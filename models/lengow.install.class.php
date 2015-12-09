@@ -14,9 +14,9 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- *  @author    Team Connector <team-connector@lengow.com>
- *  @copyright 2016 Lengow SAS
- *  @license   http://www.apache.org/licenses/LICENSE-2.0
+ * @author    Team Connector <team-connector@lengow.com>
+ * @copyright 2016 Lengow SAS
+ * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
 /**
@@ -26,7 +26,7 @@
 
 
 $sep = DIRECTORY_SEPARATOR;
-require_once dirname(__FILE__).$sep.'..'.$sep.'loader.php';
+require_once dirname(__FILE__) . $sep . '..' . $sep . 'loader.php';
 
 loadFile('export');
 
@@ -94,7 +94,7 @@ class LengowInstall
             'LENGOW_ORDER_ID_SHIPPEDBYMP',
             'LENGOW_CRON_EDITOR'
         );
-        foreach($configurations as $configuration){
+        foreach ($configurations as $configuration) {
             Configuration::deleteByName($configuration);
         }
 
@@ -204,7 +204,8 @@ class LengowInstall
             Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false) &&
             Configuration::updateValue('LENGOW_REPORT_MAIL', true) &&
             Configuration::updateValue('LENGOW_EXPORT_TIMEOUT', 0) &&
-            Configuration::updateValue('LENGOW_IMPORT_SINGLE', version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')) &&
+            Configuration::updateValue('LENGOW_IMPORT_SINGLE',
+                version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')) &&
             Configuration::updateValue('LENGOW_EMAIL_ADDRESS', '') &&
             Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
             Configuration::updateValue('LENGOW_CRON_EDITOR', false) &&
@@ -220,11 +221,9 @@ class LengowInstall
     public function addStatusError()
     {
         // Add Lengow order error status
-        if (_PS_VERSION_ >= '1.5')
-        {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state WHERE module_name = \''.$this->lengowModule->name.'\'');
-            if (empty($states))
-            {
+        if (_PS_VERSION_ >= '1.5') {
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state WHERE module_name = \'' . $this->lengowModule->name . '\'');
+            if (empty($states)) {
                 $lengow_state = new OrderState();
                 $lengow_state->send_email = false;
                 $lengow_state->module_name = $this->lengowModule->name;
@@ -237,24 +236,21 @@ class LengowInstall
                 $lengow_state->color = '#205985';
                 $lengow_state->name[1] = 'Erreur technique - Lengow';
                 $languages = Language::getLanguages(false);
-                foreach ($languages as $language)
-                {
-                    if ($language['iso_code'] == 'fr')
+                foreach ($languages as $language) {
+                    if ($language['iso_code'] == 'fr') {
                         $lengow_state->name[$language['id_lang']] = 'Erreur technique - Lengow';
-                    else
+                    } else {
                         $lengow_state->name[$language['id_lang']] = 'Technical error - Lengow';
+                    }
                 }
                 $lengow_state->add();
                 Configuration::updateValue('LENGOW_STATE_ERROR', $lengow_state->id);
-            }
-            else
+            } else {
                 Configuration::updateValue('LENGOW_STATE_ERROR', $states[0]['id_order_state']);
-        }
-        else
-        {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state_lang WHERE name = \'Erreur technique - Lengow\' LIMIT 1');
-            if (empty($states))
-            {
+            }
+        } else {
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang WHERE name = \'Erreur technique - Lengow\' LIMIT 1');
+            if (empty($states)) {
                 $lengow_state = new OrderState();
                 $lengow_state->send_email = false;
                 $lengow_state->invoice = false;
@@ -266,14 +262,14 @@ class LengowInstall
                 $lengow_state->color = '#205985';
                 $lengow_state->name[1] = 'Erreur technique - Lengow';
                 $languages = Language::getLanguages(false);
-                foreach ($languages as $language)
+                foreach ($languages as $language) {
                     $lengow_state->name[$language['id_lang']] = 'Erreur technique - Lengow';
+                }
                 $lengow_state->add();
                 Configuration::updateValue('LENGOW_STATE_ERROR', $lengow_state->id);
             }
         }
     }
-
 
 
 }

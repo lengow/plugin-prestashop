@@ -8,7 +8,7 @@ if (!defined('_PS_VERSION_')) {
 
 $sep = DIRECTORY_SEPARATOR;
 require('models/lengow.install.class.php');
-require_once  _PS_MODULE_DIR_.'lengow'.$sep.'loader.php';
+require_once _PS_MODULE_DIR_ . 'lengow' . $sep . 'loader.php';
 
 class Lengow extends Module
 {
@@ -36,15 +36,17 @@ class Lengow extends Module
 
     public function install()
     {
-        if (!parent::install())
+        if (!parent::install()) {
             return false;
+        }
         return $this->installClass->install();
     }
 
     public function uninstall()
     {
-        if (!parent::uninstall())
+        if (!parent::uninstall()) {
             return false;
+        }
         return $this->installClass->uninstall();
     }
 
