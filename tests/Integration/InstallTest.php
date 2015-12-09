@@ -1,29 +1,45 @@
 <?php
 
 namespace PrestaShop\PrestaShop\Tests\TestCase;
-
 use PHPUnit_Framework_TestCase;
 use Module;
-use Order;
+use Configuration;
 
-class InstallTest extends IntegrationTestCase
+class InstallTest extends PHPUnit_Framework_TestCase
 {
 
-
-    public function testInstall()
+    public static function setUpBeforeClass()
     {
-        Db::getInstance();
+        require_once(_PS_CONFIG_DIR_ . '/config.inc.php');
+    }
 
+    /**
+     *
+     * @test
+     *
+     */
+    public function Install()
+    {
         //test if version is correct
         $module = Module::getInstanceByName('lengow');
 
-        var_dump($module);
-
-        echo $module->version;
-
-        echo Configuration::get('LENGOW_VERSION');
-
-
-        $this->assertTrue(true, "Everything works fine");
+        $this->assertTrue($module->install());
+        $this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'));
     }
+
+    /**
+     *
+     * @test
+     *
+     */
+    public function unInstall()
+    {
+        //test if version is correct
+        $module = Module::getInstanceByName('lengow');
+        $this->assertTrue($module->uninstall());
+        $module->install();
+
+        //$this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'));
+    }
+
 }
