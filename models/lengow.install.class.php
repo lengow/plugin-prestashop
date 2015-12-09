@@ -51,6 +51,7 @@ class LengowInstall
         $this->createTab();
         $this->setDefaultValues();
         $this->addStatusError();
+        $this->update();
         return true;
     }
 
@@ -271,5 +272,15 @@ class LengowInstall
         }
     }
 
+
+    /**
+     * Update process
+     *
+     * @return void
+     */
+    public function update()
+    {
+        Configuration::updateValue('LENGOW_VERSION', '3.0.0');
+    }
 
 }

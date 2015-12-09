@@ -11,6 +11,7 @@ class DummyTest extends PHPUnit_Framework_TestCase
     public function test_Dummy()
     {
 
+        //$test = Db::getInstance()->executeS('SELECT * FROM ps_configuration');
 
 
         $this->assertTrue(true, "Everything works fine");
