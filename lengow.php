@@ -1,4 +1,5 @@
 <?php
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -13,7 +14,7 @@ require_once _PS_MODULE_DIR_ . 'lengow' . $sep . 'loader.php';
 class Lengow extends Module
 {
 
-    var $installClass;
+    private $installClass;
 
     public function __construct()
     {
@@ -28,7 +29,9 @@ class Lengow extends Module
         parent::__construct();
 
         $this->displayName = $this->l('Lengow');
-        $this->description = $this->l('Lengow allows you to easily export your product catalogue from your Prestashop store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister…  Choose from our 1,800 available marketing channels!');
+        $this->description = $this->l('Lengow allows you to easily export your product catalogue from your Prestashop
+        store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister..
+        Choose from our 1,800 available marketing channels!');
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall the Lengow module ?');
 
         $this->installClass = new LengowInstall($this);
@@ -49,6 +52,4 @@ class Lengow extends Module
         }
         return $this->installClass->uninstall();
     }
-
-
 }

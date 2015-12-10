@@ -8,7 +8,7 @@ copy_directory(){
         if [ -e "$DESTINATION_DIRECTORY" ]; then
             unlink $DESTINATION_DIRECTORY
         fi
-        cp -r $ORIGINAL_DIRECTORY $DESTINATION_DIRECTORY
+        ln -s $ORIGINAL_DIRECTORY $DESTINATION_DIRECTORY
         echo "✔ Create directory : $DESTINATION_DIRECTORY"
     else
         echo "⚠ Missing directory : $ORIGINAL_DIRECTORY"

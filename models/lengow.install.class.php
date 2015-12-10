@@ -33,7 +33,7 @@ loadFile('export');
 class LengowInstall
 {
 
-    var $lengowModule;
+    private $lengowModule;
 
     static private $_tabs = array(
         'Home' => 'AdminLengowHome',
@@ -175,7 +175,7 @@ class LengowInstall
             }
             if ($tab->id != 0) {
                 $tab->delete();
-                if (_PS_VERSION >= '1.5') {
+                if (_PS_VERSION_ >= '1.5') {
                     $tab_parent->delete();
                 }
             }
@@ -238,7 +238,8 @@ class LengowInstall
     {
         // Add Lengow order error status
         if (_PS_VERSION_ >= '1.5') {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state WHERE module_name = \'' . $this->lengowModule->name . '\'');
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state
+            WHERE module_name = \'' . $this->lengowModule->name . '\'');
             if (empty($states)) {
                 $lengow_state = new OrderState();
                 $lengow_state->send_email = false;
@@ -265,7 +266,8 @@ class LengowInstall
                 Configuration::updateValue('LENGOW_STATE_ERROR', $states[0]['id_order_state']);
             }
         } else {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang WHERE name = \'Erreur technique - Lengow\' LIMIT 1');
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang
+            WHERE name = \'Erreur technique - Lengow\' LIMIT 1');
             if (empty($states)) {
                 $lengow_state = new OrderState();
                 $lengow_state->send_email = false;

@@ -1,6 +1,7 @@
 <?php
 
 namespace PrestaShop\PrestaShop\Tests\TestCase;
+
 use PHPUnit_Framework_TestCase;
 use Module;
 use Configuration;
@@ -10,15 +11,16 @@ class InstallTest extends PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        require_once(_PS_CONFIG_DIR_ . '/config.inc.php');
+        require_once _PS_CONFIG_DIR_ . 'config.inc.php';
     }
 
     /**
+     * Test install lengow module
      *
      * @test
      *
      */
-    public function Install()
+    public function install()
     {
         //test if version is correct
         $module = Module::getInstanceByName('lengow');
@@ -28,6 +30,7 @@ class InstallTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test uninstall lengow module
      *
      * @test
      *
@@ -41,5 +44,4 @@ class InstallTest extends PHPUnit_Framework_TestCase
 
         //$this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'));
     }
-
 }
