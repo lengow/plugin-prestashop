@@ -163,12 +163,12 @@ class LengowFeed
                     $header .= LengowFeed::PROTECTION . LengowFeed::formatFields($field) . LengowFeed::PROTECTION . LengowFeed::CSV_SEPARATOR;
                 }
                 return rtrim($header, LengowFeed::CSV_SEPARATOR) . LengowFeed::EOL;
-            case 'xml' :
+            case 'xml':
                 return '<?xml version="1.0" encoding="UTF-8"?>' . LengowFeed::EOL
                 . '<catalog>' . LengowFeed::EOL;
-            case 'json' :
+            case 'json':
                 return '{"catalog":[';
-            case 'yaml' :
+            case 'yaml':
                 return '"catalog":' . LengowFeed::EOL;
         }
     }
@@ -191,7 +191,7 @@ class LengowFeed
                     $content .= LengowFeed::PROTECTION . $value . LengowFeed::PROTECTION . LengowFeed::CSV_SEPARATOR;
                 }
                 return rtrim($content, LengowFeed::CSV_SEPARATOR) . LengowFeed::EOL;
-            case 'xml' :
+            case 'xml':
                 $content = '<product>';
                 foreach ($data as $field => $value) {
                     $field = LengowFeed::formatFields($field, $format);
@@ -199,7 +199,7 @@ class LengowFeed
                 }
                 $content .= '</product>' . LengowFeed::EOL;
                 return $content;
-            case 'json' :
+            case 'json':
                 $content = $is_first ? '' : ',';
                 $json_array = array();
                 foreach ($data as $field => $value) {
@@ -208,7 +208,7 @@ class LengowFeed
                 }
                 $content .= Tools::jsonEncode($json_array);
                 return $content;
-            case 'yaml' :
+            case 'yaml':
                 $content = '  ' . LengowFeed::PROTECTION . 'product' . LengowFeed::PROTECTION . ':' . LengowFeed::EOL;
                 foreach ($data as $field => $value) {
                     $field = LengowFeed::formatFields($field, $format);
@@ -229,9 +229,9 @@ class LengowFeed
     public static function getFooter($format = 'csv')
     {
         switch ($format) {
-            case 'xml' :
+            case 'xml':
                 return '</catalog>';
-            case 'json' :
+            case 'json':
                 return ']}';
             default:
                 return '';
@@ -330,7 +330,8 @@ class LengowFeed
         switch ($format) {
             case 'csv':
                 if (_PS_VERSION_ <= '1.4.5') {
-                    return Tools::substr(Tools::strtoupper(preg_replace('/[^a-zA-Z0-9_]+/', '',
+                    return Tools::substr(
+                        Tools::strtoupper(preg_replace('/[^a-zA-Z0-9_]+/', '',
                         str_replace(array(' ', '\''), '_', LengowCore::replaceAccentedChars($str)))), 0, 58);
                 } else {
                     return Tools::substr(Tools::strtoupper(preg_replace('/[^a-zA-Z0-9_]+/', '',

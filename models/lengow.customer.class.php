@@ -110,6 +110,7 @@ class LengowCustomer extends Customer implements LengowObject
                 break;
             case LengowObject::LENGOW_SIZE_ERROR:
                 $this->validateSizeLengow($field);
+                break;
             default:
                 # code...
                 break;

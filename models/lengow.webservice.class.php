@@ -70,8 +70,11 @@ class LengowWebservice
     }
 
     /**
+     *
      * Check if action exists
-     * @param  string $action
+     *
+     * @param string $action
+     *
      * @return mixed
      */
     public static function checkAction($action)
