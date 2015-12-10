@@ -26,7 +26,7 @@
  * @author Mathieu Sabourin <mathieu.sabourin@lengow.com>
  * @copyright 2016 Lengow SAS
  */
-class LengowCustomerAbstract extends Customer implements LengowObject
+class LengowCustomer extends Customer implements LengowObject
 {
     /**
      * Definition array for prestashop 1.4.*

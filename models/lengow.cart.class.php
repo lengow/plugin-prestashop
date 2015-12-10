@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-class LengowCartAbstract extends Cart implements LengowObject
+class LengowCart extends Cart implements LengowObject
 {
     /**
      * @var boolean add inactive & out of stock products to cart
