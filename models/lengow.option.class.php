@@ -23,8 +23,6 @@
  * The Lengow Option Class.
  * User to generate option list on configuration.
  *
- * @author Ludovic Drin <ludovic@lengow.com>
- * @copyright 2013 Lengow SAS
  */
 class LengowOption
 {

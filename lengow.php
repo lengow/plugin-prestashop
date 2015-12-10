@@ -1,7 +1,7 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
+/*error_reporting(E_ALL);
+ini_set("display_errors", 1);*/
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -35,6 +35,11 @@ class Lengow extends Module
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall the Lengow module ?');
 
         $this->installClass = new LengowInstall($this);
+
+        $protocol_link = (Configuration::get('PS_SSL_ENABLED')) ? 'https://' : 'http://';
+        $protocol_content = (isset($useSSL) and $useSSL and Configuration::get('PS_SSL_ENABLED')) ? 'https://' : 'http://';
+        $link = new Link($protocol_link, $protocol_content);
+        $this->context->smarty->assign('link', $link);
     }
 
     public function install()

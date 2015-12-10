@@ -37,8 +37,6 @@ try {
 /**
  * The Lengow connector API.
  *
- * @author Ludovic Drin <ludovic@lengow.com>
- * @copyright 2013 Lengow SAS
  */
 class LengowConnector
 {

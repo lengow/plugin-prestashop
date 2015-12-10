@@ -22,8 +22,6 @@
 /**
  * The Lengow Order Class.
  *
- * @author Mathieu Sabourin <mathieu.sabourin@lengow.com>
- * @copyright 2016 Lengow SAS
  */
 
 class LengowOrder extends Order

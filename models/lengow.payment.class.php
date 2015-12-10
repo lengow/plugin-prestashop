@@ -22,8 +22,6 @@
 /**
  * The Lengow Payment Class.
  *
- * @author Mathieu Sabourin <mathieu.saourin@lengow.com>
- * @copyright 2016 Lengow SAS
  */
 class LengowPaymentModule extends PaymentModule
 {

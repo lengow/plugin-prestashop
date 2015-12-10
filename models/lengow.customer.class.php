@@ -23,8 +23,6 @@
 /**
  * Lengow Customer class
  *
- * @author Mathieu Sabourin <mathieu.sabourin@lengow.com>
- * @copyright 2016 Lengow SAS
  */
 class LengowCustomer extends Customer implements LengowObject
 {

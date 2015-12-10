@@ -22,8 +22,6 @@
 /**
  * The Lengow Product Class.
  *
- * @author Ludovic Drin <ludovic@lengow.com>
- * @copyright 2013 Lengow SAS
  */
 class LengowProduct extends Product
 {

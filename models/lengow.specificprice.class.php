@@ -22,8 +22,6 @@
 /**
  * The Lengow SpecificPrice Class.
  *
- * @author Ludovic Drin <ludovic@lengow.com>
- * @copyright 2013 Lengow SAS
  */
 class LengowSpecificPrice extends SpecificPrice
 {

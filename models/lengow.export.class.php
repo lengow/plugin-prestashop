@@ -23,6 +23,10 @@
  * The Lengow Export Class.
  *
  */
+
+$sep = DIRECTORY_SEPARATOR;
+require_once dirname(__FILE__) . $sep . '..' . $sep . 'loader.php';
+
 class LengowExport
 {
 

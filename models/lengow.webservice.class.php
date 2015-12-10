@@ -22,8 +22,6 @@
 /**
  * The Lengow Webservice Class.
  *
- * @author Romain Le Polh <romain@lengow.com>
- * @copyright 2014 Lengow SAS
  */
 class LengowWebservice
 {
