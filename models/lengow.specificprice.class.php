@@ -19,23 +19,19 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-$GLOBALS['OVERRIDE_FOLDER'] = 'override';
-$GLOBALS['INSTALL_FOLDER'] = 'install';
-$GLOBALS['MODELS_FOLDER'] = 'models';
-$GLOBALS['FILES'] = array();
+/**
+ * The Lengow SpecificPrice Class.
+ *
+ * @author Ludovic Drin <ludovic@lengow.com>
+ * @copyright 2013 Lengow SAS
+ */
+class LengowSpecificPrice extends SpecificPrice
+{
 
-require_once _PS_MODULE_DIR_.'lengow'.$sep.'backward_compatibility'.$sep.'backward.php';
+    public static function clear()
+    {
+        self::$_specificPriceCache = array();
+        self::$_cache_priorities = array();
+    }
 
-$directory = _PS_MODULE_DIR_ . 'lengow/interface/';
-$listClassFile = array_diff(scandir($directory), array('..', '.'));
-
-foreach ($listClassFile as $list) {
-    require_once $directory . $list;
-}
-
-$directory = _PS_MODULE_DIR_ . 'lengow/models/';
-$listClassFile = array_diff(scandir($directory), array('..', '.'));
-
-foreach ($listClassFile as $list) {
-    require_once $directory . $list;
 }

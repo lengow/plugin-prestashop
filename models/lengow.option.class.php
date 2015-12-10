@@ -19,23 +19,35 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-$GLOBALS['OVERRIDE_FOLDER'] = 'override';
-$GLOBALS['INSTALL_FOLDER'] = 'install';
-$GLOBALS['MODELS_FOLDER'] = 'models';
-$GLOBALS['FILES'] = array();
+/**
+ * The Lengow Option Class.
+ * User to generate option list on configuration.
+ *
+ * @author Ludovic Drin <ludovic@lengow.com>
+ * @copyright 2013 Lengow SAS
+ */
+class LengowOption
+{
 
-require_once _PS_MODULE_DIR_.'lengow'.$sep.'backward_compatibility'.$sep.'backward.php';
+    /**
+     * tracker ID.
+     */
+    public $id;
 
-$directory = _PS_MODULE_DIR_ . 'lengow/interface/';
-$listClassFile = array_diff(scandir($directory), array('..', '.'));
+    /**
+     * tracker name.
+     */
+    public $name;
 
-foreach ($listClassFile as $list) {
-    require_once $directory . $list;
-}
-
-$directory = _PS_MODULE_DIR_ . 'lengow/models/';
-$listClassFile = array_diff(scandir($directory), array('..', '.'));
-
-foreach ($listClassFile as $list) {
-    require_once $directory . $list;
+    /**
+     * Make a new tracker option.
+     *
+     * @param integer $id The tracker type unique ID.
+     * @param varchar $token The tracker type name.
+     */
+    public function __construct($id, $name)
+    {
+        $this->id = $id;
+        $this->name = $name;
+    }
 }
