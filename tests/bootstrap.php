@@ -24,7 +24,8 @@
 *  @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
-$mainDir = dirname(__DIR__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
+
+$mainDir = str_replace('modules/lengow/tests','',exec("pwd"));
 require_once($mainDir.'config/defines.inc.php');
 require_once(_PS_CONFIG_DIR_.'autoload.php');
 //require($mainDir.'tests/vendor/autoload.php');
