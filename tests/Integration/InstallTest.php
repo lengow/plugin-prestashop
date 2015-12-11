@@ -2,16 +2,24 @@
 
 namespace PrestaShop\PrestaShop\Tests\TestCase;
 
-use PHPUnit_Framework_TestCase;
+use Db;
 use Module;
 use Configuration;
 
-class InstallTest extends PHPUnit_Framework_TestCase
+class InstallTest extends IntegrationTestCase
 {
 
-    public static function setUpBeforeClass()
+    /**
+     * Test can load lengow module
+     *
+     * @test
+     *
+     */
+    public function load()
     {
-        require_once _PS_CONFIG_DIR_ . 'config.inc.php';
+        $module = Module::getInstanceByName('lengow');
+        $this->assertTrue((boolean)$module, 'Load Lengow Module');
+        $this->assertEquals($module->name, 'lengow');
     }
 
     /**
@@ -22,8 +30,8 @@ class InstallTest extends PHPUnit_Framework_TestCase
      */
     public function install()
     {
-        //test if version is correct
         $module = Module::getInstanceByName('lengow');
+        $this->assertTrue((boolean)$module, 'Load Lengow Module');
 
         $this->assertTrue($module->install());
         $this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'));
@@ -39,9 +47,9 @@ class InstallTest extends PHPUnit_Framework_TestCase
     {
         //test if version is correct
         $module = Module::getInstanceByName('lengow');
-        $this->assertTrue($module->uninstall());
-        $module->install();
 
-        //$this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'));
+        $this->assertTrue((boolean)$module, 'Load Lengow Module');
+        $this->assertTrue($module->uninstall());
     }
+
 }

@@ -29,7 +29,7 @@ class LengowInstall
 
     private $lengowModule;
 
-    static private $_tabs = array(
+    static private $tabs = array(
         'Home' => 'AdminLengowHome',
         'Configuration' => 'AdminLengowConfig',
         'Configuration Logs' => 'AdminLengowLogConfig',
@@ -45,11 +45,10 @@ class LengowInstall
 
     public function install()
     {
-        $this->createTab();
-        $this->setDefaultValues();
-        $this->addStatusError();
+        return $this->createTab() &&
+        $this->setDefaultValues() &&
+        $this->addStatusError() &&
         $this->update();
-        return true;
     }
 
     public function uninstall()
@@ -116,7 +115,7 @@ class LengowInstall
             $tab_parent->add();
         }
 
-        foreach (self::$_tabs as $name => $controllerName) {
+        foreach (self::$tabs as $name => $controllerName) {
             if (_PS_VERSION_ < '1.5') {
                 $tab_name = $controllerName . "14";
             } else {
@@ -154,7 +153,7 @@ class LengowInstall
     private static function uninstallTab()
     {
 
-        foreach (self::$_tabs as $name => $controllerName) {
+        foreach (self::$tabs as $name => $controllerName) {
             if (_PS_VERSION_ < '1.5') {
                 $tab_name = $controllerName . "14";
             } else {
@@ -281,6 +280,7 @@ class LengowInstall
                 Configuration::updateValue('LENGOW_STATE_ERROR', $lengow_state->id);
             }
         }
+        return true;
     }
 
 
@@ -292,6 +292,7 @@ class LengowInstall
     public function update()
     {
         Configuration::updateValue('LENGOW_VERSION', '3.0.0');
+        return true;
     }
 
 }
