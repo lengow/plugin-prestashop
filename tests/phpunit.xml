@@ -1,10 +1,13 @@
 <phpunit bootstrap="bootstrap.php">
     <testsuites>
-        <testsuite name="Unit">
-            <directory>Unit</directory>
+        <testsuite name="Module">
+            <directory>Module</directory>
         </testsuite>
-        <testsuite name="Integration">
-            <directory>Integration</directory>
+        <testsuite name="Controller">
+            <directory>Controller</directory>
+        </testsuite>
+        <testsuite name="Model">
+            <directory>Model</directory>
         </testsuite>
     </testsuites>
 </phpunit>

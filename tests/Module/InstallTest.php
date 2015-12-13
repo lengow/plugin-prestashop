@@ -6,7 +6,7 @@ use Db;
 use Module;
 use Configuration;
 
-class InstallTest extends IntegrationTestCase
+class InstallTest extends ModuleTestCase
 {
 
     /**
@@ -33,6 +33,12 @@ class InstallTest extends IntegrationTestCase
         $module = Module::getInstanceByName('lengow');
         $this->assertTrue((boolean)$module, 'Load Lengow Module');
 
+        //desinstall module if install
+        if ($module->isInstalled('lengow')) {
+            $module = Module::getInstanceByName('lengow');
+            $module->uninstall();
+        }
+
         $this->assertTrue($module->install());
         $this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'));
     }
@@ -40,6 +46,7 @@ class InstallTest extends IntegrationTestCase
     /**
      * Test uninstall lengow module
      *
+     * @depends install
      * @test
      *
      */
