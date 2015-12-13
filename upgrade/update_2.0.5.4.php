@@ -19,25 +19,14 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.$sep);
-
-$GLOBALS['OVERRIDE_FOLDER'] = 'override';
-$GLOBALS['INSTALL_FOLDER'] = 'install';
-$GLOBALS['MODELS_FOLDER'] = 'models';
-$GLOBALS['FILES'] = array();
-
-require_once _PS_MODULE_LENGOW_DIR_.'backward_compatibility'.$sep.'backward.php';
-
-$directory = _PS_MODULE_LENGOW_DIR_ . 'interface/';
-$listClassFile = array_diff(scandir($directory), array('..', '.'));
-
-foreach ($listClassFile as $list) {
-    require_once $directory . $list;
+if (!$installation) {
+    exit();
 }
 
-$directory = _PS_MODULE_LENGOW_DIR_ . 'models/';
-$listClassFile = array_diff(scandir($directory), array('..', '.'));
 
-foreach ($listClassFile as $list) {
-    require_once $directory . $list;
+$result = Db::getInstance()->execute("SHOW COLUMNS FROM "._DB_PREFIX_."lengow_logs_import LIKE 'mail' ");
+$exists = count($result) > 0 ? true : false;
+if (!$exists) {
+    $sql = 'ALTER TABLE '._DB_PREFIX_.'lengow_logs_import ADD `mail` tinyint(1) UNSIGNED NOT NULL DEFAULT \'0\'';
+    Db::getInstance()->execute($sql);
 }

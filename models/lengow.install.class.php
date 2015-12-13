@@ -285,7 +285,6 @@ class LengowInstall
         return true;
     }
 
-
     /**
      * Update process
      *
@@ -293,8 +292,14 @@ class LengowInstall
      */
     public function update()
     {
-        Configuration::updateValue('LENGOW_VERSION', '3.0.0');
+        $installation = true;
+
+        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_.'upgrade'), array('..', '.'));
+        foreach ($upgradeFiles as $file) {
+            include _PS_MODULE_LENGOW_DIR_.'upgrade/'.$file;
+            $numberVersion = preg_replace('/update_|\.php$/', '', $file);
+            Configuration::updateValue('LENGOW_VERSION', $numberVersion);
+        }
         return true;
     }
-
 }

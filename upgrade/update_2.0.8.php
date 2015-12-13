@@ -19,25 +19,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.$sep);
-
-$GLOBALS['OVERRIDE_FOLDER'] = 'override';
-$GLOBALS['INSTALL_FOLDER'] = 'install';
-$GLOBALS['MODELS_FOLDER'] = 'models';
-$GLOBALS['FILES'] = array();
-
-require_once _PS_MODULE_LENGOW_DIR_.'backward_compatibility'.$sep.'backward.php';
-
-$directory = _PS_MODULE_LENGOW_DIR_ . 'interface/';
-$listClassFile = array_diff(scandir($directory), array('..', '.'));
-
-foreach ($listClassFile as $list) {
-    require_once $directory . $list;
+if (!$installation) {
+    exit();
 }
 
-$directory = _PS_MODULE_LENGOW_DIR_ . 'models/';
-$listClassFile = array_diff(scandir($directory), array('..', '.'));
 
-foreach ($listClassFile as $list) {
-    require_once $directory . $list;
-}
+Configuration::updateValue('LENGOW_IMPORT_SINGLE', version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<'));
+

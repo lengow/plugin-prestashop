@@ -57,4 +57,9 @@ class Lengow extends Module
         }
         return $this->installClass->uninstall();
     }
+
+    public function update()
+    {
+        return $this->installClass->update();
+    }
 }
