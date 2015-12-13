@@ -28,6 +28,7 @@ class LengowInstall
 {
 
     private $lengowModule;
+    private $lengowHook;
 
     static private $tabs = array(
         'Home' => 'AdminLengowHome',
@@ -40,12 +41,13 @@ class LengowInstall
     public function __construct($module)
     {
         $this->lengowModule = $module;
+        $this->lengowHook = new LengowHook($module);
     }
-
 
     public function install()
     {
         return $this->createTab() &&
+        $this->lengowHook->registerHooks() &&
         $this->setDefaultValues() &&
         $this->addStatusError() &&
         $this->update();
