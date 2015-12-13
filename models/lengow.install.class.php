@@ -292,6 +292,7 @@ class LengowInstall
      */
     public function update()
     {
+        //check if update is in progress
         $installation = true;
 
         $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_.'upgrade'), array('..', '.'));
