@@ -20,21 +20,24 @@
  */
 
 
-
 /**
  * The Lengow's Log Configuration Admin Controller.
  *
  */
-
 class AdminLengowLogConfigController extends ModuleAdminController
 {
+    private $count;
+
     public function __construct()
     {
         $this->context = Context::getContext();
         $this->template = 'layout.tpl';
         $this->lite_display = true;
+        $this->explicitSelect = true;
+        $this->list_no_link   = true;
         $this->meta_title = 'Config Logs';
         $this->lang = false;
+
 
         /*$this->bootstrap =true;*/
 
@@ -42,58 +45,132 @@ class AdminLengowLogConfigController extends ModuleAdminController
 
     }
 
-    private function getLogFiles()
+    private function getLogFiles($orderBy = null, $orderWay = null, $pagination = null, $filter = null, $message = null)
     {
         $logs_links = LengowLog::getLinks();
         if (!$logs_links)
             return $this->l('No logs available');
         $logs_links = array_reverse($logs_links);
-        $output = '';
-        foreach ($logs_links as $link)
-        {
-            $output .= $link;
-            break;
-
-        }
-        $test = fopen($output, "r");
         $tab = array();
-        while(!feof($test)){
+        $this->count = 0;
+        foreach ($logs_links as $link) {
+
+            $tab = array_merge($tab, $this->openText($link, $message));
+        }
+
+        $tab = array_chunk($tab, $pagination);
+
+        if($orderBy == 'date' && $orderWay == 'desc')
+            $tab = $this->sksort($tab, "id", true);
+        else
+            $tab = $this->sksort($tab, "id");
+
+        return $tab[$filter - 1];
+    }
+
+    public function openText($link, $message = '')
+    {
+        $test = fopen($link, "r");
+        $tab = array();
+
+
+        while (!feof($test)) {
             $read = fgets($test);
 
-            $tab[] = array(
-                'date' => substr($read, 0 , 10),
-                'hour' => substr($read, 13, 8),
-                'message' =>  substr($read, 24)
+            $row = array(
+                'id' => $this->count,
+                'date' => substr($read, 0, 21),
+                'message' => substr($read, 24)
 
             );
+            if($message != '') {
+                if(stripos($row['message'], $message) !== false) {
+                    array_push($tab, $row);
+                    $this->count += 1;
+
+                }
+
+            } else {
+                array_push($tab, $row);
+                $this->count += 1;
+            }
 
         }
+
         return $tab;
     }
 
-    public function RenderList(){
+    function sksort(&$array, $subkey = "id", $sort_ascending = false)
+    {
+        if (count($array))
+            $temp_array[key($array)] = array_shift($array);
+
+        foreach ($array as $key => $val) {
+            $offset = 0;
+            $found = false;
+
+            foreach ($temp_array as $tmp_key => $tmp_val) {
+                if (!$found and strtolower($val[$subkey]) > strtolower($tmp_val[$subkey])) {
+                    $temp_array = array_merge((array)array_slice($temp_array, 0, $offset), array($key => $val), array_slice($temp_array, $offset));
+                    $found = true;
+                }
+                $offset++;
+            }
+
+            if (!$found)
+                $temp_array = array_merge($temp_array, array($key => $val));
+        }
+
+        if ($sort_ascending)
+            $array = array_reverse($temp_array);
+        else
+            $array = $temp_array;
+
+        return $array;
+    }
+
+    public function RenderList()
+    {
 
         $this->fields_list = array(
             'date' => array(
                 'title' => $this->l('Date'),
+                'search' =>false,
+                'align' => 'text-center',
                 'width' => 'auto'
 
             ),
-            'hour' => array(
-                'title' => $this->l('Heure')
-            ),
             'message' => array(
                 'title' => $this->l('Message'),
-                'width' => 'auto',
-                'align' => 'center',
+                'orderby' => false,
+                'search' =>true,
+                'width' => 'auto'
+
+
             )
         );
-        $tab = $this->getLogFiles();
         $helper = new HelperList();
+
+        $orderBy = Tools::getValue('configurationOrderby');
+        $orderWay = Tools::getValue('configurationOrderway');
+        $pagination = Tools::getValue('configuration_pagination') == null ? $helper->_default_pagination : Tools::getValue('configuration_pagination');
+        $filter = Tools::getValue('submitFilterconfiguration') == null ? 1 : Tools::getValue('submitFilterconfiguration');
+        if($filter < 1) {
+            $filter = 1;
+        }
+
+        $helper->controller_name = 'AdminLengowLogConfigController';
+        $message = $this->context->cookie->{'lengowlogconfigconfigurationFilter_message'};
+
+        $tab = $this->getLogFiles($orderBy, $orderWay, $pagination, $filter, $message);
+
+        $helper->listTotal = $this->count;
+        $helper->simple_header = false;
         $helper->token = Tools::getAdminTokenLite('AdminLengowLogConfig');
-        $helper->currentIndex = AdminController::$currentIndex.'&configure='.$this->name;
+        $helper->currentIndex = AdminController::$currentIndex;
 
         return $helper->generateList($tab, $this->fields_list);
     }
+
 
 }
