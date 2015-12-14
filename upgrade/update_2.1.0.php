@@ -24,8 +24,12 @@ if (!$installation) {
 }
 
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders\'')) {
-    $sql = 'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `is_disabled` tinyint(1) UNSIGNED DEFAULT \'0\'';
-    Db::getInstance()->execute($sql);
+    $result = Db::getInstance()->execute("SHOW COLUMNS FROM "._DB_PREFIX_."lengow_logs_import LIKE 'mail' ");
+    $exists = count($result) > 0 ? true : false;
+    if (!$exists) {
+        $sql = 'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `is_disabled` tinyint(1) UNSIGNED DEFAULT \'0\'';
+        Db::getInstance()->execute($sql);
+    }
 }
 Configuration::updateValue('LENGOW_IMPORT_SHIPPED_BY_MP', false);
 Configuration::updateValue('LENGOW_EXPORT_ALL_VARIATIONS', Configuration::get('LENGOW_EXPORT_ALL_ATTRIBUTES'));
