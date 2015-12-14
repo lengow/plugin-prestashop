@@ -24,9 +24,6 @@
  *
  */
 
-$sep = DIRECTORY_SEPARATOR;
-require_once dirname(__FILE__) . $sep . '..' . $sep . 'loader.php';
-
 class LengowExport
 {
 
@@ -188,7 +185,7 @@ class LengowExport
      * @param boolean $out_stock Export out of stock products
      * @param array $product_ids Products to export
      *
-     * @return LengowExportAbstract
+     * @return LengowExport
      */
     public function __construct(
         $format = null,
@@ -221,6 +218,8 @@ class LengowExport
      *
      * @param string $format The export format
      *
+     * @throws LengowExportException
+     *
      * @return boolean.
      */
     public function setFormat($format)
@@ -229,6 +228,7 @@ class LengowExport
             throw new LengowExportException('Illegal export format');
         }
         $this->format = $format;
+        return true;
     }
 
     /**
@@ -253,9 +253,10 @@ class LengowExport
             if ((int)Configuration::get('LENGOW_EXPORT_TIMEOUT') > 0) {
                 $this->export_timeout = true;
                 Configuration::updateValue('LENGOW_EXPORT_START_' . Context::getContext()->language->iso_code, time());
-                Configuration::updateValue('LENGOW_EXPORT_END_' . Context::getContext()->language->iso_code,
-                    time() + Configuration::get('LENGOW_EXPORT_TIMEOUT'));
-
+                Configuration::updateValue(
+                    'LENGOW_EXPORT_END_' . Context::getContext()->language->iso_code,
+                    time() + Configuration::get('LENGOW_EXPORT_TIMEOUT')
+                );
             } else {
                 $this->export_timeout = false;
             }
@@ -285,14 +286,17 @@ class LengowExport
                 );
             }
 
-            if (!$products) // if no products : export all
-            {
+            // if no products : export all
+            if (!$products) {
                 $products = LengowProduct::exportIds(true);
             }
 
 
-            LengowCore::log('Export - ' . count($products) . ' product' . (count($products) > 1 ? 's' : '') . ' found',
-                !$this->stream);
+
+            LengowCore::log(
+                'Export - ' . count($products) . ' product' . (count($products) > 1 ? 's' : '') . ' found',
+                !$this->stream
+            );
             $this->export($products, $export_fields, $shop);
 
             LengowCore::log('Export - end', !$this->stream);
@@ -314,7 +318,7 @@ class LengowExport
         $product_count = 0;
         $file_feed = null;
         if ($this->export_timeout) {
-            $file_feed = 'flux-' . $shop->id . '-' . Context::getContext()->language->iso_code . '-temp.' . $this->format;
+            $file_feed = 'flux-'.$shop->id.'-'.Context::getContext()->language->iso_code.'-temp.'.$this->format;
         }
 
         $feed = new LengowFeed($this->stream, $this->format, isset($shop->name) ? $shop->name : 'default', $file_feed);
@@ -327,8 +331,11 @@ class LengowExport
             $product = new LengowProduct($p['id_product'], Context::getContext()->language->id);
             foreach ($fields as $field) {
                 if (isset(LengowExport::$DEFAULT_FIELDS[$field])) {
-                    $product_data[$field] = $product->getData(LengowExport::$DEFAULT_FIELDS[$field], null,
-                        $this->full_title);
+                    $product_data[$field] = $product->getData(
+                        LengowExport::$DEFAULT_FIELDS[$field],
+                        null,
+                        $this->full_title
+                    );
                 } else {
                     $product_data[$field] = $product->getData($field, null, $this->full_title);
                 }
@@ -340,18 +347,24 @@ class LengowExport
                         throw new LengowExportException('Unable to retrieve product combinations');
                     }
                     foreach ($combinations as $combination) {
-                        if (!$this->export_out_stock && $product->getData('quantity',
-                                $combination['id_product_attribute']) <= 0
+                        if (!$this->export_out_stock &&
+                            $product->getData('quantity', $combination['id_product_attribute']) <= 0
                         ) {
                             continue;
                         }
                         $key = $product->id . '_' . $combination['id_product_attribute'];
                         if (isset(LengowExport::$DEFAULT_FIELDS[$field])) {
-                            $combinations_data[$key][$field] = $product->getData(LengowExport::$DEFAULT_FIELDS[$field],
-                                $combination['id_product_attribute'], $this->full_title);
+                            $combinations_data[$key][$field] = $product->getData(
+                                LengowExport::$DEFAULT_FIELDS[$field],
+                                $combination['id_product_attribute'],
+                                $this->full_title
+                            );
                         } else {
-                            $combinations_data[$key][$field] = $product->getData($field,
-                                $combination['id_product_attribute'], $this->full_title);
+                            $combinations_data[$key][$field] = $product->getData(
+                                $field,
+                                $combination['id_product_attribute'],
+                                $this->full_title
+                            );
                         }
 
                     }
@@ -376,10 +389,14 @@ class LengowExport
             }
 
             if ($this->export_timeout && time() > Configuration::get('LENGOW_EXPORT_END_' . Context::getContext()->language->iso_code)) {
-                Configuration::updateValue('LENGOW_EXPORT_LAST_ID_' . Context::getContext()->language->iso_code,
-                    $p['id_product']);
-                LengowCore::log('Export - stopped by timeout. ' . $product_count . ' products exported.',
-                    !$this->stream);
+                Configuration::updateValue(
+                    'LENGOW_EXPORT_LAST_ID_' . Context::getContext()->language->iso_code,
+                    $p['id_product']
+                );
+                LengowCore::log(
+                    'Export - stopped by timeout. ' . $product_count . ' products exported.',
+                    !$this->stream
+                );
                 return;
             }
             $is_first = false;
@@ -388,8 +405,10 @@ class LengowExport
         $success = $feed->end();
 
         if (!$success) {
-            throw new LengowFileException('Export file generation did not end properly. Please make sure the export folder is writeable.',
-                true);
+            throw new LengowFileException(
+                'Export file generation did not end properly. Please make sure the export folder is writeable.',
+                true
+            );
         }
         if (!$this->stream) {
             $feed_url = $feed->getUrl();
@@ -491,7 +510,7 @@ class LengowExport
      * @param $id_product_attribute
      * @return $array_product
      */
-    public static function setAdditionalFieldsValues($product, $id_product_attribute = null, $array_product)
+    public static function setAdditionalFieldsValues($product, $id_product_attribute = null, $array_product = null)
     {
         /**
          * Write here your process
@@ -502,13 +521,4 @@ class LengowExport
         $id_product_attribute = $id_product_attribute;
         return $array_product;
     }
-
-}
-
-/**
- * Lengow Export Exception class
- */
-class LengowExportException extends Exception
-{
-
 }
