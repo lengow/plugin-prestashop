@@ -313,6 +313,7 @@ class LengowCore
     public static function getExportCarrier()
     {
         $id_carrier = Configuration::get('LENGOW_CARRIER_DEFAULT');
+
         return new LengowCarrier($id_carrier);
     }
 

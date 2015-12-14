@@ -285,13 +285,10 @@ class LengowExport
                     $this->export_out_stock
                 );
             }
-
             // if no products : export all
             if (!$products) {
                 $products = LengowProduct::exportIds(true);
             }
-
-
 
             LengowCore::log(
                 'Export - ' . count($products) . ' product' . (count($products) > 1 ? 's' : '') . ' found',
@@ -325,6 +322,7 @@ class LengowExport
         $feed->write('header', $fields);
         $is_first = true;
         foreach ($products as $p) {
+
             $product_data = array();
             $combinations_data = array();
 
@@ -401,6 +399,7 @@ class LengowExport
             }
             $is_first = false;
         }
+
         Configuration::updateValue('LENGOW_EXPORT_LAST_ID_' . Context::getContext()->language->iso_code, 0);
         $success = $feed->end();
 

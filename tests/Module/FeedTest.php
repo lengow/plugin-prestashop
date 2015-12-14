@@ -13,6 +13,16 @@ class FeedTest extends ModuleTestCase
 {
 
 
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+        //define Transporteur
+        Configuration::set('LENGOW_CARRIER_DEFAULT', 1);
+
+    }
+
+
     /**
      * Test Module Load
      *
@@ -60,7 +70,8 @@ class FeedTest extends ModuleTestCase
      */
     public function exportLimit()
     {
-        self::loadFixture(_PS_MODULE_LENGOW_DIR_.'tests/Module/Fixtures/test.yml');
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_LENGOW_DIR_.'tests/Module/Fixtures/test.yml');
         $export = new LengowExport("csv", null, null, null, false);
         $export->exec();
     }

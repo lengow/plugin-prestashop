@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-class LengowCarrier
+class LengowCarrier extends CarrierCore
 {
 
     const COMPATIBILITY_OK = 1;

@@ -23,4 +23,10 @@ product_lang:
     name: ceci est un nom
     description: ceci est un test
 stock_available:
+  -
+    id_product: 10
+    id_product_attribute: 0
+    id_shop: 1
+    quantity: 10
+    out_of_stock: 2
 
