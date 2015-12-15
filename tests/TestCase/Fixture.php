@@ -7,6 +7,8 @@ use Db;
 class Fixture
 {
 
+    private $alreadyTruncate = array();
+
     private $defaultValues = array(
         "product" => array(
             "id_supplier" => 1,
@@ -14,16 +16,30 @@ class Fixture
             "id_category_default" => 1,
             "price" => 1.8,
             "active" => 1,
+            "redirect_type" => "404",
+            "condition" => "new",
+        ),
+        "product_shop" => array(
+            "active" => 1
         )
     );
+    private $dateValues = array(
+        "product",
+        "product_shop"
+    );
+
 
     public function loadFixture($file)
     {
         $yml = \yaml_parse_file($file);
-        foreach ($yml as $table_name => $row) {
+        foreach ($yml as $tableName => $row) {
+            //don't re-truncate tables
+            if (!isset($this->alreadyTruncate[$tableName])) {
+                Db::getInstance()->execute('TRUNCATE ' . _DB_PREFIX_ . $tableName);
+                $this->alreadyTruncate[$tableName] = true;
+            }
             foreach ($row as $values) {
-                Db::getInstance()->execute('TRUNCATE ' . _DB_PREFIX_ . $table_name);
-                $this->loadData($table_name, $values);
+                $this->loadData($tableName, $values);
             }
         }
     }
@@ -32,9 +48,20 @@ class Fixture
     {
         if (isset($this->defaultValues[$table_name])) {
             foreach ($this->defaultValues[$table_name] as $key => $value) {
-                if (isset($values[$key])) {
+                if (!isset($values[$key])) {
                     $values[$key] = $value;
                 }
+            }
+        }
+        foreach ($values as $key => &$value) {
+            $value = addslashes($value);
+        }
+        if (in_array($table_name, $this->dateValues)) {
+            if (!isset($values["date_add"])) {
+                $values["date_add"] = date('Y-m-d H:m:i');
+            }
+            if (!isset($values["date_upd"])) {
+                $values["date_upd"] = date('Y-m-d H:m:i');
             }
         }
         Db::getInstance()->insert($table_name, $values);

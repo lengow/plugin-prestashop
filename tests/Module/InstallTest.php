@@ -67,6 +67,12 @@ class InstallTest extends ModuleTestCase
         //test if version is correct
         $module = Module::getInstanceByName('lengow');
 
+        //install module if uninstall
+        if (!$module->isInstalled('lengow')) {
+            $module = Module::getInstanceByName('lengow');
+            $module->install();
+        }
+
         $this->assertTrue((boolean)$module, 'Load Lengow Module');
         $this->assertTrue($module->uninstall());
     }

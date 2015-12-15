@@ -85,7 +85,7 @@ class LengowProduct extends Product
     /*
      * Get Default Carrier
      */
-    protected $carier;
+    protected $carrier;
 
     /**
      * Variation.
@@ -99,8 +99,11 @@ class LengowProduct extends Product
      * @param integer $id_lang The ID lang for product's content
      * @param object $context The context
      */
-    public function __construct($id_product = null, $id_lang = null)
+    public function __construct($id_product = null, $id_lang = null, $params = array())
     {
+
+        $this->carrier = isset($params["carrier"]) ? $params["carrier"] : null;
+
         parent::__construct($id_product, false, $id_lang);
         $context = Context::getContext();
 
@@ -113,11 +116,7 @@ class LengowProduct extends Product
             throw new LengowExportException('No Active Employee Fund');
         }
 
-        //need carier
-        $this->carrier = LengowCore::getExportCarrier();
-        if (!$this->carrier->id) {
-            throw new LengowExportException('You must select a carrier in Lengow Export Tab');
-        }
+
 
         // The applicable tax may be BOTH the product one AND the state one (moreover this variable is some deadcode)
         $this->tax_name = 'deprecated';
@@ -471,16 +470,6 @@ class LengowProduct extends Product
                 break;
             case 'url_rewrite':
                 //return 'http://mydomain.com/index.php?controller=product&id_product=' . $this->id;
-
-                if (_PS_VERSION_ > '1.4') {
-                    $dispatcher = LengowDispatcher::getInstance();
-                    $dispatcher->lengowExportCreateUrl("product_rule", Context::getContext()->language->id, array(
-                        "id" => $this->id,
-                        "rewrite" => $this->rewrite,
-                    ));
-                } else {
-                    return Context::getContext()->link->getProductLink($this, $this->link_rewrite);
-                }
                 return Context::getContext()->link->getProductLink(
                     $this,
                     $this->link_rewrite,
@@ -607,7 +596,7 @@ class LengowProduct extends Product
      * Get the products to export.
      *
      * @param boolean $all Export selected products
-     * @param boolean $all_product Export inactive products
+     * @param boolean $showInactiveProduct Export inactive products
      * @param array $product_ids Products to export
      * @param boolean $out_of_stock Export out of stock products
      * @param integer $start Last id exported
@@ -616,7 +605,7 @@ class LengowProduct extends Product
      */
     public static function exportIds(
         $all = false,
-        $all_product = false,
+        $showInactiveProduct = false,
         $product_ids = null,
         $out_of_stock = false,
         $start = null
@@ -634,7 +623,7 @@ class LengowProduct extends Product
         if (LengowCore::compareVersion() < 0) {
             $query = 'SELECT p.`id_product` '
                 . 'FROM `' . _DB_PREFIX_ . 'product` p ';
-            if ($all_product == false) {
+            if ($showInactiveProduct == false) {
                 $query .= 'WHERE pl.`id_lang` = ' . (int)$id_lang . ' ';
             } else {
                 $query .= 'WHERE pl.`id_lang` = ' . (int)$id_lang . ' AND p.`active` = 1 ';
@@ -649,14 +638,14 @@ class LengowProduct extends Product
 
             // Add Lengow selected products
             if (LengowCore::compareVersion() == 1 && $id_shop != '') {
-                if ($all_product == false) {
+                if ($showInactiveProduct == false) {
                     $query .= ' WHERE ps.id_shop = ' . (int)$id_shop . ' AND ps.active=1 ';
                 } //AND psupp.id_product_attribute=0 ';
                 else {
                     $query .= ' WHERE ps.id_shop = ' . (int)$id_shop . ' ';
                 } //AND psupp.id_product_attribute=0 ';
             } else {
-                if ($all_product == false) {
+                if ($showInactiveProduct == false) {
                     $query .= ' WHERE p.active=1 ';
                 } else {
                     $query .= ' WHERE 1 ';
@@ -681,7 +670,6 @@ class LengowProduct extends Product
                 $query .= ' AND p.`quantity` > 0';
             }
         }
-        echo $query;
         return Db::getInstance()->executeS($query);
     }
 
@@ -848,6 +836,7 @@ class LengowProduct extends Product
 					WHERE pa.`id_product` = ' . (int)$this->id . ' AND al.`id_lang` = ' . (int)$id_lang . ' AND agl.`id_lang` = ' . (int)$id_lang . '
 					ORDER BY agl.`public_name`, al.`name`';
         }
+        //echo "**********".$sql."**********";
         return Db::getInstance()->executeS($sql);
     }
 

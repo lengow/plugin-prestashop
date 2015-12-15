@@ -1,0 +1,291 @@
+supplier:
+  -
+    id_supplier: 1
+    name: SUPPLIER1
+    active: 1
+manufacturer:
+  -
+    id_manufacturer: 1
+    name: Rebook
+    active: 1
+  -
+    id_manufacturer: 2
+    name: Nike
+    active: 1
+  -
+    id_manufacturer: 3
+    name: Converse
+    active: 1
+manufacturer_lang:
+  -
+    id_manufacturer: 1
+    id_lang: 1
+  -
+    id_manufacturer: 2
+    id_lang: 1
+  -
+    id_manufacturer: 3
+    id_lang: 1
+manufacturer_shop:
+  -
+    id_manufacturer: 1
+    id_shop: 1
+  -
+    id_manufacturer: 2
+    id_shop: 1
+  -
+    id_manufacturer: 3
+    id_shop: 1
+  -
+    id_manufacturer: 1
+    id_shop: 2
+  -
+    id_manufacturer: 2
+    id_shop: 2
+  -
+    id_manufacturer: 3
+    id_shop: 2
+category:
+  -
+    id_category: 1
+    id_parent: 0
+    id_shop_default: 1
+    level_depth: 0
+    nleft: 1
+    nright: 22
+    active: 1
+    date_add: "2015-12-11 14:17:28"
+    date_upd: "2015-12-11 14:17:28"
+    position: 0
+    is_root_category: 0
+  -
+    id_category: 2
+    id_parent: 1
+    id_shop_default: 1
+    level_depth: 1
+    nleft: 2
+    nright: 21
+    active: 1
+    date_add: "2015-12-11 14:17:29"
+    date_upd: "2015-12-11 14:17:29"
+    position: 0
+    is_root_category: 1
+  -
+    id_category: 3
+    id_parent: 2
+    id_shop_default: 1
+    level_depth: 2
+    nleft: 3
+    nright: 20
+    active: 1
+    date_add: "2015-12-11 14:17:52"
+    date_upd: "2015-12-11 14:17:52"
+    position: 0
+    is_root_category: 0
+  -
+    id_category: 4
+    id_parent: 3
+    id_shop_default: 1
+    level_depth: 3
+    nleft: 4
+    nright: 11
+    active: 1
+    date_add: "2015-12-11 14:17:53"
+    date_upd: "2015-12-11 14:17:53"
+    position: 0
+    is_root_category: 0
+  -
+    id_category: 5
+    id_parent: 4
+    id_shop_default: 1
+    level_depth: 4
+    nleft: 5
+    nright: 6
+    active: 1
+    date_add: "2015-12-11 14:17:53"
+    date_upd: "2015-12-11 14:17:53"
+    position: 0
+    is_root_category: 0
+  -
+    id_category: 6
+    id_parent: 4
+    id_shop_default: 1
+    level_depth: 4
+    nleft: 7
+    nright: 8
+    active: 0
+    date_add: "2015-12-11 14:17:54"
+    date_upd: "2015-12-11 14:17:54"
+    position: 0
+    is_root_category: 0
+  -
+    id_category: 7
+    id_parent: 4
+    id_shop_default: 1
+    level_depth: 4
+    nleft: 9
+    nright: 10
+    active: 1
+    date_add: "2015-12-11 14:17:55"
+    date_upd: "2015-12-11 14:17:55"
+    position: 0
+    is_root_category: 0
+  -
+    id_category: 8
+    id_parent: 3
+    id_shop_default: 1
+    level_depth: 3
+    nleft: 12
+    nright: 19
+    active: 1
+    date_add: "2015-12-11 14:17:55"
+    date_upd: "2015-12-11 14:17:55"
+    position: 0
+    is_root_category: 0
+  -
+    id_category: 9
+    id_parent: 8
+    id_shop_default: 1
+    level_depth: 4
+    nleft: 13
+    nright: 14
+    active: 1
+    date_add: "2015-12-11 14:17:56"
+    date_upd: "2015-12-11 14:17:56"
+    position: 0
+    is_root_category: 0
+  -
+    id_category: 10
+    id_parent: 8
+    id_shop_default: 1
+    level_depth: 4
+    nleft: 15
+    nright: 16
+    active: 1
+    date_add: "2015-12-11 14:17:57"
+    date_upd: "2015-12-11 14:17:57"
+    position: 0
+    is_root_category: 0
+  -
+    id_category: 11
+    id_parent: 8
+    id_shop_default: 1
+    level_depth: 4
+    nleft: 17
+    nright: 18
+    active: 1
+    date_add: "2015-12-11 14:17:58"
+    date_upd: "2015-12-11 14:17:58"
+    position: 0
+    is_root_category: 0
+category_lang:
+  -
+    id_category: 1
+    id_shop: 1
+    id_lang: 1
+    name: "Racine"
+    description: ""
+    link_rewrite: "racine"
+    meta_title: ""
+    meta_keywords: ""
+    meta_description: ""
+  -
+    id_category: 2
+    id_shop: 1
+    id_lang: 1
+    name: "Accueil"
+    description: ""
+    link_rewrite: "accueil"
+    meta_title: ""
+    meta_keywords: ""
+    meta_description: ""
+  -
+    id_category: 3
+    id_shop: 1
+    id_lang: 1
+    name: "Femmes"
+    description: "<p><strong>Vous trouverez ici toutes les collections mode pour femmes.</strong></p>\n<p>Cette catégorie regroupe tous les basiques de votre garde-robe et bien plus encore :</p>\n<p>chaussures, accessoires, T-shirts imprimés, robes élégantes et jeans pour femmes !</p>"
+    link_rewrite: "femmes"
+    meta_title: ""
+    meta_keywords: ""
+    meta_description: ""
+  -
+    id_category: 4
+    id_shop: 1
+    id_lang: 1
+    name: "Tops"
+    description: "<p>Choisissez parmi une large sélection de T-shirts à manches courtes, longues ou 3/4, de tops, de débardeurs, de chemisiers et bien plus encore.</p>\n<p>Trouvez la coupe qui vous va le mieux !</p>"
+    link_rewrite: "tops"
+    meta_title: ""
+    meta_keywords: ""
+    meta_description: ""
+  -
+    id_category: 5
+    id_shop: 1
+    id_lang: 1
+    name: "T-shirts"
+    description: "<p>Les must have de votre garde-robe : découvrez les divers modèles ainsi que les différentes</p>\n<p>coupes et couleurs de notre collection !</p>"
+    link_rewrite: "t-shirts"
+    meta_title: ""
+    meta_keywords: ""
+    meta_description: ""
+  -
+    id_category: 6
+    id_shop: 1
+    id_lang: 1
+    name: "Tops"
+    description: "Choisissez le top qui vous va le mieux, parmi une large sélection."
+    link_rewrite: "top"
+    meta_title: ""
+    meta_keywords: ""
+    meta_description: ""
+  -
+    id_category: 7
+    id_shop: 1
+    id_lang: 1
+    name: "Chemisiers"
+    description: "Coordonnez vos accessoires à vos chemisiers préférés, pour un look parfait."
+    link_rewrite: "chemisiers"
+    meta_title: ""
+    meta_keywords: ""
+    meta_description: ""
+  -
+    id_category: 8
+    id_shop: 1
+    id_lang: 1
+    name: "Robes"
+    description: "<p>Trouvez votre nouvelle pièce préférée parmi une large sélection de robes décontractées, d'été et de soirée !</p>\n<p>Nous avons des robes pour tous les styles et toutes les occasions.</p>"
+    link_rewrite: "robes"
+    meta_title: ""
+    meta_keywords: ""
+    meta_description: ""
+  -
+    id_category: 9
+    id_shop: 1
+    id_lang: 1
+    name: "Robes décontractées"
+    description: "<p>Vous cherchez une robe pour la vie de tous les jours ? Découvrez</p>\n<p>notre sélection de robes et trouvez celle qui vous convient.</p>"
+    link_rewrite: "robes-decontractees"
+    meta_title: ""
+    meta_keywords: ""
+    meta_description: ""
+  -
+    id_category: 10
+    id_shop: 1
+    id_lang: 1
+    name: "Robes de soirée"
+    description: "Trouvez la robe parfaite pour une soirée inoubliable !"
+    link_rewrite: "robes-soiree"
+    meta_title: ""
+    meta_keywords: ""
+    meta_description: ""
+  -
+    id_category: 11
+    id_shop: 1
+    id_lang: 1
+    name: "Robes d'été"
+    description: "Courte, longue, en soie ou imprimée, trouvez votre robe d'été idéale !"
+    link_rewrite: "robes-ete"
+    meta_title: ""
+    meta_keywords: ""
+    meta_description: ""

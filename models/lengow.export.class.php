@@ -28,11 +28,6 @@ class LengowExport
 {
 
     /**
-     * Version.
-     */
-    const VERSION = '1.0.1';
-
-    /**
      * Default fields.
      */
     public static $DEFAULT_FIELDS = array(
@@ -99,7 +94,14 @@ class LengowExport
     /**
      * Format to return.
      */
-    protected $format = 'csv';
+    protected $format;
+
+    /**
+     * Product's Carrier.
+     */
+    protected $carrier;
+
+    protected $feed;
 
     /**
      * Full export products + attributes.
@@ -144,7 +146,7 @@ class LengowExport
     /**
      * Include active products.
      */
-    protected $inactive_products = false;
+    protected $showInactiveProduct = false;
 
     /**
      * Export out of stock product
@@ -174,42 +176,82 @@ class LengowExport
     /**
      * Construct new Lengow export.
      *
-     * @param string $format The format used for export
-     * @param boolean $fullmode Export products and their attributes
-     * @param boolean $all Export selected products
-     * @param boolean $stream Export in file
-     * @param boolean $full_title Add features to product title
-     * @param boolean $inactive_products Export inactive products
-     * @param boolean $export_features Export product features
-     * @param integer $limit Amount of products to export
-     * @param boolean $out_stock Export out of stock products
-     * @param array $product_ids Products to export
-     *
+     * @param array params optional options
+     * string #format : Export Format (csv|yaml|xml|json)
+     * boolean #stream : Display file when call script (1) | Save File (0)
+     * boolean #out_stock : Export product in stock and out stock (1) | Export Only in stock product (0)
+     * int #limit : Limit product to export
+     * boolean #show_inactive_product : Export active and inactive product (1) | Export Only active product (0)
+     * boolean #show_product_combination : Export product declinaison (1) | Export Only simple product (0)
      * @return LengowExport
      */
-    public function __construct(
-        $format = null,
-        $fullmode = null,
-        $all = null,
-        $stream = null,
-        $full_title = null,
-        $inactive_products = null,
-        $export_features = null,
-        $limit = 0,
-        $out_stock = null,
-        $product_ids = array()
-    ) {
-        $this->setFormat($format);
-        $this->export_combinations = (bool)$fullmode;
-        $this->export_features = (bool)$export_features;
-        $this->all = (bool)$all;
-        $this->stream = (bool)$stream;
-        $this->full_title = (bool)$full_title;
-        $this->inactive_products = (bool)$inactive_products;
-        $this->limit = (int)$limit;
-        $this->product_ids = $product_ids;
-        $this->export_out_stock = (bool)$out_stock;
+    public function __construct($params = array())
+    {
+        $this->setFormat(isset($params["format"]) ? $params["format"] : 'csv');
+
+        $this->product_ids = (isset($params["product_ids"]) ? $params["product_ids"] : false);
+        $this->stream = (isset($params["stream"]) ? $params["stream"] : false);
+        $this->export_out_stock =  (isset($params["out_stock"]) ? $params["out_stock"] : false);
+        $this->limit =  (isset($params["limit"]) ? (int)$params["limit"] : false);
+        $this->showInactiveProduct = (isset($params["show_inactive_product"]) ?
+            (bool)$params["show_inactive_product"] : false);
+        $this->showProductCombination = (isset($params["show_product_combination"]) ?
+            $params["show_product_combination"] : false);
+
+        $this->checkCurrency();
+        $this->setCarrier();
+
+//        $format = null,
+//        $fullmode = null,
+//        $all = null,
+//        $stream = null,
+//        $full_title = null,
+//        $inactive_products = null,
+//        $export_features = null,
+//        $limit = 0,
+//        $out_stock = null,
+//        $product_ids = array()
+
+//        $this->export_features = (bool)$export_features;
+//        $this->all = (bool)$all;
+
+//        $this->full_title = (bool)$full_title;
+
+//        $this->product_ids = $product_ids;
         return $this;
+    }
+
+    /**
+     * Check currency to export.
+     *
+     * @throws LengowExportException
+     *
+     * @return boolean.
+     */
+    public function checkCurrency()
+    {
+        if (!Context::getContext()->currency) {
+            throw new LengowExportException('Illegal Currency');
+        }
+        return true;
+    }
+
+
+    /**
+     * Set Carrier to export.
+     *
+     * @throws LengowExportException
+     *
+     * @return boolean.
+     */
+    public function setCarrier()
+    {
+        $carrier = LengowCore::getExportCarrier();
+        if (!$carrier->id) {
+            throw new LengowExportException('You must select a carrier in Lengow Export Tab');
+        }
+        $this->carrier = $carrier;
+        return true;
     }
 
 
@@ -272,7 +314,7 @@ class LengowExport
             if ($this->export_timeout) {
                 $products = LengowProduct::exportIds(
                     $this->all,
-                    $this->inactive_products,
+                    $this->showInactiveProduct,
                     $this->product_ids,
                     $this->export_out_stock,
                     Configuration::get('LENGOW_EXPORT_LAST_ID_' . Context::getContext()->language->iso_code)
@@ -280,7 +322,7 @@ class LengowExport
             } else {
                 $products = LengowProduct::exportIds(
                     $this->all,
-                    $this->inactive_products,
+                    $this->showInactiveProduct,
                     $this->product_ids,
                     $this->export_out_stock
                 );
@@ -318,15 +360,19 @@ class LengowExport
             $file_feed = 'flux-'.$shop->id.'-'.Context::getContext()->language->iso_code.'-temp.'.$this->format;
         }
 
-        $feed = new LengowFeed($this->stream, $this->format, isset($shop->name) ? $shop->name : 'default', $file_feed);
-        $feed->write('header', $fields);
+        $this->feed = new LengowFeed($this->stream, $this->format, isset($shop->name) ? $shop->name : 'default', $file_feed);
+        $this->feed->write('header', $fields);
         $is_first = true;
         foreach ($products as $p) {
 
             $product_data = array();
             $combinations_data = array();
 
-            $product = new LengowProduct($p['id_product'], Context::getContext()->language->id);
+            $product = new LengowProduct(
+                $p['id_product'],
+                Context::getContext()->language->id,
+                array("carrier" => $this->carrier)
+            );
             foreach ($fields as $field) {
                 if (isset(LengowExport::$DEFAULT_FIELDS[$field])) {
                     $product_data[$field] = $product->getData(
@@ -339,7 +385,7 @@ class LengowExport
                 }
 
                 // export product attributes ?
-                if ($this->export_combinations && $product->hasAttributes()) {
+                if ($this->showProductCombination && $product->hasAttributes()) {
                     $combinations = $product->getCombinations();
                     if (empty($combinations)) {
                         throw new LengowExportException('Unable to retrieve product combinations');
@@ -369,13 +415,13 @@ class LengowExport
                 }
             }
             // write parent product
-            $feed->write('body', $product_data, $is_first);
+            $this->feed->write('body', $product_data, $is_first);
             $product_count++;
 
             // write combinations
             if (!empty($combinations_data)) {
                 foreach ($combinations_data as $combination_data) {
-                    $feed->write('body', $combination_data);
+                    $this->feed->write('body', $combination_data);
                 }
             }
             if ($product_count > 0 && $product_count % 10 == 0) {
@@ -386,7 +432,8 @@ class LengowExport
                 break;
             }
 
-            if ($this->export_timeout && time() > Configuration::get('LENGOW_EXPORT_END_' . Context::getContext()->language->iso_code)) {
+            $exportEndIso = Configuration::get('LENGOW_EXPORT_END_' . Context::getContext()->language->iso_code);
+            if ($this->export_timeout && time() > $exportEndIso) {
                 Configuration::updateValue(
                     'LENGOW_EXPORT_LAST_ID_' . Context::getContext()->language->iso_code,
                     $p['id_product']
@@ -401,18 +448,19 @@ class LengowExport
         }
 
         Configuration::updateValue('LENGOW_EXPORT_LAST_ID_' . Context::getContext()->language->iso_code, 0);
-        $success = $feed->end();
+        $success = $this->feed->end();
 
         if (!$success) {
             throw new LengowFileException(
-                'Export file generation did not end properly. Please make sure the export folder is writeable.',
+                'Export file generation did not end properly. Please make sure the export folder is writable.',
                 true
             );
         }
         if (!$this->stream) {
-            $feed_url = $feed->getUrl();
+            $feed_url = $this->feed->getUrl();
             if ($feed_url) {
-                echo date('Y-m-d : H:i:s') . ' - Export - your feed is available here: <a href="' . $feed_url . '" target="_blank">' . $feed_url . '</a><br />';
+                echo date('Y-m-d : H:i:s') . ' - Export - your feed is available here:
+                <a href="' . $feed_url . '" target="_blank">' . $feed_url . '</a><br />';
                 LengowCore::log('Export - your feed is available here: ' . $feed_url);
             }
         }
@@ -455,7 +503,7 @@ class LengowExport
             }
         }
         // if export product variations -> get variations attributes
-        if ($this->export_combinations) {
+        if ($this->showProductCombination) {
             $attributes = AttributeGroup::getAttributesGroups(Context::getContext()->language->id);
             foreach ($attributes as $attribute) {
                 if (!in_array($attribute['name'], $fields)) {
@@ -473,6 +521,16 @@ class LengowExport
         }
         // Allow to add extra fields
         return LengowExport::setAdditionalFields($fields);
+    }
+
+    /**
+     * Get filename of generated feeds
+     *
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->feed->getFilename();
     }
 
     /**
