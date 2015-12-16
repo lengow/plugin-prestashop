@@ -5,7 +5,7 @@ product:
     id_manufacturer: 1
     price: 10.70
     reference: PACKSKU001
-    supplier_reference: SUPPLIERSKU001
+    supplier_reference: SUPPLIERSKU020
     ean13: 98051201411231
   -
     id_product: 21
@@ -105,25 +105,25 @@ product_lang:
 stock_available:
   -
     id_product: 20
-    id_product_attribute: 20
+    id_product_attribute: 0
     id_shop: 1
     quantity: 10
     out_of_stock: 2
   -
     id_product: 21
-    id_product_attribute: 21
+    id_product_attribute: 0
     id_shop: 1
     quantity: 8
     out_of_stock: 2
   -
     id_product: 22
-    id_product_attribute: 22
+    id_product_attribute: 0
     id_shop: 1
     quantity: 6
     out_of_stock: 2
   -
     id_product: 23
-    id_product_attribute: 23
+    id_product_attribute: 0
     id_shop: 1
     quantity: 6
     out_of_stock: 2

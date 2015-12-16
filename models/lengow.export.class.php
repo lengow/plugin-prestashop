@@ -458,7 +458,7 @@ class LengowExport
         }
         if (!$this->stream) {
             $feed_url = $this->feed->getUrl();
-            if ($feed_url) {
+            if ($feed_url && php_sapi_name() != "cli") {
                 echo date('Y-m-d : H:i:s') . ' - Export - your feed is available here:
                 <a href="' . $feed_url . '" target="_blank">' . $feed_url . '</a><br />';
                 LengowCore::log('Export - your feed is available here: ' . $feed_url);

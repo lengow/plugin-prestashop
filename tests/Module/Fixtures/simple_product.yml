@@ -68,8 +68,8 @@ product_lang:
     id_shop: 1
     id_lang: 1
     name: NAME001
-    description: DESCRIPTION001
-    description_short: SHORTDESCRIPTION001
+    description: DESCRIPTION002
+    description_short: SHORTDESCRIPTION002
   -
     id_product: 3
     id_shop: 1

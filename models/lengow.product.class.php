@@ -211,10 +211,13 @@ class LengowProduct extends Product
                 return $this->id;
                 break;
             case 'name':
+                $tmpName =$this->name;
                 if ($id_product_attribute && $full_title) {
-                    return $this->combinations[$id_product_attribute]['attribute_name'] ? $this->name . ' - ' . $this->combinations[$id_product_attribute]['attribute_name'] : $this->name;
+                    if ($this->combinations[$id_product_attribute]['attribute_name']) {
+                        $tmpName = $this->name.' - '.$this->combinations[$id_product_attribute]['attribute_name'];
+                    }
                 }
-                return $this->name;
+                return LengowCore::cleanHtml($tmpName);
                 break;
             case 'reference':
                 if ($id_product_attribute > 1 && $this->combinations[$id_product_attribute]['reference']) {
@@ -246,13 +249,13 @@ class LengowProduct extends Product
                 return $this->category_name;
                 break;
             case 'description':
-                return substr(LengowCore::cleanHtml($this->description), 0, 1000);
+                return LengowCore::cleanHtml($this->description);
                 break;
             case 'short_description':
-                return substr(LengowCore::cleanHtml($this->description_short), 0, 500);
+                return LengowCore::cleanHtml($this->description_short);
                 break;
             case 'description_html':
-                return substr(str_replace(array("\n", "\r"), "", $this->description), 0, 1000);
+                return str_replace(array("\n", "\r"), "", $this->description);
                 break;
             case 'price':
                 if ($id_product_attribute) {

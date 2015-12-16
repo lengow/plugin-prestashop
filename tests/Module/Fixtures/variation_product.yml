@@ -19,8 +19,8 @@ product_lang:
     id_shop: 1
     id_lang: 1
     name: NAME001
-    description: DESCRIPTION001
-    description_short: SHORTDESCRIPTION001
+    description: DESCRIPTION010
+    description_short: SHORTDESCRIPTION010
 stock_available:
   -
     id_product: 10
@@ -77,37 +77,37 @@ product_supplier:
     id_product: 10
     id_product_attribute: 11
     id_supplier: 1
-    product_supplier_reference: SUPPLIERSKU0011
+    product_supplier_reference: SUPPLIERSKU011
   -
     id_product: 10
     id_product_attribute: 12
     id_supplier: 1
-    product_supplier_reference: SUPPLIERSKU0012
+    product_supplier_reference: SUPPLIERSKU012
   -
     id_product: 10
     id_product_attribute: 13
     id_supplier: 1
-    product_supplier_reference: SUPPLIERSKU0013
+    product_supplier_reference: SUPPLIERSKU013
   -
     id_product: 10
     id_product_attribute: 14
     id_supplier: 1
-    product_supplier_reference: SUPPLIERSKU0014
+    product_supplier_reference: SUPPLIERSKU014
   -
     id_product: 10
     id_product_attribute: 15
     id_supplier: 1
-    product_supplier_reference: SUPPLIERSKU0015
+    product_supplier_reference: SUPPLIERSKU015
   -
     id_product: 10
     id_product_attribute: 16
     id_supplier: 1
-    product_supplier_reference: SUPPLIERSKU0016
+    product_supplier_reference: SUPPLIERSKU016
   -
     id_product: 10
     id_product_attribute: 17
     id_supplier: 1
-    product_supplier_reference: SUPPLIERSKU0017
+    product_supplier_reference: SUPPLIERSKU017
 product_attribute:
   -
     id_product_attribute: 11

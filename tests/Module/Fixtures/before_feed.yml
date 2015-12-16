@@ -6,15 +6,15 @@ supplier:
 manufacturer:
   -
     id_manufacturer: 1
-    name: Rebook
+    name: MANUFACTURER1
     active: 1
   -
     id_manufacturer: 2
-    name: Nike
+    name: MANUFACTURER2
     active: 1
   -
     id_manufacturer: 3
-    name: Converse
+    name: MANUFACTURER3
     active: 1
 manufacturer_lang:
   -

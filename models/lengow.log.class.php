@@ -50,7 +50,7 @@ class LengowLog extends LengowFile
     {
         $log = date('Y-m-d : H:i:s') . ' - ' . (empty($id_order_lengow) ? '' : 'Order ' . $id_order_lengow . ': ');
         $log .= $message . "\r\n";
-        if ($display) {
+        if ($display && php_sapi_name() != "cli") {
             echo $log . '<br />';
             flush();
         }

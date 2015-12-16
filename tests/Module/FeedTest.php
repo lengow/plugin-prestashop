@@ -157,6 +157,36 @@ class FeedTest extends ModuleTestCase
     }
 
 
+    /**
+     * Test Two Products
+     *
+     * @test
+     *
+     */
+    public function exportProductIds()
+    {
+        $export = new LengowExport(array(
+            "product_ids" => array(1,2),
+        ));
+        $export->exec();
+        $this->assertFileNbLine($export->getFileName(), 2, 'two_product');
+    }
+
+    /**
+     * Test Export All
+     *
+     * @test
+     */
+    public function exportAll()
+    {
+        $export = new LengowExport(array(
+            "show_inactive_product" => true,
+            "out_stock" => true,
+            "show_product_combination" => true
+        ));
+        $export->exec();
+        $this->assertFileNbLine($export->getFileName(), 15, 'all');
+    }
 
 //    /**
 //     * Test Export Format Empty
