@@ -18,7 +18,7 @@ product_lang:
     id_product: 10
     id_shop: 1
     id_lang: 1
-    name: NAME001
+    name: NAME010
     description: DESCRIPTION010
     description_short: SHORTDESCRIPTION010
 stock_available:

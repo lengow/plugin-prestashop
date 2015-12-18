@@ -1,6 +1,6 @@
 product:
   -
-    id_product: 101
+    id_product: 30
     id_supplier: 1
     id_manufacturer: 1
     price: 4.90
@@ -9,31 +9,44 @@ product:
     ean13: 9805120221231
 product_supplier:
   -
-    id_product: 101
+    id_product: 1
     id_product_attribute: 0
     id_supplier: 1
 product_shop:
   -
-    id_product: 101
+    id_product: 1
     id_shop: 1
     id_tax_rules_group: 1
     price: 4.90
 product_lang:
   -
-    id_product: 101
+    id_product: 1
     id_shop: 1
     id_lang: 1
-    name: THIS " IS ' A | Test
-    description: THIS " IS ' A | Test
-    description_short: THIS " IS ' A | Test
+    name: NAME001
+    description: DESCRIPTION030
+    description_short: SHORTDESCRIPTION030
 stock_available:
   -
-    id_product: 101
+    id_product: 1
     id_product_attribute: 0
     id_shop: 1
     quantity: 10
     out_of_stock: 2
 category_product:
   -
-    id_product: 101
+    id_product: 1
     id_category: 7
+feature_product:
+  -
+    id_feature: 1
+    id_product: 1
+    id_feature_value: 17
+  -
+    id_feature: 2
+    id_product: 1
+    id_feature_value: 11
+  -
+    id_feature: 3
+    id_product: 1
+    id_feature_value: 5

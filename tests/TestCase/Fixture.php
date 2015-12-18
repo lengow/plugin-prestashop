@@ -29,12 +29,15 @@ class Fixture
     );
 
 
-    public function loadFixture($file)
+    public function loadFixture($file, $params = array())
     {
+
+        $truncate = isset($params["force_truncate"]) ? $params["force_truncate"] : false;
+
         $yml = \yaml_parse_file($file);
         foreach ($yml as $tableName => $row) {
             //don't re-truncate tables
-            if (!isset($this->alreadyTruncate[$tableName])) {
+            if ($truncate || !isset($this->alreadyTruncate[$tableName])) {
                 Db::getInstance()->execute('TRUNCATE ' . _DB_PREFIX_ . $tableName);
                 $this->alreadyTruncate[$tableName] = true;
             }

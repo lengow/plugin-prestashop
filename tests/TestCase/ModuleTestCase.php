@@ -52,6 +52,26 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         self::assertEquals($nbLine, $findLine, $message);
     }
 
+
+    /**
+     * Asserts that a file contain certain column
+     *
+     * @param  string filename
+     * @param  string columns
+     * @param  string message
+     * @throws PHPUnit_Framework_AssertionFailedError
+     */
+    public static function assertFileColumnEqual($filename, $columns, $message = '')
+    {
+        if (($handle = fopen($filename, "r")) !== false) {
+            while (($data = fgetcsv($handle, 1000, "|")) !== false) {
+                self::assertEquals($data, $columns, $message);
+                break;
+            }
+            fclose($handle);
+        }
+    }
+
     /**
      * Asserts that a file contain certain values
      *
@@ -75,7 +95,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
                         $j++;
                     }
                 } else {
-                    if ($data[$headers["ID"]] == $productId) {
+                    if ($data[$headers["ID_PRODUCT"]] === (string)$productId) {
                         foreach ($values as $key => $value) {
                             self::assertEquals($data[$headers[$key]], $value, $message);
                         }

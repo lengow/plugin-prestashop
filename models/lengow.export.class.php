@@ -104,6 +104,11 @@ class LengowExport
     protected $feed;
 
     /**
+     * Filename
+     */
+    protected $filename;
+
+    /**
      * Full export products + attributes.
      */
     protected $full = true;
@@ -181,6 +186,7 @@ class LengowExport
      * boolean #stream : Display file when call script (1) | Save File (0)
      * boolean #out_stock : Export product in stock and out stock (1) | Export Only in stock product (0)
      * int #limit : Limit product to export
+     * boolean #full_title : get parent name in title
      * boolean #show_inactive_product : Export active and inactive product (1) | Export Only active product (0)
      * boolean #show_product_combination : Export product declinaison (1) | Export Only simple product (0)
      * @return LengowExport
@@ -191,12 +197,14 @@ class LengowExport
 
         $this->product_ids = (isset($params["product_ids"]) ? $params["product_ids"] : false);
         $this->stream = (isset($params["stream"]) ? $params["stream"] : false);
+        $this->full_title = (isset($params["full_title"]) ? (bool)$params["full_title"] : false);
         $this->export_out_stock =  (isset($params["out_stock"]) ? $params["out_stock"] : false);
         $this->limit =  (isset($params["limit"]) ? (int)$params["limit"] : false);
         $this->showInactiveProduct = (isset($params["show_inactive_product"]) ?
             (bool)$params["show_inactive_product"] : false);
         $this->showProductCombination = (isset($params["show_product_combination"]) ?
             $params["show_product_combination"] : false);
+        $this->export_features = (isset($params["export_features"]) ? $params["export_features"] : false);
 
         $this->checkCurrency();
         $this->setCarrier();
@@ -212,12 +220,8 @@ class LengowExport
 //        $out_stock = null,
 //        $product_ids = array()
 
-//        $this->export_features = (bool)$export_features;
+//
 //        $this->all = (bool)$all;
-
-//        $this->full_title = (bool)$full_title;
-
-//        $this->product_ids = $product_ids;
         return $this;
     }
 
@@ -482,8 +486,8 @@ class LengowExport
                 $fields[] = $field;
             }
         } else {
-            foreach (LengowExport::$DEFAULT_FIELDS as $field) {
-                $fields[] = $field;
+            foreach (LengowExport::$DEFAULT_FIELDS as $key => $value) {
+                $fields[] = $key;
             }
         }
 
@@ -506,6 +510,10 @@ class LengowExport
         if ($this->showProductCombination) {
             $attributes = AttributeGroup::getAttributesGroups(Context::getContext()->language->id);
             foreach ($attributes as $attribute) {
+                //dont export empty attributes
+                if ($attribute['name'] == '') {
+                    continue;
+                }
                 if (!in_array($attribute['name'], $fields)) {
                     $fields[] = $attribute['name'];
                 } else {

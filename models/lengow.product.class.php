@@ -198,6 +198,7 @@ class LengowProduct extends Product
      *
      * @param string $name the data name
      * @param integer $id_product_attribute the id product attribute
+     * @param boolean $full_title set full title for product
      *
      * @return varchar The data.
      */
@@ -217,7 +218,7 @@ class LengowProduct extends Product
                         $tmpName = $this->name.' - '.$this->combinations[$id_product_attribute]['attribute_name'];
                     }
                 }
-                return LengowCore::cleanHtml($tmpName);
+                return LengowCore::cleanData($tmpName);
                 break;
             case 'reference':
                 if ($id_product_attribute > 1 && $this->combinations[$id_product_attribute]['reference']) {
@@ -232,7 +233,7 @@ class LengowProduct extends Product
                 return $this->supplier_reference;
                 break;
             case 'manufacturer':
-                return $this->manufacturer_name;
+                return LengowCore::cleanData($this->manufacturer_name);
                 break;
             case 'category':
                 return $this->category_name;
@@ -249,13 +250,13 @@ class LengowProduct extends Product
                 return $this->category_name;
                 break;
             case 'description':
-                return LengowCore::cleanHtml($this->description);
+                return LengowCore::cleanHtml(LengowCore::cleanData($this->description));
                 break;
             case 'short_description':
-                return LengowCore::cleanHtml($this->description_short);
+                return LengowCore::cleanHtml(LengowCore::cleanData($this->description_short));
                 break;
             case 'description_html':
-                return str_replace(array("\n", "\r"), "", $this->description);
+                return LengowCore::cleanData($this->description);
                 break;
             case 'price':
                 if ($id_product_attribute) {
@@ -466,10 +467,10 @@ class LengowProduct extends Product
                 return $this->is_sale ? $this->specificPrice['to'] : '';
                 break;
             case 'meta_keywords':
-                return $this->meta_keywords;
+                return LengowCore::cleanData($this->meta_keywords);
                 break;
             case 'meta_description':
-                return $this->meta_description;
+                return LengowCore::cleanData($this->meta_description);
                 break;
             case 'url_rewrite':
                 //return 'http://mydomain.com/index.php?controller=product&id_product=' . $this->id;

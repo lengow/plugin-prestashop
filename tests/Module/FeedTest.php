@@ -32,6 +32,7 @@ class FeedTest extends ModuleTestCase
 
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/attribute_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/features.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/before_feed.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/simple_product.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/variation_product.yml');
@@ -186,6 +187,150 @@ class FeedTest extends ModuleTestCase
         ));
         $export->exec();
         $this->assertFileNbLine($export->getFileName(), 15, 'all');
+    }
+
+    /**
+     * Test full title option
+     *
+     * @test
+     */
+    public function withFullTitle()
+    {
+        $fixture = new Fixture();
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/variation_product.yml'
+        );
+
+        $export = new LengowExport(array(
+            "show_inactive_product" => true,
+            "out_stock" => true,
+            "show_product_combination" => true,
+            "full_title" => true,
+            "product_ids" => array(10),
+        ));
+        $export->exec();
+        $this->assertFileValues($export->getFileName(), 10, array("NAME_PRODUCT" => "NAME010"));
+        $this->assertFileValues($export->getFileName(), '10_11', array("NAME_PRODUCT" => "NAME010 - Pointure - 35"));
+        $this->assertFileNbLine($export->getFileName(), 8, 'with_full_title');
+    }
+
+    /**
+     * Test full title option
+     *
+     * @test
+     */
+    public function withoutFullTitle()
+    {
+        $fixture = new Fixture();
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/variation_product.yml'
+        );
+
+        $export = new LengowExport(array(
+            "show_inactive_product" => true,
+            "out_stock" => true,
+            "show_product_combination" => true,
+            "full_title" => false,
+            "product_ids" => array(10),
+        ));
+        $export->exec();
+        //$this->assertFileValues($export->getFileName(), 10, array("NAME" => "NAME010"));
+        //$this->assertFileValues($export->getFileName(), '10_11', array("NAME" => "NAME010"));
+        $this->assertFileNbLine($export->getFileName(), 8, 'without_full_title');
+    }
+
+    /**
+     * Test export no field selected
+     *
+     * @test
+     */
+    public function noFieldSelected()
+    {
+
+        Configuration::set('lengow_export_fields', '');
+
+        $fixture = new Fixture();
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml'
+        );
+
+        $export = new LengowExport(array(
+            "show_inactive_product" => true,
+            "out_stock" => true,
+            "product_ids" => array(1),
+        ));
+        $export->exec();
+
+        $columns = array();
+        foreach (LengowExport::$DEFAULT_FIELDS as $key => $value) {
+            $columns[] = strtoupper($key);
+        }
+
+        $this->assertFileColumnEqual($export->getFileName(), $columns);
+        $this->assertFileNbLine($export->getFileName(), 1, 'no_field_select');
+    }
+
+
+    /**
+     * Test export options
+     *
+     * @test
+     */
+    public function exportFeature()
+    {
+
+        Configuration::set('LENGOW_EXPORT_FIELDS', '');
+        Configuration::set('LENGOW_EXPORT_SELECT_FEATURES', '["1","2","3"]');
+
+        $fixture = new Fixture();
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml'
+        );
+
+        $export = new LengowExport(array(
+            "show_inactive_product" => true,
+            "out_stock" => true,
+            "export_features" => true,
+            "product_ids" => array(1),
+        ));
+        $export->exec();
+
+        $columns = array();
+        foreach (LengowExport::$DEFAULT_FIELDS as $key => $value) {
+            $columns[] = strtoupper($key);
+        }
+
+        $columns = array_merge($columns, array('HAUTEUR', 'LARGEUR', 'PROFONDEUR'));
+
+
+        $this->assertFileColumnEqual($export->getFileName(), $columns);
+        $this->assertFileNbLine($export->getFileName(), 1, 'feature');
+    }
+
+
+    /**
+     * Test export options
+     *
+     * @test
+     */
+    public function selectField()
+    {
+        Configuration::set('LENGOW_EXPORT_FIELDS', '["supplier_reference","manufacturer"]');
+
+        $fixture = new Fixture();
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml'
+        );
+
+        $export = new LengowExport(array(
+            "show_inactive_product" => true,
+            "out_stock" => true,
+            "product_ids" => array(1),
+        ));
+        $export->exec();
+
+        $this->assertFileColumnEqual($export->getFileName(), array('SUPPLIER_REFERENCE', 'MANUFACTURER'));
+        $this->assertFileNbLine($export->getFileName(), 1, 'select_fields');
     }
 
 //    /**

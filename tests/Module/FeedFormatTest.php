@@ -33,6 +33,7 @@ class FeedFormatTest extends ModuleTestCase
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/attribute_product.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/before_feed.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/features.yml');
 
         $this->assertEquals(1, Configuration::get('LENGOW_CARRIER_DEFAULT'));
         $this->assertTrue((boolean)Context::getContext()->currency);
@@ -59,12 +60,14 @@ class FeedFormatTest extends ModuleTestCase
     public function multiLine()
     {
         $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/multi_line_product.yml');
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/multi_line_product.yml'
+        );
 
         $export = new LengowExport(array(
             "show_inactive_product" => true,
             "out_stock" => true,
-            "show_product_combination" => true
+            "show_product_combination" => true,
         ));
         $export->exec();
         $this->assertFileNbLine($export->getFileName(), 1, 'format_feed');
@@ -78,17 +81,20 @@ class FeedFormatTest extends ModuleTestCase
     public function quote()
     {
         $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/quote_product.yml');
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/quote_product.yml'
+        );
 
         $export = new LengowExport(array(
             "show_inactive_product" => true,
             "out_stock" => true,
-            "show_product_combination" => true
+            "show_product_combination" => true,
         ));
         $export->exec();
-        $this->assertFileValues($export->getFileName(), 1, array("NAME" => "THIS IS ' A   Test"));
-        $this->assertFileValues($export->getFileName(), 1, array("DESCRIPTION" => "THIS IS ' A   Test"));
-        $this->assertFileValues($export->getFileName(), 1, array("SHORT_DESCRIPTION" => "THIS IS ' A   Test"));
+        $this->assertFileValues($export->getFileName(), 101, array("NAME_PRODUCT" => "THIS ' IS ' A   Test"));
+        $this->assertFileValues($export->getFileName(), 101, array("DESCRIPTION" => "THIS ' IS ' A Test"));
+        $this->assertFileValues($export->getFileName(), 101, array("DESCRIPTION_SHORT" => "THIS ' IS ' A Test"));
         $this->assertFileNbLine($export->getFileName(), 1, 'quote');
     }
+
 }
