@@ -299,6 +299,11 @@ class LengowFeed
         return $this->file->getLink();
     }
 
+    public function getFileName()
+    {
+        return $this->file->getPath();
+    }
+
     /**
      * Return HTML header according to the given format
      *
@@ -392,6 +397,4 @@ class LengowFeed
         }
         return $feeds;
     }
-
-
 }

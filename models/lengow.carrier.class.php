@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2016 Lengow SAS.
  *
@@ -19,7 +18,8 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-class LengowCarrier
+
+class LengowCarrier extends CarrierCore
 {
 
     const COMPATIBILITY_OK = 1;
@@ -132,7 +132,8 @@ class LengowCarrier
             if (!LengowCore::isSoColissimoAvailable()) {
                 return LengowCarrier::COMPATIBILITY_KO;
             }
-            return LengowCarrier::addSoColissimo($id_cart, $id_customer, $shipping_address) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
+            return LengowCarrier::addSoColissimo($id_cart, $id_customer,
+                $shipping_address) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
         } else {
             // Mondial Relay
             if (!LengowCore::isMondialRelayAvailable()) {
@@ -144,7 +145,8 @@ class LengowCarrier
                 if (!$relay) {
                     throw new LengowCarrierException('relay ' . $shipping_address->id_relay . ' could not be found');
                 }
-                return LengowCarrier::addMondialRelay($relay, $id_customer, $id_carrier, $id_cart) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
+                return LengowCarrier::addMondialRelay($relay, $id_customer, $id_carrier,
+                    $id_cart) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
             }
         }
         return LengowCarrier::NO_COMPATIBLITY;

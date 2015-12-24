@@ -1,0 +1,214 @@
+product:
+  -
+    id_product: 10
+    id_supplier: 1
+    id_manufacturer: 1
+    price: 5.90
+    reference: CONFIGSKU001
+    supplier_reference: SUPPLIERSKU010
+    ean13: 9805145721231
+product_shop:
+  -
+    id_product: 10
+    id_shop: 1
+    id_tax_rules_group: 1
+    price: 5.90
+product_lang:
+  -
+    id_product: 10
+    id_shop: 1
+    id_lang: 1
+    name: NAME010
+    description: DESCRIPTION010
+    description_short: SHORTDESCRIPTION010
+stock_available:
+  -
+    id_product: 10
+    id_product_attribute: 11
+    id_shop: 1
+    quantity: 10
+    out_of_stock: 2
+  -
+    id_product: 10
+    id_product_attribute: 12
+    id_shop: 1
+    quantity: 8
+    out_of_stock: 2
+  -
+    id_product: 10
+    id_product_attribute: 13
+    id_shop: 1
+    quantity: 6
+    out_of_stock: 2
+  -
+    id_product: 10
+    id_product_attribute: 14
+    id_shop: 1
+    quantity: 4
+    out_of_stock: 2
+  -
+    id_product: 10
+    id_product_attribute: 15
+    id_shop: 1
+    quantity: 2
+    out_of_stock: 2
+  -
+    id_product: 10
+    id_product_attribute: 16
+    id_shop: 1
+    quantity: 0
+    out_of_stock: 2
+  -
+    id_product: 10
+    id_product_attribute: 17
+    id_shop: 1
+    quantity: 4
+    out_of_stock: 2
+category_product:
+  -
+    id_product: 10
+    id_category: 8
+product_supplier:
+  -
+    id_product: 10
+    id_product_attribute: 0
+    id_supplier: 1
+  -
+    id_product: 10
+    id_product_attribute: 11
+    id_supplier: 1
+    product_supplier_reference: SUPPLIERSKU011
+  -
+    id_product: 10
+    id_product_attribute: 12
+    id_supplier: 1
+    product_supplier_reference: SUPPLIERSKU012
+  -
+    id_product: 10
+    id_product_attribute: 13
+    id_supplier: 1
+    product_supplier_reference: SUPPLIERSKU013
+  -
+    id_product: 10
+    id_product_attribute: 14
+    id_supplier: 1
+    product_supplier_reference: SUPPLIERSKU014
+  -
+    id_product: 10
+    id_product_attribute: 15
+    id_supplier: 1
+    product_supplier_reference: SUPPLIERSKU015
+  -
+    id_product: 10
+    id_product_attribute: 16
+    id_supplier: 1
+    product_supplier_reference: SUPPLIERSKU016
+  -
+    id_product: 10
+    id_product_attribute: 17
+    id_supplier: 1
+    product_supplier_reference: SUPPLIERSKU017
+product_attribute:
+  -
+    id_product_attribute: 11
+    id_product: 10
+    reference: ""
+    supplier_reference:
+    location: ""
+    ean13: 9805120228731
+  -
+    id_product_attribute: 12
+    id_product: 10
+    reference: ""
+    supplier_reference:
+    location: ""
+    ean13: 9805120228732
+  -
+    id_product_attribute: 13
+    id_product: 10
+    reference: ""
+    supplier_reference:
+    location: ""
+    ean13: 9805120228733
+  -
+    id_product_attribute: 14
+    id_product: 10
+    reference: ""
+    supplier_reference:
+    location: ""
+    ean13: 9805120228734
+  -
+    id_product_attribute: 15
+    id_product: 10
+    reference: ""
+    supplier_reference:
+    location: ""
+    ean13: 9805120228735
+  -
+    id_product_attribute: 16
+    id_product: 10
+    reference: ""
+    supplier_reference:
+    location: ""
+    ean13: 9805120228736
+  -
+    id_product_attribute: 17
+    id_product: 10
+    reference: ""
+    supplier_reference:
+    location: ""
+    ean13: 9805120228737
+product_attribute_shop:
+  -
+    id_product: 10
+    id_product_attribute: 11
+    id_shop: 1
+  -
+    id_product: 10
+    id_product_attribute: 12
+    id_shop: 1
+  -
+    id_product: 10
+    id_product_attribute: 13
+    id_shop: 1
+  -
+    id_product: 10
+    id_product_attribute: 14
+    id_shop: 1
+  -
+    id_product: 10
+    id_product_attribute: 15
+    id_shop: 1
+  -
+    id_product: 10
+    id_product_attribute: 16
+    id_shop: 1
+  -
+    id_product: 10
+    id_product_attribute: 17
+    id_shop: 1
+product_attribute_combination:
+  -
+    id_attribute: 1
+    id_product_attribute: 11
+  -
+    id_attribute: 2
+    id_product_attribute: 12
+  -
+    id_attribute: 3
+    id_product_attribute: 13
+  -
+    id_attribute: 4
+    id_product_attribute: 14
+  -
+    id_attribute: 5
+    id_product_attribute: 15
+  -
+    id_attribute: 6
+    id_product_attribute: 16
+  -
+    id_attribute: 7
+    id_product_attribute: 17
+  -
+    id_attribute: 11
+    id_product_attribute: 17

@@ -1,0 +1,156 @@
+product:
+  -
+    id_product: 20
+    id_supplier: 1
+    id_manufacturer: 1
+    price: 10.70
+    reference: PACKSKU001
+    supplier_reference: SUPPLIERSKU020
+    ean13: 98051201411231
+  -
+    id_product: 21
+    id_supplier: 1
+    id_manufacturer: 1
+    price: 24.90
+    reference: CHILDPACK021
+    supplier_reference: SUPPLIERSKU021
+    ean13: 98051201411232
+  -
+    id_product: 22
+    id_supplier: 1
+    id_manufacturer: 1
+    price: 14.90
+    active: 0
+    reference: CHILDPACK022
+    supplier_reference: SUPPLIERSKU022
+    ean13: 98051201411233
+  -
+    id_product: 23
+    id_supplier: 1
+    id_manufacturer: 1
+    price: 4.80
+    active: 0
+    reference: CHILDPACK023
+    supplier_reference: SUPPLIERSKU023
+    ean13: 98051201411234
+product_supplier:
+  -
+    id_product: 20
+    id_product_attribute: 0
+    id_supplier: 1
+  -
+    id_product: 21
+    id_product_attribute: 0
+    id_supplier: 1
+  -
+    id_product: 22
+    id_product_attribute: 0
+    id_supplier: 1
+  -
+    id_product: 23
+    id_product_attribute: 0
+    id_supplier: 1
+product_shop:
+  -
+    id_product: 20
+    id_shop: 1
+    id_tax_rules_group: 1
+    price: 10.70
+  -
+    id_product: 21
+    id_shop: 1
+    id_tax_rules_group: 1
+    price: 24.90
+  -
+    id_product: 22
+    id_shop: 1
+    id_tax_rules_group: 1
+    price: 14.90
+    active: 0
+  -
+    id_product: 23
+    id_shop: 1
+    id_tax_rules_group: 1
+    price: 4.80
+    active: 0
+product_lang:
+  -
+    id_product: 20
+    id_shop: 1
+    id_lang: 1
+    name: NAME020
+    description: DESCRIPTION020
+    description_short: SHORTDESCRIPTION020
+  -
+    id_product: 21
+    id_shop: 1
+    id_lang: 1
+    name: NAME021
+    description: DESCRIPTION021
+    description_short: SHORTDESCRIPTION021
+  -
+    id_product: 22
+    id_shop: 1
+    id_lang: 1
+    name: NAME022
+    description: DESCRIPTION022
+    description_short: SHORTDESCRIPTION022
+  -
+    id_product: 23
+    id_shop: 1
+    id_lang: 1
+    name: NAME023
+    description: DESCRIPTION023
+    description_short: SHORTDESCRIPTION023
+stock_available:
+  -
+    id_product: 20
+    id_product_attribute: 0
+    id_shop: 1
+    quantity: 10
+    out_of_stock: 2
+  -
+    id_product: 21
+    id_product_attribute: 0
+    id_shop: 1
+    quantity: 8
+    out_of_stock: 2
+  -
+    id_product: 22
+    id_product_attribute: 0
+    id_shop: 1
+    quantity: 6
+    out_of_stock: 2
+  -
+    id_product: 23
+    id_product_attribute: 0
+    id_shop: 1
+    quantity: 6
+    out_of_stock: 2
+category_product:
+  -
+    id_product: 20
+    id_category: 9
+  -
+    id_product: 21
+    id_category: 9
+  -
+    id_product: 22
+    id_category: 9
+  -
+    id_product: 23
+    id_category: 9
+pack:
+  -
+    id_product_item: 20
+    id_product_attribute_item: 21
+    quantity: 1
+  -
+    id_product_item: 20
+    id_product_attribute_item: 22
+    quantity: 2
+  -
+    id_product_item: 20
+    id_product_attribute_item: 23
+    quantity: 2
+

@@ -313,6 +313,7 @@ class LengowCore
     public static function getExportCarrier()
     {
         $id_carrier = Configuration::get('LENGOW_CARRIER_DEFAULT');
+
         return new LengowCarrier($id_carrier);
     }
 
@@ -500,6 +501,61 @@ class LengowCore
                 $log->delete();
             }
         }
+    }
+
+    /**
+     * Clean data
+     *
+     * @param 	string $value The content
+     *
+     * @return 	string
+     */
+    public static function cleanData($value)
+    {
+        $value = preg_replace('/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]'.
+            '|[\x00-\x7F][\x80-\xBF]+'.
+            '|([\xC0\xC1]|[\xF0-\xFF])[\x80-\xBF]*'.
+            '|[\xC2-\xDF]((?![\x80-\xBF])|[\x80-\xBF]{2,})'.
+            '|[\xE0-\xEF](([\x80-\xBF](?![\x80-\xBF]))|(?![\x80-\xBF]{2})|[\x80-\xBF]{3,})/S', '', $value);
+        $value = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]'.
+            '|\xED[\xA0-\xBF][\x80-\xBF]/S', '', $value);
+        $value = preg_replace('/[\s]+/', ' ', $value);
+        $value = trim($value);
+        $value = str_replace(
+            array(
+                '&nbsp;',
+                '|',
+                '"',
+                '’',
+                '&#39;',
+                '&#150;',
+                chr(9),
+                chr(10),
+                chr(13),
+                chr(31),
+                chr(30),
+                chr(29),
+                chr(28),
+                "\n",
+                "\r"
+            ), array(
+            ' ',
+            ' ',
+            '\'',
+            '\'',
+            ' ',
+            '-',
+            ' ',
+            ' ',
+            ' ',
+            '',
+            '',
+            '',
+            '',
+            '',
+            ''
+        ), $value);
+        return $value;
     }
 
     /**
