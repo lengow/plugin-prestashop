@@ -34,12 +34,11 @@ class AdminLengowLogConfigController extends ModuleAdminController
         $this->template = 'layout.tpl';
         $this->lite_display = true;
         $this->explicitSelect = true;
-        $this->list_no_link   = true;
-        $this->meta_title = 'Config Logs';
+        $this->list_no_link = true;
+        $this->meta_title = 'Configuration Logs';
         $this->lang = false;
-
-
-        /*$this->bootstrap =true;*/
+        $this->bootstrap = true;
+        $this->show_toolbar = false;
 
         parent::__construct();
 
@@ -48,8 +47,9 @@ class AdminLengowLogConfigController extends ModuleAdminController
     private function getLogFiles($orderBy = null, $orderWay = null, $pagination = null, $filter = null, $message = null)
     {
         $logs_links = LengowLog::getLinks();
-        if (!$logs_links)
+        if (!$logs_links) {
             return $this->l('No logs available');
+        }
         $logs_links = array_reverse($logs_links);
         $tab = array();
         $this->count = 0;
@@ -58,12 +58,15 @@ class AdminLengowLogConfigController extends ModuleAdminController
             $tab = array_merge($tab, $this->openText($link, $message));
         }
 
-        $tab = array_chunk($tab, $pagination);
 
-        if($orderBy == 'date' && $orderWay == 'desc')
-            $tab = $this->sksort($tab, "id", true);
-        else
-            $tab = $this->sksort($tab, "id");
+
+        if ($orderBy == 'date' && $orderWay == 'desc') {
+            $tab = $this->sksort($tab, 'id', true);
+        } else {
+            $tab = $this->sksort($tab, 'id');
+        }
+
+        $tab = array_chunk($tab, $pagination);
 
         return $tab[$filter - 1];
     }
@@ -83,8 +86,8 @@ class AdminLengowLogConfigController extends ModuleAdminController
                 'message' => substr($read, 24)
 
             );
-            if($message != '') {
-                if(stripos($row['message'], $message) !== false) {
+            if ($message != '') {
+                if (stripos($row['message'], $message) !== false) {
                     array_push($tab, $row);
                     $this->count += 1;
 
@@ -96,14 +99,14 @@ class AdminLengowLogConfigController extends ModuleAdminController
             }
 
         }
-
         return $tab;
     }
 
-    function sksort(&$array, $subkey = "id", $sort_ascending = false)
+    public function sksort(&$array, $subkey = 'id', $sort_ascending = false)
     {
-        if (count($array))
+        if (count($array)) {
             $temp_array[key($array)] = array_shift($array);
+        }
 
         foreach ($array as $key => $val) {
             $offset = 0;
@@ -117,14 +120,16 @@ class AdminLengowLogConfigController extends ModuleAdminController
                 $offset++;
             }
 
-            if (!$found)
+            if (!$found) {
                 $temp_array = array_merge($temp_array, array($key => $val));
+            }
         }
 
-        if ($sort_ascending)
+        if ($sort_ascending) {
             $array = array_reverse($temp_array);
-        else
+        } else {
             $array = $temp_array;
+        }
 
         return $array;
     }
@@ -135,7 +140,7 @@ class AdminLengowLogConfigController extends ModuleAdminController
         $this->fields_list = array(
             'date' => array(
                 'title' => $this->l('Date'),
-                'search' =>false,
+                'search' => false,
                 'align' => 'text-center',
                 'width' => 'auto'
 
@@ -143,7 +148,7 @@ class AdminLengowLogConfigController extends ModuleAdminController
             'message' => array(
                 'title' => $this->l('Message'),
                 'orderby' => false,
-                'search' =>true,
+                'search' => true,
                 'width' => 'auto'
 
 
@@ -155,7 +160,7 @@ class AdminLengowLogConfigController extends ModuleAdminController
         $orderWay = Tools::getValue('configurationOrderway');
         $pagination = Tools::getValue('configuration_pagination') == null ? $helper->_default_pagination : Tools::getValue('configuration_pagination');
         $filter = Tools::getValue('submitFilterconfiguration') == null ? 1 : Tools::getValue('submitFilterconfiguration');
-        if($filter < 1) {
+        if ($filter < 1) {
             $filter = 1;
         }
 

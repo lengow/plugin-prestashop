@@ -180,17 +180,17 @@ class LengowConnector
     private function callAction($service, $method, $array)
     {
         switch ($service) {
-            case 'solution' :
+            case 'solution':
                 $url = $this->getUrlService($service, $method, $array);
                 break;
-            case 'api' :
+            case 'api':
                 if (!empty($array['order_id'])) {
                     $url = $this->getUrlOrder($service, $array);
                 } else {
                     $url = $this->getUrlOrders($service, $array);
                 }
                 break;
-            case 'statistics' :
+            case 'statistics':
                 $url = $this->getUrlStatistics($service, $array);
                 break;
         }
@@ -312,9 +312,9 @@ class LengowConnector
     private static function format($data, $format)
     {
         switch ($format) {
-            case 'xml' :
+            case 'xml':
                 return simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
-            case 'json' :
+            case 'json':
                 return Tools::jsonDecode($data, true);
         }
         return null;
@@ -343,8 +343,8 @@ class LengowConnector
             throw new LengowApiException(
                 array(
                     'message' => curl_error($ch),
-                    'type' => 'CurlException',
-                ), curl_errno($ch)
+                    'type' => 'CurlException'),
+                curl_errno($ch)
             );
         }
         curl_close($ch);

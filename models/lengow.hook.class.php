@@ -110,10 +110,11 @@ class LengowHook
         // ID category
         if (!(self::$_ID_CATEGORY = (int)Tools::getValue('id_category'))) {
             if (isset($_SERVER['HTTP_REFERER']) && preg_match('!^(.*)\/([0-9]+)\-(.*[^\.])|(.*)id_category=([0-9]+)(.*)$!', $_SERVER['HTTP_REFERER'], $regs) && !strstr($_SERVER['HTTP_REFERER'], '.html')) {
-                if (isset($regs[2]) && is_numeric($regs[2]))
+                if (isset($regs[2]) && is_numeric($regs[2])) {
                     self::$_ID_CATEGORY = (int)$regs[2];
-                elseif (isset($regs[5]) && is_numeric($regs[5]))
+                } elseif (isset($regs[5]) && is_numeric($regs[5])) {
                     self::$_ID_CATEGORY = (int)$regs[5];
+                }
             } elseif ($id_product = (int)Tools::getValue('id_product')) {
                 $product = new Product($id_product);
                 self::$_ID_CATEGORY = $product->id_category_default;
@@ -375,7 +376,9 @@ class LengowHook
     /**
      * Hook after add new product.
      *
-     * @param array $args Arguments of hook
+     * @param array $params Arguments of hook
+     *
+     * @return boolean
      */
     public function hookAddProduct($params)
     {
@@ -451,6 +454,8 @@ class LengowHook
      * Hook on admin page's order.
      *
      * @param array $args Arguments of hook
+     *
+     * @return display
      */
     public function hookAdminOrder($args)
     {

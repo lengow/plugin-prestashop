@@ -19,34 +19,5 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
-
-/**
- * The Lengow's Home Admin Controller.
- *
- */
-class AdminLengowHomeController extends ModuleAdminController
-{
-    public function __construct()
-    {
-
-        parent::__construct();
-
-        $this->lang = false;
-        $this->context = Context::getContext();
-        $this->lite_display = true;
-        $this->lang = true;
-        $this->explicitSelect = true;
-        $this->list_no_link = true;
-        $this->bootstrap = true;
-
-        $this->template = 'layout.tpl';
-        $this->display = 'view';
-
-
-    }
-
-
-}
+if (_PS_VERSION_ < '1.5')
+	include 'controllers/admin/TabLengowConfigController.php';

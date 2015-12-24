@@ -23,7 +23,6 @@
  * The Lengow's Configuration Admin Controller.
  *
  */
-
 class AdminLengowConfigController extends ModuleAdminController
 {
 
@@ -32,15 +31,16 @@ class AdminLengowConfigController extends ModuleAdminController
      */
     public function __construct()
     {
-        $this->table 		  = 'product';
+        $this->table = 'product';
         $this->context = Context::getContext();
-        $this->lang		   = true;
+        $this->lang = true;
         $this->explicitSelect = true;
         $this->lite_display = true;
         $this->meta_title = 'Configuration';
-        $this->list_no_link   = true;
-        if(_PS_VERSION_ >= '1.6')
+        $this->list_no_link = true;
+        if (_PS_VERSION_ >= '1.6') {
             $this->bootstrap = true;
+        }
         $this->template = 'layout.tpl';
         $this->display = 'view';
 
@@ -52,6 +52,10 @@ class AdminLengowConfigController extends ModuleAdminController
         $this->displayForm();
     }
 
+    public function checkBoxValue($string)
+    {
+        return Tools::getValue($string) ? Tools::getValue($string) : '0';
+    }
 
     /**
      * Process after post admin form.
@@ -59,26 +63,22 @@ class AdminLengowConfigController extends ModuleAdminController
     private function postProcessForm()
     {
         $html = '';
-        if (Tools::getIsset('submitlengow'))
-        {
-            if (Tools::getIsset('reset-import-lengow'))
-            {
+        if (Tools::getIsset('submitlengow')) {
+            if (Tools::getIsset('reset-import-lengow')) {
                 LengowImport::setEnd();
                 $html .= $this->displayConfirmation($this->l('Import has been resetted'));
-            }
-            else
-            {
+            } else {
                 Configuration::updateValue('LENGOW_AUTHORIZED_IP', Tools::getValue('lengow_authorized_ip'));
                 Configuration::updateValue('LENGOW_TRACKING', Tools::getValue('lengow_tracking'));
                 Configuration::updateValue('LENGOW_TRACKING_ID', Tools::getValue('lengow_tracking_id'));
                 Configuration::updateValue('LENGOW_ID_CUSTOMER', Tools::getValue('lengow_customer_id'));
                 Configuration::updateValue('LENGOW_ID_GROUP', Tools::getValue('lengow_group_id'));
                 Configuration::updateValue('LENGOW_TOKEN', Tools::getValue('lengow_token'));
-                Configuration::updateValue('LENGOW_EXPORT_SELECTION', Tools::getValue('lengow_export_selection'));
-                Configuration::updateValue('LENGOW_EXPORT_NEW', Tools::getValue('lengow_export_new'));
-                Configuration::updateValue('LENGOW_EXPORT_ALL_VARIATIONS', Tools::getValue('lengow_export_all_variations'));
-                Configuration::updateValue('LENGOW_EXPORT_FEATURES', Tools::getValue('lengow_export_features'));
-                Configuration::updateValue('LENGOW_EXPORT_FULLNAME', Tools::getValue('lengow_export_fullname'));
+                Configuration::updateValue('LENGOW_EXPORT_SELECTION', $this->checkBoxValue('lengow_export_selection'));
+                Configuration::updateValue('LENGOW_EXPORT_NEW', $this->checkBoxValue('lengow_export_new'));
+                Configuration::updateValue('LENGOW_EXPORT_ALL_VARIATIONS', $this->checkBoxValue('lengow_export_all_variations'));
+                Configuration::updateValue('LENGOW_EXPORT_FEATURES', $this->checkBoxValue('lengow_export_features'));
+                Configuration::updateValue('LENGOW_EXPORT_FULLNAME', $this->checkBoxValue('lengow_export_fullname'));
                 Configuration::updateValue('LENGOW_EXPORT_FIELDS', Tools::jsonEncode(Tools::getValue('lengow_export_fields')));
                 Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', Tools::getValue('lengow_order_process'));
                 Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', Tools::getValue('lengow_order_shipped'));
@@ -90,14 +90,14 @@ class AdminLengowConfigController extends ModuleAdminController
                 Configuration::updateValue('LENGOW_IMPORT_DAYS', Tools::getValue('lengow_import_days'));
                 Configuration::updateValue('LENGOW_FORCE_PRICE', Tools::getValue('lengow_force_price'));
                 Configuration::updateValue('LENGOW_EXPORT_FORMAT', Tools::getValue('lengow_export_format'));
-                Configuration::updateValue('LENGOW_EXPORT_FILE', Tools::getValue('lengow_export_file'));
+                Configuration::updateValue('LENGOW_EXPORT_FILE', $this->checkBoxValue('lengow_export_file'));
                 Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Tools::getValue('lengow_carrier_default'));
                 Configuration::updateValue('LENGOW_IMPORT_CARRIER_DEFAULT', Tools::getValue('lengow_import_carrier_default'));
                 Configuration::updateValue('LENGOW_DEBUG', Tools::getValue('lengow_debug'));
                 Configuration::updateValue('LENGOW_PARENT_IMAGE', Tools::getValue('lengow_parent_image'));
                 Configuration::updateValue('LENGOW_FEED_MANAGEMENT', Tools::getValue('lengow_feed_management'));
-                Configuration::updateValue('LENGOW_EXPORT_DISABLED', Tools::getValue('lengow_export_disabled'));
-                Configuration::updateValue('LENGOW_EXPORT_OUT_STOCK', Tools::getValue('lengow_export_out_stock'));
+                Configuration::updateValue('LENGOW_EXPORT_DISABLED', $this->checkBoxValue('lengow_export_disabled'));
+                Configuration::updateValue('LENGOW_EXPORT_OUT_STOCK', $this->checkBoxValue('lengow_export_out_stock'));
                 Configuration::updateValue('LENGOW_IMPORT_PROCESSING_FEE', Tools::getValue('lengow_import_processing_fee'));
                 Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', Tools::getValue('lengow_import_fake_email'));
                 Configuration::updateValue('LENGOW_MP_SHIPPING_METHOD', Tools::getValue('lengow_mp_shipping_method'));
@@ -111,8 +111,7 @@ class AdminLengowConfigController extends ModuleAdminController
                 Configuration::updateValue('LENGOW_EXPORT_SELECT_FEATURES', Tools::jsonEncode(Tools::getValue('lengow_export_select_features')));
 
                 // Send to Lengow versions
-                if (LengowCore::getTokenCustomer() && LengowCore::getIdCustomer() && LengowCore::getGroupCustomer())
-                {
+                if (LengowCore::getTokenCustomer() && LengowCore::getIdCustomer() && LengowCore::getGroupCustomer()) {
                     $lengow_connector = new LengowConnector((integer)LengowCore::getIdCustomer(), LengowCore::getTokenCustomer());
                     $lengow_connector->api('updateEcommerceSolution', array('type' => 'Prestashop',
                         'version' => _PS_VERSION_,
@@ -121,34 +120,34 @@ class AdminLengowConfigController extends ModuleAdminController
                         'module' => $this->version));
                 }
 
-                if (Tools::getValue('cron-delay') > 0)
-                {
+                if (Tools::getValue('cron-delay') > 0) {
                     Configuration::updateValue('LENGOW_CRON', Tools::getValue('cron-delay'));
                     self::updateCron(Tools::getValue('cron-delay'));
                 }
-                if (Module::isInstalled('cronjobs') && Configuration::get('LENGOW_CRON_EDITOR'))
-                {
+                if (Module::isInstalled('cronjobs') && Configuration::get('LENGOW_CRON_EDITOR')) {
                     $result = LengowCore::addCronTasks(Context::getContext()->shop->id, $this);
-                    if (!empty($result))
-                    {
-                        if (isset($result['success']))
-                            foreach ($result['success'] as $message)
+                    if (!empty($result)) {
+                        if (isset($result['success'])) {
+                            foreach ($result['success'] as $message) {
                                 $html .= $this->displayConfirmation($message);
+                            }
+                        }
 
-                        if (isset($result['error']))
-                            foreach ($result['error'] as $message)
+                        if (isset($result['error'])) {
+                            foreach ($result['error'] as $message) {
                                 $html .= $this->displayConfirmation($message);
+                            }
+                        }
                     }
-                }
-                else
-                {
+                } else {
                     $result = LengowCore::removeCronTasks(Context::getContext()->shop->id, $this);
-                    if (!empty($result))
-                    {
-                        if (isset($result['success']))
+                    if (!empty($result)) {
+                        if (isset($result['success'])) {
                             $html .= $this->displayConfirmation($result['success']);
-                        if (isset($result['error']))
+                        }
+                        if (isset($result['error'])) {
                             $html .= $this->displayConfirmation($result['error']);
+                        }
                     }
                 }
                 //$html .= $this->displayConfirmation($this->l('Configuration saved'));
@@ -158,28 +157,29 @@ class AdminLengowConfigController extends ModuleAdminController
     }
 
 
-
-    public function displayForm(){
-        if (_PS_VERSION_ <= '1.4.4.0')
+    public function displayForm()
+    {
+        if (_PS_VERSION_ <= '1.4.4.0') {
             $options = array(
                 'carriers' => Carrier::getCarriers($this->context->cookie->id_lang, true, false, false, null, ALL_CARRIERS),
             );
-        else
+        } else {
             $options = array(
                 'carriers' => Carrier::getCarriers($this->context->cookie->id_lang, true, false, false, null, Carrier::ALL_CARRIERS),
             );
+        }
 
-        $options['export_fields'] 	= LengowExport::getDefaultFields();
-        $options['shippings'] 		= LengowCore::getShippingName();
-        $options['formats'] 		= LengowCore::getExportFormats();
-        $options['states']			= OrderState::getOrderStates((int)$this->context->cookie->id_lang);
-        $options['trackers']		= LengowCore::getTrackers();
-        $options['images']			= ImageType::getImagesTypes('products');
+        $options['export_fields'] = LengowExport::getDefaultFields();
+        $options['shippings'] = LengowCore::getShippingName();
+        $options['formats'] = LengowCore::getExportFormats();
+        $options['states'] = OrderState::getOrderStates((int)$this->context->cookie->id_lang);
+        $options['trackers'] = LengowCore::getTrackers();
+        $options['images'] = ImageType::getImagesTypes('products');
         $options['export_features'] = LengowCore::getFeaturesOptions();
-        $options['images_count'] 	= LengowCore::getImagesCount();
+        $options['images_count'] = LengowCore::getImagesCount();
 
 
-        echo  Configuration::get('LENGOW_ID_CUSTOMER');
+        echo Configuration::get('LENGOW_ID_CUSTOMER');
         $links = LengowCore::getWebservicesLinks();
         $this->context->smarty->assign(
             array(
@@ -220,7 +220,7 @@ class AdminLengowConfigController extends ModuleAdminController
                 'lengow_is_import' => $this->getFormIsImport(),
                 'options' => $options,
                 'checklist' => LengowCheck::getHtmlCheckList(),
-                'log_files' => $this->getLogFiles(),                'help_credentials' => $this->getHelpSolutionIds(),
+                'log_files' => $this->getLogFiles(), 'help_credentials' => $this->getHelpSolutionIds(),
                 'lengow_import_fake_email' => Configuration::get('LENGOW_IMPORT_FAKE_EMAIL'),
                 'lengow_mp_shipping_method' => Configuration::get('LENGOW_MP_SHIPPING_METHOD'),
                 'lengow_report_mail' => Configuration::get('LENGOW_REPORT_MAIL'),
@@ -244,30 +244,28 @@ class AdminLengowConfigController extends ModuleAdminController
     private function getExportFeeds()
     {
         $feed_links = LengowFeed::getLinks();
-        if (!$feed_links)
-            return $this->l('No export file available');
+        if (!$feed_links) {
+            return '<p class="preference_description">'.$this->l('No export file available').'</p>';
+        }
         $output = '';
-        foreach ($feed_links as $link)
-            $output .= '<a href="'.$link.'" target="_blank">'.$link.'</a><br />';
+        foreach ($feed_links as $link) {
+            $output .= '<a href="' . $link . '" target="_blank">' . $link . '</a><br />';
+        }
         return $output;
     }
-
 
 
     private function getHelpSolutionIds()
     {
         $out = '';
-        $out .= '<p>';
-        $out .= sprintf($this->l('You can find credentials on %s.'),
-            '<a href="https://solution.lengow.com/api/" target="_blank">'.$this->l('your Lengow Dashboard').'</a>');
+        $out .= '<p class="preference_description">';
+        $out .= sprintf($this->l('You can find credentials on %s.'), '<a href="https://solution.lengow.com/api/" target="_blank">' . $this->l('your Lengow Dashboard') . '</a>');
         $out .= '<br />';
         $out .= $this->l('You can add more than 1 group, must be separated by <b>,</b>');
         $out .= '<br />';
-        $out .= sprintf($this->l('Make sure your website IP (%s) address is filled in your Lengow Dashboard.', 'lengow.check.class'),
-            $_SERVER['REMOTE_ADDR']);
+        $out .= sprintf($this->l('Make sure your website IP (%s) address is filled in your Lengow Dashboard.', 'lengow.check.class'), $_SERVER['REMOTE_ADDR']);
         $out .= '<br />';
-        $out .= sprintf($this->l('%s for assistance.'),
-            '<a href="'.$this->l('https://en.helpgizmo.com/help/article/link/prestashopv2').'" target="_blank">'.$this->l('Click here').'</a>');
+        $out .= sprintf($this->l('%s for assistance.'), '<a href="' . $this->l('https://en.helpgizmo.com/help/article/link/prestashopv2') . '" target="_blank">' . $this->l('Click here') . '</a>');
         $out .= '</p>';
         return $out;
     }
@@ -280,14 +278,14 @@ class AdminLengowConfigController extends ModuleAdminController
     private function getLogFiles()
     {
         $logs_links = LengowLog::getLinks();
-        if (!$logs_links)
+        if (!$logs_links) {
             return $this->l('No logs available');
+        }
         $logs_links = array_reverse($logs_links);
         $output = '';
-        foreach ($logs_links as $link)
-        {
+        foreach ($logs_links as $link) {
             $file_names = explode('/', $link);
-            $output .= '<a href="'.$link.'" target="_blank">'.end($file_names).'</a><br />';
+            $output .= '<a href="' . $link . '" target="_blank">' . end($file_names) . '</a><br />';
 
         }
         return $output;
@@ -301,49 +299,49 @@ class AdminLengowConfigController extends ModuleAdminController
     private function getFormFeeds()
     {
         $display = '';
-        if (!LengowCheck::isCurlActivated())
-            return '<p>'.$this->l('Function unavailable with your configuration, please install PHP CURL extension.').'</p>';
-
+        if (!LengowCheck::isCurlActivated()) {
+            return '<p>' . $this->l('Function unavailable with your configuration, please install PHP CURL extension.') . '</p>';
+        }
         $flows = LengowCore::getFlows();
-        if (!$flows || $flows['return'] == 'KO')
-            return '<div clas="lengow-margin">'.$this->l('Please provide your Customer ID, Group ID and API Token ').'</div>';
+        if (!$flows || $flows['return'] == 'KO') {
+            return '<div clas="lengow-margin">' . $this->l('Please provide your Customer ID, Group ID and API Token ') . '</div>';
+        }
         $data_flows_array = array();
         $data_flows = Tools::jsonDecode(Configuration::get('LENGOW_FLOW_DATA'));
-        if ($data_flows)
-        {
-            foreach ($data_flows as $key => $value)
+        if ($data_flows) {
+            foreach ($data_flows as $key => $value) {
                 $data_flows_array[$key] = get_object_vars($value);
+            }
         }
-        if (_PS_VERSION_ < '1.5')
+        if (_PS_VERSION_ < '1.5') {
             $controller = '/modules/lengow/v14/ajax.php?';
-        else
-            $controller = 'index.php?controller=AdminLengow&ajax&action=updateFlow&token='.Tools::getAdminTokenLite('AdminLengow').'';
-        if ($flows['return'] == 'OK')
-        {
+        } else {
+            $controller = 'index.php?controller=AdminLengow&ajax&action=updateFlow&token=' . Tools::getAdminTokenLite('AdminLengow') . '';
+        }
+        if ($flows['return'] == 'OK') {
             $display = '<div class="table-responsive"><table id="table-flows" class="table table-condensed">';
             $display .= '<tr>'
-                .'<th>'.$this->l('Feed ID').'</th>'
-                .'<th>'.$this->l('Feed name').'</th>'
-                .'<th>'.$this->l('Current feed').'</th>'
-                .'<th>'.$this->l('Format').'</th>'
-                .'<th>'.$this->l('Full mode').'</th>'
-                .'<th>'.$this->l('All products').'</th>'
-                .'<th>'.$this->l('Currency').'</th>'
-                .'<th>'.$this->l('Shop').'</th>'
-                .'<th>'.$this->l('Language').'</th>'
-                .'<th></th>'
-                .'<td>';
-            foreach ($flows['feeds'] as $key => $flow)
-            {
-                $display .= '<tr><td>'.$key.'</td><td>'.$flow['name'].'</td><td><span id="lengow-flux-'.$key.'" class="lengow-flux">';
-                $display .= $flow['url'].'</td>';
+                . '<th>' . $this->l('Feed ID') . '</th>'
+                . '<th>' . $this->l('Feed name') . '</th>'
+                . '<th>' . $this->l('Current feed') . '</th>'
+                . '<th>' . $this->l('Format') . '</th>'
+                . '<th>' . $this->l('Full mode') . '</th>'
+                . '<th>' . $this->l('All products') . '</th>'
+                . '<th>' . $this->l('Currency') . '</th>'
+                . '<th>' . $this->l('Shop') . '</th>'
+                . '<th>' . $this->l('Language') . '</th>'
+                . '<th></th>'
+                . '<td>';
+            foreach ($flows['feeds'] as $key => $flow) {
+                $display .= '<tr><td>' . $key . '</td><td>' . $flow['name'] . '</td><td><span id="lengow-flux-' . $key . '" class="lengow-flux">';
+                $display .= $flow['url'] . '</td>';
                 $display .= $this->_formFeed($key, $data_flows_array);
                 $display .= '<td>'
-                    .'<button id="lengow-migrate-action-'.$key.'" data-url="'.$controller.'" data-flow="'.$key.'" class="lengow-migrate-action">'
-                    .$this->l('Migrate this flow').'</button> '
-                    .'<button id="lengow-migrate-action-all-'.$key.'" data-url="'.$controller.'" data-flow="'.$key
-                    .'" class="lengow-migrate-action-all">'.$this->l('Migrate all flows').'</button>'
-                    .'</span> </td>';
+                    . '<button id="lengow-migrate-action-' . $key . '" data-url="' . $controller . '" data-flow="' . $key . '" class="lengow-migrate-action">'
+                    . $this->l('Migrate this flow') . '</button> '
+                    . '<button id="lengow-migrate-action-all-' . $key . '" data-url="' . $controller . '" data-flow="' . $key
+                    . '" class="lengow-migrate-action-all">' . $this->l('Migrate all flows') . '</button>'
+                    . '</span> </td>';
                 $display .= '</tr>';
             }
             $display .= '</table></div>';
@@ -367,8 +365,7 @@ class AdminLengowConfigController extends ModuleAdminController
         $currencies = Currency::getCurrencies();
         $shops = Shop::getShops();
         $languages = Language::getLanguages();
-        if (!isset($data_flows[$id_flow]))
-        {
+        if (!isset($data_flows[$id_flow])) {
             $data_flows[$id_flow] = array('format' => $formats[0]->id,
                 'mode' => 1,
                 'all' => 1,
@@ -380,39 +377,43 @@ class AdminLengowConfigController extends ModuleAdminController
         }
         $data = $data_flows[$id_flow];
         // Format
-        $form .= '<td><select name="format-'.$id_flow.'" id="format-'.$id_flow.'">';
-        foreach ($formats as $format)
-            $form .= '<option id="'.$format->id.'"'.($data['format'] == $format->id ? ' selected="selected"' : '').'> '.$format->name.'</option>';
-        $form .= '<select></td>';
+        $form .= '<td><select name="format-' . $id_flow . '" id="format-' . $id_flow . '">';
+        foreach ($formats as $format) {
+            $form .= '<option id="' . $format->id . '"' . ($data['format'] == $format->id ? ' selected="selected"' : '') . '> ' . $format->name . '</option>';
+        }
+            $form .= '<select></td>';
         // Mode
-        $form .= '<td><select name="mode-'.$id_flow.'" id="mode-'.$id_flow.'">';
-        $form .= '<option id="1"'.($data['mode'] == 1 ? ' selected="selected"' : '').' value="full"> '.$this->l('yes').'</option>';
-        $form .= '<option id="0"'.($data['mode'] == 0 ? ' selected="selected"' : '').' value="simple"> '.$this->l('no').'</option>';
+        $form .= '<td><select name="mode-' . $id_flow . '" id="mode-' . $id_flow . '">';
+        $form .= '<option id="1"' . ($data['mode'] == 1 ? ' selected="selected"' : '') . ' value="full"> ' . $this->l('yes') . '</option>';
+        $form .= '<option id="0"' . ($data['mode'] == 0 ? ' selected="selected"' : '') . ' value="simple"> ' . $this->l('no') . '</option>';
         $form .= '<select></td>';
 
         // All
-        $form .= '<td><select name="all-'.$id_flow.'" id="all-'.$id_flow.'">';
-        $form .= '<option id="1"'.($data['all'] == 1 ? ' selected="selected"' : '').' value="true"> '.$this->l('yes').'</option>';
-        $form .= '<option id="0"'.($data['all'] == 0 ? ' selected="selected"' : '').' value="false"> '.$this->l('no').'</option>';
+        $form .= '<td><select name="all-' . $id_flow . '" id="all-' . $id_flow . '">';
+        $form .= '<option id="1"' . ($data['all'] == 1 ? ' selected="selected"' : '') . ' value="true"> ' . $this->l('yes') . '</option>';
+        $form .= '<option id="0"' . ($data['all'] == 0 ? ' selected="selected"' : '') . ' value="false"> ' . $this->l('no') . '</option>';
         $form .= '<select></td>';
 
         // Currency
-        $form .= '<td><select name="currency-'.$id_flow.'" id="currency-'.$id_flow.'">';
-        foreach ($currencies as $currency)
-            $form .= '<option id="'.$currency['iso_code'].'"'.($data['currency'] == $currency['iso_code'] ? ' selected="selected"' : '').' value="'.$currency['iso_code'].'"> '.$currency['name'].'</option>';
-        $form .= '</select></td>';
+        $form .= '<td><select name="currency-' . $id_flow . '" id="currency-' . $id_flow . '">';
+        foreach ($currencies as $currency) {
+            $form .= '<option id="' . $currency['iso_code'] . '"' . ($data['currency'] == $currency['iso_code'] ? ' selected="selected"' : '') . ' value="' . $currency['iso_code'] . '"> ' . $currency['name'] . '</option>';
+        }
+            $form .= '</select></td>';
 
         // Shop
-        $form .= '<td><select name="shop-'.$id_flow.'" id="shop-'.$id_flow.'">';
-        foreach ($shops as $shop)
-            $form .= '<option id="'.$shop['id_shop'].'"'.($data['shop'] == $shop['id_shop'] ? ' selected="selected"' : '').' value="'.$shop['id_shop'].'"> '.$shop['name'].'</option>';
-        $form .= '</select></td>';
+        $form .= '<td><select name="shop-' . $id_flow . '" id="shop-' . $id_flow . '">';
+        foreach ($shops as $shop) {
+            $form .= '<option id="' . $shop['id_shop'] . '"' . ($data['shop'] == $shop['id_shop'] ? ' selected="selected"' : '') . ' value="' . $shop['id_shop'] . '"> ' . $shop['name'] . '</option>';
+        }
+            $form .= '</select></td>';
 
         // Langage
-        $form .= '<td><select name="lang-'.$id_flow.'" id="lang-'.$id_flow.'">';
-        foreach ($languages as $language)
-            $form .= '<option id="'.$language['iso_code'].'"'.($data['language'] == $language['iso_code'] ? ' selected="selected"' : '').' value="'.$language['iso_code'].'"> '.$language['name'].'</option>';
-        $form .= '</select></td>';
+        $form .= '<td><select name="lang-' . $id_flow . '" id="lang-' . $id_flow . '">';
+        foreach ($languages as $language) {
+            $form .= '<option id="' . $language['iso_code'] . '"' . ($data['language'] == $language['iso_code'] ? ' selected="selected"' : '') . ' value="' . $language['iso_code'] . '"> ' . $language['name'] . '</option>';
+        }
+            $form .= '</select></td>';
         return $form;
     }
 
@@ -424,29 +425,28 @@ class AdminLengowConfigController extends ModuleAdminController
     private function getFormCron()
     {
         $links = LengowCore::getWebservicesLinks();
-        if (Module::getInstanceByName('cron'))
-        {
-            $form = '<p>'.$this->l('You can use the Crontab Module to import orders from Lengow').'</p>';
+        if (Module::getInstanceByName('cron')) {
+            $form = '<p>' . $this->l('You can use the Crontab Module to import orders from Lengow') . '</p>';
             $cron_value = Configuration::get('LENGOW_CRON');
             $form .= '<select id="cron-delay" name="cron-delay">';
-            $form .= '<option value="NULL">'.$this->l('No cron configured').'</option>';
-            foreach (self::$_CRON_SELECT as $value)
-                $form .= '<option value="'.$value.'"'.($cron_value == $value ? ' selected="selected"' : '').'>'.$value.' '.$this->l('min').'</option>';
-            $form .= '</select>';
-            if (!self::getCron())
-                $form .= '<span class="lengow-no">'.$this->l('Cron Import is not configured on your Prestashop').'</span>';
-            else
-                $form .= '<span class="lengow-yes">'.$this->l('Cron Import exists on your Prestashop').'</span>';
-            $form .= '<p> - '.$this->l('or').' - </p>';
+            $form .= '<option value="NULL">' . $this->l('No cron configured') . '</option>';
+            foreach (self::$_CRON_SELECT as $value) {
+                $form .= '<option value="' . $value . '"' . ($cron_value == $value ? ' selected="selected"' : '') . '>' . $value . ' ' . $this->l('min') . '</option>';
+            }
+                $form .= '</select>';
+            if (!self::getCron()) {
+                $form .= '<span class="lengow-no">' . $this->l('Cron Import is not configured on your Prestashop') . '</span>';
+            } else {
+                $form .= '<span class="lengow-yes">' . $this->l('Cron Import exists on your Prestashop') . '</span>';
+            }
+                $form .= '<p> - ' . $this->l('or') . ' - </p>';
+        } else {
+            $form = '<p>' . $this->l('You can install "Crontab" Prestashop Plugin') . '</p>';
+            $form .= '<p> - ' . $this->l('or') . ' - </p>';
         }
-        else
-        {
-            $form = '<p>'.$this->l('You can install "Crontab" Prestashop Plugin').'</p>';
-            $form .= '<p> - '.$this->l('or').' - </p>';
-        }
-        $form .= '<p>'.$this->l('If you are using an unix system, you can use unix crontab like this :').'</p>';
-        $form .= '<strong><code>*/15 * * * * wget '.$links['url_feed_import'].'</code></strong><br /><br />';
-        return '<div class="lengow-margin">'.$form.'</div>';
+        $form .= '<p>' . $this->l('If you are using an unix system, you can use unix crontab like this :') . '</p>';
+        $form .= '<strong><code>*/15 * * * * wget ' . $links['url_feed_import'] . '</code></strong><br /><br />';
+        return '<div class="lengow-margin">' . $form . '</div>';
     }
 
     /**
@@ -458,13 +458,12 @@ class AdminLengowConfigController extends ModuleAdminController
     private function getFormIsImport()
     {
         $content = '';
-        if (LengowImport::isInProcess())
-        {
-            $content .= '<p>'.$this->l(sprintf('Import seems to be currently running (last launch: %s). Click on the button below to reset it', date('Y-m-d H:i:s', Configuration::get('LENGOW_IS_IMPORT')))).'</p>';
-            $content .= '<input type="submit" value="'.$this->l('Reset import').'"" name="reset-import-lengow" id="reset-import-lengow" />';
+        if (LengowImport::isInProcess()) {
+            $content .= '<p class="preference_description">' . $this->l(sprintf('Import seems to be currently running (last launch: %s). Click on the button below to reset it', date('Y-m-d H:i:s', Configuration::get('LENGOW_IS_IMPORT')))) . '</p>';
+            $content .= '<input type="submit" value="' . $this->l('Reset import') . '"" name="reset-import-lengow" id="reset-import-lengow" />';
+        } else {
+            $content .= '<p class="preference_description">' . $this->l('No import process currently running.') . '</p>';
         }
-        else
-            $content .= '<p>'.$this->l('No import process currently running.').'</p>';
         return $content;
     }
 

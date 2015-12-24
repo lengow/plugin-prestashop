@@ -41,7 +41,7 @@ class LengowOption
      * Make a new tracker option.
      *
      * @param integer $id The tracker type unique ID.
-     * @param varchar $token The tracker type name.
+     * @param varchar $name The tracker type name.
      */
     public function __construct($id, $name)
     {

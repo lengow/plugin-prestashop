@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2016 Lengow SAS.
  *
@@ -18,7 +19,6 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 class LengowCheck
 {
 
@@ -110,8 +110,7 @@ class LengowCheck
         } elseif ($mail_method == 3 && _PS_VERSION_ >= '1.5.0') {
             return self::$_module->l('Email are desactived.', 'lengow.check.class');
         } elseif ($mail_method == 3) {
-            return self::$_module->l('Error mail settings, PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4',
-                'lengow.check.class');
+            return self::$_module->l('Error mail settings, PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4', 'lengow.check.class');
         } else {
             return self::$_module->l('Email using php mail function.', 'lengow.check.class');
         }
@@ -224,11 +223,9 @@ class LengowCheck
             'message' => self::$_module->l('Lengow authentification', 'lengow.check.class'),
             'help' => '',
             'state' => (int)self::isValidAuth() == 1 ? 1 : 0,
-            'additional_infos' => self::$_module->l('For this step, you need to have a Lengow account to get your Client ID, Group ID and API key.',
-                    'lengow.check.class') . '<br/>'
+            'additional_infos' => self::$_module->l('For this step, you need to have a Lengow account to get your Client ID, Group ID and API key.', 'lengow.check.class') . '<br/>'
                 . self::$_module->l('Contact us if you don\'t have a Lengow account :', 'lengow.check.class') . '<br/>'
-                . self::$_module->l('By email :',
-                    'lengow.check.class') . ' <a href="mailto:' . self::$_module->l('contact@lengow.com',
+                . self::$_module->l('By email :', 'lengow.check.class') . ' <a href="mailto:' . self::$_module->l('contact@lengow.com',
                     'lengow.check.class') . '" target="_blank">' . self::$_module->l('contact@lengow.com',
                     'lengow.check.class') . '</a><br/>'
                 . self::$_module->l('By phone : +44 2033182631', 'lengow.check.class') . '<br/>'

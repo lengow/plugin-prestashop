@@ -17,6 +17,7 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 ;$(document).ready(function() {
 	// Update one flow’
 	$('.lengow-migrate-action').each(function(i) {
@@ -90,4 +91,6 @@
 		});
 		return false;
 	});
+	$(".switchLengow").bootstrapSwitch();
 });
+

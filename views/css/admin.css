@@ -1,4 +1,50 @@
 /* lengow admin css */
+
+@font-face {
+	font-family: "Lato Light";
+	src: url('../fonts/Lato-Light.ttf');
+}
+
+@font-face {
+	font-family: "Lato Medium";
+	src: url('../fonts/Lato-Medium.ttf');
+}
+
+@font-face {
+	font-family: "Lato Semibold";
+	font-weight: bold;
+	src: url('../fonts/Lato-Semibold.ttf');
+}
+
+@font-face {
+	font-family: "Open Sans";
+	src: url('../fonts/OpenSans-Regular.ttf');
+}
+
+@font-face {
+	font-family: "Open Sans Italic";
+	font-style: italic;
+	src: url('../fonts/OpenSans-Italic.ttf');
+}
+
+@font-face {
+	font-family: "Open Sans Bold";
+	font-weight: bold;
+	src: url('../fonts/OpenSans-Bold.ttf');
+}
+
+@font-face {
+	font-family: "Open Sans Bold Italic";
+	font-style: italic;
+	font-weight: bold;
+	src: url('../fonts/OpenSans-BoldItalic.ttf');
+}
+
+body{
+	font-family: Open Sans, sans-serif;
+	background-image: url(../img/background.jpg);
+}
+
 #table-feeds, #lengow-info {
 	border:1px solid #ccc;
 	padding: 0px;
@@ -82,17 +128,171 @@ label.cat-tree-lengow input {
 .depth-12 {margin-left: 180px;}
 
 .adminlengowhome > #main > #content, .adminlengow > #main > #content, .adminlengowlog > #main > #content, .adminlengowconfig > #main > #content, .adminlengowlogconfig > #main > #content{
-	padding-top: 10px;
+	padding : 0px;
 }
 
 #logoLengow {
 	width: 120px;
 }
 
-#logoLengow > img {
-	width: 100%;
+.menuLengow {
+	background-color:#2e3340 ;
+	padding-top :5px;
+	padding-bottom: 5px;
+	
 }
 
+.bootstrap .menuLengow>li>a:hover,.bootstrap .menuLengow>li.active>a:hover,.bootstrap .menuLengow>li>a,.bootstrap .menuLengow>li>a:focus,.bootstrap .menuLengow>li.active>a:focus{
+	color: white;
+	font-size: 0.9em;
+	font-family: Open Sans;
+	margin-top: 8px;
+}
+
+.bootstrap .menuLengow>li>a{
+	-webkit-border-radius:0px;
+	-moz-border-radius:0px;
+	border-radius:0px;
+}
+.bootstrap .menuLengow>li.active>a, .bootstrap .menuLengow>li>a:hover, .bootstrap .menuLengow>li.active>a:focus, .bootstrap .menuLengow>li.active>a:hover{
+	background-color: #222732;
+}
+
+#logoLengow > img {
+	width: 92%;
+	padding: 11px;
+}
+
+#content.bootstrap .breadcrumbLengow {
+	background: #2e3340;
+	border: none;
+}
+
+#content.bootstrap .breadcrumbLengow a{
+	color: white;
+	font-family: Open Sans Bold;
+}
+
+#content.bootstrap .panel {
+	border:none;
+	border-radius : 0px;
+	margin: 20px;
+	width: 1350px;
+}
+.table-responsive-row, #content.bootstrap .panel, .bootstrap .table tbody>tr>td{
+	background-color:#f7f7f7 ;
+}
+
+.bootstrap .table thead>tr>th{
+	border: none;
+}
+.bootstrap .table thead>tr.filter>th{
+	background: none;
+}
+
+.bootstrap .table tbody>tr>td{
+	width: 150px;
+}
 #home{
 	padding-left: 10px;
 }
+
+.bootstrap .table .actions {
+	width: 100px;
+}
+
+.icon-caret-up, .icon-caret-down{
+	color : #222732;
+}
+
+.bootstrap .table thead>tr.filter>th input[type="text"].filter, .bootstrap .table thead>tr.filter>th input[type="password"].filter, .bootstrap .table thead>tr.filter>th select.filter{
+	border-color: #61687c ;
+}
+
+.bootstrap .btn.btn-default:hover {
+	background-color:#ebebeb ;
+	color : #61687c;
+	border-color : #61687c;
+}
+
+.bootstrap .pagination>.active>a, .bootstrap .pagination>.active>a:hover, .bootstrap .pagination>.active>a:focus, .bootstrap .pagination>.active>span, .bootstrap .pagination>.active>span:hover, .bootstrap .pagination>.active>span:focus{
+	color : #61687c;
+	background-color: #eee;
+	border-color : #61687c;
+}
+
+.bootstrap .pagination>li>a:hover, .bootstrap .pagination>li>span, .bootstrap .pagination>li>a, .bootstrap .dropdown-menu>li a:hover{
+	color : #61687c;
+}
+
+.bootstrap .table thead>tr>th span.title_box .label-tooltip{
+	color: #656565;
+	border : none;
+	background: none;
+
+}
+
+.bootstrap .buttonLengow a{
+	color: white;
+}
+.paramLengow a{
+	font-family: "Lato Medium";
+	font-size: 1.6em;
+	padding-left: 15px;
+}
+
+.bootstrap .titleLengow {
+	font-family: "Lato Light";
+	font-size: 1.4em;
+}
+
+.bootstrap .form-control, .bootstrap input[type="text"], .bootstrap input[type="search"], .bootstrap input[type="password"], .bootstrap textarea, .bootstrap select {
+	width: 30%;
+}
+
+.bootstrap .formLengow {
+	margin-left : 50px;
+}
+
+.preference_description {
+	font-style: italic;
+	font-size: 0.9em;
+}
+
+.labelLengow{
+	margin-right: 155px;
+}
+
+.jumbotronLengow{
+	background: none;
+}
+
+.jumbotronLengow h1{
+	color: white;
+}
+.jumbotronLengow h3 {
+	color : #019ce2;
+}
+
+.jumbotronLengow h1, .jumbotronLengow h3 {
+	font-family: "Open Sans";
+	font-size: 3.5em;
+	text-align: center;
+}
+
+.jumbotronLengow p {
+	color: white;
+	text-align: center;
+	font-size: 1em;
+	font-family: "Open Sans Bold";
+}
+
+.jumbotronLengow .descLengow{
+	color: #2e3340;
+	font-family: "Open Sans";
+}
+
+#content.bootstrap .jumbotronLengow h3:not(.modal-title){
+	padding: 5px;
+}
+

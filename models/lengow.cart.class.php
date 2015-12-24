@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2016 Lengow SAS.
  *
@@ -18,7 +19,6 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 class LengowCart extends Cart implements LengowObject
 {
     /**
@@ -36,7 +36,7 @@ class LengowCart extends Cart implements LengowObject
      *
      * @param array $products list of products to be added
      *
-     * @return bool
+     * @return boolean
      */
     public function addProducts($products = array())
     {
@@ -66,6 +66,8 @@ class LengowCart extends Cart implements LengowObject
      * @param integer $id_product Product ID
      * @param integer $id_product_attribute Attribute ID if needed
      * @param string $operator Indicate if quantity must be increased or decreased
+     *
+     * @return boolean
      */
     public function updateQty(
         $quantity,
@@ -125,8 +127,7 @@ class LengowCart extends Cart implements LengowObject
             return false;
         } else {
             /* Check if the product is already in the cart */
-            $result = $this->containsProduct($id_product, $id_product_attribute, (int)$id_customization,
-                (int)$id_address_delivery);
+            $result = $this->containsProduct($id_product, $id_product_attribute, (int)$id_customization, (int)$id_address_delivery);
 
             /* Update quantity if product already exist */
             if ($result) {
@@ -254,8 +255,7 @@ class LengowCart extends Cart implements LengowObject
             CartRule::autoAddToCart($context);
         }
         if ($product->customizable) {
-            return $this->_updateCustomizationQuantity((int)$quantity, (int)$id_customization, (int)$id_product,
-                (int)$id_product_attribute, (int)$id_address_delivery, $operator);
+            return $this->_updateCustomizationQuantity((int)$quantity, (int)$id_customization, (int)$id_product, (int)$id_product_attribute, (int)$id_address_delivery, $operator);
         } else {
             return true;
         }
@@ -325,6 +325,7 @@ class LengowCart extends Cart implements LengowObject
                 break;
             case LengowObject::LENGOW_SIZE_ERROR:
                 $this->validateSizeLengow($field);
+                break;
             default:
                 # code...
                 break;

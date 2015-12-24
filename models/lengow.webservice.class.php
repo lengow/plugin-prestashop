@@ -217,8 +217,7 @@ class LengowWebservice
 
                             Db::getInstance()->execute($sql);
                         } else {
-                            $detail->product_price = Tools::ps_round(($detail->product_price * (1 + ($detail->tax_rate / 100))) / $rate,
-                                6);
+                            $detail->product_price = Tools::ps_round(($detail->product_price * (1 + ($detail->tax_rate / 100))) / $rate, 6);
                             $detail->tax_rate = Tools::getValue('rate');
                         }
 

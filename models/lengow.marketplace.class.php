@@ -163,8 +163,10 @@ class LengowMarketplace
      *
      * @param string $action The name of the action
      * @param string $id_flux The flux ID
-     * @param string $id_order The order ID
-     * @param string $args An array of arguments
+     * @param string $id_lengow_order The order ID
+     * @param array $args an array of arguments
+     *
+     * @return boolean
      */
     public function wsdl($action, $id_flux, $id_lengow_order, $args = array())
     {
@@ -178,7 +180,7 @@ class LengowMarketplace
 
         $call_url = false;
         switch ($action) {
-            case 'shipped' :
+            case 'shipped':
                 $call_url = $this->api_url;
                 $call_url = str_replace('#ID_FLUX#', $id_flux, $call_url);
                 $call_url = str_replace('#ORDER_ID#', $id_lengow_order, $call_url);
@@ -189,7 +191,7 @@ class LengowMarketplace
                     $gets = array();
                     foreach ($action_array['params'] as $type => $param) {
                         switch ($type) {
-                            case 'tracking' :
+                            case 'tracking':
                                 if (_PS_VERSION_ >= '1.5') {
                                     $id_order_carrier = $order->getIdOrderCarrier();
                                     $order_carrier = new OrderCarrier($id_order_carrier);
@@ -203,20 +205,18 @@ class LengowMarketplace
                                 $gets[$type] = array(
                                     'value' => $tracking_number,
                                     'name' => $param['name'],
-                                    'require' => (array_key_exists('require', $param) ? explode(' ',
-                                        $param['require']) : array())
+                                    'require' => (array_key_exists('require', $param) ? explode(' ', $param['require']) : array())
                                 );
                                 break;
-                            case 'carrier' :
+                            case 'carrier':
                                 $carrier = new Carrier($order->id_carrier);
                                 $gets[$type] = array(
                                     'value' => $this->matchCarrier($param, $carrier->name),
                                     'name' => $param['name'],
-                                    'require' => (array_key_exists('require', $param) ? explode(' ',
-                                        $param['require']) : array())
+                                    'require' => (array_key_exists('require', $param) ? explode(' ', $param['require']) : array())
                                 );
                                 break;
-                            case 'tracking_url' :
+                            case 'tracking_url':
                                 if (_PS_VERSION_ >= '1.5') {
                                     $id_order_carrier = $order->getIdOrderCarrier();
                                     $order_carrier = new OrderCarrier($id_order_carrier);
@@ -232,16 +232,14 @@ class LengowMarketplace
                                 $gets[$type] = array(
                                     'value' => str_replace('@', $tracking_number, $carrier->url),
                                     'name' => $param['name'],
-                                    'require' => (array_key_exists('require', $param) ? explode(' ',
-                                        $param['require']) : array())
+                                    'require' => (array_key_exists('require', $param) ? explode(' ', $param['require']) : array())
                                 );
                                 break;
-                            case 'shipping_price' :
+                            case 'shipping_price':
                                 $gets[$type] = array(
                                     'value' => $order->total_shipping,
                                     'name' => $param['name'],
-                                    'require' => (array_key_exists('require', $param) ? explode(' ',
-                                        $param['require']) : array())
+                                    'require' => (array_key_exists('require', $param) ? explode(' ', $param['require']) : array())
                                 );
                                 break;
                         }
@@ -270,7 +268,7 @@ class LengowMarketplace
                     $call_url .= '?' . implode('&', $url);
                 }
                 break;
-            case 'refuse' :
+            case 'refuse':
                 $call_url = $this->api_url;
                 $call_url = str_replace('#ID_FLUX#', $id_flux, $call_url);
                 $call_url = str_replace('#ORDER_ID#', $id_lengow_order, $call_url);
@@ -281,7 +279,7 @@ class LengowMarketplace
                     $gets = array();
                     foreach ($action_array['params'] as $type => $param) {
                         switch ($type) {
-                            case 'refused_reason' :
+                            case 'refused_reason':
                                 break;
                         }
                     }
@@ -290,7 +288,7 @@ class LengowMarketplace
                     }
                 }
                 break;
-            case 'link' :
+            case 'link':
                 $call_url = self::$WSDL_LINK_ORDER;
                 $call_url = str_replace('#MP#', $this->name, $call_url);
                 $call_url = str_replace('#ID_CLIENT#', $args['id_client'], $call_url);

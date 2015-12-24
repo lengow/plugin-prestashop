@@ -1,8 +1,5 @@
 <?php
 
-/*error_reporting(E_ALL);
-ini_set("display_errors", 1);*/
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -28,6 +25,14 @@ class Lengow extends Module
 
         parent::__construct();
 
+        if (_PS_VERSION_ < '1.5')
+        {
+            $sep = DIRECTORY_SEPARATOR;
+            require_once _PS_MODULE_DIR_.$this->name.$sep.'backward_compatibility'.$sep.'backward.php';
+            $this->context = Context::getContext();
+            $this->smarty = $this->context->smarty;
+        }
+
         $this->displayName = $this->l('Lengow');
         $this->description = $this->l('Lengow allows you to easily export your product catalogue from your Prestashop
         store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister..
@@ -45,9 +50,11 @@ class Lengow extends Module
     public function install()
     {
         if (!parent::install()) {
+
             return false;
         }
-        return $this->installClass->install();
+        return $this->registerHook('displayBackOfficeHeader') &&
+        $this->installClass->install();
     }
 
     public function uninstall()
@@ -55,11 +62,17 @@ class Lengow extends Module
         if (!parent::uninstall()) {
             return false;
         }
-        return $this->installClass->uninstall();
+        return $this->unregisterHook('displayBackOfficeHeader') &&
+        $this->installClass->uninstall();
     }
 
     public function update()
     {
         return $this->installClass->update();
+    }
+
+    public function hookDisplayBackOfficeHeader()
+    {
+        $this->context->controller->addCss(($this->_path).'/views/css/lengow-back-office.css');
     }
 }

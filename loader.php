@@ -21,6 +21,7 @@
 
 define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.$sep);
 
+$notInPresta14 = array('lengow.specificprice.class.php', 'lengow.gender.class.php');
 $GLOBALS['OVERRIDE_FOLDER'] = 'override';
 $GLOBALS['INSTALL_FOLDER'] = 'install';
 $GLOBALS['MODELS_FOLDER'] = 'models';
@@ -39,5 +40,10 @@ $directory = _PS_MODULE_LENGOW_DIR_ . 'models/';
 $listClassFile = array_diff(scandir($directory), array('..', '.'));
 
 foreach ($listClassFile as $list) {
+
+    if(in_array($list, $notInPresta14) && _PS_VERSION_ < '1.5'){
+            continue;
+    }
     require_once $directory . $list;
+
 }

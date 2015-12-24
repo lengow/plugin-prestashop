@@ -156,7 +156,7 @@ class LengowOrder extends Order
     /**
      * Load information from lengow_orders table
      *
-     * @param integer $id_order The order ID
+     *
      * @return boolean.
      */
     protected function loadLengowFields()
@@ -319,8 +319,7 @@ class LengowOrder extends Order
             if ($shipping_method == Carrier::SHIPPING_METHOD_WEIGHT) {
                 return LengowCore::formatNumber($carrier->getDeliveryPriceByWeight($total, (int)$id_zone));
             } else {
-                return LengowCore::formatNumber($carrier->getDeliveryPriceByPrice($total, (int)$id_zone,
-                    (int)$id_currency));
+                return LengowCore::formatNumber($carrier->getDeliveryPriceByPrice($total, (int)$id_zone, (int)$id_currency));
             }
         }
         return 0;
@@ -404,7 +403,8 @@ class LengowOrder extends Order
         $r = Db::getInstance()->executeS(
             'SELECT `id_order_lengow` ' .
             'FROM `' . _DB_PREFIX_ . 'lengow_orders` ' .
-            'WHERE `id_order` = ' . (int)$id);
+            'WHERE `id_order` = ' . (int)$id
+        );
         if (empty($r) || $r[0]['id_order_lengow'] == '') {
             return false;
         } else {

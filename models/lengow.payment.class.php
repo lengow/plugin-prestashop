@@ -82,8 +82,7 @@ class LengowPaymentModule extends PaymentModule
         $cart_delivery_option = $this->context->cart->getDeliveryOption(null, true, false);
 
         foreach ($delivery_option_list as $id_address => $package) {
-            if (!isset($cart_delivery_option[$id_address]) || !array_key_exists($cart_delivery_option[$id_address],
-                    $package)
+            if (!isset($cart_delivery_option[$id_address]) || !array_key_exists($cart_delivery_option[$id_address], $package)
             ) {
                 foreach ($package as $key => $val) {
                     // force carrier to be the one chosen in Lengow config
@@ -100,8 +99,8 @@ class LengowPaymentModule extends PaymentModule
                         break;
                     }
                 }
-                if (!$carrier_assigned) // else take 1st valid option
-                {
+                // else take 1st valid option
+                if (!$carrier_assigned) {
                     foreach ($package as $key => $val) {
                         $cart_delivery_option[$id_address] = $key;
                         break;
@@ -128,7 +127,8 @@ class LengowPaymentModule extends PaymentModule
                     // Rewrite the id_warehouse
                     if (method_exists($this->context->cart, 'getPackageIdWarehouse')) {
                         $package_list[$id_address][$id_package]['id_warehouse'] = (int)$this->context->cart->getPackageIdWarehouse($package_list[$id_address][$id_package],
-                            (int)$id_carrier);
+                            (int)$id_carrier
+                        );
                     }
                     $package_list[$id_address][$id_package]['id_carrier'] = $id_carrier;
                 }
@@ -184,8 +184,7 @@ class LengowPaymentModule extends PaymentModule
                 $sku .= empty($product['id_product_attribute']) ? '' : '_' . $product['id_product_attribute'];
                 if (isset($lengow_products[$sku])) {
                     $product['price_wt'] = $lengow_products[$sku]['price_unit'];
-                    $product['price'] = Tools::ps_round(LengowProduct::calculatePriceWithoutTax($product,
-                        $order->{Configuration::get('PS_TAX_ADDRESS_TYPE')}, $this->context), 2);
+                    $product['price'] = Tools::ps_round(LengowProduct::calculatePriceWithoutTax($product, $order->{Configuration::get('PS_TAX_ADDRESS_TYPE')}, $this->context), 2);
                     $product['total'] = (float)$product['price'] * (int)$product['quantity'];
                     $product['total_wt'] = Tools::ps_round((float)$product['price_wt'] * (int)$product['quantity'], 2);
 
@@ -214,8 +213,7 @@ class LengowPaymentModule extends PaymentModule
             $order->total_shipping = $order->total_shipping_tax_incl;
 
             // add processing fees to wrapping fees
-            $tax_manager = TaxManagerFactory::getManager(new LengowAddress($id_address),
-                (int)Configuration::get('PS_GIFT_WRAPPING_TAX_RULES_GROUP'));
+            $tax_manager = TaxManagerFactory::getManager(new LengowAddress($id_address), (int)Configuration::get('PS_GIFT_WRAPPING_TAX_RULES_GROUP'));
             $tax_calculator = $tax_manager->getTaxCalculator();
             $order->total_wrapping_tax_excl = $tax_calculator->removeTaxes((float)$processing_fees);
             $order->total_wrapping_tax_incl = (float)$processing_fees;
@@ -239,8 +237,7 @@ class LengowPaymentModule extends PaymentModule
             $result = $order->add();
 
             if (!$result) {
-                PrestaShopLogger::addLog('PaymentModule::validateOrder - Order cannot be created', 3, null, 'Cart',
-                    (int)$id_cart, true);
+                PrestaShopLogger::addLog('PaymentModule::validateOrder - Order cannot be created', 3, null, 'Cart', (int)$id_cart, true);
                 throw new PrestaShopException('unable to save order.');
             }
 
@@ -248,8 +245,7 @@ class LengowPaymentModule extends PaymentModule
 
             // Insert new Order detail list using cart for the current order
             $order_detail = new LengowOrderDetail(null, null, $this->context);
-            $order_detail->createList($order, $this->context->cart, $id_order_state, $order->product_list, 0, true,
-                $package_list[$id_address][$id_package]['id_warehouse']);
+            $order_detail->createList($order, $this->context->cart, $id_order_state, $order->product_list, 0, true, $package_list[$id_address][$id_package]['id_warehouse']);
             $order_detail_list[] = $order_detail;
 
             // Adding an entry in order_carrier table
@@ -274,8 +270,7 @@ class LengowPaymentModule extends PaymentModule
             $transaction_id = null;
 
             if (!$order->addOrderPayment($order->total_paid_tax_incl, null, $transaction_id)) {
-                PrestaShopLogger::addLog('PaymentModule::validateOrder - Cannot save Order Payment', 3, null, 'Cart',
-                    (int)$id_cart, true);
+                PrestaShopLogger::addLog('PaymentModule::validateOrder - Cannot save Order Payment', 3, null, 'Cart', (int)$id_cart, true);
                 throw new LengowImportException('unable to save order payment.');
             }
         }
@@ -352,8 +347,7 @@ class LengowPaymentModule extends PaymentModule
                         $history->changeIdOrderState(Configuration::get('PS_OS_OUTOFSTOCK'), $order, true);
                     }
 
-                    $history->changeIdOrderState(Configuration::get($order->valid ? 'PS_OS_OUTOFSTOCK_PAID' : 'PS_OS_OUTOFSTOCK_UNPAID'),
-                        $order, true);
+                    $history->changeIdOrderState(Configuration::get($order->valid ? 'PS_OS_OUTOFSTOCK_PAID' : 'PS_OS_OUTOFSTOCK_UNPAID'), $order, true);
                     $history->addWithemail();
                 }
 
@@ -441,8 +435,7 @@ class LengowPaymentModule extends PaymentModule
                 $sku .= empty($product['id_product_attribute']) ? '' : '_' . $product['id_product_attribute'];
                 if (isset($lengow_products[$sku])) {
                     $product['price_wt'] = $lengow_products[$sku]['price_unit'];
-                    $product['price'] = Tools::ps_round(LengowProduct::calculatePriceWithoutTax($product,
-                        $order->{Configuration::get('PS_TAX_ADDRESS_TYPE')}, $this->context), 2);
+                    $product['price'] = Tools::ps_round(LengowProduct::calculatePriceWithoutTax($product, $order->{Configuration::get('PS_TAX_ADDRESS_TYPE')}, $this->context), 2);
                     $product['total'] = (float)$product['price'] * (int)$product['quantity'];
                     $product['total_wt'] = Tools::ps_round((float)$product['price_wt'] * (int)$product['quantity'], 2);
 
@@ -464,8 +457,7 @@ class LengowPaymentModule extends PaymentModule
             $order->total_wrapping = (float)$processing_fees;
 
             $order->total_shipping = (float)$lengow_shipping_costs;
-            $order->carrier_tax_rate = (float)Tax::getCarrierTaxRate($this->context->cart->id_carrier,
-                (int)$this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
+            $order->carrier_tax_rate = (float)Tax::getCarrierTaxRate($this->context->cart->id_carrier, (int)$this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
             $order->total_paid = (float)$amount_paid + (float)$processing_fees;
             $order->invoice_date = '0000-00-00 00:00:00';
             // Creating order
@@ -499,8 +491,7 @@ class LengowPaymentModule extends PaymentModule
 				VALUES ';
                 $outOfStock = false;
                 foreach ($product_list as $key => $product) {
-                    $productQuantity = (int)(Product::getQuantity((int)($product['id_product']),
-                        ($product['id_product_attribute'] ? (int)($product['id_product_attribute']) : null)));
+                    $productQuantity = (int)(Product::getQuantity((int)($product['id_product']), ($product['id_product_attribute'] ? (int)($product['id_product_attribute']) : null)));
                     $quantityInStock = ($productQuantity - (int)($product['cart_quantity']) < 0) ? $productQuantity : (int)($product['cart_quantity']);
                     if ($id_order_state != _PS_OS_CANCELED_ && $id_order_state != _PS_OS_ERROR_) {
                         if (Product::updateQuantity($product, (int)$order->id)) {
@@ -527,8 +518,7 @@ class LengowPaymentModule extends PaymentModule
                         $product['rate'] = 0;
                         $tax_rate = 0;
                     } else {
-                        $tax_rate = Tax::getProductTaxRate((int)($product['id_product']),
-                            $this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
+                        $tax_rate = Tax::getProductTaxRate((int)($product['id_product']), $this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
                     }
 
                     $ecotaxTaxRate = 0;

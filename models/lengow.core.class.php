@@ -434,8 +434,7 @@ class LengowCore
         if (!$mp_update || $mp_update != date('Y-m-d')) {
             try {
                 if ($mp_stream = LengowFile::getRessource(self::$MP_CONF_LENGOW, 'r')) {
-                    $mp_file = new LengowFile(LengowCore::$LENGOW_CONFIG_FOLDER, LengowMarketplace::$XML_MARKETPLACES,
-                        'w');
+                    $mp_file = new LengowFile(LengowCore::$LENGOW_CONFIG_FOLDER, LengowMarketplace::$XML_MARKETPLACES, 'w');
                     stream_copy_to_stream($mp_stream, $mp_file->instance);
                     $mp_file->close();
                     Configuration::updateValue('LENGOW_MP_CONF', date('Y-m-d'));
@@ -507,6 +506,8 @@ class LengowCore
      * Clean phone number
      *
      * @param string $phone Phone to clean
+     *
+     * @return string
      */
     public static function cleanPhone($phone)
     {
@@ -889,8 +890,8 @@ class LengowCore
         $feed_export_url = $base . 'webservice/export.php';
         $feed_import_url = $base . 'webservice/import.php';
         return array(
-            'link_feed_export' => '<div class="lengow-margin"><a href="' . $feed_export_url . '" target="_blank">' . $feed_export_url . '</a></div>',
-            'link_feed_import' => '<div class="lengow-margin"><a href="' . $feed_import_url . '" target="_blank">' . $feed_import_url . '</a></div>',
+            'link_feed_export' => '<div class="lengow-margin"><button type="button" class="btn btn-primary buttonLengow"><a href="' . $feed_export_url . '" target="_blank">Export !</a></button></div>',
+            'link_feed_import' => '<div class="lengow-margin"><button type="button" class="btn btn-primary buttonLengow"><a href="' . $feed_import_url . '" target="_blank">Import !</a></button></div>',
             'url_feed_export' => $feed_export_url,
             'url_feed_import' => $feed_import_url
         );

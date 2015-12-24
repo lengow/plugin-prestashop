@@ -178,12 +178,15 @@ class LengowFeed
      *
      * @param string $format feed format
      * @param array $data feed data
-     * @param boolean $first is first product
+     * @param boolean $is_first is first product
      *
      * @return string
      */
-    public static function getBody($data, $format = 'csv', $is_first)
-    {
+    public static function getBody(
+        $data,
+        $is_first,
+        $format = 'csv'
+    ) {
         switch ($format) {
             case 'csv':
                 $content = '';

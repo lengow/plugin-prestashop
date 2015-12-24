@@ -32,16 +32,19 @@ class LengowInstall
 
     static private $tabs = array(
         'Home' => 'AdminLengowHome',
+        'Lengow Products' => 'AdminLengow',
+        'Logs' => 'AdminLengowLog',
         'Configuration' => 'AdminLengowConfig',
         'Configuration Logs' => 'AdminLengowLogConfig',
-        'Catalog Lengow' => 'AdminLengow',
-        'Logs import Lengow' => 'AdminLengowLog'
+
+
     );
 
     public function __construct($module)
     {
         $this->lengowModule = $module;
         $this->lengowHook = new LengowHook($module);
+
     }
 
     public function install()
@@ -51,7 +54,9 @@ class LengowInstall
         $this->setDefaultValues() &&
         $this->addStatusError() &&
         $this->update();
+
     }
+
 
     public function uninstall()
     {
@@ -108,14 +113,19 @@ class LengowInstall
      */
     private function createTab()
     {
-        if (_PS_VERSION_ >= '1.5') {
-            $tab_parent = new Tab();
-            $tab_parent->name[Configuration::get('PS_LANG_DEFAULT')] = 'Lengow';
-            $tab_parent->module = 'lengow';
+
+        $tab_parent = new Tab();
+        $tab_parent->name[Configuration::get('PS_LANG_DEFAULT')] = 'Lengow';
+        $tab_parent->module = 'lengow';
+
+        if (_PS_VERSION_ < '1.5') {
+            $tab_parent->class_name = 'AdminLengowHome14';
+        } else {
             $tab_parent->class_name = 'AdminLengowHome';
-            $tab_parent->id_parent = 0;
-            $tab_parent->add();
         }
+
+        $tab_parent->id_parent = 0;
+        $tab_parent->add();
 
         foreach (self::$tabs as $name => $controllerName) {
             if (_PS_VERSION_ < '1.5') {
@@ -124,15 +134,14 @@ class LengowInstall
                 $tab_name = $controllerName;
             }
 
-            /*if (Tab::getIdFromClassName($tab_name) !== false) {
+/*            if (Tab::getIdFromClassName($tab_name) != false) {
                 continue;
             }*/
 
             $tab = new Tab();
             if (_PS_VERSION_ < '1.5') {
                 $tab->class_name = $controllerName . "14";
-                $tab->position = 10;
-                $tab->id_parent = 1;
+                $tab->id_parent = $tab_parent->id;
             } else {
                 $tab->class_name = $controllerName;
                 $tab->id_parent = $tab_parent->id;
@@ -165,14 +174,14 @@ class LengowInstall
                 $tab_parent = Tab::getInstanceFromClassName('AdminLengowHome');
                 $tab = Tab::getInstanceFromClassName($tab_name);
             } else {
+                $tab_parent = Tab::getIdFromClassName('AdminLengowHome14');
                 $tab_id = Tab::getIdFromClassName($tab_name);
                 $tab = new Tab($tab_id);
             }
             if ($tab->id != 0) {
                 $tab->delete();
-                if (_PS_VERSION_ >= '1.5') {
-                    $tab_parent->delete();
-                }
+                $tab_parent->delete();
+
             }
             //LengowCore::log('Uninstall tab '.$name, null, -1);
         }
@@ -215,8 +224,7 @@ class LengowInstall
             Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false) &&
             Configuration::updateValue('LENGOW_REPORT_MAIL', true) &&
             Configuration::updateValue('LENGOW_EXPORT_TIMEOUT', 0) &&
-            Configuration::updateValue('LENGOW_IMPORT_SINGLE',
-                version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')) &&
+            Configuration::updateValue('LENGOW_IMPORT_SINGLE', version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')) &&
             Configuration::updateValue('LENGOW_EMAIL_ADDRESS', '') &&
             Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
             Configuration::updateValue('LENGOW_CRON_EDITOR', false) &&
@@ -295,12 +303,13 @@ class LengowInstall
         //check if update is in progress
         $installation = true;
 
-        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_.'upgrade'), array('..', '.'));
+        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_ . 'upgrade'), array('..', '.'));
         foreach ($upgradeFiles as $file) {
-            include _PS_MODULE_LENGOW_DIR_.'upgrade/'.$file;
+            include _PS_MODULE_LENGOW_DIR_ . 'upgrade/' . $file;
             $numberVersion = preg_replace('/update_|\.php$/', '', $file);
             Configuration::updateValue('LENGOW_VERSION', $numberVersion);
         }
         return true;
     }
+
 }
