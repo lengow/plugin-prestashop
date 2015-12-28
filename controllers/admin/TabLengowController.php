@@ -71,6 +71,9 @@ class AdminLengow14 extends AdminTab {
 		$this->_group = 'GROUP BY a.`id_product`';
 
 		parent::__construct();
+
+		$module = Module::getInstanceByName('lengow');
+		echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');
 	}
 
 	private function _cleanMetaKeywords($keywords)
@@ -198,20 +201,12 @@ class AdminLengow14 extends AdminTab {
 
 	protected function processBulkUnpublish()
 	{
-		$products = Tools::getValue($this->table.'Box');
-		if (is_array($products) && (count($products)))
-			foreach ($products as $id_product)
+		$products = Tools::getValue($this->table . 'Box');
+		if (is_array($products) && (count($products))) {
+			foreach ($products as $id_product) {
 				LengowProduct::publish($id_product, 0);
-	}
-
-	public function display($token = null)
-	{
-		$cookie = Context::getContext()->cookie;
-		$this->getList((int)($cookie->id_lang), !$cookie->__get($this->table.'Orderby') ? 'id_product' : null, !$cookie->__get($this->table.'Orderway') ? 'ASC' : null);
-		echo '<a class="button" href="index.php?tab=AdminLengow14&importorder=1&token='.($token != null ? $token : $this->token).'"> '.$this->l('Import orders from Lengow').'</a>';
-		echo '<div style="margin: 3px 0;">';
-		$this->displayList($token);
-		echo '</div>';
+			}
+		}
 	}
 
 	/**

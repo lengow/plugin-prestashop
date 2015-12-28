@@ -25,23 +25,19 @@
  * @author Ludovic Drin <ludovic@lengow.com>
  * @copyright 2013 Lengow SAS
  */
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-class AdminLengowHome14 extends AdminTab {
 
-	public function __construct()
-	{
+class AdminLengowHome14 extends AdminTab
+{
+    public function __construct()
+    {
 
-		parent::__construct();
+ 
 
+        //$this->view = true;
+        parent::__construct();
 
-		$this->displayHome();
-
-
-	}
-
-	public function displayHome(){
-		return $this->display(__FILE__, 'views/templates/admin/home.tpl');
-	}
-
+        $module = Module::getInstanceByName('lengow');
+        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');
+        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/lengow_home/helpers/view/view.tpl');
+    }
 }

@@ -15,31 +15,34 @@
     <li role="presentation" class="{if $controllerName == 'AdminLengowHome'}active{/if}" id="home"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
             {$link->getAdminLink('AdminLengowHome')}
-            {else}#
+            {else}
+            index.php?tab=AdminLengowHome14&token={Tools::getAdminTokenLite('AdminLengowHome14')}
             {/if}">Home</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengow'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
             {$link->getAdminLink('AdminLengow')}
             {else}
-            index.php?tab=AdminLengow14&token={$token}
+            index.php?tab=AdminLengow14&token={Tools::getAdminTokenLite('AdminLengow14')}
             {/if}
             ">Lengow Products</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowLog'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
             {$link->getAdminLink('AdminLengowLog')}
             {else}
-            index.php?tab=AdminLengowLog14&token={$token2}
+            index.php?tab=AdminLengowLog14&token={Tools::getAdminTokenLite('AdminLengowLog14')}
             {/if}
             ">Logs</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowConfig'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
             {$link->getAdminLink('AdminLengowConfig')}
-            {else}#
+            {else}
+            index.php?tab=AdminLengowConfig14&token={Tools::getAdminTokenLite('AdminLengowConfig14')}
             {/if}">Configuration</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowLogConfig'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
             {$link->getAdminLink('AdminLengowLogConfig')}
-            {else}#
+            {else}
+            index.php?tab=AdminLengowLogConfig14&token={Tools::getAdminTokenLite('AdminLengowLogConfig14')}
             {/if}">Configuration Logs</a></li>
 </ul>
 

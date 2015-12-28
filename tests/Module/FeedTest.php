@@ -112,12 +112,13 @@ class FeedTest extends ModuleTestCase
 
     /**
      * Test Export Limit
-     *
      * @test
      *
      */
     public function exportLimit()
     {
+        error_reporting(E_ALL);
+        ini_set("display_errors", 1);
         $export = new LengowExport(array(
             "show_product_combination" => false,
             "limit" => 4

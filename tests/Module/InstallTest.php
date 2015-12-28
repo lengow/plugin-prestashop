@@ -2,12 +2,32 @@
 
 namespace PrestaShop\PrestaShop\Tests\TestCase;
 
+use Cache;
 use Db;
 use Module;
 use Configuration;
 
 class InstallTest extends ModuleTestCase
 {
+
+    /**
+     *
+     * Install module
+     *
+     * @after
+     *
+     */
+    public function installAfter()
+    {
+        $module = Module::getInstanceByName('lengow');
+        $this->assertTrue((boolean)$module, 'Load Lengow Module');
+
+        //install module if uninstall
+        if (!$module->isInstalled('lengow')) {
+            $module = Module::getInstanceByName('lengow');
+            $module->install();
+        }
+    }
 
     /**
      * Test can load lengow module
@@ -58,7 +78,6 @@ class InstallTest extends ModuleTestCase
     /**
      * Test uninstall lengow module
      *
-     * @depends install
      * @test
      *
      */

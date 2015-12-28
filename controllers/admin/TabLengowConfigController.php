@@ -28,23 +28,18 @@
 
 class AdminLengowConfig14 extends AdminTab {
 
-	public function __construct()
-	{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->lang = false;
+        $this->context = Context::getContext();
+        $this->lite_display = true;
+        $this->lang = true;
+        $this->explicitSelect = true;
+        $this->list_no_link = true;
 
-		parent::__construct();
+        $this->template = 'layout.tpl';
+        $this->display = 'view';
 
-		$this->lang = false;
-		$this->context = Context::getContext();
-		$this->lite_display = true;
-		$this->lang = true;
-		$this->explicitSelect = true;
-		$this->list_no_link = true;
-
-
-		$this->template = 'layout.tpl';
-		$this->display = 'view';
-
-
-	}
-
+    }
 }

@@ -53,8 +53,7 @@ class Lengow extends Module
 
             return false;
         }
-        return $this->registerHook('displayBackOfficeHeader') &&
-        $this->installClass->install();
+        return $this->installClass->install();
     }
 
     public function uninstall()
@@ -62,8 +61,7 @@ class Lengow extends Module
         if (!parent::uninstall()) {
             return false;
         }
-        return $this->unregisterHook('displayBackOfficeHeader') &&
-        $this->installClass->uninstall();
+        return $this->installClass->uninstall();
     }
 
     public function update()

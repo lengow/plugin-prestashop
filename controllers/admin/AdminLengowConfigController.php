@@ -161,11 +161,11 @@ class AdminLengowConfigController extends ModuleAdminController
     {
         if (_PS_VERSION_ <= '1.4.4.0') {
             $options = array(
-                'carriers' => Carrier::getCarriers($this->context->cookie->id_lang, true, false, false, null, ALL_CARRIERS),
+                'carriers' => LengowCarrier::getCarriers($this->context->cookie->id_lang, true, false, false, null, ALL_CARRIERS),
             );
         } else {
             $options = array(
-                'carriers' => Carrier::getCarriers($this->context->cookie->id_lang, true, false, false, null, Carrier::ALL_CARRIERS),
+                'carriers' => LengowCarrier::getCarriers($this->context->cookie->id_lang, true, false, false, null, LengowCarrier::ALL_CARRIERS),
             );
         }
 
