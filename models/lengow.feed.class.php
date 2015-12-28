@@ -137,7 +137,7 @@ class LengowFeed
                 $this->flush($header);
                 break;
             case 'body':
-                $body = LengowFeed::getBody($data, $this->format, $is_first);
+                $body = LengowFeed::getBody($data, $is_first, $this->format);
                 $this->flush($body);
                 break;
             case 'footer':
