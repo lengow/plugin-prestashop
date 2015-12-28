@@ -90,10 +90,10 @@ class LengowFlat
     public function buildTable()
     {
 
-        if(count(Db::getInstance()->ExecuteS("SHOW TABLES LIKE '"._DB_PREFIX_.self::TABLE_NAME."' "))==0){
+        if (count(Db::getInstance()->ExecuteS("SHOW TABLES LIKE '"._DB_PREFIX_.self::TABLE_NAME."' "))==0) {
             $sql = array();
             $sql[]= ' `id` INT(11) NOT NULL AUTO_INCREMENT ';
-            foreach(self::$DEFAULT_FIELDS as $key => $value){
+            foreach (self::$DEFAULT_FIELDS as $key => $value) {
                 $sql[]= ' `'.$key.'` '.$value['type'].'('.$value['size'].') NULL';
             }
             $sql[]= ' `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ';
@@ -104,10 +104,10 @@ class LengowFlat
 
             $sql = 'CREATE INDEX id_product_idx ON `'._DB_PREFIX_.self::TABLE_NAME.'` (id_product)';
             Db::getInstance()->Execute($sql);
-        }else{
-            foreach(self::$DEFAULT_FIELDS as $field => $values){
+        } else {
+            foreach (self::$DEFAULT_FIELDS as $field => $values) {
                 $result = Db::getInstance()->ExecuteS('SHOW COLUMNS FROM `'._DB_PREFIX_.self::TABLE_NAME.'` LIKE "'.$field.'"');
-                if (count($result)==0){
+                if (count($result)==0) {
                     Db::getInstance()->Execute('DROP TABLE '._DB_PREFIX_.self::TABLE_NAME);
                     $this->buildTable();
                     return true;
@@ -181,14 +181,14 @@ class LengowFlat
             'quantity' => array('like' => 'sa_quantity'),
         );
 
-        foreach($select as $table => $values){
+        foreach ($select as $table => $values) {
             $isIndexed = array_values($values) === $values;
-            if ($isIndexed){
-                foreach($values as $value){
+            if ($isIndexed) {
+                foreach ($values as $value) {
                     $selectSql[] = $table.'.'.$value;
                 }
-            }else{
-                foreach($values as $value => $properties){
+            } else {
+                foreach ($values as $value => $properties) {
                     $selectSql[] = $table.'.'.$value.' as '.$properties['like'];
                 }
             }
@@ -216,8 +216,8 @@ class LengowFlat
     public function populateProduct($product)
     {
         $data = array();
-        foreach(self::$DEFAULT_FIELDS as $key => $value){
-            switch($value["type"]){
+        foreach (self::$DEFAULT_FIELDS as $key => $value) {
+            switch ($value["type"]) {
                 case "int":
                 case "tinyint":
                 case "decimal":
@@ -230,72 +230,13 @@ class LengowFlat
             }
         }
         $query = Db::getInstance()->ExecuteS('SELECT id FROM `' . _DB_PREFIX_.self::TABLE_NAME.'` WHERE id_product="'.$product->id_product.'"');
-        if (count($query)>0){
+        if (count($query)>0) {
             Db::getInstance()->update(self::TABLE_NAME, $data, 'id_product = "'.$product->id_product.'"');
-        }else{
+        } else {
             Db::getInstance()->insert(self::TABLE_NAME, $data);
         }
 
     }
 
-    /**
-     * Get fields to export
-     *
-     * @return array
-     */
-    protected function getFields()
-    {
-        $fields = array();
 
-        // fields chosen in module config
-        $export_fields = Tools::jsonDecode(Configuration::get('LENGOW_EXPORT_FIELDS'));
-        if (is_array($export_fields)) {
-            foreach ($export_fields as $field) {
-                $fields[] = $field;
-            }
-        } else {
-            foreach (LengowExport::$DEFAULT_FIELDS as $key => $value) {
-                $fields[] = $key;
-            }
-        }
-
-        //Features
-        if ($this->export_features) {
-            $features = Feature::getFeatures(Context::getContext()->language->id);
-            $features_selected = (array)Tools::jsonDecode(Configuration::get('LENGOW_EXPORT_SELECT_FEATURES'));
-            foreach ($features as $feature) {
-                if (!in_array($feature['id_feature'], $features_selected)) {
-                    continue;
-                }
-                if (in_array($feature['name'], $fields)) {
-                    $fields[] = $feature['name'] . '_1';
-                } else {
-                    $fields[] = $feature['name'];
-                }
-            }
-        }
-        // if export product variations -> get variations attributes
-        if ($this->showProductCombination) {
-            $attributes = AttributeGroup::getAttributesGroups(Context::getContext()->language->id);
-            foreach ($attributes as $attribute) {
-                //dont export empty attributes
-                if ($attribute['name'] == '') {
-                    continue;
-                }
-                if (!in_array($attribute['name'], $fields)) {
-                    $fields[] = $attribute['name'];
-                } else {
-                    $fields[] = $attribute['name'] . '_2';
-                }
-            }
-        }
-        // Images
-        if ($this->max_images > 3) {
-            for ($i = 3; $i <= ($this->max_images - 1); $i++) {
-                $fields[] = 'image_' . ($i + 1);
-            }
-        }
-        // Allow to add extra fields
-        return LengowExport::setAdditionalFields($fields);
-    }
 }

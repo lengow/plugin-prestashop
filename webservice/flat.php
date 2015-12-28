@@ -50,5 +50,3 @@ if (!Module::isInstalled($lengow->name)) {
 $lengowFlat = new LengowFlat();
 $lengowFlat->buildTable();
 $lengowFlat->populateTable();
-
-
