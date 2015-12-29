@@ -432,23 +432,23 @@ class LengowHook
         return $this->display(__FILE__, 'views/templates/admin/dashboard/stats_16.tpl');
     }
 
-    /**
-     * Hook on dashboard.
-     *
-     * @param array $args Arguments of hook
-     */
-    public function hookDisplayAdminHomeStatistics($args)
-    {
-        $args = $args; // Prestashop validator
-        $this->context->smarty->assign(
-            array(
-                'token' => LengowCore::getTokenCustomer(),
-                'id_customer' => LengowCore::getIdCustomer(),
-                'id_group' => LengowCore::getGroupCustomer(),
-            )
-        );
-        return $this->display(__FILE__, 'views/templates/admin/dashboard/stats.tpl');
-    }
+//    /**
+//     * Hook on dashboard.
+//     *
+//     * @param array $args Arguments of hook
+//     */
+//    public function hookDisplayAdminHomeStatistics($args)
+//    {
+//        $args = $args; // Prestashop validator
+//        $this->context->smarty->assign(
+//            array(
+//                'token' => LengowCore::getTokenCustomer(),
+//                'id_customer' => LengowCore::getIdCustomer(),
+//                'id_group' => LengowCore::getGroupCustomer(),
+//            )
+//        );
+//        return $this->display(__FILE__, 'views/templates/admin/dashboard/stats.tpl');
+//    }
 
     /**
      * Hook on admin page's order.

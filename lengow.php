@@ -139,14 +139,13 @@ class Lengow extends Module
         return $this->hookClass->hookDashboardZoneTwo($args);
     }
 
-    public function hookDisplayAdminHomeStatistics($args)
-    {
-        return $this->hookClass->hookDisplayAdminHomeStatistics($args);
-    }
+//    public function hookDisplayAdminHomeStatistics($args)
+//    {
+//        return $this->hookClass->hookDisplayAdminHomeStatistics($args);
+//    }
 
     public function hookAdminOrder($args)
     {
         return $this->hookClass->hookAdminOrder($args);
     }
-
 }
