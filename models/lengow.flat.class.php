@@ -26,8 +26,9 @@
 class LengowFlat
 {
 
-    public static $AADEFAULT_FIELDS = array(
+    var $context;
 
+    public static $AADEFAULT_FIELDS = array(
         'category' => 'breadcrumb',
         'price_product' => 'price',
         'wholesale_price' => 'wholesale_price',
@@ -35,24 +36,19 @@ class LengowFlat
         'price_reduction' => 'price_sale',
         'pourcentage_reduction' => 'price_sale_percent',
         'available_product' => 'available',
-        'url_product' => 'url',
         'image_product' => 'image_1',
-        'fdp' => 'price_shipping',
         'delais_livraison' => 'delivery_time',
         'image_product_2' => 'image_2',
         'image_product_3' => 'image_3',
         'reduction_from' => 'sale_from',
         'reduction_to' => 'sale_to',
-        'url_rewrite' => 'url_rewrite',
         'product_type' => 'type',
         'product_variation' => 'variation',
-        'currency' => 'currency',
         'condition' => 'condition',
         'supplier' => 'supplier',
         'is_virtual' => 'is_virtual',
         'available_for_order' => 'available_for_order',
         'available_date' => 'available_date',
-        'show_price' => 'show_price',
         'available_now' => 'available_now',
         'available_later' => 'available_later',
         'stock_availables' => 'stock_availables',
@@ -85,10 +81,20 @@ class LengowFlat
         'meta_description' => array('type' => 'varchar', 'size' => '255'),
         'manufacturer_name' => array('type' => 'varchar', 'size' => '64'),
         'supplier' => array('type' => 'varchar', 'size' => '64'),
+        'show_price' => array('type' => 'tinyint', 'size' => '1'),
+        'price_shipping' => array('type' => 'decimal', 'size' => '10,4'),
+        'currency' => array('type' => 'varchar', 'size' => '3'),
+        'url_rewrite' => array('type' => 'varchar', 'size' => '128'),
+        'url_product' => array('type' => 'varchar', 'size' => '256'),
     );
 
     public function buildTable()
     {
+
+        $this->context = Context::getContext();
+
+        $this->setCarrier();
+        $this->checkCurrency();
 
         if (count(Db::getInstance()->ExecuteS("SHOW TABLES LIKE '"._DB_PREFIX_.self::TABLE_NAME."' "))==0) {
             $sql = array();
@@ -119,9 +125,8 @@ class LengowFlat
 
     public function populateTable()
     {
-        $context = Context::getContext();
-        $langId = $context->language->id;
-        $shopId = $context->shop->id;
+        $langId = $this->context->language->id;
+        $shopId = $this->context->shop->id;
 
         $select["p"] = array(
             'id_product'  => array('like' => 'id_product'),
@@ -134,6 +139,7 @@ class LengowFlat
             'active'  => array('like' => 'p_active'),
             'minimal_quantity'  => array('like' => 'p_minimal_quantity'),
             'visibility'  => array('like' => 'p_visibility'),
+            'show_price'  => array('like' => 'p_show_price'),
         );
 
         $select["pl"] = array(
@@ -161,6 +167,7 @@ class LengowFlat
             'ecotax' => array('like' => 'pshop_ecotax'),
             'minimal_quantity'  => array('like' => 'pshop_minimal_quantity'),
             'visibility'  => array('like' => 'pshop_visibility'),
+            'show_price'  => array('like' => 'pshop_show_price'),
         );
         $select["pa"] = array(
             'id_product_attribute' => array('like' => 'id_product_attribute'),
@@ -206,8 +213,18 @@ class LengowFlat
         $query.= ' LEFT JOIN '._DB_PREFIX_.'product_attribute_shop pas ON (p.id_product = pas.id_product AND pas.id_shop =1 ) ';
         $productCollection = Db::getInstance()->executeS($query);
 
+        $productTaxes = $this->getProductTaxes();
+
         foreach($productCollection as $productInstance){
-            $product = new LengowFlatProduct($productInstance);
+            $product = new LengowFlatProduct(
+                $productInstance,
+                array(
+                    "context" => $this->context,
+                    "productTaxes" => $productTaxes,
+                    "carrier" => $this->carrier,
+                    "currency" => $this->context->currency->iso_code
+                )
+            );
             $this->populateProduct($product);
         }
 
@@ -235,8 +252,62 @@ class LengowFlat
         } else {
             Db::getInstance()->insert(self::TABLE_NAME, $data);
         }
-
     }
 
+    public function getProductTaxes()
+    {
+        // Tax calcul
+        $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
+        $taxeRules = LengowTaxRule::getLengowTaxRulesByGroupId(
+            Configuration::get('PS_LANG_DEFAULT'),
+            $this->carrier->id_tax_rules_group
+        );
+
+        //todo check tax on shipping price ?
+        if (count($taxeRules)==0) {
+            return null;
+//            throw new LengowExportException('You must configure the carrier "'.$this->carrier->name.'" (Country / Cost)');
+        }
+
+        foreach ($taxeRules as $taxe_rule) {
+            if (isset($taxe_rule['id_country']) && $taxe_rule['id_country'] == $defaultCountry) {
+                $tr = new TaxRule($taxe_rule['id_tax_rule']);
+            }
+        }
+        return new Tax($tr->id_tax);
+    }
+
+
+    /**
+     * Set Carrier to export.
+     *
+     * @throws LengowExportException
+     *
+     * @return boolean.
+     */
+    public function setCarrier()
+    {
+        $carrier = LengowCore::getExportCarrier();
+        if (!$carrier->id) {
+            throw new LengowExportException('You must select a carrier in Lengow Export Tab');
+        }
+        $this->carrier = $carrier;
+        return true;
+    }
+
+    /**
+     * Check currency to export.
+     *
+     * @throws LengowExportException
+     *
+     * @return boolean.
+     */
+    public function checkCurrency()
+    {
+        if (!$this->context->currency) {
+            throw new LengowExportException('Illegal Currency');
+        }
+        return true;
+    }
 
 }

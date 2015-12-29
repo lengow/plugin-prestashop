@@ -26,6 +26,9 @@
 class LengowFlatProduct extends Product
 {
 
+
+    var $price_shipping;
+
     /**
      * Load a new product.
      *
@@ -35,14 +38,19 @@ class LengowFlatProduct extends Product
      */
     public function __construct($product, $params = array())
     {
-//        $this->carrier = isset($params["carrier"]) ? $params["carrier"] : null;
+
+
+
+        $this->context = $params["context"];
+        $this->carrier = $params["carrier"];
+        $this->productTaxes = $params["productTaxes"];
+        $this->currency = $params["currency"];
 
         //parent::__construct($id_product, false, $id_lang);
         //var_dump($id_product);
 
-
         $this->id_product = $product["id_product"];
-        if ($product["id_product_attribute"] != ''){
+        if ($product["id_product_attribute"] != '') {
             $this->id_product = $product["id_product"]."_".$product["id_product_attribute"];
             $this->id_parent = $product["id_product"];
         }
@@ -68,37 +76,43 @@ class LengowFlatProduct extends Product
         $this->weight = ($product["pa_weight"] != 0) ? $product["p_weight"] + $product["pa_weight"] : $product["p_weight"];
         //product EAN (ATTRIBUTE > PRODUCT)
         $this->ean = ($product["pa_ean"] != '') ? $product["pa_ean"] : $product["p_ean"];
-        if ($this->ean==0){ $this->ean = ''; }
+        if ($this->ean==0) {
+            $this->ean = '';
+        }
         //product UPC (ATTRIBUTE > PRODUCT)
         $this->upc = ($product["pa_upc"] != '') ? $product["pa_upc"] : $product["p_upc"];
-        if ($this->upc==0){ $this->upc = ''; }
+        if ($this->upc==0) {
+            $this->upc = '';
+        }
         //product ecotax (ATTRIBUTE SHOP > SHOP > ATTRIBUTE > PRODUCT)
-        if ($product["pas_ecotax"] >0){
+        if ($product["pas_ecotax"] >0) {
             $this->ecotax = $product["pas_ecotax"];
-        }elseif($product["pshop_ecotax"] > 0) {
+        } elseif ($product["pshop_ecotax"] > 0) {
             $this->ecotax = $product["pshop_ecotax"];
-        }elseif($product["pa_ecotax"] > 0) {
+        } elseif ($product["pa_ecotax"] > 0) {
             $this->ecotax = $product["pa_ecotax"];
-        }else{
+        } else {
             $this->ecotax = $product["p_ecotax"];
         }
         //product minimal quantity (ATTRIBUTE SHOP > SHOP > ATTRIBUTE > PRODUCT)
-        if ($product["pas_minimal_quantity"] >0){
+        if ($product["pas_minimal_quantity"] >0) {
             $this->minimal_quantity = $product["pas_minimal_quantity"];
-        }elseif($product["pshop_minimal_quantity"] > 0) {
+        } elseif ( $product["pshop_minimal_quantity"] > 0) {
             $this->minimal_quantity = $product["pshop_minimal_quantity"];
-        }elseif($product["pa_minimal_quantity"] > 0) {
+        } elseif ( $product["pa_minimal_quantity"] > 0) {
             $this->minimal_quantity = $product["pa_minimal_quantity"];
-        }else{
+        } else {
             $this->minimal_quantity = $product["p_minimal_quantity"];
         }
-
+        $this->url_rewrite = $product["link_rewrite"];
+        $this->url_product = $this->context->link->getProductLink($this->id_product, $this->url_rewrite,  null, null, null, null, $this->id_parent);
 
         //$this->quantity = ($product["pa_quantity"] != '') ? $product["pa_quantity"] : $product["quantity"];
         $this->reference = ($product["pa_reference"] != '') ? $product["pa_reference"] : $product["reference"];
         $this->supplier_reference = ($product["pa_supplier_reference"] != '') ? $product["pa_supplier_reference"] : $product["supplier_reference"];
 
-
+        $this->price = 10;
+        $this->getShippingPrice();
 
 
 
@@ -188,5 +202,47 @@ class LengowFlatProduct extends Product
 //        }
 //        $this->makeFeatures($context);
 //        $this->makeAttributes($context);
+    }
+
+    private function getShippingPrice()
+    {
+
+        $context = Context::getContext();
+
+        $id_zone = $context->country->id_zone;
+        $id_currency = $context->cart->id_currency;
+        $shipping_method = $this->carrier->getShippingMethod();
+        $shipping_cost = 0;
+        if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shipping_method != Carrier::SHIPPING_METHOD_FREE) {
+            if ($shipping_method == Carrier::SHIPPING_METHOD_WEIGHT) {
+                $shipping_cost = LengowCore::formatNumber(
+                    $this->carrier->getDeliveryPriceByWeight($this->weight, (int)$id_zone)
+                );
+            } else {
+                $shipping_cost = LengowCore::formatNumber(
+                    $this->carrier->getDeliveryPriceByPrice(
+                        $this->price,
+                        (int)$id_zone,
+                        (int)$id_currency
+                    )
+                );
+            }
+            // Check if product have single shipping cost
+            if ($this->additional_shipping_cost > 0) {
+                $shipping_cost += $this->additional_shipping_cost;
+            }
+        }
+
+        if ($this->productTaxes) {
+            $tax_calculator = new TaxCalculator(array($this->productTaxes));
+            $taxes = $tax_calculator->getTaxesAmount($shipping_cost);
+            if (!empty($taxes)) {
+                foreach ($taxes as $tax) {
+                    $shipping_cost += $tax;
+                }
+            }
+        }
+
+        $this->price_shipping = $shipping_cost;
     }
 }
