@@ -24,7 +24,7 @@
  * The Lengow's Admin Controller.
  *
  */
-class AdminLengowController extends ModuleAdminController
+class AdminLengowProductController extends ModuleAdminController
 {
     protected $id_current_category;
 

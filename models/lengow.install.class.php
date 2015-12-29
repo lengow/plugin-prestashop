@@ -32,12 +32,10 @@ class LengowInstall
 
     static private $tabs = array(
         'Home' => 'AdminLengowHome',
-        'Lengow Products' => 'AdminLengow',
+        'Lengow Products' => 'AdminLengowProduct',
         'Logs' => 'AdminLengowLog',
         'Configuration' => 'AdminLengowConfig',
         'Configuration Logs' => 'AdminLengowLogConfig',
-
-
     );
 
     public function __construct($module)
@@ -163,7 +161,7 @@ class LengowInstall
      */
     private static function uninstallTab()
     {
-
+        //remove children tabs
         foreach (self::$tabs as $name => $controllerName) {
             if (_PS_VERSION_ < '1.5') {
                 $tab_name = $controllerName . "14";
@@ -171,19 +169,25 @@ class LengowInstall
                 $tab_name = $controllerName;
             }
             if (_PS_VERSION_ >= '1.5') {
-                $tab_parent = Tab::getInstanceFromClassName('AdminLengowHome');
                 $tab = Tab::getInstanceFromClassName($tab_name);
             } else {
-                $tab_parent = Tab::getIdFromClassName('AdminLengowHome14');
                 $tab_id = Tab::getIdFromClassName($tab_name);
                 $tab = new Tab($tab_id);
             }
             if ($tab->id != 0) {
                 $tab->delete();
-                $tab_parent->delete();
-
             }
-            //LengowCore::log('Uninstall tab '.$name, null, -1);
+            LengowCore::log('Uninstall tab '.$name, null, -1);
+        }
+        //remove parent tabs
+        if (_PS_VERSION_ >= '1.5') {
+            $tab_parent_id = Tab::getInstanceFromClassName('AdminLengowHome');
+        } else {
+            $tab_parent_id = Tab::getIdFromClassName('AdminLengowHome14');
+        }
+        $tab_parent = new Tab($tab_parent_id);
+        if ($tab_parent->id != 0) {
+            $tab_parent->delete();
         }
         return true;
     }

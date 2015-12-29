@@ -31,15 +31,17 @@ class AdminLengowConfig14 extends AdminTab {
     public function __construct()
     {
         parent::__construct();
-        $this->lang = false;
         $this->context = Context::getContext();
-        $this->lite_display = true;
-        $this->lang = true;
-        $this->explicitSelect = true;
-        $this->list_no_link = true;
 
-        $this->template = 'layout.tpl';
-        $this->display = 'view';
+        $this->lengowConfig = new LengowConfig();
+        $this->lengowConfig->postProcessForm();
+    }
 
+    public function display()
+    {
+        $module = Module::getInstanceByName('lengow');
+        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');
+        $this->lengowConfig->displayForm();
+        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/lengow_config/helpers/view/view.tpl');
     }
 }

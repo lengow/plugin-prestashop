@@ -40,6 +40,7 @@ class Lengow extends Module
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall the Lengow module ?');
 
         $this->installClass = new LengowInstall($this);
+        $this->hookClass = new LengowHook($this);
 
         $protocol_link = (Configuration::get('PS_SSL_ENABLED')) ? 'https://' : 'http://';
         $protocol_content = (isset($useSSL) and $useSSL and Configuration::get('PS_SSL_ENABLED')) ? 'https://' : 'http://';
@@ -69,8 +70,8 @@ class Lengow extends Module
         return $this->installClass->update();
     }
 
-    public function hookDisplayBackOfficeHeader()
-    {
-        $this->context->controller->addCss(($this->_path).'/views/css/lengow-back-office.css');
-    }
+//    public function hookBackOfficeHeader()
+//    {
+//        return $this->hookClass->hookBackOfficeHeader();
+//    }
 }

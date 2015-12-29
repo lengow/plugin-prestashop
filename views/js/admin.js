@@ -18,7 +18,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-;$(document).ready(function() {
+;jQuery_1_11_3(document).ready(function() {
+
+	$(document.body).addClass('lengow_body');
+
 	// Update one flow’
 	$('.lengow-migrate-action').each(function(i) {
 		$(this).click(function() {

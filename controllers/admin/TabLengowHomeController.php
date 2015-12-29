@@ -31,13 +31,16 @@ class AdminLengowHome14 extends AdminTab
     public function __construct()
     {
 
- 
-
         //$this->view = true;
         parent::__construct();
 
         $module = Module::getInstanceByName('lengow');
         echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');
         echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/lengow_home/helpers/view/view.tpl');
+    }
+
+    public function display()
+    {
+
     }
 }

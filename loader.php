@@ -27,7 +27,9 @@ $GLOBALS['INSTALL_FOLDER'] = 'install';
 $GLOBALS['MODELS_FOLDER'] = 'models';
 $GLOBALS['FILES'] = array();
 
-require_once _PS_MODULE_LENGOW_DIR_.'backward_compatibility'.$sep.'backward.php';
+if (_PS_VERSION_ < '1.5') {
+    require_once _PS_MODULE_LENGOW_DIR_.'backward_compatibility'.$sep.'backward.php';
+}
 
 $directory = _PS_MODULE_LENGOW_DIR_ . 'interface/';
 $listClassFile = array_diff(scandir($directory), array('..', '.'));

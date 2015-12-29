@@ -1,0 +1,84 @@
+
+/* NAVBAR */
+.nav.lengow-nav {
+    padding-left: 0;
+    margin: 0;
+    list-style: none;
+    background-color:#2e3340 ;
+    padding-top :5px;
+    padding-bottom: 5px;
+    height:50px;
+}
+
+body.lengow_body #content .nav.lengow-nav>li>a:hover,
+body.lengow_body #content .nav.lengow-nav>li.active>a:hover,
+body.lengow_body #content .nav.lengow-nav>li>a,
+body.lengow_body #content .nav.lengow-nav>li>a:focus,
+body.lengow_body #content .nav.lengow-nav>li.active>a:focus{
+    color: white;
+    font-size: 0.9em;
+    font-family: Open Sans;
+    margin-top: 8px;
+    -webkit-border-radius:0px;
+    -moz-border-radius:0px;
+    border-radius:0px;
+    background-color: #222732;
+}
+
+.nav.lengow-nav>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+
+.nav-pills.lengow-nav>li>a {
+    border-radius: 4px;
+}
+
+.nav-pills.lengow-nav>li+li {
+    margin-left: 2px;
+}
+.nav-pills.lengow-nav>li {
+    float: left;
+}
+
+body.lengow_body #content { font-size:14px;}
+
+/* BREADCRUBMS */
+body.lengow_body #content .lengow_breadcrumb {
+    background: #2e3340;
+    border: none;
+    padding: 8px 15px;
+    margin-top: 0px;
+    margin-bottom: 17px;
+    list-style: none;
+}
+body.lengow_body #content .lengow_breadcrumb>.active {
+    color: #999;
+}
+body.lengow_body #content .lengow_breadcrumb>li {
+    display: inline-block;
+}
+
+body.lengow_body #content .lengow_breadcrumb a {
+    color: white;
+    font-family: Open Sans Bold;
+}
+
+/* PANEL */
+
+.lengow_panel .collapse.in {
+    display:block;
+}
+
+.lengow_panel .collapse {
+    display:none;
+}
+
+.lengow_panel.panel {
+    margin:0 20px;
+    padding:20px;
+    border:none;
+    background-color: #f7f7f7;
+}
+/* MAIN */

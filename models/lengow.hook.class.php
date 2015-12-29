@@ -44,7 +44,6 @@ class LengowHook
             'addproduct' => '1.4',
             'adminOrder' => '1.4',
             'home' => '1.4',
-            'backOfficeTop' => '1.4',
             'newOrder' => '1.4',
             'updateOrderStatus' => '1.4',
             'orderConfirmation' => '1.4',
@@ -69,11 +68,6 @@ class LengowHook
         return ($error ? false : true);
     }
 
-
-    public function hookBackOfficeTop()
-    {
-        return "TOTO";
-    }
 
     public function hookHome()
     {

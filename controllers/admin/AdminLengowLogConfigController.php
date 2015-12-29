@@ -41,7 +41,6 @@ class AdminLengowLogConfigController extends ModuleAdminController
         $this->show_toolbar = false;
 
         parent::__construct();
-
     }
 
     private function getLogFiles($orderBy = null, $orderWay = null, $pagination = null, $filter = null, $message = null)
@@ -176,6 +175,4 @@ class AdminLengowLogConfigController extends ModuleAdminController
 
         return $helper->generateList($tab, $this->fields_list);
     }
-
-
 }

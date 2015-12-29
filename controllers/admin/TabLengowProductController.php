@@ -28,7 +28,7 @@
 include_once PS_ADMIN_DIR.'/tabs/AdminProfiles.php';
 include_once PS_ADMIN_DIR.'/tabs/AdminCatalog.php';
 
-class AdminLengow14 extends AdminTab {
+class AdminLengowProduct14 extends AdminTab {
 
 	protected $_pagination = array(1, 20, 50, 100, 300, 500, 1000);
 
@@ -184,7 +184,7 @@ class AdminLengow14 extends AdminTab {
 			$result = $import->exec('commands', array('dateFrom' => $date_from,
 				'dateTo' => $date_to));
 			if ($result && ($result['new'] > 0 || $result['update'] > 0))
-				Tools::redirectAdmin('index.php?tab=AdminLengow14&conf=1&token='.($token ? $token : $this->token));
+				Tools::redirectAdmin('index.php?tab=AdminLengowProduct14&conf=1&token='.($token ? $token : $this->token));
 			else
 				$this->_errors[] = Tools::displayError('No available order to import or update.');
 		}
@@ -240,7 +240,7 @@ class AdminLengow14 extends AdminTab {
 	*/
 	public function displayListContent($token = null)
 	{
-		$currentIndex = 'index.php?tab=AdminLengow14';
+		$currentIndex = 'index.php?tab=AdminLengowProduct14';
 		$cookie = Context::getContext()->cookie;
 		$currency = new Currency(_PS_CURRENCY_DEFAULT_);
 		$id_category = 1; // default cat
@@ -275,11 +275,11 @@ class AdminLengow14 extends AdminTab {
 						echo '>';
 					if ($key == 'isexport')
 					{
-						$token = Tools::getAdminTokenLite('AdminLengow14');
+						$token = Tools::getAdminTokenLite('AdminLengowProduct14');
 						if ($tr[$key] == 0)
-							echo '<a href="index.php?tab=AdminLengow14&lengowpublishproduct='.$id.'&token='.$token.'"><img src="'._PS_ADMIN_IMG_.'disabled.gif" /></a>';
+							echo '<a href="index.php?tab=AdminLengowProduct14&lengowpublishproduct='.$id.'&token='.$token.'"><img src="'._PS_ADMIN_IMG_.'disabled.gif" /></a>';
 						else
-							echo '<a href="index.php?tab=AdminLengow14&lengowunpublishproduct='.$id.'&token='.$token.'"><img src="'._PS_ADMIN_IMG_.'enabled.gif" /></a>';
+							echo '<a href="index.php?tab=AdminLengowProduct14&lengowunpublishproduct='.$id.'&token='.$token.'"><img src="'._PS_ADMIN_IMG_.'enabled.gif" /></a>';
 					}
 					elseif (isset($params['active']) && isset($tr[$key]))
 						$this->_displayEnableLink($token, $id, $tr[$key], $params['active'], Tools::getValue('id_category'), Tools::getValue('id_product'));

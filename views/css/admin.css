@@ -40,10 +40,7 @@
 	src: url('../fonts/OpenSans-BoldItalic.ttf');
 }
 
-body{
-	font-family: Open Sans, sans-serif;
-	background-image: url(../img/background.jpg);
-}
+
 
 #table-feeds, #lengow-info {
 	border:1px solid #ccc;
@@ -127,7 +124,7 @@ label.cat-tree-lengow input {
 .depth-11 {margin-left: 165px;}
 .depth-12 {margin-left: 180px;}
 
-.adminlengowhome > #main > #content, .adminlengow > #main > #content, .adminlengowlog > #main > #content, .adminlengowconfig > #main > #content, .adminlengowlogconfig > #main > #content{
+.adminlengowhome > #main > #content, .adminlengowproduct > #main > #content, .adminlengowlog > #main > #content, .adminlengowconfig > #main > #content, .adminlengowlogconfig > #main > #content{
 	padding : 0px;
 }
 
@@ -135,35 +132,12 @@ label.cat-tree-lengow input {
 	width: 120px;
 }
 
-.menuLengow {
-	background-color:#2e3340 ;
-	padding-top :5px;
-	padding-bottom: 5px;
-	
-}
-
-.bootstrap .menuLengow>li>a:hover,.bootstrap .menuLengow>li.active>a:hover,.bootstrap .menuLengow>li>a,.bootstrap .menuLengow>li>a:focus,.bootstrap .menuLengow>li.active>a:focus{
-	color: white;
-	font-size: 0.9em;
-	font-family: Open Sans;
-	margin-top: 8px;
-}
-
-.bootstrap .menuLengow>li>a{
-	-webkit-border-radius:0px;
-	-moz-border-radius:0px;
-	border-radius:0px;
-}
-.bootstrap .menuLengow>li.active>a, .bootstrap .menuLengow>li>a:hover, .bootstrap .menuLengow>li.active>a:focus, .bootstrap .menuLengow>li.active>a:hover{
-	background-color: #222732;
-}
-
 #logoLengow > img {
 	width: 92%;
 	padding: 11px;
 }
 
-#content.bootstrap .breadcrumbLengow {
+/*#content.bootstrap .breadcrumbLengow {
 	background: #2e3340;
 	border: none;
 }
@@ -171,7 +145,7 @@ label.cat-tree-lengow input {
 #content.bootstrap .breadcrumbLengow a{
 	color: white;
 	font-family: Open Sans Bold;
-}
+}*/
 
 #content.bootstrap .panel {
 	border:none;
@@ -295,4 +269,3 @@ label.cat-tree-lengow input {
 #content.bootstrap .jumbotronLengow h3:not(.modal-title){
 	padding: 5px;
 }
-

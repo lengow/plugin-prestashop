@@ -14,9 +14,9 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- *  @author    Ludovic Drin <ludovic@lengow.com> Romain Le Polh <romain@lengow.com>
- *  @copyright 2014 Lengow SAS
- *  @license   http://www.apache.org/licenses/LICENSE-2.0
+ * @author    Ludovic Drin <ludovic@lengow.com> Romain Le Polh <romain@lengow.com>
+ * @copyright 2014 Lengow SAS
+ * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
 /**
@@ -25,26 +25,20 @@
  * @author Ludovic Drin <ludovic@lengow.com>
  * @copyright 2013 Lengow SAS
  */
+class AdminLengowLogConfig14 extends AdminTab
+{
 
-class AdminLengowConfigLog14 extends AdminTab {
+    public function __construct()
+    {
+        parent::__construct();
 
-	public function __construct()
-	{
+        $module = Module::getInstanceByName('lengow');
+        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');
+        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/lengow_log_config/helpers/view/view.tpl');
+    }
 
-		parent::__construct();
+    public function display()
+    {
 
-		$this->lang = false;
-		$this->context = Context::getContext();
-		$this->lite_display = true;
-		$this->lang = true;
-		$this->explicitSelect = true;
-		$this->list_no_link = true;
-
-
-		$this->template = 'layout.tpl';
-		$this->display = 'view';
-
-
-	}
-
+    }
 }
