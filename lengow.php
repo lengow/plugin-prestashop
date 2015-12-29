@@ -70,8 +70,68 @@ class Lengow extends Module
         return $this->installClass->update();
     }
 
-//    public function hookBackOfficeHeader()
-//    {
-//        return $this->hookClass->hookBackOfficeHeader();
-//    }
+
+    /**
+     * Hook Definition in LengowHook
+     */
+    public function hookHome()
+    {
+        return $this->hookClass->hookHome();
+    }
+
+    public function hookFooter()
+    {
+        return $this->hookClass->hookFooter();
+    }
+
+    public function hookUpdateOrderStatus($args)
+    {
+        return $this->hookClass->hookUpdateOrderStatus($args);
+    }
+
+    public function hookPostUpdateOrderStatus($args)
+    {
+        return $this->hookClass->hookPostUpdateOrderStatus($args);
+    }
+
+    public function hookActionObjectUpdateAfter($args)
+    {
+        return $this->hookClass->hookActionObjectUpdateAfter($args);
+    }
+
+    public function hookOrderConfirmation($args)
+    {
+        return $this->hookClass->hookOrderConfirmation($args);
+    }
+
+    public function hookPaymentTop($args)
+    {
+        return $this->hookClass->hookPaymentTop($args);
+    }
+
+    public function hookAddProduct($args)
+    {
+        return $this->hookClass->hookAddProduct($args);
+    }
+
+    public function hookActionAdminControllerSetMedia($args)
+    {
+        return $this->hookClass->hookActionAdminControllerSetMedia($args);
+    }
+
+    public function hookDashboardZoneTwo($args)
+    {
+        return $this->hookClass->hookDashboardZoneTwo($args);
+    }
+
+    public function hookDisplayAdminHomeStatistics($args)
+    {
+        return $this->hookClass->hookDisplayAdminHomeStatistics($args);
+    }
+
+    public function hookAdminOrder($args)
+    {
+        return $this->hookClass->hookAdminOrder($args);
+    }
+
 }

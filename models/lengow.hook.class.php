@@ -68,14 +68,13 @@ class LengowHook
         return ($error ? false : true);
     }
 
-
     public function hookHome()
     {
         self::$_CURRENT_PAGE_TYPE = self::LENGOW_TRACK_HOMEPAGE;
     }
 
     /**
-     * Generate tracker on footer.
+     * Generate tracker on front footer page.
      *
      * @return varchar The data.
      */
