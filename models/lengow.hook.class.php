@@ -399,6 +399,8 @@ class LengowHook
      */
     public function hookActionAdminControllerSetMedia($args)
     {
+        $this->context = Context::getContext();
+
         $controllers = array('admindashboard', 'adminhome', 'adminlengow');
         if (in_array(Tools::strtolower(Tools::getValue('controller')), $controllers)) {
             $this->context->controller->addJs($this->_path . 'views/js/chart.min.js');

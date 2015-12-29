@@ -25,8 +25,7 @@ class Lengow extends Module
 
         parent::__construct();
 
-        if (_PS_VERSION_ < '1.5')
-        {
+        if (_PS_VERSION_ < '1.5') {
             $sep = DIRECTORY_SEPARATOR;
             require_once _PS_MODULE_DIR_.$this->name.$sep.'backward_compatibility'.$sep.'backward.php';
             $this->context = Context::getContext();
@@ -44,8 +43,24 @@ class Lengow extends Module
 
         $protocol_link = (Configuration::get('PS_SSL_ENABLED')) ? 'https://' : 'http://';
         $protocol_content = (isset($useSSL) and $useSSL and Configuration::get('PS_SSL_ENABLED')) ? 'https://' : 'http://';
-        $link = new Link($protocol_link, $protocol_content);
+        $link = new LengowLink($protocol_link, $protocol_content);
         $this->context->smarty->assign('link', $link);
+    }
+
+
+    /**
+     * Configure Link
+     * Redirect on lengow configure page
+     */
+    public function getContent()
+    {
+        $link = new LengowLink();
+        if (_PS_VERSION_ < '1.5') {
+            $configLink = $link->getAbsoluteAdminLink('AdminLengowConfig14');
+        } else {
+            $configLink = $link->getAbsoluteAdminLink('AdminLengowConfig');
+        }
+        Tools::redirect($configLink, '');
     }
 
     public function install()

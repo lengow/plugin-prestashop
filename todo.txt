@@ -1,3 +1,2 @@
-
-presta 1.5
-- create lengow icon 16*16 in GIF
+- create lengow icon 16*16 in GIF (for admin tab 1.5 and module icon 1.4)
+- create lengow icon 32*36 in PNG (for module icon 1.5 > )

@@ -13,42 +13,41 @@
 
 {assign var='controllerName' value=$smarty.get.controller}
 
-
 <ul class="nav nav-pills lengow-nav">
     <li role="presentation" id="logoLengow">
         <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
     </li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowHome'}active{/if}" id="home"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-            {$link->getAdminLink('AdminLengowHome')}
+            {$link->getAbsoluteAdminLink('AdminLengowHome')}
             {else}
-            index.php?tab=AdminLengowHome14&token={Tools::getAdminTokenLite('AdminLengowHome14')}
+            {$link->getAbsoluteAdminLink('AdminLengowHome14')}
             {/if}">Home</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowProduct'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-            {$link->getAdminLink('AdminLengowProduct')}
+            {$link->getAbsoluteAdminLink('AdminLengowProduct')}
             {else}
-            index.php?tab=AdminLengowProduct14&token={Tools::getAdminTokenLite('AdminLengowProduct14')}
+            {$link->getAbsoluteAdminLink('AdminLengowProduct14')}
             {/if}
             ">Lengow Products</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowLog'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-            {$link->getAdminLink('AdminLengowLog')}
+            {$link->getAbsoluteAdminLink('AdminLengowLog')}
             {else}
-            index.php?tab=AdminLengowLog14&token={Tools::getAdminTokenLite('AdminLengowLog14')}
+            {$link->getAbsoluteAdminLink('AdminLengowLog14')}
             {/if}
             ">Logs</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowConfig'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-            {$link->getAdminLink('AdminLengowConfig')}
+            {$link->getAbsoluteAdminLink('AdminLengowConfig')}
             {else}
-            index.php?tab=AdminLengowConfig14&token={Tools::getAdminTokenLite('AdminLengowConfig14')}
+            {$link->getAbsoluteAdminLink('AdminLengowConfig14')}
             {/if}">Configuration</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowLogConfig'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-            {$link->getAdminLink('AdminLengowLogConfig')}
+            {$link->getAbsoluteAdminLink('AdminLengowLogConfig')}
             {else}
-            index.php?tab=AdminLengowLogConfig14&token={Tools::getAdminTokenLite('AdminLengowLogConfig14')}
+            {$link->getAbsoluteAdminLink('AdminLengowLogConfig14')}
             {/if}">Configuration Logs</a></li>
 </ul>
 
