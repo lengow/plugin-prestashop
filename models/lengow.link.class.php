@@ -26,7 +26,7 @@ class LengowLink extends LinkCore
     {
         $admin_path = Tools::getShopDomainSsl(true, true).
             __PS_BASE_URI__.substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);
-        if (_PS_VERSION_ < '1.5') {
+        if (_PS_VERSION_ < '1.6') {
             $admin_path.= '/index.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
         } else {
             $admin_path.= '/'.$this->getAdminLink($controller);

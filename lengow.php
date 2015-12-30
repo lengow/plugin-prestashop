@@ -41,10 +41,9 @@ class Lengow extends Module
         $this->installClass = new LengowInstall($this);
         $this->hookClass = new LengowHook($this);
 
-        $protocol_link = (Configuration::get('PS_SSL_ENABLED')) ? 'https://' : 'http://';
-        $protocol_content = (isset($useSSL) and $useSSL and Configuration::get('PS_SSL_ENABLED')) ? 'https://' : 'http://';
-        $link = new LengowLink($protocol_link, $protocol_content);
-        $this->context->smarty->assign('link', $link);
+        $this->context = Context::getContext();
+        $this->context->smarty->assign('lengow_link', new LengowLink());
+
     }
 
 

@@ -31,8 +31,6 @@ class AdminLengowConfig14 extends AdminTab {
     public function __construct()
     {
         parent::__construct();
-        $this->context = Context::getContext();
-
         $this->lengowConfig = new LengowConfig();
         $this->lengowConfig->postProcessForm();
     }

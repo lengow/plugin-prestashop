@@ -19,6 +19,11 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+require_once _PS_MODULE_DIR_.'lengow/lengow.php';
 
 /**
  * The Lengow's Admin Controller.
@@ -33,6 +38,8 @@ class AdminLengowProductController extends ModuleAdminController
      */
     public function __construct()
     {
+        $this->context = Context::getContext();
+        $this->context->smarty->assign('lengow_link', new LengowLink());
         $this->table = 'product';
         $this->className = 'LengowProduct';
         $this->template = 'layout.tpl';

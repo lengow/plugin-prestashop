@@ -20,6 +20,12 @@
  */
 
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+require_once _PS_MODULE_DIR_.'lengow/lengow.php';
+
 /**
  * The Lengow's Log Configuration Admin Controller.
  *
@@ -31,6 +37,7 @@ class AdminLengowLogConfigController extends ModuleAdminController
     public function __construct()
     {
         $this->context = Context::getContext();
+        $this->context->smarty->assign('lengow_link', new LengowLink());
         $this->template = 'layout.tpl';
         $this->lite_display = true;
         $this->explicitSelect = true;

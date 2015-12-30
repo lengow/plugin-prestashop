@@ -23,6 +23,8 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+require_once _PS_MODULE_DIR_.'lengow/lengow.php';
+
 /**
  * The Lengow's Home Admin Controller.
  *
@@ -36,6 +38,7 @@ class AdminLengowHomeController extends ModuleAdminController
 
         $this->lang = false;
         $this->context = Context::getContext();
+        $this->context->smarty->assign('lengow_link', new LengowLink());
         $this->lite_display = true;
         $this->lang = true;
         $this->explicitSelect = true;
@@ -45,8 +48,5 @@ class AdminLengowHomeController extends ModuleAdminController
         $this->template = 'layout.tpl';
         $this->display = 'view';
 
-
     }
-
-
 }

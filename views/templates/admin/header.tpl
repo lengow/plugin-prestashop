@@ -19,35 +19,35 @@
     </li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowHome'}active{/if}" id="home"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-            {$link->getAbsoluteAdminLink('AdminLengowHome')}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowHome')}
             {else}
-            {$link->getAbsoluteAdminLink('AdminLengowHome14')}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowHome14')}
             {/if}">Home</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowProduct'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-            {$link->getAbsoluteAdminLink('AdminLengowProduct')}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowProduct')}
             {else}
-            {$link->getAbsoluteAdminLink('AdminLengowProduct14')}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowProduct14')}
             {/if}
             ">Lengow Products</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowLog'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-            {$link->getAbsoluteAdminLink('AdminLengowLog')}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowLog')}
             {else}
-            {$link->getAbsoluteAdminLink('AdminLengowLog14')}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowLog14')}
             {/if}
             ">Logs</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowConfig'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-            {$link->getAbsoluteAdminLink('AdminLengowConfig')}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowConfig')}
             {else}
-            {$link->getAbsoluteAdminLink('AdminLengowConfig14')}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowConfig14')}
             {/if}">Configuration</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowLogConfig'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-            {$link->getAbsoluteAdminLink('AdminLengowLogConfig')}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowLogConfig')}
             {else}
-            {$link->getAbsoluteAdminLink('AdminLengowLogConfig14')}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowLogConfig14')}
             {/if}">Configuration Logs</a></li>
 </ul>
 
