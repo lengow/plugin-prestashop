@@ -29,7 +29,7 @@ class LengowLink extends LinkCore
         if (_PS_VERSION_ < '1.5') {
             $admin_path.= '/index.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
         } else {
-            $admin_path.= '/'.$this->getAdminLink('AdminLengowConfig');
+            $admin_path.= '/'.$this->getAdminLink($controller);
         }
         return $admin_path;
     }
