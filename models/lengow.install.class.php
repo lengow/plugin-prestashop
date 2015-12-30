@@ -181,11 +181,11 @@ class LengowInstall
         }
         //remove parent tabs
         if (_PS_VERSION_ >= '1.5') {
-            $tab_parent_id = Tab::getInstanceFromClassName('AdminLengowHome');
+            $tab_parent = Tab::getInstanceFromClassName('AdminLengowHome');
         } else {
             $tab_parent_id = Tab::getIdFromClassName('AdminLengowHome14');
+            $tab_parent = new Tab($tab_parent_id);
         }
-        $tab_parent = new Tab($tab_parent_id);
         if ($tab_parent->id != 0) {
             $tab_parent->delete();
         }
