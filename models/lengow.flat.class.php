@@ -215,7 +215,7 @@ class LengowFlat
 
         $productTaxes = $this->getProductTaxes();
 
-        foreach($productCollection as $productInstance){
+        foreach ($productCollection as $productInstance) {
             $product = new LengowFlatProduct(
                 $productInstance,
                 array(
@@ -309,5 +309,4 @@ class LengowFlat
         }
         return true;
     }
-
 }
