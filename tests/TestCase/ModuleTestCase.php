@@ -6,6 +6,7 @@ use PHPUnit_Framework_TestCase;
 use Db;
 use Context;
 use Employee;
+use DateTime;
 use SplFileInfo;
 
 class ModuleTestCase extends PHPUnit_Framework_TestCase
@@ -23,6 +24,54 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
         $context = Context::getContext();
         $context->employee = $employee;
+    }
+
+    /**
+     * Assert that a date is valid
+     *
+     * @param $date string date in string
+     * @param $format string date format ex : (Y-m-d)
+     */
+    public static function assertValidDatetime($date, $format)
+    {
+        $d = DateTime::createFromFormat($format, $date);
+        self::assertTrue($d && $d->format($format) == $date);
+    }
+
+    /**
+     * Read Last line of filename
+     *
+     * @param $file path of the filename
+     * @return string last line of the file
+     */
+    public static function readLastLine($file)
+    {
+        $line = '';
+        $f = fopen($file, 'r');
+        $cursor = -1;
+        fseek($f, $cursor, SEEK_END);
+        $char = fgetc($f);
+
+        /**
+         * Trim trailing newline chars of the file
+         */
+        while ($char === "\n" || $char === "\r") {
+            fseek($f, $cursor--, SEEK_END);
+            $char = fgetc($f);
+        }
+
+        /**
+         * Read until the start of file or first newline char
+         */
+        while ($char !== false && $char !== "\n" && $char !== "\r") {
+            /**
+             * Prepend the new char
+             */
+            $line = $char . $line;
+            fseek($f, $cursor--, SEEK_END);
+            $char = fgetc($f);
+        }
+        return $line;
     }
 
     /**

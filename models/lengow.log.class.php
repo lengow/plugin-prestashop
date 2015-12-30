@@ -19,7 +19,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-
 /**
  * The Lengow Log class
  *
@@ -34,9 +33,11 @@ class LengowLog extends LengowFile
     public function __construct($file_name = null)
     {
         if (empty($file_name)) {
-            $file_name = 'logs-' . date('Y-m-d') . '.txt';
+            $this->file_name = 'logs-' . date('Y-m-d') . '.txt';
+        } else {
+            $this->file_name = $file_name;
         }
-        $this->file = new LengowFile(LengowLog::$LENGOW_LOGS_FOLDER, $file_name);
+        $this->file = new LengowFile(LengowLog::$LENGOW_LOGS_FOLDER, $this->file_name);
     }
 
     /**
@@ -48,8 +49,9 @@ class LengowLog extends LengowFile
      */
     public function write($message, $display = false, $id_order_lengow = null)
     {
-        $log = date('Y-m-d : H:i:s') . ' - ' . (empty($id_order_lengow) ? '' : 'Order ' . $id_order_lengow . ': ');
-        $log .= $message . "\r\n";
+        $log = date('Y-m-d:H:i:s').substr((string)microtime(), 1, 8);
+        $log.= ' - ' . (empty($id_order_lengow) ? '' : 'Order ' . $id_order_lengow . ': ');
+        $log.= $message . "\r\n";
         if ($display && php_sapi_name() != "cli") {
             echo $log . '<br />';
             flush();
@@ -74,6 +76,17 @@ class LengowLog extends LengowFile
             $logs[] = $file->getLink();
         }
         return $logs;
+    }
+
+    /**
+     * Get current file
+     *
+     * @return string
+     *
+     */
+    public function getFileName()
+    {
+        return _PS_MODULE_LENGOW_DIR_.LengowLog::$LENGOW_LOGS_FOLDER.'/'.$this->file_name;
     }
 
     /**
