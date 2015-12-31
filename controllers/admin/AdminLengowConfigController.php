@@ -37,7 +37,6 @@ class AdminLengowConfigController extends ModuleAdminController
      */
     public function __construct()
     {
-        $this->table = 'product';
         $this->context = Context::getContext();
         $this->context->smarty->assign('lengow_link', new LengowLink());
         $this->lang = true;
