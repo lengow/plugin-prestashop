@@ -49,10 +49,14 @@ class LengowFlatProduct extends Product
         //parent::__construct($id_product, false, $id_lang);
         //var_dump($id_product);
 
+        //todo: parent ?
         $this->id_product = $product["id_product"];
         if ($product["id_product_attribute"] != '') {
             $this->id_product = $product["id_product"]."_".$product["id_product_attribute"];
             $this->id_parent = $product["id_product"];
+            $this->product_type = 'child';
+        } else {
+            $this->product_type = 'simple';
         }
 
         $this->name_product = $product["name"];
@@ -97,9 +101,9 @@ class LengowFlatProduct extends Product
         //product minimal quantity (ATTRIBUTE SHOP > SHOP > ATTRIBUTE > PRODUCT)
         if ($product["pas_minimal_quantity"] >0) {
             $this->minimal_quantity = $product["pas_minimal_quantity"];
-        } elseif ( $product["pshop_minimal_quantity"] > 0) {
+        } elseif ($product["pshop_minimal_quantity"] > 0) {
             $this->minimal_quantity = $product["pshop_minimal_quantity"];
-        } elseif ( $product["pa_minimal_quantity"] > 0) {
+        } elseif ($product["pa_minimal_quantity"] > 0) {
             $this->minimal_quantity = $product["pa_minimal_quantity"];
         } else {
             $this->minimal_quantity = $product["p_minimal_quantity"];
@@ -111,8 +115,15 @@ class LengowFlatProduct extends Product
         $this->reference = ($product["pa_reference"] != '') ? $product["pa_reference"] : $product["reference"];
         $this->supplier_reference = ($product["pa_supplier_reference"] != '') ? $product["pa_supplier_reference"] : $product["supplier_reference"];
 
+        $this->is_virtual = $product['is_virtual'];
         $this->price = 10;
         $this->getShippingPrice();
+
+        //todo : load out of stock
+        $this->availability = $this->quantity > 0 ? 1 : 0;
+        if ($this->quantity < 0 && !Product::isAvailableWhenOutOfStock($this->out_of_stock)) {
+            $this->availability = 0;
+        }
 
 
 
