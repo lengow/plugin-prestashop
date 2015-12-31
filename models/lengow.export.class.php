@@ -114,6 +114,11 @@ class LengowExport
     protected $full = true;
 
     /**
+     * Current Shop Id.
+     */
+    protected $shopId;
+
+    /**
      * Export selected products.
      */
     protected $all = false;
@@ -206,6 +211,12 @@ class LengowExport
             $params["show_product_combination"] : false);
         $this->export_features = (isset($params["export_features"]) ? $params["export_features"] : false);
 
+        $this->shopId = (int)(isset($params["shop_id"]) ? (int)$params["shop_id"] : Context::getContext()->shop->id);
+        $this->langage = (isset($params["langage_id"]) ?
+            new Langage($params["langage_id"]) : Context::getContext()->language);
+
+
+
         $this->checkCurrency();
         $this->setCarrier();
 
@@ -290,7 +301,7 @@ class LengowExport
                 $this->stream = false;
             }
 
-            $shop = new Shop(Context::getContext()->shop->id);
+            $shop = new Shop($this->shopId);
             $shop_name = '';
             if (_PS_VERSION_ >= '1.5') {
                 $shop_name = $shop->name;
@@ -298,9 +309,9 @@ class LengowExport
             LengowCore::log('Export - init ' . $shop_name, !$this->stream);
             if ((int)Configuration::get('LENGOW_EXPORT_TIMEOUT') > 0) {
                 $this->export_timeout = true;
-                Configuration::updateValue('LENGOW_EXPORT_START_' . Context::getContext()->language->iso_code, time());
+                Configuration::updateValue('LENGOW_EXPORT_START_' . $this->langage->iso_code, time());
                 Configuration::updateValue(
-                    'LENGOW_EXPORT_END_' . Context::getContext()->language->iso_code,
+                    'LENGOW_EXPORT_END_' . $this->langage->iso_code,
                     time() + Configuration::get('LENGOW_EXPORT_TIMEOUT')
                 );
             } else {
@@ -321,7 +332,7 @@ class LengowExport
                     $this->showInactiveProduct,
                     $this->product_ids,
                     $this->export_out_stock,
-                    Configuration::get('LENGOW_EXPORT_LAST_ID_' . Context::getContext()->language->iso_code)
+                    Configuration::get('LENGOW_EXPORT_LAST_ID_' . $this->langage->iso_code)
                 );
             } else {
                 $products = LengowProduct::exportIds(
@@ -361,7 +372,7 @@ class LengowExport
         $product_count = 0;
         $file_feed = null;
         if ($this->export_timeout) {
-            $file_feed = 'flux-'.$shop->id.'-'.Context::getContext()->language->iso_code.'-temp.'.$this->format;
+            $file_feed = 'flux-'.$shop->id.'-'.$this->langage->iso_code.'-temp.'.$this->format;
         }
 
         $this->feed = new LengowFeed($this->stream, $this->format, isset($shop->name) ? $shop->name : 'default', $file_feed);
@@ -468,6 +479,19 @@ class LengowExport
                 LengowCore::log('Export - your feed is available here: ' . $feed_url);
             }
         }
+    }
+
+    public function getTotalProduct()
+    {
+        $query = ' SELECT COUNT(*) as total';
+        $query.= ' FROM '._DB_PREFIX_.'product p';
+        if ($this->export_features) {
+            $query.= ' INNER JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
+        }
+        $query.= ' LEFT JOIN '._DB_PREFIX_.'product_shop pshop ON (p.id_product = pshop.id_product AND pshop.id_shop = '.$this->shopId.' ) ';
+        $collection = Db::getInstance()->executeS($query);
+        echo $query;
+        return $collection[0]['total'];
     }
 
     /**

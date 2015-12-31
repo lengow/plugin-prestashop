@@ -334,6 +334,21 @@ class FeedTest extends ModuleTestCase
         $this->assertFileNbLine($export->getFileName(), 1, 'select_fields');
     }
 
+
+    public function testCount()
+    {
+
+        $export = new LengowExport(array(
+            "show_inactive_product" => true,
+            "out_stock" => true,
+            "product_ids" => array(1),
+        ));
+        var_dump($export->getTotalProduct());
+
+
+
+    }
+
 //    /**
 //     * Test Export Format Empty
 //     *
