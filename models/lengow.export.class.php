@@ -481,16 +481,19 @@ class LengowExport
         }
     }
 
+    /**
+     * Get Total product (Active/Inactive, In Stock/ Out Stock)
+     *
+     * @return array
+     */
     public function getTotalProduct()
     {
         $query = ' SELECT COUNT(*) as total';
         $query.= ' FROM '._DB_PREFIX_.'product p';
         if ($this->export_features) {
-            $query.= ' INNER JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
+            $query.= ' LEFT JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
         }
-        $query.= ' LEFT JOIN '._DB_PREFIX_.'product_shop pshop ON (p.id_product = pshop.id_product AND pshop.id_shop = '.$this->shopId.' ) ';
         $collection = Db::getInstance()->executeS($query);
-        echo $query;
         return $collection[0]['total'];
     }
 

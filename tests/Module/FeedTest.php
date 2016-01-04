@@ -155,7 +155,7 @@ class FeedTest extends ModuleTestCase
             "show_inactive_product" => true
         ));
         $export->exec();
-        $this->assertFileNbLine($export->getFileName(), 8, 'inactive_product');
+        $this->assertFileNbLine($export->getFileName(), 7, 'inactive_product');
     }
 
 
@@ -335,18 +335,31 @@ class FeedTest extends ModuleTestCase
     }
 
 
-    public function testCount()
+    /**
+     * Test count all products
+     *
+     * @test
+     */
+    public function countTotalProduct()
+    {
+        $export = new LengowExport(array(
+            "export_features" => false,
+        ));
+        $this->assertEquals(8, $export->getTotalProduct());
+    }
+
+    /**
+     * Test count all products with feature
+     *
+     * @test
+     */
+    public function countTotalProductWithFeature()
     {
 
         $export = new LengowExport(array(
-            "show_inactive_product" => true,
-            "out_stock" => true,
-            "product_ids" => array(1),
+            "export_features" => true,
         ));
-        var_dump($export->getTotalProduct());
-
-
-
+        $this->assertEquals(14, $export->getTotalProduct());
     }
 
 //    /**

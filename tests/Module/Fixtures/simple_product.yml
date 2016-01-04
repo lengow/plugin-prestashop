@@ -88,13 +88,13 @@ stock_available:
     id_product: 2
     id_product_attribute: 0
     id_shop: 1
-    quantity: 10
+    quantity: 8
     out_of_stock: 2
   -
     id_product: 3
     id_product_attribute: 0
     id_shop: 1
-    quantity: 10
+    quantity: 0
     out_of_stock: 2
 category_product:
   -
