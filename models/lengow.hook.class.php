@@ -230,7 +230,7 @@ class LengowHook
                         'id_group' => LengowCore::getGroupCustomer(false),
                     )
                 );
-                return $this->display(__FILE__, 'views/templates/front/tagpage.tpl');
+                return $this->module->display(__FILE__, 'views/templates/front/tagpage.tpl');
             }
         } elseif ($tracking_mode == 'tagcapsule') {
             $this->context->smarty->assign(
@@ -246,7 +246,7 @@ class LengowHook
                     'id_group' => LengowCore::getGroupCustomer(false),
                 )
             );
-            return $this->display(__FILE__, 'views/templates/front/tagcapsule.tpl');
+            return $this->module->display(__FILE__, 'views/templates/front/tagcapsule.tpl');
         }
         return '';
     }
@@ -403,15 +403,15 @@ class LengowHook
 
         $controllers = array('admindashboard', 'adminhome', 'adminlengow');
         if (in_array(Tools::strtolower(Tools::getValue('controller')), $controllers)) {
-            $this->context->controller->addJs($this->_path . 'views/js/chart.min.js');
+            $this->context->controller->addJs($this->module->getPathUri() . 'views/js/chart.min.js');
         }
 
         if (Tools::getValue('controller') == 'AdminModules' && Tools::getValue('configure') == 'lengow') {
-            $this->context->controller->addJs($this->_path . '/views/js/admin.js');
-            $this->context->controller->addCss($this->_path . '/views/css/admin.css');
+            $this->context->controller->addJs($this->module->getPathUri() . '/views/js/admin.js');
+            $this->context->controller->addCss($this->module->getPathUri() . '/views/css/admin.css');
         }
         if (Tools::getValue('controller') == 'AdminOrders') {
-            $this->context->controller->addJs($this->_path . '/views/js/admin.js');
+            $this->context->controller->addJs($this->module->getPathUri() . '/views/js/admin.js');
         }
         $args = 0; // Prestashop validator
     }
@@ -429,7 +429,7 @@ class LengowHook
                 'params' => $params,
             )
         );
-        return $this->display(__FILE__, 'views/templates/admin/dashboard/stats_16.tpl');
+        return $this->module->display(__FILE__, 'views/templates/admin/dashboard/stats_16.tpl');
     }
 
 //    /**
@@ -447,7 +447,7 @@ class LengowHook
 //                'id_group' => LengowCore::getGroupCustomer(),
 //            )
 //        );
-//        return $this->display(__FILE__, 'views/templates/admin/dashboard/stats.tpl');
+//        return $this->module->display(__FILE__, 'views/templates/admin/dashboard/stats.tpl');
 //    }
 
     /**
@@ -474,7 +474,7 @@ class LengowHook
 
             if (_PS_VERSION_ < '1.5') {
                 $action_reimport = 'index.php?tab=AdminOrders&id_order=' . $order->id . '&vieworder&action=reImportOrder&token=' . Tools::getAdminTokenLite('AdminOrders') . '';
-                $action_reimport = $this->_path . 'v14/ajax.php?';
+                $action_reimport = $this->module->getPathUri() . 'v14/ajax.php?';
                 $action_synchronize = 'index.php?tab=AdminOrders&id_order=' . $order->id . '&vieworder&action=synchronize&token=' . Tools::getAdminTokenLite('AdminOrders');
                 $add_script = true;
             } else {
@@ -495,7 +495,7 @@ class LengowHook
                 'action_reimport' => $action_reimport,
                 'order_id' => $args['id_order'],
                 'add_script' => $add_script,
-                'url_script' => $this->_path . 'views/js/admin.js',
+                'url_script' => $this->module->getPathUri() . 'views/js/admin.js',
                 'version' => _PS_VERSION_
             );
             if (!is_object($lengow_order_extra->tracking_informations->tracking_method)) {
@@ -516,9 +516,9 @@ class LengowHook
 
             $this->context->smarty->assign($template_data);
             if (_PS_VERSION_ >= '1.6') {
-                return $this->display(__FILE__, 'views/templates/admin/order/info_16.tpl');
+                return $this->module->display(__FILE__, 'views/templates/admin/order/info_16.tpl');
             }
-            return $this->display(__FILE__, 'views/templates/admin/order/info.tpl');
+            return $this->module->display(__FILE__, 'views/templates/admin/order/info.tpl');
         }
         return '';
     }
