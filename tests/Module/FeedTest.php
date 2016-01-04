@@ -362,6 +362,48 @@ class FeedTest extends ModuleTestCase
         $this->assertEquals(14, $export->getTotalProduct());
     }
 
+    /**
+     * Test count exported products with feature
+     *
+     * @test
+     */
+    public function countExportedProductWithFeature()
+    {
+        $export = new LengowExport(array(
+            "export_features" => true,
+        ));
+        $this->assertEquals(11, $export->getTotalExportProduct());
+    }
+
+
+    /**
+     * Test count exported products without feature
+     *
+     * @test
+     */
+    public function countExportedProductWithoutFeature()
+    {
+        $export = new LengowExport(array(
+            "export_features" => false,
+        ));
+        $this->assertEquals(5, $export->getTotalExportProduct());
+    }
+
+    /**
+     * Test count exported products without feature
+     *
+     * @test
+     */
+    public function countExportedProductInStock()
+    {
+        $export = new LengowExport(array(
+            "out_stock" => true,
+            "export_features" => false,
+        ));
+        $this->assertEquals(5, $export->getTotalExportProduct());
+    }
+
+
 //    /**
 //     * Test Export Format Empty
 //     *

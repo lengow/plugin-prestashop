@@ -200,7 +200,7 @@ class LengowExport
     {
         $this->setFormat(isset($params["format"]) ? $params["format"] : 'csv');
 
-        $this->product_ids = (isset($params["product_ids"]) ? $params["product_ids"] : false);
+        $this->productIds = (isset($params["product_ids"]) ? $params["product_ids"] : false);
         $this->stream = (isset($params["stream"]) ? $params["stream"] : false);
         $this->full_title = (isset($params["full_title"]) ? (bool)$params["full_title"] : false);
         $this->export_out_stock =  (isset($params["out_stock"]) ? $params["out_stock"] : false);
@@ -330,7 +330,7 @@ class LengowExport
                 $products = LengowProduct::exportIds(
                     $this->all,
                     $this->showInactiveProduct,
-                    $this->product_ids,
+                    $this->productIds,
                     $this->export_out_stock,
                     Configuration::get('LENGOW_EXPORT_LAST_ID_' . $this->langage->iso_code)
                 );
@@ -338,7 +338,7 @@ class LengowExport
                 $products = LengowProduct::exportIds(
                     $this->all,
                     $this->showInactiveProduct,
-                    $this->product_ids,
+                    $this->productIds,
                     $this->export_out_stock
                 );
             }
@@ -484,7 +484,7 @@ class LengowExport
     /**
      * Get Total product (Active/Inactive, In Stock/ Out Stock)
      *
-     * @return array
+     * @return integer
      */
     public function getTotalProduct()
     {
@@ -496,6 +496,64 @@ class LengowExport
         $collection = Db::getInstance()->executeS($query);
         return $collection[0]['total'];
     }
+
+
+    /**
+     * Get Count export product
+     *
+     * @return integer
+     */
+    public function getTotalExportProduct()
+    {
+        $where = array();
+        $query = ' SELECT COUNT(*) as total FROM (SELECT p.id_product';
+        $query.= ' FROM '._DB_PREFIX_.'product p';
+        if ($this->export_features) {
+            $query.= ' LEFT JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
+        }
+        if (_PS_VERSION_ >= '1.5') {
+            $query.= ' INNER JOIN '._DB_PREFIX_.'product_shop ps ON
+            (ps.id_product = p.id_product AND ps.id_shop = '.$this->shopId.') ';
+        }
+        if (!$this->showInactiveProduct) {
+            if (_PS_VERSION_ >= '1.5') {
+                $where[] = ' ps.active = 1 ';
+            } else {
+                $where[] = ' p.active = 1 ';
+            }
+        }
+        if (_PS_VERSION_ > '1.4') {
+            $where[] = ' ps.id_shop = '.$this->shopId;
+        }
+        if (!$this->export_out_stock) {
+            if (_PS_VERSION_ >= '1.5') {
+                if ($this->export_features) {
+                    $query.= ' LEFT JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
+                    (sa.id_product=p.id_product AND pa.id_product_attribute = sa.id_product_attribute
+                    AND sa.quantity > 0)';
+                    $query.= ' LEFT JOIN ' . _DB_PREFIX_ . 'stock_available sa2 ON
+                    (sa2.id_product=p.id_product AND pa.id_product_attribute = 0 AND sa2.quantity > 0)';
+                } else {
+                    $query.= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
+                    (sa.id_product=p.id_product AND sa.quantity > 0)';
+                }
+            } else {
+                $where[] = ' p.`quantity` > 0';
+            }
+        }
+        if ($this->productIds != null) {
+            $where[] = ' p.`id_product` IN (' . implode(',', $this->productIds) . ')';
+        }
+        $query.= 'WHERE '.join(' AND ', $where);
+
+        if (!$this->export_features) {
+            $query.= ' GROUP BY p.id_product';
+        }
+        $query.= ') tmp';
+        $collection = Db::getInstance()->executeS($query);
+        return $collection[0]['total'];
+    }
+
 
     /**
      * Get fields to export
