@@ -26,6 +26,16 @@
 class LengowHook
 {
 
+    const LENGOW_TRACK_HOMEPAGE = 'homepage';
+    const LENGOW_TRACK_PAGE = 'page';
+    const LENGOW_TRACK_PAGE_LIST = 'listepage';
+    const LENGOW_TRACK_PAGE_PAYMENT = 'payment';
+    const LENGOW_TRACK_PAGE_CART = 'basket';
+    const LENGOW_TRACK_PAGE_LEAD = 'lead';
+    const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
+
+    static private $_CURRENT_PAGE_TYPE = 'page';
+
     private $module;
 
     public function __construct($module)
