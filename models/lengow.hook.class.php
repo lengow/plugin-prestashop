@@ -35,12 +35,19 @@ class LengowHook
     const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
 
     static private $_CURRENT_PAGE_TYPE = 'page';
+    static private $_USE_SSL = false;
+    static private $_ID_ORDER = '';
+    static private $_ORDER_TOTAL = '';
+    static private $_IDS_PRODUCTS = '';
+    static private $_IDS_PRODUCTS_CART = '';
+    static private $_ID_CATEGORY = '';
 
     private $module;
 
     public function __construct($module)
     {
         $this->module = $module;
+        $this->context = Context::getContext();
     }
 
     public function registerHooks()
