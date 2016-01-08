@@ -24,7 +24,7 @@ if (!$installation) {
 }
 
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders\'')) {
-    $result = Db::getInstance()->execute("SHOW COLUMNS FROM "._DB_PREFIX_."lengow_logs_import LIKE 'mail' ");
+    $result = Db::getInstance()->execute("SHOW COLUMNS FROM "._DB_PREFIX_."lengow_logs_import LIKE 'is_disabled' ");
     $exists = count($result) > 0 ? true : false;
     if (!$exists) {
         $sql = 'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `is_disabled` tinyint(1) UNSIGNED DEFAULT \'0\'';
