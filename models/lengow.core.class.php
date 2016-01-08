@@ -405,7 +405,48 @@ class LengowCore
         return $lengow_connector->api('getRootFeed', $args);
     }
 
+
     /**
+     * v3
+     * Check export access
+     *
+     * @param $id_shop string
+     * @param $token   shop_token
+     *
+     * @return boolean.
+     */
+    public static function checkExportAccess($id_shop, $token)
+    {
+        if (self::checkToken($id_shop, $token)) {
+            return true;
+        }
+
+        if (self::checkIP()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * v3
+     * Check if token is correct
+     *
+     * @param $id_shop string
+     * @param $token   shop_token
+     *
+     * @return boolean.
+     */
+    public static function checkToken($id_shop, $token)
+    {
+        $storeToken = LengowCore::getToken($id_shop);
+        if ($token == $storeToken) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * v3
      * Check if current IP is authorized.
      *
      * @return boolean.
@@ -416,7 +457,10 @@ class LengowCore
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
         $ips = explode(';', $ips);
         $authorized_ips = array_merge($ips, LengowCore::$IPS_LENGOW);
-        $authorized_ips[] = $_SERVER['SERVER_ADDR'];
+
+        if (!self::inTest()) {
+            $authorized_ips[] = $_SERVER['SERVER_ADDR'];
+        }
         $hostname_ip = $_SERVER['REMOTE_ADDR'];
         if (in_array($hostname_ip, $authorized_ips)) {
             return true;
@@ -447,6 +491,20 @@ class LengowCore
     }
 
     /**
+     * v3
+     * Check if we are in phpunit test
+     *
+     * @return boolean.
+     */
+    public static function inTest()
+    {
+        if (isset($_SERVER['HTTP_USER_AGENT']) && substr($_SERVER['HTTP_USER_AGENT'], 0, 10) == 'GuzzleHttp') {
+            return true;
+        }
+        return false;
+    }
+
+     /**
      * Check and update xml of plugins version
      *
      * @return boolean
@@ -936,41 +994,72 @@ class LengowCore
     }
 
     /**
+     * v3
      * Get webservices links
+     *
+     * @param $id_shop integer
      *
      * @return array
      */
-    public static function getWebservicesLinks()
+    public static function getExportUrl($id_shop = null)
     {
-        $base = LengowCore::getLengowBaseUrl();
-        $feed_export_url = $base . 'webservice/export.php';
-        $feed_import_url = $base . 'webservice/import.php';
-        return array(
-            'link_feed_export' => '<div class="lengow-margin"><button type="button" class="btn btn-primary buttonLengow"><a href="' . $feed_export_url . '" target="_blank">Export !</a></button></div>',
-            'link_feed_import' => '<div class="lengow-margin"><button type="button" class="btn btn-primary buttonLengow"><a href="' . $feed_import_url . '" target="_blank">Import !</a></button></div>',
-            'url_feed_export' => $feed_export_url,
-            'url_feed_import' => $feed_import_url
-        );
+        $base = LengowCore::getLengowBaseUrl($id_shop);
+        return $base . 'webservice/export.php?token='.LengowCore::getToken($id_shop);
     }
 
     /**
+     * v3
+     * Get webservices links
+     *
+     * @param $id_shop integer
+     *
+     * @return array
+     */
+    public static function getImportUrl($id_shop = null)
+    {
+        $base = LengowCore::getLengowBaseUrl($id_shop);
+        return $base . 'webservice/import.php?token='.LengowCore::getToken($id_shop);
+    }
+
+    /**
+     * v3
+     * Generate token
+     *
+     * @param Shop $id_shop
+     *
+     * @return array
+     */
+    public static function getToken($id_shop)
+    {
+        $token = Configuration::get('LENGOW_SHOP_TOKEN', null, null, $id_shop);
+        if (strlen($token)>0) {
+            return $token;
+        } else {
+            $token =  bin2hex(openssl_random_pseudo_bytes(16));
+            Configuration::updateValue('LENGOW_SHOP_TOKEN', $token, null, null, $id_shop);
+        }
+        return $token;
+    }
+
+    /**
+     * v3
      * Get base url for Lengow webservices and files
      *
-     * @param Shop $shop shop
+     * @param $id_shop integer
      *
      * @return string
      */
-    public static function getLengowBaseUrl($shop = null)
+    public static function getLengowBaseUrl($id_shop = null)
     {
         $is_https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 's' : '';
         if (_PS_VERSION_ < '1.5') {
             $base = (defined('_PS_SHOP_DOMAIN_') ? 'http' . $is_https . '://' . _PS_SHOP_DOMAIN_ : _PS_BASE_URL_) . __PS_BASE_URI__;
             $url = $base . 'modules/lengow/';
         } else {
-            if (is_null($shop)) {
-                $shop = Context::getContext()->shop;
+            if (is_null($id_shop)) {
+                $id_shop = Context::getContext()->shop->id;
             }
-            $shop_url = new ShopUrl($shop->id);
+            $shop_url = new ShopUrl($id_shop);
             $base = 'http' . $is_https . '://' . $shop_url->domain . $shop_url->physical_uri;
             $url = $base . 'modules/lengow/';
         }
@@ -992,8 +1081,6 @@ class LengowCore
         $shop = new Shop((int)$id_shop);
         $description_export = 'Lengow Export - ' . $shop->name;
         $description_import = 'Lengow Import - ' . $shop->name;
-        $webservices = LengowCore::getWebservicesLinks();
-
 
         $query_import_select = 'SELECT 1 FROM ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
             . 'WHERE `description` = \'' . pSQL($description_import) . '\' '
@@ -1009,7 +1096,7 @@ class LengowCore
             . 'VALUES (\''
             . pSQL($description_export)
             . '\', \''
-            . pSQL($webservices['url_feed_export'])
+            . pSQL(LengowCore::getExportUrl())
             . '\', \'-1\', \'-1\', \'-1\', \'-1\', NULL, TRUE, '
             . (int)$id_shop . ', '
             . (int)$shop->id_shop_group
@@ -1020,7 +1107,7 @@ class LengowCore
             . 'VALUES (\''
             . pSQL($description_import)
             . '\', \''
-            . pSQL($webservices['url_feed_import'])
+            . pSQL(LengowCore::getImportUrl())
             . '\', \'-1\', \'-1\', \'-1\', \'-1\', NULL, TRUE, '
             . (int)$id_shop
             . ', '

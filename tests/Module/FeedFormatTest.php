@@ -96,5 +96,4 @@ class FeedFormatTest extends ModuleTestCase
         $this->assertFileValues($export->getFileName(), 101, array("DESCRIPTION_SHORT" => "THIS ' IS ' A Test"));
         $this->assertFileNbLine($export->getFileName(), 1, 'quote');
     }
-
 }

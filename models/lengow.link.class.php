@@ -33,4 +33,11 @@ class LengowLink extends LinkCore
         }
         return $admin_path;
     }
+
+    public function getExportLink($store)
+    {
+
+
+
+    }
 }

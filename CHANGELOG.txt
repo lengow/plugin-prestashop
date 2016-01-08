@@ -1,0 +1,159 @@
+=============================================================
+Version 3.0.0
+=============================================================
+    - check url export by token or IP
+
+=============================================================
+Version 2.0.9
+=============================================================
+	- Better compatibility with relay (SoColissimo & Mondial Relay)
+	- Export with timeout
+	- Multiple report email address option
+	- File manager and loader
+
+=============================================================
+Version 2.0.7
+=============================================================
+	- Fix of several minor bugs
+	- Possibility of importing a chosen order
+	- Force import orders shipped by markeplaces option
+	- Check override folder
+	- Matching with marketplace shipping method option
+	- Fictitious email option
+	- Import report email option
+
+=============================================================
+Version 2.0.5.3
+=============================================================
+	- Fix tracking amazon and cdiscount
+	- Improve webservice (Show module version, prestashop version, get last logs)
+	- Add option to ignore processing fee
+	- Fix bug with tagcapulse
+	- Tagcapsule - Take the first group
+	- Add webservice to migrate products selection from module v1
+	- Write un temp file during export
+	- Fix stream param for export
+	- Fix warning with 1.4 version
+
+=============================================================
+Version 2.0.5.1
+=============================================================
+	- Fix bug with 1.4 installation
+	- Fix image export
+	- Add new internal IPS
+	- Disable mail during import
+	- Fiw warning with tagcapsule
+	- Force product option improvements
+
+=============================================================
+Version 2.0.5
+=============================================================
+	- Add option show or not feed management
+	- Send tracking when it's filled
+	- Add function to add value in export
+	- Use set instead of updateValue in Configuration for mail
+	- Now compatible with Prestashop 1.6
+	- Improve zipcode verification
+	- Fix Payment error
+	- Fix wrong carrier after import
+	- Fix import bug with minimal quantity
+	- Improve logs report
+	- Add try/catch on validateOrder
+	- Add posibility to hide feed management
+
+=============================================================
+Version 2.0.4.4
+=============================================================
+	- Add option show or not feed management
+	- Add option to merge parent and children image
+
+=============================================================
+Version 2.0.4.3
+=============================================================
+	- Display message when order is already processing
+	- Choose ID Product for tagcapsule
+	- Traductions
+	- Matching carrier
+
+=============================================================
+Version 2.0.4.2
+=============================================================
+	- Add logs tab in B.O
+	- Full debug mode during import
+
+=============================================================
+Version 2.0.4.1
+=============================================================
+	- Update debug message
+	- Add Hook ValidateLengowOrder
+		- public function hookActionValidateLengowOrder
+	- Fix Tagcapsule
+	- Add ZipCode validation
+	- Allow to export only product when specify IDs
+	- Fix publish/Unpublish product in lengow tab
+	- Update webservices log import
+
+=============================================================
+Version 2.0.4
+=============================================================
+	- Warning if plugin is outdated
+	- Block import if another is already running
+	- Always show IP Address in checklist configuration
+	- Now save mail settings in database
+	- Skip order if is already imported or stopped during process
+	- Add import log table
+	- logs action in webservice Lengow
+	- Add option to force import disabled product or out of stock
+	- Fix update tracking info on Amazon
+	- Now compatible with soColissimo
+	- Matching API Field for better product search
+	- Prevent Prestashop bug when advanced stock is enabled
+	- Fix bug with tax on invoice details
+	- Fix fatal error when uninstalling module in 1.4 version
+	- Force carrier is modified by ValidateOrder
+	- Fix bug during 1.4.2.5 installation
+	- Block commands when product came from different warehouse
+	- Add compatibility with Mondial Relay
+	- Add order action to reimport order
+	- Add order action to synchronize IDs
+	- Fix with tagcapsule
+
+=============================================================
+Version 2.0.3.2
+=============================================================
+	- Lastname and firstname inverted during import in
+	  delivery address
+	- Add try/catch during import
+	- Fix bug with tagcapsule (Confirmation and payment)
+	- Fix Clean phone method during import
+	- Replace DB::getValue by ExecuteS in import
+	- Search product by UPC, SKU, ID, Reference
+
+=============================================================
+Version 2.0.3
+=============================================================
+	- Allow override
+	- Add check configuration
+	- Allow export feature without product variations
+	- Add log api
+	- Add log files list in admin modules
+	- Fix - Possible warning during export
+	- Fix - Disable mail during import (1.4)
+
+=============================================================
+Version 2.0.2
+=============================================================
+	- Allow to export disabled products
+	- Add manual export get parameters
+	- Add attribute list selection to export
+	- Fix - Import product with ID, EAN and SKU
+	- Fix - SSL mode on tracker
+	- Fix - Url export and import where multishop is active
+	- Fix other minors bug
+
+=============================================================
+Version 2.0.1
+=============================================================
+	- Add cron to import
+	- Fix - Tracker
+	- Fix other minors bug

@@ -124,9 +124,6 @@ label.cat-tree-lengow input {
 .depth-11 {margin-left: 165px;}
 .depth-12 {margin-left: 180px;}
 
-.adminlengowhome > #main > #content, .adminlengowproduct > #main > #content, .adminlengowlog > #main > #content, .adminlengowconfig > #main > #content, .adminlengowlogconfig > #main > #content{
-	padding : 0px;
-}
 
 #logoLengow {
 	width: 120px;

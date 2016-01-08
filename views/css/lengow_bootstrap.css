@@ -14,6 +14,8 @@
     height:50px;
 }
 
+
+body.lengow_body #content { padding:0px; }
 body.lengow_body #content .nav.lengow-nav>li>a:hover,
 body.lengow_body #content .nav.lengow-nav>li.active>a:hover,
 body.lengow_body #content .nav.lengow-nav>li>a,
@@ -86,3 +88,32 @@ body.lengow_body #content .lengow_breadcrumb a {
     background-color: #f7f7f7;
 }
 /* MAIN */
+
+
+
+/* FEED PAGE */
+#lengow_feed_wrapper {
+    padding:0 60px;
+}
+.lengow_feed_block {
+    background:white;
+    margin-bottom:20px;
+}
+.lengow_feed_block_header_title {
+    background: #AAAAAA;
+    color: white;
+    padding:5px 0;
+    border-radius: 2px;
+}
+.lengow_feed_block_header_title .title {
+    font-weight:bold;
+    font-size:20px;
+    padding-left:20px;
+}
+.lengow_feed_block_header_title .url {
+    padding-left:20px;
+}
+.lengow_feed_block_header_content {
+    border:1px solid #AAAAAA;
+    padding:20px;
+}

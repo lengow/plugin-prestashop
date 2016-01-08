@@ -32,6 +32,7 @@ class LengowInstall
 
     static private $tabs = array(
         'Home' => 'AdminLengowHome',
+        'Product' => 'AdminLengowFeed',
         'Lengow Products' => 'AdminLengowProduct',
         'Logs' => 'AdminLengowLog',
         'Configuration' => 'AdminLengowConfig',
@@ -94,7 +95,8 @@ class LengowInstall
             'LENGOW_EXPORT_TIMEOUT',
             'LENGOW_EMAIL_ADDRESS',
             'LENGOW_ORDER_ID_SHIPPEDBYMP',
-            'LENGOW_CRON_EDITOR'
+            'LENGOW_CRON_EDITOR',
+            'LENGOW_SHOP_TOKEN'
         );
         foreach ($configurations as $configuration) {
             Configuration::deleteByName($configuration);
@@ -232,7 +234,8 @@ class LengowInstall
             Configuration::updateValue('LENGOW_EMAIL_ADDRESS', '') &&
             Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
             Configuration::updateValue('LENGOW_CRON_EDITOR', false) &&
-            Configuration::updateValue('LENGOW_IMPORT_SHIPPED_BY_MP', false);
+            Configuration::updateValue('LENGOW_IMPORT_SHIPPED_BY_MP', false) &&
+            Configuration::updateValue('LENGOW_SHOP_TOKEN', '');
     }
 
 

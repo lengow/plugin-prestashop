@@ -1,0 +1,106 @@
+<?php
+
+namespace PrestaShop\PrestaShop\Tests\TestCase;
+
+use GuzzleHttp\Client;
+use Currency;
+use Context;
+use Db;
+use Module;
+use Configuration;
+use LengowCore;
+use LengowExport;
+use LengowExportException;
+use Assert;
+
+class CoreTest extends ModuleTestCase
+{
+    static protected $client;
+    protected $module;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+        self::$client = new Client(
+            array(
+                'base_uri' => 'http://'.CURRENT_DOMAIN,
+                'allow_redirects' => false,
+                'headers' => array('PHPUNIT_LENGOW_TEST' => 'toto')
+            )
+        );
+
+    }
+
+    /**
+     * Test Module Load
+     *
+     * @before
+     */
+    public function load()
+    {
+        $this->module = Module::getInstanceByName('lengow');
+        $this->assertTrue((boolean)$this->module, 'Lengow Module is loaded');
+        $this->assertEquals($this->module->name, 'lengow', 'Lengow Module is name "lengow"');
+    }
+
+    /**
+     * Test getToken Values
+     *
+     * @test
+     */
+    public function getToken()
+    {
+        $shopId = 1;
+
+        //set empty token
+        Configuration::updateValue('LENGOW_SHOP_TOKEN', '', null, null, $shopId);
+        $token = Configuration::get('LENGOW_SHOP_TOKEN', null, null, $shopId);
+        $this->assertTrue(strlen($token) == '', 'token is empty');
+
+        LengowCore::getToken($shopId);
+        $token = Configuration::get('LENGOW_SHOP_TOKEN', null, null, $shopId);
+        $this->assertTrue(strlen($token)>0, 'token is set with non empty value');
+        $this->assertTrue(strlen($token)==32, 'token is equal to 32');
+
+        LengowCore::getToken($shopId);
+        $this->assertEquals($token, LengowCore::getToken($shopId), 'token is not update when already set');
+    }
+
+    /**
+     * Test checkExportAccess
+     *
+     * @test
+     */
+    public function checkExportAccess()
+    {
+        $shopId = 1;
+
+        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
+
+        Configuration::updatevalue('LENGOW_AUTHORIZED_IP', '');
+        $exportUrl = LengowCore::getExportUrl($shopId);
+        $response = self::$client->get($exportUrl);
+        $body = $response->getBody()->getContents();
+        $this->assertTrue(
+            (bool) preg_match('/Export \-\ init/', substr($body, 0, 50)),
+            'Access Authorized'
+        );
+
+        $exportUrl = preg_replace('/token=[a-z0-9]*/', '', $exportUrl);
+        $response = self::$client->get($exportUrl);
+        $body = $response->getBody()->getContents();
+        $this->assertTrue(
+            (bool) preg_match('/^Unauthorized\ access\ for IP/', substr($body, 0, 50)),
+            'Access Unauthorized'
+        );
+
+        Configuration::updatevalue('LENGOW_AUTHORIZED_IP', '127.0.0.1');
+        $response = self::$client->get($exportUrl);
+        $body = $response->getBody()->getContents();
+        $this->assertTrue(
+            (bool) preg_match('/Export \-\ init/', substr($body, 0, 50)),
+            'Access Authorized'
+        );
+    }
+}

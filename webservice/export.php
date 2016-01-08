@@ -41,8 +41,13 @@ if (!Module::isInstalled($lengow->name)) {
 }
 
 // CheckIP
-if (LengowCore::checkIP()) {
-    die('Unauthorized access for IP : ' . $_SERVER['REMOTE_ADDR']);
+$token = isset($_REQUEST['token']) ? $_REQUEST['token'] : '';
+if (!LengowCore::checkExportAccess(Context::getContext()->shop->id, $token)) {
+    if (strlen($token) > 0) {
+        die('Unauthorized access for this token : ' . $token);
+    } else {
+        die('Unauthorized access for IP : ' . $_SERVER['REMOTE_ADDR']);
+    }
 }
 
 // Set import parameters

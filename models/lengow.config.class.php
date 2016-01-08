@@ -153,10 +153,6 @@ class LengowConfig
         $options['images'] = ImageType::getImagesTypes('products');
         $options['export_features'] = LengowCore::getFeaturesOptions();
         $options['images_count'] = LengowCore::getImagesCount();
-
-
-        echo Configuration::get('LENGOW_ID_CUSTOMER');
-        $links = LengowCore::getWebservicesLinks();
         $this->context->smarty->assign(
             array(
                 'lengow_customer_id' => Configuration::get('LENGOW_ID_CUSTOMER'),
@@ -189,8 +185,8 @@ class LengowConfig
                 'lengow_parent_image' => Configuration::get('LENGOW_PARENT_IMAGE'),
                 'lengow_export_out_stock' => Configuration::get('LENGOW_EXPORT_OUT_STOCK'),
                 'lengow_import_processing_fee' => Configuration::get('LENGOW_IMPORT_PROCESSING_FEE'),
-                'url_feed_export' => $links['link_feed_export'],
-                'url_feed_import' => $links['link_feed_import'],
+                'url_feed_export' => LengowCore::getExportUrl(),
+                'url_feed_import' => LengowCore::getImportUrl(),
                 'lengow_flow' => $this->getFormFeeds(),
                 'lengow_cron' => $this->getFormCron(),
                 'lengow_is_import' => $this->getFormIsImport(),
@@ -401,7 +397,6 @@ class LengowConfig
      */
     private function getFormCron()
     {
-        $links = LengowCore::getWebservicesLinks();
         if (Module::getInstanceByName('cron')) {
             $form = '<p>' . $this->module->l('You can use the Crontab Module to import orders from Lengow') . '</p>';
             $cron_value = Configuration::get('LENGOW_CRON');
@@ -422,7 +417,7 @@ class LengowConfig
             $form .= '<p> - ' . $this->module->l('or') . ' - </p>';
         }
         $form .= '<p>' . $this->module->l('If you are using an unix system, you can use unix crontab like this :') . '</p>';
-        $form .= '<strong><code>*/15 * * * * wget ' . $links['url_feed_import'] . '</code></strong><br /><br />';
+        $form .= '<strong><code>*/15 * * * * wget ' . LengowCore::getImportUrl() . '</code></strong><br /><br />';
         return '<div class="lengow-margin">' . $form . '</div>';
     }
 

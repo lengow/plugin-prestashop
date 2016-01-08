@@ -313,11 +313,11 @@ class AdminLengowProductController extends ModuleAdminController
     public function getLengowStatus($echo, $row)
     {
         $echo = $echo; // Prestashop validator
-        $token = Tools::getAdminTokenLite('AdminLengow', Context::getContext());
+        $token = Tools::getAdminTokenLite('AdminLengowProduct', Context::getContext());
         if ($row['id_lengow_product'] == 0) {
-            return '<a href="index.php?controller=AdminLengow&publish=' . $row['id_product'] . '&token=' . $token . '"><img src="' . _PS_ADMIN_IMG_ . 'disabled.gif" /></a>';
+            return '<a href="index.php?controller=AdminLengowProduct&publish=' . $row['id_product'] . '&token=' . $token . '"><img src="' . _PS_ADMIN_IMG_ . 'disabled.gif" /></a>';
         } else {
-            return '<a href="index.php?controller=AdminLengow&unpublish=' . $row['id_product'] . '&token=' . $token . '"><img src="' . _PS_ADMIN_IMG_ . 'enabled.gif" /></a>';
+            return '<a href="index.php?controller=AdminLengowProduct&unpublish=' . $row['id_product'] . '&token=' . $token . '"><img src="' . _PS_ADMIN_IMG_ . 'enabled.gif" /></a>';
         }
             return $row->id_lengow_product > 0 ? true : false;
     }

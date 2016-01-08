@@ -23,6 +23,13 @@
             {else}
             {$lengow_link->getAbsoluteAdminLink('AdminLengowHome14')}
             {/if}">Home</a></li>
+    <li role="presentation" class="{if $controllerName == 'AdminLengowFeed'}active{/if}"><a href="
+            {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')}
+            {else}
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowProduct14')}
+            {/if}
+            ">Product</a></li>
     <li role="presentation" class="{if $controllerName == 'AdminLengowProduct'}active{/if}"><a href="
             {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
             {$lengow_link->getAbsoluteAdminLink('AdminLengowProduct')}
