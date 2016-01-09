@@ -11,25 +11,6 @@ class InstallTest extends ModuleTestCase
 {
 
     /**
-     *
-     * Install module
-     *
-     * @after
-     *
-     */
-    public function installAfter()
-    {
-        $module = Module::getInstanceByName('lengow');
-        $this->assertTrue((boolean)$module, 'Load Lengow Module');
-
-        //install module if uninstall
-        if (!$module->isInstalled('lengow')) {
-            $module = Module::getInstanceByName('lengow');
-            $module->install();
-        }
-    }
-
-    /**
      * Test can load lengow module
      *
      * @test
@@ -69,8 +50,8 @@ class InstallTest extends ModuleTestCase
         if ($module->isInstalled('lengow')) {
             $module = Module::getInstanceByName('lengow');
             $module->uninstall();
+            Cache::getInstance()->flush();
         }
-
         $this->assertTrue($module->install());
         $this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'));
     }
@@ -78,6 +59,7 @@ class InstallTest extends ModuleTestCase
     /**
      * Test uninstall lengow module
      *
+     * @before
      * @test
      *
      */
