@@ -161,7 +161,7 @@ class LengowExport
     /**
      * Export out of stock product
      */
-    protected $export_out_stock = false;
+    protected $exportOutStock = false;
 
     /**
      * @var boolean Export active product.
@@ -203,19 +203,24 @@ class LengowExport
         $this->productIds = (isset($params["product_ids"]) ? $params["product_ids"] : false);
         $this->stream = (isset($params["stream"]) ? $params["stream"] : false);
         $this->full_title = (isset($params["full_title"]) ? (bool)$params["full_title"] : false);
-        $this->export_out_stock =  (isset($params["out_stock"]) ? $params["out_stock"] : false);
         $this->limit =  (isset($params["limit"]) ? (int)$params["limit"] : false);
         $this->showInactiveProduct = (isset($params["show_inactive_product"]) ?
             (bool)$params["show_inactive_product"] : false);
         $this->showProductCombination = (isset($params["show_product_combination"]) ?
             $params["show_product_combination"] : false);
-        $this->export_features = (isset($params["export_features"]) ? $params["export_features"] : false);
 
         $this->shopId = (int)(isset($params["shop_id"]) ? (int)$params["shop_id"] : Context::getContext()->shop->id);
         $this->langage = (isset($params["langage_id"]) ?
             new Langage($params["langage_id"]) : Context::getContext()->language);
-
-
+        $this->exportLengowSelection = (isset($params["export_lengow_selection"]) ?
+            $params["export_lengow_selection"] :
+            Configuration::get('LENGOW_EXPORT_SELECTION', null, null, $this->shopId));
+        $this->exportOutStock =  (isset($params["out_stock"]) ?
+            $params["out_stock"] :
+            Configuration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->shopId));
+        $this->exportVariation = isset($params["export_features"]) ?
+            $params["export_features"] :
+            Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS', null, null, $this->shopId);
 
         $this->checkCurrency();
         $this->setCarrier();
@@ -331,7 +336,7 @@ class LengowExport
                     $this->all,
                     $this->showInactiveProduct,
                     $this->productIds,
-                    $this->export_out_stock,
+                    $this->exportOutStock,
                     Configuration::get('LENGOW_EXPORT_LAST_ID_' . $this->langage->iso_code)
                 );
             } else {
@@ -339,7 +344,7 @@ class LengowExport
                     $this->all,
                     $this->showInactiveProduct,
                     $this->productIds,
-                    $this->export_out_stock
+                    $this->exportOutStock
                 );
             }
             // if no products : export all
@@ -353,6 +358,7 @@ class LengowExport
             );
             $this->export($products, $export_fields, $shop);
 
+            Configuration::updatevalue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), null, null, $this->shopId);
             LengowCore::log('Export - end', !$this->stream);
 
         } catch (Exception $e) {
@@ -406,7 +412,7 @@ class LengowExport
                         throw new LengowExportException('Unable to retrieve product combinations');
                     }
                     foreach ($combinations as $combination) {
-                        if (!$this->export_out_stock &&
+                        if (!$this->exportOutStock &&
                             $product->getData('quantity', $combination['id_product_attribute']) <= 0
                         ) {
                             continue;
@@ -482,6 +488,7 @@ class LengowExport
     }
 
     /**
+     * v3
      * Get Total product (Active/Inactive, In Stock/ Out Stock)
      *
      * @return integer
@@ -490,7 +497,7 @@ class LengowExport
     {
         $query = ' SELECT COUNT(*) as total';
         $query.= ' FROM '._DB_PREFIX_.'product p';
-        if ($this->export_features) {
+        if ($this->exportVariation) {
             $query.= ' LEFT JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
         }
         $collection = Db::getInstance()->executeS($query);
@@ -499,6 +506,7 @@ class LengowExport
 
 
     /**
+     * v3
      * Get Count export product
      *
      * @return integer
@@ -508,7 +516,12 @@ class LengowExport
         $where = array();
         $query = ' SELECT COUNT(*) as total FROM (SELECT p.id_product';
         $query.= ' FROM '._DB_PREFIX_.'product p';
-        if ($this->export_features) {
+
+        if ($this->exportLengowSelection) {
+            $query.= ' INNER JOIN '._DB_PREFIX_.'lengow_product lp ON (lp.id_product = p.id_product AND
+            lp.id_shop = '.$this->shopId.')';
+        }
+        if ($this->exportVariation) {
             $query.= ' LEFT JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
         }
         if (_PS_VERSION_ >= '1.5') {
@@ -525,9 +538,9 @@ class LengowExport
         if (_PS_VERSION_ > '1.4') {
             $where[] = ' ps.id_shop = '.$this->shopId;
         }
-        if (!$this->export_out_stock) {
+        if (!$this->exportOutStock) {
             if (_PS_VERSION_ >= '1.5') {
-                if ($this->export_features) {
+                if ($this->exportVariation) {
                     $query.= ' LEFT JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
                     (sa.id_product=p.id_product AND pa.id_product_attribute = sa.id_product_attribute
                     AND sa.quantity > 0)';
@@ -546,7 +559,7 @@ class LengowExport
         }
         $query.= 'WHERE '.join(' AND ', $where);
 
-        if (!$this->export_features) {
+        if (!$this->exportVariation) {
             $query.= ' GROUP BY p.id_product';
         }
         $query.= ') tmp';
@@ -577,7 +590,7 @@ class LengowExport
         }
 
         //Features
-        if ($this->export_features) {
+        if ($this->exportVariation) {
             $features = Feature::getFeatures(Context::getContext()->language->id);
             $features_selected = (array)Tools::jsonDecode(Configuration::get('LENGOW_EXPORT_SELECT_FEATURES'));
             foreach ($features as $feature) {

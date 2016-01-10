@@ -22,7 +22,7 @@
 (function() {
   var slice = [].slice;
 
-  (function($, window) {
+  (function(lengow_jquery, window) {
     "use strict";
     var BootstrapSwitch;
     BootstrapSwitch = (function() {
@@ -30,8 +30,8 @@
         if (options == null) {
           options = {};
         }
-        this.$element = $(element);
-        this.options = $.extend({}, $.fn.bootstrapSwitch.defaults, {
+        this.$element = lengow_jquery(element);
+        this.options = lengow_jquery.extend({}, lengow_jquery.fn.bootstrapSwitch.defaults, {
           state: this.$element.is(":checked"),
           size: this.$element.data("size"),
           animate: this.$element.data("animate"),
@@ -51,7 +51,7 @@
           wrapperClass: this.$element.data("wrapper-class")
         }, options);
         this.prevOptions = {};
-        this.$wrapper = $("<div>", {
+        this.$wrapper = lengow_jquery("<div>", {
           "class": (function(_this) {
             return function() {
               var classes;
@@ -79,18 +79,18 @@
             };
           })(this)()
         });
-        this.$container = $("<div>", {
+        this.$container = lengow_jquery("<div>", {
           "class": this.options.baseClass + "-container"
         });
-        this.$on = $("<span>", {
+        this.$on = lengow_jquery("<span>", {
           html: this.options.onText,
           "class": this.options.baseClass + "-handle-on " + this.options.baseClass + "-" + this.options.onColor
         });
-        this.$off = $("<span>", {
+        this.$off = lengow_jquery("<span>", {
           html: this.options.offText,
           "class": this.options.baseClass + "-handle-off " + this.options.baseClass + "-" + this.options.offColor
         });
-        this.$label = $("<span>", {
+        this.$label = lengow_jquery("<span>", {
           html: this.options.labelText,
           "class": this.options.baseClass + "-label"
         });
@@ -103,7 +103,7 @@
           return function(e) {
             if (false === _this.options.onSwitchChange.apply(element, arguments)) {
               if (_this.$element.is(":radio")) {
-                return $("[name='" + (_this.$element.attr('name')) + "']").trigger("previousState.bootstrapSwitch", true);
+                return lengow_jquery("[name='" + (_this.$element.attr('name')) + "']").trigger("previousState.bootstrapSwitch", true);
               } else {
                 return _this.$element.trigger("previousState.bootstrapSwitch", true);
               }
@@ -128,7 +128,7 @@
       BootstrapSwitch.prototype._constructor = BootstrapSwitch;
 
       BootstrapSwitch.prototype.setPrevOptions = function() {
-        return this.prevOptions = $.extend(true, {}, this.options);
+        return this.prevOptions = lengow_jquery.extend(true, {}, this.options);
       };
 
       BootstrapSwitch.prototype.state = function(value, skip) {
@@ -142,7 +142,7 @@
           return this.$element;
         }
         if (this.$element.is(":radio")) {
-          $("[name='" + (this.$element.attr('name')) + "']").trigger("setPreviousOptions.bootstrapSwitch");
+          lengow_jquery("[name='" + (this.$element.attr('name')) + "']").trigger("setPreviousOptions.bootstrapSwitch");
         } else {
           this.$element.trigger("setPreviousOptions.bootstrapSwitch");
         }
@@ -367,7 +367,7 @@
           return this.options.wrapperClass;
         }
         if (!value) {
-          value = $.fn.bootstrapSwitch.defaults.wrapperClass;
+          value = lengow_jquery.fn.bootstrapSwitch.defaults.wrapperClass;
         }
         this.$wrapper.removeClass(this._getClasses(this.options.wrapperClass).join(" "));
         this.$wrapper.addClass(this._getClasses(value).join(" "));
@@ -392,7 +392,7 @@
           return this.options.onInit;
         }
         if (!value) {
-          value = $.fn.bootstrapSwitch.defaults.onInit;
+          value = lengow_jquery.fn.bootstrapSwitch.defaults.onInit;
         }
         this.options.onInit = value;
         return this.$element;
@@ -403,7 +403,7 @@
           return this.options.onSwitchChange;
         }
         if (!value) {
-          value = $.fn.bootstrapSwitch.defaults.onSwitchChange;
+          value = lengow_jquery.fn.bootstrapSwitch.defaults.onSwitchChange;
         }
         this.options.onSwitchChange = value;
         return this.$element;
@@ -534,7 +534,7 @@
               _this.$wrapper.toggleClass(_this.options.baseClass + "-off").toggleClass(_this.options.baseClass + "-on");
               if (!skip) {
                 if (_this.$element.is(":radio")) {
-                  $("[name='" + (_this.$element.attr('name')) + "']").not(_this.$element).prop("checked", false).trigger("change.bootstrapSwitch", true);
+                  lengow_jquery("[name='" + (_this.$element.attr('name')) + "']").not(_this.$element).prop("checked", false).trigger("change.bootstrapSwitch", true);
                 }
                 return _this.$element.trigger("switchChange.bootstrapSwitch", [state]);
               }
@@ -676,9 +676,9 @@
         return $form.on("reset.bootstrapSwitch", function() {
           return window.setTimeout(function() {
             return $form.find("input").filter(function() {
-              return $(this).data("bootstrap-switch");
+              return lengow_jquery(this).data("bootstrap-switch");
             }).each(function() {
-              return $(this).bootstrapSwitch("state", this.checked);
+              return lengow_jquery(this).bootstrapSwitch("state", this.checked);
             });
           }, 1);
         }).data("bootstrap-switch", true);
@@ -686,7 +686,7 @@
 
       BootstrapSwitch.prototype._getClasses = function(classes) {
         var c, cls, i, len;
-        if (!$.isArray(classes)) {
+        if (!lengow_jquery.isArray(classes)) {
           return [this.options.baseClass + "-" + classes];
         }
         cls = [];
@@ -700,13 +700,13 @@
       return BootstrapSwitch;
 
     })();
-    $.fn.bootstrapSwitch = function() {
+    lengow_jquery.fn.bootstrapSwitch = function() {
       var args, option, ret;
       option = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
       ret = this;
       this.each(function() {
         var $this, data;
-        $this = $(this);
+        $this = lengow_jquery(this);
         data = $this.data("bootstrap-switch");
         if (!data) {
           $this.data("bootstrap-switch", data = new BootstrapSwitch(this, option));
@@ -717,8 +717,8 @@
       });
       return ret;
     };
-    $.fn.bootstrapSwitch.Constructor = BootstrapSwitch;
-    return $.fn.bootstrapSwitch.defaults = {
+    lengow_jquery.fn.bootstrapSwitch.Constructor = BootstrapSwitch;
+    return lengow_jquery.fn.bootstrapSwitch.defaults = {
       state: true,
       size: null,
       animate: true,

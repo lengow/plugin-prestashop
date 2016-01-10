@@ -18,7 +18,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-;jQuery_1_11_3(document).ready(function() {
+;lengow_jquery(document).ready(function() {
 
 	$(document.body).addClass('lengow_body');
 
@@ -94,6 +94,6 @@
 		});
 		return false;
 	});
-	$(".switchLengow").bootstrapSwitch();
+	$(".lengow_switch").bootstrapSwitch();
 });
 

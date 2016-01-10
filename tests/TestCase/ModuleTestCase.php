@@ -8,6 +8,8 @@ use Context;
 use Employee;
 use DateTime;
 use SplFileInfo;
+use Configuration;
+use Shop;
 
 class ModuleTestCase extends PHPUnit_Framework_TestCase
 {
@@ -15,6 +17,20 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         require_once(_PS_CONFIG_DIR_ . '/config.inc.php');
+    }
+
+    public static function tearDownAfterClass()
+    {
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/attribute_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ .'lengow/tests/Module/Fixtures/features.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/before_feed.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/simple_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/variation_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/pack_product.yml');
+
+        Shop::setContext(Shop::CONTEXT_ALL);
+        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
     }
 
     public function setUp()

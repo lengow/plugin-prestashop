@@ -81,6 +81,7 @@ product_lang:
     name: NAME020
     description: DESCRIPTION020
     description_short: SHORTDESCRIPTION020
+    link_rewrite: URL020
   -
     id_product: 21
     id_shop: 1
@@ -88,6 +89,7 @@ product_lang:
     name: NAME021
     description: DESCRIPTION021
     description_short: SHORTDESCRIPTION021
+    link_rewrite: URL021
   -
     id_product: 22
     id_shop: 1
@@ -95,6 +97,7 @@ product_lang:
     name: NAME022
     description: DESCRIPTION022
     description_short: SHORTDESCRIPTION022
+    link_rewrite: URL022
   -
     id_product: 23
     id_shop: 1
@@ -102,6 +105,7 @@ product_lang:
     name: NAME023
     description: DESCRIPTION023
     description_short: SHORTDESCRIPTION023
+    link_rewrite: URL023
 stock_available:
   -
     id_product: 20

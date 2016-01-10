@@ -26,6 +26,7 @@ product_lang:
     name: THIS " IS ' A | Test
     description: THIS " IS ' A | Test
     description_short: THIS " IS ' A | Test
+    link_rewrite: URL101
 stock_available:
   -
     id_product: 101
