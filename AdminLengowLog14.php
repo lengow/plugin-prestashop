@@ -19,5 +19,6 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (_PS_VERSION_ < '1.5')
-	require_once 'controllers/admin/TabLengowLogController.php';
+if (_PS_VERSION_ < '1.5') {
+    require_once 'controllers/admin/TabLengowLogController.php';
+}

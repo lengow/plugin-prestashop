@@ -23,6 +23,5 @@ if (!$installation) {
     exit();
 }
 
-
 Configuration::updateValue('LENGOW_IMPORT_SINGLE', version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<'));
 

@@ -19,5 +19,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (_PS_VERSION_ < '1.5')
-	include 'controllers/admin/TabLengowHomeController.php';
+if (_PS_VERSION_ < '1.5') {
+    include 'controllers/admin/TabLengowHomeController.php';
+}

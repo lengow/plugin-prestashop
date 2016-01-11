@@ -22,3 +22,8 @@
 if (!$installation) {
     exit();
 }
+
+Configuration::deleteByName('LENGOW_ID_CUSTOMER');
+Configuration::deleteByName('LENGOW_ID_GROUP');
+Configuration::deleteByName('LENGOW_TOKEN');
+Configuration::deleteByName('LENGOW_SWITCH_V3');

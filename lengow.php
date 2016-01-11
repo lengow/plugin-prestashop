@@ -13,11 +13,13 @@ class Lengow extends Module
 
     private $installClass;
 
+    private $hookClass;
+
     public function __construct()
     {
 
         $this->name = 'lengow';
-        $this->tab = 'lengow_tab';
+        $this->tab = 'export';
         $this->version = '3.0.0';
         $this->author = 'Lengow';
         $this->module_key = '92f99f52f2bc04ed999f02e7038f031c';
@@ -40,6 +42,12 @@ class Lengow extends Module
 
         $this->installClass = new LengowInstall($this);
         $this->hookClass = new LengowHook($this);
+
+        if (self::isInstalled($this->name)) {
+            if (Configuration::get('LENGOW_VERSION') != $this->version) {
+                $this->installClass->update();
+            }
+        }
 
         $this->context = Context::getContext();
         $this->context->smarty->assign('lengow_link', new LengowLink());
@@ -65,7 +73,6 @@ class Lengow extends Module
     public function install()
     {
         if (!parent::install()) {
-
             return false;
         }
         return $this->installClass->install();
@@ -77,11 +84,6 @@ class Lengow extends Module
             return false;
         }
         return $this->installClass->uninstall();
-    }
-
-    public function update()
-    {
-        return $this->installClass->update();
     }
 
 
