@@ -17,6 +17,8 @@ class FeedTest extends ModuleTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
+        //load module
+        Module::getInstanceByName('lengow');
     }
 
     /**
@@ -140,7 +142,7 @@ class FeedTest extends ModuleTestCase
             "product_ids" => array(10),
         ));
         $export->exec();
-        $this->assertFileNbLine($export->getFileName(), 7, 'show_combination');
+        $this->assertFileNbLine($export->getFileName(), 8, 'show_combination');
     }
 
     /**
@@ -155,7 +157,7 @@ class FeedTest extends ModuleTestCase
             "show_inactive_product" => true
         ));
         $export->exec();
-        $this->assertFileNbLine($export->getFileName(), 7, 'inactive_product');
+        $this->assertFileNbLine($export->getFileName(), 8, 'inactive_product');
     }
 
 
@@ -371,6 +373,7 @@ class FeedTest extends ModuleTestCase
     {
         $export = new LengowExport(array(
             "export_features" => true,
+            "export_lengow_selection" => false,
         ));
         $this->assertEquals(11, $export->getTotalExportProduct());
     }
@@ -385,6 +388,7 @@ class FeedTest extends ModuleTestCase
     {
         $export = new LengowExport(array(
             "export_features" => false,
+            "export_lengow_selection" => false,
         ));
         $this->assertEquals(5, $export->getTotalExportProduct());
     }
@@ -399,6 +403,7 @@ class FeedTest extends ModuleTestCase
         $export = new LengowExport(array(
             "out_stock" => true,
             "export_features" => false,
+            "export_lengow_selection" => false,
         ));
         $this->assertEquals(5, $export->getTotalExportProduct());
     }
