@@ -152,7 +152,7 @@ class LengowHook
         if (self::$_CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_LIST || self::$_CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE || self::$_CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_CART) {
             $array_products = array();
             $products_cart = array();
-            $products = (isset(Context::getContext()->smarty->tpl_vars['products']) ? Context::getContext()->smarty->tpl_vars['products']->value : array());
+            $products = (isset($this->context->smarty->tpl_vars['products']) ? $this->context->smarty->tpl_vars['products']->value : array());
 
             if (!empty($products)) {
                 $i = 1;
@@ -202,7 +202,7 @@ class LengowHook
                     $array_products[] = $id_product;
                 }
             } else {
-                $p = (isset(Context::getContext()->smarty->tpl_vars['product']) ? Context::getContext()->smarty->tpl_vars['product']->value : null);
+                $p = (isset($this->context->smarty->tpl_vars['product']) ? $this->context->smarty->tpl_vars['product']->value : null);
                 if ($p instanceof Product) {
                     switch (Configuration::get('LENGOW_TRACKING_ID')) {
                         case 'upc':
@@ -229,7 +229,7 @@ class LengowHook
             self::$_IDS_PRODUCTS = implode('|', $array_products);
         }
 
-        if (!$this->smarty) {
+        if (!isset($this->smarty)) {
             $this->smarty = $this->context->smarty;
         }
 
@@ -247,7 +247,7 @@ class LengowHook
                         'id_group' => LengowCore::getGroupCustomer(false),
                     )
                 );
-                return $this->module->display(__FILE__, 'views/templates/front/tagpage.tpl');
+                return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/front/tagpage.tpl');
             }
         } elseif ($tracking_mode == 'tagcapsule') {
             $this->context->smarty->assign(
@@ -263,7 +263,7 @@ class LengowHook
                     'id_group' => LengowCore::getGroupCustomer(false),
                 )
             );
-            return $this->module->display(__FILE__, 'views/templates/front/tagcapsule.tpl');
+            return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/front/tagcapsule.tpl');
         }
         return '';
     }
