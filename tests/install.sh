@@ -15,7 +15,7 @@ php $PRESTA_DIR/install-dev/index_cli.php  \
      --base_uri= \
      --db_name=presta_1_6_test \
      --db_user=root \
-     --db_password=lengow \
+     --db_password=root \
      --db_create=1 \
      --name=prestashop.unit.test \
      --password=lengow44

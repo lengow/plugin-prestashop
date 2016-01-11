@@ -24,9 +24,7 @@ if (!$installation) {
 }
 
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders\'')) {
-    $result = Db::getInstance()->execute("SHOW COLUMNS FROM "._DB_PREFIX_."lengow_logs_import LIKE 'is_disabled' ");
-    $exists = count($result) > 0 ? true : false;
-    if (!$exists) {
+    if (!$this->_checkFieldExists('lengow_orders', 'is_disabled')) {
         $sql = 'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `is_disabled` tinyint(1) UNSIGNED DEFAULT \'0\'';
         Db::getInstance()->execute($sql);
     }
@@ -37,43 +35,3 @@ Configuration::deleteByName('LENGOW_IMPORT_MARKETPLACES');
 Configuration::deleteByName('LENGOW_EXPORT_ALL_ATTRIBUTES');
 Configuration::updateValue('LENGOW_EXPORT_SELECTION', !Configuration::get('LENGOW_EXPORT_ALL'));
 Configuration::updateValue('LENGOW_FEED_MANAGEMENT', false);
-
-$sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_orders` (
-        `id_order` INTEGER(10) UNSIGNED NOT NULL ,
-        `id_order_lengow` VARCHAR(32) ,
-        `id_shop` INTEGER(11) UNSIGNED NOT NULL DEFAULT \'1\' ,
-        `id_shop_group` INTEGER(11) UNSIGNED NOT NULL DEFAULT \'1\' ,
-        `id_lang` INTEGER(10) UNSIGNED NOT NULL DEFAULT \'1\' ,
-        `id_flux` INTEGER(11) UNSIGNED NOT NULL ,
-        `marketplace` VARCHAR(100) ,
-        `message` TEXT ,
-        `total_paid` DECIMAL(17,2) NOT NULL ,
-        `carrier` VARCHAR(100) ,
-        `tracking` VARCHAR(100) ,
-        `extra` TEXT ,
-        `date_add` DATETIME NOT NULL ,
-        `is_disabled` TINYINT(1) UNSIGNED DEFAULT \'0\',
-        PRIMARY KEY(id_order) ,
-        INDEX (`id_order_lengow`) ,
-        INDEX (`id_flux`) ,
-        INDEX (`id_shop`) ,
-        INDEX (`id_shop_group`) ,
-        INDEX (`marketplace`) ,
-        INDEX (`date_add`)
-    ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-
-Db::getInstance()->execute($sql);
-
-$sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_product` (
-				`id_product` INTEGER UNSIGNED NOT NULL ,
-				`id_shop` INTEGER(11) UNSIGNED NOT NULL DEFAULT \'1\' ,
-				`id_shop_group` INTEGER(11) UNSIGNED NOT NULL DEFAULT \'1\' ,
-				`id_lang` INTEGER(10) UNSIGNED NOT NULL DEFAULT \'1\' ,
-				PRIMARY KEY ( `id_product` ) ,
-				INDEX (`id_shop`) ,
-				INDEX (`id_shop_group`) ,
-				INDEX (`id_lang`)
-				) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-
-// Products exports
-Db::getInstance()->execute($sql);

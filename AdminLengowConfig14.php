@@ -20,5 +20,6 @@
  */
 require_once 'lengow.php';
 
-if (_PS_VERSION_ < '1.5')
-	include 'controllers/admin/TabLengowConfigController.php';
+if (_PS_VERSION_ < '1.5') {
+    include 'controllers/admin/TabLengowConfigController.php';
+}

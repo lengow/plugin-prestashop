@@ -63,9 +63,9 @@ class LengowInstall
             'LENGOW_LOGO_URL',
             'LENGOW_AUTHORIZED_IP',
             'LENGOW_TRACKING',
-            'LENGOW_ID_CUSTOMER',
-            'LENGOW_ID_GROUP',
-            'LENGOW_TOKEN',
+            'LENGOW_ID_ACCOUNT',
+            'LENGOW_ACCESS_TOKEN',
+            'LENGOW_SECRET',
             'LENGOW_EXPORT_SELECTION',
             'LENGOW_EXPORT_NEW',
             'LENGOW_EXPORT_ALL_VARIATIONS',
@@ -199,9 +199,9 @@ class LengowInstall
         return
             Configuration::updateValue('LENGOW_AUTHORIZED_IP', $_SERVER['REMOTE_ADDR']) &&
             Configuration::updateValue('LENGOW_TRACKING', '') &&
-            Configuration::updateValue('LENGOW_ID_CUSTOMER', '') &&
-            Configuration::updateValue('LENGOW_ID_GROUP', '') &&
-            Configuration::updateValue('LENGOW_TOKEN', '') &&
+            Configuration::updateValue('LENGOW_ID_ACCOUNT', '') &&
+            Configuration::updateValue('LENGOW_ACCESS_TOKEN', '') &&
+            Configuration::updateValue('LENGOW_SECRET', '') &&
             Configuration::updateValue('LENGOW_EXPORT_SELECTION', false) &&
             Configuration::updateValue('LENGOW_EXPORT_DISABLED', false) &&
             Configuration::updateValue('LENGOW_EXPORT_NEW', false) &&
@@ -248,8 +248,8 @@ class LengowInstall
     {
         // Add Lengow order error status
         if (_PS_VERSION_ >= '1.5') {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state
-            WHERE module_name = \'' . $this->lengowModule->name . '\'');
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state
+            WHERE module_name = \''.$this->lengowModule->name.'\'');
             if (empty($states)) {
                 $lengow_state = new OrderState();
                 $lengow_state->send_email = false;
@@ -276,7 +276,7 @@ class LengowInstall
                 Configuration::updateValue('LENGOW_STATE_ERROR', $states[0]['id_order_state']);
             }
         } else {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state_lang
             WHERE name = \'Erreur technique - Lengow\' LIMIT 1');
             if (empty($states)) {
                 $lengow_state = new OrderState();
@@ -310,13 +310,28 @@ class LengowInstall
         //check if update is in progress
         $installation = true;
 
-        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_ . 'upgrade'), array('..', '.'));
+        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_.'upgrade'), array('..', '.'));
         foreach ($upgradeFiles as $file) {
-            include _PS_MODULE_LENGOW_DIR_ . 'upgrade/' . $file;
+            include _PS_MODULE_LENGOW_DIR_.'upgrade/'.$file;
             $numberVersion = preg_replace('/update_|\.php$/', '', $file);
-            Configuration::updateValue('LENGOW_VERSION', $numberVersion);
         }
+        Configuration::updateValue('LENGOW_VERSION', $numberVersion);
         return true;
     }
 
+    /**
+    * Checks if a field exists in BDD
+    *
+    * @param string $table
+    * @param string $field
+    *
+    * @return boolean
+    */
+    private function _checkFieldExists($table, $field)
+    {
+        $sql = 'SHOW COLUMNS FROM '._DB_PREFIX_.$table.' LIKE \''.$field.'\'';
+        $result = Db::getInstance()->executeS($sql);
+        $exists = count($result) > 0 ? true : false;
+        return $exists;
+    }
 }
