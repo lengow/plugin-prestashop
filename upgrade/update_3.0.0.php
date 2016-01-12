@@ -27,3 +27,13 @@ Configuration::deleteByName('LENGOW_ID_CUSTOMER');
 Configuration::deleteByName('LENGOW_ID_GROUP');
 Configuration::deleteByName('LENGOW_TOKEN');
 Configuration::deleteByName('LENGOW_SWITCH_V3');
+
+
+
+// alter log import table
+if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_product\'')) {
+    if (!$this->_checkFieldExists('lengow_product', 'id')) {
+        Db::getInstance()->execute('ALTER TABLE '._DB_PREFIX_.'lengow_product DROP PRIMARY KEY');
+        Db::getInstance()->execute('ALTER TABLE '._DB_PREFIX_.'lengow_product ADD `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST');
+    }
+}

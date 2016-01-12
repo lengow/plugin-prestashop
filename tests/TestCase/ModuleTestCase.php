@@ -21,13 +21,15 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
     public static function tearDownAfterClass()
     {
-        $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/attribute_product.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_ .'lengow/tests/Module/Fixtures/features.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/before_feed.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/simple_product.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/variation_product.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/pack_product.yml');
+//        $fixture = new Fixture();
+//        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/attribute_product.yml');
+//        $fixture->loadFixture(_PS_MODULE_DIR_ .'lengow/tests/Module/Fixtures/features.yml');
+//        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/before_feed.yml');
+//        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/simple_product.yml');
+//        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/variation_product.yml');
+//        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/pack_product.yml');
+//
+
 
         Shop::setContext(Shop::CONTEXT_ALL);
         Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);

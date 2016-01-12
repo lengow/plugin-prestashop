@@ -55,17 +55,17 @@ class InstallTest extends ModuleTestCase
         $this->assertEquals($module->name, 'lengow');
     }
 
-    /**
-     * Test updage process
-     *
-     * @test
-     *
-     */
-    public function upgrade()
-    {
-        $module = Module::getInstanceByName('lengow');
-        $this->assertTrue($module->update());
-    }
+//    /**
+//     * Test updage process
+//     *
+//     * @test
+//     *
+//     */
+//    public function upgrade()
+//    {
+//        $module = Module::getInstanceByName('lengow');
+//        $this->assertTrue($module->update());
+//    }
 
     /**
      * Test install lengow module

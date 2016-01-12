@@ -77,13 +77,15 @@ class CoreTest extends ModuleTestCase
         $shopId = 1;
 
         Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
+        Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
 
         Configuration::updatevalue('LENGOW_AUTHORIZED_IP', '');
         $exportUrl = LengowCore::getExportUrl($shopId);
         $response = self::$client->get($exportUrl);
         $body = $response->getBody()->getContents();
-        $this->assertTrue(
-            (bool) preg_match('/Export \-\ init/', substr($body, 0, 50)),
+        $this->assertRegExp(
+            '/Export \-\ init/',
+            substr($body, 0, 100),
             'Access Authorized'
         );
 
@@ -91,7 +93,7 @@ class CoreTest extends ModuleTestCase
         $response = self::$client->get($exportUrl);
         $body = $response->getBody()->getContents();
         $this->assertTrue(
-            (bool) preg_match('/^Unauthorized\ access\ for IP/', substr($body, 0, 50)),
+            (bool) preg_match('/^Unauthorized\ access\ for IP/', substr($body, 0, 120)),
             'Access Unauthorized'
         );
 

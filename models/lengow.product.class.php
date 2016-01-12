@@ -608,7 +608,7 @@ class LengowProduct extends Product
      * @return varchar IDs product.
      */
     public static function exportIds(
-        $all = false,
+        $exportLengowSelection = false,
         $showInactiveProduct = false,
         $product_ids = null,
         $out_of_stock = false,
@@ -619,7 +619,7 @@ class LengowProduct extends Product
         $id_shop = $context->shop->id;
         $selected_products_sql = '';
 
-        if ($all == true) {
+        if ($exportLengowSelection == true) {
             $selected_products_sql = 'AND p.`id_product` IN ('
                 . 'SELECT `id_product` FROM `' . _DB_PREFIX_ . 'lengow_product` '
                 . 'WHERE `id_shop` = ' . (int)$id_shop . ' )';

@@ -207,7 +207,7 @@ class LengowInstall
             Configuration::updateValue('LENGOW_EXPORT_NEW', false) &&
             Configuration::updateValue('LENGOW_EXPORT_ALL_VARIATIONS', true) &&
             Configuration::updateValue('LENGOW_EXPORT_FULLNAME', true) &&
-            Configuration::updateValue('LENGOW_EXPORT_FEATURES', false) &&
+            Configuration::updateValue('LENGOW_EXPORT_FEATURES', true) &&
             Configuration::updateValue('LENGOW_EXPORT_FORMAT', 'csv') &&
             Configuration::updateValue('LENGOW_EXPORT_FIELDS', Tools::jsonEncode(LengowExport::$DEFAULT_FIELDS)) &&
             Configuration::updateValue('LENGOW_IMAGE_TYPE', 3) &&

@@ -19,41 +19,27 @@ class FeedFormatTest extends ModuleTestCase
         parent::setUpBeforeClass();
     }
 
-    /**
-     * Test Module Load
-     *
-     * @before
-     */
-    public function beforeExport()
+    public function setUp()
     {
-        Configuration::set('LENGOW_CARRIER_DEFAULT', 1);
-
+        parent::setUp();
+        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
+        Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
+        Configuration::updatevalue('LENGOW_EXPORT_FULLNAME', 0);
+        Configuration::updatevalue('LENGOW_EXPORT_FILE', 0);
+        Configuration::updatevalue('LENGOW_EXPORT_SELECTION', 0);
         Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
+
+        //load module
+        Module::getInstanceByName('lengow');
 
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/attribute_product.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/before_feed.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/features.yml');
-
-        $this->assertEquals(1, Configuration::get('LENGOW_CARRIER_DEFAULT'));
-        $this->assertTrue((boolean)Context::getContext()->currency);
-    }
-
-
-    /**
-     * Test Module Load
-     *
-     * @before
-     */
-    public function load()
-    {
-        $module = Module::getInstanceByName('lengow');
-        $this->assertTrue((boolean)$module, 'Load Lengow Module');
-        $this->assertEquals($module->name, 'lengow');
     }
 
     /**
-     * Test multiligne
+     * Test multi line
      *
      * @test
      */
@@ -63,14 +49,12 @@ class FeedFormatTest extends ModuleTestCase
         $fixture->loadFixture(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/multi_line_product.yml'
         );
-
         $export = new LengowExport(array(
-            "show_inactive_product" => true,
             "out_stock" => true,
-            "show_product_combination" => true,
+            "export_variation" => true,
         ));
         $export->exec();
-        $this->assertFileNbLine($export->getFileName(), 1, 'format_feed');
+        $this->assertFileNbLine($export->getFileName(), 1, 'multi_line');
     }
 
     /**
@@ -88,7 +72,7 @@ class FeedFormatTest extends ModuleTestCase
         $export = new LengowExport(array(
             "show_inactive_product" => true,
             "out_stock" => true,
-            "show_product_combination" => true,
+            "export_variation" => true,
         ));
         $export->exec();
         $this->assertFileValues($export->getFileName(), 101, array("NAME_PRODUCT" => "THIS ' IS ' A   Test"));

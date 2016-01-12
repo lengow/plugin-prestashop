@@ -326,6 +326,7 @@ class LengowFeed
     }
 
     /**
+     * v3
      * Format field names according to the given format
      *
      * @param string $str field name
@@ -337,23 +338,26 @@ class LengowFeed
     {
         switch ($format) {
             case 'csv':
-                if (_PS_VERSION_ <= '1.4.5') {
-                    return Tools::substr(
-                        Tools::strtoupper(preg_replace('/[^a-zA-Z0-9_]+/', '',
-                        str_replace(array(' ', '\''), '_', LengowCore::replaceAccentedChars($str)))), 0, 58);
-                } else {
-                    return Tools::substr(Tools::strtoupper(preg_replace('/[^a-zA-Z0-9_]+/', '',
-                        str_replace(array(' ', '\''), '_', Tools::replaceAccentedChars($str)))), 0, 58);
-                }
+                return Tools::substr(
+                    Tools::strtoupper(
+                        preg_replace(
+                            '/[^a-zA-Z0-9_]+/',
+                            '',
+                            str_replace(array(' ', '\''), '_', LengowCore::replaceAccentedChars($str))
+                        )
+                    ),
+                    0,
+                    58
+                );
                 break;
             default:
-                if (_PS_VERSION_ <= '1.4.5') {
-                    return Tools::strtolower(preg_replace('/[^a-zA-Z0-9_]+/', '',
-                        str_replace(array(' ', '\''), '_', LengowCore::replaceAccentedChars($str))));
-                } else {
-                    return Tools::strtolower(preg_replace('/[^a-zA-Z0-9_]+/', '',
-                        str_replace(array(' ', '\''), '_', Tools::replaceAccentedChars($str))));
-                }
+                return Tools::strtolower(
+                    preg_replace(
+                        '/[^a-zA-Z0-9_]+/',
+                        '',
+                        str_replace(array(' ','\''), '_', LengowCore::replaceAccentedChars($str))
+                    )
+                );
                 break;
         }
     }

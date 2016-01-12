@@ -25,6 +25,6 @@ mv $PRESTA_DIR/modules/prestashop-v3 $PRESTA_DIR/modules/lengow
 cd $PRESTA_DIR
 curl -sS https://getcomposer.org/installer | php
 php composer.phar require  guzzlehttp/guzzle:^6.1
-
+php composer.phar require fzaninotto/faker
 
 

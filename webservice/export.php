@@ -19,6 +19,17 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * list params
+ * string format        : Format of exported files ('csv','yaml','xml','json',
+ * boolean stream       : Stream file (1) or generate a file on server (0)
+ * string product_ids   : List of product id separate with comma (1,2,3)
+ * string title         : Export combination title with parent title (full)
+ * int limit            : Limit number of exported product
+ * boolean out_stock    : Export out of stock product (1) Export only product in stock (0)
+ * boolean variation    : Export product Variation (1) Export parent product only (0)
+ */
+
 @set_time_limit(0);
 @ini_set('memory_limit', '512M');
 
@@ -28,7 +39,6 @@ $sep = DIRECTORY_SEPARATOR;
 require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules/lengow/lengow.php';
-require_once $currentDirectory . 'modules/lengow/loader.php';
 
 $lengow = new Lengow();
 
@@ -51,10 +61,12 @@ if (!LengowCore::checkExportAccess(Context::getContext()->shop->id, $token)) {
 }
 
 // Set import parameters
-// export format (csv, yaml, xml, json)
-$format = Configuration::get('LENGOW_EXPORT_FORMAT');
-if (Tools::getIsset('format')) {
-    $format = Tools::getValue('format');
+//backward compatibility
+if (isset($_REQUEST["features"])) {
+    $_REQUEST["variation"] = $_REQUEST["features"];
+}
+if (isset($_REQUEST["all"])) {
+    $_REQUEST["selection"] = !(bool)$_REQUEST["all"];
 }
 
 // $fullMode -> including variations or not
@@ -65,24 +77,6 @@ if (Tools::getIsset('mode')) {
     } elseif (Tools::getValue('mode') == 'full') {
         $fullMode = true;
     }
-}
-
-// export product features
-$export_feature = Configuration::get('LENGOW_EXPORT_FEATURES');
-if (Tools::getIsset('feature')) {
-    $export_feature = (bool)Tools::getValue('feature');
-}
-
-// export in file or no
-$stream = !Configuration::get('LENGOW_EXPORT_FILE');
-if (Tools::getIsset('stream')) {
-    $stream = (bool)Tools::getValue('stream');
-}
-
-// export all products or only selected
-$all = Configuration::get('LENGOW_EXPORT_SELECTION');
-if (Tools::getIsset('all')) {
-    $all = Tools::getValue('all');
 }
 
 // shop
@@ -107,61 +101,68 @@ if (Tools::getIsset('lang')) {
 }
 
 // fields and features in title
-$title = Configuration::get('LENGOW_EXPORT_FULLNAME');
-if (Tools::getIsset('title')) {
-    if (Tools::getValue('title') == 'full') {
-        $title = true;
-    } elseif (Tools::getValue('title') && Tools::getValue('title') == 'simple') {
-        $title = false;
-    }
+$fullTitle = isset($_REQUEST["title"]) ? $_REQUEST["title"] : Configuration::get('LENGOW_EXPORT_FULLNAME');
+if ($fullTitle == "full") {
+    $fullTitle = true;
+}
+if ($fullTitle == "simple") {
+    $fullTitle = false;
 }
 
-// export inactive products
-$inactive_products = Configuration::get('LENGOW_EXPORT_DISABLED');
-if (Tools::getValue('active') && Tools::getValue('active') == 'enabled') {
-    $inactive_products = false;
-} elseif (Tools::getValue('active') && Tools::getValue('active') == 'all') {
-    $inactive_products = true;
-}
+// export format (csv, yaml, xml, json)
+$format = isset($_REQUEST["format"]) ? $_REQUEST["format"] : Configuration::get('LENGOW_EXPORT_FORMAT');
+
+// export limit
+$limit = isset($_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : null;
+
+// export lengow selection
+$selection = isset($_REQUEST["selection"]) ? (bool)$_REQUEST["selection"] :
+    Configuration::get('LENGOW_EXPORT_SELECTION');
+
+// export in file or no
+$stream = isset($_REQUEST["stream"]) ? (bool)$_REQUEST["stream"] : (bool)Configuration::get('LENGOW_EXPORT_FILE');
 
 // export out of stock products
-$out_stock = Configuration::get('LENGOW_EXPORT_OUT_STOCK');
-if (Tools::getIsset('out_stock')) {
-    $out_stock = (bool)Tools::getValue('out_stock');
-}
+$out_stock = isset($_REQUEST["out_stock"]) ? (bool)$_REQUEST["out_stock"] :
+    (bool)Configuration::get('LENGOW_EXPORT_OUT_STOCK');
 
 // export product features
-$export_features = Configuration::get('LENGOW_EXPORT_FEATURES');
-if (Tools::getIsset('features')) {
-    $export_features = (bool)Tools::getValue('features');
-}
+$exportFeature = isset($_REQUEST["feature"]) ? (bool)$_REQUEST["feature"] :
+    (bool)Configuration::get('LENGOW_EXPORT_FEATURES');
+
+// export product variation
+$exportVariation = isset($_REQUEST["variation"]) ? (bool)$_REQUEST["variation"] :
+    (bool)Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS');
 
 // export certain products
 $product_ids = array();
-if (Tools::getIsset('ids')) {
-    $ids = Tools::getValue('ids');
-    if (Tools::strlen($ids) > 0) {
-        $product_ids = explode(',', $ids);
-    }
+$ids = isset($_REQUEST["product_ids"]) ? $_REQUEST["product_ids"] : null;
+if (strlen($ids) > 0) {
+    $ids = str_replace(array(';','|',':'), ',', $ids);
+    $ids = preg_replace('/[^0-9\,]/', '', $ids);
+    $product_ids = explode(',', $ids);
 }
 
-// export limit
-$limit = null;
-if (Tools::getIsset('limit') && Tools::getValue('limit') > 0) {
-    $limit = (int)Tools::getValue('limit');
-}
-
-$export = new LengowExport(
-    $format,
-    $fullMode,
-    $all,
-    $stream,
-    $title,
-    $inactive_products,
-    $export_features,
-    $limit,
-    $out_stock,
-    $product_ids
-);
+$export = new LengowExport(array(
+    'format' => $format,
+    'stream' => $stream,
+    'product_ids' => $product_ids,
+    'full_title' => $fullTitle,
+    'limit' => $limit,
+    'out_stock' => $out_stock,
+    'export_variation' => $exportVariation,
+    'export_feature' => $exportFeature,
+    'full_mode' => $fullMode,
+    'selection' => $selection,
+));
 
 $export->exec();
+
+//remove feature
+//// export inactive products
+//$inactive_products = Configuration::get('LENGOW_EXPORT_DISABLED');
+//if (Tools::getValue('active') && Tools::getValue('active') == 'enabled') {
+//    $inactive_products = false;
+//} elseif (Tools::getValue('active') && Tools::getValue('active') == 'all') {
+//    $inactive_products = true;
+//}

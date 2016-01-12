@@ -202,42 +202,29 @@ class LengowExport
 
         $this->productIds = (isset($params["product_ids"]) ? $params["product_ids"] : false);
         $this->stream = (isset($params["stream"]) ? $params["stream"] : false);
-        $this->full_title = (isset($params["full_title"]) ? (bool)$params["full_title"] : false);
+        $this->full_title = (isset($params["full_title"]) ? (bool)$params["full_title"] :
+            Configuration::get('LENGOW_EXPORT_FULLNAME'));
         $this->limit =  (isset($params["limit"]) ? (int)$params["limit"] : false);
         $this->showInactiveProduct = (isset($params["show_inactive_product"]) ?
             (bool)$params["show_inactive_product"] : false);
-        $this->showProductCombination = (isset($params["show_product_combination"]) ?
-            $params["show_product_combination"] : false);
-
         $this->shopId = (int)(isset($params["shop_id"]) ? (int)$params["shop_id"] : Context::getContext()->shop->id);
         $this->langage = (isset($params["langage_id"]) ?
             new Langage($params["langage_id"]) : Context::getContext()->language);
-        $this->exportLengowSelection = (isset($params["export_lengow_selection"]) ?
-            $params["export_lengow_selection"] :
+        $this->exportLengowSelection = (isset($params["selection"]) ?
+            (bool)$params["selection"] :
             Configuration::get('LENGOW_EXPORT_SELECTION', null, null, $this->shopId));
         $this->exportOutStock =  (isset($params["out_stock"]) ?
             $params["out_stock"] :
             Configuration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->shopId));
-        $this->exportVariation = isset($params["export_features"]) ?
-            $params["export_features"] :
-            Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS', null, null, $this->shopId);
+        $this->exportFeatures = isset($params["export_feature"]) ?
+            $params["export_feature"] :
+            Configuration::get('LENGOW_EXPORT_FEATURES', null, null, $this->shopId);
+        $this->exportVariation = isset($params["export_variation"]) ?
+            (bool)$params["export_variation"] :
+            (bool)Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS', null, null, $this->shopId);
 
         $this->checkCurrency();
         $this->setCarrier();
-
-//        $format = null,
-//        $fullmode = null,
-//        $all = null,
-//        $stream = null,
-//        $full_title = null,
-//        $inactive_products = null,
-//        $export_features = null,
-//        $limit = 0,
-//        $out_stock = null,
-//        $product_ids = array()
-
-//
-//        $this->all = (bool)$all;
         return $this;
     }
 
@@ -276,6 +263,7 @@ class LengowExport
 
 
     /**
+     * v3
      * Set format to export.
      *
      * @param string $format The export format
@@ -333,7 +321,7 @@ class LengowExport
             // get products to be exported
             if ($this->export_timeout) {
                 $products = LengowProduct::exportIds(
-                    $this->all,
+                    $this->exportLengowSelection,
                     $this->showInactiveProduct,
                     $this->productIds,
                     $this->exportOutStock,
@@ -341,7 +329,7 @@ class LengowExport
                 );
             } else {
                 $products = LengowProduct::exportIds(
-                    $this->all,
+                    $this->exportLengowSelection,
                     $this->showInactiveProduct,
                     $this->productIds,
                     $this->exportOutStock
@@ -406,7 +394,7 @@ class LengowExport
                 }
 
                 // export product attributes ?
-                if ($this->showProductCombination && $product->hasAttributes()) {
+                if ($this->exportVariation && $product->hasAttributes()) {
                     $combinations = $product->getCombinations();
                     if (empty($combinations)) {
                         throw new LengowExportException('Unable to retrieve product combinations');
@@ -480,9 +468,8 @@ class LengowExport
         if (!$this->stream) {
             $feed_url = $this->feed->getUrl();
             if ($feed_url && php_sapi_name() != "cli") {
-                echo date('Y-m-d : H:i:s') . ' - Export - your feed is available here:
-                <a href="' . $feed_url . '" target="_blank">' . $feed_url . '</a><br />';
-                LengowCore::log('Export - your feed is available here: ' . $feed_url);
+                LengowCore::log('Export - your feed is available here:
+                <a href="' . $feed_url . '" target="_blank">' . $feed_url . '</a>', !$this->stream);
             }
         }
     }
@@ -495,10 +482,31 @@ class LengowExport
      */
     public function getTotalProduct()
     {
-        $query = ' SELECT COUNT(*) as total';
-        $query.= ' FROM '._DB_PREFIX_.'product p';
+        if (_PS_VERSION_ >= '1.5') {
+            $join = ' INNER JOIN '._DB_PREFIX_.'product_shop ps ON
+            (ps.id_product = p.id_product AND ps.id_shop = '.$this->shopId.') ';
+        } else {
+            $join = '';
+        }
+
+        if (_PS_VERSION_ >= '1.5') {
+            $where = ' WHERE ps.active = 1 ';
+        } else {
+            $where = ' WHERE p.active = 1 ';
+        }
+
         if ($this->exportVariation) {
-            $query.= ' LEFT JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
+            $query = ' SELECT SUM(total) as total FROM (';
+            $query.= ' ( SELECT COUNT(*) as total';
+            $query.= ' FROM '._DB_PREFIX_.'product p '.$join.' '.$where.')';
+            $query.= ' UNION ';
+            $query.= ' ( SELECT COUNT(*) as total';
+            $query.= ' FROM '._DB_PREFIX_.'product p';
+            $query.= ' INNER JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) '.$join.' '.$where.' ) ';
+            $query.= '  ) as tmp ';
+        } else {
+            $query = ' SELECT COUNT(*) as total';
+            $query.= ' FROM '._DB_PREFIX_.'product p '.$join.' '.$where.'';
         }
         $collection = Db::getInstance()->executeS($query);
         return $collection[0]['total'];
@@ -513,16 +521,41 @@ class LengowExport
      */
     public function getTotalExportProduct()
     {
+        if ($this->exportVariation) {
+            $query = ' SELECT SUM(total) as total FROM ( ( ';
+            $query.= $this->buildTotalQuery();
+            $query.= ' ) UNION ( ';
+            $query.= $this->buildTotalQuery(true);
+            $query.= ' ) ) as tmp';
+        } else {
+            $query = $this->buildTotalQuery();
+        }
+        //echo $query;
+        $collection = Db::getInstance()->executeS($query);
+        return $collection[0]['total'];
+    }
+
+    /**
+     * v3
+     * Get Count export product
+     *
+     * @param $variation boolean (count variation product)
+     *
+     * @return string
+     */
+    public function buildTotalQuery($variation = false)
+    {
         $where = array();
-        $query = ' SELECT COUNT(*) as total FROM (SELECT p.id_product';
+
+        $query = ' SELECT COUNT(*) as total';
         $query.= ' FROM '._DB_PREFIX_.'product p';
 
         if ($this->exportLengowSelection) {
             $query.= ' INNER JOIN '._DB_PREFIX_.'lengow_product lp ON (lp.id_product = p.id_product AND
             lp.id_shop = '.$this->shopId.')';
         }
-        if ($this->exportVariation) {
-            $query.= ' LEFT JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
+        if ($variation) {
+            $query.= ' INNER JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
         }
         if (_PS_VERSION_ >= '1.5') {
             $query.= ' INNER JOIN '._DB_PREFIX_.'product_shop ps ON
@@ -540,15 +573,16 @@ class LengowExport
         }
         if (!$this->exportOutStock) {
             if (_PS_VERSION_ >= '1.5') {
-                if ($this->exportVariation) {
-                    $query.= ' LEFT JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
-                    (sa.id_product=p.id_product AND pa.id_product_attribute = sa.id_product_attribute
+                if ($variation) {
+                    $query.= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
+                    (sa.id_product=p.id_product
+                    AND pa.id_product_attribute = sa.id_product_attribute
+                    AND sa.id_shop = '.$this->shopId.'
                     AND sa.quantity > 0)';
-                    $query.= ' LEFT JOIN ' . _DB_PREFIX_ . 'stock_available sa2 ON
-                    (sa2.id_product=p.id_product AND pa.id_product_attribute = 0 AND sa2.quantity > 0)';
                 } else {
                     $query.= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
-                    (sa.id_product=p.id_product AND sa.quantity > 0)';
+                    (sa.id_product=p.id_product AND id_product_attribute = 0 AND sa.quantity > 0
+                    AND sa.id_shop = '.$this->shopId.' )';
                 }
             } else {
                 $where[] = ' p.`quantity` > 0';
@@ -558,13 +592,7 @@ class LengowExport
             $where[] = ' p.`id_product` IN (' . implode(',', $this->productIds) . ')';
         }
         $query.= 'WHERE '.join(' AND ', $where);
-
-        if (!$this->exportVariation) {
-            $query.= ' GROUP BY p.id_product';
-        }
-        $query.= ') tmp';
-        $collection = Db::getInstance()->executeS($query);
-        return $collection[0]['total'];
+        return $query;
     }
 
 
@@ -590,13 +618,9 @@ class LengowExport
         }
 
         //Features
-        if ($this->exportVariation) {
+        if ($this->exportFeatures) {
             $features = Feature::getFeatures(Context::getContext()->language->id);
-            $features_selected = (array)Tools::jsonDecode(Configuration::get('LENGOW_EXPORT_SELECT_FEATURES'));
             foreach ($features as $feature) {
-                if (!in_array($feature['id_feature'], $features_selected)) {
-                    continue;
-                }
                 if (in_array($feature['name'], $fields)) {
                     $fields[] = $feature['name'] . '_1';
                 } else {
@@ -605,7 +629,7 @@ class LengowExport
             }
         }
         // if export product variations -> get variations attributes
-        if ($this->showProductCombination) {
+        if ($this->exportVariation) {
             $attributes = AttributeGroup::getAttributesGroups(Context::getContext()->language->id);
             foreach ($attributes as $attribute) {
                 //dont export empty attributes
@@ -630,6 +654,7 @@ class LengowExport
     }
 
     /**
+     * v3
      * Get filename of generated feeds
      *
      * @return string
