@@ -1,5 +1,4 @@
 <div id="lengow_feed_wrapper">
-    <h1>Yeah</h1>
     {foreach from=$shopCollection  item=shop}
         <div class="lengow_feed_block" id="block_{$shop['shop']->id}">
             <div class="lengow_feed_block_header">

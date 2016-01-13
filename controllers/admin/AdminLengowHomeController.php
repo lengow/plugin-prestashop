@@ -43,8 +43,6 @@ class AdminLengowHomeController extends ModuleAdminController
         $this->lang = true;
         $this->explicitSelect = true;
         $this->list_no_link = true;
-        $this->bootstrap = true;
-
         $this->template = 'layout.tpl';
         $this->display = 'view';
 

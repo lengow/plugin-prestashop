@@ -18,8 +18,7 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
+
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -174,12 +173,12 @@ class LengowFeedController extends LengowController {
             'filter' => true,
             'filter_key' => 'p.id_product',
         );
-//        $fields_list['image'] = array(
-//            'title' => $this->module->l('Image'),
-//            'align' => 'center',
-//            'image' => 'p',
-//            'width' => 70,
-//        );
+        $fields_list['image'] = array(
+            'title' => $this->module->l('Image'),
+            'align' => 'center',
+            'image' => 'p',
+            'width' => 70,
+        );
         $fields_list['name'] = array(
             'title' => $this->module->l('Name'),
             'filter' => true,
@@ -203,7 +202,8 @@ class LengowFeedController extends LengowController {
         $fields_list['category_name'] = array(
             'title' => $this->module->l('Category'),
             'width' => 'auto',
-            'filter_key' => 'cl!name',
+            'filter' => true,
+            'filter_key' => 'cl.name',
         );
 //        }
         $fields_list['price'] = array(
@@ -307,64 +307,84 @@ class LengowFeedController extends LengowController {
                 "where" => $where,
             )
         ));
+
         $collection = $list->executeQuery();
+
+        $tempContext = new Context();
+        $tempContext->shop = new Shop($shopId);
+        $tempContext->employee = $this->context->employee;
+        $tempContext->country = $this->context->country;
+
         //calcul price
-//        $nb = count($collection);
-//        if ($collection) {
-//            for ($i = 0; $i < $nb; $i++) {
-//                $collection[$i]['price'] = Tools::convertPrice(
-//                    $collection[$i]['price'],
-//                    $this->context->currency,
-//                    true,
-//                    $this->context
-//                );
-//                $collection[$i]['price_final'] = Product::getPriceStatic(
-//                    $collection[$i]['id_product'],
-//                    true,
-//                    null,
-//                    2,
-//                    null,
-//                    false,
-//                    true,
-//                    1,
-//                    true
-//                );
-//
-//                $join = array();
-//                $join[] = ' INNER JOIN `' . _DB_PREFIX_ . 'image` i ON (i.`id_product` = p.`id_product`
-//                ' . (!Shop::isFeatureActive() ? ' AND i.cover=1' : '') . ')';
-//                if (Shop::isFeatureActive()) {
-//                    $aliasImage = 'imgs';
-//                    $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'image_shop` imgs ON (imgs.`id_image` = i.`id_image`
-//                    AND imgs.`cover` = 1 AND imgs.id_shop=' . (int)$shopId . ')';
-//                } else {
-//                    $aliasImage = 'i';
-//                }
-//                $imageSql = ' SELECT '.$aliasImage.'.id_image';
-//                $imageSql.= ' FROM '._DB_PREFIX_.'product p ';
-//                $imageSql.= join(' ', $join);
-//                $imageSql.= ' WHERE p.id_product = '.$collection[$i]['id_product'];
-//                $imageSql.= ' GROUP BY p.id_product';
-//                $imageCollection = Db::getInstance()->executeS($imageSql, true, false);
-//                if (count($imageCollection) > 0) {
-//                    $path_to_image = _PS_IMG_DIR_.'p/'.Image::getImgFolderStatic($imageCollection[0]['id_image']).
-//                        (int)$imageCollection[0]['id_image'].'.jpg';
-//                    $collection[$i]['image'] = ImageManager::thumbnail(
-//                        $path_to_image,
-//                        'product_mini_'.$collection[$i]['id_product'].'_'.$shopId.'.jpg',
-//                        45,
-//                        'jpg'
-//                    );
-//                } else {
-//                    $collection[$i]['image'] = '';
-//                }
-//            }
-//        }
+        $nb = count($collection);
+        if ($collection) {
+            for ($i = 0; $i < $nb; $i++) {
+                $productId = $collection[$i]['id_product'];
+                if (_PS_VERSION_ < '1.5') {
+                    $collection[$i]['price_final'] = Product::getPriceStatic(
+                        $productId,
+                        true,
+                        null,
+                        2,
+                        null,
+                        false,
+                        true,
+                        1,
+                        true
+                    );
+                } else {
+                    $nothing = '';
+                    $collection[$i]['price_final'] = Product::getPriceStatic(
+                        $productId,
+                        true,
+                        null,
+                        2,
+                        null,
+                        false,
+                        true,
+                        1,
+                        true,
+                        null,
+                        null,
+                        null,
+                        $nothing,
+                        true,
+                        true,
+                        $tempContext
+                    );
+                }
+                $collection[$i]['image'] = '';
+                if (_PS_VERSION_ < '1.5') {
+                    $coverImage = Product::getCover($productId);
+                    if ($coverImage) {
+                        $id_image = $coverImage['id_image'];
+                        $imageProduct = new Image($id_image);
+                        $collection[$i]['image'] = cacheImage(
+                            _PS_IMG_DIR_.'p/'.$imageProduct->getExistingImgPath().'.jpg',
+                            'product_mini_'.(int)($productId).'.jpg',
+                            45,
+                            'jpg'
+                        );
+                    }
+                } else {
+                    $coverImage = Product::getCover($collection[$i]['id_product'], $tempContext);
+                    if ($coverImage) {
+                        $id_image = $coverImage['id_image'];
+                        $path_to_image = _PS_IMG_DIR_.'p/'.Image::getImgFolderStatic($id_image).(int)$id_image.'.jpg';
+                        $collection[$i]['image'] = ImageManager::thumbnail(
+                            $path_to_image,
+                            'product_mini_' . $collection[$i]['id_product'] . '_' . $shopId . '.jpg',
+                            45,
+                            'jpg'
+                        );
+                    }
+                }
+            }
+        }
         $list->updateCollection($collection);
         $paginationBlock = $list->renderPagination(array(
             'nav_class' => 'lengow_feed_pagination'
         ));
         return $paginationBlock.$list->display().$paginationBlock;
     }
-
 }
