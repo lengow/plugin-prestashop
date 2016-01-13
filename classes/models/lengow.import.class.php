@@ -986,83 +986,50 @@ class LengowImport
     protected static function addLengowOrder($lengow_id, $order, $order_data, $package_data, $order_amount)
     {
         if (_PS_VERSION_ >= '1.5') {
-            return Db::getInstance()->insert(
-                'lengow_orders',
-                array(
-                    'id_order'          => (int)$order->id,
-                    'id_order_lengow'   => pSQL($lengow_id),
-                    'id_order_line'     => pSQL((string)$package_data->cart[0]->marketplace_order_line_id),
-                    'id_shop'           => (int)$order->id_shop,
-                    'id_shop_group'     => (int)$order->id_shop_group,
-                    'id_lang'           => (int)$order->id_lang,
-                    'marketplace'       => pSQL(Tools::strtolower((string)$order_data->marketplace)),
-                    'message'           => pSQL((string)$order_data->comments),
-                    'total_paid'        => (float)$order_amount,
-                    'carrier'           => pSQL(
-                        count($package_data->delivery->trackings) > 0
-                        ? (string)$package_data->delivery->trackings[0]->carrier
-                        : null
-                    ),
-                    'method'            => pSQL(
-                        count($package_data->delivery->trackings) > 0
-                        ? (string)$package_data->delivery->trackings[0]->method
-                        : null
-                    ),
-                    'tracking'          => pSQL(
-                        count($package_data->delivery->trackings) > 0
-                        ? (string)$package_data->delivery->trackings[0]->number
-                        : null
-                    ),
-                    'sent_marketplace'  => pSQL(
-                        count($package_data->delivery->trackings) > 0
-                        ? ($package_data->delivery->trackings[0]->is_delivered_by_marketplace == null ? 0 : 1)
-                        : 0
-                    ),
-                    'extra'             => pSQL(Tools::jsonEncode($order_data)),
-                    'date_add'          => date('Y-m-d H:i:s'),
-                    'is_disabled'       => 0,
-                )
-            );
+            $id_shop = (int)$order->id_shop;
+            $id_shop_group = (int)$order->id_shop_group;
         } else {
-            return Db::getInstance()->autoExecute(
-                _DB_PREFIX_.'lengow_orders',
-                array(
-                    'id_order'          => (int)$order->id,
-                    'id_order_lengow'   => pSQL($lengow_id),
-                    'id_order_line'     => pSQL((string)$package_data->cart[0]->marketplace_order_line_id),
-                    'id_shop'           => (int)Context::getContext()->shop->id,
-                    'id_shop_group'     => (int)Context::getContext()->shop->id_shop_group,
-                    'id_lang'           => (int)$order->id_lang,
-                    'marketplace'       => pSQL(Tools::strtolower((string)$order_data->marketplace)),
-                    'message'           => pSQL((string)$order_data->comments),
-                    'total_paid'        => (float)$order_amount,
-                    'carrier'           => pSQL(
-                        count($package_data->delivery->trackings) > 0
-                        ? (string)$package_data->delivery->trackings[0]->carrier
-                        : null
-                    ),
-                    'method'            => pSQL(
-                        count($package_data->delivery->trackings) > 0
-                        ? (string)$package_data->delivery->trackings[0]->method
-                        : null
-                    ),
-                    'tracking'          => pSQL(
-                        count($package_data->delivery->trackings) > 0
-                        ? (string)$package_data->delivery->trackings[0]->number
-                        : null
-                    ),
-                    'sent_marketplace'  => pSQL(
-                        count($package_data->delivery->trackings) > 0
-                        ? ($package_data->delivery->trackings[0]->is_delivered_by_marketplace == null ? 0 : 1)
-                        : 0
-                    ),
-                    'extra'             => pSQL(Tools::jsonEncode($order_data)),
-                    'date_add'          => date('Y-m-d H:i:s'),
-                    'is_disabled'       => 0,
-                    ),
-                'INSERT'
-            );
+            $id_shop = (int)Context::getContext()->shop->id;
+            $id_shop_group = (int)Context::getContext()->shop->id_shop_group;
         }
+        return Db::getInstance()->autoExecute(
+            _DB_PREFIX_.'lengow_orders',
+            array(
+                'id_order'          => (int)$order->id,
+                'id_order_lengow'   => pSQL($lengow_id),
+                'id_order_line'     => pSQL((string)$package_data->cart[0]->marketplace_order_line_id),
+                'id_shop'           => $id_shop,
+                'id_shop_group'     => $id_shop_group,
+                'id_lang'           => (int)$order->id_lang,
+                'marketplace'       => pSQL(Tools::strtolower((string)$order_data->marketplace)),
+                'message'           => pSQL((string)$order_data->comments),
+                'total_paid'        => (float)$order_amount,
+                'carrier'           => pSQL(
+                    count($package_data->delivery->trackings) > 0
+                    ? (string)$package_data->delivery->trackings[0]->carrier
+                    : null
+                ),
+                'method'            => pSQL(
+                    count($package_data->delivery->trackings) > 0
+                    ? (string)$package_data->delivery->trackings[0]->method
+                    : null
+                ),
+                'tracking'          => pSQL(
+                    count($package_data->delivery->trackings) > 0
+                    ? (string)$package_data->delivery->trackings[0]->number
+                    : null
+                ),
+                'sent_marketplace'  => pSQL(
+                    count($package_data->delivery->trackings) > 0
+                    ? ($package_data->delivery->trackings[0]->is_delivered_by_marketplace == null ? 0 : 1)
+                    : 0
+                ),
+                'extra'             => pSQL(Tools::jsonEncode($order_data)),
+                'date_add'          => date('Y-m-d H:i:s'),
+                'is_disabled'       => 0,
+                ),
+            'INSERT'
+        );
     }
 
     /**
@@ -1075,24 +1042,14 @@ class LengowImport
      */
     protected static function addLengowOrderLine($order, $order_line_id)
     {
-        if (_PS_VERSION_ >= '1.5') {
-            return Db::getInstance()->insert(
-                'lengow_order_line',
-                array(
-                    'id_order'      => (int)$order->id,
-                    'id_order_line' => pSQL($order_line_id),
-                )
-            );
-        } else {
-            return Db::getInstance()->autoExecute(
-                _DB_PREFIX_.'lengow_order_line',
-                array(
-                    'id_order'      => (int)$order->id,
-                    'id_order_line' => pSQL($order_line_id),
-                    ),
-                'INSERT'
-            );
-        }
+        return Db::getInstance()->autoExecute(
+            _DB_PREFIX_.'lengow_order_line',
+            array(
+                'id_order'      => (int)$order->id,
+                'id_order_line' => pSQL($order_line_id),
+                ),
+            'INSERT'
+        );
     }
 
     /**

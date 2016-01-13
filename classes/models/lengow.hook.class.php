@@ -65,11 +65,8 @@ class LengowHook
             'updateOrderStatus' => '1.4',
             'orderConfirmation' => '1.4',
             // Version 1.5
-            'displayAdminHomeStatistics' => '1.5',
             'actionAdminControllerSetMedia' => '1.5',
             'actionObjectUpdateAfter' => '1.5',
-            // Version 1.6
-            'dashboardZoneTwo' => '1.6',
         );
         foreach ($lengow_hook as $hook => $version) {
             if ($version <= Tools::substr(_PS_VERSION_, 0, 3)) {
@@ -434,40 +431,6 @@ class LengowHook
     }
 
     /**
-     * Prestashop 1.6 - Dashboard
-     */
-    public function hookDashboardZoneTwo($params)
-    {
-        $this->context->smarty->assign(
-            array(
-                'token' => LengowMain::getTokenCustomer(),
-                'id_customer' => LengowMain::getIdCustomer(),
-                'id_group' => LengowMain::getGroupCustomer(),
-                'params' => $params,
-            )
-        );
-        return $this->module->display(__FILE__, 'views/templates/admin/dashboard/stats_16.tpl');
-    }
-
-//    /**
-//     * Hook on dashboard.
-//     *
-//     * @param array $args Arguments of hook
-//     */
-//    public function hookDisplayAdminHomeStatistics($args)
-//    {
-//        $args = $args; // Prestashop validator
-//        $this->context->smarty->assign(
-//            array(
-//                'token' => LengowMain::getTokenCustomer(),
-//                'id_customer' => LengowMain::getIdCustomer(),
-//                'id_group' => LengowMain::getGroupCustomer(),
-//            )
-//        );
-//        return $this->module->display(__FILE__, 'views/templates/admin/dashboard/stats.tpl');
-//    }
-
-    /**
      * Hook on admin page's order.
      *
      * @param array $args Arguments of hook
@@ -479,63 +442,64 @@ class LengowHook
         if (LengowOrder::isFromLengow($args['id_order'])) {
             $order = new LengowOrder($args['id_order']);
             if (Tools::getValue('action') == 'synchronize') {
-                $lengow_connector = new LengowConnector((integer)LengowMain::getIdCustomer(), LengowMain::getTokenCustomer());
-                $api_args = array(
-                    'idClient' => LengowMain::getIdCustomer(),
-                    'idFlux' => $order->id_feed_lengow,
-                    'idGroup' => LengowMain::getGroupCustomer(),
-                    'idCommandeMP' => $order->id_lengow,
-                    'idCommandePresta' => $order->id);
-                $lengow_connector->api('updatePrestaInternalOrderId', $api_args);
+                if ($order->id_flux != null) {
+                    $order->checkAndChangeMarketplaceName();
+                }
+                $order_ids = LengowOrder::getOrderIdFromLengowOrder($order->id_lengow, $order->lengow_marketplace);
+                if (count($order_ids) > 0) {
+                    $presta_ids = array();
+                    foreach ($order_ids as $order_id) {
+                        $presta_ids[] = $order_id['id_order'];
+                    }
+                    $connector  = new LengowConnector(LengowMain::getAccessToken(), LengowMain::getSecretCustomer());
+                    $orders = $connector->patch(
+                        '/v3.0/orders',
+                        array(
+                            'account_id'            => LengowMain::getIdAccount(),
+                            'marketplace_order_id'  => $order->id_lengow,
+                            'marketplace'           => $order->lengow_marketplace,
+                            'merchant_order_id'     => $presta_ids
+                        )
+                    );
+                }
             }
 
             if (_PS_VERSION_ < '1.5') {
-                $action_reimport = 'index.php?tab=AdminOrders&id_order=' . $order->id . '&vieworder&action=reImportOrder&token=' . Tools::getAdminTokenLite('AdminOrders') . '';
-                $action_reimport = $this->module->getPathUri() . 'v14/ajax.php?';
-                $action_synchronize = 'index.php?tab=AdminOrders&id_order=' . $order->id . '&vieworder&action=synchronize&token=' . Tools::getAdminTokenLite('AdminOrders');
+                $action_reimport = _PS_MODULE_LENGOW_DIR_.'v14/ajax.php?';
+                $action_synchronize = 'index.php?tab=AdminOrders&id_order='.$order->id.'&vieworder&action=synchronize&token='.Tools::getAdminTokenLite('AdminOrders');
                 $add_script = true;
             } else {
-                $action_reimport = 'index.php?controller=AdminLengow&id_order=' . $order->id . '&lengoworderid=' . $order->id_lengow . '&feed_id=' . $order->id_feed_lengow . '&action=reimportOrder&ajax&token=' . Tools::getAdminTokenLite('AdminLengow');
-                $action_synchronize = 'index.php?controller=AdminOrders&id_order=' . $order->id . '&vieworder&action=synchronize&token=' . Tools::getAdminTokenLite('AdminOrders');
+                $action_reimport = 'index.php?controller=AdminLengow&id_order='.$order->id.'&lengoworderid='.$order->id_lengow.'&action=reimportOrder&ajax&token='.Tools::getAdminTokenLite('AdminLengow');
+                $action_synchronize = 'index.php?controller=AdminOrders&id_order='.$order->id.'&vieworder&action=synchronize&token='.Tools::getAdminTokenLite('AdminOrders');
                 $add_script = false;
             }
             $lengow_order_extra = Tools::jsonDecode($order->lengow_extra);
 
             $template_data = array(
-                'id_order_lengow' => $order->id_lengow,
-                'id_flux' => $order->id_feed_lengow,
-                'marketplace' => $order->lengow_marketplace,
-                'total_paid' => $order->lengow_total_paid,
-                'carrier' => $order->lengow_carrier,
-                'message' => $order->lengow_message,
-                'action_synchronize' => $action_synchronize,
-                'action_reimport' => $action_reimport,
-                'order_id' => $args['id_order'],
-                'add_script' => $add_script,
-                'url_script' => $this->module->getPathUri() . 'views/js/admin.js',
-                'version' => _PS_VERSION_
+                'id_order_lengow'       => $order->id_lengow,
+                'id_flux'               => $order->id_flux,
+                'id_order_line'         => $order->id_order_line,
+                'marketplace'           => $order->lengow_marketplace,
+                'total_paid'            => $order->lengow_total_paid,
+                'carrier'               => $order->lengow_carrier,
+                'tracking_method'       => $order->lengow_method,
+                'tracking'              => $order->lengow_tracking,
+                'tracking_carrier'      => $order->lengow_carrier,
+                'sent_markeplace'       => $order->lengow_sent_marketplace ? $this->module->l('yes') : $this->module->l('no'),
+                'message'               => $order->lengow_message,
+                'action_synchronize'    => $action_synchronize,
+                'action_reimport'       => $action_reimport,
+                'order_id'              => $args['id_order'],
+                'add_script'            => $add_script,
+                'url_script'            => _PS_MODULE_LENGOW_DIR_.'views/js/admin.js',
+                'version'               => _PS_VERSION_
             );
-            if (!is_object($lengow_order_extra->tracking_informations->tracking_method)) {
-                $template_data['tracking_method'] = $lengow_order_extra->tracking_informations->tracking_method;
-            } else {
-                $template_data['tracking_method'] = '';
-            }
-            if (!is_object($lengow_order_extra->tracking_informations->tracking_carrier)) {
-                $template_data['tracking_carrier'] = $lengow_order_extra->tracking_informations->tracking_carrier;
-            } else {
-                $template_data['tracking_carrier'] = '';
-            }
-            if (!is_object($lengow_order_extra->tracking_informations->tracking_deliveringByMarketPlace)) {
-                $template_data['sent_markeplace'] = $lengow_order_extra->tracking_informations->tracking_deliveringByMarketPlace ? $this->module->l('yes') : $this->module->l('no');
-            } else {
-                $template_data['sent_markeplace'] = '';
-            }
 
             $this->context->smarty->assign($template_data);
             if (_PS_VERSION_ >= '1.6') {
-                return $this->module->display(__FILE__, 'views/templates/admin/order/info_16.tpl');
+                return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info_16.tpl');
             }
-            return $this->module->display(__FILE__, 'views/templates/admin/order/info.tpl');
+            return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info.tpl');
         }
         return '';
     }

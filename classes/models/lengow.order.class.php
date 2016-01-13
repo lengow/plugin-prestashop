@@ -306,73 +306,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * Get the shipping price with current method
-     *
-     * @param float $total The total of order
-     *
-     * @return float The shipping price.
-     */
-    public static function getShippingPrice($total)
-    {
-        $context = Context::getContext();
-        $carrier = LengowMain::getExportCarrier();
-        $id_zone = $context->country->id_zone;
-        $id_currency = $context->cart->id_currency;
-        $shipping_method = $carrier->getShippingMethod();
-        if ($shipping_method != Carrier::SHIPPING_METHOD_FREE) {
-            if ($shipping_method == Carrier::SHIPPING_METHOD_WEIGHT) {
-                return LengowMain::formatNumber(
-                    $carrier->getDeliveryPriceByWeight($total, (int)$id_zone)
-                );
-            } else {
-                return LengowMain::formatNumber(
-                    $carrier->getDeliveryPriceByPrice($total, (int)$id_zone, (int)$id_currency)
-                );
-            }
-        }
-        return 0;
-    }
-
-    /**
-     * Rebuild OrderCarrier after validateOrder
-     *
-     * @param int $id_carrier
-     *
-     * @return void
-     */
-    public function forceCarrier($id_carrier)
-    {
-        if ($id_carrier == '') {
-            return null;
-        }
-        $this->id_carrier = $id_carrier;
-        $this->update();
-        if ($this->getIdOrderCarrier() != '') {
-            $order_carrier = new OrderCarrier($this->getIdOrderCarrier());
-            $order_carrier->id_carrier = $id_carrier;
-            $order_carrier->update();
-        } else {
-            $order_carrier = new OrderCarrier();
-            $order_carrier->id_order = $this->id;
-            $order_carrier->id_carrier = $id_carrier;
-            $order_carrier->add();
-        }
-    }
-
-    public function getIdOrderCarrier()
-    {
-        if (_PS_VERSION_ < '1.5.5') {
-            return (int)Db::getInstance()->getValue(
-                'SELECT `id_order_carrier`
-                FROM `'._DB_PREFIX_.'order_carrier`
-                WHERE `id_order` = '.(int)$this->id
-            );
-        } else {
-            return parent::getIdOrderCarrier();
-        }
-    }
-
-    /**
      * Check if a lengow order
      *
      * @param integer   $id prestashop order id
@@ -384,7 +317,7 @@ class LengowOrder extends Order
         $r = Db::getInstance()->executeS(
             'SELECT `id_order_lengow`
             FROM `'._DB_PREFIX_.'lengow_orders`
-            WHERE `id_order` = '.(int)$id
+            WHERE `id_order` = \''.(int)$id.'\''
         );
         if (empty($r) || $r[0]['id_order_lengow'] == '') {
             return false;
@@ -416,7 +349,8 @@ class LengowOrder extends Order
     {
         $update = 'UPDATE '._DB_PREFIX_.'lengow_orders
             SET `is_disabled` = 1
-            WHERE `id_order`= '.(int)$id;
+            WHERE `id_order`= \''.(int)$id.'\'
+        ';
         return DB::getInstance()->execute($update);
     }
 
