@@ -40,13 +40,13 @@ if (!Module::isInstalled($lengow->name)) {
 
 if (LengowMain::checkIP()) {
 
-    $force_product = Configuration::get('LENGOW_IMPORT_FORCE_PRODUCT');
+    $force_product = (bool)Configuration::get('LENGOW_IMPORT_FORCE_PRODUCT');
     if (Tools::getIsset('forceProduct')) {
-         $force_product = Tools::getValue('forceProduct');
+         $force_product = (bool)Tools::getValue('forceProduct');
     }
 
     /* check if debug is active in module config */
-    $debug = Configuration::get('LENGOW_DEBUG');
+    $debug = (bool)Configuration::get('LENGOW_DEBUG');
     /* check if debug param is passed in URL */
     if (Tools::getIsset('lengow_debug')) {
         $debug = (bool)Tools::getValue('lengow_debug');

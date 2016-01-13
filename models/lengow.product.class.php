@@ -20,31 +20,26 @@
  */
 
 /**
- * The Lengow Product Class.
- *
+ * The Lengow Product Class
  */
 class LengowProduct extends Product
 {
 
     /**
-     * Version.
+     * string Version
      */
     const VERSION = '1.0.1';
 
     /**
-     * API nodes containing relevant data
+     * array API nodes containing relevant data
      */
     public static $PRODUCT_API_NODES = array(
-        'idLengow',
-        'idMP',
-        'sku',
-        'ean',
-        'order_lineid',
+        'marketplace_product_id',
+        'marketplace_status',
+        'merchant_product_id',
+        'marketplace_order_line_id',
         'quantity',
-        'price',
-        'price_unit',
-        'shipping_price',
-        'status',
+        'amount'
     );
 
     /**
@@ -896,8 +891,7 @@ class LengowProduct extends Product
         $id_product_attribute = 0,
         $id_warehouse = null,
         $id_shop = null
-    )
-    {
+    ) {
         if (version_compare(_PS_VERSION_, '1.5', '<')) {
             if ($id_product_attribute == 0 || $id_product_attribute == null) {
                 return Product::getQuantity($id_product);
@@ -988,14 +982,17 @@ class LengowProduct extends Product
     /**
      * Extract cart data from API
      *
+     * @param mixed $api
+     *
      * @return array
      */
     public static function extractProductDataFromAPI($api)
     {
         $temp = array();
         foreach (LengowProduct::$PRODUCT_API_NODES as $node) {
-            $temp[$node] = (string)$api->{$node};
+            $temp[$node] = $api->{$node};
         }
+        $temp['price_unit'] = (float)$temp['amount'] / (float)$temp['quantity'];
         return $temp;
     }
 
@@ -1004,9 +1001,9 @@ class LengowProduct extends Product
      *
      * @param string $attribute_name
      * @param string $attribute_value
-     * @param array $api_data
+     * @param array  $api_data
      *
-     * @return mixes
+     * @return mixed
      */
     public static function matchProduct($attribute_name, $attribute_value, $id_shop, $api_data = array())
     {
@@ -1015,13 +1012,15 @@ class LengowProduct extends Product
         }
 
         switch (Tools::strtolower($attribute_name)) {
-            case 'reference_product':
             case 'reference':
                 return LengowProduct::findProduct('reference', $attribute_value, $id_shop);
+                break;
             case 'ean':
                 return LengowProduct::findProduct('ean13', $attribute_value, $id_shop);
+                break;
             case 'upc':
                 return LengowProduct::findProduct('upc', $attribute_value, $id_shop);
+                break;
             default:
                 $product_ids = array();
                 $sku = str_replace('\_', '_', $attribute_value);
@@ -1035,23 +1034,27 @@ class LengowProduct extends Product
 
                 $id_att_bool = true;
                 if (isset($product_ids['id_product_attribute'])) {
-                    $id_att_bool = LengowProduct::checkProductAttributeId(new LengowProduct($product_ids['id_product']),
-                        $product_ids['id_product_attribute']);
+                    $id_att_bool = LengowProduct::checkProductAttributeId(
+                        new LengowProduct($product_ids['id_product']),
+                        $product_ids['id_product_attribute']
+                    );
                 }
 
                 if ($id_bool && $id_att_bool) {
                     return $product_ids;
                 }
                 return false;
+                break;
         }
     }
 
     /**
      * Check if product id found is correct
-     * @param  integer $product_id product id to be checked
-     * @param array $api_ids product ids from the API
      *
-     * @return bool
+     * @param integer   $product_id product id to be checked
+     * @param array     $api_ids    product ids from the API
+     *
+     * @return boolean
      */
     protected static function checkProductId($product_id, $api_ids)
     {
@@ -1067,6 +1070,7 @@ class LengowProduct extends Product
 
     /**
      * Check if the product attribute exists
+     *
      * @param integer $product
      * @param integer $product_attribute_id
      *
@@ -1082,14 +1086,14 @@ class LengowProduct extends Product
         return true;
     }
 
-
     /**
      * Return the product and its attribute ids
      *
-     * @param string $key
-     * @param string $value
+     * @param string    $key
+     * @param string    $value
+     * @param integer   $id_shop
      *
-     * @return int
+     * @return integer
      */
     protected static function findProduct($key, $value, $id_shop)
     {
@@ -1139,9 +1143,11 @@ class LengowProduct extends Product
     /**
      * Search a product by its reference, ean, upc and id
      *
-     * @param type $args
+     * @param type $attribute_value
+     * @param type $id_shop
+     * @param type $api_data
      *
-     * @return type
+     * @return array
      */
     public static function advancedSearch($attribute_value, $id_shop, $api_data)
     {
@@ -1165,9 +1171,9 @@ class LengowProduct extends Product
     /**
      * Calculate product without taxes using TaxManager
      *
-     * @param array $product product
-     * @param int $id_address address id used to get tax rate
-     * @param Context $context order context
+     * @param array     $product    product
+     * @param int       $id_address address id used to get tax rate
+     * @param Context   $context    order context
      *
      * @return float
      */
@@ -1175,8 +1181,10 @@ class LengowProduct extends Product
     {
         $tax_address = new LengowAddress((int)$id_address);
         if (_PS_VERSION_ >= '1.5') {
-            $tax_manager = TaxManagerFactory::getManager($tax_address,
-                Product::getIdTaxRulesGroupByIdProduct((int)$product['id_product'], $context));
+            $tax_manager = TaxManagerFactory::getManager(
+                $tax_address,
+                Product::getIdTaxRulesGroupByIdProduct((int)$product['id_product'], $context)
+            );
             $tax_calculator = $tax_manager->getTaxCalculator();
             return $tax_calculator->removeTaxes($product['price_wt']);
         } else {
@@ -1184,5 +1192,4 @@ class LengowProduct extends Product
             return $product['price_wt'] / (1 + $rate / 100);
         }
     }
-
 }
