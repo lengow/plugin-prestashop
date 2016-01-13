@@ -288,7 +288,6 @@ class LengowCarrier extends Carrier
         if (empty($result['error'][0]) && array_key_exists($id_relay, $result['success'])) {
             return $result['success'][$id_relay];
         }
-
         return false;
     }
 
@@ -326,14 +325,4 @@ class LengowCarrier extends Carrier
 
         return $db->execute($query);
     }
-}
-
-
-/**
- * Lengow carrier exception
- */
-class LengowCarrierException extends Exception
-{
-
-
 }

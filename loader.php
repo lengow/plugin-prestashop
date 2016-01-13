@@ -19,9 +19,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
 define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.$sep);
 
 $notInPresta14 = array('lengow.specificprice.class.php', 'lengow.gender.class.php');
@@ -46,7 +43,7 @@ if (_PS_VERSION_ < '1.5') {
     $listClassFile = array_diff(scandir($directory), array('..', '.'));
 
     foreach ($listClassFile as $list) {
-        if(in_array($list, $notInPresta14) && _PS_VERSION_ < '1.5'){
+        if (in_array($list, $notInPresta14) && _PS_VERSION_ < '1.5') {
             continue;
         }
         require_once $directory . $list;

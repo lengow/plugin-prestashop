@@ -160,30 +160,24 @@ class LengowCheck
     }
 
     /**
-     * Check API Authentification
-     *
-     * @return boolean
-     */
+    * Check API Authentification
+    *
+    * @return boolean
+    */
     public static function isValidAuth()
     {
         if (!self::isCurlActivated()) {
             return false;
         }
-
-        $id_customer = (int)Configuration::get('LENGOW_ID_CUSTOMER');
-        $token = Configuration::get('LENGOW_TOKEN');
-        $connector = new LengowConnector($id_customer, $token);
-        try {
-            $result = $connector->api('authentification');
-            if ($result['return'] == 'Ok') {
-                return true;
-            } else {
-                return $result['ip'];
-            }
-        } catch (LengowApiException $lae) {
+        
+        $account_id = (integer)LengowMain::getIdAccount();
+        $connector  = new LengowConnector(LengowMain::getAccessToken(), LengowMain::getSecretCustomer());
+        $result = $connector->connect();
+        if (isset($result['token']) && $account_id != 0 && is_integer($account_id)) {
+            return true;
+        } else {
             return false;
         }
-
     }
 
     /**
@@ -218,12 +212,31 @@ class LengowCheck
 
         self::$_module = new Lengow();
 
+        $checklist[] = array(
+            'message' => self::$_module->l('Lengow needs the CURL PHP extension', 'lengow.check.class'),
+            'help' => self::$_module->l('The CURL extension is not installed or enabled in your PHP installation. Check the manual for information on how to install or enable CURL on your system.', 'lengow.check.class'),
+            'help_link' => 'http://www.php.net/manual/en/curl.setup.php',
+            'help_label' => self::$_module->l('Go to Curl PHP extension manual', 'lengow.check.class'),
+            'state' => (int)self::isCurlActivated()
+        );
+        $checklist[] = array(
+            'message' => self::$_module->l('Lengow needs the SimpleXML PHP extension', 'lengow.check.class'),
+            'help' => self::$_module->l('The SimpleXML extension is not installed or enabled in your PHP installation. Check the manual for information on how to install or enable SimpleXML on your system.', 'lengow.check.class'),
+            'help_link' => 'http://www.php.net/manual/en/book.simplexml.php',
+            'help_label' => self::$_module->l('Go to SimpleXML PHP extension manual', 'lengow.check.class'),
+            'state' => (int)self::isSimpleXMLActivated()
+        );
+        $checklist[] = array(
+            'message' => self::$_module->l('Lengow needs the JSON PHP extension', 'lengow.check.class'),
+            'help' => self::$_module->l('The JSON extension is not installed or enabled in your PHP installation. Check the manual for information on how to install or enable JSON on your system.', 'lengow.check.class'),
+            'help_link' => 'http://www.php.net/manual/fr/book.json.php',
+            'help_label' => self::$_module->l('Go to JSON PHP extension manual', 'lengow.check.class'),
+            'state' => (int)self::isJsonActivated()
+        );
         $ip = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
         $checklist[] = array(
             'message' => self::$_module->l('Lengow authentification', 'lengow.check.class'),
-            'help' => '',
-            'state' => (int)self::isValidAuth() == 1 ? 1 : 0,
-            'additional_infos' => self::$_module->l('For this step, you need to have a Lengow account to get your Client ID, Group ID and API key.', 'lengow.check.class') . '<br/>'
+            'help' => self::$_module->l('For this step, you need to have a Lengow account to get your Client ID, Group ID and API key.', 'lengow.check.class') . '<br/>'
                 . self::$_module->l('Contact us if you don\'t have a Lengow account :', 'lengow.check.class') . '<br/>'
                 . self::$_module->l('By email :', 'lengow.check.class') . ' <a href="mailto:' . self::$_module->l('contact@lengow.com',
                     'lengow.check.class') . '" target="_blank">' . self::$_module->l('contact@lengow.com',
@@ -231,9 +244,9 @@ class LengowCheck
                 . self::$_module->l('By phone : +44 2033182631', 'lengow.check.class') . '<br/>'
                 . self::$_module->l('Already a client :',
                     'lengow.check.class') . ' <a href="https://solution.lengow.com/api/" target="_blank">'
-                . self::$_module->l('go to Lengow dashboard', 'lengow.check.class') . '</a><br/>'
-                . sprintf(self::$_module->l('Make sure your website IP (%s) address is filled in your Lengow Dashboard.',
-                    'lengow.check.class'), $ip),
+                . self::$_module->l('go to Lengow dashboard', 'lengow.check.class'),
+            'state' => (int)self::isValidAuth() == 1 ? 1 : 0,
+            'additional_infos' => sprintf(self::$_module->l('Make sure your website IP (%s) address is filled in your Lengow Dashboard.', 'lengow.check.class'), $ip)
         );
 
         $checklist[] = array(
@@ -255,8 +268,7 @@ class LengowCheck
         );
         $checklist[] = array(
             'message' => self::$_module->l('Prestashop plugin version', 'lengow.check.class'),
-            'help' => self::$_module->l('There is a new version of Lengow Module, please update it.',
-                'lengow.check.class'),
+            'help' => self::$_module->l('There is a new version of Lengow Module, please update it.', 'lengow.check.class'),
             'help_link' => 'http://www.lengow.fr/plugin-prestashop.html',
             'help_label' => self::$_module->l('Download the latest version', 'lengow.check.class'),
             'state' => (int)self::checkPluginVersion(self::$_module->version)

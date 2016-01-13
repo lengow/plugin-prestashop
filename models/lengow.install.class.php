@@ -63,7 +63,7 @@ class LengowInstall
             'LENGOW_LOGO_URL',
             'LENGOW_AUTHORIZED_IP',
             'LENGOW_TRACKING',
-            'LENGOW_ID_ACCOUNT',
+            'LENGOW_ACCOUNT_ID',
             'LENGOW_ACCESS_TOKEN',
             'LENGOW_SECRET',
             'LENGOW_EXPORT_SELECTION',
@@ -199,7 +199,7 @@ class LengowInstall
         return
             Configuration::updateValue('LENGOW_AUTHORIZED_IP', $_SERVER['REMOTE_ADDR']) &&
             Configuration::updateValue('LENGOW_TRACKING', '') &&
-            Configuration::updateValue('LENGOW_ID_ACCOUNT', '') &&
+            Configuration::updateValue('LENGOW_ACCOUNT_ID', '') &&
             Configuration::updateValue('LENGOW_ACCESS_TOKEN', '') &&
             Configuration::updateValue('LENGOW_SECRET', '') &&
             Configuration::updateValue('LENGOW_EXPORT_SELECTION', false) &&

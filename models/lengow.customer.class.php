@@ -19,7 +19,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-
 /**
  * Lengow Customer class
  *
@@ -32,10 +31,10 @@ class LengowCustomer extends Customer implements LengowObject
      * @var array
      */
     public static $definition_lengow = array(
-        'lastname' => array('required' => true, 'size' => 32),
+        'lastname'  => array('required' => true, 'size' => 32),
         'firstname' => array('required' => true, 'size' => 32),
-        'email' => array('required' => true, 'size' => 128),
-        'passwd' => array('required' => true, 'size' => 32),
+        'email'     => array('required' => true, 'size' => 128),
+        'passwd'    => array('required' => true, 'size' => 32),
     );
 
     /* Interface methods */
@@ -48,20 +47,18 @@ class LengowCustomer extends Customer implements LengowObject
         if (_PS_VERSION_ < 1.5) {
             return LengowCustomer::$definition_lengow;
         }
-
         return LengowCustomer::$definition['fields'];
     }
-
 
     /**
      * @see LengowObject::assign()
      */
     public function assign($data = array())
     {
-        $this->company = LengowAddress::cleanName((string)$data['society']);
+        $this->company = LengowAddress::cleanName((string)$data['company']);
         $this->email = $data['email'];
-        $this->firstname = $data['firstname'];
-        $this->lastname = $data['lastname'];
+        $this->firstname = $data['first_name'];
+        $this->lastname = $data['last_name'];
         $this->passwd = md5(rand());
         if (_PS_VERSION_ >= '1.5') {
             $this->id_gender = LengowGender::getGender((string)$data['civility']);
@@ -75,14 +72,12 @@ class LengowCustomer extends Customer implements LengowObject
     public function validateLengow()
     {
         $definition = LengowCustomer::getFieldDefinition();
-
         foreach ($definition as $field_name => $constraints) {
             if (isset($constraints['required']) && $constraints['required']) {
                 if (!$this->{$field_name}) {
                     $this->validateFieldLengow($field_name, LengowObject::LENGOW_EMPTY_ERROR);
                 }
             }
-
             if (isset($constraints['size'])) {
                 if (Tools::strlen($this->{$field_name}) > $constraints['size']) {
                     $this->validateFieldLengow($field_name, LengowObject::LENGOW_SIZE_ERROR);
@@ -94,7 +89,6 @@ class LengowCustomer extends Customer implements LengowObject
         if (is_string($return)) {
             throw new InvalidLengowObjectException($return);
         }
-
         $this->add();
         return true;
     }
@@ -112,7 +106,6 @@ class LengowCustomer extends Customer implements LengowObject
                 $this->validateSizeLengow($field);
                 break;
             default:
-                # code...
                 break;
         }
     }
@@ -185,8 +178,6 @@ class LengowCustomer extends Customer implements LengowObject
                             $this->other .= $address_part;
                             continue;
                         }
-                        // else
-                        // 	throw new LengowValidatorException('Address is too long');
                     }
                 }
                 break;
@@ -200,5 +191,4 @@ class LengowCustomer extends Customer implements LengowObject
                 return;
         }
     }
-
 }
