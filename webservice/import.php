@@ -21,87 +21,72 @@
 
 @set_time_limit(0);
 $sep = DIRECTORY_SEPARATOR;
-require_once dirname(__FILE__).$sep.'..'.$sep.'..'.$sep.'..'.$sep.'config'.$sep.'config.inc.php';
-require_once dirname(__FILE__).$sep.'..'.$sep.'..'.$sep.'..'.$sep.'init.php';
-require_once dirname(__FILE__).$sep.'..'.$sep.'lengow.php';
-require_once dirname(__FILE__).$sep.'..'.$sep.'loader.php';
 
-try
-{
-	loadFile('core');
-	loadFile('import');
-} catch(Exception $e)
-{
-	try
-	{
-		loadFile('core');
-		LengowCore::log($e->getMessage(), null, 1);
-	} catch (Exception $ex)
-	{
-		echo date('Y-m-d : H:i:s ').$e->getMessage().'<br />';
-	}
-}
+$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
+$sep = DIRECTORY_SEPARATOR;
+require_once $currentDirectory.'config'.$sep.'config.inc.php';
+require_once $currentDirectory.'init.php';
+require_once $currentDirectory.'modules'.$sep.'lengow'.$sep.'lengow.php';
+require_once $currentDirectory.'modules'.$sep.'lengow'.$sep.'loader.php';
+
 /* check if Lengow is installed and enabled */
 $lengow = new Lengow();
-if (!Module::isInstalled($lengow->name))
-{
-	if (_PS_VERSION_ >= 1.5 && !Module::isEnabled($lengow->name))
-		die('Lengow module is not active');
-
-	die('Lengow module is not installed');
+if (!Module::isInstalled($lengow->name)) {
+    if (_PS_VERSION_ >= 1.5 && !Module::isEnabled($lengow->name)) {
+        die('Lengow module is not active');
+    }
+    die('Lengow module is not installed');
 }
 
-if (LengowCore::checkIP())
-{
-	$force_price = Configuration::get('LENGOW_FORCE_PRICE');
-	if (Tools::getIsset('forcePrice'))
-		$force_price = (bool)Tools::getValue('forcePrice');
+if (LengowCore::checkIP()) {
 
-	$force_product = Configuration::get('LENGOW_IMPORT_FORCE_PRODUCT');
-	if (Tools::getIsset('forceProduct'))
-		$force_product = Tools::getValue('forceProduct');
+    $force_product = Configuration::get('LENGOW_IMPORT_FORCE_PRODUCT');
+    if (Tools::getIsset('forceProduct')) {
+         $force_product = Tools::getValue('forceProduct');
+    }
 
-	/* check if debug is active in module config */
-	$debug = Configuration::get('LENGOW_DEBUG');
+    /* check if debug is active in module config */
+    $debug = Configuration::get('LENGOW_DEBUG');
+    /* check if debug param is passed in URL */
+    if (Tools::getIsset('lengow_debug')) {
+        $debug = (bool)Tools::getValue('lengow_debug');
+    }
 
-	/* check if debug param is passed in URL */
-	if (Tools::getIsset('lengow_debug'))
-		$debug = (bool)Tools::getValue('lengow_debug');
+    /* get start and end dates of import */
+    $days = (int)Configuration::get('LENGOW_IMPORT_DAYS');
+    if (Tools::getIsset('days') && is_numeric(Tools::getValue('days'))) {
+        $days = (int)Tools::getValue('days');
+    }
+    $date_from = date('c', strtotime(date('Y-m-d').' -'.$days.'days'));
+    $date_to = date('c');
 
-	/* get start and end dates of import */
-	$days = (int)Configuration::get('LENGOW_IMPORT_DAYS');
-	if (Tools::getIsset('days') && is_numeric(Tools::getValue('days')))
-		$days = (int)Tools::getValue('days');
-	$date_from = date('Y-m-d', strtotime(date('Y-m-d').' -'.$days.'days'));
-	$date_to = date('Y-m-d');
+    $limit = 0;
+    if (Configuration::get('LENGOW_IMPORT_SINGLE')) {
+        $limit = 1;
+    } elseif (Tools::getIsset('limit')) {
+        $limit = (int)Tools::getValue('limit');
+    }
 
-	$limit = 0;
-	if (Configuration::get('LENGOW_IMPORT_SINGLE'))
-		$limit = 1;
-	elseif (Tools::getIsset('limit'))
-		$limit = (int)Tools::getValue('limit');
-
-	if (Tools::getIsset('idOrder') && Tools::getIsset('idFlux') && is_numeric(Tools::getValue('idFlux')))
-	{
-		$import = new LengowImport(
-								Tools::getValue('idOrder'),
-								(int)Tools::getValue('idFlux'),
-								true,
-								$debug
-							);
-	}
-	else
-		$import = new LengowImport(
-								null,
-								null,
-								$force_product,
-								$debug,
-								$date_from,
-								$date_to,
-								$limit,
-								true
-							);
-	$import->exec();
+    if (Tools::getIsset('idOrder') && Tools::getIsset('marketplace')) {
+        $import = new LengowImport(
+            Tools::getValue('idOrder'),
+            Tools::getValue('marketplace'),
+            true,
+            $debug
+        );
+    } else {
+        $import = new LengowImport(
+            null,
+            null,
+            $force_product,
+            $debug,
+            $date_from,
+            $date_to,
+            $limit,
+            true
+        );
+    }
+    $import->exec();
+} else {
+    die('Unauthorized access for IP : '.$_SERVER['REMOTE_ADDR']);
 }
-else
-	die('Unauthorized access for IP : '.$_SERVER['REMOTE_ADDR']);

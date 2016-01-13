@@ -159,39 +159,33 @@ class LengowCore
     }
 
     /**
-     * Get Lengow ID Customer.
+     * Get Lengow ID Account.
      *
      * @return integer
      */
-    public static function getIdCustomer()
+    public static function getIdAccount()
     {
-        return Configuration::get('LENGOW_ID_CUSTOMER');
+        return Configuration::get('LENGOW_ACCOUNT_ID');
     }
 
     /**
-     * Get the ID Group.
+     * Get access token
      *
-     * @return integer
+     * @return string
      */
-    public static function getGroupCustomer($all = true)
+    public static function getAccessToken()
     {
-        if ($all) {
-            return Configuration::get('LENGOW_ID_GROUP');
-        }
-
-        $group = Configuration::get('LENGOW_ID_GROUP');
-        $array_group = explode(',', $group);
-        return $array_group[0];
+        return Configuration::get('LENGOW_ACCESS_TOKEN');
     }
 
     /**
-     * Get the token API.
+     * Get the secret.
      *
-     * @return integer
+     * @return string
      */
-    public static function getTokenCustomer()
+    public static function getSecretCustomer()
     {
-        return Configuration::get('LENGOW_TOKEN');
+        return Configuration::get('LENGOW_SECRET');
     }
 
     /**
@@ -204,16 +198,21 @@ class LengowCore
     public static function getOrderState($state)
     {
         switch ($state) {
-            case 'process':
-            case 'processing':
+            case 'accepted':
+            case 'waiting_shipment':
                 return Configuration::get('LENGOW_ORDER_ID_PROCESS');
+                break;
             case 'shipped':
+            case 'closed':
                 return Configuration::get('LENGOW_ORDER_ID_SHIPPED');
-            case 'cancel':
+                break;
+            case 'refused':
             case 'canceled':
                 return Configuration::get('LENGOW_ORDER_ID_CANCEL');
+                break;
             case 'shippedByMp':
                 return Configuration::get('LENGOW_ORDER_ID_SHIPPEDBYMP');
+                break;
         }
         return false;
     }
@@ -387,25 +386,6 @@ class LengowCore
     }
 
     /**
-     * Get flows.
-     *
-     * @return array Flow
-     */
-    public static function getFlows($id_flow = null)
-    {
-        $lengow_connector = new LengowConnector((integer)self::getIdCustomer(), self::getTokenCustomer());
-        $args = array(
-            'idClient' => (integer)self::getIdCustomer(),
-            'idGroup' => (string)self::getGroupCustomer()
-        );
-        if ($id_flow) {
-            $args['idFlow'] = $id_flow;
-        }
-        return $lengow_connector->api('getRootFeed', $args);
-    }
-
-
-    /**
      * v3
      * Check export access
      *
@@ -465,28 +445,6 @@ class LengowCore
             return true;
         }
         return false;
-    }
-
-    /**
-     * Check and update xml of marketplace's configuration.
-     *
-     * @return boolean.
-     */
-    public static function updateMarketPlaceConfiguration()
-    {
-        $mp_update = Configuration::get('LENGOW_MP_CONF');
-        if (!$mp_update || $mp_update != date('Y-m-d')) {
-            try {
-                if ($mp_stream = LengowFile::getRessource(self::$MP_CONF_LENGOW, 'r')) {
-                    $mp_file = new LengowFile(LengowCore::$LENGOW_CONFIG_FOLDER, LengowMarketplace::$XML_MARKETPLACES, 'w');
-                    stream_copy_to_stream($mp_stream, $mp_file->instance);
-                    $mp_file->close();
-                    Configuration::updateValue('LENGOW_MP_CONF', date('Y-m-d'));
-                }
-            } catch (LengowFileException $lfe) {
-                LengowCore::log($lfe->getMessage(), false);
-            }
-        }
     }
 
     /**

@@ -19,42 +19,25 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-
+$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
 $sep = DIRECTORY_SEPARATOR;
-require_once '..'.$sep.'..'.$sep.'..'.$sep.'config'.$sep.'config.inc.php';
-require_once '..'.$sep.'..'.$sep.'..'.$sep.'init.php';
-require_once '..'.$sep.'lengow.php';
-
-require_once '..'.$sep.'loader.php';
-try
-{
-	loadFile('core');
-	loadFile('webservice');
-} catch(Exception $e)
-{	
-	try
-	{
-		loadFile('core');
-		LengowCore::log($e->getMessage(), null, 1);
-	} catch (Exception $ex)
-	{
-		echo date('Y-m-d : H:i:s ').$e->getMessage().'<br />';
-	}
-}
+require_once $currentDirectory.'config'.$sep.'config.inc.php';
+require_once $currentDirectory.'init.php';
+require_once $currentDirectory.'modules'.$sep.'lengow'.$sep.'lengow.php';
 
 $lengow = new Lengow();
-if (LengowCore::checkIP())
-{
-	$action = Tools::getValue('action');
-	try {
-		if (LengowWebservice::checkAction($action))
-			LengowWebservice::execute($action);
-	} catch (Exception $e) {
-		echo $e->getMessage();
-		echo '<br /><br />';
-		LengowWebservice::showAvailableAction();
-	}
-	exit();
+if (LengowCore::checkIP()) {
+    $action = Tools::getValue('action');
+    try {
+        if (LengowWebservice::checkAction($action)) {
+            LengowWebservice::execute($action);
+        }
+    } catch (Exception $e) {
+        echo $e->getMessage();
+        echo '<br /><br />';
+        LengowWebservice::showAvailableAction();
+    }
+    exit();
+} else {
+    die('Unauthorized access for IP : '.$_SERVER['REMOTE_ADDR']);
 }
-else
-	die('Unauthorized access for IP : '.$_SERVER['REMOTE_ADDR']);

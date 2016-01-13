@@ -43,8 +43,8 @@ $listClassFile = array_diff(scandir($directory), array('..', '.'));
 
 foreach ($listClassFile as $list) {
 
-    if(in_array($list, $notInPresta14) && _PS_VERSION_ < '1.5'){
-            continue;
+    if (in_array($list, $notInPresta14) && _PS_VERSION_ < '1.5') {
+        continue;
     }
     require_once $directory . $list;
 

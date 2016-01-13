@@ -21,7 +21,6 @@
 
 /**
  * Lengow Object Interface
- *
  */
 interface LengowObject
 {
@@ -58,7 +57,6 @@ interface LengowObject
      */
     public function validateFieldLengow($field, $error_type);
 
-
     /**
      * Modify an empty field
      *
@@ -69,15 +67,7 @@ interface LengowObject
     /**
      * Modify a field to fit its size
      *
-     *
      * @param string $field field name
      */
     public function validateSizeLengow($field);
-
-
-}
-
-class InvalidLengowObjectException extends Exception
-{
-
 }

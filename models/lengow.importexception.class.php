@@ -19,11 +19,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!$installation) {
-    exit();
-}
+/**
+* Lengow Import Exception class
+*/
+class LengowImportException extends Exception
+{
 
-Configuration::updateValue(
-    'LENGOW_IMPORT_SINGLE',
-    version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
-);
+}

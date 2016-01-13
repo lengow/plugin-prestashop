@@ -9,55 +9,51 @@
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-    {*//////////////////////////////////////////////////////////////
-    ///////////////////// ACCOUNT CONFIGURATION  //////////////////
-    //////////////////////////////////////////////////////////////*}
-    <div class="lengow_panel panel panel-default">
-        <h4 class="panel-title paramLengow">
-            <i class="fa fa-cog fa-2x"></i> <a role="button" data-toggle="collapse" data-parent="#accordion"
-                                               href="#collapseOne" aria-expanded="false"
-                                               aria-controls="collapseOne">
-                Account Configuration
-            </a>
-        </h4>
-
-        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-            <div class="panel-body">
-                <form id="_form" class="form-group formLengow"
-                      action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}"
-                      method="post"
-                      enctype="multipart/form-data">
+    <form id="_form" class="form-group formLengow"
+        action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}"
+        method="post"
+        enctype="multipart/form-data"
+    >
+        {*//////////////////////////////////////////////////////////////
+        ///////////////////// ACCOUNT CONFIGURATION  //////////////////
+        //////////////////////////////////////////////////////////////*}
+        <div class="lengow_panel panel panel-default">
+            <h4 class="panel-title paramLengow">
+                <i class="fa fa-cog fa-2x"></i> <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                                   href="#collapseOne" aria-expanded="false"
+                                                   aria-controls="collapseOne">
+                    Account Configuration
+                </a>
+            </h4>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
                     <h5 class="titleLengow">{l s='Account - Start your configuration' mod='lengow'}</h5>
                     <br/>
-                    <label>{l s='Customer ID' mod='lengow'}</label><span
+                    <label>{l s='Account ID' mod='lengow'}</label><span
                             class="small"><sup>*</sup> {l s='Required field' mod='lengow'}</span>
-
                     <div class="margin-form">
-                        <input type="text" name="lengow_customer_id" id="lengow_customer_id"
-                               value="{$lengow_customer_id|escape:'htmlall':'UTF-8'}" class="" size="20"/>
+                        <input type="text" name="lengow_account_id" id="lengow_account_id"
+                               value="{$lengow_account_id|escape:'htmlall':'UTF-8'}" class="" size="20"/>
                     </div>
                     <div class="clear"></div>
                     <br/>
-                    <label>{l s='Group ID' mod='lengow'}</label><span
+                    <label>{l s='Access Token' mod='lengow'}</label><span
                             class="small"><sup>*</sup> {l s='Required field' mod='lengow'}</span>
-
                     <div class="margin-form">
-                        <input type="text" name="lengow_group_id" id="lengow_group_id"
-                               value="{$lengow_group_id|escape:'htmlall':'UTF-8'}" class="" size="20"/>
+                        <input type="text" name="lengow_access_token" id="lengow_access_token"
+                               value="{$lengow_access_token|escape:'htmlall':'UTF-8'}" class="" size="20"/>
                     </div>
                     <div class="clear"></div>
                     <br/>
-                    <label>{l s='Token API' mod='lengow'}</label><span
+                    <label>{l s='Secret' mod='lengow'}</label><span
                             class="small"><sup>*</sup> {l s='Required field' mod='lengow'}</span>
-
                     <div class="margin-form">
-                        <input type="text" name="lengow_token" id="lengow_token"
-                               value="{$lengow_token|escape:'htmlall':'UTF-8'}" class="" size="32"/>
+                        <input type="text" name="lengow_secret" id="lengow_secret"
+                               value="{$lengow_secret|escape:'htmlall':'UTF-8'}" class="" size="32"/>
                     </div>
                     <div class="clear"></div>
                     <br/>
                     <label>Help</label>
-
                     <div class="margin-form">
                         {$help_credentials|escape:'quotes':'UTF-8'}
                     </div>
@@ -65,28 +61,22 @@
                     <br/>
                     <input type="submit" id="_form_submit_btn" value="{l s='Save' mod='lengow'}"
                            name="submitlengow" class="btn btn-default"/>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-
-    {*//////////////////////////////////////////////////////////////
-    ///////////////////// SECURITY AND TRACKING //////////////////
-    //////////////////////////////////////////////////////////////*}
-    <div class="lengow_panel panel panel-default">
-        <h4 class="panel-title paramLengow">
-            <i class="fa fa-lock fa-2x"></i> <a class="collapsed" role="button" data-toggle="collapse"
-                                                data-parent="#accordion" href="#collapseTwo"
-                                                aria-expanded="false" aria-controls="collapseTwo">
-                Security and Tracking
-            </a>
-        </h4>
-        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-            <div class="panel-body">
-                <form id="_form" class="form-group formLengow"
-                      action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}"
-                      method="post"
-                      enctype="multipart/form-data">
+        {*//////////////////////////////////////////////////////////////
+        ///////////////////// SECURITY AND TRACKING //////////////////
+        //////////////////////////////////////////////////////////////*}
+        <div class="lengow_panel panel panel-default">
+            <h4 class="panel-title paramLengow">
+                <i class="fa fa-lock fa-2x"></i> <a class="collapsed" role="button" data-toggle="collapse"
+                                                    data-parent="#accordion" href="#collapseTwo"
+                                                    aria-expanded="false" aria-controls="collapseTwo">
+                    Security and Tracking
+                </a>
+            </h4>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
                     <h5 class="titleLengow">{l s='Security' mod='lengow'}</h5>
                     <br/>
                     <label for="lengow_authorized_ip">{l s='Authorised IP' mod='lengow'}</label><span
@@ -107,30 +97,22 @@
                     <br/>
                     <input type="submit" id="_form_submit_btn" value="{l s='Save' mod='lengow'}"
                            name="submitlengow" class="btn btn-default"/>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-
-    {*//////////////////////////////////////////////////////////////
-    ///////////////////// EXPORT //////////////////////////////////
-    //////////////////////////////////////////////////////////////*}
-
-    <div class="lengow_panel panel panel-default">
-        <h4 class="panel-title paramLengow">
-            <i class="fa fa-external-link fa-2x"></i> <a class="collapsed" role="button" data-toggle="collapse"
-                                                         data-parent="#accordion" href="#collapseThree"
-                                                         aria-expanded="false" aria-controls="collapseThree">
-                Export Parameters
-            </a>
-        </h4>
-
-        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-            <div class="panel-body">
-                <form id="_form" class="form-group formLengow"
-                      action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}"
-                      method="post"
-                      enctype="multipart/form-data">
+        {*//////////////////////////////////////////////////////////////
+        ///////////////////// EXPORT //////////////////////////////////
+        //////////////////////////////////////////////////////////////*}
+        <div class="lengow_panel panel panel-default">
+            <h4 class="panel-title paramLengow">
+                <i class="fa fa-external-link fa-2x"></i> <a class="collapsed" role="button" data-toggle="collapse"
+                                                             data-parent="#accordion" href="#collapseThree"
+                                                             aria-expanded="false" aria-controls="collapseThree">
+                    Export Parameters
+                </a>
+            </h4>
+            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
                     <h5 class="titleLengow">{l s='Export parameters' mod='lengow'}</h5>
                     <br/>
                     <label>{l s='Default export carrier' mod='lengow'}</label>
@@ -139,10 +121,8 @@
                             <option value="{$option.id_carrier|escape:'htmlall':'UTF-8'}"{if $option.id_carrier == $lengow_carrier_default} selected="selected"{/if}>{$option.name|escape:'htmlall':'UTF-8'}</option>
                         {/foreach}
                     </select>
-
                     <p class="preference_description">{l s=' The shipping costs will be calculated based on the selected carrier' mod='lengow'}</p>
                     <br/>
-
                     <label>{l s='Export only selection' mod='lengow'}</label>
                     <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                            name="lengow_export_selection" class="switchLengow" id="active_on"
@@ -154,9 +134,7 @@
                     <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                            name="lengow_export_disabled" class="switchLengow" id="active_on"
                            value="1" {if $lengow_export_disabled == 1} checked="checked"{/if}>
-
                     <p class="preference_description">{l s='If you want to export disabled products, choose "yes".' mod='lengow'}</p>
-
                     <div class="clear"></div>
                     <br/>
                     <label>{l s='Auto export of new product(s)' mod='lengow'}</label>
@@ -164,34 +142,27 @@
                            name="lengow_export_new"
                            class="switchLengow" id="active_on"
                            value="1" {if $lengow_export_new == 1} checked="checked"{/if}>
-
                     <p class="preference_description">{l s='If you choose "yes" your new product(s) will be automatically exported on the next feed' mod='lengow'}</p>
-
                     <div class="clear"></div>
                     <br/>
                     <label>{l s='Export product variations' mod='lengow'}</label>
                     <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                            name="lengow_export_all_variations" class="switchLengow" id="active_on"
                            value="1" {if $lengow_export_all_variations == 1} checked="checked"{/if}>
-
                     <p class="preference_description">{l s='If don\'t want to export all your products\' variations, choose "no"' mod='lengow'}</p>
-
                     <div class="clear"></div>
                     <br/>
                     <label>{l s='Export product features' mod='lengow'}</label>
                     <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                            name="lengow_export_features" class="switchLengow" id="active_on"
                            value="1" {if $lengow_export_features == 1} checked="checked"{/if}>
-
                     <p class="preference_description">{l s='If you choose "yes", your product(s) will be exported with features.' mod='lengow'}</p>
-
                     <div class="clear"></div>
                     <br/>
                     <label>{l s='Title + attributes + features' mod='lengow'}</label>
                     <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                            name="lengow_export_fullname" class="switchLengow" id="active_on"
                            value="1" {if $lengow_export_fullname == 1} checked="checked"{/if}>
-
                     <p class="preference_description">{l s='Select this option if you want a variation product title as title + attributes + feature. By default the title will be the product name' mod='lengow'}</p>
 
                     <div class="clear"></div>
@@ -217,7 +188,6 @@
                     <div class="clear"></div>
                     <br/>
                     <label>{l s='Number images to export' mod='lengow'}</label>
-
                     <div class="margin-form">
                         <select name="lengow_images_count" class="" id="lengow_images_count">
                             {foreach from=$options.images_count item=option}
@@ -228,7 +198,6 @@
                     <div class="clear"></div>
                     <br/>
                     <label>{l s='Export default format' mod='lengow'}</label>
-
                     <div class="margin-form">
                         <select name="lengow_export_format" class="" id="lengow_export_format">
                             {foreach from=$options.formats item=option}
@@ -243,25 +212,20 @@
                            name="lengow_export_file"
                            class="switchLengow" id="active_on"
                            value="1" {if $lengow_export_file == 1} checked="checked"{/if}>
-
                     <p class="preference_description">{l s='You should use this option if you have 3,000 products or more' mod='lengow'}</p>
-
                     <div class="clear"></div>
                     <br/>
                     <label>{l s='Fields to export' mod='lengow'}</label>
-
                     <div class="margin-form">
                         <select name="lengow_export_fields[]" class="lengow-select" size="25" multiple="multiple">
                             {foreach from=$options.export_fields item=field}
                                 <option value="{$field->id|escape:'htmlall':'UTF-8'}"{if $field->id|in_array:$lengow_export_fields} selected="selected"{/if}>{$field->name|escape:'htmlall':'UTF-8'}</option>
                             {/foreach}
                         </select>
-
                         <p class="preference_description">{l s='Maintain "control key or command key" to select fields.' mod='lengow'}</p>
                     </div>
                     <div class="clear"></div>
                     <label>{l s='Product features to export' mod='lengow'}</label>
-
                     <div class="margin-form">
                         <select name="lengow_export_select_features[]" class="lengow-select" size="10"
                                 multiple="multiple">
@@ -269,63 +233,39 @@
                                 <option value="{$feature->id|escape:'htmlall':'UTF-8'}"{if $feature->id|in_array:$lengow_export_select_features} selected="selected"{/if}>{$feature->name|escape:'htmlall':'UTF-8'}</option>
                             {/foreach}
                         </select>
-
                         <p class="preference_description">{l s='Maintain "control key or command key" to select features.' mod='lengow'}</p>
                     </div>
                     <div class="clear"></div>
                     <label>{l s='Your export script' mod='lengow'}</label>
-
                     <div class="margin-form">
                         {$url_feed_export|escape:'quotes':'UTF-8'}
                     </div>
                     <div class="clear"></div>
                     <br/>
                     <label>{l s='Your export file(s) available' mod='lengow'}</label>
-
                     <div class="margin-form">
                         {$lengow_export_feed_files|escape:'quotes':'UTF-8'}
                     </div>
                     <br/>
                     <input type="submit" id="_form_submit_btn" value="{l s='Save' mod='lengow'}"
                            name="submitlengow" class="btn btn-default"/>
-
-                    {if $lengow_feed_management}
-                        <fieldset id="fieldset_5">
-                            <legend>{l s='Feeds' mod='lengow'}</legend>
-                            {$lengow_flow|escape:'htmlall':'UTF-8'}
-                            <p class="preference_description">{l s='If you use the backoffice of the Lengow module, migrate your feed when you are sure to be ready' mod='lengow'}
-                                <br/>
-                                {l s='If you want to use the file export, don\'t use this fonctionality. Please contact Lengow Support Team' mod='lengow'}
-                            </p>
-
-                            <div class="clear"></div>
-                            <input type="submit" id="_form_submit_btn" value="{l s='Save' mod='lengow'}"
-                                   name="submitlengow" class="btn btn-default"/>
-                        </fieldset>
-                    {/if}
-                </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="lengow_panel panel panel-default">
-        {*//////////////////////////////////////////////////////////////
-        ///////////////////// IMPORT  //////////////////////////////////
-        //////////////////////////////////////////////////////////////*}
-        <h4 class="panel-title paramLengow">
-            <i class="fa fa-download fa-2x"></i> <a class="collapsed" role="button" data-toggle="collapse"
-                                                    data-parent="#accordion" href="#collapseFour"
-                                                    aria-expanded="false" aria-controls="collapseFour">
-                Import Parameters
-            </a>
-        </h4>
-
-        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-            <div class="panel-body">
-                <form id="_form" class="form-group formLengow"
-                      action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}"
-                      method="post"
-                      enctype="multipart/form-data">
+        <div class="lengow_panel panel panel-default">
+            {*//////////////////////////////////////////////////////////////
+            ///////////////////// IMPORT  //////////////////////////////////
+            //////////////////////////////////////////////////////////////*}
+            <h4 class="panel-title paramLengow">
+                <i class="fa fa-download fa-2x"></i> <a class="collapsed" role="button" data-toggle="collapse"
+                                                        data-parent="#accordion" href="#collapseFour"
+                                                        aria-expanded="false" aria-controls="collapseFour">
+                    Import Parameters
+                </a>
+            </h4>
+            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                <div class="panel-body">
                     <h5 class="titleLengow">{l s='Import parameters' mod='lengow'}</h5>
                     <br/>
                     <label>{l s='Status of process orders' mod='lengow'}</label>
@@ -405,19 +345,6 @@
                         <div class="small"><sup>*</sup> {l s='Required field' mod='lengow'}</div>
                     </div>
                     <div class="clear"></div>
-                    <!--<label>{l s='Forced price' mod='lengow'}</label>
-            <div class="margin-form">
-                <input type="radio" name="lengow_force_price"id="active_on" value="1" {if $lengow_force_price}checked="checked"{/if} />
-                <label class="t" for="active_on">
-                    <img src="../img/admin/enabled.gif" alt="{l s='Enable' mod='lengow'}" title="{l s='Enable' mod='lengow'}" />
-                </label>
-                <input type="radio" name="lengow_force_price"id="active_off" value="0" {if $lengow_force_price == 0}checked="checked"{/if} />
-                <label class="t" for="active_off">
-                    <img src="../img/admin/disabled.gif" alt="{l s='Disable' mod='lengow'}" title="{l s='Disable' mod='lengow'}" />
-                </label>
-                <p class="preference_description">{l s='This option allows to force the product prices of the marketplace orders during the import' mod='lengow'}</p>
-            </div>
-            <div class="clear"></div>-->
                     <br/>
                     <label>{l s='Force Products' mod='lengow'}</label>
                     <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
@@ -509,68 +436,54 @@
                     <br/>
                     <input type="submit" id="_form_submit_btn" value="{l s='Save' mod='lengow'}"
                            name="submitlengow" class="btn btn-default"/>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    {*//////////////////////////////////////////////////////////////
-    /////////////////////  CRON  //////////////////////////////////
-    //////////////////////////////////////////////////////////////*}
-    <div class="lengow_panel panel panel-default">
-        <h4 class="panel-title paramLengow">
-            <i class="fa fa-repeat fa-2x"></i> <a class="collapsed" role="button" data-toggle="collapse"
-                                                  data-parent="#accordion" href="#collapseFive"
-                                                  aria-expanded="false" aria-controls="collapseFive">
-                CRON Lengow Parameters
-            </a>
-        </h4>
-
-        <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-            <div class="panel-body">
-                <form id="_form" class="form-group formLengow"
-                      action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}"
-                      method="post"
-                      enctype="multipart/form-data">
+        {*//////////////////////////////////////////////////////////////
+        /////////////////////  CRON  //////////////////////////////////
+        //////////////////////////////////////////////////////////////*}
+        <div class="lengow_panel panel panel-default">
+            <h4 class="panel-title paramLengow">
+                <i class="fa fa-repeat fa-2x"></i> <a class="collapsed" role="button" data-toggle="collapse"
+                                                      data-parent="#accordion" href="#collapseFive"
+                                                      aria-expanded="false" aria-controls="collapseFive">
+                    CRON Lengow Parameters
+                </a>
+            </h4>
+            <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                <div class="panel-body">
                     <h5 class="titleLengow">{l s='Cron' mod='lengow'}</h5>
                     <br/>
                     {$lengow_cron|escape:'quotes':'UTF-8'}
                     <div class="clear"></div>
                     <input type="submit" id="_form_submit_btn" value="{l s='Save' mod='lengow'}"
                            name="submitlengow" class="btn btn-default"/>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    {*//////////////////////////////////////////////////////////////
-        /////////////////////  DEV  //////////////////////////////////
-        //////////////////////////////////////////////////////////////*}
-    <div class="lengow_panel panel panel-default">
-        <h4 class="panel-title paramLengow">
-            <i class="fa fa-cogs fa-2x"></i> <a class="collapsed" role="button" data-toggle="collapse"
-                                                data-parent="#accordion" href="#collapseSix"
-                                                aria-expanded="false" aria-controls="collapseSix">
-                Developer Tools
-            </a>
-        </h4>
-
-        <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
-            <div class="panel-body">
-                <form id="_form" class="form-group formLengow"
-                      action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}"
-                      method="post"
-                      enctype="multipart/form-data">
+        {*//////////////////////////////////////////////////////////////
+            /////////////////////  DEV  //////////////////////////////////
+            //////////////////////////////////////////////////////////////*}
+        <div class="lengow_panel panel panel-default">
+            <h4 class="panel-title paramLengow">
+                <i class="fa fa-cogs fa-2x"></i><a class="collapsed" role="button" data-toggle="collapse"
+                                                    data-parent="#accordion" href="#collapseSix"
+                                                    aria-expanded="false" aria-controls="collapseSix">
+                    Developer Tools
+                </a>
+            </h4>
+            <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+                <div class="panel-body">
                     <h5 class="titleLengow">{l s='Developer' mod='lengow'}</h5>
                     <br/>
                     <label>{l s='Debug mode' mod='lengow'}</label>
                     <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No" name="lengow_debug"
                            class="switchLengow" id="active_on" value="1" {if $lengow_debug == 1} checked="checked"{/if}>
-
                     <div class=:"clear"></div>
                     <br/>
                     <label>{l s='Export timeout' mod='lengow'}</label>
-
                     <div class="margin-form">
                         <input type="text" name="lengow_export_timeout" id="lengow_export_timeout"
                                value="{$lengow_export_timeout|escape:'htmlall':'UTF-8'}" class="" size="20"/>
@@ -578,37 +491,22 @@
                         <div class="small"><sup>*</sup>{l s='Required field' mod='lengow'}</div>
                     </div>
                     <div class="clear"></div>
-                    <!--<label>{l s='Feed management' mod='lengow'}</label>
-            <div class="margin-form">
-                <input type="radio" name="lengow_feed_management"id="active_on" value="1" {if $lengow_feed_management}checked="checked"{/if} />
-                <label class="t" for="active_on">
-                    <img src="../img/admin/enabled.gif" alt="{l s='Enable' mod='lengow'}" title="{l s='Enable' mod='lengow'}" />
-                </label>
-                <input type="radio" name="lengow_feed_management"id="active_off" value="0" {if $lengow_feed_management == 0}checked="checked"{/if} />
-                <label class="t" for="active_off">
-                    <img src="../img/admin/disabled.gif" alt="{l s='Disable' mod='lengow'}" title="{l s='Disable' mod='lengow'}" />
-                </label>
-            </div>
-            <div class=:"clear"></div>-->
                     <br/>
                     <label>{l s='Logs' mod='lengow'}</label>
-
                     <div class="margin-form">
                         {$log_files|escape:'quotes':'UTF-8'}
                     </div>
                     <br/>
-
                     <div class="margin-form">
                         <input type="submit" id="_form_submit_btn" value="{l s='Save' mod='lengow'}"
                                name="submitlengow"
                                class="btn btn-default"/>
                     </div>
                     <div class="clear"></div>
-
-                </form>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 
