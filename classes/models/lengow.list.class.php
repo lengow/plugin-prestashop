@@ -33,6 +33,7 @@ class LengowList
     protected $nbPerPage;
     protected $sql;
     protected $id;
+    protected $ajax;
 
     public function __construct($params)
     {
@@ -45,6 +46,7 @@ class LengowList
         $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
         $this->nbPerPage = isset($params['nbPerPage']) ? $params['nbPerPage'] : 20;
         $this->sql = $params['sql'];
+        $this->ajax = isset($params['ajax']) ? (bool)$params['ajax'] : false;
     }
 
     /**
@@ -113,7 +115,7 @@ class LengowList
                         case "switch_product":
                             $value = '<input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                                name="lengow_product_selection" class="lengow_switch lengow_switch_product"
-                               data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller).'"
+                               data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
                                data-action="select_product"
                                data-id_shop="'.$this->shopId.'"
                                data-id_product="'.$item[$this->identifier].'"
@@ -153,11 +155,15 @@ class LengowList
      */
     public function display()
     {
-        $lengow_link = new LengowLink();
-        $html= '<form id="form_table_'.$this->id.'" class="lengow_form_table"
-        data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller).'">';
-        $html.= $this->displayHeader().$this->displayContent().$this->displayFooter();
-        $html.= '</form>';
+        if ($this->collection) {
+            $lengow_link = new LengowLink();
+            $html= '<form id="form_table_'.$this->id.'" class="lengow_form_table"
+            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'">';
+            $html.= $this->displayHeader().$this->displayContent().$this->displayFooter();
+            $html.= '</form>';
+        } else {
+            $html = '';
+        }
         return $html;
     }
 
@@ -170,6 +176,7 @@ class LengowList
     {
         $sql = $this->buildQuery();
         $sqlTotal = $this->buildQuery(true);
+        //echo $sql;
 
         $this->collection = Db::getInstance()->executeS($sql, true, false);
         $this->total = Db::getInstance()->getValue($sqlTotal, false);
@@ -247,10 +254,10 @@ class LengowList
             $html.= '<li>';
             $class = ($i == $this->currentPage) ? 'disabled' : '';
             $html.= '<li class="'.$class.'"><a href="#"
-            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller).'&p='.$i.'">'.$i.'</a></li>';
+            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller,$this->ajax).'&p='.$i.'">'.$i.'</a></li>';
             $html.= '</li>';
         }
-        $html.= '</ul><nav>';
+        $html.= '</ul></nav>';
         return $html;
     }
 }

@@ -255,8 +255,7 @@ class ShopBackwardModule extends Shop
 
     public $id = 1;
     public $id_shop_group = 1;
-
-
+    public $name = '';
     public function getContextType()
     {
         return ShopBackwardModule::CONTEXT_ALL;

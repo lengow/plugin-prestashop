@@ -526,7 +526,7 @@ class LengowHook
                 $template_data['tracking_carrier'] = '';
             }
             if (!is_object($lengow_order_extra->tracking_informations->tracking_deliveringByMarketPlace)) {
-                $template_data['sent_markeplace'] = $lengow_order_extra->tracking_informations->tracking_deliveringByMarketPlace ? $this->l('yes') : $this->l('no');
+                $template_data['sent_markeplace'] = $lengow_order_extra->tracking_informations->tracking_deliveringByMarketPlace ? $this->module->l('yes') : $this->module->l('no');
             } else {
                 $template_data['sent_markeplace'] = '';
             }

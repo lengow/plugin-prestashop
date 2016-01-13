@@ -19,25 +19,20 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-class LengowLink extends LinkCore
+/**
+ * The Lengow Product Class.
+ *
+ */
+class LengowShop extends Shop
 {
 
-    public function getAbsoluteAdminLink($controller)
+    public function __construct()
     {
-        $admin_path = Tools::getShopDomainSsl(true, true).
-            __PS_BASE_URI__.substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);
-        if (_PS_VERSION_ < '1.6') {
-            $admin_path.= '/index.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
-        } else {
-            $admin_path.= '/'.$this->getAdminLink($controller);
+        parent::__construct();
+        if (_PS_VERSION_ < '1.5') {
+            $this->id = 1;
+            $this->name = Configuration::get('PS_SHOP_NAME');
+            $this->domain = Configuration::get('PS_SHOP_DOMAIN');
         }
-        return $admin_path;
-    }
-
-    public function getExportLink($store)
-    {
-
-
-
     }
 }

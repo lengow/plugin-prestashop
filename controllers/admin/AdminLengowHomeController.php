@@ -48,5 +48,13 @@ class AdminLengowHomeController extends ModuleAdminController
         $this->template = 'layout.tpl';
         $this->display = 'view';
 
+        parent::__construct();
+
+        $this->lengow_controller = new LengowHomeController(array(
+            'breadcrumb_title' => 'Home'
+        ));
+        $this->lengow_controller->postProcess();
+        $this->lengow_controller->display();
+
     }
 }

@@ -19,8 +19,11 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-require_once 'lengow.php';
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
-if (_PS_VERSION_ < '1.5') {
-    include 'controllers/admin/TabLengowLogConfigController.php';
+class LengowHomeController extends LengowController
+{
+
 }

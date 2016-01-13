@@ -27,7 +27,6 @@ $sep = DIRECTORY_SEPARATOR;
 require_once $currentDirectory.'config'.$sep.'config.inc.php';
 require_once $currentDirectory.'init.php';
 require_once $currentDirectory.'modules'.$sep.'lengow'.$sep.'lengow.php';
-require_once $currentDirectory.'modules'.$sep.'lengow'.$sep.'loader.php';
 
 /* check if Lengow is installed and enabled */
 $lengow = new Lengow();
