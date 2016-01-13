@@ -30,7 +30,6 @@ $sep = DIRECTORY_SEPARATOR;
 require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules/lengow/lengow.php';
-require_once $currentDirectory . 'modules/lengow/loader.php';
 
 error_reporting(E_ALL);
 ini_set("display_errors", 1);

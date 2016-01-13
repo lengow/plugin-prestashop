@@ -39,22 +39,32 @@ foreach ($listClassFile as $list) {
 }
 
 if (_PS_VERSION_ < '1.5') {
-    $directory = _PS_MODULE_LENGOW_DIR_ . 'models/';
+    $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/models/';
     $listClassFile = array_diff(scandir($directory), array('..', '.'));
-
     foreach ($listClassFile as $list) {
         if (in_array($list, $notInPresta14) && _PS_VERSION_ < '1.5') {
             continue;
         }
         require_once $directory . $list;
     }
+    $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/controllers/';
+    $listClassFile = array_diff(scandir($directory), array('..', '.'));
+    foreach ($listClassFile as $list) {
+        require_once $directory . $list;
+    }
 } else {
     spl_autoload_register('lengowAutoloader');
 }
 
-function lengowAutoloader($class){
-    $directory = _PS_MODULE_LENGOW_DIR_ . 'models/';
-    if (substr($class, 0, 6) == 'Lengow') {
-        include $directory.str_replace('lengow', 'lengow.', strtolower($class)).'.class.php';
+function lengowAutoloader($className){
+
+    if (substr($className, 0, 6) == 'Lengow') {
+        if (substr($className, -10) == 'Controller') {
+            $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/controllers/';
+            include $directory.$className.'.php';
+        } else {
+            $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/models/';
+            include $directory.str_replace('lengow', 'lengow.', strtolower($className)).'.class.php';
+        }
     }
 }

@@ -18,7 +18,6 @@
  *  @copyright 2014 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * The AdminTab Lengow Class.
  *
@@ -26,18 +25,18 @@
  * @copyright 2013 Lengow SAS
  */
 
-class AdminLengowHome14 extends AdminTab
+class AdminLengowFeed14 extends AdminTab
 {
     public function __construct()
     {
-        //$this->view = true;
 
-        parent::__construct();
-
-        $this->lengow_controller = new LengowHomeController(array(
-            'breadcrumb_title' => 'Home'
+        $this->lengow_controller = new LengowFeedController(array(
+            'breadcrumb_title' => 'Product'
         ));
         $this->lengow_controller->postProcess();
+
+
+        parent::__construct();
         $this->lengow_controller->display();
     }
 

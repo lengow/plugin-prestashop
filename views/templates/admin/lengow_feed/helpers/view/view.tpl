@@ -1,4 +1,5 @@
 <div id="lengow_feed_wrapper">
+    <h1>Yeah</h1>
     {foreach from=$shopCollection  item=shop}
         <div class="lengow_feed_block" id="block_{$shop['shop']->id}">
             <div class="lengow_feed_block_header">
@@ -11,21 +12,21 @@
                         <span class="lengow_total">{$shop['total_product']}</span> available<br/>
                         <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                                name="lengow_export_selection" class="lengow_switch lengow_switch_option"
-                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')}"
+                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)}"
                                data-action="change_option_selected"
                                data-id_shop="{$shop['shop']->id}"
                                value="1" {if $shop['option_selected'] == 1} checked="checked"{/if}>
                         <span class="lengow_select_text">Select specific products</span><br/>
                         <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                                name="lengow_export_selection" class="lengow_switch lengow_switch_option"
-                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')}"
+                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)}"
                                data-action="change_option_product_variation"
                                data-id_shop="{$shop['shop']->id}"
                                value="1" {if $shop['option_variation'] == 1} checked="checked"{/if}>
                         <span class="lengow_select_text">Include product variation</span><br/>
                         <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                                name="lengow_export_selection" class="lengow_switch lengow_switch_option"
-                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')}"
+                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)}"
                                data-action="change_option_product_out_of_stock"
                                data-id_shop="{$shop['shop']->id}"
                                value="1" {if $shop['option_product_out_of_stock'] == 1} checked="checked"{/if}>
