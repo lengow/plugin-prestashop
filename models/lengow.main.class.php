@@ -24,7 +24,7 @@
  * The Lengow Core Class.
  *
  */
-class LengowCore
+class LengowMain
 {
 
     /**
@@ -239,13 +239,13 @@ class LengowCore
      */
     public static function getImageFormat()
     {
-        if (LengowCore::$image_type_cache) {
-            return LengowCore::$image_type_cache;
+        if (LengowMain::$image_type_cache) {
+            return LengowMain::$image_type_cache;
         }
         $id_type_image = Configuration::get('LENGOW_IMAGE_TYPE');
         $image_type = new ImageType($id_type_image);
-        LengowCore::$image_type_cache = $image_type->name;
-        return LengowCore::$image_type_cache;
+        LengowMain::$image_type_cache = $image_type->name;
+        return LengowMain::$image_type_cache;
     }
 
     /**
@@ -323,10 +323,10 @@ class LengowCore
      */
     public static function getMarketplaceSingleton($name)
     {
-        if (!isset(LengowCore::$registers[$name])) {
-            LengowCore::$registers[$name] = new LengowMarketplace($name);
+        if (!isset(LengowMain::$registers[$name])) {
+            LengowMain::$registers[$name] = new LengowMarketplace($name);
         }
-        return LengowCore::$registers[$name];
+        return LengowMain::$registers[$name];
     }
 
     /**
@@ -437,7 +437,7 @@ class LengowCore
      */
     public static function checkToken($id_shop, $token)
     {
-        $storeToken = LengowCore::getToken($id_shop);
+        $storeToken = LengowMain::getToken($id_shop);
         if ($token == $storeToken) {
             return true;
         }
@@ -455,7 +455,7 @@ class LengowCore
         $ips = Configuration::get('LENGOW_AUTHORIZED_IP');
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
         $ips = explode(';', $ips);
-        $authorized_ips = array_merge($ips, LengowCore::$IPS_LENGOW);
+        $authorized_ips = array_merge($ips, LengowMain::$IPS_LENGOW);
 
         if (!self::inTest()) {
             $authorized_ips[] = $_SERVER['SERVER_ADDR'];
@@ -478,13 +478,13 @@ class LengowCore
         if (!$mp_update || $mp_update != date('Y-m-d')) {
             try {
                 if ($mp_stream = LengowFile::getRessource(self::$MP_CONF_LENGOW, 'r')) {
-                    $mp_file = new LengowFile(LengowCore::$LENGOW_CONFIG_FOLDER, LengowMarketplace::$XML_MARKETPLACES, 'w');
+                    $mp_file = new LengowFile(LengowMain::$LENGOW_CONFIG_FOLDER, LengowMarketplace::$XML_MARKETPLACES, 'w');
                     stream_copy_to_stream($mp_stream, $mp_file->instance);
                     $mp_file->close();
                     Configuration::updateValue('LENGOW_MP_CONF', date('Y-m-d'));
                 }
             } catch (LengowFileException $lfe) {
-                LengowCore::log($lfe->getMessage(), false);
+                LengowMain::log($lfe->getMessage(), false);
             }
         }
     }
@@ -514,13 +514,13 @@ class LengowCore
         if ((!$plg_update || $plg_update != date('Y-m-d')) && function_exists('curl_version')) {
             try {
                 if ($plugins_stream = LengowFile::getRessource(self::$LENGOW_PLUGINS_VERSION, 'r')) {
-                    $plugins_file = new LengowFile(LengowCore::$LENGOW_CONFIG_FOLDER, LengowCheck::$XML_PLUGINS, 'w');
+                    $plugins_file = new LengowFile(LengowMain::$LENGOW_CONFIG_FOLDER, LengowCheck::$XML_PLUGINS, 'w');
                     stream_copy_to_stream($plugins_stream, $plugins_file->instance);
                     $plugins_file->close();
                     Configuration::updateValue('LENGOW_PLG_CONF', date('Y-m-d'));
                 }
             } catch (LengowFileException $lfe) {
-                LengowCore::log($lfe->getMessage(), false);
+                LengowMain::log($lfe->getMessage(), false);
             }
         }
     }
@@ -534,7 +534,7 @@ class LengowCore
      */
     public static function log($txt, $force_output = false, $id_order_lengow = null)
     {
-        $log = LengowCore::getLogInstance();
+        $log = LengowMain::getLogInstance();
         $log->write($txt, $force_output, $id_order_lengow);
     }
 
@@ -547,7 +547,7 @@ class LengowCore
 
         $days = array();
         $days[] = 'logs-' . date('Y-m-d') . '.txt';
-        for ($i = 1; $i < LengowCore::$LOG_LIFE; $i++) {
+        for ($i = 1; $i < LengowMain::$LOG_LIFE; $i++) {
             $days[] = 'logs-' . date('Y-m-d', strtotime('-' . $i . 'day')) . '.txt';
         }
         if (empty($log_files)) {
@@ -813,7 +813,7 @@ class LengowCore
                 $mail_body .= ' - No error message, contact support via https://supportlengow.zendesk.com/agent/';
             }
             $mail_body .= '</li>';
-            LengowCore::logSent($log['lengow_order_id']);
+            LengowMain::logSent($log['lengow_order_id']);
         }
         $datas = array(
             '{mail_title}' => 'Lengow imports logs',
@@ -838,9 +838,9 @@ class LengowCore
                 _PS_MODULE_DIR_ . 'lengow/views/templates/mails/',
                 true)
             ) {
-                LengowCore::log('Unable to send report email to ' . $to);
+                LengowMain::log('Unable to send report email to ' . $to);
             } else {
-                LengowCore::log('Report email sent to ' . $to);
+                LengowMain::log('Report email sent to ' . $to);
             }
         }
     }
@@ -897,7 +897,7 @@ class LengowCore
         $sep = DIRECTORY_SEPARATOR;
         $module_dir = _PS_MODULE_DIR_ . $module_name . $sep;
 
-        if (!LengowCore::isModuleInstalled($module_name)) {
+        if (!LengowMain::isModuleInstalled($module_name)) {
             return false;
         }
 
@@ -923,7 +923,7 @@ class LengowCore
         $sep = DIRECTORY_SEPARATOR;
         $module_dir = _PS_MODULE_DIR_ . $module_name . $sep;
 
-        if (!LengowCore::isModuleInstalled($module_name)) {
+        if (!LengowMain::isModuleInstalled($module_name)) {
             return false;
         }
 
@@ -949,12 +949,12 @@ class LengowCore
     {
         if ($marketplace->getStateLengow($order_state) == 'shipped') {
             if ($shipment_by_mp) {
-                return LengowCore::getOrderState('shippedByMp');
+                return LengowMain::getOrderState('shippedByMp');
             } else {
-                return LengowCore::getOrderState('shipped');
+                return LengowMain::getOrderState('shipped');
             }
         } else {
-            return LengowCore::getOrderState('process');
+            return LengowMain::getOrderState('process');
         }
     }
 
@@ -968,7 +968,7 @@ class LengowCore
     public static function getOrderStates($id_lang)
     {
         $states = OrderState::getOrderStates($id_lang);
-        $id_state_lengow = LengowCore::getLengowErrorStateId();
+        $id_state_lengow = LengowMain::getLengowErrorStateId();
         $index = 0;
         foreach ($states as $state) {
             if ($state['id_order_state'] == $id_state_lengow) {
@@ -986,10 +986,10 @@ class LengowCore
      */
     public static function getLogInstance()
     {
-        if (is_null(LengowCore::$log)) {
-            LengowCore::$log = new LengowLog();
+        if (is_null(LengowMain::$log)) {
+            LengowMain::$log = new LengowLog();
         }
-        return LengowCore::$log;
+        return LengowMain::$log;
     }
 
     /**
@@ -1002,8 +1002,8 @@ class LengowCore
      */
     public static function getExportUrl($id_shop = null)
     {
-        $base = LengowCore::getLengowBaseUrl($id_shop);
-        return $base . 'webservice/export.php?token='.LengowCore::getToken($id_shop);
+        $base = LengowMain::getLengowBaseUrl($id_shop);
+        return $base . 'webservice/export.php?token='.LengowMain::getToken($id_shop);
     }
 
     /**
@@ -1016,8 +1016,8 @@ class LengowCore
      */
     public static function getImportUrl($id_shop = null)
     {
-        $base = LengowCore::getLengowBaseUrl($id_shop);
-        return $base . 'webservice/import.php?token='.LengowCore::getToken($id_shop);
+        $base = LengowMain::getLengowBaseUrl($id_shop);
+        return $base . 'webservice/import.php?token='.LengowMain::getToken($id_shop);
     }
 
     /**
@@ -1095,7 +1095,7 @@ class LengowCore
             . 'VALUES (\''
             . pSQL($description_export)
             . '\', \''
-            . pSQL(LengowCore::getExportUrl())
+            . pSQL(LengowMain::getExportUrl())
             . '\', \'-1\', \'-1\', \'-1\', \'-1\', NULL, TRUE, '
             . (int)$id_shop . ', '
             . (int)$shop->id_shop_group
@@ -1106,7 +1106,7 @@ class LengowCore
             . 'VALUES (\''
             . pSQL($description_import)
             . '\', \''
-            . pSQL(LengowCore::getImportUrl())
+            . pSQL(LengowMain::getImportUrl())
             . '\', \'-1\', \'-1\', \'-1\', \'-1\', NULL, TRUE, '
             . (int)$id_shop
             . ', '

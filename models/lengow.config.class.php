@@ -87,12 +87,12 @@ class LengowConfig
                 Configuration::updateValue('LENGOW_EXPORT_SELECT_FEATURES', Tools::jsonEncode(Tools::getValue('lengow_export_select_features')));
 
                 // Send to Lengow versions
-                if (LengowCore::getTokenCustomer() && LengowCore::getIdCustomer() && LengowCore::getGroupCustomer()) {
-                    $lengow_connector = new LengowConnector((integer)LengowCore::getIdCustomer(), LengowCore::getTokenCustomer());
+                if (LengowMain::getTokenCustomer() && LengowMain::getIdCustomer() && LengowMain::getGroupCustomer()) {
+                    $lengow_connector = new LengowConnector((integer)LengowMain::getIdCustomer(), LengowMain::getTokenCustomer());
                     $lengow_connector->api('updateEcommerceSolution', array('type' => 'Prestashop',
                         'version' => _PS_VERSION_,
-                        'idClient' => LengowCore::getIdCustomer(),
-                        'idGroup' => LengowCore::getGroupCustomer(),
+                        'idClient' => LengowMain::getIdCustomer(),
+                        'idGroup' => LengowMain::getGroupCustomer(),
                         'module' => $this->version));
                 }
 
@@ -101,7 +101,7 @@ class LengowConfig
                     self::updateCron(Tools::getValue('cron-delay'));
                 }
                 if (Module::isInstalled('cronjobs') && Configuration::get('LENGOW_CRON_EDITOR')) {
-                    $result = LengowCore::addCronTasks(Context::getContext()->shop->id, $this);
+                    $result = LengowMain::addCronTasks(Context::getContext()->shop->id, $this);
                     if (!empty($result)) {
                         if (isset($result['success'])) {
                             foreach ($result['success'] as $message) {
@@ -116,7 +116,7 @@ class LengowConfig
                         }
                     }
                 } else {
-                    $result = LengowCore::removeCronTasks(Context::getContext()->shop->id, $this);
+                    $result = LengowMain::removeCronTasks(Context::getContext()->shop->id, $this);
                     if (!empty($result)) {
                         if (isset($result['success'])) {
                             $html .= $this->displayConfirmation($result['success']);
@@ -146,13 +146,13 @@ class LengowConfig
         }
 
         $options['export_fields'] = LengowExport::getDefaultFields();
-        $options['shippings'] = LengowCore::getShippingName();
-        $options['formats'] = LengowCore::getExportFormats();
+        $options['shippings'] = LengowMain::getShippingName();
+        $options['formats'] = LengowMain::getExportFormats();
         $options['states'] = OrderState::getOrderStates((int)$this->context->cookie->id_lang);
-        $options['trackers'] = LengowCore::getTrackers();
+        $options['trackers'] = LengowMain::getTrackers();
         $options['images'] = ImageType::getImagesTypes('products');
-        $options['export_features'] = LengowCore::getFeaturesOptions();
-        $options['images_count'] = LengowCore::getImagesCount();
+        $options['export_features'] = LengowMain::getFeaturesOptions();
+        $options['images_count'] = LengowMain::getImagesCount();
         $this->context->smarty->assign(
             array(
                 'lengow_customer_id' => Configuration::get('LENGOW_ID_CUSTOMER'),
@@ -185,8 +185,8 @@ class LengowConfig
                 'lengow_parent_image' => Configuration::get('LENGOW_PARENT_IMAGE'),
                 'lengow_export_out_stock' => Configuration::get('LENGOW_EXPORT_OUT_STOCK'),
                 'lengow_import_processing_fee' => Configuration::get('LENGOW_IMPORT_PROCESSING_FEE'),
-                'url_feed_export' => LengowCore::getExportUrl(),
-                'url_feed_import' => LengowCore::getImportUrl(),
+                'url_feed_export' => LengowMain::getExportUrl(),
+                'url_feed_import' => LengowMain::getImportUrl(),
                 'lengow_flow' => $this->getFormFeeds(),
                 'lengow_cron' => $this->getFormCron(),
                 'lengow_is_import' => $this->getFormIsImport(),
@@ -275,7 +275,7 @@ class LengowConfig
         if (!LengowCheck::isCurlActivated()) {
             return '<p>' . $this->module->l('Function unavailable with your configuration, please install PHP CURL extension.') . '</p>';
         }
-        $flows = LengowCore::getFlows();
+        $flows = LengowMain::getFlows();
         if (!$flows || $flows['return'] == 'KO') {
             return '<div clas="lengow-margin">' . $this->module->l('Please provide your Customer ID, Group ID and API Token ') . '</div>';
         }
@@ -334,7 +334,7 @@ class LengowConfig
     {
         $form = '';
         // Init
-        $formats = LengowCore::getExportFormats();
+        $formats = LengowMain::getExportFormats();
         $currencies = Currency::getCurrencies();
         $shops = Shop::getShops();
         $languages = Language::getLanguages();
@@ -417,7 +417,7 @@ class LengowConfig
             $form .= '<p> - ' . $this->module->l('or') . ' - </p>';
         }
         $form .= '<p>' . $this->module->l('If you are using an unix system, you can use unix crontab like this :') . '</p>';
-        $form .= '<strong><code>*/15 * * * * wget ' . LengowCore::getImportUrl() . '</code></strong><br /><br />';
+        $form .= '<strong><code>*/15 * * * * wget ' . LengowMain::getImportUrl() . '</code></strong><br /><br />';
         return '<div class="lengow-margin">' . $form . '</div>';
     }
 

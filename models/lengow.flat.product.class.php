@@ -149,7 +149,7 @@ class LengowFlatProduct extends Product
 //        if (is_object($context->cart) && $context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')} != null) {
 //            $address = $context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')};
 //        }
-//        if (LengowCore::compareVersion()) {
+//        if (LengowMain::compareVersion()) {
 //            $this->tax_rate = $this->getTaxesRate(new Address($address));
 //        } else {
 //            $cart = Context::getContext()->cart;
@@ -180,7 +180,7 @@ class LengowFlatProduct extends Product
 //
 //            $this->unit_price = ($this->unit_price_ratio != 0 ? $this->price / $this->unit_price_ratio : 0);
 //        }
-//        if (LengowCore::compareVersion()) {
+//        if (LengowMain::compareVersion()) {
 //            $this->loadStockData();
 //        }
 //        if ($this->id_category_default && $this->id_category_default > 1) {
@@ -226,11 +226,11 @@ class LengowFlatProduct extends Product
         $shipping_cost = 0;
         if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shipping_method != Carrier::SHIPPING_METHOD_FREE) {
             if ($shipping_method == Carrier::SHIPPING_METHOD_WEIGHT) {
-                $shipping_cost = LengowCore::formatNumber(
+                $shipping_cost = LengowMain::formatNumber(
                     $this->carrier->getDeliveryPriceByWeight($this->weight, (int)$id_zone)
                 );
             } else {
-                $shipping_cost = LengowCore::formatNumber(
+                $shipping_cost = LengowMain::formatNumber(
                     $this->carrier->getDeliveryPriceByPrice(
                         $this->price,
                         (int)$id_zone,

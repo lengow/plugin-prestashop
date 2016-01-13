@@ -382,7 +382,7 @@ class AdminLengowProductController extends ModuleAdminController
             $import = new LengowImport();
             $import->force_log_output = false;
             $date_to = date('Y-m-d');
-            $days = (integer)LengowCore::getCountDaysToImport();
+            $days = (integer)LengowMain::getCountDaysToImport();
             $date_from = date('Y-m-d', strtotime(date('Y-m-d') . ' -' . $days . 'days'));
             $result = $import->exec('commands', array(
                 'dateFrom' => $date_from,
@@ -439,7 +439,7 @@ class AdminLengowProductController extends ModuleAdminController
         @set_time_limit(0);
         $sep = DIRECTORY_SEPARATOR;
         require_once _PS_MODULE_DIR_ . 'lengow' . $sep . 'models' . $sep . 'lengow.connector.class.php';
-        $lengow_connector = new LengowConnector((integer)LengowCore::getIdCustomer(), LengowCore::getTokenCustomer());
+        $lengow_connector = new LengowConnector((integer)LengowMain::getIdCustomer(), LengowMain::getTokenCustomer());
         $params = 'format=' . Tools::getValue('format');
         $params .= '&mode=' . Tools::getValue('mode');
         $params .= '&all=' . Tools::getValue('all');
@@ -450,8 +450,8 @@ class AdminLengowProductController extends ModuleAdminController
         $shop_url = new ShopUrl((integer)Tools::getValue('shop'));
         $new_flow = 'http' . $is_https . '://' . $shop_url->domain . __PS_BASE_URI__ . 'modules/lengow/webservice/export.php?' . $params;
         $args = array(
-            'idClient' => LengowCore::getIdCustomer(),
-            'idGroup' => LengowCore::getGroupCustomer(),
+            'idClient' => LengowMain::getIdCustomer(),
+            'idGroup' => LengowMain::getGroupCustomer(),
             'urlFlux' => $new_flow
         );
         $data_flows = get_object_vars(Tools::jsonDecode(Configuration::get('LENGOW_FLOW_DATA')));
@@ -478,7 +478,7 @@ class AdminLengowProductController extends ModuleAdminController
     {
         @set_time_limit(0);
         $sep = DIRECTORY_SEPARATOR;
-        require_once LengowCore::getLengowFolder() . $sep . 'models' . $sep . 'lengow.import.class.php';
+        require_once LengowMain::getLengowFolder() . $sep . 'models' . $sep . 'lengow.import.class.php';
 
         $error = false;
         $order_id = Tools::getValue('id_order');

@@ -160,7 +160,7 @@ class LengowConnector
             try {
                 $data = $this->callAction($api['service'], $method, $array);
             } catch (LengowApiException $lae) {
-                LengowCore::log($lae->getMessage());
+                LengowMain::log($lae->getMessage());
                 return false;
             }
 
@@ -329,7 +329,7 @@ class LengowConnector
      */
     protected static function makeRequest($url)
     {
-        LengowCore::log('Connector ' . $url);
+        LengowMain::log('Connector ' . $url);
         $ch = curl_init();
         // Options
         $opts = self::$CURL_OPTS;
@@ -339,7 +339,7 @@ class LengowConnector
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $result = curl_exec($ch);
         if ($result === false) {
-            LengowCore::log('Connector Error (' . curl_error($ch) . ')' . $result);
+            LengowMain::log('Connector Error (' . curl_error($ch) . ')' . $result);
             throw new LengowApiException(
                 array(
                     'message' => curl_error($ch),
@@ -350,7 +350,7 @@ class LengowConnector
         curl_close($ch);
         if (is_object(Tools::jsonDecode($result))) {
             if (Tools::strtolower(Tools::jsonDecode($result)->return) == 'ko') {
-                LengowCore::log('API Error : ' . Tools::jsonDecode($result)->error);
+                LengowMain::log('API Error : ' . Tools::jsonDecode($result)->error);
                 throw new LengowApiException(Tools::jsonDecode($result)->error, 4);
             }
         }

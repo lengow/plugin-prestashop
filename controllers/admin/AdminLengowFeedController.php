@@ -66,7 +66,7 @@ class AdminLengowFeedController extends ModuleAdminController
 
                 $shopCollection[]= array(
                     'shop' => $shop,
-                    'link' => LengowCore::getExportUrl($shop->id),
+                    'link' => LengowMain::getExportUrl($shop->id),
                     'total_product' => $lengowExport->getTotalProduct(),
                     'total_export_product' => $lengowExport->getTotalExportProduct(),
                     'last_export' => Configuration::get('LENGOW_LAST_EXPORT', null, null, $shop->id),

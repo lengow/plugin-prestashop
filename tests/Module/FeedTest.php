@@ -7,7 +7,7 @@ use Context;
 use Db;
 use Module;
 use Configuration;
-use LengowCore;
+use LengowMain;
 use LengowExport;
 use LengowExportException;
 use LengowFeed;
@@ -65,10 +65,10 @@ class FeedTest extends ModuleTestCase
     public function authorizedIp()
     {
         Configuration::set('LENGOW_AUTHORIZED_IP', '0.0.0.0');
-        $this->assertTrue(!LengowCore::checkIP());
+        $this->assertTrue(!LengowMain::checkIP());
 
         Configuration::set('LENGOW_AUTHORIZED_IP', '127.0.0.1');
-        $this->assertTrue(LengowCore::checkIP());
+        $this->assertTrue(LengowMain::checkIP());
     }
 
     /**

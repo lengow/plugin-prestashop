@@ -89,7 +89,7 @@ class AdminLengowLog14 extends AdminTab {
 	public function postProcess($token = null)
 	{
 		if (Tools::getValue('delete') != '')
-			LengowCore::deleteProcessOrder(Tools::getValue('delete'));
+			LengowMain::deleteProcessOrder(Tools::getValue('delete'));
 		if (Tools::getValue('delete'.$this->table))
 			$this->processBulkDelete();
 		parent::postProcess($token);
@@ -115,7 +115,7 @@ class AdminLengowLog14 extends AdminTab {
 		$logs = Tools::getValue($this->table.'Box');
 		if (is_array($logs) && (count($logs)))
 			foreach ($logs as $log)
-				LengowCore::deleteProcessOrder($log);
+				LengowMain::deleteProcessOrder($log);
 	}
 
 	/**

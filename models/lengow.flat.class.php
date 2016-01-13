@@ -288,7 +288,7 @@ class LengowFlat
      */
     public function setCarrier()
     {
-        $carrier = LengowCore::getExportCarrier();
+        $carrier = LengowMain::getExportCarrier();
         if (!$carrier->id) {
             throw new LengowExportException('You must select a carrier in Lengow Export Tab');
         }

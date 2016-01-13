@@ -107,7 +107,7 @@ class LengowFeed
     {
         $sep = DIRECTORY_SEPARATOR;
         $this->export_folder = LengowFeed::$LENGOW_EXPORT_FOLDER . $sep . $this->shop_folder;
-        $folder_path = LengowCore::getLengowFolder() . $sep . $this->export_folder;
+        $folder_path = LengowMain::getLengowFolder() . $sep . $this->export_folder;
         if (!file_exists($folder_path)) {
             if (!mkdir($folder_path)) {
                 throw new LengowFileException('Unable to create folder ' . $folder_path . '. Make sure it is writeable.');
@@ -343,7 +343,7 @@ class LengowFeed
                         preg_replace(
                             '/[^a-zA-Z0-9_]+/',
                             '',
-                            str_replace(array(' ', '\''), '_', LengowCore::replaceAccentedChars($str))
+                            str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($str))
                         )
                     ),
                     0,
@@ -355,7 +355,7 @@ class LengowFeed
                     preg_replace(
                         '/[^a-zA-Z0-9_]+/',
                         '',
-                        str_replace(array(' ','\''), '_', LengowCore::replaceAccentedChars($str))
+                        str_replace(array(' ','\''), '_', LengowMain::replaceAccentedChars($str))
                     )
                 );
                 break;

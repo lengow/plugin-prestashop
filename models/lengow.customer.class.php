@@ -191,10 +191,10 @@ class LengowCustomer extends Customer implements LengowObject
                 }
                 break;
             case 'phone':
-                $this->phone = LengowCore::cleanPhone($this->phone);
+                $this->phone = LengowMain::cleanPhone($this->phone);
                 break;
             case 'phone_mobile':
-                $this->phone_mobile = LengowCore::cleanPhone($this->phone_mobile);
+                $this->phone_mobile = LengowMain::cleanPhone($this->phone_mobile);
                 break;
             default:
                 return;

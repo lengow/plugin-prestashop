@@ -5,7 +5,6 @@ if (!defined('_PS_VERSION_')) {
 }
 
 $sep = DIRECTORY_SEPARATOR;
-require('models/lengow.install.class.php');
 require_once _PS_MODULE_DIR_ . 'lengow' . $sep . 'loader.php';
 
 class Lengow extends Module

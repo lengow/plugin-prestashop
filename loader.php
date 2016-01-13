@@ -19,6 +19,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.$sep);
 
 $notInPresta14 = array('lengow.specificprice.class.php', 'lengow.gender.class.php');
@@ -38,14 +41,23 @@ foreach ($listClassFile as $list) {
     require_once $directory . $list;
 }
 
-$directory = _PS_MODULE_LENGOW_DIR_ . 'models/';
-$listClassFile = array_diff(scandir($directory), array('..', '.'));
+if (_PS_VERSION_ < '1.5') {
+    $directory = _PS_MODULE_LENGOW_DIR_ . 'models/';
+    $listClassFile = array_diff(scandir($directory), array('..', '.'));
 
-foreach ($listClassFile as $list) {
-
-    if(in_array($list, $notInPresta14) && _PS_VERSION_ < '1.5'){
+    foreach ($listClassFile as $list) {
+        if(in_array($list, $notInPresta14) && _PS_VERSION_ < '1.5'){
             continue;
+        }
+        require_once $directory . $list;
     }
-    require_once $directory . $list;
+} else {
+    spl_autoload_register('lengowAutoloader');
+}
 
+function lengowAutoloader($class){
+    $directory = _PS_MODULE_LENGOW_DIR_ . 'models/';
+    if (substr($class, 0, 6) == 'Lengow') {
+        include $directory.str_replace('lengow', 'lengow.', strtolower($class)).'.class.php';
+    }
 }

@@ -105,7 +105,7 @@ class LengowFile
                 $this->link = null;
             }
 
-            $base = LengowCore::getLengowBaseUrl();
+            $base = LengowMain::getLengowBaseUrl();
             $this->link = $base . $this->folder_name . '/' . $this->file_name;
         }
         return $this->link;
@@ -120,7 +120,7 @@ class LengowFile
     public function getPath()
     {
         $sep = DIRECTORY_SEPARATOR;
-        return LengowCore::getLengowFolder() . $sep . $this->folder_name . $sep . $this->file_name;
+        return LengowMain::getLengowFolder() . $sep . $this->folder_name . $sep . $this->file_name;
     }
 
     /**
@@ -131,7 +131,7 @@ class LengowFile
     public function getFolderPath()
     {
         $sep = DIRECTORY_SEPARATOR;
-        return LengowCore::getLengowFolder() . $sep . $this->folder_name;
+        return LengowMain::getLengowFolder() . $sep . $this->folder_name;
     }
 
     public function __destruct()
@@ -180,7 +180,7 @@ class LengowFile
     public static function getFilesFromFolder($folder)
     {
         $sep = DIRECTORY_SEPARATOR;
-        $folder_path = LengowCore::getLengowFolder() . $sep . $folder;
+        $folder_path = LengowMain::getLengowFolder() . $sep . $folder;
         if (!file_exists($folder_path)) {
             return false;
         }

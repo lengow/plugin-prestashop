@@ -35,7 +35,7 @@ try
 	try
 	{
 		loadFile('core');
-		LengowCore::log($e->getMessage(), null, 1);
+		LengowMain::log($e->getMessage(), null, 1);
 	} catch (Exception $ex)
 	{
 		echo date('Y-m-d : H:i:s ').$e->getMessage().'<br />';
@@ -51,7 +51,7 @@ if (!Module::isInstalled($lengow->name))
 	die('Lengow module is not installed');
 }
 
-if (LengowCore::checkIP())
+if (LengowMain::checkIP())
 {
 	$force_price = Configuration::get('LENGOW_FORCE_PRICE');
 	if (Tools::getIsset('forcePrice'))

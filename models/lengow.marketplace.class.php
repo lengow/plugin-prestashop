@@ -302,11 +302,11 @@ class LengowMarketplace
                 if (!Configuration::get('LENGOW_DEBUG')) {
                     $this->makeRequest($call_url);
                 }
-                LengowCore::log('Order ' . $order->id . ' : call Lengow WSDL ' . $call_url, false);
+                LengowMain::log('Order ' . $order->id . ' : call Lengow WSDL ' . $call_url, false);
             }
         } catch (LengowWsdlException $e) {
-            LengowCore::log('Order ' . $order->id . ' : call error WSDL ' . $call_url, false);
-            LengowCore::log('Order ' . $order->id . ' : exception ' . $e->getMessage(), false);
+            LengowMain::log('Order ' . $order->id . ' : call error WSDL ' . $call_url, false);
+            LengowMain::log('Order ' . $order->id . ' : exception ' . $e->getMessage(), false);
         }
     }
 

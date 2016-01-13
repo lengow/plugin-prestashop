@@ -7,7 +7,7 @@ use Context;
 use Db;
 use Module;
 use Configuration;
-use LengowCore;
+use LengowMain;
 use LengowExport;
 use LengowExportException;
 use Assert;

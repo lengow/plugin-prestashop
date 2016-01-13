@@ -75,10 +75,10 @@ class LengowHook
             if ($version <= Tools::substr(_PS_VERSION_, 0, 3)) {
                 $log = 'Registering hook - ';
                 if (!$this->module->registerHook($hook)) {
-                    LengowCore::log($log . $hook . ': error');
+                    LengowMain::log($log . $hook . ': error');
                     $error = true;
                 } else {
-                    LengowCore::log($log . $hook . ': success');
+                    LengowMain::log($log . $hook . ': success');
                 }
             }
         }
@@ -243,8 +243,8 @@ class LengowHook
                         'id_order' => self::$_ID_ORDER,
                         'ids_products' => self::$_IDS_PRODUCTS_CART,
                         'mode_payment' => self::$_ID_ORDER,
-                        'id_customer' => LengowCore::getIdCustomer(),
-                        'id_group' => LengowCore::getGroupCustomer(false),
+                        'id_customer' => LengowMain::getIdCustomer(),
+                        'id_group' => LengowMain::getGroupCustomer(false),
                     )
                 );
                 return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/front/tagpage.tpl');
@@ -259,8 +259,8 @@ class LengowHook
                     'ids_products_cart' => self::$_IDS_PRODUCTS_CART,
                     'use_ssl' => self::$_USE_SSL ? 'true' : 'false',
                     'id_category' => self::$_ID_CATEGORY,
-                    'id_customer' => LengowCore::getIdCustomer(),
-                    'id_group' => LengowCore::getGroupCustomer(false),
+                    'id_customer' => LengowMain::getIdCustomer(),
+                    'id_group' => LengowMain::getGroupCustomer(false),
                 )
             );
             return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/front/tagcapsule.tpl');
@@ -278,7 +278,7 @@ class LengowHook
         $lengow_order = new LengowOrder($args['id_order']);
         // Not send state if we are on lengow import module
         if (LengowOrder::isFromLengow($args['id_order']) && LengowImport::$current_order != $lengow_order->id_lengow) {
-            LengowCore::disableMail();
+            LengowMain::disableMail();
         }
     }
 
@@ -295,18 +295,18 @@ class LengowHook
         if (LengowOrder::isFromLengow($args['id_order']) && LengowImport::$current_order != $lengow_order->id_lengow) {
             $new_order_state = $args['newOrderStatus'];
             $id_order_state = $new_order_state->id;
-            $marketplace = LengowCore::getMarketplaceSingleton((string)$lengow_order->lengow_marketplace);
+            $marketplace = LengowMain::getMarketplaceSingleton((string)$lengow_order->lengow_marketplace);
             if ($marketplace->isLoaded()) {
                 // Call Lengow API WSDL to send shipped state order
-                if ($id_order_state == LengowCore::getOrderState('shipped')) {
+                if ($id_order_state == LengowMain::getOrderState('shipped')) {
                     $marketplace->wsdl('shipped', $lengow_order->id_feed_lengow, $lengow_order->id_lengow, $args);
                 }
                 // Call Lengow API WSDL to send refuse state order
-                if ($id_order_state == LengowCore::getOrderState('cancel')) {
+                if ($id_order_state == LengowMain::getOrderState('cancel')) {
                     $marketplace->wsdl('refuse', $lengow_order->id_feed_lengow, $lengow_order->id_lengow, $args);
                 }
             }
-            if ($id_order_state == (int)LengowCore::getLengowErrorStateId()) {
+            if ($id_order_state == (int)LengowMain::getLengowErrorStateId()) {
                 $lengow_order->setStateToError();
             }
         }
@@ -321,11 +321,11 @@ class LengowHook
             if (LengowOrder::isFromLengow($args['object']->id)) {
                 $lengow_order = new LengowOrder($args['object']->id);
                 if ($lengow_order->shipping_number != '' &&
-                    $args['object']->current_state == LengowCore::getOrderState('shipped')
+                    $args['object']->current_state == LengowMain::getOrderState('shipped')
                 ) {
                     $params = array();
                     $params['id_order'] = $args['object']->id;
-                    $marketplace = LengowCore::getMarketplaceSingleton((string)$lengow_order->lengow_marketplace);
+                    $marketplace = LengowMain::getMarketplaceSingleton((string)$lengow_order->lengow_marketplace);
                     $marketplace->wsdl('shipped', $lengow_order->id_feed_lengow, $lengow_order->id_lengow, $params);
                 }
             }
@@ -440,9 +440,9 @@ class LengowHook
     {
         $this->context->smarty->assign(
             array(
-                'token' => LengowCore::getTokenCustomer(),
-                'id_customer' => LengowCore::getIdCustomer(),
-                'id_group' => LengowCore::getGroupCustomer(),
+                'token' => LengowMain::getTokenCustomer(),
+                'id_customer' => LengowMain::getIdCustomer(),
+                'id_group' => LengowMain::getGroupCustomer(),
                 'params' => $params,
             )
         );
@@ -459,9 +459,9 @@ class LengowHook
 //        $args = $args; // Prestashop validator
 //        $this->context->smarty->assign(
 //            array(
-//                'token' => LengowCore::getTokenCustomer(),
-//                'id_customer' => LengowCore::getIdCustomer(),
-//                'id_group' => LengowCore::getGroupCustomer(),
+//                'token' => LengowMain::getTokenCustomer(),
+//                'id_customer' => LengowMain::getIdCustomer(),
+//                'id_group' => LengowMain::getGroupCustomer(),
 //            )
 //        );
 //        return $this->module->display(__FILE__, 'views/templates/admin/dashboard/stats.tpl');
@@ -479,11 +479,11 @@ class LengowHook
         if (LengowOrder::isFromLengow($args['id_order'])) {
             $order = new LengowOrder($args['id_order']);
             if (Tools::getValue('action') == 'synchronize') {
-                $lengow_connector = new LengowConnector((integer)LengowCore::getIdCustomer(), LengowCore::getTokenCustomer());
+                $lengow_connector = new LengowConnector((integer)LengowMain::getIdCustomer(), LengowMain::getTokenCustomer());
                 $api_args = array(
-                    'idClient' => LengowCore::getIdCustomer(),
+                    'idClient' => LengowMain::getIdCustomer(),
                     'idFlux' => $order->id_feed_lengow,
-                    'idGroup' => LengowCore::getGroupCustomer(),
+                    'idGroup' => LengowMain::getGroupCustomer(),
                     'idCommandeMP' => $order->id_lengow,
                     'idCommandePresta' => $order->id);
                 $lengow_connector->api('updatePrestaInternalOrderId', $api_args);

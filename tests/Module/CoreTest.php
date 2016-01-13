@@ -8,7 +8,7 @@ use Context;
 use Db;
 use Module;
 use Configuration;
-use LengowCore;
+use LengowMain;
 use LengowExport;
 use LengowExportException;
 use Assert;
@@ -58,13 +58,13 @@ class CoreTest extends ModuleTestCase
         $token = Configuration::get('LENGOW_SHOP_TOKEN', null, null, $shopId);
         $this->assertTrue(strlen($token) == '', 'token is empty');
 
-        LengowCore::getToken($shopId);
+        LengowMain::getToken($shopId);
         $token = Configuration::get('LENGOW_SHOP_TOKEN', null, null, $shopId);
         $this->assertTrue(strlen($token)>0, 'token is set with non empty value');
         $this->assertTrue(strlen($token)==32, 'token is equal to 32');
 
-        LengowCore::getToken($shopId);
-        $this->assertEquals($token, LengowCore::getToken($shopId), 'token is not update when already set');
+        LengowMain::getToken($shopId);
+        $this->assertEquals($token, LengowMain::getToken($shopId), 'token is not update when already set');
     }
 
     /**
@@ -80,7 +80,7 @@ class CoreTest extends ModuleTestCase
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
 
         Configuration::updatevalue('LENGOW_AUTHORIZED_IP', '');
-        $exportUrl = LengowCore::getExportUrl($shopId);
+        $exportUrl = LengowMain::getExportUrl($shopId);
         $response = self::$client->get($exportUrl);
         $body = $response->getBody()->getContents();
         $this->assertRegExp(

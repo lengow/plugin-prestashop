@@ -323,7 +323,7 @@ class LengowCheck
                 self::$DOM = simplexml_load_file(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . self::$XML_PLUGINS);
             }
         } catch (Exception $e) {
-            LengowCore::log('Unable to download plugins.xml => ' . $e->getMessage());
+            LengowMain::log('Unable to download plugins.xml => ' . $e->getMessage());
             return true;
         }
 

@@ -30,9 +30,10 @@ class AdminLengowHome14 extends AdminTab
 {
     public function __construct()
     {
-
         //$this->view = true;
         parent::__construct();
+
+        $_GET['controller'] = 'AdminLengowHome';
 
         $module = Module::getInstanceByName('lengow');
         echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');

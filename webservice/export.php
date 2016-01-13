@@ -52,7 +52,7 @@ if (!Module::isInstalled($lengow->name)) {
 
 // CheckIP
 $token = isset($_REQUEST['token']) ? $_REQUEST['token'] : '';
-if (!LengowCore::checkExportAccess(Context::getContext()->shop->id, $token)) {
+if (!LengowMain::checkExportAccess(Context::getContext()->shop->id, $token)) {
     if (strlen($token) > 0) {
         die('Unauthorized access for this token : ' . $token);
     } else {

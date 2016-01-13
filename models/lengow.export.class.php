@@ -253,7 +253,7 @@ class LengowExport
      */
     public function setCarrier()
     {
-        $carrier = LengowCore::getExportCarrier();
+        $carrier = LengowMain::getExportCarrier();
         if (!$carrier->id) {
             throw new LengowExportException('You must select a carrier in Lengow Export Tab');
         }
@@ -299,7 +299,7 @@ class LengowExport
             if (_PS_VERSION_ >= '1.5') {
                 $shop_name = $shop->name;
             }
-            LengowCore::log('Export - init ' . $shop_name, !$this->stream);
+            LengowMain::log('Export - init ' . $shop_name, !$this->stream);
             if ((int)Configuration::get('LENGOW_EXPORT_TIMEOUT') > 0) {
                 $this->export_timeout = true;
                 Configuration::updateValue('LENGOW_EXPORT_START_' . $this->langage->iso_code, time());
@@ -340,17 +340,17 @@ class LengowExport
                 $products = LengowProduct::exportIds(true);
             }
 
-            LengowCore::log(
+            LengowMain::log(
                 'Export - ' . count($products) . ' product' . (count($products) > 1 ? 's' : '') . ' found',
                 !$this->stream
             );
             $this->export($products, $export_fields, $shop);
 
             Configuration::updatevalue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), null, null, $this->shopId);
-            LengowCore::log('Export - end', !$this->stream);
+            LengowMain::log('Export - end', !$this->stream);
 
         } catch (Exception $e) {
-            LengowCore::log('Export - error : ' . $e->getMessage(), true);
+            LengowMain::log('Export - error : ' . $e->getMessage(), true);
         }
     }
 
@@ -434,7 +434,7 @@ class LengowExport
                 }
             }
             if ($product_count > 0 && $product_count % 10 == 0) {
-                LengowCore::log('Export - ' . $product_count . ' products', !$this->stream);
+                LengowMain::log('Export - ' . $product_count . ' products', !$this->stream);
             }
 
             if ($this->limit > 0 && $product_count >= $this->limit) {
@@ -447,7 +447,7 @@ class LengowExport
                     'LENGOW_EXPORT_LAST_ID_' . Context::getContext()->language->iso_code,
                     $p['id_product']
                 );
-                LengowCore::log(
+                LengowMain::log(
                     'Export - stopped by timeout. ' . $product_count . ' products exported.',
                     !$this->stream
                 );
@@ -468,7 +468,7 @@ class LengowExport
         if (!$this->stream) {
             $feed_url = $this->feed->getUrl();
             if ($feed_url && php_sapi_name() != "cli") {
-                LengowCore::log('Export - your feed is available here:
+                LengowMain::log('Export - your feed is available here:
                 <a href="' . $feed_url . '" target="_blank">' . $feed_url . '</a>', !$this->stream);
             }
         }

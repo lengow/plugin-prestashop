@@ -190,14 +190,14 @@ class LengowOrder extends Order
     public function updateState(LengowMarketplace $marketplace, $api_state, $tracking_number)
     {
         // get prestashop equivalent state id to Lengow API state
-        $id_order_state = LengowCore::getOrderState($marketplace->getStateLengow($api_state));
+        $id_order_state = LengowMain::getOrderState($marketplace->getStateLengow($api_state));
         // if state is different between API and Prestashop
         if ($this->current_state != $id_order_state) {
             // Change state process to shipped
-            if ($this->current_state == LengowCore::getOrderState('process') && $marketplace->getStateLengow($api_state) == 'shipped') {
+            if ($this->current_state == LengowMain::getOrderState('process') && $marketplace->getStateLengow($api_state) == 'shipped') {
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
-                $history->changeIdOrderState(LengowCore::getOrderState('shipped'), $this, true);
+                $history->changeIdOrderState(LengowMain::getOrderState('shipped'), $this, true);
                 $history->validateFields();
                 $history->add();
 
@@ -207,18 +207,18 @@ class LengowOrder extends Order
                     $this->update();
 
                 }
-                LengowCore::getLogInstance()->write('state updated to shipped', true, $this->id_lengow);
+                LengowMain::getLogInstance()->write('state updated to shipped', true, $this->id_lengow);
                 return true;
             } // Change state process or shipped to cancel
-            elseif (($this->current_state == LengowCore::getOrderState('process') || $this->current_state == LengowCore::getOrderState('shipped'))
+            elseif (($this->current_state == LengowMain::getOrderState('process') || $this->current_state == LengowMain::getOrderState('shipped'))
                 && $marketplace->getStateLengow($api_state) == 'canceled'
             ) {
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
-                $history->changeIdOrderState(LengowCore::getOrderState('cancel'), $this, true);
+                $history->changeIdOrderState(LengowMain::getOrderState('cancel'), $this, true);
                 $history->validateFields();
                 $history->add();
-                LengowCore::getLogInstance()->write('state updated to cancel', true, $this->id_lengow);
+                LengowMain::getLogInstance()->write('state updated to cancel', true, $this->id_lengow);
                 return true;
             }
         }
@@ -276,7 +276,7 @@ class LengowOrder extends Order
         $id_shop = null,
         $id_shop_group = null
     ) {
-        $context = LengowCore::getContext();
+        $context = LengowMain::getContext();
         if (empty($id_lang)) {
             $id_lang = $context->language->id;
         }
@@ -311,15 +311,15 @@ class LengowOrder extends Order
     public static function getShippingPrice($total)
     {
         $context = Context::getContext();
-        $carrier = LengowCore::getExportCarrier();
+        $carrier = LengowMain::getExportCarrier();
         $id_zone = $context->country->id_zone;
         $id_currency = $context->cart->id_currency;
         $shipping_method = $carrier->getShippingMethod();
         if ($shipping_method != Carrier::SHIPPING_METHOD_FREE) {
             if ($shipping_method == Carrier::SHIPPING_METHOD_WEIGHT) {
-                return LengowCore::formatNumber($carrier->getDeliveryPriceByWeight($total, (int)$id_zone));
+                return LengowMain::formatNumber($carrier->getDeliveryPriceByWeight($total, (int)$id_zone));
             } else {
-                return LengowCore::formatNumber($carrier->getDeliveryPriceByPrice($total, (int)$id_zone, (int)$id_currency));
+                return LengowMain::formatNumber($carrier->getDeliveryPriceByPrice($total, (int)$id_zone, (int)$id_currency));
             }
         }
         return 0;
@@ -417,7 +417,7 @@ class LengowOrder extends Order
      */
     public function setStateToError()
     {
-        $id_error_lengow_state = LengowCore::getLengowErrorStateId();
+        $id_error_lengow_state = LengowMain::getLengowErrorStateId();
         // update order to Lengow error state if not already updated
         if ($this->current_state !== $id_error_lengow_state) {
             $this->setCurrentState($id_error_lengow_state, Context::getContext()->employee->id);

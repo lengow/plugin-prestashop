@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-class LengowCarrier extends CarrierCore
+class LengowCarrier extends Carrier
 {
 
     const COMPATIBILITY_OK = 1;
@@ -129,14 +129,14 @@ class LengowCarrier extends CarrierCore
     {
         // SoColissimo
         if ($id_carrier == Configuration::get('SOCOLISSIMO_CARRIER_ID')) {
-            if (!LengowCore::isSoColissimoAvailable()) {
+            if (!LengowMain::isSoColissimoAvailable()) {
                 return LengowCarrier::COMPATIBILITY_KO;
             }
             return LengowCarrier::addSoColissimo($id_cart, $id_customer,
                 $shipping_address) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
         } else {
             // Mondial Relay
-            if (!LengowCore::isMondialRelayAvailable()) {
+            if (!LengowMain::isMondialRelayAvailable()) {
                 return LengowCarrier::COMPATIBILITY_KO;
             }
             $mr = new MondialRelay();

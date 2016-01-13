@@ -179,7 +179,7 @@ class LengowInstall
             if ($tab->id != 0) {
                 $tab->delete();
             }
-            LengowCore::log('Uninstall tab '.$name, null, -1);
+            LengowMain::log('Uninstall tab '.$name, null, -1);
         }
         //remove parent tabs
         if (_PS_VERSION_ >= '1.5') {

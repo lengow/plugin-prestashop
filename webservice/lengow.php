@@ -35,7 +35,7 @@ try
 	try
 	{
 		loadFile('core');
-		LengowCore::log($e->getMessage(), null, 1);
+		LengowMain::log($e->getMessage(), null, 1);
 	} catch (Exception $ex)
 	{
 		echo date('Y-m-d : H:i:s ').$e->getMessage().'<br />';
@@ -43,7 +43,7 @@ try
 }
 
 $lengow = new Lengow();
-if (LengowCore::checkIP())
+if (LengowMain::checkIP())
 {
 	$action = Tools::getValue('action');
 	try {

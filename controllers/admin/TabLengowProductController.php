@@ -179,7 +179,7 @@ class AdminLengowProduct14 extends AdminTab {
 			$import = new LengowImport();
 			$import->force_log_output = false;
 			$date_to = date('Y-m-d');
-			$days = (integer)LengowCore::getCountDaysToImport();
+			$days = (integer)LengowMain::getCountDaysToImport();
 			$date_from = date('Y-m-d', strtotime(date('Y-m-d').' -'.$days.'days'));
 			$result = $import->exec('commands', array('dateFrom' => $date_from,
 				'dateTo' => $date_to));

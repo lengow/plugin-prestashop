@@ -127,7 +127,7 @@ class LengowProduct extends Product
         if (is_object($context->cart) && $context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')} != null) {
             $address = $context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')};
         }
-        if (LengowCore::compareVersion()) {
+        if (LengowMain::compareVersion()) {
             $this->tax_rate = $this->getTaxesRate(new Address($address));
         } else {
             $cart = Context::getContext()->cart;
@@ -158,7 +158,7 @@ class LengowProduct extends Product
 
             $this->unit_price = ($this->unit_price_ratio != 0 ? $this->price / $this->unit_price_ratio : 0);
         }
-        if (LengowCore::compareVersion()) {
+        if (LengowMain::compareVersion()) {
             $this->loadStockData();
         }
         if ($this->id_category_default && $this->id_category_default > 1) {
@@ -218,7 +218,7 @@ class LengowProduct extends Product
                         $tmpName = $this->name.' - '.$this->combinations[$id_product_attribute]['attribute_name'];
                     }
                 }
-                return LengowCore::cleanData($tmpName);
+                return LengowMain::cleanData($tmpName);
                 break;
             case 'reference':
                 if ($id_product_attribute > 1 && $this->combinations[$id_product_attribute]['reference']) {
@@ -233,7 +233,7 @@ class LengowProduct extends Product
                 return $this->supplier_reference;
                 break;
             case 'manufacturer':
-                return LengowCore::cleanData($this->manufacturer_name);
+                return LengowMain::cleanData($this->manufacturer_name);
                 break;
             case 'category':
                 return $this->category_name;
@@ -250,13 +250,13 @@ class LengowProduct extends Product
                 return $this->category_name;
                 break;
             case 'description':
-                return LengowCore::cleanHtml(LengowCore::cleanData($this->description));
+                return LengowMain::cleanHtml(LengowMain::cleanData($this->description));
                 break;
             case 'short_description':
-                return LengowCore::cleanHtml(LengowCore::cleanData($this->description_short));
+                return LengowMain::cleanHtml(LengowMain::cleanData($this->description_short));
                 break;
             case 'description_html':
-                return LengowCore::cleanData($this->description);
+                return LengowMain::cleanData($this->description);
                 break;
             case 'price':
                 if ($id_product_attribute) {
@@ -266,9 +266,9 @@ class LengowProduct extends Product
                 break;
             case 'wholesale_price':
                 if ($id_product_attribute > 1 && $this->combinations[$id_product_attribute]['wholesale_price']) {
-                    return LengowCore::formatNumber($this->combinations[$id_product_attribute]['wholesale_price']);
+                    return LengowMain::formatNumber($this->combinations[$id_product_attribute]['wholesale_price']);
                 }
-                return LengowCore::formatNumber($this->wholesale_price, 2);
+                return LengowMain::formatNumber($this->wholesale_price, 2);
                 break;
             case 'price_duty_free':
                 if ($id_product_attribute) {
@@ -292,7 +292,7 @@ class LengowProduct extends Product
                 }
 
                 if ($price_sale && $price) {
-                    return LengowCore::formatNumber(($price_sale / $price) * 100);
+                    return LengowMain::formatNumber(($price_sale / $price) * 100);
                 }
                 return 0;
                 break;
@@ -322,9 +322,9 @@ class LengowProduct extends Product
                 break;
             case 'ecotax' :
                 if ($id_product_attribute > 1 && $this->combinations[$id_product_attribute]['ecotax']) {
-                    return LengowCore::formatNumber($this->combinations[$id_product_attribute]['ecotax']);
+                    return LengowMain::formatNumber($this->combinations[$id_product_attribute]['ecotax']);
                 }
-                return isset($this->ecotaxinfos) && $this->ecotaxinfos > 0 ? LengowCore::formatNumber($this->ecotaxinfos) : LengowCore::formatNumber($this->ecotax);
+                return isset($this->ecotaxinfos) && $this->ecotaxinfos > 0 ? LengowMain::formatNumber($this->ecotaxinfos) : LengowMain::formatNumber($this->ecotax);
                 break;
             case 'active':
                 return $this->active;
@@ -357,11 +357,11 @@ class LengowProduct extends Product
                     if (is_array($images) && array_key_exists($id_product_attribute, $images)) {
                         return Context::getContext()->link->getImageLink($this->link_rewrite,
                             $this->id . '-' . $images[$id_product_attribute][0]['id_image'],
-                            LengowCore::getImageFormat());
+                            LengowMain::getImageFormat());
                     }
                 }
                 return isset($this->cover) ? Context::getContext()->link->getImageLink($this->link_rewrite,
-                    $this->id . '-' . $this->cover['id_image'], LengowCore::getImageFormat()) : '';
+                    $this->id . '-' . $this->cover['id_image'], LengowMain::getImageFormat()) : '';
                 break;
             case 'price_shipping':
                 if ($id_product_attribute && $id_product_attribute != null) {
@@ -379,11 +379,11 @@ class LengowProduct extends Product
                 $shipping_cost = 0;
                 if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shipping_method != Carrier::SHIPPING_METHOD_FREE) {
                     if ($shipping_method == Carrier::SHIPPING_METHOD_WEIGHT) {
-                        $shipping_cost = LengowCore::formatNumber(
+                        $shipping_cost = LengowMain::formatNumber(
                             $this->carrier->getDeliveryPriceByWeight($weight, (int)$id_zone)
                         );
                     } else {
-                        $shipping_cost = LengowCore::formatNumber(
+                        $shipping_cost = LengowMain::formatNumber(
                             $this->carrier->getDeliveryPriceByPrice(
                                 $price,
                                 (int)$id_zone,
@@ -420,7 +420,7 @@ class LengowProduct extends Product
                         }
                     }
                 }
-                return LengowCore::formatNumber($shipping_cost);
+                return LengowMain::formatNumber($shipping_cost);
                 break;
             case 'id_parent':
                 return $this->id;
@@ -435,14 +435,14 @@ class LengowProduct extends Product
                         if (isset($images[$id_product_attribute][1]['id_image'])) {
                             return Context::getContext()->link->getImageLink($this->link_rewrite,
                                 $this->id . '-' . $images[$id_product_attribute][1]['id_image'],
-                                LengowCore::getImageFormat());
+                                LengowMain::getImageFormat());
                         } else {
                             return '';
                         }
                     }
                 }
                 return isset($this->images[0]) ? Context::getContext()->link->getImageLink($this->link_rewrite,
-                    $this->id . '-' . $this->images[0]['id_image'], LengowCore::getImageFormat()) : '';
+                    $this->id . '-' . $this->images[0]['id_image'], LengowMain::getImageFormat()) : '';
                 break;
             case 'image_3':
                 if ($id_product_attribute) {
@@ -451,14 +451,14 @@ class LengowProduct extends Product
                         if (isset($images[$id_product_attribute][2]['id_image'])) {
                             return Context::getContext()->link->getImageLink($this->link_rewrite,
                                 $this->id . '-' . $images[$id_product_attribute][2]['id_image'],
-                                LengowCore::getImageFormat());
+                                LengowMain::getImageFormat());
                         } else {
                             return '';
                         }
                     }
                 }
                 return isset($this->images[1]) ? Context::getContext()->link->getImageLink($this->link_rewrite,
-                    $this->id . '-' . $this->images[1]['id_image'], LengowCore::getImageFormat()) : '';
+                    $this->id . '-' . $this->images[1]['id_image'], LengowMain::getImageFormat()) : '';
                 break;
             case 'sale_from':
                 return $this->is_sale ? $this->specificPrice['from'] : '';
@@ -467,10 +467,10 @@ class LengowProduct extends Product
                 return $this->is_sale ? $this->specificPrice['to'] : '';
                 break;
             case 'meta_keywords':
-                return LengowCore::cleanData($this->meta_keywords);
+                return LengowMain::cleanData($this->meta_keywords);
                 break;
             case 'meta_description':
-                return LengowCore::cleanData($this->meta_description);
+                return LengowMain::cleanData($this->meta_description);
                 break;
             case 'url_rewrite':
                 //return 'http://mydomain.com/index.php?controller=product&id_product=' . $this->id;
@@ -538,14 +538,14 @@ class LengowProduct extends Product
                     if (isset($attribute_images[$id_product_attribute][$id_image]['id_image'])) {
                         return Context::getContext()->link->getImageLink($this->link_rewrite,
                             $this->id . '-' . $attribute_images[$id_product_attribute][$id_image]['id_image'],
-                            LengowCore::getImageFormat());
+                            LengowMain::getImageFormat());
                     } else {
                         return '';
                     }
                 }
             }
             return isset($this->images[$out[1] - 2]) ? Context::getContext()->link->getImageLink($this->link_rewrite,
-                $this->id . '-' . $this->images[$out[1] - 2]['id_image'], LengowCore::getImageFormat()) : '';
+                $this->id . '-' . $this->images[$out[1] - 2]['id_image'], LengowMain::getImageFormat()) : '';
         }
         if (isset($this->{$name})) {
             return $this->{$name};
@@ -624,7 +624,7 @@ class LengowProduct extends Product
                 . 'SELECT `id_product` FROM `' . _DB_PREFIX_ . 'lengow_product` '
                 . 'WHERE `id_shop` = ' . (int)$id_shop . ' )';
         }
-        if (LengowCore::compareVersion() < 0) {
+        if (LengowMain::compareVersion() < 0) {
             $query = 'SELECT p.`id_product` '
                 . 'FROM `' . _DB_PREFIX_ . 'product` p ';
             if ($showInactiveProduct == false) {
@@ -636,12 +636,12 @@ class LengowProduct extends Product
         } else {
             $query = 'SELECT p.id_product '
                 . 'FROM ' . _DB_PREFIX_ . 'product p ';
-            if (LengowCore::compareVersion() == 1) {
+            if (LengowMain::compareVersion() == 1) {
                 $query .= 'LEFT JOIN ' . _DB_PREFIX_ . 'product_shop ps ON p.id_product=ps.id_product ';
             }
 
             // Add Lengow selected products
-            if (LengowCore::compareVersion() == 1 && $id_shop != '') {
+            if (LengowMain::compareVersion() == 1 && $id_shop != '') {
                 if ($showInactiveProduct == false) {
                     $query .= ' WHERE ps.id_shop = ' . (int)$id_shop . ' AND ps.active=1 ';
                 } //AND psupp.id_product_attribute=0 ';
@@ -735,7 +735,7 @@ class LengowProduct extends Product
                 $comb_array[$combination['id_product_attribute']]['upc'] = isset($combination['upc']) ? $combination['upc'] : '';
                 $comb_array[$combination['id_product_attribute']]['supplier_reference'] = isset($combination['supplier_reference']) ? $combination['supplier_reference'] : '';
                 $comb_array[$combination['id_product_attribute']]['id_image'] = isset($combination_images[$combination['id_product_attribute']][0]['id_image']) ? $combination_images[$combination['id_product_attribute']][0]['id_image'] : 0;
-                if (LengowCore::compareVersion()) {
+                if (LengowMain::compareVersion()) {
                     $comb_array[$combination['id_product_attribute']]['available_date'] = strftime($combination['available_date']);
                 }
                 $comb_array[$combination['id_product_attribute']]['default_on'] = $combination['default_on'];
@@ -757,7 +757,7 @@ class LengowProduct extends Product
                 $list = rtrim($list, ', ');
                 // $name = rtrim($name, ', ');
                 $comb_array[$id_product_attribute]['image'] = $product_attribute['id_image'] ? new Image($product_attribute['id_image']) : false;
-                if (LengowCore::compareVersion()) {
+                if (LengowMain::compareVersion()) {
                     $comb_array[$id_product_attribute]['available_date'] = $product_attribute['available_date'] != 0 ? date('Y-m-d',
                         strtotime($product_attribute['available_date'])) : '0000-00-00';
                 }
@@ -804,7 +804,7 @@ class LengowProduct extends Product
      */
     public function getAttributesGroups($id_lang)
     {
-        if (LengowCore::compareVersion()) {
+        if (LengowMain::compareVersion()) {
             if (!Combination::isFeatureActive()) {
                 return array();
             }
