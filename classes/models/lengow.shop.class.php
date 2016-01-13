@@ -26,13 +26,22 @@
 class LengowShop extends Shop
 {
 
-    public function __construct()
+    public function __construct($id = null, $id_lang = null, $id_shop = null)
     {
-        parent::__construct();
+        parent::__construct($id, $id_lang, $id_shop);
         if (_PS_VERSION_ < '1.5') {
             $this->id = 1;
             $this->name = Configuration::get('PS_SHOP_NAME');
             $this->domain = Configuration::get('PS_SHOP_DOMAIN');
+        }
+    }
+
+    public static function isFeatureActive()
+    {
+        if (_PS_VERSION_ < '1.5') {
+            return false;
+        } else {
+            parent::isFeatureActive();
         }
     }
 }

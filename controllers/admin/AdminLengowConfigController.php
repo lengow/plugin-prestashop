@@ -44,9 +44,6 @@ class AdminLengowConfigController extends ModuleAdminController
         $this->lite_display = true;
         $this->meta_title = 'Configuration';
         $this->list_no_link = true;
-        if (_PS_VERSION_ >= '1.6') {
-            $this->bootstrap = true;
-        }
         $this->template = 'layout.tpl';
         $this->display = 'view';
 
