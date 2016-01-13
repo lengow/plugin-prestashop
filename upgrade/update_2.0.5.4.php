@@ -24,8 +24,8 @@ if (!$installation) {
 }
 
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_logs_import\'')) {
-	if (!$this->_checkFieldExists('lengow_logs_import', 'mail')) {
-	    $sql = 'ALTER TABLE '._DB_PREFIX_.'lengow_logs_import ADD `mail` tinyint(1) UNSIGNED NOT NULL DEFAULT \'0\'';
-	    Db::getInstance()->execute($sql);
-	}
+    if (!$this->_checkFieldExists('lengow_logs_import', 'mail')) {
+        $sql = 'ALTER TABLE '._DB_PREFIX_.'lengow_logs_import ADD `mail` tinyint(1) UNSIGNED NOT NULL DEFAULT \'0\'';
+        Db::getInstance()->execute($sql);
+    }
 }

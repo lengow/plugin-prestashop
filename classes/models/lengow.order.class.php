@@ -271,7 +271,9 @@ class LengowOrder extends Order
         if ($this->getCurrentState() != $id_order_state) {
             // Change state process to shipped
             if ($this->getCurrentState() == LengowMain::getOrderState('accepted')
-                 &&  ($marketplace->getStateLengow($api_state) == 'shipped' || $marketplace->getStateLengow($api_state) == 'closed')
+                && ($marketplace->getStateLengow($api_state) == 'shipped'
+                    || $marketplace->getStateLengow($api_state) == 'closed'
+                )
             ) {
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
@@ -285,8 +287,11 @@ class LengowOrder extends Order
                 }
                 LengowMain::getLogInstance()->write('state updated to shipped', true, $this->id_lengow);
                 return true;
-            } elseif (($this->getCurrentState() == LengowMain::getOrderState('accepted') || $this->getCurrentState() == LengowMain::getOrderState('shipped'))
-                 && ($marketplace->getStateLengow($api_state) == 'canceled' || $marketplace->getStateLengow($api_state) == 'refused')
+            } elseif (($this->getCurrentState() == LengowMain::getOrderState('accepted')
+                    || $this->getCurrentState() == LengowMain::getOrderState('shipped')
+                ) && ($marketplace->getStateLengow($api_state) == 'canceled'
+                    || $marketplace->getStateLengow($api_state) == 'refused'
+                )
             ) {
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
@@ -316,9 +321,13 @@ class LengowOrder extends Order
         $shipping_method = $carrier->getShippingMethod();
         if ($shipping_method != Carrier::SHIPPING_METHOD_FREE) {
             if ($shipping_method == Carrier::SHIPPING_METHOD_WEIGHT) {
-                return LengowMain::formatNumber($carrier->getDeliveryPriceByWeight($total, (int)$id_zone));
+                return LengowMain::formatNumber(
+                    $carrier->getDeliveryPriceByWeight($total, (int)$id_zone)
+                );
             } else {
-                return LengowMain::formatNumber($carrier->getDeliveryPriceByPrice($total, (int)$id_zone, (int)$id_currency));
+                return LengowMain::formatNumber(
+                    $carrier->getDeliveryPriceByPrice($total, (int)$id_zone, (int)$id_currency)
+                );
             }
         }
         return 0;

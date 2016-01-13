@@ -169,21 +169,15 @@ class LengowImport
             if ($this->order_id) {
                 LengowMain::log(
                     $total_orders
-                    .' order found for order ID: '
-                    .$this->order_id
-                    .' and markeplace: '
-                    .$this->marketplace_name
-                    .' with account ID: '
-                    .LengowMain::getIdAccount(),
+                    .' order found for order ID: '.$this->order_id
+                    .' and markeplace: '.$this->marketplace_name
+                    .' with account ID: '.LengowMain::getIdAccount(),
                     $this->log_output
                 );
             } else {
                 LengowMain::log(
-                    $total_orders
-                    .' order'
-                    .($total_orders > 1 ? 's ' : ' ')
-                    .'found with account ID: '
-                    .LengowMain::getIdAccount(),
+                    $total_orders.' order'.($total_orders > 1 ? 's ' : ' ')
+                    .'found with account ID: '.LengowMain::getIdAccount(),
                     $this->log_output
                 );
             }
@@ -264,20 +258,15 @@ class LengowImport
             $connector  = new LengowConnector(LengowMain::getAccessToken(), LengowMain::getSecretCustomer());
             if ($order_id && $marketplace_name) {
                 LengowMain::log(
-                    'Connector: get order with order id: '
-                    .$order_id
-                    .' and marketplace: '
-                    .$marketplace_name,
+                    'Connector: get order with order id: '.$order_id
+                    .' and marketplace: '.$marketplace_name,
                     $this->log_output
                 );
             } else {
                 LengowMain::log(
-                    'Connector: get orders between '
-                    .date('Y-m-d', strtotime((string)$date_from))
-                    .' and '
-                    .date('Y-m-d', strtotime((string)$date_to))
-                    .' with account ID: '
-                    .$account_id,
+                    'Connector: get orders between '.date('Y-m-d', strtotime((string)$date_from))
+                    .' and '.date('Y-m-d', strtotime((string)$date_to))
+                    .' with account ID: '.$account_id,
                     $this->log_output
                 );
             }
@@ -323,9 +312,6 @@ class LengowImport
         } else {
             throw new LengowImportException('Account ID, Token access or Secret are not valid');
         }
-
-        print_r($orders);die();
-
         return $orders;
     }
 
@@ -410,7 +396,6 @@ class LengowImport
                     $order_line_ids[0],
                     (string)$marketplace->name
                 );
-
                 if ($order_id) {
                     LengowMain::log('order already imported (ORDER '.$order_id.')', $log_output, $lengow_id);
                     $order = new LengowOrder($order_id);
@@ -436,9 +421,7 @@ class LengowImport
                                     }
                                 }
                                 LengowMain::log(
-                                    'order\'s state has been updated to "'
-                                    .$state_name
-                                    .'"',
+                                    'order\'s state has been updated to "'.$state_name.'"',
                                     $log_output,
                                     $lengow_id
                                 );
@@ -454,9 +437,7 @@ class LengowImport
                 // if order is cancelled or new -> skip
                 if (!LengowImport::checkState($order_state, $marketplace)) {
                     LengowMain::log(
-                        'current order\'s state ['
-                        .$order_state
-                        .'] makes it unavailable to import',
+                        'current order\'s state ['.$order_state.'] makes it unavailable to import',
                         $log_output,
                         $lengow_id
                     );
@@ -592,7 +573,9 @@ class LengowImport
                     $id_order_state = LengowMain::getPrestahopStateId($order_state, $marketplace, $shipped_by_mp);
                     $payment = new LengowPaymentModule();
                     $payment->active = true;
-                    $payment_method = Configuration::get('LENGOW_IMPORT_METHOD_NAME') == 'lengow' ? 'Lengow' : (string)$order_data->marketplace;
+                    $payment_method = Configuration::get('LENGOW_IMPORT_METHOD_NAME') == 'lengow'
+                        ? 'Lengow'
+                        : (string)$order_data->marketplace;
                     $message = 'Import Lengow | '."\r\n"
                         .'ID order : '.(string)$order_data->marketplace_order_id.' | '."\r\n"
                         .'Marketplace : '.(string)$order_data->marketplace.' | '."\r\n"
@@ -728,14 +711,11 @@ class LengowImport
                             );
                             if ($carrier_compatibility < 0) {
                                 throw new LengowCarrierException(
-                                    'carrier '
-                                    .$carrier_name
-                                    .' could not be found in your Prestashop'
+                                    'carrier '.$carrier_name.' could not be found in your Prestashop'
                                 );
                             } elseif ($carrier_compatibility > 0) {
                                 LengowMain::log(
-                                    'carrier compatibility ensured with carrier '
-                                    .$carrier_name,
+                                    'carrier compatibility ensured with carrier '.$carrier_name,
                                     $debug,
                                     $lengow_id
                                 );
@@ -896,10 +876,8 @@ class LengowImport
                 $state_product = $marketplace->getStateLengow((string)$product_data['marketplace_status']);
                 if ($state_product == 'canceled' || $state_product == 'refused') {
                     LengowMain::log(
-                        'product '
-                        .$product_data['merchant_product_id']->id
-                        .' could not be added to cart - status: '
-                        .$state_product,
+                        'product '.$product_data['merchant_product_id']->id
+                        .' could not be added to cart - status: '.$state_product,
                         false,
                         $lengow_id
                     );
@@ -923,11 +901,8 @@ class LengowImport
                 // no product found in the "classic" way => use advanced search
                 if (!$ids) {
                     LengowMain::log(
-                        'product not found with field '
-                        .$attribute_name
-                        .' ('
-                        .$attribute_value
-                        .'). Using advanced search.',
+                        'product not found with field '.$attribute_name
+                        .' ('.$attribute_value.'). Using advanced search.',
                         false,
                         $lengow_id
                     );
@@ -942,9 +917,7 @@ class LengowImport
                         $p = new LengowProduct($ids['id_product']);
                         if ($p->hasAttributes()) {
                             throw new LengowImportException(
-                                'product '
-                                .$p->id
-                                .' is a parent ID. Product variation needed'
+                                'product '.$p->id.' is a parent ID. Product variation needed'
                             );
                         }
                     }
@@ -956,13 +929,8 @@ class LengowImport
                         $products[$id_full] = $product_data;
                     }
                     LengowMain::log(
-                        'product id '
-                        .$id_full
-                        .' found with field '
-                        .$attribute_name
-                        .' ('
-                        .$attribute_value
-                        .')',
+                        'product id '.$id_full
+                        .' found with field '.$attribute_name.' ('.$attribute_value.')',
                         false,
                         $lengow_id
                     );

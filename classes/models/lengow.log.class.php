@@ -26,8 +26,14 @@
 class LengowLog extends LengowFile
 {
 
+    /**
+     * @var string name of logs folder
+     */
     public static $LENGOW_LOGS_FOLDER = 'logs';
 
+    /**
+     * @var LengowFile
+     */
     protected $file;
 
     public function __construct($file_name = null)
@@ -90,37 +96,116 @@ class LengowLog extends LengowFile
     }
 
     /**
+     * Get log files
+     *
+     * @return array
+     */
+    public static function getFiles()
+    {
+        return LengowFile::getFilesFromFolder(LengowLog::$LENGOW_LOGS_FOLDER);
+    }
+
+    /**
+     * Delete order log from lengow_logs_import table
+     *
+     * @param string $id_log_import
+     *
+     * @return boolean
+     */
+    public static function deleteLog($id_log_import = null)
+    {
+        if (is_null($id_log_import)) {
+            return false;
+        }
+        $db = Db::getInstance();
+        $sql = 'DELETE FROM '._DB_PREFIX_.'lengow_logs_import
+            WHERE id = \''.pSQL($id_log_import).'\'
+            LIMIT 1
+        ';
+        return $db->execute($sql);
+    }
+
+    /**
+     * Delete order log from lengow_logs_import table by order ID and order line ID
+     *
+     * @param string $lengow_id
+     * @param string $lengow_order_line
+     *
+     * @return boolean
+     */
+    public static function deleteLogByOrderId($lengow_id = null, $lengow_order_line = null)
+    {
+        if (is_null($lengow_id) || is_null($lengow_order_line)) {
+            return false;
+        }
+        $db = Db::getInstance();
+        $sql = 'DELETE FROM '._DB_PREFIX_.'lengow_logs_import
+            WHERE lengow_order_id = \''.pSQL($lengow_id).'\'
+            AND lengow_order_line = \''.pSQL($lengow_order_line).'\'
+            LIMIT 1
+        ';
+        return $db->execute($sql);
+    }
+
+    /**
      * Add log information in lengow_logs_import table
      *
-     * @param string $lengow_id Lengow order id
-     * @param integer $finished order state
-     * @param string $message error message
+     * @param array     $order_data         Lengow order data
+     * @param string    $lengow_id          Lengow order id
+     * @param string    $lengow_order_line  Lengow order line id
+     * @param string    $message            error message
+     * @param integer   $finished           order state
      */
-    public static function addLog($order_data, $lengow_id, $message = '', $finished = 0)
+    public static function addLog($order_data, $lengow_id, $lengow_order_line = null, $message = '', $finished = 0)
     {
         $db = Db::getInstance();
         // check if log already exists for the given order id
-        $sql_exist = 'SELECT 1 FROM `' . _DB_PREFIX_ . 'lengow_logs_import` '
-            . 'WHERE `lengow_order_id` = \'' . pSQL($lengow_id) . '\'';
+        $sql_exist = 'SELECT 1 FROM `'._DB_PREFIX_.'lengow_logs_import`
+            WHERE `lengow_order_id` = \''.pSQL($lengow_id).'\'
+            AND `lengow_order_line` = \''.pSQL($lengow_order_line).'\'
+        ';
         $r = $db->getRow($sql_exist);
         if (!$r) {
-            LengowLog::insert($lengow_id, $finished, $message, $order_data);
+            LengowLog::insert($lengow_id, $lengow_order_line, $finished, $message, $order_data);
         } else {
-            LengowLog::update($lengow_id, $finished, $message);
+            LengowLog::update($lengow_id, $lengow_order_line, $finished, $message);
         }
     }
 
+    /**
+     * get log
+     *
+     * @param string    $lengow_id          Lengow order id
+     * @param string    $lengow_order_line  Lengow order line id
+     *
+     * @return mixed
+     */
+    public static function loadLogInfo($lengow_id, $lengow_order_line)
+    {
+        $db = Db::getInstance();
+        // check if log already exists for the given order id
+        $sql_exist = 'SELECT `is_finished`, `message`, `date` FROM `'._DB_PREFIX_.'lengow_logs_import`
+            WHERE `lengow_order_id` = \''.pSQL($lengow_id).'\'
+            AND `lengow_order_line` = \''.pSQL($lengow_order_line).'\'
+        ';
+        $row = $db->getRow($sql_exist);
+        if ($row && $row['is_finished'] == 0) {
+            return $row['message'].' (created on the '.$row['date'].')';
+        }
+        return false;
+    }
 
     /**
      * Update order log from lengow_logs_import table
      *
-     * @param string $lengow_order_id lengow order id
-     * @param integer $finished order finished
-     * @param string $message log content
+     * @param string    $lengow_order_id    lengow order id
+     * @param string    $lengow_order_line  lengow order line id
+     * @param integer   $finished           order finished
+     * @param string    $message            log content
      *
      * @return boolean
      */
-    public static function update($lengow_id, $finished, $message)
+    public static function update($lengow_id, $lengow_order_line, $finished, $message)
     {
         $db = Db::getInstance();
         if (_PS_VERSION_ >= '1.5') {
@@ -130,7 +215,8 @@ class LengowLog extends LengowFile
                     'is_finished' => (int)$finished,
                     'message' => pSQL($message),
                 ),
-                '`lengow_order_id` = \'' . pSQL($lengow_id) . '\'',
+                '`lengow_order_id` = \'' . pSQL($lengow_id) . '\'
+                AND `lengow_order_line` = \''.pSQL($lengow_order_line).'\'',
                 1
             );
         } else {
@@ -141,7 +227,8 @@ class LengowLog extends LengowFile
                     'message' => pSQL($message),
                 ),
                 'UPDATE',
-                '`lengow_order_id` = \'' . pSQL($lengow_id) . '\'',
+                '`lengow_order_id` = \'' . pSQL($lengow_id) . '\'
+                AND `lengow_order_line` = \''.pSQL($lengow_order_line).'\'',
                 1
             );
         }
@@ -150,13 +237,15 @@ class LengowLog extends LengowFile
     /**
      * Insert order log from lengow_logs_import table
      *
-     * @param string $lengow_order_id lengow order id
-     * @param integer $finished order finished
-     * @param string $message log content
+     * @param string    $lengow_id          lengow order id
+     * @param string    $lengow_order_line  lengow order line id
+     * @param integer   $finished           order finished
+     * @param string    $message            log content
+     * @param mixed     $order_data         the order data
      *
      * @return boolean
      */
-    public static function insert($lengow_id, $finished, $message, $order_data)
+    public static function insert($lengow_id, $lengow_order_line, $finished, $message, $order_data)
     {
         $db = Db::getInstance();
         if (_PS_VERSION_ >= '1.5') {
@@ -164,6 +253,7 @@ class LengowLog extends LengowFile
                 'lengow_logs_import',
                 array(
                     'lengow_order_id' => pSQL($lengow_id),
+                    'lengow_order_line' => pSQL($lengow_order_line),
                     'is_finished' => (int)$finished,
                     'extra' => pSQL(Tools::jsonEncode($order_data)),
                     'date' => date('Y-m-d H:i:s'),
@@ -172,9 +262,10 @@ class LengowLog extends LengowFile
             );
         } else {
             return $db->autoExecute(
-                _DB_PREFIX_ . 'lengow_logs_import',
+                _DB_PREFIX_.'lengow_logs_import',
                 array(
                     'lengow_order_id' => pSQL($lengow_id),
+                    'lengow_order_line' => pSQL($lengow_order_line),
                     'is_finished' => (int)$finished,
                     'extra' => pSQL(Tools::jsonEncode($order_data)),
                     'date' => date('Y-m-d H:i:s'),
@@ -183,33 +274,5 @@ class LengowLog extends LengowFile
                 'INSERT'
             );
         }
-    }
-
-    /**
-     * Delete order log from lengow_logs_import table
-     *
-     * @param string $lengow_order_id lengow order id
-     *
-     * @return boolean
-     */
-    public static function deleteLog($lengow_order_id = null)
-    {
-        if (is_null($lengow_order_id)) {
-            return false;
-        }
-        $db = Db::getInstance();
-        $sql = 'DELETE FROM ' . _DB_PREFIX_ . 'lengow_logs_import WHERE lengow_order_id = \'' .
-            pSQL(Tools::substr($lengow_order_id, 0, 32)) . '\' LIMIT 1';
-        return $db->execute($sql);
-    }
-
-    /**
-     * Get log files
-     *
-     * @return array
-     */
-    public static function getFiles()
-    {
-        return LengowFile::getFilesFromFolder(LengowLog::$LENGOW_LOGS_FOLDER);
     }
 }
