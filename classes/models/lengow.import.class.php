@@ -104,6 +104,7 @@ class LengowImport
      *
      * @param string    $order_id           lengow order id to import
      * @param string    $marketplace_name   lengow marketplace name to import
+     * @param integer   $shop_id            Id shop for current import
      * @param boolean   $force_product      force import of products
      * @param boolean   $debug              debug mode
      * @param string    $date_from          starting import date
@@ -114,6 +115,7 @@ class LengowImport
     public function __construct(
         $order_id = null,
         $marketplace_name = null,
+        $shop_id = null,
         $force_product = true,
         $debug = false,
         $date_from = null,
@@ -121,6 +123,8 @@ class LengowImport
         $limit = 0,
         $log_output = false
     ) {
+        $shop = new LengowShop($shop_id);
+        Context::getContext()->shop = $shop;
         $this->id_lang          = Context::getContext()->language->id;
         $this->id_shop          = Context::getContext()->shop->id;
         $this->id_shop_group    = Context::getContext()->shop->id_shop_group;
