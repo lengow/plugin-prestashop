@@ -1007,12 +1007,12 @@ class LengowMain
      */
     public static function getToken($id_shop)
     {
-        $token = Configuration::get('LENGOW_SHOP_TOKEN', null, null, $id_shop);
-        if (strlen($token)>0) {
+        $token = LengowConfiguration::getShop('LENGOW_SHOP_TOKEN', null, null, $id_shop);
+        if ($token && strlen($token)>0) {
             return $token;
         } else {
             $token =  bin2hex(openssl_random_pseudo_bytes(16));
-            Configuration::updateValue('LENGOW_SHOP_TOKEN', $token, null, null, $id_shop);
+            LengowConfiguration::updateValue('LENGOW_SHOP_TOKEN', $token, null, null, $id_shop);
         }
         return $token;
     }
