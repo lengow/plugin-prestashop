@@ -26,11 +26,6 @@ class LengowProduct extends Product
 {
 
     /**
-     * string Version
-     */
-    const VERSION = '1.0.1';
-
-    /**
      * array API nodes containing relevant data
      */
     public static $PRODUCT_API_NODES = array(
@@ -42,35 +37,24 @@ class LengowProduct extends Product
         'amount'
     );
 
-    /**
-     * Images of produtcs
-     */
+    //current context
+    protected $context;
+
+    // product images
     protected $images;
-
-    /**
-     * The product cover.
-     */
+    protected $imageCombinations;
+    protected $imageSize;
     protected $cover;
-
-    /**
-     * Default category.
-     */
-    protected $category_default;
-
-    /**
-     * Name of default category.
-     */
-    protected $category_name;
-
-    /**
-     * If product is sale.
-     */
-    protected $is_sale = false;
+    //default category
+    protected $categoryDefault;
+    protected $categoryDefaultName;
+    //is product in sale
+    protected $isSale = false;
 
     /**
      * Array combination of product's attributes.
      */
-    protected $combinations;
+    protected $combinations = null;
 
     /**
      * Array of product's features.
@@ -98,19 +82,10 @@ class LengowProduct extends Product
     {
 
         $this->carrier = isset($params["carrier"]) ? $params["carrier"] : null;
+        $this->imageSize = isset($params["image_size"]) ? $params["image_size"] : self::getMaxImageType();
 
         parent::__construct($id_product, false, $id_lang);
-        $context = Context::getContext();
-
-        // Need to get price Product::getPriceStatic
-        $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'employee WHERE active = 1 LIMIT 1';
-        $findEmployee = Db::getInstance()->ExecuteS($sql);
-        if ($findEmployee) {
-            $context->employee = $findEmployee;
-        } else {
-            throw new LengowExportException('No Active Employee Fund');
-        }
-
+        $this->context = Context::getContext();
 
 
         // The applicable tax may be BOTH the product one AND the state one (moreover this variable is some deadcode)
@@ -119,8 +94,8 @@ class LengowProduct extends Product
         $this->manufacturer_name = Manufacturer::getNameById((int)$this->id_manufacturer);
         $this->supplier_name = Supplier::getNameById((int)$this->id_supplier);
         $address = null;
-        if (is_object($context->cart) && $context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')} != null) {
-            $address = $context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')};
+        if (is_object($this->context->cart) && $this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')} != null) {
+            $address = $this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')};
         }
         if (LengowMain::compareVersion()) {
             $this->tax_rate = $this->getTaxesRate(new Address($address));
@@ -156,14 +131,14 @@ class LengowProduct extends Product
         if (LengowMain::compareVersion()) {
             $this->loadStockData();
         }
-        if ($this->id_category_default && $this->id_category_default > 1) {
-            $this->category_default = new Category((int)$this->id_category_default, $id_lang);
-            $this->category_name = $this->category_default->name;
+        if ($this->id_category_default && $this->id_category_default > 17) {
+            $this->categoryDefault = new Category((int)$this->id_category_default, $id_lang);
+            $this->categoryDefaultName = $this->categoryDefault->name;
         } else {
             $categories = self::getProductCategories($this->id);
             if (!empty($categories)) {
-                $this->category_default = new Category($categories[0], $id_lang);
-                $this->category_name = $this->category_default->name;
+                $this->categoryDefault = new Category($categories[0], $id_lang);
+                $this->categoryDefaultName = $this->categoryDefault->name;
             }
         }
         $images = $this->getImages($id_lang);
@@ -180,12 +155,12 @@ class LengowProduct extends Product
         if (isset($this->specificPrice) && is_array($this->specificPrice)) {
             if (array_key_exists('from', $this->specificPrice) && array_key_exists('to', $this->specificPrice)) {
                 if ($this->specificPrice['from'] <= $today && $today <= $this->specificPrice['to']) {
-                    $this->is_sale = true;
+                    $this->isSale = true;
                 }
             }
         }
-        $this->makeFeatures($context);
-        $this->makeAttributes($context);
+        $this->makeFeatures();
+        $this->makeAttributes();
     }
 
     /**
@@ -231,18 +206,18 @@ class LengowProduct extends Product
                 return LengowMain::cleanData($this->manufacturer_name);
                 break;
             case 'category':
-                return $this->category_name;
+                return $this->categoryDefaultName;
                 break;
             case 'breadcrumb':
-                if ($this->category_default) {
+                if ($this->categoryDefault) {
                     $breadcrumb = '';
-                    $categories = $this->category_default->getParentsCategories();
+                    $categories = $this->categoryDefault->getParentsCategories();
                     foreach ($categories as $category) {
                         $breadcrumb = $category['name'] . ' > ' . $breadcrumb;
                     }
                     return rtrim($breadcrumb, ' > ');
                 }
-                return $this->category_name;
+                return $this->categoryDefaultName;
                 break;
             case 'description':
                 return LengowMain::cleanHtml(LengowMain::cleanData($this->description));
@@ -346,18 +321,6 @@ class LengowProduct extends Product
                 }
                 return Context::getContext()->link->getProductLink($this);
                 break;
-            case 'image_1':
-                if ($id_product_attribute) {
-                    $images = $this->getCombinationImages($this->id_lang);
-                    if (is_array($images) && array_key_exists($id_product_attribute, $images)) {
-                        return Context::getContext()->link->getImageLink($this->link_rewrite,
-                            $this->id . '-' . $images[$id_product_attribute][0]['id_image'],
-                            LengowMain::getImageFormat());
-                    }
-                }
-                return isset($this->cover) ? Context::getContext()->link->getImageLink($this->link_rewrite,
-                    $this->id . '-' . $this->cover['id_image'], LengowMain::getImageFormat()) : '';
-                break;
             case 'price_shipping':
                 if ($id_product_attribute && $id_product_attribute != null) {
                     $price = $this->getData('price_sale', $id_product_attribute);
@@ -366,10 +329,8 @@ class LengowProduct extends Product
                     $price = $this->getData('price_sale');
                     $weight = $this->getData('weight');
                 }
-                $context = Context::getContext();
-
-                $id_zone = $context->country->id_zone;
-                $id_currency = $context->cart->id_currency;
+                $id_zone =  $this->context->country->id_zone;
+                $id_currency =  $this->context->cart->id_currency;
                 $shipping_method = $this->carrier->getShippingMethod();
                 $shipping_cost = 0;
                 if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shipping_method != Carrier::SHIPPING_METHOD_FREE) {
@@ -423,43 +384,11 @@ class LengowProduct extends Product
             case 'delivery_time':
                 return $this->carrier->delay[Context::getContext()->language->id];
                 break;
-            case 'image_2':
-                if ($id_product_attribute) {
-                    $images = $this->getCombinationImages($this->id_lang);
-                    if (is_array($images) && array_key_exists($id_product_attribute, $images)) {
-                        if (isset($images[$id_product_attribute][1]['id_image'])) {
-                            return Context::getContext()->link->getImageLink($this->link_rewrite,
-                                $this->id . '-' . $images[$id_product_attribute][1]['id_image'],
-                                LengowMain::getImageFormat());
-                        } else {
-                            return '';
-                        }
-                    }
-                }
-                return isset($this->images[0]) ? Context::getContext()->link->getImageLink($this->link_rewrite,
-                    $this->id . '-' . $this->images[0]['id_image'], LengowMain::getImageFormat()) : '';
-                break;
-            case 'image_3':
-                if ($id_product_attribute) {
-                    $images = $this->getCombinationImages($this->id_lang);
-                    if (is_array($images) && array_key_exists($id_product_attribute, $images)) {
-                        if (isset($images[$id_product_attribute][2]['id_image'])) {
-                            return Context::getContext()->link->getImageLink($this->link_rewrite,
-                                $this->id . '-' . $images[$id_product_attribute][2]['id_image'],
-                                LengowMain::getImageFormat());
-                        } else {
-                            return '';
-                        }
-                    }
-                }
-                return isset($this->images[1]) ? Context::getContext()->link->getImageLink($this->link_rewrite,
-                    $this->id . '-' . $this->images[1]['id_image'], LengowMain::getImageFormat()) : '';
-                break;
             case 'sale_from':
-                return $this->is_sale ? $this->specificPrice['from'] : '';
+                return $this->isSale ? $this->specificPrice['from'] : '';
                 break;
             case 'sale_to':
-                return $this->is_sale ? $this->specificPrice['to'] : '';
+                return $this->isSale ? $this->specificPrice['to'] : '';
                 break;
             case 'meta_keywords':
                 return LengowMain::cleanData($this->meta_keywords);
@@ -515,6 +444,21 @@ class LengowProduct extends Product
                 return 1;
                 break;
             default:
+                //export images
+                if (substr($name, 0, 6) == 'image_') {
+                    if ($id_product_attribute && isset($this->combinations[$id_product_attribute])) {
+                        $imageId = (int)substr($name, 6, 3);
+                        if (isset($this->combinations[$id_product_attribute]['images'][$imageId])) {
+                            return $this->combinations[$id_product_attribute]['images'][$imageId];
+                        }
+                    } else {
+                        $imageId = (int)substr($name, 6, 3);
+                        return isset($this->images[$imageId]) ? Context::getContext()->link->getImageLink($this->link_rewrite,
+                            $this->id . '-' . $this->images[$imageId]['id_image'], $this->imageSize) : '';
+                    }
+                }
+
+
                 if (isset($this->features[$name])) {
                     return $this->features[$name]['value'];
                 } elseif (!is_null($id_product_attribute) && isset($this->combinations[$id_product_attribute]['attributes'][$name][1])) {
@@ -533,14 +477,14 @@ class LengowProduct extends Product
                     if (isset($attribute_images[$id_product_attribute][$id_image]['id_image'])) {
                         return Context::getContext()->link->getImageLink($this->link_rewrite,
                             $this->id . '-' . $attribute_images[$id_product_attribute][$id_image]['id_image'],
-                            LengowMain::getImageFormat());
+                            $this->imageSize);
                     } else {
                         return '';
                     }
                 }
             }
             return isset($this->images[$out[1] - 2]) ? Context::getContext()->link->getImageLink($this->link_rewrite,
-                $this->id . '-' . $this->images[$out[1] - 2]['id_image'], LengowMain::getImageFormat()) : '';
+                $this->id . '-' . $this->images[$out[1] - 2]['id_image'], $this->imageSize) : '';
         }
         if (isset($this->{$name})) {
             return $this->{$name};
@@ -675,11 +619,10 @@ class LengowProduct extends Product
     /**
      * Make the feature of current product
      *
-     * @param object $context The given context
      */
-    public function makeFeatures($context)
+    public function makeFeatures()
     {
-        $features = $this->getFrontFeatures($context->language->id);
+        $features = $this->getFrontFeatures($this->context->language->id);
         if ($features) {
             foreach ($features as $feature) {
                 $this->features[$feature['name']] = $feature;
@@ -700,42 +643,44 @@ class LengowProduct extends Product
     /**
      * Make the attributes of current product
      *
-     * @param object $context The given context
      */
-    public function makeAttributes($context)
+    public function makeAttributes()
     {
         $color_by_default = '#BDE5F8';
-        $combinations = $this->getAttributesGroups($context->language->id);
+        $combinations = $this->getAttributesGroups($this->context->language->id);
         $groups = array();
         $comb_array = array();
+
         if (is_array($combinations)) {
-            $combination_images = $this->getCombinationImages($context->language->id);
-            foreach ($combinations as $k => $combination) {
-                $k = $k;
-                $price_to_convert = Tools::convertPrice($combination['price'], $context->currency);
-                $price = Tools::displayPrice($price_to_convert, $context->currency);
-                $comb_array[$combination['id_product_attribute']]['id_product_attribute'] = $combination['id_product_attribute'];
-                $comb_array[$combination['id_product_attribute']]['attributes'][$combination['group_name']] = array(
-                    $combination['group_name'],
-                    $combination['attribute_name'],
-                    $combination['id_attribute']
+            $cImages = $this->getImageUrlCombination();
+            foreach ($combinations as $k => $c) {
+                $attributeId = $c['id_product_attribute'];
+                $price_to_convert = Tools::convertPrice($c['price'], $this->context->currency);
+                $price = Tools::displayPrice($price_to_convert, $this->context->currency);
+                $comb_array[$attributeId] = array(
+                    'id_product_attribute' => $attributeId,
+                    'attributes' => array($c['group_name'] => array(
+                        $c['group_name'],
+                        $c['attribute_name'],
+                        $c['id_attribute']
+                    )),
+                    'wholesale_price' => isset($c['wholesale_price']) ? $c['wholesale_price'] : '',
+                    'price' => $price,
+                    'ecotax' =>  isset($c['ecotax']) ? $c['ecotax'] : '',
+                    'weight' => $c['weight'] . Configuration::get('PS_WEIGHT_UNIT'),
+                    'unit_impact' => $c['unit_price_impact'],
+                    'reference' => $c['reference'],
+                    'ean13' => isset($c['ean13']) ? $c['ean13'] : '',
+                    'upc' => isset($c['upc']) ? $c['upc'] : '',
+                    'supplier_reference' => isset($c['supplier_reference']) ? $c['supplier_reference'] : '',
+                    'images' => isset($cImages[$attributeId]) ? $cImages[$attributeId] : array(),
+                    'default_on' => $c['default_on'],
                 );
-                $comb_array[$combination['id_product_attribute']]['wholesale_price'] = isset($combination['wholesale_price']) ? $combination['wholesale_price'] : '';
-                $comb_array[$combination['id_product_attribute']]['price'] = $price;
-                $comb_array[$combination['id_product_attribute']]['ecotax'] = isset($combination['ecotax']) ? $combination['ecotax'] : '';
-                $comb_array[$combination['id_product_attribute']]['weight'] = $combination['weight'] . Configuration::get('PS_WEIGHT_UNIT');
-                $comb_array[$combination['id_product_attribute']]['unit_impact'] = $combination['unit_price_impact'];
-                $comb_array[$combination['id_product_attribute']]['reference'] = $combination['reference'];
-                $comb_array[$combination['id_product_attribute']]['ean13'] = isset($combination['ean13']) ? $combination['ean13'] : '';
-                $comb_array[$combination['id_product_attribute']]['upc'] = isset($combination['upc']) ? $combination['upc'] : '';
-                $comb_array[$combination['id_product_attribute']]['supplier_reference'] = isset($combination['supplier_reference']) ? $combination['supplier_reference'] : '';
-                $comb_array[$combination['id_product_attribute']]['id_image'] = isset($combination_images[$combination['id_product_attribute']][0]['id_image']) ? $combination_images[$combination['id_product_attribute']][0]['id_image'] : 0;
                 if (LengowMain::compareVersion()) {
-                    $comb_array[$combination['id_product_attribute']]['available_date'] = strftime($combination['available_date']);
+                    $comb_array[$attributeId]['available_date'] = strftime($c['available_date']);
                 }
-                $comb_array[$combination['id_product_attribute']]['default_on'] = $combination['default_on'];
-                if ($combination['is_color_group']) {
-                    $groups[$combination['id_attribute_group']] = $combination['group_name'];
+                if ($c['is_color_group']) {
+                    $groups[$attributeId] = $c['group_name'];
                 }
             }
         }
@@ -751,7 +696,6 @@ class LengowProduct extends Product
                 }
                 $list = rtrim($list, ', ');
                 // $name = rtrim($name, ', ');
-                $comb_array[$id_product_attribute]['image'] = $product_attribute['id_image'] ? new Image($product_attribute['id_image']) : false;
                 if (LengowMain::compareVersion()) {
                     $comb_array[$id_product_attribute]['available_date'] = $product_attribute['available_date'] != 0 ? date('Y-m-d',
                         strtotime($product_attribute['available_date'])) : '0000-00-00';
@@ -1190,6 +1134,54 @@ class LengowProduct extends Product
         } else {
             $rate = Tax::getProductTaxRate((int)$product['id_product'], (int)$id_address);
             return $product['price_wt'] / (1 + $rate / 100);
+        }
+    }
+
+
+    /**
+     * v3-test
+     * get image url of product variations
+     *
+     * @return mixed false or attribute image collection
+     */
+    public function getImageUrlCombination()
+    {
+        $cImages = array();
+        $psImages = $this->getCombinationImages($this->id_lang);
+        $maxImage = 10;
+        if ($psImages) {
+            foreach ($psImages as $productAttributeId => $images) {
+                foreach ($images as $image) {
+                    if (!isset($cImages[$productAttributeId]) || count($cImages[$productAttributeId]) < $maxImage) {
+                        $cImages[$productAttributeId][] =
+                            $this->context->link->getImageLink(
+                                $this->link_rewrite,
+                                $this->id . '-' . $image['id_image'],
+                                $this->imageSize
+                            );
+                    }
+                }
+            }
+            return $cImages;
+        }
+        return false;
+    }
+
+    /**
+     * v3-test
+     * Get Max Image Type
+     *
+     * @throws LengowExportException
+     * @return string
+     */
+    public static function getMaxImageType()
+    {
+        $sql = 'SELECT name FROM '._DB_PREFIX_.'image_type WHERE products = 1 ORDER BY width DESC';
+        $result = Db::getInstance()->executeS($sql);
+        if ($result) {
+            return $result[0]['name'];
+        } else {
+            throw new LengowExportException('Cant find Image type size, check your table ps_image_type');
         }
     }
 }

@@ -1,0 +1,111 @@
+product:
+  -
+    id_product: 1
+    id_supplier: 1
+    id_manufacturer: 1
+    price: 4.90
+    reference: SIMPLEKU001
+    supplier_reference: SUPPLIERSKU001
+    ean13: 9805120221231
+  -
+    id_product: 2
+    id_supplier: 1
+    id_manufacturer: 1
+    price: 5.90
+    reference: SIMPLEKU002
+    supplier_reference: SUPPLIERSKU002
+    ean13: 9805120221232
+    condition: used
+  -
+    id_product: 3
+    id_supplier: 1
+    id_manufacturer: 1
+    price: 6.90
+    active: 0
+    reference: SIMPLEKU003
+    supplier_reference: SUPPLIERSKU003
+    ean13: 9805120221233
+product_supplier:
+  -
+    id_product: 1
+    id_product_attribute: 0
+    id_supplier: 1
+  -
+    id_product: 2
+    id_product_attribute: 0
+    id_supplier: 1
+  -
+    id_product: 3
+    id_product_attribute: 0
+    id_supplier: 1
+product_shop:
+  -
+    id_product: 1
+    id_shop: 1
+    id_tax_rules_group: 1
+    price: 4.90
+  -
+    id_product: 2
+    id_shop: 1
+    id_tax_rules_group: 1
+    price: 5.90
+  -
+    id_product: 3
+    id_shop: 1
+    id_tax_rules_group: 1
+    price: 6.90
+    active: 0
+product_lang:
+  -
+    id_product: 1
+    id_shop: 1
+    id_lang: 1
+    name: NAME001
+    description: DESCRIPTION001
+    description_short: SHORTDESCRIPTION001
+    link_rewrite: URL001
+  -
+    id_product: 2
+    id_shop: 1
+    id_lang: 1
+    name: NAME001
+    description: DESCRIPTION002
+    description_short: SHORTDESCRIPTION002
+    link_rewrite: URL002
+  -
+    id_product: 3
+    id_shop: 1
+    id_lang: 1
+    name: NAME003
+    description: DESCRIPTION003
+    description_short: SHORTDESCRIPTION003
+    link_rewrite: URL003
+stock_available:
+  -
+    id_product: 1
+    id_product_attribute: 0
+    id_shop: 1
+    quantity: 10
+    out_of_stock: 2
+  -
+    id_product: 2
+    id_product_attribute: 0
+    id_shop: 1
+    quantity: 8
+    out_of_stock: 2
+  -
+    id_product: 3
+    id_product_attribute: 0
+    id_shop: 1
+    quantity: 0
+    out_of_stock: 2
+category_product:
+  -
+    id_product: 1
+    id_category: 7
+  -
+    id_product: 2
+    id_category: 8
+  -
+    id_product: 3
+    id_category: 9

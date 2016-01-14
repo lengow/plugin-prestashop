@@ -74,7 +74,6 @@ class LengowInstall
             'LENGOW_ORDER_ID_PROCESS',
             'LENGOW_ORDER_ID_SHIPPED',
             'LENGOW_ORDER_ID_CANCEL',
-            'LENGOW_IMAGE_TYPE',
             'LENGOW_IMAGES_COUNT',
             'LENGOW_IMPORT_METHOD_NAME',
             'LENGOW_IMPORT_FORCE_PRODUCT',
@@ -210,7 +209,6 @@ class LengowInstall
             Configuration::updateValue('LENGOW_EXPORT_FEATURES', true) &&
             Configuration::updateValue('LENGOW_EXPORT_FORMAT', 'csv') &&
             Configuration::updateValue('LENGOW_EXPORT_FIELDS', Tools::jsonEncode(LengowExport::$DEFAULT_FIELDS)) &&
-            Configuration::updateValue('LENGOW_IMAGE_TYPE', 3) &&
             Configuration::updateValue('LENGOW_IMAGES_COUNT', 3) &&
             Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', 2) &&
             Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', 4) &&

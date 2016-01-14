@@ -176,17 +176,6 @@
 
                     <div class="clear"></div>
                     <br/>
-                    <label>{l s='Type of images to export' mod='lengow'}</label>
-
-                    <div class="margin-form">
-                        <select name="lengow_image_type" class="" id="lengow_image_type">
-                            {foreach from=$options.images item=option}
-                                <option value="{$option.id_image_type|escape:'htmlall':'UTF-8'}"{if $option.id_image_type == $lengow_image_type} selected="selected"{/if}>{$option.name|escape:'htmlall':'UTF-8'}</option>
-                            {/foreach}
-                        </select>
-                    </div>
-                    <div class="clear"></div>
-                    <br/>
                     <label>{l s='Number images to export' mod='lengow'}</label>
                     <div class="margin-form">
                         <select name="lengow_images_count" class="" id="lengow_images_count">

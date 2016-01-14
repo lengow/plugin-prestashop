@@ -62,9 +62,6 @@ if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)
 
 // Set import parameters
 //backward compatibility
-if (isset($_REQUEST["features"])) {
-    $_REQUEST["variation"] = $_REQUEST["features"];
-}
 if (isset($_REQUEST["all"])) {
     $_REQUEST["selection"] = !(bool)$_REQUEST["all"];
 }
@@ -126,10 +123,6 @@ $stream = isset($_REQUEST["stream"]) ? (bool)$_REQUEST["stream"] : (bool)Configu
 $out_stock = isset($_REQUEST["out_stock"]) ? (bool)$_REQUEST["out_stock"] :
     (bool)Configuration::get('LENGOW_EXPORT_OUT_STOCK');
 
-// export product features
-$exportFeature = isset($_REQUEST["feature"]) ? (bool)$_REQUEST["feature"] :
-    (bool)Configuration::get('LENGOW_EXPORT_FEATURES');
-
 // export product variation
 $exportVariation = isset($_REQUEST["variation"]) ? (bool)$_REQUEST["variation"] :
     (bool)Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS');
@@ -151,18 +144,8 @@ $export = new LengowExport(array(
     'limit' => $limit,
     'out_stock' => $out_stock,
     'export_variation' => $exportVariation,
-    'export_feature' => $exportFeature,
     'full_mode' => $fullMode,
     'selection' => $selection,
 ));
 
 $export->exec();
-
-//remove feature
-//// export inactive products
-//$inactive_products = Configuration::get('LENGOW_EXPORT_DISABLED');
-//if (Tools::getValue('active') && Tools::getValue('active') == 'enabled') {
-//    $inactive_products = false;
-//} elseif (Tools::getValue('active') && Tools::getValue('active') == 'all') {
-//    $inactive_products = true;
-//}

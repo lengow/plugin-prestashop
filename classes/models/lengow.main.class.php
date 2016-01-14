@@ -232,22 +232,6 @@ class LengowMain
     }
 
     /**
-     * The image export format used.
-     *
-     * @return varchar Format
-     */
-    public static function getImageFormat()
-    {
-        if (LengowMain::$image_type_cache) {
-            return LengowMain::$image_type_cache;
-        }
-        $id_type_image = Configuration::get('LENGOW_IMAGE_TYPE');
-        $image_type = new ImageType($id_type_image);
-        LengowMain::$image_type_cache = $image_type->name;
-        return LengowMain::$image_type_cache;
-    }
-
-    /**
      * Get tracker options.
      *
      * @return array

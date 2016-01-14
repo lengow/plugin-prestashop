@@ -21,6 +21,14 @@ class Fixture
         ),
         "product_shop" => array(
             "active" => 1
+        ),
+        "image_lang" => array(
+            "id_lang" => 1
+        ),
+        "lengow_product" => array(
+            "id_shop" => 1,
+            "id_shop_group" => 1,
+            "id_lang" => 1,
         )
     );
     private $dateValues = array(
@@ -41,8 +49,10 @@ class Fixture
                 Db::getInstance()->execute('TRUNCATE ' . _DB_PREFIX_ . $tableName);
                 $this->alreadyTruncate[$tableName] = true;
             }
-            foreach ($row as $values) {
-                $this->loadData($tableName, $values);
+            if ($row) {
+                foreach ($row as $values) {
+                    $this->loadData($tableName, $values);
+                }
             }
         }
     }

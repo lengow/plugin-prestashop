@@ -61,7 +61,6 @@ class LengowConfig
             Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', Tools::getValue('lengow_order_process'));
             Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', Tools::getValue('lengow_order_shipped'));
             Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', Tools::getValue('lengow_order_cancel'));
-            Configuration::updateValue('LENGOW_IMAGE_TYPE', Tools::getValue('lengow_image_type'));
             Configuration::updateValue('LENGOW_IMAGES_COUNT', Tools::getValue('lengow_images_count'));
             Configuration::updateValue('LENGOW_IMPORT_METHOD_NAME', Tools::getValue('lengow_method_name'));
             Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', Tools::getValue('lengow_import_force_product'));
@@ -174,7 +173,6 @@ class LengowConfig
                 'lengow_order_process' => Configuration::get('LENGOW_ORDER_ID_PROCESS'),
                 'lengow_order_shipped' => Configuration::get('LENGOW_ORDER_ID_SHIPPED'),
                 'lengow_order_cancel' => Configuration::get('LENGOW_ORDER_ID_CANCEL'),
-                'lengow_image_type' => Configuration::get('LENGOW_IMAGE_TYPE'),
                 'lengow_images_count' => Configuration::get('LENGOW_IMAGES_COUNT'),
                 'lengow_method_name' => Configuration::get('LENGOW_IMPORT_METHOD_NAME'),
                 'lengow_import_days' => Configuration::get('LENGOW_IMPORT_DAYS'),

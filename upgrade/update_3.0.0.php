@@ -27,8 +27,9 @@ Configuration::deleteByName('LENGOW_ID_CUSTOMER');
 Configuration::deleteByName('LENGOW_ID_GROUP');
 Configuration::deleteByName('LENGOW_TOKEN');
 Configuration::deleteByName('LENGOW_SWITCH_V3');
-
-
+Configuration::deleteByName('LENGOW_EXPORT_FIELDS');
+Configuration::deleteByName('LENGOW_EXPORT_FEATURES');
+Configuration::deleteByName('LENGOW_IMAGE_TYPE');
 
 // alter log import table
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_product\'')) {
