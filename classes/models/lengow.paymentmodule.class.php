@@ -205,7 +205,9 @@ class LengowPaymentModule extends PaymentModule
             $order->total_paid_real = (float)$amount_paid;
 
             // calculate shipping tax free
-            $order->carrier_tax_rate = $carrier->getTaxesRate(new Address($this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')}));
+            $order->carrier_tax_rate = $carrier->getTaxesRate(
+                new Address($this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')})
+            );
             $total_shipping_tax_excl = $lengow_shipping_costs / (1 + ($order->carrier_tax_rate / 100));
 
             $order->total_shipping_tax_excl = (float)Tools::ps_round($total_shipping_tax_excl / (int)$nb_package, 2);
@@ -213,7 +215,10 @@ class LengowPaymentModule extends PaymentModule
             $order->total_shipping = $order->total_shipping_tax_incl;
 
             // add processing fees to wrapping fees
-            $tax_manager = TaxManagerFactory::getManager(new LengowAddress($id_address), (int)Configuration::get('PS_GIFT_WRAPPING_TAX_RULES_GROUP'));
+            $tax_manager = TaxManagerFactory::getManager(
+                new LengowAddress($id_address),
+                (int)Configuration::get('PS_GIFT_WRAPPING_TAX_RULES_GROUP')
+            );
             $tax_calculator = $tax_manager->getTaxCalculator();
             $order->total_wrapping_tax_excl = $tax_calculator->removeTaxes((float)$processing_fees);
             $order->total_wrapping_tax_incl = (float)$processing_fees;
@@ -224,10 +229,14 @@ class LengowPaymentModule extends PaymentModule
                 $precision = _PS_PRICE_COMPUTE_PRECISION_;
             }
 
-            $order->total_paid_tax_excl = (float)Tools::ps_round((float)$total_products + (float)$total_shipping_tax_excl + (float)$order->total_wrapping_tax_excl,
-                $precision);
-            $order->total_paid_tax_incl = (float)Tools::ps_round((float)$total_products_wt + (float)$order->total_shipping_tax_incl + (float)$processing_fees,
-                $precision);
+            $order->total_paid_tax_excl = (float)Tools::ps_round(
+                (float)$total_products + (float)$total_shipping_tax_excl + (float)$order->total_wrapping_tax_excl,
+                $precision
+            );
+            $order->total_paid_tax_incl = (float)Tools::ps_round(
+                (float)$total_products_wt + (float)$order->total_shipping_tax_incl + (float)$processing_fees,
+                $precision
+            );
             $order->total_paid = $order->total_paid_tax_incl;
             $order->round_mode = Configuration::get('PS_PRICE_ROUND_MODE');
             $order->invoice_date = '0000-00-00 00:00:00';
@@ -237,7 +246,14 @@ class LengowPaymentModule extends PaymentModule
             $result = $order->add();
 
             if (!$result) {
-                PrestaShopLogger::addLog('PaymentModule::validateOrder - Order cannot be created', 3, null, 'Cart', (int)$id_cart, true);
+                PrestaShopLogger::addLog(
+                    'PaymentModule::validateOrder - Order cannot be created',
+                    3,
+                    null,
+                    'Cart',
+                    (int)$id_cart,
+                    true
+                );
                 throw new PrestaShopException('unable to save order.');
             }
 
@@ -270,7 +286,14 @@ class LengowPaymentModule extends PaymentModule
             $transaction_id = null;
 
             if (!$order->addOrderPayment($order->total_paid_tax_incl, null, $transaction_id)) {
-                PrestaShopLogger::addLog('PaymentModule::validateOrder - Cannot save Order Payment', 3, null, 'Cart', (int)$id_cart, true);
+                PrestaShopLogger::addLog(
+                    'PaymentModule::validateOrder - Cannot save Order Payment',
+                    3,
+                    null,
+                    'Cart',
+                    (int)$id_cart,
+                    true
+                );
                 throw new LengowImportException('unable to save order payment.');
             }
         }
@@ -339,6 +362,7 @@ class LengowPaymentModule extends PaymentModule
                 $new_history->changeIdOrderState((int)$id_order_state, $order, true);
                 $new_history->addWithemail(true, null);
 
+
                 // Switch to back order if needed
                 if (Configuration::get('PS_STOCK_MANAGEMENT') && $order_detail->getStockState()) {
                     $history = new OrderHistory();
@@ -347,7 +371,11 @@ class LengowPaymentModule extends PaymentModule
                         $history->changeIdOrderState(Configuration::get('PS_OS_OUTOFSTOCK'), $order, true);
                     }
 
-                    $history->changeIdOrderState(Configuration::get($order->valid ? 'PS_OS_OUTOFSTOCK_PAID' : 'PS_OS_OUTOFSTOCK_UNPAID'), $order, true);
+                    $history->changeIdOrderState(
+                        configuration::get($order->valid ? 'PS_OS_OUTOFSTOCK_PAID' : 'PS_OS_OUTOFSTOCK_UNPAID'),
+                        $order,
+                        true
+                    );
                     $history->addWithemail();
                 }
 
@@ -601,4 +629,3 @@ class LengowPaymentModule extends PaymentModule
         }
     }
 }
-

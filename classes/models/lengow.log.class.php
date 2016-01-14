@@ -207,31 +207,17 @@ class LengowLog extends LengowFile
      */
     public static function update($lengow_id, $lengow_order_line, $finished, $message)
     {
-        $db = Db::getInstance();
-        if (_PS_VERSION_ >= '1.5') {
-            return $db->update(
-                'lengow_logs_import',
-                array(
-                    'is_finished' => (int)$finished,
-                    'message' => pSQL($message),
-                ),
-                '`lengow_order_id` = \'' . pSQL($lengow_id) . '\'
-                AND `lengow_order_line` = \''.pSQL($lengow_order_line).'\'',
-                1
-            );
-        } else {
-            return $db->autoExecute(
-                _DB_PREFIX_ . 'lengow_logs_import',
-                array(
-                    'is_finished' => (int)$finished,
-                    'message' => pSQL($message),
-                ),
-                'UPDATE',
-                '`lengow_order_id` = \'' . pSQL($lengow_id) . '\'
-                AND `lengow_order_line` = \''.pSQL($lengow_order_line).'\'',
-                1
-            );
-        }
+        return Db::getInstance()->autoExecute(
+            _DB_PREFIX_ . 'lengow_logs_import',
+            array(
+                'is_finished' => (int)$finished,
+                'message' => pSQL($message),
+            ),
+            'UPDATE',
+            '`lengow_order_id` = \'' . pSQL($lengow_id) . '\' 
+            AND `lengow_order_line` = \''.pSQL($lengow_order_line).'\'',
+            1
+        );
     }
 
     /**
@@ -247,32 +233,17 @@ class LengowLog extends LengowFile
      */
     public static function insert($lengow_id, $lengow_order_line, $finished, $message, $order_data)
     {
-        $db = Db::getInstance();
-        if (_PS_VERSION_ >= '1.5') {
-            return $db->insert(
-                'lengow_logs_import',
-                array(
-                    'lengow_order_id' => pSQL($lengow_id),
-                    'lengow_order_line' => pSQL($lengow_order_line),
-                    'is_finished' => (int)$finished,
-                    'extra' => pSQL(Tools::jsonEncode($order_data)),
-                    'date' => date('Y-m-d H:i:s'),
-                    'message' => pSQL($message),
-                )
-            );
-        } else {
-            return $db->autoExecute(
-                _DB_PREFIX_.'lengow_logs_import',
-                array(
-                    'lengow_order_id' => pSQL($lengow_id),
-                    'lengow_order_line' => pSQL($lengow_order_line),
-                    'is_finished' => (int)$finished,
-                    'extra' => pSQL(Tools::jsonEncode($order_data)),
-                    'date' => date('Y-m-d H:i:s'),
-                    'message' => pSQL($message),
-                ),
-                'INSERT'
-            );
-        }
+        return Db::getInstance()->autoExecute(
+            _DB_PREFIX_.'lengow_logs_import',
+            array(
+                'lengow_order_id' => pSQL($lengow_id),
+                'lengow_order_line' => pSQL($lengow_order_line),
+                'is_finished' => (int)$finished,
+                'extra' => pSQL(Tools::jsonEncode($order_data)),
+                'date' => date('Y-m-d H:i:s'),
+                'message' => pSQL($message),
+            ),
+            'INSERT'
+        );
     }
 }

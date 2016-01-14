@@ -66,26 +66,36 @@ if (LengowMain::checkIP()) {
         $limit = (int)Tools::getValue('limit');
     }
 
-    if (Tools::getIsset('idOrder') && Tools::getIsset('marketplace')) {
+    if (Tools::getIsset('idOrder') && Tools::getIsset('marketplace') && Tools::getIsset('shop')) {
         $import = new LengowImport(
             Tools::getValue('idOrder'),
             Tools::getValue('marketplace'),
+            Tools::getValue('shop'),
             true,
             $debug
         );
     } else {
-        $import = new LengowImport(
-            null,
-            null,
-            $force_product,
-            $debug,
-            $date_from,
-            $date_to,
-            $limit,
-            true
-        );
+        if (_PS_VERSION_ < '1.5') {
+            $results = array('id_shop' => 1);
+        } else {
+            $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+            $results = Db::getInstance()->ExecuteS($sql);
+        }
+        foreach ($results as $row) {
+            $import = new LengowImport(
+                null,
+                null,
+                $row['id_shop'],
+                $force_product,
+                $debug,
+                $date_from,
+                $date_to,
+                $limit,
+                true
+            );
+            $import->exec();
+        }
     }
-    $import->exec();
 } else {
     die('Unauthorized access for IP : '.$_SERVER['REMOTE_ADDR']);
 }
