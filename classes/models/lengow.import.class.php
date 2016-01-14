@@ -123,8 +123,12 @@ class LengowImport
         $limit = 0,
         $log_output = false
     ) {
-        $shop = new LengowShop($shop_id);
-        Context::getContext()->shop = $shop;
+        if (_PS_VERSION_ >= '1.5') {
+            Shop::setContext(Shop::CONTEXT_SHOP, $shop_id);
+            if ($shop = new Shop($shop_id)) {
+                Context::getContext()->shop = $shop;
+            }
+        }
         $this->id_lang          = Context::getContext()->language->id;
         $this->id_shop          = Context::getContext()->shop->id;
         $this->id_shop_group    = Context::getContext()->shop->id_shop_group;
@@ -152,24 +156,24 @@ class LengowImport
     public function exec()
     {
         // 1st step: check if import is already in process
-        // if (LengowImport::isInProcess() && !$this->debug) {
-        //     LengowMain::log('import already in process', $this->log_output);
-        //     return false;
-        // }
+        if (LengowImport::isInProcess() && !$this->debug) {
+            LengowMain::log('import already in process', $this->log_output);
+            return false;
+        }
         // // 2nd step: start import process
-        // LengowImport::setInProcess();
+        LengowImport::setInProcess();
         // 3rd step: disable emails
         LengowMain::disableMail();
         try {
             // start of actual import process
             // get orders from Lengow API
-            $result = LengowImport::getOrdersFromApi(
+            $orders = LengowImport::getOrdersFromApi(
                 $this->order_id,
                 $this->marketplace_name,
                 $this->date_from,
                 $this->date_to
             );
-            $total_orders = count($result);
+            $total_orders = count($orders);
             if ($this->order_id) {
                 LengowMain::log(
                     $total_orders
@@ -190,8 +194,8 @@ class LengowImport
                 return false;
             }
             // import orders in prestashop
-            LengowImport::importOrders(
-                $result,
+            $result = LengowImport::importOrders(
+                $orders,
                 $this->id_lang,
                 $this->id_shop,
                 $this->debug,
@@ -205,7 +209,7 @@ class LengowImport
             return false;
         }
         LengowImport::setEnd();
-        return true;
+        return $result;
     }
 
     /**
@@ -770,12 +774,11 @@ class LengowImport
                 }
             }
         }
-        LengowMain::log($count_orders_added.' order(s) imported', $log_output);
-        LengowMain::log($count_orders_updated.' order(s) updated', $log_output);
         // return last order id of the list
         if (isset($order)) {
             return $order->id;
         }
+        return array('new' => $count_orders_added,'update' => $count_orders_updated);
     }
 
     /**
