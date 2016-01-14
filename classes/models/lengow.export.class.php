@@ -52,12 +52,19 @@ class LengowExport
         'active' => 'active',
         'available_product' => 'available',
         'url_product' => 'url',
-        'image_product' => 'image_1',
         'fdp' => 'price_shipping',
         'id_mere' => 'id_parent',
         'delais_livraison' => 'delivery_time',
+        'image_product_1' => 'image_1',
         'image_product_2' => 'image_2',
         'image_product_3' => 'image_3',
+        'image_product_4' => 'image_4',
+        'image_product_5' => 'image_5',
+        'image_product_6' => 'image_6',
+        'image_product_7' => 'image_7',
+        'image_product_8' => 'image_8',
+        'image_product_9' => 'image_9',
+        'image_product_10' => 'image_10',
         'reduction_from' => 'sale_from',
         'reduction_to' => 'sale_to',
         'meta_keywords' => 'meta_keywords',
@@ -126,7 +133,7 @@ class LengowExport
     /**
      * Max images.
      */
-    protected $max_images = 0;
+    protected $max_images = 10;
 
     /**
      * Attributes to export.
@@ -162,11 +169,6 @@ class LengowExport
      * Export out of stock product
      */
     protected $exportOutStock = false;
-
-    /**
-     * @var boolean Export active product.
-     */
-    protected $export_features = false;
 
     /**
      * @var integer amount of products to export
@@ -216,9 +218,6 @@ class LengowExport
         $this->exportOutStock =  (isset($params["out_stock"]) ?
             $params["out_stock"] :
             Configuration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->shopId));
-        $this->exportFeatures = isset($params["export_feature"]) ?
-            $params["export_feature"] :
-            Configuration::get('LENGOW_EXPORT_FEATURES', null, null, $this->shopId);
         $this->exportVariation = isset($params["export_variation"]) ?
             (bool)$params["export_variation"] :
             (bool)Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS', null, null, $this->shopId);
@@ -310,11 +309,6 @@ class LengowExport
             } else {
                 $this->export_timeout = false;
             }
-            if (Configuration::get('LENGOW_IMAGES_COUNT') == 'all') {
-                $this->max_images = LengowProduct::getMaxImages();
-            } else {
-                $this->max_images = (int)Configuration::get('LENGOW_IMAGES_COUNT');
-            }
 
             // get fields to export
             $export_fields = $this->getFields();
@@ -380,7 +374,10 @@ class LengowExport
             $product = new LengowProduct(
                 $p['id_product'],
                 Context::getContext()->language->id,
-                array("carrier" => $this->carrier)
+                array(
+                    "carrier" => $this->carrier,
+                    "image_size" => LengowProduct::getMaxImageType()
+                )
             );
             foreach ($fields as $field) {
                 if (isset(LengowExport::$DEFAULT_FIELDS[$field])) {
@@ -514,7 +511,7 @@ class LengowExport
 
 
     /**
-     * v3
+     * v3-test
      * Get Count export product
      *
      * @return integer
@@ -536,7 +533,7 @@ class LengowExport
     }
 
     /**
-     * v3
+     * v3-test
      * Get Count export product
      *
      * @param $variation boolean (count variation product)
@@ -605,27 +602,17 @@ class LengowExport
     {
         $fields = array();
 
-        // fields chosen in module config
-        $export_fields = Tools::jsonDecode(Configuration::get('LENGOW_EXPORT_FIELDS'));
-        if (is_array($export_fields)) {
-            foreach ($export_fields as $field) {
-                $fields[] = $field;
-            }
-        } else {
-            foreach (LengowExport::$DEFAULT_FIELDS as $key => $value) {
-                $fields[] = $key;
-            }
+        foreach (LengowExport::$DEFAULT_FIELDS as $key => $value) {
+            $fields[] = $key;
         }
 
         //Features
-        if ($this->exportFeatures) {
-            $features = Feature::getFeatures(Context::getContext()->language->id);
-            foreach ($features as $feature) {
-                if (in_array($feature['name'], $fields)) {
-                    $fields[] = $feature['name'] . '_1';
-                } else {
-                    $fields[] = $feature['name'];
-                }
+        $features = Feature::getFeatures(Context::getContext()->language->id);
+        foreach ($features as $feature) {
+            if (in_array($feature['name'], $fields)) {
+                $fields[] = $feature['name'] . '_1';
+            } else {
+                $fields[] = $feature['name'];
             }
         }
         // if export product variations -> get variations attributes
@@ -644,8 +631,8 @@ class LengowExport
             }
         }
         // Images
-        if ($this->max_images > 3) {
-            for ($i = 3; $i <= ($this->max_images - 1); $i++) {
+        if ($this->max_images > 10) {
+            for ($i = 10; $i <= ($this->max_images - 1); $i++) {
                 $fields[] = 'image_' . ($i + 1);
             }
         }
@@ -654,7 +641,7 @@ class LengowExport
     }
 
     /**
-     * v3
+     * v3-test
      * Get filename of generated feeds
      *
      * @return string

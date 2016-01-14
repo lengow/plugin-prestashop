@@ -232,130 +232,6 @@ class FeedTest extends ModuleTestCase
         $this->assertFileNbLine($export->getFileName(), 8, 'without_full_title');
     }
 
-
-    /**
-     * Test export options
-     *
-     * @test
-     */
-    public function exportFeature()
-    {
-
-        Configuration::set('LENGOW_EXPORT_FEATURES', '');
-
-        $fixture = new Fixture();
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml'
-        );
-
-        $export = new LengowExport(array(
-            "show_inactive_product" => true,
-            "out_stock" => true,
-            "export_feature" => true,
-            "product_ids" => array(1),
-        ));
-        $export->exec();
-
-        $columns = array();
-        foreach (LengowExport::$DEFAULT_FIELDS as $key => $value) {
-            $columns[] = strtoupper($key);
-        }
-
-        $features = Feature::getFeatures(Context::getContext()->language->id);
-        $featureFields = array();
-        foreach ($features as $feature) {
-            $featureFields[] = LengowFeed::formatFields($feature['name'], 'csv');
-        }
-        $columns = array_merge($columns, $featureFields);
-
-
-        $this->assertFileColumnEqual($export->getFileName(), $columns);
-        $this->assertFileNbLine($export->getFileName(), 1, 'feature');
-    }
-
-
-    /**
-     * Test export options
-     *
-     * @test
-     */
-    public function selectField()
-    {
-        Configuration::set('LENGOW_EXPORT_FIELDS', '["supplier_reference","manufacturer"]');
-
-        $fixture = new Fixture();
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml'
-        );
-
-        $export = new LengowExport(array(
-            "show_inactive_product" => true,
-            "out_stock" => true,
-            "product_ids" => array(1),
-        ));
-        $export->exec();
-
-        $this->assertFileColumnEqual($export->getFileName(), array('SUPPLIER_REFERENCE', 'MANUFACTURER'));
-        $this->assertFileNbLine($export->getFileName(), 1, 'select_fields');
-    }
-
-
-    /**
-     * Test count all products
-     *
-     * @test
-     */
-    public function countTotalProduct()
-    {
-        $export = new LengowExport(array(
-            "export_features" => false,
-        ));
-        $this->assertEquals(5, $export->getTotalProduct());
-    }
-
-    /**
-     * Test count all products without variation
-     *
-     * @test
-     */
-    public function countTotalProductWithoutVariation()
-    {
-
-        $export = new LengowExport(array(
-            "export_variation" => true,
-        ));
-        $this->assertEquals(12, $export->getTotalProduct());
-    }
-
-    /**
-     * Test count exported products with variation
-     *
-     * @test
-     */
-    public function countExportedProductWithVaration()
-    {
-        $export = new LengowExport(array(
-            "export_variation" => true,
-            "selection" => false,
-        ));
-        $this->assertEquals(12, $export->getTotalExportProduct());
-    }
-
-
-    /**
-     * Test count exported products without feature
-     *
-     * @test
-     */
-    public function countExportedProductWithoutFeature()
-    {
-        $export = new LengowExport(array(
-            "export_features" => false,
-            "export_lengow_selection" => false,
-        ));
-        $this->assertEquals(5, $export->getTotalExportProduct());
-    }
-
     /**
      * Test count exported products without feature
      *
@@ -370,6 +246,38 @@ class FeedTest extends ModuleTestCase
         ));
         $this->assertEquals(5, $export->getTotalExportProduct());
     }
+
+    /**
+     * Test export max image 10
+     *
+     * @test
+     */
+    public function max10Images()
+    {
+        $fixture = new Fixture();
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/max_image.yml'
+        );
+        $export = new LengowExport(array(
+            "product_ids" => array(1),
+        ));
+        $export->exec();
+
+        $this->assertFileNbLine($export->getFileName(), 1, 'max_image');
+        $this->assertFileColumnNotContain(
+            $export->getFileName(),
+            array('IMAGE_PRODUCT_11'),
+            'Export contain max 10 images'
+        );
+        $this->assertFileColumnContain(
+            $export->getFileName(),
+            array('IMAGE_PRODUCT_1', 'IMAGE_PRODUCT_2', 'IMAGE_PRODUCT_3', 'IMAGE_PRODUCT_4', 'IMAGE_PRODUCT_5'),
+            'Export contain max 10 images'
+        );
+    }
+
+
+
 
 
 //    /**

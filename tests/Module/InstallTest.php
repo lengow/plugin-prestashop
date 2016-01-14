@@ -25,6 +25,8 @@ class InstallTest extends ModuleTestCase
      *
      * @before
      * @test
+     * @covers Lengow::uninstall
+     * @covers LengowInstall::uninstall
      *
      */
     public function unInstall()
@@ -55,22 +57,12 @@ class InstallTest extends ModuleTestCase
         $this->assertEquals($module->name, 'lengow');
     }
 
-//    /**
-//     * Test updage process
-//     *
-//     * @test
-//     *
-//     */
-//    public function upgrade()
-//    {
-//        $module = Module::getInstanceByName('lengow');
-//        $this->assertTrue($module->update());
-//    }
-
     /**
      * Test install lengow module
      *
      * @test
+     * @covers Lengow::install
+     * @covers LengowInstall::install
      *
      */
     public function install()

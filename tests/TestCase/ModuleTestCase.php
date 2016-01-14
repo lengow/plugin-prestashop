@@ -140,6 +140,58 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Asserts that a file contain certain column
+     *
+     * @param  string filename
+     * @param  string columns
+     * @param  string message
+     * @throws PHPUnit_Framework_AssertionFailedError
+     */
+    public static function assertFileColumnContain($filename, $columns, $message = '')
+    {
+        if (($handle = fopen($filename, "r")) !== false) {
+            while (($data = fgetcsv($handle, 1000, "|")) !== false) {
+
+                $find = true;
+                foreach ($columns as $column) {
+                    if (!in_array($column, $data)) {
+                        $find = false;
+                    }
+                }
+                self::assertTrue($find, $message);
+                break;
+            }
+            fclose($handle);
+        }
+    }
+
+    /**
+     * Asserts that a file don't contain certain column
+     *
+     * @param  string filename
+     * @param  string columns
+     * @param  string message
+     * @throws PHPUnit_Framework_AssertionFailedError
+     */
+    public static function assertFileColumnNotContain($filename, $columns, $message = '')
+    {
+        if (($handle = fopen($filename, "r")) !== false) {
+            while (($data = fgetcsv($handle, 1000, "|")) !== false) {
+
+                $find = false;
+                foreach ($columns as $column) {
+                    if (in_array($column, $data)) {
+                        $find = true;
+                    }
+                }
+                self::assertTrue(!$find, $message);
+                break;
+            }
+            fclose($handle);
+        }
+    }
+
+    /**
      * Asserts that a file contain certain values
      *
      * @param  string filename
