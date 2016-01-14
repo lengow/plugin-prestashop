@@ -91,7 +91,7 @@ class LengowFeedController extends LengowController {
         if (_PS_VERSION_ < '1.5') {
             $results = array('id_shop' => 1);
         } else {
-            $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop';
+            $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
             $results = Db::getInstance()->ExecuteS($sql);
         }
         foreach ($results as $row) {
