@@ -12,17 +12,12 @@
                         <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                                name="lengow_export_selection" class="lengow_switch lengow_switch_option"
                                data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)}"
-                               data-action="change_option_selected"
-                               data-id_shop="{$shop['shop']->id}"
-                               value="1" {if $shop['option_selected'] == 1} checked="checked"{/if}>
-                        <span class="lengow_select_text">Select specific products</span><br/>
-                        <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
-                               name="lengow_export_selection" class="lengow_switch lengow_switch_option"
-                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)}"
                                data-action="change_option_product_variation"
                                data-id_shop="{$shop['shop']->id}"
                                value="1" {if $shop['option_variation'] == 1} checked="checked"{/if}>
-                        <span class="lengow_select_text">Include product variation</span><br/>
+                        <span class="lengow_select_text">Include product variation</span>
+                        <i class="fa fa-info-circle lengow_link_tooltip" title="Dum apud Persas, ut supra narravimus, perfidia regis motus agitat insperatos, et in eois tractibus bella rediviva consurgunt, anno sexto decimo et eo diutius pos"></i>
+                        <br/>
                         <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                                name="lengow_export_selection" class="lengow_switch lengow_switch_option"
                                data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)}"
@@ -30,6 +25,16 @@
                                data-id_shop="{$shop['shop']->id}"
                                value="1" {if $shop['option_product_out_of_stock'] == 1} checked="checked"{/if}>
                         <span class="lengow_select_text">Include out of stock product</span>
+                        <i class="fa fa-info-circle lengow_link_tooltip" title="Dum apud Persas, ut supra narravimus, perfidia regis motus agitat insperatos, et in eois tractibus bella rediviva consurgunt, anno sexto decimo et eo diutius pos"></i>
+                        <br/>
+                        <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
+                               name="lengow_export_selection" class="lengow_switch lengow_switch_option"
+                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)}"
+                               data-action="change_option_selected"
+                               data-id_shop="{$shop['shop']->id}"
+                               value="1" {if $shop['option_selected'] == 1} checked="checked"{/if}>
+                        <span class="lengow_select_text">Select specific products</span>
+                        <i class="fa fa-info-circle lengow_link_tooltip" title="Dum apud Persas, ut supra narravimus, perfidia regis motus agitat insperatos, et in eois tractibus bella rediviva consurgunt, anno sexto decimo et eo diutius pos"></i>
                     </div>
                     <div class="lengow_feed_block_content_left">
                         This is your exported catalog. Copy this link in your Lengow platform<br/>
