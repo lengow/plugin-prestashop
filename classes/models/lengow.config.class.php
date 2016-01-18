@@ -43,17 +43,21 @@ class LengowConfig
             Configuration::updateValue('LENGOW_AUTHORIZED_IP', Tools::getValue('lengow_authorized_ip'));
             Configuration::updateValue('LENGOW_TRACKING', Tools::getValue('lengow_tracking'));
             Configuration::updateValue('LENGOW_TRACKING_ID', Tools::getValue('lengow_tracking_id'));
-            Configuration::updateValue('LENGOW_ID_CUSTOMER', Tools::getValue('lengow_customer_id'));
-            Configuration::updateValue('LENGOW_ID_GROUP', Tools::getValue('lengow_group_id'));
-            Configuration::updateValue('LENGOW_TOKEN', Tools::getValue('lengow_token'));
+            Configuration::updateValue('LENGOW_ACCOUNT_ID', Tools::getValue('lengow_account_id'));
+            Configuration::updateValue('LENGOW_ACCESS_TOKEN', Tools::getValue('lengow_access_token'));
+            Configuration::updateValue('LENGOW_SECRET', Tools::getValue('lengow_secret'));
             Configuration::updateValue('LENGOW_EXPORT_SELECTION', $this->checkBoxValue('lengow_export_selection'));
             Configuration::updateValue('LENGOW_EXPORT_NEW', $this->checkBoxValue('lengow_export_new'));
-            Configuration::updateValue('LENGOW_EXPORT_ALL_VARIATIONS',
-                $this->checkBoxValue('lengow_export_all_variations'));
+            Configuration::updateValue(
+                'LENGOW_EXPORT_ALL_VARIATIONS',
+                $this->checkBoxValue('lengow_export_all_variations')
+            );
             Configuration::updateValue('LENGOW_EXPORT_FEATURES', $this->checkBoxValue('lengow_export_features'));
             Configuration::updateValue('LENGOW_EXPORT_FULLNAME', $this->checkBoxValue('lengow_export_fullname'));
-            Configuration::updateValue('LENGOW_EXPORT_FIELDS',
-                Tools::jsonEncode(Tools::getValue('lengow_export_fields')));
+            Configuration::updateValue(
+                'LENGOW_EXPORT_FIELDS',
+                Tools::jsonEncode(Tools::getValue('lengow_export_fields'))
+            );
             Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', Tools::getValue('lengow_order_process'));
             Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', Tools::getValue('lengow_order_shipped'));
             Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', Tools::getValue('lengow_order_cancel'));
@@ -65,8 +69,10 @@ class LengowConfig
             Configuration::updateValue('LENGOW_EXPORT_FORMAT', Tools::getValue('lengow_export_format'));
             Configuration::updateValue('LENGOW_EXPORT_FILE', $this->checkBoxValue('lengow_export_file'));
             Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Tools::getValue('lengow_carrier_default'));
-            Configuration::updateValue('LENGOW_IMPORT_CARRIER_DEFAULT',
-                Tools::getValue('lengow_import_carrier_default'));
+            Configuration::updateValue(
+                'LENGOW_IMPORT_CARRIER_DEFAULT',
+                Tools::getValue('lengow_import_carrier_default')
+            );
             Configuration::updateValue('LENGOW_DEBUG', Tools::getValue('lengow_debug'));
             Configuration::updateValue('LENGOW_PARENT_IMAGE', Tools::getValue('lengow_parent_image'));
             Configuration::updateValue('LENGOW_FEED_MANAGEMENT', Tools::getValue('lengow_feed_management'));
@@ -82,8 +88,10 @@ class LengowConfig
             Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', Tools::getValue('lengow_order_shippedByMp'));
             Configuration::updateValue('LENGOW_CRON_EDITOR', Tools::getValue('lengow_cron_editor'));
             Configuration::updateValue('LENGOW_IMPORT_SHIPPED_BY_MP', Tools::getValue('lengow_import_shipped_by_mp'));
-            Configuration::updateValue('LENGOW_EXPORT_SELECT_FEATURES',
-                Tools::jsonEncode(Tools::getValue('lengow_export_select_features')));
+            Configuration::updateValue(
+                'LENGOW_EXPORT_SELECT_FEATURES',
+                Tools::jsonEncode(Tools::getValue('lengow_export_select_features'))
+            );
 
             if (Tools::getValue('cron-delay') > 0) {
                 Configuration::updateValue('LENGOW_CRON', Tools::getValue('cron-delay'));

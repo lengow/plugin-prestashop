@@ -370,39 +370,19 @@ class LengowMain
     }
 
     /**
-     * Get flows.
-     *
-     * @return array Flow
-     */
-    public static function getFlows($id_flow = null)
-    {
-        $lengow_connector = new LengowConnector((integer)self::getIdCustomer(), self::getTokenCustomer());
-        $args = array(
-            'idClient' => (integer)self::getIdCustomer(),
-            'idGroup' => (string)self::getGroupCustomer()
-        );
-        if ($id_flow) {
-            $args['idFlow'] = $id_flow;
-        }
-        return $lengow_connector->api('getRootFeed', $args);
-    }
-
-
-    /**
      * v3
-     * Check export access
+     * Check webservices access (export and import)
      *
-     * @param $id_shop string
-     * @param $token   shop_token
+     * @param string $token   shop token
+     * @param string $id_shop id shop
      *
      * @return boolean.
      */
-    public static function checkExportAccess($id_shop, $token)
+    public static function checkWebservicesAccess($token, $id_shop = null)
     {
-        if (self::checkToken($id_shop, $token)) {
+        if (self::checkToken($token, $id_shop)) {
             return true;
         }
-
         if (self::checkIP()) {
             return true;
         }
@@ -413,18 +393,48 @@ class LengowMain
      * v3
      * Check if token is correct
      *
-     * @param $id_shop string
-     * @param $token   shop_token
+     * @param string $token   shop token
+     * @param string $id_shop id shop
      *
      * @return boolean.
      */
-    public static function checkToken($id_shop, $token)
+    public static function checkToken($token, $id_shop = null)
     {
         $storeToken = LengowMain::getToken($id_shop);
         if ($token == $storeToken) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * v3
+     * Generate token
+     *
+     * @param Shop $id_shop
+     *
+     * @return array
+     */
+    public static function getToken($id_shop = null)
+    {
+        if (is_null($id_shop) && _PS_VERSION_ >= '1.5') {
+            $token = LengowConfiguration::getGlobalValue('LENGOW_SHOP_TOKEN');
+            if ($token && strlen($token)>0) {
+                return $token;
+            } else {
+                $token =  bin2hex(openssl_random_pseudo_bytes(16));
+                LengowConfiguration::updateGlobalValue('LENGOW_SHOP_TOKEN', $token);
+            }
+        } else {
+            $token = LengowConfiguration::getShop('LENGOW_SHOP_TOKEN', null, null, $id_shop);
+            if ($token && strlen($token)>0) {
+                return $token;
+            } else {
+                $token =  bin2hex(openssl_random_pseudo_bytes(16));
+                LengowConfiguration::updateValue('LENGOW_SHOP_TOKEN', $token, null, null, $id_shop);
+            }
+        }
+        return $token;
     }
 
     /**
@@ -524,9 +534,9 @@ class LengowMain
     /**
      * Clean data
      *
-     * @param 	string $value The content
+     * @param string $value The content
      *
-     * @return 	string
+     * @return string
      */
     public static function cleanData($value)
     {
@@ -556,23 +566,26 @@ class LengowMain
                 chr(28),
                 "\n",
                 "\r"
-            ), array(
-            ' ',
-            ' ',
-            '\'',
-            '\'',
-            ' ',
-            '-',
-            ' ',
-            ' ',
-            ' ',
-            '',
-            '',
-            '',
-            '',
-            '',
-            ''
-        ), $value);
+            ),
+            array(
+                ' ',
+                ' ',
+                '\'',
+                '\'',
+                ' ',
+                '-',
+                ' ',
+                ' ',
+                ' ',
+                '',
+                '',
+                '',
+                '',
+                '',
+                ''
+            ),
+            $value
+        );
         return $value;
     }
 
@@ -786,7 +799,8 @@ class LengowMain
             $emails[0] = Configuration::get('PS_SHOP_EMAIL');
         }
         foreach ($emails as $to) {
-            if (!Mail::send((int)$cookie->id_lang,
+            if (!Mail::send(
+                (int)$cookie->id_lang,
                 'report',
                 $subject,
                 $datas,
@@ -797,8 +811,8 @@ class LengowMain
                 null,
                 null,
                 _PS_MODULE_DIR_ . 'lengow/views/templates/mails/',
-                true)
-            ) {
+                true
+            )) {
                 LengowMain::log('Unable to send report email to ' . $to);
             } else {
                 LengowMain::log('Report email sent to ' . $to);
@@ -978,27 +992,7 @@ class LengowMain
     public static function getImportUrl($id_shop = null)
     {
         $base = LengowMain::getLengowBaseUrl($id_shop);
-        return $base . 'webservice/import.php?token='.LengowMain::getToken($id_shop);
-    }
-
-    /**
-     * v3
-     * Generate token
-     *
-     * @param Shop $id_shop
-     *
-     * @return array
-     */
-    public static function getToken($id_shop)
-    {
-        $token = LengowConfiguration::getShop('LENGOW_SHOP_TOKEN', null, null, $id_shop);
-        if ($token && strlen($token)>0) {
-            return $token;
-        } else {
-            $token =  bin2hex(openssl_random_pseudo_bytes(16));
-            LengowConfiguration::updateValue('LENGOW_SHOP_TOKEN', $token, null, null, $id_shop);
-        }
-        return $token;
+        return $base . 'webservice/import.php?token='.LengowMain::getToken();
     }
 
     /**
@@ -1078,8 +1072,7 @@ class LengowMain
         if (!Db::getInstance()->executeS($query_import_select)) {
             $add_import = Db::getInstance()->execute($query_import_insert);
         }
-        if (Configuration::get('LENGOW_EXPORT_FILE')) // create export cron task if export in file only
-        {
+        if (Configuration::get('LENGOW_EXPORT_FILE')) {
             if (!Db::getInstance()->executeS($query_export_select)) {
                 $add_export = Db::getInstance()->execute($query_export_insert);
             }
@@ -1190,5 +1183,4 @@ class LengowMain
         $func = create_function('$c', 'return strtoupper($c[1]);');
         return preg_replace_callback('/_([a-z])/', $func, $str);
     }
-
 }

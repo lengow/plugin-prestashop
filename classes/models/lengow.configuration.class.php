@@ -43,5 +43,4 @@ class LengowConfiguration extends Configuration
             parent::updateValue($key, $values, $html, $id_shop_group, $id_shop);
         }
     }
-
 }
