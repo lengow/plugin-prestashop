@@ -83,8 +83,9 @@ class LengowFeedController extends LengowController {
                     if ($selection) {
                         foreach ($selection as $id => $v) {
                             $this->setProductSelection($id, 1, $shopId);
-                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'").bootstrapSwitch("state",true);';
+                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'").bootstrapSwitch("state",true, true);';
                         }
+                        $this->reloadTotal($shopId);
                     } else {
                         echo 'alert("Please select a product");';
                     }
@@ -95,8 +96,9 @@ class LengowFeedController extends LengowController {
                     if ($selection) {
                         foreach ($selection as $id => $v) {
                             $this->setProductSelection($id, 0, $shopId);
-                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'").bootstrapSwitch("state",false);';
+                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'").bootstrapSwitch("state",false, true);';
                         }
+                        $this->reloadTotal($shopId);
                     } else {
                         echo 'alert("Please select a product");';
                     }
