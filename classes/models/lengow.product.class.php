@@ -784,41 +784,40 @@ class LengowProduct extends Product
     }
 
     /**
-     * Publis or unpublish to Lengow.
+     * v3-test
+     * Publish or Un-publish to Lengow.
      *
-     * @param integer $id_product the id product
-     * @param integer $status 1 : publish, 0 : unpublish
-     * @param integer $id_lang the id lang
-     * @param integer $id_product the id shop
+     * @param integer $productId the id product
+     * @param integer $value 1 : publish, 0 : unpublish
+     * @param integer $shopId the id shop
      *
      * @return boolean.
      */
-    public static function publish($id_product, $status = 1, $id_lang = null, $id_shop = null)
+    public static function publish($productId, $value, $shopId)
     {
-        $context = Context::getContext();
-        if (empty($id_lang)) {
-            $id_lang = $context->language->id;
-        }
-        if (empty($id_shop)) {
-            $id_shop = $context->shop->id;
-        }
-        $id_shop_group = $context->shop->id_shop_group;
-        if ($status == 1) {
-            $select = 'SELECT COUNT(`id_product`) FROM `' . _DB_PREFIX_ . 'lengow_product` WHERE `id_product`= ' . (int)$id_product . ';';
-            $count = Db::getInstance()->getValue($select);
-            if ($count == 1) {
-                return true;
-            } else {
-                return Db::getInstance()->autoExecute(_DB_PREFIX_ . 'lengow_product', array(
-                    'id_product' => (int)$id_product,
-                    'id_shop' => (int)$id_shop,
-                    'id_shop_group' => (int)$id_shop_group,
-                    'id_lang' => (int)$id_lang,
-                ), 'INSERT');
+        if (!$value) {
+            $sql = 'DELETE FROM '._DB_PREFIX_.'lengow_product
+             WHERE id_product = '.(int)$productId.' AND id_shop = '.$shopId;
+            Db::getInstance()->Execute($sql);
+        } else {
+            $sql = 'SELECT id_product FROM '._DB_PREFIX_.'lengow_product
+            WHERE id_product = '.(int)$productId.' AND id_shop = '.$shopId;
+            $results = Db::getInstance()->ExecuteS($sql);
+            if (count($results) == 0) {
+                if (_PS_VERSION_ < '1.5') {
+                    Db::getInstance()->autoExecute(_DB_PREFIX_.'lengow_product', array(
+                        'id_product' => $productId,
+                        'id_shop' => $shopId
+                    ), 'INSERT');
+                } else {
+                    Db::getInstance()->Insert('lengow_product', array(
+                        'id_product' => $productId,
+                        'id_shop' => $shopId
+                    ));
+                }
             }
-        } elseif ($status == 0) {
-            return Db::getInstance()->delete(_DB_PREFIX_ . 'lengow_product', 'id_product = ' . (int)$id_product, 1);
         }
+        return true;
     }
 
     /**

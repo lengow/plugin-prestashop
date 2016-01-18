@@ -68,7 +68,7 @@ class LengowFeedController extends LengowController {
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     $productId = isset($_REQUEST['id_product']) ? $_REQUEST['id_product'] : null;
                     if ($state !== null) {
-                        $this->setProductSelection($productId, $state, $shopId);
+                        LengowProduct::publish($productId, $state, $shopId);
                         $this->reloadTotal($shopId);
                     }
                     break;
@@ -82,7 +82,7 @@ class LengowFeedController extends LengowController {
                     $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
                     if ($selection) {
                         foreach ($selection as $id => $v) {
-                            $this->setProductSelection($id, 1, $shopId);
+                            LengowProduct::publish($id, 1, $shopId);
                             echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'").bootstrapSwitch("state",true, true);';
                         }
                         $this->reloadTotal($shopId);
@@ -95,7 +95,7 @@ class LengowFeedController extends LengowController {
                     $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
                     if ($selection) {
                         foreach ($selection as $id => $v) {
-                            $this->setProductSelection($id, 0, $shopId);
+                            LengowProduct::publish($id, 0, $shopId);
                             echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'").bootstrapSwitch("state",false, true);';
                         }
                         $this->reloadTotal($shopId);
@@ -155,32 +155,6 @@ class LengowFeedController extends LengowController {
         ));
         echo '$("#block_'.$shopId.' .lengow_exported").html("'.$lengowExport->getTotalExportProduct().'");';
         echo '$("#block_'.$shopId.' .lengow_total").html("'.$lengowExport->getTotalProduct().'");';
-    }
-
-    public function setProductSelection($productId, $value, $shopId)
-    {
-        if (!$value) {
-            $sql = 'DELETE FROM '._DB_PREFIX_.'lengow_product
-             WHERE id_product = '.(int)$productId.' AND id_shop = '.$shopId;
-            Db::getInstance()->Execute($sql);
-        } else {
-            $sql = 'SELECT id_product FROM '._DB_PREFIX_.'lengow_product
-            WHERE id_product = '.(int)$productId.' AND id_shop = '.$shopId;
-            $results = Db::getInstance()->ExecuteS($sql);
-            if (count($results) == 0) {
-                if (_PS_VERSION_ < '1.5') {
-                    Db::getInstance()->autoExecute(_DB_PREFIX_.'lengow_product', array(
-                        'id_product' => $productId,
-                        'id_shop' => $shopId
-                    ), 'INSERT');
-                } else {
-                    Db::getInstance()->Insert('lengow_product', array(
-                        'id_product' => $productId,
-                        'id_shop' => $shopId
-                    ));
-                }
-            }
-        }
     }
 
     /**

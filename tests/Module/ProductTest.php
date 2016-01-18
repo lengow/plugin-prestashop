@@ -88,6 +88,48 @@ class ProductTest extends ModuleTestCase
         );
 
         $name = LengowProduct::getMaxImageType();
-        $this->assertEquals('thickbox_default', $name);
+        $this->assertEquals('thickbox_default', $name, 'Max size is thickbox_default');
+    }
+
+    /**
+     * Test getMaxImageType
+     *
+     * @test
+     * @covers LengowProduct::publish
+     */
+    public function publish()
+    {
+        $fixture = new Fixture();
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Product/no_lengow_selection.yml'
+        );
+        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product');
+        $this->assertEquals(0, $result[0]['total'], 'Product selection is empty');
+
+        LengowProduct::publish(1, 1, 1);
+
+        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product');
+        $this->assertEquals(1, $result[0]['total'], 'One product is selected');
+
+        LengowProduct::publish(1, 0, 1);
+        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product');
+        $this->assertEquals(0, $result[0]['total'], 'Product selection is empty');
+
+        LengowProduct::publish(1, 1, 1);
+        LengowProduct::publish(1, 1, 2);
+        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product
+        WHERE id_shop = 1 ');
+        $this->assertEquals(1, $result[0]['total'], 'One product for shop 1');
+        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product
+        WHERE id_shop = 2 ');
+        $this->assertEquals(1, $result[0]['total'], 'One product for shop 2');
+
+        LengowProduct::publish(1, 0, 1);
+        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product
+        WHERE id_shop = 1 ');
+        $this->assertEquals(0, $result[0]['total'], 'No product for shop 1');
+        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product
+        WHERE id_shop = 2 ');
+        $this->assertEquals(1, $result[0]['total'], 'One product for shop 2');
     }
 }
