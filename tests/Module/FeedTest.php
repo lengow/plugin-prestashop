@@ -77,25 +77,11 @@ class FeedTest extends ModuleTestCase
      * @test
      * @expectedException        LengowExportException
      * @expectedExceptionMessage Illegal export format
+     * @covers LengowExport::setFormat
      */
-    public function formatEmpty()
+    public function setFormat()
     {
         new LengowExport(array("format" => "mp3"));
-    }
-
-    /**
-     * Test Export Empty Currency
-     *
-     * @test
-     * @expectedException        LengowExportException
-     * @expectedExceptionMessage Illegal Currency
-     */
-    public function currencyEmpty()
-    {
-        $context = Context::getContext();
-        $context->currency = null;
-        $export = new LengowExport();
-        $export->exec();
     }
 
     /**
@@ -104,10 +90,27 @@ class FeedTest extends ModuleTestCase
      * @test
      * @expectedException        LengowExportException
      * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
+     * @covers LengowExport::setCarrier
      */
-    public function carrierEmpty()
+    public function setCarrier()
     {
         Configuration::set('LENGOW_CARRIER_DEFAULT', '');
+        $export = new LengowExport();
+        $export->exec();
+    }
+
+    /**
+     * Test Export Empty Currency
+     *
+     * @test
+     * @expectedException        LengowExportException
+     * @expectedExceptionMessage Illegal Currency
+     * @covers LengowExport::checkCurrency
+     */
+    public function checkCurrency()
+    {
+        $context = Context::getContext();
+        $context->currency = null;
         $export = new LengowExport();
         $export->exec();
     }

@@ -133,7 +133,7 @@ class LengowExport
     /**
      * Max images.
      */
-    protected $max_images = 10;
+    protected $maxImages = 10;
 
     /**
      * Attributes to export.
@@ -228,6 +228,7 @@ class LengowExport
     }
 
     /**
+     * v3-test
      * Check currency to export.
      *
      * @throws LengowExportException
@@ -244,6 +245,7 @@ class LengowExport
 
 
     /**
+     * v3-test
      * Set Carrier to export.
      *
      * @throws LengowExportException
@@ -262,7 +264,7 @@ class LengowExport
 
 
     /**
-     * v3
+     * v3-test
      * Set format to export.
      *
      * @param string $format The export format
@@ -472,7 +474,7 @@ class LengowExport
     }
 
     /**
-     * v3
+     * v3-test
      * Get Total product (Active/Inactive, In Stock/ Out Stock)
      *
      * @return integer
@@ -594,6 +596,7 @@ class LengowExport
 
 
     /**
+     * v3-test
      * Get fields to export
      *
      * @return array
@@ -602,7 +605,7 @@ class LengowExport
     {
         $fields = array();
 
-        foreach (LengowExport::$DEFAULT_FIELDS as $key => $value) {
+        foreach (self::$DEFAULT_FIELDS as $key => $value) {
             $fields[] = $key;
         }
 
@@ -630,14 +633,8 @@ class LengowExport
                 }
             }
         }
-        // Images
-        if ($this->max_images > 10) {
-            for ($i = 10; $i <= ($this->max_images - 1); $i++) {
-                $fields[] = 'image_' . ($i + 1);
-            }
-        }
         // Allow to add extra fields
-        return LengowExport::setAdditionalFields($fields);
+        return static::setAdditionalFields($fields);
     }
 
     /**
@@ -652,21 +649,10 @@ class LengowExport
     }
 
     /**
-     * Get the default fields to be exported as HTML options
-     *
-     * @return array
-     */
-    public static function getDefaultFields()
-    {
-        $array_fields = array();
-        foreach (self::$DEFAULT_FIELDS as $fields => $value) {
-            $array_fields[] = new LengowOption($fields, $value . ' - (' . $fields . ')');
-        }
-        return $array_fields;
-    }
-
-    /**
+     * v3-test
      * Override this function in override/lengow.export.class.php to add header
+     * @params array $fields
+     * @return array
      */
     public static function setAdditionalFields($fields)
     {
