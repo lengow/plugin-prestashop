@@ -488,10 +488,10 @@ class LengowExport
             $join = '';
         }
 
-        if (_PS_VERSION_ >= '1.5') {
-            $where = ' WHERE ps.active = 1 ';
-        } else {
+        if (_PS_VERSION_ < '1.5') {
             $where = ' WHERE p.active = 1 ';
+        } else {
+            $where = ' WHERE ps.active = 1 ';
         }
 
         if ($this->exportVariation) {
@@ -529,7 +529,6 @@ class LengowExport
         } else {
             $query = $this->buildTotalQuery();
         }
-        //echo $query;
         $collection = Db::getInstance()->executeS($query);
         return $collection[0]['total'];
     }
@@ -561,13 +560,13 @@ class LengowExport
             (ps.id_product = p.id_product AND ps.id_shop = '.$this->shopId.') ';
         }
         if (!$this->showInactiveProduct) {
-            if (_PS_VERSION_ >= '1.5') {
-                $where[] = ' ps.active = 1 ';
-            } else {
+            if (_PS_VERSION_ < '1.5') {
                 $where[] = ' p.active = 1 ';
+            } else {
+                $where[] = ' ps.active = 1 ';
             }
         }
-        if (_PS_VERSION_ > '1.4') {
+        if (!(_PS_VERSION_ < '1.5')) {
             $where[] = ' ps.id_shop = '.$this->shopId;
         }
         if (!$this->exportOutStock) {
@@ -590,7 +589,9 @@ class LengowExport
         if ($this->productIds != null) {
             $where[] = ' p.`id_product` IN (' . implode(',', $this->productIds) . ')';
         }
-        $query.= 'WHERE '.join(' AND ', $where);
+        if (count($where)>0) {
+            $query.= ' WHERE '.join(' AND ', $where);
+        }
         return $query;
     }
 
