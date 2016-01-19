@@ -123,11 +123,31 @@ class FeedTest extends ModuleTestCase
     public function exportLimit()
     {
         $export = new LengowExport(array(
-            "show_product_combination" => false,
+            "export_variation" => false,
             "limit" => 4
         ));
         $export->exec();
         $this->assertFileNbLine($export->getFileName(), 4, 'limit_4');
+    }
+
+    /**
+     * Test Export Offset
+     * @test
+     *
+     */
+    public function exportOffset()
+    {
+        $export = new LengowExport(array(
+            "export_variation" => true,
+            "offset" => 2,
+            "limit" => 4
+        ));
+        $export->exec();
+        $this->assertFileValues($export->getFileName(), 10, array("NAME_PRODUCT" => "NAME010"));
+        $this->assertFileValues($export->getFileName(), '10_11', array("NAME_PRODUCT" => "NAME010"));
+        $this->assertFileValues($export->getFileName(), '10_12', array("NAME_PRODUCT" => "NAME010"));
+        $this->assertFileValues($export->getFileName(), '10_13', array("NAME_PRODUCT" => "NAME010"));
+        $this->assertFileNbLine($export->getFileName(), 4, 'offset_1_limit_2');
     }
 
     /**
