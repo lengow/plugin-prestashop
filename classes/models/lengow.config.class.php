@@ -157,7 +157,6 @@ class LengowConfig
             );
         }
 
-        $options['export_fields'] = LengowExport::getDefaultFields();
         $options['shippings'] = LengowMain::getShippingName();
         $options['formats'] = LengowMain::getExportFormats();
         $options['states'] = OrderState::getOrderStates((int)$this->context->cookie->id_lang);
