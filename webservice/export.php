@@ -26,6 +26,7 @@
  * string product_ids   : List of product id separate with comma (1,2,3)
  * string title         : Export combination title with parent title (full)
  * int limit            : Limit number of exported product
+ * int offset           : Offset of total product
  * boolean out_stock    : Export out of stock product (1) Export only product in stock (0)
  * boolean variation    : Export product Variation (1) Export parent product only (0)
  */
@@ -112,6 +113,9 @@ $format = isset($_REQUEST["format"]) ? $_REQUEST["format"] : Configuration::get(
 // export limit
 $limit = isset($_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : null;
 
+// export offset
+$offset = isset($_REQUEST["offset"]) ? (int)$_REQUEST["offset"] : null;
+
 // export lengow selection
 $selection = isset($_REQUEST["selection"]) ? (bool)$_REQUEST["selection"] :
     Configuration::get('LENGOW_EXPORT_SELECTION');
@@ -142,6 +146,7 @@ $export = new LengowExport(array(
     'product_ids' => $product_ids,
     'full_title' => $fullTitle,
     'limit' => $limit,
+    'offset' => $offset,
     'out_stock' => $out_stock,
     'export_variation' => $exportVariation,
     'full_mode' => $fullMode,

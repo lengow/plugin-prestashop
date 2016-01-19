@@ -2,6 +2,7 @@
 
 namespace PrestaShop\PrestaShop\Tests\TestCase;
 
+
 use Currency;
 use Context;
 use Db;
@@ -124,5 +125,117 @@ class ExportTest extends ModuleTestCase
             "selection" => true,
         ));
         $this->assertEquals(9, $export->getTotalExportProduct());
+    }
+
+    /**
+     * Test getFields
+     * @test
+     * @covers LengowExport::getFields
+     */
+    public function getFields()
+    {
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/features.yml');
+
+        $export = new LengowExport(array(
+            "export_variation" => false,
+            "selection" => false,
+        ));
+        $finalFields = array();
+        foreach (LengowExport::$DEFAULT_FIELDS as $k => $v) {
+            $finalFields[] = $k;
+        }
+        $finalFields = array_merge($finalFields, array(
+            'Hauteur',
+            'Largeur',
+            'Profondeur',
+            'Poids',
+            'Compositions',
+            'Styles',
+            'Propriétés',
+        ));
+
+        $lengowGetFields = $this->invokeMethod($export, 'getFields');
+        $this->assertEquals($lengowGetFields, $finalFields);
+    }
+
+    /**
+     * Test Export Format Empty
+     *
+     * @test
+     * @expectedException        LengowExportException
+     * @expectedExceptionMessage Illegal export format
+     * @covers LengowExport::setFormat
+     */
+    public function setFormat()
+    {
+        $export = new LengowExport();
+        $export->setFormat('mp3');
+    }
+
+    /**
+     * Test Export Empty Carrier
+     *
+     * @test
+     * @expectedException        LengowExportException
+     * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
+     * @covers LengowExport::setCarrier
+     */
+    public function setCarrier()
+    {
+        Configuration::set('LENGOW_CARRIER_DEFAULT', '');
+        $export = new LengowExport();
+        $export->setCarrier();
+    }
+
+    /**
+     * Test Export Empty Currency
+     *
+     * @test
+     * @expectedException        LengowExportException
+     * @expectedExceptionMessage Illegal Currency
+     * @covers LengowExport::checkCurrency
+     */
+    public function checkCurrency()
+    {
+        $context = Context::getContext();
+        $context->currency = null;
+        $export = new LengowExport();
+        $export->checkCurrency();
+    }
+
+    /**
+     * Test Export Empty Currency
+     *
+     * @test
+     * @covers LengowExport::setAdditionalFields
+     */
+    public function setAdditionalFields()
+    {
+        require_once('Fixtures/Export/LengowExportOverride.php');
+
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/no_features.yml');
+
+
+        $export = new \LengowExportOverride(array(
+            "export_variation" => false,
+            "selection" => false,
+        ));
+
+        $finalFields = array();
+        foreach (\LengowExportOverride::$DEFAULT_FIELDS as $k => $v) {
+            $finalFields[] = $k;
+        }
+        $finalFields[] = 'test1';
+        $finalFields[] = 'test2';
+        $finalFields[] = 'test3';
+
+        $lengowGetFields = $this->invokeMethod($export, 'getFields');
+        $this->assertEquals($lengowGetFields, $finalFields);
     }
 }

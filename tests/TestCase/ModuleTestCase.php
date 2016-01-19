@@ -9,6 +9,7 @@ use Employee;
 use DateTime;
 use SplFileInfo;
 use Configuration;
+use Product;
 use Shop;
 
 class ModuleTestCase extends PHPUnit_Framework_TestCase
@@ -42,6 +43,9 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
         $context = Context::getContext();
         $context->employee = $employee;
+
+        Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
+        Product::flushPriceCache();
     }
 
     /**
@@ -224,5 +228,23 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
             }
             fclose($handle);
         }
+    }
+
+    /**
+     * Call protected/private method of a class.
+     *
+     * @param object &$object    Instantiated object that we will run method on.
+     * @param string $methodName Method name to call
+     * @param array  $parameters Array of parameters to pass into method.
+     *
+     * @return mixed Method return.
+     */
+    public function invokeMethod(&$object, $methodName, array $parameters = array())
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $parameters);
     }
 }

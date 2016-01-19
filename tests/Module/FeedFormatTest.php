@@ -66,7 +66,7 @@ class FeedFormatTest extends ModuleTestCase
     {
         $fixture = new Fixture();
         $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/quote_product.yml'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Export/quote_product.yml'
         );
 
         $export = new LengowExport(array(

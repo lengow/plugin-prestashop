@@ -160,6 +160,143 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_clear {
     clear: both;
 }
+.lengow_table {
+    width: 100%
+}
+
+.lengow_btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #fff !important;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    text-decoration: none !important;
+}
+
+.lengow_tooltip {
+    position: absolute;
+    z-index: 1070;
+    display: block;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: left;
+    text-align: start;
+    text-decoration: none;
+    text-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+    word-break: normal;
+    word-spacing: normal;
+    word-wrap: normal;
+    white-space: normal;
+    filter: alpha(opacity=0);
+    opacity: 0;
+
+    line-break: auto;
+}
+.lengow_tooltip.in {
+    filter: alpha(opacity=90);
+    opacity: .9;
+}
+.lengow_tooltip.top {
+    padding: 5px 0;
+    margin-top: -3px;
+}
+.lengow_tooltip.right {
+    padding: 0 5px;
+    margin-left: 3px;
+}
+.lengow_tooltip.bottom {
+    padding: 5px 0;
+    margin-top: 3px;
+}
+.lengow_tooltip.left {
+    padding: 0 5px;
+    margin-left: -3px;
+}
+.lengow_tooltip .tooltip-inner {
+    max-width: 200px;
+    padding: 3px 8px;
+    color: #fff;
+    text-align: center;
+    background-color: #000;
+    border-radius: 4px;
+}
+.lengow_tooltip .tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+.lengow_tooltip.top .tooltip-arrow {
+    bottom: 0;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px 5px 0;
+    border-top-color: #000;
+}
+.lengow_tooltip.top-left .tooltip-arrow {
+    right: 5px;
+    bottom: 0;
+    margin-bottom: -5px;
+    border-width: 5px 5px 0;
+    border-top-color: #000;
+}
+.lengow_tooltip.top-right .tooltip-arrow {
+    bottom: 0;
+    left: 5px;
+    margin-bottom: -5px;
+    border-width: 5px 5px 0;
+    border-top-color: #000;
+}
+.lengow_tooltip.right .tooltip-arrow {
+    top: 50%;
+    left: 0;
+    margin-top: -5px;
+    border-width: 5px 5px 5px 0;
+    border-right-color: #000;
+}
+.lengow_tooltip.left .tooltip-arrow {
+    top: 50%;
+    right: 0;
+    margin-top: -5px;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #000;
+}
+.lengow_tooltip.bottom .tooltip-arrow {
+    top: 0;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 0 5px 5px;
+    border-bottom-color: #000;
+}
+.lengow_tooltip.bottom-left .tooltip-arrow {
+    top: 0;
+    right: 5px;
+    margin-top: -5px;
+    border-width: 0 5px 5px;
+    border-bottom-color: #000;
+}
+.lengow_tooltip.bottom-right .tooltip-arrow {
+    top: 0;
+    left: 5px;
+    margin-top: -5px;
+    border-width: 0 5px 5px;
+    border-bottom-color: #000;
+}
 
 /* TABLE */
 .lengow_table .left {
@@ -215,11 +352,14 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 .lengow_feed_block_content_right {
     float:right;
-    width:300px;
+    width:280px;
     height:140px;
     border-left:1px solid #E3E5E6;
     font-size:16px;
     padding:20px;
+}
+.lengow_feed_block_content_right .lengow_link_tooltip {
+    float:right;
 }
 
 #lengow_feed_wrapper .lengow_exported {
@@ -234,4 +374,38 @@ body.lengow_body #content .lengow_breadcrumb a {
 #lengow_feed_wrapper .lengow_select_text {
     font-size:12px;
     margin-left:10px;
+}
+#lengow_feed_wrapper .lengow_feed_pagination {
+    float:right;
+}
+#lengow_feed_wrapper .lengow_pagination {
+    margin-left:20px;
+}
+#lengow_feed_wrapper .lengow_pagination_total {
+    float: left;
+    margin-top: 27px;
+}
+#lengow_feed_wrapper .lengow_feed_pagination .lengow_number {
+    font-weight: bold;
+}
+
+#lengow_feed_wrapper .lengow_toolbar {
+    float: left;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+#lengow_feed_wrapper .lengow_toolbar .lengow_btn {
+    margin-left:10px;
+}
+
+#lengow_feed_wrapper .lengow_toolbar input {
+    margin-top:10px;
+}
+
+#lengow_feed_wrapper .lengow_feed_block_content_left input {
+    width:400px;
+}
+
+#lengow_feed_wrapper .lengow_feed_block_content_left a {
+    text-decoration: underline;
 }

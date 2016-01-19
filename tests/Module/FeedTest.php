@@ -77,25 +77,11 @@ class FeedTest extends ModuleTestCase
      * @test
      * @expectedException        LengowExportException
      * @expectedExceptionMessage Illegal export format
+     * @covers LengowExport::setFormat
      */
-    public function formatEmpty()
+    public function setFormat()
     {
         new LengowExport(array("format" => "mp3"));
-    }
-
-    /**
-     * Test Export Empty Currency
-     *
-     * @test
-     * @expectedException        LengowExportException
-     * @expectedExceptionMessage Illegal Currency
-     */
-    public function currencyEmpty()
-    {
-        $context = Context::getContext();
-        $context->currency = null;
-        $export = new LengowExport();
-        $export->exec();
     }
 
     /**
@@ -104,10 +90,27 @@ class FeedTest extends ModuleTestCase
      * @test
      * @expectedException        LengowExportException
      * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
+     * @covers LengowExport::setCarrier
      */
-    public function carrierEmpty()
+    public function setCarrier()
     {
         Configuration::set('LENGOW_CARRIER_DEFAULT', '');
+        $export = new LengowExport();
+        $export->exec();
+    }
+
+    /**
+     * Test Export Empty Currency
+     *
+     * @test
+     * @expectedException        LengowExportException
+     * @expectedExceptionMessage Illegal Currency
+     * @covers LengowExport::checkCurrency
+     */
+    public function checkCurrency()
+    {
+        $context = Context::getContext();
+        $context->currency = null;
         $export = new LengowExport();
         $export->exec();
     }
@@ -120,11 +123,31 @@ class FeedTest extends ModuleTestCase
     public function exportLimit()
     {
         $export = new LengowExport(array(
-            "show_product_combination" => false,
+            "export_variation" => false,
             "limit" => 4
         ));
         $export->exec();
         $this->assertFileNbLine($export->getFileName(), 4, 'limit_4');
+    }
+
+    /**
+     * Test Export Offset
+     * @test
+     *
+     */
+    public function exportOffset()
+    {
+        $export = new LengowExport(array(
+            "export_variation" => true,
+            "offset" => 2,
+            "limit" => 4
+        ));
+        $export->exec();
+        $this->assertFileValues($export->getFileName(), 10, array("NAME_PRODUCT" => "NAME010"));
+        $this->assertFileValues($export->getFileName(), '10_11', array("NAME_PRODUCT" => "NAME010"));
+        $this->assertFileValues($export->getFileName(), '10_12', array("NAME_PRODUCT" => "NAME010"));
+        $this->assertFileValues($export->getFileName(), '10_13', array("NAME_PRODUCT" => "NAME010"));
+        $this->assertFileNbLine($export->getFileName(), 4, 'offset_1_limit_2');
     }
 
     /**

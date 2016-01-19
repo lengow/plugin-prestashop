@@ -58,7 +58,6 @@ class LengowHook
             'footer' => '1.4',
             'postUpdateOrderStatus' => '1.4',
             'paymentTop' => '1.4',
-            'addproduct' => '1.4',
             'adminOrder' => '1.4',
             'home' => '1.4',
             'newOrder' => '1.4',
@@ -383,27 +382,6 @@ class LengowHook
     {
         self::$_CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE;
         $args = 0; // Prestashop validator
-    }
-
-    /**
-     * Hook after add new product.
-     *
-     * @param array $params Arguments of hook
-     *
-     * @return boolean
-     */
-    public function hookAddProduct($params)
-    {
-        if (!isset($params['product']->id)) {
-            return false;
-        }
-        $id_product = $params['product']->id;
-        if ((int)$id_product < 1) {
-            return false;
-        }
-        if (Configuration::get('LENGOW_EXPORT_NEW')) {
-            LengowProduct::publish($id_product);
-        }
     }
 
     /**

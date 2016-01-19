@@ -95,5 +95,9 @@
 		return false;
 	});
 	$(".lengow_switch").bootstrapSwitch();
+	lengow_jquery('.lengow_link_tooltip').tooltip( {
+		'template' : '<div class="lengow_tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+	});
+	var clipboard = new Clipboard('.lengow_copy');
 });
 

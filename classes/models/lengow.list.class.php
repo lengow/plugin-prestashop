@@ -31,6 +31,7 @@ class LengowList
     protected $shopId;
     protected $currentPage;
     protected $nbPerPage;
+    protected $nbMaxPage;
     protected $sql;
     protected $id;
     protected $ajax;
@@ -104,7 +105,8 @@ class LengowList
         foreach ($this->collection as $item) {
             $html.= '<tr>';
             if ($this->selection) {
-                $html.='<td><input type="checkbox" name="selection['.$item[$this->identifier].']" value="1"></td>';
+                $html.='<td><input type="checkbox" class="lengow_selection"
+                name="selection['.$item[$this->identifier].']" value="1"></td>';
             }
             foreach ($this->fields_list as $key => $values) {
                 if (isset($values['type'])) {
@@ -114,7 +116,9 @@ class LengowList
                             break;
                         case "switch_product":
                             $value = '<input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
-                               name="lengow_product_selection" class="lengow_switch lengow_switch_product"
+                               name="lengow_product_selection['.$item[$this->identifier].']"
+                               class="lengow_switch lengow_switch_product
+                               lengow_product_selection_'.$item[$this->identifier].'"
                                data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
                                data-action="select_product"
                                data-id_shop="'.$this->shopId.'"
@@ -180,6 +184,13 @@ class LengowList
 
         $this->collection = Db::getInstance()->executeS($sql, true, false);
         $this->total = Db::getInstance()->getValue($sqlTotal, false);
+        $this->nbMaxPage = ceil($this->total / $this->nbPerPage);
+        $this->paginationFrom = ($this->currentPage-1) * $this->nbPerPage + 1;
+        $this->paginationTo = $this->paginationFrom + $this->nbPerPage - 1;
+        if ($this->currentPage >= $this->nbMaxPage) {
+            $this->paginationTo = $this->total;
+        }
+
         return $this->collection;
     }
 
@@ -249,13 +260,72 @@ class LengowList
 
         $lengow_link = new LengowLink();
         $totalPage = ceil($this->total / $this->nbPerPage);
-        $html = '<nav id="nav_'.$this->id.'" class="'.$nav_class.'"><ul class="lengow_pagination">';
-        for ($i = 1; $i <= $totalPage; $i++) {
-            $html.= '<li>';
-            $class = ($i == $this->currentPage) ? 'disabled' : '';
-            $html.= '<li class="'.$class.'"><a href="#"
-            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller,$this->ajax).'&p='.$i.'">'.$i.'</a></li>';
-            $html.= '</li>';
+        $html = '<nav id="nav_'.$this->id.'" class="'.$nav_class.'">';
+
+        $html.='<div class="lengow_pagination_total">';
+        $html.= '<span class="lengow_number">'.$this->paginationFrom. '</span> -
+        <span class="lengow_number">'.$this->paginationTo.'</span>
+         sur <span class="lengow_number">'.$this->total.'</span>';
+        $html.='</div>';
+
+        $html.= '<ul class="lengow_pagination">';
+        $class = ($this->currentPage == 1) ? 'disabled' : '';
+        $html.= '<li><a href="#" class="'.$class.'"
+        data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage-1).'"
+        ><i class="fa fa-angle-left"></i></a></li>';
+        $class = ($this->currentPage == $this->nbMaxPage) ? 'disabled' : '';
+        $html.= '<li><a href="#" class="'.$class.'"
+        data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage+1).'"
+        ><i class="fa fa-angle-right"></i></a></li>';
+        $html.= '</ul>';
+
+        $html.= '<ul class="lengow_pagination">';
+        if ($this->nbMaxPage > 10) {
+            $showLastSeparation = false;
+
+            $class = ($this->currentPage == 1) ? 'disabled' : '';
+            $html.= '<li><a href="#" class="'.$class.'"
+            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p=1">1</a></li>';
+
+            $from = $this->currentPage-3;
+            $to = $this->currentPage+3;
+            if ($from<=2) {
+                $from = 2;
+                $to = $from + 6;
+            } else {
+                $html.= '<li><a href="#" class="disable">...</a></li>';
+            }
+            if ($to > ($this->nbMaxPage-1)) {
+                $to = $this->nbMaxPage - 1;
+            } else {
+                if ($this->currentPage < ($this->nbMaxPage-4)) {
+                    $showLastSeparation = true;
+                }
+            }
+            for ($i = $from; $i <= $to; $i++) {
+                $html .= '<li>';
+                $class = ($i == $this->currentPage) ? 'disabled' : '';
+                $html .= '<li class="' . $class . '"><a href="#"
+        data-href="' . $lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax) . '&p=' . $i . '">' .
+                    $i . '</a></li>';
+                $html .= '</li>';
+            }
+            if ($showLastSeparation) {
+                $html .= '<li><a href="#" class="disable">...</a></li>';
+            }
+            $class = ($this->currentPage == $this->nbMaxPage) ? 'disabled' : '';
+            $html.= '<li><a href="#" class="'.$class.'"
+            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->nbMaxPage).'"
+            >'.$this->nbMaxPage.'</a></li>';
+        } else {
+            for ($i = 1; $i <= $totalPage; $i++) {
+                $html .= '<li>';
+                $class = ($i == $this->currentPage) ? 'disabled' : '';
+                $html .= '<li class="' . $class . '"><a href="#"
+        data-href="' . $lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax) . '&p=' . $i . '">' .
+                    $i . '</a></li>';
+                $html .= '</li>';
+            }
         }
         $html.= '</ul></nav>';
         return $html;

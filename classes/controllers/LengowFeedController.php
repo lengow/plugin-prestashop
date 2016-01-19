@@ -68,7 +68,7 @@ class LengowFeedController extends LengowController {
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     $productId = isset($_REQUEST['id_product']) ? $_REQUEST['id_product'] : null;
                     if ($state !== null) {
-                        $this->setProductSelection($productId, $state, $shopId);
+                        LengowProduct::publish($productId, $state, $shopId);
                         $this->reloadTotal($shopId);
                     }
                     break;
@@ -76,6 +76,32 @@ class LengowFeedController extends LengowController {
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     echo '$("#block_'.$shopId.' .lengow_feed_block_footer_content").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable($shopId))).'");';
+                    break;
+                case 'add_to_export':
+                    $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
+                    $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
+                    if ($selection) {
+                        foreach ($selection as $id => $v) {
+                            LengowProduct::publish($id, 1, $shopId);
+                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'").bootstrapSwitch("state",true, true);';
+                        }
+                        $this->reloadTotal($shopId);
+                    } else {
+                        echo 'alert("Please select a product");';
+                    }
+                    break;
+                case 'remove_from_export':
+                    $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
+                    $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
+                    if ($selection) {
+                        foreach ($selection as $id => $v) {
+                            LengowProduct::publish($id, 0, $shopId);
+                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'").bootstrapSwitch("state",false, true);';
+                        }
+                        $this->reloadTotal($shopId);
+                    } else {
+                        echo 'alert("Please select a product");';
+                    }
                     break;
             }
             exit();
@@ -89,10 +115,14 @@ class LengowFeedController extends LengowController {
     {
         $shopCollection = array();
         if (_PS_VERSION_ < '1.5') {
-            $results = array('id_shop' => 1);
+            $results = array(array('id_shop' => 1));
         } else {
-            $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
-            $results = Db::getInstance()->ExecuteS($sql);
+            if ($currentShop = Shop::getContextShopID()) {
+                $results = array(array('id_shop' => $currentShop));
+            } else {
+                $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+                $results = Db::getInstance()->ExecuteS($sql);
+            }
         }
         foreach ($results as $row) {
             $shop = new LengowShop($row['id_shop']);
@@ -111,10 +141,7 @@ class LengowFeedController extends LengowController {
                 'list' => $this->buildTable($shop->id)
             );
         }
-
-
         $this->context->smarty->assign('shopCollection', $shopCollection);
-
         parent::display();
     }
 
@@ -129,32 +156,6 @@ class LengowFeedController extends LengowController {
         ));
         echo '$("#block_'.$shopId.' .lengow_exported").html("'.$lengowExport->getTotalExportProduct().'");';
         echo '$("#block_'.$shopId.' .lengow_total").html("'.$lengowExport->getTotalProduct().'");';
-    }
-
-    public function setProductSelection($productId, $value, $shopId)
-    {
-        if (!$value) {
-            $sql = 'DELETE FROM '._DB_PREFIX_.'lengow_product
-             WHERE id_product = '.(int)$productId.' AND id_shop = '.$shopId;
-            Db::getInstance()->Execute($sql);
-        } else {
-            $sql = 'SELECT id_product FROM '._DB_PREFIX_.'lengow_product
-            WHERE id_product = '.(int)$productId.' AND id_shop = '.$shopId;
-            $results = Db::getInstance()->ExecuteS($sql);
-            if (count($results) == 0) {
-                if (_PS_VERSION_ < '1.5') {
-                    Db::getInstance()->autoExecute(_DB_PREFIX_.'lengow_product', array(
-                        'id_product' => $productId,
-                        'id_shop' => $shopId
-                    ), 'INSERT');
-                } else {
-                    Db::getInstance()->Insert('lengow_product', array(
-                        'id_product' => $productId,
-                        'id_shop' => $shopId
-                    ));
-                }
-            }
-        }
     }
 
     /**
@@ -385,6 +386,30 @@ class LengowFeedController extends LengowController {
         $paginationBlock = $list->renderPagination(array(
             'nav_class' => 'lengow_feed_pagination'
         ));
-        return $paginationBlock.$list->display().$paginationBlock;
+
+        $lengow_link = new LengowLink();
+
+        $html='<div class="lengow_table_top">';
+        $html.='<div class="lengow_toolbar">';
+        $html.='<input type="checkbox" id="select_shop_'.$shopId.'" class="lengow_select_all"/>';
+        $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
+                data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
+                class="lengow_btn lengow_link_tooltip lengow_remove_from_export" title="Remove from export">
+                <i class="fa fa-minus"></i></a>';
+        $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
+                        data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
+                class="lengow_btn lengow_link_tooltip lengow_add_to_export" title="Add from export">
+                <i class="fa fa-plus"></i></a>';
+        $html.='</div>';
+        $html.= $paginationBlock;
+        $html.='<div class="lengow_clear"></div>';
+        $html.='</div>';
+        $html.= $list->display();
+        $html.='<div class="lengow_table_bottom">';
+        $html.= $paginationBlock;
+        $html.='<div class="lengow_clear"></div>';
+        $html.='</div>';
+
+        return $html;
     }
 }
