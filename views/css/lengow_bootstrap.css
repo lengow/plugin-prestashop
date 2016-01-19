@@ -179,7 +179,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     color: #fff !important;
     background-color: #337ab7;
     border-color: #2e6da4;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .lengow_tooltip {
@@ -352,11 +352,14 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 .lengow_feed_block_content_right {
     float:right;
-    width:300px;
+    width:280px;
     height:140px;
     border-left:1px solid #E3E5E6;
     font-size:16px;
     padding:20px;
+}
+.lengow_feed_block_content_right .lengow_link_tooltip {
+    float:right;
 }
 
 #lengow_feed_wrapper .lengow_exported {
@@ -399,3 +402,10 @@ body.lengow_body #content .lengow_breadcrumb a {
     margin-top:10px;
 }
 
+#lengow_feed_wrapper .lengow_feed_block_content_left input {
+    width:400px;
+}
+
+#lengow_feed_wrapper .lengow_feed_block_content_left a {
+    text-decoration: underline;
+}

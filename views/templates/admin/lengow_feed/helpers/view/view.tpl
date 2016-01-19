@@ -38,13 +38,15 @@
                     </div>
                     <div class="lengow_feed_block_content_left">
                         This is your exported catalog. Copy this link in your Lengow platform<br/>
-                        {$shop['link']}<br/>
+                        <input id="link_shop_{$shop['shop']->id}" value="{$shop['link']}" readonly>
+                        <a class="lengow_copy" data-clipboard-target="#link_shop_{$shop['shop']->id}">Copy</a>
+                        <a href="{$shop['link']}&stream=1" target="_blank">Download</a><br/>
                         {if $shop['last_export']}
                             Last exportation {$shop['last_export']}<br/>
                         {else}
                             No export<br/>
                         {/if}
-                        <a class="btn btn-primary" href="{$shop['link']}" target="_blank">Launch new Export</a>
+                        <a class="lengow_btn" href="{$shop['link']}" target="_blank">Launch new Export</a>
                     </div>
                     <div class="lengow_clear"></div>
                 </div>
