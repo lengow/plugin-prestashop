@@ -9,6 +9,7 @@ use Employee;
 use DateTime;
 use SplFileInfo;
 use Configuration;
+use Product;
 use Shop;
 
 class ModuleTestCase extends PHPUnit_Framework_TestCase
@@ -44,6 +45,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $context->employee = $employee;
 
         Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
+        Product::flushPriceCache();
     }
 
     /**

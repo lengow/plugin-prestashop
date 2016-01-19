@@ -8,7 +8,7 @@ product:
     supplier_reference: SUPPLIERSKU001
     ean13: 9805120221231
     upc: 156416510654
-    ecotax: 1
+    ecotax: 2
     weight: 4.5
   -
     id_product: 2

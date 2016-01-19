@@ -270,23 +270,26 @@ class LengowProduct extends Product
                 return $this->weight;
                 break;
             case 'ean':
-                if ($id_product_attribute > 1 && $this->combinations[$id_product_attribute]['ean13']) {
+                if ($id_product_attribute && $this->combinations[$id_product_attribute]['ean13']) {
                     return $this->combinations[$id_product_attribute]['ean13'];
                 }
                 return $this->ean13;
                 break;
             case 'upc':
-                if ($id_product_attribute > 1 && $this->combinations[$id_product_attribute]['upc']) {
+                if ($id_product_attribute && $this->combinations[$id_product_attribute]['upc']) {
                     return $this->combinations[$id_product_attribute]['upc'];
                 }
                 return $this->upc;
                 break;
             case 'ecotax':
-                if ($id_product_attribute > 1 && $this->combinations[$id_product_attribute]['ecotax']) {
+                if ($id_product_attribute && $this->combinations[$id_product_attribute]['ecotax']) {
                     return LengowMain::formatNumber($this->combinations[$id_product_attribute]['ecotax']);
                 }
-                return isset($this->ecotaxinfos) &&
-                LengowMain::formatNumber(($this->ecotaxinfos > 0) ? $this->ecotaxinfos : $this->ecotax);
+                if (isset($this->ecotaxinfos)) {
+                    return LengowMain::formatNumber(($this->ecotaxinfos > 0) ? $this->ecotaxinfos : $this->ecotax);
+                } else {
+                    return $this->ecotax;
+                }
                 break;
             case 'active':
                 return $this->active;
