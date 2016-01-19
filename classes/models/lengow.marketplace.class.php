@@ -47,6 +47,11 @@ class LengowMarketplace
      * @var string the name of the marketplace
      */
     public $name;
+
+    /**
+     * @var integer ID Shop
+     */
+    public $id_shop;
     
     /**
      * @var boolean if the marketplace is loaded
@@ -76,11 +81,13 @@ class LengowMarketplace
     /**
     * Construct a new Markerplace instance with xml configuration.
     *
-    * @param string $name The name of the marketplace
+    * @param string     $name       The name of the marketplace
+    * @param integer    $id_shop    ID Shop for connector
     */
-    public function __construct($name)
+    public function __construct($name, $id_shop)
     {
-        self::loadApiMarketplace();
+        $this->id_shop = $id_shop;
+        $this->loadApiMarketplace();
         $this->name = Tools::strtolower($name);
         $this->marketplace = self::$MARKETPLACES->{$this->name};
         if (!empty($this->marketplace)) {
@@ -113,14 +120,17 @@ class LengowMarketplace
     /**
      * Load the json configuration of all marketplaces
      */
-    public static function loadApiMarketplace()
+    public function loadApiMarketplace()
     {
         if (!self::$MARKETPLACES) {
-            $connector  = new LengowConnector(LengowMain::getAccessToken(), LengowMain::getSecretCustomer());
+            $connector  = new LengowConnector(
+                LengowMain::getAccessToken($this->id_shop),
+                LengowMain::getSecretCustomer($this->id_shop)
+            );
             $results = $connector->get(
                 '/v3.0/marketplaces',
                 array(
-                    'account_id' => LengowMain::getIdAccount()
+                    'account_id' => LengowMain::getIdAccount($this->id_shop)
                 ),
                 'stream'
             );
@@ -248,7 +258,7 @@ class LengowMarketplace
         $action_array = $this->getAction($action);
 
         $params = array(
-            'account_id'            => LengowMain::getIdAccount(),
+            'account_id'            => LengowMain::getIdAccount($this->id_shop),
             'marketplace_order_id'  => (string)$id_lengow_order,
             'marketplace'           => (string)$order->lengow_marketplace
         );
@@ -319,7 +329,10 @@ class LengowMarketplace
                 break;
         }
         try {
-            $connector  = new LengowConnector(LengowMain::getAccessToken(), LengowMain::getSecretCustomer());
+            $connector  = new LengowConnector(
+                LengowMain::getAccessToken($this->id_shop),
+                LengowMain::getSecretCustomer($this->id_shop)
+            );
             // Get all params send
             $param_list = false;
             foreach ($params as $param => $value) {

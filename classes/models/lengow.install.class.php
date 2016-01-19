@@ -66,6 +66,7 @@ class LengowInstall
             'LENGOW_ACCOUNT_ID',
             'LENGOW_ACCESS_TOKEN',
             'LENGOW_SECRET',
+            'LENGOW_SHOP_ACTIVE',
             'LENGOW_EXPORT_SELECTION',
             'LENGOW_EXPORT_NEW',
             'LENGOW_EXPORT_ALL_VARIATIONS',
@@ -84,7 +85,6 @@ class LengowInstall
             'LENGOW_CARRIER_DEFAULT',
             'LENGOW_IMPORT_CARRIER_DEFAULT',
             'LENGOW_FLOW_DATA',
-            'LENGOW_MIGRATE',
             'LENGOW_CRON',
             'LENGOW_DEBUG',
             'LENGOW_IMPORT_FAKE_EMAIL',
@@ -95,7 +95,9 @@ class LengowInstall
             'LENGOW_EMAIL_ADDRESS',
             'LENGOW_ORDER_ID_SHIPPEDBYMP',
             'LENGOW_CRON_EDITOR',
-            'LENGOW_SHOP_TOKEN'
+            'LENGOW_SHOP_TOKEN',
+            'LENGOW_LAST_CRON_IMPORT',
+            'LENGOW_LAST_MANUAL_IMPORT'
         );
         foreach ($configurations as $configuration) {
             Configuration::deleteByName($configuration);
@@ -198,9 +200,6 @@ class LengowInstall
         return
             Configuration::updateValue('LENGOW_AUTHORIZED_IP', $_SERVER['REMOTE_ADDR']) &&
             Configuration::updateValue('LENGOW_TRACKING', '') &&
-            Configuration::updateValue('LENGOW_ACCOUNT_ID', '') &&
-            Configuration::updateValue('LENGOW_ACCESS_TOKEN', '') &&
-            Configuration::updateValue('LENGOW_SECRET', '') &&
             Configuration::updateValue('LENGOW_EXPORT_SELECTION', false) &&
             Configuration::updateValue('LENGOW_EXPORT_DISABLED', false) &&
             Configuration::updateValue('LENGOW_EXPORT_NEW', false) &&
@@ -214,21 +213,20 @@ class LengowInstall
             Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', 4) &&
             Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', 6) &&
             Configuration::updateValue('LENGOW_IMPORT_METHOD_NAME', false) &&
-            Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', false) &&
+            Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', true) &&
             Configuration::updateValue('LENGOW_IMPORT_DAYS', 3) &&
-            Configuration::updateValue('LENGOW_FORCE_PRICE', true) &&
             Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
             Configuration::updateValue('LENGOW_IMPORT_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
             Configuration::updateValue('LENGOW_FLOW_DATA', '') &&
-            Configuration::updateValue('LENGOW_MIGRATE', false) &&
-            Configuration::updateValue('LENGOW_MP_CONF', false) &&
             Configuration::updateValue('LENGOW_CRON', false) &&
-            Configuration::updateValue('LENGOW_FEED_MANAGEMENT', false) &&
             Configuration::updateValue('LENGOW_DEBUG', false) &&
             Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false) &&
             Configuration::updateValue('LENGOW_REPORT_MAIL', true) &&
             Configuration::updateValue('LENGOW_EXPORT_TIMEOUT', 0) &&
-            Configuration::updateValue('LENGOW_IMPORT_SINGLE', version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')) &&
+            Configuration::updateValue(
+                'LENGOW_IMPORT_SINGLE',
+                version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
+            ) &&
             Configuration::updateValue('LENGOW_EMAIL_ADDRESS', '') &&
             Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
             Configuration::updateValue('LENGOW_CRON_EDITOR', false) &&
