@@ -42,6 +42,8 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
         $context = Context::getContext();
         $context->employee = $employee;
+
+        Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
     }
 
     /**

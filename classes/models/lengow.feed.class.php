@@ -132,6 +132,7 @@ class LengowFeed
             case 'header':
                 if ($this->stream) {
                     header(LengowFeed::getHtmlHeader($this->format));
+                    header('Content-Disposition: attachment; filename=feed.csv');
                 }
                 $header = LengowFeed::getHeader($data, $this->format);
                 $this->flush($header);
