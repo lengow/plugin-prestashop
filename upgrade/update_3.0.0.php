@@ -30,6 +30,8 @@ Configuration::deleteByName('LENGOW_SWITCH_V3');
 Configuration::deleteByName('LENGOW_EXPORT_FIELDS');
 Configuration::deleteByName('LENGOW_EXPORT_FEATURES');
 Configuration::deleteByName('LENGOW_IMAGE_TYPE');
+Configuration::deleteByName('LENGOW_FEED_MANAGEMENT');
+Configuration::deleteByName('LENGOW_FORCE_PRICE');
 
 // alter log import table
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_product\'')) {

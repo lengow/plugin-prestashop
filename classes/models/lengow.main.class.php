@@ -99,17 +99,24 @@ class LengowMain
     );
 
     /**
-     * Lengow XML Marketplace configuration.
+     * Image type cache
      */
-    private static $MP_CONF_LENGOW = 'http://kml.lengow.com/mp.xml';
     public static $image_type_cache;
 
+    /**
+     * The name of config folder
+     */
     protected static $LENGOW_CONFIG_FOLDER = 'config';
 
     /**
      * Lengow XML Plugins status
      */
     public static $LENGOW_PLUGINS_VERSION = 'http://kml.lengow.com/plugins.xml';
+
+    /**
+     * @var boolean import is processing
+     */
+    public static $processing;
 
     /**
      * The Prestashop compare version with current version.
@@ -163,9 +170,9 @@ class LengowMain
      *
      * @return integer
      */
-    public static function getIdAccount()
+    public static function getIdAccount($id_shop)
     {
-        return Configuration::get('LENGOW_ACCOUNT_ID');
+        return LengowConfiguration::getShop('LENGOW_ACCOUNT_ID', null, null, $id_shop);
     }
 
     /**
@@ -173,9 +180,9 @@ class LengowMain
      *
      * @return string
      */
-    public static function getAccessToken()
+    public static function getAccessToken($id_shop)
     {
-        return Configuration::get('LENGOW_ACCESS_TOKEN');
+        return LengowConfiguration::getShop('LENGOW_ACCESS_TOKEN', null, null, $id_shop);
     }
 
     /**
@@ -183,9 +190,121 @@ class LengowMain
      *
      * @return string
      */
-    public static function getSecretCustomer()
+    public static function getSecretCustomer($id_shop)
     {
-        return Configuration::get('LENGOW_SECRET');
+        return LengowConfiguration::getShop('LENGOW_SECRET', null, null, $id_shop);
+    }
+
+    /**
+     * Get the secret.
+     *
+     * @return string
+     */
+    public static function getShopActive($id_shop)
+    {
+        return LengowConfiguration::getShop('LENGOW_SHOP_ACTIVE', null, null, $id_shop);
+    }
+
+    /**
+     * Import of a specific order or all orders
+     *
+     * @param array params optional options
+     * string    $order_id           lengow order id to import
+     * string    $marketplace_name   lengow marketplace name to import
+     * integer   $shop_id            Id shop for current import
+     * boolean   $force_product      force import of products
+     * boolean   $debug              debug mode
+     * string    $date_from          starting import date
+     * string    $date_to            ending import date
+     * integer   $limit              number of orders to import
+     */
+    public static function importOrders($params = array())
+    {
+        // get all params for import
+        $order_id = (isset($params['order_id']) ? $params['order_id'] : null);
+        $markeplace_name = (isset($params['markeplace_name']) ? $params['markeplace_name'] : null);
+        $id_shop = (isset($params['id_shop']) ? $params['id_shop'] : null);
+        $days = (isset($params['days']) ? $params['days'] : (int)Configuration::get('LENGOW_IMPORT_DAYS'));
+        $debug = (isset($params['debug']) ? $params['debug'] : (bool)Configuration::get('LENGOW_DEBUG'));
+        $source = (isset($params['source']) ? $params['source'] : 'manual');
+        $force_product = (
+            isset($params['force_product'])
+            ? $params['force_product']
+            : (bool)Configuration::get('LENGOW_IMPORT_FORCE_PRODUCT')
+        );
+        if (Configuration::get('LENGOW_IMPORT_SINGLE')) {
+            $limit = 1;
+        } else {
+            $limit = (isset($params['limit']) ? (int)$params['limit'] : 0);
+        }
+        // recovering the time interval for import
+        $date_from = date('c', strtotime(date('Y-m-d').' -'.$days.'days'));
+        $date_to = date('c');
+        // launch the import orders
+        // 1st step: check if import is already in process
+        if (LengowMain::isInProcess() && !$debug) {
+            LengowMain::log('import is already started', true);
+        } else {
+            LengowMain::log('## Start '.$source.' import ##', true);
+            // 2nd step: start import process
+            LengowMain::setInProcess();
+            // 3rd step: disable emails
+            LengowMain::disableMail();
+            // import of a specific order or all orders
+            if (!is_null($order_id) && !is_null($markeplace_name) && !is_null($id_shop)) {
+                if (LengowMain::getShopActive($shop['id_shop'])) {
+                    $import = new LengowImport(array(
+                        'order_id'          => $order_id,
+                        'marketplace_name'  => $markeplace_name,
+                        'shop_id'           => $id_shop
+                    ));
+                    $result = $import->exec();
+                }
+            } else {
+                $result_new = 0;
+                $result_update = 0;
+                lengowMain::updateDateImport($source);
+                if (_PS_VERSION_ < '1.5') {
+                    $shops = array();
+                    $shops[] = array('id_shop' => 1, 'name' => 'Default shop');
+                } else {
+                    $shops = Shop::getShops();
+                }
+                foreach ($shops as $shop) {
+                    if (LengowMain::getShopActive($shop['id_shop'])) {
+                        LengowMain::log('Start import in store '.$shop['name'].' ('.$shop['id_shop'].')', true);
+                        $import = new LengowImport(array(
+                            'shop_id'           => $shop['id_shop'],
+                            'force_product'     => $force_product,
+                            'debug'             => $debug,
+                            'date_from'         => $date_from,
+                            'date_to'           => $date_to,
+                            'limit'             => $limit,
+                            'log_output'        => true
+                        ));
+                        $result = $import->exec();
+                        $result_new += $result['new'];
+                        $result_update += $result['update'];
+                    }
+                }
+                if ($result_new > 0) {
+                    LengowMain::log($result_new.' order'.($result_new > 1 ? 's ' : ' ').'imported', true);
+                }
+                if ($result_update > 0) {
+                    LengowMain::log($result_update.' order'.($result_update > 1 ? 's ' : ' ').'updated', true);
+                }
+                if ($result_new == 0 && $result_update == 0) {
+                    LengowMain::log('No order available to import', true);
+                }
+            }
+            LengowMain::setEnd();
+            LengowMain::log('## End '.$source.' import ##', true);
+
+            // sending email in error for orders
+            if (Configuration::get('LENGOW_REPORT_MAIL') && !$debug) {
+                LengowMain::sendMailAlert();
+            }
+        }
     }
 
     /**
@@ -230,6 +349,70 @@ class LengowMain
             Configuration::set('PS_MAIL_METHOD', 3);
         }
     }
+
+    /**
+     * Check if import is already in process
+     *
+     * @return boolean
+     */
+    public static function isInProcess()
+    {
+        $timestamp = Configuration::get('LENGOW_IS_IMPORT');
+        if ($timestamp == 'stopped') {
+            $timestamp = -1;
+        }
+        if ($timestamp > 0) {
+            // security check : if last import is more than 10 min old => authorize new import to be launched
+            if (($timestamp + (60 * 10)) < time()) {
+                LengowMain::setEnd();
+                print_r('test');
+                return false;
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Set import to "in process" state
+     *
+     * @return boolean
+     */
+    public static function setInProcess()
+    {
+        LengowMain::$processing = true;
+        return Configuration::updateValue('LENGOW_IS_IMPORT', time());
+    }
+
+    /**
+     * Set import to finished
+     *
+     * @return boolean
+     */
+    public static function setEnd()
+    {
+        LengowMain::$processing = false;
+        return Configuration::updateValue('LENGOW_IS_IMPORT', -1);
+    }
+
+    /**
+     * Record the date of the last import
+     *
+     * @param string $source (cron or manual)
+     *
+     * @return boolean
+     */
+    public static function updateDateImport($source)
+    {
+        $date = date('Y-m-d H:i:s');
+        if ($source === 'cron') {
+            Configuration::updateValue('LENGOW_LAST_CRON_IMPORT', $date);
+        } else {
+            Configuration::updateValue('LENGOW_LAST_MANUAL_IMPORT', $date);
+        }
+    }
+
 
     /**
      * Get tracker options.
@@ -302,12 +485,15 @@ class LengowMain
     /**
      * The shipping names options.
      *
+     * @param string    $name       markeplace name
+     * @param integer   $id_shop    Shop ID
+     *
      * @return array Lengow shipping names option
      */
-    public static function getMarketplaceSingleton($name)
+    public static function getMarketplaceSingleton($name, $id_shop)
     {
         if (!isset(LengowMain::$registers[$name])) {
-            LengowMain::$registers[$name] = new LengowMarketplace($name);
+            LengowMain::$registers[$name] = new LengowMarketplace($name, $id_shop);
         }
         return LengowMain::$registers[$name];
     }
@@ -774,7 +960,10 @@ class LengowMain
         $cookie = Context::getContext()->cookie;
         $subject = 'Lengow imports logs';
         $mail_body = '';
-        $sql_logs = 'SELECT `lengow_order_id`, `message` FROM `' . _DB_PREFIX_ . 'lengow_logs_import` WHERE `is_finished` = 0 AND `mail` = 0';
+        $sql_logs = 'SELECT `lengow_order_id`, `message` 
+            FROM `' . _DB_PREFIX_ . 'lengow_logs_import`
+            WHERE `is_finished` = 0 AND `mail` = 0
+        ';
         $logs = Db::getInstance()->ExecuteS($sql_logs);
         if (empty($logs)) {
             return true;
@@ -793,7 +982,6 @@ class LengowMain
             '{mail_title}' => 'Lengow imports logs',
             '{mail_body}' => $mail_body,
         );
-
         $emails = explode(',', Configuration::get('LENGOW_EMAIL_ADDRESS'));
         if (empty($emails[0])) {
             $emails[0] = Configuration::get('PS_SHOP_EMAIL');
@@ -914,22 +1102,24 @@ class LengowMain
     /**
      * Get prestashop state id corresponding to the current order state
      *
-     * @param string $order_state order state
-     * @param LengowMarketplace $marketplace order marketplace
-     * @param bool $shipment_by_mp order shipped by mp
+     * @param string            $order_state    order state
+     * @param LengowMarketplace $marketplace    order marketplace
+     * @param bool              $shipment_by_mp order shipped by mp
      *
      * @return int
      */
     public static function getPrestahopStateId($order_state, $marketplace, $shipment_by_mp)
     {
-        if ($marketplace->getStateLengow($order_state) == 'shipped') {
+        if ($marketplace->getStateLengow($order_state) == 'shipped'
+            || $marketplace->getStateLengow($order_state) == 'closed'
+        ) {
             if ($shipment_by_mp) {
                 return LengowMain::getOrderState('shippedByMp');
             } else {
                 return LengowMain::getOrderState('shipped');
             }
         } else {
-            return LengowMain::getOrderState('process');
+            return LengowMain::getOrderState('accepted');
         }
     }
 
@@ -1007,7 +1197,9 @@ class LengowMain
     {
         $is_https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 's' : '';
         if (_PS_VERSION_ < '1.5') {
-            $base = (defined('_PS_SHOP_DOMAIN_') ? 'http' . $is_https . '://' . _PS_SHOP_DOMAIN_ : _PS_BASE_URL_) . __PS_BASE_URI__;
+            $base = (
+                defined('_PS_SHOP_DOMAIN_') ? 'http' . $is_https . '://' . _PS_SHOP_DOMAIN_ : _PS_BASE_URL_
+            ) . __PS_BASE_URI__;
             $url = $base . 'modules/lengow/';
         } else {
             if (is_null($id_shop)) {

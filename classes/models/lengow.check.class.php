@@ -162,16 +162,18 @@ class LengowCheck
     /**
     * Check API Authentification
     *
+    * @param integer Shop ID
+    *
     * @return boolean
     */
-    public static function isValidAuth()
+    public static function isValidAuth($id_shop)
     {
         if (!self::isCurlActivated()) {
             return false;
         }
         
-        $account_id = (integer)LengowMain::getIdAccount();
-        $connector  = new LengowConnector(LengowMain::getAccessToken(), LengowMain::getSecretCustomer());
+        $account_id = (integer)LengowMain::getIdAccount($id_shop);
+        $connector  = new LengowConnector(LengowMain::getAccessToken($id_shop), LengowMain::getSecretCustomer($id_shop));
         $result = $connector->connect();
         if (isset($result['token']) && $account_id != 0 && is_integer($account_id)) {
             return true;
@@ -245,7 +247,7 @@ class LengowCheck
                 . self::$_module->l('Already a client :',
                     'lengow.check.class') . ' <a href="https://solution.lengow.com/api/" target="_blank">'
                 . self::$_module->l('go to Lengow dashboard', 'lengow.check.class'),
-            'state' => (int)self::isValidAuth() == 1 ? 1 : 0,
+            'state' => (int)self::isValidAuth((int)Context::getContext()->shop->id) == 1 ? 1 : 0,
             'additional_infos' => sprintf(self::$_module->l('Make sure your website IP (%s) address is filled in your Lengow Dashboard.', 'lengow.check.class'), $ip)
         );
 
