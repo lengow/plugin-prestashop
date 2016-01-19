@@ -92,11 +92,7 @@ if (Tools::getIsset('cur')) {
 }
 
 // export language
-if (Tools::getIsset('lang')) {
-    if ($id_language = Language::getIdByIso(Tools::getValue('lang'))) {
-        Context::getContext()->language = new Language($id_language);
-    }
-}
+
 
 // fields and features in title
 $fullTitle = isset($_REQUEST["title"]) ? $_REQUEST["title"] : Configuration::get('LENGOW_EXPORT_FULLNAME');
@@ -109,6 +105,13 @@ if ($fullTitle == "simple") {
 
 // export format (csv, yaml, xml, json)
 $format = isset($_REQUEST["format"]) ? $_REQUEST["format"] : Configuration::get('LENGOW_EXPORT_FORMAT');
+
+//define language
+if (isset($_REQUEST["lang"])) {
+    $languageId = Language::getIdByIso($_REQUEST["lang"]);
+} else {
+    $languageId = Context::getContext()->language->id;
+}
 
 // export limit
 $limit = isset($_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : null;
@@ -151,6 +154,7 @@ $export = new LengowExport(array(
     'export_variation' => $exportVariation,
     'full_mode' => $fullMode,
     'selection' => $selection,
+    'language_id' => $languageId,
 ));
 
 $export->exec();
