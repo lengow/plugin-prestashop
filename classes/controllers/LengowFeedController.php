@@ -115,10 +115,14 @@ class LengowFeedController extends LengowController {
     {
         $shopCollection = array();
         if (_PS_VERSION_ < '1.5') {
-            $results = array('id_shop' => 1);
+            $results = array(array('id_shop' => 1));
         } else {
-            $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
-            $results = Db::getInstance()->ExecuteS($sql);
+            if ($currentShop = Shop::getContextShopID()) {
+                $results = array(array('id_shop' => $currentShop));
+            } else {
+                $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+                $results = Db::getInstance()->ExecuteS($sql);
+            }
         }
         foreach ($results as $row) {
             $shop = new LengowShop($row['id_shop']);
@@ -137,10 +141,7 @@ class LengowFeedController extends LengowController {
                 'list' => $this->buildTable($shop->id)
             );
         }
-
-
         $this->context->smarty->assign('shopCollection', $shopCollection);
-
         parent::display();
     }
 
