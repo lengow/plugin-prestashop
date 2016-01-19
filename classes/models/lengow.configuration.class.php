@@ -22,13 +22,22 @@
 class LengowConfiguration extends Configuration
 {
 
+    public static function get($key, $id_lang = null, $id_shop_group = null, $id_shop = null)
+    {
+        if (_PS_VERSION_ < '1.5') {
+            return parent::get($key, $id_lang);
+        } else {
+            return parent::get($key, $id_lang, $id_shop_group, $id_shop);
+        }
+    }
+
     public static function getShop($key, $id_lang = null, $id_shop_group = null, $id_shop = null)
     {
         if (_PS_VERSION_ < '1.5') {
-            return self::get($key, $id_lang);
+            return parent::get($key, $id_lang);
         } else {
-            if (self::hasKey($key, $id_lang, null, $id_shop)) {
-                return self::get($key, $id_lang, $id_shop_group, $id_shop);
+            if (parent::hasKey($key, $id_lang, null, $id_shop)) {
+                return parent::get($key, $id_lang, $id_shop_group, $id_shop);
             } else {
                 return false;
             }

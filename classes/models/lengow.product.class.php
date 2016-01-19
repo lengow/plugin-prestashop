@@ -86,7 +86,7 @@ class LengowProduct extends Product
 
         parent::__construct($id_product, false, $id_lang);
         $this->context = Context::getContext();
-
+        $this->context->language = isset($params["language"]) ? $params["language"] : Context::getContext()->language;
 
         // The applicable tax may be BOTH the product one AND the state one (moreover this variable is some deadcode)
         $this->tax_name = 'deprecated';
@@ -392,7 +392,7 @@ class LengowProduct extends Product
                 return $this->id;
                 break;
             case 'delivery_time':
-                return $this->carrier->delay[Context::getContext()->language->id];
+                return $this->carrier->delay[$this->context->language->id];
                 break;
             case 'sale_from':
                 return $this->isSale ? $this->specificPrice['from'] : '';

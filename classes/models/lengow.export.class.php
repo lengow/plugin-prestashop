@@ -208,8 +208,9 @@ class LengowExport
         $this->showInactiveProduct = (isset($params["show_inactive_product"]) ?
             (bool)$params["show_inactive_product"] : false);
         $this->shopId = (int)(isset($params["shop_id"]) ? (int)$params["shop_id"] : Context::getContext()->shop->id);
-        $this->langage = (isset($params["langage_id"]) ?
-            new Langage($params["langage_id"]) : Context::getContext()->language);
+        $this->language = isset($params["language_id"]) ?
+            new Language($params["language_id"]) :
+            new Language(LengowConfiguration::get('PS_LANG_DEFAULT', null, null, $this->shopId));
         $this->exportLengowSelection = (isset($params["selection"]) ?
             (bool)$params["selection"] :
             Configuration::get('LENGOW_EXPORT_SELECTION', null, null, $this->shopId));
@@ -334,10 +335,11 @@ class LengowExport
             if ($p['id_product'] && $p['id_product_attribute'] == 0) {
                 $product = new LengowProduct(
                     $p['id_product'],
-                    Context::getContext()->language->id,
+                    $this->language->id,
                     array(
                         "carrier" => $this->carrier,
-                        "image_size" => LengowProduct::getMaxImageType()
+                        "image_size" => LengowProduct::getMaxImageType(),
+                        "language" => $this->language
                     )
                 );
                 foreach ($fields as $field) {
@@ -396,7 +398,7 @@ class LengowExport
 
         $product = new LengowProduct(
             $productId,
-            Context::getContext()->language->id,
+            $this->language->id,
             array(
                 "carrier" => $this->carrier,
                 "image_size" => LengowProduct::getMaxImageType()
@@ -591,7 +593,7 @@ class LengowExport
         }
 
         //Features
-        $features = Feature::getFeatures(Context::getContext()->language->id);
+        $features = Feature::getFeatures($this->language->id);
         foreach ($features as $feature) {
             if (in_array($feature['name'], $fields)) {
                 $fields[] = $feature['name'] . '_1';
@@ -601,7 +603,7 @@ class LengowExport
         }
         // if export product variations -> get variations attributes
         if ($this->exportVariation) {
-            $attributes = AttributeGroup::getAttributesGroups(Context::getContext()->language->id);
+            $attributes = AttributeGroup::getAttributesGroups($this->language->id);
             foreach ($attributes as $attribute) {
                 //dont export empty attributes
                 if ($attribute['name'] == '') {
