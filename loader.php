@@ -56,8 +56,8 @@ if (_PS_VERSION_ < '1.5') {
     spl_autoload_register('lengowAutoloader');
 }
 
-function lengowAutoloader($className){
-
+function lengowAutoloader($className)
+{
     if (substr($className, 0, 6) == 'Lengow') {
         if (substr($className, -10) == 'Controller') {
             $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/controllers/';
