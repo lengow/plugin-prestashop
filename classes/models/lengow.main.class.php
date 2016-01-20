@@ -263,6 +263,7 @@ class LengowMain
             } else {
                 $result_new = 0;
                 $result_update = 0;
+                $account_ids = array();
                 lengowMain::updateDateImport($source);
                 if (_PS_VERSION_ < '1.5') {
                     $shops = array();
@@ -272,7 +273,19 @@ class LengowMain
                 }
                 foreach ($shops as $shop) {
                     if (LengowMain::getShopActive($shop['id_shop'])) {
-                        LengowMain::log('Start import in store '.$shop['name'].' ('.$shop['id_shop'].')', true);
+                        LengowMain::log('Start import in shop '.$shop['name'].' ('.$shop['id_shop'].')', true);
+                        // checks whether an account id has not already been imported
+                        $account_id = LengowMain::getIdAccount($shop['id_shop']);
+                        if (array_key_exists($account_id, $account_ids)) {
+                            LengowMain::log(
+                                'Account ID '.$account_id.' is already used by shop '
+                                .$account_ids[$account_id]['name'].' ('.$account_ids[$account_id]['id_shop'].')',
+                                true
+                            );
+                            continue;
+                        }
+                        $account_ids[$account_id] = array('id_shop' => $shop['id_shop'], 'name' => $shop['name']);
+                        // star import for current store
                         $import = new LengowImport(array(
                             'shop_id'           => $shop['id_shop'],
                             'force_product'     => $force_product,

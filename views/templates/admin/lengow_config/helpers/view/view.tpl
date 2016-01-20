@@ -54,10 +54,12 @@
                     <div class="clear"></div>
                     <br/>
                     <label>{l s='Enable Shop' mod='lengow'}</label>
-                    <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
-                           name="lengow_shop_active" class="switchLengow" id="active_on"
-                           value="1" {if $lengow_shop_active == 1} checked="checked"{/if}>
-                    <br/>
+                    <div class="margin-form">
+                        <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
+                               name="lengow_shop_active" class="switchLengow" id="active_on"
+                               value="1" {if $lengow_shop_active == 1} checked="checked"{/if}>
+                    </div>
+                    <div class="clear"></div>
                     <label>Help</label>
                     <div class="margin-form">
                         {$help_credentials|escape:'quotes':'UTF-8'}
