@@ -36,7 +36,6 @@ class LengowInstall
         'Orders' => 'AdminLengowOrder',
         'Logs' => 'AdminLengowLog',
         'Configuration' => 'AdminLengowConfig',
-        'Configuration Logs' => 'AdminLengowLogConfig',
     );
 
     public function __construct($module)
