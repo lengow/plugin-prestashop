@@ -54,6 +54,19 @@ body.lengow_body #content .nav.lengow-nav>li.active>a:focus{
 .nav-pills.lengow-nav>li {
     float: left;
 }
+.nav.lengow-nav li.lengow_float_right {
+    float:right;
+}
+
+.nav.lengow-nav li.lengow_ring .fa {
+    font-size:23px;
+}
+
+.nav.lengow-nav li.lengow_external_link .fa {
+    font-size:23px;
+    color:#47AFD5;
+    margin-right:10px;
+}
 
 body.lengow_body #content {
     font-size:14px;
@@ -166,6 +179,12 @@ body.lengow_body #content .lengow_breadcrumb a {
 /* MAIN */
 .lengow_clear {
     clear: both;
+}
+.lengow_float_right {
+    float:right;
+}
+.lengow_float_left {
+    float:right;
 }
 .lengow_table {
     width: 100%
