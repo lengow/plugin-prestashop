@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2014 Lengow SAS.
+ * Copyright 2016 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -14,27 +14,23 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- *  @author    Ludovic Drin <ludovic@lengow.com> Romain Le Polh <romain@lengow.com>
- *  @copyright 2014 Lengow SAS
- *  @license   http://www.apache.org/licenses/LICENSE-2.0
- */
-/**
- * The AdminTab Lengow Class.
- *
- * @author Ludovic Drin <ludovic@lengow.com>
- * @copyright 2013 Lengow SAS
+ * @author    Team Connector <team-connector@lengow.com>
+ * @copyright 2016 Lengow SAS
+ * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * The AdminTab Lengow feed Class
+ *
+ */
 class AdminLengowFeed14 extends AdminTab
 {
     public function __construct()
     {
-
         $this->lengow_controller = new LengowFeedController(array(
             'breadcrumb_title' => 'Product'
         ));
         $this->lengow_controller->postProcess();
-
 
         parent::__construct();
         $this->lengow_controller->display();

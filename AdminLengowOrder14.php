@@ -19,25 +19,8 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-/**
- * The AdminTab Lengow home Class
- *
- */
-class AdminLengowHome14 extends AdminTab
-{
-    public function __construct()
-    {
-        $this->lengow_controller = new LengowHomeController(array(
-            'breadcrumb_title' => 'Home'
-        ));
-        $this->lengow_controller->postProcess();
+require_once 'lengow.php';
 
-        parent::__construct();
-        $this->lengow_controller->display();
-    }
-
-    public function display()
-    {
-
-    }
+if (_PS_VERSION_ < '1.5') {
+    include 'controllers/admin/TabLengowOrderController.php';
 }

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
-	<name>lengow</name>
-	<displayName><![CDATA[Lengow]]></displayName>
-	<version><![CDATA[3.0.0]]></version>
-	<description><![CDATA[Lengow allows you to easily export your product catalogue from your Prestashop
+    <name>lengow</name>
+    <displayName><![CDATA[Lengow]]></displayName>
+    <version><![CDATA[3.0.0]]></version>
+    <description><![CDATA[Lengow allows you to easily export your product catalogue from your Prestashop
         store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister..
         Choose from our 1,800 available marketing channels!]]></description>
-	<author><![CDATA[Lengow]]></author>
-	<tab><![CDATA[export]]></tab>
+    <author><![CDATA[Lengow]]></author>
+    <tab><![CDATA[export]]></tab>
 	<confirmUninstall>Are you sure you want to uninstall the Lengow module ?</confirmUninstall>
-	<is_configurable>1</is_configurable>
-	<need_instance>1</need_instance>
+    <is_configurable>1</is_configurable>
+    <need_instance>1</need_instance>
 	<limited_countries></limited_countries>
 </module>

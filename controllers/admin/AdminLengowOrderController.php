@@ -19,25 +19,40 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+require_once _PS_MODULE_DIR_.'lengow/lengow.php';
+
 /**
- * The AdminTab Lengow home Class
+ * The Lengow's Order Admin Controller.
  *
  */
-class AdminLengowHome14 extends AdminTab
+class AdminLengowOrderController extends ModuleAdminController
 {
     public function __construct()
     {
-        $this->lengow_controller = new LengowHomeController(array(
-            'breadcrumb_title' => 'Home'
-        ));
-        $this->lengow_controller->postProcess();
 
         parent::__construct();
-        $this->lengow_controller->display();
-    }
 
-    public function display()
-    {
+        $this->lang = false;
+        $this->context = Context::getContext();
+        $this->context->smarty->assign('lengow_link', new LengowLink());
+        $this->lite_display = true;
+        $this->lang = true;
+        $this->explicitSelect = true;
+        $this->list_no_link = true;
+        $this->template = 'layout.tpl';
+        $this->display = 'view';
+
+        parent::__construct();
+
+        $this->lengow_controller = new LengowOrderController(array(
+            'breadcrumb_title' => 'Orders'
+        ));
+        $this->lengow_controller->postProcess();
+        $this->lengow_controller->display();
 
     }
 }

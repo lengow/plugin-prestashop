@@ -33,7 +33,7 @@ class LengowInstall
     static private $tabs = array(
         'Home' => 'AdminLengowHome',
         'Product' => 'AdminLengowFeed',
-        'Lengow Products' => 'AdminLengowProduct',
+        'Orders' => 'AdminLengowOrder',
         'Logs' => 'AdminLengowLog',
         'Configuration' => 'AdminLengowConfig',
         'Configuration Logs' => 'AdminLengowLogConfig',
@@ -164,33 +164,15 @@ class LengowInstall
      */
     private static function uninstallTab()
     {
-        //remove children tabs
-        foreach (self::$tabs as $name => $controllerName) {
-            if (_PS_VERSION_ < '1.5') {
-                $tab_name = $controllerName . "14";
-            } else {
-                $tab_name = $controllerName;
-            }
-            if (_PS_VERSION_ >= '1.5') {
-                $tab = Tab::getInstanceFromClassName($tab_name);
-            } else {
-                $tab_id = Tab::getIdFromClassName($tab_name);
-                $tab = new Tab($tab_id);
-            }
+        $sql = 'SELECT `id_tab`, `class_name` FROM `' . _DB_PREFIX_ . 'tab` WHERE `module` = \'lengow\'';
+        $tabs = Db::getInstance()->executeS($sql);
+        // remove all tabs Lengow
+        foreach ($tabs as $value) {
+            $tab = new Tab((int)$value['id_tab']);
             if ($tab->id != 0) {
-                $tab->delete();
+                $result = $tab->delete();
             }
-            LengowMain::log('Uninstall tab '.$name, null, -1);
-        }
-        //remove parent tabs
-        if (_PS_VERSION_ >= '1.5') {
-            $tab_parent = Tab::getInstanceFromClassName('AdminLengowHome');
-        } else {
-            $tab_parent_id = Tab::getIdFromClassName('AdminLengowHome14');
-            $tab_parent = new Tab($tab_parent_id);
-        }
-        if ($tab_parent->id != 0) {
-            $tab_parent->delete();
+            LengowMain::log('Uninstall tab '.$value['class_name']);
         }
         return true;
     }
@@ -303,14 +285,17 @@ class LengowInstall
      */
     public function update()
     {
-        //check if update is in progress
+        // check if update is in progress
         $installation = true;
-
         $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_.'upgrade'), array('..', '.'));
         foreach ($upgradeFiles as $file) {
             include _PS_MODULE_LENGOW_DIR_.'upgrade/'.$file;
             $numberVersion = preg_replace('/update_|\.php$/', '', $file);
         }
+        // update lengow tabs
+        $this->uninstallTab();
+        $this->createTab();
+        // update lengow version
         Configuration::updateValue('LENGOW_VERSION', $numberVersion);
         return true;
     }

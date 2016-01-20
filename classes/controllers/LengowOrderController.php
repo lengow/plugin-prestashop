@@ -19,6 +19,25 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (_PS_VERSION_ < '1.5') {
-    include 'controllers/admin/TabLengowProductController.php';
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+class LengowOrderController extends LengowController
+{
+    /**
+     * Display data page
+     */
+    public function display()
+    {
+        $last_import =  LengowMain::getLastImport();
+
+        $orderCollection = array(
+            'last_import_date' => $last_import['date'],
+            'last_import_type' => $last_import['type']
+        );
+
+        $this->context->smarty->assign('orderCollection', $orderCollection);
+        parent::display();
+    }
 }

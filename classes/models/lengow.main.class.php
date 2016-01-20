@@ -226,7 +226,7 @@ class LengowMain
         $id_shop = (isset($params['id_shop']) ? $params['id_shop'] : null);
         $days = (isset($params['days']) ? $params['days'] : (int)Configuration::get('LENGOW_IMPORT_DAYS'));
         $debug = (isset($params['debug']) ? $params['debug'] : (bool)Configuration::get('LENGOW_DEBUG'));
-        $source = (isset($params['source']) ? $params['source'] : 'manual');
+        $type = (isset($params['type']) ? $params['type'] : 'manual');
         $force_product = (
             isset($params['force_product'])
             ? $params['force_product']
@@ -245,7 +245,7 @@ class LengowMain
         if (LengowMain::isInProcess() && !$debug) {
             LengowMain::log('import is already started', true);
         } else {
-            LengowMain::log('## Start '.$source.' import ##', true);
+            LengowMain::log('## Start '.$type.' import ##', true);
             // 2nd step: start import process
             LengowMain::setInProcess();
             // 3rd step: disable emails
@@ -264,7 +264,7 @@ class LengowMain
                 $result_new = 0;
                 $result_update = 0;
                 $account_ids = array();
-                lengowMain::updateDateImport($source);
+                lengowMain::updateDateImport($type);
                 if (_PS_VERSION_ < '1.5') {
                     $shops = array();
                     $shops[] = array('id_shop' => 1, 'name' => 'Default shop');
@@ -311,8 +311,7 @@ class LengowMain
                 }
             }
             LengowMain::setEnd();
-            LengowMain::log('## End '.$source.' import ##', true);
-
+            LengowMain::log('## End '.$type.' import ##', true);
             // sending email in error for orders
             if (Configuration::get('LENGOW_REPORT_MAIL') && !$debug) {
                 LengowMain::sendMailAlert();
@@ -412,20 +411,43 @@ class LengowMain
     /**
      * Record the date of the last import
      *
-     * @param string $source (cron or manual)
+     * @param string $type (cron or manual)
      *
      * @return boolean
      */
-    public static function updateDateImport($source)
+    public static function updateDateImport($type)
     {
-        $date = date('Y-m-d H:i:s');
-        if ($source === 'cron') {
-            Configuration::updateValue('LENGOW_LAST_CRON_IMPORT', $date);
+        if ($type === 'cron') {
+            Configuration::updateValue('LENGOW_LAST_CRON_IMPORT', time());
         } else {
-            Configuration::updateValue('LENGOW_LAST_MANUAL_IMPORT', $date);
+            Configuration::updateValue('LENGOW_LAST_MANUAL_IMPORT', time());
         }
     }
 
+    /**
+     * Get last import (type and timestamp)
+     *
+     * @return mixed
+     */
+    public static function getLastImport()
+    {
+        $timestamp_cron = Configuration::get('LENGOW_LAST_CRON_IMPORT');
+        $timestamp_manual = Configuration::get('LENGOW_LAST_MANUAL_IMPORT');
+
+        if ($timestamp_cron && $timestamp_manual) {
+            if ((int)$timestamp_cron > (int) $timestamp_manual) {
+                return array('type' => 'cron', 'timestamp' => (int)$timestamp_cron);
+            } else {
+                return array('type' => 'manual', 'timestamp' => (int)$timestamp_manual);
+            }
+        } elseif ($timestamp_cron && !$timestamp_manual) {
+            return array('type' => 'cron', 'timestamp' => (int)$timestamp_cron);
+        } elseif ($timestamp_manual && !$timestamp_cron) {
+            return array('type' => 'manual', 'timestamp' => (int)$timestamp_manual);
+        }
+
+        return array('type' => 'none', 'timestamp' => 'none');
+    }
 
     /**
      * Get tracker options.

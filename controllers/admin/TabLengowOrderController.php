@@ -20,15 +20,15 @@
  */
 
 /**
- * The AdminTab Lengow home Class
+ * The AdminTab Lengow order Class
  *
  */
-class AdminLengowHome14 extends AdminTab
+class AdminLengowOrder14 extends AdminTab
 {
     public function __construct()
     {
-        $this->lengow_controller = new LengowHomeController(array(
-            'breadcrumb_title' => 'Home'
+        $this->lengow_controller = new LengowOrderController(array(
+            'breadcrumb_title' => 'Order'
         ));
         $this->lengow_controller->postProcess();
 
