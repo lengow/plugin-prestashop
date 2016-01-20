@@ -88,6 +88,10 @@ class AdminLengowLogController extends ModuleAdminController
 
         parent::__construct();
         $this->identifier = 'lengow_order_id';
+
+        $this->context->smarty->assign('breadcrumb_title', 'Log');
+        $this->context->smarty->assign('current_controller', 'AdminLengowLog');
+
     }
 
     /**

@@ -11,11 +11,11 @@
 <link rel="stylesheet" href="/modules/lengow/views/css/font-awesome.css">
 
 <ul class="nav nav-pills lengow-nav">
-    <li role="presentation" id="logoLengow">
-        <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
+    <li role="presentation" id="lengow_logo">
+        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')}">
+            <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
+        </a>
     </li>
-    <li role="presentation" class="{if $current_controller == 'AdminLengowHome'}active{/if}" id="home"><a href="
-            {$lengow_link->getAbsoluteAdminLink('AdminLengowHome')}">Home</a></li>
     <li role="presentation" class="{if $current_controller == 'LengowFeedController'}active{/if}"><a href="
             {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')}">Product</a></li>
     <li role="presentation" class="{if $current_controller == 'AdminLengowOrder'}active{/if}"><a href="
@@ -24,8 +24,6 @@
             {$lengow_link->getAbsoluteAdminLink('AdminLengowLog')}">Logs</a></li>
     <li role="presentation" class="{if $current_controller == 'AdminLengowConfig'}active{/if}"><a href="
             {$lengow_link->getAbsoluteAdminLink('AdminLengowConfig')}">Configuration</a></li>
-    <li role="presentation" class="{if $current_controller == 'AdminLengowLogConfig'}active{/if}"><a href="
-            {$lengow_link->getAbsoluteAdminLink('AdminLengowLogConfig')}">Configuration Logs</a></li>
 </ul>
 
 <ol class="breadcrumb lengow_breadcrumb">

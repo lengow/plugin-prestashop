@@ -8,12 +8,19 @@
     padding-left: 0;
     margin: 0;
     list-style: none;
-    background-color:#2e3340 ;
+    background-color:#2E3340 ;
     padding-top :5px;
     padding-bottom: 5px;
     height:50px;
 }
 
+#lengow_logo {
+    width: 120px;
+}
+
+#lengow_logo a {
+    padding:10px;
+}
 
 body.lengow_body #content { padding:0px; }
 body.lengow_body #content .nav.lengow-nav>li>a:hover,
@@ -22,13 +29,13 @@ body.lengow_body #content .nav.lengow-nav>li>a,
 body.lengow_body #content .nav.lengow-nav>li>a:focus,
 body.lengow_body #content .nav.lengow-nav>li.active>a:focus{
     color: white;
-    font-size: 0.9em;
+    font-size: 16px;
     font-family: Open Sans;
     margin-top: 8px;
     -webkit-border-radius:0px;
     -moz-border-radius:0px;
     border-radius:0px;
-    background-color: #222732;
+    text-decoration: none;
 }
 
 .nav.lengow-nav>li>a {

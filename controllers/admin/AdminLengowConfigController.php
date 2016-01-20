@@ -49,6 +49,9 @@ class AdminLengowConfigController extends ModuleAdminController
 
         parent::__construct();
 
+        $this->context->smarty->assign('breadcrumb_title', 'Config');
+        $this->context->smarty->assign('current_controller', 'AdminLengowConfig');
+
         $this->lengowConfig = new LengowConfig();
         $this->lengowConfig->postProcessForm();
         $this->lengowConfig->displayForm();
