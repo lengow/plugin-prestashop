@@ -5,9 +5,6 @@
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-switch.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/admin.css">
-{if version_compare($smarty.const._PS_VERSION_,'1.5','<')}
-    <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/admin14.css">
-{/if}
 <link rel="stylesheet" href="/modules/lengow/views/css/font-awesome.css">
 
 <ul class="nav nav-pills lengow-nav">
