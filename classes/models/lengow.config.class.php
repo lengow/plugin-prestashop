@@ -47,13 +47,7 @@ class LengowConfig
             Configuration::updateValue('LENGOW_ACCOUNT_ID', Tools::getValue('lengow_account_id'));
             Configuration::updateValue('LENGOW_ACCESS_TOKEN', Tools::getValue('lengow_access_token'));
             Configuration::updateValue('LENGOW_SECRET', Tools::getValue('lengow_secret'));
-            LengowConfiguration::updateValue(
-                'LENGOW_SHOP_ACTIVE',
-                $this->checkBoxValue('lengow_shop_active'),
-                false,
-                null,
-                1
-            );
+            Configuration::updateValue('LENGOW_SHOP_ACTIVE', $this->checkBoxValue('lengow_shop_active'));
             Configuration::updateValue('LENGOW_EXPORT_SELECTION', $this->checkBoxValue('lengow_export_selection'));
             Configuration::updateValue('LENGOW_EXPORT_NEW', $this->checkBoxValue('lengow_export_new'));
             Configuration::updateValue(
