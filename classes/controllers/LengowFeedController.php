@@ -23,8 +23,8 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class LengowFeedController extends LengowController {
-
+class LengowFeedController extends LengowController
+{
     /**
      * Update data
      */

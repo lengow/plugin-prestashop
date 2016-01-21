@@ -35,8 +35,7 @@ class LengowInstall
         'Product' => 'AdminLengowFeed',
         'Orders' => 'AdminLengowOrder',
         'Logs' => 'AdminLengowLog',
-        'Configuration' => 'AdminLengowConfig',
-        'Configuration Logs' => 'AdminLengowLogConfig',
+        'Configuration' => 'AdminLengowConfig'
     );
 
     public function __construct($module)
@@ -96,7 +95,9 @@ class LengowInstall
             'LENGOW_ORDER_ID_SHIPPEDBYMP',
             'LENGOW_CRON_EDITOR',
             'LENGOW_SHOP_TOKEN',
+            'LENGOW_IS_IMPORT',
             'LENGOW_LAST_CRON_IMPORT',
+            'LENGOW_LAST_EXPORT',
             'LENGOW_LAST_MANUAL_IMPORT'
         );
         foreach ($configurations as $configuration) {

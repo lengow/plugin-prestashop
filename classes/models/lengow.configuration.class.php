@@ -21,6 +21,14 @@
  */
 class LengowConfiguration extends Configuration
 {
+    public static function getGlobalValue($key, $id_lang = null)
+    {
+        if (_PS_VERSION_ < '1.5') {
+            return parent::get($key, $id_lang);
+        } else {
+            return parent::getGlobalValue($key, $id_lang);
+        }
+    }
 
     public static function get($key, $id_lang = null, $id_shop_group = null, $id_shop = null)
     {
@@ -31,16 +39,12 @@ class LengowConfiguration extends Configuration
         }
     }
 
-    public static function getShop($key, $id_lang = null, $id_shop_group = null, $id_shop = null)
+    public static function updateGlobalValue($key, $values, $html = false)
     {
         if (_PS_VERSION_ < '1.5') {
-            return parent::get($key, $id_lang);
+            parent::updateValue($key, $values, $html);
         } else {
-            if (parent::hasKey($key, $id_lang, null, $id_shop)) {
-                return parent::get($key, $id_lang, $id_shop_group, $id_shop);
-            } else {
-                return false;
-            }
+            parent::updateGlobalValue($key, $values, $html);
         }
     }
 

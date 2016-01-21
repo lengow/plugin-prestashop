@@ -328,24 +328,29 @@ body.lengow_body #content .lengow_breadcrumb a {
 #lengow_feed_wrapper {
     padding:0 60px;
 }
+
 .lengow_feed_block {
     background:white;
     margin-bottom:20px;
 }
+
 .lengow_feed_block_header_title {
     background: #AAAAAA;
     color: white;
     padding:5px 0;
     border-radius: 2px;
 }
+
 .lengow_feed_block_header_title .title {
     font-weight:bold;
     font-size:20px;
     padding-left:20px;
 }
+
 .lengow_feed_block_header_title .url {
     padding-left:20px;
 }
+
 .lengow_feed_block_header_content {
     border:1px solid #E3E5E6;
 }
@@ -353,6 +358,7 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_feed_block_footer_content {
     background :white;
 }
+
 .lengow_feed_block_content_left {
     padding:20px;
 }
@@ -365,6 +371,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     font-size:16px;
     padding:20px;
 }
+
 .lengow_feed_block_content_right .lengow_link_tooltip {
     float:right;
 }
@@ -378,20 +385,25 @@ body.lengow_body #content .lengow_breadcrumb a {
     font-size:16px;
     font-weight:bold;
 }
+
 #lengow_feed_wrapper .lengow_select_text {
     font-size:12px;
     margin-left:10px;
 }
+
 #lengow_feed_wrapper .lengow_feed_pagination {
     float:right;
 }
+
 #lengow_feed_wrapper .lengow_pagination {
     margin-left:20px;
 }
+
 #lengow_feed_wrapper .lengow_pagination_total {
     float: left;
     margin-top: 27px;
 }
+
 #lengow_feed_wrapper .lengow_feed_pagination .lengow_number {
     font-weight: bold;
 }
@@ -401,6 +413,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     margin-top: 20px;
     margin-left: 20px;
 }
+
 #lengow_feed_wrapper .lengow_toolbar .lengow_btn {
     margin-left:10px;
 }
@@ -415,4 +428,29 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 #lengow_feed_wrapper .lengow_feed_block_content_left a {
     text-decoration: underline;
+}
+
+/* ORDER PAGE */
+#lengow_order_wrapper {
+    padding:0 60px;
+}
+
+.lengow_order_block_header_content {
+    padding: 50px 0;
+}
+
+.lengow_order_block_content_left {
+    font-weight:bold;
+    font-size:20px;
+    color:#61687c;
+    float:left;
+    padding:20px;
+}
+
+.lengow_order_block_content_right {
+    float:right;
+    width:280px;
+    height:140px;
+    font-size:16px;
+    padding:20px;
 }

@@ -172,7 +172,7 @@ class LengowMain
      */
     public static function getIdAccount($id_shop)
     {
-        return LengowConfiguration::getShop('LENGOW_ACCOUNT_ID', null, null, $id_shop);
+        return LengowConfiguration::get('LENGOW_ACCOUNT_ID', null, null, $id_shop);
     }
 
     /**
@@ -182,7 +182,7 @@ class LengowMain
      */
     public static function getAccessToken($id_shop)
     {
-        return LengowConfiguration::getShop('LENGOW_ACCESS_TOKEN', null, null, $id_shop);
+        return LengowConfiguration::get('LENGOW_ACCESS_TOKEN', null, null, $id_shop);
     }
 
     /**
@@ -192,7 +192,7 @@ class LengowMain
      */
     public static function getSecretCustomer($id_shop)
     {
-        return LengowConfiguration::getShop('LENGOW_SECRET', null, null, $id_shop);
+        return LengowConfiguration::get('LENGOW_SECRET', null, null, $id_shop);
     }
 
     /**
@@ -202,7 +202,7 @@ class LengowMain
      */
     public static function getShopActive($id_shop)
     {
-        return LengowConfiguration::getShop('LENGOW_SHOP_ACTIVE', null, null, $id_shop);
+        return LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, null, $id_shop);
     }
 
     /**
@@ -224,15 +224,23 @@ class LengowMain
         $order_id = (isset($params['order_id']) ? $params['order_id'] : null);
         $markeplace_name = (isset($params['markeplace_name']) ? $params['markeplace_name'] : null);
         $id_shop = (isset($params['id_shop']) ? $params['id_shop'] : null);
-        $days = (isset($params['days']) ? $params['days'] : (int)Configuration::get('LENGOW_IMPORT_DAYS'));
-        $debug = (isset($params['debug']) ? $params['debug'] : (bool)Configuration::get('LENGOW_DEBUG'));
+        $days = (
+            isset($params['days'])
+            ? $params['days']
+            : (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_DAYS')
+        );
+        $debug = (
+            isset($params['debug'])
+            ? $params['debug']
+            : (bool)LengowConfiguration::getGlobalValue('LENGOW_DEBUG')
+        );
         $type = (isset($params['type']) ? $params['type'] : 'manual');
         $force_product = (
             isset($params['force_product'])
             ? $params['force_product']
-            : (bool)Configuration::get('LENGOW_IMPORT_FORCE_PRODUCT')
+            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT')
         );
-        if (Configuration::get('LENGOW_IMPORT_SINGLE')) {
+        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_SINGLE')) {
             $limit = 1;
         } else {
             $limit = (isset($params['limit']) ? (int)$params['limit'] : 0);
@@ -369,7 +377,7 @@ class LengowMain
      */
     public static function isInProcess()
     {
-        $timestamp = Configuration::get('LENGOW_IS_IMPORT');
+        $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IS_IMPORT');
         if ($timestamp == 'stopped') {
             $timestamp = -1;
         }
@@ -377,7 +385,6 @@ class LengowMain
             // security check : if last import is more than 10 min old => authorize new import to be launched
             if (($timestamp + (60 * 10)) < time()) {
                 LengowMain::setEnd();
-                print_r('test');
                 return false;
             }
             return true;
@@ -394,7 +401,7 @@ class LengowMain
     public static function setInProcess()
     {
         LengowMain::$processing = true;
-        return Configuration::updateValue('LENGOW_IS_IMPORT', time());
+        return LengowConfiguration::updateGlobalValue('LENGOW_IS_IMPORT', time());
     }
 
     /**
@@ -405,7 +412,7 @@ class LengowMain
     public static function setEnd()
     {
         LengowMain::$processing = false;
-        return Configuration::updateValue('LENGOW_IS_IMPORT', -1);
+        return LengowConfiguration::updateGlobalValue('LENGOW_IS_IMPORT', -1);
     }
 
     /**
@@ -418,9 +425,9 @@ class LengowMain
     public static function updateDateImport($type)
     {
         if ($type === 'cron') {
-            Configuration::updateValue('LENGOW_LAST_CRON_IMPORT', time());
+            LengowConfiguration::updateGlobalValue('LENGOW_LAST_CRON_IMPORT', time());
         } else {
-            Configuration::updateValue('LENGOW_LAST_MANUAL_IMPORT', time());
+            LengowConfiguration::updateGlobalValue('LENGOW_LAST_MANUAL_IMPORT', time());
         }
     }
 
@@ -431,8 +438,8 @@ class LengowMain
      */
     public static function getLastImport()
     {
-        $timestamp_cron = Configuration::get('LENGOW_LAST_CRON_IMPORT');
-        $timestamp_manual = Configuration::get('LENGOW_LAST_MANUAL_IMPORT');
+        $timestamp_cron = LengowConfiguration::getGlobalValue('LENGOW_LAST_CRON_IMPORT');
+        $timestamp_manual = LengowConfiguration::getGlobalValue('LENGOW_LAST_MANUAL_IMPORT');
 
         if ($timestamp_cron && $timestamp_manual) {
             if ((int)$timestamp_cron > (int) $timestamp_manual) {
@@ -638,16 +645,16 @@ class LengowMain
      */
     public static function getToken($id_shop = null)
     {
-        if (is_null($id_shop) && _PS_VERSION_ >= '1.5') {
-            $token = LengowConfiguration::getGlobalValue('LENGOW_SHOP_TOKEN');
+        if (is_null($id_shop)) {
+            $token = LengowConfiguration::getGlobalValue('LENGOW_GLOBAL_TOKEN');
             if ($token && strlen($token)>0) {
                 return $token;
             } else {
                 $token =  bin2hex(openssl_random_pseudo_bytes(16));
-                LengowConfiguration::updateGlobalValue('LENGOW_SHOP_TOKEN', $token);
+                LengowConfiguration::updateGlobalValue('LENGOW_GLOBAL_TOKEN', $token);
             }
         } else {
-            $token = LengowConfiguration::getShop('LENGOW_SHOP_TOKEN', null, null, $id_shop);
+            $token = LengowConfiguration::get('LENGOW_SHOP_TOKEN', null, null, $id_shop);
             if ($token && strlen($token)>0) {
                 return $token;
             } else {

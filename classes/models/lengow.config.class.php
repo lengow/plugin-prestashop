@@ -38,6 +38,7 @@ class LengowConfig
      */
     public function postProcessForm()
     {
+        $id_shop = Shop::getContextShopID();
         $html = '';
         if (Tools::getIsset('submitlengow')) {
             Configuration::updateValue('LENGOW_AUTHORIZED_IP', Tools::getValue('lengow_authorized_ip'));
@@ -45,8 +46,14 @@ class LengowConfig
             Configuration::updateValue('LENGOW_TRACKING_ID', Tools::getValue('lengow_tracking_id'));
             Configuration::updateValue('LENGOW_ACCOUNT_ID', Tools::getValue('lengow_account_id'));
             Configuration::updateValue('LENGOW_ACCESS_TOKEN', Tools::getValue('lengow_access_token'));
-            Configuration::updateValue('LENGOW_SHOP_ACTIVE', Tools::getValue('lengow_shop_active'));
             Configuration::updateValue('LENGOW_SECRET', Tools::getValue('lengow_secret'));
+            LengowConfiguration::updateValue(
+                'LENGOW_SHOP_ACTIVE',
+                $this->checkBoxValue('lengow_shop_active'),
+                false,
+                null,
+                1
+            );
             Configuration::updateValue('LENGOW_EXPORT_SELECTION', $this->checkBoxValue('lengow_export_selection'));
             Configuration::updateValue('LENGOW_EXPORT_NEW', $this->checkBoxValue('lengow_export_new'));
             Configuration::updateValue(
@@ -64,8 +71,8 @@ class LengowConfig
             Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', Tools::getValue('lengow_order_cancel'));
             Configuration::updateValue('LENGOW_IMAGES_COUNT', Tools::getValue('lengow_images_count'));
             Configuration::updateValue('LENGOW_IMPORT_METHOD_NAME', Tools::getValue('lengow_method_name'));
-            Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', Tools::getValue('lengow_import_force_product'));
-            Configuration::updateValue('LENGOW_IMPORT_DAYS', Tools::getValue('lengow_import_days'));
+            LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT', Tools::getValue('lengow_import_force_product'));
+            LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_DAYS', Tools::getValue('lengow_import_days'));
             Configuration::updateValue('LENGOW_EXPORT_FORMAT', Tools::getValue('lengow_export_format'));
             Configuration::updateValue('LENGOW_EXPORT_FILE', $this->checkBoxValue('lengow_export_file'));
             Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Tools::getValue('lengow_carrier_default'));
@@ -73,7 +80,7 @@ class LengowConfig
                 'LENGOW_IMPORT_CARRIER_DEFAULT',
                 Tools::getValue('lengow_import_carrier_default')
             );
-            Configuration::updateValue('LENGOW_DEBUG', Tools::getValue('lengow_debug'));
+            LengowConfiguration::updateGlobalValue('LENGOW_DEBUG', Tools::getValue('lengow_debug'));
             Configuration::updateValue('LENGOW_PARENT_IMAGE', Tools::getValue('lengow_parent_image'));
             Configuration::updateValue('LENGOW_EXPORT_DISABLED', $this->checkBoxValue('lengow_export_disabled'));
             Configuration::updateValue('LENGOW_EXPORT_OUT_STOCK', $this->checkBoxValue('lengow_export_out_stock'));

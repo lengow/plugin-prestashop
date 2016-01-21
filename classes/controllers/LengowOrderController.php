@@ -33,8 +33,9 @@ class LengowOrderController extends LengowController
         $last_import =  LengowMain::getLastImport();
 
         $orderCollection = array(
-            'last_import_date' => $last_import['date'],
-            'last_import_type' => $last_import['type']
+            'last_import_date'  => $last_import['timestamp'],
+            'last_import_type'  => $last_import['type'],
+            'link'              => LengowMain::getImportUrl()
         );
 
         $this->context->smarty->assign('orderCollection', $orderCollection);
