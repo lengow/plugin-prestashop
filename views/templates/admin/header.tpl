@@ -11,6 +11,10 @@
 <link rel="stylesheet" href="/modules/lengow/views/css/font-awesome.css">
 
 <ul class="nav nav-pills lengow-nav">
+    <li class="lengow_float_right lengow_external_link"><a href="#"><i class="fa fa-external-link"></i></a></li>
+    <li class="lengow_float_right lengow_ring">
+        <a href="http://solution.lengow.com" target="_blank"><i class="fa fa-life-ring"></i></a>
+    </li>
     <li role="presentation" id="lengow_logo">
         <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')}">
             <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
