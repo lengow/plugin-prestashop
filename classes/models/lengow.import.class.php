@@ -262,7 +262,6 @@ class LengowImport
                         'stream'
                     );
                 }
-                $results = file_get_contents(_PS_MODULE_LENGOW_DIR_.'/orders.json');
                 if (is_null($results)) {
                     throw new LengowImportException('the connection didn\'t work with the Lengow webservice');
                 }
