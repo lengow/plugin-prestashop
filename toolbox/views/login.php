@@ -18,10 +18,15 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
-if (!$installation) {
-    exit();
-}
-
-Configuration::updateValue('LENGOW_IMPORT_MARKETPLACES', Tools::jsonEncode(array('none')));
-Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true);
+?>
+<form action="/modules/lengow/toolbox/login.php" method="POST">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Access Token</label>
+        <input type="text" class="form-control" id="access_token" placeholder="AccessToken">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Secret Token</label>
+        <input type="password" class="form-control" id="secret_token" placeholder="SecretToken">
+    </div>
+    <button type="submit" class="btn btn-default">Se Connecter</button>
+</form>

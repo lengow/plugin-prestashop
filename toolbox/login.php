@@ -19,9 +19,11 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!$installation) {
-    exit();
-}
+require 'conf.inc.php';
 
-Configuration::updateValue('LENGOW_IMPORT_MARKETPLACES', Tools::jsonEncode(array('none')));
-Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true);
+$accessToken = isset($_REQUEST['access_token']) ?  $_REQUEST['access_token'] : null;
+$secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
+
+require 'views/header.php';
+require 'views/login.php';
+require 'views/footer.php';

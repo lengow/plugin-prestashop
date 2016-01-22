@@ -54,7 +54,7 @@ if (!Module::isInstalled($lengow->name)) {
 // CheckIP
 $token = Tools::getIsset('token') ? Tools::getValue('token') : '';
 if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)) {
-    if (strlen($token) > 0) {
+    if (Tools::strlen($token) > 0) {
         die('Unauthorized access for this token : ' . $token);
     } else {
         die('Unauthorized access for IP : ' . $_SERVER['REMOTE_ADDR']);
@@ -65,16 +65,6 @@ if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)
 //backward compatibility
 if (isset($_REQUEST["all"])) {
     $_REQUEST["selection"] = !(bool)$_REQUEST["all"];
-}
-
-// $fullMode -> including variations or not
-$fullMode = Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS');
-if (Tools::getIsset('mode')) {
-    if (Tools::getValue('mode') == 'simple') {
-        $fullMode = false;
-    } elseif (Tools::getValue('mode') == 'full') {
-        $fullMode = true;
-    }
 }
 
 // shop
@@ -92,16 +82,6 @@ if (Tools::getIsset('cur')) {
 }
 
 // export language
-
-
-// fields and features in title
-$fullTitle = isset($_REQUEST["title"]) ? $_REQUEST["title"] : Configuration::get('LENGOW_EXPORT_FULLNAME');
-if ($fullTitle == "full") {
-    $fullTitle = true;
-}
-if ($fullTitle == "simple") {
-    $fullTitle = false;
-}
 
 // export format (csv, yaml, xml, json)
 $format = isset($_REQUEST["format"]) ? $_REQUEST["format"] : Configuration::get('LENGOW_EXPORT_FORMAT');
@@ -121,10 +101,10 @@ $offset = isset($_REQUEST["offset"]) ? (int)$_REQUEST["offset"] : null;
 
 // export lengow selection
 $selection = isset($_REQUEST["selection"]) ? (bool)$_REQUEST["selection"] :
-    Configuration::get('LENGOW_EXPORT_SELECTION');
+    Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED');
 
 // export in file or no
-$stream = isset($_REQUEST["stream"]) ? (bool)$_REQUEST["stream"] : (bool)Configuration::get('LENGOW_EXPORT_FILE');
+$stream = isset($_REQUEST["stream"]) ? (bool)$_REQUEST["stream"] : (bool)Configuration::get('LENGOW_EXPORT_FILE_ENABLED');
 
 // export out of stock products
 $out_stock = isset($_REQUEST["out_stock"]) ? (bool)$_REQUEST["out_stock"] :
@@ -132,12 +112,12 @@ $out_stock = isset($_REQUEST["out_stock"]) ? (bool)$_REQUEST["out_stock"] :
 
 // export product variation
 $exportVariation = isset($_REQUEST["variation"]) ? (bool)$_REQUEST["variation"] :
-    (bool)Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS');
+    (bool)Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS_ENABLED');
 
 // export certain products
 $product_ids = array();
 $ids = isset($_REQUEST["product_ids"]) ? $_REQUEST["product_ids"] : null;
-if (strlen($ids) > 0) {
+if (Tools::strlen($ids) > 0) {
     $ids = str_replace(array(';','|',':'), ',', $ids);
     $ids = preg_replace('/[^0-9\,]/', '', $ids);
     $product_ids = explode(',', $ids);
@@ -147,12 +127,10 @@ $export = new LengowExport(array(
     'format' => $format,
     'stream' => $stream,
     'product_ids' => $product_ids,
-    'full_title' => $fullTitle,
     'limit' => $limit,
     'offset' => $offset,
     'out_stock' => $out_stock,
     'export_variation' => $exportVariation,
-    'full_mode' => $fullMode,
     'selection' => $selection,
     'language_id' => $languageId,
 ));

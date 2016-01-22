@@ -39,7 +39,7 @@ if (!Module::isInstalled($lengow->name)) {
 // check IP access and Token
 $token = Tools::getIsset('token') ? Tools::getValue('token') : '';
 if (!LengowMain::checkWebservicesAccess($token)) {
-    if (strlen($token) > 0) {
+    if (Tools::strlen($token) > 0) {
         die('Unauthorized access for this token : ' . $token);
     } else {
         die('Unauthorized access for IP : ' . $_SERVER['REMOTE_ADDR']);

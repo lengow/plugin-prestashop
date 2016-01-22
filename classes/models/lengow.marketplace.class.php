@@ -345,7 +345,7 @@ class LengowMarketplace
                 if ($order_lines) {
                     foreach ($order_lines as $order_line) {
                         $params['line'] = $order_line['id_order_line'];
-                        if (!Configuration::get('LENGOW_DEBUG')) {
+                        if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
                             $result = $connector->post('/v3.0/orders/actions', $params);
                         }
                         $order_line_sent .= (!$order_line_sent ? $params['line'] : ' / '.$params['line']);
@@ -353,7 +353,7 @@ class LengowMarketplace
                     LengowMain::log('WSDL : '.$param_list.' -- "lines": '.$order_line_sent, false, $order->id);
                 }
             } else {
-                if (!Configuration::get('LENGOW_DEBUG')) {
+                if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
                     $result = $connector->post('/v3.0/orders/actions', $params);
                 }
                 LengowMain::log('WSDL : '.$param_list, false, $order->id);

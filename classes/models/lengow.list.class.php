@@ -221,7 +221,7 @@ class LengowList
         $where = $this->sql["where"];
         if (isset($_REQUEST['table_'.$this->id])) {
             foreach ($_REQUEST['table_'.$this->id] as $key => $value) {
-                if (strlen($value)>0) {
+                if (Tools::strlen($value)>0) {
                     if ($fieldValue = $this->findValueByKey($key)) {
                         $where[] = ' '.pSQL($fieldValue['filter_key']).' LIKE "%'.pSQL($value).'%"';
                     }

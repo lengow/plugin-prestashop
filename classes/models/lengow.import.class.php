@@ -426,7 +426,7 @@ class LengowImport
                         $shipped_by_mp = true;
                         $message = 'order shipped by '.$marketplace->name;
                         LengowMain::log($message, $this->log_output, $lengow_id);
-                        if (!Configuration::get('LENGOW_IMPORT_SHIPPED_BY_MP')) {
+                        if (!Configuration::get('LENGOW_IMPORT_SHIPPED_BY_MP_ENABLED')) {
                             if (!$this->debug) {
                                 LengowLog::addLog($order_data, $lengow_id, $order_line_ids[0], $message, 1);
                             }
@@ -701,7 +701,7 @@ class LengowImport
                 unset($payment);
                 unset($order);
                 // if limit is set
-                if ($this->limit > 0 && $count_orders_added == $this->limit || Configuration::get('LENGOW_IS_IMPORT') <= 0) {
+                if ($this->limit > 0 && $count_orders_added == $this->limit || Configuration::get('LENGOW_IMPORT_IN_PROGRESS') <= 0) {
                     break;
                 }
             }
@@ -985,7 +985,7 @@ class LengowImport
         $shipping_address
     ) {
         $carrier_id = false;
-        if (!Configuration::get('LENGOW_MP_SHIPPING_METHOD') || is_null($tracking_informations)) {
+        if (!Configuration::get('LENGOW_IMPORT_CARRIER_MP_ENABLED') || is_null($tracking_informations)) {
             $carrier_id = (int)Configuration::get('LENGOW_IMPORT_CARRIER_DEFAULT');
         }
         // get by tracking carrier

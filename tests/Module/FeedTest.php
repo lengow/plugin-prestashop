@@ -27,9 +27,8 @@ class FeedTest extends ModuleTestCase
 
         Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
-        Configuration::updatevalue('LENGOW_EXPORT_FULLNAME', 0);
-        Configuration::updatevalue('LENGOW_EXPORT_FILE', 0);
-        Configuration::updatevalue('LENGOW_EXPORT_SELECTION', 0);
+        Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
+        Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
         Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
 
         //load module
@@ -144,9 +143,9 @@ class FeedTest extends ModuleTestCase
         ));
         $export->exec();
         $this->assertFileValues($export->getFileName(), 10, array("NAME_PRODUCT" => "NAME010"));
-        $this->assertFileValues($export->getFileName(), '10_11', array("NAME_PRODUCT" => "NAME010"));
-        $this->assertFileValues($export->getFileName(), '10_12', array("NAME_PRODUCT" => "NAME010"));
-        $this->assertFileValues($export->getFileName(), '10_13', array("NAME_PRODUCT" => "NAME010"));
+        $this->assertFileValues($export->getFileName(), '10_11', array("NAME_PRODUCT" => "NAME010 - Pointure - 35"));
+        $this->assertFileValues($export->getFileName(), '10_12', array("NAME_PRODUCT" => "NAME010 - Pointure - 36"));
+        $this->assertFileValues($export->getFileName(), '10_13', array("NAME_PRODUCT" => "NAME010 - Pointure - 37"));
         $this->assertFileNbLine($export->getFileName(), 4, 'offset_1_limit_2');
     }
 
@@ -214,7 +213,7 @@ class FeedTest extends ModuleTestCase
      *
      * @test
      */
-    public function withFullTitle()
+    public function fullTitle()
     {
         $fixture = new Fixture();
         $fixture->loadFixture(
@@ -223,36 +222,12 @@ class FeedTest extends ModuleTestCase
 
         $export = new LengowExport(array(
             "export_variation" => true,
-            "full_title" => true,
             "product_ids" => array(10),
         ));
         $export->exec();
         $this->assertFileValues($export->getFileName(), 10, array("NAME_PRODUCT" => "NAME010"));
         $this->assertFileValues($export->getFileName(), '10_11', array("NAME_PRODUCT" => "NAME010 - Pointure - 35"));
         $this->assertFileNbLine($export->getFileName(), 8, 'with_full_title');
-    }
-
-    /**
-     * Test full title option
-     *
-     * @test
-     */
-    public function withoutFullTitle()
-    {
-        $fixture = new Fixture();
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/variation_product.yml'
-        );
-
-        $export = new LengowExport(array(
-            "export_variation" => true,
-            "full_title" => false,
-            "product_ids" => array(10),
-        ));
-        $export->exec();
-        //$this->assertFileValues($export->getFileName(), 10, array("NAME" => "NAME010"));
-        //$this->assertFileValues($export->getFileName(), '10_11', array("NAME" => "NAME010"));
-        $this->assertFileNbLine($export->getFileName(), 8, 'without_full_title');
     }
 
     /**

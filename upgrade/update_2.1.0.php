@@ -29,7 +29,7 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
         Db::getInstance()->execute($sql);
     }
 }
-Configuration::updateValue('LENGOW_IMPORT_SHIPPED_BY_MP', false);
+Configuration::updateValue('LENGOW_IMPORT_SHIPPED_BY_MP_ENABLED', false);
 Configuration::updateValue('LENGOW_EXPORT_ALL_VARIATIONS', Configuration::get('LENGOW_EXPORT_ALL_ATTRIBUTES'));
 Configuration::deleteByName('LENGOW_IMPORT_MARKETPLACES');
 Configuration::deleteByName('LENGOW_EXPORT_ALL_ATTRIBUTES');

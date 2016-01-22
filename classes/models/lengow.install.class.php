@@ -61,44 +61,35 @@ class LengowInstall
         $configurations = array(
             'LENGOW_LOGO_URL',
             'LENGOW_AUTHORIZED_IP',
-            'LENGOW_TRACKING',
+            'LENGOW_TRACKING_ENABLED',
             'LENGOW_ACCOUNT_ID',
             'LENGOW_ACCESS_TOKEN',
-            'LENGOW_SECRET',
+            'LENGOW_SECRET_TOKEN',
             'LENGOW_SHOP_ACTIVE',
-            'LENGOW_EXPORT_SELECTION',
-            'LENGOW_EXPORT_NEW',
-            'LENGOW_EXPORT_ALL_VARIATIONS',
-            'LENGOW_EXPORT_FULLNAME',
-            'LENGOW_EXPORT_FIELDS',
+            'LENGOW_EXPORT_SELECTION_ENABLED',
+            'LENGOW_EXPORT_ALL_VARIATIONS_ENABLED',
             'LENGOW_ORDER_ID_PROCESS',
             'LENGOW_ORDER_ID_SHIPPED',
             'LENGOW_ORDER_ID_CANCEL',
-            'LENGOW_IMAGES_COUNT',
-            'LENGOW_IMPORT_METHOD_NAME',
             'LENGOW_IMPORT_FORCE_PRODUCT',
             'LENGOW_IMPORT_DAYS',
-            'LENGOW_EXPORT_FEATURES',
             'LENGOW_EXPORT_FORMAT',
-            'LENGOW_EXPORT_FILE',
+            'LENGOW_EXPORT_FILE_ENABLED',
             'LENGOW_CARRIER_DEFAULT',
             'LENGOW_IMPORT_CARRIER_DEFAULT',
-            'LENGOW_FLOW_DATA',
-            'LENGOW_CRON',
-            'LENGOW_DEBUG',
+            'LENGOW_CRON_ENABLED',
+            'LENGOW_IMPORT_PREPROD_ENABLED',
             'LENGOW_IMPORT_FAKE_EMAIL',
-            'LENGOW_MP_SHIPPING_METHOD',
+            'LENGOW_IMPORT_CARRIER_MP_ENABLED',
             'LENGOW_REPORT_MAIL',
-            'LENGOW_IMPORT_SINGLE',
-            'LENGOW_EXPORT_TIMEOUT',
-            'LENGOW_EMAIL_ADDRESS',
+            'LENGOW_IMPORT_SINGLE_ENABLED',
+            'LENGOW_REPORT_MAIL_ADDRESS',
             'LENGOW_ORDER_ID_SHIPPEDBYMP',
-            'LENGOW_CRON_EDITOR',
             'LENGOW_SHOP_TOKEN',
-            'LENGOW_IS_IMPORT',
-            'LENGOW_LAST_CRON_IMPORT',
+            'LENGOW_IMPORT_IN_PROGRESS',
+            'LENGOW_LAST_IMPORT_CRON',
             'LENGOW_LAST_EXPORT',
-            'LENGOW_LAST_MANUAL_IMPORT'
+            'LENGOW_LAST_IMPORT_MANUAL'
         );
         foreach ($configurations as $configuration) {
             Configuration::deleteByName($configuration);
@@ -182,38 +173,29 @@ class LengowInstall
     {
         return
             Configuration::updateValue('LENGOW_AUTHORIZED_IP', $_SERVER['REMOTE_ADDR']) &&
-            Configuration::updateValue('LENGOW_TRACKING', '') &&
-            Configuration::updateValue('LENGOW_EXPORT_SELECTION', false) &&
+            Configuration::updateValue('LENGOW_TRACKING_ENABLED', '') &&
+            Configuration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', false) &&
             Configuration::updateValue('LENGOW_EXPORT_DISABLED', false) &&
-            Configuration::updateValue('LENGOW_EXPORT_NEW', false) &&
-            Configuration::updateValue('LENGOW_EXPORT_ALL_VARIATIONS', true) &&
-            Configuration::updateValue('LENGOW_EXPORT_FULLNAME', true) &&
-            Configuration::updateValue('LENGOW_EXPORT_FEATURES', true) &&
+            Configuration::updateValue('LENGOW_EXPORT_ALL_VARIATIONS_ENABLED', true) &&
             Configuration::updateValue('LENGOW_EXPORT_FORMAT', 'csv') &&
-            Configuration::updateValue('LENGOW_EXPORT_FIELDS', Tools::jsonEncode(LengowExport::$DEFAULT_FIELDS)) &&
-            Configuration::updateValue('LENGOW_IMAGES_COUNT', 3) &&
             Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', 2) &&
             Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', 4) &&
             Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', 6) &&
-            Configuration::updateValue('LENGOW_IMPORT_METHOD_NAME', false) &&
             Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', true) &&
             Configuration::updateValue('LENGOW_IMPORT_DAYS', 3) &&
             Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
             Configuration::updateValue('LENGOW_IMPORT_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
-            Configuration::updateValue('LENGOW_FLOW_DATA', '') &&
-            Configuration::updateValue('LENGOW_CRON', false) &&
-            Configuration::updateValue('LENGOW_DEBUG', false) &&
+            Configuration::updateValue('LENGOW_CRON_ENABLED', false) &&
+            Configuration::updateValue('LENGOW_IMPORT_PREPROD_ENABLED', false) &&
             Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false) &&
-            Configuration::updateValue('LENGOW_REPORT_MAIL', true) &&
-            Configuration::updateValue('LENGOW_EXPORT_TIMEOUT', 0) &&
+            Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true) &&
             Configuration::updateValue(
-                'LENGOW_IMPORT_SINGLE',
+                'LENGOW_IMPORT_SINGLE_ENABLED',
                 version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
             ) &&
-            Configuration::updateValue('LENGOW_EMAIL_ADDRESS', '') &&
+            Configuration::updateValue('LENGOW_REPORT_MAIL_ADDRESS', '') &&
             Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
-            Configuration::updateValue('LENGOW_CRON_EDITOR', false) &&
-            Configuration::updateValue('LENGOW_IMPORT_SHIPPED_BY_MP', false) &&
+            Configuration::updateValue('LENGOW_IMPORT_SHIPPED_BY_MP_ENABLED', false) &&
             Configuration::updateValue('LENGOW_SHOP_TOKEN', '');
     }
 
