@@ -24,7 +24,6 @@ class LengowCheck
 
     static private $_module = '';
 
-    public static $XML_PLUGINS = 'plugins.xml';
     public static $DOM;
 
     private static $_FILES_TO_CHECK = array(
@@ -61,18 +60,18 @@ class LengowCheck
             $out .= '<tr>';
             $out .= '<td><b>' . $check['message'] . '</b></td>';
             if ($check['state'] == 1) {
-                $out .= '<td><img src="' . _PS_BASE_URL_ . __PS_BASE_URI__ . '/img/admin/enabled.gif" alt="ok"></td>';
+                $out .= '<td><img src="'._PS_BASE_URL_.__PS_BASE_URI__.'/img/admin/enabled.gif" alt="ok"></td>';
             } elseif ($check['state'] == 2) {
-                $out .= '<td><img src="' . _PS_BASE_URL_ . __PS_BASE_URI__ . '/img/admin/error.png" alt="warning"></td>';
+                $out .= '<td><img src="'._PS_BASE_URL_.__PS_BASE_URI__.'/img/admin/error.png" alt="warning"></td>';
             } else {
-                $out .= '<td><img src="' . _PS_BASE_URL_ . __PS_BASE_URI__ . '/img/admin/disabled.gif" alt="nok"></td>';
+                $out .= '<td><img src="'._PS_BASE_URL_.__PS_BASE_URI__.'/img/admin/disabled.gif" alt="nok"></td>';
             }
             $out .= '</tr>';
 
             if ($check['state'] === 0 || $check['state'] === 2) {
                 $out .= '<tr><td colspan="2"><p>' . $check['help'];
                 if (array_key_exists('help_link', $check) && $check['help_link'] != '') {
-                    $out .= '<br /><a target="_blank" href="' . $check['help_link'] . '">' . $check['help_label'] . '</a>';
+                    $out .= '<br /><a target="_blank" href="'.$check['help_link'].'">'.$check['help_label'].'</a>';
                 }
                 $out .= '</p></td></tr>';
             }
@@ -110,7 +109,10 @@ class LengowCheck
         } elseif ($mail_method == 3 && _PS_VERSION_ >= '1.5.0') {
             return self::$_module->l('Email are desactived.', 'lengow.check.class');
         } elseif ($mail_method == 3) {
-            return self::$_module->l('Error mail settings, PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4', 'lengow.check.class');
+            return self::$_module->l(
+                'Error mail settings, PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4',
+                'lengow.check.class'
+            );
         } else {
             return self::$_module->l('Email using php mail function.', 'lengow.check.class');
         }
@@ -173,34 +175,16 @@ class LengowCheck
         }
         
         $account_id = (integer)LengowMain::getIdAccount($id_shop);
-        $connector  = new LengowConnector(LengowMain::getAccessToken($id_shop), LengowMain::getSecretCustomer($id_shop));
+        $connector  = new LengowConnector(
+            LengowMain::getAccessToken($id_shop),
+            LengowMain::getSecretCustomer($id_shop)
+        );
         $result = $connector->connect();
         if (isset($result['token']) && $account_id != 0 && is_integer($account_id)) {
             return true;
         } else {
             return false;
         }
-    }
-
-    /**
-     * Check if config folder is writable
-     *
-     * @return boolean
-     */
-    public static function isConfigWritable()
-    {
-        $config_folder = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config';
-        return is_writable($config_folder);
-    }
-
-    /**
-     * Check disabled product option
-     *
-     * @return boolean
-     */
-    public static function isDisabledProduct()
-    {
-        return (Configuration::get('LENGOW_EXPORT_DISABLED') == true) ? false : true;
     }
 
     /**
@@ -216,7 +200,7 @@ class LengowCheck
 
         $checklist[] = array(
             'message' => self::$_module->l('Lengow needs the CURL PHP extension', 'lengow.check.class'),
-            'help' => self::$_module->l('The CURL extension is not installed or enabled in your PHP installation. Check the manual for information on how to install or enable CURL on your system.', 'lengow.check.class'),
+            'help' => self::$_module->l('The CURL extension is not installed or enabled in your PHP installation.Check the manual for information on how to install or enable CURL on your system.', 'lengow.check.class'),
             'help_link' => 'http://www.php.net/manual/en/curl.setup.php',
             'help_label' => self::$_module->l('Go to Curl PHP extension manual', 'lengow.check.class'),
             'state' => (int)self::isCurlActivated()
@@ -239,58 +223,38 @@ class LengowCheck
         $checklist[] = array(
             'message' => self::$_module->l('Lengow authentification', 'lengow.check.class'),
             'help' => self::$_module->l('For this step, you need to have a Lengow account to get your Client ID, Group ID and API key.', 'lengow.check.class') . '<br/>'
-                . self::$_module->l('Contact us if you don\'t have a Lengow account :', 'lengow.check.class') . '<br/>'
-                . self::$_module->l('By email :', 'lengow.check.class') . ' <a href="mailto:' . self::$_module->l('contact@lengow.com',
-                    'lengow.check.class') . '" target="_blank">' . self::$_module->l('contact@lengow.com',
-                    'lengow.check.class') . '</a><br/>'
-                . self::$_module->l('By phone : +44 2033182631', 'lengow.check.class') . '<br/>'
-                . self::$_module->l('Already a client :',
-                    'lengow.check.class') . ' <a href="https://solution.lengow.com/api/" target="_blank">'
-                . self::$_module->l('go to Lengow dashboard', 'lengow.check.class'),
+                .self::$_module->l('Contact us if you don\'t have a Lengow account :', 'lengow.check.class') . '<br/>'
+                .self::$_module->l('By email :', 'lengow.check.class').' <a href="mailto:'
+                .self::$_module->l('contact@lengow.com', 'lengow.check.class').'" target="_blank">'
+                .self::$_module->l('contact@lengow.com', 'lengow.check.class') . '</a><br/>'
+                .self::$_module->l('By phone : +44 2033182631', 'lengow.check.class') . '<br/>'
+                .self::$_module->l('Already a client :', 'lengow.check.class')
+                .'<a href="https://solution.lengow.com/api/" target="_blank">'
+                .self::$_module->l('go to Lengow dashboard', 'lengow.check.class'),
             'state' => (int)self::isValidAuth((int)Context::getContext()->shop->id) == 1 ? 1 : 0,
-            'additional_infos' => sprintf(self::$_module->l('Make sure your website IP (%s) address is filled in your Lengow Dashboard.', 'lengow.check.class'), $ip)
+            'additional_infos' => sprintf(self::$_module->l(
+                'Make sure your website IP (%s) address is filled in your Lengow Dashboard.',
+                'lengow.check.class'
+            ), $ip)
         );
-
         $checklist[] = array(
             'message' => self::$_module->l('Shop functionality', 'lengow.check.class'),
-            'help' => self::$_module->l('Shop functionality are disabled, order import will be impossible, please enable them in your products settings.',
-                'lengow.check.class'),
+            'help' => self::$_module->l(
+                'Shop functionality are disabled, order import will be impossible, please enable them in your products settings.',
+                'lengow.check.class'
+            ),
             'state' => (int)self::isShopActivated()
-        );
-        $checklist[] = array(
-            'message' => self::$_module->l('Config folder is writable', 'lengow.check.class'),
-            'help' => self::$_module->l('The config folder must be writable.', 'lengow.check.class'),
-            'state' => (int)self::isConfigWritable()
-        );
-        $checklist[] = array(
-            'message' => self::$_module->l('Export disabled products', 'lengow.check.class'),
-            'help' => self::$_module->l('Disabled products are included in your feed : orders may not be imported. Make sure the "Force products" option is active.',
-                'lengow.check.class'),
-            'state' => self::isDisabledProduct() ? 1 : 0,
-        );
-        $checklist[] = array(
-            'message' => self::$_module->l('Prestashop plugin version', 'lengow.check.class'),
-            'help' => self::$_module->l('There is a new version of Lengow Module, please update it.', 'lengow.check.class'),
-            'help_link' => 'http://www.lengow.fr/plugin-prestashop.html',
-            'help_label' => self::$_module->l('Download the latest version', 'lengow.check.class'),
-            'state' => (int)self::checkPluginVersion(self::$_module->version)
-        );
-        $files = self::checkFiles();
-        $checklist[] = array(
-            'message' => self::$_module->l('Module files check', 'lengow.check.class'),
-            'help' => self::$_module->l('Please move the following files from the install to the override folder of your Lengow module : ' . implode(', ',
-                    $files), 'lengow.check.class'),
-            'state' => empty($files) ? 1 : 0,
         );
         if (Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
             $checklist[] = array(
-                'message' => self::$_module->l('Mail configuration (Be careful, debug mode is activated)',
-                    'lengow.check.class'),
+                'message' => self::$_module->l(
+                    'Mail configuration (Be careful, debug mode is activated)',
+                    'lengow.check.class'
+                ),
                 'help' => self::getMailConfiguration(),
                 'state' => 2
             );
         }
-
         return $checklist;
     }
 
@@ -316,45 +280,6 @@ class LengowCheck
     public static function getJsonCheckList()
     {
         return Tools::jsonEncode(self::_getCheckListArray());
-    }
-
-    /**
-     * Check module version
-     *
-     * @return boolean true if up to date, false if old version currently installed
-     */
-    public static function checkPluginVersion($current_version = null)
-    {
-        if ($current_version == null) {
-            return false;
-        }
-
-        // Load xml
-        try {
-            if (_PS_MODULE_DIR_) {
-                self::$DOM = simplexml_load_file(_PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . self::$XML_PLUGINS);
-            } else {
-                self::$DOM = simplexml_load_file(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . self::$XML_PLUGINS);
-            }
-        } catch (Exception $e) {
-            LengowMain::log('Unable to download plugins.xml => ' . $e->getMessage());
-            return true;
-        }
-
-
-        // Compare version
-        if (is_object(self::$DOM)) {
-            $object = self::$DOM->xpath('/plugins/plugin[@name=\'prestashop\']');
-            if (!empty($object)) {
-                $plugin = $object[0];
-                if (version_compare($current_version, $plugin->version, '<')) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        }
-        return true;
     }
 
     /**
@@ -428,17 +353,4 @@ class LengowCheck
             echo '</table>';
         }
     }
-
-    public static function checkFiles()
-    {
-        $sep = DIRECTORY_SEPARATOR;
-        $files_install = array();
-        foreach (self::$_FILES_TO_CHECK as $file) {
-            if (!file_exists(_PS_MODULE_DIR_ . 'lengow' . $sep . 'override' . $sep . $file) && file_exists(_PS_MODULE_DIR_ . 'lengow' . $sep . 'install' . $sep . $file)) {
-                $files_install[] = $file;
-            }
-        }
-        return $files_install;
-    }
-
 }

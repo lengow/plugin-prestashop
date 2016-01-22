@@ -280,7 +280,7 @@ class LengowOrder extends Order
                 $history->changeIdOrderState(LengowMain::getOrderState('shipped'), $this, true);
                 $history->validateFields();
                 $history->add();
-                if (!empty($tracking_number)) {
+                if (!is_null($tracking_number)) {
                     $this->shipping_number = $tracking_number;
                     $this->validateFields();
                     $this->update();
