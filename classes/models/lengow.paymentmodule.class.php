@@ -42,6 +42,7 @@ class LengowPaymentModule extends PaymentModule
      * @param array     $lengow_products
      * @param float     $lengow_shipping_costs
      * @param float     $processing_fees
+     * @param string    $lengow_tracking_number
      *
      * @return array
      */
@@ -53,7 +54,8 @@ class LengowPaymentModule extends PaymentModule
         $message,
         $lengow_products,
         $lengow_shipping_costs,
-        $processing_fees = null
+        $processing_fees = null,
+        $lengow_tracking_number = null
     ) {
         if (!isset($this->context)) {
             $this->context = Context::getContext();
@@ -233,6 +235,10 @@ class LengowPaymentModule extends PaymentModule
             $order->total_shipping_tax_incl = (float)Tools::ps_round($lengow_shipping_costs / (int)$nb_package, 2);
             $order->total_shipping = $order->total_shipping_tax_incl;
 
+            if (!is_null($lengow_tracking_number)) {
+                $order->shipping_number = (string)$lengow_tracking_number;
+            }
+
             // add processing fees to wrapping fees
             $tax_manager = TaxManagerFactory::getManager(
                 new LengowAddress($id_address),
@@ -299,6 +305,10 @@ class LengowPaymentModule extends PaymentModule
                 $order_carrier->weight = (float)$order->getTotalWeight();
                 $order_carrier->shipping_cost_tax_excl = (float)$order->total_shipping_tax_excl;
                 $order_carrier->shipping_cost_tax_incl = (float)$order->total_shipping_tax_incl;
+                if (!is_null($lengow_tracking_number)) {
+                    $order_carrier->tracking_number = (string)$lengow_tracking_number;
+                }
+                $order_carrier->validateFields();
                 $order_carrier->add();
             }
         }
@@ -447,6 +457,7 @@ class LengowPaymentModule extends PaymentModule
      * @param array     $lengow_products
      * @param float     $lengow_shipping_costs
      * @param float     $processing_fees
+     * @param string    $lengow_tracking_number
      *
      * @return array
      */
@@ -458,7 +469,8 @@ class LengowPaymentModule extends PaymentModule
         $message,
         $lengow_products,
         $lengow_shipping_costs,
-        $processing_fees = null
+        $processing_fees = null,
+        $lengow_tracking_number = null
     ) {
         if (!isset($this->context)) {
             $this->context = Context::getContext();
@@ -528,6 +540,9 @@ class LengowPaymentModule extends PaymentModule
             $order->total_wrapping = (float)$processing_fees;
 
             $order->total_shipping = (float)$lengow_shipping_costs;
+            if (!is_null($lengow_tracking_number)) {
+                $order->shipping_number = (string)$lengow_tracking_number;
+            }
             $order->carrier_tax_rate = (float)Tax::getCarrierTaxRate(
                 $this->context->cart->id_carrier,
                 (int)$this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')}

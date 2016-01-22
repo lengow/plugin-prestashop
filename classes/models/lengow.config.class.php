@@ -38,7 +38,6 @@ class LengowConfig
      */
     public function postProcessForm()
     {
-        $id_shop = Shop::getContextShopID();
         $html = '';
         if (Tools::getIsset('submitlengow')) {
             Configuration::updateValue('LENGOW_AUTHORIZED_IP', Tools::getValue('lengow_authorized_ip'));

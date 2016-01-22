@@ -262,6 +262,7 @@ class LengowImport
                         'stream'
                     );
                 }
+                $results = file_get_contents(_PS_MODULE_LENGOW_DIR_.'/orders.json');
                 if (is_null($results)) {
                     throw new LengowImportException('the connection didn\'t work with the Lengow webservice');
                 }
@@ -529,6 +530,11 @@ class LengowImport
                         .'Total paid : '.(float)$order_amount.' | '."\r\n"
                         .'Shipping : '.(string)$order_data->shipping.' | '."\r\n"
                         .'Message : '.(string)$order_data->comments."\r\n";
+                    // get tracking number
+                    $tracking_number = null;
+                    if (!is_null($trackings) && !is_null($trackings[0]->number)) {
+                        $tracking_number = (string)$trackings[0]->number;
+                    }
                     // validate order
                     $order_list = array();
                     if (_PS_VERSION_ >= '1.5') {
@@ -540,7 +546,8 @@ class LengowImport
                             $message,
                             $products,
                             (float)$order_data->shipping,
-                            (float)$order_data->processing_fee
+                            (float)$order_data->processing_fee,
+                            $tracking_number
                         );
                     } else {
                         $order_list = $payment->makeOrder14(
@@ -551,7 +558,8 @@ class LengowImport
                             $message,
                             $products,
                             (float)$order_data->shipping,
-                            (float)$order_data->processing_fee
+                            (float)$order_data->processing_fee,
+                            $tracking_number
                         );
                     }
                     // if no order in list
@@ -847,13 +855,13 @@ class LengowImport
                     $ids = LengowProduct::advancedSearch($attribute_value, $this->id_shop, $product_ids);
                 }
                 // for testing => replace values
-                if (_PS_VERSION_ < '1.6') {
-                    $ids['id_product'] = '1';
-                    $ids['id_product_attribute'] = '27';
-                } else {
-                    $ids['id_product'] = '1';
-                    $ids['id_product_attribute'] = '1';
-                }
+                // if (_PS_VERSION_ < '1.6') {
+                //     $ids['id_product'] = '1';
+                //     $ids['id_product_attribute'] = '27';
+                // } else {
+                //     $ids['id_product'] = '1';
+                //     $ids['id_product_attribute'] = '1';
+                // }
                 if (!empty($ids)) {
                     $id_full = $ids['id_product'];
                     if (!isset($ids['id_product_attribute'])) {
