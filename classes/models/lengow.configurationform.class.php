@@ -109,7 +109,7 @@ class LengowConfigurationForm
         return $html;
     }
 
-    public function postProcess()
+    public function postProcess($checkboxKeys)
     {
         if (_PS_VERSION_ < '1.5') {
             $shopCollection = array(array('id_shop' => 1));
@@ -132,6 +132,9 @@ class LengowConfigurationForm
         foreach ($shopCollection as $shop) {
             $shopId = $shop['id_shop'];
             foreach ($this->fields as $key => $value) {
+                if (!in_array($key, $checkboxKeys)) {
+                    continue;
+                }
                 if ($value['type'] == 'checkbox' && isset($value['shop']) && $value['shop']) {
                     if (!isset($_REQUEST[$key][$shopId])) {
                         LengowConfiguration::updateValue($key, false, false, null, $shopId);
@@ -140,6 +143,9 @@ class LengowConfigurationForm
             }
         }
         foreach ($this->fields as $key => $value) {
+            if (!in_array($key, $checkboxKeys)) {
+                continue;
+            }
             if ($value['type'] == 'checkbox' && (!isset($value['shop']) || !$value['shop'])) {
                 if (!isset($_REQUEST[$key])) {
                     LengowConfiguration::updateGlobalValue($key, false);
@@ -147,9 +153,4 @@ class LengowConfigurationForm
             }
         }
     }
-
-
-
-
-
 }

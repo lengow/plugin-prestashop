@@ -38,7 +38,17 @@ if (_PS_VERSION_ < '1.5') {
 
 switch ($action) {
     case "update":
-        $form->postProcess();
+        $form->postProcess(array(
+            'LENGOW_SHOP_ACTIVE',
+            'LENGOW_EXPORT_FILE_ENABLED',
+            'LENGOW_IMPORT_FORCE_PRODUCT',
+            'LENGOW_IMPORT_PREPROD_ENABLED',
+            'LENGOW_IMPORT_SHIPPED_BY_MP_ENABLED',
+            'LENGOW_IMPORT_CARRIER_MP_ENABLED',
+            'LENGOW_REPORT_MAIL_ENABLED',
+            'LENGOW_IMPORT_SINGLE_ENABLED',
+            'LENGOW_TRACKING_ENABLED'
+        ));
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
         break;
 }
