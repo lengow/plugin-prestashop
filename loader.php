@@ -58,13 +58,13 @@ if (_PS_VERSION_ < '1.5') {
 
 function lengowAutoloader($className)
 {
-    if (substr($className, 0, 6) == 'Lengow') {
-        if (substr($className, -10) == 'Controller') {
+    if (Tools::substr($className, 0, 6) == 'Lengow') {
+        if (Tools::substr($className, -10) == 'Controller') {
             $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/controllers/';
             include $directory.$className.'.php';
         } else {
             $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/models/';
-            include $directory.str_replace('lengow', 'lengow.', strtolower($className)).'.class.php';
+            include $directory.str_replace('lengow', 'lengow.', Tools::strtolower($className)).'.class.php';
         }
     }
 }

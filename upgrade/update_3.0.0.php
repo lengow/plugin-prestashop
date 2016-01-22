@@ -27,8 +27,6 @@ Configuration::deleteByName('LENGOW_ID_CUSTOMER');
 Configuration::deleteByName('LENGOW_ID_GROUP');
 Configuration::deleteByName('LENGOW_TOKEN');
 Configuration::deleteByName('LENGOW_SWITCH_V3');
-Configuration::deleteByName('LENGOW_EXPORT_FIELDS');
-Configuration::deleteByName('LENGOW_EXPORT_FEATURES');
 Configuration::deleteByName('LENGOW_IMAGE_TYPE');
 Configuration::deleteByName('LENGOW_FEED_MANAGEMENT');
 Configuration::deleteByName('LENGOW_FORCE_PRICE');
@@ -39,4 +37,32 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_produc
         Db::getInstance()->execute('ALTER TABLE '._DB_PREFIX_.'lengow_product DROP PRIMARY KEY');
         Db::getInstance()->execute('ALTER TABLE '._DB_PREFIX_.'lengow_product ADD `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST');
     }
+}
+
+//LENGOW_DEBUG => LENGOW_IMPORT_PREPROD_ENABLED
+//LENGOW_CRON => LENGOW_CRON_ENABLED
+//LENGOW_IMPORT_SHIPPED_BY_MP => LENGOW_IMPORT_SHIPPED_BY_MP_ENABLED
+//LENGOW_MP_SHIPPING_METHOD => LENGOW_IMPORT_CARRIER_MP_ENABLED
+//LENGOW_REPORT_MAIL => LENGOW_REPORT_MAIL_ENABLED
+//LENGOW_EMAIL_ADDRESS => LENGOW_REPORT_MAIL_ADDRESS
+//LENGOW_IMPORT_SINGLE => LENGOW_IMPORT_SINGLE_ENABLED
+//LENGOW_IS_IMPORT => LENGOW_IMPORT_IN_PROGRESS
+//LENGOW_TRACKING => LENGOW_TRACKING_ENABLED
+
+$configurations = array(
+    'LENGOW_LOGO_URL',
+    'LENGOW_EXPORT_NEW',
+    'LENGOW_EXPORT_FIELDS',
+    'LENGOW_EXPORT_FULLNAME',
+    'LENGOW_IMAGES_COUNT',
+    'LENGOW_IMPORT_METHOD_NAME',
+    'LENGOW_EXPORT_FEATURES',
+    'LENGOW_FLOW_DATA',
+    'LENGOW_CRON_EDITOR',
+    'LENGOW_EXPORT_SELECTION',
+    'LENGOW_EXPORT_ALL_VARIATIONS',
+    'LENGOW_EXPORT_TIMEOUT',
+);
+foreach ($configurations as $configuration) {
+    Configuration::deleteByName($configuration);
 }

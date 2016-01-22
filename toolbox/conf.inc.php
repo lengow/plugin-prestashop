@@ -19,9 +19,17 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!$installation) {
-    exit();
-}
+$currentDirectory = str_replace('modules/lengow/toolbox/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
 
-Configuration::updateValue('LENGOW_IMPORT_MARKETPLACES', Tools::jsonEncode(array('none')));
-Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true);
+$sep = DIRECTORY_SEPARATOR;
+require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
+require_once $currentDirectory . 'init.php';
+require_once $currentDirectory . 'modules/lengow/lengow.php';
+
+$lengowTool = new LengowTool();
+
+if (!in_array($lengowTool->getCurrentUri(), array('/modules/lengow/toolbox/login.php'))) {
+    if (!$lengowTool->isLogged()) {
+        Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/login.php', '');
+    }
+}

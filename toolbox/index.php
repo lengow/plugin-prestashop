@@ -19,9 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!$installation) {
-    exit();
-}
-
-Configuration::updateValue('LENGOW_IMPORT_MARKETPLACES', Tools::jsonEncode(array('none')));
-Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true);
+require 'conf.inc.php';
+require 'views/header.php';
+require 'views/index.php';
+require 'views/footer.php';

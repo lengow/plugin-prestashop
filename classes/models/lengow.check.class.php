@@ -245,7 +245,7 @@ class LengowCheck
             ),
             'state' => (int)self::isShopActivated()
         );
-        if (Configuration::get('LENGOW_DEBUG')) {
+        if (Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
             $checklist[] = array(
                 'message' => self::$_module->l(
                     'Mail configuration (Be careful, debug mode is activated)',

@@ -19,9 +19,21 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!$installation) {
-    exit();
-}
 
-Configuration::updateValue('LENGOW_IMPORT_MARKETPLACES', Tools::jsonEncode(array('none')));
-Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true);
+/**
+ * The Lengow Tool Class.
+ *
+ */
+class LengowTool
+{
+    public function isLogged()
+    {
+        return true;
+    }
+
+    public function getCurrentUri()
+    {
+        return $_SERVER['SCRIPT_NAME'];
+    }
+
+}

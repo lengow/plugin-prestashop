@@ -93,7 +93,7 @@ class LengowHook
      */
     public function hookFooter()
     {
-        $tracking_mode = Configuration::get('LENGOW_TRACKING');
+        $tracking_mode = Configuration::get('LENGOW_TRACKING_ENABLED');
 
         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
             self::$_USE_SSL = true;

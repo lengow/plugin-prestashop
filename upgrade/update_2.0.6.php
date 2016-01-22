@@ -24,4 +24,4 @@ if (!$installation) {
 }
 
 Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false);
-Configuration::updateValue('LENGOW_MP_SHIPPING_METHOD', false);
+Configuration::updateValue('LENGOW_IMPORT_CARRIER_MP_ENABLED', false);

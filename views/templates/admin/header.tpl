@@ -23,8 +23,6 @@
             {$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')}">Orders</a></li>
     <li role="presentation" class="{if $current_controller == 'AdminLengowLog'}active{/if}"><a href="
             {$lengow_link->getAbsoluteAdminLink('AdminLengowLog')}">Logs</a></li>
-    <li role="presentation" class="{if $current_controller == 'AdminLengowConfig'}active{/if}"><a href="
-            {$lengow_link->getAbsoluteAdminLink('AdminLengowConfig')}">Configuration</a></li>
 </ul>
 
 <ol class="breadcrumb lengow_breadcrumb">

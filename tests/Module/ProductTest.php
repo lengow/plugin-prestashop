@@ -29,9 +29,8 @@ class ProductTest extends ModuleTestCase
 
         Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
-        Configuration::updatevalue('LENGOW_EXPORT_FULLNAME', 0);
-        Configuration::updatevalue('LENGOW_EXPORT_FILE', 0);
-        Configuration::updatevalue('LENGOW_EXPORT_SELECTION', 0);
+        Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
+        Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
         Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
 
         //load module
@@ -264,7 +263,7 @@ class ProductTest extends ModuleTestCase
         $this->assertEquals('', $product->getData('image_10'));
 
         $this->assertEquals('10_11', $product->getData('id', 11));
-        $this->assertEquals('NAME010', $product->getData('name', 11));
+        $this->assertEquals('NAME010 - Pointure - 35', $product->getData('name', 11));
         $this->assertEquals('ATTRIBUTE011', $product->getData('reference', 11));
         $this->assertEquals('SUPPLIERSKU011', $product->getData('supplier_reference', 11));
         $this->assertEquals('MANUFACTURER1', $product->getData('manufacturer', 11));

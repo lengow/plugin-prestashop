@@ -23,4 +23,4 @@ if (!$installation) {
     exit();
 }
 
-Configuration::updateValue('LENGOW_EMAIL_ADDRESS', '');
+Configuration::updateValue('LENGOW_REPORT_MAIL_ADDRESS', '');

@@ -18,10 +18,11 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+?>
+</div><!-- /.container -->
 
-if (!$installation) {
-    exit();
-}
-
-Configuration::updateValue('LENGOW_IMPORT_MARKETPLACES', Tools::jsonEncode(array('none')));
-Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true);
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="../../dist/js/bootstrap.min.js"></script>-->
+</body>
+</html>

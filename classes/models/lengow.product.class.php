@@ -163,7 +163,7 @@ class LengowProduct extends Product
      *
      * @return varchar The data.
      */
-    public function getData($name, $id_product_attribute = null, $full_title = false)
+    public function getData($name, $id_product_attribute = null)
     {
         switch ($name) {
             case 'id':
@@ -174,7 +174,7 @@ class LengowProduct extends Product
                 break;
             case 'name':
                 $tmpName = $this->name;
-                if ($id_product_attribute && $full_title) {
+                if ($id_product_attribute) {
                     if ($this->combinations[$id_product_attribute]['attribute_name']) {
                         $tmpName = $this->name.' - '.$this->combinations[$id_product_attribute]['attribute_name'];
                     }

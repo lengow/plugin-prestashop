@@ -156,11 +156,6 @@ class LengowExport
     protected $data = array();
 
     /**
-     * Product data.
-     */
-    public $full_title = true;
-
-    /**
      * Include active products.
      */
     protected $showInactiveProduct = false;
@@ -190,7 +185,6 @@ class LengowExport
      * boolean #stream : Display file when call script (1) | Save File (0)
      * boolean #out_stock : Export product in stock and out stock (1) | Export Only in stock product (0)
      * int #limit : Limit product to export
-     * boolean #full_title : get parent name in title
      * boolean #show_inactive_product : Export active and inactive product (1) | Export Only active product (0)
      * boolean #show_product_combination : Export product declinaison (1) | Export Only simple product (0)
      * @return LengowExport
@@ -202,8 +196,6 @@ class LengowExport
         $this->offset = (isset($params["offset"]) ? $params["offset"] : false);
         $this->productIds = (isset($params["product_ids"]) ? $params["product_ids"] : false);
         $this->stream = (isset($params["stream"]) ? $params["stream"] : false);
-        $this->full_title = (isset($params["full_title"]) ? (bool)$params["full_title"] :
-            Configuration::get('LENGOW_EXPORT_FULLNAME'));
         $this->limit =  (isset($params["limit"]) ? (int)$params["limit"] : false);
         $this->showInactiveProduct = (isset($params["show_inactive_product"]) ?
             (bool)$params["show_inactive_product"] : false);
@@ -213,13 +205,13 @@ class LengowExport
             new Language(LengowConfiguration::get('PS_LANG_DEFAULT', null, null, $this->shopId));
         $this->exportLengowSelection = (isset($params["selection"]) ?
             (bool)$params["selection"] :
-            Configuration::get('LENGOW_EXPORT_SELECTION', null, null, $this->shopId));
+            Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->shopId));
         $this->exportOutStock =  (isset($params["out_stock"]) ?
             $params["out_stock"] :
             Configuration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->shopId));
         $this->exportVariation = isset($params["export_variation"]) ?
             (bool)$params["export_variation"] :
-            (bool)Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS', null, null, $this->shopId);
+            (bool)Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS_ENABLED', null, null, $this->shopId);
 
         $this->checkCurrency();
         $this->setCarrier();
@@ -346,11 +338,10 @@ class LengowExport
                     if (isset(LengowExport::$DEFAULT_FIELDS[$field])) {
                         $product_data[$field] = $product->getData(
                             LengowExport::$DEFAULT_FIELDS[$field],
-                            null,
-                            $this->full_title
+                            null
                         );
                     } else {
-                        $product_data[$field] = $product->getData($field, null, $this->full_title);
+                        $product_data[$field] = $product->getData($field, null);
                     }
                 }
                 // write parent product
@@ -414,14 +405,12 @@ class LengowExport
                 if (isset(LengowExport::$DEFAULT_FIELDS[$field])) {
                     $this->cacheCombination[$productId][$paId][$field] = $product->getData(
                         LengowExport::$DEFAULT_FIELDS[$field],
-                        $paId,
-                        $this->full_title
+                        $paId
                     );
                 } else {
                     $this->cacheCombination[$productId][$paId][$field] = $product->getData(
                         $field,
-                        $paId,
-                        $this->full_title
+                        $paId
                     );
                 }
             }

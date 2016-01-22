@@ -191,7 +191,7 @@ class LengowMain
      */
     public static function getSecretCustomer($id_shop)
     {
-        return LengowConfiguration::get('LENGOW_SECRET', null, null, $id_shop);
+        return LengowConfiguration::get('LENGOW_ACCESS_SECRET', null, null, $id_shop);
     }
 
     /**
@@ -237,7 +237,7 @@ class LengowMain
         $debug = (
             isset($params['debug'])
             ? $params['debug']
-            : (bool)LengowConfiguration::getGlobalValue('LENGOW_DEBUG')
+            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')
         );
         $type = (isset($params['type']) ? $params['type'] : 'manual');
         $force_product = (
@@ -245,7 +245,7 @@ class LengowMain
             ? $params['force_product']
             : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT')
         );
-        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_SINGLE')) {
+        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_SINGLE_ENABLED')) {
             $limit = 1;
         } else {
             $limit = (isset($params['limit']) ? (int)$params['limit'] : 0);
@@ -328,7 +328,7 @@ class LengowMain
             LengowMain::setEnd();
             LengowMain::log('## End '.$type.' import ##', true);
             // sending email in error for orders
-            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL') && !$debug) {
+            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$debug) {
                 LengowMain::sendMailAlert();
             }
         }
@@ -387,7 +387,7 @@ class LengowMain
      */
     public static function isInProcess()
     {
-        $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IS_IMPORT');
+        $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS');
         if ($timestamp == 'stopped') {
             $timestamp = -1;
         }
@@ -412,7 +412,7 @@ class LengowMain
     public static function setInProcess()
     {
         LengowMain::$processing = true;
-        return LengowConfiguration::updateGlobalValue('LENGOW_IS_IMPORT', time());
+        return LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', time());
     }
 
     /**
@@ -424,7 +424,7 @@ class LengowMain
     public static function setEnd()
     {
         LengowMain::$processing = false;
-        return LengowConfiguration::updateGlobalValue('LENGOW_IS_IMPORT', -1);
+        return LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', -1);
     }
 
     /**
@@ -438,9 +438,9 @@ class LengowMain
     public static function updateDateImport($type)
     {
         if ($type === 'cron') {
-            LengowConfiguration::updateGlobalValue('LENGOW_LAST_CRON_IMPORT', time());
+            LengowConfiguration::updateGlobalValue('LENGOW_LAST_IMPORT_CRON', time());
         } else {
-            LengowConfiguration::updateGlobalValue('LENGOW_LAST_MANUAL_IMPORT', time());
+            LengowConfiguration::updateGlobalValue('LENGOW_LAST_IMPORT_MANUAL', time());
         }
     }
 
@@ -452,8 +452,8 @@ class LengowMain
      */
     public static function getLastImport()
     {
-        $timestamp_cron = LengowConfiguration::getGlobalValue('LENGOW_LAST_CRON_IMPORT');
-        $timestamp_manual = LengowConfiguration::getGlobalValue('LENGOW_LAST_MANUAL_IMPORT');
+        $timestamp_cron = LengowConfiguration::getGlobalValue('LENGOW_LAST_IMPORT_CRON');
+        $timestamp_manual = LengowConfiguration::getGlobalValue('LENGOW_LAST_IMPORT_MANUAL');
 
         if ($timestamp_cron && $timestamp_manual) {
             if ((int)$timestamp_cron > (int) $timestamp_manual) {
@@ -665,7 +665,7 @@ class LengowMain
     {
         if (is_null($id_shop)) {
             $token = LengowConfiguration::getGlobalValue('LENGOW_GLOBAL_TOKEN');
-            if ($token && strlen($token)>0) {
+            if ($token && Tools::strlen($token)>0) {
                 return $token;
             } else {
                 $token =  bin2hex(openssl_random_pseudo_bytes(16));
@@ -673,7 +673,7 @@ class LengowMain
             }
         } else {
             $token = LengowConfiguration::get('LENGOW_SHOP_TOKEN', null, null, $id_shop);
-            if ($token && strlen($token)>0) {
+            if ($token && Tools::strlen($token)>0) {
                 return $token;
             } else {
                 $token =  bin2hex(openssl_random_pseudo_bytes(16));
@@ -714,7 +714,7 @@ class LengowMain
      */
     public static function inTest()
     {
-        if (isset($_SERVER['HTTP_USER_AGENT']) && substr($_SERVER['HTTP_USER_AGENT'], 0, 10) == 'GuzzleHttp') {
+        if (isset($_SERVER['HTTP_USER_AGENT']) && Tools::substr($_SERVER['HTTP_USER_AGENT'], 0, 10) == 'GuzzleHttp') {
             return true;
         }
         return false;
@@ -1023,7 +1023,7 @@ class LengowMain
             '{mail_title}' => 'Lengow imports logs',
             '{mail_body}' => $mail_body,
         );
-        $emails = explode(',', Configuration::get('LENGOW_EMAIL_ADDRESS'));
+        $emails = explode(',', Configuration::get('LENGOW_REPORT_MAIL_ADDRESS'));
         if (empty($emails[0])) {
             $emails[0] = Configuration::get('PS_SHOP_EMAIL');
         }
@@ -1306,7 +1306,7 @@ class LengowMain
         if (!Db::getInstance()->executeS($query_import_select)) {
             $add_import = Db::getInstance()->execute($query_import_insert);
         }
-        if (Configuration::get('LENGOW_EXPORT_FILE')) {
+        if (Configuration::get('LENGOW_EXPORT_FILE_ENABLED')) {
             if (!Db::getInstance()->executeS($query_export_select)) {
                 $add_export = Db::getInstance()->execute($query_export_insert);
             }
@@ -1398,7 +1398,7 @@ class LengowMain
      */
     public function fromCamelCase($str)
     {
-        $str[0] = strtolower($str[0]);
+        $str[0] = Tools::strtolower($str[0]);
         $func = create_function('$c', 'return "_" . strtolower($c[1]);');
         return preg_replace_callback('/([A-Z])/', $func, $str);
     }
@@ -1412,7 +1412,7 @@ class LengowMain
     public function toCamelCase($str, $capitalise_first_char = false)
     {
         if ($capitalise_first_char) {
-            $str[0] = strtoupper($str[0]);
+            $str[0] = Tools::strtoupper($str[0]);
         }
         $func = create_function('$c', 'return strtoupper($c[1]);');
         return preg_replace_callback('/_([a-z])/', $func, $str);
