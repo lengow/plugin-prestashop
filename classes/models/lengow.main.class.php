@@ -104,11 +104,6 @@ class LengowMain
     public static $image_type_cache;
 
     /**
-     * The name of config folder
-     */
-    protected static $LENGOW_CONFIG_FOLDER = 'config';
-
-    /**
      * @var boolean import is processing
      */
     public static $processing;
