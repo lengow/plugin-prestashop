@@ -45,7 +45,7 @@ class LengowMain
     /**
      * @var integer    life of log files in days
      */
-    public static $LOG_LIFE = 7;
+    public static $LOG_LIFE = 20;
 
     /**
      * @var array    Lengow tracker types.
@@ -109,11 +109,6 @@ class LengowMain
     protected static $LENGOW_CONFIG_FOLDER = 'config';
 
     /**
-     * Lengow XML Plugins status
-     */
-    public static $LENGOW_PLUGINS_VERSION = 'http://kml.lengow.com/plugins.xml';
-
-    /**
      * @var boolean import is processing
      */
     public static $processing;
@@ -166,7 +161,10 @@ class LengowMain
     }
 
     /**
+     * v3
      * Get Lengow ID Account.
+     *
+     * @param integer $id_shop shop ID
      *
      * @return integer
      */
@@ -176,7 +174,10 @@ class LengowMain
     }
 
     /**
+     * v3
      * Get access token
+     *
+     * @param integer $id_shop shop ID
      *
      * @return string
      */
@@ -186,7 +187,10 @@ class LengowMain
     }
 
     /**
-     * Get the secret.
+     * v3
+     * Get the secret
+     *
+     * @param integer $id_shop shop ID
      *
      * @return string
      */
@@ -196,7 +200,10 @@ class LengowMain
     }
 
     /**
-     * Get the secret.
+     * v3
+     * Recovers if a shop is active or not
+     *
+     * @param integer $id_shop shop ID
      *
      * @return string
      */
@@ -206,6 +213,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Import of a specific order or all orders
      *
      * @param array params optional options
@@ -220,6 +228,8 @@ class LengowMain
      */
     public static function importOrders($params = array())
     {
+        // clean logs
+        LengowMain::cleanLog();
         // get all params for import
         $order_id = (isset($params['order_id']) ? $params['order_id'] : null);
         $markeplace_name = (isset($params['markeplace_name']) ? $params['markeplace_name'] : null);
@@ -248,6 +258,7 @@ class LengowMain
         // recovering the time interval for import
         $date_from = date('c', strtotime(date('Y-m-d').' -'.$days.'days'));
         $date_to = date('c');
+
         // launch the import orders
         // 1st step: check if import is already in process
         if (LengowMain::isInProcess() && !$debug) {
@@ -272,6 +283,7 @@ class LengowMain
                 $result_new = 0;
                 $result_update = 0;
                 $account_ids = array();
+                // udpate last import date
                 lengowMain::updateDateImport($type);
                 if (_PS_VERSION_ < '1.5') {
                     $shops = array();
@@ -321,13 +333,14 @@ class LengowMain
             LengowMain::setEnd();
             LengowMain::log('## End '.$type.' import ##', true);
             // sending email in error for orders
-            if (Configuration::get('LENGOW_REPORT_MAIL') && !$debug) {
+            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL') && !$debug) {
                 LengowMain::sendMailAlert();
             }
         }
     }
 
     /**
+     * v3
      * Get the matching Prestashop order state id to the one given
      *
      * @param string $state state to be matched
@@ -339,24 +352,25 @@ class LengowMain
         switch ($state) {
             case 'accepted':
             case 'waiting_shipment':
-                return Configuration::get('LENGOW_ORDER_ID_PROCESS');
+                return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_PROCESS');
                 break;
             case 'shipped':
             case 'closed':
-                return Configuration::get('LENGOW_ORDER_ID_SHIPPED');
+                return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPED');
                 break;
             case 'refused':
             case 'canceled':
-                return Configuration::get('LENGOW_ORDER_ID_CANCEL');
+                return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_CANCEL');
                 break;
             case 'shippedByMp':
-                return Configuration::get('LENGOW_ORDER_ID_SHIPPEDBYMP');
+                return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPEDBYMP');
                 break;
         }
         return false;
     }
 
     /**
+     * v3
      * Temporary disable mail sending
      */
     public static function disableMail()
@@ -371,6 +385,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Check if import is already in process
      *
      * @return boolean
@@ -394,6 +409,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Set import to "in process" state
      *
      * @return boolean
@@ -405,6 +421,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Set import to finished
      *
      * @return boolean
@@ -416,6 +433,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Record the date of the last import
      *
      * @param string $type (cron or manual)
@@ -432,6 +450,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Get last import (type and timestamp)
      *
      * @return mixed
@@ -525,6 +544,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * The shipping names options.
      *
      * @param string    $name       markeplace name
@@ -541,7 +561,8 @@ class LengowMain
     }
 
     /**
-     * Clean html.
+     * v3
+     * Clean html
      *
      * @param string $html The html content
      *
@@ -571,6 +592,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Format float.
      *
      * @param float $float The float to format
@@ -583,6 +605,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Get host for generated email.
      *
      * @return string Hostname
@@ -702,29 +725,8 @@ class LengowMain
         return false;
     }
 
-     /**
-     * Check and update xml of plugins version
-     *
-     * @return boolean
-     */
-    public static function updatePluginsVersion()
-    {
-        $plg_update = Configuration::get('LENGOW_PLG_CONF');
-        if ((!$plg_update || $plg_update != date('Y-m-d')) && function_exists('curl_version')) {
-            try {
-                if ($plugins_stream = LengowFile::getRessource(self::$LENGOW_PLUGINS_VERSION, 'r')) {
-                    $plugins_file = new LengowFile(LengowMain::$LENGOW_CONFIG_FOLDER, LengowCheck::$XML_PLUGINS, 'w');
-                    stream_copy_to_stream($plugins_stream, $plugins_file->instance);
-                    $plugins_file->close();
-                    Configuration::updateValue('LENGOW_PLG_CONF', date('Y-m-d'));
-                }
-            } catch (LengowFileException $lfe) {
-                LengowMain::log($lfe->getMessage(), false);
-            }
-        }
-    }
-
     /**
+     * v3
      * Writes log
      *
      * @param string $txt log message
@@ -738,6 +740,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Suppress log files when too old.
      */
     public static function cleanLog()
@@ -993,6 +996,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Check logs table and send mail for order not imported correctly
      *
      * @return void
@@ -1051,6 +1055,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Mark log as sent by email
      *
      * @param string $lengow_order_id
