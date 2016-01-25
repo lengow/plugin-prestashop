@@ -22,16 +22,20 @@
 require 'conf.inc.php';
 
 $action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
-$accountId = isset($_REQUEST['account_id']) ?  $_REQUEST['account_id'] : null;
-$secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
-$blockedIP = isset($_REQUEST['blockedIP']) ?  $_REQUEST['blockedIP'] : false;
+$file = isset($_REQUEST['file']) ?  $_REQUEST['file'] : null;
 
 switch ($action) {
-    case 'login':
-        $lengowTool->processLogin($accountId, $secretToken);
+    case 'download':
+        LengowLog::download($file);
+        break;
+    case 'download_all':
+        LengowLog::download();
         break;
 }
 
+
+$listFile = LengowLog::getPaths();
+
 require 'views/header.php';
-require 'views/login.php';
+require 'views/log.php';
 require 'views/footer.php';

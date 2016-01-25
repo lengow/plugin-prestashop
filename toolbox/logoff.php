@@ -22,16 +22,7 @@
 require 'conf.inc.php';
 
 $action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
-$accountId = isset($_REQUEST['account_id']) ?  $_REQUEST['account_id'] : null;
+$accessToken = isset($_REQUEST['access_token']) ?  $_REQUEST['access_token'] : null;
 $secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
-$blockedIP = isset($_REQUEST['blockedIP']) ?  $_REQUEST['blockedIP'] : false;
 
-switch ($action) {
-    case 'login':
-        $lengowTool->processLogin($accountId, $secretToken);
-        break;
-}
-
-require 'views/header.php';
-require 'views/login.php';
-require 'views/footer.php';
+$lengowTool->logOff();

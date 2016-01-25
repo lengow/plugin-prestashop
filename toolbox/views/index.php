@@ -19,4 +19,16 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 ?>
-<h1>Lengow</h1>
+<h1><i class="fa fa-rocket"></i> Lengow Toolbox</h1>
+
+<ul class="list-group">
+    <li class="list-group-item">
+        <a href="/modules/lengow/toolbox/config.php">Configuration</a>
+    </li>
+    <li class="list-group-item">
+        <a href="/modules/lengow/toolbox/log.php">Logs</a>
+    </li>
+    <li class="list-group-item">
+        <a href="/modules/lengow/toolbox/logoff.php">Log Off</a>
+    </li>
+</ul>

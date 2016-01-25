@@ -92,6 +92,7 @@ class LengowFile
     }
 
     /**
+     * v3
      * Get file link
      *
      * @param Shop $shop shop
@@ -171,6 +172,7 @@ class LengowFile
 
 
     /**
+     * v3
      * Get a file list for a given folder
      *
      * @param string $folder folder name
