@@ -32,30 +32,28 @@
 </head>
 
 <body>
-
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/modules/lengow/toolbox/index.php">
-                <i class="fa fa-rocket"></i> Lengow Toolbox
-            </a>
+<?php
+if ($lengowTool->isLogged()) {
+?>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/modules/lengow/toolbox/index.php">
+                    <i class="fa fa-rocket"></i> Lengow Toolbox
+                </a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/modules/lengow/toolbox/config.php">Config</a></li>
+                    <li><a href="/modules/lengow/toolbox/log.php">Logs</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <?php
+                        echo '<li><a href="/modules/lengow/toolbox/logoff.php">Log Off</a></li>';
+                    ?>
+                </ul>
+            </div><!--/.nav-collapse -->
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="/modules/lengow/toolbox/config.php">Config</a></li>
-                <li><a href="/modules/lengow/toolbox/log.php">Logs</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <?php
-                if ($lengowTool->isLogged()) {
-                    echo '<li><a href="/modules/lengow/toolbox/logoff.php">Log Off</a></li>';
-                } else {
-                    echo '<li><a href="/modules/lengow/toolbox/login.php">Log In</a></li>';
-                }
-                ?>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</nav>
-
+    </nav>
+<?php } ?>
 <div class="container">

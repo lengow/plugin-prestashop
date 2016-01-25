@@ -31,7 +31,7 @@ foreach ($listFile as $file) {
     echo '</li>';
 }
 echo '<li class="list-group-item">';
-echo '<a href="/modules/lengow/toolbox/log.php?action=download_all">Tous les fichiers de logs</a>';
+echo '<a href="/modules/lengow/toolbox/log.php?action=download_all">All log files</a>';
 echo '</li>';
 ?>
 </ul>
