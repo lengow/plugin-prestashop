@@ -303,7 +303,7 @@ class LengowImport
             LengowImport::$current_order = $lengow_id;
             // if order contains no package
             if (count($order_data->packages) == 0) {
-                LengowMain::log('create order fail: no package in the order', true, $lengow_id);
+                LengowMain::log('create order fail: no package in the order', $this->log_output, $lengow_id);
                 continue;
             }
 
@@ -335,7 +335,7 @@ class LengowImport
                     continue;
                 }
                 // check order data
-                if (!$this->checkOrderData($order_data, $package, $lengow_id, $order_line_ids[0], $this->debug)) {
+                if (!$this->checkOrderData($order_data, $package, $lengow_id, $order_line_ids[0])) {
                     continue;
                 }
                 // update order state if already imported
@@ -588,7 +588,7 @@ class LengowImport
                             )) {
                                 LengowMain::log(
                                     'WARNING ! Order could NOT be saved in lengow orders table',
-                                    $debug,
+                                    $this->debug,
                                     $lengow_id
                                 );
                             } else {
@@ -708,7 +708,10 @@ class LengowImport
                 unset($payment);
                 unset($order);
                 // if limit is set
-                if ($this->limit > 0 && $count_orders_added == $this->limit || Configuration::get('LENGOW_IMPORT_IN_PROGRESS') <= 0) {
+
+                if ($this->limit > 0 && $count_orders_added == $this->limit
+                    || Configuration::get('LENGOW_IMPORT_IN_PROGRESS') <= 0
+                ) {
                     break;
                 }
             }
@@ -727,11 +730,10 @@ class LengowImport
      * @param mixed     $package
      * @param string    $lengow_id
      * @param string    $order_line_id
-     * @param boolean   $debug
      *
      * @return boolean
      */
-    protected function checkOrderData($order_data, $package, $lengow_id, $order_line_id, $debug)
+    protected function checkOrderData($order_data, $package, $lengow_id, $order_line_id)
     {
         $error_message = false;
         if (is_null($order_data->currency)) {
@@ -747,7 +749,7 @@ class LengowImport
         }
         if ($error_message) {
             LengowMain::log('order import failed: '.$error_message, true, $lengow_id);
-            if (!$debug) {
+            if (!$this->debug) {
                 LengowLog::addLog($order_data, $lengow_id, $order_line_id, $error_message);
             }
             return false;
@@ -766,7 +768,7 @@ class LengowImport
     {
         $customer = new LengowCustomer();
         // check if customer already exists in Prestashop
-        $customer->getByEmail($customer_data['email']);
+        $customer->getByEmailAndShop($customer_data['email'], $this->id_shop);
         if ($customer->id) {
             return $customer;
         }

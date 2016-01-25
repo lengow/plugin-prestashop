@@ -191,4 +191,35 @@ class LengowCustomer extends Customer implements LengowObject
                 return;
         }
     }
+
+    /**
+     * Retrieve customers by email address and id shop
+     *
+     * @param string  $email
+     * @param integer $id_shop
+     *
+     * @return array
+     */
+    public function getByEmailAndShop($email, $id_shop)
+    {
+
+        $sql = 'SELECT *
+            FROM `'._DB_PREFIX_.'customer`
+            WHERE `email` = \''.pSQL($email).'\'
+            '.(_PS_VERSION_ < 1.5 ? '' : ' AND `id_shop` = \''.$id_shop.'\'').'
+            AND `deleted` = \'0\'';
+
+        $result = Db::getInstance()->getRow($sql);
+
+        if (!$result) {
+            return false;
+        }
+        $this->id = $result['id_customer'];
+        foreach ($result as $key => $value) {
+            if (key_exists($key, $this)) {
+                $this->{$key} = $value;
+            }
+        }
+        return $this;
+    }
 }
