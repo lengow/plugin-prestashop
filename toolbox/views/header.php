@@ -26,8 +26,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lengow Toolbox</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/modules/lengow/views/css/bootstrap-3.3.6.css" rel="stylesheet">
     <link href="/modules/lengow/views/css/toolbox.css" rel="stylesheet">
+    <link rel="stylesheet" href="/modules/lengow/views/css/font-awesome.css">
 </head>
 
 <body>
@@ -35,18 +36,23 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/modules/lengow/toolbox/index.php">Lengow Toolbox</a>
+            <a class="navbar-brand" href="/modules/lengow/toolbox/index.php">
+                <i class="fa fa-rocket"></i> Lengow Toolbox
+            </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="/modules/lengow/toolbox/config.php">Config</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="/modules/lengow/toolbox/log.php">Logs</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <?php
+                if ($lengowTool->isLogged()) {
+                    echo '<li><a href="/modules/lengow/toolbox/logoff.php">Log Off</a></li>';
+                } else {
+                    echo '<li><a href="/modules/lengow/toolbox/login.php">Log In</a></li>';
+                }
+                ?>
             </ul>
         </div><!--/.nav-collapse -->
     </div>

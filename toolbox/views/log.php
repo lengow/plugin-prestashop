@@ -18,20 +18,20 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+?>
 
-require 'conf.inc.php';
+<h1>Logs</h1>
 
-$action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
-$accessToken = isset($_REQUEST['access_token']) ?  $_REQUEST['access_token'] : null;
-$secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
-$blockedIP = isset($_REQUEST['blockedIP']) ?  $_REQUEST['blockedIP'] : false;
-
-switch ($action) {
-    case 'login':
-        $lengowTool->processLogin($accessToken, $secretToken);
-        break;
+<ul class="list-group">
+<?php
+foreach ($listFile as $file) {
+    echo '<li class="list-group-item">';
+    echo '<a href="/modules/lengow/toolbox/log.php?action=download&file='.urlencode($file['path']).'">'
+        .$file['name'].'</a>';
+    echo '</li>';
 }
-
-require 'views/header.php';
-require 'views/login.php';
-require 'views/footer.php';
+echo '<li class="list-group-item">';
+echo '<a href="/modules/lengow/toolbox/log.php?action=download_all">Tous les fichiers de logs</a>';
+echo '</li>';
+?>
+</ul>

@@ -85,6 +85,27 @@ class LengowLog extends LengowFile
     }
 
     /**
+     * v3
+     * Get log files path
+     *
+     * @return mixed
+     *
+     */
+    public static function getPaths()
+    {
+        $files = LengowLog::getFiles();
+        if (empty($files)) {
+            return false;
+        }
+        $logs = array();
+        foreach ($files as $file) {
+            preg_match('/\/lengow\/logs\/logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt/', $file->getPath(), $match);
+            $logs[] = array('path' => $file->getPath(), 'name' => $match[1].'.txt');
+        }
+        return $logs;
+    }
+
+    /**
      * Get current file
      *
      * @return string
@@ -103,6 +124,28 @@ class LengowLog extends LengowFile
     public static function getFiles()
     {
         return LengowFile::getFilesFromFolder(LengowLog::$LENGOW_LOGS_FOLDER);
+    }
+
+    public static function download($file = null)
+    {
+        if ($file && preg_match('/\/lengow\/logs\/logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt/', $file, $match)) {
+            $handle = fopen($file, "r");
+            $contents = fread($handle, filesize($file));
+            header('Content-type: text/plain');
+            header('Content-Disposition: attachment; filename="'.$match[1].'.txt"');
+            echo $contents;
+            exit();
+        } else {
+            $files = self::getPaths();
+            header('Content-type: text/plain');
+            header('Content-Disposition: attachment; filename="logs.txt"');
+            foreach ($files as $file) {
+                $handle = fopen($file['path'], "r");
+                $contents = fread($handle, filesize($file['path']));
+                echo $contents;
+            }
+            exit();
+        }
     }
 
     /**

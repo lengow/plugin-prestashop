@@ -18,15 +18,20 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
+if ($blockedIP) {
+    echo '<div class="alert alert-danger" role="alert">Your IP Address has ben blocked</div>';
+}
 ?>
 <form action="/modules/lengow/toolbox/login.php" method="POST">
+    <input type="hidden" name="action" value="login" />
     <div class="form-group">
         <label for="exampleInputEmail1">Access Token</label>
-        <input type="text" class="form-control" id="access_token" placeholder="AccessToken">
+        <input type="text" class="form-control" name="access_token" id="access_token" placeholder="AccessToken">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Secret Token</label>
-        <input type="password" class="form-control" id="secret_token" placeholder="SecretToken">
+        <input type="password" class="form-control" name="secret_token"  id="secret_token" placeholder="SecretToken">
     </div>
     <button type="submit" class="btn btn-default">Se Connecter</button>
 </form>

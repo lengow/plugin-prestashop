@@ -33,3 +33,7 @@ if (!in_array($lengowTool->getCurrentUri(), array('/modules/lengow/toolbox/login
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/login.php', '');
     }
 }
+
+if ($lengowTool->getCurrentUri() == '/modules/lengow/toolbox/login.php' && $lengowTool->isLogged()) {
+    Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/', '');
+}
