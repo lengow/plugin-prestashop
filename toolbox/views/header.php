@@ -44,12 +44,13 @@ if ($lengowTool->isLogged()) {
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/modules/lengow/toolbox/config.php">Config</a></li>
-                    <li><a href="/modules/lengow/toolbox/log.php">Logs</a></li>
+                    <li><a href="/modules/lengow/toolbox/config.php"><i class="fa fa-cog"></i> Configuration</a></li>
+                    <li><a href="/modules/lengow/toolbox/log.php"><i class="fa fa-file-text-o"></i> Logs</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <?php
-                        echo '<li><a href="/modules/lengow/toolbox/logoff.php">Log Off</a></li>';
+                        echo '<li><a href="/modules/lengow/toolbox/logoff.php">
+                        <i class="fa fa-sign-out"></i> Log Off</a></li>';
                     ?>
                 </ul>
             </div><!--/.nav-collapse -->
