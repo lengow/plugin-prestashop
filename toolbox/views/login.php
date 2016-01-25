@@ -26,8 +26,8 @@ if ($blockedIP) {
 <form action="/modules/lengow/toolbox/login.php" method="POST">
     <input type="hidden" name="action" value="login" />
     <div class="form-group">
-        <label for="exampleInputEmail1">Access Token</label>
-        <input type="text" class="form-control" name="access_token" id="access_token" placeholder="AccessToken">
+        <label for="exampleInputEmail1">Account Id</label>
+        <input type="text" class="form-control" name="account_id" id="account_id" placeholder="AccountId">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Secret Token</label>
