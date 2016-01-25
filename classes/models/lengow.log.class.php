@@ -100,7 +100,11 @@ class LengowLog extends LengowFile
         $logs = array();
         foreach ($files as $file) {
             preg_match('/\/lengow\/logs\/logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt/', $file->getPath(), $match);
-            $logs[] = array('path' => $file->getPath(), 'name' => $match[1].'.txt');
+            $logs[] = array(
+                'full_path' => $file->getPath(),
+                'short_path' => 'logs-'.$match[1].'.txt',
+                'name' => $match[1].'.txt'
+            );
         }
         return $logs;
     }
@@ -128,9 +132,10 @@ class LengowLog extends LengowFile
 
     public static function download($file = null)
     {
-        if ($file && preg_match('/\/lengow\/logs\/logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt/', $file, $match)) {
-            $handle = fopen($file, "r");
-            $contents = fread($handle, filesize($file));
+        if ($file && preg_match('/^logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt$/', $file, $match)) {
+            $filename = _PS_MODULE_LENGOW_DIR_.LengowLog::$LENGOW_LOGS_FOLDER.'/'.$file;
+            $handle = fopen($filename, "r");
+            $contents = fread($handle, filesize($filename));
             header('Content-type: text/plain');
             header('Content-Disposition: attachment; filename="'.$match[1].'.txt"');
             echo $contents;
@@ -140,8 +145,8 @@ class LengowLog extends LengowFile
             header('Content-type: text/plain');
             header('Content-Disposition: attachment; filename="logs.txt"');
             foreach ($files as $file) {
-                $handle = fopen($file['path'], "r");
-                $contents = fread($handle, filesize($file['path']));
+                $handle = fopen($file['full_path'], "r");
+                $contents = fread($handle, filesize($file['full_path']));
                 echo $contents;
             }
             exit();

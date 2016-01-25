@@ -26,7 +26,7 @@
 <?php
 foreach ($listFile as $file) {
     echo '<li class="list-group-item">';
-    echo '<a href="/modules/lengow/toolbox/log.php?action=download&file='.urlencode($file['path']).'">'
+    echo '<a href="/modules/lengow/toolbox/log.php?action=download&file='.urlencode($file['short_path']).'">'
         .$file['name'].'</a>';
     echo '</li>';
 }
