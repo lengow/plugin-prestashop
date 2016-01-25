@@ -109,6 +109,7 @@ class LengowMain
     public static $processing;
 
     /**
+     * v3
      * The Prestashop compare version with current version.
      *
      * @param string $version The version to compare
@@ -122,6 +123,7 @@ class LengowMain
     }
 
     /**
+     * v3
      * Get lengow folder path
      *
      * @return string
@@ -132,30 +134,6 @@ class LengowMain
     }
 
     /**
-     * Get available export formats
-     *
-     * @return array Formats
-     */
-    public static function getExportFormats()
-    {
-        $array_formats = array();
-        foreach (LengowFeed::$AVAILABLE_FORMATS as $value) {
-            $array_formats[] = new LengowOption($value, $value);
-        }
-        return $array_formats;
-    }
-
-    public static function getFeaturesOptions()
-    {
-        $features_options = array();
-        $features = Feature::getFeatures(Context::getContext()->language->id);
-        foreach ($features as $feature) {
-            $features_options[] = new LengowOption($feature['id_feature'], $feature['name']);
-        }
-        return $features_options;
-    }
-
-    /**
      * v3
      * Get Lengow ID Account.
      *
@@ -163,7 +141,7 @@ class LengowMain
      *
      * @return integer
      */
-    public static function getIdAccount($id_shop)
+    public static function getIdAccount($id_shop = null)
     {
         return LengowConfiguration::get('LENGOW_ACCOUNT_ID', null, null, $id_shop);
     }
@@ -176,7 +154,7 @@ class LengowMain
      *
      * @return string
      */
-    public static function getAccessToken($id_shop)
+    public static function getAccessToken($id_shop = null)
     {
         return LengowConfiguration::get('LENGOW_ACCESS_TOKEN', null, null, $id_shop);
     }
@@ -189,9 +167,9 @@ class LengowMain
      *
      * @return string
      */
-    public static function getSecretCustomer($id_shop)
+    public static function getSecretCustomer($id_shop = null)
     {
-        return LengowConfiguration::get('LENGOW_ACCESS_SECRET', null, null, $id_shop);
+        return LengowConfiguration::get('LENGOW_SECRET_TOKEN', null, null, $id_shop);
     }
 
     /**
@@ -202,7 +180,7 @@ class LengowMain
      *
      * @return string
      */
-    public static function getShopActive($id_shop)
+    public static function getShopActive($id_shop = null)
     {
         return LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, null, $id_shop);
     }
@@ -499,35 +477,6 @@ class LengowMain
     }
 
     /**
-     * The images number to export.
-     *
-     * @return array Images count option
-     */
-    public static function getImagesCount()
-    {
-        $lengow = new Lengow();
-        $array_images = array(new LengowOption('all', $lengow->l('All images')));
-        for ($i = 3; $i < 11; $i++) {
-            $array_images[] = new LengowOption($i, $lengow->l($i . ' image' . ($i > 1 ? 's' : '')));
-        }
-        return $array_images;
-    }
-
-    /**
-     * The shipping names options.
-     *
-     * @return array Lengow shipping names option
-     */
-    public static function getShippingName()
-    {
-        $array_shipping = array();
-        foreach (self::$SHIPPING_LENGOW as $name => $value) {
-            $array_shipping[] = new LengowOption($name, $value);
-        }
-        return $array_shipping;
-    }
-
-    /**
      * Get export shipping carrier chose in config
      *
      * @return LengowCarrier
@@ -547,7 +496,7 @@ class LengowMain
      *
      * @return array Lengow shipping names option
      */
-    public static function getMarketplaceSingleton($name, $id_shop)
+    public static function getMarketplaceSingleton($name, $id_shop = null)
     {
         if (!isset(LengowMain::$registers[$name])) {
             LengowMain::$registers[$name] = new LengowMarketplace($name, $id_shop);

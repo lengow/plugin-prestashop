@@ -61,11 +61,7 @@ class Lengow extends Module
     public function getContent()
     {
         $link = new LengowLink();
-        if (_PS_VERSION_ < '1.5') {
-            $configLink = $link->getAbsoluteAdminLink('AdminLengowConfig14');
-        } else {
-            $configLink = $link->getAbsoluteAdminLink('AdminLengowConfig');
-        }
+        $configLink = $link->getAbsoluteAdminLink('AdminLengowHome');
         Tools::redirect($configLink, '');
     }
 
@@ -122,11 +118,6 @@ class Lengow extends Module
     public function hookPaymentTop($args)
     {
         return $this->hookClass->hookPaymentTop($args);
-    }
-
-    public function hookAddProduct($args)
-    {
-        return $this->hookClass->hookAddProduct($args);
     }
 
     public function hookActionAdminControllerSetMedia($args)

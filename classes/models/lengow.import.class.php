@@ -426,10 +426,8 @@ class LengowImport
                         $shipped_by_mp = true;
                         $message = 'order shipped by '.$marketplace->name;
                         LengowMain::log($message, $this->log_output, $lengow_id);
-                        if (!Configuration::get('LENGOW_IMPORT_SHIPPED_BY_MP_ENABLED')) {
-                            if (!$this->debug) {
-                                LengowLog::addLog($order_data, $lengow_id, $order_line_ids[0], $message, 1);
-                            }
+                        if (!Configuration::get('LENGOW_IMPORT_SHIP_MP_ENABLED')) {
+                            LengowLog::addLog($order_data, $lengow_id, $order_line_ids[0], $message, 1);
                             continue;
                         }
                     }
@@ -439,7 +437,10 @@ class LengowImport
                     // get billing datas
                     $billing_data = LengowAddress::extractAddressDataFromAPI($order_data->billing_address);
                     // create customer based on billing data
-                    if (Configuration::get('LENGOW_IMPORT_FAKE_EMAIL') || $this->debug || empty($billing_data['email'])) {
+                    if (Configuration::get('LENGOW_IMPORT_FAKE_EMAIL')
+                        || $this->debug
+                        || empty($billing_data['email'])
+                    ) {
                         $billing_data['email'] = 'generated-email+'.$lengow_id.'@'.LengowMain::getHost();
                         LengowMain::log('generate unique email : '.$billing_data['email'], $this->debug, $lengow_id);
                     }
@@ -640,8 +641,8 @@ class LengowImport
                                     );
                                 }
                             }
-                            LengowLog::addLog($order_data, $lengow_id, $order_line_ids[0], $success_message, 1);
                         }
+                        LengowLog::addLog($order_data, $lengow_id, $order_line_ids[0], $success_message, 1);
                         // ensure carrier compatibility with SoColissimo & Mondial Relay
                         try {
                             $carrier_name = '';
@@ -693,9 +694,7 @@ class LengowImport
                         $cart->delete();
                     }
                     LengowMain::log('order import failed: '.$error_message, $this->log_output, $lengow_id);
-                    if (!$this->debug) {
-                        LengowLog::addLog($order_data, $lengow_id, $order_line_ids[0], $error_message);
-                    }
+                    LengowLog::addLog($order_data, $lengow_id, $order_line_ids[0], $error_message);
                     unset($error_message);
                 }
                 // clean process
@@ -749,9 +748,7 @@ class LengowImport
         }
         if ($error_message) {
             LengowMain::log('order import failed: '.$error_message, true, $lengow_id);
-            if (!$this->debug) {
-                LengowLog::addLog($order_data, $lengow_id, $order_line_id, $error_message);
-            }
+            LengowLog::addLog($order_data, $lengow_id, $order_line_id, $error_message);
             return false;
         }
         return true;
@@ -856,13 +853,13 @@ class LengowImport
                     $ids = LengowProduct::advancedSearch($attribute_value, $this->id_shop, $product_ids);
                 }
                 // for testing => replace values
-                // if (_PS_VERSION_ < '1.6') {
-                //     $ids['id_product'] = '1';
-                //     $ids['id_product_attribute'] = '27';
-                // } else {
-                //     $ids['id_product'] = '1';
-                //     $ids['id_product_attribute'] = '1';
-                // }
+                if (_PS_VERSION_ < '1.6') {
+                    $ids['id_product'] = '1';
+                    $ids['id_product_attribute'] = '27';
+                } else {
+                    $ids['id_product'] = '1';
+                    $ids['id_product_attribute'] = '1';
+                }
                 if (!empty($ids)) {
                     $id_full = $ids['id_product'];
                     if (!isset($ids['id_product_attribute'])) {

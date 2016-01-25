@@ -37,7 +37,7 @@
         echo $form->buildShopInputs($shop->id, array(
             'LENGOW_SHOP_TOKEN',
             'LENGOW_EXPORT_SELECTION_ENABLED',
-            'LENGOW_EXPORT_ALL_VARIATIONS_ENABLED',
+            'LENGOW_EXPORT_VARIATION_ENABLED',
             'LENGOW_LAST_EXPORT',
         ));
         echo '</fieldset>';
@@ -53,7 +53,7 @@
         'LENGOW_IMPORT_DAYS',
         'LENGOW_IMPORT_PREPROD_ENABLED',
         'LENGOW_IMPORT_FAKE_EMAIL',
-        'LENGOW_IMPORT_SHIPPED_BY_MP_ENABLED',
+        'LENGOW_IMPORT_SHIP_MP_ENABLED',
         'LENGOW_IMPORT_CARRIER_MP_ENABLED',
         'LENGOW_REPORT_MAIL_ENABLED',
         'LENGOW_REPORT_MAIL_ADDRESS',
