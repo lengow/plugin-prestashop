@@ -18,7 +18,9 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         require_once(_PS_CONFIG_DIR_ . '/config.inc.php');
-        define('PS_UNIT_TEST', true);
+        if (!defined('PS_UNIT_TEST')) {
+            define('PS_UNIT_TEST', true);
+        }
     }
 
     public static function tearDownAfterClass()
