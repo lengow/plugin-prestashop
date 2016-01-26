@@ -46,7 +46,7 @@ FOLDER_TMP="/tmp/lengow"
 FOLDER_LOGS="/tmp/lengow/logs"
 FOLDER_EXPORT="/tmp/lengow/export"
 FOLDER_TEST="/tmp/lengow/tests"
-
+FOLDER_TOOLS="/tmp/lengow/tools"
 
 FOLDER_MODULE="lengow"
 
@@ -95,6 +95,9 @@ echo "- Clean logs folder : ""$VERT""DONE""$NORMAL"""
 # Clean export folder
 remove_directories $FOLDER_EXPORT
 echo "- Clean export folder : ""$VERT""DONE""$NORMAL"""
+# Clean export folder
+remove_directory $FOLDER_TOOLS
+echo "- Remove Tools folder : ""$VERT""DONE""$NORMAL"""
 # Remove Test folder
 remove_directory $FOLDER_TEST
 echo "- Remove Test folder : ""$VERT""DONE""$NORMAL"""
