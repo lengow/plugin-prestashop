@@ -31,6 +31,11 @@ class LengowOrder extends Order
     const VERSION = '1.0.0';
 
     /**
+     * @var string Lengow order id
+     */
+    public $id_lengow;
+
+    /**
      * @var string Marketplace's name
      */
     public $lengow_marketplace;
@@ -39,6 +44,16 @@ class LengowOrder extends Order
      * @var string Message
      */
     public $lengow_message;
+
+    /**
+     * @var integer Shop ID
+     */
+    public $lengow_id_shop;
+
+    /**
+     * @var integer Lengow flux id
+     */
+    public $id_flux;
 
     /**
      * @var decimal Total paid on marketplace
@@ -71,24 +86,49 @@ class LengowOrder extends Order
     public $lengow_extra;
 
     /**
-    * @var boolean Is importing, prevent multiple import
-    */
-    public $is_import;
+     * @var boolean order is disabled (ready to be reimported)
+     */
+    public $is_disabled;
 
     /**
-     * @var string Lengow order id
+     * @var integer lengow process state (0 => error, 1 => imported, 2 => finished)
      */
-    public $id_lengow;
+    public $lengow_process_state;
 
     /**
-     * @var integer Lengow flux id
+     * @var date marketplace order date
      */
-    public $id_flux;
+    public $lengow_order_date;
+
+    /**
+     * @var integer id of the delivery address
+     */
+    public $lengow_delivery_id_address;
+
+    /**
+     * @var string ISO code for country
+     */
+    public $lengow_delivery_country_iso;
+
+    /**
+     * @var string the name of the customer
+     */
+    public $lengow_customer_name;
+
+    /**
+     * @var string current lengow state
+     */
+    public $lengow_state;
 
     /**
      * @var string Lengow order line id
      */
     public $id_order_line;
+
+    /**
+    * @var boolean Is importing, prevent multiple import
+    */
+    public $is_import;
 
     /**
      * @var SimpleXmlElement Data of lengow order
@@ -115,10 +155,6 @@ class LengowOrder extends Order
      */
     protected $marketplace;
 
-    /**
-     * @var boolean order is disabled (ready to be reimported)
-     */
-    public $is_disabled;
 
     /**
     * Construct a Lengow order based on Prestashop order.
@@ -218,10 +254,10 @@ class LengowOrder extends Order
      */
     protected function loadLengowFields()
     {
-        $query = 'SELECT 
+        $query = 'SELECT
             lo.`id_order_lengow`,
+            lo.`id_shop`,
             lo.`id_flux`,
-            lo.`id_order_line`,
             lo.`marketplace`,
             lo.`message`,
             lo.`total_paid`,
@@ -230,23 +266,35 @@ class LengowOrder extends Order
             lo.`tracking`,
             lo.`sent_marketplace`,
             lo.`extra`,
-            lo.`is_disabled`
+            lo.`is_disabled`,
+            lo.`order_process_state`,
+            lo.`order_date`,
+            lo.`delivery_id_address`,
+            lo.`delivery_country_iso`,
+            lo.`customer_name`,
+            lo.`order_lengow_state`
             FROM `'._DB_PREFIX_.'lengow_orders` lo
             WHERE lo.id_order = \''.(int)$this->id.'\'
         ';
         if ($result = Db::getInstance()->getRow($query)) {
-            $this->id_lengow = $result['id_order_lengow'];
-            $this->id_flux = $result['id_flux'];
-            $this->id_order_line = $result['id_order_line'];
-            $this->lengow_marketplace = $result['marketplace'];
-            $this->lengow_message = $result['message'];
-            $this->lengow_total_paid = $result['total_paid'];
-            $this->lengow_carrier = $result['carrier'];
-            $this->lengow_method = $result['method'];
-            $this->lengow_tracking = $result['tracking'];
-            $this->lengow_sent_marketplace = (bool)$result['sent_marketplace'];
-            $this->lengow_extra = $result['extra'];
-            $this->is_disabled = (bool)$result['is_disabled'];
+            $this->id_lengow                    = $result['id_order_lengow'];
+            $this->lengow_id_shop               = (int)$result['id_shop'];
+            $this->id_flux                      = $result['id_flux'];
+            $this->lengow_marketplace           = $result['marketplace'];
+            $this->lengow_message               = $result['message'];
+            $this->lengow_total_paid            = $result['total_paid'];
+            $this->lengow_carrier               = $result['carrier'];
+            $this->lengow_method                = $result['method'];
+            $this->lengow_tracking              = $result['tracking'];
+            $this->lengow_sent_marketplace      = (bool)$result['sent_marketplace'];
+            $this->lengow_extra                 = $result['extra'];
+            $this->is_disabled                  = (bool)$result['is_disabled'];
+            $this->lengow_process_state         = (int)$result['order_process_state'];
+            $this->lengow_order_date            = $result['order_date'];
+            $this->lengow_delivery_id_address   = (int)$result['delivery_id_address'];
+            $this->lengow_delivery_country_iso  = $result['delivery_country_iso'];
+            $this->lengow_customer_name         = $result['customer_name'];
+            $this->lengow_state                 = $result['order_lengow_state'];
             return true;
         } else {
             return false;

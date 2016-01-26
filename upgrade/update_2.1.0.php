@@ -24,7 +24,7 @@ if (!$installation) {
 }
 
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders\'')) {
-    if (!$this->_checkFieldExists('lengow_orders', 'is_disabled')) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'is_disabled')) {
         $sql = 'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `is_disabled` tinyint(1) UNSIGNED DEFAULT \'0\'';
         Db::getInstance()->execute($sql);
     }

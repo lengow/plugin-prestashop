@@ -33,8 +33,7 @@ class LengowInstall
     static private $tabs = array(
         'Home' => 'AdminLengowHome',
         'Product' => 'AdminLengowFeed',
-        'Orders' => 'AdminLengowOrder',
-        'Logs' => 'AdminLengowLog'
+        'Orders' => 'AdminLengowOrder'
     );
 
     public function __construct($module)
@@ -291,7 +290,7 @@ class LengowInstall
     *
     * @return boolean
     */
-    private function _checkFieldExists($table, $field)
+    public static function checkFieldExists($table, $field)
     {
         $sql = 'SHOW COLUMNS FROM '._DB_PREFIX_.$table.' LIKE \''.$field.'\'';
         $result = Db::getInstance()->executeS($sql);
