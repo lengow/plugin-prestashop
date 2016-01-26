@@ -93,7 +93,7 @@ class LengowTool
     public function checkBlockedIp()
     {
         $remoteIp = $_SERVER['REMOTE_ADDR'];
-        $blockedIp = Tools::json_decode(LengowConfiguration::get('LENGOW_ACCESS_BLOCK_IP_3'));
+        $blockedIp = Tools::jsonDecode(LengowConfiguration::get('LENGOW_ACCESS_BLOCK_IP_3'));
         if (is_array($blockedIp) && in_array($remoteIp, $blockedIp)) {
             return true;
         }
@@ -112,13 +112,13 @@ class LengowTool
         if ($counter>3) {
             return;
         }
-        $blockedIp = Tools::json_decode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_'.$counter));
+        $blockedIp = Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_'.$counter));
         if (!is_array($blockedIp) || !in_array($remoteIp, $blockedIp)) {
             LengowConfiguration::updateGlobalValue(
                 'LENGOW_ACCESS_BLOCK_IP_'.$counter,
                 is_array($blockedIp) ?
-                    Tools::json_encode(array_merge($blockedIp, array($remoteIp))) :
-                    Tools::json_encode(array($remoteIp))
+                    Tools::jsonEncode(array_merge($blockedIp, array($remoteIp))) :
+                    Tools::jsonEncode(array($remoteIp))
             );
         } else {
             $this->checkIp($counter+1);
@@ -132,13 +132,13 @@ class LengowTool
     {
         $remoteIp = $_SERVER['REMOTE_ADDR'];
         for ($i = 1; $i <= 3; $i++) {
-            $blockedIp = Tools::json_decode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_'.$i));
+            $blockedIp = Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_'.$i));
             if (is_array($blockedIp)) {
                 $blockedIp = array_diff($blockedIp, array($remoteIp));
                 $blockedIp = reset($blockedIp);
                 LengowConfiguration::updateGlobalValue(
                     'LENGOW_ACCESS_BLOCK_IP_' . $i,
-                    empty($blockedIp) ? '' : Tools::json_encode($blockedIp)
+                    empty($blockedIp) ? '' : Tools::jsonEncode($blockedIp)
                 );
             }
         }

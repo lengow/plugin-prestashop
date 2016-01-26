@@ -11,6 +11,7 @@ use Assert;
 use Feature;
 use Cache;
 use LengowTool;
+use Tools;
 
 class ToolTest extends ModuleTestCase
 {
