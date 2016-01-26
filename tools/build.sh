@@ -26,6 +26,11 @@ remove_files(){
     echo "- Delete $FILE : ""$VERT""DONE""$NORMAL"""
 }
 
+remove_directories(){
+    DIRECTORY=$1
+    find $DIRECTORY -maxdepth 1 -mindepth 1 -type d -exec rm -rf {} \;
+    echo "- Delete $FILE : ""$VERT""DONE""$NORMAL"""
+}
 # Check parameters
 if [ -z "$1" ]; then
 	echo 'Version parameter is not set'
@@ -37,9 +42,10 @@ else
 fi
 
 # Variables
-FOLDER_TMP="/tmp/presta"
-FOLDER_LOGS="/tmp/presta/logs"
-FOLDER_EXPORT="/tmp/presta/export"
+FOLDER_TMP="/tmp/lengow"
+FOLDER_LOGS="/tmp/lengow/logs"
+FOLDER_EXPORT="/tmp/lengow/export"
+FOLDER_TEST="/tmp/lengow/test"
 
 
 FOLDER_MODULE="lengow"
@@ -48,7 +54,7 @@ FOLDER_OVERRIDE="/lengow/override"
 FOLDER_INSTALL="/lengow/install"
 FOLDER_GIT="/lengow/.git"
 FOLDER_IDEA="/lengow/.idea"
-FILE_MARKETPLACES="/marketplaces.xml"
+
 VERT="\\033[1;32m"
 ROUGE="\\033[1;31m"
 NORMAL="\\033[0;39m"
@@ -74,6 +80,8 @@ fi
 remove_directory $FOLDER_TMP
 #copy files
 cp -rRp $FOLDER $FOLDER_TMP
+# Remove Readme
+remove_files $FOLDER_TMP "README.md"
 # Remove .gitignore
 remove_files $FOLDER_TMP ".gitignore"
 # Remove .git
@@ -82,33 +90,24 @@ remove_files $FOLDER_TMP ".git"
 remove_files $FOLDER_TMP ".DS_Store"
 # Clean Log Folder
 remove_files $FOLDER_LOGS "*.txt"
-
-exit
-# Clean export folder
-remove_files $FOLDER_EXPORT "*"
-
-
-
-echo "- Clean export folder : ""$VERT""DONE""$NORMAL"""
-# Remove config_fr.xml
-find $FOLDER -name "config_fr.xml" -delete
-echo "- Delete config_fr.xml : ""$VERT""DONE""$NORMAL"""
-# Clean logs folder
-find $FOLDER$FOLDER_LOGS -name '*.txt' -delete
 echo "- Clean logs folder : ""$VERT""DONE""$NORMAL"""
-#move override files to install folder
-if ! find $FOLDER$FOLDER_INSTALL
-	then mkdir $FOLDER$FOLDER_INSTALL
-	echo "- Creating Install folder : ""$VERT""DONE""$NORMAL"""
-fi
-if find $FOLDER$FOLDER_OVERRIDE
-	then mv $FOLDER$FOLDER_OVERRIDE"/"* $FOLDER$FOLDER_INSTALL
-		rmdir $FOLDER$FOLDER_OVERRIDE
-		echo "- Removing override folder : ""$VERT""DONE""$NORMAL"""
-fi
-echo "- Moved override files to Install folder : ""$VERT""DONE""$NORMAL"""
+#remove Idea Folder
+remove_directory $FOLDER_IDEA
+echo "- Remove Idea folder : ""$VERT""DONE""$NORMAL"""
+# Clean export folder
+remove_directories $FOLDER_EXPORT
+echo "- Clean export folder : ""$VERT""DONE""$NORMAL"""
+# Remove Test folder
+remove_directory $FOLDER_TEST
+echo "- Remove Test folder : ""$VERT""DONE""$NORMAL"""
+# Remove config_fr.xml
+find $FOLDER_TMP -name "config_fr.xml" -delete
+echo "- Delete config_fr.xml : ""$VERT""DONE""$NORMAL"""
+# Remove todo.txt
+find $FOLDER_TMP -name "todo.txt" -delete
+echo "- todo.txt : ""$VERT""DONE""$NORMAL"""
 # Make zip
-cd $FOLDER
-zip '-r' $ARCHIVE_NAME $FOLDER_MODULE
+cd /tmp
+zip "-r" $ARCHIVE_NAME "lengow"
 echo "- Build archive : ""$VERT""DONE""$NORMAL"""
-echo
+mv $ARCHIVE_NAME ~/Bureau
