@@ -45,9 +45,9 @@ class LengowFeedController extends LengowController
                         $this->reloadTotal($shopId);
                         $state = Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shopId);
                         if ($state) {
-                            echo "$('#block_".$shopId." .lengow_feed_block_footer_content').show();";
+                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').show();";
                         } else {
-                            echo "$('#block_".$shopId." .lengow_feed_block_footer_content').hide();";
+                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').hide();";
                         }
                     }
                     break;
@@ -70,7 +70,7 @@ class LengowFeedController extends LengowController
                     break;
                 case 'load_table':
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
-                    echo '$("#block_'.$shopId.' .lengow_feed_block_footer_content").html("'.
+                    echo 'lengow_jquery("#block_'.$shopId.' .lengow_feed_block_footer_content").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable($shopId))).'");';
                     break;
                 case 'add_to_export':
@@ -79,7 +79,7 @@ class LengowFeedController extends LengowController
                     if ($selection) {
                         foreach ($selection as $id => $v) {
                             LengowProduct::publish($id, 1, $shopId);
-                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
+                            echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
                             echo '.bootstrapSwitch("state",true, true);';
                         }
                         $this->reloadTotal($shopId);
@@ -93,7 +93,7 @@ class LengowFeedController extends LengowController
                     if ($selection) {
                         foreach ($selection as $id => $v) {
                             LengowProduct::publish($id, 0, $shopId);
-                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
+                            echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
                             echo '.bootstrapSwitch("state",false, true);';
                         }
                         $this->reloadTotal($shopId);
@@ -152,8 +152,8 @@ class LengowFeedController extends LengowController
         $lengowExport = new LengowExport(array(
             "shop_id" => $shopId
         ));
-        echo '$("#block_'.$shopId.' .lengow_exported").html("'.$lengowExport->getTotalExportProduct().'");';
-        echo '$("#block_'.$shopId.' .lengow_total").html("'.$lengowExport->getTotalProduct().'");';
+        echo 'lengow_jquery("#block_'.$shopId.' .lengow_exported").html("'.$lengowExport->getTotalExportProduct().'");';
+        echo 'lengow_jquery("#block_'.$shopId.' .lengow_total").html("'.$lengowExport->getTotalProduct().'");';
     }
 
     /**
