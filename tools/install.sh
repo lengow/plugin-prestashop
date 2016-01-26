@@ -2,7 +2,7 @@
 MAGE=$1
 
 copy_directory(){
-    ORIGINAL_DIRECTORY="$PWD$1"
+    ORIGINAL_DIRECTORY="$(dirname "$(pwd)")"
     DESTINATION_DIRECTORY="$MAGE$1/modules/lengow"
     if [ -d "$ORIGINAL_DIRECTORY" ]; then
         if [ -e "$DESTINATION_DIRECTORY" ]; then
