@@ -31,5 +31,4 @@ class LengowSpecificPrice extends SpecificPrice
         self::$_specificPriceCache = array();
         self::$_cache_priorities = array();
     }
-
 }

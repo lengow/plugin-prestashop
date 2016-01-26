@@ -19,7 +19,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-
 if (_PS_CACHE_ENABLED_ == false) {
     class LengowCache
     {

@@ -19,15 +19,11 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-?>
-<ul class="list-group">
-    <li class="list-group-item">
-        <a href="/modules/lengow/toolbox/config.php"><i class="fa fa-cog"></i> Configuration</a>
-    </li>
-    <li class="list-group-item">
-        <a href="/modules/lengow/toolbox/log.php"><i class="fa fa-file-text-o"></i> Log Files</a>
-    </li>
-    <li class="list-group-item">
-        <a href="/modules/lengow/toolbox/logoff.php"><i class="fa fa-sign-out"></i> Log Off</a>
-    </li>
-</ul>
+/**
+ * The Lengow File Exception class
+ *
+ */
+class LengowFileException extends Exception
+{
+
+}

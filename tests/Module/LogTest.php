@@ -2,11 +2,28 @@
 
 namespace PrestaShop\PrestaShop\Tests\TestCase;
 
+use GuzzleHttp\Client;
 use Module;
 use LengowLog;
 
 class LogTest extends ModuleTestCase
 {
+    static protected $client;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+        self::$client = new Client(
+            array(
+                'base_uri' => 'http://'.CURRENT_DOMAIN,
+                'allow_redirects' => false,
+                'headers' => array('PHPUNIT_LENGOW_TEST' => 'toto'),
+                'exceptions' => false,
+            )
+        );
+    }
+
     /**
      * Test Module Load
      *
@@ -34,5 +51,21 @@ class LogTest extends ModuleTestCase
         $message = substr($lastLine, 30, strlen($lastLine)-30);
         $this->assertValidDatetime($date, 'Y-m-d:H:i:s.u');
         $this->assertEquals($message, 'this is a test');
+    }
+
+    /**
+     * Test log file is unauthorized
+     *
+     * @test
+     */
+    public function isLogUnauthorized()
+    {
+        $log = new LengowLog();
+        $log->write('this is a test');
+
+        $this->assertTrue(file_exists($log->getFileName()));
+
+        $response =self::$client->get('modules/lengow/logs/logs-'.date('Y-m-d').'.txt');
+        $this->assertEquals('403', $response->getStatusCode());
     }
 }

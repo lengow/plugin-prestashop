@@ -316,7 +316,12 @@ class LengowExport
         $product_count = 0;
         $file_feed = null;
 
-        $this->feed = new LengowFeed($this->stream, $this->format, isset($shop->name) ? $shop->name : 'default', $file_feed);
+        $this->feed = new LengowFeed(
+            $this->stream,
+            $this->format,
+            isset($shop->name) ? $shop->name : 'default',
+            $file_feed
+        );
         $this->feed->write('header', $fields);
         $is_first = true;
         foreach ($products as $p) {

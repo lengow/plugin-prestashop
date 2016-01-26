@@ -33,7 +33,7 @@
         <li class="active">{$breadcrumb_title}</li>
     {/if}
 </ol>
-<script type="text/javascript" src="/modules/lengow/views/js/jquery.1.11.3.min.js"></script>
+<script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
 <script type="text/javascript">
     var lengow_jquery = $.noConflict(true);
 </script>
