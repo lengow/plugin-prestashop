@@ -83,13 +83,21 @@ class ToolTest extends ModuleTestCase
         $this->assertEquals('["127.0.0.1"]', LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_1'));
         $this->assertEquals('', LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_2'));
         $this->assertEquals('', LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_3'));
+    }
 
-        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_1', '["127.0.0.1"]');
-        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_2', '["127.0.0.1"]');
-        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_3', '["127.0.0.1"]');
-
+    /**
+     * Test checkBlockedIp
+     *
+     * @test
+     * @covers LengowTool::checkBlockedIp
+     */
+    public function checkBlockedIp()
+    {
+        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_1', json_encode(array("127.0.0.1")));
+        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_2', json_encode(array("127.0.0.1")));
+        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_3', json_encode(array("127.0.0.1")));
         $tool = new LengowTool();
-        $this->assertFalse($tool->processLogin($this->account_id, $this->secret_token), 'IP Address is block');
+        $this->assertTrue($tool->checkBlockedIp());
     }
 
     /**
