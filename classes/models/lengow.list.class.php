@@ -125,6 +125,13 @@ class LengowList
                                data-id_product="'.$item[$this->identifier].'"
                                value="1" '.($item[$key] ? 'checked="checked"' : '').'/>';
                             break;
+                        case "flag_country":
+                            if ($item[$key]) {
+                                $value = '<img src="/modules/lengow/views/img/flag/'.$item[$key].'.png" />';
+                            } else {
+                                $value = '';
+                            }
+                            break;
                         default:
                             $value = $item[$key];
                     }
@@ -233,7 +240,7 @@ class LengowList
         } else {
             $sql = 'SELECT '.join(', ', $this->sql["select"]);
         }
-        $sql.= ' '.$this->sql["from"];
+        $sql.= ' '.$this->sql["from"].' ';
         if ($this->sql["join"]) {
             $sql.= join(' ', $this->sql["join"]);
         }

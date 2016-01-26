@@ -15,4 +15,12 @@
             <div class="lengow_clear"></div>
         </div>
     </div>
+    <div>
+        <div id="lengow_order_table_wrapper">
+            {$lengow_table}
+        </div>
+    </div>
 </div>
+
+
+<script type="text/javascript" src="/modules/lengow/views/js/order.js"></script>

@@ -1,0 +1,28 @@
+(function ($) {
+    $(document).ready(function () {
+        $('#lengow_order_wrapper').on('click', '.lengow_feed_pagination a', function () {
+            if ($(this).hasClass('disabled')) {
+                return false;
+            }
+            var href = $(this).attr('data-href');
+            $.ajax({
+                url: href,
+                method: 'POST',
+                data: {action: 'load_table'},
+                dataType: 'script',
+            });
+            return false;
+        });
+        $('#lengow_order_wrapper').on('submit', '.lengow_form_table', function () {
+            var href = $(this).attr('data-href');
+            var form = $(this).serialize();
+            $.ajax({
+                url: href + '&' + form,
+                method: 'POST',
+                data: {action: 'load_table'},
+                dataType: 'script'
+            });
+            return false;
+        });
+    });
+})(lengow_jquery);
