@@ -287,11 +287,11 @@ class LengowList
             $html.= '<li><a href="#" class="'.$class.'"
             data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p=1">1</a></li>';
 
-            $from = $this->currentPage-3;
-            $to = $this->currentPage+3;
-            if ($from<=2) {
+            $from = $this->currentPage - 2;
+            $to = $this->currentPage + 2;
+            if ($from <= 2) {
                 $from = 2;
-                $to = $from + 6;
+                $to = $from + 5;
             } else {
                 $html.= '<li><a href="#" class="disable">...</a></li>';
             }
