@@ -715,6 +715,9 @@ class LengowMain
      */
     public static function inTest()
     {
+        if (defined('PS_UNIT_TEST')) {
+            return true;
+        }
         if (isset($_SERVER['HTTP_USER_AGENT']) && Tools::substr($_SERVER['HTTP_USER_AGENT'], 0, 10) == 'GuzzleHttp') {
             return true;
         }

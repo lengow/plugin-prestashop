@@ -52,14 +52,15 @@ class LengowTool
 
     /**
      * Process Login Form to log User
-     * @param $accessToken
+     * @param $accountId
      * @param $secretToken
+     * @return boolean
      */
     public function processLogin($accountId, $secretToken)
     {
         if (Tools::strlen($accountId)>0 && Tools::strlen($secretToken)>0) {
             if ($this->checkBlockedIp()) {
-                Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/login.php?blockedIP=1', '');
+                return self::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/login.php?blockedIP=1', '');
             }
         }
         if (_PS_VERSION_ < '1.5') {
@@ -76,13 +77,14 @@ class LengowTool
                 if ($ai == $accountId && $st == $secretToken) {
                     Context::getContext()->cookie->lengow_toolbox = true;
                     $this->unblockIp();
-                    Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/', '');
+                    return self::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/', '');
                 }
             }
         }
         if (Tools::strlen($accountId)>0 && Tools::strlen($secretToken)>0) {
             $this->checkIp();
         }
+        return false;
     }
 
     /**
@@ -132,12 +134,22 @@ class LengowTool
         $remoteIp = $_SERVER['REMOTE_ADDR'];
         for ($i = 1; $i <= 3; $i++) {
             $blockedIp = json_decode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_'.$i));
-            $blockedIp = array_diff($blockedIp, $remoteIp);
-            LengowConfiguration::updateGlobalValue(
-                'LENGOW_ACCESS_BLOCK_IP_'.$i,
-                $blockedIp
-            );
+            if (is_array($blockedIp)) {
+                $blockedIp = array_diff($blockedIp, array($remoteIp));
+                $blockedIp = reset($blockedIp);
+                LengowConfiguration::updateGlobalValue(
+                    'LENGOW_ACCESS_BLOCK_IP_' . $i,
+                    empty($blockedIp) ? '' : json_encode($blockedIp)
+                );
+            }
         }
     }
 
+    public static function redirect($url, $baseUri = __PS_BASE_URI__)
+    {
+        if (LengowMain::inTest()) {
+            return true;
+        }
+        Tools::redirect($url, $baseUri);
+    }
 }
