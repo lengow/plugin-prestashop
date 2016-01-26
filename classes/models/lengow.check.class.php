@@ -168,7 +168,7 @@ class LengowCheck
     *
     * @return boolean
     */
-    public static function isValidAuth($id_shop)
+    public static function isValidAuth($id_shop = null)
     {
         if (!self::isCurlActivated()) {
             return false;

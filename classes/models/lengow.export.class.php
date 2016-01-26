@@ -211,7 +211,7 @@ class LengowExport
             Configuration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->shopId));
         $this->exportVariation = isset($params["export_variation"]) ?
             (bool)$params["export_variation"] :
-            (bool)Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS_ENABLED', null, null, $this->shopId);
+            (bool)Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId);
 
         $this->checkCurrency();
         $this->setCarrier();

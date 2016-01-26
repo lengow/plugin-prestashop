@@ -37,7 +37,7 @@ class LengowFeedController extends LengowController
                     $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     if ($state !== null) {
-                        Configuration::updatevalue('LENGOW_EXPORT_ALL_VARIATIONS_ENABLED', $state, null, null, $shopId);
+                        Configuration::updatevalue('LENGOW_EXPORT_VARIATION_ENABLED', $state, null, null, $shopId);
                         $this->reloadTotal($shopId);
                     }
                     break;
@@ -136,7 +136,7 @@ class LengowFeedController extends LengowController
                 'total_export_product' => $lengowExport->getTotalExportProduct(),
                 'last_export' => Configuration::get('LENGOW_LAST_EXPORT', null, null, $shop->id),
                 'option_selected' => Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shop->id),
-                'option_variation' => Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS_ENABLED', null, null, $shop->id),
+                'option_variation' => Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $shop->id),
                 'option_product_out_of_stock' => Configuration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $shop->id),
                 'list' => $this->buildTable($shop->id)
             );

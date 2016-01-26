@@ -84,7 +84,7 @@ class LengowMarketplace
     * @param string     $name       The name of the marketplace
     * @param integer    $id_shop    ID Shop for connector
     */
-    public function __construct($name, $id_shop)
+    public function __construct($name, $id_shop = null)
     {
         $this->id_shop = $id_shop;
         $this->loadApiMarketplace();

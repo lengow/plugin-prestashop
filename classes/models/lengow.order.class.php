@@ -359,14 +359,18 @@ class LengowOrder extends Order
      */
     public function checkAndChangeMarketplaceName()
     {
-        if (LengowCheck::isValidAuth()) {
-            $connector = new LengowConnector(LengowMain::getAccessToken(), LengowMain::getSecretCustomer());
+        $id_shop = (_PS_VERSION_ < 1.5 ? null : (int)$lengow_order->id_shop);
+        if (LengowCheck::isValidAuth($id_shop)) {
+            $connector = new LengowConnector(
+                LengowMain::getAccessToken($id_shop),
+                LengowMain::getSecretCustomer($id_shop)
+            );
             $results = $connector->get(
                 '/v3.0/orders',
                 array(
                     'marketplace_order_id'  => $this->id_lengow,
                     'marketplace'           => $this->lengow_marketplace,
-                    'account_id'            => LengowMain::getIdAccount()
+                    'account_id'            => LengowMain::getIdAccount($id_shop)
                 ),
                 'stream'
             );

@@ -112,7 +112,7 @@ $out_stock = isset($_REQUEST["out_stock"]) ? (bool)$_REQUEST["out_stock"] :
 
 // export product variation
 $exportVariation = isset($_REQUEST["variation"]) ? (bool)$_REQUEST["variation"] :
-    (bool)Configuration::get('LENGOW_EXPORT_ALL_VARIATIONS_ENABLED');
+    (bool)Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED');
 
 // export certain products
 $product_ids = array();

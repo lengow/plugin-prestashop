@@ -43,6 +43,14 @@ class LengowConfiguration extends Configuration
             foreach ($cs as $c) {
                 $carriers[] = array('id' => $c['id_carrier'], 'text' => $c['name']);
             }
+            $exportFormats = array();
+            foreach (LengowFeed::$AVAILABLE_FORMATS as $value) {
+                $exportFormats[] = array('id' => $value, 'text' => $value);
+            }
+            $trackerIds = array();
+            foreach (LengowMain::$TRACKER_CHOICE_ID as $key => $value) {
+                $trackerIds[] = array('id' => $key, 'text' => $value);
+            }
 
             $keys = array(
                 'LENGOW_ACCOUNT_ID' => array(
@@ -73,7 +81,7 @@ class LengowConfiguration extends Configuration
                     'shop' => true,
                     'label' => 'Product Selection'
                 ),
-                'LENGOW_EXPORT_ALL_VARIATIONS_ENABLED' => array(
+                'LENGOW_EXPORT_VARIATION_ENABLED' => array(
                     'type' => 'checkbox',
                     'readonly' => true,
                     'shop' => true,
@@ -81,8 +89,10 @@ class LengowConfiguration extends Configuration
                     'default_value' => true,
                 ),
                 'LENGOW_EXPORT_FORMAT' => array(
+                    'type' => 'select',
                     'label' => 'Export Format',
-                    'default_value' => 'csv'
+                    'default_value' => 'csv',
+                    'collection' => $exportFormats
                 ),
                 'LENGOW_EXPORT_FILE_ENABLED' => array(
                     'type' => 'checkbox',
@@ -145,7 +155,7 @@ class LengowConfiguration extends Configuration
                     'label' => 'Import Fake Email',
                     'default_value' => true
                 ),
-                'LENGOW_IMPORT_SHIPPED_BY_MP_ENABLED' => array(
+                'LENGOW_IMPORT_SHIP_MP_ENABLED' => array(
                     'type' => 'checkbox',
                     'label' => 'Import Shipped by Marketplace',
                     'default_value' => true,
@@ -194,8 +204,10 @@ class LengowConfiguration extends Configuration
                     'default_value' => true,
                 ),
                 'LENGOW_TRACKING_ID' => array(
+                    'type' => 'select',
                     'label' => 'Lengow Tracking Id',
                     'default_value' => 'id',
+                    'collection' => $trackerIds
                 )
             );
         }
