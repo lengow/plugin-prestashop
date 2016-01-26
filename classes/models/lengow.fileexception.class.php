@@ -20,32 +20,10 @@
  */
 
 /**
- * The Lengow Option Class.
- * User to generate option list on configuration.
+ * The Lengow File Exception class
  *
  */
-class LengowOption
+class LengowFileException extends Exception
 {
 
-    /**
-     * tracker ID.
-     */
-    public $id;
-
-    /**
-     * tracker name.
-     */
-    public $name;
-
-    /**
-     * Make a new tracker option.
-     *
-     * @param integer $id The tracker type unique ID.
-     * @param varchar $name The tracker type name.
-     */
-    public function __construct($id, $name)
-    {
-        $this->id = $id;
-        $this->name = $name;
-    }
 }

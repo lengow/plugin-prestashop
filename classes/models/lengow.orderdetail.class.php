@@ -54,5 +54,4 @@ class LengowOrderDetail extends OrderDetail
         $this->product_quantity_discount = 0.00;
         $this->save();
     }
-
 }

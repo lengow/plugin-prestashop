@@ -19,10 +19,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
-
 class LengowFeedController extends LengowController
 {
     /**
@@ -83,7 +79,8 @@ class LengowFeedController extends LengowController
                     if ($selection) {
                         foreach ($selection as $id => $v) {
                             LengowProduct::publish($id, 1, $shopId);
-                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'").bootstrapSwitch("state",true, true);';
+                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
+                            echo '.bootstrapSwitch("state",true, true);';
                         }
                         $this->reloadTotal($shopId);
                     } else {
@@ -96,7 +93,8 @@ class LengowFeedController extends LengowController
                     if ($selection) {
                         foreach ($selection as $id => $v) {
                             LengowProduct::publish($id, 0, $shopId);
-                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'").bootstrapSwitch("state",false, true);';
+                            echo '$("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
+                            echo '.bootstrapSwitch("state",false, true);';
                         }
                         $this->reloadTotal($shopId);
                     } else {

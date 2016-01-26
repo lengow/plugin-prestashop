@@ -26,7 +26,7 @@
 class LengowFlat
 {
 
-    var $context;
+    protected $context;
 
     public static $AADEFAULT_FIELDS = array(
         'category' => 'breadcrumb',
@@ -105,14 +105,17 @@ class LengowFlat
             $sql[]= ' `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ';
             $sql[]= ' `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ';
             $sql[]= ' PRIMARY KEY (id) ';
-            $sql = 'CREATE TABLE `'._DB_PREFIX_.self::TABLE_NAME.'` ('.join(',', $sql).') ENGINE=InnoDB DEFAULT CHARSET=latin1;';
+            $sql = 'CREATE TABLE `'._DB_PREFIX_.self::TABLE_NAME.'` ('.join(',', $sql).')
+             ENGINE=InnoDB DEFAULT CHARSET=latin1;';
             Db::getInstance()->Execute($sql);
 
             $sql = 'CREATE INDEX id_product_idx ON `'._DB_PREFIX_.self::TABLE_NAME.'` (id_product)';
             Db::getInstance()->Execute($sql);
         } else {
             foreach (self::$DEFAULT_FIELDS as $field => $values) {
-                $result = Db::getInstance()->ExecuteS('SHOW COLUMNS FROM `'._DB_PREFIX_.self::TABLE_NAME.'` LIKE "'.$field.'"');
+                $result = Db::getInstance()->ExecuteS(
+                    'SHOW COLUMNS FROM `'._DB_PREFIX_.self::TABLE_NAME.'` LIKE "'.$field.'"'
+                );
                 if (count($result)==0) {
                     Db::getInstance()->Execute('DROP TABLE '._DB_PREFIX_.self::TABLE_NAME);
                     $this->buildTable();
@@ -204,14 +207,19 @@ class LengowFlat
 
         $query = ' SELECT '.join(', ', $selectSql);
         $query.= ' FROM '._DB_PREFIX_.'product p';
-        $query.= ' INNER JOIN '._DB_PREFIX_.'product_lang pl ON (pl.id_product = p.id_product AND pl.id_shop =1 AND pl.id_lang=1) ';
+        $query.= ' INNER JOIN '._DB_PREFIX_.'product_lang pl ON (pl.id_product = p.id_product AND
+        pl.id_shop =1 AND pl.id_lang=1) ';
         $query.= ' INNER JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
-        $query.= ' LEFT JOIN '._DB_PREFIX_.'product_supplier ps ON (ps.id_product = p.id_product AND ps.id_supplier = p.id_supplier) ';
+        $query.= ' LEFT JOIN '._DB_PREFIX_.'product_supplier ps ON (ps.id_product = p.id_product AND
+        ps.id_supplier = p.id_supplier) ';
         $query.= ' LEFT JOIN '._DB_PREFIX_.'supplier s ON (s.id_supplier = p.id_supplier) ';
-        $query.= ' LEFT JOIN '._DB_PREFIX_.'stock_available sa ON (sa.id_product = p.id_product AND sa.id_product_attribute = pa.id_product_attribute) ';
+        $query.= ' LEFT JOIN '._DB_PREFIX_.'stock_available sa ON (sa.id_product = p.id_product AND
+        sa.id_product_attribute = pa.id_product_attribute) ';
         $query.= ' LEFT JOIN '._DB_PREFIX_.'manufacturer m ON (p.id_manufacturer = m.id_manufacturer) ';
-        $query.= ' LEFT JOIN '._DB_PREFIX_.'product_shop pshop ON (p.id_product = pshop.id_product AND pshop.id_shop =1 ) ';
-        $query.= ' LEFT JOIN '._DB_PREFIX_.'product_attribute_shop pas ON (p.id_product = pas.id_product AND pas.id_shop =1 ) ';
+        $query.= ' LEFT JOIN '._DB_PREFIX_.'product_shop pshop ON (p.id_product = pshop.id_product
+        AND pshop.id_shop =1 ) ';
+        $query.= ' LEFT JOIN '._DB_PREFIX_.'product_attribute_shop pas ON (p.id_product = pas.id_product
+        AND pas.id_shop =1 ) ';
         $productCollection = Db::getInstance()->executeS($query);
 
         $productTaxes = $this->getProductTaxes();
@@ -247,7 +255,8 @@ class LengowFlat
                     break;
             }
         }
-        $query = Db::getInstance()->ExecuteS('SELECT id FROM `' . _DB_PREFIX_.self::TABLE_NAME.'` WHERE id_product="'.$product->id_product.'"');
+        $query = Db::getInstance()->ExecuteS('SELECT id FROM `' . _DB_PREFIX_.self::TABLE_NAME.'`
+        WHERE id_product="'.$product->id_product.'"');
         if (count($query)>0) {
             Db::getInstance()->update(self::TABLE_NAME, $data, 'id_product = "'.$product->id_product.'"');
         } else {
@@ -267,7 +276,6 @@ class LengowFlat
         //todo check tax on shipping price ?
         if (count($taxeRules)==0) {
             return null;
-//            throw new LengowExportException('You must configure the carrier "'.$this->carrier->name.'" (Country / Cost)');
         }
 
         foreach ($taxeRules as $taxe_rule) {

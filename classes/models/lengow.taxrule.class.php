@@ -36,8 +36,8 @@ class LengowTaxRule extends TaxRule
     public static function getLengowTaxRulesByGroupId($id_lang, $id_group)
     {
         if (version_compare(_PS_VERSION_, '1.5', '<')) {
-            return Db::getInstance()->executeS('
-			SELECT g.`id_tax_rule`,
+            return Db::getInstance()->executeS(
+                'SELECT g.`id_tax_rule`,
 							 c.`name` AS country_name,
 							 s.`name` AS state_name,
 							 t.`rate`,
@@ -45,7 +45,8 @@ class LengowTaxRule extends TaxRule
 							 g.`id_country`,
 							 g.`id_state`
 			FROM `' . _DB_PREFIX_ . 'tax_rule` g
-			LEFT JOIN `' . _DB_PREFIX_ . 'country_lang` c ON (g.`id_country` = c.`id_country` AND `id_lang` = ' . (int)$id_lang . ')
+			LEFT JOIN `' . _DB_PREFIX_ . 'country_lang` c ON (g.`id_country` = c.`id_country`
+			AND `id_lang` = ' . (int)$id_lang . ')
 			LEFT JOIN `' . _DB_PREFIX_ . 'state` s ON (g.`id_state` = s.`id_state`)
 			LEFT JOIN `' . _DB_PREFIX_ . 'tax` t ON (g.`id_tax` = t.`id_tax`)
 			WHERE `id_tax_rules_group` = ' . (int)$id_group . '

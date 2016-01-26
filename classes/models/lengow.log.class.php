@@ -55,7 +55,7 @@ class LengowLog extends LengowFile
      */
     public function write($message, $display = false, $id_order_lengow = null)
     {
-        $log = date('Y-m-d:H:i:s').substr((string)microtime(), 1, 8);
+        $log = date('Y-m-d:H:i:s').Tools::substr((string)microtime(), 1, 8);
         $log.= ' - ' . (empty($id_order_lengow) ? '' : 'Order ' . $id_order_lengow . ': ');
         $log.= $message . "\r\n";
         if ($display && php_sapi_name() != "cli") {

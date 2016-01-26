@@ -196,11 +196,3 @@ class LengowFile
         return $files;
     }
 }
-
-/**
- *
- */
-class LengowFileException extends Exception
-{
-
-}

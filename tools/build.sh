@@ -22,7 +22,7 @@ remove_directory(){
 remove_files(){
     DIRECTORY=$1
     FILE=$2
-    find $DIRECTORY -name $FILE -nowarn -exec rm -f {} \;
+    find $DIRECTORY -name $FILE -nowarn -exec rm -rf {} \;
     echo "- Delete $FILE : ""$VERT""DONE""$NORMAL"""
 }
 
@@ -45,7 +45,7 @@ fi
 FOLDER_TMP="/tmp/lengow"
 FOLDER_LOGS="/tmp/lengow/logs"
 FOLDER_EXPORT="/tmp/lengow/export"
-FOLDER_TEST="/tmp/lengow/test"
+FOLDER_TEST="/tmp/lengow/tests"
 
 
 FOLDER_MODULE="lengow"
@@ -53,7 +53,6 @@ FOLDER_MODULE="lengow"
 FOLDER_OVERRIDE="/lengow/override"
 FOLDER_INSTALL="/lengow/install"
 FOLDER_GIT="/lengow/.git"
-FOLDER_IDEA="/lengow/.idea"
 
 VERT="\\033[1;32m"
 ROUGE="\\033[1;31m"
@@ -88,12 +87,11 @@ remove_files $FOLDER_TMP ".gitignore"
 remove_files $FOLDER_TMP ".git"
 # Remove .DS_Store
 remove_files $FOLDER_TMP ".DS_Store"
+# Remove .idea
+remove_files $FOLDER_TMP ".idea"
 # Clean Log Folder
 remove_files $FOLDER_LOGS "*.txt"
 echo "- Clean logs folder : ""$VERT""DONE""$NORMAL"""
-#remove Idea Folder
-remove_directory $FOLDER_IDEA
-echo "- Remove Idea folder : ""$VERT""DONE""$NORMAL"""
 # Clean export folder
 remove_directories $FOLDER_EXPORT
 echo "- Clean export folder : ""$VERT""DONE""$NORMAL"""
