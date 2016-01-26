@@ -121,6 +121,11 @@ class LengowOrder extends Order
     public $lengow_state;
 
     /**
+     * @var integer number of items
+     */
+    public $lengow_order_item;
+
+    /**
      * @var string Lengow order line id
      */
     public $id_order_line;
@@ -272,7 +277,8 @@ class LengowOrder extends Order
             lo.`delivery_id_address`,
             lo.`delivery_country_iso`,
             lo.`customer_name`,
-            lo.`order_lengow_state`
+            lo.`order_lengow_state`,
+            lo.`order_item`
             FROM `'._DB_PREFIX_.'lengow_orders` lo
             WHERE lo.id_order = \''.(int)$this->id.'\'
         ';
@@ -295,6 +301,7 @@ class LengowOrder extends Order
             $this->lengow_delivery_country_iso  = $result['delivery_country_iso'];
             $this->lengow_customer_name         = $result['customer_name'];
             $this->lengow_state                 = $result['order_lengow_state'];
+            $this->lengow_order_item            = (int)$result['order_item'];
             return true;
         } else {
             return false;
