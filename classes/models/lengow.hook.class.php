@@ -450,7 +450,7 @@ class LengowHook
                 if ($lengow_order->id_flux != null) {
                     $lengow_order->checkAndChangeMarketplaceName();
                 }
-                $order_ids = LengowOrder::getOrderIdFromLengowOrder(
+                $order_ids = LengowOrder::getAllOrderIdsFromLengowOrder(
                     $lengow_order->id_lengow,
                     $lengow_order->lengow_marketplace
                 );
@@ -488,7 +488,6 @@ class LengowHook
             $template_data = array(
                 'id_order_lengow'       => $lengow_order->id_lengow,
                 'id_flux'               => $lengow_order->id_flux,
-                'id_order_line'         => $lengow_order->id_order_line,
                 'marketplace'           => $lengow_order->lengow_marketplace,
                 'total_paid'            => $lengow_order->lengow_total_paid,
                 'carrier'               => $lengow_order->lengow_carrier,

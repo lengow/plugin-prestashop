@@ -238,7 +238,7 @@ class LengowMain
         } else {
             LengowMain::log('## Start '.$type.' import ##', true);
             // 2nd step: start import process
-            LengowMain::setInProcess();
+            // LengowMain::setInProcess();
             // 3rd step: disable emails
             LengowMain::disableMail();
             // import of a specific order or all orders
@@ -306,7 +306,7 @@ class LengowMain
             LengowMain::log('## End '.$type.' import ##', true);
             // sending email in error for orders
             if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$debug) {
-                LengowMain::sendMailAlert();
+                // LengowMain::sendMailAlert();
             }
         }
     }
