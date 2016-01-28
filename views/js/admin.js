@@ -51,9 +51,13 @@
 			return false;
 		});
 		$(".lengow_switch").bootstrapSwitch();
-		$('.lengow_link_tooltip').tooltip( {
-			'template' : '<div class="lengow_tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-		});
+		init_tooltip();
 		var clipboard = new Clipboard('.lengow_copy');
 	});
 })(lengow_jquery);
+
+function init_tooltip() {
+	lengow_jquery('.lengow_link_tooltip').tooltip( {
+		'template' : '<div class="lengow_tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+	});
+}

@@ -10,6 +10,9 @@
                 method: 'POST',
                 data: {action: 'load_table'},
                 dataType: 'script',
+                success: function() {
+                    init_tooltip();
+                }
             });
             return false;
         });
