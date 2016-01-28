@@ -249,4 +249,13 @@ class LengowConfiguration extends Configuration
             parent::updateValue($key, $values, $html, $id_shop_group, $id_shop);
         }
     }
+
+    public static function getReportEmailAddress()
+    {
+        $emails = explode(',', self::get('LENGOW_REPORT_MAIL_ADDRESS'));
+        if ($emails[0] == '') {
+            $emails[0] = self::get('PS_SHOP_EMAIL');
+        }
+        return $emails;
+    }
 }

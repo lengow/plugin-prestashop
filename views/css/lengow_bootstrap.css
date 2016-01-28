@@ -177,6 +177,35 @@ body.lengow_body #content .lengow_breadcrumb a {
     background-color: #f7f7f7;
 }
 /* MAIN */
+
+.lengow_label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    background:#3AB2D0;
+}
+
+.lengow_label_waiting_shipment {
+    background:#FDA737;
+}
+.lengow_label_shipped {
+    background:#45BF7B;
+}
+.lengow_label_closed {
+    background:#AC1802;
+}
+.lengow_label_refunded {
+    background:#AC1802;
+}
+
+
 .lengow_clear {
     clear: both;
 }
@@ -188,6 +217,14 @@ body.lengow_body #content .lengow_breadcrumb a {
 }
 .lengow_table {
     width: 100%
+}
+
+.lengow_green {
+    color: #45BF7B;
+}
+
+.lengow_red {
+    color: #F28088;
 }
 
 .lengow_btn {
@@ -207,6 +244,58 @@ body.lengow_body #content .lengow_breadcrumb a {
     border-color: #2e6da4;
     text-decoration: none !important;
 }
+
+.lengow_form_table .nowrap {
+    white-space: nowrap;
+}
+
+.lengow_form_table .lengow_label {
+    width: 100%;
+    text-align: center;
+    display: block;
+    padding: 6px 0px;
+    font-size: 13px;
+}
+
+.lengow_form_table select {
+    width:100%;
+}
+
+.lengow_form_table .fa {
+    font-size:20px;
+}
+
+.lengow_feed_pagination {
+    float:right;
+}
+
+.lengow_pagination {
+    margin-left:20px;
+}
+
+.lengow_pagination_total {
+    float: left;
+    margin-top: 27px;
+}
+
+.lengow_feed_pagination .lengow_number {
+    font-weight: bold;
+}
+
+.lengow_toolbar {
+    float: left;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.lengow_toolbar .lengow_btn {
+    margin-left:10px;
+}
+
+.lengow_toolbar input {
+    margin-top:10px;
+}
+
 
 .lengow_tooltip {
     position: absolute;
@@ -410,36 +499,6 @@ body.lengow_body #content .lengow_breadcrumb a {
     margin-left:10px;
 }
 
-#lengow_feed_wrapper .lengow_feed_pagination {
-    float:right;
-}
-
-#lengow_feed_wrapper .lengow_pagination {
-    margin-left:20px;
-}
-
-#lengow_feed_wrapper .lengow_pagination_total {
-    float: left;
-    margin-top: 27px;
-}
-
-#lengow_feed_wrapper .lengow_feed_pagination .lengow_number {
-    font-weight: bold;
-}
-
-#lengow_feed_wrapper .lengow_toolbar {
-    float: left;
-    margin-top: 20px;
-    margin-left: 20px;
-}
-
-#lengow_feed_wrapper .lengow_toolbar .lengow_btn {
-    margin-left:10px;
-}
-
-#lengow_feed_wrapper .lengow_toolbar input {
-    margin-top:10px;
-}
 
 #lengow_feed_wrapper .lengow_feed_block_content_left input {
     width:400px;
@@ -455,12 +514,11 @@ body.lengow_body #content .lengow_breadcrumb a {
 }
 
 .lengow_order_block_header_content {
-    padding: 50px 0;
+    padding: 0 0;
 }
 
 .lengow_order_block_content_left {
     font-weight:bold;
-    font-size:20px;
     color:#61687c;
     float:left;
     padding:20px;
@@ -469,7 +527,12 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_order_block_content_right {
     float:right;
     width:280px;
-    height:140px;
+    height:100px;
     font-size:16px;
     padding:20px;
 }
+
+.lengow_order_block_content_left .lengow_strong {
+    font-size:24px;
+}
+

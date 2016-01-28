@@ -24,5 +24,14 @@
             });
             return false;
         });
+        $('#lengow_order_wrapper').on('click', '.lengow_select_all', function () {
+            if ($(this).prop('checked')) {
+                $('#table_order tbody .lengow_selection').prop('checked', true);
+                $('#lengow_order_wrapper .lengow_toolbar a').show();
+            } else {
+                $('#table_order tbody .lengow_selection').prop('checked', false);
+                $('#lengow_order_wrapper .lengow_toolbar a').hide();
+            }
+        });
     });
 })(lengow_jquery);
