@@ -93,6 +93,8 @@ class LengowOrderController extends LengowController
                     'title' => $this->module->l('Shop'),
                     'filter' => true,
                     'filter_key' => 'shop.name',
+                    'filter_type' => 'select',
+                    'filter_collection' => $this->getShops()
                 );
             }
         }
@@ -230,6 +232,17 @@ class LengowOrderController extends LengowController
             $marketplaces[]= array('id' => $row['name'], 'text' =>$row['name']);
         }
         return $marketplaces;
+    }
+
+    public function getShops()
+    {
+        $shops = array();
+        $sql = 'SELECT id_shop, name FROM '._DB_PREFIX_.'shop WHERE active = 1';
+        $collection = Db::getInstance()->ExecuteS($sql);
+        foreach ($collection as $row) {
+            $shops[]= array('id' => $row['id_shop'], 'text' =>$row['name']);
+        }
+        return $shops;
     }
 
     public static function displayLengowState($key, $value)
