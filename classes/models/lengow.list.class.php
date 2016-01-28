@@ -27,6 +27,7 @@ class LengowList
     protected $total;
     protected $identifier;
     protected $selection;
+    protected $selectionCondition;
     protected $controller;
     protected $shopId;
     protected $currentPage;
@@ -35,6 +36,7 @@ class LengowList
     protected $sql;
     protected $id;
     protected $ajax;
+    protected $context;
 
     public function __construct($params)
     {
@@ -42,12 +44,15 @@ class LengowList
         $this->fields_list = $params['fields_list'];
         $this->identifier = $params['identifier'];
         $this->selection = $params['selection'];
+        $this->selectionCondition = isset($params['selection_condition']) ? $params['selection_condition'] : false ;
         $this->controller = $params['controller'];
         $this->shopId = $params['shop_id'];
         $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
         $this->nbPerPage = isset($params['nbPerPage']) ? $params['nbPerPage'] : 20;
         $this->sql = $params['sql'];
         $this->ajax = isset($params['ajax']) ? (bool)$params['ajax'] : false;
+
+        $this->context = Context::getContext();
     }
 
     /**
@@ -74,18 +79,33 @@ class LengowList
             $html.='<th width="20"></th>';
         }
         foreach ($this->fields_list as $key => $values) {
+            $html .= '<th>';
             if (isset($values['filter']) && $values['filter']) {
+                $type = isset($values['filter_type']) ? $values['filter_type'] : 'text';
+                $name = 'table_'.$this->id.'[' . $key . ']';
                 if (isset($_REQUEST['table_'.$this->id][$key])) {
                     $value = $_REQUEST['table_'.$this->id][$key];
                 } else {
                     $value = '';
                 }
-                $html .= '<th><input type="text" name="table_'.$this->id.'[' . $key . ']" value="'.$value.'" /></th>';
+                switch ($type) {
+                    case 'text':
+                        $html .= '<input type="text" name="'.$name.'" value="'.$value.'" />';
+                        break;
+                    case 'select':
+                        $html.='<select class="form-control" name="'.$name.'">';
+                        $html.='<option value="" '.($value ? 'selected' : '').'></option>';
+                        foreach ($values['filter_collection'] as $row) {
+                            $selected =  $row['id'] == $value ? 'selected' : '';
+                            $html.='<option value="'.$row['id'].'" '.$selected.'>'.$row['text'].'</option>';
+                        }
+                        $html.= '</select>';
+                        break;
+                }
             } elseif (isset($values['button_search']) && $values['button_search']) {
-                $html .= '<th><input type="submit" value="Search" /></th>';
-            } else {
-                $html .= '<th></th>';
+                $html .= '<input type="submit" value="Search" />';
             }
+            $html .= '</th>';
         }
         $html.='</tr>';
         $html.='</thead>';
@@ -105,17 +125,35 @@ class LengowList
         foreach ($this->collection as $item) {
             $html.= '<tr>';
             if ($this->selection) {
-                $html.='<td><input type="checkbox" class="lengow_selection"
-                name="selection['.$item[$this->identifier].']" value="1"></td>';
+                if ($this->selectionCondition) {
+                    if ($item[$this->selectionCondition] > 0) {
+                        $html.='<td><input type="checkbox" class="lengow_selection"
+                    name="selection['.$item[$this->identifier].']" value="1"></td>';
+                    } else {
+                        $html.='<td></td>';
+                    }
+                } else {
+                    $html.='<td><input type="checkbox" class="lengow_selection"
+                    name="selection['.$item[$this->identifier].']" value="1"></td>';
+                }
             }
             foreach ($this->fields_list as $key => $values) {
-                if (isset($values['type'])) {
-                    switch ($values["type"]) {
-                        case "price":
-                            $value = Tools::displayPrice($item[$key]);
-                            break;
-                        case "switch_product":
-                            $value = '<input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
+                if (isset($values['display_callback'])) {
+                    $value = call_user_func_array($values['display_callback'], array($key, $item[$key]));
+                } else {
+                    if (isset($values['type'])) {
+                        switch ($values["type"]) {
+                            case 'date':
+                                $value = Tools::dateFormat(
+                                    array('date' => $item[$key], 'full' => true),
+                                    $this->context->smarty
+                                );
+                                break;
+                            case 'price':
+                                $value = Tools::displayPrice($item[$key]);
+                                break;
+                            case 'switch_product':
+                                $value = '<input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                                name="lengow_product_selection['.$item[$this->identifier].']"
                                class="lengow_switch lengow_switch_product
                                lengow_product_selection_'.$item[$this->identifier].'"
@@ -124,12 +162,49 @@ class LengowList
                                data-id_shop="'.$this->shopId.'"
                                data-id_product="'.$item[$this->identifier].'"
                                value="1" '.($item[$key] ? 'checked="checked"' : '').'/>';
-                            break;
-                        default:
-                            $value = $item[$key];
+                                break;
+                            case 'flag_country':
+                                if ($item[$key]) {
+                                    $value = '<img src="/modules/lengow/views/img/flag/'.
+                                        Tools::strtoupper($item[$key]).'.png" />';
+                                } else {
+                                    $value = '';
+                                }
+                                break;
+                            case 'log_status':
+                                if ($item[$key]) {
+
+                                    if ($item[$key] == '2') {
+                                        $value = '<i class="fa fa-info-circle lengow_red lengow_link_tooltip"
+                                    data-original-title="test"
+                                    ></i>';
+                                        $value.= ' <a href="#"
+                                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
+                                    data-action="re_send"
+                                    data-order="'.$item[$this->identifier].'"
+                                    data-type="'.$item[$key].'"
+                                    >Re Send</a>';
+                                    } else {
+                                        $value = '<i class="fa fa-info-circle lengow_red lengow_link_tooltip"
+                                    data-original-title="test"
+                                    ></i>';
+                                        $value.= ' <a href="#"
+                                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
+                                    data-action="re_import"
+                                    data-order="'.$item[$this->identifier].'"
+                                    data-type="'.$item[$key].'"
+                                    >Re Import</a>';
+                                    }
+                                } else {
+                                    $value = '<i class="fa fa-circle lengow_green"></i>';
+                                }
+                                break;
+                            default:
+                                $value = $item[$key];
+                        }
+                    } else {
+                        $value = $item[$key];
                     }
-                } else {
-                    $value = $item[$key];
                 }
                 $class = isset($values['class']) ? $values['class'] : '';
 
@@ -159,15 +234,12 @@ class LengowList
      */
     public function display()
     {
-        if ($this->collection) {
-            $lengow_link = new LengowLink();
-            $html= '<form id="form_table_'.$this->id.'" class="lengow_form_table"
-            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'">';
-            $html.= $this->displayHeader().$this->displayContent().$this->displayFooter();
-            $html.= '</form>';
-        } else {
-            $html = '';
-        }
+        $lengow_link = new LengowLink();
+        $html= '<form id="form_table_'.$this->id.'" class="lengow_form_table"
+        data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'">';
+        $html.= '<input type="hidden" name="p" value="'.$this->currentPage.'" />';
+        $html.= $this->displayHeader().$this->displayContent().$this->displayFooter();
+        $html.= '</form>';
         return $html;
     }
 
@@ -180,17 +252,22 @@ class LengowList
     {
         $sql = $this->buildQuery();
         $sqlTotal = $this->buildQuery(true);
-        //echo $sql;
 
         $this->collection = Db::getInstance()->executeS($sql, true, false);
         $this->total = Db::getInstance()->getValue($sqlTotal, false);
         $this->nbMaxPage = ceil($this->total / $this->nbPerPage);
         $this->paginationFrom = ($this->currentPage-1) * $this->nbPerPage + 1;
+        if ($this->total == 0) {
+            $this->paginationFrom = 0;
+        }
         $this->paginationTo = $this->paginationFrom + $this->nbPerPage - 1;
         if ($this->currentPage >= $this->nbMaxPage) {
             $this->paginationTo = $this->total;
         }
-
+        if ($this->nbMaxPage > 0 && $this->currentPage > $this->nbMaxPage) {
+            $this->currentPage = $this->nbMaxPage;
+            return $this->executeQuery();
+        }
         return $this->collection;
     }
 
@@ -218,12 +295,29 @@ class LengowList
      */
     public function buildQuery($total = false)
     {
-        $where = $this->sql["where"];
+        $where = isset($this->sql["where"]) ? $this->sql["where"] : array();
+        $having = array();
         if (isset($_REQUEST['table_'.$this->id])) {
             foreach ($_REQUEST['table_'.$this->id] as $key => $value) {
                 if (Tools::strlen($value)>0) {
                     if ($fieldValue = $this->findValueByKey($key)) {
-                        $where[] = ' '.pSQL($fieldValue['filter_key']).' LIKE "%'.pSQL($value).'%"';
+                        $type = isset($fieldValue['type']) ? $fieldValue['type'] : 'text';
+                        switch ($type) {
+                            case 'log_status':
+                                switch ($value) {
+                                    case 1:
+                                        $having[] = ' '.pSQL($fieldValue['filter_key']).' IS NULL';
+                                        break;
+                                    case 2:
+                                        $having[] = ' '.pSQL($fieldValue['filter_key']).' IS NOT NULL';
+                                        break;
+                                }
+                                break;
+                            case 'select':
+                            case 'text':
+                                $where[] = ' '.pSQL($fieldValue['filter_key']).' LIKE "%'.pSQL($value).'%"';
+                                break;
+                        }
                     }
                 }
             }
@@ -233,14 +327,23 @@ class LengowList
         } else {
             $sql = 'SELECT '.join(', ', $this->sql["select"]);
         }
-        $sql.= ' '.$this->sql["from"];
+        if (isset($this->sql['select_having']) && $this->sql['select_having']) {
+            $sql.= ', '.join(',', $this->sql['select_having']);
+        }
+        $sql.= ' '.$this->sql["from"].' ';
         if ($this->sql["join"]) {
             $sql.= join(' ', $this->sql["join"]);
         }
         if ($where) {
             $sql .= ' WHERE ' . join(' AND ', $where);
         }
+        if ($having) {
+            $sql .= ' HAVING ' . join(' AND ', $having);
+        }
         if (!$total) {
+            if (isset($this->sql["order"])) {
+                $sql .= ' ORDER BY '.$this->sql["order"];
+            }
             if ($this->currentPage < 1) {
                 $this->currentPage = 1;
             }
@@ -270,11 +373,11 @@ class LengowList
 
         $html.= '<ul class="lengow_pagination">';
         $class = ($this->currentPage == 1) ? 'disabled' : '';
-        $html.= '<li><a href="#" class="'.$class.'"
+        $html.= '<li><a href="#" class="'.$class.'"  data-page="'.($this->currentPage-1).'"
         data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage-1).'"
         ><i class="fa fa-angle-left"></i></a></li>';
         $class = ($this->currentPage == $this->nbMaxPage) ? 'disabled' : '';
-        $html.= '<li><a href="#" class="'.$class.'"
+        $html.= '<li><a href="#" class="'.$class.'"  data-page="'.($this->currentPage+1).'"
         data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage+1).'"
         ><i class="fa fa-angle-right"></i></a></li>';
         $html.= '</ul>';
@@ -284,7 +387,7 @@ class LengowList
             $showLastSeparation = false;
 
             $class = ($this->currentPage == 1) ? 'disabled' : '';
-            $html.= '<li><a href="#" class="'.$class.'"
+            $html.= '<li><a href="#" class="'.$class.'" data-page="1"
             data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p=1">1</a></li>';
 
             $from = $this->currentPage - 2;
@@ -305,8 +408,8 @@ class LengowList
             for ($i = $from; $i <= $to; $i++) {
                 $html .= '<li>';
                 $class = ($i == $this->currentPage) ? 'disabled' : '';
-                $html .= '<li class="' . $class . '"><a href="#"
-        data-href="' . $lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax) . '&p=' . $i . '">' .
+                $html .= '<li class="' . $class . '"><a href="#" data-page="'.$i.'"
+                data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'.
                     $i . '</a></li>';
                 $html .= '</li>';
             }
@@ -314,14 +417,14 @@ class LengowList
                 $html .= '<li><a href="#" class="disable">...</a></li>';
             }
             $class = ($this->currentPage == $this->nbMaxPage) ? 'disabled' : '';
-            $html.= '<li><a href="#" class="'.$class.'"
+            $html.= '<li><a href="#" class="'.$class.'"  data-page="'.$this->nbMaxPage.'"
             data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->nbMaxPage).'"
             >'.$this->nbMaxPage.'</a></li>';
         } else {
             for ($i = 1; $i <= $totalPage; $i++) {
                 $html .= '<li>';
                 $class = ($i == $this->currentPage) ? 'disabled' : '';
-                $html .= '<li class="' . $class . '"><a href="#"
+                $html .= '<li class="' . $class . '"><a href="#"  data-page="'.$i.'"
         data-href="' . $lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax) . '&p=' . $i . '">' .
                     $i . '</a></li>';
                 $html .= '</li>';

@@ -974,10 +974,7 @@ class LengowMain
             '{mail_title}' => 'Lengow imports logs',
             '{mail_body}' => $mail_body,
         );
-        $emails = explode(',', Configuration::get('LENGOW_REPORT_MAIL_ADDRESS'));
-        if (empty($emails[0])) {
-            $emails[0] = Configuration::get('PS_SHOP_EMAIL');
-        }
+        $emails = LengowConfiguration::getReportEmailAddress();
         foreach ($emails as $to) {
             if (!Mail::send(
                 (int)$cookie->id_lang,

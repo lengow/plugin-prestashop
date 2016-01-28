@@ -33,15 +33,9 @@
             }
             var href = $(this).attr('data-href');
             var id_shop = $(this).parents('.lengow_feed_pagination').attr('id').split('_')[2];
-            $.ajax({
-                url: href,
-                method: 'POST',
-                data: {action: 'load_table', id_shop: id_shop},
-                dataType: 'script',
-                success: function () {
-                    $(".lengow_switch").bootstrapSwitch();
-                }
-            });
+
+            $('#lengow_feed_wrapper #form_table_shop_'+id_shop+' input[name="p"]').val($(this).attr('data-page'));
+            $('#lengow_feed_wrapper #form_table_shop_'+id_shop).submit();
             return false;
         });
         $('#lengow_feed_wrapper').on('submit', '.lengow_form_table', function () {
