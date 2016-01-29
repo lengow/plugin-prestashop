@@ -1,3 +1,3 @@
 {include file='../header.tpl'}
-{include file='./order.tpl'}
+{include file='../header_order.tpl'}
 {$content}
