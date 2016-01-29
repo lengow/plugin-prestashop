@@ -51,6 +51,9 @@ class LengowList
         $this->nbPerPage = isset($params['nbPerPage']) ? $params['nbPerPage'] : 20;
         $this->sql = $params['sql'];
         $this->ajax = isset($params['ajax']) ? (bool)$params['ajax'] : false;
+        $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
+        $this->orderColumn = isset($params['order_column']) ? $params['order_column'] : '';
+
 
         $this->context = Context::getContext();
     }
@@ -70,7 +73,14 @@ class LengowList
         }
         foreach ($this->fields_list as $key => $values) {
             $width = isset($values['width']) ? 'width = "'.$values['width'].'"' : '';
-            $html.='<th '.$width.'>'.$values['title'].'</th>';
+            $html.='<th '.$width.'>'.$values['title'];
+            if (isset($values['filter_order']) && $values['filter_order']) {
+                $html.='<a href="#" class="table_order" data-order="DESC" data-column="'.$values['filter_key'].'">
+            <i class="fa fa-caret-down"></i></a>';
+                $html.='<a href="#" class="table_order" data-order="ASC" data-column="'.$values['filter_key'].'">
+            <i class="fa fa-caret-up"></i></a>';
+            }
+            $html.='</th>';
         }
         $html.='</tr>';
 
@@ -238,6 +248,8 @@ class LengowList
         $html= '<form id="form_table_'.$this->id.'" class="lengow_form_table"
         data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'">';
         $html.= '<input type="hidden" name="p" value="'.$this->currentPage.'" />';
+        $html.= '<input type="hidden" name="order_value" value="'.$this->orderValue.'" />';
+        $html.= '<input type="hidden" name="order_column" value="'.$this->orderColumn.'" />';
         $html.= $this->displayHeader().$this->displayContent().$this->displayFooter();
         $html.= '<input type="submit" value="Search" style="visibility: hidden"/>';
         $html.= '</form>';
@@ -342,8 +354,15 @@ class LengowList
             $sql .= ' HAVING ' . join(' AND ', $having);
         }
         if (!$total) {
-            if (isset($this->sql["order"])) {
-                $sql .= ' ORDER BY '.$this->sql["order"];
+            if (strlen($this->orderColumn) > 0 && in_array($this->orderValue, array("ASC","DESC"))) {
+                $sql .= ' ORDER BY '.pSQL($this->orderColumn).' '.$this->orderValue;
+                if (isset($this->sql["order"])) {
+                    $sql .= ', '.$this->sql["order"];
+                }
+            } else {
+                if (isset($this->sql["order"])) {
+                    $sql .= ' ORDER BY '.$this->sql["order"];
+                }
             }
             if ($this->currentPage < 1) {
                 $this->currentPage = 1;

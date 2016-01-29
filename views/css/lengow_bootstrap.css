@@ -444,6 +444,14 @@ body.lengow_body #content .lengow_breadcrumb a {
     width: 100% !important;
 }
 
+.lengow_table a.table_order{
+    text-decoration: none !important;
+}
+.lengow_table a.table_order:focus{
+    color:#CCCCCC;
+}
+
+
 /* FEED PAGE */
 #lengow_feed_wrapper {
     padding:0 60px;

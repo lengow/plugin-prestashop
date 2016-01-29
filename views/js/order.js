@@ -12,7 +12,12 @@
             $('#lengow_order_wrapper .lengow_form_table').submit();
             return false;
         });
-
+        $('#lengow_order_wrapper').on('click', '.lengow_form_table .table_order', function () {
+            $('#lengow_order_wrapper .lengow_form_table input[name="order_value"]').val($(this).attr('data-order'));
+            $('#lengow_order_wrapper .lengow_form_table input[name="order_column"]').val($(this).attr('data-column'));
+            $('#lengow_order_wrapper .lengow_form_table').submit();
+            return false;
+        });
         $('#lengow_order_wrapper').on('submit', '.lengow_form_table', function () {
             var href = $(this).attr('data-href');
             var form = $(this).serialize();

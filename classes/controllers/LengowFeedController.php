@@ -170,6 +170,7 @@ class LengowFeedController extends LengowController
             'class' => 'center',
             'width' => 70,
             'filter' => true,
+            'filter_order' => true,
             'filter_key' => 'p.id_product',
         );
         $fields_list['image'] = array(
@@ -181,6 +182,7 @@ class LengowFeedController extends LengowController
         $fields_list['name'] = array(
             'title' => $this->module->l('Name'),
             'filter' => true,
+            'filter_order' => true,
             'filter_key' => 'pl.name',
         );
         $fields_list['reference'] = array(
@@ -188,6 +190,7 @@ class LengowFeedController extends LengowController
             'align' => 'left',
             'width' => 80,
             'filter' => true,
+            'filter_order' => true,
             'filter_key' => 'p.reference',
         );
 //
@@ -202,6 +205,7 @@ class LengowFeedController extends LengowController
             'title' => $this->module->l('Category'),
             'width' => 'auto',
             'filter' => true,
+            'filter_order' => true,
             'filter_key' => 'cl.name',
         );
 //        }
@@ -233,6 +237,8 @@ class LengowFeedController extends LengowController
             'width' => 'auto',
             'class' => 'center',
             'type' => 'switch_product',
+            'filter_order' => true,
+            'filter_key' => 'id_lengow_product',
             'button_search' => true
         );
 
@@ -289,6 +295,8 @@ class LengowFeedController extends LengowController
         }
 
         $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
+        $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
+        $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
 
         $list = new LengowList(array(
             "id" => 'shop_'.$shopId,
@@ -299,6 +307,8 @@ class LengowFeedController extends LengowController
             "shop_id" => $shopId,
             "current_page" => $currentPage,
             "ajax" => true,
+            "order_value" => $orderValue,
+            "order_column" => $orderColumn,
             "sql" => array(
                 "select" => $select,
                 "from" => $from,

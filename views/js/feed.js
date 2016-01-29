@@ -38,6 +38,13 @@
             $('#lengow_feed_wrapper #form_table_shop_'+id_shop).submit();
             return false;
         });
+        $('#lengow_feed_wrapper').on('click', '.lengow_form_table .table_order', function () {
+            var id_shop = $(this).parents('table').attr('id').split('_')[2];
+            $('#lengow_feed_wrapper #form_table_shop_'+id_shop+' input[name="order_value"]').val($(this).attr('data-order'));
+            $('#lengow_feed_wrapper #form_table_shop_'+id_shop+' input[name="order_column"]').val($(this).attr('data-column'));
+            $('#lengow_feed_wrapper #form_table_shop_'+id_shop).submit();
+            return false;
+        });
         $('#lengow_feed_wrapper').on('submit', '.lengow_form_table', function () {
             var href = $(this).attr('data-href');
             var id_shop = $(this).attr('id').split('_')[3];

@@ -69,6 +69,7 @@ class LengowOrderController extends LengowController
             'align' => 'center',
             'display_callback' => 'LengowOrderController::displayLengowState',
             'filter' => true,
+            'filter_order' => true,
             'filter_key' => 'lo.order_lengow_state',
             'filter_type' => 'select',
             'filter_collection' => array(
@@ -83,6 +84,7 @@ class LengowOrderController extends LengowController
             'title' => $this->module->l('Marketplace'),
             'align' => 'center',
             'filter' => true,
+            'filter_order' => true,
             'filter_key' => 'lo.marketplace',
             'filter_type' => 'select',
             'filter_collection' => $this->getMarketplaces(),
@@ -103,6 +105,7 @@ class LengowOrderController extends LengowController
             'class' => 'center',
             'display_callback' => 'LengowOrderController::displayOrderLink',
             'filter' => true,
+            'filter_order' => true,
             'filter_key' => 'lo.id_order_lengow',
         );
         $fields_list['reference'] = array(
@@ -110,34 +113,44 @@ class LengowOrderController extends LengowController
             'class' => 'center',
             'display_callback' => 'LengowOrderController::displayOrderLink',
             'filter' => true,
+            'filter_order' => true,
             'filter_key' => 'o.reference',
         );
         $fields_list['order_date'] = array(
             'title' => $this->module->l('Date'),
             'class' => 'center',
-            'type' => 'date'
+            'type' => 'date',
+            'filter_key' => 'lo.order_date',
+            'filter_order' => true,
         );
 
         $fields_list['delivery_country_iso'] = array(
             'title' => $this->module->l('Country'),
             'align' => 'center',
-            'type' => 'flag_country'
+            'type' => 'flag_country',
+            'filter_key' => 'lo.delivery_country_iso',
+            'filter_order' => true,
         );
         $fields_list['nb_item'] = array(
             'title' => $this->module->l('Items'),
             'align' => 'center',
+            'filter_key' => 'lo.order_item',
+            'filter_order' => true,
         );
         $fields_list['total_paid'] = array(
             'title' => $this->module->l('Total'),
             'align' => 'center',
             'type' => 'price',
-            'class' => 'nowrap'
+            'class' => 'nowrap',
+            'filter_key' => 'lo.total_paid',
+            'filter_order' => true,
         );
         $fields_list['log_status'] = array(
             'title' => $this->module->l('Status Lgw'),
             'align' => 'center',
             'type' => 'log_status',
             'filter' => true,
+            'filter_order' => true,
             'filter_key' => 'log_status',
             'filter_type' => 'select',
             'filter_collection' => array(
@@ -174,6 +187,8 @@ class LengowOrderController extends LengowController
         }
 
         $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
+        $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
+        $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
 
         $list = new LengowList(array(
             "id" => 'order',
@@ -184,6 +199,8 @@ class LengowOrderController extends LengowController
             "controller" => 'AdminLengowOrder',
             "shop_id" => $shopId,
             "current_page" => $currentPage,
+            "order_value" => $orderValue,
+            "order_column" => $orderColumn,
             "ajax" => true,
             "sql" => array(
                 "select" => $select,
@@ -206,11 +223,11 @@ class LengowOrderController extends LengowController
         $html.='<input type="checkbox" id="select_shop_'.$shopId.'" class="lengow_select_all"/>';
         $html.='<a href="#" style="display:none;"
                 data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
-                class="lengow_btn lengow_link_tooltip lengow_remove_from_export" title="Re Import Order">
+                class="lengow_btn lengow_link_tooltip lengow_remove_from_export">
                 <i class="fa fa-download"></i> Re Import Order</a>';
         $html.='<a href="#" style="display:none;"
                         data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
-                class="lengow_btn lengow_link_tooltip lengow_add_to_export" title="Re Send Order">
+                class="lengow_btn lengow_link_tooltip lengow_add_to_export">
                 <i class="fa fa-arrow-right"></i> Re Send Order</a>';
         $html.='</div>';
         $html.= $paginationBlock;
