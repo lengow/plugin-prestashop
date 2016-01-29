@@ -139,7 +139,7 @@ class LengowList
             }
             foreach ($this->fields_list as $key => $values) {
                 if (isset($values['display_callback'])) {
-                    $value = call_user_func_array($values['display_callback'], array($key, $item[$key]));
+                    $value = call_user_func_array($values['display_callback'], array($key, $item[$key], $item));
                 } else {
                     if (isset($values['type'])) {
                         switch ($values["type"]) {
@@ -239,6 +239,7 @@ class LengowList
         data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'">';
         $html.= '<input type="hidden" name="p" value="'.$this->currentPage.'" />';
         $html.= $this->displayHeader().$this->displayContent().$this->displayFooter();
+        $html.= '<input type="submit" value="Search" style="visibility: hidden"/>';
         $html.= '</form>';
         return $html;
     }

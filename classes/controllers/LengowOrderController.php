@@ -101,12 +101,14 @@ class LengowOrderController extends LengowController
         $fields_list['id_order_lengow'] = array(
             'title' => $this->module->l('Id Order'),
             'class' => 'center',
+            'display_callback' => 'LengowOrderController::displayOrderLink',
             'filter' => true,
             'filter_key' => 'lo.id_order_lengow',
         );
         $fields_list['reference'] = array(
             'title' => $this->module->l('Ref Presta'),
             'class' => 'center',
+            'display_callback' => 'LengowOrderController::displayOrderLink',
             'filter' => true,
             'filter_key' => 'o.reference',
         );
@@ -129,7 +131,6 @@ class LengowOrderController extends LengowController
             'title' => $this->module->l('Total'),
             'align' => 'center',
             'type' => 'price',
-            'button_search' => true,
             'class' => 'nowrap'
         );
         $fields_list['log_status'] = array(
@@ -153,7 +154,8 @@ class LengowOrderController extends LengowController
             'lo.order_item as nb_item',
             'o.reference',
             'lo.date_add as order_date',
-            'lo.order_lengow_state as lengow_status'
+            'lo.order_lengow_state as lengow_status',
+            'lo.id_order'
         );
         $select_having = array(
             '(SELECT IFNULL(lli.type, 0) FROM ps_lengow_logs_import lli
@@ -245,8 +247,16 @@ class LengowOrderController extends LengowController
         return $shops;
     }
 
-    public static function displayLengowState($key, $value)
+    public static function displayLengowState($key, $value, $item)
     {
         return '<span class="lengow_label lengow_label_'.$value.'">'.$value.'</span>';
     }
+
+    public static function displayOrderLink($key, $value, $item)
+    {
+        $link = new LengowLink();
+        return '<a href="'.$link->getAbsoluteAdminLink('AdminOrders').'&vieworder&id_order='.$item['id_order'].
+        '" target="_blank">'.$value.'</a>';
+    }
+
 }

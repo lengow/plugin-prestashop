@@ -20,7 +20,10 @@
                 url: href + '&' + form,
                 method: 'POST',
                 data: {action: 'load_table'},
-                dataType: 'script'
+                dataType: 'script',
+                success: function() {
+                    init_tooltip();
+                }
             });
             return false;
         });
@@ -30,6 +33,20 @@
                 $('#lengow_order_wrapper .lengow_toolbar a').show();
             } else {
                 $('#table_order tbody .lengow_selection').prop('checked', false);
+                $('#lengow_order_wrapper .lengow_toolbar a').hide();
+            }
+        });
+        $('#lengow_order_wrapper').on('click', '.lengow_selection', function () {
+            var id_shop = $(this).parents('table').attr('id').split('_')[2];
+            $('#lengow_order_wrapper .lengow_toolbar a').show();
+
+            var findProductSelected = false;
+            $(this).parents('table').find('.lengow_selection').each(function (index) {
+                if ($(this).prop('checked')) {
+                    findProductSelected = true;
+                }
+            });
+            if (!findProductSelected) {
                 $('#lengow_order_wrapper .lengow_toolbar a').hide();
             }
         });
