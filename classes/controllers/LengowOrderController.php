@@ -94,6 +94,7 @@ class LengowOrderController extends LengowController
                 $fields_list['shop_name'] = array(
                     'title' => $this->module->l('Shop'),
                     'filter' => true,
+                    'filter_order' => true,
                     'filter_key' => 'shop.name',
                     'filter_type' => 'select',
                     'filter_collection' => $this->getShops()
