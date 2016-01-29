@@ -17,6 +17,7 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
  (function($) {
  	$(document).ready(function () {
  		$(document.body).addClass('lengow_body');

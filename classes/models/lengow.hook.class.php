@@ -425,11 +425,11 @@ class LengowHook
         }
 
         if (Tools::getValue('controller') == 'AdminModules' && Tools::getValue('configure') == 'lengow') {
-            $this->context->controller->addJs($this->module->getPathUri() . '/views/js/admin.js');
+            $this->context->controller->addJs($this->module->getPathUri() . '/views/js/lengow/admin.js');
             $this->context->controller->addCss($this->module->getPathUri() . '/views/css/admin.css');
         }
         if (Tools::getValue('controller') == 'AdminOrders') {
-            $this->context->controller->addJs($this->module->getPathUri() . '/views/js/admin.js');
+            $this->context->controller->addJs($this->module->getPathUri() . '/views/js/lengow/admin.js');
         }
         $args = 0; // Prestashop validator
     }
@@ -500,7 +500,7 @@ class LengowHook
                 'action_reimport'       => $action_reimport,
                 'order_id'              => $args['id_order'],
                 'add_script'            => $add_script,
-                'url_script'            => _PS_MODULE_LENGOW_DIR_.'views/js/admin.js',
+                'url_script'            => _PS_MODULE_LENGOW_DIR_.'views/js/lengow/admin.js',
                 'version'               => _PS_VERSION_
             );
 

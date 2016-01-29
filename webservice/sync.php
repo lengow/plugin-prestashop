@@ -19,14 +19,14 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-class LengowSync extends SpecificPrice
-{
+@set_time_limit(0);
+@ini_set('memory_limit', '512M');
 
+$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
 
-    public function __construct()
-    {
+$sep = DIRECTORY_SEPARATOR;
+require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
+require_once $currentDirectory . 'init.php';
+require_once $currentDirectory . 'modules/lengow/lengow.php';
 
-    }
-
-}
 

@@ -61,4 +61,4 @@
     {/foreach}
 </div>
 
-<script type="text/javascript" src="/modules/lengow/views/js/feed.js"></script>
+<script type="text/javascript" src="/modules/lengow/views/js/lengow/feed.js"></script>

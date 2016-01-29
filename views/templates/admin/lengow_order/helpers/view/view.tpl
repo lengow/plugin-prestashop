@@ -26,4 +26,4 @@
 </div>
 
 
-<script type="text/javascript" src="/modules/lengow/views/js/order.js"></script>
+<script type="text/javascript" src="/modules/lengow/views/js/lengow/order.js"></script>

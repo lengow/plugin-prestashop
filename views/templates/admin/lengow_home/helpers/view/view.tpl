@@ -5,4 +5,4 @@
 
 
 
-<a class="lengow_btn">Sync Data</a>
+<a href="#" class="lengow_btn lengow_sync">Sync Data</a>
