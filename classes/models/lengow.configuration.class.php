@@ -249,13 +249,15 @@ public static function updateValue($key, $values, $html = false, $id_shop_group 
         parent::updateValue($key, $values, $html, $id_shop_group, $id_shop);
     }
 
-    public static function getReportEmailAddress()
-    {
-        $emails = explode(',', self::get('LENGOW_REPORT_MAIL_ADDRESS'));
-        if ($emails[0] == '') {
-            $emails[0] = self::get('PS_SHOP_EMAIL');
-        }
-        return $emails;
+    
+}
+
+public static function getReportEmailAddress()
+{
+    $emails = explode(',', self::get('LENGOW_REPORT_MAIL_ADDRESS'));
+    if ($emails[0] == '') {
+        $emails[0] = self::get('PS_SHOP_EMAIL');
     }
+    return $emails;
 }
 }
