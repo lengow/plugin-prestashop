@@ -38,6 +38,8 @@
             $('#lengow_order_wrapper .lengow_form_table').submit();
             return false;
         });
+        reload_table_js();
+
         $('#lengow_order_wrapper').on('submit', '.lengow_form_table', function () {
             var href = $(this).attr('data-href');
             var form = $(this).serialize();
@@ -48,6 +50,7 @@
                 dataType: 'script',
                 success: function() {
                     init_tooltip();
+                    reload_table_js();
                 }
             });
             return false;
@@ -77,3 +80,14 @@
         });
     });
 })(lengow_jquery);
+
+function reload_table_js() {
+    lengow_jquery('.lengow_datepicker').datepicker({
+        format : 'dd/mm/yyyy',
+        autoclose: true,
+        clearBtn: true
+    }).on('changeDate', function(e) {
+        lengow_jquery('#lengow_order_wrapper .lengow_form_table').submit();
+    });
+
+}

@@ -18,3 +18,17 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+
+(function ($) {
+    $(document).ready(function () {
+
+        $('#lengow_sync_btn').on('click', function(){
+            $('#lengow_home_content').hide();
+            $('#lengow_home_frame').show();
+        });
+
+
+
+
+    });
+})(lengow_jquery);

@@ -121,6 +121,8 @@ class LengowOrderController extends LengowController
             'title' => $this->module->l('Date'),
             'class' => 'center',
             'type' => 'date',
+            'filter' => true,
+            'filter_type' => 'date',
             'filter_key' => 'lo.order_date',
             'filter_order' => true,
         );

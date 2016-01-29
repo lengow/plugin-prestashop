@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-switch.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-datepicker.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/admin.css">
 <link rel="stylesheet" href="/modules/lengow/views/css/font-awesome.css">
 
@@ -42,4 +43,5 @@
             <script type="text/javascript" src="/modules/lengow/views/js/lengow/admin.js"></script>
             <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-switch.js"></script>
             <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-select.min.js"></script>
+            <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-datepicker.js"></script>
             <script type="text/javascript" src="/modules/lengow/views/js/clipboard.js"></script>

@@ -443,6 +443,9 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_table .lengow_filter input {
     width: 100% !important;
 }
+.lengow_table .lengow_filter input.lengow_datepicker {
+    width: 70px !important;
+}
 
 .lengow_table a.table_order{
     text-decoration: none !important;

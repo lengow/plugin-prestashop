@@ -111,6 +111,14 @@ class LengowList
                         }
                         $html.= '</select>';
                         break;
+                    case 'date':
+                        $from = isset($value['from']) ? $value['from'] : null;
+                        $to = isset($value['to']) ? $value['to'] : null;
+                        $html .= '<input type="text" name="'.$name.'[from]"
+                        value="'.$from.'" class="lengow_datepicker" />';
+                        $html .= '<input type="text" name="'.$name.'[to]"
+                        value="'.$to.'" class="lengow_datepicker" />';
+                        break;
                 }
             } elseif (isset($values['button_search']) && $values['button_search']) {
                 $html .= '<input type="submit" value="Search" />';
@@ -312,27 +320,56 @@ class LengowList
         $having = array();
         if (isset($_REQUEST['table_'.$this->id])) {
             foreach ($_REQUEST['table_'.$this->id] as $key => $value) {
-                if (Tools::strlen($value)>0) {
-                    if ($fieldValue = $this->findValueByKey($key)) {
-                        $type = isset($fieldValue['type']) ? $fieldValue['type'] : 'text';
-                        switch ($type) {
-                            case 'log_status':
+
+
+                if ($fieldValue = $this->findValueByKey($key)) {
+                    $type = isset($fieldValue['type']) ? $fieldValue['type'] : 'text';
+                    switch ($type) {
+                        case 'log_status':
+                            if (Tools::strlen($value)>0) {
                                 switch ($value) {
                                     case 1:
-                                        $having[] = ' '.pSQL($fieldValue['filter_key']).' IS NULL';
+                                        $having[] = ' ' . pSQL($fieldValue['filter_key']) . ' IS NULL';
                                         break;
                                     case 2:
-                                        $having[] = ' '.pSQL($fieldValue['filter_key']).' IS NOT NULL';
+                                        $having[] = ' ' . pSQL($fieldValue['filter_key']) . ' IS NOT NULL';
                                         break;
                                 }
-                                break;
-                            case 'select':
-                            case 'text':
-                                $where[] = ' '.pSQL($fieldValue['filter_key']).' LIKE "%'.pSQL($value).'%"';
-                                break;
-                        }
+                            }
+                            break;
+                        case 'select':
+                        case 'text':
+                            if (Tools::strlen($value)>0) {
+                                $where[] = ' ' . pSQL($fieldValue['filter_key']) . ' LIKE "%' . pSQL($value) . '%"';
+                            }
+                            break;
+                        case 'date':
+                            $from = isset($value['from']) ? $value['from'] : null;
+                            $to = isset($value['to']) ? $value['to'] : null;
+                            if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $from) &&
+                                preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $to) ) {
+
+                                $from = DateTime::createFromFormat('d/m/Y', $from);
+                                $from = $from->format('Y-m-d');
+                                $to = DateTime::createFromFormat('d/m/Y', $to);
+                                $to = $to->format('Y-m-d');
+
+                                $where[] = ' '.pSQL($fieldValue['filter_key']).'
+                                BETWEEN "'.$from.' 00:00:00" AND "'.$to.' 23:59:59"';
+                            } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $from)) {
+                                $from = DateTime::createFromFormat('d/m/Y', $from);
+                                $from = $from->format('Y-m-d');
+                                $where[] = ' '.pSQL($fieldValue['filter_key']).' >= "'.$from.' 00:00:00"';
+                            } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $to)) {
+                                $to = DateTime::createFromFormat('d/m/Y', $to);
+                                $to = $to->format('Y-m-d');
+                                $where[] = ' '.pSQL($fieldValue['filter_key']).' <= "'.$to.' 23:59:59"';
+                            }
+                            break;
+
                     }
                 }
+
             }
         }
         if ($total) {

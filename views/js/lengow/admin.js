@@ -18,49 +18,49 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
- (function($) {
- 	$(document).ready(function () {
- 		$(document.body).addClass('lengow_body');
+(function ($) {
+    $(document).ready(function () {
+        $(document.body).addClass('lengow_body');
 
-		// Reimport Order
-		$('#reimport-order').click(function(e){
-			var url = $(this).data('url');
-			var orderid = $(this).data('orderid');
-			var lengoworderid = $(this).data('lengoworderid');
-			var feed_id = $(this).data('feedid');
-			var version = $(this).data('version');
+        // Reimport Order
+        $('#reimport-order').click(function (e) {
+            var url = $(this).data('url');
+            var orderid = $(this).data('orderid');
+            var lengoworderid = $(this).data('lengoworderid');
+            var feed_id = $(this).data('feedid');
+            var version = $(this).data('version');
 
-			var datas = {};
-			datas['url'] = url;
-			datas['orderid'] = orderid;
-			datas['lengoworderid'] = lengoworderid;
-			datas['feed_id'] = feed_id;
-			if (version < '1.5')
-				datas['action'] = 'reimport_order';
+            var datas = {};
+            datas['url'] = url;
+            datas['orderid'] = orderid;
+            datas['lengoworderid'] = lengoworderid;
+            datas['feed_id'] = feed_id;
+            if (version < '1.5')
+                datas['action'] = 'reimport_order';
 
-			// Show loading div
-			$('#ajax_running').fadeIn(300);
-			$.getJSON(url, datas, function(data) {
-				$('#ajax_running').fadeOut(0);
-				if (data.status == 'success') {
-					window.location.replace(data.new_order_url);
-				} else {
-					alert(data.msg);
-				}
+            // Show loading div
+            $('#ajax_running').fadeIn(300);
+            $.getJSON(url, datas, function (data) {
+                $('#ajax_running').fadeOut(0);
+                if (data.status == 'success') {
+                    window.location.replace(data.new_order_url);
+                } else {
+                    alert(data.msg);
+                }
 
-			});
-			return false;
-		});
-		$(".lengow_switch").bootstrapSwitch();
-		//$('.lengow_select').selectpicker('render');
+            });
+            return false;
+        });
+        $('.lengow_switch').bootstrapSwitch();
+        //$('.lengow_select').selectpicker('render');
 
-		init_tooltip();
-		var clipboard = new Clipboard('.lengow_copy');
-	});
+        init_tooltip();
+        var clipboard = new Clipboard('.lengow_copy');
+    });
 })(lengow_jquery);
 
 function init_tooltip() {
-	lengow_jquery('.lengow_link_tooltip').tooltip( {
-		'template' : '<div class="lengow_tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-	});
+    lengow_jquery('.lengow_link_tooltip').tooltip({
+        'template': '<div class="lengow_tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+    });
 }
