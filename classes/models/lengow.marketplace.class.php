@@ -29,9 +29,9 @@ class LengowMarketplace
      * @var array all valid actions
      */
     public static $VALID_ACTIONS = array(
-                                'ship' ,
-                                'cancel'
-                                );
+        'ship' ,
+        'cancel'
+    );
 
     /**
      * @var mixed all markeplaces allowed for an account ID
@@ -341,7 +341,7 @@ class LengowMarketplace
             // if line_id is a required parameter -> send a call for each line_id
             if (in_array('line', $all_args)) {
                 $order_line_sent = false;
-                $order_lines = LengowOrder::getOrderLineFromLengowOrder($order->id);
+                $order_lines = LengowOrder::getAllOrderLinesFromLengowOrder($order->id);
                 if ($order_lines) {
                     foreach ($order_lines as $order_line) {
                         $params['line'] = $order_line['id_order_line'];

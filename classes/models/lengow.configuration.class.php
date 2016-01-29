@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2016 Lengow SAS.
  *
@@ -19,6 +18,7 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 class LengowConfiguration extends Configuration
 {
 
@@ -247,6 +247,15 @@ public static function updateValue($key, $values, $html = false, $id_shop_group 
         parent::updateValue($key, $values, $html);
     } else {
         parent::updateValue($key, $values, $html, $id_shop_group, $id_shop);
+    }
+
+    public static function getReportEmailAddress()
+    {
+        $emails = explode(',', self::get('LENGOW_REPORT_MAIL_ADDRESS'));
+        if ($emails[0] == '') {
+            $emails[0] = self::get('PS_SHOP_EMAIL');
+        }
+        return $emails;
     }
 }
 }

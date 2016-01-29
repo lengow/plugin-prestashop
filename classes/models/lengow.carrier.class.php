@@ -166,7 +166,8 @@ class LengowCarrier extends Carrier
         $sep = DIRECTORY_SEPARATOR;
         $loaded = include_once _PS_MODULE_DIR_ . 'socolissimo' . $sep . 'classes' . $sep . 'SCFields.php';
         if (!$loaded) {
-            throw new LengowCarrierException('missing file ' . _PS_MODULE_DIR_ . 'socolissimo' . $sep . 'classes' . $sep . 'SCFields.php');
+            throw new LengowCarrierException('missing file ' . _PS_MODULE_DIR_ . 'socolissimo' . $sep .
+                'classes' . $sep . 'SCFields.php');
         }
 
         $customer = new LengowCustomer($id_customer);

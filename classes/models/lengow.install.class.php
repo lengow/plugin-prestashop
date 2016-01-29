@@ -19,7 +19,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-
 /**
  * The Lengow Import Class.
  *
@@ -37,6 +36,7 @@ class LengowInstall
         'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
         'Logs' => array('name' => 'AdminLengowLog', 'active' => true)
         );
+
 
     public function __construct($module)
     {
@@ -294,7 +294,7 @@ return true;
     *
     * @return boolean
     */
-    private function _checkFieldExists($table, $field)
+    public static function checkFieldExists($table, $field)
     {
         $sql = 'SHOW COLUMNS FROM '._DB_PREFIX_.$table.' LIKE \''.$field.'\'';
         $result = Db::getInstance()->executeS($sql);

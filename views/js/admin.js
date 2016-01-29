@@ -17,44 +17,47 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+(function($) {
+	$(document).ready(function () {
+		$(document.body).addClass('lengow_body');
 
-;lengow_jquery(document).ready(function() {
+		// Reimport Order
+		$('#reimport-order').click(function(e){
+			var url = $(this).data('url');
+			var orderid = $(this).data('orderid');
+			var lengoworderid = $(this).data('lengoworderid');
+			var feed_id = $(this).data('feedid');
+			var version = $(this).data('version');
 
-	$(document.body).addClass('lengow_body');
+			var datas = {};
+			datas['url'] = url;
+			datas['orderid'] = orderid;
+			datas['lengoworderid'] = lengoworderid;
+			datas['feed_id'] = feed_id;
+			if (version < '1.5')
+				datas['action'] = 'reimport_order';
 
-	// Reimport Order
-	$('#reimport-order').click(function(e){
-		var url = $(this).data('url');
-		var orderid = $(this).data('orderid');
-		var lengoworderid = $(this).data('lengoworderid');
-		var feed_id = $(this).data('feedid');
-		var version = $(this).data('version');
+			// Show loading div
+			$('#ajax_running').fadeIn(300);
+			$.getJSON(url, datas, function(data) {
+				$('#ajax_running').fadeOut(0);
+				if (data.status == 'success') {
+					window.location.replace(data.new_order_url);
+				} else {
+					alert(data.msg);
+				}
 
-		var datas = {};
-		datas['url'] = url;
-		datas['orderid'] = orderid;
-		datas['lengoworderid'] = lengoworderid;
-		datas['feed_id'] = feed_id;
-		if (version < '1.5')
-			datas['action'] = 'reimport_order';
-
-		// Show loading div
-		$('#ajax_running').fadeIn(300);
-		$.getJSON(url, datas, function(data) {
-			$('#ajax_running').fadeOut(0);
-			if (data.status == 'success') {
-				window.location.replace(data.new_order_url);
-			} else {
-				alert(data.msg);
-			}
-			
+			});
+			return false;
 		});
-		return false;
+		$(".lengow_switch").bootstrapSwitch();
+		init_tooltip();
+		var clipboard = new Clipboard('.lengow_copy');
 	});
-	$(".lengow_switch").bootstrapSwitch();
+})(lengow_jquery);
+
+function init_tooltip() {
 	lengow_jquery('.lengow_link_tooltip').tooltip( {
 		'template' : '<div class="lengow_tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
 	});
-	var clipboard = new Clipboard('.lengow_copy');
-});
-
+}

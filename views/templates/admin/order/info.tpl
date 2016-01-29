@@ -26,8 +26,6 @@
 		<li>{l s='Marketplace' mod='lengow'} : <strong>{$marketplace|escape:'htmlall':'UTF-8'}</strong></li>
 		{if $id_flux != 0}
 			<li>{l s='Feed ID' mod='lengow'} : <strong>{$id_flux|escape:'htmlall':'UTF-8'}</strong></li>
-		{else}
-			<li>{l s='ID order line' mod='lengow'} : <strong>{$id_order_line|escape:'htmlall':'UTF-8'}</strong></li>
 		{/if}
 		<li>{l s='Total amount paid on Marketplace' mod='lengow'} : <strong>{$total_paid|escape:'htmlall':'UTF-8'}</strong></li>
 		<li>{l s='Carrier from marketplace' mod='lengow'} : <strong>{$tracking_carrier|escape:'htmlall':'UTF-8'}</strong></li>

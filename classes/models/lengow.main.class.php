@@ -19,7 +19,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-
 /**
  * The Lengow Core Class.
  *
@@ -239,7 +238,7 @@ class LengowMain
         } else {
             LengowMain::log('## Start '.$type.' import ##', true);
             // 2nd step: start import process
-            LengowMain::setInProcess();
+            // LengowMain::setInProcess();
             // 3rd step: disable emails
             LengowMain::disableMail();
             // import of a specific order or all orders
@@ -307,7 +306,7 @@ class LengowMain
             LengowMain::log('## End '.$type.' import ##', true);
             // sending email in error for orders
             if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$debug) {
-                LengowMain::sendMailAlert();
+                // LengowMain::sendMailAlert();
             }
         }
     }
@@ -663,6 +662,9 @@ class LengowMain
      */
     public static function inTest()
     {
+        if (defined('PS_UNIT_TEST')) {
+            return true;
+        }
         if (isset($_SERVER['HTTP_USER_AGENT']) && Tools::substr($_SERVER['HTTP_USER_AGENT'], 0, 10) == 'GuzzleHttp') {
             return true;
         }
@@ -972,10 +974,7 @@ class LengowMain
             '{mail_title}' => 'Lengow imports logs',
             '{mail_body}' => $mail_body,
         );
-        $emails = explode(',', Configuration::get('LENGOW_REPORT_MAIL_ADDRESS'));
-        if (empty($emails[0])) {
-            $emails[0] = Configuration::get('PS_SHOP_EMAIL');
-        }
+        $emails = LengowConfiguration::getReportEmailAddress();
         foreach ($emails as $to) {
             if (!Mail::send(
                 (int)$cookie->id_lang,

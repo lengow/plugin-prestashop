@@ -33,5 +33,5 @@ if ($blockedIP) {
         <label for="exampleInputPassword1">Secret Token</label>
         <input type="password" class="form-control" name="secret_token"  id="secret_token" placeholder="SecretToken">
     </div>
-    <button type="submit" class="btn btn-default">Se Connecter</button>
+    <button type="submit" class="btn btn-default">Log In</button>
 </form>

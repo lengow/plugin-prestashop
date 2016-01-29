@@ -18,20 +18,22 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 ?>
 
-<h1>Logs</h1>
+<h1>Log Files</h1>
 
 <ul class="list-group">
 <?php
 foreach ($listFile as $file) {
     echo '<li class="list-group-item">';
-    echo '<a href="/modules/lengow/toolbox/log.php?action=download&file='.urlencode($file['short_path']).'">'
-        .$file['name'].'</a>';
+    echo '<a href="/modules/lengow/toolbox/log.php?action=download&file='.urlencode($file['short_path']).'">
+    <i class="fa fa-download"></i> '.$file['name'].'</a>';
     echo '</li>';
 }
 echo '<li class="list-group-item">';
-echo '<a href="/modules/lengow/toolbox/log.php?action=download_all">Tous les fichiers de logs</a>';
+echo '<a href="/modules/lengow/toolbox/log.php?action=download_all">
+        <i class="fa fa-download"></i> Download all files</a>';
 echo '</li>';
 ?>
 </ul>
