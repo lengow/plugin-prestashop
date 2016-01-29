@@ -114,9 +114,9 @@ class LengowList
                     case 'date':
                         $from = isset($value['from']) ? $value['from'] : null;
                         $to = isset($value['to']) ? $value['to'] : null;
-                        $html .= '<input type="text" name="'.$name.'[from]"
+                        $html .= 'From : <input type="text" name="'.$name.'[from]"
                         value="'.$from.'" class="lengow_datepicker" />';
-                        $html .= '<input type="text" name="'.$name.'[to]"
+                        $html .= '<br/>To :<input type="text" name="'.$name.'[to]"
                         value="'.$to.'" class="lengow_datepicker" />';
                         break;
                 }

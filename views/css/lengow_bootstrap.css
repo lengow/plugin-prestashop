@@ -439,6 +439,9 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_table .lengow_filter th {
     background:#CCCCCC;
 }
+.lengow_table tr.lengow_filter th {
+    text-align: right;
+}
 
 .lengow_table .lengow_filter input {
     width: 100% !important;
