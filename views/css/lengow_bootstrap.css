@@ -14,6 +14,19 @@
     height:50px;
 }
 
+.nav.lengow-nav.lengow-nav-bottom {
+    padding:0px;
+    background:#FFFFFF;
+    padding-left:50px;
+}
+
+body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a,
+body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:hover,
+body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:focus
+{
+    color:#5D6275;
+}
+
 #lengow_logo {
     width: 120px;
 }
@@ -78,8 +91,7 @@ body.lengow_body #content .lengow_breadcrumb {
     background: #2e3340;
     border: none;
     padding: 8px 15px;
-    margin-top: 0px;
-    margin-bottom: 17px;
+    margin: 0px;
     list-style: none;
 }
 body.lengow_body #content .lengow_breadcrumb>.active {
