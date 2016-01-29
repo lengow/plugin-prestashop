@@ -51,15 +51,15 @@
 			return false;
 		});
 		$(".lengow_switch").bootstrapSwitch();
-		$('.lengow_select').selectpicker('render');
+		//$('.lengow_select').selectpicker('render');
 
 		init_tooltip();
 		var clipboard = new Clipboard('.lengow_copy');
 	});
- })(lengow_jquery);
+})(lengow_jquery);
 
- function init_tooltip() {
- 	lengow_jquery('.lengow_link_tooltip').tooltip( {
- 		'template' : '<div class="lengow_tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
- 	});
- }
+function init_tooltip() {
+	lengow_jquery('.lengow_link_tooltip').tooltip( {
+		'template' : '<div class="lengow_tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+	});
+}
