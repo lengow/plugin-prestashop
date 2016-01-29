@@ -78,79 +78,79 @@ class LengowConfigurationForm
         $inputType = isset($input['type']) ? $input['type'] : 'text';
         switch ($inputType) {
             case 'checkbox':
-                $html.='<div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10"><div class="checkbox"><label>';
+            $html.='<div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10"><div class="checkbox"><label>';
                 $checked = $value ? 'checked' : '';
                 $html.= '<input name="'.$name.'" type="checkbox" '.$checked.' '.$readonly.'>';
                 $html.= $input['label'];
                 $html.= '</label></div></div></div>';
                 break;
-            case 'text':
+                case 'text':
                 $html.='<div class="form-group">
-                        <label class="col-sm-2 control-label">'.$input['label'].'</label>
-                        <div class="col-sm-10">
-                        <input type="text" name="'.$name.'"
-                        class="form-control" placeholder="'.$input['label'].'"
-                        value="'.$value.'" '.$readonly.'>
-                        </div>
-                        </div>';
-                break;
+                <label class="col-sm-2 control-label">'.$input['label'].'</label>
+                <div class="col-sm-10">
+                    <input type="text" name="'.$name.'"
+                    class="form-control" placeholder="'.$input['label'].'"
+                    value="'.$value.'" '.$readonly.'>
+                </div>
+            </div>';
+            break;
             case 'select':
-                $html.='<div class="form-group">
-                        <label class="col-sm-2 control-label">'.$input['label'].'</label>
-                        <div class="col-sm-10">
-                        <select class="form-control" name="'.$name.'">';
-                foreach ($input['collection'] as $row) {
-                    $selected =  $row['id'] == $value ? 'selected' : '';
-                    $html.='<option value="'.$row['id'].'" '.$selected.'>'.$row['text'].'</option>';
-                }
-                $html.= '</select></div></div>';
-        }
-        return $html;
-    }
-
-    public function postProcess($checkboxKeys)
-    {
-        if (_PS_VERSION_ < '1.5') {
-            $shopCollection = array(array('id_shop' => 1));
-        } else {
-            $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
-            $shopCollection = Db::getInstance()->ExecuteS($sql);
-        }
-
-        foreach ($_REQUEST as $key => $value) {
-            if (isset($this->fields[$key])) {
-                if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
-                    foreach ($value as $shopId => $shopValue) {
-                        LengowConfiguration::updateValue($key, $shopValue, false, null, $shopId);
+            $html.='<div class="form-group">
+            <label class="col-sm-2 control-label">'.$input['label'].'</label>
+            <div class="col-sm-10">
+                <select class="form-control lengow_select" name="'.$name.'">';
+                    foreach ($input['collection'] as $row) {
+                        $selected =  $row['id'] == $value ? 'selected' : '';
+                        $html.='<option value="'.$row['id'].'" '.$selected.'>'.$row['text'].'</option>';
                     }
+                    $html.= '</select></div></div>';
+                }
+                return $html;
+            }
+
+            public function postProcess($checkboxKeys)
+            {
+                if (_PS_VERSION_ < '1.5') {
+                    $shopCollection = array(array('id_shop' => 1));
                 } else {
-                    LengowConfiguration::updateGlobalValue($key, $value);
+                    $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+                    $shopCollection = Db::getInstance()->ExecuteS($sql);
                 }
-            }
-        }
-        foreach ($shopCollection as $shop) {
-            $shopId = $shop['id_shop'];
-            foreach ($this->fields as $key => $value) {
-                if (!in_array($key, $checkboxKeys)) {
-                    continue;
+
+                foreach ($_REQUEST as $key => $value) {
+                    if (isset($this->fields[$key])) {
+                        if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
+                            foreach ($value as $shopId => $shopValue) {
+                                LengowConfiguration::updateValue($key, $shopValue, false, null, $shopId);
+                            }
+                        } else {
+                            LengowConfiguration::updateGlobalValue($key, $value);
+                        }
+                    }
                 }
-                if ($value['type'] == 'checkbox' && isset($value['shop']) && $value['shop']) {
-                    if (!isset($_REQUEST[$key][$shopId])) {
-                        LengowConfiguration::updateValue($key, false, false, null, $shopId);
+                foreach ($shopCollection as $shop) {
+                    $shopId = $shop['id_shop'];
+                    foreach ($this->fields as $key => $value) {
+                        if (!in_array($key, $checkboxKeys)) {
+                            continue;
+                        }
+                        if ($value['type'] == 'checkbox' && isset($value['shop']) && $value['shop']) {
+                            if (!isset($_REQUEST[$key][$shopId])) {
+                                LengowConfiguration::updateValue($key, false, false, null, $shopId);
+                            }
+                        }
+                    }
+                }
+                foreach ($this->fields as $key => $value) {
+                    if (!in_array($key, $checkboxKeys)) {
+                        continue;
+                    }
+                    if ($value['type'] == 'checkbox' && (!isset($value['shop']) || !$value['shop'])) {
+                        if (!isset($_REQUEST[$key])) {
+                            LengowConfiguration::updateGlobalValue($key, false);
+                        }
                     }
                 }
             }
         }
-        foreach ($this->fields as $key => $value) {
-            if (!in_array($key, $checkboxKeys)) {
-                continue;
-            }
-            if ($value['type'] == 'checkbox' && (!isset($value['shop']) || !$value['shop'])) {
-                if (!isset($_REQUEST[$key])) {
-                    LengowConfiguration::updateGlobalValue($key, false);
-                }
-            }
-        }
-    }
-}

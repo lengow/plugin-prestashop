@@ -50,7 +50,7 @@ class AdminLengowOrderController extends ModuleAdminController
 
         $this->lengow_controller = new LengowOrderController(array(
             'breadcrumb_title' => 'Orders'
-        ));
+            ));
         $this->lengow_controller->postProcess();
         $this->lengow_controller->display();
 

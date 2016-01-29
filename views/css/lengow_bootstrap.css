@@ -473,3 +473,22 @@ body.lengow_body #content .lengow_breadcrumb a {
     font-size:16px;
     padding:20px;
 }
+
+/*ORDER SETTING PAGE */
+.lengow_form .container, .lengow_form .container2 {
+    margin: 80px;
+}
+
+.lengow_form .container {
+   height: 300px;
+}
+
+.lengow_form .container2 {
+    height: 200px;
+}
+
+.lengow_form label {
+    float: none;
+    display: block;
+    text-align: left;
+}

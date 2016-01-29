@@ -31,11 +31,12 @@ class LengowInstall
     private $lengowHook;
 
     static private $tabs = array(
-        'Home' => 'AdminLengowHome',
-        'Product' => 'AdminLengowFeed',
-        'Orders' => 'AdminLengowOrder',
-        'Logs' => 'AdminLengowLog'
-    );
+        'Home' => array('name' => 'AdminLengowHome', 'active' => true),
+        'Product' => array('name' => 'AdminLengowFeed', 'active' => true),
+        'Orders' => array('name' => 'AdminLengowOrder', 'active' => true),
+        'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
+        'Logs' => array('name' => 'AdminLengowLog', 'active' => true)
+        );
 
     public function __construct($module)
     {
@@ -96,13 +97,13 @@ class LengowInstall
             'LENGOW_LAST_IMPORT_CRON',
             'LENGOW_LAST_EXPORT',
             'LENGOW_LAST_IMPORT_MANUAL'
-        );
-        foreach ($configurations as $configuration) {
-            Configuration::deleteByName($configuration);
-        }
-        $this->uninstallTab();
-        return true;
-    }
+            );
+foreach ($configurations as $configuration) {
+    Configuration::deleteByName($configuration);
+}
+$this->uninstallTab();
+return true;
+}
 
     /**
      * Add admin Tab (Controller)
@@ -125,20 +126,22 @@ class LengowInstall
         $tab_parent->id_parent = 0;
         $tab_parent->add();
 
-        foreach (self::$tabs as $name => $controllerName) {
+        foreach (self::$tabs as $name => $values) {
             if (_PS_VERSION_ < '1.5') {
-                $tab_name = $controllerName . "14";
+                $tab_name = $values['name'] . "14";
             } else {
-                $tab_name = $controllerName;
+                $tab_name = $values['name'];
             }
 
             $tab = new Tab();
             if (_PS_VERSION_ < '1.5') {
-                $tab->class_name = $controllerName . "14";
+                $tab->class_name = $values['name'] . "14";
                 $tab->id_parent = $tab_parent->id;
             } else {
-                $tab->class_name = $controllerName;
+                $tab->class_name = $values['name'];
                 $tab->id_parent = $tab_parent->id;
+                $tab->active = $values['active'];
+
             }
 
             $tab->module = $this->lengowModule->name;
@@ -173,30 +176,30 @@ class LengowInstall
     private static function setDefaultValues()
     {
         return
-            Configuration::updateValue('LENGOW_AUTHORIZED_IP', $_SERVER['REMOTE_ADDR']) &&
-            Configuration::updateValue('LENGOW_TRACKING_ENABLED', '') &&
-            Configuration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', false) &&
-            Configuration::updateValue('LENGOW_EXPORT_DISABLED', false) &&
-            Configuration::updateValue('LENGOW_EXPORT_VARIATION_ENABLED', true) &&
-            Configuration::updateValue('LENGOW_EXPORT_FORMAT', 'csv') &&
-            Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', 2) &&
-            Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', 4) &&
-            Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', 6) &&
-            Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', true) &&
-            Configuration::updateValue('LENGOW_IMPORT_DAYS', 5) &&
-            Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
-            Configuration::updateValue('LENGOW_IMPORT_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
-            Configuration::updateValue('LENGOW_CRON_ENABLED', false) &&
-            Configuration::updateValue('LENGOW_IMPORT_PREPROD_ENABLED', false) &&
-            Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false) &&
-            Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true) &&
-            Configuration::updateValue('LENGOW_REPORT_MAIL_ADDRESS', '') &&
-            Configuration::updateValue(
-                'LENGOW_IMPORT_SINGLE_ENABLED',
-                version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
+        Configuration::updateValue('LENGOW_AUTHORIZED_IP', $_SERVER['REMOTE_ADDR']) &&
+        Configuration::updateValue('LENGOW_TRACKING_ENABLED', '') &&
+        Configuration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', false) &&
+        Configuration::updateValue('LENGOW_EXPORT_DISABLED', false) &&
+        Configuration::updateValue('LENGOW_EXPORT_VARIATION_ENABLED', true) &&
+        Configuration::updateValue('LENGOW_EXPORT_FORMAT', 'csv') &&
+        Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', 2) &&
+        Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', 4) &&
+        Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', 6) &&
+        Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', true) &&
+        Configuration::updateValue('LENGOW_IMPORT_DAYS', 5) &&
+        Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
+        Configuration::updateValue('LENGOW_IMPORT_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
+        Configuration::updateValue('LENGOW_CRON_ENABLED', false) &&
+        Configuration::updateValue('LENGOW_IMPORT_PREPROD_ENABLED', false) &&
+        Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false) &&
+        Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true) &&
+        Configuration::updateValue('LENGOW_REPORT_MAIL_ADDRESS', '') &&
+        Configuration::updateValue(
+            'LENGOW_IMPORT_SINGLE_ENABLED',
+            version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
             ) &&
-            Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
-            Configuration::updateValue('LENGOW_IMPORT_SHIP_MP_ENABLED', false);
+        Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
+        Configuration::updateValue('LENGOW_IMPORT_SHIP_MP_ENABLED', false);
     }
 
 
@@ -210,7 +213,7 @@ class LengowInstall
         // Add Lengow order error status
         if (_PS_VERSION_ >= '1.5') {
             $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state
-            WHERE module_name = \''.$this->lengowModule->name.'\'');
+                WHERE module_name = \''.$this->lengowModule->name.'\'');
             if (empty($states)) {
                 $lengow_state = new OrderState();
                 $lengow_state->send_email = false;
@@ -238,7 +241,7 @@ class LengowInstall
             }
         } else {
             $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state_lang
-            WHERE name = \'Erreur technique - Lengow\' LIMIT 1');
+                WHERE name = \'Erreur technique - Lengow\' LIMIT 1');
             if (empty($states)) {
                 $lengow_state = new OrderState();
                 $lengow_state->send_email = false;
