@@ -132,8 +132,11 @@ class LengowCarrier extends Carrier
             if (!LengowMain::isSoColissimoAvailable()) {
                 return LengowCarrier::COMPATIBILITY_KO;
             }
-            return LengowCarrier::addSoColissimo($id_cart, $id_customer,
-                $shipping_address) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
+            return LengowCarrier::addSoColissimo(
+                $id_cart,
+                $id_customer,
+                $shipping_address
+            ) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
         } else {
             // Mondial Relay
             if (!LengowMain::isMondialRelayAvailable()) {
@@ -145,8 +148,12 @@ class LengowCarrier extends Carrier
                 if (!$relay) {
                     throw new LengowCarrierException('relay ' . $shipping_address->id_relay . ' could not be found');
                 }
-                return LengowCarrier::addMondialRelay($relay, $id_customer, $id_carrier,
-                    $id_cart) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
+                return LengowCarrier::addMondialRelay(
+                    $relay,
+                    $id_customer,
+                    $id_carrier,
+                    $id_cart
+                ) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
             }
         }
         return LengowCarrier::NO_COMPATIBLITY;

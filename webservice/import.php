@@ -67,8 +67,9 @@ if (Tools::getIsset('marketplace')) {
     $params['marketplace_name'] = (string)Tools::getValue('marketplace');
 }
 if (Tools::getIsset('shop') && is_numeric(Tools::getValue('shop'))) {
-    $params['shop'] = (int)Tools::getValue('shop');
+    $params['shop_id'] = (int)Tools::getValue('shop');
 }
 $params['type'] = (count($params) > 0 ? 'manual' : 'cron');
 // import orders
-LengowMain::importOrders($params);
+$import = new LengowImport($params);
+$import->exec();

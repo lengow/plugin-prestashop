@@ -27,16 +27,15 @@ class LengowInstall
 {
 
     private $lengowModule;
+
     private $lengowHook;
 
     static private $tabs = array(
         'Home' => array('name' => 'AdminLengowHome', 'active' => true),
         'Product' => array('name' => 'AdminLengowFeed', 'active' => true),
         'Orders' => array('name' => 'AdminLengowOrder', 'active' => true),
-        'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
-        'Logs' => array('name' => 'AdminLengowLog', 'active' => true)
-        );
-
+        'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false)
+    );
 
     public function __construct($module)
     {
@@ -54,7 +53,6 @@ class LengowInstall
         $this->update();
 
     }
-
 
     public function uninstall()
     {
@@ -98,12 +96,12 @@ class LengowInstall
             'LENGOW_LAST_EXPORT',
             'LENGOW_LAST_IMPORT_MANUAL'
             );
-foreach ($configurations as $configuration) {
-    Configuration::deleteByName($configuration);
-}
-$this->uninstallTab();
-return true;
-}
+        foreach ($configurations as $configuration) {
+            Configuration::deleteByName($configuration);
+        }
+        $this->uninstallTab();
+        return true;
+    }
 
     /**
      * Add admin Tab (Controller)
@@ -197,11 +195,10 @@ return true;
         Configuration::updateValue(
             'LENGOW_IMPORT_SINGLE_ENABLED',
             version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
-            ) &&
+        ) &&
         Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
         Configuration::updateValue('LENGOW_IMPORT_SHIP_MP_ENABLED', false);
     }
-
 
     /**
      * Add error status to reimport order
