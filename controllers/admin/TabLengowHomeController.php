@@ -27,9 +27,7 @@ class AdminLengowHome14 extends AdminTab
 {
     public function __construct()
     {
-        $this->lengow_controller = new LengowHomeController(array(
-            'breadcrumb_title' => 'Home'
-        ));
+        $this->lengow_controller = new LengowHomeController();
         $this->lengow_controller->postProcess();
 
         parent::__construct();

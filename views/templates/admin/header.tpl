@@ -25,16 +25,6 @@
             {$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')}">Orders</a></li>
         </ul>
 
-        <ol class="breadcrumb lengow_breadcrumb">
-            <li><a href="
-                {if version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-                {$link->getAdminLink('AdminLengowHome')}
-                {else}#
-                {/if}">Lengow</a></li>
-                {if $current_controller != 'AdminLengowHome'}
-                <li class="active">{$breadcrumb_title}</li>
-                {/if}
-            </ol>
             <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
             <script type="text/javascript">
                 var lengow_jquery = $.noConflict(true);

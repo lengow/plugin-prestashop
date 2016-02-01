@@ -29,9 +29,6 @@ class LengowController
     {
         $this->module = Module::getInstanceByName('lengow');
         $this->context = Context::getContext();
-
-        $breadcrumbTitle = isset($params['breadcrumb_title']) ? $params['breadcrumb_title'] : '';
-        $this->context->smarty->assign('breadcrumb_title', $breadcrumbTitle);
         $this->context->smarty->assign('current_controller', get_class($this));
     }
 

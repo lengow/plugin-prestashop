@@ -22,4 +22,39 @@
 class LengowHomeController extends LengowController
 {
 
+    /**
+     * Process Post Parameters
+     */
+    public function postProcess()
+    {
+        $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
+        if ($action) {
+            switch ($action) {
+                case 'get_sync_data':
+                    $data = array();
+                    $data['function'] = 'sync';
+                    $data['parameters'] = LengowSync::getSyncData();
+                    echo Tools::jsonEncode($data);
+                    break;
+                case 'sync':
+                    $action = isset($_REQUEST['data']) ?$_REQUEST['data'] : false;
+                    LengowSync::sync($action);
+                    echo "$('#lengow_home_content').show();";
+                    echo "$('#lengow_home_frame').hide();";
+                    echo "$('#lengow_home_iframe').attr('src','');";
+                    break;
+            }
+            exit();
+        }
+    }
+
+    /**
+     * Display data page
+     */
+    public function display()
+    {
+        $lengowLink = new LengowLink();
+        $this->context->smarty->assign('sync_link', $lengowLink->getAbsoluteAdminLink("AdminLengowHome", true));
+        parent::display();
+    }
 }

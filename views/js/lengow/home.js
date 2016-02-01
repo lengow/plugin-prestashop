@@ -25,10 +25,45 @@
         $('#lengow_sync_btn').on('click', function(){
             $('#lengow_home_content').hide();
             $('#lengow_home_frame').show();
+            var href = $(this).data('href');
+
+            var sync_iframe = document.getElementById('lengow_home_iframe');
+            sync_iframe.onload = function() {
+                $.ajax({
+                    url: href,
+                    method: 'POST',
+                    data: {action: 'get_sync_data'},
+                    dataType: 'json',
+                    success: function(data) {
+                        var targetFrame = document.getElementById("lengow_home_iframe").contentWindow;
+                        targetFrame.postMessage(data, '*');
+                    }
+                });
+            };
+            sync_iframe.src = '/modules/lengow/webservice/sync.php';
         });
 
+        window.addEventListener("message", receiveMessage, false);
 
+        function receiveMessage(event)
+        {
+            //if (event.origin !== "http://solution.lengow.com")
+            //    return;
 
-
+            switch(event.data.function){
+                case 'back':
+                    $('#lengow_home_content').show();
+                    $('#lengow_home_frame').hide();
+                    $('#lengow_home_iframe').attr('src','');
+                    break;
+                case 'sync':
+                    $.ajax({
+                        method: 'POST',
+                        data: {action: 'sync', data: event.data.parameters},
+                        dataType: 'script'
+                    });
+                    break;
+            }
+        }
     });
 })(lengow_jquery);
