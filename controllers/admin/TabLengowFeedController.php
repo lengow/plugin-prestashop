@@ -27,9 +27,7 @@ class AdminLengowFeed14 extends AdminTab
 {
     public function __construct()
     {
-        $this->lengow_controller = new LengowFeedController(array(
-            'breadcrumb_title' => 'Product'
-        ));
+        $this->lengow_controller = new LengowFeedController();
         $this->lengow_controller->postProcess();
 
         parent::__construct();

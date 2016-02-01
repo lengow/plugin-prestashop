@@ -48,9 +48,7 @@ class AdminLengowFeedController extends ModuleAdminController
 
         parent::__construct();
 
-        $this->lengow_controller = new LengowFeedController(array(
-            'breadcrumb_title' => 'Product'
-        ));
+        $this->lengow_controller = new LengowFeedController();
         $this->lengow_controller->postProcess();
         $this->lengow_controller->display();
     }
