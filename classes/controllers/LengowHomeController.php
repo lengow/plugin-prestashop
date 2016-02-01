@@ -22,6 +22,9 @@
 class LengowHomeController extends LengowController
 {
 
+    /**
+     * Process Post Parameters
+     */
     public function postProcess()
     {
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
@@ -50,20 +53,8 @@ class LengowHomeController extends LengowController
      */
     public function display()
     {
-
-
-
-
         $lengowLink = new LengowLink();
-        //$this->context->smarty->assign('sync_data', $lengowLink->getAbsoluteAdminLink("AdminLengowHome"));
-        $this->context->smarty->assign('sync_link', $lengowLink->getAbsoluteAdminLink("AdminLengowHome"));
-
-
-//        $this->context->smarty->assign('report_mail_address', LengowConfiguration::getReportEmailAddress());
-//        $this->context->smarty->assign('lengow_table', $this->buildTable());
-//        $this->context->smarty->assign('orderCollection', $orderCollection);
+        $this->context->smarty->assign('sync_link', $lengowLink->getAbsoluteAdminLink("AdminLengowHome", true));
         parent::display();
     }
-
-
 }

@@ -25,10 +25,10 @@
         $('#lengow_sync_btn').on('click', function(){
             $('#lengow_home_content').hide();
             $('#lengow_home_frame').show();
+            var href = $(this).data('href');
 
             var sync_iframe = document.getElementById('lengow_home_iframe');
             sync_iframe.onload = function() {
-                href = $(this).data('href');
                 $.ajax({
                     url: href,
                     method: 'POST',
