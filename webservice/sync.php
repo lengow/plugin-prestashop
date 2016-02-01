@@ -30,3 +30,57 @@ require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules/lengow/lengow.php';
 
 
+?>
+<html>
+<head>
+    <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
+</head>
+<body>
+<h1>Lengow Page</h1>
+<div id="call">
+    <a id="link_call" href="#">Send Information To Prestashop</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a id="link_cancel" href="#">Cancel Link</a>
+</div>
+<div id="parameters">
+
+</div>
+</body>
+
+<script type="text/javascript">
+    window.addEventListener("message", receiveMessage, false);
+
+    function receiveMessage(event) {
+        //if (event.origin !== "http://solution.lengow.com")
+        //    return;
+        switch (event.data.function) {
+            case 'sync':
+                global_parameters = event.data.parameters;
+                document.getElementById("parameters").innerHTML = 'Parameters : <br/><br/>' +
+                    JSON.stringify(event.data.parameters);
+                break;
+        }
+    }
+
+    $('#link_cancel').click(function () {
+        parent.postMessage({"function": "back"}, "*");
+    });
+
+    $('#link_call').click(function () {
+
+        var return_data = {
+            "function": "sync",
+            "parameters": {}
+        };
+        jQuery.each(global_parameters.shops, function (i, shop) {
+            return_data.parameters[shop.token] = {
+                "account_id": "155",
+                "access_token": "09da83db3f332320858e7dff7514f947f3b4860417714c44a1e7c55db336a22d",
+                "secret_token": "8eac31d7ee9a4acea0a16df12c004bc6b821c4bd2eafbc8281c31796fd88723d"
+            }
+        });
+        parent.postMessage(return_data, "*");
+    });
+
+</script>
+</html>
