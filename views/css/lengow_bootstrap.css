@@ -14,6 +14,10 @@
     height:50px;
 }
 
+body.lengow_body #content .nav.lengow-nav.lengow-nav-top li.active a {
+    border-bottom:5px solid #59BDC0;
+}
+
 .nav.lengow-nav.lengow-nav-bottom {
     padding:0px;
     background:#FFFFFF;
@@ -24,7 +28,17 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a,
 body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:hover,
 body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:focus
 {
+    margin-top:0px;
+    height: 30px;
+    padding-top: 10px;
     color:#5D6275;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom li.active a {
+    background:#C0E0E1;
+    border:0px;
 }
 
 #lengow_logo {
@@ -36,11 +50,11 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:focus
 }
 
 body.lengow_body #content { padding:0px; }
-body.lengow_body #content .nav.lengow-nav>li>a:hover,
-body.lengow_body #content .nav.lengow-nav>li.active>a:hover,
-body.lengow_body #content .nav.lengow-nav>li>a,
-body.lengow_body #content .nav.lengow-nav>li>a:focus,
-body.lengow_body #content .nav.lengow-nav>li.active>a:focus{
+body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li>a:hover,
+body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li.active>a:hover,
+body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li>a,
+body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li>a:focus,
+body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li.active>a:focus{
     color: white;
     font-size: 16px;
     font-family: Open Sans;
@@ -584,5 +598,16 @@ body.lengow_body #content .lengow_breadcrumb a {
     text-align: left;
 }
 
+/* HELP PAGE */
 
+#lengow_help_wrapper {
+    padding:0px;
+}
+#lengow_help_wrapper iframe {
+    width:100%;
+    border:none;
+    margin:0px;
+    margin-top: -6px;
+    height:100%;
 
+}

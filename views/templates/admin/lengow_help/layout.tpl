@@ -18,13 +18,5 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<ul class="nav nav-pills lengow-nav lengow-nav-bottom">
-	<li role="presentation" class="{if $current_controller == 'LengowOrderController'}active{/if}">
-		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">Overview
-		</a>
-	</li>
-	<li role="presentation" class="{if $current_controller == 'LengowOrderSettingController'}active{/if}">
-		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}">Parameters
-		</a>
-	</li>
-</ul>
+{include file='../header.tpl'}
+{html_entity_decode($content|escape:'htmlall':'UTF-8')}

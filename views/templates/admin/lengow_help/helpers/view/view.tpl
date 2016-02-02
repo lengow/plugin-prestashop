@@ -17,14 +17,8 @@
  *  @copyright 2015 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
+<div id="lengow_help_wrapper">
+    <iframe src="/modules/lengow/webservice/help.php"></iframe>
+</div>
 
-<ul class="nav nav-pills lengow-nav lengow-nav-bottom">
-	<li role="presentation" class="{if $current_controller == 'LengowOrderController'}active{/if}">
-		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">Overview
-		</a>
-	</li>
-	<li role="presentation" class="{if $current_controller == 'LengowOrderSettingController'}active{/if}">
-		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}">Parameters
-		</a>
-	</li>
-</ul>
+<script type="text/javascript" src="/modules/lengow/views/js/lengow/help.js"></script>
