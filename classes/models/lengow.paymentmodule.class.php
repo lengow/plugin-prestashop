@@ -36,7 +36,6 @@ class LengowPaymentModule extends PaymentModule
      *
      * @param integer   $id_cart
      * @param integer   $id_order_state
-     * @param float     $amount_paid
      * @param string    $payment_method
      * @param string    $message
      * @param array     $lengow_products
@@ -49,7 +48,6 @@ class LengowPaymentModule extends PaymentModule
     public function makeOrder(
         $id_cart,
         $id_order_state,
-        $amount_paid,
         $payment_method,
         $message,
         $lengow_products,
@@ -223,7 +221,7 @@ class LengowPaymentModule extends PaymentModule
             $order->product_list = $package['product_list'];
             $order->total_products = (float)Tools::ps_round($total_products, 2);
             $order->total_products_wt = (float)Tools::ps_round($total_products_wt, 2);
-            $order->total_paid_real = (float)$amount_paid;
+            $order->total_paid_real = 0;
 
             // calculate shipping tax free
             $order->carrier_tax_rate = $carrier->getTaxesRate(
@@ -534,7 +532,7 @@ class LengowPaymentModule extends PaymentModule
             }
             $order->total_products = (float)Tools::ps_round($total_products, 2);
             $order->total_products_wt = (float)Tools::ps_round($total_products_wt, 2);
-            $order->total_paid_real = (float)$amount_paid + (float)$processing_fees;
+            $order->total_paid_real = (float)$amount_paid;
 
             // put marketplace processing fees into wrapping
             $order->total_wrapping = (float)$processing_fees;
@@ -547,7 +545,7 @@ class LengowPaymentModule extends PaymentModule
                 $this->context->cart->id_carrier,
                 (int)$this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')}
             );
-            $order->total_paid = (float)$amount_paid + (float)$processing_fees;
+            $order->total_paid = (float)$amount_paid;
             $order->invoice_date = '0000-00-00 00:00:00';
             // Creating order
             if ($this->context->cart->OrderExists() == false) {

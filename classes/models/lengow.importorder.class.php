@@ -225,8 +225,11 @@ class LengowImportOrder
         // update order state if already imported
         if ($order_id) {
             $order_updated = $this->checkAndUpdateOrder($order_id);
-            if ($order_updated) {
-                return $order_updated;
+            if ($order_updated && isset($order_updated['update'])) {
+                return $this->returnResult('update', $order_updated['lengow_order_id'], $order_id);
+            }
+            if (!$this->is_reimport) {
+                return false;
             }
         }
         // checks if an external id already exists
@@ -239,10 +242,10 @@ class LengowImportOrder
             );
             return false;
         }
-        // if order is cancelled or new -> skip
+        // if order is cancelled -> skip
         if (!LengowImport::checkState($this->order_state_marketplace, $this->marketplace)) {
             LengowMain::log(
-                'current order\'s state ['.$order_state_marketplace.'] makes it unavailable to import',
+                'current order\'s state ['.$this->order_state_marketplace.'] makes it unavailable to import',
                 $this->log_output,
                 $this->lengow_id
             );
@@ -265,7 +268,7 @@ class LengowImportOrder
         }
         // checks if the required order data is present
         if (!$this->checkOrderData()) {
-            return false;
+            return $this->returnResult('error', $this->id_order_lengow);
         }
         // get order amount and load processing fees and shipping cost
         $this->order_amount = $this->getOrderAmount();
@@ -287,7 +290,13 @@ class LengowImportOrder
                 'delivery_country_iso'  => pSQL((string)$this->package_data->delivery->common_country_iso_a2)
             )
         );
-
+        if (!LengowImport::checkState($this->order_state_marketplace, $this->marketplace, 'import')) {
+            $error_message = 'current order\'s state ['.$this->order_state_marketplace.'] makes it unavailable to import';
+            LengowMain::log($error_message, $this->log_output, $this->lengow_id);
+            LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $type = 'import');
+            return $this->returnResult('error', $this->id_order_lengow);
+        }
+        // try to import order
         try {
             // check if the order is shipped by marketplace
             if ($this->shipped_by_mp) {
@@ -304,7 +313,8 @@ class LengowImportOrder
                     return false;
                 }
             }
-
+            // get products
+            $products = $this->getProducts();
             // create a cart with customer, billing address and shipping address
             $cart_data = $this->getCartData();
             if (_PS_VERSION_ < '1.5') {
@@ -316,7 +326,6 @@ class LengowImportOrder
             $cart->validateLengow();
             $cart->force_product = $this->force_product;
             // add products to cart
-            $products = $this->getProducts();
             $cart->addProducts($products, $this->force_product);
             // add cart to context
             $this->context->cart = $cart;
@@ -389,14 +398,33 @@ class LengowImportOrder
                     'order_lengow_state'    => pSQL($this->order_state_lengow)
                 )
             );
-            return false;
+            return $this->returnResult('error', $this->id_order_lengow);
         }
-        return array(
-            'order_id'      => (int)$order->id,
-            'new'           => true,
-            'lengow_state'  => $this->order_state_lengow,
-            'marketplace'   => (string)$this->marketplace->name
+        return $this->returnResult('new', $this->id_order_lengow, (int)$order->id);
+    }
+
+    /**
+     * Return an array of result for each order
+     *
+     * @param string    $type_result        Type of result (new, update, error)
+     * @param integer   $id_order_lengow    ID of the lengow order record
+     * @param integer   $order_id           Order ID Prestashop
+     *
+     * @return array
+     */
+    protected function returnResult($type_result, $id_order_lengow, $order_id = null)
+    {
+        $result = array(
+            'prestashop_order_id'   => $order_id,
+            'lengow_order_id'       => $id_order_lengow,
+            'lengow_id'             => $this->lengow_id,
+            'lengow_state'          => $this->order_state_lengow,
+            'marketplace'           => (string)$this->marketplace->name,
+            'new'                   => ($type_result == 'new' ? true : false),
+            'update'                => ($type_result == 'update' ? true : false),
+            'error'                 => ($type_result == 'error' ? true : false)
         );
+        return $result;
     }
 
     /**
@@ -410,9 +438,9 @@ class LengowImportOrder
     {
         LengowMain::log('order already imported (ORDER '.$order_id.')', $this->log_output, $this->lengow_id);
         $order = new LengowOrder($order_id);
-        $result = array('order_id' => $order_id, 'marketplace' => (string)$this->marketplace->name);
+        $result = array('lengow_order_id' => (int)$order->lengow_id);
         // Lengow -> Cancel and reimport order
-        if ($order->is_disabled) {
+        if ($order->lengow_is_disabled) {
             LengowMain::log('order is disabled (ORDER '.$order_id.')', $this->log_output, $this->lengow_id);
             $order->setStateToError();
             $this->is_reimport = true;
@@ -439,7 +467,6 @@ class LengowImportOrder
                         $this->lengow_id
                     );
                     $result['update'] = true;
-                    $result['lengow_state'] = $this->order_state_lengow;
                 }
             } catch (Exception $e) {
                 LengowMain::log('error while updating state: '.$e->getMessage(), $this->log_output, $this->lengow_id);
@@ -619,7 +646,9 @@ class LengowImportOrder
         }
         // update Lengow order with customer name
         $customer = $this->getCustomer($billing_data);
-        $customer->validateLengow();
+        if (!$customer->id) {
+            $customer->validateLengow();
+        }
         $cart_data['id_customer'] = $customer->id;
         // create addresses from API data
         // billing
@@ -641,7 +670,6 @@ class LengowImportOrder
             $this->shipping_address->phone_mobile = $billing_address->phone_mobile;
             $this->shipping_address->update();
         }
-
         $cart_data['id_address_delivery'] = $this->shipping_address->id;
         // get currency
         $cart_data['id_currency'] = (int)Currency::getIdByIsoCode((string)$this->order_data->currency->iso_a3);
@@ -681,7 +709,6 @@ class LengowImportOrder
             $order_list = $payment->makeOrder(
                 $cart->id,
                 $id_order_state,
-                $this->order_amount,
                 $payment_method,
                 $message,
                 $products,

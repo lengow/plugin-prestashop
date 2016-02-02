@@ -41,9 +41,14 @@ class LengowOrder extends Order
     const TYPE_LOG_WSDL = 2;
 
     /**
+     * @var string Lengow order record id
+     */
+    public $lengow_id;
+
+    /**
      * @var string Lengow order id
      */
-    public $id_lengow;
+    public $lengow_order_id;
 
     /**
      * @var string Marketplace's name
@@ -63,7 +68,7 @@ class LengowOrder extends Order
     /**
      * @var integer Lengow flux id
      */
-    public $id_flux;
+    public $lengow_id_flux;
 
     /**
      * @var decimal Total paid on marketplace
@@ -98,7 +103,7 @@ class LengowOrder extends Order
     /**
      * @var boolean order is disabled (ready to be reimported)
      */
-    public $is_disabled;
+    public $lengow_is_disabled;
 
     /**
      * @var integer lengow process state (0 => error, 1 => imported, 2 => finished)
@@ -209,9 +214,10 @@ class LengowOrder extends Order
             WHERE lo.id_order = \''.(int)$this->id.'\'
         ';
         if ($result = Db::getInstance()->getRow($query)) {
-            $this->id_lengow                    = $result['id_order_lengow'];
+            $this->lengow_id                    = $result['id'];
+            $this->lengow_order_id              = $result['id_order_lengow'];
             $this->lengow_id_shop               = (int)$result['id_shop'];
-            $this->id_flux                      = $result['id_flux'];
+            $this->lengow_id_flux               = $result['id_flux'];
             $this->lengow_marketplace           = $result['marketplace'];
             $this->lengow_message               = $result['message'];
             $this->lengow_total_paid            = $result['total_paid'];
@@ -220,7 +226,7 @@ class LengowOrder extends Order
             $this->lengow_tracking              = $result['tracking'];
             $this->lengow_sent_marketplace      = (bool)$result['sent_marketplace'];
             $this->lengow_extra                 = $result['extra'];
-            $this->is_disabled                  = (bool)$result['is_disabled'];
+            $this->lengow_is_disabled           = (bool)$result['is_disabled'];
             $this->lengow_process_state         = (int)$result['order_process_state'];
             $this->lengow_order_date            = $result['order_date'];
             $this->lengow_delivery_id_address   = (int)$result['delivery_id_address'];
@@ -279,7 +285,7 @@ class LengowOrder extends Order
             AND `delivery_id_address` = \''.pSQL((int)$delivery_address_id).'\'';
         $result = Db::getInstance()->getRow($query);
         if ($result) {
-            return $result['id'];
+            return (int)$result['id'];
         }
         return false;
     }
@@ -421,7 +427,7 @@ class LengowOrder extends Order
                     $this->validateFields();
                     $this->update();
                 }
-                LengowMain::getLogInstance()->write('state updated to shipped', true, $this->id_lengow);
+                LengowMain::getLogInstance()->write('state updated to shipped', true, $this->lengow_order_id);
                 return true;
             } elseif (($this->getCurrentState() == LengowMain::getOrderState('accepted')
                     || $this->getCurrentState() == LengowMain::getOrderState('shipped')
@@ -434,7 +440,7 @@ class LengowOrder extends Order
                 $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this, true);
                 $history->validateFields();
                 $history->add();
-                LengowMain::getLogInstance()->write('state updated to canceled', true, $this->id_lengow);
+                LengowMain::getLogInstance()->write('state updated to canceled', true, $this->lengow_order_id);
                 return true;
             }
         }
@@ -458,7 +464,7 @@ class LengowOrder extends Order
      */
     public function checkAndChangeMarketplaceName()
     {
-        $id_shop = (_PS_VERSION_ < 1.5 ? null : (int)$lengow_order->id_shop);
+        $id_shop = (_PS_VERSION_ < 1.5 ? null : (int)$this->lengow_id_shop);
         if (LengowCheck::isValidAuth($id_shop)) {
             $connector = new LengowConnector(
                 LengowMain::getAccessToken($id_shop),
@@ -467,7 +473,7 @@ class LengowOrder extends Order
             $results = $connector->get(
                 '/v3.0/orders',
                 array(
-                    'marketplace_order_id'  => $this->id_lengow,
+                    'marketplace_order_id'  => $this->lengow_order_id,
                     'marketplace'           => $this->lengow_marketplace,
                     'account_id'            => LengowMain::getIdAccount($id_shop)
                 ),
