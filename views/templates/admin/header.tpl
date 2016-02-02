@@ -40,9 +40,9 @@
         </a>
     </li>
     <li role="presentation" class="{if $current_controller == 'LengowFeedController'}active{/if}"><a href="
-        {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}}">Product</a></li>
+        {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}">Product</a></li>
         <li role="presentation" class="{if $current_controller == 'AdminLengowOrder'}active{/if}"><a href="
-            {$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}}">Orders</a></li>
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">Orders</a></li>
         </ul>
 
             <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
