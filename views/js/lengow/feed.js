@@ -84,9 +84,11 @@
             var id_shop = $(this).attr('id').split('_')[2];
             if ($(this).prop('checked')) {
                 $('#table_shop_' + id_shop + ' tbody .lengow_selection').prop('checked', true);
+                $('#table_shop_' + id_shop + ' tbody tr').addClass('select');
                 $('#block_' + id_shop + ' .lengow_toolbar a').show();
             } else {
                 $('#table_shop_' + id_shop + ' tbody .lengow_selection').prop('checked', false);
+                $('#table_shop_' + id_shop + ' tbody tr').removeClass('select');
                 $('#block_' + id_shop + ' .lengow_toolbar a').hide();
             }
         });
@@ -94,6 +96,11 @@
             var id_shop = $(this).parents('table').attr('id').split('_')[2];
             $('#block_' + id_shop + ' .lengow_toolbar a').show();
 
+            if ($(this).prop('checked')) {
+                $(this).parents('tr').addClass('select');
+            } else {
+                $(this).parents('tr').removeClass('select');
+            }
             var findProductSelected = false;
             $(this).parents('table').find('.lengow_selection').each(function (index) {
                 if ($(this).prop('checked')) {
