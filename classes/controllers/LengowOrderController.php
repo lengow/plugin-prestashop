@@ -175,8 +175,7 @@ class LengowOrderController extends LengowController
         );
         $select_having = array(
             '(SELECT IFNULL(lli.type, 0) FROM '._DB_PREFIX_.'lengow_logs_import lli
-            INNER JOIN '._DB_PREFIX_.'lengow_orders lo ON (lo.id = lli.id_order_lengow)
-            WHERE lo.id_order = o.id_order AND lli.is_finished = 0 LIMIT 1) as log_status',
+            WHERE lli.id_order_lengow = lo.id AND lli.is_finished = 0 LIMIT 1) as log_status',
         );
         $from = 'FROM '._DB_PREFIX_.'lengow_orders lo';
         $join = array();
