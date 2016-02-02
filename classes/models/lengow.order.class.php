@@ -245,7 +245,7 @@ class LengowOrder extends Order
      */
     public static function getOrderIdFromLengowOrders($lengow_id, $marketplace, $delivery_address_id)
     {
-        $query = 'SELECT `id_order`, `id_order_lengow`, `delivery_id_address`
+        $query = 'SELECT `id_order`, `delivery_id_address`
             FROM `'._DB_PREFIX_.'lengow_orders`
             WHERE `id_order_lengow` = \''.pSQL($lengow_id).'\'
             AND `marketplace` = \''.pSQL(Tools::strtolower($marketplace)).'\'
@@ -337,7 +337,7 @@ class LengowOrder extends Order
         $query = 'SELECT `id_order` FROM `'._DB_PREFIX_.'lengow_orders`
             WHERE `id_order_lengow` = \''.pSQL($lengow_id).'\'
             AND `marketplace` = \''.pSQL(Tools::strtolower($marketplace)).'\'
-            AND `is_disabled` = \'0\'';
+            AND `order_process_state` != \'0\'';
         return Db::getInstance()->executeS($query);
     }
 

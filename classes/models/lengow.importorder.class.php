@@ -155,6 +155,11 @@ class LengowImportOrder
     protected $shipped_by_mp = false;
 
     /**
+     * @var LengowAddress
+     */
+    protected $shipping_address;
+
+    /**
      * @var string
      */
     protected $relay_id = null;
@@ -187,25 +192,14 @@ class LengowImportOrder
         $this->order_data           = $params['order_data'];
         $this->package_data         = $params['package_data'];
         $this->first_package        = $params['first_package'];
-    }
 
-    public function exec()
-    {
-        try {
-            // get marketplace and Lengow order state
-            $this->marketplace = LengowMain::getMarketplaceSingleton(
-                (string)$this->order_data->marketplace,
-                $this->id_shop
-            );
-            $this->order_state_marketplace = (string)$this->order_data->marketplace_status;
-            $this->order_state_lengow = $this->marketplace->getStateLengow($this->order_state_marketplace);
-            // import orders in prestashop
-            $result = $this->importOrder();
-        } catch (Exception $e) {
-            LengowMain::log('Error: '.$e->getMessage(), $this->log_output);
-            return false;
-        }
-        return $result;
+        // get marketplace and Lengow order state
+        $this->marketplace = LengowMain::getMarketplaceSingleton(
+            (string)$this->order_data->marketplace,
+            $this->id_shop
+        );
+        $this->order_state_marketplace = (string)$this->order_data->marketplace_status;
+        $this->order_state_lengow = $this->marketplace->getStateLengow($this->order_state_marketplace);
     }
 
     /**
@@ -213,7 +207,7 @@ class LengowImportOrder
      *
      * @return mixed
      */
-    protected function importOrder()
+    public function importOrder()
     {
         // if log import exist and not finished
         $import_log = LengowOrder::orderIsInError($this->lengow_id, $this->delivery_address_id, 'import');
@@ -230,8 +224,9 @@ class LengowImportOrder
         );
         // update order state if already imported
         if ($order_id) {
-            if ($this->checkAndUpdateOrder($order_id)) {
-                return 'update';
+            $order_updated = $this->checkAndUpdateOrder($order_id);
+            if ($order_updated) {
+                return $order_updated;
             }
         }
         // checks if an external id already exists
@@ -327,130 +322,51 @@ class LengowImportOrder
             $this->context->cart = $cart;
             // create payment
             $order_list = $this->createAndValidatePayment($cart, $products);
-            die();
             // if no order in list
             if (empty($order_list)) {
                 throw new Exception('order could not be saved');
             } else {
-            //     $count_orders_added++;
-            //     foreach ($order_list as $order) {
-            //         // add order comment from marketplace to prestashop order
-            //         if (_PS_VERSION_ >= '1.5') {
-            //             $comment = (string)$order_data->comments;
-            //             if (!empty($comment)) {
-            //                 $msg = new Message();
-            //                 $msg->id_order = $order->id;
-            //                 $msg->private = 1;
-            //                 $msg->message = $comment;
-            //                 $msg->add();
-            //             }
-            //         }
-            //         $success_message = 'order successfully imported (ID '.$order->id.')';
-            //         if (!$this->addLengowOrder(
-            //             $this->lengow_id,
-            //             $order,
-            //             $order_data,
-            //             $package,
-            //             $order_amount
-            //         )) {
-            //             LengowMain::log(
-            //                 'WARNING ! Order could NOT be saved in lengow orders table',
-            //                 $this->debug,
-            //                 $this->lengow_id
-            //             );
-            //         } else {
-            //             LengowMain::log('order saved in lengow orders table', $this->debug, $this->lengow_id);
-            //         }
-            //         // Save order line id in lengow_order_line table
-            //         // get all lines ids
-            //         $order_line_ids = array();
-            //         foreach ($package->cart as $product) {
-            //             $order_line_ids[] = (string)$product->marketplace_order_line_id;
-            //         }
-            //         $order_line_saved = false;
-            //         foreach ($order_line_ids as $order_line_id) {
-            //             $this->addLengowOrderLine($order, $order_line_id);
-            //             $order_line_saved .= (!$order_line_saved ? $order_line_id : ' / '.$order_line_id);
-            //         }
-            //         LengowMain::log('save order lines product : '.$order_line_saved, $this->debug, $this->lengow_id);
-            //         // if more than one order (different warehouses)
-            //         LengowMain::log($success_message, $this->log_output, $this->lengow_id);
-            //     }
-            //     // Sync to lengow if no debug
-            //     if (!$this->debug) {
-            //         $order_ids = LengowOrder::getAllOrderIdsFromLengowOrder($this->lengow_id, (string)$marketplace->name);
-            //         if (count($order_ids) > 0) {
-            //             $presta_ids = array();
-            //             foreach ($order_ids as $order_id) {
-            //                 $presta_ids[] = $order_id['id_order'];
-            //             }
-            //             $result = $this->connector->patch(
-            //                 '/v3.0/orders',
-            //                 array(
-            //                     'account_id'            => $this->account_id,
-            //                     'marketplace_order_id'  => $this->lengow_id,
-            //                     'marketplace'           => (string)$order_data->marketplace,
-            //                     'merchant_order_id'     => $presta_ids
-            //                 )
-            //             );
-            //             if (is_null($result)
-            //                 || (isset($result['detail']) && $result['detail'] == 'Pas trouvé.')
-            //                 || isset($result['error'])
-            //             ) {
-            //                 LengowMain::log(
-            //                     'WARNING ! Order could NOT be synchronised with Lengow webservice (ID '
-            //                     .$order->id
-            //                     .')',
-            //                     $this->debug,
-            //                     $this->lengow_id
-            //                 );
-            //             } else {
-            //                 LengowMain::log(
-            //                     'order successfully synchronised with Lengow webservice (ID '.$order->id.')',
-            //                     $this->debug,
-            //                     $this->lengow_id
-            //                 );
-            //             }
-            //         }
-            //     }
-            //     LengowLog::addLog($order_data, $this->lengow_id, $order_line_ids[0], $success_message, 1);
-            //     // ensure carrier compatibility with SoColissimo & Mondial Relay
-            //     try {
-            //         $carrier_name = '';
-            //         if (!is_null($trackings)) {
-            //             if (!$carrier_name = (string)$trackings[0]->carrier) {
-            //                 $carrier_name = (string)$trackings[0]->method;
-            //             }
-            //         }
-            //         $carrier_compatibility = LengowCarrier::carrierCompatibility(
-            //             $order->id_customer,
-            //             $order->id_cart,
-            //             $order->id_carrier,
-            //             $shipping_address
-            //         );
-            //         if ($carrier_compatibility < 0) {
-            //             throw new LengowCarrierException(
-            //                 'carrier '.$carrier_name.' could not be found in your Prestashop'
-            //             );
-            //         } elseif ($carrier_compatibility > 0) {
-            //             LengowMain::log(
-            //                 'carrier compatibility ensured with carrier '.$carrier_name,
-            //                 $this->debug,
-            //                 $this->lengow_id
-            //             );
-            //         }
-            //     } catch (LengowCarrierException $lce) {
-            //         LengowMain::log($lce->getMessage(), $this->debug, $this->lengow_id);
-            //     }
+                foreach ($order_list as $order) {
+                    // add order comment from marketplace to prestashop order
+                    if (_PS_VERSION_ >= '1.5') {
+                        $this->addCommentOrder();
+                    }
+                    $success_message = 'order successfully imported (ID '.$order->id.')';
+                    $success = LengowOrder::updateOrderLengow(
+                        $this->id_order_lengow,
+                        array(
+                            'id_order'              => (int)$order->id,
+                            'order_process_state'   => 1,
+                            'extra'                 => pSQL(Tools::jsonEncode($this->order_data)),
+                            'order_lengow_state'    => pSQL($this->order_state_lengow)
+                        )
+                    );
+                    if (!$success) {
+                        LengowMain::log(
+                            'WARNING ! Order could NOT be updated in lengow orders table',
+                            $this->debug,
+                            $this->lengow_id
+                        );
+                    } else {
+                        LengowMain::log('order updated in lengow orders table', $this->debug, $this->lengow_id);
+                    }
+                    // Save order line id in lengow_order_line table
+                    $order_line_saved = $this->saveLengowOrderLine($order);
+                    LengowMain::log('save order lines product : '.$order_line_saved, $this->debug, $this->lengow_id);
+                    // if more than one order (different warehouses)
+                    LengowMain::log($success_message, $this->log_output, $this->lengow_id);
+                }
+                // ensure carrier compatibility with SoColissimo & Mondial Relay
+                $this->checkCarrierCompatibility($order);
             }
-            // if ($shipped_by_mp) {
-            //     LengowMain::log(
-            //         'adding quantity back to stock (order shipped by marketplace)',
-            //         $this->log_output,
-            //         $this->lengow_id
-            //     );
-            //     LengowImport::addQuantityBack($products);
-            // }
+            if ($this->shipped_by_mp) {
+                LengowMain::log(
+                    'adding quantity back to stock (order shipped by marketplace)',
+                    $this->log_output,
+                    $this->lengow_id
+                );
+                $this->addQuantityBack($products);
+            }
         } catch (InvalidLengowObjectException $iloe) {
             $error_message = $iloe->getMessage();
         } catch (LengowImportException $lie) {
@@ -465,23 +381,22 @@ class LengowImportOrder
                 $cart->delete();
             }
             LengowMain::log('order import failed: '.$error_message, $this->log_output, $this->lengow_id);
-            // LengowLog::addLog($order_data, $this->lengow_id, $order_line_ids[0], $error_message);
-            unset($error_message);
+            LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $type = 'import');
+            LengowOrder::updateOrderLengow(
+                $this->id_order_lengow,
+                array(
+                    'extra'                 => pSQL(Tools::jsonEncode($this->order_data)),
+                    'order_lengow_state'    => pSQL($this->order_state_lengow)
+                )
+            );
+            return false;
         }
-        // clean process
-        LengowImport::$current_order = -1;
-        unset($cart);
-        unset($billing_address);
-        unset($shipping_address);
-        unset($customer);
-        unset($payment);
-        unset($order);
-        // if limit is set
-        if ($this->limit > 0 && $count_orders_added == $this->limit
-            || Configuration::get('LENGOW_IMPORT_IN_PROGRESS') <= 0
-        ) {
-            break;
-        }
+        return array(
+            'order_id'      => (int)$order->id,
+            'new'           => true,
+            'lengow_state'  => $this->order_state_lengow,
+            'marketplace'   => (string)$this->marketplace->name
+        );
     }
 
     /**
@@ -495,6 +410,7 @@ class LengowImportOrder
     {
         LengowMain::log('order already imported (ORDER '.$order_id.')', $this->log_output, $this->lengow_id);
         $order = new LengowOrder($order_id);
+        $result = array('order_id' => $order_id, 'marketplace' => (string)$this->marketplace->name);
         // Lengow -> Cancel and reimport order
         if ($order->is_disabled) {
             LengowMain::log('order is disabled (ORDER '.$order_id.')', $this->log_output, $this->lengow_id);
@@ -522,13 +438,14 @@ class LengowImportOrder
                         $this->log_output,
                         $this->lengow_id
                     );
-                    $count_orders_updated++;
+                    $result['update'] = true;
+                    $result['lengow_state'] = $this->order_state_lengow;
                 }
             } catch (Exception $e) {
                 LengowMain::log('error while updating state: '.$e->getMessage(), $this->log_output, $this->lengow_id);
             }
             unset($order);
-            return true;
+            return $result;
         }
     }
 
@@ -712,23 +629,24 @@ class LengowImportOrder
         $cart_data['id_address_invoice'] = $billing_address->id;
         // shipping
         $shipping_data = LengowAddress::extractAddressDataFromAPI($this->package_data->delivery);
-        $shipping_address = $this->getAddress($shipping_data, true);
-        $shipping_address->id_customer = $customer->id;
-        $shipping_address->validateLengow();
+        $this->shipping_address = $this->getAddress($shipping_data, true);
+        $this->shipping_address->id_customer = $customer->id;
+        $this->shipping_address->validateLengow();
         // get billing phone numbers if empty in shipping address
         if (empty($shipping_address->phone) && !empty($billing_address->phone)) {
-            $shipping_address->phone = $billing_address->phone;
-            $shipping_address->update();
+            $this->shipping_address->phone = $billing_address->phone;
+            $this->shipping_address->update();
         }
         if (empty($shipping_address->phone_mobile) && !empty($billing_address->phone_mobile)) {
-            $shipping_address->phone_mobile = $billing_address->phone_mobile;
-            $shipping_address->update();
+            $this->shipping_address->phone_mobile = $billing_address->phone_mobile;
+            $this->shipping_address->update();
         }
-        $cart_data['id_address_delivery'] = $shipping_address->id;
+
+        $cart_data['id_address_delivery'] = $this->shipping_address->id;
         // get currency
         $cart_data['id_currency'] = (int)Currency::getIdByIsoCode((string)$this->order_data->currency->iso_a3);
         // get carrier
-        $cart_data['id_carrier'] = $this->getCarrierId($shipping_address);
+        $cart_data['id_carrier'] = $this->getCarrierId($this->shipping_address);
         return $cart_data;
     }
 
@@ -1000,6 +918,55 @@ class LengowImportOrder
     }
 
     /**
+     * Ensure carrier compatibility with SoColissimo & Mondial Relay
+     *
+     * @param LengowOrder $order order imported
+     */
+    protected function checkCarrierCompatibility($order)
+    {
+        try {
+            $carrier_name = 'none';
+            if (!is_null($this->carrier_name)) {
+                $carrier_name = $this->carrier_name;
+            } elseif (!is_null($this->carrier_method)) {
+                $carrier_name = $this->carrier_method;
+            }
+            $carrier_compatibility = LengowCarrier::carrierCompatibility(
+                $order->id_customer,
+                $order->id_cart,
+                $order->id_carrier,
+                $this->shipping_address
+            );
+            if ($carrier_compatibility < 0) {
+                throw new LengowCarrierException('carrier '.$carrier_name.' could not be found in your Prestashop');
+            } elseif ($carrier_compatibility > 0) {
+                LengowMain::log(
+                    'carrier compatibility ensured with carrier '.$carrier_name,
+                    $this->debug,
+                    $this->lengow_id
+                );
+            }
+        } catch (LengowCarrierException $lce) {
+            LengowMain::log($lce->getMessage(), $this->debug, $this->lengow_id);
+        }
+    }
+
+    /**
+     * Add a comment to the order
+     */
+    protected function addCommentOrder()
+    {
+        $comment = (string)$this->order_data->comments;
+        if (!empty($comment)) {
+            $msg = new Message();
+            $msg->id_order = $order->id;
+            $msg->private = 1;
+            $msg->message = $comment;
+            $msg->add();
+        }
+    }
+
+    /**
      * Add quantity back to stock
      * @param array     $products   list of products
      * @param integer   $id_shop    shop id
@@ -1071,20 +1038,30 @@ class LengowImportOrder
     /**
      * Save order line in lengow orders line table
      *
-     * @param LengowOrder   $order          order imported
-     * @param string        $order_line_id  order line ID
+     * @param LengowOrder $order order imported
      *
      * @return boolean
      */
-    protected function addLengowOrderLine($order, $order_line_id)
+    protected function saveLengowOrderLine($order)
     {
-        return Db::getInstance()->autoExecute(
-            _DB_PREFIX_.'lengow_order_line',
-            array(
-                'id_order'      => (int)$order->id,
-                'id_order_line' => pSQL($order_line_id),
-                ),
-            'INSERT'
-        );
+        $order_line_ids = array();
+        $order_line_saved = false;
+        foreach ($this->package_data->cart as $product) {
+            $order_line_ids[] = (string)$product->marketplace_order_line_id;
+        }
+        foreach ($order_line_ids as $order_line_id) {
+            $result = Db::getInstance()->autoExecute(
+                _DB_PREFIX_.'lengow_order_line',
+                array(
+                    'id_order'      => (int)$order->id,
+                    'id_order_line' => pSQL($order_line_id),
+                    ),
+                'INSERT'
+            );
+            if ($result) {
+                $order_line_saved .= (!$order_line_saved ? $order_line_id : ' / '.$order_line_id);
+            }
+        }
+        return $order_line_saved;
     }
 }

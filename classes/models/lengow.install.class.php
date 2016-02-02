@@ -34,10 +34,8 @@ class LengowInstall
         'Home' => array('name' => 'AdminLengowHome', 'active' => true),
         'Product' => array('name' => 'AdminLengowFeed', 'active' => true),
         'Orders' => array('name' => 'AdminLengowOrder', 'active' => true),
-        'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
-        'Logs' => array('name' => 'AdminLengowLog', 'active' => true)
+        'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false)
     );
-
 
     public function __construct($module)
     {
@@ -55,7 +53,6 @@ class LengowInstall
         $this->update();
 
     }
-
 
     public function uninstall()
     {
@@ -177,32 +174,31 @@ class LengowInstall
     private static function setDefaultValues()
     {
         return
-            Configuration::updateValue('LENGOW_AUTHORIZED_IP', $_SERVER['REMOTE_ADDR']) &&
-            Configuration::updateValue('LENGOW_TRACKING_ENABLED', '') &&
-            Configuration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', false) &&
-            Configuration::updateValue('LENGOW_EXPORT_DISABLED', false) &&
-            Configuration::updateValue('LENGOW_EXPORT_VARIATION_ENABLED', true) &&
-            Configuration::updateValue('LENGOW_EXPORT_FORMAT', 'csv') &&
-            Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', 2) &&
-            Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', 4) &&
-            Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', 6) &&
-            Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', true) &&
-            Configuration::updateValue('LENGOW_IMPORT_DAYS', 5) &&
-            Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
-            Configuration::updateValue('LENGOW_IMPORT_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
-            Configuration::updateValue('LENGOW_CRON_ENABLED', false) &&
-            Configuration::updateValue('LENGOW_IMPORT_PREPROD_ENABLED', false) &&
-            Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false) &&
-            Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true) &&
-            Configuration::updateValue('LENGOW_REPORT_MAIL_ADDRESS', '') &&
-            Configuration::updateValue(
-                'LENGOW_IMPORT_SINGLE_ENABLED',
-                version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
-            ) &&
-            Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
-            Configuration::updateValue('LENGOW_IMPORT_SHIP_MP_ENABLED', false);
+        Configuration::updateValue('LENGOW_AUTHORIZED_IP', $_SERVER['REMOTE_ADDR']) &&
+        Configuration::updateValue('LENGOW_TRACKING_ENABLED', '') &&
+        Configuration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', false) &&
+        Configuration::updateValue('LENGOW_EXPORT_DISABLED', false) &&
+        Configuration::updateValue('LENGOW_EXPORT_VARIATION_ENABLED', true) &&
+        Configuration::updateValue('LENGOW_EXPORT_FORMAT', 'csv') &&
+        Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', 2) &&
+        Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', 4) &&
+        Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', 6) &&
+        Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', true) &&
+        Configuration::updateValue('LENGOW_IMPORT_DAYS', 5) &&
+        Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
+        Configuration::updateValue('LENGOW_IMPORT_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
+        Configuration::updateValue('LENGOW_CRON_ENABLED', false) &&
+        Configuration::updateValue('LENGOW_IMPORT_PREPROD_ENABLED', false) &&
+        Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false) &&
+        Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true) &&
+        Configuration::updateValue('LENGOW_REPORT_MAIL_ADDRESS', '') &&
+        Configuration::updateValue(
+            'LENGOW_IMPORT_SINGLE_ENABLED',
+            version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
+        ) &&
+        Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
+        Configuration::updateValue('LENGOW_IMPORT_SHIP_MP_ENABLED', false);
     }
-
 
     /**
      * Add error status to reimport order
