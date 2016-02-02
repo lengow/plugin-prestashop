@@ -76,10 +76,11 @@ class LengowSync extends SpecificPrice
                     if (!in_array($k, array_keys($list_key))) {
                         continue;
                     }
-                    $list_key[$k] = true;
-                    LengowConfiguration::updateValue('LENGOW_'.Tools::strtoupper($k), $v, false, null, $shop->id);
+                    if (Tools::strlen($v) > 0) {
+                        $list_key[$k] = true;
+                        LengowConfiguration::updateValue('LENGOW_'.Tools::strtoupper($k), $v, false, null, $shop->id);
+                    }
                 }
-
                 $findFalseValue = false;
                 foreach ($list_key as $k => $v) {
                     if (!$v) {
