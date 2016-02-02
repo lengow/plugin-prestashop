@@ -34,15 +34,15 @@ class LengowHook
     const LENGOW_TRACK_PAGE_LEAD = 'lead';
     const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
 
-    static private $_CURRENT_PAGE_TYPE = 'page';
-    static private $_USE_SSL = false;
-    static private $_ID_ORDER = '';
-    static private $_ORDER_TOTAL = '';
-    static private $_IDS_PRODUCTS = '';
-    static private $_IDS_PRODUCTS_CART = '';
-    static private $_ID_CATEGORY = '';
+    static private $CURRENT_PAGE_TYPE = 'page';
+    static private $USE_SSL = false;
+    static private $ID_ORDER = '';
+    static private $ORDER_TOTAL = '';
+    static private $IDS_PRODUCTS = '';
+    static private $IDS_PRODUCTS_CART = '';
+    static private $ID_CATEGORY = '';
 
-    protected $_alreadyShipped = array();
+    protected $alreadyShipped = array();
 
     private $module;
 
@@ -84,7 +84,7 @@ class LengowHook
 
     public function hookHome()
     {
-        self::$_CURRENT_PAGE_TYPE = self::LENGOW_TRACK_HOMEPAGE;
+        self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_HOMEPAGE;
     }
 
     /**
@@ -99,24 +99,24 @@ class LengowHook
         }
 
         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-            self::$_USE_SSL = true;
+            self::$USE_SSL = true;
         }
 
         $current_controller = $this->context->controller;
         if ($current_controller instanceof OrderConfirmationController) {
-            self::$_CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_CONFIRMATION;
+            self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_CONFIRMATION;
         } elseif ($current_controller instanceof ProductController) {
-            self::$_CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE;
+            self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE;
         } elseif ($current_controller instanceof OrderController) {
             if ($current_controller->step == -1 || $current_controller->step == 0) {
-                self::$_CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_CART;
+                self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_CART;
             } elseif ($current_controller instanceof IndexController) {
-                self::$_CURRENT_PAGE_TYPE = self::LENGOW_TRACK_HOMEPAGE;
+                self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_HOMEPAGE;
             }
         }
 
         // ID category
-        if (!(self::$_ID_CATEGORY = (int)Tools::getValue('id_category'))) {
+        if (!(self::$ID_CATEGORY = (int)Tools::getValue('id_category'))) {
             if (isset($_SERVER['HTTP_REFERER'])
                 && preg_match(
                     '!^(.*)\/([0-9]+)\-(.*[^\.])|(.*)id_category=([0-9]+)(.*)$!',
@@ -126,32 +126,32 @@ class LengowHook
                 && !strstr($_SERVER['HTTP_REFERER'], '.html')
             ) {
                 if (isset($regs[2]) && is_numeric($regs[2])) {
-                    self::$_ID_CATEGORY = (int)$regs[2];
+                    self::$ID_CATEGORY = (int)$regs[2];
                 } elseif (isset($regs[5]) && is_numeric($regs[5])) {
-                    self::$_ID_CATEGORY = (int)$regs[5];
+                    self::$ID_CATEGORY = (int)$regs[5];
                 }
             } elseif ($id_product = (int)Tools::getValue('id_product')) {
                 $product = new Product($id_product);
-                self::$_ID_CATEGORY = $product->id_category_default;
+                self::$ID_CATEGORY = $product->id_category_default;
             }
-            if (self::$_ID_CATEGORY == 0) {
-                self::$_ID_CATEGORY = '';
+            if (self::$ID_CATEGORY == 0) {
+                self::$ID_CATEGORY = '';
             }
         } else {
-            self::$_CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_LIST;
+            self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_LIST;
         }
 
         // Basket
-        if (self::$_CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_CART ||
-            self::$_CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_PAYMENT
+        if (self::$CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_CART ||
+            self::$CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_PAYMENT
         ) {
-            self::$_ORDER_TOTAL = $this->context->cart->getOrderTotal();
+            self::$ORDER_TOTAL = $this->context->cart->getOrderTotal();
         }
 
         // Product IDS
-        if (self::$_CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_LIST
-            || self::$_CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE
-            || self::$_CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_CART
+        if (self::$CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_LIST
+            || self::$CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE
+            || self::$CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_CART
         ) {
             $array_products = array();
             $products_cart = array();
@@ -240,8 +240,8 @@ class LengowHook
                     $array_products[] = $id_product;
                 }
             }
-            self::$_IDS_PRODUCTS_CART = implode('&', $products_cart);
-            self::$_IDS_PRODUCTS = implode('|', $array_products);
+            self::$IDS_PRODUCTS_CART = implode('&', $products_cart);
+            self::$IDS_PRODUCTS = implode('|', $array_products);
         }
 
         if (!isset($this->smarty)) {
@@ -249,21 +249,21 @@ class LengowHook
         }
 
         // Generate tracker
-        if (self::$_CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_CONFIRMATION) {
+        if (self::$CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_CONFIRMATION) {
             $currency = $this->context->currency;
             $shop_id = $this->context->shop->id;
             $this->context->smarty->assign(
                 array(
                     'account_id'        => LengowMain::getIdAccount(),
-                    'order_ref'         => self::$_ID_ORDER,
-                    'amount'            => self::$_ORDER_TOTAL,
+                    'order_ref'         => self::$ID_ORDER,
+                    'amount'            => self::$ORDER_TOTAL,
                     'currency_order'    => $currency->iso_code,
-                    'payment_method'    => self::$_ID_ORDER,
-                    'cart'              => self::$_IDS_PRODUCTS_CART,
+                    'payment_method'    => self::$ID_ORDER,
+                    'cart'              => self::$IDS_PRODUCTS_CART,
                     'newbiz'            => 1,
                     'secure'            => 0,
                     'valid'             => 1,
-                    'page_type'         => self::$_CURRENT_PAGE_TYPE
+                    'page_type'         => self::$CURRENT_PAGE_TYPE
                 )
             );
             return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/front/tagpage.tpl');
@@ -296,7 +296,7 @@ class LengowHook
         // do nothing if order is not from Lengow or is being imported
         if (LengowOrder::isFromLengow($args['id_order'])
             && LengowImport::$current_order != $lengow_order->id_lengow
-            && !array_key_exists($lengow_order->id_lengow, $this->_alreadyShipped)
+            && !array_key_exists($lengow_order->id_lengow, $this->alreadyShipped)
         ) {
             $new_order_state = $args['newOrderStatus'];
             $id_order_state = $new_order_state->id;
@@ -310,12 +310,12 @@ class LengowHook
                 // Call Lengow API WSDL to send shipped state order
                 if ($id_order_state == LengowMain::getOrderState('shipped')) {
                     $marketplace->wsdl('ship', $lengow_order->id_lengow, $args);
-                    $this->_alreadyShipped[$lengow_order->id_lengow] = true;
+                    $this->alreadyShipped[$lengow_order->id_lengow] = true;
                 }
                 // Call Lengow API WSDL to send refuse state order
                 if ($id_order_state == LengowMain::getOrderState('canceled')) {
                     $marketplace->wsdl('cancel', $lengow_order->id_lengow, $args);
-                    $this->_alreadyShipped[$lengow_order->id_lengow] = true;
+                    $this->alreadyShipped[$lengow_order->id_lengow] = true;
                 }
             }
         }
@@ -332,7 +332,7 @@ class LengowHook
                 if ($lengow_order->shipping_number != ''
                     && $args['object']->current_state == LengowMain::getOrderState('shipped')
                     && LengowImport::$current_order != $lengow_order->id_lengow
-                    && !array_key_exists($lengow_order->id_lengow, $this->_alreadyShipped)
+                    && !array_key_exists($lengow_order->id_lengow, $this->alreadyShipped)
                 ) {
                     $params = array();
                     $params['id_order'] = $args['object']->id;
@@ -347,7 +347,7 @@ class LengowHook
                     );
                     if ($marketplace->isLoaded()) {
                         $marketplace->wsdl('ship', $lengow_order->id_lengow, $params);
-                        $this->_alreadyShipped[$lengow_order->id_lengow] = true;
+                        $this->alreadyShipped[$lengow_order->id_lengow] = true;
                     }
                 }
             }
@@ -361,9 +361,9 @@ class LengowHook
      */
     public function hookOrderConfirmation($args)
     {
-        self::$_CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_CONFIRMATION;
-        self::$_ID_ORDER = $args['objOrder']->id;
-        self::$_ORDER_TOTAL = $args['total_to_pay'];
+        self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_CONFIRMATION;
+        self::$ID_ORDER = $args['objOrder']->id;
+        self::$ORDER_TOTAL = $args['total_to_pay'];
         $ids_products = array();
         $products_list = $args['objOrder']->getProducts();
         $i = 0;
@@ -395,8 +395,8 @@ class LengowHook
             $products_cart[] = 'i' . $i . '=' . $id_product . '&p' . $i .
                 '=' . Tools::ps_round($p['unit_price_tax_incl'], 2) . '&q' . $i . '=' . $p['product_quantity'];
         }
-        self::$_IDS_PRODUCTS_CART = implode('&', $products_cart);
-        self::$_IDS_PRODUCTS = implode('|', $ids_products);
+        self::$IDS_PRODUCTS_CART = implode('&', $products_cart);
+        self::$IDS_PRODUCTS = implode('|', $ids_products);
     }
 
     /**
@@ -406,7 +406,7 @@ class LengowHook
      */
     public function hookPaymentTop($args)
     {
-        self::$_CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE;
+        self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE;
         $args = 0; // Prestashop validator
     }
 
@@ -477,11 +477,15 @@ class LengowHook
 
             if (_PS_VERSION_ < '1.5') {
                 $action_reimport = _PS_MODULE_LENGOW_DIR_.'v14/ajax.php?';
-                $action_synchronize = 'index.php?tab=AdminOrders&id_order='.$lengow_order->id.'&vieworder&action=synchronize&token='.Tools::getAdminTokenLite('AdminOrders');
+                $action_synchronize = 'index.php?tab=AdminOrders&id_order='.$lengow_order->id.
+                    '&vieworder&action=synchronize&token='.Tools::getAdminTokenLite('AdminOrders');
                 $add_script = true;
             } else {
-                $action_reimport = 'index.php?controller=AdminLengow&id_order='.$lengow_order->id.'&lengoworderid='.$lengow_order->id_lengow.'&action=reimportOrder&ajax&token='.Tools::getAdminTokenLite('AdminLengow');
-                $action_synchronize = 'index.php?controller=AdminOrders&id_order='.$lengow_order->id.'&vieworder&action=synchronize&token='.Tools::getAdminTokenLite('AdminOrders');
+                $action_reimport = 'index.php?controller=AdminLengow&id_order='.$lengow_order->id.
+                    '&lengoworderid='.$lengow_order->id_lengow.'&action=reimportOrder&ajax&token='.
+                    Tools::getAdminTokenLite('AdminLengow');
+                $action_synchronize = 'index.php?controller=AdminOrders&id_order='.$lengow_order->id.
+                    '&vieworder&action=synchronize&token='.Tools::getAdminTokenLite('AdminOrders');
                 $add_script = false;
             }
 
@@ -494,7 +498,8 @@ class LengowHook
                 'tracking_method'       => $lengow_order->lengow_method,
                 'tracking'              => $lengow_order->lengow_tracking,
                 'tracking_carrier'      => $lengow_order->lengow_carrier,
-                'sent_markeplace'       => $lengow_order->lengow_sent_marketplace ? $this->module->l('yes') : $this->module->l('no'),
+                'sent_markeplace'       => $lengow_order->lengow_sent_marketplace ?
+                    $this->module->l('yes') : $this->module->l('no'),
                 'message'               => $lengow_order->lengow_message,
                 'action_synchronize'    => $action_synchronize,
                 'action_reimport'       => $action_reimport,

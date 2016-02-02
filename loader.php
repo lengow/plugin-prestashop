@@ -19,8 +19,8 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR);
 $sep = DIRECTORY_SEPARATOR;
-define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.$sep);
 
 $notInPresta14 = array('lengow.specificprice.class.php', 'lengow.gender.class.php');
 $GLOBALS['OVERRIDE_FOLDER'] = 'override';

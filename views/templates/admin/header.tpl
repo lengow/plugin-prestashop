@@ -35,14 +35,14 @@
         <a href="http://solution.lengow.com" target="_blank"><i class="fa fa-life-ring"></i></a>
     </li>
     <li role="presentation" id="lengow_logo">
-        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')}">
+        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}}">
             <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
         </a>
     </li>
     <li role="presentation" class="{if $current_controller == 'LengowFeedController'}active{/if}"><a href="
-        {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')}">Product</a></li>
+        {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}}">Product</a></li>
         <li role="presentation" class="{if $current_controller == 'AdminLengowOrder'}active{/if}"><a href="
-            {$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')}">Orders</a></li>
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}}">Orders</a></li>
         </ul>
 
             <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>

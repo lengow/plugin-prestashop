@@ -31,7 +31,7 @@
                         <span class="lengow_total">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span> available<br/>
                         <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                                name="lengow_export_selection" class="lengow_switch lengow_switch_option"
-                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)}|escape:'htmlall':'UTF-8'"
+                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}"
                                data-action="change_option_product_variation"
                                data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
                                value="1" {if $shop['option_variation'] == 1} checked="checked"{/if}>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="lengow_feed_block_content_left">
                         This is your exported catalog. Copy this link in your Lengow platform<br/>
-                        <input id="link_shop_{$shop['shop']->id}" value="{$shop['link']|escape:'htmlall':'UTF-8'}" readonly>
+                        <input id="link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}" value="{$shop['link']|escape:'htmlall':'UTF-8'}" readonly>
                         <a class="lengow_copy" data-clipboard-target="#link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">Copy</a>
                         <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1" target="_blank">Download</a><br/>
                         {if $shop['last_export']}

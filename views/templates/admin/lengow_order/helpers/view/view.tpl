@@ -23,24 +23,31 @@
         <div class="lengow_order_block_header_content">
             <div class="lengow_order_block_content_left">
                 {if $orderCollection['last_import_type'] != 'none'}
-                    <span class="lengow_strong">Last order importation</span>
-                    {($orderCollection['last_import_type'] == 'cron')?'(auto)':'(manual)'}<br/>
-                    {$orderCollection['last_import_date']|date_format:"%A %e %B %Y @ %R"}
+                <span class="lengow_strong">Last order importation</span>
+                {if $orderCollection['last_import_type'] == 'cron'}
+                    (auto)
                 {else}
-                    No order importation for now
+                    (manual)
+                {/if}
+            <br/>
+                {$orderCollection['last_import_date']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}
+                {else}
+                No order importation for now
                 {/if}<br/>
-                All orders issues reports will be send to mail {', '|implode:$report_mail_address}
+                All orders issues reports will be send to
+                mail {', '|implode:$report_mail_address|escape:'htmlall':'UTF-8'}
                 <a href="#">(change this?)</a>
             </div>
             <div class="lengow_order_block_content_right">
-                <a class="lengow_btn" href="{$orderCollection['link']}" target="_blank">Update orders</a>
+                <a class="lengow_btn" href="{$orderCollection['link']|escape:'htmlall':'UTF-8'}" target="_blank">Update
+                    orders</a>
             </div>
             <div class="lengow_clear"></div>
         </div>
     </div>
     <div>
         <div id="lengow_order_table_wrapper">
-            {$lengow_table}
+            {html_entity_decode($lengow_table|escape:'htmlall':'UTF-8')}
         </div>
     </div>
 </div>

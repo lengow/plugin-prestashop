@@ -36,7 +36,7 @@
 <?php
 $lengowTool = new LengowTool();
 if ($lengowTool->isLogged()) {
-?>
+    ?>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -51,12 +51,14 @@ if ($lengowTool->isLogged()) {
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <?php
-                        echo '<li><a href="/modules/lengow/toolbox/logoff.php">
+                    echo '<li><a href="/modules/lengow/toolbox/logoff.php">
                         <i class="fa fa-sign-out"></i> Log Off</a></li>';
                     ?>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-<?php } ?>
+    <?php
+}
+?>
 <div class="container">
