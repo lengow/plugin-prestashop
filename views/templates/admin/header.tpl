@@ -35,7 +35,7 @@
         <a href="http://solution.lengow.com" target="_blank"><i class="fa fa-life-ring"></i></a>
     </li>
     <li role="presentation" id="lengow_logo">
-        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}}">
+        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">
             <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
         </a>
     </li>
