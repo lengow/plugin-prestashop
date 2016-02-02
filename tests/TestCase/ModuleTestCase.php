@@ -234,6 +234,23 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Assert Array has key
+     *
+     * @param $keys
+     * @param $array
+     */
+    public static function assertKeysExistInArray($keys, $array)
+    {
+        if (!is_array($keys) || count($keys) == 0) {
+            self::assertTrue(false, 'Keys Array is empty');
+        }
+        foreach ($keys as $key) {
+            self::assertArrayHasKey($key, $array);
+        }
+    }
+
+
+    /**
      * Call protected/private method of a class.
      *
      * @param object &$object    Instantiated object that we will run method on.

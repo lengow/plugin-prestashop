@@ -457,6 +457,9 @@ body.lengow_body #content .lengow_breadcrumb a {
     color:#CCCCCC;
 }
 
+.lengow_table tr.select td {
+    background: #D6E9FF;
+}
 
 /* FEED PAGE */
 #lengow_feed_wrapper {

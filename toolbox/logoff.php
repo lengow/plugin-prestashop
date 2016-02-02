@@ -25,4 +25,5 @@ $action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
 $accessToken = isset($_REQUEST['access_token']) ?  $_REQUEST['access_token'] : null;
 $secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
 
+$lengowTool = new LengowTool();
 $lengowTool->logOff();

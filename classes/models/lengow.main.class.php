@@ -590,13 +590,21 @@ class LengowMain
      */
     public static function cleanData($value)
     {
-        $value = preg_replace('/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]'.
+        $value = preg_replace(
+            '/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]'.
             '|[\x00-\x7F][\x80-\xBF]+'.
             '|([\xC0\xC1]|[\xF0-\xFF])[\x80-\xBF]*'.
             '|[\xC2-\xDF]((?![\x80-\xBF])|[\x80-\xBF]{2,})'.
-            '|[\xE0-\xEF](([\x80-\xBF](?![\x80-\xBF]))|(?![\x80-\xBF]{2})|[\x80-\xBF]{3,})/S', '', $value);
-        $value = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]'.
-            '|\xED[\xA0-\xBF][\x80-\xBF]/S', '', $value);
+            '|[\xE0-\xEF](([\x80-\xBF](?![\x80-\xBF]))|(?![\x80-\xBF]{2})|[\x80-\xBF]{3,})/S',
+            '',
+            $value
+        );
+        $value = preg_replace(
+            '/\xE0[\x80-\x9F][\x80-\xBF]'.
+            '|\xED[\xA0-\xBF][\x80-\xBF]/S',
+            '',
+            $value
+        );
         $value = preg_replace('/[\s]+/', ' ', $value);
         $value = trim($value);
         $value = str_replace(
@@ -1101,7 +1109,8 @@ class LengowMain
             . 'AND `id_shop_group` =' . (int)$shop->id_shop_group;
 
         $query_export_insert = 'INSERT INTO ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
-            . '(`description`, `task`, `hour`, `day`, `month`, `day_of_week`, `updated_at`, `active`, `id_shop`, `id_shop_group`) '
+            . '(`description`, `task`, `hour`, `day`, `month`, `day_of_week`,
+            `updated_at`, `active`, `id_shop`, `id_shop_group`) '
             . 'VALUES (\''
             . pSQL($description_export)
             . '\', \''
@@ -1112,7 +1121,8 @@ class LengowMain
             . ')';
 
         $query_import_insert = 'INSERT INTO ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
-            . '(`description`, `task`, `hour`, `day`, `month`, `day_of_week`, `updated_at`, `active`, `id_shop`, `id_shop_group`) '
+            . '(`description`, `task`, `hour`, `day`, `month`, `day_of_week`,
+            `updated_at`, `active`, `id_shop`, `id_shop_group`) '
             . 'VALUES (\''
             . pSQL($description_import)
             . '\', \''
@@ -1178,9 +1188,9 @@ class LengowMain
         $result = array();
         if (Db::getInstance()->executeS($query_import_select) || Db::getInstance()->executeS($query_export_select)) {
             $query = 'DELETE FROM ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
-                . 'WHERE `description` IN (\'' . pSQL($description_import) . '\', \'' . pSQL($description_export) . '\') '
-                . 'AND `id_shop` = ' . (int)$id_shop . ' '
-                . 'AND `id_shop_group` =' . (int)$shop->id_shop_group;
+                .'WHERE `description` IN (\'' . pSQL($description_import) . '\', \'' . pSQL($description_export) . '\')'
+                .'AND `id_shop` = ' . (int)$id_shop . ' '
+                .'AND `id_shop_group` =' . (int)$shop->id_shop_group;
             if (Db::getInstance()->execute($query)) {
                 $result['success'] = $lengow->l('Cron tasks sucessfully removed.');
             } else {

@@ -25,6 +25,7 @@ $action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
 $accountId = isset($_REQUEST['account_id']) ?  $_REQUEST['account_id'] : null;
 $secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
 $blockedIP = isset($_REQUEST['blockedIP']) ?  $_REQUEST['blockedIP'] : false;
+$lengowTool = new LengowTool();
 
 switch ($action) {
     case 'login':
@@ -33,5 +34,21 @@ switch ($action) {
 }
 
 require 'views/header.php';
-require 'views/login.php';
+if ($blockedIP) {
+    echo '<div class="alert alert-danger" role="alert">Your IP Address has ben blocked</div>';
+}
+?>
+<form action="/modules/lengow/toolbox/login.php" method="POST">
+    <input type="hidden" name="action" value="login" />
+    <div class="form-group">
+        <label for="exampleInputEmail1">Account Id</label>
+        <input type="text" class="form-control" name="account_id" id="account_id" placeholder="AccountId">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Secret Token</label>
+        <input type="password" class="form-control" name="secret_token"  id="secret_token" placeholder="SecretToken">
+    </div>
+    <button type="submit" class="btn btn-default">Log In</button>
+</form>
+<?php
 require 'views/footer.php';

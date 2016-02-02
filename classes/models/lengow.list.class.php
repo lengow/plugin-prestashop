@@ -391,7 +391,7 @@ class LengowList
             $sql .= ' HAVING ' . join(' AND ', $having);
         }
         if (!$total) {
-            if (strlen($this->orderColumn) > 0 && in_array($this->orderValue, array("ASC","DESC"))) {
+            if (Tools::strlen($this->orderColumn) > 0 && in_array($this->orderValue, array("ASC","DESC"))) {
                 $sql .= ' ORDER BY '.pSQL($this->orderColumn).' '.$this->orderValue;
                 if (isset($this->sql["order"])) {
                     $sql .= ', '.$this->sql["order"];

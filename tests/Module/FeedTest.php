@@ -29,7 +29,6 @@ class FeedTest extends ModuleTestCase
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
         Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
-        Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
 
         //load module
         Module::getInstanceByName('lengow');
@@ -94,22 +93,6 @@ class FeedTest extends ModuleTestCase
     public function setCarrier()
     {
         Configuration::set('LENGOW_CARRIER_DEFAULT', '');
-        $export = new LengowExport();
-        $export->exec();
-    }
-
-    /**
-     * Test Export Empty Currency
-     *
-     * @test
-     * @expectedException        LengowExportException
-     * @expectedExceptionMessage Illegal Currency
-     * @covers LengowExport::checkCurrency
-     */
-    public function checkCurrency()
-    {
-        $context = Context::getContext();
-        $context->currency = null;
         $export = new LengowExport();
         $export->exec();
     }

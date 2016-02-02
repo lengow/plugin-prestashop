@@ -37,5 +37,22 @@ switch ($action) {
 $listFile = LengowLog::getPaths();
 
 require 'views/header.php';
-require 'views/log.php';
+?>
+<h1>Log Files</h1>
+
+<ul class="list-group">
+    <?php
+    foreach ($listFile as $file) {
+        echo '<li class="list-group-item">';
+        echo '<a href="/modules/lengow/toolbox/log.php?action=download&file='.urlencode($file['short_path']).'">
+    <i class="fa fa-download"></i> '.$file['name'].'</a>';
+        echo '</li>';
+    }
+    echo '<li class="list-group-item">';
+    echo '<a href="/modules/lengow/toolbox/log.php?action=download_all">
+        <i class="fa fa-download"></i> Download all files</a>';
+    echo '</li>';
+    ?>
+</ul>
+<?php
 require 'views/footer.php';

@@ -1,3 +1,23 @@
+{*
+ * Copyright 2015 Lengow SAS.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ *	 http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ *  @author	   Team Connector <team-connector@lengow.com>
+ *  @copyright 2015 Lengow SAS
+ *  @license   http://www.apache.org/licenses/LICENSE-2.0
+ *}
+
 <!--<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap.min.css.map">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-theme.min.css">
@@ -15,14 +35,14 @@
         <a href="http://solution.lengow.com" target="_blank"><i class="fa fa-life-ring"></i></a>
     </li>
     <li role="presentation" id="lengow_logo">
-        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')}">
+        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">
             <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
         </a>
     </li>
     <li role="presentation" class="{if $current_controller == 'LengowFeedController'}active{/if}"><a href="
-        {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')}">Product</a></li>
+        {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}">Product</a></li>
         <li role="presentation" class="{if $current_controller == 'AdminLengowOrder'}active{/if}"><a href="
-            {$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')}">Orders</a></li>
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">Orders</a></li>
         </ul>
 
             <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>

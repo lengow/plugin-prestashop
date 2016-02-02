@@ -213,6 +213,11 @@ class LengowExport
             (bool)$params["export_variation"] :
             (bool)Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId);
 
+
+        if (!Context::getContext()->currency) {
+            Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
+        }
+
         $this->checkCurrency();
         $this->setCarrier();
         return $this;

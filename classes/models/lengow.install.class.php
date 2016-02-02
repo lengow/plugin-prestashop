@@ -27,8 +27,8 @@ class LengowInstall
 {
 
     private $lengowModule;
-
     private $lengowHook;
+    protected static $installationStatus;
 
     static private $tabs = array(
         'Home' => array('name' => 'AdminLengowHome', 'active' => true),
@@ -95,7 +95,7 @@ class LengowInstall
             'LENGOW_LAST_IMPORT_CRON',
             'LENGOW_LAST_EXPORT',
             'LENGOW_LAST_IMPORT_MANUAL'
-            );
+        );
         foreach ($configurations as $configuration) {
             Configuration::deleteByName($configuration);
         }
@@ -166,7 +166,7 @@ class LengowInstall
             if ($tab->id != 0) {
                 $result = $tab->delete();
             }
-            LengowMain::log('Uninstall tab '.$value['class_name']);
+            LengowMain::log('Uninstall tab ' . $value['class_name']);
         }
         return true;
     }
@@ -209,8 +209,8 @@ class LengowInstall
     {
         // Add Lengow order error status
         if (_PS_VERSION_ >= '1.5') {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state
-                WHERE module_name = \''.$this->lengowModule->name.'\'');
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state
+                WHERE module_name = \'' . $this->lengowModule->name . '\'');
             if (empty($states)) {
                 $lengow_state = new OrderState();
                 $lengow_state->send_email = false;
@@ -237,7 +237,7 @@ class LengowInstall
                 Configuration::updateValue('LENGOW_STATE_ERROR', $states[0]['id_order_state']);
             }
         } else {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state_lang
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang
                 WHERE name = \'Erreur technique - Lengow\' LIMIT 1');
             if (empty($states)) {
                 $lengow_state = new OrderState();
@@ -269,10 +269,10 @@ class LengowInstall
     public function update()
     {
         // check if update is in progress
-        $installation = true;
-        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_.'upgrade'), array('..', '.'));
+        self::setInstallationStatus(true);
+        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_ . 'upgrade'), array('..', '.'));
         foreach ($upgradeFiles as $file) {
-            include _PS_MODULE_LENGOW_DIR_.'upgrade/'.$file;
+            include _PS_MODULE_LENGOW_DIR_ . 'upgrade/' . $file;
             $numberVersion = preg_replace('/update_|\.php$/', '', $file);
         }
         // update lengow tabs
@@ -280,22 +280,43 @@ class LengowInstall
         $this->createTab();
         // update lengow version
         Configuration::updateValue('LENGOW_VERSION', $numberVersion);
+        self::setInstallationStatus(false);
         return true;
     }
 
     /**
-    * Checks if a field exists in BDD
-    *
-    * @param string $table
-    * @param string $field
-    *
-    * @return boolean
-    */
+     * Checks if a field exists in BDD
+     *
+     * @param string $table
+     * @param string $field
+     *
+     * @return boolean
+     */
     public static function checkFieldExists($table, $field)
     {
-        $sql = 'SHOW COLUMNS FROM '._DB_PREFIX_.$table.' LIKE \''.$field.'\'';
+        $sql = 'SHOW COLUMNS FROM ' . _DB_PREFIX_ . $table . ' LIKE \'' . $field . '\'';
         $result = Db::getInstance()->executeS($sql);
         $exists = count($result) > 0 ? true : false;
         return $exists;
+    }
+
+
+    /**
+     * Set Installation Status
+     *
+     * @param boolean $status Installation Status
+     */
+    public static function setInstallationStatus($status)
+    {
+        self::$installationStatus = $status;
+    }
+
+    /**
+     * Is Installation In Progress
+     * @return boolean
+     */
+    public static function isInstallationInProgress()
+    {
+        return self::$installationStatus;
     }
 }

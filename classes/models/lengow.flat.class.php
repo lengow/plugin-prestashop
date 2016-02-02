@@ -131,6 +131,8 @@ class LengowFlat
         $langId = $this->context->language->id;
         $shopId = $this->context->shop->id;
 
+        $select = array();
+        $selectSql = array();
         $select["p"] = array(
             'id_product'  => array('like' => 'id_product'),
             'reference'  => array('like' => 'reference'),
