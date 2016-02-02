@@ -253,6 +253,9 @@ class LengowFeedController extends LengowController
 //        }
 
 
+        $join = array();
+        $where = array();
+
         $select = array(
             "p.id_product",
             "p.reference",

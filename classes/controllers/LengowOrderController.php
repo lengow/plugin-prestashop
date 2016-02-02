@@ -174,8 +174,8 @@ class LengowOrderController extends LengowController
             'lo.id_order'
         );
         $select_having = array(
-            '(SELECT IFNULL(lli.type, 0) FROM ps_lengow_logs_import lli
-            INNER JOIN ps_lengow_orders lo ON (lo.id = lli.id_order_lengow)
+            '(SELECT IFNULL(lli.type, 0) FROM '._DB_PREFIX_.'lengow_logs_import lli
+            INNER JOIN '._DB_PREFIX_.'lengow_orders lo ON (lo.id = lli.id_order_lengow)
             WHERE lo.id_order = o.id_order AND lli.is_finished = 0 LIMIT 1) as log_status',
         );
         $from = 'FROM '._DB_PREFIX_.'lengow_orders lo';
@@ -278,5 +278,4 @@ class LengowOrderController extends LengowController
         return '<a href="'.$link->getAbsoluteAdminLink('AdminOrders').'&vieworder&id_order='.$item['id_order'].
         '" target="_blank">'.$value.'</a>';
     }
-
 }

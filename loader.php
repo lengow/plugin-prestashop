@@ -19,6 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+$sep = DIRECTORY_SEPARATOR;
 define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.$sep);
 
 $notInPresta14 = array('lengow.specificprice.class.php', 'lengow.gender.class.php');

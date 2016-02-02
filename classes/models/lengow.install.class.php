@@ -28,6 +28,7 @@ class LengowInstall
 
     private $lengowModule;
     private $lengowHook;
+    protected static $installationStatus;
 
     static private $tabs = array(
         'Home' => array('name' => 'AdminLengowHome', 'active' => true),
@@ -35,7 +36,7 @@ class LengowInstall
         'Orders' => array('name' => 'AdminLengowOrder', 'active' => true),
         'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
         'Logs' => array('name' => 'AdminLengowLog', 'active' => true)
-        );
+    );
 
 
     public function __construct($module)
@@ -97,13 +98,13 @@ class LengowInstall
             'LENGOW_LAST_IMPORT_CRON',
             'LENGOW_LAST_EXPORT',
             'LENGOW_LAST_IMPORT_MANUAL'
-            );
-foreach ($configurations as $configuration) {
-    Configuration::deleteByName($configuration);
-}
-$this->uninstallTab();
-return true;
-}
+        );
+        foreach ($configurations as $configuration) {
+            Configuration::deleteByName($configuration);
+        }
+        $this->uninstallTab();
+        return true;
+    }
 
     /**
      * Add admin Tab (Controller)
@@ -168,7 +169,7 @@ return true;
             if ($tab->id != 0) {
                 $result = $tab->delete();
             }
-            LengowMain::log('Uninstall tab '.$value['class_name']);
+            LengowMain::log('Uninstall tab ' . $value['class_name']);
         }
         return true;
     }
@@ -176,30 +177,30 @@ return true;
     private static function setDefaultValues()
     {
         return
-        Configuration::updateValue('LENGOW_AUTHORIZED_IP', $_SERVER['REMOTE_ADDR']) &&
-        Configuration::updateValue('LENGOW_TRACKING_ENABLED', '') &&
-        Configuration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', false) &&
-        Configuration::updateValue('LENGOW_EXPORT_DISABLED', false) &&
-        Configuration::updateValue('LENGOW_EXPORT_VARIATION_ENABLED', true) &&
-        Configuration::updateValue('LENGOW_EXPORT_FORMAT', 'csv') &&
-        Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', 2) &&
-        Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', 4) &&
-        Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', 6) &&
-        Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', true) &&
-        Configuration::updateValue('LENGOW_IMPORT_DAYS', 5) &&
-        Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
-        Configuration::updateValue('LENGOW_IMPORT_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
-        Configuration::updateValue('LENGOW_CRON_ENABLED', false) &&
-        Configuration::updateValue('LENGOW_IMPORT_PREPROD_ENABLED', false) &&
-        Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false) &&
-        Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true) &&
-        Configuration::updateValue('LENGOW_REPORT_MAIL_ADDRESS', '') &&
-        Configuration::updateValue(
-            'LENGOW_IMPORT_SINGLE_ENABLED',
-            version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
+            Configuration::updateValue('LENGOW_AUTHORIZED_IP', $_SERVER['REMOTE_ADDR']) &&
+            Configuration::updateValue('LENGOW_TRACKING_ENABLED', '') &&
+            Configuration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', false) &&
+            Configuration::updateValue('LENGOW_EXPORT_DISABLED', false) &&
+            Configuration::updateValue('LENGOW_EXPORT_VARIATION_ENABLED', true) &&
+            Configuration::updateValue('LENGOW_EXPORT_FORMAT', 'csv') &&
+            Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', 2) &&
+            Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', 4) &&
+            Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', 6) &&
+            Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', true) &&
+            Configuration::updateValue('LENGOW_IMPORT_DAYS', 5) &&
+            Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
+            Configuration::updateValue('LENGOW_IMPORT_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
+            Configuration::updateValue('LENGOW_CRON_ENABLED', false) &&
+            Configuration::updateValue('LENGOW_IMPORT_PREPROD_ENABLED', false) &&
+            Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false) &&
+            Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true) &&
+            Configuration::updateValue('LENGOW_REPORT_MAIL_ADDRESS', '') &&
+            Configuration::updateValue(
+                'LENGOW_IMPORT_SINGLE_ENABLED',
+                version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
             ) &&
-        Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
-        Configuration::updateValue('LENGOW_IMPORT_SHIP_MP_ENABLED', false);
+            Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
+            Configuration::updateValue('LENGOW_IMPORT_SHIP_MP_ENABLED', false);
     }
 
 
@@ -212,8 +213,8 @@ return true;
     {
         // Add Lengow order error status
         if (_PS_VERSION_ >= '1.5') {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state
-                WHERE module_name = \''.$this->lengowModule->name.'\'');
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state
+                WHERE module_name = \'' . $this->lengowModule->name . '\'');
             if (empty($states)) {
                 $lengow_state = new OrderState();
                 $lengow_state->send_email = false;
@@ -240,7 +241,7 @@ return true;
                 Configuration::updateValue('LENGOW_STATE_ERROR', $states[0]['id_order_state']);
             }
         } else {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state_lang
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang
                 WHERE name = \'Erreur technique - Lengow\' LIMIT 1');
             if (empty($states)) {
                 $lengow_state = new OrderState();
@@ -272,10 +273,10 @@ return true;
     public function update()
     {
         // check if update is in progress
-        $installation = true;
-        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_.'upgrade'), array('..', '.'));
+        self::setInstallationStatus(true);
+        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_ . 'upgrade'), array('..', '.'));
         foreach ($upgradeFiles as $file) {
-            include _PS_MODULE_LENGOW_DIR_.'upgrade/'.$file;
+            include _PS_MODULE_LENGOW_DIR_ . 'upgrade/' . $file;
             $numberVersion = preg_replace('/update_|\.php$/', '', $file);
         }
         // update lengow tabs
@@ -283,22 +284,43 @@ return true;
         $this->createTab();
         // update lengow version
         Configuration::updateValue('LENGOW_VERSION', $numberVersion);
+        self::setInstallationStatus(false);
         return true;
     }
 
     /**
-    * Checks if a field exists in BDD
-    *
-    * @param string $table
-    * @param string $field
-    *
-    * @return boolean
-    */
+     * Checks if a field exists in BDD
+     *
+     * @param string $table
+     * @param string $field
+     *
+     * @return boolean
+     */
     public static function checkFieldExists($table, $field)
     {
-        $sql = 'SHOW COLUMNS FROM '._DB_PREFIX_.$table.' LIKE \''.$field.'\'';
+        $sql = 'SHOW COLUMNS FROM ' . _DB_PREFIX_ . $table . ' LIKE \'' . $field . '\'';
         $result = Db::getInstance()->executeS($sql);
         $exists = count($result) > 0 ? true : false;
         return $exists;
+    }
+
+
+    /**
+     * Set Installation Status
+     *
+     * @param boolean $status Installation Status
+     */
+    public static function setInstallationStatus($status)
+    {
+        self::$installationStatus = $status;
+    }
+
+    /**
+     * Is Installation In Progress
+     * @return boolean
+     */
+    public static function isInstallationInProgress()
+    {
+        return self::$installationStatus;
     }
 }

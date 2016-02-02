@@ -25,7 +25,7 @@ class LengowController
     protected $module;
     protected $context;
 
-    public function __construct($params = array())
+    public function __construct()
     {
         $this->module = Module::getInstanceByName('lengow');
         $this->context = Context::getContext();

@@ -21,5 +21,17 @@
 
 require 'conf.inc.php';
 require 'views/header.php';
-require 'views/index.php';
+?>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="/modules/lengow/toolbox/config.php"><i class="fa fa-cog"></i> Configuration</a>
+        </li>
+        <li class="list-group-item">
+            <a href="/modules/lengow/toolbox/log.php"><i class="fa fa-file-text-o"></i> Log Files</a>
+        </li>
+        <li class="list-group-item">
+            <a href="/modules/lengow/toolbox/logoff.php"><i class="fa fa-sign-out"></i> Log Off</a>
+        </li>
+    </ul>
+<?php
 require 'views/footer.php';
