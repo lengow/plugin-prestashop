@@ -302,7 +302,7 @@ class LengowImportOrder
             if ($this->shipped_by_mp) {
                 $message = 'order shipped by '.$this->marketplace->name;
                 LengowMain::log($message, $this->log_output, $this->lengow_id);
-                if (!Configuration::get('LENGOW_IMPORT_SHIP_MP_ENABLED')) {
+                if (!LengowConfiguration::getGlobalValue('LENGOW_IMPORT_SHIP_MP_ENABLED')) {
                     LengowOrder::updateOrderLengow(
                         $this->id_order_lengow,
                         array(
@@ -420,9 +420,9 @@ class LengowImportOrder
             'lengow_id'             => $this->lengow_id,
             'lengow_state'          => $this->order_state_lengow,
             'marketplace'           => (string)$this->marketplace->name,
-            'new'                   => ($type_result == 'new' ? true : false),
-            'update'                => ($type_result == 'update' ? true : false),
-            'error'                 => ($type_result == 'error' ? true : false)
+            'order_new'             => ($type_result == 'new' ? true : false),
+            'order_update'          => ($type_result == 'update' ? true : false),
+            'order_error'           => ($type_result == 'error' ? true : false)
         );
         return $result;
     }
@@ -547,7 +547,7 @@ class LengowImportOrder
         $this->processing_fee = (float)$this->order_data->processing_fee;
         $this->shipping_cost = (float)$this->order_data->shipping;
         // rewrite processing fees and shipping cost
-        if (!Configuration::get('LENGOW_IMPORT_PROCESSING_FEE') || $this->first_package == false) {
+        if (!LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PROCESSING_FEE') || $this->first_package == false) {
             $this->processing_fee = 0;
             LengowMain::log('rewrite amount without processing fee', $this->log_output, $this->lengow_id);
         }
@@ -640,7 +640,10 @@ class LengowImportOrder
         // get billing datas
         $billing_data = LengowAddress::extractAddressDataFromAPI($this->order_data->billing_address);
         // create customer based on billing data
-        if (Configuration::get('LENGOW_IMPORT_FAKE_EMAIL') || $this->debug || empty($billing_data['email'])) {
+        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_FAKE_EMAIL')
+            || $this->debug
+            || empty($billing_data['email'])
+        ) {
             $billing_data['email'] = 'generated-email+'.$this->lengow_id.'@'.LengowMain::getHost();
             LengowMain::log('generate unique email : '.$billing_data['email'], $this->debug, $this->lengow_id);
         }
@@ -865,10 +868,10 @@ class LengowImportOrder
     protected function getCarrierId($shipping_address)
     {
         $carrier_id = false;
-        if (!Configuration::get('LENGOW_IMPORT_CARRIER_MP_ENABLED')
+        if (!LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_MP_ENABLED')
             || (is_null($this->carrier_name) && is_null($this->carrier_method))
         ) {
-            $carrier_id = (int)Configuration::get('LENGOW_IMPORT_CARRIER_DEFAULT');
+            $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
         }
         // get by tracking carrier
         if (!$carrier_id && !is_null($this->carrier_name)) {
@@ -896,7 +899,7 @@ class LengowImportOrder
         }
         // assign default carrier if no carrier is found
         if (!$carrier_id) {
-            $carrier_id = (int)Configuration::get('LENGOW_IMPORT_CARRIER_DEFAULT');
+            $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
             LengowMain::log('no matching carrier found. Default carrier assigned.', false, $this->lengow_id);
         } else {
             // check if module is active and has not been deleted
@@ -907,10 +910,10 @@ class LengowImportOrder
                     false,
                     $this->lengow_id
                 );
-                $carrier_id = (int)Configuration::get('LENGOW_IMPORT_CARRIER_DEFAULT');
+                $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
             } elseif ($carrier->is_module) {
                 if (!LengowMain::isModuleInstalled($carrier->external_module_name)) {
-                    $carrier_id = (int)Configuration::get('LENGOW_IMPORT_CARRIER_DEFAULT');
+                    $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
                     LengowMain::log(
                         'carrier module '.$carrier->external_module_name.' not installed. Default carrier assigned.',
                         false,
@@ -921,7 +924,7 @@ class LengowImportOrder
             // if carrier is SoColissimo -> check if module version is compatible
             if ($carrier_id == Configuration::get('SOCOLISSIMO_CARRIER_ID')) {
                 if (!LengowMain::isSoColissimoAvailable()) {
-                    $carrier_id = (int)Configuration::get('LENGOW_IMPORT_CARRIER_DEFAULT');
+                    $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
                     LengowMain::log(
                         'module version '.$carrier->external_module_name.' not supported. Default carrier assigned.',
                         false,
@@ -932,7 +935,7 @@ class LengowImportOrder
             // if carrier is mondialrelay -> check if module version is compatible
             if ($carrier->external_module_name == 'mondialrelay') {
                 if (!LengowMain::isMondialRelayAvailable()) {
-                    $carrier_id = (int)Configuration::get('LENGOW_IMPORT_CARRIER_DEFAULT');
+                    $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
                     LengowMain::log(
                         'module version '.$carrier->external_module_name.' not supported. Default carrier assigned.',
                         false,

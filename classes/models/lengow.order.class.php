@@ -191,6 +191,7 @@ class LengowOrder extends Order
     protected function loadLengowFields()
     {
         $query = 'SELECT
+            lo.`id`,
             lo.`id_order_lengow`,
             lo.`id_shop`,
             lo.`id_flux`,

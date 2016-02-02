@@ -103,11 +103,6 @@ class LengowMain
     public static $image_type_cache;
 
     /**
-     * @var boolean import is processing
-     */
-    public static $processing;
-
-    /**
      * v3
      * The Prestashop compare version with current version.
      *
@@ -227,54 +222,6 @@ class LengowMain
         } else {
             Configuration::set('PS_MAIL_METHOD', 3);
         }
-    }
-
-    /**
-     * v3
-     * Check if import is already in process
-     *
-     * @return boolean
-     */
-    public static function isInProcess()
-    {
-        $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS');
-        if ($timestamp == 'stopped') {
-            $timestamp = -1;
-        }
-        if ($timestamp > 0) {
-            // security check : if last import is more than 10 min old => authorize new import to be launched
-            if (($timestamp + (60 * 10)) < time()) {
-                LengowMain::setEnd();
-                return false;
-            }
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * v3
-     * Set import to "in process" state
-     *
-     * @return boolean
-     */
-    public static function setInProcess()
-    {
-        LengowMain::$processing = true;
-        return LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', time());
-    }
-
-    /**
-     * v3
-     * Set import to finished
-     *
-     * @return boolean
-     */
-    public static function setEnd()
-    {
-        LengowMain::$processing = false;
-        return LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', -1);
     }
 
     /**
