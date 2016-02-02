@@ -218,7 +218,6 @@ class LengowExport
             Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
         }
 
-
         $this->checkCurrency();
         $this->setCarrier();
         return $this;

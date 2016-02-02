@@ -27,7 +27,6 @@ class ExportTest extends ModuleTestCase
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
         Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
-        Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
 
         //load module
         Module::getInstanceByName('lengow');
@@ -199,9 +198,8 @@ class ExportTest extends ModuleTestCase
      */
     public function checkCurrency()
     {
-        $context = Context::getContext();
-        $context->currency = null;
         $export = new LengowExport();
+        Context::getContext()->currency = null;
         $export->checkCurrency();
     }
 

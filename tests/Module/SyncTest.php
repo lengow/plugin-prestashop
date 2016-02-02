@@ -4,13 +4,13 @@ namespace PrestaShop\PrestaShop\Tests\TestCase;
 
 use Currency;
 use Context;
+use LengowConfiguration;
 use Db;
 use Module;
-use LengowConfiguration;
 use Assert;
 use Feature;
 use Cache;
-use LengowTool;
+use Shop;
 use Tools;
 
 class SyncTest extends ModuleTestCase
@@ -21,6 +21,13 @@ class SyncTest extends ModuleTestCase
         parent::setUp();
         //load module
         Module::getInstanceByName('lengow');
+
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/multi_shop.yml');
+        LengowConfiguration::updatevalue('PS_MULTISHOP_FEATURE_ACTIVE', true);
+        LengowConfiguration::updateValue('LENGOW_SHOP_TOKEN', '1f65ze4f5e6z4fze654fe', false, null, 1);
+        LengowConfiguration::updateValue('LENGOW_SHOP_TOKEN', 'fg56ze4fgze654fze65fe', false, null, 2);
+        Shop::setContext(Shop::CONTEXT_ALL);
     }
 
     /**
@@ -42,9 +49,18 @@ class SyncTest extends ModuleTestCase
         ), $data);
 
         foreach ($data['shops'] as $shop) {
-            $this->assertTrue((bool)strlen($shop['token']>0));
-            $this->assertEquals($shop['name'], 'prestashop.unit.test');
-            $this->assertEquals($shop['domain'], 'prestashop.unit.test');
+            switch ($shop['token']) {
+                case '1f65ze4f5e6z4fze654fe':
+                    $this->assertEquals($shop['token'], '1f65ze4f5e6z4fze654fe');
+                    $this->assertEquals($shop['name'], 'prestashop.unit.test');
+                    $this->assertEquals($shop['domain'], 'prestashop.unit.test');
+                    break;
+                case 'fg56ze4fgze654fze65fe':
+                    $this->assertEquals($shop['token'], 'fg56ze4fgze654fze65fe');
+                    $this->assertEquals($shop['name'], 'prestashop-two.unit.test');
+                    $this->assertEquals($shop['domain'], 'prestashop-two.unit.test');
+                    break;
+            }
         }
     }
 
