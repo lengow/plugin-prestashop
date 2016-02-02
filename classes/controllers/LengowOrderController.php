@@ -169,7 +169,7 @@ class LengowOrderController extends LengowController
             'lo.delivery_country_iso',
             'lo.order_item as nb_item',
             'o.reference',
-            'lo.date_add as order_date',
+            'lo.order_date',
             'lo.order_lengow_state as lengow_status',
             'lo.id_order'
         );
