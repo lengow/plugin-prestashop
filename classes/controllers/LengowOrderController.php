@@ -53,7 +53,8 @@ class LengowOrderController extends LengowController
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
                     break;
                 case 're_import':
-                    echo 'ok';
+                    $id_order_lengow = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : 0;
+                    $test = LengowOrder::reImportOrder($id_order_lengow);
                     break;
             }
             exit();
@@ -172,7 +173,7 @@ class LengowOrderController extends LengowController
             'lo.total_paid',
             'lo.delivery_country_iso',
             'lo.order_item as nb_item',
-            'o.reference',
+            (_PS_VERSION_ < 1.5 ? 'o.id_order as reference' : 'o.reference'),
             'lo.order_date',
             'lo.order_lengow_state as lengow_status',
             'lo.id_order'
