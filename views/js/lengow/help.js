@@ -35,10 +35,14 @@
         };
         sync_iframe.src = '/modules/lengow/webservice/help.php';
 
-        $('#lengow_help_wrapper').height($('body').height());
+        resize();
 
         $(window).on('resize', function(){
-            $('#lengow_help_wrapper').height($('body').height());
+            resize();
         });
+
+        function resize() {
+            $('#lengow_help_wrapper').height($('body').height());
+        }
     });
 })(lengow_jquery);
