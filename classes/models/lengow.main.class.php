@@ -103,11 +103,6 @@ class LengowMain
     public static $image_type_cache;
 
     /**
-     * @var boolean import is processing
-     */
-    public static $processing;
-
-    /**
      * v3
      * The Prestashop compare version with current version.
      *
@@ -186,133 +181,6 @@ class LengowMain
 
     /**
      * v3
-     * Import of a specific order or all orders
-     *
-     * @param array params optional options
-     * string    $order_id           lengow order id to import
-     * string    $marketplace_name   lengow marketplace name to import
-     * integer   $shop_id            Id shop for current import
-     * boolean   $force_product      force import of products
-     * boolean   $debug              debug mode
-     * string    $date_from          starting import date
-     * string    $date_to            ending import date
-     * integer   $limit              number of orders to import
-     */
-    public static function importOrders($params = array())
-    {
-        // clean logs
-        LengowMain::cleanLog();
-        // get all params for import
-        $order_id = (isset($params['order_id']) ? $params['order_id'] : null);
-        $markeplace_name = (isset($params['markeplace_name']) ? $params['markeplace_name'] : null);
-        $id_shop = (isset($params['id_shop']) ? $params['id_shop'] : null);
-        $days = (
-            isset($params['days'])
-            ? $params['days']
-            : (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_DAYS')
-        );
-        $debug = (
-            isset($params['debug'])
-            ? $params['debug']
-            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')
-        );
-        $type = (isset($params['type']) ? $params['type'] : 'manual');
-        $force_product = (
-            isset($params['force_product'])
-            ? $params['force_product']
-            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT')
-        );
-        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_SINGLE_ENABLED')) {
-            $limit = 1;
-        } else {
-            $limit = (isset($params['limit']) ? (int)$params['limit'] : 0);
-        }
-        // recovering the time interval for import
-        $date_from = date('c', strtotime(date('Y-m-d').' -'.$days.'days'));
-        $date_to = date('c');
-
-        // launch the import orders
-        // 1st step: check if import is already in process
-        if (LengowMain::isInProcess() && !$debug) {
-            LengowMain::log('import is already started', true);
-        } else {
-            LengowMain::log('## Start '.$type.' import ##', true);
-            // 2nd step: start import process
-            // LengowMain::setInProcess();
-            // 3rd step: disable emails
-            LengowMain::disableMail();
-            // import of a specific order or all orders
-            if (!is_null($order_id) && !is_null($markeplace_name) && !is_null($id_shop)) {
-                if (LengowMain::getShopActive($shop['id_shop'])) {
-                    $import = new LengowImport(array(
-                        'order_id'          => $order_id,
-                        'marketplace_name'  => $markeplace_name,
-                        'shop_id'           => $id_shop
-                    ));
-                    $result = $import->exec();
-                }
-            } else {
-                $result_new = 0;
-                $result_update = 0;
-                $account_ids = array();
-                // udpate last import date
-                lengowMain::updateDateImport($type);
-                if (_PS_VERSION_ < '1.5') {
-                    $shops = array();
-                    $shops[] = array('id_shop' => 1, 'name' => 'Default shop');
-                } else {
-                    $shops = Shop::getShops();
-                }
-                foreach ($shops as $shop) {
-                    if (LengowMain::getShopActive($shop['id_shop'])) {
-                        LengowMain::log('Start import in shop '.$shop['name'].' ('.$shop['id_shop'].')', true);
-                        // checks whether an account id has not already been imported
-                        $account_id = LengowMain::getIdAccount($shop['id_shop']);
-                        if (array_key_exists($account_id, $account_ids)) {
-                            LengowMain::log(
-                                'Account ID '.$account_id.' is already used by shop '
-                                .$account_ids[$account_id]['name'].' ('.$account_ids[$account_id]['id_shop'].')',
-                                true
-                            );
-                            continue;
-                        }
-                        $account_ids[$account_id] = array('id_shop' => $shop['id_shop'], 'name' => $shop['name']);
-                        // star import for current store
-                        $import = new LengowImport(array(
-                            'shop_id'           => $shop['id_shop'],
-                            'force_product'     => $force_product,
-                            'debug'             => $debug,
-                            'date_from'         => $date_from,
-                            'date_to'           => $date_to,
-                            'limit'             => $limit,
-                            'log_output'        => true
-                        ));
-                        $result = $import->exec();
-                        $result_new += $result['new'];
-                        $result_update += $result['update'];
-                    }
-                }
-                if ($result_new > 0) {
-                    LengowMain::log($result_new.' order'.($result_new > 1 ? 's ' : ' ').'imported', true);
-                }
-                if ($result_update > 0) {
-                    LengowMain::log($result_update.' order'.($result_update > 1 ? 's ' : ' ').'updated', true);
-                }
-                if ($result_new == 0 && $result_update == 0) {
-                    LengowMain::log('No order available to import', true);
-                }
-            }
-            LengowMain::setEnd();
-            LengowMain::log('## End '.$type.' import ##', true);
-            // sending email in error for orders
-            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$debug) {
-                // LengowMain::sendMailAlert();
-            }
-        }
-    }
-
-    /**
-     * v3
      * Get the matching Prestashop order state id to the one given
      *
      * @param string $state state to be matched
@@ -354,54 +222,6 @@ class LengowMain
         } else {
             Configuration::set('PS_MAIL_METHOD', 3);
         }
-    }
-
-    /**
-     * v3
-     * Check if import is already in process
-     *
-     * @return boolean
-     */
-    public static function isInProcess()
-    {
-        $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS');
-        if ($timestamp == 'stopped') {
-            $timestamp = -1;
-        }
-        if ($timestamp > 0) {
-            // security check : if last import is more than 10 min old => authorize new import to be launched
-            if (($timestamp + (60 * 10)) < time()) {
-                LengowMain::setEnd();
-                return false;
-            }
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * v3
-     * Set import to "in process" state
-     *
-     * @return boolean
-     */
-    public static function setInProcess()
-    {
-        LengowMain::$processing = true;
-        return LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', time());
-    }
-
-    /**
-     * v3
-     * Set import to finished
-     *
-     * @return boolean
-     */
-    public static function setEnd()
-    {
-        LengowMain::$processing = false;
-        return LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', -1);
     }
 
     /**
