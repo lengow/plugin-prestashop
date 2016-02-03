@@ -35,7 +35,8 @@ class LengowInstall
         'Product' => array('name' => 'AdminLengowFeed', 'active' => true),
         'Orders' => array('name' => 'AdminLengowOrder', 'active' => true),
         'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
-        'Help' => array('name' => 'AdminLengowHelp', 'active' => false)
+        'Help' => array('name' => 'AdminLengowHelp', 'active' => false),
+        'MainSetting' => array('name' => 'AdminLengowMainSetting', 'active' => false)
     );
 
     public function __construct($module)

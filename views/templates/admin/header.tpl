@@ -26,12 +26,17 @@
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
 
 <ul class="nav nav-pills lengow-nav lengow-nav-top">
+    <li class="lengow_float_right">
+        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">
+            <i class="fa fa-cog"></i>
+        </a>
+    </li>
     <li class="lengow_float_right lengow_external_link">
         <a href="http://solution.lengow.com" target="_blank">
             <i class="fa fa-external-link"></i>
         </a>
     </li>
-    <li class="lengow_float_right lengow_ring {if $current_controller == 'LengowHelpController'}active{/if}">
+    <li class="lengow_float_right {if $current_controller == 'LengowHelpController'}active{/if}">
         <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}">
             <i class="fa fa-life-ring"></i>
         </a>

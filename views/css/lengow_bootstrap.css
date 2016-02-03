@@ -85,12 +85,11 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li.active>a:focus{
     float:right;
 }
 
-.nav.lengow-nav li.lengow_ring .fa {
+.nav.lengow-nav li .fa {
     font-size:23px;
 }
 
 .nav.lengow-nav li.lengow_external_link .fa {
-    font-size:23px;
     color:#47AFD5;
     margin-right:10px;
 }
