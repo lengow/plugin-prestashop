@@ -262,7 +262,7 @@ class LengowOrder extends Order
      */
     public static function getOrderIdFromLengowOrders($marketplace_sku, $marketplace, $delivery_address_id)
     {
-        $query = 'SELECT `id_order`, `delivery_address_id`
+        $query = 'SELECT `id_order`, `delivery_address_id`,`id_flux` 
             FROM `'._DB_PREFIX_.'lengow_orders`
             WHERE `marketplace_sku` = \''.pSQL($marketplace_sku).'\'
             AND `marketplace_name` = \''.pSQL(Tools::strtolower($marketplace)).'\'
@@ -272,7 +272,7 @@ class LengowOrder extends Order
             return false;
         }
         foreach ($results as $result) {
-            if (is_null($result['delivery_address_id'])) {
+            if (is_null($result['delivery_address_id']) && !is_null($result['id_flux'])) {
                 return $result['id_order'];
             } elseif ($result['delivery_address_id'] == $delivery_address_id) {
                 return $result['id_order'];

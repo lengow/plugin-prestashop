@@ -262,7 +262,7 @@ class LengowImport
                         // change context with current shop id
                         $this->changeContext((int)$shop['id_shop']);
                         // get orders from Lengow API
-                        $orders = $this->getOrdersFromApi();
+                        $orders = $this->getOrdersFromApi((int)$shop['id_shop']);
                         $total_orders = count($orders);
                         if ($this->import_one_order) {
                             LengowMain::log(
@@ -282,7 +282,7 @@ class LengowImport
                             continue;
                         }
                         // import orders in prestashop
-                        $result = $this->importOrders($orders);
+                        $result = $this->importOrders($orders, (int)$shop['id_shop']);
                         if (!$this->import_one_order) {
                             $order_new      += $result['order_new'];
                             $order_update   += $result['order_update'];
@@ -344,7 +344,7 @@ class LengowImport
                 .$this->account_ids[$this->account_id]['id_shop'].')';
             return $message;
         }
-        $account_ids[$this->account_id] = array('id_shop' => $id_shop, 'name' => $name_shop);
+        $this->account_ids[$this->account_id] = array('id_shop' => $id_shop, 'name' => $name_shop);
         return false;
     }
 
@@ -355,10 +355,9 @@ class LengowImport
      */
     protected function changeContext($id_shop)
     {
-        $this->id_shop = $id_shop;
         $this->context = Context::getContext();
         if (_PS_VERSION_ >= '1.5') {
-            if ($shop = new Shop($this->id_shop)) {
+            if ($shop = new Shop($id_shop)) {
                 $this->context->shop = $shop;
             }
         }
@@ -369,14 +368,16 @@ class LengowImport
     /**
      * Call Lengow order API
      *
+     * @param  integer $id_shop Shop Id
+     *
      * @return mixed
      */
-    protected function getOrdersFromApi()
+    protected function getOrdersFromApi($id_shop)
     {
         $page = 1;
         $orders = array();
 
-        if (LengowCheck::isValidAuth($this->id_shop)) {
+        if (LengowCheck::isValidAuth($id_shop)) {
             $this->connector  = new LengowConnector($this->access_token, $this->secret);
             if ($this->import_one_order) {
                 LengowMain::log(
@@ -443,11 +444,12 @@ class LengowImport
     /**
      * Create or update order in prestashop
      *
-     * @param mixed $orders API orders
+     * @param mixed     $orders     API orders
+     * @param integer   $id_shop    Shop Id
      *
      * @return mixed
      */
-    protected function importOrders($orders)
+    protected function importOrders($orders, $id_shop)
     {
         $order_new       = 0;
         $order_update    = 0;
@@ -492,7 +494,7 @@ class LengowImport
                 $import_order = new LengowImportOrder(
                     array(
                         'context'               => $this->context,
-                        'id_shop'               => $this->id_shop,
+                        'id_shop'               => $id_shop,
                         'id_shop_group'         => $this->id_shop_group,
                         'id_lang'               => $this->id_lang,
                         'force_product'         => $this->force_product,
