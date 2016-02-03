@@ -18,7 +18,7 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 <div id="lengow_help_wrapper">
-    <iframe src="/modules/lengow/webservice/help.php"></iframe>
+    <iframe id="lengow_help_iframe"></iframe>
 </div>
 
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/help.js"></script>

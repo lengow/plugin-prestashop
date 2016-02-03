@@ -65,4 +65,19 @@ class LengowShop extends Shop
         }
         return false;
     }
+
+    public static function findAll()
+    {
+        if (_PS_VERSION_ < '1.5') {
+            $results = array(array('id_shop' => 1));
+        } else {
+            if ($currentShop = Shop::getContextShopID()) {
+                $results = array(array('id_shop' => $currentShop));
+            } else {
+                $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+                $results = Db::getInstance()->ExecuteS($sql);
+            }
+        }
+        return $results;
+    }
 }

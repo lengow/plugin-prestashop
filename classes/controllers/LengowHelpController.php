@@ -22,4 +22,23 @@
 class LengowHelpController extends LengowController
 {
 
+    /**
+     * Process Post Parameters
+     */
+    public function postProcess()
+    {
+        $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
+        if ($action) {
+            switch ($action) {
+                case 'get_help_data':
+                    $data = array();
+                    $data['function'] = 'sync';
+                    $data['parameters'] = LengowSync::getHelpData();
+                    echo Tools::jsonEncode($data);
+                    break;
+            }
+            exit();
+        }
+    }
+
 }

@@ -43,6 +43,12 @@
             sync_iframe.src = '/modules/lengow/webservice/sync.php';
         });
 
+        $('#lengow_home_frame').height($('body').height());
+
+        $(window).on('resize', function(){
+            $('#lengow_home_frame').height($('body').height());
+        });
+
         window.addEventListener("message", receiveMessage, false);
 
         function receiveMessage(event)

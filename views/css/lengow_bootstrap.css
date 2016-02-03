@@ -598,6 +598,20 @@ body.lengow_body #content .lengow_breadcrumb a {
     text-align: left;
 }
 
+/* HOME PAGE */
+
+#lengow_home_frame {
+    padding:0px;
+}
+#lengow_home_frame iframe {
+    width:100%;
+    border:none;
+    margin:0px;
+    margin-top: -6px;
+    height:100%;
+
+}
+
 /* HELP PAGE */
 
 #lengow_help_wrapper {

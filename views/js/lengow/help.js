@@ -20,6 +20,21 @@
 
 (function ($) {
     $(document).ready(function () {
+
+        var sync_iframe = document.getElementById('lengow_help_iframe');
+        sync_iframe.onload = function() {
+            $.ajax({
+                method: 'POST',
+                data: {action: 'get_help_data'},
+                dataType: 'json',
+                success: function(data) {
+                    var targetFrame = document.getElementById('lengow_help_iframe').contentWindow;
+                    targetFrame.postMessage(data, '*');
+                }
+            });
+        };
+        sync_iframe.src = '/modules/lengow/webservice/help.php';
+
         $('#lengow_help_wrapper').height($('body').height());
 
         $(window).on('resize', function(){

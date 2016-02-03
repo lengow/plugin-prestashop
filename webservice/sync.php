@@ -35,16 +35,14 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
 <head>
     <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
 </head>
-<body>
+<body style="background: #CDCDCD;">
 <h1>Lengow Page</h1>
 <div id="call">
     <a id="link_call" href="#">Send Information To Prestashop</a>
     &nbsp;&nbsp;&nbsp;&nbsp;
     <a id="link_cancel" href="#">Cancel Link</a>
 </div>
-<div id="parameters">
-
-</div>
+<pre><code id="parameters"></code></pre>
 </body>
 
 <script type="text/javascript">
@@ -56,8 +54,10 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
         switch (event.data.function) {
             case 'sync':
                 global_parameters = event.data.parameters;
-                document.getElementById("parameters").innerHTML = 'Parameters : <br/><br/>' +
-                    JSON.stringify(event.data.parameters);
+                document.getElementById("parameters").innerHTML = 'Parameters : <br/><br/>';
+                document.getElementById("parameters").appendChild(
+                    document.createTextNode(JSON.stringify(event.data.parameters, null, 4))
+                );
                 break;
         }
     }
