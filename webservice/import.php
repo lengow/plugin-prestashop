@@ -64,7 +64,7 @@ if (Tools::getIsset('idOrder')) {
     $params['order_id'] = (string)Tools::getValue('idOrder');
 }
 if (Tools::getIsset('marketplace')) {
-    $params['marketplace_name'] = (string)Tools::getValue('marketplace');
+    $params['marketplace_name'] = (string)Tools::getValue('marketplace_name');
 }
 if (Tools::getIsset('idDelivery')) {
     $params['delivery_address_id'] = (string)Tools::getValue('idDelivery');

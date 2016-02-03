@@ -189,34 +189,6 @@ class LengowList
                                     $value = '';
                                 }
                                 break;
-                            case 'log_status':
-                                if ($item[$key]) {
-
-                                    if ($item[$key] == '2') {
-                                        $value = '<i class="fa fa-info-circle lengow_red lengow_link_tooltip"
-                                    data-original-title="test"
-                                    ></i>';
-                                        $value.= ' <a href="#"
-                                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
-                                    data-action="re_send"
-                                    data-order="'.$item[$this->identifier].'"
-                                    data-type="'.$item[$key].'"
-                                    >Re Send</a>';
-                                    } else {
-                                        $value = '<i class="fa fa-info-circle lengow_red lengow_link_tooltip"
-                                    data-original-title="test"
-                                    ></i>';
-                                        $value.= ' <a href="#"
-                                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
-                                    data-action="re_import"
-                                    data-order="'.$item[$this->identifier].'"
-                                    data-type="'.$item[$key].'"
-                                    >Re Import</a>';
-                                    }
-                                } else {
-                                    $value = '<i class="fa fa-circle lengow_green"></i>';
-                                }
-                                break;
                             default:
                                 $value = $item[$key];
                         }

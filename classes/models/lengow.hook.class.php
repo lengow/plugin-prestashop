@@ -280,7 +280,8 @@ class LengowHook
     {
         $lengow_order = new LengowOrder($args['id_order']);
         // Not send state if we are on lengow import module
-        if (LengowOrder::isFromLengow($args['id_order']) && LengowImport::$current_order != $lengow_order->lengow_order_id) {
+        if (LengowOrder::isFromLengow($args['id_order']) &&
+            LengowImport::$current_order != $lengow_order->lengow_marketplace_sku) {
             LengowMain::disableMail();
         }
     }
@@ -295,8 +296,8 @@ class LengowHook
         $lengow_order = new LengowOrder($args['id_order']);
         // do nothing if order is not from Lengow or is being imported
         if (LengowOrder::isFromLengow($args['id_order'])
-            && LengowImport::$current_order != $lengow_order->lengow_order_id
-            && !array_key_exists($lengow_order->lengow_order_id, $this->_alreadyShipped)
+            && LengowImport::$current_order != $lengow_order->lengow_marketplace_sku
+            && !array_key_exists($lengow_order->lengow_marketplace_sku, $this->_alreadyShipped)
         ) {
             $new_order_state = $args['newOrderStatus'];
             $id_order_state = $new_order_state->id;
@@ -305,17 +306,20 @@ class LengowHook
             if ($lengow_order->lengow_id_flux != null) {
                 $lengow_order->checkAndChangeMarketplaceName();
             }
-            $marketplace = LengowMain::getMarketplaceSingleton((string)$lengow_order->lengow_marketplace, $id_shop);
+            $marketplace = LengowMain::getMarketplaceSingleton(
+                (string)$lengow_order->lengow_marketplace_name,
+                $id_shop
+            );
             if ($marketplace->isLoaded()) {
                 // Call Lengow API WSDL to send shipped state order
                 if ($id_order_state == LengowMain::getOrderState('shipped')) {
-                    $marketplace->wsdl('ship', $lengow_order->lengow_order_id, $args);
-                    $this->_alreadyShipped[$lengow_order->lengow_order_id] = true;
+                    $marketplace->wsdl('ship', $lengow_order->lengow_marketplace_sku, $args);
+                    $this->_alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
                 }
                 // Call Lengow API WSDL to send refuse state order
                 if ($id_order_state == LengowMain::getOrderState('canceled')) {
-                    $marketplace->wsdl('cancel', $lengow_order->lengow_order_id, $args);
-                    $this->_alreadyShipped[$lengow_order->lengow_order_id] = true;
+                    $marketplace->wsdl('cancel', $lengow_order->lengow_marketplace_sku, $args);
+                    $this->_alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
                 }
             }
         }
@@ -331,8 +335,8 @@ class LengowHook
                 $lengow_order = new LengowOrder($args['object']->id);
                 if ($lengow_order->shipping_number != ''
                     && $args['object']->current_state == LengowMain::getOrderState('shipped')
-                    && LengowImport::$current_order != $lengow_order->lengow_order_id
-                    && !array_key_exists($lengow_order->lengow_order_id, $this->_alreadyShipped)
+                    && LengowImport::$current_order != $lengow_order->lengow_marketplace_sku
+                    && !array_key_exists($lengow_order->lengow_marketplace_sku, $this->_alreadyShipped)
                 ) {
                     $params = array();
                     $params['id_order'] = $args['object']->id;
@@ -342,12 +346,12 @@ class LengowHook
                         $lengow_order->checkAndChangeMarketplaceName();
                     }
                     $marketplace = LengowMain::getMarketplaceSingleton(
-                        (string)$lengow_order->lengow_marketplace,
+                        (string)$lengow_order->lengow_marketplace_name,
                         $id_shop
                     );
                     if ($marketplace->isLoaded()) {
-                        $marketplace->wsdl('ship', $lengow_order->lengow_order_id, $params);
-                        $this->_alreadyShipped[$lengow_order->lengow_order_id] = true;
+                        $marketplace->wsdl('ship', $lengow_order->lengow_marketplace_sku, $params);
+                        $this->_alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
                     }
                 }
             }
@@ -451,8 +455,8 @@ class LengowHook
                     $lengow_order->checkAndChangeMarketplaceName();
                 }
                 $order_ids = LengowOrder::getAllOrderIdsFromLengowOrder(
-                    $lengow_order->lengow_order_id,
-                    $lengow_order->lengow_marketplace
+                    $lengow_order->lengow_marketplace_sku,
+                    $lengow_order->lengow_marketplace_name
                 );
                 if (count($order_ids) > 0) {
                     $presta_ids = array();
@@ -467,8 +471,8 @@ class LengowHook
                         '/v3.0/orders',
                         array(
                             'account_id'            => LengowMain::getIdAccount($id_shop),
-                            'marketplace_order_id'  => $lengow_order->lengow_order_id,
-                            'marketplace'           => $lengow_order->lengow_marketplace,
+                            'marketplace_order_id'  => $lengow_order->lengow_marketplace_sku,
+                            'marketplace'           => $lengow_order->lengow_marketplace_name,
                             'merchant_order_id'     => $presta_ids
                         )
                     );
@@ -482,7 +486,7 @@ class LengowHook
                 $add_script = true;
             } else {
                 $action_reimport = 'index.php?controller=AdminLengow&id_order='.$lengow_order->id.
-                '&lengoworderid='.$lengow_order->lengow_order_id.'&action=reimportOrder&ajax&token='.
+                '&lengoworderid='.$lengow_order->lengow_marketplace_sku.'&action=reimportOrder&ajax&token='.
                 Tools::getAdminTokenLite('AdminLengow');
                 $action_synchronize = 'index.php?controller=AdminOrders&id_order='.$lengow_order->id.
                 '&vieworder&action=synchronize&token='.Tools::getAdminTokenLite('AdminOrders');
@@ -490,9 +494,9 @@ class LengowHook
             }
 
             $template_data = array(
-                'id_order_lengow'       => $lengow_order->lengow_order_id,
+                'marketplace_sku'       => $lengow_order->marketplace_sku,
                 'id_flux'               => $lengow_order->lengow_id_flux,
-                'marketplace'           => $lengow_order->lengow_marketplace,
+                'marketplace_name'      => $lengow_order->lengow_marketplace_name,
                 'total_paid'            => $lengow_order->lengow_total_paid,
                 'carrier'               => $lengow_order->lengow_carrier,
                 'tracking_method'       => $lengow_order->lengow_method,

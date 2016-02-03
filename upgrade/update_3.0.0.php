@@ -52,7 +52,12 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
     }
     if (LengowInstall::checkFieldExists('lengow_orders', 'id_order_lengow')) {
         Db::getInstance()->execute(
-            'ALTER TABLE  '._DB_PREFIX_.'lengow_orders CHANGE `id_order_lengow` `id_order_lengow` VARCHAR(32) NOT NULL'
+            'ALTER TABLE `ps_lengow_orders` CHANGE `id_order_lengow` `marketplace_sku` VARCHAR(32) NOT NULL;'
+        );
+    }
+    if (LengowInstall::checkFieldExists('lengow_orders', 'marketplace')) {
+        Db::getInstance()->execute(
+            'ALTER TABLE `ps_lengow_orders` CHANGE `marketplace` `marketplace_name` VARCHAR(100) NULL;'
         );
     }
     if (LengowInstall::checkFieldExists('lengow_orders', 'id_order_line')) {
@@ -145,7 +150,7 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
             'SELECT `lengow_order_id`, `lengow_order_line` FROM `'._DB_PREFIX_.'lengow_logs_import`'
         );
         foreach ($results as $result) {
-            if (LengowInstall::checkFieldExists('lengow_orders', 'id_order_lengow')
+            if (LengowInstall::checkFieldExists('lengow_orders', 'marketplace_sku')
                 && LengowInstall::checkFieldExists('lengow_orders', 'id_order_line')
             ) {
                 $orderLineQuery = is_null($result['lengow_order_line'])
@@ -153,7 +158,7 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
                     : ' = \''.$result['lengow_order_line'].'\'';
                 $id_order = Db::getInstance()->getRow(
                     'SELECT `id` FROM `'._DB_PREFIX_.'lengow_orders` 
-                    WHERE `id_order_lengow` = \''.$result['lengow_order_id'].'\' 
+                    WHERE `marketplace_sku` = \''.$result['lengow_order_id'].'\'
                     AND `id_order_line`'.$orderLineQuery
                 );
                 if ($id_order) {
@@ -191,9 +196,9 @@ if (LengowInstall::checkFieldExists('lengow_logs_import', 'extra')) {
         'ALTER TABLE '._DB_PREFIX_.'lengow_logs_import DROP COLUMN `extra`'
     );
 }
-if (LengowInstall::checkFieldExists('lengow_logs_import', 'delivery_id_address')) {
+if (LengowInstall::checkFieldExists('lengow_logs_import', 'delivery_address_id')) {
     Db::getInstance()->execute(
-        'ALTER TABLE '._DB_PREFIX_.'lengow_logs_import DROP COLUMN `delivery_id_address`'
+        'ALTER TABLE '._DB_PREFIX_.'lengow_logs_import DROP COLUMN `delivery_address_id`'
     );
 }
 

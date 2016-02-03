@@ -448,15 +448,15 @@ class LengowImport
         $order_error  = 0;
         foreach ($orders as $order_data) {
             $nb_package = 0;
-            $lengow_id = (string)$order_data->marketplace_order_id;
+            $marketplace_sku = (string)$order_data->marketplace_order_id;
             if ($this->debug) {
-                $lengow_id .= '--'.time();
+                $marketplace_sku .= '--'.time();
             }
             // set current order to cancel hook updateOrderStatus
-            LengowImport::$current_order = $lengow_id;
+            LengowImport::$current_order = $marketplace_sku;
             // if order contains no package
             if (count($order_data->packages) == 0) {
-                LengowMain::log('create order fail: no package in the order', $this->log_output, $lengow_id);
+                LengowMain::log('create order fail: no package in the order', $this->log_output, $marketplace_sku);
                 continue;
             }
             // start import
@@ -467,7 +467,7 @@ class LengowImport
                     LengowMain::log(
                         'create order fail: no delivery address in the order',
                         $this->log_output,
-                        $lengow_id
+                        $marketplace_sku
                     );
                     continue;
                 }
@@ -491,7 +491,7 @@ class LengowImport
                         'force_product'         => $this->force_product,
                         'debug'                 => $this->debug,
                         'log_output'            => $this->log_output,
-                        'lengow_id'             => $lengow_id,
+                        'marketplace_sku'       => $marketplace_sku,
                         'delivery_address_id'   => $package_delivery_address_id,
                         'order_data'            => $order_data,
                         'package_data'          => $package_data,
@@ -501,7 +501,7 @@ class LengowImport
                 $order = $import_order->importOrder();
                 // Sync to lengow if no debug
                 if (!$this->debug && isset($order['new'])) {
-                    $this->synchronisedOrder($lengow_id, $order['marketplace'], $order['order_id']);
+                    $this->synchronisedOrder($marketplace_sku, $order['marketplace_name'], $order['order_id']);
                 }
                 // if re-import order -> return order informations
                 if ($this->import_one_order) {
@@ -535,15 +535,15 @@ class LengowImport
     /**
      * Synchronised order with Lengow API
      *
-     * @param string    $lengow_id              Lengow order ID
+     * @param string    $marketplace_sku              Lengow order ID
      * @param string    $marketplace_name       order marketplace
      * @param integer   $prestashop_order_id    Prestashop order ID
      *
      * @return boolean
      */
-    protected function synchronisedOrder($lengow_id, $marketplace_name, $prestashop_order_id)
+    protected function synchronisedOrder($marketplace_sku, $marketplace_name, $prestashop_order_id)
     {
-        $order_ids = LengowOrder::getAllOrderIdsFromLengowOrder($lengow_id, $marketplace_name);
+        $order_ids = LengowOrder::getAllOrderIdsFromLengowOrder($marketplace_sku, $marketplace_name);
         if (count($order_ids) > 0) {
             $presta_ids = array();
             foreach ($order_ids as $order_id) {
@@ -553,7 +553,7 @@ class LengowImport
                 '/v3.0/orders',
                 array(
                     'account_id'            => $this->account_id,
-                    'marketplace_order_id'  => $lengow_id,
+                    'marketplace_order_id'  => $marketplace_sku,
                     'marketplace'           => $marketplace_name,
                     'merchant_order_id'     => $presta_ids
                 )
@@ -566,13 +566,13 @@ class LengowImport
                     'WARNING ! Order could NOT be synchronised with Lengow webservice (ID '
                     .$prestashop_order_id.')',
                     $this->debug,
-                    $lengow_id
+                    $marketplace_sku
                 );
             } else {
                 LengowMain::log(
                     'order successfully synchronised with Lengow webservice (ID '.$prestashop_order_id.')',
                     $this->debug,
-                    $lengow_id
+                    $marketplace_sku
                 );
             }
         }

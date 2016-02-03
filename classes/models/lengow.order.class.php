@@ -58,12 +58,12 @@ class LengowOrder extends Order
     /**
      * @var string Lengow order id
      */
-    public $lengow_order_id;
+    public $lengow_marketplace_sku;
 
     /**
      * @var string Marketplace's name
      */
-    public $lengow_marketplace;
+    public $lengow_marketplace_name;
 
     /**
      * @var string Message
@@ -128,7 +128,7 @@ class LengowOrder extends Order
     /**
      * @var integer id of the delivery address
      */
-    public $lengow_delivery_id_address;
+    public $lengow_delivery_address_id;
 
     /**
      * @var string ISO code for country
@@ -202,10 +202,10 @@ class LengowOrder extends Order
     {
         $query = 'SELECT
             lo.`id`,
-            lo.`id_order_lengow`,
+            lo.`marketplace_sku`,
             lo.`id_shop`,
             lo.`id_flux`,
-            lo.`marketplace`,
+            lo.`marketplace_name`,
             lo.`message`,
             lo.`total_paid`,
             lo.`carrier`,
@@ -216,7 +216,7 @@ class LengowOrder extends Order
             lo.`is_disabled`,
             lo.`order_process_state`,
             lo.`order_date`,
-            lo.`delivery_id_address`,
+            lo.`delivery_address_id`,
             lo.`delivery_country_iso`,
             lo.`customer_name`,
             lo.`order_lengow_state`,
@@ -226,10 +226,10 @@ class LengowOrder extends Order
         ';
         if ($result = Db::getInstance()->getRow($query)) {
             $this->lengow_id                    = $result['id'];
-            $this->lengow_order_id              = $result['id_order_lengow'];
+            $this->lengow_marketplace_sku              = $result['marketplace_sku'];
             $this->lengow_id_shop               = (int)$result['id_shop'];
             $this->lengow_id_flux               = $result['id_flux'];
-            $this->lengow_marketplace           = $result['marketplace'];
+            $this->lengow_marketplace_name      = $result['marketplace_name'];
             $this->lengow_message               = $result['message'];
             $this->lengow_total_paid            = $result['total_paid'];
             $this->lengow_carrier               = $result['carrier'];
@@ -240,7 +240,7 @@ class LengowOrder extends Order
             $this->lengow_is_disabled           = (bool)$result['is_disabled'];
             $this->lengow_process_state         = (int)$result['order_process_state'];
             $this->lengow_order_date            = $result['order_date'];
-            $this->lengow_delivery_id_address   = (int)$result['delivery_id_address'];
+            $this->lengow_delivery_address_id   = (int)$result['delivery_address_id'];
             $this->lengow_delivery_country_iso  = $result['delivery_country_iso'];
             $this->lengow_customer_name         = $result['customer_name'];
             $this->lengow_state                 = $result['order_lengow_state'];
@@ -254,27 +254,27 @@ class LengowOrder extends Order
     /**
      * Get Prestashop order id
      *
-     * @param string    $lengow_id              Lengow order id
+     * @param string    $marketplace_sku              Lengow order id
      * @param string    $marketplace            marketplace name
      * @param integer   $delivery_address_id    devivery address id
      *
      * @return mixed
      */
-    public static function getOrderIdFromLengowOrders($lengow_id, $marketplace, $delivery_address_id)
+    public static function getOrderIdFromLengowOrders($marketplace_sku, $marketplace, $delivery_address_id)
     {
-        $query = 'SELECT `id_order`, `delivery_id_address`
+        $query = 'SELECT `id_order`, `delivery_address_id`
             FROM `'._DB_PREFIX_.'lengow_orders`
-            WHERE `id_order_lengow` = \''.pSQL($lengow_id).'\'
-            AND `marketplace` = \''.pSQL(Tools::strtolower($marketplace)).'\'
+            WHERE `marketplace_sku` = \''.pSQL($marketplace_sku).'\'
+            AND `marketplace_name` = \''.pSQL(Tools::strtolower($marketplace)).'\'
             AND `order_process_state` != 0';
         $results = Db::getInstance()->executeS($query);
         if (count($results) == 0) {
             return false;
         }
         foreach ($results as $result) {
-            if (is_null($result['delivery_id_address'])) {
+            if (is_null($result['delivery_address_id'])) {
                 return $result['id_order'];
-            } elseif ($result['delivery_id_address'] == $delivery_address_id) {
+            } elseif ($result['delivery_address_id'] == $delivery_address_id) {
                 return $result['id_order'];
             }
         }
@@ -284,16 +284,16 @@ class LengowOrder extends Order
     /**
      * Get ID record from lengow orders table
      *
-     * @param string   $lengow_id               lengow order id
+     * @param string   $marketplace_sku               lengow order id
      * @param integer  $delivery_address_id     delivery address id
      *
      * @return mixed
      */
-    public static function getIdFromLengowOrders($lengow_id, $delivery_address_id)
+    public static function getIdFromLengowOrders($marketplace_sku, $delivery_address_id)
     {
         $query = 'SELECT `id` FROM `'._DB_PREFIX_.'lengow_orders`
-            WHERE `id_order_lengow` = \''.pSQL($lengow_id).'\'
-            AND `delivery_id_address` = \''.pSQL((int)$delivery_address_id).'\'';
+            WHERE `marketplace_sku` = \''.pSQL($marketplace_sku).'\'
+            AND `delivery_address_id` = \''.pSQL((int)$delivery_address_id).'\'';
         $result = Db::getInstance()->getRow($query);
         if ($result) {
             return (int)$result['id'];
@@ -310,11 +310,11 @@ class LengowOrder extends Order
      */
     public static function isFromLengow($order_id)
     {
-        $query = 'SELECT `id_order_lengow`
+        $query = 'SELECT `marketplace_sku`
             FROM `'._DB_PREFIX_.'lengow_orders`
             WHERE `id_order` = \''.pSQL((int)$order_id).'\'';
         $result = Db::getInstance()->executeS($query);
-        if (empty($result) || $result[0]['id_order_lengow'] == '') {
+        if (empty($result) || $result[0]['marketplace_sku'] == '') {
             return false;
         } else {
             return true;
@@ -333,7 +333,7 @@ class LengowOrder extends Order
     {
         $query = 'SELECT `id` FROM `'._DB_PREFIX_.'lengow_orders`
             WHERE `id_order` = \''.pSQL((int)$order_id).'\'
-            AND `delivery_id_address` = \''.pSQL((int)$delivery_address_id).'\'';
+            AND `delivery_address_id` = \''.pSQL((int)$delivery_address_id).'\'';
         $result = Db::getInstance()->getRow($query);
         if ($result) {
             return $result['id'];
@@ -344,16 +344,16 @@ class LengowOrder extends Order
     /**
      * Retrieves all the order ids for an order number Lengow
      *
-     * @param string    $lengow_id      Lengow order id
+     * @param string    $marketplace_sku      Lengow order id
      * @param string    $marketplace    marketplace name
      *
      * @return array
      */
-    public static function getAllOrderIdsFromLengowOrder($lengow_id, $marketplace)
+    public static function getAllOrderIdsFromLengowOrder($marketplace_sku, $marketplace)
     {
         $query = 'SELECT `id_order` FROM `'._DB_PREFIX_.'lengow_orders`
-            WHERE `id_order_lengow` = \''.pSQL($lengow_id).'\'
-            AND `marketplace` = \''.pSQL(Tools::strtolower($marketplace)).'\'
+            WHERE `marketplace_sku` = \''.pSQL($marketplace_sku).'\'
+            AND `marketplace_name` = \''.pSQL(Tools::strtolower($marketplace)).'\'
             AND `order_process_state` != \'0\'';
         return Db::getInstance()->executeS($query);
     }
@@ -434,7 +434,7 @@ class LengowOrder extends Order
                     $this->validateFields();
                     $this->update();
                 }
-                LengowMain::getLogInstance()->write('state updated to shipped', true, $this->lengow_order_id);
+                LengowMain::getLogInstance()->write('state updated to shipped', true, $this->lengow_marketplace_sku);
                 $params = $arrayName = array(
                     'order_process_state' => LengowOrder::getOrderProcessState($order_state_lengow)
                 );
@@ -452,7 +452,7 @@ class LengowOrder extends Order
                 $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this, true);
                 $history->validateFields();
                 $history->add();
-                LengowMain::getLogInstance()->write('state updated to canceled', true, $this->lengow_order_id);
+                LengowMain::getLogInstance()->write('state updated to canceled', true, $this->lengow_marketplace_sku);
                 LengowOrder::updateOrderLengow(
                     (int)$this->lengow_id,
                     array(
@@ -491,8 +491,8 @@ class LengowOrder extends Order
             $results = $connector->get(
                 '/v3.0/orders',
                 array(
-                    'marketplace_order_id'  => $this->lengow_order_id,
-                    'marketplace'           => $this->lengow_marketplace,
+                    'marketplace_order_id'  => $this->lengow_marketplace_sku,
+                    'marketplace'           => $this->lengow_marketplace_name,
                     'account_id'            => LengowMain::getIdAccount($id_shop)
                 ),
                 'stream'
@@ -505,9 +505,9 @@ class LengowOrder extends Order
                 return;
             }
             foreach ($results->results as $order) {
-                if ($this->lengow_marketplace != (string)$order->marketplace) {
+                if ($this->lengow_marketplace_name != (string)$order->marketplace) {
                     $update = 'UPDATE '._DB_PREFIX_.'lengow_orders
-                        SET `marketplace` = \''.pSQL(Tools::strtolower((string)$order->marketplace)).'\'
+                        SET `marketplace_name` = \''.pSQL(Tools::strtolower((string)$order->marketplace)).'\'
                         WHERE `id_order` = \''.pSQL((int)$this->id).'\'
                     ';
                     DB::getInstance()->execute($update);
@@ -569,20 +569,20 @@ class LengowOrder extends Order
     /**
      * Check if an order has an error
      *
-     * @param string    $lengow_id              Lengow order id
-     * @param integer    $delivery_address_id    Id delivery address
+     * @param string    $marketplace_sku        Lengow order id
+     * @param integer   $delivery_address_id    Id delivery address
      * @param string    $type                   Type (import or wsdl)
      *
      * @return mixed
      */
-    public static function orderIsInError($lengow_id, $delivery_address_id, $type = 'import')
+    public static function orderIsInError($marketplace_sku, $delivery_address_id, $type = 'import')
     {
         $log_type = LengowOrder::getOrderLogType($type);
         // check if log already exists for the given order id
         $query = 'SELECT lli.`message`, lli.`date` FROM `'._DB_PREFIX_.'lengow_logs_import` lli
             LEFT JOIN `'._DB_PREFIX_.'lengow_orders` lo ON lli.`id_order_lengow` = lo.`id`
-            WHERE lo.`id_order_lengow` = \''.pSQL($lengow_id).'\'
-            AND lo.`delivery_id_address` = \''.pSQL((int)$delivery_address_id).'\'
+            WHERE lo.`marketplace_sku` = \''.pSQL($marketplace_sku).'\'
+            AND lo.`delivery_address_id` = \''.pSQL((int)$delivery_address_id).'\'
             AND lli.`type` = \''.pSQL($log_type).'\'
             AND lli.`is_finished` = 0';
         return Db::getInstance()->getRow($query);
@@ -644,16 +644,16 @@ class LengowOrder extends Order
     /**
      * Removes all order logs
      *
-     * @param integer   $id_order_lengow    id_order_lengow
+     * @param integer   $id    id_order_lengow
      * @param string    $log_type           type (import or wsdl)
      *
      * @return boolean
      */
-    public static function finishOrderLogs($id_order_lengow, $type = 'import')
+    public static function finishOrderLogs($id, $type = 'import')
     {
         $log_type = LengowOrder::getOrderLogType($type);
         $query = 'SELECT `id` FROM `'._DB_PREFIX_.'lengow_logs_import`
-            WHERE `id_order_lengow` = \''.pSQL((int)$id_order_lengow).'\'
+            WHERE `id_order_lengow` = \''.pSQL((int)$id).'\'
             AND `type` = \''.pSQL((int)$log_type).'\'';
         $order_logs = Db::getInstance()->executeS($query);
 
@@ -671,5 +671,56 @@ class LengowOrder extends Order
         }
 
         return (count($order_logs) == $update_success ? true : false);
+    }
+
+    /***
+     * v3
+     * Find Lengow Order
+     * @param integer $id (id of table lengow_orders)
+     * @return boolean
+     */
+    public static function find($id)
+    {
+        $sql = 'SELECT * FROM `'._DB_PREFIX_.'lengow_orders` WHERE id = '.(int)$id;
+        $result = Db::getInstance()->ExecuteS($sql);
+        return (bool)count($result);
+    }
+
+
+    /***
+     * v3
+     * Re Import Order
+     * @param integer $id (id of table lengow_orders)
+     * @return boolean
+     */
+    public static function isOrderImport($id)
+    {
+        $sql = 'SELECT id_order FROM `'._DB_PREFIX_.'lengow_orders` WHERE id = '.(int)$id;
+        $result = Db::getInstance()->ExecuteS($sql);
+        return (bool)count($result);
+    }
+
+    /**
+     * v3
+     * Re Import Order
+     * @param integer $id (id of table lengow_orders)
+     */
+    public static function reImportOrder($id)
+    {
+        if (LengowOrder::isOrderImport($id)) {
+            LengowOrder::finishOrderLogs($id, self::TYPE_LOG_IMPORT);
+
+            $lengowOrder = LengowOrder::find($id);
+
+            $import = new LengowImport(array(
+                'order_id' => $lengowOrder['marketplace_sku'],
+                'marketplace_name' => $lengowOrder['marketplace_name'],
+                'delivery_address_id' => $lengowOrder['delivery_address_id'],
+                 'order_id' => '',
+            ));
+
+
+
+        }
     }
 }

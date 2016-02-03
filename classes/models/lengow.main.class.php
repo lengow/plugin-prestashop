@@ -66,14 +66,6 @@ class LengowMain
     );
 
     /**
-     * @var array    Lengow shipping types
-     */
-    public static $SHIPPING_LENGOW = array(
-        'lengow' => 'Lengow',
-        'marketplace' => 'Markeplace\'s name',
-    );
-
-    /**
      * Lengow Authorized IPs
      */
     protected static $IPS_LENGOW = array(
@@ -497,12 +489,12 @@ class LengowMain
      *
      * @param string $txt log message
      * @param boolean $force_output output on screen
-     * @param string $id_order_lengow lengow order id
+     * @param string $marketplace_sku lengow marketplace sku
      */
-    public static function log($txt, $force_output = false, $id_order_lengow = null)
+    public static function log($txt, $force_output = false, $marketplace_sku = null)
     {
         $log = LengowMain::getLogInstance();
-        $log->write($txt, $force_output, $id_order_lengow);
+        $log->write($txt, $force_output, $marketplace_sku);
     }
 
     /**
@@ -780,7 +772,7 @@ class LengowMain
         $cookie = Context::getContext()->cookie;
         $subject = 'Lengow imports logs';
         $mail_body = '';
-        $sql_logs = 'SELECT lo.`id_order_lengow`, lli.`message`, lli.`id` 
+        $sql_logs = 'SELECT lo.`marketplace_sku`, lli.`message`, lli.`id`
             FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
             INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo 
             ON lli.`id_order_lengow` = lo.`id`
@@ -791,7 +783,7 @@ class LengowMain
             return true;
         }
         foreach ($logs as $log) {
-            $mail_body .= '<li>Order ' . $log['id_order_lengow'];
+            $mail_body .= '<li>Order ' . $log['marketplace_sku'];
             if ($log['message'] != '') {
                 $mail_body .= ' - ' . $log['message'];
             } else {

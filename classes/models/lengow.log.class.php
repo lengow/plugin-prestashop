@@ -51,12 +51,12 @@ class LengowLog extends LengowFile
      *
      * @param string $message log message
      * @param boolean $display display on screen
-     * @param string $id_order_lengow lengow order id
+     * @param string $marketplace_sku lengow order id
      */
-    public function write($message, $display = false, $id_order_lengow = null)
+    public function write($message, $display = false, $marketplace_sku = null)
     {
         $log = date('Y-m-d:H:i:s').Tools::substr((string)microtime(), 1, 8);
-        $log.= ' - ' . (empty($id_order_lengow) ? '' : 'Order ' . $id_order_lengow . ': ');
+        $log.= ' - ' . (empty($marketplace_sku) ? '' : 'Order ' . $marketplace_sku . ': ');
         $log.= $message . "\r\n";
         if ($display && php_sapi_name() != "cli") {
             echo $log . '<br />';

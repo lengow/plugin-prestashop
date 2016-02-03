@@ -90,6 +90,24 @@
                 $('#lengow_order_wrapper .lengow_toolbar a').hide();
             }
         });
+        $('#lengow_order_wrapper').on('click', '.lengow_re_import', function () {
+            var href = $(this).data('href');
+            var action = $(this).data('action');
+            var id = $(this).data('order');
+            var type= $(this).data('type');
+            $.ajax({
+                url: href,
+                method: 'POST',
+                data: {action: action, id: id, type: type},
+                dataType: 'script',
+                success: function() {
+                    init_tooltip();
+                    reload_table_js();
+                }
+            });
+            return false;
+        });
+
     });
 })(lengow_jquery);
 
