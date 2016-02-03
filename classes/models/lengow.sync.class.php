@@ -26,6 +26,10 @@ class LengowSync extends SpecificPrice
 
     }
 
+    /**
+     * Get Sync Data (Inscription / Update)
+     * @return array
+     */
     public static function getSyncData()
     {
         $data = array();
@@ -89,7 +93,10 @@ class LengowSync extends SpecificPrice
         }
     }
 
-
+    /**
+     * Get Help Form Date to send to lengow solution
+     * @return array
+     */
     public static function getHelpData()
     {
         $data = array();
@@ -102,6 +109,7 @@ class LengowSync extends SpecificPrice
             $shopId = $row['id_shop'];
             $lengowExport = new LengowExport(array("shop_id" => $shopId));
             $shop = new LengowShop($shopId);
+            $data['shops'][$row['id_shop']]['token'] = LengowMain::getToken($shopId);
             $data['shops'][$row['id_shop']]['name'] = $shop->name;
             $data['shops'][$row['id_shop']]['domain'] = $shop->domain;
             $data['shops'][$row['id_shop']]['feed_url'] = LengowMain::getExportUrl($shop->id);
