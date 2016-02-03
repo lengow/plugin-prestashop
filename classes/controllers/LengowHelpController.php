@@ -41,4 +41,10 @@ class LengowHelpController extends LengowController
         }
     }
 
+    public function display()
+    {
+        $lengowLink = new LengowLink();
+        $this->context->smarty->assign('lengow_ajax_link', $lengowLink->getAbsoluteAdminLink('AdminLengowHelp', true));
+        parent::display();
+    }
 }

@@ -21,9 +21,12 @@
 (function ($) {
     $(document).ready(function () {
 
+        var href = $('#lengow_ajax_link').val();
+
         var sync_iframe = document.getElementById('lengow_help_iframe');
         sync_iframe.onload = function() {
             $.ajax({
+                url: href,
                 method: 'POST',
                 data: {action: 'get_help_data'},
                 dataType: 'json',

@@ -20,5 +20,6 @@
 <div id="lengow_help_wrapper">
     <iframe id="lengow_help_iframe"></iframe>
 </div>
+<input type="hidden" id="lengow_ajax_link" value="{$lengow_ajax_link|escape:'htmlall':'UTF-8'}">
 
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/help.js"></script>
