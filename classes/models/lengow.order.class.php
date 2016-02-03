@@ -685,14 +685,13 @@ class LengowOrder extends Order
     /***
      * v3
      * Find Lengow Order
-     * @param integer $id (id of table lengow_orders)
+     * @param integer $id_order_lengow (id of table lengow_orders)
      * @return boolean
      */
-    public static function find($id)
+    public static function find($id_order_lengow)
     {
-        $sql = 'SELECT * FROM `'._DB_PREFIX_.'lengow_orders` WHERE id = '.(int)$id;
-        $result = Db::getInstance()->ExecuteS($sql);
-        return (bool)count($result);
+        $sql = 'SELECT * FROM `'._DB_PREFIX_.'lengow_orders` WHERE id = '.(int)$id_order_lengow;
+        return Db::getInstance()->getRow($sql);
     }
 
 
@@ -702,9 +701,9 @@ class LengowOrder extends Order
      * @param integer $id (id of table lengow_orders)
      * @return boolean
      */
-    public static function isOrderImport($id)
+    public static function isOrderImport($id_order_lengow)
     {
-        $sql = 'SELECT id_order FROM `'._DB_PREFIX_.'lengow_orders` WHERE id = '.(int)$id;
+        $sql = 'SELECT id_order FROM `'._DB_PREFIX_.'lengow_orders` WHERE id = '.(int)$id_order_lengow;
         $result = Db::getInstance()->ExecuteS($sql);
         return (bool)count($result);
     }
@@ -712,24 +711,22 @@ class LengowOrder extends Order
     /**
      * v3
      * Re Import Order
-     * @param integer $id (id of table lengow_orders)
+     * @param integer $id_order_lengow (id of table lengow_orders)
      */
-    public static function reImportOrder($id)
+    public static function reImportOrder($id_order_lengow)
     {
-        if (LengowOrder::isOrderImport($id)) {
-            LengowOrder::finishOrderLogs($id, self::TYPE_LOG_IMPORT);
+        if (LengowOrder::isOrderImport($id_order_lengow)) {
+            LengowOrder::finishOrderLogs($id_order_lengow, 'import');
 
-            $lengowOrder = LengowOrder::find($id);
+            $lengowOrder = LengowOrder::find($id_order_lengow);
 
             $import = new LengowImport(array(
-                'order_id' => $lengowOrder['marketplace_sku'],
+                'marketplace_sku' => $lengowOrder['marketplace_sku'],
                 'marketplace_name' => $lengowOrder['marketplace_name'],
                 'delivery_address_id' => $lengowOrder['delivery_address_id'],
-                 'order_id' => '',
+                'shop_id' => $lengowOrder['id_shop'],
             ));
-
-
-
+            return $import->exec();
         }
     }
 }
