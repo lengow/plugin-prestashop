@@ -242,10 +242,11 @@ class LengowImportOrder
             );
             return false;
         }
-        // if order is cancelled -> skip
+        // if order is cancelled or new -> skip
         if (!LengowImport::checkState($this->order_state_marketplace, $this->marketplace)) {
             LengowMain::log(
-                'current order\'s state ['.$this->order_state_marketplace.'] makes it unavailable to import',
+                'current order\'s state ['.$this->order_state_marketplace
+                .'] makes it unavailable to import for marketplace '.$this->marketplace->name,
                 $this->log_output,
                 $this->lengow_id
             );
@@ -287,15 +288,10 @@ class LengowImportOrder
                 'method'                => pSQL($this->carrier_method),
                 'tracking'              => pSQL($this->tracking_number),
                 'sent_marketplace'      => $this->shipped_by_mp,
-                'delivery_country_iso'  => pSQL((string)$this->package_data->delivery->common_country_iso_a2)
+                'delivery_country_iso'  => pSQL((string)$this->package_data->delivery->common_country_iso_a2),
+                'order_lengow_state'    => pSQL($this->order_state_lengow)
             )
         );
-        if (!LengowImport::checkState($this->order_state_marketplace, $this->marketplace, 'import')) {
-            $error_message = 'current order\'s state ['.$this->order_state_marketplace.'] makes it unavailable to import';
-            LengowMain::log($error_message, $this->log_output, $this->lengow_id);
-            LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $type = 'import');
-            return $this->returnResult('error', $this->id_order_lengow);
-        }
         // try to import order
         try {
             // check if the order is shipped by marketplace
@@ -345,7 +341,7 @@ class LengowImportOrder
                         $this->id_order_lengow,
                         array(
                             'id_order'              => (int)$order->id,
-                            'order_process_state'   => 1,
+                            'order_process_state'   => LengowOrder::getOrderProcessState($this->order_state_lengow),
                             'extra'                 => pSQL(Tools::jsonEncode($this->order_data)),
                             'order_lengow_state'    => pSQL($this->order_state_lengow)
                         )
@@ -448,10 +444,9 @@ class LengowImportOrder
         } else {
             try {
                 if ($order->updateState(
-                    $this->marketplace,
-                    $this->order_state_marketplace,
+                    $this->order_state_lengow,
                     (count($this->package_data->delivery->trackings) > 0
-                        ?(string)$this->package_data->delivery->trackings[0]->number
+                        ? $this->package_data->delivery->trackings[0]
                         : null
                     )
                 )) {
@@ -468,6 +463,11 @@ class LengowImportOrder
                     );
                     $result['update'] = true;
                 }
+                // update lengow order state
+                LengowOrder::updateOrderLengow(
+                    (int)$order->lengow_id,
+                    array('order_lengow_state' => pSQL($this->order_state_lengow))
+                );
             } catch (Exception $e) {
                 LengowMain::log('error while updating state: '.$e->getMessage(), $this->log_output, $this->lengow_id);
             }

@@ -780,23 +780,25 @@ class LengowMain
         $cookie = Context::getContext()->cookie;
         $subject = 'Lengow imports logs';
         $mail_body = '';
-        $sql_logs = 'SELECT `lengow_order_id`, `message` 
-            FROM `' . _DB_PREFIX_ . 'lengow_logs_import`
-            WHERE `is_finished` = 0 AND `mail` = 0
+        $sql_logs = 'SELECT lo.`id_order_lengow`, lli.`message`, lli.`id` 
+            FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
+            INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo 
+            ON lli.`id_order_lengow` = lo.`id`
+            WHERE lli.`is_finished` = 0 AND lli.`mail` = 0
         ';
         $logs = Db::getInstance()->ExecuteS($sql_logs);
         if (empty($logs)) {
             return true;
         }
         foreach ($logs as $log) {
-            $mail_body .= '<li>Order ' . $log['lengow_order_id'];
+            $mail_body .= '<li>Order ' . $log['id_order_lengow'];
             if ($log['message'] != '') {
                 $mail_body .= ' - ' . $log['message'];
             } else {
                 $mail_body .= ' - No error message, contact support via https://supportlengow.zendesk.com/agent/';
             }
             $mail_body .= '</li>';
-            LengowMain::logSent($log['lengow_order_id']);
+            LengowMain::logSent($log['id']);
         }
         $datas = array(
             '{mail_title}' => 'Lengow imports logs',
@@ -829,20 +831,19 @@ class LengowMain
      * v3
      * Mark log as sent by email
      *
-     * @param string $lengow_order_id
+     * @param integer $id
      */
-    public static function logSent($lengow_order_id)
+    public static function logSent($id_order_log)
     {
-        $db = Db::getInstance();
-        if (_PS_VERSION_ >= '1.5') {
-            $db->update('lengow_logs_import', array(
-                'mail' => 1
-            ), '`lengow_order_id` = \'' . pSQL(Tools::substr($lengow_order_id, 0, 32)) . '\'', 1);
-        } else {
-            $db->autoExecute(_DB_PREFIX_ . 'lengow_logs_import', array(
+        Db::getInstance()->autoExecute(
+            _DB_PREFIX_ . 'lengow_logs_import',
+            array(
                 'mail' => 1,
-            ), 'UPDATE', '`lengow_order_id` = \'' . pSQL(Tools::substr($lengow_order_id, 0, 32)) . '\'', 1);
-        }
+            ),
+            'UPDATE',
+            '`id` = \'' .$id_order_log. '\'',
+            1
+        );
     }
 
     /**

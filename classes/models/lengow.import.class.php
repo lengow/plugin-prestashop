@@ -143,18 +143,6 @@ class LengowImport
      * @var array valid states lengow to create a Lengow order
      */
     public static $LENGOW_STATES = array(
-        'new',
-        'waiting_acceptance',
-        'accepted',
-        'waiting_shipment',
-        'shipped',
-        'closed'
-    );
-
-    /**
-     * @var array valid states lengow to import
-     */
-    public static $LENGOW_STATES_TO_IMPORT = array(
         'accepted',
         'waiting_shipment',
         'shipped',
@@ -240,6 +228,9 @@ class LengowImport
             $error[0] = $global_error;
         } else {
             LengowMain::log('## Start '.$this->type_import.' import ##', true);
+            if ($this->debug) {
+                LengowMain::log('WARNING ! Preprod mode is activated', true);
+            }
             LengowImport::setInProcess();
             LengowMain::disableMail();
             // udpate last import date
@@ -309,7 +300,7 @@ class LengowImport
             LengowMain::log('## End '.$this->type_import.' import ##', true);
             // sending email in error for orders
             if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$this->debug) {
-                // LengowMain::sendMailAlert();
+                LengowMain::sendMailAlert();
             }
         }
         if ($this->import_one_order) {
@@ -592,31 +583,18 @@ class LengowImport
      *
      * @param string            $order_state_marketplace    order state
      * @param LengowMarketplace $marketplace                order marketplace
-     * @param string            $type                       type (all or import)
      *
      * @return boolean
      */
-    public static function checkState($order_state_marketplace, $marketplace, $type = 'all')
+    public static function checkState($order_state_marketplace, $marketplace)
     {
         if (empty($order_state_marketplace)) {
             return false;
         }
-        if ($type == 'all') {
-            if (in_array(
-                $marketplace->getStateLengow($order_state_marketplace),
-                LengowImport::$LENGOW_STATES
-            )) {
-                return true;
-            }
-        } elseif ($type == 'import') {
-            if (in_array(
-                $marketplace->getStateLengow($order_state_marketplace),
-                LengowImport::$LENGOW_STATES_TO_IMPORT
-            )) {
-                return true;
-            }
+        if (!in_array($marketplace->getStateLengow($order_state_marketplace), LengowImport::$LENGOW_STATES)) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**

@@ -41,6 +41,16 @@ class LengowOrder extends Order
     const TYPE_LOG_WSDL = 2;
 
     /**
+    * integer order process state for order imported
+    */
+    const PROCESS_STATE_IMPORT = 1;
+
+    /**
+    * integer order process state for order finished
+    */
+    const PROCESS_STATE_FINISH = 2;
+
+    /**
      * @var string Lengow order record id
      */
     public $lengow_id;
@@ -399,42 +409,43 @@ class LengowOrder extends Order
     /**
      * Update order status
      *
-     * @param LengowMarketplace $marketplace    Lengow marketplace
-     * @param string            $api_state      marketplace state
-     * @param string            $lengow_id      tracking number
+     * @param string    $order_state_lengow     marketplace state
+     * @param mixed     $tracking               tracking data
      *
      * @return bool true if order has been updated
      */
-    public function updateState(LengowMarketplace $marketplace, $api_state, $tracking_number)
+    public function updateState($order_state_lengow, $tracking)
     {
         // get prestashop equivalent state id to Lengow API state
-        $id_order_state = LengowMain::getOrderState($marketplace->getStateLengow($api_state));
-
+        $id_order_state = LengowMain::getOrderState($order_state_lengow);
         // if state is different between API and Prestashop
         if ($this->getCurrentState() != $id_order_state) {
             // Change state process to shipped
             if ($this->getCurrentState() == LengowMain::getOrderState('accepted')
-                && ($marketplace->getStateLengow($api_state) == 'shipped'
-                    || $marketplace->getStateLengow($api_state) == 'closed'
-                )
+                && ($order_state_lengow == 'shipped'|| $order_state_lengow == 'closed')
             ) {
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
                 $history->changeIdOrderState(LengowMain::getOrderState('shipped'), $this, true);
                 $history->validateFields();
                 $history->add();
-                if (!is_null($tracking_number)) {
-                    $this->shipping_number = $tracking_number;
+                if (!is_null($tracking)) {
+                    $this->shipping_number = (string)$tracking->number;
                     $this->validateFields();
                     $this->update();
                 }
                 LengowMain::getLogInstance()->write('state updated to shipped', true, $this->lengow_order_id);
+                $params = $arrayName = array(
+                    'order_process_state' => LengowOrder::getOrderProcessState($order_state_lengow)
+                );
+                LengowOrder::updateOrderLengow(
+                    (int)$this->lengow_id,
+                    $params
+                );
                 return true;
             } elseif (($this->getCurrentState() == LengowMain::getOrderState('accepted')
                     || $this->getCurrentState() == LengowMain::getOrderState('shipped')
-                ) && ($marketplace->getStateLengow($api_state) == 'canceled'
-                    || $marketplace->getStateLengow($api_state) == 'refused'
-                )
+                ) && ($order_state_lengow == 'canceled' || $order_state_lengow == 'refused')
             ) {
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
@@ -442,6 +453,12 @@ class LengowOrder extends Order
                 $history->validateFields();
                 $history->add();
                 LengowMain::getLogInstance()->write('state updated to canceled', true, $this->lengow_order_id);
+                LengowOrder::updateOrderLengow(
+                    (int)$this->lengow_id,
+                    array(
+                        'order_process_state' => LengowOrder::getOrderProcessState($order_state_lengow)
+                    )
+                );
                 return true;
             }
         }
@@ -497,6 +514,32 @@ class LengowOrder extends Order
                     $this->loadLengowFields();
                 }
             }
+        }
+    }
+
+    /**
+     * Get order process state
+     *
+     * @param string $state state to be matched
+     *
+     * @return integer
+     */
+    public static function getOrderProcessState($state)
+    {
+        switch ($state) {
+            case 'accepted':
+            case 'waiting_shipment':
+                return self::PROCESS_STATE_IMPORT;
+                break;
+            case 'shipped':
+            case 'closed':
+            case 'refused':
+            case 'canceled':
+                return self::PROCESS_STATE_FINISH;
+                break;
+            default:
+                return false;
+                break;
         }
     }
 
