@@ -166,7 +166,6 @@ class LengowImport
      */
     public function __construct($params = array())
     {
-        print_r($params);
         // params for re-import order
         if ((isset($params['marketplace_sku']) && !is_null($params['marketplace_sku']))
             && ((isset($params['marketplace_name'])) && !is_null($params['marketplace_name']))
