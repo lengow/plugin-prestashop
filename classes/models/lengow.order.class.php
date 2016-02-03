@@ -410,11 +410,12 @@ class LengowOrder extends Order
      * Update order status
      *
      * @param string    $order_state_lengow     marketplace state
-     * @param mixed     $tracking               tracking data
+     * @param mixed     $order_data             order data
+     * @param string    $tracking_number        tracking number
      *
      * @return bool true if order has been updated
      */
-    public function updateState($order_state_lengow, $tracking)
+    public function updateState($order_state_lengow, $order_data, $tracking_number = null)
     {
         // get prestashop equivalent state id to Lengow API state
         $id_order_state = LengowMain::getOrderState($order_state_lengow);
@@ -424,20 +425,25 @@ class LengowOrder extends Order
             if ($this->getCurrentState() == LengowMain::getOrderState('accepted')
                 && ($order_state_lengow == 'shipped'|| $order_state_lengow == 'closed')
             ) {
+                // create params for update order
+                $params = $arrayName = array(
+                    'extra'                 => pSQL(Tools::jsonEncode($order_data)),
+                    'order_process_state'   => pSQL(LengowOrder::getOrderProcessState($order_state_lengow))
+                );
+                // create a new order history
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
                 $history->changeIdOrderState(LengowMain::getOrderState('shipped'), $this, true);
                 $history->validateFields();
                 $history->add();
-                if (!is_null($tracking)) {
-                    $this->shipping_number = (string)$tracking->number;
+                if (!is_null($tracking_number)) {
+                    $params['tracking'] = pSQL($tracking_number);
+                    $this->shipping_number = $tracking_number;
                     $this->validateFields();
                     $this->update();
                 }
                 LengowMain::getLogInstance()->write('state updated to shipped', true, $this->lengow_marketplace_sku);
-                $params = $arrayName = array(
-                    'order_process_state' => LengowOrder::getOrderProcessState($order_state_lengow)
-                );
+                // update lengow order
                 LengowOrder::updateOrderLengow(
                     (int)$this->lengow_id,
                     $params
@@ -447,16 +453,19 @@ class LengowOrder extends Order
                     || $this->getCurrentState() == LengowMain::getOrderState('shipped')
                 ) && ($order_state_lengow == 'canceled' || $order_state_lengow == 'refused')
             ) {
+                // create a new order history
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
                 $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this, true);
                 $history->validateFields();
                 $history->add();
                 LengowMain::getLogInstance()->write('state updated to canceled', true, $this->lengow_marketplace_sku);
+                // update lengow order
                 LengowOrder::updateOrderLengow(
                     (int)$this->lengow_id,
                     array(
-                        'order_process_state' => LengowOrder::getOrderProcessState($order_state_lengow)
+                        'extra'               => pSQL(Tools::jsonEncode($order_data)),
+                        'order_process_state' => pSQL(LengowOrder::getOrderProcessState($order_state_lengow))
                     )
                 );
                 return true;

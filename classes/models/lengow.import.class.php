@@ -45,9 +45,9 @@ class LengowImport
     protected $id_shop_group;
 
     /**
-     * @var boolean use debug mode
+     * @var boolean use preprod mode
      */
-    protected $debug = false;
+    protected $preprod_mode = false;
 
     /**
      * @var boolean display log messages
@@ -55,9 +55,9 @@ class LengowImport
     protected $log_output = false;
 
     /**
-     * @var string order id
+     * @var string marketplace order sku
      */
-    protected $order_id = null;
+    protected $marketplace_sku = null;
 
     /**
      * @var string markeplace name
@@ -154,11 +154,11 @@ class LengowImport
      * Construct the import manager
      *
      * @param array params optional options
-     * string    $order_id           lengow order id to import
+     * string    $marketplace_sku    lengow marketplace order id to import
      * string    $marketplace_name   lengow marketplace name to import
      * integer   $shop_id            Id shop for current import
      * boolean   $force_product      force import of products
-     * boolean   $debug              debug mode
+     * boolean   $preprod_mode       preprod mode
      * string    $date_from          starting import date
      * string    $date_to            ending import date
      * integer   $limit              number of orders to import
@@ -167,12 +167,12 @@ class LengowImport
     public function __construct($params = array())
     {
         // params for re-import order
-        if ((isset($params['order_id']) && !is_null($params['order_id']))
+        if ((isset($params['marketplace_sku']) && !is_null($params['marketplace_sku']))
             && ((isset($params['marketplace_name'])) && !is_null($params['marketplace_name']))
             && ((isset($params['delivery_address_id'])) && !is_null($params['delivery_address_id']))
             && ((isset($params['shop_id'])) && !is_null($params['shop_id']))
         ) {
-            $this->order_id             = (string)$params['order_id'];
+            $this->marketplace_sku      = (string)$params['marketplace_sku'];
             $this->marketplace_name     = (string)$params['marketplace_name'];
             $this->delivery_address_id  = $params['delivery_address_id'];
             $this->limit                = 1;
@@ -194,9 +194,9 @@ class LengowImport
             $this->log_output = true;
         }
         // get other params
-        $this->debug = (
-            isset($params['debug'])
-            ? $params['debug']
+        $this->preprod_mode = (
+            isset($params['preprod_mode'])
+            ? $params['preprod_mode']
             : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')
         );
         $this->type_import = (isset($params['type']) ? $params['type'] : 'manual');
@@ -222,13 +222,13 @@ class LengowImport
         $global_error   = false;
         // clean logs
         LengowMain::cleanLog();
-        if (LengowImport::isInProcess() && !$this->debug) {
+        if (LengowImport::isInProcess() && !$this->preprod_mode) {
             $global_error = 'import is already started';
             LengowMain::log($global_error, true);
             $error[0] = $global_error;
         } else {
             LengowMain::log('## Start '.$this->type_import.' import ##', true);
-            if ($this->debug) {
+            if ($this->preprod_mode) {
                 LengowMain::log('WARNING ! Preprod mode is activated', true);
             }
             LengowImport::setInProcess();
@@ -261,9 +261,9 @@ class LengowImport
                         // get orders from Lengow API
                         $orders = $this->getOrdersFromApi();
                         $total_orders = count($orders);
-                        if ($this->order_id && $this->marketplace_name) {
+                        if ($this->import_one_order) {
                             LengowMain::log(
-                                $total_orders.' order found for order ID: '.$this->order_id
+                                $total_orders.' order found for order ID: '.$this->marketplace_sku
                                 .' and markeplace: '.$this->marketplace_name
                                 .' with account ID: '.$this->account_id,
                                 $this->log_output
@@ -292,14 +292,18 @@ class LengowImport
                     }
                 }
             }
-            LengowMain::log($order_new.' order'.($order_new > 1 ? 's ' : ' ').'imported', true);
-            LengowMain::log($order_update.' order'.($order_update > 1 ? 's ' : ' ').'updated', true);
-            LengowMain::log($order_error.' order'.($order_error > 1 ? 's ' : ' ').'with errors', true);
+            if (!$this->import_one_order) {
+                LengowMain::log($order_new.' order'.($order_new > 1 ? 's ' : ' ').'imported', true);
+                LengowMain::log($order_update.' order'.($order_update > 1 ? 's ' : ' ').'updated', true);
+                LengowMain::log($order_error.' order'.($order_error > 1 ? 's ' : ' ').'with errors', true);
+            } else {
+                LengowMain::log($order_new.' order'.($order_new > 1 ? 's ' : ' ').'imported', true);
+            }
             // finish import process
             LengowImport::setEnd();
             LengowMain::log('## End '.$this->type_import.' import ##', true);
             // sending email in error for orders
-            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$this->debug) {
+            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$this->preprod_mode) {
                 LengowMain::sendMailAlert();
             }
         }
@@ -377,7 +381,7 @@ class LengowImport
             $this->connector  = new LengowConnector($this->access_token, $this->secret);
             if ($this->import_one_order) {
                 LengowMain::log(
-                    'Connector: get order with order id: '.$this->order_id
+                    'Connector: get order with order id: '.$this->marketplace_sku
                     .' and marketplace: '.$this->marketplace_name,
                     $this->log_output
                 );
@@ -394,7 +398,7 @@ class LengowImport
                     $results = $this->connector->get(
                         '/v3.0/orders',
                         array(
-                            'marketplace_order_id'  => $this->order_id,
+                            'marketplace_order_id'  => $this->marketplace_sku,
                             'marketplace'           => $this->marketplace_name,
                             'account_id'            => $this->account_id,
                             'page'                  => $page
@@ -417,6 +421,9 @@ class LengowImport
                     throw new LengowImportException('the connection didn\'t work with the Lengow webservice');
                 }
                 $results = Tools::jsonDecode($results);
+                if (!is_object($results)) {
+                    throw new LengowImportException('the connection didn\'t work with the Lengow webservice');
+                }
                 if (isset($results->error)) {
                     throw new LengowImportException(
                         'Lengow webservice : '.$results->error->code.' - '.$results->error->message
@@ -443,13 +450,14 @@ class LengowImport
      */
     protected function importOrders($orders)
     {
-        $order_new     = 0;
-        $order_update  = 0;
-        $order_error  = 0;
+        $order_new       = 0;
+        $order_update    = 0;
+        $order_error     = 0;
+        $import_finished = false;
         foreach ($orders as $order_data) {
             $nb_package = 0;
             $marketplace_sku = (string)$order_data->marketplace_order_id;
-            if ($this->debug) {
+            if ($this->preprod_mode) {
                 $marketplace_sku .= '--'.time();
             }
             // set current order to cancel hook updateOrderStatus
@@ -489,7 +497,7 @@ class LengowImport
                         'id_shop_group'         => $this->id_shop_group,
                         'id_lang'               => $this->id_lang,
                         'force_product'         => $this->force_product,
-                        'debug'                 => $this->debug,
+                        'preprod_mode'          => $this->preprod_mode,
                         'log_output'            => $this->log_output,
                         'marketplace_sku'       => $marketplace_sku,
                         'delivery_address_id'   => $package_delivery_address_id,
@@ -499,8 +507,8 @@ class LengowImport
                     )
                 );
                 $order = $import_order->importOrder();
-                // Sync to lengow if no debug
-                if (!$this->debug && isset($order['new'])) {
+                // Sync to lengow if no preprod_mode
+                if (!$this->preprod_mode && $order['order_new'] == true) {
                     $this->synchronisedOrder($marketplace_sku, $order['marketplace_name'], $order['order_id']);
                 }
                 // if re-import order -> return order informations
@@ -519,9 +527,14 @@ class LengowImport
                 // clean process
                 LengowImport::$current_order = -1;
                 unset($import_order);
+                unset($order);
+                // if limit is set
+                if ($this->limit > 0 && $order_new == $this->limit) {
+                    $import_finished = true;
+                    break;
+                }
             }
-            // if limit is set
-            if ($this->limit > 0 && $order_new == $this->limit) {
+            if ($import_finished) {
                 break;
             }
         }
@@ -535,7 +548,7 @@ class LengowImport
     /**
      * Synchronised order with Lengow API
      *
-     * @param string    $marketplace_sku              Lengow order ID
+     * @param string    $marketplace_sku        Lengow order ID
      * @param string    $marketplace_name       order marketplace
      * @param integer   $prestashop_order_id    Prestashop order ID
      *
@@ -563,15 +576,14 @@ class LengowImport
                 || isset($result['error'])
             ) {
                 LengowMain::log(
-                    'WARNING ! Order could NOT be synchronised with Lengow webservice (ID '
-                    .$prestashop_order_id.')',
-                    $this->debug,
+                    'WARNING ! Order could NOT be synchronised with Lengow webservice (ID '.$prestashop_order_id.')',
+                    $this->preprod_mode,
                     $marketplace_sku
                 );
             } else {
                 LengowMain::log(
                     'order successfully synchronised with Lengow webservice (ID '.$prestashop_order_id.')',
-                    $this->debug,
+                    $this->preprod_mode,
                     $marketplace_sku
                 );
             }

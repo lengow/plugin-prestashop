@@ -48,11 +48,11 @@ if (!LengowMain::checkWebservicesAccess($token)) {
 // array of params for import
 $params = array();
 // check if the GET parameters are availables
-if (Tools::getIsset('forceProduct')) {
-    $params['force_product'] = (bool)Tools::getValue('forceProduct');
+if (Tools::getIsset('force_product')) {
+    $params['force_product'] = (bool)Tools::getValue('force_product');
 }
-if (Tools::getIsset('lengowDebug')) {
-    $params['debug'] = (bool)Tools::getValue('lengowDebug');
+if (Tools::getIsset('preprod_mode')) {
+    $params['preprod_mode'] = (bool)Tools::getValue('preprod_mode');
 }
 if (Tools::getIsset('days') && is_numeric(Tools::getValue('days'))) {
     $params['days'] = (int)Tools::getValue('days');
@@ -60,17 +60,17 @@ if (Tools::getIsset('days') && is_numeric(Tools::getValue('days'))) {
 if (Tools::getIsset('limit') && is_numeric(Tools::getValue('limit'))) {
     $params['limit'] = (int)Tools::getValue('limit');
 }
-if (Tools::getIsset('idOrder')) {
-    $params['order_id'] = (string)Tools::getValue('idOrder');
+if (Tools::getIsset('marketplace_sku')) {
+    $params['marketplace_sku'] = (string)Tools::getValue('marketplace_sku');
 }
-if (Tools::getIsset('marketplace')) {
+if (Tools::getIsset('marketplace_name')) {
     $params['marketplace_name'] = (string)Tools::getValue('marketplace_name');
 }
-if (Tools::getIsset('idDelivery')) {
-    $params['delivery_address_id'] = (string)Tools::getValue('idDelivery');
+if (Tools::getIsset('delivery_address_id')) {
+    $params['delivery_address_id'] = (string)Tools::getValue('delivery_address_id');
 }
-if (Tools::getIsset('shop') && is_numeric(Tools::getValue('shop'))) {
-    $params['shop_id'] = (int)Tools::getValue('shop');
+if (Tools::getIsset('shop_id') && is_numeric(Tools::getValue('shop_id'))) {
+    $params['shop_id'] = (int)Tools::getValue('shop_id');
 }
 $params['type'] = (count($params) > 0 ? 'manual' : 'cron');
 // import orders
