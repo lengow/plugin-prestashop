@@ -34,14 +34,15 @@ class LengowInstall
         'Home' => array('name' => 'AdminLengowHome', 'active' => true),
         'Product' => array('name' => 'AdminLengowFeed', 'active' => true),
         'Orders' => array('name' => 'AdminLengowOrder', 'active' => true),
-        'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false)
+        'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
+        'Help' => array('name' => 'AdminLengowHelp', 'active' => false),
+        'MainSetting' => array('name' => 'AdminLengowMainSetting', 'active' => false)
     );
 
     public function __construct($module)
     {
         $this->lengowModule = $module;
         $this->lengowHook = new LengowHook($module);
-
     }
 
     public function install()
@@ -51,7 +52,6 @@ class LengowInstall
         $this->setDefaultValues() &&
         $this->addStatusError() &&
         $this->update();
-
     }
 
     public function uninstall()
@@ -299,7 +299,6 @@ class LengowInstall
         $exists = count($result) > 0 ? true : false;
         return $exists;
     }
-
 
     /**
      * Set Installation Status

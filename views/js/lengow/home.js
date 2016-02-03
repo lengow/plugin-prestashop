@@ -21,11 +21,12 @@
 
 (function ($) {
     $(document).ready(function () {
+        var href = $(this).data('href');
 
         $('#lengow_sync_btn').on('click', function(){
             $('#lengow_home_content').hide();
             $('#lengow_home_frame').show();
-            var href = $(this).data('href');
+            href = $(this).data('href');
 
             var sync_iframe = document.getElementById('lengow_home_iframe');
             sync_iframe.onload = function() {
@@ -43,6 +44,16 @@
             sync_iframe.src = '/modules/lengow/webservice/sync.php';
         });
 
+        resize();
+
+        $(window).on('resize', function(){
+            resize();
+        });
+
+        function resize() {
+            $('#lengow_home_frame').height($('body').height());
+        }
+
         window.addEventListener("message", receiveMessage, false);
 
         function receiveMessage(event)
@@ -58,6 +69,7 @@
                     break;
                 case 'sync':
                     $.ajax({
+                        url: href,
                         method: 'POST',
                         data: {action: 'sync', data: event.data.parameters},
                         dataType: 'script'
