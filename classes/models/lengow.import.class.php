@@ -191,20 +191,20 @@ class LengowImport
             } else {
                 $this->limit = (isset($params['limit']) ? (int)$params['limit'] : 0);
             }
-            $this->log_output = true;
         }
         // get other params
         $this->preprod_mode = (
             isset($params['preprod_mode'])
-            ? $params['preprod_mode']
+            ? (bool)$params['preprod_mode']
             : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')
         );
         $this->type_import = (isset($params['type']) ? $params['type'] : 'manual');
         $this->force_product = (
             isset($params['force_product'])
-            ? $params['force_product']
+            ? (bool)$params['force_product']
             : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT')
         );
+        $this->log_output = (isset($params['log_output']) ? (bool)$params['log_output'] : false);
         $this->id_shop = (isset($params['shop_id']) ? (int)$params['shop_id'] : null);
     }
 
@@ -224,12 +224,12 @@ class LengowImport
         LengowMain::cleanLog();
         if (LengowImport::isInProcess() && !$this->preprod_mode) {
             $global_error = 'import is already started';
-            LengowMain::log($global_error, true);
+            LengowMain::log($global_error, $this->log_output);
             $error[0] = $global_error;
         } else {
-            LengowMain::log('## Start '.$this->type_import.' import ##', true);
+            LengowMain::log('## Start '.$this->type_import.' import ##', $this->log_output);
             if ($this->preprod_mode) {
-                LengowMain::log('WARNING ! Preprod mode is activated', true);
+                LengowMain::log('WARNING ! Preprod mode is activated', $this->log_output);
             }
             LengowImport::setInProcess();
             LengowMain::disableMail();
@@ -247,12 +247,15 @@ class LengowImport
                     continue;
                 }
                 if (LengowMain::getShopActive((int)$shop['id_shop'])) {
-                    LengowMain::log('Start import in shop '.$shop['name'].' ('.(int)$shop['id_shop'].')', true);
+                    LengowMain::log(
+                        'Start import in shop '.$shop['name'].' ('.(int)$shop['id_shop'].')',
+                        $this->log_output
+                    );
                     try {
                         // check account ID, Access Token and Secret
                         $error_credential = $this->checkCredentials((int)$shop['id_shop'], $shop['name']);
                         if ($error_credential) {
-                            LengowMain::log($error_credential, true);
+                            LengowMain::log($error_credential, $this->log_output);
                             $error[(int)$shop['id_shop']] = $error_credential;
                             continue;
                         }
@@ -293,15 +296,13 @@ class LengowImport
                 }
             }
             if (!$this->import_one_order) {
-                LengowMain::log($order_new.' order'.($order_new > 1 ? 's ' : ' ').'imported', true);
-                LengowMain::log($order_update.' order'.($order_update > 1 ? 's ' : ' ').'updated', true);
-                LengowMain::log($order_error.' order'.($order_error > 1 ? 's ' : ' ').'with errors', true);
-            } else {
-                LengowMain::log($order_new.' order'.($order_new > 1 ? 's ' : ' ').'imported', true);
+                LengowMain::log($order_new.' order'.($order_new > 1 ? 's ' : ' ').'imported', $this->log_output);
+                LengowMain::log($order_update.' order'.($order_update > 1 ? 's ' : ' ').'updated', $this->log_output);
+                LengowMain::log($order_error.' order'.($order_error > 1 ? 's ' : ' ').'with errors', $this->log_output);
             }
             // finish import process
             LengowImport::setEnd();
-            LengowMain::log('## End '.$this->type_import.' import ##', true);
+            LengowMain::log('## End '.$this->type_import.' import ##', $this->log_output);
             // sending email in error for orders
             if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$this->preprod_mode) {
                 LengowMain::sendMailAlert();
@@ -367,8 +368,6 @@ class LengowImport
 
     /**
      * Call Lengow order API
-     *
-     * @param integer $id_current_shop Shop Id
      *
      * @return mixed
      */

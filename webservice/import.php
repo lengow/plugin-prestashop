@@ -54,6 +54,9 @@ if (Tools::getIsset('force_product')) {
 if (Tools::getIsset('preprod_mode')) {
     $params['preprod_mode'] = (bool)Tools::getValue('preprod_mode');
 }
+if (Tools::getIsset('log_output')) {
+    $params['log_output'] = (bool)Tools::getValue('log_output');
+}
 if (Tools::getIsset('days') && is_numeric(Tools::getValue('days'))) {
     $params['days'] = (int)Tools::getValue('days');
 }

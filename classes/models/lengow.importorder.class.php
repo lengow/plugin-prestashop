@@ -259,12 +259,12 @@ class LengowImportOrder
             if (!$this->createLengowOrder()) {
                 LengowMain::log(
                     'WARNING ! Order could NOT be saved in lengow orders table',
-                    $this->preprod_mode,
+                    $this->log_output,
                     $this->marketplace_sku
                 );
                 return false;
             } else {
-                LengowMain::log('order saved in lengow orders table', $this->preprod_mode, $this->marketplace_sku);
+                LengowMain::log('order saved in lengow orders table', $this->log_output, $this->marketplace_sku);
             }
         }
         // checks if the required order data is present
@@ -349,13 +349,13 @@ class LengowImportOrder
                     if (!$success) {
                         LengowMain::log(
                             'WARNING ! Order could NOT be updated in lengow orders table',
-                            $this->preprod_mode,
+                            $this->log_output,
                             $this->marketplace_sku
                         );
                     } else {
                         LengowMain::log(
                             'order updated in lengow orders table',
-                            $this->preprod_mode,
+                            $this->log_output,
                             $this->marketplace_sku
                         );
                     }
@@ -363,7 +363,7 @@ class LengowImportOrder
                     $order_line_saved = $this->saveLengowOrderLine($order);
                     LengowMain::log(
                         'save order lines product : '.$order_line_saved,
-                        $this->preprod_mode,
+                        $this->log_output,
                         $this->marketplace_sku
                     );
                     // if more than one order (different warehouses)
@@ -513,7 +513,7 @@ class LengowImportOrder
         if (count($error_messages) > 0) {
             foreach ($error_messages as $error_message) {
                 LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $type = 'import');
-                LengowMain::log('order import failed: '.$error_message, true, $this->marketplace_sku);
+                LengowMain::log('order import failed: '.$error_message, $this->log_output, $this->marketplace_sku);
             };
             return false;
         }
@@ -656,7 +656,7 @@ class LengowImportOrder
             $billing_data['email'] = 'generated-email+'.$this->marketplace_sku.'@'.LengowMain::getHost();
             LengowMain::log(
                 'generate unique email : '.$billing_data['email'],
-                $this->preprod_mode,
+                $this->log_output,
                 $this->marketplace_sku
             );
         }
@@ -792,7 +792,7 @@ class LengowImportOrder
                     LengowMain::log(
                         'product '.$product_data['merchant_product_id']->id
                         .' could not be added to cart - status: '.$state_product,
-                        $this->preprod_mode,
+                        $this->log_output,
                         $this->marketplace_sku
                     );
                     continue;
@@ -817,7 +817,7 @@ class LengowImportOrder
                     LengowMain::log(
                         'product not found with field '.$attribute_name
                         .' ('.$attribute_value.'). Using advanced search.',
-                        $this->preprod_mode,
+                        $this->log_output,
                         $this->marketplace_sku
                     );
                     $ids = LengowProduct::advancedSearch($attribute_value, $this->id_shop, $product_ids);
@@ -850,7 +850,7 @@ class LengowImportOrder
                     LengowMain::log(
                         'product id '.$id_full
                         .' found with field '.$attribute_name.' ('.$attribute_value.')',
-                        $this->preprod_mode,
+                        $this->log_output,
                         $this->marketplace_sku
                     );
                     $found = true;
@@ -913,14 +913,18 @@ class LengowImportOrder
         // assign default carrier if no carrier is found
         if (!$carrier_id) {
             $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
-            LengowMain::log('no matching carrier found. Default carrier assigned.', false, $this->marketplace_sku);
+            LengowMain::log(
+                'no matching carrier found. Default carrier assigned.',
+                $this->log_output,
+                $this->marketplace_sku
+            );
         } else {
             // check if module is active and has not been deleted
             $carrier = new LengowCarrier($carrier_id);
             if (!$carrier->active || $carrier->deleted) {
                 LengowMain::log(
                     'carrier '.$carrier->name.' is inactive or marked as deleted. Default carrier assigned.',
-                    false,
+                    $this->log_output,
                     $this->marketplace_sku
                 );
                 $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
@@ -929,7 +933,7 @@ class LengowImportOrder
                     $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
                     LengowMain::log(
                         'carrier module '.$carrier->external_module_name.' not installed. Default carrier assigned.',
-                        false,
+                        $this->log_output,
                         $this->marketplace_sku
                     );
                 }
@@ -940,7 +944,7 @@ class LengowImportOrder
                     $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
                     LengowMain::log(
                         'module version '.$carrier->external_module_name.' not supported. Default carrier assigned.',
-                        false,
+                        $this->log_output,
                         $this->marketplace_sku
                     );
                 }
@@ -951,7 +955,7 @@ class LengowImportOrder
                     $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
                     LengowMain::log(
                         'module version '.$carrier->external_module_name.' not supported. Default carrier assigned.',
-                        false,
+                        $this->log_output,
                         $this->marketplace_sku
                     );
                 }
@@ -985,12 +989,12 @@ class LengowImportOrder
             } elseif ($carrier_compatibility > 0) {
                 LengowMain::log(
                     'carrier compatibility ensured with carrier '.$carrier_name,
-                    $this->preprod_mode,
+                    $this->log_output,
                     $this->marketplace_sku
                 );
             }
         } catch (LengowCarrierException $lce) {
-            LengowMain::log($lce->getMessage(), $this->preprod_mode, $this->marketplace_sku);
+            LengowMain::log($lce->getMessage(), $this->log_output, $this->marketplace_sku);
         }
     }
 
