@@ -53,8 +53,10 @@ class LengowCart extends Cart implements LengowObject
             $id_product = $ids[0];
             $id_product_attribute = isset($ids[1]) ? $ids[1] : null;
             if (!$this->updateQty($product['quantity'], $id_product, $id_product_attribute)) {
-                throw new Exception('product ' . $id . ' could not be added to cart. Make sure it'.
-                'is available for order or has enough quantity.');
+                throw new Exception(
+                    'product '.$id.' could not be added to cart.'
+                    .' Make sure it is available for order or has enough quantity.'
+                );
             }
         }
         return true;
@@ -131,18 +133,18 @@ class LengowCart extends Cart implements LengowObject
             if ($result) {
                 // always add product to cart in import
                 if (_PS_VERSION_ < '1.5') {
-                    $sql = 'SELECT ' . (!empty($id_product_attribute) ? 'pa' : 'p') . '.`quantity`, p.`out_of_stock`
-							FROM `' . _DB_PREFIX_ . 'product` p
-							' . (!empty($id_product_attribute) ? 'LEFT JOIN `' . _DB_PREFIX_ .
-                            'product_attribute` pa ON p.`id_product` = pa.`id_product`' : '') . '
-							WHERE p.`id_product` = ' . (int)($id_product) .
+                    $sql = 'SELECT '.(!empty($id_product_attribute) ? 'pa' : 'p').'.`quantity`, p.`out_of_stock`
+							FROM `'._DB_PREFIX_.'product` p
+							'.(!empty($id_product_attribute) ? 'LEFT JOIN `'._DB_PREFIX_.
+                            'product_attribute` pa ON p.`id_product` = pa.`id_product`' : '').'
+							WHERE p.`id_product` = '.(int)($id_product).
                         (!empty($id_product_attribute) ?
                             ' AND `id_product_attribute` = ' . (int)$id_product_attribute : '');
                 } else {
                     $sql = 'SELECT stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity
-							FROM ' . _DB_PREFIX_ . 'product p
-							' . Product::sqlStock('p', (int)$id_product_attribute, true, $shop) . '
-							WHERE p.id_product = ' . (int)$id_product;
+							FROM '._DB_PREFIX_.'product p
+							'.Product::sqlStock('p', (int)$id_product_attribute, true, $shop).'
+							WHERE p.id_product = '.(int)$id_product;
                 }
 
                 $result2 = Db::getInstance()->getRow($sql);
@@ -153,7 +155,7 @@ class LengowCart extends Cart implements LengowObject
                     $product_qty = Pack::getQuantity($id_product, $id_product_attribute);
                 }
                 $new_qty = (int)$result['quantity'] + (int)$quantity;
-                $qty = '+ ' . (int)$quantity;
+                $qty = '+ '.(int)$quantity;
 
                 // force here
                 if (!Product::isAvailableWhenOutOfStock((int)$result2['out_of_stock']) && !$this->force_product) {
@@ -170,44 +172,43 @@ class LengowCart extends Cart implements LengowObject
                 } else {
                     if (_PS_VERSION_ < '1.5') {
                         Db::getInstance()->Execute(
-                            'UPDATE `' . _DB_PREFIX_ . 'cart_product`
-                            SET `quantity` = `quantity` ' . $qty . '
-                            WHERE `id_product` = ' . (int)$id_product .
+                            'UPDATE `'._DB_PREFIX_.'cart_product`
+                            SET `quantity` = `quantity` '.$qty.'
+                            WHERE `id_product` = '.(int)$id_product.
                             (!empty($id_product_attribute) ?
-                                ' AND `id_product_attribute` = ' . (int)$id_product_attribute : '') . '
-                            AND `id_cart` = ' . (int)$this->id . '
+                                ' AND `id_product_attribute` = '.(int)$id_product_attribute : '').'
+                            AND `id_cart` = '.(int)$this->id.'
                             LIMIT 1'
                         );
                     } else {
                         Db::getInstance()->execute(
-                            'UPDATE `' . _DB_PREFIX_ . 'cart_product`
-                            SET `quantity` = `quantity` ' . $qty . ', `date_add` = NOW()
-                            WHERE `id_product` = ' . (int)$id_product .
+                            'UPDATE `'._DB_PREFIX_.'cart_product`
+                            SET `quantity` = `quantity` '.$qty.', `date_add` = NOW()
+                            WHERE `id_product` = '.(int)$id_product.
                             (!empty($id_product_attribute) ?
-                                ' AND `id_product_attribute` = ' . (int)$id_product_attribute : '') . '
-                            AND `id_cart` = ' . (int)$this->id .
+                                ' AND `id_product_attribute` = '.(int)$id_product_attribute : '').'
+                            AND `id_cart` = '.(int)$this->id.
                             (Configuration::get('PS_ALLOW_MULTISHIPPING') && $this->isMultiAddressDelivery()
-                                ? ' AND `id_address_delivery` = ' . (int)$id_address_delivery : '') . '
+                                ? ' AND `id_address_delivery` = '. (int)$id_address_delivery : '').'
                             LIMIT 1'
                         );
                     }
                 }
-            } /* Add product to the cart */
-            else {
+            } else {
                 if (_PS_VERSION_ < '1.5') {
-                    $sql = 'SELECT ' . (!empty($id_product_attribute) ? 'pa' : 'p') . '.`quantity`, p.`out_of_stock`
-							FROM `' . _DB_PREFIX_ . 'product` p
-							' . (!empty($id_product_attribute) ?
-                            'LEFT JOIN `' . _DB_PREFIX_ .
-                            'product_attribute` pa ON p.`id_product` = pa.`id_product`' : '') . '
-							WHERE p.`id_product` = ' . (int)$id_product .
+                    $sql = 'SELECT '.(!empty($id_product_attribute) ? 'pa' : 'p').'.`quantity`, p.`out_of_stock`
+							FROM `'._DB_PREFIX_.'product` p
+							'.(!empty($id_product_attribute) ?
+                            'LEFT JOIN `'._DB_PREFIX_.
+                            'product_attribute` pa ON p.`id_product` = pa.`id_product`' : '').'
+							WHERE p.`id_product` = '.(int)$id_product .
                         (!empty($id_product_attribute) ?
-                            ' AND `id_product_attribute` = ' . (int)$id_product_attribute : '');
+                            ' AND `id_product_attribute` = '.(int)$id_product_attribute : '');
                 } else {
                     $sql = 'SELECT stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity
-							FROM ' . _DB_PREFIX_ . 'product p
-							' . Product::sqlStock('p', (int)$id_product_attribute, true, $shop) . '
-							WHERE p.id_product = ' . (int)$id_product;
+							FROM '._DB_PREFIX_.'product p
+							'.Product::sqlStock('p', (int)$id_product_attribute, true, $shop).'
+							WHERE p.id_product = '.(int)$id_product;
                 }
                 $result2 = Db::getInstance()->getRow($sql);
                 // Quantity for product pack

@@ -116,9 +116,9 @@ class LengowTool
         if (!is_array($blockedIp) || !in_array($remoteIp, $blockedIp)) {
             LengowConfiguration::updateGlobalValue(
                 'LENGOW_ACCESS_BLOCK_IP_'.$counter,
-                is_array($blockedIp) ?
-                    Tools::jsonEncode(array_merge($blockedIp, array($remoteIp))) :
-                    Tools::jsonEncode(array($remoteIp))
+                is_array($blockedIp)
+                ? Tools::jsonEncode(array_merge($blockedIp, array($remoteIp)))
+                : Tools::jsonEncode(array($remoteIp))
             );
         } else {
             $this->checkIp($counter+1);

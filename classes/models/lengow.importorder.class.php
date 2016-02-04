@@ -334,7 +334,7 @@ class LengowImportOrder
                 foreach ($order_list as $order) {
                     // add order comment from marketplace to prestashop order
                     if (_PS_VERSION_ >= '1.5') {
-                        $this->addCommentOrder();
+                        $this->addCommentOrder((int)$order->id);
                     }
                     $success_message = 'order successfully imported (ID '.$order->id.')';
                     $success = LengowOrder::updateOrderLengow(
@@ -678,11 +678,11 @@ class LengowImportOrder
         $this->shipping_address->id_customer = $customer->id;
         $this->shipping_address->validateLengow();
         // get billing phone numbers if empty in shipping address
-        if (empty($shipping_address->phone) && !empty($billing_address->phone)) {
+        if (empty($this->shipping_address->phone) && !empty($billing_address->phone)) {
             $this->shipping_address->phone = $billing_address->phone;
             $this->shipping_address->update();
         }
-        if (empty($shipping_address->phone_mobile) && !empty($billing_address->phone_mobile)) {
+        if (empty($this->shipping_address->phone_mobile) && !empty($billing_address->phone_mobile)) {
             $this->shipping_address->phone_mobile = $billing_address->phone_mobile;
             $this->shipping_address->update();
         }
@@ -1000,13 +1000,15 @@ class LengowImportOrder
 
     /**
      * Add a comment to the order
+     *
+     * @param integer $order_id Order ID Prestashop
      */
-    protected function addCommentOrder()
+    protected function addCommentOrder($order_id)
     {
         $comment = (string)$this->order_data->comments;
         if (!empty($comment)) {
             $msg = new Message();
-            $msg->id_order = $order->id;
+            $msg->id_order = $order_id;
             $msg->private = 1;
             $msg->message = $comment;
             $msg->add();
