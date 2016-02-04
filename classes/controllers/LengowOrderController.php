@@ -279,8 +279,16 @@ class LengowOrderController extends LengowController
     public static function displayOrderLink($key, $value, $item)
     {
         $link = new LengowLink();
-        return '<a href="'.$link->getAbsoluteAdminLink('AdminOrders').'&vieworder&id_order='.$item['id_order'].
-        '" target="_blank">'.$value.'</a>';
+        if ($item['id_order']) {
+            return '<a href="'.$link->getAbsoluteAdminLink('AdminOrders').'&vieworder&id_order='.$item['id_order'].
+            '" target="_blank">'.$value.'</a>';
+        } else {
+            if ($key == 'reference') {
+                return '<span class="lengow_label lengow_label_red">NOT IMPORTED</span>';
+            } else {
+                return $value;
+            }
+        }
     }
 
     public static function displayLogStatus($key, $value, $item)

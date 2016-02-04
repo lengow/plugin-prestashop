@@ -56,6 +56,9 @@ class LengowList
 
 
         $this->context = Context::getContext();
+        if (_PS_VERSION_ < 1.5) {
+            $this->context->smarty->ps_language = $this->context->language;
+        }
     }
 
     /**
