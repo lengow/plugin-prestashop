@@ -456,6 +456,7 @@ class LengowImport
         $order_error     = 0;
         $import_finished = false;
         foreach ($orders as $order_data) {
+            LengowImport::setInProcess();
             $nb_package = 0;
             $marketplace_sku = (string)$order_data->marketplace_order_id;
             if ($this->preprod_mode) {
@@ -618,18 +619,14 @@ class LengowImport
     public static function isInProcess()
     {
         $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS');
-        if ($timestamp == 'stopped') {
-            $timestamp = -1;
-        }
         if ($timestamp > 0) {
             // security check : if last import is more than 10 min old => authorize new import to be launched
-            if (($timestamp + (60 * 10)) < time()) {
+            if (($timestamp + (60 * 3)) < time()) {
                 LengowImport::setEnd();
                 return false;
             }
             return true;
         }
-
         return false;
     }
 
