@@ -167,10 +167,10 @@ class LengowImport
     public function __construct($params = array())
     {
         // params for re-import order
-        if ((isset($params['marketplace_sku']) && !is_null($params['marketplace_sku']))
-            && ((isset($params['marketplace_name'])) && !is_null($params['marketplace_name']))
-            && ((array_key_exists('delivery_address_id', $params)))
-            && ((isset($params['shop_id'])) && !is_null($params['shop_id']))
+        if (array_key_exists('marketplace_sku', $params)
+            && array_key_exists('marketplace_name', $params)
+            && array_key_exists('delivery_address_id', $params)
+            && array_key_exists('shop_id', $params)
         ) {
             $this->marketplace_sku      = (string)$params['marketplace_sku'];
             $this->marketplace_name     = (string)$params['marketplace_name'];
