@@ -110,27 +110,26 @@ class LengowInstall
      */
     private function createTab()
     {
-
-        $tab_parent = new Tab();
-        $tab_parent->name[Configuration::get('PS_LANG_DEFAULT')] = 'Lengow';
-        $tab_parent->module = 'lengow';
-
-        if (_PS_VERSION_ < '1.5') {
-            $tab_parent->class_name = 'AdminLengowHome14';
-        } else {
+        if (LengowMain::compareVersion()) {
+            $tab_parent = new Tab();
+            $tab_parent->name[Configuration::get('PS_LANG_DEFAULT')] = 'Lengow';
+            $tab_parent->module = 'lengow';
             $tab_parent->class_name = 'AdminLengowHome';
+            $tab_parent->id_parent = 0;
+            $tab_parent->add();
+
+        } else {
+            $tab_parent = new Tab(Tab::getIdFromClassName('AdminCatalog'));
+            $tab = new Tab();
+            $tab->name[Configuration::get('PS_LANG_DEFAULT')] = 'Lengow';
+            $tab->module = 'lengow';
+            $tab->class_name = 'AdminLengowHome14';
+            $tab->id_parent = $tab_parent->id;
+            $tab->add();
+
+            $tab_parent = $tab;
         }
-
-        $tab_parent->id_parent = 0;
-        $tab_parent->add();
-
         foreach (self::$tabs as $name => $values) {
-            if (_PS_VERSION_ < '1.5') {
-                $tab_name = $values['name'] . "14";
-            } else {
-                $tab_name = $values['name'];
-            }
-
             $tab = new Tab();
             if (_PS_VERSION_ < '1.5') {
                 $tab->class_name = $values['name'] . "14";
@@ -139,15 +138,11 @@ class LengowInstall
                 $tab->class_name = $values['name'];
                 $tab->id_parent = $tab_parent->id;
                 $tab->active = $values['active'];
-
             }
-
             $tab->module = $this->lengowModule->name;
             $tab->name[Configuration::get('PS_LANG_DEFAULT')] = $this->lengowModule->l($name);
-
             $tab->add();
         }
-
         return true;
     }
 
