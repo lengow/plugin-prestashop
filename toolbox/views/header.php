@@ -30,6 +30,16 @@
     <link href="/modules/lengow/views/css/bootstrap-3.3.6.css" rel="stylesheet">
     <link href="/modules/lengow/views/css/toolbox.css" rel="stylesheet">
     <link rel="stylesheet" href="/modules/lengow/views/css/font-awesome.css">
+    <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
+    <script type="text/javascript">
+        var lengow_jquery = $.noConflict(true);
+    </script>
+    <script type="text/javascript" src="/modules/lengow/views/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/modules/lengow/views/js/lengow/admin.js"></script>
+    <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-switch.js"></script>
+    <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="/modules/lengow/views/js/clipboard.js"></script>
 </head>
 
 <body>
@@ -48,6 +58,9 @@ if ($lengowTool->isLogged()) {
                 <ul class="nav navbar-nav">
                     <li><a href="/modules/lengow/toolbox/config.php"><i class="fa fa-cog"></i> Configuration</a></li>
                     <li><a href="/modules/lengow/toolbox/log.php"><i class="fa fa-file-text-o"></i> Logs</a></li>
+                    <li>
+                        <a href="/modules/lengow/toolbox/order.php"><i class="fa fa-shopping-basket"></i> Orders</a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <?php

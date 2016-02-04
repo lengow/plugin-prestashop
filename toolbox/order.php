@@ -20,21 +20,21 @@
  */
 
 require 'conf.inc.php';
+
+$action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
+$accountId = isset($_REQUEST['account_id']) ?  $_REQUEST['account_id'] : null;
+$secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
+$blockedIP = isset($_REQUEST['blockedIP']) ?  $_REQUEST['blockedIP'] : false;
+$lengowTool = new LengowTool();
+
+
+$controller = new LengowOrderController();
+$controller->postProcess();
+$controller->display();
+
 require 'views/header.php';
 ?>
-    <ul class="list-group">
-        <li class="list-group-item">
-            <a href="/modules/lengow/toolbox/config.php"><i class="fa fa-cog"></i> Configuration</a>
-        </li>
-        <li class="list-group-item">
-            <a href="/modules/lengow/toolbox/log.php"><i class="fa fa-file-text-o"></i> Log Files</a>
-        </li>
-        <li class="list-group-item">
-            <a href="/modules/lengow/toolbox/order.php"><i class="fa fa-shopping-basket"></i> Orders</a>
-        </li>
-        <li class="list-group-item">
-            <a href="/modules/lengow/toolbox/logoff.php"><i class="fa fa-sign-out"></i> Log Off</a>
-        </li>
-    </ul>
+
 <?php
+echo $controller->forceDisplay();
 require 'views/footer.php';
