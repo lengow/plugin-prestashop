@@ -57,9 +57,8 @@ class LengowOrderSettingController extends LengowController
         parent::display();
     }
 
-    public function postProcess() {
-
-
+    public function postProcess()
+    {
         $form = new LengowConfigurationForm(array(
             "fields" => LengowConfiguration::getKeys(),
             ));

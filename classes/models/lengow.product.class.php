@@ -94,7 +94,9 @@ class LengowProduct extends Product
         $this->manufacturer_name = Manufacturer::getNameById((int)$this->id_manufacturer);
         $this->supplier_name = Supplier::getNameById((int)$this->id_supplier);
         $address = null;
-        if (is_object($this->context->cart) && $this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')} != null) {
+        if (is_object($this->context->cart)
+            && $this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')} != null
+        ) {
             $address = $this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')};
         }
         if (LengowMain::compareVersion()) {
@@ -552,7 +554,9 @@ class LengowProduct extends Product
      */
     public function getDataAttribute($id_product_attribute, $name)
     {
-        return isset($this->combinations[$id_product_attribute]['attributes'][$name][1]) ? $this->combinations[$id_product_attribute]['attributes'][$name][1] : '';
+        return isset($this->combinations[$id_product_attribute]['attributes'][$name][1])
+            ? $this->combinations[$id_product_attribute]['attributes'][$name][1]
+            : '';
     }
 
     /**
@@ -648,8 +652,11 @@ class LengowProduct extends Product
                 $list = rtrim($list, ', ');
                 // $name = rtrim($name, ', ');
                 if (LengowMain::compareVersion()) {
-                    $comb_array[$id_product_attribute]['available_date'] = $product_attribute['available_date'] != 0 ? date('Y-m-d',
-                        strtotime($product_attribute['available_date'])) : '0000-00-00';
+                    $comb_array[$id_product_attribute]['available_date'] = (
+                        $product_attribute['available_date'] != 0
+                            ? date('Y-m-d', strtotime($product_attribute['available_date']))
+                            : '0000-00-00'
+                    );
                 }
                 $comb_array[$id_product_attribute]['attribute_name'] = $list;
                 $comb_array[$id_product_attribute]['name'] = $name;
