@@ -19,6 +19,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
 class LengowOrderController extends LengowController
 {
     /**
@@ -54,18 +57,20 @@ class LengowOrderController extends LengowController
                     break;
                 case 're_import':
                     $id_order_lengow = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : 0;
-                    $test = LengowOrder::reImportOrder($id_order_lengow);
+                    $return = LengowOrder::reImportOrder($id_order_lengow);
+
+                    $list = $this->loadTable();
+                    $row = $list->getRow(' id = '.(int)$id_order_lengow);
+                    $html = $list->displayRow($row);
+                    $html = preg_replace('/\r|\n/', '', addslashes($html));
+                    echo '$("#order_'.$id_order_lengow.'").replaceWith("'.$html.'");';
                     break;
             }
             exit();
         }
     }
-    /**
-     * Reload Total product / Exported product
-     * @param $shopId
-     * @return string
-     */
-    public function buildTable($shopId = null)
+
+    public function loadTable()
     {
         $fields_list = array();
         $fields_list['lengow_status'] = array(
@@ -155,6 +160,7 @@ class LengowOrderController extends LengowController
         $fields_list['log_status'] = array(
             'title' => $this->module->l('Status Lgw'),
             'align' => 'center',
+            'class' => 'lengow_status',
             'type' => 'log_status',
             'display_callback' => 'LengowOrderController::displayLogStatus',
             'filter' => true,
@@ -204,7 +210,6 @@ class LengowOrderController extends LengowController
             "selection" => true,
             "selection_condition" => 'log_status',
             "controller" => 'AdminLengowOrder',
-            "shop_id" => $shopId,
             "current_page" => $currentPage,
             "order_value" => $orderValue,
             "order_column" => $orderColumn,
@@ -217,6 +222,17 @@ class LengowOrderController extends LengowController
                 "order" => 'order_date DESC',
             )
         ));
+        return $list;
+    }
+
+    /**
+     * Reload Total product / Exported product
+     * @return string
+     */
+    public function buildTable()
+    {
+
+        $list = $this->loadTable();
 
         $list->executeQuery();
         $paginationBlock = $list->renderPagination(array(
@@ -227,14 +243,14 @@ class LengowOrderController extends LengowController
 
         $html='<div class="lengow_table_top">';
         $html.='<div class="lengow_toolbar">';
-        $html.='<input type="checkbox" id="select_shop_'.$shopId.'" class="lengow_select_all"/>';
+        $html.='<input type="checkbox" id="select_order" class="lengow_select_all"/>';
         $html.='<a href="#" style="display:none;"
                 data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
-                class="lengow_btn lengow_link_tooltip lengow_remove_from_export">
+                class="lengow_btn lengow_link_tooltip lengow_mass_re_import">
                 <i class="fa fa-download"></i> Re Import Order</a>';
         $html.='<a href="#" style="display:none;"
                         data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
-                class="lengow_btn lengow_link_tooltip lengow_add_to_export">
+                class="lengow_btn lengow_link_tooltip lengow_mass_re_send">
                 <i class="fa fa-arrow-right"></i> Re Send Order</a>';
         $html.='</div>';
         $html.= $paginationBlock;
@@ -294,7 +310,7 @@ class LengowOrderController extends LengowController
     public static function displayLogStatus($key, $value, $item)
     {
         $errorMessage = array();
-        $logCollection = LengowOrder::getOrderLogs($item['id']);
+        $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
         if (count($logCollection)>0) {
             foreach ($logCollection as $row) {
                 $errorMessage[] = $row['message'];

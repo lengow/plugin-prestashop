@@ -170,6 +170,10 @@ class LengowCheck
     */
     public static function isValidAuth($id_shop = null)
     {
+        if (LengowMain::inTest()) {
+            return true;
+        }
+
         if (!self::isCurlActivated()) {
             return false;
         }

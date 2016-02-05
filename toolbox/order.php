@@ -30,7 +30,7 @@ $lengowTool = new LengowTool();
 
 
 
-var_dump(LengowCarrier::getListMarketplaceCarrier());
+var_dump(LengowCarrier::syncListMarketplace());
 exit();
 
 

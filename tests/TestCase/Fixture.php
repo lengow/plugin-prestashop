@@ -29,6 +29,11 @@ class Fixture
             "id_shop" => 1,
             "id_shop_group" => 1,
             "id_lang" => 1,
+        ),
+        "lengow_orders" => array(
+            "id_shop" => 1,
+            "id_shop_group" => 1,
+            "id_lang" => 1,
         )
     );
     private $dateValues = array(

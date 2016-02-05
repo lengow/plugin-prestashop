@@ -258,7 +258,11 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
     {
         $whereSql = array();
         foreach ($where as $key => $value) {
-            $whereSql[]= ' `'.$key.'` = "'.pSQL($value).'" ';
+            if ($value === 'NULL') {
+                $whereSql[]= ' `'.$key.'` IS NULL';
+            } else {
+                $whereSql[]= ' `'.$key.'` = "'.pSQL($value).'" ';
+            }
         }
         $whereSql = ' WHERE '.join(' AND ', $whereSql);
         $result = Db::getInstance()->ExecuteS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.$table.$whereSql);

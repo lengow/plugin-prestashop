@@ -50,6 +50,7 @@ class FeedFormatTest extends ModuleTestCase
         $export = new LengowExport(array(
             "out_stock" => true,
             "export_variation" => true,
+            "log_output" => false,
         ));
         $export->exec();
         $this->assertFileNbLine($export->getFileName(), 1, 'multi_line');
@@ -71,6 +72,7 @@ class FeedFormatTest extends ModuleTestCase
             "show_inactive_product" => true,
             "out_stock" => true,
             "export_variation" => true,
+            "log_output" => false,
         ));
         $export->exec();
         $this->assertFileValues($export->getFileName(), 101, array("NAME_PRODUCT" => "THIS ' IS ' A   Test"));

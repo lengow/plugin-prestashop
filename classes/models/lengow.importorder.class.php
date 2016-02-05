@@ -823,13 +823,20 @@ class LengowImportOrder
                     $ids = LengowProduct::advancedSearch($attribute_value, $this->id_shop, $product_ids);
                 }
                 // for testing => replace values
-                if (_PS_VERSION_ < '1.6') {
-                    $ids['id_product'] = '1';
-                    $ids['id_product_attribute'] = '27';
-                } else {
-                    $ids['id_product'] = '1';
-                    $ids['id_product_attribute'] = '1';
-                }
+//TEMP DATA
+//                if (_PS_VERSION_ < '1.6') {
+//                    $ids['id_product'] = '1';
+//                    $ids['id_product_attribute'] = '27';
+//                } else {
+//                    $ids['id_product'] = '1';
+//                    $ids['id_product_attribute'] = '1';
+//                }
+                $product_data['amount'] = 10;
+                $product_data['price_unit'] = 10;
+//TEMP DATA
+
+
+
                 if (!empty($ids)) {
                     $id_full = $ids['id_product'];
                     if (!isset($ids['id_product_attribute'])) {

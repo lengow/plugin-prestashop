@@ -615,7 +615,7 @@ class LengowOrder extends Order
             $and_type = '';
         }
         if (!is_null($finished)) {
-            $and_finished = ($finished ? ' AND `id_order_lengow` = 1' :  'AND `id_order_lengow` = 0');
+            $and_finished = ($finished ? ' AND `is_finished` = 1' :  ' AND `is_finished` = 0');
         } else {
             $and_finished = '';
         }
@@ -709,14 +709,18 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
+     * v3-test
      * Re Import Order
      * @param integer $id_order_lengow (id of table lengow_orders)
+     * @return mixed
      */
     public static function reImportOrder($id_order_lengow)
     {
         if (LengowOrder::isOrderImport($id_order_lengow)) {
             LengowOrder::finishOrderLogs($id_order_lengow, 'import');
+
+            //TEMP DATA
+            Db::getInstance()->Execute('UPDATE ps_lengow_orders SET id_order = NULL WHERE id = '.$id_order_lengow);
 
             $lengowOrder = LengowOrder::find($id_order_lengow);
 
@@ -725,6 +729,7 @@ class LengowOrder extends Order
                 'marketplace_name' => $lengowOrder['marketplace_name'],
                 'delivery_address_id' => $lengowOrder['delivery_address_id'],
                 'shop_id' => $lengowOrder['id_shop'],
+                'log_output' => false,
             ));
             return $import->exec();
         }

@@ -95,6 +95,7 @@
             var action = $(this).data('action');
             var id = $(this).data('order');
             var type= $(this).data('type');
+            var td = $(this).parents('td');
             $.ajax({
                 url: href,
                 method: 'POST',
@@ -103,6 +104,18 @@
                 success: function() {
                     init_tooltip();
                     reload_table_js();
+                },
+                beforeSend: function() {
+                    td.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                }
+            });
+            return false;
+        });
+
+        $('#lengow_order_wrapper').on('click', '.lengow_mass_re_import', function() {
+            $('#table_order').find('.lengow_selection').each(function (index) {
+                if ($(this).prop('checked')) {
+                    console.log('test');
                 }
             });
             return false;

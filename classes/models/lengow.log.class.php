@@ -58,7 +58,7 @@ class LengowLog extends LengowFile
         $log = date('Y-m-d:H:i:s').Tools::substr((string)microtime(), 1, 8);
         $log.= ' - ' . (empty($marketplace_sku) ? '' : 'Order ' . $marketplace_sku . ': ');
         $log.= $message . "\r\n";
-        if ($display && php_sapi_name() != "cli") {
+        if ($display) {
             echo $log . '<br />';
             flush();
         }

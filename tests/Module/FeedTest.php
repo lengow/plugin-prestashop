@@ -93,7 +93,7 @@ class FeedTest extends ModuleTestCase
     public function setCarrier()
     {
         Configuration::set('LENGOW_CARRIER_DEFAULT', '');
-        $export = new LengowExport();
+        $export = new LengowExport(array("log_output" => false));
         $export->exec();
     }
 
@@ -106,7 +106,8 @@ class FeedTest extends ModuleTestCase
     {
         $export = new LengowExport(array(
             "export_variation" => false,
-            "limit" => 4
+            "limit" => 4,
+            "log_output" => false
         ));
         $export->exec();
         $this->assertFileNbLine($export->getFileName(), 4, 'limit_4');
@@ -122,7 +123,8 @@ class FeedTest extends ModuleTestCase
         $export = new LengowExport(array(
             "export_variation" => true,
             "offset" => 2,
-            "limit" => 4
+            "limit" => 4,
+            "log_output" => false
         ));
         $export->exec();
         $this->assertFileValues($export->getFileName(), 10, array("NAME_PRODUCT" => "NAME010"));
@@ -143,6 +145,7 @@ class FeedTest extends ModuleTestCase
         $export = new LengowExport(array(
             "export_variation" => true,
             "product_ids" => array(10),
+            "log_output" => false
         ));
         $export->exec();
         $this->assertFileNbLine($export->getFileName(), 8, 'show_combination');
@@ -157,10 +160,11 @@ class FeedTest extends ModuleTestCase
     public function exportInactiveProduct()
     {
         $export = new LengowExport(array(
-            "show_inactive_product" => true
+            "show_inactive_product" => true,
+            "log_output" => false
         ));
         $export->exec();
-        $this->assertFileNbLine($export->getFileName(), 8, 'inactive_product');
+        $this->assertFileNbLine($export->getFileName(), 15, 'inactive_product');
     }
 
 
@@ -174,6 +178,7 @@ class FeedTest extends ModuleTestCase
     {
         $export = new LengowExport(array(
             "product_ids" => array(1,2),
+            "log_output" => false,
         ));
         $export->exec();
         $this->assertFileNbLine($export->getFileName(), 2, 'two_product');
@@ -186,9 +191,9 @@ class FeedTest extends ModuleTestCase
      */
     public function exportAll()
     {
-        $export = new LengowExport();
+        $export = new LengowExport(array("log_output" => false));
         $export->exec();
-        $this->assertFileNbLine($export->getFileName(), 5, 'all');
+        $this->assertFileNbLine($export->getFileName(), 12, 'all');
     }
 
     /**
@@ -206,6 +211,7 @@ class FeedTest extends ModuleTestCase
         $export = new LengowExport(array(
             "export_variation" => true,
             "product_ids" => array(10),
+            "log_output" => false
         ));
         $export->exec();
         $this->assertFileValues($export->getFileName(), 10, array("NAME_PRODUCT" => "NAME010"));
@@ -224,8 +230,9 @@ class FeedTest extends ModuleTestCase
             "out_stock" => true,
             "export_features" => false,
             "export_lengow_selection" => false,
+            "log_output" => false
         ));
-        $this->assertEquals(5, $export->getTotalExportProduct());
+        $this->assertEquals(12, $export->getTotalExportProduct());
     }
 
     /**
@@ -241,10 +248,11 @@ class FeedTest extends ModuleTestCase
         );
         $export = new LengowExport(array(
             "product_ids" => array(1),
+            "log_output" => false
         ));
         $export->exec();
 
-        $this->assertFileNbLine($export->getFileName(), 1, 'max_image');
+        $this->assertFileNbLine($export->getFileName(), 4, 'max_image');
         $this->assertFileColumnNotContain(
             $export->getFileName(),
             array('IMAGE_PRODUCT_11'),

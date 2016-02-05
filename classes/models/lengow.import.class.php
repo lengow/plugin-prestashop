@@ -488,6 +488,11 @@ class LengowImport
                     if (!is_null($this->delivery_address_id)
                         && $this->delivery_address_id != $package_delivery_address_id
                     ) {
+                        LengowMain::log(
+                            'create order fail: wrong package number',
+                            $this->log_output,
+                            $marketplace_sku
+                        );
                         continue;
                     }
                 }

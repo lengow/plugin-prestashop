@@ -46,7 +46,7 @@ class LengowList
         $this->selection = $params['selection'];
         $this->selectionCondition = isset($params['selection_condition']) ? $params['selection_condition'] : false ;
         $this->controller = $params['controller'];
-        $this->shopId = $params['shop_id'];
+        $this->shopId = isset($params['shop_id']) ? $params['shop_id'] : null;
         $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
         $this->nbPerPage = isset($params['nbPerPage']) ? $params['nbPerPage'] : 20;
         $this->sql = $params['sql'];
@@ -140,41 +140,55 @@ class LengowList
      */
     public function displayContent()
     {
-        $lengow_link = new LengowLink();
-
         $html='<tbody>';
         foreach ($this->collection as $item) {
-            $html.= '<tr>';
-            if ($this->selection) {
-                if ($this->selectionCondition) {
-                    if ($item[$this->selectionCondition] > 0) {
-                        $html.='<td><input type="checkbox" class="lengow_selection"
-                    name="selection['.$item[$this->identifier].']" value="1"></td>';
-                    } else {
-                        $html.='<td></td>';
-                    }
-                } else {
+            $html.= $this->displayRow($item);
+        }
+        $html.='</tbody>';
+        return $html;
+    }
+
+    /**
+     * v3
+     * Display Table Row
+     * @param string $item
+     * @return string
+     */
+    public function displayRow($item)
+    {
+        $lengow_link = new LengowLink();
+        $html = '';
+        $html.= '<tr id='.$this->id.'_'.$item[$this->identifier].'>';
+        if ($this->selection) {
+            if ($this->selectionCondition) {
+                if ($item[$this->selectionCondition] > 0) {
                     $html.='<td><input type="checkbox" class="lengow_selection"
                     name="selection['.$item[$this->identifier].']" value="1"></td>';
-                }
-            }
-            foreach ($this->fields_list as $key => $values) {
-                if (isset($values['display_callback'])) {
-                    $value = call_user_func_array($values['display_callback'], array($key, $item[$key], $item));
                 } else {
-                    if (isset($values['type'])) {
-                        switch ($values["type"]) {
-                            case 'date':
-                                $value = Tools::dateFormat(
-                                    array('date' => $item[$key], 'full' => true),
-                                    $this->context->smarty
-                                );
-                                break;
-                            case 'price':
-                                $value = Tools::displayPrice($item[$key]);
-                                break;
-                            case 'switch_product':
-                                $value = '<input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
+                    $html.='<td></td>';
+                }
+            } else {
+                $html.='<td><input type="checkbox" class="lengow_selection"
+                    name="selection['.$item[$this->identifier].']" value="1"></td>';
+            }
+        }
+        foreach ($this->fields_list as $key => $values) {
+            if (isset($values['display_callback'])) {
+                $value = call_user_func_array($values['display_callback'], array($key, $item[$key], $item));
+            } else {
+                if (isset($values['type'])) {
+                    switch ($values["type"]) {
+                        case 'date':
+                            $value = Tools::dateFormat(
+                                array('date' => $item[$key], 'full' => true),
+                                $this->context->smarty
+                            );
+                            break;
+                        case 'price':
+                            $value = Tools::displayPrice($item[$key]);
+                            break;
+                        case 'switch_product':
+                            $value = '<input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                                name="lengow_product_selection['.$item[$this->identifier].']"
                                class="lengow_switch lengow_switch_product
                                lengow_product_selection_'.$item[$this->identifier].'"
@@ -183,29 +197,27 @@ class LengowList
                                data-id_shop="'.$this->shopId.'"
                                data-id_product="'.$item[$this->identifier].'"
                                value="1" '.($item[$key] ? 'checked="checked"' : '').'/>';
-                                break;
-                            case 'flag_country':
-                                if ($item[$key]) {
-                                    $value = '<img src="/modules/lengow/views/img/flag/'.
-                                        Tools::strtoupper($item[$key]).'.png" />';
-                                } else {
-                                    $value = '';
-                                }
-                                break;
-                            default:
-                                $value = $item[$key];
-                        }
-                    } else {
-                        $value = $item[$key];
+                            break;
+                        case 'flag_country':
+                            if ($item[$key]) {
+                                $value = '<img src="/modules/lengow/views/img/flag/'.
+                                    Tools::strtoupper($item[$key]).'.png" />';
+                            } else {
+                                $value = '';
+                            }
+                            break;
+                        default:
+                            $value = $item[$key];
                     }
+                } else {
+                    $value = $item[$key];
                 }
-                $class = isset($values['class']) ? $values['class'] : '';
-
-                $html.='<td class="'.$class.'">'.$value.'</td>';
             }
-            $html.= '</tr>';
+            $class = isset($values['class']) ? $values['class'] : '';
+
+            $html.='<td class="'.$class.'">'.$value.'</td>';
         }
-        $html.='</tbody>';
+        $html.= '</tr>';
         return $html;
     }
 
@@ -265,6 +277,24 @@ class LengowList
             return $this->executeQuery();
         }
         return $this->collection;
+    }
+
+    /**
+     * v3
+     * Get Row
+     * @param $where
+     */
+    public function getRow($where)
+    {
+        if (!isset($this->sql["where"])) {
+            $this->sql["where"] = array();
+        }
+        $tmp = $this->sql["where"];
+        $this->sql["where"][] = $where;
+        $sql = $this->buildQuery();
+        $collection = Db::getInstance()->executeS($sql, true, false);
+        $this->sql["where"] = $tmp;
+        return $collection[0];
     }
 
     /**
