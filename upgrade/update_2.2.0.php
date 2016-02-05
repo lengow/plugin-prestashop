@@ -70,10 +70,5 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_logs_i
             'ALTER TABLE '._DB_PREFIX_.'lengow_logs_import ADD `delivery_address_id` INT(10) UNSIGNED NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists('lengow_logs_import', 'lengow_order_line')) {
-        Db::getInstance()->execute(
-            'ALTER TABLE '._DB_PREFIX_.'lengow_logs_import ADD `lengow_order_line` VARCHAR(255)'
-        );
-    }
 }
 Configuration::updateValue('LENGOW_SWITCH_V3', false);
