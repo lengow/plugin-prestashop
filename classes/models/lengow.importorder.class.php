@@ -880,6 +880,8 @@ class LengowImportOrder
      */
     protected function getCarrierId($shipping_address)
     {
+
+
         $carrier_id = false;
         if (!LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_MP_ENABLED')
             || (is_null($this->carrier_name) && is_null($this->carrier_method))

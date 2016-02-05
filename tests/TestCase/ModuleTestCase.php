@@ -249,6 +249,22 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Asset Mysql Table contain data
+     * @param $table
+     * @param $where
+     */
+    public static function assertTableContain($table, $where)
+    {
+        $whereSql = array();
+        foreach ($where as $key => $value) {
+            $whereSql[]= ' `'.$key.'` = "'.pSQL($value).'" ';
+        }
+        $whereSql = ' WHERE '.join(' AND ', $whereSql);
+        $result = Db::getInstance()->ExecuteS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.$table.$whereSql);
+        self::assertTrue((bool)count($result));
+    }
+
 
     /**
      * Call protected/private method of a class.

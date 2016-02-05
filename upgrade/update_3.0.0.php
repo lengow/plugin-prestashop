@@ -202,6 +202,19 @@ if (LengowInstall::checkFieldExists('lengow_logs_import', 'delivery_address_id')
     );
 }
 
+// order line table
+$sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_marketplace_carrier` (
+`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+`id_country` int(11) UNSIGNED NOT NULL,
+`id_carrier` int(11) UNSIGNED NULL,
+`marketplace_carrier_sku` varchar(32) NOT NULL,
+        PRIMARY KEY(`id`),
+        INDEX (`id_country`) ,
+        INDEX (`id_carrier`) ,
+        INDEX (`marketplace_carrier_sku`)
+);';
+Db::getInstance()->execute($sql);
+
 // TODO MIGRATION SETTINGS
 
 //LENGOW_DEBUG => LENGOW_IMPORT_PREPROD_ENABLED
