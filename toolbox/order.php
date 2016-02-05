@@ -28,6 +28,14 @@ $blockedIP = isset($_REQUEST['blockedIP']) ?  $_REQUEST['blockedIP'] : false;
 $lengowTool = new LengowTool();
 
 
+
+
+var_dump(LengowCarrier::getListMarketplaceCarrier());
+exit();
+
+
+
+
 $controller = new LengowOrderController();
 $controller->postProcess();
 $controller->display();

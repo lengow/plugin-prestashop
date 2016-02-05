@@ -74,6 +74,8 @@ class LengowConnector
      */
     const LENGOW_API_SANDBOX_URL = 'http://10.100.1.242:8081';
 
+    public static $test_fixture_path;
+
     /**
      * @var array default options for curl
      */
@@ -155,6 +157,11 @@ class LengowConnector
 
     public function get($method, $array = array(), $format = 'json')
     {
+        if (LengowMain::inTest() && self::$test_fixture_path) {
+            $content = file_get_contents(self::$test_fixture_path);
+            self::$test_fixture_path = null;
+            return $content;
+        }
         return $this->call($method, $array, 'GET', $format);
     }
 
@@ -217,7 +224,7 @@ class LengowConnector
         $opts[CURLOPT_PORT] = $url['port'];
         $opts[CURLOPT_HEADER] = true;
         $opts[CURLOPT_RETURNTRANSFER] = true;
-        $opts[CURLOPT_VERBOSE] = true;
+        $opts[CURLOPT_VERBOSE] = false;
         if (isset($token)) {
             $opts[CURLOPT_HTTPHEADER] = array(
                 'Authorization: '.$token,
@@ -250,5 +257,63 @@ class LengowConnector
     public function getAccountId()
     {
         return $this->account_id;
+    }
+
+    /**
+     * v3
+     * Get Valid Account / Access / Secret
+     * @param integer $id_shop
+     * @return array
+     */
+    public static function getAccessId($id_shop = null)
+    {
+        if ($id_shop) {
+            $account_id = LengowMain::getIdAccount($id_shop);
+            $access_token = LengowMain::getAccessToken($id_shop);
+            $secret_token = LengowMain::getSecretCustomer($id_shop);
+        } else {
+            $shopCollection = LengowShop::findAll();
+            foreach ($shopCollection as $shop) {
+                $account_id = LengowMain::getIdAccount($shop['id_shop']);
+                $access_token = LengowMain::getAccessToken($shop['id_shop']);
+                $secret_token = LengowMain::getSecretCustomer($shop['id_shop']);
+                if (Tools::strlen($account_id) > 0 &&
+                    Tools::strlen($access_token) > 0 &&
+                    Tools::strlen($secret_token) > 0
+                ) {
+                    break;
+                }
+            }
+        }
+        if (Tools::strlen($account_id) > 0 &&
+            Tools::strlen($access_token) > 0 &&
+            Tools::strlen($secret_token) > 0
+        ) {
+            return array($account_id, $access_token, $secret_token);
+        } else {
+            return array(null, null, null);
+        }
+    }
+
+    /**
+     * v3
+     * Query Api
+     * @param $url to query
+     * @param array $params
+     * @return api result as array
+     */
+    public static function queryApi($url, $params = array())
+    {
+        list($account_id, $access_token, $secret_token) = self::getAccessId();
+        $connector  = new LengowConnector($access_token, $secret_token);
+        $results = $connector->get(
+            $url,
+            array(
+                'account_id' => $account_id,
+            ),
+            'stream'
+        );
+        return Tools::JsonDecode($results, true);
+
     }
 }

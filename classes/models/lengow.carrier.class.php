@@ -360,4 +360,28 @@ class LengowCarrier extends Carrier
 
         return $db->execute($query);
     }
+
+    /**
+     * v3-test
+     * Get List Carrier in all Lengow Marketplace
+     * @return array
+     */
+    public static function getListMarketplaceCarrier()
+    {
+        $result = LengowConnector::queryApi('/v3.0/marketplaces');
+
+        $carrierCollection = array();
+        foreach ($result as $marketplace => $values) {
+            if (isset($values["orders"]["carriers"])) {
+                foreach ($values["orders"]["carriers"] as $key => $value) {
+                    $carrierCollection[$key] = true;
+                }
+            }
+        }
+        if ($carrierCollection) {
+            return array_keys($carrierCollection);
+        } else {
+            return array();
+        }
+    }
 }
