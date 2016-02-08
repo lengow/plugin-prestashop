@@ -368,7 +368,7 @@ class LengowCarrier extends Carrier
      */
     public static function getListMarketplaceCarrier()
     {
-        $result = LengowConnector::queryApi('/v3.0/marketplaces');
+        $result = LengowConnector::queryApi('get', '/v3.0/marketplaces');
 
         $carrierCollection = array();
         foreach ($result as $marketplace => $values) {
@@ -437,5 +437,10 @@ class LengowCarrier extends Carrier
                 'INSERT'
             );
         }
+    }
+
+    public static function getMarketplaceCarrier()
+    {
+        return "LAPOSTE";
     }
 }

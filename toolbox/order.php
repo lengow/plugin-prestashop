@@ -28,9 +28,10 @@ $blockedIP = isset($_REQUEST['blockedIP']) ?  $_REQUEST['blockedIP'] : false;
 $lengowTool = new LengowTool();
 
 
+$order = new LengowOrder(150);
+$order->sendTracking();
 
 
-var_dump(LengowCarrier::syncListMarketplace());
 exit();
 
 

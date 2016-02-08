@@ -301,27 +301,22 @@ class LengowHook
         ) {
             $new_order_state = $args['newOrderStatus'];
             $id_order_state = $new_order_state->id;
-            $id_shop = (_PS_VERSION_ < 1.5 ? null : (int)$lengow_order->id_shop);
+
             // Compatibility V2
             if ($lengow_order->lengow_id_flux != null) {
                 $lengow_order->checkAndChangeMarketplaceName();
             }
-            $marketplace = LengowMain::getMarketplaceSingleton(
-                (string)$lengow_order->lengow_marketplace_name,
-                $id_shop
-            );
-            if ($marketplace->isLoaded()) {
-                // Call Lengow API WSDL to send shipped state order
-                if ($id_order_state == LengowMain::getOrderState('shipped')) {
-                    $marketplace->wsdl('ship', $lengow_order->lengow_marketplace_sku, $args);
-                    $this->_alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
-                }
-                // Call Lengow API WSDL to send refuse state order
-                if ($id_order_state == LengowMain::getOrderState('canceled')) {
-                    $marketplace->wsdl('cancel', $lengow_order->lengow_marketplace_sku, $args);
-                    $this->_alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
-                }
+            if ($id_order_state == LengowMain::getOrderState('shipped')) {
+                $lengow_order->sendTracking();
+                $this->_alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
             }
+
+//                // Call Lengow API WSDL to send refuse state order
+//                if ($id_order_state == LengowMain::getOrderState('canceled')) {
+//                    $marketplace->wsdl('cancel', $lengow_order->lengow_marketplace_sku, $args);
+//                    $this->_alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
+//                }
+
         }
     }
 
@@ -340,19 +335,13 @@ class LengowHook
                 ) {
                     $params = array();
                     $params['id_order'] = $args['object']->id;
-                    $id_shop = (_PS_VERSION_ < 1.5 ? null : (int)$lengow_order->id_shop);
                     // Compatibility V2
                     if ($lengow_order->lengow_id_flux != null) {
                         $lengow_order->checkAndChangeMarketplaceName();
                     }
-                    $marketplace = LengowMain::getMarketplaceSingleton(
-                        (string)$lengow_order->lengow_marketplace_name,
-                        $id_shop
-                    );
-                    if ($marketplace->isLoaded()) {
-                        $marketplace->wsdl('ship', $lengow_order->lengow_marketplace_sku, $params);
-                        $this->_alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
-                    }
+
+                    $lengow_order->sendTracking();
+                    $this->_alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
                 }
             }
         }
