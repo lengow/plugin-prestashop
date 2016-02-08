@@ -23,6 +23,20 @@ if (!LengowInstall::isInstallationInProgress()) {
     exit();
 }
 
+// create lengow carrier country table
+$sql = 'CREATE TABLE IF NOT EXISTS '._DB_PREFIX_.'lengow_carrier_country (
+    `id` INTEGER(10) NOT NULL AUTO_INCREMENT ,
+    `id_carrier` INTEGER(10) NULL ,
+    `id_country` INTEGER(10) NOT NULL UNIQUE,
+    PRIMARY KEY(`id`),
+    INDEX (`id_carrier`) ,
+    INDEX (`id_country`)
+    ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
+Db::getInstance()->execute($sql);
+
+//insert default_country in lengow carrier country table
+LengowCarrierCountry::createDefaultCarrier();
+
 // alter product table
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_product\'')) {
     if (!LengowInstall::checkFieldExists('lengow_product', 'id')) {
