@@ -372,8 +372,8 @@ class LengowCarrier extends Carrier
 
         $carrierCollection = array();
         foreach ($result as $marketplace => $values) {
-            if (isset($values["orders"]["carriers"])) {
-                foreach ($values["orders"]["carriers"] as $key => $value) {
+            if (isset($values->orders->carriers)) {
+                foreach ($values->orders->carriers as $key => $value) {
                     $carrierCollection[$key] = true;
                 }
             }
