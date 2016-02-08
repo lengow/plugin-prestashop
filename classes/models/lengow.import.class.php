@@ -172,12 +172,15 @@ class LengowImport
             && array_key_exists('delivery_address_id', $params)
             && array_key_exists('shop_id', $params)
         ) {
+            $this->id_order_lengow      = (int)$params['id_order_lengow'];
+            $this->id_order_lengow_type = (int)$params['type'];
             $this->marketplace_sku      = (string)$params['marketplace_sku'];
             $this->marketplace_name     = (string)$params['marketplace_name'];
             $this->delivery_address_id  = $params['delivery_address_id'];
             $this->limit                = 1;
             $this->import_one_order     = true;
         } else {
+            $this->marketplace_sku = null;
             // recovering the time interval
             $days = (
                 isset($params['days'])
@@ -289,6 +292,13 @@ class LengowImport
                             $order_error    += $result['order_error'];
                         }
                     } catch (Exception $e) {
+                        if ($this->id_order_lengow) {
+                            LengowOrder::addOrderLog(
+                                $this->id_order_lengow,
+                                'Error: '.$e->getMessage(),
+                                $this->id_order_lengow_type
+                            );
+                        }
                         LengowMain::log('Error: '.$e->getMessage(), $this->log_output);
                         $error[(int)$shop['id_shop']] = $e->getMessage();
                         continue;

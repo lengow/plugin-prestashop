@@ -725,6 +725,8 @@ class LengowOrder extends Order
             $lengowOrder = LengowOrder::find($id_order_lengow);
 
             $import = new LengowImport(array(
+                'id_order_lengow' => $id_order_lengow,
+                'type' => 'import',
                 'marketplace_sku' => $lengowOrder['marketplace_sku'],
                 'marketplace_name' => $lengowOrder['marketplace_name'],
                 'delivery_address_id' => $lengowOrder['delivery_address_id'],
