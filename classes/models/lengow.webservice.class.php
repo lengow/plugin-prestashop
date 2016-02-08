@@ -61,7 +61,8 @@ class LengowWebservice
         $out .= '</div>';
         $out .= '<div><ul>';
         foreach (self::$AVAILABLE_ACTION as $action => $description) {
-            $out .= '<li><a style="color: #222; font-size: 12px; text-decoration: none;" href="' . self::getUrlWebservice($action) . '">' . $description . '</a>';
+            $out .= '<li><a style="color: #222; font-size: 12px; text-decoration: none;" href="' .
+                self::getUrlWebservice($action) . '">' . $description . '</a>';
             $out .= '</li>';
         }
         $out .= '</ul></div>';
@@ -94,7 +95,9 @@ class LengowWebservice
         if (is_null($id_order)) {
             return null;
         }
-        $json_data = Db::getInstance()->ExecuteS('SELECT `extra` FROM ' . _DB_PREFIX_ . 'lengow_orders WHERE `id_order` = ' . (int)$id_order);
+        $json_data = Db::getInstance()->ExecuteS(
+            'SELECT `extra` FROM ' . _DB_PREFIX_ . 'lengow_orders WHERE `id_order` = ' . (int)$id_order
+        );
         if ($json_data) {
             foreach ($json_data as $data) {
                 echo '<pre>';
@@ -140,7 +143,8 @@ class LengowWebservice
                 echo LengowCheck::getHtmlLogs($days, $show_extra);
                 break;
             case 'log':
-                $log_url = _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules' . DS . 'lengow' . DS . 'logs' . DS . 'logs-' . date('Y-m-d') . '.txt';
+                $log_url = _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules' . DS . 'lengow' . DS . 'logs' .
+                    DS . 'logs-' . date('Y-m-d') . '.txt';
                 Tools::redirect($log_url);
                 break;
             default:
@@ -149,5 +153,4 @@ class LengowWebservice
         }
         exit();
     }
-
 }

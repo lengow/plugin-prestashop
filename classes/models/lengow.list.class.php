@@ -46,13 +46,19 @@ class LengowList
         $this->selection = $params['selection'];
         $this->selectionCondition = isset($params['selection_condition']) ? $params['selection_condition'] : false ;
         $this->controller = $params['controller'];
-        $this->shopId = $params['shop_id'];
+        $this->shopId = isset($params['shop_id']) ? $params['shop_id'] : null;
         $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
         $this->nbPerPage = isset($params['nbPerPage']) ? $params['nbPerPage'] : 20;
         $this->sql = $params['sql'];
         $this->ajax = isset($params['ajax']) ? (bool)$params['ajax'] : false;
+        $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
+        $this->orderColumn = isset($params['order_column']) ? $params['order_column'] : '';
+
 
         $this->context = Context::getContext();
+        if (_PS_VERSION_ < 1.5) {
+            $this->context->smarty->ps_language = $this->context->language;
+        }
     }
 
     /**
@@ -70,7 +76,14 @@ class LengowList
         }
         foreach ($this->fields_list as $key => $values) {
             $width = isset($values['width']) ? 'width = "'.$values['width'].'"' : '';
-            $html.='<th '.$width.'>'.$values['title'].'</th>';
+            $html.='<th '.$width.'>'.$values['title'];
+            if (isset($values['filter_order']) && $values['filter_order']) {
+                $html.='<a href="#" class="table_order" data-order="DESC" data-column="'.$values['filter_key'].'">
+            <i class="fa fa-caret-down"></i></a>';
+                $html.='<a href="#" class="table_order" data-order="ASC" data-column="'.$values['filter_key'].'">
+            <i class="fa fa-caret-up"></i></a>';
+            }
+            $html.='</th>';
         }
         $html.='</tr>';
 
@@ -101,6 +114,14 @@ class LengowList
                         }
                         $html.= '</select>';
                         break;
+                    case 'date':
+                        $from = isset($value['from']) ? $value['from'] : null;
+                        $to = isset($value['to']) ? $value['to'] : null;
+                        $html .= 'From : <input type="text" name="'.$name.'[from]"
+                        value="'.$from.'" class="lengow_datepicker" />';
+                        $html .= '<br/>To :<input type="text" name="'.$name.'[to]"
+                        value="'.$to.'" class="lengow_datepicker" />';
+                        break;
                 }
             } elseif (isset($values['button_search']) && $values['button_search']) {
                 $html .= '<input type="submit" value="Search" />';
@@ -119,41 +140,55 @@ class LengowList
      */
     public function displayContent()
     {
-        $lengow_link = new LengowLink();
-
         $html='<tbody>';
         foreach ($this->collection as $item) {
-            $html.= '<tr>';
-            if ($this->selection) {
-                if ($this->selectionCondition) {
-                    if ($item[$this->selectionCondition] > 0) {
-                        $html.='<td><input type="checkbox" class="lengow_selection"
-                    name="selection['.$item[$this->identifier].']" value="1"></td>';
-                    } else {
-                        $html.='<td></td>';
-                    }
-                } else {
+            $html.= $this->displayRow($item);
+        }
+        $html.='</tbody>';
+        return $html;
+    }
+
+    /**
+     * v3
+     * Display Table Row
+     * @param string $item
+     * @return string
+     */
+    public function displayRow($item)
+    {
+        $lengow_link = new LengowLink();
+        $html = '';
+        $html.= '<tr id='.$this->id.'_'.$item[$this->identifier].'>';
+        if ($this->selection) {
+            if ($this->selectionCondition) {
+                if ($item[$this->selectionCondition] > 0) {
                     $html.='<td><input type="checkbox" class="lengow_selection"
                     name="selection['.$item[$this->identifier].']" value="1"></td>';
-                }
-            }
-            foreach ($this->fields_list as $key => $values) {
-                if (isset($values['display_callback'])) {
-                    $value = call_user_func_array($values['display_callback'], array($key, $item[$key]));
                 } else {
-                    if (isset($values['type'])) {
-                        switch ($values["type"]) {
-                            case 'date':
-                                $value = Tools::dateFormat(
-                                    array('date' => $item[$key], 'full' => true),
-                                    $this->context->smarty
-                                );
-                                break;
-                            case 'price':
-                                $value = Tools::displayPrice($item[$key]);
-                                break;
-                            case 'switch_product':
-                                $value = '<input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
+                    $html.='<td></td>';
+                }
+            } else {
+                $html.='<td><input type="checkbox" class="lengow_selection"
+                    name="selection['.$item[$this->identifier].']" value="1"></td>';
+            }
+        }
+        foreach ($this->fields_list as $key => $values) {
+            if (isset($values['display_callback'])) {
+                $value = call_user_func_array($values['display_callback'], array($key, $item[$key], $item));
+            } else {
+                if (isset($values['type'])) {
+                    switch ($values["type"]) {
+                        case 'date':
+                            $value = Tools::dateFormat(
+                                array('date' => $item[$key], 'full' => true),
+                                $this->context->smarty
+                            );
+                            break;
+                        case 'price':
+                            $value = Tools::displayPrice($item[$key], $this->getCurrencyByCode($item['currency']));
+                            break;
+                        case 'switch_product':
+                            $value = '<input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
                                name="lengow_product_selection['.$item[$this->identifier].']"
                                class="lengow_switch lengow_switch_product
                                lengow_product_selection_'.$item[$this->identifier].'"
@@ -162,57 +197,27 @@ class LengowList
                                data-id_shop="'.$this->shopId.'"
                                data-id_product="'.$item[$this->identifier].'"
                                value="1" '.($item[$key] ? 'checked="checked"' : '').'/>';
-                                break;
-                            case 'flag_country':
-                                if ($item[$key]) {
-                                    $value = '<img src="/modules/lengow/views/img/flag/'.
-                                        Tools::strtoupper($item[$key]).'.png" />';
-                                } else {
-                                    $value = '';
-                                }
-                                break;
-                            case 'log_status':
-                                if ($item[$key]) {
-
-                                    if ($item[$key] == '2') {
-                                        $value = '<i class="fa fa-info-circle lengow_red lengow_link_tooltip"
-                                    data-original-title="test"
-                                    ></i>';
-                                        $value.= ' <a href="#"
-                                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
-                                    data-action="re_send"
-                                    data-order="'.$item[$this->identifier].'"
-                                    data-type="'.$item[$key].'"
-                                    >Re Send</a>';
-                                    } else {
-                                        $value = '<i class="fa fa-info-circle lengow_red lengow_link_tooltip"
-                                    data-original-title="test"
-                                    ></i>';
-                                        $value.= ' <a href="#"
-                                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
-                                    data-action="re_import"
-                                    data-order="'.$item[$this->identifier].'"
-                                    data-type="'.$item[$key].'"
-                                    >Re Import</a>';
-                                    }
-                                } else {
-                                    $value = '<i class="fa fa-circle lengow_green"></i>';
-                                }
-                                break;
-                            default:
-                                $value = $item[$key];
-                        }
-                    } else {
-                        $value = $item[$key];
+                            break;
+                        case 'flag_country':
+                            if ($item[$key]) {
+                                $value = '<img src="/modules/lengow/views/img/flag/'.
+                                    Tools::strtoupper($item[$key]).'.png" />';
+                            } else {
+                                $value = '';
+                            }
+                            break;
+                        default:
+                            $value = $item[$key];
                     }
+                } else {
+                    $value = $item[$key];
                 }
-                $class = isset($values['class']) ? $values['class'] : '';
-
-                $html.='<td class="'.$class.'">'.$value.'</td>';
             }
-            $html.= '</tr>';
+            $class = isset($values['class']) ? $values['class'] : '';
+
+            $html.='<td class="'.$class.'">'.$value.'</td>';
         }
-        $html.='</tbody>';
+        $html.= '</tr>';
         return $html;
     }
 
@@ -238,7 +243,10 @@ class LengowList
         $html= '<form id="form_table_'.$this->id.'" class="lengow_form_table"
         data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'">';
         $html.= '<input type="hidden" name="p" value="'.$this->currentPage.'" />';
+        $html.= '<input type="hidden" name="order_value" value="'.$this->orderValue.'" />';
+        $html.= '<input type="hidden" name="order_column" value="'.$this->orderColumn.'" />';
         $html.= $this->displayHeader().$this->displayContent().$this->displayFooter();
+        $html.= '<input type="submit" value="Search" style="visibility: hidden"/>';
         $html.= '</form>';
         return $html;
     }
@@ -273,6 +281,24 @@ class LengowList
 
     /**
      * v3
+     * Get Row
+     * @param $where
+     */
+    public function getRow($where)
+    {
+        if (!isset($this->sql["where"])) {
+            $this->sql["where"] = array();
+        }
+        $tmp = $this->sql["where"];
+        $this->sql["where"][] = $where;
+        $sql = $this->buildQuery();
+        $collection = Db::getInstance()->executeS($sql, true, false);
+        $this->sql["where"] = $tmp;
+        return $collection[0];
+    }
+
+    /**
+     * v3
      * Find value by key in fieldlist
      * @param $keyToSeach key search in field list
      * @return boolean
@@ -299,27 +325,56 @@ class LengowList
         $having = array();
         if (isset($_REQUEST['table_'.$this->id])) {
             foreach ($_REQUEST['table_'.$this->id] as $key => $value) {
-                if (Tools::strlen($value)>0) {
-                    if ($fieldValue = $this->findValueByKey($key)) {
-                        $type = isset($fieldValue['type']) ? $fieldValue['type'] : 'text';
-                        switch ($type) {
-                            case 'log_status':
+
+
+                if ($fieldValue = $this->findValueByKey($key)) {
+                    $type = isset($fieldValue['type']) ? $fieldValue['type'] : 'text';
+                    switch ($type) {
+                        case 'log_status':
+                            if (Tools::strlen($value)>0) {
                                 switch ($value) {
                                     case 1:
-                                        $having[] = ' '.pSQL($fieldValue['filter_key']).' IS NULL';
+                                        $having[] = ' ' . pSQL($fieldValue['filter_key']) . ' IS NULL';
                                         break;
                                     case 2:
-                                        $having[] = ' '.pSQL($fieldValue['filter_key']).' IS NOT NULL';
+                                        $having[] = ' ' . pSQL($fieldValue['filter_key']) . ' IS NOT NULL';
                                         break;
                                 }
-                                break;
-                            case 'select':
-                            case 'text':
-                                $where[] = ' '.pSQL($fieldValue['filter_key']).' LIKE "%'.pSQL($value).'%"';
-                                break;
-                        }
+                            }
+                            break;
+                        case 'select':
+                        case 'text':
+                            if (Tools::strlen($value)>0) {
+                                $where[] = ' ' . pSQL($fieldValue['filter_key']) . ' LIKE "%' . pSQL($value) . '%"';
+                            }
+                            break;
+                        case 'date':
+                            $from = isset($value['from']) ? $value['from'] : null;
+                            $to = isset($value['to']) ? $value['to'] : null;
+                            if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $from) &&
+                                preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $to) ) {
+
+                                $from = DateTime::createFromFormat('d/m/Y', $from);
+                                $from = $from->format('Y-m-d');
+                                $to = DateTime::createFromFormat('d/m/Y', $to);
+                                $to = $to->format('Y-m-d');
+
+                                $where[] = ' '.pSQL($fieldValue['filter_key']).'
+                                BETWEEN "'.$from.' 00:00:00" AND "'.$to.' 23:59:59"';
+                            } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $from)) {
+                                $from = DateTime::createFromFormat('d/m/Y', $from);
+                                $from = $from->format('Y-m-d');
+                                $where[] = ' '.pSQL($fieldValue['filter_key']).' >= "'.$from.' 00:00:00"';
+                            } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $to)) {
+                                $to = DateTime::createFromFormat('d/m/Y', $to);
+                                $to = $to->format('Y-m-d');
+                                $where[] = ' '.pSQL($fieldValue['filter_key']).' <= "'.$to.' 23:59:59"';
+                            }
+                            break;
+
                     }
                 }
+
             }
         }
         if ($total) {
@@ -341,8 +396,15 @@ class LengowList
             $sql .= ' HAVING ' . join(' AND ', $having);
         }
         if (!$total) {
-            if (isset($this->sql["order"])) {
-                $sql .= ' ORDER BY '.$this->sql["order"];
+            if (Tools::strlen($this->orderColumn) > 0 && in_array($this->orderValue, array("ASC","DESC"))) {
+                $sql .= ' ORDER BY '.pSQL($this->orderColumn).' '.$this->orderValue;
+                if (isset($this->sql["order"])) {
+                    $sql .= ', '.$this->sql["order"];
+                }
+            } else {
+                if (isset($this->sql["order"])) {
+                    $sql .= ' ORDER BY '.$this->sql["order"];
+                }
             }
             if ($this->currentPage < 1) {
                 $this->currentPage = 1;
@@ -432,5 +494,24 @@ class LengowList
         }
         $html.= '</ul></nav>';
         return $html;
+    }
+
+    private function getCurrencyByCode($isoCode)
+    {
+        $currency = null;
+        if ($isoCode) {
+            if (isset($this->currencyCode[$isoCode])) {
+                return $this->currencyCode[$isoCode];
+            }
+            $currency = Currency::getCurrency(Currency::getIdByIsoCode($isoCode));
+            if ($currency) {
+                $this->currencyCode[$isoCode] = $currency;
+            } else {
+                $this->currencyCode[$isoCode] = $this->context->currency;
+            }
+            return $this->currencyCode[$isoCode];
+        } else {
+            return $this->context->currency;
+        }
     }
 }

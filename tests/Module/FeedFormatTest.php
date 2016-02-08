@@ -26,7 +26,6 @@ class FeedFormatTest extends ModuleTestCase
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
         Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
-        Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
 
         //load module
         Module::getInstanceByName('lengow');
@@ -51,6 +50,7 @@ class FeedFormatTest extends ModuleTestCase
         $export = new LengowExport(array(
             "out_stock" => true,
             "export_variation" => true,
+            "log_output" => false,
         ));
         $export->exec();
         $this->assertFileNbLine($export->getFileName(), 1, 'multi_line');
@@ -72,6 +72,7 @@ class FeedFormatTest extends ModuleTestCase
             "show_inactive_product" => true,
             "out_stock" => true,
             "export_variation" => true,
+            "log_output" => false,
         ));
         $export->exec();
         $this->assertFileValues($export->getFileName(), 101, array("NAME_PRODUCT" => "THIS ' IS ' A   Test"));

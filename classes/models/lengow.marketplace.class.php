@@ -260,7 +260,7 @@ class LengowMarketplace
         $params = array(
             'account_id'            => LengowMain::getIdAccount($this->id_shop),
             'marketplace_order_id'  => (string)$id_lengow_order,
-            'marketplace'           => (string)$order->lengow_marketplace
+            'marketplace'           => (string)$order->lengow_marketplace_name
         );
 
         if (isset($action_array['optional_args'])) {

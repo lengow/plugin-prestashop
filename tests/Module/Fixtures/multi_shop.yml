@@ -32,5 +32,5 @@ shop_url:
     domain_ssl: "prestashop-two.unit.test"
     physical_uri: "/"
     virtual_uri: ""
-    main: 0
+    main: 1
     active: 1

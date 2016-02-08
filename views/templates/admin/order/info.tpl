@@ -22,8 +22,8 @@
 	<legend><img src="../img/admin/tab-stats.gif" /> {l s='Import Lengow' mod='lengow'}</legend>
 	<h4>{l s='This order has been imported from Lengow' mod='lengow'}</h4>
 	<ul>
-		<li>{l s='Lengow order ID' mod='lengow'} : <strong>{$id_order_lengow|escape:'htmlall':'UTF-8'}</strong></li>
-		<li>{l s='Marketplace' mod='lengow'} : <strong>{$marketplace|escape:'htmlall':'UTF-8'}</strong></li>
+		<li>{l s='Lengow order ID' mod='lengow'} : <strong>{$markteplace_sku|escape:'htmlall':'UTF-8'}</strong></li>
+		<li>{l s='Marketplace' mod='lengow'} : <strong>{$marketplace_name|escape:'htmlall':'UTF-8'}</strong></li>
 		{if $id_flux != 0}
 			<li>{l s='Feed ID' mod='lengow'} : <strong>{$id_flux|escape:'htmlall':'UTF-8'}</strong></li>
 		{/if}
@@ -37,7 +37,7 @@
 	<br />
 	<div class"button-command-prev-next">
 		{if $version < 1.5}
-			<button id="reimport-order" class="button" data-url="{$action_reimport|escape:'htmlall':'UTF-8'}" data-orderid="{$order_id|escape:'htmlall':'UTF-8'}" data-lengoworderid="{$id_order_lengow|escape:'htmlall':'UTF-8'}" data-version="{$version|escape:'htmlall':'UTF-8'}">{l s='Cancel and re-import order' mod='lengow'}</button>
+			<button id="reimport-order" class="button" data-url="{$action_reimport|escape:'htmlall':'UTF-8'}" data-orderid="{$order_id|escape:'htmlall':'UTF-8'}" data-lengoworderid="{$marketplace_sku|escape:'htmlall':'UTF-8'}" data-version="{$version|escape:'htmlall':'UTF-8'}">{l s='Cancel and re-import order' mod='lengow'}</button>
 		{else}
 			<a class="button" href="{$action_reimport|escape:'htmlall':'UTF-8'}">{l s='Cancel and re-import order' mod='lengow'}</a>
 		{/if}

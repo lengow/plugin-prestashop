@@ -27,7 +27,7 @@ class LengowFlatProduct extends Product
 {
 
 
-    var $price_shipping;
+    protected $price_shipping;
 
     /**
      * Load a new product.
@@ -73,11 +73,13 @@ class LengowFlatProduct extends Product
         $this->quantity = ($product["sa_quantity"] != '') ? $product["sa_quantity"] : $product["p_quantity"];
 
         //product active (SHOP > PRODUCT)
-        $this->visibility = ($product["pshop_visibility"] != '') ? $product["pshop_visibility"] : $product["p_visibility"];
+        $this->visibility = ($product["pshop_visibility"] != '')
+            ? $product["pshop_visibility"] : $product["p_visibility"];
         //product active (SHOP > PRODUCT)
         $this->active = ($product["pshop_active"] != '') ? $product["pshop_active"] : $product["p_active"];
         //product weight (ATTRIBUTE > PRODUCT)
-        $this->weight = ($product["pa_weight"] != 0) ? $product["p_weight"] + $product["pa_weight"] : $product["p_weight"];
+        $this->weight = ($product["pa_weight"] != 0)
+            ? $product["p_weight"] + $product["pa_weight"] : $product["p_weight"];
         //product EAN (ATTRIBUTE > PRODUCT)
         $this->ean = ($product["pa_ean"] != '') ? $product["pa_ean"] : $product["p_ean"];
         if ($this->ean==0) {
@@ -109,11 +111,20 @@ class LengowFlatProduct extends Product
             $this->minimal_quantity = $product["p_minimal_quantity"];
         }
         $this->url_rewrite = $product["link_rewrite"];
-        $this->url_product = $this->context->link->getProductLink($this->id_product, $this->url_rewrite,  null, null, null, null, $this->id_parent);
+        $this->url_product = $this->context->link->getProductLink(
+            $this->id_product,
+            $this->url_rewrite,
+            null,
+            null,
+            null,
+            null,
+            $this->id_parent
+        );
 
         //$this->quantity = ($product["pa_quantity"] != '') ? $product["pa_quantity"] : $product["quantity"];
         $this->reference = ($product["pa_reference"] != '') ? $product["pa_reference"] : $product["reference"];
-        $this->supplier_reference = ($product["pa_supplier_reference"] != '') ? $product["pa_supplier_reference"] : $product["supplier_reference"];
+        $this->supplier_reference = ($product["pa_supplier_reference"] != '')
+            ? $product["pa_supplier_reference"] : $product["supplier_reference"];
 
         $this->is_virtual = $product['is_virtual'];
         $this->price = 10;

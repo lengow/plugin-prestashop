@@ -28,21 +28,21 @@ class LengowInstall
 
     private $lengowModule;
     private $lengowHook;
+    protected static $installationStatus;
 
     static private $tabs = array(
         'Home' => array('name' => 'AdminLengowHome', 'active' => true),
         'Product' => array('name' => 'AdminLengowFeed', 'active' => true),
         'Orders' => array('name' => 'AdminLengowOrder', 'active' => true),
         'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
-        'Logs' => array('name' => 'AdminLengowLog', 'active' => true)
-        );
-
+        'Help' => array('name' => 'AdminLengowHelp', 'active' => false),
+        'MainSetting' => array('name' => 'AdminLengowMainSetting', 'active' => false)
+    );
 
     public function __construct($module)
     {
         $this->lengowModule = $module;
         $this->lengowHook = new LengowHook($module);
-
     }
 
     public function install()
@@ -52,9 +52,7 @@ class LengowInstall
         $this->setDefaultValues() &&
         $this->addStatusError() &&
         $this->update();
-
     }
-
 
     public function uninstall()
     {
@@ -97,13 +95,13 @@ class LengowInstall
             'LENGOW_LAST_IMPORT_CRON',
             'LENGOW_LAST_EXPORT',
             'LENGOW_LAST_IMPORT_MANUAL'
-            );
-foreach ($configurations as $configuration) {
-    Configuration::deleteByName($configuration);
-}
-$this->uninstallTab();
-return true;
-}
+        );
+        foreach ($configurations as $configuration) {
+            Configuration::deleteByName($configuration);
+        }
+        $this->uninstallTab();
+        return true;
+    }
 
     /**
      * Add admin Tab (Controller)
@@ -112,27 +110,26 @@ return true;
      */
     private function createTab()
     {
-
-        $tab_parent = new Tab();
-        $tab_parent->name[Configuration::get('PS_LANG_DEFAULT')] = 'Lengow';
-        $tab_parent->module = 'lengow';
-
-        if (_PS_VERSION_ < '1.5') {
-            $tab_parent->class_name = 'AdminLengowHome14';
-        } else {
+        if (LengowMain::compareVersion()) {
+            $tab_parent = new Tab();
+            $tab_parent->name[Configuration::get('PS_LANG_DEFAULT')] = 'Lengow';
+            $tab_parent->module = 'lengow';
             $tab_parent->class_name = 'AdminLengowHome';
+            $tab_parent->id_parent = 0;
+            $tab_parent->add();
+
+        } else {
+            $tab_parent = new Tab(Tab::getIdFromClassName('AdminCatalog'));
+            $tab = new Tab();
+            $tab->name[Configuration::get('PS_LANG_DEFAULT')] = 'Lengow';
+            $tab->module = 'lengow';
+            $tab->class_name = 'AdminLengowHome14';
+            $tab->id_parent = $tab_parent->id;
+            $tab->add();
+
+            $tab_parent = $tab;
         }
-
-        $tab_parent->id_parent = 0;
-        $tab_parent->add();
-
         foreach (self::$tabs as $name => $values) {
-            if (_PS_VERSION_ < '1.5') {
-                $tab_name = $values['name'] . "14";
-            } else {
-                $tab_name = $values['name'];
-            }
-
             $tab = new Tab();
             if (_PS_VERSION_ < '1.5') {
                 $tab->class_name = $values['name'] . "14";
@@ -141,15 +138,11 @@ return true;
                 $tab->class_name = $values['name'];
                 $tab->id_parent = $tab_parent->id;
                 $tab->active = $values['active'];
-
             }
-
             $tab->module = $this->lengowModule->name;
             $tab->name[Configuration::get('PS_LANG_DEFAULT')] = $this->lengowModule->l($name);
-
             $tab->add();
         }
-
         return true;
     }
 
@@ -168,7 +161,7 @@ return true;
             if ($tab->id != 0) {
                 $result = $tab->delete();
             }
-            LengowMain::log('Uninstall tab '.$value['class_name']);
+            LengowMain::log('Uninstall tab ' . $value['class_name']);
         }
         return true;
     }
@@ -197,11 +190,10 @@ return true;
         Configuration::updateValue(
             'LENGOW_IMPORT_SINGLE_ENABLED',
             version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
-            ) &&
+        ) &&
         Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
         Configuration::updateValue('LENGOW_IMPORT_SHIP_MP_ENABLED', false);
     }
-
 
     /**
      * Add error status to reimport order
@@ -212,8 +204,8 @@ return true;
     {
         // Add Lengow order error status
         if (_PS_VERSION_ >= '1.5') {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state
-                WHERE module_name = \''.$this->lengowModule->name.'\'');
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state
+                WHERE module_name = \'' . $this->lengowModule->name . '\'');
             if (empty($states)) {
                 $lengow_state = new OrderState();
                 $lengow_state->send_email = false;
@@ -240,7 +232,7 @@ return true;
                 Configuration::updateValue('LENGOW_STATE_ERROR', $states[0]['id_order_state']);
             }
         } else {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state_lang
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang
                 WHERE name = \'Erreur technique - Lengow\' LIMIT 1');
             if (empty($states)) {
                 $lengow_state = new OrderState();
@@ -272,10 +264,10 @@ return true;
     public function update()
     {
         // check if update is in progress
-        $installation = true;
-        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_.'upgrade'), array('..', '.'));
+        self::setInstallationStatus(true);
+        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_ . 'upgrade'), array('..', '.'));
         foreach ($upgradeFiles as $file) {
-            include _PS_MODULE_LENGOW_DIR_.'upgrade/'.$file;
+            include _PS_MODULE_LENGOW_DIR_ . 'upgrade/' . $file;
             $numberVersion = preg_replace('/update_|\.php$/', '', $file);
         }
         // update lengow tabs
@@ -283,22 +275,42 @@ return true;
         $this->createTab();
         // update lengow version
         Configuration::updateValue('LENGOW_VERSION', $numberVersion);
+        self::setInstallationStatus(false);
         return true;
     }
 
     /**
-    * Checks if a field exists in BDD
-    *
-    * @param string $table
-    * @param string $field
-    *
-    * @return boolean
-    */
+     * Checks if a field exists in BDD
+     *
+     * @param string $table
+     * @param string $field
+     *
+     * @return boolean
+     */
     public static function checkFieldExists($table, $field)
     {
-        $sql = 'SHOW COLUMNS FROM '._DB_PREFIX_.$table.' LIKE \''.$field.'\'';
+        $sql = 'SHOW COLUMNS FROM ' . _DB_PREFIX_ . $table . ' LIKE \'' . $field . '\'';
         $result = Db::getInstance()->executeS($sql);
         $exists = count($result) > 0 ? true : false;
         return $exists;
+    }
+
+    /**
+     * Set Installation Status
+     *
+     * @param boolean $status Installation Status
+     */
+    public static function setInstallationStatus($status)
+    {
+        self::$installationStatus = $status;
+    }
+
+    /**
+     * Is Installation In Progress
+     * @return boolean
+     */
+    public static function isInstallationInProgress()
+    {
+        return self::$installationStatus;
     }
 }

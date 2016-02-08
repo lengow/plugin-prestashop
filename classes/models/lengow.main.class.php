@@ -66,14 +66,6 @@ class LengowMain
     );
 
     /**
-     * @var array    Lengow shipping types
-     */
-    public static $SHIPPING_LENGOW = array(
-        'lengow' => 'Lengow',
-        'marketplace' => 'Markeplace\'s name',
-    );
-
-    /**
      * Lengow Authorized IPs
      */
     protected static $IPS_LENGOW = array(
@@ -94,18 +86,25 @@ class LengowMain
         '80.236.15.223',
         '92.135.36.234',
         '81.64.72.170',
-        '80.11.36.123'
+        '80.11.36.123',
+        '185.61.176.129',
+        '185.61.176.130',
+        '185.61.176.131',
+        '185.61.176.132',
+        '185.61.176.133',
+        '185.61.176.134',
+        '185.61.176.137',
+        '185.61.176.138',
+        '185.61.176.139',
+        '185.61.176.140',
+        '185.61.176.141',
+        '185.61.176.142'
     );
 
     /**
      * Image type cache
      */
     public static $image_type_cache;
-
-    /**
-     * @var boolean import is processing
-     */
-    public static $processing;
 
     /**
      * v3
@@ -186,133 +185,6 @@ class LengowMain
 
     /**
      * v3
-     * Import of a specific order or all orders
-     *
-     * @param array params optional options
-     * string    $order_id           lengow order id to import
-     * string    $marketplace_name   lengow marketplace name to import
-     * integer   $shop_id            Id shop for current import
-     * boolean   $force_product      force import of products
-     * boolean   $debug              debug mode
-     * string    $date_from          starting import date
-     * string    $date_to            ending import date
-     * integer   $limit              number of orders to import
-     */
-    public static function importOrders($params = array())
-    {
-        // clean logs
-        LengowMain::cleanLog();
-        // get all params for import
-        $order_id = (isset($params['order_id']) ? $params['order_id'] : null);
-        $markeplace_name = (isset($params['markeplace_name']) ? $params['markeplace_name'] : null);
-        $id_shop = (isset($params['id_shop']) ? $params['id_shop'] : null);
-        $days = (
-            isset($params['days'])
-            ? $params['days']
-            : (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_DAYS')
-        );
-        $debug = (
-            isset($params['debug'])
-            ? $params['debug']
-            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')
-        );
-        $type = (isset($params['type']) ? $params['type'] : 'manual');
-        $force_product = (
-            isset($params['force_product'])
-            ? $params['force_product']
-            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT')
-        );
-        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_SINGLE_ENABLED')) {
-            $limit = 1;
-        } else {
-            $limit = (isset($params['limit']) ? (int)$params['limit'] : 0);
-        }
-        // recovering the time interval for import
-        $date_from = date('c', strtotime(date('Y-m-d').' -'.$days.'days'));
-        $date_to = date('c');
-
-        // launch the import orders
-        // 1st step: check if import is already in process
-        if (LengowMain::isInProcess() && !$debug) {
-            LengowMain::log('import is already started', true);
-        } else {
-            LengowMain::log('## Start '.$type.' import ##', true);
-            // 2nd step: start import process
-            // LengowMain::setInProcess();
-            // 3rd step: disable emails
-            LengowMain::disableMail();
-            // import of a specific order or all orders
-            if (!is_null($order_id) && !is_null($markeplace_name) && !is_null($id_shop)) {
-                if (LengowMain::getShopActive($shop['id_shop'])) {
-                    $import = new LengowImport(array(
-                        'order_id'          => $order_id,
-                        'marketplace_name'  => $markeplace_name,
-                        'shop_id'           => $id_shop
-                    ));
-                    $result = $import->exec();
-                }
-            } else {
-                $result_new = 0;
-                $result_update = 0;
-                $account_ids = array();
-                // udpate last import date
-                lengowMain::updateDateImport($type);
-                if (_PS_VERSION_ < '1.5') {
-                    $shops = array();
-                    $shops[] = array('id_shop' => 1, 'name' => 'Default shop');
-                } else {
-                    $shops = Shop::getShops();
-                }
-                foreach ($shops as $shop) {
-                    if (LengowMain::getShopActive($shop['id_shop'])) {
-                        LengowMain::log('Start import in shop '.$shop['name'].' ('.$shop['id_shop'].')', true);
-                        // checks whether an account id has not already been imported
-                        $account_id = LengowMain::getIdAccount($shop['id_shop']);
-                        if (array_key_exists($account_id, $account_ids)) {
-                            LengowMain::log(
-                                'Account ID '.$account_id.' is already used by shop '
-                                .$account_ids[$account_id]['name'].' ('.$account_ids[$account_id]['id_shop'].')',
-                                true
-                            );
-                            continue;
-                        }
-                        $account_ids[$account_id] = array('id_shop' => $shop['id_shop'], 'name' => $shop['name']);
-                        // star import for current store
-                        $import = new LengowImport(array(
-                            'shop_id'           => $shop['id_shop'],
-                            'force_product'     => $force_product,
-                            'debug'             => $debug,
-                            'date_from'         => $date_from,
-                            'date_to'           => $date_to,
-                            'limit'             => $limit,
-                            'log_output'        => true
-                        ));
-                        $result = $import->exec();
-                        $result_new += $result['new'];
-                        $result_update += $result['update'];
-                    }
-                }
-                if ($result_new > 0) {
-                    LengowMain::log($result_new.' order'.($result_new > 1 ? 's ' : ' ').'imported', true);
-                }
-                if ($result_update > 0) {
-                    LengowMain::log($result_update.' order'.($result_update > 1 ? 's ' : ' ').'updated', true);
-                }
-                if ($result_new == 0 && $result_update == 0) {
-                    LengowMain::log('No order available to import', true);
-                }
-            }
-            LengowMain::setEnd();
-            LengowMain::log('## End '.$type.' import ##', true);
-            // sending email in error for orders
-            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$debug) {
-                // LengowMain::sendMailAlert();
-            }
-        }
-    }
-
-    /**
-     * v3
      * Get the matching Prestashop order state id to the one given
      *
      * @param string $state state to be matched
@@ -354,54 +226,6 @@ class LengowMain
         } else {
             Configuration::set('PS_MAIL_METHOD', 3);
         }
-    }
-
-    /**
-     * v3
-     * Check if import is already in process
-     *
-     * @return boolean
-     */
-    public static function isInProcess()
-    {
-        $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS');
-        if ($timestamp == 'stopped') {
-            $timestamp = -1;
-        }
-        if ($timestamp > 0) {
-            // security check : if last import is more than 10 min old => authorize new import to be launched
-            if (($timestamp + (60 * 10)) < time()) {
-                LengowMain::setEnd();
-                return false;
-            }
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * v3
-     * Set import to "in process" state
-     *
-     * @return boolean
-     */
-    public static function setInProcess()
-    {
-        LengowMain::$processing = true;
-        return LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', time());
-    }
-
-    /**
-     * v3
-     * Set import to finished
-     *
-     * @return boolean
-     */
-    public static function setEnd()
-    {
-        LengowMain::$processing = false;
-        return LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', -1);
     }
 
     /**
@@ -677,12 +501,12 @@ class LengowMain
      *
      * @param string $txt log message
      * @param boolean $force_output output on screen
-     * @param string $id_order_lengow lengow order id
+     * @param string $marketplace_sku lengow marketplace sku
      */
-    public static function log($txt, $force_output = false, $id_order_lengow = null)
+    public static function log($txt, $force_output = false, $marketplace_sku = null)
     {
         $log = LengowMain::getLogInstance();
-        $log->write($txt, $force_output, $id_order_lengow);
+        $log->write($txt, $force_output, $marketplace_sku);
     }
 
     /**
@@ -717,13 +541,21 @@ class LengowMain
      */
     public static function cleanData($value)
     {
-        $value = preg_replace('/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]'.
+        $value = preg_replace(
+            '/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]'.
             '|[\x00-\x7F][\x80-\xBF]+'.
             '|([\xC0\xC1]|[\xF0-\xFF])[\x80-\xBF]*'.
             '|[\xC2-\xDF]((?![\x80-\xBF])|[\x80-\xBF]{2,})'.
-            '|[\xE0-\xEF](([\x80-\xBF](?![\x80-\xBF]))|(?![\x80-\xBF]{2})|[\x80-\xBF]{3,})/S', '', $value);
-        $value = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]'.
-            '|\xED[\xA0-\xBF][\x80-\xBF]/S', '', $value);
+            '|[\xE0-\xEF](([\x80-\xBF](?![\x80-\xBF]))|(?![\x80-\xBF]{2})|[\x80-\xBF]{3,})/S',
+            '',
+            $value
+        );
+        $value = preg_replace(
+            '/\xE0[\x80-\x9F][\x80-\xBF]'.
+            '|\xED[\xA0-\xBF][\x80-\xBF]/S',
+            '',
+            $value
+        );
         $value = preg_replace('/[\s]+/', ' ', $value);
         $value = trim($value);
         $value = str_replace(
@@ -952,23 +784,25 @@ class LengowMain
         $cookie = Context::getContext()->cookie;
         $subject = 'Lengow imports logs';
         $mail_body = '';
-        $sql_logs = 'SELECT `lengow_order_id`, `message` 
-            FROM `' . _DB_PREFIX_ . 'lengow_logs_import`
-            WHERE `is_finished` = 0 AND `mail` = 0
+        $sql_logs = 'SELECT lo.`marketplace_sku`, lli.`message`, lli.`id`
+            FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
+            INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo 
+            ON lli.`id_order_lengow` = lo.`id`
+            WHERE lli.`is_finished` = 0 AND lli.`mail` = 0
         ';
         $logs = Db::getInstance()->ExecuteS($sql_logs);
         if (empty($logs)) {
             return true;
         }
         foreach ($logs as $log) {
-            $mail_body .= '<li>Order ' . $log['lengow_order_id'];
+            $mail_body .= '<li>Order ' . $log['marketplace_sku'];
             if ($log['message'] != '') {
                 $mail_body .= ' - ' . $log['message'];
             } else {
                 $mail_body .= ' - No error message, contact support via https://supportlengow.zendesk.com/agent/';
             }
             $mail_body .= '</li>';
-            LengowMain::logSent($log['lengow_order_id']);
+            LengowMain::logSent($log['id']);
         }
         $datas = array(
             '{mail_title}' => 'Lengow imports logs',
@@ -1001,20 +835,19 @@ class LengowMain
      * v3
      * Mark log as sent by email
      *
-     * @param string $lengow_order_id
+     * @param integer $id
      */
-    public static function logSent($lengow_order_id)
+    public static function logSent($id_order_log)
     {
-        $db = Db::getInstance();
-        if (_PS_VERSION_ >= '1.5') {
-            $db->update('lengow_logs_import', array(
-                'mail' => 1
-            ), '`lengow_order_id` = \'' . pSQL(Tools::substr($lengow_order_id, 0, 32)) . '\'', 1);
-        } else {
-            $db->autoExecute(_DB_PREFIX_ . 'lengow_logs_import', array(
+        Db::getInstance()->autoExecute(
+            _DB_PREFIX_ . 'lengow_logs_import',
+            array(
                 'mail' => 1,
-            ), 'UPDATE', '`lengow_order_id` = \'' . pSQL(Tools::substr($lengow_order_id, 0, 32)) . '\'', 1);
-        }
+            ),
+            'UPDATE',
+            '`id` = \'' .$id_order_log. '\'',
+            1
+        );
     }
 
     /**
@@ -1228,7 +1061,8 @@ class LengowMain
             . 'AND `id_shop_group` =' . (int)$shop->id_shop_group;
 
         $query_export_insert = 'INSERT INTO ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
-            . '(`description`, `task`, `hour`, `day`, `month`, `day_of_week`, `updated_at`, `active`, `id_shop`, `id_shop_group`) '
+            . '(`description`, `task`, `hour`, `day`, `month`, `day_of_week`,
+            `updated_at`, `active`, `id_shop`, `id_shop_group`) '
             . 'VALUES (\''
             . pSQL($description_export)
             . '\', \''
@@ -1239,7 +1073,8 @@ class LengowMain
             . ')';
 
         $query_import_insert = 'INSERT INTO ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
-            . '(`description`, `task`, `hour`, `day`, `month`, `day_of_week`, `updated_at`, `active`, `id_shop`, `id_shop_group`) '
+            . '(`description`, `task`, `hour`, `day`, `month`, `day_of_week`,
+            `updated_at`, `active`, `id_shop`, `id_shop_group`) '
             . 'VALUES (\''
             . pSQL($description_import)
             . '\', \''
@@ -1305,9 +1140,9 @@ class LengowMain
         $result = array();
         if (Db::getInstance()->executeS($query_import_select) || Db::getInstance()->executeS($query_export_select)) {
             $query = 'DELETE FROM ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
-                . 'WHERE `description` IN (\'' . pSQL($description_import) . '\', \'' . pSQL($description_export) . '\') '
-                . 'AND `id_shop` = ' . (int)$id_shop . ' '
-                . 'AND `id_shop_group` =' . (int)$shop->id_shop_group;
+                .'WHERE `description` IN (\'' . pSQL($description_import) . '\', \'' . pSQL($description_export) . '\')'
+                .'AND `id_shop` = ' . (int)$id_shop . ' '
+                .'AND `id_shop_group` =' . (int)$shop->id_shop_group;
             if (Db::getInstance()->execute($query)) {
                 $result['success'] = $lengow->l('Cron tasks sucessfully removed.');
             } else {

@@ -21,9 +21,21 @@
 
 class LengowLink extends LinkCore
 {
+    //use in toolbox to get specific link
+    protected static $force_link;
+
+    public static function forceLink($force_link)
+    {
+        self::$force_link = $force_link;
+    }
 
     public function getAbsoluteAdminLink($controller, $ajax = false)
     {
+        //use in toolbox to get specific link
+        if (self::$force_link) {
+            return self::$force_link;
+        }
+
         if (_PS_VERSION_ < '1.5') {
             $controller.= "14";
         }

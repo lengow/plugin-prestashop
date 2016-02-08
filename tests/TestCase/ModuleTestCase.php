@@ -234,6 +234,43 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Assert Array has key
+     *
+     * @param $keys
+     * @param $array
+     */
+    public static function assertKeysExistInArray($keys, $array)
+    {
+        if (!is_array($keys) || count($keys) == 0) {
+            self::assertTrue(false, 'Keys Array is empty');
+        }
+        foreach ($keys as $key) {
+            self::assertArrayHasKey($key, $array);
+        }
+    }
+
+    /**
+     * Asset Mysql Table contain data
+     * @param $table
+     * @param $where
+     */
+    public static function assertTableContain($table, $where)
+    {
+        $whereSql = array();
+        foreach ($where as $key => $value) {
+            if ($value === 'NULL') {
+                $whereSql[]= ' `'.$key.'` IS NULL';
+            } else {
+                $whereSql[]= ' `'.$key.'` = "'.pSQL($value).'" ';
+            }
+        }
+        $whereSql = ' WHERE '.join(' AND ', $whereSql);
+        $result = Db::getInstance()->ExecuteS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.$table.$whereSql);
+        self::assertTrue((bool)count($result));
+    }
+
+
+    /**
      * Call protected/private method of a class.
      *
      * @param object &$object    Instantiated object that we will run method on.

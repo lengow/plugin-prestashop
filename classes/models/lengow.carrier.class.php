@@ -132,8 +132,11 @@ class LengowCarrier extends Carrier
             if (!LengowMain::isSoColissimoAvailable()) {
                 return LengowCarrier::COMPATIBILITY_KO;
             }
-            return LengowCarrier::addSoColissimo($id_cart, $id_customer,
-                $shipping_address) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
+            return LengowCarrier::addSoColissimo(
+                $id_cart,
+                $id_customer,
+                $shipping_address
+            ) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
         } else {
             // Mondial Relay
             if (!LengowMain::isMondialRelayAvailable()) {
@@ -145,8 +148,12 @@ class LengowCarrier extends Carrier
                 if (!$relay) {
                     throw new LengowCarrierException('relay ' . $shipping_address->id_relay . ' could not be found');
                 }
-                return LengowCarrier::addMondialRelay($relay, $id_customer, $id_carrier,
-                    $id_cart) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
+                return LengowCarrier::addMondialRelay(
+                    $relay,
+                    $id_customer,
+                    $id_carrier,
+                    $id_cart
+                ) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
             }
         }
         return LengowCarrier::NO_COMPATIBLITY;
@@ -166,8 +173,9 @@ class LengowCarrier extends Carrier
         $sep = DIRECTORY_SEPARATOR;
         $loaded = include_once _PS_MODULE_DIR_ . 'socolissimo' . $sep . 'classes' . $sep . 'SCFields.php';
         if (!$loaded) {
-            throw new LengowCarrierException('missing file ' . _PS_MODULE_DIR_ . 'socolissimo' . $sep .
-                'classes' . $sep . 'SCFields.php');
+            throw new LengowCarrierException(
+                'missing file ' . _PS_MODULE_DIR_ . 'socolissimo' . $sep . 'classes' . $sep . 'SCFields.php'
+            );
         }
 
         $customer = new LengowCustomer($id_customer);
@@ -207,54 +215,78 @@ class LengowCarrier extends Carrier
 
 
         $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'socolissimo_delivery_info
-            ( `id_cart`, `id_customer`, `delivery_mode`, `prid`, `prname`, `prfirstname`, `prcompladress`,
-            `pradress1`, `pradress2`, `pradress3`, `pradress4`, `przipcode`, `prtown`,`cecountry`, `cephonenumber`, `ceemail` ,
-            `cecompanyname`, `cedeliveryinformation`, `cedoorcode1`, `cedoorcode2`,`codereseau`, `cename`, `cefirstname`)
-            VALUES (' . (int)$id_cart . ', ' . (int)$id_customer . ',';
+			( `id_cart`,
+            `id_customer`,
+            `delivery_mode`,
+            `prid`,
+            `prname`,
+            `prfirstname`,
+            `prcompladress`,
+			`pradress1`,
+            `pradress2`,
+            `pradress3`,
+            `pradress4`,
+            `przipcode`,
+            `prtown`,
+            `cecountry`,
+            `cephonenumber`,
+            `ceemail`,
+			`cecompanyname`,
+            `cedeliveryinformation`,
+            `cedoorcode1`,
+            `cedoorcode2`,
+            `codereseau`,
+            `cename`,
+            `cefirstname`)
+			VALUES (' . (int)$id_cart . ', ' . (int)$id_customer . ',';
 
         if ($so_colissimo->delivery_mode == SCFields::RELAY_POINT) {
             $sql .= '\'' . pSQL($delivery_mode) . '\',
-                    ' . (isset($params['PRID']) ? '\'' . pSQL($params['PRID']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CENAME']) ? '\'' . pSQL($params['CENAME']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\'') . ',
-                    ' . (isset($params['PRCOMPLADRESS']) ? '\'' . pSQL($params['PRCOMPLADRESS']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['PRNAME']) ? '\'' . pSQL($params['PRNAME']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['PRADRESS1']) ? '\'' . pSQL($params['PRADRESS1']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['PRADRESS3']) ? '\'' . pSQL($params['PRADRESS3']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['PRADRESS4']) ? '\'' . pSQL($params['PRADRESS4']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['PRZIPCODE']) ? '\'' . pSQL($params['PRZIPCODE']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['PRTOWN']) ? '\'' . pSQL($params['PRTOWN']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['PRPAYS']) ? '\'' . pSQL($params['PRPAYS']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEPHONENUMBER']) ? '\'' . pSQL($params['CEPHONENUMBER']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEEMAIL']) ? '\'' . pSQL($params['CEEMAIL']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CECOMPANYNAME']) ? '\'' . pSQL($params['CECOMPANYNAME']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEDELIVERYINFORMATION']) ? '\'' . pSQL($params['CEDELIVERYINFORMATION']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEDOORCODE1']) ? '\'' . pSQL($params['CEDOORCODE1']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEDOORCODE2']) ? '\'' . pSQL($params['CEDOORCODE2']) . '\'' : '\'\'') . ',
-                                    ' . (isset($params['CODERESEAU']) ? '\'' . pSQL($params['CODERESEAU']) . '\'' : '\'\'') . ',
-                                    ' . (isset($params['CENAME']) ? '\'' . Tools::ucfirst(pSQL($params['CENAME'])) . '\'' : '\'\'') . ',
-                                    ' . (isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\'') . ')';
+				' . (isset($params['PRID']) ? '\'' . pSQL($params['PRID']) . '\'' : '\'\'') . ',
+				' . (isset($params['CENAME']) ? '\'' . pSQL($params['CENAME']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\'') . ',
+				' . (isset($params['PRCOMPLADRESS']) ? '\'' . pSQL($params['PRCOMPLADRESS']) . '\'' : '\'\'') . ',
+				' . (isset($params['PRNAME']) ? '\'' . pSQL($params['PRNAME']) . '\'' : '\'\'') . ',
+				' . (isset($params['PRADRESS1']) ? '\'' . pSQL($params['PRADRESS1']) . '\'' : '\'\'') . ',
+				' . (isset($params['PRADRESS3']) ? '\'' . pSQL($params['PRADRESS3']) . '\'' : '\'\'') . ',
+				' . (isset($params['PRADRESS4']) ? '\'' . pSQL($params['PRADRESS4']) . '\'' : '\'\'') . ',
+				' . (isset($params['PRZIPCODE']) ? '\'' . pSQL($params['PRZIPCODE']) . '\'' : '\'\'') . ',
+				' . (isset($params['PRTOWN']) ? '\'' . pSQL($params['PRTOWN']) . '\'' : '\'\'') . ',
+				' . (isset($params['PRPAYS']) ? '\'' . pSQL($params['PRPAYS']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEPHONENUMBER']) ? '\'' . pSQL($params['CEPHONENUMBER']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEEMAIL']) ? '\'' . pSQL($params['CEEMAIL']) . '\'' : '\'\'') . ',
+				' . (isset($params['CECOMPANYNAME']) ? '\'' . pSQL($params['CECOMPANYNAME']) . '\'' : '\'\'') . ',
+				' . (
+                isset($params['CEDELIVERYINFORMATION']) ? '\'' . pSQL($params['CEDELIVERYINFORMATION']) . '\'' : '\'\''
+                ) . ',
+				' . (isset($params['CEDOORCODE1']) ? '\'' . pSQL($params['CEDOORCODE1']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEDOORCODE2']) ? '\'' . pSQL($params['CEDOORCODE2']) . '\'' : '\'\'') . ',
+                ' . (isset($params['CODERESEAU']) ? '\'' . pSQL($params['CODERESEAU']) . '\'' : '\'\'') . ',
+                ' . (isset($params['CENAME']) ? '\'' . Tools::ucfirst(pSQL($params['CENAME'])) . '\'' : '\'\'') . ',
+                ' . (isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\'') . ')';
         } else {
             $sql .= '\'' . pSQL($delivery_mode) . '\',\'\',
-                    ' . (isset($params['CENAME']) ? '\'' . Tools::ucfirst(pSQL($params['CENAME'])) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CECOMPLADRESS']) ? '\'' . pSQL($params['CECOMPLADRESS']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEADRESS1']) ? '\'' . pSQL($params['CEADRESS1']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEADRESS4']) ? '\'' . pSQL($params['CEADRESS4']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEADRESS3']) ? '\'' . pSQL($params['CEADRESS3']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEADRESS2']) ? '\'' . pSQL($params['CEADRESS2']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEZIPCODE']) ? '\'' . pSQL($params['CEZIPCODE']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CETOWN']) ? '\'' . pSQL($params['CETOWN']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['PRPAYS']) ? '\'' . pSQL($params['PRPAYS']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEPHONENUMBER']) ? '\'' . pSQL($params['CEPHONENUMBER']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEEMAIL']) ? '\'' . pSQL($params['CEEMAIL']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CECOMPANYNAME']) ? '\'' . pSQL($params['CECOMPANYNAME']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEDELIVERYINFORMATION']) ? '\'' . pSQL($params['CEDELIVERYINFORMATION']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEDOORCODE1']) ? '\'' . pSQL($params['CEDOORCODE1']) . '\'' : '\'\'') . ',
-                    ' . (isset($params['CEDOORCODE2']) ? '\'' . pSQL($params['CEDOORCODE2']) . '\'' : '\'\'') . ',
-                                    ' . (isset($params['CODERESEAU']) ? '\'' . pSQL($params['CODERESEAU']) . '\'' : '\'\'') . ',
-                                    ' . (isset($params['CENAME']) ? '\'' . Tools::ucfirst(pSQL($params['CENAME'])) . '\'' : '\'\'') . ',
-                                    ' . (isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\'') . ')';
+				' . (isset($params['CENAME']) ? '\'' . Tools::ucfirst(pSQL($params['CENAME'])) . '\'' : '\'\'') . ',
+				' . (isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\'') . ',
+				' . (isset($params['CECOMPLADRESS']) ? '\'' . pSQL($params['CECOMPLADRESS']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEADRESS1']) ? '\'' . pSQL($params['CEADRESS1']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEADRESS4']) ? '\'' . pSQL($params['CEADRESS4']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEADRESS3']) ? '\'' . pSQL($params['CEADRESS3']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEADRESS2']) ? '\'' . pSQL($params['CEADRESS2']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEZIPCODE']) ? '\'' . pSQL($params['CEZIPCODE']) . '\'' : '\'\'') . ',
+				' . (isset($params['CETOWN']) ? '\'' . pSQL($params['CETOWN']) . '\'' : '\'\'') . ',
+				' . (isset($params['PRPAYS']) ? '\'' . pSQL($params['PRPAYS']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEPHONENUMBER']) ? '\'' . pSQL($params['CEPHONENUMBER']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEEMAIL']) ? '\'' . pSQL($params['CEEMAIL']) . '\'' : '\'\'') . ',
+				' . (isset($params['CECOMPANYNAME']) ? '\'' . pSQL($params['CECOMPANYNAME']) . '\'' : '\'\'') . ',
+				' . (
+                isset($params['CEDELIVERYINFORMATION']) ? '\'' . pSQL($params['CEDELIVERYINFORMATION']) . '\'' : '\'\''
+                ) . ',
+				' . (isset($params['CEDOORCODE1']) ? '\'' . pSQL($params['CEDOORCODE1']) . '\'' : '\'\'') . ',
+				' . (isset($params['CEDOORCODE2']) ? '\'' . pSQL($params['CEDOORCODE2']) . '\'' : '\'\'') . ',
+                ' . (isset($params['CODERESEAU']) ? '\'' . pSQL($params['CODERESEAU']) . '\'' : '\'\'') . ',
+                ' . (isset($params['CENAME']) ? '\'' . Tools::ucfirst(pSQL($params['CENAME'])) . '\'' : '\'\'') . ',
+                ' . (isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\'') . ')';
         }
 
         return Db::getInstance()->execute($sql);
@@ -276,7 +308,9 @@ class LengowCarrier extends Carrier
         }
         $loaded = include_once _PS_MODULE_DIR_ . 'mondialrelay' . $sep . 'classes' . $sep . 'MRRelayDetail.php';
         if (!$loaded) {
-            throw new LengowCarrierException('missing file ' . _PS_MODULE_DIR_ . 'mondialrelay' . $sep . 'classes' . $sep . 'MRRelayDetail.php');
+            throw new LengowCarrierException(
+                'missing file ' . _PS_MODULE_DIR_ . 'mondialrelay' . $sep . 'classes' . $sep . 'MRRelayDetail.php'
+            );
         }
         $params = array(
             'id_address_delivery' => (int)$id_address_delivery,
@@ -327,15 +361,81 @@ class LengowCarrier extends Carrier
         return $db->execute($query);
     }
 
-    public static function getActiveCarriers() {
+    /**
+     * v3-test
+     * Get List Carrier in all Lengow Marketplace
+     * @return array
+     */
+    public static function getListMarketplaceCarrier()
+    {
+        $result = LengowConnector::queryApi('/v3.0/marketplaces');
 
-        $carriers = array();
-        $sql = 'SELECT id_carrier, name FROM '._DB_PREFIX_.'carrier WHERE active = 1 AND deleted=0';
-        $collection = Db::getInstance()->ExecuteS($sql);
-        foreach ($collection as $row) {
-            $carriers[$row['id_carrier']] = $row['name'];
+        $carrierCollection = array();
+        foreach ($result as $marketplace => $values) {
+            if (isset($values->orders->carriers)) {
+                foreach ($values->orders->carriers as $key => $value) {
+                    $carrierCollection[$key] = true;
+                }
+            }
         }
+        if ($carrierCollection) {
+            $finalCarrier = array();
+            foreach (array_keys($carrierCollection) as $carrier) {
+                $finalCarrier[] = $carrier;
+                $finalCarrier[] = $carrier."_RELAY";
+            }
+            return $finalCarrier;
+        } else {
+            return array();
+        }
+    }
 
-        return $carriers;
+    /**
+     * v3-test
+     * Sync Marketplace's Carrier
+     */
+    public static function syncListMarketplace()
+    {
+        $defaultCountryId = Configuration::get('PS_COUNTRY_DEFAULT');
+        $carrierCollection = self::getListMarketplaceCarrier();
+        $countryCollectionId = array();
+        foreach ($carrierCollection as $lengowMarketplaceSku) {
+            $countryCollection = Db::getInstance()->ExecuteS(
+                'SELECT DISTINCT(id_country) as id_country FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier'
+            );
+            foreach ($countryCollection as $country) {
+                $countryCollectionId[] = $country['id_country'];
+                self::insertCountryInMarketplace($lengowMarketplaceSku, $country['id_country']);
+            }
+
+            if (count($countryCollection) == 0 || !in_array($defaultCountryId, $countryCollectionId)) {
+                foreach ($carrierCollection as $lengowMarketplaceSku) {
+                    self::insertCountryInMarketplace($lengowMarketplaceSku, $defaultCountryId);
+                }
+            }
+        }
+    }
+
+    /**
+     * v3-test
+     * Insert Data into lengow marketplace carrier table
+     */
+    public static function insertCountryInMarketplace($lengowMarketplaceSku, $countryId)
+    {
+        $result = Db::getInstance()->ExecuteS(
+            'SELECT id_country FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier
+                    WHERE marketplace_carrier_sku = "' . pSQL($lengowMarketplaceSku) . '" AND
+                    id_country = '.(int)$countryId
+        );
+        if (count($result) == 0) {
+            Db::getInstance()->autoExecute(
+                _DB_PREFIX_ . 'lengow_marketplace_carrier',
+                array(
+                    'id_country' => (int)$countryId,
+                    'marketplace_carrier_sku' => pSQL($lengowMarketplaceSku),
+                ),
+                'INSERT'
+            );
+        }
     }
 }

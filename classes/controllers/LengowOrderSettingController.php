@@ -120,7 +120,6 @@ class LengowOrderSettingController extends LengowController
                 echo '$("#select_country").html("'.preg_replace('/\r|\n/', '', addslashes($display_countries)).'");';
                 exit();
                 break;
-
             case 'process':
                 foreach ($default_carriers as $key => $value) {
                     Db::getInstance()->autoExecute(_DB_PREFIX_ . 'lengow_carrier_country', array('id_carrier' => (int)$value), 'UPDATE', 'id = '.(int)$key);

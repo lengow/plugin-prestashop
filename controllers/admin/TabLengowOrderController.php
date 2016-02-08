@@ -27,9 +27,7 @@ class AdminLengowOrder14 extends AdminTab
 {
     public function __construct()
     {
-        $this->lengow_controller = new LengowOrderController(array(
-            'breadcrumb_title' => 'Order'
-        ));
+        $this->lengow_controller = new LengowOrderController();
         $this->lengow_controller->postProcess();
 
         parent::__construct();

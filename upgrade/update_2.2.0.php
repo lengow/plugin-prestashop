@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!$installation) {
+if (!LengowInstall::isInstallationInProgress()) {
     exit();
 }
 
@@ -38,9 +38,9 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
             'ALTER TABLE  '._DB_PREFIX_.'lengow_orders CHANGE `id_flux` `id_flux` INT(11) UNSIGNED NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists('lengow_orders', 'delivery_id_address')) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'delivery_address_id')) {
         Db::getInstance()->execute(
-            'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `delivery_id_address` INT(10) UNSIGNED NULL'
+            'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `delivery_address_id` INT(10) UNSIGNED NULL'
         );
     }
     if (!LengowInstall::checkFieldExists('lengow_orders', 'method')) {
@@ -65,14 +65,9 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_logs_i
             'ALTER TABLE   '._DB_PREFIX_.'lengow_logs_import ADD `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST'
         );
     }
-    if (!LengowInstall::checkFieldExists('lengow_logs_import', 'delivery_id_address')) {
+    if (!LengowInstall::checkFieldExists('lengow_logs_import', 'delivery_address_id')) {
         Db::getInstance()->execute(
-            'ALTER TABLE '._DB_PREFIX_.'lengow_logs_import ADD `delivery_id_address` INT(10) UNSIGNED NULL'
-        );
-    }
-    if (!LengowInstall::checkFieldExists('lengow_logs_import', 'lengow_order_line')) {
-        Db::getInstance()->execute(
-            'ALTER TABLE '._DB_PREFIX_.'lengow_logs_import ADD `lengow_order_line` VARCHAR(255)'
+            'ALTER TABLE '._DB_PREFIX_.'lengow_logs_import ADD `delivery_address_id` INT(10) UNSIGNED NULL'
         );
     }
 }

@@ -104,7 +104,8 @@ $selection = isset($_REQUEST["selection"]) ? (bool)$_REQUEST["selection"] :
     Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED');
 
 // export in file or no
-$stream = isset($_REQUEST["stream"]) ? (bool)$_REQUEST["stream"] : (bool)Configuration::get('LENGOW_EXPORT_FILE_ENABLED');
+$stream = isset($_REQUEST["stream"]) ?
+    (bool)$_REQUEST["stream"] : (bool)Configuration::get('LENGOW_EXPORT_FILE_ENABLED');
 
 // export out of stock products
 $out_stock = isset($_REQUEST["out_stock"]) ? (bool)$_REQUEST["out_stock"] :

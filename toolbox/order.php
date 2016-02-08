@@ -19,21 +19,30 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+require 'conf.inc.php';
+
+$action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
+$accountId = isset($_REQUEST['account_id']) ?  $_REQUEST['account_id'] : null;
+$secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
+$blockedIP = isset($_REQUEST['blockedIP']) ?  $_REQUEST['blockedIP'] : false;
+$lengowTool = new LengowTool();
+
+
+
+
+var_dump(LengowCarrier::syncListMarketplace());
+exit();
+
+
+
+
+$controller = new LengowOrderController();
+$controller->postProcess();
+$controller->display();
+
+require 'views/header.php';
 ?>
 
-<h1>Log Files</h1>
-
-<ul class="list-group">
 <?php
-foreach ($listFile as $file) {
-    echo '<li class="list-group-item">';
-    echo '<a href="/modules/lengow/toolbox/log.php?action=download&file='.urlencode($file['short_path']).'">
-    <i class="fa fa-download"></i> '.$file['name'].'</a>';
-    echo '</li>';
-}
-echo '<li class="list-group-item">';
-echo '<a href="/modules/lengow/toolbox/log.php?action=download_all">
-        <i class="fa fa-download"></i> Download all files</a>';
-echo '</li>';
-?>
-</ul>
+echo $controller->forceDisplay();
+require 'views/footer.php';

@@ -27,7 +27,6 @@ class ExportTest extends ModuleTestCase
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
         Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
-        Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
 
         //load module
         Module::getInstanceByName('lengow');
@@ -45,7 +44,7 @@ class ExportTest extends ModuleTestCase
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/simple_product.yml');
 
-        $export = new LengowExport(array("product_ids" => array(1)));
+        $export = new LengowExport(array("product_ids" => array(1),"log_output" => false));
         $export->exec();
         $filename = $export->getFileName();
         $this->assertFileExists($filename);
@@ -54,7 +53,7 @@ class ExportTest extends ModuleTestCase
         unlink($filename);
         $this->assertFileNotExists($filename);
 
-        $export = new LengowExport(array("product_ids" => array(1)));
+        $export = new LengowExport(array("product_ids" => array(1), "log_output" => false));
         $export->exec();
         $filename = $export->getFileName();
         $this->assertFileExists($filename);
@@ -74,12 +73,14 @@ class ExportTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
         $export = new LengowExport(array(
-            "export_variation" => false
+            "export_variation" => false,
+            "log_output" => false,
         ));
         $this->assertEquals(3, $export->getTotalProduct());
 
         $export = new LengowExport(array(
-            "export_variation" => true
+            "export_variation" => true,
+            "log_output" => false,
         ));
         $this->assertEquals(10, $export->getTotalProduct());
     }
@@ -102,12 +103,14 @@ class ExportTest extends ModuleTestCase
         $export = new LengowExport(array(
             "export_variation" => false,
             "selection" => false,
+            "log_output" => false,
         ));
         $this->assertEquals(3, $export->getTotalExportProduct());
 
         $export = new LengowExport(array(
             "export_variation" => true,
             "selection" => false,
+            "log_output" => false,
         ));
         $this->assertEquals(10, $export->getTotalExportProduct());
 
@@ -116,12 +119,14 @@ class ExportTest extends ModuleTestCase
         $export = new LengowExport(array(
             "export_variation" => false,
             "selection" => true,
+            "log_output" => false,
         ));
         $this->assertEquals(2, $export->getTotalExportProduct());
 
         $export = new LengowExport(array(
             "export_variation" => true,
             "selection" => true,
+            "log_output" => false,
         ));
         $this->assertEquals(9, $export->getTotalExportProduct());
     }
@@ -199,9 +204,8 @@ class ExportTest extends ModuleTestCase
      */
     public function checkCurrency()
     {
-        $context = Context::getContext();
-        $context->currency = null;
         $export = new LengowExport();
+        Context::getContext()->currency = null;
         $export->checkCurrency();
     }
 

@@ -170,6 +170,10 @@ class LengowCheck
     */
     public static function isValidAuth($id_shop = null)
     {
+        if (LengowMain::inTest()) {
+            return true;
+        }
+
         if (!self::isCurlActivated()) {
             return false;
         }
@@ -282,75 +286,75 @@ class LengowCheck
         return Tools::jsonEncode(self::_getCheckListArray());
     }
 
-    /**
-     * Show import logs
-     *
-     * @return string Html Content
-     */
-    public static function getHtmlLogs($days = 10, $show_extra = false)
-    {
-        if (Tools::getValue('delete') != '') {
-            LengowLog::deleteLog(Tools::getValue('delete'));
-        }
-
-        $db = Db::getInstance();
-
-        $sql_logs = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_logs_import '
-            . ' WHERE TO_DAYS(NOW()) - TO_DAYS(date) <= ' . (int)$days
-            . ' ORDER BY `date` DESC';
-
-        $results = $db->ExecuteS($sql_logs);
-
-        echo '<style type="text/css">
-			table.gridtable {
-				font-family: verdana,arial,sans-serif;
-				font-size:11px;
-				color:#333333;
-				border-width: 1px;
-				border-color: #666666;
-				border-collapse: collapse;
-			}
-			table.gridtable th {
-				border-width: 1px;
-				padding: 8px;
-				border-style: solid;
-				border-color: #666666;
-				background-color: #dedede;
-			}
-			table.gridtable td {
-				border-width: 1px;
-				padding: 8px;
-				border-style: solid;
-				border-color: #666666;
-				background-color: #ffffff;
-			}
-			</style>';
-
-        if (!empty($results)) {
-            echo '<table class="gridtable">';
-            echo '<tr>';
-            echo '<th>Lengow Order ID</th>';
-            echo '<th>Is finished</th>';
-            echo '<th>Message</th>';
-            echo '<th>Date</th>';
-            echo '<th>Action</th>';
-            if ($show_extra == true) {
-                echo '<th>Extra</th>';
-            }
-            echo '</tr>';
-            foreach ($results as $row) {
-                echo '<tr>';
-                echo '<td>' . $row['lengow_order_id'] . '</td>';
-                echo '<td>' . ($row['is_finished'] == 1 ? 'Yes' : 'No') . '</td>';
-                echo '<td>' . $row['message'] . '</td>';
-                echo '<td>' . $row['date'] . '</td>';
-                if ($show_extra == true) {
-                    echo '<td>' . $row['extra'] . '</td>';
-                }
-                echo '<td><a href="?action=logs&delete=' . $row['lengow_order_id'] . '">Supprimer</a></td>';
-                echo '</tr>';
-            }
-            echo '</table>';
-        }
-    }
+//    /**
+//     * Show import logs
+//     *
+//     * @return string Html Content
+//     */
+//    public static function getHtmlLogs($days = 10, $show_extra = false)
+//    {
+//        if (Tools::getValue('delete') != '') {
+//            LengowLog::deleteLog(Tools::getValue('delete'));
+//        }
+//
+//        $db = Db::getInstance();
+//
+//        $sql_logs = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_logs_import '
+//            . ' WHERE TO_DAYS(NOW()) - TO_DAYS(date) <= ' . (int)$days
+//            . ' ORDER BY `date` DESC';
+//
+//        $results = $db->ExecuteS($sql_logs);
+//
+//        echo '<style type="text/css">
+//			table.gridtable {
+//				font-family: verdana,arial,sans-serif;
+//				font-size:11px;
+//				color:#333333;
+//				border-width: 1px;
+//				border-color: #666666;
+//				border-collapse: collapse;
+//			}
+//			table.gridtable th {
+//				border-width: 1px;
+//				padding: 8px;
+//				border-style: solid;
+//				border-color: #666666;
+//				background-color: #dedede;
+//			}
+//			table.gridtable td {
+//				border-width: 1px;
+//				padding: 8px;
+//				border-style: solid;
+//				border-color: #666666;
+//				background-color: #ffffff;
+//			}
+//			</style>';
+//
+//        if (!empty($results)) {
+//            echo '<table class="gridtable">';
+//            echo '<tr>';
+//            echo '<th>Lengow Order ID</th>';
+//            echo '<th>Is finished</th>';
+//            echo '<th>Message</th>';
+//            echo '<th>Date</th>';
+//            echo '<th>Action</th>';
+//            if ($show_extra == true) {
+//                echo '<th>Extra</th>';
+//            }
+//            echo '</tr>';
+//            foreach ($results as $row) {
+//                echo '<tr>';
+//                echo '<td>' . $row['lengow_order_id'] . '</td>';
+//                echo '<td>' . ($row['is_finished'] == 1 ? 'Yes' : 'No') . '</td>';
+//                echo '<td>' . $row['message'] . '</td>';
+//                echo '<td>' . $row['date'] . '</td>';
+//                if ($show_extra == true) {
+//                    echo '<td>' . $row['extra'] . '</td>';
+//                }
+//                echo '<td><a href="?action=logs&delete=' . $row['lengow_order_id'] . '">Supprimer</a></td>';
+//                echo '</tr>';
+//            }
+//            echo '</table>';
+//        }
+//    }
 }

@@ -25,13 +25,10 @@ class LengowController
     protected $module;
     protected $context;
 
-    public function __construct($params = array())
+    public function __construct()
     {
         $this->module = Module::getInstanceByName('lengow');
         $this->context = Context::getContext();
-
-        $breadcrumbTitle = isset($params['breadcrumb_title']) ? $params['breadcrumb_title'] : '';
-        $this->context->smarty->assign('breadcrumb_title', $breadcrumbTitle);
         $this->context->smarty->assign('current_controller', get_class($this));
     }
 
@@ -50,5 +47,14 @@ class LengowController
             $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
             echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/'.$path.'/helpers/view/view.tpl');
         }
+    }
+
+    public function forceDisplay()
+    {
+        $module = Module::getInstanceByName('lengow');
+        $lengowMain = new LengowMain();
+        $className = get_class($this);
+        $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
+        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/'.$path.'/helpers/view/view.tpl');
     }
 }

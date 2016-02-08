@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!$installation) {
+if (!LengowInstall::isInstallationInProgress()) {
     exit();
 }
 
