@@ -1063,25 +1063,33 @@ class LengowImportOrder
             $order_date = (string)$this->order_data->imported_at;
         }
 
+        $params = array(
+            'marketplace_sku'       => pSQL($this->marketplace_sku),
+            'id_shop'               => $this->id_shop,
+            'id_shop_group'         => $this->id_shop_group,
+            'id_lang'               => $this->id_lang,
+            'marketplace_name'      => pSQL(Tools::strtolower((string)$this->order_data->marketplace)),
+            'delivery_address_id'   => $this->delivery_address_id,
+            'order_date'            => date('Y-m-d H:i:s', strtotime($order_date)),
+            'order_lengow_state'    => pSQL($this->order_state_lengow),
+            'date_add'              => date('Y-m-d H:i:s'),
+            'order_process_state'   => 0,
+            'is_disabled'           => 0,
+        );
+        if (isset($this->order_data->currency->iso_a3)) {
+            $params['currency'] = $this->order_data->currency->iso_a3;
+        }
+        if (isset($this->order_data->comments) && is_array($this->order_data->comments)) {
+            $params['message'] = pSQL(join(',', $this->order_data->comments));
+        } else {
+            $params['message'] = pSQL((string)$this->order_data->comments);
+        }
+
         $result = Db::getInstance()->autoExecute(
             _DB_PREFIX_.'lengow_orders',
-            array(
-                'marketplace_sku'       => pSQL($this->marketplace_sku),
-                'id_shop'               => $this->id_shop,
-                'id_shop_group'         => $this->id_shop_group,
-                'id_lang'               => $this->id_lang,
-                'marketplace_name'      => pSQL(Tools::strtolower((string)$this->order_data->marketplace)),
-                'message'               => pSQL((string)$this->order_data->comments),
-                'delivery_address_id'   => $this->delivery_address_id,
-                'order_date'            => date('Y-m-d H:i:s', strtotime($order_date)),
-                'order_lengow_state'    => pSQL($this->order_state_lengow),
-                'date_add'              => date('Y-m-d H:i:s'),
-                'order_process_state'   => 0,
-                'is_disabled'           => 0
-            ),
+            $params,
             'INSERT'
         );
-
         if ($result) {
             $this->id_order_lengow = LengowOrder::getIdFromLengowOrders(
                 $this->marketplace_sku,

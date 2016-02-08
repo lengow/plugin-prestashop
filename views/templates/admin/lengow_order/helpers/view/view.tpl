@@ -21,6 +21,7 @@
 <div id="lengow_order_wrapper">
     <div class="lengow_order_block_header">
         <div class="lengow_order_block_header_content">
+            <div id="lengow_wrapper_messages"></div>
             <div class="lengow_order_block_content_left">
                 {if $orderCollection['last_import_type'] != 'none'}
                 <span class="lengow_strong">Last order importation</span>
@@ -39,8 +40,8 @@
                 <a href="#">(change this?)</a>
             </div>
             <div class="lengow_order_block_content_right">
-                <a class="lengow_btn" href="{$orderCollection['link']|escape:'htmlall':'UTF-8'}" target="_blank">Update
-                    orders</a>
+                <a id="lengow_import_orders" class="lengow_btn" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
+                    Update Orders</a>
             </div>
             <div class="lengow_clear"></div>
         </div>

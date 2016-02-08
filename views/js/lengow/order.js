@@ -115,11 +115,30 @@
         $('#lengow_order_wrapper').on('click', '.lengow_mass_re_import', function() {
             $('#table_order').find('.lengow_selection').each(function (index) {
                 if ($(this).prop('checked')) {
-                    console.log('test');
+                    $(this).parents('tr').find('.lengow_re_import').trigger( "click" );
                 }
             });
             return false;
         });
+
+        $('#lengow_order_wrapper').on('click', '#lengow_import_orders', function() {
+            var button = $(this);
+            var href = $(this).data('href');
+            $.ajax({
+                url: href,
+                method: 'POST',
+                data: {action: 'import_all'},
+                dataType: 'script',
+                success: function() {
+                    init_tooltip();
+                    reload_table_js();
+                },
+                beforeSend: function() {
+                    button.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                }
+            });
+        });
+
 
     });
 })(lengow_jquery);

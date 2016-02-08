@@ -50,6 +50,11 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
             'ALTER TABLE  '._DB_PREFIX_.'lengow_orders CHANGE `id_order` `id_order` INT(10) UNSIGNED NULL'
         );
     }
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'currency')) {
+        Db::getInstance()->execute(
+            'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `currency` VARCHAR(3) NULL'
+        );
+    }
     if (LengowInstall::checkFieldExists('lengow_orders', 'id_order_lengow')) {
         Db::getInstance()->execute(
             'ALTER TABLE `ps_lengow_orders` CHANGE `id_order_lengow` `marketplace_sku` VARCHAR(32) NOT NULL;'

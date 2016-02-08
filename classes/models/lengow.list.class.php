@@ -185,7 +185,7 @@ class LengowList
                             );
                             break;
                         case 'price':
-                            $value = Tools::displayPrice($item[$key]);
+                            $value = Tools::displayPrice($item[$key], $this->getCurrencyByCode($item['currency']));
                             break;
                         case 'switch_product':
                             $value = '<input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
@@ -494,5 +494,24 @@ class LengowList
         }
         $html.= '</ul></nav>';
         return $html;
+    }
+
+    private function getCurrencyByCode($isoCode)
+    {
+        $currency = null;
+        if ($isoCode) {
+            if (isset($this->currencyCode[$isoCode])) {
+                return $this->currencyCode[$isoCode];
+            }
+            $currency = Currency::getCurrency(Currency::getIdByIsoCode($isoCode));
+            if ($currency) {
+                $this->currencyCode[$isoCode] = $currency;
+            } else {
+                $this->currencyCode[$isoCode] = $this->context->currency;
+            }
+            return $this->currencyCode[$isoCode];
+        } else {
+            return $this->context->currency;
+        }
     }
 }

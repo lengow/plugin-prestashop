@@ -65,6 +65,28 @@ class LengowOrderController extends LengowController
                     $html = preg_replace('/\r|\n/', '', addslashes($html));
                     echo '$("#order_'.$id_order_lengow.'").replaceWith("'.$html.'");';
                     break;
+                case 'import_all':
+                    $import = new LengowImport(array(
+                        'log_output' => false,
+                    ));
+                    $return = $import->exec();
+
+                    $message = array();
+                    if (count($return['order_new']) > 0) {
+                        $message[]= (int)$return['order_new'].' imported orders<br/>';
+                    }
+                    if (count($return['order_update']) > 0) {
+                        $message[]= (int)$return['order_update'].' updated orders<br/>';
+                    }
+                    if (count($return['order_error']) > 0) {
+                        $message[]= (int)$return['order_error'].' orders in error<br/>';
+                    }
+                    echo '$("#lengow_wrapper_messages").html("';
+                    echo '<div class=\"lengow_alert\">'.addslashes(join('', $message)).'</div>");';
+                    echo '$("#lengow_import_orders").html("Update Orders");';
+                    echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
+                        preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
+                    break;
             }
             exit();
         }
@@ -182,7 +204,8 @@ class LengowOrderController extends LengowController
             (_PS_VERSION_ < 1.5 ? 'o.id_order as reference' : 'o.reference'),
             'lo.order_date',
             'lo.order_lengow_state as lengow_status',
-            'lo.id_order'
+            'lo.id_order',
+            'lo.currency'
         );
         $select_having = array(
             '(SELECT IFNULL(lli.type, 0) FROM '._DB_PREFIX_.'lengow_logs_import lli
@@ -289,7 +312,7 @@ class LengowOrderController extends LengowController
 
     public static function displayLengowState($key, $value, $item)
     {
-        return '<span class="lengow_label lengow_label_'.$value.'">'.$value.'</span>';
+        return '<span class="lengow_label lengow_label_'.$value.'" title="'.$item['id'].'" >'.$value.'</span>';
     }
 
     public static function displayOrderLink($key, $value, $item)
