@@ -173,7 +173,7 @@ class LengowImport
             && array_key_exists('shop_id', $params)
         ) {
             $this->id_order_lengow      = (int)$params['id_order_lengow'];
-            $this->id_order_lengow_type = (int)$params['type'];
+            $this->re_import_type       = (int)$params['type'];
             $this->marketplace_sku      = (string)$params['marketplace_sku'];
             $this->marketplace_name     = (string)$params['marketplace_name'];
             $this->delivery_address_id  = $params['delivery_address_id'];
@@ -229,6 +229,10 @@ class LengowImport
             $global_error = 'import is already started';
             LengowMain::log($global_error, $this->log_output);
             $error[0] = $global_error;
+            if (isset($this->id_order_lengow) && $this->id_order_lengow) {
+                LengowOrder::finishOrderLogs($this->id_order_lengow, $this->re_import_type);
+                LengowOrder::addOrderLog($this->id_order_lengow, $global_error, $this->re_import_type);
+            }
         } else {
             LengowMain::log('## Start '.$this->type_import.' import ##', $this->log_output);
             if ($this->preprod_mode) {
@@ -284,6 +288,9 @@ class LengowImport
                         if ($total_orders <= 0) {
                             continue;
                         }
+                        if (isset($this->id_order_lengow) && $this->id_order_lengow) {
+                            LengowOrder::finishOrderLogs($this->id_order_lengow, $this->re_import_type);
+                        }
                         // import orders in prestashop
                         $result = $this->importOrders($orders, (int)$shop['id_shop']);
                         if (!$this->import_one_order) {
@@ -292,11 +299,12 @@ class LengowImport
                             $order_error    += $result['order_error'];
                         }
                     } catch (Exception $e) {
-                        if ($this->id_order_lengow) {
+                        if (isset($this->id_order_lengow) && $this->id_order_lengow) {
+                            LengowOrder::finishOrderLogs($this->id_order_lengow, $this->re_import_type);
                             LengowOrder::addOrderLog(
                                 $this->id_order_lengow,
                                 'Error: '.$e->getMessage(),
-                                $this->id_order_lengow_type
+                                $this->re_import_type
                             );
                         }
                         LengowMain::log('Error: '.$e->getMessage(), $this->log_output);
@@ -636,11 +644,26 @@ class LengowImport
         $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS');
         if ($timestamp > 0) {
             // security check : if last import is more than 10 min old => authorize new import to be launched
-            if (($timestamp + (60 * 3)) < time()) {
+            if (($timestamp + (60 * 2)) < time()) {
                 LengowImport::setEnd();
                 return false;
             }
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * v3
+     * Get Rest time to make re import order
+     *
+     * @return boolean
+     */
+    public static function restTimeToImport()
+    {
+        $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS');
+        if ($timestamp > 0) {
+            return $timestamp + (60 * 2) - time();
         }
         return false;
     }

@@ -499,8 +499,13 @@ class LengowImportOrder
         if (count($this->package_data->cart) == 0) {
             $error_messages[] = 'no product in the order';
         }
-        if (is_null($this->order_data->currency)) {
+        if (!isset($this->order_data->currency->iso_a3)) {
             $error_messages[] = 'no currency in the order';
+        } else {
+            $currencyId = Currency::getIdByIsoCode($this->order_data->currency->iso_a3);
+            if (!$currencyId) {
+                $error_messages[] = 'currency '.$this->order_data->currency->iso_a3.' is not available in your shop';
+            }
         }
         if (is_null($this->order_data->billing_address)) {
             $error_messages[] = 'no billing address in the order';

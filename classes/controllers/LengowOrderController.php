@@ -19,9 +19,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-
 class LengowOrderController extends LengowController
 {
     /**
@@ -73,16 +70,36 @@ class LengowOrderController extends LengowController
 
                     $message = array();
                     if (count($return['order_new']) > 0) {
-                        $message[]= (int)$return['order_new'].' imported orders<br/>';
+                        $message[]= (int)$return['order_new'].' imported orders';
                     }
                     if (count($return['order_update']) > 0) {
-                        $message[]= (int)$return['order_update'].' updated orders<br/>';
+                        $message[]= (int)$return['order_update'].' updated orders';
                     }
                     if (count($return['order_error']) > 0) {
-                        $message[]= (int)$return['order_error'].' orders in error<br/>';
+                        $message[]= (int)$return['order_error'].' orders in error';
+                    }
+
+                    if (isset($return['error'])) {
+                        foreach ($return['error'] as $shop => $values) {
+                            if ((int)$shop > 0) {
+                                $shop = new LengowShop($shop);
+                                $shopName = $shop->name. ' : ';
+                            } else {
+                                $shopName = '';
+                            }
+                            if (is_array($values)) {
+                                $message[]= $shopName.join(', ', $values);
+                            } else {
+                                $message[]= $shopName.$values;
+                            }
+                        }
+                    }
+                    if (LengowImport::isInProcess()) {
+                        $message[] = 'You need to wait '.LengowImport::restTimeToImport().
+                            ' seconds before re import orders';
                     }
                     echo '$("#lengow_wrapper_messages").html("';
-                    echo '<div class=\"lengow_alert\">'.addslashes(join('', $message)).'</div>");';
+                    echo '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>");';
                     echo '$("#lengow_import_orders").html("Update Orders");';
                     echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';

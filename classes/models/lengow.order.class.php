@@ -717,8 +717,6 @@ class LengowOrder extends Order
     public static function reImportOrder($id_order_lengow)
     {
         if (LengowOrder::isOrderImport($id_order_lengow)) {
-            LengowOrder::finishOrderLogs($id_order_lengow, 'import');
-
             //TEMP DATA
             Db::getInstance()->Execute('UPDATE ps_lengow_orders SET id_order = NULL WHERE id = '.$id_order_lengow);
 
