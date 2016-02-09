@@ -61,6 +61,7 @@
 </script>
 <script type="text/javascript" src="/modules/lengow/views/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/admin.js"></script>
+<script type="text/javascript" src="/modules/lengow/views/js/lengow/order_setting.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-switch.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-datepicker.js"></script>

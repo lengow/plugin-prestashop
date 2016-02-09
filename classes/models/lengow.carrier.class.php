@@ -439,6 +439,19 @@ class LengowCarrier extends Carrier
         }
     }
 
+    public static function getActiveCarriers()
+    {
+
+        $carriers = array();
+        $sql = 'SELECT id_carrier, name FROM '._DB_PREFIX_.'carrier WHERE active = 1 AND deleted=0';
+        $collection = Db::getInstance()->ExecuteS($sql);
+        foreach ($collection as $row) {
+            $carriers[$row['id_carrier']] = $row['name'];
+        }
+
+        return $carriers;
+    }
+
     public static function getMarketplaceCarrier()
     {
         return "LAPOSTE";
