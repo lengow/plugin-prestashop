@@ -24,7 +24,6 @@
  * string format        : Format of exported files ('csv','yaml','xml','json',
  * boolean stream       : Stream file (1) or generate a file on server (0)
  * string product_ids   : List of product id separate with comma (1,2,3)
- * string title         : Export combination title with parent title (full)
  * int limit            : Limit number of exported product
  * int offset           : Offset of total product
  * boolean out_stock    : Export out of stock product (1) Export only product in stock (0)
@@ -93,6 +92,9 @@ if (isset($_REQUEST["lang"])) {
     $languageId = Context::getContext()->language->id;
 }
 
+//mode
+$mode = isset($_REQUEST["mode"]) ? $_REQUEST["mode"] : null;
+
 // export limit
 $limit = isset($_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : null;
 
@@ -136,4 +138,8 @@ $export = new LengowExport(array(
     'language_id' => $languageId,
 ));
 
-$export->exec();
+if ($mode == 'size') {
+    echo $export->getTotalExportProduct();
+} else {
+    $export->exec();
+}
