@@ -23,7 +23,6 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-include('config/config.inc.php');
 
 class LengowOrderSettingController extends LengowController
 {
@@ -50,9 +49,8 @@ class LengowOrderSettingController extends LengowController
             'LENGOW_ORDER_ID_SHIPPEDBYMP'
             ));
 
-        $matching2 = $form->buildInputs(array('LENGOW_IMPORT_CARRIER_DEFAULT'));
-        $matching3 = $form->buildInputs(array('LENGOW_IMPORT_CARRIER_MP_ENABLED'));
-        $matching4 = $form->buildInputs(array('LENGOW_IMPORT_DAYS'));
+        $matching2 = $form->buildInputs(array('LENGOW_IMPORT_CARRIER_MP_ENABLED'));
+        $matching3 = $form->buildInputs(array('LENGOW_IMPORT_DAYS'));
 
         $this->context->smarty->assign('default_country', $default_country);
         $this->context->smarty->assign('carriers', $carriers);
@@ -62,7 +60,6 @@ class LengowOrderSettingController extends LengowController
         $this->context->smarty->assign('matching', $matching);
         $this->context->smarty->assign('matching2', $matching2);
         $this->context->smarty->assign('matching3', $matching3);
-        $this->context->smarty->assign('matching4', $matching4);
 
         parent::display();
     }

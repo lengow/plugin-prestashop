@@ -31,8 +31,9 @@ class LengowCarrierCountry
         $default = Db::getInstance()->ExecuteS($sql);
         if (empty($default)) {
             $insert = self::insert($default_country);
+            return $insert;
         }
-        return $insert;
+        return false;
     }
 
     /**
