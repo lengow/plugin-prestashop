@@ -298,21 +298,25 @@ class LengowConnector
     /**
      * v3
      * Query Api
+     * @param string $type (GET / POST)
      * @param string $url to query
      * @param integer $shopId to query
      * @param array $params
      * @return api result as array
      */
-    public static function queryApi($url, $shopId = null, $params = array())
+    public static function queryApi($type, $url, $shopId = null, $params = array())
     {
+        if (!in_array($type, array('get', 'post'))) {
+            return false;
+        }
+
         list($account_id, $access_token, $secret_token) = self::getAccessId($shopId);
         $connector  = new LengowConnector($access_token, $secret_token);
-        $results = $connector->get(
+        $results = $connector->$type(
             $url,
             array_merge(array('account_id' => $account_id), $params),
             'stream'
         );
         return Tools::JsonDecode($results);
-
     }
 }

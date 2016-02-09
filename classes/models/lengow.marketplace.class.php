@@ -123,18 +123,8 @@ class LengowMarketplace
     public function loadApiMarketplace()
     {
         if (!self::$MARKETPLACES) {
-            $connector  = new LengowConnector(
-                LengowMain::getAccessToken($this->id_shop),
-                LengowMain::getSecretCustomer($this->id_shop)
-            );
-            $results = $connector->get(
-                '/v3.0/marketplaces',
-                array(
-                    'account_id' => LengowMain::getIdAccount($this->id_shop)
-                ),
-                'stream'
-            );
-            self::$MARKETPLACES = Tools::jsonDecode($results);
+            $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $this->id_shop);
+            self::$MARKETPLACES = $result;
         }
     }
 
@@ -361,37 +351,5 @@ class LengowMarketplace
         } catch (Exception $e) {
             LengowMain::log('call error WSDL - exception: '.$e->getMessage(), false, $order->id);
         }
-    }
-
-    /**
-     * Match carrier's name with accepted values
-     *
-     * @param string $name the name of the carrier
-     *
-     * @return string The matching carrier name
-     */
-    private function _matchCarrier($name)
-    {
-        // no carrier
-        if (count($this->carriers) == 0) {
-            return $name;
-        }
-        // search by code
-        // exact match
-        foreach ($this->carriers as $key => $carrier) {
-            $value = (string)$key;
-            if (preg_match('`'.$value.'`i', trim($name))) {
-                return $value;
-            }
-        }
-        // approximately match
-        foreach ($this->carriers as $key => $carrier) {
-            $value = (string)$key;
-            if (preg_match('`.*?'.$value.'.*?`i', $name)) {
-                return $value;
-            }
-        }
-        // no match
-        return $name;
     }
 }
