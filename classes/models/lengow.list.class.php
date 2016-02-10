@@ -185,7 +185,11 @@ class LengowList
                             );
                             break;
                         case 'price':
-                            $value = Tools::displayPrice($item[$key], $this->getCurrencyByCode($item['currency']));
+                            if (isset($item['currency'])) {
+                                $value = Tools::displayPrice($item[$key], $this->getCurrencyByCode($item['currency']));
+                            } else {
+                                $value = Tools::displayPrice($item[$key]);
+                            }
                             break;
                         case 'switch_product':
                             $value = '<input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
