@@ -56,27 +56,27 @@ class InstallTest extends ModuleTestCase
         $this->assertTrue((boolean)$module, 'Load Lengow Module');
         $this->assertEquals($module->name, 'lengow');
     }
-//
-//    /**
-//     * Test install lengow module
-//     *
-//     * @test
-//     * @covers Lengow::install
-//     * @covers LengowInstall::install
-//     *
-//     */
-//    public function install()
-//    {
-//        $module = Module::getInstanceByName('lengow');
-//        $this->assertTrue((boolean)$module, 'Load Lengow Module');
-//
-//        //desinstall module if install
-//        if ($module->isInstalled('lengow')) {
-//            $module = Module::getInstanceByName('lengow');
-//            $module->uninstall();
-//            Cache::getInstance()->flush();
-//        }
-//        $this->assertTrue($module->install());
-//        $this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'));
-//    }
+
+    /**
+     * Test install lengow module
+     *
+     * @test
+     * @covers Lengow::install
+     * @covers LengowInstall::install
+     *
+     */
+    public function install()
+    {
+        $module = Module::getInstanceByName('lengow');
+        $this->assertTrue((boolean)$module, 'Load Lengow Module');
+
+        //desinstall module if install
+        if ($module->isInstalled('lengow')) {
+            $module = Module::getInstanceByName('lengow');
+            $module->uninstall();
+            Cache::getInstance()->flush();
+        }
+        $this->assertTrue($module->install());
+        $this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'));
+    }
 }

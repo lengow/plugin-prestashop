@@ -161,7 +161,7 @@ class LengowInstall
             if ($tab->id != 0) {
                 $result = $tab->delete();
             }
-            LengowMain::log('Uninstall tab ' . $value['class_name']);
+            LengowMain::log('Install', 'Uninstall tab ' . $value['class_name']);
         }
         return true;
     }

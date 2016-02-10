@@ -79,7 +79,8 @@
         },
         "ship": {
           "args": [
-            "tracking_number"
+            "tracking_number",
+            "line"
           ],
           "optional_args": [
             "carrier"

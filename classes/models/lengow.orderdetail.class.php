@@ -54,4 +54,18 @@ class LengowOrderDetail extends OrderDetail
         $this->product_quantity_discount = 0.00;
         $this->save();
     }
+
+    /**
+     * v3
+     * Get Order Lines
+     * @param integer $product_id Product_id
+     * @return array list of order line
+     */
+    public static function findByOrderIdProductId($order_id, $product_id)
+    {
+        $sql = 'SELECT id_order_detail FROM `'._DB_PREFIX_.'order_detail`
+        WHERE product_id = '.(int)$product_id.' AND id_order='.(int)$order_id;
+        $row = Db::getInstance()->getRow($sql);
+        return $row['id_order_detail'];
+    }
 }

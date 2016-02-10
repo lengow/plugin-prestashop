@@ -72,10 +72,10 @@ class LengowHook
             if ($version <= Tools::substr(_PS_VERSION_, 0, 3)) {
                 $log = 'Registering hook - ';
                 if (!$this->module->registerHook($hook)) {
-                    LengowMain::log($log . $hook . ': error');
+                    LengowMain::log('Hook', $log . $hook . ': error');
                     $error = true;
                 } else {
-                    LengowMain::log($log . $hook . ': success');
+                    LengowMain::log('Hook', $log . $hook . ': success');
                 }
             }
         }

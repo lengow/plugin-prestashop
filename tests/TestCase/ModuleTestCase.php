@@ -11,6 +11,7 @@ use SplFileInfo;
 use Configuration;
 use Product;
 use Shop;
+use Currency;
 
 class ModuleTestCase extends PHPUnit_Framework_TestCase
 {
@@ -21,6 +22,9 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         if (!defined('PS_UNIT_TEST')) {
             define('PS_UNIT_TEST', true);
         }
+
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/currency.yml');
     }
 
     public static function tearDownAfterClass()
@@ -46,6 +50,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
         $context = Context::getContext();
         $context->employee = $employee;
+        $context->currency = new Currency(1);
 
         Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
         Product::flushPriceCache();
@@ -253,9 +258,11 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      * Asset Mysql Table contain data
      * @param $table
      * @param $where
+     * @param $message
      */
-    public static function assertTableContain($table, $where)
+    public static function assertTableContain($table, $where, $message = "")
     {
+
         $whereSql = array();
         foreach ($where as $key => $value) {
             if ($value === 'NULL') {
@@ -265,8 +272,12 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
             }
         }
         $whereSql = ' WHERE '.join(' AND ', $whereSql);
-        $result = Db::getInstance()->ExecuteS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.$table.$whereSql);
-        self::assertTrue((bool)count($result));
+        $sql = 'SELECT COUNT(*) as total FROM '._DB_PREFIX_.$table.$whereSql;
+        if ($message == "") {
+            $message = 'Cant find row with ['. $whereSql.'] IN ['.$table.']';
+        }
+        $result = Db::getInstance()->ExecuteS($sql);
+        self::assertTrue((bool)$result[0]["total"], $message);
     }
 
 

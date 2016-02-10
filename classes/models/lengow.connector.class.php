@@ -158,8 +158,14 @@ class LengowConnector
     public function get($method, $array = array(), $format = 'json')
     {
         if (LengowMain::inTest() && self::$test_fixture_path) {
-            $content = file_get_contents(self::$test_fixture_path);
-            self::$test_fixture_path = null;
+            if (is_array(self::$test_fixture_path)) {
+                $content = file_get_contents(self::$test_fixture_path[0]);
+                unset(self::$test_fixture_path[0]);
+                self::$test_fixture_path = reset(self::$test_fixture_path);
+            } else {
+                $content = file_get_contents(self::$test_fixture_path);
+                self::$test_fixture_path = null;
+            }
             return $content;
         }
         return $this->call($method, $array, 'GET', $format);
@@ -167,6 +173,17 @@ class LengowConnector
 
     public function post($method, $array = array(), $format = 'json')
     {
+        if (LengowMain::inTest() && self::$test_fixture_path) {
+            if (is_array(self::$test_fixture_path)) {
+                $content = file_get_contents(self::$test_fixture_path[0]);
+                unset(self::$test_fixture_path[0]);
+                self::$test_fixture_path = reset(self::$test_fixture_path);
+            } else {
+                $content = file_get_contents(self::$test_fixture_path);
+                self::$test_fixture_path = null;
+            }
+            return $content;
+        }
         return $this->call($method, $array, 'POST', $format);
     }
 
@@ -233,7 +250,7 @@ class LengowConnector
         $url = $url['scheme'].'://'.$url['host'].$url['path'];
         if ($type == 'GET') {
             $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
-            LengowMain::log('Connector '.$opts[CURLOPT_URL]);
+            LengowMain::log('Connector', 'Call '.$opts[CURLOPT_URL]);
         } else {
             $opts[CURLOPT_URL] = $url;
             $opts[CURLOPT_POST] = count($args);
@@ -247,9 +264,8 @@ class LengowConnector
         $information = curl_getinfo($ch, CURLINFO_HEADER_OUT);
         curl_close($ch);
         if ($data === false) {
-            LengowMain::log('API Error : '.$error['code']);
+            LengowMain::log('Connector', 'Error : '.$error['code']);
             throw new \Exception('Bad request '.$error['code']);
-            return false;
         }
         return $data;
     }
