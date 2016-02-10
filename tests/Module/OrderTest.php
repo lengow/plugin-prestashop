@@ -25,6 +25,8 @@ class OrderTest extends ModuleTestCase
 
         //load module
         Module::getInstanceByName('lengow');
+
+        LengowMain::$registers =array();
     }
 
     /**

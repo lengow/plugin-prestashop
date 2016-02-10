@@ -773,7 +773,7 @@ class LengowOrder extends Order
                 );
                 return false;
             }
-            $ret[] = array();
+            $ret = array();
             foreach ($orderLineCollection as $row) {
                 $ret[] = $marketplace->sendTracking($this, $row['id_order_line']);
             }
