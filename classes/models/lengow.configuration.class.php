@@ -149,7 +149,7 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_IMPORT_PREPROD_ENABLED' => array(
                     'type' => 'checkbox',
-                    'label' => 'Activation du mode Preprod'
+                    'label' => 'Activate PreProd Mode'
                 ),
                 'LENGOW_IMPORT_FAKE_EMAIL' => array(
                     'label' => 'Import Fake Email',
@@ -157,8 +157,13 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_IMPORT_SHIP_MP_ENABLED' => array(
                     'type' => 'checkbox',
-                    'label' => 'Import Shipped by Marketplace',
-                    'default_value' => true,
+                    'label' => 'Import orders shipped by marketplace',
+                    'default_value' => false,
+                ),
+                'LENGOW_IMPORT_STOCK_SHIP_MP' => array(
+                    'type' => 'checkbox',
+                    'label' => 'Decrement inventory of orders shipped by marketplace',
+                    'default_value' => false,
                 ),
                 'LENGOW_IMPORT_CARRIER_MP_ENABLED' => array(
                     'type' => 'checkbox',
