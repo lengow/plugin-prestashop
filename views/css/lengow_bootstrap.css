@@ -615,6 +615,9 @@ body.lengow_body #content .lengow_breadcrumb a {
     margin-bottom: 20px;
 }
 
+.lengow_form .legend {
+    font-style: italic; 
+}
 
 /* HOME PAGE */
 #lengow_home_frame {

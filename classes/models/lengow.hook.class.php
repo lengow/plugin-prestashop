@@ -37,6 +37,8 @@ class LengowHook
     static private $CURRENT_PAGE_TYPE = 'page';
     static private $USE_SSL = false;
     static private $ID_ORDER = '';
+    static private $ORDER_PAYMENT = '';
+    static private $ORDER_CURRENCY = '';
     static private $ORDER_TOTAL = '';
     static private $IDS_PRODUCTS = '';
     static private $IDS_PRODUCTS_CART = '';
@@ -250,15 +252,14 @@ class LengowHook
 
         // Generate tracker
         if (self::$CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_CONFIRMATION) {
-            $currency = $this->context->currency;
             $shop_id = $this->context->shop->id;
             $this->context->smarty->assign(
                 array(
-                    'account_id'        => LengowMain::getIdAccount(),
+                    'account_id'        => LengowMain::getIdAccount($shop_id),
                     'order_ref'         => self::$ID_ORDER,
                     'amount'            => self::$ORDER_TOTAL,
-                    'currency_order'    => $currency->iso_code,
-                    'payment_method'    => self::$ID_ORDER,
+                    'currency_order'    => self::$ORDER_CURRENCY,
+                    'payment_method'    => self::$ORDER_PAYMENT,
                     'cart'              => self::$IDS_PRODUCTS_CART,
                     'newbiz'            => 1,
                     'secure'            => 0,
@@ -357,6 +358,9 @@ class LengowHook
         self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_CONFIRMATION;
         self::$ID_ORDER = $args['objOrder']->id;
         self::$ORDER_TOTAL = $args['total_to_pay'];
+        $payment_method = Tools::strtolower(str_replace(' ', '_', $args['objOrder']->payment));
+        self::$ORDER_PAYMENT = LengowMain::replaceAccentedChars($payment_method);
+        self::$ORDER_CURRENCY = $args['currencyObj']->iso_code;
         $ids_products = array();
         $products_list = $args['objOrder']->getProducts();
         $i = 0;

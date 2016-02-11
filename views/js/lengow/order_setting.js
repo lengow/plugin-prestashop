@@ -1,6 +1,16 @@
 (function ($) {
     $(document).ready(function () {
 
+        function changeStockMP() {
+            if ($("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").prop('checked')) {
+                $('.lengow_import_stock_ship_mp').show();
+            } else {
+                $('.lengow_import_stock_ship_mp').hide();
+            }
+        }
+
+        changeStockMP();
+
         $('.add_lengow_default_carrier').on('click', function () {
             if ($('#select_country').val() !== "") {
                 var href = $(this).attr('data-href');
@@ -40,6 +50,13 @@
             return false;
 
         });
+
+        $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('switchChange.bootstrapSwitch', function (event, state) {
+            if (event.type == "switchChange") {
+                changeStockMP();
+            }
+        });
+
     });
 
 })(lengow_jquery);

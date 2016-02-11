@@ -90,7 +90,12 @@ class LengowImportOrder
     protected $first_package;
 
     /**
-     * @var boolean
+     * @var mixed old Prestashop order for re-import
+     */
+    protected $old_order = null;
+
+    /**
+     * @var boolean re-import order
      */
     protected $is_reimport = false;
 
@@ -356,7 +361,8 @@ class LengowImportOrder
                             'id_order'              => (int)$order->id,
                             'order_process_state'   => LengowOrder::getOrderProcessState($this->order_state_lengow),
                             'extra'                 => pSQL(Tools::jsonEncode($this->order_data)),
-                            'order_lengow_state'    => pSQL($this->order_state_lengow)
+                            'order_lengow_state'    => pSQL($this->order_state_lengow),
+                            'is_reimported'         => 0
                         )
                     );
                     if (!$success) {
@@ -388,7 +394,7 @@ class LengowImportOrder
                 // ensure carrier compatibility with SoColissimo & Mondial Relay
                 $this->checkCarrierCompatibility($order);
             }
-            if ($this->shipped_by_mp) {
+            if ($this->shipped_by_mp && !LengowConfiguration::getGlobalValue('LENGOW_IMPORT_STOCK_SHIP_MP')) {
                 LengowMain::log(
                     'Import',
                     'adding quantity back to stock (order shipped by marketplace)',
@@ -396,6 +402,9 @@ class LengowImportOrder
                     $this->marketplace_sku
                 );
                 $this->addQuantityBack($products);
+            }
+            if ($this->is_reimport && !is_null($this->old_order)) {
+                $this->old_order->setStateToError();
             }
         } catch (InvalidLengowObjectException $iloe) {
             $error_message = $iloe->getMessage();
@@ -421,7 +430,8 @@ class LengowImportOrder
                 $this->id_order_lengow,
                 array(
                     'extra'                 => pSQL(Tools::jsonEncode($this->order_data)),
-                    'order_lengow_state'    => pSQL($this->order_state_lengow)
+                    'order_lengow_state'    => pSQL($this->order_state_lengow),
+                    'is_reimported'         => 0
                 )
             );
             return $this->returnResult('error', $this->id_order_lengow);
@@ -471,14 +481,14 @@ class LengowImportOrder
         $order = new LengowOrder($order_id);
         $result = array('id_order_lengow' => $order->lengow_id);
         // Lengow -> Cancel and reimport order
-        if ($order->lengow_is_disabled) {
+        if ($order->lengow_is_reimport) {
             LengowMain::log(
                 'Import',
                 'order is disabled (ORDER '.$order_id.')',
                 $this->log_output,
                 $this->marketplace_sku
             );
-            $order->setStateToError();
+            $this->old_order = $order;
             $this->is_reimport = true;
             return false;
         } else {
@@ -556,7 +566,12 @@ class LengowImportOrder
         if (count($error_messages) > 0) {
             foreach ($error_messages as $error_message) {
                 LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $type = 'import');
-                LengowMain::log('Import', 'order import failed: '.$error_message, $this->log_output, $this->marketplace_sku);
+                LengowMain::log(
+                    'Import',
+                    'order import failed: '.$error_message,
+                    $this->log_output,
+                    $this->marketplace_sku
+                );
             };
             return false;
         }
@@ -819,7 +834,9 @@ class LengowImportOrder
         $address_data['address_full'] .= !empty($address_data['complement']) ? $address_data['complement'].' ' : '';
         $address_data['address_full'] .= !empty($address_data['zipcode']) ? $address_data['zipcode'].' ' : '';
         $address_data['address_full'] .= !empty($address_data['city']) ? $address_data['city'].' ' : '';
-        $address_data['address_full'] .= !empty($address_data['common_country_iso_a2']) ? $address_data['common_country_iso_a2'].' ' : '';
+        $address_data['address_full'] .= !empty($address_data['common_country_iso_a2'])
+            ? $address_data['common_country_iso_a2'].' '
+            : '';
         // if tracking_informations exist => get id_relay
         if ($shipping_data && !is_null($this->relay_id)) {
             $address_data['id_relay'] = $this->relay_id;
@@ -1137,7 +1154,7 @@ class LengowImportOrder
             'order_lengow_state'    => pSQL($this->order_state_lengow),
             'date_add'              => date('Y-m-d H:i:s'),
             'order_process_state'   => 0,
-            'is_disabled'           => 0,
+            'is_reimported'         => 0,
         );
         if (isset($this->order_data->currency->iso_a3)) {
             $params['currency'] = $this->order_data->currency->iso_a3;

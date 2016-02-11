@@ -140,7 +140,8 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_IMPORT_DAYS' => array(
                     'label' => 'Re-import your orders since',
-                    'default_value' => 5
+                    'default_value' => 5,
+                    'legend' => 'Blabla blablabla'
                 ),
                 'LENGOW_IMPORT_CARRIER_DEFAULT' => array(
                     'type' => 'select',
@@ -152,6 +153,7 @@ class LengowConfiguration extends Configuration
                     'label' => 'Activate PreProd Mode'
                 ),
                 'LENGOW_IMPORT_FAKE_EMAIL' => array(
+                    'type' => 'checkbox',
                     'label' => 'Import Fake Email',
                     'default_value' => true
                 ),
@@ -164,6 +166,7 @@ class LengowConfiguration extends Configuration
                     'type' => 'checkbox',
                     'label' => 'Decrement inventory of orders shipped by marketplace',
                     'default_value' => false,
+                    'legend' => 'Blabla blablabla'
                 ),
                 'LENGOW_IMPORT_CARRIER_MP_ENABLED' => array(
                     'type' => 'checkbox',

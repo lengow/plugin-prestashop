@@ -111,9 +111,9 @@ class LengowOrder extends Order
     public $lengow_extra;
 
     /**
-     * @var boolean order is disabled (ready to be reimported)
+     * @var boolean order is reimported (ready to be reimported)
      */
-    public $lengow_is_disabled;
+    public $lengow_is_reimported;
 
     /**
      * @var integer lengow process state (0 => error, 1 => imported, 2 => finished)
@@ -213,7 +213,7 @@ class LengowOrder extends Order
             lo.`tracking`,
             lo.`sent_marketplace`,
             lo.`extra`,
-            lo.`is_disabled`,
+            lo.`is_reimported`,
             lo.`order_process_state`,
             lo.`order_date`,
             lo.`delivery_address_id`,
@@ -237,7 +237,7 @@ class LengowOrder extends Order
             $this->lengow_tracking              = $result['tracking'];
             $this->lengow_sent_marketplace      = (bool)$result['sent_marketplace'];
             $this->lengow_extra                 = $result['extra'];
-            $this->lengow_is_disabled           = (bool)$result['is_disabled'];
+            $this->lengow_is_reimported         = (bool)$result['is_reimported'];
             $this->lengow_process_state         = (int)$result['order_process_state'];
             $this->lengow_order_date            = $result['order_date'];
             $this->lengow_delivery_address_id   = (int)$result['delivery_address_id'];
@@ -392,16 +392,16 @@ class LengowOrder extends Order
     }
 
     /**
-     * Mark order as disabled in lengow_orders table
+     * Mark order as is_reimported in lengow_orders table
      *
      * @param integer   $order_id prestashop order id
      *
      * @return boolean
      */
-    public static function disable($order_id)
+    public static function isReimported($order_id)
     {
         $query = 'UPDATE '._DB_PREFIX_.'lengow_orders
-            SET `is_disabled` = 1
+            SET `is_reimported` = 1
             WHERE `id_order`= \''.pSQL((int)$order_id).'\'';
         return DB::getInstance()->execute($query);
     }
