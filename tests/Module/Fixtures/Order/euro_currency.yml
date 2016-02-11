@@ -1,0 +1,22 @@
+currency:
+  -
+    id_currency: 1
+    name: "Euro"
+    iso_code: "EUR"
+    iso_code_num: 978
+    sign: "€"
+    blank: 1
+    format: 2
+    decimals: 1
+    conversion_rate: 1.308901
+    deleted: 0
+    active: 1
+currency_shop:
+  -
+    id_currency: 1
+    id_shop: 1
+    conversion_rate: 1.308901
+  -
+    id_currency: 1
+    id_shop: 2
+    conversion_rate: 1.308901

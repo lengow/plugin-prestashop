@@ -57,15 +57,6 @@
             "waiting_acceptance"
           ]
         },
-        "cancel": {
-          "args": [],
-          "optional_args": [
-            "line"
-          ],
-          "status": [
-            "waiting_acceptance"
-          ]
-        },
         "refund": {
           "args": [
             "reason_code"
@@ -88,7 +79,8 @@
         },
         "ship": {
           "args": [
-            "tracking_number"
+            "tracking_number",
+            "line"
           ],
           "optional_args": [
             "carrier"

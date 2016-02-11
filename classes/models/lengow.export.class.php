@@ -289,7 +289,7 @@ class LengowExport
         try {
             $shop = new LengowShop($this->shopId);
             $shop_name = $shop->name;
-            LengowMain::log('Export - init ' . $shop_name, $this->log_output);
+            LengowMain::log('Export', 'init ' . $shop_name, $this->log_output);
 
             // get fields to export
             $export_fields = $this->getFields();
@@ -297,16 +297,17 @@ class LengowExport
             $products = $this->exportIds();
 
             LengowMain::log(
-                'Export - ' . count($products) . ' product' . (count($products) > 1 ? 's' : '') . ' found',
+                'Export',
+                count($products) . ' product' . (count($products) > 1 ? 's' : '') . ' found',
                 $this->log_output
             );
             $this->export($products, $export_fields, $shop);
 
             Configuration::updatevalue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), null, null, $this->shopId);
-            LengowMain::log('Export - end', $this->log_output);
+            LengowMain::log('Export', 'end', $this->log_output);
 
         } catch (Exception $e) {
-            LengowMain::log('Export - error : ' . $e->getMessage(), true);
+            LengowMain::log('Export', 'Error : ' . $e->getMessage(), true);
         }
     }
 
@@ -367,7 +368,7 @@ class LengowExport
                 }
             }
             if ($product_count > 0 && $product_count % 10 == 0) {
-                LengowMain::log('Export - ' . $product_count . ' products', $this->log_output);
+                LengowMain::log('Export', $product_count . ' products', $this->log_output);
             }
             if ($this->limit > 0 && $product_count >= $this->limit) {
                 break;
@@ -385,7 +386,7 @@ class LengowExport
         if (!$this->stream) {
             $feed_url = $this->feed->getUrl();
             if ($feed_url && php_sapi_name() != "cli") {
-                LengowMain::log('Export - your feed is available here:
+                LengowMain::log('Export', 'your feed is available here:
                 <a href="' . $feed_url . '" target="_blank">' . $feed_url . '</a>', $this->log_output);
             }
         }

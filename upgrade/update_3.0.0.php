@@ -221,18 +221,44 @@ if (LengowInstall::checkFieldExists('lengow_logs_import', 'delivery_address_id')
     );
 }
 
-// order line table
+// lengow_marketplace_carrier create
 $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_marketplace_carrier` (
-`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-`id_country` int(11) UNSIGNED NOT NULL,
-`id_carrier` int(11) UNSIGNED NULL,
-`marketplace_carrier_sku` varchar(32) NOT NULL,
-        PRIMARY KEY(`id`),
-        INDEX (`id_country`) ,
-        INDEX (`id_carrier`) ,
-        INDEX (`marketplace_carrier_sku`)
+    `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id_country` int(11) UNSIGNED NOT NULL,
+    `id_carrier` int(11) UNSIGNED NULL,
+    `marketplace_carrier_sku` varchar(32) NOT NULL,
+    PRIMARY KEY(`id`),
+    INDEX (`id_country`) ,
+    INDEX (`id_carrier`) ,
+    INDEX (`marketplace_carrier_sku`)
 );';
 Db::getInstance()->execute($sql);
+
+
+// lengow action create
+$sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_actions` (
+    `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id_order` int(11) UNSIGNED NOT NULL,
+    `order_line_sku` varchar(32) NULL,
+    `action_id` int(11) UNSIGNED NOT NULL,
+    `action_type` varchar(32) NOT NULL,
+    `retry` tinyint(1) UNSIGNED NOT NULL DEFAULT \'0\',
+    `parameters` text NOT NULL,
+    `state` tinyint(1) UNSIGNED NOT NULL,
+    `created_at` datetime NOT NULL,
+    `updated_at` datetime NOT NULL,
+    PRIMARY KEY(`id`),
+    INDEX (`id_order`) ,
+    INDEX (`action_type`)
+);';
+Db::getInstance()->execute($sql);
+
+if (!LengowInstall::checkFieldExists('lengow_order_line', 'id_order_detail')) {
+    Db::getInstance()->execute(
+        'ALTER TABLE `'._DB_PREFIX_.'lengow_order_line`
+        ADD `id_order_detail` INT(11) UNSIGNED NULL AFTER `id_order_line`'
+    );
+}
 
 // TODO MIGRATION SETTINGS
 

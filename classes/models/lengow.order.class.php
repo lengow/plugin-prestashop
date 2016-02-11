@@ -442,7 +442,7 @@ class LengowOrder extends Order
                     $this->validateFields();
                     $this->update();
                 }
-                LengowMain::getLogInstance()->write('state updated to shipped', true, $this->lengow_marketplace_sku);
+                //LengowMain::getLogInstance()->write('state updated to shipped', true, $this->lengow_marketplace_sku);
                 // update lengow order
                 LengowOrder::updateOrderLengow(
                     (int)$this->lengow_id,
@@ -459,7 +459,7 @@ class LengowOrder extends Order
                 $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this, true);
                 $history->validateFields();
                 $history->add();
-                LengowMain::getLogInstance()->write('state updated to canceled', true, $this->lengow_marketplace_sku);
+                //LengowMain::getLogInstance()->write('state updated to canceled', true, $this->lengow_marketplace_sku);
                 // update lengow order
                 LengowOrder::updateOrderLengow(
                     (int)$this->lengow_id,
@@ -654,7 +654,7 @@ class LengowOrder extends Order
      * Removes all order logs
      *
      * @param integer   $id    id_order_lengow
-     * @param string    $log_type           type (import or wsdl)
+     * @param string    $log_type type (import or wsdl)
      *
      * @return boolean
      */
@@ -694,6 +694,17 @@ class LengowOrder extends Order
         return Db::getInstance()->getRow($sql);
     }
 
+    /**
+     * v3
+     * Get Order Lines
+     * @param integer $id_order Prestashop order id
+     * @return array list of order line
+     */
+    public static function findOrderLineIds($id_order)
+    {
+        $sql = 'SELECT id_order_line FROM `'._DB_PREFIX_.'lengow_order_line` WHERE id_order = '.(int)$id_order;
+        return Db::getInstance()->ExecuteS($sql);
+    }
 
     /***
      * v3
@@ -736,99 +747,39 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
+     * v3-test
      * Send Order
      *
      */
-    public function sendTracking()
+    public function callAction($action)
     {
-        try {
-            $marketplace = LengowMain::getMarketplaceSingleton(
-                $this->lengow_marketplace_name,
-                $this->lengow_id_shop
-            );
+        if ((int)$this->id == 0) {
+            LengowMain::log('API-OrderAction', 'Error : Can\'t load order', true);
+            return false;
+        }
+        $marketplace = LengowMain::getMarketplaceSingleton(
+            $this->lengow_marketplace_name,
+            $this->lengow_id_shop
+        );
 
-            if (!isset($marketplace->actions['ship'])) {
-                LengowMain::log('Marketplace actions ship not present', true);
+        if ($marketplace->containOrderLine()) {
+            $orderLineCollection = self::findOrderLineIds($this->id);
+            if (count($orderLineCollection) == 0) {
+                LengowMain::log(
+                    'API-OrderAction',
+                    'Error : Order Line require, but not found in order '.$this->lengow_marketplace_sku,
+                    true,
+                    $this->lengow_marketplace_sku
+                );
                 return false;
             }
-            if ((int)$this->lengow_id_shop == 0) {
-                LengowMain::log('id_shop require', true, $this->lengow_marketplace_sk);
-                return false;
+            $ret = array();
+            foreach ($orderLineCollection as $row) {
+                $ret[] = $marketplace->callAction($action, $this, $row['id_order_line']);
             }
-            if (Tools::strlen($this->lengow_marketplace_name) == 0) {
-                LengowMain::log('marketplace_name require', true, $this->lengow_marketplace_sk);
-                return false;
-            }
-
-            $actions = $marketplace->actions['ship'];
-            if (isset($actions['optional_args'])) {
-                $all_args = array_merge($actions['args'], $actions['optional_args']);
-            } else {
-                $all_args = $actions['args'];
-            }
-            foreach ($all_args as $arg) {
-                switch ($arg) {
-                    case 'tracking_number':
-                        if (_PS_VERSION_ >= '1.5') {
-                            $id_order_carrier = $this->getIdOrderCarrier();
-                            $order_carrier = new OrderCarrier($id_order_carrier);
-                            $tracking_number = $order_carrier->tracking_number;
-                            if ($tracking_number == '') {
-                                $tracking_number = $this->shipping_number;
-                            }
-                        } else {
-                            $tracking_number = $this->shipping_number;
-                        }
-                        $params['tracking_number'] = $tracking_number;
-                        $params['tracking_number'] = 'tototo';
-                        break;
-                    case 'carrier':
-                        $carrier = new Carrier($this->id_carrier);
-                        $params['carrier'] = LengowCarrier::getMarketplaceCarrier();
-                        break;
-                    case 'tracking_url':
-                        if (_PS_VERSION_ >= '1.5') {
-                            $id_order_carrier = $this->getIdOrderCarrier();
-                            $order_carrier = new OrderCarrier($id_order_carrier);
-                            $tracking_number = $order_carrier->tracking_number;
-                            if ($tracking_number == '') {
-                                $tracking_number = $this->shipping_number;
-                            }
-                        } else {
-                            $tracking_number = $this->shipping_number;
-                        }
-                        $carrier = new Carrier($this->id_carrier);
-                        $params['tracking_url'] = str_replace('@', $tracking_number, $carrier->url);
-                        break;
-                    case 'shipping_price':
-                        $params['shipping_price'] = $this->total_shipping;
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            foreach ($actions['args'] as $arg) {
-                if (Tools::strlen($params[$arg]) ==0) {
-                    LengowMain::log('Can\'t ship order : '.$arg.' require', true, $this->lengow_marketplace_sku);
-                    return false;
-                }
-            }
-
-            $params['marketplace_order_id'] = $this->lengow_marketplace_sku;
-            $params['marketplace'] = $this->lengow_marketplace_name;
-            $params['action_type'] = 'ship';
-
-            if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
-                $result = LengowConnector::queryApi('post', '/v3.0/orders/actions/', $this->lengow_id_shop, $params);
-
-
-
-            }
-
-        } catch (Exception $e) {
-            LengowMain::log('call error WSDL - exception: '.$e->getMessage(), false, $this->id);
+            return !in_array(false, $ret);
+        } else {
+            return $marketplace->callAction($action, $this);
         }
     }
 }

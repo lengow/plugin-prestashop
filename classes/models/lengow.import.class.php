@@ -227,16 +227,16 @@ class LengowImport
         LengowMain::cleanLog();
         if (LengowImport::isInProcess() && !$this->preprod_mode) {
             $global_error = 'import is already started';
-            LengowMain::log($global_error, $this->log_output);
+            LengowMain::log('Import', $global_error, $this->log_output);
             $error[0] = $global_error;
             if (isset($this->id_order_lengow) && $this->id_order_lengow) {
                 LengowOrder::finishOrderLogs($this->id_order_lengow, $this->re_import_type);
                 LengowOrder::addOrderLog($this->id_order_lengow, $global_error, $this->re_import_type);
             }
         } else {
-            LengowMain::log('## Start '.$this->type_import.' import ##', $this->log_output);
+            LengowMain::log('Import', '## Start '.$this->type_import.' import ##', $this->log_output);
             if ($this->preprod_mode) {
-                LengowMain::log('WARNING ! Preprod mode is activated', $this->log_output);
+                LengowMain::log('Import','WARNING ! Preprod mode is activated', $this->log_output);
             }
             LengowImport::setInProcess();
             LengowMain::disableMail();
@@ -255,6 +255,7 @@ class LengowImport
                 }
                 if (LengowMain::getShopActive((int)$shop['id_shop'])) {
                     LengowMain::log(
+                        'Import',
                         'Start import in shop '.$shop['name'].' ('.(int)$shop['id_shop'].')',
                         $this->log_output
                     );
@@ -262,7 +263,7 @@ class LengowImport
                         // check account ID, Access Token and Secret
                         $error_credential = $this->checkCredentials((int)$shop['id_shop'], $shop['name']);
                         if ($error_credential) {
-                            LengowMain::log($error_credential, $this->log_output);
+                            LengowMain::log('Import', $error_credential, $this->log_output);
                             $error[(int)$shop['id_shop']] = $error_credential;
                             continue;
                         }
@@ -273,6 +274,7 @@ class LengowImport
                         $total_orders = count($orders);
                         if ($this->import_one_order) {
                             LengowMain::log(
+                                'Import',
                                 $total_orders.' order found for order ID: '.$this->marketplace_sku
                                 .' and markeplace: '.$this->marketplace_name
                                 .' with account ID: '.$this->account_id,
@@ -280,6 +282,7 @@ class LengowImport
                             );
                         } else {
                             LengowMain::log(
+                                'Import',
                                 $total_orders.' order'.($total_orders > 1 ? 's ' : ' ')
                                 .'found with account ID: '.$this->account_id,
                                 $this->log_output
@@ -307,20 +310,36 @@ class LengowImport
                                 $this->re_import_type
                             );
                         }
-                        LengowMain::log('Error: '.$e->getMessage(), $this->log_output);
+                        LengowMain::log(
+                            'Import',
+                            'Error : "'.$e->getMessage().'"'.$e->getFile().'|'.$e->getLine(),
+                            $this->log_output
+                        );
                         $error[(int)$shop['id_shop']] = $e->getMessage();
                         continue;
                     }
                 }
             }
             if (!$this->import_one_order) {
-                LengowMain::log($order_new.' order'.($order_new > 1 ? 's ' : ' ').'imported', $this->log_output);
-                LengowMain::log($order_update.' order'.($order_update > 1 ? 's ' : ' ').'updated', $this->log_output);
-                LengowMain::log($order_error.' order'.($order_error > 1 ? 's ' : ' ').'with errors', $this->log_output);
+                LengowMain::log(
+                    'Import',
+                    $order_new.' order'.($order_new > 1 ? 's ' : ' ').'imported',
+                    $this->log_output
+                );
+                LengowMain::log(
+                    'Import',
+                    $order_update.' order'.($order_update > 1 ? 's ' : ' ').'updated',
+                    $this->log_output
+                );
+                LengowMain::log(
+                    'Import',
+                    $order_error.' order'.($order_error > 1 ? 's ' : ' ').'with errors',
+                    $this->log_output
+                );
             }
             // finish import process
             LengowImport::setEnd();
-            LengowMain::log('## End '.$this->type_import.' import ##', $this->log_output);
+            LengowMain::log('Import', '## End '.$this->type_import.' import ##', $this->log_output);
             // sending email in error for orders
             if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$this->preprod_mode) {
                 LengowMain::sendMailAlert();
@@ -399,12 +418,14 @@ class LengowImport
             $this->connector  = new LengowConnector($this->access_token, $this->secret);
             if ($this->import_one_order) {
                 LengowMain::log(
+                    'Import',
                     'Connector: get order with order id: '.$this->marketplace_sku
                     .' and marketplace: '.$this->marketplace_name,
                     $this->log_output
                 );
             } else {
                 LengowMain::log(
+                    'Import',
                     'Connector: get orders between '.date('Y-m-d', strtotime((string)$this->date_from))
                     .' and '.date('Y-m-d', strtotime((string)$this->date_to))
                     .' with account ID: '.$this->account_id,
@@ -484,7 +505,12 @@ class LengowImport
             LengowImport::$current_order = $marketplace_sku;
             // if order contains no package
             if (count($order_data->packages) == 0) {
-                LengowMain::log('create order fail: no package in the order', $this->log_output, $marketplace_sku);
+                LengowMain::log(
+                    'Import',
+                    'create order fail: no package in the order',
+                    $this->log_output,
+                    $marketplace_sku
+                );
                 continue;
             }
             // start import
@@ -493,6 +519,7 @@ class LengowImport
                 // check whether the package contains a shipping address
                 if (!isset($package_data->delivery->id)) {
                     LengowMain::log(
+                        'Import',
                         'create order fail: no delivery address in the order',
                         $this->log_output,
                         $marketplace_sku
@@ -507,6 +534,7 @@ class LengowImport
                         && $this->delivery_address_id != $package_delivery_address_id
                     ) {
                         LengowMain::log(
+                            'Import',
                             'create order fail: wrong package number',
                             $this->log_output,
                             $marketplace_sku
@@ -601,12 +629,14 @@ class LengowImport
                 || isset($result['error'])
             ) {
                 LengowMain::log(
+                    'Import',
                     'WARNING ! Order could NOT be synchronised with Lengow webservice (ID '.$prestashop_order_id.')',
                     $this->preprod_mode,
                     $marketplace_sku
                 );
             } else {
                 LengowMain::log(
+                    'Import',
                     'order successfully synchronised with Lengow webservice (ID '.$prestashop_order_id.')',
                     $this->preprod_mode,
                     $marketplace_sku
@@ -644,7 +674,7 @@ class LengowImport
         $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS');
         if ($timestamp > 0) {
             // security check : if last import is more than 10 min old => authorize new import to be launched
-            if (($timestamp + (60 * 2)) < time()) {
+            if (($timestamp + (60 * 1)) < time()) {
                 LengowImport::setEnd();
                 return false;
             }
@@ -663,7 +693,7 @@ class LengowImport
     {
         $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS');
         if ($timestamp > 0) {
-            return $timestamp + (60 * 2) - time();
+            return $timestamp + (60 * 1) - time();
         }
         return false;
     }

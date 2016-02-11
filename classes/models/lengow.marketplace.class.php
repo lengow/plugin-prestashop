@@ -89,6 +89,10 @@ class LengowMarketplace
         $this->id_shop = $id_shop;
         $this->loadApiMarketplace();
         $this->name = Tools::strtolower($name);
+
+        if (!isset(self::$MARKETPLACES->{$this->name})) {
+            throw new Exception('Marketplace '.$this->name.' not present in marketplace list');
+        }
         $this->marketplace = self::$MARKETPLACES->{$this->name};
         if (!empty($this->marketplace)) {
             foreach ($this->marketplace->orders->status as $key => $state) {
@@ -216,140 +220,298 @@ class LengowMarketplace
         return false;
     }
 
+//    /**
+//    * If action exist
+//    *
+//    * @param string $name The marketplace state
+//    *
+//    * @return boolean
+//    */
+//    public function isAction($name)
+//    {
+//        return array_key_exists($name, $this->actions) ? true : false;
+//    }
+
+//    /**
+//    * Call the Lengow WSDL for current marketplace
+//    *
+//    * @param string $action The name of the action
+//    * @param string $id_order The order ID
+//    * @param string $args An array of arguments
+//    */
+//    public function wsdl($action, $id_lengow_order, $args = array())
+//    {
+//        if (!in_array($action, self::$VALID_ACTIONS)) {
+//            return false;
+//        }
+//        if (!$this->isAction($action)) {
+//            return false;
+//        }
+//
+//        $order = new LengowOrder($args['id_order']);
+//        $action_array = $this->getAction($action);
+//
+//        $params = array(
+//            'account_id'            => LengowMain::getIdAccount($this->id_shop),
+//            'marketplace_order_id'  => (string)$id_lengow_order,
+//            'marketplace'           => (string)$order->lengow_marketplace_name
+//        );
+//
+//        if (isset($action_array['optional_args'])) {
+//            $all_args = array_merge($action_array['args'], $action_array['optional_args']);
+//        } else {
+//            $all_args = $action_array['args'];
+//        }
+//
+//        switch ($action) {
+//            case 'ship':
+//                $params['action_type'] = 'ship';
+//                if (isset($all_args)) {
+//                    foreach ($all_args as $arg) {
+//                        switch ($arg) {
+//                            case 'tracking_number':
+//                                if (_PS_VERSION_ >= '1.5') {
+//                                    $id_order_carrier = $order->getIdOrderCarrier();
+//                                    $order_carrier = new OrderCarrier($id_order_carrier);
+//                                    $tracking_number = $order_carrier->tracking_number;
+//                                    if ($tracking_number == '') {
+//                                        $tracking_number = $order->shipping_number;
+//                                    }
+//                                } else {
+//                                    $tracking_number = $order->shipping_number;
+//                                }
+//                                $params['tracking_number'] = $tracking_number;
+//                                break;
+//                            case 'carrier':
+//                                $carrier = new Carrier($order->id_carrier);
+//                                $params['carrier'] = $this->_matchCarrier($carrier->name);
+//                                break;
+//                            case 'tracking_url':
+//                                if (_PS_VERSION_ >= '1.5') {
+//                                    $id_order_carrier = $order->getIdOrderCarrier();
+//                                    $order_carrier = new OrderCarrier($id_order_carrier);
+//                                    $tracking_number = $order_carrier->tracking_number;
+//                                    if ($tracking_number == '') {
+//                                        $tracking_number = $order->shipping_number;
+//                                    }
+//                                } else {
+//                                    $tracking_number = $order->shipping_number;
+//                                }
+//                                $id_order_carrier = $order->getIdOrderCarrier();
+//                                $carrier = new Carrier($order->id_carrier);
+//                                $params['tracking_url'] = str_replace('@', $tracking_number, $carrier->url);
+//                                break;
+//                            case 'shipping_price':
+//                                $params['shipping_price'] = $order->total_shipping;
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                    }
+//                }
+//                break;
+//            case 'cancel':
+//                $params['action_type'] = 'cancel';
+//                if (isset($all_args)) {
+//                    foreach ($all_args as $arg) {
+//                        switch ($arg) {
+//                            default:
+//                                break;
+//                        }
+//                    }
+//                }
+//                break;
+//        }
+//        try {
+//            $connector  = new LengowConnector(
+//                LengowMain::getAccessToken($this->id_shop),
+//                LengowMain::getSecretCustomer($this->id_shop)
+//            );
+//            // Get all params send
+//            $param_list = false;
+//            foreach ($params as $param => $value) {
+//                $param_list .= (!$param_list ? '"'.$param.'": '.$value : ' -- "'.$param.'": '.$value);
+//            }
+//            // if line_id is a required parameter -> send a call for each line_id
+//            if (in_array('line', $all_args)) {
+//                $order_line_sent = false;
+//                $order_lines = LengowOrder::getAllOrderLinesFromLengowOrder($order->id);
+//                if ($order_lines) {
+//                    foreach ($order_lines as $order_line) {
+//                        $params['line'] = $order_line['id_order_line'];
+//                        if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
+//                            $result = $connector->post('/v3.0/orders/actions', $params);
+//                        }
+//                        $order_line_sent .= (!$order_line_sent ? $params['line'] : ' / '.$params['line']);
+//                    }
+//                    LengowMain::log('WSDL : '.$param_list.' -- "lines": '.$order_line_sent, false, $order->id);
+//                }
+//            } else {
+//                if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
+//                    $result = $connector->post('/v3.0/orders/actions', $params);
+//                }
+//                LengowMain::log('WSDL : '.$param_list, false, $order->id);
+//            }
+//        } catch (Exception $e) {
+//            LengowMain::log('call error WSDL - exception: '.$e->getMessage(), false, $order->id);
+//        }
+//    }
+
+
     /**
-    * If action exist
-    *
-    * @param string $name The marketplace state
-    *
-    * @return boolean
-    */
-    public function isAction($name)
+     * v3-test
+     * Is marketplace contain order Line
+     * @return bool
+     */
+    public function containOrderLine()
     {
-        return array_key_exists($name, $this->actions) ? true : false;
+        $actions = $this->actions['ship'];
+        if (isset($actions['args']) && is_array($actions['args'])) {
+            if (in_array('line', $actions['args'])) {
+                return true;
+            }
+        }
+        if (isset($actions['optional_args']) && is_array($actions['optional_args'])) {
+            if (in_array('line', $actions['optional_args'])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
-    * Call the Lengow WSDL for current marketplace
-    *
-    * @param string $action The name of the action
-    * @param string $id_order The order ID
-    * @param string $args An array of arguments
-    */
-    public function wsdl($action, $id_lengow_order, $args = array())
+     * v3-test
+     * @param integer $order
+     * @param string $id_order_line
+     * @return bool
+     */
+    public function callAction($action, $order, $id_order_line = null)
     {
-        if (!in_array($action, self::$VALID_ACTIONS)) {
-            return false;
-        }
-        if (!$this->isAction($action)) {
-            return false;
-        }
-
-        $order = new LengowOrder($args['id_order']);
-        $action_array = $this->getAction($action);
-
-        $params = array(
-            'account_id'            => LengowMain::getIdAccount($this->id_shop),
-            'marketplace_order_id'  => (string)$id_lengow_order,
-            'marketplace'           => (string)$order->lengow_marketplace_name
-        );
-
-        if (isset($action_array['optional_args'])) {
-            $all_args = array_merge($action_array['args'], $action_array['optional_args']);
-        } else {
-            $all_args = $action_array['args'];
-        }
-
-        switch ($action) {
-            case 'ship':
-                $params['action_type'] = 'ship';
-                if (isset($all_args)) {
-                    foreach ($all_args as $arg) {
-                        switch ($arg) {
-                            case 'tracking_number':
-                                if (_PS_VERSION_ >= '1.5') {
-                                    $id_order_carrier = $order->getIdOrderCarrier();
-                                    $order_carrier = new OrderCarrier($id_order_carrier);
-                                    $tracking_number = $order_carrier->tracking_number;
-                                    if ($tracking_number == '') {
-                                        $tracking_number = $order->shipping_number;
-                                    }
-                                } else {
-                                    $tracking_number = $order->shipping_number;
-                                }
-                                $params['tracking_number'] = $tracking_number;
-                                break;
-                            case 'carrier':
-                                $carrier = new Carrier($order->id_carrier);
-                                $params['carrier'] = $this->_matchCarrier($carrier->name);
-                                break;
-                            case 'tracking_url':
-                                if (_PS_VERSION_ >= '1.5') {
-                                    $id_order_carrier = $order->getIdOrderCarrier();
-                                    $order_carrier = new OrderCarrier($id_order_carrier);
-                                    $tracking_number = $order_carrier->tracking_number;
-                                    if ($tracking_number == '') {
-                                        $tracking_number = $order->shipping_number;
-                                    }
-                                } else {
-                                    $tracking_number = $order->shipping_number;
-                                }
-                                $id_order_carrier = $order->getIdOrderCarrier();
-                                $carrier = new Carrier($order->id_carrier);
-                                $params['tracking_url'] = str_replace('@', $tracking_number, $carrier->url);
-                                break;
-                            case 'shipping_price':
-                                $params['shipping_price'] = $order->total_shipping;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-                break;
-            case 'cancel':
-                $params['action_type'] = 'cancel';
-                if (isset($all_args)) {
-                    foreach ($all_args as $arg) {
-                        switch ($arg) {
-                            default:
-                                break;
-                        }
-                    }
-                }
-                break;
-        }
         try {
-            $connector  = new LengowConnector(
-                LengowMain::getAccessToken($this->id_shop),
-                LengowMain::getSecretCustomer($this->id_shop)
-            );
-            // Get all params send
-            $param_list = false;
-            foreach ($params as $param => $value) {
-                $param_list .= (!$param_list ? '"'.$param.'": '.$value : ' -- "'.$param.'": '.$value);
+            if (!in_array($action, self::$VALID_ACTIONS)) {
+                throw new Exception('Action '.$action.' is not valid');
             }
-            // if line_id is a required parameter -> send a call for each line_id
-            if (in_array('line', $all_args)) {
-                $order_line_sent = false;
-                $order_lines = LengowOrder::getAllOrderLinesFromLengowOrder($order->id);
-                if ($order_lines) {
-                    foreach ($order_lines as $order_line) {
-                        $params['line'] = $order_line['id_order_line'];
-                        if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
-                            $result = $connector->post('/v3.0/orders/actions', $params);
-                        }
-                        $order_line_sent .= (!$order_line_sent ? $params['line'] : ' / '.$params['line']);
-                    }
-                    LengowMain::log('WSDL : '.$param_list.' -- "lines": '.$order_line_sent, false, $order->id);
-                }
+
+            if (!isset($this->actions[$action])) {
+                throw new Exception('Marketplace actions '.$action.' not present');
+            }
+            if ((int)$order->lengow_id_shop == 0) {
+                throw new Exception('shop_id require');
+            }
+            if (Tools::strlen($order->lengow_marketplace_name) == 0) {
+                throw new Exception('marketplace_name require');
+            }
+
+            $params = array();
+            $actions = $this->actions[$action];
+            if (isset($actions['args']) && isset($actions['optional_args'])) {
+                $all_args = array_merge($actions['args'], $actions['optional_args']);
+            } elseif (isset($actions['args'])) {
+                $all_args = $actions['args'];
             } else {
-                if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
-                    $result = $connector->post('/v3.0/orders/actions', $params);
-                }
-                LengowMain::log('WSDL : '.$param_list, false, $order->id);
+                $all_args = array();
             }
+            foreach ($all_args as $arg) {
+                switch ($arg) {
+                    case 'tracking_number':
+                        if (_PS_VERSION_ >= '1.5') {
+                            $id_order_carrier = $order->getIdOrderCarrier();
+                            $order_carrier = new OrderCarrier($id_order_carrier);
+                            $tracking_number = $order_carrier->tracking_number;
+                            if ($tracking_number == '') {
+                                $tracking_number = $order->shipping_number;
+                            }
+                        } else {
+                            $tracking_number = $order->shipping_number;
+                        }
+                        $params['tracking_number'] = $tracking_number;
+                        $params['tracking_number'] = 'tototo';
+                        break;
+                    case 'carrier':
+                        $carrier = new Carrier($order->id_carrier);
+                        $params['carrier'] = LengowCarrier::getMarketplaceCarrier();
+                        break;
+                    case 'tracking_url':
+                        if (_PS_VERSION_ >= '1.5') {
+                            $id_order_carrier = $order->getIdOrderCarrier();
+                            $order_carrier = new OrderCarrier($id_order_carrier);
+                            $tracking_number = $order_carrier->tracking_number;
+                            if ($tracking_number == '') {
+                                $tracking_number = $order->shipping_number;
+                            }
+                        } else {
+                            $tracking_number = $order->shipping_number;
+                        }
+                        $carrier = new Carrier($order->id_carrier);
+                        $params['tracking_url'] = str_replace('@', $tracking_number, $carrier->url);
+                        break;
+                    case 'shipping_price':
+                        $params['shipping_price'] = $order->total_shipping;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if ($id_order_line) {
+                $params['line'] = $id_order_line;
+            }
+
+            if (isset($actions['args'])) {
+                foreach ($actions['args'] as $arg) {
+                    if (!isset($params[$arg]) || Tools::strlen($params[$arg]) ==0) {
+                        throw new Exception('Can\'t ship order : '.$arg.' require');
+                    }
+                }
+            }
+
+            $params['marketplace_order_id'] = $order->lengow_marketplace_sku;
+            $params['marketplace'] = $order->lengow_marketplace_name;
+            $params['action_type'] = $action;
+
+
+            if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
+                $result = LengowConnector::queryApi(
+                    'get',
+                    '/v3.0/orders/actions/',
+                    $order->lengow_id_shop,
+                    array_merge($params, array("queued" => "True"))
+                );
+                if (isset($result->count) && $result->count > 0) {
+                    foreach ($result->results as $row) {
+                        LengowAction::updateAction(array(
+                            'id_order' => $order->id,
+                            'action_type' => $action,
+                            'action_id' => $row->id,
+                            'parameters' => $params
+                        ));
+                    }
+                } else {
+                    $result = LengowConnector::queryApi(
+                        'post',
+                        '/v3.0/orders/actions/',
+                        $order->lengow_id_shop,
+                        $params
+                    );
+                    if (isset($result->id)) {
+                        LengowAction::createAction(array(
+                            'id_order' => $order->id,
+                            'action_type' => $action,
+                            'action_id' => $result->id,
+                            'parameters' => $params
+                        ));
+                    }
+                }
+            }
+            return true;
         } catch (Exception $e) {
-            LengowMain::log('call error WSDL - exception: '.$e->getMessage(), false, $order->id);
+            LengowMain::log(
+                'API-OrderAction',
+                'Error : "'.$e->getMessage().'"'.$e->getFile().'|'.$e->getLine(),
+                true,
+                $order->lengow_marketplace_sku
+            );
+            return false;
         }
     }
 }

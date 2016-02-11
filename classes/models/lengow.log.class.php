@@ -49,14 +49,16 @@ class LengowLog extends LengowFile
     /**
      * Write log
      *
+     * @param string $category Category
      * @param string $message log message
      * @param boolean $display display on screen
      * @param string $marketplace_sku lengow order id
      */
-    public function write($message, $display = false, $marketplace_sku = null)
+    public function write($category, $message = "", $display = false, $marketplace_sku = null)
     {
         $log = date('Y-m-d:H:i:s').Tools::substr((string)microtime(), 1, 8);
-        $log.= ' - ' . (empty($marketplace_sku) ? '' : 'Order ' . $marketplace_sku . ': ');
+        $log.= ' - ' . (empty($category) ? '' : '[' . $category . '] ');
+        $log.= '' . (empty($marketplace_sku) ? '' : 'Order ' . $marketplace_sku . ' : ');
         $log.= $message . "\r\n";
         if ($display) {
             echo $log . '<br />';

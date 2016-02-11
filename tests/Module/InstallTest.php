@@ -56,7 +56,7 @@ class InstallTest extends ModuleTestCase
         $this->assertTrue((boolean)$module, 'Load Lengow Module');
         $this->assertEquals($module->name, 'lengow');
     }
-//
+
 //    /**
 //     * Test install lengow module
 //     *

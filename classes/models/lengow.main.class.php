@@ -499,14 +499,15 @@ class LengowMain
      * v3
      * Writes log
      *
+     * @param string $category Category log
      * @param string $txt log message
      * @param boolean $force_output output on screen
      * @param string $marketplace_sku lengow marketplace sku
      */
-    public static function log($txt, $force_output = false, $marketplace_sku = null)
+    public static function log($category, $txt, $force_output = false, $marketplace_sku = null)
     {
         $log = LengowMain::getLogInstance();
-        $log->write($txt, $force_output, $marketplace_sku);
+        $log->write($category, $txt, $force_output, $marketplace_sku);
     }
 
     /**
@@ -824,9 +825,9 @@ class LengowMain
                 _PS_MODULE_DIR_ . 'lengow/views/templates/mails/',
                 true
             )) {
-                LengowMain::log('Unable to send report email to ' . $to);
+                LengowMain::log('MailReport', 'Unable to send report email to ' . $to);
             } else {
-                LengowMain::log('Report email sent to ' . $to);
+                LengowMain::log('MailReport', 'Report email sent to ' . $to);
             }
         }
     }

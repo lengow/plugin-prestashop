@@ -41,6 +41,7 @@ class LengowCart extends Cart implements LengowObject
      */
     public function addProducts($products = array())
     {
+        $this->lengow_products = $products;
         if (!$products) {
             throw new Exception('no product to be added to cart');
         }

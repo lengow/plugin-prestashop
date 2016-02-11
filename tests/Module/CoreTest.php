@@ -84,7 +84,7 @@ class CoreTest extends ModuleTestCase
         $response = self::$client->get($exportUrl);
         $body = $response->getBody()->getContents();
         $this->assertRegExp(
-            '/Export \-\ init/',
+            '/\[Export\] init/',
             substr($body, 0, 100),
             'Access Authorized'
         );
@@ -101,7 +101,7 @@ class CoreTest extends ModuleTestCase
         $response = self::$client->get($exportUrl);
         $body = $response->getBody()->getContents();
         $this->assertTrue(
-            (bool) preg_match('/Export \-\ init/', substr($body, 0, 50)),
+            (bool) preg_match('/\[Export\] init/', substr($body, 0, 50)),
             'Access Authorized'
         );
     }
