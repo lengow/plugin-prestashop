@@ -602,7 +602,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     text-align: left;
 }
 
-.lengow_form .lengow_default_carrier {
+.lengow_form .lengow_default_carrier, .lengow_form .lengow_marketplace_carrier {
     display: inline-block;
     border: 1px #C1C7C9 solid;
     padding: 40px;
@@ -613,6 +613,11 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_form .add_lengow_default_carrier {
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.lengow_form .marketplace_carrier {
+    display: inline-block;
+    padding-right:40px;
 }
 
 
