@@ -425,7 +425,6 @@ class LengowMarketplace
                             $tracking_number = $order->shipping_number;
                         }
                         $params['tracking_number'] = $tracking_number;
-                        $params['tracking_number'] = 'tototo';
                         break;
                     case 'carrier':
                         $carrier = new Carrier($order->id_carrier);

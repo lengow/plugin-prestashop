@@ -105,6 +105,14 @@ class OrderTest extends ModuleTestCase
         );
         $this->assertTrue($order->callAction('ship'));
         $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 2));
+
+
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking_order.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
+
+        $order = new LengowOrder(1);
+        $this->assertFalse($order->callAction('ship'), 'Cant ship order without tracking');
     }
 
     /**

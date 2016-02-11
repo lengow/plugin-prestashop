@@ -55,7 +55,7 @@ order_carrier:
     weight: 0.000000
     shipping_cost_tax_excl: 2.000000
     shipping_cost_tax_incl: 2.000000
-    tracking_number: "8V4564654654"
+    tracking_number: ""
     date_add: "2015-11-12 12:40:04"
 order_detail:
   -
