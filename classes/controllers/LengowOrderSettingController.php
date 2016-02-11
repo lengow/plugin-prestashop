@@ -83,7 +83,7 @@ class LengowOrderSettingController extends LengowController
 
 
                 $itemCarrier = LengowCarrierCountry::listCarrierById($id_lengow_carrier);
-                $carriers = LengowCarrier::getActiveCarriers();
+                $carriers = LengowCarrier::getActiveCarriers($id_country);
 
                 LengowCarrier::insert($id_country);
 

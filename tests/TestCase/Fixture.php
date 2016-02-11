@@ -84,4 +84,9 @@ class Fixture
         }
         Db::getInstance()->insert($table_name, $values);
     }
+
+    public function truncate($tableName)
+    {
+        Db::getInstance()->execute('TRUNCATE ' . _DB_PREFIX_ . $tableName);
+    }
 }

@@ -82,20 +82,20 @@ class FeedTest extends ModuleTestCase
         new LengowExport(array("format" => "mp3"));
     }
 
-    /**
-     * Test Export Empty Carrier
-     *
-     * @test
-     * @expectedException        LengowExportException
-     * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
-     * @covers LengowExport::setCarrier
-     */
-    public function setCarrier()
-    {
-        Configuration::set('LENGOW_CARRIER_DEFAULT', '');
-        $export = new LengowExport(array("log_output" => false));
-        $export->exec();
-    }
+//    /**
+//     * Test Export Empty Carrier
+//     *
+//     * @test
+//     * @expectedException        LengowExportException
+//     * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
+//     * @covers LengowExport::setCarrier
+//     */
+//    public function setCarrier()
+//    {
+//        Configuration::set('LENGOW_CARRIER_DEFAULT', '');
+//        $export = new LengowExport(array("log_output" => false));
+//        $export->exec();
+//    }
 
     /**
      * Test Export Limit
