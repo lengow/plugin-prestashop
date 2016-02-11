@@ -45,7 +45,7 @@ class HookTest extends ModuleTestCase
         LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
 
         LengowConnector::$test_fixture_path = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_empty.json',
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
 

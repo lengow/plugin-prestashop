@@ -404,9 +404,9 @@ class LengowMarketplace
 
             $params = array();
             $actions = $this->actions[$action];
-            if (isset($actions['_args']) && isset($actions['optional_args'])) {
+            if (isset($actions['args']) && isset($actions['optional_args'])) {
                 $all_args = array_merge($actions['args'], $actions['optional_args']);
-            } elseif (isset($actions['_args'])) {
+            } elseif (isset($actions['args'])) {
                 $all_args = $actions['args'];
             } else {
                 $all_args = array();
