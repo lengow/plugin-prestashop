@@ -57,6 +57,15 @@
             "waiting_acceptance"
           ]
         },
+        "cancel": {
+          "args": [],
+          "optional_args": [
+            "line"
+          ],
+          "status": [
+            "waiting_acceptance"
+          ]
+        },
         "refund": {
           "args": [
             "reason_code"

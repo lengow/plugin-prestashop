@@ -28,15 +28,6 @@ $blockedIP = isset($_REQUEST['blockedIP']) ?  $_REQUEST['blockedIP'] : false;
 $lengowTool = new LengowTool();
 
 
-$order = new LengowOrder(150);
-$order->sendTracking();
-
-
-exit();
-
-
-
-
 $controller = new LengowOrderController();
 $controller->postProcess();
 $controller->display();

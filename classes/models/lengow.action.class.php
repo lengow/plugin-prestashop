@@ -74,7 +74,7 @@ class LengowAction
         return false;
     }
 
-    public static function createTracking($params)
+    public static function createAction($params)
     {
         $insertParams = array(
             'parameters' => pSQL(Tools::JsonEncode($params['parameters'])),
@@ -93,7 +93,7 @@ class LengowAction
         LengowMain::log('API', 'call tracking ', false, $params['id_order']);
     }
 
-    public static function updateTracking($params)
+    public static function updateAction($params)
     {
         $action = new LengowAction();
         if ($action->findByActionId($params['action_id'])) {

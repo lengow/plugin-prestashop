@@ -747,11 +747,11 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
+     * v3-test
      * Send Order
      *
      */
-    public function sendTracking()
+    public function callAction($action)
     {
         if ((int)$this->id == 0) {
             LengowMain::log('API-OrderAction', 'Error : Can\'t load order', true);
@@ -775,11 +775,11 @@ class LengowOrder extends Order
             }
             $ret = array();
             foreach ($orderLineCollection as $row) {
-                $ret[] = $marketplace->sendTracking($this, $row['id_order_line']);
+                $ret[] = $marketplace->callAction($action, $this, $row['id_order_line']);
             }
             return !in_array(false, $ret);
         } else {
-            return $marketplace->sendTracking($this);
+            return $marketplace->callAction($action, $this);
         }
     }
 }

@@ -52,6 +52,10 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $context->employee = $employee;
         $context->currency = new Currency(1);
 
+        Configuration::updateGlobalValue('LENGOW_ORDER_ID_PROCESS', 2);
+        Configuration::updateGlobalValue('LENGOW_ORDER_ID_SHIPPED', 4);
+        Configuration::updateGlobalValue('LENGOW_ORDER_ID_CANCEL', 6);
+
         Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
         Product::flushPriceCache();
     }
@@ -280,6 +284,12 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         self::assertTrue((bool)$result[0]["total"], $message);
     }
 
+
+    public function assertTableEmpty($tableName, $message = '')
+    {
+        $result = Db::getInstance()->ExecuteS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.$tableName);
+        self::assertTrue(!(bool)$result[0]["total"], $message);
+    }
 
     /**
      * Call protected/private method of a class.

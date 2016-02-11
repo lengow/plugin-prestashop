@@ -201,7 +201,6 @@ lengow_orders:
     id: 1
     marketplace_sku: "1300435653833-A"
     id_order: 1
-    id_flux: ""
     marketplace_name: "galeries_lafayette"
     message: ""
     total_paid: 99.99
