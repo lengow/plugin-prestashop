@@ -55,7 +55,7 @@ order_carrier:
     weight: 0.000000
     shipping_cost_tax_excl: 2.000000
     shipping_cost_tax_incl: 2.000000
-    tracking_number: "8V4564654654"
+    tracking_number: ""
     date_add: "2015-11-12 12:40:04"
 order_detail:
   -
@@ -208,7 +208,7 @@ lengow_orders:
     tracking: ""
     extra: ""
     date_add: "2015-12-15 17:42:26"
-    is_reimported: 0
+    is_disabled: 0
     sent_marketplace: 0
     order_process_state: 2
     order_date: "2015-12-15 17:42:26"

@@ -48,12 +48,15 @@ class ImportTest extends ModuleTestCase
         $fixture->loadFixture(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml'
         );
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/euro_currency.yml'
+        );
         LengowConnector::$test_fixture_path =
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Import/check_currency.json';
         $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
 
-        $this->assertTableContain('lengow_logs_import', array('id' => '1',  'id_order_lengow' => '1'));
+        //$this->assertTableContain('lengow_logs_import', array('id' => '1',  'id_order_lengow' => '1'));
         $import = new LengowImport(array(
             'log_output' => false,
         ));

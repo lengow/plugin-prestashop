@@ -78,6 +78,18 @@ class LengowCarrierCountry
     }
 
     /**
+     * Find CountryCarrier By Country
+     * @param integer $id_country
+     * @return mixed
+     */
+    public static function findByCountry($id_country)
+    {
+        return Db::getInstance()->getRow(
+            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_carrier_country WHERE id_country ='.(int)$id_country
+        );
+    }
+
+    /**
      * Returns all countries
      * @return array
      */

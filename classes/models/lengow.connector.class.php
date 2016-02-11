@@ -160,8 +160,7 @@ class LengowConnector
         if (LengowMain::inTest() && self::$test_fixture_path) {
             if (is_array(self::$test_fixture_path)) {
                 $content = file_get_contents(self::$test_fixture_path[0]);
-                unset(self::$test_fixture_path[0]);
-                self::$test_fixture_path = reset(self::$test_fixture_path);
+                array_shift(self::$test_fixture_path);
             } else {
                 $content = file_get_contents(self::$test_fixture_path);
                 self::$test_fixture_path = null;
@@ -176,8 +175,7 @@ class LengowConnector
         if (LengowMain::inTest() && self::$test_fixture_path) {
             if (is_array(self::$test_fixture_path)) {
                 $content = file_get_contents(self::$test_fixture_path[0]);
-                unset(self::$test_fixture_path[0]);
-                self::$test_fixture_path = reset(self::$test_fixture_path);
+                array_shift(self::$test_fixture_path);
             } else {
                 $content = file_get_contents(self::$test_fixture_path);
                 self::$test_fixture_path = null;

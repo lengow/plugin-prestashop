@@ -21,8 +21,9 @@
                     data: {action: 'add_country', id_country: $('#select_country').val()},
                     dataType: 'script'
                 })
+                $('#error_select_country').html('');
             } else {
-                $('.select_country').append('<span>No country selected.</span>');
+                $('#error_select_country').html('<span>No country selected.</span>');
             }
 
             return false;

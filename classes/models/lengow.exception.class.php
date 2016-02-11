@@ -19,22 +19,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-require 'conf.inc.php';
+/**
+ * Lengow Invalid Lengow Object Exception class
+ */
+class LengowException extends Exception
+{
 
-$action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
-$accountId = isset($_REQUEST['account_id']) ?  $_REQUEST['account_id'] : null;
-$secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
-$blockedIP = isset($_REQUEST['blockedIP']) ?  $_REQUEST['blockedIP'] : false;
-$lengowTool = new LengowTool();
-
-
-$controller = new LengowOrderController();
-$controller->postProcess();
-$controller->display();
-
-require 'views/header.php';
-?>
-
-<?php
-echo $controller->forceDisplay();
-require 'views/footer.php';
+}

@@ -12,6 +12,7 @@ use Configuration;
 use Product;
 use Shop;
 use Currency;
+use LengowLog;
 
 class ModuleTestCase extends PHPUnit_Framework_TestCase
 {
@@ -22,9 +23,6 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         if (!defined('PS_UNIT_TEST')) {
             define('PS_UNIT_TEST', true);
         }
-
-        $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/currency.yml');
     }
 
     public static function tearDownAfterClass()
@@ -45,12 +43,20 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/currency.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/marketplace_carrier.yml');
+
         $employee = new Employee();
         $employee->getByEmail("pub@prestashop.com");
 
         $context = Context::getContext();
         $context->employee = $employee;
         $context->currency = new Currency(1);
+
+        Configuration::updateGlobalValue('LENGOW_ORDER_ID_PROCESS', 2);
+        Configuration::updateGlobalValue('LENGOW_ORDER_ID_SHIPPED', 4);
+        Configuration::updateGlobalValue('LENGOW_ORDER_ID_CANCEL', 6);
 
         Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
         Product::flushPriceCache();
@@ -282,6 +288,17 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
 
     /**
+     * Test if table is empty
+     * @param $tableName
+     * @param string $message
+     */
+    public function assertTableEmpty($tableName, $message = '')
+    {
+        $result = Db::getInstance()->ExecuteS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.$tableName);
+        self::assertTrue(!(bool)$result[0]["total"], $message);
+    }
+
+    /**
      * Call protected/private method of a class.
      *
      * @param object &$object    Instantiated object that we will run method on.
@@ -297,5 +314,18 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
+    }
+
+
+    /**
+     * Test if last line of log contain text
+     * @param $text
+     * @param string $message
+     */
+    public function assertLogContain($text, $message = '')
+    {
+        $log = new LengowLog();
+        $lastLine = $this::readLastLine($log->getFileName());
+        self::assertTrue((bool)strpos($lastLine, $text), $message);
     }
 }

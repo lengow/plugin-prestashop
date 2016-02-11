@@ -44,13 +44,12 @@ class LogTest extends ModuleTestCase
     public function write()
     {
         $log = new LengowLog();
-        $log->write('this is a test');
-
+        $log->write('categ', 'this is a test');
         $lastLine = $this::readLastLine($log->getFileName());
         $date = substr($lastLine, 0, 26);
         $message = substr($lastLine, 30, strlen($lastLine)-30);
         $this->assertValidDatetime($date, 'Y-m-d:H:i:s.u');
-        $this->assertEquals($message, 'this is a test');
+        $this->assertEquals($message, '[categ] this is a test');
     }
 
     /**
