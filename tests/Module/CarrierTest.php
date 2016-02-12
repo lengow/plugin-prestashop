@@ -38,14 +38,14 @@ class CarrierTest extends ModuleTestCase
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         $carrierCollection = LengowCarrier::getListMarketplaceCarrierAPI();
         $testCarrier = array(
-            'LAPOSTE',
-            'LAPOSTE_RELAY',
-            'CHRONOPOST',
-            'CHRONOPOST_RELAY',
-            'MONDIALRELAY',
-            'MONDIALRELAY_RELAY',
-            'GLS',
-            'GLS_RELAY'
+            array('code' => 'LAPOSTE', 'name' => 'La Poste'),
+            array('code' => 'LAPOSTE_RELAY', 'name' => 'La Poste Relay'),
+            array('code' => 'CHRONOPOST', 'name' => 'Chronopost'),
+            array('code' => 'CHRONOPOST_RELAY', 'name' => 'Chronopost Relay'),
+            array('code' => 'MONDIALRELAY', 'name' => 'Mondial Relay'),
+            array('code' => 'MONDIALRELAY_RELAY', 'name' => 'Mondial Relay Relay'),
+            array('code' => 'GLS', 'name' => 'Gls'),
+            array('code' => 'GLS_RELAY', 'name' => 'Gls Relay')
         );
         $this->assertEquals($testCarrier, $carrierCollection);
     }
@@ -63,10 +63,11 @@ class CarrierTest extends ModuleTestCase
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Carrier/marketplace_carrier.yml'
         );
 
-        LengowCarrier::insertCountryInMarketplace('WTFCARRIER', '8');
+        LengowCarrier::insertCountryInMarketplace('WTFCARRIER', 'What a beautiful carrier', '8');
 
         $this->assertTableContain('lengow_marketplace_carrier', array(
             'marketplace_carrier_sku' => 'WTFCARRIER',
+            'marketplace_carrier_name' => 'What a beautiful carrier',
             'id_country' => '8'
         ));
     }
