@@ -52,7 +52,7 @@
             return false;
         });
         $('.lengow_switch').bootstrapSwitch();
-        //$('.lengow_select').selectpicker('render');
+        $('.lengow_select').select2({ minimumResultsForSearch: 16});
 
         init_tooltip();
         var clipboard = new Clipboard('.lengow_copy');

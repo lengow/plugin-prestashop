@@ -105,6 +105,17 @@ class LengowConfigurationForm
                     $html.='<option value="'.$row['id'].'" '.$selected.'>'.$row['text'].'</option>';
                 }
                 $html.= '</select></div><span class="legend">'.$legend.'</span></div>';
+                break;
+            case 'tag':
+                $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
+                    <div class="col-sm-10">
+                    <select class="form-control lengow_select" name="'.$name.'[]" multiple="multiple">';
+                $collection = explode(',', $value);
+                foreach ($collection as $row) {
+                    $html.='<option value="'.$row.'" selected>'.$row.'</option>';
+                }
+                $html.= '</select></div><span class="legend">'.$legend.'</span></div>';
+                break;
         }
         return $html;
     }
@@ -125,7 +136,11 @@ class LengowConfigurationForm
                         LengowConfiguration::updateValue($key, $shopValue, false, null, $shopId);
                     }
                 } else {
-                    LengowConfiguration::updateGlobalValue($key, $value);
+                    if (is_array($value)) {
+                        LengowConfiguration::updateGlobalValue($key, join(',', $value));
+                    } else {
+                        LengowConfiguration::updateGlobalValue($key, $value);
+                    }
                 }
             }
         }

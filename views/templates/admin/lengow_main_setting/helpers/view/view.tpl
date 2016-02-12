@@ -19,3 +19,35 @@
  *}
 
 <h1>Main Setting</h1>
+
+
+<div id="lengow_form_wrapper">
+    <form class="lengow_form" method="POST">
+        <input type="hidden" name="action" value="process">
+        <div class="container">
+            <h2>Notifications & alerts</h2>
+            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+            {$mail_report}
+
+            <div class="lengow_clear"></div>
+        </div>
+        <div class="container">
+            <h2>Pre-Production Mode</h2>
+            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+
+
+            <div class="lengow_clear"></div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn lengow_btn">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<script type="text/javascript" src="/modules/lengow/views/js/lengow/main_setting.js"></script>

@@ -99,7 +99,18 @@ body.lengow_body #content {
     background: #EFF1F2;
 }
 
-/* BREADCRUBMS */
+body.lengow_body .nobootstrap .form-group {
+    clear: inherit;
+    margin: 0;
+    float: none;
+    width: 100%;
+}
+body.lengow_body .nobootstrap .form-group>div {
+    float: none;
+}
+
+
+    /* BREADCRUBMS */
 body.lengow_body #content .lengow_breadcrumb {
     background: #2e3340;
     border: none;
@@ -595,8 +606,18 @@ body.lengow_body #content .lengow_breadcrumb a {
 }
 
 /*ORDER SETTING PAGE */
+#lengow_form_wrapper {
+    width:100%;
+}
+
+.lengow_form {
+    margin:20px;
+    background-color: #ffffff;
+    box-shadow:0.1px 0px 0px 0px rgba(0, 0, 0, 0.7);
+}
+
 .lengow_form .container, .lengow_form .container2 {
-    margin: 80px;
+    padding: 20px;
 }
 
 .lengow_form label {
@@ -605,10 +626,16 @@ body.lengow_body #content .lengow_breadcrumb a {
     text-align: left;
 }
 
-.lengow_form .lengow_default_carrier, .lengow_form .lengow_marketplace_carrier {
-    display: inline-block;
+.lengow_form .lengow_select {
+    width:500px;
+}
+
+.lengow_form .lengow_default_carrier, .lengow_form .no_carrier {
+    display: block;
     border: 1px #C1C7C9 solid;
-    padding: 40px;
+    padding: 25px;
+    float:left;
+    width:200px;
 }
 .lengow_form .no_carrier{
     background-color: #9E9F9E;
@@ -624,9 +651,55 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 .lengow_form .marketplace_carrier {
     display: inline-block;
-    padding-right:40px;
+}
+.lengow_form .lengow_marketplace_carrier{
+    display: block;
+
 }
 
+.lengow_form #use_marketplace_carriers{
+    padding-bottom: 30px;
+}
+/********************************************************************************/
+.lengow_form .accordion {
+    margin-left: 0;
+    padding-left: 0;
+    list-style:none;
+}
+.lengow_form .accordion label {
+    width: 1000px;
+    padding: 15px;
+}
+.lengow_form .accordion h4 {
+    border: 1px #C1C7C9 solid;
+}
+.lengow_form .accordion ul {
+    margin-top: -19px;
+    margin-right: -19px;
+    margin-bottom: -20px;
+    margin-left: -40px;
+}
+
+.lengow_form .accordion input[type="radio"],input[type="checkbox"] {
+    display: none;
+}
+
+.lengow_form .accordion input:checked + .sub > li {
+    height: 200px;
+}
+
+.lengow_form .accordion .sub > li {
+    display: none;
+    height: 0;
+    padding: 0;
+
+}
+.lengow_form .accordion input:checked + .sub > li {
+    padding:20px;
+    height: 100px;
+    display: table-cell;
+}
+/*********************************************************************************/
 
 /* HOME PAGE */
 #lengow_home_frame {
@@ -641,7 +714,6 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 }
 
-
 /* HELP PAGE */
 
 #lengow_help_wrapper {
@@ -654,4 +726,15 @@ body.lengow_body #content .lengow_breadcrumb a {
     margin-top: -6px;
     height:100%;
 
+}
+
+/* MAIN SETTINGS */
+.lengow_form .lengow_report_mail_address select {
+    width:100%;
+}
+/*.select2-dropdown--below {
+    display: none !important;
+}*/
+.lengow_form .lengow_report_mail_address .select2-search {
+    width: auto;
 }

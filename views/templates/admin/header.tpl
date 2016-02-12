@@ -20,10 +20,10 @@
 
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-switch.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap.css">
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-select.min.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-datepicker.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/admin.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
 
 <ul class="nav nav-pills lengow-nav lengow-nav-top">
     <li class="lengow_float_right">
@@ -61,8 +61,7 @@
 </script>
 <script type="text/javascript" src="/modules/lengow/views/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/admin.js"></script>
-<script type="text/javascript" src="/modules/lengow/views/js/lengow/order_setting.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-switch.js"></script>
-<script type="text/javascript" src="/modules/lengow/views/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/clipboard.js"></script>
+<script type="text/javascript" src="/modules/lengow/views/js/select2.js"></script>

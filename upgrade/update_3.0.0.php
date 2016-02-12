@@ -223,6 +223,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_marketplace_carrier` (
     `id_country` int(11) UNSIGNED NOT NULL,
     `id_carrier` int(11) UNSIGNED NULL,
     `marketplace_carrier_sku` varchar(32) NOT NULL,
+    `marketplace_carrier_name` VARCHAR(32) NOT NULL;
     PRIMARY KEY(`id`),
     INDEX (`id_country`) ,
     INDEX (`id_carrier`) ,
