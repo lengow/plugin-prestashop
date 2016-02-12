@@ -592,6 +592,11 @@ body.lengow_body #content .lengow_breadcrumb a {
 }
 
 /*ORDER SETTING PAGE */
+#lengow_form_wrapper {
+    background:white;
+    margin:20px;
+}
+
 .lengow_form .container, .lengow_form .container2 {
     margin: 80px;
 }
@@ -600,6 +605,10 @@ body.lengow_body #content .lengow_breadcrumb a {
     float: none;
     display: block;
     text-align: left;
+}
+
+.lengow_form .lengow_select {
+    width:500px;
 }
 
 .lengow_form .lengow_default_carrier, .lengow_form .lengow_marketplace_carrier {
@@ -638,7 +647,6 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 }
 
-
 /* HELP PAGE */
 
 #lengow_help_wrapper {
@@ -651,4 +659,15 @@ body.lengow_body #content .lengow_breadcrumb a {
     margin-top: -6px;
     height:100%;
 
+}
+
+/* MAIN SETTINGS */
+.lengow_form .lengow_report_mail_address select {
+    width:700px;
+}
+.select2-dropdown--below {
+    display: none !important;
+}
+.lengow_form .lengow_report_mail_address .select2-search {
+    width: auto;
 }

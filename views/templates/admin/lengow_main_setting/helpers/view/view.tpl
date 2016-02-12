@@ -19,3 +19,21 @@
  *}
 
 <h1>Main Setting</h1>
+
+
+<div id="lengow_form_wrapper">
+    <form class="lengow_form" method="POST">
+        <input type="hidden" name="action" value="process">
+        {$mail_report}
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn lengow_btn">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<script type="text/javascript" src="/modules/lengow/views/js/lengow/main_setting.js"></script>

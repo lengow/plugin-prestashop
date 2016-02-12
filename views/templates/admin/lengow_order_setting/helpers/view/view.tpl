@@ -58,3 +58,5 @@
         </div>
     </div>
 </form>
+
+<script type="text/javascript" src="/modules/lengow/views/js/lengow/order_setting.js"></script>
