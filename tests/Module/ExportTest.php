@@ -179,20 +179,20 @@ class ExportTest extends ModuleTestCase
         $export->setFormat('mp3');
     }
 
-    /**
-     * Test Export Empty Carrier
-     *
-     * @test
-     * @expectedException        LengowExportException
-     * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
-     * @covers LengowExport::setCarrier
-     */
-    public function setCarrier()
-    {
-        Configuration::set('LENGOW_CARRIER_DEFAULT', '');
-        $export = new LengowExport();
-        $export->setCarrier();
-    }
+//    /**
+//     * Test Export Empty Carrier
+//     *
+//     * @test
+//     * @expectedException        LengowExportException
+//     * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
+//     * @covers LengowExport::setCarrier
+//     */
+//    public function setCarrier()
+//    {
+//        Configuration::set('LENGOW_CARRIER_DEFAULT', '');
+//        $export = new LengowExport();
+//        $export->setCarrier();
+//    }
 
     /**
      * Test Export Empty Currency

@@ -705,36 +705,69 @@ class LengowProduct extends Product
             if (!Combination::isFeatureActive()) {
                 return array();
             }
-            $sql = 'SELECT ag.`id_attribute_group`, ag.`is_color_group`, agl.`name` AS group_name, agl.`public_name` AS public_group_name,
-						a.`id_attribute`, al.`name` AS attribute_name, a.`color` AS attribute_color, pa.`id_product_attribute`,
-						IFNULL(stock.quantity, 0) as quantity, product_attribute_shop.`price`, product_attribute_shop.`ecotax`, pa.`weight`,
-						product_attribute_shop.`default_on`, pa.`reference`, product_attribute_shop.`unit_price_impact`,
-						pa.`minimal_quantity`, pa.`available_date`, ag.`group_type`, ps.`product_supplier_reference` AS `supplier_reference`, pa.`ean13`, pa.`upc`, pa.`wholesale_price`, pa.`ecotax`
-					FROM `' . _DB_PREFIX_ . 'product_attribute` pa
-					' . Shop::addSqlAssociation('product_attribute', 'pa') . '
-					' . Product::sqlStock('pa', 'pa') . '
-					LEFT JOIN `' . _DB_PREFIX_ . 'product_supplier` ps ON (ps.`id_product_attribute` = pa.`id_product_attribute` AND ps.`id_product` = ' . (int)$this->id . ')
-					LEFT JOIN `' . _DB_PREFIX_ . 'product_attribute_combination` pac ON pac.`id_product_attribute` = pa.`id_product_attribute`
-					LEFT JOIN `' . _DB_PREFIX_ . 'attribute` a ON a.`id_attribute` = pac.`id_attribute`
-					LEFT JOIN `' . _DB_PREFIX_ . 'attribute_group` ag ON ag.`id_attribute_group` = a.`id_attribute_group`
-					LEFT JOIN `' . _DB_PREFIX_ . 'attribute_lang` al ON a.`id_attribute` = al.`id_attribute`
-					LEFT JOIN `' . _DB_PREFIX_ . 'attribute_group_lang` agl ON ag.`id_attribute_group` = agl.`id_attribute_group`
-					' . Shop::addSqlAssociation('attribute', 'a') . '
-					WHERE pa.`id_product` = ' . (int)$this->id . '
-						AND al.`id_lang` = ' . (int)$id_lang . '
-						AND agl.`id_lang` = ' . (int)$id_lang . '
+            $sql = 'SELECT
+                    ag.`id_attribute_group`,
+                    ag.`is_color_group`,
+                    agl.`name` AS group_name,
+                    agl.`public_name` AS public_group_name,
+					a.`id_attribute`,
+                    al.`name` AS attribute_name,
+                    a.`color` AS attribute_color,
+                    pa.`id_product_attribute`,
+					IFNULL(stock.quantity, 0) as quantity,
+                    product_attribute_shop.`price`,
+                    product_attribute_shop.`ecotax`,
+                    pa.`weight`,
+					product_attribute_shop.`default_on`,
+                    pa.`reference`,
+                    product_attribute_shop.`unit_price_impact`,
+					pa.`minimal_quantity`,
+                    pa.`available_date`,
+                    ag.`group_type`,
+                    ps.`product_supplier_reference` AS `supplier_reference`,
+                    pa.`ean13`,
+                    pa.`upc`,
+                    pa.`wholesale_price`,
+                    pa.`ecotax`
+					FROM `'._DB_PREFIX_.'product_attribute` pa
+					'.Shop::addSqlAssociation('product_attribute', 'pa').'
+					'.Product::sqlStock('pa', 'pa').'
+					LEFT JOIN `'._DB_PREFIX_.'product_supplier` ps
+                    ON (ps.`id_product_attribute` = pa.`id_product_attribute` AND ps.`id_product` = '.(int)$this->id.')
+					LEFT JOIN `'._DB_PREFIX_.'product_attribute_combination` pac
+                    ON pac.`id_product_attribute` = pa.`id_product_attribute`
+					LEFT JOIN `'._DB_PREFIX_.'attribute` a ON a.`id_attribute` = pac.`id_attribute`
+					LEFT JOIN `'._DB_PREFIX_.'attribute_group` ag ON ag.`id_attribute_group` = a.`id_attribute_group`
+					LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al ON a.`id_attribute` = al.`id_attribute`
+					LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
+                    ON ag.`id_attribute_group` = agl.`id_attribute_group`
+					' . Shop::addSqlAssociation('attribute', 'a').'
+					WHERE pa.`id_product` = '.(int)$this->id.'
+						AND al.`id_lang` = '.(int)$id_lang.'
+						AND agl.`id_lang` = '.(int)$id_lang.'
 					GROUP BY id_attribute_group, id_product_attribute
 					ORDER BY ag.`position` ASC, a.`position` ASC, agl.`name` ASC';
         } else {
-            $sql = 'SELECT ag.`id_attribute_group`, ag.`is_color_group`, agl.`name` group_name, agl.`public_name` public_group_name, a.`id_attribute`, al.`name` attribute_name,
-					a.`color` attribute_color, pa.*
-					FROM `' . _DB_PREFIX_ . 'product_attribute` pa
-					LEFT JOIN `' . _DB_PREFIX_ . 'product_attribute_combination` pac ON (pac.`id_product_attribute` = pa.`id_product_attribute`)
-					LEFT JOIN `' . _DB_PREFIX_ . 'attribute` a ON (a.`id_attribute` = pac.`id_attribute`)
-					LEFT JOIN `' . _DB_PREFIX_ . 'attribute_group` ag ON (ag.`id_attribute_group` = a.`id_attribute_group`)
-					LEFT JOIN `' . _DB_PREFIX_ . 'attribute_lang` al ON (a.`id_attribute` = al.`id_attribute`)
-					LEFT JOIN `' . _DB_PREFIX_ . 'attribute_group_lang` agl ON (ag.`id_attribute_group` = agl.`id_attribute_group`)
-					WHERE pa.`id_product` = ' . (int)$this->id . ' AND al.`id_lang` = ' . (int)$id_lang . ' AND agl.`id_lang` = ' . (int)$id_lang . '
+            $sql = 'SELECT 
+                    ag.`id_attribute_group`,
+                    ag.`is_color_group`,
+                    agl.`name` group_name,
+                    agl.`public_name` public_group_name,
+                    a.`id_attribute`,
+                    al.`name` attribute_name,
+					a.`color` attribute_color,
+                    pa.*
+					FROM `'._DB_PREFIX_.'product_attribute` pa
+					LEFT JOIN `'._DB_PREFIX_.'product_attribute_combination` pac
+                    ON (pac.`id_product_attribute` = pa.`id_product_attribute`)
+					LEFT JOIN `'._DB_PREFIX_.'attribute` a ON (a.`id_attribute` = pac.`id_attribute`)
+					LEFT JOIN `'._DB_PREFIX_.'attribute_group` ag ON (ag.`id_attribute_group` = a.`id_attribute_group`)
+					LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al ON (a.`id_attribute` = al.`id_attribute`)
+					LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
+                    ON (ag.`id_attribute_group` = agl.`id_attribute_group`)
+					WHERE pa.`id_product` = '.(int)$this->id.'
+                    AND al.`id_lang` = '.(int)$id_lang.'
+                    AND agl.`id_lang` = '.(int)$id_lang.'
 					ORDER BY agl.`public_name`, al.`name`';
         }
         //echo "**********".$sql."**********";
@@ -980,8 +1013,8 @@ class LengowProduct extends Product
             $query->select('p.id_product');
             $query->from('product', 'p');
             $query->innerJoin('product_shop', 'ps', 'p.id_product = ps.id_product');
-            $query->where('p.' . pSQL($key) . ' = \'' . pSQL($value) . '\'');
-            $query->where('ps.`id_shop` = \'' . (int)$id_shop . '\'');
+            $query->where('p.'.pSQL($key).' = \''.pSQL($value).'\'');
+            $query->where('ps.`id_shop` = \''.(int)$id_shop.'\'');
             $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
 
             // If no result, search in attribute
@@ -990,25 +1023,20 @@ class LengowProduct extends Product
                 $query->select('pa.id_product, pa.id_product_attribute');
                 $query->from('product_attribute', 'pa');
                 $query->innerJoin('product_shop', 'ps', 'pa.id_product = pa.id_product');
-                $query->where('pa.' . pSQL($key) . ' = \'' . pSQL($value) . '\'');
-                $query->where('ps.`id_shop` = \'' . (int)$id_shop . '\'');
+                $query->where('pa.'.pSQL($key).' = \''.pSQL($value).'\'');
+                $query->where('ps.`id_shop` = \''.(int)$id_shop.'\'');
                 $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
             }
         } else {
             $sql = 'SELECT p.`id_product`
-				FROM `' . _DB_PREFIX_ . 'product` p
-				INNER JOIN `' . _DB_PREFIX_ . 'product_shop` ps
-				ON p.id_product = ps.id_product
-				WHERE p.`' . pSQL($key) . '` = \'' . pSQL($value) . '\'
-				AND ps.`id_shop` = \'' . (int)$id_shop . '\'';
+				FROM `'._DB_PREFIX_.'product` p
+				WHERE p.`'.pSQL($key).'` = \''.pSQL($value).'\'';
             $result = Db::getInstance()->getRow($sql);
 
             if ($result == '') {
                 $sql = 'SELECT pa.`id_product`, pa.`id_product_attribute`
-					FROM `' . _DB_PREFIX_ . 'product_attribute` pa
-					INNER JOIN `' . _DB_PREFIX_ . 'product_shop` ps
-					WHERE pa.`' . pSQL($key) . '` = \'' . pSQL($value) . '\'
-					AND ps.`id_shop` = \'' . (int)$id_shop . '\'';
+					FROM `'._DB_PREFIX_.'product_attribute` pa
+					WHERE pa.`'.pSQL($key).'` = \''.pSQL($value).'\'';
                 $result = Db::getInstance()->getRow($sql);
             }
         }

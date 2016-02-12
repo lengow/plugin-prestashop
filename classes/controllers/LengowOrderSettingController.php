@@ -39,19 +39,30 @@ class LengowOrderSettingController extends LengowController
         $id_countries = LengowCarrierCountry::getIdCountries($listCarrier);
         $mkp_carriers = LengowCarrier::getListMarketplaceCarrier();
 
-        $form = new LengowConfigurationForm(array(
-            "fields" => LengowConfiguration::getKeys(),
-            ));
+        $form = new LengowConfigurationForm(
+            array(
+                "fields" => LengowConfiguration::getKeys(),
+            )
+        );
 
-        $matching = $form->buildInputs(array(
-            'LENGOW_ORDER_ID_PROCESS',
-            'LENGOW_ORDER_ID_SHIPPED',
-            'LENGOW_ORDER_ID_CANCEL',
-            'LENGOW_ORDER_ID_SHIPPEDBYMP'
-            ));
+        $matching = $form->buildInputs(
+            array(
+                'LENGOW_ORDER_ID_PROCESS',
+                'LENGOW_ORDER_ID_SHIPPED',
+                'LENGOW_ORDER_ID_CANCEL',
+                'LENGOW_ORDER_ID_SHIPPEDBYMP'
+            )
+        );
 
         $matching2 = $form->buildInputs(array('LENGOW_IMPORT_CARRIER_MP_ENABLED'));
-        $matching3 = $form->buildInputs(array('LENGOW_IMPORT_DAYS'));
+
+        $import_params = $form->buildInputs(
+            array(
+                'LENGOW_IMPORT_DAYS',
+                'LENGOW_IMPORT_SHIP_MP_ENABLED',
+                'LENGOW_IMPORT_STOCK_SHIP_MP'
+            )
+        );
 
         $this->context->smarty->assign('default_country', $default_country);
         $this->context->smarty->assign('carriers', $carriers);
@@ -61,7 +72,7 @@ class LengowOrderSettingController extends LengowController
         $this->context->smarty->assign('mkp_carriers', $mkp_carriers);
         $this->context->smarty->assign('matching', $matching);
         $this->context->smarty->assign('matching2', $matching2);
-        $this->context->smarty->assign('matching3', $matching3);
+        $this->context->smarty->assign('import_params', $import_params);
 
         parent::display();
     }
@@ -82,7 +93,7 @@ class LengowOrderSettingController extends LengowController
 
 
                 $itemCarrier = LengowCarrierCountry::listCarrierById($id_lengow_carrier);
-                $carriers = LengowCarrier::getActiveCarriers();
+                $carriers = LengowCarrier::getActiveCarriers($id_country);
 
                 LengowCarrier::insert($id_country);
 
@@ -102,11 +113,8 @@ class LengowOrderSettingController extends LengowController
                 echo '$("#add_country").append("'.preg_replace('/\r|\n/', '', addslashes($display_default_carrier)).'");';
                 echo '$("#select_country option:selected").remove();';
                 echo '$("#add_marketplace_country").append("'.preg_replace('/\r|\n/', '', addslashes($display_marketplace_carrier)).'");';
-
-
                 exit();
                 break;
-
             case 'delete_country':
                  $id_country = Tools::getValue('id_country');
 
@@ -137,20 +145,31 @@ class LengowOrderSettingController extends LengowController
                 break;
             case 'process':
                 foreach ($default_carriers as $key => $value) {
-                    Db::getInstance()->autoExecute(_DB_PREFIX_ . 'lengow_carrier_country', array('id_carrier' => (int)$value), 'UPDATE', 'id = '.(int)$key);
-                
+                    Db::getInstance()->autoExecute(
+                        _DB_PREFIX_ . 'lengow_carrier_country',
+                        array('id_carrier' => (int)$value),
+                        'UPDATE',
+                        'id = '.(int)$key
+                    );
                 }
 
                 foreach ($default_marketplace_carriers as $key => $value) {
                     Db::getInstance()->autoExecute(_DB_PREFIX_.'lengow_marketplace_carrier', array('id_carrier' => (int)$value), 'UPDATE', 'id = '.(int)$key);
                 }
 
+                $form = new LengowConfigurationForm(
+                    array(
+                        "fields" => LengowConfiguration::getKeys(),
+                    )
+                );
 
-                $form = new LengowConfigurationForm(array(
-                "fields" => LengowConfiguration::getKeys(),
-                ));
-
-                $form->postProcess(array('LENGOW_IMPORT_CARRIER_MP_ENABLED'));
+                $form->postProcess(
+                    array(
+                        'LENGOW_IMPORT_CARRIER_MP_ENABLED',
+                        'LENGOW_IMPORT_SHIP_MP_ENABLED',
+                        'LENGOW_IMPORT_STOCK_SHIP_MP'
+                    )
+                );
                 break;
             default:
                 LengowCarrierCountry::createDefaultCarrier();

@@ -193,7 +193,7 @@ class LengowPaymentModule extends PaymentModule
             $product_list = array();
             foreach ($package['product_list'] as &$product) {
                 $sku = $product['id_product'];
-                $sku .= empty($product['id_product_attribute']) ? '' : '_' . $product['id_product_attribute'];
+                $sku .= empty($product['id_product_attribute']) ? '' : '_'.$product['id_product_attribute'];
                 if (isset($lengow_products[$sku])) {
                     $product['price_wt'] = $lengow_products[$sku]['price_unit'];
                     $product['price'] = Tools::ps_round(
@@ -214,7 +214,7 @@ class LengowPaymentModule extends PaymentModule
 
                     //$product_list[] = $product;//array_merge($product, $lengow_products[$sku]);
                 } else {
-                    throw new LengowImportException('product ' . $sku . ' is not listed as part of the current order.');
+                    throw new LengowImportException('product '.$sku.' is not listed as part of the current order.');
                 }
             }
 
@@ -506,7 +506,7 @@ class LengowPaymentModule extends PaymentModule
             $product_list = array();
             foreach ($products as &$product) {
                 $sku = $product['id_product'];
-                $sku .= empty($product['id_product_attribute']) ? '' : '_' . $product['id_product_attribute'];
+                $sku .= empty($product['id_product_attribute']) ? '' : '_'.$product['id_product_attribute'];
                 if (isset($lengow_products[$sku])) {
                     $product['price_wt'] = $lengow_products[$sku]['price_unit'];
                     $product['price'] = Tools::ps_round(
@@ -521,13 +521,13 @@ class LengowPaymentModule extends PaymentModule
                     $product['total_wt'] = Tools::ps_round((float)$product['price_wt'] * (int)$product['quantity'], 2);
 
                     // total tax free
-                    $total_products += (float)$product['price'];
+                    $total_products += (float)$product['total'];
                     // total with taxes
-                    $total_products_wt += $product['price_wt'];
+                    $total_products_wt += $product['total_wt'];
 
                     $product_list[] = $product;//array_merge($product, $lengow_products[$sku]);
                 } else {
-                    throw new LengowImportException('product ' . $sku . ' is not listed as part of the current order.');
+                    throw new LengowImportException('product '.$sku.' is not listed as part of the current order.');
                 }
             }
             $order->total_products = (float)Tools::ps_round($total_products, 2);
@@ -575,7 +575,7 @@ class LengowPaymentModule extends PaymentModule
                 }
                 // Insert products from cart into order_detail table
                 $db = Db::getInstance();
-                $query = 'INSERT INTO `' . _DB_PREFIX_ . 'order_detail`
+                $query = 'INSERT INTO `'._DB_PREFIX_.'order_detail`
 					(`id_order`,
                     `product_id`,
                     `product_attribute_id`,
@@ -643,29 +643,29 @@ class LengowPaymentModule extends PaymentModule
                     if (!empty($product['ecotax'])) {
                         $ecotaxTaxRate = Tax::getProductEcotaxRate($order->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
                     }
-                    $query .= '(' . (int)($order->id) . ',
-						' . (int)($product['id_product']) . ',
-						' . (isset($product['id_product_attribute']) ? (int)($product['id_product_attribute']) : 'null') . ',
-						\'' . pSQL($product['name'] . ((isset($product['attributes']) && $product['attributes'] != null) ? ' - ' . $product['attributes'] : '')) . '\',
-						' . (int)($product['cart_quantity']) . ',
-						' . $quantityInStock . ',
-						' . (float)$product['price'] . ',
-						' . pSQL('0.00') . ',
-						' . (float)(Group::getReduction((int)($order->id_customer))) . ',
-						' . pSQL('0.00') . ',
-						' . pSQL('0') . ',
-						' . (empty($product['ean13']) ? 'null' : '\'' . pSQL($product['ean13']) . '\'') . ',
-						' . (empty($product['upc']) ? 'null' : '\'' . pSQL($product['upc']) . '\'') . ',
-						' . (empty($product['reference']) ? 'null' : '\'' . pSQL($product['reference']) . '\'') . ',
-						' . (empty($product['supplier_reference']) ? 'null' : '\'' . pSQL($product['supplier_reference']) . '\'') . ',
-						' . (float)($product['id_product_attribute'] ? $product['weight_attribute'] : $product['weight']) . ',
-						\'' . (empty($tax_rate) ? '' : pSQL($product['tax'])) . '\',
-						' . (float)($tax_rate) . ',
-						' . (float)Tools::convertPrice((float)$product['ecotax'], (int)$order->id_currency) . ',
-						' . (float)$ecotaxTaxRate . ',
-						' . pSQL('0') . ',
-						\'' . pSQL($deadline) . '\',
-						\'' . pSQL($download_hash) . '\'),';
+                    $query .= '('.(int)($order->id).',
+						'.(int)($product['id_product']).',
+						'.(isset($product['id_product_attribute']) ? (int)($product['id_product_attribute']) : 'null').',
+						\''.pSQL($product['name'].((isset($product['attributes']) && $product['attributes'] != null) ? ' - '.$product['attributes'] : '')).'\',
+						'.(int)($product['cart_quantity']).',
+						'.$quantityInStock.',
+						'.(float)$product['price'].',
+						'.pSQL('0.00').',
+						'.(float)(Group::getReduction((int)($order->id_customer))).',
+						'.pSQL('0.00').',
+						'.pSQL('0').',
+						'.(empty($product['ean13']) ? 'null' : '\''.pSQL($product['ean13']).'\'').',
+						'.(empty($product['upc']) ? 'null' : '\''.pSQL($product['upc']).'\'').',
+						'.(empty($product['reference']) ? 'null' : '\''.pSQL($product['reference']).'\'') . ',
+						'.(empty($product['supplier_reference']) ? 'null' : '\''.pSQL($product['supplier_reference']).'\'').',
+						'.(float)($product['id_product_attribute'] ? $product['weight_attribute'] : $product['weight']).',
+						\''.(empty($tax_rate) ? '' : pSQL($product['tax'])).'\',
+						'.(float)($tax_rate).',
+						'.(float)Tools::convertPrice((float)$product['ecotax'], (int)$order->id_currency).',
+						'.(float)$ecotaxTaxRate.',
+						'.pSQL('0').',
+						\''.pSQL($deadline).'\',
+						\''.pSQL($download_hash).'\'),';
                 } // end foreach ($products)
                 $query = rtrim($query, ',');
                 $result = $db->Execute($query);

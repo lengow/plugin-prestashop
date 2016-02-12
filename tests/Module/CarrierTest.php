@@ -27,16 +27,16 @@ class CarrierTest extends ModuleTestCase
     }
 
     /**
-     * Test getListMarketplaceCarrier
+     * Test getListMarketplaceCarrierAPI
      *
      * @test
-     * @covers LengowCarrier::getListMarketplaceCarrier
+     * @covers LengowCarrier::getListMarketplaceCarrierAPI
      */
-    public function getListMarketplaceCarrier()
+    public function getListMarketplaceCarrierAPI()
     {
         LengowConnector::$test_fixture_path =
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
-        $carrierCollection = LengowCarrier::getListMarketplaceCarrier();
+        $carrierCollection = LengowCarrier::getListMarketplaceCarrierAPI();
         $testCarrier = array(
             'LAPOSTE',
             'LAPOSTE_RELAY',
@@ -104,5 +104,21 @@ class CarrierTest extends ModuleTestCase
             'marketplace_carrier_sku' => 'MONDIALRELAY_RELAY',
             'id_country' => $defaultCountryId
         ));
+    }
+
+    /**
+     * Test getMarketplaceCarrier
+     *
+     * @test
+     * @covers LengowCarrier::getMarketplaceCarrier
+     */
+    public function getMarketplaceCarrier()
+    {
+        $carrierName = LengowCarrier::getMarketplaceCarrier(1, 8);
+        $this->assertEquals('LAPOSTE', $carrierName);
+        $carrierName = LengowCarrier::getMarketplaceCarrier(2, 8);
+        $this->assertEquals('LAPOSTE_RELAY', $carrierName);
+        $carrierName = LengowCarrier::getMarketplaceCarrier(3, 8);
+        $this->assertEquals(null, $carrierName);
     }
 }

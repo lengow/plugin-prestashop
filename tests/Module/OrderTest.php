@@ -27,6 +27,12 @@ class OrderTest extends ModuleTestCase
         Module::getInstanceByName('lengow');
 
         LengowMain::$registers =array();
+
+        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
+        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
+        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
+        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
     }
 
     /**
@@ -70,12 +76,6 @@ class OrderTest extends ModuleTestCase
      */
     public function callActionShip()
     {
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
-        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
@@ -105,6 +105,36 @@ class OrderTest extends ModuleTestCase
         );
         $this->assertTrue($order->callAction('ship'));
         $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 2));
+
+
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking_order.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
+
+        $order = new LengowOrder(1);
+        $this->assertFalse($order->callAction('ship'), 'Cant ship order without tracking');
+    }
+
+    /**
+     * Test Send tracking without matching marketplace
+     * @test
+     */
+    public function sendWithoutMarketplaceMatch()
+    {
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
+        $fixture->truncate('lengow_marketplace_carrier');
+
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
+        );
+        $order = new LengowOrder(1);
+        $this->assertFalse($order->callAction('ship'));
+
+        $this->assertLogContain('You need to match carrier');
+
     }
 
     /**
