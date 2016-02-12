@@ -18,6 +18,8 @@
                 }
                 return null;
             }
+        }).on("select2:open", function (e) {
+            $('.select2-dropdown--below').hide();
         });
     });
 

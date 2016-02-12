@@ -99,7 +99,18 @@ body.lengow_body #content {
     background: #EFF1F2;
 }
 
-/* BREADCRUBMS */
+body.lengow_body .nobootstrap .form-group {
+    clear: inherit;
+    margin: 0;
+    float: none;
+    width: 100%;
+}
+body.lengow_body .nobootstrap .form-group>div {
+    float: none;
+}
+
+
+    /* BREADCRUBMS */
 body.lengow_body #content .lengow_breadcrumb {
     background: #2e3340;
     border: none;
@@ -716,7 +727,7 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 /* MAIN SETTINGS */
 .lengow_form .lengow_report_mail_address select {
-    width:700px;
+    width:100%;
 }
 /*.select2-dropdown--below {
     display: none !important;

@@ -39,6 +39,7 @@ class LengowMainSettingController extends LengowController
                 $form->postProcess(
                     array(
                         'LENGOW_REPORT_MAIL_ENABLED',
+                        'LENGOW_IMPORT_PREPROD_ENABLED',
                     )
                 );
                 break;
@@ -60,6 +61,12 @@ class LengowMainSettingController extends LengowController
             array(
                 'LENGOW_REPORT_MAIL_ENABLED',
                 'LENGOW_REPORT_MAIL_ADDRESS',
+            )
+        );
+
+        $mail_report = $form->buildInputs(
+            array(
+                'LENGOW_IMPORT_PREPROD_ENABLED',
             )
         );
         $this->context->smarty->assign('mail_report', $mail_report);
