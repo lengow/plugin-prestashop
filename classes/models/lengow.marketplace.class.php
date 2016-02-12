@@ -429,6 +429,9 @@ class LengowMarketplace
                     case 'carrier':
                         $deliveryAddress = new Address($order->id_address_delivery);
                         if (!isset($deliveryAddress->id_country) || $deliveryAddress->id_country == 0) {
+                            if (isset($actions['optional_args']) && in_array('carrier', $actions['optional_args'])) {
+                                continue;
+                            }
                             throw new LengowException('Can\'t find delivery country in order');
                         }
                         $params['carrier'] = LengowCarrier::getMarketplaceCarrier(
@@ -436,6 +439,9 @@ class LengowMarketplace
                             $deliveryAddress->id_country
                         );
                         if (!$params['carrier']) {
+                            if (isset($actions['optional_args']) && in_array('carrier', $actions['optional_args'])) {
+                                continue;
+                            }
                             $countryName = Country::getNameById(
                                 Context::getContext()->language->id,
                                 $deliveryAddress->id_country
