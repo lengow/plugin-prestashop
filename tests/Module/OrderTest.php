@@ -126,6 +126,9 @@ class OrderTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
         $fixture->truncate('lengow_marketplace_carrier');
 
+        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Marketplace/require_carrier_args.json';
+        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+
         LengowConnector::$test_fixture_path = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
