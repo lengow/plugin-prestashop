@@ -97,7 +97,7 @@ class LengowImportOrder
     /**
      * @var boolean re-import order
      */
-    protected $is_reimport = false;
+    protected $is_reimported = false;
 
     /**
      * @var integer id of the record Lengow order table
@@ -233,13 +233,13 @@ class LengowImportOrder
             if ($order_updated && isset($order_updated['update'])) {
                 return $this->returnResult('update', $order_updated['lengow_order_id'], $order_id);
             }
-            if (!$this->is_reimport) {
+            if (!$this->is_reimported) {
                 return false;
             }
         }
         // checks if an external id already exists
         $id_order_prestashop = $this->checkExternalIds($this->order_data->merchant_order_id);
-        if ($id_order_prestashop && !$this->preprod_mode && !$this->is_reimport) {
+        if ($id_order_prestashop && !$this->preprod_mode && !$this->is_reimported) {
             LengowMain::log(
                 'Import',
                 'already imported in Prestashop with order ID '.$id_order_prestashop,
@@ -394,16 +394,18 @@ class LengowImportOrder
                 // ensure carrier compatibility with SoColissimo & Mondial Relay
                 $this->checkCarrierCompatibility($order);
             }
-            if ($this->shipped_by_mp && !LengowConfiguration::getGlobalValue('LENGOW_IMPORT_STOCK_SHIP_MP')) {
-                LengowMain::log(
-                    'Import',
-                    'adding quantity back to stock (order shipped by marketplace)',
-                    $this->log_output,
-                    $this->marketplace_sku
-                );
+            if ($this->is_reimported
+                || ($this->shipped_by_mp && !LengowConfiguration::getGlobalValue('LENGOW_IMPORT_STOCK_SHIP_MP'))
+            ) {
+                if ($this->is_reimported) {
+                    $log_message = 'adding quantity back to stock (order is re-imported)';
+                } else {
+                    $log_message = 'adding quantity back to stock (order shipped by marketplace)';
+                }
+                LengowMain::log('Import', $log_message, $this->log_output, $this->marketplace_sku);
                 $this->addQuantityBack($products);
             }
-            if ($this->is_reimport && !is_null($this->old_order)) {
+            if ($this->is_reimported && !is_null($this->old_order)) {
                 $this->old_order->setStateToError();
             }
         } catch (InvalidLengowObjectException $iloe) {
@@ -481,7 +483,7 @@ class LengowImportOrder
         $order = new LengowOrder($order_id);
         $result = array('id_order_lengow' => $order->lengow_id);
         // Lengow -> Cancel and reimport order
-        if ($order->lengow_is_reimport) {
+        if ($order->lengow_is_reimported) {
             LengowMain::log(
                 'Import',
                 'order is disabled (ORDER '.$order_id.')',
@@ -489,7 +491,7 @@ class LengowImportOrder
                 $this->marketplace_sku
             );
             $this->old_order = $order;
-            $this->is_reimport = true;
+            $this->is_reimported = true;
             return false;
         } else {
             try {
@@ -554,6 +556,9 @@ class LengowImportOrder
             if (!$currencyId) {
                 $error_messages[] = 'currency '.$this->order_data->currency->iso_a3.' is not available in your shop';
             }
+        }
+        if ($this->order_data->total_order == -1) {
+            $error_messages[] = 'prices can\'t be calculated in the correct currency';
         }
         if (is_null($this->order_data->billing_address)) {
             $error_messages[] = 'no billing address in the order';
