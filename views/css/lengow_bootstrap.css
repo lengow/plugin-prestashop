@@ -593,20 +593,17 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 /*ORDER SETTING PAGE */
 #lengow_form_wrapper {
-    background:white;
-    margin:20px;
+    width:100%;
 }
 
 .lengow_form {
-    width: 1000px;
-    padding: 1px;
-    margin:auto;
+    margin:20px;
     background-color: #ffffff;
     box-shadow:0.1px 0px 0px 0px rgba(0, 0, 0, 0.7);
 }
 
 .lengow_form .container, .lengow_form .container2 {
-    margin: 80px;
+    padding: 20px;
 }
 
 .lengow_form label {
@@ -620,9 +617,11 @@ body.lengow_body #content .lengow_breadcrumb a {
 }
 
 .lengow_form .lengow_default_carrier, .lengow_form .no_carrier {
-    display: table-cell;
+    display: block;
     border: 1px #C1C7C9 solid;
     padding: 25px;
+    float:left;
+    width:200px;
 }
 .lengow_form .no_carrier{
     background-color: #9E9F9E;
@@ -719,9 +718,9 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_form .lengow_report_mail_address select {
     width:700px;
 }
-.select2-dropdown--below {
+/*.select2-dropdown--below {
     display: none !important;
-}
+}*/
 .lengow_form .lengow_report_mail_address .select2-search {
     width: auto;
 }
