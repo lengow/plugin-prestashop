@@ -37,6 +37,8 @@ class LengowHook
     static private $CURRENT_PAGE_TYPE = 'page';
     static private $USE_SSL = false;
     static private $ID_ORDER = '';
+    static private $ORDER_PAYMENT = '';
+    static private $ORDER_CURRENCY = '';
     static private $ORDER_TOTAL = '';
     static private $IDS_PRODUCTS = '';
     static private $IDS_PRODUCTS_CART = '';
@@ -86,6 +88,18 @@ class LengowHook
     {
         self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_HOMEPAGE;
     }
+
+    /**
+     * Hook on Payment page.
+     *
+     * @param array $args Arguments of hook
+     */
+    public function hookPaymentTop($args)
+    {
+        self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE;
+        $args = 0; // Prestashop validator
+    }
+
 
     /**
      * Generate tracker on front footer page.
@@ -250,15 +264,14 @@ class LengowHook
 
         // Generate tracker
         if (self::$CURRENT_PAGE_TYPE == self::LENGOW_TRACK_PAGE_CONFIRMATION) {
-            $currency = $this->context->currency;
             $shop_id = $this->context->shop->id;
             $this->context->smarty->assign(
                 array(
-                    'account_id'        => LengowMain::getIdAccount(),
+                    'account_id'        => LengowMain::getIdAccount($shop_id),
                     'order_ref'         => self::$ID_ORDER,
                     'amount'            => self::$ORDER_TOTAL,
-                    'currency_order'    => $currency->iso_code,
-                    'payment_method'    => self::$ID_ORDER,
+                    'currency_order'    => self::$ORDER_CURRENCY,
+                    'payment_method'    => self::$ORDER_PAYMENT,
                     'cart'              => self::$IDS_PRODUCTS_CART,
                     'newbiz'            => 1,
                     'secure'            => 0,
@@ -270,6 +283,55 @@ class LengowHook
         }
         return '';
     }
+
+    /**
+     * Hook on order confirmation page to init order's product list.
+     *
+     * @param array $args Arguments of hook
+     */
+    public function hookOrderConfirmation($args)
+    {
+        self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_CONFIRMATION;
+        self::$ID_ORDER = $args['objOrder']->id;
+        self::$ORDER_TOTAL = $args['total_to_pay'];
+        $payment_method = Tools::strtolower(str_replace(' ', '_', $args['objOrder']->payment));
+        self::$ORDER_PAYMENT = LengowMain::replaceAccentedChars($payment_method);
+        self::$ORDER_CURRENCY = $args['currencyObj']->iso_code;
+        $ids_products = array();
+        $products_list = $args['objOrder']->getProducts();
+        $i = 0;
+        $products_cart = array();
+        foreach ($products_list as $p) {
+            $i++;
+            switch (Configuration::get('LENGOW_TRACKING_ID')) {
+                case 'upc':
+                    $id_product = $p['upc'];
+                    break;
+                case 'ean':
+                    $id_product = $p['ean13'];
+                    break;
+                case 'ref':
+                    $id_product = $p['reference'];
+                    break;
+                default:
+                    if ($p['product_attribute_id']) {
+                        $id_product = $p['product_id'] . '_' . $p['product_attribute_id'];
+                    } else {
+                        $id_product = $p['product_id'];
+                    }
+                    break;
+            }
+            // Ids Product
+            $ids_products[] = $id_product;
+
+            // Basket Product
+            $products_cart[] = 'i' . $i . '=' . $id_product . '&p' . $i .
+                '=' . Tools::ps_round($p['unit_price_tax_incl'], 2) . '&q' . $i . '=' . $p['product_quantity'];
+        }
+        self::$IDS_PRODUCTS_CART = implode('&', $products_cart);
+        self::$IDS_PRODUCTS = implode('|', $ids_products);
+    }
+
 
     /**
      * Hook before an status' update to synchronize status with lengow.
@@ -347,62 +409,6 @@ class LengowHook
                 }
             }
         }
-    }
-
-    /**
-     * Hook on order confirmation page to init order's product list.
-     *
-     * @param array $args Arguments of hook
-     */
-    public function hookOrderConfirmation($args)
-    {
-        self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_CONFIRMATION;
-        self::$ID_ORDER = $args['objOrder']->id;
-        self::$ORDER_TOTAL = $args['total_to_pay'];
-        $ids_products = array();
-        $products_list = $args['objOrder']->getProducts();
-        $i = 0;
-        $products_cart = array();
-        foreach ($products_list as $p) {
-            $i++;
-            switch (Configuration::get('LENGOW_TRACKING_ID')) {
-                case 'upc':
-                    $id_product = $p['upc'];
-                    break;
-                case 'ean':
-                    $id_product = $p['ean13'];
-                    break;
-                case 'ref':
-                    $id_product = $p['reference'];
-                    break;
-                default:
-                    if ($p['product_attribute_id']) {
-                        $id_product = $p['product_id'] . '_' . $p['product_attribute_id'];
-                    } else {
-                        $id_product = $p['product_id'];
-                    }
-                    break;
-            }
-            // Ids Product
-            $ids_products[] = $id_product;
-
-            // Basket Product
-            $products_cart[] = 'i' . $i . '=' . $id_product . '&p' . $i .
-                '=' . Tools::ps_round($p['unit_price_tax_incl'], 2) . '&q' . $i . '=' . $p['product_quantity'];
-        }
-        self::$IDS_PRODUCTS_CART = implode('&', $products_cart);
-        self::$IDS_PRODUCTS = implode('|', $ids_products);
-    }
-
-    /**
-     * Hook on Payment page.
-     *
-     * @param array $args Arguments of hook
-     */
-    public function hookPaymentTop($args)
-    {
-        self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE;
-        $args = 0; // Prestashop validator
     }
 
     /**
@@ -485,7 +491,7 @@ class LengowHook
             }
 
             $template_data = array(
-                'marketplace_sku'       => $lengow_order->marketplace_sku,
+                'marketplace_sku'       => $lengow_order->lengow_marketplace_sku,
                 'id_flux'               => $lengow_order->lengow_id_flux,
                 'marketplace_name'      => $lengow_order->lengow_marketplace_name,
                 'total_paid'            => $lengow_order->lengow_total_paid,
@@ -493,8 +499,9 @@ class LengowHook
                 'tracking_method'       => $lengow_order->lengow_method,
                 'tracking'              => $lengow_order->lengow_tracking,
                 'tracking_carrier'      => $lengow_order->lengow_carrier,
-                'sent_markeplace'       => $lengow_order->lengow_sent_marketplace ?
-                    $this->module->l('yes') : $this->module->l('no'),
+                'sent_markeplace'       => $lengow_order->lengow_sent_marketplace
+                    ? $this->module->l('yes')
+                    : $this->module->l('no'),
                 'message'               => $lengow_order->lengow_message,
                 'action_synchronize'    => $action_synchronize,
                 'action_reimport'       => $action_reimport,

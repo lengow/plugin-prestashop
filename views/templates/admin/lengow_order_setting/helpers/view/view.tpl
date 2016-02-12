@@ -50,9 +50,7 @@
         <h2>Orders importation</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua.</p><br/>
-        {$matching3}
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.</p><br/>
+        {$import_params}
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">

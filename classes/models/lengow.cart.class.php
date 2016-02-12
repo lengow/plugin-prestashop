@@ -262,9 +262,10 @@ class LengowCart extends Cart implements LengowObject
         if (_PS_VERSION_ >= '1.5') {
             Cache::clean('getContextualValue_*');
         }
-        if (_PS_VERSION_ >= '1.5' && $auto_add_cart_rule) {
-            CartRule::autoAddToCart($context);
-        }
+        // Generates errors when creating the cart
+        // if (_PS_VERSION_ >= '1.5' && $auto_add_cart_rule) {
+        //     CartRule::autoAddToCart($context);
+        // }
         if ($product->customizable) {
             return $this->_updateCustomizationQuantity(
                 (int)$quantity,

@@ -71,20 +71,17 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
     }
     if (LengowInstall::checkFieldExists('lengow_orders', 'id_order_lengow')) {
         Db::getInstance()->execute(
-            'ALTER TABLE `ps_lengow_orders` CHANGE `id_order_lengow` `marketplace_sku` VARCHAR(32) NOT NULL;'
+            'ALTER TABLE '._DB_PREFIX_.'lengow_orders CHANGE `id_order_lengow` `marketplace_sku` VARCHAR(32) NOT NULL'
         );
     }
     if (LengowInstall::checkFieldExists('lengow_orders', 'marketplace')) {
         Db::getInstance()->execute(
-            'ALTER TABLE `ps_lengow_orders` CHANGE `marketplace` `marketplace_name` VARCHAR(100) NULL;'
+            'ALTER TABLE '._DB_PREFIX_.'lengow_orders CHANGE `marketplace` `marketplace_name` VARCHAR(100) NULL'
         );
     }
-    if (LengowInstall::checkFieldExists('lengow_orders', 'id_order_line')) {
+    if (LengowInstall::checkFieldExists('lengow_orders', 'is_disabled')) {
         Db::getInstance()->execute(
-            'ALTER TABLE  '._DB_PREFIX_.'lengow_orders CHANGE `id_order_line` `id_order_line` VARCHAR(255) NULL'
-        );
-        Db::getInstance()->execute(
-            'UPDATE '._DB_PREFIX_.'lengow_orders SET `id_order_line` = NULL WHERE `id_order_line` = \'\''
+            'ALTER TABLE '._DB_PREFIX_.'lengow_orders CHANGE `is_disabled` `is_reimported` tinyint(1) UNSIGNED DEFAULT \'0\''
         );
     }
     if (LengowInstall::checkFieldExists('lengow_orders', 'total_paid')) {
@@ -156,42 +153,41 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
     && Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_logs_import\'')
 ) {
     if (LengowInstall::checkFieldExists('lengow_logs_import', 'lengow_order_id')
-        && LengowInstall::checkFieldExists('lengow_logs_import', 'lengow_order_line')
+        && LengowInstall::checkFieldExists('lengow_logs_import', 'delivery_address_id')
+        && LengowInstall::checkFieldExists('lengow_orders', 'delivery_address_id')
     ) {
         // clean order line data (if empty => NULL)
         Db::getInstance()->execute(
-            'UPDATE '._DB_PREFIX_.'lengow_logs_import SET `lengow_order_line` = NULL WHERE `lengow_order_line` = \'\''
+            'UPDATE '._DB_PREFIX_.'lengow_logs_import SET `delivery_address_id` = NULL WHERE `delivery_address_id` = \'\''
         );
         Db::getInstance()->execute(
-            'UPDATE '._DB_PREFIX_.'lengow_orders SET `id_order_line` = NULL WHERE `id_order_line` = \'\''
+            'UPDATE '._DB_PREFIX_.'lengow_orders SET `delivery_address_id` = NULL WHERE `delivery_address_id` = \'\''
         );
         $results = Db::getInstance()->executeS(
-            'SELECT `lengow_order_id`, `lengow_order_line` FROM `'._DB_PREFIX_.'lengow_logs_import`'
+            'SELECT `lengow_order_id`, `delivery_address_id` FROM `'._DB_PREFIX_.'lengow_logs_import`'
         );
         foreach ($results as $result) {
-            if (LengowInstall::checkFieldExists('lengow_orders', 'marketplace_sku')
-                && LengowInstall::checkFieldExists('lengow_orders', 'id_order_line')
-            ) {
-                $orderLineQuery = is_null($result['lengow_order_line'])
+            if (LengowInstall::checkFieldExists('lengow_orders', 'marketplace_sku')) {
+                $orderLineQuery = is_null($result['delivery_address_id'])
                     ? ' IS NULL'
-                    : ' = \''.$result['lengow_order_line'].'\'';
+                    : ' = \''.$result['delivery_address_id'].'\'';
                 $id_order = Db::getInstance()->getRow(
                     'SELECT `id` FROM `'._DB_PREFIX_.'lengow_orders` 
                     WHERE `marketplace_sku` = \''.$result['lengow_order_id'].'\'
-                    AND `id_order_line`'.$orderLineQuery
+                    AND `delivery_address_id`'.$orderLineQuery
                 );
                 if ($id_order) {
                     Db::getInstance()->execute(
                         'UPDATE '._DB_PREFIX_.'lengow_logs_import
                         SET `id_order_lengow` = \''.(int)$id_order['id'].'\', `type` = 1
                         WHERE `lengow_order_id` = \''.$result['lengow_order_id'].'\' 
-                        AND `lengow_order_line`'.$orderLineQuery
+                        AND `delivery_address_id`'.$orderLineQuery
                     );
                 } else {
                     Db::getInstance()->execute(
                         'DELETE FROM '._DB_PREFIX_.'lengow_logs_import
                         WHERE `lengow_order_id` = \''.$result['lengow_order_id'].'\' 
-                        AND `lengow_order_line`'.$orderLineQuery
+                        AND `delivery_address_id`'.$orderLineQuery
                     );
                 }
             }
