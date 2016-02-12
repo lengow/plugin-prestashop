@@ -40,10 +40,14 @@
             {include file='./select_country.tpl'}
         </div>
         <div id="error_select_country"></div>
+
         <h3>Marketplace carrier management</h3>
-        {$matching2}
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua.</p><br/>
         <div id="add_marketplace_country">
+            <ul class="accordion">
             {include file='./marketplace_carrier.tpl'}
+            </ul>
         </div>
     </div>
     <div class="container2">
