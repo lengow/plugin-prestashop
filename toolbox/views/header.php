@@ -27,6 +27,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lengow Toolbox</title>
+    <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-switch.min.css" rel="stylesheet">
     <link href="/modules/lengow/views/css/bootstrap-3.3.6.css" rel="stylesheet">
     <link href="/modules/lengow/views/css/toolbox.css" rel="stylesheet">
     <link rel="stylesheet" href="/modules/lengow/views/css/font-awesome.css">

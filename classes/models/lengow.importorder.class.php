@@ -90,11 +90,6 @@ class LengowImportOrder
     protected $first_package;
 
     /**
-     * @var mixed old Prestashop order for re-import
-     */
-    protected $old_order = null;
-
-    /**
      * @var boolean re-import order
      */
     protected $is_reimported = false;
@@ -231,7 +226,7 @@ class LengowImportOrder
         if ($order_id) {
             $order_updated = $this->checkAndUpdateOrder($order_id);
             if ($order_updated && isset($order_updated['update'])) {
-                return $this->returnResult('update', $order_updated['lengow_order_id'], $order_id);
+                return $this->returnResult('update', $order_updated['id_order_lengow'], $order_id);
             }
             if (!$this->is_reimported) {
                 return false;
@@ -354,7 +349,7 @@ class LengowImportOrder
                     if (_PS_VERSION_ >= '1.5') {
                         $this->addCommentOrder((int)$order->id);
                     }
-                    $success_message = 'order successfully imported (ID '.$order->id.')';
+                    $success_message = 'order successfully imported (ORDER ID '.$order->id.')';
                     $success = LengowOrder::updateOrderLengow(
                         $this->id_order_lengow,
                         array(
@@ -404,9 +399,6 @@ class LengowImportOrder
                 }
                 LengowMain::log('Import', $log_message, $this->log_output, $this->marketplace_sku);
                 $this->addQuantityBack($products);
-            }
-            if ($this->is_reimported && !is_null($this->old_order)) {
-                $this->old_order->setStateToError();
             }
         } catch (InvalidLengowObjectException $iloe) {
             $error_message = $iloe->getMessage();
@@ -476,7 +468,7 @@ class LengowImportOrder
     {
         LengowMain::log(
             'Import',
-            'order already imported (ORDER '.$order_id.')',
+            'order already imported (ORDER ID '.$order_id.')',
             $this->log_output,
             $this->marketplace_sku
         );
@@ -486,11 +478,10 @@ class LengowImportOrder
         if ($order->lengow_is_reimported) {
             LengowMain::log(
                 'Import',
-                'order is disabled (ORDER '.$order_id.')',
+                'order is ready to be re-imported (ORDER ID '.$order_id.')',
                 $this->log_output,
                 $this->marketplace_sku
             );
-            $this->old_order = $order;
             $this->is_reimported = true;
             return false;
         } else {
@@ -670,8 +661,11 @@ class LengowImportOrder
             $this->carrier_name     = (!is_null($trackings[0]->carrier) ? (string)$trackings[0]->carrier : null);
             $this->carrier_method   = (!is_null($trackings[0]->method) ? (string)$trackings[0]->method : null);
             $this->tracking_number  = (!is_null($trackings[0]->number) ? (string)$trackings[0]->number : null);
-            $this->shipped_by_mp    = (!is_null($trackings[0]->is_delivered_by_marketplace) ? true : false);
             $this->relay_id         = (!is_null($trackings[0]->relay->id) ? (string)$trackings[0]->relay->id : null);
+            $this->shipped_by_mp    = false;
+            if (!is_null($trackings[0]->is_delivered_by_marketplace) && $trackings[0]->is_delivered_by_marketplace) {
+                $this->shipped_by_mp = true;
+            }
         }
     }
 
@@ -909,8 +903,8 @@ class LengowImportOrder
 //                    $ids['id_product'] = '1';
 //                    $ids['id_product_attribute'] = '1';
 //                }
-                $product_data['amount'] = 10;
-                $product_data['price_unit'] = 10;
+//                $product_data['amount'] = 10;
+//                $product_data['price_unit'] = 10;
 //TEMP DATA
                 if (!empty($ids)) {
                     $id_full = $ids['id_product'];
@@ -1125,7 +1119,7 @@ class LengowImportOrder
                 $p = new LengowProduct($product_ids[0]);
                 return $p->addStockMvt($product['quantity'], (int)_STOCK_MOVEMENT_ORDER_REASON_, $id_product_attribute);
             } else {
-                return StockAvailable::updateQuantity(
+                StockAvailable::updateQuantity(
                     (int)$product_ids[0],
                     $id_product_attribute,
                     $product['quantity'],

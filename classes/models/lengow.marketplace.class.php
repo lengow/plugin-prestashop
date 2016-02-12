@@ -91,7 +91,7 @@ class LengowMarketplace
         $this->name = Tools::strtolower($name);
 
         if (!isset(self::$MARKETPLACES->{$this->name})) {
-            throw new Exception('Marketplace '.$this->name.' not present in marketplace list');
+            throw new LengowException('Marketplace '.$this->name.' not present in marketplace list');
         }
         $this->marketplace = self::$MARKETPLACES->{$this->name};
         if (!empty($this->marketplace)) {

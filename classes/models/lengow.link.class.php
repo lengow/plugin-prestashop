@@ -29,14 +29,14 @@ class LengowLink extends LinkCore
         self::$force_link = $force_link;
     }
 
-    public function getAbsoluteAdminLink($controller, $ajax = false)
+    public function getAbsoluteAdminLink($controller, $ajax = false, $admin_prestashop = false)
     {
         //use in toolbox to get specific link
         if (self::$force_link) {
             return self::$force_link;
         }
 
-        if (_PS_VERSION_ < '1.5') {
+        if (_PS_VERSION_ < '1.5' && !$admin_prestashop) {
             $controller.= "14";
         }
 
