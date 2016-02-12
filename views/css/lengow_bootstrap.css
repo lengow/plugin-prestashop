@@ -240,6 +240,9 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_label_refunded {
     background:#AC1802;
 }
+.lengow_label_canceled {
+    background:#FF9F91;
+}
 
 .lengow_label_red {
     background:#FF9F91;

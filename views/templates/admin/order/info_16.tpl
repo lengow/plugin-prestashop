@@ -40,12 +40,9 @@
 				</ul>
 			</div>
 			<div class="btn-group">
-				<a class="btn btn-default" href="{$action_reimport|escape:'htmlall':'UTF-8'}">{l s='Cancel and re-import order' mod='lengow'}</a>
+				<a class="btn btn-default" href="{$action_reimport|escape:'htmlall':'UTF-8'}" onclick="return confirm('Do you really want to cancel and re-import the order?')">{l s='Cancel and re-import order' mod='lengow'}</a>
 				<a class="btn btn-default" href="{$action_synchronize|escape:'htmlall':'UTF-8'}">{l s='Synchronize ID' mod='lengow'}</a>
 			</div>
 		</div>
-		{if $add_script == true}
-		<script type="text/javascript" src="{$url_script|escape:'htmlall':'UTF-8'}"></script>
-		{/if}
 	</div>
 </div>

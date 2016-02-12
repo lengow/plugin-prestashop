@@ -446,69 +446,31 @@ class LengowHook
     {
         if (LengowOrder::isFromLengow($args['id_order'])) {
             $lengow_order = new LengowOrder($args['id_order']);
-            if (Tools::getValue('action') == 'synchronize') {
-                $id_shop = (_PS_VERSION_ < 1.5 ? null : (int)$lengow_order->id_shop);
-                if ($lengow_order->lengow_id_flux != null) {
-                    $lengow_order->checkAndChangeMarketplaceName();
-                }
-                $order_ids = LengowOrder::getAllOrderIdsFromLengowOrder(
-                    $lengow_order->lengow_marketplace_sku,
-                    $lengow_order->lengow_marketplace_name
-                );
-                if (count($order_ids) > 0) {
-                    $presta_ids = array();
-                    foreach ($order_ids as $order_id) {
-                        $presta_ids[] = $order_id['id_order'];
-                    }
-                    $connector  = new LengowConnector(
-                        LengowMain::getAccessToken($id_shop),
-                        LengowMain::getSecretCustomer($id_shop)
-                    );
-                    $orders = $connector->patch(
-                        '/v3.0/orders',
-                        array(
-                            'account_id'            => LengowMain::getIdAccount($id_shop),
-                            'marketplace_order_id'  => $lengow_order->lengow_marketplace_sku,
-                            'marketplace'           => $lengow_order->lengow_marketplace_name,
-                            'merchant_order_id'     => $presta_ids
-                        )
-                    );
-                }
-            }
+            // get actions re-import and synchronize orders
+            $lengow_link = new LengowLink();
+            $lengow_order_controller = $lengow_link->getAbsoluteAdminLink('AdminLengowOrder');
+            $action_reimport = $lengow_order_controller.'&id_order='.$lengow_order->id.'&action=cancel_re_import';
+            $action_synchronize = $lengow_order_controller.'&id_order='.$lengow_order->id.'&action=synchronize';
 
-            if (_PS_VERSION_ < '1.5') {
-                $action_reimport = _PS_MODULE_LENGOW_DIR_.'v14/ajax.php?';
-                $action_synchronize = 'index.php?tab=AdminOrders&id_order='.$lengow_order->id.
-                    '&vieworder&action=synchronize&token='.Tools::getAdminTokenLite('AdminOrders');
-                $add_script = true;
-            } else {
-                $action_reimport = 'index.php?controller=AdminLengow&id_order='.$lengow_order->id.
-                '&lengoworderid='.$lengow_order->lengow_marketplace_sku.'&action=reimportOrder&ajax&token='.
-                Tools::getAdminTokenLite('AdminLengow');
-                $action_synchronize = 'index.php?controller=AdminOrders&id_order='.$lengow_order->id.
-                '&vieworder&action=synchronize&token='.Tools::getAdminTokenLite('AdminOrders');
-                $add_script = false;
-            }
+            $sent_markeplace = (
+                $lengow_order->lengow_sent_marketplace ? $this->module->l('yes') : $this->module->l('no')
+            );
 
             $template_data = array(
-                'marketplace_sku'       => $lengow_order->lengow_marketplace_sku,
-                'id_flux'               => $lengow_order->lengow_id_flux,
-                'marketplace_name'      => $lengow_order->lengow_marketplace_name,
-                'total_paid'            => $lengow_order->lengow_total_paid,
-                'carrier'               => $lengow_order->lengow_carrier,
-                'tracking_method'       => $lengow_order->lengow_method,
-                'tracking'              => $lengow_order->lengow_tracking,
-                'tracking_carrier'      => $lengow_order->lengow_carrier,
-                'sent_markeplace'       => $lengow_order->lengow_sent_marketplace
-                    ? $this->module->l('yes')
-                    : $this->module->l('no'),
-                'message'               => $lengow_order->lengow_message,
-                'action_synchronize'    => $action_synchronize,
-                'action_reimport'       => $action_reimport,
-                'order_id'              => $args['id_order'],
-                'add_script'            => $add_script,
-                'url_script'            => _PS_MODULE_LENGOW_DIR_.'views/js/lengow/admin.js',
-                'version'               => _PS_VERSION_
+                'marketplace_sku'    => $lengow_order->lengow_marketplace_sku,
+                'id_flux'            => $lengow_order->lengow_id_flux,
+                'marketplace_name'   => $lengow_order->lengow_marketplace_name,
+                'total_paid'         => $lengow_order->lengow_total_paid,
+                'carrier'            => $lengow_order->lengow_carrier,
+                'tracking_method'    => $lengow_order->lengow_method,
+                'tracking'           => $lengow_order->lengow_tracking,
+                'tracking_carrier'   => $lengow_order->lengow_carrier,
+                'sent_markeplace'    => $sent_markeplace,
+                'message'            => $lengow_order->lengow_message,
+                'action_synchronize' => $action_synchronize,
+                'action_reimport'    => $action_reimport,
+                'order_id'           => $args['id_order'],
+                'version'            => _PS_VERSION_
             );
 
             $this->context->smarty->assign($template_data);

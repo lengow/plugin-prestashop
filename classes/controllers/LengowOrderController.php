@@ -104,6 +104,27 @@ class LengowOrderController extends LengowController
                     echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
                     break;
+                case 'synchronize':
+                    $id_order = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
+                    $lengow_order = new LengowOrder($id_order);
+                    $lengow_order->synchronizeOrder();
+                    $lengow_link = new LengowLink();
+                    $prestashop_order_controller = $lengow_link->getAbsoluteAdminLink('AdminOrders', false, true);
+                    $order_url = $prestashop_order_controller.'&id_order='.$id_order.'&vieworder';
+                    Tools::redirectAdmin($order_url);
+                    break;
+                case 'cancel_re_import':
+                    $id_order = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
+                    $lengow_order = new LengowOrder($id_order);
+                    $new_id_order = $lengow_order->cancelAndreImportOrder();
+                    if (!$new_id_order) {
+                        $new_id_order = $id_order;
+                    }
+                    $lengow_link = new LengowLink();
+                    $prestashop_order_controller = $lengow_link->getAbsoluteAdminLink('AdminOrders', false, true);
+                    $order_url = $prestashop_order_controller.'&id_order='.$new_id_order.'&vieworder';
+                    Tools::redirectAdmin($order_url);
+                    break;
             }
             exit();
         }
