@@ -436,7 +436,12 @@ class LengowMarketplace
                             $deliveryAddress->id_country
                         );
                         if (!$params['carrier']) {
-                            throw new LengowException('You need to match carrier');
+                            $countryName = Country::getNameById(
+                                Context::getContext()->language->id,
+                                $deliveryAddress->id_country
+                            );
+                            throw new LengowException('You need to match carrier ['.$order->lengow_carrier.']'.
+                                ' with country ['.$countryName.']');
                         }
                         break;
                     case 'tracking_url':
@@ -517,6 +522,11 @@ class LengowMarketplace
                 'Error : "'.$e->getMessage(),
                 false,
                 $order->lengow_marketplace_sku
+            );
+            LengowOrder::addOrderLog(
+                $order->lengow_id,
+                $e->getMessage(),
+                $action
             );
             return false;
         } catch (Exception $e) {
