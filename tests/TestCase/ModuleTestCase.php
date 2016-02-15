@@ -43,23 +43,31 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/currency.yml');
-        // $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/marketplace_carrier.yml');
+        //load module
+        $module = Module::getInstanceByName('lengow');
+        if ($module) {
+            $fixture = new Fixture();
+            $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/currency.yml');
+            $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/marketplace_carrier.yml');
 
-        $employee = new Employee();
-        $employee->getByEmail("pub@prestashop.com");
+            //load default marketplace
+            $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
+            LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
 
-        $context = Context::getContext();
-        $context->employee = $employee;
-        $context->currency = new Currency(1);
+            $employee = new Employee();
+            $employee->getByEmail("pub@prestashop.com");
 
-        Configuration::updateGlobalValue('LENGOW_ORDER_ID_PROCESS', 2);
-        Configuration::updateGlobalValue('LENGOW_ORDER_ID_SHIPPED', 4);
-        Configuration::updateGlobalValue('LENGOW_ORDER_ID_CANCEL', 6);
+            $context = Context::getContext();
+            $context->employee = $employee;
+            $context->currency = new Currency(1);
 
-        Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
-        Product::flushPriceCache();
+            Configuration::updateGlobalValue('LENGOW_ORDER_ID_PROCESS', 2);
+            Configuration::updateGlobalValue('LENGOW_ORDER_ID_SHIPPED', 4);
+            Configuration::updateGlobalValue('LENGOW_ORDER_ID_CANCEL', 6);
+
+            Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
+            Product::flushPriceCache();
+        }
     }
 
     /**

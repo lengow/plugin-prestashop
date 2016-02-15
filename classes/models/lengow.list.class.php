@@ -264,7 +264,6 @@ class LengowList
     {
         $sql = $this->buildQuery();
         $sqlTotal = $this->buildQuery(true);
-
         $this->collection = Db::getInstance()->executeS($sql, true, false);
         $this->total = Db::getInstance()->getValue($sqlTotal, false);
         $this->nbMaxPage = ceil($this->total / $this->nbPerPage);

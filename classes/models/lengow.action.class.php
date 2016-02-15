@@ -64,6 +64,40 @@ class LengowAction
 
     }
 
+    public static function getOrderActiveAction($id_order, $type)
+    {
+        $rows = Db::getInstance()->executeS(
+            'SELECT * FROM '._DB_PREFIX_.'lengow_actions la
+            WHERE state = '.self::STATE_NEW.' AND  action_type = "'.pSQL($type).'" AND id_order='.(int)$id_order
+        );
+        $actions = array();
+        foreach ($rows as $row) {
+            $action = new LengowAction;
+            $actions[] = $action->load($row);
+        }
+        return $actions;
+    }
+
+
+    public static function getActiveActionByShop($type, $id_shop, $load = true)
+    {
+        $rows = Db::getInstance()->executeS(
+            'SELECT la.*, o.id_shop FROM '._DB_PREFIX_.'lengow_actions la
+            INNER JOIN '._DB_PREFIX_.'orders o ON (o.id_order = la.id_order)
+            WHERE id_shop='.(int)$id_shop.' AND state = '.self::STATE_NEW.' AND action_type = "'.pSQL($type).'"'
+        );
+        if ($load) {
+            $actions = array();
+            foreach ($rows as $row) {
+                $action = new LengowAction;
+                $actions[] = $action->load($row);
+            }
+            return $actions;
+        } else {
+            return $rows;
+        }
+    }
+
     public function find($id)
     {
         $row = Db::getInstance()->getRow('SELECT * FROM '._DB_PREFIX_.'lengow_actions la WHERE id = '.(int)$id);
@@ -74,7 +108,7 @@ class LengowAction
         return false;
     }
 
-    public static function createAction($params)
+    public static function createAction($params, $id_order_lengow)
     {
         $insertParams = array(
             'parameters' => pSQL(Tools::JsonEncode($params['parameters'])),
@@ -91,6 +125,7 @@ class LengowAction
 
         Db::getInstance()->autoExecute(_DB_PREFIX_ . 'lengow_actions', $insertParams, 'INSERT');
         LengowMain::log('API', 'call tracking ', false, $params['id_order']);
+        LengowOrder::addOrderLog($id_order_lengow, 'Tracking send in progress', 'ship');
     }
 
     public static function updateAction($params)

@@ -360,12 +360,13 @@ class LengowMarketplace
 
     /**
      * v3-test
-     * Is marketplace contain order Line
+     * Is marketplace contain order Line*
+     * @param string $action (ship / cancel / refund)
      * @return bool
      */
-    public function containOrderLine()
+    public function containOrderLine($action)
     {
-        $actions = $this->actions['ship'];
+        $actions = $this->actions[$action];
         if (isset($actions['args']) && is_array($actions['args'])) {
             if (in_array('line', $actions['args'])) {
                 return true;
@@ -495,6 +496,9 @@ class LengowMarketplace
                     $order->lengow_id_shop,
                     array_merge($params, array("queued" => "True"))
                 );
+                if (isset($result->error) && isset($result->error->message)) {
+                    throw new LengowException($result->error->message);
+                }
                 if (isset($result->count) && $result->count > 0) {
                     foreach ($result->results as $row) {
                         LengowAction::updateAction(array(
@@ -517,7 +521,7 @@ class LengowMarketplace
                             'action_type' => $action,
                             'action_id' => $result->id,
                             'parameters' => $params
-                        ));
+                        ), $order->lengow_id);
                     }
                 }
             }
@@ -544,5 +548,54 @@ class LengowMarketplace
             );
             return false;
         }
+    }
+
+    /**
+     * v3-test
+     *
+     * @return bool
+     */
+    public static function checkFinishAction()
+    {
+        if (Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
+            return false;
+        }
+
+        $shops = LengowShop::findAll();
+        foreach ($shops as $shop) {
+            $actions = LengowAction::getActiveActionByShop('ship', $shop['id_shop'], false);
+            foreach ($actions as $action) {
+                $result = LengowConnector::queryApi(
+                    'get',
+                    '/v3.0/orders/actions/',
+                    $shop['id_shop'],
+                    array('id' => $action['id'])
+                );
+                if (isset($result->id) && isset($result->processed) && isset($result->queued)) {
+                    if ((int)$result->id > 0 && $result->queued == false) {
+                        //update actions
+                        Db::getInstance()->autoExecute(
+                            _DB_PREFIX_ . 'lengow_actions',
+                            array(
+                                'state' => LengowAction::STATE_FINISH,
+                                'updated_at' => date('Y-m-d h:m:i'),
+                            ),
+                            'UPDATE',
+                            'id = ' . $action['id']
+                        );
+                        if ($result->processed) {
+                            $id_order_lengow = LengowOrder::findByOrder($action['id_order']);
+                            LengowOrder::updateOrderLengow($id_order_lengow, array(
+                                'order_process_state' => 2
+                            ));
+                        }
+                    }
+                }
+                if (!LengowMain::inTest()) {
+                    usleep(250000);
+                }
+            }
+        }
+        return true;
     }
 }
