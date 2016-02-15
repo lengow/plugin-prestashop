@@ -692,7 +692,7 @@ class LengowOrder extends Order
             case 'import':
                 $log_type = self::TYPE_LOG_IMPORT;
                 break;
-            case 'wsdl':
+            case 'ship':
                 $log_type = self::TYPE_LOG_WSDL;
                 break;
             default:
@@ -825,6 +825,19 @@ class LengowOrder extends Order
         return Db::getInstance()->getRow($sql);
     }
 
+
+    /***
+     * v3
+     * Find Lengow Order
+     * @param integer $id_order
+     * @return boolean
+     */
+    public static function findByOrder($id_order)
+    {
+        $sql = 'SELECT * FROM `'._DB_PREFIX_.'lengow_orders` WHERE id_order = '.(int)$id_order;
+        return Db::getInstance()->getRow($sql);
+    }
+
     /**
      * v3
      * Get Order Lines
@@ -874,6 +887,25 @@ class LengowOrder extends Order
                 'log_output' => false,
             ));
             return $import->exec();
+        }
+    }
+
+    /**
+     * v3
+     * Re Send Order
+     * @param integer $id_order_lengow (id of table lengow_orders)
+     * @return mixed
+     */
+    public static function reSendOrder($id_order_lengow)
+    {
+        if (LengowOrder::isOrderImport($id_order_lengow)) {
+            $lengowOrder = LengowOrder::find($id_order_lengow);
+            if ((int)$lengowOrder['id_order'] > 0) {
+                LengowOrder::finishOrderLogs($id_order_lengow, 'ship');
+                $order = new LengowOrder($lengowOrder['id_order']);
+                return $order->callAction('ship');
+            }
+            return false;
         }
     }
 

@@ -13,6 +13,9 @@ use Product;
 use Shop;
 use Currency;
 use LengowLog;
+use Module;
+use Tools;
+use LengowMarketplace;
 
 class ModuleTestCase extends PHPUnit_Framework_TestCase
 {
@@ -35,31 +38,38 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 //        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/variation_product.yml');
 //        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/pack_product.yml');
 //
-
-
         Shop::setContext(Shop::CONTEXT_ALL);
         Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
     }
 
     public function setUp()
     {
-        $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/currency.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/marketplace_carrier.yml');
 
-        $employee = new Employee();
-        $employee->getByEmail("pub@prestashop.com");
+        //load module
+        $module = Module::getInstanceByName('lengow');
+        if ($module) {
+            $fixture = new Fixture();
+            $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/currency.yml');
+            $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/marketplace_carrier.yml');
 
-        $context = Context::getContext();
-        $context->employee = $employee;
-        $context->currency = new Currency(1);
+            //load default marketplace
+            $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
+            LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
 
-        Configuration::updateGlobalValue('LENGOW_ORDER_ID_PROCESS', 2);
-        Configuration::updateGlobalValue('LENGOW_ORDER_ID_SHIPPED', 4);
-        Configuration::updateGlobalValue('LENGOW_ORDER_ID_CANCEL', 6);
+            $employee = new Employee();
+            $employee->getByEmail("pub@prestashop.com");
 
-        Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
-        Product::flushPriceCache();
+            $context = Context::getContext();
+            $context->employee = $employee;
+            $context->currency = new Currency(1);
+
+            Configuration::updateGlobalValue('LENGOW_ORDER_ID_PROCESS', 2);
+            Configuration::updateGlobalValue('LENGOW_ORDER_ID_SHIPPED', 4);
+            Configuration::updateGlobalValue('LENGOW_ORDER_ID_CANCEL', 6);
+
+            Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
+            Product::flushPriceCache();
+        }
     }
 
     /**

@@ -54,7 +54,17 @@ class LengowOrderController extends LengowController
                     break;
                 case 're_import':
                     $id_order_lengow = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : 0;
-                    $return = LengowOrder::reImportOrder($id_order_lengow);
+                    LengowOrder::reImportOrder($id_order_lengow);
+
+                    $list = $this->loadTable();
+                    $row = $list->getRow(' id = '.(int)$id_order_lengow);
+                    $html = $list->displayRow($row);
+                    $html = preg_replace('/\r|\n/', '', addslashes($html));
+                    echo '$("#order_'.$id_order_lengow.'").replaceWith("'.$html.'");';
+                    break;
+                case 're_send':
+                    $id_order_lengow = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : 0;
+                    LengowOrder::reSendOrder($id_order_lengow);
 
                     $list = $this->loadTable();
                     $row = $list->getRow(' id = '.(int)$id_order_lengow);
@@ -246,8 +256,8 @@ class LengowOrderController extends LengowController
             'lo.currency'
         );
         $select_having = array(
-            '(SELECT IFNULL(lli.type, 0) FROM '._DB_PREFIX_.'lengow_logs_import lli
-            WHERE lli.id_order_lengow = lo.id AND lli.is_finished = 0 LIMIT 1) as log_status',
+            ' IF(lo.order_process_state=1, 2, (SELECT IFNULL(lli.type, 0) FROM '._DB_PREFIX_.'lengow_logs_import lli
+            WHERE lli.id_order_lengow = lo.id AND lli.is_finished = 0 LIMIT 1)) as log_status',
         );
         $from = 'FROM '._DB_PREFIX_.'lengow_orders lo';
         $join = array();
@@ -370,6 +380,18 @@ class LengowOrderController extends LengowController
 
     public static function displayLogStatus($key, $value, $item)
     {
+        //check if order actions in progress
+
+        if ($item['id_order'] > 0) {
+            $actions = LengowAction::getOrderActiveAction($item['id_order'], 'ship');
+            if ($actions) {
+                $value = '<i class="fa fa-info-circle lengow_orange lengow_link_tooltip" data-html="true"
+                        data-original-title="Tracking send, waiting returns"
+                        ></i>';
+                return $value;
+            }
+        }
+
         $errorMessage = array();
         $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
         if (count($logCollection)>0) {
