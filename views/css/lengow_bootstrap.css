@@ -680,7 +680,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     margin-left: -40px;
 }
 
-.lengow_form .accordion input[type="radio"],input[type="checkbox"] {
+.lengow_form .accordion input[type="radio"], .lengow_form .accordion input[type="checkbox"] {
     display: none;
 }
 
