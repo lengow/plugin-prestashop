@@ -45,7 +45,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
     {
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/currency.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/marketplace_carrier.yml');
+        // $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/marketplace_carrier.yml');
 
         $employee = new Employee();
         $employee->getByEmail("pub@prestashop.com");

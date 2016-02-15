@@ -262,7 +262,7 @@ class LengowImport
                     try {
                         // check account ID, Access Token and Secret
                         $error_credential = $this->checkCredentials((int)$shop['id_shop'], $shop['name']);
-                        if ($error_credential) {
+                        if ($error_credential !== true) {
                             LengowMain::log('Import', $error_credential, $this->log_output);
                             $error[(int)$shop['id_shop']] = $error_credential;
                             continue;
@@ -382,7 +382,7 @@ class LengowImport
             return $message;
         }
         $this->account_ids[$this->account_id] = array('id_shop' => $id_shop, 'name' => $name_shop);
-        return false;
+        return true;
     }
 
     /**
@@ -572,24 +572,6 @@ class LengowImport
                     );
                     continue;
                 }
-                // try to import or update order
-                $import_order = new LengowImportOrder(
-                    array(
-                        'context'               => $this->context,
-                        'id_shop'               => $id_shop,
-                        'id_shop_group'         => $this->id_shop_group,
-                        'id_lang'               => $this->id_lang,
-                        'force_product'         => $this->force_product,
-                        'preprod_mode'          => $this->preprod_mode,
-                        'log_output'            => $this->log_output,
-                        'marketplace_sku'       => $marketplace_sku,
-                        'delivery_address_id'   => $package_delivery_address_id,
-                        'order_data'            => $order_data,
-                        'package_data'          => $package_data,
-                        'first_package'         => $first_package
-                    )
-                );
-                $order = $import_order->importOrder();
                 // Sync to lengow if no preprod_mode
                 if (!$this->preprod_mode && $order['order_new'] == true) {
                     $lengow_order = new LengowOrder((int)$order['order_id']);
