@@ -360,12 +360,13 @@ class LengowMarketplace
 
     /**
      * v3-test
-     * Is marketplace contain order Line
+     * Is marketplace contain order Line*
+     * @param string $action (ship / cancel / refund)
      * @return bool
      */
-    public function containOrderLine()
+    public function containOrderLine($action)
     {
-        $actions = $this->actions['ship'];
+        $actions = $this->actions[$action];
         if (isset($actions['args']) && is_array($actions['args'])) {
             if (in_array('line', $actions['args'])) {
                 return true;

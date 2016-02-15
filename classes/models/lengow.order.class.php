@@ -893,7 +893,7 @@ class LengowOrder extends Order
             $this->lengow_id_shop
         );
 
-        if ($marketplace->containOrderLine()) {
+        if ($marketplace->containOrderLine('ship')) {
             $orderLineCollection = self::findOrderLineIds($this->id);
             if (count($orderLineCollection) == 0) {
                 LengowMain::log(

@@ -44,19 +44,19 @@ class MarketplaceTest extends ModuleTestCase
             'galeries_lafayette',
             1
         );
-        $this->assertTrue(!$marketplace->containOrderLine());
+        $this->assertTrue(!$marketplace->containOrderLine('ship'));
 
         $marketplace = LengowMain::getMarketplaceSingleton(
             'cdiscount',
             1
         );
-        $this->assertTrue($marketplace->containOrderLine());
+        $this->assertTrue($marketplace->containOrderLine('ship'));
 
         $marketplace = LengowMain::getMarketplaceSingleton(
             'menlook',
             1
         );
-        $this->assertTrue($marketplace->containOrderLine());
+        $this->assertTrue($marketplace->containOrderLine('ship'));
     }
 
     /**
