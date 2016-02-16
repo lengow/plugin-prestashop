@@ -406,10 +406,11 @@ class LengowOrder extends Order
      * @param string    $order_state_lengow     marketplace state
      * @param mixed     $order_data             order data
      * @param string    $tracking_number        tracking number
+     * @param boolean   $log_output             See log or not
      *
      * @return bool true if order has been updated
      */
-    public function updateState($order_state_lengow, $order_data, $tracking_number = null)
+    public function updateState($order_state_lengow, $order_data, $tracking_number = null, $log_output = false)
     {
         // get prestashop equivalent state id to Lengow API state
         $id_order_state = LengowMain::getOrderState($order_state_lengow);
@@ -436,7 +437,12 @@ class LengowOrder extends Order
                     $this->validateFields();
                     $this->update();
                 }
-                //LengowMain::getLogInstance()->write('state updated to shipped', true, $this->lengow_marketplace_sku);
+                LengowMain::getLogInstance()->write(
+                    'Import',
+                    'state updated to shipped',
+                    $log_output,
+                    $this->lengow_marketplace_sku
+                );
                 // update lengow order
                 LengowOrder::updateOrderLengow(
                     (int)$this->lengow_id,
@@ -453,7 +459,12 @@ class LengowOrder extends Order
                 $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this, true);
                 $history->validateFields();
                 $history->add();
-                //LengowMain::getLogInstance()->write('state updated to canceled', true, $this->lengow_marketplace_sku);
+                LengowMain::getLogInstance()->write(
+                    'Import',
+                    'state updated to canceled',
+                    $log_output,
+                    $this->lengow_marketplace_sku
+                );
                 // update lengow order
                 LengowOrder::updateOrderLengow(
                     (int)$this->lengow_id,

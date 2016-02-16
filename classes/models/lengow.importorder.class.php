@@ -492,12 +492,16 @@ class LengowImportOrder
                     (count($this->package_data->delivery->trackings) > 0
                         ? $this->package_data->delivery->trackings[0]->number
                         : null
-                    )
+                    ),
+                    $this->log_output
                 )) {
+                    $result['update'] = true;
+                    $state_name = '';
                     $available_states = LengowMain::getOrderStates($this->id_lang);
                     foreach ($available_states as $state) {
-                        if ($state['id_order_state'] === LengowMain::getOrderState($this->order_state_lengow)) {
+                        if ($state['id_order_state'] == LengowMain::getOrderState($this->order_state_lengow)) {
                             $state_name = $state['name'];
+                            break;
                         }
                     }
                     LengowMain::log(
@@ -506,7 +510,6 @@ class LengowImportOrder
                         $this->log_output,
                         $this->marketplace_sku
                     );
-                    $result['update'] = true;
                 }
                 // update lengow order state
                 LengowOrder::updateOrderLengow(

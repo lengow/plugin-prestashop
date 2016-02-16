@@ -576,6 +576,7 @@ class LengowImport
                 if (!$this->preprod_mode && $order['order_new'] == true) {
                     $lengow_order = new LengowOrder((int)$order['order_id']);
                     $lengow_order->synchronizeOrder($this->connector, $this->log_output);
+                    unset($lengow_order);
                 }
                 // if re-import order -> return order informations
                 if ($this->import_one_order) {

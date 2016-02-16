@@ -297,6 +297,31 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         self::assertTrue((bool)$result[0]["total"], $message);
     }
 
+    /**
+     * Asset Mysql Table not contain data
+     * @param $table
+     * @param $where
+     * @param $message
+     */
+    public static function assertTableNotContain($table, $where, $message = "")
+    {
+
+        $whereSql = array();
+        foreach ($where as $key => $value) {
+            if ($value === 'NULL') {
+                $whereSql[]= ' `'.$key.'` IS NULL';
+            } else {
+                $whereSql[]= ' `'.$key.'` = "'.pSQL($value).'" ';
+            }
+        }
+        $whereSql = ' WHERE '.join(' AND ', $whereSql);
+        $sql = 'SELECT COUNT(*) as total FROM '._DB_PREFIX_.$table.$whereSql;
+        if ($message == "") {
+            $message = 'Cant find row with ['. $whereSql.'] IN ['.$table.']';
+        }
+        $result = Db::getInstance()->ExecuteS($sql);
+        self::assertFalse((bool)$result[0]["total"], $message);
+    }
 
     /**
      * Test if table is empty
