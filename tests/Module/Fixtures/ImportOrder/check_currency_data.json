@@ -1,0 +1,108 @@
+{
+  "count": 1,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "marketplace": "galeries_lafayette",
+      "account_id": 155,
+      "marketplace_country_iso2": "FR",
+      "marketplace_order_id": "1300435653834-A",
+      "merchant_order_id": [
+        "60"
+      ],
+      "marketplace_status": "SHIPPED",
+      "lengow_status": "shipped",
+      "workflow_rank": 6,
+      "marketplace_order_date": null,
+      "total_order": "229.00",
+      "total_tax": null,
+      "commission": "55.90",
+      "processing_fee": null,
+      "shipping": null,
+      "currency": null,
+      "comments": null,
+      "invoice_number": null,
+      "invoice_url": null,
+      "payments": [
+        {
+          "id": 1628,
+          "checkout": null,
+          "status": null,
+          "type": "paypal",
+          "settled_at": null,
+          "channel_order_marketplace": 741
+        }
+      ],
+      "packages": [
+        {
+          "cart": [
+            {
+              "marketplace_order_line_id": "1300435653833-A-1",
+              "marketplace_product_id": "1",
+              "merchant_product_id": {
+                "field": null,
+                "id": null
+              },
+              "marketplace_package_id": null,
+              "marketplace_status": "SHIPPED",
+              "lengow_status": "shipped",
+              "title": "Top EMEL avec col montant-Ecru-38",
+              "category": null,
+              "url_product": null,
+              "url_image": null,
+              "amount": "229.00",
+              "tax": null,
+              "discount": null,
+              "quantity": 1,
+              "created_at": "2015-11-17T10:02:49Z",
+              "updated_at": "2015-11-24T07:01:51Z"
+            }
+          ],
+          "delivery": {
+            "id": 7526,
+            "type": "delivery",
+            "company": null,
+            "civility": "Madame",
+            "first_name": "yvette",
+            "last_name": "alcalde",
+            "first_line": "348 CHEMIN DES FUMADES",
+            "second_line": null,
+            "complement": null,
+            "zipcode": "06220",
+            "city": "VALLAURIS",
+            "phone_home": null,
+            "phone_office": null,
+            "phone_mobile": "0615016432",
+            "full_address": null,
+            "email": null,
+            "common_country_iso_a2": "FR",
+            "trackings": []
+          }
+        }
+      ],
+      "billing_address": {
+        "id": 7527,
+        "type": "billing",
+        "company": null,
+        "civility": "Madame",
+        "first_name": "yvette",
+        "last_name": "alcalde",
+        "first_line": "348 CHEMIN DES FUMADES",
+        "second_line": null,
+        "complement": null,
+        "zipcode": "06220",
+        "city": "VALLAURIS",
+        "phone_home": null,
+        "phone_office": null,
+        "phone_mobile": "0615016432",
+        "full_address": null,
+        "email": null,
+        "common_country_iso_a2": "FR"
+      },
+      "contact_address": null,
+      "imported_at": "2015-11-23T17:10:50.098728Z",
+      "updated_at": "2015-11-25T14:09:23.449078Z"
+    }
+  ]
+}

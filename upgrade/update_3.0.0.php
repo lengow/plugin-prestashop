@@ -79,7 +79,9 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
             'ALTER TABLE '._DB_PREFIX_.'lengow_orders CHANGE `marketplace` `marketplace_name` VARCHAR(100) NULL'
         );
     }
-    if (LengowInstall::checkFieldExists('lengow_orders', 'is_disabled')) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'is_reimported')
+        && LengowInstall::checkFieldExists('lengow_orders', 'is_disabled')
+    ) {
         Db::getInstance()->execute(
             'ALTER TABLE '._DB_PREFIX_.'lengow_orders CHANGE `is_disabled` `is_reimported` tinyint(1) UNSIGNED DEFAULT \'0\''
         );
@@ -223,7 +225,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_marketplace_carrier` (
     `id_country` int(11) UNSIGNED NOT NULL,
     `id_carrier` int(11) UNSIGNED NULL,
     `marketplace_carrier_sku` varchar(32) NOT NULL,
-    `marketplace_carrier_name` VARCHAR(32) NOT NULL;
+    `marketplace_carrier_name` VARCHAR(32) NOT NULL,
     PRIMARY KEY(`id`),
     INDEX (`id_country`) ,
     INDEX (`id_carrier`) ,

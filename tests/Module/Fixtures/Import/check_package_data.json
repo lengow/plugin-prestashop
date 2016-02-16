@@ -1,0 +1,66 @@
+{
+  "count": 1,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "marketplace": "galeries_lafayette",
+      "account_id": 155,
+      "marketplace_country_iso2": "FR",
+      "marketplace_order_id": "1300435653833-A",
+      "merchant_order_id": [
+        "60"
+      ],
+      "marketplace_status": "SHIPPED",
+      "lengow_status": "shipped",
+      "workflow_rank": 6,
+      "marketplace_order_date": null,
+      "total_order": "229.00",
+      "total_tax": null,
+      "commission": "55.90",
+      "processing_fee": null,
+      "shipping": null,
+      "currency": {
+        "iso_a3": "GBP",
+        "symbol": "£",
+        "name": "British Pound"
+      },
+      "comments": null,
+      "invoice_number": null,
+      "invoice_url": null,
+      "payments": [
+        {
+          "id": 1628,
+          "checkout": null,
+          "status": null,
+          "type": "paypal",
+          "settled_at": null,
+          "channel_order_marketplace": 741
+        }
+      ],
+      "packages": [],
+      "billing_address": {
+        "id": 7527,
+        "type": "billing",
+        "company": null,
+        "civility": "Madame",
+        "first_name": "yvette",
+        "last_name": "alcalde",
+        "first_line": "348 CHEMIN DES FUMADES",
+        "second_line": null,
+        "complement": null,
+        "zipcode": "06220",
+        "city": "VALLAURIS",
+        "phone_home": null,
+        "phone_office": null,
+        "phone_mobile": "0615016432",
+        "full_address": null,
+        "email": null,
+        "common_country_iso_a2": "FR"
+      },
+      "contact_address": null,
+      "imported_at": "2015-11-23T17:10:50.098728Z",
+      "updated_at": "2015-11-25T14:09:23.449078Z"
+    }
+  ]
+}

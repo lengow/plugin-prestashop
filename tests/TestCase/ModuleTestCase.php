@@ -38,13 +38,14 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 //        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/variation_product.yml');
 //        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/pack_product.yml');
 //
+
+
         Shop::setContext(Shop::CONTEXT_ALL);
         Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
     }
 
     public function setUp()
     {
-
         //load module
         $module = Module::getInstanceByName('lengow');
         if ($module) {
