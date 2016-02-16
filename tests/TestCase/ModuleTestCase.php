@@ -13,6 +13,9 @@ use Product;
 use Shop;
 use Currency;
 use LengowLog;
+use Module;
+use Tools;
+use LengowMarketplace;
 
 class ModuleTestCase extends PHPUnit_Framework_TestCase
 {

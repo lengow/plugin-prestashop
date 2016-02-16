@@ -63,6 +63,36 @@ class ImportTest extends ModuleTestCase
     }
 
     /**
+     * Test Check if package data is present
+     *
+     * @test
+     * @covers LengowImport::importOrders
+     */
+    public function checkPackageData()
+    {
+        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
+        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
+        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
+        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+
+        $fixture = new Fixture();
+        $fixture->truncate('lengow_logs_import');
+        $fixture->truncate('lengow_orders');
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Import/check_package_data.json'
+        );
+        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
+        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(0, $result['order_new']);
+        $this->assertEquals(0, $result['order_update']);
+        $this->assertEquals(0, $result['order_error']);
+    }
+
+    /**
      * Test credentials data for a shop
      *
      * @test
