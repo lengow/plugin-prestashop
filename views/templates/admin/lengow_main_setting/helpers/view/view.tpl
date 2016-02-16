@@ -18,10 +18,7 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<h1>Main Setting</h1>
-
-
-<div id="lengow_form_wrapper">
+<div id="lengow_form_wrapper" class="lengow_main_setting">
     <form class="lengow_form" method="POST">
         <input type="hidden" name="action" value="process">
         <div class="container">
@@ -34,15 +31,36 @@
         <div class="container">
             <h2>Pre-Production Mode</h2>
             <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-
-
+            {$preprod_report}
+            <div id="lengow_wrapper_preprod" class="vertical" style="display:none;">
+                {$preprod_wrapper}
+            </div>
             <div class="lengow_clear"></div>
+        </div>
+
+        <div class="container">
+            <h2>Log Files</h2>
+            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+            <ul class="list-group">
+                {foreach from=$list_file item=file}
+                    <li class="list-group-item">
+                        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}&action=download&file={$file['short_path']}">
+                            <i class="fa fa-download"></i> {$file['name']}
+                        </a>
+                    </li>
+                {/foreach}
+                <li class="list-group-item">
+                    <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}&action=download_all">
+                        <i class="fa fa-download"></i> Download all files
+                    </a>
+                </li>
+            </ul>
         </div>
 
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn lengow_btn">Save</button>
+                <button type="submit" class="btn lengow_btn">Save changes</button>
             </div>
         </div>
     </form>

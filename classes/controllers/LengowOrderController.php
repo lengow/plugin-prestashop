@@ -60,7 +60,7 @@ class LengowOrderController extends LengowController
                     $row = $list->getRow(' id = '.(int)$id_order_lengow);
                     $html = $list->displayRow($row);
                     $html = preg_replace('/\r|\n/', '', addslashes($html));
-                    echo '$("#order_'.$id_order_lengow.'").replaceWith("'.$html.'");';
+                    echo 'lengow_jquery("#order_'.$id_order_lengow.'").replaceWith("'.$html.'");';
                     break;
                 case 're_send':
                     $id_order_lengow = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : 0;
@@ -70,7 +70,7 @@ class LengowOrderController extends LengowController
                     $row = $list->getRow(' id = '.(int)$id_order_lengow);
                     $html = $list->displayRow($row);
                     $html = preg_replace('/\r|\n/', '', addslashes($html));
-                    echo '$("#order_'.$id_order_lengow.'").replaceWith("'.$html.'");';
+                    echo 'lengow_jquery("#order_'.$id_order_lengow.'").replaceWith("'.$html.'");';
                     break;
                 case 'import_all':
                     $import = new LengowImport(array(
@@ -108,9 +108,9 @@ class LengowOrderController extends LengowController
                         $message[] = 'You need to wait '.LengowImport::restTimeToImport().
                             ' seconds before re import orders';
                     }
-                    echo '$("#lengow_wrapper_messages").html("';
+                    echo 'lengow_jquery("#lengow_wrapper_messages").html("';
                     echo '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>");';
-                    echo '$("#lengow_import_orders").html("Update Orders");';
+                    echo 'lengow_jquery("#lengow_import_orders").html("Update Orders");';
                     echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
                     break;
@@ -317,11 +317,11 @@ class LengowOrderController extends LengowController
         $html.='<input type="checkbox" id="select_order" class="lengow_select_all"/>';
         $html.='<a href="#" style="display:none;"
                 data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
-                class="lengow_btn lengow_link_tooltip lengow_mass_re_import">
+                class="lengow_btn lengow_link_tooltip lengow_mass_re_import btn btn-primary">
                 <i class="fa fa-download"></i> Re Import Order</a>';
         $html.='<a href="#" style="display:none;"
                         data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
-                class="lengow_btn lengow_link_tooltip lengow_mass_re_send">
+                class="lengow_btn lengow_link_tooltip lengow_mass_re_send btn btn-primary">
                 <i class="fa fa-arrow-right"></i> Re Send Order</a>';
         $html.='</div>';
         $html.= $paginationBlock;

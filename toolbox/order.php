@@ -33,8 +33,7 @@ $controller->postProcess();
 $controller->display();
 
 require 'views/header.php';
-?>
-
-<?php
+echo '<div class="full-container">';
 echo $controller->forceDisplay();
+echo '</div><!-- /.container -->';
 require 'views/footer.php';

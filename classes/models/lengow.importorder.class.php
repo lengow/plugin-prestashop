@@ -295,7 +295,7 @@ class LengowImportOrder
                 'carrier'               => pSQL($this->carrier_name),
                 'method'                => pSQL($this->carrier_method),
                 'tracking'              => pSQL($this->tracking_number),
-                'sent_marketplace'      => $this->shipped_by_mp,
+                'sent_marketplace'      => (int)$this->shipped_by_mp,
                 'delivery_country_iso'  => pSQL((string)$this->package_data->delivery->common_country_iso_a2),
                 'order_lengow_state'    => pSQL($this->order_state_lengow)
             )
@@ -400,6 +400,8 @@ class LengowImportOrder
                 LengowMain::log('Import', $log_message, $this->log_output, $this->marketplace_sku);
                 $this->addQuantityBack($products);
             }
+        } catch (LengowException $e) {
+            $error_message = $e->getMessage();
         } catch (InvalidLengowObjectException $iloe) {
             $error_message = $iloe->getMessage();
         } catch (LengowImportException $lie) {
@@ -665,7 +667,6 @@ class LengowImportOrder
             $this->carrier_method   = (!is_null($trackings[0]->method) ? (string)$trackings[0]->method : null);
             $this->tracking_number  = (!is_null($trackings[0]->number) ? (string)$trackings[0]->number : null);
             $this->relay_id         = (!is_null($trackings[0]->relay->id) ? (string)$trackings[0]->relay->id : null);
-            $this->shipped_by_mp    = false;
             if (!is_null($trackings[0]->is_delivered_by_marketplace) && $trackings[0]->is_delivered_by_marketplace) {
                 $this->shipped_by_mp = true;
             }
@@ -948,6 +949,14 @@ class LengowImportOrder
                     .' could not be found',
                     $this->log_output,
                     $this->marketplace_sku
+                );
+                throw new LengowException(
+                    'product '
+                    .(!is_null($product_data['merchant_product_id']->id)
+                        ? (string)$product_data['merchant_product_id']->id
+                        : (string)$product_data['marketplace_product_id']
+                    )
+                    .' could not be found'
                 );
             }
         }

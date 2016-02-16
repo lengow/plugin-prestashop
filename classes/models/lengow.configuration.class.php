@@ -150,7 +150,9 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_IMPORT_PREPROD_ENABLED' => array(
                     'type' => 'checkbox',
-                    'label' => 'Activate PreProd Mode'
+                    'label' => 'Activate pre-production Mode',
+                    'legend' => 'For simulating fake orders. This option have to be activated ONLY on your
+                    pre-production server<br/>Without this precaution, orders can be imported in double'
                 ),
                 'LENGOW_IMPORT_FAKE_EMAIL' => array(
                     'type' => 'checkbox',
@@ -175,8 +177,10 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_REPORT_MAIL_ENABLED' => array(
                     'type' => 'checkbox',
-                    'label' => 'Activate Mail Report',
+                    'label' => 'I want to be noticed when issues encountered on orders
+                    importation & catalog exportation',
                     'default_value' => true,
+                    'legend' => 'we will send you this once a day'
                 ),
                 'LENGOW_REPORT_MAIL_ADDRESS' => array(
                     'type' => 'tag',

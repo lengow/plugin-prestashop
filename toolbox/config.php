@@ -56,6 +56,7 @@ switch ($action) {
 
 require 'views/header.php';
 ?>
+<div class="container">
 <h1>Configuration</h1>
 <form class="form-horizontal" method="POST">
     <input type="hidden" name="action" value="update"/>
@@ -119,5 +120,6 @@ require 'views/header.php';
     </div>
 </div>
 </form>
+</div><!-- /.container -->
 <?php
 require 'views/footer.php';

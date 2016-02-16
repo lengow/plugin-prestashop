@@ -41,6 +41,15 @@
             <i class="fa fa-life-ring"></i>
         </a>
     </li>
+
+    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq 'on'}
+        <li class="lengow_float_right">
+            <div id="lengow_preprod">
+                <i class="fa fa-exclamation"></i> PreProd Active
+            </div>
+        </li>
+    {/if}
+
     <li role="presentation" id="lengow_logo">
         <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">
             <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
