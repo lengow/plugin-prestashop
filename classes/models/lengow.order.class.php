@@ -394,8 +394,7 @@ class LengowOrder extends Order
             _DB_PREFIX_.'lengow_orders',
             $params,
             'UPDATE',
-            '`id` = \''.pSQL((int)$id).'\'',
-            1
+            '`id` = \''.pSQL((int)$id).'\''
         );
     }
 
