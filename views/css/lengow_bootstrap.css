@@ -316,6 +316,27 @@ body.lengow_body #content .lengow_breadcrumb a {
     float:right;
 }
 
+
+body.lengow_body .lengow_form  .vertical  .form-group {
+    clear:both;
+}
+
+body.lengow_body .lengow_form .vertical  .form-group>div {
+    float:left;
+}
+
+.lengow_form .vertical  .col-sm-2 {
+    width:19%
+}
+
+.lengow_form .vertical  .col-sm-10 {
+    width:79%
+}
+
+.lengow_form .vertical input[type=text] {
+    width: 100%
+}
+
 .lengow_pagination {
     margin-left:20px;
 }
@@ -630,6 +651,20 @@ body.lengow_body #content .lengow_breadcrumb a {
     text-align: left;
 }
 
+.lengow_form  .checkbox label {
+    width:100%;
+}
+
+.lengow_form  .checkbox .legend {
+    margin-left: 114px;
+    display: block;
+}
+
+.lengow_form span.lengow_label_text {
+    margin-left:10px;
+    width:100%;
+}
+
 .lengow_form .lengow_select {
     width:500px;
 }
@@ -736,9 +771,34 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_form .lengow_report_mail_address select {
     width:100%;
 }
-/*.select2-dropdown--below {
-    display: none !important;
-}*/
+.lengow_form #lengow_wrapper_preprod label {
+    float:left;
+}
+
 .lengow_form .lengow_report_mail_address .select2-search {
     width: auto;
 }
+
+.lengow_preprod_wrapper {
+    background: #F0F0F0;
+    padding: 20px;
+    margin: 13px;
+    margin-left: 112px;
+}
+
+body.lengow_body .nobootstrap .lengow_report_mail_address {
+    margin-left:114px;
+    width: auto;
+}
+
+#lengow_form_wrapper.lengow_main_setting ul.select2-selection__rendered li {
+    height: 28px;
+    line-height: 28px;
+    font-size: 18px;
+}
+
+
+
+
+
+

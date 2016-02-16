@@ -7,7 +7,10 @@
 
         $(".lengow_report_mail_address select").select2({
             tags: true,
+            width: '100%',
             selectOnClose: true,
+            closeOnSelect: false,
+            tokenSeparators: [",", " "],
             createTag: function(term, data) {
                 var value = term.term;
                 if(validateEmail(value)) {
@@ -20,6 +23,24 @@
             }
         }).on("select2:open", function (e) {
             $('.select2-dropdown--below').hide();
+        }).on("select2:selecting", function(e) {
+            $('.select2-search__field').val('');
+        });
+
+
+        function displayPreProdMode() {
+            if ($("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").prop('checked')) {
+                $('#lengow_wrapper_preprod').show();
+            } else {
+                $('#lengow_wrapper_preprod').hide();
+            }
+        }
+        displayPreProdMode();
+
+        $("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").on('switchChange.bootstrapSwitch', function (event, state) {
+            if (event.type == "switchChange") {
+                displayPreProdMode();
+            }
         });
     });
 
