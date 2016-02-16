@@ -334,7 +334,10 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 }
 
 .lengow_form .vertical input[type=text] {
-    width: 100%
+    width: 100%;
+    height: 28px;
+    font-size: 20px;
+    color:#666666;
 }
 
 .lengow_pagination {
@@ -774,6 +777,10 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 .lengow_form #lengow_wrapper_preprod label {
     float:left;
 }
+.lengow_form #lengow_wrapper_preprod .form-group {
+    height:38px;
+}
+
 
 .lengow_form .lengow_report_mail_address .select2-search {
     width: auto;
