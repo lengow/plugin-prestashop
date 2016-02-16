@@ -946,6 +946,14 @@ class LengowImportOrder
                     $this->log_output,
                     $this->marketplace_sku
                 );
+                throw new LengowException(
+                    'product '
+                    .(!is_null($product_data['merchant_product_id']->id)
+                        ? (string)$product_data['merchant_product_id']->id
+                        : (string)$product_data['marketplace_product_id']
+                    )
+                    .' could not be found'
+                );
             }
         }
         return $products;
