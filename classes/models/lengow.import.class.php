@@ -599,6 +599,10 @@ class LengowImport
                     $import_finished = true;
                     break;
                 }
+
+                //check if order action is finish (Ship / Cancel)
+                LengowMarketplace::checkFinishAction();
+
             }
             if ($import_finished) {
                 break;

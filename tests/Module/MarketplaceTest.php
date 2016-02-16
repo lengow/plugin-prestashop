@@ -108,6 +108,12 @@ class MarketplaceTest extends ModuleTestCase
      */
     public function callActionErrorApiAccess()
     {
+        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
+        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
+        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
+        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
         $fixture->truncate('lengow_actions');
