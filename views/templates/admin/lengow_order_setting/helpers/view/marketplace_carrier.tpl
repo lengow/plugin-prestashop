@@ -4,11 +4,20 @@
 {while $i < {count($mkp_carriers)}}
     <li class="has-sub lengow_marketplace_carrier"
         id="lengow_marketplace_carrier_country_{$mkp_carriers.$i.id_country}">
-        <h4><label for="menu{$i}"><img src="/modules/lengow/views/img/flag/{$mkp_carriers.$i.iso_code}.png"
+        <h4><label for="menu{$current_id_country}"><img src="/modules/lengow/views/img/flag/{$mkp_carriers.$i.iso_code}.png"
                                        alt="{$mkp_carriers.$i.name}">
                 {$mkp_carriers.$i.name} {if {$mkp_carriers.$i.id_country} eq $default_country}
-                <span>(default)</span>{/if}</label></h4><input id="menu{$i}" name="menu" type="checkbox"/>
+                <span>(default)</span>
+                {else}
+                <button type="button" class="btn delete_lengow_default_carrier"
+                        data-id-country="{$carrierItem.$current_id_country.id_country}">X
+                </button>
+            {/if}</h4>
+        </label><input id="menu{$current_id_country}" name="menu" type="checkbox"/>
         <ul class="sub">
+            <li id="add_country">
+                {include file='./default_carrier.tpl'}
+            </li>
             {while $current_id_country eq {$mkp_carriers.$i.id_country} && $i < {count($mkp_carriers)}}
                 <li class="marketplace_carrier {if empty({$mkp_carriers.$i.id_carrier})}no_carrier{/if}">
                     <h3>{$mkp_carriers.$i.marketplace_carrier_sku}</h3>

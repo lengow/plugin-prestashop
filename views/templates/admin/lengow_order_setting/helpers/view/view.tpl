@@ -28,25 +28,16 @@
     </div>
     <div class="container2">
         <h2>Carrier Management</h2>
-        <h3>Default carrier</h3>
+        <h3>Marketplace carrier management</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua.</p><br/>
-        <div id="add_country">
-            {foreach item=itemCarrier from=$listCarrier}
-                {include file='./default_carrier.tpl'}
-            {/foreach}
-        </div>
         <div class="select_country">
             {include file='./select_country.tpl'}
         </div>
         <div id="error_select_country"></div>
-
-        <h3>Marketplace carrier management</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.</p><br/>
         <div id="add_marketplace_country">
-            <ul class="accordion">
-            {include file='./marketplace_carrier.tpl'}
+            <ul id="marketplace_country" class="accordion">
+                {include file='./marketplace_carrier.tpl'}
             </ul>
         </div>
     </div>
@@ -54,7 +45,9 @@
         <h2>Orders importation</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua.</p><br/>
-        {$import_params}
+        {$matching3}
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua.</p><br/>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">

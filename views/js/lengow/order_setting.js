@@ -29,7 +29,7 @@
             return false;
         });
 
-        $('#add_country').on('click', '.delete_lengow_default_carrier', function () {
+        $('#marketplace_country').on('click', '.delete_lengow_default_carrier', function () {
             if (confirm('Are you sure ?')) {
                 var href = $('.lengow_default_carrier').attr('data-href');
                 $.ajax({
@@ -43,7 +43,7 @@
             return false;
         });
 
-        $('#add_country').on('change', '.carrier', function () {
+        $('#add_marketplace_country').on('change', '.carrier', function () {
             if ($(this).val() !== "") {
                 $(this).parents('.lengow_default_carrier').removeClass('no_carrier');
             } else {
@@ -67,25 +67,21 @@
 
         $(".navigation ul.subMenu").hide();
 
-        $(".navigation li.toggleSubMenu span").each( function () {
-            $(this).replaceWith('<a href="" title="Afficher le sous-menu">Hello<\/a>') ;
-        } ) ;
 
-        // On modifie l'évènement "click" sur les liens dans les items de liste
-        // qui portent la classe "toggleSubMenu" :
         $(".navigation li.toggleSubMenu > a").click( function () {
-            // Si le sous-menu était déjà ouvert, on le referme :
+
             if ($(this).next("ul.subMenu:visible").length != 0) {
                 $(this).next("ul.subMenu").slideUp("normal");
             }
-            // Si le sous-menu est caché, on ferme les autres et on l'affiche :
+
             else {
                 $(".navigation ul.subMenu").slideUp("normal");
                 $(this).next("ul.subMenu").slideDown("normal");
             }
-            // On empêche le navigateur de suivre le lien :
+
             return false;
         });
+
         $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('switchChange.bootstrapSwitch', function (event, state) {
             if (event.type == "switchChange") {
                 changeStockMP();

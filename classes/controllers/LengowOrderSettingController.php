@@ -34,11 +34,20 @@ class LengowOrderSettingController extends LengowController
 
         $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
         $carriers = LengowCarrier::getActiveCarriers();
-        $listCarrier = LengowCarrierCountry::listCarrierByCountry();
         $countries = LengowCarrierCountry::getCountries();
-        $id_countries = LengowCarrierCountry::getIdCountries($listCarrier);
+        $listCarrier = LengowCarrierCountry::listCarrierByCountry();
         $mkp_carriers = LengowCarrier::getListMarketplaceCarrier();
+        $id_countries = LengowCarrierCountry::getIdCountries($mkp_carriers);
 
+        $carrierItem= array();
+        $carrierCountry = array();
+        foreach ($listCarrier as $row) {
+            $carrierCountry[$row['id_country']] = $row;
+        }
+        foreach ($mkp_carriers as $row) {
+            $carrierItem[$row['id_country']] = $row;
+
+        }
         $form = new LengowConfigurationForm(
             array(
                 "fields" => LengowConfiguration::getKeys(),
@@ -66,10 +75,12 @@ class LengowOrderSettingController extends LengowController
 
         $this->context->smarty->assign('default_country', $default_country);
         $this->context->smarty->assign('carriers', $carriers);
-        $this->context->smarty->assign('listCarrier', $listCarrier);
+        $this->context->smarty->assign('carrierCountry', $carrierCountry);
+        $this->context->smarty->assign('carrierItem', $carrierItem);
         $this->context->smarty->assign('countries', $countries);
-        $this->context->smarty->assign('id_countries', $id_countries);
         $this->context->smarty->assign('mkp_carriers', $mkp_carriers);
+        $this->context->smarty->assign('id_countries', $id_countries);
+        $this->context->smarty->assign('listCarrier', $listCarrier);
         $this->context->smarty->assign('matching', $matching);
         $this->context->smarty->assign('matching2', $matching2);
         $this->context->smarty->assign('import_params', $import_params);
@@ -88,31 +99,33 @@ class LengowOrderSettingController extends LengowController
             case 'add_country':
                 $id_country = Tools::getValue('id_country');
 
-                $db_carrier_country = LengowCarrierCountry::insert($id_country);
-                $id_lengow_carrier = $db_carrier_country->insert_ID();
-
-
-                $itemCarrier = LengowCarrierCountry::listCarrierById($id_lengow_carrier);
-                $carriers = LengowCarrier::getActiveCarriers($id_country);
-
+                LengowCarrierCountry::insert($id_country);
                 LengowCarrier::insert($id_country);
 
+                $carriers = LengowCarrier::getActiveCarriers($id_country);
+
+                $countries = LengowCarrierCountry::getCountries();
 
                 $mkp_carriers = LengowCarrier::getListMarketplaceCarrier($id_country);
+                foreach ($mkp_carriers as $row) {
+                    $carrierItem[$row['id_country']] = $row;
+                }
+                $id_countries = LengowCarrierCountry::getIdCountries($mkp_carriers);
 
-                $this->context->smarty->assign('itemCarrier', $itemCarrier);
+
                 $this->context->smarty->assign('carriers', $carriers);
+                $this->context->smarty->assign('carrierItem', $carrierItem);
+                $this->context->smarty->assign('countries', $countries);
                 $this->context->smarty->assign('mkp_carriers', $mkp_carriers);
+                $this->context->smarty->assign('id_countries', $id_countries);
                 $this->context->smarty->assign('default_country', $default_country);
 
                 $module = Module::getInstanceByName('lengow');
 
-                $display_default_carrier = $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/lengow_order_setting/helpers/view/default_carrier.tpl');
                 $display_marketplace_carrier = $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/lengow_order_setting/helpers/view/marketplace_carrier.tpl');
 
-                echo '$("#add_country").append("'.preg_replace('/\r|\n/', '', addslashes($display_default_carrier)).'");';
                 echo '$("#select_country option:selected").remove();';
-                echo '$("#add_marketplace_country").append("'.preg_replace('/\r|\n/', '', addslashes($display_marketplace_carrier)).'");';
+                echo '$("#marketplace_country").append("'.preg_replace('/\r|\n/', '', addslashes($display_marketplace_carrier)).'");';
                 exit();
                 break;
             case 'delete_country':
@@ -121,13 +134,16 @@ class LengowOrderSettingController extends LengowController
                 LengowCarrierCountry::delete($id_country);
 
                 $countries = LengowCarrierCountry::getCountries();
-                $listCarrier = LengowCarrierCountry::listCarrierByCountry();
-                $id_countries = LengowCarrierCountry::getIdCountries($listCarrier);
+
+
 
                 LengowCarrier::deleteMarketplaceCarrier($id_country);
 
-                $mkp_carriers = LengowCarrier::getListMarketplaceCarrier();
-
+                $mkp_carriers = LengowCarrier::getListMarketplaceCarrier($id_country);
+                foreach ($mkp_carriers as $row) {
+                    $carrierItem[$row['id_country']] = $row;
+                }
+                $id_countries = LengowCarrierCountry::getIdCountries($mkp_carriers);
                 $this->context->smarty->assign('countries', $countries);
                 $this->context->smarty->assign('id_countries', $id_countries);
                 $this->context->smarty->assign('mkp_carriers', $mkp_carriers);
@@ -136,9 +152,7 @@ class LengowOrderSettingController extends LengowController
 
                 $module = Module::getInstanceByName('lengow');
                 $display_countries = $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/lengow_order_setting/helpers/view/select_country.tpl');
-                $display_marketplace_carrier = $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/lengow_order_setting/helpers/view/marketplace_carrier.tpl');
 
-                echo '$("#lengow_country_'.$id_country.'").remove();';
                 echo '$("#select_country").html("'.preg_replace('/\r|\n/', '', addslashes($display_countries)).'");';
                 echo '$("#lengow_marketplace_carrier_country_'.$id_country.'").remove();';
                 exit();
@@ -147,14 +161,25 @@ class LengowOrderSettingController extends LengowController
                 foreach ($default_carriers as $key => $value) {
                     Db::getInstance()->autoExecute(
                         _DB_PREFIX_ . 'lengow_carrier_country',
-                        array('id_carrier' => (int)$value),
+                        array('id_carrier' => (int)$value > 0  ? (int)$value : null),
                         'UPDATE',
-                        'id = '.(int)$key
+                        'id = '.(int)$key,
+                        0,
+                        true,
+                        true
                     );
                 }
 
                 foreach ($default_marketplace_carriers as $key => $value) {
-                    Db::getInstance()->autoExecute(_DB_PREFIX_.'lengow_marketplace_carrier', array('id_carrier' => (int)$value), 'UPDATE', 'id = '.(int)$key);
+                    Db::getInstance()->autoExecute(
+                        _DB_PREFIX_.'lengow_marketplace_carrier',
+                        array('id_carrier' => (int)$value > 0  ? (int)$value : null),
+                        'UPDATE',
+                        'id = '.(int)$key,
+                        0,
+                        true,
+                        true
+                    );
                 }
 
                 $form = new LengowConfigurationForm(
