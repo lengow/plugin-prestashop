@@ -38,6 +38,7 @@ $listFile = LengowLog::getPaths();
 
 require 'views/header.php';
 ?>
+<div class="container">
 <h1>Log Files</h1>
 
 <ul class="list-group">
@@ -54,5 +55,6 @@ require 'views/header.php';
     echo '</li>';
     ?>
 </ul>
+</div><!-- /.container -->
 <?php
 require 'views/footer.php';

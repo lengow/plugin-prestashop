@@ -20,7 +20,6 @@
  */
 
 ?>
-</div><!-- /.container -->
 
 </body>
 </html>

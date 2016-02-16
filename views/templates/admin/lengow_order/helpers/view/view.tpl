@@ -40,7 +40,7 @@
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">(change this?)</a>
             </div>
             <div class="lengow_order_block_content_right">
-                <a id="lengow_import_orders" class="lengow_btn" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
+                <a id="lengow_import_orders" class="lengow_btn btn btn-success" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
                     Update Orders</a>
             </div>
             <div class="lengow_clear"></div>
