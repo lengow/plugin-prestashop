@@ -24,6 +24,17 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-top li.active a {
     padding-left:50px;
 }
 
+#lengow_preprod {
+    background: #DA4E4E;
+    color: white;
+    height: 44px;
+    margin-top: 4px;
+    line-height: 43px;
+    padding: 0 10px;
+    border-radius: 9px;
+}
+
+
 body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a,
 body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:hover,
 body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:focus
