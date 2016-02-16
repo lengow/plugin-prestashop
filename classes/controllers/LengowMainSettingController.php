@@ -64,12 +64,13 @@ class LengowMainSettingController extends LengowController
             )
         );
 
-        $mail_report = $form->buildInputs(
+        $preprod_report = $form->buildInputs(
             array(
                 'LENGOW_IMPORT_PREPROD_ENABLED',
             )
         );
         $this->context->smarty->assign('mail_report', $mail_report);
+        $this->context->smarty->assign('preprod_report', $preprod_report);
         parent::display();
     }
 }
