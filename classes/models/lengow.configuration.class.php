@@ -136,12 +136,16 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_IMPORT_FORCE_PRODUCT' => array(
                     'type' => 'checkbox',
-                    'label' => 'Import Force Product'
+                    'label' => 'Import Force Product',
                 ),
                 'LENGOW_IMPORT_DAYS' => array(
                     'label' => 'Re-import your orders since',
                     'default_value' => 5,
                     'legend' => 'Blabla blablabla'
+                ),
+                'LENGOW_IMPORT_PROCESSING_FEE' => array(
+                    'type' => 'checkbox',
+                    'label' => 'Import processing fees'
                 ),
                 'LENGOW_IMPORT_CARRIER_DEFAULT' => array(
                     'type' => 'select',

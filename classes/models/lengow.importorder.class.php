@@ -347,7 +347,7 @@ class LengowImportOrder
                 foreach ($order_list as $order) {
                     // add order comment from marketplace to prestashop order
                     if (_PS_VERSION_ >= '1.5') {
-                        $this->addCommentOrder((int)$order->id);
+                        $this->addCommentOrder((int)$order->id, $this->order_data->comments);
                     }
                     $success_message = 'order successfully imported (ORDER ID '.$order->id.')';
                     $success = LengowOrder::updateOrderLengow(
@@ -1101,12 +1101,12 @@ class LengowImportOrder
     /**
      * Add a comment to the order
      *
-     * @param integer $order_id Order ID Prestashop
+     * @param integer   $order_id   Order ID Prestashop
+     * @param string    $comment    Order Comment
      */
-    protected function addCommentOrder($order_id)
+    protected function addCommentOrder($order_id, $comment)
     {
-        $comment = (string)$this->order_data->comments;
-        if (!empty($comment)) {
+        if (!empty($comment) && !is_null($comment)) {
             $msg = new Message();
             $msg->id_order = $order_id;
             $msg->private = 1;

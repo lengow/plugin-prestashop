@@ -7,9 +7,9 @@
       "marketplace": "galeries_lafayette",
       "account_id": 155,
       "marketplace_country_iso2": "FR",
-      "marketplace_order_id": "1300435653833-A",
+      "marketplace_order_id": "1300435653212-A",
       "merchant_order_id": [
-        "60"
+        "1"
       ],
       "marketplace_status": "SHIPPED",
       "lengow_status": "shipped",
@@ -25,7 +25,7 @@
         "symbol": "€",
         "name": "Euro"
       },
-      "comments": "Shipped by marketplace",
+      "comments": null,
       "invoice_number": null,
       "invoice_url": null,
       "payments": [
@@ -49,8 +49,8 @@
                 "id": null
               },
               "marketplace_package_id": null,
-              "marketplace_status": "SHIPPED",
-              "lengow_status": "shipped",
+              "marketplace_status": null,
+              "lengow_status": null,
               "title": "Top EMEL avec col montant-Ecru-38",
               "category": null,
               "url_product": null,
@@ -84,16 +84,16 @@
             "trackings": [
               {
                 "number": "8V4564654654",
-                "method":"follow-up letter",
+                "method": null,
                 "carrier": "LAPOSTE",
-                "url":null,
-                "is_delivered_by_marketplace": true,
-                "parcel_weight":null,
-                "shipped_at":null,
+                "url": null,
+                "is_delivered_by_marketplace": false,
+                "parcel_weight": null,
+                "shipped_at": null,
                 "relay":
                   { 
-                    "id":15632,
-                    "name":null
+                    "id": null,
+                    "name": null
                   },
                 "marketplace_order_line_ids": [
                   "1300435653833-A-1"

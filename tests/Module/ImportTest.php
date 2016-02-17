@@ -53,7 +53,6 @@ class ImportTest extends ModuleTestCase
         Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
         Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
         Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
     }
 
     /**
@@ -177,6 +176,113 @@ class ImportTest extends ModuleTestCase
         );
     }
 
+    /**
+     * Test Check if import is allready in progress
+     *
+     * @test
+     * @covers LengowImport::importOrders
+     */
+    public function importIsInProgress()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+
+        $now = time();
+        LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', $now - 10);
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(0, $result['order_new'], '[Import Is In Progress] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Import Is In Progress] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Import Is In Progress] nb order error');
+        $this->assertEquals(
+            'import is already started',
+            $result['error'][0],
+            '[Import Is In Progress] Generate an error'
+        );
+        LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', - 1);
+    }
+
+    /**
+     * Test Check no order for import
+     *
+     * @test
+     * @covers LengowImport::importOrders
+     */
+    public function noOrderForImport()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Import/no_orders.json'
+        );
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(0, $result['order_new'], '[No Order For Import] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[No Order For Import] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[No Order For import] nb order error');
+        $this->assertTableEmpty('lengow_orders', '[No Order For import] Check if Lengow Orders table is empty');
+        $this->assertTableEmpty('orders', '[No Order For import] Check if Prestashop Orders table is empty');
+    }
+
+    /**
+     * Test Check if the shop is inactive
+     *
+     * @test
+     * @covers LengowImport::importOrders
+     */
+    public function noShopActive()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+
+        Configuration::set('LENGOW_SHOP_ACTIVE', false, null, 1);
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(0, $result['order_new'], '[No Shop Active] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[No Shop Active] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[No Shop Active] nb order error');
+        $this->assertTableEmpty('lengow_orders', '[No Shop Active] Check if Lengow Orders table is empty');
+        $this->assertTableEmpty('orders', '[No Shop Active] Check if Prestashop Orders table is empty');
+    }
+
+    /**
+     * Test Check if the shop credentials are corrects
+     *
+     * @test
+     * @covers LengowImport::importOrders
+     */
+    public function noCredentialsForShop()
+    {
+        $this->chargeFixture();
+
+        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', '', null, 1);
+        Configuration::set('LENGOW_ACCESS_TOKEN', '', null, 1);
+        Configuration::set('LENGOW_SECRET_TOKEN', '', null, 1);
+        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 2);
+        Configuration::set('LENGOW_ACCOUNT_ID', '', null, 2);
+        Configuration::set('LENGOW_ACCESS_TOKEN', '', null, 2);
+        Configuration::set('LENGOW_SECRET_TOKEN', '', null, 2);
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(0, $result['order_new'], '[No Credentials For Shop] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[No Credentials For Shop] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[No Credentials For Shop] nb order error');
+        $this->assertEquals(
+            'ID account, access token or secret is empty in store 1',
+            $result['error'][1],
+            '[No Credentials For Shop] Generate an error'
+        );
+        $this->assertEquals(
+            'ID account, access token or secret is empty in store 2',
+            $result['error'][2],
+            '[No Credentials For Shop] Generate an error'
+        );
+    }
 
     /**
      * Test Check if delivery address is present
