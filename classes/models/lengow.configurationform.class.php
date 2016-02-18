@@ -26,13 +26,12 @@
 class LengowConfigurationForm
 {
 
-    protected $fields;
+    public $fields;
 
     public function __construct($params)
     {
         $this->fields = isset($params['fields']) ? $params['fields'] : false;
     }
-
 
     public function build()
     {
@@ -83,8 +82,8 @@ class LengowConfigurationForm
                 $html.='<div class="col-sm-offset-2 col-sm-10"><div class="checkbox"><label>';
                 $checked = $value ? 'checked' : '';
                 $html.= '<input name="'.$name.'" type="checkbox" '.$checked.' '.$readonly.' class="lengow_switch">';
-                $html.= $input['label'];
-                $html.= '</label></div><span class="legend">'.$legend.'</span></div></div>';
+                $html.= '<span class="lengow_label_text">'.$input['label'].'</span>';
+                $html.= '</label><span class="legend">'.$legend.'</span></div></div></div>';
                 break;
             case 'text':
                 $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
@@ -161,7 +160,7 @@ class LengowConfigurationForm
             if (!in_array($key, $checkboxKeys)) {
                 continue;
             }
-            if ($value['type'] == 'checkbox' && (!isset($value['shop']) || !$value['shop'])) {
+            if ((!isset($value['shop']) || !$value['shop'])) {
                 if (!isset($_REQUEST[$key])) {
                     LengowConfiguration::updateGlobalValue($key, false);
                 }

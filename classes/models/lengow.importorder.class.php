@@ -295,7 +295,7 @@ class LengowImportOrder
                 'carrier'               => pSQL($this->carrier_name),
                 'method'                => pSQL($this->carrier_method),
                 'tracking'              => pSQL($this->tracking_number),
-                'sent_marketplace'      => $this->shipped_by_mp,
+                'sent_marketplace'      => (int)$this->shipped_by_mp,
                 'delivery_country_iso'  => pSQL((string)$this->package_data->delivery->common_country_iso_a2),
                 'order_lengow_state'    => pSQL($this->order_state_lengow)
             )
@@ -347,7 +347,7 @@ class LengowImportOrder
                 foreach ($order_list as $order) {
                     // add order comment from marketplace to prestashop order
                     if (_PS_VERSION_ >= '1.5') {
-                        $this->addCommentOrder((int)$order->id);
+                        $this->addCommentOrder((int)$order->id, $this->order_data->comments);
                     }
                     $success_message = 'order successfully imported (ORDER ID '.$order->id.')';
                     $success = LengowOrder::updateOrderLengow(
@@ -400,6 +400,8 @@ class LengowImportOrder
                 LengowMain::log('Import', $log_message, $this->log_output, $this->marketplace_sku);
                 $this->addQuantityBack($products);
             }
+        } catch (LengowException $e) {
+            $error_message = $e->getMessage();
         } catch (InvalidLengowObjectException $iloe) {
             $error_message = $iloe->getMessage();
         } catch (LengowImportException $lie) {
@@ -492,12 +494,16 @@ class LengowImportOrder
                     (count($this->package_data->delivery->trackings) > 0
                         ? $this->package_data->delivery->trackings[0]->number
                         : null
-                    )
+                    ),
+                    $this->log_output
                 )) {
+                    $result['update'] = true;
+                    $state_name = '';
                     $available_states = LengowMain::getOrderStates($this->id_lang);
                     foreach ($available_states as $state) {
-                        if ($state['id_order_state'] === LengowMain::getOrderState($this->order_state_lengow)) {
+                        if ($state['id_order_state'] == LengowMain::getOrderState($this->order_state_lengow)) {
                             $state_name = $state['name'];
+                            break;
                         }
                     }
                     LengowMain::log(
@@ -506,7 +512,6 @@ class LengowImportOrder
                         $this->log_output,
                         $this->marketplace_sku
                     );
-                    $result['update'] = true;
                 }
                 // update lengow order state
                 LengowOrder::updateOrderLengow(
@@ -662,7 +667,6 @@ class LengowImportOrder
             $this->carrier_method   = (!is_null($trackings[0]->method) ? (string)$trackings[0]->method : null);
             $this->tracking_number  = (!is_null($trackings[0]->number) ? (string)$trackings[0]->number : null);
             $this->relay_id         = (!is_null($trackings[0]->relay->id) ? (string)$trackings[0]->relay->id : null);
-            $this->shipped_by_mp    = false;
             if (!is_null($trackings[0]->is_delivered_by_marketplace) && $trackings[0]->is_delivered_by_marketplace) {
                 $this->shipped_by_mp = true;
             }
@@ -1097,12 +1101,12 @@ class LengowImportOrder
     /**
      * Add a comment to the order
      *
-     * @param integer $order_id Order ID Prestashop
+     * @param integer   $order_id   Order ID Prestashop
+     * @param string    $comment    Order Comment
      */
-    protected function addCommentOrder($order_id)
+    protected function addCommentOrder($order_id, $comment)
     {
-        $comment = (string)$this->order_data->comments;
-        if (!empty($comment)) {
+        if (!empty($comment) && !is_null($comment)) {
             $msg = new Message();
             $msg->id_order = $order_id;
             $msg->private = 1;

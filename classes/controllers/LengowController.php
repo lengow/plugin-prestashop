@@ -30,6 +30,8 @@ class LengowController
         $this->module = Module::getInstanceByName('lengow');
         $this->context = Context::getContext();
         $this->context->smarty->assign('current_controller', get_class($this));
+        $this->context->smarty->assign('lengow_configuration', new LengowConfiguration());
+        $this->context->smarty->assign('locale', new LengowTranslation());
     }
 
     public function postProcess()

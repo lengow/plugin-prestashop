@@ -436,7 +436,7 @@ class LengowList
          sur <span class="lengow_number">'.$this->total.'</span>';
         $html.='</div>';
 
-        $html.= '<ul class="lengow_pagination">';
+        $html.= '<ul class="lengow_pagination pagination">';
         $class = ($this->currentPage == 1) ? 'disabled' : '';
         $html.= '<li><a href="#" class="'.$class.'"  data-page="'.($this->currentPage-1).'"
         data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage-1).'"
@@ -447,7 +447,7 @@ class LengowList
         ><i class="fa fa-angle-right"></i></a></li>';
         $html.= '</ul>';
 
-        $html.= '<ul class="lengow_pagination">';
+        $html.= '<ul class="lengow_pagination pagination">';
         if ($this->nbMaxPage > 10) {
             $showLastSeparation = false;
 

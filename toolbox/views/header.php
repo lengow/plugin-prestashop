@@ -32,15 +32,16 @@
     <link href="/modules/lengow/views/css/toolbox.css" rel="stylesheet">
     <link rel="stylesheet" href="/modules/lengow/views/css/font-awesome.css">
     <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
     <script type="text/javascript">
         var lengow_jquery = $.noConflict(true);
     </script>
     <script type="text/javascript" src="/modules/lengow/views/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/modules/lengow/views/js/lengow/admin.js"></script>
     <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-switch.js"></script>
-    <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-datepicker.js"></script>
     <script type="text/javascript" src="/modules/lengow/views/js/clipboard.js"></script>
+    <script type="text/javascript" src="/modules/lengow/views/js/select2.js"></script>
 </head>
 
 <body>
@@ -75,4 +76,3 @@ if ($lengowTool->isLogged()) {
     <?php
 }
 ?>
-<div class="container">

@@ -38,6 +38,7 @@ if ($blockedIP) {
     echo '<div class="alert alert-danger" role="alert">Your IP Address has ben blocked</div>';
 }
 ?>
+<div class="container">
 <form action="/modules/lengow/toolbox/login.php" method="POST">
     <input type="hidden" name="action" value="login" />
     <div class="form-group">
@@ -50,5 +51,6 @@ if ($blockedIP) {
     </div>
     <button type="submit" class="btn btn-default">Log In</button>
 </form>
+</div><!-- /.container -->
 <?php
 require 'views/footer.php';

@@ -32,6 +32,258 @@ class ImportTest extends ModuleTestCase
         Module::getInstanceByName('lengow');
     }
 
+    public function chargeFixture()
+    {
+        $fixture = new Fixture();
+        $fixture->truncate('orders');
+        $fixture->truncate('order_carrier');
+        $fixture->truncate('lengow_logs_import');
+        $fixture->truncate('lengow_orders');
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/euro_currency.yml'
+        );
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml'
+        );
+    }
+
+    public function chargeConfig()
+    {
+        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
+        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
+        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
+    }
+
+    /**
+     * Test if orders are imported
+     *
+     * @test
+     * @covers LengowImport::importOrders
+     */
+    public function importOrders()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Import/import_orders.json'
+        );
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(3, $result['order_new'], '[Import Orders] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Import Orders] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Import Orders] nb order error');
+        $this->assertTableNotContain(
+            'lengow_orders',
+            array('marketplace_sku' => '1300435653830-A'),
+            '[Import Orders] Check if order is present in Lengow Orders table'
+        );
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'              => '1',
+                'marketplace_sku'       => '1300435653831-A',
+                'order_process_state'   => '1',
+                'delivery_address_id'   => '7528'
+            ),
+            '[Import Orders] Check if order is present in Lengow Orders table'
+        );
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'              => '2',
+                'marketplace_sku'       => '1300435653832-A',
+                'tracking'              => '8D00432154798',
+                'order_process_state'   => '2',
+                'delivery_address_id'   => '7530'
+            ),
+            '[Import Orders] Check if order is present in Lengow Orders table'
+        );
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'              => '3',
+                'marketplace_sku'       => '1300435653832-A',
+                'tracking'              => 'CK00879241952',
+                'order_process_state'   => '2',
+                'delivery_address_id'   => '7531'
+            ),
+            '[Import Orders] Check if order is present in Lengow Orders table'
+        );
+        $this->assertTableNotContain(
+            'lengow_orders',
+            array('marketplace_sku' => '1300435653833-A'),
+            '[Import Orders] Check if order is present in Lengow Orders table'
+        );
+        $this->assertTableContain(
+            'stock_available',
+            array(
+                'id_product' => '1',
+                'quantity'   => '8'
+            ),
+            '[Import Orders] Check if the stock is decremented'
+        );
+        $this->assertTableContain(
+            'stock_available',
+            array(
+                'id_product' => '2',
+                'quantity'   => '7'
+            ),
+            '[Import Orders] Check if the stock is decremented'
+        );
+        $this->assertTableContain(
+            'orders',
+            array(
+                'id_order'        => '1',
+                'shipping_number' => '',
+                'current_state'   => '2'
+            ),
+            '[Import Orders] Check if order is present in Orders Prestashop table'
+        );
+        $this->assertTableContain(
+            'orders',
+            array(
+                'id_order'        => '2',
+                'shipping_number' => '8D00432154798',
+                'current_state'   => '4'
+            ),
+            '[Import Orders] Check if order is present in Orders Prestashop table'
+        );
+        $this->assertTableContain(
+            'orders',
+            array(
+                'id_order'        => '3',
+                'shipping_number' => 'CK00879241952',
+                'current_state'   => '4'
+            ),
+            '[Import Orders] Check if order is present in Orders Prestashop table'
+        );
+        $this->assertTableContain(
+            'order_carrier',
+            array(
+                'id_order'        => '2',
+                'tracking_number' => '8D00432154798'
+            ),
+            '[Import Orders] Check if tracking number is present in Order Carrier table'
+        );
+        $this->assertTableContain(
+            'order_carrier',
+            array(
+                'id_order'        => '3',
+                'tracking_number' => 'CK00879241952'
+            ),
+            '[Import Orders] Check if tracking number is present in Order Carrier table'
+        );
+    }
+
+    /**
+     * Test Check if import is allready in progress
+     *
+     * @test
+     * @covers LengowImport::importOrders
+     */
+    public function importIsInProgress()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+
+        $now = time();
+        LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', $now - 10);
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(0, $result['order_new'], '[Import Is In Progress] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Import Is In Progress] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Import Is In Progress] nb order error');
+        $this->assertEquals(
+            'import is already started',
+            $result['error'][0],
+            '[Import Is In Progress] Generate an error'
+        );
+        LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', - 1);
+    }
+
+    /**
+     * Test Check no order for import
+     *
+     * @test
+     * @covers LengowImport::importOrders
+     */
+    public function noOrderForImport()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Import/no_orders.json'
+        );
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(0, $result['order_new'], '[No Order For Import] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[No Order For Import] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[No Order For import] nb order error');
+        $this->assertTableEmpty('lengow_orders', '[No Order For import] Check if Lengow Orders table is empty');
+        $this->assertTableEmpty('orders', '[No Order For import] Check if Prestashop Orders table is empty');
+    }
+
+    /**
+     * Test Check if the shop is inactive
+     *
+     * @test
+     * @covers LengowImport::importOrders
+     */
+    public function noShopActive()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+
+        Configuration::set('LENGOW_SHOP_ACTIVE', false, null, 1);
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(0, $result['order_new'], '[No Shop Active] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[No Shop Active] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[No Shop Active] nb order error');
+        $this->assertTableEmpty('lengow_orders', '[No Shop Active] Check if Lengow Orders table is empty');
+        $this->assertTableEmpty('orders', '[No Shop Active] Check if Prestashop Orders table is empty');
+    }
+
+    /**
+     * Test Check if the shop credentials are corrects
+     *
+     * @test
+     * @covers LengowImport::importOrders
+     */
+    public function noCredentialsForShop()
+    {
+        $this->chargeFixture();
+
+        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', '', null, 1);
+        Configuration::set('LENGOW_ACCESS_TOKEN', '', null, 1);
+        Configuration::set('LENGOW_SECRET_TOKEN', '', null, 1);
+        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 2);
+        Configuration::set('LENGOW_ACCOUNT_ID', '', null, 2);
+        Configuration::set('LENGOW_ACCESS_TOKEN', '', null, 2);
+        Configuration::set('LENGOW_SECRET_TOKEN', '', null, 2);
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(0, $result['order_new'], '[No Credentials For Shop] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[No Credentials For Shop] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[No Credentials For Shop] nb order error');
+        $this->assertEquals(
+            'ID account, access token or secret is empty in store 1',
+            $result['error'][1],
+            '[No Credentials For Shop] Generate an error'
+        );
+        $this->assertEquals(
+            'ID account, access token or secret is empty in store 2',
+            $result['error'][2],
+            '[No Credentials For Shop] Generate an error'
+        );
+    }
+
     /**
      * Test Check if delivery address is present
      *
@@ -40,26 +292,24 @@ class ImportTest extends ModuleTestCase
      */
     public function checkDeliveryAddress()
     {
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
-        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-
-        $fixture = new Fixture();
-        $fixture->truncate('lengow_logs_import');
-        $fixture->truncate('lengow_orders');
+        $this->chargeConfig();
+        $this->chargeFixture();
         LengowConnector::$test_fixture_path = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Import/check_delivery_address.json'
         );
-        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
 
         $import = new LengowImport(array('log_output' => false));
         $result = $import->exec();
-        $this->assertEquals(0, $result['order_new']);
-        $this->assertEquals(0, $result['order_update']);
-        $this->assertEquals(0, $result['order_error']);
+        $this->assertEquals(0, $result['order_new'], '[Check Delivery Address] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Check Delivery Address] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Check Delivery Address] nb order error');
+        $this->assertTableNotContain(
+            'lengow_orders',
+            array(
+                'marketplace_sku' => '1300435653833-A'
+            ),
+            '[Check Delivery Address] Check if order isn\'t present in Lengow Orders table'
+        );
     }
 
     /**
@@ -70,26 +320,24 @@ class ImportTest extends ModuleTestCase
      */
     public function checkPackageData()
     {
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
-        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-
-        $fixture = new Fixture();
-        $fixture->truncate('lengow_logs_import');
-        $fixture->truncate('lengow_orders');
+        $this->chargeConfig();
+        $this->chargeFixture();
         LengowConnector::$test_fixture_path = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Import/check_package_data.json'
         );
-        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
 
         $import = new LengowImport(array('log_output' => false));
         $result = $import->exec();
-        $this->assertEquals(0, $result['order_new']);
-        $this->assertEquals(0, $result['order_update']);
-        $this->assertEquals(0, $result['order_error']);
+        $this->assertEquals(0, $result['order_new'], '[Check Package Data] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Check Package Data] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Check Package Data] nb order error');
+        $this->assertTableNotContain(
+            'lengow_orders',
+            array(
+                'marketplace_sku' => '1300435653833-A'
+            ),
+            '[Check Package Data] Check if order isn\'t present in Lengow Orders table'
+        );
     }
 
     /**
@@ -107,17 +355,17 @@ class ImportTest extends ModuleTestCase
         $import = new LengowImport();
         $this->assertTrue(
             $this->invokeMethod($import, 'checkCredentials', array(1, 'first_shop')),
-            'Check credentials OK'
+            '[Check Credentials] Check credentials OK'
         );
         $this->assertEquals(
             'Account ID 155 is already used by shop first_shop (1)',
             $this->invokeMethod($import, 'checkCredentials', array(1, 'second_shop')),
-            'Account ID is already used by a other shop'
+            '[Check Credentials] Account ID is already used by a other shop'
         );
         $this->assertEquals(
             'ID account, access token or secret is empty in store 2',
             $this->invokeMethod($import, 'checkCredentials', array(2, 'second_shop')),
-            'Credentials are empty'
+            '[Check Credentials] Credentials are empty'
         );
     }
 
@@ -129,14 +377,17 @@ class ImportTest extends ModuleTestCase
      */
     public function checkState()
     {
-        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
-
         $marketplace = LengowMain::getMarketplaceSingleton('galeries_lafayette', 1);
 
-        $this->assertFalse(LengowImport::checkState(null, $marketplace), 'Order state is empty');
-        $this->assertFalse(LengowImport::checkState('STAGING', $marketplace), 'Order state isn\'t authorized ');
-        $this->assertTrue(LengowImport::checkState('WAITING_DEBIT', $marketplace), 'Order state is authorized');
+        $this->assertFalse(LengowImport::checkState(null, $marketplace), '[Check State] Order state is empty');
+        $this->assertFalse(
+            LengowImport::checkState('STAGING', $marketplace),
+            '[Check State] Order state isn\'t authorized '
+        );
+        $this->assertTrue(
+            LengowImport::checkState('WAITING_DEBIT', $marketplace),
+            '[Check State] Order state is authorized'
+        );
     }
 
     /**
@@ -149,16 +400,16 @@ class ImportTest extends ModuleTestCase
     {
         $now = time();
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', $now);
-        $this->assertTrue(LengowImport::isInProcess(), 'Import is already in process');
+        $this->assertTrue(LengowImport::isInProcess(), '[Is In Process] Import is already in process');
 
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', ($now - 50));
-        $this->assertTrue(LengowImport::isInProcess(), 'Import is already in process - 50s');
+        $this->assertTrue(LengowImport::isInProcess(), '[Is In Process] Import is already in process - 50s');
 
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', ($now - 70));
-        $this->assertFalse(LengowImport::isInProcess(), 'Import is already in process - 70s');
+        $this->assertFalse(LengowImport::isInProcess(), '[Is In Process] Import is already in process - 70s');
 
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', -1);
-        $this->assertFalse(LengowImport::isInProcess(), 'No import in process');
+        $this->assertFalse(LengowImport::isInProcess(), '[Is In Process] No import in process');
     }
 
     /**
@@ -171,13 +422,17 @@ class ImportTest extends ModuleTestCase
     {
         $now = time();
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', $now);
-        $this->assertEquals(60, LengowImport::restTimeToImport(), 'Rest time 60s');
+        $this->assertEquals(60, LengowImport::restTimeToImport(), '[Rest Time To Import] Rest time 60s');
 
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', ($now - 40));
-        $this->assertEquals(20, LengowImport::restTimeToImport(), 'Rest time 20s for next import');
+        $this->assertEquals(
+            20,
+            LengowImport::restTimeToImport(),
+            '[Rest Time To Import] Rest time 20s for next import'
+        );
 
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', -1);
-        $this->assertFalse(LengowImport::isInProcess(), 'Rest time 00s  for next import');
+        $this->assertFalse(LengowImport::isInProcess(), '[Rest Time To Import] Rest time 00s for next import');
     }
 
     /**
@@ -192,11 +447,11 @@ class ImportTest extends ModuleTestCase
         $this->assertEquals(
             time(),
             LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS'),
-            'Setting LENGOW_IMPORT_IN_PROGRESS is completed'
+            '[Set In Process] Setting LENGOW_IMPORT_IN_PROGRESS is completed'
         );
-        $this->assertTrue(LengowImport::$processing, 'Processing attribute is true');
-        $this->assertEquals(60, LengowImport::restTimeToImport(), 'Rest time 60s for next import');
-        $this->assertTrue(LengowImport::isInProcess(), 'Import is already in process');
+        $this->assertTrue(LengowImport::$processing, '[Set In Process] Processing attribute is true');
+        $this->assertEquals(60, LengowImport::restTimeToImport(), '[Set In Process] Rest time 60s for next import');
+        $this->assertTrue(LengowImport::isInProcess(), '[Set In Process] Import is already in process');
     }
 
     /**
@@ -211,10 +466,10 @@ class ImportTest extends ModuleTestCase
         $this->assertEquals(
             -1,
             LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS'),
-            'Setting LENGOW_IMPORT_IN_PROGRESS is completed'
+            '[Set End] Setting LENGOW_IMPORT_IN_PROGRESS is completed'
         );
-        $this->assertFalse(LengowImport::$processing, 'Processing attribute is false');
-        $this->assertFalse(LengowImport::restTimeToImport(), 'Rest time 00s for next import');
-        $this->assertFalse(LengowImport::isInProcess(), 'Import is finished');
+        $this->assertFalse(LengowImport::$processing, '[Set End] Processing attribute is false');
+        $this->assertFalse(LengowImport::restTimeToImport(), '[Set End] Rest time 00s for next import');
+        $this->assertFalse(LengowImport::isInProcess(), '[Set End] Import is finished');
     }
 }

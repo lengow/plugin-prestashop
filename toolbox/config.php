@@ -42,6 +42,7 @@ switch ($action) {
             'LENGOW_SHOP_ACTIVE',
             'LENGOW_EXPORT_FILE_ENABLED',
             'LENGOW_IMPORT_FORCE_PRODUCT',
+            'LENGOW_IMPORT_PROCESSING_FEE',
             'LENGOW_IMPORT_PREPROD_ENABLED',
             'LENGOW_IMPORT_SHIP_MP_ENABLED',
             'LENGOW_IMPORT_STOCK_SHIP_MP',
@@ -56,6 +57,7 @@ switch ($action) {
 
 require 'views/header.php';
 ?>
+<div class="container">
 <h1>Configuration</h1>
 <form class="form-horizontal" method="POST">
     <input type="hidden" name="action" value="update"/>
@@ -87,6 +89,7 @@ require 'views/header.php';
         'LENGOW_ORDER_ID_CANCEL',
         'LENGOW_IMPORT_CARRIER_DEFAULT',
         'LENGOW_IMPORT_FORCE_PRODUCT',
+        'LENGOW_IMPORT_PROCESSING_FEE',
         'LENGOW_IMPORT_DAYS',
         'LENGOW_IMPORT_PREPROD_ENABLED',
         'LENGOW_IMPORT_FAKE_EMAIL',
@@ -119,5 +122,6 @@ require 'views/header.php';
     </div>
 </div>
 </form>
+</div><!-- /.container -->
 <?php
 require 'views/footer.php';
