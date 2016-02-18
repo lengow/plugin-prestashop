@@ -623,7 +623,8 @@ class LengowCarrier extends Carrier
         foreach ($marketplace_carriers as $key) {
             $insert = DB::getInstance()->autoExecute(_DB_PREFIX_ . 'lengow_marketplace_carrier', array(
                 'id_country' => $id_country,
-                'marketplace_carrier_sku' => $key['marketplace_carrier_sku']), 'INSERT');
+                'marketplace_carrier_sku' => $key['marketplace_carrier_sku'],
+                'marketplace_carrier_name' => $key['marketplace_carrier_name']), 'INSERT');
         }
         return true;
     }
