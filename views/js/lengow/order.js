@@ -90,12 +90,14 @@
                 $('#lengow_order_wrapper .lengow_toolbar a').hide();
             }
         });
-        $('#lengow_order_wrapper').on('click', '.lengow_re_import', function () {
+        $('#lengow_order_wrapper').on('click', '.lengow_re_import, .lengow_re_send', function () {
             var href = $(this).data('href');
             var action = $(this).data('action');
             var id = $(this).data('order');
             var type= $(this).data('type');
             var td = $(this).parents('td');
+            var tr_id = $(this).parents('tr').attr('id');
+            var select = $(this).parents('tr').find('.lengow_selection').prop('checked');
             $.ajax({
                 url: href,
                 method: 'POST',
@@ -104,6 +106,9 @@
                 success: function() {
                     init_tooltip();
                     reload_table_js();
+                    if (select) {
+                        $('#'+tr_id).addClass('select').find('.lengow_selection').prop('checked', true);
+                    }
                 },
                 beforeSend: function() {
                     td.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
@@ -116,6 +121,15 @@
             $('#table_order').find('.lengow_selection').each(function (index) {
                 if ($(this).prop('checked')) {
                     $(this).parents('tr').find('.lengow_re_import').trigger( "click" );
+                }
+            });
+            return false;
+        });
+
+        $('#lengow_order_wrapper').on('click', '.lengow_mass_re_send', function() {
+            $('#table_order').find('.lengow_selection').each(function (index) {
+                if ($(this).prop('checked')) {
+                    $(this).parents('tr').find('.lengow_re_send').trigger( "click" );
                 }
             });
             return false;

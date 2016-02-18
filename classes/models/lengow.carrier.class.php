@@ -393,15 +393,16 @@ class LengowCarrier extends Carrier
         foreach ($result as $marketplace => $values) {
             if (isset($values->orders->carriers)) {
                 foreach ($values->orders->carriers as $key => $value) {
-                    $carrierCollection[$key] = true;
+                    $carrierCollection[$key] = $value->label;
                 }
             }
         }
         if ($carrierCollection) {
             $finalCarrier = array();
-            foreach (array_keys($carrierCollection) as $carrier) {
-                $finalCarrier[] = $carrier;
-                $finalCarrier[] = $carrier."_RELAY";
+            foreach ($carrierCollection as $code => $name) {
+                $finalCarrier[] = array('code' => $code, 'name' => $name);
+                $finalCarrier[] = array('code' => $code."_RELAY", 'name' => $name.' Relay');
+
             }
             return $finalCarrier;
         } else {
@@ -418,18 +419,18 @@ class LengowCarrier extends Carrier
         $defaultCountryId = Configuration::get('PS_COUNTRY_DEFAULT');
         $carrierCollection = self::getListMarketplaceCarrierAPI();
         $countryCollectionId = array();
-        foreach ($carrierCollection as $lengowMarketplaceSku) {
+        foreach ($carrierCollection as $carrier) {
             $countryCollection = Db::getInstance()->ExecuteS(
                 'SELECT DISTINCT(id_country) as id_country FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier'
             );
             foreach ($countryCollection as $country) {
                 $countryCollectionId[] = $country['id_country'];
-                self::insertCountryInMarketplace($lengowMarketplaceSku, $country['id_country']);
+                self::insertCountryInMarketplace($carrier['code'], $carrier['name'], $country['id_country']);
             }
 
             if (count($countryCollection) == 0 || !in_array($defaultCountryId, $countryCollectionId)) {
-                foreach ($carrierCollection as $lengowMarketplaceSku) {
-                    self::insertCountryInMarketplace($lengowMarketplaceSku, $defaultCountryId);
+                foreach ($carrierCollection as $carrier) {
+                    self::insertCountryInMarketplace($carrier['code'], $carrier['name'], $defaultCountryId);
                 }
             }
         }
@@ -438,14 +439,15 @@ class LengowCarrier extends Carrier
     /**
      * v3-test
      * Insert Data into lengow marketplace carrier table
-     * @param string $lengowMarketplaceSku
+     * @param string $code
+     * @param string $name
      * @param integer $countryId
      */
-    public static function insertCountryInMarketplace($lengowMarketplaceSku, $countryId)
+    public static function insertCountryInMarketplace($code, $name, $countryId)
     {
         $result = Db::getInstance()->ExecuteS(
             'SELECT id_country FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier
-                    WHERE marketplace_carrier_sku = "' . pSQL($lengowMarketplaceSku) . '" AND
+                    WHERE marketplace_carrier_sku = "' . pSQL($code) . '" AND
                     id_country = '.(int)$countryId
         );
         if (count($result) == 0) {
@@ -453,7 +455,8 @@ class LengowCarrier extends Carrier
                 _DB_PREFIX_ . 'lengow_marketplace_carrier',
                 array(
                     'id_country' => (int)$countryId,
-                    'marketplace_carrier_sku' => pSQL($lengowMarketplaceSku),
+                    'marketplace_carrier_sku' => pSQL($code),
+                    'marketplace_carrier_name' => pSQL($name),
                 ),
                 'INSERT'
             );

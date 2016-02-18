@@ -17,7 +17,7 @@
  *  @copyright 2015 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
-
+<div id="lengow_form_wrapper">
 <form class="lengow_form" method="POST">
     <input type="hidden" name="action" value="process">
     <div class="container">
@@ -29,8 +29,7 @@
     <div class="container2">
         <h2>Carrier Management</h2>
         <h3>Marketplace carrier management</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.</p><br/>
+        <p>Some countries may not have configured carriers, please go to this <a href="#">link</a></p><br/>
         <div class="select_country">
             {include file='./select_country.tpl'}
         </div>
@@ -45,14 +44,14 @@
         <h2>Orders importation</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua.</p><br/>
-        {$matching3}
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.</p><br/>
+        {$import_params}
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn lengow_btn">Save</button>
+            <button type="submit" class="btn lengow_btn lengow_submit_order_setting">Save</button>
         </div>
     </div>
 </form>
+</div>
 
+<script type="text/javascript" src="/modules/lengow/views/js/lengow/order_setting.js"></script>

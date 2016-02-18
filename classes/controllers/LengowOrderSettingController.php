@@ -110,7 +110,8 @@ class LengowOrderSettingController extends LengowController
                 foreach ($mkp_carriers as $row) {
                     $carrierItem[$row['id_country']] = $row;
                 }
-                $id_countries = LengowCarrierCountry::getIdCountries($mkp_carriers);
+                $new_mkp_carriers = LengowCarrier::getListMarketplaceCarrier();
+                $id_countries = LengowCarrierCountry::getIdCountries($new_mkp_carriers);
 
 
                 $this->context->smarty->assign('carriers', $carriers);
@@ -123,9 +124,11 @@ class LengowOrderSettingController extends LengowController
                 $module = Module::getInstanceByName('lengow');
 
                 $display_marketplace_carrier = $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/lengow_order_setting/helpers/view/marketplace_carrier.tpl');
+                $display_countries = $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/lengow_order_setting/helpers/view/select_country.tpl');
 
-                echo '$("#select_country option:selected").remove();';
                 echo '$("#marketplace_country").append("'.preg_replace('/\r|\n/', '', addslashes($display_marketplace_carrier)).'");';
+                echo '$("#select_country").html("'.preg_replace('/\r|\n/', '', addslashes($display_countries)).'");';
+                echo 'addScoreCarrier();';
                 exit();
                 break;
             case 'delete_country':
@@ -139,11 +142,12 @@ class LengowOrderSettingController extends LengowController
 
                 LengowCarrier::deleteMarketplaceCarrier($id_country);
 
-                $mkp_carriers = LengowCarrier::getListMarketplaceCarrier($id_country);
+                $mkp_carriers = LengowCarrier::getListMarketplaceCarrier();
                 foreach ($mkp_carriers as $row) {
                     $carrierItem[$row['id_country']] = $row;
                 }
                 $id_countries = LengowCarrierCountry::getIdCountries($mkp_carriers);
+
                 $this->context->smarty->assign('countries', $countries);
                 $this->context->smarty->assign('id_countries', $id_countries);
                 $this->context->smarty->assign('mkp_carriers', $mkp_carriers);

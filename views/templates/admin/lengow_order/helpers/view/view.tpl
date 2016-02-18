@@ -37,7 +37,7 @@
                 {/if}<br/>
                 All orders issues reports will be send to
                 mail {', '|implode:$report_mail_address|escape:'htmlall':'UTF-8'}
-                <a href="#">(change this?)</a>
+                <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">(change this?)</a>
             </div>
             <div class="lengow_order_block_content_right">
                 <a id="lengow_import_orders" class="lengow_btn" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">

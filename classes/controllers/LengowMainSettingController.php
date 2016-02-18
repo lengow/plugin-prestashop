@@ -27,7 +27,23 @@ class LengowMainSettingController extends LengowController
      */
     public function postProcess()
     {
+        $action = Tools::getValue('action');
+        switch ($action) {
+            case 'process':
+                $form = new LengowConfigurationForm(
+                    array(
+                        "fields" => LengowConfiguration::getKeys(),
+                    )
+                );
 
+                $form->postProcess(
+                    array(
+                        'LENGOW_REPORT_MAIL_ENABLED',
+                        'LENGOW_IMPORT_PREPROD_ENABLED',
+                    )
+                );
+                break;
+        }
     }
 
     /**
@@ -35,7 +51,26 @@ class LengowMainSettingController extends LengowController
      */
     public function display()
     {
+        $form = new LengowConfigurationForm(
+            array(
+                "fields" => LengowConfiguration::getKeys(),
+            )
+        );
 
+        $mail_report = $form->buildInputs(
+            array(
+                'LENGOW_REPORT_MAIL_ENABLED',
+                'LENGOW_REPORT_MAIL_ADDRESS',
+            )
+        );
+
+        $preprod_report = $form->buildInputs(
+            array(
+                'LENGOW_IMPORT_PREPROD_ENABLED',
+            )
+        );
+        $this->context->smarty->assign('mail_report', $mail_report);
+        $this->context->smarty->assign('preprod_report', $preprod_report);
         parent::display();
     }
 }

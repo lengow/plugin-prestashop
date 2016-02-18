@@ -99,7 +99,18 @@ body.lengow_body #content {
     background: #EFF1F2;
 }
 
-/* BREADCRUBMS */
+body.lengow_body .nobootstrap .form-group {
+    clear: inherit;
+    margin: 0;
+    float: none;
+    width: 100%;
+}
+body.lengow_body .nobootstrap .form-group>div {
+    float: none;
+}
+
+
+    /* BREADCRUBMS */
 body.lengow_body #content .lengow_breadcrumb {
     background: #2e3340;
     border: none;
@@ -229,6 +240,9 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_label_refunded {
     background:#AC1802;
 }
+.lengow_label_canceled {
+    background:#FF9F91;
+}
 
 .lengow_label_red {
     background:#FF9F91;
@@ -250,6 +264,10 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 .lengow_green {
     color: #45BF7B;
+}
+
+.lengow_orange {
+    color: #FF8400;
 }
 
 .lengow_red {
@@ -592,16 +610,18 @@ body.lengow_body #content .lengow_breadcrumb a {
 }
 
 /*ORDER SETTING PAGE */
+#lengow_form_wrapper {
+    width:100%;
+}
+
 .lengow_form {
-    width: 1000px;
-    padding: 1px;
-    margin:auto;
+    margin:20px;
     background-color: #ffffff;
     box-shadow:0.1px 0px 0px 0px rgba(0, 0, 0, 0.7);
 }
 
 .lengow_form .container, .lengow_form .container2 {
-    margin: 80px;
+    padding: 20px;
 }
 
 .lengow_form label {
@@ -610,44 +630,50 @@ body.lengow_body #content .lengow_breadcrumb a {
     text-align: left;
 }
 
+.lengow_form .lengow_select {
+    width:500px;
+}
+
 .lengow_form .no_carrier{
-    background-color: #9E9F9E;
+    background-color: #dddddd;
+}
+.lengow_form .add_lengow_default_carrier {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .lengow_form .legend {
     font-style: italic; 
 }
 
-.lengow_form .marketplace_carrier {
-    display: inline-block;
-}
 .lengow_form .lengow_marketplace_carrier{
     display: block;
 
 }
 
-.lengow_form #add_country {
-    padding: 0;
-}
 
 .lengow_form #use_marketplace_carriers{
     padding-bottom: 30px;
 }
-/******ACCORDION*****/
-.Lengow_form .delete_lengow_default_carrier {
-    float: right;
-}
+/********************************************************************************/
 .lengow_form .accordion {
     margin-left: 0;
     padding-left: 0;
     list-style:none;
 }
+
+.lengow_form .accordion .carrier {
+    width:195px;
+}
 .lengow_form .accordion label {
-    width: 1000px;
+    width: 100%;
     padding: 15px;
 }
 .lengow_form .accordion h4 {
     border: 1px #C1C7C9 solid;
+    margin-top: 0;
+    margin-bottom: 0;
+
 }
 .lengow_form .accordion ul {
     margin-top: -19px;
@@ -656,24 +682,48 @@ body.lengow_body #content .lengow_breadcrumb a {
     margin-left: -40px;
 }
 
-.lengow_form .accordion input[type="radio"],.lengow_form .accordion input[type="checkbox"] {
+.lengow_form .accordion input[type="radio"], .lengow_form .accordion input[type="checkbox"] {
     display: none;
 }
 
-.lengow_form .accordion input:checked + .sub > li, .lengow_form .lengow_default_carrier {
-    height: 200px;
-}
-
-.lengow_form .accordion .sub > li, .lengow_form .lengow_default_carrier {
-    display: none;
-    height: 0;
-    padding: 0;
-
-}
-.lengow_form .accordion input:checked + .sub > li, .lengow_form .lengow_default_carrier {
+.lengow_form .accordion .sub > li {
     padding:20px;
-    height: 100px;
-    display: table-cell;
+    height: 130px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right:-3px;
+    display: inline-block;
+
+
+}
+.lengow_form .delete_lengow_default_carrier {
+    float: right;
+    margin-right: 27px;
+    margin-top: -2px;
+}
+
+.lengow_form .score{
+    float: right;
+    margin-right:27px;
+    margin-top: -6px;
+    border-radius: 81px;
+    padding: 7px;
+}
+.lengow_form .red{
+    background-color: #ED8866;
+}
+
+.lengow_form .green{
+    background-color: #76DB89;
+}
+
+.lengow_form .orange{
+    background-color: #EDC266;
+}
+
+.lengow_form #default_carrier_missing {
+    color: red;
+    font-size: 0.9em;
 }
 /*********************************/
 

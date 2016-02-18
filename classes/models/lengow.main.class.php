@@ -380,7 +380,7 @@ class LengowMain
     public static function getHost()
     {
         $domain = Configuration::get('PS_SHOP_DOMAIN');
-        preg_match('`([a-zàâäéèêëôöùûüîïç0-9-]+\.[a-z]+$)`', $domain, $out);
+        preg_match('`([a-zàâäéèêëôöùûüîïç0-9-]+\.[a-z]+)`', $domain, $out);
         if ($out[1]) {
             return $out[1];
         }

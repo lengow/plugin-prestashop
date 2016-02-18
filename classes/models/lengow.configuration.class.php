@@ -179,6 +179,7 @@ class LengowConfiguration extends Configuration
                     'default_value' => true,
                 ),
                 'LENGOW_REPORT_MAIL_ADDRESS' => array(
+                    'type' => 'tag',
                     'label' => 'Mail Report email'
                 ),
                 'LENGOW_IMPORT_SINGLE_ENABLED' => array(
