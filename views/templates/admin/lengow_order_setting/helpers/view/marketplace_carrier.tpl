@@ -21,7 +21,7 @@
             </li>
             {while $current_id_country eq {$mkp_carriers.$i.id_country} && $i < {count($mkp_carriers)}}
                 <li class="marketplace_carrier {if empty({$mkp_carriers.$i.id_carrier})}no_carrier{/if}">
-                    <h3>{$mkp_carriers.$i.marketplace_carrier_sku}</h3>
+                    <h3>{$mkp_carriers.$i.marketplace_carrier_name}</h3>
                     <select name="default_marketplace_carrier[{$mkp_carriers.$i.id}]" class="carrier lengow_select">
                         <option value=""></option>
 

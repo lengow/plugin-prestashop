@@ -592,11 +592,14 @@ class LengowCarrier extends Carrier
 
         $condition = $id_country ? 'WHERE lmc.id_country = '.(int)$id_country : '';
 
-        $sql = 'SELECT lmc.id, lmc.id_carrier, co.iso_code, cl.name, lmc.id_country, lmc.marketplace_carrier_sku FROM '
+        $sql = 'SELECT lmc.id, lmc.id_carrier, co.iso_code, cl.name, lmc.id_country, lmc.marketplace_carrier_sku,
+            lmc.marketplace_carrier_name FROM '
             . _DB_PREFIX_ . 'lengow_marketplace_carrier lmc INNER JOIN '
             . _DB_PREFIX_ . 'country co ON lmc.id_country=co.id_country INNER JOIN '
-            . _DB_PREFIX_ . 'country_lang cl ON co.id_country=cl.id_country AND cl.id_lang= ' . (int)Context::getContext()->language->id
-            .' '.$condition.' ORDER BY CASE WHEN co.id_country = '.(int)$default_country.' THEN 1 ELSE cl.name END ASC, marketplace_carrier_sku ASC;';
+            . _DB_PREFIX_ . 'country_lang cl ON co.id_country=cl.id_country
+            AND cl.id_lang= ' . (int)Context::getContext()->language->id
+            .' '.$condition.' ORDER BY CASE WHEN co.id_country = '.(int)$default_country.' THEN 1 ELSE cl.name END ASC
+            , marketplace_carrier_sku ASC;';
 
         $collection = Db::getInstance()->ExecuteS($sql);
 

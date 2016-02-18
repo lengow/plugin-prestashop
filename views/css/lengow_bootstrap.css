@@ -733,14 +733,15 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 }
 
 .lengow_form .accordion .sub > li {
-    padding:20px;
+    padding: 0px 12px;
     height: 130px;
     margin: 0px;
-    border-left:1px solid grey;
-    border-top:1px solid grey;
-    border-bottom:1px solid grey;
-    float:left;
+    border-left: 1px solid grey;
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+    float: left;
     list-style: none;
+    text-align: center;
 }
 .lengow_form .accordion .sub > li:last-child {
     border-right:1px solid grey;
