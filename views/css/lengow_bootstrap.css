@@ -717,6 +717,12 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     width: 100%;
     padding: 15px;
 }
+
+.lengow_form .accordion h4:hover{
+    transition-duration: 200ms;
+    background-color: #d8d8d5;
+}
+
 .lengow_form .accordion h4 {
     border: 1px #C1C7C9 solid;
     margin-top: 0;
