@@ -683,15 +683,8 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     width:500px;
 }
 
-.lengow_form .lengow_default_carrier, .lengow_form .no_carrier {
-    display: block;
-    border: 1px #C1C7C9 solid;
-    padding: 25px;
-    float:left;
-    width:200px;
-}
 .lengow_form .no_carrier{
-    background-color: #9E9F9E;
+    background-color: #dddddd;
 }
 .lengow_form .add_lengow_default_carrier {
     margin-top: 20px;
@@ -702,9 +695,6 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     font-style: italic; 
 }
 
-.lengow_form .marketplace_carrier {
-    display: inline-block;
-}
 .lengow_form .lengow_marketplace_carrier{
     display: block;
 
@@ -719,12 +709,19 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     padding-left: 0;
     list-style:none;
 }
+
+.lengow_form .accordion .carrier {
+    width:195px;
+}
 .lengow_form .accordion label {
-    width: 1000px;
+    width: 100%;
     padding: 15px;
 }
 .lengow_form .accordion h4 {
     border: 1px #C1C7C9 solid;
+    margin-top: 0;
+    margin-bottom: 0;
+
 }
 .lengow_form .accordion ul {
     margin-top: -19px;
@@ -737,22 +734,46 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     display: none;
 }
 
-.lengow_form .accordion input:checked + .sub > li {
-    height: 200px;
-}
-
 .lengow_form .accordion .sub > li {
-    display: none;
-    height: 0;
-    padding: 0;
+    padding:20px;
+    height: 130px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right:-3px;
+    display: inline-block;
+
 
 }
-.lengow_form .accordion input:checked + .sub > li {
-    padding:20px;
-    height: 100px;
-    display: table-cell;
+.lengow_form .delete_lengow_default_carrier {
+    float: right;
+    margin-right: 27px;
+    margin-top: -2px;
 }
-/*********************************************************************************/
+
+.lengow_form .score{
+    float: right;
+    margin-right:27px;
+    margin-top: -6px;
+    border-radius: 81px;
+    padding: 7px;
+}
+.lengow_form .red{
+    background-color: #ED8866;
+}
+
+.lengow_form .green{
+    background-color: #76DB89;
+}
+
+.lengow_form .orange{
+    background-color: #EDC266;
+}
+
+.lengow_form #default_carrier_missing {
+    color: red;
+    font-size: 0.9em;
+}
+/*********************************/
 
 /* HOME PAGE */
 #lengow_home_frame {

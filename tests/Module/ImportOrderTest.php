@@ -48,7 +48,6 @@ class ImportOrderTest extends ModuleTestCase
         Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
         Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
         Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
     }
 
     /**
@@ -534,6 +533,7 @@ class ImportOrderTest extends ModuleTestCase
     }
 
     /**
+<<<<<<< HEAD
      * Test getCarrierId
      *
      * @test
@@ -674,4 +674,494 @@ class ImportOrderTest extends ModuleTestCase
         $this->assertEquals(1, $this->invokeMethod($import, 'getCarrierId', array($shipping_address)));
     }
 
+=======
+     * Test if external ID exist
+     *
+     * @test
+     * @covers LengowImportOrder::checkExternalIds
+     */
+    public function checkExternalIds()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+        $fixture = new Fixture();
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml'
+        );
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_external_id.json'
+        );
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(0, $result['order_new'], '[Check External Ids] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Check External Ids] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Check External Ids] nb order error');
+        $this->assertTableNotContain(
+            'lengow_orders',
+            array('marketplace_sku' => '1300435653212-A'),
+            '[Check External Ids] Check if order is present in Lengow Orders table'
+        );
+    }
+
+    /**
+     * Test check order amount and shipping cost
+     *
+     * @test
+     * @covers LengowImportOrder::getOrderAmount
+     */
+    public function getOrderAmount()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_amount.json',
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_amount_wt_fees.json',
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_amount_wt_shipping.json'
+        );
+
+        LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_PROCESSING_FEE', true);
+        LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT', true);
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(1, $result['order_new'], '[Get Order Amount] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Get Order Amount] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Get Order Amount] nb order error');
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'          => '1',
+                'marketplace_sku'   => '1300435653833-A',
+                'total_paid'        => '35.00',
+                'order_item'        => '5'
+            ),
+            '[Get Order Amount] Check if order is present in Lengow Orders table'
+        );
+        $this->assertTableContain(
+            'orders',
+            array(
+                'id_order'          => '1',
+                'total_paid'        => '35.000000',
+                'total_paid_real'   => '35.000000',
+                'total_products_wt' => '26.500000',
+                'total_wrapping'    => '3.500000',
+                'total_shipping'    => '5.000000',
+                'module'            => 'lengow_payment',
+                'payment'           => 'galeries_lafayette'
+            ),
+            '[Get Order Amount] Check if order is present in Orders Prestashop table'
+        );
+
+        LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_PROCESSING_FEE', false);
+
+        $import2 = new LengowImport(array('log_output' => false));
+        $result2 = $import2->exec();
+        $this->assertEquals(1, $result2['order_new'], '[Get Order Amount] nb order new');
+        $this->assertEquals(0, $result2['order_update'], '[Get Order Amount] nb order update');
+        $this->assertEquals(0, $result2['order_error'], '[Get Order Amount] nb order error');
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'          => '2',
+                'marketplace_sku'   => '1300435653834-A',
+                'total_paid'        => '31.50',
+                'order_item'        => '5'
+            ),
+            '[Get Order Amount] Check if order is present in Lengow Orders table'
+        );
+        $this->assertTableContain(
+            'orders',
+            array(
+                'id_order'          => '2',
+                'total_paid'        => '31.500000',
+                'total_paid_real'   => '31.500000',
+                'total_products_wt' => '26.500000',
+                'total_wrapping'    => '0.000000',
+                'total_shipping'    => '5.000000',
+                'module'            => 'lengow_payment',
+                'payment'           => 'galeries_lafayette'
+            ),
+            '[Get Order Amount] Check if order is present in Orders Prestashop table'
+        );
+
+        $import3 = new LengowImport(array('log_output' => false));
+        $result3 = $import3->exec();
+        $this->assertEquals(1, $result3['order_new'], '[Get Order Amount] nb order new');
+        $this->assertEquals(0, $result3['order_update'], '[Get Order Amount] nb order update');
+        $this->assertEquals(0, $result3['order_error'], '[Get Order Amount] nb order error');
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'          => '3',
+                'marketplace_sku'   => '1300435653835-A',
+                'total_paid'        => '26.50',
+                'order_item'        => '5'
+            ),
+            '[Get Order Amount] Check if order is present in Lengow Orders table'
+        );
+        $this->assertTableContain(
+            'orders',
+            array(
+                'id_order'          => '3',
+                'total_paid'        => '26.500000',
+                'total_paid_real'   => '26.500000',
+                'total_products_wt' => '26.500000',
+                'total_wrapping'    => '0.000000',
+                'total_shipping'    => '0.000000',
+                'module'            => 'lengow_payment',
+                'payment'           => 'galeries_lafayette'
+            ),
+            '[Get Order Amount] Check if order is present in Orders Prestashop table'
+        );
+    }
+
+    /**
+     * Test check order tracking datas
+     *
+     * @test
+     * @covers LengowImportOrder::loadTrackingData
+     */
+    public function loadTrackingData()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_shipped_mp.json'
+        );
+        LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_STOCK_SHIP_MP', true);
+        LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_SHIP_MP_ENABLED', true);
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(1, $result['order_new'], '[Load Tracking Data] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Load Tracking Data] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Load Tracking Data] nb order error');
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'          => '1',
+                'marketplace_sku'   => '1300435653833-A',
+                'carrier'           => 'LAPOSTE',
+                'method'            => 'follow-up letter',
+                'tracking'          => '8V4564654654',
+                'sent_marketplace'  => '1'
+            ),
+            '[Load Tracking Data] Check if order is present in Lengow Orders table'
+        );
+    }
+
+    /**
+     * Test check if comment is created
+     *
+     * @test
+     * @covers LengowImportOrder::addCommentOrder
+     */
+    public function addCommentOrder()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+        $fixture = new Fixture();
+        $fixture->truncate('message');
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_amount_wt_fees.json',
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_update_2.json'
+        );
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(1, $result['order_new'], '[Add Comment Order] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Add Comment Order] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Add Comment Order] nb order error');
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'          => '1',
+                'marketplace_sku'   => '1300435653834-A',
+                'message'           => 'product NAME003 is canceled'
+            ),
+            '[Add Comment Order] Check if order is present in Lengow Orders table'
+        );
+        $this->assertTableContain(
+            'message',
+            array(
+                'id_order'  => '1',
+                'message'   => 'product NAME003 is canceled',
+                'private'   => '1'
+            ),
+            '[Add Comment Order] Check if order is present in message Prestashop table'
+        );
+
+        $import2 = new LengowImport(array('log_output' => false));
+        $result2 = $import2->exec();
+        $this->assertEquals(1, $result2['order_new'], '[Add Comment Order] nb order new');
+        $this->assertEquals(0, $result2['order_update'], '[Add Comment Order] nb order update');
+        $this->assertEquals(0, $result2['order_error'], '[Add Comment Order] nb order error');
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'          => '2',
+                'marketplace_sku'   => '1300435653833-A',
+                'message'           => ''
+            ),
+            '[Add Comment Order] Check if order is present in Lengow Orders table'
+        );
+        $this->assertTableNotContain(
+            'message',
+            array(
+                'id_order'  => '2',
+                'message'   => '',
+                'private'   => '1'
+            ),
+            '[Add Comment Order] Check if order is present in message Prestashop table'
+        );
+    }
+
+    /**
+     * Test check if lengow order is created with all elements
+     *
+     * @test
+     * @covers LengowImportOrder::createLengowOrder
+     */
+    public function createLengowOrder()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_amount.json'
+        );
+
+        LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_PROCESSING_FEE', true);
+        LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT', true);
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(1, $result['order_new'], '[Add Comment Order] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Add Comment Order] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Add Comment Order] nb order error');
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'              => '1',
+                'marketplace_sku'       => '1300435653833-A',
+                'id_shop'               => '1',
+                'id_shop_group'         => '1',
+                'id_lang'               => '1',
+                'marketplace_name'      => 'galeries_lafayette',
+                'message'               => 'product NAME003 is canceled',
+                'total_paid'            => '35.00',
+                'carrier'               => 'LAPOSTE',
+                'tracking'              => '8V4564654654',
+                'is_reimported'         => '0',
+                'delivery_address_id'   => '7526',
+                'method'                => 'follow-up letter',
+                'sent_marketplace'      => '0',
+                'currency'              => 'EUR',
+                'order_process_state'   => '2',
+                'order_date'            => date('Y-m-d H:i:s', strtotime('2015-11-23T17:08:00.098728Z')),
+                'order_item'            => '5',
+                'delivery_country_iso'  => 'FR',
+                'customer_name'         => 'Yvette Alcalde',
+                'order_lengow_state'    => 'shipped'
+            ),
+            '[Add Comment Order] Check if order is present in Lengow Orders table'
+        );
+    }
+
+    /**
+     * Test check if order line is saved in lengow table
+     *
+     * @test
+     * @covers LengowImportOrder::saveLengowOrderLine
+     */
+    public function saveLengowOrderLine()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+        $fixture = new Fixture();
+        $fixture->truncate('lengow_order_line');
+        $fixture->truncate('order_detail');
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_line_saved.json'
+        );
+
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(1, $result['order_new'], '[Save Lengow Order Line] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Save Lengow Order Line] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Save Lengow Order Line] nb order error');
+        $this->assertTableContain(
+            'lengow_order_line',
+            array(
+                'id_order'          => '1',
+                'id_order_line'     => '1300435653833-A-1',
+                'id_order_detail'   => '1'
+            ),
+            '[Save Lengow Order Line] Check if order is present in Lengow Order Line table'
+        );
+        $this->assertTableContain(
+            'lengow_order_line',
+            array(
+                'id_order'          => '1',
+                'id_order_line'     => '1300435653833-A-2',
+                'id_order_detail'   => '2'
+            ),
+            '[Save Lengow Order Line] Check if order is present in Lengow Order Line table'
+        );
+        $this->assertTableContain(
+            'lengow_order_line',
+            array(
+                'id_order'          => '1',
+                'id_order_line'     => '1300435653833-A-3',
+                'id_order_detail'   => '3'
+            ),
+            '[Save Lengow Order Line] Check if order is present in Lengow Order Line table'
+        );
+    }
+
+    /**
+     * Test check if the products exist
+     *
+     * @test
+     * @covers LengowImportOrder::getProducts
+     */
+    public function getProducts()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+        $fixture = new Fixture();
+        $fixture->truncate('order_detail');
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_line_saved.json'
+        );
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(1, $result['order_new'], '[Get Products] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Get Products] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Get Products] nb order error');
+        $this->assertTableContain(
+            'order_detail',
+            array(
+                'id_order_detail'       => '1',
+                'id_order'              => '1',
+                'product_id'            => '1',
+                'product_name'          => 'NAME001',
+                'product_reference'     => 'SIMPLESKU001',
+                'product_quantity'      => '3',
+                'product_price'         => '4.900000',
+                'total_price_tax_incl'  => '14.700000'
+            ),
+            '[Get Products] Check if order is present in Orders Detail Prestashop table'
+        );
+        $this->assertTableContain(
+            'order_detail',
+            array(
+                'id_order_detail'       => '2',
+                'id_order'              => '1',
+                'product_id'            => '2',
+                'product_name'          => 'NAME002',
+                'product_reference'     => 'SIMPLESKU002',
+                'product_quantity'      => '2',
+                'product_price'         => '5.900000',
+                'total_price_tax_incl'  => '11.800000'
+            ),
+            '[Get Products] Check if order is present in Orders Detail Prestashop table'
+        );
+        $this->assertTableContain(
+            'order_detail',
+            array(
+                'id_order_detail'       => '3',
+                'id_order'              => '1',
+                'product_id'            => '3',
+                'product_name'          => 'NAME003',
+                'product_reference'     => 'SIMPLESKU003',
+                'product_quantity'      => '1',
+                'product_price'         => '6.900000',
+                'total_price_tax_incl'  => '6.900000'
+            ),
+            '[Get Products] Check if order is present in Orders Detail Prestashop table'
+        );
+    }
+
+    /**
+     * Test check if customer is correctly set
+     *
+     * @test
+     * @covers LengowImportOrder::getCustomer
+     */
+    public function getCustomer()
+    {
+        $this->chargeConfig();
+        $this->chargeFixture();
+        $fixture = new Fixture();
+        $fixture->truncate('customer');
+        $fixture->truncate('customer_group');
+        $fixture->truncate('address');
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/customer.yml'
+        );
+        LengowConnector::$test_fixture_path = array(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_customer.json',
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_customer_2.json'
+        );
+        $import = new LengowImport(array('log_output' => false));
+        $result = $import->exec();
+        $this->assertEquals(1, $result['order_new'], '[Get Customer] nb order new');
+        $this->assertEquals(0, $result['order_update'], '[Get Customer] nb order update');
+        $this->assertEquals(0, $result['order_error'], '[Get Customer] nb order error');
+        $this->assertTableNotContain(
+            'customer',
+            array('id_customer' => '2'),
+            '[Get Customer] Check if order is not present in Customer Prestashop table'
+        );
+        $this->assertTableContain(
+            'orders',
+            array(
+                'id_order'      => '1',
+                'id_customer'   => '1'
+            ),
+            '[Get Customer] Check if order is present in Orders Prestashop table'
+        );
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'          => '1',
+                'marketplace_sku'   => '1300435653835-A',
+                'customer_name'     => 'Yvette Alcalde'
+            ),
+            '[Get Customer] Check if order is present in Lengow Orders table'
+        );
+
+        $import2 = new LengowImport(array('log_output' => false));
+        $result2 = $import2->exec();
+        $this->assertEquals(1, $result2['order_new'], '[Get Customer] nb order new');
+        $this->assertEquals(0, $result2['order_update'], '[Get Customer] nb order update');
+        $this->assertEquals(0, $result2['order_error'], '[Get Customer] nb order error');
+        $this->assertTableContain(
+            'customer',
+            array(
+                'id_customer'   => '2',
+                'email'         => 'generated-email+1300435653836-A@prestashop.unit',
+                'firstname'     => 'pierre',
+                'lastname'      => 'dupond'
+            ),
+            '[Get Customer] Check if order is present in Customer Prestashop table'
+        );
+        $this->assertTableContain(
+            'orders',
+            array(
+                'id_order'      => '2',
+                'id_customer'   => '2'
+            ),
+            '[Get Customer] Check if order is present in Orders Prestashop table'
+        );
+        $this->assertTableContain(
+            'lengow_orders',
+            array(
+                'id_order'          => '2',
+                'marketplace_sku'   => '1300435653836-A',
+                'customer_name'     => 'Pierre Dupond'
+            ),
+            '[Get Customer] Check if order is present in Lengow Orders table'
+        );
+    }
+>>>>>>> bc99123700e8024b58e3480659e112c3a069f7eb
 }

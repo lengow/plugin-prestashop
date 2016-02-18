@@ -1,5 +1,39 @@
+function addScoreCarrier(){
+    nbs = 0;
+
+    $('.score').removeClass('red').removeClass('green').removeClass('orange');
+
+    $('.sub').each(function() {
+        var total = $(this).find('.carrier').length;
+        $(this).find('.carrier').each(function(){
+
+            if ($(this).val() !== "") {
+                nbs += 1 ;
+            }
+        });
+
+        $(this).parents('li.lengow_marketplace_carrier').find('.score').html(nbs+' / '+total);
+
+        if (nbs == total){
+
+            $(this).parents('li.lengow_marketplace_carrier').find('.score').addClass('green');
+        } else if (nbs <= 1){
+
+            $(this).parents('li.lengow_marketplace_carrier').find('.score').addClass('red');
+        } else {
+
+            $(this).parents('li.lengow_marketplace_carrier').find('.score').addClass('orange');
+        }
+        nbs = 0;
+
+    });
+}
+
 (function ($) {
+
     $(document).ready(function () {
+
+        addScoreCarrier();
 
         function changeStockMP() {
             if ($("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").prop('checked')) {
@@ -11,7 +45,7 @@
 
         changeStockMP();
 
-        $('.add_lengow_default_carrier').on('click', function () {
+        $('#lengow_form_wrapper').on('click', '.add_lengow_default_carrier', function () {
             if ($('#select_country').val() !== "") {
                 var href = $(this).attr('data-href');
 
@@ -25,11 +59,10 @@
             } else {
                 $('#error_select_country').html('<span>No country selected.</span>');
             }
-
             return false;
         });
 
-        $('#add_country').on('click', '.delete_lengow_default_carrier', function () {
+        $('#marketplace_country').on('click', '.delete_lengow_default_carrier', function () {
             if (confirm('Are you sure ?')) {
                 var href = $('.lengow_default_carrier').attr('data-href');
                 $.ajax({
@@ -43,11 +76,13 @@
             return false;
         });
 
-        $('#add_country').on('change', '.carrier', function () {
+        $('#add_marketplace_country').on('change', '.carrier', function () {
             if ($(this).val() !== "") {
-                $(this).parents('.lengow_default_carrier').removeClass('no_carrier');
+                $(this).parents('.add_country').removeClass('no_carrier');
+                addScoreCarrier();
             } else {
-                $(this).parents('.lengow_default_carrier').addClass('no_carrier');
+                $(this).parents('.add_country').addClass('no_carrier');
+                addScoreCarrier();
             }
 
             return false;
@@ -57,39 +92,40 @@
         $('#add_marketplace_country').on('change', '.carrier', function () {
             if ($(this).val() !== "") {
                 $(this).parents('.marketplace_carrier ').removeClass('no_carrier');
+                addScoreCarrier();
             } else {
                 $(this).parents('.marketplace_carrier ').addClass('no_carrier');
+                addScoreCarrier();
             }
 
             return false;
 
         });
 
-        $(".navigation ul.subMenu").hide();
 
-        $(".navigation li.toggleSubMenu span").each( function () {
-            $(this).replaceWith('<a href="" title="Afficher le sous-menu">Hello<\/a>') ;
-        } ) ;
-
-        // On modifie l'évènement "click" sur les liens dans les items de liste
-        // qui portent la classe "toggleSubMenu" :
-        $(".navigation li.toggleSubMenu > a").click( function () {
-            // Si le sous-menu était déjà ouvert, on le referme :
-            if ($(this).next("ul.subMenu:visible").length != 0) {
-                $(this).next("ul.subMenu").slideUp("normal");
-            }
-            // Si le sous-menu est caché, on ferme les autres et on l'affiche :
-            else {
-                $(".navigation ul.subMenu").slideUp("normal");
-                $(this).next("ul.subMenu").slideDown("normal");
-            }
-            // On empêche le navigateur de suivre le lien :
-            return false;
+        $(".sub").hide();
+        $(".sub:first").show();
+        $("#lengow_form_wrapper").on('click', '.lengow_marketplace_carrier h4',function(){
+            $(this).next().next().toggle('100');
         });
+
         $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('switchChange.bootstrapSwitch', function (event, state) {
             if (event.type == "switchChange") {
                 changeStockMP();
             }
+        });
+
+
+        $(".lengow_submit_order_setting").on('click', function(e){
+            if ($(".carrier:first").val() == "") {
+                e.preventDefault();
+                $(".sub:first").show();
+                $('html, body').stop().animate({scrollTop: $(".container2").offset().top}, 100);
+                $('#default_carrier_missing').html('<span>No default carrier selected.</span>');
+                return false;
+            }
+
+            $('#error_select_country').html('');
         });
 
     });

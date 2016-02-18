@@ -1,5 +1,5 @@
 {
-  "count": 1,
+  "count": 4,
   "next": null,
   "previous": null,
   "results": [
@@ -7,12 +7,10 @@
       "marketplace": "galeries_lafayette",
       "account_id": 155,
       "marketplace_country_iso2": "FR",
-      "marketplace_order_id": "1300435653833-A",
-      "merchant_order_id": [
-        "60"
-      ],
-      "marketplace_status": "SHIPPED",
-      "lengow_status": "shipped",
+      "marketplace_order_id": "1300435653830-A",
+      "merchant_order_id": [],
+      "marketplace_status": "WAITING_DEBIT_PAYMENT",
+      "lengow_status": "accepted",
       "workflow_rank": 6,
       "marketplace_order_date": null,
       "total_order": "229.00",
@@ -25,7 +23,7 @@
         "symbol": "€",
         "name": "Euro"
       },
-      "comments": "Shipped by marketplace",
+      "comments": null,
       "invoice_number": null,
       "invoice_url": null,
       "payments": [
@@ -43,7 +41,7 @@
           "cart": [
             {
               "marketplace_order_line_id": "1300435653833-A-1",
-              "marketplace_product_id": "1",
+              "marketplace_product_id": "2",
               "merchant_product_id": {
                 "field": null,
                 "id": null
@@ -81,25 +79,7 @@
             "full_address": null,
             "email": null,
             "common_country_iso_a2": "FR",
-            "trackings": [
-              {
-                "number": "8V4564654654",
-                "method":"follow-up letter",
-                "carrier": "LAPOSTE",
-                "url":null,
-                "is_delivered_by_marketplace": true,
-                "parcel_weight":null,
-                "shipped_at":null,
-                "relay":
-                  { 
-                    "id":15632,
-                    "name":null
-                  },
-                "marketplace_order_line_ids": [
-                  "1300435653833-A-1"
-                ]
-              }
-            ]
+            "trackings": []
           }
         }
       ],

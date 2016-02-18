@@ -110,13 +110,13 @@ class LengowCarrierCountry
      */
     public static function getIdCountries($listCarrier)
     {
-        $id_coutries = array();
+        $id_countries = array();
 
         foreach ($listCarrier as $row) {
-            $id_coutries[] = $row['id_country'];
+            $id_countries[] = $row['id_country'];
         }
 
-        return $id_coutries;
+        return $id_countries;
     }
 
     /**
@@ -144,4 +144,6 @@ class LengowCarrierCountry
 
         return $db;
     }
+
+
 }
