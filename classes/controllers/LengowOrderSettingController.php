@@ -91,8 +91,16 @@ class LengowOrderSettingController extends LengowController
     public function postProcess()
     {
         $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
-        $default_carriers = Tools::getValue('default_carrier');
-        $default_marketplace_carriers = Tools::getValue('default_marketplace_carrier');
+        if (Tools::getIsset('default_carrier')) {
+            $default_carriers = Tools::getValue('default_carrier');
+        } else {
+            $default_carriers = array();
+        }
+        if (Tools::getIsset('default_marketplace_carrier')) {
+            $default_marketplace_carriers = Tools::getValue('default_marketplace_carrier');
+        } else {
+            $default_marketplace_carriers = array();
+        }
         $action = Tools::getValue('action');
 
         switch ($action) {
@@ -201,6 +209,7 @@ class LengowOrderSettingController extends LengowController
                 );
                 break;
             default:
+                LengowCarrier::syncListMarketplace();
                 LengowCarrierCountry::createDefaultCarrier();
                 LengowCarrierCountry::listCarrierByCountry();
                 break;

@@ -31,7 +31,7 @@ class LengowTranslation
 
     }
 
-    public function t($message, $args)
+    public function t($message, $args = array())
     {
         if (self::$translation === null) {
             $this->loadFile();
