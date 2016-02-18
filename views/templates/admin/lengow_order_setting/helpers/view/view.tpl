@@ -29,7 +29,8 @@
     <div class="container2">
         <h2>Carrier Management</h2>
         <h3>Marketplace carrier management</h3>
-        <p>Some countries may not have configured carriers, please go to this <a href="#">link</a></p><br/>
+        <p>Some countries may not have configured carriers, please go to this
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminCarriers', false, true)}">link</a></p><br/>
         <div class="select_country">
             {include file='./select_country.tpl'}
         </div>

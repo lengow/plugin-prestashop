@@ -113,7 +113,7 @@ class MarketplaceTest extends ModuleTestCase
         Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
         Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        
+
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
         $fixture->truncate('lengow_actions');
@@ -182,5 +182,29 @@ class MarketplaceTest extends ModuleTestCase
             'lengow_actions',
             array('id' => '1',  'id_order' => '1', 'state' => LengowAction::STATE_FINISH)
         );
+    }
+
+    /**
+     * Test isRequireCarrier
+     * @test
+     * @covers LengowMarketplace::isRequireCarrier
+     */
+    public function isRequireCarrier()
+    {
+        //reset marketplace file
+        LengowMain::$registers = array();
+        $marketplaceFile =  _PS_MODULE_DIR_.
+            'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id_optional_carrier.json';
+        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        $marketplace = LengowMain::getMarketplaceSingleton("galeries_lafayette", 1);
+        $this->assertFalse($marketplace->isRequireCarrier());
+
+        //reset marketplace file
+        LengowMain::$registers = array();
+        $marketplaceFile =  _PS_MODULE_DIR_.
+            'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id_require_carrier.json';
+        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        $marketplace = LengowMain::getMarketplaceSingleton("galeries_lafayette", 1);
+        $this->assertTrue($marketplace->isRequireCarrier());
     }
 }

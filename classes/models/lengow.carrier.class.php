@@ -381,6 +381,25 @@ class LengowCarrier extends Carrier
     }
 
     /**
+     * v3
+     * Get Marketplace By Carrier And Country
+     * @param $marketplace_carrier_sku
+     * @param $id_country
+     * @return mixed
+     */
+    public static function getMarketplaceByCarrierSku($marketplace_carrier_sku, $id_country)
+    {
+        //Find in lengow marketplace carrier
+        $sql = 'SELECT id_carrier FROM ps_lengow_marketplace_carrier lmc
+        WHERE id_country = '.(int)$id_country.' AND marketplace_carrier_sku = "'.pSQL($marketplace_carrier_sku).'"';
+        $row = Db::getInstance()->getRow($sql);
+        if ($row) {
+            return $row['id_carrier'];
+        }
+    }
+
+
+    /**
      * v3-test
      * Get List Carrier in all Lengow Marketplace API
      * @return array
@@ -487,9 +506,15 @@ class LengowCarrier extends Carrier
     }
 
 
-    public static function getActiveCarrier($id_country = null)
+    /**
+     * v3
+     * @param null $id_country
+     * @param bool $force_country
+     * @return Carrier
+     */
+    public static function getActiveCarrier($id_country = null, $force_country = false)
     {
-        if (!$id_country && Configuration::get('PS_COUNTRY_DEFAULT')) {
+        if (!$id_country && Configuration::get('PS_COUNTRY_DEFAULT') && !$force_country) {
             $sql = 'SELECT lcc.id_carrier FROM ps_lengow_carrier_country lcc
             INNER JOIN ps_carrier c ON (c.id_carrier = lcc.id_carrier AND c.active = 1 AND deleted =0)
             WHERE lcc.id_country = '.(int)Configuration::get('PS_COUNTRY_DEFAULT');
@@ -509,7 +534,7 @@ class LengowCarrier extends Carrier
                 return $carrier;
             }
         }
-        if (!$id_country) {
+        if (!$id_country && !$force_country) {
             $id_country = Configuration::get('PS_COUNTRY_DEFAULT');
             $sql = 'SELECT * FROM ps_carrier c
                     INNER JOIN ps_carrier_zone cz ON (cz.id_carrier = c.id_carrier)
@@ -519,6 +544,40 @@ class LengowCarrier extends Carrier
             $carrier = new Carrier($row["id_carrier"]);
             if ($carrier->id) {
                 return $carrier;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * v3-test
+     * @param integer $carrier_id
+     * @param integer $id_country
+     * @return boolean
+     */
+    public static function getActiveCarrierByCarrierId($carrier_id, $id_country)
+    {
+        if (_PS_VERSION_ < '1.5') {
+            return $carrier_id;
+        }
+        $sql = 'SELECT * FROM ps_carrier c
+                    INNER JOIN ps_carrier_zone cz ON (cz.id_carrier = c.id_carrier)
+                    INNER JOIN ps_country co ON (co.id_zone = cz.id_zone)
+                    WHERE c.id_carrier = '.(int)$carrier_id.' AND co.id_country = '.(int)$id_country;
+        $row = Db::getInstance()->getRow($sql);
+        if ($row) {
+            if ((int)$row['deleted'] == 1) {
+                $sql = 'SELECT * FROM ps_carrier c
+                    INNER JOIN ps_carrier_zone cz ON (cz.id_carrier = c.id_carrier)
+                    INNER JOIN ps_country co ON (co.id_zone = cz.id_zone)
+                    WHERE c.deleted = 0 AND c.active = 1 AND co.id_country = '.(int)$id_country. ' AND id_reference= '.
+                    (int)$row['id_reference'] ;
+                $row2 = Db::getInstance()->getRow($sql);
+                if ($row2) {
+                    return $row2['id_carrier'];
+                }
+            } else {
+                return $row['id_carrier'];
             }
         }
     }
@@ -533,11 +592,14 @@ class LengowCarrier extends Carrier
 
         $condition = $id_country ? 'WHERE lmc.id_country = '.(int)$id_country : '';
 
-        $sql = 'SELECT lmc.id, lmc.id_carrier, co.iso_code, cl.name, lmc.id_country, lmc.marketplace_carrier_sku FROM '
+        $sql = 'SELECT lmc.id, lmc.id_carrier, co.iso_code, cl.name, lmc.id_country, lmc.marketplace_carrier_sku,
+            lmc.marketplace_carrier_name FROM '
             . _DB_PREFIX_ . 'lengow_marketplace_carrier lmc INNER JOIN '
             . _DB_PREFIX_ . 'country co ON lmc.id_country=co.id_country INNER JOIN '
-            . _DB_PREFIX_ . 'country_lang cl ON co.id_country=cl.id_country AND cl.id_lang= ' . (int)Context::getContext()->language->id
-            .' '.$condition.' ORDER BY CASE WHEN co.id_country = '.(int)$default_country.' THEN 1 ELSE cl.name END ASC, marketplace_carrier_sku ASC;';
+            . _DB_PREFIX_ . 'country_lang cl ON co.id_country=cl.id_country
+            AND cl.id_lang= ' . (int)Context::getContext()->language->id
+            .' '.$condition.' ORDER BY CASE WHEN co.id_country = '.(int)$default_country.' THEN 1 ELSE cl.name END ASC
+            , marketplace_carrier_sku ASC;';
 
         $collection = Db::getInstance()->ExecuteS($sql);
 

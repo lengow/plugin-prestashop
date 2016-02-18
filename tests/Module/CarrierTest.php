@@ -122,4 +122,21 @@ class CarrierTest extends ModuleTestCase
         $carrierName = LengowCarrier::getMarketplaceCarrier(3, 8);
         $this->assertEquals(null, $carrierName);
     }
+
+    /**
+     * Test getActiveCarrierByCarrierId
+     *
+     * @test
+     * @covers LengowCarrier::getActiveCarrierByCarrierId
+     */
+    public function getActiveCarrierByCarrierId()
+    {
+        $fixture = new Fixture();
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Carrier/get_active_carrier_by_carrier_id.yml'
+        );
+
+        $this->assertEquals(3, LengowCarrier::getActiveCarrierByCarrierId(1, 8));
+        $this->assertEquals(2, LengowCarrier::getActiveCarrierByCarrierId(2, 8));
+    }
 }

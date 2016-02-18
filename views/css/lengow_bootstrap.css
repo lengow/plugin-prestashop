@@ -697,7 +697,6 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 
 .lengow_form .lengow_marketplace_carrier{
     display: block;
-
 }
 
 .lengow_form #use_marketplace_carriers{
@@ -727,13 +726,12 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     border: 1px #C1C7C9 solid;
     margin-top: 0;
     margin-bottom: 0;
+    background:#D1D1D1;
 
 }
 .lengow_form .accordion ul {
-    margin-top: -19px;
-    margin-right: -19px;
-    margin-bottom: -20px;
-    margin-left: -40px;
+    margin:0px;
+    padding:0px;
 }
 
 .lengow_form .accordion input[type="radio"], .lengow_form .accordion input[type="checkbox"] {
@@ -741,15 +739,20 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 }
 
 .lengow_form .accordion .sub > li {
-    padding:20px;
+    padding: 0px 12px;
     height: 130px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-right:-3px;
-    display: inline-block;
-
-
+    margin: 0px;
+    border-left: 1px solid grey;
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+    float: left;
+    list-style: none;
+    text-align: center;
 }
+.lengow_form .accordion .sub > li:last-child {
+    border-right:1px solid grey;
+}
+
 .lengow_form .delete_lengow_default_carrier {
     float: right;
     margin-right: 27px;
@@ -758,10 +761,15 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 
 .lengow_form .score{
     float: right;
-    margin-right:27px;
+    margin-right: 27px;
     margin-top: -6px;
     border-radius: 81px;
     padding: 7px;
+    width: 64px;
+    text-align: center;
+    font-weight: normal;
+    text-shadow: none;
+    font-size: 15px;
 }
 .lengow_form .red{
     background-color: #ED8866;
