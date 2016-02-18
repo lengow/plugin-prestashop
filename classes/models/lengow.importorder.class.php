@@ -972,95 +972,35 @@ class LengowImportOrder
      */
     protected function getCarrierId($shipping_address)
     {
+        $carrier = null;
 
+        if (!isset($shipping_address->id_country)) {
+            throw new LengowException("Shipping address don't have country");
+        }
 
-        $carrier_id = false;
-        if (!LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_MP_ENABLED')
-            || (is_null($this->carrier_name) && is_null($this->carrier_method))
-        ) {
-            $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
+        $order_country_id = $shipping_address->id_country;
+        if ((int)$order_country_id == 0) {
+            throw new LengowException("Shipping address don't have country");
         }
-        // get by tracking carrier
-        if (!$carrier_id && !is_null($this->carrier_name)) {
-            $carrier = Tools::strtolower((string)$this->carrier_name);
-            if (!empty($carrier)) {
-                $carrier_id = LengowCarrier::matchCarrier(
-                    $carrier,
-                    $this->marketplace,
-                    $this->id_lang,
-                    $shipping_address
-                );
-            }
+
+        $marketplace = LengowMain::getMarketplaceSingleton(
+            $this->order_data->marketplace,
+            $this->id_shop
+        );
+        if ($marketplace->isRequireCarrier() && Tools::strlen($this->carrier_name) == 0) {
+            throw new LengowException("Carrier is require, but empty in feed");
+        } elseif ($marketplace->isRequireCarrier()) {
+            $carrier_id = LengowCarrier::getMarketplaceByCarrierSku($this->carrier_name, $order_country_id);
+            $carrier = LengowCarrier::getActiveCarrierByCarrierId($carrier_id);
         }
-        // get by tracking method
-        if (!$carrier_id && !is_null($this->carrier_method)) {
-            $carrier = Tools::strtolower((string)$this->carrier_method);
-            if (!empty($carrier)) {
-                $carrier_id = LengowCarrier::matchCarrier(
-                    $carrier,
-                    $this->marketplace,
-                    $this->id_lang,
-                    $shipping_address
-                );
+        if (!$carrier) {
+            $carrier = LengowCarrier::getActiveCarrier($order_country_id, true);
+            if (!$carrier) {
+                $countryName = Country::getNameById(Context::getContext()->language->id, $order_country_id);
+                throw new LengowException("You must select a default carrier for country : " . $countryName);
             }
         }
-        // assign default carrier if no carrier is found
-        if (!$carrier_id) {
-            $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
-            LengowMain::log(
-                'Import',
-                'no matching carrier found. Default carrier assigned.',
-                $this->log_output,
-                $this->marketplace_sku
-            );
-        } else {
-            // check if module is active and has not been deleted
-            $carrier = new LengowCarrier($carrier_id);
-            if (!$carrier->active || $carrier->deleted) {
-                LengowMain::log(
-                    'Import',
-                    'carrier '.$carrier->name.' is inactive or marked as deleted. Default carrier assigned.',
-                    $this->log_output,
-                    $this->marketplace_sku
-                );
-                $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
-            } elseif ($carrier->is_module) {
-                if (!LengowMain::isModuleInstalled($carrier->external_module_name)) {
-                    $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
-                    LengowMain::log(
-                        'Import',
-                        'carrier module '.$carrier->external_module_name.' not installed. Default carrier assigned.',
-                        $this->log_output,
-                        $this->marketplace_sku
-                    );
-                }
-            }
-            // if carrier is SoColissimo -> check if module version is compatible
-            if ($carrier_id == Configuration::get('SOCOLISSIMO_CARRIER_ID')) {
-                if (!LengowMain::isSoColissimoAvailable()) {
-                    $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
-                    LengowMain::log(
-                        'Import',
-                        'module version '.$carrier->external_module_name.' not supported. Default carrier assigned.',
-                        $this->log_output,
-                        $this->marketplace_sku
-                    );
-                }
-            }
-            // if carrier is mondialrelay -> check if module version is compatible
-            if ($carrier->external_module_name == 'mondialrelay') {
-                if (!LengowMain::isMondialRelayAvailable()) {
-                    $carrier_id = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_CARRIER_DEFAULT');
-                    LengowMain::log(
-                        'Import',
-                        'module version '.$carrier->external_module_name.' not supported. Default carrier assigned.',
-                        $this->log_output,
-                        $this->marketplace_sku
-                    );
-                }
-            }
-        }
-        return $carrier_id;
+        return $carrier->id;
     }
 
     /**

@@ -10,6 +10,7 @@ use Module;
 use Configuration;
 use LengowMain;
 use LengowImport;
+use LengowImportOrder;
 use Tools;
 use LengowMarketplace;
 use LengowOrder;
@@ -87,7 +88,7 @@ class ImportOrderTest extends ModuleTestCase
             ),
             '[Check Currency Shop] Check if currency is present for a shop'
         );
-        
+
         $import2 = new LengowImport(array('log_output' => false));
         $result2 = $import2->exec();
         $this->assertEquals(0, $result2['order_new'], '[Check Currency Data] nb order new');
@@ -531,4 +532,146 @@ class ImportOrderTest extends ModuleTestCase
             '[Check And Update Order Canceled] Check if order is present in Orders Prestashop table'
         );
     }
+
+    /**
+     * Test getCarrierId
+     *
+     * @test
+     * @expectedException        LengowException
+     * @expectedExceptionMessage Shipping address don't have country
+     * @covers LengowImport::getCarrierId
+     */
+    public function getCarrierIdEmptyAddress()
+    {
+        $shipping_address = (object) array();
+        $order_data = Tools::JsonDecode(
+            file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
+        );
+        $import = new LengowImportOrder(array(
+            'id_shop' => 1,
+            'id_shop_group' => 1,
+            'id_lang' => 1,
+            'context' => Context::getContext(),
+            'force_product' => true,
+            'preprod_mode' => false,
+            'log_output' => false,
+            'marketplace_sku' => 1,
+            'delivery_address_id' => 1,
+            'order_data' => $order_data,
+            'package_data' => 1,
+            'first_package' => 1,
+        ));
+        $this->invokeMethod($import, 'getCarrierId', array($shipping_address));
+    }
+
+    /**
+     * Test getCarrierId
+     *
+     * @test
+     * @expectedException        LengowException
+     * @expectedExceptionMessage Shipping address don't have country
+     * @covers LengowImport::getCarrierId
+     */
+    public function getCarrierIdEmptyAddressCountry()
+    {
+        $shipping_address = (object) array('id_country' => 0);
+        $order_data = Tools::JsonDecode(
+            file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
+        );
+        $import = new LengowImportOrder(array(
+            'id_shop' => 1,
+            'id_shop_group' => 1,
+            'id_lang' => 1,
+            'context' => Context::getContext(),
+            'force_product' => true,
+            'preprod_mode' => false,
+            'log_output' => false,
+            'marketplace_sku' => 1,
+            'delivery_address_id' => 1,
+            'order_data' => $order_data,
+            'package_data' => 1,
+            'first_package' => 1,
+        ));
+        $this->invokeMethod($import, 'getCarrierId', array($shipping_address));
+    }
+
+    /**
+     * Test getCarrierId
+     *
+     * @test
+     * @expectedException        LengowException
+     * @expectedExceptionMessage You must select a default carrier for country : France
+     * @covers LengowImport::getCarrierId
+     */
+    public function getCarrierIdRequireCarrierError()
+    {
+        $shipping_address = (object) array('id_country' => 8);
+        $order_data = Tools::JsonDecode(
+            file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
+        );
+        $import = new LengowImportOrder(array(
+            'id_shop' => 1,
+            'id_shop_group' => 1,
+            'id_lang' => 1,
+            'context' => Context::getContext(),
+            'force_product' => true,
+            'preprod_mode' => false,
+            'log_output' => false,
+            'marketplace_sku' => 1,
+            'delivery_address_id' => 1,
+            'order_data' => $order_data,
+            'package_data' => $order_data->packages[0],
+            'first_package' => 1,
+        ));
+
+        $fixture = new Fixture();
+        $fixture->truncate('lengow_marketplace_carrier');
+
+        $this->invokeMethod($import, 'loadTrackingData');
+        $this->invokeMethod($import, 'getCarrierId', array($shipping_address));
+    }
+
+
+
+    /**
+     * Test getCarrierId
+     *
+     * @test
+     * @covers LengowImport::getCarrierId
+     */
+    public function getCarrierIdRequireCarrier()
+    {
+        $shipping_address = (object) array('id_country' => 8);
+        $order_data = Tools::JsonDecode(
+            file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
+        );
+        $import = new LengowImportOrder(array(
+            'id_shop' => 1,
+            'id_shop_group' => 1,
+            'id_lang' => 1,
+            'context' => Context::getContext(),
+            'force_product' => true,
+            'preprod_mode' => false,
+            'log_output' => false,
+            'marketplace_sku' => 1,
+            'delivery_address_id' => 1,
+            'order_data' => $order_data,
+            'package_data' => $order_data->packages[0],
+            'first_package' => 1,
+        ));
+
+        $fixture = new Fixture();
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id_require_carrier.yml'
+        );
+        //reset marketplace file
+        LengowMain::$registers = array();
+        $marketplaceFile =  _PS_MODULE_DIR_.
+            'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id_require_carrier.json';
+        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+
+        $this->invokeMethod($import, 'loadTrackingData');
+        $this->assertEquals(1, $this->invokeMethod($import, 'getCarrierId', array($shipping_address)));
+    }
+
 }
