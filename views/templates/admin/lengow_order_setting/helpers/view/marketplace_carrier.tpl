@@ -12,7 +12,7 @@
                 <button type="button" class="btn delete_lengow_default_carrier"
                         data-id-country="{$carrierItem.$current_id_country.id_country}">X
                 </button>
-            {/if}<span class="score"></span>
+            {/if}<span class="score"></span><i class="fa fa-chevron-down"></i>
         </h4>
         </label><input id="menu{$current_id_country}" name="menu" type="checkbox"/>
         <ul class="sub">
