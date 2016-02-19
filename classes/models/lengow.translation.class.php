@@ -23,12 +23,14 @@
 class LengowTranslation
 {
     protected static $translation = null;
-    protected static $fallbackTranslation = null;
+
     public $fallbackIsoCode = 'en';
+
+    protected $isoCode = null;
 
     public function __construct()
     {
-
+        $this->isoCode = Context::getContext()->language->iso_code;
     }
 
     /**
@@ -38,19 +40,22 @@ class LengowTranslation
      * @param array $args replace word in string
      * @return mixed
      */
-    public function t($message, $args = array())
+    public function t($message, $args = array(), $iso_code = null)
     {
-        if (self::$translation === null) {
-            $this->loadFile();
+        if (is_null($iso_code)) {
+            $iso_code = $this->isoCode;
         }
-        if (isset(self::$translation[$message])) {
-            return $this->translateFinal(self::$translation[$message], $args);
+        if (isset(self::$translation[$iso_code])) {
+            $this->loadFile($iso_code);
+        }
+        if (isset(self::$translation[$iso_code][$message])) {
+            return $this->translateFinal(self::$translation[$iso_code][$message], $args);
         } else {
-            if (self::$fallbackTranslation === null) {
-                $this->loadFile(true);
+            if (!isset(self::$translation[$this->fallbackIsoCode])) {
+                $this->loadFile($this->fallbackIsoCode);
             }
-            if (isset(self::$fallbackTranslation[$message])) {
-                return $this->translateFinal(self::$fallbackTranslation[$message], $args);
+            if (isset(self::$translation[$this->fallbackIsoCode][$message])) {
+                return $this->translateFinal(self::$translation[$this->fallbackIsoCode][$message], $args);
             } else {
                 return 'Missing Translation ['.$message.']';
             }
@@ -80,12 +85,11 @@ class LengowTranslation
      * @param string $filename file location
      * @return boolean
      */
-    public function loadFile($fallback = false, $filename = null)
+    public function loadFile($iso_code, $filename = null)
     {
-        $isoCode = $fallback ? $this->fallbackIsoCode : Context::getContext()->language->iso_code;
         if (!$filename) {
             $filename = _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'translations'.
-                DIRECTORY_SEPARATOR.$isoCode.'.csv';
+                DIRECTORY_SEPARATOR.$iso_code.'.csv';
         }
         $translation = array();
         if (file_exists($filename)) {
@@ -97,11 +101,8 @@ class LengowTranslation
             }
         }
 
-        if ($fallback) {
-            self::$fallbackTranslation = $translation;
-        } else {
-            self::$translation = $translation;
-        }
+        self::$translation[$iso_code] = $translation;
+
         return count($translation)>0;
     }
 }

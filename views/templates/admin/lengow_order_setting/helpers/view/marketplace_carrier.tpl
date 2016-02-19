@@ -7,7 +7,7 @@
         <h4 class="country"><label for="menu{$current_id_country}"><img src="/modules/lengow/views/img/flag/{$mkp_carriers.$i.iso_code}.png"
                                        alt="{$mkp_carriers.$i.name}">
                 {$mkp_carriers.$i.name} {if {$mkp_carriers.$i.id_country} eq $default_country}
-                <span>(default)</span>
+                <span>({$locale->t('order_setting.screen.default_country')})</span>
                 {else}
                 <button type="button" class="btn delete_lengow_default_carrier"
                         data-id-country="{$current_id_country}">X

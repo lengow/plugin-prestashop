@@ -144,7 +144,7 @@ class LengowOrderController extends LengowController
     {
         $fields_list = array();
         $fields_list['lengow_status'] = array(
-            'title' => $this->locale->t('order.table.status'),
+            'title' => $this->locale->t('order.table.order_lengow_state'),
             'align' => 'center',
             'display_callback' => 'LengowOrderController::displayLengowState',
             'filter' => true,
@@ -152,7 +152,6 @@ class LengowOrderController extends LengowController
             'filter_key' => 'lo.order_lengow_state',
             'filter_type' => 'select',
             'filter_collection' => array(
-                array('id' => 'new', 'text' => 'new'),
                 array('id' => 'waiting_shipment', 'text' => 'waiting_shipment'),
                 array('id' => 'shipped', 'text' => 'shipped'),
                 array('id' => 'closed', 'text' => 'closed'),
@@ -160,7 +159,7 @@ class LengowOrderController extends LengowController
             ),
         );
         $fields_list['marketplace_name'] = array(
-            'title' => $this->module->l('Marketplace'),
+            'title' => $this->locale->t('order.table.marketplace_name'),
             'align' => 'center',
             'filter' => true,
             'filter_order' => true,
@@ -171,7 +170,7 @@ class LengowOrderController extends LengowController
         if (_PS_VERSION_ >= '1.5') {
             if (Shop::isFeatureActive()) {
                 $fields_list['shop_name'] = array(
-                    'title' => $this->module->l('Shop'),
+                    'title' => $this->locale->t('order.table.shop_name'),
                     'filter' => true,
                     'filter_order' => true,
                     'filter_key' => 'shop.name',
@@ -181,7 +180,7 @@ class LengowOrderController extends LengowController
             }
         }
         $fields_list['marketplace_sku'] = array(
-            'title' => $this->module->l('Id Order'),
+            'title' => $this->locale->t('order.table.marketplace_sku'),
             'class' => 'center',
             'display_callback' => 'LengowOrderController::displayOrderLink',
             'filter' => true,
@@ -189,7 +188,7 @@ class LengowOrderController extends LengowController
             'filter_key' => 'lo.marketplace_sku',
         );
         $fields_list['reference'] = array(
-            'title' => $this->module->l('Ref Presta'),
+            'title' => $this->locale->t('order.table.reference_prestashop'),
             'class' => 'center',
             'display_callback' => 'LengowOrderController::displayOrderLink',
             'filter' => true,
@@ -197,7 +196,7 @@ class LengowOrderController extends LengowController
             'filter_key' => 'o.reference',
         );
         $fields_list['order_date'] = array(
-            'title' => $this->module->l('Date'),
+            'title' => $this->locale->t('order.table.order_date'),
             'class' => 'center',
             'type' => 'date',
             'filter' => true,
@@ -205,22 +204,21 @@ class LengowOrderController extends LengowController
             'filter_key' => 'lo.order_date',
             'filter_order' => true,
         );
-
         $fields_list['delivery_country_iso'] = array(
-            'title' => $this->module->l('Country'),
+            'title' => $this->locale->t('order.table.delivery_country'),
             'align' => 'center',
             'type' => 'flag_country',
             'filter_key' => 'lo.delivery_country_iso',
             'filter_order' => true,
         );
         $fields_list['nb_item'] = array(
-            'title' => $this->module->l('Items'),
+            'title' => $this->locale->t('order.table.order_item'),
             'align' => 'center',
             'filter_key' => 'lo.order_item',
             'filter_order' => true,
         );
         $fields_list['total_paid'] = array(
-            'title' => $this->module->l('Total'),
+            'title' => $this->locale->t('order.table.total_paid'),
             'align' => 'center',
             'type' => 'price',
             'class' => 'nowrap',
@@ -228,7 +226,7 @@ class LengowOrderController extends LengowController
             'filter_order' => true,
         );
         $fields_list['log_status'] = array(
-            'title' => $this->module->l('Status Lgw'),
+            'title' => $this->locale->t('order.table.status_lengow'),
             'align' => 'center',
             'class' => 'lengow_status',
             'type' => 'log_status',
@@ -318,11 +316,11 @@ class LengowOrderController extends LengowController
         $html.='<a href="#" style="display:none;"
                 data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
                 class="lengow_btn lengow_link_tooltip lengow_mass_re_import btn btn-primary">
-                <i class="fa fa-download"></i> Re Import Order</a>';
+                <i class="fa fa-download"></i> '.$this->locale->t('order.screen.button_reimport_order').' </a>';
         $html.='<a href="#" style="display:none;"
                         data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
                 class="lengow_btn lengow_link_tooltip lengow_mass_re_send btn btn-primary">
-                <i class="fa fa-arrow-right"></i> Re Send Order</a>';
+                <i class="fa fa-arrow-right"></i> '.$this->locale->t('order.screen.button_resend_order').' </a>';
         $html.='</div>';
         $html.= $paginationBlock;
         $html.='<div class="lengow_clear"></div>';

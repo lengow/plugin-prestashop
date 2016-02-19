@@ -21,16 +21,19 @@
 <form class="lengow_form" method="POST">
     <input type="hidden" name="action" value="process">
     <div class="container">
-        <h2>Order Status</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.</p><br/>
+        <h2>{$locale->t('order_setting.screen.order_status_title')}</h2>
+        <p>{$locale->t('order_setting.screen.order_status_description')}</p><br/>
         {$matching}
     </div>
     <div class="container2">
-        <h2>Carrier Management</h2>
-        <h3>Marketplace carrier management</h3>
-        <p>Some countries may not have configured carriers, please go to this
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminCarriers', false, true)}">link</a></p><br/>
+        <h2>{$locale->t('order_setting.screen.carrier_management_title')}</h2>
+        <p>{$locale->t('order_setting.screen.carrier_management_description')}</p>
+        <p>{$locale->t('order_setting.screen.country_wt_carrier')}
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminCarriers', false, true)}">
+                {$locale->t('order_setting.screen.country_wt_carrier_link')}
+            </a>
+        </p>
+        <br/>
         <div class="select_country">
             {include file='./select_country.tpl'}
         </div>
@@ -42,14 +45,13 @@
         </div>
     </div>
     <div class="container2">
-        <h2>Orders importation</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.</p><br/>
+        <h2>{$locale->t('order_setting.screen.import_setting_title')}</h2>
+        <p>{$locale->t('order_setting.screen.import_setting_description')}</p><br/>
         {$import_params}
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn lengow_btn lengow_submit_order_setting">Save</button>
+            <button type="submit" class="btn lengow_btn lengow_submit_order_setting">{$locale->t('order_setting.screen.button_save')}</button>
         </div>
     </div>
 </form>

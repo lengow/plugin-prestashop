@@ -1,11 +1,43 @@
 en:
+  connexion:
+  dashboard:
+  product:
   order:
     screen:
       all_order_will_be_sent_to : "All orders issues reports will be send to mail"
-      auto : "Auto"
-      button_update_orders: "Update Orders"
       last_order_importation: "Last order importation"
-      manuel: "Manuel"
+      import_auto : "Auto"
+      import_manuel: "Manuel"
+      button_update_orders: "Update Orders"
+      button_reimport_order: "Re Import Orders"
+      button_resend_order: "Re Send Orders"
     table:
-      status: "Status"
-      test: "test"
+      order_lengow_state: "Status"
+      marketplace_name: "Marketplace"
+      shop_name: "Shop"
+      marketplace_sku: "Id order"
+      reference_prestashop: "Reference Prestashop"
+      order_date: "Date"
+      delivery_country: "Country"
+      order_item: "Items"
+      total_paid: "Total"
+      status_lengow: "Status Lengow"
+  order_setting:
+    screen:
+      order_status_title: "Order Status"
+      order_status_description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      carrier_management_title: "Marketplace carrier management"
+      carrier_management_description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      country_wt_carrier: "Some countries may not have configured carriers, please go to this"
+      country_wt_carrier_link: "link"
+      default_country: "default"
+      import_setting_title: "Orders importation"
+      import_setting_description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      button_add_country: "Add"
+      button_save: "Save"
+  global_setting:
+  lengow_setting:
+    lengow_import_stock_ship_mp_title: "Decrement inventory of orders shipped by marketplace"
+    lengow_import_stock_ship_mp_legend: "Blabla blablabla"
+  lengow_log:
+  log:

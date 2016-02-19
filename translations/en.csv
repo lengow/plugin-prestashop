@@ -1,7 +1,36 @@
+connexion|
+dashboard|
+product|
 order.screen.all_order_will_be_sent_to|All orders issues reports will be send to mail
-order.screen.auto|Auto
-order.screen.button_update_orders|Update Orders
 order.screen.last_order_importation|Last order importation
-order.screen.manuel|Manuel
-order.table.status|Status
-order.table.test|test
+order.screen.import_auto|Auto
+order.screen.import_manuel|Manuel
+order.screen.button_update_orders|Update Orders
+order.screen.button_reimport_order|Re Import Orders
+order.screen.button_resend_order|Re Send Orders
+order.table.order_lengow_state|Status
+order.table.marketplace_name|Marketplace
+order.table.shop_name|Shop
+order.table.marketplace_sku|Id order
+order.table.reference_prestashop|Reference Prestashop
+order.table.order_date|Date
+order.table.delivery_country|Country
+order.table.order_item|Items
+order.table.total_paid|Total
+order.table.status_lengow|Status Lengow
+order_setting.screen.order_status_title|Order Status
+order_setting.screen.order_status_description|Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+order_setting.screen.carrier_management_title|Marketplace carrier management
+order_setting.screen.carrier_management_description|Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+order_setting.screen.country_wt_carrier|Some countries may not have configured carriers, please go to this
+order_setting.screen.country_wt_carrier_link|link
+order_setting.screen.default_country|default
+order_setting.screen.import_setting_title|Orders importation
+order_setting.screen.import_setting_description|Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+order_setting.screen.button_add_country|Add
+order_setting.screen.button_save|Save
+global_setting|
+lengow_setting.lengow_import_stock_ship_mp_title|Decrement inventory of orders shipped by marketplace
+lengow_setting.lengow_import_stock_ship_mp_legend|Blabla blablabla
+lengow_log|
+log|
