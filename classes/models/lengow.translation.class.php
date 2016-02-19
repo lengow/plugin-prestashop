@@ -31,36 +31,62 @@ class LengowTranslation
 
     }
 
+    /**
+     * v3-test
+     * Translate message
+     * @param $message localization key
+     * @param array $args replace word in string
+     * @return mixed
+     */
     public function t($message, $args = array())
     {
         if (self::$translation === null) {
             $this->loadFile();
         }
         if (isset(self::$translation[$message])) {
-
-            if ($args) {
-                return self::$translation[$message];
-            } else {
-                return self::$translation[$message];
-            }
+            return $this->translateFinal(self::$translation[$message], $args);
         } else {
             if (self::$fallbackTranslation === null) {
                 $this->loadFile(true);
             }
             if (isset(self::$fallbackTranslation[$message])) {
-                return self::$fallbackTranslation[$message];
+                return $this->translateFinal(self::$fallbackTranslation[$message], $args);
             } else {
-                return $message;
+                return 'Missing Translation ['.$message.']';
             }
         }
     }
 
-    public function loadFile($fallback = false)
+    /**
+     * v3-test
+     * Translate string
+     * @param $text
+     * @param $args
+     * @return string Final Translate string
+     */
+    protected function translateFinal($text, $args)
+    {
+        if ($args) {
+            return vsprintf($text, $args);
+        } else {
+            return $text;
+        }
+    }
+
+    /**
+     * v3-test
+     * Load csv file
+     * @param bool $fallback use fallback translation
+     * @param string $filename file location
+     * @return boolean
+     */
+    public function loadFile($fallback = false, $filename = null)
     {
         $isoCode = $fallback ? $this->fallbackIsoCode : Context::getContext()->language->iso_code;
-        $filename = _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'translations'.
-            DIRECTORY_SEPARATOR.$isoCode.'.csv';
-
+        if (!$filename) {
+            $filename = _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'translations'.
+                DIRECTORY_SEPARATOR.$isoCode.'.csv';
+        }
         $translation = array();
         if (file_exists($filename)) {
             if (($handle = fopen($filename, "r")) !== false) {
@@ -76,5 +102,6 @@ class LengowTranslation
         } else {
             self::$translation = $translation;
         }
+        return count($translation)>0;
     }
 }

@@ -3,4 +3,5 @@ order.screen.auto|Auto
 order.screen.button_update_orders|Update Orders
 order.screen.last_order_importation|Last order importation
 order.screen.manuel|Manuel
-order.screen.table.status|Status
+order.table.status|Status
+order.table.test|test

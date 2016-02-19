@@ -533,7 +533,6 @@ class ImportOrderTest extends ModuleTestCase
     }
 
     /**
-<<<<<<< HEAD
      * Test getCarrierId
      *
      * @test
@@ -674,7 +673,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->assertEquals(1, $this->invokeMethod($import, 'getCarrierId', array($shipping_address)));
     }
 
-=======
+    /**
      * Test if external ID exist
      *
      * @test
@@ -1163,5 +1162,4 @@ class ImportOrderTest extends ModuleTestCase
             '[Get Customer] Check if order is present in Lengow Orders table'
         );
     }
->>>>>>> bc99123700e8024b58e3480659e112c3a069f7eb
 }

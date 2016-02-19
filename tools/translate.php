@@ -43,10 +43,10 @@ function writeCsv($fp, $text, &$frontKey = array())
         foreach ($text as $k => $v) {
             $frontKey[]= $k;
             writeCsv($fp, $v, $frontKey);
+            array_pop($frontKey);
         }
     } else {
         $line = join('.', $frontKey).'|'.$text.PHP_EOL;
-        array_pop($frontKey);
         fwrite($fp, $line);
     }
 }
