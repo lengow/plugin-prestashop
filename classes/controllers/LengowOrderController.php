@@ -144,7 +144,7 @@ class LengowOrderController extends LengowController
     {
         $fields_list = array();
         $fields_list['lengow_status'] = array(
-            'title' => $this->module->l('Status'),
+            'title' => $this->locale->t('order.table.status'),
             'align' => 'center',
             'display_callback' => 'LengowOrderController::displayLengowState',
             'filter' => true,

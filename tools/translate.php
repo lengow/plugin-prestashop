@@ -30,13 +30,23 @@ foreach ($listFiles as $list) {
     $locale =  basename($directory.$list, '.yml');
 
     $fp = fopen(dirname(dirname(__FILE__)).'/translations/'.$locale.'.csv', 'w+');
+
     foreach ($ymlFile as $language => $categories) {
-        foreach ($categories as $category => $values) {
-            foreach ($values as $key => $value) {
-                $line = $category . '.' . $key . '|' . $value . PHP_EOL;
-                fwrite($fp, $line);
-            }
-        }
+        writeCsv($fp, $categories);
     }
     fclose($fp);
+}
+
+function writeCsv($fp, $text, &$frontKey = array())
+{
+    if (is_array($text)) {
+        foreach ($text as $k => $v) {
+            $frontKey[]= $k;
+            writeCsv($fp, $v, $frontKey);
+        }
+    } else {
+        $line = join('.', $frontKey).'|'.$text.PHP_EOL;
+        array_pop($frontKey);
+        fwrite($fp, $line);
+    }
 }

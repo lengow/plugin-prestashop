@@ -1,5 +1,6 @@
-order.all_order_will_be_sent_to|All orders issues reports will be send to mail
-order.auto|Auto
-order.button_update_orders|Update Orders
-order.last_order_importation|Last order importation
-order.manuel|Manuel
+order.screen.all_order_will_be_sent_to|All orders issues reports will be send to mail
+order.screen.auto|Auto
+order.screen.button_update_orders|Update Orders
+order.screen.last_order_importation|Last order importation
+order.screen.manuel|Manuel
+order.screen.table.status|Status

@@ -24,6 +24,7 @@ class LengowController
 
     protected $module;
     protected $context;
+    protected $locale;
 
     public function __construct()
     {
@@ -32,6 +33,7 @@ class LengowController
         $this->context->smarty->assign('current_controller', get_class($this));
         $this->context->smarty->assign('lengow_configuration', new LengowConfiguration());
         $this->context->smarty->assign('locale', new LengowTranslation());
+        $this->locale = new LengowTranslation();
     }
 
     public function postProcess()
