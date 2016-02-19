@@ -256,8 +256,8 @@ class LengowOrderController extends LengowController
             'lo.currency'
         );
         $select_having = array(
-            ' IF(lo.order_process_state=1, 2, (SELECT IFNULL(lli.type, 0) FROM '._DB_PREFIX_.'lengow_logs_import lli
-            WHERE lli.id_order_lengow = lo.id AND lli.is_finished = 0 LIMIT 1)) as log_status',
+            ' (SELECT IFNULL(lli.type, 0) FROM '._DB_PREFIX_.'lengow_logs_import lli
+            WHERE lli.id_order_lengow = lo.id AND lli.is_finished = 0 LIMIT 1) as log_status',
         );
         $from = 'FROM '._DB_PREFIX_.'lengow_orders lo';
         $join = array();

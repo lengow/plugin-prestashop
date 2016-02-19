@@ -616,14 +616,15 @@ class LengowCarrier extends Carrier
     {
         $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
 
-        $sql = 'SELECT marketplace_carrier_sku FROM '._DB_PREFIX_.'lengow_marketplace_carrier WHERE id_country = '.(int)$default_country;
+        $sql = 'SELECT marketplace_carrier_sku, marketplace_carrier_name FROM '._DB_PREFIX_.'lengow_marketplace_carrier WHERE id_country = '.(int)$default_country;
 
         $marketplace_carriers = Db::getInstance()->executeS($sql);
 
         foreach ($marketplace_carriers as $key) {
             $insert = DB::getInstance()->autoExecute(_DB_PREFIX_ . 'lengow_marketplace_carrier', array(
                 'id_country' => $id_country,
-                'marketplace_carrier_sku' => $key['marketplace_carrier_sku']), 'INSERT');
+                'marketplace_carrier_sku' => $key['marketplace_carrier_sku'],
+                'marketplace_carrier_name' => $key['marketplace_carrier_name']), 'INSERT');
         }
         return true;
     }
