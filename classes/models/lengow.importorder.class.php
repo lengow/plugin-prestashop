@@ -987,12 +987,12 @@ class LengowImportOrder
             $this->order_data->marketplace,
             $this->id_shop
         );
-        if ($marketplace->isRequireCarrier() && Tools::strlen($this->carrier_name) == 0) {
-            throw new LengowException("Carrier is require, but empty in feed");
-        } elseif ($marketplace->isRequireCarrier()) {
+        //if ($marketplace->isRequireCarrier() && Tools::strlen($this->carrier_name) == 0) {
+        //    throw new LengowException("Carrier is require, but empty in feed");
+        //} elseif ($marketplace->isRequireCarrier()) {
             $carrier_id = LengowCarrier::getMarketplaceByCarrierSku($this->carrier_name, $order_country_id);
             $carrier = LengowCarrier::getActiveCarrierByCarrierId($carrier_id);
-        }
+        //}
         if (!$carrier) {
             $carrier = LengowCarrier::getActiveCarrier($order_country_id, true);
             if (!$carrier) {
