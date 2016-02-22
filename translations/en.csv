@@ -34,7 +34,6 @@ lengow_setting.lengow_account_id_title|Account Id
 lengow_setting.lengow_access_token_title|Access Token
 lengow_setting.lengow_secret_token_title|Secret Token
 lengow_setting.lengow_shop_active_title|Enabled Shop
-lengow_setting.lengow_shop_active_legend|Enabled shop for export and import process
 lengow_setting.lengow_shop_token_title|Shop Token
 lengow_setting.lengow_export_selection_enabled_title|Export only selection
 lengow_setting.lengow_export_selection_enabled_legend|If you don't want to export all your available products, enable this option and select yours products
@@ -62,5 +61,20 @@ lengow_setting.lengow_import_ship_mp_enabled_title|Import orders shipped by mark
 lengow_setting.lengow_import_ship_mp_enabled_legend|
 lengow_setting.lengow_import_stock_ship_mp_title|I want to decrease my stock
 lengow_setting.lengow_import_stock_ship_mp_legend|This option is only available for orders shipped by marketplaces channels
+lengow_setting.lengow_report_mail_enabled_title|I want to be noticed when issues encountered on orders importation & catalog exportation
+lengow_setting.lengow_report_mail_enabled_legend|We will send you this once a day
+lengow_setting.lengow_report_mail_address_title|Mail Report email
+lengow_setting.lengow_import_single_enabled_title|Limit to one order per import process
+lengow_setting.lengow_import_single_enabled_legend|Useful for prestashop versions from 1.5.2 to 1.5.4.* : avoids importing orders twice
+lengow_setting.lengow_import_in_progress_title|Import In Progress
+lengow_setting.lengow_last_import_cron_title|Last Cron Import
+lengow_setting.lengow_last_import_manual_title|Last Manuel Import
+lengow_setting.lengow_global_token_title|Lengow Global Token
+lengow_setting.lengow_authorized_ip_title|Authorised IP
+lengow_setting.lengow_authorized_ip_legend|Authorized IP separated by ;
+lengow_setting.lengow_tracking_enabled_title|Lengow tracking enabled
+lengow_setting.lengow_tracking_id_title|Lengow Tracking Id
+lengow_setting.lengow_order_stat_title|Order Statistic
+lengow_setting.lengow_order_stat_update_title|Order Statistic Update
 lengow_log|
 log|

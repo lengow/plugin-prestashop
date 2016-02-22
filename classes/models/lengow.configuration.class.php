@@ -57,33 +57,32 @@ class LengowConfiguration extends Configuration
             $keys = array(
                 'LENGOW_ACCOUNT_ID' => array(
                     'shop'          => true,
-                    'label'         => $locale->t('lengow_setting.lengow_account_id_title')
+                    'label'         => $locale->t('lengow_setting.lengow_account_id_title'),
                 ),
                 'LENGOW_ACCESS_TOKEN' => array(
                     'shop'          => true,
-                    'label'         => $locale->t('lengow_setting.lengow_access_token_title')
+                    'label'         => $locale->t('lengow_setting.lengow_access_token_title'),
                 ),
                 'LENGOW_SECRET_TOKEN' => array(
                     'shop'          => true,
-                    'label'         => $locale->t('lengow_setting.lengow_secret_token_title')
+                    'label'         => $locale->t('lengow_setting.lengow_secret_token_title'),
                 ),
                 'LENGOW_SHOP_ACTIVE' => array(
                     'type'          => 'checkbox',
                     'shop'          => true,
                     'label'         => $locale->t('lengow_setting.lengow_shop_active_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_shop_active_legend')
                 ),
                 'LENGOW_SHOP_TOKEN' => array(
                     'readonly'      => true,
                     'shop'          => true,
-                    'label'         => $locale->t('lengow_setting.lengow_shop_token_title')
+                    'label'         => $locale->t('lengow_setting.lengow_shop_token_title'),
                 ),
                 'LENGOW_EXPORT_SELECTION_ENABLED' => array(
                     'type'          => 'checkbox',
                     'readonly'      => true,
                     'shop'          => true,
                     'label'         => $locale->t('lengow_setting.lengow_export_selection_enabled_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_export_selection_enabled_legend')
+                    'legend'        => $locale->t('lengow_setting.lengow_export_selection_enabled_legend'),
                 ),
                 'LENGOW_EXPORT_VARIATION_ENABLED' => array(
                     'type'          => 'checkbox',
@@ -91,13 +90,13 @@ class LengowConfiguration extends Configuration
                     'shop'          => true,
                     'label'         => $locale->t('lengow_setting.lengow_export_variation_enabled_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_export_variation_enabled_legend'),
-                    'default_value' => true
+                    'default_value' => true,
                 ),
                 'LENGOW_EXPORT_FORMAT' => array(
                     'type'          => 'select',
                     'label'         => $locale->t('lengow_setting.lengow_export_format_title'),
                     'default_value' => 'csv',
-                    'collection'    => $exportFormats
+                    'collection'    => $exportFormats,
                 ),
                 'LENGOW_EXPORT_FILE_ENABLED' => array(
                     'type'          => 'checkbox',
@@ -114,7 +113,7 @@ class LengowConfiguration extends Configuration
                 'LENGOW_LAST_EXPORT' => array(
                     'readonly'      => true,
                     'shop'          => true,
-                    'label'         => $locale->t('lengow_setting.lengow_last_export_title')
+                    'label'         => $locale->t('lengow_setting.lengow_last_export_title'),
                 ),
                 'LENGOW_ORDER_ID_PROCESS' => array(
                     'type'          => 'select',
@@ -148,12 +147,12 @@ class LengowConfiguration extends Configuration
                 'LENGOW_IMPORT_DAYS' => array(
                     'label'         => $locale->t('lengow_setting.lengow_import_days_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_days_legend'),
-                    'default_value' => 5
+                    'default_value' => 5,
                 ),
                 'LENGOW_IMPORT_PROCESSING_FEE' => array(
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_processing_fee_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_import_processing_fee_legend')
+                    'legend'        => $locale->t('lengow_setting.lengow_import_processing_fee_legend'),
                 ),
                 'LENGOW_IMPORT_CARRIER_DEFAULT' => array(
                     'type'          => 'select',
@@ -163,13 +162,13 @@ class LengowConfiguration extends Configuration
                 'LENGOW_IMPORT_PREPROD_ENABLED' => array(
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_preprod_enabled_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_import_preprod_enabled_legend')
+                    'legend'        => $locale->t('lengow_setting.lengow_import_preprod_enabled_legend'),
                 ),
                 'LENGOW_IMPORT_FAKE_EMAIL' => array(
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_fake_mail_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_fake_mail_legend'),
-                    'default_value' => true
+                    'default_value' => true,
                 ),
                 'LENGOW_IMPORT_SHIP_MP_ENABLED' => array(
                     'type'          => 'checkbox',
@@ -181,63 +180,63 @@ class LengowConfiguration extends Configuration
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_stock_ship_mp_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_stock_ship_mp_legend'),
-                    'default_value' => false
+                    'default_value' => false,
                 ),
                 'LENGOW_REPORT_MAIL_ENABLED' => array(
                     'type'          => 'checkbox',
-                    'label'         => $locale->t('I want to be noticed when issues encountered on orders
-                    importation & catalog exportation'),
+                    'label'         => $locale->t('lengow_setting.lengow_report_mail_enabled_title'),
+                    'legend'        => $locale->t('lengow_setting.lengow_report_mail_enabled_legend'),
                     'default_value' => true,
-                    'legend'        => $locale->t('we will send you this once a day')
                 ),
                 'LENGOW_REPORT_MAIL_ADDRESS' => array(
                     'type'          => 'tag',
-                    'label'         => $locale->t('Mail Report email')
+                    'label'         => $locale->t('lengow_setting.lengow_report_mail_address_title'),
                 ),
                 'LENGOW_IMPORT_SINGLE_ENABLED' => array(
                     'type'          => 'checkbox',
-                    'label'         => $locale->t('Import Order One By One'),
+                    'label'         => $locale->t('lengow_setting.lengow_import_single_enabled_title'),
+                    'legend'        => $locale->t('lengow_setting.lengow_import_single_enabled_legend'),
                     'default_value' => version_compare(_PS_VERSION_, '1.5.2', '>') &&
-                        version_compare(_PS_VERSION_, '1.5.5', '<')
+                        version_compare(_PS_VERSION_, '1.5.5', '<'),
                 ),
                 'LENGOW_IMPORT_IN_PROGRESS' => array(
                     'readonly'      => true,
-                    'label'         => $locale->t('Import In Progress')
+                    'label'         => $locale->t('lengow_setting.lengow_import_in_progress_title'),
                 ),
                 'LENGOW_LAST_IMPORT_CRON' => array(
                     'readonly'      => true,
-                    'label'         => $locale->t('Last Cron Import')
+                    'label'         => $locale->t('lengow_setting.lengow_last_import_cron_title'),
                 ),
                 'LENGOW_LAST_IMPORT_MANUAL' => array(
                     'readonly'      => true,
-                    'label'         => $locale->t('Last Manuel Import')
+                    'label'         => $locale->t('lengow_setting.lengow_last_import_manual_title'),
                 ),
                 'LENGOW_GLOBAL_TOKEN' => array(
                     'readonly'      => true,
-                    'label'         => $locale->t('Lengow Global Token')
+                    'label'         => $locale->t('lengow_setting.lengow_global_token_title'),
                 ),
                 'LENGOW_AUTHORIZED_IP' => array(
-                    'label'         => $locale->t('Lengow Authorized IP'),
+                    'label'         => $locale->t('lengow_setting.lengow_authorized_ip_title'),
+                    'legend'        => $locale->t('lengow_setting.lengow_authorized_ip_legend'),
                 ),
                 'LENGOW_TRACKING_ENABLED' => array(
                     'type'          => 'checkbox',
-                    'label'         => $locale->t('Lengow Tracking'),
+                    'label'         => $locale->t('lengow_setting.lengow_tracking_enabled_title'),
                     'default_value' => true,
                 ),
                 'LENGOW_TRACKING_ID' => array(
                     'type'          => 'select',
-                    'label'         => $locale->t('Lengow Tracking Id'),
+                    'label'         => $locale->t('lengow_setting.lengow_tracking_id_title'),
                     'default_value' => 'id',
-
                     'collection'    => $trackerIds
                 ),
                 'LENGOW_ORDER_STAT' => array(
-                    'type' => 'json',
-                    'label' => 'Order Statistic',
+                    'type'          => 'json',
+                    'label'         => $locale->t('lengow_setting.lengow_order_stat_title'),
                 ),
                 'LENGOW_ORDER_STAT_UPDATE' => array(
-                    'type' => 'datetime',
-                    'label' => 'Order Statistic Update',
+                    'type'          => 'datetime',
+                    'label'         => $locale->t('lengow_setting.lengow_order_stat_update_title'),
                 ),
             );
         }
