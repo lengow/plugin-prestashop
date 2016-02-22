@@ -207,7 +207,12 @@ class LengowConnector
 
     private function _callAction($api, $args, $type, $format = 'json')
     {
-        $result = $this->_makeRequest($type, self::LENGOW_API_URL.$api, $args, $this->token);
+        if ($api == '/v1.0/numbers/') {
+            $url = 'http://10.100.1.242:8083';
+        } else {
+            $url = self::LENGOW_API_URL;
+        }
+        $result = $this->_makeRequest($type, $url.$api, $args, $this->token);
         return $this->_format($result, $format);
     }
 

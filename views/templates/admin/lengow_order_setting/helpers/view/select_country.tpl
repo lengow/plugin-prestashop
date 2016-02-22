@@ -6,4 +6,4 @@
 			{/if}
 		{/foreach}
 </select>
-<button type="button" class="btn add_lengow_default_carrier">+ Ajouter</button>
+<button type="button" class="btn add_lengow_default_carrier">+ {$locale->t('order_setting.screen.button_add_country')}</button>

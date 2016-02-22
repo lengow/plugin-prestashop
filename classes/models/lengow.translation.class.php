@@ -23,44 +23,75 @@
 class LengowTranslation
 {
     protected static $translation = null;
-    protected static $fallbackTranslation = null;
+
     public $fallbackIsoCode = 'en';
+
+    protected $isoCode = null;
 
     public function __construct()
     {
-
+        $this->isoCode = Context::getContext()->language->iso_code;
     }
 
-    public function t($message, $args = array())
+    /**
+     * v3-test
+     * Translate message
+     * @param $message localization key
+     * @param array $args replace word in string
+     * @param array $iso_code iso code
+     * @return mixed
+     */
+    public function t($message, $args = array(), $iso_code = null)
     {
-        if (self::$translation === null) {
-            $this->loadFile();
+        if (is_null($iso_code)) {
+            $iso_code = $this->isoCode;
         }
-        if (isset(self::$translation[$message])) {
-
-            if ($args) {
-                return self::$translation[$message];
-            } else {
-                return self::$translation[$message];
-            }
+        if (!isset(self::$translation[$iso_code])) {
+            $this->loadFile($iso_code);
+        }
+        if (isset(self::$translation[$iso_code][$message])) {
+            return $this->translateFinal(self::$translation[$iso_code][$message], $args);
         } else {
-            if (self::$fallbackTranslation === null) {
-                $this->loadFile(true);
+            if (!isset(self::$translation[$this->fallbackIsoCode])) {
+                $this->loadFile($this->fallbackIsoCode);
             }
-            if (isset(self::$fallbackTranslation[$message])) {
-                return self::$fallbackTranslation[$message];
+            if (isset(self::$translation[$this->fallbackIsoCode][$message])) {
+                return $this->translateFinal(self::$translation[$this->fallbackIsoCode][$message], $args);
             } else {
-                return $message;
+                return 'Missing Translation ['.$message.']';
             }
         }
     }
 
-    public function loadFile($fallback = false)
+    /**
+     * v3-test
+     * Translate string
+     * @param $text
+     * @param $args
+     * @return string Final Translate string
+     */
+    protected function translateFinal($text, $args)
     {
-        $isoCode = $fallback ? $this->fallbackIsoCode : Context::getContext()->language->iso_code;
-        $filename = _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'translations'.
-            DIRECTORY_SEPARATOR.$isoCode.'.csv';
+        if ($args) {
+            return vsprintf($text, $args);
+        } else {
+            return $text;
+        }
+    }
 
+    /**
+     * v3-test
+     * Load csv file
+     * @param string $iso_code
+     * @param string $filename file location
+     * @return boolean
+     */
+    public function loadFile($iso_code, $filename = null)
+    {
+        if (!$filename) {
+            $filename = _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'translations'.
+                DIRECTORY_SEPARATOR.$iso_code.'.csv';
+        }
         $translation = array();
         if (file_exists($filename)) {
             if (($handle = fopen($filename, "r")) !== false) {
@@ -71,10 +102,8 @@ class LengowTranslation
             }
         }
 
-        if ($fallback) {
-            self::$fallbackTranslation = $translation;
-        } else {
-            self::$translation = $translation;
-        }
+        self::$translation[$iso_code] = $translation;
+
+        return count($translation)>0;
     }
 }

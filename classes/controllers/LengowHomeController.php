@@ -53,6 +53,11 @@ class LengowHomeController extends LengowController
      */
     public function display()
     {
+        $isNewMerchant = LengowMain::isNewMerchant();
+        $this->context->smarty->assign('isNewMerchant', $isNewMerchant);
+        if (!$isNewMerchant) {
+            $this->context->smarty->assign('stats', LengowStatistic::get());
+        }
         $lengowLink = new LengowLink();
         $this->context->smarty->assign('sync_link', $lengowLink->getAbsoluteAdminLink("AdminLengowHome", true));
         parent::display();

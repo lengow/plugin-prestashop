@@ -715,8 +715,6 @@ class LengowImportOrder
     protected function getCartData()
     {
         $cart_data = array();
-        // get carrier
-        $cart_data['id_carrier'] = $this->getCarrierId($this->shipping_address);
         $cart_data['id_lang'] = $this->id_lang;
         $cart_data['id_shop'] = $this->id_shop;
         // get billing datas
@@ -763,6 +761,8 @@ class LengowImportOrder
         $cart_data['id_address_delivery'] = $this->shipping_address->id;
         // get currency
         $cart_data['id_currency'] = (int)Currency::getIdByIsoCode((string)$this->order_data->currency->iso_a3);
+        // get carrier
+        $cart_data['id_carrier'] = $this->getCarrierId($this->shipping_address);
         return $cart_data;
     }
 
@@ -987,12 +987,12 @@ class LengowImportOrder
             $this->order_data->marketplace,
             $this->id_shop
         );
-        if ($marketplace->isRequireCarrier() && Tools::strlen($this->carrier_name) == 0) {
-            throw new LengowException("Carrier is require, but empty in feed");
-        } elseif ($marketplace->isRequireCarrier()) {
+        //if ($marketplace->isRequireCarrier() && Tools::strlen($this->carrier_name) == 0) {
+        //    throw new LengowException("Carrier is require, but empty in feed");
+        //} elseif ($marketplace->isRequireCarrier()) {
             $carrier_id = LengowCarrier::getMarketplaceByCarrierSku($this->carrier_name, $order_country_id);
             $carrier = LengowCarrier::getActiveCarrierByCarrierId($carrier_id);
-        }
+        //}
         if (!$carrier) {
             $carrier = LengowCarrier::getActiveCarrier($order_country_id, true);
             if (!$carrier) {

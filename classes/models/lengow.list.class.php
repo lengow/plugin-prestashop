@@ -54,6 +54,7 @@ class LengowList
         $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
         $this->orderColumn = isset($params['order_column']) ? $params['order_column'] : '';
 
+        $this->locale = new LengowTranslation();
 
         $this->context = Context::getContext();
         if (_PS_VERSION_ < 1.5) {
@@ -124,7 +125,7 @@ class LengowList
                         break;
                 }
             } elseif (isset($values['button_search']) && $values['button_search']) {
-                $html .= '<input type="submit" value="Search" />';
+                $html .= '<input type="submit" value="'.$this->locale->t('class.lengow_list.button_search').'" />';
             }
             $html .= '</th>';
         }
@@ -192,15 +193,18 @@ class LengowList
                             }
                             break;
                         case 'switch_product':
-                            $value = '<input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
-                               name="lengow_product_selection['.$item[$this->identifier].']"
-                               class="lengow_switch lengow_switch_product
-                               lengow_product_selection_'.$item[$this->identifier].'"
-                               data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
-                               data-action="select_product"
-                               data-id_shop="'.$this->shopId.'"
-                               data-id_product="'.$item[$this->identifier].'"
-                               value="1" '.($item[$key] ? 'checked="checked"' : '').'/>';
+                            $value = '<input type="checkbox"
+                                data-size="mini"
+                                data-on-text="'.$this->locale->t('class.lengow_list.button_yes').'"
+                                data-off-text="'.$this->locale->t('class.lengow_list.button_no').'"
+                                name="lengow_product_selection['.$item[$this->identifier].']"
+                                class="lengow_switch lengow_switch_product
+                                lengow_product_selection_'.$item[$this->identifier].'"
+                                data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
+                                data-action="select_product"
+                                data-id_shop="'.$this->shopId.'"
+                                data-id_product="'.$item[$this->identifier].'"
+                                value="1" '.($item[$key] ? 'checked="checked"' : '').'/>';
                             break;
                         case 'flag_country':
                             if ($item[$key]) {
@@ -433,7 +437,7 @@ class LengowList
         $html.='<div class="lengow_pagination_total">';
         $html.= '<span class="lengow_number">'.$this->paginationFrom. '</span> -
         <span class="lengow_number">'.$this->paginationTo.'</span>
-         sur <span class="lengow_number">'.$this->total.'</span>';
+         '.$this->locale->t('class.lengow_list.pagination_of').' <span class="lengow_number">'.$this->total.'</span>';
         $html.='</div>';
 
         $html.= '<ul class="lengow_pagination pagination">';

@@ -24,6 +24,7 @@ class LengowController
 
     protected $module;
     protected $context;
+    protected $locale;
 
     public function __construct()
     {
@@ -32,6 +33,7 @@ class LengowController
         $this->context->smarty->assign('current_controller', get_class($this));
         $this->context->smarty->assign('lengow_configuration', new LengowConfiguration());
         $this->context->smarty->assign('locale', new LengowTranslation());
+        $this->locale = new LengowTranslation();
     }
 
     public function postProcess()
@@ -41,6 +43,11 @@ class LengowController
 
     public function display()
     {
+        $this->context->smarty->assign(
+            'total_pending_order',
+            LengowOrder::getTotalOrderByStatus('waiting_shipment')
+        );
+
         if (_PS_VERSION_ < '1.5') {
             $module = Module::getInstanceByName('lengow');
             echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');

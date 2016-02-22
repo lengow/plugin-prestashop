@@ -20,11 +20,11 @@
 
 <ul class="nav nav-pills lengow-nav lengow-nav-bottom">
 	<li role="presentation" class="{if $current_controller == 'LengowOrderController'}active{/if}">
-		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">Overview
+		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">{$locale->t('menu.order_overview')}
 		</a>
 	</li>
 	<li role="presentation" class="{if $current_controller == 'LengowOrderSettingController'}active{/if}">
-		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}">Parameters
+		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}">{$locale->t('menu.order_parameter')}
 		</a>
 	</li>
 </ul>

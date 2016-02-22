@@ -166,92 +166,71 @@ class LengowFeedController extends LengowController
         $fields_list = array();
 
         $fields_list['id_product'] = array(
-            'title' => $this->module->l('ID'),
-            'class' => 'center',
-            'width' => 70,
-            'filter' => true,
-            'filter_order' => true,
-            'filter_key' => 'p.id_product',
+            'title'         => $this->locale->t('product.table.id_product'),
+            'class'         => 'center',
+            'width'         => 70,
+            'filter'        => true,
+            'filter_order'  => true,
+            'filter_key'    => 'p.id_product',
         );
         $fields_list['image'] = array(
-            'title' => $this->module->l('Image'),
-            'align' => 'center',
-            'image' => 'p',
-            'width' => 70,
+            'title'         => $this->locale->t('product.table.image'),
+            'align'         => 'center',
+            'image'         => 'p',
+            'width'         => 70,
         );
         $fields_list['name'] = array(
-            'title' => $this->module->l('Name'),
-            'filter' => true,
-            'filter_order' => true,
-            'filter_key' => 'pl.name',
+            'title'         => $this->locale->t('product.table.name'),
+            'filter'        => true,
+            'filter_order'  => true,
+            'filter_key'    => 'pl.name',
         );
         $fields_list['reference'] = array(
-            'title' => $this->module->l('Reference'),
-            'align' => 'left',
-            'width' => 80,
-            'filter' => true,
-            'filter_order' => true,
-            'filter_key' => 'p.reference',
+            'title'         => $this->locale->t('product.table.reference'),
+            'align'         => 'left',
+            'width'         => 80,
+            'filter'        => true,
+            'filter_order'  => true,
+            'filter_key'    => 'p.reference',
         );
-//
-//        if (Shop::isFeatureActive() && Shop::getContext() != Shop::CONTEXT_SHOP) {
-//            $this->fields_list['shopname'] = array(
-//                'title' => $this->module->l('Default shop:'),
-//                'width' => 230,
-//                'filter_key' => 'shop!name',
-//            );
-//        } else {
         $fields_list['category_name'] = array(
-            'title' => $this->module->l('Category'),
-            'width' => 'auto',
-            'filter' => true,
-            'filter_order' => true,
-            'filter_key' => 'cl.name',
+            'title'         => $this->locale->t('product.table.category_name'),
+            'width'         => 'auto',
+            'filter'        => true,
+            'filter_order'  => true,
+            'filter_key'    => 'cl.name',
         );
-//        }
         $fields_list['price'] = array(
-            'title' => $this->module->l('Original price'),
-            'width' => 90,
-            'type' => 'price',
-            'class' => 'right',
-            'filter_key' => 'a!price'
+            'title'         => $this->locale->t('product.table.price'),
+            'width'         => 90,
+            'type'          => 'price',
+            'class'         => 'right',
+            'filter_key'    => 'a!price'
         );
         $fields_list['price_final'] = array(
-            'title' => $this->module->l('Final price'),
-            'width' => 90,
-            'type' => 'price',
-            'class' => 'right',
-            'havingFilter' => true,
-            'orderby' => false
+            'title'         => $this->locale->t('product.table.final_price'),
+            'width'         => 90,
+            'type'          => 'price',
+            'class'         => 'right',
+            'havingFilter'  => true,
+            'orderby'       => false
         );
         $fields_list['quantity'] = array(
-            'title' => $this->module->l('Quantity'),
-            'width' => 90,
-            'class' => 'right',
-            'filter_key' => 'sav!quantity',
-            'orderby' => true,
-            'hint' => $this->module->l('This is the quantity available in the current shop/group.'),
+            'title'         => $this->locale->t('product.table.quantity'),
+            'width'         => 90,
+            'class'         => 'right',
+            'filter_key'    => 'sav!quantity',
+            'orderby'       => true,
         );
         $fields_list['id_lengow_product'] = array(
-            'title' => $this->module->l('Lengow status'),
-            'width' => 'auto',
-            'class' => 'center',
-            'type' => 'switch_product',
-            'filter_order' => true,
-            'filter_key' => 'id_lengow_product',
+            'title'         => $this->locale->t('product.table.lengow_status'),
+            'width'         => 'auto',
+            'class'         => 'center',
+            'type'          => 'switch_product',
+            'filter_order'  => true,
+            'filter_key'    => 'id_lengow_product',
             'button_search' => true
         );
-
-//        if ((int)$this->id_current_category) {
-//            $this->fields_list['position'] = array(
-//                'title' => $this->module->l('Position'),
-//                'width' => 70,
-//                'filter_key' => 'cp!position',
-//                'align' => 'center',
-//                'position' => 'position'
-//            );
-//        }
-
 
         $join = array();
         $where = array();
@@ -302,17 +281,17 @@ class LengowFeedController extends LengowController
         $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
 
         $list = new LengowList(array(
-            "id" => 'shop_'.$shopId,
-            "fields_list" => $fields_list,
-            "identifier" => 'id_product',
-            "selection" => true,
-            "controller" => 'AdminLengowFeed',
-            "shop_id" => $shopId,
-            "current_page" => $currentPage,
-            "ajax" => true,
-            "order_value" => $orderValue,
-            "order_column" => $orderColumn,
-            "sql" => array(
+            "id"            => 'shop_'.$shopId,
+            "fields_list"   => $fields_list,
+            "identifier"    => 'id_product',
+            "selection"     => true,
+            "controller"    => 'AdminLengowFeed',
+            "shop_id"       => $shopId,
+            "current_page"  => $currentPage,
+            "ajax"          => true,
+            "order_value"   => $orderValue,
+            "order_column"  => $orderColumn,
+            "sql"           => array(
                 "select" => $select,
                 "from" => $from,
                 "join" => $join,
