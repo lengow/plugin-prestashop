@@ -43,6 +43,8 @@ $context->smarty->assign('shop', $shop);
 $context->smarty->assign('markeplaces', $markeplaces);
 $context->smarty->assign('days', $days);
 
+print_r(LengowMarketplace::getMarketplacesByShop(1));
+
 require 'views/header.php';
 echo '<div class="full-container">';
 echo $controller->forceDisplay();
