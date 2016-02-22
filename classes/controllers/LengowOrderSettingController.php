@@ -72,6 +72,8 @@ class LengowOrderSettingController extends LengowController
             )
         );
 
+        $matching2 = $form->buildInputs(array('LENGOW_IMPORT_CARRIER_MP_ENABLED'));
+
         $import_params = $form->buildInputs(
             array(
                 'LENGOW_IMPORT_DAYS',
@@ -92,6 +94,7 @@ class LengowOrderSettingController extends LengowController
         $this->context->smarty->assign('id_countries', $id_countries);
         $this->context->smarty->assign('listCarrier', $listCarrier);
         $this->context->smarty->assign('matching', $matching);
+        $this->context->smarty->assign('matching2', $matching2);
         $this->context->smarty->assign('import_params', $import_params);
         parent::display();
     }
@@ -233,6 +236,7 @@ class LengowOrderSettingController extends LengowController
 
                 $form->postProcess(
                     array(
+                        'LENGOW_IMPORT_CARRIER_MP_ENABLED',
                         'LENGOW_IMPORT_SHIP_MP_ENABLED',
                         'LENGOW_IMPORT_STOCK_SHIP_MP'
                     )

@@ -86,7 +86,7 @@ class LengowOrderController extends LengowController
                     echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
                     break;
-                case 'search_order':
+                case 'update_order':
                     $import = new LengowImport(array(
                         'log_output' => false,
                         'marketplace_sku' => Tools::getValue('marketplace_sku'),
@@ -100,7 +100,23 @@ class LengowOrderController extends LengowController
 
                     echo 'lengow_jquery("#lengow_wrapper_messages").html("';
                     echo '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>");';
-                    echo 'lengow_jquery("#lengow_search_order").html("Update");';
+                    echo 'lengow_jquery("#lengow_update_order").html("Update");';
+                    echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
+                        preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
+                    break;
+                case 'update_some_orders':
+                    $import = new LengowImport(array(
+                        'log_output' => false,
+                        'days' => Tools::getValue('days'),
+                        'shop_id' => Tools::getValue('shop_id'),
+                    ));
+                    $return = $import->exec();
+
+                    $message = $this->loadMessage($return);
+
+                    echo 'lengow_jquery("#lengow_wrapper_messages").html("';
+                    echo '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>");';
+                    echo 'lengow_jquery("#lengow_update_some_orders").html("Update");';
                     echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
                     break;

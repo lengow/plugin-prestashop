@@ -153,21 +153,23 @@
             });
         });
 
-        $('#lengow_order_wrapper').on('click', '#lengow_search_order', function() {
+        $('#lengow_order_wrapper').on('click', '#lengow_update_order', function() {
+            console.log($(this).parents('.lengow_form_update_order').find('#select_shop').val());
             var button = $(this);
             var href = $(this).data('href');
-            if (($('#select_shop').val() != "") &&
-                ($('#select_mkp').val() != "") &&
-                ($('#sku_order').val() != "") &&
-                ($('#delivery_adress_id').val() != "")) {
+            if (($(this).parents('.lengow_form_update_order').find('#select_shop').val() != "") &&
+                ($(this).parents('.lengow_form_update_order').find('#select_mkp').val() != "") &&
+                ($(this).parents('.lengow_form_update_order').find('#sku_order').val() != "") &&
+                ($(this).parents('.lengow_form_update_order').find('#delivery_adress_id').val() != "")) {
                 $.ajax({
                     url: href,
                     method: 'POST',
                     data: {
-                        action: 'search_order', shop_id: $('#select_shop').val(),
-                        marketplace_name: $('#select_mkp').val(),
-                        marketplace_sku: $('#sku_order').val(),
-                        delivery_address_id: $('#delivery_adress_id').val()
+                        action: 'update_order',
+                        shop_id: $(this).parents('.lengow_form_update_order').find('#select_shop').val(),
+                        marketplace_name: $(this).parents('.lengow_form_update_order').find('#select_mkp').val(),
+                        marketplace_sku: $(this).parents('.lengow_form_update_order').find('#sku_order').val(),
+                        delivery_address_id: $(this).parents('.lengow_form_update_order').find('#sku_order').val()
                     },
                     dataType: 'script',
                     success: function () {
@@ -178,9 +180,38 @@
                         button.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
                     }
                 });
-                $('#error_search_order').html('')
+                $('#error_update_order').html('')
             } else {
-                $('#error_search_order').html('<p>Please complete all fields.</p>')
+                $('#error_update_order').html('<p>Please complete all fields.</p>')
+                return false
+            }
+        });
+
+        $('#lengow_order_wrapper').on('click', '#lengow_update_some_orders', function() {
+            var button = $(this);
+            var href = $(this).data('href');
+            if (( $(this).parents('.lengow_form_update_some_orders').find('#select_shop').val() != "") &&
+                ($(this).parents('.lengow_form_update_some_orders').find('#import_days').val() != "")) {
+                $.ajax({
+                    url: href,
+                    method: 'POST',
+                    data: {
+                        action: 'update_some_orders',
+                        shop_id: $(this).parents('.lengow_form_update_some_orders').find('#select_shop').val(),
+                        days: $(this).parents('.lengow_form_update_some_orders').find('#import_days').val()
+                    },
+                    dataType: 'script',
+                    success: function () {
+                        init_tooltip();
+                        reload_table_js();
+                    },
+                    beforeSend: function () {
+                        button.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                    }
+                });
+                $('#error_update_some_orders').html('')
+            } else {
+                $('#error_update_some_orders').html('<p>Please complete all fields.</p>')
                 return false
             }
         });

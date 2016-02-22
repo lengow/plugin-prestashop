@@ -37,9 +37,11 @@ foreach ($shops as $s) {
 }
 
 $markeplaces = $controller->getMarketplaces();
+$days = LengowConfiguration::get('LENGOW_IMPORT_DAYS');
 
 $context->smarty->assign('shop', $shop);
 $context->smarty->assign('markeplaces', $markeplaces);
+$context->smarty->assign('days', $days);
 
 require 'views/header.php';
 echo '<div class="full-container">';
