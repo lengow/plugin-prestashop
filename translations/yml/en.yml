@@ -1,6 +1,21 @@
 en:
+  menu:
+    product: "products"
+    order: "orders"
+    preprod_active: "PreProd Active"
+    order_overview: "Overview"
+    order_parameter: "Parameters"
   connexion:
   dashboard:
+    screen:
+      good_job: "Good Job ! You have"
+      pending_order: "Pending Orders"
+      sell_everywhere: "What about go event hurther and start selling everywhere ?"
+      stat_with_lengow_you_make: "With Lengow, you've made"
+      stat_turnover: "Turnover"
+      stat_nb_orders: "Orders"
+      stat_avg_order: "Avg. Order"
+      stat_more_stats: "Want more stats ? Go to Lengow"
   product:
     screen:
       nb_exported: "products exported"

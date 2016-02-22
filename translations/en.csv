@@ -1,5 +1,17 @@
+menu.product|products
+menu.order|orders
+menu.preprod_active|PreProd Active
+menu.order_overview|Overview
+menu.order_parameter|Parameters
 connexion|
-dashboard|
+dashboard.screen.good_job|Good Job ! You have
+dashboard.screen.pending_order|Pending Orders
+dashboard.screen.sell_everywhere|What about go event hurther and start selling everywhere ?
+dashboard.screen.stat_with_lengow_you_make|With Lengow, you've made
+dashboard.screen.stat_turnover|Turnover
+dashboard.screen.stat_nb_orders|Orders
+dashboard.screen.stat_avg_order|Avg. Order
+dashboard.screen.stat_more_stats|Want more stats ? Go to Lengow
 product.screen.nb_exported|products exported
 product.screen.nb_available|products available
 product.screen.include_variation|Include product variation
