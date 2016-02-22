@@ -24,23 +24,23 @@
             <div id="lengow_wrapper_messages"></div>
             <div class="lengow_order_block_content_left">
                 {if $orderCollection['last_import_type'] != 'none'}
-                <span class="lengow_strong">{$locale->t('order.last_order_importation')}</span>
+                <span class="lengow_strong">{$locale->t('order.screen.last_order_importation')}</span>
                 {if $orderCollection['last_import_type'] == 'cron'}
-                    ({$locale->t('order.auto')})
+                    ({$locale->t('order.screen.import_auto')})
                 {else}
-                    ({$locale->t('order.manuel')})
+                    ({$locale->t('order.screen.import_manuel')})
                 {/if}
             <br/>
                 {$orderCollection['last_import_date']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}
                 {else}
                 No order importation for now
                 {/if}<br/>
-                {$locale->t('order.all_order_will_be_sent_to')} {', '|implode:$report_mail_address|escape:'htmlall':'UTF-8'}
+                {$locale->t('order.screen.all_order_will_be_sent_to')} {', '|implode:$report_mail_address|escape:'htmlall':'UTF-8'}
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">(change this?)</a>
             </div>
             <div class="lengow_order_block_content_right">
                 <a id="lengow_import_orders" class="lengow_btn btn btn-success" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
-                    {$locale->t('order.button_update_orders')}</a>
+                    {$locale->t('order.screen.button_update_orders')}</a>
             </div>
             <div class="lengow_clear"></div>
         </div>

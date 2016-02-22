@@ -22,6 +22,13 @@
 class LengowConfiguration extends Configuration
 {
 
+    protected $locale;
+
+    public function __construct()
+    {
+        $this->locale = new LengowTranslation();
+    }
+
     public static function getKeys()
     {
         static $keys = null;
@@ -171,8 +178,10 @@ class LengowConfiguration extends Configuration
                 'LENGOW_IMPORT_STOCK_SHIP_MP' => array(
                     'type' => 'checkbox',
                     'label' => 'Decrement inventory of orders shipped by marketplace',
+                    // 'label' => $this->locale->t('lengow_setting.lengow_import_stock_ship_mp_title'),
                     'default_value' => false,
                     'legend' => 'Blabla blablabla'
+                    // 'legend' => $this->locale->t('lengow_setting.lengow_import_stock_ship_mp_legend')
                 ),
                 'LENGOW_IMPORT_CARRIER_MP_ENABLED' => array(
                     'type' => 'checkbox',
