@@ -19,18 +19,48 @@ order.table.order_item|Items
 order.table.total_paid|Total
 order.table.status_lengow|Status Lengow
 order_setting.screen.order_status_title|Order Status
-order_setting.screen.order_status_description|Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+order_setting.screen.order_status_description|Description of the order status
 order_setting.screen.carrier_management_title|Marketplace carrier management
-order_setting.screen.carrier_management_description|Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+order_setting.screen.carrier_management_description|Description of the carrier settings
 order_setting.screen.country_wt_carrier|Some countries may not have configured carriers, please go to this
 order_setting.screen.country_wt_carrier_link|link
 order_setting.screen.default_country|default
 order_setting.screen.import_setting_title|Orders importation
-order_setting.screen.import_setting_description|Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+order_setting.screen.import_setting_description|Description of the import settings
 order_setting.screen.button_add_country|Add
 order_setting.screen.button_save|Save
 global_setting|
-lengow_setting.lengow_import_stock_ship_mp_title|Decrement inventory of orders shipped by marketplace
-lengow_setting.lengow_import_stock_ship_mp_legend|Blabla blablabla
+lengow_setting.lengow_account_id_title|Account Id
+lengow_setting.lengow_access_token_title|Access Token
+lengow_setting.lengow_secret_token_title|Secret Token
+lengow_setting.lengow_shop_active_title|Enabled Shop
+lengow_setting.lengow_shop_active_legend|Enabled shop for export and import process
+lengow_setting.lengow_shop_token_title|Shop Token
+lengow_setting.lengow_export_selection_enabled_title|Export only selection
+lengow_setting.lengow_export_selection_enabled_legend|If you don't want to export all your available products, enable this option and select yours products
+lengow_setting.lengow_export_variation_enabled_title|Export product variations
+lengow_setting.lengow_export_variation_enabled_legend|If don't want to export all your products' variations, disable this option
+lengow_setting.lengow_export_format_title|Export default format
+lengow_setting.lengow_export_file_enabled_title|Export in a file
+lengow_setting.lengow_export_file_enabled_legend|You should use this option if you have 3,000 products or more
+lengow_setting.lengow_last_export_title|Last Export
+lengow_setting.lengow_order_id_process_title|In preparation orders
+lengow_setting.lengow_order_id_shipped_title|Shipped orders
+lengow_setting.lengow_order_id_cancel_title|Canceled orders
+lengow_setting.lengow_order_id_shippedbymp_title|Shipped orders from marketplace
+lengow_setting.lengow_import_force_product_title|Force products
+lengow_setting.lengow_import_force_product_legend|Enable this option if you want to force import of disabled or out of stock product
+lengow_setting.lengow_import_days_title|Re-import your orders since
+lengow_setting.lengow_import_days_legend|Use this option if you have pending orders in error. it allows you to re-import orders since your last good period
+lengow_setting.lengow_import_processing_fee_title|Import processing fee
+lengow_setting.lengow_import_processing_fee_legend|Enable this option if you want have marketplace processing fee inside order
+lengow_setting.lengow_import_preprod_enabled_title|Activate pre-production Mode
+lengow_setting.lengow_import_preprod_enabled_legend|For simulating fictitious orders. This option have to be activated ONLY on your pre-production server
+lengow_setting.lengow_import_fake_mail_title|Fictitious emails
+lengow_setting.lengow_import_fake_mail_legend|If enabled, a fictitious email is generated
+lengow_setting.lengow_import_ship_mp_enabled_title|Import orders shipped by marketplace
+lengow_setting.lengow_import_ship_mp_enabled_legend|
+lengow_setting.lengow_import_stock_ship_mp_title|I want to decrease my stock
+lengow_setting.lengow_import_stock_ship_mp_legend|This option is only available for orders shipped by marketplaces channels
 lengow_log|
 log|
