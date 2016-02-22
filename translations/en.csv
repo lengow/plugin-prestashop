@@ -1,6 +1,29 @@
 connexion|
 dashboard|
-product|
+product.screen.nb_exported|products exported
+product.screen.nb_available|products available
+product.screen.include_variation|Include product variation
+product.screen.include_variation_support|Help for product variation option
+product.screen.include_out_of_stock|Include out of stock product
+product.screen.include_out_of_stock_support|Help for out of stock option
+product.screen.include_specific_product|Select specific products
+product.screen.include_specific_product_support|Help for specific product option
+product.screen.your_exported_catalog|This is your exported catalog. Copy this link in your Lengow platform
+product.screen.last_export|Last exportation
+product.screen.no_export|No exportation
+product.screen.button_copy|Copy
+product.screen.button_download|Download
+product.screen.button_yes|Yes
+product.screen.button_no|No
+product.table.id_product|ID
+product.table.image|Image
+product.table.name|Name
+product.table.reference|Reference
+product.table.category_name|Category
+product.table.price|Original price
+product.table.final_price|Final price
+product.table.quantity|Quantity
+product.table.lengow_status|Lengow status
 order.screen.all_order_will_be_sent_to|All orders issues reports will be send to mail
 order.screen.last_order_importation|Last order importation
 order.screen.import_auto|Auto
@@ -29,7 +52,7 @@ order_setting.screen.import_setting_title|Orders importation
 order_setting.screen.import_setting_description|Description of the import settings
 order_setting.screen.button_add_country|Add
 order_setting.screen.button_save|Save
-global_setting|
+global_setting.screen|
 lengow_setting.lengow_account_id_title|Account Id
 lengow_setting.lengow_access_token_title|Access Token
 lengow_setting.lengow_secret_token_title|Secret Token
@@ -76,5 +99,9 @@ lengow_setting.lengow_tracking_enabled_title|Lengow tracking enabled
 lengow_setting.lengow_tracking_id_title|Lengow Tracking Id
 lengow_setting.lengow_order_stat_title|Order Statistic
 lengow_setting.lengow_order_stat_update_title|Order Statistic Update
+class.lengow_list.pagination_of|of
+class.lengow_list.button_yes|Yes
+class.lengow_list.button_no|No
+class.lengow_list.button_search|Search
 lengow_log|
 log|

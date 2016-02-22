@@ -2,6 +2,32 @@ en:
   connexion:
   dashboard:
   product:
+    screen:
+      nb_exported: "products exported"
+      nb_available: "products available"
+      include_variation: "Include product variation"
+      include_variation_support: "Help for product variation option"
+      include_out_of_stock: "Include out of stock product"
+      include_out_of_stock_support: "Help for out of stock option"
+      include_specific_product: "Select specific products"
+      include_specific_product_support: "Help for specific product option"
+      your_exported_catalog: "This is your exported catalog. Copy this link in your Lengow platform"
+      last_export: "Last exportation"
+      no_export: "No exportation"
+      button_copy: "Copy"
+      button_download: "Download"
+      button_yes: "Yes"
+      button_no: "No"
+    table:
+      id_product: "ID"
+      image: "Image"
+      name: "Name"
+      reference: "Reference"
+      category_name: "Category"
+      price: "Original price"
+      final_price: "Final price"
+      quantity: "Quantity"
+      lengow_status: "Lengow status"
   order:
     screen:
       all_order_will_be_sent_to : "All orders issues reports will be send to mail"
@@ -36,6 +62,7 @@ en:
       button_add_country: "Add"
       button_save: "Save"
   global_setting:
+    screen:
   lengow_setting:
     lengow_account_id_title: "Account Id"
     lengow_access_token_title: "Access Token"
@@ -83,5 +110,11 @@ en:
     lengow_tracking_id_title: "Lengow Tracking Id"
     lengow_order_stat_title: "Order Statistic"
     lengow_order_stat_update_title: "Order Statistic Update"
+  class:
+    lengow_list:
+      pagination_of: 'of'
+      button_yes: "Yes"
+      button_no: "No"
+      button_search: "Search"
   lengow_log:
   log:
