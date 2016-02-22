@@ -14,6 +14,24 @@
     height:50px;
 }
 
+.nav.lengow-nav .lengow_menu_label {
+    position: absolute;
+    top: 43px;
+    left: 500px;
+    background: #FF7788;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    display: block;
+    width: 9px;
+}
+
+.nav.lengow-nav .lengow_menu_label a {
+    text-decoration: none;
+    color:white;
+    border:0px !important;
+}
+
 body.lengow_body #content .nav.lengow-nav.lengow-nav-top li.active a {
     border-bottom:5px solid #59BDC0;
 }
@@ -108,6 +126,14 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li.active>a:focus{
 body.lengow_body #content {
     font-size:14px;
     background: #EFF1F2;
+}
+
+body.lengow_body #content.nobootstrap {
+    min-width:auto;
+}
+
+body.lengow_body #main {
+    padding: 36px 0 0px;
 }
 
 body.lengow_body .nobootstrap .form-group {
@@ -692,7 +718,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 }
 
 .lengow_form .legend {
-    font-style: italic; 
+    font-style: italic;
 }
 
 .lengow_form .lengow_marketplace_carrier{
@@ -844,8 +870,47 @@ body.lengow_body .nobootstrap .lengow_report_mail_address {
     font-size: 18px;
 }
 
+/* DASHBOARD */
+body.adminlengowhome.lengow_body #content {
+    background: #182D40;
+}
 
 
+#lengow_statistic {
+    background:white;
+    width: 400px;
+    float: right;
+    text-align: center;
+}
+#lengow_statistic ul {
+    list-style: none;
+    text-align: left;
+}
 
+#lengow_statistic ul .lengow_number {
+    font-size:38px;
+    margin-right:10px;
+}
 
+#lengow_dashboard_center {
 
+}
+
+#lengow_center_block {
+    padding-top:180px;
+    text-align:center;
+    font-size:38px;
+    color:white;
+}
+
+#lengow_center_block .lengow_pending_message {
+    font-size:16px;
+}
+
+#lengow_center_block .lengow_pending_order a {
+    border-bottom: 5px solid #4BCAE7;
+    font-size:42px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color:white;
+}

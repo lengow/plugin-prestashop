@@ -20,8 +20,6 @@
 
 (function ($) {
     $(document).ready(function () {
-        $(document.body).addClass('lengow_body');
-
         // Reimport Order
         $('#reimport-order').click(function (e) {
             var url = $(this).data('url');

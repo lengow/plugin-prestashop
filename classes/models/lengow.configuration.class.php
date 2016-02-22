@@ -228,8 +228,17 @@ class LengowConfiguration extends Configuration
                     'type'          => 'select',
                     'label'         => $locale->t('Lengow Tracking Id'),
                     'default_value' => 'id',
+
                     'collection'    => $trackerIds
-                )
+                ),
+                'LENGOW_ORDER_STAT' => array(
+                    'type' => 'json',
+                    'label' => 'Order Statistic',
+                ),
+                'LENGOW_ORDER_STAT_UPDATE' => array(
+                    'type' => 'datetime',
+                    'label' => 'Order Statistic Update',
+                ),
             );
         }
         return $keys;

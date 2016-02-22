@@ -18,6 +18,8 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
+<script type="text/javascript">$(document.body).addClass('lengow_body');</script>
+
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-switch.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-datepicker.css">
@@ -61,7 +63,15 @@
     {assign var='OrderTab' value=','|explode:"LengowOrderController,LengowOrderSettingController"}
     <li role="presentation" class="{if in_array($current_controller, $OrderTab)}active{/if}">
         <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">Orders</a>
+        {if $total_pending_order}
+            <span class="lengow_menu_label">
+                <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">
+                    {$total_pending_order}
+                </a>
+            </span>
+        {/if}
     </li>
+
 </ul>
 
 <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
