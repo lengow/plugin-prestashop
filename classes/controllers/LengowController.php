@@ -43,6 +43,11 @@ class LengowController
 
     public function display()
     {
+        $this->context->smarty->assign(
+            'total_pending_order',
+            LengowOrder::getTotalOrderByStatus('waiting_shipment')
+        );
+
         if (_PS_VERSION_ < '1.5') {
             $module = Module::getInstanceByName('lengow');
             echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');

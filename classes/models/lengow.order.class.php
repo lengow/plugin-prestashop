@@ -955,4 +955,16 @@ class LengowOrder extends Order
             return $marketplace->callAction($action, $this);
         }
     }
+
+
+    /**
+     * Get Total Order By Statuses
+     */
+    public static function getTotalOrderByStatus($status)
+    {
+        $sql = 'SELECT COUNT(*) as total FROM `'._DB_PREFIX_.'lengow_orders`
+        WHERE order_lengow_state = "'.pSQL($status).'"';
+        $row = Db::getInstance()->getRow($sql);
+        return $row['total'];
+    }
 }

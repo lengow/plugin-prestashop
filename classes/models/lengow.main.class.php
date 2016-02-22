@@ -1201,4 +1201,9 @@ class LengowMain
         $func = create_function('$c', 'return strtoupper($c[1]);');
         return preg_replace_callback('/_([a-z])/', $func, $str);
     }
+
+    public static function isNewMerchant()
+    {
+        return false;
+    }
 }

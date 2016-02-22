@@ -1,0 +1,78 @@
+<?php
+/**
+ * Copyright 2016 Lengow SAS.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ * @author    Team Connector <team-connector@lengow.com>
+ * @copyright 2016 Lengow SAS
+ * @license   http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+class LengowStatistic
+{
+
+    //3 hours of cache
+    protected static $cacheTime = 10800;
+
+    /**
+     * Get Statistic with all shop
+     * @param boolean $force Force cache Update
+     * @return array
+     */
+    public static function get($force = false)
+    {
+        if (!$force) {
+            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE');
+            if ((time() - strtotime($updatedAt)) < self::$cacheTime) {
+                return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
+            }
+        }
+
+        $return = array();
+        $return['total_order'] = 0;
+        $return['nb_order'] = 0;
+        $return['average_order'] = 0;
+        $return['currency'] = '';
+
+        //get stats by shop
+        $shopCollection = LengowShop::findAll(true);
+        $i = 0;
+        foreach ($shopCollection as $s) {
+            $result = LengowConnector::queryApi(
+                'get',
+                '/v1.0/numbers/',
+                $s['id_shop']
+            );
+
+            $return['total_order'] += $result->revenues;
+            $return['nb_order'] += $result->transactions;
+            $return['average_order'] += $result->average_order;
+            $return['currency'] = $result->currency;
+            $i++;
+        }
+        if ($i>0) {
+            $return['average_order'] = $return['average_order'] / $i;
+        }
+
+        if ($return['currency']) {
+            $currency_id = LengowCurrency::getIdBySign($return['currency']);
+            $return['total_order'] = Tools::convertPrice($return['total_order'], $currency_id);
+            $return['average_order'] = Tools::convertPrice($return['average_order'], $currency_id);
+        }
+
+        LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT', Tools::JsonEncode($return));
+        LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT_UPDATE', date('Y-m-d H:i:s'));
+        return $return;
+    }
+}

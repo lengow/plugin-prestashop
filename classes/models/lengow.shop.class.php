@@ -66,12 +66,12 @@ class LengowShop extends Shop
         return false;
     }
 
-    public static function findAll()
+    public static function findAll($forceContext = false)
     {
         if (_PS_VERSION_ < '1.5') {
             $results = array(array('id_shop' => 1));
         } else {
-            if ($currentShop = Shop::getContextShopID()) {
+            if (!$forceContext && $currentShop = Shop::getContextShopID()) {
                 $results = array(array('id_shop' => $currentShop));
             } else {
                 $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
