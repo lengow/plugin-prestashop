@@ -62,14 +62,21 @@ class LengowStatistic
             $i++;
         }
         if ($i>0) {
-            $return['average_order'] = $return['average_order'] / $i;
+            $return['average_order'] = round($return['average_order'] / $i, 2);
         }
 
         if ($return['currency']) {
             $currency_id = LengowCurrency::getIdBySign($return['currency']);
-            $return['total_order'] = Tools::convertPrice($return['total_order'], $currency_id);
-            $return['average_order'] = Tools::convertPrice($return['average_order'], $currency_id);
+            if ($currency_id > 0) {
+                $return['total_order'] = Tools::displayPrice($return['total_order'], $currency_id);
+                $return['average_order'] = Tools::displayPrice($return['average_order'], $currency_id);
+            } else {
+                $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
+                $return['average_order'] = number_format($return['average_order'], 2, ',', ' ');
+            }
         }
+
+        $return['nb_order'] = (int)$return['nb_order'];
 
         LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT', Tools::JsonEncode($return));
         LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT_UPDATE', date('Y-m-d H:i:s'));
