@@ -702,7 +702,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 .lengow_form #use_marketplace_carriers{
     padding-bottom: 30px;
 }
-/********************************************************************************/
+
 .lengow_form .accordion {
     margin-left: 0;
     padding-left: 0;
@@ -787,7 +787,6 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     color: red;
     font-size: 0.9em;
 }
-/*********************************/
 
 /* HOME PAGE */
 #lengow_home_frame {

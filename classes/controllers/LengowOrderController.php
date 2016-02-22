@@ -78,39 +78,29 @@ class LengowOrderController extends LengowController
                     ));
                     $return = $import->exec();
 
-                    $message = array();
-                    if (count($return['order_new']) > 0) {
-                        $message[]= (int)$return['order_new'].' imported orders';
-                    }
-                    if (count($return['order_update']) > 0) {
-                        $message[]= (int)$return['order_update'].' updated orders';
-                    }
-                    if (count($return['order_error']) > 0) {
-                        $message[]= (int)$return['order_error'].' orders in error';
-                    }
+                    $message = $this->loadMessage($return);
 
-                    if (isset($return['error'])) {
-                        foreach ($return['error'] as $shop => $values) {
-                            if ((int)$shop > 0) {
-                                $shop = new LengowShop($shop);
-                                $shopName = $shop->name. ' : ';
-                            } else {
-                                $shopName = '';
-                            }
-                            if (is_array($values)) {
-                                $message[]= $shopName.join(', ', $values);
-                            } else {
-                                $message[]= $shopName.$values;
-                            }
-                        }
-                    }
-                    if (LengowImport::isInProcess()) {
-                        $message[] = 'You need to wait '.LengowImport::restTimeToImport().
-                            ' seconds before re import orders';
-                    }
                     echo 'lengow_jquery("#lengow_wrapper_messages").html("';
                     echo '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>");';
                     echo 'lengow_jquery("#lengow_import_orders").html("Update Orders");';
+                    echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
+                        preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
+                    break;
+                case 'search_order':
+                    $import = new LengowImport(array(
+                        'log_output' => false,
+                        'marketplace_sku' => Tools::getValue('marketplace_sku'),
+                        'marketplace_name' => Tools::getValue('marketplace_name'),
+                        'delivery_address_id' => Tools::getValue('delivery_address_id'),
+                        'shop_id' => Tools::getValue('shop_id'),
+                    ));
+                    $return = $import->exec();
+
+                    $message = $this->loadMessage($return);
+
+                    echo 'lengow_jquery("#lengow_wrapper_messages").html("';
+                    echo '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>");';
+                    echo 'lengow_jquery("#lengow_search_order").html("Update");';
                     echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
                     break;
@@ -365,10 +355,15 @@ class LengowOrderController extends LengowController
 
     public static function displayOrderLink($key, $value, $item)
     {
+        $toolbox = Context::getContext()->smarty->getVariable('toolbox');
         $link = new LengowLink();
         if ($item['id_order']) {
-            return '<a href="'.$link->getAbsoluteAdminLink('AdminOrders').'&vieworder&id_order='.$item['id_order'].
-            '" target="_blank">'.$value.'</a>';
+            if (!$toolbox) {
+                return '<a href="' . $link->getAbsoluteAdminLink('AdminOrders') . '&vieworder&id_order=' . $item['id_order'] .
+                '" target="_blank">' . $value . '</a>';
+            } else {
+                return $value;
+            }
         } else {
             if ($key == 'reference') {
                 return '<span class="lengow_label lengow_label_red">NOT IMPORTED</span>';
@@ -426,5 +421,41 @@ class LengowOrderController extends LengowController
             $value = '<i class="fa fa-circle lengow_green"></i>';
         }
         return $value;
+    }
+
+    public function loadMessage($return)
+    {
+        $message = array();
+        if (count($return['order_new']) > 0) {
+            $message[]= (int)$return['order_new'].' imported orders';
+        }
+        if (count($return['order_update']) > 0) {
+            $message[]= (int)$return['order_update'].' updated orders';
+        }
+        if (count($return['order_error']) > 0) {
+            $message[]= (int)$return['order_error'].' orders in error';
+        }
+
+        if (isset($return['error'])) {
+            foreach ($return['error'] as $shop => $values) {
+                if ((int)$shop > 0) {
+                    $shop = new LengowShop($shop);
+                    $shopName = $shop->name. ' : ';
+                } else {
+                    $shopName = '';
+                }
+                if (is_array($values)) {
+                    $message[]= $shopName.join(', ', $values);
+                } else {
+                    $message[]= $shopName.$values;
+                }
+            }
+        }
+        if (LengowImport::isInProcess()) {
+            $message[] = 'You need to wait '.LengowImport::restTimeToImport().
+                ' seconds before re import orders';
+        }
+
+        return $message;
     }
 }

@@ -167,6 +167,7 @@ class LengowOrderSettingController extends LengowController
                     preg_replace('/\r|\n/', '', addslashes($display_marketplace_carrier)).'");';
                 echo '$("#select_country").html("'.preg_replace('/\r|\n/', '', addslashes($display_countries)).'");';
                 echo 'addScoreCarrier();';
+                echo 'lengow_jquery(\'.lengow_select\').select2({ minimumResultsForSearch: 16});';
                 exit();
                 break;
             case 'delete_country':

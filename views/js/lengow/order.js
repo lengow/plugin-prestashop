@@ -153,6 +153,38 @@
             });
         });
 
+        $('#lengow_order_wrapper').on('click', '#lengow_search_order', function() {
+            var button = $(this);
+            var href = $(this).data('href');
+            if (($('#select_shop').val() != "") &&
+                ($('#select_mkp').val() != "") &&
+                ($('#sku_order').val() != "") &&
+                ($('#delivery_adress_id').val() != "")) {
+                $.ajax({
+                    url: href,
+                    method: 'POST',
+                    data: {
+                        action: 'search_order', shop_id: $('#select_shop').val(),
+                        marketplace_name: $('#select_mkp').val(),
+                        marketplace_sku: $('#sku_order').val(),
+                        delivery_address_id: $('#delivery_adress_id').val()
+                    },
+                    dataType: 'script',
+                    success: function () {
+                        init_tooltip();
+                        reload_table_js();
+                    },
+                    beforeSend: function () {
+                        button.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                    }
+                });
+                $('#error_search_order').html('')
+            } else {
+                $('#error_search_order').html('<p>Please complete all fields.</p>')
+                return false
+            }
+        });
+
 
     });
 })(lengow_jquery);
