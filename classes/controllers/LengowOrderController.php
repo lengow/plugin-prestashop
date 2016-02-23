@@ -1,5 +1,4 @@
 <?php
-ini_set('display_errors', 1);
 /**
  * Copyright 2016 Lengow SAS.
  *
@@ -94,6 +93,7 @@ class LengowOrderController extends LengowController
                         'marketplace_name' => Tools::getValue('marketplace_name'),
                         'delivery_address_id' => Tools::getValue('delivery_address_id'),
                         'shop_id' => Tools::getValue('shop_id'),
+                        'type' => Tools::getValue('type'),
                     ));
                     $return = $import->exec();
 
@@ -455,13 +455,13 @@ class LengowOrderController extends LengowController
     public function loadMessage($return)
     {
         $message = array();
-        if (count($return['order_new']) > 0) {
+        if (isset($return['order_new']) && count($return['order_new']) > 0) {
             $message[]= (int)$return['order_new'].' imported orders';
         }
-        if (count($return['order_update']) > 0) {
+        if (isset($return['order_update']) && count($return['order_update']) > 0) {
             $message[]= (int)$return['order_update'].' updated orders';
         }
-        if (count($return['order_error']) > 0) {
+        if (isset($return['order_error']) && count($return['order_error']) > 0) {
             $message[]= (int)$return['order_error'].' orders in error';
         }
 

@@ -168,7 +168,8 @@
                         shop_id: $(this).parents('.lengow_form_update_order').find('#select_shop').val(),
                         marketplace_name: $(this).parents('.lengow_form_update_order').find('#select_mkp').val(),
                         marketplace_sku: $(this).parents('.lengow_form_update_order').find('#sku_order').val(),
-                        delivery_address_id: $(this).parents('.lengow_form_update_order').find('#sku_order').val()
+                        delivery_address_id: $(this).parents('.lengow_form_update_order').find('#sku_order').val(),
+                        type: 'manuel',
                     },
                     dataType: 'script',
                     success: function () {
@@ -197,7 +198,8 @@
                     data: {
                         action: 'update_some_orders',
                         shop_id: $(this).parents('.lengow_form_update_some_orders').find('#select_shop').val(),
-                        days: $(this).parents('.lengow_form_update_some_orders').find('#import_days').val()
+                        days: $(this).parents('.lengow_form_update_some_orders').find('#import_days').val(),
+                        type: 'manuel',
                     },
                     dataType: 'script',
                     success: function () {
