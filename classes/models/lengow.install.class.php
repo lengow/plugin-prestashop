@@ -31,18 +31,33 @@ class LengowInstall
     protected static $installationStatus;
 
     static private $tabs = array(
-        'Home' => array('name' => 'AdminLengowHome', 'active' => true),
-        'Product' => array('name' => 'AdminLengowFeed', 'active' => true),
-        'Orders' => array('name' => 'AdminLengowOrder', 'active' => true),
+        'Home' => array('name' => 'AdminLengowHome', 'active' => false),
+        'Product' => array('name' => 'AdminLengowFeed', 'active' => false),
+        'Orders' => array('name' => 'AdminLengowOrder', 'active' => false),
         'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
         'Help' => array('name' => 'AdminLengowHelp', 'active' => false),
         'MainSetting' => array('name' => 'AdminLengowMainSetting', 'active' => false)
+    );
+
+    static public $tables = array(
+        'lengow_actions',
+        'lengow_carrier_country',
+        'lengow_logs_import',
+        'lengow_marketplace_carrier',
+        'lengow_orders',
+        'lengow_order_line',
+        'lengow_product',
     );
 
     public function __construct($module)
     {
         $this->lengowModule = $module;
         $this->lengowHook = new LengowHook($module);
+    }
+
+    public function reset()
+    {
+        return LengowConfiguration::resetAll(true);
     }
 
     public function install()
@@ -56,50 +71,7 @@ class LengowInstall
 
     public function uninstall()
     {
-        $configurations = array(
-            'LENGOW_VERSION',
-            'LENGOW_LOGO_URL',
-            'LENGOW_AUTHORIZED_IP',
-            'LENGOW_TRACKING_ENABLED',
-            'LENGOW_TRACKING_ID',
-            'LENGOW_ACCOUNT_ID',
-            'LENGOW_ACCESS_TOKEN',
-            'LENGOW_SECRET_TOKEN',
-            'LENGOW_SHOP_TOKEN',
-            'LENGOW_GLOBAL_TOKEN',
-            'LENGOW_SHOP_ACTIVE',
-            'LENGOW_CARRIER_DEFAULT',
-            'LENGOW_EXPORT_SELECTION_ENABLED',
-            'LENGOW_EXPORT_VARIATION_ENABLED',
-            'LENGOW_EXPORT_OUT_STOCK',
-            'LENGOW_EXPORT_FORMAT',
-            'LENGOW_EXPORT_FILE_ENABLED',
-            'LENGOW_ORDER_ID_PROCESS',
-            'LENGOW_ORDER_ID_SHIPPED',
-            'LENGOW_ORDER_ID_CANCEL',
-            'LENGOW_ORDER_ID_SHIPPEDBYMP',
-            'LENGOW_IMPORT_FORCE_PRODUCT',
-            'LENGOW_IMPORT_DAYS',
-            'LENGOW_IMPORT_PROCESSING_FEE',
-            'LENGOW_IMPORT_CARRIER_DEFAULT',
-            'LENGOW_IMPORT_PREPROD_ENABLED',
-            'LENGOW_IMPORT_FAKE_EMAIL',
-            'LENGOW_IMPORT_SHIP_MP_ENABLED',
-            'LENGOW_IMPORT_SINGLE_ENABLED',
-            'LENGOW_IMPORT_IN_PROGRESS',
-            'LENGOW_REPORT_MAIL_ENABLED',
-            'LENGOW_REPORT_MAIL_ADDRESS',
-            'LENGOW_STATE_ERROR',
-            'LENGOW_CRON_ENABLED',
-            'LENGOW_LAST_IMPORT_CRON',
-            'LENGOW_LAST_EXPORT',
-            'LENGOW_LAST_IMPORT_MANUAL'
-        );
-        foreach ($configurations as $configuration) {
-            Configuration::deleteByName($configuration);
-        }
-        $this->uninstallTab();
-        return true;
+        return $this->uninstallTab();
     }
 
     /**
@@ -167,31 +139,7 @@ class LengowInstall
 
     private static function setDefaultValues()
     {
-        return
-        Configuration::updateValue('LENGOW_AUTHORIZED_IP', $_SERVER['REMOTE_ADDR']) &&
-        Configuration::updateValue('LENGOW_TRACKING_ENABLED', '') &&
-        Configuration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', false) &&
-        Configuration::updateValue('LENGOW_EXPORT_DISABLED', false) &&
-        Configuration::updateValue('LENGOW_EXPORT_VARIATION_ENABLED', true) &&
-        Configuration::updateValue('LENGOW_EXPORT_FORMAT', 'csv') &&
-        Configuration::updateValue('LENGOW_ORDER_ID_PROCESS', 2) &&
-        Configuration::updateValue('LENGOW_ORDER_ID_SHIPPED', 4) &&
-        Configuration::updateValue('LENGOW_ORDER_ID_CANCEL', 6) &&
-        Configuration::updateValue('LENGOW_IMPORT_FORCE_PRODUCT', true) &&
-        Configuration::updateValue('LENGOW_IMPORT_DAYS', 5) &&
-        Configuration::updateValue('LENGOW_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
-        Configuration::updateValue('LENGOW_IMPORT_CARRIER_DEFAULT', Configuration::get('PS_CARRIER_DEFAULT')) &&
-        Configuration::updateValue('LENGOW_CRON_ENABLED', false) &&
-        Configuration::updateValue('LENGOW_IMPORT_PREPROD_ENABLED', false) &&
-        Configuration::updateValue('LENGOW_IMPORT_FAKE_EMAIL', false) &&
-        Configuration::updateValue('LENGOW_REPORT_MAIL_ENABLED', true) &&
-        Configuration::updateValue('LENGOW_REPORT_MAIL_ADDRESS', '') &&
-        Configuration::updateValue(
-            'LENGOW_IMPORT_SINGLE_ENABLED',
-            version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
-        ) &&
-        Configuration::updateValue('LENGOW_ORDER_ID_SHIPPEDBYMP', 4) &&
-        Configuration::updateValue('LENGOW_IMPORT_SHIP_MP_ENABLED', false);
+        return LengowConfiguration::resetAll(false);
     }
 
     /**
@@ -250,6 +198,8 @@ class LengowInstall
                 }
                 $lengow_state->add();
                 Configuration::updateValue('LENGOW_STATE_ERROR', $lengow_state->id);
+            } else {
+                Configuration::updateValue('LENGOW_STATE_ERROR', $states[0]['id_order_state']);
             }
         }
         return true;
@@ -295,6 +245,31 @@ class LengowInstall
     }
 
     /**
+     * Checks if a field exists in BDD and Dropped It
+     *
+     * @param string $table
+     * @param string $field
+     *
+     * @return boolean
+     */
+    public static function checkFieldAndDrop($table, $field)
+    {
+        if (self::checkFieldExists($table, $field)) {
+            Db::getInstance()->execute(
+                'ALTER TABLE '._DB_PREFIX_.$table.' DROP COLUMN `'.$field.'`'
+            );
+        }
+    }
+
+    public static function renameConfigurationKey($oldName, $newName)
+    {
+        $tempValue = LengowConfiguration::get($oldName);
+        LengowConfiguration::updatevalue($newName, $tempValue);
+        LengowConfiguration::deleteByName($oldName);
+    }
+
+    /**
+     * v3
      * Set Installation Status
      *
      * @param boolean $status Installation Status
@@ -305,11 +280,25 @@ class LengowInstall
     }
 
     /**
+     * v3
      * Is Installation In Progress
      * @return boolean
      */
     public static function isInstallationInProgress()
     {
         return self::$installationStatus;
+    }
+
+    /**
+     * v3
+     * Drop Lengow tables
+     * @return bool
+     */
+    public static function dropTable()
+    {
+        foreach (self::$tables as $table) {
+            Db::getInstance()->Execute('DROP TABLE '._DB_PREFIX_.$table);
+        }
+        return true;
     }
 }

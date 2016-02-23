@@ -30,12 +30,26 @@ class LengowMainSettingController extends LengowController
         $action = Tools::getValue('action');
         switch ($action) {
             case 'process':
+                if (isset($_REQUEST['uninstall_checkbox']) &&
+                    isset($_REQUEST['uninstall_textbox']) &&
+                    trim($_REQUEST['uninstall_textbox']) == 'I WANT TO REMOVE ALL DATA'
+                ) {
+                    $backup = new LengowBackup();
+                    if ($backup->add()) {
+                        LengowConfiguration::deleteAll();
+                        LengowInstall::dropTable();
+                        $module = Module::getInstanceByName('lengow');
+                        $module->uninstall();
+                        $link = new LengowLink();
+                        $configLink = $link->getAbsoluteAdminLink('AdminModules');
+                        Tools::redirect($configLink.'&conf=13', '');
+                    }
+                }
                 $form = new LengowConfigurationForm(
                     array(
                         "fields" => LengowConfiguration::getKeys(),
                     )
                 );
-
                 $form->postProcess(
                     array(
                         'LENGOW_REPORT_MAIL_ENABLED',

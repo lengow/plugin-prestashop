@@ -105,14 +105,14 @@ class ExportTest extends ModuleTestCase
             "selection" => false,
             "log_output" => false,
         ));
-        $this->assertEquals(3, $export->getTotalExportProduct());
+        $this->assertEquals(2, $export->getTotalExportProduct());
 
         $export = new LengowExport(array(
             "export_variation" => true,
             "selection" => false,
             "log_output" => false,
         ));
-        $this->assertEquals(10, $export->getTotalExportProduct());
+        $this->assertEquals(8, $export->getTotalExportProduct());
 
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/exported_total_product.yml');
 
@@ -121,14 +121,14 @@ class ExportTest extends ModuleTestCase
             "selection" => true,
             "log_output" => false,
         ));
-        $this->assertEquals(2, $export->getTotalExportProduct());
+        $this->assertEquals(1, $export->getTotalExportProduct());
 
         $export = new LengowExport(array(
             "export_variation" => true,
             "selection" => true,
             "log_output" => false,
         ));
-        $this->assertEquals(9, $export->getTotalExportProduct());
+        $this->assertEquals(7, $export->getTotalExportProduct());
     }
 
     /**

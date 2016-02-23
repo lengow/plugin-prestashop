@@ -54,11 +54,12 @@ class LengowStatistic
                 '/v1.0/numbers/',
                 $s['id_shop']
             );
-
-            $return['total_order'] += $result->revenues;
-            $return['nb_order'] += $result->transactions;
-            $return['average_order'] += $result->average_order;
-            $return['currency'] = $result->currency;
+            if (isset($result->revenues)) {
+                $return['total_order'] += $result->revenues;
+                $return['nb_order'] += $result->transactions;
+                $return['average_order'] += $result->average_order;
+                $return['currency'] = $result->currency;
+            }
             $i++;
         }
         if ($i>0) {

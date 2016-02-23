@@ -1263,6 +1263,13 @@ class LengowMain
 
     public static function isNewMerchant()
     {
-        return false;
+        $shops = LengowShop::findAll();
+        foreach ($shops as $shop) {
+            $account_id = LengowConfiguration::get('LENGOW_ACCOUNT_ID', false, null, $shop['id_shop']);
+            if (Tools::strlen($account_id) > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }

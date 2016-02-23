@@ -83,6 +83,7 @@ class LengowConfiguration extends Configuration
                     'shop'          => true,
                     'label'         => $locale->t('lengow_setting.lengow_export_selection_enabled_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_export_selection_enabled_legend'),
+                    'default_value' => false
                 ),
                 'LENGOW_EXPORT_VARIATION_ENABLED' => array(
                     'type'          => 'checkbox',
@@ -153,6 +154,7 @@ class LengowConfiguration extends Configuration
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_processing_fee_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_processing_fee_legend'),
+                    'default_value' => true,
                 ),
                 'LENGOW_IMPORT_CARRIER_DEFAULT' => array(
                     'type'          => 'select',
@@ -186,11 +188,12 @@ class LengowConfiguration extends Configuration
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_report_mail_enabled_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_report_mail_enabled_legend'),
-                    'default_value' => true,
+                    'default_value' => true
                 ),
                 'LENGOW_REPORT_MAIL_ADDRESS' => array(
                     'type'          => 'tag',
                     'label'         => $locale->t('lengow_setting.lengow_report_mail_address_title'),
+                    'default_value' => ''
                 ),
                 'LENGOW_IMPORT_SINGLE_ENABLED' => array(
                     'type'          => 'checkbox',
@@ -277,8 +280,6 @@ class LengowConfiguration extends Configuration
         } else {
             parent::updateValue($key, $values, $html, $id_shop_group, $id_shop);
         }
-
-
     }
 
     public static function getReportEmailAddress()
@@ -288,5 +289,49 @@ class LengowConfiguration extends Configuration
             $emails[0] = self::get('PS_SHOP_EMAIL');
         }
         return $emails;
+    }
+
+    public static function resetAll($overwrite = true)
+    {
+        $shops = LengowShop::findAll();
+        $keys = self::getKeys();
+        foreach ($keys as $key => $value) {
+            if (isset($value['default_values'])) {
+                $val = $value['default_values'];
+            } else {
+                $val = '';
+            }
+            if (isset($value['shop']) && $value['shop']) {
+                foreach ($shops as $shop) {
+                    if ($overwrite) {
+                        self::updateValue($key, $val, false, null, $shop["id_shop"]);
+                    } else {
+                        $oldValue = self::get($key, false, null, $shop["id_shop"]);
+                        if ($oldValue == "") {
+                            self::updateValue($key, $val, false, null, $shop["id_shop"]);
+                        }
+                    }
+                }
+            } else {
+                if ($overwrite) {
+                    self::updateValue($key, $val);
+                } else {
+                    $oldValue = self::get($key);
+                    if ($oldValue == "") {
+                        self::updateValue($key, $val);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public static function deleteAll()
+    {
+        $keys = self::getKeys();
+        foreach ($keys as $key => $value) {
+            self::deleteByName($key);
+        }
+        return true;
     }
 }

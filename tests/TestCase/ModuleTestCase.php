@@ -15,6 +15,7 @@ use Currency;
 use LengowLog;
 use Module;
 use Tools;
+use Language;
 use LengowMarketplace;
 use LengowConnector;
 
@@ -67,6 +68,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
             $context = Context::getContext();
             $context->employee = $employee;
             $context->currency = new Currency(1);
+            $context->language = new Language(1);
 
             Configuration::updateGlobalValue('LENGOW_ORDER_ID_PROCESS', 2);
             Configuration::updateGlobalValue('LENGOW_ORDER_ID_SHIPPED', 4);
@@ -367,5 +369,29 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $log = new LengowLog();
         $lastLine = $this::readLastLine($log->getFileName());
         self::assertTrue((bool)strpos($lastLine, $text), $message);
+    }
+
+    /**
+     * Test if table exist
+     * @param string $tableName
+     * @param string $message
+     * @return boolean
+     */
+    public function assertTableExist($tableName, $message = '')
+    {
+        $result = Db::getInstance()->ExecuteS("SHOW TABLES LIKE '"._DB_PREFIX_.$tableName."'");
+        return (bool)$result;
+    }
+
+    /**
+     * Test if table not exist
+     * @param string $tableName
+     * @param string $message
+     * @return boolean
+     */
+    public function assertTableNotExist($tableName, $message = '')
+    {
+        $result = Db::getInstance()->ExecuteS("SHOW TABLES LIKE '"._DB_PREFIX_.$tableName."'");
+        return !(bool)$result;
     }
 }

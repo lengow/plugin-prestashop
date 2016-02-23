@@ -9,3 +9,11 @@ body {
 .full-container {
     margin:0 40px;
 }
+
+#lengow_header_toolbox_order {
+    width:100%;
+}
+#lengow_header_toolbox_order td {
+    width:33%;
+    vertical-align: top;
+}

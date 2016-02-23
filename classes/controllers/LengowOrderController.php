@@ -1,5 +1,4 @@
 <?php
-ini_set('display_errors', 1);
 /**
  * Copyright 2016 Lengow SAS.
  *
@@ -94,6 +93,7 @@ class LengowOrderController extends LengowController
                         'marketplace_name' => Tools::getValue('marketplace_name'),
                         'delivery_address_id' => Tools::getValue('delivery_address_id'),
                         'shop_id' => Tools::getValue('shop_id'),
+                        'type' => Tools::getValue('type'),
                     ));
                     $return = $import->exec();
 
@@ -141,8 +141,7 @@ class LengowOrderController extends LengowController
                         _PS_MODULE_LENGOW_DIR_,
                         'views/templates/admin/lengow_order/helpers/view/select_marketplace.tpl'
                     );
-                    //echo '$("#select_marketplace_test").html("'.preg_replace('/\r|\n/', '', addslashes($display_select_marketplace)).'");';
-                    echo '$("#select_marketplace_test").html("'.preg_replace('/\r|\n/', '', addslashes($display_select_marketplace)).'");';
+                    echo 'lengow_jquery("#select_marketplace").html("'.preg_replace('/\r|\n/', '', addslashes($display_select_marketplace)).'");';
                     exit();
                     break;
                 case 'cancel_re_import':
@@ -456,13 +455,13 @@ class LengowOrderController extends LengowController
     public function loadMessage($return)
     {
         $message = array();
-        if (count($return['order_new']) > 0) {
+        if (isset($return['order_new']) && count($return['order_new']) > 0) {
             $message[]= (int)$return['order_new'].' imported orders';
         }
-        if (count($return['order_update']) > 0) {
+        if (isset($return['order_update']) && count($return['order_update']) > 0) {
             $message[]= (int)$return['order_update'].' updated orders';
         }
-        if (count($return['order_error']) > 0) {
+        if (isset($return['order_error']) && count($return['order_error']) > 0) {
             $message[]= (int)$return['order_error'].' orders in error';
         }
 

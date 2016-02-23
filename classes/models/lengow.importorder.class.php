@@ -1020,7 +1020,7 @@ class LengowImportOrder
         //    throw new LengowException("Carrier is require, but empty in feed");
         //} elseif ($marketplace->isRequireCarrier()) {
             $carrier_id = LengowCarrier::getMarketplaceByCarrierSku($this->carrier_name, $order_country_id);
-            $carrier = LengowCarrier::getActiveCarrierByCarrierId($carrier_id);
+            $carrier = LengowCarrier::getActiveCarrierByCarrierId($carrier_id, $order_country_id);
         //}
         if (!$carrier) {
             $carrier = LengowCarrier::getActiveCarrier($order_country_id, true);

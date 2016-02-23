@@ -95,6 +95,10 @@ class Lengow extends Module
         return $this->installClass->uninstall();
     }
 
+    public function reset()
+    {
+        return $this->installClass->reset();
+    }
 
     /**
      * Hook Definition in LengowHook

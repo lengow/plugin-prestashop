@@ -55,6 +55,27 @@
                 </li>
             </ul>
         </div>
+
+        <div id="lengow_delete_module" class="container">
+            <h2>Uninstall completely modules</h2>
+            <p>All data will be lost (Tables and Parameters), You will lost order history.<br/>
+                After Uninstall the module you will find a backup of lengow database in
+                <a href="{$lengow_link->getAbsoluteAdminLink('AdminBackup')|escape:'htmlall':'UTF-8'}">Prestashop Backup</a>
+            </p>
+            <div class="checkbox">
+                <label>
+                    <input id="lengow_uninstall_checkbox" type="checkbox" class="lengow_switch" name="uninstall_checkbox" />
+                    <span class="lengow_label_text">I want uninstall Lengow Module</span>
+                </label>
+            </div>
+            <div id="lengow_wrapper_delete" style="display:none;">
+                <div class="form-group lengow_account_id[1]"><label class="col-sm-2 control-label">To Uninstall Type : I WANT TO REMOVE ALL DATA</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="uninstall_textbox" class="form-control" placeholder="" value="">
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn lengow_btn">{$locale->t('global_setting.screen.button_save')}</button>

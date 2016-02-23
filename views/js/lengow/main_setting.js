@@ -27,6 +27,20 @@
             $('.select2-search__field').val('');
         });
 
+        $("#lengow_uninstall_checkbox").on('switchChange.bootstrapSwitch', function (event, state) {
+            if (event.type == "switchChange") {
+                displayDeleteData();
+            }
+        });
+
+        function displayDeleteData() {
+            if ($("#lengow_uninstall_checkbox").prop('checked')) {
+                $('#lengow_wrapper_delete').show();
+            } else {
+                $('#lengow_wrapper_delete').hide();
+            }
+        }
+        displayDeleteData();
 
         function displayPreProdMode() {
             if ($("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").prop('checked')) {
