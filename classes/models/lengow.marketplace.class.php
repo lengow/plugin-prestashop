@@ -91,7 +91,11 @@ class LengowMarketplace
         $this->name = Tools::strtolower($name);
 
         if (!isset(self::$MARKETPLACES->{$this->name})) {
-            throw new LengowException('Marketplace '.$this->name.' not present in marketplace list');
+            throw new LengowException(
+                LengowMain::setLogMessage('lengow_log.exception.marketplace_not_present', array(
+                    'markeplace_name' => $this->name
+                ))
+            );
         }
         $this->marketplace = self::$MARKETPLACES->{$this->name};
         if (!empty($this->marketplace)) {
@@ -268,17 +272,26 @@ class LengowMarketplace
     {
         try {
             if (!in_array($action, self::$VALID_ACTIONS)) {
-                throw new LengowException('Action ' . $action . ' is not valid');
+                throw new LengowException(
+                    LengowMain::setLogMessage('lengow_log.exception.action_not_valid', array('action' => $action))
+                );
             }
-
             if (!isset($this->actions[$action])) {
-                throw new LengowException('Marketplace actions ' . $action . ' not present');
+                throw new LengowException(
+                    LengowMain::setLogMessage('lengow_log.exception.marketplace_action_not_present', array(
+                        'action' => $action
+                    ))
+                );
             }
             if ((int)$order->lengow_id_shop == 0) {
-                throw new LengowException('shop_id require');
+                throw new LengowException(
+                    LengowMain::setLogMessage('lengow_log.exception.shop_id_require')
+                );
             }
             if (Tools::strlen($order->lengow_marketplace_name) == 0) {
-                throw new LengowException('marketplace_name require');
+                throw new LengowException(
+                    LengowMain::setLogMessage('lengow_log.exception.marketplace_name_require')
+                );
             }
 
             $params = array();
@@ -311,7 +324,9 @@ class LengowMarketplace
                             if (isset($actions['optional_args']) && in_array('carrier', $actions['optional_args'])) {
                                 continue;
                             }
-                            throw new LengowException('Can\'t find delivery country in order');
+                            throw new LengowException(
+                                LengowMain::setLogMessage('lengow_log.exception.no_delivery_country_in_order')
+                            );
                         }
                         $params['carrier'] = LengowCarrier::getMarketplaceCarrier(
                             $order->id_carrier,
@@ -325,8 +340,12 @@ class LengowMarketplace
                                 Context::getContext()->language->id,
                                 $deliveryAddress->id_country
                             );
-                            throw new LengowException('You need to match carrier ['.$order->lengow_carrier.']'.
-                                ' with country ['.$countryName.']');
+                            throw new LengowException(
+                                LengowMain::setLogMessage('lengow_log.exception.match_carrier_with_country', array(
+                                    'carrier_name' => $order->lengow_carrier,
+                                    'country_name' => $countryName
+                                ))
+                            );
                         }
                         break;
                     case 'tracking_url':
@@ -357,7 +376,11 @@ class LengowMarketplace
             if (isset($actions['args'])) {
                 foreach ($actions['args'] as $arg) {
                     if (!isset($params[$arg]) || Tools::strlen($params[$arg]) == 0) {
-                        throw new LengowException('Can\'t ship order : ' . $arg . ' require');
+                        throw new LengowException(
+                            LengowMain::setLogMessage('lengow_log.exception.arg_is_required', array(
+                                'arg_name' => $arg
+                            ))
+                        );
                     }
                 }
             }
@@ -405,22 +428,18 @@ class LengowMarketplace
             }
             return true;
         } catch (LengowException $e) {
-            LengowMain::log(
-                'API-OrderAction',
-                'Error : "'.$e->getMessage(),
-                false,
-                $order->lengow_marketplace_sku
-            );
-            LengowOrder::addOrderLog(
-                $order->lengow_id,
-                $e->getMessage(),
-                $action
-            );
-            return false;
+            $error_message = $e->getMessage();
         } catch (Exception $e) {
+            $error_message = '[Prestashop Error] "'.$e->getMessage().'"'.$e->getFile().'|'.$e->getLine();
+        }
+        if (isset($error_message)) {
+            LengowOrder::addOrderLog($order->lengow_id, $error_message, $action);
+            $decoded_message = LengowMain::getLogMessage($error_message, 'en');
             LengowMain::log(
                 'API-OrderAction',
-                'Error : "'.$e->getMessage().'"'.$e->getFile().'|'.$e->getLine(),
+                LengowMain::setLogMessage('log.order_action.call_action_failed', array(
+                    'decoded_message' => $decoded_message
+                )),
                 false,
                 $order->lengow_marketplace_sku
             );

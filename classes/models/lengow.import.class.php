@@ -318,7 +318,7 @@ class LengowImport
                     } catch (LengowException $e) {
                         $error_message = $e->getMessage();
                     } catch (Exception $e) {
-                        $error_message = 'Prestashop error: '.$e->getMessage().'"'.$e->getFile().'|'.$e->getLine();
+                        $error_message = '[Prestashop error] "'.$e->getMessage().'"'.$e->getFile().'|'.$e->getLine();
                     }
                     if (isset($error_message)) {
                         if (isset($this->id_order_lengow) && $this->id_order_lengow) {
@@ -330,16 +330,17 @@ class LengowImport
                         continue;
                     }
                 }
+                unset($shop);
             }
             if (!$this->import_one_order) {
                 LengowMain::log(
                     'Import',
-                    LengowMain::setLogMessage('log.import.nb_order_imported', array('nb_order' => $order_error)),
+                    LengowMain::setLogMessage('log.import.nb_order_imported', array('nb_order' => $order_new)),
                     $this->log_output
                 );
                 LengowMain::log(
                     'Import',
-                    LengowMain::setLogMessage('log.import.nb_order_updated', array('nb_order' => $order_error)),
+                    LengowMain::setLogMessage('log.import.nb_order_updated', array('nb_order' => $order_update)),
                     $this->log_output
                 );
                 LengowMain::log(
