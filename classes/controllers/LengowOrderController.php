@@ -1,4 +1,5 @@
 <?php
+ini_set('display_errors', 1);
 /**
  * Copyright 2016 Lengow SAS.
  *
@@ -128,6 +129,21 @@ class LengowOrderController extends LengowController
                     $prestashop_order_controller = $lengow_link->getAbsoluteAdminLink('AdminOrders', false, true);
                     $order_url = $prestashop_order_controller.'&id_order='.$id_order.'&vieworder';
                     Tools::redirectAdmin($order_url);
+                    break;
+                case 'load_marketplace':
+                    $shop_id = Tools::getValue('shop_id');
+
+                    $marketplaces = LengowMarketplace::getMarketplacesByShop($shop_id);
+                    $this->context->smarty->assign('marketplaces', $marketplaces);
+                    $module = Module::getInstanceByName('lengow');
+
+                    $display_select_marketplace = $module->display(
+                        _PS_MODULE_LENGOW_DIR_,
+                        'views/templates/admin/lengow_order/helpers/view/select_marketplace.tpl'
+                    );
+                    //echo '$("#select_marketplace_test").html("'.preg_replace('/\r|\n/', '', addslashes($display_select_marketplace)).'");';
+                    echo '$("#select_marketplace_test").html("'.preg_replace('/\r|\n/', '', addslashes($display_select_marketplace)).'");';
+                    exit();
                     break;
                 case 'cancel_re_import':
                     $id_order = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;

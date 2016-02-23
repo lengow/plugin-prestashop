@@ -35,15 +35,12 @@ $shops = LengowShop::findAll();
 foreach ($shops as $s) {
     $shop[$s['id_shop']] = new LengowShop($s['id_shop']);
 }
-
-$markeplaces = $controller->getMarketplaces();
+$marketplaces = array();
 $days = LengowConfiguration::get('LENGOW_IMPORT_DAYS');
-
 $context->smarty->assign('shop', $shop);
-$context->smarty->assign('markeplaces', $markeplaces);
+$context->smarty->assign('marketplaces', $marketplaces);
 $context->smarty->assign('days', $days);
 
-print_r(LengowMarketplace::getMarketplacesByShop(1));
 
 require 'views/header.php';
 echo '<div class="full-container">';

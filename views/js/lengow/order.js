@@ -154,7 +154,6 @@
         });
 
         $('#lengow_order_wrapper').on('click', '#lengow_update_order', function() {
-            console.log($(this).parents('.lengow_form_update_order').find('#select_shop').val());
             var button = $(this);
             var href = $(this).data('href');
             if (($(this).parents('.lengow_form_update_order').find('#select_shop').val() != "") &&
@@ -213,6 +212,18 @@
             } else {
                 $('#error_update_some_orders').html('<p>Please complete all fields.</p>')
                 return false
+            }
+        });
+
+        $('.lengow_import_order_toolbox').on('change', '#select_shop', function() {
+            var href = $(this).data('href');
+            if ($(this).val() !== "") {
+                $.ajax({
+                    url: href,
+                    method: 'POST',
+                    data: {action: 'load_marketplace', shop_id: $(this).val()},
+                    dataType: 'script',
+                });
             }
         });
 

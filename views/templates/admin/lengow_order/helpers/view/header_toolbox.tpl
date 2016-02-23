@@ -2,19 +2,16 @@
     <form class="lengow_form_update_order" method="POST">
         <h4>Update order</h4>
         <label for="select_shop">Shop : </label>
-        <select name="" id="select_shop">
+        <select name="" id="select_shop" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
             <option value=""></option>
             {foreach from=$shop item=shopItem}
                 <option value="{$shopItem->id}">{$shopItem->name}</option>
             {/foreach}
         </select><br/>
         <label for="select_mkp">Marketplace : </label>
-        <select name="" id="select_mkp">
-            <option value=""></option>
-            {foreach from=$markeplaces item=mkpItem}
-                <option value="{$mkpItem['id']}">{$mkpItem['text']}</option>
-            {/foreach}
-        </select><br/>
+        <div id="select_marketplace_test">
+        {include file='./select_marketplace.tpl'}
+        </div>
         <label for="sku_order">Sku Order : </label>
         <input type="text" id="sku_order"><br/>
         <label for="delivery_adress_id">Delivery adress ID : </label>
