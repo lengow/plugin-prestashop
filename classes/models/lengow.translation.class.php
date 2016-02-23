@@ -37,8 +37,9 @@ class LengowTranslation
      * v3
      * Translate message
      *
-     * @param $message localization key
-     * @param array $args replace word in string
+     * @param string $message   localization key
+     * @param array  $args      replace word in string
+     * @param array  $iso_code  iso code
      *
      * @return mixed
      */
@@ -47,7 +48,7 @@ class LengowTranslation
         if (is_null($iso_code)) {
             $iso_code = $this->isoCode;
         }
-        if (isset(self::$translation[$iso_code])) {
+        if (!isset(self::$translation[$iso_code])) {
             $this->loadFile($iso_code);
         }
         if (isset(self::$translation[$iso_code][$message])) {
@@ -92,7 +93,7 @@ class LengowTranslation
      * v3
      * Load csv file
      *
-     * @param bool $fallback use fallback translation
+     * @param string $iso_code
      * @param string $filename file location
      *
      * @return boolean

@@ -28,6 +28,8 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
 
 LengowLink::forceLink('/modules/lengow/toolbox/order.php?t=1');
 
+Shop::setContext(Shop::CONTEXT_ALL);
+
 $lengowTool = new LengowTool();
 
 if (!in_array($lengowTool->getCurrentUri(), array('/modules/lengow/toolbox/login.php'))) {
@@ -39,3 +41,5 @@ if (!in_array($lengowTool->getCurrentUri(), array('/modules/lengow/toolbox/login
 if ($lengowTool->getCurrentUri() == '/modules/lengow/toolbox/login.php' && $lengowTool->isLogged()) {
     Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/', '');
 }
+
+Context::getContext()->smarty->assign('toolbox', true);

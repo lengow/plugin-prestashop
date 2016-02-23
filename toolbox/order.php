@@ -20,17 +20,27 @@
  */
 
 require 'conf.inc.php';
-
+$context = Context::getContext();
 $action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
 $accountId = isset($_REQUEST['account_id']) ?  $_REQUEST['account_id'] : null;
 $secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
 $blockedIP = isset($_REQUEST['blockedIP']) ?  $_REQUEST['blockedIP'] : false;
 $lengowTool = new LengowTool();
 
-
 $controller = new LengowOrderController();
 $controller->postProcess();
 $controller->display();
+
+$shops = LengowShop::findAll();
+foreach ($shops as $s) {
+    $shop[$s['id_shop']] = new LengowShop($s['id_shop']);
+}
+$marketplaces = array();
+$days = LengowConfiguration::get('LENGOW_IMPORT_DAYS');
+$context->smarty->assign('shop', $shop);
+$context->smarty->assign('marketplaces', $marketplaces);
+$context->smarty->assign('days', $days);
+
 
 require 'views/header.php';
 echo '<div class="full-container">';

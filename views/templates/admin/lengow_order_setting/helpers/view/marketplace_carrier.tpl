@@ -12,11 +12,11 @@
                 <button type="button" class="btn delete_lengow_default_carrier"
                         data-id-country="{$current_id_country}">X
                 </button>
-            {/if}<span class="score"></span>
+            {/if}<span class="score"></span><i class="fa fa-chevron-down"></i>
         </h4>
         </label><input id="menu{$current_id_country}" name="menu" type="checkbox"/>
         <ul class="sub">
-            <li class="add_country {if empty($defaultCarrierCountries[$current_id_country]['lengow_country_id'])}no_carrier{/if}">
+            <li class="add_country {if empty($defaultCarrierCountries[$current_id_country]['id_carrier'])}no_carrier{/if}">
                 {include file='./default_carrier.tpl'}
             </li>
             {while $current_id_country eq {$mkp_carriers.$i.id_country} && $i < {count($mkp_carriers)}}

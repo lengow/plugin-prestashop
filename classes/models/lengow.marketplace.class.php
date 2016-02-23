@@ -476,4 +476,22 @@ class LengowMarketplace
         }
         return true;
     }
+
+
+    /**
+     * Get Marketplace Sku by Shop
+     * @param $id_shop
+     * @return array
+     */
+    public static function getMarketplacesByShop($id_shop)
+    {
+        $marketplaceCollection = array();
+        $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $id_shop);
+        if ($result) {
+            foreach ($result as $marketplaceSku => $value) {
+                $marketplaceCollection[] = $marketplaceSku;
+            }
+        }
+        return $marketplaceCollection;
+    }
 }

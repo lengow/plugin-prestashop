@@ -709,8 +709,6 @@ class LengowImportOrder
     protected function getCartData()
     {
         $cart_data = array();
-        // get carrier
-        $cart_data['id_carrier'] = $this->getCarrierId($this->shipping_address);
         $cart_data['id_lang'] = $this->id_lang;
         $cart_data['id_shop'] = $this->id_shop;
         // get billing datas
@@ -757,6 +755,8 @@ class LengowImportOrder
         $cart_data['id_address_delivery'] = $this->shipping_address->id;
         // get currency
         $cart_data['id_currency'] = (int)Currency::getIdByIsoCode((string)$this->order_data->currency->iso_a3);
+        // get carrier
+        $cart_data['id_carrier'] = $this->getCarrierId($this->shipping_address);
         return $cart_data;
     }
 
