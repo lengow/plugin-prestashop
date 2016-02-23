@@ -228,14 +228,14 @@ class LengowExport
      * v3-test
      * Check currency to export.
      *
-     * @throws LengowExportException
+     * @throws LengowException
      *
      * @return boolean.
      */
     public function checkCurrency()
     {
         if (!Context::getContext()->currency) {
-            throw new LengowExportException('Illegal Currency');
+            throw new LengowException('Illegal Currency');
         }
         return true;
     }
@@ -245,7 +245,7 @@ class LengowExport
      * v3-test
      * Set Carrier to export.
      *
-     * @throws LengowExportException
+     * @throws LengowException
      *
      * @return boolean.
      */
@@ -253,7 +253,7 @@ class LengowExport
     {
         $carrier = LengowCarrier::getActiveCarrier();
         if (!$carrier->id) {
-            throw new LengowExportException('You must select a carrier in Lengow Export Tab');
+            throw new LengowException('You must select a carrier in Lengow Export Tab');
         }
         $this->carrier = $carrier;
         return true;
@@ -266,14 +266,14 @@ class LengowExport
      *
      * @param string $format The export format
      *
-     * @throws LengowExportException
+     * @throws LengowException
      *
      * @return boolean.
      */
     public function setFormat($format)
     {
         if (!in_array($format, LengowFeed::$AVAILABLE_FORMATS)) {
-            throw new LengowExportException('Illegal export format');
+            throw new LengowException('Illegal export format');
         }
         $this->format = $format;
         return true;
@@ -378,7 +378,7 @@ class LengowExport
         $success = $this->feed->end();
 
         if (!$success) {
-            throw new LengowFileException(
+            throw new LengowException(
                 'Export file generation did not end properly. Please make sure the export folder is writable.',
                 true
             );
@@ -409,7 +409,7 @@ class LengowExport
         );
         $combinations = $product->getCombinations();
         if (empty($combinations)) {
-            throw new LengowExportException('Unable to retrieve product combinations');
+            throw new LengowException('Unable to retrieve product combinations');
         }
         foreach ($combinations as $combination) {
             $paId = $combination['id_product_attribute'];

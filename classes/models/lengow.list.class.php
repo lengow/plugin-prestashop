@@ -125,7 +125,7 @@ class LengowList
                         break;
                 }
             } elseif (isset($values['button_search']) && $values['button_search']) {
-                $html .= '<input type="submit" value="'.$this->locale->t('class.lengow_list.button_search').'" />';
+                $html .= '<input type="submit" value="'.$this->locale->t('product.screen.button_search').'" />';
             }
             $html .= '</th>';
         }
@@ -195,8 +195,8 @@ class LengowList
                         case 'switch_product':
                             $value = '<input type="checkbox"
                                 data-size="mini"
-                                data-on-text="'.$this->locale->t('class.lengow_list.button_yes').'"
-                                data-off-text="'.$this->locale->t('class.lengow_list.button_no').'"
+                                data-on-text="'.$this->locale->t('product.screen.button_yes').'"
+                                data-off-text="'.$this->locale->t('product.screen.button_no').'"
                                 name="lengow_product_selection['.$item[$this->identifier].']"
                                 class="lengow_switch lengow_switch_product
                                 lengow_product_selection_'.$item[$this->identifier].'"
@@ -437,7 +437,7 @@ class LengowList
         $html.='<div class="lengow_pagination_total">';
         $html.= '<span class="lengow_number">'.$this->paginationFrom. '</span> -
         <span class="lengow_number">'.$this->paginationTo.'</span>
-         '.$this->locale->t('class.lengow_list.pagination_of').' <span class="lengow_number">'.$this->total.'</span>';
+         '.$this->locale->t('product.table.pagination_of').' <span class="lengow_number">'.$this->total.'</span>';
         $html.='</div>';
 
         $html.= '<ul class="lengow_pagination pagination">';

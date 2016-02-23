@@ -214,7 +214,7 @@ class LengowPaymentModule extends PaymentModule
 
                     //$product_list[] = $product;//array_merge($product, $lengow_products[$sku]);
                 } else {
-                    throw new LengowImportException('product '.$sku.' is not listed as part of the current order.');
+                    throw new LengowException('product '.$sku.' is not listed as part of the current order.');
                 }
             }
 
@@ -324,7 +324,7 @@ class LengowPaymentModule extends PaymentModule
                     (int)$id_cart,
                     true
                 );
-                throw new LengowImportException('unable to save order payment.');
+                throw new LengowException('unable to save order payment.');
             }
         }
 
@@ -426,7 +426,7 @@ class LengowPaymentModule extends PaymentModule
                     }
                 }
             } else {
-                throw new LengowImportException('Order creation failed', 1);
+                throw new LengowException('Order creation failed', 1);
             }
         } // End foreach $order_detail_list
 
@@ -527,7 +527,7 @@ class LengowPaymentModule extends PaymentModule
 
                     $product_list[] = $product;//array_merge($product, $lengow_products[$sku]);
                 } else {
-                    throw new LengowImportException('product '.$sku.' is not listed as part of the current order.');
+                    throw new LengowException('product '.$sku.' is not listed as part of the current order.');
                 }
             }
             $order->total_products = (float)Tools::ps_round($total_products, 2);
@@ -688,7 +688,7 @@ class LengowPaymentModule extends PaymentModule
                         }
                     }
                 } else {
-                    throw new LengowImportException('Can\'t load Order status');
+                    throw new LengowException('Can\'t load Order status');
                 }
 
                 if (isset($outOfStock) && $outOfStock) {

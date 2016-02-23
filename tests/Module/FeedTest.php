@@ -9,7 +9,7 @@ use Module;
 use Configuration;
 use LengowMain;
 use LengowExport;
-use LengowExportException;
+use LengowException;
 use LengowFeed;
 use Assert;
 use Feature;
@@ -73,7 +73,7 @@ class FeedTest extends ModuleTestCase
      * Test Export Format Empty
      *
      * @test
-     * @expectedException        LengowExportException
+     * @expectedException        LengowException
      * @expectedExceptionMessage Illegal export format
      * @covers LengowExport::setFormat
      */
@@ -86,7 +86,7 @@ class FeedTest extends ModuleTestCase
 //     * Test Export Empty Carrier
 //     *
 //     * @test
-//     * @expectedException        LengowExportException
+//     * @expectedException        LengowException
 //     * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
 //     * @covers LengowExport::setCarrier
 //     */
