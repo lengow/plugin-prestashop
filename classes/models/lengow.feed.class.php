@@ -110,7 +110,7 @@ class LengowFeed
         $folder_path = LengowMain::getLengowFolder() . $sep . $this->export_folder;
         if (!file_exists($folder_path)) {
             if (!mkdir($folder_path)) {
-                throw new LengowFileException('Unable to create folder ' . $folder_path . '. Make sure it is writeable.');
+                throw new LengowException('Unable to create folder ' . $folder_path . '. Make sure it is writeable.');
             }
         }
         if ($this->part_file_name) {

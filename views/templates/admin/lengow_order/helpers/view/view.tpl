@@ -20,7 +20,7 @@
 
 <div id="lengow_order_wrapper">
     <div class="lengow_order_block_header">
-        {if "toolbox"|defined and $toolbox}
+        {if isset($toolbox) && $toolbox}
             {include file='./header_toolbox.tpl'}
         {else}
         <div class="lengow_order_block_header_content">

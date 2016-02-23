@@ -146,7 +146,7 @@ class LengowCarrier extends Carrier
             if ($mr->isMondialRelayCarrier($id_carrier)) {
                 $relay = LengowCarrier::getMRRelay($shipping_address->id, $shipping_address->id_relay, $mr);
                 if (!$relay) {
-                    throw new LengowCarrierException('relay ' . $shipping_address->id_relay . ' could not be found');
+                    throw new LengowException('relay ' . $shipping_address->id_relay . ' could not be found');
                 }
                 return LengowCarrier::addMondialRelay(
                     $relay,
@@ -173,7 +173,7 @@ class LengowCarrier extends Carrier
         $sep = DIRECTORY_SEPARATOR;
         $loaded = include_once _PS_MODULE_DIR_ . 'socolissimo' . $sep . 'classes' . $sep . 'SCFields.php';
         if (!$loaded) {
-            throw new LengowCarrierException(
+            throw new LengowException(
                 'missing file ' . _PS_MODULE_DIR_ . 'socolissimo' . $sep . 'classes' . $sep . 'SCFields.php'
             );
         }
@@ -308,7 +308,7 @@ class LengowCarrier extends Carrier
         }
         $loaded = include_once _PS_MODULE_DIR_ . 'mondialrelay' . $sep . 'classes' . $sep . 'MRRelayDetail.php';
         if (!$loaded) {
-            throw new LengowCarrierException(
+            throw new LengowException(
                 'missing file ' . _PS_MODULE_DIR_ . 'mondialrelay' . $sep . 'classes' . $sep . 'MRRelayDetail.php'
             );
         }

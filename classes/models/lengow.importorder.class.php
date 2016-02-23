@@ -402,12 +402,6 @@ class LengowImportOrder
             }
         } catch (LengowException $e) {
             $error_message = $e->getMessage();
-        } catch (InvalidLengowObjectException $iloe) {
-            $error_message = $iloe->getMessage();
-        } catch (LengowImportException $lie) {
-            $error_message = $lie->getMessage();
-        } catch (PrestashopException $pe) {
-            $error_message = $pe->getMessage();
         } catch (Exception $e) {
             $error_message = $e->getMessage().'"'.$e->getFile().'|'.$e->getLine();
         }
@@ -915,7 +909,7 @@ class LengowImportOrder
                     if (!isset($ids['id_product_attribute'])) {
                         $p = new LengowProduct($ids['id_product']);
                         if ($p->hasAttributes()) {
-                            throw new LengowImportException(
+                            throw new LengowException(
                                 'product '.$p->id.' is a parent ID. Product variation needed'
                             );
                         }
@@ -1024,7 +1018,7 @@ class LengowImportOrder
                 $this->shipping_address
             );
             if ($carrier_compatibility < 0) {
-                throw new LengowCarrierException('carrier '.$carrier_name.' could not be found in your Prestashop');
+                throw new LengowException('carrier '.$carrier_name.' could not be found in your Prestashop');
             } elseif ($carrier_compatibility > 0) {
                 LengowMain::log(
                     'Import',
@@ -1033,8 +1027,8 @@ class LengowImportOrder
                     $this->marketplace_sku
                 );
             }
-        } catch (LengowCarrierException $lce) {
-            LengowMain::log('Import', $lce->getMessage(), $this->log_output, $this->marketplace_sku);
+        } catch (LengowException $e) {
+            LengowMain::log('Import', $e->getMessage(), $this->log_output, $this->marketplace_sku);
         }
     }
 

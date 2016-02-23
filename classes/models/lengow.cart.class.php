@@ -327,7 +327,7 @@ class LengowCart extends Cart implements LengowObject
         // validateFields
         $return = $this->validateFields(false, true);
         if (is_string($return)) {
-            throw new InvalidLengowObjectException($return);
+            throw new LengowException($return);
         }
         $this->add();
         return true;

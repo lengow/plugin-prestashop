@@ -169,7 +169,7 @@ class ExportTest extends ModuleTestCase
      * Test Export Format Empty
      *
      * @test
-     * @expectedException        LengowExportException
+     * @expectedException        LengowException
      * @expectedExceptionMessage Illegal export format
      * @covers LengowExport::setFormat
      */
@@ -183,7 +183,7 @@ class ExportTest extends ModuleTestCase
 //     * Test Export Empty Carrier
 //     *
 //     * @test
-//     * @expectedException        LengowExportException
+//     * @expectedException        LengowException
 //     * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
 //     * @covers LengowExport::setCarrier
 //     */
@@ -198,7 +198,7 @@ class ExportTest extends ModuleTestCase
      * Test Export Empty Currency
      *
      * @test
-     * @expectedException        LengowExportException
+     * @expectedException        LengowException
      * @expectedExceptionMessage Illegal Currency
      * @covers LengowExport::checkCurrency
      */

@@ -9,7 +9,7 @@ use Module;
 use Configuration;
 use LengowMain;
 use LengowExport;
-use LengowExportException;
+use LengowException;
 use LengowFeed;
 use LengowProduct;
 use Assert;
@@ -63,7 +63,7 @@ class ProductTest extends ModuleTestCase
      * Test getMaxImageType when table is empty
      *
      * @test
-     * @expectedException        LengowExportException
+     * @expectedException        LengowException
      * @expectedExceptionMessage Cant find Image type size, check your table ps_image_type
      */
     public function getMaxImageTypeWhenEmpty()

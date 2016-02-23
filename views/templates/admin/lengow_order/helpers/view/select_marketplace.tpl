@@ -3,4 +3,4 @@
     {foreach from=$marketplaces item=mkpItem key=k}
         <option value="{$k}">{$mkpItem}</option>
     {/foreach}
-</select><br/>
+</select>
