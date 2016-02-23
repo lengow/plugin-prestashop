@@ -215,7 +215,7 @@
             }
         });
 
-        $('.lengow_import_order_toolbox').on('change', '#select_shop', function() {
+        $('.lengow_form_update_order').on('change', '#select_shop', function() {
             var href = $(this).data('href');
             if ($(this).val() !== "") {
                 $.ajax({

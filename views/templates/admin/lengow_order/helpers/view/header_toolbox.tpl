@@ -9,7 +9,7 @@
             {/foreach}
         </select><br/>
         <label for="select_mkp">Marketplace : </label>
-        <div id="select_marketplace_test">
+        <div id="select_marketplace">
         {include file='./select_marketplace.tpl'}
         </div>
         <label for="sku_order">Sku Order : </label>
@@ -49,3 +49,4 @@
         {$locale->t('order.screen.button_update_orders')}</a>
 </div>
 <br/>
+<div id="lengow_wrapper_messages"></div>

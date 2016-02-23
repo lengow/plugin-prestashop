@@ -141,8 +141,7 @@ class LengowOrderController extends LengowController
                         _PS_MODULE_LENGOW_DIR_,
                         'views/templates/admin/lengow_order/helpers/view/select_marketplace.tpl'
                     );
-                    //echo '$("#select_marketplace_test").html("'.preg_replace('/\r|\n/', '', addslashes($display_select_marketplace)).'");';
-                    echo '$("#select_marketplace_test").html("'.preg_replace('/\r|\n/', '', addslashes($display_select_marketplace)).'");';
+                    echo 'lengow_jquery("#select_marketplace").html("'.preg_replace('/\r|\n/', '', addslashes($display_select_marketplace)).'");';
                     exit();
                     break;
                 case 'cancel_re_import':
