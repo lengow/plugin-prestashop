@@ -22,16 +22,6 @@
 class LengowBackup extends Backup
 {
 
-    protected static $exportOnly = array(
-        'lengow_actions',
-        'lengow_carrier_country',
-        'lengow_logs_import',
-        'lengow_marketplace_carrier',
-        'lengow_orders',
-        'lengow_order_line',
-        'lengow_product',
-    );
-
     /**
      * Creates a new backup file
      *
@@ -69,18 +59,19 @@ class LengowBackup extends Backup
 
         $this->id = realpath($backupfile);
 
-        fwrite($fp, '/* Backup for '.Tools::getHttpHost(false, false).__PS_BASE_URI__."\n *  at ".date($date)."\n */\n");
+        fwrite($fp, '/* Backup for '.Tools::getHttpHost(false, false).__PS_BASE_URI__."\n * at ".date($date)."\n */\n");
         fwrite($fp, "\n".'SET NAMES \'utf8\';'."\n\n");
 
         $found = 0;
-        foreach (self::$exportOnly as $table) {
+        foreach (LengowInstall::$tables as $table) {
             $table = _DB_PREFIX_.$table;
             // Export the table schema
             $schema = Db::getInstance()->executeS('SHOW CREATE TABLE `'.$table.'`');
             if (count($schema) != 1 || !isset($schema[0]['Table']) || !isset($schema[0]['Create Table'])) {
                 fclose($fp);
                 $this->delete();
-                echo Tools::displayError('An error occurred while backing up. Unable to obtain the schema of').' "'.$table;
+                echo Tools::displayError('An error occurred while backing up. Unable to obtain the schema of').
+                    ' "'.$table;
                 return false;
             }
 

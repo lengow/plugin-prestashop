@@ -60,11 +60,18 @@
             <h2>Uninstall completely modules</h2>
             <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
 
+            <div class="checkbox">
+                <label><input type="checkbox" class="lengow_switch" name="uninstall_checkbox" />
+                    <span class="lengow_label_text">I want uninstall Lengow Module</span></label>
+            </div>
 
-            <input type="text" name="uninstall" value="" />
+            <div class="form-group lengow_account_id[1]"><label class="col-sm-2 control-label">To Uninstall Type : I WANT TO REMOVE ALL DATA</label>
+                <div class="col-sm-10">
+                    <input type="text" name="uninstall_textbox" class="form-control" placeholder="" value="">
+                </div>
+                <span class="legend"></span>
+            </div>
         </div>
-
-
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn lengow_btn">{$locale->t('global_setting.screen.button_save')}</button>

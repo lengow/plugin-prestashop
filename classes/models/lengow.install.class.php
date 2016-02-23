@@ -39,6 +39,16 @@ class LengowInstall
         'MainSetting' => array('name' => 'AdminLengowMainSetting', 'active' => false)
     );
 
+    static public $tables = array(
+        'lengow_actions',
+        'lengow_carrier_country',
+        'lengow_logs_import',
+        'lengow_marketplace_carrier',
+        'lengow_orders',
+        'lengow_order_line',
+        'lengow_product',
+    );
+
     public function __construct($module)
     {
         $this->lengowModule = $module;
@@ -259,6 +269,7 @@ class LengowInstall
     }
 
     /**
+     * v3
      * Set Installation Status
      *
      * @param boolean $status Installation Status
@@ -269,11 +280,25 @@ class LengowInstall
     }
 
     /**
+     * v3
      * Is Installation In Progress
      * @return boolean
      */
     public static function isInstallationInProgress()
     {
         return self::$installationStatus;
+    }
+
+    /**
+     * v3
+     * Drop Lengow tables
+     * @return bool
+     */
+    public function dropTable()
+    {
+        foreach (self::$tables as $table) {
+            Db::getInstance()->Execute('DROP TABLE '._DB_PREFIX_.$table);
+        }
+        return true;
     }
 }
