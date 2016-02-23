@@ -34,10 +34,12 @@ class LengowTranslation
     }
 
     /**
-     * v3-test
+     * v3
      * Translate message
+     *
      * @param $message localization key
      * @param array $args replace word in string
+     *
      * @return mixed
      */
     public function t($message, $args = array(), $iso_code = null)
@@ -63,26 +65,36 @@ class LengowTranslation
     }
 
     /**
-     * v3-test
+     * v3
      * Translate string
+     *
      * @param $text
      * @param $args
+     *
      * @return string Final Translate string
      */
     protected function translateFinal($text, $args)
     {
         if ($args) {
-            return vsprintf($text, $args);
+            $params = array();
+            $values = array();
+            foreach ($args as $key => $value) {
+                $params[] = '%{'.$key.'}';
+                $values[] = $value;
+            }
+            return str_replace($params, $values, $text);
         } else {
             return $text;
         }
     }
 
     /**
-     * v3-test
+     * v3
      * Load csv file
+     *
      * @param bool $fallback use fallback translation
      * @param string $filename file location
+     *
      * @return boolean
      */
     public function loadFile($iso_code, $filename = null)
@@ -100,9 +112,7 @@ class LengowTranslation
                 fclose($handle);
             }
         }
-
         self::$translation[$iso_code] = $translation;
-
-        return count($translation)>0;
+        return count($translation) > 0;
     }
 }

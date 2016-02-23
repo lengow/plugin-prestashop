@@ -48,7 +48,7 @@ class LengowFile
 
         $this->instance = LengowFile::getRessource($this->getPath(), $mode);
         if (!is_resource($this->instance)) {
-            throw new LengowFileException('Unable to create file ' . $file_name . ' in ' . $folder_name);
+            throw new LengowException('Unable to create file ' . $file_name . ' in ' . $folder_name);
         }
     }
 

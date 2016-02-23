@@ -44,7 +44,6 @@ class LengowLog extends LengowFile
             $this->file_name = $file_name;
         }
         $this->file = new LengowFile(LengowLog::$LENGOW_LOGS_FOLDER, $this->file_name);
-        $this->locale = new LengowTranslation();
     }
 
     /**
@@ -57,13 +56,7 @@ class LengowLog extends LengowFile
      */
     public function write($category, $message = "", $display = false, $marketplace_sku = null)
     {
-        if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
-            $key = $result[1][0];
-            $all_params = $result[1][4];
-            $params = explode('|', $all_params);
-            $message = $this->locale->t($key, $params, 'en');
-        }
-
+        $message = LengowMain::getLogMessage($message, 'en');
         $log = date('Y-m-d:H:i:s').Tools::substr((string)microtime(), 1, 8);
         $log .= ' - '.(empty($category) ? '' : '['.$category.'] ');
         $log .= ''.(empty($marketplace_sku) ? '' : 'Order '.$marketplace_sku.' : ');
@@ -73,19 +66,6 @@ class LengowLog extends LengowFile
             flush();
         }
         $this->file->write($log);
-    }
-
-    /**
-     * Clean log param
-     *
-     * @param  string $param
-     *
-     * @return string
-     */
-    public static function cleanParam($param)
-    {
-        $param = str_replace('|', '', $param);
-        return $param;
     }
 
     /**

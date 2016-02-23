@@ -292,7 +292,7 @@ class LengowFlat
     /**
      * Set Carrier to export.
      *
-     * @throws LengowExportException
+     * @throws LengowException
      *
      * @return boolean.
      */
@@ -300,7 +300,7 @@ class LengowFlat
     {
         $carrier = LengowMain::getExportCarrier();
         if (!$carrier->id) {
-            throw new LengowExportException('You must select a carrier in Lengow Export Tab');
+            throw new LengowException('You must select a carrier in Lengow Export Tab');
         }
         $this->carrier = $carrier;
         return true;
@@ -309,14 +309,14 @@ class LengowFlat
     /**
      * Check currency to export.
      *
-     * @throws LengowExportException
+     * @throws LengowException
      *
      * @return boolean.
      */
     public function checkCurrency()
     {
         if (!$this->context->currency) {
-            throw new LengowExportException('Illegal Currency');
+            throw new LengowException('Illegal Currency');
         }
         return true;
     }

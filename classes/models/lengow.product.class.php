@@ -1130,7 +1130,7 @@ class LengowProduct extends Product
      * v3-test
      * Get Max Image Type
      *
-     * @throws LengowExportException
+     * @throws LengowException
      * @return string
      */
     public static function getMaxImageType()
@@ -1140,7 +1140,7 @@ class LengowProduct extends Product
         if ($result) {
             return $result[0]['name'];
         } else {
-            throw new LengowExportException('Cant find Image type size, check your table ps_image_type');
+            throw new LengowException('Cant find Image type size, check your table ps_image_type');
         }
     }
 }

@@ -10,7 +10,7 @@ use Module;
 use Configuration;
 use LengowMain;
 use LengowExport;
-use LengowExportException;
+use LengowException;
 use LengowCarrier;
 use LengowConnector;
 use Assert;

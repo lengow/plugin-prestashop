@@ -517,7 +517,61 @@ class LengowMain
 
     /**
      * v3
-     * Suppress log files when too old.
+     * set message with params for translation
+     *
+     * @param string $key
+     * @param array  $params
+     *
+     * @return string
+     */
+    public static function setLogMessage($key, $params = array())
+    {
+        if (count($params) == 0) {
+            return $key;
+        }
+        $all_params = array();
+        foreach ($params as $param => $value) {
+            $value = str_replace(array('|', '='), array('', ''), $value);
+            $all_params[] = $param.'='.$value;
+        }
+        $message = $key.'['.join('|', $all_params).']';
+        return $message;
+    }
+
+    /**
+     * v3
+     * get message with params for translation
+     *
+     * @param string $message
+     * @param string $iso_code
+     *
+     * @return string
+     */
+    public static function getLogMessage($message, $iso_code = null)
+    {
+        if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
+            $params = null;
+            if (isset($result[1])) {
+                $key = $result[1];
+            }
+            if (isset($result[4])) {
+                $params = array();
+                $str_param = $result[4];
+                $all_params = explode('|', $str_param);
+                foreach ($all_params as $param) {
+                    $result = explode('=', $param);
+                    $params[$result[0]] = $result[1];
+                }
+            }
+            $locale = new LengowTranslation();
+            $message = $locale->t($key, $params, $iso_code);
+        }
+        return $message;
+    }
+
+    /**
+     * v3
+     * Suppress log files when too old
      */
     public static function cleanLog()
     {

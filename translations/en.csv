@@ -27,6 +27,7 @@ product.screen.button_copy|Copy
 product.screen.button_download|Download
 product.screen.button_yes|Yes
 product.screen.button_no|No
+product.screen.button_search|Search
 product.table.id_product|ID
 product.table.image|Image
 product.table.name|Name
@@ -36,11 +37,12 @@ product.table.price|Original price
 product.table.final_price|Final price
 product.table.quantity|Quantity
 product.table.lengow_status|Lengow status
+product.table.pagination_of|of
 order.screen.all_order_will_be_sent_to|All orders issues reports will be send to mail
 order.screen.last_order_importation|Last order importation
 order.screen.import_auto|Auto
 order.screen.import_manuel|Manuel
-order.screen.button_update_orders|Update Orders
+order.screen.button_update_orders|Import Orders
 order.screen.button_reimport_order|Re Import Orders
 order.screen.button_resend_order|Re Send Orders
 order.table.order_lengow_state|Status
@@ -64,7 +66,14 @@ order_setting.screen.import_setting_title|Orders importation
 order_setting.screen.import_setting_description|Description of the import settings
 order_setting.screen.button_add_country|Add
 order_setting.screen.button_save|Save
-global_setting.screen|
+global_setting.screen.notification_alert_title|Notifications & alerts
+global_setting.screen.notification_alert_description|Description of mails settings
+global_setting.screen.preprod_mode_title|Pre-Production Mode
+global_setting.screen.preprod_mode_description|Description of pre-production settings
+global_setting.screen.log_file_title|Log Files
+global_setting.screen.log_file_description|Description of log files
+global_setting.screen.button_download_all|Download all files
+global_setting.screen.button_save|Save changes
 lengow_setting.lengow_account_id_title|Account Id
 lengow_setting.lengow_access_token_title|Access Token
 lengow_setting.lengow_secret_token_title|Secret Token
@@ -111,9 +120,20 @@ lengow_setting.lengow_tracking_enabled_title|Lengow tracking enabled
 lengow_setting.lengow_tracking_id_title|Lengow Tracking Id
 lengow_setting.lengow_order_stat_title|Order Statistic
 lengow_setting.lengow_order_stat_update_title|Order Statistic Update
-class.lengow_list.pagination_of|of
-class.lengow_list.button_yes|Yes
-class.lengow_list.button_no|No
-class.lengow_list.button_search|Search
-lengow_log|
-log|
+lengow_log.exception.no_connection_webservice|Connection didn't work with the Lengow webservice in shop %{name_shop} (%{id_shop})
+lengow_log.exception.crendentials_not_valid|Account ID, Token access or Secret are not valid in shop %{name_shop} (%{id_shop})
+lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})
+log.import.in_progress|import is already started
+log.import.preprod_mode_active|WARNING ! Preprod mode is activated
+log.import.start|## Start %{type} import ##
+log.import.end|## End %{type} import ##
+log.import.start_for_shop|Start import in shop %{name_shop} (%{id_shop})
+log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and markeplace: %{markeplace_name} with account ID: %{account_id}
+log.import.find_all_orders|%{nb_order} order(s) found with account ID: %{account_id}
+log.import.nb_order_imported|%{nb_order} order(s) imported
+log.import.nb_order_updated|%{nb_order} order(s) updated
+log.import.nb_order_with_error|%{nb_order} order(s) with errors
+log.import.account_id_empty|ID account, access token or secret is empty in shop %{name_shop} (%{id_shop})
+log.import.account_id_already_used|Account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})
+log.import.connector_get_order|Connector: get order with order id: %{marketplace_sku} and marketplace: %{markeplace_name}
+log.import.connector_get_all_order|Connector: get orders between %{date_from} and %{date_to} with account ID: %{account_id}

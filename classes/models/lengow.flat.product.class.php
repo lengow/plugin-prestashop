@@ -146,7 +146,7 @@ class LengowFlatProduct extends Product
 //        if ($findEmployee) {
 //            $context->employee = $findEmployee;
 //        } else {
-//            throw new LengowExportException('No Active Employee Fund');
+//            throw new LengowException('No Active Employee Fund');
 //        }
 //
 //
