@@ -148,7 +148,7 @@ class FeedTest extends ModuleTestCase
             "log_output" => false
         ));
         $export->exec();
-        $this->assertFileNbLine($export->getFileName(), 8, 'show_combination');
+        $this->assertFileNbLine($export->getFileName(), 6, 'show_combination');
     }
 
     /**
@@ -164,7 +164,7 @@ class FeedTest extends ModuleTestCase
             "log_output" => false
         ));
         $export->exec();
-        $this->assertFileNbLine($export->getFileName(), 8, 'inactive_product');
+        $this->assertFileNbLine($export->getFileName(), 6, 'inactive_product');
     }
 
 
@@ -193,7 +193,7 @@ class FeedTest extends ModuleTestCase
     {
         $export = new LengowExport(array("log_output" => false));
         $export->exec();
-        $this->assertFileNbLine($export->getFileName(), 5, 'all');
+        $this->assertFileNbLine($export->getFileName(), 4, 'all');
     }
 
     /**
@@ -216,7 +216,7 @@ class FeedTest extends ModuleTestCase
         $export->exec();
         $this->assertFileValues($export->getFileName(), 10, array("NAME_PRODUCT" => "NAME010"));
         $this->assertFileValues($export->getFileName(), '10_11', array("NAME_PRODUCT" => "NAME010 - Pointure - 35"));
-        $this->assertFileNbLine($export->getFileName(), 8, 'with_full_title');
+        $this->assertFileNbLine($export->getFileName(), 6, 'with_full_title');
     }
 
     /**
@@ -264,10 +264,6 @@ class FeedTest extends ModuleTestCase
             'Export contain max 10 images'
         );
     }
-
-
-
-
 
 //    /**
 //     * Test Export Format Empty

@@ -15,6 +15,7 @@ use Currency;
 use LengowLog;
 use Module;
 use Tools;
+use Language;
 use LengowMarketplace;
 use LengowConnector;
 
@@ -67,6 +68,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
             $context = Context::getContext();
             $context->employee = $employee;
             $context->currency = new Currency(1);
+            $context->language = new Language(1);
 
             Configuration::updateGlobalValue('LENGOW_ORDER_ID_PROCESS', 2);
             Configuration::updateGlobalValue('LENGOW_ORDER_ID_SHIPPED', 4);

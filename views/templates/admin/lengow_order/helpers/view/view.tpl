@@ -20,7 +20,9 @@
 
 <div id="lengow_order_wrapper">
     <div class="lengow_order_block_header">
-        {if not $toolbox}
+        {if "toolbox"|defined and $toolbox}
+            {include file='./header_toolbox.tpl'}
+        {else}
         <div class="lengow_order_block_header_content">
             <div id="lengow_wrapper_messages"></div>
             <div class="lengow_order_block_content_left">
@@ -45,8 +47,6 @@
             </div>
             <div class="lengow_clear"></div>
         </div>
-            {else}
-            {include file='./header_toolbox.tpl'}
         {/if}
     </div>
     <div>

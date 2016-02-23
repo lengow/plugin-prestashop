@@ -644,7 +644,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 
 /* ORDER PAGE */
 #lengow_order_wrapper {
-    padding:0 60px;
+    padding:0 60px 40px 60px;
 }
 
 .lengow_order_block_header_content {
@@ -673,6 +673,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 /*ORDER SETTING PAGE */
 #lengow_form_wrapper {
     width:100%;
+    padding-bottom: 40px;
 }
 
 .lengow_form {
