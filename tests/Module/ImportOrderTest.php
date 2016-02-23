@@ -538,7 +538,7 @@ class ImportOrderTest extends ModuleTestCase
      * @test
      * @expectedException        LengowException
      * @expectedExceptionMessage Shipping address don't have country
-     * @covers LengowImport::getCarrierId
+     * @covers LengowImportOrder::getCarrierId
      */
     public function getCarrierIdEmptyAddress()
     {
@@ -569,7 +569,7 @@ class ImportOrderTest extends ModuleTestCase
      * @test
      * @expectedException        LengowException
      * @expectedExceptionMessage Shipping address don't have country
-     * @covers LengowImport::getCarrierId
+     * @covers LengowImportOrder::getCarrierId
      */
     public function getCarrierIdEmptyAddressCountry()
     {
@@ -600,7 +600,7 @@ class ImportOrderTest extends ModuleTestCase
      * @test
      * @expectedException        LengowException
      * @expectedExceptionMessage You must select a default carrier for country : France
-     * @covers LengowImport::getCarrierId
+     * @covers LengowImportOrder::getCarrierId
      */
     public function getCarrierIdRequireCarrierError()
     {
@@ -636,7 +636,7 @@ class ImportOrderTest extends ModuleTestCase
      * Test getCarrierId
      *
      * @test
-     * @covers LengowImport::getCarrierId
+     * @covers LengowImportOrder::getCarrierId
      */
     public function getCarrierIdRequireCarrier()
     {

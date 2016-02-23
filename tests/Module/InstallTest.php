@@ -5,6 +5,7 @@ namespace PrestaShop\PrestaShop\Tests\TestCase;
 use Cache;
 use Db;
 use Module;
+use LengowInstall;
 use Configuration;
 
 class InstallTest extends ModuleTestCase
@@ -41,7 +42,7 @@ class InstallTest extends ModuleTestCase
         }
 
         $this->assertTrue((boolean)$module, 'Load Lengow Module');
-        $this->assertTrue($module->uninstall());
+        $this->assertTrue($module->uninstall(), 'Uninstall Lengow Module');
     }
 
     /**
@@ -54,7 +55,7 @@ class InstallTest extends ModuleTestCase
     {
         $module = Module::getInstanceByName('lengow');
         $this->assertTrue((boolean)$module, 'Load Lengow Module');
-        $this->assertEquals($module->name, 'lengow');
+        $this->assertEquals($module->name, 'lengow', 'Module name is lengow');
     }
 
     /**
@@ -76,7 +77,31 @@ class InstallTest extends ModuleTestCase
             $module->uninstall();
             Cache::clean('Module::isInstalledlengow');
         }
-        $this->assertTrue($module->install());
-        $this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'));
+        $this->assertTrue($module->install(), 'Module install successfully');
+        $this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'), 'Module name has correct version');
+    }
+
+    /**
+     * Test dropTable
+     * @test
+     * @covers LengowInstallation::dropTable
+     * @covers LengowInstallation::update
+     */
+    public function dropTable()
+    {
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Install/lengow_table.yml');
+
+        foreach (LengowInstall::$tables as $table) {
+            $this->assertTableExist($table, 'Table '.$table.' exist');
+        }
+        LengowInstall::dropTable();
+        foreach (LengowInstall::$tables as $table) {
+            $this->assertTableNotExist($table, 'Table '.$table.' don\'t exist');
+        }
+        $module = Module::getInstanceByName('lengow');
+        $module->isInstalled('lengow');
+        $install = new LengowInstall($module);
+        $install->update();
     }
 }

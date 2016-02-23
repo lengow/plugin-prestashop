@@ -690,6 +690,14 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     float: none;
     display: block;
     text-align: left;
+    width:auto;
+}
+
+.lengow_form  input[type=text] {
+    width:100%;
+    height: 28px;
+    font-size: 20px;
+    color: #666666;
 }
 
 .lengow_form  .checkbox label {
@@ -853,7 +861,6 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     height:38px;
 }
 
-
 .lengow_form .lengow_report_mail_address .select2-search {
     width: auto;
 }
@@ -875,6 +882,11 @@ body.lengow_body .nobootstrap .lengow_report_mail_address {
     line-height: 28px;
     font-size: 18px;
 }
+
+#lengow_delete_module {
+    background:#ECA7A7;
+}
+
 
 /* DASHBOARD */
 body.adminlengowhome.lengow_body #content {
