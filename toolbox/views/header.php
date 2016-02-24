@@ -47,30 +47,42 @@
 <body>
 <?php
 $lengowTool = new LengowTool();
+$locale = new LengowTranslation();
 if ($lengowTool->isLogged()) {
     ?>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/modules/lengow/toolbox/index.php">
-                    <i class="fa fa-rocket"></i> Lengow Toolbox
+                    <i class="fa fa-rocket"></i> <?php echo $locale->t('toolbox.menu.lengow_toolbox'); ?>
                 </a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/modules/lengow/toolbox/config.php"><i class="fa fa-cog"></i> Configuration</a></li>
-                    <li><a href="/modules/lengow/toolbox/log.php"><i class="fa fa-file-text-o"></i> Logs</a></li>
                     <li>
-                        <a href="/modules/lengow/toolbox/order.php"><i class="fa fa-shopping-basket"></i> Orders</a>
+                        <a href="/modules/lengow/toolbox/config.php">
+                            <i class="fa fa-cog"></i> <?php echo $locale->t('toolbox.menu.configuration'); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/modules/lengow/toolbox/log.php">
+                            <i class="fa fa-file-text-o"></i> <?php echo $locale->t('toolbox.menu.log'); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/modules/lengow/toolbox/order.php">
+                            <i class="fa fa-shopping-basket"></i> <?php echo $locale->t('toolbox.menu.order'); ?>
+                        </a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <?php
-                    echo '<li><a href="/modules/lengow/toolbox/logoff.php">
-                        <i class="fa fa-sign-out"></i> Log Off</a></li>';
-                    ?>
+                    <li>
+                        <a href="/modules/lengow/toolbox/logoff.php">
+                            <i class="fa fa-sign-out"></i> <?php echo $locale->t('toolbox.menu.log_off'); ?>
+                        </a>
+                    </li>
                 </ul>
-            </div><!--/.nav-collapse -->
+            </div>
         </div>
     </nav>
     <?php

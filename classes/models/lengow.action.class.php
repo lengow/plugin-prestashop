@@ -124,8 +124,17 @@ class LengowAction
         }
 
         Db::getInstance()->autoExecute(_DB_PREFIX_ . 'lengow_actions', $insertParams, 'INSERT');
-        LengowMain::log('API', 'call tracking ', false, $params['id_order']);
-        LengowOrder::addOrderLog($id_order_lengow, 'Tracking send in progress', 'ship');
+        LengowMain::log(
+            'API',
+            LengowMain::setLogMessage('log.order_action.call_tracking'),
+            false,
+            $params['id_order']
+        );
+        LengowOrder::addOrderLog(
+            $id_order_lengow,
+            LengowMain::setLogMessage('lengow_log.error.tracking_in_progress'),
+            'ship'
+        );
     }
 
     public static function updateAction($params)

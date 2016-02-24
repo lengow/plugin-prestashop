@@ -212,7 +212,7 @@ class LengowImportOrder
         // if log import exist and not finished
         $import_log = LengowOrder::orderIsInError($this->marketplace_sku, $this->delivery_address_id, 'import');
         if ($import_log) {
-            $decoded_message = LengowMain::getLogMessage($import_log['message'], 'en');
+            $decoded_message = LengowMain::decodeLogMessage($import_log['message'], 'en');
             LengowMain::log(
                 'Import',
                 LengowMain::setLogMessage('log.import.error_already_created', array(
@@ -420,14 +420,14 @@ class LengowImportOrder
         } catch (LengowException $e) {
             $error_message = $e->getMessage();
         } catch (Exception $e) {
-            $error_message = '[Prestashop error] "'.$e->getMessage().'"'.$e->getFile().'|'.$e->getLine();
+            $error_message = '[Prestashop error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
         }
         if (isset($error_message)) {
             if (isset($cart)) {
                 $cart->delete();
             }
             LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $type = 'import');
-            $decoded_message = LengowMain::getLogMessage($error_message, 'en');
+            $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
             LengowMain::log(
                 'Import',
                 LengowMain::setLogMessage('log.import.order_import_failed', array(
@@ -586,7 +586,7 @@ class LengowImportOrder
         if (count($error_messages) > 0) {
             foreach ($error_messages as $error_message) {
                 LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $type = 'import');
-                $decoded_message = LengowMain::getLogMessage($error_message, 'en');
+                $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
                 LengowMain::log(
                     'Import',
                     LengowMain::setLogMessage('log.import.order_import_failed', array(

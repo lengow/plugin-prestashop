@@ -149,7 +149,7 @@ class LengowConnector
                 $array['account_id'] = $this->account_id;
             }
             $data = $this->_callAction($method, $array, $type, $format);
-        } catch (\Exception $e) {
+        } catch (LengowException $e) {
             return $e->getMessage();
         }
         return $data;
@@ -253,7 +253,10 @@ class LengowConnector
         $url = $url['scheme'].'://'.$url['host'].$url['path'];
         if ($type == 'GET') {
             $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
-            LengowMain::log('Connector', 'Call '.$opts[CURLOPT_URL]);
+            LengowMain::log(
+                'Connector',
+                LengowMain::setLogMessage('log.connector.call_api', array('curl_url' => $opts[CURLOPT_URL]))
+            );
         } else {
             $opts[CURLOPT_URL] = $url;
             $opts[CURLOPT_POST] = count($args);
@@ -267,8 +270,11 @@ class LengowConnector
         $information = curl_getinfo($ch, CURLINFO_HEADER_OUT);
         curl_close($ch);
         if ($data === false) {
-            LengowMain::log('Connector', 'Error : '.$error['code']);
-            throw new \Exception('Bad request '.$error['code']);
+            $error_message = LengowMain::setLogMessage('log.connector.error_api', array(
+                'error_code' => $error['code']
+            ));
+            LengowMain::log('Connector', $error_message);
+            throw new LengowException($error_message);
         }
         return $data;
     }
@@ -281,7 +287,9 @@ class LengowConnector
     /**
      * v3
      * Get Valid Account / Access / Secret
+     *
      * @param integer $id_shop
+     *
      * @return array
      */
     public static function getAccessId($id_shop = null)
@@ -317,10 +325,12 @@ class LengowConnector
     /**
      * v3
      * Query Api
+     *
      * @param string $type (GET / POST)
      * @param string $url to query
      * @param integer $shopId to query
      * @param array $params
+     *
      * @return api result as array
      */
     public static function queryApi($type, $url, $shopId = null, $params = array())

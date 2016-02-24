@@ -73,16 +73,16 @@ class LengowPaymentModule extends PaymentModule
 
         $order_status = new OrderState((int)$id_order_state, (int)$this->context->language->id);
         if (!Validate::isLoadedObject($order_status)) {
-            throw new PrestaShopException('Can\'t load Order status');
+            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.cannot_load_order_status'));
         }
 
         if (!$this->active) {
-            throw new PrestaShopException('Payment module is not active');
+            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.payment_module_not_active'));
         }
 
         // Does order already exists ?
         if (!Validate::isLoadedObject($this->context->cart) || $this->context->cart->OrderExists() != false) {
-            throw new PrestaShopException('Cart cannot be loaded or an order has already been placed using this cart');
+            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.cart_cannot_be_loaded'));
         }
 
         // For each package, generate an order
@@ -159,7 +159,9 @@ class LengowPaymentModule extends PaymentModule
                 $address = new Address($id_address);
                 $this->context->country = new Country($address->id_country, $this->context->cart->id_lang);
                 if (!$this->context->country->active) {
-                    throw new PrestaShopException('The delivery address country is not active.');
+                    throw new LengowException(
+                        LengowMain::setLogMessage('lengow_log.exception.delivery_country_not_active')
+                    );
                 }
             }
 
@@ -206,15 +208,16 @@ class LengowPaymentModule extends PaymentModule
                     );
                     $product['total'] = (float)$product['price'] * (int)$product['quantity'];
                     $product['total_wt'] = Tools::ps_round((float)$product['price_wt'] * (int)$product['quantity'], 2);
-
                     // total tax free
                     $total_products += $product['total'];
                     // total with taxes
                     $total_products_wt += $product['total_wt'];
-
-                    //$product_list[] = $product;//array_merge($product, $lengow_products[$sku]);
                 } else {
-                    throw new LengowException('product '.$sku.' is not listed as part of the current order.');
+                    throw new LengowException(
+                        LengowMain::setLogMessage('lengow_log.exception.product_is_not_listed', array(
+                            'product_id' => $sku
+                        ))
+                    );
                 }
             }
 
@@ -277,7 +280,7 @@ class LengowPaymentModule extends PaymentModule
                     (int)$id_cart,
                     true
                 );
-                throw new PrestaShopException('unable to save order.');
+                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order'));
             }
 
             $order_list[] = $order;
@@ -324,7 +327,9 @@ class LengowPaymentModule extends PaymentModule
                     (int)$id_cart,
                     true
                 );
-                throw new LengowException('unable to save order payment.');
+                throw new LengowException(
+                    LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order_payment')
+                );
             }
         }
 
@@ -426,7 +431,7 @@ class LengowPaymentModule extends PaymentModule
                     }
                 }
             } else {
-                throw new LengowException('Order creation failed', 1);
+                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.order_creation_failed'));
             }
         } // End foreach $order_detail_list
 
@@ -525,9 +530,13 @@ class LengowPaymentModule extends PaymentModule
                     // total with taxes
                     $total_products_wt += $product['total_wt'];
 
-                    $product_list[] = $product;//array_merge($product, $lengow_products[$sku]);
+                    $product_list[] = $product;
                 } else {
-                    throw new LengowException('product '.$sku.' is not listed as part of the current order.');
+                    throw new LengowException(
+                        LengowMain::setLogMessage('lengow_log.exception.product_is_not_listed', array(
+                            'product_id' => $sku
+                        ))
+                    );
                 }
             }
             $order->total_products = (float)Tools::ps_round($total_products, 2);
@@ -688,7 +697,9 @@ class LengowPaymentModule extends PaymentModule
                         }
                     }
                 } else {
-                    throw new LengowException('Can\'t load Order status');
+                    throw new LengowException(
+                        LengowMain::setLogMessage('lengow_log.exception.cannot_load_order_status')
+                    );
                 }
 
                 if (isset($outOfStock) && $outOfStock) {
@@ -711,15 +722,10 @@ class LengowPaymentModule extends PaymentModule
 
                 return array($order);
             } else {
-                $errorMessage = Tools::displayError('Order creation failed');
-                throw new Exception($errorMessage);
+                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.order_creation_failed'));
             }
         } else {
-            $errorMessage = Tools::displayError(
-                'Cart can\'t be loaded or an order has already been placed using this cart'
-            );
-            throw new Exception($errorMessage);
-
+            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.cart_cannot_be_loaded'));
         }
     }
 

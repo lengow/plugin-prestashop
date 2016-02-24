@@ -43,20 +43,24 @@ class LengowCart extends Cart implements LengowObject
     {
         $this->lengow_products = $products;
         if (!$products) {
-            throw new Exception('no product to be added to cart');
+            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_product_to_cart'));
         }
         foreach ($products as $id => $product) {
             $ids = explode('_', $id);
             if (count($ids) > 2) {
-                throw new Exception('cannot add product ' . $id . ' to cart (invalid ID format)');
+                throw new LengowException(
+                    LengowMain::setLogMessage('lengow_log.exception.cannot_add_product_to_cart', array(
+                        'product_id' => $id
+                    ))
+                );
             }
-
             $id_product = $ids[0];
             $id_product_attribute = isset($ids[1]) ? $ids[1] : null;
             if (!$this->updateQty($product['quantity'], $id_product, $id_product_attribute)) {
-                throw new Exception(
-                    'product '.$id.' could not be added to cart.'
-                    .' Make sure it is available for order or has enough quantity.'
+                throw new LengowException(
+                    LengowMain::setLogMessage('lengow_log.exception.no_quantity_for_product', array(
+                        'product_id' => $id
+                    ))
                 );
             }
         }

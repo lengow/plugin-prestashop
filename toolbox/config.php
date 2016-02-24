@@ -29,6 +29,8 @@ $form = new LengowConfigurationForm(array(
     "fields" => LengowConfiguration::getKeys()
 ));
 
+$locale = new LengowTranslation();
+
 if (_PS_VERSION_ < '1.5') {
     $shopCollection = array(array('id_shop' => 1));
 } else {
@@ -57,13 +59,14 @@ switch ($action) {
 require 'views/header.php';
 ?>
 <div class="container">
-<h1>Configuration</h1>
+<h1><?php echo $locale->t('toolbox.menu.configuration'); ?></h1>
 <form class="form-horizontal" method="POST">
     <input type="hidden" name="action" value="update"/>
     <?php
     foreach ($shopCollection as $row) {
         $shop = new LengowShop($row['id_shop']);
-        echo '<fieldset><legend>Boutique : '.$shop->name.' > Import</legend>';
+        echo '<fieldset><legend>'.$locale->t('toolbox.configuration.shop').' : '.$shop->name
+            .' > '.$locale->t('toolbox.configuration.import').'</legend>';
         echo $form->buildShopInputs($shop->id, array(
             'LENGOW_ACCOUNT_ID',
             'LENGOW_ACCESS_TOKEN',
@@ -71,7 +74,8 @@ require 'views/header.php';
             'LENGOW_SHOP_ACTIVE',
         ));
         echo '</fieldset>';
-        echo '<fieldset><legend>Boutique : '.$shop->name.' > Export</legend>';
+        echo '<fieldset><legend>'.$locale->t('toolbox.configuration.shop').' : '.$shop->name
+            .' > '.$locale->t('toolbox.configuration.export').'</legend>';
         echo $form->buildShopInputs($shop->id, array(
             'LENGOW_SHOP_TOKEN',
             'LENGOW_EXPORT_SELECTION_ENABLED',
@@ -80,7 +84,7 @@ require 'views/header.php';
         ));
         echo '</fieldset>';
     }
-    echo '<fieldset><legend>Import</legend>';
+    echo '<fieldset><legend>'.$locale->t('toolbox.configuration.import').'</legend>';
     echo $form->buildInputs(array(
         'LENGOW_ORDER_ID_PROCESS',
         'LENGOW_ORDER_ID_SHIPPED',
@@ -106,7 +110,7 @@ require 'views/header.php';
         'LENGOW_TRACKING_ID',
     ));
     echo '</fieldset>';
-    echo '<fieldset><legend>Export</legend>';
+    echo '<fieldset><legend>'.$locale->t('toolbox.configuration.export').'</legend>';
     echo $form->buildInputs(array(
         'LENGOW_EXPORT_FORMAT',
         'LENGOW_EXPORT_FILE_ENABLED',
@@ -116,7 +120,9 @@ require 'views/header.php';
     ?>
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-success">Save</button>
+        <button type="submit" class="btn btn-success">
+            <?php echo $locale->t('toolbox.configuration.button_save'); ?>
+        </button>
     </div>
 </div>
 </form>

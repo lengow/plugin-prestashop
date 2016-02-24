@@ -420,7 +420,7 @@ class LengowOrderController extends LengowController
         $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
         if (count($logCollection)>0) {
             foreach ($logCollection as $row) {
-                $errorMessage[] = $row['message'];
+                $errorMessage[] = LengowMain::decodeLogMessage($row['message']);
             }
         }
         $link = new LengowLink();
@@ -474,15 +474,16 @@ class LengowOrderController extends LengowController
                     $shopName = '';
                 }
                 if (is_array($values)) {
-                    $message[]= $shopName.join(', ', $values);
+                    $message[]= $shopName.join(', ', LengowMain::decodeLogMessage($values));
                 } else {
-                    $message[]= $shopName.$values;
+                    $message[]= $shopName.LengowMain::decodeLogMessage($values);
                 }
             }
         }
         if (LengowImport::isInProcess()) {
-            $message[] = 'You need to wait '.LengowImport::restTimeToImport().
-                ' seconds before re import orders';
+            $message[] = LengowMain::decodeLogMessage('lengow_log.error.rest_time_to_export', null, array(
+                'rest_time' => LengowImport::restTimeToImport()
+            ));
         }
 
         return $message;
