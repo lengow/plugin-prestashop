@@ -370,4 +370,28 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $lastLine = $this::readLastLine($log->getFileName());
         self::assertTrue((bool)strpos($lastLine, $text), $message);
     }
+
+    /**
+     * Test if table exist
+     * @param string $tableName
+     * @param string $message
+     * @return boolean
+     */
+    public function assertTableExist($tableName, $message = '')
+    {
+        $result = Db::getInstance()->ExecuteS("SHOW TABLES LIKE '"._DB_PREFIX_.$tableName."'");
+        return (bool)$result;
+    }
+
+    /**
+     * Test if table not exist
+     * @param string $tableName
+     * @param string $message
+     * @return boolean
+     */
+    public function assertTableNotExist($tableName, $message = '')
+    {
+        $result = Db::getInstance()->ExecuteS("SHOW TABLES LIKE '"._DB_PREFIX_.$tableName."'");
+        return !(bool)$result;
+    }
 }

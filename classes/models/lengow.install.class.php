@@ -31,12 +31,22 @@ class LengowInstall
     protected static $installationStatus;
 
     static private $tabs = array(
-        'Home' => array('name' => 'AdminLengowHome', 'active' => true),
-        'Product' => array('name' => 'AdminLengowFeed', 'active' => true),
-        'Orders' => array('name' => 'AdminLengowOrder', 'active' => true),
+        'Home' => array('name' => 'AdminLengowHome', 'active' => false),
+        'Product' => array('name' => 'AdminLengowFeed', 'active' => false),
+        'Orders' => array('name' => 'AdminLengowOrder', 'active' => false),
         'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
         'Help' => array('name' => 'AdminLengowHelp', 'active' => false),
         'MainSetting' => array('name' => 'AdminLengowMainSetting', 'active' => false)
+    );
+
+    static public $tables = array(
+        'lengow_actions',
+        'lengow_carrier_country',
+        'lengow_logs_import',
+        'lengow_marketplace_carrier',
+        'lengow_orders',
+        'lengow_order_line',
+        'lengow_product',
     );
 
     public function __construct($module)
@@ -259,6 +269,7 @@ class LengowInstall
     }
 
     /**
+     * v3
      * Set Installation Status
      *
      * @param boolean $status Installation Status
@@ -269,11 +280,25 @@ class LengowInstall
     }
 
     /**
+     * v3
      * Is Installation In Progress
      * @return boolean
      */
     public static function isInstallationInProgress()
     {
         return self::$installationStatus;
+    }
+
+    /**
+     * v3
+     * Drop Lengow tables
+     * @return bool
+     */
+    public static function dropTable()
+    {
+        foreach (self::$tables as $table) {
+            Db::getInstance()->Execute('DROP TABLE '._DB_PREFIX_.$table);
+        }
+        return true;
     }
 }
