@@ -39,9 +39,8 @@ class LengowHomeController extends LengowController
                 case 'sync':
                     $action = isset($_REQUEST['data']) ?$_REQUEST['data'] : false;
                     LengowSync::sync($action);
-                    echo "$('#lengow_home_content').show();";
-                    echo "$('#lengow_home_frame').hide();";
-                    echo "$('#lengow_home_iframe').attr('src','');";
+                    $lengowLink = new LengowLink();
+                    echo 'document.location.href="'.$lengowLink->getAbsoluteAdminLink("AdminLengowHome", true).'";';
                     break;
             }
             exit();
