@@ -26,7 +26,7 @@
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/admin.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
-
+{if !$isNewMerchant}
 <ul class="nav nav-pills lengow-nav lengow-nav-top">
     <li class="lengow_float_right">
         <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">
@@ -73,7 +73,7 @@
     </li>
 
 </ul>
-
+{/if}
 <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
 <script type="text/javascript">
     var lengow_jquery = $.noConflict(true);
