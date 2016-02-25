@@ -49,6 +49,11 @@
         <p>{$locale->t('order_setting.screen.import_setting_description')}</p><br/>
         {$import_params}
     </div>
+    <div class="container2">
+        <h2>Cron setting</h2>
+
+    </div>
+    <br/>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn lengow_btn lengow_submit_order_setting">{$locale->t('order_setting.screen.button_save')}</button>

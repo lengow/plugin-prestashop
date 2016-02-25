@@ -52,8 +52,8 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
         vero?</p>
     <p style="font-size: 0.9em;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam excepturi facilis, illo inventore molestias nam
         nesciunt non nulla porro</p>
-    <button href="#" style="width: 100%;padding: 15px;margin-top: 50px;border: none;background-color: #45bf7b;color: white;font-size: 0.9em;font-weight: bold;border-radius: 2px;">Create my 15 days-free account</button>
-    <button href="#" style="width: 100%;padding: 10px;border: none;background: none;font-size: 0.9em;color: #6c6c6c;">or Connect to your account</button>
+    <button href="#" style="width: 100%;padding: 15px;margin-top: 50px;border: none;background-color: #45bf7b;color: white;font-size: 0.9em;font-weight: bold;border-radius: 2px;" onmouseover="this.style.background='#47ce83';" onmouseout="this.style.background='#45bf7b';">Create my 15 days-free account</button>
+    <button href="#" style="width: 100%;border-radius: 2px;padding: 10px;border: none;background: none;font-size: 0.9em;color: #6c6c6c;" onmouseover="this.style.background='#CDCDCD';" onmouseout="this.style.background='none';">or Connect to your account</button>
     <div style="width: 50%;display: inline-block;vertical-align: top;margin-left: 25px;">
         <div style="height: 55px;width: 55px;background-color: #CDCDCD;border-radius: 35px;margin-top: 50px;margin-left: 25px;margin-right: 25px;"></div>
         <p style="font-size: 0.8em;margin-bottom:0;">Lorem ipsum dolor.</p><p style="font-size: 0.7em;margin-top:0;"> Aliquam excepturi</p>
