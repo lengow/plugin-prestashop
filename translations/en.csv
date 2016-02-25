@@ -176,6 +176,7 @@ log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})
 log.export.nb_product_found|%{nb_product} product(s) found
 log.export.count_product|%{product_count} products exported
 log.export.export_failed|export failed - %{decoded_message}
+log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>
 log.export.error_folder_not_writable|export file generation did not end properly. Please make sure the export folder is writable
 log.export.error_no_product_combination|unable to retrieve product combinations
 log.export.error_illegal_currency|illegal Currency
@@ -240,9 +241,10 @@ log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}
 log.connector.error_api|call api failed - %{error_code}
 toolbox.menu.lengow_toolbox|Lengow Toolbox
+toolbox.menu.product|Products
+toolbox.menu.order|Orders
 toolbox.menu.configuration|Configuration
 toolbox.menu.log|Logs
-toolbox.menu.order|Orders
 toolbox.menu.log_off|Log Off
 toolbox.configuration.shop|Shop
 toolbox.configuration.import|Import

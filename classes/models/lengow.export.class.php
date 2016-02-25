@@ -414,7 +414,7 @@ class LengowExport
             if ($feed_url && php_sapi_name() != "cli") {
                 LengowMain::log(
                     'Export',
-                    'your feed is available here: <a href="' . $feed_url . '" target="_blank">' . $feed_url . '</a>',
+                    LengowMain::setLogMessage('log.export.your_feed_available_here', array('feed_url' => $feed_url)),
                     $this->log_output
                 );
             }

@@ -52,9 +52,7 @@ class LengowHomeController extends LengowController
      */
     public function display()
     {
-        $isNewMerchant = LengowMain::isNewMerchant();
-        $this->context->smarty->assign('isNewMerchant', $isNewMerchant);
-        if (!$isNewMerchant) {
+        if (!$this->isNewMerchant) {
             $this->context->smarty->assign('stats', LengowStatistic::get());
         }
         $lengowLink = new LengowLink();
