@@ -31,6 +31,8 @@ class LengowOrderSettingController extends LengowController
      */
     public function display()
     {
+
+
         $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
 
         $countries = LengowCarrierCountry::getCountries();
@@ -243,6 +245,8 @@ class LengowOrderSettingController extends LengowController
                 );
                 break;
             default:
+                $form = LengowCron::getFormCron();
+                $this->context->smarty->assign('form', $form);
                 LengowCarrier::syncListMarketplace();
                 LengowCarrierCountry::createDefaultCarrier();
                 LengowCarrierCountry::listCarrierByCountry();
