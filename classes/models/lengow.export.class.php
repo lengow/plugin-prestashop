@@ -235,11 +235,10 @@ class LengowExport
     public function checkCurrency()
     {
         if (!Context::getContext()->currency) {
-            throw new LengowException('Illegal Currency');
+            throw new LengowException(LengowMain::setLogMessage('log.export.error_illegal_currency'));
         }
         return true;
     }
-
 
     /**
      * v3-test
@@ -253,12 +252,11 @@ class LengowExport
     {
         $carrier = LengowCarrier::getActiveCarrier();
         if (!$carrier->id) {
-            throw new LengowException('You must select a carrier in Lengow Export Tab');
+            throw new LengowException(LengowMain::setLogMessage('log.export.error_no_carrier_selected'));
         }
         $this->carrier = $carrier;
         return true;
     }
-
 
     /**
      * v3-test
@@ -273,7 +271,7 @@ class LengowExport
     public function setFormat($format)
     {
         if (!in_array($format, LengowFeed::$AVAILABLE_FORMATS)) {
-            throw new LengowException('Illegal export format');
+            throw new LengowException(LengowMain::setLogMessage('log.export.error_illegal_export_format'));
         }
         $this->format = $format;
         return true;
@@ -287,9 +285,16 @@ class LengowExport
     public function exec()
     {
         try {
+            LengowMain::log('Export', LengowMain::setLogMessage('log.export.start'), $this->log_output);
             $shop = new LengowShop($this->shopId);
-            $shop_name = $shop->name;
-            LengowMain::log('Export', 'init ' . $shop_name, $this->log_output);
+            LengowMain::log(
+                'Export',
+                LengowMain::setLogMessage('log.export.start_for_shop', array(
+                    'name_shop' => $shop->name,
+                    'id_shop'   => $shop->id
+                )),
+                $this->log_output
+            );
 
             // get fields to export
             $export_fields = $this->getFields();
@@ -298,16 +303,32 @@ class LengowExport
 
             LengowMain::log(
                 'Export',
-                count($products) . ' product' . (count($products) > 1 ? 's' : '') . ' found',
+                LengowMain::setLogMessage('log.export.nb_product_found', array("nb_product" => count($products))),
                 $this->log_output
             );
             $this->export($products, $export_fields, $shop);
 
             Configuration::updatevalue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), null, null, $this->shopId);
-            LengowMain::log('Export', 'end', $this->log_output);
+            LengowMain::log(
+                'Export',
+                LengowMain::setLogMessage('log.export.end'),
+                $this->log_output
+            );
 
+        } catch (LengowException $e) {
+            $error_message = $e->getMessage();
         } catch (Exception $e) {
-            LengowMain::log('Export', 'Error : ' . $e->getMessage(), true);
+            $error_message = '[Prestashop error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
+        }
+        if (isset($error_message)) {
+            $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
+            LengowMain::log(
+                'Export',
+                LengowMain::setLogMessage('log.export.export_failed', array(
+                    'decoded_message' => $decoded_message
+                )),
+                $this->log_output
+            );
         }
     }
 
@@ -368,7 +389,13 @@ class LengowExport
                 }
             }
             if ($product_count > 0 && $product_count % 10 == 0) {
-                LengowMain::log('Export', $product_count . ' products', $this->log_output);
+                LengowMain::log(
+                    'Export',
+                    LengowMain::setLogMessage('log.export.count_product', array(
+                        'product_count' => $product_count
+                    )),
+                    $this->log_output
+                );
             }
             if ($this->limit > 0 && $product_count >= $this->limit) {
                 break;
@@ -379,15 +406,17 @@ class LengowExport
 
         if (!$success) {
             throw new LengowException(
-                'Export file generation did not end properly. Please make sure the export folder is writable.',
-                true
+                LengowMain::setLogMessage('log.export.error_folder_not_writable')
             );
         }
         if (!$this->stream) {
             $feed_url = $this->feed->getUrl();
             if ($feed_url && php_sapi_name() != "cli") {
-                LengowMain::log('Export', 'your feed is available here:
-                <a href="' . $feed_url . '" target="_blank">' . $feed_url . '</a>', $this->log_output);
+                LengowMain::log(
+                    'Export',
+                    'your feed is available here: <a href="' . $feed_url . '" target="_blank">' . $feed_url . '</a>',
+                    $this->log_output
+                );
             }
         }
     }
@@ -409,7 +438,7 @@ class LengowExport
         );
         $combinations = $product->getCombinations();
         if (empty($combinations)) {
-            throw new LengowException('Unable to retrieve product combinations');
+            throw new LengowException(LengowMain::setLogMessage('log.export.error_no_product_combination'));
         }
         foreach ($combinations as $combination) {
             $paId = $combination['id_product_attribute'];

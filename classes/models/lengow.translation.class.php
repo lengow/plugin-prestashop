@@ -33,6 +33,11 @@ class LengowTranslation
         $this->isoCode = Context::getContext()->language->iso_code;
     }
 
+    public function setIsoCode($iso_code)
+    {
+        $this->isoCode = $iso_code;
+    }
+
     /**
      * v3
      * Translate message

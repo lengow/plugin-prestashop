@@ -517,22 +517,22 @@ class LengowMain
 
     /**
      * v3
-     * set message with params for translation
+     * Set message with params for translation
      *
      * @param string $key
      * @param array  $params
      *
      * @return string
      */
-    public static function setLogMessage($key, $params = array())
+    public static function setLogMessage($key, $params = null)
     {
-        if (count($params) == 0) {
+        if (is_null($params) || (is_array($params) && count($params) == 0)) {
             return $key;
         }
         $all_params = array();
         foreach ($params as $param => $value) {
-            $value = str_replace(array('|', '='), array('', ''), $value);
-            $all_params[] = $param.'='.$value;
+            $value = str_replace(array('|', '=='), array('', ''), $value);
+            $all_params[] = $param.'=='.$value;
         }
         $message = $key.'['.join('|', $all_params).']';
         return $message;
@@ -540,26 +540,25 @@ class LengowMain
 
     /**
      * v3
-     * get message with params for translation
+     * Decode message with params for translation
      *
      * @param string $message
      * @param string $iso_code
+     * @param mixed  $params
      *
      * @return string
      */
-    public static function getLogMessage($message, $iso_code = null)
+    public static function decodeLogMessage($message, $iso_code = null, $params = null)
     {
         if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
-            $params = null;
             if (isset($result[1])) {
                 $key = $result[1];
             }
-            if (isset($result[4])) {
-                $params = array();
+            if (isset($result[4]) && is_null($params)) {
                 $str_param = $result[4];
                 $all_params = explode('|', $str_param);
                 foreach ($all_params as $param) {
-                    $result = explode('=', $param);
+                    $result = explode('==', $param);
                     $params[$result[0]] = $result[1];
                 }
             }
@@ -837,16 +836,18 @@ class LengowMain
      * v3
      * Check logs table and send mail for order not imported correctly
      *
+     * @param  boolean $log_output See log or not
+     *
      * @return void
      */
-    public static function sendMailAlert()
+    public static function sendMailAlert($log_output = false)
     {
         $cookie = Context::getContext()->cookie;
         $subject = 'Lengow imports logs';
         $mail_body = '';
         $sql_logs = 'SELECT lo.`marketplace_sku`, lli.`message`, lli.`id`
-            FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
-            INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo 
+            FROM `'._DB_PREFIX_.'lengow_logs_import` lli
+            INNER JOIN `'._DB_PREFIX_.'lengow_orders` lo 
             ON lli.`id_order_lengow` = lo.`id`
             WHERE lli.`is_finished` = 0 AND lli.`mail` = 0
         ';
@@ -855,11 +856,13 @@ class LengowMain
             return true;
         }
         foreach ($logs as $log) {
-            $mail_body .= '<li>Order ' . $log['marketplace_sku'];
+            $mail_body .= '<li>'.LengowMain::decodeLogMessage('lengow_log.mail_report.order', null, array(
+                'marketplace_sku' => $log['marketplace_sku']
+            ));
             if ($log['message'] != '') {
-                $mail_body .= ' - ' . $log['message'];
+                $mail_body .= ' - '.LengowMain::decodeLogMessage($log['message']);
             } else {
-                $mail_body .= ' - No error message, contact support via https://supportlengow.zendesk.com/agent/';
+                $mail_body .= ' - '.LengowMain::decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
             }
             $mail_body .= '</li>';
             LengowMain::logSent($log['id']);
@@ -884,9 +887,17 @@ class LengowMain
                 _PS_MODULE_DIR_ . 'lengow/views/templates/mails/',
                 true
             )) {
-                LengowMain::log('MailReport', 'Unable to send report email to ' . $to);
+                LengowMain::log(
+                    'MailReport',
+                    LengowMain::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
+                    $log_output
+                );
             } else {
-                LengowMain::log('MailReport', 'Report email sent to ' . $to);
+                LengowMain::log(
+                    'MailReport',
+                    LengowMain::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
+                    $log_output
+                );
             }
         }
     }

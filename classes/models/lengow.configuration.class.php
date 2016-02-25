@@ -174,7 +174,7 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_IMPORT_SHIP_MP_ENABLED' => array(
                     'type'          => 'checkbox',
-                    'label'         => $locale->t('Import orders shipped by marketplace'),
+                    'label'         => $locale->t('lengow_setting.lengow_import_ship_mp_enabled_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_ship_mp_enabled_legend'),
                     'default_value' => false,
                 ),

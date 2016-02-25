@@ -228,8 +228,15 @@ class LengowImport
         // clean logs
         LengowMain::cleanLog();
         if (LengowImport::isInProcess() && !$this->preprod_mode) {
-            $global_error = LengowMain::setLogMessage('log.import.in_progress');
+            $global_error = LengowMain::setLogMessage('lengow_log.error.export_in_progress');
             LengowMain::log('Import', $global_error, $this->log_output);
+            LengowMain::log(
+                'Import',
+                LengowMain::setLogMessage('lengow_log.error.rest_time_to_export', array(
+                    'rest_time' => LengowImport::restTimeToImport()
+                )),
+                $this->log_output
+            );
             $error[0] = $global_error;
             if (isset($this->id_order_lengow) && $this->id_order_lengow) {
                 LengowOrder::finishOrderLogs($this->id_order_lengow, $this->re_import_type);
@@ -318,28 +325,36 @@ class LengowImport
                     } catch (LengowException $e) {
                         $error_message = $e->getMessage();
                     } catch (Exception $e) {
-                        $error_message = 'Prestashop error: '.$e->getMessage().'"'.$e->getFile().'|'.$e->getLine();
+                        $error_message = '[Prestashop error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
                     }
                     if (isset($error_message)) {
                         if (isset($this->id_order_lengow) && $this->id_order_lengow) {
                             LengowOrder::finishOrderLogs($this->id_order_lengow, $this->re_import_type);
                             LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $this->re_import_type);
                         }
-                        LengowMain::log('Import', $error_message, $this->log_output);
+                        $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
+                        LengowMain::log(
+                            'Import',
+                            LengowMain::setLogMessage('log.import.import_failed', array(
+                                'decoded_message' => $decoded_message
+                            )),
+                            $this->log_output
+                        );
                         $error[(int)$shop->id] = $e->getMessage();
                         continue;
                     }
                 }
+                unset($shop);
             }
             if (!$this->import_one_order) {
                 LengowMain::log(
                     'Import',
-                    LengowMain::setLogMessage('log.import.nb_order_imported', array('nb_order' => $order_error)),
+                    LengowMain::setLogMessage('log.import.nb_order_imported', array('nb_order' => $order_new)),
                     $this->log_output
                 );
                 LengowMain::log(
                     'Import',
-                    LengowMain::setLogMessage('log.import.nb_order_updated', array('nb_order' => $order_error)),
+                    LengowMain::setLogMessage('log.import.nb_order_updated', array('nb_order' => $order_update)),
                     $this->log_output
                 );
                 LengowMain::log(
@@ -357,7 +372,7 @@ class LengowImport
             );
             // sending email in error for orders
             if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$this->preprod_mode) {
-                LengowMain::sendMailAlert();
+                LengowMain::sendMailAlert($this->log_output);
             }
         }
         if ($this->import_one_order) {
@@ -551,7 +566,7 @@ class LengowImport
             if (count($order_data->packages) == 0) {
                 LengowMain::log(
                     'Import',
-                    LengowMain::setLogMessage('lengow_log.error.no_package'),
+                    LengowMain::setLogMessage('log.import.error_no_package'),
                     $this->log_output,
                     $marketplace_sku
                 );
@@ -564,7 +579,7 @@ class LengowImport
                 if (!isset($package_data->delivery->id)) {
                     LengowMain::log(
                         'Import',
-                        LengowMain::setLogMessage('lengow_log.error.no_delivery_address'),
+                        LengowMain::setLogMessage('log.import.error_no_delivery_address'),
                         $this->log_output,
                         $marketplace_sku
                     );
@@ -579,7 +594,7 @@ class LengowImport
                     ) {
                         LengowMain::log(
                             'Import',
-                            LengowMain::setLogMessage('lengow_log.error.wrong_package_number'),
+                            LengowMain::setLogMessage('log.import.error_wrong_package_number'),
                             $this->log_output,
                             $marketplace_sku
                         );
@@ -606,13 +621,19 @@ class LengowImport
                     );
                     $order = $import_order->importOrder();
                 } catch (LengowException $e) {
-                    LengowMain::log('Import', $e->getMessage(), $this->log_output);
-                    continue;
+                    $error_message = $e->getMessage();
                 } catch (Exception $e) {
+                    $error_message = '[Prestashop error]: "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
+                }
+                if (isset($error_message)) {
+                    $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
                     LengowMain::log(
                         'Import',
-                        'Prestashop error : "'.$e->getMessage().'"'.$e->getFile().'|'.$e->getLine(),
-                        $this->log_output
+                        LengowMain::setLogMessage('log.import.order_import_failed', array(
+                            'decoded_message' => $decoded_message
+                        )),
+                        $this->log_output,
+                        $marketplace_sku
                     );
                     continue;
                 }

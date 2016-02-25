@@ -436,9 +436,9 @@ class LengowOrder extends Order
                     $this->validateFields();
                     $this->update();
                 }
-                LengowMain::getLogInstance()->write(
+                LengowMain::log(
                     'Import',
-                    'state updated to shipped',
+                    LengowMain::setLogMessage('log.import.state_updated_to_shipped'),
                     $log_output,
                     $this->lengow_marketplace_sku
                 );
@@ -458,9 +458,9 @@ class LengowOrder extends Order
                 $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this, true);
                 $history->validateFields();
                 $history->add();
-                LengowMain::getLogInstance()->write(
+                LengowMain::log(
                     'Import',
-                    'state updated to canceled',
+                    LengowMain::setLogMessage('log.import.state_updated_to_canceled'),
                     $log_output,
                     $this->lengow_marketplace_sku
                 );
@@ -591,7 +591,9 @@ class LengowOrder extends Order
             ) {
                 LengowMain::log(
                     'Import',
-                    'WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID '.$this->id.')',
+                    LengowMain::setLogMessage('log.import.order_not_synchronized_with_lengow', array(
+                        'order_id' => $this->id
+                    )),
                     $log_output,
                     $this->lengow_marketplace_sku
                 );
@@ -599,7 +601,9 @@ class LengowOrder extends Order
             } else {
                 LengowMain::log(
                     'Import',
-                    'order successfully synchronised with Lengow webservice (ORDER ID '.$this->id.')',
+                    LengowMain::setLogMessage('log.import.order_synchronized_with_lengow', array(
+                        'order_id' => $this->id
+                    )),
                     $log_output,
                     $this->lengow_marketplace_sku
                 );
@@ -851,7 +855,9 @@ class LengowOrder extends Order
     /**
      * v3
      * Get Order Lines
+     *
      * @param integer $id_order Prestashop order id
+     *
      * @return array list of order line
      */
     public static function findOrderLineIds($id_order)
@@ -860,10 +866,12 @@ class LengowOrder extends Order
         return Db::getInstance()->ExecuteS($sql);
     }
 
-    /***
+    /**
      * v3
      * Re Import Order
+     *
      * @param integer $id (id of table lengow_orders)
+     *
      * @return boolean
      */
     public static function isOrderImport($id_order_lengow)
@@ -874,9 +882,11 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3-test
+     * v3
      * Re Import Order
+     *
      * @param integer $id_order_lengow (id of table lengow_orders)
+     *
      * @return mixed
      */
     public static function reImportOrder($id_order_lengow)
@@ -903,7 +913,9 @@ class LengowOrder extends Order
     /**
      * v3
      * Re Send Order
+     *
      * @param integer $id_order_lengow (id of table lengow_orders)
+     *
      * @return mixed
      */
     public static function reSendOrder($id_order_lengow)
@@ -923,11 +935,17 @@ class LengowOrder extends Order
      * v3-test
      * Send Order
      *
+     * @param $action
+     *
      */
     public function callAction($action)
     {
         if ((int)$this->id == 0) {
-            LengowMain::log('API-OrderAction', 'Error : Can\'t load order', true);
+            LengowMain::log(
+                'API-OrderAction',
+                LengowMain::setLogMessage('log.order_action.can_not_load_order'),
+                true
+            );
             return false;
         }
         $marketplace = LengowMain::getMarketplaceSingleton(
@@ -940,7 +958,9 @@ class LengowOrder extends Order
             if (count($orderLineCollection) == 0) {
                 LengowMain::log(
                     'API-OrderAction',
-                    'Error : Order Line require, but not found in order '.$this->lengow_marketplace_sku,
+                    LengowMain::setLogMessage('log.order_action.order_line_required', array(
+                        'marketplace_sku' => $this->lengow_marketplace_sku
+                    )),
                     true,
                     $this->lengow_marketplace_sku
                 );
@@ -956,9 +976,10 @@ class LengowOrder extends Order
         }
     }
 
-
     /**
      * Get Total Order By Statuses
+     *
+     * @param $status
      */
     public static function getTotalOrderByStatus($status)
     {

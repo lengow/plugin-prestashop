@@ -111,6 +111,10 @@ class LengowInstall
             $tab->module = $this->lengowModule->name;
             $tab->name[Configuration::get('PS_LANG_DEFAULT')] = $this->lengowModule->l($name);
             $tab->add();
+            LengowMain::log(
+                'Install',
+                LengowMain::setLogMessage('log.install.install_tab', array('class_name'  => $tab->class_name))
+            );
         }
         return true;
     }
@@ -130,7 +134,10 @@ class LengowInstall
             if ($tab->id != 0) {
                 $result = $tab->delete();
             }
-            LengowMain::log('Install', 'Uninstall tab ' . $value['class_name']);
+            LengowMain::log(
+                'Install',
+                LengowMain::setLogMessage('log.install.uninstall_tab', array('class_name'  => $value['class_name']))
+            );
         }
         return true;
     }

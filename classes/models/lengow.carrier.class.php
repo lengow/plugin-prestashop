@@ -27,10 +27,12 @@ class LengowCarrier extends Carrier
     const COMPATIBILITY_KO = -1;
 
     /**
+     * v3
      * Returns carrier id according to the module name given
-     * @param string $module_name Module name
-     * @param integer $id_lang lang id
-     * @param LengowAddress $shipping_address Lengow Address
+     *
+     * @param string        $module_name        Module name
+     * @param integer       $id_lang            lang id
+     * @param LengowAddress $shipping_address   Lengow Address
      *
      * @return integer carrier id
      */
@@ -70,10 +72,11 @@ class LengowCarrier extends Carrier
     }
 
     /**
+     * v3
      * Get carrier id for a given name
      *
-     * @param string $name Carrier name
-     * @param integer $id_lang lang id
+     * @param string    $name       Carrier name
+     * @param integer   $id_lang    lang id
      *
      * @return mixed
      */
@@ -89,12 +92,13 @@ class LengowCarrier extends Carrier
     }
 
     /**
+     * v3
      * Returns the carrier received from the marketplace and returns the matched prestashop carrier if found
      *
-     * @param string $carrier_code
+     * @param string            $carrier_code
      * @param LengowMarketplace $marketplace
-     * @param integer $id_lang
-     * @param LengowAddress $shipping_address
+     * @param integer           $id_lang
+     * @param LengowAddress     $shipping_address
      *
      * @return integer carrier id
      */
@@ -116,12 +120,13 @@ class LengowCarrier extends Carrier
     }
 
     /**
+     * v3
      * Ensure carrier compatibility with SoColissimo and MondialRelay Modules
      *
-     * @param integer $id_customer customer id
-     * @param integer $id_cart cart id
-     * @param integer $id_carrier carrier id
-     * @param LengowAddress $shipping_address order shipping address
+     * @param integer       $id_customer        customer id
+     * @param integer       $id_cart            cart id
+     * @param integer       $id_carrier         carrier id
+     * @param LengowAddress $shipping_address   order shipping address
      *
      * @return integer    -1 = compatibility not ensured, 0 = not a carrier module, 1 = compatibility ensured
      */
@@ -146,7 +151,11 @@ class LengowCarrier extends Carrier
             if ($mr->isMondialRelayCarrier($id_carrier)) {
                 $relay = LengowCarrier::getMRRelay($shipping_address->id, $shipping_address->id_relay, $mr);
                 if (!$relay) {
-                    throw new LengowException('relay ' . $shipping_address->id_relay . ' could not be found');
+                    throw new LengowException(
+                        LengowMain::setLogMessage('log.import.error_mondial_relay_not_found', array(
+                            'id_relay' => $shipping_address->id_relay
+                        ))
+                    );
                 }
                 return LengowCarrier::addMondialRelay(
                     $relay,
@@ -160,11 +169,12 @@ class LengowCarrier extends Carrier
     }
 
     /**
+     * v3
      * Save order in SoColissimo table
      *
-     * @param integer $id_cart cart id
-     * @param integer $id_customer customer id
-     * @param LengowAddress $shipping_adddress shipping address
+     * @param integer       $id_cart            cart id
+     * @param integer       id_customer         customer id
+     * @param LengowAddress $shipping_adddress  shipping address
      *
      * @return bool
      */
@@ -174,7 +184,9 @@ class LengowCarrier extends Carrier
         $loaded = include_once _PS_MODULE_DIR_ . 'socolissimo' . $sep . 'classes' . $sep . 'SCFields.php';
         if (!$loaded) {
             throw new LengowException(
-                'missing file ' . _PS_MODULE_DIR_ . 'socolissimo' . $sep . 'classes' . $sep . 'SCFields.php'
+                LengowMain::setLogMessage('log.import.error_colissimo_missing_file', array(
+                    'ps_module_dir' => _PS_MODULE_DIR_
+                ))
             );
         }
 
@@ -293,10 +305,11 @@ class LengowCarrier extends Carrier
     }
 
     /**
+     * v3
      * Check if relay ID is correct
      *
-     * @param integer $id_address_delivery shipping address id
-     * @param string $id_relay relay id
+     * @param integer   $id_address_delivery    shipping address id
+     * @param string    $id_relay               relay id
      *
      * @return boolean
      */
@@ -309,7 +322,9 @@ class LengowCarrier extends Carrier
         $loaded = include_once _PS_MODULE_DIR_ . 'mondialrelay' . $sep . 'classes' . $sep . 'MRRelayDetail.php';
         if (!$loaded) {
             throw new LengowException(
-                'missing file ' . _PS_MODULE_DIR_ . 'mondialrelay' . $sep . 'classes' . $sep . 'MRRelayDetail.php'
+                LengowMain::setLogMessage('log.import.error_mondial_relay_missing_file', array(
+                    'ps_module_dir' => _PS_MODULE_DIR_
+                ))
             );
         }
         $params = array(
@@ -327,12 +342,13 @@ class LengowCarrier extends Carrier
     }
 
     /**
+     * v3
      * Save order in MR table
      *
-     * @param array $relay relay info
-     * @param integer $id_customer customer id
-     * @param integer $id_carrier carrier id
-     * @param integer $insurance insurance
+     * @param array     $relay          relay info
+     * @param integer   $id_customer    customer id
+     * @param integer   $id_carrier     carrier id
+     * @param integer   $insurance      insurance
      *
      * @return boolean
      */
@@ -363,10 +379,12 @@ class LengowCarrier extends Carrier
 
 
     /**
-     * v3-test
+     * v3
      * Get Marketplace By Carrier And Country
-     * @param $id_carrier
-     * @param $id_country
+     *
+     * @param integer $id_carrier
+     * @param integer $id_country
+     *
      * @return mixed
      */
     public static function getMarketplaceCarrier($id_carrier, $id_country)
@@ -383,8 +401,10 @@ class LengowCarrier extends Carrier
     /**
      * v3
      * Get Marketplace By Carrier And Country
-     * @param $marketplace_carrier_sku
-     * @param $id_country
+     *
+     * @param string  $marketplace_carrier_sku
+     * @param integer $id_country
+     *
      * @return mixed
      */
     public static function getMarketplaceByCarrierSku($marketplace_carrier_sku, $id_country)
@@ -398,10 +418,10 @@ class LengowCarrier extends Carrier
         }
     }
 
-
     /**
      * v3-test
      * Get List Carrier in all Lengow Marketplace API
+     *
      * @return array
      */
     public static function getListMarketplaceCarrierAPI()
@@ -456,10 +476,12 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3-test
+     * v3
      * Insert Data into lengow marketplace carrier table
+     *
      * @param string $code
      * @param string $name
+     *
      * @param integer $countryId
      */
     public static function insertCountryInMarketplace($code, $name, $countryId)
@@ -483,8 +505,11 @@ class LengowCarrier extends Carrier
     }
 
     /**
+     * v3
      * Get all active carriers
-     * @param $id_country
+     *
+     * @param integer $id_country
+     *
      * @return array
      */
     public static function getActiveCarriers($id_country = null)
@@ -508,8 +533,11 @@ class LengowCarrier extends Carrier
 
     /**
      * v3
-     * @param null $id_country
-     * @param bool $force_country
+     * Get active carrier
+     *
+     * @param integer $id_country
+     * @param boolean $force_country
+     *
      * @return Carrier
      */
     public static function getActiveCarrier($id_country = null, $force_country = false)
@@ -550,9 +578,11 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3-test
+     * v3
+     *
      * @param integer $carrier_id
      * @param integer $id_country
+     *
      * @return boolean
      */
     public static function getActiveCarrierByCarrierId($carrier_id, $id_country)
@@ -583,7 +613,11 @@ class LengowCarrier extends Carrier
     }
 
     /**
+     * v3
      * Get List Carrier in all Lengow Marketplace
+     *
+     * @param integer $id_country
+     *
      * @return array
      */
     public static function getListMarketplaceCarrier($id_country = null)
@@ -606,17 +640,20 @@ class LengowCarrier extends Carrier
         return $collection;
     }
 
-
     /**
+     * v3
      * Insert a new marketplace carrier country in the table
-     * @param  int $id_country
+     *
+     * @param integer $id_country
+     *
      * @return boolean
      */
     public static function insert($id_country)
     {
         $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
 
-        $sql = 'SELECT marketplace_carrier_sku, marketplace_carrier_name FROM '._DB_PREFIX_.'lengow_marketplace_carrier WHERE id_country = '.(int)$default_country;
+        $sql = 'SELECT marketplace_carrier_sku, marketplace_carrier_name 
+                FROM '._DB_PREFIX_.'lengow_marketplace_carrier WHERE id_country = '.(int)$default_country;
 
         $marketplace_carriers = Db::getInstance()->executeS($sql);
 
@@ -630,16 +667,17 @@ class LengowCarrier extends Carrier
     }
 
     /**
+     * v3
      * Delete a marketplace carrier country
-     * @param  int $id_country
+     *
+     * @param integer $id_country
+     *
      * @return action
      */
     public static function deleteMarketplaceCarrier($id_country)
     {
         $db = DB::getInstance();
         $db->delete(_DB_PREFIX_ . 'lengow_marketplace_carrier', 'id_country = ' . $id_country);
-
         return $db;
     }
-
 }
