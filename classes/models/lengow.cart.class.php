@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-class LengowCart extends Cart implements LengowObject
+class LengowCart extends Cart
 {
     /**
      * @var boolean add inactive & out of stock products to cart
@@ -284,22 +284,24 @@ class LengowCart extends Cart implements LengowObject
         }
     }
 
-    /* LengowObject interface methods */
-
     /**
-     * @see LengowObject::getFieldDefinition()
+     * Get definition array
+     *
+     * @return array
      */
     public static function getFieldDefinition()
     {
         if (_PS_VERSION_ < 1.5) {
             return LengowCart::$definition_lengow;
         }
-
         return LengowCart::$definition['fields'];
     }
 
     /**
-     * @see LengowObject::assign()
+     * Assign API data
+     *
+     * @param array $data API data
+     * @return LengowAddress
      */
     public function assign($data = array())
     {
@@ -309,7 +311,9 @@ class LengowCart extends Cart implements LengowObject
     }
 
     /**
-     * @see LengowObject::validateLengow()
+     * Validate Lengow
+     *
+     * @return bool true if object is valid
      */
     public function validateLengow()
     {
@@ -318,13 +322,13 @@ class LengowCart extends Cart implements LengowObject
         foreach ($definition as $field_name => $constraints) {
             if (isset($constraints['required']) && $constraints['required']) {
                 if (!$this->{$field_name}) {
-                    $this->validateFieldLengow($field_name, LengowObject::LENGOW_EMPTY_ERROR);
+                    $this->validateFieldLengow($field_name, LengowAddress::LENGOW_EMPTY_ERROR);
                 }
             }
 
             if (isset($constraints['size'])) {
                 if (Tools::strlen($this->{$field_name}) > $constraints['size']) {
-                    $this->validateFieldLengow($field_name, LengowObject::LENGOW_SIZE_ERROR);
+                    $this->validateFieldLengow($field_name, LengowAddress::LENGOW_SIZE_ERROR);
                 }
             }
         }
@@ -338,15 +342,18 @@ class LengowCart extends Cart implements LengowObject
     }
 
     /**
-     * @see LengowObject::validateFieldLengow()
+     * Modify a field according to the type of error
+     *
+     * @param string $error_type type of error
+     * @param string $field incorrect field
      */
     public function validateFieldLengow($field, $error_type)
     {
         switch ($error_type) {
-            case LengowObject::LENGOW_EMPTY_ERROR:
+            case LengowAddress::LENGOW_EMPTY_ERROR:
                 $this->validateEmptyLengow($field);
                 break;
-            case LengowObject::LENGOW_SIZE_ERROR:
+            case LengowAddress::LENGOW_SIZE_ERROR:
                 $this->validateSizeLengow($field);
                 break;
             default:
@@ -356,7 +363,9 @@ class LengowCart extends Cart implements LengowObject
     }
 
     /**
-     * @see LengowObject::validateEmptyLengow()
+     * Modify an empty field
+     *
+     * @param string $field field name
      */
     public function validateEmptyLengow($field)
     {
@@ -370,7 +379,9 @@ class LengowCart extends Cart implements LengowObject
     }
 
     /**
-     * @see LengowObject::validateSizeLengow()
+     * Modify a field to fit its size
+     *
+     * @param string $field field name
      */
     public function validateSizeLengow($field)
     {
