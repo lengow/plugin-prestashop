@@ -428,6 +428,10 @@ class LengowCarrier extends Carrier
     {
         $result = LengowConnector::queryApi('get', '/v3.0/marketplaces');
 
+        if (!$result) {
+            return array();
+        }
+
         $carrierCollection = array();
         foreach ($result as $marketplace => $values) {
             if (isset($values->orders->carriers)) {
