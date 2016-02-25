@@ -35,16 +35,8 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
 <head>
     <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
 </head>
-<body style="background: #f7f7f7;font-family: Open Sans;margin: 0;">
-<div style="background: #CDCDCD;display: inline-block;height: 100%;padding: 15px;">
-    <h1>Lengow Page</h1>
-    <div id="call">
-        <a id="link_call" href="#">Send Information To Prestashop</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-    </div>
-    <pre><code id="parameters"></code></pre>
-</div>
-<div style="background: #f7f7f7;display: inline-block;vertical-align: top;padding-right: 60px;padding-left: 60px;width: 20%;">
+<body style="background: #CDCDCD;font-family: Open Sans;margin: 0;">
+<div style="background: #f7f7f7;float:right;width: 400px;padding:20px;">
     <h1 style="font-size: 4.9em;text-align: center;color: #31353d;margin-bottom: 5px;">Lengow</h1>
     <p style="width: 13%;padding-top: 5px;padding-bottom: 5px;padding-right: 20px;padding-left: 20px;margin-top: -20px;background-color: #45bf7b;color: white;font-size: 0.6em;font-weight: bold;border-radius: 2px;margin-left: 250px;">OFFICIAL</p>
     <p style="font-size: 0.9em;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam excepturi facilis, illo inventore molestias nam
@@ -63,6 +55,13 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
         <p style="font-size: 0.8em;">Lorem ipsum dolor.<span style="display: block;font-size: 0.7em;">Aliquam excepturi facilis, illo inventore molestias</span></p>
     </div>
 </div>
+
+    <h1>Lengow Page</h1>
+    <div id="call">
+        <a id="link_call" href="#">Send Information To Prestashop</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+    <pre><code id="parameters" style="display: block;overflow: hidden;"></code></pre>
 </body>
 
 <script type="text/javascript">
