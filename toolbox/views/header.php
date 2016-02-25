@@ -61,7 +61,7 @@ if ($lengowTool->isLogged()) {
                 <ul class="nav navbar-nav">
                     <li>
                         <a href="/modules/lengow/toolbox/product.php">
-                            <i class="fa fa-shopping-basket"></i> <?php echo $locale->t('toolbox.menu.product'); ?>
+                            <i class="fa fa-bicycle"></i> <?php echo $locale->t('toolbox.menu.product'); ?>
                         </a>
                     </li>
                     <li>

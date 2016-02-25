@@ -21,6 +21,8 @@
 
 require 'conf.inc.php';
 
+LengowLink::forceLink('/modules/lengow/toolbox/order.php?t=1');
+
 $controller = new LengowOrderController();
 $controller->postProcess();
 $controller->display();

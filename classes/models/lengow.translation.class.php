@@ -28,14 +28,11 @@ class LengowTranslation
 
     protected $isoCode = null;
 
+    public static $forceIsoCode = null;
+
     public function __construct()
     {
         $this->isoCode = Context::getContext()->language->iso_code;
-    }
-
-    public function setIsoCode($iso_code)
-    {
-        $this->isoCode = $iso_code;
     }
 
     /**
@@ -50,6 +47,9 @@ class LengowTranslation
      */
     public function t($message, $args = array(), $iso_code = null)
     {
+        if (!is_null(LengowTranslation::$forceIsoCode)) {
+            $iso_code = LengowTranslation::$forceIsoCode;
+        }
         if (is_null($iso_code)) {
             $iso_code = $this->isoCode;
         }

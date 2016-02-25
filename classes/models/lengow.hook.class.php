@@ -67,7 +67,6 @@ class LengowHook
             'updateOrderStatus'     => '1.4',
             'orderConfirmation'     => '1.4',
             // Version 1.5
-            'actionAdminControllerSetMedia' => '1.5',
             'actionObjectUpdateAfter'       => '1.5',
         );
         foreach ($lengow_hook as $hook => $version) {
@@ -415,30 +414,6 @@ class LengowHook
                 }
             }
         }
-    }
-
-    /**
-     * Hook on header dashboard.
-     *
-     * @param array $args Arguments of hook
-     */
-    public function hookActionAdminControllerSetMedia($args)
-    {
-        $this->context = Context::getContext();
-
-        $controllers = array('admindashboard', 'adminhome', 'adminlengow');
-        if (in_array(Tools::strtolower(Tools::getValue('controller')), $controllers)) {
-            $this->context->controller->addJs($this->module->getPathUri() . 'views/js/chart.min.js');
-        }
-
-        if (Tools::getValue('controller') == 'AdminModules' && Tools::getValue('configure') == 'lengow') {
-            $this->context->controller->addJs($this->module->getPathUri() . '/views/js/lengow/admin.js');
-            $this->context->controller->addCss($this->module->getPathUri() . '/views/css/admin.css');
-        }
-        if (Tools::getValue('controller') == 'AdminOrders') {
-            $this->context->controller->addJs($this->module->getPathUri() . '/views/js/lengow/admin.js');
-        }
-        $args = 0; // Prestashop validator
     }
 
     /**

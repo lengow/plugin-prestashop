@@ -24,12 +24,18 @@ $listDefaultValues = array();
 
 $directory =  dirname(dirname(__FILE__)).'/translations/yml/';
 $listFiles = array_diff(scandir($directory), array('..', '.'));
+$listFiles = array_diff($listFiles, array('en.yml'));
+array_unshift($listFiles, "en.yml");
 
 foreach ($listFiles as $list) {
     $ymlFile = yaml_parse_file($directory.$list);
     $locale =  basename($directory.$list, '.yml');
 
-    $fp = fopen(dirname(dirname(__FILE__)).'/translations/'.$locale.'.csv', 'w+');
+    if ($list == 'log.yml') {
+        $fp = fopen(dirname(dirname(__FILE__)).'/translations/en.csv', 'a+');
+    } else {
+        $fp = fopen(dirname(dirname(__FILE__)).'/translations/'.$locale.'.csv', 'w+');
+    }
 
     foreach ($ymlFile as $language => $categories) {
         writeCsv($fp, $categories);

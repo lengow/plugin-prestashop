@@ -23,7 +23,7 @@
  * Lengow Address class
  *
  */
-class LengowAddress extends Address implements LengowObject
+class LengowAddress extends Address
 {
     /**
      * @var string constant billing
@@ -34,6 +34,16 @@ class LengowAddress extends Address implements LengowObject
      * @var string constant delivery
      */
     const SHIPPING = 'delivery';
+
+    /**
+     * @var integer constant error empty
+     */
+    const LENGOW_EMPTY_ERROR = 1;
+
+    /**
+     * @var integer constant error size
+     */
+    const LENGOW_SIZE_ERROR = 2;
 
     /**
      * @var array API fields for an address
@@ -183,10 +193,10 @@ class LengowAddress extends Address implements LengowObject
         return $temp;
     }
 
-    /* Interface methods*/
-
     /**
-     * @see LengowObject::getFieldDefinition()
+     * Get definition array
+     *
+     * @return array
      */
     public static function getFieldDefinition()
     {
@@ -197,7 +207,10 @@ class LengowAddress extends Address implements LengowObject
     }
 
     /**
-     * @see LengowObject::assign()
+     * Assign API data
+     *
+     * @param array $data API data
+     * @return LengowAddress
      */
     public function assign($data = array())
     {
@@ -223,7 +236,9 @@ class LengowAddress extends Address implements LengowObject
     }
 
     /**
-     * @see LengowObject::validateLengow()
+     * Validate Lengow
+     *
+     * @return bool true if object is valid
      */
     public function validateLengow()
     {
@@ -235,12 +250,12 @@ class LengowAddress extends Address implements LengowObject
                 || $field_name == 'phone_mobile'
             ) {
                 if (empty($this->{$field_name})) {
-                    $this->validateFieldLengow($field_name, LengowObject::LENGOW_EMPTY_ERROR);
+                    $this->validateFieldLengow($field_name, LengowAddress::LENGOW_EMPTY_ERROR);
                 }
             }
             if (isset($constraints['size'])) {
                 if (Tools::strlen($this->{$field_name}) > $constraints['size']) {
-                    $this->validateFieldLengow($field_name, LengowObject::LENGOW_SIZE_ERROR);
+                    $this->validateFieldLengow($field_name, LengowAddress::LENGOW_SIZE_ERROR);
                 }
             }
         }
@@ -254,15 +269,18 @@ class LengowAddress extends Address implements LengowObject
     }
 
     /**
-     * @see LengowObject::validateFieldLengow()
+     * Modify a field according to the type of error
+     *
+     * @param string $error_type type of error
+     * @param string $field incorrect field
      */
     public function validateFieldLengow($field, $error_type)
     {
         switch ($error_type) {
-            case LengowObject::LENGOW_EMPTY_ERROR:
+            case LengowAddress::LENGOW_EMPTY_ERROR:
                 $this->validateEmptyLengow($field);
                 break;
-            case LengowObject::LENGOW_SIZE_ERROR:
+            case LengowAddress::LENGOW_SIZE_ERROR:
                 $this->validateSizeLengow($field);
                 break;
             default:
@@ -271,7 +289,9 @@ class LengowAddress extends Address implements LengowObject
     }
 
     /**
-     * @see LengowObject::validateEmptyLengow()
+     * Modify an empty field
+     *
+     * @param string $field field name
      */
     public function validateEmptyLengow($field)
     {
@@ -326,7 +346,9 @@ class LengowAddress extends Address implements LengowObject
     }
 
     /**
-     * @see LengowObject::validateSizeLengow()
+     * Modify a field to fit its size
+     *
+     * @param string $field field name
      */
     public function validateSizeLengow($field)
     {
