@@ -21,6 +21,8 @@
 
 require 'conf.inc.php';
 
+LengowLink::forceLink('/modules/lengow/toolbox/product.php?t=1');
+
 $controller = new LengowFeedController();
 $controller->postProcess();
 $controller->display();
