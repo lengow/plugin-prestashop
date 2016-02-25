@@ -224,12 +224,25 @@
                     url: href,
                     method: 'POST',
                     data: {action: 'load_marketplace', shop_id: $(this).val()},
-                    dataType: 'script',
+                    dataType: 'script'
                 });
             }
         });
-
-
+        $('#table_order td.link').hover(
+            function() {
+                if ($(this).parents('tr').find('td.reference a').length){
+                    $(this).css('cursor','pointer');
+                }
+            }, function () {
+                $(this).css('cursor','auto');
+            }
+        );
+        $('#lengow_order_wrapper').on('click', '#table_order td.link', function() {
+            var link = $(this).parents('tr').find('td.reference a');
+            if (link.length > 0){
+                link.trigger("click");
+            }
+        });
     });
 })(lengow_jquery);
 

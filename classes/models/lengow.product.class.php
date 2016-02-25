@@ -1140,7 +1140,7 @@ class LengowProduct extends Product
         if ($result) {
             return $result[0]['name'];
         } else {
-            throw new LengowException('Cant find Image type size, check your table ps_image_type');
+            throw new LengowException(LengowMain::setLogMessage('log.export.error_cant_find_image_size'));
         }
     }
 }

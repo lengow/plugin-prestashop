@@ -167,6 +167,7 @@ class LengowOrderController extends LengowController
         $fields_list['lengow_status'] = array(
             'title'             => $this->locale->t('order.table.order_lengow_state'),
             'align'             => 'center',
+            'class'             => 'link',
             'display_callback'  => 'LengowOrderController::displayLengowState',
             'filter'            => true,
             'filter_order'      => true,
@@ -182,6 +183,7 @@ class LengowOrderController extends LengowController
         $fields_list['marketplace_name'] = array(
             'title'             => $this->locale->t('order.table.marketplace_name'),
             'align'             => 'center',
+            'class'             => 'link',
             'filter'            => true,
             'filter_order'      => true,
             'filter_key'        => 'lo.marketplace_name',
@@ -191,6 +193,7 @@ class LengowOrderController extends LengowController
         if (_PS_VERSION_ >= '1.5') {
             if (Shop::isFeatureActive()) {
                 $fields_list['shop_name'] = array(
+                    'class'             => 'link',
                     'title'             => $this->locale->t('order.table.shop_name'),
                     'filter'            => true,
                     'filter_order'      => true,
@@ -202,7 +205,7 @@ class LengowOrderController extends LengowController
         }
         $fields_list['marketplace_sku'] = array(
             'title'             => $this->locale->t('order.table.marketplace_sku'),
-            'class'             => 'center',
+            'class'             => 'center link',
             'display_callback'  => 'LengowOrderController::displayOrderLink',
             'filter'            => true,
             'filter_order'      => true,
@@ -210,7 +213,7 @@ class LengowOrderController extends LengowController
         );
         $fields_list['reference'] = array(
             'title'             => $this->locale->t('order.table.reference_prestashop'),
-            'class'             => 'center',
+            'class'             => 'center link reference',
             'display_callback'  => 'LengowOrderController::displayOrderLink',
             'filter'            => true,
             'filter_order'      => true,
@@ -218,7 +221,7 @@ class LengowOrderController extends LengowController
         );
         $fields_list['order_date'] = array(
             'title'             => $this->locale->t('order.table.order_date'),
-            'class'             => 'center',
+            'class'             => 'center link',
             'type'              => 'date',
             'filter'            => true,
             'filter_type'       => 'date',
@@ -227,22 +230,21 @@ class LengowOrderController extends LengowController
         );
         $fields_list['delivery_country_iso'] = array(
             'title'             => $this->locale->t('order.table.delivery_country'),
-            'align'             => 'center',
+            'class'             => 'center link',
             'type'              => 'flag_country',
             'filter_key'        => 'lo.delivery_country_iso',
             'filter_order'      => true,
         );
         $fields_list['nb_item'] = array(
             'title'             => $this->locale->t('order.table.order_item'),
-            'align'             => 'center',
+            'class'             => 'center link',
             'filter_key'        => 'lo.order_item',
             'filter_order'      => true,
         );
         $fields_list['total_paid'] = array(
             'title'             => $this->locale->t('order.table.total_paid'),
-            'align'             => 'center',
             'type'              => 'price',
-            'class'             => 'nowrap',
+            'class'             => 'nowrap center link',
             'filter_key'        => 'lo.total_paid',
             'filter_order'      => true,
         );
@@ -384,12 +386,12 @@ class LengowOrderController extends LengowController
 
     public static function displayOrderLink($key, $value, $item)
     {
-        $toolbox = Context::getContext()->smarty->getVariable('toolbox');
+        $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $link = new LengowLink();
         if ($item['id_order']) {
             if (!$toolbox) {
-                return '<a href="' . $link->getAbsoluteAdminLink('AdminOrders') . '&vieworder&id_order=' . $item['id_order'] .
-                '" target="_blank">' . $value . '</a>';
+                return '<a href="'.$link->getAbsoluteAdminLink('AdminOrders').'&vieworder&id_order='.
+                $item['id_order'].'" target="_blank">' . $value . '</a>';
             } else {
                 return $value;
             }
@@ -420,7 +422,7 @@ class LengowOrderController extends LengowController
         $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
         if (count($logCollection)>0) {
             foreach ($logCollection as $row) {
-                $errorMessage[] = $row['message'];
+                $errorMessage[] = LengowMain::decodeLogMessage($row['message']);
             }
         }
         $link = new LengowLink();
@@ -474,15 +476,16 @@ class LengowOrderController extends LengowController
                     $shopName = '';
                 }
                 if (is_array($values)) {
-                    $message[]= $shopName.join(', ', $values);
+                    $message[]= $shopName.join(', ', LengowMain::decodeLogMessage($values));
                 } else {
-                    $message[]= $shopName.$values;
+                    $message[]= $shopName.LengowMain::decodeLogMessage($values);
                 }
             }
         }
         if (LengowImport::isInProcess()) {
-            $message[] = 'You need to wait '.LengowImport::restTimeToImport().
-                ' seconds before re import orders';
+            $message[] = LengowMain::decodeLogMessage('lengow_log.error.rest_time_to_export', null, array(
+                'rest_time' => LengowImport::restTimeToImport()
+            ));
         }
 
         return $message;

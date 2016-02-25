@@ -55,21 +55,24 @@
                 </li>
             </ul>
         </div>
-
         <div id="lengow_delete_module" class="container">
-            <h2>Uninstall completely modules</h2>
-            <p>All data will be lost (Tables and Parameters), You will lost order history.<br/>
-                After Uninstall the module you will find a backup of lengow database in
-                <a href="{$lengow_link->getAbsoluteAdminLink('AdminBackup')|escape:'htmlall':'UTF-8'}">Prestashop Backup</a>
+            <h2>{$locale->t('global_setting.screen.uninstall_module')}</h2>
+            <p>
+                {$locale->t('global_setting.screen.all_data_will_be_lost')}<br/>
+                {$locale->t('global_setting.screen.you_will_find_a_backup')}
+                <a href="{$lengow_link->getAbsoluteAdminLink('AdminBackup')|escape:'htmlall':'UTF-8'}">
+                    {$locale->t('global_setting.screen.prestashop_backup')}
+                </a>
             </p>
             <div class="checkbox">
                 <label>
                     <input id="lengow_uninstall_checkbox" type="checkbox" class="lengow_switch" name="uninstall_checkbox" />
-                    <span class="lengow_label_text">I want uninstall Lengow Module</span>
+                    <span class="lengow_label_text">{$locale->t('global_setting.screen.i_want_uninstall')}</span>
                 </label>
             </div>
             <div id="lengow_wrapper_delete" style="display:none;">
-                <div class="form-group lengow_account_id[1]"><label class="col-sm-2 control-label">To Uninstall Type : I WANT TO REMOVE ALL DATA</label>
+                <div class="form-group lengow_account_id[1]">
+                    <label class="col-sm-2 control-label">{$locale->t('global_setting.screen.to_uninstall_type')} : I WANT TO REMOVE ALL DATA</label>
                     <div class="col-sm-10">
                         <input type="text" name="uninstall_textbox" class="form-control" placeholder="" value="">
                     </div>

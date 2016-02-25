@@ -33,13 +33,13 @@ switch ($action) {
         break;
 }
 
-
+$locale = new LengowTranslation();
 $listFile = LengowLog::getPaths();
 
 require 'views/header.php';
 ?>
 <div class="container">
-<h1>Log Files</h1>
+<h1><?php echo $locale->t('toolbox.log.log_files'); ?></h1>
 
 <ul class="list-group">
     <?php
@@ -51,7 +51,7 @@ require 'views/header.php';
     }
     echo '<li class="list-group-item">';
     echo '<a href="/modules/lengow/toolbox/log.php?action=download_all">
-        <i class="fa fa-download"></i> Download all files</a>';
+        <i class="fa fa-download"></i> '.$locale->t('toolbox.log.download_all').'</a>';
     echo '</li>';
     ?>
 </ul>

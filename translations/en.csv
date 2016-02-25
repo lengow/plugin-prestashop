@@ -3,7 +3,6 @@ menu.order|orders
 menu.preprod_active|PreProd Active
 menu.order_overview|Overview
 menu.order_parameter|Parameters
-connexion|
 dashboard.screen.good_job|Good Job ! You have
 dashboard.screen.pending_order|Pending Orders
 dashboard.screen.sell_everywhere|What about go event hurther and start selling everywhere ?
@@ -72,6 +71,12 @@ global_setting.screen.preprod_mode_title|Pre-Production Mode
 global_setting.screen.preprod_mode_description|Description of pre-production settings
 global_setting.screen.log_file_title|Log Files
 global_setting.screen.log_file_description|Description of log files
+global_setting.screen.uninstall_module|Uninstall completely module
+global_setting.screen.all_data_will_be_lost|All data will be lost (Tables and Parameters), you will lost order history
+global_setting.screen.you_will_find_a_backup|After Uninstall the module you will find a backup of lengow database in
+global_setting.screen.prestashop_backup|Prestashop Backup
+global_setting.screen.i_want_uninstall|I want uninstall Lengow Module
+global_setting.screen.to_uninstall_type|To Uninstall Type
 global_setting.screen.button_download_all|Download all files
 global_setting.screen.button_save|Save changes
 lengow_setting.lengow_account_id_title|Account Id
@@ -120,18 +125,21 @@ lengow_setting.lengow_tracking_enabled_title|Lengow tracking enabled
 lengow_setting.lengow_tracking_id_title|Lengow Tracking Id
 lengow_setting.lengow_order_stat_title|Order Statistic
 lengow_setting.lengow_order_stat_update_title|Order Statistic Update
-lengow_log.error.no_package|create order fail: no package in the order
-lengow_log.error.wrong_package_number|create order fail: wrong package number
+lengow_log.error.export_in_progress|import is already started
+lengow_log.error.rest_time_to_export|you need to wait %{rest_time} seconds before re import orders
 lengow_log.error.no_product|no product in the order
 lengow_log.error.no_change_rate|no change rate for the order prices
 lengow_log.error.no_currency|no currency in the order
 lengow_log.error.currency_not_available|currency %{currency_iso} is not available in your shop
-lengow_log.error.no_delivery_address|create order fail: no delivery address in the order
 lengow_log.error.no_country_for_delivery_address|delivery address don't have country
 lengow_log.error.no_billing_address|no billing address in the order
 lengow_log.error.no_country_for_billing_address|billing address don't have country
+lengow_log.error.tracking_in_progress|Tracking send in progress
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
 lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation needed
+lengow_log.exception.no_product_to_cart|no product to be added to cart
+lengow_log.exception.cannot_add_product_to_cart|cannot add product %{product_id} to cart (invalid ID format)
+lengow_log.exception.no_quantity_for_product|product %{product_id} could not be added to cart. Make sure it is available for order or has enough quantity
 lengow_log.exception.no_connection_webservice|connection didn't work with the Lengow webservice in shop %{name_shop} (%{id_shop})
 lengow_log.exception.crendentials_not_valid|account ID, token access or secret token are not valid in shop %{name_shop} (%{id_shop})
 lengow_log.exception.error_lengow_webservice|lengow webservice : %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})
@@ -139,33 +147,64 @@ lengow_log.exception.order_list_is_empty|order could not be saved
 lengow_log.exception.carrier_shipping_address_no_country|shipping address don't have country
 lengow_log.exception.no_default_carrier_for_country|you must select a default carrier for country : %{country_name}
 lengow_log.exception.marketplace_not_present|marketplace %{markeplace_name} not present in marketplace list
-lengow_log.exception.action_not_valid|Action %{action} is not valid
-lengow_log.exception.marketplace_action_not_present|Marketplace actions %{action} not present
+lengow_log.exception.action_not_valid|action %{action} is not valid
+lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} not present
 lengow_log.exception.shop_id_require|shop id is required
 lengow_log.exception.marketplace_name_require|marketplace name is required
 lengow_log.exception.no_delivery_country_in_order|can't find delivery country in order
 lengow_log.exception.match_carrier_with_country|you need to match carrier %{carrier_name} with country %{country_name}
 lengow_log.exception.arg_is_required|can't ship order: %{arg_name} is required
-log.import.in_progress|import is already started
-log.import.preprod_mode_active|WARNING ! Preprod mode is activated
-log.import.start|## Start %{type} import ##
-log.import.end|## End %{type} import ##
-log.import.start_for_shop|Start import in shop %{name_shop} (%{id_shop})
+lengow_log.exception.cannot_load_order_status|can't load Order status
+lengow_log.exception.order_creation_failed|Prestashop order creation failed
+lengow_log.exception.payment_module_not_active|payment module is not active
+lengow_log.exception.cart_cannot_be_loaded|cart cannot be loaded or an order has already been placed using this cart
+lengow_log.exception.delivery_country_not_active|the delivery address country is not active
+lengow_log.exception.product_is_not_listed|product %{product_id} is not listed as part of the current order
+lengow_log.exception.unable_to_save_order|unable to save Prestashop order
+lengow_log.exception.unable_to_save_order_payment|unable to save Prestashop order payment
+lengow_log.mail_report.order|Order %{marketplace_sku}
+lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/agent/
+log.install.install_tab|install tab %{class_name}
+log.install.uninstall_tab|uninstall tab %{class_name}
+log.hook.registering_hook_success|registering hook - %{hook}: success
+log.hook.registering_hook_error|registering hook - %{hook}: error
+log.mail_report.send_mail_to|report email sent to %{emails}
+log.mail_report.unable_send_mail_to|unable to send report email to %{emails}
+log.export.start|## start export ##
+log.export.end|## end export ##
+log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})
+log.export.nb_product_found|%{nb_product} product(s) found
+log.export.count_product|%{product_count} products exported
+log.export.export_failed|export failed - %{decoded_message}
+log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>
+log.export.error_folder_not_writable|export file generation did not end properly. Please make sure the export folder is writable
+log.export.error_no_product_combination|unable to retrieve product combinations
+log.export.error_illegal_currency|illegal Currency
+log.export.error_no_carrier_selected|you must select a default carrier in Lengow import parameters
+log.export.error_illegal_export_format|illegal export format
+log.export.error_unable_to_create_folder|unable to create folder %{folder_path}. Make sure it is writeable
+log.export.error_unable_to_create_file|unable to create file %{file_name} in %{folder_name}
+log.export.error_cant_find_image_size|cant find Image type size, check your table ps_image_type
+log.import.preprod_mode_active|warning ! Preprod mode is activated
+log.import.start|## start %{type} import ##
+log.import.end|## end %{type} import ##
+log.import.start_for_shop|start import in shop %{name_shop} (%{id_shop})
 log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and markeplace: %{markeplace_name} with account ID: %{account_id}
 log.import.find_all_orders|%{nb_order} order(s) found with account ID: %{account_id}
 log.import.nb_order_imported|%{nb_order} order(s) imported
 log.import.nb_order_updated|%{nb_order} order(s) updated
 log.import.nb_order_with_error|%{nb_order} order(s) with errors
-log.import.account_id_empty|ID account, access token or secret is empty in shop %{name_shop} (%{id_shop})
-log.import.account_id_already_used|Account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})
-log.import.connector_get_order|Connector: get order with order id: %{marketplace_sku} and marketplace: %{markeplace_name}
-log.import.connector_get_all_order|Connector: get orders between %{date_from} and %{date_to} with account ID: %{account_id}
+log.import.account_id_empty|id account, access token or secret is empty in shop %{name_shop} (%{id_shop})
+log.import.account_id_already_used|account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})
+log.import.connector_get_order|get order with order id: %{marketplace_sku} and marketplace: %{markeplace_name}
+log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} with account ID: %{account_id}
 log.import.error_already_created|%{decoded_message} (created on the %{date_message})
 log.import.external_id_exist|already imported in a Prestashop with order ID %{order_id}
 log.import.order_shipped_by_marketplace|order shipped by %{markeplace_name}
 log.import.current_order_state_unavailable|current order's state [%{order_state_marketplace}] makes it unavailable to import for marketplace %{marketplace_name}
 log.import.order_successfully_imported|order successfully imported (ORDER ID %{order_id})
-log.import.order_import_failed|order import failed: %{decoded_message}
+log.import.import_failed|import failed - %{decoded_message}
+log.import.order_import_failed|import order failed - %{decoded_message}
 log.import.lengow_order_saved|order saved in lengow orders table
 log.import.lengow_order_not_saved|WARNING ! Order could NOT be saved in lengow orders table
 log.import.lengow_order_updated|order updated in lengow orders table
@@ -176,13 +215,16 @@ log.import.quantity_back_reimported_order|adding quantity back to stock (order i
 log.import.order_already_imported|order already imported (ORDER ID %{order_id})
 log.import.order_ready_to_reimport|order is ready to be re-imported (ORDER ID %{order_id})
 log.import.order_state_updated|order's state has been updated to %{state_name}
-log.import.error_order_state_updated|error while updating state: %{error_message}
 log.import.rewrite_processing_fee|rewrite amount without processing fee
 log.import.rewrite_shipping_cost|rewrite amount without shipping cost
 log.import.generate_unique_email|generate unique email %{email}
 log.import.product_be_found|product id %{id_full} found with field %{attribute_name} (%{attribute_value})
 log.import.product_advanced_search|product not found with field %{attribute_name} (%{attribute_value}). Using advanced search
 log.import.product_state_canceled|product %{product_id} could not be added to cart - status: %{state_product}
+log.import.error_order_state_updated|error while updating state: %{error_message}
+log.import.error_no_package|import order failed - no package in the order
+log.import.error_wrong_package_number|import order failed - wrong package number
+log.import.error_no_delivery_address|import order failed - no delivery address in the order
 log.import.error_carrier_not_found|carrier %{carrier_name} could not be found in your Prestashop
 log.import.error_mondial_relay_not_found|relay %{id_relay} could not be found
 log.import.error_mondial_relay_missing_file|missing file %{ps_module_dir}mondialrelay/classes/MRRelayDetail.php
@@ -192,6 +234,27 @@ log.import.state_updated_to_shipped|state updated to shipped
 log.import.state_updated_to_canceled|state updated to canceled
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
-log.order_action.order_line_required|Error: Order Line require, but not found in order %{marketplace_sku}
-log.order_action.can_not_load_order|Error: Can't load order
-log.order_action.call_action_failed|action call failed: %{decoded_message}
+log.order_action.call_tracking|call tracking
+log.order_action.order_line_required|order action failed - Order Line require, but not found in order %{marketplace_sku}
+log.order_action.can_not_load_order|order action failed - Can't load order
+log.order_action.call_action_failed|order action failed - %{decoded_message}
+log.connector.call_api|call %{curl_url}
+log.connector.error_api|call api failed - %{error_code}
+toolbox.menu.lengow_toolbox|Lengow Toolbox
+toolbox.menu.product|Products
+toolbox.menu.order|Orders
+toolbox.menu.configuration|Configuration
+toolbox.menu.log|Logs
+toolbox.menu.log_off|Log Off
+toolbox.configuration.shop|Shop
+toolbox.configuration.import|Import
+toolbox.configuration.export|Export
+toolbox.configuration.button_save|Save
+toolbox.log.log_files|Log Files
+toolbox.log.download_all|Download all files
+toolbox.order.markeplace_name|Marketplace
+toolbox.order.order_sku|Sku Order
+toolbox.order.delivery_address_id|Delivery address ID
+toolbox.order.import_days|Import days
+toolbox.order.button_import_one_order|Import One Order
+toolbox.order.button_import_shop_order|Import Shop Order

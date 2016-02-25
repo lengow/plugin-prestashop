@@ -430,11 +430,11 @@ class LengowMarketplace
         } catch (LengowException $e) {
             $error_message = $e->getMessage();
         } catch (Exception $e) {
-            $error_message = '[Prestashop Error] "'.$e->getMessage().'"'.$e->getFile().'|'.$e->getLine();
+            $error_message = '[Prestashop Error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
         }
         if (isset($error_message)) {
             LengowOrder::addOrderLog($order->lengow_id, $error_message, $action);
-            $decoded_message = LengowMain::getLogMessage($error_message, 'en');
+            $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
             LengowMain::log(
                 'API-OrderAction',
                 LengowMain::setLogMessage('log.order_action.call_action_failed', array(

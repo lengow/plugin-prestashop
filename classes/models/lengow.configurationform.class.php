@@ -111,7 +111,9 @@ class LengowConfigurationForm
                     <select class="form-control lengow_select" name="'.$name.'[]" multiple="multiple">';
                 $collection = explode(',', $value);
                 foreach ($collection as $row) {
-                    $html.='<option value="'.$row.'" selected>'.$row.'</option>';
+                    if (Tools::strlen($row) > 0) {
+                        $html.='<option value="'.$row.'" selected>'.$row.'</option>';
+                    }
                 }
                 $html.= '</select></div><span class="legend">'.$legend.'</span></div>';
                 break;
