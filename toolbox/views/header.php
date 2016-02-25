@@ -60,6 +60,16 @@ if ($lengowTool->isLogged()) {
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li>
+                        <a href="/modules/lengow/toolbox/product.php">
+                            <i class="fa fa-shopping-basket"></i> <?php echo $locale->t('toolbox.menu.product'); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/modules/lengow/toolbox/order.php">
+                            <i class="fa fa-shopping-basket"></i> <?php echo $locale->t('toolbox.menu.order'); ?>
+                        </a>
+                    </li>
+                    <li>
                         <a href="/modules/lengow/toolbox/config.php">
                             <i class="fa fa-cog"></i> <?php echo $locale->t('toolbox.menu.configuration'); ?>
                         </a>
@@ -67,11 +77,6 @@ if ($lengowTool->isLogged()) {
                     <li>
                         <a href="/modules/lengow/toolbox/log.php">
                             <i class="fa fa-file-text-o"></i> <?php echo $locale->t('toolbox.menu.log'); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/modules/lengow/toolbox/order.php">
-                            <i class="fa fa-shopping-basket"></i> <?php echo $locale->t('toolbox.menu.order'); ?>
                         </a>
                     </li>
                 </ul>

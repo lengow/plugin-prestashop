@@ -200,6 +200,7 @@ en:
       nb_product_found: "%{nb_product} product(s) found"
       count_product: "%{product_count} products exported"
       export_failed: "export failed - %{decoded_message}"
+      your_feed_available_here: "your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>"
       error_folder_not_writable: "export file generation did not end properly. Please make sure the export folder is writable"
       error_no_product_combination: "unable to retrieve product combinations"
       error_illegal_currency: "illegal Currency"
@@ -269,9 +270,10 @@ en:
   toolbox:
     menu:
       lengow_toolbox: "Lengow Toolbox"
+      product: "Products"
+      order: "Orders"
       configuration: "Configuration"
       log: "Logs"
-      order: "Orders"
       log_off: "Log Off"
     configuration:
       shop: "Shop"

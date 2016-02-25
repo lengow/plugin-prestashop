@@ -25,6 +25,7 @@ class LengowController
     protected $module;
     protected $context;
     protected $locale;
+    protected $isNewMerchant;
 
     public function __construct()
     {
@@ -33,6 +34,8 @@ class LengowController
         $this->context->smarty->assign('current_controller', get_class($this));
         $this->context->smarty->assign('lengow_configuration', new LengowConfiguration());
         $this->context->smarty->assign('locale', new LengowTranslation());
+        $this->isNewMerchant = LengowMain::isNewMerchant();
+        $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
         $this->locale = new LengowTranslation();
     }
 
