@@ -62,9 +62,7 @@ class LengowInstall
 
     public function install()
     {
-        return $this->createTab() &&
-        $this->lengowHook->registerHooks() &&
-        $this->setDefaultValues() &&
+        return $this->setDefaultValues() &&
         $this->addStatusError() &&
         $this->update();
     }
@@ -226,6 +224,7 @@ class LengowInstall
             include _PS_MODULE_LENGOW_DIR_ . 'upgrade/' . $file;
             $numberVersion = preg_replace('/update_|\.php$/', '', $file);
         }
+        $this->lengowHook->registerHooks();
         // update lengow tabs
         $this->uninstallTab();
         $this->createTab();
