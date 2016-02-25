@@ -32,13 +32,6 @@ if (_PS_VERSION_ < '1.5') {
     require_once _PS_MODULE_LENGOW_DIR_.'backward_compatibility'.$sep.'backward.php';
 }
 
-$directory = _PS_MODULE_LENGOW_DIR_ . 'interface/';
-$listClassFile = array_diff(scandir($directory), array('..', '.'));
-
-foreach ($listClassFile as $list) {
-    require_once $directory . $list;
-}
-
 if (_PS_VERSION_ < '1.5') {
     $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/models/';
     $listClassFile = array_diff(scandir($directory), array('..', '.'));
