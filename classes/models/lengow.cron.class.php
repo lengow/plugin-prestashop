@@ -184,5 +184,4 @@ class LengowCron
         }
         return $result;
     }
-
 }
