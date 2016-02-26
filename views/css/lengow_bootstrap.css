@@ -14,6 +14,9 @@
     height:50px;
 }
 
+.nav.lengow-nav.preprod {
+    background: #00CCCE;
+}
 .nav.lengow-nav .lengow_menu_label {
     position: absolute;
     top: 43px;
@@ -42,16 +45,6 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-top li.active a {
     padding-left:50px;
 }
 
-#lengow_preprod {
-    background: #DA4E4E;
-    color: white;
-    height: 44px;
-    margin-top: 4px;
-    line-height: 43px;
-    padding: 0 10px;
-    border-radius: 9px;
-}
-
 
 body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a,
 body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:hover,
@@ -70,13 +63,6 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom li.active a {
     border:0px;
 }
 
-#lengow_logo {
-    width: 120px;
-}
-
-#lengow_logo a {
-    padding:10px;
-}
 
 body.lengow_body #content { padding:0px; }
 body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li>a:hover,
@@ -92,6 +78,30 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li.active>a:focus{
     -moz-border-radius:0px;
     border-radius:0px;
     text-decoration: none;
+}
+
+body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li#lengow_logo a {
+    margin:0px;
+}
+
+#lengow_logo {
+    width: 120px;
+}
+
+.preprod #lengow_logo {
+    margin-right:20px;
+}
+
+#lengow_logo a {
+    padding:10px;
+}
+
+#lengow_preprod {
+    color: white;
+    position: absolute;
+    top: 74px;
+    margin-left: 11px;
+    font-size:12px;
 }
 
 .nav.lengow-nav>li>a {
@@ -247,6 +257,8 @@ body.lengow_body #content .lengow_breadcrumb a {
     background-color: #f7f7f7;
 }
 /* MAIN */
+
+.lengow_center {text-align: center;}
 
 .lengow_label {
     display: inline;

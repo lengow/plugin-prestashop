@@ -28,7 +28,7 @@
 
             <div class="lengow_clear"></div>
         </div>
-        <div class="container">
+        <div id="preprod_setting" class="container">
             <h2>{$locale->t('global_setting.screen.preprod_mode_title')}</h2>
             <p>{$locale->t('global_setting.screen.preprod_mode_description')}</p>
             {$preprod_report}

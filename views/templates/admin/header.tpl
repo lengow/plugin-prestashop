@@ -27,7 +27,7 @@
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
 {if !$isNewMerchant}
-<ul class="nav nav-pills lengow-nav lengow-nav-top">
+<ul class="nav nav-pills lengow-nav lengow-nav-top {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq 'on'}preprod{/if}">
     <li class="lengow_float_right">
         <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">
             <i class="fa fa-cog"></i>
@@ -44,18 +44,15 @@
         </a>
     </li>
 
-    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq 'on'}
-        <li class="lengow_float_right">
-            <div id="lengow_preprod">
-                <i class="fa fa-exclamation"></i> {$locale->t('menu.preprod_active')}
-            </div>
-        </li>
-    {/if}
-
     <li role="presentation" id="lengow_logo">
         <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">
             <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
         </a>
+        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq 'on'}
+            <div id="lengow_preprod">
+                {$locale->t('menu.preprod_active')}
+            </div>
+        {/if}
     </li>
     <li role="presentation" class="{if $current_controller == 'LengowFeedController'}active{/if}"><a href="
         {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}">{$locale->t('menu.product')}</a>

@@ -23,6 +23,13 @@
         {if isset($toolbox) && $toolbox}
             {include file='./header_toolbox.tpl'}
         {else}
+
+        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq 'on'}
+            <div class="lengow_alert lengow_center">
+                {$locale->t('order.screen.preprod_warning_message', ['url' => {$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting', true)|cat:'#preprod_setting'|escape:'htmlall':'UTF-8'}])}
+            </div>
+        {/if}
+
         <div class="lengow_order_block_header_content">
             <div id="lengow_wrapper_messages"></div>
             <div class="lengow_order_block_content_left">
