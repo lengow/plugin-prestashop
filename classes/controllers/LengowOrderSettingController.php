@@ -245,7 +245,7 @@ class LengowOrderSettingController extends LengowController
 
                 if (isset($_REQUEST['LENGOW_CRON_ENABLED'])) {
                     $result = LengowCron::addCronTasks();
-                    if ($result) {
+                    if (!$result) {
                         unset($_REQUEST['LENGOW_CRON_ENABLED']);
                     }
 

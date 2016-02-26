@@ -119,9 +119,6 @@ class LengowCron
 
         if (!Db::getInstance()->executeS($query_import_select)) {
             $add_import = Db::getInstance()->execute($query_import_insert);
-        }
-
-        if (isset($add_import)) {
             if ($add_import) {
                 LengowMain::log(
                     'Cron',
@@ -133,7 +130,6 @@ class LengowCron
                     'Cron',
                     LengowMain::setLogMessage('log.cron.creation_error')
                 );
-                return false;
             }
         }
         return false;
@@ -164,7 +160,6 @@ class LengowCron
             . 'AND `id_shop` = ' . (int)$id_shop . ' '
             . 'AND `id_shop_group` =' . (int)$shop->id_shop_group;
 
-        $result = array();
         if (Db::getInstance()->executeS($query_import_select)) {
             $query = 'DELETE FROM ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
                 . 'WHERE `description` IN (\'' . pSQL($description_import) . '\')'
@@ -175,13 +170,12 @@ class LengowCron
                     'Cron',
                     LengowMain::setLogMessage('log.cron.delete_success')
                 );
-                return false;
+                return true;
             } else {
                 LengowMain::log(
                     'Cron',
-                    LengowMain::setLogMessage('log.cron.delete_success')
+                    LengowMain::setLogMessage('log.cron.delete_error')
                 );
-                return true;
             }
         }
         return false;
