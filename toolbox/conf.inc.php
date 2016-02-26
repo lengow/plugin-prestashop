@@ -18,7 +18,7 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-ini_set("display_errors", 1);
+//ini_set("display_errors", 1);
 $currentDirectory = str_replace('modules/lengow/toolbox/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
 
 $sep = DIRECTORY_SEPARATOR;
@@ -26,7 +26,9 @@ require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules/lengow/lengow.php';
 
-Shop::setContext(Shop::CONTEXT_ALL);
+if (_PS_VERSION_ > '1.5') {
+    Shop::setContext(Shop::CONTEXT_ALL);
+}
 
 $lengowTool = new LengowTool();
 
