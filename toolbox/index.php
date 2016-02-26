@@ -22,19 +22,26 @@
 require 'conf.inc.php';
 require 'views/header.php';
 ?>
-    <ul class="list-group">
-        <li class="list-group-item">
-            <a href="/modules/lengow/toolbox/config.php"><i class="fa fa-cog"></i> Configuration</a>
-        </li>
-        <li class="list-group-item">
-            <a href="/modules/lengow/toolbox/log.php"><i class="fa fa-file-text-o"></i> Log Files</a>
-        </li>
-        <li class="list-group-item">
-            <a href="/modules/lengow/toolbox/order.php"><i class="fa fa-shopping-basket"></i> Orders</a>
-        </li>
-        <li class="list-group-item">
-            <a href="/modules/lengow/toolbox/logoff.php"><i class="fa fa-sign-out"></i> Log Off</a>
-        </li>
-    </ul>
+    <div class="container">
+        <h1><?php echo $locale->t('toolbox.menu.lengow_toolbox'); ?></h1>
+
+        <h2><?php echo $locale->t('toolbox.index.checklist_information'); ?></h2>
+        <?php echo LengowCheck::getHtmlCheckList(); ?>
+
+        <h2><?php echo $locale->t('toolbox.index.global_information'); ?></h2>
+        <table class="table">
+            <tr>
+              <td><b><?php echo $locale->t('toolbox.index.prestashop_version'); ?></b></td>
+              <td><?php echo _PS_VERSION_; ?></td>
+            </tr>
+            <tr>
+              <td><b><?php echo $locale->t('toolbox.index.plugin_version'); ?></b></td>
+              <td><?php echo Configuration::get('LENGOW_VERSION'); ?></td>
+            </tr>
+        </table>
+        
+        <h2><?php echo $locale->t('toolbox.index.store_information'); ?></h2>
+
+    </div>
 <?php
 require 'views/footer.php';

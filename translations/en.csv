@@ -258,6 +258,29 @@ toolbox.menu.order|Orders
 toolbox.menu.configuration|Configuration
 toolbox.menu.log|Logs
 toolbox.menu.log_off|Log Off
+toolbox.index.global_information|Global information
+toolbox.index.store_information|Information by store
+toolbox.index.checklist_information|Check-list information
+toolbox.index.curl_message|Lengow needs the CURL PHP extension
+toolbox.index.curl_help|The CURL extension is not installed or enabled in your PHP installation.Check the manual for information on how to install or enable CURL on your system
+toolbox.index.curl_help_link|http://www.php.net/manual/en/curl.setup.php
+toolbox.index.curl_help_label|Go to Curl PHP extension manual
+toolbox.index.simple_xml_message|Lengow needs the SimpleXML PHP extension
+toolbox.index.simple_xml_help|The SimpleXML extension is not installed or enabled in your PHP installation. Check the manual for information on how to install or enable SimpleXML on your system
+toolbox.index.simple_xml_help_link|http://www.php.net/manual/en/book.simplexml.php
+toolbox.index.simple_xml_help_label|Go to SimpleXML PHP extension manual
+toolbox.index.json_php_message|Lengow needs the JSON PHP extension
+toolbox.index.json_php_help|The JSON extension is not installed or enabled in your PHP installation
+toolbox.index.json_php_help_link|http://www.php.net/manual/fr/book.json.php
+toolbox.index.json_php_help_label|Go to JSON PHP extension manual
+toolbox.index.shop_functionality_message|Shop functionality
+toolbox.index.shop_functionality_help|Shop functionality are disabled, order import will be impossible, please enable them in your products settings
+toolbox.index.mail_configuration_enabled|Email are enabled with custom settings
+toolbox.index.email_desactived|Email are desactived
+toolbox.index.error_mail_setting|Error mail settings, PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4
+toolbox.index.email_using_php_mail|Email using php mail function
+toolbox.index.prestashop_version|Prestashop version
+toolbox.index.plugin_version|Plugin version
 toolbox.configuration.shop|Shop
 toolbox.configuration.import|Import
 toolbox.configuration.export|Export

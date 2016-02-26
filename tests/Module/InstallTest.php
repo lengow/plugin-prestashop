@@ -76,6 +76,7 @@ class InstallTest extends ModuleTestCase
             $module = Module::getInstanceByName('lengow');
             $module->uninstall();
             Cache::clean('Module::isInstalledlengow');
+            Cache::store('Module::isInstalledlengow', false);
         }
         $this->assertTrue($module->install(), 'Module install successfully');
         $this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'), 'Module name has correct version');
@@ -103,5 +104,35 @@ class InstallTest extends ModuleTestCase
         $module->isInstalled('lengow');
         $install = new LengowInstall($module);
         $install->update();
+    }
+
+
+    /**
+     * Test Remove Files
+     * @test
+     * @covers LengowInstallation::removeFiles
+     */
+    public function removeFiles()
+    {
+        $filePath = _PS_MODULE_LENGOW_DIR_.'new_file.php';
+
+        $fp = fopen($filePath, 'w');
+        $this->assertTrue((bool)$fp);
+        $this->assertTrue(file_exists($filePath));
+
+        LengowInstall::removeFiles(array(
+            'new_file.php',
+        ));
+        $this->assertFalse(file_exists($filePath));
+
+        $directoryPath = _PS_MODULE_LENGOW_DIR_.'new_directory';
+
+        $this->assertTrue((bool)mkdir($directoryPath, 0700));
+        $fp = fopen($directoryPath.'/new_file.php', 'w');
+        $this->assertTrue((bool)$fp);
+        $this->assertTrue(file_exists($directoryPath));
+        LengowInstall::removeFiles(array(
+            'new_directory/',
+        ));
     }
 }
