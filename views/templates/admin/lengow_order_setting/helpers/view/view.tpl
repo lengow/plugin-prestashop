@@ -49,7 +49,7 @@
         <p>{$locale->t('order_setting.screen.import_setting_description')}</p><br/>
         {$import_params}
     </div>
-    <div class="container2">
+    <div id="cron_setting" class="container2">
         <h2>Cron setting</h2>
         {$formCron}
         {if $moduleCron}
