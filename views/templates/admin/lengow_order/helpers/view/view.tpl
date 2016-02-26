@@ -19,6 +19,12 @@
  *}
 
 <div id="lengow_order_wrapper">
+    <div id="lengow_charge_import_order_background"></div>
+    <br/>
+    <br/>
+    <div id="lengow_charge_import_order"><p id="lengow_charge_lign1">{$locale->t('order.screen.import_charge_first')}</p>
+        <p id="lengow_charge_lign2">{$locale->t('order.screen.import_charge_second')}</p>
+    </div>
     <div class="lengow_order_block_header">
         {if isset($toolbox) && $toolbox}
             {include file='./header_toolbox.tpl'}

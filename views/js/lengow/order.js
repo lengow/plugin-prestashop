@@ -20,6 +20,26 @@
 
 (function ($) {
     $(document).ready(function () {
+        resize();
+
+        $(window).on('resize', function(){
+            resize();
+        });
+
+        function resize() {
+
+            $('#lengow_charge_import_order').css({top: $('#lengow_order_wrapper').css("top"),
+                left: $('#lengow_order_wrapper').css("left"),
+                width: $('#lengow_order_wrapper').css("width"),
+                height: $('#lengow_order_wrapper').css("height")});
+
+
+            $('#lengow_charge_import_order_background').css({top: $('#lengow_order_wrapper').css("top"),
+                left: $('#lengow_order_wrapper').css("left"),
+                width: $('#lengow_order_wrapper').css("width"),
+                height: $('#lengow_order_wrapper').css("height")});
+        }
+
         $('#lengow_order_wrapper').on('click', '.lengow_feed_pagination a', function () {
             if ($(this).hasClass('disabled')) {
                 return false;
@@ -109,9 +129,14 @@
                     if (select) {
                         $('#'+tr_id).addClass('select').find('.lengow_selection').prop('checked', true);
                     }
+
+                    if ($('.lengow_status .fa-spin').length == 0) {
+                        $('#lengow_import_orders').show();
+                    }
                 },
                 beforeSend: function() {
                     td.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                    $('#lengow_import_orders').hide();
                 }
             });
             return false;
@@ -146,9 +171,17 @@
                 success: function() {
                     init_tooltip();
                     reload_table_js();
+                    $('#lengow_charge_import_order').hide();
+                    $('#lengow_charge_import_order_background').hide();
+                },
+                error: function () {
+                    $('#lengow_charge_import_order').hide();
+                    $('#lengow_charge_import_order_background').hide();
                 },
                 beforeSend: function() {
                     button.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                    $('#lengow_charge_import_order').show();
+                    $('#lengow_charge_import_order_background').show();
                 }
             });
         });

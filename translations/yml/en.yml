@@ -46,6 +46,8 @@ en:
       pagination_of: "of"
   order:
     screen:
+      import_charge_first: "Retrieving your orders ..."
+      import_charge_second: "Promised ! This will not last long (2 min avg. time)"
       all_order_will_be_sent_to : "All orders issues reports will be send to mail"
       last_order_importation: "Last order importation"
       import_auto : "Auto"
