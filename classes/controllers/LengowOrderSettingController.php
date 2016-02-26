@@ -33,7 +33,7 @@ class LengowOrderSettingController extends LengowController
     {
 
         $import_url = LengowMain::getImportUrl();
-        
+
         $this->context->smarty->assign('import_url', $import_url);
 
         $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
@@ -241,8 +241,7 @@ class LengowOrderSettingController extends LengowController
                         true
                     );
                 }
-                $formCron = LengowCron::getFormCron();
-                $this->context->smarty->assign('form', $formCron);
+
                 $form = new LengowConfigurationForm(
                     array(
                         "fields" => LengowConfiguration::getKeys(),
@@ -250,14 +249,20 @@ class LengowOrderSettingController extends LengowController
                 );
 
                 if (isset($_REQUEST['LENGOW_CRON_ENABLED'])) {
-                    //oui
-                    //ERROR => unset($_REQUEST['LENGOW_CRON_ENABLED']
+                    $result = LengowCron::addCronTasks();
+                    if ($result['error']) {
+                        unset($_REQUEST['LENGOW_CRON_ENABLED']);
+                    }
+
                 } else {
                     $moduleCron = Module::getInstanceByName('cronjobs');
                     if ($moduleCron->active) {
-                        //non
+                        LengowCron::removeCronTasks();
                     }
+
                 }
+                $formCron = LengowCron::getFormCron();
+                $this->context->smarty->assign('formCron', $formCron);
 
                 $form->postProcess(
                     array(
@@ -267,24 +272,6 @@ class LengowOrderSettingController extends LengowController
                         'LENGOW_CRON_ENABLED'
                     )
                 );
-                break;
-            case 'add_cronTask':
-                LengowCron::addCronTasks();
-                $form = LengowCron::getFormCron();
-                $import_url = LengowMain::getImportUrl();
-
-                $this->context->smarty->assign('default_country', $default_country);
-                $this->context->smarty->assign('import_url', $import_url);
-                $this->context->smarty->assign('form', $form);
-                break;
-            case 'remove_cronTask':
-                LengowCron::removeCronTasks();
-                $form = LengowCron::getFormCron();
-                $import_url = LengowMain::getImportUrl();
-
-                $this->context->smarty->assign('default_country', $default_country);
-                $this->context->smarty->assign('import_url', $import_url);
-                $this->context->smarty->assign('form', $form);
                 break;
             default:
                 $form = LengowCron::getFormCron();

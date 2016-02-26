@@ -128,34 +128,6 @@ function addScoreCarrier(){
             $('#error_select_country').html('');
         });
 
-        $("input[name='LENGOW_CRON_ENABLED']").on('switchChange.bootstrapSwitch', function (event, state) {
-            if (event.type == "switchChange") {
-                changeCronTasks();
-            }
-        });
-
-        function changeCronTasks () {
-            if ($("input[name='LENGOW_CRON_ENABLED']").prop('checked')) {
-                var href = $(this).attr('data-href');
-
-                $.ajax({
-                    url: href,
-                    method: 'POST',
-                    data: {action: 'add_cronTask'},
-                    dataType: 'script'
-                });
-            } else {
-                var href = $(this).attr('data-href');
-                $.ajax({
-                    url: href,
-                    method: 'POST',
-                    data: {action: 'remove_cronTask'},
-                    dataType: 'script'
-                });
-            }
-        }
-        changeCronTasks();
-
     });
 
 })(lengow_jquery);
