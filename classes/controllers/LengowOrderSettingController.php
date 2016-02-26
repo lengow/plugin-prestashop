@@ -33,7 +33,7 @@ class LengowOrderSettingController extends LengowController
     {
 
         $import_url = LengowMain::getImportUrl();
-        
+
         $this->context->smarty->assign('import_url', $import_url);
 
         $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
