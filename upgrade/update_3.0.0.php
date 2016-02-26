@@ -420,3 +420,37 @@ $configurationToDelete = array(
 foreach ($configurationToDelete as $configName) {
     Configuration::deleteByName($configName);
 }
+
+LengowInstall::saveOverride();
+
+LengowInstall::removeFiles(array(
+    'config/',
+    'interface/',
+    'override/',
+    'models/',
+    'translations/es.php',
+    'translations/fr.php',
+    'translations/it.php',
+    'v14/',
+    'controllers/AdminLengowController.php',
+    'controllers/AdminLengowLogController.php',
+    'controllers/TabLengowLogController.php',
+    'controllers/TabLengowLogController.php',
+    'translations/es.php',
+    'translations/fr.php',
+    'translations/it.php',
+    'views/img/process-icon-export-csv.png',
+    'views/img/view-lengow-en.png',
+    'views/img/view-lengow-es.png',
+    'views/img/view-lengow-fr.png',
+    'views/img/view-lengow-it.png',
+    'views/js/admin.js',
+    'views/js/chart.min.js',
+    'views/templates/admin/dashboard/',
+    'views/templates/admin/form.tpl',
+    'AdminLengow14.php',
+    'AdminLengowLog14.php',
+    'es.php',
+    'fr.php',
+    'it.php',
+));

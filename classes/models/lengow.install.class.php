@@ -296,7 +296,7 @@ class LengowInstall
     }
 
     /**
-     * v3
+     * v3-test
      * Drop Lengow tables
      * @return bool
      */
@@ -306,5 +306,71 @@ class LengowInstall
             Db::getInstance()->Execute('DROP TABLE '._DB_PREFIX_.$table);
         }
         return true;
+    }
+
+
+    /**
+     * v3
+     * Save Override directory
+     */
+    public static function saveOverride()
+    {
+        $directoryBackup = _PS_MODULE_LENGOW_DIR_ . 'backup/';
+        $directory = _PS_MODULE_LENGOW_DIR_ . 'override/';
+        if (file_exists($directory)) {
+            $listFile = array_diff(scandir($directory), array('..', '.'));
+            if (count($listFile) > 0) {
+                if (!file_exists($directoryBackup . 'override')) {
+                    mkdir($directoryBackup . 'override', 0755);
+                }
+                foreach ($listFile as $file) {
+                    copy($directory . $file, $directoryBackup . 'override/' . $file);
+                }
+            }
+        }
+    }
+
+    /**
+     * v3-test
+     *
+     * @param array $listFiles
+     */
+    public static function removeFiles($listFiles)
+    {
+        foreach ($listFiles as $file) {
+            $filePath = _PS_MODULE_LENGOW_DIR_.$file;
+            if (file_exists($filePath)) {
+                if (is_dir($filePath)) {
+                    self::deleteDir($filePath);
+                } else {
+                    unlink($filePath);
+                }
+            }
+        }
+    }
+
+    /**
+     * v3-test
+     * @param $dirPath
+     * @return bool
+     */
+    public static function deleteDir($dirPath)
+    {
+        $length = Tools::strlen(_PS_MODULE_LENGOW_DIR_);
+        if (substr($dirPath, 0, $length) != _PS_MODULE_LENGOW_DIR_) {
+            return false;
+        }
+        if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+            $dirPath .= '/';
+        }
+        $files = glob($dirPath . '*', GLOB_MARK);
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                self::deleteDir($file);
+            } else {
+                unlink($file);
+            }
+        }
+        rmdir($dirPath);
     }
 }
