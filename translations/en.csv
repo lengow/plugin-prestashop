@@ -44,6 +44,7 @@ order.screen.import_manuel|Manuel
 order.screen.button_update_orders|Import Orders
 order.screen.button_reimport_order|Re Import Orders
 order.screen.button_resend_order|Re Send Orders
+order.screen.cron|Want to automatize orders updating ?
 order.table.order_lengow_state|Status
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Shop

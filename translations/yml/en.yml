@@ -53,6 +53,7 @@ en:
       button_update_orders: "Import Orders"
       button_reimport_order: "Re Import Orders"
       button_resend_order: "Re Send Orders"
+      cron: "Want to automatize orders updating ?"
     table:
       order_lengow_state: "Status"
       marketplace_name: "Marketplace"
