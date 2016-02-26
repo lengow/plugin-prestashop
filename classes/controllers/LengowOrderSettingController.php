@@ -249,13 +249,22 @@ class LengowOrderSettingController extends LengowController
                     )
                 );
 
+                if (isset($_REQUEST['LENGOW_CRON_ENABLED'])) {
+                    //oui
+                    //ERROR => unset($_REQUEST['LENGOW_CRON_ENABLED']
+                } else {
+                    $moduleCron = Module::getInstanceByName('cronjobs');
+                    if ($moduleCron->active) {
+                        //non
+                    }
+                }
+
                 $form->postProcess(
                     array(
                         'LENGOW_IMPORT_CARRIER_MP_ENABLED',
                         'LENGOW_IMPORT_SHIP_MP_ENABLED',
                         'LENGOW_IMPORT_STOCK_SHIP_MP',
                         'LENGOW_CRON_ENABLED'
-
                     )
                 );
                 break;
@@ -280,7 +289,6 @@ class LengowOrderSettingController extends LengowController
             default:
                 $form = LengowCron::getFormCron();
                 $import_url = LengowMain::getImportUrl();
-                var_dump($import_url);die();
                 $this->context->smarty->assign('import_url', $import_url);
                 $this->context->smarty->assign('form', $form);
                 LengowCarrier::syncListMarketplace();
