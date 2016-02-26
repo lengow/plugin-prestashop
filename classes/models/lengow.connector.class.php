@@ -276,7 +276,6 @@ class LengowConnector
             LengowMain::log('Connector', $error_message);
             throw new LengowException($error_message);
         }
-        print_r($data);
         return $data;
     }
 
