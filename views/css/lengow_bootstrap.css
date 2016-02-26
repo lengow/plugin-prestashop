@@ -227,10 +227,7 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_pagination > .disabled > a,
 .lengow_pagination > .disabled > a:hover,
 .lengow_pagination > .disabled > a:focus {
-    color: #777;
-    cursor: not-allowed;
-    background-color: #fff;
-    border-color: #ddd;
+    opacity: 0.2;
 }
 
 /* PANEL */
@@ -351,6 +348,8 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 .lengow_feed_pagination {
     float:right;
+    height: 60px;
+    margin-right: 14px;
 }
 
 
