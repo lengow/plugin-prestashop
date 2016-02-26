@@ -58,7 +58,7 @@ function lengowAutoloader($className)
             include $directory.$className.'.php';
         } else {
             $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/models/';
-            include $directory.str_replace('lengow', 'lengow.', Tools::strtolower($className)).'.class.php';
+            include $directory.$className.'.php';
         }
     }
 }
