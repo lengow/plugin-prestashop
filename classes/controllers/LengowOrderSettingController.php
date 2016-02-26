@@ -32,6 +32,9 @@ class LengowOrderSettingController extends LengowController
     public function display()
     {
 
+        $import_url = LengowMain::getImportUrl();
+        
+        $this->context->smarty->assign('import_url', $import_url);
 
         $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
 
@@ -83,9 +86,11 @@ class LengowOrderSettingController extends LengowController
                 'LENGOW_IMPORT_STOCK_SHIP_MP'
             )
         );
+        $cron_param = $form->buildInputs(array('LENGOW_CRON_ENABLED'));
 
         $this->context->smarty->assign('default_country', $default_country);
         $this->context->smarty->assign('countries', $countries);
+        $this->context->smarty->assign('cron_param', $cron_param);
 
         $this->context->smarty->assign('carriers', $carriers);
         $this->context->smarty->assign('defaultCarrierCountries', $defaultCarrierCountries);
@@ -145,7 +150,10 @@ class LengowOrderSettingController extends LengowController
                         $defaultCarrierCountries[$id_country]['id_carrier'] = $carrier['id_carrier'];
                     }
                 }
-
+                $formCron = LengowCron::getFormCron();
+                $import_url = LengowMain::getImportUrl();
+                $this->context->smarty->assign('import_url', $import_url);
+                $this->context->smarty->assign('form', $formCron);
                 $this->context->smarty->assign('defaultCarrierCountries', $defaultCarrierCountries);
                 $this->context->smarty->assign('listCarrierByCountry', $listCarrierByCountry);
                 $this->context->smarty->assign('carriers', $carriers);
@@ -189,6 +197,10 @@ class LengowOrderSettingController extends LengowController
                 }
                 $id_countries = LengowCarrierCountry::getIdCountries($mkp_carriers);
 
+                $formCron = LengowCron::getFormCron();
+                $import_url = LengowMain::getImportUrl();
+                $this->context->smarty->assign('import_url', $import_url);
+                $this->context->smarty->assign('form', $formCron);
                 $this->context->smarty->assign('countries', $countries);
                 $this->context->smarty->assign('id_countries', $id_countries);
                 $this->context->smarty->assign('mkp_carriers', $mkp_carriers);
@@ -229,7 +241,8 @@ class LengowOrderSettingController extends LengowController
                         true
                     );
                 }
-
+                $formCron = LengowCron::getFormCron();
+                $this->context->smarty->assign('form', $formCron);
                 $form = new LengowConfigurationForm(
                     array(
                         "fields" => LengowConfiguration::getKeys(),
@@ -240,12 +253,35 @@ class LengowOrderSettingController extends LengowController
                     array(
                         'LENGOW_IMPORT_CARRIER_MP_ENABLED',
                         'LENGOW_IMPORT_SHIP_MP_ENABLED',
-                        'LENGOW_IMPORT_STOCK_SHIP_MP'
+                        'LENGOW_IMPORT_STOCK_SHIP_MP',
+                        'LENGOW_CRON_ENABLED'
+
                     )
                 );
                 break;
+            case 'add_cronTask':
+                LengowCron::addCronTasks();
+                $form = LengowCron::getFormCron();
+                $import_url = LengowMain::getImportUrl();
+
+                $this->context->smarty->assign('default_country', $default_country);
+                $this->context->smarty->assign('import_url', $import_url);
+                $this->context->smarty->assign('form', $form);
+                break;
+            case 'remove_cronTask':
+                LengowCron::removeCronTasks();
+                $form = LengowCron::getFormCron();
+                $import_url = LengowMain::getImportUrl();
+
+                $this->context->smarty->assign('default_country', $default_country);
+                $this->context->smarty->assign('import_url', $import_url);
+                $this->context->smarty->assign('form', $form);
+                break;
             default:
                 $form = LengowCron::getFormCron();
+                $import_url = LengowMain::getImportUrl();
+                var_dump($import_url);die();
+                $this->context->smarty->assign('import_url', $import_url);
                 $this->context->smarty->assign('form', $form);
                 LengowCarrier::syncListMarketplace();
                 LengowCarrierCountry::createDefaultCarrier();

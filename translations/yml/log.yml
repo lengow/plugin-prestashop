@@ -6,6 +6,11 @@ en:
     hook:
       registering_hook_success: "registering hook - %{hook}: success"
       registering_hook_error: "registering hook - %{hook}: error"
+    cron:
+      creation_success: "lengow import cron task sucessfully created"
+      creation_error: "lengow import cron task could not be created"
+      delete_success: "cron tasks sucessfully removed"
+      delete_error: "import and/or export cron task(s) could not be removed"
     mail_report:
       send_mail_to: "report email sent to %{emails}"
       unable_send_mail_to: "unable to send report email to %{emails}"

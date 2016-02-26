@@ -32,22 +32,21 @@ class LengowCron
      */
     public static function getFormCron()
     {
-        if (Module::getInstanceByName('cronjobs')) {
-            $form = '<p>You can use the Crontab Module to import orders from Lengow</p>';
+        $locale = new LengowTranslation();
+        $moduleCron = Module::getInstanceByName('cronjobs');
+        if ($moduleCron->active) {
+            $form = '<p>' . $locale->t('order_setting.screen.cron_description') . '</p>';
 
             if (!self::getCron()) {
-                $form .= '<span class="lengow-no">Cron Import is not configured on your Prestashop</span>';
+                $form .= '<span class="lengow-no">' . $locale->t('order_setting.screen.cron_not_configured')
+                      . '</span><br/>';
             } else {
-                $form .= '<span class="lengow-yes">Cron Import exists on your Prestashop</span>';
+                $form .= '<span class="lengow-yes">' . $locale->t('order_setting.screen.cron_configured') . '</span>';
             }
-            $form .= '<p> - or - </p>';
         } else {
-            $form = '<p>You can install "Crontab" Prestashop Plugin</p>';
-            $form .= '<p> - or - </p>';
+            $form = '<p>' . $locale->t('order_setting.screen.cron_install_plugin') . '</p>';
         }
-        $form .= '<p>If you are using an unix system, you can use unix crontab like this :</p>';
-        $form .= '<strong><code>*/15 * * * * wget url_feed_import</code></strong><br /><br />';
-
+        Context::getContext()->smarty->assign('moduleCron', $moduleCron->active);
         return $form;
     }
 
@@ -58,12 +57,26 @@ class LengowCron
      */
     public static function getCron()
     {
-        $module_cron = Module::getInstanceByName('cron');
-        $module_lengow = Module::getInstanceByName('lengow');
-        if (Validate::isLoadedObject($module_cron) && $module_cron->cronExists($module_lengow->id, 'cronImport') != false) {
+        if (!Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'cronjobs\'')) {
+            return;
+        }
+        $shops = LengowShop::findAll(true);
+        foreach ($shops as $s) {
+            $id_shop = $s['id_shop'];
+            break;
+        }
+        $shop = new Shop((int)$id_shop);
+        $description_import = 'Lengow Import - ' . $shop->name;
+
+        $query_import_select = 'SELECT 1 FROM ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
+            . 'WHERE `description` = \'' . pSQL($description_import) . '\' '
+            . 'AND `id_shop` = ' . (int)$id_shop . ' '
+            . 'AND `id_shop_group` =' . (int)$shop->id_shop_group;
+
+        if (Db::getInstance()->executeS($query_import_select)) {
             return true;
         }
-        return false;
+
     }
 
     /**
@@ -75,7 +88,7 @@ class LengowCron
      */
     public static function addCronTasks()
     {
-        if (!Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'cronjobs\'')) {
+        if (!Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'cronjobs\'')) {
             return;
         }
         $shops = LengowShop::findAll(true);
@@ -113,12 +126,12 @@ class LengowCron
             if ($add_import) {
                 $result['success'][] = LengowMain::log(
                     'Cron',
-                    LengowMain::setLogMessage('Lengow import cron task sucessfully created.')
+                    LengowMain::setLogMessage('log.cron.creation_success')
                 );
             } else {
                 $result['error'][] = LengowMain::log(
                     'Cron',
-                    LengowMain::setLogMessage('Lengow import cron task could not be created.')
+                    LengowMain::setLogMessage('log.cron.creation_error')
                 );
             }
         }
@@ -135,7 +148,7 @@ class LengowCron
      */
     public static function removeCronTasks()
     {
-        if (!Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'cronjobs\'')) {
+        if (!Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'cronjobs\'')) {
             return;
         }
         $shops = LengowShop::findAll(true);
@@ -160,12 +173,12 @@ class LengowCron
             if (Db::getInstance()->execute($query)) {
                 $result['success'] = LengowMain::log(
                     'Cron',
-                    LengowMain::setLogMessage('Cron tasks sucessfully removed.')
+                    LengowMain::setLogMessage('log.cron.delete_success')
                 );
             } else {
                 $result['error'] = LengowMain::log(
                     'Cron',
-                    LengowMain::setLogMessage('Import and/or export cron task(s) could not be removed.')
+                    LengowMain::setLogMessage('log.cron.delete_success')
                 );
             }
         }

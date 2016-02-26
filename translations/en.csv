@@ -63,6 +63,14 @@ order_setting.screen.country_wt_carrier_link|link
 order_setting.screen.default_country|default
 order_setting.screen.import_setting_title|Orders importation
 order_setting.screen.import_setting_description|Description of the import settings
+order_setting.screen.cron_description|You can use the Crontab Module to import orders from Lengow
+order_setting.screen.cron_not_configured|Cron Import is not configured on your Prestashop
+order_setting.screen.cron_configured|Cron Import exists on your Prestashop
+order_setting.screen.cron_if_not_exists| - or - 
+order_setting.screen.cron_install_plugin|You can install 'Crontab' Prestashop Plugin
+order_setting.screen.cron_if_not_install_plugin| - or - 
+order_setting.screen.cron_manual_installation|If you are using an unix system, you can use unix crontab like this :
+order_setting.screen.command_unix_crontab|*/15 * * * * wget
 order_setting.screen.button_add_country|Add
 order_setting.screen.button_save|Save
 global_setting.screen.notification_alert_title|Notifications & alerts
@@ -168,6 +176,10 @@ log.install.install_tab|install tab %{class_name}
 log.install.uninstall_tab|uninstall tab %{class_name}
 log.hook.registering_hook_success|registering hook - %{hook}: success
 log.hook.registering_hook_error|registering hook - %{hook}: error
+log.cron.creation_success|lengow import cron task sucessfully created
+log.cron.creation_error|lengow import cron task could not be created
+log.cron.delete_success|cron tasks sucessfully removed
+log.cron.delete_error|import and/or export cron task(s) could not be removed
 log.mail_report.send_mail_to|report email sent to %{emails}
 log.mail_report.unable_send_mail_to|unable to send report email to %{emails}
 log.export.start|## start export ##

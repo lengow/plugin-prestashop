@@ -161,6 +161,12 @@ class LengowConfiguration extends Configuration
                     'label'         => 'Import Carrier',
                     'collection'    => $carriers,
                 ),
+                'LENGOW_CRON_ENABLED' => array(
+                    'type'          => 'checkbox',
+                    'label'         => '',
+                    'legend'        => '',
+                    'default_value' => false,
+                ),
                 'LENGOW_IMPORT_PREPROD_ENABLED' => array(
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_preprod_enabled_title'),

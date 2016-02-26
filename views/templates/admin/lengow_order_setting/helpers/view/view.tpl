@@ -52,6 +52,12 @@
     <div class="container2">
         <h2>Cron setting</h2>
         {$form}
+        {if $moduleCron}
+        {$cron_param}
+        {/if}
+        <p>{$locale->t('order_setting.screen.cron_if_not_exists')}</p>
+        <p>{$locale->t('order_setting.screen.cron_manual_installation')}</p>
+        <strong><code>{$locale->t('order_setting.screen.command_unix_crontab')} {$import_url}</code></strong><br /><br />
     </div>
     <br/>
     <div class="form-group">
