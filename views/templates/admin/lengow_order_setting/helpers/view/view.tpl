@@ -51,7 +51,7 @@
     </div>
     <div class="container2">
         <h2>Cron setting</h2>
-        {$form}
+        {$formCron}
         {if $moduleCron}
         {$cron_param}
         {/if}
