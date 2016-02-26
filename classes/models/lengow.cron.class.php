@@ -58,7 +58,7 @@ class LengowCron
     public static function getCron()
     {
         if (!Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'cronjobs\'')) {
-            return;
+            return false;
         }
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
@@ -89,7 +89,7 @@ class LengowCron
     public static function addCronTasks()
     {
         if (!Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'cronjobs\'')) {
-            return;
+            return false;
         }
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
@@ -117,26 +117,26 @@ class LengowCron
             . (int)$shop->id_shop_group
             . ')';
 
-        $result = array();
         if (!Db::getInstance()->executeS($query_import_select)) {
             $add_import = Db::getInstance()->execute($query_import_insert);
         }
 
         if (isset($add_import)) {
             if ($add_import) {
-                $result['success'][] = LengowMain::log(
+                LengowMain::log(
                     'Cron',
                     LengowMain::setLogMessage('log.cron.creation_success')
                 );
+                return true;
             } else {
-                $result['error'][] = LengowMain::log(
+                LengowMain::log(
                     'Cron',
                     LengowMain::setLogMessage('log.cron.creation_error')
                 );
+                return false;
             }
         }
-
-        return $result;
+        return false;
     }
 
     /**
@@ -149,7 +149,7 @@ class LengowCron
     public static function removeCronTasks()
     {
         if (!Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'cronjobs\'')) {
-            return;
+            return false;
         }
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
@@ -171,17 +171,19 @@ class LengowCron
                 . 'AND `id_shop` = ' . (int)$id_shop . ' '
                 . 'AND `id_shop_group` =' . (int)$shop->id_shop_group;
             if (Db::getInstance()->execute($query)) {
-                $result['success'] = LengowMain::log(
+                LengowMain::log(
                     'Cron',
                     LengowMain::setLogMessage('log.cron.delete_success')
                 );
+                return false;
             } else {
-                $result['error'] = LengowMain::log(
+                LengowMain::log(
                     'Cron',
                     LengowMain::setLogMessage('log.cron.delete_success')
                 );
+                return true;
             }
         }
-        return $result;
+        return false;
     }
 }

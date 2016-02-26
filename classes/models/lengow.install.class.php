@@ -69,7 +69,7 @@ class LengowInstall
 
     public function uninstall()
     {
-        return $this->uninstallTab();
+        return LengowCron::removeCronTasks() && $this->uninstallTab();
     }
 
     /**
