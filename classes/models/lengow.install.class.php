@@ -228,6 +228,8 @@ class LengowInstall
         // update lengow tabs
         $this->uninstallTab();
         $this->createTab();
+        LengowConfiguration::resetAll();
+
         // update lengow version
         Configuration::updateValue('LENGOW_VERSION', $numberVersion);
         self::setInstallationStatus(false);
