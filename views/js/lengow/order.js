@@ -240,8 +240,9 @@
         $('#lengow_order_wrapper').on('click', '#table_order td.link', function() {
             var link = $(this).parents('tr').find('td.reference a');
             if (link.length > 0){
-                link.trigger("click");
+                window.open(link.attr('href'));
             }
+            return false;
         });
     });
 })(lengow_jquery);
@@ -254,5 +255,4 @@ function reload_table_js() {
     }).on('changeDate', function(e) {
         lengow_jquery('#lengow_order_wrapper .lengow_form_table').submit();
     });
-
 }
