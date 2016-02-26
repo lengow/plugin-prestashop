@@ -302,8 +302,8 @@ class LengowConfiguration extends Configuration
         $shops = LengowShop::findAll();
         $keys = self::getKeys();
         foreach ($keys as $key => $value) {
-            if (isset($value['default_values'])) {
-                $val = $value['default_values'];
+            if (isset($value['default_value'])) {
+                $val = $value['default_value'];
             } else {
                 $val = '';
             }
