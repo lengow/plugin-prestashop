@@ -43,7 +43,6 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
 
         Shop::setContext(Shop::CONTEXT_ALL);
-        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
     }
 
     public function setUp()

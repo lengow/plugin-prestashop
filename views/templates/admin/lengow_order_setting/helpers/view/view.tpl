@@ -18,7 +18,7 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 <div id="lengow_form_wrapper">
-<form class="lengow_form" method="POST">
+<form class="lengow_form" method="POST" id="lengow_form_order_setting">
     <input type="hidden" name="action" value="process">
     <div class="container">
         <h2>{$locale->t('order_setting.screen.order_status_title')}</h2>

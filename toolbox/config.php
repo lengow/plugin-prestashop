@@ -90,7 +90,6 @@ require 'views/header.php';
         'LENGOW_ORDER_ID_SHIPPED',
         'LENGOW_ORDER_ID_SHIPPEDBYMP',
         'LENGOW_ORDER_ID_CANCEL',
-        'LENGOW_IMPORT_CARRIER_DEFAULT',
         'LENGOW_IMPORT_FORCE_PRODUCT',
         'LENGOW_IMPORT_PROCESSING_FEE',
         'LENGOW_IMPORT_DAYS',
@@ -114,7 +113,6 @@ require 'views/header.php';
     echo $form->buildInputs(array(
         'LENGOW_EXPORT_FORMAT',
         'LENGOW_EXPORT_FILE_ENABLED',
-        'LENGOW_CARRIER_DEFAULT',
     ));
     echo '</fieldset>';
     ?>

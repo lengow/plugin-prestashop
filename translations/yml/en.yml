@@ -88,6 +88,7 @@ en:
       command_unix_crontab: "*/15 * * * * wget"
       button_add_country: "Add"
       button_save: "Save"
+      no_default_carrier_selected: "No default carrier Selected"
   global_setting:
     screen:
       notification_alert_title: "Notifications & alerts"
