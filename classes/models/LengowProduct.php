@@ -80,11 +80,9 @@ class LengowProduct extends Product
      */
     public function __construct($id_product = null, $id_lang = null, $params = array())
     {
-
+        parent::__construct($id_product, false, $id_lang);
         $this->carrier = isset($params["carrier"]) ? $params["carrier"] : null;
         $this->imageSize = isset($params["image_size"]) ? $params["image_size"] : self::getMaxImageType();
-
-        parent::__construct($id_product, false, $id_lang);
         $this->context = Context::getContext();
         $this->context->language = isset($params["language"]) ? $params["language"] : Context::getContext()->language;
 
@@ -112,6 +110,10 @@ class LengowProduct extends Product
         $this->new = $this->isNew();
         $this->base_price = $this->price;
         if ($this->id) {
+            //reset attribute cache
+            if (LengowMain::inTest()) {
+                Product::getDefaultAttribute($this->id, 0, true);
+            }
             $this->price = Product::getPriceStatic(
                 (int)$this->id,
                 false,
@@ -127,7 +129,6 @@ class LengowProduct extends Product
                 null,
                 $this->specificPrice
             );
-
             $this->unit_price = ($this->unit_price_ratio != 0 ? $this->price / $this->unit_price_ratio : 0);
         }
         if (LengowMain::compareVersion()) {
@@ -343,6 +344,9 @@ class LengowProduct extends Product
                 }
                 $id_zone =  $this->context->country->id_zone;
                 $id_currency =  $this->context->cart->id_currency;
+                if (!$this->carrier) {
+                    return LengowMain::formatNumber(0);
+                }
                 $shipping_method = $this->carrier->getShippingMethod();
                 $shipping_cost = 0;
                 if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shipping_method != Carrier::SHIPPING_METHOD_FREE) {

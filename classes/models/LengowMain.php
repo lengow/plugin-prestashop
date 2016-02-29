@@ -305,17 +305,6 @@ class LengowMain
     }
 
     /**
-     * Get export shipping carrier chose in config
-     *
-     * @return LengowCarrier
-     */
-    public static function getExportCarrier()
-    {
-        $id_carrier = Configuration::get('LENGOW_CARRIER_DEFAULT');
-        return new LengowCarrier($id_carrier);
-    }
-
-    /**
      * v3
      * The shipping names options.
      *

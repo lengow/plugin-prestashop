@@ -858,7 +858,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     background-color: #EDC266;
 }
 
-.lengow_form #default_carrier_missing {
+.lengow_form .default_carrier_missing {
     color: red;
     font-size: 0.9em;
 }

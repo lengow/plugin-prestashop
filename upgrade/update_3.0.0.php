@@ -234,6 +234,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_orders` (
         `id_lang` INTEGER(10) UNSIGNED NOT NULL DEFAULT \'1\' ,
         `id_flux` INTEGER(11) UNSIGNED NULL ,
         `marketplace_name` VARCHAR(100) NULL ,
+        `marketplace_label` VARCHAR(40) NULL ,
         `message` TEXT ,
         `total_paid` DECIMAL(17,2) UNSIGNED NULL ,
         `carrier` VARCHAR(100) ,
@@ -299,6 +300,11 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
         Db::getInstance()->execute(
             'ALTER TABLE '._DB_PREFIX_.'lengow_orders CHANGE `is_disabled` `is_reimported` TINYINT(1) UNSIGNED
             DEFAULT \'0\''
+        );
+    }
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'marketplace_label')) {
+        Db::getInstance()->execute(
+            'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `marketplace_label` VARCHAR(40) NULL'
         );
     }
     if (!LengowInstall::checkFieldExists('lengow_orders', 'delivery_address_id')) {

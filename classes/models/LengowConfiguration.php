@@ -36,15 +36,6 @@ class LengowConfiguration extends Configuration
             foreach ($os as $state) {
                 $orderStates[] = array('id' => $state['id_order_state'], 'text' => $state['name']);
             }
-            $carriers = array();
-            if (_PS_VERSION_ <= '1.4.4.0') {
-                $cs = LengowCarrier::getCarriers($langId, true, false, false, null, ALL_CARRIERS);
-            } else {
-                $cs = LengowCarrier::getCarriers($langId, true, false, false, null, LengowCarrier::ALL_CARRIERS);
-            }
-            foreach ($cs as $c) {
-                $carriers[] = array('id' => $c['id_carrier'], 'text' => $c['name']);
-            }
             $exportFormats = array();
             foreach (LengowFeed::$AVAILABLE_FORMATS as $value) {
                 $exportFormats[] = array('id' => $value, 'text' => $value);
@@ -105,12 +96,6 @@ class LengowConfiguration extends Configuration
                     'label'         => $locale->t('lengow_setting.lengow_export_file_enabled_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_export_file_enabled_legend'),
                 ),
-                'LENGOW_CARRIER_DEFAULT' => array(
-                    'type' => 'select',
-                    'readonly' => true,
-                    'label' => 'Export Carrier',
-                    'collection' => $carriers,
-                ),
                 'LENGOW_LAST_EXPORT' => array(
                     'readonly'      => true,
                     'shop'          => true,
@@ -155,11 +140,6 @@ class LengowConfiguration extends Configuration
                     'label'         => $locale->t('lengow_setting.lengow_import_processing_fee_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_processing_fee_legend'),
                     'default_value' => true,
-                ),
-                'LENGOW_IMPORT_CARRIER_DEFAULT' => array(
-                    'type'          => 'select',
-                    'label'         => 'Import Carrier',
-                    'collection'    => $carriers,
                 ),
                 'LENGOW_CRON_ENABLED' => array(
                     'type'          => 'checkbox',

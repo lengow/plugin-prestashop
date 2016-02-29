@@ -73,11 +73,17 @@ class LengowOrderController extends LengowController
                     echo 'lengow_jquery("#order_'.$id_order_lengow.'").replaceWith("'.$html.'");';
                     break;
                 case 'import_all':
-                    $import = new LengowImport(array(
-                        'log_output' => false,
-                    ));
+                    if (Shop::getContextShopID()) {
+                        $import = new LengowImport(array(
+                            'shop_id' => Shop::getContextShopID(),
+                            'log_output' => false,
+                        ));
+                    } else {
+                        $import = new LengowImport(array(
+                            'log_output' => false,
+                        ));
+                    }
                     $return = $import->exec();
-
                     $message = $this->loadMessage($return);
 
                     echo 'lengow_jquery("#lengow_wrapper_messages").html("';
@@ -141,7 +147,8 @@ class LengowOrderController extends LengowController
                         _PS_MODULE_LENGOW_DIR_,
                         'views/templates/admin/lengow_order/helpers/view/select_marketplace.tpl'
                     );
-                    echo 'lengow_jquery("#select_marketplace").html("'.preg_replace('/\r|\n/', '', addslashes($display_select_marketplace)).'");';
+                    echo 'lengow_jquery("#select_marketplace").html("'.
+                        preg_replace('/\r|\n/', '', addslashes($display_select_marketplace)).'");';
                     exit();
                     break;
                 case 'cancel_re_import':
@@ -184,6 +191,7 @@ class LengowOrderController extends LengowController
             'title'             => $this->locale->t('order.table.marketplace_name'),
             'align'             => 'center',
             'class'             => 'link',
+            'display_callback'  => 'LengowOrderController::displayMarketplaceName',
             'filter'            => true,
             'filter_order'      => true,
             'filter_key'        => 'lo.marketplace_name',
@@ -191,7 +199,7 @@ class LengowOrderController extends LengowController
             'filter_collection' => $this->getMarketplaces(),
         );
         if (_PS_VERSION_ >= '1.5') {
-            if (Shop::isFeatureActive()) {
+            if (Shop::isFeatureActive() && !Shop::getContextShopID()) {
                 $fields_list['shop_name'] = array(
                     'class'             => 'link',
                     'title'             => $this->locale->t('order.table.shop_name'),
@@ -267,6 +275,7 @@ class LengowOrderController extends LengowController
             'lo.id',
             'lo.marketplace_sku',
             'lo.marketplace_name',
+            'IFNULL(lo.marketplace_label,lo.marketplace_name) as marketplace_label',
             'lo.total_paid',
             'lo.delivery_country_iso',
             'lo.order_item as nb_item',
@@ -286,7 +295,12 @@ class LengowOrderController extends LengowController
         $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'orders` o ON (o.id_order = lo.id_order) ';
         if (_PS_VERSION_ >= '1.5') {
             if (Shop::isFeatureActive()) {
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (lo.id_shop = shop.id_shop) ';
+                if (Shop::getContextShopID()) {
+                    $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'shop` shop ON (lo.id_shop = shop.id_shop
+                    AND shop.id_shop = '.(int)Shop::getContextShopID().') ';
+                } else {
+                    $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (lo.id_shop = shop.id_shop) ';
+                }
                 $select[] = 'shop.name as shop_name';
             }
         }
@@ -360,10 +374,11 @@ class LengowOrderController extends LengowController
     public function getMarketplaces()
     {
         $marketplaces = array();
-        $sql = 'SELECT DISTINCT(marketplace_name) as name FROM `' . _DB_PREFIX_ . 'lengow_orders`';
+        $sql = 'SELECT DISTINCT(marketplace_name) as name,
+        IFNULL(marketplace_label, marketplace_name) as marketplace_label FROM `' . _DB_PREFIX_ . 'lengow_orders`';
         $collection = Db::getInstance()->executeS($sql);
         foreach ($collection as $row) {
-            $marketplaces[]= array('id' => $row['name'], 'text' =>$row['name']);
+            $marketplaces[]= array('id' => $row['name'], 'text' =>$row['marketplace_label']);
         }
         return $marketplaces;
     }
@@ -402,6 +417,11 @@ class LengowOrderController extends LengowController
                 return $value;
             }
         }
+    }
+
+    public static function displayMarketplaceName($key, $value, $item)
+    {
+        return $item['marketplace_label'];
     }
 
     public static function displayLogStatus($key, $value, $item)

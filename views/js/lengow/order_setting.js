@@ -115,19 +115,17 @@ function addScoreCarrier(){
             }
         });
 
-
-        $(".lengow_submit_order_setting").on('click', function(e){
-            if ($(".carrier:first").val() == "") {
-                e.preventDefault();
-                $(".sub:first").show();
-                $('html, body').stop().animate({scrollTop: $(".container2").offset().top}, 100);
-                $('#default_carrier_missing').html('<span>No default carrier selected.</span>');
-                return false;
-            }
-
+        $('#lengow_form_order_setting').submit(function( event ) {
+            $("li.add_country .carrier").each(function() {
+                if ($(this).val() == "") {
+                    $(this).parents(".sub").show();
+                    $('html, body').stop().animate({scrollTop: $(this).parents(".has-sub").offset().top - 200}, 100);
+                    $(this).parents(".sub").find('.default_carrier_missing').show();
+                    event.preventDefault();
+                }
+            });
             $('#error_select_country').html('');
         });
-
     });
 
 })(lengow_jquery);

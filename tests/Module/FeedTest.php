@@ -24,8 +24,6 @@ class FeedTest extends ModuleTestCase
     public function setUp()
     {
         parent::setUp();
-
-        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
         Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
@@ -74,28 +72,13 @@ class FeedTest extends ModuleTestCase
      *
      * @test
      * @expectedException        LengowException
-     * @expectedExceptionMessage Illegal export format
+     * @expectedExceptionMessage log.export.error_illegal_export_format
      * @covers LengowExport::setFormat
      */
     public function setFormat()
     {
         new LengowExport(array("format" => "mp3"));
     }
-
-//    /**
-//     * Test Export Empty Carrier
-//     *
-//     * @test
-//     * @expectedException        LengowException
-//     * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
-//     * @covers LengowExport::setCarrier
-//     */
-//    public function setCarrier()
-//    {
-//        Configuration::set('LENGOW_CARRIER_DEFAULT', '');
-//        $export = new LengowExport(array("log_output" => false));
-//        $export->exec();
-//    }
 
     /**
      * Test Export Limit

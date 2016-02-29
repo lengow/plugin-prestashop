@@ -89,7 +89,6 @@ class LengowMarketplace
         $this->id_shop = $id_shop;
         $this->loadApiMarketplace();
         $this->name = Tools::strtolower($name);
-
         if (!isset(self::$MARKETPLACES->{$this->name})) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.marketplace_not_present', array(
@@ -99,6 +98,7 @@ class LengowMarketplace
         }
         $this->marketplace = self::$MARKETPLACES->{$this->name};
         if (!empty($this->marketplace)) {
+            $this->label_name = $this->marketplace->name;
             foreach ($this->marketplace->orders->status as $key => $state) {
                 foreach ($state as $value) {
                     $this->states_lengow[(string)$value] = (string)$key;
@@ -238,6 +238,15 @@ class LengowMarketplace
             return true;
         }
         return false;
+    }
+
+    /**
+     * v3
+     * Get Marketplace Name
+     */
+    public function getMarketplaceName()
+    {
+
     }
 
     /**

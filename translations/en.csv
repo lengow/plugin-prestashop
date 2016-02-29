@@ -79,8 +79,8 @@ order_setting.screen.cron_manual_installation|If you are using an unix system, y
 order_setting.screen.command_unix_crontab|*/15 * * * * wget
 order_setting.screen.button_add_country|Add
 order_setting.screen.button_save|Save
+order_setting.screen.no_default_carrier_selected|No default carrier Selected
 global_setting.screen.notification_alert_title|Notifications & alerts
-global_setting.screen.notification_alert_description|Description of mails settings
 global_setting.screen.preprod_mode_title|Pre-Production Mode
 global_setting.screen.preprod_mode_description|Description of pre-production settings
 global_setting.screen.log_file_title|Log Files

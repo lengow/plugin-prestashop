@@ -10,7 +10,7 @@ use Configuration;
 use LengowMain;
 use LengowExport;
 use LengowException;
-use LengowFeed;
+use LengowCarrier;
 use LengowProduct;
 use Assert;
 use Feature;
@@ -26,8 +26,6 @@ class ProductTest extends ModuleTestCase
     public function setUp()
     {
         parent::setUp();
-
-        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
         Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
@@ -53,9 +51,7 @@ class ProductTest extends ModuleTestCase
 
         $productId = $productAttributeId = $langId = 1;
 
-        $product = new \LengowProduct($productId, $langId, array(
-            'carrier' => LengowMain::getExportCarrier()
-        ));
+        $product = new \LengowProduct($productId, $langId);
         $this->assertEquals(10, count($product->getImageUrlCombination()[$productAttributeId]));
     }
 
@@ -64,7 +60,7 @@ class ProductTest extends ModuleTestCase
      *
      * @test
      * @expectedException        LengowException
-     * @expectedExceptionMessage Cant find Image type size, check your table ps_image_type
+     * @expectedExceptionMessage log.export.error_cant_find_image_size
      */
     public function getMaxImageTypeWhenEmpty()
     {
@@ -148,9 +144,7 @@ class ProductTest extends ModuleTestCase
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Product/get_data.yml'
         );
 
-        $product = new LengowProduct(1, 1, array(
-            'carrier' => LengowMain::getExportCarrier()
-        ));
+        $product = new LengowProduct(1, 1, array('carrier' => new LengowCarrier(1)));
 
         $this->assertEquals(1, $product->getData('id'));
         $this->assertEquals('NAME001', $product->getData('name'));
@@ -206,9 +200,7 @@ class ProductTest extends ModuleTestCase
             $product->getData('image_10')
         );
 
-        $product = new LengowProduct(10, 1, array(
-            'carrier' => LengowMain::getExportCarrier()
-        ));
+        $product = new LengowProduct(10, 1, array('carrier' => new LengowCarrier(1)));
 
         $this->assertEquals(10, $product->getData('id'));
         $this->assertEquals('NAME010', $product->getData('name'));

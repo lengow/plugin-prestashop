@@ -63,7 +63,6 @@ class LengowController
 
     public function forceDisplay()
     {
-
         $module = Module::getInstanceByName('lengow');
         $lengowMain = new LengowMain();
         $className = get_class($this);

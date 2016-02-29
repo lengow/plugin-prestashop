@@ -12,5 +12,5 @@
             {/if}
         {/foreach}
     </select>
-    <div id="default_carrier_missing"></div>
+    <div class="default_carrier_missing" style="display:none;">{$locale->t('order_setting.screen.no_default_carrier_selected')}</div>
 </div>
