@@ -8,7 +8,7 @@ en:
     order: "orders"
     preprod_active: "Pre-production mode"
     order_overview: "Overview"
-    order_parameter: "Parameters"
+    order_parameter: "Settings"
   dashboard:
     screen:
       good_job: "Good Job ! You have"
@@ -60,7 +60,7 @@ en:
       button_reimport_order: "Re-import Orders"
       button_resend_order: "Resend Orders"
       cron: "Want to automatize your orders update?"
-      preprod_warning_message: "You are in a pre-production mode. You can only import order but no interaction with Lengow is possible. <a href=%{url}>Change this</a>"
+      preprod_warning_message: "Changes on your orders will not be saved until you are in pre-production mode. <a href=%{url}>Go back to production mode ?</a>"
     table:
       order_lengow_state: "Status"
       marketplace_name: "Marketplace"
@@ -96,7 +96,7 @@ en:
     screen:
       notification_alert_title: "Notifications & alerts"
       preprod_mode_title: "Pre-production Mode"
-      preprod_mode_description: "Use this pre-production mode to carry on your tests and simulate fictitious orders. Please note that this option has to be activated ONLY on your pre-production server"
+      preprod_mode_description: "Pre-production mode allow you to test changes without impacting orders (Change of status, package tracking)."
       log_file_title: "Log Files"
       log_file_description: "Find below all the maintenance logs (orders imported, errors reports,...). They will be registered here for 20 days."
       uninstall_module: "Uninstall the module completely"

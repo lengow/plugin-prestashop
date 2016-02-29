@@ -5,7 +5,7 @@ menu.product|products
 menu.order|orders
 menu.preprod_active|Pre-production mode
 menu.order_overview|Overview
-menu.order_parameter|Parameters
+menu.order_parameter|Settings
 dashboard.screen.good_job|Good Job ! You have
 dashboard.screen.pending_order|Pending Orders
 dashboard.screen.sell_everywhere|What about going further and start selling everywhere ?
@@ -50,7 +50,7 @@ order.screen.button_update_orders|Import Orders
 order.screen.button_reimport_order|Re-import Orders
 order.screen.button_resend_order|Resend Orders
 order.screen.cron|Want to automatize your orders update?
-order.screen.preprod_warning_message|You are in a pre-production mode. You can only import order but no interaction with Lengow is possible. <a href=%{url}>Change this</a>
+order.screen.preprod_warning_message|Changes on your orders will not be saved until you are in pre-production mode. <a href=%{url}>Go back to production mode ?</a>
 order.table.order_lengow_state|Status
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Shop
@@ -81,7 +81,7 @@ order_setting.screen.button_save|Save
 order_setting.screen.no_default_carrier_selected|No default carrier selected
 global_setting.screen.notification_alert_title|Notifications & alerts
 global_setting.screen.preprod_mode_title|Pre-production Mode
-global_setting.screen.preprod_mode_description|Use this pre-production mode to carry on your tests and simulate fictitious orders. Please note that this option has to be activated ONLY on your pre-production server
+global_setting.screen.preprod_mode_description|Pre-production mode allow you to test changes without impacting orders (Change of status, package tracking).
 global_setting.screen.log_file_title|Log Files
 global_setting.screen.log_file_description|Find below all the maintenance logs (orders imported, errors reports,...). They will be registered here for 20 days.
 global_setting.screen.uninstall_module|Uninstall the module completely

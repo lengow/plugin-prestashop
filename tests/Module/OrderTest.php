@@ -136,8 +136,7 @@ class OrderTest extends ModuleTestCase
         $order = new LengowOrder(1);
         $this->assertFalse($order->callAction('ship'));
 
-        $this->assertLogContain('You need to match carrier');
-
+        $this->assertLogContain('you need to match carrier Standard with country');
     }
 
     /**
