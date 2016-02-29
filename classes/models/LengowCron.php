@@ -179,6 +179,6 @@ class LengowCron
                 );
             }
         }
-        return false;
+        return true;
     }
 }

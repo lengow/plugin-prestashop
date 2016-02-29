@@ -152,7 +152,11 @@ class MarketplaceTest extends ModuleTestCase
 
         $this->assertTableContain(
             'lengow_logs_import',
-            array('id' => '1',  'id_order_lengow' => '1', 'message' => 'Can\'t ship order : tracking_number require')
+            array(
+                'id' => '1',
+                'id_order_lengow' => '1',
+                'message' => 'lengow_log.exception.arg_is_required[arg_name==tracking_number]'
+            )
         );
     }
 
