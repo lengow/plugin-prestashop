@@ -70,9 +70,8 @@ order_setting.screen.import_setting_description|Description of the import settin
 order_setting.screen.cron_description|You can use the Crontab Module to import orders from Lengow
 order_setting.screen.cron_not_configured|Cron Import is not configured on your Prestashop
 order_setting.screen.cron_configured|Cron Import exists on your Prestashop
-order_setting.screen.cron_if_not_exists| - or - 
+order_setting.screen.cron_if_not_exists|or
 order_setting.screen.cron_install_plugin|You can install 'Crontab' Prestashop Plugin
-order_setting.screen.cron_if_not_install_plugin| - or - 
 order_setting.screen.cron_manual_installation|If you are using an unix system, you can use unix crontab like this :
 order_setting.screen.command_unix_crontab|*/15 * * * * wget
 order_setting.screen.button_add_country|Add
