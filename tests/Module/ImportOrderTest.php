@@ -65,7 +65,7 @@ class ImportOrderTest extends ModuleTestCase
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_currency_data.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_price_data.json'
         );
-        $import = new LengowImport(array('log_output' => false,));
+        $import = new LengowImport(array('log_output' => false));
         $result = $import->exec();
         $this->assertEquals(0, $result['order_new'], '[Check Currency Shop] nb order new');
         $this->assertEquals(0, $result['order_update'], '[Check Currency Shop] nb order update');
@@ -81,7 +81,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->assertTableContain(
             'lengow_logs_import',
             array(
-                'message'           => 'currency GBP is not available in your shop',
+                'message'           => 'lengow_log.error.currency_not_available[currency_iso==GBP]',
                 'id_order_lengow'   => '1',
                 'type'              => '1'
             ),
@@ -104,7 +104,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->assertTableContain(
             'lengow_logs_import',
             array(
-                'message'           => 'no currency in the order',
+                'message'           => 'lengow_log.error.no_currency',
                 'id_order_lengow'   => '2',
                 'type'              => '1'
             ),
@@ -127,7 +127,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->assertTableContain(
             'lengow_logs_import',
             array(
-                'message'           => 'prices can\'t be calculated in the correct currency',
+                'message'           => 'lengow_log.error.no_change_rate',
                 'id_order_lengow'   => '3',
                 'type'              => '1'
             ),
@@ -166,7 +166,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->assertTableContain(
             'lengow_logs_import',
             array(
-                'message'           => 'no billing address in the order',
+                'message'           => 'lengow_log.error.no_billing_address',
                 'id_order_lengow'   => '1',
                 'type'              => '1'
             ),
@@ -189,7 +189,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->assertTableContain(
             'lengow_logs_import',
             array(
-                'message'           => 'billing address doesn\'t have country',
+                'message'           => 'lengow_log.error.no_country_for_billing_address',
                 'id_order_lengow'   => '2',
                 'type'              => '1'
             ),
@@ -227,7 +227,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->assertTableContain(
             'lengow_logs_import',
             array(
-                'message'           => 'delivery address doesn\'t have country',
+                'message'           => 'lengow_log.error.no_country_for_delivery_address',
                 'id_order_lengow'   => '1',
                 'type'              => '1'
             ),
@@ -265,7 +265,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->assertTableContain(
             'lengow_logs_import',
             array(
-                'message'           => 'no product in the order',
+                'message'           => 'lengow_log.error.no_product',
                 'id_order_lengow'   => '1',
                 'type'              => '1'
             ),
@@ -537,7 +537,7 @@ class ImportOrderTest extends ModuleTestCase
      *
      * @test
      * @expectedException        LengowException
-     * @expectedExceptionMessage Shipping address don't have country
+     * @expectedExceptionMessage lengow_log.exception.carrier_shipping_address_no_country
      * @covers LengowImportOrder::getCarrierId
      */
     public function getCarrierIdEmptyAddress()
@@ -568,7 +568,7 @@ class ImportOrderTest extends ModuleTestCase
      *
      * @test
      * @expectedException        LengowException
-     * @expectedExceptionMessage Shipping address don't have country
+     * @expectedExceptionMessage lengow_log.exception.carrier_shipping_address_no_country
      * @covers LengowImportOrder::getCarrierId
      */
     public function getCarrierIdEmptyAddressCountry()
