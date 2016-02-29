@@ -34,6 +34,8 @@ class LengowOrderController extends LengowController
             'link'              => LengowMain::getImportUrl()
         );
 
+
+        $this->context->smarty->assign('cron_active', LengowCron::getCron());
         $this->context->smarty->assign('report_mail_address', LengowConfiguration::getReportEmailAddress());
         $this->context->smarty->assign('lengow_table', $this->buildTable());
         $this->context->smarty->assign('orderCollection', $orderCollection);

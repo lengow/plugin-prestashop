@@ -46,7 +46,9 @@
                 {else}
                     ({$locale->t('order.screen.import_manuel')})
                 {/if}
-                <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting', true)|escape:'htmlall':'UTF-8'}#cron_setting">{$locale->t('order.screen.cron')}</a>
+                {if not $cron_active}
+                    <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting', true)|escape:'htmlall':'UTF-8'}#cron_setting">{$locale->t('order.screen.cron')}</a>
+                {/if}
             <br/>
                 {$orderCollection['last_import_date']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}
                 {else}
