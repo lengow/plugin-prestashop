@@ -191,6 +191,7 @@ class LengowOrderController extends LengowController
             'title'             => $this->locale->t('order.table.marketplace_name'),
             'align'             => 'center',
             'class'             => 'link',
+            'display_callback'  => 'LengowOrderController::displayMarketplaceName',
             'filter'            => true,
             'filter_order'      => true,
             'filter_key'        => 'lo.marketplace_name',
@@ -274,6 +275,7 @@ class LengowOrderController extends LengowController
             'lo.id',
             'lo.marketplace_sku',
             'lo.marketplace_name',
+            'IFNULL(lo.marketplace_label,lo.marketplace_name) as marketplace_label',
             'lo.total_paid',
             'lo.delivery_country_iso',
             'lo.order_item as nb_item',
@@ -372,10 +374,11 @@ class LengowOrderController extends LengowController
     public function getMarketplaces()
     {
         $marketplaces = array();
-        $sql = 'SELECT DISTINCT(marketplace_name) as name FROM `' . _DB_PREFIX_ . 'lengow_orders`';
+        $sql = 'SELECT DISTINCT(marketplace_name) as name,
+        IFNULL(marketplace_label, marketplace_name) as marketplace_label FROM `' . _DB_PREFIX_ . 'lengow_orders`';
         $collection = Db::getInstance()->executeS($sql);
         foreach ($collection as $row) {
-            $marketplaces[]= array('id' => $row['name'], 'text' =>$row['name']);
+            $marketplaces[]= array('id' => $row['name'], 'text' =>$row['marketplace_label']);
         }
         return $marketplaces;
     }
@@ -414,6 +417,11 @@ class LengowOrderController extends LengowController
                 return $value;
             }
         }
+    }
+
+    public static function displayMarketplaceName($key, $value, $item)
+    {
+        return $item['marketplace_label'];
     }
 
     public static function displayLogStatus($key, $value, $item)

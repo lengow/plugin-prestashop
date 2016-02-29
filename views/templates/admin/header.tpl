@@ -27,7 +27,7 @@
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
 {if !$isNewMerchant}
-<ul class="nav nav-pills lengow-nav lengow-nav-top {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq 'on'}preprod{/if}">
+<ul class="nav nav-pills lengow-nav lengow-nav-top {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}preprod{/if}">
     <li class="lengow_float_right">
         <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">
             <i class="fa fa-cog"></i>

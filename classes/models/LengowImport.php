@@ -613,6 +613,7 @@ class LengowImport
                             'preprod_mode'          => $this->preprod_mode,
                             'log_output'            => $this->log_output,
                             'marketplace_sku'       => $marketplace_sku,
+                            'marketplace_label'     => $marketplace_label,
                             'delivery_address_id'   => $package_delivery_address_id,
                             'order_data'            => $order_data,
                             'package_data'          => $package_data,

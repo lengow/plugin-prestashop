@@ -198,6 +198,7 @@ class LengowImportOrder
             (string)$this->order_data->marketplace,
             $this->id_shop
         );
+        $this->marketplace_label = $this->marketplace->label_name;
         $this->order_state_marketplace = (string)$this->order_data->marketplace_status;
         $this->order_state_lengow = $this->marketplace->getStateLengow($this->order_state_marketplace);
     }
@@ -1139,6 +1140,7 @@ class LengowImportOrder
             'id_shop_group'         => $this->id_shop_group,
             'id_lang'               => $this->id_lang,
             'marketplace_name'      => pSQL(Tools::strtolower((string)$this->order_data->marketplace)),
+            'marketplace_label'     => pSQL((string)$this->marketplace_label),
             'delivery_address_id'   => $this->delivery_address_id,
             'order_date'            => date('Y-m-d H:i:s', strtotime($order_date)),
             'order_lengow_state'    => pSQL($this->order_state_lengow),
