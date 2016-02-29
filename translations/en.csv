@@ -37,6 +37,8 @@ product.table.final_price|Final price
 product.table.quantity|Quantity
 product.table.lengow_status|Lengow status
 product.table.pagination_of|of
+order.screen.import_charge_first|Retrieving your orders ...
+order.screen.import_charge_second|Promised ! This will not last long (2 min avg. time)
 order.screen.all_order_will_be_sent_to|All orders issues reports will be send to mail
 order.screen.last_order_importation|Last order importation
 order.screen.import_auto|Auto
