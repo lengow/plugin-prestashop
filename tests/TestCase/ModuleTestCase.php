@@ -12,6 +12,7 @@ use Configuration;
 use Product;
 use Shop;
 use Currency;
+use Cache;
 use LengowLog;
 use Module;
 use Tools;
@@ -75,6 +76,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
             Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
             Product::flushPriceCache();
+            Cache::getInstance()->flush();
         }
     }
 

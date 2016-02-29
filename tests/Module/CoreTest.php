@@ -9,7 +9,7 @@ use Db;
 use Module;
 use Configuration;
 use LengowMain;
-use LengowExport;
+use LengowConfiguration;
 use LengowException;
 use Assert;
 
@@ -78,7 +78,7 @@ class CoreTest extends ModuleTestCase
 
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
 
-        Configuration::updatevalue('LENGOW_AUTHORIZED_IP', '');
+        LengowConfiguration::updateGlobalValue('LENGOW_AUTHORIZED_IP', '');
         $exportUrl = LengowMain::getExportUrl($shopId);
         $response = self::$client->get($exportUrl);
         $body = $response->getBody()->getContents();
@@ -96,7 +96,7 @@ class CoreTest extends ModuleTestCase
             'Access Unauthorized'
         );
 
-        Configuration::updatevalue('LENGOW_AUTHORIZED_IP', '127.0.0.1');
+        LengowConfiguration::updateGlobalValue('LENGOW_AUTHORIZED_IP', '127.0.0.1');
         $response = self::$client->get($exportUrl);
         $body = $response->getBody()->getContents();
         $this->assertTrue(

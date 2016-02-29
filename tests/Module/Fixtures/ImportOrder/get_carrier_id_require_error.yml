@@ -129,7 +129,3 @@ lengow_marketplace_carrier:
     id_carrier: 2
     marketplace_carrier_sku: "LAPOSTE_RELAY"
 lengow_carrier_country:
-  -
-    id: 1
-    id_country: 8
-    id_carrier: 1

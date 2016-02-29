@@ -457,11 +457,10 @@ class LengowMain
      */
     public static function checkIP()
     {
-        $ips = Configuration::get('LENGOW_AUTHORIZED_IP');
+        $ips = LengowConfiguration::getGlobalValue('LENGOW_AUTHORIZED_IP');
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
-        $ips = explode(';', $ips);
-        $authorized_ips = array_merge($ips, LengowMain::$IPS_LENGOW);
-
+        $ips = array_filter(explode(';', $ips));
+        $authorized_ips = count($ips) >0 ? array_merge($ips, LengowMain::$IPS_LENGOW) : LengowMain::$IPS_LENGOW;
         if (!self::inTest()) {
             $authorized_ips[] = $_SERVER['SERVER_ADDR'];
         }
