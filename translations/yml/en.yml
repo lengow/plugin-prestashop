@@ -1,4 +1,8 @@
 en:
+  module:
+    name: "Lengow"
+    description: "Lengow allows you to easily export your product catalogue from your Prestashop store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister. Choose from our 1,800 available marketing channels!"
+    uninstall: "Are you sure you want to uninstall the Lengow module ?"
   menu:
     product: "products"
     order: "orders"
@@ -152,8 +156,8 @@ en:
     lengow_order_stat_update_title: "Order statistics update"
   lengow_log:
     error:
-      export_in_progress: "import is already started"
-      rest_time_to_export: "You need to wait %{rest_time} seconds before you re-import orders"
+      import_in_progress: "import is already started"
+      rest_time_to_import: "you need to wait %{rest_time} seconds before re import orders"
       no_product: "no product in the order"
       no_change_rate: "no change rate for the order prices"
       no_currency: "no currency in the order"

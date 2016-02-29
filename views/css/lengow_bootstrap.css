@@ -660,7 +660,6 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 }
 
 #lengow_charge_import_order {
-    display: none;
     position: absolute;
     text-align: center;
     z-index: 100;
@@ -674,7 +673,6 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     font-size: 1.5em;
 }
 #lengow_charge_import_order_background {
-    display: none;
     position: absolute;
     background-color: white;
     z-index: 90;
