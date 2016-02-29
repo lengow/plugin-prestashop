@@ -92,7 +92,6 @@ en:
   global_setting:
     screen:
       notification_alert_title: "Notifications & alerts"
-      notification_alert_description: "Description of mails settings"
       preprod_mode_title: "Pre-Production Mode"
       preprod_mode_description: "Description of pre-production settings"
       log_file_title: "Log Files"

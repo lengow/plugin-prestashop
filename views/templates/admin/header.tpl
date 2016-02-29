@@ -48,7 +48,7 @@
         <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">
             <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
         </a>
-        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq 'on'}
+        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
             <div id="lengow_preprod">
                 {$locale->t('menu.preprod_active')}
             </div>

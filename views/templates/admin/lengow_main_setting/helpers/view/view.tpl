@@ -23,9 +23,7 @@
         <input type="hidden" name="action" value="process">
         <div class="container">
             <h2>{$locale->t('global_setting.screen.notification_alert_title')}</h2>
-            <p>{$locale->t('global_setting.screen.notification_alert_description')}</p>
             {$mail_report}
-
             <div class="lengow_clear"></div>
         </div>
         <div id="preprod_setting" class="container">
