@@ -92,7 +92,7 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_EXPORT_FILE_ENABLED' => array(
                     'type'          => 'checkbox',
-                    'readonly'      => true,
+                    'readonly'      => false,
                     'label'         => $locale->t('lengow_setting.lengow_export_file_enabled_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_export_file_enabled_legend'),
                 ),

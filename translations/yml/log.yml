@@ -141,18 +141,23 @@ en:
       shop_product_total: "Products available in the shop"
       shop_product_exported: "Products exported in the shop"
       url_export: "Export URL for this shop"
-    configuration:
+    order:
       shop: "Shop"
-      import: "Import"
-      export: "Export"
+      markeplace_name: "Marketplace"
+      order_sku: "Sku Order"
+      delivery_address_id: "Delivery address ID"
+      import_one_order: "Import one order"
+      import_days: "Import days"
+      import_shop_order: "Import shop orders"
+      import_all_order: "Import all orders"
+      button_import_one_order: "Import Order"
+      button_import_shop_order: "Import Orders"
+    configuration:
+      shop_credentials: "Shop credentials"
+      export_setting: "Export settings"
+      import_setting: "Import settings"
+      global_setting: "Global settings"
       button_save: "Save"
     log:
       log_files: "Log Files"
       download_all: "Download all files"
-    order:
-      markeplace_name: "Marketplace"
-      order_sku: "Sku Order"
-      delivery_address_id: "Delivery address ID"
-      import_days: "Import days"
-      button_import_one_order: "Import One Order"
-      button_import_shop_order: "Import Shop Order"

@@ -91,8 +91,8 @@ class LengowConfigurationForm
                         <input type="text" name="'.$name.'"
                             class="form-control" placeholder="'.$input['label'].'"
                             value="'.$value.'" '.$readonly.'>
+                        <span class="legend">'.$legend.'</span>
                     </div>
-                    <span class="legend">'.$legend.'</span>
                     </div>';
                 break;
             case 'select':

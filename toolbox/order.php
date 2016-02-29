@@ -27,6 +27,8 @@ $controller = new LengowOrderController();
 $controller->postProcess();
 $controller->display();
 
+$locale = new LengowTranslation();
+
 $shops = LengowShop::findAll();
 foreach ($shops as $s) {
     $shop[$s['id_shop']] = new LengowShop($s['id_shop']);
@@ -40,6 +42,7 @@ $context->smarty->assign('days', $days);
 
 require 'views/header.php';
 echo '<div class="full-container">';
+echo '<h1>'.$locale->t('toolbox.menu.order').'</h1>';
 echo $controller->forceDisplay();
 echo '</div><!-- /.container -->';
 require 'views/footer.php';
