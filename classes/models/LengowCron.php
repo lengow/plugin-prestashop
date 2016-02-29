@@ -35,16 +35,17 @@ class LengowCron
         $locale = new LengowTranslation();
         $moduleCron = Module::getInstanceByName('cronjobs');
         if ($moduleCron->active) {
-            $form = '<p>' . $locale->t('order_setting.screen.cron_description') . '</p>';
+            $form = '<p>'.$locale->t('order_setting.screen.cron_description').'</p>';
 
             if (!self::getCron()) {
-                $form .= '<span class="lengow-no">' . $locale->t('order_setting.screen.cron_not_configured')
-                      . '</span><br/>';
+                $form .= '<span class="lengow-no">'.$locale->t(
+                    'order_setting.screen.cron_not_configured'
+                ).'</span><br/>';
             } else {
-                $form .= '<span class="lengow-yes">' . $locale->t('order_setting.screen.cron_configured') . '</span>';
+                $form .= '<span class="lengow-yes">'.$locale->t('order_setting.screen.cron_configured').'</span>';
             }
         } else {
-            $form = '<p>' . $locale->t('order_setting.screen.cron_install_plugin') . '</p>';
+            $form = '<p>'.$locale->t('order_setting.screen.cron_install_plugin').'</p>';
         }
         Context::getContext()->smarty->assign('moduleCron', $moduleCron->active);
         return $form;
@@ -57,7 +58,7 @@ class LengowCron
      */
     public static function getCron()
     {
-        if (!Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'cronjobs\'')) {
+        if (!Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'cronjobs\'')) {
             return false;
         }
         $shops = LengowShop::findAll(true);
@@ -66,17 +67,17 @@ class LengowCron
             break;
         }
         $shop = new Shop((int)$id_shop);
-        $description_import = 'Lengow Import - ' . $shop->name;
+        $description_import = 'Lengow Import - '.$shop->name;
 
-        $query_import_select = 'SELECT 1 FROM ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
-            . 'WHERE `description` = \'' . pSQL($description_import) . '\' '
-            . 'AND `id_shop` = ' . (int)$id_shop . ' '
-            . 'AND `id_shop_group` =' . (int)$shop->id_shop_group;
+        $query_import_select = 'SELECT 1 FROM '.pSQL(_DB_PREFIX_ . 'cronjobs').' '
+            . 'WHERE `description` = \''.pSQL($description_import).'\' '
+            . 'AND `id_shop` = '.(int)$id_shop.' '
+            . 'AND `id_shop_group` ='.(int)$shop->id_shop_group;
 
         if (Db::getInstance()->executeS($query_import_select)) {
             return true;
         }
-
+        return false;
     }
 
     /**
@@ -88,7 +89,7 @@ class LengowCron
      */
     public static function addCronTasks()
     {
-        if (!Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'cronjobs\'')) {
+        if (!Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'cronjobs\'')) {
             return false;
         }
         $shops = LengowShop::findAll(true);
@@ -97,25 +98,25 @@ class LengowCron
             break;
         }
         $shop = new Shop((int)$id_shop);
-        $description_import = 'Lengow Import - ' . $shop->name;
+        $description_import = 'Lengow Import - '.$shop->name;
 
-        $query_import_select = 'SELECT 1 FROM ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
-            . 'WHERE `description` = \'' . pSQL($description_import) . '\' '
-            . 'AND `id_shop` = ' . (int)$id_shop . ' '
-            . 'AND `id_shop_group` =' . (int)$shop->id_shop_group;
+        $query_import_select = 'SELECT 1 FROM '.pSQL(_DB_PREFIX_.'cronjobs').' '
+            .'WHERE `description` = \''.pSQL($description_import).'\' '
+            .'AND `id_shop` = '.(int)$id_shop.' '
+            .'AND `id_shop_group` ='.(int)$shop->id_shop_group;
 
-        $query_import_insert = 'INSERT INTO ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
-            . '(`description`, `task`, `hour`, `day`, `month`, `day_of_week`,
+        $query_import_insert = 'INSERT INTO '.pSQL(_DB_PREFIX_ . 'cronjobs').' '
+            .'(`description`, `task`, `hour`, `day`, `month`, `day_of_week`,
             `updated_at`, `active`, `id_shop`, `id_shop_group`) '
-            . 'VALUES (\''
-            . pSQL($description_import)
-            . '\', \''
-            . pSQL(LengowMain::getImportUrl())
-            . '\', \'-1\', \'-1\', \'-1\', \'-1\', NULL, TRUE, '
-            . (int)$id_shop
-            . ', '
-            . (int)$shop->id_shop_group
-            . ')';
+            .'VALUES (\''
+            .pSQL($description_import)
+            .'\', \''
+            .pSQL(LengowMain::getImportUrl())
+            .'\', \'-1\', \'-1\', \'-1\', \'-1\', NULL, TRUE, '
+            .(int)$id_shop
+            .', '
+            .(int)$shop->id_shop_group
+            .')';
 
         if (!Db::getInstance()->executeS($query_import_select)) {
             $add_import = Db::getInstance()->execute($query_import_insert);
@@ -144,7 +145,7 @@ class LengowCron
      */
     public static function removeCronTasks()
     {
-        if (!Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'cronjobs\'')) {
+        if (!Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'cronjobs\'')) {
             return false;
         }
         $shops = LengowShop::findAll(true);
@@ -153,18 +154,18 @@ class LengowCron
             break;
         }
         $shop = new Shop((int)$id_shop);
-        $description_import = 'Lengow Import - ' . $shop->name;
+        $description_import = 'Lengow Import - '.$shop->name;
 
-        $query_import_select = 'SELECT 1 FROM ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
-            . 'WHERE `description` = \'' . pSQL($description_import) . '\' '
-            . 'AND `id_shop` = ' . (int)$id_shop . ' '
-            . 'AND `id_shop_group` =' . (int)$shop->id_shop_group;
+        $query_import_select = 'SELECT 1 FROM '.pSQL(_DB_PREFIX_.'cronjobs').' '
+            .'WHERE `description` = \''.pSQL($description_import).'\' '
+            .'AND `id_shop` = '.(int)$id_shop . ' '
+            .'AND `id_shop_group` =' . (int)$shop->id_shop_group;
 
         if (Db::getInstance()->executeS($query_import_select)) {
-            $query = 'DELETE FROM ' . pSQL(_DB_PREFIX_ . 'cronjobs') . ' '
-                . 'WHERE `description` IN (\'' . pSQL($description_import) . '\')'
-                . 'AND `id_shop` = ' . (int)$id_shop . ' '
-                . 'AND `id_shop_group` =' . (int)$shop->id_shop_group;
+            $query = 'DELETE FROM '.pSQL(_DB_PREFIX_ . 'cronjobs').' '
+                .'WHERE `description` IN (\''.pSQL($description_import).'\')'
+                .'AND `id_shop` = '.(int)$id_shop.' '
+                .'AND `id_shop_group` ='.(int)$shop->id_shop_group;
             if (Db::getInstance()->execute($query)) {
                 LengowMain::log(
                     'Cron',

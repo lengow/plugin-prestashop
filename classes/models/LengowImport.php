@@ -228,11 +228,11 @@ class LengowImport
         // clean logs
         LengowMain::cleanLog();
         if (LengowImport::isInProcess() && !$this->preprod_mode) {
-            $global_error = LengowMain::setLogMessage('lengow_log.error.export_in_progress');
+            $global_error = LengowMain::setLogMessage('lengow_log.error.import_in_progress');
             LengowMain::log('Import', $global_error, $this->log_output);
             LengowMain::log(
                 'Import',
-                LengowMain::setLogMessage('lengow_log.error.rest_time_to_export', array(
+                LengowMain::setLogMessage('lengow_log.error.rest_time_to_import', array(
                     'rest_time' => LengowImport::restTimeToImport()
                 )),
                 $this->log_output

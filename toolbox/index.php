@@ -21,27 +21,31 @@
 
 require 'conf.inc.php';
 require 'views/header.php';
+
+$check = new LengowCheck();
+if (_PS_VERSION_ < '1.5') {
+    $shopCollection = array(array('id_shop' => 1));
+} else {
+    $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+    $shopCollection = Db::getInstance()->ExecuteS($sql);
+}
+
 ?>
     <div class="container">
         <h1><?php echo $locale->t('toolbox.menu.lengow_toolbox'); ?></h1>
-
-        <h2><?php echo $locale->t('toolbox.index.checklist_information'); ?></h2>
-        <?php echo LengowCheck::getHtmlCheckList(); ?>
-
-        <h2><?php echo $locale->t('toolbox.index.global_information'); ?></h2>
-        <table class="table">
-            <tr>
-              <td><b><?php echo $locale->t('toolbox.index.prestashop_version'); ?></b></td>
-              <td><?php echo _PS_VERSION_; ?></td>
-            </tr>
-            <tr>
-              <td><b><?php echo $locale->t('toolbox.index.plugin_version'); ?></b></td>
-              <td><?php echo Configuration::get('LENGOW_VERSION'); ?></td>
-            </tr>
-        </table>
-        
-        <h2><?php echo $locale->t('toolbox.index.store_information'); ?></h2>
-
+        <h3><i class="fa fa-check-square-o"></i> <?php echo $locale->t('toolbox.index.checklist_information'); ?></h3>
+        <?php echo $check->getCheckList(); ?>
+        <h3><i class="fa fa-cog"></i> <?php echo $locale->t('toolbox.index.global_information'); ?></h3>
+        <?php echo $check->getGlobalInformation(); ?>
+        <h3><i class="fa fa-download"></i> <?php echo $locale->t('toolbox.index.import_information'); ?></h3>
+        <?php echo $check->getImportInformation(); ?>      
+        <h3><i class="fa fa-upload"></i> <?php echo $locale->t('toolbox.index.export_information'); ?></h3>
+        <?php
+        foreach ($shopCollection as $row) {
+            $shop = new LengowShop($row['id_shop']);
+            echo $check->getInformationByStore($shop);
+        }
+        ?>
     </div>
 <?php
 require 'views/footer.php';

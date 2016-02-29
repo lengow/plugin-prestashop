@@ -483,7 +483,7 @@ class LengowOrderController extends LengowController
             }
         }
         if (LengowImport::isInProcess()) {
-            $message[] = LengowMain::decodeLogMessage('lengow_log.error.rest_time_to_export', null, array(
+            $message[] = LengowMain::decodeLogMessage('lengow_log.error.rest_time_to_import', null, array(
                 'rest_time' => LengowImport::restTimeToImport()
             ));
         }

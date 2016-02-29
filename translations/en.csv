@@ -1,3 +1,6 @@
+module.name|Lengow
+module.description|Lengow allows you to easily export your product catalogue from your Prestashop store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister. Choose from our 1,800 available marketing channels!
+module.uninstall|Are you sure you want to uninstall the Lengow module ?
 menu.product|products
 menu.order|orders
 menu.preprod_active|Pre-production mode
@@ -136,8 +139,8 @@ lengow_setting.lengow_tracking_enabled_title|Lengow tracking enabled
 lengow_setting.lengow_tracking_id_title|Lengow Tracking Id
 lengow_setting.lengow_order_stat_title|Order Statistic
 lengow_setting.lengow_order_stat_update_title|Order Statistic Update
-lengow_log.error.export_in_progress|import is already started
-lengow_log.error.rest_time_to_export|you need to wait %{rest_time} seconds before re import orders
+lengow_log.error.import_in_progress|import is already started
+lengow_log.error.rest_time_to_import|you need to wait %{rest_time} seconds before re import orders
 lengow_log.error.no_product|no product in the order
 lengow_log.error.no_change_rate|no change rate for the order prices
 lengow_log.error.no_currency|no currency in the order
@@ -261,9 +264,7 @@ toolbox.menu.order|Orders
 toolbox.menu.configuration|Configuration
 toolbox.menu.log|Logs
 toolbox.menu.log_off|Log Off
-toolbox.index.global_information|Global information
-toolbox.index.store_information|Information by store
-toolbox.index.checklist_information|Check-list information
+toolbox.index.checklist_information|Check-list
 toolbox.index.curl_message|Lengow needs the CURL PHP extension
 toolbox.index.curl_help|The CURL extension is not installed or enabled in your PHP installation.Check the manual for information on how to install or enable CURL on your system
 toolbox.index.curl_help_link|http://www.php.net/manual/en/curl.setup.php
@@ -282,8 +283,31 @@ toolbox.index.mail_configuration_enabled|Email are enabled with custom settings
 toolbox.index.email_desactived|Email are desactived
 toolbox.index.error_mail_setting|Error mail settings, PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4
 toolbox.index.email_using_php_mail|Email using php mail function
+toolbox.index.global_information|Global information
 toolbox.index.prestashop_version|Prestashop version
 toolbox.index.plugin_version|Plugin version
+toolbox.index.ip_server|Server IP
+toolbox.index.ip_authorized|Ip authorised
+toolbox.index.preprod_disabled|Preprod mode disabled
+toolbox.index.cron_enable|Cron job set in the crontab Module
+toolbox.index.import_information|Import information (Global)
+toolbox.index.global_token|Import token
+toolbox.index.url_import|Import URL
+toolbox.index.import_in_progress|Import in progress
+toolbox.index.no_import|no import in progress
+toolbox.index.rest_time_to_import|wait %{rest_time} seconds before the next import
+toolbox.index.shop_last_import|Last import
+toolbox.index.shop_type_import|Last import type
+toolbox.index.last_import_none|none
+toolbox.index.last_import_cron|cron
+toolbox.index.last_import_manual|manual
+toolbox.index.export_information|Export information (By store)
+toolbox.index.shop_active|Shop followed by Lengow
+toolbox.index.shop_export_token|Export token
+toolbox.index.shop_last_export|Last export
+toolbox.index.shop_product_total|Products available in the shop
+toolbox.index.shop_product_exported|Products exported in the shop
+toolbox.index.url_export|Export URL for this shop
 toolbox.configuration.shop|Shop
 toolbox.configuration.import|Import
 toolbox.configuration.export|Export
