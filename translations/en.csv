@@ -1,6 +1,6 @@
 menu.product|products
 menu.order|orders
-menu.preprod_active|PreProd Active
+menu.preprod_active|Pre-production mode
 menu.order_overview|Overview
 menu.order_parameter|Parameters
 dashboard.screen.good_job|Good Job ! You have
@@ -47,6 +47,7 @@ order.screen.button_update_orders|Import Orders
 order.screen.button_reimport_order|Re Import Orders
 order.screen.button_resend_order|Re Send Orders
 order.screen.cron|Want to automatize orders updating ?
+order.screen.preprod_warning_message|You are in pre-production mode. You can only import order. No interaction with lengow is possible. <a href=%{url}>Change this</a>
 order.table.order_lengow_state|Status
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Shop

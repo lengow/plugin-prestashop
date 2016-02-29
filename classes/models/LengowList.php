@@ -440,13 +440,18 @@ class LengowList
          '.$this->locale->t('product.table.pagination_of').' <span class="lengow_number">'.$this->total.'</span>';
         $html.='</div>';
 
+        if ($totalPage<=1) {
+            return $html.'</nav>';
+        }
+
+
         $html.= '<ul class="lengow_pagination pagination">';
         $class = ($this->currentPage == 1) ? 'disabled' : '';
-        $html.= '<li><a href="#" class="'.$class.'"  data-page="'.($this->currentPage-1).'"
+        $html.= '<li class="'.$class.'"><a href="#" data-page="'.($this->currentPage-1).'"
         data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage-1).'"
         ><i class="fa fa-angle-left"></i></a></li>';
         $class = ($this->currentPage == $this->nbMaxPage) ? 'disabled' : '';
-        $html.= '<li><a href="#" class="'.$class.'"  data-page="'.($this->currentPage+1).'"
+        $html.= '<li class="'.$class.'"><a href="#" data-page="'.($this->currentPage+1).'"
         data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage+1).'"
         ><i class="fa fa-angle-right"></i></a></li>';
         $html.= '</ul>';
@@ -456,7 +461,7 @@ class LengowList
             $showLastSeparation = false;
 
             $class = ($this->currentPage == 1) ? 'disabled' : '';
-            $html.= '<li><a href="#" class="'.$class.'" data-page="1"
+            $html.= '<li class="'.$class.'"><a href="#" data-page="1"
             data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p=1">1</a></li>';
 
             $from = $this->currentPage - 2;

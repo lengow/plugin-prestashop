@@ -311,7 +311,7 @@ class LengowOrderController extends LengowController
                 "from" => $from,
                 "join" => $join,
                 "select_having" => $select_having,
-                "order" => 'order_date DESC',
+                "order" => 'IF (order_lengow_state = "waiting_shipment",1,0) DESC, order_date DESC',
             )
         ));
         return $list;

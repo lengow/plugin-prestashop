@@ -2,7 +2,7 @@ en:
   menu:
     product: "products"
     order: "orders"
-    preprod_active: "PreProd Active"
+    preprod_active: "Pre-production mode"
     order_overview: "Overview"
     order_parameter: "Parameters"
   dashboard:
@@ -56,6 +56,7 @@ en:
       button_reimport_order: "Re Import Orders"
       button_resend_order: "Re Send Orders"
       cron: "Want to automatize orders updating ?"
+      preprod_warning_message: "You are in pre-production mode. You can only import order. No interaction with lengow is possible. <a href=%{url}>Change this</a>"
     table:
       order_lengow_state: "Status"
       marketplace_name: "Marketplace"
