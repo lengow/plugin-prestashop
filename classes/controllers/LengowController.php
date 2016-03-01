@@ -52,15 +52,22 @@ class LengowController
         );
 
         if (_PS_VERSION_ < '1.5') {
-            $module = Module::getInstanceByName('lengow');
-            echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');
-            $lengowMain = new LengowMain();
-            $className = get_class($this);
-            if (substr($className, 0, 11) == 'LengowOrder') {
-                echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header_order.tpl');
+
+            $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
+            if (!$toolbox) {
+                $module = Module::getInstanceByName('lengow');
+                echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');
+                $lengowMain = new LengowMain();
+                $className = get_class($this);
+                if (substr($className, 0, 11) == 'LengowOrder') {
+                    echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header_order.tpl');
+                }
+                $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
+                echo $module->display(
+                    _PS_MODULE_LENGOW_DIR_,
+                    'views/templates/admin/' . $path . '/helpers/view/view.tpl'
+                );
             }
-            $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
-            echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/'.$path.'/helpers/view/view.tpl');
         }
     }
 
