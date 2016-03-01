@@ -227,6 +227,10 @@ class LengowConfiguration extends Configuration
                     'type'          => 'datetime',
                     'label'         => $locale->t('lengow_setting.lengow_order_stat_update_title'),
                 ),
+                'LENGOW_VERSION' => array(
+                    'type'          => 'text',
+                    'default_value' => '',
+                ),
             );
         }
         return $keys;

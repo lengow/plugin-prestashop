@@ -29,15 +29,21 @@ class LengowCurrency
      */
     public static function getIdBySign($sign, $id_shop = 0)
     {
-        $cache_id = 'Currency::getIdBySign_' . pSQL($sign) . '-' . (int)$id_shop;
-        if (!Cache::isStored($cache_id)) {
-            $query = Currency::getIdByQuery($id_shop);
-            $query->where('sign = \'' . pSQL($sign) . '\'');
+        if (_PS_VERSION_ < '1.5') {
+            $sql = "SELECT id_currency FROM "._DB_PREFIX_."currency WHERE sign = '".pSQL($sign)."' ";
+            $result = Db::getInstance()->getRow($sql);
+            return $result['id_currency'];
+        } else {
+            $cache_id = 'Currency::getIdBySign_' . pSQL($sign) . '-' . (int)$id_shop;
+            if (!Cache::isStored($cache_id)) {
+                $query = Currency::getIdByQuery($id_shop);
+                $query->where('sign = \'' . pSQL($sign) . '\'');
 
-            $result = (int)Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($query->build());
-            Cache::store($cache_id, $result);
-            return $result;
+                $result = (int)Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($query->build());
+                Cache::store($cache_id, $result);
+                return $result;
+            }
+            return Cache::retrieve($cache_id);
         }
-        return Cache::retrieve($cache_id);
     }
 }

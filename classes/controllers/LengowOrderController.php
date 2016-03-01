@@ -75,15 +75,21 @@ class LengowOrderController extends LengowController
                     echo 'lengow_jquery("#order_'.$id_order_lengow.'").replaceWith("'.$html.'");';
                     break;
                 case 'import_all':
-                    if (Shop::getContextShopID()) {
+                    if (_PS_VERSION_ < '1.5') {
                         $import = new LengowImport(array(
-                            'shop_id' => Shop::getContextShopID(),
                             'log_output' => false,
                         ));
                     } else {
-                        $import = new LengowImport(array(
-                            'log_output' => false,
-                        ));
+                        if (Shop::getContextShopID()) {
+                            $import = new LengowImport(array(
+                                'shop_id' => Shop::getContextShopID(),
+                                'log_output' => false,
+                            ));
+                        } else {
+                            $import = new LengowImport(array(
+                                'log_output' => false,
+                            ));
+                        }
                     }
                     $return = $import->exec();
                     $message = $this->loadMessage($return);
@@ -415,7 +421,7 @@ class LengowOrderController extends LengowController
         $link = new LengowLink();
         if ($item['id_order']) {
             if (!$toolbox) {
-                return '<a href="'.$link->getAbsoluteAdminLink('AdminOrders').'&vieworder&id_order='.
+                return '<a href="'.$link->getAbsoluteAdminLink('AdminOrders', false, true).'&vieworder&id_order='.
                 $item['id_order'].'" target="_blank">' . $value . '</a>';
             } else {
                 return $value;

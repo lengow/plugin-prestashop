@@ -192,6 +192,7 @@ class LengowFeedController extends LengowController
             'filter'        => true,
             'filter_order'  => true,
             'filter_key'    => 'p.reference',
+            'display_callback'  => 'LengowFeedController::displayLink',
         );
         $fields_list['category_name'] = array(
             'title'         => $this->locale->t('product.table.category_name'),
@@ -401,5 +402,22 @@ class LengowFeedController extends LengowController
         $html.='</div>';
 
         return $html;
+    }
+    public static function displayLink($key, $value, $item)
+    {
+        $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
+        $link = new LengowLink();
+        if ($item['id_product']) {
+            if (!$toolbox) {
+                return '<a href="'.
+                $link->getAbsoluteAdminLink((_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'), false, true).
+                '&updateproduct&id_product='.
+                $item['id_product'].'" target="_blank">' . $value . '</a>';
+            } else {
+                return $value;
+            }
+        } else {
+            return $value;
+        }
     }
 }

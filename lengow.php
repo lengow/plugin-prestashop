@@ -58,7 +58,7 @@ class Lengow extends Module
         $this->hookClass = new LengowHook($this);
 
         if (self::isInstalled($this->name)) {
-            if (Configuration::get('LENGOW_VERSION') != $this->version) {
+            if (LengowConfiguration::getGlobalValue('LENGOW_VERSION') != $this->version) {
                 $this->installClass->update();
             }
         }

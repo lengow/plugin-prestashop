@@ -37,10 +37,10 @@ class LengowHomeController extends LengowController
                     echo Tools::jsonEncode($data);
                     break;
                 case 'sync':
-                    $action = isset($_REQUEST['data']) ?$_REQUEST['data'] : false;
-                    LengowSync::sync($action);
+                    $data = isset($_REQUEST['data']) ?$_REQUEST['data'] : false;
+                    LengowSync::sync($data);
                     $lengowLink = new LengowLink();
-                    echo 'document.location.href="'.$lengowLink->getAbsoluteAdminLink("AdminLengowHome", true).'";';
+                    echo 'document.location.href="'.$lengowLink->getAbsoluteAdminLink("AdminLengowHome").'";';
                     break;
             }
             exit();

@@ -20,9 +20,7 @@
 
 <div id="lengow_order_wrapper">
     <div id="lengow_charge_import_order_background" style="display:none"></div>
-    <br/>
-    <br/>
-    <div id="lengow_charge_import_order" style="display:none"><p id="lengow_charge_lign1">{$locale->t('order.screen.import_charge_first')}</p>
+    <div id="lengow_charge_import_order" style="display:none"><br/><br/><br/><p id="lengow_charge_lign1">{$locale->t('order.screen.import_charge_first')}</p>
         <p id="lengow_charge_lign2">{$locale->t('order.screen.import_charge_second')}</p>
     </div>
     <div class="lengow_order_block_header">

@@ -34,7 +34,7 @@ class LengowCron
     {
         $locale = new LengowTranslation();
         $moduleCron = Module::getInstanceByName('cronjobs');
-        if ($moduleCron->active) {
+        if ($moduleCron && $moduleCron->active) {
             $form = '<p>'.$locale->t('order_setting.screen.cron_description').'</p>';
 
             if (!self::getCron()) {
@@ -47,7 +47,9 @@ class LengowCron
         } else {
             $form = '<p>'.$locale->t('order_setting.screen.cron_install_plugin').'</p>';
         }
-        Context::getContext()->smarty->assign('moduleCron', $moduleCron->active);
+        if ($moduleCron) {
+            Context::getContext()->smarty->assign('moduleCron', $moduleCron->active);
+        }
         return $form;
     }
 
