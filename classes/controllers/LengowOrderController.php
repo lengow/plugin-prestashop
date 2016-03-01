@@ -407,7 +407,7 @@ class LengowOrderController extends LengowController
         $link = new LengowLink();
         if ($item['id_order']) {
             if (!$toolbox) {
-                return '<a href="'.$link->getAbsoluteAdminLink('AdminOrders').'&vieworder&id_order='.
+                return '<a href="'.$link->getAbsoluteAdminLink('AdminOrders', false, true).'&vieworder&id_order='.
                 $item['id_order'].'" target="_blank">' . $value . '</a>';
             } else {
                 return $value;

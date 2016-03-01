@@ -409,7 +409,9 @@ class LengowFeedController extends LengowController
         $link = new LengowLink();
         if ($item['id_product']) {
             if (!$toolbox) {
-                return '<a href="'.$link->getAbsoluteAdminLink('AdminProducts').'&updateproduct&id_product='.
+                return '<a href="'.
+                $link->getAbsoluteAdminLink((_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'), false, true).
+                '&updateproduct&id_product='.
                 $item['id_product'].'" target="_blank">' . $value . '</a>';
             } else {
                 return $value;
