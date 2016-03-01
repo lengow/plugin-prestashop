@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 /**
  * Copyright 2016 Lengow SAS.
  *
@@ -22,7 +24,7 @@
 define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR);
 $sep = DIRECTORY_SEPARATOR;
 
-$notInPresta14 = array('lengow.specificprice.class.php', 'lengow.gender.class.php');
+$notInPresta14 = array('LengowSpecificprice.php', 'LengowGender.php');
 $GLOBALS['OVERRIDE_FOLDER'] = 'override';
 $GLOBALS['INSTALL_FOLDER'] = 'install';
 $GLOBALS['MODELS_FOLDER'] = 'models';

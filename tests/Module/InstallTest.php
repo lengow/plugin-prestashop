@@ -79,7 +79,7 @@ class InstallTest extends ModuleTestCase
             Cache::store('Module::isInstalledlengow', false);
         }
         $this->assertTrue($module->install(), 'Module install successfully');
-        $this->assertEquals($module->version, Configuration::get('LENGOW_VERSION'), 'Module name has correct version');
+        $this->assertEquals($module->version, LengowConfiguration::getGlobalValue('LENGOW_VERSION'), 'Module name has correct version');
     }
 
     /**

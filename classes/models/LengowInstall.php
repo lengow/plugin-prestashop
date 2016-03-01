@@ -231,7 +231,7 @@ class LengowInstall
         LengowConfiguration::resetAll();
 
         // update lengow version
-        Configuration::updateValue('LENGOW_VERSION', $numberVersion);
+        LengowConfiguration::updateGlobalValue('LENGOW_VERSION', $numberVersion);
         self::setInstallationStatus(false);
         return true;
     }

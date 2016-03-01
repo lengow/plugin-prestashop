@@ -116,7 +116,7 @@ class LengowCheck
         );
         $checklist[] = array(
             'title'     => $this->locale->t('toolbox.index.plugin_version'),
-            'message'   => LengowConfiguration::get('LENGOW_VERSION')
+            'message'   => LengowConfiguration::getGlobalValue('LENGOW_VERSION')
         );
         $checklist[] = array(
             'title'     => $this->locale->t('toolbox.index.ip_server'),
