@@ -52,7 +52,7 @@
     <div id="cron_setting" class="container2">
         <h2>Cron setting</h2>
         {$formCron}
-        {if $moduleCron}
+        {if isset($moduleCron) && $moduleCron}
         {$cron_param}
         {/if}
         <p>-- {$locale->t('order_setting.screen.cron_if_not_exists')} --</p>

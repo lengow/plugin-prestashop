@@ -75,15 +75,21 @@ class LengowOrderController extends LengowController
                     echo 'lengow_jquery("#order_'.$id_order_lengow.'").replaceWith("'.$html.'");';
                     break;
                 case 'import_all':
-                    if (Shop::getContextShopID()) {
+                    if (_PS_VERSION_ < '1.5') {
                         $import = new LengowImport(array(
-                            'shop_id' => Shop::getContextShopID(),
                             'log_output' => false,
                         ));
                     } else {
-                        $import = new LengowImport(array(
-                            'log_output' => false,
-                        ));
+                        if (Shop::getContextShopID()) {
+                            $import = new LengowImport(array(
+                                'shop_id' => Shop::getContextShopID(),
+                                'log_output' => false,
+                            ));
+                        } else {
+                            $import = new LengowImport(array(
+                                'log_output' => false,
+                            ));
+                        }
                     }
                     $return = $import->exec();
                     $message = $this->loadMessage($return);

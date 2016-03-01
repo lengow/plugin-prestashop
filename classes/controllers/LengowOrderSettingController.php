@@ -248,13 +248,11 @@ class LengowOrderSettingController extends LengowController
                     if (!$result) {
                         unset($_REQUEST['LENGOW_CRON_ENABLED']);
                     }
-
                 } else {
                     $moduleCron = Module::getInstanceByName('cronjobs');
-                    if ($moduleCron->active) {
+                    if ($moduleCron && $moduleCron->active) {
                         LengowCron::removeCronTasks();
                     }
-
                 }
                 $form->postProcess(
                     array(
