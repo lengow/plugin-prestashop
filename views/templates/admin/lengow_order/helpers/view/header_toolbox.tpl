@@ -22,10 +22,10 @@
             <label for="delivery_adress_id">{$locale->t('toolbox.order.delivery_address_id')}</label>
             <input type="text" id="delivery_adress_id">
         </div>
-        <button type="button" class="btn lengow_btn btn-success update_order" id="lengow_update_order"
-                data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
-            {$locale->t('toolbox.order.button_import_one_order')}
-        </button>
+        <a id="lengow_update_order" class="lengow_btn btn-success"
+            data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
+            {$locale->t('toolbox.order.import_one_order')}
+        </a>
         <div id="error_update_order"></div>
     </form>
 </div>
@@ -46,19 +46,20 @@
             <label for="import_days">{$locale->t('toolbox.order.import_days')}</label>
             <input type="text" id="import_days" value="{$days}">
         </div>
-        <button type="button" class="btn lengow_btn btn-success update_some_orders" id="lengow_update_some_orders"
-                data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
-            {$locale->t('toolbox.order.button_import_shop_order')}
-        </button>
+        <a id="lengow_update_some_orders" class="lengow_btn btn-success"
+            data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
+            {$locale->t('toolbox.order.import_shop_order')}
+        </a>
         <div id="error_update_some_orders"></div>
     </form>
 </div>
 
 <div class="lengow_import_order_toolbox">
     <h4>{$locale->t('toolbox.order.import_all_order')}</h4>
-    <a id="lengow_import_orders" class="lengow_btn btn btn-success"
+    <a id="lengow_import_orders" class="lengow_btn btn-success"
        data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
-        {$locale->t('order.screen.button_update_orders')}</a>
+        {$locale->t('order.screen.button_update_orders')}
+    </a>
 </div>
 
 <div id="lengow_wrapper_messages"></div>

@@ -215,7 +215,7 @@
                 });
                 $('#error_update_order').html('')
             } else {
-                $('#error_update_order').html('<p>Please complete all fields.</p>')
+                $('#error_update_order').html('<p>Please complete all fields</p>')
                 return false
             }
         });
@@ -245,7 +245,7 @@
                 });
                 $('#error_update_some_orders').html('')
             } else {
-                $('#error_update_some_orders').html('<p>Please complete all fields.</p>')
+                $('#error_update_some_orders').html('<p>Please complete all fields</p>')
                 return false
             }
         });

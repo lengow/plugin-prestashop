@@ -18,7 +18,7 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-//ini_set("display_errors", 1);
+// ini_set("display_errors", 1);
 $currentDirectory = str_replace('modules/lengow/toolbox/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
 
 $sep = DIRECTORY_SEPARATOR;
@@ -31,6 +31,7 @@ if (_PS_VERSION_ > '1.5') {
 }
 
 $lengowTool = new LengowTool();
+$locale = new LengowTranslation();
 
 if (!in_array($lengowTool->getCurrentUri(), array('/modules/lengow/toolbox/login.php'))) {
     if (!$lengowTool->isLogged()) {

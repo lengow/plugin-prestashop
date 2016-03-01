@@ -440,6 +440,7 @@ class LengowHook
             $lengow_order = new LengowOrder($args['id_order']);
             // get actions re-import and synchronize orders
             $lengow_link = new LengowLink();
+            $locale = new LengowTranslation();
             $lengow_order_controller = $lengow_link->getAbsoluteAdminLink('AdminLengowOrder');
             $action_reimport = $lengow_order_controller.'&id_order='.$lengow_order->id.'&action=cancel_re_import';
             $action_synchronize = $lengow_order_controller.'&id_order='.$lengow_order->id.'&action=synchronize';
@@ -462,7 +463,8 @@ class LengowHook
                 'action_synchronize' => $action_synchronize,
                 'action_reimport'    => $action_reimport,
                 'order_id'           => $args['id_order'],
-                'version'            => _PS_VERSION_
+                'version'            => _PS_VERSION_,
+                'lengow_locale'      => $locale
             );
 
             $this->context->smarty->assign($template_data);

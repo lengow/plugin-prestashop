@@ -177,6 +177,20 @@ lengow_log.exception.unable_to_save_order|unable to save PrestaShop order
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
 lengow_log.mail_report.order|Order %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/agent/
+admin.order.import_lengow|Import Lengow
+admin.order.imported_from_lengow|This order has been imported from Lengow
+admin.order.lengow_order_id|Lengow order ID
+admin.order.marketplace|Marketplace
+admin.order.feed_id|Feed ID
+admin.order.total_paid|Total amount paid on Marketplace
+admin.order.carrier_from_marketplace|Carrier from marketplace
+admin.order.method_from_marketplace|Shipping method from marketplace
+admin.order.tracking_number|Tracking number
+admin.order.message|Message
+admin.order.shipped_by_marketplace|Shipped by marketplace
+admin.order.cancel_and_reimport|Cancel and re-import order
+admin.order.check_cancel_and_reimport|Do you really want to cancel and re-import the order?
+admin.order.synchronize_id|Synchronize ID
 log.install.install_tab|install tab %{class_name}
 log.install.uninstall_tab|uninstall tab %{class_name}
 log.hook.registering_hook_success|registering hook - %{hook}: success
@@ -311,16 +325,20 @@ toolbox.order.shop|Shop
 toolbox.order.markeplace_name|Marketplace
 toolbox.order.order_sku|Sku Order
 toolbox.order.delivery_address_id|Delivery address ID
-toolbox.order.import_one_order|Import one order
+toolbox.order.import_one_order|Import Order
 toolbox.order.import_days|Import days
-toolbox.order.import_shop_order|Import shop orders
+toolbox.order.import_shop_order|Import Orders
 toolbox.order.import_all_order|Import all orders
-toolbox.order.button_import_one_order|Import Order
-toolbox.order.button_import_shop_order|Import Orders
+toolbox.order.order_import_success|Order %{marketplace_sku} from %{marketplace_name} is imported
+toolbox.order.order_import_failed|Order import failed (<a href='%{log_url}' target='_blank'>See logs for more information</a>)
 toolbox.configuration.shop_credentials|Shop credentials
 toolbox.configuration.export_setting|Export settings
 toolbox.configuration.import_setting|Import settings
 toolbox.configuration.global_setting|Global settings
-toolbox.configuration.button_save|Save
+toolbox.configuration.get_default_settings|Get default settings
+toolbox.configuration.check_get_default_settings|Do you really want to reset all settings ?
+toolbox.configuration.update_settings|Update settings
+toolbox.configuration.check_update_settings|Do you really want to update settings and Lengow tables ?
+toolbox.configuration.button_save|Save settings
 toolbox.log.log_files|Log Files
 toolbox.log.download_all|Download all files

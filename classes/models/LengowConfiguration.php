@@ -281,7 +281,7 @@ class LengowConfiguration extends Configuration
         return $emails;
     }
 
-    public static function resetAll($overwrite = true)
+    public static function resetAll($overwrite = false)
     {
         $shops = LengowShop::findAll();
         $keys = self::getKeys();

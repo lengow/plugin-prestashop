@@ -197,3 +197,19 @@ en:
     mail_report:
       order: "Order %{marketplace_sku}"
       no_error_in_report_mail: "no error message, contact support via https://supportlengow.zendesk.com/agent/"
+  admin:
+    order:
+      import_lengow: "Import Lengow"
+      imported_from_lengow: "This order has been imported from Lengow"
+      lengow_order_id: "Lengow order ID"
+      marketplace: "Marketplace"
+      feed_id: "Feed ID"
+      total_paid: "Total amount paid on Marketplace"
+      carrier_from_marketplace: "Carrier from marketplace"
+      method_from_marketplace: "Shipping method from marketplace"
+      tracking_number: "Tracking number"
+      message: "Message"
+      shipped_by_marketplace: "Shipped by marketplace"
+      cancel_and_reimport: "Cancel and re-import order"
+      check_cancel_and_reimport: "Do you really want to cancel and re-import the order?"
+      synchronize_id: "Synchronize ID"

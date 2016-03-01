@@ -1,6 +1,7 @@
 body {
     padding-top: 60px;
 }
+
 .starter-template {
     padding: 40px 15px;
     text-align: center;
@@ -26,7 +27,120 @@ body {
 	color: red;
 }
 
+.lengow_btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #fff !important;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    text-decoration: none !important;
+}
+
+button {
+    margin: 0;
+    padding: 0;
+    line-height: 100%;
+    border: 0;
+    background: none;
+}
+
+/* PRODUCT PAGE */
+
+#lengow_feed_wrapper {
+    padding:20px 60px;
+}
+
+.lengow_feed_block {
+    background:white;
+    margin-bottom:20px;
+}
+
+.lengow_feed_block_header_title {
+    background: #AAAAAA;
+    color: white;
+    padding:5px 0;
+    border-radius: 2px;
+}
+
+.lengow_feed_block_header_title .title {
+    font-weight:bold;
+    font-size:20px;
+    padding-left:20px;
+}
+
+.lengow_feed_block_header_title .url {
+    padding-left:20px;
+}
+
+.lengow_feed_block_header_content {
+    border:1px solid #E3E5E6;
+}
+
+.lengow_feed_block_footer_content {
+    background :white;
+}
+
+.lengow_feed_block_content_left {
+    padding:20px;
+    height: 150px;
+}
+
+.lengow_feed_block_content_right {
+    float:right;
+    width:300px;
+    height:150px;
+    border-left:1px solid #E3E5E6;
+    font-size:16px;
+    padding:20px;
+}
+
+.lengow_feed_block_content_right .lengow_link_tooltip {
+    float:right;
+}
+
+#lengow_feed_wrapper .lengow_exported {
+    font-size:20px;
+    font-weight:bold;
+}
+
+#lengow_feed_wrapper .lengow_total {
+    font-size:16px;
+    font-weight:bold;
+}
+
+#lengow_feed_wrapper .lengow_select_text {
+    font-size:12px;
+    margin-left:10px;
+}
+
+
+#lengow_feed_wrapper .lengow_feed_block_content_left input {
+    width:400px;
+}
+
+#lengow_feed_wrapper .lengow_feed_block_content_left a {
+    text-decoration: underline;
+}
+
 /* ORDER PAGE */
+
+.lengow_alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
 
 #lengow_charge_import_order {
     position: absolute;
@@ -63,8 +177,8 @@ body {
     margin: 0 5px;
 }
 
-#lengow_order_wrapper .update_order, #lengow_order_wrapper .update_some_orders {
-    margin-top: 15px;
+#lengow_update_order, #lengow_update_some_orders {
+    margin: 20px 5px 0 5px;
 }
 
 .lengow_import_order_toolbox {
