@@ -56,8 +56,10 @@ class LengowOrderSettingController extends LengowController
         }
 
         $mkp_carriers = LengowCarrier::getListMarketplaceCarrier();
-        foreach ($mkp_carriers as $row) {
-            $carrierItem[$row['id_country']] = $row;
+        if (is_array($mkp_carriers)) {
+            foreach ($mkp_carriers as $row) {
+                $carrierItem[$row['id_country']] = $row;
+            }
         }
 
         $carriers = LengowCarrier::getActiveCarriers();

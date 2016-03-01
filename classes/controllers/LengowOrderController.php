@@ -186,6 +186,7 @@ class LengowOrderController extends LengowController
 
     public function loadTable()
     {
+        $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $fields_list = array();
         $fields_list['lengow_status'] = array(
             'title'             => $this->locale->t('order.table.order_lengow_state'),
@@ -287,12 +288,20 @@ class LengowOrderController extends LengowController
                 array('id' => 2, 'text' => 'error')
             ),
         );
+        if ($toolbox) {
+            $fields_list['extra'] = array(
+                'title'             => $this->locale->t('order.table.extra'),
+                'type'              => 'text',
+                'display_callback'  => 'LengowOrderController::displayLengowExtra'
+            );
+        }
         $select = array(
             'lo.id',
             'lo.marketplace_sku',
             'lo.marketplace_name',
             'IFNULL(lo.marketplace_label,lo.marketplace_name) as marketplace_label',
             'lo.total_paid',
+            'lo.extra',
             'lo.delivery_country_iso',
             'lo.order_item as nb_item',
             (_PS_VERSION_ < 1.5 ? 'o.id_order as reference' : 'o.reference'),
@@ -488,6 +497,11 @@ class LengowOrderController extends LengowController
             $value = '<i class="fa fa-circle lengow_green"></i>';
         }
         return $value;
+    }
+
+    public static function displayLengowExtra($key, $value, $item)
+    {
+        return $item['extra'];
     }
 
     public function loadMessage($return)

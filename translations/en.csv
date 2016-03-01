@@ -177,6 +177,7 @@ lengow_log.exception.unable_to_save_order|unable to save PrestaShop order
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
 lengow_log.mail_report.order|Order %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/agent/
+admin.order.import_lengow|Import Lengow
 admin.order.imported_from_lengow|This order has been imported from Lengow
 admin.order.lengow_order_id|Lengow order ID
 admin.order.marketplace|Marketplace

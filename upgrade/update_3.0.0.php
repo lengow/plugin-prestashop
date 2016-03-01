@@ -454,6 +454,7 @@ LengowInstall::removeFiles(array(
     'views/js/chart.min.js',
     'views/templates/admin/dashboard/',
     'views/templates/admin/form.tpl',
+    'webservice/lengow.php',
     'AdminLengow14.php',
     'AdminLengowLog14.php',
     'es.php',
