@@ -33,7 +33,6 @@ switch ($action) {
         break;
 }
 
-$locale = new LengowTranslation();
 $listFile = LengowLog::getPaths();
 
 require 'views/header.php';

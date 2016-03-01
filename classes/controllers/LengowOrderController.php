@@ -104,12 +104,21 @@ class LengowOrderController extends LengowController
                         'type' => Tools::getValue('type'),
                     ));
                     $return = $import->exec();
-
-                    $message = $this->loadMessage($return);
-
+                    $message = array();
+                    if (isset($result['marketplace_sku']) && isset($result['marketplace_name'])) {
+                        $message[] = LengowMain::decodeLogMessage('toolbox.order.order_import_success', null, array(
+                            'marketplace_sku' => $result['marketplace_sku'],
+                            'marketplace_name' => $result['marketplace_name']
+                        ));
+                    } else {
+                        $message[] = LengowMain::decodeLogMessage('toolbox.order.order_import_failed', null, array(
+                            'log_url' => '/modules/lengow/toolbox/log.php'
+                        ));
+                    }
                     echo 'lengow_jquery("#lengow_wrapper_messages").html("';
                     echo '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>");';
-                    echo 'lengow_jquery("#lengow_update_order").html("Update");';
+                    echo 'lengow_jquery("#lengow_update_order").html("'
+                        .$this->locale->t('toolbox.order.import_one_order').'");';
                     echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
                     break;
@@ -120,12 +129,11 @@ class LengowOrderController extends LengowController
                         'shop_id' => Tools::getValue('shop_id'),
                     ));
                     $return = $import->exec();
-
                     $message = $this->loadMessage($return);
-
                     echo 'lengow_jquery("#lengow_wrapper_messages").html("';
                     echo '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>");';
-                    echo 'lengow_jquery("#lengow_update_some_orders").html("Update");';
+                    echo 'lengow_jquery("#lengow_update_some_orders").html("'
+                        .$this->locale->t('toolbox.order.import_shop_order').'");';
                     echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
                     break;
