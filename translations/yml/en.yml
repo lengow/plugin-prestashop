@@ -61,6 +61,9 @@ en:
       button_resend_order: "Resend Orders"
       cron: "Want to automatize your orders update?"
       preprod_warning_message: "Changes on your orders will not be saved until you are in pre-production mode. <a href=%{url}>Go back to production mode ?</a>"
+      tracking_send: "Tracking send, waiting returns"
+      re_send: "Re Send"
+      re_import: "Re Import"
     table:
       order_lengow_state: "Status"
       marketplace_name: "Marketplace"
@@ -72,6 +75,7 @@ en:
       order_item: "Number of items"
       total_paid: "Total"
       status_lengow: "Lengow Status"
+      extra: "Extra"
   order_setting:
     screen:
       order_status_title: "Order Status"

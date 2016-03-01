@@ -199,7 +199,9 @@ class LengowCheck
     public function getInformationByStore($shop)
     {
         $lengowExport = new LengowExport(array("shop_id" => $shop->id));
-        if (!is_null(LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id))) {
+        if (!is_null(LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id))
+            && LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id) != ''
+        ) {
             $last_export = LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id);
         } else {
             $last_export = $this->locale->t('toolbox.index.last_import_none');

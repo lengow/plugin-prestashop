@@ -51,6 +51,9 @@ order.screen.button_reimport_order|Re-import Orders
 order.screen.button_resend_order|Resend Orders
 order.screen.cron|Want to automatize your orders update?
 order.screen.preprod_warning_message|Changes on your orders will not be saved until you are in pre-production mode. <a href=%{url}>Go back to production mode ?</a>
+order.screen.tracking_send|Tracking send, waiting returns
+order.screen.re_send|Re Send
+order.screen.re_import|Re Import
 order.table.order_lengow_state|Status
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Shop
@@ -61,6 +64,7 @@ order.table.delivery_country|Country
 order.table.order_item|Number of items
 order.table.total_paid|Total
 order.table.status_lengow|Lengow Status
+order.table.extra|Extra
 order_setting.screen.order_status_title|Order Status
 order_setting.screen.order_status_description|It's time to match the order status you have on your Lengow platform with the following PrestaShop status
 order_setting.screen.carrier_management_title|Marketplace carrier management

@@ -457,7 +457,7 @@ class LengowOrderController extends LengowController
             $actions = LengowAction::getOrderActiveAction($item['id_order'], 'ship');
             if ($actions) {
                 $value = '<i class="fa fa-info-circle lengow_orange lengow_link_tooltip" data-html="true"
-                        data-original-title="Tracking send, waiting returns"
+                        data-original-title="'.LengowMain::decodeLogMessage('order.screen.tracking_send').'"
                         ></i>';
                 return $value;
             }
@@ -481,7 +481,7 @@ class LengowOrderController extends LengowController
                                     data-action="re_send"
                                     data-order="'.$item['id'].'"
                                     data-type="'.$item[$key].'"
-                                    >Re Send</a>';
+                                    >'.LengowMain::decodeLogMessage('order.screen.re_send').'</a>';
             } else {
                 $value = '<i class="fa fa-info-circle lengow_red lengow_link_tooltip" data-html="true"
                                     data-original-title="'.join('<br/>', $errorMessage).'"
@@ -491,7 +491,7 @@ class LengowOrderController extends LengowController
                                     data-action="re_import"
                                     data-order="'.$item['id'].'"
                                     data-type="'.$item[$key].'"
-                                    >Re Import</a>';
+                                    >'.LengowMain::decodeLogMessage('order.screen.re_import').'</a>';
             }
         } else {
             $value = '<i class="fa fa-circle lengow_green"></i>';
@@ -501,7 +501,14 @@ class LengowOrderController extends LengowController
 
     public static function displayLengowExtra($key, $value, $item)
     {
-        return $item['extra'];
+        if (!empty($value)) {
+            $value = htmlentities($value);
+            return '<input id="link_extra_'.$item['id'].'" value="'.$value.'" readonly>
+                <a class="lengow_copy" data-clipboard-target="#link_extra_'.$item['id'].'">'
+                .LengowMain::decodeLogMessage('product.screen.button_copy')
+                .'</a>';
+        }
+        return '';
     }
 
     public function loadMessage($return)
