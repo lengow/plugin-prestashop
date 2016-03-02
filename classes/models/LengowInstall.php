@@ -31,9 +31,9 @@ class LengowInstall
     protected static $installationStatus;
 
     static private $tabs = array(
-        'Home' => array('name' => 'AdminLengowHome', 'active' => false),
-        'Product' => array('name' => 'AdminLengowFeed', 'active' => false),
-        'Orders' => array('name' => 'AdminLengowOrder', 'active' => false),
+        'Home' => array('name' => 'AdminLengowHome', 'active' => true),
+        'Product' => array('name' => 'AdminLengowFeed', 'active' => true),
+        'Orders' => array('name' => 'AdminLengowOrder', 'active' => true),
         'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
         'Help' => array('name' => 'AdminLengowHelp', 'active' => false),
         'MainSetting' => array('name' => 'AdminLengowMainSetting', 'active' => false)
