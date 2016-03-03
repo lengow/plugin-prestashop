@@ -70,8 +70,9 @@ en:
       cron: "Want to automatize your orders update?"
       preprod_warning_message: "Changes on your orders will not be saved until you are in pre-production mode. <a href=%{url}>Go back to production mode ?</a>"
       tracking_send: "Tracking send, waiting returns"
-      re_send: "Re Send"
-      re_import: "Re Import"
+      not_imported: "not imported"
+      re_send: "re-send"
+      re_import: "re-import"
     table:
       order_lengow_state: "Status"
       marketplace_name: "Marketplace"

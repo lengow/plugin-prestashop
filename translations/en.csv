@@ -59,8 +59,9 @@ order.screen.button_resend_order|Resend Orders
 order.screen.cron|Want to automatize your orders update?
 order.screen.preprod_warning_message|Changes on your orders will not be saved until you are in pre-production mode. <a href=%{url}>Go back to production mode ?</a>
 order.screen.tracking_send|Tracking send, waiting returns
-order.screen.re_send|Re Send
-order.screen.re_import|Re Import
+order.screen.not_imported|not imported
+order.screen.re_send|re-send
+order.screen.re_import|re-import
 order.table.order_lengow_state|Status
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Shop

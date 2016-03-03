@@ -437,7 +437,9 @@ class LengowOrderController extends LengowController
             }
         } else {
             if ($key == 'reference') {
-                return '<span class="lengow_label lengow_label_red">NOT IMPORTED</span>';
+                return '<span class="lengow_label lengow_label_red">'
+                    .LengowMain::decodeLogMessage('order.screen.not_imported')
+                    .'</span>';
             } else {
                 return $value;
             }
