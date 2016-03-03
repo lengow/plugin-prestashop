@@ -988,4 +988,81 @@ class LengowOrder extends Order
         $row = Db::getInstance()->getRow($sql);
         return $row['total'];
     }
+
+    /**
+     * v3
+     * Sync old data
+     */
+    public static function syncOldData()
+    {
+        //delete row with is_disabled = 1 IN 3.0.0 UPDATE
+        //get country when empty
+        $sql = "SELECT id, id_address_delivery FROM "._DB_PREFIX_."lengow_orders lo
+        INNER JOIN "._DB_PREFIX_."orders o ON (o.id_order = lo.id_order)
+        WHERE (delivery_country_iso IS NULL OR delivery_country_iso='')";
+        $collection = Db::getInstance()->ExecuteS($sql);
+        foreach ($collection as $row) {
+            $sql = "SELECT c.iso_code FROM "._DB_PREFIX_."address a
+                INNER JOIN "._DB_PREFIX_."country c ON (c.id_country = a.id_country)
+                WHERE a.id_address = ".(int)$row['id_address_delivery'];
+            $country = Db::getInstance()->getRow($sql);
+            if (Tools::strlen($country['iso_code'])>0 && Tools::strlen($row['id'])>0) {
+                Db::getInstance()->Execute(
+                    'UPDATE '._DB_PREFIX_.'lengow_orders SET delivery_country_iso = "'.pSQL($country['iso_code']).'"'.
+                    ' WHERE id = '.(int)$row['id']
+                );
+            }
+        }
+        //check country in order
+
+        $states = Db::getInstance()->getRow('SELECT id_order_state FROM ' . _DB_PREFIX_ . 'order_state_lang
+                WHERE name = "Erreur technique - Lengow"');
+        $errorState = $states['id_order_state'];
+        if ($errorState > 0) {
+            $sql = "SELECT COUNT(*) as total, marketplace_sku FROM "._DB_PREFIX_."lengow_orders
+            GROUP BY marketplace_sku HAVING total > 1";
+            $marketplaceSkuCollection = Db::getInstance()->ExecuteS($sql);
+            foreach ($marketplaceSkuCollection as $marketplaceRow) {
+                $orderCollection = Db::getInstance()->ExecuteS(
+                    "SELECT o.current_state, lo.id FROM `"._DB_PREFIX_."lengow_orders` lo
+                    INNER JOIN "._DB_PREFIX_."orders o ON (o.id_order = lo.id_order)
+                    WHERE marketplace_sku = '".$marketplaceRow['marketplace_sku']."'"
+                );
+                if (count($orderCollection) ==0) {
+                    continue;
+                }
+                $findOtherState = false;
+                $orderToDelete = array();
+                foreach ($orderCollection as $order) {
+                    if ($order['current_state'] == $errorState) {
+                        $orderToDelete[] = $errorState;
+                    } else {
+                        $findOtherState = true;
+                    }
+                }
+                if ($findOtherState && count($orderToDelete)>0) {
+                    foreach ($orderToDelete as $id) {
+                        Db::getInstance()->Execute(
+                            'DELETE FROM '._DB_PREFIX_.'lengow_orders WHERE id = '.(int)$id
+                        );
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
 }

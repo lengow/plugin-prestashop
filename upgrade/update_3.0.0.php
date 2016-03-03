@@ -297,6 +297,7 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
     if (!LengowInstall::checkFieldExists('lengow_orders', 'is_reimported')
         && LengowInstall::checkFieldExists('lengow_orders', 'is_disabled')
     ) {
+        Db::getInstance()->execute('DELETE FROM  '._DB_PREFIX_.'lengow_orders WHERE is_disabled = 1');
         Db::getInstance()->execute(
             'ALTER TABLE '._DB_PREFIX_.'lengow_orders CHANGE `is_disabled` `is_reimported` TINYINT(1) UNSIGNED
             DEFAULT \'0\''

@@ -1,0 +1,377 @@
+order_state:
+  -
+    id_order_state: 1
+    invoice: 0
+    send_email: 1
+    module_name: "cheque"
+    color: "#4169E1"
+    unremovable: 1
+    hidden: 0
+    logable: 0
+    delivery: 0
+    shipped: 0
+    paid: 0
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 2
+    invoice: 0
+    send_email: 1
+    module_name: ""
+    color: "#32CD32"
+    unremovable: 1
+    hidden: 0
+    logable: 1
+    delivery: 0
+    shipped: 0
+    paid: 1
+    pdf_invoice: 1
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 3
+    invoice: 0
+    send_email: 1
+    module_name: ""
+    color: "#FF8C00"
+    unremovable: 1
+    hidden: 0
+    logable: 1
+    delivery: 1
+    shipped: 0
+    paid: 1
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 4
+    invoice: 0
+    send_email: 1
+    module_name: ""
+    color: "#8A2BE2"
+    unremovable: 1
+    hidden: 0
+    logable: 1
+    delivery: 1
+    shipped: 1
+    paid: 1
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 5
+    invoice: 0
+    send_email: 0
+    module_name: ""
+    color: "#108510"
+    unremovable: 1
+    hidden: 0
+    logable: 1
+    delivery: 1
+    shipped: 1
+    paid: 1
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 6
+    invoice: 0
+    send_email: 1
+    module_name: ""
+    color: "#DC143C"
+    unremovable: 1
+    hidden: 0
+    logable: 0
+    delivery: 0
+    shipped: 0
+    paid: 0
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 7
+    invoice: 0
+    send_email: 1
+    module_name: ""
+    color: "#ec2e15"
+    unremovable: 1
+    hidden: 0
+    logable: 0
+    delivery: 0
+    shipped: 0
+    paid: 0
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 8
+    invoice: 0
+    send_email: 1
+    module_name: ""
+    color: "#8f0621"
+    unremovable: 1
+    hidden: 0
+    logable: 0
+    delivery: 0
+    shipped: 0
+    paid: 0
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 9
+    invoice: 0
+    send_email: 1
+    module_name: ""
+    color: "#FF69B4"
+    unremovable: 1
+    hidden: 0
+    logable: 0
+    delivery: 0
+    shipped: 0
+    paid: 1
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 10
+    invoice: 0
+    send_email: 1
+    module_name: "bankwire"
+    color: "#4169E1"
+    unremovable: 1
+    hidden: 0
+    logable: 0
+    delivery: 0
+    shipped: 0
+    paid: 0
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 11
+    invoice: 0
+    send_email: 0
+    module_name: ""
+    color: "#4169E1"
+    unremovable: 1
+    hidden: 0
+    logable: 0
+    delivery: 0
+    shipped: 0
+    paid: 0
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 12
+    invoice: 0
+    send_email: 1
+    module_name: ""
+    color: "#32CD32"
+    unremovable: 1
+    hidden: 0
+    logable: 1
+    delivery: 0
+    shipped: 0
+    paid: 1
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 13
+    invoice: 0
+    send_email: 1
+    module_name: ""
+    color: "#FF69B4"
+    unremovable: 1
+    hidden: 0
+    logable: 0
+    delivery: 0
+    shipped: 0
+    paid: 0
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 14
+    invoice: 0
+    send_email: 0
+    module_name: "cashondelivery"
+    color: "#4169E1"
+    unremovable: 1
+    hidden: 0
+    logable: 0
+    delivery: 0
+    shipped: 0
+    paid: 0
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+  -
+    id_order_state: 15
+    invoice: 0
+    send_email: 0
+    module_name: "lengow"
+    color: "#205985"
+    unremovable: 0
+    hidden: 0
+    logable: 0
+    delivery: 0
+    shipped: 0
+    paid: 0
+    pdf_invoice: 0
+    pdf_delivery: 0
+    deleted: 0
+order_state_lang:
+  -
+    id_order_state: 1
+    id_lang: 1
+    name: "En attente de paiement par chèque"
+    template: "cheque"
+  -
+    id_order_state: 1
+    id_lang: 2
+    name: "En attente de paiement par chèque"
+    template: "cheque"
+  -
+    id_order_state: 2
+    id_lang: 1
+    name: "Paiement accepté"
+    template: "payment"
+  -
+    id_order_state: 2
+    id_lang: 2
+    name: "Paiement accepté"
+    template: "payment"
+  -
+    id_order_state: 3
+    id_lang: 1
+    name: "En cours de préparation"
+    template: "preparation"
+  -
+    id_order_state: 3
+    id_lang: 2
+    name: "En cours de préparation"
+    template: "preparation"
+  -
+    id_order_state: 4
+    id_lang: 1
+    name: "Expédié"
+    template: "shipped"
+  -
+    id_order_state: 4
+    id_lang: 2
+    name: "Expédié"
+    template: "shipped"
+  -
+    id_order_state: 5
+    id_lang: 1
+    name: "Livré"
+    template: ""
+  -
+    id_order_state: 5
+    id_lang: 2
+    name: "Livré"
+    template: ""
+  -
+    id_order_state: 6
+    id_lang: 1
+    name: "Annulé"
+    template: "order_canceled"
+  -
+    id_order_state: 6
+    id_lang: 2
+    name: "Annulé"
+    template: "order_canceled"
+  -
+    id_order_state: 7
+    id_lang: 1
+    name: "Remboursé"
+    template: "refund"
+  -
+    id_order_state: 7
+    id_lang: 2
+    name: "Remboursé"
+    template: "refund"
+  -
+    id_order_state: 8
+    id_lang: 1
+    name: "Erreur de paiement"
+    template: "payment_error"
+  -
+    id_order_state: 8
+    id_lang: 2
+    name: "Erreur de paiement"
+    template: "payment_error"
+  -
+    id_order_state: 9
+    id_lang: 1
+    name: "En attente de réapprovisionnement (payé)"
+    template: "outofstock"
+  -
+    id_order_state: 9
+    id_lang: 2
+    name: "En attente de réapprovisionnement (payé)"
+    template: "outofstock"
+  -
+    id_order_state: 10
+    id_lang: 1
+    name: "En attente de virement bancaire"
+    template: "bankwire"
+  -
+    id_order_state: 10
+    id_lang: 2
+    name: "En attente de virement bancaire"
+    template: "bankwire"
+  -
+    id_order_state: 11
+    id_lang: 1
+    name: "En attente de paiement PayPal"
+    template: ""
+  -
+    id_order_state: 11
+    id_lang: 2
+    name: "En attente de paiement PayPal"
+    template: ""
+  -
+    id_order_state: 12
+    id_lang: 1
+    name: "Paiement à distance accepté"
+    template: "payment"
+  -
+    id_order_state: 12
+    id_lang: 2
+    name: "Paiement à distance accepté"
+    template: "payment"
+  -
+    id_order_state: 13
+    id_lang: 1
+    name: "En attente de réapprovisionnement (non payé)"
+    template: "outofstock"
+  -
+    id_order_state: 13
+    id_lang: 2
+    name: "En attente de réapprovisionnement (non payé)"
+    template: "outofstock"
+  -
+    id_order_state: 14
+    id_lang: 1
+    name: "En attente de paiement à la livraison"
+    template: "cashondelivery"
+  -
+    id_order_state: 14
+    id_lang: 2
+    name: "En attente de paiement à la livraison"
+    template: "cashondelivery"
+  -
+    id_order_state: 15
+    id_lang: 1
+    name: "Erreur technique - Lengow"
+    template: ""
+  -
+    id_order_state: 15
+    id_lang: 2
+    name: "Erreur technique - Lengow"
+    template: ""

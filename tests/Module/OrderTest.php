@@ -243,4 +243,40 @@ class OrderTest extends ModuleTestCase
         $this->assertTrue($order->callAction('cancel'));
         $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 2));
     }
+
+    /**
+     * Test syncOldData
+     *
+     * @test
+     * @covers LengowOrder::syncOldData
+     */
+    public function syncOldDataCountry()
+    {
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/sync_old_data.yml');
+
+        $this->assertTableContain('lengow_orders', array('id' => '1',  'delivery_country_iso' => ''));
+        LengowOrder::syncOldData();
+        $this->assertTableContain('lengow_orders', array('id' => '1',  'delivery_country_iso' => 'fr'));
+    }
+
+    /**
+     * Test syncOldData
+     *
+     * @test
+     * @covers LengowOrder::syncOldData
+     */
+    public function syncOldDataLengowState()
+    {
+        $fixture = new Fixture();
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/sync_old_data_multiple.yml');
+
+        $this->assertTableContain('lengow_orders', array('id' => '1',  'marketplace_sku' => '1300435653833-A'));
+        $this->assertTableContain('lengow_orders', array('id' => '2',  'marketplace_sku' => '1300435653833-A'));
+        $this->assertTableContain('lengow_orders', array('id' => '3',  'marketplace_sku' => '1300435653833-A'));
+        LengowOrder::syncOldData();
+        $this->assertTableContain('lengow_orders', array('id' => '1',  'marketplace_sku' => '1300435653833-A'));
+        $this->assertTableNotContain('lengow_orders', array('id' => '2',  'marketplace_sku' => '1300435653833-A'));
+        $this->assertTableNotContain('lengow_orders', array('id' => '3',  'marketplace_sku' => '1300435653833-A'));
+    }
 }
