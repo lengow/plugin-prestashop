@@ -38,6 +38,9 @@ class LengowList
     protected $ajax;
     protected $context;
 
+    /**
+     * Construct
+     */
     public function __construct($params)
     {
         $this->id = $params['id'];
@@ -65,6 +68,7 @@ class LengowList
     /**
      * v3
      * Display Table Header
+     *
      * @return string
      */
     public function displayHeader()
@@ -137,6 +141,7 @@ class LengowList
     /**
      * v3
      * Display Table Content
+     *
      * @return string
      */
     public function displayContent()
@@ -152,7 +157,9 @@ class LengowList
     /**
      * v3
      * Display Table Row
+     *
      * @param string $item
+     *
      * @return string
      */
     public function displayRow($item)
@@ -236,6 +243,7 @@ class LengowList
     /**
      * v3
      * Display Table Footer
+     *
      * @return string
      */
     public function displayFooter()
@@ -247,6 +255,7 @@ class LengowList
     /**
      * v3
      * Display Table (Header + Content + Footer)
+     *
      * @return string
      */
     public function display()
@@ -266,6 +275,7 @@ class LengowList
     /**
      * v3
      * Execute Queries (Collection + Total)
+     *
      * @return mixed
      */
     public function executeQuery()
@@ -293,6 +303,7 @@ class LengowList
     /**
      * v3
      * Get Row
+     *
      * @param $where
      */
     public function getRow($where)
@@ -311,7 +322,9 @@ class LengowList
     /**
      * v3
      * Find value by key in fieldlist
+     *
      * @param $keyToSeach key search in field list
+     *
      * @return boolean
      */
     public function findValueByKey($keyToSeach)
@@ -327,7 +340,9 @@ class LengowList
     /**
      * v3
      * Build Query
+     *
      * @param bool $total Execute Total Query
+     *
      * @return string sql query
      */
     public function buildQuery($total = false)
@@ -345,10 +360,10 @@ class LengowList
                             if (Tools::strlen($value)>0) {
                                 switch ($value) {
                                     case 1:
-                                        $having[] = ' ' . pSQL($fieldValue['filter_key']) . ' IS NULL';
+                                        $having[] = ' '.pSQL($fieldValue['filter_key']).' IS NULL';
                                         break;
                                     case 2:
-                                        $having[] = ' ' . pSQL($fieldValue['filter_key']) . ' IS NOT NULL';
+                                        $having[] = ' '.pSQL($fieldValue['filter_key']).' IS NOT NULL';
                                         break;
                                 }
                             }
@@ -356,7 +371,7 @@ class LengowList
                         case 'select':
                         case 'text':
                             if (Tools::strlen($value)>0) {
-                                $where[] = ' ' . pSQL($fieldValue['filter_key']) . ' LIKE "%' . pSQL($value) . '%"';
+                                $where[] = ' '.pSQL($fieldValue['filter_key']).' LIKE "%'.pSQL($value).'%"';
                             }
                             break;
                         case 'date':
@@ -401,10 +416,10 @@ class LengowList
             $sql.= join(' ', $this->sql["join"]);
         }
         if ($where) {
-            $sql .= ' WHERE ' . join(' AND ', $where);
+            $sql .= ' WHERE '.join(' AND ', $where);
         }
         if ($having) {
-            $sql .= ' HAVING ' . join(' AND ', $having);
+            $sql .= ' HAVING '.join(' AND ', $having);
         }
         if (!$total) {
             if (Tools::strlen($this->orderColumn) > 0 && in_array($this->orderValue, array("ASC","DESC"))) {
@@ -425,11 +440,25 @@ class LengowList
         return $sql;
     }
 
+    /**
+     * v3
+     * Update collection
+     *
+     * @param array $collection
+     */
     public function updateCollection($collection)
     {
         $this->collection = $collection;
     }
 
+    /**
+     * v3
+     * Render pagination
+     *
+     * @param array $params
+     *
+     * @return string
+     */
     public function renderPagination($params = array())
     {
         $nav_class = isset($params["nav_class"]) ? $params["nav_class"] : '';
@@ -503,8 +532,8 @@ class LengowList
                 $html .= '<li>';
                 $class = ($i == $this->currentPage) ? 'disabled' : '';
                 $html .= '<li class="' . $class . '"><a href="#"  data-page="'.$i.'"
-        data-href="' . $lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax) . '&p=' . $i . '">' .
-                    $i . '</a></li>';
+                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'.$i.'
+                    </a></li>';
                 $html .= '</li>';
             }
         }
@@ -512,6 +541,14 @@ class LengowList
         return $html;
     }
 
+    /**
+     * v3
+     * Get currency by code
+     *
+     * @param string $isoCode
+     *
+     * @return array
+     */
     private function getCurrencyByCode($isoCode)
     {
         $currency = null;

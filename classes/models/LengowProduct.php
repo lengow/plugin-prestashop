@@ -792,23 +792,30 @@ class LengowProduct extends Product
     {
         if (!$value) {
             $sql = 'DELETE FROM '._DB_PREFIX_.'lengow_product
-             WHERE id_product = '.(int)$productId.' AND id_shop = '.$shopId;
+             WHERE id_product = '.(int)$productId.' AND id_shop = '.(int)$shopId;
             Db::getInstance()->Execute($sql);
         } else {
             $sql = 'SELECT id_product FROM '._DB_PREFIX_.'lengow_product
-            WHERE id_product = '.(int)$productId.' AND id_shop = '.$shopId;
+            WHERE id_product = '.(int)$productId.' AND id_shop = '.(int)$shopId;
             $results = Db::getInstance()->ExecuteS($sql);
             if (count($results) == 0) {
                 if (_PS_VERSION_ < '1.5') {
-                    Db::getInstance()->autoExecute(_DB_PREFIX_.'lengow_product', array(
-                        'id_product' => $productId,
-                        'id_shop' => $shopId
-                    ), 'INSERT');
+                    Db::getInstance()->autoExecute(
+                        _DB_PREFIX_.'lengow_product',
+                        array(
+                            'id_product'    => (int)$productId,
+                            'id_shop'       => (int)$shopId
+                        ),
+                        'INSERT'
+                    );
                 } else {
-                    Db::getInstance()->Insert('lengow_product', array(
-                        'id_product' => $productId,
-                        'id_shop' => $shopId
-                    ));
+                    Db::getInstance()->Insert(
+                        'lengow_product',
+                        array(
+                            'id_product'    => (int)$productId,
+                            'id_shop'       => (int)$shopId
+                        )
+                    );
                 }
             }
         }

@@ -904,7 +904,7 @@ class LengowMain
                 'mail' => 1,
             ),
             'UPDATE',
-            '`id` = \''.$id_order_log.'\'',
+            '`id` = \''.(int)$id_order_log.'\'',
             1
         );
     }

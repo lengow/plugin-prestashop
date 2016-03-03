@@ -158,7 +158,7 @@ class LengowInstall
         // Add Lengow order error status
         if (_PS_VERSION_ >= '1.5') {
             $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state
-                WHERE module_name = \''.$this->lengowModule->name.'\'');
+                WHERE module_name = \''.pSQL($this->lengowModule->name).'\'');
             if (empty($states)) {
                 $lengow_state = new OrderState();
                 $lengow_state->send_email = false;

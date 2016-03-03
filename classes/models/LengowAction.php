@@ -29,11 +29,19 @@ class LengowAction
     const STATE_NEW = 0;
     const STATE_FINISH = 1;
 
+    /**
+     * Construct
+     */
     public function __construct()
     {
 
     }
 
+    /**
+     * Load action data
+     *
+     * @param array $row
+     */
     public function load($row)
     {
         $this->id = (int)$row['id'];
@@ -47,6 +55,13 @@ class LengowAction
         $this->updated_at = $row['updated_at'];
     }
 
+    /**
+     * Find by ID
+     *
+     * @param integer $action_id
+     *
+     * @return boolean
+     */
     public function findByActionId($action_id)
     {
         $row = Db::getInstance()->getRow(
@@ -59,11 +74,21 @@ class LengowAction
         return false;
     }
 
+    /**
+     * Find all action data
+     */
     public function findAll()
     {
 
     }
 
+    /**
+     * Find by ID
+     *
+     * @param integer $action_id
+     *
+     * @return boolean
+     */
     public static function getOrderActiveAction($id_order, $type)
     {
         $rows = Db::getInstance()->executeS(
@@ -78,13 +103,21 @@ class LengowAction
         return $actions;
     }
 
-
+    /**
+     * Get active action by shop
+     *
+     * @param string    $type
+     * @param integer   $id_shop
+     * @param boolean   $load
+     *
+     * @return array
+     */
     public static function getActiveActionByShop($type, $id_shop, $load = true)
     {
         $rows = Db::getInstance()->executeS(
             'SELECT la.*, o.id_shop FROM '._DB_PREFIX_.'lengow_actions la
             INNER JOIN '._DB_PREFIX_.'orders o ON (o.id_order = la.id_order)
-            WHERE id_shop='.(int)$id_shop.' AND state = '.self::STATE_NEW.' AND action_type = "'.pSQL($type).'"'
+            WHERE id_shop='.(int)$id_shop.' AND state = '.(int)self::STATE_NEW.' AND action_type = "'.pSQL($type).'"'
         );
         if ($load) {
             $actions = array();
@@ -98,6 +131,13 @@ class LengowAction
         }
     }
 
+    /**
+     * Find
+     *
+     * @param integer $id
+     *
+     * @return boolean
+     */
     public function find($id)
     {
         $row = Db::getInstance()->getRow('SELECT * FROM '._DB_PREFIX_.'lengow_actions la WHERE id = '.(int)$id);
@@ -108,16 +148,22 @@ class LengowAction
         return false;
     }
 
+    /**
+     * Create action
+     *
+     * @param array     $params
+     * @param integer   $id_order_lengow
+     */
     public static function createAction($params, $id_order_lengow)
     {
         $insertParams = array(
-            'parameters' => pSQL(Tools::JsonEncode($params['parameters'])),
-            'id_order' => (int)$params['id_order'],
-            'action_id' => (int)$params['action_id'],
-            'action_type' => $params['action_type'],
-            'state' => self::STATE_NEW,
-            'created_at' => date('Y-m-d h:m:i'),
-            'updated_at' => date('Y-m-d h:m:i'),
+            'parameters'    => pSQL(Tools::JsonEncode($params['parameters'])),
+            'id_order'      => (int)$params['id_order'],
+            'action_id'     => (int)$params['action_id'],
+            'action_type'   => pSQL($params['action_type']),
+            'state'         => (int)self::STATE_NEW,
+            'created_at'    => date('Y-m-d h:m:i'),
+            'updated_at'    => date('Y-m-d h:m:i'),
         );
         if (isset($params['parameters']['line'])) {
             $insertParams['order_line_sku'] = $params['parameters']['line'];
@@ -137,6 +183,11 @@ class LengowAction
         );
     }
 
+    /**
+     * Update action
+     *
+     * @param array $params
+     */
     public static function updateAction($params)
     {
         $action = new LengowAction();
@@ -145,8 +196,8 @@ class LengowAction
                 Db::getInstance()->autoExecute(
                     _DB_PREFIX_ . 'lengow_actions',
                     array(
-                        'retry' => $action->retry + 1,
-                        'updated_at' => date('Y-m-d h:m:i'),
+                        'retry'         => $action->retry + 1,
+                        'updated_at'    => date('Y-m-d h:m:i'),
                     ),
                     'UPDATE',
                     'id = ' . $action->id
