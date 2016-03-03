@@ -90,7 +90,6 @@ class LengowCart extends Cart
         if (!$shop) {
             $shop = Context::getContext()->shop;
         }
-
         $quantity = (int)$quantity;
         $id_product = (int)$id_product;
         $id_product_attribute = (int)$id_product_attribute;
@@ -101,7 +100,6 @@ class LengowCart extends Cart
                 return false;
             }
         }
-
         /* If we have a product combination, the minimal quantity is set with the one of this combination */
         if (!empty($id_product_attribute)) {
             $minimal_quantity = (int)Attribute::getAttributeMinimalQty($id_product_attribute);
@@ -111,17 +109,12 @@ class LengowCart extends Cart
         if (!Validate::isLoadedObject($product)) {
             die(Tools::displayError());
         }
-
         if (isset(self::$_nbProducts[$this->id])) {
             unset(self::$_nbProducts[$this->id]);
         }
-
         if (isset(self::$_totalWeight[$this->id])) {
             unset(self::$_totalWeight[$this->id]);
         }
-        // if ((int)$quantity <= 0)
-        // 	return $this->deleteProduct($id_product, $id_product_attribute, (int)$id_customization);
-        // else
         if ((!$product->available_for_order && !$this->force_product) ||
             (Configuration::get('PS_CATALOG_MODE') && !defined('_PS_ADMIN_DIR_'))) {
             return false;
@@ -133,7 +126,6 @@ class LengowCart extends Cart
                 (int)$id_customization,
                 (int)$id_address_delivery
             );
-
             /* Update quantity if product already exist */
             if ($result) {
                 // always add product to cart in import
@@ -233,22 +225,22 @@ class LengowCart extends Cart
 
                 if (_PS_VERSION_ < '1.5') {
                     $values = array(
-                        'id_product' => (int)$id_product,
-                        'id_product_attribute' => (int)$id_product_attribute,
-                        'id_cart' => (int)$this->id,
-                        'quantity' => (int)$quantity,
-                        'date_add' => date('Y-m-d H:i:s'),
+                        'id_product'            => (int)$id_product,
+                        'id_product_attribute'  => (int)$id_product_attribute,
+                        'id_cart'               => (int)$this->id,
+                        'quantity'              => (int)$quantity,
+                        'date_add'              => date('Y-m-d H:i:s'),
                     );
                     $result_add = DB::getInstance()->autoExecute(_DB_PREFIX_ . 'cart_product', $values, 'insert');
                 } else {
                     $values = array(
-                        'id_product' => (int)$id_product,
-                        'id_product_attribute' => (int)$id_product_attribute,
-                        'id_cart' => (int)$this->id,
-                        'id_address_delivery' => (int)$id_address_delivery,
-                        'id_shop' => (int)$shop->id,
-                        'quantity' => (int)$quantity,
-                        'date_add' => date('Y-m-d H:i:s'),
+                        'id_product'            => (int)$id_product,
+                        'id_product_attribute'  => (int)$id_product_attribute,
+                        'id_cart'               => (int)$this->id,
+                        'id_address_delivery'   => (int)$id_address_delivery,
+                        'id_shop'               => (int)$shop->id,
+                        'quantity'              => (int)$quantity,
+                        'date_add'              => date('Y-m-d H:i:s'),
                     );
                     $result_add = Db::getInstance()->insert('cart_product', $values);
                 }
@@ -257,7 +249,6 @@ class LengowCart extends Cart
                 }
             }
         }
-
         // refresh cache of self::_products
         $this->_products = $this->getProducts(true);
         $this->update();
@@ -266,10 +257,6 @@ class LengowCart extends Cart
         if (_PS_VERSION_ >= '1.5') {
             Cache::clean('getContextualValue_*');
         }
-        // Generates errors when creating the cart
-        // if (_PS_VERSION_ >= '1.5' && $auto_add_cart_rule) {
-        //     CartRule::autoAddToCart($context);
-        // }
         if ($product->customizable) {
             return $this->_updateCustomizationQuantity(
                 (int)$quantity,

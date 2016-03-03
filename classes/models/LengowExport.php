@@ -468,7 +468,7 @@ class LengowExport
     {
         if (_PS_VERSION_ >= '1.5') {
             $join = ' INNER JOIN '._DB_PREFIX_.'product_shop ps ON
-            (ps.id_product = p.id_product AND ps.id_shop = '.$this->shopId.') ';
+            (ps.id_product = p.id_product AND ps.id_shop = '.(int)$this->shopId.') ';
         } else {
             $join = '';
         }
@@ -535,14 +535,14 @@ class LengowExport
 
         if ($this->exportLengowSelection) {
             $query.= ' INNER JOIN '._DB_PREFIX_.'lengow_product lp ON (lp.id_product = p.id_product AND
-            lp.id_shop = '.$this->shopId.')';
+            lp.id_shop = '.(int)$this->shopId.')';
         }
         if ($variation) {
             $query.= ' INNER JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
         }
         if (_PS_VERSION_ >= '1.5') {
             $query.= ' INNER JOIN '._DB_PREFIX_.'product_shop ps ON
-            (ps.id_product = p.id_product AND ps.id_shop = '.$this->shopId.') ';
+            (ps.id_product = p.id_product AND ps.id_shop = '.(int)$this->shopId.') ';
         }
         if (!$this->showInactiveProduct) {
             if (_PS_VERSION_ < '1.5') {
@@ -552,7 +552,7 @@ class LengowExport
             }
         }
         if (!(_PS_VERSION_ < '1.5')) {
-            $where[] = ' ps.id_shop = '.$this->shopId;
+            $where[] = ' ps.id_shop = '.(int)$this->shopId;
         }
         if (!$this->exportOutStock) {
             if (_PS_VERSION_ >= '1.5') {
@@ -560,19 +560,19 @@ class LengowExport
                     $query.= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
                     (sa.id_product=p.id_product
                     AND pa.id_product_attribute = sa.id_product_attribute
-                    AND sa.id_shop = '.$this->shopId.'
+                    AND sa.id_shop = '.(int)$this->shopId.'
                     AND sa.quantity > 0)';
                 } else {
                     $query.= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
                     (sa.id_product=p.id_product AND id_product_attribute = 0 AND sa.quantity > 0
-                    AND sa.id_shop = '.$this->shopId.' )';
+                    AND sa.id_shop = '.(int)$this->shopId.' )';
                 }
             } else {
                 $where[] = ' p.`quantity` > 0';
             }
         }
         if ($this->productIds != null) {
-            $where[] = ' p.`id_product` IN (' . implode(',', $this->productIds) . ')';
+            $where[] = ' p.`id_product` IN ('.implode(',', $this->productIds).')';
         }
         if (count($where)>0) {
             $query.= ' WHERE '.join(' AND ', $where);

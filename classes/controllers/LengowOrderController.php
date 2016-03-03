@@ -400,7 +400,7 @@ class LengowOrderController extends LengowController
     {
         $marketplaces = array();
         $sql = 'SELECT DISTINCT(marketplace_name) as name,
-        IFNULL(marketplace_label, marketplace_name) as marketplace_label FROM `' . _DB_PREFIX_ . 'lengow_orders`';
+        IFNULL(marketplace_label, marketplace_name) as marketplace_label FROM `'._DB_PREFIX_.'lengow_orders`';
         $collection = Db::getInstance()->executeS($sql);
         foreach ($collection as $row) {
             $marketplaces[]= array('id' => $row['name'], 'text' =>$row['marketplace_label']);
@@ -437,7 +437,9 @@ class LengowOrderController extends LengowController
             }
         } else {
             if ($key == 'reference') {
-                return '<span class="lengow_label lengow_label_red">NOT IMPORTED</span>';
+                return '<span class="lengow_label lengow_label_red">'
+                    .LengowMain::decodeLogMessage('order.screen.not_imported')
+                    .'</span>';
             } else {
                 return $value;
             }

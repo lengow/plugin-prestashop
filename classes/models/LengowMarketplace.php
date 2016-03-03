@@ -483,11 +483,11 @@ class LengowMarketplace
                         Db::getInstance()->autoExecute(
                             _DB_PREFIX_ . 'lengow_actions',
                             array(
-                                'state' => LengowAction::STATE_FINISH,
-                                'updated_at' => date('Y-m-d h:m:i'),
+                                'state'         => (int)LengowAction::STATE_FINISH,
+                                'updated_at'    => date('Y-m-d h:m:i'),
                             ),
                             'UPDATE',
-                            'id = ' . $action['id']
+                            'id = '.(int)$action['id']
                         );
                         if ($result->processed) {
                             $id_order_lengow = LengowOrder::findByOrder($action['id_order']);

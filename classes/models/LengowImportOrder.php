@@ -1139,12 +1139,12 @@ class LengowImportOrder
 
         $params = array(
             'marketplace_sku'       => pSQL($this->marketplace_sku),
-            'id_shop'               => $this->id_shop,
-            'id_shop_group'         => $this->id_shop_group,
-            'id_lang'               => $this->id_lang,
+            'id_shop'               => (int)$this->id_shop,
+            'id_shop_group'         => (int)$this->id_shop_group,
+            'id_lang'               => (int)$this->id_lang,
             'marketplace_name'      => pSQL(Tools::strtolower((string)$this->order_data->marketplace)),
             'marketplace_label'     => pSQL((string)$this->marketplace_label),
-            'delivery_address_id'   => $this->delivery_address_id,
+            'delivery_address_id'   => (int)$this->delivery_address_id,
             'order_date'            => date('Y-m-d H:i:s', strtotime($order_date)),
             'order_lengow_state'    => pSQL($this->order_state_lengow),
             'date_add'              => date('Y-m-d H:i:s'),

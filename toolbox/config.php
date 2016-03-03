@@ -57,9 +57,18 @@ switch ($action) {
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
         break;
     case "update_settings":
+        if (_PS_VERSION_ < '1.5') {
+            $temp_profile = $cookie->profile;
+            $cookie->profile = 1;
+        }
+        LengowTranslation::$forceIsoCode = null;
         $module = Module::getInstanceByName('lengow');
         $install = new LengowInstall($module);
         $install->update();
+        LengowTranslation::$forceIsoCode = 'en';
+        if (_PS_VERSION_ < '1.5') {
+            $cookie->profile = $temp_profile;
+        }
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
         break;
 }

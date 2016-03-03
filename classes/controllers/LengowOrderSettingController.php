@@ -198,8 +198,6 @@ class LengowOrderSettingController extends LengowController
 
                 $countries = LengowCarrierCountry::getCountries();
 
-
-
                 LengowCarrier::deleteMarketplaceCarrier($id_country);
 
                 $mkp_carriers = LengowCarrier::getListMarketplaceCarrier();
@@ -212,7 +210,6 @@ class LengowOrderSettingController extends LengowController
                 $this->context->smarty->assign('id_countries', $id_countries);
                 $this->context->smarty->assign('mkp_carriers', $mkp_carriers);
                 $this->context->smarty->assign('default_country', $default_country);
-
 
                 $module = Module::getInstanceByName('lengow');
                 $display_countries = $module->display(

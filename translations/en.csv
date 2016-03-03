@@ -1,6 +1,13 @@
 module.name|Lengow
 module.description|Lengow allows you to easily export your product catalogue from your Prestashop store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister. Choose from our 1,800 available marketing channels!
 module.uninstall|Are you sure you want to uninstall the Lengow module ?
+module.state_technical_error|Technical error - Lengow
+tab.home|Home
+tab.product|Products
+tab.order|Orders
+tab.order_setting|Orders settings
+tab.help|Help
+tab.main_setting|Main settings
 menu.product|products
 menu.order|orders
 menu.preprod_active|Pre-production mode
@@ -52,8 +59,9 @@ order.screen.button_resend_order|Resend Orders
 order.screen.cron|Want to automatize your orders update?
 order.screen.preprod_warning_message|Changes on your orders will not be saved until you are in pre-production mode. <a href=%{url}>Go back to production mode ?</a>
 order.screen.tracking_send|Tracking send, waiting returns
-order.screen.re_send|Re Send
-order.screen.re_import|Re Import
+order.screen.not_imported|not imported
+order.screen.re_send|re-send
+order.screen.re_import|re-import
 order.table.order_lengow_state|Status
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Shop
@@ -73,6 +81,7 @@ order_setting.screen.country_wt_carrier|Some countries may have no configured ca
 order_setting.screen.country_wt_carrier_link|link
 order_setting.screen.default_country|default
 order_setting.screen.import_setting_title|Orders importation
+order_setting.screen.select_a_country|Please choose a country...
 order_setting.screen.import_setting_description|Manage here your import settings for the orders coming from the marketplaces
 order_setting.screen.cron_description|You can use the Crontab Module to import orders from Lengow
 order_setting.screen.cron_not_configured|Cron import is not configured in your PrestaShop
