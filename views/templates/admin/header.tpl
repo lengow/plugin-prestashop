@@ -64,7 +64,7 @@
     <li role="presentation" class="{if in_array($current_controller, $OrderTab)}active{/if}">
         <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lengow_order_link">{$locale->t('menu.order')}</a>
     </li>
-    <li>
+    <li class="lengow_menu_label_li">
         {if $total_pending_order}
             <span class="lengow_menu_label">
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">

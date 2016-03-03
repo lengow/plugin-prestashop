@@ -17,6 +17,11 @@
 .nav.lengow-nav.preprod {
     background: #00CCCE;
 }
+
+.nav.lengow-nav .lengow_menu_label_li {
+    margin-left: -13px;
+    margin-top: 2px;
+}
 .nav.lengow-nav .lengow_menu_label {
     background: #FF7788;
     color: white;
@@ -27,11 +32,7 @@
     text-align: center;
 }
 
-.nav.lengow-nav .lengow_menu_label a {
-    text-decoration: none;
-    color:white;
-    border:0px !important;
-}
+
 
 body.lengow_body #content .nav.lengow-nav.lengow-nav-top li.active a {
     border-bottom:5px solid #59BDC0;
@@ -50,9 +51,15 @@ body.lengow_body #content h2 {
     color:#555;
 }
 
-body.lengow_body a {
+body.lengow_body #content a {
     color: #415260;
     text-decoration: underline;
+}
+
+body.lengow_body #content .nav.lengow-nav .lengow_menu_label a {
+    text-decoration: none;
+    color:white;
+    border:0px !important;
 }
 
 body.lengow_body input[type="text"],
@@ -138,7 +145,7 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li#lengow_logo a {
 
 .nav-pills.lengow-nav>li+li {
     margin-left: 2px;
-    height:54px;
+    height:50px;
 }
 .nav-pills.lengow-nav>li {
     float: left;
@@ -1011,7 +1018,7 @@ body.adminlengowhome.lengow_body #content {
     display: block;
 }
 
-#lengow_center_block .lengow_pending_order a {
+body.lengow_body #content #lengow_center_block .lengow_pending_order a {
     border-bottom: 5px solid #4BCAE7;
     font-size:42px;
     text-transform: uppercase;
