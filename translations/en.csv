@@ -81,6 +81,7 @@ order_setting.screen.country_wt_carrier|Some countries may have no configured ca
 order_setting.screen.country_wt_carrier_link|link
 order_setting.screen.default_country|default
 order_setting.screen.import_setting_title|Orders importation
+order_setting.screen.select_a_country|Please choose a country...
 order_setting.screen.import_setting_description|Manage here your import settings for the orders coming from the marketplaces
 order_setting.screen.cron_description|You can use the Crontab Module to import orders from Lengow
 order_setting.screen.cron_not_configured|Cron import is not configured in your PrestaShop

@@ -95,6 +95,7 @@ en:
       country_wt_carrier_link: "link"
       default_country: "default"
       import_setting_title: "Orders importation"
+      select_a_country: "Please choose a country..."
       import_setting_description: "Manage here your import settings for the orders coming from the marketplaces"
       cron_description: "You can use the Crontab Module to import orders from Lengow"
       cron_not_configured: "Cron import is not configured in your PrestaShop"
