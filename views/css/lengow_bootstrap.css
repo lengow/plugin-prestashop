@@ -26,7 +26,8 @@
     padding: 2px 8px;
     border-radius: 12px;
     display: block;
-    width: 9px;
+    width: 15px;
+    text-align: center;
 }
 
 .nav.lengow-nav .lengow_menu_label a {
@@ -140,6 +141,7 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li#lengow_logo a {
 
 .nav-pills.lengow-nav>li+li {
     margin-left: 2px;
+    height:54px;
 }
 .nav-pills.lengow-nav>li {
     float: left;
@@ -984,6 +986,8 @@ body.adminlengowhome.lengow_body #content {
 #lengow_statistic ul {
     list-style: none;
     text-align: left;
+    margin-left:20px;
+    padding:0px;
 }
 
 #lengow_statistic ul .lengow_number {
@@ -1004,6 +1008,10 @@ body.adminlengowhome.lengow_body #content {
 
 #lengow_center_block .lengow_pending_message {
     font-size:16px;
+}
+#lengow_center_block .lengow_pending_order {
+    margin-bottom: 13px;
+    display: block;
 }
 
 #lengow_center_block .lengow_pending_order a {

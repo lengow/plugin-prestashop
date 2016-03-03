@@ -23,31 +23,31 @@
     $(document).ready(function () {
         var href = $('#lengow_ajax_link').val();
 
-        $('#lengow_home_frame').show();
-
         var sync_iframe = document.getElementById('lengow_home_iframe');
-        sync_iframe.onload = function () {
-            $.ajax({
-                url: href,
-                method: 'POST',
-                data: {action: 'get_sync_data'},
-                dataType: 'json',
-                success: function (data) {
-                    var targetFrame = document.getElementById("lengow_home_iframe").contentWindow;
-                    targetFrame.postMessage(data, '*');
-                }
-            });
-        };
-        sync_iframe.src = '/modules/lengow/webservice/sync.php';
-
-        resize();
-
-        $(window).on('resize', function () {
+        if (sync_iframe) {
+            $('#lengow_home_frame').show();
+            sync_iframe.onload = function () {
+                $.ajax({
+                    url: href,
+                    method: 'POST',
+                    data: {action: 'get_sync_data'},
+                    dataType: 'json',
+                    success: function (data) {
+                        var targetFrame = document.getElementById("lengow_home_iframe").contentWindow;
+                        targetFrame.postMessage(data, '*');
+                    }
+                });
+            };
+            sync_iframe.src = '/modules/lengow/webservice/sync.php';
             resize();
-        });
 
-        function resize() {
-            $('#lengow_home_frame').height($('body').height());
+            $(window).on('resize', function () {
+                resize();
+            });
+
+            function resize() {
+                $('#lengow_home_frame').height($('body').height());
+            }
         }
 
         window.addEventListener("message", receiveMessage, false);
