@@ -28,7 +28,7 @@
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">
                 {$total_pending_order} {$locale->t('dashboard.screen.pending_order')}
             </a>
-        </span><br/>
+        </span>
         <span class="lengow_pending_message">{$locale->t('dashboard.screen.sell_everywhere')}</span><br/>
     </div>
 </div>

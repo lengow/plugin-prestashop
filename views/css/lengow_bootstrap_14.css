@@ -1,0 +1,9 @@
+body.lengow_body #container {
+    width: 99%;
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.lengow_body .path_bar {display:none;}

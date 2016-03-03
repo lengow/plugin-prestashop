@@ -17,6 +17,7 @@
  *  @copyright 2015 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
+<script type="text/javascript">$(document.body).addClass("adminlengowhome");</script>
 
 <div id="lengow_home_wrapper">
 {if $isNewMerchant}

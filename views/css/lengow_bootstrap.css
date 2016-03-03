@@ -18,15 +18,16 @@
     background: #00CCCE;
 }
 .nav.lengow-nav .lengow_menu_label {
-    position: absolute;
-    top: 43px;
-    left: 500px;
+    position: relative;
+    left: 67px;
+    top: -44px;
     background: #FF7788;
     color: white;
     padding: 2px 8px;
     border-radius: 12px;
     display: block;
-    width: 9px;
+    width: 15px;
+    text-align: center;
 }
 
 .nav.lengow-nav .lengow_menu_label a {
@@ -45,6 +46,26 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-top li.active a {
     padding-left:50px;
 }
 
+body.lengow_body #content {
+    color:#555;
+}
+body.lengow_body #content h2 {
+    color:#555;
+}
+
+body.lengow_body a {
+    color: #415260;
+    text-decoration: underline;
+}
+
+body.lengow_body input[type="text"],
+body.lengow_body input[type="password"],
+body.lengow_body input[type="file"], textarea {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    padding: 2px 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1) inset;
+}
 
 body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a,
 body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:hover,
@@ -78,6 +99,10 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li.active>a:focus{
     -moz-border-radius:0px;
     border-radius:0px;
     text-decoration: none;
+}
+
+.lengow_order_link {
+    position:absolute;
 }
 
 body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li#lengow_logo a {
@@ -116,6 +141,7 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li#lengow_logo a {
 
 .nav-pills.lengow-nav>li+li {
     margin-left: 2px;
+    height:54px;
 }
 .nav-pills.lengow-nav>li {
     float: left;
@@ -301,7 +327,28 @@ body.lengow_body #content .lengow_breadcrumb a {
     float:right;
 }
 .lengow_table {
-    width: 100%
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 0;
+    border-radius: 3px;
+}
+
+
+.lengow_table tr th {
+    background: #F1F1F1;
+    color: #333;
+    font-size: 13px;
+    padding: 4px 6px;
+    text-align: left;
+}
+
+.lengow_table tr td {
+    border-bottom: 1px solid #ccc;
+    color: #333;
+    font-size: 12px;
+    padding: 4px 4px 4px 6px;
 }
 
 .lengow_green {
@@ -939,6 +986,8 @@ body.adminlengowhome.lengow_body #content {
 #lengow_statistic ul {
     list-style: none;
     text-align: left;
+    margin-left:20px;
+    padding:0px;
 }
 
 #lengow_statistic ul .lengow_number {
@@ -959,6 +1008,10 @@ body.adminlengowhome.lengow_body #content {
 
 #lengow_center_block .lengow_pending_message {
     font-size:16px;
+}
+#lengow_center_block .lengow_pending_order {
+    margin-bottom: 13px;
+    display: block;
 }
 
 #lengow_center_block .lengow_pending_order a {

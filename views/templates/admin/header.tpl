@@ -26,6 +26,9 @@
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/admin.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
+{if version_compare($smarty.const._PS_VERSION_,'1.5','<')}
+    <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_14.css">
+{/if}
 {if !$isNewMerchant}
 <ul class="nav nav-pills lengow-nav lengow-nav-top {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}preprod{/if}">
     <li class="lengow_float_right">
@@ -59,7 +62,7 @@
     </li>
     {assign var='OrderTab' value=','|explode:"LengowOrderController,LengowOrderSettingController"}
     <li role="presentation" class="{if in_array($current_controller, $OrderTab)}active{/if}">
-        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">{$locale->t('menu.order')}</a>
+        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lengow_order_link">{$locale->t('menu.order')}</a>
         {if $total_pending_order}
             <span class="lengow_menu_label">
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">

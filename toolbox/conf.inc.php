@@ -51,5 +51,6 @@ if ($lengowTool->getCurrentUri() == '/modules/lengow/toolbox/login.php' && $leng
 $employeeCollection = LengowEmployee::getEmployees(true);
 $lastEmployeeId = end($employeeCollection);
 Context::getContext()->employee = new Employee($lastEmployeeId);
+$cookie->profile = 1;
 LengowTranslation::$forceIsoCode = 'en';
 Context::getContext()->smarty->assign('toolbox', true);
