@@ -472,7 +472,7 @@ class LengowCarrier extends Carrier
     public static function syncListMarketplace()
     {
         $defaultCountryId = Configuration::get('PS_COUNTRY_DEFAULT');
-        $carrierCollection = self::getListMarketplaceCarrierAPI();
+        $carrierCollection = self::getListMarketplaceCarrierAPI(true);
         $countryCollectionId = array();
         foreach ($carrierCollection as $carrier) {
             $countryCollection = Db::getInstance()->ExecuteS(

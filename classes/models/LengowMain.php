@@ -899,12 +899,12 @@ class LengowMain
     public static function logSent($id_order_log)
     {
         Db::getInstance()->autoExecute(
-            _DB_PREFIX_ . 'lengow_logs_import',
+            _DB_PREFIX_.'lengow_logs_import',
             array(
                 'mail' => 1,
             ),
             'UPDATE',
-            '`id` = \'' .$id_order_log. '\'',
+            '`id` = \''.$id_order_log.'\'',
             1
         );
     }
@@ -940,13 +940,13 @@ class LengowMain
         $module_name = 'mondialrelay';
         $supported_version = '2.1.0';
         $sep = DIRECTORY_SEPARATOR;
-        $module_dir = _PS_MODULE_DIR_ . $module_name . $sep;
+        $module_dir = _PS_MODULE_DIR_.$module_name.$sep;
 
         if (!LengowMain::isModuleInstalled($module_name)) {
             return false;
         }
 
-        require_once($module_dir . $module_name . '.php');
+        require_once($module_dir.$module_name.'.php');
         $mr = new MondialRelay();
         if (version_compare($mr->version, $supported_version, '>=')) {
             return true;
@@ -966,13 +966,13 @@ class LengowMain
         $module_name = 'socolissimo';
         $supported_version = '2.8.5';
         $sep = DIRECTORY_SEPARATOR;
-        $module_dir = _PS_MODULE_DIR_ . $module_name . $sep;
+        $module_dir = _PS_MODULE_DIR_.$module_name.$sep;
 
         if (!LengowMain::isModuleInstalled($module_name)) {
             return false;
         }
 
-        require_once($module_dir . $module_name . '.php');
+        require_once($module_dir.$module_name.'.php');
         $soColissimo = new Socolissimo();
         if (version_compare($soColissimo->version, $supported_version, '>=')) {
             return true;
@@ -1080,16 +1080,16 @@ class LengowMain
         $is_https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 's' : '';
         if (_PS_VERSION_ < '1.5') {
             $base = (
-                defined('_PS_SHOP_DOMAIN_') ? 'http' . $is_https . '://' . _PS_SHOP_DOMAIN_ : _PS_BASE_URL_
-            ) . __PS_BASE_URI__;
+                defined('_PS_SHOP_DOMAIN_') ? 'http'.$is_https.'://'._PS_SHOP_DOMAIN_ : _PS_BASE_URL_
+            ).__PS_BASE_URI__;
             $url = $base . 'modules/lengow/';
         } else {
             if (is_null($id_shop)) {
                 $id_shop = Context::getContext()->shop->id;
             }
             $shop_url = new ShopUrl($id_shop);
-            $base = 'http' . $is_https . '://' . $shop_url->domain . $shop_url->physical_uri;
-            $url = $base . 'modules/lengow/';
+            $base = 'http'.$is_https.'://'.$shop_url->domain.$shop_url->physical_uri;
+            $url = $base.'modules/lengow/';
         }
         return $url;
     }
@@ -1103,18 +1103,31 @@ class LengowMain
      */
     public static function getLengowErrorStateId($id_lang = null)
     {
-        if (!$id_lang) {
-            $id_lang = Context::getContext()->language->id;
+        $id_error_state = LengowConfiguration::getGlobalValue('LENGOW_STATE_ERROR');
+        if ($id_error_state) {
+            return $id_error_state;
         }
-        $states = OrderState::getOrderStates($id_lang);
-        foreach ($states as $state) {
-            if ($state['module_name'] == 'lengow') {
-                return $state['id_order_state'];
+        if (_PS_VERSION_ >= '1.5') {
+            if (!$id_lang) {
+                $id_lang = Context::getContext()->language->id;
+            }
+            $states = OrderState::getOrderStates($id_lang);
+            foreach ($states as $state) {
+                if ($state['module_name'] == 'lengow') {
+                    return $state['id_order_state'];
+                }
+            }
+        } else {
+            $states = Db::getInstance()->ExecuteS(
+                'SELECT * FROM '._DB_PREFIX_.'order_state_lang
+                WHERE name = \'Technical error - Lengow\' OR name = \'Erreur technique - Lengow\' LIMIT 1'
+            );
+            if (!empty($states)) {
+                return $states[0]['id_order_state'];
             }
         }
         return false;
     }
-
 
     /**
      * Translates a camel case string into a string with underscores (e.g. firstName -&gt; first_name)
