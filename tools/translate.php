@@ -52,7 +52,7 @@ function writeCsv($fp, $text, &$frontKey = array())
             array_pop($frontKey);
         }
     } else {
-        $line = join('.', $frontKey).'|'.$text.PHP_EOL;
+        $line = join('.', $frontKey).'|'.str_replace("\n", '<br />', $text).PHP_EOL;
         fwrite($fp, $line);
     }
 }
