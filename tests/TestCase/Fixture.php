@@ -51,7 +51,7 @@ class Fixture
         foreach ($yml as $tableName => $row) {
             //don't re-truncate tables
             if ($truncate || !isset($this->alreadyTruncate[$tableName])) {
-                Db::getInstance()->execute('TRUNCATE ' . _DB_PREFIX_ . $tableName);
+                Db::getInstance()->execute('TRUNCATE '._DB_PREFIX_.$tableName);
                 $this->alreadyTruncate[$tableName] = true;
             }
             if ($row) {
@@ -87,6 +87,6 @@ class Fixture
 
     public function truncate($tableName)
     {
-        Db::getInstance()->execute('TRUNCATE ' . _DB_PREFIX_ . $tableName);
+        Db::getInstance()->execute('TRUNCATE '._DB_PREFIX_.$tableName);
     }
 }

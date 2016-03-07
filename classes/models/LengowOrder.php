@@ -893,7 +893,7 @@ class LengowOrder extends Order
     {
         if (LengowOrder::isOrderImport($id_order_lengow)) {
             //TEMP DATA
-            Db::getInstance()->Execute('UPDATE ps_lengow_orders SET id_order = NULL WHERE id = '.(int)$id_order_lengow);
+            Db::getInstance()->Execute('UPDATE `'._DB_PREFIX_.'lengow_orders` SET id_order = NULL WHERE id = '.(int)$id_order_lengow);
 
             $lengowOrder = LengowOrder::find($id_order_lengow);
 
@@ -1015,7 +1015,7 @@ class LengowOrder extends Order
         }
         //check country in order
 
-        $states = Db::getInstance()->getRow('SELECT id_order_state FROM ' . _DB_PREFIX_ . 'order_state_lang
+        $states = Db::getInstance()->getRow('SELECT id_order_state FROM '._DB_PREFIX_.'order_state_lang
                 WHERE name = "Erreur technique - Lengow"');
         $errorState = $states['id_order_state'];
         if ($errorState > 0) {

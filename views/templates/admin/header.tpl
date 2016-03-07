@@ -53,22 +53,26 @@
         </a>
         {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
             <div id="lengow_preprod">
-                {$locale->t('menu.preprod_active')}
+                {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
     </li>
     <li role="presentation" class="{if $current_controller == 'LengowFeedController'}active{/if}"><a href="
-        {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}">{$locale->t('menu.product')}</a>
+        {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}">
+            {$locale->t('menu.product')|escape:'htmlall':'UTF-8'}
+        </a>
     </li>
     {assign var='OrderTab' value=','|explode:"LengowOrderController,LengowOrderSettingController"}
     <li role="presentation" class="{if in_array($current_controller, $OrderTab)}active{/if}">
-        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lengow_order_link">{$locale->t('menu.order')}</a>
+        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lengow_order_link">
+            {$locale->t('menu.order')|escape:'htmlall':'UTF-8'}
+        </a>
     </li>
     <li class="lengow_menu_label_li">
         {if $total_pending_order}
             <span class="lengow_menu_label">
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">
-                    {$total_pending_order}
+                    {$total_pending_order|escape:'htmlall':'UTF-8'}
                 </a>
             </span>
         {/if}

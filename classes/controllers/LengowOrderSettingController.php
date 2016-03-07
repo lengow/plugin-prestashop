@@ -58,12 +58,11 @@ class LengowOrderSettingController extends LengowController
         }
 
         $mkp_carriers = LengowCarrier::getListMarketplaceCarrier();
+        $marketplace_carriers = array();
         if (count($mkp_carriers) >0) {
             foreach ($mkp_carriers as $row) {
                 $marketplace_carriers[$row['id_country']][]= $row;
             }
-        } else {
-            $marketplace_carriers = array();
         }
 
         $carriers = LengowCarrier::getActiveCarriers();
@@ -141,12 +140,11 @@ class LengowOrderSettingController extends LengowController
                 $countries = LengowCarrierCountry::getCountries();
 
                 $mkp_carriers = LengowCarrier::getListMarketplaceCarrier();
+                $marketplace_carriers = array();
                 if (count($mkp_carriers) >0) {
                     foreach ($mkp_carriers as $row) {
                         $marketplace_carriers[$row['id_country']][]= $row;
                     }
-                } else {
-                    $marketplace_carriers = array();
                 }
 
                 $new_mkp_carriers = LengowCarrier::getListMarketplaceCarrier();
@@ -224,7 +222,7 @@ class LengowOrderSettingController extends LengowController
             case 'process':
                 foreach ($default_carriers as $key => $value) {
                     Db::getInstance()->autoExecute(
-                        _DB_PREFIX_ . 'lengow_carrier_country',
+                        _DB_PREFIX_.'lengow_carrier_country',
                         array('id_carrier' => (int)$value > 0  ? (int)$value : null),
                         'UPDATE',
                         'id = '.(int)$key,

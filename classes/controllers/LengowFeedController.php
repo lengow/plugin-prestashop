@@ -252,19 +252,19 @@ class LengowFeedController extends LengowController
         $join[] = ' LEFT JOIN '._DB_PREFIX_.'lengow_product lp ON (lp.id_product = p.id_product
         AND lp.id_shop = '.(int)$shopId.' ) ';
         if (_PS_VERSION_ >= '1.5') {
-            $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'product_shop` ps ON (p.`id_product` = ps.`id_product`
+            $join[] = 'INNER JOIN `'._DB_PREFIX_.'product_shop` ps ON (p.`id_product` = ps.`id_product`
             AND ps.id_shop = ' . (int)$shopId . ') ';
             $join[] = ' LEFT JOIN '._DB_PREFIX_.'stock_available sav ON (sav.id_product = p.id_product
             AND sav.id_product_attribute = 0 AND sav.id_shop = ' . (int)$shopId . ')';
         }
         if (_PS_VERSION_ >= '1.5') {
             if (Shop::isFeatureActive()) {
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
+                $join[] = 'LEFT JOIN `'._DB_PREFIX_.'category_lang` cl
                 ON (ps.`id_category_default` = cl.`id_category`
                 AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = ' . (int)$shopId . ')';
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (shop.id_shop = ' . (int)$shopId . ') ';
+                $join[] = 'LEFT JOIN `'._DB_PREFIX_.'shop` shop ON (shop.id_shop = ' . (int)$shopId . ') ';
             } else {
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
+                $join[] = 'LEFT JOIN `'._DB_PREFIX_.'category_lang` cl
                 ON (p.`id_category_default` = cl.`id_category`
                 AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = 1)';
             }

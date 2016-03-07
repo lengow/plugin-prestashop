@@ -165,6 +165,7 @@ class LengowCheck
             $import_in_progress = $this->locale->t('toolbox.index.no_import');
         }
 
+        $checklist = array();
         $checklist[] = array(
             'title'     => $this->locale->t('toolbox.index.global_token'),
             'message'   => LengowConfiguration::get('LENGOW_GLOBAL_TOKEN')

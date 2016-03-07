@@ -169,7 +169,7 @@ class LengowAction
             $insertParams['order_line_sku'] = $params['parameters']['line'];
         }
 
-        Db::getInstance()->autoExecute(_DB_PREFIX_ . 'lengow_actions', $insertParams, 'INSERT');
+        Db::getInstance()->autoExecute(_DB_PREFIX_.'lengow_actions', $insertParams, 'INSERT');
         LengowMain::log(
             'API',
             LengowMain::setLogMessage('log.order_action.call_tracking'),
@@ -194,7 +194,7 @@ class LengowAction
         if ($action->findByActionId($params['action_id'])) {
             if ($action->state == self::STATE_NEW) {
                 Db::getInstance()->autoExecute(
-                    _DB_PREFIX_ . 'lengow_actions',
+                    _DB_PREFIX_.'lengow_actions',
                     array(
                         'retry'         => $action->retry + 1,
                         'updated_at'    => date('Y-m-d h:m:i'),

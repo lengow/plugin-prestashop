@@ -1064,7 +1064,7 @@ class LengowMain
     public static function getImportUrl($id_shop = null)
     {
         $base = LengowMain::getLengowBaseUrl($id_shop);
-        return $base . 'webservice/import.php?token='.LengowMain::getToken();
+        return $base . 'webservice/cron.php?token='.LengowMain::getToken();
     }
 
     /**

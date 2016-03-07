@@ -159,10 +159,10 @@ class LengowConnector
     {
         if (LengowMain::inTest() && self::$test_fixture_path) {
             if (is_array(self::$test_fixture_path)) {
-                $content = file_get_contents(self::$test_fixture_path[0]);
+                $content = Tools::file_get_contents(self::$test_fixture_path[0]);
                 array_shift(self::$test_fixture_path);
             } else {
-                $content = file_get_contents(self::$test_fixture_path);
+                $content = Tools::file_get_contents(self::$test_fixture_path);
                 self::$test_fixture_path = null;
             }
             return $content;
@@ -174,10 +174,10 @@ class LengowConnector
     {
         if (LengowMain::inTest() && self::$test_fixture_path) {
             if (is_array(self::$test_fixture_path)) {
-                $content = file_get_contents(self::$test_fixture_path[0]);
+                $content = Tools::file_get_contents(self::$test_fixture_path[0]);
                 array_shift(self::$test_fixture_path);
             } else {
-                $content = file_get_contents(self::$test_fixture_path);
+                $content = Tools::file_get_contents(self::$test_fixture_path);
                 self::$test_fixture_path = null;
             }
             return $content;

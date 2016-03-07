@@ -149,7 +149,6 @@ class LengowImport
         'closed'
     );
 
-
     /**
      * Construct the import manager
      *

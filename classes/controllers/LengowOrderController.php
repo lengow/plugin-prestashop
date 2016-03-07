@@ -26,19 +26,8 @@ class LengowOrderController extends LengowController
      */
     public function display()
     {
-        $last_import =  LengowMain::getLastImport();
-
-        $orderCollection = array(
-            'last_import_date'  => $last_import['timestamp'],
-            'last_import_type'  => $last_import['type'],
-            'link'              => LengowMain::getImportUrl()
-        );
-
-
-        $this->context->smarty->assign('cron_active', LengowCron::getCron());
-        $this->context->smarty->assign('report_mail_address', LengowConfiguration::getReportEmailAddress());
+        $this->assignLastImportationInfos();
         $this->context->smarty->assign('lengow_table', $this->buildTable());
-        $this->context->smarty->assign('orderCollection', $orderCollection);
         parent::display();
     }
 
@@ -57,7 +46,6 @@ class LengowOrderController extends LengowController
                 case 're_import':
                     $id_order_lengow = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : 0;
                     LengowOrder::reImportOrder($id_order_lengow);
-
                     $list = $this->loadTable();
                     $row = $list->getRow(' id = '.(int)$id_order_lengow);
                     $html = $list->displayRow($row);
@@ -93,10 +81,18 @@ class LengowOrderController extends LengowController
                     }
                     $return = $import->exec();
                     $message = $this->loadMessage($return);
-
                     echo 'lengow_jquery("#lengow_wrapper_messages").html("';
                     echo '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>");';
-                    echo 'lengow_jquery("#lengow_import_orders").html("Update Orders");';
+                    $this->assignLastImportationInfos();
+                    $module = Module::getInstanceByName('lengow');
+                    $display_last_importation = $module->display(
+                        _PS_MODULE_LENGOW_DIR_,
+                        'views/templates/admin/lengow_order/helpers/view/last_importation.tpl'
+                    );
+                    echo 'lengow_jquery("#lengow_last_importation").html("'.
+                        preg_replace('/\r|\n/', '', addslashes($display_last_importation)).'");';
+                    echo 'lengow_jquery("#lengow_import_orders").html("'
+                        .$this->locale->t('order.screen.button_update_orders').'");';
                     echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
                     break;
@@ -109,7 +105,7 @@ class LengowOrderController extends LengowController
                         'shop_id' => Tools::getValue('shop_id'),
                         'type' => Tools::getValue('type'),
                     ));
-                    $return = $import->exec();
+                    $result = $import->exec();
                     $message = array();
                     if (isset($result['marketplace_sku']) && isset($result['marketplace_name'])) {
                         $message[] = LengowMain::decodeLogMessage('toolbox.order.order_import_success', null, array(
@@ -154,11 +150,9 @@ class LengowOrderController extends LengowController
                     break;
                 case 'load_marketplace':
                     $shop_id = Tools::getValue('shop_id');
-
                     $marketplaces = LengowMarketplace::getMarketplacesByShop($shop_id);
                     $this->context->smarty->assign('marketplaces', $marketplaces);
                     $module = Module::getInstanceByName('lengow');
-
                     $display_select_marketplace = $module->display(
                         _PS_MODULE_LENGOW_DIR_,
                         'views/templates/admin/lengow_order/helpers/view/select_marketplace.tpl'
@@ -182,6 +176,19 @@ class LengowOrderController extends LengowController
             }
             exit();
         }
+    }
+
+    public function assignLastImportationInfos()
+    {
+        $last_import =  LengowMain::getLastImport();
+        $orderCollection = array(
+            'last_import_date'  => $last_import['timestamp'],
+            'last_import_type'  => $last_import['type'],
+            'link'              => LengowMain::getImportUrl()
+        );
+        $this->context->smarty->assign('cron_active', LengowCron::getCron());
+        $this->context->smarty->assign('report_mail_address', LengowConfiguration::getReportEmailAddress());
+        $this->context->smarty->assign('orderCollection', $orderCollection);
     }
 
     public function loadTable()
@@ -317,14 +324,14 @@ class LengowOrderController extends LengowController
         $from = 'FROM '._DB_PREFIX_.'lengow_orders lo';
         $join = array();
 
-        $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'orders` o ON (o.id_order = lo.id_order) ';
+        $join[] = 'LEFT JOIN `'._DB_PREFIX_.'orders` o ON (o.id_order = lo.id_order) ';
         if (_PS_VERSION_ >= '1.5') {
             if (Shop::isFeatureActive()) {
                 if (Shop::getContextShopID()) {
-                    $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'shop` shop ON (lo.id_shop = shop.id_shop
+                    $join[] = 'INNER JOIN `'._DB_PREFIX_.'shop` shop ON (lo.id_shop = shop.id_shop
                     AND shop.id_shop = '.(int)Shop::getContextShopID().') ';
                 } else {
-                    $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (lo.id_shop = shop.id_shop) ';
+                    $join[] = 'LEFT JOIN `'._DB_PREFIX_.'shop` shop ON (lo.id_shop = shop.id_shop) ';
                 }
                 $select[] = 'shop.name as shop_name';
             }
