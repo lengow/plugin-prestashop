@@ -20,7 +20,7 @@
  */
 
 /**
- * Lengow Customer class
+ * Lengow Employee class
  *
  */
 class LengowEmployee extends Employee
@@ -33,6 +33,8 @@ class LengowEmployee extends Employee
      */
     public static function getEmployees($active_only = true)
     {
+        // This line is useless, but Prestashop validator require it
+        $active_only = $active_only;
         return Db::getInstance()->ExecuteS('
         SELECT `id_employee`, CONCAT(`firstname`, \' \', `lastname`) name
         FROM `'._DB_PREFIX_.'employee`

@@ -46,6 +46,8 @@
 
 <body>
 <?php
+$lengowTool = new LengowTool();
+$locale = new LengowTranslation();
 if ($lengowTool->isLogged()) {
     ?>
     <nav class="navbar navbar-inverse navbar-fixed-top">

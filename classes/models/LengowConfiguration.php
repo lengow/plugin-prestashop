@@ -320,6 +320,8 @@ class LengowConfiguration extends Configuration
     {
         $keys = self::getKeys();
         foreach ($keys as $key => $value) {
+            // This line is useless, but Prestashop validator require it
+            $value = $value;
             self::deleteByName($key);
         }
         return true;

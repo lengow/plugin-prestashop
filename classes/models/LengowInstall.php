@@ -133,7 +133,7 @@ class LengowInstall
         foreach ($tabs as $value) {
             $tab = new Tab((int)$value['id_tab']);
             if ($tab->id != 0) {
-                $result = $tab->delete();
+                $tab->delete();
             }
             LengowMain::log(
                 'Install',
@@ -191,7 +191,7 @@ class LengowInstall
             $languages = Language::getLanguages(false);
             foreach ($languages as $language) {
                 $name = LengowMain::decodeLogMessage('module.state_technical_error', $language['iso_code']);
-                $result = Db::getInstance()->autoExecute(
+                Db::getInstance()->autoExecute(
                     _DB_PREFIX_.'order_state_lang',
                     array('name' => $name),
                     'UPDATE',

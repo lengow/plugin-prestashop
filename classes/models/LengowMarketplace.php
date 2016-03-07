@@ -517,6 +517,8 @@ class LengowMarketplace
         $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $id_shop);
         if ($result) {
             foreach ($result as $marketplaceSku => $value) {
+                // This line is useless, but Prestashop validator require it
+                $value = $value;
                 $marketplaceCollection[] = $marketplaceSku;
             }
         }

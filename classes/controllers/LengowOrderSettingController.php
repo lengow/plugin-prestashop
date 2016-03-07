@@ -19,11 +19,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
-
-
 class LengowOrderSettingController extends LengowController
 {
     /**
@@ -42,7 +37,6 @@ class LengowOrderSettingController extends LengowController
         $listCarrier = LengowCarrierCountry::listCarrierByCountry();
         $id_countries = LengowCarrierCountry::getIdCountries($listCarrier);
 
-        $carrierItem= array();
         $defaultCarrierCountries = array();
         $listCarrierByCountry = array();
         foreach ($id_countries as $id_country) {
@@ -188,7 +182,6 @@ class LengowOrderSettingController extends LengowController
                 echo 'addScoreCarrier();';
                 echo 'lengow_jquery(\'.lengow_select\').select2({ minimumResultsForSearch: 16});';
                 exit();
-                break;
             case 'delete_country':
                  $id_country = Tools::getValue('id_country');
 
@@ -218,7 +211,6 @@ class LengowOrderSettingController extends LengowController
                 echo '$("#select_country").html("'.preg_replace('/\r|\n/', '', addslashes($display_countries)).'");';
                 echo '$("#lengow_marketplace_carrier_country_'.$id_country.'").remove();';
                 exit();
-                break;
             case 'process':
                 foreach ($default_carriers as $key => $value) {
                     Db::getInstance()->autoExecute(

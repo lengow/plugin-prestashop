@@ -327,7 +327,8 @@ class LengowCheck
                         if (isset($check['help']) && isset($check['help_link']) && isset($check['help_label'])) {
                             $out .= '<tr><td colspan="2"><p>' . $check['help'];
                             if (array_key_exists('help_link', $check) && $check['help_link'] != '') {
-                                $out .= '<br /><a target="_blank" href="'.$check['help_link'].'">'.$check['help_label'].'</a>';
+                                $out .= '<br /><a target="_blank" href="'
+                                .$check['help_link'].'">'.$check['help_label'].'</a>';
                             }
                             $out .= '</p></td></tr>';
                         }

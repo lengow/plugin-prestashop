@@ -25,6 +25,8 @@ $action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
 $accessToken = isset($_REQUEST['access_token']) ?  $_REQUEST['access_token'] : null;
 $secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
 
+$locale = new LengowTranslation();
+
 $form = new LengowConfigurationForm(array(
     "fields" => LengowConfiguration::getKeys()
 ));
@@ -58,8 +60,8 @@ switch ($action) {
         break;
     case "update_settings":
         if (_PS_VERSION_ < '1.5') {
-            $temp_profile = $cookie->profile;
-            $cookie->profile = 1;
+            $temp_profile = Context::getContext()->cookie->profile;
+            Context::getContext()->cookie->profile = 1;
         }
         LengowTranslation::$forceIsoCode = null;
         $module = Module::getInstanceByName('lengow');
@@ -67,7 +69,7 @@ switch ($action) {
         $install->update();
         LengowTranslation::$forceIsoCode = 'en';
         if (_PS_VERSION_ < '1.5') {
-            $cookie->profile = $temp_profile;
+            Context::getContext()->cookie->profile = $temp_profile;
         }
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
         break;
@@ -132,11 +134,15 @@ require 'views/header.php';
                     <?php echo $locale->t('toolbox.configuration.button_save'); ?>
                 </button>
                 <a class="lengow_btn btn-success" href="/modules/lengow/toolbox/config.php?action=get_default_settings"
-                    onclick="return confirm('<?php echo  $locale->t('toolbox.configuration.check_get_default_settings'); ?>')">
+                    onclick="return confirm(
+                        '<?php echo  $locale->t('toolbox.configuration.check_get_default_settings'); ?>'
+                    )">
                     <?php echo $locale->t('toolbox.configuration.get_default_settings'); ?>
                 </a>
                 <a class="lengow_btn btn-success" href="/modules/lengow/toolbox/config.php?action=update_settings"
-                    onclick="return confirm('<?php echo  $locale->t('toolbox.configuration.check_update_settings'); ?>')">
+                    onclick="return confirm(
+                        '<?php echo  $locale->t('toolbox.configuration.check_update_settings'); ?>'
+                    )">
                     <?php echo  $locale->t('toolbox.configuration.update_settings'); ?>
                 </a>
             </div>

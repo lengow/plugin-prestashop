@@ -27,6 +27,16 @@ class LengowOrderController extends LengowController
     public function display()
     {
         $this->assignLastImportationInfos();
+        $shop = array();
+        $shops = LengowShop::findAll();
+        foreach ($shops as $s) {
+            $shop[$s['id_shop']] = new LengowShop($s['id_shop']);
+        }
+        $marketplaces = array();
+        $days = LengowConfiguration::get('LENGOW_IMPORT_DAYS');
+        $this->context->smarty->assign('shop', $shop);
+        $this->context->smarty->assign('marketplaces', $marketplaces);
+        $this->context->smarty->assign('days', $days);
         $this->context->smarty->assign('lengow_table', $this->buildTable());
         parent::display();
     }
@@ -160,7 +170,6 @@ class LengowOrderController extends LengowController
                     echo 'lengow_jquery("#select_marketplace").html("'.
                         preg_replace('/\r|\n/', '', addslashes($display_select_marketplace)).'");';
                     exit();
-                    break;
                 case 'cancel_re_import':
                     $id_order = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
                     $lengow_order = new LengowOrder($id_order);
@@ -428,6 +437,8 @@ class LengowOrderController extends LengowController
 
     public static function displayLengowState($key, $value, $item)
     {
+        // This line is useless, but Prestashop validator require it
+        $key = $key;
         return '<span class="lengow_label lengow_label_'.$value.'" title="'.$item['id'].'" >'.$value.'</span>';
     }
 
@@ -455,6 +466,9 @@ class LengowOrderController extends LengowController
 
     public static function displayMarketplaceName($key, $value, $item)
     {
+        // This two lines are useless, but Prestashop validator require it
+        $key = $key;
+        $value = $value;
         return $item['marketplace_label'];
     }
 
@@ -510,6 +524,8 @@ class LengowOrderController extends LengowController
 
     public static function displayLengowExtra($key, $value, $item)
     {
+        // This line is useless, but Prestashop validator require it
+        $key = $key;
         if (!empty($value)) {
             $value = htmlentities($value);
             return '<input id="link_extra_'.$item['id'].'" value="'.$value.'" readonly>

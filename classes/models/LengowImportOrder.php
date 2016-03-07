@@ -427,7 +427,7 @@ class LengowImportOrder
             if (isset($cart)) {
                 $cart->delete();
             }
-            LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $type = 'import');
+            LengowOrder::addOrderLog($this->id_order_lengow, $error_message, 'import');
             $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
             LengowMain::log(
                 'Import',
@@ -586,7 +586,7 @@ class LengowImportOrder
         }
         if (count($error_messages) > 0) {
             foreach ($error_messages as $error_message) {
-                LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $type = 'import');
+                LengowOrder::addOrderLog($this->id_order_lengow, $error_message, 'import');
                 $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
                 LengowMain::log(
                     'Import',

@@ -38,21 +38,55 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
 <body style="background: #CDCDCD;font-family: Open Sans;margin: 0;">
 <div style="background: #f7f7f7;float:right;width: 400px;padding:20px;">
     <h1 style="font-size: 4.9em;text-align: center;color: #31353d;margin-bottom: 5px;">Lengow</h1>
-    <p style="width: 13%;padding-top: 5px;padding-bottom: 5px;padding-right: 20px;padding-left: 20px;margin-top: -20px;background-color: #45bf7b;color: white;font-size: 0.6em;font-weight: bold;border-radius: 2px;margin-left: 250px;">OFFICIAL</p>
-    <p style="font-size: 0.9em;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam excepturi facilis, illo inventore molestias nam
+    <p style="width: 13%;padding: 5px;padding-bottom: 5px;padding-right: 20px;padding-left: 20px;
+        margin-top: -20px;background-color: #45bf7b;color: white;
+        font-size: 0.6em;font-weight: bold;border-radius: 2px;margin-left: 250px;">
+        OFFICIAL
+    </p>
+    <p style="font-size: 0.9em;">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+        Aliquam excepturi facilis, illo inventore molestias nam
         nesciunt non nulla porro quo,
-        vero?</p>
-    <p style="font-size: 0.9em;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam excepturi facilis, illo inventore molestias nam
-        nesciunt non nulla porro</p>
-    <button href="#" style="width: 100%;padding: 15px;margin-top: 50px;border: none;background-color: #45bf7b;color: white;font-size: 0.9em;font-weight: bold;border-radius: 2px;" onmouseover="this.style.background='#47ce83';" onmouseout="this.style.background='#45bf7b';">Create my 15 days-free account</button>
-    <button href="#" style="width: 100%;border-radius: 2px;padding: 10px;border: none;background: none;font-size: 0.9em;color: #6c6c6c;" onmouseover="this.style.background='#CDCDCD';" onmouseout="this.style.background='none';">or Connect to your account</button>
+        vero?
+    </p>
+    <p style="font-size: 0.9em;">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+        Aliquam excepturi facilis, illo inventore molestias nam
+        nesciunt non nulla porro
+    </p>
+    <button href="#" style="width: 100%;padding: 15px;margin-top: 50px;border: none;
+        background-color: #45bf7b;color: white;font-size: 0.9em;font-weight: bold;border-radius: 2px;"
+        onmouseover="this.style.background='#47ce83';"
+        onmouseout="this.style.background='#45bf7b';">
+        Create my 15 days-free account
+    </button>
+    <button href="#" style="width: 100%;border-radius: 2px;padding: 10px;border: none;
+        background: none;font-size: 0.9em;color: #6c6c6c;"
+        onmouseover="this.style.background='#CDCDCD';"
+        onmouseout="this.style.background='none';">
+        or Connect to your account
+    </button>
     <div style="width: 50%;display: inline-block;vertical-align: top;margin-left: 25px;">
-        <div style="height: 55px;width: 55px;background-color: #CDCDCD;border-radius: 35px;margin-top: 50px;margin-left: 25px;margin-right: 25px;"></div>
-        <p style="font-size: 0.8em;margin-bottom:0;">Lorem ipsum dolor.</p><p style="font-size: 0.7em;margin-top:0;"> Aliquam excepturi</p>
+        <div style="height: 55px;width: 55px;background-color: #CDCDCD;border-radius: 35px;
+        margin-top: 50px;margin-left: 25px;margin-right: 25px;">
+        </div>
+        <p style="font-size: 0.8em;margin-bottom:0;">
+            Lorem ipsum dolor.
+        </p>
+        <p style="font-size: 0.7em;margin-top:0;">
+            Aliquam excepturi
+        </p>
     </div>
     <div style="width: 40%;display: inline-block;">
-        <div style="height: 55px;width: 55px;background-color: #CDCDCD;border-radius: 35px;margin-top: 50px;margin-left: 25px;margin-right: 25px;"></div>
-        <p style="font-size: 0.8em;">Lorem ipsum dolor.<span style="display: block;font-size: 0.7em;">Aliquam excepturi facilis, illo inventore molestias</span></p>
+        <div style="height: 55px;width: 55px;background-color: #CDCDCD;
+        border-radius: 35px;margin-top: 50px;margin-left: 25px;margin-right: 25px;">
+        </div>
+        <p style="font-size: 0.8em;">
+            Lorem ipsum dolor.
+            <span style="display: block;font-size: 0.7em;">
+                Aliquam excepturi facilis, illo inventore molestias
+            </span>
+        </p>
     </div>
 </div>
 

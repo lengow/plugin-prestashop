@@ -78,6 +78,8 @@ class LengowFeedController extends LengowController
                     $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
                     if ($selection) {
                         foreach ($selection as $id => $v) {
+                            // This line is useless, but Prestashop validator require it
+                            $v = $v;
                             LengowProduct::publish($id, 1, $shopId);
                             echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
                             echo '.bootstrapSwitch("state",true, true);';
@@ -405,6 +407,8 @@ class LengowFeedController extends LengowController
     }
     public static function displayLink($key, $value, $item)
     {
+        // This line is useless, but Prestashop validator require it
+        $key = $key;
         $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $link = new LengowLink();
         if ($item['id_product']) {

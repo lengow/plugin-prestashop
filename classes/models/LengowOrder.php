@@ -420,7 +420,7 @@ class LengowOrder extends Order
                 && ($order_state_lengow == 'shipped'|| $order_state_lengow == 'closed')
             ) {
                 // create params for update order
-                $params = $arrayName = array(
+                $params = array(
                     'extra'                 => pSQL(Tools::jsonEncode($order_data)),
                     'order_process_state'   => pSQL(LengowOrder::getOrderProcessState($order_state_lengow))
                 );
@@ -679,16 +679,13 @@ class LengowOrder extends Order
             case 'accepted':
             case 'waiting_shipment':
                 return self::PROCESS_STATE_IMPORT;
-                break;
             case 'shipped':
             case 'closed':
             case 'refused':
             case 'canceled':
                 return self::PROCESS_STATE_FINISH;
-                break;
             default:
                 return false;
-                break;
         }
     }
 
@@ -893,7 +890,9 @@ class LengowOrder extends Order
     {
         if (LengowOrder::isOrderImport($id_order_lengow)) {
             //TEMP DATA
-            Db::getInstance()->Execute('UPDATE `'._DB_PREFIX_.'lengow_orders` SET id_order = NULL WHERE id = '.(int)$id_order_lengow);
+            Db::getInstance()->Execute(
+                'UPDATE `'._DB_PREFIX_.'lengow_orders` SET id_order = NULL WHERE id = '.(int)$id_order_lengow
+            );
 
             $lengowOrder = LengowOrder::find($id_order_lengow);
 

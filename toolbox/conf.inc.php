@@ -35,8 +35,8 @@ if (_PS_VERSION_ > '1.5') {
 }
 
 $lengowTool = new LengowTool();
-$locale = new LengowTranslation();
 $context = Context::getContext();
+LengowTranslation::$forceIsoCode = 'en';
 
 if (!in_array($lengowTool->getCurrentUri(), array('/modules/lengow/toolbox/login.php'))) {
     if (!$lengowTool->isLogged()) {
@@ -51,6 +51,4 @@ if ($lengowTool->getCurrentUri() == '/modules/lengow/toolbox/login.php' && $leng
 $employeeCollection = LengowEmployee::getEmployees(true);
 $lastEmployeeId = end($employeeCollection);
 Context::getContext()->employee = new Employee($lastEmployeeId);
-$cookie->profile = 1;
-LengowTranslation::$forceIsoCode = 'en';
 Context::getContext()->smarty->assign('toolbox', true);

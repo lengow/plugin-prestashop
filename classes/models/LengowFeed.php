@@ -165,7 +165,8 @@ class LengowFeed
             case 'csv':
                 $header = '';
                 foreach ($data as $field) {
-                    $header .= LengowFeed::PROTECTION . LengowFeed::formatFields($field) . LengowFeed::PROTECTION . LengowFeed::CSV_SEPARATOR;
+                    $header .= LengowFeed::PROTECTION.LengowFeed::formatFields($field)
+                        .LengowFeed::PROTECTION.LengowFeed::CSV_SEPARATOR;
                 }
                 return rtrim($header, LengowFeed::CSV_SEPARATOR) . LengowFeed::EOL;
             case 'xml':
@@ -354,7 +355,6 @@ class LengowFeed
                     0,
                     58
                 );
-                break;
             default:
                 return Tools::strtolower(
                     preg_replace(
@@ -363,7 +363,6 @@ class LengowFeed
                         str_replace(array(' ','\''), '_', LengowMain::replaceAccentedChars($str))
                     )
                 );
-                break;
         }
     }
 

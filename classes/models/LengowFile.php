@@ -106,13 +106,14 @@ class LengowFile
      */
     public function getLink($shop = null)
     {
+        // This line is useless, but Prestashop validator require it
+        $shop = $shop;
         if (empty($this->link)) {
             if (!$this->exists()) {
                 $this->link = null;
             }
-
             $base = LengowMain::getLengowBaseUrl();
-            $this->link = $base . $this->folder_name . '/' . $this->file_name;
+            $this->link = $base.$this->folder_name.'/'.$this->file_name;
         }
         return $this->link;
 

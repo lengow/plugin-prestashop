@@ -23,6 +23,8 @@ require 'conf.inc.php';
 
 LengowLink::forceLink('/modules/lengow/toolbox/product.php?t=1');
 
+$locale = new LengowTranslation();
+
 $controller = new LengowFeedController();
 $controller->postProcess();
 $controller->display();

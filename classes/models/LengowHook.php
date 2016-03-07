@@ -71,7 +71,6 @@ class LengowHook
         );
         foreach ($lengow_hook as $hook => $version) {
             if ($version <= Tools::substr(_PS_VERSION_, 0, 3)) {
-                $log = 'Registering hook - ';
                 if (!$this->module->registerHook($hook)) {
                     LengowMain::log(
                         'Hook',
@@ -446,7 +445,9 @@ class LengowHook
             $action_synchronize = $lengow_order_controller.'&id_order='.$lengow_order->id.'&action=synchronize';
 
             $sent_markeplace = (
-                $lengow_order->lengow_sent_marketplace ? $this->module->l('yes') : $this->module->l('no')
+                $lengow_order->lengow_sent_marketplace
+                    ? $locale->t('product.screen.button_yes')
+                    : $locale->t('product.screen.button_no')
             );
 
             $template_data = array(

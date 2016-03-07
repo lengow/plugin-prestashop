@@ -37,6 +37,7 @@ class LengowController
         $this->isNewMerchant = LengowMain::isNewMerchant();
         $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
         $this->locale = new LengowTranslation();
+        $this->context->smarty->assign('lengow_link', new LengowLink());
     }
 
     public function postProcess()

@@ -104,6 +104,12 @@ echo "- Remove Test folder : ""$VERT""DONE""$NORMAL"""
 # Remove config_fr.xml
 find $FOLDER_TMP -name "config_fr.xml" -delete
 echo "- Delete config_fr.xml : ""$VERT""DONE""$NORMAL"""
+# Remove config_es.xml
+find $FOLDER_TMP -name "config_es.xml" -delete
+echo "- Delete config_es.xml : ""$VERT""DONE""$NORMAL"""
+# Remove config_it.xml
+find $FOLDER_TMP -name "config_it.xml" -delete
+echo "- Delete config_it.xml : ""$VERT""DONE""$NORMAL"""
 # Remove todo.txt
 find $FOLDER_TMP -name "todo.txt" -delete
 echo "- todo.txt : ""$VERT""DONE""$NORMAL"""

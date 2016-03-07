@@ -59,7 +59,9 @@ class LengowCarrier extends Carrier
         if (count($id_carriers) > 0) {
             if ($module_name == 'mondialrelay') {
                 $sql = 'SELECT `id_carrier` FROM `'._DB_PREFIX_.'mr_method`';
-                $sql .= empty($shipping_address->id_relay) ? ' WHERE `dlv_mode` = \'LD1\'' : ' WHERE `dlv_mode` = \'24R\'';
+                $sql .= empty($shipping_address->id_relay)
+                    ? ' WHERE `dlv_mode` = \'LD1\''
+                    : ' WHERE `dlv_mode` = \'24R\'';
                 $carriers = Db::getInstance()->executeS($sql);
                 foreach ($carriers as $carrier) {
                     if (in_array($carrier['id_carrier'], $id_carriers)) {
@@ -447,7 +449,7 @@ class LengowCarrier extends Carrier
                 continue;
             }
             $carrierCollection = array();
-            foreach ($result as $marketplace => $values) {
+            foreach ($result as $values) {
                 if (isset($values->orders->carriers)) {
                     foreach ($values->orders->carriers as $key => $value) {
                         $carrierCollection[$key] = $value->label;
@@ -684,7 +686,7 @@ class LengowCarrier extends Carrier
         $marketplace_carriers = Db::getInstance()->executeS($sql);
 
         foreach ($marketplace_carriers as $key) {
-            $insert = DB::getInstance()->autoExecute(
+            DB::getInstance()->autoExecute(
                 _DB_PREFIX_.'lengow_marketplace_carrier',
                 array(
                     'id_country'                => (int)$id_country,

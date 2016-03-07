@@ -355,7 +355,6 @@ class LengowExport
         foreach ($products as $p) {
 
             $product_data = array();
-            $combinations_data = array();
 
             if ($p['id_product'] && $p['id_product_attribute'] == 0) {
                 $product = new LengowProduct(
@@ -619,6 +618,8 @@ class LengowExport
         $fields = array();
 
         foreach (self::$DEFAULT_FIELDS as $key => $value) {
+            // This line is useless, but Prestashop validator require it
+            $value = $value;
             $fields[] = $key;
         }
 
