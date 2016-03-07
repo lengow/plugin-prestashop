@@ -72,6 +72,8 @@ en:
       not_imported: "not imported"
       re_send: "re-send"
       re_import: "re-import" 
+      no_order_title: "Le meilleur est encore à venir !"
+      no_order_description: "Vos futurs clients ne savent pas encore à quel point vos produits sont géniaux ! Ne perdez pas espoir !"
     table:
       order_lengow_state: "Status"
       marketplace_name: "Marketplace"

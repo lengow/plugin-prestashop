@@ -61,6 +61,8 @@ order.screen.tracking_send|Tracking send, waiting returns
 order.screen.not_imported|not imported
 order.screen.re_send|re-send
 order.screen.re_import|re-import
+order.screen.no_order_title|Le meilleur est encore à venir !
+order.screen.no_order_description|Vos futurs clients ne savent pas encore à quel point vos produits sont géniaux ! Ne perdez pas espoir !
 order.table.order_lengow_state|Status
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Shop

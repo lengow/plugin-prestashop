@@ -26,7 +26,7 @@
 	    ({$locale->t('order.screen.import_manuel')|escape:'htmlall':'UTF-8'})
 	{/if}
 	{if not $cron_active}
-	    <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting', true)|escape:'htmlall':'UTF-8'}#cron_setting">
+	    <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}#cron_setting">
 	    	{$locale->t('order.screen.cron')|escape:'htmlall':'UTF-8'}
 	    </a>
 	{/if}

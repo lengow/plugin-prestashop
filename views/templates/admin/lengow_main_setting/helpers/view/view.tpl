@@ -41,13 +41,13 @@
             <ul class="list-group">
                 {foreach from=$list_file item=file}
                     <li class="list-group-item">
-                        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}&action=download&file={$file['short_path']|escape:'htmlall':'UTF-8'}">
+                        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting', true)|escape:'htmlall':'UTF-8'}&action=download&file={$file['short_path']|escape:'htmlall':'UTF-8'}">
                             <i class="fa fa-download"></i> {$file['name']|escape:'htmlall':'UTF-8'}
                         </a>
                     </li>
                 {/foreach}
                 <li class="list-group-item">
-                    <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}&action=download_all">
+                    <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting', true)|escape:'htmlall':'UTF-8'}&action=download_all">
                         <i class="fa fa-download"></i>
                         {$locale->t('global_setting.screen.button_download_all')|escape:'htmlall':'UTF-8'}
                     </a>

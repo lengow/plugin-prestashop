@@ -51,7 +51,19 @@
     </div>
     <div>
         <div id="lengow_order_table_wrapper">
-            {html_entity_decode($lengow_table|escape:'htmlall':'UTF-8')}
+            {if $nb_order_imported eq '0'}
+                <div id="lengow_no_order_block">
+                    <div id="lengow_no_order_message">
+                        <span class="img_no_order"></span>
+                        <span class="title_no_order">
+                            {$locale->t('order.screen.no_order_title')|escape:'htmlall':'UTF-8'}
+                        </span>
+                        {$locale->t('order.screen.no_order_description')|escape:'htmlall':'UTF-8'}
+                    </div>
+                </div>
+            {else}
+                {html_entity_decode($lengow_table|escape:'htmlall':'UTF-8')}
+            {/if}
         </div>
     </div>
 </div>

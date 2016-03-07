@@ -51,9 +51,7 @@ class LengowController
             'total_pending_order',
             LengowOrder::getTotalOrderByStatus('waiting_shipment')
         );
-
         if (_PS_VERSION_ < '1.5') {
-
             $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
             if (!$toolbox) {
                 $module = Module::getInstanceByName('lengow');

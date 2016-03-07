@@ -27,6 +27,9 @@ class LengowOrderController extends LengowController
     public function display()
     {
         $this->assignLastImportationInfos();
+        $this->assignNbOrderImported();
+
+        // datas for toolbox
         $shop = array();
         $shops = LengowShop::findAll();
         foreach ($shops as $s) {
@@ -37,6 +40,7 @@ class LengowOrderController extends LengowController
         $this->context->smarty->assign('shop', $shop);
         $this->context->smarty->assign('marketplaces', $marketplaces);
         $this->context->smarty->assign('days', $days);
+
         $this->context->smarty->assign('lengow_table', $this->buildTable());
         parent::display();
     }
@@ -94,6 +98,7 @@ class LengowOrderController extends LengowController
                     echo 'lengow_jquery("#lengow_wrapper_messages").html("';
                     echo '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>");';
                     $this->assignLastImportationInfos();
+                    $this->assignNbOrderImported();
                     $module = Module::getInstanceByName('lengow');
                     $display_last_importation = $module->display(
                         _PS_MODULE_LENGOW_DIR_,
@@ -198,6 +203,13 @@ class LengowOrderController extends LengowController
         $this->context->smarty->assign('cron_active', LengowCron::getCron());
         $this->context->smarty->assign('report_mail_address', LengowConfiguration::getReportEmailAddress());
         $this->context->smarty->assign('orderCollection', $orderCollection);
+    }
+
+    public function assignNbOrderImported()
+    {
+        $sql = 'SELECT COUNT(*) as `total` FROM `'._DB_PREFIX_.'lengow_orders`';
+        $nb_order_imported = Db::getInstance()->executeS($sql);
+        $this->context->smarty->assign('nb_order_imported', (int)$nb_order_imported[0]['total']);
     }
 
     public function loadTable()

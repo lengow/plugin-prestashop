@@ -706,6 +706,33 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     position: relative;
 }
 
+#lengow_no_order_block {
+    background: #182D40 url("../img/background.jpg") repeat left top;
+}
+
+#lengow_no_order_message {
+    padding: 30px;
+    text-align:center;
+    font-size: 18px;
+    color:#61687d;
+}
+
+span.img_no_order {
+    background : transparent url("../img/no-result-white.png") no-repeat;
+    height: 208px; 
+    width: 269px;
+    display: block;
+    margin: 0 auto;
+}
+
+span.title_no_order {
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #FFFFFF;
+}
+
 #lengow_charge_import_order {
     position: absolute;
     text-align: center;
@@ -977,9 +1004,8 @@ body.lengow_body .nobootstrap .lengow_report_mail_address {
 
 /* DASHBOARD */
 body.adminlengowhome.lengow_body #content {
-    background: #182D40;
+    background: #182D40 url("../img/background.jpg") repeat left top;
 }
-
 
 #lengow_statistic {
     background:white;
