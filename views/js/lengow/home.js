@@ -23,22 +23,23 @@
     $(document).ready(function () {
         var href = $('#lengow_ajax_link').val();
 
-        var sync_iframe = document.getElementById('lengow_home_iframe');
+        var sync_iframe = document.getElementById('lengow_iframe');
         if (sync_iframe) {
-            $('#lengow_home_frame').show();
             sync_iframe.onload = function () {
+                $('#frame_loader').hide();
+                $('#lengow_iframe').show();
                 $.ajax({
                     url: href,
                     method: 'POST',
                     data: {action: 'get_sync_data'},
                     dataType: 'json',
                     success: function (data) {
-                        var targetFrame = document.getElementById("lengow_home_iframe").contentWindow;
+                        var targetFrame = document.getElementById("lengow_iframe").contentWindow;
                         targetFrame.postMessage(data, '*');
                     }
                 });
             };
-            sync_iframe.src = '/modules/lengow/webservice/sync.php';
+            sync_iframe.src = 'http://cms.lengow.local';
             resize();
 
             $(window).on('resize', function () {

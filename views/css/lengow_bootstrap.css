@@ -914,7 +914,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 #lengow_home_frame {
     padding:0px;
 }
-#lengow_home_frame iframe {
+#lengow_home_frame #lengow_iframe {
     width:100%;
     border:none;
     margin:0px;
@@ -922,6 +922,8 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     height:100%;
 
 }
+
+#frame_loader {text-align: center;padding-top:60px;}
 
 /* HELP PAGE */
 

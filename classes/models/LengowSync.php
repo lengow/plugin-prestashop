@@ -35,8 +35,11 @@ class LengowSync extends SpecificPrice
         $data = array();
         $data['domain_name'] = $_SERVER["SERVER_NAME"];
         $data['global_token'] = LengowMain::getToken();
+        $data['type'] = 'prestashop';
+        $data['version'] = _PS_VERSION_;
+        $data['plugin_version'] = LengowConfiguration::getGlobalValue('LENGOW_VERSION');
         $data['email'] = LengowConfiguration::get('PS_SHOP_EMAIL');
-
+        $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 
         $shopCollection = LengowShop::findAll();
         foreach ($shopCollection as $row) {
@@ -48,7 +51,7 @@ class LengowSync extends SpecificPrice
             $data['shops'][$row['id_shop']]['name'] = $shop->name;
             $data['shops'][$row['id_shop']]['domain'] = $shop->domain;
             $data['shops'][$row['id_shop']]['feed_url'] = LengowMain::getExportUrl($shop->id);
-            $data['shops'][$row['id_shop']]['import_url'] = LengowMain::getImportUrl($shop->id);
+            $data['shops'][$row['id_shop']]['cron_url'] = LengowMain::getImportUrl($shop->id);
             $data['shops'][$row['id_shop']]['nb_product_total'] = $lengowExport->getTotalProduct();
             $data['shops'][$row['id_shop']]['nb_product_exported'] = $lengowExport->getTotalExportProduct();
         }
@@ -100,8 +103,8 @@ class LengowSync extends SpecificPrice
     public static function getHelpData()
     {
         $data = array();
-        $data['cms'] = 'prestashop';
-        $data['cms_version'] = _PS_VERSION_;
+        $data['type'] = 'prestashop';
+        $data['version'] = _PS_VERSION_;
         $data['plugin_version'] = LengowConfiguration::getGlobalValue('LENGOW_VERSION');
         $data['email'] = LengowConfiguration::get('PS_SHOP_EMAIL');
         $shopCollection = LengowShop::findAll();
