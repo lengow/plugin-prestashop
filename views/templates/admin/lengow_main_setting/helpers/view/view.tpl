@@ -85,7 +85,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn lengow_btn">
+                <button type="submit" class="btn lengow_btn lengow_submit_main_setting">
                     {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
                 </button>
             </div>
