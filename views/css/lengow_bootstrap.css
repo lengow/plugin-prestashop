@@ -734,6 +734,17 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     margin-right: 5px;
 }
 
+.lengow_select_all_shop input{
+    vertical-align: sub;
+    margin-right: 10px;
+}
+
+.lengow_select_all_shop {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: none;
+}
+
 /* ORDER PAGE */
 #lengow_order_wrapper {
     padding:0 60px 40px 60px;

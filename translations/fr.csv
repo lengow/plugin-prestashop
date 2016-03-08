@@ -27,6 +27,7 @@ product.screen.button_download|Télécharger
 product.screen.button_yes|Oui
 product.screen.button_no|Non
 product.screen.button_search|Rechercher
+product.screen.select_all_products|Sélectionner les %{nb} produits
 product.table.id_product|ID
 product.table.image|Image
 product.table.name|Nom

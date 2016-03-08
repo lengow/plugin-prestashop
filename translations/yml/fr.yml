@@ -33,6 +33,7 @@ fr:
       button_yes: "Oui"
       button_no: "Non"
       button_search: "Rechercher"
+      select_all_products: "Sélectionner les %{nb} produits"
     table:
       id_product: "ID"
       image: "Image"

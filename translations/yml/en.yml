@@ -46,6 +46,7 @@ en:
       button_yes: "Yes"
       button_no: "No"
       button_search: "Search"
+      select_all_products: "Select the %{nb} products"
     table:
       id_product: "ID"
       image: "Image"
