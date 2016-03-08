@@ -21,6 +21,8 @@
 
 class LengowFeedController extends LengowController
 {
+    protected $list;
+
     /**
      * Update data
      */
@@ -76,7 +78,23 @@ class LengowFeedController extends LengowController
                 case 'add_to_export':
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
-                    if ($selection) {
+                    $select_all = isset($_REQUEST['select_all']) ? $_REQUEST['select_all'] : null;
+                    if ($select_all == "true") {
+                        $this->buildTable($shopId);
+                        $sql = $this->list->buildQueryTotal();
+                        $db = Db::getInstance()->executeS($sql);
+                        $all = array();
+                        foreach ($db as $key => $value) {
+                            $all[] = $value['id_product'];
+                        }
+                        foreach ($all as $id) {
+                            LengowProduct::publish($id, 1, $shopId);
+                            echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
+                            echo '.bootstrapSwitch("state",true, true);';
+                        }
+
+                        $this->reloadTotal($shopId);
+                    } elseif ($selection) {
                         foreach ($selection as $id => $v) {
                             LengowProduct::publish($id, 1, $shopId);
                             echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
@@ -90,7 +108,22 @@ class LengowFeedController extends LengowController
                 case 'remove_from_export':
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
-                    if ($selection) {
+                    $select_all = isset($_REQUEST['select_all']) ? $_REQUEST['select_all'] : null;
+                    if ($select_all  == "true") {
+                        $this->buildTable($shopId);
+                        $sql = $this->list->buildQueryTotal();
+                        $db = Db::getInstance()->executeS($sql);
+                        $all = array();
+                        foreach ($db as $key => $value) {
+                            $all[] = $value['id_product'];
+                        }
+                        foreach ($all as $id) {
+                            LengowProduct::publish($id, 0, $shopId);
+                            echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
+                            echo '.bootstrapSwitch("state",false, true);';
+                        }
+                        $this->reloadTotal($shopId);
+                    } elseif ($selection) {
                         foreach ($selection as $id => $v) {
                             LengowProduct::publish($id, 0, $shopId);
                             echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
@@ -280,7 +313,7 @@ class LengowFeedController extends LengowController
         $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
         $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
 
-        $list = new LengowList(array(
+        $this->list = new LengowList(array(
             "id"            => 'shop_'.$shopId,
             "fields_list"   => $fields_list,
             "identifier"    => 'id_product',
@@ -299,7 +332,7 @@ class LengowFeedController extends LengowController
             )
         ));
 
-        $collection = $list->executeQuery();
+        $collection = $this->list->executeQuery();
 
         $tempContext = new Context();
         $tempContext->shop = new Shop($shopId);
@@ -372,8 +405,8 @@ class LengowFeedController extends LengowController
                 }
             }
         }
-        $list->updateCollection($collection);
-        $paginationBlock = $list->renderPagination(array(
+        $this->list->updateCollection($collection);
+        $paginationBlock = $this->list->renderPagination(array(
             'nav_class' => 'lengow_feed_pagination'
         ));
 
@@ -390,11 +423,15 @@ class LengowFeedController extends LengowController
                         data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
                 class="lengow_btn lengow_link_tooltip lengow_add_to_export" title="Add from export">
                 <i class="fa fa-plus"></i></a>';
+        $html.='<div class="lengow_select_all_shop">';
+        $html.='<input type="checkbox" id="select_all_shop_'.$shopId.'"/>';
+        $html.='<span>select the '. $this->list->getTotal() .' products</span>';
+        $html.='</div>';
         $html.='</div>';
         $html.= $paginationBlock;
         $html.='<div class="lengow_clear"></div>';
         $html.='</div>';
-        $html.= $list->display();
+        $html.= $this->list->display();
         $html.='<div class="lengow_table_bottom">';
         $html.= $paginationBlock;
         $html.='<div class="lengow_clear"></div>';
