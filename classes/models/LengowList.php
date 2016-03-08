@@ -37,6 +37,7 @@ class LengowList
     protected $id;
     protected $ajax;
     protected $context;
+    protected $locale;
 
     /**
      * Construct
@@ -81,7 +82,7 @@ class LengowList
         }
         foreach ($this->fields_list as $key => $values) {
             $width = isset($values['width']) ? 'width = "'.$values['width'].'"' : '';
-            $html.='<th '.$width.'>'.$values['title'];
+            $html.='<th '.$width.'>'.$values['title'].'<br/>';
             if (isset($values['filter_order']) && $values['filter_order']) {
                 $html.='<a href="#" class="table_order" data-order="DESC" data-column="'.$values['filter_key'].'">
             <i class="fa fa-caret-down"></i></a>';
@@ -122,9 +123,11 @@ class LengowList
                     case 'date':
                         $from = isset($value['from']) ? $value['from'] : null;
                         $to = isset($value['to']) ? $value['to'] : null;
-                        $html.= 'From : <input type="text" name="'.$name.'[from]"
-                        value="'.$from.'" class="lengow_datepicker" />';
-                        $html.= '<br/>To :<input type="text" name="'.$name.'[to]"
+                        $html.= '<input type="text" name="'.$name.'[from]" 
+                            placeholder="'.$this->locale->t('product.screen.date_from').'"
+                            value="'.$from.'" class="lengow_datepicker" />';
+                        $html.= '<br/><input type="text" name="'.$name.'[to]"
+                        placeholder="'.$this->locale->t('product.screen.date_to').'"
                         value="'.$to.'" class="lengow_datepicker" />';
                         break;
                 }
@@ -148,7 +151,10 @@ class LengowList
     {
         $html = '<tbody>';
         if (count($this->collection) == 0) {
-            $html.= '<tr><td colspan="100%">NO RESULTS</td></tr>';
+            $html.= '<tr><td colspan="100%" align="center"><div id="lengow_no_result_message">
+                <span class="img_no_result"></span>
+                <span class="title_no_result">'.$this->locale->t('product.screen.no_result_found').'</span>
+                </div></td></tr>';
         } else {
             foreach ($this->collection as $item) {
                 $html.= $this->displayRow($item);

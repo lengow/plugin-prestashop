@@ -125,7 +125,7 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
         $i = 0;
         jQuery.each(global_parameters.shops, function (i, shop) {
             return_data.parameters[shop.token] = {
-                "account_id": $i == 1 ? "557" : "155",
+                "account_id": $i == 1 ? "155" : "557",
                 "access_token": "09da83db3f332320858e7dff7514f947f3b4860417714c44a1e7c55db336a22d",
                 "secret_token": "8eac31d7ee9a4acea0a16df12c004bc6b821c4bd2eafbc8281c31796fd88723d"
             }

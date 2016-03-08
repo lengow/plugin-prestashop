@@ -84,7 +84,7 @@ class LengowFeedController extends LengowController
                         $sql = $this->list->buildQuery(false, true);
                         $db = Db::getInstance()->executeS($sql);
                         $all = array();
-                        foreach ($db as $key => $value) {
+                        foreach ($db as $value) {
                             $all[] = $value['id_product'];
                         }
                         foreach ($all as $id) {
@@ -106,7 +106,7 @@ class LengowFeedController extends LengowController
                         }
                         $this->reloadTotal($shopId);
                     } else {
-                        echo 'alert("Please select a product");';
+                        echo 'alert("'.$this->locale->t('product.screen.no_product_selected').'");';
                     }
                     break;
                 case 'remove_from_export':
@@ -118,7 +118,7 @@ class LengowFeedController extends LengowController
                         $sql = $this->list->buildQuery(false, true);
                         $db = Db::getInstance()->executeS($sql);
                         $all = array();
-                        foreach ($db as $key => $value) {
+                        foreach ($db as $value) {
                             $all[] = $value['id_product'];
                         }
                         foreach ($all as $id) {
@@ -137,7 +137,7 @@ class LengowFeedController extends LengowController
                         }
                         $this->reloadTotal($shopId);
                     } else {
-                        echo 'alert("Please select a product");';
+                        echo 'alert("'.$this->locale->t('product.screen.no_product_selected').'");';
                     }
                     break;
             }

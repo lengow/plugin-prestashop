@@ -29,24 +29,8 @@
 {if version_compare($smarty.const._PS_VERSION_,'1.5','<')}
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_14.css">
 {/if}
-{if !$isNewMerchant}
-<ul class="nav nav-pills lengow-nav lengow-nav-top {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}preprod{/if}">
-    <li class="lengow_float_right">
-        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">
-            <i class="fa fa-cog"></i>
-        </a>
-    </li>
-    <li class="lengow_float_right lengow_external_link">
-        <a href="http://solution.lengow.com" target="_blank">
-            <i class="fa fa-external-link"></i>
-        </a>
-    </li>
-    <li class="lengow_float_right {if $current_controller == 'LengowHelpController'}active{/if}">
-        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}">
-            <i class="fa fa-life-ring"></i>
-        </a>
-    </li>
 
+<ul class="nav nav-pills lengow-nav lengow-nav-top {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}preprod{/if}">
     <li role="presentation" id="lengow_logo">
         <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">
             <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
@@ -57,29 +41,44 @@
             </div>
         {/if}
     </li>
-    <li role="presentation" class="{if $current_controller == 'LengowFeedController'}active{/if}"><a href="
-        {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}">
-            {$locale->t('menu.product')|escape:'htmlall':'UTF-8'}
+    {if !$isNewMerchant}
+        <li role="presentation" class="{if $current_controller == 'LengowFeedController'}active{/if}"><a href="
+            {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}">
+                {$locale->t('menu.product')|escape:'htmlall':'UTF-8'}
+            </a>
+        </li>
+        {assign var='OrderTab' value=','|explode:"LengowOrderController,LengowOrderSettingController"}
+        <li role="presentation" class="{if in_array($current_controller, $OrderTab)}active{/if}">
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lengow_order_link">
+                {$locale->t('menu.order')|escape:'htmlall':'UTF-8'}
+            </a>
+        </li>
+        <li class="lengow_menu_label_li">
+            {if $total_pending_order}
+                <span class="lengow_menu_label">
+                    <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">
+                        {$total_pending_order|escape:'htmlall':'UTF-8'}
+                    </a>
+                </span>
+            {/if}
+        </li>
+    {/if}
+    <li class="lengow_float_right">
+        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">
+            <i class="fa fa-cog"></i>
         </a>
     </li>
-    {assign var='OrderTab' value=','|explode:"LengowOrderController,LengowOrderSettingController"}
-    <li role="presentation" class="{if in_array($current_controller, $OrderTab)}active{/if}">
-        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lengow_order_link">
-            {$locale->t('menu.order')|escape:'htmlall':'UTF-8'}
+    <li class="lengow_float_right">
+        <a href="http://solution.lengow.com" target="_blank">
+            <i class="fa fa-external-link"></i>
         </a>
     </li>
-    <li class="lengow_menu_label_li">
-        {if $total_pending_order}
-            <span class="lengow_menu_label">
-                <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">
-                    {$total_pending_order|escape:'htmlall':'UTF-8'}
-                </a>
-            </span>
-        {/if}
+    <li class="lengow_float_right {if $current_controller == 'LengowHelpController'}active{/if}">
+        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}">
+            <i class="fa fa-life-ring"></i>
+        </a>
     </li>
-
 </ul>
-{/if}
 <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
 <script type="text/javascript">
     var lengow_jquery = $.noConflict(true);

@@ -1013,19 +1013,12 @@ class LengowImportOrder
             );
         }
 
-//        $marketplace = LengowMain::getMarketplaceSingleton(
-//            $this->order_data->marketplace,
-//            $this->id_shop
-//        );
-//        if ($marketplace->isRequireCarrier() && Tools::strlen($this->carrier_name) == 0) {
-//            throw new LengowException("Carrier is require, but empty in feed");
-//        } elseif ($marketplace->isRequireCarrier()) {
         $carrier_id = LengowCarrier::getMarketplaceByCarrierSku($this->carrier_name, $order_country_id);
         $carrier_id = LengowCarrier::getActiveCarrierByCarrierId($carrier_id, $order_country_id);
         if ($carrier_id > 0) {
             $carrier = new Carrier($carrier_id);
         }
-//        }
+
         if (!$carrier) {
             $carrier = LengowCarrier::getActiveCarrier($order_country_id, true);
             if (!$carrier) {

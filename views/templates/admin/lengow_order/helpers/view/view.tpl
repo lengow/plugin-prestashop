@@ -32,7 +32,7 @@
             {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
                 <div class="lengow_alert lengow_center">
                     {$locale->t('order.screen.preprod_warning_message',
-                    ['url' => {$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting', true)|cat:'#preprod_setting'|escape:'htmlall':'UTF-8'}]
+                    ['url' => {$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|cat:'#preprod_setting'|escape:'htmlall':'UTF-8'}]
                 )}
                 </div>
             {/if}
@@ -52,21 +52,12 @@
     <div>
         <div id="lengow_order_table_wrapper">
             {if $nb_order_imported eq '0'}
-                <div id="lengow_no_order_block">
-                    <div id="lengow_no_order_message">
-                        <span class="img_no_order"></span>
-                        <span class="title_no_order">
-                            {$locale->t('order.screen.no_order_title')|escape:'htmlall':'UTF-8'}
-                        </span>
-                        {$locale->t('order.screen.no_order_description')|escape:'htmlall':'UTF-8'}
-                    </div>
-                </div>
+                {include file='./no_order.tpl'}
             {else}
                 {html_entity_decode($lengow_table|escape:'htmlall':'UTF-8')}
             {/if}
         </div>
     </div>
 </div>
-
 
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/order.js"></script>
