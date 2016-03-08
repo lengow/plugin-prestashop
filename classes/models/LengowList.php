@@ -348,11 +348,12 @@ class LengowList
      * v3
      * Build Query
      *
-     * @param bool $total Execute Total Query
+     * @param bool $total       Execute Total Query
+     * @param bool $select_all
      *
      * @return string sql query
      */
-    public function buildQuery($total = false, $select_all= false)
+    public function buildQuery($total = false, $select_all = false)
     {
         $where = isset($this->sql["where"]) ? $this->sql["where"] : array();
         $having = array();
