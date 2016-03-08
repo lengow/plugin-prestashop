@@ -34,6 +34,7 @@ fr:
       button_no: "Non"
       button_search: "Rechercher"
       select_all_products: "Sélectionner les %{nb} produits"
+      publish_confirmation: "Etes-vous sûre ?"
     table:
       id_product: "ID"
       image: "Image"

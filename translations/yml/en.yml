@@ -43,6 +43,7 @@ en:
       button_no: "No"
       button_search: "Search"
       select_all_products: "Select the %{nb} products"
+      publish_confirmation: "Are you sure ?"
     table:
       id_product: "ID"
       image: "Image"

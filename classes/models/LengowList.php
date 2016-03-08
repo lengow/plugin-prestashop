@@ -346,7 +346,7 @@ class LengowList
      *
      * @return string sql query
      */
-    public function buildQuery($total = false)
+    public function buildQuery($total = false, $select_all= false)
     {
         $where = isset($this->sql["where"]) ? $this->sql["where"] : array();
         $having = array();
@@ -402,6 +402,8 @@ class LengowList
         }
         if ($total) {
             $sql = 'SELECT COUNT(*) as total';
+        } elseif ($select_all == true) {
+            $sql = 'SELECT '.$this->fields_list['id_product']['filter_key'];
         } else {
             $sql = 'SELECT '.join(', ', $this->sql["select"]);
         }
@@ -418,7 +420,7 @@ class LengowList
         if ($having) {
             $sql .= ' HAVING '.join(' AND ', $having);
         }
-        if (!$total) {
+        if (!$total && !$select_all) {
             if (Tools::strlen($this->orderColumn) > 0 && in_array($this->orderValue, array("ASC","DESC"))) {
                 $sql .= ' ORDER BY '.pSQL($this->orderColumn).' '.$this->orderValue;
                 if (isset($this->sql["order"])) {
@@ -434,63 +436,6 @@ class LengowList
             }
             $sql.= ' LIMIT '.($this->currentPage-1)* $this->nbPerPage.','.$this->nbPerPage;
         }
-        return $sql;
-    }
-
-    /**
-     * v3
-     * Build Query Total
-     *
-     * @return string sql query
-     */
-    public function buildQueryTotal()
-    {
-        $where = isset($this->sql["where"]) ? $this->sql["where"] : array();
-        $having = array();
-        if (isset($_REQUEST['table_' . $this->id])) {
-            foreach ($_REQUEST['table_' . $this->id] as $key => $value) {
-
-                if ($fieldValue = $this->findValueByKey($key)) {
-                    $type = isset($fieldValue['type']) ? $fieldValue['type'] : 'text';
-                    switch ($type) {
-                        case 'select':
-                        case 'text':
-                            if (Tools::strlen($value) > 0) {
-                                $where[] = ' ' . pSQL($fieldValue['filter_key']) . ' LIKE "%' . pSQL($value) . '%"';
-                            }
-                            break;
-                    }
-                }
-
-            }
-        }
-        $sql = 'SELECT ' . join(', ', $this->sql["select"]);
-
-        if (isset($this->sql['select_having']) && $this->sql['select_having']) {
-            $sql .= ', ' . join(',', $this->sql['select_having']);
-        }
-        $sql .= ' ' . $this->sql["from"] . ' ';
-        if ($this->sql["join"]) {
-            $sql .= join(' ', $this->sql["join"]);
-        }
-        if ($where) {
-            $sql .= ' WHERE ' . join(' AND ', $where);
-        }
-        if ($having) {
-            $sql .= ' HAVING ' . join(' AND ', $having);
-        }
-
-        if (Tools::strlen($this->orderColumn) > 0 && in_array($this->orderValue, array("ASC", "DESC"))) {
-            $sql .= ' ORDER BY ' . pSQL($this->orderColumn) . ' ' . $this->orderValue;
-            if (isset($this->sql["order"])) {
-                $sql .= ', ' . $this->sql["order"];
-            }
-        } else {
-            if (isset($this->sql["order"])) {
-                $sql .= ' ORDER BY ' . $this->sql["order"];
-            }
-        }
-
         return $sql;
     }
 
