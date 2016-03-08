@@ -84,7 +84,7 @@ class LengowFeedController extends LengowController
                         $sql = $this->list->buildQueryTotal();
                         $db = Db::getInstance()->executeS($sql);
                         $all = array();
-                        foreach ($db as $key => $value) {
+                        foreach ($db as $value) {
                             $all[] = $value['id_product'];
                         }
                         foreach ($all as $id) {
@@ -116,7 +116,7 @@ class LengowFeedController extends LengowController
                         $sql = $this->list->buildQueryTotal();
                         $db = Db::getInstance()->executeS($sql);
                         $all = array();
-                        foreach ($db as $key => $value) {
+                        foreach ($db as $value) {
                             $all[] = $value['id_product'];
                         }
                         foreach ($all as $id) {
