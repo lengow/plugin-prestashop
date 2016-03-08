@@ -19,24 +19,57 @@
  *}
 <br />
 <fieldset>
-	<legend><img src="../img/admin/tab-stats.gif" /> {l s='Import Lengow' mod='lengow'}</legend>
-	<h4>{l s='This order has been imported from Lengow' mod='lengow'}</h4>
+	<legend>{$lengow_locale->t('admin.order.import_lengow')|escape:'htmlall':'UTF-8'}</legend>
+	<h4>{$lengow_locale->t('admin.order.imported_from_lengow')|escape:'htmlall':'UTF-8'}</h4>
 	<ul>
-		<li>{l s='Lengow order ID' mod='lengow'} : <strong>{$marketplace_sku|escape:'htmlall':'UTF-8'}</strong></li>
-		<li>{l s='Marketplace' mod='lengow'} : <strong>{$marketplace_name|escape:'htmlall':'UTF-8'}</strong></li>
+		<li>
+			{$lengow_locale->t('admin.order.lengow_order_id')|escape:'htmlall':'UTF-8'} :
+			<strong>{$marketplace_sku|escape:'htmlall':'UTF-8'}</strong>
+		</li>
+		<li>
+			{$lengow_locale->t('admin.order.marketplace')|escape:'htmlall':'UTF-8'} :
+			<strong>{$marketplace_name|escape:'htmlall':'UTF-8'}</strong>
+		</li>
 		{if $id_flux != 0}
-			<li>{l s='Feed ID' mod='lengow'} : <strong>{$id_flux|escape:'htmlall':'UTF-8'}</strong></li>
+			<li>
+				{$lengow_locale->t('admin.order.feed_id')|escape:'htmlall':'UTF-8'} :
+				<strong>{$id_flux|escape:'htmlall':'UTF-8'}</strong>
+			</li>
 		{/if}
-		<li>{l s='Total amount paid on Marketplace' mod='lengow'} : <strong>{$total_paid|escape:'htmlall':'UTF-8'}</strong></li>
-		<li>{l s='Carrier from marketplace' mod='lengow'} : <strong>{$tracking_carrier|escape:'htmlall':'UTF-8'}</strong></li>
-		<li>{l s='Shipping method' mod='lengow'} : <strong>{$tracking_method|escape:'htmlall':'UTF-8'}</strong></li>
-		<li>{l s='Tracking number' mod='lengow'} : <strong>{$tracking|escape:'htmlall':'UTF-8'}</strong></li>
-		<li>{l s='Message' mod='lengow'} : <strong>{$message|escape:'htmlall':'UTF-8'}</strong></li>
-		<li>{l s='Shipping by marketplace' mod='lengow'} : <strong>{$sent_markeplace|escape:'htmlall':'UTF-8'}</strong>
+		<li>
+			{$lengow_locale->t('admin.order.total_paid')|escape:'htmlall':'UTF-8'} :
+			<strong>{$total_paid|escape:'htmlall':'UTF-8'}</strong>
+		</li>
+		<li>
+			{$lengow_locale->t('admin.order.carrier_from_marketplace')|escape:'htmlall':'UTF-8'} :
+			<strong>{$tracking_carrier|escape:'htmlall':'UTF-8'}</strong>
+		</li>
+		<li>
+			{$lengow_locale->t('admin.order.method_from_marketplace')|escape:'htmlall':'UTF-8'} :
+			<strong>{$tracking_method|escape:'htmlall':'UTF-8'}</strong>
+		</li>
+		<li>
+			{$lengow_locale->t('admin.order.tracking_number')|escape:'htmlall':'UTF-8'} :
+			<strong>{$tracking|escape:'htmlall':'UTF-8'}</strong>
+		</li>
+		<li>
+			{$lengow_locale->t('admin.order.message')|escape:'htmlall':'UTF-8'} :
+			<strong>{$message|escape:'htmlall':'UTF-8'}</strong>
+		</li>
+		<li>
+			{$lengow_locale->t('admin.order.shipped_by_marketplace')|escape:'htmlall':'UTF-8'} :
+			<strong>{$sent_markeplace|escape:'htmlall':'UTF-8'}</strong>
+		</li>
 	</ul>
 	<br />
 	<div class"button-command-prev-next">
-		<a class="button" href="{$action_reimport|escape:'htmlall':'UTF-8'}" onclick="return confirm('Do you really want to cancel and re-import the order?')">{l s='Cancel and re-import order' mod='lengow'}</a>
-		<a class="button" href="{$action_synchronize|escape:'htmlall':'UTF-8'}">{l s='Synchronize ID' mod='lengow'}</a>
+		<a class="button" 
+			href="{$action_reimport|escape:'htmlall':'UTF-8'}" 
+			onclick="return confirm('{$lengow_locale->t('admin.order.check_cancel_and_reimport')|escape:'htmlall':'UTF-8'}')">
+			{$lengow_locale->t('admin.order.cancel_and_reimport')|escape:'htmlall':'UTF-8'}
+		</a>
+		<a class="button" href="{$action_synchronize|escape:'htmlall':'UTF-8'}">
+			{$lengow_locale->t('admin.order.synchronize_id')|escape:'htmlall':'UTF-8'}
+		</a>
 	</div>
 </fieldset>

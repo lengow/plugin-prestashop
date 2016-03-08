@@ -18,7 +18,7 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-//ini_set("display_errors", 1);
+
 $currentDirectory = str_replace('modules/lengow/toolbox/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
 
 $sep = DIRECTORY_SEPARATOR;
@@ -26,11 +26,17 @@ require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules/lengow/lengow.php';
 
+if (_PS_VERSION_ < '1.5') {
+    require_once $currentDirectory.'images.inc.php';
+}
+
 if (_PS_VERSION_ > '1.5') {
     Shop::setContext(Shop::CONTEXT_ALL);
 }
 
 $lengowTool = new LengowTool();
+$context = Context::getContext();
+LengowTranslation::$forceIsoCode = 'en';
 
 if (!in_array($lengowTool->getCurrentUri(), array('/modules/lengow/toolbox/login.php'))) {
     if (!$lengowTool->isLogged()) {
@@ -42,8 +48,7 @@ if ($lengowTool->getCurrentUri() == '/modules/lengow/toolbox/login.php' && $leng
     Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/', '');
 }
 
-$employeeCollection = Employee::getEmployees(true);
+$employeeCollection = LengowEmployee::getEmployees(true);
 $lastEmployeeId = end($employeeCollection);
 Context::getContext()->employee = new Employee($lastEmployeeId);
-LengowTranslation::$forceIsoCode = 'en';
 Context::getContext()->smarty->assign('toolbox', true);

@@ -33,8 +33,7 @@
 @set_time_limit(0);
 @ini_set('memory_limit', '512M');
 
-$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
-
+$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME'])."/");
 $sep = DIRECTORY_SEPARATOR;
 require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 require_once $currentDirectory . 'init.php';
@@ -45,8 +44,10 @@ $lengow = new Lengow();
 // check if Lengow is installed and enabled
 if (!Module::isInstalled($lengow->name)) {
     if (_PS_VERSION_ >= 1.5 && !Module::isEnabled($lengow->name)) {
+        header('HTTP/1.1 400 Bad Request');
         die('Lengow module is not active');
     }
+    header('HTTP/1.1 400 Bad Request');
     die('Lengow module is not installed');
 }
 
@@ -54,9 +55,11 @@ if (!Module::isInstalled($lengow->name)) {
 $token = Tools::getIsset('token') ? Tools::getValue('token') : '';
 if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)) {
     if (Tools::strlen($token) > 0) {
-        die('Unauthorized access for this token : ' . $token);
+        header('HTTP/1.1 403 Forbidden');
+        die('Unauthorized access for this token : '.$token);
     } else {
-        die('Unauthorized access for IP : ' . $_SERVER['REMOTE_ADDR']);
+        header('HTTP/1.1 403 Forbidden');
+        die('Unauthorized access for IP : '.$_SERVER['REMOTE_ADDR']);
     }
 }
 
@@ -65,58 +68,44 @@ if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)
 if (isset($_REQUEST["all"])) {
     $_REQUEST["selection"] = !(bool)$_REQUEST["all"];
 }
-
 // shop
 if (Tools::getIsset('shop')) {
     if ($shop = new Shop((int)Tools::getValue('shop'))) {
         Context::getContext()->shop = $shop;
     }
 }
-
 // currency
 if (Tools::getIsset('cur')) {
     if ($id_currency = Currency::getIdByIsoCode((int)Tools::getValue('cur'))) {
         Context::getContext()->currency = new Currency($id_currency);
     }
 }
-
-// export language
-
 // export format (csv, yaml, xml, json)
 $format = isset($_REQUEST["format"]) ? $_REQUEST["format"] : Configuration::get('LENGOW_EXPORT_FORMAT');
-
 //define language
 if (isset($_REQUEST["lang"])) {
     $languageId = Language::getIdByIso($_REQUEST["lang"]);
 } else {
     $languageId = Context::getContext()->language->id;
 }
-
 //mode
 $mode = isset($_REQUEST["mode"]) ? $_REQUEST["mode"] : null;
-
 // export limit
 $limit = isset($_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : null;
-
 // export offset
 $offset = isset($_REQUEST["offset"]) ? (int)$_REQUEST["offset"] : null;
-
 // export lengow selection
 $selection = isset($_REQUEST["selection"]) ? (bool)$_REQUEST["selection"] :
     Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED');
-
 // export in file or no
 $stream = isset($_REQUEST["stream"]) ?
     (bool)$_REQUEST["stream"] : (bool)Configuration::get('LENGOW_EXPORT_FILE_ENABLED');
-
 // export out of stock products
 $out_stock = isset($_REQUEST["out_stock"]) ? (bool)$_REQUEST["out_stock"] :
     (bool)Configuration::get('LENGOW_EXPORT_OUT_STOCK');
-
 // export product variation
 $exportVariation = isset($_REQUEST["variation"]) ? (bool)$_REQUEST["variation"] :
     (bool)Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED');
-
 // export certain products
 $product_ids = array();
 $ids = isset($_REQUEST["product_ids"]) ? $_REQUEST["product_ids"] : null;

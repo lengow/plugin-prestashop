@@ -31,12 +31,12 @@ class LengowInstall
     protected static $installationStatus;
 
     static private $tabs = array(
-        'Home' => array('name' => 'AdminLengowHome', 'active' => false),
-        'Product' => array('name' => 'AdminLengowFeed', 'active' => false),
-        'Orders' => array('name' => 'AdminLengowOrder', 'active' => false),
-        'Parameters' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
-        'Help' => array('name' => 'AdminLengowHelp', 'active' => false),
-        'MainSetting' => array('name' => 'AdminLengowMainSetting', 'active' => false)
+        'tab.home'          => array('name' => 'AdminLengowHome', 'active' => true),
+        'tab.product'       => array('name' => 'AdminLengowFeed', 'active' => true),
+        'tab.order'         => array('name' => 'AdminLengowOrder', 'active' => true),
+        'tab.order_setting' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
+        'tab.help'          => array('name' => 'AdminLengowHelp', 'active' => false),
+        'tab.main_setting'  => array('name' => 'AdminLengowMainSetting', 'active' => false)
     );
 
     static public $tables = array(
@@ -62,9 +62,7 @@ class LengowInstall
 
     public function install()
     {
-        return $this->setDefaultValues() &&
-        $this->addStatusError() &&
-        $this->update();
+        return $this->setDefaultValues() && $this->update();
     }
 
     public function uninstall()
@@ -109,7 +107,10 @@ class LengowInstall
                 $tab->active = $values['active'];
             }
             $tab->module = $this->lengowModule->name;
-            $tab->name[Configuration::get('PS_LANG_DEFAULT')] = $this->lengowModule->l($name);
+            $languages = Language::getLanguages(false);
+            foreach ($languages as $language) {
+                $tab->name[$language['id_lang']] = LengowMain::decodeLogMessage($name, $language['iso_code']);
+            }
             $tab->add();
             LengowMain::log(
                 'Install',
@@ -126,17 +127,17 @@ class LengowInstall
      */
     private static function uninstallTab()
     {
-        $sql = 'SELECT `id_tab`, `class_name` FROM `' . _DB_PREFIX_ . 'tab` WHERE `module` = \'lengow\'';
+        $sql = 'SELECT `id_tab`, `class_name` FROM `'._DB_PREFIX_.'tab` WHERE `module` = \'lengow\'';
         $tabs = Db::getInstance()->executeS($sql);
         // remove all tabs Lengow
         foreach ($tabs as $value) {
             $tab = new Tab((int)$value['id_tab']);
             if ($tab->id != 0) {
-                $result = $tab->delete();
+                $tab->delete();
             }
             LengowMain::log(
                 'Install',
-                LengowMain::setLogMessage('log.install.uninstall_tab', array('class_name'  => $value['class_name']))
+                LengowMain::setLogMessage('log.install.uninstall_tab', array('class_name' => $value['class_name']))
             );
         }
         return true;
@@ -152,59 +153,50 @@ class LengowInstall
      *
      * @return void
      */
-    public function addStatusError()
+    private function addStatusError()
     {
         // Add Lengow order error status
         if (_PS_VERSION_ >= '1.5') {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state
-                WHERE module_name = \'' . $this->lengowModule->name . '\'');
-            if (empty($states)) {
-                $lengow_state = new OrderState();
-                $lengow_state->send_email = false;
-                $lengow_state->module_name = $this->lengowModule->name;
-                $lengow_state->invoice = false;
-                $lengow_state->delivery = false;
-                $lengow_state->shipped = false;
-                $lengow_state->paid = false;
-                $lengow_state->unremovable = false;
-                $lengow_state->logable = false;
-                $lengow_state->color = '#205985';
-                $lengow_state->name[1] = 'Erreur technique - Lengow';
-                $languages = Language::getLanguages(false);
-                foreach ($languages as $language) {
-                    if ($language['iso_code'] == 'fr') {
-                        $lengow_state->name[$language['id_lang']] = 'Erreur technique - Lengow';
-                    } else {
-                        $lengow_state->name[$language['id_lang']] = 'Technical error - Lengow';
-                    }
-                }
-                $lengow_state->add();
-                Configuration::updateValue('LENGOW_STATE_ERROR', $lengow_state->id);
-            } else {
-                Configuration::updateValue('LENGOW_STATE_ERROR', $states[0]['id_order_state']);
-            }
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state
+                WHERE module_name = \''.pSQL($this->lengowModule->name).'\'');
         } else {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang
-                WHERE name = \'Erreur technique - Lengow\' LIMIT 1');
-            if (empty($states)) {
-                $lengow_state = new OrderState();
-                $lengow_state->send_email = false;
-                $lengow_state->invoice = false;
-                $lengow_state->delivery = false;
-                $lengow_state->shipped = false;
-                $lengow_state->paid = false;
-                $lengow_state->unremovable = false;
-                $lengow_state->logable = false;
-                $lengow_state->color = '#205985';
-                $lengow_state->name[1] = 'Erreur technique - Lengow';
-                $languages = Language::getLanguages(false);
-                foreach ($languages as $language) {
-                    $lengow_state->name[$language['id_lang']] = 'Erreur technique - Lengow';
-                }
-                $lengow_state->add();
-                Configuration::updateValue('LENGOW_STATE_ERROR', $lengow_state->id);
-            } else {
-                Configuration::updateValue('LENGOW_STATE_ERROR', $states[0]['id_order_state']);
+            $states = Db::getInstance()->ExecuteS('SELECT * FROM '. _DB_PREFIX_.'order_state_lang
+                WHERE name = \'Technical error - Lengow\' OR name = \'Erreur technique - Lengow\' LIMIT 1');
+        }
+        if (empty($states)) {
+            $lengow_state = new OrderState();
+            $lengow_state->send_email = false;
+            if (_PS_VERSION_ >= '1.5') {
+                $lengow_state->module_name = $this->lengowModule->name;
+            }
+            $lengow_state->invoice = false;
+            $lengow_state->delivery = false;
+            $lengow_state->shipped = false;
+            $lengow_state->paid = false;
+            $lengow_state->unremovable = false;
+            $lengow_state->logable = false;
+            $lengow_state->color = '#205985';
+            $languages = Language::getLanguages(false);
+            foreach ($languages as $language) {
+                $lengow_state->name[$language['id_lang']] = LengowMain::decodeLogMessage(
+                    'module.state_technical_error',
+                    $language['iso_code']
+                );
+            }
+            $lengow_state->add();
+            Configuration::updateValue('LENGOW_STATE_ERROR', $lengow_state->id);
+        } else {
+            $id_order_state = $states[0]['id_order_state'];
+            Configuration::updateValue('LENGOW_STATE_ERROR', $id_order_state);
+            $languages = Language::getLanguages(false);
+            foreach ($languages as $language) {
+                $name = LengowMain::decodeLogMessage('module.state_technical_error', $language['iso_code']);
+                Db::getInstance()->autoExecute(
+                    _DB_PREFIX_.'order_state_lang',
+                    array('name' => $name),
+                    'UPDATE',
+                    '`id_order_state` = \''.(int)$id_order_state.'\' AND `id_lang` = \''.(int)$language['id_lang'].'\''
+                );
             }
         }
         return true;
@@ -224,14 +216,17 @@ class LengowInstall
             include _PS_MODULE_LENGOW_DIR_ . 'upgrade/' . $file;
             $numberVersion = preg_replace('/update_|\.php$/', '', $file);
         }
+        // Register hooks
         $this->lengowHook->registerHooks();
+        // Create state technical error - Lengow
+        $this->addStatusError();
         // update lengow tabs
         $this->uninstallTab();
         $this->createTab();
         LengowConfiguration::resetAll();
 
         // update lengow version
-        Configuration::updateValue('LENGOW_VERSION', $numberVersion);
+        LengowConfiguration::updateGlobalValue('LENGOW_VERSION', $numberVersion);
         self::setInstallationStatus(false);
         return true;
     }
@@ -246,7 +241,7 @@ class LengowInstall
      */
     public static function checkFieldExists($table, $field)
     {
-        $sql = 'SHOW COLUMNS FROM ' . _DB_PREFIX_ . $table . ' LIKE \'' . $field . '\'';
+        $sql = 'SHOW COLUMNS FROM '._DB_PREFIX_.$table.' LIKE \''.$field.'\'';
         $result = Db::getInstance()->executeS($sql);
         $exists = count($result) > 0 ? true : false;
         return $exists;
@@ -359,10 +354,10 @@ class LengowInstall
     public static function deleteDir($dirPath)
     {
         $length = Tools::strlen(_PS_MODULE_LENGOW_DIR_);
-        if (substr($dirPath, 0, $length) != _PS_MODULE_LENGOW_DIR_) {
+        if (Tools::substr($dirPath, 0, $length) != _PS_MODULE_LENGOW_DIR_) {
             return false;
         }
-        if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+        if (Tools::substr($dirPath, Tools::strlen($dirPath) - 1, 1) != '/') {
             $dirPath .= '/';
         }
         $files = glob($dirPath . '*', GLOB_MARK);

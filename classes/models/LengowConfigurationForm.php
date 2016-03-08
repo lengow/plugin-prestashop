@@ -91,8 +91,8 @@ class LengowConfigurationForm
                         <input type="text" name="'.$name.'"
                             class="form-control" placeholder="'.$input['label'].'"
                             value="'.$value.'" '.$readonly.'>
+                        <span class="legend">'.$legend.'</span>
                     </div>
-                    <span class="legend">'.$legend.'</span>
                     </div>';
                 break;
             case 'select':
@@ -134,12 +134,20 @@ class LengowConfigurationForm
             if (isset($this->fields[$key])) {
                 if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
                     foreach ($value as $shopId => $shopValue) {
+                        if (isset($this->fields[$key]['type']) &&
+                            $this->fields[$key]['type'] == 'checkbox' && $shopValue == 'on') {
+                            $shopValue = true;
+                        }
                         LengowConfiguration::updateValue($key, $shopValue, false, null, $shopId);
                     }
                 } else {
                     if (is_array($value)) {
                         LengowConfiguration::updateGlobalValue($key, join(',', $value));
                     } else {
+                        if (isset($this->fields[$key]['type']) &&
+                            $this->fields[$key]['type'] == 'checkbox' && $value == 'on') {
+                            $value = true;
+                        }
                         LengowConfiguration::updateGlobalValue($key, $value);
                     }
                 }

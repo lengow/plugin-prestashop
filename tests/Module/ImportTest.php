@@ -196,7 +196,7 @@ class ImportTest extends ModuleTestCase
         $this->assertEquals(0, $result['order_update'], '[Import Is In Progress] nb order update');
         $this->assertEquals(0, $result['order_error'], '[Import Is In Progress] nb order error');
         $this->assertEquals(
-            'import is already started',
+            'lengow_log.error.import_in_progress',
             $result['error'][0],
             '[Import Is In Progress] Generate an error'
         );
@@ -273,12 +273,12 @@ class ImportTest extends ModuleTestCase
         $this->assertEquals(0, $result['order_update'], '[No Credentials For Shop] nb order update');
         $this->assertEquals(0, $result['order_error'], '[No Credentials For Shop] nb order error');
         $this->assertEquals(
-            'ID account, access token or secret is empty in store 1',
+            'log.import.account_id_empty[name_shop==prestashop.unit.test|id_shop==1]',
             $result['error'][1],
             '[No Credentials For Shop] Generate an error'
         );
         $this->assertEquals(
-            'ID account, access token or secret is empty in store 2',
+            'log.import.account_id_empty[name_shop==prestashop-two.unit.test|id_shop==2]',
             $result['error'][2],
             '[No Credentials For Shop] Generate an error'
         );
@@ -358,12 +358,12 @@ class ImportTest extends ModuleTestCase
             '[Check Credentials] Check credentials OK'
         );
         $this->assertEquals(
-            'Account ID 155 is already used by shop first_shop (1)',
+            'log.import.account_id_already_used[account_id==155|name_shop==first_shop|id_shop==1]',
             $this->invokeMethod($import, 'checkCredentials', array(1, 'second_shop')),
             '[Check Credentials] Account ID is already used by a other shop'
         );
         $this->assertEquals(
-            'ID account, access token or secret is empty in store 2',
+            'log.import.account_id_empty[name_shop==second_shop|id_shop==2]',
             $this->invokeMethod($import, 'checkCredentials', array(2, 'second_shop')),
             '[Check Credentials] Credentials are empty'
         );

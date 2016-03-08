@@ -24,6 +24,8 @@ require 'conf.inc.php';
 $action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
 $file = isset($_REQUEST['file']) ?  $_REQUEST['file'] : null;
 
+$locale = new LengowTranslation();
+
 switch ($action) {
     case 'download':
         LengowLog::download($file);
@@ -33,7 +35,6 @@ switch ($action) {
         break;
 }
 
-$locale = new LengowTranslation();
 $listFile = LengowLog::getPaths();
 
 require 'views/header.php';

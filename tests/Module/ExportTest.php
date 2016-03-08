@@ -23,7 +23,6 @@ class ExportTest extends ModuleTestCase
     {
         parent::setUp();
 
-        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
         Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
@@ -170,7 +169,7 @@ class ExportTest extends ModuleTestCase
      *
      * @test
      * @expectedException        LengowException
-     * @expectedExceptionMessage Illegal export format
+     * @expectedExceptionMessage log.export.error_illegal_export_format
      * @covers LengowExport::setFormat
      */
     public function setFormat()
@@ -179,27 +178,12 @@ class ExportTest extends ModuleTestCase
         $export->setFormat('mp3');
     }
 
-//    /**
-//     * Test Export Empty Carrier
-//     *
-//     * @test
-//     * @expectedException        LengowException
-//     * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
-//     * @covers LengowExport::setCarrier
-//     */
-//    public function setCarrier()
-//    {
-//        Configuration::set('LENGOW_CARRIER_DEFAULT', '');
-//        $export = new LengowExport();
-//        $export->setCarrier();
-//    }
-
     /**
      * Test Export Empty Currency
      *
      * @test
      * @expectedException        LengowException
-     * @expectedExceptionMessage Illegal Currency
+     * @expectedExceptionMessage log.export.error_illegal_currency
      * @covers LengowExport::checkCurrency
      */
     public function checkCurrency()

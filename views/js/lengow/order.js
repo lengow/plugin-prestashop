@@ -215,7 +215,7 @@
                 });
                 $('#error_update_order').html('')
             } else {
-                $('#error_update_order').html('<p>Please complete all fields.</p>')
+                $('#error_update_order').html('<p>Please complete all fields</p>')
                 return false
             }
         });
@@ -245,7 +245,7 @@
                 });
                 $('#error_update_some_orders').html('')
             } else {
-                $('#error_update_some_orders').html('<p>Please complete all fields.</p>')
+                $('#error_update_some_orders').html('<p>Please complete all fields</p>')
                 return false
             }
         });
@@ -261,15 +261,6 @@
                 });
             }
         });
-        $('#table_order td.link').hover(
-            function() {
-                if ($(this).parents('tr').find('td.reference a').length){
-                    $(this).css('cursor','pointer');
-                }
-            }, function () {
-                $(this).css('cursor','auto');
-            }
-        );
         $('#lengow_order_wrapper').on('click', '#table_order td.link', function() {
             var link = $(this).parents('tr').find('td.reference a');
             if (link.length > 0){
@@ -288,4 +279,14 @@ function reload_table_js() {
     }).on('changeDate', function(e) {
         lengow_jquery('#lengow_order_wrapper .lengow_form_table').submit();
     });
+
+    lengow_jquery('#table_order td.link').hover(
+        function() {
+            if (lengow_jquery(this).parents('tr').find('td.reference a').length){
+                lengow_jquery(this).css('cursor','pointer');
+            }
+        }, function () {
+            lengow_jquery(this).css('cursor','auto');
+        }
+    );
 }

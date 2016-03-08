@@ -1,3 +1,23 @@
+/**
+ * Copyright 2016 Lengow SAS.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ * @author    Team Connector <team-connector@lengow.com>
+ * @copyright 2016 Lengow SAS
+ * @license   http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 function addScoreCarrier(){
     nbs = 0;
 
@@ -115,19 +135,17 @@ function addScoreCarrier(){
             }
         });
 
-
-        $(".lengow_submit_order_setting").on('click', function(e){
-            if ($(".carrier:first").val() == "") {
-                e.preventDefault();
-                $(".sub:first").show();
-                $('html, body').stop().animate({scrollTop: $(".container2").offset().top}, 100);
-                $('#default_carrier_missing').html('<span>No default carrier selected.</span>');
-                return false;
-            }
-
+        $('#lengow_form_order_setting').submit(function( event ) {
+            $("li.add_country .carrier").each(function() {
+                if ($(this).val() == "") {
+                    $(this).parents(".sub").show();
+                    $('html, body').stop().animate({scrollTop: $(this).parents(".has-sub").offset().top - 200}, 100);
+                    $(this).parents(".sub").find('.default_carrier_missing').show();
+                    event.preventDefault();
+                }
+            });
             $('#error_select_country').html('');
         });
-
     });
 
 })(lengow_jquery);

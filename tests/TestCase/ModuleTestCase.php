@@ -12,6 +12,7 @@ use Configuration;
 use Product;
 use Shop;
 use Currency;
+use Cache;
 use LengowLog;
 use Module;
 use Tools;
@@ -43,7 +44,6 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
 
         Shop::setContext(Shop::CONTEXT_ALL);
-        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
     }
 
     public function setUp()
@@ -55,6 +55,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
             $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/currency.yml');
             $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/marketplace_carrier.yml');
             $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/carrier.yml');
+            $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/order_state.yml');
 
             //load default marketplace
             $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
@@ -76,6 +77,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
             Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
             Product::flushPriceCache();
+            Cache::getInstance()->flush();
         }
     }
 

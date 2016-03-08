@@ -10,7 +10,7 @@ use Configuration;
 use LengowMain;
 use LengowExport;
 use LengowException;
-use LengowFeed;
+use LengowConfiguration;
 use Assert;
 use Feature;
 
@@ -24,8 +24,6 @@ class FeedTest extends ModuleTestCase
     public function setUp()
     {
         parent::setUp();
-
-        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
         Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
@@ -62,10 +60,10 @@ class FeedTest extends ModuleTestCase
      */
     public function authorizedIp()
     {
-        Configuration::set('LENGOW_AUTHORIZED_IP', '0.0.0.0');
+        LengowConfiguration::updateGlobalValue('LENGOW_AUTHORIZED_IP', '0.0.0.0');
         $this->assertTrue(!LengowMain::checkIP());
 
-        Configuration::set('LENGOW_AUTHORIZED_IP', '127.0.0.1');
+        LengowConfiguration::updateGlobalValue('LENGOW_AUTHORIZED_IP', '127.0.0.1');
         $this->assertTrue(LengowMain::checkIP());
     }
 
@@ -74,28 +72,13 @@ class FeedTest extends ModuleTestCase
      *
      * @test
      * @expectedException        LengowException
-     * @expectedExceptionMessage Illegal export format
+     * @expectedExceptionMessage log.export.error_illegal_export_format
      * @covers LengowExport::setFormat
      */
     public function setFormat()
     {
         new LengowExport(array("format" => "mp3"));
     }
-
-//    /**
-//     * Test Export Empty Carrier
-//     *
-//     * @test
-//     * @expectedException        LengowException
-//     * @expectedExceptionMessage You must select a carrier in Lengow Export Tab
-//     * @covers LengowExport::setCarrier
-//     */
-//    public function setCarrier()
-//    {
-//        Configuration::set('LENGOW_CARRIER_DEFAULT', '');
-//        $export = new LengowExport(array("log_output" => false));
-//        $export->exec();
-//    }
 
     /**
      * Test Export Limit
@@ -164,7 +147,7 @@ class FeedTest extends ModuleTestCase
             "log_output" => false
         ));
         $export->exec();
-        $this->assertFileNbLine($export->getFileName(), 6, 'inactive_product');
+        $this->assertFileNbLine($export->getFileName(), 12, 'inactive_product');
     }
 
 
@@ -193,7 +176,7 @@ class FeedTest extends ModuleTestCase
     {
         $export = new LengowExport(array("log_output" => false));
         $export->exec();
-        $this->assertFileNbLine($export->getFileName(), 4, 'all');
+        $this->assertFileNbLine($export->getFileName(), 10, 'all');
     }
 
     /**
@@ -232,7 +215,7 @@ class FeedTest extends ModuleTestCase
             "export_lengow_selection" => false,
             "log_output" => false
         ));
-        $this->assertEquals(5, $export->getTotalExportProduct());
+        $this->assertEquals(12, $export->getTotalExportProduct());
     }
 
     /**
@@ -252,7 +235,7 @@ class FeedTest extends ModuleTestCase
         ));
         $export->exec();
 
-        $this->assertFileNbLine($export->getFileName(), 1, 'max_image');
+        $this->assertFileNbLine($export->getFileName(), 4, 'max_image');
         $this->assertFileColumnNotContain(
             $export->getFileName(),
             array('IMAGE_PRODUCT_11'),

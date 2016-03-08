@@ -96,6 +96,8 @@ class LengowFeedController extends LengowController
                         $this->reloadTotal($shopId);
                     } elseif ($selection) {
                         foreach ($selection as $id => $v) {
+                            // This line is useless, but Prestashop validator require it
+                            $v = $v;
                             LengowProduct::publish($id, 1, $shopId);
                             echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
                             echo '.bootstrapSwitch("state",true, true);';
@@ -225,6 +227,7 @@ class LengowFeedController extends LengowController
             'filter'        => true,
             'filter_order'  => true,
             'filter_key'    => 'p.reference',
+            'display_callback'  => 'LengowFeedController::displayLink',
         );
         $fields_list['category_name'] = array(
             'title'         => $this->locale->t('product.table.category_name'),
@@ -284,19 +287,19 @@ class LengowFeedController extends LengowController
         $join[] = ' LEFT JOIN '._DB_PREFIX_.'lengow_product lp ON (lp.id_product = p.id_product
         AND lp.id_shop = '.(int)$shopId.' ) ';
         if (_PS_VERSION_ >= '1.5') {
-            $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'product_shop` ps ON (p.`id_product` = ps.`id_product`
+            $join[] = 'INNER JOIN `'._DB_PREFIX_.'product_shop` ps ON (p.`id_product` = ps.`id_product`
             AND ps.id_shop = ' . (int)$shopId . ') ';
             $join[] = ' LEFT JOIN '._DB_PREFIX_.'stock_available sav ON (sav.id_product = p.id_product
             AND sav.id_product_attribute = 0 AND sav.id_shop = ' . (int)$shopId . ')';
         }
         if (_PS_VERSION_ >= '1.5') {
             if (Shop::isFeatureActive()) {
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
+                $join[] = 'LEFT JOIN `'._DB_PREFIX_.'category_lang` cl
                 ON (ps.`id_category_default` = cl.`id_category`
                 AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = ' . (int)$shopId . ')';
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (shop.id_shop = ' . (int)$shopId . ') ';
+                $join[] = 'LEFT JOIN `'._DB_PREFIX_.'shop` shop ON (shop.id_shop = ' . (int)$shopId . ') ';
             } else {
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
+                $join[] = 'LEFT JOIN `'._DB_PREFIX_.'category_lang` cl
                 ON (p.`id_category_default` = cl.`id_category`
                 AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = 1)';
             }
@@ -425,7 +428,10 @@ class LengowFeedController extends LengowController
                 <i class="fa fa-plus"></i></a>';
         $html.='<div class="lengow_select_all_shop">';
         $html.='<input type="checkbox" id="select_all_shop_'.$shopId.'"/>';
-        $html.='<span>select the '. $this->list->getTotal() .' products</span>';
+        $html.='<span>'.$this->locale->t('product.screen.select_all_products', array(
+                'nb' => $this->list->getTotal()
+                ));
+        $html.='</span>';
         $html.='</div>';
         $html.='</div>';
         $html.= $paginationBlock;
@@ -438,5 +444,25 @@ class LengowFeedController extends LengowController
         $html.='</div>';
 
         return $html;
+    }
+
+    public static function displayLink($key, $value, $item)
+    {
+        // This line is useless, but Prestashop validator require it
+        $key = $key;
+        $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
+        $link = new LengowLink();
+        if ($item['id_product']) {
+            if (!$toolbox) {
+                return '<a href="'.
+                $link->getAbsoluteAdminLink((_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'), false, true).
+                '&updateproduct&id_product='.
+                $item['id_product'].'" target="_blank">' . $value . '</a>';
+            } else {
+                return $value;
+            }
+        } else {
+            return $value;
+        }
     }
 }

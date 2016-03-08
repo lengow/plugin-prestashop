@@ -22,7 +22,6 @@ class FeedFormatTest extends ModuleTestCase
     public function setUp()
     {
         parent::setUp();
-        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
         Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);

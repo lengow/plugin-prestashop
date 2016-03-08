@@ -89,7 +89,6 @@ class LengowMarketplace
         $this->id_shop = $id_shop;
         $this->loadApiMarketplace();
         $this->name = Tools::strtolower($name);
-
         if (!isset(self::$MARKETPLACES->{$this->name})) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.marketplace_not_present', array(
@@ -99,6 +98,7 @@ class LengowMarketplace
         }
         $this->marketplace = self::$MARKETPLACES->{$this->name};
         if (!empty($this->marketplace)) {
+            $this->label_name = $this->marketplace->name;
             foreach ($this->marketplace->orders->status as $key => $state) {
                 foreach ($state as $value) {
                     $this->states_lengow[(string)$value] = (string)$key;
@@ -238,6 +238,15 @@ class LengowMarketplace
             return true;
         }
         return false;
+    }
+
+    /**
+     * v3
+     * Get Marketplace Name
+     */
+    public function getMarketplaceName()
+    {
+
     }
 
     /**
@@ -474,11 +483,11 @@ class LengowMarketplace
                         Db::getInstance()->autoExecute(
                             _DB_PREFIX_ . 'lengow_actions',
                             array(
-                                'state' => LengowAction::STATE_FINISH,
-                                'updated_at' => date('Y-m-d h:m:i'),
+                                'state'         => (int)LengowAction::STATE_FINISH,
+                                'updated_at'    => date('Y-m-d h:m:i'),
                             ),
                             'UPDATE',
-                            'id = ' . $action['id']
+                            'id = '.(int)$action['id']
                         );
                         if ($result->processed) {
                             $id_order_lengow = LengowOrder::findByOrder($action['id_order']);
@@ -508,6 +517,8 @@ class LengowMarketplace
         $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $id_shop);
         if ($result) {
             foreach ($result as $marketplaceSku => $value) {
+                // This line is useless, but Prestashop validator require it
+                $value = $value;
                 $marketplaceCollection[] = $marketplaceSku;
             }
         }

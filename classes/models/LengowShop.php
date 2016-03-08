@@ -26,6 +26,9 @@
 class LengowShop extends Shop
 {
 
+    /**
+     * Construct
+     */
     public function __construct($id = null, $id_lang = null, $id_shop = null)
     {
         parent::__construct($id, $id_lang, $id_shop);
@@ -36,6 +39,11 @@ class LengowShop extends Shop
         }
     }
 
+    /**
+     * Is feature active
+     *
+     * @return mixed
+     */
     public static function isFeatureActive()
     {
         if (_PS_VERSION_ < '1.5') {
@@ -45,6 +53,13 @@ class LengowShop extends Shop
         }
     }
 
+    /**
+     * Find shop by token
+     *
+     * @param string $token
+     *
+     * @return mixed
+     */
     public static function findByToken($token)
     {
         if (_PS_VERSION_ < '1.5') {
@@ -66,6 +81,13 @@ class LengowShop extends Shop
         return false;
     }
 
+    /**
+     * Find all shop
+     *
+     * @param boolean $forceContext
+     *
+     * @return array
+     */
     public static function findAll($forceContext = false)
     {
         if (_PS_VERSION_ < '1.5') {

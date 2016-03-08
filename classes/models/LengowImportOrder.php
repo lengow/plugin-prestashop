@@ -198,6 +198,7 @@ class LengowImportOrder
             (string)$this->order_data->marketplace,
             $this->id_shop
         );
+        $this->marketplace_label = $this->marketplace->label_name;
         $this->order_state_marketplace = (string)$this->order_data->marketplace_status;
         $this->order_state_lengow = $this->marketplace->getStateLengow($this->order_state_marketplace);
     }
@@ -426,7 +427,7 @@ class LengowImportOrder
             if (isset($cart)) {
                 $cart->delete();
             }
-            LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $type = 'import');
+            LengowOrder::addOrderLog($this->id_order_lengow, $error_message, 'import');
             $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
             LengowMain::log(
                 'Import',
@@ -585,7 +586,7 @@ class LengowImportOrder
         }
         if (count($error_messages) > 0) {
             foreach ($error_messages as $error_message) {
-                LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $type = 'import');
+                LengowOrder::addOrderLog($this->id_order_lengow, $error_message, 'import');
                 $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
                 LengowMain::log(
                     'Import',
@@ -1012,16 +1013,19 @@ class LengowImportOrder
             );
         }
 
-        $marketplace = LengowMain::getMarketplaceSingleton(
-            $this->order_data->marketplace,
-            $this->id_shop
-        );
-        //if ($marketplace->isRequireCarrier() && Tools::strlen($this->carrier_name) == 0) {
-        //    throw new LengowException("Carrier is require, but empty in feed");
-        //} elseif ($marketplace->isRequireCarrier()) {
-            $carrier_id = LengowCarrier::getMarketplaceByCarrierSku($this->carrier_name, $order_country_id);
-            $carrier = LengowCarrier::getActiveCarrierByCarrierId($carrier_id, $order_country_id);
-        //}
+//        $marketplace = LengowMain::getMarketplaceSingleton(
+//            $this->order_data->marketplace,
+//            $this->id_shop
+//        );
+//        if ($marketplace->isRequireCarrier() && Tools::strlen($this->carrier_name) == 0) {
+//            throw new LengowException("Carrier is require, but empty in feed");
+//        } elseif ($marketplace->isRequireCarrier()) {
+        $carrier_id = LengowCarrier::getMarketplaceByCarrierSku($this->carrier_name, $order_country_id);
+        $carrier_id = LengowCarrier::getActiveCarrierByCarrierId($carrier_id, $order_country_id);
+        if ($carrier_id > 0) {
+            $carrier = new Carrier($carrier_id);
+        }
+//        }
         if (!$carrier) {
             $carrier = LengowCarrier::getActiveCarrier($order_country_id, true);
             if (!$carrier) {
@@ -1135,11 +1139,12 @@ class LengowImportOrder
 
         $params = array(
             'marketplace_sku'       => pSQL($this->marketplace_sku),
-            'id_shop'               => $this->id_shop,
-            'id_shop_group'         => $this->id_shop_group,
-            'id_lang'               => $this->id_lang,
+            'id_shop'               => (int)$this->id_shop,
+            'id_shop_group'         => (int)$this->id_shop_group,
+            'id_lang'               => (int)$this->id_lang,
             'marketplace_name'      => pSQL(Tools::strtolower((string)$this->order_data->marketplace)),
-            'delivery_address_id'   => $this->delivery_address_id,
+            'marketplace_label'     => pSQL((string)$this->marketplace_label),
+            'delivery_address_id'   => (int)$this->delivery_address_id,
             'order_date'            => date('Y-m-d H:i:s', strtotime($order_date)),
             'order_lengow_state'    => pSQL($this->order_state_lengow),
             'date_add'              => date('Y-m-d H:i:s'),

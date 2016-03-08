@@ -59,19 +59,18 @@ class LengowHook
         $error = false;
         $lengow_hook = array(
             // Common version
-            'footer'                => '1.4',
-            'postUpdateOrderStatus' => '1.4',
-            'paymentTop'            => '1.4',
-            'adminOrder'            => '1.4',
-            'home'                  => '1.4',
-            'updateOrderStatus'     => '1.4',
-            'orderConfirmation'     => '1.4',
+            'footer'                  => '1.4',
+            'postUpdateOrderStatus'   => '1.4',
+            'paymentTop'              => '1.4',
+            'adminOrder'              => '1.4',
+            'home'                    => '1.4',
+            'updateOrderStatus'       => '1.4',
+            'orderConfirmation'       => '1.4',
             // Version 1.5
-            'actionObjectUpdateAfter'       => '1.5',
+            'actionObjectUpdateAfter' => '1.5'
         );
         foreach ($lengow_hook as $hook => $version) {
             if ($version <= Tools::substr(_PS_VERSION_, 0, 3)) {
-                $log = 'Registering hook - ';
                 if (!$this->module->registerHook($hook)) {
                     LengowMain::log(
                         'Hook',
@@ -89,13 +88,19 @@ class LengowHook
         return ($error ? false : true);
     }
 
-    public function hookHome()
+    /**
+     * Hook on Home page
+     *
+     * @param array $args Arguments of hook
+     */
+    public function hookHome($args)
     {
         self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_HOMEPAGE;
+        $args = 0; // Prestashop validator
     }
 
     /**
-     * Hook on Payment page.
+     * Hook on Payment page
      *
      * @param array $args Arguments of hook
      */
@@ -107,12 +112,15 @@ class LengowHook
 
 
     /**
-     * Generate tracker on front footer page.
+     * Generate tracker on front footer page
      *
-     * @return varchar The data.
+     * @param array $args Arguments of hook
+     *
+     * @return mixed
      */
-    public function hookFooter()
+    public function hookFooter($args)
     {
+        $args = 0; // Prestashop validator
         if (!Configuration::get('LENGOW_TRACKING_ENABLED')) {
             return '';
         }
@@ -290,7 +298,7 @@ class LengowHook
     }
 
     /**
-     * Hook on order confirmation page to init order's product list.
+     * Hook on order confirmation page to init order's product list
      *
      * @param array $args Arguments of hook
      */
@@ -339,7 +347,7 @@ class LengowHook
 
 
     /**
-     * Hook before an status' update to synchronize status with lengow.
+     * Hook before an status' update to synchronize status with lengow
      *
      * @param array $args Arguments of hook
      */
@@ -391,6 +399,8 @@ class LengowHook
 
     /**
      * Update, if isset tracking number
+     *
+     * @param array $args Arguments of hook
      */
     public function hookActionObjectUpdateAfter($args)
     {
@@ -429,12 +439,15 @@ class LengowHook
             $lengow_order = new LengowOrder($args['id_order']);
             // get actions re-import and synchronize orders
             $lengow_link = new LengowLink();
+            $locale = new LengowTranslation();
             $lengow_order_controller = $lengow_link->getAbsoluteAdminLink('AdminLengowOrder');
             $action_reimport = $lengow_order_controller.'&id_order='.$lengow_order->id.'&action=cancel_re_import';
             $action_synchronize = $lengow_order_controller.'&id_order='.$lengow_order->id.'&action=synchronize';
 
             $sent_markeplace = (
-                $lengow_order->lengow_sent_marketplace ? $this->module->l('yes') : $this->module->l('no')
+                $lengow_order->lengow_sent_marketplace
+                    ? $locale->t('product.screen.button_yes')
+                    : $locale->t('product.screen.button_no')
             );
 
             $template_data = array(
@@ -451,7 +464,8 @@ class LengowHook
                 'action_synchronize' => $action_synchronize,
                 'action_reimport'    => $action_reimport,
                 'order_id'           => $args['id_order'],
-                'version'            => _PS_VERSION_
+                'version'            => _PS_VERSION_,
+                'lengow_locale'      => $locale
             );
 
             $this->context->smarty->assign($template_data);

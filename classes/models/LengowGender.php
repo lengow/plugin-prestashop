@@ -83,8 +83,8 @@ class LengowGender extends Gender
         } elseif (in_array($name, self::$CURRENT_FEMALE)) {
             return 2;
         } else {
-            $query = 'SELECT `id_gender` FROM `' . _DB_PREFIX_ . 'gender_lang` WHERE `name` = \'' .
-                pSQL($name) . '\' LIMIT 1;';
+            $query = 'SELECT `id_gender` FROM `'._DB_PREFIX_.'gender_lang` WHERE `name` = \''.
+                pSQL($name).'\' LIMIT 1;';
             if ($result = Db::getInstance()->Execute($query)) {
                 return $result['id_gender'];
             }

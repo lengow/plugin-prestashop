@@ -19,25 +19,30 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
-$sep = DIRECTORY_SEPARATOR;
-require_once $currentDirectory.'config'.$sep.'config.inc.php';
-require_once $currentDirectory.'init.php';
-require_once $currentDirectory.'modules'.$sep.'lengow'.$sep.'lengow.php';
-
-$lengow = new Lengow();
-if (LengowMain::checkIP()) {
-    $action = Tools::getValue('action');
-    try {
-        if (LengowWebservice::checkAction($action)) {
-            LengowWebservice::execute($action);
+/**
+ * Lengow Country Class.
+ *
+ */
+class LengowCountry
+{
+    /**
+     * v3
+     * Get Name country By IsoCode
+     * @param $isoCode
+     * @return mixed
+     */
+    public static function getNameByIso($isoCode)
+    {
+        $id_lang = Context::getContext()->language->id;
+        if ($id_lang > 0) {
+            $where = "AND id_lang = '".pSQL(Context::getContext()->language->id)."'";
+        } else {
+            $where = '';
         }
-    } catch (Exception $e) {
-        echo $e->getMessage();
-        echo '<br /><br />';
-        LengowWebservice::showAvailableAction();
+        $sql = "SELECT name FROM "._DB_PREFIX_."country c INNER JOIN "._DB_PREFIX_."country_lang cl
+        ON (cl.id_country = c.id_country)
+        WHERE iso_code = '".pSQL($isoCode)."' ".$where;
+        $result = Db::getInstance()->getRow($sql);
+        return $result['name'];
     }
-    exit();
-} else {
-    die('Unauthorized access for IP : '.$_SERVER['REMOTE_ADDR']);
 }

@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-require_once _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'loader.php';
+require_once _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'loader.php';
 
 class Lengow extends Module
 {
@@ -30,7 +30,6 @@ class Lengow extends Module
 
     public function __construct()
     {
-
         $this->name = 'lengow';
         $this->tab = 'export';
         $this->version = '3.0.0';
@@ -48,25 +47,21 @@ class Lengow extends Module
         }
 
         $this->displayName = $this->l('Lengow');
-        $this->description = $this->l('Lengow allows you to easily export your product catalogue from your Prestashop
-        store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister..
-        Choose from our 1,800 available marketing channels!');
-        $this->confirmUninstall = $this->l('Are you sure you want to uninstall the Lengow module ?');
+        $this->description = $this->l('Lengow allows you to easily export your product catalogue from your Prestashop store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister. Choose from our 1,800 available marketing channels!');
+        $this->confirmUninstall = $this->l('Are you sure you want to uninstall the Lengow module?');
 
         $this->installClass = new LengowInstall($this);
         $this->hookClass = new LengowHook($this);
 
         if (self::isInstalled($this->name)) {
-            if (Configuration::get('LENGOW_VERSION') != $this->version) {
+            if (LengowConfiguration::getGlobalValue('LENGOW_VERSION') != $this->version) {
                 $this->installClass->update();
             }
         }
 
         $this->context = Context::getContext();
         $this->context->smarty->assign('lengow_link', new LengowLink());
-
     }
-
 
     /**
      * Configure Link
@@ -103,14 +98,24 @@ class Lengow extends Module
     /**
      * Hook Definition in LengowHook
      */
-    public function hookHome()
+    public function hookHome($args)
     {
-        return $this->hookClass->hookHome();
+        return $this->hookClass->hookHome($args);
     }
 
-    public function hookFooter()
+    public function hookPaymentTop($args)
     {
-        return $this->hookClass->hookFooter();
+        return $this->hookClass->hookPaymentTop($args);
+    }
+
+    public function hookFooter($args)
+    {
+        return $this->hookClass->hookFooter($args);
+    }
+
+    public function hookOrderConfirmation($args)
+    {
+        return $this->hookClass->hookOrderConfirmation($args);
     }
 
     public function hookUpdateOrderStatus($args)
@@ -126,21 +131,6 @@ class Lengow extends Module
     public function hookActionObjectUpdateAfter($args)
     {
         return $this->hookClass->hookActionObjectUpdateAfter($args);
-    }
-
-    public function hookOrderConfirmation($args)
-    {
-        return $this->hookClass->hookOrderConfirmation($args);
-    }
-
-    public function hookPaymentTop($args)
-    {
-        return $this->hookClass->hookPaymentTop($args);
-    }
-
-    public function hookActionAdminControllerSetMedia($args)
-    {
-        return $this->hookClass->hookActionAdminControllerSetMedia($args);
     }
 
     public function hookAdminOrder($args)

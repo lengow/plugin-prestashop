@@ -36,15 +36,6 @@ class LengowConfiguration extends Configuration
             foreach ($os as $state) {
                 $orderStates[] = array('id' => $state['id_order_state'], 'text' => $state['name']);
             }
-            $carriers = array();
-            if (_PS_VERSION_ <= '1.4.4.0') {
-                $cs = LengowCarrier::getCarriers($langId, true, false, false, null, ALL_CARRIERS);
-            } else {
-                $cs = LengowCarrier::getCarriers($langId, true, false, false, null, LengowCarrier::ALL_CARRIERS);
-            }
-            foreach ($cs as $c) {
-                $carriers[] = array('id' => $c['id_carrier'], 'text' => $c['name']);
-            }
             $exportFormats = array();
             foreach (LengowFeed::$AVAILABLE_FORMATS as $value) {
                 $exportFormats[] = array('id' => $value, 'text' => $value);
@@ -101,15 +92,9 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_EXPORT_FILE_ENABLED' => array(
                     'type'          => 'checkbox',
-                    'readonly'      => true,
+                    'readonly'      => false,
                     'label'         => $locale->t('lengow_setting.lengow_export_file_enabled_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_export_file_enabled_legend'),
-                ),
-                'LENGOW_CARRIER_DEFAULT' => array(
-                    'type' => 'select',
-                    'readonly' => true,
-                    'label' => 'Export Carrier',
-                    'collection' => $carriers,
                 ),
                 'LENGOW_LAST_EXPORT' => array(
                     'readonly'      => true,
@@ -144,6 +129,7 @@ class LengowConfiguration extends Configuration
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_force_product_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_force_product_legend'),
+                    'default_value' => true,
                 ),
                 'LENGOW_IMPORT_DAYS' => array(
                     'label'         => $locale->t('lengow_setting.lengow_import_days_title'),
@@ -155,11 +141,6 @@ class LengowConfiguration extends Configuration
                     'label'         => $locale->t('lengow_setting.lengow_import_processing_fee_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_processing_fee_legend'),
                     'default_value' => true,
-                ),
-                'LENGOW_IMPORT_CARRIER_DEFAULT' => array(
-                    'type'          => 'select',
-                    'label'         => 'Import Carrier',
-                    'collection'    => $carriers,
                 ),
                 'LENGOW_CRON_ENABLED' => array(
                     'type'          => 'checkbox',
@@ -181,7 +162,6 @@ class LengowConfiguration extends Configuration
                 'LENGOW_IMPORT_SHIP_MP_ENABLED' => array(
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_ship_mp_enabled_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_import_ship_mp_enabled_legend'),
                     'default_value' => false,
                 ),
                 'LENGOW_IMPORT_STOCK_SHIP_MP' => array(
@@ -247,6 +227,10 @@ class LengowConfiguration extends Configuration
                     'type'          => 'datetime',
                     'label'         => $locale->t('lengow_setting.lengow_order_stat_update_title'),
                 ),
+                'LENGOW_VERSION' => array(
+                    'type'          => 'text',
+                    'default_value' => '',
+                ),
             );
         }
         return $keys;
@@ -297,7 +281,7 @@ class LengowConfiguration extends Configuration
         return $emails;
     }
 
-    public static function resetAll($overwrite = true)
+    public static function resetAll($overwrite = false)
     {
         $shops = LengowShop::findAll();
         $keys = self::getKeys();
@@ -336,6 +320,8 @@ class LengowConfiguration extends Configuration
     {
         $keys = self::getKeys();
         foreach ($keys as $key => $value) {
+            // This line is useless, but Prestashop validator require it
+            $value = $value;
             self::deleteByName($key);
         }
         return true;

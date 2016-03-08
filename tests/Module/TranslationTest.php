@@ -68,7 +68,11 @@ class TranslationTest extends ModuleTestCase
         $return = $translation->loadFile('fr', _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Translation/fr.csv');
         $this->assertTrue($return);
 
-        $this->assertEquals('Question : %s/%s=%s', $translation->t('order.screen.question'));
-        $this->assertEquals('Question : 10/2=5', $translation->t('order.screen.question', array('10','2','5')));
+        $this->assertEquals('Question : %{first}/%{second}=%{third}', $translation->t('order.screen.question'));
+        $this->assertEquals('Question : 10/2=5', $translation->t('order.screen.question', array(
+            'first' => '10',
+            'second' => '2',
+            'third' => '5'
+        )));
     }
 }
