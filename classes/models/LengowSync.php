@@ -34,7 +34,7 @@ class LengowSync extends SpecificPrice
     {
         $data = array();
         $data['domain_name'] = $_SERVER["SERVER_NAME"];
-        $data['global_token'] = LengowMain::getToken();
+        $data['token'] = LengowMain::getToken();
         $data['type'] = 'prestashop';
         $data['version'] = _PS_VERSION_;
         $data['plugin_version'] = LengowConfiguration::getGlobalValue('LENGOW_VERSION');
