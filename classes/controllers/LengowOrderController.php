@@ -21,6 +21,9 @@
 
 class LengowOrderController extends LengowController
 {
+
+    protected $list;
+
     /**
      * Display data page
      */
@@ -98,18 +101,26 @@ class LengowOrderController extends LengowController
                     echo 'lengow_jquery("#lengow_wrapper_messages").html("';
                     echo '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>");';
                     $this->assignLastImportationInfos();
-                    $this->assignNbOrderImported();
                     $module = Module::getInstanceByName('lengow');
                     $display_last_importation = $module->display(
                         _PS_MODULE_LENGOW_DIR_,
                         'views/templates/admin/lengow_order/helpers/view/last_importation.tpl'
                     );
+                    $order_table = $this->buildTable();
+                    if ($this->list->getTotal() > 0) {
+                        $display_list_order = $order_table;
+                    } else {
+                        $display_list_order = $module->display(
+                            _PS_MODULE_LENGOW_DIR_,
+                            'views/templates/admin/lengow_order/helpers/view/no_order.tpl'
+                        );
+                    }
                     echo 'lengow_jquery("#lengow_last_importation").html("'.
                         preg_replace('/\r|\n/', '', addslashes($display_last_importation)).'");';
                     echo 'lengow_jquery("#lengow_import_orders").html("'
                         .$this->locale->t('order.screen.button_update_orders').'");';
                     echo 'lengow_jquery("#lengow_order_table_wrapper").html("'.
-                        preg_replace('/\r|\n/', '', addslashes($this->buildTable())).'");';
+                        preg_replace('/\r|\n/', '', addslashes($display_list_order)).'");';
                     break;
                 case 'update_order':
                     $import = new LengowImport(array(
@@ -391,10 +402,10 @@ class LengowOrderController extends LengowController
     public function buildTable()
     {
 
-        $list = $this->loadTable();
+        $this->list = $this->loadTable();
 
-        $list->executeQuery();
-        $paginationBlock = $list->renderPagination(array(
+        $this->list->executeQuery();
+        $paginationBlock = $this->list->renderPagination(array(
             'nav_class' => 'lengow_feed_pagination'
         ));
 
@@ -415,7 +426,7 @@ class LengowOrderController extends LengowController
         $html.= $paginationBlock;
         $html.='<div class="lengow_clear"></div>';
         $html.='</div>';
-        $html.= $list->display();
+        $html.= $this->list->display();
         $html.='<div class="lengow_table_bottom">';
         $html.= $paginationBlock;
         $html.='<div class="lengow_clear"></div>';

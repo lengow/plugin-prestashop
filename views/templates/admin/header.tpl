@@ -68,7 +68,7 @@
             <i class="fa fa-cog"></i>
         </a>
     </li>
-    <li class="lengow_float_right lengow_external_link">
+    <li class="lengow_float_right">
         <a href="http://solution.lengow.com" target="_blank">
             <i class="fa fa-external-link"></i>
         </a>
