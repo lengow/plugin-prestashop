@@ -451,7 +451,11 @@ class LengowOrderController extends LengowController
     {
         // This line is useless, but Prestashop validator require it
         $key = $key;
-        return '<span class="lengow_label lengow_label_'.$value.'" title="'.$item['id'].'" >'.$value.'</span>';
+        if (empty($value)) {
+            $value = 'not_synchronized';
+        }
+        return '<span class="lengow_label lengow_label_'.$value.'" title="'.$item['id'].'" >'
+            .LengowMain::decodeLogMessage('order.screen.status_'.$value).'</span>';
     }
 
     public static function displayOrderLink($key, $value, $item)
@@ -541,9 +545,9 @@ class LengowOrderController extends LengowController
         if (!empty($value)) {
             $value = htmlentities($value);
             return '<input id="link_extra_'.$item['id'].'" value="'.$value.'" readonly>
-                <a class="lengow_copy" data-clipboard-target="#link_extra_'.$item['id'].'">'
-                .LengowMain::decodeLogMessage('product.screen.button_copy')
-                .'</a>';
+                <a class="lengow_copy lengow_link_tooltip" data-clipboard-target="#link_extra_'.$item['id'].'"
+                data-original-title="'.LengowMain::decodeLogMessage('product.screen.button_copy').'">
+                <i class="fa fa-download"></i></a>';
         }
         return '';
     }

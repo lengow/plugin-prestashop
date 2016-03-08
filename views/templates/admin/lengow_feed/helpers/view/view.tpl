@@ -72,15 +72,18 @@
                         <i class="fa fa-info-circle lengow_link_tooltip" title="{$locale->t('product.screen.include_specific_product_support')|escape:'htmlall':'UTF-8'}"></i>
                     </div>
                     <div class="lengow_feed_block_content_left">
-                        {$locale->t('product.screen.your_exported_catalog')|escape:'htmlall':'UTF-8'}<br/>
-                        <input id="link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}" value="{$shop['link']|escape:'htmlall':'UTF-8'}" readonly>
-                        <a class="lengow_copy" data-clipboard-target="#link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
-                            {$locale->t('product.screen.button_copy')|escape:'htmlall':'UTF-8'}
-                        </a>
-                        <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1" target="_blank">
-                            {$locale->t('product.screen.button_download')|escape:'htmlall':'UTF-8'}
-                        </a>
-                        <br/>
+                        <p>{$locale->t('product.screen.your_exported_catalog')|escape:'htmlall':'UTF-8'}</p>
+                        <p>
+                            <input id="link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}" value="{$shop['link']|escape:'htmlall':'UTF-8'}" readonly>
+                            <a class="lengow_copy lengow_link_tooltip"
+                                data-original-title="{$locale->t('product.screen.button_copy')|escape:'htmlall':'UTF-8'}"
+                                data-clipboard-target="#link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
+                                <i class="fa fa-clone"></i></a>
+                            <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1"
+                                class="lengow_link_tooltip"
+                                data-original-title="{$locale->t('product.screen.button_download')|escape:'htmlall':'UTF-8'}"
+                                target="_blank"><i class="fa fa-download"></i></a>
+                        <p/>
                         {if $shop['last_export']}
                             {$locale->t('product.screen.last_export')|escape:'htmlall':'UTF-8'}
                             {$shop['last_export']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}<br/>

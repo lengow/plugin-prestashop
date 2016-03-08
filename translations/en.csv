@@ -29,6 +29,10 @@ product.screen.include_specific_product_support|Use this option to select your p
 product.screen.your_exported_catalog|This is your export catalogue. Copy this link into your Lengow platform
 product.screen.last_export|Last export
 product.screen.no_export|No export
+product.screen.no_result_found|Sorry, we found no results for your search
+product.screen.no_product_selected|Please select a product
+product.screen.date_from|From
+product.screen.date_to|To
 product.screen.button_copy|Copy
 product.screen.button_download|Download
 product.screen.button_yes|Yes
@@ -63,6 +67,12 @@ order.screen.re_send|re-send
 order.screen.re_import|re-import
 order.screen.no_order_title|Le meilleur est encore à venir !
 order.screen.no_order_description|Vos futurs clients ne savent pas encore à quel point vos produits sont géniaux ! Ne perdez pas espoir !
+order.screen.status_not_synchronized|Status not synchronized
+order.screen.status_waiting_shipment|Waiting shipment
+order.screen.status_shipped|Shipped
+order.screen.status_closed|Closed
+order.screen.status_refunded|Refunded
+order.screen.status_canceled|Canceled
 order.table.order_lengow_state|Status
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Shop

@@ -86,7 +86,7 @@ class LengowFeedController extends LengowController
                         }
                         $this->reloadTotal($shopId);
                     } else {
-                        echo 'alert("Please select a product");';
+                        echo 'alert("'.$this->locale->t('product.screen.no_product_selected').'");';
                     }
                     break;
                 case 'remove_from_export':
@@ -100,7 +100,7 @@ class LengowFeedController extends LengowController
                         }
                         $this->reloadTotal($shopId);
                     } else {
-                        echo 'alert("Please select a product");';
+                        echo 'alert("'.$this->locale->t('product.screen.no_product_selected').'");';
                     }
                     break;
             }

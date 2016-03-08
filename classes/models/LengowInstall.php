@@ -31,9 +31,9 @@ class LengowInstall
     protected static $installationStatus;
 
     static private $tabs = array(
-        'tab.home'          => array('name' => 'AdminLengowHome', 'active' => true),
-        'tab.product'       => array('name' => 'AdminLengowFeed', 'active' => true),
-        'tab.order'         => array('name' => 'AdminLengowOrder', 'active' => true),
+        'tab.home'          => array('name' => 'AdminLengowHome', 'active' => false),
+        'tab.product'       => array('name' => 'AdminLengowFeed', 'active' => false),
+        'tab.order'         => array('name' => 'AdminLengowOrder', 'active' => false),
         'tab.order_setting' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
         'tab.help'          => array('name' => 'AdminLengowHelp', 'active' => false),
         'tab.main_setting'  => array('name' => 'AdminLengowMainSetting', 'active' => false)
@@ -84,7 +84,6 @@ class LengowInstall
             $tab_parent->class_name = 'AdminLengowHome';
             $tab_parent->id_parent = 0;
             $tab_parent->add();
-
         } else {
             $tab_parent = new Tab(Tab::getIdFromClassName('AdminCatalog'));
             $tab = new Tab();
@@ -93,18 +92,21 @@ class LengowInstall
             $tab->class_name = 'AdminLengowHome14';
             $tab->id_parent = $tab_parent->id;
             $tab->add();
-
             $tab_parent = $tab;
         }
         foreach (self::$tabs as $name => $values) {
             $tab = new Tab();
             if (_PS_VERSION_ < '1.5') {
-                $tab->class_name = $values['name'] . "14";
+                $tab->class_name = $values['name']."14";
                 $tab->id_parent = $tab_parent->id;
             } else {
                 $tab->class_name = $values['name'];
                 $tab->id_parent = $tab_parent->id;
-                $tab->active = $values['active'];
+                if (LengowMain::compareVersion('1.5') == 0 && $values['name'] == 'AdminLengowHome') {
+                    $tab->active = true;
+                } else {
+                    $tab->active = $values['active'];
+                }
             }
             $tab->module = $this->lengowModule->name;
             $languages = Language::getLanguages(false);
@@ -114,7 +116,7 @@ class LengowInstall
             $tab->add();
             LengowMain::log(
                 'Install',
-                LengowMain::setLogMessage('log.install.install_tab', array('class_name'  => $tab->class_name))
+                LengowMain::setLogMessage('log.install.install_tab', array('class_name' => $tab->class_name))
             );
         }
         return true;
