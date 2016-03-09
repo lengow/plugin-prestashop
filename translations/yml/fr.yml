@@ -86,6 +86,7 @@ fr:
       button_add_country: "Ajouter"
       button_save: "Enregistrer"
       no_default_carrier_selected: "Pas de transporteur par défaut sélectionné"
+      confirmation_delete_carrier_country: "Etes-vous sûre ?"
   global_setting:
     screen:
       notification_alert_title: "Notifications & alertes"

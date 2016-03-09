@@ -102,7 +102,9 @@ class LengowCarrierCountry
     public static function getCountries()
     {
 
-        $sql = 'SELECT * FROM '._DB_PREFIX_.'country_lang WHERE id_lang = '.(int)Context::getContext()->language->id;
+        $sql = 'SELECT cl.id_country, cl.id_lang, cl.name, c.iso_code FROM '._DB_PREFIX_.'country_lang cl
+                INNER JOIN '._DB_PREFIX_.'country c ON cl.id_country=c.id_country
+                WHERE id_lang = '.(int)Context::getContext()->language->id;
 
         $collection = Db::getInstance()->ExecuteS($sql);
 

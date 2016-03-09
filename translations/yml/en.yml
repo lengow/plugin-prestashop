@@ -130,6 +130,7 @@ en:
       button_save: "Save"
       default_carrier: "Default carrier"
       no_default_carrier_selected: "No default carrier selected"
+      confirmation_delete_carrier_country: "Are you sure ?"
   global_setting:
     screen:
       notification_alert_title: "Notifications & alerts"
