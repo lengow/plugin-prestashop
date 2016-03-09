@@ -83,7 +83,8 @@ function addScoreCarrier(){
         });
 
         $('#marketplace_country').on('click', '.delete_lengow_default_carrier', function () {
-            if (confirm('Are you sure ?')) {
+            var message = $(this).attr('data-message');
+            if (confirm(message)) {
                 var href = $('.lengow_default_carrier').attr('data-href');
                 $.ajax({
                     url: href,
@@ -145,6 +146,23 @@ function addScoreCarrier(){
                 }
             });
             $('#error_select_country').html('');
+        });
+
+        function formatState (state) {
+            var image = $(state.element).data('image');
+            if (!state.id) { return state.text; }
+            if (!image) {
+                return state.text;
+            } else {
+                var $state = $(
+                    '<span><img width="22" height="15" src="'+ image +'" class="img-flag" /> ' + state.text + '</span>'
+                );
+                return $state;
+            }
+        };
+
+        $(".lengow_select").select2({
+            templateResult: formatState
         });
     });
 

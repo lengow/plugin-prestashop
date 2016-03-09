@@ -17,14 +17,15 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
-
 <select id="select_country" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting', true)|escape:'htmlall':'UTF-8'}" class="lengow_select">
 	<option value="" disabled selected hidden>
 		{$locale->t('order_setting.screen.select_a_country')|escape:'htmlall':'UTF-8'}
 	</option>
 		{foreach from=$countries item=country}
 			{if not in_array($country['id_country'],$id_countries)}
-				<option value="{$country['id_country']|escape:'htmlall':'UTF-8'}">{$country['name']|escape:'htmlall':'UTF-8'}</option>
+				<option value="{$country['id_country']|escape:'htmlall':'UTF-8'}"
+                data-image="/modules/lengow/views/img/flag/{$country["iso_code"]|escape:'htmlall':'UTF-8'}.png">
+					{$country['name']|escape:'htmlall':'UTF-8'}</option>
 			{/if}
 		{/foreach}
 </select>

@@ -107,6 +107,7 @@ order_setting.screen.button_add_country|Add
 order_setting.screen.button_save|Save
 order_setting.screen.default_carrier|Default carrier
 order_setting.screen.no_default_carrier_selected|No default carrier selected
+order_setting.screen.confirmation_delete_carrier_country|Are you sure ?
 global_setting.screen.notification_alert_title|Notifications & alerts
 global_setting.screen.preprod_mode_title|Pre-production Mode
 global_setting.screen.preprod_mode_description|Use pre-production mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your pre-production server ONLY 

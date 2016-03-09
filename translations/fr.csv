@@ -78,6 +78,7 @@ order_setting.screen.cron_manual_installation|Si vous utilisez un système unix,
 order_setting.screen.button_add_country|Ajouter
 order_setting.screen.button_save|Enregistrer
 order_setting.screen.no_default_carrier_selected|Pas de transporteur par défaut sélectionné
+order_setting.screen.confirmation_delete_carrier_country|Etes-vous sûre ?
 global_setting.screen.notification_alert_title|Notifications & alertes
 global_setting.screen.preprod_mode_title|Mode Préproduction
 global_setting.screen.preprod_mode_description|Utilisez la pré-production pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ces paramètres UNIQUEMENT sur votre serveur de préproduction

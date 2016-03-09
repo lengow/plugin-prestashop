@@ -29,6 +29,7 @@
                 <span>({$locale->t('order_setting.screen.default_country')|escape:'htmlall':'UTF-8'})</span>
             {else}
                 <button type="button" class="btn delete_lengow_default_carrier"
+                        data-message="{$locale->t('order_setting.screen.confirmation_delete_carrier_country')|escape:'htmlall':'UTF-8'}"
                         data-id-country="{$id_country|escape:'htmlall':'UTF-8'}">X
                 </button>
             {/if}
