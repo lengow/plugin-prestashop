@@ -82,7 +82,6 @@ en:
       order_not_synchronized_with_lengow: "WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})"
     order_action:
       call_tracking: "call tracking"
-      order_line_required: "order action failed - Order Line require, but not found in order %{marketplace_sku}"
       can_not_load_order: "order action failed - Can't load order"
       call_action_failed: "order action failed - %{decoded_message}"
     connector:

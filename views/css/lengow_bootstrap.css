@@ -281,39 +281,75 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_center {text-align: center;}
 
 .lengow_label {
-    display: inline;
-    padding: .2em .6em .3em;
-    font-size: 75%;
-    font-weight: 700;
-    line-height: 1;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
+    border-style: solid;
+    border-width: 1px;
+    margin: 5px;
     vertical-align: baseline;
-    border-radius: .25em;
-    background:#3AB2D0;
+    border-radius: 5px;
+    background:#FFFFFF;
+    padding: 2px 10px;
+    display: block;
+}
+
+.lengow_label_not_synchronized {
+    border-color: #00aeef;
+    color: #00aeef;
+}
+
+.lengow_label_accepted {
+    border-color: #FF8400;
+    color: #FF8400;
 }
 
 .lengow_label_waiting_shipment {
-    background:#FDA737;
+    border-color: #FF8400;
+    color: #FF8400;
 }
+
 .lengow_label_shipped {
-    background:#45BF7B;
+    border-color: #45BF7B;
+    color: #45BF7B;
 }
+
 .lengow_label_closed {
-    background:#45BF7B;
+    border-color: #45BF7B;
+    color: #45BF7B;
 }
-.lengow_label_refunded {
-    background:#AC1802;
-}
+
 .lengow_label_canceled {
-    background:#FF9F91;
+    border-color: #e55a4d;
+    color: #e55a4d;
 }
 
 .lengow_label_red {
-    background:#FF9F91;
+    text-align: center;
+    background:#e55a4d;
+    border-color: #e55a4d;
+    color: #FFFFFF;
+    font-weight: bold;
+    display: inline-block;
+    width: 60%;
 }
 
+.lengow_label_green {
+    text-align: center;
+    background:#45BF7B;
+    border-color: #45BF7B;
+    color: #FFFFFF;
+    font-weight: bold;
+    display: inline-block;
+    width: 60%;
+}
+
+.lengow_label_orange {
+    text-align: center;
+    background:#FF8400;
+    border-color: #FF8400;
+    color: #FFFFFF;
+    font-weight: bold;
+    display: inline-block;
+    width: 60%;
+}
 
 .lengow_clear {
     clear: both;
@@ -332,7 +368,6 @@ body.lengow_body #content .lengow_breadcrumb a {
     padding: 0;
     border-radius: 3px;
 }
-
 
 .lengow_table tr th {
     background: #F1F1F1;
@@ -381,14 +416,6 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 .lengow_form_table .nowrap {
     white-space: nowrap;
-}
-
-.lengow_form_table .lengow_label {
-    width: 100%;
-    text-align: center;
-    display: block;
-    padding: 6px 0px;
-    font-size: 13px;
 }
 
 .lengow_form_table select {
@@ -466,7 +493,6 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 .lengow_toolbar {
     float: left;
     margin-top: 20px;
-    margin-left: 20px;
 }
 
 .lengow_toolbar .lengow_btn {
@@ -485,7 +511,6 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     background-color: #d9edf7;
     border-color: #bce8f1;
 }
-
 
 .lengow_tooltip {
     position: absolute;
@@ -508,7 +533,6 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     white-space: normal;
     filter: alpha(opacity=0);
     opacity: 0;
-
     line-break: auto;
 }
 .lengow_tooltip.in {
@@ -636,6 +660,14 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     background: #D6E9FF;
 }
 
+.lengow_table td {
+    height: 30px;
+}
+
+.lengow_table .lengow_selection {
+    margin-left: 3px;
+}
+
 /* FEED PAGE */
 #lengow_feed_wrapper {
     padding:20px 60px;
@@ -728,15 +760,17 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     margin-right: 5px;
 }
 
-.lengow_select_all_shop input{
+.lengow_select_all_shop input {
+    margin-left: 10px;
     vertical-align: sub;
-    margin-right: 10px;
+}
+
+.lengow_select_all_shop span {
+    margin-left: 5px;
 }
 
 .lengow_select_all_shop {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    display: none;
+    display: inline-block;
 }
 
 /* ORDER PAGE */

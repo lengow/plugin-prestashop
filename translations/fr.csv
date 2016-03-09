@@ -27,8 +27,6 @@ product.screen.button_download|Télécharger
 product.screen.button_yes|Oui
 product.screen.button_no|Non
 product.screen.button_search|Rechercher
-product.screen.select_all_products|Sélectionner les %{nb} produits
-product.screen.publish_confirmation|Etes-vous sûre ?
 product.table.id_product|ID
 product.table.image|Image
 product.table.name|Nom
@@ -50,7 +48,6 @@ order.screen.button_reimport_order|Importer de nouveau mes commandes
 order.screen.button_resend_order|Renvoyer la commande
 order.screen.cron|Vous voulez automatiser la mise à jour de vos commandes ? 
 order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles.  <a href=%{url}>Retourner en mode production ?</a>
-order.table.order_lengow_state|Statut
 order.table.marketplace_name|Place de marché
 order.table.shop_name|Boutique
 order.table.marketplace_sku|ID Commande
@@ -59,7 +56,6 @@ order.table.order_date|Date
 order.table.delivery_country|Pays
 order.table.order_item|Nombre d'articles
 order.table.total_paid|Total
-order.table.status_lengow|Statut Lengow
 order_setting.screen.order_status_title|Statut des commandes
 order_setting.screen.order_status_description|C'est le moment de faire correspondre vos statuts de commande Lengow avec les statuts proposés par PrestaShop
 order_setting.screen.carrier_management_title|Gestion des transporteurs pour les places de marché
@@ -136,8 +132,8 @@ lengow_setting.lengow_tracking_enabled_title|Activez le tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_order_stat_title|Statistiques des commandes
 lengow_setting.lengow_order_stat_update_title|Mise à jour des statistiques de commandes
-lengow_log.error.export_in_progress|L'import à déjà commencé
-lengow_log.error.rest_time_to_export|Attendez %{rest_time} secondes avant de réimporter les commandes 
+lengow_log.error.import_in_progress|L'import à déjà commencé
+lengow_log.error.rest_time_to_import|Attendez %{rest_time} secondes avant de réimporter les commandes 
 lengow_log.error.no_product|pas de produit dans cette commande
 lengow_log.error.no_change_rate|pas de taux de change valide à appliquer sur les prix
 lengow_log.error.no_currency|pas de devise dans cette commande

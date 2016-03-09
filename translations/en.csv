@@ -29,7 +29,7 @@ product.screen.include_specific_product_support|Use this option to select your p
 product.screen.your_exported_catalog|This is your export catalogue. Copy this link into your Lengow platform
 product.screen.last_export|Last export
 product.screen.no_export|No export
-product.screen.no_result_found|Sorry, we found no results for your search
+product.screen.no_result_found|Sorry, no results found for your search
 product.screen.no_product_selected|Please select a product
 product.screen.date_from|From
 product.screen.date_to|To
@@ -38,8 +38,11 @@ product.screen.button_download|Download
 product.screen.button_yes|Yes
 product.screen.button_no|No
 product.screen.button_search|Search
-product.screen.select_all_products|Select the %{nb} products
-product.screen.publish_confirmation|Are you sure ?
+product.screen.select_all_products|Select all of your products (%{nb} products)
+product.screen.add_confirmation|Do you really want to add %{nb} products in your selection?
+product.screen.remove_confirmation|Do you really want to remove %{nb} products in your selection?
+product.screen.remove_from_export|Remove from export
+product.screen.add_from_export|Add from export
 product.table.id_product|ID
 product.table.image|Image
 product.table.name|Name
@@ -63,19 +66,26 @@ order.screen.button_reimport_order|Re-import Orders
 order.screen.button_resend_order|Resend Orders
 order.screen.cron|Want to automate your order updates?
 order.screen.preprod_warning_message|You are in pre-production mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>
-order.screen.tracking_send|Tracking send, waiting returns
 order.screen.not_imported|not imported
-order.screen.re_send|re-send
-order.screen.re_import|re-import
-order.screen.no_order_title|Le meilleur est encore à venir !
-order.screen.no_order_description|Vos futurs clients ne savent pas encore à quel point vos produits sont géniaux ! Ne perdez pas espoir !
-order.screen.status_not_synchronized|Status not synchronized
+order.screen.not_sent|not sent
+order.screen.refresh_order|refresh order
+order.screen.order_not_imported|Order hasn't been imported into PrestaShop
+order.screen.action_sent|action sent
+order.screen.action_waiting_return|Action sent, waiting returns
+order.screen.action_sent_not_work|Action sent to the marketplace didn't work
+order.screen.no_order_title|The best is yet to come!
+order.screen.no_order_description|Your products have great visibility and your sales are about to prosper!
+order.screen.nb_order_imported|%{nb_order} order(s) imported
+order.screen.nb_order_updated|%{nb_order} order(s) updated
+order.screen.nb_order_with_error|%{nb_order} order(s) with errors
+order.screen.status_not_synchronized|Not synchronized
 order.screen.status_waiting_shipment|Waiting shipment
 order.screen.status_shipped|Shipped
 order.screen.status_closed|Closed
 order.screen.status_refunded|Refunded
 order.screen.status_canceled|Canceled
-order.table.order_lengow_state|Status
+order.table.action_lengow|Actions
+order.table.order_lengow_state|Status Lengow
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Shop
 order.table.marketplace_sku|ID order
@@ -84,7 +94,6 @@ order.table.order_date|Date
 order.table.delivery_country|Country
 order.table.order_item|Number of items
 order.table.total_paid|Total
-order.table.status_lengow|Lengow Status
 order.table.extra|Extra
 order_setting.screen.order_status_title|Order Status
 order_setting.screen.order_status_description|It's time to match your Lengow platform order status with the following PrestaShop status
@@ -165,8 +174,8 @@ lengow_setting.lengow_tracking_enabled_title|Activate Lengow tracking
 lengow_setting.lengow_tracking_id_title|Lengow Tracking ID
 lengow_setting.lengow_order_stat_title|Order statistics
 lengow_setting.lengow_order_stat_update_title|Order statistics update
-lengow_log.error.export_in_progress|import has already started
-lengow_log.error.rest_time_to_export|Please wait %{rest_time} seconds before re-importing orders
+lengow_log.error.import_in_progress|import has already started
+lengow_log.error.rest_time_to_import|Please wait %{rest_time} seconds before re-importing orders
 lengow_log.error.no_product|no products in the order
 lengow_log.error.no_change_rate|no exchange rates available for order prices
 lengow_log.error.no_currency|no currency in the order
@@ -187,6 +196,7 @@ lengow_log.exception.order_list_is_empty|order could not be saved
 lengow_log.exception.carrier_shipping_address_no_country|shipping address doesn't contain the country
 lengow_log.exception.no_default_carrier_for_country|you must select a default carrier for the country : %{country_name}
 lengow_log.exception.marketplace_not_present|the marketplace %{markeplace_name} does not feature in the marketplace list
+lengow_log.exception.order_line_required|order Line require, but not found in order
 lengow_log.exception.action_not_valid|action %{action} is not valid
 lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} are not present
 lengow_log.exception.shop_id_require|shop ID is required
@@ -293,7 +303,6 @@ log.import.state_updated_to_canceled|state updated to canceled
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
 log.order_action.call_tracking|call tracking
-log.order_action.order_line_required|order action failed - Order Line require, but not found in order %{marketplace_sku}
 log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}

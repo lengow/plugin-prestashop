@@ -226,7 +226,7 @@ class LengowImport
         $global_error   = false;
         // clean logs
         LengowMain::cleanLog();
-        if (LengowImport::isInProcess() && !$this->preprod_mode) {
+        if (LengowImport::isInProcess() && !$this->preprod_mode && !$this->import_one_order) {
             $global_error = LengowMain::setLogMessage('lengow_log.error.import_in_progress');
             LengowMain::log('Import', $global_error, $this->log_output);
             LengowMain::log(
