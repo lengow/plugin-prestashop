@@ -977,6 +977,10 @@ span.title_no_order {
     font-size: 0.9em;
 }
 
+button.lengow_submit_order_setting {
+    border: 0;
+}
+
 /* HOME PAGE */
 #lengow_home_frame {
     padding:0px;
@@ -1041,6 +1045,9 @@ body.lengow_body .nobootstrap .lengow_report_mail_address {
     background:#ECA7A7;
 }
 
+button.lengow_submit_main_setting {
+    border: 0;
+}
 
 /* DASHBOARD */
 body.adminlengowhome.lengow_body #content {
