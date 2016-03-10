@@ -118,6 +118,9 @@ global_setting.screen.all_data_will_be_lost|All data will be lost (tables and co
 global_setting.screen.you_will_find_a_backup|After uninstalling the module, you will find a back-up of your Lengow database in
 global_setting.screen.prestashop_backup|PrestaShop Backup
 global_setting.screen.i_want_uninstall|I want to uninstall the Lengow module
+global_setting.screen.button_i_want_uninstall|Delete Lengow
+global_setting.screen.title_modal_uninstall|Remove Lengow Module
+global_setting.screen.cancel_i_want_uninstall|Cancel
 global_setting.screen.to_uninstall_type|To uninstall, type
 global_setting.screen.button_download_all|Download all files
 global_setting.screen.button_save|Save changes

@@ -1041,12 +1041,45 @@ body.lengow_body .nobootstrap .lengow_report_mail_address {
     font-size: 18px;
 }
 
-#lengow_delete_module {
-    background:#ECA7A7;
+button.lengow_submit_main_setting, button.lengow_submit_delete_module, button.lengow_delete_module {
+    border: 0;
 }
 
-button.lengow_submit_main_setting {
-    border: 0;
+button.lengow_delete_module, button.lengow_submit_delete_module{
+    background: #f66b57;
+}
+
+.deleteModalDialog {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+
+.deleteModalDialog:target {
+    opacity:1;
+    pointer-events: auto;
+}
+.deleteModalDialog > div {
+    width: 700px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 5px;
+    background: #fff;
+}
+.close {
+    text-align: center;
+    font-weight: bold;
+    margin-left: 5px;
 }
 
 /* DASHBOARD */
