@@ -370,7 +370,10 @@ class LengowImport
                 $this->log_output
             );
             // sending email in error for orders
-            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$this->preprod_mode) {
+            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED')
+                && !$this->preprod_mode
+                && !$this->import_one_order
+            ) {
                 LengowMain::sendMailAlert($this->log_output);
             }
         }

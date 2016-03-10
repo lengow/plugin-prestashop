@@ -3,6 +3,16 @@
     content: "\f135";
 }
 
+/* GLOBAL */
+
+body.lengow_body ul li {
+    text-align: left;
+}
+
+body.lengow_body .multishop_toolbar {
+    margin-bottom: 0px;
+}
+
 /* NAVBAR */
 .nav.lengow-nav {
     padding-left: 0;
@@ -22,6 +32,7 @@
     margin-left: -13px;
     margin-top: 2px;
 }
+
 .nav.lengow-nav .lengow_menu_label {
     background: #FF7788;
     color: white;
@@ -146,9 +157,11 @@ body.lengow_body #content .nav.lengow-nav.lengow-nav-top>li#lengow_logo a {
     margin-left: 2px;
     height:50px;
 }
+
 .nav-pills.lengow-nav>li {
     float: left;
 }
+
 .nav.lengow-nav li.lengow_float_right {
     float:right;
 }
@@ -172,12 +185,12 @@ body.lengow_body .nobootstrap .form-group {
     float: none;
     width: 100%;
 }
+
 body.lengow_body .nobootstrap .form-group>div {
     float: none;
 }
 
-
-    /* BREADCRUBMS */
+/* BREADCRUBMS */
 body.lengow_body #content .lengow_breadcrumb {
     background: #2e3340;
     border: none;
@@ -185,9 +198,11 @@ body.lengow_body #content .lengow_breadcrumb {
     margin: 0px;
     list-style: none;
 }
+
 body.lengow_body #content .lengow_breadcrumb>.active {
     color: #999;
 }
+
 body.lengow_body #content .lengow_breadcrumb>li {
     display: inline-block;
 }
@@ -204,9 +219,11 @@ body.lengow_body #content .lengow_breadcrumb a {
     margin: 20px 0;
     border-radius: 4px;
 }
+
 .lengow_pagination > li {
     display: inline;
 }
+
 .lengow_pagination > li > a,
 .lengow_pagination > li > span {
     position: relative;
@@ -219,17 +236,20 @@ body.lengow_body #content .lengow_breadcrumb a {
     background-color: #fff;
     border: 1px solid #ddd;
 }
+
 .lengow_pagination > li:first-child > a,
 .lengow_pagination > li:first-child > span {
     margin-left: 0;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
 }
+
 .lengow_pagination > li:last-child > a,
 .lengow_pagination > li:last-child > span {
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
 }
+
 .lengow_pagination > li > a:hover,
 .lengow_pagination > li > span:hover,
 .lengow_pagination > li > a:focus,
@@ -239,6 +259,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     background-color: #eee;
     border-color: #ddd;
 }
+
 .lengow_pagination > .active > a,
 .lengow_pagination > .active > span,
 .lengow_pagination > .active > a:hover,
@@ -251,6 +272,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     background-color: #337ab7;
     border-color: #337ab7;
 }
+
 .lengow_pagination > .disabled > span,
 .lengow_pagination > .disabled > span:hover,
 .lengow_pagination > .disabled > span:focus,
@@ -261,7 +283,6 @@ body.lengow_body #content .lengow_breadcrumb a {
 }
 
 /* PANEL */
-
 .lengow_panel .collapse.in {
     display:block;
 }
@@ -276,8 +297,8 @@ body.lengow_body #content .lengow_breadcrumb a {
     border:none;
     background-color: #f7f7f7;
 }
-/* MAIN */
 
+/* MAIN */
 .lengow_center {text-align: center;}
 
 .lengow_label {
@@ -354,12 +375,15 @@ body.lengow_body #content .lengow_breadcrumb a {
 .lengow_clear {
     clear: both;
 }
+
 .lengow_float_right {
     float:right;
 }
+
 .lengow_float_left {
     float:right;
 }
+
 .lengow_table {
     width: 100%;
     border-collapse: collapse;
@@ -535,26 +559,32 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     opacity: 0;
     line-break: auto;
 }
+
 .lengow_tooltip.in {
     filter: alpha(opacity=90);
     opacity: .9;
 }
+
 .lengow_tooltip.top {
     padding: 5px 0;
     margin-top: -3px;
 }
+
 .lengow_tooltip.right {
     padding: 0 5px;
     margin-left: 3px;
 }
+
 .lengow_tooltip.bottom {
     padding: 5px 0;
     margin-top: 3px;
 }
+
 .lengow_tooltip.left {
     padding: 0 5px;
     margin-left: -3px;
 }
+
 .lengow_tooltip .tooltip-inner {
     max-width: 200px;
     padding: 3px 8px;
@@ -563,6 +593,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     background-color: #000;
     border-radius: 4px;
 }
+
 .lengow_tooltip .tooltip-arrow {
     position: absolute;
     width: 0;
@@ -570,6 +601,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     border-color: transparent;
     border-style: solid;
 }
+
 .lengow_tooltip.top .tooltip-arrow {
     bottom: 0;
     left: 50%;
@@ -577,6 +609,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     border-width: 5px 5px 0;
     border-top-color: #000;
 }
+
 .lengow_tooltip.top-left .tooltip-arrow {
     right: 5px;
     bottom: 0;
@@ -584,6 +617,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     border-width: 5px 5px 0;
     border-top-color: #000;
 }
+
 .lengow_tooltip.top-right .tooltip-arrow {
     bottom: 0;
     left: 5px;
@@ -591,6 +625,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     border-width: 5px 5px 0;
     border-top-color: #000;
 }
+
 .lengow_tooltip.right .tooltip-arrow {
     top: 50%;
     left: 0;
@@ -598,6 +633,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     border-width: 5px 5px 5px 0;
     border-right-color: #000;
 }
+
 .lengow_tooltip.left .tooltip-arrow {
     top: 50%;
     right: 0;
@@ -605,6 +641,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     border-width: 5px 0 5px 5px;
     border-left-color: #000;
 }
+
 .lengow_tooltip.bottom .tooltip-arrow {
     top: 0;
     left: 50%;
@@ -612,6 +649,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     border-width: 0 5px 5px;
     border-bottom-color: #000;
 }
+
 .lengow_tooltip.bottom-left .tooltip-arrow {
     top: 0;
     right: 5px;
@@ -619,6 +657,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     border-width: 0 5px 5px;
     border-bottom-color: #000;
 }
+
 .lengow_tooltip.bottom-right .tooltip-arrow {
     top: 0;
     left: 5px;
@@ -631,18 +670,18 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 .lengow_table .left {
     text-align: left;
 }
+
 .lengow_table .right {
     text-align: right;
 }
+
 .lengow_table .center {
     text-align: center;
 }
 
-.lengow_table .lengow_filter th {
-    background:#CCCCCC;
-}
 .lengow_table tr.lengow_filter th {
     text-align: right;
+    background:#CCCCCC;
 }
 
 .lengow_table .lengow_filter input {
@@ -652,6 +691,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 .lengow_table a.table_order{
     text-decoration: none !important;
 }
+
 .lengow_table a.table_order:focus{
     color:#CCCCCC;
 }
@@ -820,6 +860,7 @@ span.title_no_order {
 #lengow_charge_import_order #lengow_charge_lign3{
     font-size: 1.5em;
 }
+
 #lengow_charge_import_order_background {
     position: absolute;
     background-color: white;
@@ -972,6 +1013,7 @@ span.title_no_order {
     list-style: none;
     text-align: center;
 }
+
 .lengow_form .accordion .sub > li:last-child {
     border-right:1px solid grey;
 }
@@ -994,6 +1036,7 @@ span.title_no_order {
     text-shadow: none;
     font-size: 15px;
 }
+
 .lengow_form .red{
     background-color: #ED8866;
 }
@@ -1033,6 +1076,7 @@ button.lengow_submit_order_setting {
 #lengow_help_wrapper {
     padding:0px;
 }
+
 #lengow_help_wrapper iframe {
     width:100%;
     border:none;
@@ -1046,9 +1090,11 @@ button.lengow_submit_order_setting {
 .lengow_form .lengow_report_mail_address select {
     width:100%;
 }
+
 .lengow_form #lengow_wrapper_preprod label {
     float:left;
 }
+
 .lengow_form #lengow_wrapper_preprod .form-group {
     height:38px;
 }

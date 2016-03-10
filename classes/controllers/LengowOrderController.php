@@ -516,8 +516,8 @@ class LengowOrderController extends LengowController
         if ($item[$key]) {
             $message = '<ul>'.join('', $errorMessage).'</ul>';
             if ($item[$key] == '2') {
-                $message = '<p>'.LengowMain::decodeLogMessage('order.screen.action_sent_not_work')
-                    .'</p>'.join('<br/>', $errorMessage);
+                $message = LengowMain::decodeLogMessage('order.screen.action_sent_not_work')
+                    .'<br/><br/>'.join('<br/>', $errorMessage);
                 $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red"
                     data-html="true" data-original-title="'.$message.'"
                     >'.LengowMain::decodeLogMessage('order.screen.not_sent').'</span>';
@@ -530,8 +530,8 @@ class LengowOrderController extends LengowController
                     data-original-title="'.LengowMain::decodeLogMessage('order.screen.refresh_order').'"
                     ><i class="fa fa-refresh"></i></a>';
             } else {
-                $message = '<p>'.LengowMain::decodeLogMessage('order.screen.order_not_imported')
-                    .'</p>'.join('<br/>', $errorMessage);
+                $message = LengowMain::decodeLogMessage('order.screen.order_not_imported')
+                    .'<br/><br/>'.join('<br/>', $errorMessage);
                 $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red"
                     data-html="true" data-original-title="'.$message.'"
                     >'.LengowMain::decodeLogMessage('order.screen.not_imported').'</span>';
