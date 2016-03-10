@@ -26,8 +26,6 @@
         var sync_iframe = document.getElementById('lengow_iframe');
         if (sync_iframe) {
             sync_iframe.onload = function () {
-                $('#frame_loader').hide();
-                $('#lengow_iframe').show();
                 $.ajax({
                     url: href,
                     method: 'POST',
@@ -40,6 +38,8 @@
                 });
             };
             sync_iframe.src = 'http://cms.lengow.local';
+            $('#frame_loader').hide();
+            $('#lengow_iframe').show();
             resize();
 
             $(window).on('resize', function () {
@@ -65,6 +65,20 @@
                         data: {action: 'sync', data: event.data.parameters},
                         dataType: 'script'
                     });
+                    break;
+                case 'sync_and_reload':
+                    $.ajax({
+                        url: href,
+                        method: 'POST',
+                        data: {action: 'sync', data: event.data.parameters},
+                        dataType: 'script',
+                        success: function() {
+                            location.reload();
+                        }
+                    });
+                    break;
+                case 'reload':
+                    location.reload();
                     break;
             }
         }

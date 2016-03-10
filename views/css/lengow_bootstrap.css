@@ -50,6 +50,9 @@ body.lengow_body #content {
 body.lengow_body #content h2 {
     color:#555;
 }
+body.lengow_body #main {
+    padding: 36px 0 0px;
+}
 
 body.lengow_body #content a {
     color: #415260;
@@ -920,7 +923,6 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     margin:0px;
     margin-top: -6px;
     height:100%;
-
 }
 
 #frame_loader {text-align: center;padding-top:60px;}

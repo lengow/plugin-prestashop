@@ -39,8 +39,6 @@ class LengowHomeController extends LengowController
                 case 'sync':
                     $data = isset($_REQUEST['data']) ?$_REQUEST['data'] : false;
                     LengowSync::sync($data);
-                    $lengowLink = new LengowLink();
-                    echo 'document.location.href="'.$lengowLink->getAbsoluteAdminLink("AdminLengowHome").'";';
                     break;
             }
             exit();
