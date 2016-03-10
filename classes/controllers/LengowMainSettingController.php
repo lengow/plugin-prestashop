@@ -30,8 +30,7 @@ class LengowMainSettingController extends LengowController
         $action = Tools::getValue('action');
         switch ($action) {
             case 'process':
-                if (isset($_REQUEST['uninstall_checkbox']) &&
-                    isset($_REQUEST['uninstall_textbox']) &&
+                if (isset($_REQUEST['uninstall_textbox']) &&
                     trim($_REQUEST['uninstall_textbox']) == 'I WANT TO REMOVE ALL DATA'
                 ) {
                     $backup = new LengowBackup();
