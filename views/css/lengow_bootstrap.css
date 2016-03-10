@@ -685,7 +685,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 }
 
 .lengow_table .lengow_filter input {
-    width: 100% !important;
+    width: 95% !important;
 }
 
 .lengow_table a.table_order{
@@ -696,8 +696,9 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     color:#CCCCCC;
 }
 
-.lengow_table tr.select td {
-    background: #D6E9FF;
+.lengow_table select {
+    background: #FFFFFF;
+    height: 20px;
 }
 
 .lengow_table td {
@@ -740,6 +741,10 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 .lengow_feed_block_header_content {
     background: white;
     border-bottom:1px solid #E3E5E6;
+}
+
+.lengow_feed_block_header_content_result {
+    margin-bottom: 10px;
 }
 
 .lengow_feed_block_footer_content {
