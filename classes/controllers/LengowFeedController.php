@@ -214,7 +214,7 @@ class LengowFeedController extends LengowController
         );
         $fields_list['image'] = array(
             'title'         => $this->locale->t('product.table.image'),
-            'align'         => 'center',
+            'class'         => 'center',
             'image'         => 'p',
             'width'         => 70,
         );
@@ -226,7 +226,7 @@ class LengowFeedController extends LengowController
         );
         $fields_list['reference'] = array(
             'title'         => $this->locale->t('product.table.reference'),
-            'align'         => 'left',
+            'class'         => 'left',
             'width'         => 80,
             'filter'        => true,
             'filter_order'  => true,
@@ -404,7 +404,7 @@ class LengowFeedController extends LengowController
                         $path_to_image = _PS_IMG_DIR_.'p/'.Image::getImgFolderStatic($id_image).(int)$id_image.'.jpg';
                         $collection[$i]['image'] = ImageManager::thumbnail(
                             $path_to_image,
-                            'product_mini_' . $collection[$i]['id_product'] . '_' . $shopId . '.jpg',
+                            'product_mini_'.$collection[$i]['id_product'].'_'.$shopId.'.jpg',
                             45,
                             'jpg'
                         );
@@ -421,21 +421,24 @@ class LengowFeedController extends LengowController
 
         $html='<div class="lengow_table_top">';
         $html.='<div class="lengow_toolbar">';
-        $html.='<input type="checkbox" id="select_shop_'.$shopId.'" class="lengow_select_all"/>';
         $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
-                data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
-                data-message="'.$this->locale->t('product.screen.publish_confirmation').'"
-                class="lengow_btn lengow_link_tooltip lengow_remove_from_export" title="Remove from export">
-                <i class="fa fa-minus"></i></a>';
+            data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
+            data-message="'.$this->locale->t('product.screen.remove_confirmation', array(
+                'nb' => $this->list->getTotal()
+            )).'"
+            class="lengow_btn lengow_remove_from_export">
+            <i class="fa fa-minus"></i> '.$this->locale->t('product.screen.remove_from_export').'</a>';
         $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
-                        data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
-                        data-message="'.$this->locale->t('product.screen.publish_confirmation').'"
-                class="lengow_btn lengow_link_tooltip lengow_add_to_export" title="Add from export">
-                <i class="fa fa-plus"></i></a>';
-        $html.='<div class="lengow_select_all_shop">';
+            data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
+            data-message="'.$this->locale->t('product.screen.add_confirmation', array(
+                'nb' => $this->list->getTotal()
+            )).'"
+            class="lengow_btn lengow_add_to_export">
+            <i class="fa fa-plus"></i> '.$this->locale->t('product.screen.add_from_export').'</a>';
+        $html.='<div class="lengow_select_all_shop" style="display:none;">';
         $html.='<input type="checkbox" id="select_all_shop_'.$shopId.'"/>';
         $html.='<span>'.$this->locale->t('product.screen.select_all_products', array(
-                'nb' => $this->list->getTotal()
+                    'nb' => $this->list->getTotal()
                 ));
         $html.='</span>';
         $html.='</div>';
@@ -463,7 +466,7 @@ class LengowFeedController extends LengowController
                 return '<a href="'.
                 $link->getAbsoluteAdminLink((_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'), false, true).
                 '&updateproduct&id_product='.
-                $item['id_product'].'" target="_blank">' . $value . '</a>';
+                $item['id_product'].'" target="_blank">'.$value.'</a>';
             } else {
                 return $value;
             }

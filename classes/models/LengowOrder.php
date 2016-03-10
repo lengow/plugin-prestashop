@@ -947,31 +947,42 @@ class LengowOrder extends Order
             );
             return false;
         }
-        $marketplace = LengowMain::getMarketplaceSingleton(
-            $this->lengow_marketplace_name,
-            $this->lengow_id_shop
-        );
-
-        if ($marketplace->containOrderLine('ship')) {
-            $orderLineCollection = self::findOrderLineIds($this->id);
-            if (count($orderLineCollection) == 0) {
-                LengowMain::log(
-                    'API-OrderAction',
-                    LengowMain::setLogMessage('log.order_action.order_line_required', array(
-                        'marketplace_sku' => $this->lengow_marketplace_sku
-                    )),
-                    true,
-                    $this->lengow_marketplace_sku
-                );
-                return false;
+        try {
+            $marketplace = LengowMain::getMarketplaceSingleton(
+                $this->lengow_marketplace_name,
+                $this->lengow_id_shop
+            );
+            if ($marketplace->containOrderLine('ship')) {
+                $orderLineCollection = self::findOrderLineIds($this->id);
+                if (count($orderLineCollection) == 0) {
+                    throw new LengowException(
+                        LengowMain::setLogMessage('lengow_log.exception.order_line_required')
+                    );
+                }
+                $ret = array();
+                foreach ($orderLineCollection as $row) {
+                    $ret[] = $marketplace->callAction($action, $this, $row['id_order_line']);
+                }
+                return !in_array(false, $ret);
+            } else {
+                return $marketplace->callAction($action, $this);
             }
-            $ret = array();
-            foreach ($orderLineCollection as $row) {
-                $ret[] = $marketplace->callAction($action, $this, $row['id_order_line']);
-            }
-            return !in_array(false, $ret);
-        } else {
-            return $marketplace->callAction($action, $this);
+        } catch (LengowException $e) {
+            $error_message = $e->getMessage();
+        } catch (Exception $e) {
+            $error_message = '[Prestashop error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
+        }
+        if (isset($error_message)) {
+            LengowOrder::addOrderLog($this->lengow_id, $error_message, $action);
+            $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
+            LengowMain::log(
+                'API-OrderAction',
+                LengowMain::setLogMessage('log.order_action.call_action_failed', array(
+                    'decoded_message' => $decoded_message
+                )),
+                false,
+                $this->lengow_marketplace_sku
+            );
         }
     }
 

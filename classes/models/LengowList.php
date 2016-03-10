@@ -95,7 +95,8 @@ class LengowList
 
         $html.='<tr class="lengow_filter">';
         if ($this->selection) {
-            $html.='<th width="20"></th>';
+            $html.='<th width="20"><input type="checkbox" id="select_'.$this->id.'"
+                class="lengow_select_all lengow_link_tooltip"/></th>';
         }
         foreach ($this->fields_list as $key => $values) {
             $html.= '<th>';

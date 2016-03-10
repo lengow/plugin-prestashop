@@ -25,7 +25,7 @@
 	{else}
 	    ({$locale->t('order.screen.import_manuel')|escape:'htmlall':'UTF-8'})
 	{/if}
-	{$orderCollection['last_import_date']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}
+	: {$orderCollection['last_import_date']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}
 {else}
 	<span class="lengow_strong">{$locale->t('order.screen.no_order_importation')|escape:'htmlall':'UTF-8'}</span>
 {/if}

@@ -226,7 +226,7 @@ class LengowImport
         $global_error   = false;
         // clean logs
         LengowMain::cleanLog();
-        if (LengowImport::isInProcess() && !$this->preprod_mode) {
+        if (LengowImport::isInProcess() && !$this->preprod_mode && !$this->import_one_order) {
             $global_error = LengowMain::setLogMessage('lengow_log.error.import_in_progress');
             LengowMain::log('Import', $global_error, $this->log_output);
             LengowMain::log(
@@ -370,7 +370,10 @@ class LengowImport
                 $this->log_output
             );
             // sending email in error for orders
-            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') && !$this->preprod_mode) {
+            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED')
+                && !$this->preprod_mode
+                && !$this->import_one_order
+            ) {
                 LengowMain::sendMailAlert($this->log_output);
             }
         }

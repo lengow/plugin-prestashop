@@ -458,4 +458,9 @@ LengowInstall::removeFiles(array(
     'webservice/lengow.php',
     'AdminLengow14.php',
     'AdminLengowLog14.php',
+    'config_fr.xml',
+    'config_it.xml',
+    'config_es.xml',
+    'config_gb.xml',
+    'config_de.xml',
 ));
