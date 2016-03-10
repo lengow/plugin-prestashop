@@ -105,6 +105,7 @@ order_setting.screen.default_country|default
 order_setting.screen.import_setting_title|Order import
 order_setting.screen.select_a_country|Please choose a country...
 order_setting.screen.import_setting_description|Manage your import settings here for marketplace orders 
+order_setting.screen.nb_days|days
 order_setting.screen.cron_title|Cron settings
 order_setting.screen.cron_description|Use the Crontab Module to import orders from Lengow
 order_setting.screen.cron_not_configured|Cron import is not configured in your PrestaShop
@@ -113,7 +114,6 @@ order_setting.screen.cron_if_not_exists|or
 order_setting.screen.cron_install_plugin|You can install the 'Crontab' PrestaShop Plugin
 order_setting.screen.cron_manual_installation|If you are using an unix system, you can use unix crontab as follows:
 order_setting.screen.button_add_country|Add
-order_setting.screen.button_save|Save
 order_setting.screen.default_carrier|Default carrier
 order_setting.screen.no_default_carrier_selected|No default carrier selected
 order_setting.screen.confirmation_delete_carrier_country|Are you sure ?
@@ -122,7 +122,10 @@ global_setting.screen.preprod_mode_title|Pre-production Mode
 global_setting.screen.preprod_mode_description|Use pre-production mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your pre-production server ONLY 
 global_setting.screen.log_file_title|Log Files
 global_setting.screen.log_file_description|Find all the maintenance logs below (imported orders, errors reports...). They will be recorded here for 20 days.
+global_setting.screen.please_choose_log|Please choose a log file...
+global_setting.screen.download_all_files|Download all files
 global_setting.screen.uninstall_module|Uninstall the module completely
+global_setting.screen.uninstall_module_description|Description uninstall module
 global_setting.screen.all_data_will_be_lost|All data will be lost (tables and configuration) and you will lose order history
 global_setting.screen.you_will_find_a_backup|After uninstalling the module, you will find a back-up of your Lengow database in
 global_setting.screen.prestashop_backup|PrestaShop Backup
@@ -131,7 +134,7 @@ global_setting.screen.button_i_want_uninstall|Delete Lengow
 global_setting.screen.title_modal_uninstall|Remove Lengow Module
 global_setting.screen.cancel_i_want_uninstall|Cancel
 global_setting.screen.to_uninstall_type|To uninstall, type
-global_setting.screen.button_download_all|Download all files
+global_setting.screen.button_download_file|Download log files
 global_setting.screen.button_save|Save changes
 lengow_setting.lengow_account_id_title|Account ID
 lengow_setting.lengow_access_token_title|Access Token
@@ -171,6 +174,7 @@ lengow_setting.lengow_import_single_enabled_legend|Useful for PrestaShop version
 lengow_setting.lengow_import_in_progress_title|Import in progress
 lengow_setting.lengow_last_import_cron_title|Last Cron import
 lengow_setting.lengow_last_import_manual_title|Last manual import
+lengow_setting.lengow_cron_enabled_title|Use crontab module PrestaShop
 lengow_setting.lengow_global_token_title|Lengow global Token
 lengow_setting.lengow_authorized_ip_title|Authorised IP
 lengow_setting.lengow_authorized_ip_legend|Authorized IP separated by:

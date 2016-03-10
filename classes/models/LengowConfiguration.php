@@ -132,6 +132,7 @@ class LengowConfiguration extends Configuration
                     'default_value' => true,
                 ),
                 'LENGOW_IMPORT_DAYS' => array(
+                    'type'          => 'day',
                     'label'         => $locale->t('lengow_setting.lengow_import_days_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_days_legend'),
                     'default_value' => 5,
@@ -144,8 +145,7 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_CRON_ENABLED' => array(
                     'type'          => 'checkbox',
-                    'label'         => '',
-                    'legend'        => '',
+                    'label'         => $locale->t('lengow_setting.lengow_cron_enabled_title'),
                     'default_value' => false,
                 ),
                 'LENGOW_IMPORT_PREPROD_ENABLED' => array(

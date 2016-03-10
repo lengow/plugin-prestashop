@@ -61,6 +61,12 @@
                 displayPreProdMode();
             }
         });
+
+        $('#download_log').on('click', function() {
+            if ($('#select_log').val() !== null) {
+                window.location.href = $('#select_log').val();
+            }
+        });
     });
 
 })(lengow_jquery);

@@ -28,9 +28,12 @@ class LengowConfigurationForm
 
     public $fields;
 
+    protected $locale;
+
     public function __construct($params)
     {
         $this->fields = isset($params['fields']) ? $params['fields'] : false;
+        $this->locale = new LengowTranslation();
     }
 
     public function build()
@@ -116,6 +119,20 @@ class LengowConfigurationForm
                     }
                 }
                 $html.= '</select></div><span class="legend">'.$legend.'</span></div>';
+                break;
+            case 'day':
+                $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <input type="text" name="'.$name.'"
+                                class="form-control" placeholder="'.$input['label'].'"
+                                value="'.$value.'" '.$readonly.'>
+                            <div class="input-group-addon">'.$this->locale->t('order_setting.screen.nb_days').'</div>
+                        </div>
+                        <div class="clear"></div>
+                        <span class="legend">'.$legend.'</span>
+                    </div>
+                    </div>';
                 break;
         }
         return $html;
