@@ -843,6 +843,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 
 #lengow_no_order_block {
     background: #182D40 url("../img/background.jpg") repeat left top;
+    margin-top: 20px; 
 }
 
 #lengow_no_order_message {
