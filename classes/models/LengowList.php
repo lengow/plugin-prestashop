@@ -78,7 +78,7 @@ class LengowList
         $html.='<thead>';
         $html.='<tr>';
         if ($this->selection) {
-            $html.='<th width="20"></th>';
+            $html.='<th width="2%"></th>';
         }
         foreach ($this->fields_list as $key => $values) {
             $width = isset($values['width']) ? 'width = "'.$values['width'].'"' : '';
@@ -95,7 +95,7 @@ class LengowList
 
         $html.='<tr class="lengow_filter">';
         if ($this->selection) {
-            $html.='<th width="20"><input type="checkbox" id="select_'.$this->id.'"
+            $html.='<th width="2%"><input type="checkbox" id="select_'.$this->id.'"
                 class="lengow_select_all lengow_link_tooltip"/></th>';
         }
         foreach ($this->fields_list as $key => $values) {

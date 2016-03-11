@@ -75,9 +75,6 @@ order.screen.action_waiting_return|Action sent, waiting returns
 order.screen.action_sent_not_work|Action sent to the marketplace didn't work
 order.screen.no_order_title|The best is yet to come!
 order.screen.no_order_description|Your products have great visibility and your sales are about to prosper!
-order.screen.nb_order_imported|%{nb_order} order(s) imported
-order.screen.nb_order_updated|%{nb_order} order(s) updated
-order.screen.nb_order_with_error|%{nb_order} order(s) with errors
 order.screen.action_success|Success
 order.screen.action_error|Error
 order.screen.status_not_synchronized|Not synchronized
@@ -185,6 +182,11 @@ lengow_setting.lengow_tracking_enabled_title|Activate Lengow tracking
 lengow_setting.lengow_tracking_id_title|Lengow Tracking ID
 lengow_setting.lengow_order_stat_title|Order statistics
 lengow_setting.lengow_order_stat_update_title|Order statistics update
+lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
+lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
+lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
+lengow_log.error.account_id_empty|id account, access token or secret is empty in shop %{name_shop} (%{id_shop})
+lengow_log.error.account_id_already_used|account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})
 lengow_log.error.import_in_progress|import has already started
 lengow_log.error.rest_time_to_import|Please wait %{rest_time} seconds before re-importing orders
 lengow_log.error.no_product|no products in the order
@@ -273,8 +275,6 @@ log.import.find_all_orders|%{nb_order} order(s) found with account ID: %{account
 log.import.nb_order_imported|%{nb_order} order(s) imported
 log.import.nb_order_updated|%{nb_order} order(s) updated
 log.import.nb_order_with_error|%{nb_order} order(s) with errors
-log.import.account_id_empty|id account, access token or secret is empty in shop %{name_shop} (%{id_shop})
-log.import.account_id_already_used|account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})
 log.import.connector_get_order|get order with order id: %{marketplace_sku} and marketplace: %{markeplace_name}
 log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} with account ID: %{account_id}
 log.import.error_already_created|%{decoded_message} (created on the %{date_message})

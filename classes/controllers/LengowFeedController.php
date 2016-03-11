@@ -207,7 +207,7 @@ class LengowFeedController extends LengowController
         $fields_list['id_product'] = array(
             'title'         => $this->locale->t('product.table.id_product'),
             'class'         => 'center',
-            'width'         => 70,
+            'width'         => '5%',
             'filter'        => true,
             'filter_order'  => true,
             'filter_key'    => 'p.id_product',
@@ -216,18 +216,19 @@ class LengowFeedController extends LengowController
             'title'         => $this->locale->t('product.table.image'),
             'class'         => 'center',
             'image'         => 'p',
-            'width'         => 70,
+            'width'         => '5%',
         );
         $fields_list['name'] = array(
             'title'         => $this->locale->t('product.table.name'),
             'filter'        => true,
             'filter_order'  => true,
             'filter_key'    => 'pl.name',
+            'width'         => '20%',
         );
         $fields_list['reference'] = array(
             'title'         => $this->locale->t('product.table.reference'),
             'class'         => 'left',
-            'width'         => 80,
+            'width'         => '14%',
             'filter'        => true,
             'filter_order'  => true,
             'filter_key'    => 'p.reference',
@@ -235,36 +236,43 @@ class LengowFeedController extends LengowController
         );
         $fields_list['category_name'] = array(
             'title'         => $this->locale->t('product.table.category_name'),
-            'width'         => 'auto',
+            'width'         => '14%',
             'filter'        => true,
             'filter_order'  => true,
             'filter_key'    => 'cl.name',
         );
         $fields_list['price'] = array(
             'title'         => $this->locale->t('product.table.price'),
-            'width'         => 90,
+            'width'         => '9%',
+            'filter_order'  => true,
             'type'          => 'price',
-            'class'         => 'right',
-            'filter_key'    => 'a!price'
+            'class'         => 'left',
+            'filter_key'    => 'p.price'
         );
         $fields_list['price_final'] = array(
             'title'         => $this->locale->t('product.table.final_price'),
-            'width'         => 90,
+            'width'         => '9%',
             'type'          => 'price',
-            'class'         => 'right',
+            'class'         => 'left',
             'havingFilter'  => true,
             'orderby'       => false
         );
+        if (_PS_VERSION_ >= '1.5') {
+            $quantity_filter_key = 'sav.quantity';
+        } else {
+            $quantity_filter_key = 'p.quantity';
+        }
         $fields_list['quantity'] = array(
             'title'         => $this->locale->t('product.table.quantity'),
-            'width'         => 90,
-            'class'         => 'right',
-            'filter_key'    => 'sav!quantity',
+            'width'         => '9%',
+            'filter_order'  => true,
+            'class'         => 'left',
+            'filter_key'    => $quantity_filter_key,
             'orderby'       => true,
         );
         $fields_list['id_lengow_product'] = array(
             'title'         => $this->locale->t('product.table.lengow_status'),
-            'width'         => 'auto',
+            'width'         => '13%',
             'class'         => 'center',
             'type'          => 'switch_product',
             'filter_order'  => true,

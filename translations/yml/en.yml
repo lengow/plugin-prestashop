@@ -86,9 +86,6 @@ en:
       action_sent_not_work: "Action sent to the marketplace didn't work"
       no_order_title: "The best is yet to come!"
       no_order_description: "Your products have great visibility and your sales are about to prosper!"
-      nb_order_imported: "%{nb_order} order(s) imported"
-      nb_order_updated: "%{nb_order} order(s) updated"
-      nb_order_with_error: "%{nb_order} order(s) with errors"
       action_success: "Success"
       action_error: "Error"
       status_not_synchronized: "Not synchronized"
@@ -204,6 +201,11 @@ en:
     lengow_order_stat_update_title: "Order statistics update"
   lengow_log:
     error:
+      nb_order_imported: "%{nb_order} order(s) imported"
+      nb_order_updated: "%{nb_order} order(s) updated"
+      nb_order_with_error: "%{nb_order} order(s) with errors"
+      account_id_empty: "id account, access token or secret is empty in shop %{name_shop} (%{id_shop})"
+      account_id_already_used: "account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})"
       import_in_progress: "import has already started"
       rest_time_to_import: "Please wait %{rest_time} seconds before re-importing orders"
       no_product: "no products in the order"
