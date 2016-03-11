@@ -37,7 +37,6 @@
                 </div>
             {/if}
             <div class="lengow_order_block_header_content">
-                <div id="lengow_wrapper_messages"></div>
                 <div id="lengow_last_importation" class="lengow_order_block_content_left">
                     {include file='./last_importation.tpl'}
                 </div>
@@ -47,6 +46,7 @@
                 </div>
                 <div class="lengow_clear"></div>
             </div>
+            <div id="lengow_wrapper_messages"></div>
         {/if}
     </div>
     <div>

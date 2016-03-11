@@ -31,7 +31,7 @@
 {/if}
 <br/>
 <p>
-	{$locale->t('order.screen.all_order_will_be_sent_to')|escape:'htmlall':'UTF-8'} {', '|implode:$report_mail_address|escape:'htmlall':'UTF-8'}
+	{$locale->t('order.screen.all_order_will_be_sent_to')|escape:'htmlall':'UTF-8'}<br/>{', '|implode:$report_mail_address|escape:'htmlall':'UTF-8'}
 	(<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">{$locale->t('order.screen.change_this')|escape:'htmlall':'UTF-8'}</a>)
 </p>
 {if not $cron_active}

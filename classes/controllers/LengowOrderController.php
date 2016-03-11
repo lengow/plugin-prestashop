@@ -237,8 +237,8 @@ class LengowOrderController extends LengowController
             'filter_key'        => 'log_status',
             'filter_type'       => 'select',
             'filter_collection' => array(
-                array('id' => 1, 'text' => 'success'),
-                array('id' => 2, 'text' => 'error')
+                array('id' => 1, 'text' => $this->locale->t('order.screen.action_success')),
+                array('id' => 2, 'text' => $this->locale->t('order.screen.action_error'))
             ),
         );
         $fields_list['lengow_status'] = array(
@@ -250,10 +250,11 @@ class LengowOrderController extends LengowController
             'filter_key'        => 'lo.order_lengow_state',
             'filter_type'       => 'select',
             'filter_collection' => array(
-                array('id' => 'accepted', 'text' => 'accepted'),
-                array('id' => 'waiting_shipment', 'text' => 'waiting_shipment'),
-                array('id' => 'shipped', 'text' => 'shipped'),
-                array('id' => 'closed', 'text' => 'closed'),
+                array('id' => 'accepted', 'text' => $this->locale->t('order.screen.status_accepted')),
+                array('id' => 'waiting_shipment', 'text' => $this->locale->t('order.screen.status_waiting_shipment')),
+                array('id' => 'shipped', 'text' => $this->locale->t('order.screen.status_shipped')),
+                array('id' => 'closed', 'text' => $this->locale->t('order.screen.status_closed')),
+                array('id' => 'canceled', 'text' => $this->locale->t('order.screen.status_canceled')),
             ),
         );
         $fields_list['marketplace_name'] = array(
@@ -273,7 +274,7 @@ class LengowOrderController extends LengowController
                     'title'             => $this->locale->t('order.table.shop_name'),
                     'filter'            => true,
                     'filter_order'      => true,
-                    'filter_key'        => 'shop.name',
+                    'filter_key'        => 'shop.id_shop',
                     'filter_type'       => 'select',
                     'filter_collection' => $this->getShops()
                 );

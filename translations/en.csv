@@ -78,7 +78,10 @@ order.screen.no_order_description|Your products have great visibility and your s
 order.screen.nb_order_imported|%{nb_order} order(s) imported
 order.screen.nb_order_updated|%{nb_order} order(s) updated
 order.screen.nb_order_with_error|%{nb_order} order(s) with errors
+order.screen.action_success|Success
+order.screen.action_error|Error
 order.screen.status_not_synchronized|Not synchronized
+order.screen.status_accepted|Accepted
 order.screen.status_waiting_shipment|Waiting shipment
 order.screen.status_shipped|Shipped
 order.screen.status_closed|Closed

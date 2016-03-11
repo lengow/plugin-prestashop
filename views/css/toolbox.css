@@ -1,3 +1,5 @@
+/* GLOBAL */
+
 body {
     padding-top: 60px;
 }
@@ -72,6 +74,71 @@ span.title_no_result {
     font-weight: bold;
     margin: 10px 0;
     color:#c3c3c3;
+}
+
+/* TABLE */
+
+.lengow_table_top {
+    height: 40px;
+    margin: 20px 0 10px 0;
+}
+
+.lengow_table_bottom {
+    height: 40px;
+    margin-bottom: 10px; 
+}
+
+/* PAGINATION */
+
+.lengow_feed_pagination {
+    float:right;
+}
+
+.lengow_pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 0;
+    border-radius: 4px;
+}
+
+.lengow_pagination > li {
+    display: inline;
+}
+
+.lengow_pagination {
+    margin-left:10px;
+}
+
+.lengow_pagination_total {
+    padding-top: 7px; 
+    float: left;
+}
+
+/* TOOLBAR */
+
+.lengow_toolbar {
+    float: left;
+}
+
+.lengow_toolbar .lengow_btn {
+    margin-right:10px;
+}
+
+.lengow_toolbar input {
+    margin-top:10px;
+}
+
+.lengow_select_all_shop input {
+    margin-left: 10px;
+    vertical-align: sub;
+}
+
+.lengow_select_all_shop span {
+    margin-left: 5px;
+}
+
+.lengow_select_all_shop {
+    display: inline-block;
 }
 
 /* PRODUCT PAGE */
