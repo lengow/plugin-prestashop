@@ -813,6 +813,9 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     display: inline-block;
 }
 
+.lengow_remove_from_export i, .lengow_add_to_export i {
+    margin-right: 8px;
+}
 /* ORDER PAGE */
 #lengow_order_wrapper {
     padding:0 60px 40px 60px;

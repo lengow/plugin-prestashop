@@ -467,6 +467,7 @@ class LengowImport
                     'Import',
                     LengowMain::setLogMessage('log.import.connector_get_all_order', array(
                         'date_from'  => date('Y-m-d', strtotime((string)$this->date_from)),
+                        'marketplace_order_date_from'  => date('Y-m-d', strtotime((string)$this->date_from)),
                         'date_to'    => date('Y-m-d', strtotime((string)$this->date_to)),
                         'account_id' => $this->account_id
                     )),
@@ -490,6 +491,7 @@ class LengowImport
                         '/v3.0/orders',
                         array(
                             'updated_from'          => $this->date_from,
+                            'marketplace_order_date_from'  => $this->date_from,
                             'updated_to'            => $this->date_to,
                             'account_id'            => $this->account_id,
                             'page'                  => $page
