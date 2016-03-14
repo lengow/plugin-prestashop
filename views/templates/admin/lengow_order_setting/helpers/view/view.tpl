@@ -21,20 +21,19 @@
 <div id="lengow_form_wrapper">
 <form class="lengow_form" method="POST" id="lengow_form_order_setting">
     <input type="hidden" name="action" value="process">
-    <div class="container">
+    <div id="matching_order_status" class="container">
         <h2>{$locale->t('order_setting.screen.order_status_title')|escape:'htmlall':'UTF-8'}</h2>
         <p>{$locale->t('order_setting.screen.order_status_description')|escape:'htmlall':'UTF-8'}</p><br/>
         {html_entity_decode($matching|escape:'htmlall':'UTF-8')}
     </div>
-    <div class="container2">
+    <div class="container">
         <h2>{$locale->t('order_setting.screen.carrier_management_title')|escape:'htmlall':'UTF-8'}</h2>
         <p>{$locale->t('order_setting.screen.carrier_management_description')|escape:'htmlall':'UTF-8'}</p>
         <p>{$locale->t('order_setting.screen.country_wt_carrier')|escape:'htmlall':'UTF-8'}
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminCarriers', false, true)|escape:'htmlall':'UTF-8'}">
                 {$locale->t('order_setting.screen.country_wt_carrier_link')|escape:'htmlall':'UTF-8'}
             </a>
-        </p>
-        <br/>
+        </p><br/>
         <div class="select_country">
             {include file='./select_country.tpl'}
         </div>
@@ -45,12 +44,12 @@
             </ul>
         </div>
     </div>
-    <div class="container2">
+    <div id="import_setting" class="container">
         <h2>{$locale->t('order_setting.screen.import_setting_title')|escape:'htmlall':'UTF-8'}</h2>
         <p>{$locale->t('order_setting.screen.import_setting_description')|escape:'htmlall':'UTF-8'}</p><br/>
         {html_entity_decode($import_params|escape:'htmlall':'UTF-8')}
     </div>
-    <div id="cron_setting" class="container2">
+    <div id="cron_setting" class="container">
         <h2>{$locale->t('order_setting.screen.cron_title')|escape:'htmlall':'UTF-8'}</h2>
         {html_entity_decode($formCron|escape:'htmlall':'UTF-8')}
         {if isset($moduleCron) && $moduleCron}
@@ -58,13 +57,12 @@
         {/if}
         <p>-- {$locale->t('order_setting.screen.cron_if_not_exists')|escape:'htmlall':'UTF-8'} --</p>
         <p>{$locale->t('order_setting.screen.cron_manual_installation')|escape:'htmlall':'UTF-8'}</p>
-        <strong><code>*/15 * * * * wget {$import_url|escape:'htmlall':'UTF-8'}</code></strong><br /><br />
+        <strong><code>*/15 * * * * wget {$import_url|escape:'htmlall':'UTF-8'}</code></strong>
     </div>
-    <br/>
-    <div class="form-group">
+    <div class="form-group container">
         <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn lengow_btn lengow_submit_order_setting">
-                {$locale->t('order_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
+                {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
             </button>
         </div>
     </div>

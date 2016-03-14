@@ -93,7 +93,7 @@ class LengowMainSettingController extends LengowController
         );
 
         $preprod_wrapper = '';
-        $shops = LengowShop::findAll();
+        $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
             $shop = new LengowShop($s['id_shop']);
             $form->fields['LENGOW_SHOP_ACTIVE']['label'] = $shop->name;

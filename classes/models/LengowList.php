@@ -78,7 +78,7 @@ class LengowList
         $html.='<thead>';
         $html.='<tr>';
         if ($this->selection) {
-            $html.='<th width="20"></th>';
+            $html.='<th width="2%"></th>';
         }
         foreach ($this->fields_list as $key => $values) {
             $width = isset($values['width']) ? 'width = "'.$values['width'].'"' : '';
@@ -95,7 +95,7 @@ class LengowList
 
         $html.='<tr class="lengow_filter">';
         if ($this->selection) {
-            $html.='<th width="20"><input type="checkbox" id="select_'.$this->id.'"
+            $html.='<th width="2%"><input type="checkbox" id="select_'.$this->id.'"
                 class="lengow_select_all lengow_link_tooltip"/></th>';
         }
         foreach ($this->fields_list as $key => $values) {
@@ -496,25 +496,25 @@ class LengowList
         $html.= '</ul>';
 
         $html.= '<ul class="lengow_pagination pagination">';
-        if ($this->nbMaxPage > 10) {
+        if ($this->nbMaxPage > 7) {
             $showLastSeparation = false;
 
             $class = ($this->currentPage == 1) ? 'disabled' : '';
             $html.= '<li class="'.$class.'"><a href="#" data-page="1"
             data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p=1">1</a></li>';
 
-            $from = $this->currentPage - 2;
-            $to = $this->currentPage + 2;
+            $from = $this->currentPage - 1;
+            $to = $this->currentPage + 1;
             if ($from <= 2) {
                 $from = 2;
-                $to = $from + 5;
+                $to = $from + 3;
             } else {
                 $html.= '<li><a href="#" class="disable">...</a></li>';
             }
             if ($to > ($this->nbMaxPage-1)) {
                 $to = $this->nbMaxPage - 1;
             } else {
-                if ($this->currentPage < ($this->nbMaxPage-4)) {
+                if ($this->currentPage < ($this->nbMaxPage-2)) {
                     $showLastSeparation = true;
                 }
             }

@@ -348,17 +348,23 @@ class LengowImport
             if (!$this->import_one_order) {
                 LengowMain::log(
                     'Import',
-                    LengowMain::setLogMessage('log.import.nb_order_imported', array('nb_order' => $order_new)),
+                    LengowMain::setLogMessage('lengow_log.error.nb_order_imported', array(
+                        'nb_order' => $order_new
+                    )),
                     $this->log_output
                 );
                 LengowMain::log(
                     'Import',
-                    LengowMain::setLogMessage('log.import.nb_order_updated', array('nb_order' => $order_update)),
+                    LengowMain::setLogMessage('lengow_log.error.nb_order_updated', array(
+                        'nb_order' => $order_update
+                    )),
                     $this->log_output
                 );
                 LengowMain::log(
                     'Import',
-                    LengowMain::setLogMessage('log.import.nb_order_with_error', array('nb_order' => $order_error)),
+                    LengowMain::setLogMessage('lengow_log.error.nb_order_with_error', array(
+                        'nb_order' => $order_error
+                    )),
                     $this->log_output
                 );
             }
@@ -404,14 +410,14 @@ class LengowImport
         $this->access_token = LengowMain::getAccessToken($id_shop);
         $this->secret = LengowMain::getSecretCustomer($id_shop);
         if (!$this->account_id || !$this->access_token || !$this->secret) {
-            $message = LengowMain::setLogMessage('log.import.account_id_empty', array(
+            $message = LengowMain::setLogMessage('lengow_log.error.account_id_empty', array(
                 'name_shop' => $name_shop,
                 'id_shop'   => $id_shop
             ));
             return $message;
         }
         if (array_key_exists($this->account_id, $this->account_ids)) {
-            $message = LengowMain::setLogMessage('log.import.account_id_already_used', array(
+            $message = LengowMain::setLogMessage('lengow_log.error.account_id_already_used', array(
                 'account_id' => $this->account_id,
                 'name_shop'  => $this->account_ids[$this->account_id]['name'],
                 'id_shop'    => $this->account_ids[$this->account_id]['id_shop'],

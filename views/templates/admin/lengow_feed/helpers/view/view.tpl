@@ -28,10 +28,12 @@
                 </div>
                 <div class="lengow_feed_block_header_content">
                     <div class="lengow_feed_block_content_right">
-                        <span class="lengow_exported">{$shop['total_export_product']|escape:'htmlall':'UTF-8'}</span>
-                        {$locale->t('product.screen.nb_exported')|escape:'htmlall':'UTF-8'}<br/>
-                        <span class="lengow_total">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span>
-                        {$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}<br/>
+                        <div class="lengow_feed_block_header_content_result">
+                            <span class="lengow_exported">{$shop['total_export_product']|escape:'htmlall':'UTF-8'}</span>
+                            {$locale->t('product.screen.nb_exported')|escape:'htmlall':'UTF-8'}<br/>
+                            <span class="lengow_total">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span>
+                            {$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}<br/>
+                        </div>
                         <input 
                             type="checkbox"
                             data-size="mini"

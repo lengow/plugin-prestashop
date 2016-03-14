@@ -36,13 +36,12 @@ class LengowCron
         $moduleCron = Module::getInstanceByName('cronjobs');
         if ($moduleCron && $moduleCron->active) {
             $form = '<p>'.$locale->t('order_setting.screen.cron_description').'</p>';
-
             if (!self::getCron()) {
-                $form .= '<span class="lengow-no">'.$locale->t(
-                    'order_setting.screen.cron_not_configured'
-                ).'</span><br/>';
+                $form.= '<p><span class="lengow-no">'
+                    .$locale->t('order_setting.screen.cron_not_configured').'</span></p>';
             } else {
-                $form .= '<span class="lengow-yes">'.$locale->t('order_setting.screen.cron_configured').'</span>';
+                $form.= '<p><span class="lengow-yes">'
+                    .$locale->t('order_setting.screen.cron_configured').'</span></p>';
             }
         } else {
             $form = '<p>'.$locale->t('order_setting.screen.cron_install_plugin').'</p>';
