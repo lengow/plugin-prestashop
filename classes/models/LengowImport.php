@@ -308,7 +308,9 @@ class LengowImport
                                 $this->log_output
                             );
                         }
-                        if ($total_orders <= 0) {
+                        if ($total_orders<=0 && $this->import_one_order) {
+                            throw new LengowException('lengow_log.error.order_not_found');
+                        } elseif ($total_orders <= 0) {
                             continue;
                         }
                         if (isset($this->id_order_lengow) && $this->id_order_lengow) {
@@ -487,8 +489,9 @@ class LengowImport
                             'marketplace_order_id'  => $this->marketplace_sku,
                             'marketplace'           => $this->marketplace_name,
                             'account_id'            => $this->account_id,
-                            'page'                  => $page
-                        ),
+                            'page'                  => $page,
+                            'marketplace_order_date_from' => '2015-01-01T00:00:00+01:00',
+                            ),
                         'stream'
                     );
                 } else {
@@ -496,6 +499,7 @@ class LengowImport
                         '/v3.0/orders',
                         array(
                             'updated_from'          => $this->date_from,
+                            'marketplace_order_date_from'          => $this->date_from,
                             'updated_to'            => $this->date_to,
                             'account_id'            => $this->account_id,
                             'page'                  => $page
