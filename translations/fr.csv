@@ -48,7 +48,6 @@ order.screen.button_reimport_order|Importer de nouveau mes commandes
 order.screen.button_resend_order|Renvoyer la commande
 order.screen.cron|Vous voulez automatiser la mise à jour de vos commandes ? 
 order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles.  <a href=%{url}>Retourner en mode production ?</a>
-order.table.order_lengow_state|Statut
 order.table.marketplace_name|Place de marché
 order.table.shop_name|Boutique
 order.table.marketplace_sku|ID Commande
@@ -57,7 +56,6 @@ order.table.order_date|Date
 order.table.delivery_country|Pays
 order.table.order_item|Nombre d'articles
 order.table.total_paid|Total
-order.table.status_lengow|Statut Lengow
 order_setting.screen.order_status_title|Statut des commandes
 order_setting.screen.order_status_description|C'est le moment de faire correspondre vos statuts de commande Lengow avec les statuts proposés par PrestaShop
 order_setting.screen.carrier_management_title|Gestion des transporteurs pour les places de marché
@@ -76,16 +74,20 @@ order_setting.screen.cron_manual_installation|Si vous utilisez un système unix,
 order_setting.screen.button_add_country|Ajouter
 order_setting.screen.button_save|Enregistrer
 order_setting.screen.no_default_carrier_selected|Pas de transporteur par défaut sélectionné
+order_setting.screen.confirmation_delete_carrier_country|Etes-vous sûre ?
 global_setting.screen.notification_alert_title|Notifications & alertes
 global_setting.screen.preprod_mode_title|Mode Préproduction
 global_setting.screen.preprod_mode_description|Utilisez la pré-production pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ces paramètres UNIQUEMENT sur votre serveur de préproduction
 global_setting.screen.log_file_title|Fichiers Log
 global_setting.screen.log_file_description|Retrouvez ci-dessous tout l'historique des logs (commandes importées, messages d'erreurs...). <br />Ils seront sauvegardés ici pendant 20 jours.
 global_setting.screen.uninstall_module|Désinstaller complètement le module 
-global_setting.screen.all_data_will_be_lost|Toutes les données vont être perdues (tableaux et paramétrages) et vous allez perdre votre historique
-global_setting.screen.you_will_find_a_backup|Après la désinstallation du module, vousretrouverez une sauvegarde de votre base de données Lengow dans votre
-global_setting.screen.prestashop_backup|Backup PrestaShop
+global_setting.screen.all_data_will_be_lost|Toutes les données vont être perdues (tableaux et paramétrages) et vous allez perdre votre historique.
+global_setting.screen.you_will_find_a_backup|Après la désinstallation du module, vous retrouverez une sauvegarde de votre base de données Lengow dans votre
+global_setting.screen.prestashop_backup|Backup PrestaShop.
 global_setting.screen.i_want_uninstall|Je veux désinstaller le module Lengow
+global_setting.screen.button_i_want_uninstall|Supprimer Lengow
+global_setting.screen.title_modal_uninstall|Suppression complète du module Lengow
+global_setting.screen.cancel_i_want_uninstall|Annuler
 global_setting.screen.to_uninstall_type|Pour désinstaller, écrivez
 global_setting.screen.button_download_all|Télécharger tous les fichiers
 global_setting.screen.button_save|Sauvegarder les changements
@@ -134,8 +136,8 @@ lengow_setting.lengow_tracking_enabled_title|Activez le tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_order_stat_title|Statistiques des commandes
 lengow_setting.lengow_order_stat_update_title|Mise à jour des statistiques de commandes
-lengow_log.error.export_in_progress|L'import à déjà commencé
-lengow_log.error.rest_time_to_export|Attendez %{rest_time} secondes avant de réimporter les commandes 
+lengow_log.error.import_in_progress|L'import à déjà commencé
+lengow_log.error.rest_time_to_import|Attendez %{rest_time} secondes avant de réimporter les commandes 
 lengow_log.error.no_product|pas de produit dans cette commande
 lengow_log.error.no_change_rate|pas de taux de change valide à appliquer sur les prix
 lengow_log.error.no_currency|pas de devise dans cette commande

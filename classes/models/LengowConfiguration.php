@@ -129,8 +129,10 @@ class LengowConfiguration extends Configuration
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_force_product_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_force_product_legend'),
+                    'default_value' => true,
                 ),
                 'LENGOW_IMPORT_DAYS' => array(
+                    'type'          => 'day',
                     'label'         => $locale->t('lengow_setting.lengow_import_days_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_days_legend'),
                     'default_value' => 5,
@@ -143,8 +145,7 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_CRON_ENABLED' => array(
                     'type'          => 'checkbox',
-                    'label'         => '',
-                    'legend'        => '',
+                    'label'         => $locale->t('lengow_setting.lengow_cron_enabled_title'),
                     'default_value' => false,
                 ),
                 'LENGOW_IMPORT_PREPROD_ENABLED' => array(
@@ -161,7 +162,6 @@ class LengowConfiguration extends Configuration
                 'LENGOW_IMPORT_SHIP_MP_ENABLED' => array(
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_ship_mp_enabled_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_import_ship_mp_enabled_legend'),
                     'default_value' => false,
                 ),
                 'LENGOW_IMPORT_STOCK_SHIP_MP' => array(
@@ -320,6 +320,8 @@ class LengowConfiguration extends Configuration
     {
         $keys = self::getKeys();
         foreach ($keys as $key => $value) {
+            // This line is useless, but Prestashop validator require it
+            $value = $value;
             self::deleteByName($key);
         }
         return true;

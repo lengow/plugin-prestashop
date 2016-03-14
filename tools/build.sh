@@ -47,6 +47,7 @@ FOLDER_LOGS="/tmp/lengow/logs"
 FOLDER_EXPORT="/tmp/lengow/export"
 FOLDER_TEST="/tmp/lengow/tests"
 FOLDER_TOOLS="/tmp/lengow/tools"
+FOLDER_TRANSLATION="/tmp/lengow/translations/yml"
 
 FOLDER_MODULE="lengow"
 
@@ -101,9 +102,18 @@ echo "- Remove Tools folder : ""$VERT""DONE""$NORMAL"""
 # Remove Test folder
 remove_directory $FOLDER_TEST
 echo "- Remove Test folder : ""$VERT""DONE""$NORMAL"""
+#remove TMP FOLDER_TRANSLATION
+remove_directory $FOLDER_TRANSLATION
+echo "- Remove Translation yml folder : ""$VERT""DONE""$NORMAL"""
 # Remove config_fr.xml
 find $FOLDER_TMP -name "config_fr.xml" -delete
 echo "- Delete config_fr.xml : ""$VERT""DONE""$NORMAL"""
+# Remove config_es.xml
+find $FOLDER_TMP -name "config_es.xml" -delete
+echo "- Delete config_es.xml : ""$VERT""DONE""$NORMAL"""
+# Remove config_it.xml
+find $FOLDER_TMP -name "config_it.xml" -delete
+echo "- Delete config_it.xml : ""$VERT""DONE""$NORMAL"""
 # Remove todo.txt
 find $FOLDER_TMP -name "todo.txt" -delete
 echo "- todo.txt : ""$VERT""DONE""$NORMAL"""

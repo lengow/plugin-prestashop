@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2016 Lengow SAS.
  *
@@ -19,6 +18,7 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 class LengowCarrierCountry
 {
 
@@ -48,7 +48,8 @@ class LengowCarrierCountry
         $sql = 'SELECT lc.id, lc.id_carrier, co.iso_code, cl.name, co.id_country FROM '
             ._DB_PREFIX_.'lengow_carrier_country lc INNER JOIN '
             ._DB_PREFIX_.'country co ON lc.id_country=co.id_country INNER JOIN '
-            ._DB_PREFIX_.'country_lang cl ON co.id_country=cl.id_country AND cl.id_lang= '.(int)Context::getContext()->language->id
+            ._DB_PREFIX_.'country_lang cl ON co.id_country=cl.id_country AND cl.id_lang= '
+            .(int)Context::getContext()->language->id
             .' WHERE lc.id = '.(int)$id_lengow_carrier;
 
         $collection = Db::getInstance()->getRow($sql);
@@ -69,7 +70,8 @@ class LengowCarrierCountry
         $sql = 'SELECT lc.id, lc.id_carrier, co.iso_code, cl.name, co.id_country FROM '
             ._DB_PREFIX_.'lengow_carrier_country lc INNER JOIN '
             ._DB_PREFIX_.'country co ON lc.id_country=co.id_country INNER JOIN '
-            ._DB_PREFIX_.'country_lang cl ON co.id_country=cl.id_country AND cl.id_lang= '.(int)Context::getContext()->language->id
+            ._DB_PREFIX_.'country_lang cl ON co.id_country=cl.id_country AND cl.id_lang= '
+            .(int)Context::getContext()->language->id
             .' ORDER BY CASE WHEN co.id_country = '.(int)$default_country.' THEN 1 ELSE cl.name END ASC;';
 
         $collection = Db::getInstance()->ExecuteS($sql);
@@ -100,7 +102,9 @@ class LengowCarrierCountry
     public static function getCountries()
     {
 
-        $sql = 'SELECT * FROM '._DB_PREFIX_.'country_lang WHERE id_lang = '.(int)Context::getContext()->language->id;
+        $sql = 'SELECT cl.id_country, cl.id_lang, cl.name, c.iso_code FROM '._DB_PREFIX_.'country_lang cl
+                INNER JOIN '._DB_PREFIX_.'country c ON cl.id_country=c.id_country
+                WHERE id_lang = '.(int)Context::getContext()->language->id;
 
         $collection = Db::getInstance()->ExecuteS($sql);
 

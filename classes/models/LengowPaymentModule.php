@@ -95,6 +95,8 @@ class LengowPaymentModule extends PaymentModule
                 || !array_key_exists($cart_delivery_option[$id_address], $package)
             ) {
                 foreach ($package as $key => $val) {
+                    // This line is useless, but Prestashop validator require it
+                    $val = $val;
                     // force carrier to be the one chosen in Lengow config
                     $carrier_options = explode(',', $key);
                     $carrier_assigned = false;
@@ -490,7 +492,6 @@ class LengowPaymentModule extends PaymentModule
             $order->id_customer = (int)$this->context->cart->id_customer;
             $order->id_address_invoice = (int)$this->context->cart->id_address_invoice;
             $order->id_address_delivery = (int)$this->context->cart->id_address_delivery;
-            $vat_address = new Address((int)$order->id_address_delivery);
             $order->id_currency = (int)$this->context->cart->id_currency;
             $order->id_lang = (int)$this->context->cart->id_lang;
             $order->id_cart = (int)$this->context->cart->id;
@@ -610,7 +611,7 @@ class LengowPaymentModule extends PaymentModule
                     `download_hash`)
 				VALUES ';
                 $outOfStock = false;
-                foreach ($product_list as $key => $product) {
+                foreach ($product_list as $product) {
                     $productQuantity = (int)(Product::getQuantity(
                         (int)($product['id_product']),
                         ($product['id_product_attribute'] ? (int)($product['id_product_attribute']) : null)
@@ -654,8 +655,14 @@ class LengowPaymentModule extends PaymentModule
                     }
                     $query .= '('.(int)($order->id).',
 						'.(int)($product['id_product']).',
-						'.(isset($product['id_product_attribute']) ? (int)($product['id_product_attribute']) : 'null').',
-						\''.pSQL($product['name'].((isset($product['attributes']) && $product['attributes'] != null) ? ' - '.$product['attributes'] : '')).'\',
+						'.(isset($product['id_product_attribute'])
+                            ? (int)($product['id_product_attribute'])
+                            : 'null'
+                        ).',
+						\''.pSQL($product['name'].((isset($product['attributes']) && $product['attributes'] != null)
+                            ? ' - '.$product['attributes']
+                            : ''
+                        )).'\',
 						'.(int)($product['cart_quantity']).',
 						'.$quantityInStock.',
 						'.(float)$product['price'].',
@@ -666,8 +673,14 @@ class LengowPaymentModule extends PaymentModule
 						'.(empty($product['ean13']) ? 'null' : '\''.pSQL($product['ean13']).'\'').',
 						'.(empty($product['upc']) ? 'null' : '\''.pSQL($product['upc']).'\'').',
 						'.(empty($product['reference']) ? 'null' : '\''.pSQL($product['reference']).'\'') . ',
-						'.(empty($product['supplier_reference']) ? 'null' : '\''.pSQL($product['supplier_reference']).'\'').',
-						'.(float)($product['id_product_attribute'] ? $product['weight_attribute'] : $product['weight']).',
+						'.(empty($product['supplier_reference'])
+                            ? 'null'
+                            : '\''.pSQL($product['supplier_reference']).'\''
+                        ).',
+						'.(float)($product['id_product_attribute']
+                            ? $product['weight_attribute']
+                            : $product['weight']
+                        ).',
 						\''.(empty($tax_rate) ? '' : pSQL($product['tax'])).'\',
 						'.(float)($tax_rate).',
 						'.(float)Tools::convertPrice((float)$product['ecotax'], (int)$order->id_currency).',

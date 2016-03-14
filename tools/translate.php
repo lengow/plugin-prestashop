@@ -22,8 +22,8 @@ ini_set("display_errors", 1);
 $default_locale = 'en';
 $listDefaultValues = array();
 
-$directory =  dirname(dirname(__FILE__)).'/translations/yml/';
-$listFiles = array_diff(scandir($directory), array('..', '.'));
+$directory = dirname(dirname(__FILE__)).'/translations/yml/';
+$listFiles = array_diff(scandir($directory), array('..', '.', 'index.php'));
 $listFiles = array_diff($listFiles, array('en.yml'));
 array_unshift($listFiles, "en.yml");
 

@@ -1,3 +1,5 @@
+/* GLOBAL */
+
 body {
     padding-top: 60px;
 }
@@ -53,10 +55,97 @@ button {
     background: none;
 }
 
+#lengow_no_result_message {
+    padding: 30px;
+    text-align:center;
+}
+
+span.img_no_result {
+    background : transparent url("../img/no-result-grey.png") no-repeat;
+    height: 208px; 
+    width: 269px;
+    display: block;
+    margin: 0 auto;
+}
+
+span.title_no_result {
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 10px 0;
+    color:#c3c3c3;
+}
+
+/* TABLE */
+
+.lengow_table_top {
+    height: 40px;
+    margin: 20px 0 10px 0;
+}
+
+.lengow_table_bottom {
+    height: 40px;
+    margin-bottom: 10px; 
+}
+
+/* PAGINATION */
+
+.lengow_feed_pagination {
+    float:right;
+}
+
+.lengow_pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 0;
+    border-radius: 4px;
+}
+
+.lengow_pagination > li {
+    display: inline;
+}
+
+.lengow_pagination {
+    margin-left:10px;
+}
+
+.lengow_pagination_total {
+    padding-top: 7px; 
+    float: left;
+}
+
+/* TOOLBAR */
+
+.lengow_toolbar {
+    float: left;
+}
+
+.lengow_toolbar .lengow_btn {
+    margin-right:10px;
+}
+
+.lengow_toolbar input {
+    margin-top:10px;
+}
+
+.lengow_select_all_shop input {
+    margin-left: 10px;
+    vertical-align: sub;
+}
+
+.lengow_select_all_shop span {
+    margin-left: 5px;
+}
+
+.lengow_select_all_shop {
+    display: inline-block;
+}
+
 /* PRODUCT PAGE */
 
 #lengow_feed_wrapper {
     padding:20px 60px;
+    min-width: 980px;
 }
 
 .lengow_feed_block {
@@ -122,9 +211,20 @@ button {
     margin-left:10px;
 }
 
-
 #lengow_feed_wrapper .lengow_feed_block_content_left input {
-    width:400px;
+    width:500px;
+    height: 20px;
+    padding: 0 5px 0 2px;
+    margin-right: 5px;
+    border:1px solid #E3E5E6;
+}
+
+#lengow_feed_wrapper .lengow_feed_block_content_left a {
+    text-decoration: underline;
+}
+
+#lengow_feed_wrapper a.lengow_copy {
+    margin-right: 5px;
 }
 
 #lengow_feed_wrapper .lengow_feed_block_content_left a {
@@ -140,6 +240,33 @@ button {
     color: #31708f;
     background-color: #d9edf7;
     border-color: #bce8f1;
+}
+
+#lengow_no_order_block {
+    background: #182D40 url("../img/background.jpg") repeat left top;
+}
+
+#lengow_no_order_message {
+    padding: 30px;
+    text-align:center;
+    font-size: 18px;
+    color:#61687d;
+}
+
+span.img_no_order {
+    background : transparent url("../img/no-result-white.png") no-repeat;
+    height: 208px; 
+    width: 269px;
+    display: block;
+    margin: 0 auto;
+}
+
+span.title_no_order {
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #FFFFFF;
 }
 
 #lengow_charge_import_order {

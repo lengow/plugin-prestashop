@@ -86,10 +86,12 @@
                 $('#table_shop_' + id_shop + ' tbody .lengow_selection').prop('checked', true);
                 $('#table_shop_' + id_shop + ' tbody tr').addClass('select');
                 $('#block_' + id_shop + ' .lengow_toolbar a').show();
+                $('#block_' + id_shop + ' .lengow_toolbar .lengow_select_all_shop').show();
             } else {
                 $('#table_shop_' + id_shop + ' tbody .lengow_selection').prop('checked', false);
                 $('#table_shop_' + id_shop + ' tbody tr').removeClass('select');
                 $('#block_' + id_shop + ' .lengow_toolbar a').hide();
+                $('#block_' + id_shop + ' .lengow_toolbar .lengow_select_all_shop').hide();
             }
         });
         $('#lengow_feed_wrapper').on('click', '.lengow_selection', function () {
@@ -99,7 +101,9 @@
             if ($(this).prop('checked')) {
                 $(this).parents('tr').addClass('select');
             } else {
+                $('#block_' + id_shop + ' .lengow_toolbar .lengow_select_all_shop input').prop('checked', false);
                 $(this).parents('tr').removeClass('select');
+
             }
             var findProductSelected = false;
             $(this).parents('table').find('.lengow_selection').each(function (index) {
@@ -114,26 +118,40 @@
         $('#lengow_feed_wrapper').on('click', '.lengow_add_to_export', function () {
             var href = $(this).attr('data-href');
             var id_shop = $(this).attr('data-id_shop');
+            var message = $(this).attr('data-message');
             var form = $('#form_table_shop_' + id_shop).serialize();
-            $.ajax({
-                url: href + '&' + form,
-                method: 'POST',
-                data: {action: 'add_to_export', id_shop: id_shop},
-                dataType: 'script'
-            });
-            return false;
+            var check = $('#select_all_shop_' + id_shop).prop('checked');
+            if (!check || (check && confirm(message))) {
+                $.ajax({
+                    url: href + '&' + form,
+                    method: 'POST',
+                    data: {action: 'add_to_export', id_shop: id_shop, select_all: check},
+                    dataType: 'script'
+                });
+            }
         });
         $('#lengow_feed_wrapper').on('click', '.lengow_remove_from_export', function () {
             var href = $(this).attr('data-href');
             var id_shop = $(this).attr('data-id_shop');
+            var message = $(this).attr('data-message');
             var form = $('#form_table_shop_' + id_shop).serialize();
-            $.ajax({
-                url: href + '&' + form,
-                method: 'POST',
-                data: {action: 'remove_from_export', id_shop: id_shop},
-                dataType: 'script'
-            });
-            return false;
+            var check = $('#select_all_shop_' + id_shop).prop('checked');
+            if (!check || (check && confirm(message))) {
+                $.ajax({
+                    url: href + '&' + form,
+                    method: 'POST',
+                    data: {action: 'remove_from_export', id_shop: id_shop, select_all: check},
+                    dataType: 'script'
+                });
+            }
+        });
+
+        $('#lengow_feed_wrapper').on('click', '.lengow_select_all_shop input', function () {
+            var id_shop = $('.lengow_select_all').attr('id').split('_')[2];
+            if ($(this).prop('checked')) {
+                $('#table_shop_' + id_shop + ' tbody .lengow_selection').prop('checked', true);
+                $('.lengow_selection').parents('tr').addClass('select');
+            }
         });
     });
 })(lengow_jquery);

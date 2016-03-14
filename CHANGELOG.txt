@@ -1,7 +1,46 @@
 =============================================================
 Version 3.0.0
 =============================================================
-    - check url export by token or IP
+    - Full rewrite for the new platform Lengow
+
+=============================================================
+Version 2.2.0
+=============================================================
+	- Compatibility V2/V3 for import process
+
+=============================================================
+Version 2.1.1
+=============================================================
+	- [export] Fix stream with false columns -> empty attributes 
+	- [export] Better data cleansing for export
+	- [export] Fix setAdditionalFields() and override
+	- [export] Fix selection of default fields if no field is selected
+	- [import] Fix import of several times the same product
+	- [import] Fix Importing more than one product (version 1.4)
+	- [import] Fix reimport order option
+	- [import] Fix notice index not found in getStateLengow()
+
+=============================================================
+Version 2.1
+=============================================================
+	- Full rewrite of import and export processes
+	- Compatibility with advanced stock management
+	- New LengowFeed class
+	- New LengowFile class
+	- Security updates - SQL injection
+	- Search markeplace carrier improved
+	- Compatibility with Prestashop Cron Editor
+	- Better exception management
+	- Fix Reset lengow import
+	- New log writing process
+	- Export in file improved
+	- Create interface LengowObject
+	- Compatibility with Prestasop 1.4 improved
+	- Export selected features
+	- Validate order process rewritten for orders imported
+	- Removal of "Force prices" option
+	- Removal of Feed Management
+	- Order comment from marketplaces imported
 
 =============================================================
 Version 2.0.9

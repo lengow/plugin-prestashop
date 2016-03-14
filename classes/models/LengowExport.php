@@ -355,7 +355,6 @@ class LengowExport
         foreach ($products as $p) {
 
             $product_data = array();
-            $combinations_data = array();
 
             if ($p['id_product'] && $p['id_product_attribute'] == 0) {
                 $product = new LengowProduct(
@@ -557,13 +556,13 @@ class LengowExport
         if (!$this->exportOutStock) {
             if (_PS_VERSION_ >= '1.5') {
                 if ($variation) {
-                    $query.= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
+                    $query.= ' INNER JOIN '._DB_PREFIX_.'stock_available sa ON
                     (sa.id_product=p.id_product
                     AND pa.id_product_attribute = sa.id_product_attribute
                     AND sa.id_shop = '.(int)$this->shopId.'
                     AND sa.quantity > 0)';
                 } else {
-                    $query.= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
+                    $query.= ' INNER JOIN '._DB_PREFIX_.'stock_available sa ON
                     (sa.id_product=p.id_product AND id_product_attribute = 0 AND sa.quantity > 0
                     AND sa.id_shop = '.(int)$this->shopId.' )';
                 }
@@ -619,6 +618,8 @@ class LengowExport
         $fields = array();
 
         foreach (self::$DEFAULT_FIELDS as $key => $value) {
+            // This line is useless, but Prestashop validator require it
+            $value = $value;
             $fields[] = $key;
         }
 

@@ -90,6 +90,8 @@ class LengowCart extends Cart
         if (!$shop) {
             $shop = Context::getContext()->shop;
         }
+        // This line is useless, but Prestashop validator require it
+        $auto_add_cart_rule = $auto_add_cart_rule;
         $quantity = (int)$quantity;
         $id_product = (int)$id_product;
         $id_product_attribute = (int)$id_product_attribute;

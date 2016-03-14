@@ -1,3 +1,23 @@
+/**
+ * Copyright 2016 Lengow SAS.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ * @author    Team Connector <team-connector@lengow.com>
+ * @copyright 2016 Lengow SAS
+ * @license   http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 function addScoreCarrier(){
     nbs = 0;
 
@@ -63,7 +83,8 @@ function addScoreCarrier(){
         });
 
         $('#marketplace_country').on('click', '.delete_lengow_default_carrier', function () {
-            if (confirm('Are you sure ?')) {
+            var message = $(this).attr('data-message');
+            if (confirm(message)) {
                 var href = $('.lengow_default_carrier').attr('data-href');
                 $.ajax({
                     url: href,
@@ -125,6 +146,23 @@ function addScoreCarrier(){
                 }
             });
             $('#error_select_country').html('');
+        });
+
+        function formatState (state) {
+            var image = $(state.element).data('image');
+            if (!state.id) { return state.text; }
+            if (!image) {
+                return state.text;
+            } else {
+                var $state = $(
+                    '<span><img width="22" height="15" src="'+ image +'" class="img-flag" /> ' + state.text + '</span>'
+                );
+                return $state;
+            }
+        };
+
+        $(".lengow_select").select2({
+            templateResult: formatState
         });
     });
 

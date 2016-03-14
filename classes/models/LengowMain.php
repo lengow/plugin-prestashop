@@ -202,18 +202,14 @@ class LengowMain
             case 'accepted':
             case 'waiting_shipment':
                 return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_PROCESS');
-                break;
             case 'shipped':
             case 'closed':
                 return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPED');
-                break;
             case 'refused':
             case 'canceled':
                 return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_CANCEL');
-                break;
             case 'shippedByMp':
                 return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPEDBYMP');
-                break;
         }
         return false;
     }
@@ -1064,7 +1060,7 @@ class LengowMain
     public static function getImportUrl($id_shop = null)
     {
         $base = LengowMain::getLengowBaseUrl($id_shop);
-        return $base . 'webservice/import.php?token='.LengowMain::getToken();
+        return $base . 'webservice/cron.php?token='.LengowMain::getToken();
     }
 
     /**

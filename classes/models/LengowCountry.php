@@ -19,6 +19,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Country Class.
+ *
+ */
 class LengowCountry
 {
     /**

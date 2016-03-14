@@ -19,29 +19,17 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
-
-require_once _PS_MODULE_DIR_.'lengow/lengow.php';
-
-/**
- * The Lengow's Order Admin Controller.
- *
- */
 class AdminLengowOrderController extends ModuleAdminController
 {
+    /**
+     * Construct the admin selection of products
+     */
     public function __construct()
     {
-
-        parent::__construct();
-
         $this->lang = false;
-        $this->context = Context::getContext();
-        $this->context->smarty->assign('lengow_link', new LengowLink());
-        $this->lite_display = true;
-        $this->lang = true;
         $this->explicitSelect = true;
+        $this->lite_display = true;
+        $this->meta_title = 'Configuration';
         $this->list_no_link = true;
         $this->template = 'layout.tpl';
         $this->display = 'view';

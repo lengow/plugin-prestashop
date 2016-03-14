@@ -37,6 +37,7 @@ class LengowController
         $this->isNewMerchant = LengowMain::isNewMerchant();
         $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
         $this->locale = new LengowTranslation();
+        $this->context->smarty->assign('lengow_link', new LengowLink());
     }
 
     public function postProcess()
@@ -50,16 +51,14 @@ class LengowController
             'total_pending_order',
             LengowOrder::getTotalOrderByStatus('waiting_shipment')
         );
-
         if (_PS_VERSION_ < '1.5') {
-
             $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
             if (!$toolbox) {
                 $module = Module::getInstanceByName('lengow');
                 echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');
                 $lengowMain = new LengowMain();
                 $className = get_class($this);
-                if (substr($className, 0, 11) == 'LengowOrder') {
+                if (Tools::substr($className, 0, 11) == 'LengowOrder') {
                     echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header_order.tpl');
                 }
                 $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));

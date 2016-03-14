@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-require_once _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'loader.php';
+require_once _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'loader.php';
 
 class Lengow extends Module
 {
@@ -27,8 +27,6 @@ class Lengow extends Module
     private $installClass;
 
     private $hookClass;
-
-    private $locale;
 
     public function __construct()
     {
@@ -41,8 +39,6 @@ class Lengow extends Module
 
         parent::__construct();
 
-        $this->locale = new LengowTranslation();
-
         if (_PS_VERSION_ < '1.5') {
             $sep = DIRECTORY_SEPARATOR;
             require_once _PS_MODULE_DIR_.$this->name.$sep.'backward_compatibility'.$sep.'backward.php';
@@ -50,9 +46,9 @@ class Lengow extends Module
             $this->smarty = $this->context->smarty;
         }
 
-        $this->displayName = $this->locale->t('module.name');
-        $this->description = $this->locale->t('module.description');
-        $this->confirmUninstall = $this->locale->t('module.uninstall');
+        $this->displayName = $this->l('Lengow');
+        $this->description = $this->l('Lengow allows you to easily export your product catalogue from your Prestashop store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister. Choose from our 1,800 available marketing channels!');
+        $this->confirmUninstall = $this->l('Are you sure you want to uninstall the Lengow module?');
 
         $this->installClass = new LengowInstall($this);
         $this->hookClass = new LengowHook($this);
@@ -65,9 +61,7 @@ class Lengow extends Module
 
         $this->context = Context::getContext();
         $this->context->smarty->assign('lengow_link', new LengowLink());
-
     }
-
 
     /**
      * Configure Link
