@@ -110,7 +110,7 @@ class LengowList
                 }
                 switch ($type) {
                     case 'text':
-                        $html.= '<input type="text" name="'.$name.'" value="'.$value.'" />';
+                        $html.= '<input type="text" class="focus_'.$key.'" name="'.$name.'" value="'.$value.'" />';
                         break;
                     case 'select':
                         $html.='<select class="form-control" name="'.$name.'">';
