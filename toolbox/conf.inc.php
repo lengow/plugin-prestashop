@@ -21,9 +21,11 @@
 
 $currentDirectory = str_replace('modules/lengow/toolbox/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
 
-
 //bypass id_shop from ps 1.6 check
-$temp_id_shop = $_REQUEST["id_shop"];
+$temp_id_shop = null;
+if (isset($_REQUEST["id_shop"])) {
+    $temp_id_shop = $_REQUEST["id_shop"];
+}
 $_POST["id_shop"] = null;
 $_GET["id_shop"] = null;
 $_REQUEST["id_shop"] = null;

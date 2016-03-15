@@ -74,6 +74,9 @@ class LengowFeedController extends LengowController
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     echo 'lengow_jquery("#block_'.$shopId.' .lengow_feed_block_footer_content").html("'.
                         preg_replace('/\r|\n/', '', addslashes($this->buildTable($shopId))).'");';
+                    if ($this->toolbox) {
+                        echo 'lengow_jquery(".lengow_switch").bootstrapSwitch({readonly: true});';
+                    }
                     break;
                 case 'add_to_export':
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
