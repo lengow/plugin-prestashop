@@ -197,6 +197,7 @@ lengow_log.error.no_country_for_delivery_address|delivery address doesn't contai
 lengow_log.error.no_billing_address|no billing address in the order
 lengow_log.error.no_country_for_billing_address|billing address doesn't contain the country
 lengow_log.error.tracking_in_progress|Tracking send in progress
+lengow_log.error.order_not_found|Order can't be found in lengow feed
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
 lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation is needed
 lengow_log.exception.no_product_to_cart|no product to be added to cart

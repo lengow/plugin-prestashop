@@ -59,6 +59,9 @@ body.lengow_body #content {
 body.lengow_body #content h2 {
     color:#555;
 }
+body.lengow_body #main {
+    padding: 36px 0 0px;
+}
 
 body.lengow_body #content a {
     color: #415260;
@@ -461,7 +464,7 @@ body.lengow_body #content .lengow_breadcrumb a {
 
 span.img_no_result {
     background : transparent url("../img/no-result-grey.png") no-repeat;
-    height: 208px; 
+    height: 208px;
     width: 269px;
     display: block;
     margin: 0 auto;
@@ -508,7 +511,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 }
 
 .lengow_pagination_total {
-    padding-top: 7px; 
+    padding-top: 7px;
     float: left;
 }
 
@@ -717,7 +720,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 
 .lengow_table_bottom {
     height: 30px;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 
 /* FEED PAGE */
@@ -764,7 +767,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 
 .lengow_feed_block_footer_content .lengow_table_bottom,
 .lengow_feed_block_footer_content .lengow_table_top {
-    padding: 0 10px; 
+    padding: 0 10px;
 }
 
 #lengow_feed_wrapper .lengow_table {
@@ -847,7 +850,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 
 #lengow_no_order_block {
     background: #182D40 url("../img/background.jpg") repeat left top;
-    margin-top: 20px; 
+    margin-top: 20px;
 }
 
 #lengow_no_order_message {
@@ -863,7 +866,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 
 span.img_no_order {
     background : transparent url("../img/no-result-white.png") no-repeat;
-    height: 208px; 
+    height: 208px;
     width: 269px;
     display: block;
     margin: 0 auto;
@@ -1148,14 +1151,15 @@ button.lengow_submit_order_setting {
 #lengow_home_frame {
     padding:0px;
 }
-
-#lengow_home_frame iframe {
+#lengow_home_frame #lengow_iframe {
     width:100%;
     border:none;
     margin:0px;
     margin-top: -6px;
     height:100%;
 }
+
+#frame_loader {text-align: center;padding-top:60px;}
 
 /* HELP PAGE */
 #lengow_help_wrapper {

@@ -216,6 +216,7 @@ en:
       no_billing_address: "no billing address in the order"
       no_country_for_billing_address: "billing address doesn't contain the country"
       tracking_in_progress: "Tracking send in progress"
+      order_not_found: "Order can't be found in lengow feed"
     exception:
       product_not_be_found: "product %{product_id} could not be found"
       product_is_a_parent: "product %{product_id} is a parent ID. Product variation is needed"
