@@ -347,7 +347,8 @@ class LengowOrderController extends LengowController
             );
         }
         $fields_list['search'] = array(
-            'width'             => '10%',
+            'title'         => '',
+            'width'         => '10%',
             'button_search' => true
         );
         $select = array(
@@ -363,7 +364,8 @@ class LengowOrderController extends LengowController
             'lo.order_date',
             'lo.order_lengow_state as lengow_status',
             'lo.id_order',
-            'lo.currency'
+            'lo.currency',
+            "'' as search"
         );
         $select_having = array(
             ' (SELECT IFNULL(lli.type, 0) FROM '._DB_PREFIX_.'lengow_logs_import lli

@@ -279,6 +279,7 @@ class LengowFeedController extends LengowController
             'filter_key'    => 'id_lengow_product'
         );
         $fields_list['search'] = array(
+            'title'         => '',
             'width'         => '12%',
             'button_search' => true
         );
@@ -294,6 +295,7 @@ class LengowFeedController extends LengowController
             "0 as price_final",
             "IF(lp.id_product, 1, 0) as id_lengow_product",
             "cl.name as category_name",
+            "'' as search"
         );
         $from = 'FROM '._DB_PREFIX_.'product p';
 
