@@ -48,10 +48,6 @@
             $('#lengow_order_wrapper .lengow_form_table').submit();
             return false;
         });
-        $('#lengow_order_wrapper').on('change', '.lengow_form_table select', function () {
-            $('#lengow_order_wrapper .lengow_form_table').submit();
-            return false;
-        });
         $('#lengow_order_wrapper').on('click', '.lengow_form_table .table_order', function () {
             $('#lengow_order_wrapper .lengow_form_table input[name="order_value"]').val($(this).attr('data-order'));
             $('#lengow_order_wrapper .lengow_form_table input[name="order_column"]').val($(this).attr('data-column'));
