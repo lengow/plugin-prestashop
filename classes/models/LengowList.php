@@ -38,6 +38,7 @@ class LengowList
     protected $ajax;
     protected $context;
     protected $locale;
+    protected $toolbox;
 
     /**
      * Construct
@@ -57,6 +58,7 @@ class LengowList
         $this->ajax = isset($params['ajax']) ? (bool)$params['ajax'] : false;
         $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
         $this->orderColumn = isset($params['order_column']) ? $params['order_column'] : '';
+        $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
 
         $this->locale = new LengowTranslation();
 
@@ -77,7 +79,7 @@ class LengowList
         $html ='<table class="lengow_table table table-bordered table-striped table-hover" id="table_'.$this->id.'">';
         $html.='<thead>';
         $html.='<tr>';
-        if ($this->selection) {
+        if ($this->selection && !$this->toolbox) {
             $html.='<th width="2%"></th>';
         }
         foreach ($this->fields_list as $key => $values) {
@@ -94,7 +96,7 @@ class LengowList
         $html.='</tr>';
 
         $html.='<tr class="lengow_filter">';
-        if ($this->selection) {
+        if ($this->selection && !$this->toolbox) {
             $html.='<th width="2%"><input type="checkbox" id="select_'.$this->id.'"
                 class="lengow_select_all lengow_link_tooltip"/></th>';
         }
@@ -178,7 +180,7 @@ class LengowList
         $lengow_link = new LengowLink();
         $html = '';
         $html.= '<tr id='.$this->id.'_'.$item[$this->identifier].'>';
-        if ($this->selection) {
+        if ($this->selection && !$this->toolbox) {
             if ($this->selectionCondition) {
                 if ($item[$this->selectionCondition] > 0) {
                     $html.='<td><input type="checkbox" class="lengow_selection"
