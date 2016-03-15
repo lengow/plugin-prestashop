@@ -29,7 +29,7 @@ class LengowFeedController extends LengowController
     public function postProcess()
     {
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
-        if ($action && !$this->toolbox) {
+        if ($action) {
             switch ($action) {
                 case 'change_option_product_variation':
                     $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
