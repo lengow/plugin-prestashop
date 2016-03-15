@@ -291,7 +291,7 @@ class LengowOrderController extends LengowController
         }
         $fields_list['marketplace_sku'] = array(
             'title'             => $this->locale->t('order.table.marketplace_sku'),
-            'width'             => '15%',
+            'width'             => '14%',
             'class'             => 'center link',
             'display_callback'  => 'LengowOrderController::displayOrderLink',
             'filter'            => true,
@@ -334,7 +334,7 @@ class LengowOrderController extends LengowController
         );
         $fields_list['total_paid'] = array(
             'title'             => $this->locale->t('order.table.total_paid'),
-            'width'             => '9%',
+            'width'             => '7%',
             'type'              => 'price',
             'class'             => 'nowrap center link',
             'filter_key'        => 'lo.total_paid',
@@ -347,6 +347,10 @@ class LengowOrderController extends LengowController
                 'display_callback'  => 'LengowOrderController::displayLengowExtra'
             );
         }
+        $fields_list['search'] = array(
+            'width'             => '10%',
+            'button_search' => true
+        );
         $select = array(
             'lo.id',
             'lo.marketplace_sku',
