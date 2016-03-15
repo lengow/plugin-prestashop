@@ -75,6 +75,11 @@ if ($lengowTool->isLogged()) {
                         </a>
                     </li>
                     <li>
+                        <a href="/modules/lengow/toolbox/checksum.php">
+                            <i class="fa fa-search"></i> <?php echo $locale->t('toolbox.menu.checksum'); ?>
+                        </a>
+                    </li>
+                    <li>
                         <a href="/modules/lengow/toolbox/log.php">
                             <i class="fa fa-file-text-o"></i> <?php echo $locale->t('toolbox.menu.log'); ?>
                         </a>

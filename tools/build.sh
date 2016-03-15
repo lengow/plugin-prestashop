@@ -76,6 +76,9 @@ if [ ! -d "$FOLDER" ]; then
 	exit 0
 fi
 
+# Create files checksum
+php checkmd5.php
+echo "- Create files checksum : ""$VERT""DONE""$NORMAL"""
 #remove TMP FOLDER
 remove_directory $FOLDER_TMP
 #copy files

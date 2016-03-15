@@ -91,6 +91,7 @@ en:
       product: "Products"
       order: "Orders"
       configuration: "Configuration"
+      checksum: "Checksum"
       log: "Logs"
       log_off: "Log Off"
     index:
@@ -113,6 +114,9 @@ en:
       email_desactived: "Email are desactived"
       error_mail_setting: "Error mail settings, PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4"
       email_using_php_mail: "Email using php mail function"
+      checksum_message: "Verification plugin files"
+      checksum_help: "Some files have been modified by the customer"
+      checksum_help_label: "Go to Checksum page"
       global_information: "Global information"
       prestashop_version: "Prestashop version"
       plugin_version: "Plugin version"
@@ -161,6 +165,13 @@ en:
       update_settings: "Update settings"
       check_update_settings: "Do you really want to update settings and Lengow tables ?"
       button_save: "Save settings"
-    log:
+    checksum:
+      checksum_integrity: "File checksum integrity"
+      file_not_exists: "checkmd5.csv file is not present. Verification is impossible !"
+      summary: "Summary"
+      file_checked: "%{nb_file} files checked"
+      file_modified: "%{nb_file} files modified"
+      list_modified_file: "List of modified files"
+    log: 
       log_files: "Log Files"
       download_all: "Download all files"
