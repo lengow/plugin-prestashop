@@ -35,3 +35,9 @@ echo '<h1>'.$locale->t('toolbox.menu.product').'</h1>';
 echo $controller->forceDisplay();
 echo '</div><!-- /.container -->';
 require 'views/footer.php';
+
+?>
+
+<script>
+	lengow_jquery('.lengow_switch').bootstrapSwitch({readonly: true});
+</script>

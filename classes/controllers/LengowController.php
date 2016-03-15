@@ -26,6 +26,7 @@ class LengowController
     protected $context;
     protected $locale;
     protected $isNewMerchant;
+    protected $toolbox;
 
     public function __construct()
     {
@@ -38,6 +39,7 @@ class LengowController
         $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
         $this->locale = new LengowTranslation();
         $this->context->smarty->assign('lengow_link', new LengowLink());
+        $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
     }
 
     public function postProcess()
@@ -52,8 +54,7 @@ class LengowController
             LengowOrder::getTotalOrderByStatus('waiting_shipment')
         );
         if (_PS_VERSION_ < '1.5') {
-            $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
-            if (!$toolbox) {
+            if (!$this->toolbox) {
                 $module = Module::getInstanceByName('lengow');
                 echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');
                 $lengowMain = new LengowMain();

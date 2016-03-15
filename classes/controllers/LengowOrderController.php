@@ -230,7 +230,6 @@ class LengowOrderController extends LengowController
         } else {
             $width = '12%';
         }
-        $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $fields_list = array();
         $fields_list['log_status'] = array(
             'title'             => $this->locale->t('order.table.action_lengow'),
@@ -340,7 +339,7 @@ class LengowOrderController extends LengowController
             'filter_key'        => 'lo.total_paid',
             'filter_order'      => true,
         );
-        if ($toolbox) {
+        if ($this->toolbox) {
             $fields_list['extra'] = array(
                 'title'             => $this->locale->t('order.table.extra'),
                 'type'              => 'text',
