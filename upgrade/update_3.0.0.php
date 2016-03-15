@@ -464,3 +464,5 @@ LengowInstall::removeFiles(array(
     'config_gb.xml',
     'config_de.xml',
 ));
+
+LengowInstall::createTabImage();

@@ -61,10 +61,10 @@ fr:
       marketplace_name: "Place de marché"
       shop_name: "Boutique"
       marketplace_sku: "ID Commande"
-      reference_prestashop: "Référence PrestaShop"
+      reference_prestashop: "Référence"
       order_date: "Date"
       delivery_country: "Pays"
-      order_item: "Nombre d'articles"
+      order_item: "Quantité"
       total_paid: "Total"
   order_setting:
     screen:

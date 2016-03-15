@@ -372,4 +372,17 @@ class LengowInstall
         }
         rmdir($dirPath);
     }
+
+    /**
+     * v3
+     * Create tab image for version 1.5
+     */
+    public static function createTabImage()
+    {
+        $filePath = _PS_MODULE_LENGOW_DIR_.'views/img/AdminLengowHome.gif';
+        $fileDest = _PS_MODULE_LENGOW_DIR_.'AdminLengowHome.gif';
+        if (!file_exists($fileDest) && LengowMain::compareVersion('1.5') == 0) {
+            copy($filePath, $fileDest);
+        }
+    }
 }

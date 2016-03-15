@@ -930,6 +930,18 @@ span.title_no_order {
     font-size:24px;
 }
 
+.label_re_send,
+.label_re_import {
+   float: left;
+}
+
+.lengow_re_send,
+.lengow_re_import {
+    margin-top: 6px;
+    text-align: center;
+    display: block;
+}
+
 /*ORDER SETTING PAGE */
 #lengow_form_wrapper {
     width:100%;

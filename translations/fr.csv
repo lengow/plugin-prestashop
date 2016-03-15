@@ -51,10 +51,10 @@ order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pou
 order.table.marketplace_name|Place de marché
 order.table.shop_name|Boutique
 order.table.marketplace_sku|ID Commande
-order.table.reference_prestashop|Référence PrestaShop
+order.table.reference_prestashop|Référence
 order.table.order_date|Date
 order.table.delivery_country|Pays
-order.table.order_item|Nombre d'articles
+order.table.order_item|Quantité
 order.table.total_paid|Total
 order_setting.screen.order_status_title|Statut des commandes
 order_setting.screen.order_status_description|C'est le moment de faire correspondre vos statuts de commande Lengow avec les statuts proposés par PrestaShop
