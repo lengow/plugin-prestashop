@@ -89,10 +89,10 @@ order.table.order_lengow_state|Status Lengow
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Shop
 order.table.marketplace_sku|ID order
-order.table.reference_prestashop|PrestaShop Reference
+order.table.reference_prestashop|Reference
 order.table.order_date|Date
 order.table.delivery_country|Country
-order.table.order_item|Number of items
+order.table.order_item|Quantity
 order.table.total_paid|Total
 order.table.extra|Extra
 order_setting.screen.order_status_title|Order Status
@@ -323,6 +323,7 @@ toolbox.menu.lengow_toolbox|Lengow Toolbox
 toolbox.menu.product|Products
 toolbox.menu.order|Orders
 toolbox.menu.configuration|Configuration
+toolbox.menu.checksum|Checksum
 toolbox.menu.log|Logs
 toolbox.menu.log_off|Log Off
 toolbox.index.checklist_information|Check-list
@@ -344,6 +345,9 @@ toolbox.index.mail_configuration_enabled|Email are enabled with custom settings
 toolbox.index.email_desactived|Email are desactived
 toolbox.index.error_mail_setting|Error mail settings, PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4
 toolbox.index.email_using_php_mail|Email using php mail function
+toolbox.index.checksum_message|Verification plugin files
+toolbox.index.checksum_help|Some files have been modified by the customer
+toolbox.index.checksum_help_label|Go to Checksum page
 toolbox.index.global_information|Global information
 toolbox.index.prestashop_version|Prestashop version
 toolbox.index.plugin_version|Plugin version
@@ -388,5 +392,11 @@ toolbox.configuration.check_get_default_settings|Do you really want to reset all
 toolbox.configuration.update_settings|Update settings
 toolbox.configuration.check_update_settings|Do you really want to update settings and Lengow tables ?
 toolbox.configuration.button_save|Save settings
+toolbox.checksum.checksum_integrity|File checksum integrity
+toolbox.checksum.file_not_exists|checkmd5.csv file is not present. Verification is impossible !
+toolbox.checksum.summary|Summary
+toolbox.checksum.file_checked|%{nb_file} files checked
+toolbox.checksum.file_modified|%{nb_file} files modified
+toolbox.checksum.list_modified_file|List of modified files
 toolbox.log.log_files|Log Files
 toolbox.log.download_all|Download all files

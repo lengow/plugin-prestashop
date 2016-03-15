@@ -230,7 +230,6 @@ class LengowOrderController extends LengowController
         } else {
             $width = '12%';
         }
-        $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $fields_list = array();
         $fields_list['log_status'] = array(
             'title'             => $this->locale->t('order.table.action_lengow'),
@@ -291,7 +290,7 @@ class LengowOrderController extends LengowController
         }
         $fields_list['marketplace_sku'] = array(
             'title'             => $this->locale->t('order.table.marketplace_sku'),
-            'width'             => '15%',
+            'width'             => '14%',
             'class'             => 'center link',
             'display_callback'  => 'LengowOrderController::displayOrderLink',
             'filter'            => true,
@@ -327,26 +326,30 @@ class LengowOrderController extends LengowController
         );
         $fields_list['nb_item'] = array(
             'title'             => $this->locale->t('order.table.order_item'),
-            'width'             => '9%',
+            'width'             => '5%',
             'class'             => 'center link',
             'filter_key'        => 'lo.order_item',
             'filter_order'      => true,
         );
         $fields_list['total_paid'] = array(
             'title'             => $this->locale->t('order.table.total_paid'),
-            'width'             => '9%',
+            'width'             => '7%',
             'type'              => 'price',
             'class'             => 'nowrap center link',
             'filter_key'        => 'lo.total_paid',
             'filter_order'      => true,
         );
-        if ($toolbox) {
+        if ($this->toolbox) {
             $fields_list['extra'] = array(
                 'title'             => $this->locale->t('order.table.extra'),
                 'type'              => 'text',
                 'display_callback'  => 'LengowOrderController::displayLengowExtra'
             );
         }
+        $fields_list['search'] = array(
+            'width'             => '10%',
+            'button_search' => true
+        );
         $select = array(
             'lo.id',
             'lo.marketplace_sku',
@@ -534,7 +537,7 @@ class LengowOrderController extends LengowController
             if ($item[$key] == '2') {
                 $message = LengowMain::decodeLogMessage('order.screen.action_sent_not_work')
                     .'<br/><br/>'.join('<br/>', $errorMessage);
-                $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red"
+                $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red label_re_send"
                     data-html="true" data-original-title="'.$message.'"
                     >'.LengowMain::decodeLogMessage('order.screen.not_sent').'</span>';
                 $value.= ' <a href="#" class="lengow_re_send lengow_link_tooltip"
@@ -548,7 +551,7 @@ class LengowOrderController extends LengowController
             } else {
                 $message = LengowMain::decodeLogMessage('order.screen.order_not_imported')
                     .'<br/><br/>'.join('<br/>', $errorMessage);
-                $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red"
+                $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red label_re_import"
                     data-html="true" data-original-title="'.$message.'"
                     >'.LengowMain::decodeLogMessage('order.screen.not_imported').'</span>';
                 $value.= ' <a href="#" class="lengow_re_import lengow_link_tooltip"

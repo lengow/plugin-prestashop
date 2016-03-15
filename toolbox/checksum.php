@@ -20,24 +20,15 @@
  */
 
 require 'conf.inc.php';
-
-LengowLink::forceLink('/modules/lengow/toolbox/product.php?t=1');
+require 'views/header.php';
 
 $locale = new LengowTranslation();
-
-$controller = new LengowFeedController();
-$controller->postProcess();
-$controller->display();
-
-require 'views/header.php';
-echo '<div class="full-container">';
-echo '<h1>'.$locale->t('toolbox.menu.product').'</h1>';
-echo $controller->forceDisplay();
-echo '</div><!-- /.container -->';
-require 'views/footer.php';
+$check = new LengowCheck();
 
 ?>
-
-<script>
-	lengow_jquery('.lengow_switch').bootstrapSwitch({readonly: true});
-</script>
+    <div class="container">
+        <h1><?php echo $locale->t('toolbox.checksum.checksum_integrity'); ?></h1>
+        <?php echo $check->checkFileMd5(); ?>
+    </div>
+<?php
+require 'views/footer.php';

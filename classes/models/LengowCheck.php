@@ -99,6 +99,13 @@ class LengowCheck
             'title'         => $mail_check['message'],
             'state'         => $mail_check['state']
         );
+        $checklist[] = array(
+            'title'         => $this->locale->t('toolbox.index.checksum_message'),
+            'help'          => $this->locale->t('toolbox.index.checksum_help'),
+            'help_link'     => '/modules/lengow/toolbox/checksum.php',
+            'help_label'    => $this->locale->t('toolbox.index.checksum_help_label'),
+            'state'         => (int)self::getFileModified()
+        );
         return $this->getAdminContent($checklist);
     }
 
@@ -236,6 +243,85 @@ class LengowCheck
             'message'   => $last_export
         );
         return $this->getAdminContent($checklist);
+    }
+
+    /**
+     * Get files checksum
+     *
+     * @return mixed
+     */
+    public function checkFileMd5()
+    {
+        $checklist = array();
+        $file_name = _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'toolbox'.DIRECTORY_SEPARATOR.'checkmd5.csv';
+        $html = '<h3><i class="fa fa-commenting"></i> '.$this->locale->t('toolbox.checksum.summary').'</h3>';
+        $file_counter = 0;
+        if (file_exists($file_name)) {
+            $file_errors = array();
+            if (($file = fopen($file_name, "r")) !== false) {
+                while (($data = fgetcsv($file, 1000, "|")) !== false) {
+                    $file_counter++;
+                    $file_path = _PS_MODULE_DIR_.'lengow'.$data[0];
+                    $file_md5 = md5_file($file_path);
+                    if ($file_md5 !== $data[1]) {
+                        $file_errors[] = array(
+                            'title' => $file_path,
+                            'state' => 0
+                        );
+                    }
+                }
+                fclose($file);
+            }
+            $checklist[] = array(
+                'title' => $this->locale->t('toolbox.checksum.file_checked', array(
+                    'nb_file' => $file_counter
+                )),
+                'state' => 1
+            );
+            $checklist[] = array(
+                'title' => $this->locale->t('toolbox.checksum.file_modified', array(
+                    'nb_file' => count($file_errors)
+                )),
+                'state' => (count($file_errors) > 0 ? 0 : 1)
+            );
+            $html.= $this->getAdminContent($checklist);
+            if (count($file_errors) > 0) {
+                $html.= '<h3><i class="fa fa-list"></i> '
+                    .$this->locale->t('toolbox.checksum.list_modified_file').'</h3>';
+                $html.= $this->getAdminContent($file_errors);
+            }
+        } else {
+            $checklist[] = array(
+                'title' => $this->locale->t('toolbox.checksum.file_not_exists'),
+                'state' => 0
+            );
+            $html.= $this->getAdminContent($checklist);
+        }
+        return $html;
+    }
+
+    /**
+     * Get checksum errors
+     *
+     * @return boolean
+     */
+    public static function getFileModified()
+    {
+        $file_name = _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'toolbox'.DIRECTORY_SEPARATOR.'checkmd5.csv';
+        if (file_exists($file_name)) {
+            if (($file = fopen($file_name, "r")) !== false) {
+                while (($data = fgetcsv($file, 1000, "|")) !== false) {
+                    $file_path = _PS_MODULE_DIR_.'lengow'.$data[0];
+                    $file_md5 = md5_file($file_path);
+                    if ($file_md5 !== $data[1]) {
+                        return false;
+                    }
+                }
+                fclose($file);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

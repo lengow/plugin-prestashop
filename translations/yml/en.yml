@@ -101,10 +101,10 @@ en:
       marketplace_name: "Marketplace"
       shop_name: "Shop"
       marketplace_sku: "ID order"
-      reference_prestashop: "PrestaShop Reference"
+      reference_prestashop: "Reference"
       order_date: "Date"
       delivery_country: "Country"
-      order_item: "Number of items"
+      order_item: "Quantity"
       total_paid: "Total"
       extra: "Extra"
   order_setting:

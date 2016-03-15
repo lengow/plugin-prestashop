@@ -841,6 +841,9 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     display: inline-block;
 }
 
+.lengow_remove_from_export i, .lengow_add_to_export i {
+    margin-right: 8px;
+}
 /* ORDER PAGE */
 #lengow_order_wrapper {
     padding:0 60px 40px 60px;
@@ -931,6 +934,18 @@ span.title_no_order {
 
 .lengow_order_block_content_left .lengow_strong {
     font-size:24px;
+}
+
+.label_re_send,
+.label_re_import {
+   float: left;
+}
+
+.lengow_re_send,
+.lengow_re_import {
+    margin-top: 6px;
+    text-align: center;
+    display: block;
 }
 
 /*ORDER SETTING PAGE */

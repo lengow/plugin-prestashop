@@ -251,7 +251,7 @@ class LengowFeedController extends LengowController
         );
         $fields_list['price_final'] = array(
             'title'         => $this->locale->t('product.table.final_price'),
-            'width'         => '9%',
+            'width'         => '7%',
             'type'          => 'price',
             'class'         => 'left',
             'havingFilter'  => true,
@@ -264,7 +264,7 @@ class LengowFeedController extends LengowController
         }
         $fields_list['quantity'] = array(
             'title'         => $this->locale->t('product.table.quantity'),
-            'width'         => '9%',
+            'width'         => '7%',
             'filter_order'  => true,
             'class'         => 'left',
             'filter_key'    => $quantity_filter_key,
@@ -272,11 +272,14 @@ class LengowFeedController extends LengowController
         );
         $fields_list['id_lengow_product'] = array(
             'title'         => $this->locale->t('product.table.lengow_status'),
-            'width'         => '13%',
+            'width'         => '10%',
             'class'         => 'center',
             'type'          => 'switch_product',
             'filter_order'  => true,
-            'filter_key'    => 'id_lengow_product',
+            'filter_key'    => 'id_lengow_product'
+        );
+        $fields_list['search'] = array(
+            'width'         => '12%',
             'button_search' => true
         );
 
@@ -429,27 +432,29 @@ class LengowFeedController extends LengowController
 
         $html='<div class="lengow_table_top">';
         $html.='<div class="lengow_toolbar">';
-        $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
-            data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
-            data-message="'.$this->locale->t('product.screen.remove_confirmation', array(
-                'nb' => $this->list->getTotal()
-            )).'"
-            class="lengow_btn lengow_remove_from_export">
-            <i class="fa fa-minus"></i> '.$this->locale->t('product.screen.remove_from_export').'</a>';
-        $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
-            data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
-            data-message="'.$this->locale->t('product.screen.add_confirmation', array(
-                'nb' => $this->list->getTotal()
-            )).'"
-            class="lengow_btn lengow_add_to_export">
-            <i class="fa fa-plus"></i> '.$this->locale->t('product.screen.add_from_export').'</a>';
-        $html.='<div class="lengow_select_all_shop" style="display:none;">';
-        $html.='<input type="checkbox" id="select_all_shop_'.$shopId.'"/>';
-        $html.='<span>'.$this->locale->t('product.screen.select_all_products', array(
+        if (!$this->toolbox) {
+            $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
+                data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
+                data-message="'.$this->locale->t('product.screen.remove_confirmation', array(
                     'nb' => $this->list->getTotal()
-                ));
-        $html.='</span>';
-        $html.='</div>';
+                )).'"
+                class="lengow_btn lengow_remove_from_export">
+                <i class="fa fa-minus"></i> '.$this->locale->t('product.screen.remove_from_export').'</a>';
+            $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
+                data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
+                data-message="'.$this->locale->t('product.screen.add_confirmation', array(
+                    'nb' => $this->list->getTotal()
+                )).'"
+                class="lengow_btn lengow_add_to_export">
+                <i class="fa fa-plus"></i> '.$this->locale->t('product.screen.add_from_export').'</a>';
+            $html.='<div class="lengow_select_all_shop" style="display:none;">';
+            $html.='<input type="checkbox" id="select_all_shop_'.$shopId.'"/>';
+            $html.='<span>'.$this->locale->t('product.screen.select_all_products', array(
+                        'nb' => $this->list->getTotal()
+                    ));
+            $html.='</span>';
+            $html.='</div>';
+        }
         $html.='</div>';
         $html.= $paginationBlock;
         $html.='<div class="lengow_clear"></div>';
