@@ -327,7 +327,7 @@ class LengowOrderController extends LengowController
         );
         $fields_list['nb_item'] = array(
             'title'             => $this->locale->t('order.table.order_item'),
-            'width'             => '9%',
+            'width'             => '5%',
             'class'             => 'center link',
             'filter_key'        => 'lo.order_item',
             'filter_order'      => true,
@@ -534,7 +534,7 @@ class LengowOrderController extends LengowController
             if ($item[$key] == '2') {
                 $message = LengowMain::decodeLogMessage('order.screen.action_sent_not_work')
                     .'<br/><br/>'.join('<br/>', $errorMessage);
-                $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red"
+                $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red label_re_send"
                     data-html="true" data-original-title="'.$message.'"
                     >'.LengowMain::decodeLogMessage('order.screen.not_sent').'</span>';
                 $value.= ' <a href="#" class="lengow_re_send lengow_link_tooltip"
@@ -548,7 +548,7 @@ class LengowOrderController extends LengowController
             } else {
                 $message = LengowMain::decodeLogMessage('order.screen.order_not_imported')
                     .'<br/><br/>'.join('<br/>', $errorMessage);
-                $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red"
+                $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red label_re_import"
                     data-html="true" data-original-title="'.$message.'"
                     >'.LengowMain::decodeLogMessage('order.screen.not_imported').'</span>';
                 $value.= ' <a href="#" class="lengow_re_import lengow_link_tooltip"
