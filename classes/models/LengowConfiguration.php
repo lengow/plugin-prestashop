@@ -195,10 +195,12 @@ class LengowConfiguration extends Configuration
                 'LENGOW_LAST_IMPORT_CRON' => array(
                     'readonly'      => true,
                     'label'         => $locale->t('lengow_setting.lengow_last_import_cron_title'),
+                    'export'        => false
                 ),
                 'LENGOW_LAST_IMPORT_MANUAL' => array(
                     'readonly'      => true,
                     'label'         => $locale->t('lengow_setting.lengow_last_import_manual_title'),
+                    'export'        => false
                 ),
                 'LENGOW_GLOBAL_TOKEN' => array(
                     'readonly'      => true,
@@ -222,10 +224,12 @@ class LengowConfiguration extends Configuration
                 'LENGOW_ORDER_STAT' => array(
                     'type'          => 'json',
                     'label'         => $locale->t('lengow_setting.lengow_order_stat_title'),
+                    'export'        => false
                 ),
                 'LENGOW_ORDER_STAT_UPDATE' => array(
                     'type'          => 'datetime',
                     'label'         => $locale->t('lengow_setting.lengow_order_stat_update_title'),
+                    'export'        => false
                 ),
                 'LENGOW_VERSION' => array(
                     'type'          => 'text',
@@ -283,7 +287,7 @@ class LengowConfiguration extends Configuration
 
     public static function resetAll($overwrite = false)
     {
-        $shops = LengowShop::findAll();
+        $shops = LengowShop::findAll(true);
         $keys = self::getKeys();
         foreach ($keys as $key => $value) {
             if (isset($value['default_value'])) {
@@ -325,5 +329,29 @@ class LengowConfiguration extends Configuration
             self::deleteByName($key);
         }
         return true;
+    }
+
+    /**
+     * Get Values by shop or global
+     * @param null $shopId
+     * @return array
+     */
+    public static function getAllValues($shopId = null)
+    {
+        $rows = array();
+        $keys = self::getKeys();
+        foreach ($keys as $key => $value) {
+            if (isset($value['export']) && !$value['export']) {
+                continue;
+            }
+            if ($shopId) {
+                if (isset($value['shop']) && $value['shop'] == 1) {
+                    $rows[$key] = LengowConfiguration::get($key, null, false, $shopId);
+                }
+            } else {
+                $rows[$key] = LengowConfiguration::getGlobalValue($key);
+            }
+        }
+        return $rows;
     }
 }
