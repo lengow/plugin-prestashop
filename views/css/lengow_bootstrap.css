@@ -889,7 +889,9 @@ span.title_no_order {
     z-index: 100;
     color: #61687d;
 }
-#lengow_charge_import_order #lengow_charge_lign1, #lengow_charge_import_order #lengow_charge_lign2 {
+
+#lengow_charge_import_order #lengow_charge_lign1,
+#lengow_charge_import_order #lengow_charge_lign2 {
     font-size: 2.5em;
 }
 
@@ -1001,7 +1003,8 @@ span.title_no_order {
     box-shadow:0.1px 0px 0px 0px rgba(0, 0, 0, 0.7);
 }
 
-.lengow_form .container, .lengow_form .container2 {
+.lengow_form .container,
+.lengow_form .container2 {
     padding: 20px;
 }
 
@@ -1090,7 +1093,8 @@ span.title_no_order {
     padding:0px;
 }
 
-.lengow_form .accordion input[type="radio"], .lengow_form .accordion input[type="checkbox"] {
+.lengow_form .accordion input[type="radio"],
+.lengow_form .accordion input[type="checkbox"] {
     display: none;
 }
 
@@ -1210,14 +1214,17 @@ body.lengow_body .nobootstrap .lengow_report_mail_address {
 #lengow_form_wrapper.lengow_main_setting ul.select2-selection__rendered li {
     height: 28px;
     line-height: 28px;
-    font-size: 18px;
+    margin-bottom: 5px;
 }
 
-button.lengow_submit_main_setting, button.lengow_submit_delete_module, button.lengow_delete_module {
+button.lengow_submit_main_setting,
+button.lengow_submit_delete_module,
+button.lengow_delete_module {
     border: 0;
 }
 
-button.lengow_delete_module, button.lengow_submit_delete_module{
+button.lengow_delete_module,
+button.lengow_submit_delete_module{
     background: #f66b57;
 }
 

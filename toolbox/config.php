@@ -56,21 +56,25 @@ switch ($action) {
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
         break;
     case "get_default_settings":
-        LengowConfiguration::resetAll(true);
+        if ($fullAccess && $fullAccess == 'admin') {
+            LengowConfiguration::resetAll(true);
+        }
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
         break;
     case "update_settings":
-        if (_PS_VERSION_ < '1.5') {
-            $temp_profile = Context::getContext()->cookie->profile;
-            Context::getContext()->cookie->profile = 1;
-        }
-        LengowTranslation::$forceIsoCode = null;
-        $module = Module::getInstanceByName('lengow');
-        $install = new LengowInstall($module);
-        $install->update();
-        LengowTranslation::$forceIsoCode = 'en';
-        if (_PS_VERSION_ < '1.5') {
-            Context::getContext()->cookie->profile = $temp_profile;
+        if ($fullAccess && $fullAccess == 'admin') {
+            if (_PS_VERSION_ < '1.5') {
+                $temp_profile = Context::getContext()->cookie->profile;
+                Context::getContext()->cookie->profile = 1;
+            }
+            LengowTranslation::$forceIsoCode = null;
+            $module = Module::getInstanceByName('lengow');
+            $install = new LengowInstall($module);
+            $install->update();
+            LengowTranslation::$forceIsoCode = 'en';
+            if (_PS_VERSION_ < '1.5') {
+                Context::getContext()->cookie->profile = $temp_profile;
+            }
         }
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
         break;
@@ -135,17 +139,17 @@ require 'views/header.php';
                     <?php echo $locale->t('toolbox.configuration.button_save'); ?>
                 </button>
                 <?php
-                if ($fullAccess && $fullAccess = 'power_user') {
+                if ($fullAccess && $fullAccess == 'admin') {
                     ?>
                     <a class="lengow_btn btn-success"
-                        href="/modules/lengow/toolbox/config.php?action=get_default_settings"
+                        href="/modules/lengow/toolbox/config.php?action=get_default_settings&access=admin"
                         onclick="return confirm(
                             '<?php echo  $locale->t('toolbox.configuration.check_get_default_settings'); ?>'
                         )">
                         <?php echo $locale->t('toolbox.configuration.get_default_settings'); ?>
                     </a>
                     <a class="lengow_btn btn-success"
-                        href="/modules/lengow/toolbox/config.php?action=update_settings"
+                        href="/modules/lengow/toolbox/config.php?action=update_settings&access=admin"
                         onclick="return confirm(
                             '<?php echo  $locale->t('toolbox.configuration.check_update_settings'); ?>'
                         )">
@@ -160,3 +164,6 @@ require 'views/header.php';
 </div>
 <?php
 require 'views/footer.php';
+?>
+
+<script type="text/javascript" src="/modules/lengow/views/js/lengow/main_setting.js"></script>
