@@ -41,7 +41,7 @@ class LengowSync extends SpecificPrice
         $data['email'] = LengowConfiguration::get('PS_SHOP_EMAIL');
         $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 
-        $shopCollection = LengowShop::findAll();
+        $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $shopId = $row['id_shop'];
 
