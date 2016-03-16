@@ -187,8 +187,7 @@
             var href = $(this).data('href');
             if (($(this).parents('.lengow_form_update_order').find('#select_shop').val() != "") &&
                 ($(this).parents('.lengow_form_update_order').find('#select_mkp').val() != "") &&
-                ($(this).parents('.lengow_form_update_order').find('#sku_order').val() != "") &&
-                ($(this).parents('.lengow_form_update_order').find('#delivery_adress_id').val() != "")) {
+                ($(this).parents('.lengow_form_update_order').find('#sku_order').val() != "")) {
                 $.ajax({
                     url: href,
                     method: 'POST',
@@ -197,7 +196,7 @@
                         shop_id: $(this).parents('.lengow_form_update_order').find('#select_shop').val(),
                         marketplace_name: $(this).parents('.lengow_form_update_order').find('#select_mkp').val(),
                         marketplace_sku: $(this).parents('.lengow_form_update_order').find('#sku_order').val(),
-                        delivery_address_id: $(this).parents('.lengow_form_update_order').find('#sku_order').val(),
+                        delivery_address_id: $(this).parents('.lengow_form_update_order').find('#delivery_adress_id').val(),
                         type: 'manuel',
                     },
                     dataType: 'script',

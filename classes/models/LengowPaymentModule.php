@@ -136,6 +136,9 @@ class LengowPaymentModule extends PaymentModule
         foreach ($cart_delivery_option as $id_address => $key_carriers) {
             foreach ($delivery_option_list[$id_address][$key_carriers]['carrier_list'] as $id_carrier => $data) {
                 foreach ($data['package_list'] as $id_package) {
+                    if ($id_carrier != $this->context->cart->id_carrier) {
+                        $id_carrier =  $this->context->cart->id_carrier;
+                    }
                     // Rewrite the id_warehouse
                     if (method_exists($this->context->cart, 'getPackageIdWarehouse')) {
                         $id_warehouse = (int)$this->context->cart->getPackageIdWarehouse(

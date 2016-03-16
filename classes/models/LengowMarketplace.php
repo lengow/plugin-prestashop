@@ -345,16 +345,20 @@ class LengowMarketplace
                             if (isset($actions['optional_args']) && in_array('carrier', $actions['optional_args'])) {
                                 continue;
                             }
-                            $countryName = Country::getNameById(
-                                Context::getContext()->language->id,
-                                $deliveryAddress->id_country
-                            );
-                            throw new LengowException(
-                                LengowMain::setLogMessage('lengow_log.exception.match_carrier_with_country', array(
-                                    'carrier_name' => $order->lengow_carrier,
-                                    'country_name' => $countryName
-                                ))
-                            );
+                            if ($order->lengow_carrier != '') {
+                                $countryName = Country::getNameById(
+                                    Context::getContext()->language->id,
+                                    $deliveryAddress->id_country
+                                );
+                                throw new LengowException(
+                                    LengowMain::setLogMessage('lengow_log.exception.match_carrier_with_country', array(
+                                        'carrier_name' => $order->lengow_carrier,
+                                        'country_name' => $countryName
+                                    ))
+                                );
+                            }
+                            $carrier = new Carrier($order->id_carrier);
+                            $params['carrier'] = $carrier->name;
                         }
                         break;
                     case 'tracking_url':
@@ -368,8 +372,10 @@ class LengowMarketplace
                         } else {
                             $tracking_number = $order->shipping_number;
                         }
-                        $carrier = new Carrier($order->id_carrier);
-                        $params['tracking_url'] = str_replace('@', $tracking_number, $carrier->url);
+                        if ($tracking_number != '') {
+                            $carrier = new Carrier($order->id_carrier);
+                            $params['tracking_url'] = str_replace('@', $tracking_number, $carrier->url);
+                        }
                         break;
                     case 'shipping_price':
                         $params['shipping_price'] = $order->total_shipping;
@@ -394,10 +400,17 @@ class LengowMarketplace
                 }
             }
 
+            if (isset($actions['optional_args'])) {
+                foreach ($actions['optional_args'] as $arg) {
+                    if (isset($params[$arg]) && Tools::strlen($params[$arg]) == 0) {
+                        unset($params[$arg]);
+                    }
+                }
+            }
+
             $params['marketplace_order_id'] = $order->lengow_marketplace_sku;
             $params['marketplace'] = $order->lengow_marketplace_name;
             $params['action_type'] = $action;
-
 
             if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
                 $result = LengowConnector::queryApi(

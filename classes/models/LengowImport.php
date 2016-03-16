@@ -168,7 +168,6 @@ class LengowImport
         // params for re-import order
         if (array_key_exists('marketplace_sku', $params)
             && array_key_exists('marketplace_name', $params)
-            && array_key_exists('delivery_address_id', $params)
             && array_key_exists('shop_id', $params)
         ) {
             if (isset($params['id_order_lengow'])) {
@@ -177,7 +176,9 @@ class LengowImport
             $this->re_import_type       = (int)$params['type'];
             $this->marketplace_sku      = (string)$params['marketplace_sku'];
             $this->marketplace_name     = (string)$params['marketplace_name'];
-            $this->delivery_address_id  = $params['delivery_address_id'];
+            if (array_key_exists('delivery_address_id', $params) && $params['delivery_address_id'] != '') {
+                $this->delivery_address_id  = $params['delivery_address_id'];
+            }
             $this->limit                = 1;
             $this->import_one_order     = true;
         } else {
@@ -254,7 +255,9 @@ class LengowImport
                     $this->log_output
                 );
             }
-            LengowImport::setInProcess();
+            if (!$this->import_one_order) {
+                LengowImport::setInProcess();
+            }
             LengowMain::disableMail();
             // udpate last import date
             lengowMain::updateDateImport($this->type_import);
@@ -566,7 +569,9 @@ class LengowImport
         $order_error     = 0;
         $import_finished = false;
         foreach ($orders as $order_data) {
-            LengowImport::setInProcess();
+            if (!$this->import_one_order) {
+                LengowImport::setInProcess();
+            }
             $nb_package = 0;
             $marketplace_sku = (string)$order_data->marketplace_order_id;
             if ($this->preprod_mode) {
