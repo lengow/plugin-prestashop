@@ -415,13 +415,16 @@ class LengowCarrier extends Carrier
      */
     public static function getMarketplaceByCarrierSku($marketplace_carrier_sku, $id_country)
     {
-        //Find in lengow marketplace carrier
-        $sql = 'SELECT id_carrier FROM '._DB_PREFIX_.'lengow_marketplace_carrier lmc
-        WHERE id_country = '.(int)$id_country.' AND marketplace_carrier_sku = "'.pSQL($marketplace_carrier_sku).'"';
-        $row = Db::getInstance()->getRow($sql);
-        if ($row) {
-            return $row['id_carrier'];
+        if ($marketplace_carrier_sku != '') {
+            //Find in lengow marketplace carrier
+            $sql = 'SELECT id_carrier FROM '._DB_PREFIX_.'lengow_marketplace_carrier lmc
+            WHERE id_country = '.(int)$id_country.' AND marketplace_carrier_sku = "'.pSQL($marketplace_carrier_sku).'"';
+            $row = Db::getInstance()->getRow($sql);
+            if ($row) {
+                return $row['id_carrier'];
+            }
         }
+        return false;
     }
 
     /**

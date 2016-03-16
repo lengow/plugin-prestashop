@@ -24,6 +24,7 @@ require 'conf.inc.php';
 $action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
 $accessToken = isset($_REQUEST['access_token']) ?  $_REQUEST['access_token'] : null;
 $secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
+$fullAccess = isset($_REQUEST['access']) ? $_REQUEST['access'] : null;
 
 $locale = new LengowTranslation();
 
@@ -133,18 +134,26 @@ require 'views/header.php';
                 <button type="submit" class="btn-success lengow_btn">
                     <?php echo $locale->t('toolbox.configuration.button_save'); ?>
                 </button>
-                <a class="lengow_btn btn-success" href="/modules/lengow/toolbox/config.php?action=get_default_settings"
-                    onclick="return confirm(
-                        '<?php echo  $locale->t('toolbox.configuration.check_get_default_settings'); ?>'
-                    )">
-                    <?php echo $locale->t('toolbox.configuration.get_default_settings'); ?>
-                </a>
-                <a class="lengow_btn btn-success" href="/modules/lengow/toolbox/config.php?action=update_settings"
-                    onclick="return confirm(
-                        '<?php echo  $locale->t('toolbox.configuration.check_update_settings'); ?>'
-                    )">
-                    <?php echo  $locale->t('toolbox.configuration.update_settings'); ?>
-                </a>
+                <?php
+                if ($fullAccess && $fullAccess = 'power_user') {
+                    ?>
+                    <a class="lengow_btn btn-success"
+                        href="/modules/lengow/toolbox/config.php?action=get_default_settings"
+                        onclick="return confirm(
+                            '<?php echo  $locale->t('toolbox.configuration.check_get_default_settings'); ?>'
+                        )">
+                        <?php echo $locale->t('toolbox.configuration.get_default_settings'); ?>
+                    </a>
+                    <a class="lengow_btn btn-success"
+                        href="/modules/lengow/toolbox/config.php?action=update_settings"
+                        onclick="return confirm(
+                            '<?php echo  $locale->t('toolbox.configuration.check_update_settings'); ?>'
+                        )">
+                        <?php echo  $locale->t('toolbox.configuration.update_settings'); ?>
+                    </a>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </form>
