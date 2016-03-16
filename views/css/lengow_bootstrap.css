@@ -356,7 +356,6 @@ body.lengow_body #content .lengow_breadcrumb a {
     color: #FFFFFF;
     font-weight: bold;
     display: inline-block;
-    width: 60%;
 }
 
 .lengow_label_green {
@@ -365,8 +364,8 @@ body.lengow_body #content .lengow_breadcrumb a {
     border-color: #45BF7B;
     color: #FFFFFF;
     font-weight: bold;
-    display: inline-block;
-    width: 60%;
+    display: block;
+    width: auto;
 }
 
 .lengow_label_orange {
@@ -691,6 +690,16 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 .lengow_table .lengow_filter input {
     width: 100% !important;
 }
+
+#table_order td {
+    white-space: nowrap;
+}
+#table_order td.lengow_status {
+    padding-right:20px;
+}
+
+
+
 
 .lengow_table a.table_order{
     text-decoration: none !important;

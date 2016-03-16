@@ -33,7 +33,7 @@ class LengowHelpController extends LengowController
                 case 'get_help_data':
                     $data = array();
                     $data['function'] = 'sync';
-                    $data['parameters'] = LengowSync::getHelpData();
+                    $data['parameters'] = LengowSync::getSyncData();
                     echo Tools::jsonEncode($data);
                     break;
             }

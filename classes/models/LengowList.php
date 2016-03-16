@@ -293,7 +293,13 @@ class LengowList
         $sql = $this->buildQuery();
         $sqlTotal = $this->buildQuery(true);
         $this->collection = Db::getInstance()->executeS($sql, true, false);
-        $this->total = Db::getInstance()->getValue($sqlTotal, false);
+
+        if (isset($this->sql['select_having']) && $this->sql['select_having']) {
+            Db::getInstance()->executeS($sqlTotal);
+            $this->total = Db::getInstance()->NumRows();
+        } else {
+            $this->total = Db::getInstance()->getValue($sqlTotal, false);
+        }
         $this->nbMaxPage = ceil($this->total / $this->nbPerPage);
         $this->paginationFrom = ($this->currentPage-1) * $this->nbPerPage + 1;
         if ($this->total == 0) {
@@ -411,7 +417,15 @@ class LengowList
             }
         }
         if ($total) {
-            $sql = 'SELECT COUNT(*) as total';
+            $value = $this->findValueByKey($this->identifier);
+            $first_column = $value['filter_key'];
+            if (isset($this->sql['select_having']) && $this->sql['select_having']) {
+                $sql = 'SELECT "'.pSQL($first_column).'" ';
+                $sql.= ', '.join(',', $this->sql['select_having']);
+            } else {
+                $sql = 'SELECT COUNT("'.pSQL($first_column).'") as total';
+            }
+
         } elseif ($select_all == true) {
             $sql = 'SELECT '.$this->fields_list['id_product']['filter_key'];
         } else {
