@@ -151,10 +151,9 @@ class LengowAction
     /**
      * Create action
      *
-     * @param array     $params
-     * @param integer   $id_order_lengow
+     * @param array $params
      */
-    public static function createAction($params, $id_order_lengow)
+    public static function createAction($params)
     {
         $insertParams = array(
             'parameters'    => pSQL(Tools::JsonEncode($params['parameters'])),
