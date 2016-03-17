@@ -45,6 +45,11 @@
             $('.select2-dropdown--below').hide();
         }).on("select2:selecting", function(e) {
             $('.select2-search__field').val('');
+        }).on("select2:unselect", function (evt) {
+            if (!evt.params.originalEvent) {
+                return;
+            }
+            evt.params.originalEvent.stopPropagation();
         });
 
         function displayPreProdMode() {

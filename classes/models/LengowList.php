@@ -543,10 +543,10 @@ class LengowList
                 $html.= '</li>';
             }
             if ($showLastSeparation) {
-                $html .= '<li><a href="#" class="disable">...</a></li>';
+                $html .= '<li class="disabled"><a href="#">...</a></li>';
             }
             $class = ($this->currentPage == $this->nbMaxPage) ? 'disabled' : '';
-            $html.= '<li><a href="#" class="'.$class.'"  data-page="'.$this->nbMaxPage.'"
+            $html.= '<li class="' . $class . '"><a href="#" data-page="'.$this->nbMaxPage.'"
             data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->nbMaxPage).'"
             >'.$this->nbMaxPage.'</a></li>';
         } else {

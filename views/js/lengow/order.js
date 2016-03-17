@@ -41,7 +41,7 @@
         }
 
         $('#lengow_order_wrapper').on('click', '.lengow_feed_pagination a', function () {
-            if ($(this).hasClass('disabled')) {
+            if ($(this).parent().hasClass('disabled')) {
                 return false;
             }
             $('#lengow_order_wrapper .lengow_form_table input[name="p"]').val($(this).attr('data-page'));
