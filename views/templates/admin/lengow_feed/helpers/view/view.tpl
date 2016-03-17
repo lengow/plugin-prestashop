@@ -87,10 +87,10 @@
                                 target="_blank"><i class="fa fa-download"></i></a>
                         <p/>
                         {if $shop['last_export']}
-                            {$locale->t('product.screen.last_export')|escape:'htmlall':'UTF-8'}
+                            <span class="lengow_strong">{$locale->t('product.screen.last_export')|escape:'htmlall':'UTF-8'} :</span>
                             {$shop['last_export']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}<br/>
                         {else}
-                            {$locale->t('product.screen.no_export')|escape:'htmlall':'UTF-8'}<br/>
+                            <span class="lengow_strong">{$locale->t('product.screen.no_export')|escape:'htmlall':'UTF-8'}</span><br/>
                         {/if}
                     </div>
                     <div class="lengow_clear"></div>

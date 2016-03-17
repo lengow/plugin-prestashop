@@ -811,7 +811,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 }
 
 #lengow_feed_wrapper .lengow_feed_block_content_left input {
-    width:500px;
+    width:550px;
     height: 20px;
     padding: 0 5px 0 2px;
     margin-right: 5px;
@@ -843,9 +843,15 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     display: inline-block;
 }
 
-.lengow_remove_from_export i, .lengow_add_to_export i {
+.lengow_remove_from_export i,
+.lengow_add_to_export i {
     margin-right: 8px;
 }
+
+.lengow_feed_block_content_left .lengow_strong {
+    font-weight: bold;
+}
+
 /* ORDER PAGE */
 #lengow_order_wrapper {
     padding:0 60px 40px 60px;
