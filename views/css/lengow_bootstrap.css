@@ -317,6 +317,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     background:#FFFFFF;
     padding: 2px 10px;
     display: block;
+
 }
 
 .lengow_label_not_synchronized {
@@ -355,7 +356,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     border-color: #e55a4d;
     color: #FFFFFF;
     font-weight: bold;
-    display: inline-block;
+    display: block;
 }
 
 .lengow_label_green {
@@ -365,7 +366,6 @@ body.lengow_body #content .lengow_breadcrumb a {
     color: #FFFFFF;
     font-weight: bold;
     display: block;
-    width: auto;
 }
 
 .lengow_label_orange {
@@ -374,8 +374,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     border-color: #FF8400;
     color: #FFFFFF;
     font-weight: bold;
-    display: inline-block;
-    width: 60%;
+    display: block;
 }
 
 .lengow_clear {
@@ -694,12 +693,6 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 #table_order td {
     white-space: nowrap;
 }
-#table_order td.lengow_status {
-    padding-right:20px;
-}
-
-
-
 
 .lengow_table a.table_order{
     text-decoration: none !important;
@@ -952,12 +945,20 @@ span.title_no_order {
    float: left;
 }
 
-.lengow_re_send,
-.lengow_re_import {
-    margin-top: 6px;
+body.lengow_body #content a.lengow_re_send ,
+body.lengow_body #content a.lengow_re_import {
     text-align: center;
-    display: block;
+    color: #FFFFFF;
+    text-decoration: none;
 }
+
+body.lengow_body #content a.lengow_re_send i ,
+body.lengow_body #content a.lengow_re_import i {
+    margin-left: 6px;
+    font-size: 15px;
+    padding-top: 2px;
+}
+
 
 /*ORDER SETTING PAGE */
 #lengow_form_wrapper {

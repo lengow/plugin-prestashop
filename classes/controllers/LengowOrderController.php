@@ -539,31 +539,27 @@ class LengowOrderController extends LengowController
             if ($item[$key] == '2') {
                 $message = LengowMain::decodeLogMessage('order.screen.action_sent_not_work')
                     .'<br/><br/>'.join('<br/>', $errorMessage);
-                $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red label_re_send"
-                    data-html="true" data-original-title="'.$message.'"
-                    >'.LengowMain::decodeLogMessage('order.screen.not_sent').'</span>';
-                $value.= ' <a href="#" class="lengow_re_send lengow_link_tooltip"
+                $value = '<a href="#"
+                    class="lengow_re_send lengow_link_tooltip lengow_label lengow_label_red"
                     data-href="'.$link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
                     data-action="re_send"
                     data-order="'.$item['id'].'"
                     data-type="'.$item[$key].'"
                     data-html="true"
-                    data-original-title="'.LengowMain::decodeLogMessage('order.screen.refresh_order').'"
-                    ><i class="fa fa-refresh"></i></a>';
+                    data-original-title="'.$message.'"
+                    >'.LengowMain::decodeLogMessage('order.screen.not_sent').'<i class="fa fa-refresh"></i></a>';
             } else {
                 $message = LengowMain::decodeLogMessage('order.screen.order_not_imported')
                     .'<br/><br/>'.join('<br/>', $errorMessage);
-                $value = '<span class="lengow_link_tooltip lengow_label lengow_label_red label_re_import"
-                    data-html="true" data-original-title="'.$message.'"
-                    >'.LengowMain::decodeLogMessage('order.screen.not_imported').'</span>';
-                $value.= ' <a href="#" class="lengow_re_import lengow_link_tooltip"
+                $value = '<a href="#"
+                    class="lengow_re_import lengow_link_tooltip lengow_label lengow_label_red"
                     data-href="'.$link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
                     data-action="re_import"
                     data-order="'.$item['id'].'"
                     data-type="'.$item[$key].'"
                     data-html="true"
-                    data-original-title="'.LengowMain::decodeLogMessage('order.screen.refresh_order').'"
-                    ><i class="fa fa-refresh"></i></a>';
+                    data-original-title="'.$message.'"
+                    >'.LengowMain::decodeLogMessage('order.screen.not_imported').'<i class="fa fa-refresh"></i></a>';
             }
         } else {
             $value = '<span class="lengow_label lengow_label_green">ok</span>';

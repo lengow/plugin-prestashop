@@ -176,11 +176,6 @@ class LengowAction
             false,
             $params['id_order']
         );
-        LengowOrder::addOrderLog(
-            $id_order_lengow,
-            LengowMain::setLogMessage('lengow_log.error.tracking_in_progress'),
-            'ship'
-        );
     }
 
     /**

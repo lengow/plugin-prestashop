@@ -145,7 +145,6 @@ lengow_log.error.currency_not_available|la devise %{currency_iso} n'est pas disp
 lengow_log.error.no_country_for_delivery_address|l'adresse de livraison ne contient pas de pays
 lengow_log.error.no_billing_address|pas d'adresse de facturation dans cette commande
 lengow_log.error.no_country_for_billing_address|l'adresse de facturation ne contient pas de pays
-lengow_log.error.tracking_in_progress|Suivi en cours, en attente d'une réponse de la place de marché
 lengow_log.exception.product_not_be_found|le produit %{product_id} ne peut être trouvé
 lengow_log.exception.product_is_a_parent|le produit %{product_id}  est un ID parent. Les déclinaisons du produit sont nécessaires
 lengow_log.exception.no_product_to_cart|il n'y a pas de produit ajouté au panier
