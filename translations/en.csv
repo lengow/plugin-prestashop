@@ -319,6 +319,10 @@ log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}
 log.connector.error_api|call api failed - %{error_code}
+log.setting.setting_reset|All Lengow settings were reset
+log.setting.setting_updated|All Lengow settings were updated
+log.setting.setting_change|%{key} - old value %{old_value} change by %{value}
+log.setting.setting_change_for_shop|%{key} - old value %{old_value} change by %{value} for shop %{shop_id}
 toolbox.menu.lengow_toolbox|Lengow Toolbox
 toolbox.menu.product|Products
 toolbox.menu.order|Orders

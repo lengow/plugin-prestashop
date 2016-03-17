@@ -317,6 +317,11 @@ class LengowConfiguration extends Configuration
                 }
             }
         }
+        if ($overwrite) {
+            LengowMain::log('Setting', LengowMain::setLogMessage('log.setting.setting_reset'));
+        } else {
+            LengowMain::log('Setting', LengowMain::setLogMessage('log.setting.setting_updated'));
+        }
         return true;
     }
 
