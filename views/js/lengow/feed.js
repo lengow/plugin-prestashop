@@ -48,7 +48,7 @@
             }
         });
         $('#lengow_feed_wrapper').on('click', '.lengow_feed_pagination a', function () {
-            if ($(this).hasClass('disabled')) {
+            if ($(this).parent().hasClass('disabled')) {
                 return false;
             }
             var href = $(this).attr('data-href');
