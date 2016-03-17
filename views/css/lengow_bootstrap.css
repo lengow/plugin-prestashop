@@ -987,7 +987,7 @@ body.lengow_body #content a.lengow_re_import i {
 
 #import_setting input {
     float :left;
-    width: 435px;
+    width: 40px;
     margin-bottom: 5px;
     border-right: none;
     display: block;
@@ -999,7 +999,8 @@ body.lengow_body #content a.lengow_re_import i {
 #import_setting .input-group-addon {
     padding: 6px 0 0 5px;
     height: 26px;
-    width: 55px;
+    width: 50px;
+    font-weight: bold;
     float :left;
     background-color: #eee;
     border: 1px solid #ccc;
