@@ -345,6 +345,7 @@ class LengowImport
                             $this->log_output
                         );
                         $error[(int)$shop->id] = $e->getMessage();
+                        unset($error_message);
                         continue;
                     }
                 }
@@ -652,6 +653,7 @@ class LengowImport
                         $this->log_output,
                         $marketplace_sku
                     );
+                    unset($error_message);
                     continue;
                 }
                 // Sync to lengow if no preprod_mode

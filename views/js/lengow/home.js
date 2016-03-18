@@ -37,8 +37,8 @@
                     }
                 });
             };
-            // sync_iframe.src = 'http://cms.lengow.local';
-            sync_iframe.src = '/modules/lengow/webservice/sync.php';
+            sync_iframe.src = 'http://cms.lengow.local';
+            //sync_iframe.src = '/modules/lengow/webservice/sync.php';
             $('#frame_loader').hide();
             $('#lengow_iframe').show();
             resize();

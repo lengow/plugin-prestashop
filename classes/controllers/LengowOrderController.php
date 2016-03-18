@@ -476,12 +476,13 @@ class LengowOrderController extends LengowController
 
     public static function displayLengowState($key, $value, $item)
     {
-        // This line is useless, but Prestashop validator require it
+        // This two lines are useless, but Prestashop validator require it
         $key = $key;
+        $item = $item;
         if (empty($value)) {
             $value = 'not_synchronized';
         }
-        return '<span class="lengow_label lengow_label_'.$value.'" title="'.$item['id'].'" >'
+        return '<span class="lengow_label lengow_label_'.$value.'">'
             .LengowMain::decodeLogMessage('order.screen.status_'.$value).'</span>';
     }
 
