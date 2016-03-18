@@ -151,10 +151,9 @@ class LengowAction
     /**
      * Create action
      *
-     * @param array     $params
-     * @param integer   $id_order_lengow
+     * @param array $params
      */
-    public static function createAction($params, $id_order_lengow)
+    public static function createAction($params)
     {
         $insertParams = array(
             'parameters'    => pSQL(Tools::JsonEncode($params['parameters'])),
@@ -175,11 +174,6 @@ class LengowAction
             LengowMain::setLogMessage('log.order_action.call_tracking'),
             false,
             $params['id_order']
-        );
-        LengowOrder::addOrderLog(
-            $id_order_lengow,
-            LengowMain::setLogMessage('lengow_log.error.tracking_in_progress'),
-            'ship'
         );
     }
 

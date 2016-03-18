@@ -71,6 +71,7 @@ class LengowInstall
     }
 
     /**
+     * v3
      * Add admin Tab (Controller)
      *
      * @return boolean Result of add tab on database.
@@ -123,6 +124,7 @@ class LengowInstall
     }
 
     /**
+     * v3
      * Remove admin tab
      *
      * @return boolean Result of tab uninstallation
@@ -147,10 +149,11 @@ class LengowInstall
 
     private static function setDefaultValues()
     {
-        return LengowConfiguration::resetAll(false);
+        return LengowConfiguration::resetAll();
     }
 
     /**
+     * v3
      * Add error status to reimport order
      *
      * @return void
@@ -205,6 +208,7 @@ class LengowInstall
     }
 
     /**
+     * v3
      * Update process
      *
      * @return void
@@ -225,8 +229,8 @@ class LengowInstall
         // update lengow tabs
         $this->uninstallTab();
         $this->createTab();
-        LengowConfiguration::resetAll();
-
+        // set default value for old version
+        $this->setDefaultValues();
         // update lengow version
         LengowConfiguration::updateGlobalValue('LENGOW_VERSION', $numberVersion);
         self::setInstallationStatus(false);
@@ -234,6 +238,7 @@ class LengowInstall
     }
 
     /**
+     * v3
      * Checks if a field exists in BDD
      *
      * @param string $table
@@ -250,6 +255,7 @@ class LengowInstall
     }
 
     /**
+     * v3
      * Checks if a field exists in BDD and Dropped It
      *
      * @param string $table
@@ -266,6 +272,13 @@ class LengowInstall
         }
     }
 
+    /**
+     * v3
+     * Rename configuration key
+     *
+     * @param string $oldName
+     * @param string $newName
+     */
     public static function renameConfigurationKey($oldName, $newName)
     {
         $tempValue = LengowConfiguration::get($oldName);
@@ -287,6 +300,7 @@ class LengowInstall
     /**
      * v3
      * Is Installation In Progress
+     *
      * @return boolean
      */
     public static function isInstallationInProgress()
@@ -295,8 +309,9 @@ class LengowInstall
     }
 
     /**
-     * v3-test
+     * v3
      * Drop Lengow tables
+     *
      * @return bool
      */
     public static function dropTable()
@@ -306,7 +321,6 @@ class LengowInstall
         }
         return true;
     }
-
 
     /**
      * v3
@@ -330,7 +344,7 @@ class LengowInstall
     }
 
     /**
-     * v3-test
+     * v3
      *
      * @param array $listFiles
      */
@@ -349,8 +363,10 @@ class LengowInstall
     }
 
     /**
-     * v3-test
+     * v3
+     *
      * @param $dirPath
+     *
      * @return bool
      */
     public static function deleteDir($dirPath)

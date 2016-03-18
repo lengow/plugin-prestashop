@@ -21,10 +21,24 @@
 
 $currentDirectory = str_replace('modules/lengow/toolbox/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
 
+//bypass id_shop from ps 1.6 check
+$temp_id_shop = null;
+if (isset($_REQUEST["id_shop"])) {
+    $temp_id_shop = $_REQUEST["id_shop"];
+}
+$_POST["id_shop"] = null;
+$_GET["id_shop"] = null;
+$_REQUEST["id_shop"] = null;
+
 $sep = DIRECTORY_SEPARATOR;
 require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules/lengow/lengow.php';
+
+//bypass id_shop from ps 1.6 check
+$_GET["id_shop"] = $temp_id_shop;
+$_POST["id_shop"] = $temp_id_shop;
+$_REQUEST["id_shop"] = $temp_id_shop;
 
 if (_PS_VERSION_ < '1.5') {
     require_once $currentDirectory.'images.inc.php';

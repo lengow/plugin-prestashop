@@ -36,7 +36,9 @@
                 }
             });
         };
-        sync_iframe.src = '/modules/lengow/webservice/help.php';
+        sync_iframe.src = 'http://my.lengow.local/help/ticket/cms_new';
+        //sync_iframe.src = '/modules/lengow/webservice/help.php';
+
 
         resize();
 

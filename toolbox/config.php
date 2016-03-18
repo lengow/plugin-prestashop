@@ -24,6 +24,7 @@ require 'conf.inc.php';
 $action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
 $accessToken = isset($_REQUEST['access_token']) ?  $_REQUEST['access_token'] : null;
 $secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
+$fullAccess = isset($_REQUEST['access']) ? $_REQUEST['access'] : null;
 
 $locale = new LengowTranslation();
 
@@ -55,21 +56,25 @@ switch ($action) {
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
         break;
     case "get_default_settings":
-        LengowConfiguration::resetAll(true);
+        if ($fullAccess && $fullAccess == 'admin') {
+            LengowConfiguration::resetAll(true);
+        }
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
         break;
     case "update_settings":
-        if (_PS_VERSION_ < '1.5') {
-            $temp_profile = Context::getContext()->cookie->profile;
-            Context::getContext()->cookie->profile = 1;
-        }
-        LengowTranslation::$forceIsoCode = null;
-        $module = Module::getInstanceByName('lengow');
-        $install = new LengowInstall($module);
-        $install->update();
-        LengowTranslation::$forceIsoCode = 'en';
-        if (_PS_VERSION_ < '1.5') {
-            Context::getContext()->cookie->profile = $temp_profile;
+        if ($fullAccess && $fullAccess == 'admin') {
+            if (_PS_VERSION_ < '1.5') {
+                $temp_profile = Context::getContext()->cookie->profile;
+                Context::getContext()->cookie->profile = 1;
+            }
+            LengowTranslation::$forceIsoCode = null;
+            $module = Module::getInstanceByName('lengow');
+            $install = new LengowInstall($module);
+            $install->update();
+            LengowTranslation::$forceIsoCode = 'en';
+            if (_PS_VERSION_ < '1.5') {
+                Context::getContext()->cookie->profile = $temp_profile;
+            }
         }
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
         break;
@@ -133,21 +138,32 @@ require 'views/header.php';
                 <button type="submit" class="btn-success lengow_btn">
                     <?php echo $locale->t('toolbox.configuration.button_save'); ?>
                 </button>
-                <a class="lengow_btn btn-success" href="/modules/lengow/toolbox/config.php?action=get_default_settings"
-                    onclick="return confirm(
-                        '<?php echo  $locale->t('toolbox.configuration.check_get_default_settings'); ?>'
-                    )">
-                    <?php echo $locale->t('toolbox.configuration.get_default_settings'); ?>
-                </a>
-                <a class="lengow_btn btn-success" href="/modules/lengow/toolbox/config.php?action=update_settings"
-                    onclick="return confirm(
-                        '<?php echo  $locale->t('toolbox.configuration.check_update_settings'); ?>'
-                    )">
-                    <?php echo  $locale->t('toolbox.configuration.update_settings'); ?>
-                </a>
+                <?php
+                if ($fullAccess && $fullAccess == 'admin') {
+                    ?>
+                    <a class="lengow_btn btn-success"
+                        href="/modules/lengow/toolbox/config.php?action=get_default_settings&access=admin"
+                        onclick="return confirm(
+                            '<?php echo  $locale->t('toolbox.configuration.check_get_default_settings'); ?>'
+                        )">
+                        <?php echo $locale->t('toolbox.configuration.get_default_settings'); ?>
+                    </a>
+                    <a class="lengow_btn btn-success"
+                        href="/modules/lengow/toolbox/config.php?action=update_settings&access=admin"
+                        onclick="return confirm(
+                            '<?php echo  $locale->t('toolbox.configuration.check_update_settings'); ?>'
+                        )">
+                        <?php echo  $locale->t('toolbox.configuration.update_settings'); ?>
+                    </a>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </form>
 </div>
 <?php
 require 'views/footer.php';
+?>
+
+<script type="text/javascript" src="/modules/lengow/views/js/lengow/main_setting.js"></script>

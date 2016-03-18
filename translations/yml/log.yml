@@ -85,6 +85,11 @@ en:
     connector:
       call_api: "call %{curl_url}"
       error_api: "call api failed - %{error_code}"
+    setting:
+      setting_reset: "All Lengow settings were reset"
+      setting_updated: "All Lengow settings were updated"
+      setting_change: "%{key} - old value %{old_value} change by %{value}"
+      setting_change_for_shop: "%{key} - old value %{old_value} change by %{value} for shop %{shop_id}"
   toolbox:
     menu:
       lengow_toolbox: "Lengow Toolbox"

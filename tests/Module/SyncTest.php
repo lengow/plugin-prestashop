@@ -143,37 +143,4 @@ class SyncTest extends ModuleTestCase
         $this->assertEquals(false, LengowConfiguration::get('LENGOW_SHOP_ACTIVE', false, null, 1));
 
     }
-
-
-    /**
-     * Test getHelpData
-     *
-     * @test
-     * @covers LengowSync::getHelpData
-     */
-    public function getHelpData()
-    {
-        $sync = new \LengowSync();
-        $data = $sync->getHelpData();
-
-        $this->assertKeysExistInArray(array(
-            'cms',
-            'cms_version',
-            'plugin_version',
-            'email',
-        ), $data);
-
-        foreach ($data['shops'] as $shop) {
-            switch ($shop['token']) {
-                case '1f65ze4f5e6z4fze654fe':
-                    $this->assertEquals($shop['name'], 'prestashop.unit.test');
-                    $this->assertEquals($shop['domain'], 'prestashop.unit.test');
-                    break;
-                case 'fg56ze4fgze654fze65fe':
-                    $this->assertEquals($shop['name'], 'prestashop-two.unit.test');
-                    $this->assertEquals($shop['domain'], 'prestashop-two.unit.test');
-                    break;
-            }
-        }
-    }
 }

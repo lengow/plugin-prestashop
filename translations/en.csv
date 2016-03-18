@@ -198,7 +198,6 @@ lengow_log.error.currency_not_available|currency %{currency_iso} is not availabl
 lengow_log.error.no_country_for_delivery_address|delivery address doesn't contain the country
 lengow_log.error.no_billing_address|no billing address in the order
 lengow_log.error.no_country_for_billing_address|billing address doesn't contain the country
-lengow_log.error.tracking_in_progress|Tracking send in progress
 lengow_log.error.order_not_found|Order can't be found in lengow feed
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
 lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation is needed
@@ -321,6 +320,10 @@ log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}
 log.connector.error_api|call api failed - %{error_code}
+log.setting.setting_reset|All Lengow settings were reset
+log.setting.setting_updated|All Lengow settings were updated
+log.setting.setting_change|%{key} - old value %{old_value} change by %{value}
+log.setting.setting_change_for_shop|%{key} - old value %{old_value} change by %{value} for shop %{shop_id}
 toolbox.menu.lengow_toolbox|Lengow Toolbox
 toolbox.menu.product|Products
 toolbox.menu.order|Orders

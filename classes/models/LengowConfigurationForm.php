@@ -124,9 +124,8 @@ class LengowConfigurationForm
                 $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
                     <div class="col-sm-10">
                         <div class="input-group">
-                            <input type="text" name="'.$name.'"
-                                class="form-control" placeholder="'.$input['label'].'"
-                                value="'.$value.'" '.$readonly.'>
+                            <input type="number" name="'.$name.'" class="form-control" value="'.$value.'" '
+                            .$readonly.' min="1" max="99">
                             <div class="input-group-addon">'.$this->locale->t('order_setting.screen.nb_days').'</div>
                         </div>
                         <div class="clear"></div>
@@ -155,16 +154,19 @@ class LengowConfigurationForm
                             $this->fields[$key]['type'] == 'checkbox' && $shopValue == 'on') {
                             $shopValue = true;
                         }
+                        $this->checkAndLog($key, $shopValue, $shopId);
                         LengowConfiguration::updateValue($key, $shopValue, false, null, $shopId);
                     }
                 } else {
                     if (is_array($value)) {
+                        $this->checkAndLog($key, join(',', $value));
                         LengowConfiguration::updateGlobalValue($key, join(',', $value));
                     } else {
                         if (isset($this->fields[$key]['type']) &&
                             $this->fields[$key]['type'] == 'checkbox' && $value == 'on') {
                             $value = true;
                         }
+                        $this->checkAndLog($key, $value);
                         LengowConfiguration::updateGlobalValue($key, $value);
                     }
                 }
@@ -178,6 +180,7 @@ class LengowConfigurationForm
                 }
                 if ($value['type'] == 'checkbox' && isset($value['shop']) && $value['shop']) {
                     if (!isset($_REQUEST[$key][$shopId])) {
+                        $this->checkAndLog($key, false, $shopId);
                         LengowConfiguration::updateValue($key, false, false, null, $shopId);
                     }
                 }
@@ -189,9 +192,46 @@ class LengowConfigurationForm
             }
             if ((!isset($value['shop']) || !$value['shop'])) {
                 if (!isset($_REQUEST[$key])) {
+                    $this->checkAndLog($key, false, $shopId);
                     LengowConfiguration::updateGlobalValue($key, false);
                 }
             }
+        }
+    }
+
+    public function checkAndLog($key, $value, $shopId = null)
+    {
+        if (is_null($shopId)) {
+            $old_value = LengowConfiguration::getGlobalValue($key);
+        } else {
+            $old_value = LengowConfiguration::get($key, null, null, $shopId);
+        }
+        if (isset($this->fields[$key]['type']) && $this->fields[$key]['type'] == 'checkbox') {
+            $value = (int)$value;
+            $old_value = (int)$old_value;
+        } elseif ($key == 'LENGOW_ACCESS_TOKEN' || $key == 'LENGOW_SECRET_TOKEN') {
+            $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
+            $old_value = preg_replace("/[a-zA-Z0-9]/", '*', $old_value);
+        }
+        if ($old_value != $value && !is_null($shopId)) {
+            LengowMain::log(
+                'Setting',
+                LengowMain::setLogMessage('log.setting.setting_change_for_shop', array(
+                    'key'       => $key,
+                    'old_value' => $old_value,
+                    'value'     => $value,
+                    'shop_id'   => $shopId
+                ))
+            );
+        } elseif ($old_value != $value) {
+            LengowMain::log(
+                'Setting',
+                LengowMain::setLogMessage('log.setting.setting_change', array(
+                    'key'       => $key,
+                    'old_value' => $old_value,
+                    'value'     => $value
+                ))
+            );
         }
     }
 }
