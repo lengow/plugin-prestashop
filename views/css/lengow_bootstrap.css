@@ -744,6 +744,13 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     border-radius: 2px;
 }
 
+body.lengow_body #content .lengow_feed_block_header_title a {
+    float: right;
+    margin-right: 5px;
+    margin-top: 3px;
+    color: white;
+}
+
 .lengow_feed_block_header_title .title {
     font-weight:bold;
     font-size:20px;
@@ -846,6 +853,23 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
 .lengow_remove_from_export i,
 .lengow_add_to_export i {
     margin-right: 8px;
+}
+
+.lengow_check_shop {
+    float: right;
+    margin-right: 15px;
+    margin-top: 7px;
+    width: 5px;
+    height: 5px;
+    padding:5px;
+    border-radius: 10px;
+}
+
+#lengow_shop_sync {
+    background-color: #45bf7b;
+}
+#lengow_shop_no_sync {
+    background-color: #e55a4d;
 }
 
 .lengow_feed_block_content_left .lengow_strong {

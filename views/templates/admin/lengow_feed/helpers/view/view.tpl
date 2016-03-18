@@ -17,14 +17,18 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
-
+<div id="lengow_home_feed_wrapper">
 <div id="lengow_feed_wrapper">
     {foreach from=$shopCollection  item=shop}
         <div class="lengow_feed_block" id="block_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
             <div class="lengow_feed_block_header">
-                <div class="lengow_feed_block_header_title">
+                <div class="lengow_feed_block_header_title" id="lengow_feed_block_header_title">
                     <span class="title">{$shop['shop']->name|escape:'htmlall':'UTF-8'}</span>
                     <span class="url">http://{$shop['shop']->domain|escape:'htmlall':'UTF-8'}</span>
+                    <div class="lengow_check_shop lengow_link_tooltip"
+                         data-original-title=""
+                         data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}">
+                    </div>
                 </div>
                 <div class="lengow_feed_block_header_content">
                     <div class="lengow_feed_block_content_right">
@@ -45,7 +49,8 @@
                             data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
                             value="1" {if $shop['option_variation'] == 1} checked="checked"{/if}>
                         <span class="lengow_select_text">{$locale->t('product.screen.include_variation')|escape:'htmlall':'UTF-8'}</span>
-                        <i class="fa fa-info-circle lengow_link_tooltip" title="{$locale->t('product.screen.include_variation_support')|escape:'htmlall':'UTF-8'}"></i>
+                        <i class="fa fa-info-circle lengow_link_tooltip"
+                           title="{$locale->t('product.screen.include_variation_support')|escape:'htmlall':'UTF-8'}"></i>
                         <br/>
                         <input
                             type="checkbox"
@@ -58,7 +63,8 @@
                             data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
                             value="1" {if $shop['option_product_out_of_stock'] == 1} checked="checked"{/if}>
                         <span class="lengow_select_text">{$locale->t('product.screen.include_out_of_stock')|escape:'htmlall':'UTF-8'}</span>
-                        <i class="fa fa-info-circle lengow_link_tooltip" title="{$locale->t('product.screen.include_out_of_stock_support')|escape:'htmlall':'UTF-8'}"></i>
+                        <i class="fa fa-info-circle lengow_link_tooltip"
+                           title="{$locale->t('product.screen.include_out_of_stock_support')|escape:'htmlall':'UTF-8'}"></i>
                         <br/>
                         <input 
                             type="checkbox"
@@ -71,7 +77,8 @@
                             data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
                             value="1" {if $shop['option_selected'] == 1} checked="checked"{/if}>
                         <span class="lengow_select_text">{$locale->t('product.screen.include_specific_product')|escape:'htmlall':'UTF-8'}</span>
-                        <i class="fa fa-info-circle lengow_link_tooltip" title="{$locale->t('product.screen.include_specific_product_support')|escape:'htmlall':'UTF-8'}"></i>
+                        <i class="fa fa-info-circle lengow_link_tooltip"
+                           title="{$locale->t('product.screen.include_specific_product_support')|escape:'htmlall':'UTF-8'}"></i>
                     </div>
                     <div class="lengow_feed_block_content_left">
                         <p>{$locale->t('product.screen.your_exported_catalog')|escape:'htmlall':'UTF-8'}</p>
@@ -104,6 +111,7 @@
             </div>
         </div>
     {/foreach}
+</div>
 </div>
 
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/feed.js"></script>

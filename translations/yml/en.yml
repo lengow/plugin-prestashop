@@ -51,6 +51,8 @@ en:
       remove_confirmation: "Do you really want to remove %{nb} products in your selection?"
       remove_from_export: "Remove from export"
       add_from_export: "Add from export"
+      lengow_shop_sync: "Synchronized"
+      lengow_shop_no_sync: "Not synchronized"
     table:
       id_product: "ID"
       image: "Image"

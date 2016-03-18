@@ -43,6 +43,8 @@ product.screen.add_confirmation|Do you really want to add %{nb} products in your
 product.screen.remove_confirmation|Do you really want to remove %{nb} products in your selection?
 product.screen.remove_from_export|Remove from export
 product.screen.add_from_export|Add from export
+product.screen.lengow_shop_sync|Synchronized
+product.screen.lengow_shop_no_sync|Not synchronized
 product.table.id_product|ID
 product.table.image|Image
 product.table.name|Name

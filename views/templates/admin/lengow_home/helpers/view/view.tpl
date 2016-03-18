@@ -21,7 +21,7 @@
 <script type="text/javascript">$(document.body).addClass("adminlengowhome");</script>
 
 <div id="lengow_home_wrapper">
-{if $isNewMerchant}
+{if $isNewMerchant || $isSync }
     {include file='./new.tpl'}
 {else}
     {include file='./connect.tpl'}
