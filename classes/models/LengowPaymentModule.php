@@ -285,7 +285,9 @@ class LengowPaymentModule extends PaymentModule
                     (int)$id_cart,
                     true
                 );
-                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order'));
+                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order'), array(
+                    'error' => Db::getInstance()->getMsgError()
+                ));
             }
 
             $order_list[] = $order;

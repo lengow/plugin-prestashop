@@ -263,6 +263,14 @@ class LengowConnector
         curl_setopt_array($ch, $opts);
         $result = curl_exec($ch);
         $error = curl_errno($ch);
+        if (in_array($error, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
+            $timeout = LengowMain::setLogMessage('lengow_log.exception.timeout_api');
+            $error_message = LengowMain::setLogMessage('log.connector.error_api', array(
+                'error_code' => LengowMain::decodeLogMessage($timeout, 'en')
+            ));
+            LengowMain::log('Connector', $error_message);
+            throw new LengowException($timeout);
+        }
         list($header, $data) = explode("\r\n\r\n", $result, 2);
         $information = curl_getinfo($ch, CURLINFO_HEADER_OUT);
         // This two lines are useless, but Prestashop validator require it
@@ -271,10 +279,10 @@ class LengowConnector
         curl_close($ch);
         if ($data === false) {
             $error_message = LengowMain::setLogMessage('log.connector.error_api', array(
-                'error_code' => $error['code']
+                'error_code' => $error
             ));
             LengowMain::log('Connector', $error_message);
-            throw new LengowException($error_message);
+            throw new LengowException($error);
         }
         return $data;
     }
@@ -339,13 +347,17 @@ class LengowConnector
             return false;
         }
 
-        list($account_id, $access_token, $secret_token) = self::getAccessId($shopId);
-        $connector  = new LengowConnector($access_token, $secret_token);
-        $results = $connector->$type(
-            $url,
-            array_merge(array('account_id' => $account_id), $params),
-            'stream'
-        );
+        try {
+            list($account_id, $access_token, $secret_token) = self::getAccessId($shopId);
+            $connector  = new LengowConnector($access_token, $secret_token);
+            $results = $connector->$type(
+                $url,
+                array_merge(array('account_id' => $account_id), $params),
+                'stream'
+            );
+        } catch (LengowException $e) {
+            return false;
+        }
         return Tools::JsonDecode($results);
     }
 }
