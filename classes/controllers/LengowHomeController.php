@@ -27,6 +27,8 @@ class LengowHomeController extends LengowController
      */
     public function postProcess()
     {
+        $isSync = isset($_REQUEST['isSync']) ? $_REQUEST['isSync'] : false;
+
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
         if ($action) {
             switch ($action) {
@@ -43,6 +45,7 @@ class LengowHomeController extends LengowController
             }
             exit();
         }
+        $this->context->smarty->assign('isSync', $isSync);
     }
 
     /**
