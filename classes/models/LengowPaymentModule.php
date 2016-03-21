@@ -294,15 +294,26 @@ class LengowPaymentModule extends PaymentModule
 
             // Insert new Order detail list using cart for the current order
             $order_detail = new LengowOrderDetail(null, null, $this->context);
-            $order_detail->createList(
-                $order,
-                $this->context->cart,
-                $id_order_state,
-                $order->product_list,
-                0,
-                true,
-                $package_list[$id_address][$id_package]['id_warehouse']
-            );
+            if ($package_list[$id_address][$id_package]['id_warehouse'] != '') {
+                $order_detail->createList(
+                    $order,
+                    $this->context->cart,
+                    $id_order_state,
+                    $order->product_list,
+                    0,
+                    true,
+                    $package_list[$id_address][$id_package]['id_warehouse']
+                );
+            } else {
+                $order_detail->createList(
+                    $order,
+                    $this->context->cart,
+                    $id_order_state,
+                    $order->product_list,
+                    0,
+                    true
+                );
+            }
             $order_detail_list[] = $order_detail;
 
             // Adding an entry in order_carrier table
