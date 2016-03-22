@@ -251,7 +251,10 @@ class LengowPaymentModule extends PaymentModule
                 (int)Configuration::get('PS_GIFT_WRAPPING_TAX_RULES_GROUP')
             );
             $tax_calculator = $tax_manager->getTaxCalculator();
-            $order->total_wrapping_tax_excl = $tax_calculator->removeTaxes((float)$processing_fees);
+            $order->total_wrapping_tax_excl = (float)Tools::ps_round(
+                $tax_calculator->removeTaxes((float)$processing_fees),
+                2
+            );
             $order->total_wrapping_tax_incl = (float)$processing_fees;
             $order->total_wrapping = $order->total_wrapping_tax_incl;
 
