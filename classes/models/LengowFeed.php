@@ -120,7 +120,7 @@ class LengowFeed
         if ($this->part_file_name) {
             $file_name = $this->part_file_name;
         } else {
-            $file_name = 'flux-' . Context::getContext()->language->iso_code . '-' . time() . '.' . $this->format;
+            $file_name = 'flux-'.Context::getContext()->language->iso_code.'-'.time().'.'.$this->format;
         }
         $this->file = new LengowFile($this->export_folder, $file_name);
     }
@@ -136,7 +136,9 @@ class LengowFeed
             case 'header':
                 if ($this->stream) {
                     header(LengowFeed::getHtmlHeader($this->format));
-                    header('Content-Disposition: attachment; filename=feed.csv');
+                    if ($this->format == 'csv') {
+                        header('Content-Disposition: attachment; filename=feed.csv');
+                    }
                 }
                 $header = LengowFeed::getHeader($data, $this->format);
                 $this->flush($header);
@@ -168,14 +170,14 @@ class LengowFeed
                     $header .= LengowFeed::PROTECTION.LengowFeed::formatFields($field)
                         .LengowFeed::PROTECTION.LengowFeed::CSV_SEPARATOR;
                 }
-                return rtrim($header, LengowFeed::CSV_SEPARATOR) . LengowFeed::EOL;
+                return rtrim($header, LengowFeed::CSV_SEPARATOR).LengowFeed::EOL;
             case 'xml':
-                return '<?xml version="1.0" encoding="UTF-8"?>' . LengowFeed::EOL
-                . '<catalog>' . LengowFeed::EOL;
+                return '<?xml version="1.0" encoding="UTF-8"?>'.LengowFeed::EOL
+                . '<catalog>'.LengowFeed::EOL;
             case 'json':
                 return '{"catalog":[';
             case 'yaml':
-                return '"catalog":' . LengowFeed::EOL;
+                return '"catalog":'.LengowFeed::EOL;
         }
     }
 
@@ -197,16 +199,16 @@ class LengowFeed
             case 'csv':
                 $content = '';
                 foreach ($data as $value) {
-                    $content .= LengowFeed::PROTECTION . $value . LengowFeed::PROTECTION . LengowFeed::CSV_SEPARATOR;
+                    $content .= LengowFeed::PROTECTION.$value.LengowFeed::PROTECTION.LengowFeed::CSV_SEPARATOR;
                 }
-                return rtrim($content, LengowFeed::CSV_SEPARATOR) . LengowFeed::EOL;
+                return rtrim($content, LengowFeed::CSV_SEPARATOR).LengowFeed::EOL;
             case 'xml':
                 $content = '<product>';
                 foreach ($data as $field => $value) {
                     $field = LengowFeed::formatFields($field, $format);
-                    $content .= '<' . $field . '><![CDATA[' . $value . ']]></' . $field . '>' . LengowFeed::EOL;
+                    $content .= '<'.$field.'><![CDATA[' . $value . ']]></'.$field.'>'.LengowFeed::EOL;
                 }
-                $content .= '</product>' . LengowFeed::EOL;
+                $content .= '</product>'.LengowFeed::EOL;
                 return $content;
             case 'json':
                 $content = $is_first ? '' : ',';
@@ -218,11 +220,11 @@ class LengowFeed
                 $content .= Tools::jsonEncode($json_array);
                 return $content;
             case 'yaml':
-                $content = '  ' . LengowFeed::PROTECTION . 'product' . LengowFeed::PROTECTION . ':' . LengowFeed::EOL;
+                $content = '  '.LengowFeed::PROTECTION.'product'.LengowFeed::PROTECTION.':'.LengowFeed::EOL;
                 foreach ($data as $field => $value) {
                     $field = LengowFeed::formatFields($field, $format);
-                    $content .= '    ' . LengowFeed::PROTECTION . $field . LengowFeed::PROTECTION . ':';
-                    $content .= LengowFeed::indentYaml($field, 22) . (string)$value . LengowFeed::EOL;
+                    $content .= '    '.LengowFeed::PROTECTION.$field.LengowFeed::PROTECTION.':';
+                    $content .= LengowFeed::indentYaml($field, 22).(string)$value.LengowFeed::EOL;
                 }
                 return $content;
         }

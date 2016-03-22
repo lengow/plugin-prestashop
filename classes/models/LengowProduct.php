@@ -191,7 +191,7 @@ class LengowProduct extends Product
                 if ($id_product_attribute > 1 && $this->combinations[$id_product_attribute]['supplier_reference']) {
                     return $this->combinations[$id_product_attribute]['supplier_reference'];
                 }
-                return LengowMain::cleanData($this->supplier_reference);
+                return LengowMain::cleanData($this->getSupplierReference());
             case 'manufacturer':
                 return LengowMain::cleanData($this->manufacturer_name);
             case 'category':
@@ -733,6 +733,25 @@ class LengowProduct extends Product
         }
         //echo "**********".$sql."**********";
         return Db::getInstance()->executeS($sql);
+    }
+
+    /**
+     * v3
+     * Get supplier reference.
+     *
+     * @return string
+     */
+    public function getSupplierReference()
+    {
+        if ($this->supplier_reference != '' || _PS_VERSION_ < '1.5') {
+            return $this->supplier_reference;
+        }
+        $sql = 'SELECT `product_supplier_reference`
+            FROM `'._DB_PREFIX_.'product_supplier`
+            WHERE `id_product` = \''.pSQL($this->id).'\'
+            AND `id_product_attribute` = 0';
+        $result = Db::getInstance()->getRow($sql);
+        return $result['product_supplier_reference'];
     }
 
     /**

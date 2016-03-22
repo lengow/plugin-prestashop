@@ -192,7 +192,6 @@ class LengowExport
     public function __construct($params = array())
     {
         $this->setFormat(isset($params["format"]) ? $params["format"] : 'csv');
-
         $this->offset = (isset($params["offset"]) ? $params["offset"] : false);
         $this->productIds = (isset($params["product_ids"]) ? $params["product_ids"] : false);
         $this->stream = (isset($params["stream"]) ? $params["stream"] : false);
