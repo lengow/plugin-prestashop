@@ -228,13 +228,13 @@ LengowInstall::checkFieldAndDrop('lengow_logs_import', 'delivery_address_id');
 $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_orders` (
         `id` INT(11) NOT NULL AUTO_INCREMENT,
         `id_order` INTEGER(10) UNSIGNED NULL ,
-        `marketplace_sku` VARCHAR(32) NOT NULL ,
+        `marketplace_sku` VARCHAR(100) NOT NULL ,
         `id_shop` INTEGER(11) UNSIGNED NOT NULL DEFAULT \'1\' ,
         `id_shop_group` INTEGER(11) UNSIGNED NOT NULL DEFAULT \'1\' ,
         `id_lang` INTEGER(10) UNSIGNED NOT NULL DEFAULT \'1\' ,
         `id_flux` INTEGER(11) UNSIGNED NULL ,
         `marketplace_name` VARCHAR(100) NULL ,
-        `marketplace_label` VARCHAR(40) NULL ,
+        `marketplace_label` VARCHAR(100) NULL ,
         `message` TEXT ,
         `total_paid` DECIMAL(17,2) UNSIGNED NULL ,
         `carrier` VARCHAR(100) ,
@@ -277,7 +277,7 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
     }
     if (LengowInstall::checkFieldExists('lengow_orders', 'id_order_lengow')) {
         Db::getInstance()->execute(
-            'ALTER TABLE '._DB_PREFIX_.'lengow_orders CHANGE `id_order_lengow` `marketplace_sku` VARCHAR(32) NOT NULL'
+            'ALTER TABLE '._DB_PREFIX_.'lengow_orders CHANGE `id_order_lengow` `marketplace_sku` VARCHAR(100) NOT NULL'
         );
     }
     if (LengowInstall::checkFieldExists('lengow_orders', 'marketplace')) {
@@ -305,7 +305,7 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
     }
     if (!LengowInstall::checkFieldExists('lengow_orders', 'marketplace_label')) {
         Db::getInstance()->execute(
-            'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `marketplace_label` VARCHAR(40) NULL'
+            'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `marketplace_label` VARCHAR(100) NULL'
         );
     }
     if (!LengowInstall::checkFieldExists('lengow_orders', 'delivery_address_id')) {
