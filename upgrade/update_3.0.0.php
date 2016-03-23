@@ -41,9 +41,9 @@ Db::getInstance()->execute($sql);
 $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_actions` (
     `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `id_order` int(11) UNSIGNED NOT NULL,
-    `order_line_sku` varchar(32) NULL,
+    `order_line_sku` VARCHAR(100) NULL,
     `action_id` int(11) UNSIGNED NOT NULL,
-    `action_type` varchar(32) NOT NULL,
+    `action_type` VARCHAR(32) NOT NULL,
     `retry` TINYINT(1) UNSIGNED NOT NULL DEFAULT \'0\',
     `parameters` text NOT NULL,
     `state` TINYINT(1) UNSIGNED NOT NULL,
@@ -59,7 +59,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_marketplace_carrier` (
     `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `id_country` int(11) UNSIGNED NOT NULL,
     `id_carrier` int(11) UNSIGNED NULL,
-    `marketplace_carrier_sku` varchar(32) NOT NULL,
+    `marketplace_carrier_sku` VARCHAR(32) NOT NULL,
     `marketplace_carrier_name` VARCHAR(32) NOT NULL,
     PRIMARY KEY(`id`),
     INDEX (`id_country`) ,
@@ -103,7 +103,7 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_produc
 $sql = 'CREATE TABLE IF NOT EXISTS '._DB_PREFIX_.'lengow_order_line (
         `id` INTEGER(11) NOT NULL AUTO_INCREMENT ,
         `id_order` INTEGER(11) UNSIGNED NOT NULL ,
-        `id_order_line` VARCHAR(255) NOT NULL ,
+        `id_order_line` VARCHAR(100) NOT NULL ,
         `id_order_detail` INTEGER(11) UNSIGNED NULL ,
         PRIMARY KEY(`id`));';
 Db::getInstance()->execute($sql);
@@ -264,7 +264,6 @@ Db::getInstance()->execute($sql);
 
 
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders\'')) {
-
     if (LengowInstall::checkFieldExists('lengow_orders', 'id_flux')) {
         Db::getInstance()->execute(
             'ALTER TABLE  '._DB_PREFIX_.'lengow_orders CHANGE `id_flux` `id_flux` INT(11) UNSIGNED NULL'
@@ -323,7 +322,6 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
             'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `sent_marketplace` TINYINT(1) UNSIGNED DEFAULT \'0\''
         );
     }
-
     if (!LengowInstall::checkFieldExists('lengow_orders', 'currency')) {
         Db::getInstance()->execute(
             'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `currency` VARCHAR(3) NULL'
