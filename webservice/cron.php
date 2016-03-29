@@ -86,7 +86,7 @@ if (!$sync || $sync === 'order') {
         $params['marketplace_name'] = (string)Tools::getValue('marketplace_name');
     }
     if (Tools::getIsset('delivery_address_id')) {
-        $params['delivery_address_id'] = (string)Tools::getValue('delivery_address_id');
+        $params['delivery_address_id'] = (int)Tools::getValue('delivery_address_id');
     }
     if (Tools::getIsset('shop_id') && is_numeric(Tools::getValue('shop_id'))) {
         $params['shop_id'] = (int)Tools::getValue('shop_id');
