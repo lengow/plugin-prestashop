@@ -117,6 +117,7 @@ class LengowSync extends SpecificPrice
             $shop = new LengowShop($shopId);
 
             $data['shops'][] = array(
+                'enabled' => LengowConfiguration::get('LENGOW_SHOP_ACTIVE', $shop->id),
                 'token' => LengowMain::getToken($shopId),
                 'store_name' => $shop->name,
                 'domain_url' => $shop->domain,

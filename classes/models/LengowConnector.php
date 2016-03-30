@@ -142,21 +142,21 @@ class LengowConnector
      *
      * @return array The formated data response
      */
-    public function call($method, $array = array(), $type = 'GET', $format = 'json')
+    public function call($method, $array = array(), $type = 'GET', $format = 'json', $body = '')
     {
         $this->connect();
         try {
             if (!array_key_exists('account_id', $array)) {
                 $array['account_id'] = $this->account_id;
             }
-            $data = $this->callAction($method, $array, $type, $format);
+            $data = $this->callAction($method, $array, $type, $format, $body);
         } catch (LengowException $e) {
             return $e->getMessage();
         }
         return $data;
     }
 
-    public function get($method, $array = array(), $format = 'json')
+    public function get($method, $array = array(), $format = 'json', $body = '')
     {
         if (LengowMain::inTest() && self::$test_fixture_path) {
             if (is_array(self::$test_fixture_path)) {
@@ -168,10 +168,10 @@ class LengowConnector
             }
             return $content;
         }
-        return $this->call($method, $array, 'GET', $format);
+        return $this->call($method, $array, 'GET', $format, $body);
     }
 
-    public function post($method, $array = array(), $format = 'json')
+    public function post($method, $array = array(), $format = 'json', $body = '')
     {
         if (LengowMain::inTest() && self::$test_fixture_path) {
             if (is_array(self::$test_fixture_path)) {
@@ -183,37 +183,37 @@ class LengowConnector
             }
             return $content;
         }
-        return $this->call($method, $array, 'POST', $format);
+        return $this->call($method, $array, 'POST', $format, $body);
     }
 
-    public function head($method, $array = array(), $format = 'json')
+    public function head($method, $array = array(), $format = 'json', $body = '')
     {
-        return $this->call($method, $array, 'HEAD', $format);
+        return $this->call($method, $array, 'HEAD', $format, $body);
     }
 
-    public function put($method, $array = array(), $format = 'json')
+    public function put($method, $array = array(), $format = 'json', $body = '')
     {
-        return $this->call($method, $array, 'PUT', $format);
+        return $this->call($method, $array, 'PUT', $format, $body);
     }
 
-    public function delete($method, $array = array(), $format = 'json')
+    public function delete($method, $array = array(), $format = 'json', $body = '')
     {
-        return $this->call($method, $array, 'DELETE', $format);
+        return $this->call($method, $array, 'DELETE', $format, $body);
     }
 
-    public function patch($method, $array = array(), $format = 'json')
+    public function patch($method, $array = array(), $format = 'json', $body = '')
     {
-        return $this->call($method, $array, 'PATCH', $format);
+        return $this->call($method, $array, 'PATCH', $format, $body);
     }
 
-    private function callAction($api, $args, $type, $format = 'json')
+    private function callAction($api, $args, $type, $format = 'json', $body = '')
     {
         if ($api == '/v1.0/numbers/') {
             $url = 'http://10.100.1.242:8083';
         } else {
             $url = self::LENGOW_API_URL;
         }
-        $result = $this->makeRequest($type, $url.$api, $args, $this->token);
+        $result = $this->makeRequest($type, $url.$api, $args, $this->token, $body);
         return $this->format($result, $format);
     }
 
@@ -231,7 +231,7 @@ class LengowConnector
         }
     }
 
-    protected function makeRequest($type, $url, $args, $token)
+    protected function makeRequest($type, $url, $args, $token, $body = '')
     {
         $ch = curl_init();
         // Options
@@ -239,7 +239,7 @@ class LengowConnector
         $opts[CURLOPT_CUSTOMREQUEST] = Tools::strtoupper($type);
         $url = parse_url($url);
         $opts[CURLOPT_PORT] = $url['port'];
-        $opts[CURLOPT_HEADER] = true;
+        $opts[CURLOPT_HEADER] = false;
         $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_VERBOSE] = false;
         if (isset($token)) {
@@ -248,35 +248,44 @@ class LengowConnector
             );
         }
         $url = $url['scheme'].'://'.$url['host'].$url['path'];
-        if ($type == 'GET') {
-            $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
-            LengowMain::log(
-                'Connector',
-                LengowMain::setLogMessage('log.connector.call_api', array('curl_url' => $opts[CURLOPT_URL]))
-            );
-        } else {
-            $opts[CURLOPT_URL] = $url;
-            $opts[CURLOPT_POST] = count($args);
-            $opts[CURLOPT_POSTFIELDS] = http_build_query($args);
+        switch ($type) {
+            case "GET":
+                $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
+                LengowMain::log(
+                    'Connector',
+                    LengowMain::setLogMessage('log.connector.call_api', array('curl_url' => $opts[CURLOPT_URL]))
+                );
+                break;
+            case "PUT":
+                $opts[CURLOPT_HTTPHEADER] = array_merge($opts[CURLOPT_HTTPHEADER], array(
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($body)
+                ));
+                $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
+                $opts[CURLOPT_POSTFIELDS] = $body;
+                break;
+            default:
+                $opts[CURLOPT_URL] = $url;
+                $opts[CURLOPT_POST] = count($args);
+                $opts[CURLOPT_POSTFIELDS] = http_build_query($args);
+                break;
         }
         // Exectute url request
         curl_setopt_array($ch, $opts);
         $result = curl_exec($ch);
         $error = curl_errno($ch);
-        list($header, $data) = explode("\r\n\r\n", $result, 2);
         $information = curl_getinfo($ch, CURLINFO_HEADER_OUT);
         // This two lines are useless, but Prestashop validator require it
-        $header = $header;
         $information = $information;
         curl_close($ch);
-        if ($data === false) {
+        if ($result === false) {
             $error_message = LengowMain::setLogMessage('log.connector.error_api', array(
                 'error_code' => $error['code']
             ));
             LengowMain::log('Connector', $error_message);
             throw new LengowException($error_message);
         }
-        return $data;
+        return $result;
     }
 
     public function getAccountId()
@@ -333,9 +342,9 @@ class LengowConnector
      *
      * @return api result as array
      */
-    public static function queryApi($type, $url, $shopId = null, $params = array())
+    public static function queryApi($type, $url, $shopId = null, $params = array(), $body = '')
     {
-        if (!in_array($type, array('get', 'post'))) {
+        if (!in_array($type, array('get', 'post', 'put'))) {
             return false;
         }
 
@@ -344,7 +353,8 @@ class LengowConnector
         $results = $connector->$type(
             $url,
             array_merge(array('account_id' => $account_id), $params),
-            'stream'
+            'stream',
+            $body
         );
         return Tools::JsonDecode($results);
     }
