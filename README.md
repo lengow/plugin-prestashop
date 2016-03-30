@@ -46,7 +46,7 @@ Cloner le repo dans votre espace de travail :
     cd /var/www/prestashop/
     git clone git@bitbucket.org:lengow-dev/prestashop-v3.git
 
-### Installation dans Magento ###
+### Installation dans Prestashop ###
 
 Exécuter le script suivant :
 
