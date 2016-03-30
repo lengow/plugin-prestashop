@@ -345,6 +345,7 @@ class LengowImport
                             $this->log_output
                         );
                         $error[(int)$shop->id] = $e->getMessage();
+                        unset($error_message);
                         continue;
                     }
                 }
@@ -489,23 +490,21 @@ class LengowImport
                     $results = $this->connector->get(
                         '/v3.0/orders',
                         array(
-                            'marketplace_order_id'          => $this->marketplace_sku,
-                            'marketplace'                   => $this->marketplace_name,
-                            'account_id'                    => $this->account_id,
-                            'page'                          => $page,
-                            'marketplace_order_date_from'   => '2015-01-01T00:00:00+01:00'
-                            ),
+                            'marketplace_order_id' => $this->marketplace_sku,
+                            'marketplace'          => $this->marketplace_name,
+                            'account_id'           => $this->account_id,
+                            'page'                 => $page
+                        ),
                         'stream'
                     );
                 } else {
                     $results = $this->connector->get(
                         '/v3.0/orders',
                         array(
-                            'updated_from'                  => $this->date_from,
-                            'updated_to'                    => $this->date_to,
-                            'account_id'                    => $this->account_id,
-                            'page'                          => $page,
-                            'marketplace_order_date_from'   => $this->date_from
+                            'updated_from' => $this->date_from,
+                            'updated_to'   => $this->date_to,
+                            'account_id'   => $this->account_id,
+                            'page'         => $page
                         ),
                         'stream'
                     );
@@ -652,6 +651,7 @@ class LengowImport
                         $this->log_output,
                         $marketplace_sku
                     );
+                    unset($error_message);
                     continue;
                 }
                 // Sync to lengow if no preprod_mode

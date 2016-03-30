@@ -251,7 +251,10 @@ class LengowPaymentModule extends PaymentModule
                 (int)Configuration::get('PS_GIFT_WRAPPING_TAX_RULES_GROUP')
             );
             $tax_calculator = $tax_manager->getTaxCalculator();
-            $order->total_wrapping_tax_excl = $tax_calculator->removeTaxes((float)$processing_fees);
+            $order->total_wrapping_tax_excl = (float)Tools::ps_round(
+                $tax_calculator->removeTaxes((float)$processing_fees),
+                2
+            );
             $order->total_wrapping_tax_incl = (float)$processing_fees;
             $order->total_wrapping = $order->total_wrapping_tax_incl;
 
@@ -285,22 +288,35 @@ class LengowPaymentModule extends PaymentModule
                     (int)$id_cart,
                     true
                 );
-                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order'));
+                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order'), array(
+                    'error' => Db::getInstance()->getMsgError()
+                ));
             }
 
             $order_list[] = $order;
 
             // Insert new Order detail list using cart for the current order
             $order_detail = new LengowOrderDetail(null, null, $this->context);
-            $order_detail->createList(
-                $order,
-                $this->context->cart,
-                $id_order_state,
-                $order->product_list,
-                0,
-                true,
-                $package_list[$id_address][$id_package]['id_warehouse']
-            );
+            if ($package_list[$id_address][$id_package]['id_warehouse'] != '') {
+                $order_detail->createList(
+                    $order,
+                    $this->context->cart,
+                    $id_order_state,
+                    $order->product_list,
+                    0,
+                    true,
+                    $package_list[$id_address][$id_package]['id_warehouse']
+                );
+            } else {
+                $order_detail->createList(
+                    $order,
+                    $this->context->cart,
+                    $id_order_state,
+                    $order->product_list,
+                    0,
+                    true
+                );
+            }
             $order_detail_list[] = $order_detail;
 
             // Adding an entry in order_carrier table

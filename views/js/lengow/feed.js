@@ -20,6 +20,24 @@
 
 (function ($) {
     $(document).ready(function () {
+        function checkShop() {
+            var href = $('.lengow_check_shop').attr('data-href');
+            $.ajax({
+                url: href,
+                method: 'POST',
+                data: {action: 'check_shop'},
+                dataType: 'script',
+                beforeSend: function () {
+                    $('.lengow_check_shop').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                },
+                success: function () {
+                    init_tooltip()
+                }
+            });
+        }
+
+        checkShop();
+
         $('#lengow_feed_wrapper').on('switchChange.bootstrapSwitch', '.lengow_switch_option', function (event, state) {
             if (event.type == "switchChange") {
                 var href = $(this).attr('data-href');
@@ -54,15 +72,15 @@
             var href = $(this).attr('data-href');
             var id_shop = $(this).parents('.lengow_feed_pagination').attr('id').split('_')[2];
 
-            $('#lengow_feed_wrapper #form_table_shop_'+id_shop+' input[name="p"]').val($(this).attr('data-page'));
-            $('#lengow_feed_wrapper #form_table_shop_'+id_shop).submit();
+            $('#lengow_feed_wrapper #form_table_shop_' + id_shop + ' input[name="p"]').val($(this).attr('data-page'));
+            $('#lengow_feed_wrapper #form_table_shop_' + id_shop).submit();
             return false;
         });
         $('#lengow_feed_wrapper').on('click', '.lengow_form_table .table_order', function () {
             var id_shop = $(this).parents('table').attr('id').split('_')[2];
-            $('#lengow_feed_wrapper #form_table_shop_'+id_shop+' input[name="order_value"]').val($(this).attr('data-order'));
-            $('#lengow_feed_wrapper #form_table_shop_'+id_shop+' input[name="order_column"]').val($(this).attr('data-column'));
-            $('#lengow_feed_wrapper #form_table_shop_'+id_shop).submit();
+            $('#lengow_feed_wrapper #form_table_shop_' + id_shop + ' input[name="order_value"]').val($(this).attr('data-order'));
+            $('#lengow_feed_wrapper #form_table_shop_' + id_shop + ' input[name="order_column"]').val($(this).attr('data-column'));
+            $('#lengow_feed_wrapper #form_table_shop_' + id_shop).submit();
             return false;
         });
         $('#lengow_feed_wrapper').on('submit', '.lengow_form_table', function () {
@@ -153,5 +171,7 @@
                 $('.lengow_selection').parents('tr').addClass('select');
             }
         });
+
+
     });
 })(lengow_jquery);

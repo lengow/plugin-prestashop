@@ -36,6 +36,7 @@
 $currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME'])."/");
 $sep = DIRECTORY_SEPARATOR;
 require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
+Configuration::set('PS_SHOP_ENABLE', true);
 require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules/lengow/lengow.php';
 
@@ -81,7 +82,9 @@ if (Tools::getIsset('cur')) {
     }
 }
 // export format (csv, yaml, xml, json)
-$format = isset($_REQUEST["format"]) ? $_REQUEST["format"] : Configuration::get('LENGOW_EXPORT_FORMAT');
+$format = isset($_REQUEST["format"])
+    ? $_REQUEST["format"]
+    : LengowConfiguration::getGlobalValue('LENGOW_EXPORT_FORMAT');
 //define language
 if (isset($_REQUEST["lang"])) {
     $languageId = Language::getIdByIso($_REQUEST["lang"]);
@@ -96,16 +99,17 @@ $limit = isset($_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : null;
 $offset = isset($_REQUEST["offset"]) ? (int)$_REQUEST["offset"] : null;
 // export lengow selection
 $selection = isset($_REQUEST["selection"]) ? (bool)$_REQUEST["selection"] :
-    Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED');
+    LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED');
 // export in file or no
 $stream = isset($_REQUEST["stream"]) ?
-    (bool)$_REQUEST["stream"] : (bool)Configuration::get('LENGOW_EXPORT_FILE_ENABLED');
+    (bool)$_REQUEST["stream"] : !(bool)LengowConfiguration::getGlobalValue('LENGOW_EXPORT_FILE_ENABLED');
+
 // export out of stock products
 $out_stock = isset($_REQUEST["out_stock"]) ? (bool)$_REQUEST["out_stock"] :
-    (bool)Configuration::get('LENGOW_EXPORT_OUT_STOCK');
+    (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK');
 // export product variation
 $exportVariation = isset($_REQUEST["variation"]) ? (bool)$_REQUEST["variation"] :
-    (bool)Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED');
+    (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED');
 // export certain products
 $product_ids = array();
 $ids = isset($_REQUEST["product_ids"]) ? $_REQUEST["product_ids"] : null;

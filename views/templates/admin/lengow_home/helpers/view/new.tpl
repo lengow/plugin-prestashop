@@ -24,4 +24,5 @@
     <iframe id="lengow_iframe" style="display: none;" frameBorder="0"></iframe>
 </div>
 <input type="hidden" id="lengow_ajax_link" value="{$lengow_ajax_link|escape:'htmlall':'UTF-8'}">
+<input type="hidden" id="lengow_sync_link" value="{$isSync|escape:'htmlall':'UTF-8'}">
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/home.js"></script>

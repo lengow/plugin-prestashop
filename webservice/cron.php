@@ -24,6 +24,7 @@
 $currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME'])."/");
 $sep = DIRECTORY_SEPARATOR;
 require_once $currentDirectory.'config'.$sep.'config.inc.php';
+Configuration::set('PS_SHOP_ENABLE', true);
 require_once $currentDirectory.'init.php';
 require_once $currentDirectory.'modules'.$sep.'lengow'.$sep.'lengow.php';
 
@@ -85,7 +86,7 @@ if (!$sync || $sync === 'order') {
         $params['marketplace_name'] = (string)Tools::getValue('marketplace_name');
     }
     if (Tools::getIsset('delivery_address_id')) {
-        $params['delivery_address_id'] = (string)Tools::getValue('delivery_address_id');
+        $params['delivery_address_id'] = (int)Tools::getValue('delivery_address_id');
     }
     if (Tools::getIsset('shop_id') && is_numeric(Tools::getValue('shop_id'))) {
         $params['shop_id'] = (int)Tools::getValue('shop_id');

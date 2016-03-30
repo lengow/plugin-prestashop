@@ -162,7 +162,6 @@ fr:
       no_country_for_delivery_address: "l'adresse de livraison ne contient pas de pays"
       no_billing_address: "pas d'adresse de facturation dans cette commande"
       no_country_for_billing_address: "l'adresse de facturation ne contient pas de pays"
-      tracking_in_progress: "Suivi en cours, en attente d'une réponse de la place de marché"
     exception:
       product_not_be_found: "le produit %{product_id} ne peut être trouvé"
       product_is_a_parent: "le produit %{product_id}  est un ID parent. Les déclinaisons du produit sont nécessaires"

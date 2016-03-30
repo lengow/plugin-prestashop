@@ -444,7 +444,7 @@ class LengowMarketplace
                             'action_type' => $action,
                             'action_id' => $result->id,
                             'parameters' => $params
-                        ), $order->lengow_id);
+                        ));
                     }
                 }
             }

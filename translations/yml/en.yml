@@ -51,6 +51,8 @@ en:
       remove_confirmation: "Do you really want to remove %{nb} products in your selection?"
       remove_from_export: "Remove from export"
       add_from_export: "Add from export"
+      lengow_shop_sync: "Synchronized"
+      lengow_shop_no_sync: "Not synchronized"
     table:
       id_product: "ID"
       image: "Image"
@@ -215,7 +217,6 @@ en:
       no_country_for_delivery_address: "delivery address doesn't contain the country"
       no_billing_address: "no billing address in the order"
       no_country_for_billing_address: "billing address doesn't contain the country"
-      tracking_in_progress: "Tracking send in progress"
       order_not_found: "Order can't be found in lengow feed"
     exception:
       product_not_be_found: "product %{product_id} could not be found"
@@ -244,8 +245,9 @@ en:
       cart_cannot_be_loaded: "cart cannot be loaded, or an order has already been placed using this cart"
       delivery_country_not_active: "the country in the delivery address is not active"
       product_is_not_listed: "product %{product_id} is not listed as part of the current order"
-      unable_to_save_order: "unable to save PrestaShop order"
+      unable_to_save_order: "unable to save PrestaShop order - %{error}"
       unable_to_save_order_payment: "unable to save PrestaShop order payment"
+      timeout_api: "API call was blocked by a timeout"
     mail_report:
       order: "Order %{marketplace_sku}"
       no_error_in_report_mail: "no error message, contact support via https://supportlengow.zendesk.com/agent/"

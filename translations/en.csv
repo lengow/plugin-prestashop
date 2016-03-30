@@ -43,6 +43,8 @@ product.screen.add_confirmation|Do you really want to add %{nb} products in your
 product.screen.remove_confirmation|Do you really want to remove %{nb} products in your selection?
 product.screen.remove_from_export|Remove from export
 product.screen.add_from_export|Add from export
+product.screen.lengow_shop_sync|Synchronized
+product.screen.lengow_shop_no_sync|Not synchronized
 product.table.id_product|ID
 product.table.image|Image
 product.table.name|Name
@@ -196,7 +198,6 @@ lengow_log.error.currency_not_available|currency %{currency_iso} is not availabl
 lengow_log.error.no_country_for_delivery_address|delivery address doesn't contain the country
 lengow_log.error.no_billing_address|no billing address in the order
 lengow_log.error.no_country_for_billing_address|billing address doesn't contain the country
-lengow_log.error.tracking_in_progress|Tracking send in progress
 lengow_log.error.order_not_found|Order can't be found in lengow feed
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
 lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation is needed
@@ -226,6 +227,7 @@ lengow_log.exception.delivery_country_not_active|the country in the delivery add
 lengow_log.exception.product_is_not_listed|product %{product_id} is not listed as part of the current order
 lengow_log.exception.unable_to_save_order|unable to save PrestaShop order
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
+lengow_log.exception.timeout_api|API call was blocked by a timeout
 lengow_log.mail_report.order|Order %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Import Lengow
