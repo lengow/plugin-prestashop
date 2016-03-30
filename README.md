@@ -16,7 +16,7 @@
 
 5 - Création du fichier virtualhost d'apache
 
-    sudo vim /etc/apache2/sites-enabled/magento_1_9.conf 
+    sudo vim /etc/apache2/sites-enabled/prestashop-1-6.conf 
     <VirtualHost *:80>
     DocumentRoot /var/www/prestashop/prestashop-1-6/
     ServerName prestashop-1-6.local
@@ -35,7 +35,7 @@
     
     mysql -u root -p -e "CREATE DATABASE prestashop-1-6"; 
         
-8 - Se connecter sur magento pour lancer l'installation
+8 - Se connecter sur prestashop pour lancer l'installation
     
     http://prestashop-1-6.local     
 
