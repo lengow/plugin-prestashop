@@ -147,18 +147,19 @@ class LengowFeedController extends LengowController
                     $shops = LengowShop::findAll(true);
                     $link = new LengowLink();
                     foreach ($shops as $shopId) {
-                        if ($this->checkShop($shopId['id_shop']) === true) {
+                        $checkShop = $this->checkShop($shopId['id_shop']);
+                        if ($checkShop === true) {
                             echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").attr("id", "lengow_shop_sync");';
                             echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").attr("data-original-title", "'
                                     . $this->locale->t('product.screen.lengow_shop_sync') . '");';
-                            echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").html("");';
                         } else {
+                            echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").html("");';
                             echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").attr("id", "lengow_shop_no_sync");';
                             echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").attr("data-original-title", "'
                                 . $this->locale->t('product.screen.lengow_shop_no_sync') . '");';
-                            echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").html("");';
                             echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_feed_block_header_title").append("<a href=\"'
                                 . $link->getAbsoluteAdminLink('AdminLengowHome', true) . '&isSync=true\" ><span>sync</span></a>");';
+
                         }
                     }
                     break;
@@ -206,16 +207,21 @@ class LengowFeedController extends LengowController
 
     /**
      * Check token shop
+     * @param array
      * @param $idShop
+     *
+     * @return boolean
      */
     public function checkShop($idShop)
     {
+        $result = LengowConnector::queryApi('get', '/v3.0/cms', $idShop);
         $token = LengowConfiguration::get('LENGOW_SHOP_TOKEN', null, null, $idShop);
-        $json_data = LengowShop::getContentShopJson();
-        foreach ($json_data->shops as $key => $value) {
-            if ($value->token == $token) {
-                if ($value->enabled === "1") {
-                    return true;
+        if (!isset($result->error)) {
+            foreach ($result->shops as $results) {
+                if ($results->token === $token) {
+                    if ($results->enabled === true) {
+                        return true;
+                    }
                 }
             }
         }

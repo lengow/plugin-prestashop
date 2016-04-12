@@ -31,7 +31,9 @@
                     $('.lengow_check_shop').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
                 },
                 success: function () {
-                    init_tooltip()
+                    init_tooltip();
+                    $('.lengow_check_shop').html('');
+
                 }
             });
         }
