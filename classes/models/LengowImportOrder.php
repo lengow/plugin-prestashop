@@ -70,6 +70,11 @@ class LengowImportOrder
     protected $marketplace_sku;
 
     /**
+     * @var string marketplace label
+     */
+    protected $marketplace_label;
+
+    /**
      * @var integer id of delivery address for current order
      */
     protected $delivery_address_id;

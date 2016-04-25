@@ -36,7 +36,7 @@ class LengowMarketplace
     /**
      * @var mixed all markeplaces allowed for an account ID
      */
-    public static $MARKETPLACES;
+    public static $MARKETPLACES = array();
     
     /**
      * @var mixed the current marketplace
@@ -89,14 +89,14 @@ class LengowMarketplace
         $this->id_shop = $id_shop;
         $this->loadApiMarketplace();
         $this->name = Tools::strtolower($name);
-        if (!isset(self::$MARKETPLACES->{$this->name})) {
+        if (!isset(self::$MARKETPLACES[$this->id_shop]->{$this->name})) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.marketplace_not_present', array(
                     'markeplace_name' => $this->name
                 ))
             );
         }
-        $this->marketplace = self::$MARKETPLACES->{$this->name};
+        $this->marketplace = self::$MARKETPLACES[$this->id_shop]->{$this->name};
         if (!empty($this->marketplace)) {
             $this->label_name = $this->marketplace->name;
             foreach ($this->marketplace->orders->status as $key => $state) {
@@ -130,9 +130,9 @@ class LengowMarketplace
      */
     public function loadApiMarketplace()
     {
-        if (!self::$MARKETPLACES) {
+        if (!array_key_exists($this->id_shop, self::$MARKETPLACES)) {
             $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $this->id_shop);
-            self::$MARKETPLACES = $result;
+            self::$MARKETPLACES[$this->id_shop] = $result;
         }
     }
 
