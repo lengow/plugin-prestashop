@@ -1,0 +1,29 @@
+customer:
+  -
+    id_customer: 1
+    id_shop_group: 1
+    id_shop: 1
+    id_gender: 2
+    id_default_group: 3
+    id_lang: 1
+    id_risk: 0
+    firstname: "yvette"
+    lastname: "alcalde"
+    email: "generated-email+1300435653835-A@prestashop.unit"
+    passwd: "f678e69e510d203fdec1e743f09621c2"
+    last_passwd_gen: "2016-02-17 04:59:09"
+    newsletter: 0
+    optin: 0
+    outstanding_allow_amount: 0.000000
+    show_public_prices: 0
+    max_payment_days: 0
+    secure_key: "2ee6110dbc609b11d66f2e947eb2c1be"
+    active: 1
+    is_guest: 0
+    deleted: 0
+    date_add: "2016-02-17 10:59:09"
+    date_upd: "2016-02-17 10:59:09"
+customer_group:
+  -
+    id_customer: 1
+    id_group: 3

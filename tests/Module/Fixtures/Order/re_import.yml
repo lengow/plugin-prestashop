@@ -1,0 +1,30 @@
+lengow_orders:
+  -
+    id: 1
+    marketplace_sku: "1300435653833-A"
+    id_flux: ""
+    marketplace_name: "galeries_lafayette"
+    message: ""
+    total_paid: 99.99
+    carrier: "Standard"
+    tracking: ""
+    extra: ""
+    date_add: "2015-12-15 17:42:26"
+    is_reimported: 0
+    sent_marketplace: 0
+    order_process_state: 2
+    order_date: "2015-12-15 17:42:26"
+    order_item: 2
+    delivery_country_iso: "fr"
+    order_lengow_state: "new"
+    delivery_address_id: "7526"
+orders:
+order_carrier:
+order_detail:
+order_detail_tax:
+order_history:
+order_invoice:
+order_invoice_payment:
+order_invoice_tax:
+order_payment:
+lengow_logs_import:

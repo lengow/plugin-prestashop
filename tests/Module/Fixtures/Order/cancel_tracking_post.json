@@ -1,0 +1,13 @@
+{
+  "id": 1,
+  "marketplace_order_id": "1300435653833-A",
+  "account_id": 155,
+  "marketplace": "galeries_lafayette",
+  "action_type": "cancel",
+  "processed": false,
+  "queued": false,
+  "line": null,
+  "created_at": "2016-02-08T15:26:26.174512Z",
+  "updated_at": "2016-02-08T15:26:26.174577Z",
+  "errors": ""
+}

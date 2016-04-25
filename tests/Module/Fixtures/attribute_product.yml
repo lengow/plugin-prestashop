@@ -1,0 +1,140 @@
+attribute:
+  -
+    id_attribute: 1
+    id_attribute_group: 1
+    position: 0
+  -
+    id_attribute: 2
+    id_attribute_group: 1
+    position: 1
+  -
+    id_attribute: 3
+    id_attribute_group: 1
+    position: 2
+  -
+    id_attribute: 4
+    id_attribute_group: 1
+    position: 3
+  -
+    id_attribute: 5
+    id_attribute_group: 1
+    position: 4
+  -
+    id_attribute: 6
+    id_attribute_group: 1
+    position: 5
+  -
+    id_attribute: 11
+    id_attribute_group: 2
+    position: 0
+  -
+    id_attribute: 12
+    id_attribute_group: 2
+    position: 1
+  -
+    id_attribute: 13
+    id_attribute_group: 2
+    position: 2
+  -
+    id_attribute: 14
+    id_attribute_group: 2
+    position: 3
+  -
+    id_attribute: 15
+    id_attribute_group: 2
+    position: 4
+  -
+    id_attribute: 16
+    id_attribute_group: 2
+    position: 5
+attribute_lang:
+  -
+    id_attribute: 1
+    id_lang: 1
+    name: 35
+  -
+    id_attribute: 2
+    id_lang: 1
+    name: 36
+  -
+    id_attribute: 3
+    id_lang: 1
+    name: 37
+  -
+    id_attribute: 4
+    id_lang: 1
+    name: 38
+  -
+    id_attribute: 5
+    id_lang: 1
+    name: 39
+  -
+    id_attribute: 6
+    id_lang: 1
+    name: 40
+  -
+    id_attribute: 11
+    id_lang: 1
+    name: "Beige"
+  -
+    id_attribute: 12
+    id_lang: 1
+    name: "Blanc"
+  -
+    id_attribute: 13
+    id_lang: 1
+    name: "Blanc cassé"
+  -
+    id_attribute: 14
+    id_lang: 1
+    name: "Bleu"
+  -
+    id_attribute: 15
+    id_lang: 1
+    name: "Camel"
+  -
+    id_attribute: 16
+    id_lang: 1
+    name: "Gris"
+attribute_group:
+  -
+    id_attribute_group: 1
+    is_color_group: 0
+    group_type: "select"
+    position: 0
+  -
+    id_attribute_group: 2
+    is_color_group: 0
+    group_type: "select"
+    position: 1
+  -
+    id_attribute_group: 3
+    is_color_group: 1
+    group_type: "color"
+    position: 2
+attribute_group_lang:
+  -
+    id_attribute_group: 1
+    id_lang: 1
+    name: "Pointure"
+    public_name: "Pointure"
+  -
+    id_attribute_group: 2
+    id_lang: 1
+    name: "Couleur"
+    public_name: "Couleur"
+  -
+    id_attribute_group: 3
+    id_lang: 1
+    name: "Taille"
+    public_name: "Taille"
+attribute_group_shop:
+  -
+    id_attribute_group: 1
+    id_shop: 1
+  -
+    id_attribute_group: 2
+    id_shop: 1
+  -
+    id_attribute_group: 3
+    id_shop: 1

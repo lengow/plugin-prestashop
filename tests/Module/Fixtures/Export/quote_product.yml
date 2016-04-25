@@ -1,0 +1,40 @@
+product:
+  -
+    id_product: 101
+    id_supplier: 1
+    id_manufacturer: 1
+    price: 4.90
+    reference: SIMPLEKU001
+    supplier_reference: SUPPLIERSKU001
+    ean13: 9805120221231
+product_supplier:
+  -
+    id_product: 101
+    id_product_attribute: 0
+    id_supplier: 1
+product_shop:
+  -
+    id_product: 101
+    id_shop: 1
+    id_tax_rules_group: 1
+    price: 4.90
+product_lang:
+  -
+    id_product: 101
+    id_shop: 1
+    id_lang: 1
+    name: THIS " IS ' A | Test
+    description: THIS " IS ' A | Test
+    description_short: THIS " IS ' A | Test
+    link_rewrite: URL101
+stock_available:
+  -
+    id_product: 101
+    id_product_attribute: 0
+    id_shop: 1
+    quantity: 10
+    out_of_stock: 2
+category_product:
+  -
+    id_product: 101
+    id_category: 7

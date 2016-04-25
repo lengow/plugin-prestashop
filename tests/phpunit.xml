@@ -1,0 +1,18 @@
+<phpunit bootstrap="bootstrap.php">
+    <testsuites>
+        <testsuite name="Module">
+            <directory>Module</directory>
+        </testsuite>
+        <testsuite name="Controller">
+            <directory>Controller</directory>
+        </testsuite>
+        <testsuite name="Model">
+            <directory>Model</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../classes/models/</directory>
+        </whitelist>
+    </filter>
+</phpunit>
