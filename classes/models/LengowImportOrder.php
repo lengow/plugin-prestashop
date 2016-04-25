@@ -794,7 +794,7 @@ class LengowImportOrder
         // get currency
         $cart_data['id_currency'] = (int)Currency::getIdByIsoCode((string)$this->order_data->currency->iso_a3);
         // get carrier
-        $cart_data['id_carrier'] = $this->getCarrierId($this->shipping_address);
+        $cart_data['id_carrier'] = $this->getCarrierId();
         return $cart_data;
     }
 
@@ -863,6 +863,10 @@ class LengowImportOrder
      */
     protected function getAddress($id_customer, $address_data = array(), $shipping_data = false)
     {
+        // if tracking_informations exist => get id_relay
+        if ($shipping_data && !is_null($this->relay_id)) {
+            $address_data['id_relay'] = $this->relay_id;
+        }
         $address_data['address_full'] = '';
         // construct field address_full
         $address_data['address_full'] .= !empty($address_data['first_line']) ? $address_data['first_line'].' ' : '';
@@ -874,14 +878,14 @@ class LengowImportOrder
             ? $address_data['common_country_iso_a2'].' '
             : '';
         $address = LengowAddress::getByHash($address_data['address_full']);
-        $same_names = false;
         // if address exists => check if names are the same
-        if ($address->id && $address->id_customer == $id_customer) {
-            return $address;
-        }
-        // if tracking_informations exist => get id_relay
-        if ($shipping_data && !is_null($this->relay_id)) {
-            $address_data['id_relay'] = $this->relay_id;
+        if ($address) {
+            if ($address->id_customer == $id_customer) {
+                if (isset($address_data['id_relay'])) {
+                    $address->id_relay = $address_data['id_relay'];
+                }
+                return $address;
+            }
         }
         // construct LengowAddress and assign values
         $address = new LengowAddress();
@@ -1008,21 +1012,19 @@ class LengowImportOrder
     /**
      * Get carrier id according to the tracking informations given in the API
      *
-     * @param LengowAddress $shipping_address Lengow Address
-     *
      * @return integer
      */
-    protected function getCarrierId($shipping_address)
+    protected function getCarrierId()
     {
         $carrier = null;
 
-        if (!isset($shipping_address->id_country)) {
+        if (!isset($this->shipping_address->id_country)) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country')
             );
         }
 
-        $order_country_id = $shipping_address->id_country;
+        $order_country_id = $this->shipping_address->id_country;
         if ((int)$order_country_id == 0) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country')
