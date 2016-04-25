@@ -672,7 +672,7 @@ class ImportOrderTest extends ModuleTestCase
         LengowMain::$registers = array();
         $marketplaceFile =  _PS_MODULE_DIR_.
             'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id_require_carrier.json';
-        LengowMarketplace::$MARKETPLACES[1] = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
 
         $this->invokeMethod($import, 'loadTrackingData');
         $this->assertEquals(3, $this->invokeMethod($import, 'getCarrierId', array($shipping_address)));

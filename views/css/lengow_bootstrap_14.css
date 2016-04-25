@@ -1,5 +1,23 @@
+body.lengow_body #content{
+    border:1px solid #ccc;
+    margin-bottom:20px;
+}
+
+body.lengow_body #main {
+    padding-bottom:30px;
+    padding-top:0px;
+}
+
+body.lengow_body #lengow_statistic h2{
+    margin-top: 1em;
+}
+
+body.lengow_body h3{
+    margin-top: 1em;
+}
+
 body.lengow_body #container {
-    width: 99%;
+    width:100%;
     margin: 0;
     padding: 0;
     margin-left: auto;
@@ -7,3 +25,33 @@ body.lengow_body #container {
 }
 
 body.lengow_body .path_bar {display:none;}
+
+
+body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a,
+body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:hover,
+body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:focus{
+  line-height:25px;
+}
+
+
+@media all and (min-width: 978px) and (max-width: 992px) {
+
+  body{
+    display:inline-block;
+  }
+
+  #lengow_form_wrapper{
+    min-width:inherit;
+  }
+
+  .lengow_form .checkbox .legend{
+    margin-left:0;
+    margin-top:10px;
+  }
+
+}
+
+
+
+
+

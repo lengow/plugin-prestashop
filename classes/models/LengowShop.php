@@ -102,16 +102,4 @@ class LengowShop extends Shop
         }
         return $results;
     }
-
-    /**
-     * Find shop json
-     *
-     * @return array
-     */
-    public static function getContentShopJson()
-    {
-        $json_source = Tools::file_get_contents(_PS_BASE_URL_.'/modules/lengow/shop.json');
-        $json_data = json_decode($json_source);
-        return $json_data;
-    }
 }

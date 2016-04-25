@@ -17,6 +17,8 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
+
+
 <div id="lengow_home_feed_wrapper">
 <div id="lengow_feed_wrapper">
     {foreach from=$shopCollection  item=shop}
@@ -38,7 +40,7 @@
                             <span class="lengow_total">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span>
                             {$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}<br/>
                         </div>
-                        <input 
+                        <input
                             type="checkbox"
                             data-size="mini"
                             data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
@@ -66,7 +68,7 @@
                         <i class="fa fa-info-circle lengow_link_tooltip"
                            title="{$locale->t('product.screen.include_out_of_stock_support')|escape:'htmlall':'UTF-8'}"></i>
                         <br/>
-                        <input 
+                        <input
                             type="checkbox"
                             data-size="mini"
                             data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"

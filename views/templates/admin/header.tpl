@@ -26,9 +26,22 @@
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/admin.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
-{if version_compare($smarty.const._PS_VERSION_,'1.5','<')}
+{if version_compare($smarty.const._PS_VERSION_,'1.5','<')&&version_compare($smarty.const._PS_VERSION_,'1.4','>=')}
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_14.css">
+    <!--<script type="text/javascript">alert('version 1.4');</script>-->
+
 {/if}
+{if version_compare($smarty.const._PS_VERSION_,'1.6','<')&&version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
+    <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_15.css">
+    <!--<script type="text/javascript">alert('version 1.5');</script>-->
+{/if}
+
+<script type="text/javascript">
+    if (screen.width < 992) {
+        document.write('<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_min-980.css">');
+    }
+</script>
+
 {if !$isNewMerchant}
     <ul class="nav nav-pills lengow-nav lengow-nav-top {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}preprod{/if}">
         <li role="presentation" id="lengow_logo">
