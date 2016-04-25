@@ -768,15 +768,19 @@ class LengowImportOrder
         $cart_data['id_customer'] = $customer->id;
         // create addresses from API data
         // billing
-        $billing_address = $this->getAddress($billing_data);
-        $billing_address->id_customer = $customer->id;
-        $billing_address->validateLengow();
+        $billing_address = $this->getAddress($customer->id, $billing_data);
+        if (!$billing_address->id) {
+            $billing_address->id_customer = $customer->id;
+            $billing_address->validateLengow();
+        }
         $cart_data['id_address_invoice'] = $billing_address->id;
         // shipping
         $shipping_data = LengowAddress::extractAddressDataFromAPI($this->package_data->delivery);
-        $this->shipping_address = $this->getAddress($shipping_data, true);
-        $this->shipping_address->id_customer = $customer->id;
-        $this->shipping_address->validateLengow();
+        $this->shipping_address = $this->getAddress($customer->id, $shipping_data, true);
+        if (!$this->shipping_address->id) {
+            $this->shipping_address->id_customer = $customer->id;
+            $this->shipping_address->validateLengow();
+        }
         // get billing phone numbers if empty in shipping address
         if (empty($this->shipping_address->phone) && !empty($billing_address->phone)) {
             $this->shipping_address->phone = $billing_address->phone;
@@ -851,12 +855,13 @@ class LengowImportOrder
     /**
      * Create or load address based on API data
      *
+     * @param integer   $id_customer
      * @param array     $address_data   API data
      * @param boolean   $shipping_data
      *
      * @return LengowAddress
      */
-    protected function getAddress($address_data = array(), $shipping_data = false)
+    protected function getAddress($id_customer, $address_data = array(), $shipping_data = false)
     {
         $address_data['address_full'] = '';
         // construct field address_full
@@ -868,6 +873,12 @@ class LengowImportOrder
         $address_data['address_full'] .= !empty($address_data['common_country_iso_a2'])
             ? $address_data['common_country_iso_a2'].' '
             : '';
+        $address = LengowAddress::getByHash($address_data['address_full']);
+        $same_names = false;
+        // if address exists => check if names are the same
+        if ($address->id && $address->id_customer == $id_customer) {
+            return $address;
+        }
         // if tracking_informations exist => get id_relay
         if ($shipping_data && !is_null($this->relay_id)) {
             $address_data['id_relay'] = $this->relay_id;
