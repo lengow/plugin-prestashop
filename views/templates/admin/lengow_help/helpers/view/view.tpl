@@ -17,9 +17,21 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
- 
+
 <div id="lengow_help_wrapper">
-    <iframe id="lengow_help_iframe"></iframe>
+
+    <!-- <iframe id="lengow_help_iframe"></iframe> -->
+    <div>
+      <h2>Get a little help from your support team !</h2>
+
+      <p>
+        Ask us anything about Lengow or share your feedback at <a href="mailto:chose@bidule.fr" title="Need some help?">support@lengow.com</a>. We’ll do our best to get back to you during regular business hours (Monday to Friday – 9 pm to 9 am / France Timezone).
+      </p>
+      <p>
+        You can also find answers in our PrestaShop dedicated guide. (ajouter une icône pour indiquer l’aide)
+      </p>
+    </div>
+
 </div>
 <input type="hidden" id="lengow_ajax_link" value="{$lengow_ajax_link|escape:'htmlall':'UTF-8'}">
 

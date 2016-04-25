@@ -76,6 +76,8 @@ class LengowList
      */
     public function displayHeader()
     {
+        $newOrder = ( empty($this->orderValue) || $this->orderValue == "ASC" ) ? 'DESC' : "ASC";
+        $icon_class = ( $newOrder == "ASC" ) ? "fa-angle-up" : "fa-angle-down";
         $html ='<table class="lengow_table table table-bordered table-striped table-hover" id="table_'.$this->id.'">';
         $html.='<thead>';
         $html.='<tr>';
@@ -86,10 +88,10 @@ class LengowList
             $width = isset($values['width']) ? 'width = "'.$values['width'].'"' : '';
             $html.='<th '.$width.'>'.$values['title']; /*.'<br/>';*/
             if (isset($values['filter_order']) && $values['filter_order']) {
-                $html.='<a href="#" class="table_order" data-order="DESC" data-column="'.$values['filter_key'].'">
-            <i class="fa fa-angle-down fa-lg"></i></a>';
-                $html.='<a href="#" class="table_order" data-order="ASC" data-column="'.$values['filter_key'].'">
-            <i class="fa fa-angle-up fa-lg"></i></a>';
+                $html.='<a href="#" class="table_order" data-order="'.$newOrder.'" data-column="'.$values['filter_key'].'">
+            <i class="fa '.$icon_class.' fa-lg"></i></a>';
+            //     $html.='<a href="#" class="table_order" data-order="ASC" data-column="'.$values['filter_key'].'">
+            // <i class="fa fa-angle-up fa-lg"></i></a>';
             }
             $html.='</th>';
         }

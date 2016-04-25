@@ -74,17 +74,17 @@
                 </span>
             {/if}
         </li>
-        <li class="lengow_float_right">
+        <li class="lengow_float_right" id="menugotosetting">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">
                 <i class="fa fa-cog"></i>
             </a>
         </li>
-        <li class="lengow_float_right">
+        <li class="lengow_float_right" id="menugotosolution">
             <a href="http://solution.lengow.com" target="_blank">
                 <i class="fa fa-external-link"></i>
             </a>
         </li>
-        <li class="lengow_float_right">
+        <li class="lengow_float_right" id="menugotohelp">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}">
                 <i class="fa fa-life-ring"></i>
             </a>
