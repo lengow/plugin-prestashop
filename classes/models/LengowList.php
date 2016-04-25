@@ -84,12 +84,12 @@ class LengowList
         }
         foreach ($this->fields_list as $key => $values) {
             $width = isset($values['width']) ? 'width = "'.$values['width'].'"' : '';
-            $html.='<th '.$width.'>'.$values['title'].'<br/>';
+            $html.='<th '.$width.'>'.$values['title']; /*.'<br/>';*/
             if (isset($values['filter_order']) && $values['filter_order']) {
                 $html.='<a href="#" class="table_order" data-order="DESC" data-column="'.$values['filter_key'].'">
-            <i class="fa fa-caret-down"></i></a>';
+            <i class="fa fa-angle-down fa-lg"></i></a>';
                 $html.='<a href="#" class="table_order" data-order="ASC" data-column="'.$values['filter_key'].'">
-            <i class="fa fa-caret-up"></i></a>';
+            <i class="fa fa-angle-up fa-lg"></i></a>';
             }
             $html.='</th>';
         }
@@ -126,7 +126,7 @@ class LengowList
                     case 'date':
                         $from = isset($value['from']) ? $value['from'] : null;
                         $to = isset($value['to']) ? $value['to'] : null;
-                        $html.= '<input type="text" name="'.$name.'[from]" 
+                        $html.= '<input type="text" name="'.$name.'[from]"
                             placeholder="'.$this->locale->t('product.screen.date_from').'"
                             value="'.$from.'" class="lengow_datepicker" />';
                         $html.= '<br/><input type="text" name="'.$name.'[to]"
