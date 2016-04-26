@@ -47,9 +47,9 @@ class LengowFeedController extends LengowController
                         $this->reloadTotal($shopId);
                         $state = Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shopId);
                         if ($state) {
-                            echo "lengow_jquery('#block_" . $shopId . " .lengow_feed_block_footer_content').show();";
+                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').show();";
                         } else {
-                            echo "lengow_jquery('#block_" . $shopId . " .lengow_feed_block_footer_content').hide();";
+                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').hide();";
                         }
                     }
                     break;
@@ -93,7 +93,7 @@ class LengowFeedController extends LengowController
                         foreach ($all as $id) {
                             LengowProduct::publish($id, 1, $shopId);
                             foreach ($selection as $id => $v) {
-                                echo 'lengow_jquery("#block_' . $shopId . ' .lengow_product_selection_' . $id . '")';
+                                echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
                                 echo '.bootstrapSwitch("state",true, true);';
                             }
                         }
@@ -104,12 +104,12 @@ class LengowFeedController extends LengowController
                             // This line is useless, but Prestashop validator require it
                             $v = $v;
                             LengowProduct::publish($id, 1, $shopId);
-                            echo 'lengow_jquery("#block_' . $shopId . ' .lengow_product_selection_' . $id . '")';
+                            echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
                             echo '.bootstrapSwitch("state",true, true);';
                         }
                         $this->reloadTotal($shopId);
                     } else {
-                        echo 'alert("' . $this->locale->t('product.screen.no_product_selected') . '");';
+                        echo 'alert("'.$this->locale->t('product.screen.no_product_selected').'");';
                     }
                     break;
                 case 'remove_from_export':
@@ -127,7 +127,7 @@ class LengowFeedController extends LengowController
                         foreach ($all as $id) {
                             LengowProduct::publish($id, 0, $shopId);
                             foreach ($selection as $id => $v) {
-                                echo 'lengow_jquery("#block_' . $shopId . ' .lengow_product_selection_' . $id . '")';
+                                echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
                                 echo '.bootstrapSwitch("state",false, true);';
                             }
                         }
@@ -140,7 +140,7 @@ class LengowFeedController extends LengowController
                         }
                         $this->reloadTotal($shopId);
                     } else {
-                        echo 'alert("' . $this->locale->t('product.screen.no_product_selected') . '");';
+                        echo 'alert("'.$this->locale->t('product.screen.no_product_selected').'");';
                     }
                     break;
                 case 'check_shop':
@@ -149,16 +149,23 @@ class LengowFeedController extends LengowController
                     foreach ($shops as $shopId) {
                         $checkShop = $this->checkShop($shopId['id_shop']);
                         if ($checkShop === true) {
-                            echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").attr("id", "lengow_shop_sync");';
-                            echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").attr("data-original-title", "'
-                                    . $this->locale->t('product.screen.lengow_shop_sync') . '");';
+                            echo 'lengow_jquery("#block_'.$shopId['id_shop']
+                                .' .lengow_check_shop").attr("id", "lengow_shop_sync");';
+                            echo 'lengow_jquery("#block_'.$shopId['id_shop']
+                                .' .lengow_check_shop").attr("data-original-title", "'
+                                .$this->locale->t('product.screen.lengow_shop_sync').'");';
                         } else {
-                            echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").html("");';
-                            echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").attr("id", "lengow_shop_no_sync");';
-                            echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_check_shop").attr("data-original-title", "'
-                                . $this->locale->t('product.screen.lengow_shop_no_sync') . '");';
-                            echo 'lengow_jquery("#block_' . $shopId['id_shop'] . ' .lengow_feed_block_header_title").append("<a href=\"'
-                                . $link->getAbsoluteAdminLink('AdminLengowHome', true) . '&isSync=true\" ><span>sync</span></a>");';
+                            echo 'lengow_jquery("#block_'.$shopId['id_shop']
+                                .' .lengow_check_shop").html("");';
+                            echo 'lengow_jquery("#block_'.$shopId['id_shop']
+                                .' .lengow_check_shop").attr("id", "lengow_shop_no_sync");';
+                            echo 'lengow_jquery("#block_'.$shopId['id_shop']
+                                .' .lengow_check_shop").attr("data-original-title", "'
+                                .$this->locale->t('product.screen.lengow_shop_no_sync').'");';
+                            echo 'lengow_jquery("#block_' . $shopId['id_shop']
+                                .' .lengow_feed_block_header_title").append("<a href=\"'
+                                .$link->getAbsoluteAdminLink('AdminLengowHome', true)
+                                .'&isSync=true\" ><span>sync</span></a>");';
 
                         }
                     }
@@ -207,6 +214,7 @@ class LengowFeedController extends LengowController
 
     /**
      * Check token shop
+     *
      * @param array
      * @param $idShop
      *
@@ -226,11 +234,11 @@ class LengowFeedController extends LengowController
             }
         }
         return false;
-
     }
 
     /**
      * Reload Total product / Exported product
+     *
      * @param $shopId
      */
     public function reloadTotal($shopId)
@@ -244,7 +252,9 @@ class LengowFeedController extends LengowController
 
     /**
      * Reload Total product / Exported product
+     *
      * @param $shopId
+     *
      * @return string
      */
     public function buildTable($shopId)
