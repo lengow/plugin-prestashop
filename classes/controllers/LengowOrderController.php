@@ -432,11 +432,11 @@ class LengowOrderController extends LengowController
         $html.='<div class="lengow_toolbar">';
         $html.='<a href="#" style="display:none;"
                 data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
-                class="lengow_btn lengow_link_tooltip lengow_mass_re_import btn btn-primary">
+                class="lgw-btn lengow_link_tooltip lengow_mass_re_import btn btn-primary">
                 <i class="fa fa-download"></i> '.$this->locale->t('order.screen.button_reimport_order').'</a>';
         $html.='<a href="#" style="display:none;"
                         data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
-                class="lengow_btn lengow_link_tooltip lengow_mass_re_send btn btn-primary">
+                class="lgw-btn lengow_link_tooltip lengow_mass_re_send btn btn-primary">
                 <i class="fa fa-arrow-right"></i> '.$this->locale->t('order.screen.button_resend_order').'</a>';
         $html.='</div>';
         $html.= $paginationBlock;

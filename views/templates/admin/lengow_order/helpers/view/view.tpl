@@ -42,7 +42,7 @@
                                 {include file='./last_importation.tpl'}
                             </div>
                             <div class="lengow_order_block_content_right">
-                                <a id="lengow_import_orders" class="lengow_btn btn btn-success" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
+                                <a id="lengow_import_orders" class="lgw-btn btn btn-success" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
                                     {$locale->t('order.screen.button_update_orders')|escape:'htmlall':'UTF-8'}</a>
                             </div>
                             <div class="lengow_clear"></div>

@@ -99,14 +99,14 @@ class LengowConfigurationForm
                     </div>';
                 break;
             case 'select':
-                $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
-                    <div class="col-sm-10">
+                $html.= '<label class="control-label">'.$input['label'].'</label>
+
                     <select class="form-control lengow_select" name="'.$name.'">';
                 foreach ($input['collection'] as $row) {
                     $selected =  $row['id'] == $value ? 'selected' : '';
                     $html.='<option value="'.$row['id'].'" '.$selected.'>'.$row['text'].'</option>';
                 }
-                $html.= '</select></div><span class="legend">'.$legend.'</span></div>';
+                $html.= '</select><span class="legend">'.$legend.'</span></div>';
                 break;
             case 'tag':
                 $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>

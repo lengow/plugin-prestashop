@@ -56,7 +56,7 @@
                             {$locale->t('global_setting.screen.download_all_files')|escape:'htmlall':'UTF-8'}
                         </option>
                     </select>
-                    <button type="button" id="download_log" class="btn lengow_btn">
+                    <button type="button" id="download_log" class="btn lgw-btn">
                         <i class="fa fa-download"></i> {$locale->t('global_setting.screen.button_download_file')|escape:'htmlall':'UTF-8'}
                     </button>
                 </div>
@@ -66,7 +66,7 @@
                 <div class="lengow_main_setting_block_content">
                     <p>{$locale->t('global_setting.screen.uninstall_module_description')|escape:'htmlall':'UTF-8'}</p><br/>
                     <a href="#openDeleteModal">
-                        <button type="button" class="btn lengow_btn lengow_delete_module" name="delete_module">
+                        <button type="button" class="btn lgw-btn lengow_delete_module" name="delete_module">
                             {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                          </button></a>
                     <span class="lengow_label_text">
@@ -89,7 +89,7 @@
                                         : I WANT TO REMOVE ALL DATA
                                     </label>
                                     <input type="text" name="uninstall_textbox" class="form-control" placeholder="" value="">
-                                    <button type="submit" class="btn lengow_btn lengow_submit_delete_module">
+                                    <button type="submit" class="btn lgw-btn lengow_submit_delete_module">
                                         {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                                     </button>
                                     <a href="#close" title="Close" class="close">
@@ -104,7 +104,7 @@
             <div class="form-group container">
                 <div class="lengow_main_setting_block_content">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn lengow_btn lengow_submit_main_setting">
+                        <button type="submit" class="btn lgw-btn lengow_submit_main_setting">
                             {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
                         </button>
                     </div>

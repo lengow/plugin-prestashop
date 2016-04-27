@@ -455,7 +455,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     color: #F28088;
 }
 
-.lengow_btn {
+.lgw-btn {
     // display: inline-block;
     // padding: 6px 12px;
     // margin-bottom: 0;
@@ -561,7 +561,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     float: left;
 }
 
-.lengow_toolbar .lengow_btn {
+.lengow_toolbar .lgw-btn {
     margin-right:10px;
     color:#fff!important;
     text-decoration: none!important;

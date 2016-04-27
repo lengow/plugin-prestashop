@@ -74,56 +74,69 @@
 /*************************************************/
 
 
-.lengow_body{
+.lgw-container{
     font-family: 'Open Sans', sans-serif;
     font-size: 15px;
     color: #464646;
 }
-.lengow_body h1,
-.lengow_body h2,
-.lengow_body h3,
-.lengow_body h4,
-.lengow_body h5,
-.lengow_body h6{
+.lgw-container h1,
+.lgw-container h2,
+.lgw-container h3,
+.lgw-container h4,
+.lgw-container h5,
+.lgw-container h6{
     font-family:'Lato', sans-serif;
 }
-.lengow_body h1{
+.lgw-container h1{
   font-size: 32px;
   font-weight:900;
   margin:30px 0;
 }
-.lengow_body h2{
+.lgw-container h2{
   font-size: 23px;
   margin:15px 0 30px;
 }
 
-.lengow_body h3{
+.lgw-container h3{
   font-size: 19px;
 }
 
-.lengow_body h4{
+.lgw-container h4{
   font-size: 17px;
 }
 
-.lengow_body h5,
-.lengow_body h6{
+.lgw-container h5,
+.lgw-container h6{
   font-size: 17px;
   font-style:italic;
 }
 
-.lengow_body p{
+.lgw-container p{
   line-height:1.7;
   margin:0 0 10px;
 }
 
-.lengow_body a{
+.lgw-container a{
     color:#00aeef;
     text-decoration: none;
 }
-.lengow_body a:hover{
+.lgw-container a:hover{
     color:#019ce2;
     text-decoration: underline;
 }
+
+.lgw-container label{
+  text-shadow:none;
+  width:inherit;
+  float:none;
+  text-align: left;
+  display:block;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+/* ALIGN */
+
 .text-left{
     text-align:left;
 }
@@ -140,6 +153,7 @@
 /*************************************************/
 
 .lengow-nav{
+  font-size:13px;
   position:absolute;
   top:0;
   left:0;
@@ -164,10 +178,10 @@
   height:54px;
   display:block;
   padding:0 15px;
+  text-decoration: none;
 }
 .lengow-nav a:hover{
   background:#61687c;
-  text-decoration: none;
   color:white;
 }
 .lengow-nav .lengow_float_right{
@@ -250,19 +264,31 @@ a.lgw-box-link:hover{
 /*                    BUTTONS                    */
 /*************************************************/
 
-a.lgw-btn{
+.lgw-btn{
     border-radius:3px;
     padding:8px 20px;
-    margin-top:15px;
+    margin:15px 0;
     color:white !important;
+    text-decoration: none !important;
     background:#00aeef;
     position:relative;
     transition: top 100ms all;
+    border:0;
+    display:inline-block;
+    cursor:pointer;
 }
-a.lgw-btn:hover{
+.lgw-btn:hover{
     background:#019ce2;
-    text-decoration: none;
 }
-a.lgw-btn:active{
-    background:#2e6592;
+.lgw-btn:active{
+    background:#019ce2;
+}
+
+
+/*************************************************/
+/*                     FORMS                     */
+/*************************************************/
+
+.lgw-container .form-group{
+  float:none;
 }
