@@ -20,12 +20,24 @@
 
 <script type="text/javascript">$(document.body).addClass('lengow_body');</script>
 
+
+<!-- PLUGINS -->
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-switch.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-datepicker.css">
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/admin.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
+<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-tooltip.css">
+
+<!-- STYLE LENGOW -->
+
+<!--
+<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap.css">
+<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/admin.css">
+-->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic|Open+Sans:700,600,800,400,300" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-layout.css">
+<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-pages.css">
+
 {if version_compare($smarty.const._PS_VERSION_,'1.5','<')&&version_compare($smarty.const._PS_VERSION_,'1.4','>=')}
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_14.css">
     <!--<script type="text/javascript">alert('version 1.4');</script>-->
@@ -36,11 +48,6 @@
     <!--<script type="text/javascript">alert('version 1.5');</script>-->
 {/if}
 
-<script type="text/javascript">
-    if (screen.width < 992) {
-        document.write('<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_min-980.css">');
-    }
-</script>
 
 {if !$isNewMerchant}
     <ul class="nav nav-pills lengow-nav lengow-nav-top {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}preprod{/if}">

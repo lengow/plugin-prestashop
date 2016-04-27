@@ -1,0 +1,37 @@
+/*************************************************/
+/*                      HOME                     */
+/*************************************************/
+
+.adminlengowhome .lengow-nav{
+    display:none;
+}
+
+
+/*************************************************/
+/*                    PRODUCTS                   */
+/*************************************************/
+
+.lengow_feed_block_header_title{
+    border-bottom:1px solid #e1e1e1;
+    padding:15px 25px 0;
+}
+
+.lengow_feed_block_header_title a{
+    position:absolute;
+    top:15px;
+    right:25px;
+}
+
+.lengow_feed_block_header_content{
+    padding:25px;
+}
+
+
+/*************************************************/
+/*                    PRODUCTS                   */
+/*************************************************/
+
+.adminlengoworder .nobootstrap,
+.adminlengowordersetting .nobootstrap{
+    padding-top:154px;
+}
