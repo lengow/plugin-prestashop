@@ -26,7 +26,7 @@
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-datepicker.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-tooltip.css">
+
 
 <!-- STYLE LENGOW -->
 
@@ -36,6 +36,7 @@
 -->
 <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic|Open+Sans:700,600,800,400,300" type="text/css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-layout.css">
+<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-components.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-pages.css">
 
 {if version_compare($smarty.const._PS_VERSION_,'1.5','<')&&version_compare($smarty.const._PS_VERSION_,'1.4','>=')}
@@ -83,17 +84,17 @@
         </li>
         <li class="lengow_float_right" id="menugotosetting">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">
-                <i class="fa fa-cog"></i>
+                <i class="fa fa-cog fa-2x"></i>
             </a>
         </li>
         <li class="lengow_float_right" id="menugotosolution">
             <a href="http://solution.lengow.com" target="_blank">
-                <i class="fa fa-external-link"></i>
+                <i class="fa fa-external-link fa-2x"></i>
             </a>
         </li>
         <li class="lengow_float_right" id="menugotohelp">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}">
-                <i class="fa fa-life-ring"></i>
+                <i class="fa fa-life-ring fa-2x"></i>
             </a>
         </li>
     </ul>

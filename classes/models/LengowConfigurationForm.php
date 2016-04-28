@@ -82,11 +82,11 @@ class LengowConfigurationForm
         $html.= '<div class="form-group '.Tools::strtolower($name).'">';
         switch ($inputType) {
             case 'checkbox':
-                $html.='<div class="col-sm-offset-2 col-sm-10"><div class="checkbox"><label>';
+                $html.='<div class="checkbox"><label>';
                 $checked = $value ? 'checked' : '';
                 $html.= '<input name="'.$name.'" type="checkbox" '.$checked.' '.$readonly.' class="lengow_switch">';
                 $html.= '<span class="lengow_label_text">'.$input['label'].'</span>';
-                $html.= '</label><span class="legend">'.$legend.'</span></div></div></div>';
+                $html.= '</label><span class="legend">'.$legend.'</span></div></div>';
                 break;
             case 'text':
                 $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>

@@ -59,10 +59,10 @@
                 {/if}
                 <p>-- {$locale->t('order_setting.screen.cron_if_not_exists')|escape:'htmlall':'UTF-8'} --</p>
                 <p>{$locale->t('order_setting.screen.cron_manual_installation')|escape:'htmlall':'UTF-8'}</p>
-                <strong><code>*/15 * * * * wget {$import_url|escape:'htmlall':'UTF-8'}</code></strong>
+                <code>*/15 * * * * wget {$import_url|escape:'htmlall':'UTF-8'}</code>
             </div>
            <div class="lgw-content-section">
-                <button type="submit" class="btn lgw-btn lengow_submit_order_setting">
+                <button type="submit" class="lgw-btn lengow_submit_order_setting">
                     {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
                 </button>
             </div>
