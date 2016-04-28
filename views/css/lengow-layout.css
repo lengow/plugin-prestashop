@@ -219,6 +219,16 @@ code{
   color:white;
 }
 
+.lengow-nav-notif{
+  background:#e55a4d;
+  color:white;
+  font-size:11px;
+  padding:0 5px;
+  height:20px;
+  border-radius:10px;
+  margin-left:2px;
+}
+
 /* ACTIVE */
 
 .lengow-nav .active a{

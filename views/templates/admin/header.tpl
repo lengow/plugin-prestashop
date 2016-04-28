@@ -72,9 +72,7 @@
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lengow_order_link">
                 {$locale->t('menu.order')|escape:'htmlall':'UTF-8'}
                 {if $total_pending_order}
-                    <span>
-                        {$total_pending_order|escape:'htmlall':'UTF-8'}
-                    </span>
+                    <span class="lengow-nav-notif">{$total_pending_order|escape:'htmlall':'UTF-8'}</span>
                 {/if}
             </a>
         </li>
