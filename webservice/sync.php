@@ -51,10 +51,6 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
             <div class="lgw-box">
                 <div class="lgw-content-section">
                     <img src="/modules/lengow/views/img/logo-blue.png" alt="lengow" class="center-block img-responsive"/>
-
-                    <p class="text-right">
-                        OFFICIAL
-                    </p>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                         Aliquam excepturi facilis, illo inventore molestias nam
