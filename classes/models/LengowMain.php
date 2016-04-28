@@ -369,7 +369,7 @@ class LengowMain
      */
     public static function getHost()
     {
-        $domain = Configuration::get('PS_SHOP_DOMAIN');
+        $domain = defined('_PS_SHOP_DOMAIN_') ? _PS_SHOP_DOMAIN_ : _PS_BASE_URL_;
         preg_match('`([a-zàâäéèêëôöùûüîïç0-9-]+\.[a-z]+)`', $domain, $out);
         if ($out[1]) {
             return $out[1];
@@ -1046,7 +1046,7 @@ class LengowMain
     public static function getExportUrl($id_shop = null)
     {
         $base = LengowMain::getLengowBaseUrl($id_shop);
-        return $base . 'webservice/export.php?token='.LengowMain::getToken($id_shop);
+        return $base.'webservice/export.php?token='.LengowMain::getToken($id_shop);
     }
 
     /**
@@ -1060,7 +1060,7 @@ class LengowMain
     public static function getImportUrl($id_shop = null)
     {
         $base = LengowMain::getLengowBaseUrl($id_shop);
-        return $base . 'webservice/cron.php?token='.LengowMain::getToken();
+        return $base.'webservice/cron.php?token='.LengowMain::getToken();
     }
 
     /**
@@ -1078,7 +1078,7 @@ class LengowMain
             $base = (
                 defined('_PS_SHOP_DOMAIN_') ? 'http'.$is_https.'://'._PS_SHOP_DOMAIN_ : _PS_BASE_URL_
             ).__PS_BASE_URI__;
-            $url = $base . 'modules/lengow/';
+            $url = $base.'modules/lengow/';
         } else {
             if (is_null($id_shop)) {
                 $id_shop = Context::getContext()->shop->id;

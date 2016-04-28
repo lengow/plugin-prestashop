@@ -198,38 +198,37 @@ class LengowCarrier extends Carrier
             $delivery_mode = 'A2P';
             $so_colissimo = new SCFields($delivery_mode);
 
-            $params['PRID'] = (string)$shipping_address->id_relay;
+            $params['PRID']          = (string)$shipping_address->id_relay;
             $params['PRCOMPLADRESS'] = (string)$shipping_address->other;
-            $params['PRADRESS1'] = (string)$shipping_address->address1;
+            $params['PRADRESS1']     = (string)$shipping_address->address1;
             // not a param in SoColissimo -> error ?
-            $params['PRADRESS2'] = (string)$shipping_address->address2;
-            $params['PRADRESS3'] = (string)$shipping_address->address2;
-            $params['PRZIPCODE'] = (string)$shipping_address->postcode;
-            $params['PRTOWN'] = (string)$shipping_address->city;
-            $params['CEEMAIL'] = (string)$customer->email;
+            $params['PRADRESS2']     = (string)$shipping_address->address2;
+            $params['PRADRESS3']     = (string)$shipping_address->address2;
+            $params['PRZIPCODE']     = (string)$shipping_address->postcode;
+            $params['PRTOWN']        = (string)$shipping_address->city;
+            $params['CEEMAIL']       = (string)$customer->email;
         } else {
             $delivery_mode = 'DOM';
             $so_colissimo = new SCFields($delivery_mode);
 
             $params['CECOMPLADRESS'] = (string)$shipping_address->other;
-            $params['CEADRESS1'] = (string)$shipping_address->address1;
-            $params['CEADRESS2'] = (string)$shipping_address->address2;
-            $params['CEADRESS3'] = (string)$shipping_address->address2;
+            $params['CEADRESS1']     = (string)$shipping_address->address1;
+            $params['CEADRESS2']     = (string)$shipping_address->address2;
+            $params['CEADRESS3']     = (string)$shipping_address->address2;
         }
 
         // common params
-        $params['DELIVERYMODE'] = $delivery_mode;
-        $params['CENAME'] = (string)$shipping_address->lastname;
-        $params['CEFIRSTNAME'] = (string)$shipping_address->firstname;
+        $params['DELIVERYMODE']  = $delivery_mode;
+        $params['CENAME']        = (string)$shipping_address->lastname;
+        $params['CEFIRSTNAME']   = (string)$shipping_address->firstname;
         $params['CEPHONENUMBER'] = (string)$shipping_address->phone;
         $params['CECOMPANYNAME'] = (string)$shipping_address->company;
-        $params['CEZIPCODE'] = (string)$shipping_address->postcode;
-        $params['CETOWN'] = (string)$shipping_address->city;
-        $params['PRPAYS'] = (string)Country::getIsoById($shipping_address->id_country);
-
+        $params['CEZIPCODE']     = (string)$shipping_address->postcode;
+        $params['CETOWN']        = (string)$shipping_address->city;
+        $params['PRPAYS']        = (string)Country::getIsoById($shipping_address->id_country);
 
         $sql = 'INSERT INTO '._DB_PREFIX_.'socolissimo_delivery_info
-			( `id_cart`,
+			(`id_cart`,
             `id_customer`,
             `delivery_mode`,
             `prid`,
@@ -253,7 +252,6 @@ class LengowCarrier extends Carrier
             `cename`,
             `cefirstname`)
 			VALUES ('.(int)$id_cart.', '.(int)$id_customer.',';
-
         if ($so_colissimo->delivery_mode == SCFields::RELAY_POINT) {
             $sql .= '\''.pSQL($delivery_mode).'\',
 				'.(isset($params['PRID']) ? '\''.pSQL($params['PRID']).'\'' : '\'\'').',
@@ -306,7 +304,6 @@ class LengowCarrier extends Carrier
                     isset($params['CEFIRSTNAME']) ? '\''.Tools::ucfirst(pSQL($params['CEFIRSTNAME'])).'\'' : '\'\''
                 ).')';
         }
-
         return Db::getInstance()->execute($sql);
     }
 
