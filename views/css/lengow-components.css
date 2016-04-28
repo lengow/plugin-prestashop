@@ -45,7 +45,7 @@ a.lgw-box-link:hover{
     text-decoration: none !important;
     background:#00aeef;
     position:relative;
-    transition: top 100ms all;
+    transition: all 100ms ease;
     border:0;
     display:inline-block;
     cursor:pointer;
@@ -197,7 +197,73 @@ a.lgw-box-link:hover{
 /*                    SWITCH                     */
 /*************************************************/
 
-.bootstrap-switch{
+
+.lgw-switch{
+    display:inline-block;
+    padding-left:0;
+}
+
+.lgw-switch input[type="checkbox"]{
+    display: block;
+    margin: 0;
+    padding: 0;
+    opacity: .01;
+    position: absolute;
+}
+.lgw-switch label{
+    padding-left: 0;
+    font-weight:400;
+    cursor: pointer;
+    line-height:22px;
+    font-size: 15px;
+    color: #828282;
+    transition: all 100ms ease;
+}
+.lgw-switch div{
+    width:42px;
+    float:left;
+    padding:2px;
+    border-radius:50px;
+    margin-right:7px;
+    height:18px;
+    border:0;
+    background: #d7d7d7;
+    transition: all 100ms ease;
+}
+.lgw-switch span{
+    display:block;
+    height:18px;
+    width:18px;
+    background:white;
+    border-radius:50%;
+    left:0;
+    top:0;
+    position:relative;
+    transition: all 100ms ease;
+}
+
+.lgw-switch:hover div,
+.lgw-switch:focus div{
+    background-color: #c0c0c0;
+}
+
+.lgw-switch.checked label{
+    color:#555;
+}
+.lgw-switch.checked div{
+    background:#7ac279;
+}
+.lgw-switch.checked span{
+    left:24px;
+}
+.lgw-switch.checked:hover div,
+.lgw-switch.checked:focus div{
+    background:#66b165;
+}
+
+
+
+/*.bootstrap-switch{
     border-radius: 22px;
     height: 22px;
     position:relative;
@@ -263,7 +329,7 @@ a.lgw-box-link:hover{
 .bootstrap-switch-handle-off.bootstrap-switch-default{
     color:#fff !important;
     background: transparent!important;
-}
+}*/
 
 /*************************************************/
 /*                  PAGINATION                   */

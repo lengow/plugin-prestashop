@@ -97,6 +97,11 @@
 <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
 <script type="text/javascript">
     var lengow_jquery = $.noConflict(true);
+    lengow_jquery('body').on('change', '.lgw-switch', function(event) {
+        var check = lengow_jquery(this);
+        var checked = check.find('input').prop('checked');
+        check.toggleClass('checked');
+    });
 </script>
 <script type="text/javascript" src="/modules/lengow/views/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/admin.js"></script>
