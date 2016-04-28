@@ -20,6 +20,7 @@
 
 (function ($) {
     $(document).ready(function () {
+
         function checkShop() {
             var href = $('.lengow_check_shop').attr('data-href');
             $.ajax({

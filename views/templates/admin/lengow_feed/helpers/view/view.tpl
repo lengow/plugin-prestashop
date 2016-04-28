@@ -19,7 +19,7 @@
  *}
 
 
-<div class="lgw-container">
+<div class="lgw-container" id="#lengow_feed_wrapper">
     {foreach from=$shopCollection  item=shop}
         <div class="lgw-box no-padding" id="block_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
             <div class="lengow_feed_block_header_title" id="lengow_feed_block_header_title">
