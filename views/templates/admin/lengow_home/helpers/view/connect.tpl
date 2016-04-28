@@ -20,7 +20,7 @@
 
 <div class="lgw-container">
     <div class="lgw-content-section text-center">
-        <img src="/modules/lengow/views/img/lengow-white_big.png" alt="lengow">
+        <img src="/modules/lengow/views/img/logo-blue.png" alt="lengow">
         <h1>Hi Johnny! Welcome back!</h1>
         <a href="http://solution.lengow.com" class="lgw-btn" target="_blank" title="Lengow Solution">Go to Lengow</a>
     </div>
@@ -38,7 +38,7 @@
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                 <div class="lgw-box">
                     <img src="https://www.placehold.it/120x120" class="img-circle">
-                    {$total_pending_order|escape:'htmlall':'UTF-8'}
+                    <span class="lgw-label lgw-label_red">{$total_pending_order|escape:'htmlall':'UTF-8'}</span>
                     <h2>Orders</h2>
                     <p>Manage your orders directly on your PrestaShop dashboard</p>
                 </div>
@@ -59,11 +59,11 @@
             <div class="lgw-col-6">
                 <h3>Lengow, partner of your business</h3>
                 <ul>
-                    <li><span class="number_business">$23.345.339</span> {$locale->t('dashboard.screen.stat_turnover')|escape:'htmlall':'UTF-8'}</li>
-                    <li><span class="number_business">3.456.455</span> {$locale->t('dashboard.screen.stat_nb_orders')|escape:'htmlall':'UTF-8'}</li>
-                    <li><span class="number_business">$345</span> {$locale->t('dashboard.screen.stat_avg_order')|escape:'htmlall':'UTF-8'}</li>
+                    <li><span class="stats-big-value">$23.345.339</span> {$locale->t('dashboard.screen.stat_turnover')|escape:'htmlall':'UTF-8'}</li>
+                    <li><span class="stats-big-value">3.456.455</span> {$locale->t('dashboard.screen.stat_nb_orders')|escape:'htmlall':'UTF-8'}</li>
+                    <li><span class="stats-big-value">$345</span> {$locale->t('dashboard.screen.stat_avg_order')|escape:'htmlall':'UTF-8'}</li>
                 </ul>
-                <a href="http://solution.lengow.com" target="_blank" title="Lengow solution">Want more stats ?</a>
+                <a href="http://solution.lengow.com" target="_blank" title="Lengow solution" class="pull-right">Want more stats ?</a>
             </div>
             <div class="lgw-col-6">
                 <h3>Need some help?</h3>
