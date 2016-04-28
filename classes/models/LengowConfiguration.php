@@ -28,7 +28,6 @@ class LengowConfiguration extends Configuration
         if ($keys === null) {
 
             $langId = (int)Context::getContext()->cookie->id_lang;
-            
             $locale = new LengowTranslation();
 
             $orderStates = array();
