@@ -1,4 +1,20 @@
 /*************************************************/
+/*                      CONNECT                    */
+/*************************************************/
+
+.adminlengowhome #lengow_iframe{
+    width:100%;
+    height:800px;
+    margin: 0 auto;
+}
+
+.lgw-connect{
+   margin:0 auto;
+   float:none;
+}
+
+
+/*************************************************/
 /*                      HOME                     */
 /*************************************************/
 
@@ -25,22 +41,18 @@
 .lengow_feed_block_header_content{
     padding:25px;
 }
-
 .adminlengoworder .nobootstrap,
 .adminlengowordersetting .nobootstrap{
     padding-top:154px;
 }
-
 .adminlengoworder .lgw-container{
     min-width:1500px;
     width:100%;
 }
-
 .adminlengoworder table input[type="text"]{
     max-width:100%;
     width:inherit;
 }
-
 .lengow_datepicker_box{
     min-width:180px;
 }
