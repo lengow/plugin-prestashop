@@ -137,7 +137,7 @@ class LengowList
                         break;
                 }
             } elseif (isset($values['button_search']) && $values['button_search']) {
-                $html.= '<input type="submit" value="'.$this->locale->t('product.screen.button_search').'" />';
+                $html.= '<input type="submit" value="'.$this->locale->t('product.screen.button_search').'" class="lgw-btn lgw-btn-white">';
             }
             $html.= '</th>';
         }

@@ -99,6 +99,18 @@ a.lgw-box-link:hover{
 
 
 
+.lgw-label_closed{
+    color:white;
+    background:#e55a4d;
+}
+.lgw-label_waiting_shipment{
+    border:1px solid #7ac279;
+    color:#7ac279;
+    background:transparent;
+    line-height:21px;
+}
+
+
 /*************************************************/
 /*                    INPUTS                     */
 /*************************************************/
