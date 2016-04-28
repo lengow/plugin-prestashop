@@ -79,6 +79,26 @@ a.lgw-box-link:hover{
     color:#555;
 }
 
+
+/*************************************************/
+/*                    LABELS                     */
+/*************************************************/
+
+.lgw-label{
+    font-size:13px;
+    background:#ebebeb;
+    color:#828282;
+    height:23px;
+    line-height:23px;
+    padding:0 20px;
+    border-radius:12px;
+    display:inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+
+
 /*************************************************/
 /*                    INPUTS                     */
 /*************************************************/
@@ -291,12 +311,14 @@ a.lgw-box-link:hover{
 
 .lgw-container .table{
     border:0;
+    width:100%;
 }
 .lgw-container .table tr th{
     font-family: 'Lato', sans-serif;
     color: #555;
     font-size: 15px;
     padding: 10px;
+    width: auto !important;
 }
 .lgw-container .table tr th a{
     display:inline;
