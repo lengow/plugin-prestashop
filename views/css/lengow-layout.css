@@ -189,6 +189,7 @@ code{
   display:block;
   padding:0 15px;
   text-decoration: none;
+  transition: all 100ms ease;
 }
 .lengow-nav a:hover{
   background:#61687c;
@@ -201,6 +202,7 @@ code{
   font-size:18px;
   color:#858ca1;
   vertical-align: middle;
+  transition: all 100ms ease;
 }
 .lengow-nav a:hover .fa-2x{
   color:white;
