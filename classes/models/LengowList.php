@@ -128,12 +128,12 @@ class LengowList
                     case 'date':
                         $from = isset($value['from']) ? $value['from'] : null;
                         $to = isset($value['to']) ? $value['to'] : null;
-                        $html.= '<input type="text" name="'.$name.'[from]"
+                        $html.= '<div class="lengow_datepicker_box"><input type="text" name="'.$name.'[from]"
                             placeholder="'.$this->locale->t('product.screen.date_from').'"
                             value="'.$from.'" class="lengow_datepicker" />';
-                        $html.= '<br/><input type="text" name="'.$name.'[to]"
+                        $html.= '<input type="text" name="'.$name.'[to]"
                         placeholder="'.$this->locale->t('product.screen.date_to').'"
-                        value="'.$to.'" class="lengow_datepicker" />';
+                        value="'.$to.'" class="lengow_datepicker" /></div>';
                         break;
                 }
             } elseif (isset($values['button_search']) && $values['button_search']) {

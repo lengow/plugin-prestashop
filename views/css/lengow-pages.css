@@ -40,3 +40,15 @@
     max-width:100%;
     width:inherit;
 }
+
+.lengow_datepicker_box{
+    min-width:180px;
+}
+.adminlengoworder table input[type="text"].lengow_datepicker{
+    width:70px;
+    padding:0 7px;
+    font-size:13px;
+}
+.adminlengoworder table input[type="text"].lengow_datepicker:first-child{
+    margin-right:3px;
+}

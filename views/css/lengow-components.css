@@ -120,6 +120,8 @@ a.lgw-box-link:hover{
     max-width:600px;
     box-shadow: none;
     font-size:15px;
+    color:#555;
+    font-weight:normal;
 }
 
 /*************************************************/
