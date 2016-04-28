@@ -4,13 +4,23 @@
 
 .adminlengowhome #lengow_iframe{
     width:100%;
-    height:800px;
+    height:850px;
     margin: 0 auto;
 }
 
 .lgw-connect{
    margin:0 auto;
    float:none;
+}
+
+body.lgw-home-iframe button{
+  margin:15px auto!important;
+  display:block!important;
+  font-size: inherit;
+}
+
+body.lgw-home-iframe .lgw-container{
+  width:inherit;
 }
 
 

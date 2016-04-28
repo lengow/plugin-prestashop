@@ -168,6 +168,25 @@ code{
     text-align:right;
 }
 
+/*************************************************/
+/*                     IMAGES                    */
+/*************************************************/
+
+.img-responsive{
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+
 
 /*************************************************/
 /*                     NAVBAR                    */
