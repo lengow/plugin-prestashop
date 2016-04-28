@@ -51,16 +51,16 @@
 
 
 {if !$isNewMerchant}
+    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+        <div id="lgw-preprod">
+            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        </div>
+    {/if}
     <ul class="nav nav-pills lengow-nav lengow-nav-top {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}preprod{/if}">
         <li role="presentation" id="lengow_logo">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">
                 <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
             </a>
-            {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
-                <div id="lengow_preprod">
-                    {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
-                </div>
-            {/if}
         </li>
         <li role="presentation" class="{if $current_controller == 'LengowFeedController'}active{/if}"><a href="
             {$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}">

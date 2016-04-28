@@ -289,3 +289,13 @@ code{
   background:transparent;
 }
 
+/* PREPROD */
+
+#lgw-preprod{
+  color:white;
+  background:#e55a4d;
+  padding:5px 10px;
+  position:absolute;
+  top:54px;
+  left:0;
+}
