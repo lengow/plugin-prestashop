@@ -46,6 +46,11 @@ body.lgw-home-iframe .lgw-container{
 /*                    PRODUCTS                   */
 /*************************************************/
 
+.adminlengowfeed .lgw-container{
+  min-width:1200px;
+
+}
+
 .lengow_feed_block_header_title{
     border-bottom:1px solid #e1e1e1;
     padding:15px 25px 0;
@@ -60,6 +65,11 @@ body.lgw-home-iframe .lgw-container{
 .lengow_feed_block_header_content{
     padding:25px;
 }
+
+/*************************************************/
+/*                     ORDERS                    */
+/*************************************************/
+
 .adminlengoworder .nobootstrap,
 .adminlengowordersetting .nobootstrap{
     padding-top:154px;
@@ -67,10 +77,6 @@ body.lgw-home-iframe .lgw-container{
 .adminlengoworder .lgw-container{
     min-width:1600px;
     width:100%;
-}
-.adminlengoworder table input[type="text"]{
-    max-width:100%;
-    width:inherit;
 }
 .lengow_datepicker_box{
     min-width:180px;
