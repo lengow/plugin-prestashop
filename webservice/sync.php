@@ -40,66 +40,66 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-components.css">
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-pages.css">
 </head>
-<body style="">
+<body class="lgw-home-iframe">
 <div id="call">
         <a id="link_call" href="#">Send Information To Prestashop</a>
         &nbsp;&nbsp;&nbsp;&nbsp;
     </div>
 <div class="lgw-container">
-    <div class="lgw-col-7 lgw-connect">
-        <div class="lgw-box">
-        <h1>Lengow</h1>
+    <div class="lgw-row">
+        <div class="lgw-col-7 lgw-connect">
+            <div class="lgw-box">
+                <div class="lgw-content-section">
+                    <img src="/modules/lengow/views/img/logo-blue.png" alt="lengow" class="center-block img-responsive"/>
 
-        <p>
-            OFFICIAL
-        </p>
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        Aliquam excepturi facilis, illo inventore molestias nam
-        nesciunt non nulla porro quo,
-        vero?
-    </p>
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        Aliquam excepturi facilis, illo inventore molestias nam
-        nesciunt non nulla porro
-    </p>
-    <button href="#" style="width: 100%;padding: 15px;margin-top: 50px;border: none;
-        background-color: #45bf7b;color: white;font-size: 0.9em;font-weight: bold;border-radius: 2px;"
-        onmouseover="this.style.background='#47ce83';"
-        onmouseout="this.style.background='#45bf7b';">
-        Create my 15 days-free account
-    </button>
-    <button href="#" style="width: 100%;border-radius: 2px;padding: 10px;border: none;
-        background: none;font-size: 0.9em;color: #6c6c6c;"
-        onmouseover="this.style.background='#CDCDCD';"
-        onmouseout="this.style.background='none';">
-        or Connect to your account
-    </button>
-    <div style="width: 50%;display: inline-block;vertical-align: top;margin-left: 25px;">
-        <div style="height: 55px;width: 55px;background-color: #CDCDCD;border-radius: 35px;
-        margin-top: 50px;margin-left: 25px;margin-right: 25px;">
+                    <p>
+                        OFFICIAL
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                        Aliquam excepturi facilis, illo inventore molestias nam
+                        nesciunt non nulla porro quo,
+                        vero?
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                        Aliquam excepturi facilis, illo inventore molestias nam
+                        nesciunt non nulla porro
+                    </p>
+
+                    <div class="lgw-container">
+                        <div class="lgw-row">
+                            <button href="#" class="lgw-btn lgw-btn-green">
+                                Create my 15 days-free account
+                            </button>
+                        </div>
+                        <div class="lgw-row">
+                            <button href="#" class="lgw-btn lgw-btn-grey">
+                                or Connect to your account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="lgw-container">
+                    <div class="lgw-row">
+                        <div class="lgw-col-3">
+                            <img src="https://www.placehold.it/55x55" class="img-circle">
+                            <h4>Lorem ipsum dolor.</h4>
+                            <p>Aliquam excepturi</p>
+                        </div>
+                        <div class="lgw-col-3">
+                            <img src="https://www.placehold.it/55x55" class="img-circle">
+                            <h4>Lorem ipsum dolor.</h4>
+                            <p>Aliquam excepturi facilis, illo inventore molestias</p>
+                        </div>
+                        <div class="lgw-col-3">
+                            <img src="https://www.placehold.it/55x55" class="img-circle">
+                            <h4>Lorem ipsum dolor.</h4>
+                            <p>Aliquam excepturi facilis, illo inventore molestias</p>
+                        </div>
+            </div>
         </div>
-        <p style="font-size: 0.8em;margin-bottom:0;">
-            Lorem ipsum dolor.
-        </p>
-        <p style="font-size: 0.7em;margin-top:0;">
-            Aliquam excepturi
-        </p>
     </div>
-    <div style="width: 40%;display: inline-block;">
-        <div style="height: 55px;width: 55px;background-color: #CDCDCD;
-        border-radius: 35px;margin-top: 50px;margin-left: 25px;margin-right: 25px;">
-        </div>
-        <p style="font-size: 0.8em;">
-            Lorem ipsum dolor.
-            <span style="display: block;font-size: 0.7em;">
-                Aliquam excepturi facilis, illo inventore molestias
-            </span>
-        </p>
-    </div>
-    </div>
-</div>
 </div>
 
     <!-- <h1>Lengow Page</h1>
