@@ -484,7 +484,7 @@ class LengowFeedController extends LengowController
         }
         $this->list->updateCollection($collection);
         $paginationBlock = $this->list->renderPagination(array(
-            'nav_class' => 'lengow_feed_pagination'
+            'nav_class' => 'lgw-pagination'
         ));
 
         $lengow_link = new LengowLink();
@@ -516,12 +516,12 @@ class LengowFeedController extends LengowController
         }
         $html.='</div>';
         $html.= $paginationBlock;
-        $html.='<div class="lengow_clear"></div>';
+        $html.='<div class="clearfix"></div>';
         $html.='</div>';
         $html.= $this->list->display();
         $html.='<div class="lengow_table_bottom">';
         $html.= $paginationBlock;
-        $html.='<div class="lengow_clear"></div>';
+        $html.='<div class="clearfix"></div>';
         $html.='</div>';
 
         return $html;

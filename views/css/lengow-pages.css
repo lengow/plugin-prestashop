@@ -26,12 +26,17 @@
     padding:25px;
 }
 
-
-/*************************************************/
-/*                    PRODUCTS                   */
-/*************************************************/
-
 .adminlengoworder .nobootstrap,
 .adminlengowordersetting .nobootstrap{
     padding-top:154px;
+}
+
+.adminlengoworder .lgw-container{
+    min-width:1500px;
+    width:100%;
+}
+
+.adminlengoworder table input[type="text"]{
+    max-width:100%;
+    width:inherit;
 }

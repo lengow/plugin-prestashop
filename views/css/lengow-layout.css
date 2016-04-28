@@ -124,6 +124,13 @@
     color:#019ce2;
     text-decoration: underline;
 }
+.lgw-container .sub-link{
+  color:#464646;
+  text-decoration: underline;
+}
+.lgw-container .sub-link:hover{
+  color: #00aeef;
+}
 
 .lgw-container label{
   text-shadow:none;
@@ -173,7 +180,7 @@ code{
   padding:0 25px;
   background:#3f4452;
   list-style: none;
-  z-index: 500;
+  z-index: 300;
 }
 #lengow_logo img{
   margin-top: 13px;

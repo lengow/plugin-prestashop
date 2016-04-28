@@ -40,7 +40,7 @@
                 height: $('#lengow_order_wrapper').css("height")});
         }
 
-        $('#lengow_order_wrapper').on('click', '.lengow_feed_pagination a', function () {
+        $('#lengow_order_wrapper').on('click', '.lgw-pagination a', function () {
             if ($(this).parent().hasClass('disabled')) {
                 return false;
             }

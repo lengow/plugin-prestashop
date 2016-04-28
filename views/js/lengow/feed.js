@@ -65,12 +65,12 @@
                 });
             }
         });
-        $('#lengow_feed_wrapper').on('click', '.lengow_feed_pagination a', function () {
+        $('#lengow_feed_wrapper').on('click', '.lgw-pagination a', function () {
             if ($(this).parent().hasClass('disabled')) {
                 return false;
             }
             var href = $(this).attr('data-href');
-            var id_shop = $(this).parents('.lengow_feed_pagination').attr('id').split('_')[2];
+            var id_shop = $(this).parents('.lgw-pagination').attr('id').split('_')[2];
 
             $('#lengow_feed_wrapper #form_table_shop_' + id_shop + ' input[name="p"]').val($(this).attr('data-page'));
             $('#lengow_feed_wrapper #form_table_shop_' + id_shop).submit();

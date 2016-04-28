@@ -423,7 +423,7 @@ class LengowOrderController extends LengowController
 
         $this->list->executeQuery();
         $paginationBlock = $this->list->renderPagination(array(
-            'nav_class' => 'lengow_feed_pagination'
+            'nav_class' => 'lgw-pagination'
         ));
 
         $lengow_link = new LengowLink();
@@ -440,12 +440,12 @@ class LengowOrderController extends LengowController
                 <i class="fa fa-arrow-right"></i> '.$this->locale->t('order.screen.button_resend_order').'</a>';
         $html.='</div>';
         $html.= $paginationBlock;
-        $html.='<div class="lengow_clear"></div>';
+        $html.='<div class="clearfix"></div>';
         $html.='</div>';
         $html.= $this->list->display();
         $html.='<div class="lengow_table_bottom">';
         $html.= $paginationBlock;
-        $html.='<div class="lengow_clear"></div>';
+        $html.='<div class="clearfix"></div>';
         $html.='</div>';
 
         return $html;

@@ -16,7 +16,7 @@
 
 .lgw-box-link .lgw-box{
     top:0;
-    color:#464646;
+    color:#555;
     text-decoration: none;
     transition: top 100ms ease,
                 box-shadow 100ms ease;
@@ -76,7 +76,7 @@ a.lgw-box-link:hover{
 .lgw-container .lgw-btn-white:hover,
 .lgw-container .lgw-btn-white:focus{
     background-color:#f7f7f7;
-    color:#464646;
+    color:#555;
 }
 
 /*************************************************/
@@ -123,7 +123,7 @@ a.lgw-box-link:hover{
     height: 42px;
     line-height: 42px;
     padding:0 15px;
-    color: #464646;
+    color: #555;
 }
 .select2-container--default .select2-selection--single .select2-selection__arrow{
     top:9px;
@@ -157,7 +157,7 @@ a.lgw-box-link:hover{
 .select2-container--default .select2-results__option--highlighted[aria-selected],
 .select2-container--default .select2-results__option[aria-selected=true]{
     background:#ebebeb;
-    color: #464646;
+    color: #555;
 }
 /*************************************************/
 /*                    SWITCH                     */
@@ -229,6 +229,86 @@ a.lgw-box-link:hover{
 .bootstrap-switch-handle-off.bootstrap-switch-default{
     color:#fff !important;
     background: transparent!important;
+}
+
+/*************************************************/
+/*                  PAGINATION                   */
+/*************************************************/
+
+.lgw-pagination{
+    float:right;
+}
+.lgw-pagination-pages{
+    font-size:13px;
+    display:block;
+    text-align:right;
+}
+.lgw-pagination-btns{
+    list-style: none;
+    margin:5px 0 15px;
+    display:inline-block;
+    padding:0;
+}
+.lgw-pagination-arrow{
+    margin-right:15px;
+}
+.lgw-pagination-btns li{
+    display:inline-block;
+}
+
+.lgw-pagination-btns a{
+    display:block;
+    border:1px solid #d7d7d7;
+    border-right:0;
+    padding:0;
+    height:30px;
+    width:30px;
+    line-height: 30px;
+    text-align:center;
+    color:#555;
+}
+.lgw-pagination-btns li:first-child a{
+    border-radius: 3px 0 0 3px;
+}
+.lgw-pagination-btns li:last-child a{
+    border-right:1px solid #d7d7d7;
+    border-radius: 0 3px 3px 0;
+}
+.lgw-pagination-btns a:hover{
+    text-decoration: none;
+    background:#f7f7f7;
+    color:#555;
+}
+.lgw-pagination-btns .disabled a{
+    background: #ebebeb;
+    color:#828282;
+    pointer-events:none;
+}
+
+/*************************************************/
+/*                     TABLE                     */
+/*************************************************/
+
+.lgw-container .table{
+    border:0;
+}
+.lgw-container .table tr th{
+    font-family: 'Lato', sans-serif;
+    color: #555;
+    font-size: 15px;
+    padding: 10px;
+}
+.lgw-container .table tr th a{
+    display:inline;
+}
+.lgw-container .table tr td{
+    max-width:250px;
+    padding:17px 10px;
+    font-size:13px;
+    color:#555;
+    border-bottom:1px solid #f7f7f7;
+    position:relative;
+    word-break: break-word;
 }
 
 /*************************************************/

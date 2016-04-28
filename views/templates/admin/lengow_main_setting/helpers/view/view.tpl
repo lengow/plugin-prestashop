@@ -80,7 +80,7 @@
                 <button type="submit" class="lgw-btn lgw-btn-red lengow_submit_delete_module">
                     {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                 </button>
-                <a href="#close" title="Close" class="close">
+                <a href="#close" title="Close" class="sub-link">
                     {$locale->t('global_setting.screen.cancel_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                 </a>
             </div>

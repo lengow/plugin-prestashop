@@ -58,7 +58,7 @@
                 {/foreach}
             {/if}
         </ul>
-        <div class="lengow_clear"></div>
+        <div class="clearfix"></div>
     </li>
 {/foreach}
 

@@ -492,7 +492,7 @@ class LengowList
         $totalPage = ceil($this->total / $this->nbPerPage);
         $html = '<nav id="nav_'.$this->id.'" class="'.$nav_class.'">';
 
-        $html.= '<div class="lengow_pagination_total">';
+        $html.= '<div class="lgw-pagination-pages">';
         $html.= '<span class="lengow_number">'.$this->paginationFrom.'</span> -
         <span class="lengow_number">'.$this->paginationTo.'</span>
          '.$this->locale->t('product.table.pagination_of').' <span class="lengow_number">'.$this->total.'</span>';
@@ -502,7 +502,7 @@ class LengowList
             return $html.'</nav>';
         }
 
-        $html.= '<ul class="lengow_pagination pagination">';
+        $html.= '<ul class="lgw-pagination-btns lgw-pagination-arrow">';
         $class = ($this->currentPage == 1) ? 'disabled' : '';
         $html.= '<li class="'.$class.'"><a href="#" data-page="'.($this->currentPage-1).'"
         data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage-1).'"
@@ -513,7 +513,7 @@ class LengowList
         ><i class="fa fa-angle-right"></i></a></li>';
         $html.= '</ul>';
 
-        $html.= '<ul class="lengow_pagination pagination">';
+        $html.= '<ul class="lgw-pagination-btns lgw-pagination-numbers">';
         if ($this->nbMaxPage > 7) {
             $showLastSeparation = false;
 
@@ -553,12 +553,9 @@ class LengowList
             >'.$this->nbMaxPage.'</a></li>';
         } else {
             for ($i = 1; $i <= $totalPage; $i++) {
-                $html .= '<li>';
                 $class = ($i == $this->currentPage) ? 'disabled' : '';
                 $html .= '<li class="' . $class . '"><a href="#"  data-page="'.$i.'"
-                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'.$i.'
-                    </a></li>';
-                $html .= '</li>';
+                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'.$i.'</a></li>';
             }
         }
         $html.= '</ul></nav>';

@@ -407,7 +407,7 @@ body.lengow_body #content .lengow_breadcrumb a {
     display: block;
 }
 
-.lengow_clear {
+.clearfix {
     clear: both;
 }
 
@@ -516,7 +516,7 @@ span.title_no_result {
     color:#c3c3c3;
 }
 
-.lengow_feed_pagination {
+.lgw-pagination {
     float:right;
 }
 
@@ -553,7 +553,7 @@ body.lengow_body .lengow_form .vertical  .form-group>div {
     float: left;
 }
 
-.lengow_feed_pagination .lengow_number {
+.lgw-pagination .lengow_number {
     font-weight: bold;
 }
 
