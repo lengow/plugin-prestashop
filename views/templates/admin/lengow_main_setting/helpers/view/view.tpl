@@ -48,7 +48,7 @@
                     {$locale->t('global_setting.screen.download_all_files')|escape:'htmlall':'UTF-8'}
                 </option>
             </select>
-            <button type="button" id="download_log" class="lgw-btn">
+            <button type="button" id="download_log" class="lgw-btn lgw-btn-white">
                 <i class="fa fa-download"></i> {$locale->t('global_setting.screen.button_download_file')|escape:'htmlall':'UTF-8'}
             </button>
         </div>
@@ -56,7 +56,7 @@
             <h2>{$locale->t('global_setting.screen.uninstall_module')|escape:'htmlall':'UTF-8'}</h2>
             <p>{$locale->t('global_setting.screen.uninstall_module_description')|escape:'htmlall':'UTF-8'}</p>
             <a href="#openDeleteModal">
-                <button type="button" class="lgw-btn lengow_delete_module" name="delete_module">
+                <button type="button" class="lgw-btn lgw-btn-red lengow_delete_module" name="delete_module">
                     {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                  </button>
             </a>
@@ -76,8 +76,8 @@
                     {$locale->t('global_setting.screen.to_uninstall_type')|escape:'htmlall':'UTF-8'}
                     : I WANT TO REMOVE ALL DATA
                 </label>
-                <input type="text" name="uninstall_textbox" class="form-control" placeholder="" value="">
-                <button type="submit" class="lgw-btn lengow_submit_delete_module">
+                <input type="text" name="uninstall_textbox" class="form-control" placeholder="" value=""><br>
+                <button type="submit" class="lgw-btn lgw-btn-red lengow_submit_delete_module">
                     {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                 </button>
                 <a href="#close" title="Close" class="close">
