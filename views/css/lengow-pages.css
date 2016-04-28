@@ -32,6 +32,15 @@ body.lgw-home-iframe .lgw-container{
     display:none;
 }
 
+.stats-big-value{
+    font-size: 19px;
+    font-weight: 600;
+    color: #61687c;
+}
+
+.adminlengowhome .lgw-label_red{
+  padding:0 8px;
+}
 
 /*************************************************/
 /*                    PRODUCTS                   */
