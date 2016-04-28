@@ -52,7 +52,7 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
                 <div class="lgw-content-section">
                     <img src="/modules/lengow/views/img/logo-blue.png" alt="lengow" class="center-block img-responsive"/>
 
-                    <p>
+                    <p class="text-right">
                         OFFICIAL
                     </p>
                     <p>
@@ -74,7 +74,7 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
                             </button>
                         </div>
                         <div class="lgw-row">
-                            <button href="#" class="lgw-btn lgw-btn-grey">
+                            <button href="#" class="lgw-btn lgw-btn-white">
                                 or Connect to your account
                             </button>
                         </div>

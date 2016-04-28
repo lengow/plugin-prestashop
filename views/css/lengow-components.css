@@ -88,21 +88,9 @@ a.lgw-box-link:hover{
 .lgw-container .lgw-btn-green:hover,
 .lgw-container .lgw-btn-green:focus{
     background-color:#66b165;
-    color:#555;
 }
 
-/* GREY */
 
-.lgw-container .lgw-btn-grey{
-    background-color:#f7f7f7;
-    color:#555;
-}
-
-.lgw-container .lgw-btn-grey:hover,
-.lgw-container .lgw-btn-grey:focus{
-    background-color:#ebebeb;
-    color:#555;
-}
 
 
 /*************************************************/
