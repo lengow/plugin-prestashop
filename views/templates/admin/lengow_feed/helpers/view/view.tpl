@@ -57,9 +57,9 @@
                     <div class="lgw-col-6">
                         <div class="lengow_feed_block_header_content_result">
                             <p>
-                                {$shop['total_export_product']|escape:'htmlall':'UTF-8'}
+                                <span class="lengow_exported">{$shop['total_export_product']|escape:'htmlall':'UTF-8'}</span>
                                 {$locale->t('product.screen.nb_exported')|escape:'htmlall':'UTF-8'}<br>
-                                {$shop['total_product']|escape:'htmlall':'UTF-8'}
+                                <span class="lengow_total">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span>
                                 {$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}
                             </p>
                         </div>
@@ -73,6 +73,7 @@
                                         data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
                                         data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
                                         name="lengow_export_selection"
+                                        class="lengow_switch_option"
                                         data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}"
                                         data-action="change_option_product_variation"
                                         data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
@@ -93,6 +94,7 @@
                                         data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
                                         data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
                                         name="lengow_export_selection"
+                                        class="lengow_switch_option"
                                         data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}"
                                         data-action="change_option_product_out_of_stock"
                                         data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
@@ -112,6 +114,7 @@
                                         data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
                                         data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
                                         name="lengow_export_selection"
+                                        class="lengow_switch_option"
                                         data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}"
                                         data-action="change_option_selected"
                                         data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
