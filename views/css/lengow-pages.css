@@ -23,6 +23,15 @@ body.lgw-home-iframe .lgw-container{
   width:inherit;
 }
 
+body.lgw-home-iframe .lgw-content-section img{
+  margin-bottom:60px;
+}
+
+
+body.lgw-home-iframe .lgw-content-section p{
+  margin:25px 0;
+}
+
 
 /*************************************************/
 /*                      HOME                     */

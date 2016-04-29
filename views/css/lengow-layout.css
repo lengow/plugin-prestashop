@@ -67,6 +67,10 @@
   margin-bottom: 30px;
 }
 
+.marginTB{
+  margin:60px 0;
+}
+
 /* PLACEMENT */
 
 .pull-right{

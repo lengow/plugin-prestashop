@@ -51,18 +51,19 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
             <div class="lgw-box">
                 <div class="lgw-content-section">
                     <img src="/modules/lengow/views/img/logo-blue.png" alt="lengow" class="center-block img-responsive"/>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        Aliquam excepturi facilis, illo inventore molestias nam
-                        nesciunt non nulla porro quo,
-                        vero?
-                    </p>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        Aliquam excepturi facilis, illo inventore molestias nam
-                        nesciunt non nulla porro
-                    </p>
-
+                    <div class="marginTB">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                            Aliquam excepturi facilis, illo inventore molestias nam
+                            nesciunt non nulla porro quo,
+                            vero?
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                            Aliquam excepturi facilis, illo inventore molestias nam
+                            nesciunt non nulla porro
+                        </p>
+                    </div>
                     <div class="lgw-container">
                         <div class="lgw-row">
                             <button href="#" class="lgw-btn lgw-btn-green">
