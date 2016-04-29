@@ -38,6 +38,12 @@ body.lgw-home-iframe .lgw-container{
     color: #61687c;
 }
 
+.adminlengowhome .lgw-home-menu .lgw-label{
+  position: absolute;
+  top: 45px;
+  right:60px;
+}
+
 .adminlengowhome .lgw-label_red{
   padding:0 8px;
 }
