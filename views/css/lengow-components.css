@@ -368,6 +368,13 @@ a.lgw-box-link:hover{
 .lgw-container .table input[type="text"]{
     max-width:100%;
     width:100px;
+    height:30px;
+    line-height:30px;
+    padding:0 7px;
+}
+
+.lgw-container .table input[type="text"].focus_id_product{
+    width:50px;
 }
 .lgw-container .table .lgw-btn{
     margin:0;
