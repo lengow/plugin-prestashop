@@ -52,20 +52,18 @@
             evt.params.originalEvent.stopPropagation();
         });
 
+        displayPreProdMode();
+        $("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").on('change', function () {
+            displayPreProdMode();
+        });
+
         function displayPreProdMode() {
             if ($("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").prop('checked')) {
-                $('#lengow_wrapper_preprod').show();
+                $('#lengow_wrapper_preprod').slideDown(150);
             } else {
-                $('#lengow_wrapper_preprod').hide();
+                $('#lengow_wrapper_preprod').slideUp(150);
             }
         }
-        displayPreProdMode();
-
-        $("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").on('switchChange.bootstrapSwitch', function (event, state) {
-            if (event.type == "switchChange") {
-                displayPreProdMode();
-            }
-        });
 
         $('#download_log').on('click', function() {
             if ($('#select_log').val() !== null) {
