@@ -19,7 +19,7 @@
  *}
 
 
-<div class="lgw-container" id="#lengow_feed_wrapper">
+<div class="lgw-container" id="lengow_feed_wrapper">
     {foreach from=$shopCollection  item=shop}
         <div class="lgw-box no-padding" id="block_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
             <div class="lengow_feed_block_header_title" id="lengow_feed_block_header_title">
@@ -84,7 +84,7 @@
                         </div>
                         <i
                             class="fa fa-info-circle lengow_link_tooltip"
-                            title="{$locale->t('product.screen.include_variation_support')|escape:'htmlall':'UTF-8'}"></i>
+                            title="{$locale->t('product.screen.include_variation_support')|escape:'htmlall':'UTF-8'}"></i><br>
                         <div class="lgw-switch {if $shop['option_product_out_of_stock'] == 1} checked{/if}">
                             <label>
                                 <div><span></span>
@@ -104,7 +104,7 @@
                             </label>
                         </div>
                         <i class="fa fa-info-circle lengow_link_tooltip"
-                            title="{$locale->t('product.screen.include_out_of_stock_support')|escape:'htmlall':'UTF-8'}"></i>
+                            title="{$locale->t('product.screen.include_out_of_stock_support')|escape:'htmlall':'UTF-8'}"></i><br>
                         <div class="lgw-switch {if $shop['option_selected'] == 1} checked{/if}">
                             <label>
                                 <div><span></span>

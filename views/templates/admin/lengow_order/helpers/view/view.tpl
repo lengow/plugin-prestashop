@@ -18,8 +18,8 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 <div class="lgw-container">
-    <div class="lgw-box">
-        <div id="lengow_order_wrapper">
+    <div class="lgw-box" id="lengow_order_wrapper">
+
             <a id="lengow_import_orders" class="lgw-btn btn btn-success pull-right" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">{$locale->t('order.screen.button_update_orders')|escape:'htmlall':'UTF-8'}</a>
 
             <!-- UPDATE ORDERS -->
@@ -45,14 +45,15 @@
             {/if}
 
             <!-- TABLE -->
-            {if $nb_order_imported eq '0'}
-                {include file='./no_order.tpl'}
-            {else}
-                {html_entity_decode($lengow_table|escape:'htmlall':'UTF-8')}
-            {/if}
+            <div id="lengow_order_table_wrapper">
+                {if $nb_order_imported eq '0'}
+                    {include file='./no_order.tpl'}
+                {else}
+                    {html_entity_decode($lengow_table|escape:'htmlall':'UTF-8')}
+                {/if}
+            </div>
             <!-- /TABLE -->
 
-        </div>
     </div>
 </div>
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/order.js"></script>

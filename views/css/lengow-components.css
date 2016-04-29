@@ -32,6 +32,16 @@ a.lgw-box-link:hover{
     border-radius: 50%;
 }
 
+.lgw-container .grey-frame{
+  background:#f7f7f7;
+  padding:30px;
+  border:1px solid #d7d7d7;
+  border-radius:3x;
+  margin-bottom:15px;
+}
+.lgw-container .grey-frame input[type="text"]{
+    background:white;
+}
 
 /*************************************************/
 /*                    BUTTONS                    */
@@ -274,76 +284,6 @@ a.lgw-box-link:hover{
     background:#66b165;
 }
 
-
-
-/*.bootstrap-switch{
-    border-radius: 22px;
-    height: 22px;
-    position:relative;
-    font-size: 0;
-    width:60px !important;
-    margin:0 5px 0 0;
-}
-
-.bootstrap-switch.bootstrap-switch-off{
-    background:#c0c0c0;
-    border:1px solid #c0c0c0;
-}
-
-.bootstrap-switch.bootstrap-switch-on{
-    background:#7ac279;
-    border:1px solid #7ac279;
-
-}
-
-.bootstrap-switch:before{
-    content:"";
-    z-index:6;
-    background:white;
-    border-radius:50%;
-    width:20px;
-    height:22px;
-    position:absolute;
-    right:0;
-}
-
-.bootstrap-switch-on:before{
-    left:0;
-    right:auto;
-}
-
-.bootstrap-switch-off:before{
-    right:0;
-}
-
-.bootstrap-switch-off .bootstrap-switch-container{
-    margin-left:-70px!important;
-}
-
-.bootstrap-switch-on .bootstrap-switch-label{
-    background:#7ac279!important;
-    width:0;
-}
-
-.bootstrap-switch-off .bootstrap-switch-label{
-    background:#c0c0c0!important;
-    width:0;
-}
-
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
-.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary{
-    background:#7ac279;
-    height: 22px;
-    line-height:22px;
-    width:50px !important;
-    padding-left:30px;
-}
-
-.bootstrap-switch-handle-off.bootstrap-switch-default{
-    color:#fff !important;
-    background: transparent!important;
-}*/
-
 /*************************************************/
 /*                  PAGINATION                   */
 /*************************************************/
@@ -424,6 +364,10 @@ a.lgw-box-link:hover{
     border-bottom:1px solid #f7f7f7;
     position:relative;
     word-break: break-word;
+}
+.lgw-container .table input[type="text"]{
+    max-width:100%;
+    width:100px;
 }
 
 /*************************************************/

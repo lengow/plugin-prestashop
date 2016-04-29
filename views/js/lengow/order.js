@@ -20,26 +20,6 @@
 
 (function ($) {
     $(document).ready(function () {
-        resize();
-
-        $(window).on('resize', function(){
-            resize();
-        });
-
-        function resize() {
-
-            $('#lengow_charge_import_order').css({top: $('#lengow_order_wrapper').css("top"),
-                left: $('#lengow_order_wrapper').css("left"),
-                width: $('#lengow_order_wrapper').css("width"),
-                height: $('#lengow_order_wrapper').css("height")});
-
-
-            $('#lengow_charge_import_order_background').css({top: $('#lengow_order_wrapper').css("top"),
-                left: $('#lengow_order_wrapper').css("left"),
-                width: $('#lengow_order_wrapper').css("width"),
-                height: $('#lengow_order_wrapper').css("height")});
-        }
-
         $('#lengow_order_wrapper').on('click', '.lgw-pagination a', function () {
             if ($(this).parent().hasClass('disabled')) {
                 return false;
