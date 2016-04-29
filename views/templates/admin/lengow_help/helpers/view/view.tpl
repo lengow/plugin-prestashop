@@ -25,7 +25,9 @@
       <h2>Get a little help from your support team !</h2>
 
       <p>
-        Ask us anything about Lengow or share your feedback at <a href="mailto:chose@bidule.fr" title="Need some help?">support@lengow.com</a>.We’ll do our best to get back to you during regular business hours (Monday to Friday – 9 pm to 9 am / France Timezone).
+        Ask us anything about Lengow or share your feedback at <a href="mailto:chose@bidule.fr" title="Need some help?">support@lengow.com</a>.
+      <br>
+        We’ll do our best to get back to you during regular business hours (Monday to Friday – 9 pm to 9 am / France Timezone).
       </p>
       <p>
         You can also find answers in our <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" class="sub-link" target="_blank" title="Help Center">PrestaShop dedicated guide</a>.

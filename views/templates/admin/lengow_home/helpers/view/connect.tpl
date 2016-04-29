@@ -75,7 +75,7 @@
     <div class="lgw-box">
         <h3>Need some help?</h3>
         <p><a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}" title="Need some help?">Get in touch with Lengow.</a></p>
-        <p><a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank" title="Help Center">Visit our Help Center</a> for detailed information on how to configure properly your PrestaShop plugin</p>
+        <p><a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank" title="Help Center" class="sub-link">Visit our Help Center</a> for detailed information on how to configure properly your PrestaShop plugin</p>
 
         </div>
     </div>
