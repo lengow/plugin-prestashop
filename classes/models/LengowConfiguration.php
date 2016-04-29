@@ -176,7 +176,7 @@ class LengowConfiguration extends Configuration
                     'default_value' => true
                 ),
                 'LENGOW_REPORT_MAIL_ADDRESS' => array(
-                    'type'          => 'tag',
+                    'type'          => 'text',
                     'label'         => $locale->t('lengow_setting.lengow_report_mail_address_title'),
                     'default_value' => ''
                 ),

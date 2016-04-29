@@ -54,15 +54,16 @@
         </div>
         <div class="lgw-box">
             <h2>{$locale->t('global_setting.screen.uninstall_module')|escape:'htmlall':'UTF-8'}</h2>
-            <p>{$locale->t('global_setting.screen.uninstall_module_description')|escape:'htmlall':'UTF-8'}</p>
+            <!--<p>{$locale->t('global_setting.screen.uninstall_module_description')|escape:'htmlall':'UTF-8'}</p>-->
+            <p>{$locale->t('global_setting.screen.i_want_uninstall')|escape:'htmlall':'UTF-8'}</p>
             <a href="#openDeleteModal">
                 <button type="button" class="lgw-btn lgw-btn-red lengow_delete_module" name="delete_module">
                     {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                  </button>
             </a>
-            <p>{$locale->t('global_setting.screen.i_want_uninstall')|escape:'htmlall':'UTF-8'}</p>
+            
         </div>
-        <div class="lgw-box">
+        <!--<div class="lgw-box">
             <h2>{$locale->t('global_setting.screen.title_modal_uninstall')|escape:'htmlall':'UTF-8'}</h2>
             <p>
                 {$locale->t('global_setting.screen.all_data_will_be_lost')|escape:'htmlall':'UTF-8'}
@@ -84,7 +85,7 @@
                     {$locale->t('global_setting.screen.cancel_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                 </a>
             </div>
-        </div>
+        </div>-->
         <div class="form-group container">
             <div class="lengow_main_setting_block_content">
                 <div class="col-sm-offset-2 col-sm-10">
