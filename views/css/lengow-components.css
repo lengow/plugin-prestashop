@@ -370,6 +370,23 @@ a.lgw-box-link:hover{
     width:100px;
 }
 
+.lgw-container .table .table_order{
+    color:#555;
+    text-decoration: none;
+}
+.lgw-container .table .table_order:hover{
+    text-decoration: underline;
+}
+
+.lgw-container .order[data-order="ASC"]{
+    padding-right:12px;
+    background: url('../img/carret-down.png') no-repeat right center;
+}
+.lgw-container .order[data-order="DESC"]{
+    padding-right:12px;
+    background: url('../img/carret-up.png') no-repeat right center;
+}
+
 /*************************************************/
 /*                    TOOLTIP                    */
 /*************************************************/

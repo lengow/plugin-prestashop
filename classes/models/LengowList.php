@@ -74,24 +74,28 @@ class LengowList
      *
      * @return string
      */
-    public function displayHeader()
+    public function displayHeader($order)
     {
         $newOrder = ( empty($this->orderValue) || $this->orderValue == "ASC" ) ? 'DESC' : "ASC";
-        $icon_class = ( $newOrder == "ASC" ) ? "fa-angle-up" : "fa-angle-down";
         $html ='<table class="lengow_table table table-bordered table-striped table-hover" id="table_'.$this->id.'">';
         $html.='<thead>';
         $html.='<tr>';
         if ($this->selection && !$this->toolbox) {
-            $html.='<th width="2%"></th>';
+            $html.='<th></th>';
         }
         foreach ($this->fields_list as $key => $values) {
-            $width = isset($values['width']) ? 'width = "'.$values['width'].'"' : '';
-            $html.='<th '.$width.'>'.$values['title']; /*.'<br/>';*/
+            $orderClass = '';
+            if( $order == $values['filter_key'] ){
+                $orderClass = 'order';
+            }
+
+
+            $html.='<th>';
             if (isset($values['filter_order']) && $values['filter_order']) {
-                $html.='<a href="#" class="table_order" data-order="'.$newOrder.'" data-column="'.$values['filter_key'].'">
-            <i class="fa '.$icon_class.' fa-lg"></i></a>';
-            //     $html.='<a href="#" class="table_order" data-order="ASC" data-column="'.$values['filter_key'].'">
-            // <i class="fa fa-angle-up fa-lg"></i></a>';
+                $html.='<a href="#" class="table_order '.$orderClass.'" data-order="'.$newOrder.'" data-column="'.$values['filter_key'].'">'.$values['title'].'</a>';
+            }
+            else{
+                $html.$values['title'];
             }
             $html.='</th>';
         }
@@ -99,7 +103,7 @@ class LengowList
 
         $html.='<tr class="lengow_filter">';
         if ($this->selection && !$this->toolbox) {
-            $html.='<th width="2%"><input type="checkbox" id="select_'.$this->id.'"
+            $html.='<th><input type="checkbox" id="select_'.$this->id.'"
                 class="lengow_select_all lengow_link_tooltip"/></th>';
         }
         foreach ($this->fields_list as $key => $values) {
@@ -278,7 +282,7 @@ class LengowList
         $html.= '<input type="hidden" name="p" value="'.$this->currentPage.'" />';
         $html.= '<input type="hidden" name="order_value" value="'.$this->orderValue.'" />';
         $html.= '<input type="hidden" name="order_column" value="'.$this->orderColumn.'" />';
-        $html.= $this->displayHeader().$this->displayContent().$this->displayFooter();
+        $html.= $this->displayHeader($this->orderColumn).$this->displayContent().$this->displayFooter();
         $html.= '<input type="submit" value="Search" style="visibility: hidden"/>';
         $html.= '</form>';
         return $html;
