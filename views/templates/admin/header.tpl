@@ -77,7 +77,7 @@
             </a>
         </li>
 
-        <li class="lengow_float_right" id="menugotosetting">
+        <li class="lengow_float_right {if $current_controller == 'LengowMainSettingController'}active{/if}" id="menugotosetting">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">
                 <i class="fa fa-cog fa-2x"></i>
             </a>
@@ -87,7 +87,7 @@
                 <i class="fa fa-external-link fa-2x"></i>
             </a>
         </li>
-        <li class="lengow_float_right" id="menugotohelp">
+        <li class="lengow_float_right  {if $current_controller == 'LengowHelpController'}active{/if}" id="menugotohelp">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}">
                 <i class="fa fa-life-ring fa-2x"></i>
             </a>
