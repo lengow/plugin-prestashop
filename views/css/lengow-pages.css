@@ -36,6 +36,12 @@ body.lgw-home-iframe .lgw-container{
   top:0;
 }
 
+.adminlengowhome .lgw-home-menu .lgw-label{
+  position: absolute;
+  top: 45px;
+  right:60px;
+}
+
 .adminlengowhome .lgw-label_red{
   padding:0 8px;
 }
