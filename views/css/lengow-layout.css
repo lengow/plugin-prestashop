@@ -63,6 +63,17 @@
 
 /* SPACING */
 
+.no-padding{
+  padding:0 !important;
+}
+
+.no-margin{
+  margin:0 !important;
+}
+.no-margin-top{
+  margin-top:0 !important;
+}
+
 .margin-standard{
   margin-bottom: 30px;
 }
@@ -72,9 +83,7 @@
 .pull-right{
   float:right !important;
 }
-.no-padding{
-  padding:0 !important;
-}
+
 
 
 /*************************************************/
@@ -132,6 +141,13 @@ ul,li{
 .lgw-container p{
   line-height:1.7;
   margin:0 0 10px;
+}
+
+.lgw-container .small{
+  font-size:13px;
+}
+.lgw-container .light{
+  color:#828282;
 }
 
 .lgw-container a{

@@ -66,7 +66,7 @@ order.screen.import_manuel|Manual
 order.screen.button_update_orders|Import Orders
 order.screen.button_reimport_order|Re-import Orders
 order.screen.button_resend_order|Resend Orders
-order.screen.cron|Want to automate your order updates?
+order.screen.cron|Automate order updates
 order.screen.preprod_warning_message|You are in pre-production mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>
 order.screen.not_imported|not imported
 order.screen.not_sent|not sent
