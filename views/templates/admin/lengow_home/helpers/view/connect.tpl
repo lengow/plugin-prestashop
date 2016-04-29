@@ -25,7 +25,7 @@
         <a href="http://solution.lengow.com" class="lgw-btn" target="_blank" title="Lengow Solution">Go to Lengow</a>
     </div>
     <div class="lgw-row lgw-home-menu text-center">
-        <div class="lgw-col-3">
+        <div class="lgw-col-4">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                 <div class="lgw-box">
                     <img src="https://www.placehold.it/120x120" class="img-circle">
@@ -34,7 +34,7 @@
                 </div>
             </a>
         </div>
-        <div class="lgw-col-3">
+        <div class="lgw-col-4">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                 <div class="lgw-box">
                     <img src="https://www.placehold.it/120x120" class="img-circle">
@@ -44,7 +44,7 @@
                 </div>
             </a>
         </div>
-        <div class="lgw-col-3">
+        <div class="lgw-col-4">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                 <div class="lgw-box">
                     <img src="https://www.placehold.it/120x120" class="img-circle">
@@ -54,22 +54,29 @@
             </a>
         </div>
     </div>
+    <div class="lgw-box text-center">
+        <h3>Lengow, partner of your business</h3>
+        <div class="lgw-row margin-standard">
+            <div class="lgw-col-4">
+                {$locale->t('dashboard.screen.stat_turnover')|escape:'htmlall':'UTF-8'}<br>
+                <span class="stats-big-value">$23.345.339</span>
+            </div>
+            <div class="lgw-col-4">
+                {$locale->t('dashboard.screen.stat_nb_orders')|escape:'htmlall':'UTF-8'}<br>
+                <span class="stats-big-value">3.456.455</span>
+            </div>
+            <div class="lgw-col-4">
+                {$locale->t('dashboard.screen.stat_avg_order')|escape:'htmlall':'UTF-8'}<br>
+                <span class="stats-big-value">$345</span>
+            </div>
+        </div>
+        <p><a href="http://solution.lengow.com" target="_blank" title="Lengow solution" class="lgw-btn lgw-btn-white">Want more stats ?</a></p>
+    </div>
     <div class="lgw-box">
-        <div class="lgw-row">
-            <div class="lgw-col-6">
-                <h3>Lengow, partner of your business</h3>
-                <ul>
-                    <li><span class="stats-big-value">$23.345.339</span> {$locale->t('dashboard.screen.stat_turnover')|escape:'htmlall':'UTF-8'}</li>
-                    <li><span class="stats-big-value">3.456.455</span> {$locale->t('dashboard.screen.stat_nb_orders')|escape:'htmlall':'UTF-8'}</li>
-                    <li><span class="stats-big-value">$345</span> {$locale->t('dashboard.screen.stat_avg_order')|escape:'htmlall':'UTF-8'}</li>
-                </ul>
-                <a href="http://solution.lengow.com" target="_blank" title="Lengow solution" class="pull-right">Want more stats ?</a>
-            </div>
-            <div class="lgw-col-6">
-                <h3>Need some help?</h3>
-                <p><a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}" title="Need some help?">Get in touch width Lengow.</a></p>
-                <p><a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank" title="Help Center">Visit our Help Center</a> for detailed information on how to configure properly your PrestaShop plugin</p>
-            </div>
+        <h3>Need some help?</h3>
+        <p><a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}" title="Need some help?">Get in touch width Lengow.</a></p>
+        <p><a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank" title="Help Center">Visit our Help Center</a> for detailed information on how to configure properly your PrestaShop plugin</p>
+
         </div>
     </div>
 </div>

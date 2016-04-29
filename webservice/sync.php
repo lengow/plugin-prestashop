@@ -78,17 +78,17 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
                 </div>
                 <div class="lgw-container">
                     <div class="lgw-row">
-                        <div class="lgw-col-3">
+                        <div class="lgw-col-4">
                             <img src="https://www.placehold.it/55x55" class="img-circle">
                             <h4>Lorem ipsum dolor.</h4>
                             <p>Aliquam excepturi</p>
                         </div>
-                        <div class="lgw-col-3">
+                        <div class="lgw-col-4">
                             <img src="https://www.placehold.it/55x55" class="img-circle">
                             <h4>Lorem ipsum dolor.</h4>
                             <p>Aliquam excepturi facilis, illo inventore molestias</p>
                         </div>
-                        <div class="lgw-col-3">
+                        <div class="lgw-col-4">
                             <img src="https://www.placehold.it/55x55" class="img-circle">
                             <h4>Lorem ipsum dolor.</h4>
                             <p>Aliquam excepturi facilis, illo inventore molestias</p>
