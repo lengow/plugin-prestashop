@@ -259,7 +259,8 @@ code{
   vertical-align: middle;
   transition: all 100ms ease;
 }
-.lengow-nav a:hover .fa-2x{
+.lengow-nav a:hover .fa-2x,
+.lengow-nav li.active .fa-2x{
   color:white;
 }
 
@@ -282,6 +283,7 @@ code{
 .lengow-nav .active a{
   background:#2e3340;
 }
+
 .lengow-nav .active:before{
   content:'';
   position:absolute;
