@@ -19,8 +19,8 @@
  *}
 
 <div class="lgw-container">
-    <div class="lgw-content-section text-center">
-        <img src="/modules/lengow/views/img/logo-blue.png" alt="lengow">
+    <div class="lgw-box lgw-home-header text-center">
+        <img src="/modules/lengow/views/img/lengow-white-big.png" alt="lengow">
         <h1>Hi Johnny! Welcome back!</h1>
         <a href="http://solution.lengow.com" class="lgw-btn" target="_blank" title="Lengow Solution">Go to Lengow</a>
     </div>
