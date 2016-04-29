@@ -230,6 +230,9 @@ class LengowPaymentModule extends PaymentModule
             $order->total_products = (float)Tools::ps_round($total_products, 2);
             $order->total_products_wt = (float)Tools::ps_round($total_products_wt, 2);
             $order->total_paid_real = 0;
+            $order->total_discounts_tax_excl = 0;
+            $order->total_discounts_tax_incl = 0;
+            $order->total_discounts = $order->total_discounts_tax_incl;
 
             // calculate shipping tax free
             $order->carrier_tax_rate = $carrier->getTaxesRate(
@@ -280,14 +283,16 @@ class LengowPaymentModule extends PaymentModule
             $result = $order->add();
 
             if (!$result) {
-                PrestaShopLogger::addLog(
-                    'PaymentModule::validateOrder - Order cannot be created',
-                    3,
-                    null,
-                    'Cart',
-                    (int)$id_cart,
-                    true
-                );
+                if (_PS_VERSION_ >= '1.6') {
+                    PrestaShopLogger::addLog(
+                        'PaymentModule::validateOrder - Order cannot be created',
+                        3,
+                        null,
+                        'Cart',
+                        (int)$id_cart,
+                        true
+                    );
+                }
                 throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order'), array(
                     'error' => Db::getInstance()->getMsgError()
                 ));
@@ -340,14 +345,16 @@ class LengowPaymentModule extends PaymentModule
             $transaction_id = null;
 
             if (!$order->addOrderPayment($order->total_paid_tax_incl, null, $transaction_id)) {
-                PrestaShopLogger::addLog(
-                    'PaymentModule::validateOrder - Cannot save Order Payment',
-                    3,
-                    null,
-                    'Cart',
-                    (int)$id_cart,
-                    true
-                );
+                if (_PS_VERSION_ >= '1.6') {
+                    PrestaShopLogger::addLog(
+                        'PaymentModule::validateOrder - Cannot save Order Payment',
+                        3,
+                        null,
+                        'Cart',
+                        (int)$id_cart,
+                        true
+                    );
+                }
                 throw new LengowException(
                     LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order_payment')
                 );

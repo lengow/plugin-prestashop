@@ -119,7 +119,7 @@ class LengowImportOrder
      */
     protected $order_state_lengow;
 
-     /**
+    /**
      * @var float
      */
     protected $processing_fee;
