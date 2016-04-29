@@ -21,3 +21,4 @@
 {include file='../header.tpl'}
 {html_entity_decode($content|escape:'htmlall':'UTF-8')}
 {include file='../footer.tpl'}
+

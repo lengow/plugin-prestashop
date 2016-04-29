@@ -205,6 +205,10 @@ code{
   margin-right: auto;
 }
 
+.img-circle{
+  border-radius: 50%;
+}
+
 
 
 
