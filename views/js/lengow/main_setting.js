@@ -25,7 +25,7 @@
             return re.test(email);
         }
 
-        $(".lengow_report_mail_address select").select2({
+        /*$(".lengow_report_mail_address select").select2({
             tags: true,
             width: '100%',
             selectOnClose: true,
@@ -50,7 +50,7 @@
                 return;
             }
             evt.params.originalEvent.stopPropagation();
-        });
+        });*/
 
         displayPreProdMode();
         $("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").on('change', function () {

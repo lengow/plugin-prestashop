@@ -79,27 +79,27 @@ class LengowConfigurationForm
         $readonly = isset($input['readonly']) && $input['readonly'] ? 'readonly' : '';
         $inputType = isset($input['type']) ? $input['type'] : 'text';
         $legend = isset($input['legend']) ? $input['legend'] : '';
+        $label = isset($input['label']) ? $input['label'] : '';
+        $placeholder = isset($input['placeholder']) ? $input['placeholder'] : '';
         $html.= '<div class="form-group '.Tools::strtolower($name).'">';
         switch ($inputType) {
             case 'checkbox':
                 $checked = $value ? 'checked' : '';
                 $html.='<div class="lgw-switch '.$checked.'"><label><div><span></span>';
                 $html.='<input name="'.$name.'" type="checkbox" '.$checked.' '.$readonly.' >';
-                $html.='</div>'. $input["label"];
+                $html.='</div>'. $label;
                 $html.='</label></div></div>';
                 break;
             case 'text':
-                $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="'.$name.'"
-                            class="form-control" placeholder="'.$input['label'].'"
-                            value="'.$value.'" '.$readonly.'>
-                        <span class="legend">'.$legend.'</span>
-                    </div>
-                    </div>';
+                $html.= '<label class="control-label">'.$label.'</label>
+                    <input type="text" name="'.$name.'"
+                        class="form-control" placeholder="'.$placeholder.'"
+                        value="'.$value.'" '.$readonly.'>
+                    <span class="legend">'.$legend.'</span>
+                </div>';
                 break;
             case 'select':
-                $html.= '<label class="control-label">'.$input['label'].'</label>
+                $html.= '<label class="control-label">'.$label.'</label>
 
                     <select class="form-control lengow_select" name="'.$name.'">';
                 foreach ($input['collection'] as $row) {
@@ -108,8 +108,8 @@ class LengowConfigurationForm
                 }
                 $html.= '</select><span class="legend">'.$legend.'</span></div>';
                 break;
-            case 'tag':
-                $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
+            /*case 'tag':
+                $html.= '<label class="col-sm-2 control-label">'.$label.'</label>
                     <div class="col-sm-10">
                     <select class="form-control lengow_select" name="'.$name.'[]" multiple="multiple">';
                 $collection = explode(',', $value);
@@ -119,9 +119,9 @@ class LengowConfigurationForm
                     }
                 }
                 $html.= '</select></div><span class="legend">'.$legend.'</span></div>';
-                break;
+                break;*/
             case 'day':
-                $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
+                $html.= '<label class="col-sm-2 control-label">'.$label.'</label>
                     <div class="col-sm-10">
                         <div class="input-group">
                             <input type="number" name="'.$name.'" class="form-control" value="'.$value.'" '

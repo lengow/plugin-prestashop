@@ -20,7 +20,13 @@
 <div class="lgw-container">
     <div class="lgw-box" id="lengow_order_wrapper">
 
-            <a id="lengow_import_orders" class="lgw-btn btn btn-success pull-right" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">{$locale->t('order.screen.button_update_orders')|escape:'htmlall':'UTF-8'}</a>
+        <div class="pull-right">
+            <a id="lengow_import_orders" class="lgw-btn btn no-margin-top" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">{$locale->t('order.screen.button_update_orders')|escape:'htmlall':'UTF-8'}</a>
+            {if not $cron_active}
+                <p class="small light text-right"><a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}#cron_setting" class="sub-link">{$locale->t('order.screen.cron')|escape:'htmlall':'UTF-8'}</a></p>
+            {/if}
+        </div>
+
 
             <!-- UPDATE ORDERS -->
             <div id="lengow_charge_import_order_background" style="display:none"></div>
@@ -45,6 +51,7 @@
             {/if}
 
             <!-- TABLE -->
+            <div class="clearfix"></div>
             <div id="lengow_order_table_wrapper">
                 {if $nb_order_imported eq '0'}
                     {include file='./no_order.tpl'}
