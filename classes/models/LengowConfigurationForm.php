@@ -80,6 +80,7 @@ class LengowConfigurationForm
         $inputType = isset($input['type']) ? $input['type'] : 'text';
         $legend = isset($input['legend']) ? $input['legend'] : '';
         $label = isset($input['label']) ? $input['label'] : '';
+        $placeholder = isset($input['placeholder']) ? $input['placeholder'] : '';
         $html.= '<div class="form-group '.Tools::strtolower($name).'">';
         switch ($inputType) {
             case 'checkbox':
@@ -92,7 +93,7 @@ class LengowConfigurationForm
             case 'text':
                 $html.= '<label class="control-label">'.$label.'</label>
                     <input type="text" name="'.$name.'"
-                        class="form-control" placeholder="'.$legend.'"
+                        class="form-control" placeholder="'.$placeholder.'"
                         value="'.$value.'" '.$readonly.'>
                     <span class="legend">'.$legend.'</span>
                 </div>';
