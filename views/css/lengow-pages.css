@@ -32,6 +32,10 @@ body.lgw-home-iframe .lgw-container{
     display:none;
 }
 
+.adminlengowhome #lgw-preprod{
+  top:0;
+}
+
 .stats-big-value{
     font-size: 19px;
     font-weight: 600;
@@ -48,7 +52,6 @@ body.lgw-home-iframe .lgw-container{
 
 .adminlengowfeed .lgw-container{
   min-width:1200px;
-
 }
 
 .lengow_feed_block_header_title{
@@ -64,6 +67,10 @@ body.lgw-home-iframe .lgw-container{
 
 .lengow_feed_block_header_content{
     padding:25px;
+}
+
+.adminlengowordersetting #lgw-preprod{
+  top:108px;
 }
 
 /*************************************************/
@@ -88,4 +95,7 @@ body.lgw-home-iframe .lgw-container{
 }
 .adminlengoworder table input[type="text"].lengow_datepicker:first-child{
     margin-right:3px;
+}
+.adminlengoworder #lgw-preprod{
+  top:108px;
 }
