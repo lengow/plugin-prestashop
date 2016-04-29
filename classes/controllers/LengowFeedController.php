@@ -47,9 +47,9 @@ class LengowFeedController extends LengowController
                         $this->reloadTotal($shopId);
                         $state = Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shopId);
                         if ($state) {
-                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').show();";
+                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').slideDown(150);";
                         } else {
-                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').hide();";
+                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').slideUp(150);";
                         }
                     }
                     break;
