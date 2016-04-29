@@ -71,7 +71,7 @@
 
 
 /*************************************************/
-/*                      TABLE                    */
+/*                     LISTS                     */
 /*************************************************/
 
 ul,li{
@@ -152,7 +152,10 @@ ul,li{
   font-weight: 600;
   margin-bottom: 7px;
 }
-
+.stats-big-value{
+  font-size: 26px;
+  font-weight: 300;
+}
 code{
   white-space: pre-wrap;
   display:inline-block;
