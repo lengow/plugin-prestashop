@@ -97,7 +97,7 @@ class LengowMainSettingController extends LengowController
         foreach ($shops as $s) {
             $shop = new LengowShop($s['id_shop']);
             $form->fields['LENGOW_SHOP_ACTIVE']['label'] = $shop->name;
-            $preprod_wrapper.= '<div class="lengow_preprod_wrapper">'.$form->buildShopInputs($shop->id, array(
+            $preprod_wrapper.= '<div class="grey-frame">'.$form->buildShopInputs($shop->id, array(
                 'LENGOW_SHOP_ACTIVE',
                 'LENGOW_ACCOUNT_ID',
                 'LENGOW_ACCESS_TOKEN',
