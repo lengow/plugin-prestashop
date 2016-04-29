@@ -329,3 +329,7 @@ code{
 #lgw-footer{
   font-size:12px;
 }
+
+.page-sidebar #lgw-footer #content{
+  margin-left: 210px;
+}
