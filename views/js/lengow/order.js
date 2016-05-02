@@ -147,6 +147,7 @@
                 success: function() {
                     init_tooltip();
                     reload_table_js();
+                    tableSelectRender();
                     $('#lengow_charge_import_order').fadeOut(150);
                     setTimeout(function(){
                         $('#lengow_wrapper_messages').fadeIn(250);
@@ -244,7 +245,11 @@
         });
 
         // Table header filters
-        $('.table select').select2();
+        tableSelectRender();
+
+        function tableSelectRender(){
+            $('#form_table_order .table select').select2();
+        }
     });
 })(lengow_jquery);
 
