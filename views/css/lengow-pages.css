@@ -47,8 +47,10 @@ body.lgw-home-iframe .lgw-content-section p{
 
 .adminlengowhome .lgw-home-menu .lgw-label{
   position: absolute;
-  top: 45px;
-  right:60px;
+  top: 181px;
+  left: 68%;
+  margin-left: -10px;
+  margin-right: -10px;
 }
 
 .adminlengowhome .lgw-label_red{
