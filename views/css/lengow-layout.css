@@ -200,6 +200,14 @@ code{
   white-space: nowrap;
 }
 
+/* ICONS*/
+
+a.lengow_link_tooltip {
+    padding: 0 5px;
+    margin-top: 0;
+}
+
+
 /* ALIGN */
 
 .text-left{
