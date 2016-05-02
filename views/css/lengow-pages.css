@@ -166,5 +166,21 @@ body.lgw-home-iframe .lgw-content-section p{
   font-weight:300;
 }
 .select_country{
-  margin-top:30px;
+  margin:0;
+  padding:25px;
+  border:1px solid #d7d7d7;
+  border-top:0;
+  background:#f7f7f7;
+}
+.lgw-container .add-country{
+  border:1px solid #d7d7d7;
+  border-top:0;
+  display:block;
+  padding: 15px 40px 15px 25px;
+  color:#555;
+  background:#f7f7f7;
+  transition: all 100ms ease;
+}
+.lgw-container .add-country:hover{
+  color:#555;
 }

@@ -123,6 +123,12 @@ function addScoreCarrier(){
 
         });
 
+        $('.add-country').click( function(){
+            $('.add-country').hide();
+            $('.select_country').fadeIn(150);
+            return false;
+        });
+
 
         $(".sub").hide();
         $(".sub:first").show();

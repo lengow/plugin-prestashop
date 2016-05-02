@@ -586,7 +586,7 @@ a.lgw-box-link:hover{
 
 
 /*************************************************/
-/*                    ACCORDION                    */
+/*                   ACCORDION                   */
 /*************************************************/
 
 .lgw-container .accordion {
@@ -599,7 +599,7 @@ a.lgw-box-link:hover{
     width:195px;
 }
 .lgw-container .accordion label {
-    padding: 10px 40px 10px 25px ;
+    padding: 15px 40px 15px 25px ;
     margin:0;
     font-weight: normal;
     cursor:pointer;
@@ -644,7 +644,7 @@ a.lgw-box-link:hover{
 }
 .delete_lengow_default_carrier{
     position:absolute;
-    top:10px;
+    top:15px;
     right:10px;
     height:22px;
     width:22px;

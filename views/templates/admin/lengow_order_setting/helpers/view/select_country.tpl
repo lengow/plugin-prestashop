@@ -30,6 +30,6 @@
 		{/foreach}
 </select>
 <button type="button" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting', true)|escape:'htmlall':'UTF-8'}"
-	class="lgw-btn lgw-btn-white add_lengow_default_carrier">
+	class="lgw-btn add_lengow_default_carrier">
 	<i class="fa fa-plus"></i> {$locale->t('order_setting.screen.button_add_country')|escape:'htmlall':'UTF-8'}
 </button>

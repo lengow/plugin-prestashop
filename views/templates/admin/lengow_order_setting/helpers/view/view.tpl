@@ -42,7 +42,8 @@
                     {include file='./marketplace_carrier.tpl'}
                 </ul>
             </div>
-            <div class="select_country">
+            <a href="#" class="add-country"><i class="fa fa-plus"></i> Add a new country</a>
+            <div class="select_country" style="display:none">
                 {include file='./select_country.tpl'}
             </div>
         </div>
