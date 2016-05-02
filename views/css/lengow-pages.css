@@ -120,6 +120,10 @@ body.lgw-home-iframe .lgw-content-section p{
 .lengow_feed_block_header_content{
     padding:45px 0;
 }
+.lengow_feed_block_header_content input[type="text"]{
+  max-width:400px;
+}
+
 
 .lengow_feed_block_header_content_result{
   margin-bottom:45px;
