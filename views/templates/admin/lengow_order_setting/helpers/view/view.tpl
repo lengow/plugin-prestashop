@@ -19,7 +19,7 @@
  *}
 <div class="lgw-container">
     <form method="POST" id="lengow_form_order_setting">
-        <div class="lgw-box" id="lengow_form_wrapper">
+        <div class="lgw-box">
             <input type="hidden" name="action" value="process">
             <h2>{$locale->t('order_setting.screen.order_status_title')|escape:'htmlall':'UTF-8'}</h2>
             <div>
@@ -36,14 +36,14 @@
                     {$locale->t('order_setting.screen.country_wt_carrier_link')|escape:'htmlall':'UTF-8'}
                 </a>
             </p>
-            <div class="select_country">
-                {include file='./select_country.tpl'}
-            </div>
             <div id="error_select_country"></div>
             <div id="add_marketplace_country">
                 <ul id="marketplace_country" class="accordion">
                     {include file='./marketplace_carrier.tpl'}
                 </ul>
+            </div>
+            <div class="select_country">
+                {include file='./select_country.tpl'}
             </div>
         </div>
         <div class="lgw-box">

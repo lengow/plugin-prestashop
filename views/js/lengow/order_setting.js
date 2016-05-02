@@ -65,7 +65,7 @@ function addScoreCarrier(){
 
         changeStockMP();
 
-        $('#lengow_form_wrapper').on('click', '.add_lengow_default_carrier', function () {
+        $('#lengow_form_order_setting').on('click', '.add_lengow_default_carrier', function () {
             if ($('#select_country').val() !== "") {
                 var href = $(this).attr('data-href');
 
@@ -126,8 +126,8 @@ function addScoreCarrier(){
 
         $(".sub").hide();
         $(".sub:first").show();
-        $("#lengow_form_wrapper").on('click', '.lengow_marketplace_carrier h4',function(){
-            $(this).next().next().toggle('100');
+        $("#lengow_form_order_setting").on('click', '.country',function(){
+            $(this).next().next().slideToggle(150);
         });
 
         $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('change', function () {
