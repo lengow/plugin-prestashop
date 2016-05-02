@@ -157,7 +157,8 @@ a.lgw-box-link:hover{
   float:none;
 }
 
-.lgw-container input[type="text"]{
+.lgw-container input[type="text"],
+.lgw-container input[type="number"]{
     outline:none;
     background:#fafafa;
     border-radius: 3px;
@@ -171,7 +172,35 @@ a.lgw-box-link:hover{
     font-size:15px;
     color:#555;
     font-weight:normal;
+    margin-bottom:15px;
 }
+.lgw-container input[type="number"]{
+    max-width:100px;
+}
+
+/* WITH UNIT */
+
+.input-group input[type="number"]{
+    float:left;
+    border-radius: 3px 0 0 3px;
+}
+.input-group-addon {
+  padding: 0;
+  border: 0px solid transparent;
+  width:75px;
+  float:left;
+}
+.input-group-addon .unit {
+    padding: 0 15px;
+    margin: 0;
+    height: 44px;
+    line-height: 44px;
+    border: 1px solid #d7d7d7;
+    border-left: 0;
+    border-radius: 0 3px 3px 0;
+    background:#eee;
+}
+
 
 /*************************************************/
 /*                    SELECT                     */
@@ -385,6 +414,7 @@ a.lgw-box-link:hover{
     height:30px;
     line-height:30px;
     padding:0 7px;
+    margin:0;
 }
 
 .lgw-container .table input[type="text"].focus_id_product{

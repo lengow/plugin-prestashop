@@ -108,29 +108,17 @@ class LengowConfigurationForm
                 }
                 $html.= '</select><span class="legend">'.$legend.'</span></div>';
                 break;
-            /*case 'tag':
-                $html.= '<label class="col-sm-2 control-label">'.$label.'</label>
-                    <div class="col-sm-10">
-                    <select class="form-control lengow_select" name="'.$name.'[]" multiple="multiple">';
-                $collection = explode(',', $value);
-                foreach ($collection as $row) {
-                    if (Tools::strlen($row) > 0) {
-                        $html.='<option value="'.$row.'" selected>'.$row.'</option>';
-                    }
-                }
-                $html.= '</select></div><span class="legend">'.$legend.'</span></div>';
-                break;*/
             case 'day':
-                $html.= '<label class="col-sm-2 control-label">'.$label.'</label>
-                    <div class="col-sm-10">
+                $html.= '<label class="control-label">'.$label.'</label>
                         <div class="input-group">
                             <input type="number" name="'.$name.'" class="form-control" value="'.$value.'" '
                             .$readonly.' min="1" max="99">
-                            <div class="input-group-addon">'.$this->locale->t('order_setting.screen.nb_days').'</div>
+                            <div class="input-group-addon">
+                                <div class="unit">'.$this->locale->t('order_setting.screen.nb_days').'</div>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clear"></div>
                         <span class="legend">'.$legend.'</span>
-                    </div>
                     </div>';
                 break;
         }
