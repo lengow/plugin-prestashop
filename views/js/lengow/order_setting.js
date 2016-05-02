@@ -57,9 +57,9 @@ function addScoreCarrier(){
 
         function changeStockMP() {
             if ($("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").prop('checked')) {
-                $('.lengow_import_stock_ship_mp').show();
+                $('.lengow_import_stock_ship_mp').slideDown(150);
             } else {
-                $('.lengow_import_stock_ship_mp').hide();
+                $('.lengow_import_stock_ship_mp').slideUp(150);
             }
         }
 
@@ -130,10 +130,8 @@ function addScoreCarrier(){
             $(this).next().next().toggle('100');
         });
 
-        $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('switchChange.bootstrapSwitch', function (event, state) {
-            if (event.type == "switchChange") {
-                changeStockMP();
-            }
+        $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('change', function () {
+            changeStockMP();
         });
 
         $('#lengow_form_order_setting').submit(function( event ) {
