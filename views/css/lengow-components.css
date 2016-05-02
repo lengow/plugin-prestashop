@@ -114,7 +114,9 @@ a.lgw-box-link:hover{
     background-color:#66b165;
 }
 
-
+.lgw-container .lengow_toolbar .lgw-btn{
+    margin-right: 15px;
+}
 
 
 /*************************************************/

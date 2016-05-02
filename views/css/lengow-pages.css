@@ -68,32 +68,59 @@ body.lgw-home-iframe .lgw-content-section p{
   font-weight:300;
 }
 
+.adminlengowhome .lgw-row h5{
+    margin: 0;
+    padding: 0;
+    font-style: initial;
+    font-size: 15px;
+}
+
 /*************************************************/
 /*                    PRODUCTS                   */
 /*************************************************/
 
 .adminlengowfeed .lgw-container{
-  min-width:1200px;
+  min-width:1600px;
+  width:100%;
 }
 
 .lengow_feed_block_header_title{
     border-bottom:1px solid #e1e1e1;
-    padding:15px 25px 0;
+    padding: 15px 0px 0;
 }
 
 .lengow_feed_block_header_title a{
     position:absolute;
-    top:15px;
-    right:25px;
+    top:60px;
+    right:60px;
 }
+
 
 .lengow_feed_block_header_content{
-    padding:25px;
+    padding:45px 0;
 }
 
-.adminlengowordersetting #lgw-preprod{
-  top:108px;
+.lengow_feed_block_header_content_result{
+  margin-bottom:45px;
 }
+
+
+.adminlengowfeed .lgw-row h5{
+    margin: 0;
+    padding: 0;
+    font-style: initial;
+    font-size: 15px;
+    display: inline-block;
+}
+
+.lengow_select_all_shop{
+    padding:0 10px;
+}
+
+.adminlengowfeed .lgw-pagination-pages {
+    margin: 5px 0px 5px 5px;
+}
+
 
 /*************************************************/
 /*                     ORDERS                    */

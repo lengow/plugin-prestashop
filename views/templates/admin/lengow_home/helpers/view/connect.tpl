@@ -58,15 +58,15 @@
         <h3>Lengow, partner of your business</h3>
         <div class="lgw-row margin-standard">
             <div class="lgw-col-4">
-                {$locale->t('dashboard.screen.stat_turnover')|escape:'htmlall':'UTF-8'}<br>
+                <h5>{$locale->t('dashboard.screen.stat_turnover')|escape:'htmlall':'UTF-8'}</h5>
                 <span class="stats-big-value">$23.345.339</span>
             </div>
             <div class="lgw-col-4">
-                {$locale->t('dashboard.screen.stat_nb_orders')|escape:'htmlall':'UTF-8'}<br>
+                <h5>{$locale->t('dashboard.screen.stat_nb_orders')|escape:'htmlall':'UTF-8'}</h5>
                 <span class="stats-big-value">3.456.455</span>
             </div>
             <div class="lgw-col-4">
-                {$locale->t('dashboard.screen.stat_avg_order')|escape:'htmlall':'UTF-8'}<br>
+                <h5>{$locale->t('dashboard.screen.stat_avg_order')|escape:'htmlall':'UTF-8'}</h5>
                 <span class="stats-big-value">$345</span>
             </div>
         </div>

@@ -21,23 +21,23 @@
 
 <div class="lgw-container" id="lengow_feed_wrapper">
     {foreach from=$shopCollection  item=shop}
-        <div class="lgw-box no-padding" id="block_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
+        <div class="lgw-box" id="block_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
             <div class="lengow_feed_block_header_title" id="lengow_feed_block_header_title">
                 <div class="lengow_check_shop lengow_link_tooltip pull-right"
                      data-original-title=""
                      data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}">
                 </div>
-                <p>
+                <p class="bold">
                     {$shop['shop']->name|escape:'htmlall':'UTF-8'}
                     http://{$shop['shop']->domain|escape:'htmlall':'UTF-8'}
                 </p>
             </div>
-            <div class="lengow_feed_block_header_content">
+            <div class="lengow_feed_block_header_content lgw-container">
                 <div class="lgw-row">
                     <div class="lgw-col-6">
                         <p>{$locale->t('product.screen.your_exported_catalog')|escape:'htmlall':'UTF-8'}</p>
                         <p>
-                            <input id="link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}" value="{$shop['link']|escape:'htmlall':'UTF-8'}" readonly>
+                            <input type="text" id="link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}" value="{$shop['link']|escape:'htmlall':'UTF-8'}" readonly>
                             <a class="lengow_copy lengow_link_tooltip"
                                 data-original-title="{$locale->t('product.screen.button_copy')|escape:'htmlall':'UTF-8'}"
                                 data-clipboard-target="#link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
@@ -48,20 +48,22 @@
                                 target="_blank"><i class="fa fa-download"></i></a>
                         </p>
                         {if $shop['last_export']}
-                            <p>{$locale->t('product.screen.last_export')|escape:'htmlall':'UTF-8'} :</p>
-                            {$shop['last_export']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}
+                            <p>{$locale->t('product.screen.last_export')|escape:'htmlall':'UTF-8'} :
+                            <span  class="bold">{$shop['last_export']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}</span></p>
                         {else}
                             <p>{$locale->t('product.screen.no_export')|escape:'htmlall':'UTF-8'}</p>
                         {/if}
                     </div>
                     <div class="lgw-col-6">
                         <div class="lengow_feed_block_header_content_result">
-                            <p>
-                                <span class="lengow_exported">{$shop['total_export_product']|escape:'htmlall':'UTF-8'}</span>
-                                {$locale->t('product.screen.nb_exported')|escape:'htmlall':'UTF-8'}<br>
-                                <span class="lengow_total">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span>
-                                {$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}
-                            </p>
+                            <div class="lgw-row">
+                                <span class="lengow_exported stats-big-value">{$shop['total_export_product']|escape:'htmlall':'UTF-8'}</span>
+                                <h5>{$locale->t('product.screen.nb_exported')|escape:'htmlall':'UTF-8'}</h5>
+                            </div>
+                            <div class="lgw-row">
+                                <span class="lengow_total stats-big-value">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span>
+                                <h5>{$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}</h5>
+                            </div>
                         </div>
 
                         <div class="lgw-switch {if $shop['option_variation'] == 1} checked{/if}">
