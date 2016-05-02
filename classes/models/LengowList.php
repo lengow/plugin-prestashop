@@ -217,8 +217,9 @@ class LengowList
                             }
                             break;
                         case 'switch_product':
-                            $value = '<div class="lgw-switch '.($item[$key] ? 'checked="checked"' : '').'"><label><div><span></span><input type="checkbox"
+                            $value = '<div class="lgw-switch '.($item[$key] ? 'checked' : '').'"><label><div><span></span><input type="checkbox"
                                 data-size="mini"
+                                class="lengow_switch_product"
                                 data-on-text="'.$this->locale->t('product.screen.button_yes').'"
                                 data-off-text="'.$this->locale->t('product.screen.button_no').'"
                                 name="lengow_product_selection['.$item[$this->identifier].']"

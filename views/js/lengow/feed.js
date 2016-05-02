@@ -43,7 +43,7 @@
             var href = $(this).attr('data-href');
             var action = $(this).attr('data-action');
             var id_shop = $(this).attr('data-id_shop');
-            var state = $(this).prop('checked') ;
+            var state = $(this).prop('checked');
             $.ajax({
                 url: href,
                 method: 'POST',
@@ -57,6 +57,7 @@
             var action = $(this).attr('data-action');
             var id_shop = $(this).attr('data-id_shop');
             var id_product = $(this).attr('data-id_product');
+            var state = $(this).prop('checked');
             $.ajax({
                 url: href,
                 method: 'POST',
