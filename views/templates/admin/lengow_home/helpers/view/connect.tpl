@@ -28,7 +28,7 @@
         <div class="lgw-col-4">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                 <div class="lgw-box">
-                    <img src="https://www.placehold.it/120x120" class="img-circle">
+                    <img src="/modules/lengow/views/img/home-products.png" class="img-responsive">
                     <h2>Products</h2>
                     <p>Take a look at all your products available to prepare your catalogue</p>
                 </div>
@@ -37,9 +37,8 @@
         <div class="lgw-col-4">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                 <div class="lgw-box">
-                    <img src="https://www.placehold.it/120x120" class="img-circle">
-                    <span class="lgw-label lgw-label_red">{$total_pending_order|escape:'htmlall':'UTF-8'}</span>
-                    <h2>Orders</h2>
+                     <img src="/modules/lengow/views/img/home-orders.png" class="img-responsive">
+                    <h2>Orders <span class="lgw-label lgw-label_red">{$total_pending_order|escape:'htmlall':'UTF-8'}</span></h2>
                     <p>Manage your orders directly on your PrestaShop dashboard</p>
                 </div>
             </a>
@@ -47,7 +46,7 @@
         <div class="lgw-col-4">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                 <div class="lgw-box">
-                    <img src="https://www.placehold.it/120x120" class="img-circle">
+                     <img src="/modules/lengow/views/img/home-settings.png" class="img-responsive">
                     <h2>Settings</h2>
                     <p>Configure the main settings of your PrestaShop plugin</p>
                 </div>
