@@ -163,18 +163,6 @@ body.lgw-home-iframe .lgw-content-section p{
 .adminlengoworder table input[type="text"].lengow_datepicker:first-child{
     margin-right:3px;
 }
-.adminlengoworder table .select2-selection--single .select2-selection__rendered{
-  height:32px;
-  line-height: 32px;
-}
-.adminlengoworder table .select2-selection--single{
-  height:32px;
-}
-
-.adminlengoworder table .select2-selection--single .select2-selection__arrow {
-    top: 4px;
-    right: 2px;
-}
 
 .adminlengoworder #lgw-preprod{
   top:108px;
