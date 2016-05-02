@@ -246,9 +246,10 @@ a.lgw-box-link:hover{
     border:0;
     height:42px;
     line-height: 42px;
-    padding:0 15px;
+    padding:0 30px 0 15px;
     font-size:15px;
     border-bottom: 1px solid #d7d7d7;
+    background:url('../img/search.png') no-repeat right center;
 }
 
 .select2-dropdown{
@@ -453,8 +454,9 @@ a.lgw-box-link:hover{
 /* TABLE DROPDOWN */
 
 .lgw-container table .select2-selection--single .select2-selection__rendered{
-  height:32px;
-  line-height: 32px;
+  height:30px;
+  line-height: 30px;
+  font-weight: 400;
 }
 .lgw-container table .select2-selection--single{
   height:32px;
