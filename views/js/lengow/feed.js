@@ -95,7 +95,7 @@
                 data: {action: 'load_table', id_shop: id_shop},
                 dataType: 'script',
                 success: function () {
-                    $(".lengow_switch").bootstrapSwitch();
+                    //
                 }
             });
             return false;

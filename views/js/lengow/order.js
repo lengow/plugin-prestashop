@@ -244,13 +244,12 @@
         });
 
         // Table header filters
-        tableSelectRender();
+        pluginsRender();
 
     });
 })(lengow_jquery);
 
 function reload_table_js() {
-    tableSelectRender();
     lengow_jquery('.lengow_datepicker').datepicker({
         format : 'dd/mm/yyyy',
         autoclose: true,
@@ -268,8 +267,10 @@ function reload_table_js() {
             lengow_jquery(this).css('cursor','auto');
         }
     );
+    pluginsRender();
 }
 
-function tableSelectRender(){
+function pluginsRender(){
+    // Selects
     lengow_jquery('#form_table_order .table select').select2();
 }

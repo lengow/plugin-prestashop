@@ -217,18 +217,17 @@ class LengowList
                             }
                             break;
                         case 'switch_product':
-                            $value = '<input type="checkbox"
+                            $value = '<div class="lgw-switch '.($item[$key] ? 'checked="checked"' : '').'"><label><div><span></span><input type="checkbox"
                                 data-size="mini"
                                 data-on-text="'.$this->locale->t('product.screen.button_yes').'"
                                 data-off-text="'.$this->locale->t('product.screen.button_no').'"
                                 name="lengow_product_selection['.$item[$this->identifier].']"
-                                class="lengow_switch lengow_switch_product
                                 lengow_product_selection_'.$item[$this->identifier].'"
                                 data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
                                 data-action="select_product"
                                 data-id_shop="'.$this->shopId.'"
                                 data-id_product="'.$item[$this->identifier].'"
-                                value="1" '.($item[$key] ? 'checked="checked"' : '').'/>';
+                                value="1" '.($item[$key] ? 'checked="checked"' : '').'/></div></label></div>';
                             break;
                         case 'flag_country':
                             if ($item[$key]) {
@@ -253,6 +252,7 @@ class LengowList
         $html.= '</tr>';
         return $html;
     }
+
 
     /**
      * v3
