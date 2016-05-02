@@ -84,15 +84,18 @@ body.lgw-home-iframe .lgw-content-section p{
   width:100%;
 }
 
-.lengow_feed_block_header_title{
-    border-bottom:1px solid #e1e1e1;
-    padding: 15px 0px 0;
+.lengow_feed_block_header_title {
+    border-bottom: 1px solid #e1e1e1;
+    padding: 15px 15px;
+    box-sizing: border-box;
+    margin-bottom: 0px;
 }
 
 .lengow_feed_block_header_title a{
-    position:absolute;
-    top:60px;
-    right:60px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 2;
 }
 
 .lengow_feed_block_header_title a:hover{
@@ -112,6 +115,12 @@ body.lgw-home-iframe .lgw-content-section p{
     position: absolute;
     top: -10px;
     right:0;
+}
+.lengow_feed_block_header_title .lengow_check_shop{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
 }
 
 
