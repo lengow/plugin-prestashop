@@ -29,7 +29,6 @@
 
 
             <!-- UPDATE ORDERS -->
-            <div id="lengow_charge_import_order_background" style="display:none"></div>
             <div id="lengow_charge_import_order" style="display:none">
                 <p id="lengow_charge_lign1">{$locale->t('order.screen.import_charge_first')|escape:'htmlall':'UTF-8'}</p>
                 <p id="lengow_charge_lign2">{$locale->t('order.screen.import_charge_second')|escape:'htmlall':'UTF-8'}</p>
@@ -47,7 +46,7 @@
                 <div id="lengow_last_importation">
                     {include file='./last_importation.tpl'}
                 </div>
-                <div id="lengow_wrapper_messages"></div>
+                <div id="lengow_wrapper_messages" class="blue-frame" style="display:none;"></div>
             {/if}
 
             <!-- TABLE -->

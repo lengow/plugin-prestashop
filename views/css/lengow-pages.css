@@ -110,3 +110,20 @@ body.lgw-home-iframe .lgw-container{
 .adminlengoworder #lgw-preprod{
   top:108px;
 }
+
+#lengow_wrapper_messages{
+  max-width:600px;
+}
+#lengow_charge_import_order{
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:30;
+  background:rgba(255,255,255,.95);
+  text-align:center;
+  padding-top:150px;
+  font-size:24px;
+  font-weight:300;
+}

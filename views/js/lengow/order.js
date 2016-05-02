@@ -147,17 +147,16 @@
                 success: function() {
                     init_tooltip();
                     reload_table_js();
-                    $('#lengow_charge_import_order').hide();
-                    $('#lengow_charge_import_order_background').hide();
+                    $('#lengow_charge_import_order').fadeOut(150);
+                    setTimeout(function(){
+                        $('#lengow_wrapper_messages').fadeIn(250);
+                    }, 300);
                 },
                 error: function () {
-                    $('#lengow_charge_import_order').hide();
-                    $('#lengow_charge_import_order_background').hide();
+                    $('#lengow_charge_import_order').fadeOut(150);
                 },
                 beforeSend: function() {
-                    button.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
-                    $('#lengow_charge_import_order').show();
-                    $('#lengow_charge_import_order_background').show();
+                    $('#lengow_charge_import_order').fadeIn(150);
                 }
             });
         });
