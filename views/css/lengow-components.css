@@ -134,11 +134,19 @@ a.lgw-box-link:hover{
     white-space: nowrap;
 }
 
-
 .lgw-label_red,
-.lgw-label_closed{
+.lgw-label_closed,
+.lgw-label.red{
     color:white;
     background:#e55a4d;
+}
+.lgw-label.orange{
+    color:white;
+    background:#fbb829;
+}
+.lgw-label.green{
+    color:white;
+    background:#7ac279;
 }
 .lgw-label_waiting_shipment{
     border:1px solid #7ac279;
@@ -572,4 +580,88 @@ a.lgw-box-link:hover{
     margin-top: -5px;
     border-width: 0 5px 5px;
     border-bottom-color: #000;
+}
+
+
+/*************************************************/
+/*                    ACCORDION                    */
+/*************************************************/
+
+.lgw-container .accordion {
+    margin-left: 0;
+    padding-left: 0;
+    outline: 0;
+    border-top: 1px solid #d7d7d7;
+}
+.lgw-container .accordion .carrier {
+    width:195px;
+}
+.lgw-container .accordion label {
+    padding: 10px 40px 10px 25px ;
+    margin:0;
+    font-weight: normal;
+    cursor:pointer;
+    transition: all 100ms ease;
+}
+.lgw-container .accordion label:hover {
+    background:#f7f7f7;
+}
+.lgw-container .accordion .country {
+    border: 1px solid #d7d7d7;
+    border-top:0;
+    margin-top: 0;
+    margin-bottom: 0;
+    background:#fff;
+    position:relative;
+}
+.lgw-container .accordion .score{
+    float:right;
+    padding-right:10px;
+    padding-left:10px;
+}
+.lgw-container .accordion ul {
+    margin:0px;
+    list-style:none;
+    padding:0px;
+    border-right:1px solid #d7d7d7;
+}
+.lgw-container .accordion input[type="radio"],
+.lgw-container .accordion input[type="checkbox"] {
+    display: none;
+}
+.lgw-container .accordion .sub > li {
+    height: 140px;
+    width:33.33%;
+    padding: 15px 30px;
+    margin: 0px;
+    float: left;
+    list-style: none;
+    box-sizing: border-box;
+    border-left:1px solid #d7d7d7;
+    border-bottom:1px solid #d7d7d7;
+}
+.delete_lengow_default_carrier{
+    position:absolute;
+    top:10px;
+    right:10px;
+    height:22px;
+    width:22px;
+    border-radius: 50%;
+    background: url('../img/box-close.png') no-repeat;
+    border:0;
+}
+.delete_lengow_default_carrier:hover{
+    background-position: 0 -22px;
+}
+.lgw-container .accordion  .fa-chevron-down,
+.lgw-container .accordion  .fa-chevron-up{
+    background: url('../img/carret-down.png') no-repeat right center;
+    font-size:0;
+    display:inline-block;
+    width:9px;
+    height:5px;
+    vertical-align: middle;
+}
+.lgw-container .accordion  .fa-chevron-up{
+    background: url('../img/carret-up.png') no-repeat right center;
 }

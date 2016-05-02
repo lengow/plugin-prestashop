@@ -18,7 +18,7 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<div class="lgw-container" id="lengow_form_wrapper" xmlns="http://www.w3.org/1999/html">
+<div class="lgw-container" xmlns="http://www.w3.org/1999/html">
     <form class="lengow_form" method="POST">
         <input type="hidden" name="action" value="process">
         <div class="lgw-box">

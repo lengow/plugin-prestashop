@@ -17,11 +17,11 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
- 
+
 <div class="lengow_default_carrier"
      data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting', true)|escape:'htmlall':'UTF-8'}"
      id="lengow_country_{$defaultCarrierCountries[$id_country]['lengow_country_id']|escape:'htmlall':'UTF-8'}">
-    <h3>{$locale->t('order_setting.screen.default_carrier')|escape:'htmlall':'UTF-8'}</h3>
+    <p>{$locale->t('order_setting.screen.default_carrier')|escape:'htmlall':'UTF-8'}</p>
     <select name="default_carrier[{$defaultCarrierCountries[$id_country]['lengow_country_id']|escape:'htmlall':'UTF-8'}]" class="carrier defaultCarrier lengow_select">
         <option value=""></option>
         {foreach from=$listCarrierByCountry[$id_country] key=k item=c}
