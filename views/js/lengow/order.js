@@ -242,10 +242,15 @@
             }
             return false;
         });
+
+        // Table header filters
+        tableSelectRender();
+
     });
 })(lengow_jquery);
 
 function reload_table_js() {
+    tableSelectRender();
     lengow_jquery('.lengow_datepicker').datepicker({
         format : 'dd/mm/yyyy',
         autoclose: true,
@@ -263,4 +268,8 @@ function reload_table_js() {
             lengow_jquery(this).css('cursor','auto');
         }
     );
+}
+
+function tableSelectRender(){
+    lengow_jquery('#form_table_order .table select').select2();
 }
