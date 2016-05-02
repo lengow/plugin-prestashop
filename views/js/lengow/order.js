@@ -242,6 +242,9 @@
             }
             return false;
         });
+
+        // Table header filters
+        $('.table select').select2();
     });
 })(lengow_jquery);
 
