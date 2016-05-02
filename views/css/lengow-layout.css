@@ -1,0 +1,372 @@
+/*************************************************/
+/*                     LAYOUT                    */
+/*************************************************/
+
+.lengow_body{
+    background:#f7f7f7;
+}
+.lengow_body .nobootstrap{
+    background:transparent;
+    width:auto;
+    min-width: inherit;
+    margin: 0 auto;
+    position:relative;
+}
+.lgw-container{
+    width:990px;
+    margin:0 auto;
+}
+
+/* GRID */
+
+.lgw-row{
+    margin-left: -15px;
+    margin-right: -15px;
+    box-sizing: border-box;
+}
+.lgw-row:after{
+   clear: both;
+   content: " ";
+   display:block;
+   width:100%;
+}
+.lgw-col-7,
+.lgw-col-6,
+.lgw-col-5,
+.lgw-col-4,
+.lgw-col-4{
+    padding:0 15px;
+    float:left;
+    box-sizing: border-box;
+}
+.lgw-col-7{
+    width:58.33%;
+}
+.lgw-col-6{
+    width:50%;
+}
+.lgw-col-5{
+  width:41.67%;
+}
+.lgw-col-4{
+    width:33.33%;
+}
+.clearfix{
+    clear:both;
+}
+
+/* SECTIONS */
+
+.lgw-content-section{
+    margin-bottom: 60px;
+}
+
+/* SPACING */
+
+.no-padding{
+  padding:0 !important;
+}
+
+.no-margin{
+  margin:0 !important;
+}
+.no-margin-top{
+  margin-top:0 !important;
+}
+
+.margin-standard{
+  margin-bottom: 30px;
+}
+
+.marginTB{
+  margin:60px 0;
+}
+
+/* PLACEMENT */
+
+.pull-right{
+  float:right !important;
+}
+
+/* FONT WEIGHT*/
+b,
+.bold{
+  font-weight: 600;
+}
+
+/*************************************************/
+/*                     LISTS                     */
+/*************************************************/
+
+ul,li{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+/*************************************************/
+/*                     FONTS                     */
+/*************************************************/
+
+
+.lgw-container{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    color: #464646;
+}
+.lgw-container h1,
+.lgw-container h2,
+.lgw-container h3,
+.lgw-container h4,
+.lgw-container h5,
+.lgw-container h6{
+    font-family:'Lato', sans-serif;
+}
+.lgw-container h1{
+  font-size: 32px;
+  font-weight:900;
+  margin:30px 0;
+}
+.lgw-container h2{
+  font-size: 23px;
+  margin:15px 0 30px;
+}
+
+.lgw-container h3{
+  font-size: 19px;
+}
+
+.lgw-container h4{
+  font-size: 17px;
+}
+
+.lgw-container h5,
+.lgw-container h6{
+  font-size: 17px;
+  font-style:italic;
+}
+
+.lgw-container p{
+  line-height:1.7;
+  margin:0 0 10px;
+}
+
+.lgw-container .small{
+  font-size:13px;
+}
+.lgw-container .light{
+  color:#828282;
+}
+
+.lgw-container a{
+    color:#00aeef;
+    text-decoration: none;
+}
+.lgw-container a:hover{
+    color:#019ce2;
+    text-decoration: underline;
+}
+.lgw-container .sub-link{
+  color:#464646;
+  text-decoration: underline;
+}
+.lgw-container .sub-link:hover{
+  color: #00aeef;
+}
+
+.lgw-container label{
+  text-shadow:none;
+  width:inherit;
+  float:none;
+  text-align: left;
+  display:block;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+.stats-big-value{
+  font-size: 26px;
+  font-weight: 300;
+}
+code{
+  white-space: pre-wrap;
+  display:inline-block;
+  word-break: break-all;
+  padding:5px 15px;
+  margin-bottom:15px;
+  color: #c7254e;
+  background-color: #f9f2f4;
+}
+
+.nowrap{
+  white-space: nowrap;
+}
+
+/* ICONS*/
+
+a.lengow_link_tooltip {
+    padding: 0 5px;
+    margin-top: 0;
+    color:#555;
+}
+
+
+/* ALIGN */
+
+.text-left{
+    text-align:left;
+}
+.text-center{
+    text-align:center;
+}
+.text-right{
+    text-align:right;
+}
+
+/*************************************************/
+/*                     IMAGES                    */
+/*************************************************/
+
+.img-responsive{
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.img-circle{
+  border-radius: 50%;
+}
+
+
+/*************************************************/
+/*                     NAVBAR                    */
+/*************************************************/
+
+.lengow-nav{
+  font-size:13px;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:54px;
+  margin:0;
+  padding:0 25px;
+  background:#3f4452;
+  list-style: none;
+  z-index: 300;
+}
+#lengow_logo img{
+  margin-top: 13px;
+}
+.lengow-nav li{
+  float:left;
+  position:relative;
+}
+.lengow-nav a{
+  color:white;
+  line-height: 54px;
+  height:54px;
+  display:block;
+  padding:0 15px;
+  text-decoration: none;
+  transition: all 100ms ease;
+}
+.lengow-nav a:hover{
+  background:#61687c;
+  color:white;
+}
+.lengow-nav .lengow_float_right{
+  float:right;
+}
+.lengow-nav .fa-2x{
+  font-size:18px;
+  color:#858ca1;
+  vertical-align: middle;
+  transition: all 100ms ease;
+}
+.lengow-nav a:hover .fa-2x,
+.lengow-nav li.active .fa-2x{
+  color:white;
+}
+
+.lengow-nav-notif{
+  display:inline-block;
+  background:#e55a4d;
+  color:white;
+  font-size:11px;
+  padding:0 3px;
+  height:18px;
+  min-width:12px;
+  line-height:18px;
+  text-align: center;
+  border-radius:11px;
+  margin-left:2px;
+}
+
+/* ACTIVE */
+
+.lengow-nav .active a{
+  background:#2e3340;
+}
+
+.lengow-nav .active:before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:2px;
+  background:#00aeef;
+}
+
+/* SUB NAV */
+
+.lengow-nav-bottom{
+  top:54px;
+  background:white;
+  border-bottom:1px solid #e1e1e1;
+}
+.lengow-nav-bottom a{
+  color:#555;
+}
+.lengow-nav-bottom a:hover{
+  background: #f7f7f7;
+  color:#555;
+}
+.lengow-nav-bottom .active a{
+  color:#00aeef;
+  background:transparent;
+}
+.lengow-nav-bottom .active:before{
+  background:transparent;
+}
+
+/* PREPROD */
+
+#lgw-preprod{
+  color:white;
+  background:#e55a4d;
+  padding:5px 10px;
+  position:absolute;
+  top:54px;
+  left:0;
+}
+
+
+/*************************************************/
+/*                     FOOTER                    */
+/*************************************************/
+
+#lgw-footer{
+  font-size:12px;
+}
+
+.page-sidebar #lgw-footer #content{
+  margin-left: 210px;
+}

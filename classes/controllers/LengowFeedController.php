@@ -47,9 +47,9 @@ class LengowFeedController extends LengowController
                         $this->reloadTotal($shopId);
                         $state = Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shopId);
                         if ($state) {
-                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').show();";
+                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').slideDown(150);";
                         } else {
-                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').hide();";
+                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').slideUp(150);";
                         }
                     }
                     break;
@@ -165,7 +165,7 @@ class LengowFeedController extends LengowController
                             echo 'lengow_jquery("#block_' . $shopId['id_shop']
                                 .' .lengow_feed_block_header_title").append("<a href=\"'
                                 .$link->getAbsoluteAdminLink('AdminLengowHome', true)
-                                .'&isSync=true\" ><span>sync</span></a>");';
+                                .'&isSync=true\" ><span>sync</span> </a>");';
 
                         }
                     }
@@ -484,7 +484,7 @@ class LengowFeedController extends LengowController
         }
         $this->list->updateCollection($collection);
         $paginationBlock = $this->list->renderPagination(array(
-            'nav_class' => 'lengow_feed_pagination'
+            'nav_class' => 'lgw-pagination'
         ));
 
         $lengow_link = new LengowLink();
@@ -497,17 +497,17 @@ class LengowFeedController extends LengowController
                 data-message="'.$this->locale->t('product.screen.remove_confirmation', array(
                     'nb' => $this->list->getTotal()
                 )).'"
-                class="lengow_btn lengow_remove_from_export">
+                class="lgw-btn lgw-btn-red lengow_remove_from_export">
                 <i class="fa fa-minus"></i> '.$this->locale->t('product.screen.remove_from_export').'</a>';
             $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
                 data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
                 data-message="'.$this->locale->t('product.screen.add_confirmation', array(
                     'nb' => $this->list->getTotal()
                 )).'"
-                class="lengow_btn lengow_add_to_export">
+                class="lgw-btn lengow_add_to_export">
                 <i class="fa fa-plus"></i> '.$this->locale->t('product.screen.add_from_export').'</a>';
-            $html.='<div class="lengow_select_all_shop" style="display:none;">';
-            $html.='<input type="checkbox" id="select_all_shop_'.$shopId.'"/>';
+            $html.='<div class="lengow_select_all_shop lgw-container" style="display:none;">';
+            $html.='<input type="checkbox" id="select_all_shop_'.$shopId.'"/>&nbsp;&nbsp;';
             $html.='<span>'.$this->locale->t('product.screen.select_all_products', array(
                         'nb' => $this->list->getTotal()
                     ));
@@ -516,12 +516,12 @@ class LengowFeedController extends LengowController
         }
         $html.='</div>';
         $html.= $paginationBlock;
-        $html.='<div class="lengow_clear"></div>';
+        $html.='<div class="clearfix"></div>';
         $html.='</div>';
         $html.= $this->list->display();
         $html.='<div class="lengow_table_bottom">';
         $html.= $paginationBlock;
-        $html.='<div class="lengow_clear"></div>';
+        $html.='<div class="clearfix"></div>';
         $html.='</div>';
 
         return $html;
@@ -538,7 +538,7 @@ class LengowFeedController extends LengowController
                 return '<a href="'.
                 $link->getAbsoluteAdminLink((_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'), false, true).
                 '&updateproduct&id_product='.
-                $item['id_product'].'" target="_blank">'.$value.'</a>';
+                $item['id_product'].'" target="_blank" class="sub-link">'.$value.'</a>';
             } else {
                 return $value;
             }

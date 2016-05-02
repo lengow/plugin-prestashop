@@ -20,6 +20,7 @@
 
 (function ($) {
     $(document).ready(function () {
+
         function checkShop() {
             var href = $('.lengow_check_shop').attr('data-href');
             $.ajax({
@@ -38,44 +39,46 @@
 
         checkShop();
 
-        $('#lengow_feed_wrapper').on('switchChange.bootstrapSwitch', '.lengow_switch_option', function (event, state) {
-            if (event.type == "switchChange") {
-                var href = $(this).attr('data-href');
-                var action = $(this).attr('data-action');
-                var id_shop = $(this).attr('data-id_shop');
-                $.ajax({
-                    url: href,
-                    method: 'POST',
-                    data: {state: state ? 1 : 0, action: action, id_shop: id_shop},
-                    dataType: 'script'
-                });
-            }
+        $('.lgw-container').on('change', '.lengow_switch_option', function () {
+            var href = $(this).attr('data-href');
+            var action = $(this).attr('data-action');
+            var id_shop = $(this).attr('data-id_shop');
+            var state = $(this).prop('checked');
+            $.ajax({
+                url: href,
+                method: 'POST',
+                data: {state: state ? 1 : 0, action: action, id_shop: id_shop},
+                dataType: 'script'
+            });
         });
-        $('#lengow_feed_wrapper').on('switchChange.bootstrapSwitch', '.lengow_switch_product', function (event, state) {
-            if (event.type == "switchChange") {
-                var href = $(this).attr('data-href');
-                var action = $(this).attr('data-action');
-                var id_shop = $(this).attr('data-id_shop');
-                var id_product = $(this).attr('data-id_product');
-                $.ajax({
-                    url: href,
-                    method: 'POST',
-                    data: {state: state ? 1 : 0, action: action, id_shop: id_shop, id_product: id_product},
-                    dataType: 'script'
-                });
-            }
+
+         $('.lgw-container').on('change', '.lengow_switch_product', function () {
+            var href = $(this).attr('data-href');
+            var action = $(this).attr('data-action');
+            var id_shop = $(this).attr('data-id_shop');
+            var id_product = $(this).attr('data-id_product');
+            var state = $(this).prop('checked');
+            $.ajax({
+                url: href,
+                method: 'POST',
+                data: {state: state ? 1 : 0, action: action, id_shop: id_shop, id_product: id_product},
+                dataType: 'script'
+            });
         });
-        $('#lengow_feed_wrapper').on('click', '.lengow_feed_pagination a', function () {
+
+
+        $('.lgw-container').on('click', '.lgw-pagination a', function () {
             if ($(this).parent().hasClass('disabled')) {
                 return false;
             }
             var href = $(this).attr('data-href');
-            var id_shop = $(this).parents('.lengow_feed_pagination').attr('id').split('_')[2];
+            var id_shop = $(this).parents('.lgw-pagination').attr('id').split('_')[2];
 
             $('#lengow_feed_wrapper #form_table_shop_' + id_shop + ' input[name="p"]').val($(this).attr('data-page'));
             $('#lengow_feed_wrapper #form_table_shop_' + id_shop).submit();
             return false;
         });
+
         $('#lengow_feed_wrapper').on('click', '.lengow_form_table .table_order', function () {
             var id_shop = $(this).parents('table').attr('id').split('_')[2];
             $('#lengow_feed_wrapper #form_table_shop_' + id_shop + ' input[name="order_value"]').val($(this).attr('data-order'));
@@ -93,7 +96,7 @@
                 data: {action: 'load_table', id_shop: id_shop},
                 dataType: 'script',
                 success: function () {
-                    $(".lengow_switch").bootstrapSwitch();
+                    //
                 }
             });
             return false;

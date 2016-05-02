@@ -44,7 +44,7 @@
             </label>
             <input type="text" id="delivery_adress_id">
         </div>
-        <a id="lengow_update_order" class="lengow_btn btn-success"
+        <a id="lengow_update_order" class="lgw-btn btn-success"
             data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
             {$locale->t('toolbox.order.import_one_order')|escape:'htmlall':'UTF-8'}
         </a>
@@ -68,7 +68,7 @@
             <label for="import_days">{$locale->t('toolbox.order.import_days')|escape:'htmlall':'UTF-8'}</label>
             <input type="text" id="import_days" value="{$days|escape:'htmlall':'UTF-8'}">
         </div>
-        <a id="lengow_update_some_orders" class="lengow_btn btn-success"
+        <a id="lengow_update_some_orders" class="lgw-btn btn-success"
             data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
             {$locale->t('toolbox.order.import_shop_order')|escape:'htmlall':'UTF-8'}
         </a>
@@ -78,7 +78,7 @@
 
 <div class="lengow_import_order_toolbox">
     <h4>{$locale->t('toolbox.order.import_all_order')|escape:'htmlall':'UTF-8'}</h4>
-    <a id="lengow_import_orders" class="lengow_btn btn-success"
+    <a id="lengow_import_orders" class="lgw-btn btn-success"
        data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
         {$locale->t('order.screen.button_update_orders')|escape:'htmlall':'UTF-8'}
     </a>

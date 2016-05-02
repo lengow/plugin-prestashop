@@ -57,15 +57,15 @@ function addScoreCarrier(){
 
         function changeStockMP() {
             if ($("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").prop('checked')) {
-                $('.lengow_import_stock_ship_mp').show();
+                $('.lengow_import_stock_ship_mp').slideDown(150);
             } else {
-                $('.lengow_import_stock_ship_mp').hide();
+                $('.lengow_import_stock_ship_mp').slideUp(150);
             }
         }
 
         changeStockMP();
 
-        $('#lengow_form_wrapper').on('click', '.add_lengow_default_carrier', function () {
+        $('#lengow_form_order_setting').on('click', '.add_lengow_default_carrier', function () {
             if ($('#select_country').val() !== "") {
                 var href = $(this).attr('data-href');
 
@@ -123,17 +123,21 @@ function addScoreCarrier(){
 
         });
 
+        $('.add-country').click( function(){
+            $('.add-country').hide();
+            $('.select_country').fadeIn(150);
+            return false;
+        });
+
 
         $(".sub").hide();
         $(".sub:first").show();
-        $("#lengow_form_wrapper").on('click', '.lengow_marketplace_carrier h4',function(){
-            $(this).next().next().toggle('100');
+        $("#lengow_form_order_setting").on('click', '.country',function(){
+            $(this).next().next().slideToggle(150);
         });
 
-        $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('switchChange.bootstrapSwitch', function (event, state) {
-            if (event.type == "switchChange") {
-                changeStockMP();
-            }
+        $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('change', function () {
+            changeStockMP();
         });
 
         $('#lengow_form_order_setting').submit(function( event ) {

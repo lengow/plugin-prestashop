@@ -79,58 +79,46 @@ class LengowConfigurationForm
         $readonly = isset($input['readonly']) && $input['readonly'] ? 'readonly' : '';
         $inputType = isset($input['type']) ? $input['type'] : 'text';
         $legend = isset($input['legend']) ? $input['legend'] : '';
+        $label = isset($input['label']) ? $input['label'] : '';
+        $placeholder = isset($input['placeholder']) ? $input['placeholder'] : '';
         $html.= '<div class="form-group '.Tools::strtolower($name).'">';
         switch ($inputType) {
             case 'checkbox':
-                $html.='<div class="col-sm-offset-2 col-sm-10"><div class="checkbox"><label>';
                 $checked = $value ? 'checked' : '';
-                $html.= '<input name="'.$name.'" type="checkbox" '.$checked.' '.$readonly.' class="lengow_switch">';
-                $html.= '<span class="lengow_label_text">'.$input['label'].'</span>';
-                $html.= '</label><span class="legend">'.$legend.'</span></div></div></div>';
+                $html.='<div class="lgw-switch '.$checked.'"><label><div><span></span>';
+                $html.='<input name="'.$name.'" type="checkbox" '.$checked.' '.$readonly.' >';
+                $html.='</div>'. $label;
+                $html.='</label></div></div>';
                 break;
             case 'text':
-                $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="'.$name.'"
-                            class="form-control" placeholder="'.$input['label'].'"
-                            value="'.$value.'" '.$readonly.'>
-                        <span class="legend">'.$legend.'</span>
-                    </div>
-                    </div>';
+                $html.= '<label class="control-label">'.$label.'</label>
+                    <input type="text" name="'.$name.'"
+                        class="form-control" placeholder="'.$placeholder.'"
+                        value="'.$value.'" '.$readonly.'>
+                    <span class="legend">'.$legend.'</span>
+                </div>';
                 break;
             case 'select':
-                $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
-                    <div class="col-sm-10">
+                $html.= '<label class="control-label">'.$label.'</label>
+
                     <select class="form-control lengow_select" name="'.$name.'">';
                 foreach ($input['collection'] as $row) {
                     $selected =  $row['id'] == $value ? 'selected' : '';
                     $html.='<option value="'.$row['id'].'" '.$selected.'>'.$row['text'].'</option>';
                 }
-                $html.= '</select></div><span class="legend">'.$legend.'</span></div>';
-                break;
-            case 'tag':
-                $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
-                    <div class="col-sm-10">
-                    <select class="form-control lengow_select" name="'.$name.'[]" multiple="multiple">';
-                $collection = explode(',', $value);
-                foreach ($collection as $row) {
-                    if (Tools::strlen($row) > 0) {
-                        $html.='<option value="'.$row.'" selected>'.$row.'</option>';
-                    }
-                }
-                $html.= '</select></div><span class="legend">'.$legend.'</span></div>';
+                $html.= '</select><span class="legend">'.$legend.'</span></div>';
                 break;
             case 'day':
-                $html.= '<label class="col-sm-2 control-label">'.$input['label'].'</label>
-                    <div class="col-sm-10">
+                $html.= '<label class="control-label">'.$label.'</label>
                         <div class="input-group">
                             <input type="number" name="'.$name.'" class="form-control" value="'.$value.'" '
                             .$readonly.' min="1" max="99">
-                            <div class="input-group-addon">'.$this->locale->t('order_setting.screen.nb_days').'</div>
+                            <div class="input-group-addon">
+                                <div class="unit">'.$this->locale->t('order_setting.screen.nb_days').'</div>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clear"></div>
                         <span class="legend">'.$legend.'</span>
-                    </div>
                     </div>';
                 break;
         }

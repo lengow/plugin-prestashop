@@ -74,24 +74,26 @@ class LengowList
      *
      * @return string
      */
-    public function displayHeader()
+    public function displayHeader($order)
     {
         $newOrder = ( empty($this->orderValue) || $this->orderValue == "ASC" ) ? 'DESC' : "ASC";
-        $icon_class = ( $newOrder == "ASC" ) ? "fa-angle-up" : "fa-angle-down";
         $html ='<table class="lengow_table table table-bordered table-striped table-hover" id="table_'.$this->id.'">';
         $html.='<thead>';
         $html.='<tr>';
         if ($this->selection && !$this->toolbox) {
-            $html.='<th width="2%"></th>';
+            $html.='<th></th>';
         }
         foreach ($this->fields_list as $key => $values) {
-            $width = isset($values['width']) ? 'width = "'.$values['width'].'"' : '';
-            $html.='<th '.$width.'>'.$values['title']; /*.'<br/>';*/
+            $orderClass = '';
+            if( $order == $values['filter_key'] ){
+                $orderClass = 'order';
+            }
+            $html.='<th>';
             if (isset($values['filter_order']) && $values['filter_order']) {
-                $html.='<a href="#" class="table_order" data-order="'.$newOrder.'" data-column="'.$values['filter_key'].'">
-            <i class="fa '.$icon_class.' fa-lg"></i></a>';
-            //     $html.='<a href="#" class="table_order" data-order="ASC" data-column="'.$values['filter_key'].'">
-            // <i class="fa fa-angle-up fa-lg"></i></a>';
+                $html.='<a href="#" class="table_order '.$orderClass.'" data-order="'.$newOrder.'" data-column="'.$values['filter_key'].'">'.$values['title'].'</a>';
+            }
+            else{
+                $html.=$values['title'];
             }
             $html.='</th>';
         }
@@ -99,7 +101,7 @@ class LengowList
 
         $html.='<tr class="lengow_filter">';
         if ($this->selection && !$this->toolbox) {
-            $html.='<th width="2%"><input type="checkbox" id="select_'.$this->id.'"
+            $html.='<th><input type="checkbox" id="select_'.$this->id.'"
                 class="lengow_select_all lengow_link_tooltip"/></th>';
         }
         foreach ($this->fields_list as $key => $values) {
@@ -128,16 +130,16 @@ class LengowList
                     case 'date':
                         $from = isset($value['from']) ? $value['from'] : null;
                         $to = isset($value['to']) ? $value['to'] : null;
-                        $html.= '<input type="text" name="'.$name.'[from]"
+                        $html.= '<div class="lengow_datepicker_box"><input type="text" name="'.$name.'[from]"
                             placeholder="'.$this->locale->t('product.screen.date_from').'"
                             value="'.$from.'" class="lengow_datepicker" />';
-                        $html.= '<br/><input type="text" name="'.$name.'[to]"
+                        $html.= '<input type="text" name="'.$name.'[to]"
                         placeholder="'.$this->locale->t('product.screen.date_to').'"
-                        value="'.$to.'" class="lengow_datepicker" />';
+                        value="'.$to.'" class="lengow_datepicker" /></div>';
                         break;
                 }
             } elseif (isset($values['button_search']) && $values['button_search']) {
-                $html.= '<input type="submit" value="'.$this->locale->t('product.screen.button_search').'" />';
+                $html.= '<input type="submit" value="'.$this->locale->t('product.screen.button_search').'" class="lgw-btn lgw-btn-white">';
             }
             $html.= '</th>';
         }
@@ -215,18 +217,18 @@ class LengowList
                             }
                             break;
                         case 'switch_product':
-                            $value = '<input type="checkbox"
+                            $value = '<div class="lgw-switch '.($item[$key] ? 'checked' : '').'"><label><div><span></span><input type="checkbox"
                                 data-size="mini"
+                                class="lengow_switch_product"
                                 data-on-text="'.$this->locale->t('product.screen.button_yes').'"
                                 data-off-text="'.$this->locale->t('product.screen.button_no').'"
                                 name="lengow_product_selection['.$item[$this->identifier].']"
-                                class="lengow_switch lengow_switch_product
                                 lengow_product_selection_'.$item[$this->identifier].'"
                                 data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
                                 data-action="select_product"
                                 data-id_shop="'.$this->shopId.'"
                                 data-id_product="'.$item[$this->identifier].'"
-                                value="1" '.($item[$key] ? 'checked="checked"' : '').'/>';
+                                value="1" '.($item[$key] ? 'checked="checked"' : '').'/></div></label></div>';
                             break;
                         case 'flag_country':
                             if ($item[$key]) {
@@ -251,6 +253,7 @@ class LengowList
         $html.= '</tr>';
         return $html;
     }
+
 
     /**
      * v3
@@ -278,7 +281,7 @@ class LengowList
         $html.= '<input type="hidden" name="p" value="'.$this->currentPage.'" />';
         $html.= '<input type="hidden" name="order_value" value="'.$this->orderValue.'" />';
         $html.= '<input type="hidden" name="order_column" value="'.$this->orderColumn.'" />';
-        $html.= $this->displayHeader().$this->displayContent().$this->displayFooter();
+        $html.= $this->displayHeader($this->orderColumn).$this->displayContent().$this->displayFooter();
         $html.= '<input type="submit" value="Search" style="visibility: hidden"/>';
         $html.= '</form>';
         return $html;
@@ -492,7 +495,7 @@ class LengowList
         $totalPage = ceil($this->total / $this->nbPerPage);
         $html = '<nav id="nav_'.$this->id.'" class="'.$nav_class.'">';
 
-        $html.= '<div class="lengow_pagination_total">';
+        $html.= '<div class="lgw-pagination-pages">';
         $html.= '<span class="lengow_number">'.$this->paginationFrom.'</span> -
         <span class="lengow_number">'.$this->paginationTo.'</span>
          '.$this->locale->t('product.table.pagination_of').' <span class="lengow_number">'.$this->total.'</span>';
@@ -502,7 +505,7 @@ class LengowList
             return $html.'</nav>';
         }
 
-        $html.= '<ul class="lengow_pagination pagination">';
+        $html.= '<ul class="lgw-pagination-btns lgw-pagination-arrow">';
         $class = ($this->currentPage == 1) ? 'disabled' : '';
         $html.= '<li class="'.$class.'"><a href="#" data-page="'.($this->currentPage-1).'"
         data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage-1).'"
@@ -513,7 +516,7 @@ class LengowList
         ><i class="fa fa-angle-right"></i></a></li>';
         $html.= '</ul>';
 
-        $html.= '<ul class="lengow_pagination pagination">';
+        $html.= '<ul class="lgw-pagination-btns lgw-pagination-numbers">';
         if ($this->nbMaxPage > 7) {
             $showLastSeparation = false;
 
@@ -553,12 +556,9 @@ class LengowList
             >'.$this->nbMaxPage.'</a></li>';
         } else {
             for ($i = 1; $i <= $totalPage; $i++) {
-                $html .= '<li>';
                 $class = ($i == $this->currentPage) ? 'disabled' : '';
                 $html .= '<li class="' . $class . '"><a href="#"  data-page="'.$i.'"
-                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'.$i.'
-                    </a></li>';
-                $html .= '</li>';
+                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'.$i.'</a></li>';
             }
         }
         $html.= '</ul></nav>';

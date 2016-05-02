@@ -34,68 +34,77 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
 <html>
 <head>
     <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
+
+    <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic|Open+Sans:700,600,800,400,300" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-layout.css">
+    <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-components.css">
+    <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-pages.css">
 </head>
-<body style="background: #CDCDCD;font-family: Open Sans;margin: 0;">
-<div style="background: #f7f7f7;float:right;width: 400px;padding:20px;">
-    <h1 style="font-size: 4.9em;text-align: center;color: #31353d;margin-bottom: 5px;">Lengow</h1>
-    <p style="width: 13%;padding: 5px;padding-bottom: 5px;padding-right: 20px;padding-left: 20px;
-        margin-top: -20px;background-color: #45bf7b;color: white;
-        font-size: 0.6em;font-weight: bold;border-radius: 2px;margin-left: 250px;">
-        OFFICIAL
-    </p>
-    <p style="font-size: 0.9em;">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        Aliquam excepturi facilis, illo inventore molestias nam
-        nesciunt non nulla porro quo,
-        vero?
-    </p>
-    <p style="font-size: 0.9em;">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        Aliquam excepturi facilis, illo inventore molestias nam
-        nesciunt non nulla porro
-    </p>
-    <button href="#" style="width: 100%;padding: 15px;margin-top: 50px;border: none;
-        background-color: #45bf7b;color: white;font-size: 0.9em;font-weight: bold;border-radius: 2px;"
-        onmouseover="this.style.background='#47ce83';"
-        onmouseout="this.style.background='#45bf7b';">
-        Create my 15 days-free account
-    </button>
-    <button href="#" style="width: 100%;border-radius: 2px;padding: 10px;border: none;
-        background: none;font-size: 0.9em;color: #6c6c6c;"
-        onmouseover="this.style.background='#CDCDCD';"
-        onmouseout="this.style.background='none';">
-        or Connect to your account
-    </button>
-    <div style="width: 50%;display: inline-block;vertical-align: top;margin-left: 25px;">
-        <div style="height: 55px;width: 55px;background-color: #CDCDCD;border-radius: 35px;
-        margin-top: 50px;margin-left: 25px;margin-right: 25px;">
-        </div>
-        <p style="font-size: 0.8em;margin-bottom:0;">
-            Lorem ipsum dolor.
-        </p>
-        <p style="font-size: 0.7em;margin-top:0;">
-            Aliquam excepturi
-        </p>
+<body class="lgw-home-iframe">
+<div id="call">
+        <a id="link_call" href="#">Send Information To Prestashop</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
     </div>
-    <div style="width: 40%;display: inline-block;">
-        <div style="height: 55px;width: 55px;background-color: #CDCDCD;
-        border-radius: 35px;margin-top: 50px;margin-left: 25px;margin-right: 25px;">
+<div class="lgw-container">
+    <div class="lgw-row">
+        <div class="lgw-col-7 lgw-connect">
+            <div class="lgw-box">
+                <div class="lgw-content-section">
+                    <img src="/modules/lengow/views/img/logo-blue.png" alt="lengow" class="center-block img-responsive"/>
+                    <div class="marginTB">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                            Aliquam excepturi facilis, illo inventore molestias nam
+                            nesciunt non nulla porro quo,
+                            vero?
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                            Aliquam excepturi facilis, illo inventore molestias nam
+                            nesciunt non nulla porro
+                        </p>
+                    </div>
+                    <div class="lgw-container">
+                        <div class="lgw-row">
+                            <button href="#" class="lgw-btn lgw-btn-green">
+                                Create my 15 days-free account
+                            </button>
+                        </div>
+                        <div class="lgw-row">
+                            <button href="#" class="lgw-btn lgw-btn-white">
+                                or Connect to your account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="lgw-container">
+                    <div class="lgw-row">
+                        <div class="lgw-col-4">
+                            <img src="https://www.placehold.it/55x55" class="img-circle">
+                            <h4>Lorem ipsum dolor.</h4>
+                            <p>Aliquam excepturi</p>
+                        </div>
+                        <div class="lgw-col-4">
+                            <img src="https://www.placehold.it/55x55" class="img-circle">
+                            <h4>Lorem ipsum dolor.</h4>
+                            <p>Aliquam excepturi facilis, illo inventore molestias</p>
+                        </div>
+                        <div class="lgw-col-4">
+                            <img src="https://www.placehold.it/55x55" class="img-circle">
+                            <h4>Lorem ipsum dolor.</h4>
+                            <p>Aliquam excepturi facilis, illo inventore molestias</p>
+                        </div>
+            </div>
         </div>
-        <p style="font-size: 0.8em;">
-            Lorem ipsum dolor.
-            <span style="display: block;font-size: 0.7em;">
-                Aliquam excepturi facilis, illo inventore molestias
-            </span>
-        </p>
     </div>
 </div>
 
-    <h1>Lengow Page</h1>
+    <!-- <h1>Lengow Page</h1>
     <div id="call">
         <a id="link_call" href="#">Send Information To Prestashop</a>
         &nbsp;&nbsp;&nbsp;&nbsp;
     </div>
-    <pre><code id="parameters" style="display: block;overflow: hidden;"></code></pre>
+    <pre><code id="parameters" style="display: block;overflow: hidden;"></code></pre> -->
 </body>
 
 <script type="text/javascript">

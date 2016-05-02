@@ -29,7 +29,7 @@ body {
 	color: red;
 }
 
-.lengow_btn {
+.lgw-btn {
     display: inline-block;
     padding: 6px 12px;
     margin: 5px;
@@ -90,7 +90,7 @@ span.title_no_result {
 
 /* PAGINATION */
 
-.lengow_feed_pagination {
+.lgw-pagination {
     float:right;
 }
 
@@ -120,7 +120,7 @@ span.title_no_result {
     float: left;
 }
 
-.lengow_toolbar .lengow_btn {
+.lengow_toolbar .lgw-btn {
     margin-right:10px;
 }
 
@@ -444,7 +444,7 @@ span.title_no_order {
     padding-left: 0px;
 }
 
-.lengow_label_text {
+.lgw-label_text {
     margin-left: 10px;
     font-weight: bold;
 }
