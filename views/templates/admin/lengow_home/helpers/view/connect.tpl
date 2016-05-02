@@ -54,8 +54,8 @@
         </div>
     </div>
     <div class="lgw-box text-center">
-        <h3>Lengow, partner of your business</h3>
-        <div class="lgw-row margin-standard">
+        <h2>Lengow, partner of your business</h2>
+        <div class="lgw-row lgw-home-stats">
             <div class="lgw-col-4">
                 <h5>{$locale->t('dashboard.screen.stat_turnover')|escape:'htmlall':'UTF-8'}</h5>
                 <span class="stats-big-value">$23.345.339</span>
@@ -72,7 +72,7 @@
         <p><a href="http://solution.lengow.com" target="_blank" title="Lengow solution" class="lgw-btn lgw-btn-white">Want more stats ?</a></p>
     </div>
     <div class="lgw-box">
-        <h3>Need some help?</h3>
+        <h2>Need some help?</h2>
         <p><a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}" title="Need some help?">Get in touch with Lengow.</a></p>
         <p><a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank" title="Help Center" class="sub-link">Visit our Help Center</a> for detailed information on how to configure properly your PrestaShop plugin</p>
 

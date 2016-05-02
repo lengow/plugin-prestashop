@@ -66,6 +66,9 @@ body.lgw-home-iframe .lgw-content-section p{
     font-style: initial;
     font-size: 15px;
 }
+.lgw-home-stats{
+  margin:60px 0 30px;
+}
 
 /*************************************************/
 /*                    PRODUCTS                   */
@@ -114,7 +117,6 @@ body.lgw-home-iframe .lgw-content-section p{
     right: 15px;
 
 }
-
 
 .lengow_feed_block_header_content{
     padding:45px 0;
