@@ -467,6 +467,9 @@ a.lgw-box-link:hover{
     right: 2px;
 }
 
+.select2-results__option{
+    white-space: nowrap;
+}
 /*************************************************/
 /*                    TOOLTIP                    */
 /*************************************************/

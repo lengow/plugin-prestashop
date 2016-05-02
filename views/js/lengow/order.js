@@ -147,7 +147,6 @@
                 success: function() {
                     init_tooltip();
                     reload_table_js();
-                    tableSelectRender();
                     $('#lengow_charge_import_order').fadeOut(150);
                     setTimeout(function(){
                         $('#lengow_wrapper_messages').fadeIn(250);
@@ -247,13 +246,11 @@
         // Table header filters
         tableSelectRender();
 
-        function tableSelectRender(){
-            $('#form_table_order .table select').select2();
-        }
     });
 })(lengow_jquery);
 
 function reload_table_js() {
+    tableSelectRender();
     lengow_jquery('.lengow_datepicker').datepicker({
         format : 'dd/mm/yyyy',
         autoclose: true,
@@ -271,4 +268,8 @@ function reload_table_js() {
             lengow_jquery(this).css('cursor','auto');
         }
     );
+}
+
+function tableSelectRender(){
+    lengow_jquery('#form_table_order .table select').select2();
 }
