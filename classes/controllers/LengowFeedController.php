@@ -165,7 +165,7 @@ class LengowFeedController extends LengowController
                             echo 'lengow_jquery("#block_' . $shopId['id_shop']
                                 .' .lengow_feed_block_header_title").append("<a href=\"'
                                 .$link->getAbsoluteAdminLink('AdminLengowHome', true)
-                                .'&isSync=true\" ><span>sync</span></a>");';
+                                .'&isSync=true\" ><span>sync</span> </a>");';
 
                         }
                     }
@@ -538,7 +538,7 @@ class LengowFeedController extends LengowController
                 return '<a href="'.
                 $link->getAbsoluteAdminLink((_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'), false, true).
                 '&updateproduct&id_product='.
-                $item['id_product'].'" target="_blank">'.$value.'</a>';
+                $item['id_product'].'" target="_blank" class="sub-link">'.$value.'</a>';
             } else {
                 return $value;
             }
