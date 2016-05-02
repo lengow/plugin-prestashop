@@ -63,6 +63,7 @@
 
         init_tooltip();
         var clipboard = new Clipboard('.lengow_copy');
+
     });
 })(lengow_jquery);
 

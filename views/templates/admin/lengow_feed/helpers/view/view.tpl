@@ -41,10 +41,10 @@
                             <p>{$locale->t('product.screen.your_exported_catalog')|escape:'htmlall':'UTF-8'}</p>
                             <p>
                                 <input type="text" id="link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}" value="{$shop['link']|escape:'htmlall':'UTF-8'}" readonly>
-                                <a href="#" class="lengow_copy lengow_link_tooltip"
+                                <button class="lengow_copy lengow_link_tooltip"
                                     data-original-title="{$locale->t('product.screen.button_copy')|escape:'htmlall':'UTF-8'}"
                                     data-clipboard-target="#link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
-                                    <i class="fa fa-clone"></i></a>
+                                    <i class="fa fa-clone"></i></button>
                                 <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1"
                                     class="lengow_link_tooltip"
                                     data-original-title="{$locale->t('product.screen.button_download')|escape:'htmlall':'UTF-8'}"

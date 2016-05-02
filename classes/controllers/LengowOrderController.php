@@ -574,9 +574,9 @@ class LengowOrderController extends LengowController
         if (!empty($value)) {
             $value = htmlentities($value);
             return '<input id="link_extra_'.$item['id'].'" value="'.$value.'" readonly>
-                <a href="#" class="lengow_copy lengow_link_tooltip" data-clipboard-target="#link_extra_'.$item['id'].'"
+                <button href="#" class="lengow_copy lengow_link_tooltip" data-clipboard-target="#link_extra_'.$item['id'].'"
                 data-original-title="'.LengowMain::decodeLogMessage('product.screen.button_copy').'">
-                <i class="fa fa-download"></i></a>';
+                <i class="fa fa-download"></i></button>';
         }
         return '';
     }

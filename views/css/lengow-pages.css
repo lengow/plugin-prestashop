@@ -145,6 +145,15 @@ body.lgw-home-iframe .lgw-content-section p{
     margin: 5px 0px 5px 5px;
 }
 
+.lengow_copy{
+  background:transparent;
+  border:0;
+  outline:none;
+}
+.lengow_copy:hover{
+  color:#00aeef;
+}
+
 
 /*************************************************/
 /*                     ORDERS                    */
