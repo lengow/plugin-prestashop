@@ -58,11 +58,11 @@
                         <div class="lengow_feed_block_header_content_result">
                             <div class="lgw-row">
                                 <span class="lengow_exported stats-big-value">{$shop['total_export_product']|escape:'htmlall':'UTF-8'}</span>
-                                <h5>{$locale->t('product.screen.nb_exported')|escape:'htmlall':'UTF-8'}</h5>
+                                <p>{$locale->t('product.screen.nb_exported')|escape:'htmlall':'UTF-8'}</p>
                             </div>
                             <div class="lgw-row">
                                 <span class="lengow_total stats-big-value">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span>
-                                <h5>{$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}</h5>
+                                <p>{$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}</p>
                             </div>
                         </div>
 
