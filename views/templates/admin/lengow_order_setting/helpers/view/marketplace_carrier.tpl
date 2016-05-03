@@ -32,6 +32,7 @@
                         data-message="{$locale->t('order_setting.screen.confirmation_delete_carrier_country')|escape:'htmlall':'UTF-8'}"
                         data-id-country="{$id_country|escape:'htmlall':'UTF-8'}">
                 </button>
+                <div class="delete-country-confirm">Are you sure?<a href="#" class="js-delete-country-yes">Yes</a><a href="#" class="js-delete-country-no">No</a></div>
             {/if}
             <span class="score lgw-label"></span><i class="fa fa-chevron-down"></i>
         </div>

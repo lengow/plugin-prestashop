@@ -631,6 +631,8 @@ a.lgw-box-link:hover{
     margin-bottom: 0;
     background:#fff;
     position:relative;
+    height: 51px;
+    overflow:hidden;
 }
 .lgw-container .accordion .score{
     float:right;
@@ -667,9 +669,33 @@ a.lgw-box-link:hover{
     border-radius: 50%;
     background: url('../img/box-close.png') no-repeat;
     border:0;
+    outline: none;
 }
 .delete_lengow_default_carrier:hover{
     background-position: 0 -22px;
+}
+.delete-country-confirm{
+    position:absolute;
+    top:51px;
+    right:0;
+    height:51px;
+    line-height: 51px;
+    padding: 0 15px;
+    z-index:10;
+    background:#f7f7f7;
+    border-left:1px solid #d7d7d7;
+    transition: all 100ms ease;
+}
+.delete-country-confirm a{
+    display:inline-block;
+    height:51px;
+    text-align: center;
+    padding:0 5px;
+    margin-left:10px;
+    color:#555;
+}
+.js-confirm .delete-country-confirm{
+    top:0;
 }
 .lgw-container .accordion  .fa-chevron-down,
 .lgw-container .accordion  .fa-chevron-up{

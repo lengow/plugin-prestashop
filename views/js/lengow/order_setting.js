@@ -83,17 +83,26 @@ function addScoreCarrier(){
         });
 
         $('#marketplace_country').on('click', '.delete_lengow_default_carrier', function () {
-            var message = $(this).attr('data-message');
-            if (confirm(message)) {
-                var href = $('.lengow_default_carrier').attr('data-href');
-                $.ajax({
-                    url: href,
-                    method: 'POST',
-                    data: {action: 'delete_country', id_country: $(this).attr('data-id-country')},
-                    dataType: 'script'
-                });
-            }
+            $(this).closest('.country').addClass('js-confirm');
+            return false;
+        });
 
+        // CONFIRM REMOVE COUNTRY ? --> NO
+        $('#marketplace_country').on('click', '.js-delete-country-no', function () {
+            $(this).closest('.country').removeClass('js-confirm');
+            return false;
+        });
+
+        // CONFIRM REMOVE COUNTRY ? --> YES
+        $('#marketplace_country').on('click', '.js-delete-country-yes', function () {
+            var href = $('.lengow_default_carrier').attr('data-href');
+            var idCountry = $(this).closest('.country').find('.delete_lengow_default_carrier').data('id-country');
+            $.ajax({
+                url: href,
+                method: 'POST',
+                data: {action: 'delete_country', id_country: idCountry},
+                dataType: 'script'
+            });
             return false;
         });
 
