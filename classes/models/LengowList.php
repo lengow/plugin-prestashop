@@ -85,14 +85,13 @@ class LengowList
         }
         foreach ($this->fields_list as $key => $values) {
             $orderClass = '';
-            if( $order == $values['filter_key'] ){
+            if (isset($values['filter_key']) && $order == $values['filter_key']) {
                 $orderClass = 'order';
             }
             $html.='<th>';
             if (isset($values['filter_order']) && $values['filter_order']) {
                 $html.='<a href="#" class="table_order '.$orderClass.'" data-order="'.$newOrder.'" data-column="'.$values['filter_key'].'">'.$values['title'].'</a>';
-            }
-            else{
+            } else {
                 $html.=$values['title'];
             }
             $html.='</th>';
