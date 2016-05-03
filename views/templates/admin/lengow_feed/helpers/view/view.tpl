@@ -38,7 +38,7 @@
                         <span class="lengow_exported stats-big-value">{$shop['total_export_product']|escape:'htmlall':'UTF-8'}</span>
                         {$locale->t('product.screen.nb_exported')|escape:'htmlall':'UTF-8'}
                     </p>
-                    <p class="products-available small">
+                    <p class="products-available small light">
                         <span class="lengow_total stats-big-value">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span>
                         {$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}
                     </p>
