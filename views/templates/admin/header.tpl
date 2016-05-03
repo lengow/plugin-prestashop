@@ -78,18 +78,18 @@
         </li>
 
         <li class="lengow_float_right {if $current_controller == 'LengowMainSettingController'}active{/if}" id="menugotosetting">
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}" title="Global parameters">
                 <i class="fa fa-cog fa-2x"></i>
+            </a>
+        </li>
+        <li class="lengow_float_right  {if $current_controller == 'LengowHelpController'}active{/if}" id="menugotohelp">
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}" title="Help">
+                <i class="fa fa-life-ring fa-2x"></i>
             </a>
         </li>
         <li class="lengow_float_right" id="menugotosolution">
             <a href="http://solution.lengow.com" target="_blank">
-                <i class="fa fa-external-link fa-2x"></i>
-            </a>
-        </li>
-        <li class="lengow_float_right  {if $current_controller == 'LengowHelpController'}active{/if}" id="menugotohelp">
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}">
-                <i class="fa fa-life-ring fa-2x"></i>
+                Jump to Lengow
             </a>
         </li>
     </ul>
