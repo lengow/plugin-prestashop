@@ -55,7 +55,7 @@ fr:
       button_update_orders: "Importer les commandes"
       button_reimport_order: "Importer de nouveau mes commandes"
       button_resend_order: "Renvoyer la commande"
-      cron: "Vous voulez automatiser la mise à jour de vos commandes ? "
+      cron: "Automatiser les commandes "
       preprod_warning_message: "Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles.  <a href=%{url}>Retourner en mode production ?</a>"
     table:
       marketplace_name: "Place de marché"
