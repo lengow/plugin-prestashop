@@ -20,9 +20,7 @@
 
 <div class="lgw-container">
     <div class="lgw-box lengow_legals_wrapper">
-
       <h2>Even though using "lorem ipsum" often arouses curiosity </h2>
-
       <h4>The text is derived from Cicero's De Finibus Bonorum et Malorum</h4>
       <p>
          Where text is visible in a document, people tend to focus on the textual content rather than upon overall presentation, so publishers use lorem ipsum when displaying a typeface or design in order to direct the focus to presentation. "Lorem ipsum" also approximates a typical distribution of spaces in English.
@@ -43,10 +41,4 @@
         You can also find answers in our <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" class="sub-link" target="_blank" title="Help Center">PrestaShop dedicated guide</a>.
       </p>
     </div>
-
 </div>
-
-
-<input type="hidden" id="lengow_ajax_link" value="{$lengow_ajax_link|escape:'htmlall':'UTF-8'}">
-
-<script type="text/javascript" src="/modules/lengow/views/js/lengow/legals.js"></script>

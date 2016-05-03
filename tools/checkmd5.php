@@ -34,6 +34,8 @@ $list_folders = array(
     '/views/templates/admin/lengow_order/helpers/view/',
     '/views/templates/admin/lengow_order_setting/',
     '/views/templates/admin/lengow_order_setting/helpers/view/',
+    '/views/templates/admin/lengow_legals/',
+    '/views/templates/admin/lengow_legals/helpers/view/',
     '/views/templates/admin/order/',
     '/views/templates/front/',
     '/views/templates/mails/de/',

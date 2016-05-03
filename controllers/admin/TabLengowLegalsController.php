@@ -19,25 +19,23 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-class AdminLengowLegalsController extends ModuleAdminController
+/**
+ * The AdminTab Lengow home Class
+ *
+ */
+class AdminLengowLegals14 extends AdminTab
 {
-    /**
-     * Construct the admin selection of products
-     */
     public function __construct()
     {
-        $this->lang = true;
-        $this->explicitSelect = true;
-        $this->lite_display = true;
-        $this->meta_title = 'Legals';
-        $this->list_no_link = true;
-        $this->template = 'layout.tpl';
-        $this->display = 'view';
-        
-        parent::__construct();
-
         $this->lengow_controller = new LengowLegalsController();
         $this->lengow_controller->postProcess();
+
+        parent::__construct();
         $this->lengow_controller->display();
+    }
+
+    public function display()
+    {
+
     }
 }
