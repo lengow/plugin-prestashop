@@ -22,11 +22,11 @@
     <div class="lgw-content-section text-center">
         <div id="lgw-footer">
             {if $isNewMerchant}
-                <p class="text-center"> 
+                <p class="text-center">
             {else}
                 <p class="pull-right">
             {/if}
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowLegals')|escape:'htmlall':'UTF-8'}" class="sub-link" title="Legal">Legals</a> | Copyright 2016</p>
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowLegals')|escape:'htmlall':'UTF-8'}" class="sub-link" title="Legal">Legals</a> | Copyright Lengow</p>
         </div>
     </div>
 </div>
