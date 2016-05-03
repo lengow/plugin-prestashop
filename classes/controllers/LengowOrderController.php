@@ -562,7 +562,7 @@ class LengowOrderController extends LengowController
                     >'.LengowMain::decodeLogMessage('order.screen.not_imported').' <i class="fa fa-refresh"></i></a>';
             }
         } else {
-            $value = 'ok';
+            $value = '';
         }
         return $value;
     }
