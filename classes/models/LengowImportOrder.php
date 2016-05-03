@@ -119,7 +119,7 @@ class LengowImportOrder
      */
     protected $order_state_lengow;
 
-     /**
+    /**
      * @var float
      */
     protected $processing_fee;
@@ -752,7 +752,8 @@ class LengowImportOrder
             || $this->preprod_mode
             || empty($billing_data['email'])
         ) {
-            $billing_data['email'] = 'generated-email+'.$this->marketplace_sku.'@'.LengowMain::getHost();
+            $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
+            $billing_data['email'] = 'generated-email+'.$this->marketplace_sku.'@'.$domain;
             LengowMain::log(
                 'Import',
                 LengowMain::setLogMessage('log.import.generate_unique_email', array('email' => $billing_data['email'])),
