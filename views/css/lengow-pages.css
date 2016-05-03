@@ -110,34 +110,27 @@ body.lgw-home-iframe .lgw-content-section p{
     top: -10px;
     right:0;
 }
-.lengow_feed_block_header_title .lengow_check_shop{
+.lengow_check_shop{
     position: absolute;
-    top: 15px;
-    right: 15px;
-
+    top: 30px;
+    left: 30px;
+}
+.lengow_export_feed{
+    position: absolute;
+    top: 30px;
+    right: 30px;
 }
 
-.lengow_feed_block_header_content{
-    padding: 45px 60px 45px;
-}
 .lengow_feed_block_header_content input[type="text"]{
   max-width:400px;
 }
 
-
-.lengow_feed_block_header_content_result{
-  margin-bottom:45px;
-}
 .adminlengowfeed .lgw-row .lengow_feed_block_header_content_result p{
     margin: 0;
     padding: 0;
     font-style: initial;
     font-size: 15px;
     display: inline-block;
-}
-
-.lengow_feed_block_footer_content{
-  padding:0 60px 45px;
 }
 
 .lengow_select_all_shop{
@@ -155,6 +148,16 @@ body.lgw-home-iframe .lgw-content-section p{
 }
 .lengow_copy:hover{
   color:#00aeef;
+}
+.adminlengowfeed .products-exported{
+  font-size:17px;
+  margin-bottom:-10px;
+}
+.adminlengowfeed .products-exported .stats-big-value{
+  font-size:32px;
+}
+.adminlengowfeed .products-available .stats-big-value{
+  font-size:19px;
 }
 
 
