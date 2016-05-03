@@ -30,7 +30,7 @@
                 class="lengow_export_feed lengow_link_tooltip"
                 data-original-title="{$locale->t('product.screen.button_download')|escape:'htmlall':'UTF-8'}"
                 target="_blank"><i class="fa fa-download"></i></a>
-            <h2 class="text-center">{$shop['shop']->name|escape:'htmlall':'UTF-8'}
+            <h2 class="text-center catalog-title">{$shop['shop']->name|escape:'htmlall':'UTF-8'}
             <!--http://{$shop['shop']->domain|escape:'htmlall':'UTF-8'}--></h2>
             <div class="text-center">
                 <div class="margin-standard text-center">
