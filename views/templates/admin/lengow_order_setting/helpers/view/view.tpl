@@ -52,7 +52,7 @@
             {$locale->t('order_setting.screen.import_setting_description')|escape:'htmlall':'UTF-8'}
             {html_entity_decode($import_params|escape:'htmlall':'UTF-8')}
         </div>
-        <div class="lgw-box">
+        <div class="lgw-box" id="cron_setting">
             <h2>{$locale->t('order_setting.screen.cron_title')|escape:'htmlall':'UTF-8'}</span></h2>
             {html_entity_decode($formCron|escape:'htmlall':'UTF-8')}
             {if isset($moduleCron) && $moduleCron}
