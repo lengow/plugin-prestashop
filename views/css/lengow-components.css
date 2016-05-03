@@ -69,6 +69,7 @@ a.lgw-box-link:hover{
     display:inline-block;
     cursor:pointer;
     outline: none !important;
+    white-space: nowrap;
 }
 .lgw-container .lgw-btn:hover,
 .lgw-container .lgw-btn:active{
