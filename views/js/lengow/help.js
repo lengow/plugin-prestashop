@@ -50,7 +50,7 @@
         }*/
 
         window.addEventListener("message", receiveMessage, false);
-         
+
         function receiveMessage(event) {
             //if (event.origin !== "http://my.lengow.io")
             //    return;
