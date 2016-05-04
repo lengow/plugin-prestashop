@@ -130,9 +130,9 @@
                     {/if}
                 </div>
                 <div class="lgw-col-6">
-                    
 
-                    
+
+
                 </div>
             </div>-->
 
