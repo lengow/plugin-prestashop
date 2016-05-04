@@ -75,7 +75,9 @@ body.lgw-home-iframe .lgw-content-section p{
 /*************************************************/
 
 .adminlengowfeed .lgw-container{
-  min-width:1300px;
+  min-width:1100px;
+  max-width:1400px;
+  width: auto;
 }
 
 .lengow_feed_block_header_title {
