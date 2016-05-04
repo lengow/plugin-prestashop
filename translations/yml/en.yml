@@ -32,6 +32,13 @@ en:
       retailers_channels_text: "Some of the world's most respected retailers and brands trust Lengow"
   dashboard:
     screen:
+      product_title: "Products"
+      product_text: "Take a look at all your products available to prepare your catalogue"
+      orders_title: "Orders"
+      orders_text: "Manage your orders directly on your PrestaShop dashboard"
+      settings_title: "Settings"
+      settings_text: "Configure the main settings of your PrestaShop plugin"
+      partner_business: "Lengow, partner of your business"
       good_job: "Good Job! You have"
       pending_order: "Pending Orders"
       sell_everywhere: "Why not go a step further, and start selling everywhere?"
@@ -39,7 +46,12 @@ en:
       stat_turnover: "Turnover"
       stat_nb_orders: "Orders"
       stat_avg_order: "Average Order"
-      stat_more_stats: "Want more stats? Go to Lengow.com"
+      stat_more_stats: "Want more stats?"
+      some_help_title: "Need some help?"
+      get_in_touch: "Get in touch with Lengow"
+      visit_help_center: "Visit our Help Center"
+      configure_plugin: "for detailed information on how to configure properly your PrestaShop plugin"
+
   product:
     screen:
       nb_exported: "products exported"
