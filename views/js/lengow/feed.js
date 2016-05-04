@@ -86,6 +86,23 @@
             $('#lengow_feed_wrapper #form_table_shop_' + id_shop).submit();
             return false;
         });
+
+        // UPDATE BY INPUT
+
+        var typingTimer;
+        var id_shop;
+        $('#lengow_feed_wrapper').on('keyup', 'thead input[type="text"]', function () {
+            id_shop = $(this).closest('table').attr('id').split('_')[2];
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(doneTyping, 750);
+        });
+        $('#lengow_feed_wrapper').on('keydown', 'thead input[type="text"]', function () {
+            clearTimeout(typingTimer);
+        });
+        function doneTyping (){
+            $('#lengow_feed_wrapper #form_table_shop_' + id_shop).submit();
+        }
+
         $('#lengow_feed_wrapper').on('submit', '.lengow_form_table', function () {
             var href = $(this).attr('data-href');
             var id_shop = $(this).attr('id').split('_')[3];
