@@ -346,11 +346,11 @@ class LengowOrderController extends LengowController
                 'display_callback'  => 'LengowOrderController::displayLengowExtra'
             );
         }
-        $fields_list['search'] = array(
+        /*$fields_list['search'] = array(
             'title'         => '',
             'width'         => '10%',
             'button_search' => true
-        );
+        );*/
         $select = array(
             'lo.id',
             'lo.marketplace_sku',
