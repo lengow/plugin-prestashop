@@ -21,7 +21,7 @@
 (function ($) {
     $(document).ready(function () {
 
-        var href = $('#lengow_ajax_link').val();
+        /*var href = $('#lengow_ajax_link').val();
 
         var sync_iframe = document.getElementById('lengow_help_iframe');
         sync_iframe.onload = function() {
@@ -47,6 +47,7 @@
 
         function resize() {
             $('#lengow_help_wrapper').height($('body').height());
-        }
+        }*/
+
     });
 })(lengow_jquery);

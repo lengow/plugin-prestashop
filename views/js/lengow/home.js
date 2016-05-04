@@ -50,15 +50,7 @@
 
             $('#frame_loader').hide();
             $('#lengow_iframe').show();
-            resize();
 
-            $(window).on('resize', function () {
-                resize();
-            });
-
-            function resize() {
-                $('#lengow_home_frame').height($('body').height());
-            }
         }
 
         window.addEventListener("message", receiveMessage, false);

@@ -42,9 +42,9 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
 </head>
 <body class="lgw-home-iframe">
 <div id="call">
-        <a id="link_call" href="#">Send Information To Prestashop</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-    </div>
+    <a id="link_call" href="#">Send Information To Prestashop</a>
+    <pre><code id="parameters" style="display: block;overflow: hidden;"></code></pre>
+</div>
 <div class="lgw-container">
     <div class="lgw-row">
         <div class="lgw-col-7 lgw-connect">
@@ -94,6 +94,8 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
                             <h4>Lorem ipsum dolor.</h4>
                             <p>Aliquam excepturi facilis, illo inventore molestias</p>
                         </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -109,13 +111,16 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
 
 <script type="text/javascript">
     window.addEventListener("message", receiveMessage, false);
-
     function receiveMessage(event) {
         //if (event.origin !== "http://solution.lengow.com")
         //    return;
         switch (event.data.function) {
             case 'sync':
                 global_parameters = event.data.parameters;
+                console.log(global_parameters.email)
+                console.log(global_parameters.type)
+                console.log(global_parameters.version)
+                console.log(global_parameters.plugin_version)
                 document.getElementById("parameters").innerHTML = 'Parameters : <br/><br/>';
                 document.getElementById("parameters").appendChild(
                     document.createTextNode(JSON.stringify(event.data.parameters, null, 4))
@@ -124,9 +129,7 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
         }
     }
 
-
     $('#link_call').click(function () {
-
         var return_data = {
             "function": "sync",
             "parameters": {}
