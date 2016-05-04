@@ -24,13 +24,12 @@
 
       <h2>{$locale->t('help.title')|escape:'htmlall':'UTF-8'}</h2>
       <p>
+        {$locale->t('help.content_text')|escape:'htmlall':'UTF-8'}
 
-        Ask us anything about Lengow or share your feedback at <a href="mailto:chose@bidule.fr?subject=Hey%20Dude. %20You're%20Cool.&subject=Le%20sujet%20du%20mail&body=ID%20account%3A%20tata%0D%0AModule%20type%3A%20Prestashop%0D%0AModule%20version%3A%201.5.3.2%0D%0APlugin%20type%3A%206.5%0D%0A" title="Need some help?">support@lengow.com</a>.
-      <br>
-        We’ll do our best to get back to you during regular business hours (Monday to Friday – 9 pm to 9 am / France Timezone).
       </p>
       <p>
-        You can also find answers in our <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" class="sub-link" target="_blank" title="Help Center">PrestaShop dedicated guide</a>.
+        {$locale->t('help.find_answer')|escape:'htmlall':'UTF-8'}
+
       </p>
     </div>
 
