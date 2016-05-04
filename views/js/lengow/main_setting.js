@@ -52,6 +52,17 @@
             evt.params.originalEvent.stopPropagation();
         });*/
 
+        $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').change(function(){
+            var checked = $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked');
+            if( checked == true ){
+                $('.lengow_report_mail_address').slideDown(150);
+            }
+            else{
+                $('.lengow_report_mail_address').slideUp(150);
+            }
+        });
+
+
         displayPreProdMode();
         $("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").on('change', function () {
             displayPreProdMode();
