@@ -42,9 +42,11 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
 </head>
 <body class="lgw-home-iframe">
 <div id="call">
+
     <a id="link_call" href="#">Send Information To Prestashop</a>
-    <pre><code id="parameters" style="display: block;overflow: hidden;"></code></pre>
-</div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+
 <div class="lgw-container">
     <div class="lgw-row">
         <div class="lgw-col-7 lgw-connect">
@@ -52,27 +54,23 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
                 <div class="lgw-content-section">
                     <img src="/modules/lengow/views/img/logo-blue.png" alt="lengow" class="center-block img-responsive"/>
                     <div class="marginTB">
+                        <h3>{$locale->t('connect.lengow')|escape:'htmlall':'UTF-8'}</h3>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Aliquam excepturi facilis, illo inventore molestias nam
-                            nesciunt non nulla porro quo,
-                            vero?
+                            {$locale->t('connect.lengow_presentation')|escape:'htmlall':'UTF-8'}
                         </p>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Aliquam excepturi facilis, illo inventore molestias nam
-                            nesciunt non nulla porro
+                            {$locale->t('connect.lengow_platform')|escape:'htmlall':'UTF-8'}
                         </p>
                     </div>
                     <div class="lgw-container">
                         <div class="lgw-row">
                             <button href="#" class="lgw-btn lgw-btn-green">
-                                Create my 15 days-free account
+                                {$locale->t('connect.create_account')|escape:'htmlall':'UTF-8'}
                             </button>
                         </div>
                         <div class="lgw-row">
                             <button href="#" class="lgw-btn lgw-btn-white">
-                                or Connect to your account
+                                {$locale->t('connect.connect_account')|escape:'htmlall':'UTF-8'}
                             </button>
                         </div>
                     </div>
@@ -81,18 +79,18 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
                     <div class="lgw-row">
                         <div class="lgw-col-4">
                             <img src="https://www.placehold.it/55x55" class="img-circle">
-                            <h4>Lorem ipsum dolor.</h4>
-                            <p>Aliquam excepturi</p>
+                            <h4>{$locale->t('connect.free_days_title')|escape:'htmlall':'UTF-8'}</h4>
+                            <p>{$locale->t('connect.free_days_text')|escape:'htmlall':'UTF-8'}</p>
                         </div>
                         <div class="lgw-col-4">
                             <img src="https://www.placehold.it/55x55" class="img-circle">
-                            <h4>Lorem ipsum dolor.</h4>
-                            <p>Aliquam excepturi facilis, illo inventore molestias</p>
+                            <h4>{$locale->t('connect.marketing_channels_title')|escape:'htmlall':'UTF-8'}</h4>
+                            <p>{$locale->t('connect.marketing_channels_text')|escape:'htmlall':'UTF-8'}</p>
                         </div>
                         <div class="lgw-col-4">
                             <img src="https://www.placehold.it/55x55" class="img-circle">
-                            <h4>Lorem ipsum dolor.</h4>
-                            <p>Aliquam excepturi facilis, illo inventore molestias</p>
+                            <h4>{$locale->t('connect.retailers_title')|escape:'htmlall':'UTF-8'}</h4>
+                            <p>{$locale->t('connect.retailers_text')|escape:'htmlall':'UTF-8'}</p>
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,14 @@ fr:
     preprod_active: "mode préproduction "
     order_overview: "Vue d'ensemble"
     order_parameter: "Paramètres"
+  connect:
+    screen:
+      free_days_title: "15 free days"
+      free_days_text: "No credit card, no commitment : just results"
+      marketing_channels_title: "1 800 marketing channels"
+      marketing_channels_text: "Be visible on the major players in your market"
+      retailers_title: "3500 retailers"
+      retailers_channels_text: "Some of the world's most respected retailers and brands trust Lengow"
   dashboard:
     screen:
       good_job: "Bon travail ! Vous avez"

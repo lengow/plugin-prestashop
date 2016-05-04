@@ -49,5 +49,17 @@
             $('#lengow_help_wrapper').height($('body').height());
         }*/
 
+        window.addEventListener("message", receiveMessage, false);
+         
+        function receiveMessage(event) {
+            //if (event.origin !== "http://my.lengow.io")
+            //    return;
+            switch (event.data.function) {
+                case 'sync':
+                    console.log(event.data.parameters);
+                    break;
+            }
+        }
+
     });
 })(lengow_jquery);
