@@ -18,6 +18,8 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
+
+
 <script type="text/javascript">$(document.body).addClass('lengow_body');</script>
 
 
@@ -48,7 +50,6 @@
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_15.css">
     <!--<script type="text/javascript">alert('version 1.5');</script>-->
 {/if}
-
 
 {if !$isNewMerchant}
     {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}

@@ -18,7 +18,7 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<div class="lgw-container" xmlns="http://www.w3.org/1999/html">
+<div class="lgw-container" id="lengow_mainsettings_wrapper" xmlns="http://www.w3.org/1999/html">
     <form class="lengow_form" method="POST">
         <input type="hidden" name="action" value="process">
         <div class="lgw-box">
@@ -52,46 +52,25 @@
                 <i class="fa fa-download"></i> {$locale->t('global_setting.screen.button_download_file')|escape:'htmlall':'UTF-8'}
             </button>
         </div>
-        <div class="lgw-box">
+        <div class="lgw-box lgw-box-vold">
             <h2>{$locale->t('global_setting.screen.uninstall_module')|escape:'htmlall':'UTF-8'}</h2>
             <!--<p>{$locale->t('global_setting.screen.uninstall_module_description')|escape:'htmlall':'UTF-8'}</p>-->
             <p>{$locale->t('global_setting.screen.i_want_uninstall')|escape:'htmlall':'UTF-8'}</p>
             <a href="#openDeleteModal">
                 <button type="button" class="lgw-btn lgw-btn-red lengow_delete_module" name="delete_module">
                     {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
-                 </button>
-            </a>
-            
-        </div>
-        <!--<div class="lgw-box">
-            <h2>{$locale->t('global_setting.screen.title_modal_uninstall')|escape:'htmlall':'UTF-8'}</h2>
-            <p>
-                {$locale->t('global_setting.screen.all_data_will_be_lost')|escape:'htmlall':'UTF-8'}
-                {$locale->t('global_setting.screen.you_will_find_a_backup')|escape:'htmlall':'UTF-8'}
-                <a href="{$lengow_link->getAbsoluteAdminLink('AdminBackup')|escape:'htmlall':'UTF-8'}">
-                    {$locale->t('global_setting.screen.prestashop_backup')|escape:'htmlall':'UTF-8'}
-                </a>
-            </p>
-            <div class="form-group lengow_account_id[1]">
-                <label class="control-label">
-                    {$locale->t('global_setting.screen.to_uninstall_type')|escape:'htmlall':'UTF-8'}
-                    : I WANT TO REMOVE ALL DATA
-                </label>
-                <input type="text" name="uninstall_textbox" class="form-control" placeholder="" value=""><br>
-                <button type="submit" class="lgw-btn lgw-btn-red lengow_submit_delete_module">
-                    {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                 </button>
-                <a href="#close" title="Close" class="sub-link">
-                    {$locale->t('global_setting.screen.cancel_i_want_uninstall')|escape:'htmlall':'UTF-8'}
-                </a>
-            </div>
-        </div>-->
-        <div class="form-group container">
-            <div class="lengow_main_setting_block_content">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="lgw-btn lengow_submit_main_setting">
-                        {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
-                    </button>
+            </a>
+
+        </div>
+        <div class="lgw-container putasse" >
+            <div class="form-group container">
+                <div class="lengow_main_setting_block_content">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="lgw-btn lengow_submit_main_setting">
+                            {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

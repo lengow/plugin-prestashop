@@ -96,13 +96,13 @@ body.lgw-home-iframe .lgw-content-section p{
     color: #464646;
 }
 
-.lengow_feed_block_header_title a span{
+.lengow_check_shop span{
     color: #464646;
     position: relative;
     padding-right: 25px;
 }
 
-.lengow_feed_block_header_title a span:after{
+.lengow_check_shop:after{
     content: "\25cf";
     font-size: 28px;
     color: #da493b;
