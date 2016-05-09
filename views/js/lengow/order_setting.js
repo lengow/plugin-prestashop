@@ -73,12 +73,23 @@ function addScoreCarrier(){
                     url: href,
                     method: 'POST',
                     data: {action: 'add_country', id_country: $('#select_country').val()},
-                    dataType: 'script'
+                    dataType: 'script',
+                    success: function(){
+                        $('.add-country').show();
+                    }
                 });
                 $('#error_select_country').html('');
+                $('.select_country').hide();
             } else {
                 $('#error_select_country').html('<span>No country selected.</span>');
             }
+
+            return false;
+        });
+
+        $('.js-cancel-country').click(function(){
+            $('.select_country').hide();
+            $('.add-country').show();
             return false;
         });
 
@@ -134,7 +145,7 @@ function addScoreCarrier(){
 
         $('.add-country').click( function(){
             $('.add-country').hide();
-            $('.select_country').fadeIn(150);
+            $('.select_country').show();
             return false;
         });
 

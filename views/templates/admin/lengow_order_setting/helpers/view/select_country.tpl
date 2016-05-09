@@ -33,3 +33,4 @@
 	class="lgw-btn add_lengow_default_carrier">
 	<i class="fa fa-plus"></i> {$locale->t('order_setting.screen.button_add_country')|escape:'htmlall':'UTF-8'}
 </button>
+<a href="#" class="sub-link js-cancel-country">Cancel</a>
