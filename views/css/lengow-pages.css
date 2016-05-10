@@ -75,7 +75,9 @@ body.lgw-home-iframe .lgw-content-section p{
 /*************************************************/
 
 .adminlengowfeed .lgw-container{
-  min-width:1300px;
+  min-width:1100px;
+  max-width:1400px;
+  width: auto;
 }
 
 .lengow_feed_block_header_title {
@@ -96,13 +98,13 @@ body.lgw-home-iframe .lgw-content-section p{
     color: #464646;
 }
 
-.lengow_feed_block_header_title a span{
+.lengow_check_shop span{
     color: #464646;
     position: relative;
     padding-right: 25px;
 }
 
-.lengow_feed_block_header_title a span:after{
+.lengow_check_shop:after{
     content: "\25cf";
     font-size: 28px;
     color: #da493b;
@@ -173,7 +175,7 @@ body.lgw-home-iframe .lgw-content-section p{
     padding-top:154px;
 }
 .adminlengoworder .lgw-container{
-    min-width:1350px;
+    min-width:1250px;
     width:100%;
 }
 .lengow_datepicker_box{
@@ -191,7 +193,9 @@ body.lgw-home-iframe .lgw-content-section p{
 .adminlengoworder #lgw-preprod{
   top:108px;
 }
-
+.adminlengowordersetting .add_lengow_default_carrier{
+  margin-right:10px;
+}
 #lengow_wrapper_messages{
   max-width:600px;
 }

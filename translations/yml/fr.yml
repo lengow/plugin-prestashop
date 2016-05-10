@@ -5,6 +5,29 @@ fr:
     preprod_active: "mode préproduction "
     order_overview: "Vue d'ensemble"
     order_parameter: "Paramètres"
+  connect:
+    screen:
+      free_days_title: "15 free days"
+      free_days_text: "No credit card, no commitment : just results"
+      marketing_channels_title: "1 800 marketing channels"
+      marketing_channels_text: "Be visible on the major players in your market"
+      retailers_title: "3500 retailers"
+      retailers_channels_text: "Some of the world's most respected retailers and brands trust Lengow"
+  footer:
+    legals: "Mentions légales"
+  connect:
+    screen:
+      lengow: "Lengow, 'easily sell everywhere'"
+      lengow_presentation: "Lengow est la solution d'automatisation de commerce électronique qui aide les détaillants à améliorer leurs performances, d'automatiser leurs processus d'affaires et de croître à l'échelle internationale."
+      lengow_platform: "Découvrez la plate-forme Lengow et ouvrir la porte à une forte rentabilité et la visibilité de vos produits dans le monde entier sur tous les canaux de distribution : les marchés , les moteurs de comparaison de prix , les plates-formes d'affiliation et de l'affichage / retargeting ..."
+      create_account: "Créer mon compte gratuit pendant 15 jours"
+      connect_account: "ou me connecter à mon compte"
+      free_days_title: "15 jours gratuits"
+      free_days_text: "Pas de carte de crédit, aucun engagement : juste du résultat"
+      marketing_channels_title: "1 800 marketing channels"
+      marketing_channels_text: "Soyez visible sur les principaux acteurs de votre marché"
+      retailers_title: "3500 detaillants"
+      retailers_channels_text: "De nombreux détaillants et marques les plus respectées dans le monde font confiance à Lengow"
   dashboard:
     screen:
       good_job: "Bon travail ! Vous avez"
@@ -105,6 +128,13 @@ fr:
       to_uninstall_type: "Pour désinstaller, écrivez"
       button_download_all: "Télécharger tous les fichiers"
       button_save: "Sauvegarder les changements"
+  help:
+    screen:
+      title: "Titre de la page"
+      content_text: "Demandez-nous quelque chose sur Lengow ou faites nous votre feddback à <a href="mailto:chose@bidule.fr?subject=Hey%20Dude. %20You're%20Cool.&subject=Le%20sujet%20du%20mail&body=ID%20account%3A%20tata%0D%0AModule%20type%3A%20Prestashop%0D%0AModule%20version%3A%201.5.3.2%0D%0APlugin%20type%3A%206.5%0D%0A" title="Besoin d'aide?">support@lengow.com</a>.
+      <br>
+        Nous ferons de notre mieux pour revenir vers vous pendant les heures normales de bureau (Lundi au Vendredi – 9h à 18h / France Timezone)."
+      find_answer: Vous pouvez également trouver des réponses dans notre <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" class="sub-link" target="_blank" title="Help Center">guide Prestashop</a>.
   lengow_setting:
     lengow_account_id_title: "ID du compte"
     lengow_access_token_title: "Token d'accès"

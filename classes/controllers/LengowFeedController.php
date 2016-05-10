@@ -335,11 +335,11 @@ class LengowFeedController extends LengowController
             'filter_order'  => true,
             'filter_key'    => 'id_lengow_product'
         );
-        $fields_list['search'] = array(
+        /*$fields_list['search'] = array(
             'title'         => '',
             'width'         => '12%',
             'button_search' => true
-        );
+        );*/
 
         $join = array();
         $where = array();

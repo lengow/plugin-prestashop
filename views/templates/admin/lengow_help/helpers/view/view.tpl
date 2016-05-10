@@ -22,17 +22,18 @@
     <div class="lgw-box lengow_help_wrapper text-center">
      <img src="/modules/lengow/views/img/cosmo-yoga.png" class="img-circle" alt="lengow">
 
-      <h2>Get a little help from your support team !</h2>
-
+      <h2>{$locale->t('help.title')|escape:'htmlall':'UTF-8'}</h2>
       <p>
-        Ask us anything about Lengow or share your feedback at <a href="mailto:chose@bidule.fr" title="Need some help?">support@lengow.com</a>.
-      <br>
-        We’ll do our best to get back to you during regular business hours (Monday to Friday – 9 pm to 9 am / France Timezone).
+        {$locale->t('help.content_text')|escape:'htmlall':'UTF-8'}
+
       </p>
       <p>
-        You can also find answers in our <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" class="sub-link" target="_blank" title="Help Center">PrestaShop dedicated guide</a>.
+        {$locale->t('help.find_answer')|escape:'htmlall':'UTF-8'}
+
       </p>
     </div>
+
+
 
 </div>
 

@@ -416,6 +416,7 @@ a.lgw-box-link:hover{
 }
 .lgw-container .table tr td{
     max-width:250px;
+    min-width:50px;
     padding:17px 10px;
     font-size:13px;
     color:#555;
@@ -425,7 +426,7 @@ a.lgw-box-link:hover{
 }
 .lgw-container .table input[type="text"]{
     max-width:100%;
-    width:100px;
+    width:70px;
     height:30px;
     line-height:30px;
     padding:0 7px;

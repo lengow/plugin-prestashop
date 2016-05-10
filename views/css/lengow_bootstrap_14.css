@@ -1,57 +1,99 @@
-body.lengow_body #content{
-    border:1px solid #ccc;
-    margin-bottom:20px;
+/*************************************************/
+/*                      GENERICS                 */
+/*************************************************/
+
+h1,h2, h3, h4, h5, h6{
+  color:inherit;
+}
+
+.lengow-nav{
+  top:inherit;
+  position: inherit;
+}
+.lengow-nav-bottom{
+  margin-top:0!important;
+}
+
+.lengow-nav .fa-2x {
+    line-height: 54px;
+}
+
+.lgw-box{
+  top:120px;
 }
 
 body.lengow_body #main {
-    padding-bottom:30px;
-    padding-top:0px;
+    padding-top:0;
+    background:inherit;
+    min-height: 730px;
 }
 
-body.lengow_body #lengow_statistic h2{
-    margin-top: 1em;
+#content{
+  border:none;
 }
 
-body.lengow_body h3{
-    margin-top: 1em;
+.lgw-footer-vold{
+    margin-top: 150px;
 }
 
-body.lengow_body #container {
-    width:100%;
-    margin: 0;
-    padding: 0;
-    margin-left: auto;
-    margin-right: auto;
+.lgw-container{
+  width: inherit;
 }
 
-body.lengow_body .path_bar {display:none;}
-
-
-body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a,
-body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:hover,
-body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:focus{
-  line-height:25px;
+#lengow_home_wrapper,
+#lengow_feed_wrapper{
+  margin-top:0px;
 }
 
-
-@media all and (min-width: 978px) and (max-width: 992px) {
-
-  body{
-    display:inline-block;
-  }
-
-  #lengow_form_wrapper{
-    min-width:inherit;
-  }
-
-  .lengow_form .checkbox .legend{
-    margin-left:0;
-    margin-top:10px;
-  }
+#lengow_order_wrapper,
+#lengow_mainsettings_wrapper,
+#lengow_form_order_setting,
+.lengow_help_wrapper{
 
 }
 
+/*************************************************/
+/*                      HOME                     */
+/*************************************************/
 
 
 
+.lgw-box-link .lgw-box{
+  min-height: 250px;
+}
 
+.lgw-box{
+  top:inherit;
+}
+
+
+/*************************************************/
+/*                      SETTINGS                 */
+/*************************************************/
+.form-group.container {
+
+}
+
+/*************************************************/
+/*                      ORDERS                   */
+/*************************************************/
+
+.lengow-nav-top{
+  margin-top:0px;
+}
+
+.lengow-nav-bottom{
+  margin-top:55px;
+}
+
+/*************************************************/
+/*                      FEEDS                    */
+/*************************************************/
+
+.lgw-container .table tr th{
+  padding:10px 3px;
+}
+
+.lgw-container .table input[type="text"]{
+  width:60px;
+}

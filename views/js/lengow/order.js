@@ -243,6 +243,27 @@
             return false;
         });
 
+        // UPDATE BY SELECT
+
+        $('#lengow_order_table_wrapper').on('change', 'thead select', function(){
+            lengow_jquery('#lengow_order_wrapper .lengow_form_table').submit();
+        });
+
+        //UPDATE BY INPUTS
+        var typingTimer;
+        $('#lengow_order_table_wrapper').on('keyup', 'thead input[type="text"]', function () {
+          clearTimeout(typingTimer);
+          typingTimer = setTimeout(doneTyping, 750);
+        });
+        $('#lengow_order_table_wrapper').on('keydown', 'thead input[type="text"]', function () {
+          clearTimeout(typingTimer);
+        });
+        function doneTyping () {
+          lengow_jquery('#lengow_order_wrapper .lengow_form_table').submit();
+        }
+
+
+
         // Table header filters
         pluginsRender();
 

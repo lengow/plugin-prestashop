@@ -15,6 +15,21 @@ en:
     preprod_active: "Pre-production mode"
     order_overview: "Overview"
     order_parameter: "Settings"
+  footer:
+    legals: "Legals"
+  connect:
+    screen:
+      lengow: "Lengow, 'easily sell everywhere'"
+      lengow_presentation: "Lengow is the ecommerce automation solution that helps retailers improve their performance, automate their business processes and grow internationally."
+      lengow_platform: "Discover the Lengow platform and open the door to strong profitability and visibility for your products around the world on all distribution channels: marketplaces, comparison shopping engines, affiliate platforms and display/retargeting…"
+      create_account: "Create my 15 days-free account"
+      connect_account: "or Connect to your account"
+      free_days_title: "15 free days"
+      free_days_text: "No credit card, no commitment : just results"
+      marketing_channels_title: "1 800 marketing channels"
+      marketing_channels_text: "Be visible on the major players in your market"
+      retailers_title: "3500 retailers"
+      retailers_channels_text: "Some of the world's most respected retailers and brands trust Lengow"
   dashboard:
     screen:
       good_job: "Good Job! You have"
@@ -155,6 +170,13 @@ en:
       to_uninstall_type: "To uninstall, type"
       button_download_file: "Download log files"
       button_save: "Save changes"
+  help:
+    screen:
+      title: "Get a little help from your support team !"
+      content_text: "Ask us anything about Lengow or share your feedback at <a href="mailto:chose@bidule.fr?subject=Hey%20Dude. %20You're%20Cool.&subject=Le%20sujet%20du%20mail&body=ID%20account%3A%20tata%0D%0AModule%20type%3A%20Prestashop%0D%0AModule%20version%3A%201.5.3.2%0D%0APlugin%20type%3A%206.5%0D%0A" title="Need some help?">support@lengow.com</a>.
+      <br>
+        We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone)."
+      find_answer: You can also find answers in our <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" class="sub-link" target="_blank" title="Help Center">PrestaShop dedicated guide</a>.
   lengow_setting:
     lengow_account_id_title: "Account ID"
     lengow_access_token_title: "Access Token"
