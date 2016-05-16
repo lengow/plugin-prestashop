@@ -139,11 +139,19 @@ class LengowCarrierCountry
     public static function insert($id_country)
     {
         $db = DB::getInstance();
-        $db->autoExecute(
-            _DB_PREFIX_.'lengow_carrier_country',
-            array('id_country' => (int)$id_country),
-            'INSERT'
-        );
+
+        if (_PS_VERSION_ < '1.5') {
+            $db->autoExecute(
+                _DB_PREFIX_.'lengow_carrier_country',
+                array('id_country' => (int)$id_country),
+                'INSERT'
+            );
+        } else {
+            $db->insert(
+                'lengow_carrier_country',
+                array('id_country' => (int)$id_country)
+            );
+        }
         return $db;
     }
 

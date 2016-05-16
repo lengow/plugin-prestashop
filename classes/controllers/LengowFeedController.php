@@ -225,10 +225,12 @@ class LengowFeedController extends LengowController
         $result = LengowConnector::queryApi('get', '/v3.0/cms', $idShop);
         $token = LengowConfiguration::get('LENGOW_SHOP_TOKEN', null, null, $idShop);
         if (!isset($result->error)) {
-            foreach ($result->shops as $results) {
-                if ($results->token === $token) {
-                    if ($results->enabled === true) {
-                        return true;
+            if (isset($result->shops)) {
+                foreach ($result->shops as $results) {
+                    if ($results->token === $token) {
+                        if ($results->enabled === true) {
+                            return true;
+                        }
                     }
                 }
             }
@@ -535,10 +537,20 @@ class LengowFeedController extends LengowController
         $link = new LengowLink();
         if ($item['id_product']) {
             if (!$toolbox) {
-                return '<a href="'.
-                $link->getAbsoluteAdminLink((_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'), false, true).
-                '&updateproduct&id_product='.
-                $item['id_product'].'" target="_blank" class="sub-link">'.$value.'</a>';
+                if (_PS_VERSION_ < '1.7') {
+                    return '<a href="'.
+                    $link->getAbsoluteAdminLink((_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'), false, true).
+                    '&updateproduct&id_product='.
+                    $item['id_product'].'" target="_blank" class="sub-link">'.$value.'</a>';
+                } else {
+                    return '<a href="' .
+                                $link->getAdminLink(
+                                    'AdminProducts',
+                                    true,
+                                    ['id_product' => $item['id_product']]
+                                ) . 
+                            '" target="_blank" class="sub-link">' . $value . '</a>';
+                }
             } else {
                 return $value;
             }

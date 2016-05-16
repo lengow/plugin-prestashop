@@ -168,7 +168,12 @@ class LengowAction
             $insertParams['order_line_sku'] = $params['parameters']['line'];
         }
 
-        Db::getInstance()->autoExecute(_DB_PREFIX_.'lengow_actions', $insertParams, 'INSERT');
+        if (_PS_VERSION_ < '1.5') {
+            Db::getInstance()->autoExecute(_DB_PREFIX_.'lengow_actions', $insertParams, 'INSERT');
+        } else {
+            Db::getInstance()->insert('lengow_actions', $insertParams);
+        }
+
         LengowMain::log(
             'API',
             LengowMain::setLogMessage('log.order_action.call_tracking'),
@@ -187,15 +192,26 @@ class LengowAction
         $action = new LengowAction();
         if ($action->findByActionId($params['action_id'])) {
             if ($action->state == self::STATE_NEW) {
-                Db::getInstance()->autoExecute(
-                    _DB_PREFIX_.'lengow_actions',
-                    array(
-                        'retry'         => $action->retry + 1,
-                        'updated_at'    => date('Y-m-d h:m:i'),
-                    ),
-                    'UPDATE',
-                    'id = ' . $action->id
-                );
+                if (_PS_VERSION_ < '1.5') {
+                    Db::getInstance()->autoExecute(
+                        _DB_PREFIX_.'lengow_actions',
+                        array(
+                            'retry'         => $action->retry + 1,
+                            'updated_at'    => date('Y-m-d h:m:i'),
+                        ),
+                        'UPDATE',
+                        'id = ' . $action->id
+                    );
+                } else {
+                    Db::getInstance()->update(
+                        'lengow_actions',
+                        array(
+                            'retry'         => $action->retry + 1,
+                            'updated_at'    => date('Y-m-d h:m:i'),
+                        ),
+                        'id = ' . $action->id
+                    );
+                }
             }
         }
     }

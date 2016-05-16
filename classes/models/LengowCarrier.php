@@ -520,15 +520,26 @@ class LengowCarrier extends Carrier
                     id_country = '.(int)$countryId
         );
         if (count($result) == 0) {
-            Db::getInstance()->autoExecute(
-                _DB_PREFIX_.'lengow_marketplace_carrier',
-                array(
-                    'id_country' => (int)$countryId,
-                    'marketplace_carrier_sku' => pSQL($code),
-                    'marketplace_carrier_name' => pSQL($name),
-                ),
-                'INSERT'
-            );
+            if (_PS_VERSION_ < '1.5') {
+                Db::getInstance()->autoExecute(
+                    _DB_PREFIX_.'lengow_marketplace_carrier',
+                    array(
+                        'id_country' => (int)$countryId,
+                        'marketplace_carrier_sku' => pSQL($code),
+                        'marketplace_carrier_name' => pSQL($name),
+                    ),
+                    'INSERT'
+                );
+            } else {
+                Db::getInstance()->insert(
+                    'lengow_marketplace_carrier',
+                    array(
+                        'id_country' => (int)$countryId,
+                        'marketplace_carrier_sku' => pSQL($code),
+                        'marketplace_carrier_name' => pSQL($name),
+                    )
+                );
+            }
         }
     }
 
@@ -686,15 +697,26 @@ class LengowCarrier extends Carrier
         $marketplace_carriers = Db::getInstance()->executeS($sql);
 
         foreach ($marketplace_carriers as $key) {
-            DB::getInstance()->autoExecute(
-                _DB_PREFIX_.'lengow_marketplace_carrier',
-                array(
-                    'id_country'                => (int)$id_country,
-                    'marketplace_carrier_sku'   => pSQL($key['marketplace_carrier_sku']),
-                    'marketplace_carrier_name'  => pSQL($key['marketplace_carrier_name'])
-                ),
-                'INSERT'
-            );
+            if (_PS_VERSION_ < '1.5') {
+                DB::getInstance()->autoExecute(
+                    _DB_PREFIX_.'lengow_marketplace_carrier',
+                    array(
+                        'id_country'                => (int)$id_country,
+                        'marketplace_carrier_sku'   => pSQL($key['marketplace_carrier_sku']),
+                        'marketplace_carrier_name'  => pSQL($key['marketplace_carrier_name'])
+                    ),
+                    'INSERT'
+                );
+            } else {
+                DB::getInstance()->insert(
+                    'lengow_marketplace_carrier',
+                    array(
+                        'id_country'                => (int)$id_country,
+                        'marketplace_carrier_sku'   => pSQL($key['marketplace_carrier_sku']),
+                        'marketplace_carrier_name'  => pSQL($key['marketplace_carrier_name'])
+                    )
+                );
+            }
         }
         return true;
     }
