@@ -134,31 +134,29 @@ require 'views/header.php';
         echo '</fieldset>';
         ?>
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn-success lengow_btn">
-                    <?php echo $locale->t('toolbox.configuration.button_save'); ?>
-                </button>
-                <?php
-                if ($fullAccess && $fullAccess == 'admin') {
-                    ?>
-                    <a class="lengow_btn btn-success"
-                        href="/modules/lengow/toolbox/config.php?action=get_default_settings&access=admin"
-                        onclick="return confirm(
-                            '<?php echo  $locale->t('toolbox.configuration.check_get_default_settings'); ?>'
-                        )">
-                        <?php echo $locale->t('toolbox.configuration.get_default_settings'); ?>
-                    </a>
-                    <a class="lengow_btn btn-success"
-                        href="/modules/lengow/toolbox/config.php?action=update_settings&access=admin"
-                        onclick="return confirm(
-                            '<?php echo  $locale->t('toolbox.configuration.check_update_settings'); ?>'
-                        )">
-                        <?php echo  $locale->t('toolbox.configuration.update_settings'); ?>
-                    </a>
-                <?php
-                }
+            <button type="submit" class="btn-success lgw-btn">
+                <?php echo $locale->t('toolbox.configuration.button_save'); ?>
+            </button>
+            <?php
+            if ($fullAccess && $fullAccess == 'admin') {
                 ?>
-            </div>
+                <a class="lgw-btn btn-success"
+                    href="/modules/lengow/toolbox/config.php?action=get_default_settings&access=admin"
+                    onclick="return confirm(
+                        '<?php echo  $locale->t('toolbox.configuration.check_get_default_settings'); ?>'
+                    )">
+                    <?php echo $locale->t('toolbox.configuration.get_default_settings'); ?>
+                </a>
+                <a class="lgw-btn btn-success"
+                    href="/modules/lengow/toolbox/config.php?action=update_settings&access=admin"
+                    onclick="return confirm(
+                        '<?php echo  $locale->t('toolbox.configuration.check_update_settings'); ?>'
+                    )">
+                    <?php echo  $locale->t('toolbox.configuration.update_settings'); ?>
+                </a>
+            <?php
+            }
+            ?>
         </div>
     </form>
 </div>

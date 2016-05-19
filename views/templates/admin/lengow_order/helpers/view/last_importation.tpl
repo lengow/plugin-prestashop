@@ -19,23 +19,18 @@
  *}
 
 {if $orderCollection['last_import_type'] != 'none'}
-	<span class="lengow_strong">{$locale->t('order.screen.last_order_importation')|escape:'htmlall':'UTF-8'}</span>
+	<p>{$locale->t('order.screen.last_order_importation')|escape:'htmlall':'UTF-8'}
 	{if $orderCollection['last_import_type'] == 'cron'}
 	    ({$locale->t('order.screen.import_auto')|escape:'htmlall':'UTF-8'})
 	{else}
 	    ({$locale->t('order.screen.import_manuel')|escape:'htmlall':'UTF-8'})
-	{/if}
-	: {$orderCollection['last_import_date']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}
+	 {/if}
+	 : <b>{$orderCollection['last_import_date']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}</b>
 {else}
-	<span class="lengow_strong">{$locale->t('order.screen.no_order_importation')|escape:'htmlall':'UTF-8'}</span>
+	{$locale->t('order.screen.no_order_importation')|escape:'htmlall':'UTF-8'}
 {/if}
-<br/>
+</p>
 <p>
-	{$locale->t('order.screen.all_order_will_be_sent_to')|escape:'htmlall':'UTF-8'}<br/>{', '|implode:$report_mail_address|escape:'htmlall':'UTF-8'}
+	{$locale->t('order.screen.all_order_will_be_sent_to')|escape:'htmlall':'UTF-8'} {', '|implode:$report_mail_address|escape:'htmlall':'UTF-8'}
 	(<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">{$locale->t('order.screen.change_this')|escape:'htmlall':'UTF-8'}</a>)
 </p>
-{if not $cron_active}
-	<p>
-		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}#cron_setting">{$locale->t('order.screen.cron')|escape:'htmlall':'UTF-8'}</a>
-	</p>
-{/if}

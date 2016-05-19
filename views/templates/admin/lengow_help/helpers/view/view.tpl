@@ -18,21 +18,26 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<div id="lengow_help_wrapper">
+<div class="lgw-container">
+    <div class="lgw-box lengow_help_wrapper text-center">
+     <img src="/modules/lengow/views/img/cosmo-yoga.png" class="img-circle" alt="lengow">
 
-    <!-- <iframe id="lengow_help_iframe"></iframe> -->
-    <div>
-      <h2>Get a little help from your support team !</h2>
-
+      <h2>{$locale->t('help.title')|escape:'htmlall':'UTF-8'}</h2>
       <p>
-        Ask us anything about Lengow or share your feedback at <a href="mailto:chose@bidule.fr" title="Need some help?">support@lengow.com</a>. We’ll do our best to get back to you during regular business hours (Monday to Friday – 9 pm to 9 am / France Timezone).
+        {$locale->t('help.content_text')|escape:'htmlall':'UTF-8'}
+
       </p>
       <p>
-        You can also find answers in our PrestaShop dedicated guide. (ajouter une icône pour indiquer l’aide)
+        {$locale->t('help.find_answer')|escape:'htmlall':'UTF-8'}
+
       </p>
     </div>
 
+
+
 </div>
+
+
 <input type="hidden" id="lengow_ajax_link" value="{$lengow_ajax_link|escape:'htmlall':'UTF-8'}">
 
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/help.js"></script>

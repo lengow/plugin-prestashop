@@ -1,0 +1,233 @@
+/*************************************************/
+/*                     CONNECT                   */
+/*************************************************/
+
+.adminlengowhome #lengow_iframe{
+    width:100%;
+    height:850px;
+    margin: 0 auto;
+}
+
+.lgw-connect{
+   margin:0 auto;
+   float:none;
+}
+
+body.lgw-home-iframe button{
+  margin:15px auto!important;
+  display:block!important;
+  font-size: inherit;
+}
+
+body.lgw-home-iframe .lgw-container{
+  width:inherit;
+}
+
+body.lgw-home-iframe .lgw-content-section img{
+  margin-bottom:60px;
+}
+
+
+body.lgw-home-iframe .lgw-content-section p{
+  margin:25px 0;
+}
+
+
+/*************************************************/
+/*                      HOME                     */
+/*************************************************/
+
+.adminlengowhome .lengow-nav{
+    display:none;
+}
+
+.adminlengowhome #lgw-preprod{
+  top:0;
+}
+
+.adminlengowhome .lgw-label_red{
+  padding:0 8px;
+}
+
+.lgw-home-header{
+  height:240px;
+  color:white;
+  padding:60px 30px 0;
+  background: url("../img/header.png") #2E3340 no-repeat center;
+}
+.lgw-home-header h1{
+  margin:15px 0 5px;
+  font-weight:300;
+}
+
+.adminlengowhome .lgw-row h5{
+    margin: 0;
+    padding: 0;
+    font-style: initial;
+    font-size: 15px;
+}
+.lgw-home-stats{
+  margin:60px 0 30px;
+}
+
+/*************************************************/
+/*                    PRODUCTS                   */
+/*************************************************/
+
+.adminlengowfeed .lgw-container{
+  min-width:1100px;
+  max-width:1400px;
+  width: auto;
+}
+
+.lengow_feed_block_header_title {
+    border-bottom: 1px solid #e1e1e1;
+    padding: 15px 15px;
+    box-sizing: border-box;
+    margin-bottom: 0px;
+}
+
+.lengow_feed_block_header_title a{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 2;
+}
+
+.lengow_feed_block_header_title a:hover{
+    color: #464646;
+}
+
+.lengow_check_shop span{
+    color: #464646;
+    position: relative;
+    padding-right: 25px;
+}
+
+.lengow_check_shop:after{
+    content: "\25cf";
+    font-size: 28px;
+    color: #da493b;
+    position: absolute;
+    top: -10px;
+    right:0;
+}
+.lengow_check_shop{
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+.lengow_export_feed{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+}
+
+.lengow_feed_block_header_content input[type="text"]{
+  max-width:400px;
+}
+
+.adminlengowfeed .lgw-row .lengow_feed_block_header_content_result p{
+    margin: 0;
+    padding: 0;
+    font-style: initial;
+    font-size: 15px;
+    display: inline-block;
+}
+
+.lengow_select_all_shop{
+    padding:0 10px;
+}
+
+.adminlengowfeed .lgw-pagination-pages {
+    margin: 5px 0px 5px 5px;
+}
+
+.lengow_copy{
+  background:transparent;
+  border:0;
+  outline:none;
+}
+.lengow_copy:hover{
+  color:#00aeef;
+}
+.adminlengowfeed .products-exported{
+  font-size:17px;
+  margin-bottom:-10px;
+}
+.adminlengowfeed .products-exported .stats-big-value{
+  font-size:32px;
+}
+.adminlengowfeed .products-available .stats-big-value{
+  font-size:19px;
+}
+.adminlengowfeed .catalog-title{
+  margin-bottom: 15px;
+}
+
+
+/*************************************************/
+/*                     ORDERS                    */
+/*************************************************/
+
+.adminlengoworder .nobootstrap,
+.adminlengowordersetting .nobootstrap{
+    padding-top:154px;
+}
+.adminlengoworder .lgw-container{
+    min-width:1250px;
+    width:100%;
+}
+.lengow_datepicker_box{
+    min-width:180px;
+}
+.adminlengoworder table input[type="text"].lengow_datepicker{
+    width:70px;
+    padding:0 7px;
+    font-size:13px;
+}
+.adminlengoworder table input[type="text"].lengow_datepicker:first-child{
+    margin-right:3px;
+}
+
+.adminlengoworder #lgw-preprod{
+  top:108px;
+}
+.adminlengowordersetting .add_lengow_default_carrier{
+  margin-right:10px;
+}
+#lengow_wrapper_messages{
+  max-width:600px;
+}
+#lengow_charge_import_order{
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:30;
+  background:rgba(255,255,255,.95);
+  text-align:center;
+  padding-top:150px;
+  font-size:24px;
+  font-weight:300;
+}
+.select_country{
+  margin:0;
+  padding:25px;
+  border:1px solid #d7d7d7;
+  border-top:0;
+  background:#f7f7f7;
+}
+.lgw-container .add-country{
+  border:1px solid #d7d7d7;
+  border-top:0;
+  display:block;
+  padding: 15px 40px 15px 25px;
+  color:#555;
+  background:#f7f7f7;
+  transition: all 100ms ease;
+}
+.lgw-container .add-country:hover{
+  color:#555;
+}

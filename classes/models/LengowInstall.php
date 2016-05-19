@@ -36,7 +36,8 @@ class LengowInstall
         'tab.order'         => array('name' => 'AdminLengowOrder', 'active' => false),
         'tab.order_setting' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
         'tab.help'          => array('name' => 'AdminLengowHelp', 'active' => false),
-        'tab.main_setting'  => array('name' => 'AdminLengowMainSetting', 'active' => false)
+        'tab.main_setting'  => array('name' => 'AdminLengowMainSetting', 'active' => false),
+        'tab.legals'        => array('name' => 'AdminLengowLegals', 'active' => false)
     );
 
     static public $tables = array(

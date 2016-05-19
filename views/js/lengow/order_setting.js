@@ -57,15 +57,15 @@ function addScoreCarrier(){
 
         function changeStockMP() {
             if ($("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").prop('checked')) {
-                $('.lengow_import_stock_ship_mp').show();
+                $('.lengow_import_stock_ship_mp').slideDown(150);
             } else {
-                $('.lengow_import_stock_ship_mp').hide();
+                $('.lengow_import_stock_ship_mp').slideUp(150);
             }
         }
 
         changeStockMP();
 
-        $('#lengow_form_wrapper').on('click', '.add_lengow_default_carrier', function () {
+        $('#lengow_form_order_setting').on('click', '.add_lengow_default_carrier', function () {
             if ($('#select_country').val() !== "") {
                 var href = $(this).attr('data-href');
 
@@ -73,27 +73,47 @@ function addScoreCarrier(){
                     url: href,
                     method: 'POST',
                     data: {action: 'add_country', id_country: $('#select_country').val()},
-                    dataType: 'script'
+                    dataType: 'script',
+                    success: function(){
+                        $('.add-country').show();
+                    }
                 });
                 $('#error_select_country').html('');
+                $('.select_country').hide();
             } else {
                 $('#error_select_country').html('<span>No country selected.</span>');
             }
+
+            return false;
+        });
+
+        $('.js-cancel-country').click(function(){
+            $('.select_country').hide();
+            $('.add-country').show();
             return false;
         });
 
         $('#marketplace_country').on('click', '.delete_lengow_default_carrier', function () {
-            var message = $(this).attr('data-message');
-            if (confirm(message)) {
-                var href = $('.lengow_default_carrier').attr('data-href');
-                $.ajax({
-                    url: href,
-                    method: 'POST',
-                    data: {action: 'delete_country', id_country: $(this).attr('data-id-country')},
-                    dataType: 'script'
-                });
-            }
+            $(this).closest('.country').addClass('js-confirm');
+            return false;
+        });
 
+        // CONFIRM REMOVE COUNTRY ? --> NO
+        $('#marketplace_country').on('click', '.js-delete-country-no', function () {
+            $(this).closest('.country').removeClass('js-confirm');
+            return false;
+        });
+
+        // CONFIRM REMOVE COUNTRY ? --> YES
+        $('#marketplace_country').on('click', '.js-delete-country-yes', function () {
+            var href = $('.lengow_default_carrier').attr('data-href');
+            var idCountry = $(this).closest('.country').find('.delete_lengow_default_carrier').data('id-country');
+            $.ajax({
+                url: href,
+                method: 'POST',
+                data: {action: 'delete_country', id_country: idCountry},
+                dataType: 'script'
+            });
             return false;
         });
 
@@ -123,17 +143,21 @@ function addScoreCarrier(){
 
         });
 
+        $('.add-country').click( function(){
+            $('.add-country').hide();
+            $('.select_country').show();
+            return false;
+        });
+
 
         $(".sub").hide();
         $(".sub:first").show();
-        $("#lengow_form_wrapper").on('click', '.lengow_marketplace_carrier h4',function(){
-            $(this).next().next().toggle('100');
+        $("#lengow_form_order_setting").on('click', '.country',function(){
+            $(this).next().next().slideToggle(150);
         });
 
-        $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('switchChange.bootstrapSwitch', function (event, state) {
-            if (event.type == "switchChange") {
-                changeStockMP();
-            }
+        $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('change', function () {
+            changeStockMP();
         });
 
         $('#lengow_form_order_setting').submit(function( event ) {

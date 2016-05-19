@@ -17,36 +17,7 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 (function ($) {
     $(document).ready(function () {
-
-        var href = $('#lengow_ajax_link').val();
-
-        var sync_iframe = document.getElementById('lengow_help_iframe');
-        sync_iframe.onload = function() {
-            $.ajax({
-                url: href,
-                method: 'POST',
-                data: {action: 'get_help_data'},
-                dataType: 'json',
-                success: function(data) {
-                    var targetFrame = document.getElementById('lengow_help_iframe').contentWindow;
-                    targetFrame.postMessage(data, '*');
-                }
-            });
-        };
-        // sync_iframe.src = 'http://my.lengow.local/help/ticket/cms_new';
-        sync_iframe.src = '/modules/lengow/webservice/help.php';
-
-        resize();
-
-        $(window).on('resize', function(){
-            resize();
-        });
-
-        function resize() {
-            $('#lengow_help_wrapper').height($('body').height());
-        }
     });
 })(lengow_jquery);

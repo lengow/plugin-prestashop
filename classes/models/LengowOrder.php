@@ -1024,7 +1024,6 @@ class LengowOrder extends Order
             }
         }
         //check country in order
-
         $states = Db::getInstance()->getRow('SELECT id_order_state FROM '._DB_PREFIX_.'order_state_lang
                 WHERE name = "Erreur technique - Lengow"');
         $errorState = $states['id_order_state'];
@@ -1059,20 +1058,5 @@ class LengowOrder extends Order
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

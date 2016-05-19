@@ -49,11 +49,21 @@
             });
             return false;
         });
-        $('.lengow_switch').bootstrapSwitch();
+
+        /* SWITCH TOGGLE */
+        lengow_jquery('body').on('change', '.lgw-switch', function(event) {
+            var check = lengow_jquery(this);
+            var checked = check.find('input').prop('checked');
+            check.toggleClass('checked');
+        });
+
+
+        //$('.lengow_switch').bootstrapSwitch();
         $('.lengow_select').select2({ minimumResultsForSearch: 16});
 
         init_tooltip();
         var clipboard = new Clipboard('.lengow_copy');
+
     });
 })(lengow_jquery);
 

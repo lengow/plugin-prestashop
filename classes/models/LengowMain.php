@@ -853,7 +853,7 @@ class LengowMain
         }
         $datas = array(
             '{mail_title}' => 'Lengow imports logs',
-            '{mail_body}' => $mail_body,
+            '{mail_body}'  => $mail_body,
         );
         $emails = LengowConfiguration::getReportEmailAddress();
         foreach ($emails as $to) {
@@ -868,7 +868,7 @@ class LengowMain
                 null,
                 null,
                 null,
-                _PS_MODULE_DIR_ . 'lengow/views/templates/mails/',
+                _PS_MODULE_DIR_.'lengow/views/templates/mails/',
                 true
             )) {
                 LengowMain::log(
