@@ -77,7 +77,7 @@ order.screen.action_sent|action sent
 order.screen.action_waiting_return|Action sent, waiting returns
 order.screen.action_sent_not_work|Action sent to the marketplace didn't work
 order.screen.no_order_title|The best is yet to come!
-order.screen.no_order_description|Your future customers don't know yet how good your products are!
+order.screen.no_order_description|Your products have great visibility and your sales are about to prosper!
 order.screen.action_success|Success
 order.screen.action_error|Error
 order.screen.status_not_synchronized|Not synchronized

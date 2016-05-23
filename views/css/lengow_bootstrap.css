@@ -508,7 +508,7 @@ span.img_no_result {
     margin: 0 auto;
 }
 
-span.title_no_result {
+p.title_no_result {
     display: block;
     font-size: 15px;
     font-weight: bold;

@@ -462,6 +462,30 @@ a.lgw-box-link:hover{
     background: url('../img/carret-up.png') no-repeat right center;
 }
 
+.lgw-container .table .img_no_result{
+    background: url('../img/no-result-grey.png') no-repeat right center;
+    height:208px;
+    line-height:21.4286px;
+    margin:0 auto;
+    margin-bottom:60px;
+    margin-top:15px;
+    text-align:center;
+    width:270px;
+    display: block;
+}
+
+.lgw-container .table .title_no_result{
+    color:#828282;
+}
+
+.lgw-container .table .description_no_result{
+    display: block;
+    font-size: 15px;
+    margin: 10px 0;
+    color:#828282;
+}
+
+
 /* TABLE DROPDOWN */
 
 .lgw-container table .select2-selection--single .select2-selection__rendered{
