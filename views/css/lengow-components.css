@@ -462,6 +462,22 @@ a.lgw-box-link:hover{
     background: url('../img/carret-up.png') no-repeat right center;
 }
 
+.lgw-container .table tr:hover{
+    background: #fafafa;
+    cursor:pointer;
+}
+
+.lgw-container .table tr:hover td:first-child:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #00aeef;
+}
+
 .lgw-container .table .img_no_result{
     background: url('../img/no-result-grey.png') no-repeat right center;
     height:208px;
