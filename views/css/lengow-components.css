@@ -264,15 +264,21 @@ a.lgw-box-link:hover{
     padding:0 !important;
 }
 .select2-results li{
-    height:42px;
-    line-height: 42px;
-    padding:0 15px;
-    font-size:13px;
+    padding: 0 15px 0 25px;
+    height: 44px;
+    line-height: 44px;
+    word-wrap: normal;
+    white-space: nowrap;
+    font-size: 15px;
 }
-.select2-container--default .select2-results__option--highlighted[aria-selected],
-.select2-container--default .select2-results__option[aria-selected=true]{
+.select2-container--default .select2-results__option--highlighted[aria-selected]{
     background:#ebebeb;
     color: #555;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true]{
+
+    background: url("../img/tick.png") no-repeat 8px center;
 }
 /*************************************************/
 /*                    SWITCH                     */
