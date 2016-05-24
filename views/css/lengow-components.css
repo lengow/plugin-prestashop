@@ -462,12 +462,12 @@ a.lgw-box-link:hover{
     background: url('../img/carret-up.png') no-repeat right center;
 }
 
-.lgw-container .table tr:hover{
+.lgw-container .table:not(.table_no_result) tr:hover{
     background: #fafafa;
     cursor:pointer;
 }
 
-.lgw-container .table tr:hover td:first-child:before {
+.lgw-container .table:not(.table_no_result) tr:hover td:first-child:before {
     content: '';
     display: block;
     position: absolute;
@@ -479,14 +479,14 @@ a.lgw-box-link:hover{
 }
 
 .lgw-container .table .img_no_result{
-    background: url('../img/no-result-grey.png') no-repeat right center;
+    background: url('../img/no-result.png') no-repeat right center;
     height:208px;
     line-height:21.4286px;
     margin:0 auto;
     margin-bottom:60px;
     margin-top:15px;
     text-align:center;
-    width:270px;
+    width:395px;
     display: block;
 }
 

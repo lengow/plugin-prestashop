@@ -1,8 +1,8 @@
 fr:
   menu:
-    product: "produits"
-    order: "commandes"
-    preprod_active: "mode préproduction "
+    product: "Produits"
+    order: "Commandes"
+    preprod_active: "Mode préproduction "
     order_overview: "Vue d'ensemble"
     order_parameter: "Paramètres"
   connect:

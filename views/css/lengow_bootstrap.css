@@ -501,9 +501,9 @@ body.lengow_body #content .lengow_breadcrumb a {
 }
 
 span.img_no_result {
-    background : transparent url("../img/no-result-grey.png") no-repeat;
+    background : transparent url("../img/no-result.png") no-repeat;
     height: 208px;
-    width: 269px;
+    width: 395px;
     display: block;
     margin: 0 auto;
 }
@@ -1108,9 +1108,9 @@ body.lengow_body #content .lengow_feed_block_header_title a {
 }
 
 span.img_no_order {
-    background : transparent url("../img/no-result-white.png") no-repeat;
+    background : transparent url("../img/no-result.png") no-repeat;
     height: 208px;
-    width: 269px;
+    width: 395px;
     display: block;
     margin: 0 auto;
 }

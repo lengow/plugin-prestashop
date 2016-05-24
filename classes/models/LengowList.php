@@ -76,10 +76,14 @@ class LengowList
      */
     public function displayHeader($order)
     {
+        if (count($this->collection) == 0) {
+            $tableClass="table_no_result";
+        }
         $newOrder = ( empty($this->orderValue) || $this->orderValue == "ASC" ) ? 'DESC' : "ASC";
-        $html ='<table class="lengow_table table table-bordered table-striped table-hover" id="table_'.$this->id.'">';
+        $html ='<table class="lengow_table table table-bordered table-striped table-hover '.$tableClass.'" id="table_'.$this->id.'">';
         $html.='<thead>';
         $html.='<tr>';
+
         if ($this->selection && !$this->toolbox) {
             $html.='<th></th>';
         }
