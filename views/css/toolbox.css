@@ -61,9 +61,9 @@ button {
 }
 
 span.img_no_result {
-    background : transparent url("../img/no-result-grey.png") no-repeat;
-    height: 208px; 
-    width: 269px;
+    background : transparent url("../img/no-result.png") no-repeat;
+    height: 208px;
+    width: 395px;
     display: block;
     margin: 0 auto;
 }
@@ -85,7 +85,7 @@ span.title_no_result {
 
 .lengow_table_bottom {
     height: 40px;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 
 /* PAGINATION */
@@ -110,7 +110,7 @@ span.title_no_result {
 }
 
 .lengow_pagination_total {
-    padding-top: 7px; 
+    padding-top: 7px;
     float: left;
 }
 
@@ -254,9 +254,9 @@ span.title_no_result {
 }
 
 span.img_no_order {
-    background : transparent url("../img/no-result-white.png") no-repeat;
-    height: 208px; 
-    width: 269px;
+    background : transparent url("../img/no-result.png") no-repeat;
+    height: 208px;
+    width: 395px;
     display: block;
     margin: 0 auto;
 }
