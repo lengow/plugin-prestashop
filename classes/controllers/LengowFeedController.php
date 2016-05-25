@@ -152,8 +152,7 @@ class LengowFeedController extends LengowController
                             echo 'lengow_jquery("#block_'.$shopId['id_shop']
                                 .' .lengow_check_shop").attr("id", "lengow_shop_sync");';
                             echo 'lengow_jquery("#block_'.$shopId['id_shop']
-                                .' .lengow_check_shop").attr("data-original-title", "'
-                                .$this->locale->t('product.screen.lengow_shop_sync').'");';
+                                .' .lengow_check_shop").attr("data-original-title", "';
                         } else {
                             echo 'lengow_jquery("#block_'.$shopId['id_shop']
                                 .' .lengow_check_shop").html("");';
