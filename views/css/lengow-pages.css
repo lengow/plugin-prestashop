@@ -231,3 +231,13 @@ body.lgw-home-iframe .lgw-content-section p{
 .lgw-container .add-country:hover{
   color:#555;
 }
+
+
+
+/*************************************************/
+/*               MAIN SETTINGS                   */
+/*************************************************/
+
+.lgw-container #download_log{
+  display:none;
+}
