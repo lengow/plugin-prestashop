@@ -68,15 +68,14 @@ function addScoreCarrier(){
         $('#lengow_form_order_setting').on('click', '.add_lengow_default_carrier', function () {
             if ($('#select_country').val() !== "") {
                 var href = $(this).attr('data-href');
+                var data = {action: 'add_country', id_country: $('#select_country').val()};
 
-                $.ajax({
-                    url: href,
-                    method: 'POST',
-                    data: {action: 'add_country', id_country: $('#select_country').val()},
-                    dataType: 'script',
-                    success: function(){
-                        $('.add-country').show();
-                    }
+                $.getJSON(href, data, function(content) {
+                    $("#marketplace_country").append(content['marketplace_carrier']);
+                    $("#select_country").html(content['countries']);
+                    addScoreCarrier();
+                    lengow_jquery('.lengow_select').select2({ minimumResultsForSearch: 16});
+                    $('.add-country').show();
                 });
                 $('#error_select_country').html('');
                 $('.select_country').hide();
@@ -108,12 +107,13 @@ function addScoreCarrier(){
         $('#marketplace_country').on('click', '.js-delete-country-yes', function () {
             var href = $('.lengow_default_carrier').attr('data-href');
             var idCountry = $(this).closest('.country').find('.delete_lengow_default_carrier').data('id-country');
-            $.ajax({
-                url: href,
-                method: 'POST',
-                data: {action: 'delete_country', id_country: idCountry},
-                dataType: 'script'
+            var data = {action: 'delete_country', id_country: idCountry};
+
+            $.getJSON(href, data, function(content) {
+                $("#select_country").html(content['countries']);
+                $("#lengow_marketplace_carrier_country_" + content['id_country']).remove();
             });
+
             return false;
         });
 

@@ -173,11 +173,11 @@ class LengowOrderSettingController extends LengowController
                     _PS_MODULE_LENGOW_DIR_,
                     'views/templates/admin/lengow_order_setting/helpers/view/select_country.tpl'
                 );
-                echo '$("#marketplace_country").append("'.
-                    preg_replace('/\r|\n/', '', addslashes($display_marketplace_carrier)).'");';
-                echo '$("#select_country").html("'.preg_replace('/\r|\n/', '', addslashes($display_countries)).'");';
-                echo 'addScoreCarrier();';
-                echo 'lengow_jquery(\'.lengow_select\').select2({ minimumResultsForSearch: 16});';
+
+                $data = array();
+                $data['marketplace_carrier'] = preg_replace('/\r|\n/', '', $display_marketplace_carrier);
+                $data['countries'] = preg_replace('/\r|\n/', '', addslashes($display_countries));
+                echo Tools::jsonEncode($data);
                 exit();
             case 'delete_country':
                  $id_country = Tools::getValue('id_country');
@@ -205,8 +205,11 @@ class LengowOrderSettingController extends LengowController
                     'views/templates/admin/lengow_order_setting/helpers/view/select_country.tpl'
                 );
 
-                echo '$("#select_country").html("'.preg_replace('/\r|\n/', '', addslashes($display_countries)).'");';
-                echo '$("#lengow_marketplace_carrier_country_'.$id_country.'").remove();';
+                $data = array();
+                $data['countries'] = preg_replace('/\r|\n/', '', addslashes($display_countries));
+                $data['id_country'] = $id_country;
+
+                echo Tools::jsonEncode($data);
                 exit();
             case 'process':
                 foreach ($default_carriers as $key => $value) {
