@@ -211,13 +211,13 @@
                         alert(content['message']);
                     } else {
                         $.each(content['product_id'], function(idx, p_id) {
-                            lengow_jquery("#block_" + id_shop
-                                + " .lengow_product_selection_"  + p_id).bootstrapSwitch("state", true, true);
+                            lengow_jquery("#shop_" + id_shop + "_" + p_id + " .lgw-switch").addClass("checked");
                         });
                         reloadTotal(content, id_shop);
                     }
                 });
             }
+            return false;
         });
         $('#lengow_feed_wrapper').on('click', '.lengow_remove_from_export', function () {
             var href = $(this).attr('data-href');
@@ -237,13 +237,13 @@
                         alert(content['message']);
                     } else {
                         $.each(content['product_id'], function(idx, p_id) {
-                            lengow_jquery("#block_" + id_shop
-                                + " .lengow_product_selection_" + p_id).bootstrapSwitch("state",false, true);
+                            lengow_jquery("#shop_" + id_shop + "_" + p_id + " .lgw-switch").removeClass("checked");
                         });
                         reloadTotal(content, id_shop);
                     }
                 });
             }
+            return false;
         });
 
         $('#lengow_feed_wrapper').on('click', '.lengow_select_all_shop input', function () {
