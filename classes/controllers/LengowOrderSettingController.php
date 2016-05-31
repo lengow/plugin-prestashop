@@ -176,7 +176,7 @@ class LengowOrderSettingController extends LengowController
 
                 $data = array();
                 $data['marketplace_carrier'] = preg_replace('/\r|\n/', '', $display_marketplace_carrier);
-                $data['countries'] = preg_replace('/\r|\n/', '', addslashes($display_countries));
+                $data['countries'] = $display_countries;
                 echo Tools::jsonEncode($data);
                 exit();
             case 'delete_country':
@@ -206,7 +206,7 @@ class LengowOrderSettingController extends LengowController
                 );
 
                 $data = array();
-                $data['countries'] = preg_replace('/\r|\n/', '', addslashes($display_countries));
+                $data['countries'] = $display_countries;
                 $data['id_country'] = $id_country;
 
                 echo Tools::jsonEncode($data);

@@ -77,7 +77,10 @@ function addScoreCarrier(){
                     $("#marketplace_country").append(content['marketplace_carrier']);
                     $("#select_country").html(content['countries']);
                     addScoreCarrier();
-                    lengow_jquery('.lengow_select').select2({ minimumResultsForSearch: 16});
+                    lengow_jquery('.lengow_select').select2({
+                        minimumResultsForSearch: 16,
+                        templateResult: formatState
+                    });
                     $('.add-country').show();
                 });
                 $('#error_select_country').html('');
