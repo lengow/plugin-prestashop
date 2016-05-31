@@ -213,27 +213,49 @@ class LengowOrderSettingController extends LengowController
                 exit();
             case 'process':
                 foreach ($default_carriers as $key => $value) {
-                    Db::getInstance()->autoExecute(
-                        _DB_PREFIX_.'lengow_carrier_country',
-                        array('id_carrier' => (int)$value > 0  ? (int)$value : null),
-                        'UPDATE',
-                        'id = '.(int)$key,
-                        0,
-                        true,
-                        true
-                    );
+                    if (_PS_VERSION_ < '1.5') {
+                        Db::getInstance()->autoExecute(
+                            _DB_PREFIX_.'lengow_carrier_country',
+                            array('id_carrier' => (int)$value > 0  ? (int)$value : null),
+                            'UPDATE',
+                            'id = '.(int)$key,
+                            0,
+                            true,
+                            true
+                        );
+                    } else {
+                        Db::getInstance()->update(
+                            'lengow_carrier_country',
+                            array('id_carrier' => (int)$value > 0  ? (int)$value : null),
+                            'id = '.(int)$key,
+                            0,
+                            true,
+                            true
+                        );
+                    }
                 }
 
                 foreach ($default_marketplace_carriers as $key => $value) {
-                    Db::getInstance()->autoExecute(
-                        _DB_PREFIX_.'lengow_marketplace_carrier',
-                        array('id_carrier' => (int)$value > 0  ? (int)$value : null),
-                        'UPDATE',
-                        'id = '.(int)$key,
-                        0,
-                        true,
-                        true
-                    );
+                    if (_PS_VERSION_ < '1.5') {
+                        Db::getInstance()->autoExecute(
+                            _DB_PREFIX_.'lengow_marketplace_carrier',
+                            array('id_carrier' => (int)$value > 0  ? (int)$value : null),
+                            'UPDATE',
+                            'id = '.(int)$key,
+                            0,
+                            true,
+                            true
+                        );
+                    } else {
+                        Db::getInstance()->update(
+                            'lengow_marketplace_carrier',
+                            array('id_carrier' => (int)$value > 0  ? (int)$value : null),
+                            'id = '.(int)$key,
+                            0,
+                            true,
+                            true
+                        );
+                    }
                 }
 
                 $form = new LengowConfigurationForm(

@@ -248,12 +248,12 @@ class LengowConfiguration extends Configuration
         }
     }
 
-    public static function get($key, $id_lang = null, $id_shop_group = null, $id_shop = null)
+    public static function get($key, $id_lang = null, $id_shop_group = null, $id_shop = null, $default = false)
     {
         if (_PS_VERSION_ < '1.5') {
             return parent::get($key, $id_lang);
         } else {
-            return parent::get($key, $id_lang, $id_shop_group, $id_shop);
+            return parent::get($key, $id_lang, $id_shop_group, $id_shop, $default);
         }
     }
 

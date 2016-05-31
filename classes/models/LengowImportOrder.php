@@ -1172,11 +1172,18 @@ class LengowImportOrder
             $params['message'] = pSQL((string)$this->order_data->comments);
         }
 
-        $result = Db::getInstance()->autoExecute(
-            _DB_PREFIX_.'lengow_orders',
-            $params,
-            'INSERT'
-        );
+        if (_PS_VERSION_ < '1.5') {
+            $result = Db::getInstance()->autoExecute(
+                _DB_PREFIX_.'lengow_orders',
+                $params,
+                'INSERT'
+            );
+        } else {
+            $result = Db::getInstance()->insert(
+                'lengow_orders',
+                $params
+            );
+        }
         if ($result) {
             $this->id_order_lengow = LengowOrder::getIdFromLengowOrders(
                 $this->marketplace_sku,
@@ -1202,15 +1209,27 @@ class LengowImportOrder
         foreach ($products as $product_id => $values) {
             $order_line_id =  $values['marketplace_order_line_id'];
             $id_order_detail = LengowOrderDetail::findByOrderIdProductId($order->id, $product_id);
-            $result = Db::getInstance()->autoExecute(
-                _DB_PREFIX_.'lengow_order_line',
-                array(
-                    'id_order'          => (int)$order->id,
-                    'id_order_line'     => pSQL($order_line_id),
-                    'id_order_detail'   => (int)$id_order_detail,
-                ),
-                'INSERT'
-            );
+
+            if (_PS_VERSION_ < '1.5') {
+                $result = Db::getInstance()->autoExecute(
+                    _DB_PREFIX_.'lengow_order_line',
+                    array(
+                        'id_order'          => (int)$order->id,
+                        'id_order_line'     => pSQL($order_line_id),
+                        'id_order_detail'   => (int)$id_order_detail,
+                    ),
+                    'INSERT'
+                );
+            } else {
+                $result = Db::getInstance()->insert(
+                    'lengow_order_line',
+                    array(
+                        'id_order'          => (int)$order->id,
+                        'id_order_line'     => pSQL($order_line_id),
+                        'id_order_detail'   => (int)$id_order_detail,
+                    )
+                );
+            }
             if ($result) {
                 $order_line_saved .= (!$order_line_saved ? $order_line_id : ' / '.$order_line_id);
             }

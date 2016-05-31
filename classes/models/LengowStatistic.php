@@ -58,7 +58,7 @@ class LengowStatistic
                 $return['total_order'] += $result->revenues;
                 $return['nb_order'] += $result->transactions;
                 $return['average_order'] += $result->average_order;
-                $return['currency'] = $result->currency->symbol;
+                $return['currency'] = $result->currency->iso_a3;
             }
             $i++;
         }

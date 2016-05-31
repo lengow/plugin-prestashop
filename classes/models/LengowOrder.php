@@ -390,12 +390,20 @@ class LengowOrder extends Order
      */
     public static function updateOrderLengow($id, $params)
     {
-        return Db::getInstance()->autoExecute(
-            _DB_PREFIX_.'lengow_orders',
-            $params,
-            'UPDATE',
-            '`id` = \''.(int)$id.'\''
-        );
+        if (_PS_VERSION_ < '1.5') {
+            return Db::getInstance()->autoExecute(
+                _DB_PREFIX_.'lengow_orders',
+                $params,
+                'UPDATE',
+                '`id` = \''.(int)$id.'\''
+            );
+        } else {
+            return Db::getInstance()->update(
+                'lengow_orders',
+                $params,
+                '`id` = \''.(int)$id.'\''
+            );
+        }
     }
 
     /**
@@ -778,17 +786,31 @@ class LengowOrder extends Order
     public static function addOrderLog($id_order_lengow, $message = '', $type = 'import', $finished = 0)
     {
         $log_type = LengowOrder::getOrderLogType($type);
-        return Db::getInstance()->autoExecute(
-            _DB_PREFIX_.'lengow_logs_import',
-            array(
-                'is_finished'       => (int)$finished,
-                'date'              => date('Y-m-d H:i:s'),
-                'message'           => pSQL($message),
-                'type'              => (int)$log_type,
-                'id_order_lengow'   => (int)$id_order_lengow
-            ),
-            'INSERT'
-        );
+
+        if (_PS_VERSION_ < '1.5') {
+            return Db::getInstance()->autoExecute(
+                _DB_PREFIX_.'lengow_logs_import',
+                array(
+                    'is_finished'       => (int)$finished,
+                    'date'              => date('Y-m-d H:i:s'),
+                    'message'           => pSQL($message),
+                    'type'              => (int)$log_type,
+                    'id_order_lengow'   => (int)$id_order_lengow
+                ),
+                'INSERT'
+            );
+        } else {
+            return Db::getInstance()->insert(
+                'lengow_logs_import',
+                array(
+                    'is_finished'       => (int)$finished,
+                    'date'              => date('Y-m-d H:i:s'),
+                    'message'           => pSQL($message),
+                    'type'              => (int)$log_type,
+                    'id_order_lengow'   => (int)$id_order_lengow
+                )
+            );
+        }
     }
 
     /**
@@ -810,12 +832,20 @@ class LengowOrder extends Order
 
         $update_success = 0;
         foreach ($order_logs as $order_log) {
-            $result = Db::getInstance()->autoExecute(
-                _DB_PREFIX_.'lengow_logs_import',
-                array('is_finished' => 1),
-                'UPDATE',
-                '`id` = \''.(int)$order_log['id'].'\''
-            );
+            if (_PS_VERSION_ < '1.5') {
+                $result = Db::getInstance()->autoExecute(
+                    _DB_PREFIX_.'lengow_logs_import',
+                    array('is_finished' => 1),
+                    'UPDATE',
+                    '`id` = \''.(int)$order_log['id'].'\''
+                );
+            } else {
+                $result = Db::getInstance()->update(
+                    'lengow_logs_import',
+                    array('is_finished' => 1),
+                    '`id` = \''.(int)$order_log['id'].'\''
+                );
+            }
             if ($result) {
                 $update_success++;
             }

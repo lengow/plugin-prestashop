@@ -483,35 +483,48 @@ class LengowMarketplace
         $shops = LengowShop::findAll();
         foreach ($shops as $shop) {
             $actions = LengowAction::getActiveActionByShop('ship', $shop['id_shop'], false);
-            foreach ($actions as $action) {
-                $result = LengowConnector::queryApi(
-                    'get',
-                    '/v3.0/orders/actions/',
-                    $shop['id_shop'],
-                    array('id' => $action['id'])
-                );
-                if (isset($result->id) && isset($result->processed) && isset($result->queued)) {
-                    if ((int)$result->id > 0 && $result->queued == false) {
-                        //update actions
-                        Db::getInstance()->autoExecute(
-                            _DB_PREFIX_ . 'lengow_actions',
-                            array(
-                                'state'         => (int)LengowAction::STATE_FINISH,
-                                'updated_at'    => date('Y-m-d h:m:i'),
-                            ),
-                            'UPDATE',
-                            'id = '.(int)$action['id']
-                        );
-                        if ($result->processed) {
-                            $id_order_lengow = LengowOrder::findByOrder($action['id_order']);
-                            LengowOrder::updateOrderLengow($id_order_lengow, array(
-                                'order_process_state' => 2
-                            ));
+            if ($actions != null) {
+                foreach ($actions as $action) {
+                    $result = LengowConnector::queryApi(
+                        'get',
+                        '/v3.0/orders/actions/',
+                        $shop['id_shop'],
+                        array('id' => $action['id'])
+                    );
+                    if (isset($result->id) && isset($result->processed) && isset($result->queued)) {
+                        if ((int)$result->id > 0 && $result->queued == false) {
+                            //update actions
+                            if (_PS_VERSION_ < '1.5') {
+                                Db::getInstance()->autoExecute(
+                                    _DB_PREFIX_ . 'lengow_actions',
+                                    array(
+                                        'state'         => (int)LengowAction::STATE_FINISH,
+                                        'updated_at'    => date('Y-m-d h:m:i'),
+                                    ),
+                                    'UPDATE',
+                                    'id = '.(int)$action['id']
+                                );
+                            } else {
+                                Db::getInstance()->update(
+                                    'lengow_actions',
+                                    array(
+                                        'state'         => (int)LengowAction::STATE_FINISH,
+                                        'updated_at'    => date('Y-m-d h:m:i'),
+                                    ),
+                                    'id = '.(int)$action['id']
+                                );
+                            }
+                            if ($result->processed) {
+                                $id_order_lengow = LengowOrder::findByOrder($action['id_order']);
+                                LengowOrder::updateOrderLengow($id_order_lengow, array(
+                                    'order_process_state' => 2
+                                ));
+                            }
                         }
                     }
-                }
-                if (!LengowMain::inTest()) {
-                    usleep(250000);
+                    if (!LengowMain::inTest()) {
+                        usleep(250000);
+                    }
                 }
             }
         }
