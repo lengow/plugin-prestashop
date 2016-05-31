@@ -36,7 +36,7 @@ class LengowFeedController extends LengowController
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     if ($state !== null) {
                         Configuration::updatevalue('LENGOW_EXPORT_VARIATION_ENABLED', $state, null, null, $shopId);
-                        $this->reloadTotal($shopId);
+                        echo Tools::jsonEncode($this->reloadTotal($shopId));
                     }
                     break;
                 case 'change_option_selected':
@@ -44,13 +44,16 @@ class LengowFeedController extends LengowController
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     if ($state !== null) {
                         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', $state, null, null, $shopId);
-                        $this->reloadTotal($shopId);
                         $state = Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shopId);
+                        $data = array();
+                        $data['shop_id'] = $shopId;
                         if ($state) {
-                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').slideDown(150);";
+                            $data["state"] = true;
                         } else {
-                            echo "lengow_jquery('#block_".$shopId." .lengow_feed_block_footer_content').slideUp(150);";
+                            $data["state"] = false;
                         }
+                        $result = array_merge($data, $this->reloadTotal($shopId));
+                        echo Tools::jsonEncode($result);
                     }
                     break;
                 case 'change_option_product_out_of_stock':
@@ -58,7 +61,7 @@ class LengowFeedController extends LengowController
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     if ($state !== null) {
                         Configuration::updatevalue('LENGOW_EXPORT_OUT_STOCK', $state, null, null, $shopId);
-                        $this->reloadTotal($shopId);
+                        echo Tools::jsonEncode($this->reloadTotal($shopId));
                     }
                     break;
                 case 'select_product':
@@ -67,21 +70,24 @@ class LengowFeedController extends LengowController
                     $productId = isset($_REQUEST['id_product']) ? $_REQUEST['id_product'] : null;
                     if ($state !== null) {
                         LengowProduct::publish($productId, $state, $shopId);
-                        $this->reloadTotal($shopId);
+                        echo Tools::jsonEncode($this->reloadTotal($shopId));
                     }
                     break;
                 case 'load_table':
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
-                    echo 'lengow_jquery("#block_'.$shopId.' .lengow_feed_block_footer_content").html("'.
-                        preg_replace('/\r|\n/', '', addslashes($this->buildTable($shopId))).'");';
+                    $data = array();
+                    $data['shop_id'] = $shopId;
+                    $data['footer_content'] = preg_replace('/\r|\n/', '', $this->buildTable($shopId));
                     if ($this->toolbox) {
-                        echo 'lengow_jquery(".lengow_switch").bootstrapSwitch({readonly: true});';
+                        $data['bootstrap_switch_readonly'] = true;
                     }
+                    echo Tools::jsonEncode($data);
                     break;
                 case 'add_to_export':
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
                     $select_all = isset($_REQUEST['select_all']) ? $_REQUEST['select_all'] : null;
+                    $data = array();
                     if ($select_all == "true") {
                         $this->buildTable($shopId);
                         $sql = $this->list->buildQuery(false, true);
@@ -93,29 +99,28 @@ class LengowFeedController extends LengowController
                         foreach ($all as $id) {
                             LengowProduct::publish($id, 1, $shopId);
                             foreach ($selection as $id => $v) {
-                                echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
-                                echo '.bootstrapSwitch("state",true, true);';
+                                $data['product_id'][] = $id;
                             }
                         }
-
-                        $this->reloadTotal($shopId);
+                        $data = array_merge($data, $this->reloadTotal($shopId));
                     } elseif ($selection) {
                         foreach ($selection as $id => $v) {
                             // This line is useless, but Prestashop validator require it
                             $v = $v;
                             LengowProduct::publish($id, 1, $shopId);
-                            echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
-                            echo '.bootstrapSwitch("state",true, true);';
+                            $data['product_id'][] = $id;
                         }
-                        $this->reloadTotal($shopId);
+                        $data = array_merge($data, $this->reloadTotal($shopId));
                     } else {
-                        echo 'alert("'.$this->locale->t('product.screen.no_product_selected').'");';
+                        $data['message'] = $this->locale->t('product.screen.no_product_selected');
                     }
+                    echo Tools::jsonEncode($data);
                     break;
                 case 'remove_from_export':
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
                     $select_all = isset($_REQUEST['select_all']) ? $_REQUEST['select_all'] : null;
+                    $data = array();
                     if ($select_all == "true") {
                         $this->buildTable($shopId);
                         $sql = $this->list->buildQuery(false, true);
@@ -127,47 +132,43 @@ class LengowFeedController extends LengowController
                         foreach ($all as $id) {
                             LengowProduct::publish($id, 0, $shopId);
                             foreach ($selection as $id => $v) {
-                                echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
-                                echo '.bootstrapSwitch("state",false, true);';
+                                $data['product_id'][] = $id;
                             }
                         }
-                        $this->reloadTotal($shopId);
+                        $data = array_merge($data, $this->reloadTotal($shopId));
                     } elseif ($selection) {
                         foreach ($selection as $id => $v) {
                             LengowProduct::publish($id, 0, $shopId);
-                            echo 'lengow_jquery("#block_'.$shopId.' .lengow_product_selection_'.$id.'")';
-                            echo '.bootstrapSwitch("state",false, true);';
+                            $data['product_id'][] = $id;
                         }
-                        $this->reloadTotal($shopId);
+                        $data = array_merge($data, $this->reloadTotal($shopId));
                     } else {
-                        echo 'alert("'.$this->locale->t('product.screen.no_product_selected').'");';
+                        $data['message'] = $this->locale->t('product.screen.no_product_selected');
                     }
+
+                    echo Tools::jsonEncode($data);
                     break;
                 case 'check_shop':
                     $shops = LengowShop::findAll(true);
                     $link = new LengowLink();
                     foreach ($shops as $shopId) {
                         $checkShop = $this->checkShop($shopId['id_shop']);
-                        if ($checkShop === true) {
-                            echo 'lengow_jquery("#block_'.$shopId['id_shop']
-                                .' .lengow_check_shop").attr("id", "lengow_shop_sync");';
-                            echo 'lengow_jquery("#block_'.$shopId['id_shop']
-                                .' .lengow_check_shop").attr("data-original-title", "'
-                                .$this->locale->t('product.screen.lengow_shop_sync').'");';
-                        } else {
-                            echo 'lengow_jquery("#block_'.$shopId['id_shop']
-                                .' .lengow_check_shop").html("");';
-                            echo 'lengow_jquery("#block_'.$shopId['id_shop']
-                                .' .lengow_check_shop").attr("id", "lengow_shop_no_sync");';
-                            echo 'lengow_jquery("#block_'.$shopId['id_shop']
-                                .' .lengow_check_shop").attr("data-original-title", "'
-                                .$this->locale->t('product.screen.lengow_shop_no_sync').'");';
-                            echo 'lengow_jquery("#block_' . $shopId['id_shop']
-                                .' .lengow_feed_block_header_title").append("<a href=\"'
-                                .$link->getAbsoluteAdminLink('AdminLengowHome', true)
-                                .'&isSync=true\" ><span>sync</span> </a>");';
 
+                        $data = array();
+                        $data['shop_id'] = $shopId['id_shop'];
+
+                        if ($checkShop === true) {
+                            $data['check_shop'] = true;
+                            $data['original_title'] = $this->locale->t('product.screen.lengow_shop_sync');
+                        } else {
+                            $data['check_shop'] = false;
+                            $data['original_title'] = $this->locale->t('product.screen.lengow_shop_no_sync');
+                            $data['header_title'] = '<a href=\"'
+                                .$link->getAbsoluteAdminLink('AdminLengowHome', true)
+                                .'&isSync=true\" ><span>sync</span> </a>';
                         }
+
+                        echo Tools::jsonEncode($data);
                     }
                     break;
             }
@@ -240,14 +241,19 @@ class LengowFeedController extends LengowController
      * Reload Total product / Exported product
      *
      * @param $shopId
+     * @return array Number of product exported/total for this shop
      */
     public function reloadTotal($shopId)
     {
         $lengowExport = new LengowExport(array(
             "shop_id" => $shopId
         ));
-        echo 'lengow_jquery("#block_'.$shopId.' .lengow_exported").html("'.$lengowExport->getTotalExportProduct().'");';
-        echo 'lengow_jquery("#block_'.$shopId.' .lengow_total").html("'.$lengowExport->getTotalProduct().'");';
+
+        $result = array();
+        $result['total_export_product'] = $lengowExport->getTotalExportProduct();
+        $result['total_product'] = $lengowExport->getTotalProduct();
+
+        return $result;
     }
 
     /**

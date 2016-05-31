@@ -79,12 +79,12 @@
         </li>
 
         <li class="lengow_float_right {if $current_controller == 'LengowMainSettingController'}active{/if}" id="menugotosetting">
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}" title="Global parameters">
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}"  class="lengow_link_tooltip" data-placement="bottom" data-original-title="Global parameters">
                 <i class="fa fa-cog fa-2x"></i>
             </a>
         </li>
         <li class="lengow_float_right  {if $current_controller == 'LengowHelpController'}active{/if}" id="menugotohelp">
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}" title="Help">
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}" class="lengow_link_tooltip" data-placement="bottom" data-original-title="Help">
                 <i class="fa fa-life-ring fa-2x"></i>
             </a>
         </li>
