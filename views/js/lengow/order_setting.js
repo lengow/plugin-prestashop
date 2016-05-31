@@ -56,10 +56,13 @@ function addScoreCarrier(){
         addScoreCarrier();
 
         function changeStockMP() {
+            var selector = $('.lengow_import_stock_ship_mp');
             if ($("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").prop('checked')) {
-                $('.lengow_import_stock_ship_mp').slideDown(150);
+                selector.slideDown(150);
+                selector.next('.legend').show();
             } else {
-                $('.lengow_import_stock_ship_mp').slideUp(150);
+                selector.slideUp(150);
+                selector.next('.legend').hide();
             }
         }
 

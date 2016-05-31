@@ -89,12 +89,15 @@ class LengowConfigurationForm
                 $html.='<input name="'.$name.'" type="checkbox" '.$checked.' '.$readonly.' >';
                 $html.='</div>'. $label;
                 $html.='</label></div></div>';
+                $html .= '<span class="legend">' . $legend . '</span>';
                 break;
             case 'text':
                 $html.= '<label class="control-label">'.$label.'</label>
-                    <input type="text" name="'.$name.'"
-                        class="form-control" placeholder="'.$placeholder.'"
-                        value="'.$value.'" '.$readonly.'>
+                    <div class="input-group">
+                        <input type="text" name="'.$name.'"
+                            class="form-control" placeholder="'.$placeholder.'"
+                            value="'.$value.'" '.$readonly.'>
+                    </div>
                     <span class="legend">'.$legend.'</span>
                 </div>';
                 break;

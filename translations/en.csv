@@ -6,8 +6,8 @@ tab.order_setting|Orders settings
 tab.help|Help
 tab.main_setting|Main settings
 tab.legals|Legals
-menu.product|products
-menu.order|orders
+menu.product|Products
+menu.order|Orders
 menu.preprod_active|Pre-production mode
 menu.order_overview|Overview
 menu.order_parameter|Settings
@@ -23,6 +23,13 @@ connect.screen.marketing_channels_title|1 800 marketing channels
 connect.screen.marketing_channels_text|Be visible on the major players in your market
 connect.screen.retailers_title|3500 retailers
 connect.screen.retailers_channels_text|Some of the world's most respected retailers and brands trust Lengow
+dashboard.screen.products_title|Products
+dashboard.screen.products_text|Take a look at all your products available to prepare your catalogue
+dashboard.screen.orders_title|Orders
+dashboard.screen.orders_text|Manage your orders directly on your PrestaShop dashboard
+dashboard.screen.settings_title|Settings
+dashboard.screen.settings_text|Configure the main settings of your PrestaShop plugin
+dashboard.screen.partner_business|Lengow, partner of your business
 dashboard.screen.good_job|Good Job! You have
 dashboard.screen.pending_order|Pending Orders
 dashboard.screen.sell_everywhere|Why not go a step further, and start selling everywhere?
@@ -30,7 +37,11 @@ dashboard.screen.stat_with_lengow_you_make|With Lengow, you have made
 dashboard.screen.stat_turnover|Turnover
 dashboard.screen.stat_nb_orders|Orders
 dashboard.screen.stat_avg_order|Average Order
-dashboard.screen.stat_more_stats|Want more stats? Go to Lengow.com
+dashboard.screen.stat_more_stats|Want more stats?
+dashboard.screen.some_help_title|Need some help?
+dashboard.screen.get_in_touch|Get in touch with Lengow
+dashboard.screen.visit_help_center|Visit our Help Center
+dashboard.screen.configure_plugin|for detailed information on how to configure properly your PrestaShop plugin
 product.screen.nb_exported|products exported
 product.screen.nb_available|products available
 product.screen.include_variation|Include product variations
@@ -42,7 +53,8 @@ product.screen.include_specific_product_support|Use this option to select your p
 product.screen.your_exported_catalog|This is your export catalogue. Copy this link into your Lengow platform
 product.screen.last_export|Last export
 product.screen.no_export|No export
-product.screen.no_result_found|Sorry, no results found for your search
+product.screen.no_result_found_title|Sorry, we've found nothing.
+product.screen.no_result_found_description|Maybe, you can try to change your request to find your order ?
 product.screen.no_product_selected|Please select a product
 product.screen.date_from|From
 product.screen.date_to|To
@@ -89,7 +101,7 @@ order.screen.action_sent|action sent
 order.screen.action_waiting_return|Action sent, waiting returns
 order.screen.action_sent_not_work|Action sent to the marketplace didn't work
 order.screen.no_order_title|The best is yet to come!
-order.screen.no_order_description|Your products have great visibility and your sales are about to prosper!
+order.screen.no_order_description|Your future customers don't know yet how good your products are!
 order.screen.action_success|Success
 order.screen.action_error|Error
 order.screen.status_not_synchronized|Not synchronized
@@ -119,7 +131,7 @@ order_setting.screen.country_wt_carrier_link|link
 order_setting.screen.default_country|default
 order_setting.screen.import_setting_title|Order import
 order_setting.screen.select_a_country|Please choose a country...
-order_setting.screen.import_setting_description|Manage your import settings here for marketplace orders
+order_setting.screen.import_setting_description|Manage your import settings here for marketplace orders 
 order_setting.screen.nb_days|days
 order_setting.screen.cron_title|Cron settings
 order_setting.screen.cron_description|Use the Crontab Module to import orders from Lengow
@@ -134,7 +146,7 @@ order_setting.screen.no_default_carrier_selected|No default carrier selected
 order_setting.screen.confirmation_delete_carrier_country|Are you sure ?
 global_setting.screen.notification_alert_title|Notifications & alerts
 global_setting.screen.preprod_mode_title|Pre-production Mode
-global_setting.screen.preprod_mode_description|Use pre-production mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your pre-production server ONLY
+global_setting.screen.preprod_mode_description|Use pre-production mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your pre-production server ONLY 
 global_setting.screen.log_file_title|Log Files
 global_setting.screen.log_file_description|Find all the maintenance logs below (imported orders, errors reports...). They will be recorded here for 20 days.
 global_setting.screen.please_choose_log|Please choose a log file...
@@ -145,7 +157,7 @@ global_setting.screen.all_data_will_be_lost|All data will be lost (tables and co
 global_setting.screen.you_will_find_a_backup|After uninstalling the module, you will find a back-up of your Lengow database in
 global_setting.screen.prestashop_backup|PrestaShop Backup
 global_setting.screen.i_want_uninstall|I want to uninstall the Lengow module
-global_setting.screen.button_i_want_uninstall|Delete Lengow
+global_setting.screen.button_i_want_uninstall|Uninstall Lengow module
 global_setting.screen.title_modal_uninstall|Remove Lengow Module
 global_setting.screen.cancel_i_want_uninstall|Cancel
 global_setting.screen.to_uninstall_type|To uninstall, type
@@ -172,20 +184,17 @@ lengow_setting.lengow_order_id_cancel_title|Cancelled orders
 lengow_setting.lengow_order_id_shippedbymp_title|Shipped marketplace orders
 lengow_setting.lengow_import_force_product_title|Force products
 lengow_setting.lengow_import_force_product_legend|Enable this option if you want to automate the importing of out of stock and inactive products
-lengow_setting.lengow_import_days_title|Re-import all orders made after
+lengow_setting.lengow_import_days_title|Re-import all orders made after 
 lengow_setting.lengow_import_days_legend|Activate this option if you have pending orders in error. It lets you re-import orders made since your last good period
 lengow_setting.lengow_import_processing_fee_title|Import processing fee
 lengow_setting.lengow_import_processing_fee_legend|Enable this option if you want to have marketplace processing fee inside your order
 lengow_setting.lengow_import_preprod_enabled_title|Activate Pre-production Mode
-lengow_setting.lengow_import_preprod_enabled_legend|To simulate fictitious orders. You have to activate this option on your pre-production server ONLY
-lengow_setting.lengow_import_fake_mail_title|Fictitious emails
-lengow_setting.lengow_import_fake_mail_legend|When enabled, a fictitious email is generated
 lengow_setting.lengow_import_ship_mp_enabled_title|Import orders shipped by marketplaces
 lengow_setting.lengow_import_stock_ship_mp_title|I want to decrease my stock
-lengow_setting.lengow_import_stock_ship_mp_legend|This option is only available for orders shipped by marketplaces
+lengow_setting.lengow_import_stock_ship_mp_legend|Use this option to take into account your marketplaces orders on your stock in your PrestaShop backoffice
 lengow_setting.lengow_report_mail_enabled_title|I would like to be notified when there are issues regarding order importation and/or catalogue exportation
-lengow_setting.lengow_report_mail_enabled_legend|We will send you this once a day
 lengow_setting.lengow_report_mail_address_title|Mail for the report email
+lengow_setting.lengow_report_mail_address_legend|To add several email, separate them with ;
 lengow_setting.lengow_import_single_enabled_title|Limited to one order per import process
 lengow_setting.lengow_import_single_enabled_legend|Useful for PrestaShop versions from 1.5.2 to 1.5.4.* (avoids importing orders twice)
 lengow_setting.lengow_import_in_progress_title|Import in progress
