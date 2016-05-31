@@ -93,13 +93,10 @@ class LengowConfigurationForm
                 break;
             case 'text':
                 $html.= '<label class="control-label">'.$label.'</label>
-                    <div class="input-group">
-                        <input type="text" name="'.$name.'"
-                            class="form-control" placeholder="'.$placeholder.'"
-                            value="'.$value.'" '.$readonly.'>
-                    </div>
-                    <span class="legend">'.$legend.'</span>
-                </div>';
+                    <input type="text" name="'.$name.'"
+                        class="form-control" placeholder="'.$placeholder.'"
+                        value="'.$value.'" '.$readonly.'>
+                    </div><span class="legend">'.$legend.'</span>';
                 break;
             case 'select':
                 $html.= '<label class="control-label">'.$label.'</label>
