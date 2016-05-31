@@ -106,8 +106,16 @@ class LengowMainSettingController extends LengowController
         }
 
         $listFile = LengowLog::getPaths();
+        $files = array();
 
-        $this->context->smarty->assign('list_file', $listFile);
+        foreach ($listFile as $file) {
+            $name = explode(".", $file['name']);
+            $date = DateTime::createFromFormat('Y-m-d', $name[0]);
+            $file['name'] = $date->format('d M Y');
+            $files[] = $file;
+        }
+
+        $this->context->smarty->assign('list_file', $files);
         $this->context->smarty->assign('mail_report', $mail_report);
         $this->context->smarty->assign('preprod_report', $preprod_report);
         $this->context->smarty->assign('preprod_wrapper', $preprod_wrapper);
