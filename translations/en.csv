@@ -11,6 +11,18 @@ menu.order|orders
 menu.preprod_active|Pre-production mode
 menu.order_overview|Overview
 menu.order_parameter|Settings
+footer.legals|Legals
+connect.screen.lengow|Lengow, 'easily sell everywhere'
+connect.screen.lengow_presentation|Lengow is the ecommerce automation solution that helps retailers improve their performance, automate their business processes and grow internationally.
+connect.screen.lengow_platform|Discover the Lengow platform and open the door to strong profitability and visibility for your products around the world on all distribution channels: marketplaces, comparison shopping engines, affiliate platforms and display/retargeting…
+connect.screen.create_account|Create my 15 days-free account
+connect.screen.connect_account|or Connect to your account
+connect.screen.free_days_title|15 free days
+connect.screen.free_days_text|No credit card, no commitment : just results
+connect.screen.marketing_channels_title|1 800 marketing channels
+connect.screen.marketing_channels_text|Be visible on the major players in your market
+connect.screen.retailers_title|3500 retailers
+connect.screen.retailers_channels_text|Some of the world's most respected retailers and brands trust Lengow
 dashboard.screen.good_job|Good Job! You have
 dashboard.screen.pending_order|Pending Orders
 dashboard.screen.sell_everywhere|Why not go a step further, and start selling everywhere?
@@ -139,6 +151,8 @@ global_setting.screen.cancel_i_want_uninstall|Cancel
 global_setting.screen.to_uninstall_type|To uninstall, type
 global_setting.screen.button_download_file|Download log files
 global_setting.screen.button_save|Save changes
+help.screen.title|Get a little help from your support team !
+help.screen.content_text|Ask us anything about Lengow or share your feedback
 lengow_setting.lengow_account_id_title|Account ID
 lengow_setting.lengow_access_token_title|Access Token
 lengow_setting.lengow_secret_token_title|Secret Token

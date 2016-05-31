@@ -388,6 +388,10 @@ class LengowImport
             ) {
                 LengowMain::sendMailAlert($this->log_output);
             }
+            //check if order action is finish (Ship / Cancel)
+            if (!$this->preprod_mode && !$this->import_one_order && $this->type_import == 'manual') {
+                LengowMarketplace::checkFinishAction();
+            }
         }
         if ($this->import_one_order) {
             $result['error'] = $error;
@@ -682,10 +686,6 @@ class LengowImport
                     $import_finished = true;
                     break;
                 }
-
-                //check if order action is finish (Ship / Cancel)
-                LengowMarketplace::checkFinishAction();
-
             }
             if ($import_finished) {
                 break;
