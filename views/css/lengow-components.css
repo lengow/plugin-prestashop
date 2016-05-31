@@ -280,6 +280,33 @@ a.lgw-box-link:hover{
 
     background: url("../img/tick.png") no-repeat 8px center;
 }
+
+.deleteModalDialog {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+
+.deleteModalDialog:target {
+    opacity:1;
+    pointer-events: auto;
+}
+
+.deleteModalDialog > div {
+    width: 700px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 5px;
+    background: #fff;
+}
 /*************************************************/
 /*                    SWITCH                     */
 /*************************************************/
