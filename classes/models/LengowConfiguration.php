@@ -150,7 +150,6 @@ class LengowConfiguration extends Configuration
                 'LENGOW_IMPORT_PREPROD_ENABLED' => array(
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_preprod_enabled_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_import_preprod_enabled_legend'),
                 ),
                 'LENGOW_IMPORT_SHIP_MP_ENABLED' => array(
                     'type'          => 'checkbox',
@@ -166,12 +165,12 @@ class LengowConfiguration extends Configuration
                 'LENGOW_REPORT_MAIL_ENABLED' => array(
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_report_mail_enabled_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_report_mail_enabled_legend'),
                     'default_value' => true
                 ),
                 'LENGOW_REPORT_MAIL_ADDRESS' => array(
                     'type'          => 'text',
-                    'placeholder'         => $locale->t('lengow_setting.lengow_report_mail_address_title'),
+                    'placeholder'   => $locale->t('lengow_setting.lengow_report_mail_address_title'),
+                    'legend'        => $locale->t('lengow_setting.lengow_report_mail_address_legend'),
                     'default_value' => ''
                 ),
                 'LENGOW_IMPORT_SINGLE_ENABLED' => array(
