@@ -76,11 +76,10 @@ class LengowList
      */
     public function displayHeader($order)
     {
-        if (count($this->collection) == 0) {
-            $tableClass="table_no_result";
-        }
+        $tableClass = (count($this->collection) == 0 ? 'table_no_result' : '');
         $newOrder = ( empty($this->orderValue) || $this->orderValue == "ASC" ) ? 'DESC' : "ASC";
-        $html ='<table class="lengow_table table table-bordered table-striped table-hover '.$tableClass.'" id="table_'.$this->id.'">';
+        $html ='<table class="lengow_table table table-bordered table-striped table-hover '.$tableClass.'"
+            id="table_'.$this->id.'">';
         $html.='<thead>';
         $html.='<tr>';
 
@@ -94,7 +93,8 @@ class LengowList
             }
             $html.='<th>';
             if (isset($values['filter_order']) && $values['filter_order']) {
-                $html.='<a href="#" class="table_order '.$orderClass.'" data-order="'.$newOrder.'" data-column="'.$values['filter_key'].'">'.$values['title'].'</a>';
+                $html.='<a href="#" class="table_order '.$orderClass.'" data-order="'.$newOrder.'"
+                    data-column="'.$values['filter_key'].'">'.$values['title'].'</a>';
             } else {
                 $html.=$values['title'];
             }
@@ -142,7 +142,8 @@ class LengowList
                         break;
                 }
             } elseif (isset($values['button_search']) && $values['button_search']) {
-                $html.= '<input type="submit" value="'.$this->locale->t('product.screen.button_search').'" class="lgw-btn lgw-btn-white">';
+                $html.= '<input type="submit" value="'.$this->locale->t('product.screen.button_search').'"
+                    class="lgw-btn lgw-btn-white">';
             }
             $html.= '</th>';
         }
@@ -163,8 +164,7 @@ class LengowList
         if (count($this->collection) == 0) {
             $html.= '<tr><td colspan="100%" align="center"><div id="lengow_no_result_message">
                 <span class="img_no_result"></span>
-                <h2 class="title_no_result">'.htmlspecialchars_decode($this->locale->t('product.screen.no_result_found_title')).'</h2>
-                <p class="description_no_result">'.htmlspecialchars_decode($this->locale->t('product.screen.no_result_found_description')).'</p>
+                <h2 class="title_no_result">'.$this->locale->t('product.screen.no_result_found_title').'</h2>
                 </div></td></tr>';
         } else {
             foreach ($this->collection as $item) {

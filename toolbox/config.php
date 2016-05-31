@@ -116,7 +116,6 @@ require 'views/header.php';
             'LENGOW_IMPORT_FORCE_PRODUCT',
             'LENGOW_IMPORT_PROCESSING_FEE',
             'LENGOW_IMPORT_DAYS',
-            'LENGOW_IMPORT_FAKE_EMAIL',
             'LENGOW_IMPORT_SHIP_MP_ENABLED',
             'LENGOW_IMPORT_STOCK_SHIP_MP',
             'LENGOW_IMPORT_SINGLE_ENABLED'

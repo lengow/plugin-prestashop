@@ -15,23 +15,10 @@ fr:
       retailers_channels_text: "Some of the world's most respected retailers and brands trust Lengow"
   footer:
     legals: "Mentions légales"
-  connect:
-    screen:
-      lengow: "Lengow, 'easily sell everywhere'"
-      lengow_presentation: "Lengow est la solution d'automatisation de commerce électronique qui aide les détaillants à améliorer leurs performances, d'automatiser leurs processus d'affaires et de croître à l'échelle internationale."
-      lengow_platform: "Découvrez la plate-forme Lengow et ouvrir la porte à une forte rentabilité et la visibilité de vos produits dans le monde entier sur tous les canaux de distribution : les marchés , les moteurs de comparaison de prix , les plates-formes d'affiliation et de l'affichage / retargeting ..."
-      create_account: "Créer mon compte gratuit pendant 15 jours"
-      connect_account: "ou me connecter à mon compte"
-      free_days_title: "15 jours gratuits"
-      free_days_text: "Pas de carte de crédit, aucun engagement : juste du résultat"
-      marketing_channels_title: "1 800 marketing channels"
-      marketing_channels_text: "Soyez visible sur les principaux acteurs de votre marché"
-      retailers_title: "3500 detaillants"
-      retailers_channels_text: "De nombreux détaillants et marques les plus respectées dans le monde font confiance à Lengow"
   dashboard:
     screen:
-      product_title: "Produits"
-      product_text: "Jetez un oeil à tous vos produits disponibles pour préparer votre catalogue"
+      products_title: "Produits"
+      products_text: "Jetez un oeil à tous vos produits disponibles pour préparer votre catalogue"
       orders_title: "Commandes"
       orders_text: "Gérer vos commandes directement sur votre tableau de bord PrestaShop"
       settings_title: "Paramètres"
@@ -139,10 +126,6 @@ fr:
       to_uninstall_type: "Pour désinstaller, écrivez"
       button_download_all: "Télécharger tous les fichiers"
       button_save: "Sauvegarder les changements"
-  help:
-    screen:
-      title: "Titre de la page"
-      content_text: "Demandez-nous quelque chose sur Lengow"
   lengow_setting:
     lengow_account_id_title: "ID du compte"
     lengow_access_token_title: "Token d'accès"

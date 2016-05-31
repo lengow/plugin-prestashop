@@ -1,20 +1,22 @@
-menu.product|produits
-menu.order|commandes
-menu.preprod_active|mode préproduction 
+menu.product|Produits
+menu.order|Commandes
+menu.preprod_active|Mode préproduction 
 menu.order_overview|Vue d'ensemble
 menu.order_parameter|Paramètres
-connect.screen.lengow|Lengow, 'easily sell everywhere'
-connect.screen.lengow_presentation|Lengow est la solution d'automatisation de commerce électronique qui aide les détaillants à améliorer leurs performances, d'automatiser leurs processus d'affaires et de croître à l'échelle internationale.
-connect.screen.lengow_platform|Découvrez la plate-forme Lengow et ouvrir la porte à une forte rentabilité et la visibilité de vos produits dans le monde entier sur tous les canaux de distribution : les marchés , les moteurs de comparaison de prix , les plates-formes d'affiliation et de l'affichage / retargeting ...
-connect.screen.create_account|Créer mon compte gratuit pendant 15 jours
-connect.screen.connect_account|ou me connecter à mon compte
-connect.screen.free_days_title|15 jours gratuits
-connect.screen.free_days_text|Pas de carte de crédit, aucun engagement : juste du résultat
+connect.screen.free_days_title|15 free days
+connect.screen.free_days_text|No credit card, no commitment : just results
 connect.screen.marketing_channels_title|1 800 marketing channels
-connect.screen.marketing_channels_text|Soyez visible sur les principaux acteurs de votre marché
-connect.screen.retailers_title|3500 detaillants
-connect.screen.retailers_channels_text|De nombreux détaillants et marques les plus respectées dans le monde font confiance à Lengow
+connect.screen.marketing_channels_text|Be visible on the major players in your market
+connect.screen.retailers_title|3500 retailers
+connect.screen.retailers_channels_text|Some of the world's most respected retailers and brands trust Lengow
 footer.legals|Mentions légales
+dashboard.screen.products_title|Produits
+dashboard.screen.products_text|Jetez un oeil à tous vos produits disponibles pour préparer votre catalogue
+dashboard.screen.orders_title|Commandes
+dashboard.screen.orders_text|Gérer vos commandes directement sur votre tableau de bord PrestaShop
+dashboard.screen.settings_title|Paramètres
+dashboard.screen.settings_text|Configurer les principaux paramètres de votre plugin PrestaShop
+dashboard.screen.partner_business|Lengow, partenaire de votre entreprise
 dashboard.screen.good_job|Bon travail ! Vous avez
 dashboard.screen.pending_order|Commandes en attente
 dashboard.screen.sell_everywhere|Passez à l'étape supérieure et vendez vos produits partout dans le monde !
@@ -22,7 +24,11 @@ dashboard.screen.stat_with_lengow_you_make|Vos ventes avec Lengow
 dashboard.screen.stat_turnover|Chiffre d'affaires
 dashboard.screen.stat_nb_orders|Commandes
 dashboard.screen.stat_avg_order|Panier moyen
-dashboard.screen.stat_more_stats|Vous voulez accéder à plus de statistiques ? Rendez-vous sur Lengow.com
+dashboard.screen.stat_more_stats|Plus de statistiques ?
+dashboard.screen.some_help_title|Besoin d'aide?
+dashboard.screen.get_in_touch|Restez en contact avec Lengow
+dashboard.screen.visit_help_center|Visitez notre Help Center
+dashboard.screen.configure_plugin|pour des informations détaillées sur la façon de configurer correctement votre plugin PrestaShop
 product.screen.nb_exported|produits exportés 
 product.screen.nb_available|produits disponibles
 product.screen.include_variation|Inclure les produits déclinés
@@ -103,8 +109,6 @@ global_setting.screen.cancel_i_want_uninstall|Annuler
 global_setting.screen.to_uninstall_type|Pour désinstaller, écrivez
 global_setting.screen.button_download_all|Télécharger tous les fichiers
 global_setting.screen.button_save|Sauvegarder les changements
-help.screen.title|Titre de la page
-help.screen.content_text|Demandez-nous quelque chose sur Lengow
 lengow_setting.lengow_account_id_title|ID du compte
 lengow_setting.lengow_access_token_title|Token d'accès
 lengow_setting.lengow_secret_token_title|Token secret

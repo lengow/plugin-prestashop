@@ -18,10 +18,7 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-
-
 <script type="text/javascript">$(document.body).addClass('lengow_body');</script>
-
 
 <!-- PLUGINS -->
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-switch.min.css" rel="stylesheet">
@@ -29,13 +26,7 @@
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
 
-
 <!-- STYLE LENGOW -->
-
-<!--
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap.css">
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/admin.css">
--->
 <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic|Open+Sans:700,600,800,400,300" type="text/css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-layout.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-components.css">
@@ -43,12 +34,9 @@
 
 {if version_compare($smarty.const._PS_VERSION_,'1.5','<')&&version_compare($smarty.const._PS_VERSION_,'1.4','>=')}
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_14.css">
-    <!--<script type="text/javascript">alert('version 1.4');</script>-->
-
 {/if}
 {if version_compare($smarty.const._PS_VERSION_,'1.6','<')&&version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_15.css">
-    <!--<script type="text/javascript">alert('version 1.5');</script>-->
 {/if}
 
 {if !$isNewMerchant}
@@ -57,7 +45,7 @@
             {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
         </div>
     {/if}
-    <ul class="nav nav-pills lengow-nav lengow-nav-top {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}preprod{/if}">
+    <ul class="nav nav-pills lengow-nav lengow-nav-top">
         <li role="presentation" id="lengow_logo">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">
                 <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
@@ -79,18 +67,24 @@
         </li>
 
         <li class="lengow_float_right {if $current_controller == 'LengowMainSettingController'}active{/if}" id="menugotosetting">
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}"  class="lengow_link_tooltip" data-placement="bottom" data-original-title="Global parameters">
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}" 
+                class="lengow_link_tooltip" 
+                data-placement="bottom"
+                data-original-title="{$locale->t('menu.global_parameter')|escape:'htmlall':'UTF-8'}">
                 <i class="fa fa-cog fa-2x"></i>
             </a>
         </li>
         <li class="lengow_float_right  {if $current_controller == 'LengowHelpController'}active{/if}" id="menugotohelp">
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}" class="lengow_link_tooltip" data-placement="bottom" data-original-title="Help">
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}"
+                class="lengow_link_tooltip"
+                data-placement="bottom"
+                data-original-title="{$locale->t('menu.help')|escape:'htmlall':'UTF-8'}">
                 <i class="fa fa-life-ring fa-2x"></i>
             </a>
         </li>
         <li class="lengow_float_right" id="menugotosolution">
             <a href="http://solution.lengow.com" target="_blank">
-                Jump to Lengow
+                {$locale->t('menu.jump_to_lengow')|escape:'htmlall':'UTF-8'}
             </a>
         </li>
     </ul>

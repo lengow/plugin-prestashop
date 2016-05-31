@@ -362,11 +362,6 @@ class LengowOrderController extends LengowController
                 'display_callback'  => 'LengowOrderController::displayLengowExtra'
             );
         }
-        /*$fields_list['search'] = array(
-            'title'         => '',
-            'width'         => '10%',
-            'button_search' => true
-        );*/
         $select = array(
             'lo.id',
             'lo.marketplace_sku',
@@ -555,7 +550,7 @@ class LengowOrderController extends LengowController
             $message = '<ul>'.join('', $errorMessage).'</ul>';
             if ($item[$key] == '2') {
                 $message = LengowMain::decodeLogMessage('order.screen.action_sent_not_work')
-                    .join('<br/>', $errorMessage);
+                    .'<br/>'.join('<br/>', $errorMessage);
                 $value = '<a href="#"
                     class="lengow_re_send lengow_link_tooltip lgw-btn lgw-btn-white"
                     data-href="'.$link->getAbsoluteAdminLink('AdminLengowOrder', true).'"
@@ -566,7 +561,8 @@ class LengowOrderController extends LengowController
                     data-original-title="'.$message.'"
                     >'.LengowMain::decodeLogMessage('order.screen.not_sent').' <i class="fa fa-refresh"></i></a>';
             } else {
-                $message = LengowMain::decodeLogMessage('order.screen.order_not_imported').join('<br/>', $errorMessage);
+                $message = LengowMain::decodeLogMessage('order.screen.order_not_imported')
+                    .'<br/>'.join('<br/>', $errorMessage);
                 $value = '<a href="#"
                     class="lengow_re_import lengow_link_tooltip lgw-btn lgw-btn-white"
                     data-href="'.$link->getAbsoluteAdminLink('AdminLengowOrder', true).'"

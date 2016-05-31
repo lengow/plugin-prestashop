@@ -152,12 +152,6 @@ class LengowConfiguration extends Configuration
                     'label'         => $locale->t('lengow_setting.lengow_import_preprod_enabled_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_import_preprod_enabled_legend'),
                 ),
-                'LENGOW_IMPORT_FAKE_EMAIL' => array(
-                    'type'          => 'checkbox',
-                    'label'         => $locale->t('lengow_setting.lengow_import_fake_mail_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_import_fake_mail_legend'),
-                    'default_value' => true,
-                ),
                 'LENGOW_IMPORT_SHIP_MP_ENABLED' => array(
                     'type'          => 'checkbox',
                     'label'         => $locale->t('lengow_setting.lengow_import_ship_mp_enabled_title'),
@@ -277,7 +271,7 @@ class LengowConfiguration extends Configuration
 
     public static function getReportEmailAddress()
     {
-        $emails = explode(',', self::get('LENGOW_REPORT_MAIL_ADDRESS'));
+        $emails = explode(';', self::get('LENGOW_REPORT_MAIL_ADDRESS'));
         if ($emails[0] == '') {
             $emails[0] = self::get('PS_SHOP_EMAIL');
         }

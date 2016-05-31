@@ -459,6 +459,7 @@ class LengowHook
                 'tracking_method'    => $lengow_order->lengow_method,
                 'tracking'           => $lengow_order->lengow_tracking,
                 'tracking_carrier'   => $lengow_order->lengow_carrier,
+                'customer_email'     => $lengow_order->lengow_customer_email,
                 'sent_markeplace'    => $sent_markeplace,
                 'message'            => $lengow_order->lengow_message,
                 'action_synchronize' => $action_synchronize,

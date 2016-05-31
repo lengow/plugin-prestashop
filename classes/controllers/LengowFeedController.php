@@ -197,7 +197,7 @@ class LengowFeedController extends LengowController
             $lengowExport = new LengowExport(array(
                 "shop_id" => $shop->id
             ));
-            $shopCollection[]= array(
+            $shopCollection[] = array(
                 'shop' => $shop,
                 'link' => LengowMain::getExportUrl($shop->id),
                 'total_product' => $lengowExport->getTotalProduct(),

@@ -30,8 +30,11 @@
                 class="lengow_export_feed lengow_link_tooltip"
                 data-original-title="{$locale->t('product.screen.button_download')|escape:'htmlall':'UTF-8'}"
                 target="_blank"><i class="fa fa-download"></i></a>
-            <h2 class="text-center catalog-title">{$shop['shop']->name|escape:'htmlall':'UTF-8'}
-            <!--http://{$shop['shop']->domain|escape:'htmlall':'UTF-8'}--></h2>
+            <h2 class="text-center catalog-title lengow_link_tooltip"
+                data-original-title="{$shop['shop']->name|escape:'htmlall':'UTF-8'} ({$shop['shop']->id|escape:'htmlall':'UTF-8'})
+                {$shop['shop']->domain|escape:'htmlall':'UTF-8'}">
+                {$shop['shop']->name|escape:'htmlall':'UTF-8'}
+            </h2>
             <div class="text-center">
                 <div class="margin-standard text-center">
                     <p class="products-exported">
@@ -43,9 +46,7 @@
                         {$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}
                     </p>
                 </div>
-
                 <hr>
-
                 <div class="lgw-switch {if $shop['option_variation'] == 1} checked{/if}">
                     <label>
                         <div><span></span>
@@ -106,36 +107,7 @@
                 </div>
                 <i class="fa fa-info-circle lengow_link_tooltip"
                    title="{$locale->t('product.screen.include_specific_product_support')|escape:'htmlall':'UTF-8'}"></i>
-           </div>
-
-            <!--<div class="lgw-row">
-                <div class="lgw-col-6">
-                    <p>{$locale->t('product.screen.your_exported_catalog')|escape:'htmlall':'UTF-8'}</p>
-                    <p>
-                        <input type="text" id="link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}" value="{$shop['link']|escape:'htmlall':'UTF-8'}" readonly>
-                        <button class="lengow_copy lengow_link_tooltip"
-                            data-original-title="{$locale->t('product.screen.button_copy')|escape:'htmlall':'UTF-8'}"
-                            data-clipboard-target="#link_shop_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
-                            <i class="fa fa-clone"></i></button>
-                        <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1"
-                            class="lengow_link_tooltip"
-                            data-original-title="{$locale->t('product.screen.button_download')|escape:'htmlall':'UTF-8'}"
-                            target="_blank"><i class="fa fa-download"></i></a>
-                    </p>
-                    {if $shop['last_export']}
-                        <p>{$locale->t('product.screen.last_export')|escape:'htmlall':'UTF-8'} :
-                        <span  class="bold">{$shop['last_export']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}</span></p>
-                    {else}
-                        <p>{$locale->t('product.screen.no_export')|escape:'htmlall':'UTF-8'}</p>
-                    {/if}
-                </div>
-                <div class="lgw-col-6">
-
-
-
-                </div>
-            </div>-->
-
+            </div>
             <div class="lengow_feed_block_footer">
                 <div class="lengow_feed_block_footer_content" style="{if !$shop['option_selected']}display:none;{/if}">
                     {html_entity_decode($shop['list']|escape:'htmlall':'UTF-8')}

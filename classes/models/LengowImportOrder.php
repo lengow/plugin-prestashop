@@ -222,8 +222,8 @@ class LengowImportOrder
             LengowMain::log(
                 'Import',
                 LengowMain::setLogMessage('log.import.error_already_created', array(
-                    'decoded_message'  => $decoded_message,
-                    'date_message' => $import_log['date']
+                    'decoded_message' => $decoded_message,
+                    'date_message'    => $import_log['date']
                 )),
                 $this->log_output,
                 $this->marketplace_sku
@@ -303,6 +303,10 @@ class LengowImportOrder
         $this->loadTrackingData();
         // get customer name
         $customer_name = $this->getCustomerName();
+        $customer_email = (!is_null($this->order_data->billing_address->email)
+            ? (string)$this->order_data->billing_address->email
+            : (string)$this->package_data->delivery->email
+        );
         // update Lengow order with new informations
         LengowOrder::updateOrderLengow(
             $this->id_order_lengow,
@@ -310,6 +314,7 @@ class LengowImportOrder
                 'total_paid'            => $this->order_amount,
                 'order_item'            => $this->order_items,
                 'customer_name'         => pSQL($customer_name),
+                'customer_email'       =>  pSQL($customer_email),
                 'carrier'               => pSQL($this->carrier_name),
                 'method'                => pSQL($this->carrier_method),
                 'tracking'              => pSQL($this->tracking_number),
@@ -748,19 +753,15 @@ class LengowImportOrder
         // get billing datas
         $billing_data = LengowAddress::extractAddressDataFromAPI($this->order_data->billing_address);
         // create customer based on billing data
-        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_FAKE_EMAIL')
-            || $this->preprod_mode
-            || empty($billing_data['email'])
-        ) {
-            $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
-            $billing_data['email'] = 'generated-email+'.$this->marketplace_sku.'@'.$domain;
-            LengowMain::log(
-                'Import',
-                LengowMain::setLogMessage('log.import.generate_unique_email', array('email' => $billing_data['email'])),
-                $this->log_output,
-                $this->marketplace_sku
-            );
-        }
+        // generation of fictitious email
+        $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
+        $billing_data['email'] = $this->marketplace_sku.'-'.$this->marketplace->name.'@'.$domain;
+        LengowMain::log(
+            'Import',
+            LengowMain::setLogMessage('log.import.generate_unique_email', array('email' => $billing_data['email'])),
+            $this->log_output,
+            $this->marketplace_sku
+        );
         // update Lengow order with customer name
         $customer = $this->getCustomer($billing_data);
         if (!$customer->id) {
