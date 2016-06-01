@@ -212,9 +212,8 @@ class LengowCarrier extends Carrier
             $so_colissimo = new SCFields($delivery_mode);
 
             $params['CECOMPLADRESS'] = (string)$shipping_address->other;
-            $params['CEADRESS1']     = (string)$shipping_address->address1;
             $params['CEADRESS2']     = (string)$shipping_address->address2;
-            $params['CEADRESS3']     = (string)$shipping_address->address2;
+            $params['CEADRESS3']     = (string)$shipping_address->address1;
         }
 
         // common params

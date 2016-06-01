@@ -403,16 +403,7 @@ class LengowPaymentModule extends PaymentModule
                         $this->errors[] = Tools::displayError('An error occurred while saving message');
                     }
                 }
-
-                // Hook validate order
-                Hook::exec('actionValidateOrder', array(
-                    'cart' => $this->context->cart,
-                    'order' => $order,
-                    'customer' => $this->context->customer,
-                    'currency' => $this->context->currency,
-                    'orderStatus' => $order_status
-                ));
-
+                
                 foreach ($this->context->cart->getProducts() as $product) {
                     if ($order_status->logable) {
                         ProductSale::addProductSale((int)$product['id_product'], (int)$product['cart_quantity']);
