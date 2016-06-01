@@ -52,24 +52,26 @@
             evt.params.originalEvent.stopPropagation();
         });*/
 
-        // TODO : check input text
-        /*$('#lengow_mainsettings_wrapper').on('submit', '.lengow_form', function(e) {
+        $('#lengow_mainsettings_wrapper').on('submit', '.lengow_form', function(e) {
             var selector    = $('input[name="uninstall_textbox"]');
             var check       = selector.val();
 
             if (check != "I WANT TO REMOVE ALL DATA") {
-
+                e.preventDefault();
+                return false;
             }
-            e.preventDefault();
-        });*/
+        });
 
         $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').change(function(){
             var checked = $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked');
+            var selector = $('.lengow_report_mail_address');
             if( checked == true ){
-                $('.lengow_report_mail_address').slideDown(150);
+                selector.slideDown(150);
+                selector.next('span.legend').show();
             }
             else{
-                $('.lengow_report_mail_address').slideUp(150);
+                selector.slideUp(150);
+                selector.next('span.legend').hide();
             }
         });
 

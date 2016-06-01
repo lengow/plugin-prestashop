@@ -221,6 +221,8 @@ class LengowList
                             }
                             break;
                         case 'switch_product':
+                            $status = $this->toolbox ? 'disabled' : '';
+
                             $value = '<div class="lgw-switch '.($item[$key] ? 'checked' : '').'"><label><div><span></span><input type="checkbox"
                                 data-size="mini"
                                 class="lengow_switch_product"
@@ -231,8 +233,9 @@ class LengowList
                                 data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
                                 data-action="select_product"
                                 data-id_shop="'.$this->shopId.'"
-                                data-id_product="'.$item[$this->identifier].'"
-                                value="1" '.($item[$key] ? 'checked="checked"' : '').'/></div></label></div>';
+                                data-id_product="'.$item[$this->identifier].'" ' .
+                                $status . ' ' .
+                                'value="1" '.($item[$key] ? 'checked="checked"' : '').'/></div></label></div>';
                             break;
                         case 'flag_country':
                             if ($item[$key]) {

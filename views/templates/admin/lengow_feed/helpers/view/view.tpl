@@ -61,6 +61,7 @@
                                 data-action="change_option_product_variation"
                                 data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
                                 value="1" {if $shop['option_variation'] == 1} checked="checked"{/if}
+                                {if isset($toolbox) && $toolbox} disabled {/if}
                             >
                         </div> {$locale->t('product.screen.include_variation')|escape:'htmlall':'UTF-8'}
                     </label>
@@ -82,6 +83,7 @@
                                 data-action="change_option_product_out_of_stock"
                                 data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
                                 value="1" {if $shop['option_product_out_of_stock'] == 1} checked="checked"{/if}
+                                {if isset($toolbox) && $toolbox} disabled {/if}
                             >
                         </div> {$locale->t('product.screen.include_out_of_stock')|escape:'htmlall':'UTF-8'}
                     </label>
@@ -101,7 +103,9 @@
                                 data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}"
                                 data-action="change_option_selected"
                                 data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
-                                value="1" {if $shop['option_selected'] == 1} checked="checked"{/if}>
+                                value="1" {if $shop['option_selected'] == 1} checked="checked"{/if}
+                                {if isset($toolbox) && $toolbox} disabled {/if}
+                            >
                         </div> {$locale->t('product.screen.include_specific_product')|escape:'htmlall':'UTF-8'}
                     </label>
                 </div>
