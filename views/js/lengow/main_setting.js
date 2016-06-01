@@ -52,6 +52,17 @@
             evt.params.originalEvent.stopPropagation();
         });*/
 
+        // TODO : check input text
+        /*$('#lengow_mainsettings_wrapper').on('submit', '.lengow_form', function(e) {
+            var selector    = $('input[name="uninstall_textbox"]');
+            var check       = selector.val();
+
+            if (check != "I WANT TO REMOVE ALL DATA") {
+
+            }
+            e.preventDefault();
+        });*/
+
         $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').change(function(){
             var checked = $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked');
             if( checked == true ){

@@ -62,10 +62,39 @@
         <div class="lgw-container">
             <div class="container">
                 <a href="#openDeleteModal">
-                    <button type="button" class="lgw-btn lgw-btn-red lengow_delete_module" name="delete_module">
+                    <button type="button" data-toggle="modal" data-target="#openDeleteModal"
+                            class="lgw-btn lgw-btn-red lengow_delete_module" name="delete_module">
                         {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                     </button>
                 </a>
+                <div id="openDeleteModal" class="deleteModalDialog modal">
+                    <div>
+                        <h2><span>{$locale->t('global_setting.screen.title_modal_uninstall')|escape:'htmlall':'UTF-8'}</span></h2>
+                        <p>
+                            {$locale->t('global_setting.screen.all_data_will_be_lost')|escape:'htmlall':'UTF-8'}<br/><br/>
+                            {$locale->t('global_setting.screen.you_will_find_a_backup')|escape:'htmlall':'UTF-8'}
+                            <a href="{$lengow_link->getAbsoluteAdminLink('AdminBackup')|escape:'htmlall':'UTF-8'}">
+                                {$locale->t('global_setting.screen.prestashop_backup')|escape:'htmlall':'UTF-8'}
+                            </a>
+                        </p>
+                        <div id="lengow_wrapper_delete">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    {$locale->t('global_setting.screen.to_uninstall_type')|escape:'htmlall':'UTF-8'}
+                                    : I WANT TO REMOVE ALL DATA
+                                </label>
+                                <input type="text" name="uninstall_textbox" class="form-control" placeholder="" value="">
+                                <button type="submit" class="btn lgw-btn lengow_submit_delete_module">
+                                    {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
+                                </button>
+                                <button type="button" class="lgw-btn lgw-btn-red"
+                                        data-dismiss="modal" name="close_modal">
+                                    {$locale->t('global_setting.screen.cancel_i_want_uninstall')|escape:'htmlall':'UTF-8'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="lgw-container putasse" >
