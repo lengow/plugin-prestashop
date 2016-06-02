@@ -30,7 +30,7 @@
                 <label class="lengow_shop_status_label">
                 </label>
             </div>
-            <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1"
+            <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1{if isset($toolbox) && $toolbox}&update_export_date=0{/if}"
                 class="lengow_export_feed lengow_link_tooltip"
                 data-original-title="{$locale->t('product.screen.button_download')|escape:'htmlall':'UTF-8'}"
                 target="_blank"><i class="fa fa-download"></i></a>

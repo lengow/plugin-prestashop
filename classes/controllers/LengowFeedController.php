@@ -160,6 +160,7 @@ class LengowFeedController extends LengowController
 
                         if ($checkShop) {
                             $data['check_shop']     = true;
+
                             $sync_date = Configuration::get('LENGOW_LAST_EXPORT', null, null, $data['shop_id']);
 
                             if ($sync_date == null) {
@@ -170,13 +171,17 @@ class LengowFeedController extends LengowController
                             }
                             $data['original_title'] = $this->locale->t('product.screen.lengow_shop_sync');
                         } else {
-                            $data['check_shop']     = false;
-                            $data['tooltip']        = $this->locale->t('product.screen.lengow_shop_no_sync');
-                            $data['original_title'] = $this->locale->t('product.screen.sync_your_shop');
-                            $data['header_title']   = '<a href="'
-                                .$link->getAbsoluteAdminLink('AdminLengowHome', true)
-                                .'&isSync=true">
-                                <span>' . $this->locale->t('product.screen.sync_your_shop') . '</span></a>';
+                            $data['check_shop'] = false;
+                            if (!$this->toolbox) {
+                                $data['tooltip'] = $this->locale->t('product.screen.lengow_shop_no_sync');
+                                $data['original_title'] = $this->locale->t('product.screen.sync_your_shop');
+                                $data['header_title'] = '<a href="'
+                                    . $link->getAbsoluteAdminLink('AdminLengowHome', true)
+                                    . '&isSync=true">
+                                    <span>' . $this->locale->t('product.screen.sync_your_shop') . '</span></a>';
+                            } else {
+                                $data['header_title'] = $this->locale->t('product.screen.lengow_shop_no_sync');
+                            }
                         }
                         $result[] = $data;
                     }

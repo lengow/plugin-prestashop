@@ -175,6 +175,11 @@ class LengowExport
      */
     protected $product_ids = array();
 
+    /**
+     * Update export date.
+     */
+    protected $updateExportDate;
+
     protected $cacheCombination;
 
     /**
@@ -187,6 +192,8 @@ class LengowExport
      * int #limit : Limit product to export
      * boolean #show_inactive_product : Export active and inactive product (1) | Export Only active product (0)
      * boolean #show_product_combination : Export product declinaison (1) | Export Only simple product (0)
+     * boolean #update_export_date : Update 'LENGOW_LAST_EXPORT' when launching export process (1)
+     *                              | Do not update 'LENGOW_LAST_EXPORT' when exporting from toolbox (0)
      * @return LengowExport
      */
     public function __construct($params = array())
@@ -213,6 +220,7 @@ class LengowExport
             (bool)Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId);
 
         $this->log_output = (isset($params['log_output']) ? (bool)$params['log_output'] : !$this->stream);
+        $this->updateExportDate = (isset($params['update_export_date']) ? (bool)$params['update_export_date'] : true);
 
         if (!Context::getContext()->currency) {
             Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
@@ -307,7 +315,10 @@ class LengowExport
             );
             $this->export($products, $export_fields, $shop);
 
-            Configuration::updatevalue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), null, null, $this->shopId);
+            if ($this->updateExportDate) {
+                Configuration::updatevalue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), null, null, $this->shopId);
+            }
+
             LengowMain::log(
                 'Export',
                 LengowMain::setLogMessage('log.export.end'),
