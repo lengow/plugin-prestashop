@@ -176,7 +176,7 @@ class LengowFeedController extends LengowController
                                 $data['tooltip'] = $this->locale->t('product.screen.lengow_shop_no_sync');
                                 $data['original_title'] = $this->locale->t('product.screen.sync_your_shop');
                                 $data['header_title'] = '<a href="'
-                                    . $link->getAbsoluteAdminLink('AdminLengowHome', true)
+                                    . $link->getAbsoluteAdminLink('AdminLengowHome')
                                     . '&isSync=true">
                                     <span>' . $this->locale->t('product.screen.sync_your_shop') . '</span></a>';
                             } else {
