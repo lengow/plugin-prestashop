@@ -164,7 +164,7 @@ class LengowList
         if (count($this->collection) == 0) {
             $html.= '<tr><td colspan="100%" align="center"><div id="lengow_no_result_message">
                 <span class="img_no_result"></span>
-                <h2 class="title_no_result">'.$this->locale->t('product.screen.no_result_found_title').'</h2>
+                <h2 class="title_no_result">'.$this->locale->t('product.screen.no_result_found').'</h2>
                 </div></td></tr>';
         } else {
             foreach ($this->collection as $item) {
