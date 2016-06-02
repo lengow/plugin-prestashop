@@ -82,7 +82,7 @@
                             <div class="form-group">
                                 <label class="control-label">
                                     {$locale->t('global_setting.screen.to_uninstall_type')|escape:'htmlall':'UTF-8'}
-                                    : I WANT TO REMOVE ALL DATA
+                                    : I AM SURE
                                 </label>
                                 <input type="text" name="uninstall_textbox" class="form-control" placeholder="" value="">
                                 <button type="submit" class="btn lgw-btn lengow_submit_delete_module">
