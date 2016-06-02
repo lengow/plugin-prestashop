@@ -67,6 +67,7 @@ class LengowController
                     _PS_MODULE_LENGOW_DIR_,
                     'views/templates/admin/'.$path.'/helpers/view/view.tpl'
                 );
+                echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/footer.tpl');
             }
         }
     }
