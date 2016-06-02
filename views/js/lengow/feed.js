@@ -22,25 +22,36 @@
     $(document).ready(function () {
 
         function checkShop() {
-            var href = $('.lengow_check_shop').attr('data-href');
-            var data = {action: 'check_shop'};
+            var status = $('.lengow_check_shop');
+            var href = status.attr('data-href');
+            var data = {
+                action: 'check_shop'
+            };
 
-            $('.lengow_check_shop').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+            status.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
 
             $.getJSON(href, data, function(content) {
-                var selector = lengow_jquery("#block_" + content['shop_id'] + " .lengow_check_shop");
-                selector.attr("data-original-title", content['original_title']);
+                $.each(content, function(index, shop) {
+                    var selector = lengow_jquery("#block_" + shop['shop_id'] + " .lengow_check_shop");
+                    selector.attr("data-original-title", shop['tooltip']);
 
-                if (content['check_shop']) {
-                    selector.attr("id", "lengow_shop_sync");
-                } else {
+                    var title = shop['original_title'];
+
+                    if (shop['check_shop'] === true) {
+                        status.removeClass('lengow_check_shop_no_sync').addClass('lengow_check_shop_sync');
+                        selector.attr("id", "lengow_shop_sync");
+                    } else {
+                        selector.attr("id", "lengow_shop_no_sync");
+                        lengow_jquery("#block_" + shop['shop_id']
+                            +  " .lengow_feed_block_header_title").append(shop['header_title']);
+                        title = shop['header_title'];
+                    }
                     selector.html("");
-                    selector.attr("id", "lengow_shop_no_sync");
-                    lengow_jquery("#block_" + content['shop_id']
-                        +  " .lengow_feed_block_header_title").append(content['header_title']);
-                }
 
-                init_tooltip()
+                    $('.lengow_shop_status_label').html(title);
+
+                    init_tooltip()
+                });
             });
         }
 

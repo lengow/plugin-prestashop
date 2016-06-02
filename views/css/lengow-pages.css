@@ -104,14 +104,34 @@ body.lgw-home-iframe .lgw-content-section p{
     padding-right: 25px;
 }
 
-.lengow_check_shop:after{
+.lengow_check_shop_no_sync:after{
+    cursor: default;
     content: "\25cf";
     font-size: 28px;
     color: #da493b;
     position: absolute;
     top: -10px;
-    right:0;
+    right:-3px;
 }
+
+.lengow_check_shop_sync:after{
+    cursor: default;
+    content: "\25cf";
+    font-size: 28px;
+    color: #45bf7b;
+    position: absolute;
+    top: -10px;
+    right:-3px;
+}
+
+.lengow_shop_status_label {
+    margin-top: -17px;
+}
+
+.lengow_shop_status_label a:hover {
+    text-decoration: none;
+}
+
 .lengow_check_shop{
     position: absolute;
     top: 30px;
