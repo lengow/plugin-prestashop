@@ -193,6 +193,11 @@ body.lgw-home-iframe .lgw-content-section p{
 .adminlengoworder #lgw-preprod{
   top:108px;
 }
+
+.adminlengowordersetting #lgw-preprod{
+    top:108px;
+}
+
 .adminlengowordersetting .add_lengow_default_carrier{
   margin-right:10px;
 }
