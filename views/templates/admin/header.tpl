@@ -67,8 +67,8 @@
         </li>
 
         <li class="lengow_float_right {if $current_controller == 'LengowMainSettingController'}active{/if}" id="menugotosetting">
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}" 
-                class="lengow_link_tooltip" 
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}"
+                class="lengow_link_tooltip"
                 data-placement="bottom"
                 data-original-title="{$locale->t('menu.global_parameter')|escape:'htmlall':'UTF-8'}">
                 <i class="fa fa-cog fa-2x"></i>

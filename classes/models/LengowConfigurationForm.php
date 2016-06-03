@@ -89,14 +89,19 @@ class LengowConfigurationForm
                 $html.='<input name="'.$name.'" type="checkbox" '.$checked.' '.$readonly.' >';
                 $html.='</div>'. $label;
                 $html.='</label></div></div>';
-                $html .= '<span class="legend">' . $legend . '</span>';
+                if (!empty($legend)) {
+                    $html.= '<span class="legend">' . $legend . '</span>';
+                }
                 break;
             case 'text':
                 $html.= '<label class="control-label">'.$label.'</label>
                     <input type="text" name="'.$name.'"
                         class="form-control" placeholder="'.$placeholder.'"
                         value="'.$value.'" '.$readonly.'>
-                    </div><span class="legend">'.$legend.'</span>';
+                    </div>';
+                if (!empty($legend)) {
+                    $html.= '<span class="legend">' . $legend . '</span>';
+                }
                 break;
             case 'select':
                 $html.= '<label class="control-label">'.$label.'</label>
@@ -117,9 +122,11 @@ class LengowConfigurationForm
                                 <div class="unit">'.$this->locale->t('order_setting.screen.nb_days').'</div>
                             </div>
                             <div class="clearfix"></div>
-                        </div>
-                        <span class="legend">'.$legend.'</span>
-                    </div>';
+                        </div>';
+                if (!empty($legend)) {
+                    $html.= '<span class="legend">' . $legend . '</span>';
+                }
+                $html.= '</div>';
                 break;
         }
         return $html;

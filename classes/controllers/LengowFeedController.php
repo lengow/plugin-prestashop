@@ -151,25 +151,41 @@ class LengowFeedController extends LengowController
                 case 'check_shop':
                     $shops = LengowShop::findAll(true);
                     $link = new LengowLink();
+                    $result = array();
                     foreach ($shops as $shopId) {
                         $checkShop = $this->checkShop($shopId['id_shop']);
 
                         $data = array();
                         $data['shop_id'] = $shopId['id_shop'];
 
-                        if ($checkShop === true) {
-                            $data['check_shop'] = true;
+                        if ($checkShop) {
+                            $data['check_shop']     = true;
+
+                            $sync_date = Configuration::get('LENGOW_LAST_EXPORT', null, null, $data['shop_id']);
+
+                            if ($sync_date == null) {
+                                $data['tooltip'] = $this->locale->t('product.screen.shop_not_index');
+                            } else {
+                                $data['tooltip'] = $this->locale->t('product.screen.shop_last_indexation') .
+                                    ' : ' . strftime("%A %e %B %Y @ %R", strtotime($sync_date));
+                            }
                             $data['original_title'] = $this->locale->t('product.screen.lengow_shop_sync');
                         } else {
                             $data['check_shop'] = false;
-                            $data['original_title'] = $this->locale->t('product.screen.lengow_shop_no_sync');
-                            $data['header_title'] = '<a href=\"'
-                                .$link->getAbsoluteAdminLink('AdminLengowHome', true)
-                                .'&isSync=true\" ><span>sync</span> </a>';
+                            if (!$this->toolbox) {
+                                $data['tooltip'] = $this->locale->t('product.screen.lengow_shop_no_sync');
+                                $data['original_title'] = $this->locale->t('product.screen.sync_your_shop');
+                                $data['header_title'] = '<a href="'
+                                    . $link->getAbsoluteAdminLink('AdminLengowHome')
+                                    . '&isSync=true">
+                                    <span>' . $this->locale->t('product.screen.sync_your_shop') . '</span></a>';
+                            } else {
+                                $data['header_title'] = $this->locale->t('product.screen.lengow_shop_no_sync');
+                            }
                         }
-
-                        echo Tools::jsonEncode($data);
+                        $result[] = $data;
                     }
+                    echo Tools::jsonEncode($result);
                     break;
             }
             exit();

@@ -69,6 +69,9 @@ en:
       add_from_export: "Add to export"
       lengow_shop_sync: "Synchronized"
       lengow_shop_no_sync: "Not synchronized"
+      sync_your_shop: "Synchronize my shop with Lengow"
+      shop_last_indexation: "Last indexation"
+      shop_not_index: "Not indexed yet"
     table:
       id_product: "ID"
       image: "Image"
@@ -86,7 +89,7 @@ en:
       import_charge_second: "Please bear with us; this will not take long (2 min average waiting time)"
       all_order_will_be_sent_to: "All order issue reports will be sent by mail to"
       change_this: "Change this?"
-      last_order_importation: "Last synchronisation"
+      last_order_importation: "Last synchronization"
       no_order_importation: "No order importation for now"
       import_auto: "Auto"
       import_manuel: "Manual"

@@ -104,14 +104,34 @@ body.lgw-home-iframe .lgw-content-section p{
     padding-right: 25px;
 }
 
-.lengow_check_shop:after{
+.lengow_check_shop_no_sync:after{
+    cursor: default;
     content: "\25cf";
     font-size: 28px;
     color: #da493b;
     position: absolute;
     top: -10px;
-    right:0;
+    right:-3px;
 }
+
+.lengow_check_shop_sync:after{
+    cursor: default;
+    content: "\25cf";
+    font-size: 28px;
+    color: #45bf7b;
+    position: absolute;
+    top: -10px;
+    right:-3px;
+}
+
+.lengow_shop_status_label {
+    margin-top: -17px;
+}
+
+.lengow_shop_status_label a:hover {
+    text-decoration: none;
+}
+
 .lengow_check_shop{
     position: absolute;
     top: 30px;
@@ -162,6 +182,7 @@ body.lgw-home-iframe .lgw-content-section p{
   font-size:19px;
 }
 .adminlengowfeed .catalog-title{
+  cursor: default;
   margin-bottom: 15px;
 }
 
@@ -193,6 +214,11 @@ body.lgw-home-iframe .lgw-content-section p{
 .adminlengoworder #lgw-preprod{
   top:108px;
 }
+
+.adminlengowordersetting #lgw-preprod{
+    top:108px;
+}
+
 .adminlengowordersetting .add_lengow_default_carrier{
   margin-right:10px;
 }
@@ -230,4 +256,27 @@ body.lgw-home-iframe .lgw-content-section p{
 }
 .lgw-container .add-country:hover{
   color:#555;
+}
+
+span.img_no_order {
+    background : transparent url("../img/no-result.png") no-repeat;
+    height: 208px;
+    width: 395px;
+    display: block;
+    margin: 0 auto;
+}
+
+span.title_no_order {
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #61687d;
+}
+
+#lengow_no_order_message {
+    padding: 30px;
+    text-align:center;
+    font-size: 18px;
+    color:#61687d;
 }

@@ -42,7 +42,8 @@
                 </option>
                 {foreach from=$list_file item=file}
                     <option value="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting', true)|escape:'htmlall':'UTF-8'}&action=download&file={$file['short_path']|escape:'htmlall':'UTF-8'}">
-                    {$file['name']|escape:'htmlall':'UTF-8'}</option>
+                    {assign var=file_name value="."|explode:$file['name']}
+                    {$file_name[0]|date_format:"%A %e %B %Y"|escape:'htmlall':'UTF-8'}</option>
                 {/foreach}
                 <option value="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting', true)|escape:'htmlall':'UTF-8'}&action=download_all" >
                     {$locale->t('global_setting.screen.download_all_files')|escape:'htmlall':'UTF-8'}
@@ -81,7 +82,7 @@
                             <div class="form-group">
                                 <label class="control-label">
                                     {$locale->t('global_setting.screen.to_uninstall_type')|escape:'htmlall':'UTF-8'}
-                                    : I WANT TO REMOVE ALL DATA
+                                    : I AM SURE
                                 </label>
                                 <input type="text" name="uninstall_textbox" class="form-control" placeholder="" value="">
                                 <button type="submit" class="btn lgw-btn lengow_submit_delete_module">

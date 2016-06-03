@@ -76,6 +76,54 @@ span.title_no_result {
     color:#c3c3c3;
 }
 
+legend {
+    margin-top:10px;
+}
+
+/* SWITCH */
+.text-center .lgw-switch{
+    display:inline-block;
+}
+
+.lgw-switch input[type="checkbox"]{
+    margin-right: 5px;
+}
+.lgw-switch label{
+    display:inline-block;
+}
+.lgw-switch div{
+    float:left;
+}
+
+.form-group {
+    margin-bottom: 2px;
+}
+
+.center .lgw-switch {
+    text-align: center;
+}
+
+/* EXPORT BUTTON */
+.lengow_export_feed{
+    margin-right: 0px;
+}
+a.lengow_link_tooltip {
+    float: right;
+    padding: 0 5px;
+    margin-top: 0;
+    color:#555;
+}
+
+.lengow_check_shop {
+    float: left;
+    margin-right: 15px;
+    margin-top: 4px;
+    width: 5px;
+    height: 5px;
+    padding:5px;
+    border-radius: 10px;
+}
+
 /* TABLE */
 
 .lengow_table_top {
@@ -229,6 +277,38 @@ span.title_no_result {
 
 #lengow_feed_wrapper .lengow_feed_block_content_left a {
     text-decoration: underline;
+}
+
+.lengow_check_shop span{
+    color: #464646;
+}
+
+.lengow_check_shop_no_sync:after{
+    cursor: default;
+    content: "\25cf";
+    font-size: 28px;
+    color: #da493b;
+    position: absolute;
+    top: -10px;
+    right:-3px;
+}
+
+.lengow_check_shop_sync:after{
+    cursor: default;
+    content: "\25cf";
+    font-size: 28px;
+    color: #45bf7b;
+    position: absolute;
+    top: -10px;
+    right:-3px;
+}
+
+.lengow_check_shop{
+    position: absolute;
+}
+
+.lengow_shop_status_label {
+    margin-left: 20px;
 }
 
 /* ORDER PAGE */
@@ -450,7 +530,7 @@ span.title_no_order {
 }
 
 span.legend {
-    margin-top: 5px;
+    margin-bottom: 15px;
     display: block;
     font-style: italic;
 }

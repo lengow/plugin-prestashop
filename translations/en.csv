@@ -60,6 +60,9 @@ product.screen.remove_from_export|Remove from export
 product.screen.add_from_export|Add to export
 product.screen.lengow_shop_sync|Synchronized
 product.screen.lengow_shop_no_sync|Not synchronized
+product.screen.sync_your_shop|Synchronize my shop with Lengow
+product.screen.shop_last_indexation|Last indexation
+product.screen.shop_not_index|Not indexed yet
 product.table.id_product|ID
 product.table.image|Image
 product.table.name|Name
@@ -74,7 +77,7 @@ order.screen.import_charge_first|Retrieving your orders...
 order.screen.import_charge_second|Please bear with us; this will not take long (2 min average waiting time)
 order.screen.all_order_will_be_sent_to|All order issue reports will be sent by mail to
 order.screen.change_this|Change this?
-order.screen.last_order_importation|Last synchronisation
+order.screen.last_order_importation|Last synchronization
 order.screen.no_order_importation|No order importation for now
 order.screen.import_auto|Auto
 order.screen.import_manuel|Manual

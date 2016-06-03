@@ -164,7 +164,7 @@ class LengowList
         if (count($this->collection) == 0) {
             $html.= '<tr><td colspan="100%" align="center"><div id="lengow_no_result_message">
                 <span class="img_no_result"></span>
-                <h2 class="title_no_result">'.$this->locale->t('product.screen.no_result_found_title').'</h2>
+                <h2 class="title_no_result">'.$this->locale->t('product.screen.no_result_found').'</h2>
                 </div></td></tr>';
         } else {
             foreach ($this->collection as $item) {
@@ -221,6 +221,8 @@ class LengowList
                             }
                             break;
                         case 'switch_product':
+                            $status = $this->toolbox ? 'disabled' : '';
+
                             $value = '<div class="lgw-switch '.($item[$key] ? 'checked' : '').'"><label><div><span></span><input type="checkbox"
                                 data-size="mini"
                                 class="lengow_switch_product"
@@ -231,8 +233,9 @@ class LengowList
                                 data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
                                 data-action="select_product"
                                 data-id_shop="'.$this->shopId.'"
-                                data-id_product="'.$item[$this->identifier].'"
-                                value="1" '.($item[$key] ? 'checked="checked"' : '').'/></div></label></div>';
+                                data-id_product="'.$item[$this->identifier].'" ' .
+                                $status . ' ' .
+                                'value="1" '.($item[$key] ? 'checked="checked"' : '').'/></div></label></div>';
                             break;
                         case 'flag_country':
                             if ($item[$key]) {

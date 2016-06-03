@@ -31,7 +31,7 @@ class LengowMainSettingController extends LengowController
         switch ($action) {
             case 'process':
                 if (isset($_REQUEST['uninstall_textbox']) &&
-                    trim($_REQUEST['uninstall_textbox']) == 'I WANT TO REMOVE ALL DATA'
+                    trim($_REQUEST['uninstall_textbox']) == 'I AM SURE'
                 ) {
                     $backup = new LengowBackup();
                     if ($backup->add()) {
@@ -40,7 +40,7 @@ class LengowMainSettingController extends LengowController
                         $module = Module::getInstanceByName('lengow');
                         $module->uninstall();
                         $link = new LengowLink();
-                        $configLink = $link->getAbsoluteAdminLink('AdminModules');
+                        $configLink = $link->getAbsoluteAdminLink('AdminModules', false, true);
                         Tools::redirect($configLink.'&conf=13', '');
                     }
                 }
@@ -106,16 +106,8 @@ class LengowMainSettingController extends LengowController
         }
 
         $listFile = LengowLog::getPaths();
-        $files = array();
 
-        foreach ($listFile as $file) {
-            $name = explode(".", $file['name']);
-            $date = DateTime::createFromFormat('Y-m-d', $name[0]);
-            $file['name'] = $date->format('d M Y');
-            $files[] = $file;
-        }
-
-        $this->context->smarty->assign('list_file', $files);
+        $this->context->smarty->assign('list_file', $listFile);
         $this->context->smarty->assign('mail_report', $mail_report);
         $this->context->smarty->assign('preprod_report', $preprod_report);
         $this->context->smarty->assign('preprod_wrapper', $preprod_wrapper);
