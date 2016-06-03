@@ -31,7 +31,6 @@ class LengowOrderController extends LengowController
     {
         $this->assignLastImportationInfos();
         $this->assignNbOrderImported();
-
         // datas for toolbox
         $shop = array();
         $shops = LengowShop::findAll();
@@ -43,7 +42,6 @@ class LengowOrderController extends LengowController
         $this->context->smarty->assign('shop', $shop);
         $this->context->smarty->assign('marketplaces', $marketplaces);
         $this->context->smarty->assign('days', $days);
-
         $this->context->smarty->assign('lengow_table', $this->buildTable());
         parent::display();
     }
@@ -512,12 +510,14 @@ class LengowOrderController extends LengowController
     {
         //check if order actions in progress
         if ($item['id_order'] > 0) {
-            $actions = LengowAction::getOrderActiveAction($item['id_order'], 'ship');
-            if ($actions) {
+            $last_action_type = LengowAction::getLastOrderActionType($item['id_order']);
+            if ($last_action_type) {
                 $value = '<span class="lengow_link_tooltip lgw-label lgw-label_orange"
                     data-html="true"
                     data-original-title="'.LengowMain::decodeLogMessage('order.screen.action_waiting_return').'"
-                    >'.LengowMain::decodeLogMessage('order.screen.action_sent').'</span>';
+                    >'.LengowMain::decodeLogMessage('order.screen.action_sent', null, array(
+                        'action_type' => $last_action_type
+                    )).'</span>';
                 return $value;
             }
         }

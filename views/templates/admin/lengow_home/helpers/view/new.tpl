@@ -17,6 +17,7 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
+ 
 <div class="lgw-container">
   <div class="lgw-content-section text-center">
     <div id="frame_loader">

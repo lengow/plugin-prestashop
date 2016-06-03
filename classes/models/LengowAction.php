@@ -350,7 +350,7 @@ class LengowAction
                 );
                 // Get all active actions by shop
                 $shop_actions = self::getActiveActionByShop((int)$shop->id, false);
-                if (is_null($shop_actions)) {
+                if (count($shop_actions) == 0) {
                     continue;
                 }
                 // Get all actions with API for 3 days
