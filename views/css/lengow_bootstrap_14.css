@@ -32,12 +32,12 @@ body.lengow_body #main {
     min-height: 730px;
 }
 
-#content{
-  border:none;
+#lgw-footer p {
+    margin-top: -30px;
 }
 
-.lgw-footer-vold{
-    margin-top: 150px;
+#content{
+  border:none;
 }
 
 .lgw-container{
