@@ -263,6 +263,7 @@ en:
       no_delivery_country_in_order: "can't find the delivery country in the order"
       match_carrier_with_country: "you need to match the carrier %{carrier_name} with the country %{country_name}"
       arg_is_required: "can't ship order: %{arg_name} is required"
+      action_is_too_old: "order action is too old. Please retry the call"
       cannot_load_order_status: "cannot load order status"
       order_creation_failed: "PrestaShop order creation failed"
       payment_module_not_active: "payment module is not active"

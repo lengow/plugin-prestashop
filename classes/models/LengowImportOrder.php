@@ -513,16 +513,15 @@ class LengowImportOrder
             return false;
         } else {
             try {
-                if ($order->updateState(
-                    $this->order_state_lengow,
-                    $this->order_data,
-                    (count($this->package_data->delivery->trackings) > 0
-                        ? $this->package_data->delivery->trackings[0]->number
-                        : null
-                    ),
-                    $this->log_output
-                )) {
+                $order_updated = $order->updateState($this->order_state_lengow, $this->order_data, $this->package_data);
+                if ($order_updated) {
                     $result['update'] = true;
+                    LengowMain::log(
+                        'Import',
+                        LengowMain::setLogMessage('log.import.state_updated_to', array('state_name' => $order_updated)),
+                        $log_output,
+                        $this->lengow_marketplace_sku
+                    );
                     $state_name = '';
                     $available_states = LengowMain::getOrderStates($this->id_lang);
                     foreach ($available_states as $state) {
@@ -538,11 +537,6 @@ class LengowImportOrder
                         $this->marketplace_sku
                     );
                 }
-                // update lengow order state
-                LengowOrder::updateOrderLengow(
-                    (int)$order->lengow_id,
-                    array('order_lengow_state' => pSQL($this->order_state_lengow))
-                );
             } catch (Exception $e) {
                 $error_message = $e->getMessage().'"'.$e->getFile().'|'.$e->getLine();
                 LengowMain::log(
@@ -952,15 +946,8 @@ class LengowImportOrder
                 }
 
                 // for testing => replace values
-                // if (_PS_VERSION_ < '1.6') {
-                //     $ids['id_product'] = '1';
-                //     $ids['id_product_attribute'] = '27';
-                // } else {
-                //     $ids['id_product'] = '1';
-                //     $ids['id_product_attribute'] = '1';
-                // }
-                // $product_data['amount'] = 10;
-                // $product_data['price_unit'] = 10;
+                // $ids['id_product'] = '1';
+                // $ids['id_product_attribute'] = '1';
 
                 if (!empty($ids)) {
                     $id_full = $ids['id_product'];

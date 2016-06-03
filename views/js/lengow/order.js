@@ -172,7 +172,6 @@
                     marketplace_name: $(this).parents('.lengow_form_update_order').find('#select_mkp').val(),
                     marketplace_sku: $(this).parents('.lengow_form_update_order').find('#sku_order').val(),
                     delivery_address_id: $(this).parents('.lengow_form_update_order').find('#delivery_adress_id').val(),
-                    type: 'manuel'
                 };
 
                 button.html('<i class="fa fa-circle-o-notch fa-spin"></i>');

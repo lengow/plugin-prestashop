@@ -186,13 +186,11 @@ class LengowConfiguration extends Configuration
                 ),
                 'LENGOW_LAST_IMPORT_CRON' => array(
                     'readonly'      => true,
-                    'label'         => $locale->t('lengow_setting.lengow_last_import_cron_title'),
-                    'export'        => false
+                    'label'         => $locale->t('lengow_setting.lengow_last_import_cron_title')
                 ),
                 'LENGOW_LAST_IMPORT_MANUAL' => array(
                     'readonly'      => true,
-                    'label'         => $locale->t('lengow_setting.lengow_last_import_manual_title'),
-                    'export'        => false
+                    'label'         => $locale->t('lengow_setting.lengow_last_import_manual_title')
                 ),
                 'LENGOW_GLOBAL_TOKEN' => array(
                     'readonly'      => true,
@@ -330,7 +328,9 @@ class LengowConfiguration extends Configuration
 
     /**
      * Get Values by shop or global
+     *
      * @param null $shopId
+     *
      * @return array
      */
     public static function getAllValues($shopId = null)

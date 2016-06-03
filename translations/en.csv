@@ -240,6 +240,7 @@ lengow_log.exception.marketplace_name_require|marketplace name is required
 lengow_log.exception.no_delivery_country_in_order|can't find the delivery country in the order
 lengow_log.exception.match_carrier_with_country|you need to match the carrier %{carrier_name} with the country %{country_name}
 lengow_log.exception.arg_is_required|can't ship order: %{arg_name} is required
+lengow_log.exception.action_is_too_old|order action is too old. Please retry the call
 lengow_log.exception.cannot_load_order_status|cannot load order status
 lengow_log.exception.order_creation_failed|PrestaShop order creation failed
 lengow_log.exception.payment_module_not_active|payment module is not active
@@ -319,6 +320,7 @@ log.import.quantity_back_reimported_order|adding quantity back to stock (order i
 log.import.order_already_imported|order already imported (ORDER ID %{order_id})
 log.import.order_ready_to_reimport|order is ready to be re-imported (ORDER ID %{order_id})
 log.import.order_state_updated|order's status has been updated to %{state_name}
+log.import.state_updated_to|status updated to %{state_name}
 log.import.rewrite_processing_fee|rewrite amount without processing fee
 log.import.rewrite_shipping_cost|rewrite amount without shipping cost
 log.import.generate_unique_email|generate unique email %{email}
@@ -334,11 +336,10 @@ log.import.error_mondial_relay_not_found|relay %{id_relay} could not be found
 log.import.error_mondial_relay_missing_file|missing file %{ps_module_dir}mondialrelay/classes/MRRelayDetail.php
 log.import.error_colissimo_missing_file|missing file %{ps_module_dir}socolissimo/classes/SCFields.php
 log.import.carrier_compatibility_ensured|carrier compatibility ensured with carrier %{carrier_name}
-log.import.state_updated_to_shipped|status updated to shipped
-log.import.state_updated_to_canceled|status updated to cancelled
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
-log.order_action.call_tracking|call tracking
+log.order_action.start_for_shop|check finish actions in shop %{name_shop} (%{id_shop})
+log.order_action.call_tracking|call tracking with parameters: %{parameters}
 log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}

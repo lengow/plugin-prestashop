@@ -59,7 +59,6 @@ class LengowOrderController extends LengowController
                 case 'load_table':
                     $data = array();
                     $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
-
                     echo Tools::jsonEncode($data);
                     break;
                 case 're_import':
@@ -69,7 +68,6 @@ class LengowOrderController extends LengowController
                     $row = $list->getRow(' id = '.(int)$id_order_lengow);
                     $html = $list->displayRow($row);
                     $html = preg_replace('/\r|\n/', '', $html);
-
                     $data = array();
                     $data['id_order_lengow'] = $id_order_lengow;
                     $data['html'] = $html;
@@ -78,12 +76,10 @@ class LengowOrderController extends LengowController
                 case 're_send':
                     $id_order_lengow = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : 0;
                     LengowOrder::reSendOrder($id_order_lengow);
-
                     $list = $this->loadTable();
                     $row = $list->getRow(' id = '.(int)$id_order_lengow);
                     $html = $list->displayRow($row);
                     $html = preg_replace('/\r|\n/', '', $html);
-
                     $data = array();
                     $data['id_order_lengow'] = $id_order_lengow;
                     $data['html'] = $html;
@@ -108,7 +104,6 @@ class LengowOrderController extends LengowController
                     }
                     $return = $import->exec();
                     $message = $this->loadMessage($return);
-
                     $this->assignLastImportationInfos();
                     $module = Module::getInstanceByName('lengow');
                     $display_last_importation = $module->display(
@@ -124,23 +119,19 @@ class LengowOrderController extends LengowController
                             'views/templates/admin/lengow_order/helpers/view/no_order.tpl'
                         );
                     }
-
                     $data = array();
                     $data['message'] = '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>';
                     $data['last_importation'] = preg_replace('/\r|\n/', '', $display_last_importation);
                     $data['import_orders'] = $this->locale->t('order.screen.button_update_orders');
                     $data['list_order'] = preg_replace('/\r|\n/', '', $display_list_order);
-
                     echo Tools::jsonEncode($data);
                     break;
                 case 'update_order':
                     $import = new LengowImport(array(
-                        'log_output' => false,
-                        'marketplace_sku' => Tools::getValue('marketplace_sku'),
-                        'marketplace_name' => Tools::getValue('marketplace_name'),
+                        'marketplace_sku'     => Tools::getValue('marketplace_sku'),
+                        'marketplace_name'    => Tools::getValue('marketplace_name'),
                         'delivery_address_id' => Tools::getValue('delivery_address_id'),
-                        'shop_id' => Tools::getValue('shop_id'),
-                        'type' => Tools::getValue('type'),
+                        'shop_id'             => Tools::getValue('shop_id'),
                     ));
                     $result = $import->exec();
                     $message = array();
@@ -154,28 +145,24 @@ class LengowOrderController extends LengowController
                             'log_url' => '/modules/lengow/toolbox/log.php'
                         ));
                     }
-
                     $data = array();
                     $data['message'] = '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>';
                     $data['update_order'] = $this->locale->t('toolbox.order.import_one_order');
                     $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
-
                     echo Tools::jsonEncode($data);
                     break;
                 case 'update_some_orders':
                     $import = new LengowImport(array(
                         'log_output' => false,
-                        'days' => Tools::getValue('days'),
-                        'shop_id' => Tools::getValue('shop_id'),
+                        'days'       => Tools::getValue('days'),
+                        'shop_id'    => Tools::getValue('shop_id'),
                     ));
                     $return = $import->exec();
                     $message = $this->loadMessage($return);
-
                     $data = array();
-                    $data['message'] =  '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>';
+                    $data['message'] = '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>';
                     $data['update_some_orders'] = $this->locale->t('toolbox.order.import_shop_order');
                     $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
-
                     echo Tools::jsonEncode($data);
                     break;
                 case 'synchronize':
@@ -196,10 +183,8 @@ class LengowOrderController extends LengowController
                         _PS_MODULE_LENGOW_DIR_,
                         'views/templates/admin/lengow_order/helpers/view/select_marketplace.tpl'
                     );
-
                     $data = array();
                     $data['select_marketplace'] = preg_replace('/\r|\n/', '', addslashes($display_select_marketplace));
-
                     echo Tools::jsonEncode($data);
                     exit();
                 case 'cancel_re_import':

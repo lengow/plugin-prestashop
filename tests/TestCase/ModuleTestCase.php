@@ -59,7 +59,11 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
             //load default marketplace
             $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
-            LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+
+            LengowMarketplace::$MARKETPLACES = array(
+                1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
+                2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
+            );
 
             LengowConnector::$test_fixture_path = null;
 

@@ -104,26 +104,25 @@ class LengowSync extends SpecificPrice
     {
         $data = array();
         $data['cms'] = array(
-            'token' => LengowMain::getToken(),
-            'type' => 'prestashop',
-            'version' => _PS_VERSION_,
+            'token'          => LengowMain::getToken(),
+            'type'           => 'prestashop',
+            'version'        => _PS_VERSION_,
             'plugin_version' => LengowConfiguration::getGlobalValue('LENGOW_VERSION'),
-            'options' => LengowConfiguration::getAllValues()
+            'options'        => LengowConfiguration::getAllValues()
         );
 
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
-            $shopId = $row['id_shop'];
-            $shop = new LengowShop($shopId);
-
+            $shop_id = $row['id_shop'];
+            $shop = new LengowShop($shop_id);
             $data['shops'][] = array(
-                'enabled' => LengowConfiguration::get('LENGOW_SHOP_ACTIVE', $shop->id),
-                'token' => LengowMain::getToken($shopId),
+                'enabled'    => LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $shop->id),
+                'token'      => LengowMain::getToken($shop_id),
                 'store_name' => $shop->name,
                 'domain_url' => $shop->domain,
-                'feed_url' => LengowMain::getExportUrl($shop->id),
-                'cron_url' => LengowMain::getImportUrl($shop->id),
-                'options' => LengowConfiguration::getAllValues($shop->id)
+                'feed_url'   => LengowMain::getExportUrl($shop->id),
+                'cron_url'   => LengowMain::getImportUrl($shop->id),
+                'options'    => LengowConfiguration::getAllValues($shop->id)
             );
         }
         return $data;

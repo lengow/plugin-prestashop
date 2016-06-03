@@ -59,6 +59,7 @@ en:
       order_already_imported: "order already imported (ORDER ID %{order_id})"
       order_ready_to_reimport: "order is ready to be re-imported (ORDER ID %{order_id})"
       order_state_updated: "order's status has been updated to %{state_name}"
+      state_updated_to: "status updated to %{state_name}"
       rewrite_processing_fee: "rewrite amount without processing fee"
       rewrite_shipping_cost: "rewrite amount without shipping cost"
       generate_unique_email: "generate unique email %{email}"
@@ -74,12 +75,11 @@ en:
       error_mondial_relay_missing_file: "missing file %{ps_module_dir}mondialrelay/classes/MRRelayDetail.php"
       error_colissimo_missing_file: "missing file %{ps_module_dir}socolissimo/classes/SCFields.php"
       carrier_compatibility_ensured: "carrier compatibility ensured with carrier %{carrier_name}"
-      state_updated_to_shipped: "status updated to shipped"
-      state_updated_to_canceled: "status updated to cancelled"
       order_synchronized_with_lengow: "order successfully synchronised with Lengow webservice (ORDER ID %{order_id})"
       order_not_synchronized_with_lengow: "WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})"
     order_action:
-      call_tracking: "call tracking"
+      start_for_shop: "check finish actions in shop %{name_shop} (%{id_shop})"
+      call_tracking: "call tracking with parameters: %{parameters}"
       can_not_load_order: "order action failed - Can't load order"
       call_action_failed: "order action failed - %{decoded_message}"
     connector:
