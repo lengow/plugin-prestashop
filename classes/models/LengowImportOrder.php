@@ -519,8 +519,8 @@ class LengowImportOrder
                     LengowMain::log(
                         'Import',
                         LengowMain::setLogMessage('log.import.state_updated_to', array('state_name' => $order_updated)),
-                        $log_output,
-                        $this->lengow_marketplace_sku
+                        $this->log_output,
+                        $this->marketplace_sku
                     );
                     $state_name = '';
                     $available_states = LengowMain::getOrderStates($this->id_lang);

@@ -370,9 +370,6 @@ class LengowAction
                     if (!is_object($results) || isset($results->error)) {
                         break;
                     }
-                    if (isset($results->count) && $results->count == 0) {
-                        break;
-                    }
                     // Construct array actions
                     foreach ($results->results as $action) {
                         if (isset($action->id)) {

@@ -343,7 +343,6 @@ class LengowPaymentModule extends PaymentModule
         // Register Payment only if the order status validate the order
         if ($order_status->logable) {
             $transaction_id = null;
-
             if (!$order->addOrderPayment($order->total_paid_tax_incl, null, $transaction_id)) {
                 if (_PS_VERSION_ >= '1.6') {
                     PrestaShopLogger::addLog(

@@ -19,6 +19,7 @@ use Tools;
 use Language;
 use LengowMarketplace;
 use LengowConnector;
+use LengowConfiguration;
 
 class ModuleTestCase extends PHPUnit_Framework_TestCase
 {

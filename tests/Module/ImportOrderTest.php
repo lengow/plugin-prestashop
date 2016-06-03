@@ -599,7 +599,7 @@ class ImportOrderTest extends ModuleTestCase
      *
      * @test
      * @expectedException        LengowException
-     * @expectedExceptionMessage lengow_log.exception.no_default_carrier_for_country[country_name==France]
+     * @expectedExceptionMessage lengow_log.exception.carrier_shipping_address_no_country
      * @covers LengowImportOrder::getCarrierId
      */
     public function getCarrierIdRequireCarrierError()
@@ -672,7 +672,7 @@ class ImportOrderTest extends ModuleTestCase
         LengowMain::$registers = array();
         $marketplaceFile =  _PS_MODULE_DIR_.
             'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id_require_carrier.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
         $this->invokeMethod($import, 'loadTrackingData');
         $this->assertEquals(3, $this->invokeMethod($import, 'getCarrierId', array($shipping_address)));
