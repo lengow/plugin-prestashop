@@ -53,13 +53,6 @@
                 <i class="fa fa-download"></i> {$locale->t('global_setting.screen.button_download_file')|escape:'htmlall':'UTF-8'}
             </button>
         </div>
-        <!--<div class="lgw-box lgw-box-vold">-->
-            <!--<h2>{$locale->t('global_setting.screen.uninstall_module')|escape:'htmlall':'UTF-8'}</h2>-->
-            <!--<p>{$locale->t('global_setting.screen.uninstall_module_description')|escape:'htmlall':'UTF-8'}</p>-->
-            <!--<p>{$locale->t('global_setting.screen.i_want_uninstall')|escape:'htmlall':'UTF-8'}</p>-->
-
-
-        <!--</div>-->
         <div class="lgw-container">
             <div class="container">
                 <a href="#openDeleteModal">

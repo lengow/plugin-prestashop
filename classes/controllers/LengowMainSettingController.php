@@ -85,13 +85,11 @@ class LengowMainSettingController extends LengowController
                 'LENGOW_REPORT_MAIL_ADDRESS',
             )
         );
-
         $preprod_report = $form->buildInputs(
             array(
                 'LENGOW_IMPORT_PREPROD_ENABLED',
             )
         );
-
         $preprod_wrapper = '';
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
@@ -104,9 +102,7 @@ class LengowMainSettingController extends LengowController
                 'LENGOW_SECRET_TOKEN',
             )).'</div>';
         }
-
         $listFile = LengowLog::getPaths();
-
         $this->context->smarty->assign('list_file', $listFile);
         $this->context->smarty->assign('mail_report', $mail_report);
         $this->context->smarty->assign('preprod_report', $preprod_report);

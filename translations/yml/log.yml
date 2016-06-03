@@ -176,7 +176,9 @@ en:
       summary: "Summary"
       file_checked: "%{nb_file} files checked"
       file_modified: "%{nb_file} files changed"
+      file_deleted: "%{nb_file} files deleted"
       list_modified_file: "Files changed list"
+      list_deleted_file: "Files deleted list"
     log:
       log_files: "Log Files"
       download_all: "Download all files"

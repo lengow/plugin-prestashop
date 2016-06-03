@@ -359,11 +359,6 @@ class LengowFeedController extends LengowController
             'filter_order'  => true,
             'filter_key'    => 'id_lengow_product'
         );
-        /*$fields_list['search'] = array(
-            'title'         => '',
-            'width'         => '12%',
-            'button_search' => true
-        );*/
 
         $join = array();
         $where = array();
@@ -427,9 +422,9 @@ class LengowFeedController extends LengowController
             "order_column"  => $orderColumn,
             "sql"           => array(
                 "select" => $select,
-                "from" => $from,
-                "join" => $join,
-                "where" => $where,
+                "from"   => $from,
+                "join"   => $join,
+                "where"  => $where,
             )
         ));
 
@@ -562,16 +557,12 @@ class LengowFeedController extends LengowController
                 if (_PS_VERSION_ < '1.7') {
                     return '<a href="'.
                     $link->getAbsoluteAdminLink((_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'), false, true).
-                    '&updateproduct&id_product='.
-                    $item['id_product'].'" target="_blank" class="sub-link">'.$value.'</a>';
+                    '&updateproduct&id_product='.$item['id_product']
+                    .'" target="_blank" class="sub-link">'.$value.'</a>';
                 } else {
                     return '<a href="' .
-                                $link->getAdminLink(
-                                    'AdminProducts',
-                                    true,
-                                    ['id_product' => $item['id_product']]
-                                ) . 
-                            '" target="_blank" class="sub-link">' . $value . '</a>';
+                        $link->getAdminLink('AdminProducts', true, ['id_product' => $item['id_product']]).
+                        '" target="_blank" class="sub-link">' . $value . '</a>';
                 }
             } else {
                 return $value;

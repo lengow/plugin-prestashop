@@ -90,7 +90,7 @@ order.screen.not_imported|not imported
 order.screen.not_sent|not sent
 order.screen.refresh_order|refresh order
 order.screen.order_not_imported|Order hasn't been imported into PrestaShop
-order.screen.action_sent|action sent
+order.screen.action_sent|action %{action_type} sent
 order.screen.action_waiting_return|Action sent, waiting for response
 order.screen.action_sent_not_work|Action sent to the marketplace failed
 order.screen.no_order_title|The best is yet to come!
@@ -429,6 +429,8 @@ toolbox.checksum.file_not_exists|checkmd5.csv file is not available. Checking is
 toolbox.checksum.summary|Summary
 toolbox.checksum.file_checked|%{nb_file} files checked
 toolbox.checksum.file_modified|%{nb_file} files changed
+toolbox.checksum.file_deleted|%{nb_file} files deleted
 toolbox.checksum.list_modified_file|Files changed list
+toolbox.checksum.list_deleted_file|Files deleted list
 toolbox.log.log_files|Log Files
 toolbox.log.download_all|Download all files

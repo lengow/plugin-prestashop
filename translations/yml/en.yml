@@ -102,7 +102,7 @@ en:
       not_sent: "not sent"
       refresh_order: "refresh order"
       order_not_imported: "Order hasn't been imported into PrestaShop"
-      action_sent: "action sent"
+      action_sent: "action %{action_type} sent"
       action_waiting_return: "Action sent, waiting for response"
       action_sent_not_work: "Action sent to the marketplace failed"
       no_order_title: "The best is yet to come!"
