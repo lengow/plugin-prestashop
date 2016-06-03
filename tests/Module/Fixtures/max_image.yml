@@ -4,7 +4,7 @@ product:
     id_supplier: 1
     id_manufacturer: 1
     price: 4.90
-    reference: SIMPLEKU001
+    reference: SIMPLESKU001
     supplier_reference: SUPPLIERSKU001
     ean13: 9805120221231
 product_supplier:
@@ -39,8 +39,8 @@ product_lang:
     id_shop: 1
     id_lang: 1
     name: NAME001
-    description: DESCRIPTION001
-    description_short: DESCRIPTION001
+    description: <strong>DESCRIPTION001</strong>
+    description_short: SHORTDESCRIPTION001
 product_attribute:
   -
     id_product_attribute: 1
