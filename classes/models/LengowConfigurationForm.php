@@ -25,39 +25,57 @@
  */
 class LengowConfigurationForm
 {
-
+    /**
+     * @var array $fields
+     */
     public $fields;
 
+    /**
+     * @var $locale for translation
+     */
     protected $locale;
 
+    /**
+    * Construct
+    */
     public function __construct($params)
     {
         $this->fields = isset($params['fields']) ? $params['fields'] : false;
         $this->locale = new LengowTranslation();
     }
 
-    public function build()
-    {
-
-    }
-
-    public function buildShopInputs($shopId, $displayKey)
+    /**
+    * Construct Lengow setting input for shop
+    *
+    * @param integer $id_shop      shop id
+    * @param array   $display_keys names of lengow setting
+    *
+    * @return string
+    */
+    public function buildShopInputs($id_shop, $display_keys)
     {
         $html = '';
-        foreach ($displayKey as $key) {
+        foreach ($display_keys as $key) {
             if (isset($this->fields[$key])) {
                 if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
-                    $html.= $this->input($key, $this->fields[$key], $shopId);
+                    $html.= $this->input($key, $this->fields[$key], $id_shop);
                 }
             }
         }
         return $html;
     }
 
-    public function buildInputs($displayKey)
+    /**
+    * Construct Lengow setting input
+    *
+    * @param array $display_keys names of lengow setting
+    *
+    * @return string
+    */
+    public function buildInputs($display_keys)
     {
         $html = '';
-        foreach ($displayKey as $key) {
+        foreach ($display_keys as $key) {
             if (isset($this->fields[$key])) {
                 if (!isset($this->fields[$key]['shop']) || !$this->fields[$key]['shop']) {
                     $html .= $this->input($key, $this->fields[$key], null);
@@ -67,12 +85,21 @@ class LengowConfigurationForm
         return $html;
     }
 
-    public function input($key, $input, $shopId = null)
+    /**
+    * Get lengow input
+    *
+    * @param string  $key     name of lengow setting
+    * @param array   $input   all lengow settings
+    * @param integer $id_shop shop id
+    *
+    * @return string
+    */
+    public function input($key, $input, $id_shop = null)
     {
         $html = '';
-        $name = $shopId ?  $key.'['.$shopId.']' : $key;
-        if ($shopId) {
-            $value = LengowConfiguration::get($key, null, null, $shopId);
+        $name = $id_shop ?  $key.'['.$id_shop.']' : $key;
+        if ($id_shop) {
+            $value = LengowConfiguration::get($key, null, null, $id_shop);
         } else {
             $value = LengowConfiguration::getGlobalValue($key);
         }
@@ -87,10 +114,10 @@ class LengowConfigurationForm
                 $checked = $value ? 'checked' : '';
                 $html.='<div class="lgw-switch '.$checked.'"><label><div><span></span>';
                 $html.='<input name="'.$name.'" type="checkbox" '.$checked.' '.$readonly.' >';
-                $html.='</div>'. $label;
+                $html.='</div>'.$label;
                 $html.='</label></div></div>';
                 if (!empty($legend)) {
-                    $html.= '<span class="legend">' . $legend . '</span>';
+                    $html.= '<span class="legend">'.$legend.'</span>';
                 }
                 break;
             case 'text':
@@ -124,7 +151,7 @@ class LengowConfigurationForm
                             <div class="clearfix"></div>
                         </div>';
                 if (!empty($legend)) {
-                    $html.= '<span class="legend">' . $legend . '</span>';
+                    $html.= '<span class="legend">'.$legend.'</span>';
                 }
                 $html.= '</div>';
                 break;
@@ -132,7 +159,12 @@ class LengowConfigurationForm
         return $html;
     }
 
-    public function postProcess($checkboxKeys)
+    /**
+    * Save Lengow settings
+    *
+    * @param array $checkbox_keys checkbox Lengow
+    */
+    public function postProcess($checkbox_keys)
     {
         if (_PS_VERSION_ < '1.5') {
             $shopCollection = array(array('id_shop' => 1));
@@ -140,17 +172,16 @@ class LengowConfigurationForm
             $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
             $shopCollection = Db::getInstance()->ExecuteS($sql);
         }
-
         foreach ($_REQUEST as $key => $value) {
             if (isset($this->fields[$key])) {
                 if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
-                    foreach ($value as $shopId => $shopValue) {
+                    foreach ($value as $id_shop => $shopValue) {
                         if (isset($this->fields[$key]['type']) &&
                             $this->fields[$key]['type'] == 'checkbox' && $shopValue == 'on') {
                             $shopValue = true;
                         }
-                        $this->checkAndLog($key, $shopValue, $shopId);
-                        LengowConfiguration::updateValue($key, $shopValue, false, null, $shopId);
+                        $this->checkAndLog($key, $shopValue, $id_shop);
+                        LengowConfiguration::updateValue($key, $shopValue, false, null, $id_shop);
                     }
                 } else {
                     if (is_array($value)) {
@@ -168,38 +199,45 @@ class LengowConfigurationForm
             }
         }
         foreach ($shopCollection as $shop) {
-            $shopId = $shop['id_shop'];
+            $id_shop = $shop['id_shop'];
             foreach ($this->fields as $key => $value) {
-                if (!in_array($key, $checkboxKeys)) {
+                if (!in_array($key, $checkbox_keys)) {
                     continue;
                 }
                 if ($value['type'] == 'checkbox' && isset($value['shop']) && $value['shop']) {
-                    if (!isset($_REQUEST[$key][$shopId])) {
-                        $this->checkAndLog($key, false, $shopId);
-                        LengowConfiguration::updateValue($key, false, false, null, $shopId);
+                    if (!isset($_REQUEST[$key][$id_shop])) {
+                        $this->checkAndLog($key, false, $id_shop);
+                        LengowConfiguration::updateValue($key, false, false, null, $id_shop);
                     }
                 }
             }
         }
         foreach ($this->fields as $key => $value) {
-            if (!in_array($key, $checkboxKeys)) {
+            if (!in_array($key, $checkbox_keys)) {
                 continue;
             }
             if ((!isset($value['shop']) || !$value['shop'])) {
                 if (!isset($_REQUEST[$key])) {
-                    $this->checkAndLog($key, false, $shopId);
+                    $this->checkAndLog($key, false, $id_shop);
                     LengowConfiguration::updateGlobalValue($key, false);
                 }
             }
         }
     }
 
-    public function checkAndLog($key, $value, $shopId = null)
+    /**
+    * Check value and create a log if necessary
+    *
+    * @param string  $key     name of lengow setting
+    * @param mixed   $value   setting value
+    * @param integer $id_shop shop id
+    */
+    public function checkAndLog($key, $value, $id_shop = null)
     {
-        if (is_null($shopId)) {
+        if (is_null($id_shop)) {
             $old_value = LengowConfiguration::getGlobalValue($key);
         } else {
-            $old_value = LengowConfiguration::get($key, null, null, $shopId);
+            $old_value = LengowConfiguration::get($key, null, null, $id_shop);
         }
         if (isset($this->fields[$key]['type']) && $this->fields[$key]['type'] == 'checkbox') {
             $value = (int)$value;
@@ -208,14 +246,14 @@ class LengowConfigurationForm
             $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
             $old_value = preg_replace("/[a-zA-Z0-9]/", '*', $old_value);
         }
-        if ($old_value != $value && !is_null($shopId)) {
+        if ($old_value != $value && !is_null($id_shop)) {
             LengowMain::log(
                 'Setting',
                 LengowMain::setLogMessage('log.setting.setting_change_for_shop', array(
                     'key'       => $key,
                     'old_value' => $old_value,
                     'value'     => $value,
-                    'shop_id'   => $shopId
+                    'shop_id'   => $id_shop
                 ))
             );
         } elseif ($old_value != $value) {
