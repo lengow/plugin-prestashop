@@ -113,6 +113,16 @@ a.lgw-box-link:hover{
 .lgw-container .lengow_toolbar .lgw-btn{
     margin-right: 15px;
 }
+
+/* DISABLED */
+
+.lgw-container .lgw-btn-disabled{
+    background: #c0c0c0;
+    top: 0;
+    color: #828282;
+    pointer-events: none;
+}
+
 .btn-link{
     border:0;
     padding:8px 20px;
