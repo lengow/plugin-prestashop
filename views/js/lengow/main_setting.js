@@ -79,16 +79,6 @@
             }
         });
 
-        $('.lengow_submit_delete_module').on('click', function(e) {
-            var selector    = $('input[name="uninstall_textbox"]');
-            var check       = selector.val();
-
-            if (check != "I AM SURE") {
-                selector.val("");
-                selector.prop('required', true);
-            }
-        });
-
         $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').change(function(){
             var checked = $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked');
             var selector = $('.lengow_report_mail_address');
@@ -101,7 +91,6 @@
                 selector.next('span.legend').hide();
             }
         });
-
 
         displayPreProdMode();
         $("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").on('change', function () {

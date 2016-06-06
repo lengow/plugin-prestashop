@@ -154,6 +154,7 @@ global_setting.screen.button_i_want_uninstall|Remove Lengow Module
 global_setting.screen.title_modal_uninstall|Remove Lengow Module
 global_setting.screen.cancel_i_want_uninstall|Cancel
 global_setting.screen.to_uninstall_type|To remove, type
+global_setting.screen.i_am_sure|I AM SURE
 global_setting.screen.button_download_file|Download log files
 global_setting.screen.button_save|Save changes
 help.screen.title|Get a little help from your support team !
