@@ -175,13 +175,13 @@ class LengowImportOrder
      *
      * @param array params optional options
      *
-     * integer  $shop_id        Id shop for current order
-     * integer  $id_shop_group  Id shop group for current order
-     * integer  $id_lang        Id lang for current order
-     * mixed    $context        Context for current order
-     * boolean  $force_product  force import of products
-     * boolean  $preprod_mode   preprod mode
-     * boolean  $log_output     display log messages
+     * integer  $shop_id       Id shop for current order
+     * integer  $id_shop_group Id shop group for current order
+     * integer  $id_lang       Id lang for current order
+     * mixed    $context       Context for current order
+     * boolean  $force_product force import of products
+     * boolean  $preprod_mode  preprod mode
+     * boolean  $log_output    display log messages
      */
     public function __construct($params = array())
     {
@@ -463,23 +463,23 @@ class LengowImportOrder
     /**
      * Return an array of result for each order
      *
-     * @param string    $type_result        Type of result (new, update, error)
-     * @param integer   $id_order_lengow    ID of the lengow order record
-     * @param integer   $order_id           Order ID Prestashop
+     * @param string  $type_result     Type of result (new, update, error)
+     * @param integer $id_order_lengow ID of the lengow order record
+     * @param integer $order_id        Order ID Prestashop
      *
      * @return array
      */
     protected function returnResult($type_result, $id_order_lengow, $order_id = null)
     {
         $result = array(
-            'order_id'              => $order_id,
-            'id_order_lengow'       => $id_order_lengow,
-            'marketplace_sku'       => $this->marketplace_sku,
-            'marketplace_name'      => (string)$this->marketplace->name,
-            'lengow_state'          => $this->order_state_lengow,
-            'order_new'             => ($type_result == 'new' ? true : false),
-            'order_update'          => ($type_result == 'update' ? true : false),
-            'order_error'           => ($type_result == 'error' ? true : false)
+            'order_id'         => $order_id,
+            'id_order_lengow'  => $id_order_lengow,
+            'marketplace_sku'  => $this->marketplace_sku,
+            'marketplace_name' => (string)$this->marketplace->name,
+            'lengow_state'     => $this->order_state_lengow,
+            'order_new'        => ($type_result == 'new' ? true : false),
+            'order_update'     => ($type_result == 'update' ? true : false),
+            'order_error'      => ($type_result == 'error' ? true : false)
         );
         return $result;
     }
@@ -555,9 +555,6 @@ class LengowImportOrder
 
     /**
      * Checks if order data are present
-     *
-     * @param mixed     $order_data
-     * @param mixed     $package
      *
      * @return boolean
      */

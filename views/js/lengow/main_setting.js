@@ -105,7 +105,6 @@
             }
         });
 
-
         displayPreProdMode();
         $("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").on('change', function () {
             displayPreProdMode();

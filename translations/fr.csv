@@ -107,6 +107,7 @@ global_setting.screen.button_i_want_uninstall|Supprimer Lengow
 global_setting.screen.title_modal_uninstall|Suppression complète du module Lengow
 global_setting.screen.cancel_i_want_uninstall|Annuler
 global_setting.screen.to_uninstall_type|Pour désinstaller, écrivez
+global_setting.screen.i_am_sure|JE SUIS SUR
 global_setting.screen.button_download_all|Télécharger tous les fichiers
 global_setting.screen.button_save|Sauvegarder les changements
 lengow_setting.lengow_account_id_title|ID du compte
