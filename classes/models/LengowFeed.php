@@ -25,7 +25,6 @@
  */
 class LengowFeed
 {
-
     /**
      * Protection.
      */
@@ -42,32 +41,32 @@ class LengowFeed
     const EOL = "\r\n";
 
     /**
-     * @var string    name of file containing part of export (in cas of timeout)
+     * @var string name of file containing part of export (in cas of timeout)
      */
     public $part_file_name;
 
     /**
-     * @var LengowFile    temporary export file
+     * @var LengowFile temporary export file
      */
     protected $file;
 
     /**
-     * @var string    feed content
+     * @var string feed content
      */
     protected $content = '';
 
     /**
-     * @var string    feed format
+     * @var string feed format
      */
     protected $format;
 
     /**
-     * @var string    export shop folder
+     * @var string export shop folder
      */
     protected $shop_folder = null;
 
     /**
-     * @var string    full export folder
+     * @var string full export folder
      */
     protected $export_folder;
 
@@ -81,10 +80,19 @@ class LengowFeed
         'json',
     );
 
-
+    /**
+     * @var string Lengow export folder
+     */
     public static $LENGOW_EXPORT_FOLDER = 'export';
 
-
+    /**
+     * Construct
+     *
+     * @param boolean $stream
+     * @param string  $format
+     * @param string  $shop_name
+     * @param string  $part_file_name
+     */
     public function __construct($stream, $format, $shop_name = null, $part_file_name = null)
     {
         $this->stream = $stream;
@@ -128,7 +136,9 @@ class LengowFeed
     /**
      * Write feed
      *
-     * @param array $data export data
+     * @param string  $type     (header, body or footer)
+     * @param array   $data     export data
+     * @param boolean $is_first
      */
     public function write($type, $data = array(), $is_first = null)
     {
@@ -157,6 +167,7 @@ class LengowFeed
     /**
      * Return feed header
      *
+     * @param array  $data   export data
      * @param string $format feed format
      *
      * @return string
@@ -184,9 +195,9 @@ class LengowFeed
     /**
      * Get feed body
      *
-     * @param string $format feed format
-     * @param array $data feed data
+     * @param array   $data     feed data
      * @param boolean $is_first is first product
+     * @param string  $format   feed format
      *
      * @return string
      */
@@ -253,7 +264,6 @@ class LengowFeed
      * Flush feed content
      *
      * @param string $content feed content to be flushed
-     *
      */
     public function flush($content)
     {
@@ -307,6 +317,11 @@ class LengowFeed
         return $this->file->getLink();
     }
 
+    /**
+     * Get file name
+     *
+     * @return string
+     */
     public function getFileName()
     {
         return $this->file->getPath();
@@ -334,10 +349,9 @@ class LengowFeed
     }
 
     /**
-     * v3
      * Format field names according to the given format
      *
-     * @param string $str field name
+     * @param string $str    field name
      * @param string $format feed format
      *
      * @return string
@@ -371,7 +385,7 @@ class LengowFeed
     /**
      * For YAML, add spaces to have good indentation.
      *
-     * @param string $name the field name
+     * @param string $name    the field name
      * @param string $maxsize space limit
      *
      * @return string
@@ -386,6 +400,11 @@ class LengowFeed
         return $spaces;
     }
 
+    /**
+     * Get file link
+     *
+     * @return string
+     */
     public static function getLinks()
     {
         if (_PS_VERSION_ >= '1.5') {
@@ -393,11 +412,9 @@ class LengowFeed
         } else {
             $shop_name = 'default';
         }
-
         $sep = DIRECTORY_SEPARATOR;
-        $folder = LengowFeed::$LENGOW_EXPORT_FOLDER . $sep . LengowFeed::formatFields($shop_name, 'shop');
+        $folder = LengowFeed::$LENGOW_EXPORT_FOLDER.$sep.LengowFeed::formatFields($shop_name, 'shop');
         $files = LengowFile::getFilesFromFolder($folder);
-
         if (empty($files)) {
             return false;
         }
