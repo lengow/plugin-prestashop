@@ -20,19 +20,21 @@
 <div class="lgw-container">
     <div class="lgw-box" id="lengow_order_wrapper">
 
-        <div class="pull-right">
-            <a id="lengow_import_orders" class="lgw-btn btn no-margin-top"
-                data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
-                {$locale->t('order.screen.button_update_orders')|escape:'htmlall':'UTF-8'}
-            </a>
-            {if not $cron_active}
-                <p class="small light text-right">
-                    <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}#cron_setting" class="sub-link">
-                        {$locale->t('order.screen.cron')|escape:'htmlall':'UTF-8'}
-                    </a>
-                </p>
-            {/if}
-        </div>
+        {if !isset($toolbox) || !$toolbox}
+            <div class="pull-right">
+                <a id="lengow_import_orders" class="lgw-btn btn no-margin-top"
+                    data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
+                    {$locale->t('order.screen.button_update_orders')|escape:'htmlall':'UTF-8'}
+                </a>
+                {if not $cron_active}
+                    <p class="small light text-right">
+                        <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}#cron_setting" class="sub-link">
+                            {$locale->t('order.screen.cron')|escape:'htmlall':'UTF-8'}
+                        </a>
+                    </p>
+                {/if}
+            </div>
+        {/if}
         <!-- UPDATE ORDERS -->
         <div id="lengow_charge_import_order" style="display:none">
             <p id="lengow_charge_lign1">{$locale->t('order.screen.import_charge_first')|escape:'htmlall':'UTF-8'}</p>

@@ -138,28 +138,55 @@ a.lengow_link_tooltip {
 
 /* PAGINATION */
 
-.lgw-pagination {
+
+.lgw-pagination{
     float:right;
 }
-
-.lengow_pagination {
-    display: inline-block;
-    padding-left: 0;
-    margin: 0;
-    border-radius: 4px;
+.lgw-pagination-pages{
+    font-size:13px;
+    display:block;
+    text-align:right;
+}
+.lgw-pagination-btns{
+    list-style: none;
+    margin:5px 0 15px;
+    display:inline-block;
+    padding:0;
+}
+.lgw-pagination-arrow{
+    margin-right:15px;
+}
+.lgw-pagination-btns li{
+    display:inline-block;
 }
 
-.lengow_pagination > li {
-    display: inline;
+.lgw-pagination-btns a{
+    display:block;
+    border:1px solid #d7d7d7;
+    border-right:0;
+    padding:0;
+    height:30px;
+    width:30px;
+    line-height: 30px;
+    text-align:center;
+    color:#555;
 }
-
-.lengow_pagination {
-    margin-left:10px;
+.lgw-pagination-btns li:first-child a{
+    border-radius: 3px 0 0 3px;
 }
-
-.lengow_pagination_total {
-    padding-top: 7px;
-    float: left;
+.lgw-pagination-btns li:last-child a{
+    border-right:1px solid #d7d7d7;
+    border-radius: 0 3px 3px 0;
+}
+.lgw-pagination-btns a:hover{
+    text-decoration: none;
+    background:#f7f7f7;
+    color:#555;
+}
+.lgw-pagination-btns .disabled a{
+    background: #ebebeb;
+    color:#828282;
+    pointer-events:none;
 }
 
 /* TOOLBAR */
@@ -386,6 +413,20 @@ span.title_no_order {
 
 #lengow_update_order, #lengow_update_some_orders {
     margin: 20px 5px 0 5px;
+}
+
+#lengow_charge_import_order{
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:30;
+    background:rgba(255,255,255,.95);
+    text-align:center;
+    padding-top:150px;
+    font-size:24px;
+    font-weight:300;
 }
 
 .lengow_import_order_toolbox {
