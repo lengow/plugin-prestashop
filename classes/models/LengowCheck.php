@@ -21,7 +21,9 @@
 
 class LengowCheck
 {
-
+    /**
+     * @var $locale for translation
+     */
     protected $locale;
 
     public function __construct()
@@ -29,11 +31,10 @@ class LengowCheck
         $this->locale = new LengowTranslation();
     }
 
-
     /**
     * Check API Authentification
     *
-    * @param integer Shop ID
+    * @param integer $id_shop Shop ID
     *
     * @return boolean
     */
@@ -42,11 +43,9 @@ class LengowCheck
         if (LengowMain::inTest()) {
             return true;
         }
-
         if (!self::isCurlActivated()) {
             return false;
         }
-        
         $account_id = (integer)LengowMain::getIdAccount($id_shop);
         $connector  = new LengowConnector(
             LengowMain::getAccessToken($id_shop),
@@ -171,7 +170,6 @@ class LengowCheck
         } else {
             $import_in_progress = $this->locale->t('toolbox.index.no_import');
         }
-
         $checklist = array();
         $checklist[] = array(
             'title'     => $this->locale->t('toolbox.index.global_token'),

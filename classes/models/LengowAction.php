@@ -263,8 +263,8 @@ class LengowAction
     /**
      * Removes all actions for one order Prestashop
      *
-     * @param integer $id_order     Prestashop order id
-     * @param string  $action_type  type (null, ship or cancel)
+     * @param integer $id_order    Prestashop order id
+     * @param string  $action_type type (null, ship or cancel)
      *
      * @return boolean
      */
@@ -287,7 +287,7 @@ class LengowAction
     /**
      * Remove old actions > 3 days
      *
-     * @param string  $action_type  type (null, ship or cancel)
+     * @param string $action_type type (null, ship or cancel)
      *
      * @return boolean
      */

@@ -26,12 +26,13 @@
 class LengowCountry
 {
     /**
-     * v3
-     * Get Name country By IsoCode
-     * @param $isoCode
+     * Get Name country By iso_code
+     *
+     * @param $iso_code
+     *
      * @return mixed
      */
-    public static function getNameByIso($isoCode)
+    public static function getNameByIso($iso_code)
     {
         $id_lang = Context::getContext()->language->id;
         if ($id_lang > 0) {
@@ -41,7 +42,7 @@ class LengowCountry
         }
         $sql = "SELECT name FROM "._DB_PREFIX_."country c INNER JOIN "._DB_PREFIX_."country_lang cl
         ON (cl.id_country = c.id_country)
-        WHERE iso_code = '".pSQL($isoCode)."' ".$where;
+        WHERE iso_code = '".pSQL($iso_code)."' ".$where;
         $result = Db::getInstance()->getRow($sql);
         return $result['name'];
     }
