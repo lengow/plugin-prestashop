@@ -259,7 +259,7 @@ class LengowConnector
             case "PUT":
                 $opts[CURLOPT_HTTPHEADER] = array_merge($opts[CURLOPT_HTTPHEADER], array(
                     'Content-Type: application/json',
-                    'Content-Length: ' . strlen($body)
+                    'Content-Length: '.Tools::strlen($body)
                 ));
                 $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
                 $opts[CURLOPT_POSTFIELDS] = $body;

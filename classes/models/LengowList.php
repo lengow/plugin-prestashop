@@ -223,7 +223,8 @@ class LengowList
                         case 'switch_product':
                             $status = $this->toolbox ? 'disabled' : '';
 
-                            $value = '<div class="lgw-switch '.($item[$key] ? 'checked' : '').'"><label><div><span></span><input type="checkbox"
+                            $value = '<div class="lgw-switch '.($item[$key] ? 'checked' : '')
+                                .'"><label><div><span></span><input type="checkbox"
                                 data-size="mini"
                                 class="lengow_switch_product"
                                 data-on-text="'.$this->locale->t('product.screen.button_yes').'"
@@ -565,7 +566,8 @@ class LengowList
             for ($i = 1; $i <= $totalPage; $i++) {
                 $class = ($i == $this->currentPage) ? 'disabled' : '';
                 $html .= '<li class="' . $class . '"><a href="#"  data-page="'.$i.'"
-                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'.$i.'</a></li>';
+                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'
+                    .$i.'</a></li>';
             }
         }
         $html.= '</ul></nav>';

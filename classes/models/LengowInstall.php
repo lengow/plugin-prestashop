@@ -199,13 +199,15 @@ class LengowInstall
                         _DB_PREFIX_.'order_state_lang',
                         array('name' => $name),
                         'UPDATE',
-                        '`id_order_state` = \''.(int)$id_order_state.'\' AND `id_lang` = \''.(int)$language['id_lang'].'\''
+                        '`id_order_state` = \''.(int)$id_order_state
+                        .'\' AND `id_lang` = \''.(int)$language['id_lang'].'\''
                     );
                 } else {
                     Db::getInstance()->update(
                         'order_state_lang',
                         array('name' => $name),
-                        '`id_order_state` = \''.(int)$id_order_state.'\' AND `id_lang` = \''.(int)$language['id_lang'].'\''
+                        '`id_order_state` = \''.(int)$id_order_state
+                        .'\' AND `id_lang` = \''.(int)$language['id_lang'].'\''
                     );
                 }
             }
