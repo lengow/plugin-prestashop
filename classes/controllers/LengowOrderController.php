@@ -144,7 +144,7 @@ class LengowOrderController extends LengowController
                         ));
                     }
                     $data = array();
-                    $data['message'] = '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>';
+                    $data['message'] = '<div class=\"lengow_alert\">'.join('<br/>', $message).'</div>';
                     $data['update_order'] = $this->locale->t('toolbox.order.import_one_order');
                     $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
                     echo Tools::jsonEncode($data);
