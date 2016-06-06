@@ -52,6 +52,19 @@
             evt.params.originalEvent.stopPropagation();
         });*/
 
+        // SUMBIT FORM
+
+        $( ".lengow_form" ).submit(function( event ) {
+            event.preventDefault();
+            var form = this;
+          $('.lengow_submit_main_setting').addClass('loading');
+          setTimeout(function () {
+            $('.lengow_submit_main_setting').removeClass('loading');
+            $('.lengow_submit_main_setting').addClass('success');
+            form.submit();
+           }, 1000);
+        });
+
 
         $('.lgw-modal-delete').click(function(){
             $('body').addClass('unscrollable');
@@ -76,16 +89,6 @@
                 $('.lengow_submit_delete_module')
                     .addClass('lgw-btn-disabled')
                     .removeClass('lgw-btn-red');
-            }
-        });
-
-        $('.lengow_submit_delete_module').on('click', function(e) {
-            var selector    = $('input[name="uninstall_textbox"]');
-            var check       = selector.val();
-
-            if (check != "I AM SURE") {
-                selector.val("");
-                selector.prop('required', true);
             }
         });
 

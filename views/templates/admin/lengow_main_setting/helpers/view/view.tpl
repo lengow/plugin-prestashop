@@ -102,9 +102,15 @@
         <div class="form-group container">
             <div class="lengow_main_setting_block_content">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="lgw-btn lengow_submit_main_setting">
-                        {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
+
+                    <button type="submit" class="lgw-btn lgw-btn-progression lengow_submit_main_setting">
+                        <div class="btn-inner">
+                            <div class="btn-step default">{$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}</div>
+                            <div class="btn-step loading">Saving...</div>
+                            <div class="btn-step done" data-success="Success!" data-error="Error">Success!</div>
+                        </div>
                     </button>
+
                 </div>
             </div>
         </div>
