@@ -83,9 +83,9 @@
                             <div class="form-group">
                                 <label class="control-label">
                                     {$locale->t('global_setting.screen.to_uninstall_type')|escape:'htmlall':'UTF-8'}
-                                    : I AM SURE
+                                    : {$locale->t('global_setting.screen.i_am_sure')|escape:'htmlall':'UTF-8'}
                                 </label>
-                                <input type="text" name="uninstall_textbox" class="form-control js-confirm-delete" placeholder="" value="" data-confirm="I AM SURE">
+                                <input type="text" name="uninstall_textbox" class="form-control js-confirm-delete" placeholder="" value="" data-confirm="{$locale->t('global_setting.screen.i_am_sure')|escape:'htmlall':'UTF-8'}">
                                 <button type="submit" class="btn lgw-btn lgw-btn-disabled lengow_submit_delete_module">
                                     {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                                 </button>

@@ -171,6 +171,7 @@ en:
       title_modal_uninstall: "Remove Lengow Module"
       cancel_i_want_uninstall: "Cancel"
       to_uninstall_type: "To remove, type"
+      i_am_sure: "I AM SURE"
       button_download_file: "Download log files"
       button_save: "Save changes"
   help:
