@@ -70,6 +70,10 @@ body.lgw-home-iframe .lgw-content-section p{
   margin:60px 0 30px;
 }
 
+.lgw-home-menu .lgw-box{
+  min-height: 280px;
+}
+
 /*************************************************/
 /*                    PRODUCTS                   */
 /*************************************************/
