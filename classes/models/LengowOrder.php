@@ -956,7 +956,7 @@ class LengowOrder extends Order
                 $orderLineCollection = self::findOrderLineIds($this->id);
                 // compatibility V2 and security
                 if (count($orderLineCollection) == 0) {
-                    $order_line_collection = $this->getOrderLineByApi();
+                    $orderLineCollection = $this->getOrderLineByApi();
                 }
                 if (!$orderLineCollection) {
                     throw new LengowException(
