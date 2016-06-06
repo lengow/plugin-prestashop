@@ -114,6 +114,27 @@ a.lgw-box-link:hover{
     margin-right: 15px;
 }
 
+/* DISABLED */
+
+.lgw-container .lgw-btn-disabled{
+    background: #c0c0c0;
+    top: 0;
+    color: #828282;
+    pointer-events: none;
+}
+
+.btn-link{
+    border:0;
+    padding:8px 20px;
+    margin:15px 0;
+    background:transparent;
+    outline: none;
+}
+.btn-link:hover{
+    text-decoration: underline;
+    color:#00aeef;
+}
+
 
 /*************************************************/
 /*                    LABELS                     */

@@ -124,6 +124,7 @@ fr:
       title_modal_uninstall: "Suppression complète du module Lengow"
       cancel_i_want_uninstall: "Annuler"
       to_uninstall_type: "Pour désinstaller, écrivez"
+      i_am_sure: "JE SUIS SUR"
       button_download_all: "Télécharger tous les fichiers"
       button_save: "Sauvegarder les changements"
   lengow_setting:
