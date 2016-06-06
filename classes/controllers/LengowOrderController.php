@@ -652,20 +652,23 @@ class LengowOrderController extends LengowController
     public function loadMessage($return)
     {
         $message = array();
-        if (isset($return['order_new'])) {
+        if (isset($return['order_new']) && $return['order_new'] > 0) {
             $message[]= $this->locale->t('lengow_log.error.nb_order_imported', array(
                 'nb_order' => (int)$return['order_new']
             ));
         }
-        if (isset($return['order_update'])) {
+        if (isset($return['order_update']) && $return['order_update'] > 0) {
             $message[]= $this->locale->t('lengow_log.error.nb_order_updated', array(
                 'nb_order' => (int)$return['order_update']
             ));
         }
-        if (isset($return['order_error'])) {
+        if (isset($return['order_error']) && $return['order_error'] > 0) {
             $message[]= $this->locale->t('lengow_log.error.nb_order_with_error', array(
                 'nb_order' => (int)$return['order_error']
             ));
+        }
+        if (count($message) == 0) {
+            $message[]= $this->locale->t('lengow_log.error.no_notification');
         }
         if (isset($return['error'])) {
             foreach ($return['error'] as $shop => $values) {

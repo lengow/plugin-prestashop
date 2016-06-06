@@ -25,6 +25,9 @@
  */
 class AdminLengowHelp14 extends AdminTab
 {
+    /**
+     * Construct
+     */
     public function __construct()
     {
         $this->lengow_controller = new LengowHelpController();
@@ -34,8 +37,10 @@ class AdminLengowHelp14 extends AdminTab
         $this->lengow_controller->display();
     }
 
+    /**
+     * Display data page
+     */
     public function display()
     {
-
     }
 }

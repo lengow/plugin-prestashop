@@ -22,7 +22,7 @@
 class AdminLengowMainSettingController extends ModuleAdminController
 {
     /**
-     * Construct the admin selection of products
+     * Construct
      */
     public function __construct()
     {

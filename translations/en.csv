@@ -211,6 +211,7 @@ lengow_setting.lengow_order_stat_update_title|Order statistics update
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
+lengow_log.error.no_notification|No new notification on order
 lengow_log.error.account_id_empty|Account ID, Access Token or Secret is empty in shop %{name_shop} (%{id_shop})
 lengow_log.error.account_id_already_used|account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})
 lengow_log.error.import_in_progress|import has already begun
