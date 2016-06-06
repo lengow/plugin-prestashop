@@ -48,7 +48,7 @@ class LogTest extends ModuleTestCase
         $lastLine = $this::readLastLine($log->getFileName());
         $date = substr($lastLine, 0, 26);
         $message = substr($lastLine, 30, strlen($lastLine)-30);
-        $this->assertValidDatetime($date, 'Y-m-d:H:i:s.u');
+        $this->assertValidDatetime($date, 'Y-m-d H:i:s.u');
         $this->assertEquals($message, '[categ] this is a test');
     }
 

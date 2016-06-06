@@ -52,13 +52,32 @@
             evt.params.originalEvent.stopPropagation();
         });*/
 
+        $('.lengow_submit_delete_module').on('click', function(e) {
+            var selector    = $('input[name="uninstall_textbox"]');
+            var check       = selector.val();
+
+            if (check != "I AM SURE") {
+                selector.val("");
+                selector.prop('required', true);
+            }
+        });
+
+        $('#openDeleteModal').on('hidden.bs.modal', function () {
+            var selector = $('input[name="uninstall_textbox"]');
+            selector.prop('required', false);
+            selector.val("");
+        });
+
         $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').change(function(){
             var checked = $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked');
+            var selector = $('.lengow_report_mail_address');
             if( checked == true ){
-                $('.lengow_report_mail_address').slideDown(150);
+                selector.slideDown(150);
+                selector.next('span.legend').show();
             }
             else{
-                $('.lengow_report_mail_address').slideUp(150);
+                selector.slideUp(150);
+                selector.next('span.legend').hide();
             }
         });
 

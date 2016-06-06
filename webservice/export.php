@@ -110,6 +110,8 @@ $out_stock = isset($_REQUEST["out_stock"]) ? (bool)$_REQUEST["out_stock"] :
 // export product variation
 $exportVariation = isset($_REQUEST["variation"]) ? (bool)$_REQUEST["variation"] :
     (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED');
+// update export date
+$updateExportDate = isset($_REQUEST["update_export_date"]) ? (bool)$_REQUEST["update_export_date"] : true;
 // export certain products
 $product_ids = array();
 $ids = isset($_REQUEST["product_ids"]) ? $_REQUEST["product_ids"] : null;
@@ -129,6 +131,7 @@ $export = new LengowExport(array(
     'export_variation' => $exportVariation,
     'selection' => $selection,
     'language_id' => $languageId,
+    'update_export_date' => $updateExportDate,
 ));
 
 if ($mode == 'size') {

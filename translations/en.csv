@@ -6,31 +6,45 @@ tab.order_setting|Orders settings
 tab.help|Help
 tab.main_setting|Main settings
 tab.legals|Legals
-menu.product|products
-menu.order|orders
+menu.product|Products
+menu.order|Orders
+menu.jump_to_lengow|Jump to Lengow
 menu.preprod_active|Pre-production mode
 menu.order_overview|Overview
 menu.order_parameter|Settings
-dashboard.screen.good_job|Good Job! You have
-dashboard.screen.pending_order|Pending Orders
-dashboard.screen.sell_everywhere|Why not go a step further, and start selling everywhere?
-dashboard.screen.stat_with_lengow_you_make|With Lengow, you have made
+menu.help|Help
+menu.global_parameter|Global parameters
+footer.legals|Legals
+footer.copyright_lengow|Copyright Lengow
+dashboard.screen.welcome_back|Hi! Welcome back!
+dashboard.screen.go_to_lengow|Go to Lengow
+dashboard.screen.products_title|Products
+dashboard.screen.products_text|Take a look at all your products available to prepare your catalogue
+dashboard.screen.orders_title|Orders
+dashboard.screen.orders_text|Manage your orders directly on your PrestaShop dashboard
+dashboard.screen.settings_title|Settings
+dashboard.screen.settings_text|Configure the main settings of your PrestaShop plugin
+dashboard.screen.partner_business|Lengow, partner of your business
 dashboard.screen.stat_turnover|Turnover
 dashboard.screen.stat_nb_orders|Orders
 dashboard.screen.stat_avg_order|Average Order
-dashboard.screen.stat_more_stats|Want more stats? Go to Lengow.com
+dashboard.screen.stat_more_stats|Want more stats?
+dashboard.screen.some_help_title|Need some help?
+dashboard.screen.get_in_touch|Get in touch with Lengow
+dashboard.screen.visit_help_center|Visit our Help Center
+dashboard.screen.configure_plugin|for detailed information on how to configure properly your PrestaShop plugin
 product.screen.nb_exported|products exported
 product.screen.nb_available|products available
 product.screen.include_variation|Include product variations
-product.screen.include_variation_support|Use this option if you sell your products only on shopbots. For marketplaces, you have to export all of your catalogue with variations
+product.screen.include_variation_support|Use this option if you want to export all of your catalogue with variations
 product.screen.include_out_of_stock|Include out of stock products
 product.screen.include_out_of_stock_support|Use this option if you want to export out of stock products
 product.screen.include_specific_product|Include specific products
 product.screen.include_specific_product_support|Use this option to select your products one by one
 product.screen.your_exported_catalog|This is your export catalogue. Copy this link into your Lengow platform
-product.screen.last_export|Last export
+product.screen.last_export|Last indexation
 product.screen.no_export|No export
-product.screen.no_result_found|Sorry, no results found for your search
+product.screen.no_result_found|Sorry, no results found for your search.<br />Maybe, you can try to change your request ?
 product.screen.no_product_selected|Please select a product
 product.screen.date_from|From
 product.screen.date_to|To
@@ -40,12 +54,15 @@ product.screen.button_yes|Yes
 product.screen.button_no|No
 product.screen.button_search|Search
 product.screen.select_all_products|Select all of your products (%{nb} products)
-product.screen.add_confirmation|Do you really want to add %{nb} products in your selection?
-product.screen.remove_confirmation|Do you really want to remove %{nb} products in your selection?
+product.screen.add_confirmation|Do you really want to add %{nb} products to your selection?
+product.screen.remove_confirmation|Do you really want to remove %{nb} products from your selection?
 product.screen.remove_from_export|Remove from export
-product.screen.add_from_export|Add from export
+product.screen.add_from_export|Add to export
 product.screen.lengow_shop_sync|Synchronized
 product.screen.lengow_shop_no_sync|Not synchronized
+product.screen.sync_your_shop|Synchronize my shop with Lengow
+product.screen.shop_last_indexation|Last indexation
+product.screen.shop_not_index|Not indexed yet
 product.table.id_product|ID
 product.table.image|Image
 product.table.name|Name
@@ -60,7 +77,7 @@ order.screen.import_charge_first|Retrieving your orders...
 order.screen.import_charge_second|Please bear with us; this will not take long (2 min average waiting time)
 order.screen.all_order_will_be_sent_to|All order issue reports will be sent by mail to
 order.screen.change_this|Change this?
-order.screen.last_order_importation|Last order importation
+order.screen.last_order_importation|Last synchronization
 order.screen.no_order_importation|No order importation for now
 order.screen.import_auto|Auto
 order.screen.import_manuel|Manual
@@ -73,16 +90,16 @@ order.screen.not_imported|not imported
 order.screen.not_sent|not sent
 order.screen.refresh_order|refresh order
 order.screen.order_not_imported|Order hasn't been imported into PrestaShop
-order.screen.action_sent|action sent
-order.screen.action_waiting_return|Action sent, waiting returns
-order.screen.action_sent_not_work|Action sent to the marketplace didn't work
+order.screen.action_sent|action %{action_type} sent
+order.screen.action_waiting_return|Action sent, waiting for response
+order.screen.action_sent_not_work|Action sent to the marketplace failed
 order.screen.no_order_title|The best is yet to come!
 order.screen.no_order_description|Your products have great visibility and your sales are about to prosper!
 order.screen.action_success|Success
 order.screen.action_error|Error
 order.screen.status_not_synchronized|Not synchronized
 order.screen.status_accepted|Accepted
-order.screen.status_waiting_shipment|Waiting shipment
+order.screen.status_waiting_shipment|Waiting for shipment
 order.screen.status_shipped|Shipped
 order.screen.status_closed|Closed
 order.screen.status_refunded|Refunded
@@ -99,10 +116,10 @@ order.table.order_item|Quantity
 order.table.total_paid|Total
 order.table.extra|Extra
 order_setting.screen.order_status_title|Order Status
-order_setting.screen.order_status_description|It's time to match your Lengow platform order status with the following PrestaShop status
+order_setting.screen.order_status_description|Match your Lengow order status to retrieve them easily among your orders
 order_setting.screen.carrier_management_title|Marketplace carrier management
-order_setting.screen.carrier_management_description|For each country that you are active in, select the default carrier to apply to your orders. Then, match your marketplace carrier with the PrestaShop carrier
-order_setting.screen.country_wt_carrier|Some countries may have no configured carriers, in which case, please go to
+order_setting.screen.carrier_management_description|Select the default carrier that you would like to apply to your orders for each country that you are active in. Then, match your marketplace carrier with the PrestaShop carrier
+order_setting.screen.country_wt_carrier|Some countries may have no configured carriers, in which case, please setup them
 order_setting.screen.country_wt_carrier_link|link
 order_setting.screen.default_country|default
 order_setting.screen.import_setting_title|Order import
@@ -110,7 +127,7 @@ order_setting.screen.select_a_country|Please choose a country...
 order_setting.screen.import_setting_description|Manage your import settings here for marketplace orders 
 order_setting.screen.nb_days|days
 order_setting.screen.cron_title|Cron settings
-order_setting.screen.cron_description|Use the Crontab Module to import orders from Lengow
+order_setting.screen.cron_description|Use the  Crontab Module to import orders from Lengow
 order_setting.screen.cron_not_configured|Cron import is not configured in your PrestaShop
 order_setting.screen.cron_configured|Cron Import exists in your PrestaShop
 order_setting.screen.cron_if_not_exists|or
@@ -127,18 +144,27 @@ global_setting.screen.log_file_title|Log Files
 global_setting.screen.log_file_description|Find all the maintenance logs below (imported orders, errors reports...). They will be recorded here for 20 days.
 global_setting.screen.please_choose_log|Please choose a log file...
 global_setting.screen.download_all_files|Download all files
-global_setting.screen.uninstall_module|Uninstall the module completely
-global_setting.screen.uninstall_module_description|Description uninstall module
+global_setting.screen.uninstall_module|Remove the entire module
+global_setting.screen.uninstall_module_description|Uninstall the entire module and all related data here
 global_setting.screen.all_data_will_be_lost|All data will be lost (tables and configuration) and you will lose order history
-global_setting.screen.you_will_find_a_backup|After uninstalling the module, you will find a back-up of your Lengow database in
+global_setting.screen.you_will_find_a_backup|After removing the module, you will find a back-up of your Lengow database in
 global_setting.screen.prestashop_backup|PrestaShop Backup
-global_setting.screen.i_want_uninstall|I want to uninstall the Lengow module
-global_setting.screen.button_i_want_uninstall|Delete Lengow
+global_setting.screen.i_want_uninstall|I want to remove the Lengow module
+global_setting.screen.button_i_want_uninstall|Remove Lengow Module
 global_setting.screen.title_modal_uninstall|Remove Lengow Module
 global_setting.screen.cancel_i_want_uninstall|Cancel
-global_setting.screen.to_uninstall_type|To uninstall, type
+global_setting.screen.to_uninstall_type|To remove, type
 global_setting.screen.button_download_file|Download log files
 global_setting.screen.button_save|Save changes
+help.screen.title|Get a little help from your support team !
+help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at 
+help.screen.mail_lengow_support|support@lengow.com.
+help.screen.mail_lengow_support_title|Account Information :
+help.screen.mailto_subject|Prestashop Lengow Plugin #Need assistance
+help.screen.need_some_help|Need some help ?
+help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
+help.screen.find_answer|You can also find answers in our 
+help.screen.link_prestashop_guide|PrestaShop dedicated guide
 lengow_setting.lengow_account_id_title|Account ID
 lengow_setting.lengow_access_token_title|Access Token
 lengow_setting.lengow_secret_token_title|Secret Token
@@ -157,27 +183,24 @@ lengow_setting.lengow_order_id_shipped_title|Shipped orders
 lengow_setting.lengow_order_id_cancel_title|Cancelled orders
 lengow_setting.lengow_order_id_shippedbymp_title|Shipped marketplace orders
 lengow_setting.lengow_import_force_product_title|Force products
-lengow_setting.lengow_import_force_product_legend|Enable this option if you want to automate the importing of out of stock and inactive products
-lengow_setting.lengow_import_days_title|Re-import all orders made after 
-lengow_setting.lengow_import_days_legend|Activate this option if you have pending orders in error. It lets you re-import orders made since your last good period
+lengow_setting.lengow_import_force_product_legend|Enable this option if you want to force the importing of out of stock/inactive products
+lengow_setting.lengow_import_days_title|Re-import all orders made since
+lengow_setting.lengow_import_days_legend|Activate this option if you have incorrect pending orders. It lets you re-import all orders that have been processed during this faulty period
 lengow_setting.lengow_import_processing_fee_title|Import processing fee
 lengow_setting.lengow_import_processing_fee_legend|Enable this option if you want to have marketplace processing fee inside your order
 lengow_setting.lengow_import_preprod_enabled_title|Activate Pre-production Mode
-lengow_setting.lengow_import_preprod_enabled_legend|To simulate fictitious orders. You have to activate this option on your pre-production server ONLY
-lengow_setting.lengow_import_fake_mail_title|Fictitious emails
-lengow_setting.lengow_import_fake_mail_legend|When enabled, a fictitious email is generated
 lengow_setting.lengow_import_ship_mp_enabled_title|Import orders shipped by marketplaces
 lengow_setting.lengow_import_stock_ship_mp_title|I want to decrease my stock
-lengow_setting.lengow_import_stock_ship_mp_legend|This option is only available for orders shipped by marketplaces
+lengow_setting.lengow_import_stock_ship_mp_legend|Use this option to take into account your marketplaces orders on your stock in your PrestaShop backoffice
 lengow_setting.lengow_report_mail_enabled_title|I would like to be notified when there are issues regarding order importation and/or catalogue exportation
-lengow_setting.lengow_report_mail_enabled_legend|We will send you this once a day
 lengow_setting.lengow_report_mail_address_title|Mail for the report email
+lengow_setting.lengow_report_mail_address_legend|To add several email, separate them with ;
 lengow_setting.lengow_import_single_enabled_title|Limited to one order per import process
 lengow_setting.lengow_import_single_enabled_legend|Useful for PrestaShop versions from 1.5.2 to 1.5.4.* (avoids importing orders twice)
 lengow_setting.lengow_import_in_progress_title|Import in progress
 lengow_setting.lengow_last_import_cron_title|Last Cron import
 lengow_setting.lengow_last_import_manual_title|Last manual import
-lengow_setting.lengow_cron_enabled_title|Use crontab module PrestaShop
+lengow_setting.lengow_cron_enabled_title|Use Crontab module PrestaShop
 lengow_setting.lengow_global_token_title|Lengow global Token
 lengow_setting.lengow_authorized_ip_title|Authorised IP
 lengow_setting.lengow_authorized_ip_legend|Authorized IP separated by:
@@ -188,9 +211,9 @@ lengow_setting.lengow_order_stat_update_title|Order statistics update
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
-lengow_log.error.account_id_empty|id account, access token or secret is empty in shop %{name_shop} (%{id_shop})
+lengow_log.error.account_id_empty|Account ID, Access Token or Secret is empty in shop %{name_shop} (%{id_shop})
 lengow_log.error.account_id_already_used|account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})
-lengow_log.error.import_in_progress|import has already started
+lengow_log.error.import_in_progress|import has already begun
 lengow_log.error.rest_time_to_import|Please wait %{rest_time} seconds before re-importing orders
 lengow_log.error.no_product|no products in the order
 lengow_log.error.no_change_rate|no exchange rates available for order prices
@@ -199,7 +222,7 @@ lengow_log.error.currency_not_available|currency %{currency_iso} is not availabl
 lengow_log.error.no_country_for_delivery_address|delivery address doesn't contain the country
 lengow_log.error.no_billing_address|no billing address in the order
 lengow_log.error.no_country_for_billing_address|billing address doesn't contain the country
-lengow_log.error.order_not_found|Order can't be found in lengow feed
+lengow_log.error.order_not_found|Order cannot be found in Lengow feed
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
 lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation is needed
 lengow_log.exception.no_product_to_cart|no product to be added to cart
@@ -212,7 +235,7 @@ lengow_log.exception.order_list_is_empty|order could not be saved
 lengow_log.exception.carrier_shipping_address_no_country|shipping address doesn't contain the country
 lengow_log.exception.no_default_carrier_for_country|you must select a default carrier for the country : %{country_name}
 lengow_log.exception.marketplace_not_present|the marketplace %{markeplace_name} does not feature in the marketplace list
-lengow_log.exception.order_line_required|order Line require, but not found in order
+lengow_log.exception.order_line_required|order line is required but cannot be not found in order
 lengow_log.exception.action_not_valid|action %{action} is not valid
 lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} are not present
 lengow_log.exception.shop_id_require|shop ID is required
@@ -220,6 +243,7 @@ lengow_log.exception.marketplace_name_require|marketplace name is required
 lengow_log.exception.no_delivery_country_in_order|can't find the delivery country in the order
 lengow_log.exception.match_carrier_with_country|you need to match the carrier %{carrier_name} with the country %{country_name}
 lengow_log.exception.arg_is_required|can't ship order: %{arg_name} is required
+lengow_log.exception.action_is_too_old|order action is too old. Please retry the call
 lengow_log.exception.cannot_load_order_status|cannot load order status
 lengow_log.exception.order_creation_failed|PrestaShop order creation failed
 lengow_log.exception.payment_module_not_active|payment module is not active
@@ -228,7 +252,7 @@ lengow_log.exception.delivery_country_not_active|the country in the delivery add
 lengow_log.exception.product_is_not_listed|product %{product_id} is not listed as part of the current order
 lengow_log.exception.unable_to_save_order|unable to save PrestaShop order - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
-lengow_log.exception.timeout_api|API call was blocked by a timeout
+lengow_log.exception.timeout_api|API call has been blocked by a timeout
 lengow_log.mail_report.order|Order %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Import Lengow
@@ -240,6 +264,7 @@ admin.order.total_paid|Total amount paid on Marketplace
 admin.order.carrier_from_marketplace|Carrier from marketplace
 admin.order.method_from_marketplace|Shipping method from marketplace
 admin.order.tracking_number|Tracking number
+admin.order.customer_email|Customer email
 admin.order.message|Message
 admin.order.shipped_by_marketplace|Shipped by marketplace
 admin.order.cancel_and_reimport|Cancel and re-import order
@@ -249,9 +274,9 @@ log.install.install_tab|install tab %{class_name}
 log.install.uninstall_tab|uninstall tab %{class_name}
 log.hook.registering_hook_success|registering hook - %{hook}: success
 log.hook.registering_hook_error|registering hook - %{hook}: error
-log.cron.creation_success|lengow import cron task sucessfully created
-log.cron.creation_error|lengow import cron task could not be created
-log.cron.delete_success|cron tasks sucessfully removed
+log.cron.creation_success|Lengow import cron task sucessfully created
+log.cron.creation_error|Lengow import cron task could not be created
+log.cron.delete_success|cron task(s) sucessfully removed
 log.cron.delete_error|import and/or export cron task(s) could not be removed
 log.mail_report.send_mail_to|report email sent to %{emails}
 log.mail_report.unable_send_mail_to|unable to send report email to %{emails}
@@ -259,18 +284,18 @@ log.export.start|## start export ##
 log.export.end|## end export ##
 log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})
 log.export.nb_product_found|%{nb_product} product(s) found
-log.export.count_product|%{product_count} products exported
+log.export.count_product|%{product_count} product(s) exported
 log.export.export_failed|export failed - %{decoded_message}
 log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>
 log.export.error_folder_not_writable|export file generation did not end properly. Please make sure the export folder is writable
 log.export.error_no_product_combination|unable to retrieve product combinations
-log.export.error_illegal_currency|illegal Currency
+log.export.error_illegal_currency|illegal currency
 log.export.error_no_carrier_selected|you must select a default carrier in Lengow import parameters
 log.export.error_illegal_export_format|illegal export format
-log.export.error_unable_to_create_folder|unable to create folder %{folder_path}. Make sure it is writeable
+log.export.error_unable_to_create_folder|unable to create folder %{folder_path}. Make sure it is writable
 log.export.error_unable_to_create_file|unable to create file %{file_name} in %{folder_name}
-log.export.error_cant_find_image_size|cant find Image type size, check your table ps_image_type
-log.import.preprod_mode_active|warning ! Preprod mode is activated
+log.export.error_cant_find_image_size|can't find image type size, check your table ps_image_type
+log.import.preprod_mode_active|warning ! Pre-prod mode is activated
 log.import.start|## start %{type} import ##
 log.import.end|## end %{type} import ##
 log.import.start_for_shop|start import in shop %{name_shop} (%{id_shop})
@@ -280,66 +305,66 @@ log.import.nb_order_imported|%{nb_order} order(s) imported
 log.import.nb_order_updated|%{nb_order} order(s) updated
 log.import.nb_order_with_error|%{nb_order} order(s) with errors
 log.import.connector_get_order|get order with order id: %{marketplace_sku} and marketplace: %{markeplace_name}
-log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} with account ID: %{account_id}
+log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} for the account ID: %{account_id}
 log.import.error_already_created|%{decoded_message} (created on the %{date_message})
-log.import.external_id_exist|already imported in a Prestashop with order ID %{order_id}
+log.import.external_id_exist|already imported in a PrestaShop with the order ID %{order_id}
 log.import.order_shipped_by_marketplace|order shipped by %{markeplace_name}
-log.import.current_order_state_unavailable|current order's state [%{order_state_marketplace}] makes it unavailable to import for marketplace %{marketplace_name}
+log.import.current_order_state_unavailable|current order's status [%{order_state_marketplace}] makes it unavailable to import for marketplace %{marketplace_name}
 log.import.order_successfully_imported|order successfully imported (ORDER ID %{order_id})
 log.import.import_failed|import failed - %{decoded_message}
 log.import.order_import_failed|import order failed - %{decoded_message}
-log.import.lengow_order_saved|order saved in lengow orders table
-log.import.lengow_order_not_saved|WARNING ! Order could NOT be saved in lengow orders table
-log.import.lengow_order_updated|order updated in lengow orders table
-log.import.lengow_order_not_updated|WARNING ! Order could NOT be updated in lengow orders table
-log.import.lengow_order_line_saved|save order lines product : %{order_line_saved}
+log.import.lengow_order_saved|order saved in Lengow orders table
+log.import.lengow_order_not_saved|WARNING ! Order could NOT be saved in Lengow orders table
+log.import.lengow_order_updated|order updated in Lengow orders table
+log.import.lengow_order_not_updated|WARNING ! Order could NOT be updated in Lengow orders table
+log.import.lengow_order_line_saved|save order lines product: %{order_line_saved}
 log.import.quantity_back_shipped_by_marketplace|adding quantity back to stock (order shipped by marketplace)
 log.import.quantity_back_reimported_order|adding quantity back to stock (order is re-imported)
 log.import.order_already_imported|order already imported (ORDER ID %{order_id})
 log.import.order_ready_to_reimport|order is ready to be re-imported (ORDER ID %{order_id})
-log.import.order_state_updated|order's state has been updated to %{state_name}
+log.import.order_state_updated|order's status has been updated to %{state_name}
+log.import.state_updated_to|status updated to %{state_name}
 log.import.rewrite_processing_fee|rewrite amount without processing fee
 log.import.rewrite_shipping_cost|rewrite amount without shipping cost
 log.import.generate_unique_email|generate unique email %{email}
 log.import.product_be_found|product id %{id_full} found with field %{attribute_name} (%{attribute_value})
 log.import.product_advanced_search|product not found with field %{attribute_name} (%{attribute_value}). Using advanced search
 log.import.product_state_canceled|product %{product_id} could not be added to cart - status: %{state_product}
-log.import.error_order_state_updated|error while updating state: %{error_message}
+log.import.error_order_state_updated|error while updating status: %{error_message}
 log.import.error_no_package|import order failed - no package in the order
 log.import.error_wrong_package_number|import order failed - wrong package number
 log.import.error_no_delivery_address|import order failed - no delivery address in the order
-log.import.error_carrier_not_found|carrier %{carrier_name} could not be found in your Prestashop
+log.import.error_carrier_not_found|carrier %{carrier_name} could not be found in your PrestaShop
 log.import.error_mondial_relay_not_found|relay %{id_relay} could not be found
 log.import.error_mondial_relay_missing_file|missing file %{ps_module_dir}mondialrelay/classes/MRRelayDetail.php
 log.import.error_colissimo_missing_file|missing file %{ps_module_dir}socolissimo/classes/SCFields.php
 log.import.carrier_compatibility_ensured|carrier compatibility ensured with carrier %{carrier_name}
-log.import.state_updated_to_shipped|state updated to shipped
-log.import.state_updated_to_canceled|state updated to canceled
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
-log.order_action.call_tracking|call tracking
+log.order_action.start_for_shop|check finish actions in shop %{name_shop} (%{id_shop})
+log.order_action.call_tracking|call tracking with parameters: %{parameters}
 log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}
 log.connector.error_api|call api failed - %{error_code}
 log.setting.setting_reset|All Lengow settings were reset
 log.setting.setting_updated|All Lengow settings were updated
-log.setting.setting_change|%{key} - old value %{old_value} change by %{value}
-log.setting.setting_change_for_shop|%{key} - old value %{old_value} change by %{value} for shop %{shop_id}
+log.setting.setting_change|%{key} - old value %{old_value} replaced with %{value}
+log.setting.setting_change_for_shop|%{key} - old value %{old_value} replaced with %{value} for shop %{shop_id}
 toolbox.menu.lengow_toolbox|Lengow Toolbox
 toolbox.menu.product|Products
 toolbox.menu.order|Orders
 toolbox.menu.configuration|Configuration
 toolbox.menu.checksum|Checksum
 toolbox.menu.log|Logs
-toolbox.menu.log_off|Log Off
-toolbox.index.checklist_information|Check-list
+toolbox.menu.log_off|Log out
+toolbox.index.checklist_information|Checklist
 toolbox.index.curl_message|Lengow needs the CURL PHP extension
-toolbox.index.curl_help|The CURL extension is not installed or enabled in your PHP installation.Check the manual for information on how to install or enable CURL on your system
+toolbox.index.curl_help|The CURL extension is not installed or enabled in your PHP installation. Check the manual to get more information on how to install or enable CURL on your system
 toolbox.index.curl_help_link|http://www.php.net/manual/en/curl.setup.php
 toolbox.index.curl_help_label|Go to Curl PHP extension manual
 toolbox.index.simple_xml_message|Lengow needs the SimpleXML PHP extension
-toolbox.index.simple_xml_help|The SimpleXML extension is not installed or enabled in your PHP installation. Check the manual for information on how to install or enable SimpleXML on your system
+toolbox.index.simple_xml_help|The SimpleXML extension is not installed or enabled in your PHP installation. Check the manual to get more information on how to install or enable SimpleXML on your system
 toolbox.index.simple_xml_help_link|http://www.php.net/manual/en/book.simplexml.php
 toolbox.index.simple_xml_help_label|Go to SimpleXML PHP extension manual
 toolbox.index.json_php_message|Lengow needs the JSON PHP extension
@@ -347,33 +372,33 @@ toolbox.index.json_php_help|The JSON extension is not installed or enabled in yo
 toolbox.index.json_php_help_link|http://www.php.net/manual/fr/book.json.php
 toolbox.index.json_php_help_label|Go to JSON PHP extension manual
 toolbox.index.shop_functionality_message|Shop functionality
-toolbox.index.shop_functionality_help|Shop functionality are disabled, order import will be impossible, please enable them in your products settings
+toolbox.index.shop_functionality_help|Shop functionalities are disabled, order import is impossible: please enable them in the products settings section
 toolbox.index.mail_configuration_enabled|Email are enabled with custom settings
-toolbox.index.email_desactived|Email are desactived
-toolbox.index.error_mail_setting|Error mail settings, PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4
+toolbox.index.email_desactived|Email are disabled
+toolbox.index.error_mail_setting|Error on email settings: PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4
 toolbox.index.email_using_php_mail|Email using php mail function
-toolbox.index.checksum_message|Verification plugin files
-toolbox.index.checksum_help|Some files have been modified by the customer
+toolbox.index.checksum_message|Plugin files check
+toolbox.index.checksum_help|Some files have been changed by the customer
 toolbox.index.checksum_help_label|Go to Checksum page
 toolbox.index.global_information|Global information
-toolbox.index.prestashop_version|Prestashop version
+toolbox.index.prestashop_version|PrestaShop version
 toolbox.index.plugin_version|Plugin version
 toolbox.index.ip_server|Server IP
-toolbox.index.ip_authorized|Ip authorised
-toolbox.index.preprod_disabled|Preprod mode disabled
-toolbox.index.cron_enable|Cron job set in the crontab Module
+toolbox.index.ip_authorized|IP authorised
+toolbox.index.preprod_disabled|Pre-production mode disabled
+toolbox.index.cron_enable|Cron job set in the Crontab module
 toolbox.index.import_information|Import information (Global)
 toolbox.index.global_token|Import token
 toolbox.index.url_import|Import URL
 toolbox.index.import_in_progress|Import in progress
-toolbox.index.no_import|no import in progress
+toolbox.index.no_import|No import in progress
 toolbox.index.rest_time_to_import|wait %{rest_time} seconds before the next import
 toolbox.index.shop_last_import|Last import
 toolbox.index.shop_type_import|Last import type
 toolbox.index.last_import_none|none
-toolbox.index.last_import_cron|cron
+toolbox.index.last_import_cron|Cron
 toolbox.index.last_import_manual|manual
-toolbox.index.export_information|Export information (By store)
+toolbox.index.export_information|Export information (by store)
 toolbox.index.shop_active|Shop followed by Lengow
 toolbox.index.shop_export_token|Export token
 toolbox.index.shop_last_export|Last export
@@ -382,11 +407,11 @@ toolbox.index.shop_product_exported|Products exported in the shop
 toolbox.index.url_export|Export URL for this shop
 toolbox.order.shop|Shop
 toolbox.order.markeplace_name|Marketplace
-toolbox.order.order_sku|Sku Order
+toolbox.order.order_sku|Sku order
 toolbox.order.delivery_address_id|Delivery address ID
-toolbox.order.import_one_order|Import Order
+toolbox.order.import_one_order|Import order
 toolbox.order.import_days|Import days
-toolbox.order.import_shop_order|Import Orders
+toolbox.order.import_shop_order|Import orders
 toolbox.order.import_all_order|Import all orders
 toolbox.order.order_import_success|Order %{marketplace_sku} from %{marketplace_name} is imported
 toolbox.order.order_import_failed|Order import failed (<a href='%{log_url}' target='_blank'>See logs for more information</a>)
@@ -395,15 +420,17 @@ toolbox.configuration.export_setting|Export settings
 toolbox.configuration.import_setting|Import settings
 toolbox.configuration.global_setting|Global settings
 toolbox.configuration.get_default_settings|Get default settings
-toolbox.configuration.check_get_default_settings|Do you really want to reset all settings ?
+toolbox.configuration.check_get_default_settings|Do you really want to reset all settings?
 toolbox.configuration.update_settings|Update settings
-toolbox.configuration.check_update_settings|Do you really want to update settings and Lengow tables ?
+toolbox.configuration.check_update_settings|Do you really want to update settings and Lengow tables?
 toolbox.configuration.button_save|Save settings
-toolbox.checksum.checksum_integrity|File checksum integrity
-toolbox.checksum.file_not_exists|checkmd5.csv file is not present. Verification is impossible !
+toolbox.checksum.checksum_integrity|File Checksum integrity
+toolbox.checksum.file_not_exists|checkmd5.csv file is not available. Checking is impossible!
 toolbox.checksum.summary|Summary
 toolbox.checksum.file_checked|%{nb_file} files checked
-toolbox.checksum.file_modified|%{nb_file} files modified
-toolbox.checksum.list_modified_file|List of modified files
+toolbox.checksum.file_modified|%{nb_file} files changed
+toolbox.checksum.file_deleted|%{nb_file} files deleted
+toolbox.checksum.list_modified_file|Files changed list
+toolbox.checksum.list_deleted_file|Files deleted list
 toolbox.log.log_files|Log Files
 toolbox.log.download_all|Download all files

@@ -22,19 +22,47 @@
     $(document).ready(function () {
 
         function checkShop() {
-            var href = $('.lengow_check_shop').attr('data-href');
-            $.ajax({
-                url: href,
-                method: 'POST',
-                data: {action: 'check_shop'},
-                dataType: 'script',
-                beforeSend: function () {
-                    $('.lengow_check_shop').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
-                },
-                success: function () {
+            var status = $('.lengow_check_shop');
+            var href = status.attr('data-href');
+            var data = {
+                action: 'check_shop'
+            };
+
+            status.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+
+            $.getJSON(href, data, function(content) {
+                $.each(content, function(index, shop) {
+                    var selector = lengow_jquery("#block_" + shop['shop_id'] + " .lengow_check_shop");
+                    selector.attr("data-original-title", shop['tooltip']);
+
+                    var title = shop['original_title'];
+
+                    if (shop['check_shop'] === true) {
+                        status.removeClass('lengow_check_shop_no_sync').addClass('lengow_check_shop_sync');
+                        selector.attr("id", "lengow_shop_sync");
+                    } else {
+                        selector.attr("id", "lengow_shop_no_sync");
+                        lengow_jquery("#block_" + shop['shop_id']
+                            +  " .lengow_feed_block_header_title").append(shop['header_title']);
+                        title = shop['header_title'];
+                    }
+                    selector.html("");
+
+                    $('.lengow_shop_status_label').html(title);
+
                     init_tooltip()
-                }
+                });
             });
+        }
+
+        /**
+         * Refresh total product/product exported
+         * @param data Number of products exported and total products
+         * @param id_shop Shop id
+         */
+        function reloadTotal(data, id_shop) {
+            lengow_jquery("#block_" + id_shop + " .lengow_exported").html(data['total_export_product']);
+            lengow_jquery("#block_" + id_shop + " .lengow_total").html(data['total_product']);
         }
 
         checkShop();
@@ -44,11 +72,24 @@
             var action = $(this).attr('data-action');
             var id_shop = $(this).attr('data-id_shop');
             var state = $(this).prop('checked');
-            $.ajax({
-                url: href,
-                method: 'POST',
-                data: {state: state ? 1 : 0, action: action, id_shop: id_shop},
-                dataType: 'script'
+            var data = {
+                state: state ? 1 : 0,
+                action: action,
+                id_shop: id_shop
+            };
+
+            $.getJSON(href, data, function(content) {
+                var selector = lengow_jquery('#block_' + id_shop + ' .lengow_feed_block_footer_content');
+
+                reloadTotal(content, id_shop);
+
+                if (content['state'] != null) {
+                    if (content['state'] === true) {
+                        selector.slideDown(150);
+                    } else {
+                        selector.slideUp(150);
+                    }
+                }
             });
         });
 
@@ -58,12 +99,16 @@
             var id_shop = $(this).attr('data-id_shop');
             var id_product = $(this).attr('data-id_product');
             var state = $(this).prop('checked');
-            $.ajax({
-                url: href,
-                method: 'POST',
-                data: {state: state ? 1 : 0, action: action, id_shop: id_shop, id_product: id_product},
-                dataType: 'script'
-            });
+            var data = {
+                 state: state ? 1 : 0,
+                 action: action,
+                 id_shop: id_shop,
+                 id_product: id_product
+            };
+
+             $.getJSON(href, data, function(content) {
+                 reloadTotal(content, id_shop);
+             });
         });
 
 
@@ -107,15 +152,21 @@
             var href = $(this).attr('data-href');
             var id_shop = $(this).attr('id').split('_')[3];
             var form = $(this).serialize();
-            $.ajax({
-                url: href + '&' + form,
-                method: 'POST',
-                data: {action: 'load_table', id_shop: id_shop},
-                dataType: 'script',
-                success: function () {
-                    //
+            var url = href + "&" + form;
+            var data = {
+                action: 'load_table',
+                id_shop: id_shop
+            };
+
+            $.getJSON(url, data, function(content) {
+                lengow_jquery("#block_" + content['shop_id']
+                    + " .lengow_feed_block_footer_content").html(content['footer_content']);
+
+                if (content['bootstrap_switch_readonly']) {
+                    lengow_jquery(".lengow_switch").bootstrapSwitch({readonly: true});
                 }
             });
+
             return false;
         });
         $('#lengow_feed_wrapper').on('click', '.lengow_select_all', function () {
@@ -158,30 +209,52 @@
             var id_shop = $(this).attr('data-id_shop');
             var message = $(this).attr('data-message');
             var form = $('#form_table_shop_' + id_shop).serialize();
+            var url = href + "&" + form;
             var check = $('#select_all_shop_' + id_shop).prop('checked');
+            var data = {
+                action: 'add_to_export',
+                id_shop: id_shop,
+                select_all: check
+            };
             if (!check || (check && confirm(message))) {
-                $.ajax({
-                    url: href + '&' + form,
-                    method: 'POST',
-                    data: {action: 'add_to_export', id_shop: id_shop, select_all: check},
-                    dataType: 'script'
+                $.getJSON(url, data, function(content) {
+                    if (content['message']) {
+                        alert(content['message']);
+                    } else {
+                        $.each(content['product_id'], function(idx, p_id) {
+                            lengow_jquery("#shop_" + id_shop + "_" + p_id + " .lgw-switch").addClass("checked");
+                        });
+                        reloadTotal(content, id_shop);
+                    }
                 });
             }
+            return false;
         });
         $('#lengow_feed_wrapper').on('click', '.lengow_remove_from_export', function () {
             var href = $(this).attr('data-href');
             var id_shop = $(this).attr('data-id_shop');
             var message = $(this).attr('data-message');
             var form = $('#form_table_shop_' + id_shop).serialize();
+            var url = href + '&' + form;
             var check = $('#select_all_shop_' + id_shop).prop('checked');
+            var data = {
+                action: 'remove_from_export',
+                id_shop: id_shop,
+                select_all: check
+            };
             if (!check || (check && confirm(message))) {
-                $.ajax({
-                    url: href + '&' + form,
-                    method: 'POST',
-                    data: {action: 'remove_from_export', id_shop: id_shop, select_all: check},
-                    dataType: 'script'
+                $.getJSON(url, data, function(content) {
+                    if (content['message']) {
+                        alert(content['message']);
+                    } else {
+                        $.each(content['product_id'], function(idx, p_id) {
+                            lengow_jquery("#shop_" + id_shop + "_" + p_id + " .lgw-switch").removeClass("checked");
+                        });
+                        reloadTotal(content, id_shop);
+                    }
                 });
             }
+            return false;
         });
 
         $('#lengow_feed_wrapper').on('click', '.lengow_select_all_shop input', function () {

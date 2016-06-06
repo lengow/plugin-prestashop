@@ -43,7 +43,7 @@ class SyncTest extends ModuleTestCase
 
         $this->assertKeysExistInArray(array(
             'domain_name',
-            'global_token',
+            'token',
             'email',
             'shops',
         ), $data);

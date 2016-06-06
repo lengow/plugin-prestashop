@@ -29,6 +29,7 @@ class LengowLegalsController extends LengowController
 
     public function display()
     {
+        $this->context->smarty->assign('iso_code', Context::getContext()->language->iso_code);
         parent::display();
     }
 }

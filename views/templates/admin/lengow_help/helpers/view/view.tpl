@@ -20,24 +20,22 @@
 
 <div class="lgw-container">
     <div class="lgw-box lengow_help_wrapper text-center">
-     <img src="/modules/lengow/views/img/cosmo-yoga.png" class="img-circle" alt="lengow">
-
-      <h2>{$locale->t('help.title')|escape:'htmlall':'UTF-8'}</h2>
-      <p>
-        {$locale->t('help.content_text')|escape:'htmlall':'UTF-8'}
-
-      </p>
-      <p>
-        {$locale->t('help.find_answer')|escape:'htmlall':'UTF-8'}
-
-      </p>
+        <img src="/modules/lengow/views/img/cosmo-yoga.png" class="img-circle" alt="lengow">
+        <h2>{$locale->t('help.screen.title')|escape:'htmlall':'UTF-8'}</h2>
+        <p>
+            {$locale->t('help.screen.contain_text_support')|escape:'htmlall':'UTF-8'}
+            {html_entity_decode($mailto|escape:'htmlall':'UTF-8')}
+        </p>
+        <p>{$locale->t('help.screen.contain_text_support_hour')|escape:'htmlall':'UTF-8'}</p>
+        <p>
+            {$locale->t('help.screen.find_answer')|escape:'htmlall':'UTF-8'}
+            <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2"
+                target="_blank"
+                title="Help Center">
+                {$locale->t('help.screen.link_prestashop_guide')|escape:'htmlall':'UTF-8'}
+            </a>
+        </p>
     </div>
-
-
-
 </div>
-
-
 <input type="hidden" id="lengow_ajax_link" value="{$lengow_ajax_link|escape:'htmlall':'UTF-8'}">
-
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/help.js"></script>

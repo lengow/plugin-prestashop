@@ -250,6 +250,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_orders` (
         `delivery_address_id` INT(11) UNSIGNED NULL,
         `delivery_country_iso` VARCHAR(3) NULL,
         `customer_name` VARCHAR(255) NULL,
+        `customer_email` VARCHAR(255) NULL,
         `order_lengow_state` VARCHAR(32) NOT NULL,
         `currency` VARCHAR(3) NULL,
         PRIMARY KEY(id) ,
@@ -365,6 +366,11 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
             'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `customer_name` VARCHAR(255) NULL'
         );
     }
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'customer_email')) {
+        Db::getInstance()->execute(
+            'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `customer_email` VARCHAR(255) NULL'
+        );
+    }
     if (!LengowInstall::checkFieldExists('lengow_orders', 'order_lengow_state')) {
         Db::getInstance()->execute(
             'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `order_lengow_state` VARCHAR(32) NOT NULL'
@@ -410,6 +416,7 @@ $configurationToDelete = array(
     'LENGOW_EXPORT_FEATURES',
     'LENGOW_EXPORT_SELECT_FEATURES',
     'LENGOW_IMPORT_CARRIER_MP_ENABLED',
+    'LENGOW_IMPORT_FAKE_EMAIL',
     'LENGOW_FLOW_DATA',
     'LENGOW_CRON_EDITOR',
     'LENGOW_EXPORT_TIMEOUT',

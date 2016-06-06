@@ -334,6 +334,7 @@ hr{
 /* SUB NAV */
 
 .lengow-nav-bottom{
+  z-index:1;
   top:54px;
   background:white;
   border-bottom:1px solid #e1e1e1;

@@ -60,7 +60,7 @@ class OrderTest extends ModuleTestCase
         LengowConnector::$test_fixture_path =
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/re_import.json';
         $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
 
         $this->assertTableContain('lengow_orders', array('id' => '1',  'id_order' => 'NULL'));
@@ -81,7 +81,7 @@ class OrderTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
 
         $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
         LengowConnector::$test_fixture_path = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
@@ -127,7 +127,7 @@ class OrderTest extends ModuleTestCase
         $fixture->truncate('lengow_marketplace_carrier');
 
         $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Marketplace/require_carrier_args.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
         LengowConnector::$test_fixture_path = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
@@ -158,7 +158,7 @@ class OrderTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
 
         $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces_line.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
         LengowConnector::$test_fixture_path = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
@@ -218,7 +218,7 @@ class OrderTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
 
         $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
         LengowConnector::$test_fixture_path = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',

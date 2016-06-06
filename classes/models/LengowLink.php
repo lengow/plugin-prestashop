@@ -42,15 +42,19 @@ class LengowLink extends LinkCore
 
         $admin_path = Tools::getShopDomainSsl(true, true).
             __PS_BASE_URI__.Tools::substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);
+
         if (_PS_VERSION_ < '1.6') {
             if (_PS_VERSION_ < '1.5' && $ajax) {
                 $admin_path.= '/ajax-tab.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
             } else {
                 $admin_path.= '/index.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
             }
-        } else {
+        } elseif (_PS_VERSION_ < '1.7') {
             $admin_path.= '/'.$this->getAdminLink($controller);
+        } else {
+            $admin_path = $this->getAdminLink($controller);
         }
+
         return $admin_path;
     }
 }

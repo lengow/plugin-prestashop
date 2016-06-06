@@ -90,7 +90,10 @@ class MarketplaceTest extends ModuleTestCase
         //reset marketplace file
         LengowMain::$registers = array();
         $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Marketplace/require_carrier_args.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        LengowMarketplace::$MARKETPLACES = array(
+            1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
+            2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
+        );
 
         LengowConnector::$test_fixture_path = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
@@ -160,34 +163,6 @@ class MarketplaceTest extends ModuleTestCase
         );
     }
 
-
-    /**
-     * Test Check finish action
-     * @test
-     * @covers LengowMarketplace::checkFinishAction
-     */
-    public function checkFinishAction()
-    {
-        Configuration::updateValue('LENGOW_IMPORT_PREPROD_ENABLED', true);
-        $this->assertFalse(LengowMarketplace::checkFinishAction());
-
-
-        $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Action/queued_actions.yml');
-
-        LengowConnector::$test_fixture_path = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Action/sync_queued_action.json',
-        );
-
-        Configuration::updateValue('LENGOW_IMPORT_PREPROD_ENABLED', false);
-        $this->assertTrue(LengowMarketplace::checkFinishAction());
-        $this->assertTableContain(
-            'lengow_actions',
-            array('id' => '1',  'id_order' => '1', 'state' => LengowAction::STATE_FINISH)
-        );
-    }
-
     /**
      * Test isRequireCarrier
      * @test
@@ -199,7 +174,10 @@ class MarketplaceTest extends ModuleTestCase
         LengowMain::$registers = array();
         $marketplaceFile =  _PS_MODULE_DIR_.
             'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id_optional_carrier.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        LengowMarketplace::$MARKETPLACES = array(
+            1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
+            2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
+        );
         $marketplace = LengowMain::getMarketplaceSingleton("galeries_lafayette", 1);
         $this->assertFalse($marketplace->isRequireCarrier());
 
@@ -207,7 +185,10 @@ class MarketplaceTest extends ModuleTestCase
         LengowMain::$registers = array();
         $marketplaceFile =  _PS_MODULE_DIR_.
             'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id_require_carrier.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        LengowMarketplace::$MARKETPLACES = array(
+            1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
+            2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
+        );
         $marketplace = LengowMain::getMarketplaceSingleton("galeries_lafayette", 1);
         $this->assertTrue($marketplace->isRequireCarrier());
     }

@@ -147,7 +147,7 @@ class LengowCron
     public static function removeCronTasks()
     {
         if (!Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'cronjobs\'')) {
-            return false;
+            return true;
         }
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {

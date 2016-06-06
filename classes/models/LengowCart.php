@@ -233,7 +233,12 @@ class LengowCart extends Cart
                         'quantity'              => (int)$quantity,
                         'date_add'              => date('Y-m-d H:i:s'),
                     );
-                    $result_add = DB::getInstance()->autoExecute(_DB_PREFIX_ . 'cart_product', $values, 'insert');
+
+                    if (_PS_VERSION_ < '1.5') {
+                        $result_add = DB::getInstance()->autoExecute(_DB_PREFIX_ . 'cart_product', $values, 'insert');
+                    } else {
+                        $result_add = DB::getInstance()->insert('cart_product', $values);
+                    }
                 } else {
                     $values = array(
                         'id_product'            => (int)$id_product,

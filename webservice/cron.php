@@ -97,14 +97,14 @@ if (!$sync || $sync === 'order') {
     $import->exec();
 }
 
-// sync action between Lengow and Prestashop
+// sync actions between Lengow and Prestashop
 if (!$sync || $sync === 'action') {
-    LengowMarketplace::checkFinishAction();
+    LengowAction::checkFinishAction();
 }
 
 // sync options between Lengow and Prestashop
 if (!$sync || $sync === 'option') {
-    // TODO
+    LengowConnector::queryApi('put', '/v3.0/cms', null, array(), Tools::jsonEncode(LengowSync::getOptionData()));
 }
 
 // sync option is not valid

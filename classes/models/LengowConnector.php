@@ -133,7 +133,7 @@ class LengowConnector
     }
 
     /**
-     * The API method.
+     * The API method
      *
      * @param varchar $method Lengow method API call.
      * @param varchar $array Lengow method API parameters
@@ -259,7 +259,7 @@ class LengowConnector
             case "PUT":
                 $opts[CURLOPT_HTTPHEADER] = array_merge($opts[CURLOPT_HTTPHEADER], array(
                     'Content-Type: application/json',
-                    'Content-Length: ' . strlen($body)
+                    'Content-Length: '.Tools::strlen($body)
                 ));
                 $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
                 $opts[CURLOPT_POSTFIELDS] = $body;
@@ -302,7 +302,6 @@ class LengowConnector
     }
 
     /**
-     * v3
      * Get Valid Account / Access / Secret
      *
      * @param integer $id_shop
@@ -340,22 +339,21 @@ class LengowConnector
     }
 
     /**
-     * v3
-     * Query Api
+     * Get result for a query Api
      *
-     * @param string $type (GET / POST)
-     * @param string $url to query
-     * @param integer $shopId to query
-     * @param array $params
+     * @param string  $type   (GET / POST / PUT / PATCH)
+     * @param string  $url
+     * @param integer $shopId
+     * @param array   $params
+     * @param string  $body
      *
      * @return api result as array
      */
     public static function queryApi($type, $url, $shopId = null, $params = array(), $body = '')
     {
-        if (!in_array($type, array('get', 'post', 'put'))) {
+        if (!in_array($type, array('get', 'post', 'put', 'patch'))) {
             return false;
         }
-
         try {
             list($account_id, $access_token, $secret_token) = self::getAccessId($shopId);
             $connector  = new LengowConnector($access_token, $secret_token);

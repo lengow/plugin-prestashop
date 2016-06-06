@@ -343,7 +343,6 @@ class LengowPaymentModule extends PaymentModule
         // Register Payment only if the order status validate the order
         if ($order_status->logable) {
             $transaction_id = null;
-
             if (!$order->addOrderPayment($order->total_paid_tax_incl, null, $transaction_id)) {
                 if (_PS_VERSION_ >= '1.6') {
                     PrestaShopLogger::addLog(
@@ -403,16 +402,7 @@ class LengowPaymentModule extends PaymentModule
                         $this->errors[] = Tools::displayError('An error occurred while saving message');
                     }
                 }
-
-                // Hook validate order
-                Hook::exec('actionValidateOrder', array(
-                    'cart' => $this->context->cart,
-                    'order' => $order,
-                    'customer' => $this->context->customer,
-                    'currency' => $this->context->currency,
-                    'orderStatus' => $order_status
-                ));
-
+                
                 foreach ($this->context->cart->getProducts() as $product) {
                     if ($order_status->logable) {
                         ProductSale::addProductSale((int)$product['id_product'], (int)$product['cart_quantity']);
