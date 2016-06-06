@@ -21,7 +21,6 @@
 
 class LengowOrderController extends LengowController
 {
-
     protected $list;
 
     /**
@@ -47,7 +46,7 @@ class LengowOrderController extends LengowController
     }
 
     /**
-     * Update data
+     * Process Post Parameters
      */
     public function postProcess()
     {
@@ -202,6 +201,9 @@ class LengowOrderController extends LengowController
         }
     }
 
+    /**
+     * Get all last importation informations
+     */
     public function assignLastImportationInfos()
     {
         $last_import =  LengowMain::getLastImport();
@@ -215,6 +217,9 @@ class LengowOrderController extends LengowController
         $this->context->smarty->assign('orderCollection', $orderCollection);
     }
 
+    /**
+     * Display data page
+     */
     public function assignNbOrderImported()
     {
         $sql = 'SELECT COUNT(*) as `total` FROM `'._DB_PREFIX_.'lengow_orders`';
@@ -222,6 +227,11 @@ class LengowOrderController extends LengowController
         $this->context->smarty->assign('nb_order_imported', (int)$nb_order_imported[0]['total']);
     }
 
+    /**
+     * Load all order information
+     *
+     * @return array
+     */
     public function loadTable()
     {
         if (_PS_VERSION_ >= '1.5' && Shop::isFeatureActive() && !Shop::getContextShopID()) {
@@ -408,7 +418,8 @@ class LengowOrderController extends LengowController
     }
 
     /**
-     * Reload Total product / Exported product
+     * Build order grid
+     *
      * @return string
      */
     public function buildTable()
@@ -445,6 +456,11 @@ class LengowOrderController extends LengowController
         return $html;
     }
 
+    /**
+     * Get Marketplace (name and label)
+     *
+     * @return array
+     */
     public function getMarketplaces()
     {
         $marketplaces = array();
@@ -457,6 +473,11 @@ class LengowOrderController extends LengowController
         return $marketplaces;
     }
 
+    /**
+     * Get shop (ID and name)
+     *
+     * @return array
+     */
     public function getShops()
     {
         $shops = array();
@@ -468,6 +489,15 @@ class LengowOrderController extends LengowController
         return $shops;
     }
 
+    /**
+     * Generate lengow state
+     *
+     * @param string $key
+     * @param string $value
+     * @param string $item
+     *
+     * @return string
+     */
     public static function displayLengowState($key, $value, $item)
     {
         // This two lines are useless, but Prestashop validator require it
@@ -480,6 +510,15 @@ class LengowOrderController extends LengowController
             .LengowMain::decodeLogMessage('order.screen.status_'.$value).'</span>';
     }
 
+    /**
+     * Generate order link
+     *
+     * @param string $key
+     * @param string $value
+     * @param string $item
+     *
+     * @return string
+     */
     public static function displayOrderLink($key, $value, $item)
     {
         // This line is useless, but Prestashop validator require it
@@ -498,6 +537,15 @@ class LengowOrderController extends LengowController
         }
     }
 
+    /**
+     * Generate lengow marketplace name
+     *
+     * @param string $key
+     * @param string $value
+     * @param string $item
+     *
+     * @return string
+     */
     public static function displayMarketplaceName($key, $value, $item)
     {
         // This two lines are useless, but Prestashop validator require it
@@ -506,6 +554,15 @@ class LengowOrderController extends LengowController
         return $item['marketplace_label'];
     }
 
+    /**
+     * Generate logs and lengow action
+     *
+     * @param string $key
+     * @param string $value
+     * @param string $item
+     *
+     * @return string
+     */
     public static function displayLogStatus($key, $value, $item)
     {
         //check if order actions in progress
@@ -521,7 +578,6 @@ class LengowOrderController extends LengowController
                 return $value;
             }
         }
-
         $errorMessage = array();
         $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
         if (count($logCollection)>0) {
@@ -529,7 +585,6 @@ class LengowOrderController extends LengowController
                 $errorMessage[] = LengowMain::decodeLogMessage($row['message']);
             }
         }
-
         $link = new LengowLink();
         if ($item[$key]) {
             $message = '<ul>'.join('', $errorMessage).'</ul>';
@@ -564,6 +619,15 @@ class LengowOrderController extends LengowController
         return $value;
     }
 
+    /**
+     * Generate extra informations (only for toolbox)
+     *
+     * @param string $key
+     * @param string $value
+     * @param string $item
+     *
+     * @return string
+     */
     public static function displayLengowExtra($key, $value, $item)
     {
         // This line is useless, but Prestashop validator require it
@@ -578,6 +642,13 @@ class LengowOrderController extends LengowController
         return '';
     }
 
+    /**
+     * Generate message array (new, update and errors)
+     *
+     * @param array $return
+     *
+     * @return array
+     */
     public function loadMessage($return)
     {
         $message = array();
@@ -616,7 +687,6 @@ class LengowOrderController extends LengowController
                 'rest_time' => LengowImport::restTimeToImport()
             ));
         }
-
         return $message;
     }
 }

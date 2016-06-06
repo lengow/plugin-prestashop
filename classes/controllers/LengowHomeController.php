@@ -28,7 +28,6 @@ class LengowHomeController extends LengowController
     public function postProcess()
     {
         $isSync = isset($_REQUEST['isSync']) ? $_REQUEST['isSync'] : false;
-
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
         if ($action) {
             switch ($action) {
@@ -56,7 +55,6 @@ class LengowHomeController extends LengowController
         if (!$this->isNewMerchant) {
             $this->context->smarty->assign('stats', LengowStatistic::get());
         }
-
         $lengowLink = new LengowLink();
         $this->context->smarty->assign('lengow_ajax_link', $lengowLink->getAbsoluteAdminLink('AdminLengowHome', true));
         parent::display();

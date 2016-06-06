@@ -29,6 +29,9 @@ class LengowHelpController extends LengowController
     {
     }
 
+    /**
+     * Display data page
+     */
     public function display()
     {
         $lengowLink = new LengowLink();

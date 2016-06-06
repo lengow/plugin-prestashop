@@ -42,11 +42,17 @@ class LengowController
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
     }
 
+    /**
+     * Process Post Parameters
+     */
     public function postProcess()
     {
 
     }
 
+    /**
+     * Display data page
+     */
     public function display()
     {
         $this->context->smarty->assign(
@@ -72,6 +78,9 @@ class LengowController
         }
     }
 
+    /**
+     * Force Display data page
+     */
     public function forceDisplay()
     {
         $module = Module::getInstanceByName('lengow');

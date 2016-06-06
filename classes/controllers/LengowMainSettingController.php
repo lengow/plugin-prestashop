@@ -21,7 +21,6 @@
 
 class LengowMainSettingController extends LengowController
 {
-
     /**
      * Process Post Parameters
      */

@@ -9,7 +9,7 @@
 /classes/controllers/LengowHomeController.php|47a85be91ffec5b8a0c82f50a04d4794
 /classes/controllers/LengowLegalsController.php|80c8cfd0d86507d6bc259aed5f0cdb12
 /classes/controllers/LengowMainSettingController.php|6b1de87b1ac71be0809a035f82bf28a3
-/classes/controllers/LengowOrderController.php|5c6728daf0a5fde479c12a2a3290552c
+/classes/controllers/LengowOrderController.php|0d0a4fedd8c61a5689b8e5b57949df98
 /classes/controllers/LengowOrderSettingController.php|dc92f9648bf488743933c892e53a2eb3
 /classes/models/LengowAction.php|b82dc145cfaa7818cf72ff6bebbbb1a3
 /classes/models/LengowAddress.php|a428fb67c174c9d7f8e9c15a2149fc02
@@ -89,11 +89,11 @@
 /views/css/lengow-layout.css|03385cb985a4ac1f14e22cbb8362d395
 /views/css/lengow-pages.css|b0db5b56b823677e98ed60a35fe8fa88
 /views/css/lengow_bootstrap.css|c402e1ba33fdae41efeb931a9c991414
-/views/css/lengow_bootstrap_14.css|7fa823385a4862db43ce58ffcf64383b
+/views/css/lengow_bootstrap_14.css|043db715c9211bcc96f41c36095a3e16
 /views/css/lengow_bootstrap_15.css|bae5a9cc8c3b50e21a194582622be809
 /views/css/lengow_bootstrap_min-980.css|5c7b41793ed8d0c20f96c9ea2a1163f8
 /views/css/select2.css|8969ac4614d64a13dfc32e1eb4e731f7
-/views/css/toolbox.css|a6b0c5a427009ded64d1efb29bdba474
+/views/css/toolbox.css|f6b9d594f8facabf05a4267cef70ab8a
 /views/fonts/FontAwesome.otf|87d8ca3ddc57e7d2da6226e480f90457
 /views/fonts/fontawesome-webfont.eot|32400f4e08932a94d8bfd2422702c446
 /views/fonts/fontawesome-webfont.svg|f775f9cca88e21d45bebe185b27c0e5b
@@ -420,7 +420,7 @@
 /views/templates/admin/lengow_order/helpers/view/last_importation.tpl|749097c26c8b09ef2cc8e86aadd2349a
 /views/templates/admin/lengow_order/helpers/view/no_order.tpl|d8d7bbbff5ffc00abea5320b9abc0ff3
 /views/templates/admin/lengow_order/helpers/view/select_marketplace.tpl|594d5832e51749829912dfeff9f549b4
-/views/templates/admin/lengow_order/helpers/view/view.tpl|b2e932abf7f2a44ec097faf62a644e09
+/views/templates/admin/lengow_order/helpers/view/view.tpl|c61c710ae61b17980ca73974cdd6f037
 /views/templates/admin/lengow_order_setting/helpers|d41d8cd98f00b204e9800998ecf8427e
 /views/templates/admin/lengow_order_setting/layout.tpl|fe6327cc36a4e40b01b293cde4d57c30
 /views/templates/admin/lengow_order_setting/helpers/view/default_carrier.tpl|eef0c7512abfecb0b342fd6df65cea48

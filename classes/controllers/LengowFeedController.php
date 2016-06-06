@@ -24,7 +24,7 @@ class LengowFeedController extends LengowController
     protected $list;
 
     /**
-     * Update data
+     * Process Post Parameters
      */
     public function postProcess()
     {
@@ -258,7 +258,8 @@ class LengowFeedController extends LengowController
     /**
      * Reload Total product / Exported product
      *
-     * @param $shopId
+     * @param integer $shopId
+     *
      * @return array Number of product exported/total for this shop
      */
     public function reloadTotal($shopId)
@@ -275,9 +276,9 @@ class LengowFeedController extends LengowController
     }
 
     /**
-     * Reload Total product / Exported product
+     * Build product grid
      *
-     * @param $shopId
+     * @param integer $shopId
      *
      * @return string
      */
@@ -546,6 +547,15 @@ class LengowFeedController extends LengowController
         return $html;
     }
 
+    /**
+     * Get product link
+     *
+     * @param string $key
+     * @param string $value
+     * @param string $item
+     *
+     * @return string
+     */
     public static function displayLink($key, $value, $item)
     {
         // This line is useless, but Prestashop validator require it
