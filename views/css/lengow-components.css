@@ -113,6 +113,17 @@ a.lgw-box-link:hover{
 .lgw-container .lengow_toolbar .lgw-btn{
     margin-right: 15px;
 }
+.btn-link{
+    border:0;
+    padding:8px 20px;
+    margin:15px 0;
+    background:transparent;
+    outline: none;
+}
+.btn-link:hover{
+    text-decoration: underline;
+    color:#00aeef;
+}
 
 
 /*************************************************/
