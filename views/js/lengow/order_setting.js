@@ -158,8 +158,11 @@ function addScoreCarrier(){
 
         $(".sub").hide();
         $(".sub:first").show();
+        $(".lengow_marketplace_carrier:first").find('.fa').toggleClass('fa-chevron-down fa-chevron-up');
         $("#lengow_form_order_setting").on('click', '.country',function(){
-            $(this).next().next().slideToggle(150);
+            var $sub = $(this).closest('li').find('.sub');
+            $sub.slideToggle(150);
+            $(this).find('.fa').toggleClass('fa-chevron-down fa-chevron-up');
         });
 
         $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('change', function () {
