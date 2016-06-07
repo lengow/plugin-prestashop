@@ -27,24 +27,57 @@ class LengowHelpController extends LengowController
      */
     public function postProcess()
     {
-        $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
-        if ($action) {
-            switch ($action) {
-                case 'get_help_data':
-                    $data = array();
-                    $data['function'] = 'sync';
-                    $data['parameters'] = LengowSync::getSyncData();
-                    echo Tools::jsonEncode($data);
-                    break;
-            }
-            exit();
-        }
     }
 
+    /**
+     * Display data page
+     */
     public function display()
     {
         $lengowLink = new LengowLink();
+        $this->context->smarty->assign('mailto', $this->getMailTo());
         $this->context->smarty->assign('lengow_ajax_link', $lengowLink->getAbsoluteAdminLink('AdminLengowHelp', true));
         parent::display();
+    }
+
+    /**
+     * Generate mailto for help page
+     */
+    public function getMailTo()
+    {
+        $mailto = LengowSync::getSyncData();
+        $mail = 'support.lengow.zendesk@lengow.com';
+        $subject = $this->locale->t('help.screen.mailto_subject');
+        $result = LengowConnector::queryApi('get', '/v3.0/cms');
+        $body = '%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A'
+            . $this->locale->t('help.screen.mail_lengow_support_title').'%0D%0A';
+        if (isset($result->cms)) {
+            $body .= 'commun_account : '.$result->cms->common_account.'%0D%0A';
+        }
+        foreach ($mailto as $key => $value) {
+            if ($key == 'domain_name' || $key == 'token' || $key == 'return_url' || $key == 'shops') {
+                continue;
+            }
+            $body .= $key.' : '.$value.'%0D%0A';
+        }
+        $shops = $mailto['shops'];
+        $i = 1;
+        foreach ($shops as $shop) {
+            foreach ($shop as $item => $value) {
+                if ($item == 'name') {
+                    $body .= 'Store '.$i.' : '.$value.'%0D%0A';
+                } elseif ($item == 'feed_url') {
+                    $body .= $value . '%0D%0A';
+                }
+            }
+            $i++;
+        }
+        $html = '<a href="mailto:'. $mail;
+        $html.= '?subject='. $subject;
+        $html.= '&body='. $body .'" ';
+        $html.= 'title="'. $this->locale->t('help.screen.need_some_help').'" target="_blank">';
+        $html.=  $this->locale->t('help.screen.mail_lengow_support');
+        $html.= '</a>';
+        return $html;
     }
 }

@@ -19,13 +19,9 @@
  *}
 
 {if $orderCollection['last_import_type'] != 'none'}
-	<p>{$locale->t('order.screen.last_order_importation')|escape:'htmlall':'UTF-8'}
-	{if $orderCollection['last_import_type'] == 'cron'}
-	    ({$locale->t('order.screen.import_auto')|escape:'htmlall':'UTF-8'})
-	{else}
-	    ({$locale->t('order.screen.import_manuel')|escape:'htmlall':'UTF-8'})
-	 {/if}
-	 : <b>{$orderCollection['last_import_date']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}</b>
+	<p>
+		{$locale->t('order.screen.last_order_importation')|escape:'htmlall':'UTF-8'}
+	 	: <b>{$orderCollection['last_import_date']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}</b>
 {else}
 	{$locale->t('order.screen.no_order_importation')|escape:'htmlall':'UTF-8'}
 {/if}

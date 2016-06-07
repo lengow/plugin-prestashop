@@ -18,6 +18,10 @@ h1,h2, h3, h4, h5, h6{
     line-height: 54px;
 }
 
+.select2-results__options {
+    text-align:left;
+}
+
 .lgw-box{
   top:120px;
 }
@@ -28,12 +32,12 @@ body.lengow_body #main {
     min-height: 730px;
 }
 
-#content{
-  border:none;
+#lgw-footer p {
+    margin-top: -30px;
 }
 
-.lgw-footer-vold{
-    margin-top: 150px;
+#content{
+  border:none;
 }
 
 .lgw-container{

@@ -22,7 +22,6 @@
 if (!LengowInstall::isInstallationInProgress()) {
     exit();
 }
-
 // *********************************************************
 //                        NEW DATA
 // *********************************************************
@@ -36,7 +35,6 @@ $sql = 'CREATE TABLE IF NOT EXISTS '._DB_PREFIX_.'lengow_carrier_country (
     INDEX (`id_country`)
     ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
 Db::getInstance()->execute($sql);
-
 // create table lengow_actions
 $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_actions` (
     `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -67,7 +65,6 @@ $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_marketplace_carrier` (
     INDEX (`marketplace_carrier_sku`)
 );';
 Db::getInstance()->execute($sql);
-
 
 // *********************************************************
 //                         lengow_product
@@ -129,7 +126,6 @@ $sql = 'CREATE TABLE IF NOT EXISTS '._DB_PREFIX_.'lengow_logs_import ('
     .' `type` TINYINT(1) NOT NULL,'
     .' PRIMARY KEY(id));';
 Db::getInstance()->execute($sql);
-
 //add missing field for old plugins
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_logs_import\'')) {
     if (LengowInstall::checkFieldExists('lengow_logs_import', 'message')) {
@@ -165,7 +161,6 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_logs_i
         );
     }
 }
-
 // data migration to the new system
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders\'')
     && Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_logs_import\'')
@@ -212,18 +207,15 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
         }
     }
 }
-
 // drop old column from log import table
 LengowInstall::checkFieldAndDrop('lengow_logs_import', 'lengow_order_id');
 LengowInstall::checkFieldAndDrop('lengow_logs_import', 'is_processing');
 LengowInstall::checkFieldAndDrop('lengow_logs_import', 'extra');
 LengowInstall::checkFieldAndDrop('lengow_logs_import', 'delivery_address_id');
 
-
 // *********************************************************
 //                         lengow_orders
 // *********************************************************
-
 // Orders lengow
 $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_orders` (
         `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -250,6 +242,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_orders` (
         `delivery_address_id` INT(11) UNSIGNED NULL,
         `delivery_country_iso` VARCHAR(3) NULL,
         `customer_name` VARCHAR(255) NULL,
+        `customer_email` VARCHAR(255) NULL,
         `order_lengow_state` VARCHAR(32) NOT NULL,
         `currency` VARCHAR(3) NULL,
         PRIMARY KEY(id) ,
@@ -261,8 +254,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_orders` (
         INDEX (`date_add`)
     ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
 Db::getInstance()->execute($sql);
-
-
+//add missing field for old plugins
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders\'')) {
     if (LengowInstall::checkFieldExists('lengow_orders', 'id_flux')) {
         Db::getInstance()->execute(
@@ -365,6 +357,11 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
             'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `customer_name` VARCHAR(255) NULL'
         );
     }
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'customer_email')) {
+        Db::getInstance()->execute(
+            'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `customer_email` VARCHAR(255) NULL'
+        );
+    }
     if (!LengowInstall::checkFieldExists('lengow_orders', 'order_lengow_state')) {
         Db::getInstance()->execute(
             'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `order_lengow_state` VARCHAR(32) NOT NULL'
@@ -380,9 +377,12 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
     }
 }
 
+// *********************************************************
+//                  Other install process
+// *********************************************************
 //insert default_country in lengow carrier country table
 LengowCarrierCountry::createDefaultCarrier();
-
+// Rename old settings
 LengowInstall::renameConfigurationKey('LENGOW_DEBUG', 'LENGOW_IMPORT_PREPROD_ENABLED');
 LengowInstall::renameConfigurationKey('LENGOW_CRON', 'LENGOW_CRON_ENABLED');
 LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SHIPPED_BY_MP', 'LENGOW_IMPORT_SHIP_MP_ENABLED');
@@ -390,7 +390,7 @@ LengowInstall::renameConfigurationKey('LENGOW_REPORT_MAIL', 'LENGOW_REPORT_MAIL_
 LengowInstall::renameConfigurationKey('LENGOW_EMAIL_ADDRESS', 'LENGOW_REPORT_MAIL_ADDRESS');
 LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SINGLE', 'LENGOW_IMPORT_SINGLE_ENABLED');
 LengowInstall::renameConfigurationKey('LENGOW_TRACKING', 'LENGOW_TRACKING_ENABLED');
-
+// Delete old settings
 $configurationToDelete = array(
     'LENGOW_MIGRATE',
     'LENGOW_MP_CONF',
@@ -410,6 +410,7 @@ $configurationToDelete = array(
     'LENGOW_EXPORT_FEATURES',
     'LENGOW_EXPORT_SELECT_FEATURES',
     'LENGOW_IMPORT_CARRIER_MP_ENABLED',
+    'LENGOW_IMPORT_FAKE_EMAIL',
     'LENGOW_FLOW_DATA',
     'LENGOW_CRON_EDITOR',
     'LENGOW_EXPORT_TIMEOUT',
@@ -425,9 +426,9 @@ $configurationToDelete = array(
 foreach ($configurationToDelete as $configName) {
     Configuration::deleteByName($configName);
 }
-
+// Save old override folder
 LengowInstall::saveOverride();
-
+// Delete old folders and files
 LengowInstall::removeFiles(array(
     'config/',
     'interface/',
@@ -462,5 +463,5 @@ LengowInstall::removeFiles(array(
     'config_gb.xml',
     'config_de.xml',
 ));
-
+// Copy AdminLengowHome.gif for version 1.5
 LengowInstall::createTabImage();

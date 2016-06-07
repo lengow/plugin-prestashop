@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2016 Lengow SAS.
  *
@@ -19,6 +18,7 @@
  * @copyright 2016 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 class LengowStatistic
 {
 
@@ -58,7 +58,7 @@ class LengowStatistic
                 $return['total_order'] += $result->revenues;
                 $return['nb_order'] += $result->transactions;
                 $return['average_order'] += $result->average_order;
-                $return['currency'] = $result->currency->symbol;
+                $return['currency'] = $result->currency->iso_a3;
             }
             $i++;
         }

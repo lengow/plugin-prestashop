@@ -15,23 +15,10 @@ fr:
       retailers_channels_text: "Some of the world's most respected retailers and brands trust Lengow"
   footer:
     legals: "Mentions légales"
-  connect:
-    screen:
-      lengow: "Lengow, 'easily sell everywhere'"
-      lengow_presentation: "Lengow est la solution d'automatisation de commerce électronique qui aide les détaillants à améliorer leurs performances, d'automatiser leurs processus d'affaires et de croître à l'échelle internationale."
-      lengow_platform: "Découvrez la plate-forme Lengow et ouvrir la porte à une forte rentabilité et la visibilité de vos produits dans le monde entier sur tous les canaux de distribution : les marchés , les moteurs de comparaison de prix , les plates-formes d'affiliation et de l'affichage / retargeting ..."
-      create_account: "Créer mon compte gratuit pendant 15 jours"
-      connect_account: "ou me connecter à mon compte"
-      free_days_title: "15 jours gratuits"
-      free_days_text: "Pas de carte de crédit, aucun engagement : juste du résultat"
-      marketing_channels_title: "1 800 marketing channels"
-      marketing_channels_text: "Soyez visible sur les principaux acteurs de votre marché"
-      retailers_title: "3500 detaillants"
-      retailers_channels_text: "De nombreux détaillants et marques les plus respectées dans le monde font confiance à Lengow"
   dashboard:
     screen:
-      product_title: "Produits"
-      product_text: "Jetez un oeil à tous vos produits disponibles pour préparer votre catalogue"
+      products_title: "Produits"
+      products_text: "Jetez un oeil à tous vos produits disponibles pour préparer votre catalogue"
       orders_title: "Commandes"
       orders_text: "Gérer vos commandes directement sur votre tableau de bord PrestaShop"
       settings_title: "Paramètres"
@@ -137,15 +124,9 @@ fr:
       title_modal_uninstall: "Suppression complète du module Lengow"
       cancel_i_want_uninstall: "Annuler"
       to_uninstall_type: "Pour désinstaller, écrivez"
+      i_am_sure: "JE SUIS SUR"
       button_download_all: "Télécharger tous les fichiers"
       button_save: "Sauvegarder les changements"
-  help:
-    screen:
-      title: "Titre de la page"
-      content_text: "Demandez-nous quelque chose sur Lengow ou faites nous votre feddback à <a href="mailto:chose@bidule.fr?subject=Hey%20Dude. %20You're%20Cool.&subject=Le%20sujet%20du%20mail&body=ID%20account%3A%20tata%0D%0AModule%20type%3A%20Prestashop%0D%0AModule%20version%3A%201.5.3.2%0D%0APlugin%20type%3A%206.5%0D%0A" title="Besoin d'aide?">support@lengow.com</a>.
-      <br>
-        Nous ferons de notre mieux pour revenir vers vous pendant les heures normales de bureau (Lundi au Vendredi – 9h à 18h / France Timezone)."
-      find_answer: Vous pouvez également trouver des réponses dans notre <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" class="sub-link" target="_blank" title="Help Center">guide Prestashop</a>.
   lengow_setting:
     lengow_account_id_title: "ID du compte"
     lengow_access_token_title: "Token d'accès"
@@ -171,15 +152,12 @@ fr:
     lengow_import_processing_fee_title: "Importer les frais de traitement"
     lengow_import_processing_fee_legend: "Activez cette option si vous souhaitez importer dans vos commandes les frais de traitement des places de marché"
     lengow_import_preprod_enabled_title: "Activez le mode préproduction"
-    lengow_import_preprod_enabled_legend: "Pour simuler des commandes fictives.\nActivez cette option SEULEMENT sur votre serveur de préproduction "
-    lengow_import_fake_mail_title: "Emails fictifs"
-    lengow_import_fake_mail_legend: "En activant cette option, un email fictif est généré"
     lengow_import_ship_mp_enabled_title: "Import des commandes expédiées par les places de marché"
     lengow_import_stock_ship_mp_title: "Je veux diminuer mon stock"
-    lengow_import_stock_ship_mp_legend: "Cette option est disponible uniquement pour les commandes expédiées par les places de marché"
+    lengow_import_stock_ship_mp_legend: "Activez cette option pour prendre en compte les commandes des places de marché sur les stocks de votre backoffice Prestashop"
     lengow_report_mail_enabled_title: "Je veux être notifié quand il y a des erreurs lors de l'importation d'une commande et/ou lors de l'export de mon catalogue"
-    lengow_report_mail_enabled_legend: "Nous allons vous envoyer cela une fois par jour"
     lengow_report_mail_address_title: "Email à utiliser pour l'envoi des emails de rapport"
+    lengow_report_mail_address_legend: "Pour ajouter plusieurs emails, les séparer par des ;"
     lengow_import_single_enabled_title: "Limité à une commande par import"
     lengow_import_single_enabled_legend: "Utile pour les versions PrestaShop 1.5.2 à 1.5.4. *(cela évite d'importer deux fois les commandes)"
     lengow_import_in_progress_title: "Import en cours"

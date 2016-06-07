@@ -785,7 +785,7 @@ class LengowProduct extends Product
                         'INSERT'
                     );
                 } else {
-                    Db::getInstance()->Insert(
+                    Db::getInstance()->insert(
                         'lengow_product',
                         array(
                             'id_product'    => (int)$productId,

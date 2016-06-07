@@ -31,7 +31,7 @@ class LengowInstall
     protected static $installationStatus;
 
     static private $tabs = array(
-        'tab.home'          => array('name' => 'AdminLengowHome', 'active' => false),
+        'tab.home'          => array('name' => 'AdminLengowHome', 'active' => true),
         'tab.product'       => array('name' => 'AdminLengowFeed', 'active' => false),
         'tab.order'         => array('name' => 'AdminLengowOrder', 'active' => false),
         'tab.order_setting' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
@@ -104,11 +104,7 @@ class LengowInstall
             } else {
                 $tab->class_name = $values['name'];
                 $tab->id_parent = $tab_parent->id;
-                if (LengowMain::compareVersion('1.5') == 0 && $values['name'] == 'AdminLengowHome') {
-                    $tab->active = true;
-                } else {
-                    $tab->active = $values['active'];
-                }
+                $tab->active = $values['active'];
             }
             $tab->module = $this->lengowModule->name;
             $languages = Language::getLanguages(false);
@@ -197,12 +193,23 @@ class LengowInstall
             $languages = Language::getLanguages(false);
             foreach ($languages as $language) {
                 $name = LengowMain::decodeLogMessage('module.state_technical_error', $language['iso_code']);
-                Db::getInstance()->autoExecute(
-                    _DB_PREFIX_.'order_state_lang',
-                    array('name' => $name),
-                    'UPDATE',
-                    '`id_order_state` = \''.(int)$id_order_state.'\' AND `id_lang` = \''.(int)$language['id_lang'].'\''
-                );
+
+                if (_PS_VERSION_ < '1.5') {
+                    Db::getInstance()->autoExecute(
+                        _DB_PREFIX_.'order_state_lang',
+                        array('name' => $name),
+                        'UPDATE',
+                        '`id_order_state` = \''.(int)$id_order_state
+                        .'\' AND `id_lang` = \''.(int)$language['id_lang'].'\''
+                    );
+                } else {
+                    Db::getInstance()->update(
+                        'order_state_lang',
+                        array('name' => $name),
+                        '`id_order_state` = \''.(int)$id_order_state
+                        .'\' AND `id_lang` = \''.(int)$language['id_lang'].'\''
+                    );
+                }
             }
         }
         return true;

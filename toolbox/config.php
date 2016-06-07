@@ -88,7 +88,7 @@ require 'views/header.php';
     <form class="form-horizontal" method="POST">
         <input type="hidden" name="action" value="update"/>
         <fieldset>
-            <legend><?php echo $locale->t('toolbox.configuration.shop_credentials'); ?></legend>
+            <h3><?php echo $locale->t('toolbox.configuration.shop_credentials'); ?></h3>
         <?php
         foreach ($shopCollection as $row) {
             $shop = new LengowShop($row['id_shop']);
@@ -101,13 +101,13 @@ require 'views/header.php';
             ));
             echo '</fieldset>';
         }
-        echo '<fieldset><legend>'.$locale->t('toolbox.configuration.export_setting').'</legend>';
+        echo '<fieldset><h3>'.$locale->t('toolbox.configuration.export_setting').'</h3>';
         echo $form->buildInputs(array(
             'LENGOW_EXPORT_FORMAT',
             'LENGOW_EXPORT_FILE_ENABLED',
         ));
         echo '</fieldset>';
-        echo '<fieldset><legend>'.$locale->t('toolbox.configuration.import_setting').'</legend>';
+        echo '<fieldset><h3>'.$locale->t('toolbox.configuration.import_setting').'</h3>';
         echo $form->buildInputs(array(
             'LENGOW_ORDER_ID_PROCESS',
             'LENGOW_ORDER_ID_SHIPPED',
@@ -116,13 +116,12 @@ require 'views/header.php';
             'LENGOW_IMPORT_FORCE_PRODUCT',
             'LENGOW_IMPORT_PROCESSING_FEE',
             'LENGOW_IMPORT_DAYS',
-            'LENGOW_IMPORT_FAKE_EMAIL',
             'LENGOW_IMPORT_SHIP_MP_ENABLED',
             'LENGOW_IMPORT_STOCK_SHIP_MP',
             'LENGOW_IMPORT_SINGLE_ENABLED'
         ));
         echo '</fieldset>';
-        echo '<fieldset><legend>'.$locale->t('toolbox.configuration.global_setting').'</legend>';
+        echo '<fieldset><h3>'.$locale->t('toolbox.configuration.global_setting').'</h3>';
         echo $form->buildInputs(array(
             'LENGOW_AUTHORIZED_IP',
             'LENGOW_IMPORT_PREPROD_ENABLED',

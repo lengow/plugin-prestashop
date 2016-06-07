@@ -140,14 +140,12 @@ class LengowCron
     /**
      * Remove cron tasks from cronjobs table
      *
-     * @param integer $id_shop shop id
-     *
      * @return boolean
      */
     public static function removeCronTasks()
     {
         if (!Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'cronjobs\'')) {
-            return false;
+            return true;
         }
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {

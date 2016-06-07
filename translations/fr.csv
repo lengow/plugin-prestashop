@@ -1,8 +1,22 @@
-menu.product|produits
-menu.order|commandes
-menu.preprod_active|mode préproduction 
+menu.product|Produits
+menu.order|Commandes
+menu.preprod_active|Mode préproduction 
 menu.order_overview|Vue d'ensemble
 menu.order_parameter|Paramètres
+connect.screen.free_days_title|15 free days
+connect.screen.free_days_text|No credit card, no commitment : just results
+connect.screen.marketing_channels_title|1 800 marketing channels
+connect.screen.marketing_channels_text|Be visible on the major players in your market
+connect.screen.retailers_title|3500 retailers
+connect.screen.retailers_channels_text|Some of the world's most respected retailers and brands trust Lengow
+footer.legals|Mentions légales
+dashboard.screen.products_title|Produits
+dashboard.screen.products_text|Jetez un oeil à tous vos produits disponibles pour préparer votre catalogue
+dashboard.screen.orders_title|Commandes
+dashboard.screen.orders_text|Gérer vos commandes directement sur votre tableau de bord PrestaShop
+dashboard.screen.settings_title|Paramètres
+dashboard.screen.settings_text|Configurer les principaux paramètres de votre plugin PrestaShop
+dashboard.screen.partner_business|Lengow, partenaire de votre entreprise
 dashboard.screen.good_job|Bon travail ! Vous avez
 dashboard.screen.pending_order|Commandes en attente
 dashboard.screen.sell_everywhere|Passez à l'étape supérieure et vendez vos produits partout dans le monde !
@@ -10,7 +24,11 @@ dashboard.screen.stat_with_lengow_you_make|Vos ventes avec Lengow
 dashboard.screen.stat_turnover|Chiffre d'affaires
 dashboard.screen.stat_nb_orders|Commandes
 dashboard.screen.stat_avg_order|Panier moyen
-dashboard.screen.stat_more_stats|Vous voulez accéder à plus de statistiques ? Rendez-vous sur Lengow.com
+dashboard.screen.stat_more_stats|Plus de statistiques ?
+dashboard.screen.some_help_title|Besoin d'aide?
+dashboard.screen.get_in_touch|Restez en contact avec Lengow
+dashboard.screen.visit_help_center|Visitez notre Help Center
+dashboard.screen.configure_plugin|pour des informations détaillées sur la façon de configurer correctement votre plugin PrestaShop
 product.screen.nb_exported|produits exportés 
 product.screen.nb_available|produits disponibles
 product.screen.include_variation|Inclure les produits déclinés
@@ -89,6 +107,7 @@ global_setting.screen.button_i_want_uninstall|Supprimer Lengow
 global_setting.screen.title_modal_uninstall|Suppression complète du module Lengow
 global_setting.screen.cancel_i_want_uninstall|Annuler
 global_setting.screen.to_uninstall_type|Pour désinstaller, écrivez
+global_setting.screen.i_am_sure|JE SUIS SUR
 global_setting.screen.button_download_all|Télécharger tous les fichiers
 global_setting.screen.button_save|Sauvegarder les changements
 lengow_setting.lengow_account_id_title|ID du compte
@@ -115,15 +134,12 @@ lengow_setting.lengow_import_days_legend|Activez cette option si vous avez comma
 lengow_setting.lengow_import_processing_fee_title|Importer les frais de traitement
 lengow_setting.lengow_import_processing_fee_legend|Activez cette option si vous souhaitez importer dans vos commandes les frais de traitement des places de marché
 lengow_setting.lengow_import_preprod_enabled_title|Activez le mode préproduction
-lengow_setting.lengow_import_preprod_enabled_legend|Pour simuler des commandes fictives.<br />Activez cette option SEULEMENT sur votre serveur de préproduction 
-lengow_setting.lengow_import_fake_mail_title|Emails fictifs
-lengow_setting.lengow_import_fake_mail_legend|En activant cette option, un email fictif est généré
 lengow_setting.lengow_import_ship_mp_enabled_title|Import des commandes expédiées par les places de marché
 lengow_setting.lengow_import_stock_ship_mp_title|Je veux diminuer mon stock
-lengow_setting.lengow_import_stock_ship_mp_legend|Cette option est disponible uniquement pour les commandes expédiées par les places de marché
+lengow_setting.lengow_import_stock_ship_mp_legend|Activez cette option pour prendre en compte les commandes des places de marché sur les stocks de votre backoffice Prestashop
 lengow_setting.lengow_report_mail_enabled_title|Je veux être notifié quand il y a des erreurs lors de l'importation d'une commande et/ou lors de l'export de mon catalogue
-lengow_setting.lengow_report_mail_enabled_legend|Nous allons vous envoyer cela une fois par jour
 lengow_setting.lengow_report_mail_address_title|Email à utiliser pour l'envoi des emails de rapport
+lengow_setting.lengow_report_mail_address_legend|Pour ajouter plusieurs emails, les séparer par des ;
 lengow_setting.lengow_import_single_enabled_title|Limité à une commande par import
 lengow_setting.lengow_import_single_enabled_legend|Utile pour les versions PrestaShop 1.5.2 à 1.5.4. *(cela évite d'importer deux fois les commandes)
 lengow_setting.lengow_import_in_progress_title|Import en cours

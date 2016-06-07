@@ -40,7 +40,13 @@ class LengowFile
      */
     public $instance;
 
-
+    /**
+     * Construct
+     *
+     * @param string $folder_name
+     * @param string $file_name
+     * @param string $mode
+     */
     public function __construct($folder_name, $file_name = null, $mode = 'a+')
     {
         $this->file_name = $file_name;
@@ -97,7 +103,6 @@ class LengowFile
     }
 
     /**
-     * v3
      * Get file link
      *
      * @param Shop $shop shop
@@ -178,7 +183,6 @@ class LengowFile
 
 
     /**
-     * v3
      * Get a file list for a given folder
      *
      * @param string $folder folder name

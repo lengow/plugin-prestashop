@@ -210,6 +210,7 @@ class LengowMarketplace
     * Check if a status is valid for action
     *
     * @param array      $action_status  valid status for action
+    *
     * @param integer    $id_status      curent status id
     *
     * @return boolean
@@ -225,8 +226,8 @@ class LengowMarketplace
     }
 
     /**
-     * v3-test
      * Is carrier require when shipping
+     *
      * @return bool
      */
     public function isRequireCarrier()
@@ -241,7 +242,6 @@ class LengowMarketplace
     }
 
     /**
-     * v3
      * Get Marketplace Name
      */
     public function getMarketplaceName()
@@ -250,9 +250,10 @@ class LengowMarketplace
     }
 
     /**
-     * v3-test
-     * Is marketplace contain order Line*
+     * Is marketplace contain order Line
+     *
      * @param string $action (ship / cancel / refund)
+     *
      * @return bool
      */
     public function containOrderLine($action)
@@ -272,9 +273,11 @@ class LengowMarketplace
     }
 
     /**
-     * v3-test
+     * Call API action and create action in lengow_actions table
+     *
      * @param integer $order
      * @param string $id_order_line
+     *
      * @return bool
      */
     public function callAction($action, $order, $id_order_line = null)
@@ -412,26 +415,26 @@ class LengowMarketplace
             $params['marketplace'] = $order->lengow_marketplace_name;
             $params['action_type'] = $action;
 
-            if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
-                $result = LengowConnector::queryApi(
-                    'get',
-                    '/v3.0/orders/actions/',
-                    $order->lengow_id_shop,
-                    array_merge($params, array("queued" => "True"))
-                );
-                if (isset($result->error) && isset($result->error->message)) {
-                    throw new LengowException($result->error->message);
+            $result = LengowConnector::queryApi(
+                'get',
+                '/v3.0/orders/actions/',
+                $order->lengow_id_shop,
+                array_merge($params, array("queued" => "True"))
+            );
+            if (isset($result->error) && isset($result->error->message)) {
+                throw new LengowException($result->error->message);
+            }
+            if (isset($result->count) && $result->count > 0) {
+                foreach ($result->results as $row) {
+                    LengowAction::updateAction(array(
+                        'id_order'    => $order->id,
+                        'action_type' => $action,
+                        'action_id'   => $row->id,
+                        'parameters'  => $params
+                    ));
                 }
-                if (isset($result->count) && $result->count > 0) {
-                    foreach ($result->results as $row) {
-                        LengowAction::updateAction(array(
-                            'id_order' => $order->id,
-                            'action_type' => $action,
-                            'action_id' => $row->id,
-                            'parameters' => $params
-                        ));
-                    }
-                } else {
+            } else {
+                if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
                     $result = LengowConnector::queryApi(
                         'post',
                         '/v3.0/orders/actions/',
@@ -440,13 +443,24 @@ class LengowMarketplace
                     );
                     if (isset($result->id)) {
                         LengowAction::createAction(array(
-                            'id_order' => $order->id,
+                            'id_order'    => $order->id,
                             'action_type' => $action,
-                            'action_id' => $result->id,
-                            'parameters' => $params
+                            'action_id'   => $result->id,
+                            'parameters'  => $params
                         ));
                     }
                 }
+                // Create log for call action
+                $param_list = false;
+                foreach ($params as $param => $value) {
+                    $param_list.= !$param_list ? '"'.$param.'": '.$value : ' -- "'.$param.'": '.$value;
+                }
+                LengowMain::log(
+                    'API-OrderAction',
+                    LengowMain::setLogMessage('log.order_action.call_tracking', array('parameters' => $param_list)),
+                    false,
+                    $order->lengow_marketplace_sku
+                );
             }
             return true;
         } catch (LengowException $e) {
@@ -455,7 +469,9 @@ class LengowMarketplace
             $error_message = '[Prestashop Error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
         }
         if (isset($error_message)) {
-            LengowOrder::addOrderLog($order->lengow_id, $error_message, $action);
+            if ($order->lengow_process_state != LengowOrder::PROCESS_STATE_FINISH) {
+                LengowOrder::addOrderLog($order->lengow_id, $error_message, 'send');
+            }
             $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
             LengowMain::log(
                 'API-OrderAction',
@@ -470,58 +486,10 @@ class LengowMarketplace
     }
 
     /**
-     * v3-test
-     *
-     * @return bool
-     */
-    public static function checkFinishAction()
-    {
-        if (Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
-            return false;
-        }
-
-        $shops = LengowShop::findAll();
-        foreach ($shops as $shop) {
-            $actions = LengowAction::getActiveActionByShop('ship', $shop['id_shop'], false);
-            foreach ($actions as $action) {
-                $result = LengowConnector::queryApi(
-                    'get',
-                    '/v3.0/orders/actions/',
-                    $shop['id_shop'],
-                    array('id' => $action['id'])
-                );
-                if (isset($result->id) && isset($result->processed) && isset($result->queued)) {
-                    if ((int)$result->id > 0 && $result->queued == false) {
-                        //update actions
-                        Db::getInstance()->autoExecute(
-                            _DB_PREFIX_ . 'lengow_actions',
-                            array(
-                                'state'         => (int)LengowAction::STATE_FINISH,
-                                'updated_at'    => date('Y-m-d h:m:i'),
-                            ),
-                            'UPDATE',
-                            'id = '.(int)$action['id']
-                        );
-                        if ($result->processed) {
-                            $id_order_lengow = LengowOrder::findByOrder($action['id_order']);
-                            LengowOrder::updateOrderLengow($id_order_lengow, array(
-                                'order_process_state' => 2
-                            ));
-                        }
-                    }
-                }
-                if (!LengowMain::inTest()) {
-                    usleep(250000);
-                }
-            }
-        }
-        return true;
-    }
-
-
-    /**
      * Get Marketplace Sku by Shop
+     *
      * @param $id_shop
+     *
      * @return array
      */
     public static function getMarketplacesByShop($id_shop)

@@ -53,6 +53,10 @@
 			<strong>{$tracking|escape:'htmlall':'UTF-8'}</strong>
 		</li>
 		<li>
+			{$lengow_locale->t('admin.order.customer_email')|escape:'htmlall':'UTF-8'} :
+			<strong>{$customer_email|escape:'htmlall':'UTF-8'}</strong>
+		</li>
+		<li>
 			{$lengow_locale->t('admin.order.message')|escape:'htmlall':'UTF-8'} :
 			<strong>{$message|escape:'htmlall':'UTF-8'}</strong>
 		</li>

@@ -42,7 +42,10 @@ class HookTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
 
         $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
-        LengowMarketplace::$MARKETPLACES = Tools::jsonDecode(file_get_contents($marketplaceFile));
+        LengowMarketplace::$MARKETPLACES = array(
+            1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
+            2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
+        );
 
         LengowConnector::$test_fixture_path = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',

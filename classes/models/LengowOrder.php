@@ -36,9 +36,9 @@ class LengowOrder extends Order
     const TYPE_LOG_IMPORT = 1;
 
     /**
-    * integer order log wsdl type
+    * integer order log send type
     */
-    const TYPE_LOG_WSDL = 2;
+    const TYPE_LOG_SEND = 2;
 
     /**
     * integer order process state for order imported
@@ -141,6 +141,11 @@ class LengowOrder extends Order
     public $lengow_customer_name;
 
     /**
+     * @var string email of the customer
+     */
+    public $lengow_customer_email;
+
+    /**
      * @var string current lengow state
      */
     public $lengow_state;
@@ -194,7 +199,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Load information from lengow_orders table
      *
      * @return boolean.
@@ -220,6 +224,7 @@ class LengowOrder extends Order
             lo.`delivery_address_id`,
             lo.`delivery_country_iso`,
             lo.`customer_name`,
+            lo.`customer_email`,
             lo.`order_lengow_state`,
             lo.`order_item`
             FROM `'._DB_PREFIX_.'lengow_orders` lo
@@ -244,6 +249,7 @@ class LengowOrder extends Order
             $this->lengow_delivery_address_id   = (int)$result['delivery_address_id'];
             $this->lengow_delivery_country_iso  = $result['delivery_country_iso'];
             $this->lengow_customer_name         = $result['customer_name'];
+            $this->lengow_customer_email        = $result['customer_email'];
             $this->lengow_state                 = $result['order_lengow_state'];
             $this->lengow_order_item            = (int)$result['order_item'];
             return true;
@@ -253,7 +259,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Get Prestashop order id
      *
      * @param string    $marketplace_sku              Lengow order id
@@ -284,7 +289,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Get ID record from lengow orders table
      *
      * @param string   $marketplace_sku               lengow order id
@@ -305,7 +309,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Check if a lengow order
      *
      * @param integer   $order_id prestashop order id
@@ -326,7 +329,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Get Id from Lengow delivery address id
      *
      * @param integer   $order_id               Prestashop order id
@@ -347,7 +349,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Retrieves all the order ids for an order number Lengow
      *
      * @param string    $marketplace_sku      Lengow order id
@@ -365,7 +366,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Retrieves all the order lines of a order PrestaShop
      *
      * @param integer $order_id prestashop order id
@@ -380,7 +380,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Update order Lengow
      *
      * @param integer $id       Id of the record
@@ -390,27 +389,54 @@ class LengowOrder extends Order
      */
     public static function updateOrderLengow($id, $params)
     {
-        return Db::getInstance()->autoExecute(
-            _DB_PREFIX_.'lengow_orders',
-            $params,
-            'UPDATE',
-            '`id` = \''.(int)$id.'\''
-        );
+        if (_PS_VERSION_ < '1.5') {
+            return Db::getInstance()->autoExecute(
+                _DB_PREFIX_.'lengow_orders',
+                $params,
+                'UPDATE',
+                '`id` = \''.(int)$id.'\''
+            );
+        } else {
+            return Db::getInstance()->update(
+                'lengow_orders',
+                $params,
+                '`id` = \''.(int)$id.'\''
+            );
+        }
     }
 
     /**
-     * v3
      * Update order status
      *
-     * @param string    $order_state_lengow     marketplace state
-     * @param mixed     $order_data             order data
-     * @param string    $tracking_number        tracking number
-     * @param boolean   $log_output             See log or not
+     * @param string $order_state_lengow marketplace state
+     * @param mixed  $order_data         order data
+     * @param mixed  $package_data       package data
      *
-     * @return bool true if order has been updated
+     * @return mixed (Shipped, Canceled or false)
      */
-    public function updateState($order_state_lengow, $order_data, $tracking_number = null, $log_output = false)
+    public function updateState($order_state_lengow, $order_data, $package_data)
     {
+        $order_process_state = self::getOrderProcessState($order_state_lengow);
+        $tracking_number = (
+            count($package_data->delivery->trackings) > 0 ? (string)$package_data->delivery->trackings[0]->number : null
+        );
+        // Update Lengow order if necessary
+        $params = array();
+        if ($this->lengow_state != $order_state_lengow) {
+            $params['order_lengow_state'] = pSQL($order_state_lengow);
+            $params['extra'] = pSQL(Tools::jsonEncode($order_data));
+            $params['tracking'] = pSQL($tracking_number);
+        }
+        if ($order_process_state == self::PROCESS_STATE_FINISH) {
+            // Finish actions if lengow order is shipped, closed or cancel
+            LengowAction::finishAllActions((int)$this->id);
+            if ((int)$this->lengow_process_state != $order_process_state) {
+                $params['order_process_state'] = (int)$order_process_state;
+            }
+        }
+        if (count($params) > 0) {
+            self::updateOrderLengow((int)$this->lengow_id, $params);
+        }
         // get prestashop equivalent state id to Lengow API state
         $id_order_state = LengowMain::getOrderState($order_state_lengow);
         // if state is different between API and Prestashop
@@ -419,11 +445,6 @@ class LengowOrder extends Order
             if ($this->getCurrentState() == LengowMain::getOrderState('accepted')
                 && ($order_state_lengow == 'shipped'|| $order_state_lengow == 'closed')
             ) {
-                // create params for update order
-                $params = array(
-                    'extra'                 => pSQL(Tools::jsonEncode($order_data)),
-                    'order_process_state'   => pSQL(LengowOrder::getOrderProcessState($order_state_lengow))
-                );
                 // create a new order history
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
@@ -431,23 +452,11 @@ class LengowOrder extends Order
                 $history->validateFields();
                 $history->add();
                 if (!is_null($tracking_number)) {
-                    $params['tracking'] = pSQL($tracking_number);
                     $this->shipping_number = $tracking_number;
                     $this->validateFields();
                     $this->update();
                 }
-                LengowMain::log(
-                    'Import',
-                    LengowMain::setLogMessage('log.import.state_updated_to_shipped'),
-                    $log_output,
-                    $this->lengow_marketplace_sku
-                );
-                // update lengow order
-                LengowOrder::updateOrderLengow(
-                    (int)$this->lengow_id,
-                    $params
-                );
-                return true;
+                return 'Shipped';
             } elseif (($this->getCurrentState() == LengowMain::getOrderState('accepted')
                     || $this->getCurrentState() == LengowMain::getOrderState('shipped')
                 ) && ($order_state_lengow == 'canceled' || $order_state_lengow == 'refused')
@@ -458,28 +467,13 @@ class LengowOrder extends Order
                 $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this, true);
                 $history->validateFields();
                 $history->add();
-                LengowMain::log(
-                    'Import',
-                    LengowMain::setLogMessage('log.import.state_updated_to_canceled'),
-                    $log_output,
-                    $this->lengow_marketplace_sku
-                );
-                // update lengow order
-                LengowOrder::updateOrderLengow(
-                    (int)$this->lengow_id,
-                    array(
-                        'extra'               => pSQL(Tools::jsonEncode($order_data)),
-                        'order_process_state' => pSQL(LengowOrder::getOrderProcessState($order_state_lengow))
-                    )
-                );
-                return true;
+                return 'Canceled';
             }
         }
         return false;
     }
 
     /**
-     * v3
      * Cancel and re-import order
      *
      * @return mixed
@@ -491,13 +485,11 @@ class LengowOrder extends Order
         }
         $import = new LengowImport(
             array(
-                'id_order_lengow'       => $this->lengow_id,
-                'type'                  => 'import',
-                'marketplace_sku'       => $this->lengow_marketplace_sku,
-                'marketplace_name'      => $this->lengow_marketplace_name,
-                'delivery_address_id'   => $this->lengow_delivery_address_id,
-                'shop_id'               => $this->lengow_id_shop,
-                'log_output'            => false,
+                'id_order_lengow'     => $this->lengow_id,
+                'marketplace_sku'     => $this->lengow_marketplace_sku,
+                'marketplace_name'    => $this->lengow_marketplace_name,
+                'delivery_address_id' => $this->lengow_delivery_address_id,
+                'shop_id'             => $this->lengow_id_shop,
             )
         );
         $result = $import->exec();
@@ -511,7 +503,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Mark order as is_reimported in lengow_orders table
      *
      * @return boolean
@@ -525,7 +516,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Sets order state to Lengow technical error
      */
     public function setStateToError()
@@ -538,7 +528,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Synchronize order with Lengow API
      *
      * @param LengowConnector   $connector  Lengow Connector for API calls
@@ -561,7 +550,7 @@ class LengowOrder extends Order
             }
         }
  
-        $order_ids = LengowOrder::getAllOrderIdsFromLengowOrder(
+        $order_ids = self::getAllOrderIdsFromLengowOrder(
             $this->lengow_marketplace_sku,
             $this->lengow_marketplace_name
         );
@@ -579,10 +568,10 @@ class LengowOrder extends Order
             $result = $connector->patch(
                 '/v3.0/orders',
                 array(
-                    'account_id'            => LengowMain::getIdAccount($id_shop),
-                    'marketplace_order_id'  => $this->lengow_marketplace_sku,
-                    'marketplace'           => $this->lengow_marketplace_name,
-                    'merchant_order_id'     => $presta_ids
+                    'account_id'           => LengowMain::getIdAccount($id_shop),
+                    'marketplace_order_id' => $this->lengow_marketplace_sku,
+                    'marketplace'          => $this->lengow_marketplace_name,
+                    'merchant_order_id'    => $presta_ids
                 )
             );
             if (is_null($result)
@@ -614,7 +603,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Check and change the name of the marketplace for v3 compatibility
      *
      * @param LengowConnector $connector Lengow Connector for API calls
@@ -639,9 +627,9 @@ class LengowOrder extends Order
         $results = $connector->get(
             '/v3.0/orders',
             array(
-                'marketplace_order_id'  => $this->lengow_marketplace_sku,
-                'marketplace'           => $this->lengow_marketplace_name,
-                'account_id'            => LengowMain::getIdAccount($id_shop)
+                'marketplace_order_id' => $this->lengow_marketplace_sku,
+                'marketplace'          => $this->lengow_marketplace_name,
+                'account_id'           => LengowMain::getIdAccount($id_shop)
             ),
             'stream'
         );
@@ -666,7 +654,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Get order process state
      *
      * @param string $state state to be matched
@@ -690,10 +677,9 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Return type value
      *
-     * @param string $type Type (import or wsdl)
+     * @param string $type Type (import or send)
      *
      * @return mixed
      */
@@ -703,8 +689,8 @@ class LengowOrder extends Order
             case 'import':
                 $log_type = self::TYPE_LOG_IMPORT;
                 break;
-            case 'ship':
-                $log_type = self::TYPE_LOG_WSDL;
+            case 'send':
+                $log_type = self::TYPE_LOG_SEND;
                 break;
             default:
                 $log_type = null;
@@ -714,7 +700,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Check if an order has an error
      *
      * @param string    $marketplace_sku        Lengow order id
@@ -725,7 +710,7 @@ class LengowOrder extends Order
      */
     public static function orderIsInError($marketplace_sku, $delivery_address_id, $type = 'import')
     {
-        $log_type = LengowOrder::getOrderLogType($type);
+        $log_type = self::getOrderLogType($type);
         // check if log already exists for the given order id
         $query = 'SELECT lli.`message`, lli.`date` FROM `'._DB_PREFIX_.'lengow_logs_import` lli
             LEFT JOIN `'._DB_PREFIX_.'lengow_orders` lo ON lli.`id_order_lengow` = lo.`id`
@@ -737,7 +722,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Check if log already exists for the given order
      *
      * @param string    $id_order_lengow        id lengow order
@@ -748,7 +732,7 @@ class LengowOrder extends Order
      */
     public static function getOrderLogs($id_order_lengow, $type = null, $finished = null)
     {
-        $log_type = LengowOrder::getOrderLogType($type);
+        $log_type = self::getOrderLogType($type);
         if (!is_null($log_type)) {
             $and_type = ' AND `type` = \''.(int)$log_type.'\'';
         } else {
@@ -766,43 +750,54 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Add log information in lengow_logs_import table
      *
      * @param integer   $id_order_lengow    id lengow order
      * @param string    $message            error message
-     * @param string    $type               type (import or wsdl)
+     * @param string    $type               type (import or send)
      * @param integer   $finished           error is finished
      *
      */
     public static function addOrderLog($id_order_lengow, $message = '', $type = 'import', $finished = 0)
     {
-        $log_type = LengowOrder::getOrderLogType($type);
-        return Db::getInstance()->autoExecute(
-            _DB_PREFIX_.'lengow_logs_import',
-            array(
-                'is_finished'       => (int)$finished,
-                'date'              => date('Y-m-d H:i:s'),
-                'message'           => pSQL($message),
-                'type'              => (int)$log_type,
-                'id_order_lengow'   => (int)$id_order_lengow
-            ),
-            'INSERT'
-        );
+        $log_type = self::getOrderLogType($type);
+        if (_PS_VERSION_ < '1.5') {
+            return Db::getInstance()->autoExecute(
+                _DB_PREFIX_.'lengow_logs_import',
+                array(
+                    'is_finished'     => (int)$finished,
+                    'date'            => date('Y-m-d H:i:s'),
+                    'message'         => pSQL($message),
+                    'type'            => (int)$log_type,
+                    'id_order_lengow' => (int)$id_order_lengow
+                ),
+                'INSERT'
+            );
+        } else {
+            return Db::getInstance()->insert(
+                'lengow_logs_import',
+                array(
+                    'is_finished'     => (int)$finished,
+                    'date'            => date('Y-m-d H:i:s'),
+                    'message'         => pSQL($message),
+                    'type'            => (int)$log_type,
+                    'id_order_lengow' => (int)$id_order_lengow
+                )
+            );
+        }
     }
 
     /**
-     * v3
      * Removes all order logs
      *
-     * @param integer   $id    id_order_lengow
-     * @param string    $log_type type (import or wsdl)
+     * @param integer $id       id_order_lengow
+     * @param string  $log_type type (import or send)
      *
      * @return boolean
      */
     public static function finishOrderLogs($id, $type = 'import')
     {
-        $log_type = LengowOrder::getOrderLogType($type);
+        $log_type = self::getOrderLogType($type);
         $query = 'SELECT `id` FROM `'._DB_PREFIX_.'lengow_logs_import`
             WHERE `id_order_lengow` = \''.(int)$id.'\'
             AND `type` = \''.(int)$log_type.'\'';
@@ -810,12 +805,20 @@ class LengowOrder extends Order
 
         $update_success = 0;
         foreach ($order_logs as $order_log) {
-            $result = Db::getInstance()->autoExecute(
-                _DB_PREFIX_.'lengow_logs_import',
-                array('is_finished' => 1),
-                'UPDATE',
-                '`id` = \''.(int)$order_log['id'].'\''
-            );
+            if (_PS_VERSION_ < '1.5') {
+                $result = Db::getInstance()->autoExecute(
+                    _DB_PREFIX_.'lengow_logs_import',
+                    array('is_finished' => 1),
+                    'UPDATE',
+                    '`id` = \''.(int)$order_log['id'].'\''
+                );
+            } else {
+                $result = Db::getInstance()->update(
+                    'lengow_logs_import',
+                    array('is_finished' => 1),
+                    '`id` = \''.(int)$order_log['id'].'\''
+                );
+            }
             if ($result) {
                 $update_success++;
             }
@@ -824,10 +827,11 @@ class LengowOrder extends Order
         return (count($order_logs) == $update_success ? true : false);
     }
 
-    /***
-     * v3
+    /**
      * Find Lengow Order
+     *
      * @param integer $id_order_lengow (id of table lengow_orders)
+     *
      * @return boolean
      */
     public static function find($id_order_lengow)
@@ -837,10 +841,11 @@ class LengowOrder extends Order
     }
 
 
-    /***
-     * v3
+    /**
      * Find Lengow Order
+     *
      * @param integer $id_order
+     *
      * @return boolean
      */
     public static function findByOrder($id_order)
@@ -850,7 +855,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Get Order Lines
      *
      * @param integer $id_order Prestashop order id
@@ -864,7 +868,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Re Import Order
      *
      * @param integer $id (id of table lengow_orders)
@@ -879,7 +882,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
      * Re Import Order
      *
      * @param integer $id_order_lengow (id of table lengow_orders)
@@ -888,29 +890,25 @@ class LengowOrder extends Order
      */
     public static function reImportOrder($id_order_lengow)
     {
-        if (LengowOrder::isOrderImport($id_order_lengow)) {
+        if (self::isOrderImport($id_order_lengow)) {
             //TEMP DATA
             Db::getInstance()->Execute(
                 'UPDATE `'._DB_PREFIX_.'lengow_orders` SET id_order = NULL WHERE id = '.(int)$id_order_lengow
             );
-
-            $lengowOrder = LengowOrder::find($id_order_lengow);
-
+            $lengowOrder = self::find($id_order_lengow);
             $import = new LengowImport(array(
-                'id_order_lengow'       => $id_order_lengow,
-                'type'                  => 'import',
-                'marketplace_sku'       => $lengowOrder['marketplace_sku'],
-                'marketplace_name'      => $lengowOrder['marketplace_name'],
-                'delivery_address_id'   => $lengowOrder['delivery_address_id'],
-                'shop_id'               => $lengowOrder['id_shop'],
-                'log_output'            => false,
+                'id_order_lengow'     => $id_order_lengow,
+                'type'                => 'import',
+                'marketplace_sku'     => $lengowOrder['marketplace_sku'],
+                'marketplace_name'    => $lengowOrder['marketplace_name'],
+                'delivery_address_id' => $lengowOrder['delivery_address_id'],
+                'shop_id'             => $lengowOrder['id_shop'],
             ));
             return $import->exec();
         }
     }
 
     /**
-     * v3
      * Re Send Order
      *
      * @param integer $id_order_lengow (id of table lengow_orders)
@@ -919,22 +917,22 @@ class LengowOrder extends Order
      */
     public static function reSendOrder($id_order_lengow)
     {
-        if (LengowOrder::isOrderImport($id_order_lengow)) {
-            $lengowOrder = LengowOrder::find($id_order_lengow);
+        if (self::isOrderImport($id_order_lengow)) {
+            $lengowOrder = self::find($id_order_lengow);
             if ((int)$lengowOrder['id_order'] > 0) {
-                LengowOrder::finishOrderLogs($id_order_lengow, 'ship');
+                $action = LengowAction::getLastOrderActionType($lengowOrder['id_order']);
+                $action = $action ? $action : 'ship';
                 $order = new LengowOrder($lengowOrder['id_order']);
-                return $order->callAction('ship');
+                return $order->callAction($action);
             }
             return false;
         }
     }
 
     /**
-     * v3-test
-     * Send Order
+     * Send Order action
      *
-     * @param $action
+     * @param string $action Lengow Actions (ship or cancel)
      *
      */
     public function callAction($action)
@@ -947,23 +945,29 @@ class LengowOrder extends Order
             );
             return false;
         }
+        // Finish all order logs send
+        self::finishOrderLogs($this->lengow_id, 'send');
         try {
             $marketplace = LengowMain::getMarketplaceSingleton(
                 $this->lengow_marketplace_name,
                 $this->lengow_id_shop
             );
-            if ($marketplace->containOrderLine('ship')) {
+            if ($marketplace->containOrderLine($action)) {
                 $orderLineCollection = self::findOrderLineIds($this->id);
+                // compatibility V2 and security
                 if (count($orderLineCollection) == 0) {
+                    $orderLineCollection = $this->getOrderLineByApi();
+                }
+                if (!$orderLineCollection) {
                     throw new LengowException(
                         LengowMain::setLogMessage('lengow_log.exception.order_line_required')
                     );
                 }
-                $ret = array();
+                $results = array();
                 foreach ($orderLineCollection as $row) {
-                    $ret[] = $marketplace->callAction($action, $this, $row['id_order_line']);
+                    $results[] = $marketplace->callAction($action, $this, $row['id_order_line']);
                 }
-                return !in_array(false, $ret);
+                return !in_array(false, $results);
             } else {
                 return $marketplace->callAction($action, $this);
             }
@@ -973,7 +977,9 @@ class LengowOrder extends Order
             $error_message = '[Prestashop error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
         }
         if (isset($error_message)) {
-            LengowOrder::addOrderLog($this->lengow_id, $error_message, $action);
+            if ($this->lengow_process_state != self::PROCESS_STATE_FINISH) {
+                self::addOrderLog($this->lengow_id, $error_message, 'send');
+            }
             $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
             LengowMain::log(
                 'API-OrderAction',
@@ -984,6 +990,42 @@ class LengowOrder extends Order
                 $this->lengow_marketplace_sku
             );
         }
+    }
+
+    /**
+     * Get order line by API
+     *
+     * @return mixed
+     */
+    public function getOrderLineByApi()
+    {
+        $order_lines = array();
+        $results = LengowConnector::queryApi(
+            'get',
+            '/v3.0/orders',
+            $this->lengow_id_shop,
+            array(
+                'marketplace_order_id' => $this->lengow_marketplace_sku,
+                'marketplace'          => $this->lengow_marketplace_name,
+            )
+        );
+        if (isset($results->count) && $results->count == 0) {
+            return false;
+        }
+        $order_data = $results->results[0];
+        foreach ($order_data->packages as $package) {
+            $product_lines = array();
+            foreach ($package->cart as $product) {
+                $product_lines[] = array('id_order_line' => (string)$product->marketplace_order_line_id);
+            }
+            if ($this->lengow_delivery_address_id == 0) {
+                return count($product_lines) > 0 ? $product_lines : false;
+            } else {
+                $order_lines[(int)$package->delivery->id] = $product_lines;
+            }
+        }
+        $return = $order_lines[$this->lengow_delivery_address_id];
+        return count($return) > 0 ? $return : false;
     }
 
     /**
@@ -1000,7 +1042,7 @@ class LengowOrder extends Order
     }
 
     /**
-     * v3
+     * Test function not finish
      * Sync old data
      */
     public static function syncOldData()
@@ -1024,7 +1066,6 @@ class LengowOrder extends Order
             }
         }
         //check country in order
-
         $states = Db::getInstance()->getRow('SELECT id_order_state FROM '._DB_PREFIX_.'order_state_lang
                 WHERE name = "Erreur technique - Lengow"');
         $errorState = $states['id_order_state'];
@@ -1059,20 +1100,5 @@ class LengowOrder extends Order
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

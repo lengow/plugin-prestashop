@@ -21,7 +21,6 @@
 
 class LengowMainSettingController extends LengowController
 {
-
     /**
      * Process Post Parameters
      */
@@ -30,8 +29,9 @@ class LengowMainSettingController extends LengowController
         $action = Tools::getValue('action');
         switch ($action) {
             case 'process':
+                $security = LengowMain::decodeLogMessage('global_setting.screen.i_am_sure');
                 if (isset($_REQUEST['uninstall_textbox']) &&
-                    trim($_REQUEST['uninstall_textbox']) == 'I WANT TO REMOVE ALL DATA'
+                    trim($_REQUEST['uninstall_textbox']) == $security
                 ) {
                     $backup = new LengowBackup();
                     if ($backup->add()) {
@@ -40,7 +40,7 @@ class LengowMainSettingController extends LengowController
                         $module = Module::getInstanceByName('lengow');
                         $module->uninstall();
                         $link = new LengowLink();
-                        $configLink = $link->getAbsoluteAdminLink('AdminModules');
+                        $configLink = $link->getAbsoluteAdminLink('AdminModules', false, true);
                         Tools::redirect($configLink.'&conf=13', '');
                     }
                 }
@@ -85,13 +85,11 @@ class LengowMainSettingController extends LengowController
                 'LENGOW_REPORT_MAIL_ADDRESS',
             )
         );
-
         $preprod_report = $form->buildInputs(
             array(
                 'LENGOW_IMPORT_PREPROD_ENABLED',
             )
         );
-
         $preprod_wrapper = '';
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
@@ -104,9 +102,7 @@ class LengowMainSettingController extends LengowController
                 'LENGOW_SECRET_TOKEN',
             )).'</div>';
         }
-
         $listFile = LengowLog::getPaths();
-
         $this->context->smarty->assign('list_file', $listFile);
         $this->context->smarty->assign('mail_report', $mail_report);
         $this->context->smarty->assign('preprod_report', $preprod_report);

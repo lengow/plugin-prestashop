@@ -26,9 +26,12 @@ class LengowCart extends Cart
      */
     public $force_product = true;
 
+    /**
+     * @var array definition_lengow
+     */
     public static $definition_lengow = array(
         'id_currency' => array('required' => true),
-        'id_lang' => array('required' => true),
+        'id_lang'     => array('required' => true),
     );
 
     /**
@@ -70,10 +73,10 @@ class LengowCart extends Cart
     /**
      * @see Cart::updateQty()
      *
-     * @param integer $quantity Quantity to add (or substract)
-     * @param integer $id_product Product ID
+     * @param integer $quantity             Quantity to add (or substract)
+     * @param integer $id_product           Product ID
      * @param integer $id_product_attribute Attribute ID if needed
-     * @param string $operator Indicate if quantity must be increased or decreased
+     * @param string  $operator             Indicate if quantity must be increased or decreased
      *
      * @return boolean
      */
@@ -145,9 +148,7 @@ class LengowCart extends Cart
 							'.Product::sqlStock('p', (int)$id_product_attribute, true, $shop).'
 							WHERE p.id_product = '.(int)$id_product;
                 }
-
                 $result2 = Db::getInstance()->getRow($sql);
-
                 $product_qty = (int)$result2['quantity'];
                 // Quantity for product pack
                 if (Pack::isPack($id_product)) {
@@ -155,14 +156,12 @@ class LengowCart extends Cart
                 }
                 $new_qty = (int)$result['quantity'] + (int)$quantity;
                 $qty = '+ '.(int)$quantity;
-
                 // force here
                 if (!Product::isAvailableWhenOutOfStock((int)$result2['out_of_stock']) && !$this->force_product) {
                     if ($new_qty > $product_qty) {
                         return false;
                     }
                 }
-
                 /* Delete product from cart */
                 if ($new_qty <= 0) {
                     return $this->deleteProduct((int)$id_product, (int)$id_product_attribute, (int)$id_customization);
@@ -214,7 +213,6 @@ class LengowCart extends Cart
                 if (_PS_VERSION_ > '1.4' && Pack::isPack($id_product)) {
                     $result2['quantity'] = Pack::getQuantity($id_product, $id_product_attribute);
                 }
-
                 if (!Product::isAvailableWhenOutOfStock((int)$result2['out_of_stock']) && !$this->force_product) {
                     if ((int)$quantity > $result2['quantity']) {
                         return false;
@@ -224,7 +222,6 @@ class LengowCart extends Cart
                 if ($new_qty < $minimal_quantity && !$this->force_product) {
                     return false;
                 }
-
                 if (_PS_VERSION_ < '1.5') {
                     $values = array(
                         'id_product'            => (int)$id_product,
@@ -233,7 +230,12 @@ class LengowCart extends Cart
                         'quantity'              => (int)$quantity,
                         'date_add'              => date('Y-m-d H:i:s'),
                     );
-                    $result_add = DB::getInstance()->autoExecute(_DB_PREFIX_ . 'cart_product', $values, 'insert');
+
+                    if (_PS_VERSION_ < '1.5') {
+                        $result_add = DB::getInstance()->autoExecute(_DB_PREFIX_ . 'cart_product', $values, 'insert');
+                    } else {
+                        $result_add = DB::getInstance()->insert('cart_product', $values);
+                    }
                 } else {
                     $values = array(
                         'id_product'            => (int)$id_product,
@@ -290,6 +292,7 @@ class LengowCart extends Cart
      * Assign API data
      *
      * @param array $data API data
+     *
      * @return LengowAddress
      */
     public function assign($data = array())
@@ -307,14 +310,12 @@ class LengowCart extends Cart
     public function validateLengow()
     {
         $definition = LengowCart::getFieldDefinition();
-
         foreach ($definition as $field_name => $constraints) {
             if (isset($constraints['required']) && $constraints['required']) {
                 if (!$this->{$field_name}) {
                     $this->validateFieldLengow($field_name, LengowAddress::LENGOW_EMPTY_ERROR);
                 }
             }
-
             if (isset($constraints['size'])) {
                 if (Tools::strlen($this->{$field_name}) > $constraints['size']) {
                     $this->validateFieldLengow($field_name, LengowAddress::LENGOW_SIZE_ERROR);
@@ -334,7 +335,7 @@ class LengowCart extends Cart
      * Modify a field according to the type of error
      *
      * @param string $error_type type of error
-     * @param string $field incorrect field
+     * @param string $field      incorrect field
      */
     public function validateFieldLengow($field, $error_type)
     {

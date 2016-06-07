@@ -21,7 +21,9 @@
 
 class LengowCheck
 {
-
+    /**
+     * @var $locale for translation
+     */
     protected $locale;
 
     public function __construct()
@@ -29,11 +31,10 @@ class LengowCheck
         $this->locale = new LengowTranslation();
     }
 
-
     /**
     * Check API Authentification
     *
-    * @param integer Shop ID
+    * @param integer $id_shop Shop ID
     *
     * @return boolean
     */
@@ -42,11 +43,9 @@ class LengowCheck
         if (LengowMain::inTest()) {
             return true;
         }
-
         if (!self::isCurlActivated()) {
             return false;
         }
-        
         $account_id = (integer)LengowMain::getIdAccount($id_shop);
         $connector  = new LengowConnector(
             LengowMain::getAccessToken($id_shop),
@@ -171,7 +170,6 @@ class LengowCheck
         } else {
             $import_in_progress = $this->locale->t('toolbox.index.no_import');
         }
-
         $checklist = array();
         $checklist[] = array(
             'title'     => $this->locale->t('toolbox.index.global_token'),
@@ -258,13 +256,21 @@ class LengowCheck
         $file_counter = 0;
         if (file_exists($file_name)) {
             $file_errors = array();
+            $file_deletes = array();
             if (($file = fopen($file_name, "r")) !== false) {
                 while (($data = fgetcsv($file, 1000, "|")) !== false) {
                     $file_counter++;
                     $file_path = _PS_MODULE_DIR_.'lengow'.$data[0];
-                    $file_md5 = md5_file($file_path);
-                    if ($file_md5 !== $data[1]) {
-                        $file_errors[] = array(
+                    if (file_exists($file_path)) {
+                        $file_md5 = md5_file($file_path);
+                        if ($file_md5 !== $data[1]) {
+                            $file_errors[] = array(
+                                'title' => $file_path,
+                                'state' => 0
+                            );
+                        }
+                    } else {
+                        $file_deletes[] = array(
                             'title' => $file_path,
                             'state' => 0
                         );
@@ -284,11 +290,22 @@ class LengowCheck
                 )),
                 'state' => (count($file_errors) > 0 ? 0 : 1)
             );
+            $checklist[] = array(
+                'title' => $this->locale->t('toolbox.checksum.file_deleted', array(
+                    'nb_file' => count($file_deletes)
+                )),
+                'state' => (count($file_deletes) > 0 ? 0 : 1)
+            );
             $html.= $this->getAdminContent($checklist);
             if (count($file_errors) > 0) {
                 $html.= '<h3><i class="fa fa-list"></i> '
                     .$this->locale->t('toolbox.checksum.list_modified_file').'</h3>';
                 $html.= $this->getAdminContent($file_errors);
+            }
+            if (count($file_deletes) > 0) {
+                $html.= '<h3><i class="fa fa-list"></i> '
+                    .$this->locale->t('toolbox.checksum.list_deleted_file').'</h3>';
+                $html.= $this->getAdminContent($file_deletes);
             }
         } else {
             $checklist[] = array(

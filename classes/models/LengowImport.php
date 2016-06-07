@@ -170,17 +170,16 @@ class LengowImport
             && array_key_exists('marketplace_name', $params)
             && array_key_exists('shop_id', $params)
         ) {
-            if (isset($params['id_order_lengow'])) {
-                $this->id_order_lengow  = (int)$params['id_order_lengow'];
-            }
-            $this->re_import_type       = (int)$params['type'];
-            $this->marketplace_sku      = (string)$params['marketplace_sku'];
-            $this->marketplace_name     = (string)$params['marketplace_name'];
+            $this->marketplace_sku  = (string)$params['marketplace_sku'];
+            $this->marketplace_name = (string)$params['marketplace_name'];
+            $this->limit            = 1;
+            $this->import_one_order = true;
             if (array_key_exists('delivery_address_id', $params) && $params['delivery_address_id'] != '') {
-                $this->delivery_address_id  = $params['delivery_address_id'];
+                $this->delivery_address_id = $params['delivery_address_id'];
             }
-            $this->limit                = 1;
-            $this->import_one_order     = true;
+            if (isset($params['id_order_lengow'])) {
+                $this->id_order_lengow = (int)$params['id_order_lengow'];
+            }
         } else {
             $this->marketplace_sku = null;
             // recovering the time interval
@@ -239,8 +238,8 @@ class LengowImport
             );
             $error[0] = $global_error;
             if (isset($this->id_order_lengow) && $this->id_order_lengow) {
-                LengowOrder::finishOrderLogs($this->id_order_lengow, $this->re_import_type);
-                LengowOrder::addOrderLog($this->id_order_lengow, $global_error, $this->re_import_type);
+                LengowOrder::finishOrderLogs($this->id_order_lengow, 'import');
+                LengowOrder::addOrderLog($this->id_order_lengow, $global_error, 'import');
             }
         } else {
             LengowMain::log(
@@ -317,7 +316,7 @@ class LengowImport
                             continue;
                         }
                         if (isset($this->id_order_lengow) && $this->id_order_lengow) {
-                            LengowOrder::finishOrderLogs($this->id_order_lengow, $this->re_import_type);
+                            LengowOrder::finishOrderLogs($this->id_order_lengow, 'import');
                         }
                         // import orders in prestashop
                         $result = $this->importOrders($orders, (int)$shop->id);
@@ -333,8 +332,8 @@ class LengowImport
                     }
                     if (isset($error_message)) {
                         if (isset($this->id_order_lengow) && $this->id_order_lengow) {
-                            LengowOrder::finishOrderLogs($this->id_order_lengow, $this->re_import_type);
-                            LengowOrder::addOrderLog($this->id_order_lengow, $error_message, $this->re_import_type);
+                            LengowOrder::finishOrderLogs($this->id_order_lengow, 'import');
+                            LengowOrder::addOrderLog($this->id_order_lengow, $error_message, 'import');
                         }
                         $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
                         LengowMain::log(
@@ -387,6 +386,14 @@ class LengowImport
                 && !$this->import_one_order
             ) {
                 LengowMain::sendMailAlert($this->log_output);
+            }
+            //check if order action is finish (Ship / Cancel)
+            if (!LengowMain::inTest()
+                && !$this->preprod_mode
+                && !$this->import_one_order
+                && $this->type_import == 'manual'
+            ) {
+                LengowAction::checkFinishAction();
             }
         }
         if ($this->import_one_order) {
@@ -682,10 +689,6 @@ class LengowImport
                     $import_finished = true;
                     break;
                 }
-
-                //check if order action is finish (Ship / Cancel)
-                LengowMarketplace::checkFinishAction();
-
             }
             if ($import_finished) {
                 break;

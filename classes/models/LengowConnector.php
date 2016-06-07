@@ -90,8 +90,8 @@ class LengowConnector
     /**
      * Make a new Lengow API Connector.
      *
-     * @param varchar $access_token Your access token.
-     * @param varchar $secret Your secret.
+     * @param string $access_token Your access token
+     * @param string $secret       Your secret
      */
     public function __construct($access_token, $secret)
     {
@@ -107,7 +107,7 @@ class LengowConnector
     /**
      * Connectection to the API
      *
-     * @param varchar $user_token The user token if is connected
+     * @param string $user_token The user token if is connected
      *
      * @return mixed array [authorized token + account_id + user_id] or false
      */
@@ -133,12 +133,13 @@ class LengowConnector
     }
 
     /**
-     * The API method.
+     * The API method
      *
-     * @param varchar $method Lengow method API call.
-     * @param varchar $array Lengow method API parameters
-     * @param varchar $type type of request GET|POST|PUT|HEAD|DELETE|PATCH
-     * @param varchar $format return format of API
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $type   type of request GET|POST|PUT|HEAD|DELETE|PATCH
+     * @param string $format return format of API
+     * @param string $body
      *
      * @return array The formated data response
      */
@@ -156,6 +157,16 @@ class LengowConnector
         return $data;
     }
 
+    /**
+     * Get API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
     public function get($method, $array = array(), $format = 'json', $body = '')
     {
         if (LengowMain::inTest() && self::$test_fixture_path) {
@@ -171,6 +182,16 @@ class LengowConnector
         return $this->call($method, $array, 'GET', $format, $body);
     }
 
+    /**
+     * Post API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
     public function post($method, $array = array(), $format = 'json', $body = '')
     {
         if (LengowMain::inTest() && self::$test_fixture_path) {
@@ -186,26 +207,77 @@ class LengowConnector
         return $this->call($method, $array, 'POST', $format, $body);
     }
 
+    /**
+     * Head API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
     public function head($method, $array = array(), $format = 'json', $body = '')
     {
         return $this->call($method, $array, 'HEAD', $format, $body);
     }
 
+    /**
+     * Put API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
     public function put($method, $array = array(), $format = 'json', $body = '')
     {
         return $this->call($method, $array, 'PUT', $format, $body);
     }
 
+    /**
+     * Delete API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
     public function delete($method, $array = array(), $format = 'json', $body = '')
     {
         return $this->call($method, $array, 'DELETE', $format, $body);
     }
 
+    /**
+     * Patch API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
     public function patch($method, $array = array(), $format = 'json', $body = '')
     {
         return $this->call($method, $array, 'PATCH', $format, $body);
     }
 
+    /**
+     * Call API action
+     *
+     * @param string $api    Lengow method API call
+     * @param array  $args   Lengow method API parameters
+     * @param string $type   type of request GET|POST|PUT|HEAD|DELETE|PATCH
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
     private function callAction($api, $args, $type, $format = 'json', $body = '')
     {
         if ($api == '/v1.0/numbers/') {
@@ -217,6 +289,14 @@ class LengowConnector
         return $this->format($result, $format);
     }
 
+    /**
+     * Get data in specific format
+     *
+     * @param mixed  $data
+     * @param string $format
+     *
+     * @return array The formated data response
+     */
     private function format($data, $format)
     {
         switch ($format) {
@@ -231,6 +311,17 @@ class LengowConnector
         }
     }
 
+    /**
+     * Make Curl request
+     *
+     * @param string $type  Lengow method API call
+     * @param string $url   Lengow API url
+     * @param array  $args  Lengow method API parameters
+     * @param string $token temporary access token
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
     protected function makeRequest($type, $url, $args, $token, $body = '')
     {
         $ch = curl_init();
@@ -259,7 +350,7 @@ class LengowConnector
             case "PUT":
                 $opts[CURLOPT_HTTPHEADER] = array_merge($opts[CURLOPT_HTTPHEADER], array(
                     'Content-Type: application/json',
-                    'Content-Length: ' . strlen($body)
+                    'Content-Length: '.Tools::strlen($body)
                 ));
                 $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
                 $opts[CURLOPT_POSTFIELDS] = $body;
@@ -296,13 +387,7 @@ class LengowConnector
         return $result;
     }
 
-    public function getAccountId()
-    {
-        return $this->account_id;
-    }
-
     /**
-     * v3
      * Get Valid Account / Access / Secret
      *
      * @param integer $id_shop
@@ -340,24 +425,23 @@ class LengowConnector
     }
 
     /**
-     * v3
-     * Query Api
+     * Get result for a query Api
      *
-     * @param string $type (GET / POST)
-     * @param string $url to query
-     * @param integer $shopId to query
-     * @param array $params
+     * @param string  $type   (GET / POST / PUT / PATCH)
+     * @param string  $url
+     * @param integer $id_shop
+     * @param array   $params
+     * @param string  $body
      *
      * @return api result as array
      */
-    public static function queryApi($type, $url, $shopId = null, $params = array(), $body = '')
+    public static function queryApi($type, $url, $id_shop = null, $params = array(), $body = '')
     {
-        if (!in_array($type, array('get', 'post', 'put'))) {
+        if (!in_array($type, array('get', 'post', 'put', 'patch'))) {
             return false;
         }
-
         try {
-            list($account_id, $access_token, $secret_token) = self::getAccessId($shopId);
+            list($account_id, $access_token, $secret_token) = self::getAccessId($id_shop);
             $connector  = new LengowConnector($access_token, $secret_token);
             $results = $connector->$type(
                 $url,

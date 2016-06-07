@@ -894,15 +894,26 @@ class LengowMain
      */
     public static function logSent($id_order_log)
     {
-        Db::getInstance()->autoExecute(
-            _DB_PREFIX_.'lengow_logs_import',
-            array(
-                'mail' => 1,
-            ),
-            'UPDATE',
-            '`id` = \''.(int)$id_order_log.'\'',
-            1
-        );
+        if (_PS_VERSION_ < '1.5') {
+            Db::getInstance()->autoExecute(
+                _DB_PREFIX_.'lengow_logs_import',
+                array(
+                    'mail' => 1,
+                ),
+                'UPDATE',
+                '`id` = \''.(int)$id_order_log.'\'',
+                1
+            );
+        } else {
+            Db::getInstance()->update(
+                'lengow_logs_import',
+                array(
+                    'mail' => 1,
+                ),
+                '`id` = \''.(int)$id_order_log.'\'',
+                1
+            );
+        }
     }
 
     /**

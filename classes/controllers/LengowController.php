@@ -42,11 +42,17 @@ class LengowController
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
     }
 
+    /**
+     * Process Post Parameters
+     */
     public function postProcess()
     {
 
     }
 
+    /**
+     * Display data page
+     */
     public function display()
     {
         $this->context->smarty->assign(
@@ -65,12 +71,16 @@ class LengowController
                 $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
                 echo $module->display(
                     _PS_MODULE_LENGOW_DIR_,
-                    'views/templates/admin/' . $path . '/helpers/view/view.tpl'
+                    'views/templates/admin/'.$path.'/helpers/view/view.tpl'
                 );
+                echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/footer.tpl');
             }
         }
     }
 
+    /**
+     * Force Display data page
+     */
     public function forceDisplay()
     {
         $module = Module::getInstanceByName('lengow');

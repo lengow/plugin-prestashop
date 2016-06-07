@@ -52,16 +52,45 @@
             evt.params.originalEvent.stopPropagation();
         });*/
 
-        $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').change(function(){
-            var checked = $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked');
-            if( checked == true ){
-                $('.lengow_report_mail_address').slideDown(150);
+
+        $('.lgw-modal-delete').click(function(){
+            $('body').addClass('unscrollable');
+            $('.lgw-modal').addClass('open');
+            return false;
+        });
+
+        $('.js-close-this-modal').click(function(){
+            $('body').removeClass('unscrollable');
+            $('.lgw-modal').removeClass('open');
+            return false;
+        });
+
+        $('.js-confirm-delete').keyup(function(){
+            var confirm = $(this).data('confirm');
+            if( $(this).val() == confirm ){
+                $('.lengow_submit_delete_module')
+                    .removeClass('lgw-btn-disabled')
+                    .addClass('lgw-btn-red');
             }
             else{
-                $('.lengow_report_mail_address').slideUp(150);
+                $('.lengow_submit_delete_module')
+                    .addClass('lgw-btn-disabled')
+                    .removeClass('lgw-btn-red');
             }
         });
 
+        $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').change(function(){
+            var checked = $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked');
+            var selector = $('.lengow_report_mail_address');
+            if( checked == true ){
+                selector.slideDown(150);
+                selector.next('span.legend').show();
+            }
+            else{
+                selector.slideUp(150);
+                selector.next('span.legend').hide();
+            }
+        });
 
         displayPreProdMode();
         $("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").on('change', function () {

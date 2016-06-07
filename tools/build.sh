@@ -91,6 +91,8 @@ remove_files $FOLDER_TMP ".gitignore"
 remove_files $FOLDER_TMP ".git"
 # Remove .DS_Store
 remove_files $FOLDER_TMP ".DS_Store"
+# Remove .AdminLengowHome.gif
+remove_files $FOLDER_TMP "AdminLengowHome.gif"
 # Remove .idea
 remove_files $FOLDER_TMP ".idea"
 # Clean Log Folder
