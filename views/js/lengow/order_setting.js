@@ -162,18 +162,25 @@ function addScoreCarrier(){
         });
 
 
-        $(".sub").hide();
-        $(".sub:first").show();
-        $(".lengow_marketplace_carrier:first").find('.fa').toggleClass('fa-chevron-down fa-chevron-up');
+        // Toggle countries
+
+        toggleCountry( $('#lengow_form_order_setting .country:eq(0)') ); // First one
         $("#lengow_form_order_setting").on('click', '.country',function(){
-            var $sub = $(this).closest('li').find('.sub');
-            $sub.slideToggle(150);
-            $(this).find('.fa').toggleClass('fa-chevron-down fa-chevron-up');
+            toggleCountry( $(this) );
         });
+
+        function toggleCountry($head){
+            var $sub = $head.closest('li').find('.sub');
+            $head.toggleClass('active');
+            $head.find('.fa').toggleClass('fa-chevron-down fa-chevron-up');
+            $sub.slideToggle(150);
+        }
 
         $("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").on('change', function () {
             changeStockMP();
         });
+
+        // Submit form
 
         $('#lengow_form_order_setting').submit(function( event ) {
             event.preventDefault();

@@ -37,7 +37,7 @@
             <span class="score lgw-label"></span><i class="fa fa-chevron-down"></i>
         </div>
         </label><input id="menu{$id_country|escape:'htmlall':'UTF-8'}" name="menu" type="checkbox"/>
-        <ul class="sub">
+        <ul class="sub" style="display:none">
             <li class="add_country {if empty($defaultCarrierCountries[$id_country]['id_carrier']|escape:'htmlall':'UTF-8')}no_carrier{/if}">
                 {include file='./default_carrier.tpl'}
             </li>
