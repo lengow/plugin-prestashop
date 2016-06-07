@@ -262,25 +262,10 @@ body.lgw-home-iframe .lgw-content-section p{
   color:#555;
 }
 
-span.img_no_order {
+.img_no_order {
     background : transparent url("../img/no-result.png") no-repeat;
     height: 208px;
     width: 395px;
     display: block;
-    margin: 0 auto;
-}
-
-span.title_no_order {
-    display: block;
-    font-size: 32px;
-    font-weight: bold;
-    margin: 10px 0;
-    color: #61687d;
-}
-
-#lengow_no_order_message {
-    padding: 30px;
-    text-align:center;
-    font-size: 18px;
-    color:#61687d;
+    margin: 60px auto 0;
 }
