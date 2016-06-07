@@ -62,8 +62,13 @@
             <p>{$locale->t('order_setting.screen.cron_manual_installation')|escape:'htmlall':'UTF-8'}</p>
             <code>*/15 * * * * wget {$import_url|escape:'htmlall':'UTF-8'}</code>
         </div>
-        <button type="submit" class="lgw-btn lengow_submit_order_setting">
-            {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
+
+        <button type="submit" class="lgw-btn lgw-btn-progression lengow_submit_order_setting">
+            <div class="btn-inner">
+                <div class="btn-step default">{$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}</div>
+                <div class="btn-step loading">Saving...</div>
+                <div class="btn-step done" data-success="Saved!" data-error="Error">Saved!</div>
+            </div>
         </button>
     </form>
 </div>

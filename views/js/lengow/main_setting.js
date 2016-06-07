@@ -52,6 +52,19 @@
             evt.params.originalEvent.stopPropagation();
         });*/
 
+        // SUMBIT FORM
+
+        $( ".lengow_form" ).submit(function( event ) {
+            event.preventDefault();
+            var form = this;
+          $('.lengow_form button[type="submit"]').addClass('loading');
+          setTimeout(function () {
+            $('.lengow_form button[type="submit"]').removeClass('loading');
+            $('.lengow_form button[type="submit"]').addClass('success');
+            form.submit();
+           }, 1000);
+        });
+
 
         $('.lgw-modal-delete').click(function(){
             $('body').addClass('unscrollable');
@@ -62,6 +75,7 @@
         $('.js-close-this-modal').click(function(){
             $('body').removeClass('unscrollable');
             $('.lgw-modal').removeClass('open');
+            $('.js-confirm-delete').val('');
             return false;
         });
 
