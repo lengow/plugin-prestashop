@@ -57,10 +57,10 @@
         $( ".lengow_form" ).submit(function( event ) {
             event.preventDefault();
             var form = this;
-          $('.lengow_submit_main_setting').addClass('loading');
+          $('.lengow_form button[type="submit"]').addClass('loading');
           setTimeout(function () {
-            $('.lengow_submit_main_setting').removeClass('loading');
-            $('.lengow_submit_main_setting').addClass('success');
+            $('.lengow_form button[type="submit"]').removeClass('loading');
+            $('.lengow_form button[type="submit"]').addClass('success');
             form.submit();
            }, 1000);
         });
@@ -75,6 +75,7 @@
         $('.js-close-this-modal').click(function(){
             $('body').removeClass('unscrollable');
             $('.lgw-modal').removeClass('open');
+            $('.js-confirm-delete').val('');
             return false;
         });
 
