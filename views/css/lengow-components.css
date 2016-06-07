@@ -375,6 +375,10 @@ a.lgw-box-link:hover{
     margin: 0 !important;
     padding:0 !important;
 }
+.select2-results,
+.select2-container--default .select2-results>.select2-results__options{
+    max-height: 240px;
+}
 .select2-results li{
     padding: 0 15px 0 25px;
     height: 44px;
