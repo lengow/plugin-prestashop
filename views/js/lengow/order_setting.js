@@ -92,6 +92,12 @@ function addScoreCarrier(){
             return false;
         });
 
+        // Change country
+
+        $('#select_country').change(function(){
+            $('.add_lengow_default_carrier').removeClass('lgw-btn-disabled');
+        });
+
         $('.js-cancel-country').click(function(){
             $('.select_country').hide();
             $('.add-country').show();
