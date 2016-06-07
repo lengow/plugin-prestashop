@@ -164,9 +164,9 @@ function addScoreCarrier(){
 
         // Toggle countries
 
-        toggleCountry( $('#lengow_form_order_setting .country:eq(0)') ); // First one
+        toggleCountry( $('#lengow_form_order_setting .lengow_marketplace_carrier:eq(0)') ); // First one
         $("#lengow_form_order_setting").on('click', '.country',function(){
-            toggleCountry( $(this) );
+            toggleCountry( $(this).closest('.lengow_marketplace_carrier') );
         });
 
         function toggleCountry($head){
