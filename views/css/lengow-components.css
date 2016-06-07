@@ -818,9 +818,10 @@ a.lgw-box-link:hover{
     font-weight: normal;
     cursor:pointer;
     transition: all 100ms ease;
+    background:#f7F7F7;
 }
 .lgw-container .accordion label:hover {
-    background:#f7f7f7;
+    background:#ffffff;
 }
 .lgw-container .accordion .country {
     border: 1px solid #d7d7d7;

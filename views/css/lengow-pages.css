@@ -262,6 +262,13 @@ body.lgw-home-iframe .lgw-content-section p{
   color:#555;
 }
 
+/*************************************************/
+/*               MAIN SETTINGS                   */
+/*************************************************/
+
+.lgw-container #download_log{
+  display:none;
+}
 .img_no_order {
     background : transparent url("../img/no-result.png") no-repeat;
     height: 208px;
@@ -270,6 +277,12 @@ body.lgw-home-iframe .lgw-content-section p{
     margin: 60px auto 0;
 }
 
+#lengow_no_order_message {
+    padding: 30px;
+    text-align:center;
+    font-size: 18px;
+    color:#61687d;
+}
 .default_carrier_missing{
   color:#e55a4d;
   font-size:13px;

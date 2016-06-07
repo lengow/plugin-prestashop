@@ -119,11 +119,18 @@
             }
         }
 
+        $('#select_log').change(function(){
+            if ($('#select_log').val() !== null) {
+                $("#download_log" ).show();
+            }
+        });
+
         $('#download_log').on('click', function() {
             if ($('#select_log').val() !== null) {
                 window.location.href = $('#select_log').val();
             }
         });
+
     });
 
 })(lengow_jquery);
