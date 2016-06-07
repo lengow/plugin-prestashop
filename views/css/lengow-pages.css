@@ -269,3 +269,8 @@ body.lgw-home-iframe .lgw-content-section p{
     display: block;
     margin: 60px auto 0;
 }
+
+.default_carrier_missing{
+  color:#e55a4d;
+  font-size:13px;
+}
