@@ -820,6 +820,7 @@ a.lgw-box-link:hover{
     transition: all 100ms ease;
     background:#f7F7F7;
 }
+.lgw-container .accordion .active label,
 .lgw-container .accordion label:hover {
     background:#ffffff;
 }
