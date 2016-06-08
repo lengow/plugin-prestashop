@@ -23,11 +23,19 @@ require_once _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'loader.php';
 
 class Lengow extends Module
 {
-
+    /**
+     * Lengow Install Class
+     */
     private $installClass;
 
+    /**
+     * Lengow Hook Class
+     */
     private $hookClass;
 
+    /**
+     * Construct
+     */
     public function __construct()
     {
         $this->name = 'lengow';
@@ -74,6 +82,9 @@ class Lengow extends Module
         Tools::redirect($configLink, '');
     }
 
+    /**
+     * Install process
+     */
     public function install()
     {
         if (!parent::install()) {
@@ -82,6 +93,9 @@ class Lengow extends Module
         return $this->installClass->install();
     }
 
+    /**
+     * Uninstall process
+     */
     public function uninstall()
     {
         if (!parent::uninstall()) {
@@ -90,49 +104,89 @@ class Lengow extends Module
         return $this->installClass->uninstall();
     }
 
+    /**
+     * Reset process
+     */
     public function reset()
     {
         return $this->installClass->reset();
     }
 
     /**
-     * Hook Definition in LengowHook
+     * Hook on Home page
+     *
+     * @param array $args Arguments of hook
      */
     public function hookHome($args)
     {
         return $this->hookClass->hookHome($args);
     }
 
+    /**
+     * Hook on Payment page
+     *
+     * @param array $args Arguments of hook
+     */
     public function hookPaymentTop($args)
     {
         return $this->hookClass->hookPaymentTop($args);
     }
 
+    /**
+     * Hook for generate tracker on front footer page
+     *
+     * @param array $args Arguments of hook
+     */
     public function hookFooter($args)
     {
         return $this->hookClass->hookFooter($args);
     }
 
+    /**
+     * Hook on order confirmation page to init order's product list
+     *
+     * @param array $args Arguments of hook
+     */
     public function hookOrderConfirmation($args)
     {
         return $this->hookClass->hookOrderConfirmation($args);
     }
 
+    /**
+     * Hook before an status update to synchronize status with lengow
+     *
+     * @param array $args Arguments of hook
+     */
     public function hookUpdateOrderStatus($args)
     {
         return $this->hookClass->hookUpdateOrderStatus($args);
     }
 
+    /**
+     * Hook after an status update to synchronize status with lengow
+     *
+     * @param array $args Arguments of hook
+     */
     public function hookPostUpdateOrderStatus($args)
     {
         return $this->hookClass->hookPostUpdateOrderStatus($args);
     }
 
+    /**
+     * Hook for update order if isset tracking number
+     *
+     * @param array $args Arguments of hook
+     */
     public function hookActionObjectUpdateAfter($args)
     {
         return $this->hookClass->hookActionObjectUpdateAfter($args);
     }
 
+    /**
+     * Hook on admin page's order
+     *
+     * @param array $args Arguments of hook
+     */
     public function hookAdminOrder($args)
     {
         return $this->hookClass->hookAdminOrder($args);

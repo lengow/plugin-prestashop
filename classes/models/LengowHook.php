@@ -371,7 +371,7 @@ class LengowHook
     }
 
     /**
-     * Hook after an status' update to synchronize status with lengow.
+     * Hook after an status' update to synchronize status with lengow
      *
      * @param array $args Arguments of hook
      */
@@ -433,7 +433,7 @@ class LengowHook
     }
 
     /**
-     * Hook on admin page's order.
+     * Hook on admin page's order
      *
      * @param array $args Arguments of hook
      *

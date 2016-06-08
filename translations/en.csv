@@ -134,6 +134,7 @@ order_setting.screen.cron_if_not_exists|or
 order_setting.screen.cron_install_plugin|You can install the 'Crontab' PrestaShop Plugin
 order_setting.screen.cron_manual_installation|If you are using an unix system, you can use unix crontab as follows:
 order_setting.screen.button_add_country|Add
+order_setting.screen.please_select_carrier|Please select a carrier...
 order_setting.screen.default_carrier|Default carrier
 order_setting.screen.no_default_carrier_selected|No default carrier selected
 order_setting.screen.confirmation_delete_carrier_country|Are you sure ?

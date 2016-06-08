@@ -90,6 +90,7 @@ order_setting.screen.cron_if_not_exists|ou
 order_setting.screen.cron_install_plugin|Vous pouvez installer l'éditeur de tâche Cron pour le plugin PrestaShop
 order_setting.screen.cron_manual_installation|Si vous utilisez un système unix, vous pouvez utiliser le CRON unix cette manière :
 order_setting.screen.button_add_country|Ajouter
+order_setting.screen.please_select_carrier|Please select a carrier...
 order_setting.screen.button_save|Enregistrer
 order_setting.screen.no_default_carrier_selected|Pas de transporteur par défaut sélectionné
 order_setting.screen.confirmation_delete_carrier_country|Etes-vous sûre ?
