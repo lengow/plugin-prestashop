@@ -105,6 +105,7 @@ fr:
       cron_install_plugin: "Vous pouvez installer l'éditeur de tâche Cron pour le plugin PrestaShop"
       cron_manual_installation: "Si vous utilisez un système unix, vous pouvez utiliser le CRON unix cette manière :"
       button_add_country: "Ajouter"
+      please_select_carrier: "Please select a carrier..."
       button_save: "Enregistrer"
       no_default_carrier_selected: "Pas de transporteur par défaut sélectionné"
       confirmation_delete_carrier_country: "Etes-vous sûre ?"

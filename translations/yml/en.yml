@@ -149,6 +149,7 @@ en:
       cron_install_plugin: "You can install the 'Crontab' PrestaShop Plugin"
       cron_manual_installation: "If you are using an unix system, you can use unix crontab as follows:"
       button_add_country: "Add"
+      please_select_carrier: "Please select a carrier..."
       default_carrier: "Default carrier"
       no_default_carrier_selected: "No default carrier selected"
       confirmation_delete_carrier_country: "Are you sure ?"
