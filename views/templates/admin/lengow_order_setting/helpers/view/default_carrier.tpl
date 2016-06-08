@@ -23,7 +23,7 @@
      id="lengow_country_{$defaultCarrierCountries[$id_country]['lengow_country_id']|escape:'htmlall':'UTF-8'}">
     <p>{$locale->t('order_setting.screen.default_carrier')|escape:'htmlall':'UTF-8'}</p>
     <select name="default_carrier[{$defaultCarrierCountries[$id_country]['lengow_country_id']|escape:'htmlall':'UTF-8'}]" class="carrier defaultCarrier lengow_select">
-        <option value=""></option>
+        <option value="">{$locale->t('order_setting.screen.please_select_carrier')|escape:'htmlall':'UTF-8'}</option>
         {foreach from=$listCarrierByCountry[$id_country] key=k item=c}
             {if $defaultCarrierCountries[$id_country]['id_carrier'] eq $k}
                 <option value="{$k|escape:'htmlall':'UTF-8'}" selected="selected">{$c|escape:'htmlall':'UTF-8'}</option>

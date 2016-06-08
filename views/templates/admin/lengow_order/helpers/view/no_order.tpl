@@ -17,13 +17,11 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
- 
+
 <div id="lengow_no_order_block">
-    <div id="lengow_no_order_message">
+    <div id="lengow_no_order_message" class="text-center">
         <span class="img_no_order"></span>
-        <span class="title_no_order">
-            {$locale->t('order.screen.no_order_title')|escape:'htmlall':'UTF-8'}
-        </span>
-        {$locale->t('order.screen.no_order_description')|escape:'htmlall':'UTF-8'}
+        <h2 class="no-margin">{$locale->t('order.screen.no_order_title')|escape:'htmlall':'UTF-8'}</h2>
+        <p>{$locale->t('order.screen.no_order_description')|escape:'htmlall':'UTF-8'}</p>
     </div>
 </div>
