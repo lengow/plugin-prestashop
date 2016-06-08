@@ -85,6 +85,7 @@ function addScoreCarrier(){
                 });
                 $('#error_select_country').html('');
                 $('.select_country').hide();
+                $(this).addClass('lgw-btn-disabled');
             } else {
                 $('#error_select_country').html('<span>No country selected.</span>');
             }
