@@ -20,10 +20,8 @@
  */
 
 /**
- * The Lengow Export Class.
- *
+ * Lengow Export class
  */
-
 class LengowExport
 {
     /**

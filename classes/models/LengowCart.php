@@ -19,6 +19,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Cart Class
+ */
 class LengowCart extends Cart
 {
     /**

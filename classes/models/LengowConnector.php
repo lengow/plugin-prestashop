@@ -20,8 +20,7 @@
  */
 
 /**
- * Lengow Connector Class.
- *
+ * Lengow Connector Class
  */
 class LengowConnector
 {
@@ -68,12 +67,12 @@ class LengowConnector
     /**
      * @var string URL of the API Lengow
      */
-    const LENGOW_API_URL = 'http://10.100.1.242:8081';
+    const LENGOW_API_URL = 'http://10.100.1.82:8081';
 
     /**
      * @var string URL of the SANDBOX Lengow
      */
-    const LENGOW_API_SANDBOX_URL = 'http://10.100.1.242:8081';
+    const LENGOW_API_SANDBOX_URL = 'http://10.100.1.82:8081';
 
     public static $test_fixture_path;
 
@@ -117,8 +116,8 @@ class LengowConnector
             '/access/get_token',
             array(
                 'access_token' => $this->access_token,
-                'secret' => $this->secret,
-                'user_token' => $user_token
+                'secret'       => $this->secret,
+                'user_token'   => $user_token
             ),
             'POST'
         );
@@ -280,8 +279,8 @@ class LengowConnector
      */
     private function callAction($api, $args, $type, $format = 'json', $body = '')
     {
-        if ($api == '/v1.0/numbers/') {
-            $url = 'http://10.100.1.242:8083';
+        if ($api == '/v3.0/numbers') {
+            $url = 'http://10.100.1.82:8082';
         } else {
             $url = self::LENGOW_API_URL;
         }

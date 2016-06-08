@@ -19,15 +19,14 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-class LengowSync extends SpecificPrice
+/**
+ * Lengow Sync Class
+ */
+class LengowSync
 {
-    public function __construct()
-    {
-
-    }
-
     /**
      * Get Sync Data (Inscription / Update)
+     *
      * @return array
      */
     public static function getSyncData()
@@ -40,11 +39,9 @@ class LengowSync extends SpecificPrice
         $data['plugin_version'] = LengowConfiguration::getGlobalValue('LENGOW_VERSION');
         $data['email'] = LengowConfiguration::get('PS_SHOP_EMAIL');
         $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $shopId = $row['id_shop'];
-
             $lengowExport = new LengowExport(array("shop_id" => $shopId));
             $shop = new LengowShop($shopId);
             $data['shops'][$row['id_shop']]['token'] = LengowMain::getToken($shopId);
@@ -60,6 +57,7 @@ class LengowSync extends SpecificPrice
 
     /**
      * Store Configuration Key From Lengow
+     *
      * @param $params
      */
     public static function sync($params)
@@ -98,6 +96,7 @@ class LengowSync extends SpecificPrice
 
     /**
      * Get Sync Data (Inscription / Update)
+     *
      * @return array
      */
     public static function getOptionData()
@@ -110,7 +109,6 @@ class LengowSync extends SpecificPrice
             'plugin_version' => LengowConfiguration::getGlobalValue('LENGOW_VERSION'),
             'options'        => LengowConfiguration::getAllValues()
         );
-
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $shop_id = $row['id_shop'];

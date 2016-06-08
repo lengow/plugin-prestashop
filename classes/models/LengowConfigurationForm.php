@@ -20,8 +20,7 @@
  */
 
 /**
- * Lengow Form class
- *
+ * Lengow Configuration Form Class
  */
 class LengowConfigurationForm
 {

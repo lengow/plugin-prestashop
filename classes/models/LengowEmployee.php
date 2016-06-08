@@ -20,8 +20,7 @@
  */
 
 /**
- * Lengow Employee class
- *
+ * Lengow Employee Class
  */
 class LengowEmployee extends Employee
 {

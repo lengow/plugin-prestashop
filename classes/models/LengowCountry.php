@@ -20,8 +20,7 @@
  */
 
 /**
- * Lengow Country Class.
- *
+ * Lengow Country Class
  */
 class LengowCountry
 {

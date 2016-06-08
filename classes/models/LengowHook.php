@@ -20,8 +20,7 @@
  */
 
 /**
- * The Lengow Hook class
- *
+ * Lengow Hook Class
  */
 class LengowHook
 {

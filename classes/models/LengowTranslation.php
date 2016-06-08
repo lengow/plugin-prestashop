@@ -19,28 +19,45 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Translation Class
+ */
 class LengowTranslation
 {
+    /**
+     * Version
+     */
     protected static $translation = null;
 
+    /**
+     * Fallback iso code
+     */
     public $fallbackIsoCode = 'en';
 
+    /**
+     * Iso code
+     */
     protected $isoCode = null;
 
+    /**
+     * Force iso code for log and toolbox
+     */
     public static $forceIsoCode = null;
 
+    /**
+     * Construct
+     */
     public function __construct()
     {
         $this->isoCode = Context::getContext()->language->iso_code;
     }
 
     /**
-     * v3
      * Translate message
      *
-     * @param string $message   localization key
-     * @param array  $args      replace word in string
-     * @param array  $iso_code  iso code
+     * @param string $message  localization key
+     * @param array  $args     replace word in string
+     * @param array  $iso_code iso code
      *
      * @return mixed
      */
@@ -70,11 +87,10 @@ class LengowTranslation
     }
 
     /**
-     * v3
      * Translate string
      *
-     * @param $text
-     * @param $args
+     * @param string $text
+     * @param array  $args
      *
      * @return string Final Translate string
      */
@@ -94,7 +110,6 @@ class LengowTranslation
     }
 
     /**
-     * v3
      * Load csv file
      *
      * @param string $iso_code

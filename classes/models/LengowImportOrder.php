@@ -20,7 +20,7 @@
  */
 
 /**
-* Lengow Import class
+* Lengow Import Order Class
 */
 class LengowImportOrder
 {
@@ -175,13 +175,18 @@ class LengowImportOrder
      *
      * @param array params optional options
      *
-     * integer  $shop_id       Id shop for current order
-     * integer  $id_shop_group Id shop group for current order
-     * integer  $id_lang       Id lang for current order
-     * mixed    $context       Context for current order
-     * boolean  $force_product force import of products
-     * boolean  $preprod_mode  preprod mode
-     * boolean  $log_output    display log messages
+     * integer  $shop_id             Id shop for current order
+     * integer  $id_shop_group       Id shop group for current order
+     * integer  $id_lang             Id lang for current order
+     * mixed    $context             Context for current order
+     * boolean  $force_product       force import of products
+     * boolean  $preprod_mode        preprod mode
+     * boolean  $log_output          display log messages
+     * string   $marketplace_sku     order marketplace sku
+     * integer  $delivery_address_id order delivery address id
+     * mixed    $order_data          order data
+     * mixed    $package_data        package data
+     * boolean  $first_package       it is the first package
      */
     public function __construct($params = array())
     {
@@ -197,7 +202,6 @@ class LengowImportOrder
         $this->order_data           = $params['order_data'];
         $this->package_data         = $params['package_data'];
         $this->first_package        = $params['first_package'];
-
         // get marketplace and Lengow order state
         $this->marketplace = LengowMain::getMarketplaceSingleton(
             (string)$this->order_data->marketplace,
@@ -606,7 +610,7 @@ class LengowImportOrder
     /**
      * Checks if an external id already exists
      *
-     * @param array $external_ids
+     * @param array $external_ids external ids return by API
      *
      * @return mixed
      */
@@ -678,10 +682,6 @@ class LengowImportOrder
 
     /**
      * Get tracking data and update Lengow order record
-     *
-     * @param mixed $package
-     *
-     * @return mixed
      */
     protected function loadTrackingData()
     {
@@ -794,8 +794,8 @@ class LengowImportOrder
     /**
      * Create and validate order
      *
-     * @param $cart
-     * @param $products
+     * @param LengowCart $cart
+     * @param array      $products
      *
      * @return
      */
@@ -848,9 +848,9 @@ class LengowImportOrder
     /**
      * Create or load address based on API data
      *
-     * @param integer   $id_customer
-     * @param array     $address_data   API data
-     * @param boolean   $shipping_data
+     * @param integer $id_customer
+     * @param array   $address_data
+     * @param boolean $shipping_data
      *
      * @return LengowAddress
      */
@@ -1081,8 +1081,8 @@ class LengowImportOrder
     /**
      * Add a comment to the order
      *
-     * @param integer   $order_id   Order ID Prestashop
-     * @param string    $comment    Order Comment
+     * @param integer $order_id Order ID Prestashop
+     * @param string  $comment  Order Comment
      */
     protected function addCommentOrder($order_id, $comment)
     {
@@ -1097,8 +1097,9 @@ class LengowImportOrder
 
     /**
      * Add quantity back to stock
-     * @param array     $products   list of products
-     * @param integer   $id_shop    shop id
+     *
+     * @param array   $products list of products
+     * @param integer $id_shop  shop id
      *
      * @return boolean
      */
@@ -1183,14 +1184,14 @@ class LengowImportOrder
     /**
      * Save order line in lengow orders line table
      *
-     * @param LengowOrder $order order imported
+     * @param LengowOrder $order    order imported
+     * @param array       $products order products
      *
      * @return boolean
      */
     protected function saveLengowOrderLine($order, $products)
     {
         $order_line_saved = false;
-
         foreach ($products as $product_id => $values) {
             $order_line_id =  $values['marketplace_order_line_id'];
             $id_order_detail = LengowOrderDetail::findByOrderIdProductId($order->id, $product_id);

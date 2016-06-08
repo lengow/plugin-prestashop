@@ -20,8 +20,7 @@
  */
 
 /**
- * Lengow Action class
- *
+ * Lengow Action Class
  */
 class LengowAction
 {

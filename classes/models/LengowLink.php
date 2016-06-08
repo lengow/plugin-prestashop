@@ -19,30 +19,46 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Link Class
+ */
 class LengowLink extends LinkCore
 {
-    //use in toolbox to get specific link
+    /**
+    * Use in toolbox to get specific link
+    */
     protected static $force_link;
 
+    /**
+     * Reset option
+     *
+     * @return boolean Result of reset process
+     */
     public static function forceLink($force_link)
     {
         self::$force_link = $force_link;
     }
 
+    /**
+     * Get absolute admin link
+     *
+     * @param string  $controller       name of the controller
+     * @param boolean $ajax             if link use ajax
+     * @param boolean $admin_prestashop if link is a prestashop controller
+     *
+     * @return string
+     */
     public function getAbsoluteAdminLink($controller, $ajax = false, $admin_prestashop = false)
     {
         //use in toolbox to get specific link
         if (self::$force_link) {
             return self::$force_link;
         }
-
         if (_PS_VERSION_ < '1.5' && !$admin_prestashop) {
             $controller.= "14";
         }
-
         $admin_path = Tools::getShopDomainSsl(true, true).
             __PS_BASE_URI__.Tools::substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);
-
         if (_PS_VERSION_ < '1.6') {
             if (_PS_VERSION_ < '1.5' && $ajax) {
                 $admin_path.= '/ajax-tab.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
@@ -54,7 +70,6 @@ class LengowLink extends LinkCore
         } else {
             $admin_path = $this->getAdminLink($controller);
         }
-
         return $admin_path;
     }
 }

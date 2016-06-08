@@ -20,11 +20,10 @@
  */
 
 /**
- * The Lengow Product Class
+ * Lengow Product Class
  */
 class LengowProduct extends Product
 {
-
     /**
      * array API nodes containing relevant data
      */
@@ -37,27 +36,37 @@ class LengowProduct extends Product
         'amount'
     );
 
-    //current context
+    /**
+     * current context
+     */
     protected $context;
 
-    // product images
+    /**
+     * product images
+     */
     protected $images;
     protected $imageCombinations;
     protected $imageSize;
     protected $cover;
-    //default category
+
+    /**
+     * default category
+     */
     protected $categoryDefault;
     protected $categoryDefaultName;
-    //is product in sale
+
+    /**
+     * is product in sale
+     */
     protected $isSale = false;
 
     /**
-     * Array combination of product's attributes.
+     * Array combination of product's attributes
      */
     protected $combinations = null;
 
     /**
-     * Array of product's features.
+     * Array of product's features
      */
     protected $features;
 
@@ -72,11 +81,11 @@ class LengowProduct extends Product
     protected $variation;
 
     /**
-     * Load a new product.
+     * Load a new product
      *
      * @param integer $id_product The ID product to load
-     * @param integer $id_lang The ID lang for product's content
-     * @param object $params The context
+     * @param integer $id_lang    The ID lang for product's content
+     * @param object  $params     The context
      */
     public function __construct($id_product = null, $id_lang = null, $params = array())
     {
@@ -85,10 +94,8 @@ class LengowProduct extends Product
         $this->imageSize = isset($params["image_size"]) ? $params["image_size"] : self::getMaxImageType();
         $this->context = Context::getContext();
         $this->context->language = isset($params["language"]) ? $params["language"] : Context::getContext()->language;
-
         // The applicable tax may be BOTH the product one AND the state one (moreover this variable is some deadcode)
         $this->tax_name = 'deprecated';
-
         $this->manufacturer_name = Manufacturer::getNameById((int)$this->id_manufacturer);
         $this->supplier_name = Supplier::getNameById((int)$this->id_supplier);
         $address = null;
@@ -134,7 +141,7 @@ class LengowProduct extends Product
         if (LengowMain::compareVersion()) {
             $this->loadStockData();
         }
-        if ($this->id_category_default && $this->id_category_default > 17) {
+        if ($this->id_category_default && $this->id_category_default > 1) {
             $this->categoryDefault = new Category((int)$this->id_category_default, $id_lang);
             $this->categoryDefaultName = $this->categoryDefault->name;
         } else {
@@ -158,13 +165,12 @@ class LengowProduct extends Product
     }
 
     /**
-     * Get data of current product.
+     * Get data of current product
      *
-     * @param string $name the data name
+     * @param string  $name                 the data name
      * @param integer $id_product_attribute the id product attribute
-     * @param boolean $full_title set full title for product
      *
-     * @return varchar The data.
+     * @return string
      */
     public function getData($name, $id_product_attribute = null)
     {
@@ -340,12 +346,10 @@ class LengowProduct extends Product
                         );
                     }
                 }
-
                 // Check if product have single shipping cost
                 if ($this->additional_shipping_cost > 0) {
                     $shipping_cost += $this->additional_shipping_cost;
                 }
-
                 // Tax calcul
                 $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
                 $taxe_rules = LengowTaxRule::getLengowTaxRulesByGroupId(
@@ -357,7 +361,6 @@ class LengowProduct extends Product
                         $tr = new TaxRule($taxe_rule['id_tax_rule']);
                     }
                 }
-
                 if (isset($tr)) {
                     $t = new Tax($tr->id_tax);
                     $tax_calculator = new TaxCalculator(array($t));
@@ -509,9 +512,9 @@ class LengowProduct extends Product
      * Get data attribute of current product.
      *
      * @param integer $id_product_attribute the id product atrribute
-     * @param string $name the data name attribute
+     * @param string  $name                 the data name attribute
      *
-     * @return varchar The data.
+     * @return string
      */
     public function getDataAttribute($id_product_attribute, $name)
     {
@@ -525,7 +528,7 @@ class LengowProduct extends Product
      *
      * @param string $name the data name feature
      *
-     * @return varchar The data.
+     * @return string
      */
     public function getDataFeature($name)
     {
@@ -534,7 +537,6 @@ class LengowProduct extends Product
 
     /**
      * Make the feature of current product
-     *
      */
     public function makeFeatures()
     {
@@ -549,7 +551,7 @@ class LengowProduct extends Product
     /**
      * Get features of current product
      *
-     * @return array All features.
+     * @return array All features
      */
     public function getFeatures()
     {
@@ -558,7 +560,6 @@ class LengowProduct extends Product
 
     /**
      * Make the attributes of current product
-     *
      */
     public function makeAttributes()
     {
@@ -636,7 +637,7 @@ class LengowProduct extends Product
     /**
      * Get combinations of current product
      *
-     * @return array All combinations.
+     * @return array All combinations
      */
     public function getCombinations()
     {
@@ -646,7 +647,7 @@ class LengowProduct extends Product
     /**
      * Get count images of current product
      *
-     * @return integer The number of images.
+     * @return integer The number of images
      */
     public function getCountImages()
     {
@@ -658,6 +659,7 @@ class LengowProduct extends Product
      * Get all available attribute groups
      *
      * @param integer $id_lang Language id
+     *
      * @return array Attribute groups
      */
     public function getAttributesGroups($id_lang)
@@ -731,12 +733,10 @@ class LengowProduct extends Product
                     AND agl.`id_lang` = '.(int)$id_lang.'
 					ORDER BY agl.`public_name`, al.`name`';
         }
-        //echo "**********".$sql."**********";
         return Db::getInstance()->executeS($sql);
     }
 
     /**
-     * v3
      * Get supplier reference.
      *
      * @return string
@@ -755,12 +755,11 @@ class LengowProduct extends Product
     }
 
     /**
-     * v3-test
      * Publish or Un-publish to Lengow.
      *
      * @param integer $productId the id product
-     * @param integer $value 1 : publish, 0 : unpublish
-     * @param integer $shopId the id shop
+     * @param integer $value     1 : publish, 0 : unpublish
+     * @param integer $shopId    the id shop
      *
      * @return boolean.
      */
@@ -801,11 +800,12 @@ class LengowProduct extends Product
     /**
      * For a given product, returns its real quantity
      *
-     * @param int $id_product
-     * @param int $id_product_attribute
-     * @param int $id_warehouse
-     * @param int $id_shop
-     * @return int real_quantity
+     * @param integer $id_product
+     * @param integer $id_product_attribute
+     * @param integer $id_warehouse
+     * @param integer $id_shop
+     *
+     * @return integer
      */
     public static function getRealQuantity(
         $id_product,
@@ -825,6 +825,9 @@ class LengowProduct extends Product
 
     /**
      * Compares found id with API ids and checks if they match
+     *
+     * @param LengowProduct $product
+     * @param array         $api_ids
      *
      * @return boolean if valid or not
      */
@@ -894,9 +897,10 @@ class LengowProduct extends Product
     /**
      * Retrieves the product sku
      *
-     * @param string $attribute_name
-     * @param string $attribute_value
-     * @param array  $api_data
+     * @param string  $attribute_name
+     * @param string  $attribute_value
+     * @param integer $id_shop
+     * @param array   $api_data
      *
      * @return mixed
      */
@@ -905,7 +909,6 @@ class LengowProduct extends Product
         if (empty($attribute_value) || empty($attribute_name)) {
             return false;
         }
-
         switch (Tools::strtolower($attribute_name)) {
             case 'reference':
                 return LengowProduct::findProduct('reference', $attribute_value, $id_shop);
@@ -923,7 +926,6 @@ class LengowProduct extends Product
                     $product_ids['id_product_attribute'] = $sku[1];
                 }
                 $id_bool = LengowProduct::checkProductId($product_ids['id_product'], $api_data);
-
                 $id_att_bool = true;
                 if (isset($product_ids['id_product_attribute'])) {
                     $id_att_bool = LengowProduct::checkProductAttributeId(
@@ -941,8 +943,8 @@ class LengowProduct extends Product
     /**
      * Check if product id found is correct
      *
-     * @param integer   $product_id product id to be checked
-     * @param array     $api_ids    product ids from the API
+     * @param integer $product_id product id to be checked
+     * @param array   $api_ids    product ids from the API
      *
      * @return boolean
      */
@@ -979,9 +981,9 @@ class LengowProduct extends Product
     /**
      * Return the product and its attribute ids
      *
-     * @param string    $key
-     * @param string    $value
-     * @param integer   $id_shop
+     * @param string  $key
+     * @param string  $value
+     * @param integer $id_shop
      *
      * @return integer
      */
@@ -998,7 +1000,6 @@ class LengowProduct extends Product
             $query->where('p.'.pSQL($key).' = \''.pSQL($value).'\'');
             $query->where('ps.`id_shop` = \''.(int)$id_shop.'\'');
             $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
-
             // If no result, search in attribute
             if ($result == '') {
                 $query = new DbQuery();
@@ -1056,9 +1057,9 @@ class LengowProduct extends Product
     /**
      * Calculate product without taxes using TaxManager
      *
-     * @param array     $product    product
-     * @param int       $id_address address id used to get tax rate
-     * @param Context   $context    order context
+     * @param array   $product    product
+     * @param int     $id_address address id used to get tax rate
+     * @param Context $context    order context
      *
      * @return float
      */
@@ -1080,7 +1081,6 @@ class LengowProduct extends Product
 
 
     /**
-     * v3-test
      * get image url of product variations
      *
      * @return mixed false or attribute image collection
@@ -1109,10 +1109,10 @@ class LengowProduct extends Product
     }
 
     /**
-     * v3-test
      * Get Max Image Type
      *
      * @throws LengowException
+     *
      * @return string
      */
     public static function getMaxImageType()

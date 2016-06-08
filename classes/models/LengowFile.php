@@ -20,8 +20,7 @@
  */
 
 /**
- * The Lengow File class
- *
+ * Lengow File Class
  */
 class LengowFile
 {

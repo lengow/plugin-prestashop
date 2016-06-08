@@ -20,8 +20,7 @@
  */
 
 /**
- * Lengow Customer class
- *
+ * Lengow Customer Class
  */
 class LengowCustomer extends Customer
 {

@@ -20,8 +20,7 @@
  */
 
 /**
- * The Lengow SpecificPrice Class.
- *
+ * Lengow Specific Price Class
  */
 class LengowSpecificPrice extends SpecificPrice
 {

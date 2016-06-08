@@ -20,7 +20,7 @@
  */
 
 /**
-* Lengow Import class
+* Lengow Import Class
 */
 class LengowImport
 {

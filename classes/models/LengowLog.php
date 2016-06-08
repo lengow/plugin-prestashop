@@ -20,12 +20,10 @@
  */
 
 /**
- * The Lengow Log class
- *
+ * Lengow Log Class
  */
 class LengowLog extends LengowFile
 {
-
     /**
      * @var string name of logs folder
      */
@@ -36,6 +34,11 @@ class LengowLog extends LengowFile
      */
     protected $file;
 
+    /**
+     * Construct
+     *
+     * @param string $file_name log file name
+     */
     public function __construct($file_name = null)
     {
         if (empty($file_name)) {
@@ -49,10 +52,10 @@ class LengowLog extends LengowFile
     /**
      * Write log
      *
-     * @param string $category Category
-     * @param string $message log message
-     * @param boolean $display display on screen
-     * @param string $marketplace_sku lengow order id
+     * @param string  $category        Category
+     * @param string  $message         log message
+     * @param boolean $display         display on screen
+     * @param string  $marketplace_sku lengow order id
      */
     public function write($category, $message = "", $display = false, $marketplace_sku = null)
     {
@@ -72,7 +75,6 @@ class LengowLog extends LengowFile
      * Get log files links
      *
      * @return mixed
-     *
      */
     public static function getLinks()
     {
@@ -88,11 +90,9 @@ class LengowLog extends LengowFile
     }
 
     /**
-     * v3
      * Get log files path
      *
      * @return mixed
-     *
      */
     public static function getPaths()
     {
@@ -116,7 +116,6 @@ class LengowLog extends LengowFile
      * Get current file
      *
      * @return string
-     *
      */
     public function getFileName()
     {
@@ -133,6 +132,9 @@ class LengowLog extends LengowFile
         return LengowFile::getFilesFromFolder(LengowLog::$LENGOW_LOGS_FOLDER);
     }
 
+    /**
+     * Download log file
+     */
     public static function download($file = null)
     {
         if ($file && preg_match('/^logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt$/', $file, $match)) {

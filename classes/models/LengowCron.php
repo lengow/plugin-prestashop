@@ -20,8 +20,7 @@
  */
 
 /**
- * The Lengow Cron Class.
- *
+ * Lengow Cron Class
  */
 class LengowCron
 {

@@ -19,6 +19,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Currency Class
+ */
 class LengowCurrency
 {
     /**

@@ -20,8 +20,7 @@
  */
 
 /**
- * The Lengow Feed Class.
- *
+ * Lengow Feed Class
  */
 class LengowFeed
 {

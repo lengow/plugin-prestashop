@@ -19,6 +19,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Carrier Class
+ */
 class LengowCarrier extends Carrier
 {
     /**

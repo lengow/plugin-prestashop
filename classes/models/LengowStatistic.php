@@ -19,15 +19,21 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Statistic Class
+ */
 class LengowStatistic
 {
-
-    //3 hours of cache
+    /**
+     * Get Statistic with all shop
+     */
     protected static $cacheTime = 10800;
 
     /**
      * Get Statistic with all shop
+     *
      * @param boolean $force Force cache Update
+     *
      * @return array
      */
     public static function get($force = false)
@@ -38,20 +44,18 @@ class LengowStatistic
                 return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
             }
         }
-
         $return = array();
         $return['total_order'] = 0;
         $return['nb_order'] = 0;
         $return['average_order'] = 0;
         $return['currency'] = '';
-
         //get stats by shop
         $shopCollection = LengowShop::findAll(true);
         $i = 0;
         foreach ($shopCollection as $s) {
             $result = LengowConnector::queryApi(
                 'get',
-                '/v1.0/numbers/',
+                '/v3.0/numbers',
                 $s['id_shop']
             );
             if (isset($result->revenues)) {
@@ -76,7 +80,6 @@ class LengowStatistic
             }
         }
         $return['nb_order'] = (int)$return['nb_order'];
-
         LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT', Tools::JsonEncode($return));
         LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT_UPDATE', date('Y-m-d H:i:s'));
         return $return;

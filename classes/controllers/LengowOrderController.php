@@ -117,7 +117,7 @@ class LengowOrderController extends LengowController
                         );
                     }
                     $data = array();
-                    $data['message'] = '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>';
+                    $data['message'] = '<div class=\"lengow_alert\">'.join('<br/>', $message).'</div>';
                     $data['last_importation'] = preg_replace('/\r|\n/', '', $display_last_importation);
                     $data['import_orders'] = $this->locale->t('order.screen.button_update_orders');
                     $data['list_order'] = preg_replace('/\r|\n/', '', $display_list_order);
@@ -652,6 +652,11 @@ class LengowOrderController extends LengowController
     public function loadMessage($return)
     {
         $message = array();
+        if (LengowImport::isInProcess()) {
+            $message[] = $this->locale->t('lengow_log.error.rest_time_to_import', array(
+                'rest_time' => LengowImport::restTimeToImport()
+            ));
+        }
         if (isset($return['order_new']) && $return['order_new'] > 0) {
             $message[]= $this->locale->t('lengow_log.error.nb_order_imported', array(
                 'nb_order' => (int)$return['order_new']
@@ -684,11 +689,6 @@ class LengowOrderController extends LengowController
                     $message[]= $shopName.LengowMain::decodeLogMessage($values);
                 }
             }
-        }
-        if (LengowImport::isInProcess()) {
-            $message[] = $this->locale->t('lengow_log.error.rest_time_to_import', array(
-                'rest_time' => LengowImport::restTimeToImport()
-            ));
         }
         return $message;
     }

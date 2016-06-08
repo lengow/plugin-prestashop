@@ -20,12 +20,10 @@
  */
 
 /**
- * The Lengow Payment Class.
- *
+ * Lengow Payment Class
  */
 class LengowPaymentModule extends PaymentModule
 {
-
     /**
      * @var string Lengow Payment name
      */

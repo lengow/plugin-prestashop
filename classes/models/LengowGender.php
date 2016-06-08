@@ -20,8 +20,7 @@
  */
 
 /**
- * The Lengow Gender Class.
- *
+ * Lengow Gender Class
  */
 class LengowGender extends Gender
 {

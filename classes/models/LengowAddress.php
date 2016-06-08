@@ -20,8 +20,7 @@
  */
 
 /**
- * Lengow Address class
- *
+ * Lengow Address Class
  */
 class LengowAddress extends Address
 {

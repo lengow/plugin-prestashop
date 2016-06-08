@@ -20,9 +20,7 @@
  */
 
 /**
- * The Lengow Option Class.
- * User to generate option list on configuration.
- *
+ * Lengow Option Class
  */
 class LengowOption
 {
