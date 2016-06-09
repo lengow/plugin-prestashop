@@ -184,7 +184,6 @@ class LengowOrder extends Order
      */
     protected $marketplace;
 
-
     /**
     * Construct a Lengow order based on Prestashop order.
     *
@@ -575,24 +574,8 @@ class LengowOrder extends Order
                 || (isset($result['detail']) && $result['detail'] == 'Pas trouvé.')
                 || isset($result['error'])
             ) {
-                LengowMain::log(
-                    'Import',
-                    LengowMain::setLogMessage('log.import.order_not_synchronized_with_lengow', array(
-                        'order_id' => $this->id
-                    )),
-                    $log_output,
-                    $this->lengow_marketplace_sku
-                );
                 return false;
             } else {
-                LengowMain::log(
-                    'Import',
-                    LengowMain::setLogMessage('log.import.order_synchronized_with_lengow', array(
-                        'order_id' => $this->id
-                    )),
-                    $log_output,
-                    $this->lengow_marketplace_sku
-                );
                 return true;
             }
         }

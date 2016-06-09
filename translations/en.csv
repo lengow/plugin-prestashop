@@ -173,14 +173,14 @@ help.screen.need_some_help|Need some help ?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
 help.screen.find_answer|You can also find answers in our 
 help.screen.link_prestashop_guide|PrestaShop dedicated guide
-legals.simplified_company|Simplified limited liability company
-legals.social_capital|Social capital:
-legals.cnil_declaration|CNIL declaration:
-legals.company_registration_number|Company Registration Number, Nantes:
-legals.vat_identification_number|VAT identification number:
-legals.address|Adress
-legals.contact|Contact
-legals.hosting|Hosting
+legals.screen.simplified_company|Simplified limited liability company
+legals.screen.social_capital|Social capital:
+legals.screen.cnil_declaration|CNIL declaration:
+legals.screen.company_registration_number|Company Registration Number, Nantes:
+legals.screen.vat_identification_number|VAT identification number:
+legals.screen.address|Adress
+legals.screen.contact|Contact
+legals.screen.hosting|Hosting
 lengow_setting.lengow_account_id_title|Account ID
 lengow_setting.lengow_access_token_title|Access Token
 lengow_setting.lengow_secret_token_title|Secret Token

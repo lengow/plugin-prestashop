@@ -193,14 +193,15 @@ en:
       find_answer: "You can also find answers in our "
       link_prestashop_guide: "PrestaShop dedicated guide"
   legals:
-    simplified_company: "Simplified limited liability company"
-    social_capital: "Social capital:"
-    cnil_declaration: "CNIL declaration:"
-    company_registration_number: "Company Registration Number, Nantes:"
-    vat_identification_number: "VAT identification number:"
-    address: "Adress"
-    contact: "Contact"
-    hosting: "Hosting"
+    screen:
+      simplified_company: "Simplified limited liability company"
+      social_capital: "Social capital:"
+      cnil_declaration: "CNIL declaration:"
+      company_registration_number: "Company Registration Number, Nantes:"
+      vat_identification_number: "VAT identification number:"
+      address: "Adress"
+      contact: "Contact"
+      hosting: "Hosting"
   lengow_setting:
     lengow_account_id_title: "Account ID"
     lengow_access_token_title: "Access Token"

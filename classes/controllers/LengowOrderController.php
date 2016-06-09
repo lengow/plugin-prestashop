@@ -165,7 +165,19 @@ class LengowOrderController extends LengowController
                 case 'synchronize':
                     $id_order = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
                     $lengow_order = new LengowOrder($id_order);
-                    $lengow_order->synchronizeOrder();
+                    $synchro = $lengow_order->synchronizeOrder();
+                    if ($synchro) {
+                        $synchro_message = LengowMain::setLogMessage(
+                            'log.import.order_synchronized_with_lengow',
+                            array('order_id' => $id_order)
+                        );
+                    } else {
+                        $synchro_message = LengowMain::setLogMessage(
+                            'log.import.order_not_synchronized_with_lengow',
+                            array('order_id' => $id_order)
+                        );
+                    }
+                    LengowMain::log('Import', $synchro_message, false, $lengow_order->lengow_marketplace_sku);
                     $lengow_link = new LengowLink();
                     $prestashop_order_controller = $lengow_link->getAbsoluteAdminLink('AdminOrders', false, true);
                     $order_url = $prestashop_order_controller.'&id_order='.$id_order.'&vieworder';
