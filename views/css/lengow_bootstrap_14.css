@@ -53,7 +53,12 @@ body.lengow_body #main {
 #lengow_mainsettings_wrapper,
 #lengow_form_order_setting,
 .lengow_help_wrapper{
+}
 
+#container {
+    width: 1210px;
+    margin: 0 auto 2em auto;
+    text-align: left;
 }
 
 /*************************************************/

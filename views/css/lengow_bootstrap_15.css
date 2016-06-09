@@ -36,6 +36,12 @@ body.lengow_body #main {
   margin-top:150px;
 }
 
+#container {
+    width: 1210px;
+    margin: 0 auto 2em auto;
+    text-align: left;
+}
+
 /*************************************************/
 /*                      HOME                     */
 /*************************************************/
