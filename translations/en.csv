@@ -119,8 +119,9 @@ order_setting.screen.order_status_title|Order Status
 order_setting.screen.order_status_description|Match your Lengow order status to retrieve them easily among your orders
 order_setting.screen.carrier_management_title|Marketplace carrier management
 order_setting.screen.carrier_management_description|Select the default carrier that you would like to apply to your orders for each country that you are active in. Then, match your marketplace carrier with the PrestaShop carrier
-order_setting.screen.country_wt_carrier|Some countries may have no configured carriers, in which case, please setup them
-order_setting.screen.country_wt_carrier_link|link
+order_setting.screen.country_wt_carrier|Some countries may have no configured carriers, in which case,
+order_setting.screen.please_setup_then|please setup them
+order_setting.screen.add_new_country|Add a new country
 order_setting.screen.default_country|default
 order_setting.screen.import_setting_title|Order import
 order_setting.screen.select_a_country|Please choose a country...
@@ -134,6 +135,7 @@ order_setting.screen.cron_if_not_exists|or
 order_setting.screen.cron_install_plugin|You can install the 'Crontab' PrestaShop Plugin
 order_setting.screen.cron_manual_installation|If you are using an unix system, you can use unix crontab as follows:
 order_setting.screen.button_add_country|Add
+order_setting.screen.button_cancel_country|Cancel
 order_setting.screen.please_select_carrier|Please select a carrier...
 order_setting.screen.default_carrier|Default carrier
 order_setting.screen.no_default_carrier_selected|No default carrier selected
@@ -158,6 +160,10 @@ global_setting.screen.to_uninstall_type|To remove, type
 global_setting.screen.i_am_sure|I AM SURE
 global_setting.screen.button_download_file|Download log files
 global_setting.screen.button_save|Save changes
+global_setting.screen.plugin_deleting|Deleting...
+global_setting.screen.plugin_deleted|Delete!
+global_setting.screen.setting_saving|Saving...
+global_setting.screen.setting_saved|Saved!
 help.screen.title|Get a little help from your support team !
 help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at 
 help.screen.mail_lengow_support|support@lengow.com.
@@ -167,6 +173,14 @@ help.screen.need_some_help|Need some help ?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
 help.screen.find_answer|You can also find answers in our 
 help.screen.link_prestashop_guide|PrestaShop dedicated guide
+legals.simplified_company|Simplified limited liability company
+legals.social_capital|Social capital:
+legals.cnil_declaration|CNIL declaration:
+legals.company_registration_number|Company Registration Number, Nantes:
+legals.vat_identification_number|VAT identification number:
+legals.address|Adress
+legals.contact|Contact
+legals.hosting|Hosting
 lengow_setting.lengow_account_id_title|Account ID
 lengow_setting.lengow_access_token_title|Access Token
 lengow_setting.lengow_secret_token_title|Secret Token

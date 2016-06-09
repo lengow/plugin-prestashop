@@ -53,7 +53,6 @@
                 <i class="fa fa-download"></i> {$locale->t('global_setting.screen.button_download_file')|escape:'htmlall':'UTF-8'}
             </button>
         </div>
-
         <div class="lgw-box">
             <a href="#" class="lgw-modal-delete">
                 <button type="button" data-toggle="modal" data-target="#openDeleteModal"
@@ -62,7 +61,6 @@
                 </button>
             </a>
         </div>
-
         <div class="lgw-modal">
             <a href="#" class="modal-close js-close-this-modal"></a>
             <div class="lgw-modal-inner">
@@ -86,15 +84,19 @@
                                     : {$locale->t('global_setting.screen.i_am_sure')|escape:'htmlall':'UTF-8'}
                                 </label>
                                 <input type="text" name="uninstall_textbox" class="form-control js-confirm-delete" placeholder="" value="" data-confirm="{$locale->t('global_setting.screen.i_am_sure')|escape:'htmlall':'UTF-8'}" autocomplete="off">
-
                                 <button type="submit" class="lgw-btn lgw-btn-progression lgw-btn-disabled lengow_submit_delete_module">
                                     <div class="btn-inner">
-                                        <div class="btn-step default">{$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}</div>
-                                        <div class="btn-step loading">Deleting...</div>
-                                        <div class="btn-step done" data-success="Saved!" data-error="Error">Delete!</div>
+                                        <div class="btn-step default">
+                                            {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
+                                        </div>
+                                        <div class="btn-step loading">
+                                            {$locale->t('global_setting.screen.plugin_deleting')|escape:'htmlall':'UTF-8'}
+                                        </div>
+                                        <div class="btn-step done" data-success="Saved!" data-error="Error">
+                                            {$locale->t('global_setting.screen.plugin_deleted')|escape:'htmlall':'UTF-8'}
+                                        </div>
                                     </div>
                                 </button>
-
                                 <button type="button" class="btn-link js-close-this-modal">
                                     {$locale->t('global_setting.screen.cancel_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                                 </button>
@@ -104,19 +106,22 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group container">
             <div class="lengow_main_setting_block_content">
                 <div class="col-sm-offset-2 col-sm-10">
-
                     <button type="submit" class="lgw-btn lgw-btn-progression lengow_submit_main_setting">
                         <div class="btn-inner">
-                            <div class="btn-step default">{$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}</div>
-                            <div class="btn-step loading">Saving...</div>
-                            <div class="btn-step done" data-success="Saved!" data-error="Error">Saved!</div>
+                            <div class="btn-step default">
+                                {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
+                            </div>
+                            <div class="btn-step loading">
+                                {$locale->t('global_setting.screen.setting_saving')|escape:'htmlall':'UTF-8'}
+                            </div>
+                            <div class="btn-step done" data-success="Saved!" data-error="Error">
+                                {$locale->t('global_setting.screen.setting_saved')|escape:'htmlall':'UTF-8'}
+                            </div>
                         </div>
                     </button>
-
                 </div>
             </div>
         </div>
