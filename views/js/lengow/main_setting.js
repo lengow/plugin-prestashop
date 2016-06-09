@@ -99,6 +99,7 @@
             if( checked == true ){
                 selector.slideDown(150);
                 selector.next('span.legend').show();
+
             }
             else{
                 selector.slideUp(150);

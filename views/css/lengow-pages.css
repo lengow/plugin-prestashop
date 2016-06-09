@@ -118,6 +118,17 @@ body.lgw-home-iframe .lgw-content-section p{
     right:-3px;
 }
 
+.lengow_shop_status_label span{
+  color:#555;
+  font-weight:normal;
+  font: 400 12px/1.42857 "Open Sans",Helvetica,Arial,sans-serif;
+  text-decoration: underline;
+}
+
+.lengow_shop_status_label span:hover{
+  color:#00aeef;
+}
+
 .lengow_check_shop_sync:after{
     cursor: default;
     content: "\25cf";

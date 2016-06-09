@@ -6,6 +6,19 @@ h1,h2, h3, h4, h5, h6{
   color:inherit;
 }
 
+#lgw-preprod{
+  top:0px;
+}
+
+#content{
+  position:relative;
+}
+
+.lengow-nav-top{
+  margin-top: 20px;
+}
+
+
 .lengow-nav{
   top:inherit;
   position: inherit;
@@ -59,6 +72,13 @@ body.lengow_body #main {
     width: 1210px;
     margin: 0 auto 2em auto;
     text-align: left;
+}
+.lgw-pagination-arrow {
+    margin-right: 15px;
+    float: left;
+}
+.lgw-pagination-btns a .fa{
+  line-height: 30px;
 }
 
 /*************************************************/

@@ -2,6 +2,19 @@
 /*                      GENERICS                 */
 /*************************************************/
 
+.adminlengowhome #lgw-preprod,
+#lgw-preprod{
+  top:74px;
+}
+
+.lengow-nav-top{
+  margin-top: 20px !important;
+}
+
+.lengow-nav-bottom {
+    margin-top: 75px!important;
+}
+
 .lengow-nav{
   top:inherit;
 }
@@ -36,10 +49,17 @@ body.lengow_body #main {
   margin-top:150px;
 }
 
-#container {
+.lgw-container {
     width: 1210px;
     margin: 0 auto 2em auto;
     text-align: left;
+}
+.lgw-pagination-arrow {
+    margin-right: 15px;
+    float: left;
+}
+.lgw-pagination-btns a .fa{
+  line-height: 30px;
 }
 
 /*************************************************/
