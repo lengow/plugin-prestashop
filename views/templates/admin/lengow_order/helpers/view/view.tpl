@@ -17,7 +17,13 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
+ 
 <div class="lgw-container">
+    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+        <div id="lgw-preprod" class="adminlengoworder">
+            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        </div>
+    {/if}
     <div class="lgw-box" id="lengow_order_wrapper">
 
         {if !isset($toolbox) || !$toolbox}

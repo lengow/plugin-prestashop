@@ -18,8 +18,12 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-
 <div class="lgw-container" id="lengow_feed_wrapper">
+    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+        <div id="lgw-preprod" class="adminlengowfeed">
+            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        </div>
+    {/if}
     {foreach from=$shopCollection item=shop}
         <div class="lgw-box" id="block_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
             <div class="lengow_shop_status">

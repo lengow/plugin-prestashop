@@ -19,6 +19,11 @@
  *}
 
 <div class="lgw-container" id="lengow_mainsettings_wrapper" xmlns="http://www.w3.org/1999/html">
+    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+        <div id="lgw-preprod" class="adminlengowmainsetting">
+            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        </div>
+    {/if}
     <form class="lengow_form" method="POST">
         <input type="hidden" name="action" value="process">
         <div class="lgw-box">

@@ -13,24 +13,24 @@ menu.preprod_active|mode préproduction
 menu.order_overview|Vue d'ensemble
 menu.order_parameter|Paramètres
 menu.help|Aide
-menu.global_parameter|Paramètres globaux
+menu.global_parameter|Paramètres principaux
 footer.legals|Mentions légales
 footer.copyright_lengow|Copyright Lengow
 dashboard.screen.welcome_back|Bonjour ! Bienvenue parmi nous !
 dashboard.screen.go_to_lengow|Aller sur la plateforme Lengow
 dashboard.screen.products_title|Produits
-dashboard.screen.products_text|Jetez un oeil à tous vos produits disponibles pour préparer votre catalogue
+dashboard.screen.products_text|Consulter tous vos produits disponibles pour préparer votre catalogue
 dashboard.screen.orders_title|Commandes
 dashboard.screen.orders_text|Gérer vos commandes directement sur votre tableau de bord PrestaShop
 dashboard.screen.settings_title|Paramètres
 dashboard.screen.settings_text|Configurer les principaux paramètres de votre plugin PrestaShop
-dashboard.screen.partner_business|Lengow, partenaire de votre entreprise
+dashboard.screen.partner_business|Lengow, partenaire de votre activité e-commerce
 dashboard.screen.stat_turnover|Chiffre d'affaires
 dashboard.screen.stat_nb_orders|Commandes
 dashboard.screen.stat_avg_order|Panier moyen
 dashboard.screen.stat_more_stats|Plus de statistiques ?
 dashboard.screen.some_help_title|Besoin d'aide ?
-dashboard.screen.get_in_touch|Restez en contact avec Lengow.
+dashboard.screen.get_in_touch|Prenez contact avec les équipes Lengow.
 dashboard.screen.visit_help_center|Visitez notre Help Center
 dashboard.screen.configure_plugin|pour plus d'informations sur la configuration de votre plugin PrestaShop
 product.screen.nb_exported|produits exportés 
@@ -44,7 +44,7 @@ product.screen.include_specific_product_support|Utilisez cette option pour séle
 product.screen.your_exported_catalog|Votre catalogue est prêt pour l'export ! Copiez le lien sur la plateforme Lengow
 product.screen.last_export|Dernière indexation
 product.screen.no_export|Pas d'export 
-product.screen.no_result_found|Désolé, nous n'avons trouvé aucun produit correspondant à votre demande.<br />Vous devriez modifier votre requête.
+product.screen.no_result_found|Désolé, nous n'avons trouvé aucun produit correspondant à votre demande.<br />Souhaitez-vous modifier votre recherche ?
 product.screen.no_product_selected|Sélectionnez un produit
 product.screen.date_from|Du
 product.screen.date_to|Au
@@ -85,8 +85,8 @@ order.screen.button_update_orders|Synchroniser les commandes
 order.screen.button_reimport_order|Réimporter mes commandes
 order.screen.button_resend_order|Renvoyer mes commandes
 order.screen.cron|Vous voulez automatiser la mise à jour de vos commandes ?
-order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production ?</a>
-order.screen.not_imported|pas importé
+order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production </a>
+order.screen.not_imported|Pas importé
 order.screen.not_sent|Non envoyé
 order.screen.refresh_order|Actualiser ma commande
 order.screen.order_not_imported|Votre commande n'a pas été importée dans PrestaShop
@@ -119,7 +119,7 @@ order_setting.screen.order_status_title|Statut des commandes
 order_setting.screen.order_status_description|Attribuez des statuts Lengow à vos commandes pour les retrouver facilement parmi l'ensemble de vos commandes
 order_setting.screen.carrier_management_title|Gestion des transporteurs pour les places de marché
 order_setting.screen.carrier_management_description|Pour chaque pays où vous livrez vos produits, sélectionnez le transporteur par défaut à appliquer à vos commandes. Puis faites correspondre vos transporteurs des places de marché avec les transporteurs proposés par PrestaShop
-order_setting.screen.country_wt_carrier|Il manque des transporteurs pour certains pays,
+order_setting.screen.country_wt_carrier|Si il manque des transporteurs pour certains pays,
 order_setting.screen.please_setup_then|paramétrez-les !
 order_setting.screen.add_new_country|Ajouter un nouveau pays
 order_setting.screen.default_country|par défaut
@@ -165,12 +165,12 @@ global_setting.screen.plugin_deleted|Désinstallation terminée !
 global_setting.screen.setting_saving|Enregistrement en cours...
 global_setting.screen.setting_saved|Enregistrement terminé !
 help.screen.title|Demandez de l'aide à notre équipe Support !
-help.screen.contain_text_support|Des questions, un feedback sur Lengow... transmettez nous vos commentaires à cette adresse
+help.screen.contain_text_support|Des questions, un feedback sur Lengow... transmettez nous vos demandes à l'adresse :
 help.screen.mail_lengow_support|support@lengow.com.
 help.screen.mail_lengow_support_title|Informations relatives à votre compte :
 help.screen.mailto_subject|Prestashop Lengow Plugin #Besoin d'aide
 help.screen.need_some_help|Besoin d'aide ?
-help.screen.contain_text_support_hour|Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h / Heure normale d'Europe centrale).
+help.screen.contain_text_support_hour|Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h).
 help.screen.find_answer|Vous pouvez aussi consulter
 help.screen.link_prestashop_guide|notre guide dédié à PrestaShop
 legals.screen.simplified_company|Société par actions simplifiés
@@ -210,7 +210,7 @@ lengow_setting.lengow_import_stock_ship_mp_title|Je veux diminuer mon stock
 lengow_setting.lengow_import_stock_ship_mp_legend|Activez cette option pour prendre en compte les commandes des places de marché sur les stocks de votre backoffice Prestashop
 lengow_setting.lengow_report_mail_enabled_title|Je veux être notifié en cas de problème lors de l'importation de mes commandes
 lengow_setting.lengow_report_mail_address_title|Email à utiliser pour l'envoi des emails de rapport
-lengow_setting.lengow_report_mail_address_legend|Pour ajouter plusieurs emails, utilisez des ; pour les séparer
+lengow_setting.lengow_report_mail_address_legend|Pour ajouter plusieurs emails, utilisez des " ; " pour les séparer
 lengow_setting.lengow_import_single_enabled_title|Limité à une commande par import
 lengow_setting.lengow_import_single_enabled_legend|Utile pour les versions PrestaShop 1.5.2 à 1.5.4. *(cela évite d'importer deux fois les commandes)
 lengow_setting.lengow_import_in_progress_title|Import en cours

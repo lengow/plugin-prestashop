@@ -19,6 +19,11 @@
  *}
 
 <div class="lgw-container">
+    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+        <div id="lgw-preprod" class="adminlengowlegals">
+            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        </div>
+    {/if}
     <div class="lgw-box lengow_legals_wrapper">
         <h3>SAS Lengow</h3>
         {$locale->t('legals.screen.simplified_company')|escape:'htmlall':'UTF-8'}

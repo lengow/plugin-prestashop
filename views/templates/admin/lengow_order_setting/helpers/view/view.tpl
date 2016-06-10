@@ -17,7 +17,13 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
+ 
 <div class="lgw-container">
+    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+        <div id="lgw-preprod" class="adminlengowordersetting">
+            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        </div>
+    {/if}
     <form method="POST" id="lengow_form_order_setting">
         <div class="lgw-box">
             <input type="hidden" name="action" value="process">

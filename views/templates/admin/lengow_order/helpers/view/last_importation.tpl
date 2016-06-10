@@ -26,7 +26,9 @@
 	{$locale->t('order.screen.no_order_importation')|escape:'htmlall':'UTF-8'}
 {/if}
 </p>
-<p>
-	{$locale->t('order.screen.all_order_will_be_sent_to')|escape:'htmlall':'UTF-8'} {', '|implode:$report_mail_address|escape:'htmlall':'UTF-8'}
-	(<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">{$locale->t('order.screen.change_this')|escape:'htmlall':'UTF-8'}</a>)
-</p>
+{if $lengow_configuration->getGlobalValue('LENGOW_REPORT_MAIL_ENABLED') eq '1'}
+    <p>
+    	{$locale->t('order.screen.all_order_will_be_sent_to')|escape:'htmlall':'UTF-8'} {', '|implode:$report_mail_address|escape:'htmlall':'UTF-8'}
+    	(<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}">{$locale->t('order.screen.change_this')|escape:'htmlall':'UTF-8'}</a>)
+    </p>
+{/if}

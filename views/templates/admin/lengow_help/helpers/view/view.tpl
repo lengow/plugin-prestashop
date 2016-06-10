@@ -19,6 +19,11 @@
  *}
 
 <div class="lgw-container">
+    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+        <div id="lgw-preprod" class="adminlengowhelp">
+            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        </div>
+    {/if}
     <div class="lgw-box lengow_help_wrapper text-center">
         <img src="/modules/lengow/views/img/cosmo-yoga.png" class="img-circle" alt="lengow">
         <h2>{$locale->t('help.screen.title')|escape:'htmlall':'UTF-8'}</h2>
