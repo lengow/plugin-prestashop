@@ -59,11 +59,11 @@ function addScoreCarrier(){
             var selector = $('.lengow_import_stock_ship_mp');
             if ($("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").prop('checked')) {
                 selector.slideDown(150);
-                selector.next('.legend').show();
-                // var divLegend = selector.next('.legend');
-                //     divLegend.addClass("blue-frame");
-                //     divLegend.css('display', 'inline-block');
-                //     divLegend.show();
+                //selector.next('.legend').show();
+                var divLegend = selector.next('.legend');
+                    divLegend.addClass("blue-frame");
+                    divLegend.css('display', 'block');
+                    divLegend.show();
             } else {
                 selector.slideUp(150);
                 selector.next('.legend').hide();
