@@ -97,7 +97,7 @@ fr:
       button_reimport_order: "Réimporter mes commandes"
       button_resend_order: "Renvoyer mes commandes"
       cron: "Vous voulez automatiser la mise à jour de vos commandes ?"
-      preprod_warning_message: "Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production ?&lt;/a>"
+      preprod_warning_message: "Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production ?</a>"
       not_imported: "pas importé"
       not_sent: "Non envoyé"
       refresh_order: "Actualiser ma commande"

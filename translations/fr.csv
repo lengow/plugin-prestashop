@@ -85,7 +85,7 @@ order.screen.button_update_orders|Synchroniser les commandes
 order.screen.button_reimport_order|Réimporter mes commandes
 order.screen.button_resend_order|Renvoyer mes commandes
 order.screen.cron|Vous voulez automatiser la mise à jour de vos commandes ?
-order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production ?&lt;/a>
+order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production ?</a>
 order.screen.not_imported|pas importé
 order.screen.not_sent|Non envoyé
 order.screen.refresh_order|Actualiser ma commande
