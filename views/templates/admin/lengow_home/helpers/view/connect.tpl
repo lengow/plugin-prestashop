@@ -75,7 +75,7 @@
             </div>
         </div>
         <p>
-            <a href="http://solution.lengow.com" target="_blank" 
+            <a href="http://solution.lengow.com" target="_blank"
                 title="{$locale->t('dashboard.screen.stat_more_stats')|escape:'htmlall':'UTF-8'}" class="lgw-btn lgw-btn-white">
                 {$locale->t('dashboard.screen.stat_more_stats')|escape:'htmlall':'UTF-8'}
             </a>
@@ -91,7 +91,7 @@
         </p>
         <p>
             <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank"
-                title="{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}" class="sub-link">{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}</a> 
+                title="{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}">{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}</a>
             {$locale->t('dashboard.screen.configure_plugin')|escape:'htmlall':'UTF-8'}
         </p>
     </div>
