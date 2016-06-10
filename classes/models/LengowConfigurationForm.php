@@ -116,7 +116,7 @@ class LengowConfigurationForm
                 $html.='</div>'.$label;
                 $html.='</label></div></div>';
                 if (!empty($legend)) {
-                    $html.= '<span class="legend blue-frame" style="display:block;">'.$legend.'</span>';
+                    $html.= '<span class="legend" style="display:block;">'.$legend.'</span>';
                 }
                 break;
             case 'text':
@@ -126,7 +126,7 @@ class LengowConfigurationForm
                         value="'.$value.'" '.$readonly.'>
                     </div>';
                 if (!empty($legend)) {
-                    $html.= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    $html.= '<span class="legend" style="display:block;">' . $legend . '</span>';
                 }
                 break;
             case 'select':
@@ -137,7 +137,7 @@ class LengowConfigurationForm
                     $selected =  $row['id'] == $value ? 'selected' : '';
                     $html.='<option value="'.$row['id'].'" '.$selected.'>'.$row['text'].'</option>';
                 }
-                $html.= '</select><span class="legend blue-frame" style="display:block;">'.$legend.'</span></div>';
+                $html.= '</select><span class="legend" style="display:block;">'.$legend.'</span></div>';
                 break;
             case 'day':
                 $html.= '<label class="control-label">'.$label.'</label>
