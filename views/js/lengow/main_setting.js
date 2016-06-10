@@ -25,33 +25,6 @@
             return re.test(email);
         }
 
-        /*$(".lengow_report_mail_address select").select2({
-            tags: true,
-            width: '100%',
-            selectOnClose: true,
-            closeOnSelect: false,
-            tokenSeparators: [",", " "],
-            createTag: function(term, data) {
-                var value = term.term;
-                if(validateEmail(value)) {
-                    return {
-                        id: value,
-                        text: value
-                    };
-                }
-                return null;
-            }
-        }).on("select2:open", function (e) {
-            $('.select2-dropdown--below').hide();
-        }).on("select2:selecting", function(e) {
-            $('.select2-search__field').val('');
-        }).on("select2:unselect", function (evt) {
-            if (!evt.params.originalEvent) {
-                return;
-            }
-            evt.params.originalEvent.stopPropagation();
-        });*/
-
         // SUMBIT FORM
 
         $( ".lengow_form" ).submit(function( event ) {
@@ -93,19 +66,30 @@
             }
         });
 
-        $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').change(function(){
-            var checked = $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked');
+        displayReportMail();
+        $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').on('change', function(){
             var selector = $('.lengow_report_mail_address');
-            if( checked == true ){
+            if($('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked')){
                 selector.slideDown(150);
                 selector.next('span.legend').show();
-
             }
             else{
                 selector.slideUp(150);
                 selector.next('span.legend').hide();
             }
         });
+
+        function displayReportMail() {
+            var selector = $('.lengow_report_mail_address');
+            if($('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked')){
+                selector.show();
+                selector.next('span.legend').show();
+            }
+            else{
+                selector.hide();
+                selector.next('span.legend').hide();
+            }
+        }
 
         displayPreProdMode();
         $("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").on('change', function () {
