@@ -256,10 +256,10 @@ class LengowImport
             }
             if (!$this->import_one_order) {
                 LengowImport::setInProcess();
+                // udpate last import date
+                lengowMain::updateDateImport($this->type_import);
             }
             LengowMain::disableMail();
-            // udpate last import date
-            lengowMain::updateDateImport($this->type_import);
             // get all shops for import
             $shops = LengowShop::findAll(true);
             foreach ($shops as $shop) {
