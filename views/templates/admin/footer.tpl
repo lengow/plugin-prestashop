@@ -26,9 +26,8 @@
             {else}
                 <p class="pull-right">
             {/if}
-                <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowLegals')|escape:'htmlall':'UTF-8'}" class="sub-link" title="Legal">
-                    {$locale->t('footer.legals')|escape:'htmlall':'UTF-8'}
-                </a> | {$locale->t('footer.copyright_lengow')|escape:'htmlall':'UTF-8'}
+                <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowLegals')|escape:'htmlall':'UTF-8'}" class="sub-link" title="Legal">{$locale->t('footer.legals')|escape:'htmlall':'UTF-8'}</a>
+                | {$locale->t('footer.copyright_lengow')|escape:'htmlall':'UTF-8'}
             </p>
         </div>
     </div>

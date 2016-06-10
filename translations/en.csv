@@ -13,7 +13,7 @@ menu.preprod_active|Pre-production mode
 menu.order_overview|Overview
 menu.order_parameter|Settings
 menu.help|Help
-menu.global_parameter|Global parameters
+menu.global_parameter|General settings
 footer.legals|Legals
 footer.copyright_lengow|Copyright Lengow
 dashboard.screen.welcome_back|Hi! Welcome back!
@@ -81,7 +81,7 @@ order.screen.last_order_importation|Last synchronization
 order.screen.no_order_importation|No order importation for now
 order.screen.import_auto|Auto
 order.screen.import_manuel|Manual
-order.screen.button_update_orders|Import Orders
+order.screen.button_update_orders|Synchronize Orders
 order.screen.button_reimport_order|Re-import Orders
 order.screen.button_resend_order|Resend Orders
 order.screen.cron|Want to automate your order updates?
@@ -147,16 +147,16 @@ global_setting.screen.log_file_title|Log Files
 global_setting.screen.log_file_description|Find all the maintenance logs below (imported orders, errors reports...). They will be recorded here for 20 days.
 global_setting.screen.please_choose_log|Please choose a log file...
 global_setting.screen.download_all_files|Download all files
-global_setting.screen.uninstall_module|Remove the entire module
+global_setting.screen.uninstall_module|Uninstall the entire module
 global_setting.screen.uninstall_module_description|Uninstall the entire module and all related data here
 global_setting.screen.all_data_will_be_lost|All data will be lost (tables and configuration) and you will lose order history
 global_setting.screen.you_will_find_a_backup|After removing the module, you will find a back-up of your Lengow database in
 global_setting.screen.prestashop_backup|PrestaShop Backup
-global_setting.screen.i_want_uninstall|I want to remove the Lengow module
-global_setting.screen.button_i_want_uninstall|Remove Lengow Module
-global_setting.screen.title_modal_uninstall|Remove Lengow Module
+global_setting.screen.i_want_uninstall|I want to uninstall the Lengow module
+global_setting.screen.button_i_want_uninstall|Uninstall Lengow Module
+global_setting.screen.title_modal_uninstall|Uninstall Lengow Module
 global_setting.screen.cancel_i_want_uninstall|Cancel
-global_setting.screen.to_uninstall_type|To remove, type
+global_setting.screen.to_uninstall_type|To uninstall, type
 global_setting.screen.i_am_sure|I AM SURE
 global_setting.screen.button_download_file|Download log files
 global_setting.screen.button_save|Save changes
@@ -167,9 +167,9 @@ global_setting.screen.setting_saved|Saved!
 help.screen.title|Get a little help from your support team !
 help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at 
 help.screen.mail_lengow_support|support@lengow.com.
-help.screen.mail_lengow_support_title|Account Information :
+help.screen.mail_lengow_support_title|Account Information:
 help.screen.mailto_subject|Prestashop Lengow Plugin #Need assistance
-help.screen.need_some_help|Need some help ?
+help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
 help.screen.find_answer|You can also find answers in our 
 help.screen.link_prestashop_guide|PrestaShop dedicated guide
@@ -178,7 +178,7 @@ legals.screen.social_capital|Social capital:
 legals.screen.cnil_declaration|CNIL declaration:
 legals.screen.company_registration_number|Company Registration Number, Nantes:
 legals.screen.vat_identification_number|VAT identification number:
-legals.screen.address|Adress
+legals.screen.address|Address
 legals.screen.contact|Contact
 legals.screen.hosting|Hosting
 lengow_setting.lengow_account_id_title|Account ID
@@ -210,7 +210,7 @@ lengow_setting.lengow_import_stock_ship_mp_title|I want to decrease my stock
 lengow_setting.lengow_import_stock_ship_mp_legend|Use this option to take into account your marketplaces orders on your stock in your PrestaShop backoffice
 lengow_setting.lengow_report_mail_enabled_title|I would like to be notified when there are issues regarding order importation and/or catalogue exportation
 lengow_setting.lengow_report_mail_address_title|Mail for the report email
-lengow_setting.lengow_report_mail_address_legend|To add several email, separate them with ;
+lengow_setting.lengow_report_mail_address_legend|To add several email, use ; to separate them
 lengow_setting.lengow_import_single_enabled_title|Limited to one order per import process
 lengow_setting.lengow_import_single_enabled_legend|Useful for PrestaShop versions from 1.5.2 to 1.5.4.* (avoids importing orders twice)
 lengow_setting.lengow_import_in_progress_title|Import in progress
