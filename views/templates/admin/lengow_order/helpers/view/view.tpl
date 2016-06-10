@@ -45,9 +45,10 @@
             {include file='./header_toolbox.tpl'}
         {else}
             {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
-                {$locale->t('order.screen.preprod_warning_message',
+                <p class="blue-frame" style="display: inline-block;line-height: 20px;width: 70%;">
+                    {$locale->t('order.screen.preprod_warning_message',
                     ['url' => {$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|cat:'#preprod_setting'|escape:'htmlall':'UTF-8'}]
-                )}
+                )}</p>
             {/if}
             <div id="lengow_last_importation">
                 {include file='./last_importation.tpl'}
