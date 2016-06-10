@@ -2,9 +2,12 @@
 /*                      GENERICS                 */
 /*************************************************/
 
-.adminlengowhome #lgw-preprod,
-#lgw-preprod{
+.adminlengowhome #lgw-preprod{
   top:74px;
+}
+
+#lgw-preprod{
+  top:154px;
 }
 
 .lengow-nav-top{
@@ -66,7 +69,9 @@ body.lengow_body #main {
 /*                      HOME                     */
 /*************************************************/
 
-
+.lgw-home-header{
+  background-size:100%;
+}
 
 .lgw-box-link .lgw-box{
   min-height: 250px;
