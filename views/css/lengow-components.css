@@ -370,6 +370,7 @@ a.lgw-box-link:hover{
 
 .select2-dropdown{
     border: 1px solid #d7d7d7;
+    min-width: 250px;
 }
 .select2-results{
     margin: 0 !important;
