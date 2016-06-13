@@ -51,7 +51,7 @@ body.lengow_body #main {
 }
 
 .lgw-container {
-    width: 1210px;
+    width: 1300px;
     margin: 0 auto 2em auto;
     text-align: left;
 }
@@ -108,6 +108,10 @@ body.lengow_body #main {
   margin-top:190px;
 }
 
+.lgw-container .table tr td.shop{
+  min-width: 70px;
+  background: red;
+}
 
 
 .lengow-nav-top{

@@ -73,7 +73,7 @@ body.lengow_body #main {
 }
 
 #container {
-    width: 1210px;
+    width: 1300px;
     margin: 0 auto 2em auto;
     text-align: left;
 }
@@ -125,6 +125,10 @@ body.lengow_body #main {
 /*                      ORDERS                   */
 /*************************************************/
 
+.table.lengow_table tr th {
+    background: #F1F1F1 top left;
+}
+
 #lgw-preprod.adminlengoworder,
 #lgw-preprod.adminlengowordersetting{
   top: 150px;
@@ -147,6 +151,10 @@ body.lengow_body #main {
 
 .lengow-nav-bottom{
   margin-top:55px;
+}
+
+.lgw-container .table tr td.shop{
+  min-width: 70px;
 }
 
 /*************************************************/
