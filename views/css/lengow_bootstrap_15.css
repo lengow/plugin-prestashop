@@ -2,13 +2,11 @@
 /*                      GENERICS                 */
 /*************************************************/
 
-.adminlengowhome #lgw-preprod{
-  top:74px;
+#lgw-preprod{
+  top:165px;
+  left:inherit;
 }
 
-#lgw-preprod{
-  top:154px;
-}
 
 .lengow-nav-top{
   margin-top: 20px !important;
@@ -53,7 +51,7 @@ body.lengow_body #main {
 }
 
 .lgw-container {
-    width: 1210px;
+    width: 1300px;
     margin: 0 auto 2em auto;
     text-align: left;
 }
@@ -68,6 +66,10 @@ body.lengow_body #main {
 /*************************************************/
 /*                      HOME                     */
 /*************************************************/
+
+.adminlengowhome #lgw-preprod{
+  top:130px;
+}
 
 .lgw-home-header{
   background-size:100%;
@@ -85,13 +87,32 @@ body.lengow_body #main {
 /*************************************************/
 /*                      SETTINGS                 */
 /*************************************************/
-.form-group.container {
 
+#lengow_mainsettings_wrapper.activePreprod{
+  margin-top:138px;
 }
 
 /*************************************************/
 /*                      ORDERS                   */
 /*************************************************/
+
+#lgw-preprod.adminlengoworder,
+#lgw-preprod.adminlengowordersetting{
+  top: 220px;
+  left: inherit;
+  z-index: 2;
+}
+
+#lengow_order_wrapper.activePreprod,
+#lengow_form_order_setting.activePreprod{
+  margin-top:190px;
+}
+
+.lgw-container .table tr td.shop{
+  min-width: 70px;
+  background: red;
+}
+
 
 .lengow-nav-top{
   margin-top:0px;
@@ -105,12 +126,24 @@ body.lengow_body #main {
 /*                      FEEDS                    */
 /*************************************************/
 
+#lengow_feed_wrapper.activePreprod{
+  margin-top:137px;
+}
+
 .lgw-container .table tr th{
   padding:10px 3px;
 }
 
 .lgw-container .table input[type="text"]{
   width:60px;
+}
+
+/*************************************************/
+/*                      HELP                     */
+/*************************************************/
+
+.lengow_help_wrapper.activePreprod{
+  margin-top:138px;
 }
 
 

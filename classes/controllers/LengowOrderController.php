@@ -298,7 +298,7 @@ class LengowOrderController extends LengowController
         if (_PS_VERSION_ >= '1.5') {
             if (Shop::isFeatureActive() && !Shop::getContextShopID()) {
                 $fields_list['shop_name'] = array(
-                    'class'             => 'link',
+                    'class'             => 'link  shop',
                     'width'             => $width,
                     'title'             => $this->locale->t('order.table.shop_name'),
                     'filter'            => true,

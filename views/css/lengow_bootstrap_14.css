@@ -6,15 +6,8 @@ h1,h2, h3, h4, h5, h6{
   color:inherit;
 }
 
-.adminlengowhome #lgw-preprod{
-  top:0px;
-  margin-top:-15px;
-  position:inherit;
-  display:inline-block;
-}
-
 #lgw-preprod{
-  top: 84px;
+  top: 94px;
   z-index: 1;
   left: 15px;
 
@@ -80,7 +73,7 @@ body.lengow_body #main {
 }
 
 #container {
-    width: 1210px;
+    width: 1300px;
     margin: 0 auto 2em auto;
     text-align: left;
 }
@@ -95,6 +88,13 @@ body.lengow_body #main {
 /*************************************************/
 /*                      HOME                     */
 /*************************************************/
+
+.adminlengowhome #lgw-preprod{
+  top:0px;
+  margin-top:-15px;
+  position:inherit;
+  display:inline-block;
+}
 
 .lgw-home-header{
   background-size:100%;
@@ -112,13 +112,38 @@ body.lengow_body #main {
 /*************************************************/
 /*                      SETTINGS                 */
 /*************************************************/
-.form-group.container {
 
+#lgw-preprod.adminlengowmainsetting{
+
+}
+
+#lengow_mainsettings_wrapper.activePreprod{
+  margin-top:15px;
 }
 
 /*************************************************/
 /*                      ORDERS                   */
 /*************************************************/
+
+.table.lengow_table tr th {
+    background: #F1F1F1 top left;
+}
+
+#lgw-preprod.adminlengoworder,
+#lgw-preprod.adminlengowordersetting{
+  top: 150px;
+  left: inherit;
+  z-index: 2;
+}
+
+#lengow_order_wrapper.activePreprod,
+#lengow_form_order_setting.activePreprod{
+  margin-top:8px;
+}
+
+#lengow_order_wrapper.activePreprod p.blue-frame{
+  width: 55% !important;
+}
 
 .lengow-nav-top{
   margin-top:0px;
@@ -128,9 +153,17 @@ body.lengow_body #main {
   margin-top:55px;
 }
 
+.lgw-container .table tr td.shop{
+  min-width: 70px;
+}
+
 /*************************************************/
 /*                      FEEDS                    */
 /*************************************************/
+
+#lengow_feed_wrapper.activePreprod{
+  margin-top:15px;
+}
 
 .lgw-container .table tr th{
   padding:10px 3px;
@@ -138,4 +171,12 @@ body.lengow_body #main {
 
 .lgw-container .table input[type="text"]{
   width:60px;
+}
+
+/*************************************************/
+/*                      HELP                    */
+/*************************************************/
+
+.lengow_help_wrapper.activePreprod{
+  margin-top:15px;
 }
