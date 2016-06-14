@@ -27,7 +27,7 @@
     <div class="lgw-box lgw-home-header text-center">
         <img src="/modules/lengow/views/img/lengow-white-big.png" alt="lengow">
         <h1>{$locale->t('dashboard.screen.welcome_back')|escape:'htmlall':'UTF-8'}</h1>
-        <a href="http://solution.lengow.com" class="lgw-btn" target="_blank" title="Lengow Solution">
+        <a href="http://solution.lengow.com" class="lgw-btn" target="_blank">
             {$locale->t('dashboard.screen.go_to_lengow')|escape:'htmlall':'UTF-8'}
         </a>
     </div>
@@ -80,8 +80,7 @@
             </div>
         </div>
         <p>
-            <a href="http://solution.lengow.com" target="_blank"
-                title="{$locale->t('dashboard.screen.stat_more_stats')|escape:'htmlall':'UTF-8'}" class="lgw-btn lgw-btn-white">
+            <a href="http://solution.lengow.com" target="_blank" class="lgw-btn lgw-btn-white">
                 {$locale->t('dashboard.screen.stat_more_stats')|escape:'htmlall':'UTF-8'}
             </a>
         </p>
@@ -89,14 +88,12 @@
     <div class="lgw-box">
         <h2>{$locale->t('dashboard.screen.some_help_title')|escape:'htmlall':'UTF-8'}</h2>
         <p>
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}"
-                title="{$locale->t('dashboard.screen.get_in_touch')|escape:'htmlall':'UTF-8'}">
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}">
                 {$locale->t('dashboard.screen.get_in_touch')|escape:'htmlall':'UTF-8'}
             </a>
         </p>
         <p>
-            <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank"
-                title="{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}">{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}</a>
+            <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank">{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}</a>
             {$locale->t('dashboard.screen.configure_plugin')|escape:'htmlall':'UTF-8'}
         </p>
     </div>

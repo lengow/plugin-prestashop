@@ -17,7 +17,7 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
- 
+
 <div class="lgw-container">
     {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
         <div id="lgw-preprod" class="adminlengoworder">
@@ -25,9 +25,29 @@
         </div>
     {/if}
     <div class="lgw-box" id="lengow_order_wrapper">
+        {if isset($toolbox) && $toolbox}
+            {include file='./header_toolbox.tpl'}
+        {else}
+            {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+                <p class="blue-frame" style="line-height: 20px;">
+                    {$locale->t('order.screen.preprod_warning_message',
+                    ['url' => {$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|cat:'#preprod_setting'|escape:'htmlall':'UTF-8'}]
+                )}</p>
+            {/if}
+        {/if}
 
+        {if isset($toolbox) && $toolbox}
+            {include file='./header_toolbox.tpl'}
+        {else}
+            <div class="lgw-col-8" style="padding:0;">
+                <div id="lengow_last_importation">
+                    {include file='./last_importation.tpl'}
+                </div>
+                <div id="lengow_wrapper_messages" class="blue-frame" style="display:none;"></div>
+            </div>
+        {/if}
         {if !isset($toolbox) || !$toolbox}
-            <div class="pull-right">
+            <div class="pull-right lgw-col-3">
                 <a id="lengow_import_orders" class="lgw-btn btn no-margin-top"
                     data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
                     {$locale->t('order.screen.button_update_orders')|escape:'htmlall':'UTF-8'}
@@ -47,20 +67,6 @@
             <p id="lengow_charge_lign2">{$locale->t('order.screen.import_charge_second')|escape:'htmlall':'UTF-8'}</p>
         </div>
         <!-- /UPDATE ORDERS -->
-        {if isset($toolbox) && $toolbox}
-            {include file='./header_toolbox.tpl'}
-        {else}
-            {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
-                <p class="blue-frame" style="display: inline-block;line-height: 20px;width: 70%;">
-                    {$locale->t('order.screen.preprod_warning_message',
-                    ['url' => {$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|cat:'#preprod_setting'|escape:'htmlall':'UTF-8'}]
-                )}</p>
-            {/if}
-            <div id="lengow_last_importation">
-                {include file='./last_importation.tpl'}
-            </div>
-            <div id="lengow_wrapper_messages" class="blue-frame" style="display:none;"></div>
-        {/if}
         <!-- TABLE -->
         <div class="clearfix"></div>
         <div id="lengow_order_table_wrapper">

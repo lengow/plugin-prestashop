@@ -90,8 +90,8 @@ body.lengow_body #main {
 /*************************************************/
 
 .adminlengowhome #lgw-preprod{
-  top:0px;
-  margin-top:-15px;
+  margin-top: -20px;
+  margin-bottom: 10px;
   position:inherit;
   display:inline-block;
 }
@@ -139,10 +139,6 @@ body.lengow_body #main {
 #lengow_order_wrapper.activePreprod,
 #lengow_form_order_setting.activePreprod{
   margin-top:8px;
-}
-
-#lengow_order_wrapper.activePreprod p.blue-frame{
-  width: 55% !important;
 }
 
 .lengow-nav-top{
