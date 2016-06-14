@@ -39,18 +39,56 @@
         });
 
 
+        // MODAL
+
+        // Open modal
         $('.lgw-modal-delete').click(function(){
-            $('body').addClass('unscrollable');
-            $('.lgw-modal').addClass('open');
+            window.location.hash = 'delete';
             return false;
         });
 
+        // Open modal on loading
+
+        if(window.location.hash) {
+            openModal();
+        }
+
+        // Delete modal
         $('.js-close-this-modal').click(function(){
+            window.location.hash = '';
+            return false;
+        });
+
+        var hash = window.location.hash;
+        setInterval(function(){
+            if (window.location.hash != hash) {
+                hash = window.location.hash;
+                if( hash.length < 1){
+                    killModal();
+                }
+                else{
+                    if( $('.lgw-modal.open').length == 0 ){
+                        openModal();
+                    }
+                }
+            }
+        }, 100);
+
+        function killModal(){
+            window.location.hash = '';
             $('body').removeClass('unscrollable');
             $('.lgw-modal').removeClass('open');
             $('.js-confirm-delete').val('');
-            return false;
-        });
+        }
+
+        function openModal(){
+            window.location.hash = 'delete';
+            $('body').addClass('unscrollable');
+            $('.lgw-modal').addClass('open');
+        }
+
+
+        // CONFIRM DELETE
 
         $('.js-confirm-delete').keyup(function(){
             var confirm = $(this).data('confirm');
