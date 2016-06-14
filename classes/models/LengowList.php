@@ -222,7 +222,6 @@ class LengowList
                             break;
                         case 'switch_product':
                             $status = $this->toolbox ? 'disabled' : '';
-
                             $value = '<div class="lgw-switch '.($item[$key] ? 'checked' : '')
                                 .'"><label><div><span></span><input type="checkbox"
                                 data-size="mini"

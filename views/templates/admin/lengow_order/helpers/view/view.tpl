@@ -34,11 +34,6 @@
                     ['url' => {$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|cat:'#preprod_setting'|escape:'htmlall':'UTF-8'}]
                 )}</p>
             {/if}
-        {/if}
-
-        {if isset($toolbox) && $toolbox}
-            {include file='./header_toolbox.tpl'}
-        {else}
             <div class="lgw-col-8" style="padding:0;">
                 <div id="lengow_last_importation">
                     {include file='./last_importation.tpl'}

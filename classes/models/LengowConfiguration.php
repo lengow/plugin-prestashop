@@ -137,7 +137,6 @@ class LengowConfiguration extends Configuration
                 'LENGOW_IMPORT_DAYS' => array(
                     'type'          => 'day',
                     'label'         => $locale->t('lengow_setting.lengow_import_days_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_import_days_legend'),
                     'default_value' => 5,
                 ),
                 'LENGOW_IMPORT_PROCESSING_FEE' => array(

@@ -79,6 +79,9 @@
             $('body').removeClass('unscrollable');
             $('.lgw-modal').removeClass('open');
             $('.js-confirm-delete').val('');
+            $('.lengow_submit_delete_module')
+                    .addClass('lgw-btn-disabled')
+                    .removeClass('lgw-btn-red');
         }
 
         function openModal(){
