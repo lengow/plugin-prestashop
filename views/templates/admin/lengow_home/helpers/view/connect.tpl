@@ -88,14 +88,12 @@
     <div class="lgw-box">
         <h2>{$locale->t('dashboard.screen.some_help_title')|escape:'htmlall':'UTF-8'}</h2>
         <p>
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}"
-                title="{$locale->t('dashboard.screen.get_in_touch')|escape:'htmlall':'UTF-8'}">
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHelp')|escape:'htmlall':'UTF-8'}">
                 {$locale->t('dashboard.screen.get_in_touch')|escape:'htmlall':'UTF-8'}
             </a>
         </p>
         <p>
-            <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank"
-                title="{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}">{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}</a>
+            <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank">{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}</a>
             {$locale->t('dashboard.screen.configure_plugin')|escape:'htmlall':'UTF-8'}
         </p>
     </div>
