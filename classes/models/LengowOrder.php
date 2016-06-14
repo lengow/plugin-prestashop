@@ -926,6 +926,10 @@ class LengowOrder extends Order
         // Finish all order logs send
         self::finishOrderLogs($this->lengow_id, 'send');
         try {
+            // Compatibility V2
+            if ((int)$this->lengow_id_flux > 0) {
+                $this->checkAndChangeMarketplaceName();
+            }
             $marketplace = LengowMain::getMarketplaceSingleton(
                 $this->lengow_marketplace_name,
                 $this->lengow_id_shop

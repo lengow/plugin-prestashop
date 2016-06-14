@@ -128,7 +128,6 @@ class LengowHook
         $args = 0; // Prestashop validator
     }
 
-
     /**
      * Generate tracker on front footer page
      *
@@ -354,84 +353,6 @@ class LengowHook
         self::$IDS_PRODUCTS = implode('|', $ids_products);
     }
 
-
-    /**
-     * Hook before an status' update to synchronize status with lengow
-     *
-     * @param array $args Arguments of hook
-     */
-    public function hookUpdateOrderStatus($args)
-    {
-        $lengow_order = new LengowOrder($args['id_order']);
-        // Not send state if we are on lengow import module
-        if (LengowOrder::isFromLengow($args['id_order']) &&
-            LengowImport::$current_order != $lengow_order->lengow_marketplace_sku) {
-            LengowMain::disableMail();
-        }
-    }
-
-    /**
-     * Hook after an status' update to synchronize status with lengow
-     *
-     * @param array $args Arguments of hook
-     */
-    public function hookPostUpdateOrderStatus($args)
-    {
-        $lengow_order = new LengowOrder($args['id_order']);
-        // do nothing if order is not from Lengow or is being imported
-        if (LengowOrder::isFromLengow($args['id_order'])
-            && LengowImport::$current_order != $lengow_order->lengow_marketplace_sku
-            && !array_key_exists($lengow_order->lengow_marketplace_sku, $this->alreadyShipped)
-        ) {
-            $new_order_state = $args['newOrderStatus'];
-            $id_order_state = $new_order_state->id;
-            // Compatibility V2
-            if ((int)$lengow_order->lengow_id_flux > 0) {
-                $lengow_order->checkAndChangeMarketplaceName();
-            }
-            if ($id_order_state == LengowMain::getOrderState('shipped')) {
-                $lengow_order->callAction('ship');
-                $this->alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
-                return true;
-            }
-            // Call Lengow API WSDL to send refuse state order
-            if ($id_order_state == LengowMain::getOrderState('canceled')) {
-                $lengow_order->callAction('cancel');
-                $this->alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Update, if isset tracking number
-     *
-     * @param array $args Arguments of hook
-     */
-    public function hookActionObjectUpdateAfter($args)
-    {
-        if ($args['object'] instanceof Order) {
-            if (LengowOrder::isFromLengow($args['object']->id)) {
-                $lengow_order = new LengowOrder($args['object']->id);
-                if ($lengow_order->shipping_number != ''
-                    && $args['object']->current_state == LengowMain::getOrderState('shipped')
-                    && LengowImport::$current_order != $lengow_order->lengow_marketplace_sku
-                    && !array_key_exists($lengow_order->lengow_marketplace_sku, $this->alreadyShipped)
-                ) {
-                    $params = array();
-                    $params['id_order'] = $args['object']->id;
-                    // Compatibility V2
-                    if ($lengow_order->lengow_id_flux != null) {
-                        $lengow_order->checkAndChangeMarketplaceName();
-                    }
-                    $lengow_order->callAction('ship');
-                    $this->alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
-                }
-            }
-        }
-    }
-
     /**
      * Hook on admin page's order
      *
@@ -479,5 +400,106 @@ class LengowHook
             return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info.tpl');
         }
         return '';
+    }
+
+    /**
+     * Hook before an status' update to synchronize status with lengow
+     *
+     * @param array $args Arguments of hook
+     */
+    public function hookUpdateOrderStatus($args)
+    {
+        $lengow_order = new LengowOrder($args['id_order']);
+        // Not send state if we are on lengow import module
+        if (LengowOrder::isFromLengow($args['id_order']) &&
+            LengowImport::$current_order != $lengow_order->lengow_marketplace_sku) {
+            LengowMain::disableMail();
+        }
+    }
+
+    /**
+     * Hook after an status' update to synchronize status with lengow
+     *
+     * @param array $args Arguments of hook
+     */
+    public function hookPostUpdateOrderStatus($args)
+    {
+        $lengow_order = new LengowOrder($args['id_order']);
+        // do nothing if order is not from Lengow or is being imported
+        if (LengowOrder::isFromLengow($args['id_order'])
+            && LengowImport::$current_order != $lengow_order->lengow_marketplace_sku
+            && !array_key_exists($lengow_order->lengow_marketplace_sku, $this->alreadyShipped)
+        ) {
+            $new_order_state = $args['newOrderStatus'];
+            $id_order_state = $new_order_state->id;
+            if ($id_order_state == LengowMain::getOrderState('shipped')) {
+                $this->prepareCallRequest('ship', $lengow_order);
+                $this->alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
+                return true;
+            }
+            // Call Lengow API WSDL to send refuse state order
+            if ($id_order_state == LengowMain::getOrderState('canceled')) {
+                $this->prepareCallRequest('cancel', $lengow_order);
+                $this->alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Update, if isset tracking number
+     *
+     * @param array $args Arguments of hook
+     */
+    public function hookActionObjectUpdateAfter($args)
+    {
+        if ($args['object'] instanceof Order) {
+            if (LengowOrder::isFromLengow($args['object']->id)) {
+                $lengow_order = new LengowOrder($args['object']->id);
+                if ($lengow_order->shipping_number != ''
+                    && $args['object']->current_state == LengowMain::getOrderState('shipped')
+                    && LengowImport::$current_order != $lengow_order->lengow_marketplace_sku
+                    && !array_key_exists($lengow_order->lengow_marketplace_sku, $this->alreadyShipped)
+                ) {
+                    $params = array();
+                    $params['id_order'] = $args['object']->id;
+                    $this->prepareCallRequest('ship', $lengow_order);
+                    $this->alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
+                }
+            }
+        }
+    }
+
+    /**
+     * Prepare call request and add logs
+     *
+     * @param string      $action
+     * @param LengowOrder $lengow_order
+     */
+    private function prepareCallRequest($action, $lengow_order)
+    {
+        LengowMain::log(
+            'API-OrderAction',
+            LengowMain::setLogMessage('log.order_action.try_to_send_action', array(
+                'action'   => $action,
+                'order_id' => $lengow_order->id
+            )),
+            false,
+            $lengow_order->lengow_marketplace_sku
+        );
+        $result = $lengow_order->callAction($action);
+        if ($result) {
+            $message = LengowMain::setLogMessage('log.order_action.action_send', array(
+                'action'   => $action,
+                'order_id' => $lengow_order->id
+            ));
+        } else {
+            $message = LengowMain::setLogMessage('log.order_action.action_not_send', array(
+                'action'   => $action,
+                'order_id' => $lengow_order->id
+            ));
+        }
+        LengowMain::log('API-OrderAction', $message, false, $lengow_order->lengow_marketplace_sku);
     }
 }
