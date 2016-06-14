@@ -90,8 +90,8 @@ body.lengow_body #main {
 /*************************************************/
 
 .adminlengowhome #lgw-preprod{
-  top:0px;
-  margin-top:-15px;
+  margin-top: -20px;
+  margin-bottom: 10px;
   position:inherit;
   display:inline-block;
 }
@@ -131,7 +131,7 @@ body.lengow_body #main {
 
 #lgw-preprod.adminlengoworder,
 #lgw-preprod.adminlengowordersetting{
-  top: 134px;
+  top: 150px;
   left: inherit;
   z-index: 2;
 }
