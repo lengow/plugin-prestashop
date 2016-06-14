@@ -47,7 +47,7 @@
             </div>
         {/if}
         {if !isset($toolbox) || !$toolbox}
-            <div class="pull-right lgw-col-3">
+            <div class="pull-right text-right lgw-col-3">
                 <a id="lengow_import_orders" class="lgw-btn btn no-margin-top"
                     data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
                     {$locale->t('order.screen.button_update_orders')|escape:'htmlall':'UTF-8'}
