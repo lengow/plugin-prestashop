@@ -18,7 +18,7 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<div class="lgw-container lgw-footer-vold">
+<div class="lgw-container lgw-footer-vold clear">
     <div class="lgw-content-section text-center">
         <div id="lgw-footer">
             {if $isNewMerchant}
