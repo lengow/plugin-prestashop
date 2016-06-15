@@ -84,11 +84,11 @@
 /views/css/bootstrap-datepicker.css|d5260247b97663d887f4efe8ec894353
 /views/css/bootstrap-switch.min.css|45abe3ae6425458dcfea724c1dcb9087
 /views/css/font-awesome.css|bf4b58c946c9234e4a6b9f7a70d38006
-/views/css/lengow-components.css|5379478bdfe7f085c9e1b614c5ca2163
-/views/css/lengow-layout.css|c3cb3f08bb9bcb46510bfd73cef1b988
-/views/css/lengow-pages.css|9ff7891f8bc395c8c1e89aa531215655
+/views/css/lengow-components.css|258cf09810105db94b78edd47157ac41
+/views/css/lengow-layout.css|2fd7f37e225300e342ead918a7fbb838
+/views/css/lengow-pages.css|6c833c027ded5d448e59e99958014ab8
 /views/css/lengow_bootstrap.css|c402e1ba33fdae41efeb931a9c991414
-/views/css/lengow_bootstrap_14.css|e47929093438e3ee28767b0299101f92
+/views/css/lengow_bootstrap_14.css|06eed7afeece8c177908660e35ee64d8
 /views/css/lengow_bootstrap_15.css|3df366c3a48128dd83c11e1c5748bb8a
 /views/css/lengow_bootstrap_min-980.css|5c7b41793ed8d0c20f96c9ea2a1163f8
 /views/css/select2.css|8969ac4614d64a13dfc32e1eb4e731f7
@@ -390,7 +390,7 @@
 /views/js/lengow/main_setting.js|b1d3687eee23416ad76a17ad8406590d
 /views/js/lengow/order.js|cd57d498ca023fba350549f9b4a110ce
 /views/js/lengow/order_setting.js|20b2255bfd857c28f141d50a990e8492
-/views/templates/admin/footer.tpl|aae10eeb43732945e3f14ac39e3956e3
+/views/templates/admin/footer.tpl|5096f0ebe38763039f6a6f29d72877a3
 /views/templates/admin/header.tpl|299024f9f2980d87121db16e9e561e69
 /views/templates/admin/header_order.tpl|a0bf968d4e06109addf761f03313dfd8
 /views/templates/admin/lengow_feed|d41d8cd98f00b204e9800998ecf8427e
@@ -414,7 +414,7 @@
 /views/templates/admin/lengow_home/helpers/view/view.tpl|12c349618ccb3f41f35474e540a2062c
 /views/templates/admin/lengow_main_setting/helpers|d41d8cd98f00b204e9800998ecf8427e
 /views/templates/admin/lengow_main_setting/layout.tpl|e38a30cf78157b940edd80e14b08dcae
-/views/templates/admin/lengow_main_setting/helpers/view/view.tpl|0e5654f5eb3a768fb24216c9ada8a959
+/views/templates/admin/lengow_main_setting/helpers/view/view.tpl|efd3c73cfc612786b8e93a3f69ea8583
 /views/templates/admin/lengow_order/helpers|d41d8cd98f00b204e9800998ecf8427e
 /views/templates/admin/lengow_order/layout.tpl|fe6327cc36a4e40b01b293cde4d57c30
 /views/templates/admin/lengow_order/helpers/view/header_toolbox.tpl|566421a5c2c4d3b6c33b1ce156b8c49b

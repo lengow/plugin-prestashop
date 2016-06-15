@@ -166,7 +166,7 @@ global_setting.screen.setting_saving|Guardando...
 global_setting.screen.setting_saved|¡Guardado!
 help.screen.title|Obtener un poco de ayuda de tu equipo de ayuda!
 help.screen.contain_text_support|Pregúntanos lo que sea a Lengow o comparte tu parecer en
-help.screen.mail_lengow_support|support@lengow.com
+help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com. 
 help.screen.mail_lengow_support_title|Información de la cuenta:
 help.screen.mailto_subject|Prestashop Lengow Plugin #necesita asistencia
 help.screen.need_some_help|¿Necesitas ayuda?

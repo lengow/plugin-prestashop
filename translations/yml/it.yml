@@ -141,6 +141,9 @@ it:
       to_uninstall_type: "Tipo disinstallazione"
       button_download_file: "Scarica log file"
       button_save: "Salva"
+  help:
+    screen:
+      mail_lengow_support: "support.lengow.zendesk@lengow.com."
   lengow_setting:
     lengow_account_id_title: "ID Cliente"
     lengow_access_token_title: "Token"

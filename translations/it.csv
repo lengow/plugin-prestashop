@@ -125,6 +125,7 @@ global_setting.screen.cancel_i_want_uninstall|Cancella
 global_setting.screen.to_uninstall_type|Tipo disinstallazione
 global_setting.screen.button_download_file|Scarica log file
 global_setting.screen.button_save|Salva
+help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com.
 lengow_setting.lengow_account_id_title|ID Cliente
 lengow_setting.lengow_access_token_title|Token
 lengow_setting.lengow_secret_token_title|Token Segreto
