@@ -82,6 +82,10 @@ body.lengow_body #main {
   line-height: 30px;
 }
 
+.lgw-content-section {
+    margin-bottom: 130px;
+}
+
 /*************************************************/
 /*                      HOME                     */
 /*************************************************/
