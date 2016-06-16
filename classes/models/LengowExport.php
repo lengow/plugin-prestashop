@@ -27,7 +27,65 @@ class LengowExport
     /**
      * Default fields for export
      */
-    public static $DEFAULT_FIELDS = array(
+    public static $DEFAULT_FIELDS;
+
+    /**
+     * New fields for v3
+     */
+    protected $new_fields = array(
+        'id'                  => 'id',
+        'sku'                 => 'reference',
+        'sku_supplier'        => 'supplier_reference',
+        'ean'                 => 'ean',
+        'upc'                 => 'upc',
+        'name'                => 'name',
+        'quantity'            => 'quantity',
+        'minimal_quantity'    => 'minimal_quantity',
+        'availability'        => 'available',
+        'active'              => 'active',
+        'is_virtual'          => 'is_virtual',
+        'condition'           => 'condition',
+        'breadcrumb'          => 'breadcrumb',
+        'url'                 => 'url',
+        'url_rewrite'         => 'url_rewrite',
+        'price_excl_tax'      => 'price_duty_free',
+        'price_incl_tax'      => 'price',
+        'ecotax'              => 'ecotax',
+        'discount_price'      => 'price_sale',
+        'discount_percent'    => 'price_sale_percent',
+        'discount_start_date' => 'sale_from',
+        'discount_end_date'   => 'sale_to',
+        'shipping_cost'       => 'price_shipping',
+        'shipping_delay'      => 'delivery_time',
+        'currency'            => 'currency',
+        'image_url_1'         => 'image_1',
+        'image_url_2'         => 'image_2',
+        'image_url_3'         => 'image_3',
+        'image_url_4'         => 'image_4',
+        'image_url_5'         => 'image_5',
+        'image_url_6'         => 'image_6',
+        'image_url_7'         => 'image_7',
+        'image_url_8'         => 'image_8',
+        'image_url_9'         => 'image_9',
+        'image_url_10'        => 'image_10',
+        'type'                => 'type',
+        'parent_id'           => 'id_parent',
+        'variation'           => 'variation',
+        'language'            => 'language',
+        'description'         => 'description',
+        'description_short'   => 'short_description',
+        'description_html'    => 'description_html',
+        'meta_keyword'        => 'meta_keywords',
+        'meta_description'    => 'meta_description',
+        'manufacturer'        => 'manufacturer',
+        'supplier'            => 'supplier',
+        'weight'              => 'weight',
+    );
+
+    /**
+     * Legacy fields for export
+     */
+    protected $legacy_fields = array(
         'id_product'            => 'id',
         'name_product'          => 'name',
         'reference_product'     => 'reference',
@@ -189,14 +247,19 @@ class LengowExport
      * Construct new Lengow export.
      *
      * @param array params optional options
-     * string #format : Export Format (csv|yaml|xml|json)
-     * boolean #stream : Display file when call script (1) | Save File (0)
-     * boolean #out_stock : Export product in stock and out stock (1) | Export Only in stock product (0)
-     * int #limit : Limit product to export
-     * boolean #show_inactive_product : Export active and inactive product (1) | Export Only active product (0)
-     * boolean #show_product_combination : Export product declinaison (1) | Export Only simple product (0)
-     * boolean #update_export_date : Update 'LENGOW_LAST_EXPORT' when launching export process (1)
-     *                              | Do not update 'LENGOW_LAST_EXPORT' when exporting from toolbox (0)
+     * string  #format                Export Format (csv|yaml|xml|json)
+     * boolean #stream                Display file when call script (1) | Save File (0)
+     * boolean #out_stock             Export product in stock and out stock (1) | Export Only in stock product (0)
+     * int     #limit                 Limit product to export
+     * int     #offset                From which product is exported
+     * string  #product_ids           Export specific products
+     * boolean #show_inactive_product Export active and inactive product (1) | Export Only active product (0)
+     * boolean #export_variation      Export product variation (1) | Export Only simple product (0)
+     * boolean #legacy_fields         Export with legacy fields (1) | Export with new fields (0)
+     * boolean #update_export_date    Update 'LENGOW_LAST_EXPORT' when launching export process (1)
+     *                                  | Do not update 'LENGOW_LAST_EXPORT' when exporting from toolbox (0)
+     * boolean #log_output            See logs (only when stream = 0) (1) | no logs (0)
+     *
      * @return LengowExport
      */
     public function __construct($params = array())
@@ -221,6 +284,8 @@ class LengowExport
         $this->exportVariation = isset($params["export_variation"]) ?
             (bool)$params["export_variation"] :
             (bool)Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId);
+        $legacy_fields = (isset($params['legacy_fields']) ? (bool)$params['legacy_fields'] : false);
+        LengowExport::$DEFAULT_FIELDS = $legacy_fields ? $this->legacy_fields : $this->new_fields ;
         $this->log_output = (isset($params['log_output']) ? (bool)$params['log_output'] : !$this->stream);
         $this->updateExportDate = (isset($params['update_export_date']) ? (bool)$params['update_export_date'] : true);
         if (!Context::getContext()->currency) {

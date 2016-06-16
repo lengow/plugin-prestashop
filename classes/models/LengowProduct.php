@@ -177,7 +177,7 @@ class LengowProduct extends Product
         switch ($name) {
             case 'id':
                 if ($id_product_attribute) {
-                    return $this->id . '_' . $id_product_attribute;
+                    return $this->id.'_'.$id_product_attribute;
                 }
                 return $this->id;
             case 'name':
@@ -207,7 +207,7 @@ class LengowProduct extends Product
                     $breadcrumb = '';
                     $categories = $this->categoryDefault->getParentsCategories();
                     foreach ($categories as $category) {
-                        $breadcrumb = $category['name'] . ' > ' . $breadcrumb;
+                        $breadcrumb = $category['name'].' > '.$breadcrumb;
                     }
                     return rtrim($breadcrumb, ' > ');
                 }
@@ -281,6 +281,8 @@ class LengowProduct extends Product
                 return $this->ecotax;
             case 'active':
                 return $this->active;
+            case 'language':
+                return $this->context->language->iso_code;
             case 'available':
                 if ($id_product_attribute) {
                     $quantity = self::getRealQuantity($this->id, $id_product_attribute);
