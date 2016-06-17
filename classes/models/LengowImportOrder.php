@@ -421,6 +421,7 @@ class LengowImportOrder
                 // ensure carrier compatibility with SoColissimo & Mondial Relay
                 $this->checkCarrierCompatibility($order);
             }
+            // add quantity back for re-import order and order shipped by marketplace
             if ($this->is_reimported
                 || ($this->shipped_by_mp && !LengowConfiguration::getGlobalValue('LENGOW_IMPORT_STOCK_SHIP_MP'))
             ) {

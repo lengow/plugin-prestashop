@@ -131,21 +131,23 @@ class LengowPaymentModule extends PaymentModule
         $this->currentOrderReference = $reference;
 
         $order_creation_failed = false;
-        foreach ($cart_delivery_option as $id_address => $key_carriers) {
-            foreach ($delivery_option_list[$id_address][$key_carriers]['carrier_list'] as $id_carrier => $data) {
-                foreach ($data['package_list'] as $id_package) {
-                    if ($id_carrier != $this->context->cart->id_carrier) {
-                        $id_carrier =  $this->context->cart->id_carrier;
+        if ($cart_delivery_option) {
+            foreach ($cart_delivery_option as $id_address => $key_carriers) {
+                foreach ($delivery_option_list[$id_address][$key_carriers]['carrier_list'] as $id_carrier => $data) {
+                    foreach ($data['package_list'] as $id_package) {
+                        if ($id_carrier != $this->context->cart->id_carrier) {
+                            $id_carrier =  $this->context->cart->id_carrier;
+                        }
+                        // Rewrite the id_warehouse
+                        if (method_exists($this->context->cart, 'getPackageIdWarehouse')) {
+                            $id_warehouse = (int)$this->context->cart->getPackageIdWarehouse(
+                                $package_list[$id_address][$id_package],
+                                (int)$id_carrier
+                            );
+                            $package_list[$id_address][$id_package]['id_warehouse'] = $id_warehouse;
+                        }
+                        $package_list[$id_address][$id_package]['id_carrier'] = $id_carrier;
                     }
-                    // Rewrite the id_warehouse
-                    if (method_exists($this->context->cart, 'getPackageIdWarehouse')) {
-                        $id_warehouse = (int)$this->context->cart->getPackageIdWarehouse(
-                            $package_list[$id_address][$id_package],
-                            (int)$id_carrier
-                        );
-                        $package_list[$id_address][$id_package]['id_warehouse'] = $id_warehouse;
-                    }
-                    $package_list[$id_address][$id_package]['id_carrier'] = $id_carrier;
                 }
             }
         }
@@ -168,7 +170,11 @@ class LengowPaymentModule extends PaymentModule
                 }
             }
 
-            $carrier = new Carrier($package['id_carrier'], $this->context->cart->id_lang);
+            if (isset($package['id_carrier'])) {
+                $carrier = new Carrier($package['id_carrier'], $this->context->cart->id_lang);
+            } else {
+                $carrier = new Carrier($this->context->cart->id_carrier, $this->context->cart->id_lang);
+            }
             $order->id_carrier = (int)$carrier->id;
             $id_carrier = (int)$carrier->id;
 

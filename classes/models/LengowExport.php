@@ -42,7 +42,7 @@ class LengowExport
         'quantity'            => 'quantity',
         'minimal_quantity'    => 'minimal_quantity',
         'availability'        => 'available',
-        'active'              => 'active',
+        'status'              => 'active',
         'is_virtual'          => 'is_virtual',
         'condition'           => 'condition',
         'breadcrumb'          => 'breadcrumb',
@@ -247,18 +247,22 @@ class LengowExport
      * Construct new Lengow export.
      *
      * @param array params optional options
-     * string  #format                Export Format (csv|yaml|xml|json)
-     * boolean #stream                Display file when call script (1) | Save File (0)
-     * boolean #out_stock             Export product in stock and out stock (1) | Export Only in stock product (0)
-     * int     #limit                 Limit product to export
-     * int     #offset                From which product is exported
-     * string  #product_ids           Export specific products
-     * boolean #show_inactive_product Export active and inactive product (1) | Export Only active product (0)
-     * boolean #export_variation      Export product variation (1) | Export Only simple product (0)
-     * boolean #legacy_fields         Export with legacy fields (1) | Export with new fields (0)
-     * boolean #update_export_date    Update 'LENGOW_LAST_EXPORT' when launching export process (1)
+     * 
+     * int     $limit                 The number of product to be exported
+     * int     $offset                From what product export
+     * int     $shop_id               Shop id for export
+     * int     $language_id           language for export
+     * string  $product_ids           Ids product to export
+     * string  $format                Export Format (csv|yaml|xml|json)
+     * boolean $stream                Display file when call script (1) | Save File (0)
+     * boolean $out_stock             Export product in stock and out stock (1) | Export Only in stock product (0)
+     * boolean $selection             Export selected product (1) | Export all products (0)
+     * boolean $show_inactive_product Export active and inactive product (1) | Export Only active product (0)
+     * boolean $export_variation      Export product variation (1) | Export Only simple product (0)
+     * boolean $legacy_fields         Export with legacy fields (1) | Export with new fields (0)
+     * boolean $update_export_date    Update 'LENGOW_LAST_EXPORT' when launching export process (1)
      *                                  | Do not update 'LENGOW_LAST_EXPORT' when exporting from toolbox (0)
-     * boolean #log_output            See logs (only when stream = 0) (1) | no logs (0)
+     * boolean $log_output            See logs (only when stream = 0) (1) | no logs (0)
      *
      * @return LengowExport
      */

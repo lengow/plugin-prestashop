@@ -280,7 +280,7 @@ class LengowProduct extends Product
                 }
                 return $this->ecotax;
             case 'active':
-                return $this->active;
+                return $this->active ? 'Enabled' : 'Disabled';
             case 'language':
                 return $this->context->language->iso_code;
             case 'available':
