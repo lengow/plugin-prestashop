@@ -427,7 +427,7 @@ class LengowCheck
                     if ($check['state'] == 1) {
                         $out .= '<td align="right"><i class="fa fa-check lengow-green"></i></td>';
                     } else {
-                        $out .= '<td align="right"><i class="fa fa-times lengow-red"></i></i></td>';
+                        $out .= '<td align="right"><i class="fa fa-times lengow-red"></i></td>';
                     }
                     if ($check['state'] === 0) {
                         if (isset($check['help']) && isset($check['help_link']) && isset($check['help_label'])) {

@@ -80,6 +80,17 @@ legend {
     margin-top:10px;
 }
 
+/* PREPROD */
+#lgw-preprod{
+  color:white;
+  background:#e55a4d;
+  padding:5px 10px;
+  position:absolute;
+  top:50px;
+  left:0;
+  font-size:12px;
+}
+
 /* SWITCH */
 .text-center .lgw-switch{
     display:inline-block;
