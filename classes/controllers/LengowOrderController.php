@@ -296,18 +296,16 @@ class LengowOrderController extends LengowController
             'filter_collection' => $this->getMarketplaces(),
         );
         if (_PS_VERSION_ >= '1.5') {
-            //if (Shop::isFeatureActive() && !Shop::getContextShopID()) {
-                $fields_list['shop_name'] = array(
-                    'class'             => 'link shop',
-                    'width'             => $width,
-                    'title'             => $this->locale->t('order.table.shop_name'),
-                    'filter'            => true,
-                    'filter_order'      => true,
-                    'filter_key'        => 'shop.id_shop',
-                    'filter_type'       => 'select',
-                    'filter_collection' => $this->getShops()
-                );
-            //}
+            $fields_list['shop_name'] = array(
+                'class'             => 'link shop',
+                'width'             => $width,
+                'title'             => $this->locale->t('order.table.shop_name'),
+                'filter'            => true,
+                'filter_order'      => true,
+                'filter_key'        => 'shop.id_shop',
+                'filter_type'       => 'select',
+                'filter_collection' => $this->getShops()
+            );
         }
         $fields_list['marketplace_sku'] = array(
             'title'             => $this->locale->t('order.table.marketplace_sku'),
@@ -389,24 +387,19 @@ class LengowOrderController extends LengowController
         );
         $from = 'FROM '._DB_PREFIX_.'lengow_orders lo';
         $join = array();
-
         $join[] = 'LEFT JOIN `'._DB_PREFIX_.'orders` o ON (o.id_order = lo.id_order) ';
         if (_PS_VERSION_ >= '1.5') {
-            //if (Shop::isFeatureActive()) {
-                if (Shop::getContextShopID()) {
-                    $join[] = 'INNER JOIN `'._DB_PREFIX_.'shop` shop ON (lo.id_shop = shop.id_shop
-                    AND shop.id_shop = '.(int)Shop::getContextShopID().') ';
-                } else {
-                    $join[] = 'LEFT JOIN `'._DB_PREFIX_.'shop` shop ON (lo.id_shop = shop.id_shop) ';
-                }
-                $select[] = 'shop.name as shop_name';
-            //}
+            if (Shop::getContextShopID()) {
+                $join[] = 'INNER JOIN `'._DB_PREFIX_.'shop` shop ON (lo.id_shop = shop.id_shop
+                AND shop.id_shop = '.(int)Shop::getContextShopID().') ';
+            } else {
+                $join[] = 'LEFT JOIN `'._DB_PREFIX_.'shop` shop ON (lo.id_shop = shop.id_shop) ';
+            }
+            $select[] = 'shop.name as shop_name';
         }
-
         $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
         $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
         $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
-
         $list = new LengowList(array(
             "id" => 'order',
             "fields_list" => $fields_list,
@@ -437,14 +430,11 @@ class LengowOrderController extends LengowController
     public function buildTable()
     {
         $this->list = $this->loadTable();
-
         $this->list->executeQuery();
         $paginationBlock = $this->list->renderPagination(array(
             'nav_class' => 'lgw-pagination'
         ));
-
         $lengow_link = new LengowLink();
-
         $html='<div class="lengow_table_top">';
         $html.='<div class="lengow_toolbar">';
         $html.='<a href="#" style="display:none;"
@@ -464,7 +454,6 @@ class LengowOrderController extends LengowController
         $html.= $paginationBlock;
         $html.='<div class="clearfix"></div>';
         $html.='</div>';
-
         return $html;
     }
 

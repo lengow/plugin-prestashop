@@ -528,12 +528,11 @@ class LengowOrder extends Order
     /**
      * Synchronize order with Lengow API
      *
-     * @param LengowConnector $connector  Lengow Connector for API calls
-     * @param boolean         $log_output See log or not
+     * @param LengowConnector $connector Lengow Connector for API calls
      *
      * @return boolean
      */
-    public function synchronizeOrder($connector = null, $log_output = false)
+    public function synchronizeOrder($connector = null)
     {
         $id_shop = (_PS_VERSION_ < 1.5 ? null : (int)$this->lengow_id_shop);
         // Get connector
