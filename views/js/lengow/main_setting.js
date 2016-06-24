@@ -109,26 +109,21 @@
 
         displayReportMail();
         $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').on('change', function(){
-            var selector = $('.lengow_report_mail_address');
-            if($('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked')){
-                selector.slideDown(150);
-                selector.next('span.legend').show();
-            }
-            else{
-                selector.slideUp(150);
-                selector.next('span.legend').hide();
-            }
+            displayReportMail();
         });
 
         function displayReportMail() {
             var selector = $('.lengow_report_mail_address');
             if($('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked')){
-                selector.show();
-                selector.next('span.legend').show();
+                selector.slideDown(150);
+                var divLegend = selector.next('.legend');
+                    divLegend.addClass("blue-frame");
+                    divLegend.css('display', 'block');
+                    divLegend.show();
             }
             else{
-                selector.hide();
-                selector.next('span.legend').hide();
+                selector.slideUp(150);
+                selector.next('.legend').hide();
             }
         }
 

@@ -126,7 +126,7 @@ class LengowConfigurationForm
                         value="'.$value.'" '.$readonly.'>
                     </div>';
                 if (!empty($legend)) {
-                    $html.= '<span class="legend" style="display:block;">' . $legend . '</span>';
+                    $html.= '<span class="legend" style="display:block;">'.$legend.'</span>';
                 }
                 break;
             case 'select':
@@ -150,7 +150,7 @@ class LengowConfigurationForm
                             <div class="clearfix"></div>
                         </div>';
                 if (!empty($legend)) {
-                    $html.= '<span class="legend blue-frame" style="display:block;">'.$legend.'</span>';
+                    $html.= '<span class="legend" style="display:block;">'.$legend.'</span>';
                 }
                 $html.= '</div>';
                 break;

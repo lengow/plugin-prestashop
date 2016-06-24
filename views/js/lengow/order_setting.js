@@ -59,7 +59,6 @@ function addScoreCarrier(){
             var selector = $('.lengow_import_stock_ship_mp');
             if ($("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").prop('checked')) {
                 selector.slideDown(150);
-                //selector.next('.legend').show();
                 var divLegend = selector.next('.legend');
                     divLegend.addClass("blue-frame");
                     divLegend.css('display', 'block');
@@ -93,7 +92,6 @@ function addScoreCarrier(){
             } else {
                 $('#error_select_country').html('<span>No country selected.</span>');
             }
-
             return false;
         });
 
@@ -130,7 +128,6 @@ function addScoreCarrier(){
                 $("#select_country").html(content['countries']);
                 $("#lengow_marketplace_carrier_country_" + content['id_country']).remove();
             });
-
             return false;
         });
 
@@ -142,7 +139,6 @@ function addScoreCarrier(){
                 $(this).parents('.add_country').addClass('no_carrier');
                 addScoreCarrier();
             }
-
             return false;
 
         });
@@ -155,7 +151,6 @@ function addScoreCarrier(){
                 $(this).parents('.marketplace_carrier ').addClass('no_carrier');
                 addScoreCarrier();
             }
-
             return false;
 
         });
