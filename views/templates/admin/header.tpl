@@ -31,6 +31,7 @@
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-layout.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-components.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-pages.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
 {if version_compare($smarty.const._PS_VERSION_,'1.5','<')&&version_compare($smarty.const._PS_VERSION_,'1.4','>=')}
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_14.css">
