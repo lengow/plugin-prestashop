@@ -212,7 +212,8 @@ body.lgw-home-iframe .lgw-content-section p{
 }
 .adminlengoworder .lgw-container{
     /*min-width:1250px;*/
-    min-width: 1330px;
+    /*min-width: 1330px;*/
+    min-width: 1450px;
     width:100%;
 }
 .lengow_datepicker_box{
