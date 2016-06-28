@@ -213,7 +213,7 @@ body.lgw-home-iframe .lgw-content-section p{
 /*                     ORDERS                    */
 /*************************************************/
 .adminlengoworder .lengow-nav{
-  width: 1450px;
+  min-width: 1450px;
 }
 
 .adminlengoworder .nobootstrap,
