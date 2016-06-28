@@ -373,6 +373,7 @@ class LengowOrderController extends LengowController
             'lo.total_paid',
             'lo.extra',
             'lo.delivery_country_iso',
+            'lo.sent_marketplace',
             'lo.order_item as nb_item',
             (_PS_VERSION_ < 1.5 ? 'o.id_order as reference' : 'o.reference'),
             'lo.order_date',
@@ -534,6 +535,10 @@ class LengowOrderController extends LengowController
                 return $value;
             }
         } else {
+            if ($key == 'reference' && $item['sent_marketplace'] == 0) {
+                return '<span class="lgw-label">'
+                    .LengowMain::decodeLogMessage('order.screen.status_shipped_by_mkp').'</span>';
+            }
             return $value;
         }
     }

@@ -90,7 +90,7 @@ en:
       all_order_will_be_sent_to: "All order issue reports will be sent by mail to"
       change_this: "Change this?"
       last_order_importation: "Last synchronization"
-      no_order_importation: "No order importation for now"
+      no_order_importation: "No synchronisation for now"
       import_auto: "Auto"
       import_manuel: "Manual"
       button_update_orders: "Synchronize Orders"
@@ -116,6 +116,7 @@ en:
       status_closed: "Closed"
       status_refunded: "Refunded"
       status_canceled: "Canceled"
+      status_shipped_by_mkp: "Shipped by Marketplace"
     table:
       action_lengow: "Actions"
       order_lengow_state: "Status Lengow"

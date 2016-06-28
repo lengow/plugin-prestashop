@@ -78,7 +78,7 @@ order.screen.import_charge_second|Please bear with us; this will not take long (
 order.screen.all_order_will_be_sent_to|All order issue reports will be sent by mail to
 order.screen.change_this|Change this?
 order.screen.last_order_importation|Last synchronization
-order.screen.no_order_importation|No order importation for now
+order.screen.no_order_importation|No synchronisation for now
 order.screen.import_auto|Auto
 order.screen.import_manuel|Manual
 order.screen.button_update_orders|Synchronize Orders
@@ -104,6 +104,7 @@ order.screen.status_shipped|Shipped
 order.screen.status_closed|Closed
 order.screen.status_refunded|Refunded
 order.screen.status_canceled|Canceled
+order.screen.status_shipped_by_mkp|Shipped by Marketplace
 order.table.action_lengow|Actions
 order.table.order_lengow_state|Status Lengow
 order.table.marketplace_name|Marketplace

@@ -52,7 +52,12 @@ class LengowStatistic
         //get stats by shop
         $shopCollection = LengowShop::findAll(true);
         $i = 0;
+        $account_ids = array();
         foreach ($shopCollection as $s) {
+            $account_id = LengowMain::getIdAccount($s['id_shop']);
+            if (!$account_id || in_array($account_id, $account_ids) || empty($account_id)) {
+                continue;
+            }
             $result = LengowConnector::queryApi(
                 'get',
                 '/v3.0/numbers',
@@ -64,6 +69,7 @@ class LengowStatistic
                 $return['average_order'] += $result->average_order;
                 $return['currency'] = $result->currency->iso_a3;
             }
+            $account_ids[] = $account_id;
             $i++;
         }
         if ($i > 0) {
