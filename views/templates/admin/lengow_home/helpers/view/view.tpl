@@ -19,10 +19,11 @@
  *}
 
 <script type="text/javascript">$(document.body).addClass("adminlengowhome");</script>
-
 <div id="lengow_home_wrapper">
 {if $isNewMerchant || $isSync }
     {include file='./new.tpl'}
+{elseif ($isStatut['type'] == 'free_trial' && $isStatut['day'] == 0) || $isStatut['type'] == 'bad_payer'}
+    {include file='./statut.tpl'}
 {else}
     {include file='./connect.tpl'}
 {/if}

@@ -40,6 +40,23 @@ en:
       get_in_touch: "Get in touch with Lengow."
       visit_help_center: "Visit our Help Center"
       configure_plugin: "for detailed information on how to configure properly your PrestaShop plugin"
+  status:
+    screen:
+      title_end_free_trial: "Even good times can stop"
+      subtitle_end_free_trial: "You've reach the end of your trial !"
+      first_description_end_free_trial: "Your 15 days free on Lengow is now expired. It's terrible, we know, but the best is yet to come ! We sincerely hope you've enjoyed Lengow to improve your business."
+      second_description_end_free_trial: "Your account will be disabled until you purchase a new subscription. All existing diffusions and indexations will be stopped too."
+      third_description_end_free_trial: "Don't forget that a trial account is deleted 30 days after expiration. Make sure to upgrade in order not to lose the great work you've made into building your channels."
+      title_bad_payer: "Bad things happened :'("
+      subtitle_bad_payer: "Your account is temporaly closed"
+      first_description_bad_payer: "We are sorry that we had to get there, but we had to temporarily limit access to your account because the automatic payment of your subscription failed."
+      second_description_bad_payer: "The publication of your catalogs is also suspended. We strongly suggest you get in touch with us at"
+      phone_bad_payer: "or by phone at (+33)4 565 656"
+      third_description_bad_payer: "We hope to count you back among us really soon."
+      signature_bad_payer: "Team Lengow"
+      facturation_button: "View my billing informations"
+      upgrade_account_button: "It's ok, I'm ready for an upgrade !"
+      refresh_action: "Refresh my account"
   product:
     screen:
       nb_exported: "products exported"
@@ -251,6 +268,8 @@ en:
     lengow_tracking_id_title: "Lengow Tracking ID"
     lengow_order_stat_title: "Order statistics"
     lengow_order_stat_update_title: "Order statistics update"
+    lengow_account_status_title: "Account statut"
+    lengow_order_stat_update_title: "Account statut update"
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} order(s) imported"

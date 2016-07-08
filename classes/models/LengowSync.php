@@ -25,6 +25,11 @@
 class LengowSync
 {
     /**
+     * Get Account Status
+     */
+    protected static $cacheTime = 10800;
+
+    /**
      * Get Sync Data (Inscription / Update)
      *
      * @return array
@@ -124,5 +129,40 @@ class LengowSync
             );
         }
         return $data;
+    }
+
+    /**
+     * Get Status Account
+     *
+     * @param boolean $force Force cache Update
+     * @return mixed
+     */
+    public static function getStatusAccount($force = false)
+    {
+        if (!$force) {
+            $updated_at =  LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE');
+            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < self::$cacheTime) {
+                return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
+            }
+        }
+
+        //TODO call API for return a customer id or false
+        //$result = LengowConnector::queryApi('get', '/v3.0/cms');
+        $result = true;
+
+        if ($result) {
+            //TODO call API with customer id parameter for return status account
+            //$status = LengowConnector::queryApi('get', '/v3.0/cms');
+            $status = array();
+            $status['type'] = 'prenium';
+            $status['day'] = 0;
+
+            if ($status) {
+                LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS', Tools::JsonEncode($status));
+                LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE', date('Y-m-d H:i:s'));
+                return $status;
+            }
+        }
+        return false;
     }
 }

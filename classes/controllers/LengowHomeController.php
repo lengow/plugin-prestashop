@@ -55,8 +55,12 @@ class LengowHomeController extends LengowController
         if (!$this->isNewMerchant) {
             $this->context->smarty->assign('stats', LengowStatistic::get());
         }
+        //TODO add true parameter for refresh account statut
+        $this->context->smarty->assign('isStatut', LengowSync::getStatusAccount());
         $lengowLink = new LengowLink();
         $this->context->smarty->assign('lengow_ajax_link', $lengowLink->getAbsoluteAdminLink('AdminLengowHome', true));
         parent::display();
     }
+
+    //TODO Refresh Action
 }
