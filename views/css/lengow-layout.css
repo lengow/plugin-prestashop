@@ -269,8 +269,10 @@ hr{
 .lengow-nav{
   font-size:13px;
   position:absolute;
-  top:0;
-  left:0;
+
+  /*position:fixed;*/
+  top:0px;
+  left:0px;
   right:0;
   height:54px;
   margin:0;
@@ -279,6 +281,11 @@ hr{
   list-style: none;
   z-index: 300;
 }
+ body.page-sidebar-closed .lengow-nav,
+ body.page-sidebar-closed .lengow-nav-bottom{
+  left:-5px;
+}
+
 #lengow_logo img{
   margin-top: 13px;
 }
@@ -347,7 +354,9 @@ hr{
 
 .lengow-nav-bottom{
   z-index:1;
-  top:54px;
+  top:55px;
+  /*position:fixed;*/
+  position:absolute;
   background:white;
   border-bottom:1px solid #e1e1e1;
 }
@@ -373,9 +382,11 @@ hr{
   background:#e55a4d;
   padding:5px 10px;
   position:absolute;
-  top:54px;
-  left:0;
+  top:0px;
+  left: 0px;
   font-size:12px;
+  z-index:2;
+  top:54px;
 }
 
 

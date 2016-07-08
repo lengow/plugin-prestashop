@@ -10,6 +10,7 @@ h1,h2, h3, h4, h5, h6{
   top: 75px;
   z-index: 1;
   left: 15px;
+  position: absolute;
 }
 
 #content{
@@ -22,6 +23,7 @@ h1,h2, h3, h4, h5, h6{
 
 .lengow-nav{
   top:inherit;
+  left:0;
   position: inherit;
 }
 .lengow-nav-bottom{
@@ -130,6 +132,7 @@ body.lengow_body #main {
   top: 130px;
   left: inherit;
   z-index: 2;
+  position:absolute;
 }
 
 #lengow_order_wrapper.activePreprod,

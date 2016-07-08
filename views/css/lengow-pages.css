@@ -42,7 +42,14 @@ body.lgw-home-iframe .lgw-content-section p{
 }
 
 .adminlengowhome #lgw-preprod{
-  top:0;
+  color:white;
+  background:#e55a4d;
+  padding:5px 10px;
+  position:absolute;
+  left:0px;
+  font-size:12px;
+  z-index:2;
+  top:0px;
 }
 
 .adminlengowhome .lgw-label_red{
@@ -205,6 +212,9 @@ body.lgw-home-iframe .lgw-content-section p{
 /*************************************************/
 /*                     ORDERS                    */
 /*************************************************/
+.adminlengoworder .lengow-nav{
+  width: 1450px;
+}
 
 .adminlengoworder .nobootstrap,
 .adminlengowordersetting .nobootstrap{
@@ -228,12 +238,10 @@ body.lgw-home-iframe .lgw-content-section p{
     margin-right:3px;
 }
 
-.adminlengoworder #lgw-preprod{
-  top:108px;
-}
-
+.adminlengoworder #lgw-preprod,
 .adminlengowordersetting #lgw-preprod{
-    top:108px;
+    top:110px;
+
 }
 
 .adminlengowordersetting .add_lengow_default_carrier{

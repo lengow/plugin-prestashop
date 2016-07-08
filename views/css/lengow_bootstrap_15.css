@@ -2,6 +2,9 @@
 /*                      GENERICS                 */
 /*************************************************/
 
+#header {
+    min-width: 1445px!important;
+}
 #lgw-preprod{
   top:165px;
   left:inherit;
@@ -18,6 +21,9 @@
 
 .lengow-nav{
   top:inherit;
+  padding:0;
+  min-width: 1445px;
+  position:absolute;
 }
 
 .lengow-nav .fa-2x {
@@ -51,7 +57,7 @@ body.lengow_body #main {
 }
 
 .lgw-container {
-    width: 1300px;
+    width: 1415px;
     margin: 0 auto 2em auto;
     text-align: left;
 }
@@ -68,7 +74,7 @@ body.lengow_body #main {
 /*************************************************/
 
 .adminlengowhome #lgw-preprod{
-  top:130px;
+  top:105px;
 }
 
 .lgw-home-header{
