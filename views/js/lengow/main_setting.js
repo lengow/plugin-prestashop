@@ -20,67 +20,106 @@
 
 (function ($) {
     $(document).ready(function () {
-        function validateEmail(email) {
-            var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
+
+        // SUMBIT FORM
+        $( ".lengow_form" ).submit(function( event ) {
+            event.preventDefault();
+            var form = this;
+          $('.lengow_form button[type="submit"]').addClass('loading');
+          setTimeout(function () {
+            $('.lengow_form button[type="submit"]').removeClass('loading');
+            $('.lengow_form button[type="submit"]').addClass('success');
+            form.submit();
+           }, 1000);
+        });
+
+        // MODAL
+
+        // Open modal
+        $('.lgw-modal-delete').click(function(){
+            window.location.hash = 'delete';
+            return false;
+        });
+
+        // Open modal on loading
+
+        if(window.location.hash) {
+            openModal();
         }
 
-        /*$(".lengow_report_mail_address select").select2({
-            tags: true,
-            width: '100%',
-            selectOnClose: true,
-            closeOnSelect: false,
-            tokenSeparators: [",", " "],
-            createTag: function(term, data) {
-                var value = term.term;
-                if(validateEmail(value)) {
-                    return {
-                        id: value,
-                        text: value
-                    };
+        // Delete modal
+        $('.js-close-this-modal').click(function(){
+            window.location.hash = '';
+            return false;
+        });
+
+        var hash = window.location.hash;
+        setInterval(function(){
+            if (window.location.hash != hash) {
+                hash = window.location.hash;
+                if( hash.length < 1){
+                    killModal();
                 }
-                return null;
+                else{
+                    if( $('.lgw-modal.open').length == 0 ){
+                        openModal();
+                    }
+                }
             }
-        }).on("select2:open", function (e) {
-            $('.select2-dropdown--below').hide();
-        }).on("select2:selecting", function(e) {
-            $('.select2-search__field').val('');
-        }).on("select2:unselect", function (evt) {
-            if (!evt.params.originalEvent) {
-                return;
+        }, 100);
+
+        function killModal(){
+            window.location.hash = '';
+            $('body').removeClass('unscrollable');
+            $('.lgw-modal').removeClass('open');
+            $('.js-confirm-delete').val('');
+            $('.lengow_submit_delete_module')
+                    .addClass('lgw-btn-disabled')
+                    .removeClass('lgw-btn-red');
+        }
+
+        function openModal(){
+            window.location.hash = 'delete';
+            $('body').addClass('unscrollable');
+            $('.lgw-modal').addClass('open');
+        }
+
+
+        // CONFIRM DELETE
+
+        $('.js-confirm-delete').keyup(function(){
+            var confirm = $(this).data('confirm');
+            if( $(this).val() == confirm ){
+                $('.lengow_submit_delete_module')
+                    .removeClass('lgw-btn-disabled')
+                    .addClass('lgw-btn-red');
             }
-            evt.params.originalEvent.stopPropagation();
-        });*/
-
-        $('.lengow_submit_delete_module').on('click', function(e) {
-            var selector    = $('input[name="uninstall_textbox"]');
-            var check       = selector.val();
-
-            if (check != "I AM SURE") {
-                selector.val("");
-                selector.prop('required', true);
+            else{
+                $('.lengow_submit_delete_module')
+                    .addClass('lgw-btn-disabled')
+                    .removeClass('lgw-btn-red');
             }
         });
 
-        $('#openDeleteModal').on('hidden.bs.modal', function () {
-            var selector = $('input[name="uninstall_textbox"]');
-            selector.prop('required', false);
-            selector.val("");
+        displayReportMail();
+        $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').on('change', function(){
+            displayReportMail();
         });
 
-        $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').change(function(){
-            var checked = $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked');
+        function displayReportMail() {
             var selector = $('.lengow_report_mail_address');
-            if( checked == true ){
+            if($('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked')){
                 selector.slideDown(150);
-                selector.next('span.legend').show();
+                var divLegend = selector.next('.legend');
+                    divLegend.addClass("blue-frame");
+                    divLegend.css('display', 'block');
+                    divLegend.show();
             }
             else{
                 selector.slideUp(150);
-                selector.next('span.legend').hide();
+                selector.next('.legend').hide();
             }
-        });
-
+        }
 
         displayPreProdMode();
         $("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").on('change', function () {
@@ -95,11 +134,18 @@
             }
         }
 
+        $('#select_log').change(function(){
+            if ($('#select_log').val() !== null) {
+                $("#download_log" ).show();
+            }
+        });
+
         $('#download_log').on('click', function() {
             if ($('#select_log').val() !== null) {
                 window.location.href = $('#select_log').val();
             }
         });
+
     });
 
 })(lengow_jquery);

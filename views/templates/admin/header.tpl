@@ -21,17 +21,15 @@
 <script type="text/javascript">$(document.body).addClass('lengow_body');</script>
 
 <!-- PLUGINS -->
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-switch.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-datepicker.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
-
 <!-- STYLE LENGOW -->
 <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic|Open+Sans:700,600,800,400,300" type="text/css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-layout.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-components.css">
 <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-pages.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 {if version_compare($smarty.const._PS_VERSION_,'1.5','<')&&version_compare($smarty.const._PS_VERSION_,'1.4','>=')}
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_14.css">
 {/if}
@@ -40,11 +38,6 @@
 {/if}
 
 {if !$isNewMerchant}
-    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
-        <div id="lgw-preprod">
-            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
-        </div>
-    {/if}
     <ul class="nav nav-pills lengow-nav lengow-nav-top">
         <li role="presentation" id="lengow_logo">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">
@@ -65,7 +58,6 @@
                 {/if}
             </a>
         </li>
-
         <li class="lengow_float_right {if $current_controller == 'LengowMainSettingController'}active{/if}" id="menugotosetting">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}"
                 class="lengow_link_tooltip"
@@ -95,7 +87,6 @@
 </script>
 <script type="text/javascript" src="/modules/lengow/views/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/admin.js"></script>
-<script type="text/javascript" src="/modules/lengow/views/js/bootstrap-switch.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/clipboard.js"></script>
 <script type="text/javascript" src="/modules/lengow/views/js/select2.js"></script>

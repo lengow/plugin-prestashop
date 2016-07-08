@@ -21,12 +21,17 @@
 
 class LengowLegalsController extends LengowController
 {
-
+    /**
+     * Process Post Parameters
+     */
     public function postProcess()
     {
 
     }
 
+    /**
+     * Display data page
+     */
     public function display()
     {
         $this->context->smarty->assign('iso_code', Context::getContext()->language->iso_code);

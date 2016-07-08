@@ -87,9 +87,9 @@ $format = isset($_REQUEST["format"])
     : LengowConfiguration::getGlobalValue('LENGOW_EXPORT_FORMAT');
 //define language
 if (isset($_REQUEST["lang"])) {
-    $languageId = Language::getIdByIso($_REQUEST["lang"]);
+    $language_id = Language::getIdByIso($_REQUEST["lang"]);
 } else {
-    $languageId = Context::getContext()->language->id;
+    $language_id = Context::getContext()->language->id;
 }
 //mode
 $mode = isset($_REQUEST["mode"]) ? $_REQUEST["mode"] : null;
@@ -103,16 +103,20 @@ $selection = isset($_REQUEST["selection"]) ? (bool)$_REQUEST["selection"] :
 // export in file or no
 $stream = isset($_REQUEST["stream"]) ?
     (bool)$_REQUEST["stream"] : !(bool)LengowConfiguration::getGlobalValue('LENGOW_EXPORT_FILE_ENABLED');
-
 // export out of stock products
 $out_stock = isset($_REQUEST["out_stock"]) ? (bool)$_REQUEST["out_stock"] :
     (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK');
 // export product variation
-$exportVariation = isset($_REQUEST["variation"]) ? (bool)$_REQUEST["variation"] :
+$export_variation = isset($_REQUEST["variation"]) ? (bool)$_REQUEST["variation"] :
     (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED');
+// get legacy fields
+$legacy_fields = isset($_REQUEST["legacy_fields"]) ? (bool)$_REQUEST["legacy_fields"] :
+    (bool)LengowConfiguration::get('LENGOW_EXPORT_LEGACY_ENABLED');
 // update export date
-$updateExportDate = isset($_REQUEST["update_export_date"]) ? (bool)$_REQUEST["update_export_date"] : true;
-// export certain products
+$update_export_date = isset($_REQUEST["update_export_date"]) ? (bool)$_REQUEST["update_export_date"] : true;
+// See logs or not
+$log_output = isset($_REQUEST["log_output"]) ? (bool)$_REQUEST["log_output"] : false;
+// export specific products
 $product_ids = array();
 $ids = isset($_REQUEST["product_ids"]) ? $_REQUEST["product_ids"] : null;
 if (Tools::strlen($ids) > 0) {
@@ -122,16 +126,18 @@ if (Tools::strlen($ids) > 0) {
 }
 
 $export = new LengowExport(array(
-    'format' => $format,
-    'stream' => $stream,
-    'product_ids' => $product_ids,
-    'limit' => $limit,
-    'offset' => $offset,
-    'out_stock' => $out_stock,
-    'export_variation' => $exportVariation,
-    'selection' => $selection,
-    'language_id' => $languageId,
-    'update_export_date' => $updateExportDate,
+    'format'             => $format,
+    'stream'             => $stream,
+    'product_ids'        => $product_ids,
+    'limit'              => $limit,
+    'offset'             => $offset,
+    'out_stock'          => $out_stock,
+    'export_variation'   => $export_variation,
+    'legacy_fields'      => $legacy_fields,
+    'selection'          => $selection,
+    'language_id'        => $language_id,
+    'update_export_date' => $update_export_date,
+    'log_output'         => $log_output,
 ));
 
 if ($mode == 'size') {

@@ -20,8 +20,7 @@
  */
 
 /**
- * Lengow Address class
- *
+ * Lengow Address Class
  */
 class LengowAddress extends Address
 {
@@ -49,42 +48,42 @@ class LengowAddress extends Address
      * @var array API fields for an address
      */
     public static $ADDRESS_API_NODES = array(
-                                        'company',
-                                        'civility',
-                                        'email',
-                                        'last_name',
-                                        'first_name',
-                                        'first_line',
-                                        'second_line',
-                                        'complement',
-                                        'zipcode',
-                                        'city',
-                                        'common_country_iso_a2',
-                                        'phone_home',
-                                        'phone_office',
-                                        'phone_mobile',
-                                    );
+        'company',
+        'civility',
+        'email',
+        'last_name',
+        'first_name',
+        'first_line',
+        'second_line',
+        'complement',
+        'zipcode',
+        'city',
+        'common_country_iso_a2',
+        'phone_home',
+        'phone_office',
+        'phone_mobile',
+    );
 
     /**
-     * Definition array for prestashop 1.4.*
+     * Definition array for prestashop 1.4
      *
      * @var array
      */
     public static $definition_lengow = array(
-                                            'id_country'    =>  array('required' => true),
-                                            'alias'         =>  array('required' => true, 'size' => 32),
-                                            'company'       =>  array('size' => 32),
-                                            'lastname'      =>  array('required' => true, 'size' => 32),
-                                            'firstname'     =>  array('required' => true, 'size' => 32),
-                                            'address1'      =>  array('required' => true, 'size' => 128),
-                                            'address2'      =>  array('size' => 128),
-                                            'postcode'      =>  array('size' => 12),
-                                            'city'          =>  array('required' => true, 'size' => 64),
-                                            'other'         =>  array('size' => 300),
-                                            'phone'         =>  array('check' => true, 'size' => 16),
-                                            'phone_mobile'  =>  array('check' => true, 'size' => 16),
-                                            'phone_office'  =>  array('check' => true),
-                                        );
+        'id_country'    =>  array('required' => true),
+        'alias'         =>  array('required' => true, 'size' => 32),
+        'company'       =>  array('size' => 32),
+        'lastname'      =>  array('required' => true, 'size' => 32),
+        'firstname'     =>  array('required' => true, 'size' => 32),
+        'address1'      =>  array('required' => true, 'size' => 128),
+        'address2'      =>  array('size' => 128),
+        'postcode'      =>  array('size' => 12),
+        'city'          =>  array('required' => true, 'size' => 64),
+        'other'         =>  array('size' => 300),
+        'phone'         =>  array('check' => true, 'size' => 16),
+        'phone_mobile'  =>  array('check' => true, 'size' => 16),
+        'phone_office'  =>  array('check' => true),
+    );
 
     /**
      * @var string phone_office given in API
@@ -210,6 +209,7 @@ class LengowAddress extends Address
      * Assign API data
      *
      * @param array $data API data
+     *
      * @return LengowAddress
      */
     public function assign($data = array())

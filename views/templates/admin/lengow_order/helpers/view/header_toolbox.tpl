@@ -51,7 +51,6 @@
         <div id="error_update_order"></div>
     </form>
 </div>
-
 <div class="lengow_import_order_toolbox">
     <h4>{$locale->t('toolbox.order.import_shop_order')|escape:'htmlall':'UTF-8'}</h4>
     <form class="lengow_form_update_some_orders form-inline" method="POST">
@@ -75,7 +74,6 @@
         <div id="error_update_some_orders"></div>
     </form>
 </div>
-
 <div class="lengow_import_order_toolbox">
     <h4>{$locale->t('toolbox.order.import_all_order')|escape:'htmlall':'UTF-8'}</h4>
     <a id="lengow_import_orders" class="lgw-btn btn-success"
@@ -83,5 +81,4 @@
         {$locale->t('order.screen.button_update_orders')|escape:'htmlall':'UTF-8'}
     </a>
 </div>
-
 <div id="lengow_wrapper_messages"></div>

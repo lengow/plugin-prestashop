@@ -79,6 +79,9 @@ en:
       order_not_synchronized_with_lengow: "WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})"
     order_action:
       start_for_shop: "check finish actions in shop %{name_shop} (%{id_shop})"
+      try_to_send_action : "try to send %{action} action (ORDER ID %{order_id})"
+      action_send: "action %{action} successfully sent (ORDER ID %{order_id})"
+      action_not_send: "WARNING ! action %{action} could not be sent (ORDER ID %{order_id})"
       call_tracking: "call tracking with parameters: %{parameters}"
       can_not_load_order: "order action failed - Can't load order"
       call_action_failed: "order action failed - %{decoded_message}"

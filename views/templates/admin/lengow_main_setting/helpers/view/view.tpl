@@ -19,6 +19,11 @@
  *}
 
 <div class="lgw-container" id="lengow_mainsettings_wrapper" xmlns="http://www.w3.org/1999/html">
+    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+        <div id="lgw-preprod" class="adminlengowmainsetting">
+            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        </div>
+    {/if}
     <form class="lengow_form" method="POST">
         <input type="hidden" name="action" value="process">
         <div class="lgw-box">
@@ -53,53 +58,78 @@
                 <i class="fa fa-download"></i> {$locale->t('global_setting.screen.button_download_file')|escape:'htmlall':'UTF-8'}
             </button>
         </div>
-        <div class="lgw-container">
-            <div class="container">
-                <a href="#openDeleteModal">
+        <div class="form-group container">
+            <div class="lengow_main_setting_block_content">
+                <div class="pull-left">
+                    <button type="submit" class="lgw-btn lgw-btn-progression lengow_submit_main_setting">
+                        <div class="btn-inner">
+                            <div class="btn-step default">
+                                {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
+                            </div>
+                            <div class="btn-step loading">
+                                {$locale->t('global_setting.screen.setting_saving')|escape:'htmlall':'UTF-8'}
+                            </div>
+                            <div class="btn-step done" data-success="Saved!" data-error="Error">
+                                {$locale->t('global_setting.screen.setting_saved')|escape:'htmlall':'UTF-8'}
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <!--ICI-->
+                <div class="pull-right">
+                    <a href="#" class="lgw-modal-delete">
                     <button type="button" data-toggle="modal" data-target="#openDeleteModal"
                             class="lgw-btn lgw-btn-red lengow_delete_module" name="delete_module">
                         {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
                     </button>
-                </a>
-                <div id="openDeleteModal" class="deleteModalDialog modal">
-                    <div>
-                        <h2><span>{$locale->t('global_setting.screen.title_modal_uninstall')|escape:'htmlall':'UTF-8'}</span></h2>
-                        <p>
-                            {$locale->t('global_setting.screen.all_data_will_be_lost')|escape:'htmlall':'UTF-8'}<br/><br/>
-                            {$locale->t('global_setting.screen.you_will_find_a_backup')|escape:'htmlall':'UTF-8'}
-                            <a href="{$lengow_link->getAbsoluteAdminLink('AdminBackup')|escape:'htmlall':'UTF-8'}">
-                                {$locale->t('global_setting.screen.prestashop_backup')|escape:'htmlall':'UTF-8'}
-                            </a>
-                        </p>
-                        <div id="lengow_wrapper_delete">
-                            <div class="form-group">
-                                <label class="control-label">
-                                    {$locale->t('global_setting.screen.to_uninstall_type')|escape:'htmlall':'UTF-8'}
-                                    : I AM SURE
-                                </label>
-                                <input type="text" name="uninstall_textbox" class="form-control" placeholder="" value="">
-                                <button type="submit" class="btn lgw-btn lengow_submit_delete_module">
-                                    {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
-                                </button>
-                                <button type="button" class="lgw-btn lgw-btn-red"
-                                        data-dismiss="modal" name="close_modal">
-                                    {$locale->t('global_setting.screen.cancel_i_want_uninstall')|escape:'htmlall':'UTF-8'}
-                                </button>
+                    </a>
+                    <div class="lgw-modal">
+                        <a href="#" class="modal-close js-close-this-modal"></a>
+                        <div class="lgw-modal-inner">
+                            <div class="scrollable no-margin">
+                                <div class="scrollable-in">
+                                    <div class="lgw-content-section text-center">
+                                        <img src="/modules/lengow/views/img/laser-gun.png">
+                                        <h2><span>{$locale->t('global_setting.screen.title_modal_uninstall')|escape:'htmlall':'UTF-8'}</span></h2>
+                                        <p>
+                                            {$locale->t('global_setting.screen.all_data_will_be_lost')|escape:'htmlall':'UTF-8'}<br/><br/>
+                                            {$locale->t('global_setting.screen.you_will_find_a_backup')|escape:'htmlall':'UTF-8'}
+                                            <a href="{$lengow_link->getAbsoluteAdminLink('AdminBackup')|escape:'htmlall':'UTF-8'}">
+                                                {$locale->t('global_setting.screen.prestashop_backup')|escape:'htmlall':'UTF-8'}
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div id="lengow_wrapper_delete">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                {$locale->t('global_setting.screen.to_uninstall_type')|escape:'htmlall':'UTF-8'}
+                                                : {$locale->t('global_setting.screen.i_am_sure')|escape:'htmlall':'UTF-8'}
+                                            </label>
+                                            <input type="text" name="uninstall_textbox" class="form-control js-confirm-delete" placeholder="" value="" data-confirm="{$locale->t('global_setting.screen.i_am_sure')|escape:'htmlall':'UTF-8'}" autocomplete="off">
+                                            <button type="submit" class="lgw-btn lgw-btn-progression lgw-btn-disabled lengow_submit_delete_module">
+                                                <div class="btn-inner">
+                                                    <div class="btn-step default">
+                                                        {$locale->t('global_setting.screen.button_i_want_uninstall')|escape:'htmlall':'UTF-8'}
+                                                    </div>
+                                                    <div class="btn-step loading">
+                                                        {$locale->t('global_setting.screen.plugin_deleting')|escape:'htmlall':'UTF-8'}
+                                                    </div>
+                                                    <div class="btn-step done" data-success="Saved!" data-error="Error">
+                                                        {$locale->t('global_setting.screen.plugin_deleted')|escape:'htmlall':'UTF-8'}
+                                                    </div>
+                                                </div>
+                                            </button>
+                                            <button type="button" class="btn-link js-close-this-modal">
+                                                {$locale->t('global_setting.screen.cancel_i_want_uninstall')|escape:'htmlall':'UTF-8'}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="lgw-container putasse" >
-            <div class="form-group container">
-                <div class="lengow_main_setting_block_content">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="lgw-btn lengow_submit_main_setting">
-                            {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
-                        </button>
-                    </div>
-                </div>
+                <div class="clear"></div>
             </div>
         </div>
     </form>

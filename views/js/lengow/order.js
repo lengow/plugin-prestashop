@@ -20,6 +20,7 @@
 
 (function ($) {
     $(document).ready(function () {
+
         $('#lengow_order_wrapper').on('click', '.lgw-pagination a', function () {
             if ($(this).parent().hasClass('disabled')) {
                 return false;
@@ -28,6 +29,8 @@
             $('#lengow_order_wrapper .lengow_form_table').submit();
             return false;
         });
+
+
         $('#lengow_order_wrapper').on('click', '.lengow_form_table .table_order', function () {
             $('#lengow_order_wrapper .lengow_form_table input[name="order_value"]').val($(this).attr('data-order'));
             $('#lengow_order_wrapper .lengow_form_table input[name="order_column"]').val($(this).attr('data-column'));
@@ -226,7 +229,7 @@
             var href = $(this).data('href');
             if ($(this).val() !== "") {
                 var data = {
-                    action: 'load_marketplace', 
+                    action: 'load_marketplace',
                     shop_id: $(this).val()
                 };
 

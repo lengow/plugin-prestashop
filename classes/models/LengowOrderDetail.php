@@ -20,14 +20,12 @@
  */
 
 /**
- * The Lengow Order Class.
- *
+ * Lengow Order Detail Class
  */
 class LengowOrderDetail extends OrderDetail
 {
-
     /**
-     * Version.
+     * Version
      */
     const VERSION = '1.0.0';
 
@@ -56,9 +54,10 @@ class LengowOrderDetail extends OrderDetail
     }
 
     /**
-     * v3
      * Get Order Lines
+     *
      * @param integer $product_id Product_id
+     *
      * @return array list of order line
      */
     public static function findByOrderIdProductId($order_id, $product_id)

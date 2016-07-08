@@ -20,12 +20,10 @@
  */
 
 /**
- * The Lengow Core Class.
- *
+ * Lengow Main Class
  */
 class LengowMain
 {
-
     /**
      * Version.
      */
@@ -112,7 +110,6 @@ class LengowMain
     public static $image_type_cache;
 
     /**
-     * v3
      * The Prestashop compare version with current version.
      *
      * @param string $version The version to compare
@@ -126,18 +123,16 @@ class LengowMain
     }
 
     /**
-     * v3
      * Get lengow folder path
      *
      * @return string
      */
     public static function getLengowFolder()
     {
-        return _PS_MODULE_DIR_ . 'lengow';
+        return _PS_MODULE_DIR_.'lengow';
     }
 
     /**
-     * v3
      * Get Lengow ID Account.
      *
      * @param integer $id_shop shop ID
@@ -150,7 +145,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Get access token
      *
      * @param integer $id_shop shop ID
@@ -163,7 +157,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Get the secret
      *
      * @param integer $id_shop shop ID
@@ -176,7 +169,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Recovers if a shop is active or not
      *
      * @param integer $id_shop shop ID
@@ -189,7 +181,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Get the matching Prestashop order state id to the one given
      *
      * @param string $state state to be matched
@@ -215,7 +206,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Temporary disable mail sending
      */
     public static function disableMail()
@@ -230,7 +220,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Record the date of the last import
      *
      * @param string $type (cron or manual)
@@ -247,7 +236,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Get last import (type and timestamp)
      *
      * @return mixed
@@ -256,7 +244,6 @@ class LengowMain
     {
         $timestamp_cron = LengowConfiguration::getGlobalValue('LENGOW_LAST_IMPORT_CRON');
         $timestamp_manual = LengowConfiguration::getGlobalValue('LENGOW_LAST_IMPORT_MANUAL');
-
         if ($timestamp_cron && $timestamp_manual) {
             if ((int)$timestamp_cron > (int) $timestamp_manual) {
                 return array('type' => 'cron', 'timestamp' => (int)$timestamp_cron);
@@ -268,7 +255,6 @@ class LengowMain
         } elseif ($timestamp_manual && !$timestamp_cron) {
             return array('type' => 'manual', 'timestamp' => (int)$timestamp_manual);
         }
-
         return array('type' => 'none', 'timestamp' => 'none');
     }
 
@@ -301,11 +287,10 @@ class LengowMain
     }
 
     /**
-     * v3
-     * The shipping names options.
+     * The shipping names options
      *
-     * @param string    $name       markeplace name
-     * @param integer   $id_shop    Shop ID
+     * @param string  $name    markeplace name
+     * @param integer $id_shop Shop ID
      *
      * @return array Lengow shipping names option
      */
@@ -318,7 +303,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Clean html
      *
      * @param string $html The html content
@@ -349,8 +333,7 @@ class LengowMain
     }
 
     /**
-     * v3
-     * Format float.
+     * Format float
      *
      * @param float $float The float to format
      *
@@ -362,7 +345,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Get host for generated email.
      *
      * @return string Hostname
@@ -378,13 +360,12 @@ class LengowMain
     }
 
     /**
-     * v3
      * Check webservices access (export and import)
      *
      * @param string $token   shop token
      * @param string $id_shop id shop
      *
-     * @return boolean.
+     * @return boolean
      */
     public static function checkWebservicesAccess($token, $id_shop = null)
     {
@@ -398,13 +379,12 @@ class LengowMain
     }
 
     /**
-     * v3
      * Check if token is correct
      *
      * @param string $token   shop token
      * @param string $id_shop id shop
      *
-     * @return boolean.
+     * @return boolean
      */
     public static function checkToken($token, $id_shop = null)
     {
@@ -416,7 +396,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Generate token
      *
      * @param Shop $id_shop
@@ -446,10 +425,9 @@ class LengowMain
     }
 
     /**
-     * v3
-     * Check if current IP is authorized.
+     * Check if current IP is authorized
      *
-     * @return boolean.
+     * @return boolean
      */
     public static function checkIP()
     {
@@ -468,7 +446,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Check if we are in phpunit test
      *
      * @return boolean.
@@ -485,13 +462,12 @@ class LengowMain
     }
 
     /**
-     * v3
      * Writes log
      *
-     * @param string $category Category log
-     * @param string $txt log message
-     * @param boolean $force_output output on screen
-     * @param string $marketplace_sku lengow marketplace sku
+     * @param string  $category        Category log
+     * @param string  $txt             log message
+     * @param boolean $force_output    output on screen
+     * @param string  $marketplace_sku lengow marketplace sku
      */
     public static function log($category, $txt, $force_output = false, $marketplace_sku = null)
     {
@@ -500,7 +476,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Set message with params for translation
      *
      * @param string $key
@@ -523,7 +498,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Decode message with params for translation
      *
      * @param string $message
@@ -553,17 +527,15 @@ class LengowMain
     }
 
     /**
-     * v3
      * Suppress log files when too old
      */
     public static function cleanLog()
     {
         $log_files = LengowLog::getFiles();
-
         $days = array();
-        $days[] = 'logs-' . date('Y-m-d') . '.txt';
+        $days[] = 'logs-'.date('Y-m-d').'.txt';
         for ($i = 1; $i < LengowMain::$LOG_LIFE; $i++) {
-            $days[] = 'logs-' . date('Y-m-d', strtotime('-' . $i . 'day')) . '.txt';
+            $days[] = 'logs-'.date('Y-m-d', strtotime('-'.$i.'day')).'.txt';
         }
         if (empty($log_files)) {
             return;
@@ -764,11 +736,9 @@ class LengowMain
             /* OE */
             '/[\x{0152}]/u'
         );
-
         // ö to oe
         // å to aa
         // ä to ae
-
         $replacements = array(
             'a',
             'c',
@@ -812,12 +782,10 @@ class LengowMain
             'AE',
             'OE'
         );
-
         return preg_replace($patterns, $replacements, $str);
     }
 
     /**
-     * v3
      * Check logs table and send mail for order not imported correctly
      *
      * @param  boolean $log_output See log or not
@@ -887,19 +855,16 @@ class LengowMain
     }
 
     /**
-     * v3
      * Mark log as sent by email
      *
-     * @param integer $id
+     * @param integer $id_order_log
      */
     public static function logSent($id_order_log)
     {
         if (_PS_VERSION_ < '1.5') {
             Db::getInstance()->autoExecute(
                 _DB_PREFIX_.'lengow_logs_import',
-                array(
-                    'mail' => 1,
-                ),
+                array('mail' => 1),
                 'UPDATE',
                 '`id` = \''.(int)$id_order_log.'\'',
                 1
@@ -907,9 +872,7 @@ class LengowMain
         } else {
             Db::getInstance()->update(
                 'lengow_logs_import',
-                array(
-                    'mail' => 1,
-                ),
+                array('mail' => 1),
                 '`id` = \''.(int)$id_order_log.'\'',
                 1
             );
@@ -928,7 +891,6 @@ class LengowMain
         if (!Module::isInstalled($module_name)) {
             return false;
         }
-
         if (_PS_VERSION_ >= '1.5') {
             if (!Module::isEnabled($module_name)) {
                 return false;
@@ -948,11 +910,9 @@ class LengowMain
         $supported_version = '2.1.0';
         $sep = DIRECTORY_SEPARATOR;
         $module_dir = _PS_MODULE_DIR_.$module_name.$sep;
-
         if (!LengowMain::isModuleInstalled($module_name)) {
             return false;
         }
-
         require_once($module_dir.$module_name.'.php');
         $mr = new MondialRelay();
         if (version_compare($mr->version, $supported_version, '>=')) {
@@ -960,7 +920,6 @@ class LengowMain
         } else {
             return false;
         }
-
     }
 
     /**
@@ -974,11 +933,9 @@ class LengowMain
         $supported_version = '2.8.5';
         $sep = DIRECTORY_SEPARATOR;
         $module_dir = _PS_MODULE_DIR_.$module_name.$sep;
-
         if (!LengowMain::isModuleInstalled($module_name)) {
             return false;
         }
-
         require_once($module_dir.$module_name.'.php');
         $soColissimo = new Socolissimo();
         if (version_compare($soColissimo->version, $supported_version, '>=')) {
@@ -1047,7 +1004,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Get webservices links
      *
      * @param $id_shop integer
@@ -1061,7 +1017,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Get webservices links
      *
      * @param $id_shop integer
@@ -1075,7 +1030,6 @@ class LengowMain
     }
 
     /**
-     * v3
      * Get base url for Lengow webservices and files
      *
      * @param $id_shop integer
@@ -1138,8 +1092,10 @@ class LengowMain
 
     /**
      * Translates a camel case string into a string with underscores (e.g. firstName -&gt; first_name)
-     * @param    string   $str    String in camel case format
-     * @return    string            $str Translated into underscore format
+     *
+     * @param string $str String in camel case format
+     *
+     * @return string
      */
     public function fromCamelCase($str)
     {
@@ -1150,9 +1106,11 @@ class LengowMain
 
     /**
      * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName)
-     * @param    string   $str                     String in underscore format
-     * @param    bool     $capitalise_first_char   If true, capitalise the first char in $str
-     * @return   string                              $str translated into camel caps
+     *
+     * @param string  $str                   String in underscore format
+     * @param boolean $capitalise_first_char If true, capitalise the first char in $str
+     *
+     * @return string
      */
     public function toCamelCase($str, $capitalise_first_char = false)
     {
@@ -1163,6 +1121,11 @@ class LengowMain
         return preg_replace_callback('/_([a-z])/', $func, $str);
     }
 
+    /**
+     * Check if is a new marchant
+     *
+     * @return boolean
+     */
     public static function isNewMerchant()
     {
         $shops = LengowShop::findAll();

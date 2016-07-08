@@ -20,12 +20,10 @@
  */
 
 /**
- * The Lengow Product Class.
- *
+ * Lengow Shop Class
  */
 class LengowShop extends Shop
 {
-
     /**
      * Construct
      */

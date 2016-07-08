@@ -24,7 +24,7 @@ class LengowFeedController extends LengowController
     protected $list;
 
     /**
-     * Update data
+     * Process Post Parameters
      */
     public function postProcess()
     {
@@ -154,15 +154,11 @@ class LengowFeedController extends LengowController
                     $result = array();
                     foreach ($shops as $shopId) {
                         $checkShop = $this->checkShop($shopId['id_shop']);
-
                         $data = array();
                         $data['shop_id'] = $shopId['id_shop'];
-
                         if ($checkShop) {
-                            $data['check_shop']     = true;
-
+                            $data['check_shop'] = true;
                             $sync_date = Configuration::get('LENGOW_LAST_EXPORT', null, null, $data['shop_id']);
-
                             if ($sync_date == null) {
                                 $data['tooltip'] = $this->locale->t('product.screen.shop_not_index');
                             } else {
@@ -258,7 +254,8 @@ class LengowFeedController extends LengowController
     /**
      * Reload Total product / Exported product
      *
-     * @param $shopId
+     * @param integer $shopId
+     *
      * @return array Number of product exported/total for this shop
      */
     public function reloadTotal($shopId)
@@ -275,9 +272,9 @@ class LengowFeedController extends LengowController
     }
 
     /**
-     * Reload Total product / Exported product
+     * Build product grid
      *
-     * @param $shopId
+     * @param integer $shopId
      *
      * @return string
      */
@@ -305,6 +302,7 @@ class LengowFeedController extends LengowController
             'filter_order'  => true,
             'filter_key'    => 'pl.name',
             'width'         => '20%',
+            'display_callback'  => 'LengowFeedController::displayLink',
         );
         $fields_list['reference'] = array(
             'title'         => $this->locale->t('product.table.reference'),
@@ -546,6 +544,15 @@ class LengowFeedController extends LengowController
         return $html;
     }
 
+    /**
+     * Get product link
+     *
+     * @param string $key
+     * @param string $value
+     * @param string $item
+     *
+     * @return string
+     */
     public static function displayLink($key, $value, $item)
     {
         // This line is useless, but Prestashop validator require it
@@ -558,11 +565,11 @@ class LengowFeedController extends LengowController
                     return '<a href="'.
                     $link->getAbsoluteAdminLink((_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'), false, true).
                     '&updateproduct&id_product='.$item['id_product']
-                    .'" target="_blank" class="sub-link">'.$value.'</a>';
+                    .'" target="_blank">'.$value.'</a>';
                 } else {
                     return '<a href="' .
                         $link->getAdminLink('AdminProducts', true, ['id_product' => $item['id_product']]).
-                        '" target="_blank" class="sub-link">' . $value . '</a>';
+                        '" target="_blank">'.$value.'</a>';
                 }
             } else {
                 return $value;

@@ -20,7 +20,7 @@
  */
 
 /**
- * Lengow Invalid Lengow Object Exception class
+ * Lengow Exception Class
  */
 class LengowException extends Exception
 {

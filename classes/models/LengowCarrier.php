@@ -19,20 +19,32 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Carrier Class
+ */
 class LengowCarrier extends Carrier
 {
-
+    /**
+    * integer Carrier compatibility ensured
+    */
     const COMPATIBILITY_OK = 1;
+
+    /**
+    * integer not a carrier module
+    */
     const NO_COMPATIBLITY = 0;
+
+    /**
+    * integer Carrier compatibility not ensured
+    */
     const COMPATIBILITY_KO = -1;
 
     /**
-     * v3
      * Returns carrier id according to the module name given
      *
-     * @param string        $module_name        Module name
-     * @param integer       $id_lang            lang id
-     * @param LengowAddress $shipping_address   Lengow Address
+     * @param string        $module_name      Module name
+     * @param integer       $id_lang          lang id
+     * @param LengowAddress $shipping_address Lengow Address
      *
      * @return integer carrier id
      */
@@ -74,11 +86,10 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Get carrier id for a given name
      *
-     * @param string    $name       Carrier name
-     * @param integer   $id_lang    lang id
+     * @param string  $name    Carrier name
+     * @param integer $id_lang lang id
      *
      * @return mixed
      */
@@ -94,7 +105,6 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Returns the carrier received from the marketplace and returns the matched prestashop carrier if found
      *
      * @param string            $carrier_code
@@ -122,15 +132,14 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Ensure carrier compatibility with SoColissimo and MondialRelay Modules
      *
-     * @param integer       $id_customer        customer id
-     * @param integer       $id_cart            cart id
-     * @param integer       $id_carrier         carrier id
-     * @param LengowAddress $shipping_address   order shipping address
+     * @param integer       $id_customer      customer id
+     * @param integer       $id_cart          cart id
+     * @param integer       $id_carrier       carrier id
+     * @param LengowAddress $shipping_address order shipping address
      *
-     * @return integer    -1 = compatibility not ensured, 0 = not a carrier module, 1 = compatibility ensured
+     * @return integer -1 = compatibility not ensured, 0 = not a carrier module, 1 = compatibility ensured
      */
     public static function carrierCompatibility($id_customer, $id_cart, $id_carrier, $shipping_address)
     {
@@ -171,12 +180,11 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Save order in SoColissimo table
      *
-     * @param integer       $id_cart            cart id
-     * @param integer       id_customer         customer id
-     * @param LengowAddress $shipping_adddress  shipping address
+     * @param integer       $id_cart           cart id
+     * @param integer       id_customer        customer id
+     * @param LengowAddress $shipping_adddress shipping address
      *
      * @return bool
      */
@@ -191,13 +199,11 @@ class LengowCarrier extends Carrier
                 ))
             );
         }
-
         $customer = new LengowCustomer($id_customer);
         $params = array();
         if (!empty($shipping_address->id_relay)) {
             $delivery_mode = 'A2P';
             $so_colissimo = new SCFields($delivery_mode);
-
             $params['PRID']          = (string)$shipping_address->id_relay;
             $params['PRCOMPLADRESS'] = (string)$shipping_address->other;
             $params['PRADRESS1']     = (string)$shipping_address->address1;
@@ -210,12 +216,10 @@ class LengowCarrier extends Carrier
         } else {
             $delivery_mode = 'DOM';
             $so_colissimo = new SCFields($delivery_mode);
-
             $params['CECOMPLADRESS'] = (string)$shipping_address->other;
             $params['CEADRESS2']     = (string)$shipping_address->address2;
             $params['CEADRESS3']     = (string)$shipping_address->address1;
         }
-
         // common params
         $params['DELIVERYMODE']  = $delivery_mode;
         $params['CENAME']        = (string)$shipping_address->lastname;
@@ -225,7 +229,6 @@ class LengowCarrier extends Carrier
         $params['CEZIPCODE']     = (string)$shipping_address->postcode;
         $params['CETOWN']        = (string)$shipping_address->city;
         $params['PRPAYS']        = (string)Country::getIsoById($shipping_address->id_country);
-
         $sql = 'INSERT INTO '._DB_PREFIX_.'socolissimo_delivery_info
 			(`id_cart`,
             `id_customer`,
@@ -307,11 +310,10 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Check if relay ID is correct
      *
-     * @param integer   $id_address_delivery    shipping address id
-     * @param string    $id_relay               relay id
+     * @param integer $id_address_delivery shipping address id
+     * @param string  $id_relay            relay id
      *
      * @return boolean
      */
@@ -344,13 +346,13 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Save order in MR table
      *
-     * @param array     $relay          relay info
-     * @param integer   $id_customer    customer id
-     * @param integer   $id_carrier     carrier id
-     * @param integer   $insurance      insurance
+     * @param array   $relay       relay info
+     * @param integer $id_customer customer id
+     * @param integer $id_carrier  carrier id
+     * @param integer $id_cart     cart id
+     * @param integer $insurance   insurance
      *
      * @return boolean
      */
@@ -375,13 +377,10 @@ class LengowCarrier extends Carrier
             }
         }
         $query = rtrim($query, ', ').')';
-
         return $db->execute($query);
     }
 
-
     /**
-     * v3
      * Get Marketplace By Carrier And Country
      *
      * @param integer $id_carrier
@@ -401,7 +400,6 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Get Marketplace By Carrier And Country
      *
      * @param string  $marketplace_carrier_sku
@@ -424,10 +422,10 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3-test
      * Get List Carrier in all Lengow Marketplace API
      *
      * @param boolean $force Force Update
+     *
      * @return array
      */
     public static function getListMarketplaceCarrierAPI($force = false)
@@ -438,7 +436,6 @@ class LengowCarrier extends Carrier
                 return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_LIST_MARKETPLACE'), true);
             }
         }
-
         $finalCarrier = array();
         $findCarrier = array();
         $shops = LengowShop::findAll(true);
@@ -471,7 +468,6 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3-test
      * Sync Marketplace's Carrier
      */
     public static function syncListMarketplace()
@@ -503,27 +499,27 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Insert Data into lengow marketplace carrier table
      *
-     * @param string $code
-     * @param string $name
+     * @param string  $code
+     * @param string  $name
+     * @param integer $id_country
      *
-     * @param integer $countryId
+     * @param integer
      */
-    public static function insertCountryInMarketplace($code, $name, $countryId)
+    public static function insertCountryInMarketplace($code, $name, $id_country)
     {
         $result = Db::getInstance()->ExecuteS(
             'SELECT id_country FROM '._DB_PREFIX_.'lengow_marketplace_carrier
                     WHERE marketplace_carrier_sku = "'.pSQL($code).'" AND
-                    id_country = '.(int)$countryId
+                    id_country = '.(int)$id_country
         );
         if (count($result) == 0) {
             if (_PS_VERSION_ < '1.5') {
                 Db::getInstance()->autoExecute(
                     _DB_PREFIX_.'lengow_marketplace_carrier',
                     array(
-                        'id_country' => (int)$countryId,
+                        'id_country' => (int)$id_country,
                         'marketplace_carrier_sku' => pSQL($code),
                         'marketplace_carrier_name' => pSQL($name),
                     ),
@@ -533,7 +529,7 @@ class LengowCarrier extends Carrier
                 Db::getInstance()->insert(
                     'lengow_marketplace_carrier',
                     array(
-                        'id_country' => (int)$countryId,
+                        'id_country' => (int)$id_country,
                         'marketplace_carrier_sku' => pSQL($code),
                         'marketplace_carrier_name' => pSQL($name),
                     )
@@ -543,7 +539,6 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Get all active carriers
      *
      * @param integer $id_country
@@ -570,7 +565,6 @@ class LengowCarrier extends Carrier
 
 
     /**
-     * v3
      * Get active carrier
      *
      * @param integer $id_country
@@ -616,22 +610,22 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
+     * Get active carrier by country
      *
-     * @param integer $carrier_id
+     * @param integer $id_carrier
      * @param integer $id_country
      *
      * @return boolean
      */
-    public static function getActiveCarrierByCarrierId($carrier_id, $id_country)
+    public static function getActiveCarrierByCarrierId($id_carrier, $id_country)
     {
         if (_PS_VERSION_ < '1.5') {
-            return $carrier_id;
+            return $id_carrier;
         }
         $sql = 'SELECT * FROM '._DB_PREFIX_.'carrier c
                     INNER JOIN '._DB_PREFIX_.'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
                     INNER JOIN '._DB_PREFIX_.'country co ON (co.id_zone = cz.id_zone)
-                    WHERE c.id_carrier = '.(int)$carrier_id.' AND co.id_country = '.(int)$id_country;
+                    WHERE c.id_carrier = '.(int)$id_carrier.' AND co.id_country = '.(int)$id_country;
         $row = Db::getInstance()->getRow($sql);
         if ($row) {
             if ((int)$row['deleted'] == 1) {
@@ -651,7 +645,6 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Get List Carrier in all Lengow Marketplace
      *
      * @param integer $id_country
@@ -661,9 +654,7 @@ class LengowCarrier extends Carrier
     public static function getListMarketplaceCarrier($id_country = null)
     {
         $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
-
         $condition = $id_country ? 'WHERE lmc.id_country = '.(int)$id_country : '';
-
         $sql = 'SELECT lmc.id, lmc.id_carrier, co.iso_code, cl.name, lmc.id_country, lmc.marketplace_carrier_sku,
             lmc.marketplace_carrier_name FROM '
             ._DB_PREFIX_.'lengow_marketplace_carrier lmc INNER JOIN '
@@ -679,7 +670,6 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Insert a new marketplace carrier country in the table
      *
      * @param integer $id_country
@@ -689,12 +679,9 @@ class LengowCarrier extends Carrier
     public static function insert($id_country)
     {
         $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
-
         $sql = 'SELECT marketplace_carrier_sku, marketplace_carrier_name 
                 FROM '._DB_PREFIX_.'lengow_marketplace_carrier WHERE id_country = '.(int)$default_country;
-
         $marketplace_carriers = Db::getInstance()->executeS($sql);
-
         foreach ($marketplace_carriers as $key) {
             if (_PS_VERSION_ < '1.5') {
                 DB::getInstance()->autoExecute(
@@ -721,7 +708,6 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * v3
      * Delete a marketplace carrier country
      *
      * @param integer $id_country

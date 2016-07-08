@@ -42,7 +42,14 @@ body.lgw-home-iframe .lgw-content-section p{
 }
 
 .adminlengowhome #lgw-preprod{
-  top:0;
+  color:white;
+  background:#e55a4d;
+  padding:5px 10px;
+  position:absolute;
+  left:0px;
+  font-size:12px;
+  z-index:2;
+  top:0px;
 }
 
 .adminlengowhome .lgw-label_red{
@@ -68,6 +75,10 @@ body.lgw-home-iframe .lgw-content-section p{
 }
 .lgw-home-stats{
   margin:60px 0 30px;
+}
+
+.lgw-home-menu .lgw-box{
+  min-height: 280px;
 }
 
 /*************************************************/
@@ -112,6 +123,17 @@ body.lgw-home-iframe .lgw-content-section p{
     position: absolute;
     top: -10px;
     right:-3px;
+}
+
+.lengow_shop_status_label span{
+  color:#555;
+  font-weight:normal;
+  font: 400 12px/1.42857 "Open Sans",Helvetica,Arial,sans-serif;
+  text-decoration: underline;
+}
+
+.lengow_shop_status_label span:hover{
+  color:#00aeef;
 }
 
 .lengow_check_shop_sync:after{
@@ -190,13 +212,18 @@ body.lgw-home-iframe .lgw-content-section p{
 /*************************************************/
 /*                     ORDERS                    */
 /*************************************************/
+.adminlengoworder .lengow-nav{
+  width: 1450px;
+}
 
 .adminlengoworder .nobootstrap,
 .adminlengowordersetting .nobootstrap{
     padding-top:154px;
 }
 .adminlengoworder .lgw-container{
-    min-width:1250px;
+    /*min-width:1250px;*/
+    /*min-width: 1330px;*/
+    min-width: 1450px;
     width:100%;
 }
 .lengow_datepicker_box{
@@ -211,12 +238,10 @@ body.lgw-home-iframe .lgw-content-section p{
     margin-right:3px;
 }
 
-.adminlengoworder #lgw-preprod{
-  top:108px;
-}
-
+.adminlengoworder #lgw-preprod,
 .adminlengowordersetting #lgw-preprod{
-    top:108px;
+    top:110px;
+
 }
 
 .adminlengowordersetting .add_lengow_default_carrier{
@@ -258,25 +283,28 @@ body.lgw-home-iframe .lgw-content-section p{
   color:#555;
 }
 
-span.img_no_order {
+/*************************************************/
+/*               MAIN SETTINGS                   */
+/*************************************************/
+
+.lgw-container #download_log{
+  display:none;
+}
+.img_no_order {
     background : transparent url("../img/no-result.png") no-repeat;
     height: 208px;
     width: 395px;
     display: block;
-    margin: 0 auto;
-}
-
-span.title_no_order {
-    display: block;
-    font-size: 32px;
-    font-weight: bold;
-    margin: 10px 0;
-    color: #61687d;
+    margin: 60px auto 0;
 }
 
 #lengow_no_order_message {
     padding: 30px;
     text-align:center;
     font-size: 18px;
-    color:#61687d;
+    color:#828282;
+}
+.default_carrier_missing{
+  color:#e55a4d;
+  font-size:13px;
 }

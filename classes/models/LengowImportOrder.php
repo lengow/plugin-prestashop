@@ -20,7 +20,7 @@
  */
 
 /**
-* Lengow Import class
+* Lengow Import Order Class
 */
 class LengowImportOrder
 {
@@ -175,13 +175,18 @@ class LengowImportOrder
      *
      * @param array params optional options
      *
-     * integer  $shop_id        Id shop for current order
-     * integer  $id_shop_group  Id shop group for current order
-     * integer  $id_lang        Id lang for current order
-     * mixed    $context        Context for current order
-     * boolean  $force_product  force import of products
-     * boolean  $preprod_mode   preprod mode
-     * boolean  $log_output     display log messages
+     * integer  $shop_id             Id shop for current order
+     * integer  $id_shop_group       Id shop group for current order
+     * integer  $id_lang             Id lang for current order
+     * mixed    $context             Context for current order
+     * boolean  $force_product       force import of products
+     * boolean  $preprod_mode        preprod mode
+     * boolean  $log_output          display log messages
+     * string   $marketplace_sku     order marketplace sku
+     * integer  $delivery_address_id order delivery address id
+     * mixed    $order_data          order data
+     * mixed    $package_data        package data
+     * boolean  $first_package       it is the first package
      */
     public function __construct($params = array())
     {
@@ -197,7 +202,6 @@ class LengowImportOrder
         $this->order_data           = $params['order_data'];
         $this->package_data         = $params['package_data'];
         $this->first_package        = $params['first_package'];
-
         // get marketplace and Lengow order state
         $this->marketplace = LengowMain::getMarketplaceSingleton(
             (string)$this->order_data->marketplace,
@@ -417,6 +421,7 @@ class LengowImportOrder
                 // ensure carrier compatibility with SoColissimo & Mondial Relay
                 $this->checkCarrierCompatibility($order);
             }
+            // add quantity back for re-import order and order shipped by marketplace
             if ($this->is_reimported
                 || ($this->shipped_by_mp && !LengowConfiguration::getGlobalValue('LENGOW_IMPORT_STOCK_SHIP_MP'))
             ) {
@@ -463,23 +468,23 @@ class LengowImportOrder
     /**
      * Return an array of result for each order
      *
-     * @param string    $type_result        Type of result (new, update, error)
-     * @param integer   $id_order_lengow    ID of the lengow order record
-     * @param integer   $order_id           Order ID Prestashop
+     * @param string  $type_result     Type of result (new, update, error)
+     * @param integer $id_order_lengow ID of the lengow order record
+     * @param integer $order_id        Order ID Prestashop
      *
      * @return array
      */
     protected function returnResult($type_result, $id_order_lengow, $order_id = null)
     {
         $result = array(
-            'order_id'              => $order_id,
-            'id_order_lengow'       => $id_order_lengow,
-            'marketplace_sku'       => $this->marketplace_sku,
-            'marketplace_name'      => (string)$this->marketplace->name,
-            'lengow_state'          => $this->order_state_lengow,
-            'order_new'             => ($type_result == 'new' ? true : false),
-            'order_update'          => ($type_result == 'update' ? true : false),
-            'order_error'           => ($type_result == 'error' ? true : false)
+            'order_id'         => $order_id,
+            'id_order_lengow'  => $id_order_lengow,
+            'marketplace_sku'  => $this->marketplace_sku,
+            'marketplace_name' => (string)$this->marketplace->name,
+            'lengow_state'     => $this->order_state_lengow,
+            'order_new'        => ($type_result == 'new' ? true : false),
+            'order_update'     => ($type_result == 'update' ? true : false),
+            'order_error'      => ($type_result == 'error' ? true : false)
         );
         return $result;
     }
@@ -556,9 +561,6 @@ class LengowImportOrder
     /**
      * Checks if order data are present
      *
-     * @param mixed     $order_data
-     * @param mixed     $package
-     *
      * @return boolean
      */
     protected function checkOrderData()
@@ -609,7 +611,7 @@ class LengowImportOrder
     /**
      * Checks if an external id already exists
      *
-     * @param array $external_ids
+     * @param array $external_ids external ids return by API
      *
      * @return mixed
      */
@@ -681,10 +683,6 @@ class LengowImportOrder
 
     /**
      * Get tracking data and update Lengow order record
-     *
-     * @param mixed $package
-     *
-     * @return mixed
      */
     protected function loadTrackingData()
     {
@@ -797,8 +795,8 @@ class LengowImportOrder
     /**
      * Create and validate order
      *
-     * @param $cart
-     * @param $products
+     * @param LengowCart $cart
+     * @param array      $products
      *
      * @return
      */
@@ -851,9 +849,9 @@ class LengowImportOrder
     /**
      * Create or load address based on API data
      *
-     * @param integer   $id_customer
-     * @param array     $address_data   API data
-     * @param boolean   $shipping_data
+     * @param integer $id_customer
+     * @param array   $address_data
+     * @param boolean $shipping_data
      *
      * @return LengowAddress
      */
@@ -876,7 +874,10 @@ class LengowImportOrder
         $address = LengowAddress::getByHash($address_data['address_full']);
         // if address exists => check if names are the same
         if ($address) {
-            if ($address->id_customer == $id_customer) {
+            if ($address->id_customer == $id_customer
+                && $address->lastname == $address_data['last_name']
+                && $address->firstname == $address_data['first_name']
+            ) {
                 if (isset($address_data['id_relay'])) {
                     $address->id_relay = $address_data['id_relay'];
                 }
@@ -944,15 +945,13 @@ class LengowImportOrder
                     );
                     $ids = LengowProduct::advancedSearch($attribute_value, $this->id_shop, $product_ids);
                 }
-
                 // for testing => replace values
                 // $ids['id_product'] = '1';
                 // $ids['id_product_attribute'] = '1';
-
                 if (!empty($ids)) {
                     $id_full = $ids['id_product'];
                     if (!isset($ids['id_product_attribute'])) {
-                        $p = new LengowProduct($ids['id_product']);
+                        $p = new Product($ids['id_product']);
                         if ($p->hasAttributes()) {
                             throw new LengowException(
                                 LengowMain::setLogMessage('lengow_log.exception.product_is_a_parent', array(
@@ -1006,26 +1005,22 @@ class LengowImportOrder
     protected function getCarrierId()
     {
         $carrier = null;
-
         if (!isset($this->shipping_address->id_country)) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country')
             );
         }
-
         $order_country_id = $this->shipping_address->id_country;
         if ((int)$order_country_id == 0) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country')
             );
         }
-
         $carrier_id = LengowCarrier::getMarketplaceByCarrierSku($this->carrier_name, $order_country_id);
         $carrier_id = LengowCarrier::getActiveCarrierByCarrierId($carrier_id, $order_country_id);
         if ($carrier_id > 0) {
             $carrier = new Carrier($carrier_id);
         }
-
         if (!$carrier) {
             $carrier = LengowCarrier::getActiveCarrier($order_country_id, true);
             if (!$carrier) {
@@ -1084,8 +1079,8 @@ class LengowImportOrder
     /**
      * Add a comment to the order
      *
-     * @param integer   $order_id   Order ID Prestashop
-     * @param string    $comment    Order Comment
+     * @param integer $order_id Order ID Prestashop
+     * @param string  $comment  Order Comment
      */
     protected function addCommentOrder($order_id, $comment)
     {
@@ -1100,8 +1095,9 @@ class LengowImportOrder
 
     /**
      * Add quantity back to stock
-     * @param array     $products   list of products
-     * @param integer   $id_shop    shop id
+     *
+     * @param array   $products list of products
+     * @param integer $id_shop  shop id
      *
      * @return boolean
      */
@@ -1111,7 +1107,7 @@ class LengowImportOrder
             $product_ids = explode('_', $sku);
             $id_product_attribute = isset($product_ids[1]) ? $product_ids[1] : null;
             if (_PS_VERSION_ < '1.5') {
-                $p = new LengowProduct($product_ids[0]);
+                $p = new Product($product_ids[0]);
                 return $p->addStockMvt($product['quantity'], (int)_STOCK_MOVEMENT_ORDER_REASON_, $id_product_attribute);
             } else {
                 StockAvailable::updateQuantity(
@@ -1136,7 +1132,6 @@ class LengowImportOrder
         } else {
             $order_date = (string)$this->order_data->imported_at;
         }
-
         $params = array(
             'marketplace_sku'       => pSQL($this->marketplace_sku),
             'id_shop'               => (int)$this->id_shop,
@@ -1159,7 +1154,6 @@ class LengowImportOrder
         } else {
             $params['message'] = pSQL((string)$this->order_data->comments);
         }
-
         if (_PS_VERSION_ < '1.5') {
             $result = Db::getInstance()->autoExecute(
                 _DB_PREFIX_.'lengow_orders',
@@ -1186,14 +1180,14 @@ class LengowImportOrder
     /**
      * Save order line in lengow orders line table
      *
-     * @param LengowOrder $order order imported
+     * @param LengowOrder $order    order imported
+     * @param array       $products order products
      *
      * @return boolean
      */
     protected function saveLengowOrderLine($order, $products)
     {
         $order_line_saved = false;
-
         foreach ($products as $product_id => $values) {
             $order_line_id =  $values['marketplace_order_line_id'];
             $id_order_detail = LengowOrderDetail::findByOrderIdProductId($order->id, $product_id);

@@ -21,7 +21,6 @@
 
 class LengowMainSettingController extends LengowController
 {
-
     /**
      * Process Post Parameters
      */
@@ -30,8 +29,9 @@ class LengowMainSettingController extends LengowController
         $action = Tools::getValue('action');
         switch ($action) {
             case 'process':
+                $security = LengowMain::decodeLogMessage('global_setting.screen.i_am_sure');
                 if (isset($_REQUEST['uninstall_textbox']) &&
-                    trim($_REQUEST['uninstall_textbox']) == 'I AM SURE'
+                    trim($_REQUEST['uninstall_textbox']) == $security
                 ) {
                     $backup = new LengowBackup();
                     if ($backup->add()) {

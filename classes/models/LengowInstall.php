@@ -20,16 +20,28 @@
  */
 
 /**
- * The Lengow Import Class.
- *
+ * Lengow Install Class
  */
 class LengowInstall
 {
-
+    /**
+    * lengow module
+    */
     private $lengowModule;
+
+    /**
+    * lengow hook class
+    */
     private $lengowHook;
+
+    /**
+    * installation status
+    */
     protected static $installationStatus;
 
+    /**
+    * All module tabs
+    */
     static private $tabs = array(
         'tab.home'          => array('name' => 'AdminLengowHome', 'active' => true),
         'tab.product'       => array('name' => 'AdminLengowFeed', 'active' => false),
@@ -40,6 +52,9 @@ class LengowInstall
         'tab.legals'        => array('name' => 'AdminLengowLegals', 'active' => false)
     );
 
+    /**
+    * All module tables
+    */
     static public $tables = array(
         'lengow_actions',
         'lengow_carrier_country',
@@ -50,29 +65,46 @@ class LengowInstall
         'lengow_product',
     );
 
+    /**
+     * Construct
+     */
     public function __construct($module)
     {
         $this->lengowModule = $module;
         $this->lengowHook = new LengowHook($module);
     }
 
+    /**
+     * Reset option
+     *
+     * @return boolean Result of reset process
+     */
     public function reset()
     {
         return LengowConfiguration::resetAll(true);
     }
 
+    /**
+     * Install otpion
+     *
+     * @return boolean Result of install process
+     */
     public function install()
     {
         return $this->setDefaultValues() && $this->update();
     }
 
+    /**
+     * Uninstall option
+     *
+     * @return boolean Result of uninstall process
+     */
     public function uninstall()
     {
         return LengowCron::removeCronTasks() && $this->uninstallTab();
     }
 
     /**
-     * v3
      * Add admin Tab (Controller)
      *
      * @return boolean Result of add tab on database.
@@ -121,7 +153,6 @@ class LengowInstall
     }
 
     /**
-     * v3
      * Remove admin tab
      *
      * @return boolean Result of tab uninstallation
@@ -144,13 +175,17 @@ class LengowInstall
         return true;
     }
 
+    /**
+     * Set default value for Lengow configuration
+     *
+     * @return boolean
+     */
     private static function setDefaultValues()
     {
         return LengowConfiguration::resetAll();
     }
 
     /**
-     * v3
      * Add error status to reimport order
      *
      * @return void
@@ -216,10 +251,9 @@ class LengowInstall
     }
 
     /**
-     * v3
      * Update process
      *
-     * @return void
+     * @return boolean Result of update process
      */
     public function update()
     {
@@ -246,7 +280,6 @@ class LengowInstall
     }
 
     /**
-     * v3
      * Checks if a field exists in BDD
      *
      * @param string $table
@@ -263,7 +296,6 @@ class LengowInstall
     }
 
     /**
-     * v3
      * Checks if a field exists in BDD and Dropped It
      *
      * @param string $table
@@ -281,7 +313,6 @@ class LengowInstall
     }
 
     /**
-     * v3
      * Rename configuration key
      *
      * @param string $oldName
@@ -295,7 +326,6 @@ class LengowInstall
     }
 
     /**
-     * v3
      * Set Installation Status
      *
      * @param boolean $status Installation Status
@@ -306,7 +336,6 @@ class LengowInstall
     }
 
     /**
-     * v3
      * Is Installation In Progress
      *
      * @return boolean
@@ -317,7 +346,6 @@ class LengowInstall
     }
 
     /**
-     * v3
      * Drop Lengow tables
      *
      * @return bool
@@ -325,13 +353,12 @@ class LengowInstall
     public static function dropTable()
     {
         foreach (self::$tables as $table) {
-            Db::getInstance()->Execute('DROP TABLE '._DB_PREFIX_.$table);
+            Db::getInstance()->Execute('DROP TABLE IF EXISTS '._DB_PREFIX_.$table);
         }
         return true;
     }
 
     /**
-     * v3
      * Save Override directory
      */
     public static function saveOverride()
@@ -352,7 +379,7 @@ class LengowInstall
     }
 
     /**
-     * v3
+     * Delete old files
      *
      * @param array $listFiles
      */
@@ -371,9 +398,9 @@ class LengowInstall
     }
 
     /**
-     * v3
+     * Delete old folders
      *
-     * @param $dirPath
+     * @param string $dirPath
      *
      * @return bool
      */
@@ -398,7 +425,6 @@ class LengowInstall
     }
 
     /**
-     * v3
      * Create tab image for version 1.5
      */
     public static function createTabImage()

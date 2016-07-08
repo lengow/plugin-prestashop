@@ -2,8 +2,28 @@
 /*                      GENERICS                 */
 /*************************************************/
 
+#header {
+    min-width: 1445px!important;
+}
+#lgw-preprod{
+  top:165px;
+  left:inherit;
+}
+
+
+.lengow-nav-top{
+  margin-top: 20px !important;
+}
+
+.lengow-nav-bottom {
+    margin-top: 75px!important;
+}
+
 .lengow-nav{
   top:inherit;
+  padding:0;
+  min-width: 1445px;
+  position:absolute;
 }
 
 .lengow-nav .fa-2x {
@@ -36,11 +56,30 @@ body.lengow_body #main {
   margin-top:150px;
 }
 
+.lgw-container {
+    width: 1415px;
+    margin: 0 auto 2em auto;
+    text-align: left;
+}
+.lgw-pagination-arrow {
+    margin-right: 15px;
+    float: left;
+}
+.lgw-pagination-btns a .fa{
+  line-height: 30px;
+}
+
 /*************************************************/
 /*                      HOME                     */
 /*************************************************/
 
+.adminlengowhome #lgw-preprod{
+  top:105px;
+}
 
+.lgw-home-header{
+  background-size:100%;
+}
 
 .lgw-box-link .lgw-box{
   min-height: 250px;
@@ -54,13 +93,31 @@ body.lengow_body #main {
 /*************************************************/
 /*                      SETTINGS                 */
 /*************************************************/
-.form-group.container {
 
+#lengow_mainsettings_wrapper.activePreprod{
+  margin-top:138px;
 }
 
 /*************************************************/
 /*                      ORDERS                   */
 /*************************************************/
+
+#lgw-preprod.adminlengoworder,
+#lgw-preprod.adminlengowordersetting{
+  top: 220px;
+  left: inherit;
+  z-index: 2;
+}
+
+#lengow_order_wrapper.activePreprod,
+#lengow_form_order_setting.activePreprod{
+  margin-top:190px;
+}
+
+.lgw-container .table tr td.shop{
+  min-width: 70px;
+}
+
 
 .lengow-nav-top{
   margin-top:0px;
@@ -74,12 +131,24 @@ body.lengow_body #main {
 /*                      FEEDS                    */
 /*************************************************/
 
+#lengow_feed_wrapper.activePreprod{
+  margin-top:137px;
+}
+
 .lgw-container .table tr th{
   padding:10px 3px;
 }
 
 .lgw-container .table input[type="text"]{
   width:60px;
+}
+
+/*************************************************/
+/*                      HELP                     */
+/*************************************************/
+
+.lengow_help_wrapper.activePreprod{
+  margin-top:138px;
 }
 
 

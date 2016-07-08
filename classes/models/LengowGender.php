@@ -20,8 +20,7 @@
  */
 
 /**
- * The Lengow Gender Class.
- *
+ * Lengow Gender Class
  */
 class LengowGender extends Gender
 {
@@ -71,7 +70,7 @@ class LengowGender extends Gender
      *
      * @param $name The gender text
      *
-     * @return id_gender
+     * @return string
      */
     public static function getGender($name)
     {

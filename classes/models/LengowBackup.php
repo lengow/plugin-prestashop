@@ -19,9 +19,11 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Backup Class
+ */
 class LengowBackup extends Backup
 {
-
     /**
      * Creates a new backup file
      *
@@ -35,12 +37,10 @@ class LengowBackup extends Backup
         } else {
             $ignore_insert_table = array();
         }
-
         // Generate some random number, to make it extra hard to guess backup file names
         $rand = dechex(mt_rand(0, min(0xffffffff, mt_getrandmax())));
         $date = time();
         $backupfile = $this->getRealBackupPath().$date.'-lengowbackup'.$rand.'.sql';
-
         // Figure out what compression is available and open the file
         if (function_exists('bzopen')) {
             $backupfile .= '.bz2';
@@ -51,17 +51,13 @@ class LengowBackup extends Backup
         } else {
             $fp = @fopen($backupfile, 'w');
         }
-
         if ($fp === false) {
             echo Tools::displayError('Unable to create backup file').' "'.addslashes($backupfile).'"';
             return false;
         }
-
         $this->id = realpath($backupfile);
-
         fwrite($fp, '/* Backup for '.Tools::getHttpHost(false, false).__PS_BASE_URI__."\n * at ".date($date)."\n */\n");
         fwrite($fp, "\n".'SET NAMES \'utf8\';'."\n\n");
-
         $found = 0;
         foreach (LengowInstall::$tables as $table) {
             $table = _DB_PREFIX_.$table;
@@ -74,7 +70,6 @@ class LengowBackup extends Backup
                     ' "'.$table;
                 return false;
             }
-
             fwrite($fp, '/* Scheme for table '.$schema[0]['Table']." */\n");
             fwrite($fp, $schema[0]['Create Table'].";\n\n");
             if (!in_array($schema[0]['Table'], $ignore_insert_table)) {
@@ -88,7 +83,6 @@ class LengowBackup extends Backup
                     $i = 1;
                     while ($row = DB::getInstance()->nextRow($data)) {
                         $s = '(';
-
                         foreach ($row as $field => $value) {
                             $tmp = "'".pSQL($value, true)."',";
                             if ($tmp != "'',") {

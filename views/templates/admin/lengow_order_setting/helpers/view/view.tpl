@@ -17,7 +17,13 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
+ 
 <div class="lgw-container">
+    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+        <div id="lgw-preprod" class="adminlengowordersetting">
+            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        </div>
+    {/if}
     <form method="POST" id="lengow_form_order_setting">
         <div class="lgw-box">
             <input type="hidden" name="action" value="process">
@@ -33,7 +39,7 @@
             <p>{$locale->t('order_setting.screen.carrier_management_description')|escape:'htmlall':'UTF-8'}</p>
             <p>{$locale->t('order_setting.screen.country_wt_carrier')|escape:'htmlall':'UTF-8'}
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminCarriers', false, true)|escape:'htmlall':'UTF-8'}">
-                    {$locale->t('order_setting.screen.country_wt_carrier_link')|escape:'htmlall':'UTF-8'}
+                    {$locale->t('order_setting.screen.please_setup_then')|escape:'htmlall':'UTF-8'}
                 </a>
             </p>
             <div id="error_select_country"></div>
@@ -42,7 +48,10 @@
                     {include file='./marketplace_carrier.tpl'}
                 </ul>
             </div>
-            <a href="#" class="add-country"><i class="fa fa-plus"></i> Add a new country</a>
+            <a href="#" class="add-country">
+                <i class="fa fa-plus"></i>
+                {$locale->t('order_setting.screen.add_new_country')|escape:'htmlall':'UTF-8'}
+            </a>
             <div class="select_country" style="display:none">
                 {include file='./select_country.tpl'}
             </div>
@@ -62,8 +71,18 @@
             <p>{$locale->t('order_setting.screen.cron_manual_installation')|escape:'htmlall':'UTF-8'}</p>
             <code>*/15 * * * * wget {$import_url|escape:'htmlall':'UTF-8'}</code>
         </div>
-        <button type="submit" class="lgw-btn lengow_submit_order_setting">
-            {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
+        <button type="submit" class="lgw-btn lgw-btn-progression lengow_submit_order_setting">
+            <div class="btn-inner">
+                <div class="btn-step default">
+                    {$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}
+                </div>
+                <div class="btn-step loading">
+                    {$locale->t('global_setting.screen.setting_saving')|escape:'htmlall':'UTF-8'}
+                </div>
+                <div class="btn-step done" data-success="Saved!" data-error="Error">
+                    {$locale->t('global_setting.screen.setting_saved')|escape:'htmlall':'UTF-8'}
+                </div>
+            </div>
         </button>
     </form>
 </div>

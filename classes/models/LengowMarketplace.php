@@ -20,8 +20,7 @@
  */
 
 /**
- * The Lengow Marketplace Class.
- *
+ * Lengow Marketplace Class
  */
 class LengowMarketplace
 {
@@ -81,8 +80,8 @@ class LengowMarketplace
     /**
     * Construct a new Markerplace instance with xml configuration.
     *
-    * @param string     $name       The name of the marketplace
-    * @param integer    $id_shop    ID Shop for connector
+    * @param string  $name    The name of the marketplace
+    * @param integer $id_shop ID Shop for connector
     */
     public function __construct($name, $id_shop = null)
     {
@@ -209,9 +208,8 @@ class LengowMarketplace
     /**
     * Check if a status is valid for action
     *
-    * @param array      $action_status  valid status for action
-    *
-    * @param integer    $id_status      curent status id
+    * @param array   $action_status valid status for action
+    * @param integer $id_status     curent status id
     *
     * @return boolean
     */
@@ -228,7 +226,7 @@ class LengowMarketplace
     /**
      * Is carrier require when shipping
      *
-     * @return bool
+     * @return boolean
      */
     public function isRequireCarrier()
     {
@@ -242,19 +240,11 @@ class LengowMarketplace
     }
 
     /**
-     * Get Marketplace Name
-     */
-    public function getMarketplaceName()
-    {
-
-    }
-
-    /**
      * Is marketplace contain order Line
      *
      * @param string $action (ship / cancel / refund)
      *
-     * @return bool
+     * @return boolean
      */
     public function containOrderLine($action)
     {
@@ -276,9 +266,9 @@ class LengowMarketplace
      * Call API action and create action in lengow_actions table
      *
      * @param integer $order
-     * @param string $id_order_line
+     * @param string  $id_order_line
      *
-     * @return bool
+     * @return boolean
      */
     public function callAction($action, $order, $id_order_line = null)
     {
@@ -305,7 +295,6 @@ class LengowMarketplace
                     LengowMain::setLogMessage('lengow_log.exception.marketplace_name_require')
                 );
             }
-
             $params = array();
             $actions = $this->actions[$action];
             if (isset($actions['args']) && isset($actions['optional_args'])) {
@@ -390,7 +379,6 @@ class LengowMarketplace
             if ($id_order_line) {
                 $params['line'] = $id_order_line;
             }
-
             if (isset($actions['args'])) {
                 foreach ($actions['args'] as $arg) {
                     if (!isset($params[$arg]) || Tools::strlen($params[$arg]) == 0) {
@@ -402,7 +390,6 @@ class LengowMarketplace
                     }
                 }
             }
-
             if (isset($actions['optional_args'])) {
                 foreach ($actions['optional_args'] as $arg) {
                     if (isset($params[$arg]) && Tools::strlen($params[$arg]) == 0) {
@@ -410,11 +397,9 @@ class LengowMarketplace
                     }
                 }
             }
-
             $params['marketplace_order_id'] = $order->lengow_marketplace_sku;
             $params['marketplace'] = $order->lengow_marketplace_name;
             $params['action_type'] = $action;
-
             $result = LengowConnector::queryApi(
                 'get',
                 '/v3.0/orders/actions/',

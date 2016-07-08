@@ -19,9 +19,14 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow List Class
+ */
 class LengowList
 {
-
+    /**
+    * All params for lengow grid
+    */
     protected $fields_list;
     protected $collection;
     protected $total;
@@ -59,9 +64,7 @@ class LengowList
         $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
         $this->orderColumn = isset($params['order_column']) ? $params['order_column'] : '';
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
-
         $this->locale = new LengowTranslation();
-
         $this->context = Context::getContext();
         if (_PS_VERSION_ < 1.5) {
             $this->context->smarty->ps_language = $this->context->language;
@@ -69,7 +72,6 @@ class LengowList
     }
 
     /**
-     * v3
      * Display Table Header
      *
      * @return string
@@ -153,7 +155,6 @@ class LengowList
     }
 
     /**
-     * v3
      * Display Table Content
      *
      * @return string
@@ -176,7 +177,6 @@ class LengowList
     }
 
     /**
-     * v3
      * Display Table Row
      *
      * @param string $item
@@ -222,7 +222,6 @@ class LengowList
                             break;
                         case 'switch_product':
                             $status = $this->toolbox ? 'disabled' : '';
-
                             $value = '<div class="lgw-switch '.($item[$key] ? 'checked' : '')
                                 .'"><label><div><span></span><input type="checkbox"
                                 data-size="mini"
@@ -262,9 +261,7 @@ class LengowList
         return $html;
     }
 
-
     /**
-     * v3
      * Display Table Footer
      *
      * @return string
@@ -276,7 +273,6 @@ class LengowList
     }
 
     /**
-     * v3
      * Display Table (Header + Content + Footer)
      *
      * @return string
@@ -296,7 +292,6 @@ class LengowList
     }
 
     /**
-     * v3
      * Execute Queries (Collection + Total)
      *
      * @return mixed
@@ -306,7 +301,6 @@ class LengowList
         $sql = $this->buildQuery();
         $sqlTotal = $this->buildQuery(true);
         $this->collection = Db::getInstance()->executeS($sql, true, false);
-
         if (isset($this->sql['select_having']) && $this->sql['select_having']) {
             Db::getInstance()->executeS($sqlTotal);
             $this->total = Db::getInstance()->NumRows();
@@ -330,10 +324,11 @@ class LengowList
     }
 
     /**
-     * v3
      * Get Row
      *
-     * @param $where
+     * @param string $where
+     *
+     * @return array
      */
     public function getRow($where)
     {
@@ -349,7 +344,6 @@ class LengowList
     }
 
     /**
-     * v3
      * Find value by key in fieldlist
      *
      * @param $keyToSeach key search in field list
@@ -367,10 +361,9 @@ class LengowList
     }
 
     /**
-     * v3
      * Build Query
      *
-     * @param bool $total       Execute Total Query
+     * @param bool $total      Execute Total Query
      * @param bool $select_all
      *
      * @return string sql query
@@ -477,7 +470,6 @@ class LengowList
     }
 
     /**
-     * v3
      * Update collection
      *
      * @param array $collection
@@ -488,7 +480,6 @@ class LengowList
     }
 
     /**
-     * v3
      * Render pagination
      *
      * @param array $params
@@ -498,21 +489,17 @@ class LengowList
     public function renderPagination($params = array())
     {
         $nav_class = isset($params["nav_class"]) ? $params["nav_class"] : '';
-
         $lengow_link = new LengowLink();
         $totalPage = ceil($this->total / $this->nbPerPage);
         $html = '<nav id="nav_'.$this->id.'" class="'.$nav_class.'">';
-
         $html.= '<div class="lgw-pagination-pages">';
         $html.= '<span class="lengow_number">'.$this->paginationFrom.'</span> -
         <span class="lengow_number">'.$this->paginationTo.'</span>
          '.$this->locale->t('product.table.pagination_of').' <span class="lengow_number">'.$this->total.'</span>';
         $html.='</div>';
-
         if ($totalPage<=1) {
             return $html.'</nav>';
         }
-
         $html.= '<ul class="lgw-pagination-btns lgw-pagination-arrow">';
         $class = ($this->currentPage == 1) ? 'disabled' : '';
         $html.= '<li class="'.$class.'"><a href="#" data-page="'.($this->currentPage-1).'"
@@ -523,15 +510,12 @@ class LengowList
         data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage+1).'"
         ><i class="fa fa-angle-right"></i></a></li>';
         $html.= '</ul>';
-
         $html.= '<ul class="lgw-pagination-btns lgw-pagination-numbers">';
         if ($this->nbMaxPage > 7) {
             $showLastSeparation = false;
-
             $class = ($this->currentPage == 1) ? 'disabled' : '';
             $html.= '<li class="'.$class.'"><a href="#" data-page="1"
             data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p=1">1</a></li>';
-
             $from = $this->currentPage - 1;
             $to = $this->currentPage + 1;
             if ($from <= 2) {
@@ -575,7 +559,6 @@ class LengowList
     }
 
     /**
-     * v3
      * Get currency by code
      *
      * @param string $isoCode
@@ -602,7 +585,6 @@ class LengowList
     }
 
     /**
-     * v3
      * Get total product
      *
      * @return string

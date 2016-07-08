@@ -19,9 +19,14 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Check Class
+ */
 class LengowCheck
 {
-
+    /**
+     * @var $locale for translation
+     */
     protected $locale;
 
     public function __construct()
@@ -29,11 +34,10 @@ class LengowCheck
         $this->locale = new LengowTranslation();
     }
 
-
     /**
     * Check API Authentification
     *
-    * @param integer Shop ID
+    * @param integer $id_shop Shop ID
     *
     * @return boolean
     */
@@ -42,11 +46,9 @@ class LengowCheck
         if (LengowMain::inTest()) {
             return true;
         }
-
         if (!self::isCurlActivated()) {
             return false;
         }
-        
         $account_id = (integer)LengowMain::getIdAccount($id_shop);
         $connector  = new LengowConnector(
             LengowMain::getAccessToken($id_shop),
@@ -171,7 +173,6 @@ class LengowCheck
         } else {
             $import_in_progress = $this->locale->t('toolbox.index.no_import');
         }
-
         $checklist = array();
         $checklist[] = array(
             'title'     => $this->locale->t('toolbox.index.global_token'),
@@ -426,7 +427,7 @@ class LengowCheck
                     if ($check['state'] == 1) {
                         $out .= '<td align="right"><i class="fa fa-check lengow-green"></i></td>';
                     } else {
-                        $out .= '<td align="right"><i class="fa fa-times lengow-red"></i></i></td>';
+                        $out .= '<td align="right"><i class="fa fa-times lengow-red"></i></td>';
                     }
                     if ($check['state'] === 0) {
                         if (isset($check['help']) && isset($check['help_link']) && isset($check['help_label'])) {

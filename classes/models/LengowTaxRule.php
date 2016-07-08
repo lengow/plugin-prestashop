@@ -20,8 +20,7 @@
  */
 
 /**
- * The Lengow Tax Class.
- *
+ * Lengow Tax Rule Class
  */
 class LengowTaxRule extends TaxRule
 {
@@ -30,6 +29,7 @@ class LengowTaxRule extends TaxRule
      *
      * @param int $id_lang
      * @param int $id_group
+     *
      * @return array list of tax rules
      */
     public static function getLengowTaxRulesByGroupId($id_lang, $id_group)

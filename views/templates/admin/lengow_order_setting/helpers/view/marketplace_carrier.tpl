@@ -32,12 +32,16 @@
                         data-message="{$locale->t('order_setting.screen.confirmation_delete_carrier_country')|escape:'htmlall':'UTF-8'}"
                         data-id-country="{$id_country|escape:'htmlall':'UTF-8'}">
                 </button>
-                <div class="delete-country-confirm">Are you sure?<a href="#" class="js-delete-country-yes">Yes</a><a href="#" class="js-delete-country-no">No</a></div>
+                <div class="delete-country-confirm">
+                    {$locale->t('order_setting.screen.confirmation_delete_carrier_country')|escape:'htmlall':'UTF-8'}
+                    <a href="#" class="js-delete-country-yes">{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}</a>
+                    <a href="#" class="js-delete-country-no">{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}</a>
+                </div>
             {/if}
             <span class="score lgw-label"></span><i class="fa fa-chevron-down"></i>
         </div>
         </label><input id="menu{$id_country|escape:'htmlall':'UTF-8'}" name="menu" type="checkbox"/>
-        <ul class="sub">
+        <ul class="sub" style="display:none">
             <li class="add_country {if empty($defaultCarrierCountries[$id_country]['id_carrier']|escape:'htmlall':'UTF-8')}no_carrier{/if}">
                 {include file='./default_carrier.tpl'}
             </li>
@@ -46,7 +50,7 @@
                     <li class="marketplace_carrier {if empty({$marketplace_carrier['id_carrier']|escape:'htmlall':'UTF-8'})}no_carrier{/if}">
                         <p>{$marketplace_carrier['marketplace_carrier_name']|escape:'htmlall':'UTF-8'}</p>
                         <select name="default_marketplace_carrier[{$marketplace_carrier["id"]|escape:'htmlall':'UTF-8'}]" class="carrier lengow_select">
-                            <option value=""></option>
+                            <option value="">{$locale->t('order_setting.screen.please_select_carrier')|escape:'htmlall':'UTF-8'}</option>
                             {foreach from=$listCarrierByCountry[$id_country] key=k item=c}
                                 {if {$marketplace_carrier["id_carrier"]} eq $k}
                                     <option value="{$k|escape:'htmlall':'UTF-8'}" selected="selected">{$c|escape:'htmlall':'UTF-8'}</option>

@@ -20,8 +20,7 @@
  */
 
 /**
- * The Lengow Cron Class.
- *
+ * Lengow Cron Class
  */
 class LengowCron
 {
@@ -139,8 +138,6 @@ class LengowCron
 
     /**
      * Remove cron tasks from cronjobs table
-     *
-     * @param integer $id_shop shop id
      *
      * @return boolean
      */

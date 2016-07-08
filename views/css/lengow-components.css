@@ -1,4 +1,3 @@
-
 /*************************************************/
 /*                      BOXES                    */
 /*************************************************/
@@ -58,7 +57,7 @@ a.lgw-box-link:hover{
 
 .lgw-container .lgw-btn{
     border-radius:3px;
-    padding:8px 20px;
+    padding:10px 20px;
     margin:15px 0;
     color:white;
     text-decoration: none !important;
@@ -112,6 +111,114 @@ a.lgw-box-link:hover{
 
 .lgw-container .lengow_toolbar .lgw-btn{
     margin-right: 15px;
+}
+
+/* DISABLED */
+
+.lgw-container .lgw-btn-disabled{
+    background: #c0c0c0;
+    top: 0;
+    color: #828282;
+    pointer-events: none;
+}
+
+.btn-link{
+    border:0;
+    padding:8px 20px;
+    margin:15px 0;
+    background:transparent;
+    outline: none;
+}
+.btn-link:hover{
+    text-decoration: underline;
+    color:#00aeef;
+}
+
+/* BTN PROGRESSION */
+
+.lgw-container .lgw-btn-progression{
+    height:36px;
+    overflow:hidden;
+    padding:0;
+}
+.lgw-container .lgw-btn-progression .btn-inner{
+    position:relative;
+    top:0;
+    left:0;
+}
+.lgw-container .lgw-btn-progression .btn-step{
+    height:36px;
+    line-height:36px;
+    padding:0 15px;
+}
+.lgw-container .lgw-btn-progression.loading{
+    pointer-events:none;
+    padding-right:30px;
+    background: #c0c0c0;
+    color: #828282;
+}
+.lgw-container .lgw-btn-progression.loading .btn-inner{
+    top:-36px;
+}
+
+.lgw-container .lgw-btn-progression.loading::after{
+    content:'';
+    position:absolute;
+    height:24px;
+    width:24px;
+    top:0;
+    bottom:0;
+    margin: auto;
+    right:10px;
+    opacity:.66;
+    background:#ebebeb;
+    border-radius:50%;
+    -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+    animation: sk-bounce 2.0s infinite ease-in-out;
+}
+.lgw-container .lgw-btn-progression.loading::before{
+    content:'';
+    position:absolute;
+    height:24px;
+    width:24px;
+    top:0;
+    bottom:0;
+    margin: auto;
+    right:10px;
+    opacity:.66;
+    background:#ebebeb;
+    border-radius:50%;
+    -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+    animation: sk-bounce 2.0s infinite ease-in-out;
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+
+.lgw-container .lgw-btn-progression.success,
+.lgw-container .lgw-btn-progression.error{
+   pointer-events:none;
+}
+.lgw-container .lgw-btn-progression.success{
+    background-color:#7ac279;
+}
+.lgw-container .lgw-btn-progression.success .btn-inner,
+.lgw-container .lgw-btn-progression.error .btn-inner{
+    top: -72px;
+}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+  0%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
 }
 
 
@@ -231,7 +338,7 @@ a.lgw-box-link:hover{
 }
 .select2-container--default .select2-selection--single{
     outline: none !important;
-    font-size: 15px;
+    font-size: 13px;
     border-radius: 3px;
     border: 1px solid #d7d7d7;
     background: #fafafa;
@@ -255,17 +362,22 @@ a.lgw-box-link:hover{
     height:42px;
     line-height: 42px;
     padding:0 30px 0 15px;
-    font-size:15px;
+    font-size:13px;
     border-bottom: 1px solid #d7d7d7;
     background:url('../img/search.png') no-repeat right center;
 }
 
 .select2-dropdown{
     border: 1px solid #d7d7d7;
+    min-width: 250px;
 }
 .select2-results{
     margin: 0 !important;
     padding:0 !important;
+}
+.select2-results,
+.select2-container--default .select2-results>.select2-results__options{
+    max-height: 240px;
 }
 .select2-results li{
     padding: 0 15px 0 25px;
@@ -273,7 +385,7 @@ a.lgw-box-link:hover{
     line-height: 44px;
     word-wrap: normal;
     white-space: nowrap;
-    font-size: 15px;
+    font-size: 13px;
 }
 .select2-container--default .select2-results__option--highlighted[aria-selected]{
     background:#ebebeb;
@@ -706,9 +818,11 @@ a.lgw-box-link:hover{
     font-weight: normal;
     cursor:pointer;
     transition: all 100ms ease;
+    background:#f7F7F7;
 }
+.lgw-container .accordion .active label,
 .lgw-container .accordion label:hover {
-    background:#f7f7f7;
+    background:#ffffff;
 }
 .lgw-container .accordion .country {
     border: 1px solid #d7d7d7;

@@ -20,13 +20,12 @@
  */
 
 /**
- * Lengow Customer class
- *
+ * Lengow Customer Class
  */
 class LengowCustomer extends Customer
 {
     /**
-     * Definition array for prestashop 1.4.*
+     * Definition array for prestashop 1.4
      *
      * @var array
      */
@@ -54,6 +53,7 @@ class LengowCustomer extends Customer
      * Assign API data
      *
      * @param array $data API data
+     *
      * @return LengowCustomer
      */
     public function assign($data = array())
@@ -102,7 +102,7 @@ class LengowCustomer extends Customer
      * Modify a field according to the type of error
      *
      * @param string $error_type type of error
-     * @param string $field incorrect field
+     * @param string $field      incorrect field
      */
     public function validateFieldLengow($field, $error_type)
     {
@@ -214,15 +214,12 @@ class LengowCustomer extends Customer
      */
     public function getByEmailAndShop($email, $id_shop)
     {
-
         $sql = 'SELECT *
             FROM `'._DB_PREFIX_.'customer`
             WHERE `email` = \''.pSQL($email).'\'
             '.(_PS_VERSION_ < 1.5 ? '' : ' AND `id_shop` = \''.$id_shop.'\'').'
             AND `deleted` = \'0\'';
-
         $result = Db::getInstance()->getRow($sql);
-
         if (!$result) {
             return false;
         }

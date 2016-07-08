@@ -20,7 +20,7 @@
  */
 
 /**
-* Lengow Import class
+* Lengow Import Class
 */
 class LengowImport
 {
@@ -256,10 +256,10 @@ class LengowImport
             }
             if (!$this->import_one_order) {
                 LengowImport::setInProcess();
+                // udpate last import date
+                lengowMain::updateDateImport($this->type_import);
             }
             LengowMain::disableMail();
-            // udpate last import date
-            lengowMain::updateDateImport($this->type_import);
             // get all shops for import
             $shops = LengowShop::findAll(true);
             foreach ($shops as $shop) {
@@ -343,7 +343,7 @@ class LengowImport
                             )),
                             $this->log_output
                         );
-                        $error[(int)$shop->id] = $e->getMessage();
+                        $error[(int)$shop->id] = $error_message;
                         unset($error_message);
                         continue;
                     }
@@ -664,7 +664,19 @@ class LengowImport
                 // Sync to lengow if no preprod_mode
                 if (!$this->preprod_mode && $order['order_new'] == true) {
                     $lengow_order = new LengowOrder((int)$order['order_id']);
-                    $lengow_order->synchronizeOrder($this->connector, $this->log_output);
+                    $synchro = $lengow_order->synchronizeOrder($this->connector, $this->log_output);
+                    if ($synchro) {
+                        $synchro_message = LengowMain::setLogMessage(
+                            'log.import.order_synchronized_with_lengow',
+                            array('order_id' => $order['order_id'])
+                        );
+                    } else {
+                        $synchro_message = LengowMain::setLogMessage(
+                            'log.import.order_not_synchronized_with_lengow',
+                            array('order_id' => $order['order_id'])
+                        );
+                    }
+                    LengowMain::log('Import', $synchro_message, $this->log_output, $marketplace_sku);
                     unset($lengow_order);
                 }
                 // if re-import order -> return order informations

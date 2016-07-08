@@ -21,7 +21,6 @@
 
 /**
  * Lengow Order Class
- *
  */
 class LengowOrder extends Order
 {
@@ -185,12 +184,11 @@ class LengowOrder extends Order
      */
     protected $marketplace;
 
-
     /**
     * Construct a Lengow order based on Prestashop order.
     *
-    * @param integer $id        Lengow order id
-    * @param integer $id_lang   id lang
+    * @param integer $id      Lengow order id
+    * @param integer $id_lang id lang
     */
     public function __construct($id = null, $id_lang = null)
     {
@@ -201,7 +199,7 @@ class LengowOrder extends Order
     /**
      * Load information from lengow_orders table
      *
-     * @return boolean.
+     * @return boolean
      */
     protected function loadLengowFields()
     {
@@ -261,9 +259,9 @@ class LengowOrder extends Order
     /**
      * Get Prestashop order id
      *
-     * @param string    $marketplace_sku              Lengow order id
-     * @param string    $marketplace            marketplace name
-     * @param integer   $delivery_address_id    devivery address id
+     * @param string  $marketplace_sku     Lengow order id
+     * @param string  $marketplace         marketplace name
+     * @param integer $delivery_address_id devivery address id
      *
      * @return mixed
      */
@@ -291,8 +289,8 @@ class LengowOrder extends Order
     /**
      * Get ID record from lengow orders table
      *
-     * @param string   $marketplace_sku               lengow order id
-     * @param integer  $delivery_address_id     delivery address id
+     * @param string  $marketplace_sku     lengow order id
+     * @param integer $delivery_address_id delivery address id
      *
      * @return mixed
      */
@@ -311,7 +309,7 @@ class LengowOrder extends Order
     /**
      * Check if a lengow order
      *
-     * @param integer   $order_id prestashop order id
+     * @param integer $order_id prestashop order id
      *
      * @return boolean
      */
@@ -331,8 +329,8 @@ class LengowOrder extends Order
     /**
      * Get Id from Lengow delivery address id
      *
-     * @param integer   $order_id               Prestashop order id
-     * @param integer   $delivery_address_id    Lengow delivery address id
+     * @param integer $order_id            Prestashop order id
+     * @param integer $delivery_address_id Lengow delivery address id
      *
      * @return mixed
      */
@@ -351,8 +349,8 @@ class LengowOrder extends Order
     /**
      * Retrieves all the order ids for an order number Lengow
      *
-     * @param string    $marketplace_sku      Lengow order id
-     * @param string    $marketplace    marketplace name
+     * @param string $marketplace_sku Lengow order id
+     * @param string $marketplace     marketplace name
      *
      * @return array
      */
@@ -382,8 +380,8 @@ class LengowOrder extends Order
     /**
      * Update order Lengow
      *
-     * @param integer $id       Id of the record
-     * @param array   $params   Fields update
+     * @param integer $id     Id of the record
+     * @param array   $params Fields update
      *
      * @return bool true if order has been updated
      */
@@ -530,15 +528,14 @@ class LengowOrder extends Order
     /**
      * Synchronize order with Lengow API
      *
-     * @param LengowConnector   $connector  Lengow Connector for API calls
-     * @param boolean           $log_output See log or not
+     * @param LengowConnector $connector Lengow Connector for API calls
      *
      * @return boolean
      */
-    public function synchronizeOrder($connector = null, $log_output = false)
+    public function synchronizeOrder($connector = null)
     {
         $id_shop = (_PS_VERSION_ < 1.5 ? null : (int)$this->lengow_id_shop);
-
+        // Get connector
         if (is_null($connector)) {
             if (LengowCheck::isValidAuth($id_shop)) {
                 $connector = new LengowConnector(
@@ -549,7 +546,7 @@ class LengowOrder extends Order
                 return false;
             }
         }
- 
+        // Get all order id
         $order_ids = self::getAllOrderIdsFromLengowOrder(
             $this->lengow_marketplace_sku,
             $this->lengow_marketplace_name
@@ -559,12 +556,10 @@ class LengowOrder extends Order
             foreach ($order_ids as $order_id) {
                 $presta_ids[] = $order_id['id_order'];
             }
-
             // compatibility V2
             if ($this->lengow_id_flux != null) {
                 $this->checkAndChangeMarketplaceName($connector);
             }
-
             $result = $connector->patch(
                 '/v3.0/orders',
                 array(
@@ -578,24 +573,8 @@ class LengowOrder extends Order
                 || (isset($result['detail']) && $result['detail'] == 'Pas trouvé.')
                 || isset($result['error'])
             ) {
-                LengowMain::log(
-                    'Import',
-                    LengowMain::setLogMessage('log.import.order_not_synchronized_with_lengow', array(
-                        'order_id' => $this->id
-                    )),
-                    $log_output,
-                    $this->lengow_marketplace_sku
-                );
                 return false;
             } else {
-                LengowMain::log(
-                    'Import',
-                    LengowMain::setLogMessage('log.import.order_synchronized_with_lengow', array(
-                        'order_id' => $this->id
-                    )),
-                    $log_output,
-                    $this->lengow_marketplace_sku
-                );
                 return true;
             }
         }
@@ -612,7 +591,7 @@ class LengowOrder extends Order
     public function checkAndChangeMarketplaceName($connector = null)
     {
         $id_shop = (_PS_VERSION_ < 1.5 ? null : (int)$this->lengow_id_shop);
-        
+        // get connector
         if (is_null($connector)) {
             if (LengowCheck::isValidAuth($id_shop)) {
                 $connector = new LengowConnector(
@@ -623,7 +602,6 @@ class LengowOrder extends Order
                 return false;
             }
         }
-
         $results = $connector->get(
             '/v3.0/orders',
             array(
@@ -702,9 +680,9 @@ class LengowOrder extends Order
     /**
      * Check if an order has an error
      *
-     * @param string    $marketplace_sku        Lengow order id
-     * @param integer   $delivery_address_id    Id delivery address
-     * @param string    $type                   Type (import or wsdl)
+     * @param string  $marketplace_sku     Lengow order id
+     * @param integer $delivery_address_id Id delivery address
+     * @param string  $type                Type (import or wsdl)
      *
      * @return mixed
      */
@@ -724,9 +702,9 @@ class LengowOrder extends Order
     /**
      * Check if log already exists for the given order
      *
-     * @param string    $id_order_lengow        id lengow order
-     * @param string    $type                   type (import or wsdl)
-     * @param boolean   $finished               log finished (true or false)
+     * @param string  $id_order_lengow id lengow order
+     * @param string  $type            type (import or wsdl)
+     * @param boolean $finished        log finished (true or false)
      *
      * @return mixed
      */
@@ -752,10 +730,10 @@ class LengowOrder extends Order
     /**
      * Add log information in lengow_logs_import table
      *
-     * @param integer   $id_order_lengow    id lengow order
-     * @param string    $message            error message
-     * @param string    $type               type (import or send)
-     * @param integer   $finished           error is finished
+     * @param integer $id_order_lengow id lengow order
+     * @param string  $message         error message
+     * @param string  $type            type (import or send)
+     * @param integer $finished        error is finished
      *
      */
     public static function addOrderLog($id_order_lengow, $message = '', $type = 'import', $finished = 0)
@@ -802,7 +780,6 @@ class LengowOrder extends Order
             WHERE `id_order_lengow` = \''.(int)$id.'\'
             AND `type` = \''.(int)$log_type.'\'';
         $order_logs = Db::getInstance()->executeS($query);
-
         $update_success = 0;
         foreach ($order_logs as $order_log) {
             if (_PS_VERSION_ < '1.5') {
@@ -823,7 +800,6 @@ class LengowOrder extends Order
                 $update_success++;
             }
         }
-
         return (count($order_logs) == $update_success ? true : false);
     }
 
@@ -909,6 +885,27 @@ class LengowOrder extends Order
     }
 
     /**
+     * Check if can resend action order
+     *
+     * @return boolean
+     */
+    public function canReSendOrder()
+    {
+        $order_actions = LengowAction::getActiveActionByOrderId((int)$this->id);
+        if (count($order_actions) > 0) {
+            return false;
+        }
+        if ($this->lengow_process_state != self::PROCESS_STATE_FINISH &&
+            ($this->getCurrentState() == LengowMain::getOrderState('shipped')
+                || $this->getCurrentState() == LengowMain::getOrderState('canceled')
+            )
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Re Send Order
      *
      * @param integer $id_order_lengow (id of table lengow_orders)
@@ -934,62 +931,93 @@ class LengowOrder extends Order
      *
      * @param string $action Lengow Actions (ship or cancel)
      *
+     * @return boolean
      */
     public function callAction($action)
     {
+        $success = true;
+        LengowMain::log(
+            'API-OrderAction',
+            LengowMain::setLogMessage('log.order_action.try_to_send_action', array(
+                'action'   => $action,
+                'order_id' => $this->id
+            )),
+            false,
+            $this->lengow_marketplace_sku
+        );
         if ((int)$this->id == 0) {
             LengowMain::log(
                 'API-OrderAction',
                 LengowMain::setLogMessage('log.order_action.can_not_load_order'),
                 true
             );
-            return false;
+            $success = false;
         }
-        // Finish all order logs send
-        self::finishOrderLogs($this->lengow_id, 'send');
-        try {
-            $marketplace = LengowMain::getMarketplaceSingleton(
-                $this->lengow_marketplace_name,
-                $this->lengow_id_shop
-            );
-            if ($marketplace->containOrderLine($action)) {
-                $orderLineCollection = self::findOrderLineIds($this->id);
-                // compatibility V2 and security
-                if (count($orderLineCollection) == 0) {
-                    $orderLineCollection = $this->getOrderLineByApi();
+        if ($success) {
+            // Finish all order logs send
+            self::finishOrderLogs($this->lengow_id, 'send');
+            try {
+                // Compatibility V2
+                if ((int)$this->lengow_id_flux > 0) {
+                    $this->checkAndChangeMarketplaceName();
                 }
-                if (!$orderLineCollection) {
-                    throw new LengowException(
-                        LengowMain::setLogMessage('lengow_log.exception.order_line_required')
-                    );
+                $marketplace = LengowMain::getMarketplaceSingleton(
+                    $this->lengow_marketplace_name,
+                    $this->lengow_id_shop
+                );
+                if ($marketplace->containOrderLine($action)) {
+                    $orderLineCollection = self::findOrderLineIds($this->id);
+                    // compatibility V2 and security
+                    if (count($orderLineCollection) == 0) {
+                        $orderLineCollection = $this->getOrderLineByApi();
+                    }
+                    if (!$orderLineCollection) {
+                        throw new LengowException(
+                            LengowMain::setLogMessage('lengow_log.exception.order_line_required')
+                        );
+                    }
+                    $results = array();
+                    foreach ($orderLineCollection as $row) {
+                        $results[] = $marketplace->callAction($action, $this, $row['id_order_line']);
+                    }
+                    $success = !in_array(false, $results);
+                } else {
+                    $success = $marketplace->callAction($action, $this);
                 }
-                $results = array();
-                foreach ($orderLineCollection as $row) {
-                    $results[] = $marketplace->callAction($action, $this, $row['id_order_line']);
-                }
-                return !in_array(false, $results);
-            } else {
-                return $marketplace->callAction($action, $this);
+            } catch (LengowException $e) {
+                $error_message = $e->getMessage();
+            } catch (Exception $e) {
+                $error_message = '[Prestashop error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
             }
-        } catch (LengowException $e) {
-            $error_message = $e->getMessage();
-        } catch (Exception $e) {
-            $error_message = '[Prestashop error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
-        }
-        if (isset($error_message)) {
-            if ($this->lengow_process_state != self::PROCESS_STATE_FINISH) {
-                self::addOrderLog($this->lengow_id, $error_message, 'send');
+            if (isset($error_message)) {
+                if ($this->lengow_process_state != self::PROCESS_STATE_FINISH) {
+                    self::addOrderLog($this->lengow_id, $error_message, 'send');
+                }
+                $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
+                LengowMain::log(
+                    'API-OrderAction',
+                    LengowMain::setLogMessage('log.order_action.call_action_failed', array(
+                        'decoded_message' => $decoded_message
+                    )),
+                    false,
+                    $this->lengow_marketplace_sku
+                );
+                $success = false;
             }
-            $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
-            LengowMain::log(
-                'API-OrderAction',
-                LengowMain::setLogMessage('log.order_action.call_action_failed', array(
-                    'decoded_message' => $decoded_message
-                )),
-                false,
-                $this->lengow_marketplace_sku
-            );
         }
+        if ($success) {
+            $message = LengowMain::setLogMessage('log.order_action.action_send', array(
+                'action'   => $action,
+                'order_id' => $this->id
+            ));
+        } else {
+            $message = LengowMain::setLogMessage('log.order_action.action_not_send', array(
+                'action'   => $action,
+                'order_id' => $this->id
+            ));
+        }
+        LengowMain::log('API-OrderAction', $message, false, $this->lengow_marketplace_sku);
+        return $success;
     }
 
     /**
@@ -1031,7 +1059,7 @@ class LengowOrder extends Order
     /**
      * Get Total Order By Statuses
      *
-     * @param $status
+     * @param string $status
      */
     public static function getTotalOrderByStatus($status)
     {

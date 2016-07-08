@@ -22,7 +22,7 @@
 class AdminLengowHelpController extends ModuleAdminController
 {
     /**
-     * Construct the admin selection of products
+     * Construct
      */
     public function __construct()
     {

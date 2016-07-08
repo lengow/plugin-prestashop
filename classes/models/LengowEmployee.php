@@ -20,14 +20,14 @@
  */
 
 /**
- * Lengow Employee class
- *
+ * Lengow Employee Class
  */
 class LengowEmployee extends Employee
 {
-
     /**
      * Return all employee id and email
+     *
+     * @param boolean $active_only active employee or not
      *
      * @return array Employees
      */
@@ -35,10 +35,11 @@ class LengowEmployee extends Employee
     {
         // This line is useless, but Prestashop validator require it
         $active_only = $active_only;
-        return Db::getInstance()->ExecuteS('
-        SELECT `id_employee`, CONCAT(`firstname`, \' \', `lastname`) name
-        FROM `'._DB_PREFIX_.'employee`
-        WHERE `active` = 1
-        ORDER BY `email`');
+        return Db::getInstance()->ExecuteS(
+            'SELECT `id_employee`, CONCAT(`firstname`, \' \', `lastname`) name
+            FROM `'._DB_PREFIX_.'employee`
+            WHERE `active` = 1
+            ORDER BY `email`'
+        );
     }
 }

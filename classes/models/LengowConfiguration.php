@@ -19,17 +19,22 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Configuration Class
+ */
 class LengowConfiguration extends Configuration
 {
-
+    /**
+    * Get all Lengow configuration keys
+    *
+    * @return array
+    */
     public static function getKeys()
     {
         static $keys = null;
         if ($keys === null) {
-
             $langId = (int)Context::getContext()->cookie->id_lang;
             $locale = new LengowTranslation();
-
             $orderStates = array();
             $os = OrderState::getOrderStates($langId);
             foreach ($os as $state) {
@@ -43,7 +48,6 @@ class LengowConfiguration extends Configuration
             foreach (LengowMain::$TRACKER_CHOICE_ID as $key => $value) {
                 $trackerIds[] = array('id' => $key, 'text' => $value);
             }
-
             $keys = array(
                 'LENGOW_ACCOUNT_ID' => array(
                     'shop'          => true,
@@ -89,6 +93,13 @@ class LengowConfiguration extends Configuration
                     'default_value' => 'csv',
                     'collection'    => $exportFormats,
                 ),
+                'LENGOW_EXPORT_LEGACY_ENABLED' => array(
+                    'type'          => 'checkbox',
+                    'readonly'      => false,
+                    'label'         => $locale->t('lengow_setting.lengow_export_legacy_enabled_title'),
+                    'legend'        => $locale->t('lengow_setting.lengow_export_legacy_enabled_legend'),
+                    'default_value' => false,
+                ),
                 'LENGOW_EXPORT_FILE_ENABLED' => array(
                     'type'          => 'checkbox',
                     'readonly'      => false,
@@ -133,7 +144,6 @@ class LengowConfiguration extends Configuration
                 'LENGOW_IMPORT_DAYS' => array(
                     'type'          => 'day',
                     'label'         => $locale->t('lengow_setting.lengow_import_days_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_import_days_legend'),
                     'default_value' => 5,
                 ),
                 'LENGOW_IMPORT_PROCESSING_FEE' => array(
@@ -230,6 +240,14 @@ class LengowConfiguration extends Configuration
         return $keys;
     }
 
+    /**
+    * Get Lengow global value
+    *
+    * @param string  $key     lengow configuration key
+    * @param integer $id_lang id lang
+    *
+    * @return mixed
+    */
     public static function getGlobalValue($key, $id_lang = null)
     {
         if (_PS_VERSION_ < '1.5') {
@@ -239,6 +257,17 @@ class LengowConfiguration extends Configuration
         }
     }
 
+    /**
+    * Get Lengow value by shop
+    *
+    * @param string  $key           lengow configuration key
+    * @param integer $id_lang       id lang
+    * @param integer $id_shop_group id shop group
+    * @param integer $id_shop       id shop
+    * @param integer $default       default value (compatibility version 1.7)
+    *
+    * @return mixed
+    */
     public static function get($key, $id_lang = null, $id_shop_group = null, $id_shop = null, $default = false)
     {
         if (_PS_VERSION_ < '1.5') {
@@ -248,6 +277,13 @@ class LengowConfiguration extends Configuration
         }
     }
 
+    /**
+    * Update Lengow global value
+    *
+    * @param string  $key     lengow configuration key
+    * @param integer $id_lang id lang
+    * @param boolean $html
+    */
     public static function updateGlobalValue($key, $values, $html = false)
     {
         if (_PS_VERSION_ < '1.5') {
@@ -257,6 +293,15 @@ class LengowConfiguration extends Configuration
         }
     }
 
+    /**
+    * Update Lengow value by shop
+    *
+    * @param string  $key           lengow configuration key
+    * @param integer $id_lang       id lang
+    * @param boolean $html
+    * @param integer $id_shop_group id shop group
+    * @param integer $id_shop       id shop
+    */
     public static function updateValue($key, $values, $html = false, $id_shop_group = null, $id_shop = null)
     {
         if (_PS_VERSION_ < '1.5') {
@@ -266,6 +311,11 @@ class LengowConfiguration extends Configuration
         }
     }
 
+    /**
+    * Get Report Email Address for error report
+    *
+    * @return array
+    */
     public static function getReportEmailAddress()
     {
         $emails = explode(';', self::get('LENGOW_REPORT_MAIL_ADDRESS'));
@@ -275,6 +325,11 @@ class LengowConfiguration extends Configuration
         return $emails;
     }
 
+    /**
+    * Reset all Lengow settings
+    *
+    * @return boolean
+    */
     public static function resetAll($overwrite = false)
     {
         $shops = LengowShop::findAll(true);
@@ -315,6 +370,11 @@ class LengowConfiguration extends Configuration
         return true;
     }
 
+    /**
+    * Delete all Lengow settings
+    *
+    * @return boolean
+    */
     public static function deleteAll()
     {
         $keys = self::getKeys();
@@ -329,11 +389,11 @@ class LengowConfiguration extends Configuration
     /**
      * Get Values by shop or global
      *
-     * @param null $shopId
+     * @param integer $id_shop
      *
      * @return array
      */
-    public static function getAllValues($shopId = null)
+    public static function getAllValues($id_shop = null)
     {
         $rows = array();
         $keys = self::getKeys();
@@ -341,9 +401,9 @@ class LengowConfiguration extends Configuration
             if (isset($value['export']) && !$value['export']) {
                 continue;
             }
-            if ($shopId) {
+            if ($id_shop) {
                 if (isset($value['shop']) && $value['shop'] == 1) {
-                    $rows[$key] = LengowConfiguration::get($key, null, false, $shopId);
+                    $rows[$key] = LengowConfiguration::get($key, null, false, $id_shop);
                 }
             } else {
                 $rows[$key] = LengowConfiguration::getGlobalValue($key);

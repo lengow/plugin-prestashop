@@ -30,7 +30,7 @@
 		{/foreach}
 </select>
 <button type="button" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting', true)|escape:'htmlall':'UTF-8'}"
-	class="lgw-btn add_lengow_default_carrier">
+	class="lgw-btn lgw-btn-disabled add_lengow_default_carrier">
 	<i class="fa fa-plus"></i> {$locale->t('order_setting.screen.button_add_country')|escape:'htmlall':'UTF-8'}
 </button>
-<a href="#" class="sub-link js-cancel-country">Cancel</a>
+<a href="#" class="sub-link js-cancel-country">{$locale->t('order_setting.screen.button_cancel_country')|escape:'htmlall':'UTF-8'}</a>

@@ -27,9 +27,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lengow Toolbox</title>
-    <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-switch.min.css" rel="stylesheet">
-    <link href="/modules/lengow/views/css/bootstrap-3.3.6.css" rel="stylesheet">
-    <link href="/modules/lengow/views/css/toolbox.css" rel="stylesheet">
+    <link rel="stylesheet" href="/modules/lengow/views/css/bootstrap-3.3.6.css">
+    <link rel="stylesheet" href="/modules/lengow/views/css/toolbox.css">
     <link rel="stylesheet" href="/modules/lengow/views/css/font-awesome.css">
     <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
@@ -38,7 +37,6 @@
     </script>
     <script type="text/javascript" src="/modules/lengow/views/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/modules/lengow/views/js/lengow/admin.js"></script>
-    <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-switch.js"></script>
     <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-datepicker.js"></script>
     <script type="text/javascript" src="/modules/lengow/views/js/clipboard.js"></script>
     <script type="text/javascript" src="/modules/lengow/views/js/select2.js"></script>

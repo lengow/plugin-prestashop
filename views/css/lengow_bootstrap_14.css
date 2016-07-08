@@ -6,8 +6,24 @@ h1,h2, h3, h4, h5, h6{
   color:inherit;
 }
 
+#lgw-preprod{
+  top: 75px;
+  z-index: 1;
+  left: 15px;
+  position: absolute;
+}
+
+#content{
+  position:relative;
+}
+
+.lengow-nav-top{
+  margin-top: 20px;
+}
+
 .lengow-nav{
   top:inherit;
+  left:0;
   position: inherit;
 }
 .lengow-nav-bottom{
@@ -53,14 +69,39 @@ body.lengow_body #main {
 #lengow_mainsettings_wrapper,
 #lengow_form_order_setting,
 .lengow_help_wrapper{
+}
 
+#container {
+    width: 1300px;
+    margin: 0 auto 2em auto;
+    text-align: left;
+}
+.lgw-pagination-arrow {
+    margin-right: 15px;
+    float: left;
+}
+.lgw-pagination-btns a .fa{
+  line-height: 30px;
+}
+
+.lgw-content-section {
+    margin-bottom: 130px;
 }
 
 /*************************************************/
 /*                      HOME                     */
 /*************************************************/
 
+.adminlengowhome #lgw-preprod{
+  margin-top: -10px;
+  margin-bottom: 10px;
+  position:inherit;
+  display:inline-block;
+}
 
+.lgw-home-header{
+  background-size:100%;
+}
 
 .lgw-box-link .lgw-box{
   min-height: 250px;
@@ -70,17 +111,34 @@ body.lengow_body #main {
   top:inherit;
 }
 
-
 /*************************************************/
 /*                      SETTINGS                 */
 /*************************************************/
-.form-group.container {
 
+#lengow_mainsettings_wrapper.activePreprod{
+  margin-top:15px;
 }
 
 /*************************************************/
 /*                      ORDERS                   */
 /*************************************************/
+
+.table.lengow_table tr th {
+    background: #F1F1F1 top left;
+}
+
+#lgw-preprod.adminlengoworder,
+#lgw-preprod.adminlengowordersetting{
+  top: 130px;
+  left: inherit;
+  z-index: 2;
+  position:absolute;
+}
+
+#lengow_order_wrapper.activePreprod,
+#lengow_form_order_setting.activePreprod{
+  margin-top:8px;
+}
 
 .lengow-nav-top{
   margin-top:0px;
@@ -90,9 +148,17 @@ body.lengow_body #main {
   margin-top:55px;
 }
 
+.lgw-container .table tr td.shop{
+  min-width: 70px;
+}
+
 /*************************************************/
 /*                      FEEDS                    */
 /*************************************************/
+
+#lengow_feed_wrapper.activePreprod{
+  margin-top:15px;
+}
 
 .lgw-container .table tr th{
   padding:10px 3px;

@@ -20,14 +20,13 @@
  */
 
 /**
- * The Lengow Tool Class.
- *
+ * Lengow Tool Class
  */
 class LengowTool
 {
-
     /**
      * Is user log in ?
+     *
      * @return bool
      */
     public function isLogged()
@@ -44,6 +43,9 @@ class LengowTool
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/', '');
     }
 
+    /**
+     * Get current uri
+     */
     public function getCurrentUri()
     {
         return $_SERVER['SCRIPT_NAME'];
@@ -51,8 +53,10 @@ class LengowTool
 
     /**
      * Process Login Form to log User
-     * @param $accountId
-     * @param $secretToken
+     *
+     * @param integer $accountId
+     * @param string  $secretToken
+     *
      * @return boolean
      */
     public function processLogin($accountId, $secretToken)
@@ -88,7 +92,8 @@ class LengowTool
 
     /**
      * Check if Current IP is blocked
-     * @return bool
+     *
+     * @return boolean
      */
     public function checkBlockedIp()
     {
@@ -103,7 +108,8 @@ class LengowTool
     /**
      * Check IP with number tentative
      *
-     * @param int $counter
+     * @param integer $counter
+     *
      * @return void
      */
     public function checkIp($counter = 1)
@@ -144,6 +150,14 @@ class LengowTool
         }
     }
 
+    /**
+     * Redirect toolbox
+     *
+     * @param string $url
+     * @param string $baseUri
+     *
+     * @return void
+     */
     public static function redirect($url, $baseUri = __PS_BASE_URI__)
     {
         if (LengowMain::inTest()) {
