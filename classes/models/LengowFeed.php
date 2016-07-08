@@ -113,8 +113,8 @@ class LengowFeed
     public function initExportFile()
     {
         $sep = DIRECTORY_SEPARATOR;
-        $this->export_folder = LengowFeed::$LENGOW_EXPORT_FOLDER . $sep . $this->shop_folder;
-        $folder_path = LengowMain::getLengowFolder() . $sep . $this->export_folder;
+        $this->export_folder = LengowFeed::$LENGOW_EXPORT_FOLDER.$sep.$this->shop_folder;
+        $folder_path = LengowMain::getLengowFolder().$sep.$this->export_folder;
         if (!file_exists($folder_path)) {
             if (!mkdir($folder_path)) {
                 throw new LengowException(
@@ -135,11 +135,12 @@ class LengowFeed
     /**
      * Write feed
      *
-     * @param string  $type     (header, body or footer)
-     * @param array   $data     export data
+     * @param string  $type          (header, body or footer)
+     * @param array   $data          export data
      * @param boolean $is_first
+     * @param boolean $max_character Max characters for yaml format
      */
-    public function write($type, $data = array(), $is_first = null)
+    public function write($type, $data = array(), $is_first = null, $max_character = null)
     {
         switch ($type) {
             case 'header':
@@ -153,7 +154,7 @@ class LengowFeed
                 $this->flush($header);
                 break;
             case 'body':
-                $body = LengowFeed::getBody($data, $is_first, $this->format);
+                $body = LengowFeed::getBody($data, $is_first, $max_character, $this->format);
                 $this->flush($body);
                 break;
             case 'footer':
@@ -194,17 +195,15 @@ class LengowFeed
     /**
      * Get feed body
      *
-     * @param array   $data     feed data
-     * @param boolean $is_first is first product
-     * @param string  $format   feed format
+     * @param array   $data          feed data
+     * @param boolean $is_first      is first product
+     * @param integer $max_character max characters for yaml format
+     * @param string  $format        feed format
      *
      * @return string
      */
-    public static function getBody(
-        $data,
-        $is_first,
-        $format = 'csv'
-    ) {
+    public static function getBody($data, $is_first, $max_character, $format = 'csv')
+    {
         switch ($format) {
             case 'csv':
                 $content = '';
@@ -230,11 +229,16 @@ class LengowFeed
                 $content .= Tools::jsonEncode($json_array);
                 return $content;
             case 'yaml':
+                if ($max_character % 2 == 1) {
+                    $max_character = $max_character + 1;
+                } else {
+                    $max_character = $max_character + 2;
+                }
                 $content = '  '.LengowFeed::PROTECTION.'product'.LengowFeed::PROTECTION.':'.LengowFeed::EOL;
                 foreach ($data as $field => $value) {
                     $field = LengowFeed::formatFields($field, $format);
                     $content .= '    '.LengowFeed::PROTECTION.$field.LengowFeed::PROTECTION.':';
-                    $content .= LengowFeed::indentYaml($field, 22).(string)$value.LengowFeed::EOL;
+                    $content .= LengowFeed::indentYaml($field, $max_character).(string)$value.LengowFeed::EOL;
                 }
                 return $content;
         }

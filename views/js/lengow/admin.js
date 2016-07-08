@@ -57,7 +57,6 @@
             check.toggleClass('checked');
         });
 
-        //$('.lengow_switch').bootstrapSwitch();
         $('.lengow_select').select2({ minimumResultsForSearch: 16});
 
         init_tooltip();

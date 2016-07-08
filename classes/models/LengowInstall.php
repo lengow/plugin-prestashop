@@ -353,7 +353,7 @@ class LengowInstall
     public static function dropTable()
     {
         foreach (self::$tables as $table) {
-            Db::getInstance()->Execute('DROP TABLE '._DB_PREFIX_.$table);
+            Db::getInstance()->Execute('DROP TABLE IF EXISTS '._DB_PREFIX_.$table);
         }
         return true;
     }

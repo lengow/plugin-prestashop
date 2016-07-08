@@ -114,6 +114,8 @@ $legacy_fields = isset($_REQUEST["legacy_fields"]) ? (bool)$_REQUEST["legacy_fie
     (bool)LengowConfiguration::get('LENGOW_EXPORT_LEGACY_ENABLED');
 // update export date
 $update_export_date = isset($_REQUEST["update_export_date"]) ? (bool)$_REQUEST["update_export_date"] : true;
+// See logs or not
+$log_output = isset($_REQUEST["log_output"]) ? (bool)$_REQUEST["log_output"] : false;
 // export specific products
 $product_ids = array();
 $ids = isset($_REQUEST["product_ids"]) ? $_REQUEST["product_ids"] : null;
@@ -135,6 +137,7 @@ $export = new LengowExport(array(
     'selection'          => $selection,
     'language_id'        => $language_id,
     'update_export_date' => $update_export_date,
+    'log_output'         => $log_output,
 ));
 
 if ($mode == 'size') {

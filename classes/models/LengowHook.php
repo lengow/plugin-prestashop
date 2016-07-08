@@ -85,7 +85,9 @@ class LengowHook
             'updateOrderStatus'       => '1.4',
             'orderConfirmation'       => '1.4',
             // Version 1.5
-            'actionObjectUpdateAfter' => '1.5'
+            'actionObjectUpdateAfter' => '1.5',
+            // Version 1.6
+            'displayBackOfficeHeader' => '1.6'
         );
         foreach ($lengow_hook as $hook => $version) {
             if ($version <= Tools::substr(_PS_VERSION_, 0, 3)) {
@@ -104,6 +106,17 @@ class LengowHook
             }
         }
         return ($error ? false : true);
+    }
+
+    /**
+     * Hook to display the icon
+     *
+     * @param array $args Arguments of hook
+     */
+    public function hookDisplayBackOfficeHeader($args)
+    {
+        $this->context->controller->addCss(_PS_MODULE_LENGOW_DIR_.'views/css/lengow-tab.css');
+        $args = 0; // Prestashop validator
     }
 
     /**
@@ -215,7 +228,7 @@ class LengowHook
                                 break;
                             default:
                                 if (isset($p->id_product_attribute)) {
-                                    $id_product = $p->id . '_' . $p->id_product_attribute;
+                                    $id_product = $p->id.'_'.$p->id_product_attribute;
                                 } else {
                                     $id_product = $p->id;
                                 }
@@ -237,7 +250,7 @@ class LengowHook
                                 break;
                             default:
                                 if (array_key_exists('id_product_attribute', $p) && $p['id_product_attribute']) {
-                                    $id_product = $p['id_product'] . '_' . $p['id_product_attribute'];
+                                    $id_product = $p['id_product'].'_'.$p['id_product_attribute'];
                                 } else {
                                     $id_product = $p['id_product'];
                                 }
@@ -269,7 +282,7 @@ class LengowHook
                             break;
                         default:
                             if (isset($p->id_product_attribute)) {
-                                $id_product = $p->id . '_' . $p->id_product_attribute;
+                                $id_product = $p->id.'_'.$p->id_product_attribute;
                             } else {
                                 $id_product = $p->id;
                             }
@@ -337,7 +350,7 @@ class LengowHook
                     break;
                 default:
                     if ($p['product_attribute_id']) {
-                        $id_product = $p['product_id'] . '_' . $p['product_attribute_id'];
+                        $id_product = $p['product_id'].'_'.$p['product_attribute_id'];
                     } else {
                         $id_product = $p['product_id'];
                     }
@@ -346,8 +359,8 @@ class LengowHook
             // Ids Product
             $ids_products[] = $id_product;
             // Basket Product
-            $products_cart[] = 'i' . $i . '=' . $id_product . '&p' . $i .
-                '=' . Tools::ps_round($p['unit_price_tax_incl'], 2) . '&q' . $i . '=' . $p['product_quantity'];
+            $products_cart[] = 'i'.$i.'='.$id_product.'&p'.$i.
+                '='.Tools::ps_round($p['unit_price_tax_incl'], 2).'&q'.$i.'='.$p['product_quantity'];
         }
         self::$IDS_PRODUCTS_CART = implode('&', $products_cart);
         self::$IDS_PRODUCTS = implode('|', $ids_products);
@@ -364,34 +377,46 @@ class LengowHook
     {
         if (LengowOrder::isFromLengow($args['id_order'])) {
             $lengow_order = new LengowOrder($args['id_order']);
-            // get actions re-import and synchronize orders
+            // get actions re-import, synchronize orders and resend actions
             $lengow_link = new LengowLink();
             $locale = new LengowTranslation();
             $lengow_order_controller = $lengow_link->getAbsoluteAdminLink('AdminLengowOrder');
             $action_reimport = $lengow_order_controller.'&id_order='.$lengow_order->id.'&action=cancel_re_import';
             $action_synchronize = $lengow_order_controller.'&id_order='.$lengow_order->id.'&action=synchronize';
+            $can_resend_action = $lengow_order->canReSendOrder();
+            $action_type = ($lengow_order->getCurrentState() == LengowMain::getOrderState('canceled')
+                ? 'cancel'
+                : 'ship'
+            );
+            $check_resend_action = $locale->t('admin.order.check_resend_action', array('action' => $action_type));
+            $action_resend = $lengow_order_controller.'&id_order='.$lengow_order->id
+                .'&action=force_resend&action_type='.$action_type;
             $sent_markeplace = (
                 $lengow_order->lengow_sent_marketplace
                     ? $locale->t('product.screen.button_yes')
                     : $locale->t('product.screen.button_no')
             );
             $template_data = array(
-                'marketplace_sku'    => $lengow_order->lengow_marketplace_sku,
-                'id_flux'            => $lengow_order->lengow_id_flux,
-                'marketplace_name'   => $lengow_order->lengow_marketplace_name,
-                'total_paid'         => $lengow_order->lengow_total_paid,
-                'carrier'            => $lengow_order->lengow_carrier,
-                'tracking_method'    => $lengow_order->lengow_method,
-                'tracking'           => $lengow_order->lengow_tracking,
-                'tracking_carrier'   => $lengow_order->lengow_carrier,
-                'customer_email'     => $lengow_order->lengow_customer_email,
-                'sent_markeplace'    => $sent_markeplace,
-                'message'            => $lengow_order->lengow_message,
-                'action_synchronize' => $action_synchronize,
-                'action_reimport'    => $action_reimport,
-                'order_id'           => $args['id_order'],
-                'version'            => _PS_VERSION_,
-                'lengow_locale'      => $locale
+                'marketplace_sku'     => $lengow_order->lengow_marketplace_sku,
+                'id_flux'             => $lengow_order->lengow_id_flux,
+                'marketplace_name'    => $lengow_order->lengow_marketplace_name,
+                'total_paid'          => $lengow_order->lengow_total_paid,
+                'carrier'             => $lengow_order->lengow_carrier,
+                'tracking_method'     => $lengow_order->lengow_method,
+                'tracking'            => $lengow_order->lengow_tracking,
+                'tracking_carrier'    => $lengow_order->lengow_carrier,
+                'customer_email'      => $lengow_order->lengow_customer_email,
+                'sent_markeplace'     => $sent_markeplace,
+                'message'             => $lengow_order->lengow_message,
+                'action_synchronize'  => $action_synchronize,
+                'action_reimport'     => $action_reimport,
+                'action_resend'       => $action_resend,
+                'order_id'            => $args['id_order'],
+                'version'             => _PS_VERSION_,
+                'lengow_locale'       => $locale,
+                'preprod_mode'        => (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED'),
+                'can_resend_action'   => $can_resend_action,
+                'check_resend_action' => $check_resend_action
             );
             $this->context->smarty->assign($template_data);
             if (_PS_VERSION_ >= '1.6') {
@@ -433,13 +458,13 @@ class LengowHook
             $new_order_state = $args['newOrderStatus'];
             $id_order_state = $new_order_state->id;
             if ($id_order_state == LengowMain::getOrderState('shipped')) {
-                $this->prepareCallRequest('ship', $lengow_order);
+                $lengow_order->callAction('ship');
                 $this->alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
                 return true;
             }
             // Call Lengow API WSDL to send refuse state order
             if ($id_order_state == LengowMain::getOrderState('canceled')) {
-                $this->prepareCallRequest('cancel', $lengow_order);
+                $lengow_order->callAction('cancel');
                 $this->alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
                 return true;
             }
@@ -464,42 +489,10 @@ class LengowHook
                 ) {
                     $params = array();
                     $params['id_order'] = $args['object']->id;
-                    $this->prepareCallRequest('ship', $lengow_order);
+                    $lengow_order->callAction('ship');
                     $this->alreadyShipped[$lengow_order->lengow_marketplace_sku] = true;
                 }
             }
         }
-    }
-
-    /**
-     * Prepare call request and add logs
-     *
-     * @param string      $action
-     * @param LengowOrder $lengow_order
-     */
-    private function prepareCallRequest($action, $lengow_order)
-    {
-        LengowMain::log(
-            'API-OrderAction',
-            LengowMain::setLogMessage('log.order_action.try_to_send_action', array(
-                'action'   => $action,
-                'order_id' => $lengow_order->id
-            )),
-            false,
-            $lengow_order->lengow_marketplace_sku
-        );
-        $result = $lengow_order->callAction($action);
-        if ($result) {
-            $message = LengowMain::setLogMessage('log.order_action.action_send', array(
-                'action'   => $action,
-                'order_id' => $lengow_order->id
-            ));
-        } else {
-            $message = LengowMain::setLogMessage('log.order_action.action_not_send', array(
-                'action'   => $action,
-                'order_id' => $lengow_order->id
-            ));
-        }
-        LengowMain::log('API-OrderAction', $message, false, $lengow_order->lengow_marketplace_sku);
     }
 }

@@ -33,53 +33,54 @@ class LengowExport
      * New fields for v3
      */
     protected $new_fields = array(
-        'id'                  => 'id',
-        'sku'                 => 'reference',
-        'sku_supplier'        => 'supplier_reference',
-        'ean'                 => 'ean',
-        'upc'                 => 'upc',
-        'name'                => 'name',
-        'quantity'            => 'quantity',
-        'minimal_quantity'    => 'minimal_quantity',
-        'availability'        => 'available',
-        'status'              => 'active',
-        'is_virtual'          => 'is_virtual',
-        'condition'           => 'condition',
-        'breadcrumb'          => 'breadcrumb',
-        'url'                 => 'url',
-        'url_rewrite'         => 'url_rewrite',
-        'price_excl_tax'      => 'price_duty_free',
-        'price_incl_tax'      => 'price',
-        'ecotax'              => 'ecotax',
-        'discount_price'      => 'price_sale',
-        'discount_percent'    => 'price_sale_percent',
-        'discount_start_date' => 'sale_from',
-        'discount_end_date'   => 'sale_to',
-        'shipping_cost'       => 'price_shipping',
-        'shipping_delay'      => 'delivery_time',
-        'currency'            => 'currency',
-        'image_url_1'         => 'image_1',
-        'image_url_2'         => 'image_2',
-        'image_url_3'         => 'image_3',
-        'image_url_4'         => 'image_4',
-        'image_url_5'         => 'image_5',
-        'image_url_6'         => 'image_6',
-        'image_url_7'         => 'image_7',
-        'image_url_8'         => 'image_8',
-        'image_url_9'         => 'image_9',
-        'image_url_10'        => 'image_10',
-        'type'                => 'type',
-        'parent_id'           => 'id_parent',
-        'variation'           => 'variation',
-        'language'            => 'language',
-        'description'         => 'description',
-        'description_short'   => 'short_description',
-        'description_html'    => 'description_html',
-        'meta_keyword'        => 'meta_keywords',
-        'meta_description'    => 'meta_description',
-        'manufacturer'        => 'manufacturer',
-        'supplier'            => 'supplier',
-        'weight'              => 'weight',
+        'id'                             => 'id',
+        'sku'                            => 'reference',
+        'sku_supplier'                   => 'supplier_reference',
+        'ean'                            => 'ean',
+        'upc'                            => 'upc',
+        'name'                           => 'name',
+        'quantity'                       => 'quantity',
+        'minimal_quantity'               => 'minimal_quantity',
+        'availability'                   => 'available',
+        'status'                         => 'active',
+        'is_virtual'                     => 'is_virtual',
+        'condition'                      => 'condition',
+        'breadcrumb'                     => 'breadcrumb',
+        'url'                            => 'url',
+        'url_rewrite'                    => 'url_rewrite',
+        'price_excl_tax'                 => 'price_sale_duty_free',
+        'price_incl_tax'                 => 'price_sale',
+        'price_before_discount_excl_tax' => 'price_duty_free',
+        'price_before_discount_incl_tax' => 'price',
+        'discount_percent'               => 'price_sale_percent',
+        'discount_start_date'            => 'sale_from',
+        'discount_end_date'              => 'sale_to',
+        'ecotax'                         => 'ecotax',
+        'shipping_cost'                  => 'price_shipping',
+        'shipping_delay'                 => 'delivery_time',
+        'currency'                       => 'currency',
+        'image_url_1'                    => 'image_1',
+        'image_url_2'                    => 'image_2',
+        'image_url_3'                    => 'image_3',
+        'image_url_4'                    => 'image_4',
+        'image_url_5'                    => 'image_5',
+        'image_url_6'                    => 'image_6',
+        'image_url_7'                    => 'image_7',
+        'image_url_8'                    => 'image_8',
+        'image_url_9'                    => 'image_9',
+        'image_url_10'                   => 'image_10',
+        'type'                           => 'type',
+        'parent_id'                      => 'id_parent',
+        'variation'                      => 'variation',
+        'language'                       => 'language',
+        'description'                    => 'description',
+        'description_short'              => 'short_description',
+        'description_html'               => 'description_html',
+        'meta_keyword'                   => 'meta_keywords',
+        'meta_description'               => 'meta_description',
+        'manufacturer'                   => 'manufacturer',
+        'supplier'                       => 'supplier',
+        'weight'                         => 'weight',
     );
 
     /**
@@ -247,7 +248,6 @@ class LengowExport
      * Construct new Lengow export.
      *
      * @param array params optional options
-     * 
      * int     $limit                 The number of product to be exported
      * int     $offset                From what product export
      * int     $shop_id               Shop id for export
@@ -290,7 +290,10 @@ class LengowExport
             (bool)Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId);
         $legacy_fields = (isset($params['legacy_fields']) ? (bool)$params['legacy_fields'] : false);
         LengowExport::$DEFAULT_FIELDS = $legacy_fields ? $this->legacy_fields : $this->new_fields ;
-        $this->log_output = (isset($params['log_output']) ? (bool)$params['log_output'] : !$this->stream);
+        $this->log_output = ((!$this->stream && isset($params['log_output']))
+            ? (bool)$params['log_output']
+            : false
+        );
         $this->updateExportDate = (isset($params['update_export_date']) ? (bool)$params['update_export_date'] : true);
         if (!Context::getContext()->currency) {
             Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
@@ -422,6 +425,16 @@ class LengowExport
         );
         $this->feed->write('header', $fields);
         $is_first = true;
+        // modulo for export counter
+        $modulo_export = (int)(count($products) / 10);
+        // Get the maximum of character for yaml format
+        $max_character = 0;
+        foreach ($fields as $field) {
+            if (Tools::strlen($field) > $max_character) {
+                $max_character = Tools::strlen($field);
+            }
+        }
+        $modulo_export = $modulo_export < 10 ? 10 : $modulo_export;
         foreach ($products as $p) {
             $product_data = array();
             if ($p['id_product'] && $p['id_product_attribute'] == 0) {
@@ -445,17 +458,22 @@ class LengowExport
                     }
                 }
                 // write parent product
-                $this->feed->write('body', $product_data, $is_first);
+                $this->feed->write('body', $product_data, $is_first, $max_character);
                 $product_count++;
             }
             if ($p['id_product'] && $p['id_product_attribute'] > 0) {
                 $this->loadCacheCombinations($p['id_product'], $fields);
                 if (isset($this->cacheCombination[$p['id_product']][$p['id_product_attribute']])) {
-                    $this->feed->write('body', $this->cacheCombination[$p['id_product']][$p['id_product_attribute']]);
+                    $this->feed->write(
+                        'body',
+                        $this->cacheCombination[$p['id_product']][$p['id_product_attribute']],
+                        $is_first,
+                        $max_character
+                    );
                     $product_count++;
                 }
             }
-            if ($product_count > 0 && $product_count % 10 == 0) {
+            if ($product_count > 0 && $product_count % $modulo_export == 0) {
                 LengowMain::log(
                     'Export',
                     LengowMain::setLogMessage('log.export.count_product', array(
@@ -467,6 +485,7 @@ class LengowExport
             if ($this->limit > 0 && $product_count >= $this->limit) {
                 break;
             }
+            $is_first = false;
         }
         $success = $this->feed->end();
         if (!$success) {

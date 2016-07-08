@@ -42,10 +42,10 @@
             if (sync_link) {
                 //synchronisation des boutiques, à modifier lorsque l'API sera disponible
                 // sync_iframe.src = 'http://cms.lengow.io/sync/';
-                sync_iframe.src = 'http://cms.lengow.int/sync/';
+                sync_iframe.src = 'http://cms.lengow.net/sync/';
             } else {
                 // sync_iframe.src = 'http://cms.lengow.io/';
-                sync_iframe.src = 'http://cms.lengow.int/';
+                sync_iframe.src = 'http://cms.lengow.net/';
             }
 
             $('#frame_loader').hide();

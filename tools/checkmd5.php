@@ -3,89 +3,63 @@
 /*
  * Check MD5 
  */
-
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-$list_folders = array(
-    '/backward_compatibility/',
-    '/classes/controllers/',
-    '/classes/models/',
-    '/controllers/admin/',
-    '/toolbox/',
-    '/toolbox/views/',
-    '/upgrade/',
-    '/views/css/',
-    '/views/fonts/',
-    '/views/img/',
-    '/views/img/flag/',
-    '/views/js/',
-    '/views/js/lengow/',
-    '/views/templates/admin/',
-    '/views/templates/admin/lengow_feed/',
-    '/views/templates/admin/lengow_feed/helpers/view/',
-    '/views/templates/admin/lengow_help/',
-    '/views/templates/admin/lengow_help/helpers/view/',
-    '/views/templates/admin/lengow_home/',
-    '/views/templates/admin/lengow_home/helpers/view/',
-    '/views/templates/admin/lengow_main_setting/',
-    '/views/templates/admin/lengow_main_setting/helpers/view/',
-    '/views/templates/admin/lengow_order/',
-    '/views/templates/admin/lengow_order/helpers/view/',
-    '/views/templates/admin/lengow_order_setting/',
-    '/views/templates/admin/lengow_order_setting/helpers/view/',
-    '/views/templates/admin/lengow_legals/',
-    '/views/templates/admin/lengow_legals/helpers/view/',
-    '/views/templates/admin/order/',
-    '/views/templates/front/',
-    '/views/templates/mails/de/',
-    '/views/templates/mails/en/',
-    '/views/templates/mails/es/',
-    '/views/templates/mails/fr/',
-    '/views/templates/mails/de/',
-    '/views/templates/mails/it/',
-    '/views/templates/mails/nl/',
-    '/views/templates/mails/pt/',
-    '/views/templates/mails/sv/',
-    '/webservice/',
-);
-
-$list_files = array(
-    '/lengow.php',
-    '/loader.php',
-    '/AdminLengowFeed14.php',
-    '/AdminLengowHelp14.php',
-    '/AdminLengowHome14.php',
-    '/AdminLengowMainSetting14.php',
-    '/AdminLengowOrder14.php',
-    '/AdminLengowOrderSetting14.php',
-);
-
+$base = dirname(dirname(__FILE__));
 $fp = fopen(dirname(dirname(__FILE__)).'/toolbox/checkmd5.csv', 'w+');
 
+$list_folders = array(
+    '/backward_compatibility',
+    '/classes',
+    '/controllers',
+    '/toolbox',
+    '/upgrade',
+    '/views',
+    '/webservice',
+);
+
+$file_paths = array(
+    $base.'/lengow.php',
+    $base.'/loader.php',
+    $base.'/AdminLengowFeed14.php',
+    $base.'/AdminLengowHelp14.php',
+    $base.'/AdminLengowHome14.php',
+    $base.'/AdminLengowMainSetting14.php',
+    $base.'/AdminLengowOrder14.php',
+    $base.'/AdminLengowOrderSetting14.php',
+);
+
 foreach ($list_folders as $folder) {
-    if (file_exists(dirname(dirname(__FILE__)).$folder)) {
-        $folder_files = array_diff(
-            scandir(dirname(dirname(__FILE__)).$folder),
-            array('..', '.', 'index.php', 'checkmd5.csv')
-        );
-        foreach ($folder_files as $file) {
-            $file_path = $folder.$file;
-            if (file_exists(dirname(dirname(__FILE__)).$file_path)) {
-                $checksum = array($file_path => md5_file(dirname(dirname(__FILE__)).$file_path));
-                writeCsv($fp, $checksum);
-            }
-        }
+    if (file_exists($base.$folder)) {
+        $result = explorer($base.$folder);
+        $file_paths = array_merge($file_paths, $result);
     }
 }
-foreach ($list_files as $file) {
-    if (file_exists(dirname(dirname(__FILE__)).$file)) {
-        $checksum = array($file => md5_file(dirname(dirname(__FILE__)).$file));
+foreach ($file_paths as $file_path) {
+    if (file_exists($file_path)) {
+        $checksum = array(str_replace($base, '', $file_path) => md5_file($file_path));
         writeCsv($fp, $checksum);
     }
 }
-
 fclose($fp);
+
+function explorer($path)
+{
+    $paths = array();
+    if (is_dir($path)) {
+        $me = opendir($path);
+        while ($child = readdir($me)) {
+            if ($child != '.' && $child != '..' && $child != 'checkmd5.csv') {
+                $result = explorer($path.DIRECTORY_SEPARATOR.$child);
+                $paths = array_merge($paths, $result);
+            }
+        }
+    } else {
+        $paths[] = $path;
+    }
+    return $paths;
+}
 
 function writeCsv($fp, $text, &$frontKey = array())
 {

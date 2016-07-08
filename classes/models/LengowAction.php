@@ -80,24 +80,31 @@ class LengowAction
     }
 
     /**
-     * Find by ID
+     * Find active actions by order id
      *
      * @param integer $action_id
+     * @param string  $action_type (ship or cancel)
+     * @param boolean $load
      *
      * @return boolean
      */
-    public static function getOrderActiveAction($id_order, $type)
+    public static function getActiveActionByOrderId($id_order, $action_type = null, $load = true)
     {
+        $sql_type = is_null($action_type) ? '' : ' AND  action_type = "'.pSQL($action_type).'"';
         $rows = Db::getInstance()->executeS(
             'SELECT * FROM '._DB_PREFIX_.'lengow_actions la
-            WHERE state = '.self::STATE_NEW.' AND  action_type = "'.pSQL($type).'" AND id_order='.(int)$id_order
+            WHERE state = '.self::STATE_NEW.$sql_type.'" AND id_order='.(int)$id_order
         );
-        $actions = array();
-        foreach ($rows as $row) {
-            $action = new LengowAction;
-            $actions[] = $action->load($row);
+        if ($load) {
+            $actions = array();
+            foreach ($rows as $row) {
+                $action = new LengowAction;
+                $actions[] = $action->load($row);
+            }
+            return $actions;
+        } else {
+            return $rows;
         }
-        return $actions;
     }
 
     /**
