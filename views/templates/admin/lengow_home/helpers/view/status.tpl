@@ -21,7 +21,7 @@
 <div class="lgw-container">
     <div>
         <img src="/modules/lengow/views/img/lengow-white-big.png" alt="lengow">
-        {if $isStatut['type'] == 'free_trial' && $isStatut['day'] == 0}
+        {if $isStatus['type'] == 'free_trial' && $isStatus['day'] == 0}
             <h1>{$locale->t('status.screen.title_end_free_trial')|escape:'htmlall':'UTF-8'}</h1>
             <h4>{$locale->t('status.screen.subtitle_end_free_trial')|escape:'htmlall':'UTF-8'}</h4>
             <p>{$locale->t('status.screen.first_description_end_free_trial')|escape:'htmlall':'UTF-8'}</p>
@@ -30,8 +30,7 @@
             <a href="http://solution.lengow.com" class="lgw-btn" target="_blank">
                 {$locale->t('status.screen.facturation_button')|escape:'htmlall':'UTF-8'}
             </a>
-            {*TODO Add refresh action *}
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}"
+            <a href="{$refresh_status|escape:'htmlall':'UTF-8'}"
                class="lgw-box-link">
                 {$locale->t('status.screen.refresh_action')|escape:'htmlall':'UTF-8'}
             </a>
@@ -48,10 +47,9 @@
             <a href="http://solution.lengow.com" class="lgw-btn" target="_blank">
                 {$locale->t('status.screen.upgrade_account_button')|escape:'htmlall':'UTF-8'}
             </a>
-            {*TODO Add refresh action *}
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}"
+            <a href="{$refresh_status|escape:'htmlall':'UTF-8'}"
                class="lgw-box-link">
-            {$locale->t('status.screen.refresh_action')|escape:'htmlall':'UTF-8'}
+                {$locale->t('status.screen.refresh_action')|escape:'htmlall':'UTF-8'}
             </a>
         {/if}
     </div>

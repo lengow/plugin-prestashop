@@ -135,6 +135,7 @@ class LengowSync
      * Get Status Account
      *
      * @param boolean $force Force cache Update
+     *
      * @return mixed
      */
     public static function getStatusAccount($force = false)
@@ -145,18 +146,15 @@ class LengowSync
                 return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
             }
         }
-
         //TODO call API for return a customer id or false
         //$result = LengowConnector::queryApi('get', '/v3.0/cms');
         $result = true;
-
         if ($result) {
             //TODO call API with customer id parameter for return status account
             //$status = LengowConnector::queryApi('get', '/v3.0/cms');
             $status = array();
-            $status['type'] = 'prenium';
+            $status['type'] = 'premium';
             $status['day'] = 0;
-
             if ($status) {
                 LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS', Tools::JsonEncode($status));
                 LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE', date('Y-m-d H:i:s'));
