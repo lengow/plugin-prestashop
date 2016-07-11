@@ -10,6 +10,8 @@ menu.product|Products
 menu.order|Orders
 menu.jump_to_lengow|Jump to Lengow
 menu.preprod_active|Pre-production mode
+menu.counter|Day left: %{counter}
+menu.upgrade_account|upgrade
 menu.order_overview|Overview
 menu.order_parameter|Settings
 menu.help|Help
@@ -212,7 +214,7 @@ lengow_setting.lengow_export_format_title|Export the default format
 lengow_setting.lengow_export_file_enabled_title|Export in a file
 lengow_setting.lengow_export_file_enabled_legend|You should use this option if you have 3,000 products or more
 lengow_setting.lengow_export_legacy_enabled_title|Export with legacy feed
-lengow_setting.lengow_export_legacy_enabled_legend|Compatibility for old lengow versions
+lengow_setting.lengow_export_legacy_enabled_legend|Compatibility with old Lengow versions
 lengow_setting.lengow_last_export_title|Last export
 lengow_setting.lengow_order_id_process_title|Orders in preparation
 lengow_setting.lengow_order_id_shipped_title|Shipped orders
@@ -243,8 +245,9 @@ lengow_setting.lengow_authorized_ip_legend|Authorized IP separated by:
 lengow_setting.lengow_tracking_enabled_title|Activate Lengow tracking
 lengow_setting.lengow_tracking_id_title|Lengow Tracking ID
 lengow_setting.lengow_order_stat_title|Order statistics
-lengow_setting.lengow_order_stat_update_title|Account statut update
-lengow_setting.lengow_account_status_title|Account statut
+lengow_setting.lengow_order_stat_update_title|Order statistics update
+lengow_setting.lengow_account_status_title|Account status
+lengow_setting.lengow_account_status_update_title|Account status update
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
@@ -253,14 +256,14 @@ lengow_log.error.account_id_empty|Account ID, Access Token or Secret is empty in
 lengow_log.error.account_id_already_used|account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})
 lengow_log.error.import_in_progress|import has already begun
 lengow_log.error.rest_time_to_import|Please wait %{rest_time} seconds before re-importing orders
-lengow_log.error.no_product|no products in the order
-lengow_log.error.no_change_rate|no exchange rates available for order prices
-lengow_log.error.no_currency|no currency in the order
+lengow_log.error.no_product|Lengow error: no products in the order
+lengow_log.error.no_change_rate|Lengow error: no exchange rates available for order prices
+lengow_log.error.no_currency|Lengow error: no currency in the order
 lengow_log.error.currency_not_available|currency %{currency_iso} is not available in your shop
-lengow_log.error.no_country_for_delivery_address|delivery address doesn't contain the country
+lengow_log.error.no_country_for_delivery_address|Lengow error: delivery address doesn't contain the country
 lengow_log.error.no_billing_address|no billing address in the order
-lengow_log.error.no_country_for_billing_address|billing address doesn't contain the country
-lengow_log.error.order_not_found|order cannot be found in Lengow feed
+lengow_log.error.no_country_for_billing_address|Lengow error: billing address doesn't contain the country
+lengow_log.error.order_not_found|Lengow error: order cannot be found in Lengow feed
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
 lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation is needed
 lengow_log.exception.no_product_to_cart|no product to be added to cart
@@ -268,11 +271,11 @@ lengow_log.exception.cannot_add_product_to_cart|cannot add product %{product_id}
 lengow_log.exception.no_quantity_for_product|product %{product_id} could not be added to cart. Make sure it is available for order or that there enough in stock
 lengow_log.exception.no_connection_webservice|connection didn't work with the Lengow webservice in shop %{name_shop} (%{id_shop})
 lengow_log.exception.crendentials_not_valid|account ID, token access or secret token are not valid in shop %{name_shop} (%{id_shop})
-lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})
+lengow_log.exception.error_lengow_webservice|Lengow webservice: %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|order could not be saved
 lengow_log.exception.carrier_shipping_address_no_country|shipping address doesn't contain the country
 lengow_log.exception.no_default_carrier_for_country|you must select a default carrier for the country : %{country_name}
-lengow_log.exception.marketplace_not_present|the marketplace %{markeplace_name} does not feature in the marketplace list
+lengow_log.exception.marketplace_not_present|Lengow error: the marketplace %{markeplace_name} does not feature in the marketplace list
 lengow_log.exception.order_line_required|order line is required but cannot be not found in order
 lengow_log.exception.action_not_valid|action %{action} is not valid
 lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} are not present

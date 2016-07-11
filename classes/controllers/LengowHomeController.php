@@ -62,7 +62,6 @@ class LengowHomeController extends LengowController
         }
         $lengow_link = new LengowLink();
         $this->context->smarty->assign('lengow_ajax_link', $lengow_link->getAbsoluteAdminLink('AdminLengowHome', true));
-        $this->context->smarty->assign('isStatus', LengowSync::getStatusAccount());
         $refresh_status = $lengow_link->getAbsoluteAdminLink('AdminLengowHome').'&action=refresh_status';
         $this->context->smarty->assign('refresh_status', $refresh_status);
         parent::display();

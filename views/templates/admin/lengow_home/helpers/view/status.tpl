@@ -21,7 +21,7 @@
 <div class="lgw-container">
     <div>
         <img src="/modules/lengow/views/img/lengow-white-big.png" alt="lengow">
-        {if $isStatus['type'] == 'free_trial' && $isStatus['day'] == 0}
+        {if $merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] eq 0}
             <h1>{$locale->t('status.screen.title_end_free_trial')|escape:'htmlall':'UTF-8'}</h1>
             <h4>{$locale->t('status.screen.subtitle_end_free_trial')|escape:'htmlall':'UTF-8'}</h4>
             <p>{$locale->t('status.screen.first_description_end_free_trial')|escape:'htmlall':'UTF-8'}</p>

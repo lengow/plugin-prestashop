@@ -153,8 +153,8 @@ class LengowSync
             //TODO call API with customer id parameter for return status account
             //$status = LengowConnector::queryApi('get', '/v3.0/cms');
             $status = array();
-            $status['type'] = 'premium';
-            $status['day'] = 0;
+            $status['type'] = 'free_trial';
+            $status['day'] = 10;
             if ($status) {
                 LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS', Tools::JsonEncode($status));
                 LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE', date('Y-m-d H:i:s'));

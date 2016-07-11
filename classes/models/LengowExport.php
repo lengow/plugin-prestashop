@@ -361,6 +361,8 @@ class LengowExport
     public function exec()
     {
         try {
+            // clean logs
+            LengowMain::cleanLog();
             LengowMain::log('Export', LengowMain::setLogMessage('log.export.start'), $this->log_output);
             $shop = new LengowShop($this->shopId);
             LengowMain::log(

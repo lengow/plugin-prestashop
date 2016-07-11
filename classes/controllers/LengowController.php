@@ -26,6 +26,7 @@ class LengowController
     protected $context;
     protected $locale;
     protected $isNewMerchant;
+    protected $merchantStatus;
     protected $toolbox;
 
     public function __construct()
@@ -37,6 +38,8 @@ class LengowController
         $this->context->smarty->assign('locale', new LengowTranslation());
         $this->isNewMerchant = LengowMain::isNewMerchant();
         $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
+        $this->merchantStatus =  LengowSync::getStatusAccount();
+        $this->context->smarty->assign('merchantStatus', $this->merchantStatus);
         $this->locale = new LengowTranslation();
         $this->context->smarty->assign('lengow_link', new LengowLink());
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;

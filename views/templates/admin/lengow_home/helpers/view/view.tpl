@@ -22,7 +22,7 @@
 <div id="lengow_home_wrapper">
 {if $isNewMerchant || $isSync }
     {include file='./new.tpl'}
-{elseif ($isStatus['type'] == 'free_trial' && $isStatus['day'] == 0) || $isStatus['type'] == 'bad_payer'}
+{elseif ($merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] eq 0) || $merchantStatus['type'] == 'bad_payer'}
     {include file='./status.tpl'}
 {else}
     {include file='./connect.tpl'}
