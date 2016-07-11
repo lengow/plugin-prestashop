@@ -216,6 +216,7 @@ fr:
     lengow_export_file_enabled_title: "Exportez dans un fichier"
     lengow_export_file_enabled_legend: "Il est conseillé d'activer cette option si vous avez 3 000 produits ou plus."
     lengow_export_legacy_enabled_title: "Exportez le flux avec les en-têtes de la version antérieure"
+    lengow_export_legacy_enabled_legend: "Compatibilité avec les anciennes versions Lengow"
     lengow_last_export_title: "Dernier export"
     lengow_order_id_process_title: "Commande en préparation"
     lengow_order_id_shipped_title: "Commandes expédiées"
@@ -246,6 +247,7 @@ fr:
     lengow_tracking_enabled_title: "Activez le tracking Lengow"
     lengow_tracking_id_title: "ID Tracking Lengow"
     lengow_order_stat_title: "Statistiques des commandes"
+    lengow_order_stat_update_title: "Mise à jour des statistiques de commandes"
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} commande(s) importée(s)"
@@ -312,6 +314,6 @@ fr:
       customer_email: "Email du client"
       message: "Message"
       shipped_by_marketplace: "Expédié par la place de marché"
-      cancel_and_reimport: "Annulez et ré-importez la commande"
-      check_cancel_and_reimport: "Vous voulez vous vraiment annuler et réimporter la commande ?"
+      cancel_and_reimport: "Ré-importer la commande"
+      check_cancel_and_reimport: "Vous voulez vous vraiment réimporter la commande ?"
       synchronize_id: "Synchronisez l'ID"
