@@ -541,7 +541,7 @@ class LengowOrder extends Order
             WHERE o.`id_shop` ='.(int)$id_shop
             .' AND lo.`order_process_state` = '.(int)self::PROCESS_STATE_IMPORT
             .' AND oh.`id_order_state` IN ('
-                .LengowMain::getOrderState('shipped').','.LengowMain::getOrderState('canceled')
+            .LengowMain::getOrderState('shipped').','.LengowMain::getOrderState('canceled')
             .')'
         );
         if ($results) {
