@@ -100,6 +100,7 @@ if (!$sync || $sync === 'order') {
 // sync actions between Lengow and Prestashop
 if (!$sync || $sync === 'action') {
     LengowAction::checkFinishAction();
+    LengowAction::checkActionNotSent();
 }
 
 // sync options between Lengow and Prestashop

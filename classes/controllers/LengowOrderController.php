@@ -617,7 +617,7 @@ class LengowOrderController extends LengowController
         if ($item['id_order'] > 0) {
             $last_action_type = LengowAction::getLastOrderActionType($item['id_order']);
             if ($last_action_type) {
-                $value = '<span class="lengow_link_tooltip lgw-label lgw-label_orange"
+                $value = '<span class="lengow_link_tooltip lgw-label orange"
                     data-html="true"
                     data-original-title="'.LengowMain::decodeLogMessage('order.screen.action_waiting_return').'"
                     >'.LengowMain::decodeLogMessage('order.screen.action_sent', null, array(

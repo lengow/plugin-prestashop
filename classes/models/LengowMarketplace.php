@@ -411,12 +411,22 @@ class LengowMarketplace
             }
             if (isset($result->count) && $result->count > 0) {
                 foreach ($result->results as $row) {
-                    LengowAction::updateAction(array(
+                    $update = LengowAction::updateAction(array(
                         'id_order'    => $order->id,
                         'action_type' => $action,
                         'action_id'   => $row->id,
                         'parameters'  => $params
                     ));
+                    // if update doesn't work, create new action
+                    if (!$update) {
+                        LengowAction::createAction(array(
+                            'id_order'        => $order->id,
+                            'action_type'     => $action,
+                            'action_id'       => $row->id,
+                            'parameters'      => $params,
+                            'marketplace_sku' => $order->lengow_marketplace_sku
+                        ));
+                    }
                 }
             } else {
                 if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
@@ -428,10 +438,11 @@ class LengowMarketplace
                     );
                     if (isset($result->id)) {
                         LengowAction::createAction(array(
-                            'id_order'    => $order->id,
-                            'action_type' => $action,
-                            'action_id'   => $result->id,
-                            'parameters'  => $params
+                            'id_order'        => $order->id,
+                            'action_type'     => $action,
+                            'action_id'       => $result->id,
+                            'parameters'      => $params,
+                            'marketplace_sku' => $order->lengow_marketplace_sku
                         ));
                     }
                 }

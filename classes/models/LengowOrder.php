@@ -526,6 +526,45 @@ class LengowOrder extends Order
     }
 
     /**
+     * Get unset order by shop
+     *
+     * @param integer $id_shop Prestashop shop id
+     *
+     * @return mixed
+     */
+    public static function getUnsentOrderByStore($id_shop)
+    {
+        $results = Db::getInstance()->executeS(
+            'SELECT lo.`id`, o.`id_shop`, o.`id_order`, oh.`id_order_state` FROM '._DB_PREFIX_.'lengow_orders lo
+            INNER JOIN '._DB_PREFIX_.'orders o ON (o.id_order = lo.id_order)
+            INNER JOIN '._DB_PREFIX_.'order_history oh ON (oh.id_order = lo.id_order)
+            WHERE o.`id_shop` ='.(int)$id_shop
+            .' AND lo.`order_process_state` = '.(int)self::PROCESS_STATE_IMPORT
+            .' AND oh.`id_order_state` IN ('
+                .LengowMain::getOrderState('shipped').','.LengowMain::getOrderState('canceled')
+            .')'
+        );
+        if ($results) {
+            $unsent_orders = array();
+            foreach ($results as $result) {
+                $active_action = LengowAction::getActiveActionByOrderId($result['id_order']);
+                $order_logs = LengowOrder::getOrderLogs($result['id'], 'send', false);
+                if (!$active_action
+                    && count($order_logs) == 0
+                    && !array_key_exists($result['id_order'], $unsent_orders)
+                ) {
+                    $action_type = $result['state'] == LengowMain::getOrderState('canceled') ? 'cancel' : 'ship';
+                    $unsent_orders[$result['id_order']] = $action_type;
+                }
+            }
+            if (count($unsent_orders) > 0) {
+                return $unsent_orders;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Synchronize order with Lengow API
      *
      * @param LengowConnector $connector Lengow Connector for API calls
@@ -682,7 +721,7 @@ class LengowOrder extends Order
      *
      * @param string  $marketplace_sku     Lengow order id
      * @param integer $delivery_address_id Id delivery address
-     * @param string  $type                Type (import or wsdl)
+     * @param string  $type                Type (import or send)
      *
      * @return mixed
      */
@@ -703,7 +742,7 @@ class LengowOrder extends Order
      * Check if log already exists for the given order
      *
      * @param string  $id_order_lengow id lengow order
-     * @param string  $type            type (import or wsdl)
+     * @param string  $type            type (import or send)
      * @param boolean $finished        log finished (true or false)
      *
      * @return mixed
