@@ -248,21 +248,21 @@ class LengowExport
      * Construct new Lengow export.
      *
      * @param array params optional options
-     * int     $limit                 The number of product to be exported
-     * int     $offset                From what product export
-     * int     $shop_id               Shop id for export
-     * int     $language_id           language for export
-     * string  $product_ids           Ids product to export
-     * string  $format                Export Format (csv|yaml|xml|json)
-     * boolean $stream                Display file when call script (1) | Save File (0)
-     * boolean $out_stock             Export product in stock and out stock (1) | Export Only in stock product (0)
-     * boolean $selection             Export selected product (1) | Export all products (0)
-     * boolean $show_inactive_product Export active and inactive product (1) | Export Only active product (0)
-     * boolean $export_variation      Export product variation (1) | Export Only simple product (0)
-     * boolean $legacy_fields         Export with legacy fields (1) | Export with new fields (0)
-     * boolean $update_export_date    Update 'LENGOW_LAST_EXPORT' when launching export process (1)
-     *                                  | Do not update 'LENGOW_LAST_EXPORT' when exporting from toolbox (0)
-     * boolean $log_output            See logs (only when stream = 0) (1) | no logs (0)
+     * int     $limit              The number of product to be exported
+     * int     $offset             From what product export
+     * int     $shop_id            Shop id for export
+     * int     $language_id        language for export
+     * string  $product_ids        Ids product to export
+     * string  $format             Export Format (csv|yaml|xml|json)
+     * boolean $stream             Display file when call script (1) | Save File (0)
+     * boolean $out_of_stock       Export product in stock and out stock (1) | Export Only in stock product (0)
+     * boolean $selection          Export selected product (1) | Export all products (0)
+     * boolean $inactive           Export active and inactive product (1) | Export Only active product (0)
+     * boolean $variation          Export product variation (1) | Export Only simple product (0)
+     * boolean $legacy_fields      Export with legacy fields (1) | Export with new fields (0)
+     * boolean $update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1)
+     *                                | Do not update 'LENGOW_LAST_EXPORT' when exporting from toolbox (0)
+     * boolean $log_output         See logs (only when stream = 0) (1) | no logs (0)
      *
      * @return LengowExport
      */
@@ -273,27 +273,32 @@ class LengowExport
         $this->productIds = (isset($params["product_ids"]) ? $params["product_ids"] : false);
         $this->stream = (isset($params["stream"]) ? $params["stream"] : false);
         $this->limit =  (isset($params["limit"]) ? (int)$params["limit"] : false);
-        $this->showInactiveProduct = (isset($params["show_inactive_product"]) ?
-            (bool)$params["show_inactive_product"] : false);
         $this->shopId = (int)(isset($params["shop_id"]) ? (int)$params["shop_id"] : Context::getContext()->shop->id);
-        $this->language = isset($params["language_id"]) ?
-            new Language($params["language_id"]) :
-            new Language(LengowConfiguration::get('PS_LANG_DEFAULT', null, null, $this->shopId));
-        $this->exportLengowSelection = (isset($params["selection"]) ?
-            (bool)$params["selection"] :
-            Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->shopId));
-        $this->exportOutStock =  (isset($params["out_stock"]) ?
-            $params["out_stock"] :
-            Configuration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->shopId));
-        $this->exportVariation = isset($params["export_variation"]) ?
-            (bool)$params["export_variation"] :
-            (bool)Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId);
+        $this->language = (isset($params["language_id"])
+            ? new Language($params["language_id"])
+            : new Language(LengowConfiguration::get('PS_LANG_DEFAULT', null, null, $this->shopId))
+        );
+        $this->exportLengowSelection = (isset($params["selection"])
+            ? (bool)$params["selection"]
+            : Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->shopId)
+        );
+        $this->exportOutStock = (isset($params["out_of_stock"])
+            ? $params["out_of_stock"]
+            : Configuration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->shopId)
+        );
+        $this->exportVariation = (isset($params["variation"])
+            ? (bool)$params["variation"]
+            : (bool)Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId)
+        );
+        $this->showInactiveProduct = (isset($params["inactive"]) ? (bool)$params["inactive"] : false);
         $legacy_fields = (isset($params['legacy_fields']) ? (bool)$params['legacy_fields'] : false);
         LengowExport::$DEFAULT_FIELDS = $legacy_fields ? $this->legacy_fields : $this->new_fields ;
-        $this->log_output = ((!$this->stream && isset($params['log_output']))
-            ? (bool)$params['log_output']
-            : false
-        );
+        // See logs or not (only when stream = 0)
+        if ($this->stream) {
+            $this->log_output = false;
+        } else {
+            $this->log_output = isset($params['log_output']) ? (bool)$params['log_output'] : true;
+        }
         $this->updateExportDate = (isset($params['update_export_date']) ? (bool)$params['update_export_date'] : true);
         if (!Context::getContext()->currency) {
             Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
@@ -427,8 +432,6 @@ class LengowExport
         );
         $this->feed->write('header', $fields);
         $is_first = true;
-        // modulo for export counter
-        $modulo_export = (int)(count($products) / 10);
         // Get the maximum of character for yaml format
         $max_character = 0;
         foreach ($fields as $field) {
@@ -436,7 +439,6 @@ class LengowExport
                 $max_character = Tools::strlen($field);
             }
         }
-        $modulo_export = $modulo_export < 10 ? 10 : $modulo_export;
         foreach ($products as $p) {
             $product_data = array();
             if ($p['id_product'] && $p['id_product_attribute'] == 0) {
@@ -475,7 +477,7 @@ class LengowExport
                     $product_count++;
                 }
             }
-            if ($product_count > 0 && $product_count % $modulo_export == 0) {
+            if ($product_count > 0 && $product_count % 50 == 0) {
                 LengowMain::log(
                     'Export',
                     LengowMain::setLogMessage('log.export.count_product', array(
