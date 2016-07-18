@@ -22,7 +22,7 @@ en:
     global_parameter: "General settings"
   footer:
     legals: "Legals"
-    lengow_module: "Lengow PrestaShop Module"
+    plugin_lengow: "Lengow Prestashop Plugin"
   dashboard:
     screen:
       welcome_back: "Hi! Welcome back!"

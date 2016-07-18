@@ -163,4 +163,3 @@ require 'views/header.php';
 </div>
 <?php
 require 'views/footer.php';
-?>
