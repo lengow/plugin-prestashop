@@ -288,7 +288,7 @@ function reload_table_js() {
                 lengow_jquery(this).css('cursor','pointer');
             }
         }, function () {
-            lengow_jquery(this).css('cursor','auto');
+            /*lengow_jquery(this).css('cursor','auto');*/
         }
     );
     pluginsRender();
