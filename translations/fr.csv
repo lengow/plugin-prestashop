@@ -10,12 +10,14 @@ menu.product|Produits
 menu.order|Commandes
 menu.jump_to_lengow|Accéder à Lengow
 menu.preprod_active|mode préproduction 
+menu.counter|Période d'essai : %{counter} jour(s) restant(s)
+menu.upgrade_account|mettre à jour
 menu.order_overview|Vue d'ensemble
 menu.order_parameter|Paramètres des commandes
 menu.help|Aide
 menu.global_parameter|Paramètres principaux
 footer.legals|Mentions légales
-footer.copyright_lengow|Copyright Lengow
+footer.plugin_lengow|Lengow Prestashop Module
 dashboard.screen.welcome_back|Bonjour ! Bienvenue parmi nous !
 dashboard.screen.go_to_lengow|Aller sur la plateforme Lengow
 dashboard.screen.products_title|Produits
@@ -33,6 +35,21 @@ dashboard.screen.some_help_title|Besoin d'aide ?
 dashboard.screen.get_in_touch|Prenez contact avec les équipes Lengow.
 dashboard.screen.visit_help_center|Visitez notre Help Center
 dashboard.screen.configure_plugin|pour plus d'informations sur la configuration de votre plugin PrestaShop
+status.screen.title_end_free_trial|Toutes les bonnes choses ont une fin 
+status.screen.subtitle_end_free_trial|Vous avez atteint la fin de votre période d'essai !
+status.screen.first_description_end_free_trial|Vos 15 jours d'essai gratuits sur la plateforme Lengow sont maintenant terminés. Nous espérons que vous avez pu en profiter au mieux pour votre activité e-commerce.
+status.screen.second_description_end_free_trial|Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les indexations vont être momentanément stoppées.
+status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration.<br />Pour conserver l'intégralité du paramétrage que vous avez défini, pensez à vous abonner dès à présent !
+status.screen.title_bad_payer|Les erreurs arrivent parfois...
+status.screen.subtitle_bad_payer|Votre compte est temporairement fermé.
+status.screen.first_description_bad_payer|Nous sommes désolé d'en arriver là mais nous devons limiter temporairement l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire.
+status.screen.second_description_bad_payer|La publication de vos catalogues est aussi suspendue. Nous vous recommandons vivement de prendre contact avec nous par mail
+status.screen.phone_bad_payer|ou par téléphone au +33 (0)2 85 52 64 15
+status.screen.third_description_bad_payer|Nous espérons vous revoir très rapidement parmi nous
+status.screen.signature_bad_payer|L'équipe Lengow
+status.screen.facturation_button|Voir mes informations des facturation
+status.screen.upgrade_account_button|Je suis prêt à m'abonner !
+status.screen.refresh_action|Actualiser mon compte
 product.screen.nb_exported|produits exportés 
 product.screen.nb_available|produits disponibles
 product.screen.include_variation|Inclure les produits déclinés
@@ -44,7 +61,7 @@ product.screen.include_specific_product_support|Utilisez cette option pour séle
 product.screen.your_exported_catalog|Votre catalogue est prêt pour l'export ! Copiez le lien sur la plateforme Lengow
 product.screen.last_export|Dernière indexation
 product.screen.no_export|Pas d'export 
-product.screen.no_result_found|Désolé, nous n'avons trouvé aucun produit correspondant à votre demande.<br />Souhaitez-vous modifier votre recherche ?
+product.screen.no_result_found|Désolé, nous n'avons trouvé aucun élément correspondant à votre demande.<br />Souhaitez-vous modifier votre recherche ?
 product.screen.no_product_selected|Sélectionnez un produit
 product.screen.date_from|Du
 product.screen.date_to|Au
@@ -86,6 +103,8 @@ order.screen.button_reimport_order|Réimporter mes commandes
 order.screen.button_resend_order|Renvoyer mes commandes
 order.screen.cron|Vous voulez automatiser la mise à jour de vos commandes ?
 order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <br /><a href=%{url}>Retourner en mode production ?&lt;/a>
+order.screen.import_single_warning_message|La version de votre module est comprise entre la 1.5.2 et la 1.5.4 ? Pour des raisons de sécurité, vous ne pouvez importer qu'une seule commande par synchronisation.
+order.screen.no_carrier_warning_message|Vous ne pouvez pas importer les commandes car vous n'avez pas encore défini de transporteur par défaut. <a href=%{url}>Configuration des transporteurs</a>
 order.screen.not_imported|Pas importée
 order.screen.not_sent|Non envoyé
 order.screen.refresh_order|Actualiser ma commande
@@ -104,6 +123,7 @@ order.screen.status_shipped|Expédié
 order.screen.status_closed|Fermé
 order.screen.status_refunded|Remboursé
 order.screen.status_canceled|Annulé
+order.screen.status_shipped_by_mkp|Expédié par la place de marché
 order.table.action_lengow|Actions
 order.table.order_lengow_state|Statut Lengow
 order.table.marketplace_name|Place de marché
@@ -226,6 +246,8 @@ lengow_setting.lengow_tracking_enabled_title|Activez le tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_order_stat_title|Statistiques des commandes
 lengow_setting.lengow_order_stat_update_title|Mise à jour des statistiques de commandes
+lengow_setting.lengow_account_status_title|Statut du compte
+lengow_setting.lengow_account_status_update_title|Statut du compte à jour
 lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs
@@ -289,3 +311,5 @@ admin.order.shipped_by_marketplace|Expédié par la place de marché
 admin.order.cancel_and_reimport|Ré-importer la commande
 admin.order.check_cancel_and_reimport|Vous voulez vous vraiment réimporter la commande ?
 admin.order.synchronize_id|Synchronisez l'ID
+admin.order.resend_action|Renvoyer l'action
+admin.order.check_resend_action|Vous voulez vous vraiment renvoyer l'action %{action} ?

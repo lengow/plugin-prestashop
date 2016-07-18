@@ -14,13 +14,15 @@ fr:
     order: "Commandes"
     jump_to_lengow: "Accéder à Lengow"
     preprod_active: "mode préproduction "
+    counter: "Période d'essai : %{counter} jour(s) restant(s)"
+    upgrade_account: "mettre à jour"
     order_overview: "Vue d'ensemble"
     order_parameter: "Paramètres des commandes"
     help: "Aide"
     global_parameter: "Paramètres principaux"
   footer:
     legals: "Mentions légales"
-    copyright_lengow: "Copyright Lengow"
+    plugin_lengow: "Lengow Prestashop Module"
   dashboard:
     screen:
       welcome_back: "Bonjour ! Bienvenue parmi nous !"
@@ -40,6 +42,23 @@ fr:
       get_in_touch: "Prenez contact avec les équipes Lengow."
       visit_help_center: "Visitez notre Help Center"
       configure_plugin: "pour plus d'informations sur la configuration de votre plugin PrestaShop"
+  status:
+    screen:
+      title_end_free_trial: "Toutes les bonnes choses ont une fin "
+      subtitle_end_free_trial: "Vous avez atteint la fin de votre période d'essai !"
+      first_description_end_free_trial: "Vos 15 jours d'essai gratuits sur la plateforme Lengow sont maintenant terminés. Nous espérons que vous avez pu en profiter au mieux pour votre activité e-commerce."
+      second_description_end_free_trial: "Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les indexations vont être momentanément stoppées."
+      third_description_end_free_trial: "Votre compte d'essai sera supprimé 30 jours après expiration.\nPour conserver l'intégralité du paramétrage que vous avez défini, pensez à vous abonner dès à présent !"
+      title_bad_payer: "Les erreurs arrivent parfois..."
+      subtitle_bad_payer: "Votre compte est temporairement fermé."
+      first_description_bad_payer: "Nous sommes désolé d'en arriver là mais nous devons limiter temporairement l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire."
+      second_description_bad_payer: "La publication de vos catalogues est aussi suspendue. Nous vous recommandons vivement de prendre contact avec nous par mail"
+      phone_bad_payer: "ou par téléphone au +33 (0)2 85 52 64 15"
+      third_description_bad_payer: "Nous espérons vous revoir très rapidement parmi nous"
+      signature_bad_payer: "L'équipe Lengow"
+      facturation_button: "Voir mes informations des facturation"
+      upgrade_account_button: "Je suis prêt à m'abonner !"
+      refresh_action: "Actualiser mon compte"
   product:
     screen:
       nb_exported: "produits exportés "
@@ -53,7 +72,7 @@ fr:
       your_exported_catalog: "Votre catalogue est prêt pour l'export ! Copiez le lien sur la plateforme Lengow"
       last_export: "Dernière indexation"
       no_export: "Pas d'export "
-      no_result_found: "Désolé, nous n'avons trouvé aucun produit correspondant à votre demande.\nSouhaitez-vous modifier votre recherche ?"
+      no_result_found: "Désolé, nous n'avons trouvé aucun élément correspondant à votre demande.\nSouhaitez-vous modifier votre recherche ?"
       no_product_selected: "Sélectionnez un produit"
       date_from: "Du"
       date_to: "Au"
@@ -98,6 +117,8 @@ fr:
       button_resend_order: "Renvoyer mes commandes"
       cron: "Vous voulez automatiser la mise à jour de vos commandes ?"
       preprod_warning_message: "Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. \n<a href=%{url}>Retourner en mode production ?&lt;/a>"
+      import_single_warning_message: "La version de votre module est comprise entre la 1.5.2 et la 1.5.4 ? Pour des raisons de sécurité, vous ne pouvez importer qu'une seule commande par synchronisation."
+      no_carrier_warning_message: "Vous ne pouvez pas importer les commandes car vous n'avez pas encore défini de transporteur par défaut. <a href=%{url}>Configuration des transporteurs</a>"
       not_imported: "Pas importée"
       not_sent: "Non envoyé"
       refresh_order: "Actualiser ma commande"
@@ -116,6 +137,7 @@ fr:
       status_closed: "Fermé"
       status_refunded: "Remboursé"
       status_canceled: "Annulé"
+      status_shipped_by_mkp: "Expédié par la place de marché"
     table:
       action_lengow: "Actions"
       order_lengow_state: "Statut Lengow"
@@ -248,6 +270,8 @@ fr:
     lengow_tracking_id_title: "ID Tracking Lengow"
     lengow_order_stat_title: "Statistiques des commandes"
     lengow_order_stat_update_title: "Mise à jour des statistiques de commandes"
+    lengow_account_status_title: "Statut du compte"
+    lengow_account_status_update_title: "Statut du compte à jour"
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} commande(s) importée(s)"
@@ -317,3 +341,5 @@ fr:
       cancel_and_reimport: "Ré-importer la commande"
       check_cancel_and_reimport: "Vous voulez vous vraiment réimporter la commande ?"
       synchronize_id: "Synchronisez l'ID"
+      resend_action: "Renvoyer l'action"
+      check_resend_action: "Vous voulez vous vraiment renvoyer l'action %{action} ?"
