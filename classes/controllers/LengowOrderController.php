@@ -296,7 +296,7 @@ class LengowOrderController extends LengowController
         $fields_list = array();
         $fields_list['log_status'] = array(
             'title'             => $this->locale->t('order.table.action_lengow'),
-            'class'             => 'lengow_status',
+            'class'             => 'lengow_status no-link',
             'type'              => 'log_status',
             'width'             => $width,
             'display_callback'  => 'LengowOrderController::displayLogStatus',
@@ -311,7 +311,7 @@ class LengowOrderController extends LengowController
         );
         $fields_list['lengow_status'] = array(
             'title'             => $this->locale->t('order.table.order_lengow_state'),
-            'class'             => 'text-center link',
+            'class'             => 'text-center link  no-link',
             'width'             => $width,
             'display_callback'  => 'LengowOrderController::displayLengowState',
             'filter'            => true,
@@ -352,7 +352,7 @@ class LengowOrderController extends LengowController
         $fields_list['marketplace_sku'] = array(
             'title'             => $this->locale->t('order.table.marketplace_sku'),
             'width'             => '14%',
-            'class'             => 'link',
+            'class'             => 'link no-link',
             'display_callback'  => 'LengowOrderController::displayOrderLink',
             'filter'            => true,
             'filter_order'      => true,
@@ -360,7 +360,7 @@ class LengowOrderController extends LengowController
         );
         $fields_list['reference'] = array(
             'title'             => $this->locale->t('order.table.reference_prestashop'),
-            'class'             => 'link reference',
+            'class'             => 'link reference no-link',
             'width'             => $width,
             'display_callback'  => 'LengowOrderController::displayOrderLink',
             'filter'            => true,

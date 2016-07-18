@@ -187,17 +187,17 @@ class LengowList
     {
         $lengow_link = new LengowLink();
         $html = '';
-        $html.= '<tr id='.$this->id.'_'.$item[$this->identifier].'>';
+        $html.= '<tr id='.$this->id.'_'.$item[$this->identifier].' class="table_row">';/*ici*/
         if ($this->selection && !$this->toolbox) {
             if ($this->selectionCondition) {
                 if ($item[$this->selectionCondition] > 0) {
-                    $html.='<td><input type="checkbox" class="lengow_selection"
+                    $html.='<td class="no-link"> <input type="checkbox" class="lengow_selection"
                     name="selection['.$item[$this->identifier].']" value="1"></td>';
                 } else {
                     $html.='<td></td>';
                 }
             } else {
-                $html.='<td><input type="checkbox" class="lengow_selection"
+                $html.='<td class="no-link"><input type="checkbox" class="lengow_selection"
                     name="selection['.$item[$this->identifier].']" value="1"></td>';
             }
         }

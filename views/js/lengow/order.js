@@ -265,7 +265,11 @@
           lengow_jquery('#lengow_order_wrapper .lengow_form_table').submit();
         }
 
-
+        // $('.lengow_table').on('click', '.table_row td:not(.no-link)', function(){
+        //     var url = $(this).closest('.table_row').find('.reference a').attr('href');
+        //     window.open(url, '_blank');
+        //     return false;
+        // });
 
         // Table header filters
         pluginsRender();
