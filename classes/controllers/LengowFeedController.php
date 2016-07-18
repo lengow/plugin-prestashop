@@ -298,6 +298,7 @@ class LengowFeedController extends LengowController
         );
         $fields_list['name'] = array(
             'title'         => $this->locale->t('product.table.name'),
+            'class'         => 'feed_name',
             'filter'        => true,
             'filter_order'  => true,
             'filter_key'    => 'pl.name',
@@ -352,7 +353,7 @@ class LengowFeedController extends LengowController
         $fields_list['id_lengow_product'] = array(
             'title'         => $this->locale->t('product.table.lengow_status'),
             'width'         => '10%',
-            'class'         => 'center',
+            'class'         => 'center no-link',
             'type'          => 'switch_product',
             'filter_order'  => true,
             'filter_key'    => 'id_lengow_product'

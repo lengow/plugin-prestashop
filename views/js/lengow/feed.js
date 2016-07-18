@@ -21,6 +21,8 @@
 (function ($) {
     $(document).ready(function () {
 
+
+
         function checkShop() {
             var status = $('.lengow_check_shop');
             var href = status.attr('data-href');
@@ -265,6 +267,10 @@
             }
         });
 
-
+        $('.lengow_table').on('click', '.table_row td:not(.no-link)', function(){
+            var url = $(this).closest('.table_row').find('.feed_name a').attr('href');
+            window.open(url, '_blank');
+            return false;
+        });
     });
 })(lengow_jquery);
