@@ -14,7 +14,7 @@ en:
     order: "Orders"
     jump_to_lengow: "Jump to Lengow"
     preprod_active: "Pre-production mode"
-    counter: "Day left: %{counter}"
+    counter: "Trial period: %{counter} day(s) left"
     upgrade_account: "upgrade"
     order_overview: "Overview"
     order_parameter: "Settings"
@@ -22,7 +22,7 @@ en:
     global_parameter: "General settings"
   footer:
     legals: "Legals"
-    lengow_module: "Lengow PrestaShop Module"
+    plugin_lengow: "Lengow Prestashop Plugin"
   dashboard:
     screen:
       welcome_back: "Hi! Welcome back!"
@@ -45,19 +45,19 @@ en:
   status:
     screen:
       title_end_free_trial: "Even good times can stop"
-      subtitle_end_free_trial: "You've reach the end of your trial !"
+      subtitle_end_free_trial: "You've reach the end of your trial!"
       first_description_end_free_trial: "Your 15 days free on Lengow is now expired. It's terrible, we know, but the best is yet to come ! We sincerely hope you've enjoyed Lengow to improve your business."
       second_description_end_free_trial: "Your account will be disabled until you purchase a new subscription. All existing diffusions and indexations will be stopped too."
       third_description_end_free_trial: "Don't forget that a trial account is deleted 30 days after expiration. Make sure to upgrade in order not to lose the great work you've made into building your channels."
-      title_bad_payer: "Bad things happened :'("
+      title_bad_payer: "Bad things happened sometimes :'("
       subtitle_bad_payer: "Your account is temporaly closed"
-      first_description_bad_payer: "We are sorry that we had to get there, but we had to temporarily limit access to your account because the automatic payment of your subscription failed."
+      first_description_bad_payer: "We are sorry to get there, but we had to temporarily limit access to your account because the automatic payment of your subscription failed."
       second_description_bad_payer: "The publication of your catalogs is also suspended. We strongly suggest you get in touch with us at"
-      phone_bad_payer: "or by phone at (+33)4 565 656"
+      phone_bad_payer: "or by phone at +44 203 318 2632"
       third_description_bad_payer: "We hope to count you back among us really soon."
-      signature_bad_payer: "Team Lengow"
+      signature_bad_payer: "The Lengow team"
       facturation_button: "View my billing informations"
-      upgrade_account_button: "It's ok, I'm ready for an upgrade !"
+      upgrade_account_button: "It's ok, I'm ready to upgrade !"
       refresh_action: "Refresh my account"
   product:
     screen:
@@ -117,8 +117,8 @@ en:
       button_resend_order: "Resend Orders"
       cron: "Want to automate your order updates?"
       preprod_warning_message: "You are in pre-production mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>"
-      import_single_warning_message: "You have a version of Prestashop between 1.5.2 and 1.5.4.*. For security reasons, only one command will be imported by synchronization."
-      no_carrier_warning_message: "You can't import orders. You have not specify default carrier. <a href=%{url}>Change this</a>"
+      import_single_warning_message: "Your version of PrestaShop is between 1.5.2 and 1.5.4. ? For security reasons, only one command will be imported by synchronization."
+      no_carrier_warning_message: "You can't import orders: you haven't specified any default carrier. <a href=%{url}>Change this</a>"
       not_imported: "not imported"
       not_sent: "not sent"
       refresh_order: "refresh order"

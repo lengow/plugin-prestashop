@@ -89,11 +89,11 @@ require 'views/header.php';
     <form class="form-horizontal" method="POST">
         <input type="hidden" name="action" value="update"/>
         <fieldset>
-            <h3><?php echo $locale->t('toolbox.configuration.shop_credentials'); ?></h3>
+            <h3 class="start-block"><?php echo $locale->t('toolbox.configuration.shop_credentials'); ?></h3>
         <?php
         foreach ($shopCollection as $row) {
             $shop = new LengowShop($row['id_shop']);
-            echo '<h4>'.$shop->name.' ('.$shop->id.')</h4>';
+            echo '<h4 style="text-align:center">'.$shop->name.' ('.$shop->id.')</h4>';
             echo $form->buildShopInputs($shop->id, array(
                 'LENGOW_SHOP_ACTIVE',
                 'LENGOW_ACCOUNT_ID',
@@ -102,14 +102,14 @@ require 'views/header.php';
             ));
             echo '</fieldset>';
         }
-        echo '<fieldset><h3>'.$locale->t('toolbox.configuration.export_setting').'</h3>';
+        echo '<fieldset><h3 class="start-block">'.$locale->t('toolbox.configuration.export_setting').'</h3>';
         echo $form->buildInputs(array(
             'LENGOW_EXPORT_FORMAT',
             'LENGOW_EXPORT_FILE_ENABLED',
             'LENGOW_EXPORT_LEGACY_ENABLED',
         ));
         echo '</fieldset>';
-        echo '<fieldset><h3>'.$locale->t('toolbox.configuration.import_setting').'</h3>';
+        echo '<fieldset><h3 class="start-block">'.$locale->t('toolbox.configuration.import_setting').'</h3>';
         echo $form->buildInputs(array(
             'LENGOW_ORDER_ID_PROCESS',
             'LENGOW_ORDER_ID_SHIPPED',
@@ -123,7 +123,7 @@ require 'views/header.php';
             'LENGOW_IMPORT_SINGLE_ENABLED'
         ));
         echo '</fieldset>';
-        echo '<fieldset><h3>'.$locale->t('toolbox.configuration.global_setting').'</h3>';
+        echo '<fieldset><h3 class="start-block">'.$locale->t('toolbox.configuration.global_setting').'</h3>';
         echo $form->buildInputs(array(
             'LENGOW_AUTHORIZED_IP',
             'LENGOW_IMPORT_PREPROD_ENABLED',
@@ -163,6 +163,3 @@ require 'views/header.php';
 </div>
 <?php
 require 'views/footer.php';
-?>
-
-<script type="text/javascript" src="/modules/lengow/views/js/lengow/main_setting.js"></script>

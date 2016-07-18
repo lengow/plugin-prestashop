@@ -25,9 +25,9 @@
 class LengowSync
 {
     /**
-     * Get Account Status
+     * Get Account Status every 5 hours
      */
-    protected static $cacheTime = 10800;
+    protected static $cacheTime = 18000;
 
     /**
      * Get Sync Data (Inscription / Update)
@@ -146,15 +146,15 @@ class LengowSync
                 return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
             }
         }
-        //TODO call API for return a customer id or false
+        // TODO call API for return a customer id or false
         //$result = LengowConnector::queryApi('get', '/v3.0/cms');
         $result = true;
         if ($result) {
-            //TODO call API with customer id parameter for return status account
+            // TODO call API with customer id parameter for return status account
             //$status = LengowConnector::queryApi('get', '/v3.0/cms');
             $status = array();
             $status['type'] = 'free_trial';
-            $status['day'] = 5;
+            $status['day'] = 10;
             if ($status) {
                 LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS', Tools::JsonEncode($status));
                 LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE', date('Y-m-d H:i:s'));
