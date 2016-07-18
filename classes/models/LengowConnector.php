@@ -67,7 +67,7 @@ class LengowConnector
     /**
      * @var string URL of the API Lengow
      */
-    const LENGOW_API_URL = 'http://10.100.1.82:8081';
+    const LENGOW_API_URL = 'http://api.lengow.net:80';
 
     /**
      * @var string URL of the SANDBOX Lengow

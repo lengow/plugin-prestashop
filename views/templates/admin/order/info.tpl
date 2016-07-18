@@ -66,14 +66,23 @@
 		</li>
 	</ul>
 	<br />
-	<div class"button-command-prev-next">
-		<a class="button" 
-			href="{$action_reimport|escape:'htmlall':'UTF-8'}" 
-			onclick="return confirm('{$lengow_locale->t('admin.order.check_cancel_and_reimport')|escape:'htmlall':'UTF-8'}')">
-			{$lengow_locale->t('admin.order.cancel_and_reimport')|escape:'htmlall':'UTF-8'}
-		</a>
-		<a class="button" href="{$action_synchronize|escape:'htmlall':'UTF-8'}">
-			{$lengow_locale->t('admin.order.synchronize_id')|escape:'htmlall':'UTF-8'}
-		</a>
-	</div>
+	{if !$preprod_mode}
+		<div class"button-command-prev-next">
+			<a class="button" 
+				href="{$action_reimport|escape:'htmlall':'UTF-8'}" 
+				onclick="return confirm('{$lengow_locale->t('admin.order.check_cancel_and_reimport')|escape:'htmlall':'UTF-8'}')">
+				{$lengow_locale->t('admin.order.cancel_and_reimport')|escape:'htmlall':'UTF-8'}
+			</a>
+			<a class="button" href="{$action_synchronize|escape:'htmlall':'UTF-8'}">
+				{$lengow_locale->t('admin.order.synchronize_id')|escape:'htmlall':'UTF-8'}
+			</a>
+			{if $can_resend_action}
+				<a class="button"
+					href="{$action_resend|escape:'htmlall':'UTF-8'}"
+					onclick="return confirm('{$check_resend_action|escape:'htmlall':'UTF-8'}')">
+					{$lengow_locale->t('admin.order.resend_action')|escape:'htmlall':'UTF-8'}
+				</a>
+			{/if}
+		</div>
+	{/if}
 </fieldset>

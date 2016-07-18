@@ -235,6 +235,16 @@ class LengowConfiguration extends Configuration
                     'type'          => 'text',
                     'default_value' => '',
                 ),
+                'LENGOW_ACCOUNT_STATUS' => array(
+                    'type'          => 'json',
+                    'label'         => $locale->t('lengow_setting.lengow_account_status_title'),
+                    'export'        => false
+                ),
+                'LENGOW_ACCOUNT_STATUS_UPDATE' => array(
+                    'type'          => 'datetime',
+                    'label'         => $locale->t('lengow_setting.lengow_account_status_update_title'),
+                    'export'        => false
+                ),
             );
         }
         return $keys;

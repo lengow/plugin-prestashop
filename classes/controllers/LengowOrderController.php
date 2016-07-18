@@ -30,6 +30,7 @@ class LengowOrderController extends LengowController
     {
         $this->assignLastImportationInfos();
         $this->assignNbOrderImported();
+        $this->assignWarningMessages();
         // datas for toolbox
         $shop = array();
         $shops = LengowShop::findAll();
@@ -208,9 +209,50 @@ class LengowOrderController extends LengowController
                     $order_url = $prestashop_order_controller.'&id_order='.$new_id_order.'&vieworder';
                     Tools::redirectAdmin($order_url);
                     break;
+                case 'force_resend':
+                    $id_order = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
+                    $action_type = isset($_REQUEST['action_type']) ? $_REQUEST['action_type'] : 'ship';
+                    $lengow_order = new LengowOrder($id_order);
+                    $lengow_order->callAction($action_type);
+                    $lengow_link = new LengowLink();
+                    $prestashop_order_controller = $lengow_link->getAbsoluteAdminLink('AdminOrders', false, true);
+                    $order_url = $prestashop_order_controller.'&id_order='.$id_order.'&vieworder';
+                    Tools::redirectAdmin($order_url);
             }
             exit();
         }
+    }
+
+    /**
+     * Get all warning messages
+     */
+    public function assignWarningMessages()
+    {
+        $warning_messages = array();
+        $id_default_country = Configuration::get('PS_COUNTRY_DEFAULT');
+        $list_carriers = LengowCarrierCountry::findByCountry($id_default_country);
+        $lengow_link = new LengowLink();
+        if (!$list_carriers || is_null($list_carriers['id_carrier'])) {
+            $warning_messages[] = $this->locale->t(
+                'order.screen.no_carrier_warning_message',
+                array('url' => $lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting'))
+            );
+        }
+        if (LengowConfiguration::get('LENGOW_IMPORT_SINGLE_ENABLED')) {
+            $warning_messages[] = $this->locale->t('order.screen.import_single_warning_message');
+        }
+        if (LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
+            $warning_messages[] = $this->locale->t(
+                'order.screen.preprod_warning_message',
+                array('url' => $lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting'))
+            );
+        }
+        if (count($warning_messages) > 0) {
+            $message = join('<br/>', $warning_messages);
+        } else {
+            $message = false;
+        }
+        $this->context->smarty->assign('warning_message', $message);
     }
 
     /**
@@ -535,7 +577,7 @@ class LengowOrderController extends LengowController
                 return $value;
             }
         } else {
-            if ($key == 'reference' && $item['sent_marketplace'] == 0) {
+            if ($key == 'reference' && $item['sent_marketplace'] == 1) {
                 return '<span class="lgw-label">'
                     .LengowMain::decodeLogMessage('order.screen.status_shipped_by_mkp').'</span>';
             }
@@ -575,7 +617,7 @@ class LengowOrderController extends LengowController
         if ($item['id_order'] > 0) {
             $last_action_type = LengowAction::getLastOrderActionType($item['id_order']);
             if ($last_action_type) {
-                $value = '<span class="lengow_link_tooltip lgw-label lgw-label_orange"
+                $value = '<span class="lengow_link_tooltip lgw-label orange"
                     data-html="true"
                     data-original-title="'.LengowMain::decodeLogMessage('order.screen.action_waiting_return').'"
                     >'.LengowMain::decodeLogMessage('order.screen.action_sent', null, array(

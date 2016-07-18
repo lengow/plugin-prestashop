@@ -874,7 +874,10 @@ class LengowImportOrder
         $address = LengowAddress::getByHash($address_data['address_full']);
         // if address exists => check if names are the same
         if ($address) {
-            if ($address->id_customer == $id_customer) {
+            if ($address->id_customer == $id_customer
+                && $address->lastname == $address_data['last_name']
+                && $address->firstname == $address_data['first_name']
+            ) {
                 if (isset($address_data['id_relay'])) {
                     $address->id_relay = $address_data['id_relay'];
                 }
@@ -942,15 +945,13 @@ class LengowImportOrder
                     );
                     $ids = LengowProduct::advancedSearch($attribute_value, $this->id_shop, $product_ids);
                 }
-
                 // for testing => replace values
                 // $ids['id_product'] = '1';
                 // $ids['id_product_attribute'] = '1';
-
                 if (!empty($ids)) {
                     $id_full = $ids['id_product'];
                     if (!isset($ids['id_product_attribute'])) {
-                        $p = new LengowProduct($ids['id_product']);
+                        $p = new Product($ids['id_product']);
                         if ($p->hasAttributes()) {
                             throw new LengowException(
                                 LengowMain::setLogMessage('lengow_log.exception.product_is_a_parent', array(
@@ -1004,26 +1005,22 @@ class LengowImportOrder
     protected function getCarrierId()
     {
         $carrier = null;
-
         if (!isset($this->shipping_address->id_country)) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country')
             );
         }
-
         $order_country_id = $this->shipping_address->id_country;
         if ((int)$order_country_id == 0) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country')
             );
         }
-
         $carrier_id = LengowCarrier::getMarketplaceByCarrierSku($this->carrier_name, $order_country_id);
         $carrier_id = LengowCarrier::getActiveCarrierByCarrierId($carrier_id, $order_country_id);
         if ($carrier_id > 0) {
             $carrier = new Carrier($carrier_id);
         }
-
         if (!$carrier) {
             $carrier = LengowCarrier::getActiveCarrier($order_country_id, true);
             if (!$carrier) {
@@ -1110,7 +1107,7 @@ class LengowImportOrder
             $product_ids = explode('_', $sku);
             $id_product_attribute = isset($product_ids[1]) ? $product_ids[1] : null;
             if (_PS_VERSION_ < '1.5') {
-                $p = new LengowProduct($product_ids[0]);
+                $p = new Product($product_ids[0]);
                 return $p->addStockMvt($product['quantity'], (int)_STOCK_MOVEMENT_ORDER_REASON_, $id_product_attribute);
             } else {
                 StockAvailable::updateQuantity(
@@ -1135,7 +1132,6 @@ class LengowImportOrder
         } else {
             $order_date = (string)$this->order_data->imported_at;
         }
-
         $params = array(
             'marketplace_sku'       => pSQL($this->marketplace_sku),
             'id_shop'               => (int)$this->id_shop,
@@ -1158,7 +1154,6 @@ class LengowImportOrder
         } else {
             $params['message'] = pSQL((string)$this->order_data->comments);
         }
-
         if (_PS_VERSION_ < '1.5') {
             $result = Db::getInstance()->autoExecute(
                 _DB_PREFIX_.'lengow_orders',

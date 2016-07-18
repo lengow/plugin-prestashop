@@ -238,6 +238,11 @@ class LengowProduct extends Product
                     return $this->getPrice(true, $id_product_attribute, 2, null, false, true, 1);
                 }
                 return $this->getPrice(true, null, 2, null, false, true, 1);
+            case 'price_sale_duty_free':
+                if ($id_product_attribute) {
+                    return $this->getPrice(false, $id_product_attribute, 2, null, false, true, 1);
+                }
+                return $this->getPrice(false, null, 2, null, false, true, 1);
             case 'price_sale_percent':
                 if ($id_product_attribute) {
                     $price = $this->getPrice(true, $id_product_attribute, 2, null, false, false, 1);

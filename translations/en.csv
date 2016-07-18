@@ -10,6 +10,8 @@ menu.product|Products
 menu.order|Orders
 menu.jump_to_lengow|Jump to Lengow
 menu.preprod_active|Pre-production mode
+menu.counter|Day left: %{counter}
+menu.upgrade_account|upgrade
 menu.order_overview|Overview
 menu.order_parameter|Settings
 menu.help|Help
@@ -33,6 +35,21 @@ dashboard.screen.some_help_title|Need some help?
 dashboard.screen.get_in_touch|Get in touch with Lengow.
 dashboard.screen.visit_help_center|Visit our Help Center
 dashboard.screen.configure_plugin|for detailed information on how to configure properly your PrestaShop plugin
+status.screen.title_end_free_trial|Even good times can stop
+status.screen.subtitle_end_free_trial|You've reach the end of your trial !
+status.screen.first_description_end_free_trial|Your 15 days free on Lengow is now expired. It's terrible, we know, but the best is yet to come ! We sincerely hope you've enjoyed Lengow to improve your business.
+status.screen.second_description_end_free_trial|Your account will be disabled until you purchase a new subscription. All existing diffusions and indexations will be stopped too.
+status.screen.third_description_end_free_trial|Don't forget that a trial account is deleted 30 days after expiration. Make sure to upgrade in order not to lose the great work you've made into building your channels.
+status.screen.title_bad_payer|Bad things happened :'(
+status.screen.subtitle_bad_payer|Your account is temporaly closed
+status.screen.first_description_bad_payer|We are sorry that we had to get there, but we had to temporarily limit access to your account because the automatic payment of your subscription failed.
+status.screen.second_description_bad_payer|The publication of your catalogs is also suspended. We strongly suggest you get in touch with us at
+status.screen.phone_bad_payer|or by phone at (+33)4 565 656
+status.screen.third_description_bad_payer|We hope to count you back among us really soon.
+status.screen.signature_bad_payer|Team Lengow
+status.screen.facturation_button|View my billing informations
+status.screen.upgrade_account_button|It's ok, I'm ready for an upgrade !
+status.screen.refresh_action|Refresh my account
 product.screen.nb_exported|products exported
 product.screen.nb_available|products available
 product.screen.include_variation|Include product variations
@@ -86,6 +103,8 @@ order.screen.button_reimport_order|Re-import Orders
 order.screen.button_resend_order|Resend Orders
 order.screen.cron|Want to automate your order updates?
 order.screen.preprod_warning_message|You are in pre-production mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>
+order.screen.import_single_warning_message|You have a version of Prestashop between 1.5.2 and 1.5.4.*. For security reasons, only one command will be imported by synchronization.
+order.screen.no_carrier_warning_message|You can't import orders. You have not specify default carrier. <a href=%{url}>Change this</a>
 order.screen.not_imported|not imported
 order.screen.not_sent|not sent
 order.screen.refresh_order|refresh order
@@ -195,7 +214,7 @@ lengow_setting.lengow_export_format_title|Export the default format
 lengow_setting.lengow_export_file_enabled_title|Export in a file
 lengow_setting.lengow_export_file_enabled_legend|You should use this option if you have 3,000 products or more
 lengow_setting.lengow_export_legacy_enabled_title|Export with legacy feed
-lengow_setting.lengow_export_legacy_enabled_legend|Compatibility for old lengow versions
+lengow_setting.lengow_export_legacy_enabled_legend|Compatibility with old Lengow versions
 lengow_setting.lengow_last_export_title|Last export
 lengow_setting.lengow_order_id_process_title|Orders in preparation
 lengow_setting.lengow_order_id_shipped_title|Shipped orders
@@ -227,6 +246,8 @@ lengow_setting.lengow_tracking_enabled_title|Activate Lengow tracking
 lengow_setting.lengow_tracking_id_title|Lengow Tracking ID
 lengow_setting.lengow_order_stat_title|Order statistics
 lengow_setting.lengow_order_stat_update_title|Order statistics update
+lengow_setting.lengow_account_status_title|Account status
+lengow_setting.lengow_account_status_update_title|Account status update
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
@@ -235,14 +256,14 @@ lengow_log.error.account_id_empty|Account ID, Access Token or Secret is empty in
 lengow_log.error.account_id_already_used|account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})
 lengow_log.error.import_in_progress|import has already begun
 lengow_log.error.rest_time_to_import|Please wait %{rest_time} seconds before re-importing orders
-lengow_log.error.no_product|no products in the order
-lengow_log.error.no_change_rate|no exchange rates available for order prices
-lengow_log.error.no_currency|no currency in the order
+lengow_log.error.no_product|Lengow error: no products in the order
+lengow_log.error.no_change_rate|Lengow error: no exchange rates available for order prices
+lengow_log.error.no_currency|Lengow error: no currency in the order
 lengow_log.error.currency_not_available|currency %{currency_iso} is not available in your shop
-lengow_log.error.no_country_for_delivery_address|delivery address doesn't contain the country
+lengow_log.error.no_country_for_delivery_address|Lengow error: delivery address doesn't contain the country
 lengow_log.error.no_billing_address|no billing address in the order
-lengow_log.error.no_country_for_billing_address|billing address doesn't contain the country
-lengow_log.error.order_not_found|order cannot be found in Lengow feed
+lengow_log.error.no_country_for_billing_address|Lengow error: billing address doesn't contain the country
+lengow_log.error.order_not_found|Lengow error: order cannot be found in Lengow feed
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
 lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation is needed
 lengow_log.exception.no_product_to_cart|no product to be added to cart
@@ -250,11 +271,11 @@ lengow_log.exception.cannot_add_product_to_cart|cannot add product %{product_id}
 lengow_log.exception.no_quantity_for_product|product %{product_id} could not be added to cart. Make sure it is available for order or that there enough in stock
 lengow_log.exception.no_connection_webservice|connection didn't work with the Lengow webservice in shop %{name_shop} (%{id_shop})
 lengow_log.exception.crendentials_not_valid|account ID, token access or secret token are not valid in shop %{name_shop} (%{id_shop})
-lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})
+lengow_log.exception.error_lengow_webservice|Lengow webservice: %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|order could not be saved
 lengow_log.exception.carrier_shipping_address_no_country|shipping address doesn't contain the country
 lengow_log.exception.no_default_carrier_for_country|you must select a default carrier for the country : %{country_name}
-lengow_log.exception.marketplace_not_present|the marketplace %{markeplace_name} does not feature in the marketplace list
+lengow_log.exception.marketplace_not_present|Lengow error: the marketplace %{markeplace_name} does not feature in the marketplace list
 lengow_log.exception.order_line_required|order line is required but cannot be not found in order
 lengow_log.exception.action_not_valid|action %{action} is not valid
 lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} are not present
@@ -287,9 +308,11 @@ admin.order.tracking_number|Tracking number
 admin.order.customer_email|Customer email
 admin.order.message|Message
 admin.order.shipped_by_marketplace|Shipped by marketplace
-admin.order.cancel_and_reimport|Cancel and re-import order
-admin.order.check_cancel_and_reimport|Do you really want to cancel and re-import the order?
+admin.order.cancel_and_reimport|Re-import order
+admin.order.check_cancel_and_reimport|Do you really want to re-import the order?
 admin.order.synchronize_id|Synchronize ID
+admin.order.resend_action|Resend Action
+admin.order.check_resend_action|Do you really want to send the action %{action}?
 log.install.install_tab|install tab %{class_name}
 log.install.uninstall_tab|uninstall tab %{class_name}
 log.hook.registering_hook_success|registering hook - %{hook}: success
@@ -362,10 +385,11 @@ log.import.carrier_compatibility_ensured|carrier compatibility ensured with carr
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
 log.order_action.start_for_shop|check finish actions in shop %{name_shop} (%{id_shop})
+log.order_action.start_not_sent_for_store|check actions not sent in shop %{name_shop} (%{id_shop})
 log.order_action.try_to_send_action|try to send %{action} action (ORDER ID %{order_id})
 log.order_action.action_send|action %{action} successfully sent (ORDER ID %{order_id})
 log.order_action.action_not_send|WARNING ! action %{action} could not be sent (ORDER ID %{order_id})
-log.order_action.call_tracking|call tracking with parameters: %{parameters}
+log.order_action.call_tracking|call tracking save in lengow_actions table
 log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}

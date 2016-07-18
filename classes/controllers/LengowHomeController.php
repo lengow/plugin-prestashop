@@ -41,6 +41,11 @@ class LengowHomeController extends LengowController
                     $data = isset($_REQUEST['data']) ?$_REQUEST['data'] : false;
                     LengowSync::sync($data);
                     break;
+                case 'refresh_status':
+                    LengowSync::getStatusAccount(true);
+                    $lengow_link = new LengowLink();
+                    Tools::redirectAdmin($lengow_link->getAbsoluteAdminLink('AdminLengowHome'));
+                    break;
             }
             exit();
         }
@@ -55,8 +60,10 @@ class LengowHomeController extends LengowController
         if (!$this->isNewMerchant) {
             $this->context->smarty->assign('stats', LengowStatistic::get());
         }
-        $lengowLink = new LengowLink();
-        $this->context->smarty->assign('lengow_ajax_link', $lengowLink->getAbsoluteAdminLink('AdminLengowHome', true));
+        $lengow_link = new LengowLink();
+        $this->context->smarty->assign('lengow_ajax_link', $lengow_link->getAbsoluteAdminLink('AdminLengowHome', true));
+        $refresh_status = $lengow_link->getAbsoluteAdminLink('AdminLengowHome').'&action=refresh_status';
+        $this->context->smarty->assign('refresh_status', $refresh_status);
         parent::display();
     }
 }

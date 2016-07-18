@@ -28,11 +28,10 @@
         {if isset($toolbox) && $toolbox}
             {include file='./header_toolbox.tpl'}
         {else}
-            {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+            {if $warning_message}
                 <p class="blue-frame" style="line-height: 20px;">
-                    {$locale->t('order.screen.preprod_warning_message',
-                    ['url' => {$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|cat:'#preprod_setting'|escape:'htmlall':'UTF-8'}]
-                )}</p>
+                    {html_entity_decode($warning_message|escape:'htmlall':'UTF-8')}
+                </p>
             {/if}
             <div class="lgw-col-8" style="padding:0;">
                 <div id="lengow_last_importation">

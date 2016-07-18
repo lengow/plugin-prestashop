@@ -80,33 +80,43 @@ class LengowAction
     }
 
     /**
-     * Find by ID
+     * Find active actions by order id
      *
      * @param integer $action_id
+     * @param string  $action_type (ship or cancel)
+     * @param boolean $load
      *
-     * @return boolean
+     * @return mixed
      */
-    public static function getOrderActiveAction($id_order, $type)
+    public static function getActiveActionByOrderId($id_order, $action_type = null, $load = true)
     {
+        $sql_type = is_null($action_type) ? '' : ' AND  action_type = "'.pSQL($action_type).'"';
         $rows = Db::getInstance()->executeS(
             'SELECT * FROM '._DB_PREFIX_.'lengow_actions la
-            WHERE state = '.self::STATE_NEW.' AND  action_type = "'.pSQL($type).'" AND id_order='.(int)$id_order
+            WHERE state = '.self::STATE_NEW.$sql_type.' AND id_order='.(int)$id_order
         );
-        $actions = array();
-        foreach ($rows as $row) {
-            $action = new LengowAction;
-            $actions[] = $action->load($row);
+        if (count($rows) > 0) {
+            if ($load) {
+                $actions = array();
+                foreach ($rows as $row) {
+                    $action = new LengowAction;
+                    $actions[] = $action->load($row);
+                }
+                return $actions;
+            } else {
+                return $rows;
+            }
         }
-        return $actions;
+        return false;
     }
 
     /**
      * Get active action by shop
      *
-     * @param integer   $id_shop
-     * @param boolean   $load
+     * @param integer $id_shop
+     * @param boolean $load
      *
-     * @return array
+     * @return mixed
      */
     public static function getActiveActionByShop($id_shop, $load = true)
     {
@@ -115,16 +125,19 @@ class LengowAction
             INNER JOIN '._DB_PREFIX_.'orders o ON (o.id_order = la.id_order)
             WHERE id_shop='.(int)$id_shop.' AND state = '.(int)self::STATE_NEW
         );
-        if ($load) {
-            $actions = array();
-            foreach ($rows as $row) {
-                $action = new LengowAction;
-                $actions[] = $action->load($row);
+        if (count($rows) > 0) {
+            if ($load) {
+                $actions = array();
+                foreach ($rows as $row) {
+                    $action = new LengowAction;
+                    $actions[] = $action->load($row);
+                }
+                return $actions;
+            } else {
+                return $rows;
             }
-            return $actions;
-        } else {
-            return $rows;
         }
+        return false;
     }
 
     /**
@@ -189,10 +202,10 @@ class LengowAction
             Db::getInstance()->insert('lengow_actions', $insertParams);
         }
         LengowMain::log(
-            'API',
+            'API-OrderAction',
             LengowMain::setLogMessage('log.order_action.call_tracking'),
             false,
-            $params['id_order']
+            $params['marketplace_sku']
         );
     }
 
@@ -200,6 +213,8 @@ class LengowAction
      * Update action
      *
      * @param array $params
+     *
+     * @return boolean
      */
     public static function updateAction($params)
     {
@@ -216,6 +231,7 @@ class LengowAction
                         'UPDATE',
                         'id = ' . $action->id
                     );
+                    return true;
                 } else {
                     Db::getInstance()->update(
                         'lengow_actions',
@@ -225,9 +241,11 @@ class LengowAction
                         ),
                         'id = ' . $action->id
                     );
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     /**
@@ -349,7 +367,7 @@ class LengowAction
                 );
                 // Get all active actions by shop
                 $shop_actions = self::getActiveActionByShop((int)$shop->id, false);
-                if (count($shop_actions) == 0) {
+                if (!$shop_actions) {
                     continue;
                 }
                 // Get all actions with API for 3 days
@@ -427,6 +445,42 @@ class LengowAction
         }
         // Clean actions after 3 days
         self::finishAllOldActions();
+        return true;
+    }
+
+    /**
+     * Check if actions are not sent
+     *
+     * @return bool
+     */
+    public static function checkActionNotSent()
+    {
+        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')) {
+            return false;
+        }
+        // get all store to check active actions
+        $shops = LengowShop::findAll();
+        foreach ($shops as $shop) {
+            if (LengowMain::getShopActive((int)$shop['id_shop'])) {
+                $shop = new LengowShop((int)$shop['id_shop']);
+                LengowMain::log(
+                    'API-OrderAction',
+                    LengowMain::setLogMessage('log.order_action.start_not_sent_for_store', array(
+                        'name_shop' => $shop->name,
+                        'id_shop'   => (int)$shop->id
+                    ))
+                );
+                // Get unsent orders by store
+                $unsent_orders = LengowOrder::getUnsentOrderByStore((int)$shop->id);
+                if (!$unsent_orders) {
+                    continue;
+                }
+                foreach ($unsent_orders as $id_order => $action_type) {
+                    $lengow_order = new LengowOrder($id_order);
+                    $lengow_order->callAction($action_type);
+                }
+            }
+        }
         return true;
     }
 }

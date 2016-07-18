@@ -78,14 +78,14 @@ order.screen.import_charge_second|Restez avec nous, cela ne va pas durer longtem
 order.screen.all_order_will_be_sent_to|Les rapports d'erreurs de vos commandes seront envoyés par email à
 order.screen.change_this|Vous voulez modifier cela ?
 order.screen.last_order_importation|Dernière synchronisation
-order.screen.no_order_importation|Pas d'import de commande pour le moment
+order.screen.no_order_importation|Aucune synchronisation pour le moment
 order.screen.import_auto|Auto
 order.screen.import_manuel|Manuel
 order.screen.button_update_orders|Synchroniser les commandes
 order.screen.button_reimport_order|Réimporter mes commandes
 order.screen.button_resend_order|Renvoyer mes commandes
 order.screen.cron|Vous voulez automatiser la mise à jour de vos commandes ?
-order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles.<br /><a href=%{url}>Retourner en mode production </a>
+order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <br /><a href=%{url}>Retourner en mode production ?&lt;/a>
 order.screen.not_imported|Pas importée
 order.screen.not_sent|Non envoyé
 order.screen.refresh_order|Actualiser ma commande
@@ -166,7 +166,7 @@ global_setting.screen.setting_saving|Enregistrement en cours...
 global_setting.screen.setting_saved|Enregistrement terminé !
 help.screen.title|Demandez de l'aide à notre équipe Support !
 help.screen.contain_text_support|Des questions, un feedback sur Lengow... transmettez nous vos demandes à l'adresse :
-help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com. 
+help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com.
 help.screen.mail_lengow_support_title|Informations relatives à votre compte :
 help.screen.mailto_subject|Prestashop Lengow Plugin #Besoin d'aide
 help.screen.need_some_help|Besoin d'aide ?
@@ -193,6 +193,8 @@ lengow_setting.lengow_export_variation_enabled_legend|Si vous ne voulez pas expo
 lengow_setting.lengow_export_format_title|Exportez le format par défaut
 lengow_setting.lengow_export_file_enabled_title|Exportez dans un fichier
 lengow_setting.lengow_export_file_enabled_legend|Il est conseillé d'activer cette option si vous avez 3 000 produits ou plus.
+lengow_setting.lengow_export_legacy_enabled_title|Exportez le flux avec les en-têtes de la version antérieure
+lengow_setting.lengow_export_legacy_enabled_legend|Compatibilité avec les anciennes versions Lengow
 lengow_setting.lengow_last_export_title|Dernier export
 lengow_setting.lengow_order_id_process_title|Commande en préparation
 lengow_setting.lengow_order_id_shipped_title|Commandes expédiées
@@ -232,14 +234,14 @@ lengow_log.error.account_id_empty|ID du compte, access token ou secret token vid
 lengow_log.error.account_id_already_used|l'ID du compte %{account_id} est déjà utilisé par la boutique %{name_shop} (%{id_shop})
 lengow_log.error.import_in_progress|L'import a déjà commencé
 lengow_log.error.rest_time_to_import|Attendez %{rest_time}  secondes avant d'importer de nouveau vos commandes
-lengow_log.error.no_product|Pas de produit dans cette commande.
-lengow_log.error.no_change_rate|Pas de taux de change valide à appliquer sur les prix.
-lengow_log.error.no_currency|Pas de devise dans cette commande.
+lengow_log.error.no_product|Erreur Lengow : pas de produit dans cette commande.
+lengow_log.error.no_change_rate|Erreur Lengow : pas de taux de change valide à appliquer sur les prix.
+lengow_log.error.no_currency|Erreur Lengow : pas de devise dans cette commande.
 lengow_log.error.currency_not_available|La devise %{currency_iso} n'est pas disponible dans votre boutique.
-lengow_log.error.no_country_for_delivery_address|L'adresse de livraison ne contient pas de pays.
-lengow_log.error.no_billing_address|Pas d'adresse de facturation dans cette commande.
-lengow_log.error.no_country_for_billing_address|L'adresse de facturation ne contient pas de pays.
-lengow_log.error.order_not_found|La commande n'a pas été trouvée dans le flux Lengow.
+lengow_log.error.no_country_for_delivery_address|Erreur Lengow : l'adresse de livraison ne contient pas de pays.
+lengow_log.error.no_billing_address|Erreur Lengow : pas d'adresse de facturation dans cette commande.
+lengow_log.error.no_country_for_billing_address|Erreur Lengow : l'adresse de facturation ne contient pas de pays.
+lengow_log.error.order_not_found|Erreur Lengow : la commande n'a pas été trouvée dans le flux Lengow.
 lengow_log.exception.product_not_be_found|Le produit %{product_id} ne peut être trouvé.
 lengow_log.exception.product_is_a_parent|Le produit %{product_id}  est un ID parent. Les déclinaisons du produit sont nécessaires.
 lengow_log.exception.no_product_to_cart|il n'y a pas de produit ajouté au panier.
@@ -251,7 +253,7 @@ lengow_log.exception.error_lengow_webservice|L'API Lengow : %{error_code} - %{er
 lengow_log.exception.order_list_is_empty|La commande ne peut être sauvegardée.
 lengow_log.exception.carrier_shipping_address_no_country|L'adresse d'expédition ne contient pas de pays.
 lengow_log.exception.no_default_carrier_for_country|Vous devez sélectionner un transporteur par défaut pour le pays : %{country_name}.
-lengow_log.exception.marketplace_not_present|La place de marché %{markeplace_name} n’apparaît pas dans la liste des places de marché.
+lengow_log.exception.marketplace_not_present|Erreur Lengow : la place de marché %{markeplace_name} n’apparaît pas dans la liste des places de marché.
 lengow_log.exception.order_line_required|Numéro de la ligne de commande requis, non trouvé dans la commande.
 lengow_log.exception.action_not_valid|L'action %{action} n'est pas valide.
 lengow_log.exception.marketplace_action_not_present|Les actions %{action} des places de marché ne sont pas présentes.
@@ -284,6 +286,6 @@ admin.order.tracking_number|Numéro de tracking
 admin.order.customer_email|Email du client
 admin.order.message|Message
 admin.order.shipped_by_marketplace|Expédié par la place de marché
-admin.order.cancel_and_reimport|Annulez et ré-importez la commande
-admin.order.check_cancel_and_reimport|Vous voulez vous vraiment annuler et réimporter la commande ?
+admin.order.cancel_and_reimport|Ré-importer la commande
+admin.order.check_cancel_and_reimport|Vous voulez vous vraiment réimporter la commande ?
 admin.order.synchronize_id|Synchronisez l'ID

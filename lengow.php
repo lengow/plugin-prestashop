@@ -113,6 +113,16 @@ class Lengow extends Module
     }
 
     /**
+     * Hook to display the icon
+     *
+     * @param array $args Arguments of hook
+     */
+    public function hookDisplayBackOfficeHeader($args)
+    {
+        return $this->hookClass->hookDisplayBackOfficeHeader($args);
+    }
+
+    /**
      * Hook on Home page
      *
      * @param array $args Arguments of hook

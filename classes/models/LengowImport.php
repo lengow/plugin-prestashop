@@ -394,6 +394,7 @@ class LengowImport
                 && $this->type_import == 'manual'
             ) {
                 LengowAction::checkFinishAction();
+                LengowAction::checkActionNotSent();
             }
         }
         if ($this->import_one_order) {

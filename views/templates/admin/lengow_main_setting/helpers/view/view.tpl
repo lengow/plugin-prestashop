@@ -58,7 +58,6 @@
                 <i class="fa fa-download"></i> {$locale->t('global_setting.screen.button_download_file')|escape:'htmlall':'UTF-8'}
             </button>
         </div>
-
         <div class="form-group container">
             <div class="lengow_main_setting_block_content">
                 <div class="pull-left">
@@ -130,10 +129,9 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="clear"></div>
             </div>
         </div>
-
     </form>
 </div>
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/main_setting.js"></script>
