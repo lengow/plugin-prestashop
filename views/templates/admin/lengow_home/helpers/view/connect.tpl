@@ -74,17 +74,13 @@
     <div class="lgw-box text-center">
         <h2>{$locale->t('dashboard.screen.partner_business')|escape:'htmlall':'UTF-8'}</h2>
         <div class="lgw-row lgw-home-stats">
-            <div class="lgw-col-4">
+            <div class="lgw-col-6">
                 <h5>{$locale->t('dashboard.screen.stat_turnover')|escape:'htmlall':'UTF-8'}</h5>
                 <span class="stats-big-value">{$stats['total_order']|escape:'htmlall':'UTF-8'}</span>
             </div>
-            <div class="lgw-col-4">
+            <div class="lgw-col-6">
                 <h5>{$locale->t('dashboard.screen.stat_nb_orders')|escape:'htmlall':'UTF-8'}</h5>
                 <span class="stats-big-value">{$stats['nb_order']|escape:'htmlall':'UTF-8'}</span>
-            </div>
-            <div class="lgw-col-4">
-                <h5>{$locale->t('dashboard.screen.stat_avg_order')|escape:'htmlall':'UTF-8'}</h5>
-                <span class="stats-big-value">{$stats['average_order']|escape:'htmlall':'UTF-8'}</span>
             </div>
         </div>
         <p>

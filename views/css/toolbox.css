@@ -1,4 +1,6 @@
-/* GLOBAL */
+/*************************************************/
+/*                   GLOBAL                      */
+/*************************************************/
 
 body {
     padding-top: 60px;
@@ -16,17 +18,18 @@ body {
 #lengow_header_toolbox_order {
     width:100%;
 }
+
 #lengow_header_toolbox_order td {
     width:33%;
     vertical-align: top;
 }
 
 .lengow-green {
-	color: green;
+    color: green;
 }
 
 .lengow-red {
-	color: red;
+    color: red;
 }
 
 .lgw-btn {
@@ -80,44 +83,10 @@ legend {
     margin-top:10px;
 }
 
-/* PREPROD */
-#lgw-preprod{
-  color:white;
-  background:#e55a4d;
-  padding:5px 10px;
-  position:absolute;
-  top:50px;
-  left:0;
-  font-size:12px;
-}
-
-/* SWITCH */
-.text-center .lgw-switch{
-    display:inline-block;
-}
-
-.lgw-switch input[type="checkbox"]{
-    margin-right: 5px;
-}
-.lgw-switch label{
-    display:inline-block;
-}
-.lgw-switch div{
-    float:left;
-}
-
-.form-group {
-    margin-bottom: 2px;
-}
-
-.center .lgw-switch {
-    text-align: center;
-}
-
-/* EXPORT BUTTON */
 .lengow_export_feed{
     margin-right: 0px;
 }
+
 a.lengow_link_tooltip {
     float: right;
     padding: 0 5px;
@@ -135,99 +104,19 @@ a.lengow_link_tooltip {
     border-radius: 10px;
 }
 
-/* TABLE */
-
-.lengow_table_top {
-    height: 40px;
-    margin: 20px 0 10px 0;
+#lgw-preprod{
+  color:white;
+  background:#e55a4d;
+  padding:5px 10px;
+  position:absolute;
+  top:50px;
+  left:0;
+  font-size:12px;
 }
 
-.lengow_table_bottom {
-    height: 40px;
-    margin-bottom: 10px;
-}
-
-/* PAGINATION */
-
-
-.lgw-pagination{
-    float:right;
-}
-.lgw-pagination-pages{
-    font-size:13px;
-    display:block;
-    text-align:right;
-}
-.lgw-pagination-btns{
-    list-style: none;
-    margin:5px 0 15px;
-    display:inline-block;
-    padding:0;
-}
-.lgw-pagination-arrow{
-    margin-right:15px;
-}
-.lgw-pagination-btns li{
-    display:inline-block;
-}
-
-.lgw-pagination-btns a{
-    display:block;
-    border:1px solid #d7d7d7;
-    border-right:0;
-    padding:0;
-    height:30px;
-    width:30px;
-    line-height: 30px;
-    text-align:center;
-    color:#555;
-}
-.lgw-pagination-btns li:first-child a{
-    border-radius: 3px 0 0 3px;
-}
-.lgw-pagination-btns li:last-child a{
-    border-right:1px solid #d7d7d7;
-    border-radius: 0 3px 3px 0;
-}
-.lgw-pagination-btns a:hover{
-    text-decoration: none;
-    background:#f7f7f7;
-    color:#555;
-}
-.lgw-pagination-btns .disabled a{
-    background: #ebebeb;
-    color:#828282;
-    pointer-events:none;
-}
-
-/* TOOLBAR */
-
-.lengow_toolbar {
-    float: left;
-}
-
-.lengow_toolbar .lgw-btn {
-    margin-right:10px;
-}
-
-.lengow_toolbar input {
-    margin-top:10px;
-}
-
-.lengow_select_all_shop input {
-    margin-left: 10px;
-    vertical-align: sub;
-}
-
-.lengow_select_all_shop span {
-    margin-left: 5px;
-}
-
-.lengow_select_all_shop {
-    display: inline-block;
-}
-
-/* PRODUCT PAGE */
+/*************************************************/
+/*                 PRODUCT PAGE                  */
+/*************************************************/
 
 #lengow_feed_wrapper {
     padding:20px 60px;
@@ -349,7 +238,9 @@ a.lengow_link_tooltip {
     margin-left: 20px;
 }
 
-/* ORDER PAGE */
+/*************************************************/
+/*                 ORDER PAGE                    */
+/*************************************************/
 
 .lengow_alert {
     padding: 15px;
@@ -453,6 +344,201 @@ span.title_no_order {
 .lengow_import_order_toolbox h4 {
     border-bottom: 1px solid #CCCCCC;
 }
+
+/*************************************************/
+/*                CONFIGURATION                  */
+/*************************************************/
+
+.checkbox label, .radio label {
+    padding-left: 0px;
+}
+
+.lgw-label_text {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+span.legend {
+    margin-bottom: 15px;
+    display: block;
+    font-style: italic;
+}
+
+.start-block {
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
+
+
+
+
+/*************************************************/
+/*                 COMPONENTS                    */
+/*************************************************/
+
+/*************************************************/
+/*                    TABLE                      */
+/*************************************************/
+
+.lengow_table_top {
+    height: 40px;
+    margin: 20px 0 10px 0;
+}
+
+.lengow_table_bottom {
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+/*************************************************/
+/*                 PAGINATION                    */
+/*************************************************/
+
+.lgw-pagination{
+    float:right;
+}
+.lgw-pagination-pages{
+    font-size:13px;
+    display:block;
+    text-align:right;
+}
+.lgw-pagination-btns{
+    list-style: none;
+    margin:5px 0 15px;
+    display:inline-block;
+    padding:0;
+}
+.lgw-pagination-arrow{
+    margin-right:15px;
+}
+.lgw-pagination-btns li{
+    display:inline-block;
+}
+
+.lgw-pagination-btns a{
+    display:block;
+    border:1px solid #d7d7d7;
+    border-right:0;
+    padding:0;
+    height:30px;
+    width:30px;
+    line-height: 30px;
+    text-align:center;
+    color:#555;
+}
+.lgw-pagination-btns li:first-child a{
+    border-radius: 3px 0 0 3px;
+}
+.lgw-pagination-btns li:last-child a{
+    border-right:1px solid #d7d7d7;
+    border-radius: 0 3px 3px 0;
+}
+.lgw-pagination-btns a:hover{
+    text-decoration: none;
+    background:#f7f7f7;
+    color:#555;
+}
+.lgw-pagination-btns .disabled a{
+    background: #ebebeb;
+    color:#828282;
+    pointer-events:none;
+}
+
+/*************************************************/
+/*                   TOOLBAR                     */
+/*************************************************/
+
+.lengow_toolbar {
+    float: left;
+}
+
+.lengow_toolbar .lgw-btn {
+    margin-right:10px;
+}
+
+.lengow_toolbar input {
+    margin-top:10px;
+}
+
+.lengow_select_all_shop input {
+    margin-left: 10px;
+    vertical-align: sub;
+}
+
+.lengow_select_all_shop span {
+    margin-left: 5px;
+}
+
+.lengow_select_all_shop {
+    display: inline-block;
+}
+
+/*************************************************/
+/*                  SWITCH                       */
+/*************************************************/
+
+
+.lgw-switch{
+    display:inline-block;
+    padding-left:0;
+    margin-top: 15px;
+}
+
+.lgw-switch input[type="checkbox"]{
+    display: block;
+    margin: 0;
+    padding: 0;
+    opacity: .01;
+    position: absolute;
+}
+
+.lgw-switch div{
+    width:46px;
+    float:left;
+    padding:2px;
+    border-radius:50px;
+    margin-right:7px;
+    height:22px;
+    border:0;
+    background: #d7d7d7;
+    transition: all 100ms ease;
+}
+
+.lgw-switch span{
+    display:block;
+    height:18px;
+    width:18px;
+    background:white;
+    border-radius:50%;
+    left:0;
+    top:0;
+    position:relative;
+    transition: all 100ms ease;
+}
+
+.lgw-switch:hover div,
+.lgw-switch:focus div{
+    background-color: #c0c0c0;
+}
+
+.lgw-switch.checked div{
+    background:#7ac279;
+}
+
+.lgw-switch.checked span{
+    left:24px;
+}
+
+.lgw-switch.checked:hover div,
+.lgw-switch.checked:focus div{
+    background:#66b165;
+}
+
+/*************************************************/
+/*                  TOOLTIP                      */
+/*************************************************/
 
 .lengow_tooltip {
     position: absolute;
@@ -568,21 +654,4 @@ span.title_no_order {
     margin-top: -5px;
     border-width: 0 5px 5px;
     border-bottom-color: #000;
-}
-
-/* CONFIGURATION PAGE */
-
-.checkbox label, .radio label {
-    padding-left: 0px;
-}
-
-.lgw-label_text {
-    margin-left: 10px;
-    font-weight: bold;
-}
-
-span.legend {
-    margin-bottom: 15px;
-    display: block;
-    font-style: italic;
 }

@@ -25,9 +25,9 @@
 class LengowStatistic
 {
     /**
-     * Get Statistic with all shop
+     * Get Statistic with all shop every 5 hours
      */
-    protected static $cacheTime = 10800;
+    protected static $cacheTime = 18000;
 
     /**
      * Get Statistic with all shop
@@ -47,7 +47,6 @@ class LengowStatistic
         $return = array();
         $return['total_order'] = 0;
         $return['nb_order'] = 0;
-        $return['average_order'] = 0;
         $return['currency'] = '';
         //get stats by shop
         $shopCollection = LengowShop::findAll(true);
@@ -58,31 +57,31 @@ class LengowStatistic
             if (!$account_id || in_array($account_id, $account_ids) || empty($account_id)) {
                 continue;
             }
+            // TODO test call API for return statistics
             $result = LengowConnector::queryApi(
                 'get',
-                '/v3.0/numbers',
-                $s['id_shop']
+                '/v3.0/stats',
+                $s['id_shop'],
+                array(
+                    'date_from' => date('c', strtotime(date('Y-m-d').' -10 years')),
+                    'date_to'   => date('c'),
+                    'metrics'   => 'year',
+                )
             );
-            if (isset($result->revenues)) {
-                $return['total_order'] += $result->revenues;
-                $return['nb_order'] += $result->transactions;
-                $return['average_order'] += $result->average_order;
+            if (isset($result->level0)) {
+                $return['total_order'] += $result->level0->revenue;
+                $return['nb_order'] += $result->level0->transactions;
                 $return['currency'] = $result->currency->iso_a3;
             }
             $account_ids[] = $account_id;
             $i++;
         }
-        if ($i > 0) {
-            $return['average_order'] = round($return['average_order'] / $i, 2);
-        }
         if ($return['currency']) {
             $currency_id = LengowCurrency::getIdBySign($return['currency']);
             if ($currency_id > 0) {
                 $return['total_order'] = Tools::displayPrice($return['total_order'], new Currency($currency_id));
-                $return['average_order'] = Tools::displayPrice($return['average_order'], new Currency($currency_id));
             } else {
                 $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
-                $return['average_order'] = number_format($return['average_order'], 2, ',', ' ');
             }
         }
         $return['nb_order'] = (int)$return['nb_order'];

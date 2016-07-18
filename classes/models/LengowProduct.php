@@ -181,13 +181,7 @@ class LengowProduct extends Product
                 }
                 return $this->id;
             case 'name':
-                $tmpName = $this->name;
-                if ($id_product_attribute) {
-                    if ($this->combinations[$id_product_attribute]['attribute_name']) {
-                        $tmpName = $this->name.' - '.$this->combinations[$id_product_attribute]['attribute_name'];
-                    }
-                }
-                return LengowMain::cleanData($tmpName);
+                return LengowMain::cleanData($this->name);
             case 'reference':
                 if ($id_product_attribute > 1 && $this->combinations[$id_product_attribute]['reference']) {
                     return $this->combinations[$id_product_attribute]['reference'];
