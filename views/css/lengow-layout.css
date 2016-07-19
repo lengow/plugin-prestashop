@@ -17,6 +17,15 @@
     margin:0 auto;
 }
 
+.lgw-block{
+    display:block;
+    line-height: 54px;
+    height: 54px;
+    display: block;
+    padding: 0px;
+    color:#fff;
+}
+
 /* GRID */
 
 .lgw-row{

@@ -25,12 +25,12 @@
         </div>
     {/if}
     {if $merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] neq 0}
-        <span class="lengow_float_right" id="menucountertrial">
+        <p class="text-right" id="menucountertrial">
             {$locale->t('menu.counter', ['counter' => $merchantStatus['day']])|escape:'htmlall':'UTF-8'}
             <a href="http://www.lengow.com/" target="_blank">
                 {$locale->t('menu.upgrade_account')|escape:'htmlall':'UTF-8'}
             </a>
-        </span>
+        </p>
     {/if}
     <div class="lgw-box lgw-home-header text-center">
         <img src="/modules/lengow/views/img/lengow-white-big.png" alt="lengow">
