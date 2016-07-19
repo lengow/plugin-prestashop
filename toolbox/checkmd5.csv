@@ -116,7 +116,7 @@
 /views/templates/admin/lengow_home/helpers/view/status.tpl|8288ac8ad523ff839fea460edfb88832
 /views/templates/admin/lengow_home/helpers/view/view.tpl|61484443bedb44484da1acda81f9aadf
 /views/templates/admin/lengow_home/helpers/view/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/templates/admin/lengow_home/helpers/view/connect.tpl|8059143c9255a48da7854c8e129a228e
+/views/templates/admin/lengow_home/helpers/view/connect.tpl|cad1d008e1335b71dc94df6f091db3c2
 /views/templates/admin/lengow_home/helpers/view/new.tpl|ced9d188e6b6195399b22415c3e120b3
 /views/templates/admin/lengow_home/layout.tpl|01d8ee8ad5432c7fa603e14228048dba
 /views/templates/admin/lengow_home/index.php|d41d8cd98f00b204e9800998ecf8427e
@@ -130,7 +130,7 @@
 /views/templates/admin/lengow_help/helpers/view/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_help/layout.tpl|e38a30cf78157b940edd80e14b08dcae
 /views/templates/admin/lengow_help/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/templates/admin/header.tpl|3f5321645d5d6aa424f73536220bdb41
+/views/templates/admin/header.tpl|7b5fa5de09f53a3f354e6e21f7858e04
 /views/templates/admin/lengow_main_setting/helpers/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_main_setting/helpers/view/view.tpl|76807ce99b85e1df0aa9c560cf2af6f4
 /views/templates/admin/lengow_main_setting/helpers/view/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
@@ -145,7 +145,7 @@
 /views/templates/admin/lengow_order_setting/helpers/view/select_country.tpl|aad87978dc35dd784c36d1a852fc5360
 /views/templates/admin/lengow_order_setting/layout.tpl|fe6327cc36a4e40b01b293cde4d57c30
 /views/templates/admin/lengow_order_setting/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/templates/admin/footer.tpl|59e6ebf6f81f0370ed953ed962a10a66
+/views/templates/admin/footer.tpl|6b52b9de6055d862cc7b28d67768b75d
 /views/templates/admin/lengow_legals/helpers/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_legals/helpers/view/view.tpl|61655f324ede89105913b7dfab7964d0
 /views/templates/admin/lengow_legals/helpers/view/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
@@ -477,12 +477,12 @@
 /views/css/lengow-tab.css|c2b0b5f67f3f4135e036f456385d1dd1
 /views/css/select2.css|8969ac4614d64a13dfc32e1eb4e731f7
 /views/css/bootstrap-3.3.6.css|2f624089c65f12185e79925bc5a7fc42
-/views/css/lengow-layout.css|771f7d3f587e824a9e5b2260689619e5
+/views/css/lengow-layout.css|6a6c4161f9a6df83a2a8466c68e07f8d
 /views/css/font-awesome.css|bf4b58c946c9234e4a6b9f7a70d38006
 /views/css/lengow-components.css|78884fb37d1df52c7724e16f0087402b
 /views/css/toolbox.css|c58e98d3b329170a6bffd0efba3d947d
 /views/css/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/css/lengow-pages.css|f23bcda3d2ae5186e53a9e72a2006977
+/views/css/lengow-pages.css|1c22ccfee72176b9906d3e92d62d4f31
 /views/css/lengow_bootstrap_15.css|a46589beefe6fc00ae558b3b8de66d60
 /views/css/lengow_bootstrap_14.css|911f893fab44a8cce100f24015f1355a
 /views/css/bootstrap-datepicker.css|d5260247b97663d887f4efe8ec894353
