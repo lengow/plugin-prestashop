@@ -48,6 +48,7 @@ class LengowStatistic
         $return['total_order'] = 0;
         $return['nb_order'] = 0;
         $return['currency'] = '';
+        $currency_id = 0;
         //get stats by shop
         $shopCollection = LengowShop::findAll(true);
         $i = 0;
@@ -78,11 +79,11 @@ class LengowStatistic
         }
         if ($return['currency']) {
             $currency_id = LengowCurrency::getIdBySign($return['currency']);
-            if ($currency_id > 0) {
-                $return['total_order'] = Tools::displayPrice($return['total_order'], new Currency($currency_id));
-            } else {
-                $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
-            }
+        }
+        if ($currency_id > 0) {
+            $return['total_order'] = Tools::displayPrice($return['total_order'], new Currency($currency_id));
+        } else {
+            $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
         }
         $return['nb_order'] = (int)$return['nb_order'];
         LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT', Tools::JsonEncode($return));
