@@ -28,7 +28,7 @@
             {/if}
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowLegals')|escape:'htmlall':'UTF-8'}" class="sub-link" title="Legal">{$locale->t('footer.legals')|escape:'htmlall':'UTF-8'}</a>
                 | {$locale->t('footer.plugin_lengow')|escape:'htmlall':'UTF-8'} -
-                <a href="www.lengow.com" target="_blank" class="sub-link" title="Lengow.com">Lengow.com</a>
+                <a href="http://www.lengow.com" target="_blank" class="sub-link" title="Lengow.com">Lengow.com</a>
             </p>
         </div>
     </div>
