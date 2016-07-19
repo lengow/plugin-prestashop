@@ -1,3 +1,19 @@
+.lengow-nav #menucountertrial{
+  padding:0 15px;
+}
+.lengow-nav #menucountertrial a{
+  display:inline-block;
+  text-decoration:underline;
+  padding:0 0px;
+  margin-left:5px;
+}
+
+.lengow-nav #menucountertrial a:hover{
+  background:none;
+  color:#00aeef;
+  text-decoration:underline;
+}
+
 /*************************************************/
 /*                     CONNECT                   */
 /*************************************************/

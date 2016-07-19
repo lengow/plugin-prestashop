@@ -116,7 +116,7 @@ fr:
       button_reimport_order: "Réimporter mes commandes"
       button_resend_order: "Renvoyer mes commandes"
       cron: "Vous voulez automatiser la mise à jour de vos commandes ?"
-      preprod_warning_message: "Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. \n<a href=%{url}>Retourner en mode production ?&lt;/a>"
+      preprod_warning_message: "Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. \n<a href=%{url}>Retourner en mode production ? </a>"
       import_single_warning_message: "La version de votre module est comprise entre la 1.5.2 et la 1.5.4 ? Pour des raisons de sécurité, vous ne pouvez importer qu'une seule commande par synchronisation."
       no_carrier_warning_message: "Vous ne pouvez pas importer les commandes car vous n'avez pas encore défini de transporteur par défaut. <a href=%{url}>Configuration des transporteurs</a>"
       not_imported: "Pas importée"
