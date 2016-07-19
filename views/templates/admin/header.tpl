@@ -81,10 +81,12 @@
         </li>
         {if $merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] neq 0}
             <li class="lengow_float_right" id="menucountertrial">
-                <a href="http://www.lengow.com/" target="_blank">
+                <div class="lgw-block">
                     {$locale->t('menu.counter', ['counter' => $merchantStatus['day']])|escape:'htmlall':'UTF-8'}
-                    {$locale->t('menu.upgrade_account')|escape:'htmlall':'UTF-8'}
-                </a>
+                    <a href="http://www.lengow.com/" target="_blank">
+                        {$locale->t('menu.upgrade_account')|escape:'htmlall':'UTF-8'}
+                    </a>
+                </div>
             </li>
         {/if}
     </ul>
