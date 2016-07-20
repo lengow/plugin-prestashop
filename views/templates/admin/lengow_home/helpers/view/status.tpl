@@ -23,10 +23,7 @@
         <div class="lgw-row">
 
         {if $merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] eq 0}
-            <div class="lgw-col-6">
-                <img src="http://dummyimage.com/600x800/ffffff/ffffff&text=+" class="img-responsive center-block" alt="lengow"/>
-            </div>
-            <div class="lgw-col-6">
+            <div class="lgw-col-6 display-inline-block">
                 <h2 class="text-center">{$locale->t('status.screen.title_end_free_trial')|escape:'htmlall':'UTF-8'}</h2>
                 <h3 class="text-center">{$locale->t('status.screen.subtitle_end_free_trial')|escape:'htmlall':'UTF-8'}</h3>
                 <p class="text-center">{$locale->t('status.screen.first_description_end_free_trial')|escape:'htmlall':'UTF-8'}</p>
@@ -44,10 +41,12 @@
                     </a>
                 </div>
             </div>
-        {else}
             <div class="lgw-col-6">
-                <img src="http://dummyimage.com/600x800/ffffff/ffffff&text=+" class="img-responsive center-block" alt="lengow"/>
+                <div class="vertical-center">
+                    <img src="/modules/lengow/views/img/logo-blue.png" class="center-block" alt="lengow"/>
+                </div>
             </div>
+        {else}
             <div class="lgw-col-6">
                 <h2 class="text-center">{$locale->t('status.screen.title_bad_payer')|escape:'htmlall':'UTF-8'}</h2>
                 <h3 class="text-center">{$locale->t('status.screen.subtitle_bad_payer')|escape:'htmlall':'UTF-8'}</h3>
@@ -69,6 +68,11 @@
                        class="lgw-box-link">
                         {$locale->t('status.screen.refresh_action')|escape:'htmlall':'UTF-8'}
                     </a>
+                </div>
+            </div>
+            <div class="lgw-col-6">
+                <div class="vertical-center">
+                    <img src="/modules/lengow/views/img/logo-blue.png" class="center-block" alt="lengow"/>
                 </div>
             </div>
         {/if}
