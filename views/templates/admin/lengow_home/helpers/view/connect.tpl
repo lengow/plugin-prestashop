@@ -72,13 +72,16 @@
         </div>
     </div>
     <div class="lgw-box text-center">
+        <div class="lgw-col-12 center-block">
+            <img src="/modules/lengow/views/img/picto-stats.png" class="img-responsive">
+        </div>
         <h2>{$locale->t('dashboard.screen.partner_business')|escape:'htmlall':'UTF-8'}</h2>
         <div class="lgw-row lgw-home-stats">
-            <div class="lgw-col-6">
+            <div class="lgw-col-4 lgw-col-offset-2">
                 <h5>{$locale->t('dashboard.screen.stat_turnover')|escape:'htmlall':'UTF-8'}</h5>
                 <span class="stats-big-value">{$stats['total_order']|escape:'htmlall':'UTF-8'}</span>
             </div>
-            <div class="lgw-col-6">
+            <div class="lgw-col-4">
                 <h5>{$locale->t('dashboard.screen.stat_nb_orders')|escape:'htmlall':'UTF-8'}</h5>
                 <span class="stats-big-value">{$stats['nb_order']|escape:'htmlall':'UTF-8'}</span>
             </div>
