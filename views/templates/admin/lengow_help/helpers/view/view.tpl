@@ -25,7 +25,7 @@
         </div>
     {/if}
     <div class="lgw-box lengow_help_wrapper text-center">
-        <img src="/modules/lengow/views/img/cosmo-yoga.png" class="img-circle" alt="lengow">
+        <!--<img src="/modules/lengow/views/img/cosmo-yoga.png" class="img-circle" alt="lengow">-->
         <h2>{$locale->t('help.screen.title')|escape:'htmlall':'UTF-8'}</h2>
         <p>
             {$locale->t('help.screen.contain_text_support')|escape:'htmlall':'UTF-8'}
