@@ -96,13 +96,13 @@ a.lgw-box-link:hover{
 .lgw-container .lgw-btn-white{
     background-color:#fff;
     border:1px solid #d7d7d7;
-    color: #00aeef;
+    color: #555;
 }
 
 .lgw-container .lgw-btn-white:hover,
 .lgw-container .lgw-btn-white:focus{
     background-color:#f7f7f7;
-    color:#555;
+    color:#00aeef;
 }
 
 /* GREEN */
@@ -668,8 +668,9 @@ a.lgw-box-link:hover{
 }
 
 .lgw-container .table .img_no_result{
-    background: url('../img/no-result.png') no-repeat right center;
-    height:208px;
+    /*background: url('../img/no-result.png') no-repeat right center;*/
+    background:transparent;
+    /*height:208px;*/
     line-height:21.4286px;
     margin:0 auto;
     margin-bottom:60px;

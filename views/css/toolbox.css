@@ -64,7 +64,8 @@ button {
 }
 
 span.img_no_result {
-    background : transparent url("../img/no-result.png") no-repeat;
+    /*background : transparent url("../img/no-result.png") no-repeat;*/
+    background:transparent;
     height: 208px;
     width: 395px;
     display: block;
