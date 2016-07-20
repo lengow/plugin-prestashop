@@ -26,7 +26,7 @@
             <h3 class="text-center">{$locale->t('status.screen.subtitle_end_free_trial')|escape:'htmlall':'UTF-8'}</h3>
             <p class="text-center">{$locale->t('status.screen.first_description_end_free_trial')|escape:'htmlall':'UTF-8'}</p>
             <p class="text-center">{$locale->t('status.screen.second_description_end_free_trial')|escape:'htmlall':'UTF-8'}</p>
-            <p class="text-center">{$locale->t('status.screen.third_description_end_free_trial')|escape:'htmlall':'UTF-8'}</p>
+            <p class="text-center">{html_entity_decode($locale->t('status.screen.third_description_end_free_trial')|escape:'htmlall':'UTF-8')}</p>
             <div class="text-center">
                 <a href="http://solution.lengow.com" class="lgw-btn" target="_blank">
                     {$locale->t('status.screen.facturation_button')|escape:'htmlall':'UTF-8'}
@@ -45,8 +45,6 @@
                 {$locale->t('status.screen.phone_bad_payer')|escape:'htmlall':'UTF-8'}
             </p>
             <p class="text-center">{$locale->t('status.screen.third_description_bad_payer')|escape:'htmlall':'UTF-8'}</p>
-            <p class="text-right">{$locale->t('status.screen.signature_bad_payer')|escape:'htmlall':'UTF-8'}</p>
-
             <div class="text-center">
                 <a href="http://solution.lengow.com" class="lgw-btn" target="_blank">
                     {$locale->t('status.screen.upgrade_account_button')|escape:'htmlall':'UTF-8'}

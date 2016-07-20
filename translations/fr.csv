@@ -9,9 +9,9 @@ tab.legals|Mentions légales
 menu.product|Produits
 menu.order|Commandes
 menu.jump_to_lengow|Accéder à Lengow
-menu.preprod_active|mode préproduction
+menu.preprod_active|mode préproduction 
 menu.counter|Période d'essai : %{counter} jour(s) restant(s)
-menu.upgrade_account|mettre à jour
+menu.upgrade_account|Mettre à jour
 menu.order_overview|Vue d'ensemble
 menu.order_parameter|Paramètres des commandes
 menu.help|Aide
@@ -29,28 +29,26 @@ dashboard.screen.settings_text|Configurer les principaux paramètres de votre pl
 dashboard.screen.partner_business|Lengow, partenaire de votre activité e-commerce
 dashboard.screen.stat_turnover|Chiffre d'affaires
 dashboard.screen.stat_nb_orders|Commandes
-dashboard.screen.stat_avg_order|Panier moyen
 dashboard.screen.stat_more_stats|Plus de statistiques ?
 dashboard.screen.some_help_title|Besoin d'aide ?
 dashboard.screen.get_in_touch|Prenez contact avec les équipes Lengow.
 dashboard.screen.visit_help_center|Visitez notre Help Center
 dashboard.screen.configure_plugin|pour plus d'informations sur la configuration de votre plugin PrestaShop
-status.screen.title_end_free_trial|Toutes les bonnes choses ont une fin
+status.screen.title_end_free_trial|Toutes les bonnes choses ont une fin...
 status.screen.subtitle_end_free_trial|Vous avez atteint la fin de votre période d'essai !
-status.screen.first_description_end_free_trial|Vos 15 jours d'essai gratuits sur la plateforme Lengow sont maintenant terminés. Nous espérons que vous avez pu en profiter au mieux pour votre activité e-commerce.
+status.screen.first_description_end_free_trial|Vos 15 jours d'essai gratuit sur la plateforme Lengow sont maintenant terminés. Nous espérons qu'ils ont été bénéfiques à votre activité e-commerce.
 status.screen.second_description_end_free_trial|Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les indexations vont être momentanément stoppées.
-status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration.<br />Pour conserver l'intégralité du paramétrage que vous avez défini, pensez à vous abonner dès à présent !
+status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration. Pour conserver l'intégralité des paramètres que vous avez défini, pensez à vous abonner dès à présent !
 status.screen.title_bad_payer|Les erreurs arrivent parfois...
 status.screen.subtitle_bad_payer|Votre compte est temporairement fermé.
-status.screen.first_description_bad_payer|Nous sommes désolé d'en arriver là mais nous devons limiter temporairement l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire.
-status.screen.second_description_bad_payer|La publication de vos catalogues est aussi suspendue. Nous vous recommandons vivement de prendre contact avec nous par mail
-status.screen.phone_bad_payer|ou par téléphone au +33 (0)2 85 52 64 15
+status.screen.first_description_bad_payer|Nous sommes désolé mais nous devons temporairement limiter l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire.
+status.screen.second_description_bad_payer|La publication de vos catalogues est aussi suspendue. Nous vous recommandons de prendre contact avec nous rapidement par mail
+status.screen.phone_bad_payer|ou par téléphone au +33 (0)2 85 52 64 15.
 status.screen.third_description_bad_payer|Nous espérons vous revoir très rapidement parmi nous
-status.screen.signature_bad_payer|L'équipe Lengow
-status.screen.facturation_button|Voir mes informations des facturation
+status.screen.facturation_button|Voir mes informations de facturation
 status.screen.upgrade_account_button|Je suis prêt à m'abonner !
 status.screen.refresh_action|Actualiser mon compte
-product.screen.nb_exported|produits exportés
+product.screen.nb_exported|produits exportés 
 product.screen.nb_available|produits disponibles
 product.screen.include_variation|Inclure les produits déclinés
 product.screen.include_variation_support|Activez cette option si vous souhaitez exporter l'ensemble de vos déclinaisons produits
@@ -60,7 +58,7 @@ product.screen.include_specific_product|Inclure une sélection de produits
 product.screen.include_specific_product_support|Utilisez cette option pour sélectionner vos produits individuellement
 product.screen.your_exported_catalog|Votre catalogue est prêt pour l'export ! Copiez le lien sur la plateforme Lengow
 product.screen.last_export|Dernière indexation
-product.screen.no_export|Pas d'export
+product.screen.no_export|Pas d'export 
 product.screen.no_result_found|Désolé, nous n'avons trouvé aucun élément correspondant à votre demande.<br />Souhaitez-vous modifier votre recherche ?
 product.screen.no_product_selected|Sélectionnez un produit
 product.screen.date_from|Du
@@ -102,8 +100,8 @@ order.screen.button_update_orders|Synchroniser les commandes
 order.screen.button_reimport_order|Réimporter mes commandes
 order.screen.button_resend_order|Renvoyer mes commandes
 order.screen.cron|Vous voulez automatiser la mise à jour de vos commandes ?
-order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <br /><a href=%{url}>Retourner en mode production ? </a>
-order.screen.import_single_warning_message|La version de votre module est comprise entre la 1.5.2 et la 1.5.4 ? Pour des raisons de sécurité, vous ne pouvez importer qu'une seule commande par synchronisation.
+order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <br /><a href=%{url}>Retourner en mode production ?&lt;/a>
+order.screen.import_single_warning_message|La version de votre module est comprise entre la 1.5.2 et la 1.5.4. Pour des raisons de sécurité, vous ne pouvez importer qu'une seule commande par synchronisation.
 order.screen.no_carrier_warning_message|Vous ne pouvez pas importer les commandes car vous n'avez pas encore défini de transporteur par défaut. <a href=%{url}>Configuration des transporteurs</a>
 order.screen.not_imported|Pas importée
 order.screen.not_sent|Non envoyé
@@ -112,7 +110,7 @@ order.screen.order_not_imported|Votre commande n'a pas été importée dans Pres
 order.screen.action_sent|Action %{action_type} envoyée
 order.screen.action_waiting_return|Action envoyée, en attente d'une réponse.
 order.screen.action_sent_not_work|Erreur sur l'action envoyée à la place de marché.
-order.screen.no_order_title|Le meilleur est encore à venir !
+order.screen.no_order_title|Le meilleur est encore à venir ! 
 order.screen.no_order_description|Vos produits sont bien visibles, vos ventes sont sur le point de décoller
 order.screen.action_success|Succès
 order.screen.action_error|Erreur
@@ -144,7 +142,7 @@ order_setting.screen.please_setup_then|paramétrez-les !
 order_setting.screen.add_new_country|Ajouter un nouveau pays
 order_setting.screen.default_country|par défaut
 order_setting.screen.import_setting_title|Import des commandes
-order_setting.screen.select_a_country|Choisissez un pays...
+order_setting.screen.select_a_country|Choisissez un pays... 
 order_setting.screen.import_setting_description|Gérez ici vos paramètres d'import pour les commandes provenant des places de marché.
 order_setting.screen.nb_days|jours
 order_setting.screen.cron_title|Paramètres du CRON
@@ -156,7 +154,7 @@ order_setting.screen.cron_install_plugin|Vous pouvez installer l'éditeur de tâ
 order_setting.screen.cron_manual_installation|Si vous utilisez un système unix, vous pouvez utiliser le CRON unix cette manière :
 order_setting.screen.button_add_country|Ajouter
 order_setting.screen.button_cancel_country|Annuler
-order_setting.screen.please_select_carrier|Choisissez un transporteur...
+order_setting.screen.please_select_carrier|Choisissez un transporteur... 
 order_setting.screen.default_carrier|Transporteur par défaut
 order_setting.screen.no_default_carrier_selected|Pas de transporteur par défaut sélectionné
 order_setting.screen.confirmation_delete_carrier_country|Etes-vous sûr ?
