@@ -48,16 +48,16 @@ class LengowMain
      * @var array    Lengow tracker types.
      */
     public static $TRACKER_LENGOW = array(
-        'none' => 'No tracker',
+        'none'       => 'No tracker',
         'tagcapsule' => 'TagCapsule',
-        'simpletag' => 'SimpleTag',
+        'simpletag'  => 'SimpleTag',
     );
 
     /**
      * @var array    product ids available to track products
      */
     public static $TRACKER_CHOICE_ID = array(
-        'id' => 'Product ID',
+        'id'  => 'Product ID',
         'ean' => 'Product EAN',
         'upc' => 'Product UPC',
         'ref' => 'Product Reference',

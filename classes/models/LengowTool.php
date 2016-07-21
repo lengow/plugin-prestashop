@@ -61,7 +61,7 @@ class LengowTool
      */
     public function processLogin($accountId, $secretToken)
     {
-        if (Tools::strlen($accountId)>0 && Tools::strlen($secretToken)>0) {
+        if (Tools::strlen($accountId) > 0 && Tools::strlen($secretToken) > 0) {
             if ($this->checkBlockedIp()) {
                 return self::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/login.php?blockedIP=1', '');
             }
@@ -75,7 +75,6 @@ class LengowTool
         foreach ($shopCollection as $shop) {
             $ai = LengowConfiguration::get('LENGOW_ACCOUNT_ID', false, null, (int)$shop['id_shop']);
             $st = LengowConfiguration::get('LENGOW_SECRET_TOKEN', false, null, (int)$shop['id_shop']);
-
             if (Tools::strlen($ai) > 0 && Tools::strlen($st) > 0) {
                 if ($ai == $accountId && $st == $secretToken) {
                     Context::getContext()->cookie->lengow_toolbox = true;
@@ -84,7 +83,7 @@ class LengowTool
                 }
             }
         }
-        if (Tools::strlen($accountId)>0 && Tools::strlen($secretToken)>0) {
+        if (Tools::strlen($accountId) > 0 && Tools::strlen($secretToken) > 0) {
             $this->checkIp();
         }
         return false;
@@ -115,7 +114,7 @@ class LengowTool
     public function checkIp($counter = 1)
     {
         $remoteIp = $_SERVER['REMOTE_ADDR'];
-        if ($counter>3) {
+        if ($counter > 3 || LengowMain::checkIP()) {
             return;
         }
         $blockedIp = Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_'.$counter));
@@ -123,8 +122,8 @@ class LengowTool
             LengowConfiguration::updateGlobalValue(
                 'LENGOW_ACCESS_BLOCK_IP_'.$counter,
                 is_array($blockedIp)
-                ? Tools::jsonEncode(array_merge($blockedIp, array($remoteIp)))
-                : Tools::jsonEncode(array($remoteIp))
+                    ? Tools::jsonEncode(array_merge($blockedIp, array($remoteIp)))
+                    : Tools::jsonEncode(array($remoteIp))
             );
         } else {
             $this->checkIp($counter+1);
@@ -143,7 +142,7 @@ class LengowTool
                 $blockedIp = array_diff($blockedIp, array($remoteIp));
                 $blockedIp = reset($blockedIp);
                 LengowConfiguration::updateGlobalValue(
-                    'LENGOW_ACCESS_BLOCK_IP_' . $i,
+                    'LENGOW_ACCESS_BLOCK_IP_'.$i,
                     empty($blockedIp) ? '' : Tools::jsonEncode($blockedIp)
                 );
             }
