@@ -145,7 +145,6 @@ class LengowFeedController extends LengowController
                     } else {
                         $data['message'] = $this->locale->t('product.screen.no_product_selected');
                     }
-
                     echo Tools::jsonEncode($data);
                     break;
                 case 'check_shop':
@@ -153,7 +152,7 @@ class LengowFeedController extends LengowController
                     $link = new LengowLink();
                     $result = array();
                     foreach ($shops as $shopId) {
-                        $checkShop = $this->checkShop($shopId['id_shop']);
+                        $checkShop = LengowSync::checkSyncShop($shopId['id_shop']);
                         $data = array();
                         $data['shop_id'] = $shopId['id_shop'];
                         if ($checkShop) {
@@ -223,32 +222,6 @@ class LengowFeedController extends LengowController
         }
         $this->context->smarty->assign('shopCollection', $shopCollection);
         parent::display();
-    }
-
-    /**
-     * Check token shop
-     *
-     * @param array
-     * @param $idShop
-     *
-     * @return boolean
-     */
-    public function checkShop($idShop)
-    {
-        $result = LengowConnector::queryApi('get', '/v3.0/cms', $idShop);
-        $token = LengowConfiguration::get('LENGOW_SHOP_TOKEN', null, null, $idShop);
-        if (!isset($result->error)) {
-            if (isset($result->shops)) {
-                foreach ($result->shops as $results) {
-                    if ($results->token === $token) {
-                        if ($results->enabled === true) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     /**

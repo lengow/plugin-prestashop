@@ -10,7 +10,7 @@ menu.product|Products
 menu.order|Orders
 menu.jump_to_lengow|Jump to Lengow
 menu.preprod_active|Pre-production mode
-menu.counter|Trial period: %{counter} day(s) left
+menu.counter|Trial period: %{counter} day(s) left.
 menu.upgrade_account|Upgrade
 menu.order_overview|Overview
 menu.order_parameter|Settings
@@ -246,6 +246,7 @@ lengow_setting.lengow_order_stat_title|Order statistics
 lengow_setting.lengow_order_stat_update_title|Order statistics update
 lengow_setting.lengow_account_status_title|Account status
 lengow_setting.lengow_account_status_update_title|Account status update
+lengow_setting.lengow_option_cms_update_title|Option cms update
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
@@ -362,19 +363,19 @@ log.import.lengow_order_line_saved|save order lines product: %{order_line_saved}
 log.import.quantity_back_shipped_by_marketplace|adding quantity back to stock (order shipped by marketplace)
 log.import.quantity_back_reimported_order|adding quantity back to stock (order is re-imported)
 log.import.order_already_imported|order already imported (ORDER ID %{order_id})
-log.import.order_ready_to_reimport|order is ready to be re-imported (ORDER ID %{order_id})
+log.import.order_ready_to_reimport|order ready to be re-imported (ORDER ID %{order_id})
 log.import.order_state_updated|order's status has been updated to %{state_name}
 log.import.state_updated_to|status updated to %{state_name}
 log.import.rewrite_processing_fee|rewrite amount without processing fee
 log.import.rewrite_shipping_cost|rewrite amount without shipping cost
-log.import.generate_unique_email|generate unique email %{email}
+log.import.generate_unique_email|generate a unique email %{email}
 log.import.product_be_found|product id %{id_full} found with field %{attribute_name} (%{attribute_value})
 log.import.product_advanced_search|product not found with field %{attribute_name} (%{attribute_value}). Using advanced search
 log.import.product_state_canceled|product %{product_id} could not be added to cart - status: %{state_product}
 log.import.error_order_state_updated|error while updating status: %{error_message}
-log.import.error_no_package|import order failed - no package in the order
+log.import.error_no_package|import order failed - Lengow error: no package in the order
 log.import.error_wrong_package_number|import order failed - wrong package number
-log.import.error_no_delivery_address|import order failed - no delivery address in the order
+log.import.error_no_delivery_address|Import order failed - Lengow error: no delivery address in the order
 log.import.error_carrier_not_found|carrier %{carrier_name} could not be found in your PrestaShop
 log.import.error_mondial_relay_not_found|relay %{id_relay} could not be found
 log.import.error_mondial_relay_missing_file|missing file %{ps_module_dir}mondialrelay/classes/MRRelayDetail.php
@@ -382,16 +383,16 @@ log.import.error_colissimo_missing_file|missing file %{ps_module_dir}socolissimo
 log.import.carrier_compatibility_ensured|carrier compatibility ensured with carrier %{carrier_name}
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
-log.order_action.start_for_shop|check finish actions in shop %{name_shop} (%{id_shop})
+log.order_action.start_for_shop|check completed actions in shop %{name_shop} (%{id_shop})
 log.order_action.start_not_sent_for_store|check actions not sent in shop %{name_shop} (%{id_shop})
 log.order_action.try_to_send_action|try to send %{action} action (ORDER ID %{order_id})
-log.order_action.action_send|action %{action} successfully sent (ORDER ID %{order_id})
+log.order_action.action_send|action %{action} was successfully sent (ORDER ID %{order_id})
 log.order_action.action_not_send|WARNING ! action %{action} could not be sent (ORDER ID %{order_id})
-log.order_action.call_tracking|call tracking save in lengow_actions table
+log.order_action.call_tracking|call tracking saved in lengow_actions table
 log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}
-log.connector.error_api|call api failed - %{error_code}
+log.connector.error_api|API call failed - %{error_code}
 log.setting.setting_reset|All Lengow settings were reset
 log.setting.setting_updated|All Lengow settings were updated
 log.setting.setting_change|%{key} - old value %{old_value} replaced with %{value}
@@ -443,7 +444,7 @@ toolbox.index.shop_type_import|Last import type
 toolbox.index.last_import_none|none
 toolbox.index.last_import_cron|Cron
 toolbox.index.last_import_manual|manual
-toolbox.index.export_information|Export information (by store)
+toolbox.index.export_information|Export information (by shop)
 toolbox.index.shop_active|Shop followed by Lengow
 toolbox.index.shop_export_token|Export token
 toolbox.index.shop_last_export|Last export

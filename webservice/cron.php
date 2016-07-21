@@ -105,9 +105,7 @@ if (!$sync || $sync === 'action') {
 
 // sync options between Lengow and Prestashop
 if (!$sync || $sync === 'option') {
-    if (!LengowMain::isNewMerchant()) {
-        LengowConnector::queryApi('put', '/v3.0/cms', null, array(), Tools::jsonEncode(LengowSync::getOptionData()));
-    }
+    LengowSync::setCmsOption();
 }
 
 // sync option is not valid

@@ -10,7 +10,7 @@ menu.product|Produits
 menu.order|Commandes
 menu.jump_to_lengow|Accéder à Lengow
 menu.preprod_active|mode préproduction 
-menu.counter|Période d'essai : %{counter} jour(s) restant(s)
+menu.counter|Période d'essai : %{counter} jour(s) restant(s).
 menu.upgrade_account|Mettre à jour
 menu.order_overview|Vue d'ensemble
 menu.order_parameter|Paramètres des commandes
@@ -246,6 +246,7 @@ lengow_setting.lengow_order_stat_title|Statistiques des commandes
 lengow_setting.lengow_order_stat_update_title|Mise à jour des statistiques de commandes
 lengow_setting.lengow_account_status_title|Statut du compte
 lengow_setting.lengow_account_status_update_title|Statut du compte à jour
+lengow_setting.lengow_option_cms_update_title|Mise à jour des options cms
 lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs

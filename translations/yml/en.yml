@@ -14,7 +14,7 @@ en:
     order: "Orders"
     jump_to_lengow: "Jump to Lengow"
     preprod_active: "Pre-production mode"
-    counter: "Trial period: %{counter} day(s) left"
+    counter: "Trial period: %{counter} day(s) left."
     upgrade_account: "Upgrade"
     order_overview: "Overview"
     order_parameter: "Settings"
@@ -270,6 +270,7 @@ en:
     lengow_order_stat_update_title: "Order statistics update"
     lengow_account_status_title: "Account status"
     lengow_account_status_update_title: "Account status update"
+    lengow_option_cms_update_title: "Option cms update"
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} order(s) imported"

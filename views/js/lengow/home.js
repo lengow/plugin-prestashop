@@ -23,7 +23,6 @@
     $(document).ready(function () {
         var href = $('#lengow_ajax_link').val();
         var sync_link = $('#lengow_sync_link').val();
-
         var sync_iframe = document.getElementById('lengow_iframe');
         if (sync_iframe) {
             sync_iframe.onload = function () {
@@ -38,28 +37,23 @@
                     }
                 });
             };
-
             if (sync_link) {
                 //synchronisation des boutiques, à modifier lorsque l'API sera disponible
                 // sync_iframe.src = 'http://cms.lengow.io/sync/';
                 sync_iframe.src = 'http://cms.lengow.net/sync/';
+                // sync_iframe.src = 'http://cms.lengow.dev/sync/';
             } else {
                 // sync_iframe.src = 'http://cms.lengow.io/';
                 sync_iframe.src = 'http://cms.lengow.net/';
+                // sync_iframe.src = 'http://cms.lengow.dev/';
             }
-
             $('#frame_loader').hide();
             $('#lengow_iframe').show();
-
         }
 
         window.addEventListener('message', receiveMessage, false);
 
         function receiveMessage(event) {
-            //if (event.origin !== "http://solution.lengow.com")
-            //    return;
-            console.log(event.data);
-
             switch (event.data.function) {
                 case 'sync':
                     $.ajax({

@@ -100,6 +100,19 @@ class LengowSync
     }
 
     /**
+     * Check Synchronisation shop
+     *
+     * @param $id_shop
+     *
+     * @return boolean
+     */
+    public static function checkSyncShop($id_shop)
+    {
+        // TODO check shop synchronisation with account API
+        return true;
+    }
+
+    /**
      * Get Sync Data (Inscription / Update)
      *
      * @return array
@@ -116,11 +129,11 @@ class LengowSync
         );
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
-            $shop_id = $row['id_shop'];
-            $shop = new LengowShop($shop_id);
+            $id_shop = $row['id_shop'];
+            $shop = new LengowShop($id_shop);
             $data['shops'][] = array(
                 'enabled'    => LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $shop->id),
-                'token'      => LengowMain::getToken($shop_id),
+                'token'      => LengowMain::getToken($id_shop),
                 'store_name' => $shop->name,
                 'domain_url' => $shop->domain,
                 'feed_url'   => LengowMain::getExportUrl($shop->id),
@@ -129,6 +142,29 @@ class LengowSync
             );
         }
         return $data;
+    }
+
+    /**
+     * Set CMS options
+     *
+     * @param boolean $force Force cache Update
+     *
+     * @return boolean
+     */
+    public static function setCmsOption($force = false)
+    {
+        if (LengowMain::isNewMerchant()) {
+            return false;
+        }
+        if (!$force) {
+            $updated_at =  LengowConfiguration::getGlobalValue('LENGOW_OPTION_CMS_UPDATE');
+            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < self::$cacheTime) {
+                return false;
+            }
+        }
+        $options = Tools::jsonEncode(Self::getOptionData());
+        LengowConnector::queryApi('put', '/v3.0/cms', null, array(), $options);
+        return true;
     }
 
     /**
@@ -147,11 +183,9 @@ class LengowSync
             }
         }
         // TODO call API for return a customer id or false
-        //$result = LengowConnector::queryApi('get', '/v3.0/cms');
         $result = true;
         if ($result) {
             // TODO call API with customer id parameter for return status account
-            //$status = LengowConnector::queryApi('get', '/v3.0/cms');
             $status = array();
             $status['type'] = 'free_trial';
             $status['day'] = 10;
@@ -162,5 +196,67 @@ class LengowSync
             }
         }
         return false;
+    }
+
+    /**
+     * Get Statistic with all shop
+     *
+     * @param boolean $force Force cache Update
+     *
+     * @return array
+     */
+    public static function getStatistic($force = false)
+    {
+        if (!$force) {
+            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE');
+            if ((time() - strtotime($updatedAt)) < self::$cacheTime) {
+                return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
+            }
+        }
+        $return = array();
+        $return['total_order'] = 0;
+        $return['nb_order'] = 0;
+        $return['currency'] = '';
+        $currency_id = 0;
+        //get stats by shop
+        $shopCollection = LengowShop::findAll(true);
+        $i = 0;
+        $account_ids = array();
+        foreach ($shopCollection as $s) {
+            $account_id = LengowMain::getIdAccount($s['id_shop']);
+            if (!$account_id || in_array($account_id, $account_ids) || empty($account_id)) {
+                continue;
+            }
+            // TODO test call API for return statistics
+            $result = LengowConnector::queryApi(
+                'get',
+                '/v3.0/stats',
+                $s['id_shop'],
+                array(
+                    'date_from' => date('c', strtotime(date('Y-m-d').' -10 years')),
+                    'date_to'   => date('c'),
+                    'metrics'   => 'year',
+                )
+            );
+            if (isset($result->level0)) {
+                $return['total_order'] += $result->level0->revenue;
+                $return['nb_order'] += $result->level0->transactions;
+                $return['currency'] = $result->currency->iso_a3;
+            }
+            $account_ids[] = $account_id;
+            $i++;
+        }
+        if ($return['currency']) {
+            $currency_id = LengowCurrency::getIdBySign($return['currency']);
+        }
+        if ($currency_id > 0) {
+            $return['total_order'] = Tools::displayPrice($return['total_order'], new Currency($currency_id));
+        } else {
+            $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
+        }
+        $return['nb_order'] = (int)$return['nb_order'];
+        LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT', Tools::JsonEncode($return));
+        LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT_UPDATE', date('Y-m-d H:i:s'));
+        return $return;
     }
 }

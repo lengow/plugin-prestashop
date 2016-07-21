@@ -14,7 +14,7 @@ fr:
     order: "Commandes"
     jump_to_lengow: "Accéder à Lengow"
     preprod_active: "mode préproduction "
-    counter: "Période d'essai : %{counter} jour(s) restant(s)"
+    counter: "Période d'essai : %{counter} jour(s) restant(s)."
     upgrade_account: "Mettre à jour"
     order_overview: "Vue d'ensemble"
     order_parameter: "Paramètres des commandes"
@@ -270,6 +270,7 @@ fr:
     lengow_order_stat_update_title: "Mise à jour des statistiques de commandes"
     lengow_account_status_title: "Statut du compte"
     lengow_account_status_update_title: "Statut du compte à jour"
+    lengow_option_cms_update_title: "Mise à jour des options cms"
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} commande(s) importée(s)"

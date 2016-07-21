@@ -245,6 +245,11 @@ class LengowConfiguration extends Configuration
                     'label'         => $locale->t('lengow_setting.lengow_account_status_update_title'),
                     'export'        => false
                 ),
+                'LENGOW_OPTION_CMS_UPDATE' => array(
+                    'type'          => 'datetime',
+                    'label'         => $locale->t('lengow_setting.lengow_option_cms_update_title'),
+                    'export'        => false
+                ),
             );
         }
         return $keys;
