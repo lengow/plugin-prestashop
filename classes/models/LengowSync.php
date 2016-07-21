@@ -164,6 +164,7 @@ class LengowSync
         }
         $options = Tools::jsonEncode(Self::getOptionData());
         LengowConnector::queryApi('put', '/v3.0/cms', null, array(), $options);
+        LengowConfiguration::updateGlobalValue('LENGOW_OPTION_CMS_UPDATE', date('Y-m-d H:i:s'));
         return true;
     }
 
