@@ -108,6 +108,7 @@ class LengowSync
      */
     public static function checkSyncShop($id_shop)
     {
+        $id_shop = $id_shop;
         // TODO check shop synchronisation with account API
         return false;
     }
