@@ -46,10 +46,10 @@ class LengowSync
         $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
-            $shopId = $row['id_shop'];
-            $lengowExport = new LengowExport(array("shop_id" => $shopId));
-            $shop = new LengowShop($shopId);
-            $data['shops'][$row['id_shop']]['token'] = LengowMain::getToken($shopId);
+            $id_shop = $row['id_shop'];
+            $lengowExport = new LengowExport(array("shop_id" => $id_shop));
+            $shop = new LengowShop($id_shop);
+            $data['shops'][$row['id_shop']]['token'] = LengowMain::getToken($id_shop);
             $data['shops'][$row['id_shop']]['name'] = $shop->name;
             $data['shops'][$row['id_shop']]['domain'] = $shop->domain;
             $data['shops'][$row['id_shop']]['feed_url'] = LengowMain::getExportUrl($shop->id);
@@ -70,7 +70,7 @@ class LengowSync
         foreach ($params as $shop_token => $values) {
             if ($shop = LengowShop::findByToken($shop_token)) {
                 $list_key = array(
-                    'account_id' => false,
+                    'account_id'   => false,
                     'access_token' => false,
                     'secret_token' => false
                 );
@@ -109,7 +109,7 @@ class LengowSync
     public static function checkSyncShop($id_shop)
     {
         // TODO check shop synchronisation with account API
-        return true;
+        return false;
     }
 
     /**
@@ -162,7 +162,7 @@ class LengowSync
                 return false;
             }
         }
-        $options = Tools::jsonEncode(Self::getOptionData());
+        $options = Self::getOptionData();
         LengowConnector::queryApi('put', '/v3.0/cms', null, array(), $options);
         LengowConfiguration::updateGlobalValue('LENGOW_OPTION_CMS_UPDATE', date('Y-m-d H:i:s'));
         return true;

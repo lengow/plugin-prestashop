@@ -68,8 +68,8 @@ class LengowConnector
      * @var string URL of the API Lengow
      */
     // const LENGOW_API_URL = 'http://api.lengow.io:80';
-    const LENGOW_API_URL = 'http://api.lengow.net:80';
-    // const LENGOW_API_URL = 'http://10.100.1.82:8081';
+    // const LENGOW_API_URL = 'http://api.lengow.net:80';
+    const LENGOW_API_URL = 'http://10.100.1.82:8081';
 
     /**
      * @var string URL of the SANDBOX Lengow
@@ -402,17 +402,17 @@ class LengowConnector
                 $account_id = LengowMain::getIdAccount($shop['id_shop']);
                 $access_token = LengowMain::getAccessToken($shop['id_shop']);
                 $secret_token = LengowMain::getSecretCustomer($shop['id_shop']);
-                if (Tools::strlen($account_id) > 0 &&
-                    Tools::strlen($access_token) > 0 &&
-                    Tools::strlen($secret_token) > 0
+                if (Tools::strlen($account_id) > 0
+                    && Tools::strlen($access_token) > 0
+                    && Tools::strlen($secret_token) > 0
                 ) {
                     break;
                 }
             }
         }
-        if (Tools::strlen($account_id) > 0 &&
-            Tools::strlen($access_token) > 0 &&
-            Tools::strlen($secret_token) > 0
+        if (Tools::strlen($account_id) > 0
+            && Tools::strlen($access_token) > 0
+            && Tools::strlen($secret_token) > 0
         ) {
             return array($account_id, $access_token, $secret_token);
         } else {

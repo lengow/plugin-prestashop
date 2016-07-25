@@ -35,7 +35,13 @@ class LengowFeedController extends LengowController
                     $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     if ($state !== null) {
-                        Configuration::updatevalue('LENGOW_EXPORT_VARIATION_ENABLED', $state, null, null, $shopId);
+                        LengowConfiguration::updatevalue(
+                            'LENGOW_EXPORT_VARIATION_ENABLED',
+                            $state,
+                            null,
+                            null,
+                            $shopId
+                        );
                         echo Tools::jsonEncode($this->reloadTotal($shopId));
                     }
                     break;
@@ -43,8 +49,14 @@ class LengowFeedController extends LengowController
                     $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     if ($state !== null) {
-                        Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', $state, null, null, $shopId);
-                        $state = Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shopId);
+                        LengowConfiguration::updatevalue(
+                            'LENGOW_EXPORT_SELECTION_ENABLED',
+                            $state,
+                            null,
+                            null,
+                            $shopId
+                        );
+                        $state = LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shopId);
                         $data = array();
                         $data['shop_id'] = $shopId;
                         if ($state) {
@@ -60,7 +72,7 @@ class LengowFeedController extends LengowController
                     $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     if ($state !== null) {
-                        Configuration::updatevalue('LENGOW_EXPORT_OUT_STOCK', $state, null, null, $shopId);
+                        LengowConfiguration::updatevalue('LENGOW_EXPORT_OUT_STOCK', $state, null, null, $shopId);
                         echo Tools::jsonEncode($this->reloadTotal($shopId));
                     }
                     break;
@@ -157,7 +169,7 @@ class LengowFeedController extends LengowController
                         $data['shop_id'] = $shopId['id_shop'];
                         if ($checkShop) {
                             $data['check_shop'] = true;
-                            $sync_date = Configuration::get('LENGOW_LAST_EXPORT', null, null, $data['shop_id']);
+                            $sync_date = LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $data['shop_id']);
                             if ($sync_date == null) {
                                 $data['tooltip'] = $this->locale->t('product.screen.shop_not_index');
                             } else {
@@ -213,10 +225,20 @@ class LengowFeedController extends LengowController
                 'link' => LengowMain::getExportUrl($shop->id),
                 'total_product' => $lengowExport->getTotalProduct(),
                 'total_export_product' => $lengowExport->getTotalExportProduct(),
-                'last_export' => Configuration::get('LENGOW_LAST_EXPORT', null, null, $shop->id),
-                'option_selected' => Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shop->id),
-                'option_variation' => Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $shop->id),
-                'option_product_out_of_stock' => Configuration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $shop->id),
+                'last_export' => LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id),
+                'option_selected' => LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shop->id),
+                'option_variation' => LengowConfiguration::get(
+                    'LENGOW_EXPORT_VARIATION_ENABLED',
+                    null,
+                    null,
+                    $shop->id
+                ),
+                'option_product_out_of_stock' => LengowConfiguration::get(
+                    'LENGOW_EXPORT_OUT_STOCK',
+                    null,
+                    null,
+                    $shop->id
+                ),
                 'list' => $this->buildTable($shop->id)
             );
         }

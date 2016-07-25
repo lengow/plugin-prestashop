@@ -215,14 +215,24 @@ class LengowExport
     protected $data = array();
 
     /**
-     * Include active products
+     * Export Lengow selection
      */
-    protected $showInactiveProduct = false;
+    protected $exportLengowSelection = false;
 
     /**
      * Export out of stock product
      */
     protected $exportOutStock = false;
+
+    /**
+     * Export product variations
+     */
+    protected $exportVariation = true;
+
+    /**
+     * Include active products
+     */
+    protected $showInactiveProduct = false;
 
     /**
      * @var integer amount of products to export
@@ -276,19 +286,19 @@ class LengowExport
         $this->shopId = (int)(isset($params["shop_id"]) ? (int)$params["shop_id"] : Context::getContext()->shop->id);
         $this->language = (isset($params["language_id"])
             ? new Language($params["language_id"])
-            : new Language(LengowConfiguration::get('PS_LANG_DEFAULT', null, null, $this->shopId))
+            : new Language(Configuration::get('PS_LANG_DEFAULT', null, null, $this->shopId))
         );
         $this->exportLengowSelection = (isset($params["selection"])
             ? (bool)$params["selection"]
-            : Configuration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->shopId)
+            : (bool)LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->shopId)
         );
         $this->exportOutStock = (isset($params["out_of_stock"])
-            ? $params["out_of_stock"]
-            : Configuration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->shopId)
+            ? (bool)$params["out_of_stock"]
+            : (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->shopId)
         );
         $this->exportVariation = (isset($params["variation"])
             ? (bool)$params["variation"]
-            : (bool)Configuration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId)
+            : (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId)
         );
         $this->showInactiveProduct = (isset($params["inactive"]) ? (bool)$params["inactive"] : false);
         $legacy_fields = (isset($params['legacy_fields']) ? (bool)$params['legacy_fields'] : false);

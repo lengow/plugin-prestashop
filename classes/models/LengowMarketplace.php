@@ -429,7 +429,7 @@ class LengowMarketplace
                     }
                 }
             } else {
-                if (!Configuration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
+                if (!LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
                     $result = LengowConnector::queryApi(
                         'post',
                         '/v3.0/orders/actions/',

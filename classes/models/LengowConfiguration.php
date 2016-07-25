@@ -87,6 +87,14 @@ class LengowConfiguration extends Configuration
                     'legend'        => $locale->t('lengow_setting.lengow_export_variation_enabled_legend'),
                     'default_value' => true,
                 ),
+                'LENGOW_EXPORT_OUT_STOCK' => array(
+                    'type'          => 'checkbox',
+                    'readonly'      => true,
+                    'shop'          => true,
+                    'label'         => $locale->t('lengow_setting.lengow_export_out_stock_title'),
+                    'legend'        => $locale->t('lengow_setting.lengow_export_out_stock_legend'),
+                    'default_value' => false
+                ),
                 'LENGOW_EXPORT_FORMAT' => array(
                     'type'          => 'select',
                     'label'         => $locale->t('lengow_setting.lengow_export_format_title'),
@@ -288,7 +296,20 @@ class LengowConfiguration extends Configuration
         if (_PS_VERSION_ < '1.5') {
             return parent::get($key, $id_lang);
         } else {
-            return parent::get($key, $id_lang, $id_shop_group, $id_shop, $default);
+            if (Shop::isFeatureActive() && $id_shop > 1) {
+                $sql = 'SELECT `value` FROM '._DB_PREFIX_.'configuration
+                   WHERE `name` = \''.pSQL($key).'\'
+                   AND `id_shop` = \''.(int)$id_shop.'\'
+                ';
+                $value = Db::getInstance()->getRow($sql);
+                if ($value) {
+                    return $value['value'];
+                } else {
+                    return false;
+                }
+            } else {
+                return parent::get($key, $id_lang, $id_shop_group, $id_shop, $default);
+            }
         }
     }
 

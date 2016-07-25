@@ -221,10 +221,10 @@ class LengowInstall
                 );
             }
             $lengow_state->add();
-            Configuration::updateValue('LENGOW_STATE_ERROR', $lengow_state->id);
+            LengowConfiguration::updateValue('LENGOW_STATE_ERROR', $lengow_state->id);
         } else {
             $id_order_state = $states[0]['id_order_state'];
-            Configuration::updateValue('LENGOW_STATE_ERROR', $id_order_state);
+            LengowConfiguration::updateValue('LENGOW_STATE_ERROR', $id_order_state);
             $languages = Language::getLanguages(false);
             foreach ($languages as $language) {
                 $name = LengowMain::decodeLogMessage('module.state_technical_error', $language['iso_code']);

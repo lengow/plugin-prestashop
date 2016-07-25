@@ -68,12 +68,10 @@ class LengowCron
         }
         $shop = new Shop((int)$id_shop);
         $description_import = 'Lengow Import - '.$shop->name;
-
         $query_import_select = 'SELECT 1 FROM '.pSQL(_DB_PREFIX_.'cronjobs').' '
             . 'WHERE `description` = \''.pSQL($description_import).'\' '
             . 'AND `id_shop` = '.(int)$id_shop.' '
             . 'AND `id_shop_group` ='.(int)$shop->id_shop_group;
-
         if (Db::getInstance()->executeS($query_import_select)) {
             return true;
         }
@@ -99,12 +97,10 @@ class LengowCron
         }
         $shop = new Shop((int)$id_shop);
         $description_import = 'Lengow Import - '.$shop->name;
-
         $query_import_select = 'SELECT 1 FROM '.pSQL(_DB_PREFIX_.'cronjobs').' '
             .'WHERE `description` = \''.pSQL($description_import).'\' '
             .'AND `id_shop` = '.(int)$id_shop.' '
             .'AND `id_shop_group` ='.(int)$shop->id_shop_group;
-
         $query_import_insert = 'INSERT INTO '.pSQL(_DB_PREFIX_.'cronjobs').' '
             .'(`description`, `task`, `hour`, `day`, `month`, `day_of_week`,
             `updated_at`, `active`, `id_shop`, `id_shop_group`) '
@@ -117,7 +113,6 @@ class LengowCron
             .', '
             .(int)$shop->id_shop_group
             .')';
-
         if (!Db::getInstance()->executeS($query_import_select)) {
             $add_import = Db::getInstance()->execute($query_import_insert);
             if ($add_import) {
@@ -153,12 +148,10 @@ class LengowCron
         }
         $shop = new Shop((int)$id_shop);
         $description_import = 'Lengow Import - '.$shop->name;
-
         $query_import_select = 'SELECT 1 FROM '.pSQL(_DB_PREFIX_.'cronjobs').' '
             .'WHERE `description` = \''.pSQL($description_import).'\' '
             .'AND `id_shop` = '.(int)$id_shop . ' '
             .'AND `id_shop_group` =' . (int)$shop->id_shop_group;
-
         if (Db::getInstance()->executeS($query_import_select)) {
             $query = 'DELETE FROM '.pSQL(_DB_PREFIX_.'cronjobs').' '
                 .'WHERE `description` IN (\''.pSQL($description_import).'\')'

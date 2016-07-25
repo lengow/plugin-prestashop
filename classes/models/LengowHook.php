@@ -151,7 +151,7 @@ class LengowHook
     public function hookFooter($args)
     {
         $args = 0; // Prestashop validator
-        if (!Configuration::get('LENGOW_TRACKING_ENABLED')) {
+        if (!LengowConfiguration::get('LENGOW_TRACKING_ENABLED')) {
             return '';
         }
         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
@@ -216,7 +216,7 @@ class LengowHook
                 $i = 1;
                 foreach ($products as $p) {
                     if (is_object($p)) {
-                        switch (Configuration::get('LENGOW_TRACKING_ID')) {
+                        switch (LengowConfiguration::get('LENGOW_TRACKING_ID')) {
                             case 'upc':
                                 $id_product = $p->upc;
                                 break;
@@ -238,7 +238,7 @@ class LengowHook
                             .'&p'.$i.'='.(isset($p->price_wt) ? $p->price_wt : $p->price)
                             .'&q'.$i.'='.$p->quantity;
                     } else {
-                        switch (Configuration::get('LENGOW_TRACKING_ID')) {
+                        switch (LengowConfiguration::get('LENGOW_TRACKING_ID')) {
                             case 'upc':
                                 $id_product = $p['upc'];
                                 break;
@@ -270,7 +270,7 @@ class LengowHook
                     : null
                 );
                 if ($p instanceof Product) {
-                    switch (Configuration::get('LENGOW_TRACKING_ID')) {
+                    switch (LengowConfiguration::get('LENGOW_TRACKING_ID')) {
                         case 'upc':
                             $id_product = $p->upc;
                             break;
@@ -338,7 +338,7 @@ class LengowHook
         $products_cart = array();
         foreach ($products_list as $p) {
             $i++;
-            switch (Configuration::get('LENGOW_TRACKING_ID')) {
+            switch (LengowConfiguration::get('LENGOW_TRACKING_ID')) {
                 case 'upc':
                     $id_product = $p['upc'];
                     break;

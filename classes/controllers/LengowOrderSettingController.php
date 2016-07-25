@@ -223,9 +223,6 @@ class LengowOrderSettingController extends LengowController
                 $form = new LengowConfigurationForm(array("fields" => LengowConfiguration::getKeys()));
                 if (isset($_REQUEST['LENGOW_CRON_ENABLED'])) {
                     $result = LengowCron::addCronTasks();
-                    if (!$result) {
-                        unset($_REQUEST['LENGOW_CRON_ENABLED']);
-                    }
                 } else {
                     $moduleCron = Module::getInstanceByName('cronjobs');
                     if ($moduleCron && $moduleCron->active) {

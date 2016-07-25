@@ -406,7 +406,7 @@ class LengowMain
     {
         if (is_null($id_shop)) {
             $token = LengowConfiguration::getGlobalValue('LENGOW_GLOBAL_TOKEN');
-            if ($token && Tools::strlen($token)>0) {
+            if ($token && Tools::strlen($token) > 0) {
                 return $token;
             } else {
                 $token =  bin2hex(openssl_random_pseudo_bytes(16));
@@ -414,7 +414,7 @@ class LengowMain
             }
         } else {
             $token = LengowConfiguration::get('LENGOW_SHOP_TOKEN', null, null, $id_shop);
-            if ($token && Tools::strlen($token)>0) {
+            if ($token && Tools::strlen($token) > 0) {
                 return $token;
             } else {
                 $token =  bin2hex(openssl_random_pseudo_bytes(16));
@@ -434,7 +434,7 @@ class LengowMain
         $ips = LengowConfiguration::getGlobalValue('LENGOW_AUTHORIZED_IP');
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
         $ips = array_filter(explode(';', $ips));
-        $authorized_ips = count($ips) >0 ? array_merge($ips, LengowMain::$IPS_LENGOW) : LengowMain::$IPS_LENGOW;
+        $authorized_ips = count($ips) > 0 ? array_merge($ips, LengowMain::$IPS_LENGOW) : LengowMain::$IPS_LENGOW;
         if (!self::inTest()) {
             $authorized_ips[] = $_SERVER['SERVER_ADDR'];
         }
