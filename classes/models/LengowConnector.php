@@ -369,9 +369,6 @@ class LengowConnector
             LengowMain::log('Connector', $error_message);
             throw new LengowException($timeout);
         }
-        $information = curl_getinfo($ch, CURLINFO_HEADER_OUT);
-        // This two lines are useless, but Prestashop validator require it
-        $information = $information;
         curl_close($ch);
         if ($result === false) {
             $error_message = LengowMain::setLogMessage('log.connector.error_api', array(

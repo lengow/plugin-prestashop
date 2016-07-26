@@ -73,8 +73,8 @@ product.screen.add_confirmation|Do you really want to add %{nb} products to your
 product.screen.remove_confirmation|Do you really want to remove %{nb} products from your selection?
 product.screen.remove_from_export|Remove from export
 product.screen.add_from_export|Add to export
-product.screen.lengow_shop_sync|Synchronized
-product.screen.lengow_shop_no_sync|Not synchronized
+product.screen.lengow_shop_sync|Shop synchronized
+product.screen.lengow_shop_no_sync|Shop not synchronized
 product.screen.sync_your_shop|Synchronize my shop with Lengow
 product.screen.shop_last_indexation|Last indexation
 product.screen.shop_not_index|Not indexed yet
@@ -208,6 +208,8 @@ lengow_setting.lengow_export_selection_enabled_title|Export the selection only
 lengow_setting.lengow_export_selection_enabled_legend|Activate this option if you do not want to export all available products. Then, select only the products you want to export
 lengow_setting.lengow_export_variation_enabled_title|Export product variations
 lengow_setting.lengow_export_variation_enabled_legend|If you don't want to export all of your products' variations, disable this option
+lengow_setting.lengow_export_out_stock_title|Export out of stock products
+lengow_setting.lengow_export_out_stock_legend|Activate this option if you want to export out of stock products
 lengow_setting.lengow_export_format_title|Export the default format
 lengow_setting.lengow_export_file_enabled_title|Export in a file
 lengow_setting.lengow_export_file_enabled_legend|You should use this option if you have 3,000 products or more

@@ -73,9 +73,9 @@ product.screen.add_confirmation|Voulez-vous vraiment ajouter %{nb} produits dans
 product.screen.remove_confirmation|Voulez-vous vraiment supprimer %{nb} produits de votre sélection ?
 product.screen.remove_from_export|Supprimer de mon export
 product.screen.add_from_export|Inclure dans mon export
-product.screen.lengow_shop_sync|Synchronisé
-product.screen.lengow_shop_no_sync|Non synchronisé
-product.screen.sync_your_shop|Synchronisez ma boutique avec Lengow
+product.screen.lengow_shop_sync|Boutique synchronisée
+product.screen.lengow_shop_no_sync|Boutique non synchronisée
+product.screen.sync_your_shop|Synchroniser ma boutique avec Lengow
 product.screen.shop_last_indexation|Dernière indexation
 product.screen.shop_not_index|Pas encore indexé
 product.table.id_product|ID
@@ -207,7 +207,9 @@ lengow_setting.lengow_shop_token_title|Token de la boutique
 lengow_setting.lengow_export_selection_enabled_title|Exporter seulement la sélection
 lengow_setting.lengow_export_selection_enabled_legend|Activez cette option si vous ne voulez pas exporter tous les produits disponibles. Sélectionnez ensuite uniquement les produits à exporter.
 lengow_setting.lengow_export_variation_enabled_title|Exporter les produits déclinés
-lengow_setting.lengow_export_variation_enabled_legend|Si vous ne voulez pas exporter toutes les déclinaisons produits, désactivez cette option.
+lengow_setting.lengow_export_variation_enabled_legend|Activez cette option si vous souhaitez exporter l'ensemble de vos déclinaisons produits
+lengow_setting.lengow_export_out_stock_title|Export des produits sans stock
+lengow_setting.lengow_export_out_stock_legend|Activez cette option si vous souhaitez exporter vos produits sans stock
 lengow_setting.lengow_export_format_title|Exportez le format par défaut
 lengow_setting.lengow_export_file_enabled_title|Exportez dans un fichier
 lengow_setting.lengow_export_file_enabled_legend|Il est conseillé d'activer cette option si vous avez 3 000 produits ou plus.

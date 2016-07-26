@@ -293,10 +293,10 @@ class LengowImport
                             LengowMain::log(
                                 'Import',
                                 LengowMain::setLogMessage('log.import.find_one_order', array(
-                                    'nb_order'          => $total_orders,
-                                    'marketplace_sku'   => $this->marketplace_sku,
-                                    'markeplace_name'   => $this->marketplace_name,
-                                    'account_id'        => $this->account_id
+                                    'nb_order'        => $total_orders,
+                                    'marketplace_sku' => $this->marketplace_sku,
+                                    'markeplace_name' => $this->marketplace_name,
+                                    'account_id'      => $this->account_id
                                 )),
                                 $this->log_output
                             );
@@ -310,7 +310,7 @@ class LengowImport
                                 $this->log_output
                             );
                         }
-                        if ($total_orders<=0 && $this->import_one_order) {
+                        if ($total_orders <= 0 && $this->import_one_order) {
                             throw new LengowException('lengow_log.error.order_not_found');
                         } elseif ($total_orders <= 0) {
                             continue;
@@ -321,9 +321,9 @@ class LengowImport
                         // import orders in prestashop
                         $result = $this->importOrders($orders, (int)$shop->id);
                         if (!$this->import_one_order) {
-                            $order_new      += $result['order_new'];
-                            $order_update   += $result['order_update'];
-                            $order_error    += $result['order_error'];
+                            $order_new    += $result['order_new'];
+                            $order_update += $result['order_update'];
+                            $order_error  += $result['order_error'];
                         }
                     } catch (LengowException $e) {
                         $error_message = $e->getMessage();
@@ -402,10 +402,10 @@ class LengowImport
             return $result;
         } else {
             return array(
-                'order_new'     => $order_new,
-                'order_update'  => $order_update,
-                'order_error'   => $order_error,
-                'error'         => $error
+                'order_new'    => $order_new,
+                'order_update' => $order_update,
+                'order_error'  => $order_error,
+                'error'        => $error
             );
         }
     }
@@ -413,8 +413,8 @@ class LengowImport
     /**
      * Check credentials for a shop
      *
-     * @param integer   $id_shop      Shop Id
-     * @param string    $name_shop    Shop name
+     * @param integer $id_shop   Shop Id
+     * @param string  $name_shop Shop name
      *
      * @return boolean
      */
@@ -445,7 +445,7 @@ class LengowImport
     /**
      * Change Context for import
      *
-     * @param  integer $id_shop Shop Id
+     * @param integer $id_shop Shop Id
      */
     protected function changeContext($id_shop)
     {
@@ -462,7 +462,7 @@ class LengowImport
     /**
      * Call Lengow order API
      *
-     * @param  LengowShop $shop
+     * @param LengowShop $shop
      *
      * @return mixed
      */
@@ -564,8 +564,8 @@ class LengowImport
     /**
      * Create or update order in prestashop
      *
-     * @param mixed     $orders     API orders
-     * @param integer   $id_shop    Shop Id
+     * @param mixed   $orders  API orders
+     * @param integer $id_shop Shop Id
      *
      * @return mixed
      */
@@ -629,18 +629,18 @@ class LengowImport
                     // try to import or update order
                     $import_order = new LengowImportOrder(
                         array(
-                            'context'               => $this->context,
-                            'id_shop'               => $id_shop,
-                            'id_shop_group'         => $this->id_shop_group,
-                            'id_lang'               => $this->id_lang,
-                            'force_product'         => $this->force_product,
-                            'preprod_mode'          => $this->preprod_mode,
-                            'log_output'            => $this->log_output,
-                            'marketplace_sku'       => $marketplace_sku,
-                            'delivery_address_id'   => $package_delivery_address_id,
-                            'order_data'            => $order_data,
-                            'package_data'          => $package_data,
-                            'first_package'         => $first_package
+                            'context'             => $this->context,
+                            'id_shop'             => $id_shop,
+                            'id_shop_group'       => $this->id_shop_group,
+                            'id_lang'             => $this->id_lang,
+                            'force_product'       => $this->force_product,
+                            'preprod_mode'        => $this->preprod_mode,
+                            'log_output'          => $this->log_output,
+                            'marketplace_sku'     => $marketplace_sku,
+                            'delivery_address_id' => $package_delivery_address_id,
+                            'order_data'          => $order_data,
+                            'package_data'        => $package_data,
+                            'first_package'       => $first_package
                         )
                     );
                     $order = $import_order->importOrder();
@@ -708,17 +708,17 @@ class LengowImport
             }
         }
         return array(
-            'order_new'     => $order_new,
-            'order_update'  => $order_update,
-            'order_error'   => $order_error
+            'order_new'    => $order_new,
+            'order_update' => $order_update,
+            'order_error'  => $order_error
         );
     }
 
     /**
      * Check if order status is valid for import
      *
-     * @param string            $order_state_marketplace    order state
-     * @param LengowMarketplace $marketplace                order marketplace
+     * @param string            $order_state_marketplace order state
+     * @param LengowMarketplace $marketplace             order marketplace
      *
      * @return boolean
      */
@@ -742,7 +742,7 @@ class LengowImport
     {
         $timestamp = LengowConfiguration::getGlobalValue('LENGOW_IMPORT_IN_PROGRESS');
         if ($timestamp > 0) {
-            // security check : if last import is more than 10 min old => authorize new import to be launched
+            // security check : if last import is more than 60 seconds old => authorize new import to be launched
             if (($timestamp + (60 * 1)) < time()) {
                 LengowImport::setEnd();
                 return false;
