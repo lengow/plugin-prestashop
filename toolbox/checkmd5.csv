@@ -61,7 +61,7 @@
 /classes/controllers/LengowLegalsController.php|96a0b781ded3f2b48dc2c838da6b3364
 /classes/controllers/LengowHomeController.php|c724d05e98126b89ed7f023f0d0bcf95
 /classes/controllers/LengowHelpController.php|8d72f901d14dce21414840bddc2ecc26
-/classes/controllers/LengowOrderController.php|3d7625e8e4732ed5c4670db0d9b9ea93
+/classes/controllers/LengowOrderController.php|e77e38b503a8287092e84592e6df7065
 /classes/controllers/LengowController.php|fde556d893809077d1151002fff67ef7
 /controllers/admin/TabLengowOrderSettingController.php|748fc96ddf67b9d83f05068a595df3a3
 /controllers/admin/AdminLengowOrderController.php|c8e25301e217510e25a27499e0d5aa43
@@ -104,7 +104,7 @@
 /views/templates/admin/lengow_order/helpers/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_order/helpers/view/select_marketplace.tpl|594d5832e51749829912dfeff9f549b4
 /views/templates/admin/lengow_order/helpers/view/view.tpl|a845957e65cc447bf481ab32cb93fcb5
-/views/templates/admin/lengow_order/helpers/view/header_toolbox.tpl|e27a55f4c91b0de7e087fb1b210a007a
+/views/templates/admin/lengow_order/helpers/view/header_toolbox.tpl|a88600196f1aa9319b5f6774fe07a21d
 /views/templates/admin/lengow_order/helpers/view/last_importation.tpl|7bbe6067be697777fd4a1bb9cbbca9e5
 /views/templates/admin/lengow_order/helpers/view/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_order/helpers/view/no_order.tpl|0edfd0f97edf52c4da48e12e521a1f41
@@ -480,7 +480,7 @@
 /views/css/lengow-layout.css|13f1c7b918c01e3e5234b381a05d7bde
 /views/css/font-awesome.css|bf4b58c946c9234e4a6b9f7a70d38006
 /views/css/lengow-components.css|24c9ac1012a2dcc595ab0f055b650714
-/views/css/toolbox.css|a1fdb1e2b306cc4abe93340162b35843
+/views/css/toolbox.css|ae0e4bcdf67354630f6a993173ceb733
 /views/css/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/css/lengow-pages.css|efa7cabc567d36210b3eac9f6145559d
 /views/css/lengow_bootstrap_15.css|a46589beefe6fc00ae558b3b8de66d60

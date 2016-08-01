@@ -252,10 +252,6 @@ a.lengow_link_tooltip {
     border-color: #bce8f1;
 }
 
-#lengow_no_order_block {
-    background: #182D40 url("../img/background.jpg") repeat left top;
-}
-
 #lengow_no_order_message {
     padding: 30px;
     text-align:center;

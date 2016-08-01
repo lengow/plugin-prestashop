@@ -458,8 +458,9 @@ toolbox.order.order_sku|Sku order
 toolbox.order.delivery_address_id|Delivery address ID
 toolbox.order.import_one_order|Import order
 toolbox.order.import_days|Import days
-toolbox.order.import_shop_order|Import orders
+toolbox.order.import_shop_order|Import shop orders
 toolbox.order.import_all_order|Import all orders
+toolbox.order.button_import_shop_order|Import orders
 toolbox.order.order_import_success|Order %{marketplace_sku} from %{marketplace_name} is imported
 toolbox.order.order_import_failed|Order import failed (<a href='%{log_url}' target='_blank'>See logs for more information</a>)
 toolbox.configuration.shop_credentials|Shop credentials

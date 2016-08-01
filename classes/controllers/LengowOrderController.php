@@ -159,7 +159,7 @@ class LengowOrderController extends LengowController
                     $message = $this->loadMessage($return);
                     $data = array();
                     $data['message'] = '<div class=\"lengow_alert\">'.addslashes(join('<br/>', $message)).'</div>';
-                    $data['update_some_orders'] = $this->locale->t('toolbox.order.import_shop_order');
+                    $data['update_some_orders'] = $this->locale->t('toolbox.order.button_import_shop_order');
                     $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
                     echo Tools::jsonEncode($data);
                     break;

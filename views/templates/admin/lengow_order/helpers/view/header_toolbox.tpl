@@ -69,7 +69,7 @@
         </div>
         <a id="lengow_update_some_orders" class="lgw-btn btn-success"
             data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
-            {$locale->t('toolbox.order.import_shop_order')|escape:'htmlall':'UTF-8'}
+            {$locale->t('toolbox.order.button_import_shop_order')|escape:'htmlall':'UTF-8'}
         </a>
         <div id="error_update_some_orders"></div>
     </form>
