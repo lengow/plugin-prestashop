@@ -21,7 +21,6 @@
 <div class="lgw-container">
     <div class="lgw-box">
         <div class="lgw-row">
-
         {if $merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] eq 0}
             <div class="lgw-col-6 display-inline-block">
                 <h2 class="text-center">{$locale->t('status.screen.title_end_free_trial')|escape:'htmlall':'UTF-8'}</h2>
@@ -48,7 +47,6 @@
             </div>
         {else}
             <div class="lgw-col-6">
-                <h2 class="text-center">{$locale->t('status.screen.title_bad_payer')|escape:'htmlall':'UTF-8'}</h2>
                 <h3 class="text-center">{$locale->t('status.screen.subtitle_bad_payer')|escape:'htmlall':'UTF-8'}</h3>
                 <p class="text-center">{$locale->t('status.screen.first_description_bad_payer')|escape:'htmlall':'UTF-8'}</p>
                 <p class="text-center">{$locale->t('status.screen.second_description_bad_payer')|escape:'htmlall':'UTF-8'}

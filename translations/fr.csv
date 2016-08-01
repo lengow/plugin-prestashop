@@ -100,7 +100,7 @@ order.screen.button_update_orders|Synchroniser les commandes
 order.screen.button_reimport_order|Réimporter mes commandes
 order.screen.button_resend_order|Renvoyer mes commandes
 order.screen.cron|Vous voulez automatiser la mise à jour de vos commandes ?
-order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <br /><a href=%{url}>Retourner en mode production ?&lt;/a>
+order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <br /><a href=%{url}>Retourner en mode production ?</a>
 order.screen.import_single_warning_message|La version de votre module est comprise entre la 1.5.2 et la 1.5.4. Pour des raisons de sécurité, vous ne pouvez importer qu'une seule commande par synchronisation.
 order.screen.no_carrier_warning_message|Vous ne pouvez pas importer les commandes car vous n'avez pas encore défini de transporteur par défaut. <a href=%{url}>Configuration des transporteurs</a>
 order.screen.not_imported|Pas importée

@@ -262,7 +262,7 @@ lengow_log.error.no_change_rate|Lengow error: no exchange rates available for or
 lengow_log.error.no_currency|Lengow error: no currency in the order
 lengow_log.error.currency_not_available|the %{currency_iso} currency is not available in your shop
 lengow_log.error.no_country_for_delivery_address|Lengow error: delivery address doesn't contain the country
-lengow_log.error.no_billing_address|no billing address in the order
+lengow_log.error.no_billing_address|Lengow error: no billing address in the order
 lengow_log.error.no_country_for_billing_address|Lengow error: billing address doesn't contain the country
 lengow_log.error.order_not_found|Lengow error: order cannot be found in Lengow feed
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
