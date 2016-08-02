@@ -76,7 +76,6 @@ body.lgw-home-iframe .lgw-content-section p{
   height:240px;
   color:white;
   padding:60px 30px 0;
-  /*background: url("../img/header.png") #2E3340 no-repeat center;*/
   background:#2e3340;
 }
 .lgw-home-header h1{
@@ -319,13 +318,6 @@ body.lgw-home-iframe .lgw-content-section p{
 .lgw-container #download_log{
   display:none;
 }
-.img_no_order {
-    background : transparent url("../img/no-result.png") no-repeat;
-    height: 208px;
-    width: 395px;
-    display: block;
-    margin: 60px auto 0;
-}
 
 #lengow_no_order_message {
     padding: 30px;
@@ -333,6 +325,7 @@ body.lgw-home-iframe .lgw-content-section p{
     font-size: 18px;
     color:#828282;
 }
+
 .default_carrier_missing{
   color:#e55a4d;
   font-size:13px;

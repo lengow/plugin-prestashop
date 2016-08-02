@@ -15,7 +15,7 @@ menu.order_parameter|Ajustes
 menu.help|Ayuda
 menu.global_parameter|Parámetros generales
 footer.legals|Legal
-footer.copyright_lengow|Copyright Lengow
+footer.lengow_link_url|http://www.lengow.com/es/
 dashboard.screen.welcome_back|Hola! Bienvenido de nuevo!
 dashboard.screen.go_to_lengow|Ir a Lengow
 dashboard.screen.products_title|Productos
@@ -27,7 +27,6 @@ dashboard.screen.settings_text|Configura los parametros de tu plug-in PrestaShop
 dashboard.screen.partner_business|Lengow, colaborador en tu business
 dashboard.screen.stat_turnover|Ventas 
 dashboard.screen.stat_nb_orders|Pedidos
-dashboard.screen.stat_avg_order|Valor medio del pedido
 dashboard.screen.stat_more_stats|¿Quieres ver más estadísticas?
 dashboard.screen.some_help_title|¿Necesitas ayuda?
 dashboard.screen.get_in_touch|Ponte en contacto con Lengow
@@ -44,7 +43,7 @@ product.screen.include_specific_product_support|Active esta opción para hacer l
 product.screen.your_exported_catalog|Este es el catálogo de exportación. Copia este enlace en tu plataforma Lengow
 product.screen.last_export|Última indexación
 product.screen.no_export|No exportar
-product.screen.no_result_found|Lo sentimos , no hay resultados para su búsqueda.<br />¿Tal vez si intentas modificar tu solicitud?
+product.screen.no_result_found|Lo sentimos, no hay resultados para su búsqueda. ¿Tal vez si intentas modificar tu solicitud?
 product.screen.no_product_selected|Por favor, selecciona un producto
 product.screen.date_from|Desde
 product.screen.date_to|Hasta
@@ -58,8 +57,6 @@ product.screen.add_confirmation|¿Realmente desea agregar %{nb} productos a la s
 product.screen.remove_confirmation|¿Estás seguro que quieres eliminar %{nb} productos de la selección ?
 product.screen.remove_from_export|Sacar de la exportación
 product.screen.add_from_export|Añadir a la exportación
-product.screen.lengow_shop_sync|Sincronizada
-product.screen.lengow_shop_no_sync|No sincronizado
 product.screen.sync_your_shop|Sincronizar mi tienda con Lengow
 product.screen.shop_last_indexation|Última indexación
 product.screen.shop_not_index|Aún no está indexado
@@ -78,7 +75,6 @@ order.screen.import_charge_second|Por favor, ten paciencia con nosotros; esto no
 order.screen.all_order_will_be_sent_to|Todos los informes de envios de pedidos serán enviados por email 
 order.screen.change_this|¿Cambiar esto?
 order.screen.last_order_importation|Última sincronización
-order.screen.no_order_importation|No hay pedidos a importar por el momento
 order.screen.import_auto|Auto
 order.screen.import_manuel|Manual
 order.screen.button_update_orders|Sincronizar los pedidos
@@ -150,7 +146,6 @@ global_setting.screen.download_all_files|Descarga todos los documentos
 global_setting.screen.uninstall_module|Eliminar el módulo entero
 global_setting.screen.uninstall_module_description|Desinstalar el módulo completo asi como todos los datos relacionados
 global_setting.screen.all_data_will_be_lost|Se perderán todos los datos ( tablas y configuración) y perderás el historial de pedidos
-global_setting.screen.you_will_find_a_backup|Después de retirar el módulo, encontrás una copia de seguridad de su base de datos en Lengow
 global_setting.screen.prestashop_backup|PrestaShop Backup
 global_setting.screen.i_want_uninstall|Quiero eliminar el módulo Lengow
 global_setting.screen.button_i_want_uninstall|Eliminar el módulo Lengow
@@ -166,13 +161,14 @@ global_setting.screen.setting_saving|Guardando...
 global_setting.screen.setting_saved|¡Guardado!
 help.screen.title|Obtener un poco de ayuda de tu equipo de ayuda!
 help.screen.contain_text_support|Pregúntanos lo que sea a Lengow o comparte tu parecer en
-help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com. 
+help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com.
 help.screen.mail_lengow_support_title|Información de la cuenta:
 help.screen.mailto_subject|Prestashop Lengow Plugin #necesita asistencia
 help.screen.need_some_help|¿Necesitas ayuda?
-help.screen.contain_text_support_hour|Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria ) .
+help.screen.contain_text_support_hour|Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria ).
 help.screen.find_answer|Puedes también encontrar respuestas en nuestro
 help.screen.link_prestashop_guide|Manual Prestashop
+help.screen.knowledge_link_url|https://es.knowledgeowl.com/help/prestashop
 legals.screen.simplified_company|Simplificado sociedad de responsabilidad limitada
 legals.screen.social_capital|Capital social:
 legals.screen.cnil_declaration|Declaración CNIL:
@@ -207,7 +203,7 @@ lengow_setting.lengow_import_processing_fee_legend|Activa esta opción si quiere
 lengow_setting.lengow_import_preprod_enabled_title|Activate Pre-production Mode
 lengow_setting.lengow_import_ship_mp_enabled_title|Importar los pedidos enviados por las Marketplaces
 lengow_setting.lengow_import_stock_ship_mp_title|Quiero disminuir mi stock
-lengow_setting.lengow_import_stock_ship_mp_legend|Utiliza esta opción para tener en cuenta la variacion de stock de los pedidos del marketplaces en el backoffice de PrestaShop .
+lengow_setting.lengow_import_stock_ship_mp_legend|Utiliza esta opción para tener en cuenta la variacion de stock de los pedidos del marketplaces en el backoffice de PrestaShop.
 lengow_setting.lengow_report_mail_enabled_title|Me gustaría ser notificado cuando haya cuestiones relativas a la importación de pedidos y/o el catálogo de la exportación
 lengow_setting.lengow_report_mail_address_title|Email para el email de reporte
 lengow_setting.lengow_report_mail_address_legend|Par añadir varios emails, separalos con un ";"
@@ -232,14 +228,7 @@ lengow_log.error.account_id_empty|Account ID, Access Token o Secret está vacio 
 lengow_log.error.account_id_already_used|account ID %{account_id} está siendo actualmente utilizada  por la tienda %{name_shop} (%{id_shop})
 lengow_log.error.import_in_progress|importación ya ha comenzado
 lengow_log.error.rest_time_to_import|Por favor, espere %{rest_time} segundos antes de volver a re-importar pedidos
-lengow_log.error.no_product|no productos en el pedido
-lengow_log.error.no_change_rate|no hay tipos de cambio disponibles para los precios de pedidos
-lengow_log.error.no_currency|Ninguna moneda en el pedido
 lengow_log.error.currency_not_available|moneda %{currency_iso} no está disponible en tu tienda
-lengow_log.error.no_country_for_delivery_address|La dirección de entraga no contiene el país
-lengow_log.error.no_billing_address|No hay dirección de facturación en el pedido
-lengow_log.error.no_country_for_billing_address|la dirección de facturación no contiene el país
-lengow_log.error.order_not_found|El pedido no se puede encontrar en el feed de Lengow
 lengow_log.exception.product_not_be_found|producto %{product_id} no pudo ser encontrado
 lengow_log.exception.product_is_a_parent|producto %{product_id} es un parent ID. La variación de productos esrequerida
 lengow_log.exception.no_product_to_cart|ningún producto añadido a la cesta
@@ -251,7 +240,6 @@ lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} -
 lengow_log.exception.order_list_is_empty|el pedido no ha podido ser registrado
 lengow_log.exception.carrier_shipping_address_no_country|la dirección de envío no contiene el país
 lengow_log.exception.no_default_carrier_for_country|tienes que elegir un transportista por defecto para el país: {country_name}
-lengow_log.exception.marketplace_not_present|el marketplace %{markeplace_name} no consta en la lista de marketplaces
 lengow_log.exception.order_line_required|la línea de pedido es requerida pero no se encuentra 
 lengow_log.exception.action_not_valid|la acción %{action} no es válida
 lengow_log.exception.marketplace_action_not_present|acción marketplace %{action} no está presente
@@ -284,6 +272,6 @@ admin.order.tracking_number|Tracking número
 admin.order.customer_email|Correo electrónico del cliente
 admin.order.message|Mensaje
 admin.order.shipped_by_marketplace|Enviado por el marketplace
-admin.order.cancel_and_reimport|Cancelar y volver a importar el pedido
-admin.order.check_cancel_and_reimport|¿Realmente desea cancelar y volver a importar el pedido?
+admin.order.cancel_and_reimport|Volver a importar el pedido
+admin.order.check_cancel_and_reimport|¿Realmente desea volver a importar el pedido?
 admin.order.synchronize_id|Sincronizar ID

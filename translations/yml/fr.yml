@@ -23,6 +23,7 @@ fr:
   footer:
     legals: "Mentions légales"
     plugin_lengow: "Lengow Prestashop Module"
+    lengow_link_url: "http://www.lengow.com/fr/"
   dashboard:
     screen:
       welcome_back: "Bonjour ! Bienvenue parmi nous !"
@@ -211,6 +212,7 @@ fr:
       contain_text_support_hour: "Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h)."
       find_answer: "Vous pouvez aussi consulter"
       link_prestashop_guide: "notre guide dédié à PrestaShop"
+      knowledge_link_url: "https://fr.knowledgeowl.com/help/public-module-prestashop-v2"
   legals:
     screen:
       simplified_company: "Société par actions simplifiés"

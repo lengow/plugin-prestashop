@@ -25,7 +25,6 @@
         </div>
     {/if}
     <div class="lgw-box lengow_help_wrapper text-center">
-        <!--<img src="/modules/lengow/views/img/cosmo-yoga.png" class="img-circle" alt="lengow">-->
         <h2>{$locale->t('help.screen.title')|escape:'htmlall':'UTF-8'}</h2>
         <p>
             {$locale->t('help.screen.contain_text_support')|escape:'htmlall':'UTF-8'}
@@ -34,7 +33,7 @@
         <p>{$locale->t('help.screen.contain_text_support_hour')|escape:'htmlall':'UTF-8'}</p>
         <p>
             {$locale->t('help.screen.find_answer')|escape:'htmlall':'UTF-8'}
-            <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2"
+            <a href="{$locale->t('help.screen.knowledge_link_url')|escape:'htmlall':'UTF-8'}"
                 target="_blank"
                 title="Help Center">
                 {$locale->t('help.screen.link_prestashop_guide')|escape:'htmlall':'UTF-8'}

@@ -18,6 +18,7 @@ menu.help|Help
 menu.global_parameter|General settings
 footer.legals|Legal notices
 footer.plugin_lengow|Lengow Prestashop Plugin
+footer.lengow_link_url|http://www.lengow.com/
 dashboard.screen.welcome_back|Hi! Welcome back!
 dashboard.screen.go_to_lengow|Go to Lengow
 dashboard.screen.products_title|Products
@@ -190,6 +191,7 @@ help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
 help.screen.find_answer|You can also find answers in our 
 help.screen.link_prestashop_guide|PrestaShop dedicated guide
+help.screen.knowledge_link_url|https://en.knowledgeowl.com/help/prestashopv2
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:
 legals.screen.cnil_declaration|CNIL declaration:

@@ -75,7 +75,7 @@
             </a>
         </li>
         <li class="lengow_float_right" id="menugotosolution">
-            <a href="http://solution.lengow.com" target="_blank">
+            <a href="http://my.lengow.io/" target="_blank">
                 {$locale->t('menu.jump_to_lengow')|escape:'htmlall':'UTF-8'}
             </a>
         </li>
@@ -83,7 +83,7 @@
             <li class="lengow_float_right" id="menucountertrial">
                 <div class="lgw-block">
                     {$locale->t('menu.counter', ['counter' => $merchantStatus['day']])|escape:'htmlall':'UTF-8'}
-                    <a href="http://www.lengow.com/" target="_blank">
+                    <a href="http://my.lengow.io/" target="_blank">
                         {$locale->t('menu.upgrade_account')|escape:'htmlall':'UTF-8'}
                     </a>
                 </div>

@@ -259,14 +259,6 @@ a.lengow_link_tooltip {
     color:#61687d;
 }
 
-span.img_no_order {
-    background : transparent url("../img/no-result.png") no-repeat;
-    height: 208px;
-    width: 395px;
-    display: block;
-    margin: 0 auto;
-}
-
 span.title_no_order {
     display: block;
     font-size: 32px;

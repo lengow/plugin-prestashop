@@ -20,7 +20,6 @@
 
 <div id="lengow_no_order_block">
     <div id="lengow_no_order_message" class="text-center">
-        <span class="img_no_order"></span>
         <h2 class="no-margin">{$locale->t('order.screen.no_order_title')|escape:'htmlall':'UTF-8'}</h2>
         <p>{$locale->t('order.screen.no_order_description')|escape:'htmlall':'UTF-8'}</p>
     </div>

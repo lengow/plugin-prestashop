@@ -27,7 +27,7 @@
     {if $merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] neq 0}
         <p class="text-right" id="menucountertrial">
             {$locale->t('menu.counter', ['counter' => $merchantStatus['day']])|escape:'htmlall':'UTF-8'}
-            <a href="http://www.lengow.com/" target="_blank">
+            <a href="http://my.lengow.io/" target="_blank">
                 {$locale->t('menu.upgrade_account')|escape:'htmlall':'UTF-8'}
             </a>
         </p>
@@ -35,7 +35,7 @@
     <div class="lgw-box lgw-home-header text-center">
         <img src="/modules/lengow/views/img/lengow-white-big.png" alt="lengow">
         <h1>{$locale->t('dashboard.screen.welcome_back')|escape:'htmlall':'UTF-8'}</h1>
-        <a href="http://solution.lengow.com" class="lgw-btn" target="_blank">
+        <a href="http://my.lengow.io/" class="lgw-btn" target="_blank">
             {$locale->t('dashboard.screen.go_to_lengow')|escape:'htmlall':'UTF-8'}
         </a>
     </div>
@@ -87,7 +87,7 @@
             </div>
         </div>
         <p>
-            <a href="http://solution.lengow.com" target="_blank" class="lgw-btn lgw-btn-white">
+            <a href="http://my.lengow.io/" target="_blank" class="lgw-btn lgw-btn-white">
                 {$locale->t('dashboard.screen.stat_more_stats')|escape:'htmlall':'UTF-8'}
             </a>
         </p>
@@ -100,7 +100,7 @@
             </a>
         </p>
         <p>
-            <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank">{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}</a>
+            <a href="{$locale->t('help.screen.knowledge_link_url')|escape:'htmlall':'UTF-8'}" target="_blank">{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}</a>
             {$locale->t('dashboard.screen.configure_plugin')|escape:'htmlall':'UTF-8'}
         </p>
     </div>
