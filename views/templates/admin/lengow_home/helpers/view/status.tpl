@@ -29,7 +29,7 @@
                 <p class="text-center">{$locale->t('status.screen.second_description_end_free_trial')|escape:'htmlall':'UTF-8'}</p>
                 <p class="text-center">{html_entity_decode($locale->t('status.screen.third_description_end_free_trial')|escape:'htmlall':'UTF-8')}</p>
                 <div class="text-center">
-                    <a href="http://solution.lengow.com" class="lgw-btn" target="_blank">
+                    <a href="http://my.lengow.io/" class="lgw-btn" target="_blank">
                         {$locale->t('status.screen.upgrade_account_button')|escape:'htmlall':'UTF-8'}
                     </a>
                 </div>
@@ -55,7 +55,7 @@
                 </p>
                 <p class="text-center">{$locale->t('status.screen.third_description_bad_payer')|escape:'htmlall':'UTF-8'}</p>
                 <div class="text-center">
-                    <a href="http://solution.lengow.com" class="lgw-btn" target="_blank">
+                    <a href="http://my.lengow.io/" class="lgw-btn" target="_blank">
                         {$locale->t('status.screen.facturation_button')|escape:'htmlall':'UTF-8'}
                     </a>
                 </div>
