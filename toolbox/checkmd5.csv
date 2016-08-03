@@ -24,12 +24,12 @@
 /classes/models/LengowCarrier.php|e270c105dbd9bbba4d6da4d774bc6491
 /classes/models/LengowSpecificPrice.php|fc1f5e0e227cca82cbd70063ec45b75f
 /classes/models/LengowPaymentModule.php|a5c5dfbfa82515357bf3e6a8e70dff1d
-/classes/models/LengowConfiguration.php|223f7414182c79442e12bdbd2e92b503
+/classes/models/LengowConfiguration.php|42db0b9669fec237715e68bf09650e16
 /classes/models/LengowMarketplace.php|a19443ebd3d580a5ded03218f9564673
 /classes/models/LengowExport.php|833b68b8a905ef5adc1ef4629cb885ab
 /classes/models/LengowCarrierCountry.php|12c5027e2c23407cb42518a39b652997
 /classes/models/LengowBackup.php|01e31fdcba2c82f65ed88af55ff87179
-/classes/models/LengowSync.php|c897f3e5f2a50f46d89c42fc560a84b4
+/classes/models/LengowSync.php|773c171ae0fa9c6944d31cfb2ae69757
 /classes/models/LengowImport.php|6f779402a3e614eb05f4644890d46961
 /classes/models/LengowTaxRule.php|251dea1e668a8ce27b3d484788166d38
 /classes/models/LengowEmployee.php|aacaeb7e96bee04abd78ab84938cd855

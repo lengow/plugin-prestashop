@@ -163,7 +163,7 @@ class LengowSync
                 return false;
             }
         }
-        $options = Self::getOptionData();
+        $options = Tools::JsonEncode(Self::getOptionData());
         LengowConnector::queryApi('put', '/v3.0/cms', null, array(), $options);
         LengowConfiguration::updateGlobalValue('LENGOW_OPTION_CMS_UPDATE', date('Y-m-d H:i:s'));
         return true;
