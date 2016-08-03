@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_15.css">
 {/if}
 
-{if !$isNewMerchant}
+{if $displayToolbar eq 1}
     <ul class="nav nav-pills lengow-nav lengow-nav-top">
         <li role="presentation" id="lengow_logo">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">

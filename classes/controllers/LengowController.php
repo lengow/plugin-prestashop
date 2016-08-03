@@ -27,6 +27,7 @@ class LengowController
     protected $locale;
     protected $isNewMerchant;
     protected $merchantStatus;
+    protected $displayToolbar;
     protected $toolbox;
 
     public function __construct()
@@ -43,6 +44,16 @@ class LengowController
         $this->locale = new LengowTranslation();
         $this->context->smarty->assign('lengow_link', new LengowLink());
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
+        // Show header or not
+        if ($this->isNewMerchant
+            || ($this->merchantStatus['type'] == 'free_trial' && $this->merchantStatus['day'] == 0)
+            || $this->merchantStatus['type'] == 'bad_payer'
+        ) {
+            $this->displayToolbar = false;
+        } else {
+            $this->displayToolbar = true;
+        }
+        $this->context->smarty->assign('displayToolbar', $this->displayToolbar);
     }
 
     /**

@@ -21,7 +21,7 @@
 <div class="lgw-container lgw-footer-vold clear">
     <div class="lgw-content-section text-center">
         <div id="lgw-footer">
-            {if $isNewMerchant}
+            {if $displayToolbar eq 0}
                 <p class="text-center">
             {else}
                 <p class="pull-right">

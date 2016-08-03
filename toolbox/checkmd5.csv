@@ -62,7 +62,7 @@
 /classes/controllers/LengowHomeController.php|c724d05e98126b89ed7f023f0d0bcf95
 /classes/controllers/LengowHelpController.php|8d72f901d14dce21414840bddc2ecc26
 /classes/controllers/LengowOrderController.php|e77e38b503a8287092e84592e6df7065
-/classes/controllers/LengowController.php|fde556d893809077d1151002fff67ef7
+/classes/controllers/LengowController.php|0f15400d36e6318a9f227722004b43d6
 /controllers/admin/TabLengowOrderSettingController.php|748fc96ddf67b9d83f05068a595df3a3
 /controllers/admin/AdminLengowOrderController.php|c8e25301e217510e25a27499e0d5aa43
 /controllers/admin/AdminLengowOrderSettingController.php|011cda8f93a2bab4c42ba140a0b64ea8
@@ -129,7 +129,7 @@
 /views/templates/admin/lengow_help/helpers/view/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_help/layout.tpl|e38a30cf78157b940edd80e14b08dcae
 /views/templates/admin/lengow_help/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/templates/admin/header.tpl|5784599b79c23734dc4a9aba8e5a62b9
+/views/templates/admin/header.tpl|eeaf782616ba2a8a31d7e78db03fa5c6
 /views/templates/admin/lengow_main_setting/helpers/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_main_setting/helpers/view/view.tpl|76807ce99b85e1df0aa9c560cf2af6f4
 /views/templates/admin/lengow_main_setting/helpers/view/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
@@ -144,7 +144,7 @@
 /views/templates/admin/lengow_order_setting/helpers/view/select_country.tpl|aad87978dc35dd784c36d1a852fc5360
 /views/templates/admin/lengow_order_setting/layout.tpl|fe6327cc36a4e40b01b293cde4d57c30
 /views/templates/admin/lengow_order_setting/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/templates/admin/footer.tpl|064b7e2fe79846b700521d97d6401f52
+/views/templates/admin/footer.tpl|633ec4f9a585e7f89b5598b9fa6ee003
 /views/templates/admin/lengow_legals/helpers/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_legals/helpers/view/view.tpl|61655f324ede89105913b7dfab7964d0
 /views/templates/admin/lengow_legals/helpers/view/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
