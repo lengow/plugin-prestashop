@@ -29,7 +29,7 @@
 /classes/models/LengowExport.php|833b68b8a905ef5adc1ef4629cb885ab
 /classes/models/LengowCarrierCountry.php|12c5027e2c23407cb42518a39b652997
 /classes/models/LengowBackup.php|01e31fdcba2c82f65ed88af55ff87179
-/classes/models/LengowSync.php|773c171ae0fa9c6944d31cfb2ae69757
+/classes/models/LengowSync.php|99cea8e21c43871455503baf081d1964
 /classes/models/LengowImport.php|6f779402a3e614eb05f4644890d46961
 /classes/models/LengowTaxRule.php|251dea1e668a8ce27b3d484788166d38
 /classes/models/LengowEmployee.php|aacaeb7e96bee04abd78ab84938cd855

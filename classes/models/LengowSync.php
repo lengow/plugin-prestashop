@@ -37,25 +37,25 @@ class LengowSync
     public static function getSyncData()
     {
         $data = array();
-        $data['domain_name'] = $_SERVER["SERVER_NAME"];
-        $data['token'] = LengowMain::getToken();
-        $data['type'] = 'prestashop';
-        $data['version'] = _PS_VERSION_;
+        $data['domain_name']    = $_SERVER["SERVER_NAME"];
+        $data['token']          = LengowMain::getToken();
+        $data['type']           = 'prestashop';
+        $data['version']        = _PS_VERSION_;
         $data['plugin_version'] = LengowConfiguration::getGlobalValue('LENGOW_VERSION');
-        $data['email'] = LengowConfiguration::get('PS_SHOP_EMAIL');
-        $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+        $data['email']          = LengowConfiguration::get('PS_SHOP_EMAIL');
+        $data['return_url']     = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $id_shop = $row['id_shop'];
             $lengowExport = new LengowExport(array("shop_id" => $id_shop));
             $shop = new LengowShop($id_shop);
-            $data['shops'][$row['id_shop']]['token'] = LengowMain::getToken($id_shop);
-            $data['shops'][$row['id_shop']]['name'] = $shop->name;
-            $data['shops'][$row['id_shop']]['domain'] = $shop->domain;
-            $data['shops'][$row['id_shop']]['feed_url'] = LengowMain::getExportUrl($shop->id);
-            $data['shops'][$row['id_shop']]['cron_url'] = LengowMain::getImportUrl($shop->id);
-            $data['shops'][$row['id_shop']]['nb_product_total'] = $lengowExport->getTotalProduct();
-            $data['shops'][$row['id_shop']]['nb_product_exported'] = $lengowExport->getTotalExportProduct();
+            $data['shops'][$row['id_shop']]['token']                   = LengowMain::getToken($id_shop);
+            $data['shops'][$row['id_shop']]['name']                    = $shop->name;
+            $data['shops'][$row['id_shop']]['domain']                  = $shop->domain;
+            $data['shops'][$row['id_shop']]['feed_url']                = LengowMain::getExportUrl($shop->id);
+            $data['shops'][$row['id_shop']]['cron_url']                = LengowMain::getImportUrl($shop->id);
+            $data['shops'][$row['id_shop']]['total_product_number']    = $lengowExport->getTotalProduct();
+            $data['shops'][$row['id_shop']]['exported_product_number'] = $lengowExport->getTotalExportProduct();
         }
         return $data;
     }
@@ -131,15 +131,18 @@ class LengowSync
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $id_shop = $row['id_shop'];
+            $lengowExport = new LengowExport(array("shop_id" => $id_shop));
             $shop = new LengowShop($id_shop);
             $data['shops'][] = array(
-                'enabled'    => LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $shop->id),
-                'token'      => LengowMain::getToken($id_shop),
-                'store_name' => $shop->name,
-                'domain_url' => $shop->domain,
-                'feed_url'   => LengowMain::getExportUrl($shop->id),
-                'cron_url'   => LengowMain::getImportUrl($shop->id),
-                'options'    => LengowConfiguration::getAllValues($shop->id)
+                'enabled'                 => LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $shop->id),
+                'token'                   => LengowMain::getToken($id_shop),
+                'store_name'              => $shop->name,
+                'domain_url'              => $shop->domain,
+                'feed_url'                => LengowMain::getExportUrl($shop->id),
+                'cron_url'                => LengowMain::getImportUrl($shop->id),
+                'total_product_number'    => $lengowExport->getTotalProduct(),
+                'exported_product_number' => $lengowExport->getTotalExportProduct(),
+                'options'                 => LengowConfiguration::getAllValues($shop->id)
             );
         }
         return $data;
