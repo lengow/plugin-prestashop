@@ -394,7 +394,7 @@ class LengowConnector
             $access_token = LengowMain::getAccessToken($id_shop);
             $secret_token = LengowMain::getSecretCustomer($id_shop);
         } else {
-            $shopCollection = LengowShop::findAll();
+            $shopCollection = LengowShop::findAll(true);
             foreach ($shopCollection as $shop) {
                 $account_id = LengowMain::getIdAccount($shop['id_shop']);
                 $access_token = LengowMain::getAccessToken($shop['id_shop']);
