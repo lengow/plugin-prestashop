@@ -2,32 +2,33 @@
 /*                      GENERICS                 */
 /*************************************************/
 
-h1,h2, h3, h4, h5, h6{
-  color:inherit;
+h1,h2, h3, h4, h5, h6 {
+  color: inherit;
 }
 
-#lgw-preprod{
+#lgw-preprod {
   top: 75px;
   z-index: 1;
   left: 15px;
   position: absolute;
 }
 
-#content{
-  position:relative;
+#content {
+  position: relative;
 }
 
-.lengow-nav-top{
+.lengow-nav-top {
   margin-top: 20px;
 }
 
-.lengow-nav{
-  top:inherit;
-  left:0;
+.lengow-nav {
+  top: inherit;
+  left: 0;
   position: inherit;
 }
-.lengow-nav-bottom{
-  margin-top:0!important;
+
+.lengow-nav-bottom {
+  margin-top: 0!important;
 }
 
 .lengow-nav .fa-2x {
@@ -35,16 +36,16 @@ h1,h2, h3, h4, h5, h6{
 }
 
 .select2-results__options {
-    text-align:left;
+    text-align: left;
 }
 
-.lgw-box{
-  top:120px;
+.lgw-box {
+  top: 120px;
 }
 
 body.lengow_body #main {
-    padding-top:0;
-    background:inherit;
+    padding-top: 0;
+    background: inherit;
     min-height: 730px;
 }
 
@@ -52,35 +53,35 @@ body.lengow_body #main {
     margin-top: -30px;
 }
 
-#content{
-  border:none;
+#content {
+  border: none;
 }
 
-.lgw-container{
+.lgw-container {
   width: inherit;
 }
 
 #lengow_home_wrapper,
-#lengow_feed_wrapper{
-  margin-top:0px;
+#lengow_feed_wrapper {
+  margin-top: 0px;
 }
 
 #lengow_order_wrapper,
 #lengow_mainsettings_wrapper,
 #lengow_form_order_setting,
-.lengow_help_wrapper{
+.lengow_help_wrapper {
 }
 
 #container {
-    width: 1300px;
-    margin: 0 auto 2em auto;
-    text-align: left;
+  width: 1300px;
+  margin: 0 auto 2em auto;
+  text-align: left;
 }
 .lgw-pagination-arrow {
-    margin-right: 15px;
-    float: left;
+  margin-right: 15px;
+  float: left;
 }
-.lgw-pagination-btns a .fa{
+.lgw-pagination-btns a .fa {
   line-height: 30px;
 }
 
@@ -92,31 +93,31 @@ body.lengow_body #main {
 /*                      HOME                     */
 /*************************************************/
 
-.adminlengowhome #lgw-preprod{
+.adminlengowhome #lgw-preprod {
   margin-top: -10px;
   margin-bottom: 10px;
-  position:inherit;
-  display:inline-block;
+  position: inherit;
+  display: inline-block;
 }
 
-.lgw-home-header{
-  background-size:100%;
+.lgw-home-header {
+  background-size: 100%;
 }
 
-.lgw-box-link .lgw-box{
+.lgw-box-link .lgw-box {
   min-height: 250px;
 }
 
-.lgw-box{
-  top:inherit;
+.lgw-box {
+  top: inherit;
 }
 
 /*************************************************/
 /*                      SETTINGS                 */
 /*************************************************/
 
-#lengow_mainsettings_wrapper.activePreprod{
-  margin-top:15px;
+#lengow_mainsettings_wrapper.activePreprod {
+  margin-top: 15px;
 }
 
 /*************************************************/
@@ -124,31 +125,31 @@ body.lengow_body #main {
 /*************************************************/
 
 .table.lengow_table tr th {
-    background: #F1F1F1 top left;
+  background: #F1F1F1 top left;
 }
 
 #lgw-preprod.adminlengoworder,
-#lgw-preprod.adminlengowordersetting{
+#lgw-preprod.adminlengowordersetting {
   top: 130px;
   left: inherit;
   z-index: 2;
-  position:absolute;
+  position: absolute;
 }
 
 #lengow_order_wrapper.activePreprod,
-#lengow_form_order_setting.activePreprod{
-  margin-top:8px;
+#lengow_form_order_setting.activePreprod {
+  margin-top: 8px;
 }
 
-.lengow-nav-top{
-  margin-top:0px;
+.lengow-nav-top {
+  margin-top: 0px;
 }
 
-.lengow-nav-bottom{
-  margin-top:55px;
+.lengow-nav-bottom {
+  margin-top: 55px;
 }
 
-.lgw-container .table tr td.shop{
+.lgw-container .table tr td.shop {
   min-width: 70px;
 }
 
@@ -156,14 +157,14 @@ body.lengow_body #main {
 /*                      FEEDS                    */
 /*************************************************/
 
-#lengow_feed_wrapper.activePreprod{
-  margin-top:15px;
+#lengow_feed_wrapper.activePreprod {
+  margin-top: 15px;
 }
 
-.lgw-container .table tr th{
-  padding:10px 3px;
+.lgw-container .table tr th {
+  padding: 10px 3px;
 }
 
-.lgw-container .table input[type="text"]{
-  width:60px;
+.lgw-container .table input[type="text"] {
+  width: 60px;
 }
