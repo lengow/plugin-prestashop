@@ -109,8 +109,8 @@ class LengowSync
     public static function checkSyncShop($id_shop)
     {
         $id_shop = $id_shop;
-        // TODO check shop synchronisation with account API
-        return false;
+        return LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $id_shop)
+            && LengowCheck::isValidAuth($id_shop);
     }
 
     /**
