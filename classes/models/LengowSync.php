@@ -56,6 +56,7 @@ class LengowSync
             $data['shops'][$row['id_shop']]['cron_url']                = LengowMain::getImportUrl($shop->id);
             $data['shops'][$row['id_shop']]['total_product_number']    = $lengowExport->getTotalProduct();
             $data['shops'][$row['id_shop']]['exported_product_number'] = $lengowExport->getTotalExportProduct();
+            $data['shops'][$row['id_shop']]['configured']              = self::checkSyncShop($shop->id);
         }
         return $data;
     }
