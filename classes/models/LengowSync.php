@@ -56,6 +56,7 @@ class LengowSync
             $data['shops'][$row['id_shop']]['cron_url']                = LengowMain::getImportUrl($shop->id);
             $data['shops'][$row['id_shop']]['total_product_number']    = $lengowExport->getTotalProduct();
             $data['shops'][$row['id_shop']]['exported_product_number'] = $lengowExport->getTotalExportProduct();
+            $data['shops'][$row['id_shop']]['configured']              = self::checkSyncShop($shop->id);
         }
         return $data;
     }
@@ -109,8 +110,8 @@ class LengowSync
     public static function checkSyncShop($id_shop)
     {
         $id_shop = $id_shop;
-        // TODO check shop synchronisation with account API
-        return false;
+        return LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $id_shop)
+            && LengowCheck::isValidAuth($id_shop);
     }
 
     /**

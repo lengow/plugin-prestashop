@@ -40,7 +40,7 @@
                     var title = shop['original_title'];
 
                     if (shop['check_shop'] === true) {
-                        status.removeClass('lengow_check_shop_no_sync').addClass('lengow_check_shop_sync');
+                        selector.removeClass('lengow_check_shop_no_sync').addClass('lengow_check_shop_sync');
                         selector.attr("id", "lengow_shop_sync");
                     } else {
                         selector.attr("id", "lengow_shop_no_sync");
@@ -50,7 +50,7 @@
                     }
                     selector.html("");
 
-                    $('.lengow_shop_status_label').html(title);
+                    lengow_jquery("#block_" + shop['shop_id'] + ' .lengow_shop_status_label').html(title);
 
                     init_tooltip()
                 });
