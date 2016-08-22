@@ -229,27 +229,27 @@ class LengowOrder extends Order
             WHERE lo.id_order = \''.(int)$this->id.'\'
         ';
         if ($result = Db::getInstance()->getRow($query)) {
-            $this->lengow_id                    = $result['id'];
-            $this->lengow_marketplace_sku       = $result['marketplace_sku'];
-            $this->lengow_id_shop               = (int)$result['id_shop'];
-            $this->lengow_id_flux               = $result['id_flux'];
-            $this->lengow_marketplace_name      = $result['marketplace_name'];
-            $this->lengow_message               = $result['message'];
-            $this->lengow_total_paid            = $result['total_paid'];
-            $this->lengow_carrier               = $result['carrier'];
-            $this->lengow_method                = $result['method'];
-            $this->lengow_tracking              = $result['tracking'];
-            $this->lengow_sent_marketplace      = (bool)$result['sent_marketplace'];
-            $this->lengow_extra                 = $result['extra'];
-            $this->lengow_is_reimported         = (bool)$result['is_reimported'];
-            $this->lengow_process_state         = (int)$result['order_process_state'];
-            $this->lengow_order_date            = $result['order_date'];
-            $this->lengow_delivery_address_id   = (int)$result['delivery_address_id'];
-            $this->lengow_delivery_country_iso  = $result['delivery_country_iso'];
-            $this->lengow_customer_name         = $result['customer_name'];
-            $this->lengow_customer_email        = $result['customer_email'];
-            $this->lengow_state                 = $result['order_lengow_state'];
-            $this->lengow_order_item            = (int)$result['order_item'];
+            $this->lengow_id                   = $result['id'];
+            $this->lengow_marketplace_sku      = $result['marketplace_sku'];
+            $this->lengow_id_shop              = (int)$result['id_shop'];
+            $this->lengow_id_flux              = $result['id_flux'];
+            $this->lengow_marketplace_name     = $result['marketplace_name'];
+            $this->lengow_message              = $result['message'];
+            $this->lengow_total_paid           = $result['total_paid'];
+            $this->lengow_carrier              = $result['carrier'];
+            $this->lengow_method               = $result['method'];
+            $this->lengow_tracking             = $result['tracking'];
+            $this->lengow_sent_marketplace     = (bool)$result['sent_marketplace'];
+            $this->lengow_extra                = $result['extra'];
+            $this->lengow_is_reimported        = (bool)$result['is_reimported'];
+            $this->lengow_process_state        = (int)$result['order_process_state'];
+            $this->lengow_order_date           = $result['order_date'];
+            $this->lengow_delivery_address_id  = (int)$result['delivery_address_id'];
+            $this->lengow_delivery_country_iso = $result['delivery_country_iso'];
+            $this->lengow_customer_name        = $result['customer_name'];
+            $this->lengow_customer_email       = $result['customer_email'];
+            $this->lengow_state                = $result['order_lengow_state'];
+            $this->lengow_order_item           = (int)$result['order_item'];
             return true;
         } else {
             return false;
@@ -1125,7 +1125,7 @@ class LengowOrder extends Order
                 INNER JOIN "._DB_PREFIX_."country c ON (c.id_country = a.id_country)
                 WHERE a.id_address = ".(int)$row['id_address_delivery'];
             $country = Db::getInstance()->getRow($sql);
-            if (Tools::strlen($country['iso_code'])>0 && Tools::strlen($row['id'])>0) {
+            if (Tools::strlen($country['iso_code']) > 0 && Tools::strlen($row['id']) > 0) {
                 Db::getInstance()->Execute(
                     'UPDATE '._DB_PREFIX_.'lengow_orders SET delivery_country_iso = "'.pSQL($country['iso_code']).'"'.
                     ' WHERE id = '.(int)$row['id']
@@ -1146,7 +1146,7 @@ class LengowOrder extends Order
                     INNER JOIN "._DB_PREFIX_."orders o ON (o.id_order = lo.id_order)
                     WHERE marketplace_sku = '".$marketplaceRow['marketplace_sku']."'"
                 );
-                if (count($orderCollection) ==0) {
+                if (count($orderCollection) == 0) {
                     continue;
                 }
                 $findOtherState = false;
@@ -1158,7 +1158,7 @@ class LengowOrder extends Order
                         $findOtherState = true;
                     }
                 }
-                if ($findOtherState && count($orderToDelete)>0) {
+                if ($findOtherState && count($orderToDelete) > 0) {
                     foreach ($orderToDelete as $id) {
                         Db::getInstance()->Execute(
                             'DELETE FROM '._DB_PREFIX_.'lengow_orders WHERE id = '.(int)$id

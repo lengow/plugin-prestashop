@@ -190,18 +190,18 @@ class LengowImportOrder
      */
     public function __construct($params = array())
     {
-        $this->id_shop              = $params['id_shop'];
-        $this->id_shop_group        = $params['id_shop_group'];
-        $this->id_lang              = $params['id_lang'];
-        $this->context              = $params['context'];
-        $this->force_product        = $params['force_product'];
-        $this->preprod_mode         = $params['preprod_mode'];
-        $this->log_output           = $params['log_output'];
-        $this->marketplace_sku      = $params['marketplace_sku'];
-        $this->delivery_address_id  = $params['delivery_address_id'];
-        $this->order_data           = $params['order_data'];
-        $this->package_data         = $params['package_data'];
-        $this->first_package        = $params['first_package'];
+        $this->id_shop             = $params['id_shop'];
+        $this->id_shop_group       = $params['id_shop_group'];
+        $this->id_lang             = $params['id_lang'];
+        $this->context             = $params['context'];
+        $this->force_product       = $params['force_product'];
+        $this->preprod_mode        = $params['preprod_mode'];
+        $this->log_output          = $params['log_output'];
+        $this->marketplace_sku     = $params['marketplace_sku'];
+        $this->delivery_address_id = $params['delivery_address_id'];
+        $this->order_data          = $params['order_data'];
+        $this->package_data        = $params['package_data'];
+        $this->first_package       = $params['first_package'];
         // get marketplace and Lengow order state
         $this->marketplace = LengowMain::getMarketplaceSingleton(
             (string)$this->order_data->marketplace,
@@ -315,16 +315,16 @@ class LengowImportOrder
         LengowOrder::updateOrderLengow(
             $this->id_order_lengow,
             array(
-                'total_paid'            => $this->order_amount,
-                'order_item'            => $this->order_items,
-                'customer_name'         => pSQL($customer_name),
+                'total_paid'           => $this->order_amount,
+                'order_item'           => $this->order_items,
+                'customer_name'        => pSQL($customer_name),
                 'customer_email'       =>  pSQL($customer_email),
-                'carrier'               => pSQL($this->carrier_name),
-                'method'                => pSQL($this->carrier_method),
-                'tracking'              => pSQL($this->tracking_number),
-                'sent_marketplace'      => (int)$this->shipped_by_mp,
-                'delivery_country_iso'  => pSQL((string)$this->package_data->delivery->common_country_iso_a2),
-                'order_lengow_state'    => pSQL($this->order_state_lengow)
+                'carrier'              => pSQL($this->carrier_name),
+                'method'               => pSQL($this->carrier_method),
+                'tracking'             => pSQL($this->tracking_number),
+                'sent_marketplace'     => (int)$this->shipped_by_mp,
+                'delivery_country_iso' => pSQL((string)$this->package_data->delivery->common_country_iso_a2),
+                'order_lengow_state'   => pSQL($this->order_state_lengow)
             )
         );
         // try to import order
@@ -343,8 +343,8 @@ class LengowImportOrder
                     LengowOrder::updateOrderLengow(
                         $this->id_order_lengow,
                         array(
-                            'order_process_state'   => 2,
-                            'extra'                 => pSQL(Tools::jsonEncode($this->order_data))
+                            'order_process_state' => 2,
+                            'extra'               => pSQL(Tools::jsonEncode($this->order_data))
                         )
                     );
                     return false;
@@ -383,11 +383,11 @@ class LengowImportOrder
                     $success = LengowOrder::updateOrderLengow(
                         $this->id_order_lengow,
                         array(
-                            'id_order'              => (int)$order->id,
-                            'order_process_state'   => LengowOrder::getOrderProcessState($this->order_state_lengow),
-                            'extra'                 => pSQL(Tools::jsonEncode($this->order_data)),
-                            'order_lengow_state'    => pSQL($this->order_state_lengow),
-                            'is_reimported'         => 0
+                            'id_order'            => (int)$order->id,
+                            'order_process_state' => LengowOrder::getOrderProcessState($this->order_state_lengow),
+                            'extra'               => pSQL(Tools::jsonEncode($this->order_data)),
+                            'order_lengow_state'  => pSQL($this->order_state_lengow),
+                            'is_reimported'       => 0
                         )
                     );
                     if (!$success) {
@@ -455,9 +455,9 @@ class LengowImportOrder
             LengowOrder::updateOrderLengow(
                 $this->id_order_lengow,
                 array(
-                    'extra'                 => pSQL(Tools::jsonEncode($this->order_data)),
-                    'order_lengow_state'    => pSQL($this->order_state_lengow),
-                    'is_reimported'         => 0
+                    'extra'              => pSQL(Tools::jsonEncode($this->order_data)),
+                    'order_lengow_state' => pSQL($this->order_state_lengow),
+                    'is_reimported'      => 0
                 )
             );
             return $this->returnResult('error', $this->id_order_lengow);
@@ -688,10 +688,10 @@ class LengowImportOrder
     {
         $trackings = $this->package_data->delivery->trackings;
         if (count($trackings) > 0) {
-            $this->carrier_name     = (!is_null($trackings[0]->carrier) ? (string)$trackings[0]->carrier : null);
-            $this->carrier_method   = (!is_null($trackings[0]->method) ? (string)$trackings[0]->method : null);
-            $this->tracking_number  = (!is_null($trackings[0]->number) ? (string)$trackings[0]->number : null);
-            $this->relay_id         = (!is_null($trackings[0]->relay->id) ? (string)$trackings[0]->relay->id : null);
+            $this->carrier_name    = (!is_null($trackings[0]->carrier) ? (string)$trackings[0]->carrier : null);
+            $this->carrier_method  = (!is_null($trackings[0]->method) ? (string)$trackings[0]->method : null);
+            $this->tracking_number = (!is_null($trackings[0]->number) ? (string)$trackings[0]->number : null);
+            $this->relay_id        = (!is_null($trackings[0]->relay->id) ? (string)$trackings[0]->relay->id : null);
             if (!is_null($trackings[0]->is_delivered_by_marketplace) && $trackings[0]->is_delivered_by_marketplace) {
                 $this->shipped_by_mp = true;
             }
@@ -970,9 +970,9 @@ class LengowImportOrder
                     LengowMain::log(
                         'Import',
                         LengowMain::setLogMessage('log.import.product_be_found', array(
-                            'id_full'           => $id_full,
-                            'attribute_name'    => $attribute_name,
-                            'attribute_value'   => $attribute_value
+                            'id_full'         => $id_full,
+                            'attribute_name'  => $attribute_name,
+                            'attribute_value' => $attribute_value
                         )),
                         $this->log_output,
                         $this->marketplace_sku
@@ -1133,18 +1133,18 @@ class LengowImportOrder
             $order_date = (string)$this->order_data->imported_at;
         }
         $params = array(
-            'marketplace_sku'       => pSQL($this->marketplace_sku),
-            'id_shop'               => (int)$this->id_shop,
-            'id_shop_group'         => (int)$this->id_shop_group,
-            'id_lang'               => (int)$this->id_lang,
-            'marketplace_name'      => pSQL(Tools::strtolower((string)$this->order_data->marketplace)),
-            'marketplace_label'     => pSQL((string)$this->marketplace_label),
-            'delivery_address_id'   => (int)$this->delivery_address_id,
-            'order_date'            => date('Y-m-d H:i:s', strtotime($order_date)),
-            'order_lengow_state'    => pSQL($this->order_state_lengow),
-            'date_add'              => date('Y-m-d H:i:s'),
-            'order_process_state'   => 0,
-            'is_reimported'         => 0,
+            'marketplace_sku'     => pSQL($this->marketplace_sku),
+            'id_shop'             => (int)$this->id_shop,
+            'id_shop_group'       => (int)$this->id_shop_group,
+            'id_lang'             => (int)$this->id_lang,
+            'marketplace_name'    => pSQL(Tools::strtolower((string)$this->order_data->marketplace)),
+            'marketplace_label'   => pSQL((string)$this->marketplace_label),
+            'delivery_address_id' => (int)$this->delivery_address_id,
+            'order_date'          => date('Y-m-d H:i:s', strtotime($order_date)),
+            'order_lengow_state'  => pSQL($this->order_state_lengow),
+            'date_add'            => date('Y-m-d H:i:s'),
+            'order_process_state' => 0,
+            'is_reimported'       => 0,
         );
         if (isset($this->order_data->currency->iso_a3)) {
             $params['currency'] = $this->order_data->currency->iso_a3;
@@ -1196,9 +1196,9 @@ class LengowImportOrder
                 $result = Db::getInstance()->autoExecute(
                     _DB_PREFIX_.'lengow_order_line',
                     array(
-                        'id_order'          => (int)$order->id,
-                        'id_order_line'     => pSQL($order_line_id),
-                        'id_order_detail'   => (int)$id_order_detail,
+                        'id_order'        => (int)$order->id,
+                        'id_order_line'   => pSQL($order_line_id),
+                        'id_order_detail' => (int)$id_order_detail,
                     ),
                     'INSERT'
                 );
@@ -1206,9 +1206,9 @@ class LengowImportOrder
                 $result = Db::getInstance()->insert(
                     'lengow_order_line',
                     array(
-                        'id_order'          => (int)$order->id,
-                        'id_order_line'     => pSQL($order_line_id),
-                        'id_order_detail'   => (int)$id_order_detail,
+                        'id_order'        => (int)$order->id,
+                        'id_order_line'   => pSQL($order_line_id),
+                        'id_order_detail' => (int)$id_order_detail,
                     )
                 );
             }

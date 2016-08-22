@@ -70,19 +70,19 @@ class LengowAddress extends Address
      * @var array
      */
     public static $definition_lengow = array(
-        'id_country'    =>  array('required' => true),
-        'alias'         =>  array('required' => true, 'size' => 32),
-        'company'       =>  array('size' => 32),
-        'lastname'      =>  array('required' => true, 'size' => 32),
-        'firstname'     =>  array('required' => true, 'size' => 32),
-        'address1'      =>  array('required' => true, 'size' => 128),
-        'address2'      =>  array('size' => 128),
-        'postcode'      =>  array('size' => 12),
-        'city'          =>  array('required' => true, 'size' => 64),
-        'other'         =>  array('size' => 300),
-        'phone'         =>  array('check' => true, 'size' => 16),
-        'phone_mobile'  =>  array('check' => true, 'size' => 16),
-        'phone_office'  =>  array('check' => true),
+        'id_country'   =>  array('required' => true),
+        'alias'        =>  array('required' => true, 'size' => 32),
+        'company'      =>  array('size' => 32),
+        'lastname'     =>  array('required' => true, 'size' => 32),
+        'firstname'    =>  array('required' => true, 'size' => 32),
+        'address1'     =>  array('required' => true, 'size' => 128),
+        'address2'     =>  array('size' => 128),
+        'postcode'     =>  array('size' => 12),
+        'city'         =>  array('required' => true, 'size' => 64),
+        'other'        =>  array('size' => 300),
+        'phone'        =>  array('check' => true, 'size' => 16),
+        'phone_mobile' =>  array('check' => true, 'size' => 16),
+        'phone_office' =>  array('check' => true),
     );
 
     /**
@@ -148,7 +148,7 @@ class LengowAddress extends Address
         $firstname = empty($firstname) ? '' : self::cleanName($firstname);
         return array(
             'firstname' => Tools::ucfirst(Tools::strtolower($firstname)),
-            'lastname' => Tools::ucfirst(Tools::strtolower($lastname))
+            'lastname'  => Tools::ucfirst(Tools::strtolower($lastname))
         );
     }
 

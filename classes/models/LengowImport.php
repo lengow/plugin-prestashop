@@ -219,11 +219,11 @@ class LengowImport
      */
     public function exec()
     {
-        $order_new      = 0;
-        $order_update   = 0;
-        $order_error    = 0;
-        $error          = array();
-        $global_error   = false;
+        $order_new    = 0;
+        $order_update = 0;
+        $order_error  = 0;
+        $error        = array();
+        $global_error = false;
         // clean logs
         LengowMain::cleanLog();
         if (LengowImport::isInProcess() && !$this->preprod_mode && !$this->import_one_order) {

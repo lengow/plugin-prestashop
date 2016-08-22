@@ -456,9 +456,9 @@ class LengowExport
                     $p['id_product'],
                     $this->language->id,
                     array(
-                        "carrier" => $this->carrier,
+                        "carrier"    => $this->carrier,
                         "image_size" => LengowProduct::getMaxImageType(),
-                        "language" => $this->language
+                        "language"   => $this->language
                     )
                 );
                 foreach ($fields as $field) {
@@ -535,7 +535,7 @@ class LengowExport
             $productId,
             $this->language->id,
             array(
-                "carrier" => $this->carrier,
+                "carrier"    => $this->carrier,
                 "image_size" => LengowProduct::getMaxImageType()
             )
         );
@@ -718,7 +718,7 @@ class LengowExport
         $features = Feature::getFeatures($this->language->id);
         foreach ($features as $feature) {
             if (in_array($feature['name'], $fields)) {
-                $fields[] = $feature['name'] . '_1';
+                $fields[] = $feature['name'].'_1';
             } else {
                 $fields[] = $feature['name'];
             }
@@ -734,7 +734,7 @@ class LengowExport
                 if (!in_array($attribute['name'], $fields)) {
                     $fields[] = $attribute['name'];
                 } else {
-                    $fields[] = $attribute['name'] . '_2';
+                    $fields[] = $attribute['name'].'_2';
                 }
             }
         }

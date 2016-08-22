@@ -287,7 +287,7 @@ class LengowFeed
     {
         $this->write('footer');
         if (!$this->stream) {
-            $old_file_name = 'flux-' . Context::getContext()->language->iso_code . '.' . $this->format;
+            $old_file_name = 'flux-'.Context::getContext()->language->iso_code.'.'.$this->format;
             $old_file = new LengowFile($this->export_folder, $old_file_name);
 
             if ($old_file->exists()) {
@@ -302,7 +302,7 @@ class LengowFeed
 
             } else {
                 $sep = DIRECTORY_SEPARATOR;
-                $rename = $this->file->rename($this->file->getFolderPath() . $sep . $old_file_name);
+                $rename = $this->file->rename($this->file->getFolderPath().$sep.$old_file_name);
                 $this->file->file_name = $old_file_name;
             }
             return $rename;

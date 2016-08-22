@@ -519,8 +519,8 @@ class LengowCarrier extends Carrier
                 Db::getInstance()->autoExecute(
                     _DB_PREFIX_.'lengow_marketplace_carrier',
                     array(
-                        'id_country' => (int)$id_country,
-                        'marketplace_carrier_sku' => pSQL($code),
+                        'id_country'               => (int)$id_country,
+                        'marketplace_carrier_sku'  => pSQL($code),
                         'marketplace_carrier_name' => pSQL($name),
                     ),
                     'INSERT'
@@ -529,8 +529,8 @@ class LengowCarrier extends Carrier
                 Db::getInstance()->insert(
                     'lengow_marketplace_carrier',
                     array(
-                        'id_country' => (int)$id_country,
-                        'marketplace_carrier_sku' => pSQL($code),
+                        'id_country'               => (int)$id_country,
+                        'marketplace_carrier_sku'  => pSQL($code),
                         'marketplace_carrier_name' => pSQL($name),
                     )
                 );

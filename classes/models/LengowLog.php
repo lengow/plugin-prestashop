@@ -42,7 +42,7 @@ class LengowLog extends LengowFile
     public function __construct($file_name = null)
     {
         if (empty($file_name)) {
-            $this->file_name = 'logs-' . date('Y-m-d') . '.txt';
+            $this->file_name = 'logs-'.date('Y-m-d').'.txt';
         } else {
             $this->file_name = $file_name;
         }
@@ -104,9 +104,9 @@ class LengowLog extends LengowFile
         foreach ($files as $file) {
             preg_match('/\/lengow\/logs\/logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt/', $file->getPath(), $match);
             $logs[] = array(
-                'full_path' => $file->getPath(),
+                'full_path'  => $file->getPath(),
                 'short_path' => 'logs-'.$match[1].'.txt',
-                'name' => $match[1].'.txt'
+                'name'       => $match[1].'.txt'
             );
         }
         return $logs;

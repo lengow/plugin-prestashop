@@ -207,9 +207,9 @@ class LengowCart extends Cart
                             ' AND `id_product_attribute` = '.(int)$id_product_attribute : '');
                 } else {
                     $sql = 'SELECT stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity
-							FROM '._DB_PREFIX_.'product p
-							'.Product::sqlStock('p', (int)$id_product_attribute, true, $shop).'
-							WHERE p.id_product = '.(int)$id_product;
+						FROM '._DB_PREFIX_.'product p
+						'.Product::sqlStock('p', (int)$id_product_attribute, true, $shop).'
+						WHERE p.id_product = '.(int)$id_product;
                 }
                 $result2 = Db::getInstance()->getRow($sql);
                 // Quantity for product pack
@@ -227,11 +227,11 @@ class LengowCart extends Cart
                 }
                 if (_PS_VERSION_ < '1.5') {
                     $values = array(
-                        'id_product'            => (int)$id_product,
-                        'id_product_attribute'  => (int)$id_product_attribute,
-                        'id_cart'               => (int)$this->id,
-                        'quantity'              => (int)$quantity,
-                        'date_add'              => date('Y-m-d H:i:s'),
+                        'id_product'           => (int)$id_product,
+                        'id_product_attribute' => (int)$id_product_attribute,
+                        'id_cart'              => (int)$this->id,
+                        'quantity'             => (int)$quantity,
+                        'date_add'             => date('Y-m-d H:i:s'),
                     );
 
                     if (_PS_VERSION_ < '1.5') {
@@ -241,13 +241,13 @@ class LengowCart extends Cart
                     }
                 } else {
                     $values = array(
-                        'id_product'            => (int)$id_product,
-                        'id_product_attribute'  => (int)$id_product_attribute,
-                        'id_cart'               => (int)$this->id,
-                        'id_address_delivery'   => (int)$id_address_delivery,
-                        'id_shop'               => (int)$shop->id,
-                        'quantity'              => (int)$quantity,
-                        'date_add'              => date('Y-m-d H:i:s'),
+                        'id_product'           => (int)$id_product,
+                        'id_product_attribute' => (int)$id_product_attribute,
+                        'id_cart'              => (int)$this->id,
+                        'id_address_delivery'  => (int)$id_address_delivery,
+                        'id_shop'              => (int)$shop->id,
+                        'quantity'             => (int)$quantity,
+                        'date_add'             => date('Y-m-d H:i:s'),
                     );
                     $result_add = Db::getInstance()->insert('cart_product', $values);
                 }

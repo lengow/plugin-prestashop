@@ -10,11 +10,14 @@ menu.product|Productos
 menu.order|Pedidos
 menu.jump_to_lengow|Pasar a Lengow
 menu.preprod_active|Modo de pre-producción
+menu.counter|Período de prueba: %{contador} día(s) izquierda.
+menu.upgrade_account|Actualizar
 menu.order_overview|Visión de conjunto
 menu.order_parameter|Ajustes
 menu.help|Ayuda
 menu.global_parameter|Parámetros generales
 footer.legals|Legal
+footer.plugin_lengow|Lengow PrestaShop Plugin
 footer.lengow_link_url|http://www.lengow.com/es/
 dashboard.screen.welcome_back|Hola! Bienvenido de nuevo!
 dashboard.screen.go_to_lengow|Ir a Lengow
@@ -23,7 +26,7 @@ dashboard.screen.products_text|Echa un vistazo a todos los productos disponibles
 dashboard.screen.orders_title|Pedidos
 dashboard.screen.orders_text|Gestiona tus pedidos directamente en el panel PrestaShop
 dashboard.screen.settings_title|Ajustes
-dashboard.screen.settings_text|Configura los parametros de tu plug-in PrestaShop
+dashboard.screen.settings_text|Configura los parametros de tu plugin PrestaShop
 dashboard.screen.partner_business|Lengow, colaborador en tu business
 dashboard.screen.stat_turnover|Ventas 
 dashboard.screen.stat_nb_orders|Pedidos
@@ -32,6 +35,19 @@ dashboard.screen.some_help_title|¿Necesitas ayuda?
 dashboard.screen.get_in_touch|Ponte en contacto con Lengow
 dashboard.screen.visit_help_center|Visita nuestro Centro de Ayuda
 dashboard.screen.configure_plugin|para obtener información detallada sobre cómo configurar correctamente el plugin de PrestaShop
+status.screen.title_end_free_trial|Todas las cosas buenas llegan a su fin
+status.screen.subtitle_end_free_trial|Usted ha llegado al final de su periodo de prueba!
+status.screen.first_description_end_free_trial|Su período de prueba gratuito de 15 días en Lengow ya ha expirado.Sabemos que es una noticia triste,pero lo mejor está por venir! Esperamos sinceramente que Lengow haya ayudado a mejorar su negocio.
+status.screen.second_description_end_free_trial|Su cuenta será suspendida hasta que adquiera una nueva suscripción.También se suspenderán todas las distribuciones y indexaciones existentes.
+status.screen.third_description_end_free_trial|No se olvide que la cuenta de prueba se elimina a los 30 días después del final del período de prueba. Asegúrese de actualizarla para que no se pierda el trabajo que ha hecho configurando los canales.
+status.screen.subtitle_bad_payer|Su cuenta ha sido cerrada temporalmente
+status.screen.first_description_bad_payer|Sentimos informarle que hemos tenido que limitar el acceso a su cuenta de forma temporal debido a que el pago automático de su suscripción ha fallado.
+status.screen.second_description_bad_payer|La publicación de su catálogo ha sido suspendida.Le sugerimos que se ponga en contacto con nosotros a
+status.screen.phone_bad_payer|o por teléfono al +34 911 898 135
+status.screen.third_description_bad_payer|Esperamos trabajar con ustedes de nuevo en un futuro próximo.
+status.screen.facturation_button|Ver la información de facturación
+status.screen.upgrade_account_button|Está bien, estoy listo para actualizar!
+status.screen.refresh_action|Refrescar mi cuenta
 product.screen.nb_exported|productos exportados
 product.screen.nb_available|productos disponibles
 product.screen.include_variation|Incluir las variaciones de productos
@@ -40,10 +56,7 @@ product.screen.include_out_of_stock|Incluir los productos sin stock
 product.screen.include_out_of_stock_support|Active esta opción si quieres exportar los productos sin stock
 product.screen.include_specific_product|Incluir los productos seleccionados
 product.screen.include_specific_product_support|Active esta opción para hacer la selección de tus productos a exportar
-product.screen.your_exported_catalog|Este es el catálogo de exportación. Copia este enlace en tu plataforma Lengow
-product.screen.last_export|Última indexación
-product.screen.no_export|No exportar
-product.screen.no_result_found|Lo sentimos, no hay resultados para su búsqueda. ¿Tal vez si intentas modificar tu solicitud?
+product.screen.no_result_found|Lo sentimos, no hay resultados para su búsqueda. <br />¿Tal vez si intentas modificar tu solicitud?
 product.screen.no_product_selected|Por favor, selecciona un producto
 product.screen.date_from|Desde
 product.screen.date_to|Hasta
@@ -53,10 +66,12 @@ product.screen.button_yes|Si
 product.screen.button_no|No
 product.screen.button_search|Buscar
 product.screen.select_all_products|Selecciona todos tus productos (%{nb} products)
-product.screen.add_confirmation|¿Realmente desea agregar %{nb} productos a la selección ?
-product.screen.remove_confirmation|¿Estás seguro que quieres eliminar %{nb} productos de la selección ?
+product.screen.add_confirmation|¿Realmente desea agregar %{nb} productos a la selección?
+product.screen.remove_confirmation|¿Estás seguro que quieres eliminar %{nb} productos de la selección?
 product.screen.remove_from_export|Sacar de la exportación
 product.screen.add_from_export|Añadir a la exportación
+product.screen.lengow_shop_sync|Tienda sincronizada
+product.screen.lengow_shop_no_sync|Tienda no sincronizada
 product.screen.sync_your_shop|Sincronizar mi tienda con Lengow
 product.screen.shop_last_indexation|Última indexación
 product.screen.shop_not_index|Aún no está indexado
@@ -75,13 +90,16 @@ order.screen.import_charge_second|Por favor, ten paciencia con nosotros; esto no
 order.screen.all_order_will_be_sent_to|Todos los informes de envios de pedidos serán enviados por email 
 order.screen.change_this|¿Cambiar esto?
 order.screen.last_order_importation|Última sincronización
+order.screen.no_order_importation|No hay sincronización por ahora
 order.screen.import_auto|Auto
 order.screen.import_manuel|Manual
 order.screen.button_update_orders|Sincronizar los pedidos
 order.screen.button_reimport_order|Importar de nuevo los pedidos
 order.screen.button_resend_order|Enviar de nuevo los pedidos
 order.screen.cron|¿Deseas automatizar la actualización de los pedidos?
-order.screen.preprod_warning_message|Estás en el modo de pre-producción . Puedes importar los pedidos , pero no hay interacción con Lengow posible . <a href=%{url}>Cambie este</a>
+order.screen.preprod_warning_message|Estás en el modo de pre-producción. Puedes importar los pedidos , pero no hay interacción con Lengow posible. <a href=%{url}>Cambie este</a>
+order.screen.import_single_warning_message|Su versión de PrestaShop está entre 1.5.2 y 1.5.4.Por razones de seguridad , sólo una orden será importado para la sincronización.
+order.screen.no_carrier_warning_message|No se puede importar pedidos : no se ha especificado un transportista por defecto.
 order.screen.not_imported|No importado
 order.screen.not_sent|No enviado
 order.screen.refresh_order|Actualizar pedido
@@ -100,6 +118,7 @@ order.screen.status_shipped|Enviado
 order.screen.status_closed|Cerrado
 order.screen.status_refunded|Reintegrado
 order.screen.status_canceled|Cancelado
+order.screen.status_shipped_by_mkp|Enviado por el Marketplace
 order.table.action_lengow|Acciones
 order.table.order_lengow_state|Estado de Lengow
 order.table.marketplace_name|Marketplace
@@ -120,15 +139,15 @@ order_setting.screen.please_setup_then|por favor, instala
 order_setting.screen.add_new_country|Añade un nuevo país
 order_setting.screen.default_country|por defecto
 order_setting.screen.import_setting_title|Pedido importación
-order_setting.screen.select_a_country|Por favor, selecciona el país
+order_setting.screen.select_a_country|Por favor, selecciona el país...
 order_setting.screen.import_setting_description|Gestiona los parámetros de importación aquí para los pedidos de los marketplaces
 order_setting.screen.nb_days|dias
 order_setting.screen.cron_title|Cron settings
 order_setting.screen.cron_description|Usa el "Crontab Module" para importar pedidos desde Lengow
-order_setting.screen.cron_not_configured|El cron de importaciones no está configurado en tu Prestashop
-order_setting.screen.cron_configured|El cron de importaciones existe en tu Prestashop
+order_setting.screen.cron_not_configured|El cron de importaciones no está configurado en tu PrestaShop
+order_setting.screen.cron_configured|El cron de importaciones existe en tu PrestaShop
 order_setting.screen.cron_if_not_exists|o
-order_setting.screen.cron_install_plugin|Puedes instalar el plugin "Crontab" Prestashop
+order_setting.screen.cron_install_plugin|Puedes instalar el plugin "Crontab" PrestaShop
 order_setting.screen.cron_manual_installation|Si estás utilizando un sistema UNIX, puedes utilizar UNIX crontab de la siguiente manera:
 order_setting.screen.button_add_country|Añadir
 order_setting.screen.button_cancel_country|Cancelar
@@ -140,12 +159,13 @@ global_setting.screen.notification_alert_title|Notificaciones & alertas
 global_setting.screen.preprod_mode_title|Modo de pre-producción
 global_setting.screen.preprod_mode_description|Utiliza el modo de pre-producción para pruebas y para simular pedidos ficticios. Ten en cuenta que hay que activar esta configuración en el servidor de pre-producción SOLAMENTE
 global_setting.screen.log_file_title|Logs archivos
-global_setting.screen.log_file_description|Encuentra todos los registros de mantenimiento aqui debajo (pedidos importados , informes de errores ... ) . Ellos serán registrados aquí durante 20 días .
+global_setting.screen.log_file_description|Encuentra todos los registros de mantenimiento aqui debajo (pedidos importados , informes de errores ... ). Ellos serán registrados aquí durante 20 días.
 global_setting.screen.please_choose_log|Por favor, seleccione un archivo de registro ...
 global_setting.screen.download_all_files|Descarga todos los documentos
 global_setting.screen.uninstall_module|Eliminar el módulo entero
 global_setting.screen.uninstall_module_description|Desinstalar el módulo completo asi como todos los datos relacionados
-global_setting.screen.all_data_will_be_lost|Se perderán todos los datos ( tablas y configuración) y perderás el historial de pedidos
+global_setting.screen.all_data_will_be_lost|Se perderán todos los datos (tablas y configuración) y perderás el historial de pedidos
+global_setting.screen.you_will_find_a_backup|Después de retirar el módulo, se puede encontrar una copia de seguridad de su base de datos en Lengow
 global_setting.screen.prestashop_backup|PrestaShop Backup
 global_setting.screen.i_want_uninstall|Quiero eliminar el módulo Lengow
 global_setting.screen.button_i_want_uninstall|Eliminar el módulo Lengow
@@ -165,9 +185,9 @@ help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com.
 help.screen.mail_lengow_support_title|Información de la cuenta:
 help.screen.mailto_subject|Prestashop Lengow Plugin #necesita asistencia
 help.screen.need_some_help|¿Necesitas ayuda?
-help.screen.contain_text_support_hour|Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria ).
+help.screen.contain_text_support_hour|Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria).
 help.screen.find_answer|Puedes también encontrar respuestas en nuestro
-help.screen.link_prestashop_guide|Manual Prestashop
+help.screen.link_prestashop_guide|Manual PrestaShop
 help.screen.knowledge_link_url|https://es.knowledgeowl.com/help/prestashop
 legals.screen.simplified_company|Simplificado sociedad de responsabilidad limitada
 legals.screen.social_capital|Capital social:
@@ -186,9 +206,13 @@ lengow_setting.lengow_export_selection_enabled_title|Exportar solamente los elem
 lengow_setting.lengow_export_selection_enabled_legend|Activar esta opción si no deseas exportar todos los productos disponibles. Después, sólo selecciona los productos que deseas exportar
 lengow_setting.lengow_export_variation_enabled_title|Exportar las variaciones de productos
 lengow_setting.lengow_export_variation_enabled_legend|Si no quieres exportar las variaciones, desactive esta opción
+lengow_setting.lengow_export_out_stock_title|Exporte los productos sin stock
+lengow_setting.lengow_export_out_stock_legend|Active esta opción si desea exportar productos sin stock
 lengow_setting.lengow_export_format_title|Exportar el formato por defecto
 lengow_setting.lengow_export_file_enabled_title|Exportar en un archivo
 lengow_setting.lengow_export_file_enabled_legend|Debes utilizar esta opción si tiene 3.000 o más productos
+lengow_setting.lengow_export_legacy_enabled_title|Exporte con el feed de origen
+lengow_setting.lengow_export_legacy_enabled_legend|Compatibilidad con anteriores versiones de Lengow
 lengow_setting.lengow_last_export_title|Última exportación
 lengow_setting.lengow_order_id_process_title|Pedidos en preparación
 lengow_setting.lengow_order_id_shipped_title|Pedidos enviados
@@ -198,8 +222,8 @@ lengow_setting.lengow_import_force_product_title|Forzar los productos
 lengow_setting.lengow_import_force_product_legend|Activa esta opción si deseas forzar la importación de "fuera de stocks" / "productos inactivos"
 lengow_setting.lengow_import_days_title|Re-import all orders made since
 lengow_setting.lengow_import_days_legend|Activar esta opción si tiene pedidos pendientes incorrectos. Esto te permite volver a importar todas los pedidos que han sido procesados ​​durante este período con problemas
-lengow_setting.lengow_import_processing_fee_title|Importar los gastos de procesamiento
-lengow_setting.lengow_import_processing_fee_legend|Activa esta opción si quieres incluir gasto de procesamiento en el pedido del marketplace
+lengow_setting.lengow_import_processing_fee_title|Importar las cuotas de procesamiento
+lengow_setting.lengow_import_processing_fee_legend|Active esta opción si desea incorporar en su pedido la tarifa de gestión de expedición de las Marketplaces
 lengow_setting.lengow_import_preprod_enabled_title|Activate Pre-production Mode
 lengow_setting.lengow_import_ship_mp_enabled_title|Importar los pedidos enviados por las Marketplaces
 lengow_setting.lengow_import_stock_ship_mp_title|Quiero disminuir mi stock
@@ -216,11 +240,14 @@ lengow_setting.lengow_cron_enabled_title|Usa Crontab módulo Prestashop
 lengow_setting.lengow_global_token_title|Lengow global Token
 lengow_setting.lengow_authorized_ip_title|Authorised IP
 lengow_setting.lengow_authorized_ip_legend|Authorized IP separada por:
-lengow_setting.lengow_tracking_enabled_title|Activate Lengow tracking
+lengow_setting.lengow_tracking_enabled_title|Activar el seguimiento Lengow
 lengow_setting.lengow_tracking_id_title|Lengow Tracking ID
 lengow_setting.lengow_order_stat_title|Estadística de pedidos
 lengow_setting.lengow_order_stat_update_title|Estadística de pedidos actualizada
-lengow_log.error.nb_order_imported|%{nb_order} pedido(s) iimportada
+lengow_setting.lengow_account_status_title|Estado de la cuenta
+lengow_setting.lengow_account_status_update_title|Actualización de estado de cuenta
+lengow_setting.lengow_option_cms_update_title|Opcion de actualizar el cms
+lengow_log.error.nb_order_imported|%{nb_order} pedido(s) importada
 lengow_log.error.nb_order_updated|%{nb_order} pedido(s) actualizado
 lengow_log.error.nb_order_with_error|%{nb_order} pedido(s) con errores
 lengow_log.error.no_notification|No hay nueva notificación de pedido
@@ -228,7 +255,14 @@ lengow_log.error.account_id_empty|Account ID, Access Token o Secret está vacio 
 lengow_log.error.account_id_already_used|account ID %{account_id} está siendo actualmente utilizada  por la tienda %{name_shop} (%{id_shop})
 lengow_log.error.import_in_progress|importación ya ha comenzado
 lengow_log.error.rest_time_to_import|Por favor, espere %{rest_time} segundos antes de volver a re-importar pedidos
+lengow_log.error.no_product|Error Lengow: no hay productos en el pedido
+lengow_log.error.no_change_rate|Lengow error: no hay tipos de cambio disponibles para los precios de pedidos
+lengow_log.error.no_currency|Lengow error: ningun tipo de moneda en el pedido
 lengow_log.error.currency_not_available|moneda %{currency_iso} no está disponible en tu tienda
+lengow_log.error.no_country_for_delivery_address|Lengow error: la dirección de entrega no contiene el país
+lengow_log.error.no_billing_address|Lengow error: no hay ninguna direccion en el pedido
+lengow_log.error.no_country_for_billing_address|Lengow error: la dirección de entrega no contiene el país
+lengow_log.error.order_not_found|Lengow error: el pedido puedo no ser encontrado en Lengow
 lengow_log.exception.product_not_be_found|producto %{product_id} no pudo ser encontrado
 lengow_log.exception.product_is_a_parent|producto %{product_id} es un parent ID. La variación de productos esrequerida
 lengow_log.exception.no_product_to_cart|ningún producto añadido a la cesta
@@ -240,10 +274,11 @@ lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} -
 lengow_log.exception.order_list_is_empty|el pedido no ha podido ser registrado
 lengow_log.exception.carrier_shipping_address_no_country|la dirección de envío no contiene el país
 lengow_log.exception.no_default_carrier_for_country|tienes que elegir un transportista por defecto para el país: {country_name}
+lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} no figura en la lista del mercado
 lengow_log.exception.order_line_required|la línea de pedido es requerida pero no se encuentra 
 lengow_log.exception.action_not_valid|la acción %{action} no es válida
 lengow_log.exception.marketplace_action_not_present|acción marketplace %{action} no está presente
-lengow_log.exception.shop_id_require|shop ID is required
+lengow_log.exception.shop_id_require|Se requiere ID de la tienda
 lengow_log.exception.marketplace_name_require|es necesario el nombre del marketplace 
 lengow_log.exception.no_delivery_country_in_order|no puede encontrar el país de entrega en el pedido
 lengow_log.exception.match_carrier_with_country|necesitas relacionar el transportista %{carrier_name} con el país %{country_name}
@@ -275,3 +310,5 @@ admin.order.shipped_by_marketplace|Enviado por el marketplace
 admin.order.cancel_and_reimport|Volver a importar el pedido
 admin.order.check_cancel_and_reimport|¿Realmente desea volver a importar el pedido?
 admin.order.synchronize_id|Sincronizar ID
+admin.order.resend_action|Reenvie la accion
+admin.order.check_resend_action|¿Realmente desea enviar la siguiente acción: ? % { Acción }

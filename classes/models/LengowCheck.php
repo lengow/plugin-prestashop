@@ -71,42 +71,42 @@ class LengowCheck
     {
         $checklist = array();
         $checklist[] = array(
-            'title'         => $this->locale->t('toolbox.index.curl_message'),
-            'help'          => $this->locale->t('toolbox.index.curl_help'),
-            'help_link'     => $this->locale->t('toolbox.index.curl_help_link'),
-            'help_label'    => $this->locale->t('toolbox.index.curl_help_label'),
-            'state'         => (int)self::isCurlActivated()
+            'title'      => $this->locale->t('toolbox.index.curl_message'),
+            'help'       => $this->locale->t('toolbox.index.curl_help'),
+            'help_link'  => $this->locale->t('toolbox.index.curl_help_link'),
+            'help_label' => $this->locale->t('toolbox.index.curl_help_label'),
+            'state'      => (int)self::isCurlActivated()
         );
         $checklist[] = array(
-            'title'         => $this->locale->t('toolbox.index.simple_xml_message'),
-            'help'          => $this->locale->t('toolbox.index.simple_xml_help'),
-            'help_link'     => $this->locale->t('toolbox.index.simple_xml_help_link'),
-            'help_label'    => $this->locale->t('toolbox.index.simple_xml_help_label'),
-            'state'         => (int)self::isSimpleXMLActivated()
+            'title'      => $this->locale->t('toolbox.index.simple_xml_message'),
+            'help'       => $this->locale->t('toolbox.index.simple_xml_help'),
+            'help_link'  => $this->locale->t('toolbox.index.simple_xml_help_link'),
+            'help_label' => $this->locale->t('toolbox.index.simple_xml_help_label'),
+            'state'      => (int)self::isSimpleXMLActivated()
         );
         $checklist[] = array(
-            'title'         => $this->locale->t('toolbox.index.json_php_message'),
-            'help'          => $this->locale->t('toolbox.index.json_php_help'),
-            'help_link'     => $this->locale->t('toolbox.index.json_php_help_link'),
-            'help_label'    => $this->locale->t('toolbox.index.json_php_help_label'),
-            'state'         => (int)self::isJsonActivated()
+            'title'      => $this->locale->t('toolbox.index.json_php_message'),
+            'help'       => $this->locale->t('toolbox.index.json_php_help'),
+            'help_link'  => $this->locale->t('toolbox.index.json_php_help_link'),
+            'help_label' => $this->locale->t('toolbox.index.json_php_help_label'),
+            'state'      => (int)self::isJsonActivated()
         );
         $checklist[] = array(
-            'title'         => $this->locale->t('toolbox.index.shop_functionality_message'),
-            'help'          => $this->locale->t('toolbox.index.shop_functionality_help'),
-            'state'         => (int)self::isShopActivated()
+            'title' => $this->locale->t('toolbox.index.shop_functionality_message'),
+            'help'  => $this->locale->t('toolbox.index.shop_functionality_help'),
+            'state' => (int)self::isShopActivated()
         );
         $mail_check = $this->getMailConfiguration();
         $checklist[] = array(
-            'title'         => $mail_check['message'],
-            'state'         => $mail_check['state']
+            'title' => $mail_check['message'],
+            'state' => $mail_check['state']
         );
         $checklist[] = array(
-            'title'         => $this->locale->t('toolbox.index.checksum_message'),
-            'help'          => $this->locale->t('toolbox.index.checksum_help'),
-            'help_link'     => '/modules/lengow/toolbox/checksum.php',
-            'help_label'    => $this->locale->t('toolbox.index.checksum_help_label'),
-            'state'         => (int)self::getFileModified()
+            'title'      => $this->locale->t('toolbox.index.checksum_message'),
+            'help'       => $this->locale->t('toolbox.index.checksum_help'),
+            'help_link'  => '/modules/lengow/toolbox/checksum.php',
+            'help_label' => $this->locale->t('toolbox.index.checksum_help_label'),
+            'state'      => (int)self::getFileModified()
         );
         return $this->getAdminContent($checklist);
     }
@@ -120,28 +120,28 @@ class LengowCheck
     {
         $checklist = array();
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.prestashop_version'),
-            'message'   => _PS_VERSION_
+            'title'   => $this->locale->t('toolbox.index.prestashop_version'),
+            'message' => _PS_VERSION_
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.plugin_version'),
-            'message'   => LengowConfiguration::getGlobalValue('LENGOW_VERSION')
+            'title'   => $this->locale->t('toolbox.index.plugin_version'),
+            'message' => LengowConfiguration::getGlobalValue('LENGOW_VERSION')
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.ip_server'),
-            'message'   => $_SERVER['SERVER_ADDR']
+            'title'   => $this->locale->t('toolbox.index.ip_server'),
+            'message' => $_SERVER['SERVER_ADDR']
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.ip_authorized'),
-            'message'   => LengowConfiguration::get('LENGOW_AUTHORIZED_IP')
+            'title'   => $this->locale->t('toolbox.index.ip_authorized'),
+            'message' => LengowConfiguration::get('LENGOW_AUTHORIZED_IP')
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.preprod_disabled'),
-            'state'     => (LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED') ? 0 : 1)
+            'title' => $this->locale->t('toolbox.index.preprod_disabled'),
+            'state' => (LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED') ? 0 : 1)
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.cron_enable'),
-            'state'   => (int)LengowCron::getCron()
+            'title' => $this->locale->t('toolbox.index.cron_enable'),
+            'state' => (int)LengowCron::getCron()
         );
         return $this->getAdminContent($checklist);
     }
@@ -175,24 +175,24 @@ class LengowCheck
         }
         $checklist = array();
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.global_token'),
-            'message'   => LengowConfiguration::get('LENGOW_GLOBAL_TOKEN')
+            'title'   => $this->locale->t('toolbox.index.global_token'),
+            'message' => LengowConfiguration::get('LENGOW_GLOBAL_TOKEN')
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.url_import'),
-            'message'   => LengowMain::getImportUrl()
+            'title'   => $this->locale->t('toolbox.index.url_import'),
+            'message' => LengowMain::getImportUrl()
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.import_in_progress'),
-            'message'   => $import_in_progress
+            'title'   => $this->locale->t('toolbox.index.import_in_progress'),
+            'message' => $import_in_progress
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.shop_last_import'),
-            'message'   => $last_import_date
+            'title'   => $this->locale->t('toolbox.index.shop_last_import'),
+            'message' => $last_import_date
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.shop_type_import'),
-            'message'   => $last_import_type
+            'title'   => $this->locale->t('toolbox.index.shop_type_import'),
+            'message' => $last_import_type
         );
         return $this->getAdminContent($checklist);
     }
@@ -217,31 +217,31 @@ class LengowCheck
         }
         $checklist = array();
         $checklist[] = array(
-            'header'     => $shop->name.' ('.$shop->id.')'.' - http://'.$shop->domain
+            'header' => $shop->name.' ('.$shop->id.')'.' - http://'.$shop->domain
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.shop_active'),
-            'state'     => (int)LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, null, $shop->id)
+            'title' => $this->locale->t('toolbox.index.shop_active'),
+            'state' => (int)LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, null, $shop->id)
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.shop_product_total'),
-            'message'   => $lengowExport->getTotalProduct()
+            'title'   => $this->locale->t('toolbox.index.shop_product_total'),
+            'message' => $lengowExport->getTotalProduct()
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.shop_product_exported'),
-            'message'   => $lengowExport->getTotalExportProduct()
+            'title'   => $this->locale->t('toolbox.index.shop_product_exported'),
+            'message' => $lengowExport->getTotalExportProduct()
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.shop_export_token'),
-            'message'   => LengowConfiguration::get('LENGOW_SHOP_TOKEN', null, null, $shop->id)
+            'title'   => $this->locale->t('toolbox.index.shop_export_token'),
+            'message' => LengowConfiguration::get('LENGOW_SHOP_TOKEN', null, null, $shop->id)
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.url_export'),
-            'message'   => LengowMain::getExportUrl($shop->id)
+            'title'   => $this->locale->t('toolbox.index.url_export'),
+            'message' => LengowMain::getExportUrl($shop->id)
         );
         $checklist[] = array(
-            'title'     => $this->locale->t('toolbox.index.shop_last_export'),
-            'message'   => $last_export
+            'title'   => $this->locale->t('toolbox.index.shop_last_export'),
+            'message' => $last_export
         );
         return $this->getAdminContent($checklist);
     }
@@ -420,32 +420,32 @@ class LengowCheck
         foreach ($checklist as $check) {
             $out .= '<tr>';
             if (isset($check['header'])) {
-                $out .= '<td colspan="2" align="center" style="border:0"><h4>'.$check['header'].'</h4></td>';
+                $out.= '<td colspan="2" align="center" style="border:0"><h4>'.$check['header'].'</h4></td>';
             } else {
-                $out .= '<td><b>'.$check['title'].'</b></td>';
+                $out.= '<td><b>'.$check['title'].'</b></td>';
                 if (isset($check['state'])) {
                     if ($check['state'] == 1) {
-                        $out .= '<td align="right"><i class="fa fa-check lengow-green"></i></td>';
+                        $out.= '<td align="right"><i class="fa fa-check lengow-green"></i></td>';
                     } else {
-                        $out .= '<td align="right"><i class="fa fa-times lengow-red"></i></td>';
+                        $out.= '<td align="right"><i class="fa fa-times lengow-red"></i></td>';
                     }
                     if ($check['state'] === 0) {
                         if (isset($check['help']) && isset($check['help_link']) && isset($check['help_label'])) {
-                            $out .= '<tr><td colspan="2"><p>' . $check['help'];
+                            $out.= '<tr><td colspan="2"><p>' . $check['help'];
                             if (array_key_exists('help_link', $check) && $check['help_link'] != '') {
-                                $out .= '<br /><a target="_blank" href="'
+                                $out.= '<br /><a target="_blank" href="'
                                 .$check['help_link'].'">'.$check['help_label'].'</a>';
                             }
-                            $out .= '</p></td></tr>';
+                            $out.= '</p></td></tr>';
                         }
                     }
                 } else {
-                    $out .= '<td align="right"><b>'.$check['message'].'</b></td>';
+                    $out.= '<td align="right"><b>'.$check['message'].'</b></td>';
                 }
             }
-            $out .= '</tr>';
+            $out.= '</tr>';
         }
-        $out .= '</table>';
+        $out.= '</table>';
         return $out;
     }
 }

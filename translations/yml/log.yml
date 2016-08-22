@@ -156,7 +156,6 @@ en:
       markeplace_name: "Marketplace"
       order_sku: "Sku order"
       delivery_address_id: "Delivery address ID"
-      import_one_order: "Import one order"
       import_days: "Import days"
       import_shop_order: "Import shop orders"
       import_all_order: "Import all orders"

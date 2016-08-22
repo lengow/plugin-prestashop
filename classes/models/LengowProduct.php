@@ -476,15 +476,15 @@ class LengowProduct extends Product
                 }
                 return isset($this->images[$id_image]) ? $this->context->link->getImageLink(
                     $this->link_rewrite,
-                    $this->id . '-' . $this->images[$id_image]['id_image'],
+                    $this->id.'-'.$this->images[$id_image]['id_image'],
                     $this->imageSize
                 ) : '';
             default:
                 if (isset($this->features[$name])) {
-                    return $this->features[$name]['value'];
+                    return LengowMain::cleanData($this->features[$name]['value']);
                 } elseif (!is_null($id_product_attribute) &&
                     isset($this->combinations[$id_product_attribute]['attributes'][$name][1])) {
-                    return $this->combinations[$id_product_attribute]['attributes'][$name][1];
+                    return LengowMain::cleanData($this->combinations[$id_product_attribute]['attributes'][$name][1]);
                 }
                 return '';
         }
@@ -577,22 +577,22 @@ class LengowProduct extends Product
                 $price = Tools::displayPrice($price_to_convert, $this->context->currency);
                 $comb_array[$attributeId] = array(
                     'id_product_attribute' => $attributeId,
-                    'attributes' => array($c['group_name'] => array(
+                    'attributes'           => array($c['group_name'] => array(
                         $c['group_name'],
                         $c['attribute_name'],
                         $c['id_attribute']
                     )),
-                    'wholesale_price' => isset($c['wholesale_price']) ? $c['wholesale_price'] : '',
-                    'price' => $price,
-                    'ecotax' =>  isset($c['ecotax']) ? $c['ecotax'] : '',
-                    'weight' => $c['weight'] . Configuration::get('PS_WEIGHT_UNIT'),
-                    'unit_impact' => $c['unit_price_impact'],
-                    'reference' => $c['reference'],
-                    'ean13' => isset($c['ean13']) ? $c['ean13'] : '',
-                    'upc' => isset($c['upc']) ? $c['upc'] : '',
-                    'supplier_reference' => isset($c['supplier_reference']) ? $c['supplier_reference'] : '',
-                    'images' => isset($cImages[$attributeId]) ? $cImages[$attributeId] : array(),
-                    'default_on' => $c['default_on'],
+                    'wholesale_price'      => isset($c['wholesale_price']) ? $c['wholesale_price'] : '',
+                    'price'                => $price,
+                    'ecotax'               =>  isset($c['ecotax']) ? $c['ecotax'] : '',
+                    'weight'               => $c['weight'] . Configuration::get('PS_WEIGHT_UNIT'),
+                    'unit_impact'          => $c['unit_price_impact'],
+                    'reference'            => $c['reference'],
+                    'ean13'                => isset($c['ean13']) ? $c['ean13'] : '',
+                    'upc'                  => isset($c['upc']) ? $c['upc'] : '',
+                    'supplier_reference'   => isset($c['supplier_reference']) ? $c['supplier_reference'] : '',
+                    'images'               => isset($cImages[$attributeId]) ? $cImages[$attributeId] : array(),
+                    'default_on'           => $c['default_on'],
                 );
                 if (LengowMain::compareVersion()) {
                     $comb_array[$attributeId]['available_date'] = strftime($c['available_date']);
@@ -609,8 +609,8 @@ class LengowProduct extends Product
                 /* In order to keep the same attributes order */
                 asort($product_attribute['attributes']);
                 foreach ($product_attribute['attributes'] as $attribute) {
-                    $list .= $attribute[0] . ' - ' . $attribute[1] . ', ';
-                    $name .= $attribute[0] . ',';
+                    $list .= $attribute[0].' - '.$attribute[1].', ';
+                    $name .= $attribute[0].',';
                 }
                 $list = rtrim($list, ', ');
                 // $name = rtrim($name, ', ');
@@ -779,8 +779,8 @@ class LengowProduct extends Product
                     Db::getInstance()->autoExecute(
                         _DB_PREFIX_.'lengow_product',
                         array(
-                            'id_product'    => (int)$productId,
-                            'id_shop'       => (int)$shopId
+                            'id_product' => (int)$productId,
+                            'id_shop'    => (int)$shopId
                         ),
                         'INSERT'
                     );
@@ -788,8 +788,8 @@ class LengowProduct extends Product
                     Db::getInstance()->insert(
                         'lengow_product',
                         array(
-                            'id_product'    => (int)$productId,
-                            'id_shop'       => (int)$shopId
+                            'id_product' => (int)$productId,
+                            'id_shop'    => (int)$shopId
                         )
                     );
                 }
@@ -1098,7 +1098,7 @@ class LengowProduct extends Product
                         $cImages[$productAttributeId][] =
                             $this->context->link->getImageLink(
                                 $this->link_rewrite,
-                                $this->id . '-' . $image['id_image'],
+                                $this->id.'-'.$image['id_image'],
                                 $this->imageSize
                             );
                     }

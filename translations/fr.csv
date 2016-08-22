@@ -38,7 +38,7 @@ dashboard.screen.configure_plugin|pour plus d'informations sur la configuration 
 status.screen.title_end_free_trial|Toutes les bonnes choses ont une fin...
 status.screen.subtitle_end_free_trial|Vous avez atteint la fin de votre période d'essai !
 status.screen.first_description_end_free_trial|Vos 15 jours d'essai gratuit sur la plateforme Lengow sont maintenant terminés. Nous espérons qu'ils ont été bénéfiques à votre activité e-commerce.
-status.screen.second_description_end_free_trial|Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les indexations vont être momentanément stoppées.
+status.screen.second_description_end_free_trial|Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les importations vont être momentanément stoppées.
 status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration. Pour conserver l'intégralité des paramètres que vous avez défini, pensez à vous abonner dès à présent !
 status.screen.subtitle_bad_payer|Votre compte est temporairement fermé.
 status.screen.first_description_bad_payer|Nous sommes désolé mais nous devons temporairement limiter l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire.
@@ -56,9 +56,6 @@ product.screen.include_out_of_stock|Inclure les produits hors stock
 product.screen.include_out_of_stock_support|Activez cette option si vous souhaitez exporter les produits dont les stocks sont à 0
 product.screen.include_specific_product|Inclure une sélection de produits
 product.screen.include_specific_product_support|Utilisez cette option pour sélectionner vos produits individuellement
-product.screen.your_exported_catalog|Votre catalogue est prêt pour l'export ! Copiez le lien sur la plateforme Lengow
-product.screen.last_export|Dernière indexation
-product.screen.no_export|Pas d'export 
 product.screen.no_result_found|Désolé, nous n'avons trouvé aucun élément correspondant à votre demande.<br />Souhaitez-vous modifier votre recherche ?
 product.screen.no_product_selected|Sélectionnez un produit
 product.screen.date_from|Du
