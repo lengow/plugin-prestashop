@@ -217,7 +217,7 @@ lengow_setting.lengow_last_export_title|Last export
 lengow_setting.lengow_order_id_process_title|Orders in preparation
 lengow_setting.lengow_order_id_shipped_title|Shipped orders
 lengow_setting.lengow_order_id_cancel_title|Cancelled orders
-lengow_setting.lengow_order_id_shippedbymp_title|Shipped marketplace orders
+lengow_setting.lengow_order_id_shippedbymp_title|Orders shipped by marketplace
 lengow_setting.lengow_import_force_product_title|Force products
 lengow_setting.lengow_import_force_product_legend|Enable this option if you want to force the importing of out of stock/inactive products
 lengow_setting.lengow_import_days_title|Re-import all orders made since:
