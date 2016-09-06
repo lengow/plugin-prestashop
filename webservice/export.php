@@ -19,17 +19,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-/**
- * list params
- * string format        : Format of exported files ('csv','yaml','xml','json',
- * boolean stream       : Stream file (1) or generate a file on server (0)
- * string product_ids   : List of product id separate with comma (1,2,3)
- * int limit            : Limit number of exported product
- * int offset           : Offset of total product
- * boolean out_stock    : Export out of stock product (1) Export only product in stock (0)
- * boolean variation    : Export product Variation (1) Export parent product only (0)
- */
-
 @set_time_limit(0);
 @ini_set('memory_limit', '512M');
 
@@ -68,7 +57,7 @@ $mode = (Tools::getIsset('mode') && Tools::getValue('mode') == 'size') ? Tools::
 $format = Tools::getIsset('format')
     ? Tools::getValue('format')
     : LengowConfiguration::getGlobalValue('LENGOW_EXPORT_FORMAT');
-// export in file or no
+// export in file or not
 $stream = Tools::getIsset('stream')
     ? (bool)Tools::getValue('stream')
     : !(bool)LengowConfiguration::getGlobalValue('LENGOW_EXPORT_FILE_ENABLED');
