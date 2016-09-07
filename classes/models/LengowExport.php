@@ -579,20 +579,15 @@ class LengowExport
         } else {
             $where = ' WHERE ps.active = 1 ';
         }
-        if ($this->exportVariation) {
-            $query = ' SELECT SUM(total) as total FROM (';
-            $query.= ' ( SELECT COUNT(*) as total';
-            $query.= ' FROM '._DB_PREFIX_.'product p '.$join.' '.$where.')';
-            $query.= ' UNION ';
-            $query.= ' ( SELECT COUNT(*) as total';
-            $query.= ' FROM '._DB_PREFIX_.'product p';
-            $query.= ' INNER JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product)';
-            $query.= ' '.$join.' '.$where.' ) ';
-            $query.= '  ) as tmp ';
-        } else {
-            $query = ' SELECT COUNT(*) as total';
-            $query.= ' FROM '._DB_PREFIX_.'product p '.$join.' '.$where.'';
-        }
+        $query = ' SELECT SUM(total) as total FROM (';
+        $query.= ' ( SELECT COUNT(*) as total';
+        $query.= ' FROM '._DB_PREFIX_.'product p '.$join.' '.$where.')';
+        $query.= ' UNION ';
+        $query.= ' ( SELECT COUNT(*) as total';
+        $query.= ' FROM '._DB_PREFIX_.'product p';
+        $query.= ' INNER JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product)';
+        $query.= ' '.$join.' '.$where.' ) ';
+        $query.= '  ) as tmp ';
         $collection = Db::getInstance()->executeS($query);
         return $collection[0]['total'];
     }
