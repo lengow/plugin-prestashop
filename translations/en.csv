@@ -328,7 +328,7 @@ log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})
 log.export.nb_product_found|%{nb_product} product(s) found
 log.export.count_product|%{product_count} product(s) exported
 log.export.export_failed|export failed - %{decoded_message}
-log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>
+log.export.your_feed_available_here|your feed is available here: %{feed_url}
 log.export.error_folder_not_writable|export file generation did not end properly. Please make sure the export folder is writable
 log.export.error_no_product_combination|unable to retrieve product combinations
 log.export.error_illegal_currency|illegal currency

@@ -42,10 +42,10 @@ class LengowExport
         'quantity'                       => 'quantity',
         'minimal_quantity'               => 'minimal_quantity',
         'availability'                   => 'available',
-        'status'                         => 'active',
         'is_virtual'                     => 'is_virtual',
         'condition'                      => 'condition',
-        'breadcrumb'                     => 'breadcrumb',
+        'category'                       => 'breadcrumb',
+        'status'                         => 'active',
         'url'                            => 'url',
         'url_rewrite'                    => 'url_rewrite',
         'price_excl_tax'                 => 'price_sale_duty_free',
@@ -399,7 +399,7 @@ class LengowExport
             );
             $this->export($products, $export_fields, $shop);
             if ($this->updateExportDate) {
-                Configuration::updatevalue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), null, null, $this->shopId);
+                LengowConfiguration::updateValue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), false, null, $this->shopId);
             }
             LengowMain::log(
                 'Export',

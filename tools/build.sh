@@ -2,10 +2,15 @@
 # Build archive for Prestashop module
 # Step :
 #     - Remove .DS_Store
+#     - Remove .README.md
+#     - Remove .idea
 #     - Clean export folder
 #     - Clean logs folder
-#     - Remove .gitFolder and .gitignore
-#     - Update marketplaces.xml
+#     - Clean translation folder
+#     - Remove tools folder
+#     - Remove tests folder
+#     - Remove .git Folder and .gitignore
+
 
 
 remove_if_exist(){
@@ -49,12 +54,6 @@ FOLDER_TEST="/tmp/lengow/tests"
 FOLDER_TOOLS="/tmp/lengow/tools"
 FOLDER_TRANSLATION="/tmp/lengow/translations/yml"
 
-FOLDER_MODULE="lengow"
-
-FOLDER_OVERRIDE="/lengow/override"
-FOLDER_INSTALL="/lengow/install"
-FOLDER_GIT="/lengow/.git"
-
 VERT="\\033[1;32m"
 ROUGE="\\033[1;31m"
 NORMAL="\\033[0;39m"
@@ -76,6 +75,9 @@ if [ ! -d "$FOLDER" ]; then
 	exit 0
 fi
 
+# Generate translations
+php translate.php
+echo "- Generate translations : ""$VERT""DONE""$NORMAL"""
 # Create files checksum
 php checkmd5.php
 echo "- Create files checksum : ""$VERT""DONE""$NORMAL"""
