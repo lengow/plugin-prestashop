@@ -181,9 +181,8 @@ global_setting.screen.setting_saving|Saving...
 global_setting.screen.setting_saved|Saved!
 help.screen.title|Get a little help from your support team!
 help.screen.contain_text_support|Ask us anything about Lengow or share feedback at
-help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com.
-help.screen.mail_lengow_support_title|Account Information:
-help.screen.mailto_subject|Prestashop Lengow Plugin #Need assistance
+help.screen.title_lengow_support|Lengow Support.
+help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
 help.screen.find_answer|You can also find answers in our 

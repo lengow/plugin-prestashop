@@ -28,7 +28,11 @@
         <h2>{$locale->t('help.screen.title')|escape:'htmlall':'UTF-8'}</h2>
         <p>
             {$locale->t('help.screen.contain_text_support')|escape:'htmlall':'UTF-8'}
-            {html_entity_decode($mailto|escape:'htmlall':'UTF-8')}
+            {*{html_entity_decode($mailto|escape:'htmlall':'UTF-8')}*}
+            <a href="{$locale->t('help.screen.link_lengow_support')|escape:'htmlall':'UTF-8'}"
+               target="_blank"
+               title="Lengow Support">
+                {$locale->t('help.screen.title_lengow_support')|escape:'htmlall':'UTF-8'}</a>
         </p>
         <p>{$locale->t('help.screen.contain_text_support_hour')|escape:'htmlall':'UTF-8'}</p>
         <p>

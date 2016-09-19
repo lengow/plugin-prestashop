@@ -201,10 +201,12 @@ fr:
   help:
     screen:
       title: "Demandez de l'aide à notre équipe Support !"
-      contain_text_support: "Des questions, un feedback sur Lengow... transmettez nous vos demandes à l'adresse :"
-      mail_lengow_support: "support.lengow.zendesk@lengow.com."
-      mail_lengow_support_title: "Informations relatives à votre compte :"
-      mailto_subject: "Prestashop Lengow Plugin #Besoin d'aide"
+      contain_text_support: "Des questions, un feedback sur Lengow... transmettez nous vos demandes au "
+      title_lengow_support: "Support de Lengow."
+      link_lengow_support: "https://supportlengow.zendesk.com/hc/fr/requests/new"
+#      mail_lengow_support: "support.lengow.zendesk@lengow.com."
+#      mail_lengow_support_title: "Informations relatives à votre compte :"
+#      mailto_subject: "Prestashop Lengow Plugin #Besoin d'aide"
       need_some_help: "Besoin d'aide ?"
       contain_text_support_hour: "Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h)."
       find_answer: "Vous pouvez aussi consulter"

@@ -180,10 +180,9 @@ global_setting.screen.plugin_deleted|Désinstallation terminée !
 global_setting.screen.setting_saving|Enregistrement en cours...
 global_setting.screen.setting_saved|Enregistrement terminé !
 help.screen.title|Demandez de l'aide à notre équipe Support !
-help.screen.contain_text_support|Des questions, un feedback sur Lengow... transmettez nous vos demandes à l'adresse :
-help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com.
-help.screen.mail_lengow_support_title|Informations relatives à votre compte :
-help.screen.mailto_subject|Prestashop Lengow Plugin #Besoin d'aide
+help.screen.contain_text_support|Des questions, un feedback sur Lengow... transmettez nous vos demandes au 
+help.screen.title_lengow_support|Support de Lengow.
+help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/fr/requests/new
 help.screen.need_some_help|Besoin d'aide ?
 help.screen.contain_text_support_hour|Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h).
 help.screen.find_answer|Vous pouvez aussi consulter
