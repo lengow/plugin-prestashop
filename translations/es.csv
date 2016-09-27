@@ -11,7 +11,6 @@ menu.order|Pedidos
 menu.jump_to_lengow|Pasar a Lengow
 menu.preprod_active|Modo de pre-producción
 menu.counter|Período de prueba: %{contador} día(s) izquierda.
-menu.upgrade_account|Actualizar
 menu.order_overview|Visión de conjunto
 menu.order_parameter|Ajustes
 menu.help|Ayuda
@@ -39,14 +38,12 @@ status.screen.title_end_free_trial|Todas las cosas buenas llegan a su fin
 status.screen.subtitle_end_free_trial|Usted ha llegado al final de su periodo de prueba!
 status.screen.first_description_end_free_trial|Su período de prueba gratuito de 15 días en Lengow ya ha expirado.Sabemos que es una noticia triste,pero lo mejor está por venir! Esperamos sinceramente que Lengow haya ayudado a mejorar su negocio.
 status.screen.second_description_end_free_trial|Su cuenta será suspendida hasta que adquiera una nueva suscripción.También se suspenderán todas las distribuciones y indexaciones existentes.
-status.screen.third_description_end_free_trial|No se olvide que la cuenta de prueba se elimina a los 30 días después del final del período de prueba. Asegúrese de actualizarla para que no se pierda el trabajo que ha hecho configurando los canales.
 status.screen.subtitle_bad_payer|Su cuenta ha sido cerrada temporalmente
 status.screen.first_description_bad_payer|Sentimos informarle que hemos tenido que limitar el acceso a su cuenta de forma temporal debido a que el pago automático de su suscripción ha fallado.
 status.screen.second_description_bad_payer|La publicación de su catálogo ha sido suspendida.Le sugerimos que se ponga en contacto con nosotros a
 status.screen.phone_bad_payer|o por teléfono al +34 911 898 135
 status.screen.third_description_bad_payer|Esperamos trabajar con ustedes de nuevo en un futuro próximo.
 status.screen.facturation_button|Ver la información de facturación
-status.screen.upgrade_account_button|Está bien, estoy listo para actualizar!
 status.screen.refresh_action|Refrescar mi cuenta
 product.screen.nb_exported|productos exportados
 product.screen.nb_available|productos disponibles
@@ -180,15 +177,13 @@ global_setting.screen.plugin_deleted|¡Eliminar!
 global_setting.screen.setting_saving|Guardando...
 global_setting.screen.setting_saved|¡Guardado!
 help.screen.title|Obtener un poco de ayuda de tu equipo de ayuda!
-help.screen.contain_text_support|Pregúntanos lo que sea a Lengow o comparte tu parecer en
-help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com.
-help.screen.mail_lengow_support_title|Información de la cuenta:
-help.screen.mailto_subject|Prestashop Lengow Plugin #necesita asistencia
+help.screen.contain_text_support|Pregúntanos lo que sea a Lengow o comparte tu parecer con
+help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|¿Necesitas ayuda?
 help.screen.contain_text_support_hour|Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria).
 help.screen.find_answer|Puedes también encontrar respuestas en nuestro
 help.screen.link_prestashop_guide|Manual PrestaShop
-help.screen.knowledge_link_url|https://es.knowledgeowl.com/help/prestashop
+help.screen.knowledge_link_url|https://en.lengow.help/help/prestashop
 legals.screen.simplified_company|Simplificado sociedad de responsabilidad limitada
 legals.screen.social_capital|Capital social:
 legals.screen.cnil_declaration|Declaración CNIL:

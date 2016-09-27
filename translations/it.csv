@@ -11,7 +11,6 @@ menu.order|Ordine
 menu.jump_to_lengow|Vai su Lengow
 menu.preprod_active|Attiva Preproduzione
 menu.counter|Periodo di prova: %{counter} giorno(s) a sinistra
-menu.upgrade_account|Aggiorna
 menu.order_overview|Panoramica
 menu.order_parameter|Parametro
 menu.help|Aiuto
@@ -39,14 +38,12 @@ status.screen.title_end_free_trial|Tutte le cose belle hanno una fine
 status.screen.subtitle_end_free_trial|Hai raggiunto la fine del tuo periodo di prova!
 status.screen.first_description_end_free_trial|Il tuo periodo di prova di 15 giorni su Lengow é scaduto. Che brutta notizia, ma il meglio deve ancora arrivare! Ci auguriamo che Lengow vi abbia aiutato a migliorare il vostro business.
 status.screen.second_description_end_free_trial|Il tuo account sarà sospeso fino a quando non sarà acquistata una nuova licenza. Tutte le pubblicazioni e indicizzazioni in corso saranno sospese
-status.screen.third_description_end_free_trial|Non dimenticare che questo account di prova sarà eliminato 30 giorni dopo la scandenza di quest'ultimo. Assicurati di effettuare l'upgrade per non perdere tutto il lavoro fatto.
 status.screen.subtitle_bad_payer|Il tuo account é stato temporaneamente chiuso
 status.screen.first_description_bad_payer|Siamo spiacenti, purtroppo dobbiamo limitare temporaneamente l'accesso al tuo account perché il pagamento automatico non é andato a buon fine.
 status.screen.second_description_bad_payer|La pubblicazione del tuo catalogo é stata sospesa. Ti consigliamo di metterti in contatto con noi a
 status.screen.phone_bad_payer|oppure telefonicamente al +39 02 94752876
 status.screen.third_description_bad_payer|Ci auguriamo di lavorare di nuovo insieme un giorno.
 status.screen.facturation_button|Vedi le mie informazioni di fatturazione
-status.screen.upgrade_account_button|Ok! Sono pronto a fare l'upgrade!
 status.screen.refresh_action|Aggiorna il mio account
 product.screen.nb_exported|prodotto esportato
 product.screen.nb_available|prodotto disponibile
@@ -181,14 +178,12 @@ global_setting.screen.setting_saving|Salvataggio
 global_setting.screen.setting_saved|Salvato!
 help.screen.title|Chiedi aiuto al nostro supporto tecnico!
 help.screen.contain_text_support|Fai una domanda su Lengow oppure condividi il tuo feedback a
-help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com.
-help.screen.mail_lengow_support_title|Informazioni Account:
-help.screen.mailto_subject|PrestaShop Lengow Plugin
+help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Hai bisogno d'aiuto ?
 help.screen.contain_text_support_hour|Faremo il possibile per darti una risposta durante le ore di lavoro (dal Lunedi al Venerdi - 9h/18h)
 help.screen.find_answer|Potresti trovare una risposta nella nostra  
 help.screen.link_prestashop_guide|guida dedicata PrestaShop
-help.screen.knowledge_link_url|https://it.knowledgeowl.com/help/prestashop
+help.screen.knowledge_link_url|https://en.lengow.help/help/prestashop
 legals.screen.simplified_company|Società responsabilità limitata
 legals.screen.social_capital|Capitale sociale:
 legals.screen.cnil_declaration|Dichiarazione CNIL:
@@ -217,7 +212,6 @@ lengow_setting.lengow_last_export_title|Ultima esportazione
 lengow_setting.lengow_order_id_process_title|Ordini in preparazione
 lengow_setting.lengow_order_id_shipped_title|Ordine Spedizione
 lengow_setting.lengow_order_id_cancel_title|Ordine cancellato
-lengow_setting.lengow_order_id_shippedbymp_title|Ordini marketplaces spediti
 lengow_setting.lengow_import_force_product_title|Forzare i prodotti
 lengow_setting.lengow_import_force_product_legend|Attiva questa opzione se vuoi fozare l'importazione sei tuoi prodotti non disponibili/inattivi
 lengow_setting.lengow_import_days_title|Re-importa tutti gli ordini ricevuti dal:

@@ -15,7 +15,6 @@ es:
     jump_to_lengow: "Pasar a Lengow"
     preprod_active: "Modo de pre-producción"
     counter: "Período de prueba: %{contador} día(s) izquierda."
-    upgrade_account: "Actualizar"
     order_overview: "Visión de conjunto"
     order_parameter: "Ajustes"
     help: "Ayuda"
@@ -48,14 +47,12 @@ es:
       subtitle_end_free_trial: "Usted ha llegado al final de su periodo de prueba!"
       first_description_end_free_trial: "Su período de prueba gratuito de 15 días en Lengow ya ha expirado.Sabemos que es una noticia triste,pero lo mejor está por venir! Esperamos sinceramente que Lengow haya ayudado a mejorar su negocio."
       second_description_end_free_trial: "Su cuenta será suspendida hasta que adquiera una nueva suscripción.También se suspenderán todas las distribuciones y indexaciones existentes."
-      third_description_end_free_trial: "No se olvide que la cuenta de prueba se elimina a los 30 días después del final del período de prueba. Asegúrese de actualizarla para que no se pierda el trabajo que ha hecho configurando los canales."
       subtitle_bad_payer: "Su cuenta ha sido cerrada temporalmente"
       first_description_bad_payer: "Sentimos informarle que hemos tenido que limitar el acceso a su cuenta de forma temporal debido a que el pago automático de su suscripción ha fallado."
       second_description_bad_payer: "La publicación de su catálogo ha sido suspendida.Le sugerimos que se ponga en contacto con nosotros a"
       phone_bad_payer: "o por teléfono al +34 911 898 135"
       third_description_bad_payer: "Esperamos trabajar con ustedes de nuevo en un futuro próximo."
       facturation_button: "Ver la información de facturación"
-      upgrade_account_button: "Está bien, estoy listo para actualizar!"
       refresh_action: "Refrescar mi cuenta"
   product:
     screen:
@@ -201,15 +198,13 @@ es:
   help:
     screen:
       title: "Obtener un poco de ayuda de tu equipo de ayuda!"
-      contain_text_support: "Pregúntanos lo que sea a Lengow o comparte tu parecer en"
-      mail_lengow_support: "support.lengow.zendesk@lengow.com."
-      mail_lengow_support_title: "Información de la cuenta:"
-      mailto_subject: "Prestashop Lengow Plugin #necesita asistencia"
+      contain_text_support: "Pregúntanos lo que sea a Lengow o comparte tu parecer con"
+      link_lengow_support: "https://supportlengow.zendesk.com/hc/en-us/requests/new"
       need_some_help: "¿Necesitas ayuda?"
       contain_text_support_hour: "Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria)."
       find_answer: "Puedes también encontrar respuestas en nuestro"
       link_prestashop_guide: "Manual PrestaShop"
-      knowledge_link_url: "https://es.knowledgeowl.com/help/prestashop"
+      knowledge_link_url: "https://en.lengow.help/help/prestashop"
   legals:
     screen:
       simplified_company: "Simplificado sociedad de responsabilidad limitada"

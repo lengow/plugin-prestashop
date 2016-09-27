@@ -306,9 +306,6 @@ class LengowExport
             : (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId)
         );
         $this->showInactiveProduct = (isset($params["inactive"]) ? (bool)$params["inactive"] : false);
-        $this->legacy = (isset($params['legacy_fields']) ? (bool)$params['legacy_fields'] : false);
-        LengowExport::$DEFAULT_FIELDS = $this->legacy ? $this->legacy_fields : $this->new_fields ;
-        // See logs or not (only when stream = 0)
         if ($this->stream) {
             $this->log_output = false;
         } else {
@@ -318,6 +315,7 @@ class LengowExport
         if (!Context::getContext()->currency) {
             Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
         }
+        $this->legacy = isset($params['legacy_fields']) ? (bool)$params['legacy_fields'] : null;
         $this->checkCurrency();
         $this->setCarrier();
         return $this;
@@ -374,6 +372,28 @@ class LengowExport
     }
 
     /**
+     * Set or not legacy fields to export
+     *
+     * @param boolean $legacy_fields use legacy fields
+     */
+    public function setLegacyFields()
+    {
+        if (is_null($this->legacy)) {
+            $result = LengowConnector::queryApi(
+                'get',
+                '/v3.0/subscriptions',
+                $this->shopId
+            );
+            if (isset($result->legacy)) {
+                $this->legacy = (bool)$result->legacy;
+            } else {
+                $this->legacy = false;
+            }
+        }
+        LengowExport::$DEFAULT_FIELDS = $this->legacy ? $this->legacy_fields : $this->new_fields;
+    }
+
+    /**
      * Execute the export
      *
      * @return mixed
@@ -393,6 +413,8 @@ class LengowExport
                 )),
                 $this->log_output
             );
+            // set legacy fields option
+            $this->setLegacyFields();
             // get fields to export
             $export_fields = $this->getFields();
             // get products to be exported

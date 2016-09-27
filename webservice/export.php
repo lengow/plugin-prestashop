@@ -145,9 +145,7 @@ if (Tools::getIsset('language') || !is_null($language)) {
     $language_id = Context::getContext()->language->id;
 }
 // get legacy fields
-$legacy_fields = Tools::getIsset('legacy_fields')
-    ? (bool)Tools::getValue('legacy_fields')
-    : (bool)LengowConfiguration::get('LENGOW_EXPORT_LEGACY_ENABLED');
+$legacy_fields = Tools::getIsset('legacy_fields') ? (bool)Tools::getValue('legacy_fields') : null;
 // update export date
 $update_export_date = Tools::getIsset('update_export_date') ? (bool)Tools::getValue('update_export_date') : true;
 // See logs or not

@@ -15,7 +15,6 @@ it:
     jump_to_lengow: "Vai su Lengow"
     preprod_active: "Attiva Preproduzione"
     counter: "Periodo di prova: %{counter} giorno(s) a sinistra"
-    upgrade_account: "Aggiorna"
     order_overview: "Panoramica"
     order_parameter: "Parametro"
     help: "Aiuto"
@@ -48,14 +47,12 @@ it:
       subtitle_end_free_trial: "Hai raggiunto la fine del tuo periodo di prova!"
       first_description_end_free_trial: "Il tuo periodo di prova di 15 giorni su Lengow é scaduto. Che brutta notizia, ma il meglio deve ancora arrivare! Ci auguriamo che Lengow vi abbia aiutato a migliorare il vostro business."
       second_description_end_free_trial: "Il tuo account sarà sospeso fino a quando non sarà acquistata una nuova licenza. Tutte le pubblicazioni e indicizzazioni in corso saranno sospese"
-      third_description_end_free_trial: "Non dimenticare che questo account di prova sarà eliminato 30 giorni dopo la scandenza di quest'ultimo. Assicurati di effettuare l'upgrade per non perdere tutto il lavoro fatto."
       subtitle_bad_payer: "Il tuo account é stato temporaneamente chiuso"
       first_description_bad_payer: "Siamo spiacenti, purtroppo dobbiamo limitare temporaneamente l'accesso al tuo account perché il pagamento automatico non é andato a buon fine."
       second_description_bad_payer: "La pubblicazione del tuo catalogo é stata sospesa. Ti consigliamo di metterti in contatto con noi a"
       phone_bad_payer: "oppure telefonicamente al +39 02 94752876"
       third_description_bad_payer: "Ci auguriamo di lavorare di nuovo insieme un giorno."
       facturation_button: "Vedi le mie informazioni di fatturazione"
-      upgrade_account_button: "Ok! Sono pronto a fare l'upgrade!"
       refresh_action: "Aggiorna il mio account"
   product:
     screen:
@@ -202,14 +199,12 @@ it:
     screen:
       title: "Chiedi aiuto al nostro supporto tecnico!"
       contain_text_support: "Fai una domanda su Lengow oppure condividi il tuo feedback a"
-      mail_lengow_support: "support.lengow.zendesk@lengow.com."
-      mail_lengow_support_title: "Informazioni Account:"
-      mailto_subject: "PrestaShop Lengow Plugin"
+      link_lengow_support: "https://supportlengow.zendesk.com/hc/en-us/requests/new"
       need_some_help: "Hai bisogno d'aiuto ?"
       contain_text_support_hour: "Faremo il possibile per darti una risposta durante le ore di lavoro (dal Lunedi al Venerdi - 9h/18h)"
       find_answer: "Potresti trovare una risposta nella nostra  "
       link_prestashop_guide: "guida dedicata PrestaShop"
-      knowledge_link_url: "https://it.knowledgeowl.com/help/prestashop"
+      knowledge_link_url: "https://en.lengow.help/help/prestashop"
   legals:
     screen:
       simplified_company: "Società responsabilità limitata"
@@ -241,7 +236,6 @@ it:
     lengow_order_id_process_title: "Ordini in preparazione"
     lengow_order_id_shipped_title: "Ordine Spedizione"
     lengow_order_id_cancel_title: "Ordine cancellato"
-    lengow_order_id_shippedbymp_title: "Ordini marketplaces spediti"
     lengow_import_force_product_title: "Forzare i prodotti"
     lengow_import_force_product_legend: "Attiva questa opzione se vuoi fozare l'importazione sei tuoi prodotti non disponibili/inattivi"
     lengow_import_days_title: "Re-importa tutti gli ordini ricevuti dal:"

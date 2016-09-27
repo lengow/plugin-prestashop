@@ -188,13 +188,17 @@ class LengowSync
                 return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
             }
         }
-        // TODO call API for return a customer id or false
-        $result = true;
-        if ($result) {
-            // TODO call API with customer id parameter for return status account
+        $result = LengowConnector::queryApi(
+            'get',
+            '/v3.0/subscriptions'
+        );
+        if (isset($result->subscription)) {
             $status = array();
-            $status['type'] = 'free_trial';
-            $status['day'] = 10;
+            $status['type'] = $result->subscription->billing_offer->type;
+            $status['day'] = - round((strtotime(date("c")) - strtotime($result->subscription->renewal)) / 86400);
+            if ($status['day'] < 0) {
+                $status['day'] = 0;
+            }
             if ($status) {
                 LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS', Tools::JsonEncode($status));
                 LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE', date('Y-m-d H:i:s'));
@@ -233,7 +237,6 @@ class LengowSync
             if (!$account_id || in_array($account_id, $account_ids) || empty($account_id)) {
                 continue;
             }
-            // TODO test call API for return statistics
             $result = LengowConnector::queryApi(
                 'get',
                 '/v3.0/stats',
@@ -245,8 +248,9 @@ class LengowSync
                 )
             );
             if (isset($result->level0)) {
-                $return['total_order'] += $result->level0->revenue;
-                $return['nb_order'] += $result->level0->transactions;
+                $stats = $result->level0[0];
+                $return['total_order'] += $stats->revenue;
+                $return['nb_order'] += $stats->transactions;
                 $return['currency'] = $result->currency->iso_a3;
             }
             $account_ids[] = $account_id;
