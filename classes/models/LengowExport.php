@@ -235,6 +235,11 @@ class LengowExport
     protected $showInactiveProduct = false;
 
     /**
+     * Use legacy fields
+     */
+    protected $legacy = false;
+
+    /**
      * @var integer amount of products to export
      */
     protected $limit = 0;
@@ -301,8 +306,8 @@ class LengowExport
             : (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId)
         );
         $this->showInactiveProduct = (isset($params["inactive"]) ? (bool)$params["inactive"] : false);
-        $legacy_fields = (isset($params['legacy_fields']) ? (bool)$params['legacy_fields'] : false);
-        LengowExport::$DEFAULT_FIELDS = $legacy_fields ? $this->legacy_fields : $this->new_fields ;
+        $this->legacy = (isset($params['legacy_fields']) ? (bool)$params['legacy_fields'] : false);
+        LengowExport::$DEFAULT_FIELDS = $this->legacy ? $this->legacy_fields : $this->new_fields ;
         // See logs or not (only when stream = 0)
         if ($this->stream) {
             $this->log_output = false;
@@ -433,12 +438,11 @@ class LengowExport
     public function export($products, $fields, $shop)
     {
         $product_count = 0;
-        $file_feed = null;
         $this->feed = new LengowFeed(
             $this->stream,
             $this->format,
-            isset($shop->name) ? $shop->name : 'default',
-            $file_feed
+            $this->legacy,
+            isset($shop->name) ? $shop->name : 'default'
         );
         $this->feed->write('header', $fields);
         $is_first = true;

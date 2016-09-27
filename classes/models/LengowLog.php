@@ -72,24 +72,6 @@ class LengowLog extends LengowFile
     }
 
     /**
-     * Get log files links
-     *
-     * @return mixed
-     */
-    public static function getLinks()
-    {
-        $files = LengowLog::getFiles();
-        if (empty($files)) {
-            return false;
-        }
-        $logs = array();
-        foreach ($files as $file) {
-            $logs[] = $file->getLink();
-        }
-        return $logs;
-    }
-
-    /**
      * Get log files path
      *
      * @return mixed

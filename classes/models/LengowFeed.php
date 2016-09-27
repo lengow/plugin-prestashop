@@ -40,11 +40,6 @@ class LengowFeed
     const EOL = "\r\n";
 
     /**
-     * @var string name of file containing part of export (in cas of timeout)
-     */
-    public $part_file_name;
-
-    /**
      * @var LengowFile temporary export file
      */
     protected $file;
@@ -58,6 +53,11 @@ class LengowFeed
      * @var string feed format
      */
     protected $format;
+
+    /**
+     * @var boolean Use legacy fields
+     */
+    protected $legacy;
 
     /**
      * @var string export shop folder
@@ -89,18 +89,19 @@ class LengowFeed
      *
      * @param boolean $stream
      * @param string  $format
+     * @param boolean $legacy
      * @param string  $shop_name
-     * @param string  $part_file_name
+     *
      */
-    public function __construct($stream, $format, $shop_name = null, $part_file_name = null)
+    public function __construct($stream, $format, $legacy, $shop_name = null)
     {
         $this->stream = $stream;
         $this->format = $format;
-        $this->part_file_name = $part_file_name;
+        $this->legacy = $legacy;
         if (is_null($shop_name)) {
             $shop_name = Context::getContext()->shop->name;
         }
-        $this->shop_folder = LengowFeed::formatFields($shop_name, 'shop');
+        $this->shop_folder = $this->formatFields($shop_name, 'shop');
 
         if (!$this->stream) {
             $this->initExportFile();
@@ -124,11 +125,7 @@ class LengowFeed
                 );
             }
         }
-        if ($this->part_file_name) {
-            $file_name = $this->part_file_name;
-        } else {
-            $file_name = 'flux-'.Context::getContext()->language->iso_code.'-'.time().'.'.$this->format;
-        }
+        $file_name = 'flux-'.Context::getContext()->language->iso_code.'-'.time().'.'.$this->format;
         $this->file = new LengowFile($this->export_folder, $file_name);
     }
 
@@ -145,20 +142,20 @@ class LengowFeed
         switch ($type) {
             case 'header':
                 if ($this->stream) {
-                    header(LengowFeed::getHtmlHeader($this->format));
+                    header($this->getHtmlHeader());
                     if ($this->format == 'csv') {
                         header('Content-Disposition: attachment; filename=feed.csv');
                     }
                 }
-                $header = LengowFeed::getHeader($data, $this->format);
+                $header = $this->getHeader($data);
                 $this->flush($header);
                 break;
             case 'body':
-                $body = LengowFeed::getBody($data, $is_first, $max_character, $this->format);
+                $body = $this->getBody($data, $is_first, $max_character);
                 $this->flush($body);
                 break;
             case 'footer':
-                $footer = LengowFeed::getFooter($this->format);
+                $footer = $this->getFooter();
                 $this->flush($footer);
                 break;
         }
@@ -168,17 +165,16 @@ class LengowFeed
      * Return feed header
      *
      * @param array  $data   export data
-     * @param string $format feed format
      *
      * @return string
      */
-    public static function getHeader($data, $format = 'csv')
+    protected function getHeader($data)
     {
-        switch ($format) {
+        switch ($this->format) {
             case 'csv':
                 $header = '';
                 foreach ($data as $field) {
-                    $header .= LengowFeed::PROTECTION.LengowFeed::formatFields($field)
+                    $header .= LengowFeed::PROTECTION.$this->formatFields($field)
                         .LengowFeed::PROTECTION.LengowFeed::CSV_SEPARATOR;
                 }
                 return rtrim($header, LengowFeed::CSV_SEPARATOR).LengowFeed::EOL;
@@ -198,13 +194,12 @@ class LengowFeed
      * @param array   $data          feed data
      * @param boolean $is_first      is first product
      * @param integer $max_character max characters for yaml format
-     * @param string  $format        feed format
      *
      * @return string
      */
-    public static function getBody($data, $is_first, $max_character, $format = 'csv')
+    protected function getBody($data, $is_first, $max_character)
     {
-        switch ($format) {
+        switch ($this->format) {
             case 'csv':
                 $content = '';
                 foreach ($data as $value) {
@@ -214,7 +209,7 @@ class LengowFeed
             case 'xml':
                 $content = '<product>';
                 foreach ($data as $field => $value) {
-                    $field = LengowFeed::formatFields($field, $format);
+                    $field = $this->formatFields($field);
                     $content .= '<'.$field.'><![CDATA[' . $value . ']]></'.$field.'>'.LengowFeed::EOL;
                 }
                 $content .= '</product>'.LengowFeed::EOL;
@@ -223,7 +218,7 @@ class LengowFeed
                 $content = $is_first ? '' : ',';
                 $json_array = array();
                 foreach ($data as $field => $value) {
-                    $field = LengowFeed::formatFields($field, $format);
+                    $field = $this->formatFields($field);
                     $json_array[$field] = $value;
                 }
                 $content .= Tools::jsonEncode($json_array);
@@ -236,9 +231,9 @@ class LengowFeed
                 }
                 $content = '  '.LengowFeed::PROTECTION.'product'.LengowFeed::PROTECTION.':'.LengowFeed::EOL;
                 foreach ($data as $field => $value) {
-                    $field = LengowFeed::formatFields($field, $format);
+                    $field = $this->formatFields($field);
                     $content .= '    '.LengowFeed::PROTECTION.$field.LengowFeed::PROTECTION.':';
-                    $content .= LengowFeed::indentYaml($field, $max_character).(string)$value.LengowFeed::EOL;
+                    $content .= $this->indentYaml($field, $max_character).(string)$value.LengowFeed::EOL;
                 }
                 return $content;
         }
@@ -247,13 +242,11 @@ class LengowFeed
     /**
      * Return feed footer
      *
-     * @param string $format feed format
-     *
      * @return string
      */
-    public static function getFooter($format = 'csv')
+    protected function getFooter()
     {
-        switch ($format) {
+        switch ($this->format) {
             case 'xml':
                 return '</catalog>';
             case 'json':
@@ -333,13 +326,11 @@ class LengowFeed
     /**
      * Return HTML header according to the given format
      *
-     * @param string $format feed format
-     *
      * @return string
      */
-    public static function getHtmlHeader($format)
+    protected function getHtmlHeader()
     {
-        switch ($format) {
+        switch ($this->format) {
             case 'csv':
                 return 'Content-Type: text/csv; charset=UTF-8';
             case 'xml':
@@ -354,26 +345,40 @@ class LengowFeed
     /**
      * Format field names according to the given format
      *
-     * @param string $str    field name
-     * @param string $format feed format
+     * @param string $str field name
      *
      * @return string
      */
-    public static function formatFields($str, $format = 'csv')
+    protected function formatFields($str)
     {
-        switch ($format) {
+        switch ($this->format) {
             case 'csv':
-                return Tools::substr(
-                    Tools::strtoupper(
-                        preg_replace(
-                            '/[^a-zA-Z0-9_]+/',
-                            '',
-                            str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($str))
-                        )
-                    ),
-                    0,
-                    58
-                );
+                if ($this->legacy) {
+                    return Tools::substr(
+                        Tools::strtoupper(
+                            preg_replace(
+                                '/[^a-zA-Z0-9_]+/',
+                                '',
+                                str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($str))
+                            )
+                        ),
+                        0,
+                        58
+                    );
+                } else {
+                    return Tools::substr(
+                        Tools::strtolower(
+                            preg_replace(
+                                '/[^a-zA-Z0-9_]+/',
+                                '',
+                                str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($str))
+                            )
+                        ),
+                        0,
+                        58
+                    );
+                }
+                break;
             default:
                 return Tools::strtolower(
                     preg_replace(
@@ -393,7 +398,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected static function indentYaml($name, $maxsize)
+    protected function indentYaml($name, $maxsize)
     {
         $strlen = Tools::strlen($name);
         $spaces = '';
@@ -401,30 +406,5 @@ class LengowFeed
             $spaces .= ' ';
         }
         return $spaces;
-    }
-
-    /**
-     * Get file link
-     *
-     * @return string
-     */
-    public static function getLinks()
-    {
-        if (_PS_VERSION_ >= '1.5') {
-            $shop_name = Context::getContext()->shop->name;
-        } else {
-            $shop_name = 'default';
-        }
-        $sep = DIRECTORY_SEPARATOR;
-        $folder = LengowFeed::$LENGOW_EXPORT_FOLDER.$sep.LengowFeed::formatFields($shop_name, 'shop');
-        $files = LengowFile::getFilesFromFolder($folder);
-        if (empty($files)) {
-            return false;
-        }
-        $feeds = array();
-        foreach ($files as $file) {
-            $feeds[] = $file->getLink();
-        }
-        return $feeds;
     }
 }
