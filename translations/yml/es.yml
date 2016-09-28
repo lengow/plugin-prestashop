@@ -14,7 +14,7 @@ es:
     order: "Pedidos"
     jump_to_lengow: "Pasar a Lengow"
     preprod_active: "Modo de pre-producción"
-    counter: "Período de prueba: %{contador} día(s) izquierda."
+    counter: "Período de prueba: %{counter} día(s) izquierda."
     order_overview: "Visión de conjunto"
     order_parameter: "Ajustes"
     help: "Ayuda"
@@ -198,7 +198,6 @@ es:
   help:
     screen:
       title: "Obtener un poco de ayuda de tu equipo de ayuda!"
-      contain_text_support: "Pregúntanos lo que sea a Lengow o comparte tu parecer con"
       link_lengow_support: "https://supportlengow.zendesk.com/hc/en-us/requests/new"
       need_some_help: "¿Necesitas ayuda?"
       contain_text_support_hour: "Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria)."
@@ -334,4 +333,4 @@ es:
       check_cancel_and_reimport: "¿Realmente desea volver a importar el pedido?"
       synchronize_id: "Sincronizar ID"
       resend_action: "Reenvie la accion"
-      check_resend_action: "¿Realmente desea enviar la siguiente acción: ? % { Acción }"
+      check_resend_action: "¿Realmente desea enviar la siguiente acción: %{action} ?"

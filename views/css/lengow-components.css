@@ -16,6 +16,7 @@
 .lgw-box-link .lgw-box {
   top: 0;
   color: #555;
+  height: 300px;
   text-decoration: none;
   transition: top 100ms ease,
               box-shadow 100ms ease;

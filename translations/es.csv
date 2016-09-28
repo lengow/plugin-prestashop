@@ -10,7 +10,7 @@ menu.product|Productos
 menu.order|Pedidos
 menu.jump_to_lengow|Pasar a Lengow
 menu.preprod_active|Modo de pre-producción
-menu.counter|Período de prueba: %{contador} día(s) izquierda.
+menu.counter|Período de prueba: %{counter} día(s) izquierda.
 menu.order_overview|Visión de conjunto
 menu.order_parameter|Ajustes
 menu.help|Ayuda
@@ -177,7 +177,6 @@ global_setting.screen.plugin_deleted|¡Eliminar!
 global_setting.screen.setting_saving|Guardando...
 global_setting.screen.setting_saved|¡Guardado!
 help.screen.title|Obtener un poco de ayuda de tu equipo de ayuda!
-help.screen.contain_text_support|Pregúntanos lo que sea a Lengow o comparte tu parecer con
 help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|¿Necesitas ayuda?
 help.screen.contain_text_support_hour|Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria).
@@ -304,4 +303,4 @@ admin.order.cancel_and_reimport|Volver a importar el pedido
 admin.order.check_cancel_and_reimport|¿Realmente desea volver a importar el pedido?
 admin.order.synchronize_id|Sincronizar ID
 admin.order.resend_action|Reenvie la accion
-admin.order.check_resend_action|¿Realmente desea enviar la siguiente acción: ? % { Acción }
+admin.order.check_resend_action|¿Realmente desea enviar la siguiente acción: %{action} ?

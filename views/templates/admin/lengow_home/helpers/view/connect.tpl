@@ -52,7 +52,7 @@
         <div class="lgw-col-4">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                 <div class="lgw-box">
-                     <img src="/modules/lengow/views/img/home-orders.png" class="img-responsive">
+                    <img src="/modules/lengow/views/img/home-orders.png" class="img-responsive">
                     <h2>
                         {$locale->t('dashboard.screen.orders_title')|escape:'htmlall':'UTF-8'}
                         <span class="lgw-label lgw-label_red">{$total_pending_order|escape:'htmlall':'UTF-8'}</span>
@@ -64,7 +64,7 @@
         <div class="lgw-col-4">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                 <div class="lgw-box">
-                     <img src="/modules/lengow/views/img/home-settings.png" class="img-responsive">
+                    <img src="/modules/lengow/views/img/home-settings.png" class="img-responsive">
                     <h2>{$locale->t('dashboard.screen.settings_title')|escape:'htmlall':'UTF-8'}</h2>
                     <p>{$locale->t('dashboard.screen.settings_text')|escape:'htmlall':'UTF-8'}</p>
                 </div>
