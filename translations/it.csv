@@ -206,8 +206,6 @@ lengow_setting.lengow_export_out_stock_legend|Attiva questa opzione se vuoi espo
 lengow_setting.lengow_export_format_title|Esporta formato
 lengow_setting.lengow_export_file_enabled_title|Esporta in un file
 lengow_setting.lengow_export_file_enabled_legend|E' consigliato attivare questa opzione se avete 3.000 o piu' prodotti nel vostro flusso.
-lengow_setting.lengow_export_legacy_enabled_title|Esportare con legacy feed
-lengow_setting.lengow_export_legacy_enabled_legend|Compatibilità con la precedente versione di Lengow
 lengow_setting.lengow_last_export_title|Ultima esportazione 
 lengow_setting.lengow_order_id_process_title|Ordini in preparazione
 lengow_setting.lengow_order_id_shipped_title|Ordine Spedizione

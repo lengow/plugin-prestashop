@@ -44,7 +44,6 @@ switch ($action) {
         $form->postProcess(array(
             'LENGOW_SHOP_ACTIVE',
             'LENGOW_EXPORT_FILE_ENABLED',
-            'LENGOW_EXPORT_LEGACY_ENABLED',
             'LENGOW_IMPORT_FORCE_PRODUCT',
             'LENGOW_IMPORT_PROCESSING_FEE',
             'LENGOW_IMPORT_PREPROD_ENABLED',
@@ -106,7 +105,6 @@ require 'views/header.php';
         echo $form->buildInputs(array(
             'LENGOW_EXPORT_FORMAT',
             'LENGOW_EXPORT_FILE_ENABLED',
-            'LENGOW_EXPORT_LEGACY_ENABLED',
         ));
         echo '</fieldset>';
         echo '<fieldset><h3 class="start-block">'.$locale->t('toolbox.configuration.import_setting').'</h3>';

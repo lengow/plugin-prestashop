@@ -210,8 +210,6 @@ lengow_setting.lengow_export_out_stock_legend|Activate this option if you want t
 lengow_setting.lengow_export_format_title|Export the default format
 lengow_setting.lengow_export_file_enabled_title|Export in a file
 lengow_setting.lengow_export_file_enabled_legend|You should use this option if you have 3,000 products or more
-lengow_setting.lengow_export_legacy_enabled_title|Export with legacy feed
-lengow_setting.lengow_export_legacy_enabled_legend|Compatibility with old Lengow versions
 lengow_setting.lengow_last_export_title|Last export
 lengow_setting.lengow_order_id_process_title|Orders in preparation
 lengow_setting.lengow_order_id_shipped_title|Shipped orders

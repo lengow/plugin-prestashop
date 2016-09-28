@@ -102,14 +102,6 @@ class LengowConfiguration extends Configuration
                     'default_value' => 'csv',
                     'collection'    => $exportFormats,
                 ),
-                'LENGOW_EXPORT_LEGACY_ENABLED' => array(
-                    'type'          => 'checkbox',
-                    'readonly'      => false,
-                    'global'        => true,
-                    'label'         => $locale->t('lengow_setting.lengow_export_legacy_enabled_title'),
-                    'legend'        => $locale->t('lengow_setting.lengow_export_legacy_enabled_legend'),
-                    'default_value' => false,
-                ),
                 'LENGOW_EXPORT_FILE_ENABLED' => array(
                     'type'          => 'checkbox',
                     'readonly'      => false,

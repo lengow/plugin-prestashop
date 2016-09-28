@@ -230,8 +230,6 @@ es:
     lengow_export_format_title: "Exportar el formato por defecto"
     lengow_export_file_enabled_title: "Exportar en un archivo"
     lengow_export_file_enabled_legend: "Debes utilizar esta opción si tiene 3.000 o más productos"
-    lengow_export_legacy_enabled_title: "Exporte con el feed de origen"
-    lengow_export_legacy_enabled_legend: "Compatibilidad con anteriores versiones de Lengow"
     lengow_last_export_title: "Última exportación"
     lengow_order_id_process_title: "Pedidos en preparación"
     lengow_order_id_shipped_title: "Pedidos enviados"
