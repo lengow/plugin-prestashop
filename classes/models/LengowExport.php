@@ -373,8 +373,6 @@ class LengowExport
 
     /**
      * Set or not legacy fields to export
-     *
-     * @param boolean $legacy_fields use legacy fields
      */
     public function setLegacyFields()
     {
