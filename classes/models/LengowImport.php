@@ -153,15 +153,16 @@ class LengowImport
      * Construct the import manager
      *
      * @param array params optional options
-     * string    $marketplace_sku    lengow marketplace order id to import
-     * string    $marketplace_name   lengow marketplace name to import
-     * integer   $shop_id            Id shop for current import
-     * boolean   $force_product      force import of products
-     * boolean   $preprod_mode       preprod mode
-     * string    $date_from          starting import date
-     * string    $date_to            ending import date
-     * integer   $limit              number of orders to import
-     * boolean   $log_output         display log messages
+     * string  marketplace_sku     lengow marketplace order id to import
+     * string  marketplace_name    lengow marketplace name to import
+     * string  type                type of current import
+     * integer delivery_address_id Lengow delivery address id to import
+     * integer id_order_lengow     Lengow order id in Magento
+     * integer shop_id             shop id for current import
+     * integer days                import period
+     * integer limit               number of orders to import
+     * boolean log_output          display log messages
+     * boolean preprod_mode        preprod mode
      */
     public function __construct($params = array())
     {
@@ -213,7 +214,7 @@ class LengowImport
     }
 
     /**
-     * Excute import : fetch orders and import them
+     * Execute import : fetch orders and import them
      *
      * @return array
      */
