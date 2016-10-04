@@ -262,15 +262,25 @@ class LengowOrder extends Order
      * @param string  $marketplace_sku     Lengow order id
      * @param string  $marketplace         marketplace name
      * @param integer $delivery_address_id devivery address id
+     * @param string  $marketplace_legacy  old marketplace name for v2 compatibility
      *
      * @return mixed
      */
-    public static function getOrderIdFromLengowOrders($marketplace_sku, $marketplace, $delivery_address_id)
-    {
+    public static function getOrderIdFromLengowOrders(
+        $marketplace_sku,
+        $marketplace,
+        $delivery_address_id,
+        $marketplace_legacy
+    ) {
+        // V2 compatibility
+        $in = (is_null($marketplace_legacy)
+            ? '\''.pSQL(Tools::strtolower($marketplace)).'\''
+            : '\''.pSQL(Tools::strtolower($marketplace)).'\', \''.pSQL(Tools::strtolower($marketplace_legacy)).'\''
+        );
         $query = 'SELECT `id_order`, `delivery_address_id`,`id_flux` 
             FROM `'._DB_PREFIX_.'lengow_orders`
             WHERE `marketplace_sku` = \''.pSQL($marketplace_sku).'\'
-            AND `marketplace_name` = \''.pSQL(Tools::strtolower($marketplace)).'\'
+            AND `marketplace` IN ('.$in.')
             AND `order_process_state` != 0';
         $results = Db::getInstance()->executeS($query);
         if (count($results) == 0) {

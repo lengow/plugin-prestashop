@@ -237,8 +237,9 @@ class LengowImportOrder
         // recovery id if the command has already been imported
         $order_id = LengowOrder::getOrderIdFromLengowOrders(
             $this->marketplace_sku,
-            (string)$this->marketplace->name,
-            $this->delivery_address_id
+            $this->marketplace->name,
+            $this->delivery_address_id,
+            $this->marketplace->legacy_code
         );
         // update order state if already imported
         if ($order_id) {
