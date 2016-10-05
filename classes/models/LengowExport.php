@@ -30,6 +30,29 @@ class LengowExport
     public static $DEFAULT_FIELDS;
 
     /**
+     * All available params for export
+     */
+    public static $EXPORT_PARAMS = array(
+        'mode',
+        'format',
+        'stream',
+        'offset',
+        'limit',
+        'selection',
+        'out_of_stock',
+        'product_ids',
+        'variation',
+        'inactive',
+        'shop',
+        'currency',
+        'language',
+        'legacy_fields',
+        'log_output',
+        'update_export_date',
+        'get_params'
+    );
+
+    /**
      * New fields for v3
      */
     protected $new_fields = array(
@@ -769,6 +792,83 @@ class LengowExport
     public function getFileName()
     {
         return $this->feed->getFilename();
+    }
+
+    /**
+     * Get all export available parameters
+     *
+     * @return string
+     */
+    public function getExportParams()
+    {
+        $params = array();
+        foreach (self::$EXPORT_PARAMS as $param) {
+            switch ($param) {
+                case 'mode':
+                    $authorized_value = array( 'size', 'total' );
+                    $type             = 'string';
+                    $example          = 'size';
+                    break;
+                case 'format':
+                    $authorized_value = LengowFeed::$AVAILABLE_FORMATS;
+                    $type             = 'string';
+                    $example          = 'csv';
+                    break;
+                case 'shop':
+                    $available_shops = array();
+                    $shops = LengowShop::findAll(true);
+                    foreach ($shops as $shop) {
+                        $available_shops[] = $shop['id_shop'];
+                    }
+                    $authorized_value = $available_shops;
+                    $type             = 'integer';
+                    $example          = 1;
+                    break;
+                case 'currency':
+                    $available_currencies = array();
+                    $currencies = Currency::getCurrencies();
+                    foreach ($currencies as $currency) {
+                        $available_currencies[] = $currency['iso_code'];
+                    }
+                    $authorized_value = $available_currencies;
+                    $type             = 'string';
+                    $example          = 'EUR';
+                    break;
+                case 'language':
+                    $available_languages = array();
+                    $languages = Language::getLanguages();
+                    foreach ($languages as $language) {
+                        $available_languages[] = $language['iso_code'];
+                    }
+                    $authorized_value = $available_languages;
+                    $type             = 'string';
+                    $example          = 'fr';
+                    break;
+                case 'offset':
+                case 'limit':
+                    $authorized_value = 'all integers';
+                    $type             = 'integer';
+                    $example          = 100;
+                    break;
+                case 'product_ids':
+                    $authorized_value = 'all integers';
+                    $type             = 'string';
+                    $example          = '101,108,215';
+                    break;
+                default:
+                    $authorized_value = array( 0, 1 );
+                    $type             = 'integer';
+                    $example          = 1;
+                    break;
+            }
+            $params[ $param ] = array(
+                'authorized_values' => $authorized_value,
+                'type'              => $type,
+                'example'           => $example
+            );
+        }
+
+        return json_encode($params);
     }
 
     /**

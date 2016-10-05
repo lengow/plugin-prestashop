@@ -51,6 +51,7 @@ if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)
     }
 }
 // get params data
+$get_params = Tools::getIsset('get_params') ? (bool)Tools::getValue('get_params') : false;
 // get mode 
 $mode = (Tools::getIsset('mode') && (Tools::getValue('mode') == 'size' || Tools::getValue('mode') == 'total'))
     ? Tools::getValue('mode')
@@ -169,7 +170,9 @@ $export = new LengowExport(array(
     'log_output'         => $log_output,
 ));
 
-if ($mode == 'size') {
+if ($get_params) {
+    echo $export->getExportParams();
+} elseif ($mode == 'size') {
     echo $export->getTotalExportProduct();
 } elseif ($mode == 'total') {
     echo $export->getTotalProduct();
