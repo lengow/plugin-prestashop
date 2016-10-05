@@ -805,7 +805,7 @@ class LengowExport
         foreach (self::$EXPORT_PARAMS as $param) {
             switch ($param) {
                 case 'mode':
-                    $authorized_value = array( 'size', 'total' );
+                    $authorized_value = array('size', 'total');
                     $type             = 'string';
                     $example          = 'size';
                     break;
@@ -856,12 +856,12 @@ class LengowExport
                     $example          = '101,108,215';
                     break;
                 default:
-                    $authorized_value = array( 0, 1 );
+                    $authorized_value = array(0, 1);
                     $type             = 'integer';
                     $example          = 1;
                     break;
             }
-            $params[ $param ] = array(
+            $params[$param] = array(
                 'authorized_values' => $authorized_value,
                 'type'              => $type,
                 'example'           => $example
