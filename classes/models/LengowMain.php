@@ -287,7 +287,7 @@ class LengowMain
     }
 
     /**
-     * The shipping names options
+     * Get marketplace singleton
      *
      * @param string  $name    markeplace name
      * @param integer $id_shop Shop ID

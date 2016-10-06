@@ -335,7 +335,7 @@ class LengowImportOrder
                 LengowMain::log(
                     'Import',
                     LengowMain::setLogMessage('log.import.order_shipped_by_marketplace', array(
-                        'markeplace_name' => $this->marketplace->name
+                        'marketplace_name' => $this->marketplace->name
                     )),
                     $this->log_output,
                     $this->marketplace_sku

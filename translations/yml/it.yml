@@ -15,6 +15,7 @@ it:
     jump_to_lengow: "Vai su Lengow"
     preprod_active: "Attiva Preproduzione"
     counter: "Periodo di prova: %{counter} giorno(s) a sinistra"
+    upgrade_account: "Iscriviti"
     order_overview: "Panoramica"
     order_parameter: "Parametro"
     help: "Aiuto"
@@ -47,12 +48,14 @@ it:
       subtitle_end_free_trial: "Hai raggiunto la fine del tuo periodo di prova!"
       first_description_end_free_trial: "Il tuo periodo di prova di 15 giorni su Lengow é scaduto. Che brutta notizia, ma il meglio deve ancora arrivare! Ci auguriamo che Lengow vi abbia aiutato a migliorare il vostro business."
       second_description_end_free_trial: "Il tuo account sarà sospeso fino a quando non sarà acquistata una nuova licenza. Tutte le pubblicazioni e indicizzazioni in corso saranno sospese"
+      third_description_end_free_trial: "Non dimenticare che l'account di prova sarà eliminato dopo 30 giorni dalla fine del periodo di prova. Iscriviti in modo da non perdere il lavoro fatto fino ad ora sui tuoi canali."
       subtitle_bad_payer: "Il tuo account é stato temporaneamente chiuso"
       first_description_bad_payer: "Siamo spiacenti, purtroppo dobbiamo limitare temporaneamente l'accesso al tuo account perché il pagamento automatico non é andato a buon fine."
       second_description_bad_payer: "La pubblicazione del tuo catalogo é stata sospesa. Ti consigliamo di metterti in contatto con noi a"
       phone_bad_payer: "oppure telefonicamente al +39 02 94752876"
       third_description_bad_payer: "Ci auguriamo di lavorare di nuovo insieme un giorno."
       facturation_button: "Vedi le mie informazioni di fatturazione"
+      upgrade_account_button: "Ok, sono pronto per iscrivermi!"
       refresh_action: "Aggiorna il mio account"
   product:
     screen:
@@ -198,6 +201,8 @@ it:
   help:
     screen:
       title: "Chiedi aiuto al nostro supporto tecnico!"
+      contain_text_support: "Contattaci o condividi i tuoi feedback con"
+      title_lengow_support: "il Supporto Lengow"
       link_lengow_support: "https://supportlengow.zendesk.com/hc/en-us/requests/new"
       need_some_help: "Hai bisogno d'aiuto ?"
       contain_text_support_hour: "Faremo il possibile per darti una risposta durante le ore di lavoro (dal Lunedi al Venerdi - 9h/18h)"
@@ -233,6 +238,7 @@ it:
     lengow_order_id_process_title: "Ordini in preparazione"
     lengow_order_id_shipped_title: "Ordine Spedizione"
     lengow_order_id_cancel_title: "Ordine cancellato"
+    lengow_order_id_shippedbymp_title: "Importa ordini spediti dai marketplace"
     lengow_import_force_product_title: "Forzare i prodotti"
     lengow_import_force_product_legend: "Attiva questa opzione se vuoi fozare l'importazione sei tuoi prodotti non disponibili/inattivi"
     lengow_import_days_title: "Re-importa tutti gli ordini ricevuti dal:"
@@ -292,7 +298,7 @@ it:
       order_list_is_empty: "impossibile salvare l'ordine"
       carrier_shipping_address_no_country: "nessun trasportatore per indirizzo di spedizione del paese"
       no_default_carrier_for_country: "Devi selezionare un corriere di default per il paese: %{country_name}"
-      marketplace_not_present: "Lengow error: %{markeplace_name} non figura nella lista mercato"
+      marketplace_not_present: "Lengow error: %{marketplace_name} non figura nella lista mercato"
       order_line_required: "E' richiesta la linea d'ordine ma non puo' essere trovata nell'ordine"
       action_not_valid: "azione %{action} non valida"
       marketplace_action_not_present: "azione marketplace non disponibile"

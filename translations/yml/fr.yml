@@ -211,7 +211,7 @@ fr:
       knowledge_link_url: "https://fr.lengow.help/help/prestashop"
   legals:
     screen:
-      simplified_company: "Société par actions simplifiés"
+      simplified_company: "Société par actions simplifiées"
       social_capital: "Capital social :"
       cnil_declaration: "Déclaration CNIL :"
       company_registration_number: "RCS de Nantes :"
@@ -229,8 +229,8 @@ fr:
     lengow_export_selection_enabled_legend: "Activez cette option si vous ne voulez pas exporter tous les produits disponibles. Sélectionnez ensuite uniquement les produits à exporter."
     lengow_export_variation_enabled_title: "Exporter les produits déclinés"
     lengow_export_variation_enabled_legend: "Activez cette option si vous souhaitez exporter l'ensemble de vos déclinaisons produits"
-    lengow_export_out_stock_title: "Export des produits sans stock"
-    lengow_export_out_stock_legend: "Activez cette option si vous souhaitez exporter vos produits sans stock"
+    lengow_export_out_stock_title: "Export des produit hors stock"
+    lengow_export_out_stock_legend: "Activez cette option si vous souhaitez exporter vos produits hors stock"
     lengow_export_format_title: "Exportez le format par défaut"
     lengow_export_file_enabled_title: "Exportez dans un fichier"
     lengow_export_file_enabled_legend: "Il est conseillé d'activer cette option si vous avez 3 000 produits ou plus."
@@ -298,7 +298,7 @@ fr:
       order_list_is_empty: "La commande ne peut être sauvegardée."
       carrier_shipping_address_no_country: "L'adresse d'expédition ne contient pas de pays."
       no_default_carrier_for_country: "Vous devez sélectionner un transporteur par défaut pour le pays : %{country_name}."
-      marketplace_not_present: "Erreur Lengow : la place de marché %{markeplace_name} n’apparaît pas dans la liste des places de marché."
+      marketplace_not_present: "Erreur Lengow : la place de marché %{marketplace_name} n’apparaît pas dans la liste des places de marché."
       order_line_required: "Numéro de la ligne de commande requis, non trouvé dans la commande."
       action_not_valid: "L'action %{action} n'est pas valide."
       marketplace_action_not_present: "Les actions %{action} des places de marché ne sont pas présentes."

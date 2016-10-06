@@ -294,10 +294,10 @@ class LengowImport
                             LengowMain::log(
                                 'Import',
                                 LengowMain::setLogMessage('log.import.find_one_order', array(
-                                    'nb_order'        => $total_orders,
-                                    'marketplace_sku' => $this->marketplace_sku,
-                                    'markeplace_name' => $this->marketplace_name,
-                                    'account_id'      => $this->account_id
+                                    'nb_order'         => $total_orders,
+                                    'marketplace_sku'  => $this->marketplace_sku,
+                                    'marketplace_name' => $this->marketplace_name,
+                                    'account_id'       => $this->account_id
                                 )),
                                 $this->log_output
                             );
@@ -478,8 +478,8 @@ class LengowImport
                 LengowMain::log(
                     'Import',
                     LengowMain::setLogMessage('log.import.connector_get_order', array(
-                        'marketplace_sku' => $this->marketplace_sku,
-                        'markeplace_name' => $this->marketplace_name
+                        'marketplace_sku'  => $this->marketplace_sku,
+                        'marketplace_name' => $this->marketplace_name
                     )),
                     $this->log_output
                 );

@@ -298,7 +298,7 @@ en:
       order_list_is_empty: "order could not be saved"
       carrier_shipping_address_no_country: "shipping address doesn't contain the country"
       no_default_carrier_for_country: "you must select a default carrier for the country : %{country_name}"
-      marketplace_not_present: "Lengow error: %{markeplace_name} does not feature in the marketplace list"
+      marketplace_not_present: "Lengow error: %{marketplace_name} does not feature in the marketplace list"
       order_line_required: "order line is required but cannot be not found in order"
       action_not_valid: "action %{action} is not valid"
       marketplace_action_not_present: "marketplace actions %{action} are not present"

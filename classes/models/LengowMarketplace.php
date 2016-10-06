@@ -88,7 +88,7 @@ class LengowMarketplace
     public $carriers = array();
 
     /**
-    * Construct a new Markerplace instance with xml configuration.
+    * Construct a new Markerplace instance with marketplace API
     *
     * @param string  $name    The name of the marketplace
     * @param integer $id_shop ID Shop for connector
@@ -101,7 +101,7 @@ class LengowMarketplace
         if (!isset(self::$MARKETPLACES[$this->id_shop]->{$this->name})) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.marketplace_not_present', array(
-                    'markeplace_name' => $this->name
+                    'marketplace_name' => $this->name
                 ))
             );
         }

@@ -11,6 +11,7 @@ menu.order|Ordine
 menu.jump_to_lengow|Vai su Lengow
 menu.preprod_active|Attiva Preproduzione
 menu.counter|Periodo di prova: %{counter} giorno(s) a sinistra
+menu.upgrade_account|Iscriviti
 menu.order_overview|Panoramica
 menu.order_parameter|Parametro
 menu.help|Aiuto
@@ -38,12 +39,14 @@ status.screen.title_end_free_trial|Tutte le cose belle hanno una fine
 status.screen.subtitle_end_free_trial|Hai raggiunto la fine del tuo periodo di prova!
 status.screen.first_description_end_free_trial|Il tuo periodo di prova di 15 giorni su Lengow é scaduto. Che brutta notizia, ma il meglio deve ancora arrivare! Ci auguriamo che Lengow vi abbia aiutato a migliorare il vostro business.
 status.screen.second_description_end_free_trial|Il tuo account sarà sospeso fino a quando non sarà acquistata una nuova licenza. Tutte le pubblicazioni e indicizzazioni in corso saranno sospese
+status.screen.third_description_end_free_trial|Non dimenticare che l'account di prova sarà eliminato dopo 30 giorni dalla fine del periodo di prova. Iscriviti in modo da non perdere il lavoro fatto fino ad ora sui tuoi canali.
 status.screen.subtitle_bad_payer|Il tuo account é stato temporaneamente chiuso
 status.screen.first_description_bad_payer|Siamo spiacenti, purtroppo dobbiamo limitare temporaneamente l'accesso al tuo account perché il pagamento automatico non é andato a buon fine.
 status.screen.second_description_bad_payer|La pubblicazione del tuo catalogo é stata sospesa. Ti consigliamo di metterti in contatto con noi a
 status.screen.phone_bad_payer|oppure telefonicamente al +39 02 94752876
 status.screen.third_description_bad_payer|Ci auguriamo di lavorare di nuovo insieme un giorno.
 status.screen.facturation_button|Vedi le mie informazioni di fatturazione
+status.screen.upgrade_account_button|Ok, sono pronto per iscrivermi!
 status.screen.refresh_action|Aggiorna il mio account
 product.screen.nb_exported|prodotto esportato
 product.screen.nb_available|prodotto disponibile
@@ -177,6 +180,8 @@ global_setting.screen.plugin_deleted|Eliminato!
 global_setting.screen.setting_saving|Salvataggio
 global_setting.screen.setting_saved|Salvato!
 help.screen.title|Chiedi aiuto al nostro supporto tecnico!
+help.screen.contain_text_support|Contattaci o condividi i tuoi feedback con
+help.screen.title_lengow_support|il Supporto Lengow
 help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Hai bisogno d'aiuto ?
 help.screen.contain_text_support_hour|Faremo il possibile per darti una risposta durante le ore di lavoro (dal Lunedi al Venerdi - 9h/18h)
@@ -209,6 +214,7 @@ lengow_setting.lengow_last_export_title|Ultima esportazione
 lengow_setting.lengow_order_id_process_title|Ordini in preparazione
 lengow_setting.lengow_order_id_shipped_title|Ordine Spedizione
 lengow_setting.lengow_order_id_cancel_title|Ordine cancellato
+lengow_setting.lengow_order_id_shippedbymp_title|Importa ordini spediti dai marketplace
 lengow_setting.lengow_import_force_product_title|Forzare i prodotti
 lengow_setting.lengow_import_force_product_legend|Attiva questa opzione se vuoi fozare l'importazione sei tuoi prodotti non disponibili/inattivi
 lengow_setting.lengow_import_days_title|Re-importa tutti gli ordini ricevuti dal:
@@ -265,7 +271,7 @@ lengow_log.exception.error_lengow_webservice|Errore Lengow Webservice : %{error_
 lengow_log.exception.order_list_is_empty|impossibile salvare l'ordine
 lengow_log.exception.carrier_shipping_address_no_country|nessun trasportatore per indirizzo di spedizione del paese
 lengow_log.exception.no_default_carrier_for_country|Devi selezionare un corriere di default per il paese: %{country_name}
-lengow_log.exception.marketplace_not_present|Lengow error: %{markeplace_name} non figura nella lista mercato
+lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} non figura nella lista mercato
 lengow_log.exception.order_line_required|E' richiesta la linea d'ordine ma non puo' essere trovata nell'ordine
 lengow_log.exception.action_not_valid|azione %{action} non valida
 lengow_log.exception.marketplace_action_not_present|azione marketplace non disponibile

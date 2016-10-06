@@ -271,7 +271,7 @@ lengow_log.exception.error_lengow_webservice|Lengow webservice: %{error_code} - 
 lengow_log.exception.order_list_is_empty|order could not be saved
 lengow_log.exception.carrier_shipping_address_no_country|shipping address doesn't contain the country
 lengow_log.exception.no_default_carrier_for_country|you must select a default carrier for the country : %{country_name}
-lengow_log.exception.marketplace_not_present|Lengow error: %{markeplace_name} does not feature in the marketplace list
+lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} does not feature in the marketplace list
 lengow_log.exception.order_line_required|order line is required but cannot be not found in order
 lengow_log.exception.action_not_valid|action %{action} is not valid
 lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} are not present
@@ -338,16 +338,16 @@ log.import.preprod_mode_active|warning ! Pre-prod mode is activated
 log.import.start|## start %{type} import ##
 log.import.end|## end %{type} import ##
 log.import.start_for_shop|start import in shop %{name_shop} (%{id_shop})
-log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and markeplace: %{markeplace_name} with account ID: %{account_id}
+log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and markeplace: %{marketplace_name} with account ID: %{account_id}
 log.import.find_all_orders|%{nb_order} order(s) found with account ID: %{account_id}
 log.import.nb_order_imported|%{nb_order} order(s) imported
 log.import.nb_order_updated|%{nb_order} order(s) updated
 log.import.nb_order_with_error|%{nb_order} order(s) with errors
-log.import.connector_get_order|get order with order id: %{marketplace_sku} and marketplace: %{markeplace_name}
+log.import.connector_get_order|get order with order ID: %{marketplace_sku} and marketplace: %{marketplace_name}
 log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} for the account ID: %{account_id}
 log.import.error_already_created|%{decoded_message} (created on the %{date_message})
 log.import.external_id_exist|already imported in a PrestaShop with the order ID %{order_id}
-log.import.order_shipped_by_marketplace|order shipped by %{markeplace_name}
+log.import.order_shipped_by_marketplace|order shipped by %{marketplace_name}
 log.import.current_order_state_unavailable|current order's status [%{order_state_marketplace}] makes it unavailable to import for marketplace %{marketplace_name}
 log.import.order_successfully_imported|order successfully imported (ORDER ID %{order_id})
 log.import.import_failed|import failed - %{decoded_message}
@@ -449,7 +449,7 @@ toolbox.index.shop_product_total|Products available in the shop
 toolbox.index.shop_product_exported|Products exported in the shop
 toolbox.index.url_export|Export URL for this shop
 toolbox.order.shop|Shop
-toolbox.order.markeplace_name|Marketplace
+toolbox.order.marketplace_name|Marketplace
 toolbox.order.order_sku|Sku order
 toolbox.order.delivery_address_id|Delivery address ID
 toolbox.order.import_days|Import days

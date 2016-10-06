@@ -31,7 +31,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="select_mkp">{$locale->t('toolbox.order.markeplace_name')|escape:'htmlall':'UTF-8'}</label>
+            <label for="select_mkp">{$locale->t('toolbox.order.marketplace_name')|escape:'htmlall':'UTF-8'}</label>
             <span id="select_marketplace">{include file='./select_marketplace.tpl'}</span>
         </div>
         <div class="form-group">
