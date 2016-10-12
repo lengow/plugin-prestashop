@@ -95,10 +95,11 @@ class LengowFeedController extends LengowController
                     }
                     echo Tools::jsonEncode($data);
                     break;
-                case 'add_to_export':
+                case 'lengow_export_action':
                     $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
                     $select_all = isset($_REQUEST['select_all']) ? $_REQUEST['select_all'] : null;
+                    $export_action = isset($_REQUEST['export_action']) ? $_REQUEST['export_action'] : null;
                     $data = array();
                     if ($select_all == "true") {
                         $this->buildTable($shopId);
@@ -109,7 +110,11 @@ class LengowFeedController extends LengowController
                             $all[] = $value['id_product'];
                         }
                         foreach ($all as $id) {
-                            LengowProduct::publish($id, 1, $shopId);
+                            if ($export_action == 'lengow_add_to_export') {
+                                LengowProduct::publish($id, 1, $shopId);
+                            } else {
+                                LengowProduct::publish($id, 0, $shopId);
+                            }
                             foreach ($selection as $id => $v) {
                                 $data['product_id'][] = $id;
                             }
@@ -119,38 +124,11 @@ class LengowFeedController extends LengowController
                         foreach ($selection as $id => $v) {
                             // This line is useless, but Prestashop validator require it
                             $v = $v;
-                            LengowProduct::publish($id, 1, $shopId);
-                            $data['product_id'][] = $id;
-                        }
-                        $data = array_merge($data, $this->reloadTotal($shopId));
-                    } else {
-                        $data['message'] = $this->locale->t('product.screen.no_product_selected');
-                    }
-                    echo Tools::jsonEncode($data);
-                    break;
-                case 'remove_from_export':
-                    $shopId = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
-                    $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
-                    $select_all = isset($_REQUEST['select_all']) ? $_REQUEST['select_all'] : null;
-                    $data = array();
-                    if ($select_all == "true") {
-                        $this->buildTable($shopId);
-                        $sql = $this->list->buildQuery(false, true);
-                        $db = Db::getInstance()->executeS($sql);
-                        $all = array();
-                        foreach ($db as $value) {
-                            $all[] = $value['id_product'];
-                        }
-                        foreach ($all as $id) {
-                            LengowProduct::publish($id, 0, $shopId);
-                            foreach ($selection as $id => $v) {
-                                $data['product_id'][] = $id;
+                            if ($export_action == 'lengow_add_to_export') {
+                                LengowProduct::publish($id, 1, $shopId);
+                            } else {
+                                LengowProduct::publish($id, 0, $shopId);
                             }
-                        }
-                        $data = array_merge($data, $this->reloadTotal($shopId));
-                    } elseif ($selection) {
-                        foreach ($selection as $id => $v) {
-                            LengowProduct::publish($id, 0, $shopId);
                             $data['product_id'][] = $id;
                         }
                         $data = array_merge($data, $this->reloadTotal($shopId));
@@ -510,6 +488,8 @@ class LengowFeedController extends LengowController
                 data-message="'.$this->locale->t('product.screen.remove_confirmation', array(
                     'nb' => $this->list->getTotal()
                 )).'"
+                data-action="lengow_export_action"
+                data-export-action="lengow_remove_from_export"
                 class="lgw-btn lgw-btn-red lengow_remove_from_export">
                 <i class="fa fa-minus"></i> '.$this->locale->t('product.screen.remove_from_export').'</a>';
             $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
@@ -517,6 +497,8 @@ class LengowFeedController extends LengowController
                 data-message="'.$this->locale->t('product.screen.add_confirmation', array(
                     'nb' => $this->list->getTotal()
                 )).'"
+                data-action="lengow_export_action"
+                data-export-action="lengow_add_to_export"
                 class="lgw-btn lengow_add_to_export">
                 <i class="fa fa-plus"></i> '.$this->locale->t('product.screen.add_from_export').'</a>';
             $html.='<div class="lengow_select_all_shop lgw-container" style="display:none;">';
