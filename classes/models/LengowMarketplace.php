@@ -315,6 +315,8 @@ class LengowMarketplace
             } else {
                 $all_args = array();
             }
+            // get delivery address for carrier, shipping method and tracking url
+            $deliveryAddress = new Address($order->id_address_delivery);
             foreach ($all_args as $arg) {
                 switch ($arg) {
                     case 'tracking_number':
@@ -328,10 +330,10 @@ class LengowMarketplace
                         } else {
                             $tracking_number = $order->shipping_number;
                         }
-                        $params['tracking_number'] = $tracking_number;
+                        $params[$arg] = $tracking_number;
                         break;
                     case 'carrier':
-                        $deliveryAddress = new Address($order->id_address_delivery);
+                    case 'shipping_method':
                         if (!isset($deliveryAddress->id_country) || $deliveryAddress->id_country == 0) {
                             if (isset($actions['optional_args']) && in_array('carrier', $actions['optional_args'])) {
                                 continue;
@@ -340,29 +342,13 @@ class LengowMarketplace
                                 LengowMain::setLogMessage('lengow_log.exception.no_delivery_country_in_order')
                             );
                         }
-                        $params['carrier'] = LengowCarrier::getMarketplaceCarrier(
-                            $order->id_carrier,
-                            $deliveryAddress->id_country
-                        );
-                        if (!$params['carrier']) {
-                            if (isset($actions['optional_args']) && in_array('carrier', $actions['optional_args'])) {
-                                continue;
-                            }
-                            if ($order->lengow_carrier != '') {
-                                $countryName = Country::getNameById(
-                                    Context::getContext()->language->id,
-                                    $deliveryAddress->id_country
-                                );
-                                throw new LengowException(
-                                    LengowMain::setLogMessage('lengow_log.exception.match_carrier_with_country', array(
-                                        'carrier_name' => $order->lengow_carrier,
-                                        'country_name' => $countryName
-                                    ))
-                                );
-                            }
+                        if ($order->lengow_carrier != '') {
+                            $carrier_name = (string) $order->lengow_carrier;
+                        } else {
                             $carrier = new Carrier($order->id_carrier);
-                            $params['carrier'] = $carrier->name;
+                            $carrier_name = $carrier->name;
                         }
+                        $params[$arg] = $carrier_name;
                         break;
                     case 'tracking_url':
                         if (_PS_VERSION_ >= '1.5') {
@@ -376,12 +362,19 @@ class LengowMarketplace
                             $tracking_number = $order->shipping_number;
                         }
                         if ($tracking_number != '') {
-                            $carrier = new Carrier($order->id_carrier);
-                            $params['tracking_url'] = str_replace('@', $tracking_number, $carrier->url);
+                            $id_carrier = LengowCarrier::getActiveCarrierByCarrierId(
+                                $order->id_carrier,
+                                $deliveryAddress->id_country
+                            );
+                            $carrier = new Carrier($id_carrier);
+                            $params[$arg] = str_replace('@', $tracking_number, $carrier->url);
                         }
                         break;
                     case 'shipping_price':
-                        $params['shipping_price'] = $order->total_shipping;
+                        $params[$arg] = $order->total_shipping;
+                        break;
+                    case 'shipping_date':
+                        $params[$arg] = date('c');
                         break;
                     default:
                         break;

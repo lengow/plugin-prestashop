@@ -30,14 +30,12 @@
             return false;
         });
 
-
         $('#lengow_order_wrapper').on('click', '.lengow_form_table .table_order', function () {
             $('#lengow_order_wrapper .lengow_form_table input[name="order_value"]').val($(this).attr('data-order'));
             $('#lengow_order_wrapper .lengow_form_table input[name="order_column"]').val($(this).attr('data-column'));
             $('#lengow_order_wrapper .lengow_form_table').submit();
             return false;
         });
-        reload_table_js();
 
         $('#lengow_order_wrapper').on('submit', '.lengow_form_table', function () {
             var href = $(this).attr('data-href');
@@ -55,6 +53,7 @@
             });
             return false;
         });
+
         $('#lengow_order_wrapper').on('click', '.lengow_select_all', function () {
             if ($(this).prop('checked')) {
                 $('#table_order tbody .lengow_selection').prop('checked', true);
@@ -71,6 +70,7 @@
                 $('#lengow_order_wrapper .lengow_toolbar a').hide();
             }
         });
+
         $('#lengow_order_wrapper').on('click', '.lengow_selection', function () {
             var id_shop = $(this).parents('table').attr('id').split('_')[2];
             $('#lengow_order_wrapper .lengow_toolbar a').show();
@@ -90,6 +90,7 @@
                 $('#lengow_order_wrapper .lengow_toolbar a').hide();
             }
         });
+
         $('#lengow_order_wrapper').on('click', '.lengow_re_import, .lengow_re_send', function () {
             var href = $(this).data('href');
             var action = $(this).data('action');
@@ -238,6 +239,7 @@
                 });
             }
         });
+
         $('#lengow_order_wrapper').on('click', '#table_order td.link', function() {
             var link = $(this).parents('tr').find('td.reference a');
             if (link.length > 0){
@@ -247,7 +249,6 @@
         });
 
         // UPDATE BY SELECT
-
         $('#lengow_order_table_wrapper').on('change', 'thead select', function(){
             lengow_jquery('#lengow_order_wrapper .lengow_form_table').submit();
         });
@@ -265,11 +266,13 @@
           lengow_jquery('#lengow_order_wrapper .lengow_form_table').submit();
         }
 
-        // $('.lengow_table').on('click', '.table_row td:not(.no-link)', function(){
-        //     var url = $(this).closest('.table_row').find('.reference a').attr('href');
-        //     window.open(url, '_blank');
-        //     return false;
-        // });
+        $('.lengow_table').on('click', '.table_row td:not(.no-link)', function(){
+            var url = $(this).closest('.table_row').find('.reference a').attr('href');
+            if (url) {
+               window.open(url, '_blank'); 
+            };
+            return false;
+        });
 
         // Table header filters
         pluginsRender();

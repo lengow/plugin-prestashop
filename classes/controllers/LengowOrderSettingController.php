@@ -52,7 +52,6 @@ class LengowOrderSettingController extends LengowController
                 $marketplace_carriers[$row['id_country']][]= $row;
             }
         }
-        $carriers = LengowCarrier::getActiveCarriers();
         $form = new LengowConfigurationForm(array("fields" => LengowConfiguration::getKeys()));
         $matching = $form->buildInputs(array(
             'LENGOW_ORDER_ID_PROCESS',
@@ -71,12 +70,10 @@ class LengowOrderSettingController extends LengowController
         $this->context->smarty->assign('default_country', $default_country);
         $this->context->smarty->assign('countries', $countries);
         $this->context->smarty->assign('cron_param', $cron_param);
-        $this->context->smarty->assign('carriers', $carriers);
         $this->context->smarty->assign('defaultCarrierCountries', $defaultCarrierCountries);
         $this->context->smarty->assign('listCarrierByCountry', $listCarrierByCountry);
         $this->context->smarty->assign('marketplace_carriers', $marketplace_carriers);
         $this->context->smarty->assign('id_countries', $id_countries);
-        $this->context->smarty->assign('listCarrier', $listCarrier);
         $this->context->smarty->assign('matching', $matching);
         $this->context->smarty->assign('import_params', $import_params);
         parent::display();
@@ -105,7 +102,6 @@ class LengowOrderSettingController extends LengowController
                 $id_country = Tools::getValue('id_country');
                 LengowCarrierCountry::insert($id_country);
                 LengowCarrier::insert($id_country);
-                $carriers = LengowCarrier::getActiveCarriers($id_country);
                 $countries = LengowCarrierCountry::getCountries();
                 $mkp_carriers = LengowCarrier::getListMarketplaceCarrier();
                 $marketplace_carriers = array();
@@ -131,7 +127,6 @@ class LengowOrderSettingController extends LengowController
                 }
                 $this->context->smarty->assign('defaultCarrierCountries', $defaultCarrierCountries);
                 $this->context->smarty->assign('listCarrierByCountry', $listCarrierByCountry);
-                $this->context->smarty->assign('carriers', $carriers);
                 $this->context->smarty->assign('carrierItem', $carrierItem);
                 $this->context->smarty->assign('countries', $countries);
                 $this->context->smarty->assign('marketplace_carriers', $marketplace_carriers);

@@ -718,11 +718,9 @@ class LengowPaymentModule extends PaymentModule
                     $message->id_order = (int)$order->id;
                     $message->update();
                 }
-
-                // Hook new order
+                
                 $orderStatus = new OrderState((int)$id_order_state, (int)$order->id_lang);
                 if (Validate::isLoadedObject($orderStatus)) {
-                    Hook::newOrder($this->context->cart, $order, $this->context->customer, $currency, $orderStatus);
                     $products = $this->context->cart->getProducts();
                     foreach ($products as $product) {
                         if ($orderStatus->logable) {

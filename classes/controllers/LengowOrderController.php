@@ -218,6 +218,20 @@ class LengowOrderController extends LengowController
                     $prestashop_order_controller = $lengow_link->getAbsoluteAdminLink('AdminOrders', false, true);
                     $order_url = $prestashop_order_controller.'&id_order='.$id_order.'&vieworder';
                     Tools::redirectAdmin($order_url);
+                    break;
+                case 'add_tracking':
+                    $id_order = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
+                    $tracking_number = isset($_REQUEST['tracking_number']) ? $_REQUEST['tracking_number'] : '';
+                    if ($tracking_number != '' && _PS_VERSION_ < '1.5' && $id_order > 0) {
+                        $order = new Order($id_order);
+                        $order->shipping_number = $tracking_number;
+                        $order->update();
+                    }
+                    $lengow_link = new LengowLink();
+                    $prestashop_order_controller = $lengow_link->getAbsoluteAdminLink('AdminOrders', false, true);
+                    $order_url = $prestashop_order_controller.'&id_order='.$id_order.'&vieworder';
+                    Tools::redirectAdmin($order_url);
+                    break;
             }
             exit();
         }
@@ -230,9 +244,9 @@ class LengowOrderController extends LengowController
     {
         $warning_messages = array();
         $id_default_country = Configuration::get('PS_COUNTRY_DEFAULT');
-        $list_carriers = LengowCarrierCountry::findByCountry($id_default_country);
+        $default_carrier = LengowCarrier::getDefaultCarrier($id_default_country);
         $lengow_link = new LengowLink();
-        if (!$list_carriers || is_null($list_carriers['id_carrier'])) {
+        if (!$default_carrier) {
             $warning_messages[] = $this->locale->t(
                 'order.screen.no_carrier_warning_message',
                 array('url' => $lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting'))
@@ -403,6 +417,7 @@ class LengowOrderController extends LengowController
         if ($this->toolbox) {
             $fields_list['extra'] = array(
                 'title'             => $this->locale->t('order.table.extra'),
+                'class'             => 'no-link',
                 'type'              => 'text',
                 'display_callback'  => 'LengowOrderController::displayLengowExtra'
             );

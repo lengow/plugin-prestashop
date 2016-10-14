@@ -550,16 +550,6 @@ class LengowProduct extends Product
     }
 
     /**
-     * Get features of current product
-     *
-     * @return array All features
-     */
-    public function getFeatures()
-    {
-        return $this->features;
-    }
-
-    /**
      * Make the attributes of current product
      */
     public function makeAttributes()

@@ -280,7 +280,7 @@ class LengowOrder extends Order
         $query = 'SELECT `id_order`, `delivery_address_id`,`id_flux` 
             FROM `'._DB_PREFIX_.'lengow_orders`
             WHERE `marketplace_sku` = \''.pSQL($marketplace_sku).'\'
-            AND `marketplace` IN ('.$in.')
+            AND `marketplace_name` IN ('.$in.')
             AND `order_process_state` != 0';
         $results = Db::getInstance()->executeS($query);
         if (count($results) == 0) {
@@ -949,6 +949,19 @@ class LengowOrder extends Order
                 || $this->getCurrentState() == LengowMain::getOrderState('canceled')
             )
         ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if can add tracking
+     *
+     * @return boolean
+     */
+    public function canAddTracking()
+    {
+        if (_PS_VERSION_ < '1.5' && $this->shipping_number == '') {
             return true;
         }
         return false;

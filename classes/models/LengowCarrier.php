@@ -40,98 +40,6 @@ class LengowCarrier extends Carrier
     const COMPATIBILITY_KO = -1;
 
     /**
-     * Returns carrier id according to the module name given
-     *
-     * @param string        $module_name      Module name
-     * @param integer       $id_lang          lang id
-     * @param LengowAddress $shipping_address Lengow Address
-     *
-     * @return integer carrier id
-     */
-    public static function getIdByModuleName($module_name, $id_lang, $shipping_address)
-    {
-        $country = new Country($shipping_address->id_country);
-        $id_zone = (integer)$country->id_zone;
-
-        $module_name = Tools::strtolower(str_replace(' ', '', $module_name));
-        if ($module_name == 'laposte') {
-            $module_name = 'socolissimo';
-        }
-        if (strpos($module_name, 'mondialrelay') !== false || strpos($module_name, 'mondialrelais') !== false) {
-            $module_name = 'mondialrelay';
-        }
-
-        $carrier_list = self::getCarriers($id_lang, true, false, $id_zone, null, self::ALL_CARRIERS);
-        $id_carriers = array();
-        foreach ($carrier_list as $c) {
-            if (Tools::strtolower(str_replace(' ', '', $c['external_module_name'])) == $module_name) {
-                $id_carriers[] = $c['id_carrier'];
-            }
-        }
-        if (count($id_carriers) > 0) {
-            if ($module_name == 'mondialrelay') {
-                $sql = 'SELECT `id_carrier` FROM `'._DB_PREFIX_.'mr_method`';
-                $sql .= empty($shipping_address->id_relay)
-                    ? ' WHERE `dlv_mode` = \'LD1\''
-                    : ' WHERE `dlv_mode` = \'24R\'';
-                $carriers = Db::getInstance()->executeS($sql);
-                foreach ($carriers as $carrier) {
-                    if (in_array($carrier['id_carrier'], $id_carriers)) {
-                        return $carrier['id_carrier'];
-                    }
-                }
-            }
-            return $id_carriers[0];
-        }
-    }
-
-    /**
-     * Get carrier id for a given name
-     *
-     * @param string  $name    Carrier name
-     * @param integer $id_lang lang id
-     *
-     * @return mixed
-     */
-    public static function getIdByCarrierName($name, $id_lang)
-    {
-        $name = Tools::strtolower(str_replace(' ', '', $name));
-        foreach (self::getCarriers($id_lang, true, false, false, null, self::ALL_CARRIERS) as $c) {
-            if (Tools::strtolower(str_replace(' ', '', $c['name'])) == $name) {
-                return $c['id_carrier'];
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns the carrier received from the marketplace and returns the matched prestashop carrier if found
-     *
-     * @param string            $carrier_code
-     * @param LengowMarketplace $marketplace
-     * @param integer           $id_lang
-     * @param LengowAddress     $shipping_address
-     *
-     * @return integer carrier id
-     */
-    public static function matchCarrier($carrier_code, $marketplace, $id_lang, $shipping_address)
-    {
-        $id_carrier = null;
-        if ($carrier_name = $marketplace->getCarrierByCode($carrier_code)) {
-            $id_carrier = self::getIdByCarrierName($carrier_name, $id_lang);
-            if (!$id_carrier) {
-                $id_carrier = self::getIdByModuleName($carrier_name, $id_lang, $shipping_address);
-            }
-        } else {
-            $id_carrier = self::getIdByCarrierName($carrier_code, $id_lang);
-            if (!$id_carrier) {
-                $id_carrier = self::getIdByModuleName($carrier_code, $id_lang, $shipping_address);
-            }
-        }
-        return $id_carrier;
-    }
-
-    /**
      * Ensure carrier compatibility with SoColissimo and MondialRelay Modules
      *
      * @param integer       $id_customer      customer id
@@ -381,41 +289,22 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * Get Marketplace By Carrier And Country
-     *
-     * @param integer $id_carrier
-     * @param integer $id_country
-     *
-     * @return mixed
-     */
-    public static function getMarketplaceCarrier($id_carrier, $id_country)
-    {
-        //Find in lengow marketplace carrier
-        $sql = 'SELECT marketplace_carrier_sku FROM '._DB_PREFIX_.'lengow_marketplace_carrier lmc
-        WHERE id_country = '.(int)$id_country.' AND id_carrier ='.(int)$id_carrier;
-        $row = Db::getInstance()->getRow($sql);
-        if ($row) {
-            return $row['marketplace_carrier_sku'];
-        }
-    }
-
-    /**
-     * Get Marketplace By Carrier And Country
+     * Get Id Carrier By Marketplace Carrier Sku And Country
      *
      * @param string  $marketplace_carrier_sku
      * @param integer $id_country
      *
      * @return mixed
      */
-    public static function getMarketplaceByCarrierSku($marketplace_carrier_sku, $id_country)
+    public static function getIdCarrierByMarketplaceCarrierSku($marketplace_carrier_sku, $id_country)
     {
         if ($marketplace_carrier_sku != '') {
-            //Find in lengow marketplace carrier
+            // find in lengow marketplace carrier
             $sql = 'SELECT id_carrier FROM '._DB_PREFIX_.'lengow_marketplace_carrier lmc
             WHERE id_country = '.(int)$id_country.' AND marketplace_carrier_sku = "'.pSQL($marketplace_carrier_sku).'"';
             $row = Db::getInstance()->getRow($sql);
             if ($row) {
-                return $row['id_carrier'];
+                return LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], (int)$id_country);
             }
         }
         return false;
@@ -554,54 +443,64 @@ class LengowCarrier extends Carrier
                     INNER JOIN '._DB_PREFIX_.'country co ON (co.id_zone = cz.id_zone)
                     WHERE c.active = 1 AND deleted = 0 AND co.id_country = '.(int)$id_country;
         } else {
-            $sql = 'SELECT id_carrier, name FROM '._DB_PREFIX_.'carrier WHERE active = 1 AND deleted=0';
+            $sql = 'SELECT id_carrier, id_reference, name FROM '._DB_PREFIX_.'carrier WHERE active = 1 AND deleted = 0';
         }
         $collection = Db::getInstance()->ExecuteS($sql);
         foreach ($collection as $row) {
-            $carriers[$row['id_carrier']] = $row['name'];
+            if (_PS_VERSION_ < '1.5') {
+                $carriers[$row['id_carrier']] = $row['name'];
+            } else {
+                $carriers[$row['id_reference']] = $row['name'];
+            }
+            
         }
         return $carriers;
     }
 
 
     /**
-     * Get active carrier
+     * Get Default carrier
      *
-     * @param integer $id_country
-     * @param boolean $force_country
+     * @param mixed $id_country
      *
-     * @return Carrier
+     * @return mixed
      */
-    public static function getActiveCarrier($id_country = null, $force_country = false)
+    public static function getDefaultCarrier($id_country = false)
     {
-        if (!$id_country && Configuration::get('PS_COUNTRY_DEFAULT') && !$force_country) {
-            $sql = 'SELECT lcc.id_carrier FROM '._DB_PREFIX_.'lengow_carrier_country lcc
-            INNER JOIN '._DB_PREFIX_.'carrier c ON (c.id_carrier = lcc.id_carrier AND c.active = 1 AND deleted =0)
-            WHERE lcc.id_country = '.(int)Configuration::get('PS_COUNTRY_DEFAULT');
-            $row = Db::getInstance()->getRow($sql);
-            $carrier = new Carrier($row["id_carrier"]);
-            if ($carrier->id) {
-                return $carrier;
-            }
-        }
+        $id_carrier = false;
+        // get default id with lengow tables for a specific country id
         if ($id_country) {
-            $sql = 'SELECT lcc.id_carrier FROM '._DB_PREFIX_.'lengow_carrier_country lcc
-            INNER JOIN '._DB_PREFIX_.'carrier c ON (c.id_carrier = lcc.id_carrier AND c.active = 1 AND deleted =0)
-            WHERE lcc.id_country = '.(int)$id_country;
+            $sql = 'SELECT id_carrier FROM '._DB_PREFIX_.'lengow_carrier_country
+                WHERE id_country = '.(int)$id_country;
             $row = Db::getInstance()->getRow($sql);
-            $carrier = new Carrier($row["id_carrier"]);
-            if ($carrier->id) {
-                return $carrier;
+            if ($row) {
+                // get newest carrier id
+                $id_carrier = LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], $id_country);
             }
-        }
-        if (!$id_country && !$force_country) {
-            $id_country = Configuration::get('PS_COUNTRY_DEFAULT');
-            $sql = 'SELECT * FROM '._DB_PREFIX_.'carrier c
+        } else {
+            $id_country = (int)Configuration::get('PS_COUNTRY_DEFAULT');
+            // get default id with lengow tables without country id
+            $sql = 'SELECT id_carrier FROM '._DB_PREFIX_.'lengow_carrier_country
+                WHERE id_country = '.$id_country;
+            $row = Db::getInstance()->getRow($sql);
+            if ($row) {
+                // get newest carrier id
+                $id_carrier = LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], $id_country);
+            }
+            // get first carrier id with prestashop tables for default country
+            if (!$id_carrier) {
+                $sql = 'SELECT * FROM '._DB_PREFIX_.'carrier c
                     INNER JOIN '._DB_PREFIX_.'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
                     INNER JOIN '._DB_PREFIX_.'country co ON (co.id_zone = cz.id_zone)
-                    WHERE c.active = 1 AND deleted = 0 AND co.id_country = '.(int)$id_country;
-            $row = Db::getInstance()->getRow($sql);
-            $carrier = new Carrier($row["id_carrier"]);
+                    WHERE c.active = 1 AND deleted = 0 AND co.id_country = '.$id_country;
+                $row = Db::getInstance()->getRow($sql);
+                if ($row) {
+                    $id_carrier = (int)$row["id_carrier"];
+                }
+            }
+        }
+        if ($id_carrier) {
+            $carrier = new Carrier($id_carrier);
             if ($carrier->id) {
                 return $carrier;
             }
@@ -615,33 +514,36 @@ class LengowCarrier extends Carrier
      * @param integer $id_carrier
      * @param integer $id_country
      *
-     * @return boolean
+     * @return mixed
      */
     public static function getActiveCarrierByCarrierId($id_carrier, $id_country)
     {
-        if (_PS_VERSION_ < '1.5') {
-            return $id_carrier;
-        }
+        // search with id_carrier for Prestashop 1.4 and id_reference for other versions
+        $id_reference = _PS_VERSION_ < '1.5' ? 'c.id_carrier' : 'c.id_reference';
         $sql = 'SELECT * FROM '._DB_PREFIX_.'carrier c
-                    INNER JOIN '._DB_PREFIX_.'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
-                    INNER JOIN '._DB_PREFIX_.'country co ON (co.id_zone = cz.id_zone)
-                    WHERE c.id_carrier = '.(int)$id_carrier.' AND co.id_country = '.(int)$id_country;
+            INNER JOIN '._DB_PREFIX_.'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
+            INNER JOIN '._DB_PREFIX_.'country co ON (co.id_zone = cz.id_zone)
+            WHERE '.$id_reference.' = '.(int)$id_carrier.' AND co.id_country = '.(int)$id_country;
         $row = Db::getInstance()->getRow($sql);
         if ($row) {
             if ((int)$row['deleted'] == 1) {
+                if (_PS_VERSION_ < '1.5') {
+                    return false;
+                }
                 $sql = 'SELECT * FROM '._DB_PREFIX_.'carrier c
                     INNER JOIN '._DB_PREFIX_.'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
                     INNER JOIN '._DB_PREFIX_.'country co ON (co.id_zone = cz.id_zone)
-                    WHERE c.deleted = 0 AND c.active = 1 AND co.id_country = '.(int)$id_country. ' AND id_reference= '.
-                    (int)$row['id_reference'] ;
+                    WHERE c.deleted = 0 AND c.active = 1 AND co.id_country = '.(int)$id_country
+                    . ' AND id_reference= '.(int)$row['id_reference'] ;
                 $row2 = Db::getInstance()->getRow($sql);
                 if ($row2) {
-                    return $row2['id_carrier'];
+                    return (int)$row2['id_carrier'];
                 }
             } else {
-                return $row['id_carrier'];
+                return (int)$row['id_carrier'];
             }
         }
+        return false;
     }
 
     /**

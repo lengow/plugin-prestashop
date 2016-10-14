@@ -37,6 +37,11 @@ class LengowCustomer extends Customer
     );
 
     /**
+     * @var string full name
+     */
+    public $full_name;
+
+    /**
      * Get definition array
      *
      * @return array
@@ -62,6 +67,7 @@ class LengowCustomer extends Customer
         $this->email = $data['email'];
         $this->firstname = $data['first_name'];
         $this->lastname = $data['last_name'];
+        $this->full_name = $data['full_name'];
         $this->passwd = md5(rand());
         if (_PS_VERSION_ >= '1.5') {
             $this->id_gender = LengowGender::getGender((string)$data['civility']);
@@ -134,6 +140,12 @@ class LengowCustomer extends Customer
                     $field = 'lastname';
                 }
                 $names = LengowAddress::extractNames($this->{$field});
+                $this->firstname = $names['firstname'];
+                $this->lastname = $names['lastname'];
+                // check full name if last_name and first_name are empty
+                if (empty($this->firstname) && empty($this->lastname)) {
+                    $names = LengowAddress::extractNames($this->full_name);
+                }
                 $this->firstname = $names['firstname'];
                 $this->lastname = $names['lastname'];
                 if (empty($this->firstname)) {

@@ -1005,27 +1005,29 @@ class LengowImportOrder
      */
     protected function getCarrierId()
     {
-        $carrier = null;
+        $carrier = false;
         if (!isset($this->shipping_address->id_country)) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country')
             );
         }
-        $order_country_id = $this->shipping_address->id_country;
-        if ((int)$order_country_id == 0) {
+        $order_id_country = $this->shipping_address->id_country;
+        if ((int)$order_id_country == 0) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country')
             );
         }
-        $carrier_id = LengowCarrier::getMarketplaceByCarrierSku($this->carrier_name, $order_country_id);
-        $carrier_id = LengowCarrier::getActiveCarrierByCarrierId($carrier_id, $order_country_id);
-        if ($carrier_id > 0) {
-            $carrier = new Carrier($carrier_id);
+        // get carrier id by carrier code
+        $carrier_name = is_null($this->relay_id) ? $this->carrier_name : $this->carrier_name.'_RELAY';
+        $id_carrier = LengowCarrier::getIdCarrierByMarketplaceCarrierSku($carrier_name, $order_id_country);
+        if ($id_carrier && $id_carrier > 0) {
+            $carrier = new Carrier($id_carrier);
         }
         if (!$carrier) {
-            $carrier = LengowCarrier::getActiveCarrier($order_country_id, true);
+            // get default carrier by country
+            $carrier = LengowCarrier::getDefaultCarrier($order_id_country);
             if (!$carrier) {
-                $country_name = Country::getNameById(Context::getContext()->language->id, $order_country_id);
+                $country_name = Country::getNameById($this->context->language->id, $order_id_country);
                 throw new LengowException(
                     LengowMain::setLogMessage('lengow_log.exception.no_default_carrier_for_country', array(
                         'country_name' => $country_name

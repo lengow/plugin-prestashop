@@ -264,6 +264,8 @@ class LengowImport
             // get all shops for import
             $shops = LengowShop::findAll(true);
             foreach ($shops as $shop) {
+                // clean context
+                $this->context = null;
                 if (!is_null($this->id_shop) && (int)$shop['id_shop'] != $this->id_shop) {
                     continue;
                 }
@@ -450,7 +452,7 @@ class LengowImport
      */
     protected function changeContext($id_shop)
     {
-        $this->context = Context::getContext();
+        $this->context = Context::getContext()->cloneContext();
         if (_PS_VERSION_ >= '1.5') {
             if ($shop = new Shop($id_shop)) {
                 $this->context->shop = $shop;

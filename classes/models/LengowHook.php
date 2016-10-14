@@ -41,6 +41,7 @@ class LengowHook
     static private $CURRENT_PAGE_TYPE = 'page';
     static private $USE_SSL = false;
     static private $ID_ORDER = '';
+    static private $ID_CART = '';
     static private $ORDER_PAYMENT = '';
     static private $ORDER_CURRENCY = '';
     static private $ORDER_TOTAL = '';
@@ -234,9 +235,12 @@ class LengowHook
                                 }
                                 break;
                         }
-                        $products_cart[] = 'i'.$i.'='.$id_product
-                            .'&p'.$i.'='.(isset($p->price_wt) ? $p->price_wt : $p->price)
-                            .'&q'.$i.'='.$p->quantity;
+                        $product_datas = array(
+                            'product_id' => $id_product,
+                            'price'      => (isset($p->price_wt) ? $p->price_wt : $p->price),
+                            'quantity'   => $p->quantity
+                        );
+                        $products_cart[] = $product_datas;
                     } else {
                         switch (LengowConfiguration::get('LENGOW_TRACKING_ID')) {
                             case 'upc':
@@ -256,9 +260,12 @@ class LengowHook
                                 }
                                 break;
                         }
-                        $products_cart[] = 'i'.$i.'='.$id_product
-                            .'&p'.$i.'='.(isset($p['price_wt']) ? $p['price_wt'] : $p['price'])
-                            .'&q'.$i.'='.$p['quantity'];
+                        $product_datas = array(
+                            'product_id' => $id_product,
+                            'price'      => (isset($p['price_wt']) ? $p['price_wt'] : $p['price']),
+                            'quantity'   => $p['quantity']
+                        );
+                        $products_cart[] = $product_datas;
                     }
                     $i++;
                     $array_products[] = $id_product;
@@ -291,7 +298,7 @@ class LengowHook
                     $array_products[] = $id_product;
                 }
             }
-            self::$IDS_PRODUCTS_CART = implode('&', $products_cart);
+            self::$IDS_PRODUCTS_CART = Tools::jsonEncode($products_cart);
             self::$IDS_PRODUCTS = implode('|', $array_products);
         }
         if (!isset($this->smarty)) {
@@ -308,8 +315,8 @@ class LengowHook
                     'currency_order' => self::$ORDER_CURRENCY,
                     'payment_method' => self::$ORDER_PAYMENT,
                     'cart'           => self::$IDS_PRODUCTS_CART,
+                    'cart_number'    => self::$ID_CART,
                     'newbiz'         => 1,
-                    'secure'         => 0,
                     'valid'          => 1,
                     'page_type'      => self::$CURRENT_PAGE_TYPE
                 )
@@ -328,7 +335,8 @@ class LengowHook
     {
         self::$CURRENT_PAGE_TYPE = self::LENGOW_TRACK_PAGE_CONFIRMATION;
         self::$ID_ORDER = $args['objOrder']->id;
-        self::$ORDER_TOTAL = $args['total_to_pay'];
+        self::$ID_CART = $args['objOrder']->id_cart;
+        self::$ORDER_TOTAL = Tools::ps_round($args['total_to_pay'], 2);
         $payment_method = Tools::strtolower(str_replace(' ', '_', $args['objOrder']->payment));
         self::$ORDER_PAYMENT = LengowMain::replaceAccentedChars($payment_method);
         self::$ORDER_CURRENCY = $args['currencyObj']->iso_code;
@@ -359,10 +367,13 @@ class LengowHook
             // Ids Product
             $ids_products[] = $id_product;
             // Basket Product
-            $products_cart[] = 'i'.$i.'='.$id_product.'&p'.$i.
-                '='.Tools::ps_round($p['unit_price_tax_incl'], 2).'&q'.$i.'='.$p['product_quantity'];
+            $products_cart[] = array(
+                'product_id' => $id_product,
+                'price'      => Tools::ps_round($p['unit_price_tax_incl'], 2),
+                'quantity'   => $p['product_quantity']
+            );
         }
-        self::$IDS_PRODUCTS_CART = implode('&', $products_cart);
+        self::$IDS_PRODUCTS_CART = Tools::jsonEncode($products_cart);
         self::$IDS_PRODUCTS = implode('|', $ids_products);
     }
 
@@ -377,20 +388,22 @@ class LengowHook
     {
         if (LengowOrder::isFromLengow($args['id_order'])) {
             $lengow_order = new LengowOrder($args['id_order']);
-            // get actions re-import, synchronize orders and resend actions
+            // get actions re-import, synchronize orders, add tracking and resend actions
             $lengow_link = new LengowLink();
             $locale = new LengowTranslation();
-            $lengow_order_controller = $lengow_link->getAbsoluteAdminLink('AdminLengowOrder');
-            $action_reimport = $lengow_order_controller.'&id_order='.$lengow_order->id.'&action=cancel_re_import';
-            $action_synchronize = $lengow_order_controller.'&id_order='.$lengow_order->id.'&action=synchronize';
             $can_resend_action = $lengow_order->canReSendOrder();
+            $can_add_tracking = $lengow_order->canAddTracking();
+            $lengow_order_controller = $lengow_link->getAbsoluteAdminLink('AdminLengowOrder');
+            $base_action = $lengow_order_controller.'&id_order='.$lengow_order->id;
+            $action_reimport = $base_action.'&action=cancel_re_import';
+            $action_synchronize = $base_action.'&action=synchronize';
+            $action_add_tracking = $base_action.'&action=add_tracking&tracking_number=';
             $action_type = ($lengow_order->getCurrentState() == LengowMain::getOrderState('canceled')
                 ? 'cancel'
                 : 'ship'
             );
             $check_resend_action = $locale->t('admin.order.check_resend_action', array('action' => $action_type));
-            $action_resend = $lengow_order_controller.'&id_order='.$lengow_order->id
-                .'&action=force_resend&action_type='.$action_type;
+            $action_resend = $lengow_order_controller.'&action=force_resend&action_type='.$action_type;
             $sent_markeplace = (
                 $lengow_order->lengow_sent_marketplace
                     ? $locale->t('product.screen.button_yes')
@@ -411,11 +424,13 @@ class LengowHook
                 'action_synchronize'  => $action_synchronize,
                 'action_reimport'     => $action_reimport,
                 'action_resend'       => $action_resend,
+                'action_add_tracking' => $action_add_tracking,
                 'order_id'            => $args['id_order'],
                 'version'             => _PS_VERSION_,
                 'lengow_locale'       => $locale,
                 'preprod_mode'        => (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED'),
                 'can_resend_action'   => $can_resend_action,
+                'can_add_tracking'    => $can_add_tracking,
                 'check_resend_action' => $check_resend_action
             );
             $this->context->smarty->assign($template_data);

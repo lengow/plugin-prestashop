@@ -368,7 +368,7 @@ class LengowExport
      */
     public function setCarrier()
     {
-        $carrier = LengowCarrier::getActiveCarrier();
+        $carrier = LengowCarrier::getDefaultCarrier();
         if (!$carrier->id) {
             throw new LengowException(LengowMain::setLogMessage('log.export.error_no_carrier_selected'));
         }
@@ -868,7 +868,7 @@ class LengowExport
             );
         }
 
-        return json_encode($params);
+        return Tools::jsonEncode($params);
     }
 
     /**

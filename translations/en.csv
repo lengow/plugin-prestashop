@@ -308,6 +308,8 @@ admin.order.cancel_and_reimport|Re-import order
 admin.order.check_cancel_and_reimport|Do you really want to re-import the order?
 admin.order.synchronize_id|Synchronize ID
 admin.order.resend_action|Resend Action
+admin.order.add_tracking|Add Tracking Number
+admin.order.add_tracking_title|Thank you enter your tracking number
 admin.order.check_resend_action|Do you really want to send the following action: %{action}?
 log.install.install_tab|install tab %{class_name}
 log.install.uninstall_tab|uninstall tab %{class_name}

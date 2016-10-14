@@ -76,6 +76,11 @@
 			<a class="button" href="{$action_synchronize|escape:'htmlall':'UTF-8'}">
 				{$lengow_locale->t('admin.order.synchronize_id')|escape:'htmlall':'UTF-8'}
 			</a>
+			{if $can_add_tracking }
+				<a class="button" onclick="getValue()">
+					{$lengow_locale->t('admin.order.add_tracking')|escape:'htmlall':'UTF-8'}
+				</a>
+			{/if}
 			{if $can_resend_action}
 				<a class="button"
 					href="{$action_resend|escape:'htmlall':'UTF-8'}"
@@ -86,3 +91,13 @@
 		</div>
 	{/if}
 </fieldset>
+
+<script type="text/javascript">
+    function getValue() {
+        var tracking_number = prompt("{$lengow_locale->t('admin.order.add_tracking_title')|escape:'htmlall':'UTF-8'}");
+        if (tracking_number.length > 0) {
+        	var url = "{html_entity_decode($action_add_tracking|escape:'htmlall':'UTF-8')}" + tracking_number;
+        	document.location.href=url;
+        }
+    }
+</script>

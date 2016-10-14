@@ -338,4 +338,6 @@ en:
       check_cancel_and_reimport: "Do you really want to re-import the order?"
       synchronize_id: "Synchronize ID"
       resend_action: "Resend Action"
+      add_tracking: "Add Tracking Number"
+      add_tracking_title: "Thank you enter your tracking number"
       check_resend_action: "Do you really want to send the following action: %{action}?"

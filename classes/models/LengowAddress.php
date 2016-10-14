@@ -54,6 +54,7 @@ class LengowAddress extends Address
         'last_name',
         'first_name',
         'first_line',
+        'full_name',
         'second_line',
         'complement',
         'zipcode',
@@ -94,6 +95,11 @@ class LengowAddress extends Address
      * @var string full address
      */
     public $address_full = '';
+
+    /**
+     * @var string full name
+     */
+    public $full_name;
 
     /**
      * @var string Relay id (so colissimo, Mondial Relay)
@@ -217,12 +223,15 @@ class LengowAddress extends Address
         $this->company = $data['company'];
         $this->lastname = $data['last_name'];
         $this->firstname = $data['first_name'];
+        $this->full_name = $data['full_name'];
         $this->address1 = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['first_line']);
         $this->address2 = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['second_line']);
         $this->other = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['complement']);
         if (isset($data['id_relay'])) {
             $this->id_relay = $data['id_relay'];
-            $this->other .= 'Relay id: '.$this->id_relay;
+            $this->other .= empty($this->other)
+                ? 'Relay id: '.$this->id_relay
+                : ' Relay id: '.$this->id_relay;
         }
         $this->postcode = $data['zipcode'];
         $this->city = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['city']);
@@ -304,6 +313,12 @@ class LengowAddress extends Address
                     $field = 'lastname';
                 }
                 $names = LengowAddress::extractNames($this->{$field});
+                $this->firstname = $names['firstname'];
+                $this->lastname = $names['lastname'];
+                // check full name if last_name and first_name are empty
+                if (empty($this->firstname) && empty($this->lastname)) {
+                    $names = LengowAddress::extractNames($this->full_name);
+                }
                 $this->firstname = $names['firstname'];
                 $this->lastname = $names['lastname'];
                 if (empty($this->firstname)) {
