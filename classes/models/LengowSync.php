@@ -158,7 +158,9 @@ class LengowSync
      */
     public static function setCmsOption($force = false)
     {
-        if (LengowMain::isNewMerchant()) {
+        if (LengowMain::isNewMerchant()
+            || LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')
+        ) {
             return false;
         }
         if (!$force) {
