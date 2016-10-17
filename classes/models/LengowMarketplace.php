@@ -376,6 +376,9 @@ class LengowMarketplace
                     case 'shipping_date':
                         $params[$arg] = date('c');
                         break;
+                    case 'cancel_reason':
+                        $params[$arg] = 'Order canceled by merchant';
+                        break;
                     default:
                         break;
                 }
