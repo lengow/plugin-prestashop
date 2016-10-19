@@ -100,6 +100,11 @@ class LengowOrder extends Order
     public $lengow_tracking;
 
     /**
+    * @var string Id relay
+    */
+    public $lengow_id_relay;
+
+    /**
     * @var boolean Shipped by markeplace
     */
     public $lengow_sent_marketplace;
@@ -214,6 +219,7 @@ class LengowOrder extends Order
             lo.`carrier`,
             lo.`method`,
             lo.`tracking`,
+            lo.`id_relay`,
             lo.`sent_marketplace`,
             lo.`extra`,
             lo.`is_reimported`,
@@ -239,6 +245,7 @@ class LengowOrder extends Order
             $this->lengow_carrier              = $result['carrier'];
             $this->lengow_method               = $result['method'];
             $this->lengow_tracking             = $result['tracking'];
+            $this->lengow_id_relay             = $result['id_relay'];
             $this->lengow_sent_marketplace     = (bool)$result['sent_marketplace'];
             $this->lengow_extra                = $result['extra'];
             $this->lengow_is_reimported        = (bool)$result['is_reimported'];

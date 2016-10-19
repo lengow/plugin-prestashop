@@ -323,6 +323,7 @@ class LengowImportOrder
                 'carrier'              => pSQL($this->carrier_name),
                 'method'               => pSQL($this->carrier_method),
                 'tracking'             => pSQL($this->tracking_number),
+                'id_relay'             => pSQL($this->relay_id),
                 'sent_marketplace'     => (int)$this->shipped_by_mp,
                 'delivery_country_iso' => pSQL((string)$this->package_data->delivery->common_country_iso_a2),
                 'order_lengow_state'   => pSQL($this->order_state_lengow)
@@ -710,7 +711,11 @@ class LengowImportOrder
         $lastname = (string)$this->order_data->billing_address->last_name;
         $firstname = Tools::ucfirst(Tools::strtolower($firstname));
         $lastname = Tools::ucfirst(Tools::strtolower($lastname));
-        return $firstname.' '.$lastname;
+        if (empty($firstname) && empty($lastname)) {
+            return (string)$this->order_data->billing_address->full_name;
+        } else {
+            return $firstname.' '.$lastname;
+        }
     }
 
     /**

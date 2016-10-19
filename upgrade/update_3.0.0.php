@@ -224,31 +224,32 @@ LengowInstall::checkFieldAndDrop('lengow_logs_import', 'delivery_address_id');
 $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_orders` (
     `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `id_order` INTEGER(11) UNSIGNED NULL,
-    `marketplace_sku` VARCHAR(100) NOT NULL,
     `id_shop` INTEGER(11) UNSIGNED NOT NULL DEFAULT 1,
     `id_shop_group` INTEGER(11) UNSIGNED NOT NULL DEFAULT 1,
     `id_lang` INTEGER(11) UNSIGNED NOT NULL DEFAULT 1,
     `id_flux` INTEGER(11) UNSIGNED NULL,
+    `delivery_address_id` INTEGER(11) UNSIGNED NULL,
+    `delivery_country_iso` VARCHAR(3) NULL,
+    `marketplace_sku` VARCHAR(100) NOT NULL,
     `marketplace_name` VARCHAR(100) NULL,
     `marketplace_label` VARCHAR(100) NULL,
-    `message` TEXT,
-    `total_paid` DECIMAL(17,2) UNSIGNED NULL,
-    `carrier` VARCHAR(100),
-    `tracking` VARCHAR(100),
-    `extra` TEXT,
-    `date_add` DATETIME NOT NULL,
-    `is_reimported` TINYINT(1) UNSIGNED DEFAULT 0,
-    `method` VARCHAR(100) NULL,
-    `sent_marketplace` TINYINT(1) UNSIGNED DEFAULT 0,
+    `order_lengow_state` VARCHAR(32) NOT NULL,
     `order_process_state` TINYINT(1) UNSIGNED NOT NULL,
     `order_date` DATETIME NOT NULL,
     `order_item` INTEGER(11) UNSIGNED NULL,
-    `delivery_address_id` INTEGER(11) UNSIGNED NULL,
-    `delivery_country_iso` VARCHAR(3) NULL,
+    `currency` VARCHAR(3) NULL,
+    `total_paid` DECIMAL(17,2) UNSIGNED NULL,
     `customer_name` VARCHAR(255) NULL,
     `customer_email` VARCHAR(255) NULL,
-    `order_lengow_state` VARCHAR(32) NOT NULL,
-    `currency` VARCHAR(3) NULL,
+    `carrier` VARCHAR(100),
+    `method` VARCHAR(100) NULL,
+    `tracking` VARCHAR(100),
+    `id_relay` VARCHAR(100) NULL,
+    `sent_marketplace` TINYINT(1) UNSIGNED DEFAULT 0,
+    `is_reimported` TINYINT(1) UNSIGNED DEFAULT 0,
+    `message` TEXT,
+    `date_add` DATETIME NOT NULL,
+    `extra` TEXT,
     PRIMARY KEY(id),
     INDEX (`id_flux`),
     INDEX (`id_shop`),
@@ -354,6 +355,11 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
     if (!LengowInstall::checkFieldExists('lengow_orders', 'delivery_country_iso')) {
         Db::getInstance()->execute(
             'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `delivery_country_iso` VARCHAR(3) NULL'
+        );
+    }
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'id_relay')) {
+        Db::getInstance()->execute(
+            'ALTER TABLE '._DB_PREFIX_.'lengow_orders ADD `id_relay` VARCHAR(100) NULL'
         );
     }
     if (!LengowInstall::checkFieldExists('lengow_orders', 'customer_name')) {
