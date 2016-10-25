@@ -318,7 +318,7 @@ log.hook.registering_hook_error|registering hook - %{hook}: error
 log.cron.creation_success|Lengow import cron task sucessfully created
 log.cron.creation_error|Lengow import cron task could not be created
 log.cron.delete_success|cron task(s) sucessfully removed
-log.cron.delete_error|import and/or export cron task(s) could not be removed
+log.cron.delete_error|cron task(s) could not be removed
 log.mail_report.send_mail_to|report email sent to %{emails}
 log.mail_report.unable_send_mail_to|unable to send report email to %{emails}
 log.export.start|## start export ##
@@ -387,7 +387,8 @@ log.order_action.start_not_sent_for_store|check actions not sent in shop %{name_
 log.order_action.try_to_send_action|try to send %{action} action (ORDER ID %{order_id})
 log.order_action.action_send|action %{action} was successfully sent (ORDER ID %{order_id})
 log.order_action.action_not_send|WARNING ! action %{action} could not be sent (ORDER ID %{order_id})
-log.order_action.call_tracking|call tracking saved in lengow_actions table
+log.order_action.action_saved|call tracking saved in lengow_actions table
+log.order_action.call_tracking|call tracking with parameters: %{parameters}
 log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}

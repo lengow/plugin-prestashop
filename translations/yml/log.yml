@@ -10,7 +10,7 @@ en:
       creation_success: "Lengow import cron task sucessfully created"
       creation_error: "Lengow import cron task could not be created"
       delete_success: "cron task(s) sucessfully removed"
-      delete_error: "import and/or export cron task(s) could not be removed"
+      delete_error: "cron task(s) could not be removed"
     mail_report:
       send_mail_to: "report email sent to %{emails}"
       unable_send_mail_to: "unable to send report email to %{emails}"
@@ -83,7 +83,8 @@ en:
       try_to_send_action: "try to send %{action} action (ORDER ID %{order_id})"
       action_send: "action %{action} was successfully sent (ORDER ID %{order_id})"
       action_not_send: "WARNING ! action %{action} could not be sent (ORDER ID %{order_id})"
-      call_tracking: "call tracking saved in lengow_actions table"
+      action_saved: "call tracking saved in lengow_actions table"
+      call_tracking: "call tracking with parameters: %{parameters}"
       can_not_load_order: "order action failed - Can't load order"
       call_action_failed: "order action failed - %{decoded_message}"
     connector:

@@ -203,7 +203,7 @@ class LengowAction
         }
         LengowMain::log(
             'API-OrderAction',
-            LengowMain::setLogMessage('log.order_action.call_tracking'),
+            LengowMain::setLogMessage('log.order_action.action_saved'),
             false,
             $params['marketplace_sku']
         );
