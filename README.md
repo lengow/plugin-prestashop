@@ -10,7 +10,7 @@
 
 ### Installation dans Prestashop ###
 
-    cd ~/Documents/modules_lengow/prestashop/tools
+    cd ~/Documents/modules_lengow/prestashop/lengow/tools
     sh install.sh ~/Documents/docker_images/presta16
 
 Le script va créer des liens symboliques vers les sources du module
