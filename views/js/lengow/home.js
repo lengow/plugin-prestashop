@@ -40,11 +40,13 @@
             if (sync_link) {
                 // sync_iframe.src = 'http://cms.lengow.io/sync/';
                 // sync_iframe.src = 'http://cms.lengow.net/sync/';
-                sync_iframe.src = 'http://cms.lengow.dev/sync/';
+                sync_iframe.src = 'http://cms.lengow.rec/sync';
+                // sync_iframe.src = 'http://cms.lengow.dev/sync/';
             } else {
                 // sync_iframe.src = 'http://cms.lengow.io/';
                 // sync_iframe.src = 'http://cms.lengow.net/';
-                sync_iframe.src = 'http://cms.lengow.dev/';
+                sync_iframe.src = 'http://cms.lengow.rec/';
+                // sync_iframe.src = 'http://cms.lengow.dev/';
             }
             $('#frame_loader').hide();
             $('#lengow_iframe').show();
