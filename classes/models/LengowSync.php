@@ -53,7 +53,7 @@ class LengowSync
             $data['shops'][$row['id_shop']]['name']                    = $shop->name;
             $data['shops'][$row['id_shop']]['domain']                  = $shop->domain;
             $data['shops'][$row['id_shop']]['feed_url']                = LengowMain::getExportUrl($shop->id);
-            $data['shops'][$row['id_shop']]['cron_url']                = LengowMain::getImportUrl($shop->id);
+            $data['shops'][$row['id_shop']]['cron_url']                = LengowMain::getImportUrl();
             $data['shops'][$row['id_shop']]['total_product_number']    = $lengowExport->getTotalProduct();
             $data['shops'][$row['id_shop']]['exported_product_number'] = $lengowExport->getTotalExportProduct();
             $data['shops'][$row['id_shop']]['configured']              = self::checkSyncShop($shop->id);
@@ -140,7 +140,7 @@ class LengowSync
                 'store_name'              => $shop->name,
                 'domain_url'              => $shop->domain,
                 'feed_url'                => LengowMain::getExportUrl($shop->id),
-                'cron_url'                => LengowMain::getImportUrl($shop->id),
+                'cron_url'                => LengowMain::getImportUrl(),
                 'total_product_number'    => $lengowExport->getTotalProduct(),
                 'exported_product_number' => $lengowExport->getTotalExportProduct(),
                 'options'                 => LengowConfiguration::getAllValues($shop->id)

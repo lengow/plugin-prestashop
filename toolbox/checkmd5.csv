@@ -17,7 +17,7 @@
 /classes/models/LengowImportOrder.php|d60a7fd66d03c17b90cd348f9729edac
 /classes/models/LengowPaymentModule.php|a2f5ccf92ff3f19ed1af1654f07d6fd2
 /classes/models/LengowCustomer.php|1c735022e0e0af458269d44ebf0635a9
-/classes/models/LengowSync.php|98229e93b486b7916245fb9769f9bcb2
+/classes/models/LengowSync.php|48599e519036727f9fe57d5a6e9888cd
 /classes/models/LengowCountry.php|727f1427dd162bc52387d1fcf1cddb5a
 /classes/models/LengowHook.php|90912ea53f27b3bf69802c6dbd88308e
 /classes/models/LengowImport.php|4e152b942f3d6bdf17cb6f496a86b854
