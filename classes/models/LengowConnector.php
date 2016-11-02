@@ -438,7 +438,7 @@ class LengowConnector
         }
         try {
             list($account_id, $access_token, $secret_token) = self::getAccessId($id_shop);
-            if(is_null($account_id)) {
+            if (is_null($account_id)) {
                 return false;
             }
             $connector  = new LengowConnector($access_token, $secret_token);
