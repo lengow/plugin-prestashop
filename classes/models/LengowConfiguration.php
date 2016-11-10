@@ -283,40 +283,40 @@ class LengowConfiguration extends Configuration
     /**
     * Get Lengow global value
     *
-    * @param string  $key     lengow configuration key
-    * @param integer $id_lang id lang
+    * @param string  $key    lengow configuration key
+    * @param integer $idLang id lang
     *
     * @return mixed
     */
-    public static function getGlobalValue($key, $id_lang = null)
+    public static function getGlobalValue($key, $idLang = null)
     {
         if (_PS_VERSION_ < '1.5') {
-            return parent::get($key, $id_lang);
+            return parent::get($key, $idLang);
         } else {
-            return parent::getGlobalValue($key, $id_lang);
+            return parent::getGlobalValue($key, $idLang);
         }
     }
 
     /**
     * Get Lengow value by shop
     *
-    * @param string  $key           lengow configuration key
-    * @param integer $id_lang       id lang
-    * @param integer $id_shop_group id shop group
-    * @param integer $id_shop       id shop
-    * @param integer $default       default value (compatibility version 1.7)
+    * @param string  $key         lengow configuration key
+    * @param integer $idLang      id lang
+    * @param integer $idShopGroup id shop group
+    * @param integer $idShop      id shop
+    * @param integer $default     default value (compatibility version 1.7)
     *
     * @return mixed
     */
-    public static function get($key, $id_lang = null, $id_shop_group = null, $id_shop = null, $default = false)
+    public static function get($key, $idLang = null, $idShopGroup = null, $idShop = null, $default = false)
     {
         if (_PS_VERSION_ < '1.5') {
-            return parent::get($key, $id_lang);
+            return parent::get($key, $idLang);
         } else {
-            if (Shop::isFeatureActive() && $id_shop > 1) {
+            if (Shop::isFeatureActive() && $idShop > 1) {
                 $sql = 'SELECT `value` FROM '._DB_PREFIX_.'configuration
                    WHERE `name` = \''.pSQL($key).'\'
-                   AND `id_shop` = \''.(int)$id_shop.'\'
+                   AND `id_shop` = \''.(int)$idShop.'\'
                 ';
                 $value = Db::getInstance()->getRow($sql);
                 if ($value) {
@@ -325,7 +325,7 @@ class LengowConfiguration extends Configuration
                     return false;
                 }
             } else {
-                return parent::get($key, $id_lang, $id_shop_group, $id_shop, $default);
+                return parent::get($key, $idLang, $idShopGroup, $idShop, $default);
             }
         }
     }
@@ -333,9 +333,9 @@ class LengowConfiguration extends Configuration
     /**
     * Update Lengow global value
     *
-    * @param string  $key     lengow configuration key
-    * @param integer $id_lang id lang
-    * @param boolean $html
+    * @param string  $key    lengow configuration key
+    * @param integer $values lengow configuration value
+    * @param boolean $html   compatibility new version
     */
     public static function updateGlobalValue($key, $values, $html = false)
     {
@@ -349,18 +349,18 @@ class LengowConfiguration extends Configuration
     /**
     * Update Lengow value by shop
     *
-    * @param string  $key           lengow configuration key
-    * @param integer $id_lang       id lang
-    * @param boolean $html
-    * @param integer $id_shop_group id shop group
-    * @param integer $id_shop       id shop
+    * @param string  $key         lengow configuration key
+    * @param integer $values      lengow configuration value
+    * @param boolean $html        compatibility new version
+    * @param integer $idShopGroup id shop group
+    * @param integer $idShop      id shop
     */
-    public static function updateValue($key, $values, $html = false, $id_shop_group = null, $id_shop = null)
+    public static function updateValue($key, $values, $html = false, $idShopGroup = null, $idShop = null)
     {
         if (_PS_VERSION_ < '1.5') {
             parent::updateValue($key, $values, $html);
         } else {
-            parent::updateValue($key, $values, $html, $id_shop_group, $id_shop);
+            parent::updateValue($key, $values, $html, $idShopGroup, $idShop);
         }
     }
 
@@ -442,11 +442,11 @@ class LengowConfiguration extends Configuration
     /**
      * Get Values by shop or global
      *
-     * @param integer $id_shop
+     * @param integer $idShop
      *
      * @return array
      */
-    public static function getAllValues($id_shop = null)
+    public static function getAllValues($idShop = null)
     {
         $rows = array();
         $keys = self::getKeys();
@@ -454,9 +454,9 @@ class LengowConfiguration extends Configuration
             if (isset($value['export']) && !$value['export']) {
                 continue;
             }
-            if ($id_shop) {
+            if ($idShop) {
                 if (isset($value['shop']) && $value['shop']) {
-                    $rows[$key] = LengowConfiguration::get($key, null, false, $id_shop);
+                    $rows[$key] = LengowConfiguration::get($key, null, false, $idShop);
                 }
             } else {
                 if (isset($value['global']) && $value['global']) {

@@ -47,7 +47,7 @@ class LengowAddress extends Address
     /**
      * @var array API fields for an address
      */
-    public static $ADDRESS_API_NODES = array(
+    public static $addressApiNodes = array(
         'company',
         'civility',
         'email',
@@ -70,7 +70,7 @@ class LengowAddress extends Address
      *
      * @var array
      */
-    public static $definition_lengow = array(
+    public static $definitionLengow = array(
         'id_country'   =>  array('required' => true),
         'alias'        =>  array('required' => true, 'size' => 32),
         'company'      =>  array('size' => 32),
@@ -89,22 +89,22 @@ class LengowAddress extends Address
     /**
      * @var string phone_office given in API
      */
-    public $phone_office;
+    public $phoneOffice;
 
     /**
      * @var string full address
      */
-    public $address_full = '';
+    public $fullAddress = '';
 
     /**
      * @var string full name
      */
-    public $full_name;
+    public $fullName;
 
     /**
      * @var string Relay id (so colissimo, Mondial Relay)
      */
-    public $id_relay;
+    public $idRelay;
 
     /**
     * Specify if an address is already in base
@@ -141,16 +141,16 @@ class LengowAddress extends Address
     /**
      * Extract firstname and lastname from a name field
      *
-     * @param string $fullname
+     * @param string $fullName
      *
      * @return array
      */
-    public static function extractNames($fullname)
+    public static function extractNames($fullName)
     {
-        LengowAddress::cleanName($fullname);
-        $array_name = explode(' ', $fullname);
-        $lastname = $array_name[0];
-        $firstname = str_replace($lastname.' ', '', $fullname);
+        LengowAddress::cleanName($fullName);
+        $arrayName = explode(' ', $fullName);
+        $lastname = $arrayName[0];
+        $firstname = str_replace($lastname.' ', '', $fullName);
         $lastname = empty($lastname) ? '' : self::cleanName($lastname);
         $firstname = empty($firstname) ? '' : self::cleanName($firstname);
         return array(
@@ -193,7 +193,7 @@ class LengowAddress extends Address
     public static function extractAddressDataFromAPI($api)
     {
         $temp = array();
-        foreach (LengowAddress::$ADDRESS_API_NODES as $node) {
+        foreach (LengowAddress::$addressApiNodes as $node) {
             $temp[$node] = (string)$api->{$node};
         }
         return $temp;
@@ -207,7 +207,7 @@ class LengowAddress extends Address
     public static function getFieldDefinition()
     {
         if (_PS_VERSION_ < 1.5) {
-            return LengowAddress::$definition_lengow;
+            return LengowAddress::$definitionLengow;
         }
         return LengowAddress::$definition['fields'];
     }
@@ -224,24 +224,24 @@ class LengowAddress extends Address
         $this->company = $data['company'];
         $this->lastname = $data['last_name'];
         $this->firstname = $data['first_name'];
-        $this->full_name = $data['full_name'];
+        $this->fullName = $data['full_name'];
         $this->address1 = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['first_line']);
         $this->address2 = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['second_line']);
         $this->other = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['complement']);
         if (isset($data['id_relay'])) {
-            $this->id_relay = $data['id_relay'];
+            $this->idRelay = $data['id_relay'];
             $this->other .= empty($this->other)
-                ? 'Relay id: '.$this->id_relay
-                : ' Relay id: '.$this->id_relay;
+                ? 'Relay id: '.$this->idRelay
+                : ' Relay id: '.$this->idRelay;
         }
         $this->postcode = $data['zipcode'];
         $this->city = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['city']);
         $this->id_country = Country::getByIso($data['common_country_iso_a2']);
         $this->phone = $data['phone_home'];
         $this->phone_mobile = $data['phone_mobile'];
-        $this->phone_office = $data['phone_office'];
-        $this->address_full = $data['address_full'];
-        $this->alias = LengowAddress::hash($this->address_full);
+        $this->phoneOffice = $data['phone_office'];
+        $this->fullAddress = $data['address_full'];
+        $this->alias = LengowAddress::hash($this->fullAddress);
         return $this;
     }
 
@@ -253,19 +253,19 @@ class LengowAddress extends Address
     public function validateLengow()
     {
         $definition = LengowAddress::getFieldDefinition();
-        foreach ($definition as $field_name => $constraints) {
+        foreach ($definition as $fieldName => $constraints) {
             if (isset($constraints['required']) && $constraints['required']
                 || isset($constraints['check']) && $constraints['check']
-                || $field_name == 'phone'
-                || $field_name == 'phone_mobile'
+                || $fieldName == 'phone'
+                || $fieldName == 'phone_mobile'
             ) {
-                if (empty($this->{$field_name})) {
-                    $this->validateFieldLengow($field_name, LengowAddress::LENGOW_EMPTY_ERROR);
+                if (empty($this->{$fieldName})) {
+                    $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_EMPTY_ERROR);
                 }
             }
             if (isset($constraints['size'])) {
-                if (Tools::strlen($this->{$field_name}) > $constraints['size']) {
-                    $this->validateFieldLengow($field_name, LengowAddress::LENGOW_SIZE_ERROR);
+                if (Tools::strlen($this->{$fieldName}) > $constraints['size']) {
+                    $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_SIZE_ERROR);
                 }
             }
         }
@@ -281,17 +281,17 @@ class LengowAddress extends Address
     /**
      * Modify a field according to the type of error
      *
-     * @param string $error_type type of error
-     * @param string $field incorrect field
+     * @param string $fieldName incorrect field
+     * @param string $errorType type of error
      */
-    public function validateFieldLengow($field, $error_type)
+    public function validateFieldLengow($fieldName, $errorType)
     {
-        switch ($error_type) {
+        switch ($errorType) {
             case LengowAddress::LENGOW_EMPTY_ERROR:
-                $this->validateEmptyLengow($field);
+                $this->validateEmptyLengow($fieldName);
                 break;
             case LengowAddress::LENGOW_SIZE_ERROR:
-                $this->validateSizeLengow($field);
+                $this->validateSizeLengow($fieldName);
                 break;
             default:
                 break;
@@ -301,24 +301,24 @@ class LengowAddress extends Address
     /**
      * Modify an empty field
      *
-     * @param string $field field name
+     * @param string $fieldName field name
      */
-    public function validateEmptyLengow($field)
+    public function validateEmptyLengow($fieldName)
     {
-        switch ($field) {
+        switch ($fieldName) {
             case 'lastname':
             case 'firstname':
-                if ($field == 'lastname') {
-                    $field = 'firstname';
+                if ($fieldName == 'lastname') {
+                    $fieldName = 'firstname';
                 } else {
-                    $field = 'lastname';
+                    $fieldName = 'lastname';
                 }
-                $names = LengowAddress::extractNames($this->{$field});
+                $names = LengowAddress::extractNames($this->{$fieldName});
                 $this->firstname = $names['firstname'];
                 $this->lastname = $names['lastname'];
                 // check full name if last_name and first_name are empty
                 if (empty($this->firstname) && empty($this->lastname)) {
-                    $names = LengowAddress::extractNames($this->full_name);
+                    $names = LengowAddress::extractNames($this->fullName);
                 }
                 $this->firstname = $names['firstname'];
                 $this->lastname = $names['lastname'];
@@ -342,17 +342,17 @@ class LengowAddress extends Address
             case 'phone_mobile':
                 $this->phone = LengowMain::cleanPhone($this->phone);
                 $this->phone_mobile = LengowMain::cleanPhone($this->phone_mobile);
-                $this->phone_office = LengowMain::cleanPhone($this->phone_office);
-                if ($field == 'phone') {
-                    if (!empty($this->phone_office)) {
-                        $this->phone = $this->phone_office;
+                $this->phoneOffice = LengowMain::cleanPhone($this->phoneOffice);
+                if ($fieldName == 'phone') {
+                    if (!empty($this->phoneOffice)) {
+                        $this->phone = $this->phoneOffice;
                     } elseif (!empty($this->phone_mobile)) {
                         $this->phone = $this->phone_mobile;
                     }
                 }
-                if ($field == 'phone_mobile') {
-                    if (!empty($this->phone_office)) {
-                        $this->phone_mobile = $this->phone_office;
+                if ($fieldName == 'phone_mobile') {
+                    if (!empty($this->phoneOffice)) {
+                        $this->phone_mobile = $this->phoneOffice;
                     }
                 }
                 break;
@@ -364,41 +364,41 @@ class LengowAddress extends Address
     /**
      * Modify a field to fit its size
      *
-     * @param string $field field name
+     * @param string $fieldName field name
      */
-    public function validateSizeLengow($field)
+    public function validateSizeLengow($fieldName)
     {
-        switch ($field) {
+        switch ($fieldName) {
             case 'address1':
             case 'address2':
             case 'other':
-                $address_full_array = explode(' ', $this->address_full);
-                if (count($address_full_array) < 1) {
+                $fullAddressArray = explode(' ', $this->fullAddress);
+                if (count($fullAddressArray) < 1) {
                     $definition = LengowAddress::getFieldDefinition();
-                    $address1_maxlength = $definition['address1']['size'];
-                    $address2_maxlength = $definition['address1']['size'];
-                    $other_maxlength = $definition['other']['size'];
+                    $address1Maxlength = $definition['address1']['size'];
+                    $address2Maxlength = $definition['address1']['size'];
+                    $otherMaxlength = $definition['other']['size'];
                     $this->address1 = '';
                     $this->address2 = '';
                     $this->other = '';
-                    foreach ($address_full_array as $address_part) {
-                        if (Tools::strlen($this->address1) < $address1_maxlength) {
+                    foreach ($fullAddressArray as $addressPart) {
+                        if (Tools::strlen($this->address1) < $address1Maxlength) {
                             if (!empty($this->address1)) {
                                 $this->address1 .= ' ';
                             }
-                            $this->address1 .= $address_part;
+                            $this->address1 .= $addressPart;
                             continue;
-                        } elseif (Tools::strlen($this->address2) < $address2_maxlength) {
+                        } elseif (Tools::strlen($this->address2) < $address2Maxlength) {
                             if (!empty($this->address2)) {
                                 $this->address2 .= ' ';
                             }
-                            $this->address2 .= $address_part;
+                            $this->address2 .= $addressPart;
                             continue;
-                        } elseif (Tools::strlen($this->other) < $other_maxlength) {
+                        } elseif (Tools::strlen($this->other) < $otherMaxlength) {
                             if (!empty($this->other)) {
                                 $this->other .= ' ';
                             }
-                            $this->other .= $address_part;
+                            $this->other .= $addressPart;
                             continue;
                         }
                     }

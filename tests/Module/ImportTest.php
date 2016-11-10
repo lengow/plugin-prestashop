@@ -20,9 +20,12 @@ use Assert;
 class ImportTest extends ModuleTestCase
 {
 
-    protected $account_id = 155;
-    protected $secret_token = '456465465146514651465';
-    protected $access_token = '457565421786654123231';
+    protected $accountId = 155;
+
+    protected $accessToken = '457565421786654123231';
+    
+    protected $secretToken = '456465465146514651465';
+    
 
     public function setUp()
     {
@@ -348,9 +351,9 @@ class ImportTest extends ModuleTestCase
      */
     public function checkCredentials()
     {
-        LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', $this->account_id, false, null, 1);
-        LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', $this->secret_token, false, null, 1);
-        LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', $this->access_token, false, null, 1);
+        LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', $this->accountId, false, null, 1);
+        LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', $this->secretToken, false, null, 1);
+        LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', $this->accessToken, false, null, 1);
 
         $import = new LengowImport();
         $this->assertTrue(

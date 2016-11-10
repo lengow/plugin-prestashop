@@ -263,3 +263,4 @@ class FeedTest extends ModuleTestCase
             'Export contain max 10 images'
         );
     }
+}

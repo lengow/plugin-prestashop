@@ -31,11 +31,11 @@ class LengowCarrierCountry
      */
     public static function createDefaultCarrier()
     {
-        $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
-        $sql = 'SELECT * FROM '._DB_PREFIX_.'lengow_carrier_country WHERE id_country = '.(int)$default_country;
+        $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
+        $sql = 'SELECT * FROM '._DB_PREFIX_.'lengow_carrier_country WHERE id_country = '.(int)$defaultCountry;
         $default = Db::getInstance()->ExecuteS($sql);
         if (empty($default)) {
-            $insert = self::insert($default_country);
+            $insert = self::insert($defaultCountry);
             return $insert;
         }
         return false;
@@ -44,18 +44,18 @@ class LengowCarrierCountry
     /**
      * Returns carrier's list by id lengow carrier
      *
-     * @param integer $id_lengow_carrier
+     * @param integer $idLengowCarrier
      *
      * @return array
      */
-    public static function listCarrierById($id_lengow_carrier)
+    public static function listCarrierById($idLengowCarrier)
     {
         $sql = 'SELECT lc.id, lc.id_carrier, co.iso_code, cl.name, co.id_country FROM '
             ._DB_PREFIX_.'lengow_carrier_country lc INNER JOIN '
             ._DB_PREFIX_.'country co ON lc.id_country=co.id_country INNER JOIN '
             ._DB_PREFIX_.'country_lang cl ON co.id_country=cl.id_country AND cl.id_lang= '
             .(int)Context::getContext()->language->id
-            .' WHERE lc.id = '.(int)$id_lengow_carrier;
+            .' WHERE lc.id = '.(int)$idLengowCarrier;
         $collection = Db::getInstance()->getRow($sql);
         return $collection;
     }
@@ -67,13 +67,13 @@ class LengowCarrierCountry
      */
     public static function listCarrierByCountry()
     {
-        $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
+        $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
         $sql = 'SELECT lc.id, lc.id_carrier, co.iso_code, cl.name, co.id_country FROM '
             ._DB_PREFIX_.'lengow_carrier_country lc INNER JOIN '
             ._DB_PREFIX_.'country co ON lc.id_country=co.id_country INNER JOIN '
             ._DB_PREFIX_.'country_lang cl ON co.id_country=cl.id_country AND cl.id_lang= '
             .(int)Context::getContext()->language->id
-            .' ORDER BY CASE WHEN co.id_country = '.(int)$default_country.' THEN 1 ELSE cl.name END ASC;';
+            .' ORDER BY CASE WHEN co.id_country = '.(int)$defaultCountry.' THEN 1 ELSE cl.name END ASC;';
         $collection = Db::getInstance()->ExecuteS($sql);
         return $collection;
     }
@@ -81,14 +81,14 @@ class LengowCarrierCountry
     /**
      * Find CountryCarrier By Country
      *
-     * @param integer $id_country
+     * @param integer $idCountry
      *
      * @return mixed
      */
-    public static function findByCountry($id_country)
+    public static function findByCountry($idCountry)
     {
         return Db::getInstance()->getRow(
-            'SELECT * FROM '._DB_PREFIX_.'lengow_carrier_country WHERE id_country ='.(int)$id_country
+            'SELECT * FROM '._DB_PREFIX_.'lengow_carrier_country WHERE id_country ='.(int)$idCountry
         );
     }
 
@@ -115,33 +115,33 @@ class LengowCarrierCountry
      */
     public static function getIdCountries($listCarrier)
     {
-        $id_countries = array();
+        $idCountries = array();
         foreach ($listCarrier as $row) {
-            $id_countries[] = $row['id_country'];
+            $idCountries[] = $row['id_country'];
         }
-        return $id_countries;
+        return $idCountries;
     }
 
     /**
      * Insert a new carrier country in the table
      *
-     * @param integer $id_country
+     * @param integer $idCountry
      *
      * @return action
      */
-    public static function insert($id_country)
+    public static function insert($idCountry)
     {
         $db = DB::getInstance();
         if (_PS_VERSION_ < '1.5') {
             $db->autoExecute(
                 _DB_PREFIX_.'lengow_carrier_country',
-                array('id_country' => (int)$id_country),
+                array('id_country' => (int)$idCountry),
                 'INSERT'
             );
         } else {
             $db->insert(
                 'lengow_carrier_country',
-                array('id_country' => (int)$id_country)
+                array('id_country' => (int)$idCountry)
             );
         }
         return $db;
@@ -150,14 +150,14 @@ class LengowCarrierCountry
     /**
      * Delete a carrier country
      *
-     * @param integer $id_country
+     * @param integer $idCountry
      *
      * @return action
      */
-    public static function delete($id_country)
+    public static function delete($idCountry)
     {
         $db = DB::getInstance();
-        $db->delete(_DB_PREFIX_.'lengow_carrier_country', 'id_country = '.(int)$id_country);
+        $db->delete(_DB_PREFIX_.'lengow_carrier_country', 'id_country = '.(int)$idCountry);
         return $db;
     }
 }

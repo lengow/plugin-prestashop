@@ -459,9 +459,9 @@ class LengowFeedController extends LengowController
                     $coverImage = Product::getCover($collection[$i]['id_product'], $tempContext);
                     if ($coverImage) {
                         $idImage = $coverImage['id_image'];
-                        $path_to_image = _PS_IMG_DIR_.'p/'.Image::getImgFolderStatic($idImage).(int)$idImage.'.jpg';
+                        $pathToImage = _PS_IMG_DIR_.'p/'.Image::getImgFolderStatic($idImage).(int)$idImage.'.jpg';
                         $collection[$i]['image'] = ImageManager::thumbnail(
-                            $path_to_image,
+                            $pathToImage,
                             'product_mini_'.$collection[$i]['id_product'].'_'.$idShop.'.jpg',
                             45,
                             'jpg'

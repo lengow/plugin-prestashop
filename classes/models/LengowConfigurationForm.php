@@ -46,18 +46,18 @@ class LengowConfigurationForm
     /**
     * Construct Lengow setting input for shop
     *
-    * @param integer $id_shop      shop id
-    * @param array   $display_keys names of lengow setting
+    * @param integer $idShop      shop id
+    * @param array   $displayKeys names of lengow setting
     *
     * @return string
     */
-    public function buildShopInputs($id_shop, $display_keys)
+    public function buildShopInputs($idShop, $displayKeys)
     {
         $html = '';
-        foreach ($display_keys as $key) {
+        foreach ($displayKeys as $key) {
             if (isset($this->fields[$key])) {
                 if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
-                    $html.= $this->input($key, $this->fields[$key], $id_shop);
+                    $html.= $this->input($key, $this->fields[$key], $idShop);
                 }
             }
         }
@@ -67,14 +67,14 @@ class LengowConfigurationForm
     /**
     * Construct Lengow setting input
     *
-    * @param array $display_keys names of lengow setting
+    * @param array $displayKeys names of lengow setting
     *
     * @return string
     */
-    public function buildInputs($display_keys)
+    public function buildInputs($displayKeys)
     {
         $html = '';
-        foreach ($display_keys as $key) {
+        foreach ($displayKeys as $key) {
             if (isset($this->fields[$key])) {
                 if (!isset($this->fields[$key]['shop']) || !$this->fields[$key]['shop']) {
                     $html .= $this->input($key, $this->fields[$key], null);
@@ -87,18 +87,18 @@ class LengowConfigurationForm
     /**
     * Get lengow input
     *
-    * @param string  $key     name of lengow setting
-    * @param array   $input   all lengow settings
-    * @param integer $id_shop shop id
+    * @param string  $key    name of lengow setting
+    * @param array   $input  all lengow settings
+    * @param integer $idShop shop id
     *
     * @return string
     */
-    public function input($key, $input, $id_shop = null)
+    public function input($key, $input, $idShop = null)
     {
         $html = '';
-        $name = $id_shop ?  $key.'['.$id_shop.']' : $key;
-        if ($id_shop) {
-            $value = LengowConfiguration::get($key, null, null, $id_shop);
+        $name = $idShop ?  $key.'['.$idShop.']' : $key;
+        if ($idShop) {
+            $value = LengowConfiguration::get($key, null, null, $idShop);
         } else {
             $value = LengowConfiguration::getGlobalValue($key);
         }
@@ -161,9 +161,9 @@ class LengowConfigurationForm
     /**
     * Save Lengow settings
     *
-    * @param array $checkbox_keys checkbox Lengow
+    * @param array $checkboxKeys checkbox Lengow
     */
-    public function postProcess($checkbox_keys)
+    public function postProcess($checkboxKeys)
     {
         if (_PS_VERSION_ < '1.5') {
             $shopCollection = array(array('id_shop' => 1));
@@ -174,13 +174,13 @@ class LengowConfigurationForm
         foreach ($_REQUEST as $key => $value) {
             if (isset($this->fields[$key])) {
                 if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
-                    foreach ($value as $id_shop => $shopValue) {
+                    foreach ($value as $idShop => $shopValue) {
                         if (isset($this->fields[$key]['type']) &&
                             $this->fields[$key]['type'] == 'checkbox' && $shopValue == 'on') {
                             $shopValue = true;
                         }
-                        $this->checkAndLog($key, $shopValue, $id_shop);
-                        LengowConfiguration::updateValue($key, $shopValue, false, null, $id_shop);
+                        $this->checkAndLog($key, $shopValue, $idShop);
+                        LengowConfiguration::updateValue($key, $shopValue, false, null, $idShop);
                     }
                 } else {
                     if (is_array($value)) {
@@ -198,26 +198,26 @@ class LengowConfigurationForm
             }
         }
         foreach ($shopCollection as $shop) {
-            $id_shop = $shop['id_shop'];
+            $idShop = $shop['id_shop'];
             foreach ($this->fields as $key => $value) {
-                if (!in_array($key, $checkbox_keys)) {
+                if (!in_array($key, $checkboxKeys)) {
                     continue;
                 }
                 if ($value['type'] == 'checkbox' && isset($value['shop']) && $value['shop']) {
-                    if (!isset($_REQUEST[$key][$id_shop])) {
-                        $this->checkAndLog($key, false, $id_shop);
-                        LengowConfiguration::updateValue($key, false, false, null, $id_shop);
+                    if (!isset($_REQUEST[$key][$idShop])) {
+                        $this->checkAndLog($key, false, $idShop);
+                        LengowConfiguration::updateValue($key, false, false, null, $idShop);
                     }
                 }
             }
         }
         foreach ($this->fields as $key => $value) {
-            if (!in_array($key, $checkbox_keys)) {
+            if (!in_array($key, $checkboxKeys)) {
                 continue;
             }
             if ((!isset($value['shop']) || !$value['shop'])) {
                 if (!isset($_REQUEST[$key])) {
-                    $this->checkAndLog($key, false, $id_shop);
+                    $this->checkAndLog($key, false, $idShop);
                     LengowConfiguration::updateGlobalValue($key, false);
                 }
             }
@@ -227,45 +227,45 @@ class LengowConfigurationForm
     /**
     * Check value and create a log if necessary
     *
-    * @param string  $key     name of lengow setting
-    * @param mixed   $value   setting value
-    * @param integer $id_shop shop id
+    * @param string  $key    name of lengow setting
+    * @param mixed   $value  setting value
+    * @param integer $idShop shop id
     */
-    public function checkAndLog($key, $value, $id_shop = null)
+    public function checkAndLog($key, $value, $idShop = null)
     {
-        if (is_null($id_shop)) {
-            $old_value = LengowConfiguration::getGlobalValue($key);
+        if (is_null($idShop)) {
+            $oldValue = LengowConfiguration::getGlobalValue($key);
         } else {
-            $old_value = LengowConfiguration::get($key, null, null, $id_shop);
+            $oldValue = LengowConfiguration::get($key, null, null, $idShop);
         }
         if (isset($this->fields[$key]['type']) && $this->fields[$key]['type'] == 'checkbox') {
             $value = (int)$value;
-            $old_value = (int)$old_value;
+            $oldValue = (int)$oldValue;
         } elseif ($key == 'LENGOW_ACCESS_TOKEN' || $key == 'LENGOW_SECRET_TOKEN') {
             $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
-            $old_value = preg_replace("/[a-zA-Z0-9]/", '*', $old_value);
+            $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
         }
-        if ($old_value != $value && !is_null($id_shop)) {
+        if ($oldValue != $value && !is_null($idShop)) {
             LengowMain::log(
                 'Setting',
                 LengowMain::setLogMessage(
                     'log.setting.setting_change_for_shop',
                     array(
                         'key'       => $key,
-                        'old_value' => $old_value,
+                        'old_value' => $oldValue,
                         'value'     => $value,
-                        'shop_id'   => $id_shop
+                        'shop_id'   => $idShop
                     )
                 )
             );
-        } elseif ($old_value != $value) {
+        } elseif ($oldValue != $value) {
             LengowMain::log(
                 'Setting',
                 LengowMain::setLogMessage(
                     'log.setting.setting_change',
                     array(
                         'key'       => $key,
-                        'old_value' => $old_value,
+                        'old_value' => $oldValue,
                         'value'     => $value
                     )
                 )

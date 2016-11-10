@@ -42,24 +42,24 @@ class LengowCarrier extends Carrier
     /**
      * Ensure carrier compatibility with SoColissimo and MondialRelay Modules
      *
-     * @param integer       $id_customer      customer id
-     * @param integer       $id_cart          cart id
-     * @param integer       $id_carrier       carrier id
-     * @param LengowAddress $shipping_address order shipping address
+     * @param integer       $idCustomer      customer id
+     * @param integer       $idCart          cart id
+     * @param integer       $idCarrier       carrier id
+     * @param LengowAddress $shippingAddress order shipping address
      *
      * @return integer -1 = compatibility not ensured, 0 = not a carrier module, 1 = compatibility ensured
      */
-    public static function carrierCompatibility($id_customer, $id_cart, $id_carrier, $shipping_address)
+    public static function carrierCompatibility($idCustomer, $idCart, $idCarrier, $shippingAddress)
     {
         // SoColissimo
-        if ($id_carrier == Configuration::get('SOCOLISSIMO_CARRIER_ID')) {
+        if ($idCarrier == Configuration::get('SOCOLISSIMO_CARRIER_ID')) {
             if (!LengowMain::isSoColissimoAvailable()) {
                 return LengowCarrier::COMPATIBILITY_KO;
             }
             return LengowCarrier::addSoColissimo(
-                $id_cart,
-                $id_customer,
-                $shipping_address
+                $idCart,
+                $idCustomer,
+                $shippingAddress
             ) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
         } else {
             // Mondial Relay
@@ -67,21 +67,21 @@ class LengowCarrier extends Carrier
                 return LengowCarrier::COMPATIBILITY_KO;
             }
             $mr = new MondialRelay();
-            if ($mr->isMondialRelayCarrier($id_carrier)) {
-                $relay = LengowCarrier::getMRRelay($shipping_address->id, $shipping_address->id_relay, $mr);
+            if ($mr->isMondialRelayCarrier($idCarrier)) {
+                $relay = LengowCarrier::getMRRelay($shippingAddress->id, $shippingAddress->id_relay, $mr);
                 if (!$relay) {
                     throw new LengowException(
                         LengowMain::setLogMessage(
                             'log.import.error_mondial_relay_not_found',
-                            array('id_relay' => $shipping_address->id_relay)
+                            array('id_relay' => $shippingAddress->id_relay)
                         )
                     );
                 }
                 return LengowCarrier::addMondialRelay(
                     $relay,
-                    $id_customer,
-                    $id_carrier,
-                    $id_cart
+                    $idCustomer,
+                    $idCarrier,
+                    $idCart
                 ) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
             }
         }
@@ -91,13 +91,13 @@ class LengowCarrier extends Carrier
     /**
      * Save order in SoColissimo table
      *
-     * @param integer       $id_cart           cart id
-     * @param integer       id_customer        customer id
-     * @param LengowAddress $shipping_adddress shipping address
+     * @param integer       $idCart          cart id
+     * @param integer       $idCustomer      customer id
+     * @param LengowAddress $shippingAddress shipping address
      *
      * @return bool
      */
-    public static function addSoColissimo($id_cart, $id_customer, $shipping_address)
+    public static function addSoColissimo($idCart, $idCustomer, $shippingAddress)
     {
         $sep = DIRECTORY_SEPARATOR;
         $loaded = include_once _PS_MODULE_DIR_.'socolissimo'.$sep.'classes'.$sep.'SCFields.php';
@@ -109,36 +109,36 @@ class LengowCarrier extends Carrier
                 )
             );
         }
-        $customer = new LengowCustomer($id_customer);
+        $customer = new LengowCustomer($idCustomer);
         $params = array();
-        if (!empty($shipping_address->id_relay)) {
-            $delivery_mode = 'A2P';
-            $so_colissimo = new SCFields($delivery_mode);
-            $params['PRID']          = (string)$shipping_address->id_relay;
-            $params['PRCOMPLADRESS'] = (string)$shipping_address->other;
-            $params['PRADRESS1']     = (string)$shipping_address->address1;
+        if (!empty($shippingAddress->id_relay)) {
+            $deliveryMode = 'A2P';
+            $soColissimo = new SCFields($deliveryMode);
+            $params['PRID']          = (string)$shippingAddress->id_relay;
+            $params['PRCOMPLADRESS'] = (string)$shippingAddress->other;
+            $params['PRADRESS1']     = (string)$shippingAddress->address1;
             // not a param in SoColissimo -> error ?
-            $params['PRADRESS2']     = (string)$shipping_address->address2;
-            $params['PRADRESS3']     = (string)$shipping_address->address2;
-            $params['PRZIPCODE']     = (string)$shipping_address->postcode;
-            $params['PRTOWN']        = (string)$shipping_address->city;
+            $params['PRADRESS2']     = (string)$shippingAddress->address2;
+            $params['PRADRESS3']     = (string)$shippingAddress->address2;
+            $params['PRZIPCODE']     = (string)$shippingAddress->postcode;
+            $params['PRTOWN']        = (string)$shippingAddress->city;
             $params['CEEMAIL']       = (string)$customer->email;
         } else {
-            $delivery_mode = 'DOM';
-            $so_colissimo = new SCFields($delivery_mode);
-            $params['CECOMPLADRESS'] = (string)$shipping_address->other;
-            $params['CEADRESS2']     = (string)$shipping_address->address2;
-            $params['CEADRESS3']     = (string)$shipping_address->address1;
+            $deliveryMode = 'DOM';
+            $soColissimo = new SCFields($deliveryMode);
+            $params['CECOMPLADRESS'] = (string)$shippingAddress->other;
+            $params['CEADRESS2']     = (string)$shippingAddress->address2;
+            $params['CEADRESS3']     = (string)$shippingAddress->address1;
         }
         // common params
-        $params['DELIVERYMODE']  = $delivery_mode;
-        $params['CENAME']        = (string)$shipping_address->lastname;
-        $params['CEFIRSTNAME']   = (string)$shipping_address->firstname;
-        $params['CEPHONENUMBER'] = (string)$shipping_address->phone;
-        $params['CECOMPANYNAME'] = (string)$shipping_address->company;
-        $params['CEZIPCODE']     = (string)$shipping_address->postcode;
-        $params['CETOWN']        = (string)$shipping_address->city;
-        $params['PRPAYS']        = (string)Country::getIsoById($shipping_address->id_country);
+        $params['DELIVERYMODE']  = $deliveryMode;
+        $params['CENAME']        = (string)$shippingAddress->lastname;
+        $params['CEFIRSTNAME']   = (string)$shippingAddress->firstname;
+        $params['CEPHONENUMBER'] = (string)$shippingAddress->phone;
+        $params['CECOMPANYNAME'] = (string)$shippingAddress->company;
+        $params['CEZIPCODE']     = (string)$shippingAddress->postcode;
+        $params['CETOWN']        = (string)$shippingAddress->city;
+        $params['PRPAYS']        = (string)Country::getIsoById($shippingAddress->id_country);
         $sql = 'INSERT INTO '._DB_PREFIX_.'socolissimo_delivery_info
 			(`id_cart`,
             `id_customer`,
@@ -163,9 +163,9 @@ class LengowCarrier extends Carrier
             `codereseau`,
             `cename`,
             `cefirstname`)
-			VALUES ('.(int)$id_cart.', '.(int)$id_customer.',';
-        if ($so_colissimo->delivery_mode == SCFields::RELAY_POINT) {
-            $sql .= '\''.pSQL($delivery_mode).'\',
+			VALUES ('.(int)$idCart.', '.(int)$idCustomer.',';
+        if ($soColissimo->delivery_mode == SCFields::RELAY_POINT) {
+            $sql .= '\''.pSQL($deliveryMode).'\',
 				'.(isset($params['PRID']) ? '\''.pSQL($params['PRID']).'\'' : '\'\'').',
 				'.(isset($params['CENAME']) ? '\''.pSQL($params['CENAME']).'\'' : '\'\'').',
 				'.(isset($params['CEFIRSTNAME']) ? '\''.Tools::ucfirst(pSQL($params['CEFIRSTNAME'])).'\'' : '\'\'').',
@@ -191,7 +191,7 @@ class LengowCarrier extends Carrier
                     isset($params['CEFIRSTNAME']) ? '\''.Tools::ucfirst(pSQL($params['CEFIRSTNAME'])).'\'' : '\'\''
                 ).')';
         } else {
-            $sql .= '\''.pSQL($delivery_mode).'\',\'\',
+            $sql .= '\''.pSQL($deliveryMode).'\',\'\',
 				'.(isset($params['CENAME']) ? '\''.Tools::ucfirst(pSQL($params['CENAME'])).'\'' : '\'\'').',
 				'.(isset($params['CEFIRSTNAME']) ? '\''.Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\'').',
 				'.(isset($params['CECOMPLADRESS']) ? '\''.pSQL($params['CECOMPLADRESS']) . '\'' : '\'\'').',
@@ -222,15 +222,15 @@ class LengowCarrier extends Carrier
     /**
      * Check if relay ID is correct
      *
-     * @param integer $id_address_delivery shipping address id
-     * @param string  $id_relay            relay id
+     * @param integer $idAddressDelivery shipping address id
+     * @param string  $idRelay           relay id
      *
      * @return boolean
      */
-    public static function getMRRelay($id_address_delivery, $id_relay, $mr)
+    public static function getMRRelay($idAddressDelivery, $idRelay, $mr)
     {
         $sep = DIRECTORY_SEPARATOR;
-        if (empty($id_relay)) {
+        if (empty($idRelay)) {
             return false;
         }
         $loaded = include_once _PS_MODULE_DIR_.'mondialrelay'.$sep.'classes'.$sep.'MRRelayDetail.php';
@@ -243,15 +243,15 @@ class LengowCarrier extends Carrier
             );
         }
         $params = array(
-            'id_address_delivery' => (int)$id_address_delivery,
-            'relayPointNumList' => array($id_relay),
+            'id_address_delivery' => (int)$idAddressDelivery,
+            'relayPointNumList'   => array($idRelay),
         );
-        $mr_rd = new MRRelayDetail($params, $mr);
-        $mr_rd->init();
-        $mr_rd->send();
-        $result = $mr_rd->getResult();
-        if (empty($result['error'][0]) && array_key_exists($id_relay, $result['success'])) {
-            return $result['success'][$id_relay];
+        $mrRd = new MRRelayDetail($params, $mr);
+        $mrRd->init();
+        $mrRd->send();
+        $result = $mrRd->getResult();
+        if (empty($result['error'][0]) && array_key_exists($idRelay, $result['success'])) {
+            return $result['success'][$idRelay];
         }
         return false;
     }
@@ -260,14 +260,14 @@ class LengowCarrier extends Carrier
      * Save order in MR table
      *
      * @param array   $relay       relay info
-     * @param integer $id_customer customer id
-     * @param integer $id_carrier  carrier id
-     * @param integer $id_cart     cart id
+     * @param integer $idCustomer customer id
+     * @param integer $idCarrier  carrier id
+     * @param integer $idCart     cart id
      * @param integer $insurance   insurance
      *
      * @return boolean
      */
-    public static function addMondialRelay($relay, $id_customer, $id_carrier, $id_cart, $insurance = 0)
+    public static function addMondialRelay($relay, $idCustomer, $idCarrier, $idCart, $insurance = 0)
     {
         $db = Db::getInstance();
         $query = 'INSERT INTO `'._DB_PREFIX_.'mr_selected` (`id_customer`, `id_method`, `id_cart`, MR_insurance, ';
@@ -277,9 +277,9 @@ class LengowCarrier extends Carrier
             }
         }
         $query = rtrim($query, ', ').') VALUES ('
-            .(int)$id_customer.', '
-            .(int)$id_carrier.', '
-            .(int)$id_cart.', '
+            .(int)$idCustomer.', '
+            .(int)$idCarrier.', '
+            .(int)$idCart.', '
             .(int)$insurance.', ';
 
         if (is_array($relay)) {
@@ -294,20 +294,20 @@ class LengowCarrier extends Carrier
     /**
      * Get Id Carrier By Marketplace Carrier Sku And Country
      *
-     * @param string  $marketplace_carrier_sku
-     * @param integer $id_country
+     * @param string  $marketplaceCarrierSku
+     * @param integer $idCountry
      *
      * @return mixed
      */
-    public static function getIdCarrierByMarketplaceCarrierSku($marketplace_carrier_sku, $id_country)
+    public static function getIdCarrierByMarketplaceCarrierSku($marketplaceCarrierSku, $idCountry)
     {
-        if ($marketplace_carrier_sku != '') {
+        if ($marketplaceCarrierSku != '') {
             // find in lengow marketplace carrier
             $sql = 'SELECT id_carrier FROM '._DB_PREFIX_.'lengow_marketplace_carrier lmc
-            WHERE id_country = '.(int)$id_country.' AND marketplace_carrier_sku = "'.pSQL($marketplace_carrier_sku).'"';
+            WHERE id_country = '.(int)$idCountry.' AND marketplace_carrier_sku = "'.pSQL($marketplaceCarrierSku).'"';
             $row = Db::getInstance()->getRow($sql);
             if ($row) {
-                return LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], (int)$id_country);
+                return LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], (int)$idCountry);
             }
         }
         return false;
@@ -395,23 +395,23 @@ class LengowCarrier extends Carrier
      *
      * @param string  $code
      * @param string  $name
-     * @param integer $id_country
+     * @param integer $idCountry
      *
      * @param integer
      */
-    public static function insertCountryInMarketplace($code, $name, $id_country)
+    public static function insertCountryInMarketplace($code, $name, $idCountry)
     {
         $result = Db::getInstance()->ExecuteS(
             'SELECT id_country FROM '._DB_PREFIX_.'lengow_marketplace_carrier
                     WHERE marketplace_carrier_sku = "'.pSQL($code).'" AND
-                    id_country = '.(int)$id_country
+                    id_country = '.(int)$idCountry
         );
         if (count($result) == 0) {
             if (_PS_VERSION_ < '1.5') {
                 Db::getInstance()->autoExecute(
                     _DB_PREFIX_.'lengow_marketplace_carrier',
                     array(
-                        'id_country'               => (int)$id_country,
+                        'id_country'               => (int)$idCountry,
                         'marketplace_carrier_sku'  => pSQL($code),
                         'marketplace_carrier_name' => pSQL($name),
                     ),
@@ -421,7 +421,7 @@ class LengowCarrier extends Carrier
                 Db::getInstance()->insert(
                     'lengow_marketplace_carrier',
                     array(
-                        'id_country'               => (int)$id_country,
+                        'id_country'               => (int)$idCountry,
                         'marketplace_carrier_sku'  => pSQL($code),
                         'marketplace_carrier_name' => pSQL($name),
                     )
@@ -433,18 +433,18 @@ class LengowCarrier extends Carrier
     /**
      * Get all active carriers
      *
-     * @param integer $id_country
+     * @param integer $idCountry
      *
      * @return array
      */
-    public static function getActiveCarriers($id_country = null)
+    public static function getActiveCarriers($idCountry = null)
     {
         $carriers = array();
-        if ($id_country) {
+        if ($idCountry) {
             $sql = 'SELECT * FROM '._DB_PREFIX_.'carrier c
                     INNER JOIN '._DB_PREFIX_.'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
                     INNER JOIN '._DB_PREFIX_.'country co ON (co.id_zone = cz.id_zone)
-                    WHERE c.active = 1 AND deleted = 0 AND co.id_country = '.(int)$id_country;
+                    WHERE c.active = 1 AND deleted = 0 AND co.id_country = '.(int)$idCountry;
         } else {
             $sql = 'SELECT id_carrier, id_reference, name FROM '._DB_PREFIX_.'carrier WHERE active = 1 AND deleted = 0';
         }
@@ -464,46 +464,46 @@ class LengowCarrier extends Carrier
     /**
      * Get Default carrier
      *
-     * @param mixed $id_country
+     * @param mixed $idCountry
      *
      * @return mixed
      */
-    public static function getDefaultCarrier($id_country = false)
+    public static function getDefaultCarrier($idCountry = false)
     {
-        $id_carrier = false;
+        $idCarrier = false;
         // get default id with lengow tables for a specific country id
-        if ($id_country) {
+        if ($idCountry) {
             $sql = 'SELECT id_carrier FROM '._DB_PREFIX_.'lengow_carrier_country
-                WHERE id_country = '.(int)$id_country;
+                WHERE id_country = '.(int)$idCountry;
             $row = Db::getInstance()->getRow($sql);
             if ($row) {
                 // get newest carrier id
-                $id_carrier = LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], $id_country);
+                $idCarrier = LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], $idCountry);
             }
         } else {
-            $id_country = (int)Configuration::get('PS_COUNTRY_DEFAULT');
+            $idCountry = (int)Configuration::get('PS_COUNTRY_DEFAULT');
             // get default id with lengow tables without country id
             $sql = 'SELECT id_carrier FROM '._DB_PREFIX_.'lengow_carrier_country
-                WHERE id_country = '.$id_country;
+                WHERE id_country = '.$idCountry;
             $row = Db::getInstance()->getRow($sql);
             if ($row) {
                 // get newest carrier id
-                $id_carrier = LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], $id_country);
+                $idCarrier = LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], $idCountry);
             }
             // get first carrier id with prestashop tables for default country
-            if (!$id_carrier) {
+            if (!$idCarrier) {
                 $sql = 'SELECT * FROM '._DB_PREFIX_.'carrier c
                     INNER JOIN '._DB_PREFIX_.'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
                     INNER JOIN '._DB_PREFIX_.'country co ON (co.id_zone = cz.id_zone)
-                    WHERE c.active = 1 AND deleted = 0 AND co.id_country = '.$id_country;
+                    WHERE c.active = 1 AND deleted = 0 AND co.id_country = '.$idCountry;
                 $row = Db::getInstance()->getRow($sql);
                 if ($row) {
-                    $id_carrier = (int)$row["id_carrier"];
+                    $idCarrier = (int)$row["id_carrier"];
                 }
             }
         }
-        if ($id_carrier) {
-            $carrier = new Carrier($id_carrier);
+        if ($idCarrier) {
+            $carrier = new Carrier($idCarrier);
             if ($carrier->id) {
                 return $carrier;
             }
@@ -514,19 +514,19 @@ class LengowCarrier extends Carrier
     /**
      * Get active carrier by country
      *
-     * @param integer $id_carrier
-     * @param integer $id_country
+     * @param integer $idCarrier
+     * @param integer $idCountry
      *
      * @return mixed
      */
-    public static function getActiveCarrierByCarrierId($id_carrier, $id_country)
+    public static function getActiveCarrierByCarrierId($idCarrier, $idCountry)
     {
         // search with id_carrier for Prestashop 1.4 and id_reference for other versions
-        $id_reference = _PS_VERSION_ < '1.5' ? 'c.id_carrier' : 'c.id_reference';
+        $idReference = _PS_VERSION_ < '1.5' ? 'c.id_carrier' : 'c.id_reference';
         $sql = 'SELECT * FROM '._DB_PREFIX_.'carrier c
             INNER JOIN '._DB_PREFIX_.'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
             INNER JOIN '._DB_PREFIX_.'country co ON (co.id_zone = cz.id_zone)
-            WHERE '.$id_reference.' = '.(int)$id_carrier.' AND co.id_country = '.(int)$id_country;
+            WHERE '.$idReference.' = '.(int)$idCarrier.' AND co.id_country = '.(int)$idCountry;
         $row = Db::getInstance()->getRow($sql);
         if ($row) {
             if ((int)$row['deleted'] == 1) {
@@ -536,7 +536,7 @@ class LengowCarrier extends Carrier
                 $sql = 'SELECT * FROM '._DB_PREFIX_.'carrier c
                     INNER JOIN '._DB_PREFIX_.'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
                     INNER JOIN '._DB_PREFIX_.'country co ON (co.id_zone = cz.id_zone)
-                    WHERE c.deleted = 0 AND c.active = 1 AND co.id_country = '.(int)$id_country
+                    WHERE c.deleted = 0 AND c.active = 1 AND co.id_country = '.(int)$idCountry
                     . ' AND id_reference= '.(int)$row['id_reference'] ;
                 $row2 = Db::getInstance()->getRow($sql);
                 if ($row2) {
@@ -552,21 +552,21 @@ class LengowCarrier extends Carrier
     /**
      * Get List Carrier in all Lengow Marketplace
      *
-     * @param integer $id_country
+     * @param integer $idCountry
      *
      * @return array
      */
-    public static function getListMarketplaceCarrier($id_country = null)
+    public static function getListMarketplaceCarrier($idCountry = null)
     {
-        $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
-        $condition = $id_country ? 'WHERE lmc.id_country = '.(int)$id_country : '';
+        $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
+        $condition = $idCountry ? 'WHERE lmc.id_country = '.(int)$idCountry : '';
         $sql = 'SELECT lmc.id, lmc.id_carrier, co.iso_code, cl.name, lmc.id_country, lmc.marketplace_carrier_sku,
             lmc.marketplace_carrier_name FROM '
             ._DB_PREFIX_.'lengow_marketplace_carrier lmc INNER JOIN '
             ._DB_PREFIX_.'country co ON lmc.id_country=co.id_country INNER JOIN '
             ._DB_PREFIX_.'country_lang cl ON co.id_country=cl.id_country
             AND cl.id_lang= '.(int)Context::getContext()->language->id
-            .' '.$condition.' ORDER BY CASE WHEN co.id_country = '.(int)$default_country.' THEN 1 ELSE cl.name END ASC
+            .' '.$condition.' ORDER BY CASE WHEN co.id_country = '.(int)$defaultCountry.' THEN 1 ELSE cl.name END ASC
             , marketplace_carrier_sku ASC;';
 
         $collection = Db::getInstance()->ExecuteS($sql);
@@ -577,22 +577,22 @@ class LengowCarrier extends Carrier
     /**
      * Insert a new marketplace carrier country in the table
      *
-     * @param integer $id_country
+     * @param integer $idCountry
      *
      * @return boolean
      */
-    public static function insert($id_country)
+    public static function insert($idCountry)
     {
-        $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
+        $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
         $sql = 'SELECT marketplace_carrier_sku, marketplace_carrier_name 
-                FROM '._DB_PREFIX_.'lengow_marketplace_carrier WHERE id_country = '.(int)$default_country;
-        $marketplace_carriers = Db::getInstance()->executeS($sql);
-        foreach ($marketplace_carriers as $key) {
+                FROM '._DB_PREFIX_.'lengow_marketplace_carrier WHERE id_country = '.(int)$defaultCountry;
+        $marketplaceCarriers = Db::getInstance()->executeS($sql);
+        foreach ($marketplaceCarriers as $key) {
             if (_PS_VERSION_ < '1.5') {
                 DB::getInstance()->autoExecute(
                     _DB_PREFIX_.'lengow_marketplace_carrier',
                     array(
-                        'id_country'                => (int)$id_country,
+                        'id_country'                => (int)$idCountry,
                         'marketplace_carrier_sku'   => pSQL($key['marketplace_carrier_sku']),
                         'marketplace_carrier_name'  => pSQL($key['marketplace_carrier_name'])
                     ),
@@ -602,7 +602,7 @@ class LengowCarrier extends Carrier
                 DB::getInstance()->insert(
                     'lengow_marketplace_carrier',
                     array(
-                        'id_country'                => (int)$id_country,
+                        'id_country'                => (int)$idCountry,
                         'marketplace_carrier_sku'   => pSQL($key['marketplace_carrier_sku']),
                         'marketplace_carrier_name'  => pSQL($key['marketplace_carrier_name'])
                     )
@@ -615,14 +615,14 @@ class LengowCarrier extends Carrier
     /**
      * Delete a marketplace carrier country
      *
-     * @param integer $id_country
+     * @param integer $idCountry
      *
      * @return action
      */
-    public static function deleteMarketplaceCarrier($id_country)
+    public static function deleteMarketplaceCarrier($idCountry)
     {
         $db = DB::getInstance();
-        $db->delete(_DB_PREFIX_.'lengow_marketplace_carrier', 'id_country = '.(int)$id_country);
+        $db->delete(_DB_PREFIX_.'lengow_marketplace_carrier', 'id_country = '.(int)$idCountry);
         return $db;
     }
 }

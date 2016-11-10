@@ -32,10 +32,10 @@ class LengowBackup extends Backup
     public function add()
     {
         if (!$this->psBackupAll) {
-            $ignore_insert_table = array(_DB_PREFIX_.'connections', _DB_PREFIX_.'connections_page', _DB_PREFIX_
+            $ignoreInsertTable = array(_DB_PREFIX_.'connections', _DB_PREFIX_.'connections_page', _DB_PREFIX_
                 .'connections_source', _DB_PREFIX_.'guest', _DB_PREFIX_.'statssearch');
         } else {
-            $ignore_insert_table = array();
+            $ignoreInsertTable = array();
         }
         // Generate some random number, to make it extra hard to guess backup file names
         $rand = dechex(mt_rand(0, min(0xffffffff, mt_getrandmax())));
@@ -72,7 +72,7 @@ class LengowBackup extends Backup
             }
             fwrite($fp, '/* Scheme for table '.$schema[0]['Table']." */\n");
             fwrite($fp, $schema[0]['Create Table'].";\n\n");
-            if (!in_array($schema[0]['Table'], $ignore_insert_table)) {
+            if (!in_array($schema[0]['Table'], $ignoreInsertTable)) {
                 $data = Db::getInstance()->executeS('SELECT * FROM `'.$schema[0]['Table'].'`', false);
                 $sizeof = DB::getInstance()->NumRows();
                 $lines = explode("\n", $schema[0]['Create Table']);

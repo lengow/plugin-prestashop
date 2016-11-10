@@ -219,9 +219,9 @@ class LengowOrderController extends LengowController
                     break;
                 case 'force_resend':
                     $idOrder = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
-                    $action_type = isset($_REQUEST['action_type']) ? $_REQUEST['action_type'] : 'ship';
+                    $actionType = isset($_REQUEST['action_type']) ? $_REQUEST['action_type'] : 'ship';
                     $lengowOrder = new LengowOrder($idOrder);
-                    $lengowOrder->callAction($action_type);
+                    $lengowOrder->callAction($actionType);
                     $lengowLink = new LengowLink();
                     $prestashopOrderController = $lengowLink->getAbsoluteAdminLink('AdminOrders', false, true);
                     $orderUrl = $prestashopOrderController.'&id_order='.$idOrder.'&vieworder';
@@ -229,10 +229,10 @@ class LengowOrderController extends LengowController
                     break;
                 case 'add_tracking':
                     $idOrder = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
-                    $tracking_number = isset($_REQUEST['tracking_number']) ? $_REQUEST['tracking_number'] : '';
-                    if ($tracking_number != '' && _PS_VERSION_ < '1.5' && $idOrder > 0) {
+                    $trackingNumber = isset($_REQUEST['tracking_number']) ? $_REQUEST['tracking_number'] : '';
+                    if ($trackingNumber != '' && _PS_VERSION_ < '1.5' && $idOrder > 0) {
                         $order = new Order($idOrder);
-                        $order->shipping_number = $tracking_number;
+                        $order->shipping_number = $trackingNumber;
                         $order->update();
                     }
                     $lengowLink = new LengowLink();

@@ -26,8 +26,8 @@ class LengowOrderSettingController extends LengowController
      */
     public function display()
     {
-        $import_url = LengowMain::getImportUrl();
-        $this->context->smarty->assign('import_url', $import_url);
+        $importUrl = LengowMain::getImportUrl();
+        $this->context->smarty->assign('import_url', $importUrl);
         $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
         $countries = LengowCarrierCountry::getCountries();
         $listCarrier = LengowCarrierCountry::listCarrierByCountry();

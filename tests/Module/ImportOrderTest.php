@@ -542,8 +542,8 @@ class ImportOrderTest extends ModuleTestCase
      */
     public function getCarrierIdEmptyAddress()
     {
-        $shipping_address = (object) array();
-        $order_data = Tools::JsonDecode(
+        $shippingAddress = (object) array();
+        $orderData = Tools::JsonDecode(
             file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
         );
         $import = new LengowImportOrder(
@@ -557,12 +557,12 @@ class ImportOrderTest extends ModuleTestCase
                 'log_output'          => false,
                 'marketplace_sku'     => 1,
                 'delivery_address_id' => 1,
-                'order_data'          => $order_data,
+                'order_data'          => $orderData,
                 'package_data'        => 1,
                 'first_package'       => 1,
             )
         );
-        $this->invokeMethod($import, 'getCarrierId', array($shipping_address));
+        $this->invokeMethod($import, 'getCarrierId', array($shippingAddress));
     }
 
     /**
@@ -575,8 +575,8 @@ class ImportOrderTest extends ModuleTestCase
      */
     public function getCarrierIdEmptyAddressCountry()
     {
-        $shipping_address = (object) array('id_country' => 0);
-        $order_data = Tools::JsonDecode(
+        $shippingAddress = (object) array('id_country' => 0);
+        $orderData = Tools::JsonDecode(
             file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
         );
         $import = new LengowImportOrder(
@@ -590,12 +590,12 @@ class ImportOrderTest extends ModuleTestCase
                 'log_output'          => false,
                 'marketplace_sku'     => 1,
                 'delivery_address_id' => 1,
-                'order_data'          => $order_data,
+                'order_data'          => $orderData,
                 'package_data'        => 1,
                 'first_package'       => 1,
             )
         );
-        $this->invokeMethod($import, 'getCarrierId', array($shipping_address));
+        $this->invokeMethod($import, 'getCarrierId', array($shippingAddress));
     }
 
     /**
@@ -608,8 +608,8 @@ class ImportOrderTest extends ModuleTestCase
      */
     public function getCarrierIdRequireCarrierError()
     {
-        $shipping_address = (object) array('id_country' => 8);
-        $order_data = Tools::JsonDecode(
+        $shippingAddress = (object) array('id_country' => 8);
+        $orderData = Tools::JsonDecode(
             file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
         );
         $fixture = new Fixture();
@@ -628,8 +628,8 @@ class ImportOrderTest extends ModuleTestCase
                 'log_output'          => false,
                 'marketplace_sku'     => 1,
                 'delivery_address_id' => 1,
-                'order_data'          => $order_data,
-                'package_data'        => $order_data->packages[0],
+                'order_data'          => $orderData,
+                'package_data'        => $orderData->packages[0],
                 'first_package'       => 1,
             )
         );
@@ -638,7 +638,7 @@ class ImportOrderTest extends ModuleTestCase
         $fixture->truncate('lengow_marketplace_carrier');
 
         $this->invokeMethod($import, 'loadTrackingData');
-        $this->invokeMethod($import, 'getCarrierId', array($shipping_address));
+        $this->invokeMethod($import, 'getCarrierId', array($shippingAddress));
     }
 
 
@@ -651,8 +651,8 @@ class ImportOrderTest extends ModuleTestCase
      */
     public function getCarrierIdRequireCarrier()
     {
-        $shipping_address = (object) array('id_country' => 8);
-        $order_data = Tools::JsonDecode(
+        $shippingAddress = (object) array('id_country' => 8);
+        $orderData = Tools::JsonDecode(
             file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
         );
         $import = new LengowImportOrder(
@@ -666,8 +666,8 @@ class ImportOrderTest extends ModuleTestCase
                 'log_output'          => false,
                 'marketplace_sku'     => 1,
                 'delivery_address_id' => 1,
-                'order_data'          => $order_data,
-                'package_data'        => $order_data->packages[0],
+                'order_data'          => $orderData,
+                'package_data'        => $orderData->packages[0],
                 'first_package'       => 1,
             )
         );
@@ -683,7 +683,7 @@ class ImportOrderTest extends ModuleTestCase
         LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
         $this->invokeMethod($import, 'loadTrackingData');
-        $this->assertEquals(3, $this->invokeMethod($import, 'getCarrierId', array($shipping_address)));
+        $this->assertEquals(3, $this->invokeMethod($import, 'getCarrierId', array($shippingAddress)));
     }
 
     /**

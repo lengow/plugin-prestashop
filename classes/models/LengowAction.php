@@ -35,12 +35,49 @@ class LengowAction
     const STATE_FINISH = 1;
 
     /**
-     * Construct
+     * @var integer Lengow action record id
      */
-    public function __construct()
-    {
+    public $id;
 
-    }
+    /**
+     * @var integer Prestashop order id
+     */
+    public $idOrder;
+
+    /**
+     * @var integer Lengow action id 
+     */
+    public $actionId;
+
+    /**
+     * @var string action type (ship or cancel)
+     */
+    public $actionType;
+
+    /**
+     * @var integer Lengow order record id
+     */
+    public $retry;
+
+    /**
+     * @var string all parameters in json format
+     */
+    public $parameters;
+
+    /**
+     * @var integer action state
+     */
+    public $state;
+
+    /**
+     * @var date action created at
+     */
+    public $createdAt;
+
+    /**
+     * @var date updated at
+     */
+    public $updatedAt;
 
     /**
      * Load action data
@@ -49,28 +86,28 @@ class LengowAction
      */
     public function load($row)
     {
-        $this->id = (int)$row['id'];
-        $this->id_order = (int)$row['id_order'];
-        $this->action_id = (int)$row['action_id'];
-        $this->action_type = $row['action_type'];
-        $this->retry = $row['retry'];
+        $this->id         = (int)$row['id'];
+        $this->idOrder    = (int)$row['id_order'];
+        $this->actionId   = (int)$row['action_id'];
+        $this->actionType = $row['action_type'];
+        $this->retry      = $row['retry'];
         $this->parameters = $row['parameters'];
-        $this->state = $row['state'];
-        $this->created_at = $row['created_at'];
-        $this->updated_at = $row['updated_at'];
+        $this->state      = $row['state'];
+        $this->createdAt  = $row['created_at'];
+        $this->updatedAt  = $row['updated_at'];
     }
 
     /**
      * Find by ID
      *
-     * @param integer $action_id
+     * @param integer $actionId
      *
      * @return boolean
      */
-    public function findByActionId($action_id)
+    public function findByActionId($actionId)
     {
         $row = Db::getInstance()->getRow(
-            'SELECT * FROM '._DB_PREFIX_.'lengow_actions la WHERE action_id = '.(int)$action_id
+            'SELECT * FROM '._DB_PREFIX_.'lengow_actions la WHERE action_id = '.(int)$actionId
         );
         if ($row) {
             $this->load($row);
@@ -82,18 +119,18 @@ class LengowAction
     /**
      * Find active actions by order id
      *
-     * @param integer $action_id
-     * @param string  $action_type (ship or cancel)
+     * @param integer $idOrder
+     * @param string  $actionType (ship or cancel)
      * @param boolean $load
      *
      * @return mixed
      */
-    public static function getActiveActionByOrderId($id_order, $action_type = null, $load = true)
+    public static function getActiveActionByOrderId($idOrder, $actionType = null, $load = true)
     {
-        $sql_type = is_null($action_type) ? '' : ' AND  action_type = "'.pSQL($action_type).'"';
+        $sqlType = is_null($actionType) ? '' : ' AND  action_type = "'.pSQL($actionType).'"';
         $rows = Db::getInstance()->executeS(
             'SELECT * FROM '._DB_PREFIX_.'lengow_actions la
-            WHERE state = '.self::STATE_NEW.$sql_type.' AND id_order='.(int)$id_order
+            WHERE state = '.self::STATE_NEW.$sqlType.' AND id_order='.(int)$idOrder
         );
         if (count($rows) > 0) {
             if ($load) {
@@ -113,17 +150,17 @@ class LengowAction
     /**
      * Get active action by shop
      *
-     * @param integer $id_shop
+     * @param integer $idShop
      * @param boolean $load
      *
      * @return mixed
      */
-    public static function getActiveActionByShop($id_shop, $load = true)
+    public static function getActiveActionByShop($idShop, $load = true)
     {
         $rows = Db::getInstance()->executeS(
             'SELECT la.*, o.id_shop FROM '._DB_PREFIX_.'lengow_actions la
             INNER JOIN '._DB_PREFIX_.'orders o ON (o.id_order = la.id_order)
-            WHERE id_shop='.(int)$id_shop.' AND state = '.(int)self::STATE_NEW
+            WHERE id_shop='.(int)$idShop.' AND state = '.(int)self::STATE_NEW
         );
         if (count($rows) > 0) {
             if ($load) {
@@ -143,19 +180,19 @@ class LengowAction
     /**
      * Get last order action type to re-send action
      *
-     * @param integer $id_order
+     * @param integer $idOrder
      *
      * @return mixed
      */
-    public static function getLastOrderActionType($id_order)
+    public static function getLastOrderActionType($idOrder)
     {
         $rows = Db::getInstance()->executeS(
             'SELECT action_type FROM '._DB_PREFIX_.'lengow_actions
-            WHERE state = '.self::STATE_NEW.' AND id_order='.(int)$id_order
+            WHERE state = '.self::STATE_NEW.' AND id_order='.(int)$idOrder
         );
         if (count($rows) > 0) {
-            $last_action = end($rows);
-            return (string)$last_action['action_type'];
+            $lastAction = end($rows);
+            return (string)$lastAction['action_type'];
         }
         return false;
     }
@@ -280,17 +317,17 @@ class LengowAction
     /**
      * Removes all actions for one order Prestashop
      *
-     * @param integer $id_order    Prestashop order id
-     * @param string  $action_type type (null, ship or cancel)
+     * @param integer $idOrder    Prestashop order id
+     * @param string  $actionType type (null, ship or cancel)
      *
      * @return boolean
      */
-    public static function finishAllActions($id_order, $action_type = null)
+    public static function finishAllActions($idOrder, $actionType = null)
     {
-        $sql_action_type = is_null($action_type) ? '' : ' AND action_type = "'.pSQL($action_type).'"';
+        $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "'.pSQL($actionType).'"';
         $rows = Db::getInstance()->executeS(
             'SELECT * FROM '._DB_PREFIX_.'lengow_actions
-            WHERE id_order ='.(int)$id_order.' AND state = '.(int)self::STATE_NEW.$sql_action_type
+            WHERE id_order ='.(int)$idOrder.' AND state = '.(int)self::STATE_NEW.$sqlActionType
         );
         if (count($rows) > 0) {
             foreach ($rows as $row) {
@@ -304,40 +341,40 @@ class LengowAction
     /**
      * Remove old actions > 3 days
      *
-     * @param string $action_type type (null, ship or cancel)
+     * @param string $actionType type (null, ship or cancel)
      *
      * @return boolean
      */
-    public static function finishAllOldActions($action_type = null)
+    public static function finishAllOldActions($actionType = null)
     {
         // get all old order action (+ 3 days)
-        $sql_action_type = is_null($action_type) ? '' : ' AND action_type = "'.pSQL($action_type).'"';
+        $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "'.pSQL($actionType).'"';
         $date = date('Y-m-d h:m:i', strtotime('-3 days', time()));
         $rows = Db::getInstance()->executeS(
             'SELECT * FROM '._DB_PREFIX_.'lengow_actions
-            WHERE created_at <= "'.$date.'" AND state = '.(int)self::STATE_NEW.$sql_action_type
+            WHERE created_at <= "'.$date.'" AND state = '.(int)self::STATE_NEW.$sqlActionType
         );
         if (count($rows) > 0) {
             foreach ($rows as $row) {
                 // Finish action in lengow_action table
                 self::finishAction($row['id']);
-                $order_lengow = new LengowOrder($row['id_order']);
-                if ($order_lengow->lengow_process_state != LengowOrder::PROCESS_STATE_FINISH) {
+                $orderLengow = new LengowOrder($row['id_order']);
+                if ($orderLengow->lengow_process_state != LengowOrder::PROCESS_STATE_FINISH) {
                     // If action is denied -> create order error
-                    $error_message = LengowMain::setLogMessage('lengow_log.exception.action_is_too_old');
-                    LengowOrder::addOrderLog($order_lengow->lengow_id, $error_message, 'send');
-                    $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
+                    $errorMessage = LengowMain::setLogMessage('lengow_log.exception.action_is_too_old');
+                    LengowOrder::addOrderLog($orderLengow->lengow_id, $errorMessage, 'send');
+                    $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
                     LengowMain::log(
                         'API-OrderAction',
                         LengowMain::setLogMessage(
                             'log.order_action.call_action_failed',
-                            array('decoded_message' => $decoded_message)
+                            array('decoded_message' => $decodedMessage)
                         ),
                         false,
-                        $order_lengow->lengow_marketplace_sku
+                        $orderLengow->lengow_marketplace_sku
                     );
                 }
-                unset($order_lengow);
+                unset($orderLengow);
             }
             return true;
         }
@@ -370,13 +407,13 @@ class LengowAction
                     )
                 );
                 // Get all active actions by shop
-                $shop_actions = self::getActiveActionByShop((int)$shop->id, false);
-                if (!$shop_actions) {
+                $shopActions = self::getActiveActionByShop((int)$shop->id, false);
+                if (!$shopActions) {
                     continue;
                 }
                 // Get all actions with API for 3 days
                 $page = 1;
-                $api_actions = array();
+                $apiActions = array();
                 do {
                     $results = LengowConnector::queryApi(
                         'get',
@@ -394,56 +431,56 @@ class LengowAction
                     // Construct array actions
                     foreach ($results->results as $action) {
                         if (isset($action->id)) {
-                            $api_actions[$action->id] = $action;
+                            $apiActions[$action->id] = $action;
                         }
                     }
                     $page++;
                 } while ($results->next != null);
-                if (count($api_actions) == 0) {
+                if (count($apiActions) == 0) {
                     continue;
                 }
                 // Check foreach action if is complete
-                foreach ($shop_actions as $action) {
-                    if (!isset($api_actions[$action['action_id']])) {
+                foreach ($shopActions as $action) {
+                    if (!isset($apiActions[$action['action_id']])) {
                         continue;
                     }
-                    if (isset($api_actions[$action['action_id']]->queued)
-                        && isset($api_actions[$action['action_id']]->processed)
-                        && isset($api_actions[$action['action_id']]->errors)
+                    if (isset($apiActions[$action['action_id']]->queued)
+                        && isset($apiActions[$action['action_id']]->processed)
+                        && isset($apiActions[$action['action_id']]->errors)
                     ) {
-                        if ($api_actions[$action['action_id']]->queued == false) {
+                        if ($apiActions[$action['action_id']]->queued == false) {
                             // Finish action in lengow_action table
                             self::finishAction($action['id']);
-                            $order_lengow = new LengowOrder($action['id_order']);
+                            $orderLengow = new LengowOrder($action['id_order']);
                             // Finish all order logs send
-                            LengowOrder::finishOrderLogs($order_lengow->lengow_id, 'send');
-                            if ($order_lengow->lengow_process_state != LengowOrder::PROCESS_STATE_FINISH) {
+                            LengowOrder::finishOrderLogs($orderLengow->lengow_id, 'send');
+                            if ($orderLengow->lengow_process_state != LengowOrder::PROCESS_STATE_FINISH) {
                                 // If action is accepted -> close order and finish all order actions
-                                if ($api_actions[$action['action_id']]->processed == true) {
+                                if ($apiActions[$action['action_id']]->processed == true) {
                                     LengowOrder::updateOrderLengow(
-                                        $order_lengow->lengow_id,
+                                        $orderLengow->lengow_id,
                                         array('order_process_state' => LengowOrder::PROCESS_STATE_FINISH)
                                     );
-                                    self::finishAllActions($order_lengow->id);
+                                    self::finishAllActions($orderLengow->id);
                                 } else {
                                     // If action is denied -> create order logs and finish all order actions
                                     LengowOrder::addOrderLog(
-                                        $order_lengow->lengow_id,
-                                        $api_actions[$action['action_id']]->errors,
+                                        $orderLengow->lengow_id,
+                                        $apiActions[$action['action_id']]->errors,
                                         'send'
                                     );
                                     LengowMain::log(
                                         'API-OrderAction',
                                         LengowMain::setLogMessage(
                                             'log.order_action.call_action_failed',
-                                            array('decoded_message' => $api_actions[$action['action_id']]->errors)
+                                            array('decoded_message' => $apiActions[$action['action_id']]->errors)
                                         ),
                                         false,
-                                        $order_lengow->lengow_marketplace_sku
+                                        $orderLengow->lengow_marketplace_sku
                                     );
                                 }
                             }
-                            unset($order_lengow);
+                            unset($orderLengow);
                         }
                     }
                 }
@@ -480,13 +517,13 @@ class LengowAction
                     )
                 );
                 // Get unsent orders by store
-                $unsent_orders = LengowOrder::getUnsentOrderByStore((int)$shop->id);
-                if (!$unsent_orders) {
+                $unsentOrders = LengowOrder::getUnsentOrderByStore((int)$shop->id);
+                if (!$unsentOrders) {
                     continue;
                 }
-                foreach ($unsent_orders as $id_order => $action_type) {
-                    $lengow_order = new LengowOrder($id_order);
-                    $lengow_order->callAction($action_type);
+                foreach ($unsentOrders as $idOrder => $actionType) {
+                    $lengow_order = new LengowOrder($idOrder);
+                    $lengow_order->callAction($actionType);
                 }
             }
         }
