@@ -588,9 +588,10 @@ class LengowImportOrder
         } else {
             $currencyId = Currency::getIdByIsoCode($this->order_data->currency->iso_a3);
             if (!$currencyId) {
-                $error_messages[] = LengowMain::setLogMessage('lengow_log.error.currency_not_available', array(
-                    'currency_iso' => $this->order_data->currency->iso_a3
-                ));
+                $error_messages[] = LengowMain::setLogMessage(
+                    'lengow_log.error.currency_not_available',
+                    array('currency_iso' => $this->order_data->currency->iso_a3)
+                );
             }
         }
         if ($this->order_data->total_order == -1) {

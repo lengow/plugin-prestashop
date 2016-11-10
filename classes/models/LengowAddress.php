@@ -115,8 +115,8 @@ class LengowAddress extends Address
     */
     public static function getByAlias($alias)
     {
-        $row = Db::getInstance()->getRow('
-            SELECT `id_address`
+        $row = Db::getInstance()->getRow(
+            'SELECT `id_address`
             FROM '._DB_PREFIX_.'address a
             WHERE a.`alias` = "'.pSQL($alias).'"'
         );

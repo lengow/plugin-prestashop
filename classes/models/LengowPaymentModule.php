@@ -678,18 +678,16 @@ class LengowPaymentModule extends PaymentModule
                     if (!empty($product['ecotax'])) {
                         $ecotaxTaxRate = Tax::getProductEcotaxRate($order->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
                     }
+                    $productName = (isset($product['attributes']) && $product['attributes'] != null)
+                        ? ' - '.$product['attributes']
+                        : '';
                     $query .= '('.(int)($order->id).',
 						'.(int)($product['id_product']).',
 						'.(isset($product['id_product_attribute'])
                             ? (int)($product['id_product_attribute'])
                             : 'null'
                         ).',
-						\''.pSQL($product['name'].(
-                            (isset($product['attributes']) && $product['attributes'] != null)
-                                ? ' - '.$product['attributes']
-                                : ''
-                            )
-                        ).'\',
+						\''.pSQL($product['name'].$productName).'\',
 						'.(int)($product['cart_quantity']).',
 						'.$quantityInStock.',
 						'.(float)$product['price'].',

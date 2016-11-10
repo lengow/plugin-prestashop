@@ -173,7 +173,8 @@ class LengowCheck
         if (LengowImport::isInProcess()) {
             $import_in_progress = LengowMain::decodeLogMessage(
                 'toolbox.index.rest_time_to_import',
-                null, array('rest_time' => LengowImport::restTimeToImport())
+                null,
+                array('rest_time' => LengowImport::restTimeToImport())
             );
         } else {
             $import_in_progress = $this->locale->t('toolbox.index.no_import');

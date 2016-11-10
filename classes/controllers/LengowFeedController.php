@@ -476,22 +476,24 @@ class LengowFeedController extends LengowController
         $html='<div class="lengow_table_top">';
         $html.='<div class="lengow_toolbar">';
         if (!$this->toolbox) {
+            $messageRemoveConfirmation = $this->locale->t(
+                'product.screen.remove_confirmation',
+                array('nb' => $this->list->getTotal())
+            );
             $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
                 data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
-                data-message="'.$this->locale->t(
-                    'product.screen.remove_confirmation',
-                    array('nb' => $this->list->getTotal())
-                ).'"
+                data-message="'.$messageRemoveConfirmation.'"
                 data-action="lengow_export_action"
                 data-export-action="lengow_remove_from_export"
                 class="lgw-btn lgw-btn-red lengow_remove_from_export">
                 <i class="fa fa-minus"></i> '.$this->locale->t('product.screen.remove_from_export').'</a>';
+            $messageAddConfirmation = $this->locale->t(
+                'product.screen.add_confirmation',
+                array('nb' => $this->list->getTotal())
+            );
             $html.='<a href="#" data-id_shop="'.$shopId.'" style="display:none;"
                 data-href="'.$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true).'"
-                data-message="'.$this->locale->t(
-                    'product.screen.add_confirmation',
-                    array('nb' => $this->list->getTotal())
-                ).'"
+                data-message="'.$messageAddConfirmation.'"
                 data-action="lengow_export_action"
                 data-export-action="lengow_add_to_export"
                 class="lgw-btn lengow_add_to_export">

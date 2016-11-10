@@ -638,16 +638,17 @@ class LengowOrderController extends LengowController
     {
         //check if order actions in progress
         if ($item['id_order'] > 0) {
-            $last_action_type = LengowAction::getLastOrderActionType($item['id_order']);
-            if ($last_action_type) {
+            $lastActionType = LengowAction::getLastOrderActionType($item['id_order']);
+            if ($lastActionType) {
+                $messageLastAction = LengowMain::decodeLogMessage(
+                    'order.screen.action_sent',
+                    null,
+                    array('action_type' => $lastActionType)
+                );
                 $value = '<span class="lengow_link_tooltip lgw-label orange"
                     data-html="true"
                     data-original-title="'.LengowMain::decodeLogMessage('order.screen.action_waiting_return').'"
-                    >'.LengowMain::decodeLogMessage(
-                        'order.screen.action_sent',
-                        null,
-                        array('action_type' => $last_action_type)
-                    ).'</span>';
+                    >'.$messageLastAction.'</span>';
                 return $value;
             }
         }

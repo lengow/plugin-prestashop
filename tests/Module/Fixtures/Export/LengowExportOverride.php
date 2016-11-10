@@ -1,8 +1,7 @@
 <?php
 
-class LengowExportOverride extends LengowExport {
-
-
+class LengowExportOverride extends LengowExport
+{
     public static function setAdditionalFields($fields)
     {
         $fields[] = 'test1';

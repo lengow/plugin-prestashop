@@ -420,9 +420,10 @@ class LengowAction
                             if ($order_lengow->lengow_process_state != LengowOrder::PROCESS_STATE_FINISH) {
                                 // If action is accepted -> close order and finish all order actions
                                 if ($api_actions[$action['action_id']]->processed == true) {
-                                    LengowOrder::updateOrderLengow($order_lengow->lengow_id, array(
-                                        'order_process_state' => LengowOrder::PROCESS_STATE_FINISH
-                                    ));
+                                    LengowOrder::updateOrderLengow(
+                                        $order_lengow->lengow_id,
+                                        array('order_process_state' => LengowOrder::PROCESS_STATE_FINISH)
+                                    );
                                     self::finishAllActions($order_lengow->id);
                                 } else {
                                     // If action is denied -> create order logs and finish all order actions

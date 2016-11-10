@@ -39,5 +39,5 @@ require 'views/footer.php';
 ?>
 
 <script>
-	lengow_jquery('.lengow_switch').bootstrapSwitch({readonly: true});
+    lengow_jquery('.lengow_switch').bootstrapSwitch({readonly: true});
 </script>
