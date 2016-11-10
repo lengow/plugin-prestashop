@@ -19,7 +19,6 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-$default_locale = 'en';
 $listDefaultValues = array();
 
 $directory = dirname(dirname(__FILE__)).'/translations/yml/';

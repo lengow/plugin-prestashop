@@ -808,9 +808,11 @@ class LengowMain
             return true;
         }
         foreach ($logs as $log) {
-            $mail_body .= '<li>'.LengowMain::decodeLogMessage('lengow_log.mail_report.order', null, array(
-                'marketplace_sku' => $log['marketplace_sku']
-            ));
+            $mail_body .= '<li>'.LengowMain::decodeLogMessage(
+                'lengow_log.mail_report.order',
+                null,
+                array('marketplace_sku' => $log['marketplace_sku'])
+            );
             if ($log['message'] != '') {
                 $mail_body .= ' - '.LengowMain::decodeLogMessage($log['message']);
             } else {

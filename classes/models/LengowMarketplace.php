@@ -100,9 +100,10 @@ class LengowMarketplace
         $this->name = Tools::strtolower($name);
         if (!isset(self::$MARKETPLACES[$this->id_shop]->{$this->name})) {
             throw new LengowException(
-                LengowMain::setLogMessage('lengow_log.exception.marketplace_not_present', array(
-                    'marketplace_name' => $this->name
-                ))
+                LengowMain::setLogMessage(
+                    'lengow_log.exception.marketplace_not_present',
+                    array('marketplace_name' => $this->name)
+                )
             );
         }
         $this->marketplace = self::$MARKETPLACES[$this->id_shop]->{$this->name};
@@ -291,9 +292,10 @@ class LengowMarketplace
             }
             if (!isset($this->actions[$action])) {
                 throw new LengowException(
-                    LengowMain::setLogMessage('lengow_log.exception.marketplace_action_not_present', array(
-                        'action' => $action
-                    ))
+                    LengowMain::setLogMessage(
+                        'lengow_log.exception.marketplace_action_not_present',
+                        array('action' => $action)
+                    )
                 );
             }
             if ((int)$order->lengow_id_shop == 0) {
@@ -390,9 +392,10 @@ class LengowMarketplace
                 foreach ($actions['args'] as $arg) {
                     if (!isset($params[$arg]) || Tools::strlen($params[$arg]) == 0) {
                         throw new LengowException(
-                            LengowMain::setLogMessage('lengow_log.exception.arg_is_required', array(
-                                'arg_name' => $arg
-                            ))
+                            LengowMain::setLogMessage(
+                                'lengow_log.exception.arg_is_required',
+                                array('arg_name' => $arg)
+                            )
                         );
                     }
                 }
@@ -418,21 +421,25 @@ class LengowMarketplace
             }
             if (isset($result->count) && $result->count > 0) {
                 foreach ($result->results as $row) {
-                    $update = LengowAction::updateAction(array(
-                        'id_order'    => $order->id,
-                        'action_type' => $action,
-                        'action_id'   => $row->id,
-                        'parameters'  => $params
-                    ));
+                    $update = LengowAction::updateAction(
+                        array(
+                            'id_order'    => $order->id,
+                            'action_type' => $action,
+                            'action_id'   => $row->id,
+                            'parameters'  => $params
+                        )
+                    );
                     // if update doesn't work, create new action
                     if (!$update) {
-                        LengowAction::createAction(array(
-                            'id_order'        => $order->id,
-                            'action_type'     => $action,
-                            'action_id'       => $row->id,
-                            'parameters'      => $params,
-                            'marketplace_sku' => $order->lengow_marketplace_sku
-                        ));
+                        LengowAction::createAction(
+                            array(
+                                'id_order'        => $order->id,
+                                'action_type'     => $action,
+                                'action_id'       => $row->id,
+                                'parameters'      => $params,
+                                'marketplace_sku' => $order->lengow_marketplace_sku
+                            )
+                        );
                     }
                 }
             } else {
@@ -444,13 +451,15 @@ class LengowMarketplace
                         $params
                     );
                     if (isset($result->id)) {
-                        LengowAction::createAction(array(
-                            'id_order'        => $order->id,
-                            'action_type'     => $action,
-                            'action_id'       => $result->id,
-                            'parameters'      => $params,
-                            'marketplace_sku' => $order->lengow_marketplace_sku
-                        ));
+                        LengowAction::createAction(
+                            array(
+                                'id_order'        => $order->id,
+                                'action_type'     => $action,
+                                'action_id'       => $result->id,
+                                'parameters'      => $params,
+                                'marketplace_sku' => $order->lengow_marketplace_sku
+                            )
+                        );
                     }
                 }
                 // Create log for call action
@@ -478,9 +487,10 @@ class LengowMarketplace
             $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
             LengowMain::log(
                 'API-OrderAction',
-                LengowMain::setLogMessage('log.order_action.call_action_failed', array(
-                    'decoded_message' => $decoded_message
-                )),
+                LengowMain::setLogMessage(
+                    'log.order_action.call_action_failed',
+                    array('decoded_message' => $decoded_message)
+                ),
                 false,
                 $order->lengow_marketplace_sku
             );

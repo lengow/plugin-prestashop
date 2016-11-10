@@ -154,21 +154,23 @@ $update_export_date = Tools::getIsset('update_export_date') ? (bool)Tools::getVa
 // See logs or not
 $log_output = Tools::getIsset('log_output') ? (bool)Tools::getValue('log_output') : true;
 
-$export = new LengowExport(array(
-    'format'             => $format,
-    'stream'             => $stream,
-    'product_ids'        => $product_ids,
-    'limit'              => $limit,
-    'offset'             => $offset,
-    'out_of_stock'       => $out_of_stock,
-    'variation'          => $variation,
-    'inactive'           => $inactive,
-    'legacy_fields'      => $legacy_fields,
-    'selection'          => $selection,
-    'language_id'        => $language_id,
-    'update_export_date' => $update_export_date,
-    'log_output'         => $log_output,
-));
+$export = new LengowExport(
+    array(
+        'format'             => $format,
+        'stream'             => $stream,
+        'product_ids'        => $product_ids,
+        'limit'              => $limit,
+        'offset'             => $offset,
+        'out_of_stock'       => $out_of_stock,
+        'variation'          => $variation,
+        'inactive'           => $inactive,
+        'legacy_fields'      => $legacy_fields,
+        'selection'          => $selection,
+        'language_id'        => $language_id,
+        'update_export_date' => $update_export_date,
+        'log_output'         => $log_output,
+    )
+);
 
 if ($get_params) {
     echo $export->getExportParams();

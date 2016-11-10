@@ -194,11 +194,14 @@ class LengowInstall
     {
         // Add Lengow order error status
         if (_PS_VERSION_ >= '1.5') {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM '._DB_PREFIX_.'order_state
-                WHERE module_name = \''.pSQL($this->lengowModule->name).'\'');
+            $states = Db::getInstance()->ExecuteS(
+                'SELECT * FROM '._DB_PREFIX_.'order_state WHERE module_name = \''.pSQL($this->lengowModule->name).'\''
+            );
         } else {
-            $states = Db::getInstance()->ExecuteS('SELECT * FROM '. _DB_PREFIX_.'order_state_lang
-                WHERE name = \'Technical error - Lengow\' OR name = \'Erreur technique - Lengow\' LIMIT 1');
+            $states = Db::getInstance()->ExecuteS(
+                'SELECT * FROM '. _DB_PREFIX_.'order_state_lang
+                WHERE name = \'Technical error - Lengow\' OR name = \'Erreur technique - Lengow\' LIMIT 1'
+            );
         }
         if (empty($states)) {
             $lengow_state = new OrderState();

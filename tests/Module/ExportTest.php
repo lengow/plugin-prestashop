@@ -71,16 +71,20 @@ class ExportTest extends ModuleTestCase
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
-        $export = new LengowExport(array(
-            "export_variation" => false,
-            "log_output" => false,
-        ));
+        $export = new LengowExport(
+            array(
+                'export_variation' => false,
+                'log_output'       => false,
+            )
+        );
         $this->assertEquals(3, $export->getTotalProduct());
 
-        $export = new LengowExport(array(
-            "export_variation" => true,
-            "log_output" => false,
-        ));
+        $export = new LengowExport(
+            array(
+                'export_variation' => true,
+                'log_output'       => false,
+            )
+        );
         $this->assertEquals(10, $export->getTotalProduct());
     }
 
@@ -99,34 +103,42 @@ class ExportTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
 
-        $export = new LengowExport(array(
-            "export_variation" => false,
-            "selection" => false,
-            "log_output" => false,
-        ));
+        $export = new LengowExport(
+            array(
+                'export_variation' => false,
+                'selection'        => false,
+                'log_output'       => false,
+            )
+        );
         $this->assertEquals(2, $export->getTotalExportProduct());
 
-        $export = new LengowExport(array(
-            "export_variation" => true,
-            "selection" => false,
-            "log_output" => false,
-        ));
+        $export = new LengowExport(
+            array(
+                'export_variation' => true,
+                'selection'        => false,
+                'log_output'       => false,
+            )
+        );
         $this->assertEquals(8, $export->getTotalExportProduct());
 
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/exported_total_product.yml');
 
-        $export = new LengowExport(array(
-            "export_variation" => false,
-            "selection" => true,
-            "log_output" => false,
-        ));
+        $export = new LengowExport(
+            array(
+                'export_variation' => false,
+                'selection'        => true,
+                'log_output'       => false,
+            )
+        );
         $this->assertEquals(1, $export->getTotalExportProduct());
 
-        $export = new LengowExport(array(
-            "export_variation" => true,
-            "selection" => true,
-            "log_output" => false,
-        ));
+        $export = new LengowExport(
+            array(
+                'export_variation' => true,
+                'selection'        => true,
+                'log_output'       => false,
+            )
+        );
         $this->assertEquals(7, $export->getTotalExportProduct());
     }
 
@@ -142,23 +154,28 @@ class ExportTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/features.yml');
 
-        $export = new LengowExport(array(
-            "export_variation" => false,
-            "selection" => false,
-        ));
+        $export = new LengowExport(
+            array(
+                'export_variation' => false,
+                'selection'        => false,
+            )
+        );
         $finalFields = array();
         foreach (LengowExport::$DEFAULT_FIELDS as $k => $v) {
             $finalFields[] = $k;
         }
-        $finalFields = array_merge($finalFields, array(
-            'Hauteur',
-            'Largeur',
-            'Profondeur',
-            'Poids',
-            'Compositions',
-            'Styles',
-            'Propriétés',
-        ));
+        $finalFields = array_merge(
+            $finalFields,
+            array(
+                'Hauteur',
+                'Largeur',
+                'Profondeur',
+                'Poids',
+                'Compositions',
+                'Styles',
+                'Propriétés',
+            )
+        );
 
         $lengowGetFields = $this->invokeMethod($export, 'getFields');
         $this->assertEquals($lengowGetFields, $finalFields);
@@ -209,10 +226,12 @@ class ExportTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/no_features.yml');
 
 
-        $export = new \LengowExportOverride(array(
-            "export_variation" => false,
-            "selection" => false,
-        ));
+        $export = new \LengowExportOverride(
+            array(
+                'export_variation' => false,
+                'selection'        => false,
+            )
+        );
 
         $finalFields = array();
         foreach (\LengowExportOverride::$DEFAULT_FIELDS as $k => $v) {

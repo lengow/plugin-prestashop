@@ -248,21 +248,27 @@ class LengowConfigurationForm
         if ($old_value != $value && !is_null($id_shop)) {
             LengowMain::log(
                 'Setting',
-                LengowMain::setLogMessage('log.setting.setting_change_for_shop', array(
-                    'key'       => $key,
-                    'old_value' => $old_value,
-                    'value'     => $value,
-                    'shop_id'   => $id_shop
-                ))
+                LengowMain::setLogMessage(
+                    'log.setting.setting_change_for_shop',
+                    array(
+                        'key'       => $key,
+                        'old_value' => $old_value,
+                        'value'     => $value,
+                        'shop_id'   => $id_shop
+                    )
+                )
             );
         } elseif ($old_value != $value) {
             LengowMain::log(
                 'Setting',
-                LengowMain::setLogMessage('log.setting.setting_change', array(
-                    'key'       => $key,
-                    'old_value' => $old_value,
-                    'value'     => $value
-                ))
+                LengowMain::setLogMessage(
+                    'log.setting.setting_change',
+                    array(
+                        'key'       => $key,
+                        'old_value' => $old_value,
+                        'value'     => $value
+                    )
+                )
             );
         }
     }

@@ -28,9 +28,7 @@ $fullAccess = isset($_REQUEST['access']) ? $_REQUEST['access'] : null;
 
 $locale = new LengowTranslation();
 
-$form = new LengowConfigurationForm(array(
-    "fields" => LengowConfiguration::getKeys()
-));
+$form = new LengowConfigurationForm(array("fields" => LengowConfiguration::getKeys()));
 
 if (_PS_VERSION_ < '1.5') {
     $shopCollection = array(array('id_shop' => 1));
@@ -41,18 +39,20 @@ if (_PS_VERSION_ < '1.5') {
 
 switch ($action) {
     case "update":
-        $form->postProcess(array(
-            'LENGOW_SHOP_ACTIVE',
-            'LENGOW_EXPORT_FILE_ENABLED',
-            'LENGOW_IMPORT_FORCE_PRODUCT',
-            'LENGOW_IMPORT_PROCESSING_FEE',
-            'LENGOW_IMPORT_PREPROD_ENABLED',
-            'LENGOW_IMPORT_SHIP_MP_ENABLED',
-            'LENGOW_IMPORT_STOCK_SHIP_MP',
-            'LENGOW_REPORT_MAIL_ENABLED',
-            'LENGOW_IMPORT_SINGLE_ENABLED',
-            'LENGOW_TRACKING_ENABLED'
-        ));
+        $form->postProcess(
+            array(
+                'LENGOW_SHOP_ACTIVE',
+                'LENGOW_EXPORT_FILE_ENABLED',
+                'LENGOW_IMPORT_FORCE_PRODUCT',
+                'LENGOW_IMPORT_PROCESSING_FEE',
+                'LENGOW_IMPORT_PREPROD_ENABLED',
+                'LENGOW_IMPORT_SHIP_MP_ENABLED',
+                'LENGOW_IMPORT_STOCK_SHIP_MP',
+                'LENGOW_REPORT_MAIL_ENABLED',
+                'LENGOW_IMPORT_SINGLE_ENABLED',
+                'LENGOW_TRACKING_ENABLED'
+            )
+        );
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
         break;
     case "get_default_settings":
@@ -93,43 +93,52 @@ require 'views/header.php';
         foreach ($shopCollection as $row) {
             $shop = new LengowShop($row['id_shop']);
             echo '<h4 style="text-align:center">'.$shop->name.' ('.$shop->id.')</h4>';
-            echo $form->buildShopInputs($shop->id, array(
-                'LENGOW_SHOP_ACTIVE',
-                'LENGOW_ACCOUNT_ID',
-                'LENGOW_ACCESS_TOKEN',
-                'LENGOW_SECRET_TOKEN'
-            ));
+            echo $form->buildShopInputs(
+                $shop->id,
+                array(
+                    'LENGOW_SHOP_ACTIVE',
+                    'LENGOW_ACCOUNT_ID',
+                    'LENGOW_ACCESS_TOKEN',
+                    'LENGOW_SECRET_TOKEN'
+                )
+            );
             echo '</fieldset>';
         }
         echo '<fieldset><h3 class="start-block">'.$locale->t('toolbox.configuration.export_setting').'</h3>';
-        echo $form->buildInputs(array(
-            'LENGOW_EXPORT_FORMAT',
-            'LENGOW_EXPORT_FILE_ENABLED',
-        ));
+        echo $form->buildInputs(
+            array(
+                'LENGOW_EXPORT_FORMAT',
+                'LENGOW_EXPORT_FILE_ENABLED',
+            )
+        );
         echo '</fieldset>';
         echo '<fieldset><h3 class="start-block">'.$locale->t('toolbox.configuration.import_setting').'</h3>';
-        echo $form->buildInputs(array(
-            'LENGOW_ORDER_ID_PROCESS',
-            'LENGOW_ORDER_ID_SHIPPED',
-            'LENGOW_ORDER_ID_SHIPPEDBYMP',
-            'LENGOW_ORDER_ID_CANCEL',
-            'LENGOW_IMPORT_FORCE_PRODUCT',
-            'LENGOW_IMPORT_PROCESSING_FEE',
-            'LENGOW_IMPORT_DAYS',
-            'LENGOW_IMPORT_SHIP_MP_ENABLED',
-            'LENGOW_IMPORT_STOCK_SHIP_MP',
-            'LENGOW_IMPORT_SINGLE_ENABLED'
-        ));
+        echo $form->buildInputs(
+            array(
+                'LENGOW_ORDER_ID_PROCESS',
+                'LENGOW_ORDER_ID_SHIPPED',
+                'LENGOW_ORDER_ID_SHIPPEDBYMP',
+                'LENGOW_ORDER_ID_CANCEL',
+                'LENGOW_IMPORT_FORCE_PRODUCT',
+                'LENGOW_IMPORT_PROCESSING_FEE',
+                'LENGOW_IMPORT_DAYS',
+                'LENGOW_IMPORT_SHIP_MP_ENABLED',
+                'LENGOW_IMPORT_STOCK_SHIP_MP',
+                'LENGOW_IMPORT_SINGLE_ENABLED'
+            )
+        );
         echo '</fieldset>';
         echo '<fieldset><h3 class="start-block">'.$locale->t('toolbox.configuration.global_setting').'</h3>';
-        echo $form->buildInputs(array(
-            'LENGOW_AUTHORIZED_IP',
-            'LENGOW_IMPORT_PREPROD_ENABLED',
-            'LENGOW_REPORT_MAIL_ENABLED',
-            'LENGOW_REPORT_MAIL_ADDRESS',
-            'LENGOW_TRACKING_ENABLED',
-            'LENGOW_TRACKING_ID',
-        ));
+        echo $form->buildInputs(
+            array(
+                'LENGOW_AUTHORIZED_IP',
+                'LENGOW_IMPORT_PREPROD_ENABLED',
+                'LENGOW_REPORT_MAIL_ENABLED',
+                'LENGOW_REPORT_MAIL_ADDRESS',
+                'LENGOW_TRACKING_ENABLED',
+                'LENGOW_TRACKING_ID',
+            )
+        );
         echo '</fieldset>';
         ?>
         <div class="form-group">

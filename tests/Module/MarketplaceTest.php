@@ -64,7 +64,7 @@ class MarketplaceTest extends ModuleTestCase
         $fixture->truncate('lengow_actions');
         $fixture->truncate('lengow_marketplace_carrier');
 
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
@@ -95,7 +95,7 @@ class MarketplaceTest extends ModuleTestCase
             2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
         );
 
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
@@ -146,7 +146,7 @@ class MarketplaceTest extends ModuleTestCase
 
         $marketplace = LengowMain::getMarketplaceSingleton('galeries_lafayette', '1');
 
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );

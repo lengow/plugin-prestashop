@@ -55,18 +55,20 @@ class LengowCart extends Cart
             $ids = explode('_', $id);
             if (count($ids) > 2) {
                 throw new LengowException(
-                    LengowMain::setLogMessage('lengow_log.exception.cannot_add_product_to_cart', array(
-                        'product_id' => $id
-                    ))
+                    LengowMain::setLogMessage(
+                        'lengow_log.exception.cannot_add_product_to_cart',
+                        array('product_id' => $id)
+                    )
                 );
             }
             $id_product = $ids[0];
             $id_product_attribute = isset($ids[1]) ? $ids[1] : null;
             if (!$this->updateQty($product['quantity'], $id_product, $id_product_attribute)) {
                 throw new LengowException(
-                    LengowMain::setLogMessage('lengow_log.exception.no_quantity_for_product', array(
-                        'product_id' => $id
-                    ))
+                    LengowMain::setLogMessage(
+                        'lengow_log.exception.no_quantity_for_product',
+                        array('product_id' => $id)
+                    )
                 );
             }
         }

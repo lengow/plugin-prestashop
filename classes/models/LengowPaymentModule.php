@@ -223,9 +223,10 @@ class LengowPaymentModule extends PaymentModule
                     $total_products_wt += $product['total_wt'];
                 } else {
                     throw new LengowException(
-                        LengowMain::setLogMessage('lengow_log.exception.product_is_not_listed', array(
-                            'product_id' => $sku
-                        ))
+                        LengowMain::setLogMessage(
+                            'lengow_log.exception.product_is_not_listed',
+                            array('product_id' => $sku)
+                        )
                     );
                 }
             }
@@ -297,9 +298,12 @@ class LengowPaymentModule extends PaymentModule
                         true
                     );
                 }
-                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order'), array(
-                    'error' => Db::getInstance()->getMsgError()
-                ));
+                throw new LengowException(
+                    LengowMain::setLogMessage(
+                        'lengow_log.exception.unable_to_save_order',
+                        array('error' => Db::getInstance()->getMsgError())
+                    )
+                );
             }
 
             $order_list[] = $order;
@@ -554,9 +558,10 @@ class LengowPaymentModule extends PaymentModule
                     $product_list[] = $product;
                 } else {
                     throw new LengowException(
-                        LengowMain::setLogMessage('lengow_log.exception.product_is_not_listed', array(
-                            'product_id' => $sku
-                        ))
+                        LengowMain::setLogMessage(
+                            'lengow_log.exception.product_is_not_listed',
+                            array('product_id' => $sku)
+                        )
                     );
                 }
             }
@@ -679,10 +684,12 @@ class LengowPaymentModule extends PaymentModule
                             ? (int)($product['id_product_attribute'])
                             : 'null'
                         ).',
-						\''.pSQL($product['name'].((isset($product['attributes']) && $product['attributes'] != null)
-                            ? ' - '.$product['attributes']
-                            : ''
-                        )).'\',
+						\''.pSQL($product['name'].(
+                            (isset($product['attributes']) && $product['attributes'] != null)
+                                ? ' - '.$product['attributes']
+                                : ''
+                            )
+                        ).'\',
 						'.(int)($product['cart_quantity']).',
 						'.$quantityInStock.',
 						'.(float)$product['price'].',

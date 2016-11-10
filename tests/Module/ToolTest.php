@@ -94,9 +94,9 @@ class ToolTest extends ModuleTestCase
      */
     public function checkBlockedIp()
     {
-        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_1', json_encode(array("127.0.0.1")));
-        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_2', json_encode(array("127.0.0.1")));
-        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_3', json_encode(array("127.0.0.1")));
+        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_1', json_encode(array('127.0.0.1')));
+        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_2', json_encode(array('127.0.0.1')));
+        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_3', json_encode(array('127.0.0.1')));
         $tool = new LengowTool();
         $this->assertTrue($tool->checkBlockedIp());
     }
@@ -112,8 +112,8 @@ class ToolTest extends ModuleTestCase
         LengowConfiguration::updatevalue('LENGOW_ACCOUNT_ID', $this->account_id);
         LengowConfiguration::updatevalue('LENGOW_SECRET_TOKEN', $this->secret_token);
 
-        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_1', json_encode(array("127.0.0.1")));
-        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_2', json_encode(array("127.0.0.1")));
+        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_1', json_encode(array('127.0.0.1')));
+        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_2', json_encode(array('127.0.0.1')));
         LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_3', '');
 
         $tool = new LengowTool();
@@ -123,24 +123,24 @@ class ToolTest extends ModuleTestCase
         $this->assertEquals('', LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_3'));
 
 
-        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_1', json_encode(array(
-            "127.0.0.1",
-            "128.0.0.1"
-        )));
-        LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_2', json_encode(array(
-            "127.0.0.1",
-            "128.0.0.1"
-        )));
+        LengowConfiguration::updateGlobalValue(
+            'LENGOW_ACCESS_BLOCK_IP_1',
+            json_encode(array('127.0.0.1', '128.0.0.1'))
+        );
+        LengowConfiguration::updateGlobalValue(
+            'LENGOW_ACCESS_BLOCK_IP_2',
+            json_encode(array('127.0.0.1', '128.0.0.1'))
+        );
         LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_3', '');
 
         $tool = new LengowTool();
         $this->assertTrue($tool->processLogin($this->account_id, $this->secret_token));
         $this->assertEquals(
-            array("128.0.0.1"),
+            array('128.0.0.1'),
             (array)json_decode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_1'))
         );
         $this->assertEquals(
-            array("128.0.0.1"),
+            array('128.0.0.1'),
             (array)json_decode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_2'))
         );
         $this->assertEquals('', LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_3'));

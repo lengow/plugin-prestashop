@@ -69,10 +69,16 @@ class TranslationTest extends ModuleTestCase
         $this->assertTrue($return);
 
         $this->assertEquals('Question : %{first}/%{second}=%{third}', $translation->t('order.screen.question'));
-        $this->assertEquals('Question : 10/2=5', $translation->t('order.screen.question', array(
-            'first' => '10',
-            'second' => '2',
-            'third' => '5'
-        )));
+        $this->assertEquals(
+            'Question : 10/2=5',
+            $translation->t(
+                'order.screen.question',
+                array(
+                    'first' => '10',
+                    'second' => '2',
+                    'third' => '5'
+                )
+            )
+        );
     }
 }

@@ -30,14 +30,37 @@ class LengowConnector
     const VERSION = '1.0';
 
     /**
-     * @var mixed error returned by the API
+     * @var string URL of the API Lengow
      */
-    public $error;
+    // const LENGOW_API_URL = 'http://api.lengow.io:80';
+    // const LENGOW_API_URL = 'http://api.lengow.net:80';
+    const LENGOW_API_URL = 'http://api.lengow.rec:80';
+    // const LENGOW_API_URL = 'http://10.100.1.82:8081';
+
+    /**
+     * @var string URL of the SANDBOX Lengow
+     */
+    const LENGOW_API_SANDBOX_URL = 'http://api.lengow.net:80';
+
+    /**
+     * @var array Fixture for test
+     */
+    public static $testFixturePath;
+
+    /**
+     * @var array default options for curl
+     */
+    public static $curlOpts = array (
+        CURLOPT_CONNECTTIMEOUT => 10,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 20,
+        CURLOPT_USERAGENT      => 'lengow-php-sdk',
+    );
 
     /**
      * @var string the access token to connect
      */
-    protected $access_token;
+    protected $accessToken;
 
     /**
      * @var string the secret to connect
@@ -52,82 +75,59 @@ class LengowConnector
     /**
      * @var integer ID account
      */
-    protected $account_id;
+    protected $accountId;
 
     /**
      * @var integer the user Id
      */
-    protected $user_id;
+    protected $userId;
 
     /**
-     * @var string
+     * @var array lengow url for curl timeout
      */
-    protected $request;
-
-    /**
-     * @var string URL of the API Lengow
-     */
-    // const LENGOW_API_URL = 'http://api.lengow.io:80';
-    // const LENGOW_API_URL = 'http://api.lengow.net:80';
-    // const LENGOW_API_URL = 'http://api.lengow.rec:80';
-    const LENGOW_API_URL = 'http://10.100.1.82:8081';
-
-    /**
-     * @var string URL of the SANDBOX Lengow
-     */
-    const LENGOW_API_SANDBOX_URL = 'http://api.lengow.net:80';
-
-    public static $test_fixture_path;
-
-    /**
-     * @var array default options for curl
-     */
-    public static $CURL_OPTS = array (
-        CURLOPT_CONNECTTIMEOUT => 10,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 300,
-        CURLOPT_USERAGENT      => 'lengow-php-sdk',
+    protected $lengowUrls = array (
+        '/v3.0/orders'          => 15,
+        '/v3.0/orders/actions/' => 15,
+        '/v3.0/marketplaces'    => 10,
+        '/v3.0/subscriptions'   => 5,
+        '/v3.0/stats'           => 5,
+        '/v3.0/cms'             => 5,
     );
 
     /**
      * Make a new Lengow API Connector.
      *
-     * @param string $access_token Your access token
+     * @param string $accessToken Your access token
      * @param string $secret       Your secret
      */
-    public function __construct($access_token, $secret)
+    public function __construct($accessToken, $secret)
     {
-        $this->access_token = $access_token;
+        $this->accessToken = $accessToken;
         $this->secret = $secret;
     }
 
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
     /**
-     * Connectection to the API
+     * Connection to the API
      *
-     * @param string $user_token The user token if is connected
+     * @param string $userToken The user token if is connected
      *
      * @return mixed array [authorized token + account_id + user_id] or false
      */
-    public function connect($user_token = '')
+    public function connect($userToken = '')
     {
         $data = $this->callAction(
             '/access/get_token',
             array(
-                'access_token' => $this->access_token,
+                'access_token' => $this->accessToken,
                 'secret'       => $this->secret,
-                'user_token'   => $user_token
+                'user_token'   => $userToken
             ),
             'POST'
         );
         if (isset($data['token'])) {
             $this->token = $data['token'];
-            $this->account_id = $data['account_id'];
-            $this->user_id = $data['user_id'];
+            $this->accountId = $data['account_id'];
+            $this->userId = $data['user_id'];
             return $data;
         } else {
             return false;
@@ -150,7 +150,7 @@ class LengowConnector
         $this->connect();
         try {
             if (!array_key_exists('account_id', $array)) {
-                $array['account_id'] = $this->account_id;
+                $array['account_id'] = $this->accountId;
             }
             $data = $this->callAction($method, $array, $type, $format, $body);
         } catch (LengowException $e) {
@@ -171,13 +171,13 @@ class LengowConnector
      */
     public function get($method, $array = array(), $format = 'json', $body = '')
     {
-        if (LengowMain::inTest() && self::$test_fixture_path) {
-            if (is_array(self::$test_fixture_path)) {
-                $content = Tools::file_get_contents(self::$test_fixture_path[0]);
-                array_shift(self::$test_fixture_path);
+        if (LengowMain::inTest() && self::$testFixturePath) {
+            if (is_array(self::$testFixturePath)) {
+                $content = Tools::file_get_contents(self::$testFixturePath[0]);
+                array_shift(self::$testFixturePath);
             } else {
-                $content = Tools::file_get_contents(self::$test_fixture_path);
-                self::$test_fixture_path = null;
+                $content = Tools::file_get_contents(self::$testFixturePath);
+                self::$testFixturePath = null;
             }
             return $content;
         }
@@ -196,13 +196,13 @@ class LengowConnector
      */
     public function post($method, $array = array(), $format = 'json', $body = '')
     {
-        if (LengowMain::inTest() && self::$test_fixture_path) {
-            if (is_array(self::$test_fixture_path)) {
-                $content = Tools::file_get_contents(self::$test_fixture_path[0]);
-                array_shift(self::$test_fixture_path);
+        if (LengowMain::inTest() && self::$testFixturePath) {
+            if (is_array(self::$testFixturePath)) {
+                $content = Tools::file_get_contents(self::$testFixturePath[0]);
+                array_shift(self::$testFixturePath);
             } else {
-                $content = Tools::file_get_contents(self::$test_fixture_path);
-                self::$test_fixture_path = null;
+                $content = Tools::file_get_contents(self::$testFixturePath);
+                self::$testFixturePath = null;
             }
             return $content;
         }
@@ -282,7 +282,7 @@ class LengowConnector
      */
     private function callAction($api, $args, $type, $format = 'json', $body = '')
     {
-        $result = $this->makeRequest($type, self::LENGOW_API_URL.$api, $args, $this->token, $body);
+        $result = $this->makeRequest($type, $api, $args, $this->token, $body);
         return $this->format($result, $format);
     }
 
@@ -325,7 +325,13 @@ class LengowConnector
         defined("CURLE_OPERATION_TIMEDOUT") || define("CURLE_OPERATION_TIMEDOUT", CURLE_OPERATION_TIMEOUTED);
         $ch = curl_init();
         // Options
-        $opts = self::$CURL_OPTS;
+        $opts = self::$curlOpts;
+        // get special timeout for specific Lengow API
+        if (array_key_exists($url, $this->lengowUrls)) {
+            $opts[CURLOPT_TIMEOUT] = $this->lengowUrls[$url];
+        }
+        // get url for a specific environment
+        $url = self::LENGOW_API_URL.$url;
         $opts[CURLOPT_CUSTOMREQUEST] = Tools::strtoupper($type);
         $url = parse_url($url);
         $opts[CURLOPT_PORT] = $url['port'];
@@ -347,10 +353,13 @@ class LengowConnector
                 );
                 break;
             case "PUT":
-                $opts[CURLOPT_HTTPHEADER] = array_merge($opts[CURLOPT_HTTPHEADER], array(
-                    'Content-Type: application/json',
-                    'Content-Length: '.Tools::strlen($body)
-                ));
+                $opts[CURLOPT_HTTPHEADER] = array_merge(
+                    $opts[CURLOPT_HTTPHEADER],
+                    array(
+                        'Content-Type: application/json',
+                        'Content-Length: '.Tools::strlen($body)
+                    )
+                );
                 $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
                 $opts[CURLOPT_POSTFIELDS] = $body;
                 break;
@@ -363,22 +372,32 @@ class LengowConnector
         // Exectute url request
         curl_setopt_array($ch, $opts);
         $result = curl_exec($ch);
-        $error = curl_errno($ch);
-        if (in_array($error, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
+        $errorNumber = curl_errno($ch);
+        $errorText = curl_error($ch);
+        if (in_array($errorNumber, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
             $timeout = LengowMain::setLogMessage('lengow_log.exception.timeout_api');
-            $error_message = LengowMain::setLogMessage('log.connector.error_api', array(
-                'error_code' => LengowMain::decodeLogMessage($timeout, 'en')
-            ));
-            LengowMain::log('Connector', $error_message);
+            $errorMessage = LengowMain::setLogMessage(
+                'log.connector.error_api',
+                array('error_code' => LengowMain::decodeLogMessage($timeout, 'en'))
+            );
+            LengowMain::log('Connector', $errorMessage);
             throw new LengowException($timeout);
         }
         curl_close($ch);
         if ($result === false) {
-            $error_message = LengowMain::setLogMessage('log.connector.error_api', array(
-                'error_code' => $error
-            ));
-            LengowMain::log('Connector', $error_message);
-            throw new LengowException($error);
+            $errorCurl = LengowMain::setLogMessage(
+                'lengow_log.exception.error_curl',
+                array(
+                    'error_code'    => $errorNumber,
+                    'error_message' => $errorText
+                )
+            );
+            $errorMessage = LengowMain::setLogMessage(
+                'log.connector.error_api',
+                array('error_code' => LengowMain::decodeLogMessage($errorCurl, 'en'))
+            );
+            LengowMain::log('Connector', $errorMessage);
+            throw new LengowException($errorCurl);
         }
         return $result;
     }
@@ -386,35 +405,35 @@ class LengowConnector
     /**
      * Get Valid Account / Access / Secret
      *
-     * @param integer $id_shop
+     * @param integer $idShop
      *
      * @return array
      */
-    public static function getAccessId($id_shop = null)
+    public static function getAccessId($idShop = null)
     {
-        if ($id_shop) {
-            $account_id = LengowMain::getIdAccount($id_shop);
-            $access_token = LengowMain::getAccessToken($id_shop);
-            $secret_token = LengowMain::getSecretCustomer($id_shop);
+        if ($idShop) {
+            $accountId = LengowMain::getIdAccount($idShop);
+            $accessToken = LengowMain::getAccessToken($idShop);
+            $secretToken = LengowMain::getSecretCustomer($idShop);
         } else {
             $shopCollection = LengowShop::findAll(true);
             foreach ($shopCollection as $shop) {
-                $account_id = LengowMain::getIdAccount($shop['id_shop']);
-                $access_token = LengowMain::getAccessToken($shop['id_shop']);
-                $secret_token = LengowMain::getSecretCustomer($shop['id_shop']);
-                if (Tools::strlen($account_id) > 0
-                    && Tools::strlen($access_token) > 0
-                    && Tools::strlen($secret_token) > 0
+                $accountId = LengowMain::getIdAccount($shop['id_shop']);
+                $accessToken = LengowMain::getAccessToken($shop['id_shop']);
+                $secretToken = LengowMain::getSecretCustomer($shop['id_shop']);
+                if (Tools::strlen($accountId) > 0
+                    && Tools::strlen($accessToken) > 0
+                    && Tools::strlen($secretToken) > 0
                 ) {
                     break;
                 }
             }
         }
-        if (Tools::strlen($account_id) > 0
-            && Tools::strlen($access_token) > 0
-            && Tools::strlen($secret_token) > 0
+        if (Tools::strlen($accountId) > 0
+            && Tools::strlen($accessToken) > 0
+            && Tools::strlen($secretToken) > 0
         ) {
-            return array($account_id, $access_token, $secret_token);
+            return array($accountId, $accessToken, $secretToken);
         } else {
             return array(null, null, null);
         }
@@ -425,26 +444,26 @@ class LengowConnector
      *
      * @param string  $type   (GET / POST / PUT / PATCH)
      * @param string  $url
-     * @param integer $id_shop
+     * @param integer $idShop
      * @param array   $params
      * @param string  $body
      *
      * @return api result as array
      */
-    public static function queryApi($type, $url, $id_shop = null, $params = array(), $body = '')
+    public static function queryApi($type, $url, $idShop = null, $params = array(), $body = '')
     {
         if (!in_array($type, array('get', 'post', 'put', 'patch'))) {
             return false;
         }
         try {
-            list($account_id, $access_token, $secret_token) = self::getAccessId($id_shop);
-            if (is_null($account_id)) {
+            list($accountId, $accessToken, $secretToken) = self::getAccessId($idShop);
+            if (is_null($accountId)) {
                 return false;
             }
-            $connector  = new LengowConnector($access_token, $secret_token);
+            $connector  = new LengowConnector($accessToken, $secretToken);
             $results = $connector->$type(
                 $url,
-                array_merge(array('account_id' => $account_id), $params),
+                array_merge(array('account_id' => $accountId), $params),
                 'stream',
                 $body
             );

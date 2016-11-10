@@ -95,12 +95,15 @@ class LengowMainSettingController extends LengowController
         foreach ($shops as $s) {
             $shop = new LengowShop($s['id_shop']);
             $form->fields['LENGOW_SHOP_ACTIVE']['label'] = $shop->name;
-            $preprod_wrapper.= '<div class="grey-frame">'.$form->buildShopInputs($shop->id, array(
-                'LENGOW_SHOP_ACTIVE',
-                'LENGOW_ACCOUNT_ID',
-                'LENGOW_ACCESS_TOKEN',
-                'LENGOW_SECRET_TOKEN',
-            )).'</div>';
+            $preprod_wrapper.= '<div class="grey-frame">'.$form->buildShopInputs(
+                $shop->id,
+                array(
+                    'LENGOW_SHOP_ACTIVE',
+                    'LENGOW_ACCOUNT_ID',
+                    'LENGOW_ACCESS_TOKEN',
+                    'LENGOW_SECRET_TOKEN',
+                )
+            ).'</div>';
         }
         $listFile = LengowLog::getPaths();
         $this->context->smarty->assign('list_file', $listFile);

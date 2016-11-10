@@ -54,10 +54,13 @@ class LengowFile
         $this->instance = LengowFile::getRessource($this->getPath(), $mode);
         if (!is_resource($this->instance)) {
             throw new LengowException(
-                LengowMain::setLogMessage('log.export.error_unable_to_create_file', array(
-                    'file_name'   => $file_name,
-                    'folder_name' => $folder_name
-                ))
+                LengowMain::setLogMessage(
+                    'log.export.error_unable_to_create_file',
+                    array(
+                        'file_name'   => $file_name,
+                        'folder_name' => $folder_name
+                    )
+                )
             );
         }
     }

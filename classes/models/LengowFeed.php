@@ -119,9 +119,10 @@ class LengowFeed
         if (!file_exists($folder_path)) {
             if (!mkdir($folder_path)) {
                 throw new LengowException(
-                    LengowMain::setLogMessage('log.export.error_unable_to_create_folder', array(
-                        'folder_path' => $folder_path
-                    ))
+                    LengowMain::setLogMessage(
+                        'log.export.error_unable_to_create_folder',
+                        array('folder_path' => $folder_path)
+                    )
                 );
             }
         }

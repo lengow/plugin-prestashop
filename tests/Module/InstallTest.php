@@ -120,9 +120,7 @@ class InstallTest extends ModuleTestCase
         $this->assertTrue((bool)$fp);
         $this->assertTrue(file_exists($filePath));
 
-        LengowInstall::removeFiles(array(
-            'new_file.php',
-        ));
+        LengowInstall::removeFiles(array('new_file.php'));
         $this->assertFalse(file_exists($filePath));
 
         $directoryPath = _PS_MODULE_LENGOW_DIR_.'new_directory';
@@ -131,8 +129,6 @@ class InstallTest extends ModuleTestCase
         $fp = fopen($directoryPath.'/new_file.php', 'w');
         $this->assertTrue((bool)$fp);
         $this->assertTrue(file_exists($directoryPath));
-        LengowInstall::removeFiles(array(
-            'new_directory/',
-        ));
+        LengowInstall::removeFiles(array('new_directory/'));
     }
 }

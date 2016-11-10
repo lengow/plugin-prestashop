@@ -53,17 +53,21 @@ class LengowOrderSettingController extends LengowController
             }
         }
         $form = new LengowConfigurationForm(array("fields" => LengowConfiguration::getKeys()));
-        $matching = $form->buildInputs(array(
-            'LENGOW_ORDER_ID_PROCESS',
-            'LENGOW_ORDER_ID_SHIPPED',
-            'LENGOW_ORDER_ID_CANCEL',
-            'LENGOW_ORDER_ID_SHIPPEDBYMP'
-        ));
-        $import_params = $form->buildInputs(array(
-            'LENGOW_IMPORT_DAYS',
-            'LENGOW_IMPORT_SHIP_MP_ENABLED',
-            'LENGOW_IMPORT_STOCK_SHIP_MP'
-        ));
+        $matching = $form->buildInputs(
+            array(
+                'LENGOW_ORDER_ID_PROCESS',
+                'LENGOW_ORDER_ID_SHIPPED',
+                'LENGOW_ORDER_ID_CANCEL',
+                'LENGOW_ORDER_ID_SHIPPEDBYMP'
+            )
+        );
+        $import_params = $form->buildInputs(
+            array(
+                'LENGOW_IMPORT_DAYS',
+                'LENGOW_IMPORT_SHIP_MP_ENABLED',
+                'LENGOW_IMPORT_STOCK_SHIP_MP'
+            )
+        );
         $cron_param = $form->buildInputs(array('LENGOW_CRON_ENABLED'));
         $form = LengowCron::getFormCron();
         $this->context->smarty->assign('formCron', $form);
@@ -224,11 +228,13 @@ class LengowOrderSettingController extends LengowController
                         LengowCron::removeCronTasks();
                     }
                 }
-                $form->postProcess(array(
-                    'LENGOW_IMPORT_SHIP_MP_ENABLED',
-                    'LENGOW_IMPORT_STOCK_SHIP_MP',
-                    'LENGOW_CRON_ENABLED'
-                ));
+                $form->postProcess(
+                    array(
+                        'LENGOW_IMPORT_SHIP_MP_ENABLED',
+                        'LENGOW_IMPORT_STOCK_SHIP_MP',
+                        'LENGOW_CRON_ENABLED'
+                    )
+                );
                 break;
             default:
                 LengowCarrier::syncListMarketplace();

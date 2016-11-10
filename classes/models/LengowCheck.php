@@ -54,7 +54,11 @@ class LengowCheck
             LengowMain::getAccessToken($id_shop),
             LengowMain::getSecretCustomer($id_shop)
         );
-        $result = $connector->connect();
+        try {
+            $result = $connector->connect();
+        } catch (LengowException $e) {
+            return false;
+        }
         if (isset($result['token']) && $account_id != 0 && is_integer($account_id)) {
             return true;
         } else {
@@ -167,9 +171,10 @@ class LengowCheck
             $last_import_type = $this->locale->t('toolbox.index.last_import_manual');
         }
         if (LengowImport::isInProcess()) {
-            $import_in_progress = LengowMain::decodeLogMessage('toolbox.index.rest_time_to_import', null, array(
-                'rest_time' => LengowImport::restTimeToImport()
-            ));
+            $import_in_progress = LengowMain::decodeLogMessage(
+                'toolbox.index.rest_time_to_import',
+                null, array('rest_time' => LengowImport::restTimeToImport())
+            );
         } else {
             $import_in_progress = $this->locale->t('toolbox.index.no_import');
         }
@@ -282,21 +287,24 @@ class LengowCheck
                 fclose($file);
             }
             $checklist[] = array(
-                'title' => $this->locale->t('toolbox.checksum.file_checked', array(
-                    'nb_file' => $file_counter
-                )),
+                'title' => $this->locale->t(
+                    'toolbox.checksum.file_checked',
+                    array('nb_file' => $file_counter)
+                ),
                 'state' => 1
             );
             $checklist[] = array(
-                'title' => $this->locale->t('toolbox.checksum.file_modified', array(
-                    'nb_file' => count($file_errors)
-                )),
+                'title' => $this->locale->t(
+                    'toolbox.checksum.file_modified',
+                    array('nb_file' => count($file_errors))
+                ),
                 'state' => (count($file_errors) > 0 ? 0 : 1)
             );
             $checklist[] = array(
-                'title' => $this->locale->t('toolbox.checksum.file_deleted', array(
-                    'nb_file' => count($file_deletes)
-                )),
+                'title' => $this->locale->t(
+                    'toolbox.checksum.file_deleted',
+                    array('nb_file' => count($file_deletes))
+                ),
                 'state' => (count($file_deletes) > 0 ? 0 : 1)
             );
             $html.= $this->getAdminContent($checklist);

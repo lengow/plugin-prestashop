@@ -431,10 +431,13 @@ class LengowExport
             $shop = new LengowShop($this->shopId);
             LengowMain::log(
                 'Export',
-                LengowMain::setLogMessage('log.export.start_for_shop', array(
-                    'name_shop' => $shop->name,
-                    'id_shop'   => $shop->id
-                )),
+                LengowMain::setLogMessage(
+                    'log.export.start_for_shop',
+                    array(
+                        'name_shop' => $shop->name,
+                        'id_shop'   => $shop->id
+                    )
+                ),
                 $this->log_output
             );
             // set legacy fields option
@@ -466,9 +469,10 @@ class LengowExport
             $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
             LengowMain::log(
                 'Export',
-                LengowMain::setLogMessage('log.export.export_failed', array(
-                    'decoded_message' => $decoded_message
-                )),
+                LengowMain::setLogMessage(
+                    'log.export.export_failed',
+                    array('decoded_message' => $decoded_message)
+                ),
                 $this->log_output
             );
         }
@@ -540,9 +544,10 @@ class LengowExport
             if ($product_count > 0 && $product_count % 50 == 0) {
                 LengowMain::log(
                     'Export',
-                    LengowMain::setLogMessage('log.export.count_product', array(
-                        'product_count' => $product_count
-                    )),
+                    LengowMain::setLogMessage(
+                        'log.export.count_product',
+                        array('product_count' => $product_count)
+                    ),
                     $this->log_output
                 );
             }

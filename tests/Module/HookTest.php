@@ -47,7 +47,7 @@ class HookTest extends ModuleTestCase
             2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
         );
 
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
@@ -55,14 +55,20 @@ class HookTest extends ModuleTestCase
         $this->assertTableEmpty('lengow_actions');
 
         $hook = new LengowHook(Module::getInstanceByName('lengow'));
-        $hook->hookPostUpdateOrderStatus(array('id_order' => 1, 'newOrderStatus' => new OrderState(
-            LengowMain::getOrderState('shipped')
-        )));
+        $hook->hookPostUpdateOrderStatus(
+            array(
+                'id_order'       => 1,
+                'newOrderStatus' => new OrderState(LengowMain::getOrderState('shipped'))
+            )
+        );
         $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 0));
 
-        $ret = $hook->hookPostUpdateOrderStatus(array('id_order' => 10, 'newOrderStatus' => new OrderState(
-            LengowMain::getOrderState('shipped')
-        )));
+        $ret = $hook->hookPostUpdateOrderStatus(
+            array(
+                'id_order'       => 10,
+                'newOrderStatus' => new OrderState(LengowMain::getOrderState('shipped'))
+            )
+        );
         $this->assertFalse($ret, 'Can\'t update not existing order');
 
         $fixture = new Fixture();

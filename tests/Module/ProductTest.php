@@ -114,19 +114,23 @@ class ProductTest extends ModuleTestCase
 
         LengowProduct::publish(1, 1, 1);
         LengowProduct::publish(1, 1, 2);
-        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product
-        WHERE id_shop = 1 ');
+        $result = Db::getInstance()->executeS(
+            'SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product WHERE id_shop = 1 '
+        );
         $this->assertEquals(1, $result[0]['total'], 'One product for shop 1');
-        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product
-        WHERE id_shop = 2 ');
+        $result = Db::getInstance()->executeS(
+            'SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product WHERE id_shop = 2 '
+        );
         $this->assertEquals(1, $result[0]['total'], 'One product for shop 2');
 
         LengowProduct::publish(1, 0, 1);
-        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product
-        WHERE id_shop = 1 ');
+        $result = Db::getInstance()->executeS(
+            'SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product WHERE id_shop = 1 '
+        );
         $this->assertEquals(0, $result[0]['total'], 'No product for shop 1');
-        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product
-        WHERE id_shop = 2 ');
+        $result = Db::getInstance()->executeS(
+            'SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product WHERE id_shop = 2 '
+        );
         $this->assertEquals(1, $result[0]['total'], 'One product for shop 2');
     }
 

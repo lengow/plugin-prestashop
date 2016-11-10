@@ -71,9 +71,10 @@ class LengowCarrier extends Carrier
                 $relay = LengowCarrier::getMRRelay($shipping_address->id, $shipping_address->id_relay, $mr);
                 if (!$relay) {
                     throw new LengowException(
-                        LengowMain::setLogMessage('log.import.error_mondial_relay_not_found', array(
-                            'id_relay' => $shipping_address->id_relay
-                        ))
+                        LengowMain::setLogMessage(
+                            'log.import.error_mondial_relay_not_found',
+                            array('id_relay' => $shipping_address->id_relay)
+                        )
                     );
                 }
                 return LengowCarrier::addMondialRelay(
@@ -102,9 +103,10 @@ class LengowCarrier extends Carrier
         $loaded = include_once _PS_MODULE_DIR_.'socolissimo'.$sep.'classes'.$sep.'SCFields.php';
         if (!$loaded) {
             throw new LengowException(
-                LengowMain::setLogMessage('log.import.error_colissimo_missing_file', array(
-                    'ps_module_dir' => _PS_MODULE_DIR_
-                ))
+                LengowMain::setLogMessage(
+                    'log.import.error_colissimo_missing_file',
+                    array('ps_module_dir' => _PS_MODULE_DIR_)
+                )
             );
         }
         $customer = new LengowCustomer($id_customer);
@@ -234,9 +236,10 @@ class LengowCarrier extends Carrier
         $loaded = include_once _PS_MODULE_DIR_.'mondialrelay'.$sep.'classes'.$sep.'MRRelayDetail.php';
         if (!$loaded) {
             throw new LengowException(
-                LengowMain::setLogMessage('log.import.error_mondial_relay_missing_file', array(
-                    'ps_module_dir' => _PS_MODULE_DIR_
-                ))
+                LengowMain::setLogMessage(
+                    'log.import.error_mondial_relay_missing_file',
+                    array('ps_module_dir' => _PS_MODULE_DIR_)
+                )
             );
         }
         $params = array(

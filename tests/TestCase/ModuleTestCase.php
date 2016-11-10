@@ -66,7 +66,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
                 2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
             );
 
-            LengowConnector::$test_fixture_path = null;
+            LengowConnector::$testFixturePath = null;
 
             $employee = new Employee();
             $employee->getByEmail("pub@prestashop.com");

@@ -85,19 +85,17 @@ class LengowOrderController extends LengowController
                     break;
                 case 'import_all':
                     if (_PS_VERSION_ < '1.5') {
-                        $import = new LengowImport(array(
-                            'log_output' => false,
-                        ));
+                        $import = new LengowImport(array('log_output' => false));
                     } else {
                         if (Shop::getContextShopID()) {
-                            $import = new LengowImport(array(
-                                'shop_id' => Shop::getContextShopID(),
-                                'log_output' => false,
-                            ));
+                            $import = new LengowImport(
+                                array(
+                                    'shop_id' => Shop::getContextShopID(),
+                                    'log_output' => false,
+                                )
+                            );
                         } else {
-                            $import = new LengowImport(array(
-                                'log_output' => false,
-                            ));
+                            $import = new LengowImport(array('log_output' => false));
                         }
                     }
                     $return = $import->exec();
@@ -125,23 +123,31 @@ class LengowOrderController extends LengowController
                     echo Tools::jsonEncode($data);
                     break;
                 case 'update_order':
-                    $import = new LengowImport(array(
-                        'marketplace_sku'     => Tools::getValue('marketplace_sku'),
-                        'marketplace_name'    => Tools::getValue('marketplace_name'),
-                        'delivery_address_id' => Tools::getValue('delivery_address_id'),
-                        'shop_id'             => Tools::getValue('shop_id'),
-                    ));
+                    $import = new LengowImport(
+                        array(
+                            'marketplace_sku'     => Tools::getValue('marketplace_sku'),
+                            'marketplace_name'    => Tools::getValue('marketplace_name'),
+                            'delivery_address_id' => Tools::getValue('delivery_address_id'),
+                            'shop_id'             => Tools::getValue('shop_id'),
+                        )
+                    );
                     $result = $import->exec();
                     $message = array();
                     if (isset($result['marketplace_sku']) && isset($result['marketplace_name'])) {
-                        $message[] = LengowMain::decodeLogMessage('toolbox.order.order_import_success', null, array(
-                            'marketplace_sku' => $result['marketplace_sku'],
-                            'marketplace_name' => $result['marketplace_name']
-                        ));
+                        $message[] = LengowMain::decodeLogMessage(
+                            'toolbox.order.order_import_success',
+                            null,
+                            array(
+                                'marketplace_sku' => $result['marketplace_sku'],
+                                'marketplace_name' => $result['marketplace_name']
+                            )
+                        );
                     } else {
-                        $message[] = LengowMain::decodeLogMessage('toolbox.order.order_import_failed', null, array(
-                            'log_url' => '/modules/lengow/toolbox/log.php'
-                        ));
+                        $message[] = LengowMain::decodeLogMessage(
+                            'toolbox.order.order_import_failed',
+                            null,
+                            array('log_url' => '/modules/lengow/toolbox/log.php')
+                        );
                     }
                     $data = array();
                     $data['message'] = '<div class=\"lengow_alert\">'.join('<br/>', $message).'</div>';
@@ -150,11 +156,13 @@ class LengowOrderController extends LengowController
                     echo Tools::jsonEncode($data);
                     break;
                 case 'update_some_orders':
-                    $import = new LengowImport(array(
-                        'log_output' => false,
-                        'days'       => Tools::getValue('days'),
-                        'shop_id'    => Tools::getValue('shop_id'),
-                    ));
+                    $import = new LengowImport(
+                        array(
+                            'log_output' => false,
+                            'days'       => Tools::getValue('days'),
+                            'shop_id'    => Tools::getValue('shop_id'),
+                        )
+                    );
                     $return = $import->exec();
                     $message = $this->loadMessage($return);
                     $data = array();
@@ -458,25 +466,27 @@ class LengowOrderController extends LengowController
         $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
         $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
         $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
-        $list = new LengowList(array(
-            "id" => 'order',
-            "fields_list" => $fields_list,
-            "identifier" => 'id',
-            "selection" => true,
-            "selection_condition" => 'log_status',
-            "controller" => 'AdminLengowOrder',
-            "current_page" => $currentPage,
-            "order_value" => $orderValue,
-            "order_column" => $orderColumn,
-            "ajax" => true,
-            "sql" => array(
-                "select" => $select,
-                "from" => $from,
-                "join" => $join,
-                "select_having" => $select_having,
-                "order" => 'IF (order_lengow_state = "waiting_shipment",1,0) DESC, order_date DESC',
+        $list = new LengowList(
+            array(
+                'id'                  => 'order',
+                'fields_list'         => $fields_list,
+                'identifier'          => 'id',
+                'selection'           => true,
+                'selection_condition' => 'log_status',
+                'controller'          => 'AdminLengowOrder',
+                'current_page'        => $currentPage,
+                'order_value'         => $orderValue,
+                'order_column'        => $orderColumn,
+                'ajax'                => true,
+                'sql'                 => array(
+                    'select'        => $select,
+                    'from'          => $from,
+                    'join'          => $join,
+                    'select_having' => $select_having,
+                    'order'         => 'IF (order_lengow_state = "waiting_shipment",1,0) DESC, order_date DESC',
+                )
             )
-        ));
+        );
         return $list;
     }
 
@@ -489,9 +499,7 @@ class LengowOrderController extends LengowController
     {
         $this->list = $this->loadTable();
         $this->list->executeQuery();
-        $paginationBlock = $this->list->renderPagination(array(
-            'nav_class' => 'lgw-pagination'
-        ));
+        $paginationBlock = $this->list->renderPagination(array('nav_class' => 'lgw-pagination'));
         $lengow_link = new LengowLink();
         $html='<div class="lengow_table_top">';
         $html.='<div class="lengow_toolbar">';
@@ -635,9 +643,11 @@ class LengowOrderController extends LengowController
                 $value = '<span class="lengow_link_tooltip lgw-label orange"
                     data-html="true"
                     data-original-title="'.LengowMain::decodeLogMessage('order.screen.action_waiting_return').'"
-                    >'.LengowMain::decodeLogMessage('order.screen.action_sent', null, array(
-                        'action_type' => $last_action_type
-                    )).'</span>';
+                    >'.LengowMain::decodeLogMessage(
+                        'order.screen.action_sent',
+                        null,
+                        array('action_type' => $last_action_type)
+                    ).'</span>';
                 return $value;
             }
         }
@@ -716,24 +726,28 @@ class LengowOrderController extends LengowController
     {
         $message = array();
         if (LengowImport::isInProcess()) {
-            $message[] = $this->locale->t('lengow_log.error.rest_time_to_import', array(
-                'rest_time' => LengowImport::restTimeToImport()
-            ));
+            $message[] = $this->locale->t(
+                'lengow_log.error.rest_time_to_import',
+                array('rest_time' => LengowImport::restTimeToImport())
+            );
         }
         if (isset($return['order_new']) && $return['order_new'] > 0) {
-            $message[]= $this->locale->t('lengow_log.error.nb_order_imported', array(
-                'nb_order' => (int)$return['order_new']
-            ));
+            $message[]= $this->locale->t(
+                'lengow_log.error.nb_order_imported',
+                array('nb_order' => (int)$return['order_new'])
+            );
         }
         if (isset($return['order_update']) && $return['order_update'] > 0) {
-            $message[]= $this->locale->t('lengow_log.error.nb_order_updated', array(
-                'nb_order' => (int)$return['order_update']
-            ));
+            $message[]= $this->locale->t(
+                'lengow_log.error.nb_order_updated',
+                array('nb_order' => (int)$return['order_update'])
+            );
         }
         if (isset($return['order_error']) && $return['order_error'] > 0) {
-            $message[]= $this->locale->t('lengow_log.error.nb_order_with_error', array(
-                'nb_order' => (int)$return['order_error']
-            ));
+            $message[]= $this->locale->t(
+                'lengow_log.error.nb_order_with_error',
+                array('nb_order' => (int)$return['order_error'])
+            );
         }
         if (count($message) == 0) {
             $message[]= $this->locale->t('lengow_log.error.no_notification');

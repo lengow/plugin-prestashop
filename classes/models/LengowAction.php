@@ -329,9 +329,10 @@ class LengowAction
                     $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
                     LengowMain::log(
                         'API-OrderAction',
-                        LengowMain::setLogMessage('log.order_action.call_action_failed', array(
-                            'decoded_message' => $decoded_message
-                        )),
+                        LengowMain::setLogMessage(
+                            'log.order_action.call_action_failed',
+                            array('decoded_message' => $decoded_message)
+                        ),
                         false,
                         $order_lengow->lengow_marketplace_sku
                     );
@@ -360,10 +361,13 @@ class LengowAction
                 $shop = new LengowShop((int)$shop['id_shop']);
                 LengowMain::log(
                     'API-OrderAction',
-                    LengowMain::setLogMessage('log.order_action.start_for_shop', array(
-                        'name_shop' => $shop->name,
-                        'id_shop'   => (int)$shop->id
-                    ))
+                    LengowMain::setLogMessage(
+                        'log.order_action.start_for_shop',
+                        array(
+                            'name_shop' => $shop->name,
+                            'id_shop'   => (int)$shop->id
+                        )
+                    )
                 );
                 // Get all active actions by shop
                 $shop_actions = self::getActiveActionByShop((int)$shop->id, false);
@@ -429,9 +433,10 @@ class LengowAction
                                     );
                                     LengowMain::log(
                                         'API-OrderAction',
-                                        LengowMain::setLogMessage('log.order_action.call_action_failed', array(
-                                            'decoded_message' => $api_actions[$action['action_id']]->errors
-                                        )),
+                                        LengowMain::setLogMessage(
+                                            'log.order_action.call_action_failed',
+                                            array('decoded_message' => $api_actions[$action['action_id']]->errors)
+                                        ),
                                         false,
                                         $order_lengow->lengow_marketplace_sku
                                     );
@@ -465,10 +470,13 @@ class LengowAction
                 $shop = new LengowShop((int)$shop['id_shop']);
                 LengowMain::log(
                     'API-OrderAction',
-                    LengowMain::setLogMessage('log.order_action.start_not_sent_for_store', array(
-                        'name_shop' => $shop->name,
-                        'id_shop'   => (int)$shop->id
-                    ))
+                    LengowMain::setLogMessage(
+                        'log.order_action.start_not_sent_for_store',
+                        array(
+                            'name_shop' => $shop->name,
+                            'id_shop'   => (int)$shop->id
+                        )
+                    )
                 );
                 // Get unsent orders by store
                 $unsent_orders = LengowOrder::getUnsentOrderByStore((int)$shop->id);

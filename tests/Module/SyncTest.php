@@ -41,12 +41,15 @@ class SyncTest extends ModuleTestCase
         $sync = new \LengowSync();
         $data = $sync->getSyncData();
 
-        $this->assertKeysExistInArray(array(
-            'domain_name',
-            'token',
-            'email',
-            'shops',
-        ), $data);
+        $this->assertKeysExistInArray(
+            array(
+                'domain_name',
+                'token',
+                'email',
+                'shops',
+            ),
+            $data
+        );
 
         foreach ($data['shops'] as $shop) {
             switch ($shop['token']) {

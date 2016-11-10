@@ -317,6 +317,7 @@ en:
       unable_to_save_order: "unable to save PrestaShop order - %{error}"
       unable_to_save_order_payment: "unable to save PrestaShop order payment"
       timeout_api: "API call has been blocked by a timeout"
+      error_curl: "Curl error %{error_code} - %{error_message}"
     mail_report:
       order: "Order %{marketplace_sku}"
       no_error_in_report_mail: "no error message, contact support via https://supportlengow.zendesk.com/agent/"

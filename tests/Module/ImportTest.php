@@ -65,7 +65,7 @@ class ImportTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Import/import_orders.json'
         );
         $import = new LengowImport(array('log_output' => false));
@@ -213,7 +213,7 @@ class ImportTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Import/no_orders.json'
         );
 
@@ -294,7 +294,7 @@ class ImportTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Import/check_delivery_address.json'
         );
 
@@ -322,7 +322,7 @@ class ImportTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Import/check_package_data.json'
         );
 

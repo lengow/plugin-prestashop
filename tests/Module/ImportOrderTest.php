@@ -60,7 +60,7 @@ class ImportOrderTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_currency.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_currency_data.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_price_data.json'
@@ -145,7 +145,7 @@ class ImportOrderTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_billing_address.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_billing_country.json'
         );
@@ -207,7 +207,7 @@ class ImportOrderTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_delivery_country.json'
         );
 
@@ -245,7 +245,7 @@ class ImportOrderTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_product_data.json',
         );
 
@@ -283,7 +283,7 @@ class ImportOrderTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_shipped_mp.json'
         );
 
@@ -325,7 +325,7 @@ class ImportOrderTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_shipped_mp.json'
         );
 
@@ -367,7 +367,7 @@ class ImportOrderTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_shipped_mp.json'
         );
 
@@ -411,7 +411,7 @@ class ImportOrderTest extends ModuleTestCase
         $fixture->loadFixture(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml'
         );
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/allready_imported.json'
         );
         $import = new LengowImport(array('log_output' => false));
@@ -431,7 +431,7 @@ class ImportOrderTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_update_1.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_update_2.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_update_3.json',
@@ -546,20 +546,22 @@ class ImportOrderTest extends ModuleTestCase
         $order_data = Tools::JsonDecode(
             file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
         );
-        $import = new LengowImportOrder(array(
-            'id_shop' => 1,
-            'id_shop_group' => 1,
-            'id_lang' => 1,
-            'context' => Context::getContext(),
-            'force_product' => true,
-            'preprod_mode' => false,
-            'log_output' => false,
-            'marketplace_sku' => 1,
-            'delivery_address_id' => 1,
-            'order_data' => $order_data,
-            'package_data' => 1,
-            'first_package' => 1,
-        ));
+        $import = new LengowImportOrder(
+            array(
+                'id_shop'             => 1,
+                'id_shop_group'       => 1,
+                'id_lang'             => 1,
+                'context'             => Context::getContext(),
+                'force_product'       => true,
+                'preprod_mode'        => false,
+                'log_output'          => false,
+                'marketplace_sku'     => 1,
+                'delivery_address_id' => 1,
+                'order_data'          => $order_data,
+                'package_data'        => 1,
+                'first_package'       => 1,
+            )
+            );
         $this->invokeMethod($import, 'getCarrierId', array($shipping_address));
     }
 
@@ -577,20 +579,22 @@ class ImportOrderTest extends ModuleTestCase
         $order_data = Tools::JsonDecode(
             file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
         );
-        $import = new LengowImportOrder(array(
-            'id_shop' => 1,
-            'id_shop_group' => 1,
-            'id_lang' => 1,
-            'context' => Context::getContext(),
-            'force_product' => true,
-            'preprod_mode' => false,
-            'log_output' => false,
-            'marketplace_sku' => 1,
-            'delivery_address_id' => 1,
-            'order_data' => $order_data,
-            'package_data' => 1,
-            'first_package' => 1,
-        ));
+        $import = new LengowImportOrder(
+            array(
+                'id_shop'             => 1,
+                'id_shop_group'       => 1,
+                'id_lang'             => 1,
+                'context'             => Context::getContext(),
+                'force_product'       => true,
+                'preprod_mode'        => false,
+                'log_output'          => false,
+                'marketplace_sku'     => 1,
+                'delivery_address_id' => 1,
+                'order_data'          => $order_data,
+                'package_data'        => 1,
+                'first_package'       => 1,
+            )
+        );
         $this->invokeMethod($import, 'getCarrierId', array($shipping_address));
     }
 
@@ -613,20 +617,22 @@ class ImportOrderTest extends ModuleTestCase
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id_require_error.yml'
         );
 
-        $import = new LengowImportOrder(array(
-            'id_shop' => 1,
-            'id_shop_group' => 1,
-            'id_lang' => 1,
-            'context' => Context::getContext(),
-            'force_product' => true,
-            'preprod_mode' => false,
-            'log_output' => false,
-            'marketplace_sku' => 1,
-            'delivery_address_id' => 1,
-            'order_data' => $order_data,
-            'package_data' => $order_data->packages[0],
-            'first_package' => 1,
-        ));
+        $import = new LengowImportOrder(
+            array(
+                'id_shop'             => 1,
+                'id_shop_group'       => 1,
+                'id_lang'             => 1,
+                'context'             => Context::getContext(),
+                'force_product'       => true,
+                'preprod_mode'        => false,
+                'log_output'          => false,
+                'marketplace_sku'     => 1,
+                'delivery_address_id' => 1,
+                'order_data'          => $order_data,
+                'package_data'        => $order_data->packages[0],
+                'first_package'       => 1,
+            )
+        );
 
         $fixture = new Fixture();
         $fixture->truncate('lengow_marketplace_carrier');
@@ -649,20 +655,22 @@ class ImportOrderTest extends ModuleTestCase
         $order_data = Tools::JsonDecode(
             file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
         );
-        $import = new LengowImportOrder(array(
-            'id_shop' => 1,
-            'id_shop_group' => 1,
-            'id_lang' => 1,
-            'context' => Context::getContext(),
-            'force_product' => true,
-            'preprod_mode' => false,
-            'log_output' => false,
-            'marketplace_sku' => 1,
-            'delivery_address_id' => 1,
-            'order_data' => $order_data,
-            'package_data' => $order_data->packages[0],
-            'first_package' => 1,
-        ));
+        $import = new LengowImportOrder(
+            array(
+                'id_shop'             => 1,
+                'id_shop_group'       => 1,
+                'id_lang'             => 1,
+                'context'             => Context::getContext(),
+                'force_product'       => true,
+                'preprod_mode'        => false,
+                'log_output'          => false,
+                'marketplace_sku'     => 1,
+                'delivery_address_id' => 1,
+                'order_data'          => $order_data,
+                'package_data'        => $order_data->packages[0],
+                'first_package'       => 1,
+            )
+        );
 
         $fixture = new Fixture();
         $fixture->loadFixture(
@@ -692,7 +700,7 @@ class ImportOrderTest extends ModuleTestCase
         $fixture->loadFixture(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml'
         );
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_external_id.json'
         );
         $import = new LengowImport(array('log_output' => false));
@@ -717,7 +725,7 @@ class ImportOrderTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_amount.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_amount_wt_fees.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_amount_wt_shipping.json'
@@ -829,7 +837,7 @@ class ImportOrderTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_shipped_mp.json'
         );
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_STOCK_SHIP_MP', true);
@@ -865,7 +873,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->chargeFixture();
         $fixture = new Fixture();
         $fixture->truncate('message');
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_amount_wt_fees.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/check_update_2.json'
         );
@@ -929,7 +937,7 @@ class ImportOrderTest extends ModuleTestCase
     {
         $this->chargeConfig();
         $this->chargeFixture();
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_amount.json'
         );
 
@@ -983,7 +991,7 @@ class ImportOrderTest extends ModuleTestCase
         $fixture = new Fixture();
         $fixture->truncate('lengow_order_line');
         $fixture->truncate('order_detail');
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_line_saved.json'
         );
 
@@ -1033,7 +1041,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->chargeFixture();
         $fixture = new Fixture();
         $fixture->truncate('order_detail');
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_line_saved.json'
         );
         $import = new LengowImport(array('log_output' => false));
@@ -1102,7 +1110,7 @@ class ImportOrderTest extends ModuleTestCase
         $fixture->loadFixture(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/customer.yml'
         );
-        LengowConnector::$test_fixture_path = array(
+        LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_customer.json',
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/order_customer_2.json'
         );

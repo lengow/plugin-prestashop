@@ -34,7 +34,7 @@ class CarrierTest extends ModuleTestCase
      */
     public function getListMarketplaceCarrierAPI()
     {
-        LengowConnector::$test_fixture_path =
+        LengowConnector::$testFixturePath =
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         $carrierCollection = LengowCarrier::getListMarketplaceCarrierAPI();
         $testCarrier = array(
@@ -65,11 +65,14 @@ class CarrierTest extends ModuleTestCase
 
         LengowCarrier::insertCountryInMarketplace('WTFCARRIER', 'What a beautiful carrier', '8');
 
-        $this->assertTableContain('lengow_marketplace_carrier', array(
-            'marketplace_carrier_sku' => 'WTFCARRIER',
-            'marketplace_carrier_name' => 'What a beautiful carrier',
-            'id_country' => '8'
-        ));
+        $this->assertTableContain(
+            'lengow_marketplace_carrier',
+            array(
+                'marketplace_carrier_sku'  => 'WTFCARRIER',
+                'marketplace_carrier_name' => 'What a beautiful carrier',
+                'id_country'               => '8'
+            )
+        );
     }
 
     /**
@@ -84,27 +87,39 @@ class CarrierTest extends ModuleTestCase
         $fixture->loadFixture(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Carrier/marketplace_carrier.yml'
         );
-        LengowConnector::$test_fixture_path =
+        LengowConnector::$testFixturePath =
             _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         LengowCarrier::syncListMarketplace();
 
         $defaultCountryId = Configuration::get('PS_COUNTRY_DEFAULT');
-        $this->assertTableContain('lengow_marketplace_carrier', array(
-            'marketplace_carrier_sku' => 'LAPOSTE',
-            'id_country' => $defaultCountryId
-        ));
-        $this->assertTableContain('lengow_marketplace_carrier', array(
-            'marketplace_carrier_sku' => 'LAPOSTE_RELAY',
-            'id_country' => $defaultCountryId
-        ));
-        $this->assertTableContain('lengow_marketplace_carrier', array(
-            'marketplace_carrier_sku' => 'MONDIALRELAY',
-            'id_country' => $defaultCountryId
-        ));
-        $this->assertTableContain('lengow_marketplace_carrier', array(
-            'marketplace_carrier_sku' => 'MONDIALRELAY_RELAY',
-            'id_country' => $defaultCountryId
-        ));
+        $this->assertTableContain(
+            'lengow_marketplace_carrier',
+            array(
+                'marketplace_carrier_sku' => 'LAPOSTE',
+                'id_country'              => $defaultCountryId
+            )
+        );
+        $this->assertTableContain(
+            'lengow_marketplace_carrier',
+            array(
+                'marketplace_carrier_sku' => 'LAPOSTE_RELAY',
+                'id_country'              => $defaultCountryId
+            )
+        );
+        $this->assertTableContain(
+            'lengow_marketplace_carrier',
+            array(
+                'marketplace_carrier_sku' => 'MONDIALRELAY',
+                'id_country'              => $defaultCountryId
+            )
+        );
+        $this->assertTableContain(
+            'lengow_marketplace_carrier',
+            array(
+                'marketplace_carrier_sku' => 'MONDIALRELAY_RELAY',
+                'id_country'              => $defaultCountryId
+            )
+        );
     }
 
     /**

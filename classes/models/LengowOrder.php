@@ -928,14 +928,16 @@ class LengowOrder extends Order
                 'UPDATE `'._DB_PREFIX_.'lengow_orders` SET id_order = NULL WHERE id = '.(int)$id_order_lengow
             );
             $lengowOrder = self::find($id_order_lengow);
-            $import = new LengowImport(array(
-                'id_order_lengow'     => $id_order_lengow,
-                'type'                => 'import',
-                'marketplace_sku'     => $lengowOrder['marketplace_sku'],
-                'marketplace_name'    => $lengowOrder['marketplace_name'],
-                'delivery_address_id' => $lengowOrder['delivery_address_id'],
-                'shop_id'             => $lengowOrder['id_shop'],
-            ));
+            $import = new LengowImport(
+                array(
+                    'id_order_lengow'     => $id_order_lengow,
+                    'type'                => 'import',
+                    'marketplace_sku'     => $lengowOrder['marketplace_sku'],
+                    'marketplace_name'    => $lengowOrder['marketplace_name'],
+                    'delivery_address_id' => $lengowOrder['delivery_address_id'],
+                    'shop_id'             => $lengowOrder['id_shop'],
+                )
+            );
             return $import->exec();
         }
     }
@@ -1007,10 +1009,13 @@ class LengowOrder extends Order
         $success = true;
         LengowMain::log(
             'API-OrderAction',
-            LengowMain::setLogMessage('log.order_action.try_to_send_action', array(
-                'action'   => $action,
-                'order_id' => $this->id
-            )),
+            LengowMain::setLogMessage(
+                'log.order_action.try_to_send_action',
+                array(
+                    'action'   => $action,
+                    'order_id' => $this->id
+                )
+            ),
             false,
             $this->lengow_marketplace_sku
         );
@@ -1065,9 +1070,10 @@ class LengowOrder extends Order
                 $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
                 LengowMain::log(
                     'API-OrderAction',
-                    LengowMain::setLogMessage('log.order_action.call_action_failed', array(
-                        'decoded_message' => $decoded_message
-                    )),
+                    LengowMain::setLogMessage(
+                        'log.order_action.call_action_failed',
+                        array('decoded_message' => $decoded_message)
+                    ),
                     false,
                     $this->lengow_marketplace_sku
                 );
@@ -1075,15 +1081,21 @@ class LengowOrder extends Order
             }
         }
         if ($success) {
-            $message = LengowMain::setLogMessage('log.order_action.action_send', array(
-                'action'   => $action,
-                'order_id' => $this->id
-            ));
+            $message = LengowMain::setLogMessage(
+                'log.order_action.action_send',
+                array(
+                    'action'   => $action,
+                    'order_id' => $this->id
+                )
+            );
         } else {
-            $message = LengowMain::setLogMessage('log.order_action.action_not_send', array(
-                'action'   => $action,
-                'order_id' => $this->id
-            ));
+            $message = LengowMain::setLogMessage(
+                'log.order_action.action_not_send',
+                array(
+                    'action'   => $action,
+                    'order_id' => $this->id
+                )
+            );
         }
         LengowMain::log('API-OrderAction', $message, false, $this->lengow_marketplace_sku);
         return $success;
@@ -1163,8 +1175,9 @@ class LengowOrder extends Order
             }
         }
         //check country in order
-        $states = Db::getInstance()->getRow('SELECT id_order_state FROM '._DB_PREFIX_.'order_state_lang
-                WHERE name = "Erreur technique - Lengow"');
+        $states = Db::getInstance()->getRow(
+            'SELECT id_order_state FROM '._DB_PREFIX_.'order_state_lang WHERE name = "Erreur technique - Lengow"'
+        );
         $errorState = $states['id_order_state'];
         if ($errorState > 0) {
             $sql = "SELECT COUNT(*) as total, marketplace_sku FROM "._DB_PREFIX_."lengow_orders
