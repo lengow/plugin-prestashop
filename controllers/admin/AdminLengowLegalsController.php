@@ -36,8 +36,8 @@ class AdminLengowLegalsController extends ModuleAdminController
         
         parent::__construct();
 
-        $this->lengow_controller = new LengowLegalsController();
-        $this->lengow_controller->postProcess();
-        $this->lengow_controller->display();
+        $lengowController = new LengowLegalsController();
+        $lengowController->postProcess();
+        $lengowController->display();
     }
 }

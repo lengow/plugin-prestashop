@@ -25,17 +25,23 @@
  */
 class AdminLengowLegals14 extends AdminTab
 {
+    /**
+     * Construct
+     */
     public function __construct()
     {
-        $this->lengow_controller = new LengowLegalsController();
-        $this->lengow_controller->postProcess();
+        $lengowController = new LengowLegalsController();
+        $lengowController->postProcess();
 
         parent::__construct();
-        $this->lengow_controller->display();
+        
+        $lengowController->display();
     }
 
+    /**
+     * Display data page
+     */
     public function display()
     {
-
     }
 }

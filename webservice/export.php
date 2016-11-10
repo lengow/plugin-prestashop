@@ -51,7 +51,7 @@ if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)
     }
 }
 // get params data
-$get_params = Tools::getIsset('get_params') ? (bool)Tools::getValue('get_params') : false;
+$getParams = Tools::getIsset('get_params') ? (bool)Tools::getValue('get_params') : false;
 // get mode 
 $mode = (Tools::getIsset('mode') && (Tools::getValue('mode') == 'size' || Tools::getValue('mode') == 'total'))
     ? Tools::getValue('mode')
@@ -76,21 +76,21 @@ if (Tools::getIsset('selection') || !is_null($selection)) {
     $selection = (bool)LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED');
 }
 // export out of stock products
-$out_of_stock = Tools::getIsset('out_stock') ? (bool)Tools::getValue('out_stock') : null;
-if (Tools::getIsset('out_of_stock') || !is_null($out_of_stock)) {
-    $out_of_stock = !is_null($out_of_stock) ? $out_of_stock : (bool)Tools::getValue('out_of_stock');
+$outOfStock = Tools::getIsset('out_stock') ? (bool)Tools::getValue('out_stock') : null;
+if (Tools::getIsset('out_of_stock') || !is_null($outOfStock)) {
+    $outOfStock = !is_null($outOfStock) ? $outOfStock : (bool)Tools::getValue('out_of_stock');
 } else {
-    $out_of_stock = (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK');
+    $outOfStock = (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK');
 }
 // export specific products
-$product_ids = array();
+$productIds = array();
 $ids = Tools::getIsset('ids') ? Tools::getValue('ids') : null;
 if (Tools::getIsset('product_ids') || !is_null($ids)) {
     $ids = !is_null($ids) ? $ids : Tools::getValue('product_ids');
     if (Tools::strlen($ids) > 0) {
         $ids = str_replace(array(';','|',':'), ',', $ids);
         $ids = preg_replace('/[^0-9\,]/', '', $ids);
-        $product_ids = explode(',', $ids);
+        $productIds = explode(',', $ids);
     }
 }
 // export product variation
@@ -131,48 +131,48 @@ if (Tools::getIsset('shop')) {
 $currency = Tools::getIsset('cur') ? Tools::getValue('cur') : null;
 if (Tools::getIsset('currency') || !is_null($currency)) {
     $currency = !is_null($currency) ? $currency : Tools::getValue('currency');
-    $id_currency = Currency::getIdByIsoCode($currency);
-    if ($id_currency != 0) {
-        Context::getContext()->currency = new Currency($id_currency);
+    $idCurrency = Currency::getIdByIsoCode($currency);
+    if ($idCurrency != 0) {
+        Context::getContext()->currency = new Currency($idCurrency);
     }
 }
 // define language
 $language = Tools::getIsset('lang') ? Tools::getValue('lang') : null;
 if (Tools::getIsset('language') || !is_null($language)) {
     $language = !is_null($language) ? $language : Tools::getValue('language');
-    $language_id = (int)Language::getIdByIso($language);
-    if ($language_id == 0) {
-        $language_id = Context::getContext()->language->id;
+    $languageId = (int)Language::getIdByIso($language);
+    if ($languageId == 0) {
+        $languageId = Context::getContext()->language->id;
     }
 } else {
-    $language_id = Context::getContext()->language->id;
+    $languageId = Context::getContext()->language->id;
 }
 // get legacy fields
-$legacy_fields = Tools::getIsset('legacy_fields') ? (bool)Tools::getValue('legacy_fields') : null;
+$legacyFields = Tools::getIsset('legacy_fields') ? (bool)Tools::getValue('legacy_fields') : null;
 // update export date
-$update_export_date = Tools::getIsset('update_export_date') ? (bool)Tools::getValue('update_export_date') : true;
+$updateExportDate = Tools::getIsset('update_export_date') ? (bool)Tools::getValue('update_export_date') : true;
 // See logs or not
-$log_output = Tools::getIsset('log_output') ? (bool)Tools::getValue('log_output') : true;
+$logOutput = Tools::getIsset('log_output') ? (bool)Tools::getValue('log_output') : true;
 
 $export = new LengowExport(
     array(
         'format'             => $format,
         'stream'             => $stream,
-        'product_ids'        => $product_ids,
+        'product_ids'        => $productIds,
         'limit'              => $limit,
         'offset'             => $offset,
-        'out_of_stock'       => $out_of_stock,
+        'out_of_stock'       => $outOfStock,
         'variation'          => $variation,
         'inactive'           => $inactive,
-        'legacy_fields'      => $legacy_fields,
+        'legacy_fields'      => $legacyFields,
         'selection'          => $selection,
-        'language_id'        => $language_id,
-        'update_export_date' => $update_export_date,
-        'log_output'         => $log_output,
+        'language_id'        => $languageId,
+        'update_export_date' => $updateExportDate,
+        'log_output'         => $logOutput,
     )
 );
 
-if ($get_params) {
+if ($getParams) {
     echo $export->getExportParams();
 } elseif ($mode == 'size') {
     echo $export->getTotalExportProduct();

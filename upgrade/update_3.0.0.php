@@ -188,15 +188,15 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_orders
                 $orderLineQuery = is_null($result['delivery_address_id'])
                     ? ' IS NULL'
                     : ' = \''.$result['delivery_address_id'].'\'';
-                $id_order = Db::getInstance()->getRow(
+                $idOrder = Db::getInstance()->getRow(
                     'SELECT `id` FROM `'._DB_PREFIX_.'lengow_orders`
                     WHERE `marketplace_sku` = \''.$result['lengow_order_id'].'\'
                     AND `delivery_address_id`'.$orderLineQuery
                 );
-                if ($id_order) {
+                if ($idOrder) {
                     Db::getInstance()->execute(
                         'UPDATE '._DB_PREFIX_.'lengow_logs_import
-                        SET `id_order_lengow` = \''.(int)$id_order['id'].'\', `type` = 1
+                        SET `id_order_lengow` = \''.(int)$idOrder['id'].'\', `type` = 1
                         WHERE `lengow_order_id` = \''.$result['lengow_order_id'].'\'
                         AND `delivery_address_id`'.$orderLineQuery
                     );

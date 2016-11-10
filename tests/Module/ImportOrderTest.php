@@ -561,7 +561,7 @@ class ImportOrderTest extends ModuleTestCase
                 'package_data'        => 1,
                 'first_package'       => 1,
             )
-            );
+        );
         $this->invokeMethod($import, 'getCarrierId', array($shipping_address));
     }
 

@@ -30,11 +30,12 @@ class AdminLengowHome14 extends AdminTab
      */
     public function __construct()
     {
-        $this->lengow_controller = new LengowHomeController();
-        $this->lengow_controller->postProcess();
+        $lengowController = new LengowHomeController();
+        $lengowController->postProcess();
 
         parent::__construct();
-        $this->lengow_controller->display();
+        
+        $lengowController->display();
     }
 
     /**

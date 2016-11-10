@@ -36,9 +36,9 @@ class AdminLengowOrderSettingController extends ModuleAdminController
 
         parent::__construct();
 
-        $this->lengow_controller = new LengowOrderSettingController();
-        $this->lengow_controller->postProcess();
-        $this->lengow_controller->display();
+        $lengowController = new LengowOrderSettingController();
+        $lengowController->postProcess();
+        $lengowController->display();
 
     }
 }

@@ -79,23 +79,23 @@ class LengowMainSettingController extends LengowController
             )
         );
         $form->fields['LENGOW_REPORT_MAIL_ADDRESS']['label'] = '';
-        $mail_report = $form->buildInputs(
+        $mailReport = $form->buildInputs(
             array(
                 'LENGOW_REPORT_MAIL_ENABLED',
                 'LENGOW_REPORT_MAIL_ADDRESS',
             )
         );
-        $preprod_report = $form->buildInputs(
+        $preprodReport = $form->buildInputs(
             array(
                 'LENGOW_IMPORT_PREPROD_ENABLED',
             )
         );
-        $preprod_wrapper = '';
+        $preprodWrapper = '';
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
             $shop = new LengowShop($s['id_shop']);
             $form->fields['LENGOW_SHOP_ACTIVE']['label'] = $shop->name;
-            $preprod_wrapper.= '<div class="grey-frame">'.$form->buildShopInputs(
+            $preprodWrapper.= '<div class="grey-frame">'.$form->buildShopInputs(
                 $shop->id,
                 array(
                     'LENGOW_SHOP_ACTIVE',
@@ -107,9 +107,9 @@ class LengowMainSettingController extends LengowController
         }
         $listFile = LengowLog::getPaths();
         $this->context->smarty->assign('list_file', $listFile);
-        $this->context->smarty->assign('mail_report', $mail_report);
-        $this->context->smarty->assign('preprod_report', $preprod_report);
-        $this->context->smarty->assign('preprod_wrapper', $preprod_wrapper);
+        $this->context->smarty->assign('mail_report', $mailReport);
+        $this->context->smarty->assign('preprod_report', $preprodReport);
+        $this->context->smarty->assign('preprod_wrapper', $preprodWrapper);
         parent::display();
     }
 }

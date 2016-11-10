@@ -36,8 +36,8 @@ class AdminLengowHomeController extends ModuleAdminController
 
         parent::__construct();
 
-        $this->lengow_controller = new LengowHomeController();
-        $this->lengow_controller->postProcess();
-        $this->lengow_controller->display();
+        $lengowController = new LengowHomeController();
+        $lengowController->postProcess();
+        $lengowController->display();
     }
 }

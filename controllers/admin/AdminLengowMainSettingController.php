@@ -36,8 +36,8 @@ class AdminLengowMainSettingController extends ModuleAdminController
 
         parent::__construct();
 
-        $this->lengow_controller = new LengowMainSettingController();
-        $this->lengow_controller->postProcess();
-        $this->lengow_controller->display();
+        $lengowController = new LengowMainSettingController();
+        $lengowController->postProcess();
+        $lengowController->display();
     }
 }

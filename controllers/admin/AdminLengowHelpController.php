@@ -36,8 +36,8 @@ class AdminLengowHelpController extends ModuleAdminController
 
         parent::__construct();
 
-        $this->lengow_controller = new LengowHelpController();
-        $this->lengow_controller->postProcess();
-        $this->lengow_controller->display();
+        $lengowController = new LengowHelpController();
+        $lengowController->postProcess();
+        $lengowController->display();
     }
 }

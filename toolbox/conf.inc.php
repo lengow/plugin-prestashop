@@ -22,9 +22,9 @@
 $currentDirectory = str_replace('modules/lengow/toolbox/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
 
 //bypass id_shop from ps 1.6 check
-$temp_id_shop = null;
+$tempIdShop = null;
 if (isset($_REQUEST["id_shop"])) {
-    $temp_id_shop = $_REQUEST["id_shop"];
+    $tempIdShop = $_REQUEST["id_shop"];
 }
 $_POST["id_shop"] = null;
 $_GET["id_shop"] = null;
@@ -36,9 +36,9 @@ require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules/lengow/lengow.php';
 
 //bypass id_shop from ps 1.6 check
-$_GET["id_shop"] = $temp_id_shop;
-$_POST["id_shop"] = $temp_id_shop;
-$_REQUEST["id_shop"] = $temp_id_shop;
+$_GET["id_shop"] = $tempIdShop;
+$_POST["id_shop"] = $tempIdShop;
+$_REQUEST["id_shop"] = $tempIdShop;
 
 if (_PS_VERSION_ < '1.5') {
     require_once $currentDirectory.'images.inc.php';

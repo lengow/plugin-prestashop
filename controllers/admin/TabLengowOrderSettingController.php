@@ -30,11 +30,12 @@ class AdminLengowOrderSetting14 extends AdminTab
      */
     public function __construct()
     {
-        $this->lengow_controller = new LengowOrderSettingController();
-        $this->lengow_controller->postProcess();
+        $lengowController = new LengowOrderSettingController();
+        $lengowController->postProcess();
 
         parent::__construct();
-        $this->lengow_controller->display();
+        
+        $lengowController->display();
     }
 
     /**

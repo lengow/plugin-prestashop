@@ -64,7 +64,7 @@ switch ($action) {
     case "update_settings":
         if ($fullAccess && $fullAccess == 'admin') {
             if (_PS_VERSION_ < '1.5') {
-                $temp_profile = Context::getContext()->cookie->profile;
+                $tempProfile = Context::getContext()->cookie->profile;
                 Context::getContext()->cookie->profile = 1;
             }
             LengowTranslation::$forceIsoCode = null;
@@ -73,7 +73,7 @@ switch ($action) {
             $install->update();
             LengowTranslation::$forceIsoCode = 'en';
             if (_PS_VERSION_ < '1.5') {
-                Context::getContext()->cookie->profile = $temp_profile;
+                Context::getContext()->cookie->profile = $tempProfile;
             }
         }
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');

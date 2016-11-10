@@ -16,7 +16,9 @@ class InstallTest extends ModuleTestCase
         parent::setUpBeforeClass();
 
         $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/multi_shop.yml');
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/multi_shop.yml'
+        );
 
         Configuration::updatevalue('PS_MULTISHOP_FEATURE_ACTIVE', true);
     }
@@ -79,7 +81,11 @@ class InstallTest extends ModuleTestCase
             Cache::store('Module::isInstalledlengow', false);
         }
         $this->assertTrue($module->install(), 'Module install successfully');
-        $this->assertEquals($module->version, Configuration::getGlobalValue('LENGOW_VERSION'), 'Module name has correct version');
+        $this->assertEquals(
+            $module->version,
+            Configuration::getGlobalValue('LENGOW_VERSION'),
+            'Module name has correct version'
+        );
     }
 
     /**
@@ -91,7 +97,9 @@ class InstallTest extends ModuleTestCase
     public function dropTable()
     {
         $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Install/lengow_table.yml');
+        $fixture->loadFixture(
+            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Install/lengow_table.yml'
+        );
 
         foreach (LengowInstall::$tables as $table) {
             $this->assertTableExist($table, 'Table '.$table.' exist');
