@@ -469,45 +469,45 @@ class LengowProduct extends Product
                 //speed up export
                 switch ($name) {
                     case 'image_1':
-                        $id_image = 0;
+                        $idImage = 0;
                         break;
                     case 'image_2':
-                        $id_image = 1;
+                        $idImage = 1;
                         break;
                     case 'image_3':
-                        $id_image = 2;
+                        $idImage = 2;
                         break;
                     case 'image_4':
-                        $id_image = 3;
+                        $idImage = 3;
                         break;
                     case 'image_5':
-                        $id_image = 4;
+                        $idImage = 4;
                         break;
                     case 'image_6':
-                        $id_image = 5;
+                        $idImage = 5;
                         break;
                     case 'image_7':
-                        $id_image = 6;
+                        $idImage = 6;
                         break;
                     case 'image_8':
-                        $id_image = 7;
+                        $idImage = 7;
                         break;
                     case 'image_9':
-                        $id_image = 8;
+                        $idImage = 8;
                         break;
                     case 'image_10':
-                        $id_image = 9;
+                        $idImage = 9;
                         break;
                 }
                 if ($idProductAttribute) {
-                    if (isset($this->combinations[$idProductAttribute]['images'][$id_image])) {
-                        return $this->combinations[$idProductAttribute]['images'][$id_image];
+                    if (isset($this->combinations[$idProductAttribute]['images'][$idImage])) {
+                        return $this->combinations[$idProductAttribute]['images'][$idImage];
                     }
                     return '';
                 }
-                return isset($this->images[$id_image]) ? $this->context->link->getImageLink(
+                return isset($this->images[$idImage]) ? $this->context->link->getImageLink(
                     $this->link_rewrite,
-                    $this->id.'-'.$this->images[$id_image]['id_image'],
+                    $this->id.'-'.$this->images[$idImage]['id_image'],
                     $this->imageSize
                 ) : '';
             default:
@@ -627,11 +627,11 @@ class LengowProduct extends Product
             }
         }
         if (isset($combArray)) {
-            foreach ($combArray as $idProductAttribute => $product_attribute) {
+            foreach ($combArray as $idProductAttribute => $productAttribute) {
                 $name = '';
                 /* In order to keep the same attributes order */
-                asort($product_attribute['attributes']);
-                foreach ($product_attribute['attributes'] as $attribute) {
+                asort($productAttribute['attributes']);
+                foreach ($productAttribute['attributes'] as $attribute) {
                     $name .= $attribute[0].', ';
                 }
                 if (!$this->variation) {
@@ -639,8 +639,8 @@ class LengowProduct extends Product
                 }
                 if (LengowMain::compareVersion()) {
                     $combArray[$idProductAttribute]['available_date'] = (
-                        $product_attribute['available_date'] != 0
-                            ? date('Y-m-d', strtotime($product_attribute['available_date']))
+                        $productAttribute['available_date'] != 0
+                            ? date('Y-m-d', strtotime($productAttribute['available_date']))
                             : '0000-00-00'
                     );
                 }

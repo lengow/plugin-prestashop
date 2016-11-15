@@ -161,7 +161,7 @@ class ExportTest extends ModuleTestCase
             )
         );
         $finalFields = array();
-        foreach (LengowExport::$DEFAULT_FIELDS as $k => $v) {
+        foreach (LengowExport::$defaultFields as $k => $v) {
             $finalFields[] = $k;
         }
         $finalFields = array_merge(
@@ -234,7 +234,7 @@ class ExportTest extends ModuleTestCase
         );
 
         $finalFields = array();
-        foreach (\LengowExportOverride::$DEFAULT_FIELDS as $k => $v) {
+        foreach (\LengowExportOverride::$defaultFields as $k => $v) {
             $finalFields[] = $k;
         }
         $finalFields[] = 'test1';

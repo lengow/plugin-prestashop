@@ -349,11 +349,11 @@ class LengowHook
         if (LengowOrder::isFromLengow($args['id_order'])) {
             $lengowOrder = new LengowOrder($args['id_order']);
             // get actions re-import, synchronize orders, add tracking and resend actions
-            $lengow_link = new LengowLink();
+            $lengowLink = new LengowLink();
             $locale = new LengowTranslation();
             $canResendAction = $lengowOrder->canReSendOrder();
             $canAddTracking = $lengowOrder->canAddTracking();
-            $lengowOrderController = $lengow_link->getAbsoluteAdminLink('AdminLengowOrder');
+            $lengowOrderController = $lengowLink->getAbsoluteAdminLink('AdminLengowOrder');
             $baseAction = $lengowOrderController.'&id_order='.$lengowOrder->id;
             $actionReimport = $baseAction.'&action=cancel_re_import';
             $actionSynchronize = $baseAction.'&action=synchronize';

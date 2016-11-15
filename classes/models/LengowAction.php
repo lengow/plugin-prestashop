@@ -359,10 +359,10 @@ class LengowAction
                 // Finish action in lengow_action table
                 self::finishAction($row['id']);
                 $orderLengow = new LengowOrder($row['id_order']);
-                if ($orderLengow->lengow_process_state != LengowOrder::PROCESS_STATE_FINISH) {
+                if ($orderLengow->lengowProcessState != LengowOrder::PROCESS_STATE_FINISH) {
                     // If action is denied -> create order error
                     $errorMessage = LengowMain::setLogMessage('lengow_log.exception.action_is_too_old');
-                    LengowOrder::addOrderLog($orderLengow->lengow_id, $errorMessage, 'send');
+                    LengowOrder::addOrderLog($orderLengow->lengowId, $errorMessage, 'send');
                     $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
                     LengowMain::log(
                         'API-OrderAction',
@@ -371,7 +371,7 @@ class LengowAction
                             array('decoded_message' => $decodedMessage)
                         ),
                         false,
-                        $orderLengow->lengow_marketplace_sku
+                        $orderLengow->lengowMarketplaceSku
                     );
                 }
                 unset($orderLengow);
@@ -453,19 +453,19 @@ class LengowAction
                             self::finishAction($action['id']);
                             $orderLengow = new LengowOrder($action['id_order']);
                             // Finish all order logs send
-                            LengowOrder::finishOrderLogs($orderLengow->lengow_id, 'send');
-                            if ($orderLengow->lengow_process_state != LengowOrder::PROCESS_STATE_FINISH) {
+                            LengowOrder::finishOrderLogs($orderLengow->lengowId, 'send');
+                            if ($orderLengow->lengowProcessState != LengowOrder::PROCESS_STATE_FINISH) {
                                 // If action is accepted -> close order and finish all order actions
                                 if ($apiActions[$action['action_id']]->processed == true) {
                                     LengowOrder::updateOrderLengow(
-                                        $orderLengow->lengow_id,
+                                        $orderLengow->lengowId,
                                         array('order_process_state' => LengowOrder::PROCESS_STATE_FINISH)
                                     );
                                     self::finishAllActions($orderLengow->id);
                                 } else {
                                     // If action is denied -> create order logs and finish all order actions
                                     LengowOrder::addOrderLog(
-                                        $orderLengow->lengow_id,
+                                        $orderLengow->lengowId,
                                         $apiActions[$action['action_id']]->errors,
                                         'send'
                                     );
@@ -476,7 +476,7 @@ class LengowAction
                                             array('decoded_message' => $apiActions[$action['action_id']]->errors)
                                         ),
                                         false,
-                                        $orderLengow->lengow_marketplace_sku
+                                        $orderLengow->lengowMarketplaceSku
                                     );
                                 }
                             }
@@ -522,8 +522,8 @@ class LengowAction
                     continue;
                 }
                 foreach ($unsentOrders as $idOrder => $actionType) {
-                    $lengow_order = new LengowOrder($idOrder);
-                    $lengow_order->callAction($actionType);
+                    $lengowOrder = new LengowOrder($idOrder);
+                    $lengowOrder->callAction($actionType);
                 }
             }
         }

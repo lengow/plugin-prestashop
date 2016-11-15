@@ -220,16 +220,16 @@ class LengowCustomer extends Customer
      * Retrieve customers by email address and id shop
      *
      * @param string  $email
-     * @param integer $id_shop
+     * @param integer $idShop
      *
      * @return array
      */
-    public function getByEmailAndShop($email, $id_shop)
+    public function getByEmailAndShop($email, $idShop)
     {
         $sql = 'SELECT *
             FROM `'._DB_PREFIX_.'customer`
             WHERE `email` = \''.pSQL($email).'\'
-            '.(_PS_VERSION_ < 1.5 ? '' : ' AND `id_shop` = \''.$id_shop.'\'').'
+            '.(_PS_VERSION_ < 1.5 ? '' : ' AND `id_shop` = \''.$idShop.'\'').'
             AND `deleted` = \'0\'';
         $result = Db::getInstance()->getRow($sql);
         if (!$result) {

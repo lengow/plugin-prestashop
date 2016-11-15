@@ -41,11 +41,11 @@ class LengowConfiguration extends Configuration
                 $orderStates[] = array('id' => $state['id_order_state'], 'text' => $state['name']);
             }
             $exportFormats = array();
-            foreach (LengowFeed::$AVAILABLE_FORMATS as $value) {
+            foreach (LengowFeed::$availabeFormats as $value) {
                 $exportFormats[] = array('id' => $value, 'text' => $value);
             }
             $trackerIds = array();
-            foreach (LengowMain::$TRACKER_CHOICE_ID as $key => $value) {
+            foreach (LengowMain::$trackerChoiceId as $key => $value) {
                 $trackerIds[] = array('id' => $key, 'text' => $value);
             }
             $keys = array(

@@ -480,7 +480,7 @@ class LengowPaymentModule extends PaymentModule
      *
      * @param integer   $idCart
      * @param integer   $idOrderState
-     * @param float     $amount_paid
+     * @param float     $amountPaid
      * @param string    $paymentMethod
      * @param string    $message
      * @param array     $lengowProducts
@@ -493,7 +493,7 @@ class LengowPaymentModule extends PaymentModule
     public function makeOrder14(
         $idCart,
         $idOrderState,
-        $amount_paid,
+        $amountPaid,
         $paymentMethod,
         $message,
         $lengowProducts,
@@ -567,7 +567,7 @@ class LengowPaymentModule extends PaymentModule
             }
             $order->total_products = (float)Tools::ps_round($totalProducts, 2);
             $order->total_products_wt = (float)Tools::ps_round($totalProductsWt, 2);
-            $order->total_paid_real = (float)$amount_paid;
+            $order->total_paid_real = (float)$amountPaid;
 
             // put marketplace processing fees into wrapping
             $order->total_wrapping = (float)$processingFees;
@@ -580,7 +580,7 @@ class LengowPaymentModule extends PaymentModule
                 $this->context->cart->id_carrier,
                 (int)$this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')}
             );
-            $order->total_paid = (float)$amount_paid;
+            $order->total_paid = (float)$amountPaid;
             $order->invoice_date = '0000-00-00 00:00:00';
             // Creating order
             if ($this->context->cart->OrderExists() == false) {
@@ -657,8 +657,8 @@ class LengowPaymentModule extends PaymentModule
                     // Add some informations for virtual products
                     $deadline = '0000-00-00 00:00:00';
                     $downloadHash = null;
-                    if ($id_product_download = ProductDownload::getIdFromIdProduct((int)($product['id_product']))) {
-                        $productDownload = new ProductDownload((int)($id_product_download));
+                    if ($idProductDownload = ProductDownload::getIdFromIdProduct((int)($product['id_product']))) {
+                        $productDownload = new ProductDownload((int)($idProductDownload));
                         $deadline = $productDownload->getDeadLine();
                         $downloadHash = $productDownload->getHash();
                     }

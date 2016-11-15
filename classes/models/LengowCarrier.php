@@ -68,12 +68,12 @@ class LengowCarrier extends Carrier
             }
             $mr = new MondialRelay();
             if ($mr->isMondialRelayCarrier($idCarrier)) {
-                $relay = LengowCarrier::getMRRelay($shippingAddress->id, $shippingAddress->id_relay, $mr);
+                $relay = LengowCarrier::getMRRelay($shippingAddress->id, $shippingAddress->idRelay, $mr);
                 if (!$relay) {
                     throw new LengowException(
                         LengowMain::setLogMessage(
                             'log.import.error_mondial_relay_not_found',
-                            array('id_relay' => $shippingAddress->id_relay)
+                            array('id_relay' => $shippingAddress->idRelay)
                         )
                     );
                 }
@@ -111,10 +111,10 @@ class LengowCarrier extends Carrier
         }
         $customer = new LengowCustomer($idCustomer);
         $params = array();
-        if (!empty($shippingAddress->id_relay)) {
+        if (!empty($shippingAddress->idRelay)) {
             $deliveryMode = 'A2P';
             $soColissimo = new SCFields($deliveryMode);
-            $params['PRID']          = (string)$shippingAddress->id_relay;
+            $params['PRID']          = (string)$shippingAddress->idRelay;
             $params['PRCOMPLADRESS'] = (string)$shippingAddress->other;
             $params['PRADRESS1']     = (string)$shippingAddress->address1;
             // not a param in SoColissimo -> error ?

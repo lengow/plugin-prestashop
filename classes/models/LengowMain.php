@@ -436,15 +436,15 @@ class LengowMain
     /**
      * Writes log
      *
-     * @param string  $category        Category log
-     * @param string  $txt             log message
-     * @param boolean $force_output    output on screen
-     * @param string  $marketplace_sku lengow marketplace sku
+     * @param string  $category       Category log
+     * @param string  $txt            log message
+     * @param boolean $logOutput      output on screen
+     * @param string  $marketplaceSku lengow marketplace sku
      */
-    public static function log($category, $txt, $force_output = false, $marketplace_sku = null)
+    public static function log($category, $txt, $logOutput = false, $marketplaceSku = null)
     {
         $log = LengowMain::getLogInstance();
-        $log->write($category, $txt, $force_output, $marketplace_sku);
+        $log->write($category, $txt, $logOutput, $marketplaceSku);
     }
 
     /**
@@ -473,27 +473,27 @@ class LengowMain
      * Decode message with params for translation
      *
      * @param string $message
-     * @param string $iso_code
+     * @param string $isoCode
      * @param mixed  $params
      *
      * @return string
      */
-    public static function decodeLogMessage($message, $iso_code = null, $params = null)
+    public static function decodeLogMessage($message, $isoCode = null, $params = null)
     {
         if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
             if (isset($result[1])) {
                 $key = $result[1];
             }
             if (isset($result[4]) && is_null($params)) {
-                $str_param = $result[4];
-                $allParams = explode('|', $str_param);
+                $strParam = $result[4];
+                $allParams = explode('|', $strParam);
                 foreach ($allParams as $param) {
                     $result = explode('==', $param);
                     $params[$result[0]] = $result[1];
                 }
             }
             $locale = new LengowTranslation();
-            $message = $locale->t($key, $params, $iso_code);
+            $message = $locale->t($key, $params, $isoCode);
         }
         return $message;
     }
@@ -760,11 +760,11 @@ class LengowMain
     /**
      * Check logs table and send mail for order not imported correctly
      *
-     * @param  boolean $log_output See log or not
+     * @param  boolean $logOutput See log or not
      *
      * @return void
      */
-    public static function sendMailAlert($log_output = false)
+    public static function sendMailAlert($logOutput = false)
     {
         $cookie = Context::getContext()->cookie;
         $subject = 'Lengow imports logs';
@@ -816,13 +816,13 @@ class LengowMain
                 LengowMain::log(
                     'MailReport',
                     LengowMain::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
-                    $log_output
+                    $logOutput
                 );
             } else {
                 LengowMain::log(
                     'MailReport',
                     LengowMain::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
-                    $log_output
+                    $logOutput
                 );
             }
         }
@@ -922,16 +922,16 @@ class LengowMain
     /**
      * Get prestashop state id corresponding to the current order state
      *
-     * @param string            $order_state  order state
+     * @param string            $orderState  order state
      * @param LengowMarketplace $marketplace  order marketplace
      * @param bool              $shipmentByMp order shipped by mp
      *
      * @return int
      */
-    public static function getPrestahopStateId($order_state, $marketplace, $shipmentByMp)
+    public static function getPrestahopStateId($orderState, $marketplace, $shipmentByMp)
     {
-        if ($marketplace->getStateLengow($order_state) == 'shipped'
-            || $marketplace->getStateLengow($order_state) == 'closed'
+        if ($marketplace->getStateLengow($orderState) == 'shipped'
+            || $marketplace->getStateLengow($orderState) == 'closed'
         ) {
             if ($shipmentByMp) {
                 return LengowMain::getOrderState('shippedByMp');
@@ -1081,14 +1081,14 @@ class LengowMain
     /**
      * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName)
      *
-     * @param string  $str                   String in underscore format
-     * @param boolean $capitalise_first_char If true, capitalise the first char in $str
+     * @param string  $str                    String in underscore format
+     * @param boolean $capitaliseFirstChar If true, capitalise the first char in $str
      *
      * @return string
      */
-    public function toCamelCase($str, $capitalise_first_char = false)
+    public function toCamelCase($str, $capitaliseFirstChar = false)
     {
-        if ($capitalise_first_char) {
+        if ($capitaliseFirstChar) {
             $str[0] = Tools::strtoupper($str[0]);
         }
         $func = create_function('$c', 'return strtoupper($c[1]);');

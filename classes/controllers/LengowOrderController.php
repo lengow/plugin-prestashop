@@ -186,7 +186,7 @@ class LengowOrderController extends LengowController
                             array('order_id' => $idOrder)
                         );
                     }
-                    LengowMain::log('Import', $synchroMessage, false, $lengowOrder->lengow_marketplace_sku);
+                    LengowMain::log('Import', $synchroMessage, false, $lengowOrder->lengowMarketplaceSku);
                     $lengowLink = new LengowLink();
                     $prestashopOrderController = $lengowLink->getAbsoluteAdminLink('AdminOrders', false, true);
                     $orderUrl = $prestashopOrderController.'&id_order='.$idOrder.'&vieworder';

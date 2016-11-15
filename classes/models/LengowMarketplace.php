@@ -254,15 +254,15 @@ class LengowMarketplace
     /**
     * Check if a status is valid for action
     *
-    * @param array   $action_status valid status for action
-    * @param integer $id_status     curent status id
+    * @param array   $actionStatus valid status for action
+    * @param integer $idStatus     curent status id
     *
     * @return boolean
     */
-    public function isValidState($action_status, $id_status)
+    public function isValidState($actionStatus, $idStatus)
     {
-        foreach ($action_status as $status) {
-            if ($id_status == LengowMain::getOrderState($status)) {
+        foreach ($actionStatus as $status) {
+            if ($idStatus == LengowMain::getOrderState($status)) {
                 return true;
             }
         }
@@ -473,7 +473,7 @@ class LengowMarketplace
                     $result = LengowConnector::queryApi(
                         'post',
                         '/v3.0/orders/actions/',
-                        $order->lengow_id_shop,
+                        $order->lengowIdShop,
                         $params
                     );
                     if (isset($result->id)) {
@@ -518,7 +518,7 @@ class LengowMarketplace
                     array('decoded_message' => $decodedMessage)
                 ),
                 false,
-                $order->lengow_marketplace_sku
+                $order->lengowMarketplaceSku
             );
             return false;
         }

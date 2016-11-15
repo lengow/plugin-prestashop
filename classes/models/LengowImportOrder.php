@@ -541,8 +541,8 @@ class LengowImportOrder
                         $this->marketplaceSku
                     );
                     $stateName = '';
-                    $available_states = LengowMain::getOrderStates($this->idLang);
-                    foreach ($available_states as $state) {
+                    $availableStates = LengowMain::getOrderStates($this->idLang);
+                    foreach ($availableStates as $state) {
                         if ($state['id_order_state'] == LengowMain::getOrderState($this->orderStateLengow)) {
                             $stateName = $state['name'];
                             break;
@@ -735,20 +735,20 @@ class LengowImportOrder
     /**
      * Create or load customer based on API data
      *
-     * @param array $customer_data API data
+     * @param array $customerDatas API data
      *
      * @return LengowCustomer
      */
-    protected function getCustomer($customer_data = array())
+    protected function getCustomer($customerDatas = array())
     {
         $customer = new LengowCustomer();
         // check if customer already exists in Prestashop
-        $customer->getByEmailAndShop($customer_data['email'], $this->idShop);
+        $customer->getByEmailAndShop($customerDatas['email'], $this->idShop);
         if ($customer->id) {
             return $customer;
         }
         // create new customer
-        $customer->assign($customer_data);
+        $customer->assign($customerDatas);
         return $customer;
     }
 
@@ -899,7 +899,7 @@ class LengowImportOrder
                 && $address->firstname == $addressDatas['first_name']
             ) {
                 if (isset($addressDatas['id_relay'])) {
-                    $address->id_relay = $addressDatas['id_relay'];
+                    $address->idRelay = $addressDatas['id_relay'];
                 }
                 return $address;
             }
