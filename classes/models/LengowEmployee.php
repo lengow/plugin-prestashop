@@ -27,14 +27,14 @@ class LengowEmployee extends Employee
     /**
      * Return all employee id and email
      *
-     * @param boolean $active_only active employee or not
+     * @param boolean $activeOnly active employee or not
      *
      * @return array Employees
      */
-    public static function getEmployees($active_only = true)
+    public static function getEmployees($activeOnly = true)
     {
         // This line is useless, but Prestashop validator require it
-        $active_only = $active_only;
+        $activeOnly = $activeOnly;
         return Db::getInstance()->ExecuteS(
             'SELECT `id_employee`, CONCAT(`firstname`, \' \', `lastname`) name
             FROM `'._DB_PREFIX_.'employee`

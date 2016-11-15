@@ -57,23 +57,23 @@ class LengowTranslation
      *
      * @param string $message  localization key
      * @param array  $args     replace word in string
-     * @param array  $iso_code iso code
+     * @param array  $isoCode iso code
      *
      * @return mixed
      */
-    public function t($message, $args = array(), $iso_code = null)
+    public function t($message, $args = array(), $isoCode = null)
     {
         if (!is_null(LengowTranslation::$forceIsoCode)) {
-            $iso_code = LengowTranslation::$forceIsoCode;
+            $isoCode = LengowTranslation::$forceIsoCode;
         }
-        if (is_null($iso_code)) {
-            $iso_code = $this->isoCode;
+        if (is_null($isoCode)) {
+            $isoCode = $this->isoCode;
         }
-        if (!isset(self::$translation[$iso_code])) {
-            $this->loadFile($iso_code);
+        if (!isset(self::$translation[$isoCode])) {
+            $this->loadFile($isoCode);
         }
-        if (isset(self::$translation[$iso_code][$message])) {
-            return $this->translateFinal(self::$translation[$iso_code][$message], $args);
+        if (isset(self::$translation[$isoCode][$message])) {
+            return $this->translateFinal(self::$translation[$isoCode][$message], $args);
         } else {
             if (!isset(self::$translation[$this->fallbackIsoCode])) {
                 $this->loadFile($this->fallbackIsoCode);
@@ -112,16 +112,16 @@ class LengowTranslation
     /**
      * Load csv file
      *
-     * @param string $iso_code
+     * @param string $isoCode
      * @param string $filename file location
      *
      * @return boolean
      */
-    public function loadFile($iso_code, $filename = null)
+    public function loadFile($isoCode, $filename = null)
     {
         if (!$filename) {
             $filename = _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'translations'.
-                DIRECTORY_SEPARATOR.$iso_code.'.csv';
+                DIRECTORY_SEPARATOR.$isoCode.'.csv';
         }
         $translation = array();
         if (file_exists($filename)) {
@@ -132,7 +132,7 @@ class LengowTranslation
                 fclose($handle);
             }
         }
-        self::$translation[$iso_code] = $translation;
+        self::$translation[$isoCode] = $translation;
         return count($translation) > 0;
     }
 }

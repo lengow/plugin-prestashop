@@ -27,7 +27,7 @@ class LengowList
     /**
     * All params for lengow grid
     */
-    protected $fields_list;
+    protected $fieldsList;
     protected $collection;
     protected $total;
     protected $identifier;
@@ -50,22 +50,22 @@ class LengowList
      */
     public function __construct($params)
     {
-        $this->id = $params['id'];
-        $this->fields_list = $params['fields_list'];
-        $this->identifier = $params['identifier'];
-        $this->selection = $params['selection'];
+        $this->id                 = $params['id'];
+        $this->fieldsList         = $params['fields_list'];
+        $this->identifier         = $params['identifier'];
+        $this->selection          = $params['selection'];
         $this->selectionCondition = isset($params['selection_condition']) ? $params['selection_condition'] : false ;
-        $this->controller = $params['controller'];
-        $this->shopId = isset($params['shop_id']) ? $params['shop_id'] : null;
-        $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
-        $this->nbPerPage = isset($params['nbPerPage']) ? $params['nbPerPage'] : 20;
-        $this->sql = $params['sql'];
-        $this->ajax = isset($params['ajax']) ? (bool)$params['ajax'] : false;
-        $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
-        $this->orderColumn = isset($params['order_column']) ? $params['order_column'] : '';
-        $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
-        $this->locale = new LengowTranslation();
-        $this->context = Context::getContext();
+        $this->controller         = $params['controller'];
+        $this->shopId             = isset($params['shop_id']) ? $params['shop_id'] : null;
+        $this->currentPage        = isset($params['current_page']) ? $params['current_page'] : 1;
+        $this->nbPerPage          = isset($params['nbPerPage']) ? $params['nbPerPage'] : 20;
+        $this->sql                = $params['sql'];
+        $this->ajax               = isset($params['ajax']) ? (bool)$params['ajax'] : false;
+        $this->orderValue         = isset($params['order_value']) ? $params['order_value'] : '';
+        $this->orderColumn        = isset($params['order_column']) ? $params['order_column'] : '';
+        $this->toolbox            = Context::getContext()->smarty->getVariable('toolbox')->value;
+        $this->locale             = new LengowTranslation();
+        $this->context            = Context::getContext();
         if (_PS_VERSION_ < 1.5) {
             $this->context->smarty->ps_language = $this->context->language;
         }
@@ -80,36 +80,36 @@ class LengowList
     {
         $tableClass = (count($this->collection) == 0 ? 'table_no_result' : '');
         $newOrder = ( empty($this->orderValue) || $this->orderValue == "ASC" ) ? 'DESC' : "ASC";
-        $html ='<table class="lengow_table table table-bordered table-striped table-hover '.$tableClass.'"
+        $html = '<table class="lengow_table table table-bordered table-striped table-hover '.$tableClass.'"
             id="table_'.$this->id.'">';
-        $html.='<thead>';
-        $html.='<tr>';
+        $html.= '<thead>';
+        $html.= '<tr>';
 
         if ($this->selection && !$this->toolbox) {
-            $html.='<th></th>';
+            $html.= '<th></th>';
         }
-        foreach ($this->fields_list as $key => $values) {
+        foreach ($this->fieldsList as $key => $values) {
             $orderClass = '';
             if (isset($values['filter_key']) && $order == $values['filter_key']) {
                 $orderClass = 'order';
             }
-            $html.='<th>';
+            $html.= '<th>';
             if (isset($values['filter_order']) && $values['filter_order']) {
                 $html.='<a href="#" class="table_order '.$orderClass.'" data-order="'.$newOrder.'"
                     data-column="'.$values['filter_key'].'">'.$values['title'].'</a>';
             } else {
                 $html.=$values['title'];
             }
-            $html.='</th>';
+            $html.= '</th>';
         }
-        $html.='</tr>';
+        $html.= '</tr>';
 
-        $html.='<tr class="lengow_filter">';
+        $html.= '<tr class="lengow_filter">';
         if ($this->selection && !$this->toolbox) {
             $html.='<th><input type="checkbox" id="select_'.$this->id.'"
                 class="lengow_select_all lengow_link_tooltip"/></th>';
         }
-        foreach ($this->fields_list as $key => $values) {
+        foreach ($this->fieldsList as $key => $values) {
             $html.= '<th>';
             if (isset($values['filter']) && $values['filter']) {
                 $type = isset($values['filter_type']) ? $values['filter_type'] : 'text';
@@ -124,8 +124,8 @@ class LengowList
                         $html.= '<input type="text" class="focus_'.$key.'" name="'.$name.'" value="'.$value.'" />';
                         break;
                     case 'select':
-                        $html.='<select class="form-control" name="'.$name.'">';
-                        $html.='<option value="" '.($value ? 'selected' : '').'></option>';
+                        $html.= '<select class="form-control" name="'.$name.'">';
+                        $html.= '<option value="" '.($value ? 'selected' : '').'></option>';
                         foreach ($values['filter_collection'] as $row) {
                             $selected =  $row['id'] == $value ? 'selected' : '';
                             $html.='<option value="'.$row['id'].'" '.$selected.'>'.$row['text'].'</option>';
@@ -187,21 +187,21 @@ class LengowList
     {
         $lengow_link = new LengowLink();
         $html = '';
-        $html.= '<tr id='.$this->id.'_'.$item[$this->identifier].' class="table_row">';/*ici*/
+        $html.= '<tr id='.$this->id.'_'.$item[$this->identifier].' class="table_row">';
         if ($this->selection && !$this->toolbox) {
             if ($this->selectionCondition) {
                 if ($item[$this->selectionCondition] > 0) {
-                    $html.='<td class="no-link"> <input type="checkbox" class="lengow_selection"
+                    $html.= '<td class="no-link"> <input type="checkbox" class="lengow_selection"
                     name="selection['.$item[$this->identifier].']" value="1"></td>';
                 } else {
-                    $html.='<td></td>';
+                    $html.= '<td></td>';
                 }
             } else {
-                $html.='<td class="no-link"><input type="checkbox" class="lengow_selection"
+                $html.= '<td class="no-link"><input type="checkbox" class="lengow_selection"
                     name="selection['.$item[$this->identifier].']" value="1"></td>';
             }
         }
-        foreach ($this->fields_list as $key => $values) {
+        foreach ($this->fieldsList as $key => $values) {
             if (isset($values['display_callback'])) {
                 $value = call_user_func_array($values['display_callback'], array($key, $item[$key], $item));
             } else {
@@ -352,7 +352,7 @@ class LengowList
      */
     public function findValueByKey($keyToSeach)
     {
-        foreach ($this->fields_list as $key => $value) {
+        foreach ($this->fieldsList as $key => $value) {
             if ($keyToSeach == $key) {
                 return $value;
             }
@@ -398,14 +398,13 @@ class LengowList
                         case 'date':
                             $from = isset($value['from']) ? $value['from'] : null;
                             $to = isset($value['to']) ? $value['to'] : null;
-                            if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $from) &&
-                                preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $to) ) {
-
+                            if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $from)
+                                && preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $to)
+                            ) {
                                 $from = DateTime::createFromFormat('d/m/Y', $from);
                                 $from = $from->format('Y-m-d');
                                 $to = DateTime::createFromFormat('d/m/Y', $to);
                                 $to = $to->format('Y-m-d');
-
                                 $where[] = ' '.pSQL($fieldValue['filter_key']).'
                                 BETWEEN "'.$from.' 00:00:00" AND "'.$to.' 23:59:59"';
                             } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $from)) {
@@ -433,7 +432,7 @@ class LengowList
             }
 
         } elseif ($select_all == true) {
-            $sql = 'SELECT '.$this->fields_list['id_product']['filter_key'];
+            $sql = 'SELECT '.$this->fieldsList['id_product']['filter_key'];
         } else {
             $sql = 'SELECT '.join(', ', $this->sql["select"]);
         }
@@ -494,8 +493,8 @@ class LengowList
         $html = '<nav id="nav_'.$this->id.'" class="'.$nav_class.'">';
         $html.= '<div class="lgw-pagination-pages">';
         $html.= '<span class="lengow_number">'.$this->paginationFrom.'</span> -
-        <span class="lengow_number">'.$this->paginationTo.'</span>
-         '.$this->locale->t('product.table.pagination_of').' <span class="lengow_number">'.$this->total.'</span>';
+            <span class="lengow_number">'.$this->paginationTo.'</span>'
+            .$this->locale->t('product.table.pagination_of').' <span class="lengow_number">'.$this->total.'</span>';
         $html.='</div>';
         if ($totalPage<=1) {
             return $html.'</nav>';
@@ -503,19 +502,19 @@ class LengowList
         $html.= '<ul class="lgw-pagination-btns lgw-pagination-arrow">';
         $class = ($this->currentPage == 1) ? 'disabled' : '';
         $html.= '<li class="'.$class.'"><a href="#" data-page="'.($this->currentPage-1).'"
-        data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage-1).'"
-        ><i class="fa fa-angle-left"></i></a></li>';
+            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax)
+            .'&p='.($this->currentPage-1).'"><i class="fa fa-angle-left"></i></a></li>';
         $class = ($this->currentPage == $this->nbMaxPage) ? 'disabled' : '';
         $html.= '<li class="'.$class.'"><a href="#" data-page="'.($this->currentPage+1).'"
-        data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->currentPage+1).'"
-        ><i class="fa fa-angle-right"></i></a></li>';
+            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax)
+            .'&p='.($this->currentPage+1).'"><i class="fa fa-angle-right"></i></a></li>';
         $html.= '</ul>';
         $html.= '<ul class="lgw-pagination-btns lgw-pagination-numbers">';
         if ($this->nbMaxPage > 7) {
             $showLastSeparation = false;
             $class = ($this->currentPage == 1) ? 'disabled' : '';
             $html.= '<li class="'.$class.'"><a href="#" data-page="1"
-            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p=1">1</a></li>';
+                data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p=1">1</a></li>';
             $from = $this->currentPage - 1;
             $to = $this->currentPage + 1;
             if ($from <= 2) {
@@ -535,8 +534,8 @@ class LengowList
                 $html.= '<li>';
                 $class = ($i == $this->currentPage) ? 'disabled' : '';
                 $html.= '<li class="' . $class . '"><a href="#" data-page="'.$i.'"
-                data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'.
-                    $i.'</a></li>';
+                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'
+                    .$i.'</a></li>';
                 $html.= '</li>';
             }
             if ($showLastSeparation) {
@@ -544,8 +543,8 @@ class LengowList
             }
             $class = ($this->currentPage == $this->nbMaxPage) ? 'disabled' : '';
             $html.= '<li class="' . $class . '"><a href="#" data-page="'.$this->nbMaxPage.'"
-            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.($this->nbMaxPage).'"
-            >'.$this->nbMaxPage.'</a></li>';
+                data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax)
+                .'&p='.($this->nbMaxPage).'">'.$this->nbMaxPage.'</a></li>';
         } else {
             for ($i = 1; $i <= $totalPage; $i++) {
                 $class = ($i == $this->currentPage) ? 'disabled' : '';

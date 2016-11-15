@@ -28,26 +28,26 @@ class LengowCurrency
      * Get id currency by iso_code
      *
      * @param string  $sign
-     * @param integer $id_shop
+     * @param integer $idShop
      *
      * @return integer
      */
-    public static function getIdBySign($sign, $id_shop = 0)
+    public static function getIdBySign($sign, $idShop = 0)
     {
         if (_PS_VERSION_ < '1.5') {
             $sql = "SELECT id_currency FROM "._DB_PREFIX_."currency WHERE iso_code = '".pSQL($sign)."' ";
             $result = Db::getInstance()->getRow($sql);
             return $result['id_currency'];
         } else {
-            $cache_id = 'Currency::getIdBySign_'.pSQL($sign).'-'.(int)$id_shop;
-            if (!Cache::isStored($cache_id)) {
-                $query = Currency::getIdByQuery($id_shop);
+            $idCache = 'Currency::getIdBySign_'.pSQL($sign).'-'.(int)$idShop;
+            if (!Cache::isStored($idCache)) {
+                $query = Currency::getIdByQuery($idShop);
                 $query->where('iso_code = \''.pSQL($sign).'\'');
                 $result = (int)Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($query->build());
-                Cache::store($cache_id, $result);
+                Cache::store($idCache, $result);
                 return $result;
             }
-            return Cache::retrieve($cache_id);
+            return Cache::retrieve($idCache);
         }
     }
 }

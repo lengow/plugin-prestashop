@@ -27,9 +27,9 @@ class LengowShop extends Shop
     /**
      * Construct
      */
-    public function __construct($id = null, $id_lang = null, $id_shop = null)
+    public function __construct($id = null, $idLang = null, $idShop = null)
     {
-        parent::__construct($id, $id_lang, $id_shop);
+        parent::__construct($id, $idLang, $idShop);
         if (_PS_VERSION_ < '1.5') {
             $this->id = 1;
             $this->name = Configuration::get('PS_SHOP_NAME');

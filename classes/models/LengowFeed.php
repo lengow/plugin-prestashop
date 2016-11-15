@@ -62,17 +62,17 @@ class LengowFeed
     /**
      * @var string export shop folder
      */
-    protected $shop_folder = null;
+    protected $shopFolder = null;
 
     /**
      * @var string full export folder
      */
-    protected $export_folder;
+    protected $exportFolder;
 
     /**
      * @var array formats available for export
      */
-    public static $AVAILABLE_FORMATS = array(
+    public static $availabeFormats = array(
         'csv',
         'yaml',
         'xml',
@@ -82,7 +82,7 @@ class LengowFeed
     /**
      * @var string Lengow export folder
      */
-    public static $LENGOW_EXPORT_FOLDER = 'export';
+    public static $lengowExportFolder = 'export';
 
     /**
      * Construct
@@ -90,18 +90,18 @@ class LengowFeed
      * @param boolean $stream
      * @param string  $format
      * @param boolean $legacy
-     * @param string  $shop_name
+     * @param string  $shopName
      *
      */
-    public function __construct($stream, $format, $legacy, $shop_name = null)
+    public function __construct($stream, $format, $legacy, $shopName = null)
     {
         $this->stream = $stream;
         $this->format = $format;
         $this->legacy = $legacy;
-        if (is_null($shop_name)) {
-            $shop_name = Context::getContext()->shop->name;
+        if (is_null($shopName)) {
+            $shopName = Context::getContext()->shop->name;
         }
-        $this->shop_folder = $this->formatFields($shop_name, 'shop');
+        $this->shopFolder = $this->formatFields($shopName, 'shop');
 
         if (!$this->stream) {
             $this->initExportFile();
@@ -114,31 +114,31 @@ class LengowFeed
     public function initExportFile()
     {
         $sep = DIRECTORY_SEPARATOR;
-        $this->export_folder = LengowFeed::$LENGOW_EXPORT_FOLDER.$sep.$this->shop_folder;
-        $folder_path = LengowMain::getLengowFolder().$sep.$this->export_folder;
-        if (!file_exists($folder_path)) {
-            if (!mkdir($folder_path)) {
+        $this->exportFolder = LengowFeed::$lengowExportFolder.$sep.$this->shopFolder;
+        $folderPath = LengowMain::getLengowFolder().$sep.$this->exportFolder;
+        if (!file_exists($folderPath)) {
+            if (!mkdir($folderPath)) {
                 throw new LengowException(
                     LengowMain::setLogMessage(
                         'log.export.error_unable_to_create_folder',
-                        array('folder_path' => $folder_path)
+                        array('folder_path' => $folderPath)
                     )
                 );
             }
         }
-        $file_name = 'flux-'.Context::getContext()->language->iso_code.'-'.time().'.'.$this->format;
-        $this->file = new LengowFile($this->export_folder, $file_name);
+        $fileName = 'flux-'.Context::getContext()->language->iso_code.'-'.time().'.'.$this->format;
+        $this->file = new LengowFile($this->exportFolder, $fileName);
     }
 
     /**
      * Write feed
      *
-     * @param string  $type          (header, body or footer)
-     * @param array   $data          export data
-     * @param boolean $is_first
-     * @param boolean $max_character Max characters for yaml format
+     * @param string  $type         (header, body or footer)
+     * @param array   $data         export data
+     * @param boolean $isFirst
+     * @param boolean $maxCharacter Max characters for yaml format
      */
-    public function write($type, $data = array(), $is_first = null, $max_character = null)
+    public function write($type, $data = array(), $isFirst = null, $maxCharacter = null)
     {
         switch ($type) {
             case 'header':
@@ -152,7 +152,7 @@ class LengowFeed
                 $this->flush($header);
                 break;
             case 'body':
-                $body = $this->getBody($data, $is_first, $max_character);
+                $body = $this->getBody($data, $isFirst, $maxCharacter);
                 $this->flush($body);
                 break;
             case 'footer':
@@ -192,13 +192,13 @@ class LengowFeed
     /**
      * Get feed body
      *
-     * @param array   $data          feed data
-     * @param boolean $is_first      is first product
-     * @param integer $max_character max characters for yaml format
+     * @param array   $data         feed data
+     * @param boolean $isFirst     is first product
+     * @param integer $maxCharacter max characters for yaml format
      *
      * @return string
      */
-    protected function getBody($data, $is_first, $max_character)
+    protected function getBody($data, $isFirst, $maxCharacter)
     {
         switch ($this->format) {
             case 'csv':
@@ -211,30 +211,30 @@ class LengowFeed
                 $content = '<product>';
                 foreach ($data as $field => $value) {
                     $field = $this->formatFields($field);
-                    $content .= '<'.$field.'><![CDATA[' . $value . ']]></'.$field.'>'.LengowFeed::EOL;
+                    $content .= '<'.$field.'><![CDATA['.$value.']]></'.$field.'>'.LengowFeed::EOL;
                 }
                 $content .= '</product>'.LengowFeed::EOL;
                 return $content;
             case 'json':
-                $content = $is_first ? '' : ',';
-                $json_array = array();
+                $content = $isFirst ? '' : ',';
+                $jsonArray = array();
                 foreach ($data as $field => $value) {
                     $field = $this->formatFields($field);
-                    $json_array[$field] = $value;
+                    $jsonArray[$field] = $value;
                 }
-                $content .= Tools::jsonEncode($json_array);
+                $content .= Tools::jsonEncode($jsonArray);
                 return $content;
             case 'yaml':
-                if ($max_character % 2 == 1) {
-                    $max_character = $max_character + 1;
+                if ($maxCharacter % 2 == 1) {
+                    $maxCharacter = $maxCharacter + 1;
                 } else {
-                    $max_character = $max_character + 2;
+                    $maxCharacter = $maxCharacter + 2;
                 }
                 $content = '  '.LengowFeed::PROTECTION.'product'.LengowFeed::PROTECTION.':'.LengowFeed::EOL;
                 foreach ($data as $field => $value) {
                     $field = $this->formatFields($field);
                     $content .= '    '.LengowFeed::PROTECTION.$field.LengowFeed::PROTECTION.':';
-                    $content .= $this->indentYaml($field, $max_character).(string)$value.LengowFeed::EOL;
+                    $content .= $this->indentYaml($field, $maxCharacter).(string)$value.LengowFeed::EOL;
                 }
                 return $content;
         }
@@ -281,23 +281,21 @@ class LengowFeed
     {
         $this->write('footer');
         if (!$this->stream) {
-            $old_file_name = 'flux-'.Context::getContext()->language->iso_code.'.'.$this->format;
-            $old_file = new LengowFile($this->export_folder, $old_file_name);
-
-            if ($old_file->exists()) {
-                $old_file_path = $old_file->getPath();
-                $old_file->delete();
+            $oldFileName = 'flux-'.Context::getContext()->language->iso_code.'.'.$this->format;
+            $oldFile = new LengowFile($this->exportFolder, $oldFileName);
+            if ($oldFile->exists()) {
+                $oldFilePath = $oldFile->getPath();
+                $oldFile->delete();
             }
-
             $rename = false;
-            if (isset($old_file_path)) {
-                $rename = $this->file->rename($old_file_path);
-                $this->file->file_name = $old_file_name;
+            if (isset($oldFilePath)) {
+                $rename = $this->file->rename($oldFilePath);
+                $this->file->file_name = $oldFileName;
 
             } else {
                 $sep = DIRECTORY_SEPARATOR;
-                $rename = $this->file->rename($this->file->getFolderPath().$sep.$old_file_name);
-                $this->file->file_name = $old_file_name;
+                $rename = $this->file->rename($this->file->getFolderPath().$sep.$oldFileName);
+                $this->file->file_name = $oldFileName;
             }
             return $rename;
         }
@@ -395,15 +393,15 @@ class LengowFeed
      * For YAML, add spaces to have good indentation.
      *
      * @param string $name    the field name
-     * @param string $maxsize space limit
+     * @param string $maxSize space limit
      *
      * @return string
      */
-    protected function indentYaml($name, $maxsize)
+    protected function indentYaml($name, $maxSize)
     {
         $strlen = Tools::strlen($name);
         $spaces = '';
-        for ($i = $strlen; $i < $maxsize; $i++) {
+        for ($i = $strlen; $i < $maxSize; $i++) {
             $spaces .= ' ';
         }
         return $spaces;

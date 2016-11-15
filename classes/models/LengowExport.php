@@ -27,12 +27,12 @@ class LengowExport
     /**
      * Default fields for export
      */
-    public static $DEFAULT_FIELDS;
+    public static $defaultFields;
 
     /**
      * All available params for export
      */
-    public static $EXPORT_PARAMS = array(
+    public static $exportParams = array(
         'mode',
         'format',
         'stream',
@@ -55,7 +55,7 @@ class LengowExport
     /**
      * New fields for v3
      */
-    protected $new_fields = array(
+    protected $newFields = array(
         'id'                             => 'id',
         'sku'                            => 'reference',
         'sku_supplier'                   => 'supplier_reference',
@@ -112,7 +112,7 @@ class LengowExport
     /**
      * Legacy fields for export
      */
-    protected $legacy_fields = array(
+    protected $legacyFields = array(
         'id_product'            => 'id',
         'name_product'          => 'name',
         'reference_product'     => 'reference',
@@ -171,16 +171,6 @@ class LengowExport
     );
 
     /**
-     * Additional head attributes export
-     */
-    protected $head_attributes_export;
-
-    /**
-     * Additional head image export
-     */
-    protected $head_images_export;
-
-    /**
      * Format to return
      */
     protected $format;
@@ -208,7 +198,7 @@ class LengowExport
     /**
      * Current Shop Id
      */
-    protected $shopId;
+    protected $idShop;
 
     /**
      * Export selected products
@@ -261,6 +251,11 @@ class LengowExport
     protected $showInactiveProduct = false;
 
     /**
+     * See log or not
+     */
+    protected $logOutput;
+
+    /**
      * Use legacy fields
      */
     protected $legacy = false;
@@ -273,7 +268,7 @@ class LengowExport
     /**
      * @var array product ids to be exported
      */
-    protected $product_ids = array();
+    protected $productIds = array();
 
     /**
      * Update export date.
@@ -289,21 +284,21 @@ class LengowExport
      * Construct new Lengow export.
      *
      * @param array params optional options
-     * int     $limit              The number of product to be exported
-     * int     $offset             From what product export
-     * int     $shop_id            Shop id for export
-     * int     $language_id        language for export
-     * string  $product_ids        Ids product to export
-     * string  $format             Export Format (csv|yaml|xml|json)
-     * boolean $stream             Display file when call script (1) | Save File (0)
-     * boolean $out_of_stock       Export product in stock and out stock (1) | Export Only in stock product (0)
-     * boolean $selection          Export selected product (1) | Export all products (0)
-     * boolean $inactive           Export active and inactive product (1) | Export Only active product (0)
-     * boolean $variation          Export product variation (1) | Export Only simple product (0)
-     * boolean $legacy_fields      Export with legacy fields (1) | Export with new fields (0)
-     * boolean $update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1)
+     * int     limit              The number of product to be exported
+     * int     offset             From what product export
+     * int     shop_id            Shop id for export
+     * int     language_id        language for export
+     * string  product_ids        Ids product to export
+     * string  format             Export Format (csv|yaml|xml|json)
+     * boolean stream             Display file when call script (1) | Save File (0)
+     * boolean out_of_stock       Export product in stock and out stock (1) | Export Only in stock product (0)
+     * boolean selection          Export selected product (1) | Export all products (0)
+     * boolean inactive           Export active and inactive product (1) | Export Only active product (0)
+     * boolean variation          Export product variation (1) | Export Only simple product (0)
+     * boolean legacy_fields      Export with legacy fields (1) | Export with new fields (0)
+     * boolean update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1)
      *                                | Do not update 'LENGOW_LAST_EXPORT' when exporting from toolbox (0)
-     * boolean $log_output         See logs (only when stream = 0) (1) | no logs (0)
+     * boolean log_output         See logs (only when stream = 0) (1) | no logs (0)
      *
      * @return LengowExport
      */
@@ -314,28 +309,28 @@ class LengowExport
         $this->productIds = (isset($params["product_ids"]) ? $params["product_ids"] : false);
         $this->stream = (isset($params["stream"]) ? $params["stream"] : false);
         $this->limit =  (isset($params["limit"]) ? (int)$params["limit"] : false);
-        $this->shopId = (int)(isset($params["shop_id"]) ? (int)$params["shop_id"] : Context::getContext()->shop->id);
+        $this->idShop = (int)(isset($params["shop_id"]) ? (int)$params["shop_id"] : Context::getContext()->shop->id);
         $this->language = (isset($params["language_id"])
             ? new Language($params["language_id"])
-            : new Language(Configuration::get('PS_LANG_DEFAULT', null, null, $this->shopId))
+            : new Language(Configuration::get('PS_LANG_DEFAULT', null, null, $this->idShop))
         );
         $this->exportLengowSelection = (isset($params["selection"])
             ? (bool)$params["selection"]
-            : (bool)LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->shopId)
+            : (bool)LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->idShop)
         );
         $this->exportOutStock = (isset($params["out_of_stock"])
             ? (bool)$params["out_of_stock"]
-            : (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->shopId)
+            : (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->idShop)
         );
         $this->exportVariation = (isset($params["variation"])
             ? (bool)$params["variation"]
-            : (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->shopId)
+            : (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->idShop)
         );
         $this->showInactiveProduct = (isset($params["inactive"]) ? (bool)$params["inactive"] : false);
         if ($this->stream) {
-            $this->log_output = false;
+            $this->logOutput = false;
         } else {
-            $this->log_output = isset($params['log_output']) ? (bool)$params['log_output'] : true;
+            $this->logOutput = isset($params['log_output']) ? (bool)$params['log_output'] : true;
         }
         $this->updateExportDate = (isset($params['update_export_date']) ? (bool)$params['update_export_date'] : true);
         if (!Context::getContext()->currency) {
@@ -390,7 +385,7 @@ class LengowExport
      */
     public function setFormat($format)
     {
-        if (!in_array($format, LengowFeed::$AVAILABLE_FORMATS)) {
+        if (!in_array($format, LengowFeed::$availabeFormats)) {
             throw new LengowException(LengowMain::setLogMessage('log.export.error_illegal_export_format'));
         }
         $this->format = $format;
@@ -406,7 +401,7 @@ class LengowExport
             $result = LengowConnector::queryApi(
                 'get',
                 '/v3.0/subscriptions',
-                $this->shopId
+                $this->idShop
             );
             if (isset($result->legacy)) {
                 $this->legacy = (bool)$result->legacy;
@@ -414,7 +409,7 @@ class LengowExport
                 $this->legacy = false;
             }
         }
-        LengowExport::$DEFAULT_FIELDS = $this->legacy ? $this->legacy_fields : $this->new_fields;
+        LengowExport::$defaultFields = $this->legacy ? $this->legacyFields : $this->newFields;
     }
 
     /**
@@ -427,8 +422,8 @@ class LengowExport
         try {
             // clean logs
             LengowMain::cleanLog();
-            LengowMain::log('Export', LengowMain::setLogMessage('log.export.start'), $this->log_output);
-            $shop = new LengowShop($this->shopId);
+            LengowMain::log('Export', LengowMain::setLogMessage('log.export.start'), $this->logOutput);
+            $shop = new LengowShop($this->idShop);
             LengowMain::log(
                 'Export',
                 LengowMain::setLogMessage(
@@ -438,42 +433,42 @@ class LengowExport
                         'id_shop'   => $shop->id
                     )
                 ),
-                $this->log_output
+                $this->logOutput
             );
             // set legacy fields option
             $this->setLegacyFields();
             // get fields to export
-            $export_fields = $this->getFields();
+            $exportFields = $this->getFields();
             // get products to be exported
             $products = $this->exportIds();
             LengowMain::log(
                 'Export',
                 LengowMain::setLogMessage('log.export.nb_product_found', array("nb_product" => count($products))),
-                $this->log_output
+                $this->logOutput
             );
-            $this->export($products, $export_fields, $shop);
+            $this->export($products, $exportFields, $shop);
             if ($this->updateExportDate) {
-                LengowConfiguration::updateValue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), false, null, $this->shopId);
+                LengowConfiguration::updateValue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), false, null, $this->idShop);
             }
             LengowMain::log(
                 'Export',
                 LengowMain::setLogMessage('log.export.end'),
-                $this->log_output
+                $this->logOutput
             );
         } catch (LengowException $e) {
-            $error_message = $e->getMessage();
+            $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $error_message = '[Prestashop error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
+            $errorMessage = '[Prestashop error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
         }
-        if (isset($error_message)) {
-            $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
+        if (isset($errorMessage)) {
+            $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
             LengowMain::log(
                 'Export',
                 LengowMain::setLogMessage(
                     'log.export.export_failed',
-                    array('decoded_message' => $decoded_message)
+                    array('decoded_message' => $decodedMessage)
                 ),
-                $this->log_output
+                $this->logOutput
             );
         }
     }
@@ -487,7 +482,7 @@ class LengowExport
      */
     public function export($products, $fields, $shop)
     {
-        $product_count = 0;
+        $productCount = 0;
         $this->feed = new LengowFeed(
             $this->stream,
             $this->format,
@@ -495,16 +490,16 @@ class LengowExport
             isset($shop->name) ? $shop->name : 'default'
         );
         $this->feed->write('header', $fields);
-        $is_first = true;
+        $isFirst = true;
         // Get the maximum of character for yaml format
-        $max_character = 0;
+        $maxCharacter = 0;
         foreach ($fields as $field) {
-            if (Tools::strlen($field) > $max_character) {
-                $max_character = Tools::strlen($field);
+            if (Tools::strlen($field) > $maxCharacter) {
+                $maxCharacter = Tools::strlen($field);
             }
         }
         foreach ($products as $p) {
-            $product_data = array();
+            $productDatas = array();
             if ($p['id_product'] && $p['id_product_attribute'] == 0) {
                 $product = new LengowProduct(
                     $p['id_product'],
@@ -516,18 +511,18 @@ class LengowExport
                     )
                 );
                 foreach ($fields as $field) {
-                    if (isset(LengowExport::$DEFAULT_FIELDS[$field])) {
-                        $product_data[$field] = $product->getData(
-                            LengowExport::$DEFAULT_FIELDS[$field],
+                    if (isset(LengowExport::$defaultFields[$field])) {
+                        $productDatas[$field] = $product->getData(
+                            LengowExport::$defaultFields[$field],
                             null
                         );
                     } else {
-                        $product_data[$field] = $product->getData($field, null);
+                        $productDatas[$field] = $product->getData($field, null);
                     }
                 }
                 // write parent product
-                $this->feed->write('body', $product_data, $is_first, $max_character);
-                $product_count++;
+                $this->feed->write('body', $productDatas, $isFirst, $maxCharacter);
+                $productCount++;
             }
             if ($p['id_product'] && $p['id_product_attribute'] > 0) {
                 $this->loadCacheCombinations($p['id_product'], $fields);
@@ -535,26 +530,26 @@ class LengowExport
                     $this->feed->write(
                         'body',
                         $this->cacheCombination[$p['id_product']][$p['id_product_attribute']],
-                        $is_first,
-                        $max_character
+                        $isFirst,
+                        $maxCharacter
                     );
-                    $product_count++;
+                    $productCount++;
                 }
             }
-            if ($product_count > 0 && $product_count % 50 == 0) {
+            if ($productCount > 0 && $productCount % 50 == 0) {
                 LengowMain::log(
                     'Export',
                     LengowMain::setLogMessage(
                         'log.export.count_product',
-                        array('product_count' => $product_count)
+                        array('product_count' => $productCount)
                     ),
-                    $this->log_output
+                    $this->logOutput
                 );
             }
-            if ($this->limit > 0 && $product_count >= $this->limit) {
+            if ($this->limit > 0 && $productCount >= $this->limit) {
                 break;
             }
-            $is_first = false;
+            $isFirst = false;
         }
         $success = $this->feed->end();
         if (!$success) {
@@ -563,12 +558,12 @@ class LengowExport
             );
         }
         if (!$this->stream) {
-            $feed_url = $this->feed->getUrl();
-            if ($feed_url && php_sapi_name() != "cli") {
+            $feedUrl = $this->feed->getUrl();
+            if ($feedUrl && php_sapi_name() != "cli") {
                 LengowMain::log(
                     'Export',
-                    LengowMain::setLogMessage('log.export.your_feed_available_here', array('feed_url' => $feed_url)),
-                    $this->log_output
+                    LengowMain::setLogMessage('log.export.your_feed_available_here', array('feed_url' => $feedUrl)),
+                    $this->logOutput
                 );
             }
         }
@@ -601,9 +596,9 @@ class LengowExport
         foreach ($combinations as $combination) {
             $paId = $combination['id_product_attribute'];
             foreach ($fields as $field) {
-                if (isset(LengowExport::$DEFAULT_FIELDS[$field])) {
+                if (isset(LengowExport::$defaultFields[$field])) {
                     $this->cacheCombination[$productId][$paId][$field] = $product->getData(
-                        LengowExport::$DEFAULT_FIELDS[$field],
+                        LengowExport::$defaultFields[$field],
                         $paId
                     );
                 } else {
@@ -625,7 +620,7 @@ class LengowExport
     {
         if (_PS_VERSION_ >= '1.5') {
             $join = ' INNER JOIN '._DB_PREFIX_.'product_shop ps ON
-            (ps.id_product = p.id_product AND ps.id_shop = '.(int)$this->shopId.') ';
+            (ps.id_product = p.id_product AND ps.id_shop = '.(int)$this->idShop.') ';
         } else {
             $join = '';
         }
@@ -680,14 +675,14 @@ class LengowExport
         $query= ' FROM '._DB_PREFIX_.'product p';
         if ($this->exportLengowSelection) {
             $query.= ' INNER JOIN '._DB_PREFIX_.'lengow_product lp ON (lp.id_product = p.id_product AND
-            lp.id_shop = '.(int)$this->shopId.')';
+            lp.id_shop = '.(int)$this->idShop.')';
         }
         if ($variation) {
             $query.= ' INNER JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
         }
         if (_PS_VERSION_ >= '1.5') {
             $query.= ' INNER JOIN '._DB_PREFIX_.'product_shop ps ON
-            (ps.id_product = p.id_product AND ps.id_shop = '.(int)$this->shopId.') ';
+            (ps.id_product = p.id_product AND ps.id_shop = '.(int)$this->idShop.') ';
         }
         if (!$this->showInactiveProduct) {
             if (_PS_VERSION_ < '1.5') {
@@ -697,7 +692,7 @@ class LengowExport
             }
         }
         if (!(_PS_VERSION_ < '1.5')) {
-            $where[] = ' ps.id_shop = '.(int)$this->shopId;
+            $where[] = ' ps.id_shop = '.(int)$this->idShop;
         }
         if (!$this->exportOutStock) {
             if (_PS_VERSION_ >= '1.5') {
@@ -705,12 +700,12 @@ class LengowExport
                     $query.= ' INNER JOIN '._DB_PREFIX_.'stock_available sa ON
                     (sa.id_product=p.id_product
                     AND pa.id_product_attribute = sa.id_product_attribute
-                    AND sa.id_shop = '.(int)$this->shopId.'
+                    AND sa.id_shop = '.(int)$this->idShop.'
                     AND sa.quantity > 0)';
                 } else {
                     $query.= ' INNER JOIN '._DB_PREFIX_.'stock_available sa ON
                     (sa.id_product=p.id_product AND id_product_attribute = 0 AND sa.quantity > 0
-                    AND sa.id_shop = '.(int)$this->shopId.' )';
+                    AND sa.id_shop = '.(int)$this->idShop.' )';
                 }
             } else {
                 $where[] = ' p.`quantity` > 0';
@@ -759,7 +754,7 @@ class LengowExport
     protected function getFields()
     {
         $fields = array();
-        foreach (self::$DEFAULT_FIELDS as $key => $value) {
+        foreach (self::$defaultFields as $key => $value) {
             // This line is useless, but Prestashop validator require it
             $value = $value;
             $fields[] = $key;
@@ -810,67 +805,67 @@ class LengowExport
     public function getExportParams()
     {
         $params = array();
-        foreach (self::$EXPORT_PARAMS as $param) {
+        foreach (self::$exportParams as $param) {
             switch ($param) {
                 case 'mode':
-                    $authorized_value = array('size', 'total');
-                    $type             = 'string';
-                    $example          = 'size';
+                    $authorizedValue = array('size', 'total');
+                    $type = 'string';
+                    $example = 'size';
                     break;
                 case 'format':
-                    $authorized_value = LengowFeed::$AVAILABLE_FORMATS;
-                    $type             = 'string';
-                    $example          = 'csv';
+                    $authorizedValue = LengowFeed::$availabeFormats;
+                    $type = 'string';
+                    $example = 'csv';
                     break;
                 case 'shop':
-                    $available_shops = array();
+                    $availableShops = array();
                     $shops = LengowShop::findAll(true);
                     foreach ($shops as $shop) {
-                        $available_shops[] = $shop['id_shop'];
+                        $availableShops[] = $shop['id_shop'];
                     }
-                    $authorized_value = $available_shops;
-                    $type             = 'integer';
-                    $example          = 1;
+                    $authorizedValue = $availableShops;
+                    $type = 'integer';
+                    $example = 1;
                     break;
                 case 'currency':
-                    $available_currencies = array();
+                    $availableCurrencies = array();
                     $currencies = Currency::getCurrencies();
                     foreach ($currencies as $currency) {
-                        $available_currencies[] = $currency['iso_code'];
+                        $availableCurrencies[] = $currency['iso_code'];
                     }
-                    $authorized_value = $available_currencies;
-                    $type             = 'string';
-                    $example          = 'EUR';
+                    $authorizedValue = $availableCurrencies;
+                    $type = 'string';
+                    $example = 'EUR';
                     break;
                 case 'language':
-                    $available_languages = array();
+                    $availableLanguages = array();
                     $languages = Language::getLanguages();
                     foreach ($languages as $language) {
-                        $available_languages[] = $language['iso_code'];
+                        $availableLanguages[] = $language['iso_code'];
                     }
-                    $authorized_value = $available_languages;
-                    $type             = 'string';
-                    $example          = 'fr';
+                    $authorizedValue = $availableLanguages;
+                    $type = 'string';
+                    $example = 'fr';
                     break;
                 case 'offset':
                 case 'limit':
-                    $authorized_value = 'all integers';
-                    $type             = 'integer';
-                    $example          = 100;
+                    $authorizedValue = 'all integers';
+                    $type = 'integer';
+                    $example = 100;
                     break;
                 case 'product_ids':
-                    $authorized_value = 'all integers';
-                    $type             = 'string';
-                    $example          = '101,108,215';
+                    $authorizedValue = 'all integers';
+                    $type = 'string';
+                    $example = '101,108,215';
                     break;
                 default:
-                    $authorized_value = array(0, 1);
-                    $type             = 'integer';
-                    $example          = 1;
+                    $authorizedValue = array(0, 1);
+                    $type = 'integer';
+                    $example = 1;
                     break;
             }
             $params[$param] = array(
-                'authorized_values' => $authorized_value,
+                'authorized_values' => $authorizedValue,
                 'type'              => $type,
                 'example'           => $example
             );
@@ -900,20 +895,20 @@ class LengowExport
      * Override this function to assign data for additional fields
      *
      * @param LengowProduct $product
-     * @param integer       $id_product_attribute
-     * @param array         $array_product
+     * @param integer       $idProductAttribute
+     * @param array         $arrayProduct
      *
      * @return array
      */
-    public static function setAdditionalFieldsValues($product, $id_product_attribute = null, $array_product = null)
+    public static function setAdditionalFieldsValues($product, $idProductAttribute = null, $arrayProduct = null)
     {
         /**
          * Write here your process
-         * $array_product['my_header_value'] = 'your value';
+         * $arrayProduct['my_header_value'] = 'your value';
          */
         // This two lines are useless, but Prestashop validator require it.
         $product = $product;
-        $id_product_attribute = $id_product_attribute;
-        return $array_product;
+        $idProductAttribute = $idProductAttribute;
+        return $arrayProduct;
     }
 }

@@ -28,7 +28,7 @@ class LengowGender extends Gender
     /**
      * Current alias of mister.
      */
-    public static $CURRENT_MALE = array(
+    public static $currentMale = array(
         'M',
         'M.',
         'Mr',
@@ -44,7 +44,7 @@ class LengowGender extends Gender
     /**
      * Current alias of miss.
      */
-    public static $CURRENT_FEMALE = array(
+    public static $currentFemale = array(
         'Mme',
         'mme',
         'Mm',
@@ -77,9 +77,9 @@ class LengowGender extends Gender
         if (empty($name)) {
             return '';
         }
-        if (in_array($name, self::$CURRENT_MALE)) {
+        if (in_array($name, self::$currentMale)) {
             return 1;
-        } elseif (in_array($name, self::$CURRENT_FEMALE)) {
+        } elseif (in_array($name, self::$currentFemale)) {
             return 2;
         } else {
             $query = 'SELECT `id_gender` FROM `'._DB_PREFIX_.'gender_lang` WHERE `name` = \''.

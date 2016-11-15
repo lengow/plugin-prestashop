@@ -27,7 +27,7 @@ class LengowMarketplace
     /**
      * @var array all valid actions
      */
-    public static $VALID_ACTIONS = array(
+    public static $validActions = array(
         'ship' ,
         'cancel'
     );
@@ -35,7 +35,7 @@ class LengowMarketplace
     /**
      * @var mixed all markeplaces allowed for an account ID
      */
-    public static $MARKETPLACES = array();
+    public static $markeplaces = array();
     
     /**
      * @var mixed the current marketplace
@@ -50,27 +50,27 @@ class LengowMarketplace
     /**
      * @var string the old code of the markeplace for v2 compatibility
      */
-    public $legacy_code;
+    public $legacyCode;
 
     /**
      * @var string the name of the marketplace
      */
-    public $label_name;
+    public $labelName;
 
     /**
      * @var integer ID Shop
      */
-    public $id_shop;
+    public $idShop;
     
     /**
      * @var boolean if the marketplace is loaded
      */
-    public $is_loaded = false;
+    public $isLoaded = false;
     
     /**
      * @var array Lengow states => marketplace states
      */
-    public $states_lengow = array();
+    public $statesLengow = array();
     
     /**
      * @var array marketplace states => Lengow states
@@ -81,6 +81,11 @@ class LengowMarketplace
      * @var array all possible actions of the marketplace
      */
     public $actions = array();
+
+    /**
+     * @var array all possible values for actions of the marketplace
+     */
+    public $argValues = array();
    
     /**
      * @var array all carriers of the marketplace
@@ -90,15 +95,15 @@ class LengowMarketplace
     /**
     * Construct a new Markerplace instance with marketplace API
     *
-    * @param string  $name    The name of the marketplace
-    * @param integer $id_shop ID Shop for connector
+    * @param string  $name   The name of the marketplace
+    * @param integer $idShop ID Shop for connector
     */
-    public function __construct($name, $id_shop = null)
+    public function __construct($name, $idShop = null)
     {
-        $this->id_shop = $id_shop;
+        $this->idShop = $idShop;
         $this->loadApiMarketplace();
         $this->name = Tools::strtolower($name);
-        if (!isset(self::$MARKETPLACES[$this->id_shop]->{$this->name})) {
+        if (!isset(self::$markeplaces[$this->idShop]->{$this->name})) {
             throw new LengowException(
                 LengowMain::setLogMessage(
                     'lengow_log.exception.marketplace_not_present',
@@ -106,13 +111,13 @@ class LengowMarketplace
                 )
             );
         }
-        $this->marketplace = self::$MARKETPLACES[$this->id_shop]->{$this->name};
+        $this->marketplace = self::$markeplaces[$this->idShop]->{$this->name};
         if (!empty($this->marketplace)) {
-            $this->legacy_code = $this->marketplace->legacy_code;
-            $this->label_name = $this->marketplace->name;
+            $this->legacyCode = $this->marketplace->legacy_code;
+            $this->labelName = $this->marketplace->name;
             foreach ($this->marketplace->orders->status as $key => $state) {
                 foreach ($state as $value) {
-                    $this->states_lengow[(string)$value] = (string)$key;
+                    $this->statesLengow[(string)$value] = (string)$key;
                     $this->states[(string)$key][(string)$value] = (string)$value;
                 }
             }
@@ -123,16 +128,27 @@ class LengowMarketplace
                 foreach ($action->args as $arg) {
                     $this->actions[(string)$key]['args'][(string)$arg] = (string)$arg;
                 }
-                foreach ($action->optional_args as $optional_arg) {
-                    $this->actions[(string)$key]['optional_args'][(string)$optional_arg] = $optional_arg;
+                foreach ($action->optional_args as $optionalArg) {
+                    $this->actions[(string)$key]['optional_args'][(string)$optionalArg] = $optionalArg;
                 }
+                // foreach ($action->args_description as $key => $argDescription) {
+                //     $validValues = array();
+                //     foreach ($argDescription->valid_values as $key => $validValue) {
+                //         $validValues[(string)$key] = (string)$validValue->label;
+                //     }
+                //     $descriptions = array(
+                //         'default_value' => (string)$argDescription->default_value,
+                //         'valid_values'  => $validValues
+                //     );
+                //     $this->argValues[(string)$key] = $descriptions;
+                // }
             }
             if (isset($this->marketplace->orders->carriers)) {
                 foreach ($this->marketplace->orders->carriers as $key => $carrier) {
                     $this->carriers[(string)$key] = (string)$carrier->label;
                 }
             }
-            $this->is_loaded = true;
+            $this->isLoaded = true;
         }
     }
 
@@ -141,9 +157,9 @@ class LengowMarketplace
      */
     public function loadApiMarketplace()
     {
-        if (!array_key_exists($this->id_shop, self::$MARKETPLACES)) {
-            $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $this->id_shop);
-            self::$MARKETPLACES[$this->id_shop] = $result;
+        if (!array_key_exists($this->idShop, self::$markeplaces)) {
+            $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $this->idShop);
+            self::$markeplaces[$this->idShop] = $result;
         }
     }
 
@@ -154,7 +170,7 @@ class LengowMarketplace
     */
     public function isLoaded()
     {
-        return $this->is_loaded;
+        return $this->isLoaded;
     }
 
     /**
@@ -166,8 +182,8 @@ class LengowMarketplace
     */
     public function getStateLengow($name)
     {
-        if (array_key_exists($name, $this->states_lengow)) {
-            return $this->states_lengow[$name];
+        if (array_key_exists($name, $this->statesLengow)) {
+            return $this->statesLengow[$name];
         }
     }
 
@@ -198,6 +214,24 @@ class LengowMarketplace
             return $this->actions[$name];
         }
     }
+
+    /**
+    * Get the default value for argument
+    *
+    * @param string $name The argument's name
+    *
+    * @return mixed
+    */
+    // public function getDefaultValue($name)
+    // {
+    //     if (array_key_exists($name, $this->argValues)) {
+    //         $defautlValue = $this->argValues[$name]['default_value'];
+    //         if (!empty($defautlValue)) {
+    //             return (string)$defautlValue;
+    //         }
+    //     }
+    //     return false;
+    // }
 
     /**
      * Get carrier name by code
@@ -277,15 +311,16 @@ class LengowMarketplace
     /**
      * Call API action and create action in lengow_actions table
      *
-     * @param integer $order
-     * @param string  $id_order_line
+     * @param string      $action
+     * @param LengowOrder $order
+     * @param string      $idOrderLine
      *
      * @return boolean
      */
-    public function callAction($action, $order, $id_order_line = null)
+    public function callAction($action, $order, $idOrderLine = null)
     {
         try {
-            if (!in_array($action, self::$VALID_ACTIONS)) {
+            if (!in_array($action, self::$validActions)) {
                 throw new LengowException(
                     LengowMain::setLogMessage('lengow_log.exception.action_not_valid', array('action' => $action))
                 );
@@ -298,12 +333,12 @@ class LengowMarketplace
                     )
                 );
             }
-            if ((int)$order->lengow_id_shop == 0) {
+            if ((int)$order->lengowIdShop == 0) {
                 throw new LengowException(
                     LengowMain::setLogMessage('lengow_log.exception.shop_id_require')
                 );
             }
-            if (Tools::strlen($order->lengow_marketplace_name) == 0) {
+            if (Tools::strlen($order->lengowMarketplaceName) == 0) {
                 throw new LengowException(
                     LengowMain::setLogMessage('lengow_log.exception.marketplace_name_require')
                 );
@@ -311,28 +346,29 @@ class LengowMarketplace
             $params = array();
             $actions = $this->actions[$action];
             if (isset($actions['args']) && isset($actions['optional_args'])) {
-                $all_args = array_merge($actions['args'], $actions['optional_args']);
+                $allArgs = array_merge($actions['args'], $actions['optional_args']);
             } elseif (isset($actions['args'])) {
-                $all_args = $actions['args'];
+                $allArgs = $actions['args'];
             } else {
-                $all_args = array();
+                $allArgs = array();
             }
             // get delivery address for carrier, shipping method and tracking url
             $deliveryAddress = new Address($order->id_address_delivery);
-            foreach ($all_args as $arg) {
+            // get tracking number for tracking number and tracking url
+            if (_PS_VERSION_ >= '1.5') {
+                $idOrderCarrier = $order->getIdOrderCarrier();
+                $orderCarrier = new OrderCarrier($idOrderCarrier);
+                $trackingNumber = $orderCarrier->tracking_number;
+                if ($trackingNumber == '') {
+                    $trackingNumber = $order->shipping_number;
+                }
+            } else {
+                $trackingNumber = $order->shipping_number;
+            }
+            foreach ($allArgs as $arg) {
                 switch ($arg) {
                     case 'tracking_number':
-                        if (_PS_VERSION_ >= '1.5') {
-                            $id_order_carrier = $order->getIdOrderCarrier();
-                            $order_carrier = new OrderCarrier($id_order_carrier);
-                            $tracking_number = $order_carrier->tracking_number;
-                            if ($tracking_number == '') {
-                                $tracking_number = $order->shipping_number;
-                            }
-                        } else {
-                            $tracking_number = $order->shipping_number;
-                        }
-                        $params[$arg] = $tracking_number;
+                        $params[$arg] = $trackingNumber;
                         break;
                     case 'carrier':
                     case 'shipping_method':
@@ -344,32 +380,22 @@ class LengowMarketplace
                                 LengowMain::setLogMessage('lengow_log.exception.no_delivery_country_in_order')
                             );
                         }
-                        if ($order->lengow_carrier != '') {
-                            $carrier_name = (string) $order->lengow_carrier;
+                        if ($order->lengowCarrier != '') {
+                            $carrierName = (string) $order->lengowCarrier;
                         } else {
                             $carrier = new Carrier($order->id_carrier);
-                            $carrier_name = $carrier->name;
+                            $carrierName = $carrier->name;
                         }
-                        $params[$arg] = $carrier_name;
+                        $params[$arg] = $carrierName;
                         break;
                     case 'tracking_url':
-                        if (_PS_VERSION_ >= '1.5') {
-                            $id_order_carrier = $order->getIdOrderCarrier();
-                            $order_carrier = new OrderCarrier($id_order_carrier);
-                            $tracking_number = $order_carrier->tracking_number;
-                            if ($tracking_number == '') {
-                                $tracking_number = $order->shipping_number;
-                            }
-                        } else {
-                            $tracking_number = $order->shipping_number;
-                        }
-                        if ($tracking_number != '') {
-                            $id_carrier = LengowCarrier::getActiveCarrierByCarrierId(
+                        if ($trackingNumber != '') {
+                            $idCarrier = LengowCarrier::getActiveCarrierByCarrierId(
                                 $order->id_carrier,
                                 $deliveryAddress->id_country
                             );
-                            $carrier = new Carrier($id_carrier);
-                            $params[$arg] = str_replace('@', $tracking_number, $carrier->url);
+                            $carrier = new Carrier($idCarrier);
+                            $params[$arg] = str_replace('@', $trackingNumber, $carrier->url);
                         }
                         break;
                     case 'shipping_price':
@@ -378,15 +404,15 @@ class LengowMarketplace
                     case 'shipping_date':
                         $params[$arg] = date('c');
                         break;
-                    case 'cancel_reason':
-                        $params[$arg] = 'Order canceled by merchant';
-                        break;
                     default:
+                        // $defautlValue = $this->getDefaultValue((string)$arg);
+                        // $paramValue = $defautlValue ? $defautlValue : $arg.' not available';
+                        // $params[$arg] = $paramValue;
                         break;
                 }
             }
-            if ($id_order_line) {
-                $params['line'] = $id_order_line;
+            if ($idOrderLine) {
+                $params['line'] = $idOrderLine;
             }
             if (isset($actions['args'])) {
                 foreach ($actions['args'] as $arg) {
@@ -407,13 +433,13 @@ class LengowMarketplace
                     }
                 }
             }
-            $params['marketplace_order_id'] = $order->lengow_marketplace_sku;
-            $params['marketplace'] = $order->lengow_marketplace_name;
+            $params['marketplace_order_id'] = $order->lengowMarketplaceSku;
+            $params['marketplace'] = $order->lengowMarketplaceName;
             $params['action_type'] = $action;
             $result = LengowConnector::queryApi(
                 'get',
                 '/v3.0/orders/actions/',
-                $order->lengow_id_shop,
+                $order->lengowIdShop,
                 array_merge($params, array("queued" => "True"))
             );
             if (isset($result->error) && isset($result->error->message)) {
@@ -437,7 +463,7 @@ class LengowMarketplace
                                 'action_type'     => $action,
                                 'action_id'       => $row->id,
                                 'parameters'      => $params,
-                                'marketplace_sku' => $order->lengow_marketplace_sku
+                                'marketplace_sku' => $order->lengowMarketplaceSku
                             )
                         );
                     }
@@ -457,39 +483,39 @@ class LengowMarketplace
                                 'action_type'     => $action,
                                 'action_id'       => $result->id,
                                 'parameters'      => $params,
-                                'marketplace_sku' => $order->lengow_marketplace_sku
+                                'marketplace_sku' => $order->lengowMarketplaceSku
                             )
                         );
                     }
                 }
                 // Create log for call action
-                $param_list = false;
+                $paramList = false;
                 foreach ($params as $param => $value) {
-                    $param_list.= !$param_list ? '"'.$param.'": '.$value : ' -- "'.$param.'": '.$value;
+                    $paramList.= !$paramList ? '"'.$param.'": '.$value : ' -- "'.$param.'": '.$value;
                 }
                 LengowMain::log(
                     'API-OrderAction',
-                    LengowMain::setLogMessage('log.order_action.call_tracking', array('parameters' => $param_list)),
+                    LengowMain::setLogMessage('log.order_action.call_tracking', array('parameters' => $paramList)),
                     false,
-                    $order->lengow_marketplace_sku
+                    $order->lengowMarketplaceSku
                 );
             }
             return true;
         } catch (LengowException $e) {
-            $error_message = $e->getMessage();
+            $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $error_message = '[Prestashop Error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
+            $errorMessage = '[Prestashop Error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
         }
-        if (isset($error_message)) {
-            if ($order->lengow_process_state != LengowOrder::PROCESS_STATE_FINISH) {
-                LengowOrder::addOrderLog($order->lengow_id, $error_message, 'send');
+        if (isset($errorMessage)) {
+            if ($order->lengowProcessState != LengowOrder::PROCESS_STATE_FINISH) {
+                LengowOrder::addOrderLog($order->lengowId, $errorMessage, 'send');
             }
-            $decoded_message = LengowMain::decodeLogMessage($error_message, 'en');
+            $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
             LengowMain::log(
                 'API-OrderAction',
                 LengowMain::setLogMessage(
                     'log.order_action.call_action_failed',
-                    array('decoded_message' => $decoded_message)
+                    array('decoded_message' => $decodedMessage)
                 ),
                 false,
                 $order->lengow_marketplace_sku
@@ -501,14 +527,14 @@ class LengowMarketplace
     /**
      * Get Marketplace Sku by Shop
      *
-     * @param $id_shop
+     * @param $idShop
      *
      * @return array
      */
-    public static function getMarketplacesByShop($id_shop)
+    public static function getMarketplacesByShop($idShop)
     {
         $marketplaceCollection = array();
-        $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $id_shop);
+        $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $idShop);
         if ($result) {
             foreach ($result as $marketplaceSku => $value) {
                 // This line is useless, but Prestashop validator require it

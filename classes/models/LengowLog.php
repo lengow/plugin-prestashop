@@ -27,7 +27,7 @@ class LengowLog extends LengowFile
     /**
      * @var string name of logs folder
      */
-    public static $LENGOW_LOGS_FOLDER = 'logs';
+    public static $lengowLogFolder = 'logs';
 
     /**
      * @var LengowFile
@@ -37,32 +37,32 @@ class LengowLog extends LengowFile
     /**
      * Construct
      *
-     * @param string $file_name log file name
+     * @param string $fileName log file name
      */
-    public function __construct($file_name = null)
+    public function __construct($fileName = null)
     {
-        if (empty($file_name)) {
-            $this->file_name = 'logs-'.date('Y-m-d').'.txt';
+        if (empty($fileName)) {
+            $this->fileName = 'logs-'.date('Y-m-d').'.txt';
         } else {
-            $this->file_name = $file_name;
+            $this->fileName = $fileName;
         }
-        $this->file = new LengowFile(LengowLog::$LENGOW_LOGS_FOLDER, $this->file_name);
+        $this->file = new LengowFile(LengowLog::$lengowLogFolder, $this->fileName);
     }
 
     /**
      * Write log
      *
-     * @param string  $category        Category
-     * @param string  $message         log message
-     * @param boolean $display         display on screen
-     * @param string  $marketplace_sku lengow order id
+     * @param string  $category       Category
+     * @param string  $message        log message
+     * @param boolean $display        display on screen
+     * @param string  $marketplaceSku lengow order id
      */
-    public function write($category, $message = "", $display = false, $marketplace_sku = null)
+    public function write($category, $message = "", $display = false, $marketplaceSku = null)
     {
         $decoded_message = LengowMain::decodeLogMessage($message, 'en');
         $log = date('Y-m-d H:i:s').Tools::substr((string)microtime(), 1, 8);
         $log .= ' - '.(empty($category) ? '' : '['.$category.'] ');
-        $log .= ''.(empty($marketplace_sku) ? '' : 'order '.$marketplace_sku.' : ');
+        $log .= ''.(empty($marketplaceSku) ? '' : 'order '.$marketplaceSku.' : ');
         $log .= $decoded_message."\r\n";
         if ($display) {
             echo $log.'<br />';
@@ -101,7 +101,7 @@ class LengowLog extends LengowFile
      */
     public function getFileName()
     {
-        return _PS_MODULE_LENGOW_DIR_.LengowLog::$LENGOW_LOGS_FOLDER.'/'.$this->file_name;
+        return _PS_MODULE_LENGOW_DIR_.LengowLog::$lengowLogFolder.'/'.$this->fileName;
     }
 
     /**
@@ -111,7 +111,7 @@ class LengowLog extends LengowFile
      */
     public static function getFiles()
     {
-        return LengowFile::getFilesFromFolder(LengowLog::$LENGOW_LOGS_FOLDER);
+        return LengowFile::getFilesFromFolder(LengowLog::$lengowLogFolder);
     }
 
     /**
@@ -120,7 +120,7 @@ class LengowLog extends LengowFile
     public static function download($file = null)
     {
         if ($file && preg_match('/^logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt$/', $file, $match)) {
-            $filename = _PS_MODULE_LENGOW_DIR_.LengowLog::$LENGOW_LOGS_FOLDER.'/'.$file;
+            $filename = _PS_MODULE_LENGOW_DIR_.LengowLog::$lengowLogFolder.'/'.$file;
             $handle = fopen($filename, "r");
             $contents = fread($handle, filesize($filename));
             header('Content-type: text/plain');

@@ -27,7 +27,7 @@ class LengowProduct extends Product
     /**
      * array API nodes containing relevant data
      */
-    public static $PRODUCT_API_NODES = array(
+    public static $productApiNodes = array(
         'marketplace_product_id',
         'marketplace_status',
         'merchant_product_id',
@@ -83,13 +83,13 @@ class LengowProduct extends Product
     /**
      * Load a new product
      *
-     * @param integer $id_product The ID product to load
-     * @param integer $id_lang    The ID lang for product's content
+     * @param integer $idProduct The ID product to load
+     * @param integer $idLang    The ID lang for product's content
      * @param object  $params     The context
      */
-    public function __construct($id_product = null, $id_lang = null, $params = array())
+    public function __construct($idProduct = null, $idLang = null, $params = array())
     {
-        parent::__construct($id_product, false, $id_lang);
+        parent::__construct($idProduct, false, $idLang);
         $this->carrier = isset($params["carrier"]) ? $params["carrier"] : null;
         $this->imageSize = isset($params["image_size"]) ? $params["image_size"] : self::getMaxImageType();
         $this->context = Context::getContext();
@@ -142,16 +142,16 @@ class LengowProduct extends Product
             $this->loadStockData();
         }
         if ($this->id_category_default && $this->id_category_default > 1) {
-            $this->categoryDefault = new Category((int)$this->id_category_default, $id_lang);
+            $this->categoryDefault = new Category((int)$this->id_category_default, $idLang);
             $this->categoryDefaultName = $this->categoryDefault->name;
         } else {
             $categories = self::getProductCategories($this->id);
             if (!empty($categories)) {
-                $this->categoryDefault = new Category($categories[0], $id_lang);
+                $this->categoryDefault = new Category($categories[0], $idLang);
                 $this->categoryDefaultName = $this->categoryDefault->name;
             }
         }
-        $this->images = $this->getImages($id_lang);
+        $this->images = $this->getImages($idLang);
         $today = date('Y-m-d H:i:s');
         if (isset($this->specificPrice) && is_array($this->specificPrice)) {
             if (array_key_exists('from', $this->specificPrice) && array_key_exists('to', $this->specificPrice)) {
@@ -167,29 +167,29 @@ class LengowProduct extends Product
     /**
      * Get data of current product
      *
-     * @param string  $name                 the data name
-     * @param integer $id_product_attribute the id product attribute
+     * @param string  $name               the data name
+     * @param integer $idProductAttribute the id product attribute
      *
      * @return string
      */
-    public function getData($name, $id_product_attribute = null)
+    public function getData($name, $idProductAttribute = null)
     {
         switch ($name) {
             case 'id':
-                if ($id_product_attribute) {
-                    return $this->id.'_'.$id_product_attribute;
+                if ($idProductAttribute) {
+                    return $this->id.'_'.$idProductAttribute;
                 }
                 return $this->id;
             case 'name':
                 return LengowMain::cleanData($this->name);
             case 'reference':
-                if ($id_product_attribute && $this->combinations[$id_product_attribute]['reference']) {
-                    return $this->combinations[$id_product_attribute]['reference'];
+                if ($idProductAttribute && $this->combinations[$idProductAttribute]['reference']) {
+                    return $this->combinations[$idProductAttribute]['reference'];
                 }
                 return LengowMain::cleanData($this->reference);
             case 'supplier_reference':
-                if ($id_product_attribute && $this->combinations[$id_product_attribute]['supplier_reference']) {
-                    return $this->combinations[$id_product_attribute]['supplier_reference'];
+                if ($idProductAttribute && $this->combinations[$idProductAttribute]['supplier_reference']) {
+                    return $this->combinations[$idProductAttribute]['supplier_reference'];
                 }
                 return LengowMain::cleanData($this->getSupplierReference());
             case 'manufacturer':
@@ -215,73 +215,73 @@ class LengowProduct extends Product
             case 'short_description_html':
                 return LengowMain::cleanData($this->description_short);
             case 'price':
-                if ($id_product_attribute) {
-                    return $this->getPrice(true, $id_product_attribute, 2, null, false, false, 1);
+                if ($idProductAttribute) {
+                    return $this->getPrice(true, $idProductAttribute, 2, null, false, false, 1);
                 }
                 return $this->getPrice(true, null, 2, null, false, false, 1);
             case 'wholesale_price':
-                if ($id_product_attribute && $this->combinations[$id_product_attribute]['wholesale_price']) {
-                    return LengowMain::formatNumber($this->combinations[$id_product_attribute]['wholesale_price']);
+                if ($idProductAttribute && $this->combinations[$idProductAttribute]['wholesale_price']) {
+                    return LengowMain::formatNumber($this->combinations[$idProductAttribute]['wholesale_price']);
                 }
                 return LengowMain::formatNumber($this->wholesale_price);
             case 'price_duty_free':
-                if ($id_product_attribute) {
-                    return $this->getPrice(false, $id_product_attribute, 2, null, false, false, 1);
+                if ($idProductAttribute) {
+                    return $this->getPrice(false, $idProductAttribute, 2, null, false, false, 1);
                 }
                 return $this->getPrice(false, null, 2, null, false, false, 1);
             case 'price_sale':
-                if ($id_product_attribute) {
-                    return $this->getPrice(true, $id_product_attribute, 2, null, false, true, 1);
+                if ($idProductAttribute) {
+                    return $this->getPrice(true, $idProductAttribute, 2, null, false, true, 1);
                 }
                 return $this->getPrice(true, null, 2, null, false, true, 1);
             case 'price_sale_duty_free':
-                if ($id_product_attribute) {
-                    return $this->getPrice(false, $id_product_attribute, 2, null, false, true, 1);
+                if ($idProductAttribute) {
+                    return $this->getPrice(false, $idProductAttribute, 2, null, false, true, 1);
                 }
                 return $this->getPrice(false, null, 2, null, false, true, 1);
             case 'price_sale_percent':
-                if ($id_product_attribute) {
-                    $price = $this->getPrice(true, $id_product_attribute, 2, null, false, false, 1);
-                    $price_sale = $this->getPrice(true, $id_product_attribute, 2, null, true, true, 1);
+                if ($idProductAttribute) {
+                    $price = $this->getPrice(true, $idProductAttribute, 2, null, false, false, 1);
+                    $priceSale = $this->getPrice(true, $idProductAttribute, 2, null, true, true, 1);
                 } else {
                     $price = $this->getPrice(true, null, 2, null, false, false, 1);
-                    $price_sale = $this->getPrice(true, null, 2, null, true, true, 1);
+                    $priceSale = $this->getPrice(true, null, 2, null, true, true, 1);
                 }
 
-                if ($price_sale && $price) {
-                    return LengowMain::formatNumber(($price_sale / $price) * 100);
+                if ($priceSale && $price) {
+                    return LengowMain::formatNumber(($priceSale / $price) * 100);
                 }
                 return 0;
             case 'quantity':
-                if ($id_product_attribute) {
-                    return self::getRealQuantity($this->id, $id_product_attribute);
+                if ($idProductAttribute) {
+                    return self::getRealQuantity($this->id, $idProductAttribute);
                 }
                 return self::getRealQuantity($this->id);
             case 'minimal_quantity':
-                if ($id_product_attribute && $this->combinations[$id_product_attribute]['minimal_quantity']) {
-                    return $this->combinations[$id_product_attribute]['minimal_quantity'];
+                if ($idProductAttribute && $this->combinations[$idProductAttribute]['minimal_quantity']) {
+                    return $this->combinations[$idProductAttribute]['minimal_quantity'];
                 }
                 return $this->minimal_quantity;
             case 'weight':
-                if ($id_product_attribute && $this->combinations[$id_product_attribute]['weight']) {
-                    $weight = $this->weight + $this->combinations[$id_product_attribute]['weight'];
+                if ($idProductAttribute && $this->combinations[$idProductAttribute]['weight']) {
+                    $weight = $this->weight + $this->combinations[$idProductAttribute]['weight'];
                 } else {
                     $weight = $this->weight;
                 }
                 return LengowMain::formatNumber($weight).Configuration::get('PS_WEIGHT_UNIT');
             case 'ean':
-                if ($id_product_attribute && $this->combinations[$id_product_attribute]['ean13']) {
-                    return $this->combinations[$id_product_attribute]['ean13'];
+                if ($idProductAttribute && $this->combinations[$idProductAttribute]['ean13']) {
+                    return $this->combinations[$idProductAttribute]['ean13'];
                 }
                 return $this->ean13;
             case 'upc':
-                if ($id_product_attribute && $this->combinations[$id_product_attribute]['upc']) {
-                    return $this->combinations[$id_product_attribute]['upc'];
+                if ($idProductAttribute && $this->combinations[$idProductAttribute]['upc']) {
+                    return $this->combinations[$idProductAttribute]['upc'];
                 }
                 return $this->upc;
             case 'ecotax':
-                if ($id_product_attribute && $this->combinations[$id_product_attribute]['ecotax']) {
-                    return LengowMain::formatNumber($this->combinations[$id_product_attribute]['ecotax']);
+                if ($idProductAttribute && $this->combinations[$idProductAttribute]['ecotax']) {
+                    return LengowMain::formatNumber($this->combinations[$idProductAttribute]['ecotax']);
                 }
                 if (isset($this->ecotaxinfos)) {
                     return LengowMain::formatNumber(($this->ecotaxinfos > 0) ? $this->ecotaxinfos : $this->ecotax);
@@ -292,8 +292,8 @@ class LengowProduct extends Product
             case 'language':
                 return $this->context->language->iso_code;
             case 'available':
-                if ($id_product_attribute) {
-                    $quantity = self::getRealQuantity($this->id, $id_product_attribute);
+                if ($idProductAttribute) {
+                    $quantity = self::getRealQuantity($this->id, $idProductAttribute);
                 } else {
                     $quantity = self::getRealQuantity($this->id);
                 }
@@ -311,7 +311,7 @@ class LengowProduct extends Product
                             null,
                             null,
                             null,
-                            $id_product_attribute,
+                            $idProductAttribute,
                             true
                         );
                     }
@@ -322,71 +322,71 @@ class LengowProduct extends Product
                         null,
                         null,
                         null,
-                        $id_product_attribute
+                        $idProductAttribute
                     );
                 }
                 return $this->context->link->getProductLink($this);
             case 'price_shipping':
-                if ($id_product_attribute && $id_product_attribute != null) {
-                    $price = $this->getData('price_sale', $id_product_attribute);
-                    $weight = $this->getData('weight', $id_product_attribute);
+                if ($idProductAttribute && $idProductAttribute != null) {
+                    $price = $this->getData('price_sale', $idProductAttribute);
+                    $weight = $this->getData('weight', $idProductAttribute);
                 } else {
                     $price = $this->getData('price_sale');
                     $weight = $this->getData('weight');
                 }
-                $id_zone =  $this->context->country->id_zone;
-                $id_currency =  $this->context->cart->id_currency;
+                $idZone =  $this->context->country->id_zone;
+                $idCurrency =  $this->context->cart->id_currency;
                 if (!$this->carrier) {
                     return LengowMain::formatNumber(0);
                 }
-                $shipping_method = $this->carrier->getShippingMethod();
-                $shipping_cost = 0;
-                if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shipping_method != Carrier::SHIPPING_METHOD_FREE) {
-                    if ($shipping_method == Carrier::SHIPPING_METHOD_WEIGHT) {
-                        $shipping_cost = LengowMain::formatNumber(
-                            $this->carrier->getDeliveryPriceByWeight($weight, (int)$id_zone)
+                $shippingMethod = $this->carrier->getShippingMethod();
+                $shippingCost = 0;
+                if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shippingMethod != Carrier::SHIPPING_METHOD_FREE) {
+                    if ($shippingMethod == Carrier::SHIPPING_METHOD_WEIGHT) {
+                        $shippingCost = LengowMain::formatNumber(
+                            $this->carrier->getDeliveryPriceByWeight($weight, (int)$idZone)
                         );
                     } else {
-                        $shipping_cost = LengowMain::formatNumber(
+                        $shippingCost = LengowMain::formatNumber(
                             $this->carrier->getDeliveryPriceByPrice(
                                 $price,
-                                (int)$id_zone,
-                                (int)$id_currency
+                                (int)$idZone,
+                                (int)$idCurrency
                             )
                         );
                     }
                 }
                 // Check if product have single shipping cost
                 if ($this->additional_shipping_cost > 0) {
-                    $shipping_cost += $this->additional_shipping_cost;
+                    $shippingCost += $this->additional_shipping_cost;
                 }
                 // Tax calcul
-                $default_country = Configuration::get('PS_COUNTRY_DEFAULT');
+                $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
                 if (_PS_VERSION_ < '1.5') {
-                    $id_tax_rules_group = $this->carrier->id_tax_rules_group;
+                    $idTaxRulesGroup = $this->carrier->id_tax_rules_group;
                 } else {
-                    $id_tax_rules_group = $this->carrier->getIdTaxRulesGroup();
+                    $idTaxRulesGroup = $this->carrier->getIdTaxRulesGroup();
                 }
-                $taxe_rules = LengowTaxRule::getLengowTaxRulesByGroupId(
+                $taxeRules = LengowTaxRule::getLengowTaxRulesByGroupId(
                     Configuration::get('PS_LANG_DEFAULT'),
-                    $id_tax_rules_group
+                    $idTaxRulesGroup
                 );
-                foreach ($taxe_rules as $taxe_rule) {
-                    if (isset($taxe_rule['id_country']) && $taxe_rule['id_country'] == $default_country) {
-                        $tr = new TaxRule($taxe_rule['id_tax_rule']);
+                foreach ($taxeRules as $taxeRule) {
+                    if (isset($taxeRule['id_country']) && $taxeRule['id_country'] == $defaultCountry) {
+                        $tr = new TaxRule($taxeRule['id_tax_rule']);
                     }
                 }
                 if (isset($tr)) {
                     $t = new Tax($tr->id_tax);
-                    $tax_calculator = new TaxCalculator(array($t));
-                    $taxes = $tax_calculator->getTaxesAmount($shipping_cost);
+                    $taxCalculator = new TaxCalculator(array($t));
+                    $taxes = $taxCalculator->getTaxesAmount($shippingCost);
                     if (!empty($taxes)) {
                         foreach ($taxes as $taxe) {
-                            $shipping_cost += $taxe;
+                            $shippingCost += $taxe;
                         }
                     }
                 }
-                return LengowMain::formatNumber($shipping_cost);
+                return LengowMain::formatNumber($shippingCost);
             case 'id_parent':
                 return $this->id;
             case 'delivery_time':
@@ -402,8 +402,8 @@ class LengowProduct extends Product
                         return '';
                     }
                     $tags = '';
-                    foreach ($results[$this->context->language->id] as $tag_name) {
-                        $tags .= $tag_name.', ';
+                    foreach ($results[$this->context->language->id] as $tagName) {
+                        $tags .= $tagName.', ';
                     }
                     $tags = rtrim($tags, ', ');
                 } else {
@@ -425,12 +425,12 @@ class LengowProduct extends Product
                         null,
                         null,
                         null,
-                        $id_product_attribute
+                        $idProductAttribute
                     );
                 }
                 return $this->context->link->getProductLink($this, $this->link_rewrite);
             case 'type':
-                if ($id_product_attribute) {
+                if ($idProductAttribute) {
                     return 'child';
                 }
                 if (empty($this->combinations)) {
@@ -446,8 +446,8 @@ class LengowProduct extends Product
             case 'supplier':
                 return $this->supplier_name;
             case 'availability':
-                if ($id_product_attribute) {
-                    $quantity = self::getRealQuantity($this->id, $id_product_attribute);
+                if ($idProductAttribute) {
+                    $quantity = self::getRealQuantity($this->id, $idProductAttribute);
                 } else {
                     $quantity = self::getRealQuantity($this->id);
                 }
@@ -499,9 +499,9 @@ class LengowProduct extends Product
                         $id_image = 9;
                         break;
                 }
-                if ($id_product_attribute) {
-                    if (isset($this->combinations[$id_product_attribute]['images'][$id_image])) {
-                        return $this->combinations[$id_product_attribute]['images'][$id_image];
+                if ($idProductAttribute) {
+                    if (isset($this->combinations[$idProductAttribute]['images'][$id_image])) {
+                        return $this->combinations[$idProductAttribute]['images'][$id_image];
                     }
                     return '';
                 }
@@ -513,9 +513,9 @@ class LengowProduct extends Product
             default:
                 if (isset($this->features[$name])) {
                     return LengowMain::cleanData($this->features[$name]['value']);
-                } elseif (!is_null($id_product_attribute) &&
-                    isset($this->combinations[$id_product_attribute]['attributes'][$name][1])) {
-                    return LengowMain::cleanData($this->combinations[$id_product_attribute]['attributes'][$name][1]);
+                } elseif (!is_null($idProductAttribute) &&
+                    isset($this->combinations[$idProductAttribute]['attributes'][$name][1])) {
+                    return LengowMain::cleanData($this->combinations[$idProductAttribute]['attributes'][$name][1]);
                 }
                 return '';
         }
@@ -543,15 +543,15 @@ class LengowProduct extends Product
     /**
      * Get data attribute of current product.
      *
-     * @param integer $id_product_attribute the id product atrribute
-     * @param string  $name                 the data name attribute
+     * @param integer $idProductAttribute the id product atrribute
+     * @param string  $name               the data name attribute
      *
      * @return string
      */
-    public function getDataAttribute($id_product_attribute, $name)
+    public function getDataAttribute($idProductAttribute, $name)
     {
-        return isset($this->combinations[$id_product_attribute]['attributes'][$name][1])
-            ? $this->combinations[$id_product_attribute]['attributes'][$name][1]
+        return isset($this->combinations[$idProductAttribute]['attributes'][$name][1])
+            ? $this->combinations[$idProductAttribute]['attributes'][$name][1]
             : '';
     }
 
@@ -585,22 +585,22 @@ class LengowProduct extends Product
      */
     public function makeAttributes()
     {
-        $comb_array = array();
+        $combArray = array();
         $combinations = $this->getAttributesGroups($this->context->language->id);
         if (is_array($combinations)) {
             $cImages = $this->getImageUrlCombination();
             foreach ($combinations as $c) {
                 $attributeId = $c['id_product_attribute'];
-                $price_to_convert = Tools::convertPrice($c['price'], $this->context->currency);
-                $price = Tools::displayPrice($price_to_convert, $this->context->currency);
-                if (array_key_exists($attributeId, $comb_array)) {
-                    $comb_array[$attributeId]['attributes'][$c['group_name']] = array(
+                $priceToConvert = Tools::convertPrice($c['price'], $this->context->currency);
+                $price = Tools::displayPrice($priceToConvert, $this->context->currency);
+                if (array_key_exists($attributeId, $combArray)) {
+                    $combArray[$attributeId]['attributes'][$c['group_name']] = array(
                         $c['group_name'],
                         $c['attribute_name'],
                         $c['id_attribute']
                     );
                 } else {
-                    $comb_array[$attributeId] = array(
+                    $combArray[$attributeId] = array(
                         'id_product_attribute' => $attributeId,
                         'attributes'           => array(
                             $c['group_name'] => array(
@@ -622,12 +622,12 @@ class LengowProduct extends Product
                     );
                 }
                 if (LengowMain::compareVersion()) {
-                    $comb_array[$attributeId]['available_date'] = strftime($c['available_date']);
+                    $combArray[$attributeId]['available_date'] = strftime($c['available_date']);
                 }
             }
         }
-        if (isset($comb_array)) {
-            foreach ($comb_array as $id_product_attribute => $product_attribute) {
+        if (isset($combArray)) {
+            foreach ($combArray as $idProductAttribute => $product_attribute) {
                 $name = '';
                 /* In order to keep the same attributes order */
                 asort($product_attribute['attributes']);
@@ -638,7 +638,7 @@ class LengowProduct extends Product
                     $this->variation = rtrim($name, ', ');
                 }
                 if (LengowMain::compareVersion()) {
-                    $comb_array[$id_product_attribute]['available_date'] = (
+                    $combArray[$idProductAttribute]['available_date'] = (
                         $product_attribute['available_date'] != 0
                             ? date('Y-m-d', strtotime($product_attribute['available_date']))
                             : '0000-00-00'
@@ -646,7 +646,7 @@ class LengowProduct extends Product
                 }
             }
         }
-        $this->combinations = $comb_array;
+        $this->combinations = $combArray;
     }
 
     /**
@@ -673,11 +673,11 @@ class LengowProduct extends Product
      * OVERRIDE NATIVE FONCTION : add supplier_reference, ean13, upc, wholesale_price and ecotax
      * Get all available attribute groups
      *
-     * @param integer $id_lang Language id
+     * @param integer $idLang Language id
      *
      * @return array Attribute groups
      */
-    public function getAttributesGroups($id_lang)
+    public function getAttributesGroups($idLang)
     {
         if (LengowMain::compareVersion()) {
             if (!Combination::isFeatureActive()) {
@@ -721,8 +721,8 @@ class LengowProduct extends Product
                     ON ag.`id_attribute_group` = agl.`id_attribute_group`
 					' . Shop::addSqlAssociation('attribute', 'a').'
 					WHERE pa.`id_product` = '.(int)$this->id.'
-						AND al.`id_lang` = '.(int)$id_lang.'
-						AND agl.`id_lang` = '.(int)$id_lang.'
+						AND al.`id_lang` = '.(int)$idLang.'
+						AND agl.`id_lang` = '.(int)$idLang.'
 					GROUP BY id_attribute_group, id_product_attribute
 					ORDER BY ag.`position` ASC, a.`position` ASC, agl.`name` ASC';
         } else {
@@ -744,8 +744,8 @@ class LengowProduct extends Product
 					LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
                     ON (ag.`id_attribute_group` = agl.`id_attribute_group`)
 					WHERE pa.`id_product` = '.(int)$this->id.'
-                    AND al.`id_lang` = '.(int)$id_lang.'
-                    AND agl.`id_lang` = '.(int)$id_lang.'
+                    AND al.`id_lang` = '.(int)$idLang.'
+                    AND agl.`id_lang` = '.(int)$idLang.'
 					ORDER BY agl.`public_name`, al.`name`';
         }
         return Db::getInstance()->executeS($sql);
@@ -815,26 +815,22 @@ class LengowProduct extends Product
     /**
      * For a given product, returns its real quantity
      *
-     * @param integer $id_product
-     * @param integer $id_product_attribute
-     * @param integer $id_warehouse
-     * @param integer $id_shop
+     * @param integer $idProduct
+     * @param integer $idProductAttribute
+     * @param integer $idWarehouse
+     * @param integer $idShop
      *
      * @return integer
      */
-    public static function getRealQuantity(
-        $id_product,
-        $id_product_attribute = 0,
-        $id_warehouse = null,
-        $id_shop = null
-    ) {
+    public static function getRealQuantity($idProduct, $idProductAttribute = 0, $idWarehouse = null, $idShop = null)
+    {
         if (version_compare(_PS_VERSION_, '1.5', '<')) {
-            if ($id_product_attribute == 0 || $id_product_attribute == null) {
-                return Product::getQuantity($id_product);
+            if ($idProductAttribute == 0 || $idProductAttribute == null) {
+                return Product::getQuantity($idProduct);
             }
-            return Product::getQuantity($id_product, $id_product_attribute);
+            return Product::getQuantity($idProduct, $idProductAttribute);
         } else {
-            return parent::getRealQuantity($id_product, $id_product_attribute, $id_warehouse, $id_shop);
+            return parent::getRealQuantity($idProduct, $idProductAttribute, $idWarehouse, $idShop);
         }
     }
 
@@ -842,27 +838,27 @@ class LengowProduct extends Product
      * Compares found id with API ids and checks if they match
      *
      * @param LengowProduct $product
-     * @param array         $api_ids
+     * @param array         $idsApi
      *
      * @return boolean if valid or not
      */
-    protected static function isValidId($product, $api_ids)
+    protected static function isValidId($product, $idsApi)
     {
         $attributes = array('reference', 'ean13', 'upc', 'id');
         if (count($product->getCombinations()) > 0) {
             foreach ($product->getCombinations() as $combination) {
-                foreach ($attributes as $attribute_name) {
-                    foreach ($api_ids as $api_id) {
-                        if (!empty($api_id)) {
-                            if ($attribute_name == 'id') {
-                                $id = str_replace('\_', '_', $api_id);
-                                $id = str_replace('X', '_', $api_id);
+                foreach ($attributes as $attributeName) {
+                    foreach ($idsApi as $idApi) {
+                        if (!empty($idApi)) {
+                            if ($attributeName == 'id') {
+                                $id = str_replace('\_', '_', $idApi);
+                                $id = str_replace('X', '_', $idApi);
                                 $ids = explode('_', $id);
                                 $id = $ids[0];
-                                if (is_numeric($id) && $product->{$attribute_name} == $id) {
+                                if (is_numeric($id) && $product->{$attributeName} == $id) {
                                     return true;
                                 }
-                            } elseif ($combination[$attribute_name] === $api_id) {
+                            } elseif ($combination[$attributeName] === $idApi) {
                                 return true;
                             }
                         }
@@ -870,19 +866,19 @@ class LengowProduct extends Product
                 }
             }
         } else {
-            foreach ($attributes as $attribute_name) {
-                foreach ($api_ids as $api_id) {
-                    if (!empty($api_id)) {
-                        if ($attribute_name == 'id') {
-                            $id = str_replace('\_', '_', $api_id);
-                            $id = str_replace('X', '_', $api_id);
+            foreach ($attributes as $attributeName) {
+                foreach ($idsApi as $idApi) {
+                    if (!empty($idApi)) {
+                        if ($attributeName == 'id') {
+                            $id = str_replace('\_', '_', $idApi);
+                            $id = str_replace('X', '_', $idApi);
                             $ids = explode('_', $id);
                             $id = $ids[0];
-                            if (is_numeric($id) && $product->{$attribute_name} == $id) {
+                            if (is_numeric($id) && $product->{$attributeName} == $id) {
                                 return true;
                             }
                         }
-                        if ($product->{$attribute_name} === $api_id) {
+                        if ($product->{$attributeName} === $idApi) {
                             return true;
                         }
                     }
@@ -902,7 +898,7 @@ class LengowProduct extends Product
     public static function extractProductDataFromAPI($api)
     {
         $temp = array();
-        foreach (LengowProduct::$PRODUCT_API_NODES as $node) {
+        foreach (LengowProduct::$productApiNodes as $node) {
             $temp[$node] = $api->{$node};
         }
         $temp['price_unit'] = (float)$temp['amount'] / (float)$temp['quantity'];
@@ -912,44 +908,44 @@ class LengowProduct extends Product
     /**
      * Retrieves the product sku
      *
-     * @param string  $attribute_name
-     * @param string  $attribute_value
-     * @param integer $id_shop
-     * @param array   $api_data
+     * @param string  $attributeName
+     * @param string  $attributeValue
+     * @param integer $idShop
+     * @param array   $apiDatas
      *
      * @return mixed
      */
-    public static function matchProduct($attribute_name, $attribute_value, $id_shop, $api_data = array())
+    public static function matchProduct($attributeName, $attributeValue, $idShop, $apiDatas = array())
     {
-        if (empty($attribute_value) || empty($attribute_name)) {
+        if (empty($attributeValue) || empty($attributeName)) {
             return false;
         }
-        switch (Tools::strtolower($attribute_name)) {
+        switch (Tools::strtolower($attributeName)) {
             case 'reference':
-                return LengowProduct::findProduct('reference', $attribute_value, $id_shop);
+                return LengowProduct::findProduct('reference', $attributeValue, $idShop);
             case 'ean':
-                return LengowProduct::findProduct('ean13', $attribute_value, $id_shop);
+                return LengowProduct::findProduct('ean13', $attributeValue, $idShop);
             case 'upc':
-                return LengowProduct::findProduct('upc', $attribute_value, $id_shop);
+                return LengowProduct::findProduct('upc', $attributeValue, $idShop);
             default:
-                $product_ids = array();
-                $sku = str_replace('\_', '_', $attribute_value);
+                $idsProduct = array();
+                $sku = str_replace('\_', '_', $attributeValue);
                 $sku = str_replace('X', '_', $sku);
                 $sku = explode('_', $sku);
-                $product_ids['id_product'] = $sku[0];
+                $idsProduct['id_product'] = $sku[0];
                 if (isset($sku[1])) {
-                    $product_ids['id_product_attribute'] = $sku[1];
+                    $idsProduct['id_product_attribute'] = $sku[1];
                 }
-                $id_bool = LengowProduct::checkProductId($product_ids['id_product'], $api_data);
-                $id_att_bool = true;
-                if (isset($product_ids['id_product_attribute'])) {
-                    $id_att_bool = LengowProduct::checkProductAttributeId(
-                        new LengowProduct($product_ids['id_product']),
-                        $product_ids['id_product_attribute']
+                $idBool = LengowProduct::checkProductId($idsProduct['id_product'], $apiDatas);
+                $idAttBool = true;
+                if (isset($idsProduct['id_product_attribute'])) {
+                    $idAttBool = LengowProduct::checkProductAttributeId(
+                        new LengowProduct($idsProduct['id_product']),
+                        $idsProduct['id_product_attribute']
                     );
                 }
-                if ($id_bool && $id_att_bool) {
-                    return $product_ids;
+                if ($idBool && $idAttBool) {
+                    return $idsProduct;
                 }
                 return false;
         }
@@ -958,18 +954,18 @@ class LengowProduct extends Product
     /**
      * Check if product id found is correct
      *
-     * @param integer $product_id product id to be checked
-     * @param array   $api_ids    product ids from the API
+     * @param integer $idProduct product id to be checked
+     * @param array   $idsApi    product ids from the API
      *
      * @return boolean
      */
-    protected static function checkProductId($product_id, $api_ids)
+    protected static function checkProductId($idProduct, $idsApi)
     {
-        if (empty($product_id)) {
+        if (empty($idProduct)) {
             return false;
         }
-        $product = new LengowProduct($product_id);
-        if ($product->name == '' || !self::isValidId($product, $api_ids)) {
+        $product = new LengowProduct($idProduct);
+        if ($product->name == '' || !self::isValidId($product, $idsApi)) {
             return false;
         }
         return true;
@@ -979,14 +975,14 @@ class LengowProduct extends Product
      * Check if the product attribute exists
      *
      * @param integer $product
-     * @param integer $product_attribute_id
+     * @param integer $idProductAttribute
      *
      * @return boolean
      */
-    protected static function checkProductAttributeId($product, $product_attribute_id)
+    protected static function checkProductAttributeId($product, $idProductAttribute)
     {
-        if ($product_attribute_id != 0) {
-            if (!array_key_exists($product_attribute_id, $product->getCombinations())) {
+        if ($idProductAttribute != 0) {
+            if (!array_key_exists($idProductAttribute, $product->getCombinations())) {
                 return false;
             }
         }
@@ -998,11 +994,11 @@ class LengowProduct extends Product
      *
      * @param string  $key
      * @param string  $value
-     * @param integer $id_shop
+     * @param integer $idShop
      *
      * @return integer
      */
-    protected static function findProduct($key, $value, $id_shop)
+    protected static function findProduct($key, $value, $idShop)
     {
         if (empty($key) || empty($value)) {
             return false;
@@ -1013,7 +1009,7 @@ class LengowProduct extends Product
             $query->from('product', 'p');
             $query->innerJoin('product_shop', 'ps', 'p.id_product = ps.id_product');
             $query->where('p.'.pSQL($key).' = \''.pSQL($value).'\'');
-            $query->where('ps.`id_shop` = \''.(int)$id_shop.'\'');
+            $query->where('ps.`id_shop` = \''.(int)$idShop.'\'');
             $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
             // If no result, search in attribute
             if ($result == '') {
@@ -1022,7 +1018,7 @@ class LengowProduct extends Product
                 $query->from('product_attribute', 'pa');
                 $query->innerJoin('product_shop', 'ps', 'pa.id_product = pa.id_product');
                 $query->where('pa.'.pSQL($key).' = \''.pSQL($value).'\'');
-                $query->where('ps.`id_shop` = \''.(int)$id_shop.'\'');
+                $query->where('ps.`id_shop` = \''.(int)$idShop.'\'');
                 $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
             }
         } else {
@@ -1044,52 +1040,52 @@ class LengowProduct extends Product
     /**
      * Search a product by its reference, ean, upc and id
      *
-     * @param type $attribute_value
-     * @param type $id_shop
-     * @param type $api_data
+     * @param type $attributeValue
+     * @param type $idShop
+     * @param type $apiDatas
      *
      * @return array
      */
-    public static function advancedSearch($attribute_value, $id_shop, $api_data)
+    public static function advancedSearch($attributeValue, $idShop, $apiDatas)
     {
         $attributes = array('reference', 'ean', 'upc', 'ids'); // Product class attribute to search
-        $product_ids = array();
+        $idsProduct = array();
         $find = false;
         $i = 0;
         $count = count($attributes);
         while (!$find && $i < $count) {
-            $product_ids = self::matchProduct($attributes[$i], $attribute_value, $id_shop, $api_data);
-            if (!empty($product_ids)) {
+            $idsProduct = self::matchProduct($attributes[$i], $attributeValue, $idShop, $apiDatas);
+            if (!empty($idsProduct)) {
                 $find = true;
             }
             $i++;
         }
         if ($find) {
-            return $product_ids;
+            return $idsProduct;
         }
     }
 
     /**
      * Calculate product without taxes using TaxManager
      *
-     * @param array   $product    product
-     * @param int     $id_address address id used to get tax rate
-     * @param Context $context    order context
+     * @param array   $product   product
+     * @param int     $idAddress address id used to get tax rate
+     * @param Context $context   order context
      *
      * @return float
      */
-    public static function calculatePriceWithoutTax($product, $id_address, $context)
+    public static function calculatePriceWithoutTax($product, $idAddress, $context)
     {
-        $tax_address = new LengowAddress((int)$id_address);
+        $taxAddress = new LengowAddress((int)$idAddress);
         if (_PS_VERSION_ >= '1.5') {
-            $tax_manager = TaxManagerFactory::getManager(
-                $tax_address,
+            $taxManager = TaxManagerFactory::getManager(
+                $taxAddress,
                 Product::getIdTaxRulesGroupByIdProduct((int)$product['id_product'], $context)
             );
-            $tax_calculator = $tax_manager->getTaxCalculator();
-            return $tax_calculator->removeTaxes($product['price_wt']);
+            $taxCalculator = $taxManager->getTaxCalculator();
+            return $taxCalculator->removeTaxes($product['price_wt']);
         } else {
-            $rate = Tax::getProductTaxRate((int)$product['id_product'], (int)$id_address);
+            $rate = Tax::getProductTaxRate((int)$product['id_product'], (int)$idAddress);
             return $product['price_wt'] / (1 + $rate / 100);
         }
     }
@@ -1109,12 +1105,11 @@ class LengowProduct extends Product
             foreach ($psImages as $productAttributeId => $images) {
                 foreach ($images as $image) {
                     if (!isset($cImages[$productAttributeId]) || count($cImages[$productAttributeId]) < $maxImage) {
-                        $cImages[$productAttributeId][] =
-                            $this->context->link->getImageLink(
-                                $this->link_rewrite,
-                                $this->id.'-'.$image['id_image'],
-                                $this->imageSize
-                            );
+                        $cImages[$productAttributeId][] = $this->context->link->getImageLink(
+                            $this->link_rewrite,
+                            $this->id.'-'.$image['id_image'],
+                            $this->imageSize
+                        );
                     }
                 }
             }

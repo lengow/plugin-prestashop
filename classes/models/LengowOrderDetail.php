@@ -32,22 +32,22 @@ class LengowOrderDetail extends OrderDetail
     /**
      * Set a new price of product
      *
-     * @param float $new_price The new price of product
+     * @param float $newPrice The new price of product
      * @param float $tax The tax apply
      */
-    public function changePrice($new_price, $tax)
+    public function changePrice($newPrice, $tax)
     {
         $tax = 1 + (0.01 * $tax);
         $this->reduction_amount = 0.00;
         $this->reduction_percent = 0.00;
         $this->reduction_amount_tax_incl = 0.00;
         $this->reduction_amount_tax_excl = 0.00;
-        $this->product_price = LengowMain::formatNumber($new_price / $tax);
+        $this->product_price = LengowMain::formatNumber($newPrice / $tax);
         if (_PS_VERSION_ >= '1.5') {
-            $this->unit_price_tax_incl = LengowMain::formatNumber($new_price);
-            $this->unit_price_tax_excl = LengowMain::formatNumber($new_price / $tax);
-            $this->total_price_tax_incl = LengowMain::formatNumber($new_price * $this->product_quantity);
-            $this->total_price_tax_excl = LengowMain::formatNumber(($new_price * $this->product_quantity) / $tax);
+            $this->unit_price_tax_incl = LengowMain::formatNumber($newPrice);
+            $this->unit_price_tax_excl = LengowMain::formatNumber($newPrice / $tax);
+            $this->total_price_tax_incl = LengowMain::formatNumber($newPrice * $this->product_quantity);
+            $this->total_price_tax_excl = LengowMain::formatNumber(($newPrice * $this->product_quantity) / $tax);
         }
         $this->product_quantity_discount = 0.00;
         $this->save();

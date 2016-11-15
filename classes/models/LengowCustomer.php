@@ -29,7 +29,7 @@ class LengowCustomer extends Customer
      *
      * @var array
      */
-    public static $definition_lengow = array(
+    public static $definitionLengow = array(
         'lastname'  => array('required' => true, 'size' => 32),
         'firstname' => array('required' => true, 'size' => 32),
         'email'     => array('required' => true, 'size' => 128),
@@ -39,7 +39,7 @@ class LengowCustomer extends Customer
     /**
      * @var string full name
      */
-    public $full_name;
+    public $fullName;
 
     /**
      * Get definition array
@@ -49,7 +49,7 @@ class LengowCustomer extends Customer
     public static function getFieldDefinition()
     {
         if (_PS_VERSION_ < 1.5) {
-            return LengowCustomer::$definition_lengow;
+            return LengowCustomer::$definitionLengow;
         }
         return LengowCustomer::$definition['fields'];
     }
@@ -67,7 +67,7 @@ class LengowCustomer extends Customer
         $this->email = $data['email'];
         $this->firstname = $data['first_name'];
         $this->lastname = $data['last_name'];
-        $this->full_name = $data['full_name'];
+        $this->fullName = $data['full_name'];
         $this->passwd = md5(rand());
         if (_PS_VERSION_ >= '1.5') {
             $this->id_gender = LengowGender::getGender((string)$data['civility']);
@@ -83,15 +83,15 @@ class LengowCustomer extends Customer
     public function validateLengow()
     {
         $definition = LengowCustomer::getFieldDefinition();
-        foreach ($definition as $field_name => $constraints) {
+        foreach ($definition as $fieldName => $constraints) {
             if (isset($constraints['required']) && $constraints['required']) {
-                if (!$this->{$field_name}) {
-                    $this->validateFieldLengow($field_name, LengowAddress::LENGOW_EMPTY_ERROR);
+                if (!$this->{$fieldName}) {
+                    $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_EMPTY_ERROR);
                 }
             }
             if (isset($constraints['size'])) {
-                if (Tools::strlen($this->{$field_name}) > $constraints['size']) {
-                    $this->validateFieldLengow($field_name, LengowAddress::LENGOW_SIZE_ERROR);
+                if (Tools::strlen($this->{$fieldName}) > $constraints['size']) {
+                    $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_SIZE_ERROR);
                 }
             }
         }
@@ -107,17 +107,17 @@ class LengowCustomer extends Customer
     /**
      * Modify a field according to the type of error
      *
-     * @param string $error_type type of error
-     * @param string $field      incorrect field
+     * @param string $fieldName  incorrect field
+     * @param string $errorType type of error
      */
-    public function validateFieldLengow($field, $error_type)
+    public function validateFieldLengow($fieldName, $errorType)
     {
-        switch ($error_type) {
+        switch ($errorType) {
             case LengowAddress::LENGOW_EMPTY_ERROR:
-                $this->validateEmptyLengow($field);
+                $this->validateEmptyLengow($fieldName);
                 break;
             case LengowAddress::LENGOW_SIZE_ERROR:
-                $this->validateSizeLengow($field);
+                $this->validateSizeLengow($fieldName);
                 break;
             default:
                 break;
@@ -127,24 +127,24 @@ class LengowCustomer extends Customer
     /**
      * Modify an empty field
      *
-     * @param string $field field name
+     * @param string $fieldName field name
      */
-    public function validateEmptyLengow($field)
+    public function validateEmptyLengow($fieldName)
     {
-        switch ($field) {
+        switch ($fieldName) {
             case 'lastname':
             case 'firstname':
-                if ($field == 'lastname') {
-                    $field = 'firstname';
+                if ($fieldName == 'lastname') {
+                    $fieldName = 'firstname';
                 } else {
-                    $field = 'lastname';
+                    $fieldName = 'lastname';
                 }
-                $names = LengowAddress::extractNames($this->{$field});
+                $names = LengowAddress::extractNames($this->{$fieldName});
                 $this->firstname = $names['firstname'];
                 $this->lastname = $names['lastname'];
                 // check full name if last_name and first_name are empty
                 if (empty($this->firstname) && empty($this->lastname)) {
-                    $names = LengowAddress::extractNames($this->full_name);
+                    $names = LengowAddress::extractNames($this->fullName);
                 }
                 $this->firstname = $names['firstname'];
                 $this->lastname = $names['lastname'];
@@ -165,41 +165,41 @@ class LengowCustomer extends Customer
     /**
      * Modify a field to fit its size
      *
-     * @param string $field field name
+     * @param string $fieldName field name
      */
-    public function validateSizeLengow($field)
+    public function validateSizeLengow($fieldName)
     {
-        switch ($field) {
+        switch ($fieldName) {
             case 'address1':
             case 'address2':
             case 'other':
-                $address_full_array = explode(' ', $this->address_full);
-                if (count($address_full_array) < 1) {
+                $addressFullArray = explode(' ', $this->address_full);
+                if (count($addressFullArray) < 1) {
                     $definition = LengowCustomer::getFieldDefinition();
-                    $address1_maxlength = $definition['address1']['size'];
-                    $address2_maxlength = $definition['address1']['size'];
-                    $other_maxlength = $definition['other']['size'];
+                    $address1MaxLength = $definition['address1']['size'];
+                    $address2MaxLength = $definition['address1']['size'];
+                    $otherMaxLength = $definition['other']['size'];
                     $this->address1 = '';
                     $this->address2 = '';
                     $this->other = '';
-                    foreach ($address_full_array as $address_part) {
-                        if (Tools::strlen($this->address1) < $address1_maxlength) {
+                    foreach ($addressFullArray as $addressPart) {
+                        if (Tools::strlen($this->address1) < $address1MaxLength) {
                             if (!empty($this->address1)) {
                                 $this->address1 .= ' ';
                             }
-                            $this->address1 .= $address_part;
+                            $this->address1 .= $addressPart;
                             continue;
-                        } elseif (Tools::strlen($this->address2) < $address2_maxlength) {
+                        } elseif (Tools::strlen($this->address2) < $address2MaxLength) {
                             if (!empty($this->address2)) {
                                 $this->address2 .= ' ';
                             }
-                            $this->address2 .= $address_part;
+                            $this->address2 .= $addressPart;
                             continue;
-                        } elseif (Tools::strlen($this->other) < $other_maxlength) {
+                        } elseif (Tools::strlen($this->other) < $otherMaxLength) {
                             if (!empty($this->other)) {
                                 $this->other .= ' ';
                             }
-                            $this->other .= $address_part;
+                            $this->other .= $addressPart;
                             continue;
                         }
                     }

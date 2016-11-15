@@ -46,10 +46,10 @@ class LengowSync
         $data['return_url']     = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
-            $id_shop = $row['id_shop'];
-            $lengowExport = new LengowExport(array("shop_id" => $id_shop));
-            $shop = new LengowShop($id_shop);
-            $data['shops'][$row['id_shop']]['token']                   = LengowMain::getToken($id_shop);
+            $idShop = $row['id_shop'];
+            $lengowExport = new LengowExport(array("shop_id" => $idShop));
+            $shop = new LengowShop($idShop);
+            $data['shops'][$row['id_shop']]['token']                   = LengowMain::getToken($idShop);
             $data['shops'][$row['id_shop']]['name']                    = $shop->name;
             $data['shops'][$row['id_shop']]['domain']                  = $shop->domain;
             $data['shops'][$row['id_shop']]['feed_url']                = LengowMain::getExportUrl($shop->id);
@@ -68,24 +68,24 @@ class LengowSync
      */
     public static function sync($params)
     {
-        foreach ($params as $shop_token => $values) {
-            if ($shop = LengowShop::findByToken($shop_token)) {
-                $list_key = array(
+        foreach ($params as $shopToken => $values) {
+            if ($shop = LengowShop::findByToken($shopToken)) {
+                $listKey = array(
                     'account_id'   => false,
                     'access_token' => false,
                     'secret_token' => false
                 );
                 foreach ($values as $k => $v) {
-                    if (!in_array($k, array_keys($list_key))) {
+                    if (!in_array($k, array_keys($listKey))) {
                         continue;
                     }
                     if (Tools::strlen($v) > 0) {
-                        $list_key[$k] = true;
+                        $listKey[$k] = true;
                         LengowConfiguration::updateValue('LENGOW_'.Tools::strtoupper($k), $v, false, null, $shop->id);
                     }
                 }
                 $findFalseValue = false;
-                foreach ($list_key as $k => $v) {
+                foreach ($listKey as $k => $v) {
                     if (!$v) {
                         $findFalseValue = true;
                         break;
@@ -103,15 +103,14 @@ class LengowSync
     /**
      * Check Synchronisation shop
      *
-     * @param $id_shop
+     * @param $idShop
      *
      * @return boolean
      */
-    public static function checkSyncShop($id_shop)
+    public static function checkSyncShop($idShop)
     {
-        $id_shop = $id_shop;
-        return LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $id_shop)
-            && LengowCheck::isValidAuth($id_shop);
+        return LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $idShop)
+            && LengowCheck::isValidAuth($idShop);
     }
 
     /**
@@ -131,12 +130,12 @@ class LengowSync
         );
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
-            $id_shop = $row['id_shop'];
-            $lengowExport = new LengowExport(array("shop_id" => $id_shop));
-            $shop = new LengowShop($id_shop);
+            $idShop = $row['id_shop'];
+            $lengowExport = new LengowExport(array("shop_id" => $idShop));
+            $shop = new LengowShop($idShop);
             $data['shops'][] = array(
                 'enabled'                 => LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $shop->id),
-                'token'                   => LengowMain::getToken($id_shop),
+                'token'                   => LengowMain::getToken($idShop),
                 'store_name'              => $shop->name,
                 'domain_url'              => $shop->domain,
                 'feed_url'                => LengowMain::getExportUrl($shop->id),
@@ -164,8 +163,8 @@ class LengowSync
             return false;
         }
         if (!$force) {
-            $updated_at =  LengowConfiguration::getGlobalValue('LENGOW_OPTION_CMS_UPDATE');
-            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < self::$cacheTime) {
+            $updatedAt =  LengowConfiguration::getGlobalValue('LENGOW_OPTION_CMS_UPDATE');
+            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < self::$cacheTime) {
                 return false;
             }
         }
@@ -185,8 +184,8 @@ class LengowSync
     public static function getStatusAccount($force = false)
     {
         if (!$force) {
-            $updated_at =  LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE');
-            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < self::$cacheTime) {
+            $updatedAt =  LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE');
+            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < self::$cacheTime) {
                 return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
             }
         }
@@ -233,10 +232,10 @@ class LengowSync
         //get stats by shop
         $shopCollection = LengowShop::findAll(true);
         $i = 0;
-        $account_ids = array();
+        $accountIds = array();
         foreach ($shopCollection as $s) {
-            $account_id = LengowMain::getIdAccount($s['id_shop']);
-            if (!$account_id || in_array($account_id, $account_ids) || empty($account_id)) {
+            $accountId = LengowMain::getIdAccount($s['id_shop']);
+            if (!$accountId || in_array($accountId, $accountIds) || empty($accountId)) {
                 continue;
             }
             $result = LengowConnector::queryApi(
@@ -255,7 +254,7 @@ class LengowSync
                 $return['nb_order'] += $stats->transactions;
                 $return['currency'] = $result->currency->iso_a3;
             }
-            $account_ids[] = $account_id;
+            $accountIds[] = $accountId;
             $i++;
         }
         if ($return['currency']) {

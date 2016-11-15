@@ -27,16 +27,18 @@ class LengowLink extends LinkCore
     /**
     * Use in toolbox to get specific link
     */
-    protected static $force_link;
+    protected static $forceLink;
 
     /**
      * Reset option
      *
+     * @param boolean $forceLink
+     *
      * @return boolean Result of reset process
      */
-    public static function forceLink($force_link)
+    public static function forceLink($forceLink)
     {
-        self::$force_link = $force_link;
+        self::$forceLink = $forceLink;
     }
 
     /**
@@ -44,32 +46,32 @@ class LengowLink extends LinkCore
      *
      * @param string  $controller       name of the controller
      * @param boolean $ajax             if link use ajax
-     * @param boolean $admin_prestashop if link is a prestashop controller
+     * @param boolean $adminPrestashop if link is a prestashop controller
      *
      * @return string
      */
-    public function getAbsoluteAdminLink($controller, $ajax = false, $admin_prestashop = false)
+    public function getAbsoluteAdminLink($controller, $ajax = false, $adminPrestashop = false)
     {
         //use in toolbox to get specific link
-        if (self::$force_link) {
-            return self::$force_link;
+        if (self::$forceLink) {
+            return self::$forceLink;
         }
-        if (_PS_VERSION_ < '1.5' && !$admin_prestashop) {
+        if (_PS_VERSION_ < '1.5' && !$adminPrestashop) {
             $controller.= "14";
         }
-        $admin_path = Tools::getShopDomainSsl(true, true).
+        $adminPath = Tools::getShopDomainSsl(true, true).
             __PS_BASE_URI__.Tools::substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);
         if (_PS_VERSION_ < '1.6') {
             if (_PS_VERSION_ < '1.5' && $ajax) {
-                $admin_path.= '/ajax-tab.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
+                $adminPath.= '/ajax-tab.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
             } else {
-                $admin_path.= '/index.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
+                $adminPath.= '/index.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
             }
         } elseif (_PS_VERSION_ < '1.7') {
-            $admin_path.= '/'.$this->getAdminLink($controller);
+            $adminPath.= '/'.$this->getAdminLink($controller);
         } else {
-            $admin_path = $this->getAdminLink($controller);
+            $adminPath = $this->getAdminLink($controller);
         }
-        return $admin_path;
+        return $adminPath;
     }
 }
