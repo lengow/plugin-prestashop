@@ -207,7 +207,7 @@ class LengowImportOrder
             (string)$this->orderData->marketplace,
             $this->idShop
         );
-        $this->marketplaceLabel      = $this->marketplace->label_name;
+        $this->marketplaceLabel      = $this->marketplace->labelName;
         $this->orderStateMarketplace = (string)$this->orderData->marketplace_status;
         $this->orderStateLengow      = $this->marketplace->getStateLengow($this->orderStateMarketplace);
     }
@@ -242,7 +242,7 @@ class LengowImportOrder
             $this->marketplaceSku,
             $this->marketplace->name,
             $this->deliveryAddressId,
-            $this->marketplace->legacy_code
+            $this->marketplace->legacyCode
         );
         // update order state if already imported
         if ($idOrder) {

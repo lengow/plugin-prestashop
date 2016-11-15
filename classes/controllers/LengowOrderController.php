@@ -501,25 +501,25 @@ class LengowOrderController extends LengowController
         $this->list->executeQuery();
         $paginationBlock = $this->list->renderPagination(array('nav_class' => 'lgw-pagination'));
         $lengowLink = new LengowLink();
-        $html='<div class="lengow_table_top">';
-        $html.='<div class="lengow_toolbar">';
-        $html.='<a href="#" style="display:none;"
+        $html= '<div class="lengow_table_top">';
+        $html.= '<div class="lengow_toolbar">';
+        $html.= '<a href="#" style="display:none;"
                 data-href="'.$lengowLink->getAbsoluteAdminLink('AdminLengowOrder', true).'"
                 class="lgw-btn lengow_link_tooltip lengow_mass_re_import btn btn-primary">
                 <i class="fa fa-download"></i> '.$this->locale->t('order.screen.button_reimport_order').'</a>';
-        $html.='<a href="#" style="display:none;"
+        $html.= '<a href="#" style="display:none;"
                         data-href="'.$lengowLink->getAbsoluteAdminLink('AdminLengowOrder', true).'"
                 class="lgw-btn lengow_link_tooltip lengow_mass_re_send btn btn-primary">
                 <i class="fa fa-arrow-right"></i> '.$this->locale->t('order.screen.button_resend_order').'</a>';
-        $html.='</div>';
+        $html.= '</div>';
         $html.= $paginationBlock;
-        $html.='<div class="clearfix"></div>';
-        $html.='</div>';
+        $html.= '<div class="clearfix"></div>';
+        $html.= '</div>';
         $html.= $this->list->display();
-        $html.='<div class="lengow_table_bottom">';
+        $html.= '<div class="lengow_table_bottom">';
         $html.= $paginationBlock;
-        $html.='<div class="clearfix"></div>';
-        $html.='</div>';
+        $html.= '<div class="clearfix"></div>';
+        $html.= '</div>';
         return $html;
     }
 

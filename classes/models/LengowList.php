@@ -185,7 +185,7 @@ class LengowList
      */
     public function displayRow($item)
     {
-        $lengow_link = new LengowLink();
+        $lengowLink = new LengowLink();
         $html = '';
         $html.= '<tr id='.$this->id.'_'.$item[$this->identifier].' class="table_row">';
         if ($this->selection && !$this->toolbox) {
@@ -230,7 +230,7 @@ class LengowList
                                 data-off-text="'.$this->locale->t('product.screen.button_no').'"
                                 name="lengow_product_selection['.$item[$this->identifier].']"
                                 lengow_product_selection_'.$item[$this->identifier].'"
-                                data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'"
+                                data-href="'.$lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax).'"
                                 data-action="select_product"
                                 data-id_shop="'.$this->shopId.'"
                                 data-id_product="'.$item[$this->identifier].'" ' .
@@ -279,9 +279,9 @@ class LengowList
      */
     public function display()
     {
-        $lengow_link = new LengowLink();
+        $lengowLink = new LengowLink();
         $html = '<form id="form_table_'.$this->id.'" class="lengow_form_table"
-        data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'">';
+        data-href="'.$lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax).'">';
         $html.= '<input type="hidden" name="p" value="'.$this->currentPage.'" />';
         $html.= '<input type="hidden" name="order_value" value="'.$this->orderValue.'" />';
         $html.= '<input type="hidden" name="order_column" value="'.$this->orderColumn.'" />';
@@ -363,12 +363,12 @@ class LengowList
     /**
      * Build Query
      *
-     * @param bool $total      Execute Total Query
-     * @param bool $select_all
+     * @param bool $total     Execute Total Query
+     * @param bool $selectAll
      *
      * @return string sql query
      */
-    public function buildQuery($total = false, $select_all = false)
+    public function buildQuery($total = false, $selectAll = false)
     {
         $where = isset($this->sql["where"]) ? $this->sql["where"] : array();
         $having = array();
@@ -423,15 +423,15 @@ class LengowList
         }
         if ($total) {
             $value = $this->findValueByKey($this->identifier);
-            $first_column = $value['filter_key'];
+            $firstColumn = $value['filter_key'];
             if (isset($this->sql['select_having']) && $this->sql['select_having']) {
-                $sql = 'SELECT "'.pSQL($first_column).'" ';
+                $sql = 'SELECT "'.pSQL($firstColumn).'" ';
                 $sql.= ', '.join(',', $this->sql['select_having']);
             } else {
-                $sql = 'SELECT COUNT("'.pSQL($first_column).'") as total';
+                $sql = 'SELECT COUNT("'.pSQL($firstColumn).'") as total';
             }
 
-        } elseif ($select_all == true) {
+        } elseif ($selectAll == true) {
             $sql = 'SELECT '.$this->fieldsList['id_product']['filter_key'];
         } else {
             $sql = 'SELECT '.join(', ', $this->sql["select"]);
@@ -449,7 +449,7 @@ class LengowList
         if ($having) {
             $sql .= ' HAVING '.join(' AND ', $having);
         }
-        if (!$total && !$select_all) {
+        if (!$total && !$selectAll) {
             if (Tools::strlen($this->orderColumn) > 0 && in_array($this->orderValue, array("ASC","DESC"))) {
                 $sql .= ' ORDER BY '.pSQL($this->orderColumn).' '.$this->orderValue;
                 if (isset($this->sql["order"])) {
@@ -487,10 +487,10 @@ class LengowList
      */
     public function renderPagination($params = array())
     {
-        $nav_class = isset($params["nav_class"]) ? $params["nav_class"] : '';
-        $lengow_link = new LengowLink();
+        $navClass = isset($params["nav_class"]) ? $params["nav_class"] : '';
+        $lengowLink = new LengowLink();
         $totalPage = ceil($this->total / $this->nbPerPage);
-        $html = '<nav id="nav_'.$this->id.'" class="'.$nav_class.'">';
+        $html = '<nav id="nav_'.$this->id.'" class="'.$navClass.'">';
         $html.= '<div class="lgw-pagination-pages">';
         $html.= '<span class="lengow_number">'.$this->paginationFrom.'</span> -
             <span class="lengow_number">'.$this->paginationTo.'</span>'
@@ -502,11 +502,11 @@ class LengowList
         $html.= '<ul class="lgw-pagination-btns lgw-pagination-arrow">';
         $class = ($this->currentPage == 1) ? 'disabled' : '';
         $html.= '<li class="'.$class.'"><a href="#" data-page="'.($this->currentPage-1).'"
-            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax)
+            data-href="'.$lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax)
             .'&p='.($this->currentPage-1).'"><i class="fa fa-angle-left"></i></a></li>';
         $class = ($this->currentPage == $this->nbMaxPage) ? 'disabled' : '';
         $html.= '<li class="'.$class.'"><a href="#" data-page="'.($this->currentPage+1).'"
-            data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax)
+            data-href="'.$lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax)
             .'&p='.($this->currentPage+1).'"><i class="fa fa-angle-right"></i></a></li>';
         $html.= '</ul>';
         $html.= '<ul class="lgw-pagination-btns lgw-pagination-numbers">';
@@ -514,7 +514,7 @@ class LengowList
             $showLastSeparation = false;
             $class = ($this->currentPage == 1) ? 'disabled' : '';
             $html.= '<li class="'.$class.'"><a href="#" data-page="1"
-                data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p=1">1</a></li>';
+                data-href="'.$lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax).'&p=1">1</a></li>';
             $from = $this->currentPage - 1;
             $to = $this->currentPage + 1;
             if ($from <= 2) {
@@ -534,7 +534,7 @@ class LengowList
                 $html.= '<li>';
                 $class = ($i == $this->currentPage) ? 'disabled' : '';
                 $html.= '<li class="' . $class . '"><a href="#" data-page="'.$i.'"
-                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'
+                    data-href="'.$lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'
                     .$i.'</a></li>';
                 $html.= '</li>';
             }
@@ -543,13 +543,13 @@ class LengowList
             }
             $class = ($this->currentPage == $this->nbMaxPage) ? 'disabled' : '';
             $html.= '<li class="' . $class . '"><a href="#" data-page="'.$this->nbMaxPage.'"
-                data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax)
+                data-href="'.$lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax)
                 .'&p='.($this->nbMaxPage).'">'.$this->nbMaxPage.'</a></li>';
         } else {
             for ($i = 1; $i <= $totalPage; $i++) {
                 $class = ($i == $this->currentPage) ? 'disabled' : '';
                 $html .= '<li class="' . $class . '"><a href="#"  data-page="'.$i.'"
-                    data-href="'.$lengow_link->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'
+                    data-href="'.$lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax).'&p='.$i.'">'
                     .$i.'</a></li>';
             }
         }

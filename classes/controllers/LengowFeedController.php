@@ -197,13 +197,23 @@ class LengowFeedController extends LengowController
             $shop = new LengowShop($row['id_shop']);
             $lengowExport = new LengowExport(array("shop_id" => $shop->id));
             $shopCollection[] = array(
-                'shop' => $shop,
-                'link' => LengowMain::getExportUrl($shop->id),
-                'total_product' => $lengowExport->getTotalProduct(),
-                'total_export_product' => $lengowExport->getTotalExportProduct(),
-                'last_export' => LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id),
-                'option_selected' => LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shop->id),
-                'option_variation' => LengowConfiguration::get(
+                'shop'                       => $shop,
+                'link'                       => LengowMain::getExportUrl($shop->id),
+                'total_product'              => $lengowExport->getTotalProduct(),
+                'total_export_product'       => $lengowExport->getTotalExportProduct(),
+                'last_export'                => LengowConfiguration::get(
+                    'LENGOW_LAST_EXPORT',
+                    null,
+                    null,
+                    $shop->id
+                ),
+                'option_selected'            => LengowConfiguration::get(
+                    'LENGOW_EXPORT_SELECTION_ENABLED',
+                    null,
+                    null,
+                    $shop->id
+                ),
+                'option_variation'           => LengowConfiguration::get(
                     'LENGOW_EXPORT_VARIATION_ENABLED',
                     null,
                     null,
@@ -215,7 +225,7 @@ class LengowFeedController extends LengowController
                     null,
                     $shop->id
                 ),
-                'list' => $this->buildTable($shop->id)
+                'list'                        => $this->buildTable($shop->id)
             );
         }
         $this->context->smarty->assign('shopCollection', $shopCollection);
@@ -473,14 +483,14 @@ class LengowFeedController extends LengowController
         $this->list->updateCollection($collection);
         $paginationBlock = $this->list->renderPagination(array('nav_class' => 'lgw-pagination'));
         $lengowLink = new LengowLink();
-        $html='<div class="lengow_table_top">';
-        $html.='<div class="lengow_toolbar">';
+        $html= '<div class="lengow_table_top">';
+        $html.= '<div class="lengow_toolbar">';
         if (!$this->toolbox) {
             $messageRemoveConfirmation = $this->locale->t(
                 'product.screen.remove_confirmation',
                 array('nb' => $this->list->getTotal())
             );
-            $html.='<a href="#" data-id_shop="'.$idShop.'" style="display:none;"
+            $html.= '<a href="#" data-id_shop="'.$idShop.'" style="display:none;"
                 data-href="'.$lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true).'"
                 data-message="'.$messageRemoveConfirmation.'"
                 data-action="lengow_export_action"
@@ -491,31 +501,31 @@ class LengowFeedController extends LengowController
                 'product.screen.add_confirmation',
                 array('nb' => $this->list->getTotal())
             );
-            $html.='<a href="#" data-id_shop="'.$idShop.'" style="display:none;"
+            $html.= '<a href="#" data-id_shop="'.$idShop.'" style="display:none;"
                 data-href="'.$lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true).'"
                 data-message="'.$messageAddConfirmation.'"
                 data-action="lengow_export_action"
                 data-export-action="lengow_add_to_export"
                 class="lgw-btn lengow_add_to_export">
                 <i class="fa fa-plus"></i> '.$this->locale->t('product.screen.add_from_export').'</a>';
-            $html.='<div class="lengow_select_all_shop lgw-container" style="display:none;">';
-            $html.='<input type="checkbox" id="select_all_shop_'.$idShop.'"/>&nbsp;&nbsp;';
-            $html.='<span>'.$this->locale->t(
+            $html.= '<div class="lengow_select_all_shop lgw-container" style="display:none;">';
+            $html.= '<input type="checkbox" id="select_all_shop_'.$idShop.'"/>&nbsp;&nbsp;';
+            $html.= '<span>'.$this->locale->t(
                 'product.screen.select_all_products',
                 array('nb' => $this->list->getTotal())
             );
-            $html.='</span>';
-            $html.='</div>';
+            $html.= '</span>';
+            $html.= '</div>';
         }
-        $html.='</div>';
+        $html.= '</div>';
         $html.= $paginationBlock;
-        $html.='<div class="clearfix"></div>';
-        $html.='</div>';
+        $html.= '<div class="clearfix"></div>';
+        $html.= '</div>';
         $html.= $this->list->display();
-        $html.='<div class="lengow_table_bottom">';
+        $html.= '<div class="lengow_table_bottom">';
         $html.= $paginationBlock;
-        $html.='<div class="clearfix"></div>';
-        $html.='</div>';
+        $html.= '<div class="clearfix"></div>';
+        $html.= '</div>';
 
         return $html;
     }

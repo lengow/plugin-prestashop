@@ -133,14 +133,16 @@ class LengowMarketplace
                 }
                 // foreach ($action->args_description as $key => $argDescription) {
                 //     $validValues = array();
-                //     foreach ($argDescription->valid_values as $key => $validValue) {
-                //         $validValues[(string)$key] = (string)$validValue->label;
+                //     if (isset($argDescription->valid_values)) {
+                //         foreach ($argDescription->valid_values as $code => $validValue) {
+                //             $validValues[(string)$code] = (string)$validValue->label;
+                //         }
                 //     }
-                //     $descriptions = array(
-                //         'default_value' => (string)$argDescription->default_value,
-                //         'valid_values'  => $validValues
+                //     $this->argValues[(string)$key] = array(
+                //         'default_value'      => (string)$argDescription->default_value,
+                //         'accept_free_values' => (bool)$argDescription->accept_free_values,
+                //         'valid_values'       => $validValues
                 //     );
-                //     $this->argValues[(string)$key] = $descriptions;
                 // }
             }
             if (isset($this->marketplace->orders->carriers)) {
@@ -159,6 +161,7 @@ class LengowMarketplace
     {
         if (!array_key_exists($this->idShop, self::$markeplaces)) {
             $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $this->idShop);
+            // $result = json_decode(file_get_contents(dirname(__FILE__).'/marketplaces.json'));
             self::$markeplaces[$this->idShop] = $result;
         }
     }
@@ -222,16 +225,16 @@ class LengowMarketplace
     *
     * @return mixed
     */
-    // public function getDefaultValue($name)
-    // {
-    //     if (array_key_exists($name, $this->argValues)) {
-    //         $defautlValue = $this->argValues[$name]['default_value'];
-    //         if (!empty($defautlValue)) {
-    //             return (string)$defautlValue;
-    //         }
-    //     }
-    //     return false;
-    // }
+    public function getDefaultValue($name)
+    {
+        if (array_key_exists($name, $this->argValues)) {
+            $defautlValue = $this->argValues[$name]['default_value'];
+            if (!empty($defautlValue)) {
+                return $defautlValue;
+            }
+        }
+        return false;
+    }
 
     /**
      * Get carrier name by code
@@ -405,9 +408,9 @@ class LengowMarketplace
                         $params[$arg] = date('c');
                         break;
                     default:
-                        // $defautlValue = $this->getDefaultValue((string)$arg);
-                        // $paramValue = $defautlValue ? $defautlValue : $arg.' not available';
-                        // $params[$arg] = $paramValue;
+                        $defautlValue = $this->getDefaultValue((string)$arg);
+                        $paramValue = $defautlValue ? $defautlValue : $arg.' not available';
+                        $params[$arg] = $paramValue;
                         break;
                 }
             }
