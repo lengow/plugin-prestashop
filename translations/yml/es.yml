@@ -61,10 +61,6 @@ es:
     screen:
       nb_exported: "productos exportados"
       nb_available: "productos disponibles"
-      include_variation: "Incluir las variaciones de productos"
-      include_variation_support: "Utiliza esta opción si deseas exportar la totalidad de tu catálogo con variaciones"
-      include_out_of_stock: "Incluir los productos sin stock"
-      include_out_of_stock_support: "Active esta opción si quieres exportar los productos sin stock"
       include_specific_product: "Incluir los productos seleccionados"
       include_specific_product_support: "Active esta opción para hacer la selección de tus productos a exportar"
       no_result_found: "Lo sentimos, no hay resultados para su búsqueda. \n¿Tal vez si intentas modificar tu solicitud?"
@@ -317,6 +313,7 @@ es:
       unable_to_save_order: "no se ha podido guardar el pedido PrestaShop - %{error}"
       unable_to_save_order_payment: "unable to save PrestaShop order payment"
       timeout_api: "la llamada a la API ha sido bloqueada a causa del tiempo de espera"
+      error_curl: "Curl error %{error_code} - %{error_message}"
     mail_report:
       order: "Pedido %{marketplace_sku}"
       no_error_in_report_mail: "ningún mensaje de error , póngase en contacto con el support via https://supportlengow.zendesk.com/agent/"
@@ -338,4 +335,6 @@ es:
       check_cancel_and_reimport: "¿Realmente desea volver a importar el pedido?"
       synchronize_id: "Sincronizar ID"
       resend_action: "Reenvie la accion"
+      add_tracking: "Añadir el tracking número"
+      add_tracking_title: "Por favor añade el tracking número"
       check_resend_action: "¿Realmente desea enviar la siguiente acción: %{action} ?"

@@ -31,20 +31,6 @@ class LengowFeedController extends LengowController
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
         if ($action) {
             switch ($action) {
-                case 'change_option_product_variation':
-                    $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
-                    $idShop = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
-                    if ($state !== null) {
-                        LengowConfiguration::updatevalue(
-                            'LENGOW_EXPORT_VARIATION_ENABLED',
-                            $state,
-                            null,
-                            null,
-                            $idShop
-                        );
-                        echo Tools::jsonEncode($this->reloadTotal($idShop));
-                    }
-                    break;
                 case 'change_option_selected':
                     $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
                     $idShop = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
@@ -66,14 +52,6 @@ class LengowFeedController extends LengowController
                         }
                         $result = array_merge($data, $this->reloadTotal($idShop));
                         echo Tools::jsonEncode($result);
-                    }
-                    break;
-                case 'change_option_product_out_of_stock':
-                    $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
-                    $idShop = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
-                    if ($state !== null) {
-                        LengowConfiguration::updatevalue('LENGOW_EXPORT_OUT_STOCK', $state, null, null, $idShop);
-                        echo Tools::jsonEncode($this->reloadTotal($idShop));
                     }
                     break;
                 case 'select_product':
@@ -139,7 +117,6 @@ class LengowFeedController extends LengowController
                     break;
                 case 'check_shop':
                     $shops = LengowShop::findAll(true);
-                    $link = new LengowLink();
                     $result = array();
                     foreach ($shops as $idShop) {
                         $checkShop = LengowSync::checkSyncShop($idShop['id_shop']);
@@ -152,7 +129,7 @@ class LengowFeedController extends LengowController
                                 $data['tooltip'] = $this->locale->t('product.screen.shop_not_index');
                             } else {
                                 $data['tooltip'] = $this->locale->t('product.screen.shop_last_indexation') .
-                                    ' : ' . strftime("%A %e %B %Y @ %R", strtotime($syncDate));
+                                    ' : '.strftime("%A %e %B %Y @ %R", strtotime($syncDate));
                             }
                             $data['original_title'] = $this->locale->t('product.screen.lengow_shop_sync');
                         } else {
@@ -160,10 +137,8 @@ class LengowFeedController extends LengowController
                             if (!$this->toolbox) {
                                 $data['tooltip'] = $this->locale->t('product.screen.lengow_shop_no_sync');
                                 $data['original_title'] = $this->locale->t('product.screen.sync_your_shop');
-                                $data['header_title'] = '<a href="'
-                                    . $link->getAbsoluteAdminLink('AdminLengowHome')
-                                    . '&isSync=true">
-                                    <span>' . $this->locale->t('product.screen.sync_your_shop') . '</span></a>';
+                                $data['header_title'] = '<a href="https://my.lengow.io/company/store" target="_blank">
+                                    <span>'.$this->locale->t('product.screen.sync_your_shop') . '</span></a>';
                             } else {
                                 $data['header_title'] = $this->locale->t('product.screen.lengow_shop_no_sync');
                             }
@@ -197,35 +172,23 @@ class LengowFeedController extends LengowController
             $shop = new LengowShop($row['id_shop']);
             $lengowExport = new LengowExport(array("shop_id" => $shop->id));
             $shopCollection[] = array(
-                'shop'                       => $shop,
-                'link'                       => LengowMain::getExportUrl($shop->id),
-                'total_product'              => $lengowExport->getTotalProduct(),
-                'total_export_product'       => $lengowExport->getTotalExportProduct(),
-                'last_export'                => LengowConfiguration::get(
+                'shop'                 => $shop,
+                'link'                 => LengowMain::getExportUrl($shop->id),
+                'total_product'        => $lengowExport->getTotalProduct(),
+                'total_export_product' => $lengowExport->getTotalExportProduct(),
+                'last_export'          => LengowConfiguration::get(
                     'LENGOW_LAST_EXPORT',
                     null,
                     null,
                     $shop->id
                 ),
-                'option_selected'            => LengowConfiguration::get(
+                'option_selected'      => LengowConfiguration::get(
                     'LENGOW_EXPORT_SELECTION_ENABLED',
                     null,
                     null,
                     $shop->id
                 ),
-                'option_variation'           => LengowConfiguration::get(
-                    'LENGOW_EXPORT_VARIATION_ENABLED',
-                    null,
-                    null,
-                    $shop->id
-                ),
-                'option_product_out_of_stock' => LengowConfiguration::get(
-                    'LENGOW_EXPORT_OUT_STOCK',
-                    null,
-                    null,
-                    $shop->id
-                ),
-                'list'                        => $this->buildTable($shop->id)
+                'list'                 => $this->buildTable($shop->id)
             );
         }
         $this->context->smarty->assign('shopCollection', $shopCollection);

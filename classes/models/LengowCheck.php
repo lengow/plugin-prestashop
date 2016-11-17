@@ -226,8 +226,12 @@ class LengowCheck
             'header' => $shop->name.' ('.$shop->id.')'.' - http://'.$shop->domain
         );
         $checklist[] = array(
-            'title' => $this->locale->t('toolbox.index.shop_active'),
+            'title' => $this->locale->t('toolbox.index.shop_active_in_cms'),
             'state' => (int)LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, null, $shop->id)
+        );
+        $checklist[] = array(
+            'title' => $this->locale->t('toolbox.index.shop_active'),
+            'state' => (int)LengowSync::checkSyncShop($shop->id)
         );
         $checklist[] = array(
             'title'   => $this->locale->t('toolbox.index.shop_product_total'),
@@ -236,6 +240,18 @@ class LengowCheck
         $checklist[] = array(
             'title'   => $this->locale->t('toolbox.index.shop_product_exported'),
             'message' => $lengowExport->getTotalExportProduct()
+        );
+        $checklist[] = array(
+            'title' => $this->locale->t('toolbox.index.export_variation_enabled'),
+            'state' => (int)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $shop->id)
+        );
+        $checklist[] = array(
+            'title' => $this->locale->t('toolbox.index.export_out_stock_enabled'),
+            'state' => (int)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $shop->id)
+        );
+        $checklist[] = array(
+            'title' => $this->locale->t('toolbox.index.export_selection_enabled'),
+            'state' => (int)LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shop->id)
         );
         $checklist[] = array(
             'title'   => $this->locale->t('toolbox.index.shop_export_token'),

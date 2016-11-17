@@ -61,10 +61,6 @@ en:
     screen:
       nb_exported: "products exported"
       nb_available: "products available"
-      include_variation: "Include product variations"
-      include_variation_support: "Use this option if you want to export all of your catalogue with variations"
-      include_out_of_stock: "Include out of stock products"
-      include_out_of_stock_support: "Use this option if you want to export out of stock products"
       include_specific_product: "Include specific products"
       include_specific_product_support: "Use this option to select your products one by one"
       no_result_found: "Sorry, no results found for your search.\nPlease try changing your request."
@@ -340,5 +336,5 @@ en:
       synchronize_id: "Synchronize ID"
       resend_action: "Resend Action"
       add_tracking: "Add Tracking Number"
-      add_tracking_title: "Thank you enter your tracking number"
+      add_tracking_title: "Please enter your tracking number"
       check_resend_action: "Do you really want to send the following action: %{action}?"

@@ -93,7 +93,7 @@ class LengowConfiguration extends Configuration
                     'shop'          => true,
                     'label'         => $locale->t('lengow_setting.lengow_export_out_stock_title'),
                     'legend'        => $locale->t('lengow_setting.lengow_export_out_stock_legend'),
-                    'default_value' => false
+                    'default_value' => true
                 ),
                 'LENGOW_EXPORT_FORMAT' => array(
                     'type'          => 'select',

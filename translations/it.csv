@@ -50,10 +50,6 @@ status.screen.upgrade_account_button|Ok, sono pronto per iscrivermi!
 status.screen.refresh_action|Aggiorna il mio account
 product.screen.nb_exported|prodotto esportato
 product.screen.nb_available|prodotto disponibile
-product.screen.include_variation|Includi prodotto varianti
-product.screen.include_variation_support|Usa questa opzione se vuoi esportare tutto il tuo catalogo con varianti
-product.screen.include_out_of_stock|Includi Prodotti con Stock 0 
-product.screen.include_out_of_stock_support|Attiva questa opzione si se volete esportare i prodotti il cui stock é 0
 product.screen.include_specific_product|Includi prodotto specifico 
 product.screen.include_specific_product_support|Usa questa opzione per selezionare i fuoi prodotti uno alla volta
 product.screen.no_result_found|Scusa, nessun risultato trovato. <br />Perfavore prova a cambiare la tua ricerca.
@@ -238,7 +234,7 @@ lengow_setting.lengow_global_token_title|Lengow global Token
 lengow_setting.lengow_authorized_ip_title|IP Autorizzati
 lengow_setting.lengow_authorized_ip_legend|IP Autorizzati separati da:
 lengow_setting.lengow_tracking_enabled_title|Attiva il tracking Lengow
-lengow_setting.lengow_tracking_id_title|ID Tracciamento Lengow
+lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_order_stat_title|Stato ordini
 lengow_setting.lengow_order_stat_update_title|Statistiche ordini
 lengow_setting.lengow_account_status_title|Account status
@@ -290,6 +286,7 @@ lengow_log.exception.product_is_not_listed|prodotto %{product_id} non è inserit
 lengow_log.exception.unable_to_save_order|Impossibile salvare PrestaShop ordine  - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossibile salvare PrestaShop pagamento ordine
 lengow_log.exception.timeout_api|Chiamata API bloccata da timeout
+lengow_log.exception.error_curl|Curl errore %{error_code} - %{error_message}
 lengow_log.mail_report.order|Ordine %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|nessun errore nella mail di report https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Importazione Lengow
@@ -308,4 +305,6 @@ admin.order.cancel_and_reimport|Reimporta ordine
 admin.order.check_cancel_and_reimport|Vuoi veramente re-importare l'ordine?
 admin.order.synchronize_id|Sincronizza ID
 admin.order.resend_action|Re-invia Azione
+admin.order.add_tracking|Aggiungi Numero Tracking
+admin.order.add_tracking_title|Per favore aggiungi Numero Tracking
 admin.order.check_resend_action|Vuoi veramente inviare di nuovo questa azione: %{action}?

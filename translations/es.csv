@@ -50,10 +50,6 @@ status.screen.upgrade_account_button|Está bien, estoy listo para suscribirme!
 status.screen.refresh_action|Refrescar mi cuenta
 product.screen.nb_exported|productos exportados
 product.screen.nb_available|productos disponibles
-product.screen.include_variation|Incluir las variaciones de productos
-product.screen.include_variation_support|Utiliza esta opción si deseas exportar la totalidad de tu catálogo con variaciones
-product.screen.include_out_of_stock|Incluir los productos sin stock
-product.screen.include_out_of_stock_support|Active esta opción si quieres exportar los productos sin stock
 product.screen.include_specific_product|Incluir los productos seleccionados
 product.screen.include_specific_product_support|Active esta opción para hacer la selección de tus productos a exportar
 product.screen.no_result_found|Lo sentimos, no hay resultados para su búsqueda. <br />¿Tal vez si intentas modificar tu solicitud?
@@ -290,6 +286,7 @@ lengow_log.exception.product_is_not_listed|producto %{product_id} no aparece com
 lengow_log.exception.unable_to_save_order|no se ha podido guardar el pedido PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
 lengow_log.exception.timeout_api|la llamada a la API ha sido bloqueada a causa del tiempo de espera
+lengow_log.exception.error_curl|Curl error %{error_code} - %{error_message}
 lengow_log.mail_report.order|Pedido %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|ningún mensaje de error , póngase en contacto con el support via https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Import Lengow
@@ -308,4 +305,6 @@ admin.order.cancel_and_reimport|Volver a importar el pedido
 admin.order.check_cancel_and_reimport|¿Realmente desea volver a importar el pedido?
 admin.order.synchronize_id|Sincronizar ID
 admin.order.resend_action|Reenvie la accion
+admin.order.add_tracking|Añadir el tracking número
+admin.order.add_tracking_title|Por favor añade el tracking número
 admin.order.check_resend_action|¿Realmente desea enviar la siguiente acción: %{action} ?

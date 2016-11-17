@@ -72,7 +72,6 @@
         });
 
         $('#lengow_order_wrapper').on('click', '.lengow_selection', function () {
-            var id_shop = $(this).parents('table').attr('id').split('_')[2];
             $('#lengow_order_wrapper .lengow_toolbar a').show();
 
             if ($(this).prop('checked')) {
@@ -97,7 +96,7 @@
             var id = $(this).data('order');
             var type= $(this).data('type');
             var td = $(this).parents('td');
-            var tr_id = $(this).parents('tr').attr('id');
+            var trId = $(this).parents('tr').attr('id');
             var select = $(this).parents('tr').find('.lengow_selection').prop('checked');
             var data = {action: action, id: id, type: type};
 
@@ -110,7 +109,7 @@
                 reload_table_js();
 
                 if (select) {
-                    $('#'+tr_id).addClass('select').find('.lengow_selection').prop('checked', true);
+                    $('#'+trId).addClass('select').find('.lengow_selection').prop('checked', true);
                 }
 
                 if ($('.lengow_status .fa-spin').length == 0) {

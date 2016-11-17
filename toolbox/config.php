@@ -42,6 +42,9 @@ switch ($action) {
         $form->postProcess(
             array(
                 'LENGOW_SHOP_ACTIVE',
+                'LENGOW_EXPORT_VARIATION_ENABLED',
+                'LENGOW_EXPORT_OUT_STOCK',
+                'LENGOW_EXPORT_SELECTION_ENABLED',
                 'LENGOW_EXPORT_FILE_ENABLED',
                 'LENGOW_IMPORT_FORCE_PRODUCT',
                 'LENGOW_IMPORT_PROCESSING_FEE',
@@ -50,7 +53,7 @@ switch ($action) {
                 'LENGOW_IMPORT_STOCK_SHIP_MP',
                 'LENGOW_REPORT_MAIL_ENABLED',
                 'LENGOW_IMPORT_SINGLE_ENABLED',
-                'LENGOW_TRACKING_ENABLED'
+                'LENGOW_TRACKING_ENABLED',
             )
         );
         Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
@@ -99,7 +102,10 @@ require 'views/header.php';
                     'LENGOW_SHOP_ACTIVE',
                     'LENGOW_ACCOUNT_ID',
                     'LENGOW_ACCESS_TOKEN',
-                    'LENGOW_SECRET_TOKEN'
+                    'LENGOW_SECRET_TOKEN',
+                    'LENGOW_EXPORT_VARIATION_ENABLED',
+                    'LENGOW_EXPORT_OUT_STOCK',
+                    'LENGOW_EXPORT_SELECTION_ENABLED',
                 )
             );
             echo '</fieldset>';
@@ -124,7 +130,7 @@ require 'views/header.php';
                 'LENGOW_IMPORT_DAYS',
                 'LENGOW_IMPORT_SHIP_MP_ENABLED',
                 'LENGOW_IMPORT_STOCK_SHIP_MP',
-                'LENGOW_IMPORT_SINGLE_ENABLED'
+                'LENGOW_IMPORT_SINGLE_ENABLED',
             )
         );
         echo '</fieldset>';

@@ -50,10 +50,6 @@ status.screen.upgrade_account_button|It's ok, I'm ready to subscribe!
 status.screen.refresh_action|Refresh my account
 product.screen.nb_exported|products exported
 product.screen.nb_available|products available
-product.screen.include_variation|Include product variations
-product.screen.include_variation_support|Use this option if you want to export all of your catalogue with variations
-product.screen.include_out_of_stock|Include out of stock products
-product.screen.include_out_of_stock_support|Use this option if you want to export out of stock products
 product.screen.include_specific_product|Include specific products
 product.screen.include_specific_product_support|Use this option to select your products one by one
 product.screen.no_result_found|Sorry, no results found for your search.<br />Please try changing your request.
@@ -310,7 +306,7 @@ admin.order.check_cancel_and_reimport|Do you really want to re-import the order?
 admin.order.synchronize_id|Synchronize ID
 admin.order.resend_action|Resend Action
 admin.order.add_tracking|Add Tracking Number
-admin.order.add_tracking_title|Thank you enter your tracking number
+admin.order.add_tracking_title|Please enter your tracking number
 admin.order.check_resend_action|Do you really want to send the following action: %{action}?
 log.install.install_tab|install tab %{class_name}
 log.install.uninstall_tab|uninstall tab %{class_name}
@@ -446,7 +442,11 @@ toolbox.index.last_import_none|none
 toolbox.index.last_import_cron|Cron
 toolbox.index.last_import_manual|manual
 toolbox.index.export_information|Export information (by shop)
+toolbox.index.shop_active_in_cms|Shop enabled in Prestashop
 toolbox.index.shop_active|Shop followed by Lengow
+toolbox.index.export_variation_enabled|Include product variations
+toolbox.index.export_out_stock_enabled|Include out of stock products
+toolbox.index.export_selection_enabled|Include specific products
 toolbox.index.shop_export_token|Export token
 toolbox.index.shop_last_export|Last export
 toolbox.index.shop_product_total|Products available in the shop

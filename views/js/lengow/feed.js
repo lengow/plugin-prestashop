@@ -21,8 +21,6 @@
 (function ($) {
     $(document).ready(function () {
 
-
-
         function checkShop() {
             var status = $('.lengow_check_shop');
             var href = status.attr('data-href');
@@ -60,11 +58,11 @@
         /**
          * Refresh total product/product exported
          * @param data Number of products exported and total products
-         * @param id_shop Shop id
+         * @param idShop Shop id
          */
-        function reloadTotal(data, id_shop) {
-            lengow_jquery("#block_" + id_shop + " .lengow_exported").html(data['total_export_product']);
-            lengow_jquery("#block_" + id_shop + " .lengow_total").html(data['total_product']);
+        function reloadTotal(data, idShop) {
+            lengow_jquery("#block_" + idShop + " .lengow_exported").html(data['total_export_product']);
+            lengow_jquery("#block_" + idShop + " .lengow_total").html(data['total_product']);
         }
 
         checkShop();
@@ -72,18 +70,18 @@
         $('.lgw-container').on('change', '.lengow_switch_option', function () {
             var href = $(this).attr('data-href');
             var action = $(this).attr('data-action');
-            var id_shop = $(this).attr('data-id_shop');
+            var idShop = $(this).attr('data-id_shop');
             var state = $(this).prop('checked');
             var data = {
                 state: state ? 1 : 0,
                 action: action,
-                id_shop: id_shop
+                id_shop: idShop
             };
 
             $.getJSON(href, data, function(content) {
-                var selector = lengow_jquery('#block_' + id_shop + ' .lengow_feed_block_footer_content');
+                var selector = lengow_jquery('#block_' + idShop + ' .lengow_feed_block_footer_content');
 
-                reloadTotal(content, id_shop);
+                reloadTotal(content, idShop);
 
                 if (content['state'] != null) {
                     if (content['state'] === true) {
@@ -98,18 +96,18 @@
          $('.lgw-container').on('change', '.lengow_switch_product', function () {
             var href = $(this).attr('data-href');
             var action = $(this).attr('data-action');
-            var id_shop = $(this).attr('data-id_shop');
-            var id_product = $(this).attr('data-id_product');
+            var idShop = $(this).attr('data-id_shop');
+            var idProduct = $(this).attr('data-id_product');
             var state = $(this).prop('checked');
             var data = {
-                 state: state ? 1 : 0,
-                 action: action,
-                 id_shop: id_shop,
-                 id_product: id_product
+                state: state ? 1 : 0,
+                action: action,
+                id_shop: idShop,
+                id_product: idProduct
             };
 
              $.getJSON(href, data, function(content) {
-                 reloadTotal(content, id_shop);
+                 reloadTotal(content, idShop);
              });
         });
 
@@ -119,27 +117,27 @@
                 return false;
             }
             var href = $(this).attr('data-href');
-            var id_shop = $(this).parents('.lgw-pagination').attr('id').split('_')[2];
+            var idShop = $(this).parents('.lgw-pagination').attr('id').split('_')[2];
 
-            $('#lengow_feed_wrapper #form_table_shop_' + id_shop + ' input[name="p"]').val($(this).attr('data-page'));
-            $('#lengow_feed_wrapper #form_table_shop_' + id_shop).submit();
+            $('#lengow_feed_wrapper #form_table_shop_' + idShop + ' input[name="p"]').val($(this).attr('data-page'));
+            $('#lengow_feed_wrapper #form_table_shop_' + idShop).submit();
             return false;
         });
 
         $('#lengow_feed_wrapper').on('click', '.lengow_form_table .table_order', function () {
-            var id_shop = $(this).parents('table').attr('id').split('_')[2];
-            $('#lengow_feed_wrapper #form_table_shop_' + id_shop + ' input[name="order_value"]').val($(this).attr('data-order'));
-            $('#lengow_feed_wrapper #form_table_shop_' + id_shop + ' input[name="order_column"]').val($(this).attr('data-column'));
-            $('#lengow_feed_wrapper #form_table_shop_' + id_shop).submit();
+            var idShop = $(this).parents('table').attr('id').split('_')[2];
+            $('#lengow_feed_wrapper #form_table_shop_' + idShop + ' input[name="order_value"]').val($(this).attr('data-order'));
+            $('#lengow_feed_wrapper #form_table_shop_' + idShop + ' input[name="order_column"]').val($(this).attr('data-column'));
+            $('#lengow_feed_wrapper #form_table_shop_' + idShop).submit();
             return false;
         });
 
         // UPDATE BY INPUT
 
         var typingTimer;
-        var id_shop;
+        var idShop;
         $('#lengow_feed_wrapper').on('keyup', 'thead input[type="text"]', function () {
-            id_shop = $(this).closest('table').attr('id').split('_')[2];
+            idShop = $(this).closest('table').attr('id').split('_')[2];
             clearTimeout(typingTimer);
             typingTimer = setTimeout(doneTyping, 750);
         });
@@ -147,17 +145,17 @@
             clearTimeout(typingTimer);
         });
         function doneTyping (){
-            $('#lengow_feed_wrapper #form_table_shop_' + id_shop).submit();
+            $('#lengow_feed_wrapper #form_table_shop_' + idShop).submit();
         }
 
         $('#lengow_feed_wrapper').on('submit', '.lengow_form_table', function () {
             var href = $(this).attr('data-href');
-            var id_shop = $(this).attr('id').split('_')[3];
+            var idShop = $(this).attr('id').split('_')[3];
             var form = $(this).serialize();
             var url = href + "&" + form;
             var data = {
                 action: 'load_table',
-                id_shop: id_shop
+                id_shop: idShop
             };
 
             $.getJSON(url, data, function(content) {
@@ -172,27 +170,27 @@
             return false;
         });
         $('#lengow_feed_wrapper').on('click', '.lengow_select_all', function () {
-            var id_shop = $(this).attr('id').split('_')[2];
+            var idShop = $(this).attr('id').split('_')[2];
             if ($(this).prop('checked')) {
-                $('#table_shop_' + id_shop + ' tbody .lengow_selection').prop('checked', true);
-                $('#table_shop_' + id_shop + ' tbody tr').addClass('select');
-                $('#block_' + id_shop + ' .lengow_toolbar a').show();
-                $('#block_' + id_shop + ' .lengow_toolbar .lengow_select_all_shop').show();
+                $('#table_shop_' + idShop + ' tbody .lengow_selection').prop('checked', true);
+                $('#table_shop_' + idShop + ' tbody tr').addClass('select');
+                $('#block_' + idShop + ' .lengow_toolbar a').show();
+                $('#block_' + idShop + ' .lengow_toolbar .lengow_select_all_shop').show();
             } else {
-                $('#table_shop_' + id_shop + ' tbody .lengow_selection').prop('checked', false);
-                $('#table_shop_' + id_shop + ' tbody tr').removeClass('select');
-                $('#block_' + id_shop + ' .lengow_toolbar a').hide();
-                $('#block_' + id_shop + ' .lengow_toolbar .lengow_select_all_shop').hide();
+                $('#table_shop_' + idShop + ' tbody .lengow_selection').prop('checked', false);
+                $('#table_shop_' + idShop + ' tbody tr').removeClass('select');
+                $('#block_' + idShop + ' .lengow_toolbar a').hide();
+                $('#block_' + idShop + ' .lengow_toolbar .lengow_select_all_shop').hide();
             }
         });
         $('#lengow_feed_wrapper').on('click', '.lengow_selection', function () {
-            var id_shop = $(this).parents('table').attr('id').split('_')[2];
-            $('#block_' + id_shop + ' .lengow_toolbar a').show();
+            var idShop = $(this).parents('table').attr('id').split('_')[2];
+            $('#block_' + idShop + ' .lengow_toolbar a').show();
 
             if ($(this).prop('checked')) {
                 $(this).parents('tr').addClass('select');
             } else {
-                $('#block_' + id_shop + ' .lengow_toolbar .lengow_select_all_shop input').prop('checked', false);
+                $('#block_' + idShop + ' .lengow_toolbar .lengow_select_all_shop input').prop('checked', false);
                 $(this).parents('tr').removeClass('select');
 
             }
@@ -203,39 +201,39 @@
                 }
             });
             if (!findProductSelected) {
-                $('#block_' + id_shop + ' .lengow_toolbar a').hide();
+                $('#block_' + idShop + ' .lengow_toolbar a').hide();
             }
         });
         $('#lengow_feed_wrapper').on('click', '.lengow_add_to_export, .lengow_remove_from_export', function () {
             var href = $(this).attr('data-href');
-            var id_shop = $(this).attr('data-id_shop');
+            var idShop = $(this).attr('data-id_shop');
             var message = $(this).attr('data-message');
             var action = $(this).attr('data-action');
-            var export_action = $(this).attr('data-export-action');
-            var form = $('#form_table_shop_' + id_shop).serialize();
+            var exportAction = $(this).attr('data-export-action');
+            var form = $('#form_table_shop_' + idShop).serialize();
             var url = href + "&" + form;
-            var check = $('#select_all_shop_' + id_shop).prop('checked');
+            var check = $('#select_all_shop_' + idShop).prop('checked');
             var data = {
                 action: action,
-                id_shop: id_shop,
+                id_shop: idShop,
                 select_all: check,
-                export_action: export_action
+                export_action: exportAction
             };
             if (!check || (check && confirm(message))) {
                 $.getJSON(url, data, function(content) {
                     if (content['message']) {
                         alert(content['message']);
                     } else {
-                        $.each(content['product_id'], function(idx, p_id) {
-                            if (export_action == 'lengow_add_to_export') {
-                                lengow_jquery("#shop_" + id_shop + "_" + p_id + " .lgw-switch").addClass("checked");
+                        $.each(content['product_id'], function(idx, productId) {
+                            if (exportAction == 'lengow_add_to_export') {
+                                lengow_jquery("#shop_" + idShop + "_" + productId + " .lgw-switch").addClass("checked");
                                 lengow_jquery(".lengow_switch_product").prop("checked", true);
                             } else {
-                                lengow_jquery("#shop_" + id_shop + "_" + p_id + " .lgw-switch").removeClass("checked");
+                                lengow_jquery("#shop_" + idShop + "_" + productId + " .lgw-switch").removeClass("checked");
                                 lengow_jquery(".lengow_switch_product").prop("checked", false);
                             }
                         });
-                        reloadTotal(content, id_shop);
+                        reloadTotal(content, idShop);
                     }
                 });
             }
@@ -243,16 +241,18 @@
         });
 
         $('#lengow_feed_wrapper').on('click', '.lengow_select_all_shop input', function () {
-            var id_shop = $('.lengow_select_all').attr('id').split('_')[2];
+            var idShop = $('.lengow_select_all').attr('id').split('_')[2];
             if ($(this).prop('checked')) {
-                $('#table_shop_' + id_shop + ' tbody .lengow_selection').prop('checked', true);
+                $('#table_shop_' + idShop + ' tbody .lengow_selection').prop('checked', true);
                 $('.lengow_selection').parents('tr').addClass('select');
             }
         });
 
         $('.lengow_table').on('click', '.table_row td:not(.no-link)', function(){
             var url = $(this).closest('.table_row').find('.feed_name a').attr('href');
-            window.open(url, '_blank');
+            if (url) {
+               window.open(url, '_blank'); 
+            };
             return false;
         });
     });

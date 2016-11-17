@@ -55,49 +55,6 @@
                     </p>
                 </div>
                 <hr>
-                <div class="lgw-switch {if $shop['option_variation'] == 1} checked{/if}">
-                    <label>
-                        <div><span></span>
-                            <input
-                                type="checkbox"
-                                data-size="mini"
-                                data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
-                                data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
-                                name="lengow_export_selection"
-                                class="lengow_switch_option"
-                                data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}"
-                                data-action="change_option_product_variation"
-                                data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
-                                value="1" {if $shop['option_variation'] == 1} checked="checked"{/if}
-                                {if isset($toolbox) && $toolbox} disabled {/if}
-                            >
-                        </div> {$locale->t('product.screen.include_variation')|escape:'htmlall':'UTF-8'}
-                    </label>
-                </div>
-                <i
-                    class="fa fa-info-circle lengow_link_tooltip"
-                    title="{$locale->t('product.screen.include_variation_support')|escape:'htmlall':'UTF-8'}"></i><br>
-                <div class="lgw-switch {if $shop['option_product_out_of_stock'] == 1} checked{/if}">
-                    <label>
-                        <div><span></span>
-                            <input
-                                type="checkbox"
-                                data-size="mini"
-                                data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
-                                data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
-                                name="lengow_export_selection"
-                                class="lengow_switch_option"
-                                data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}"
-                                data-action="change_option_product_out_of_stock"
-                                data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
-                                value="1" {if $shop['option_product_out_of_stock'] == 1} checked="checked"{/if}
-                                {if isset($toolbox) && $toolbox} disabled {/if}
-                            >
-                        </div> {$locale->t('product.screen.include_out_of_stock')|escape:'htmlall':'UTF-8'}
-                    </label>
-                </div>
-                <i class="fa fa-info-circle lengow_link_tooltip"
-                    title="{$locale->t('product.screen.include_out_of_stock_support')|escape:'htmlall':'UTF-8'}"></i><br>
                 <div class="lgw-switch {if $shop['option_selected'] == 1} checked{/if}">
                     <label>
                         <div><span></span>
