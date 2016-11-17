@@ -51,65 +51,66 @@ if (!LengowMain::checkWebservicesAccess($token)) {
     }
 }
 
-// get sync action if exists
-$sync = false;
-if (Tools::getIsset('sync')) {
-    if (Tools::strlen((string)Tools::getValue('sync')) > 0) {
-        $sync = (string)Tools::getValue('sync');
+// get all shop informations
+if (Tools::getIsset('get_sync') && (bool)Tools::getValue('get_sync')) {
+    echo Tools::JsonEncode(LengowSync::getSyncData());
+} else {
+    // get sync action if exists
+    $sync = false;
+    if (Tools::getIsset('sync')) {
+        if (Tools::strlen((string)Tools::getValue('sync')) > 0) {
+            $sync = (string)Tools::getValue('sync');
+        }
     }
-}
-
-// sync orders between Lengow and Prestashop
-if (!$sync || $sync === 'order') {
-    // array of params for import order
-    $params = array();
-    // check if the GET parameters are availables
-    if (Tools::getIsset('force_product')) {
-        $params['force_product'] = (bool)Tools::getValue('force_product');
+    // sync orders between Lengow and Prestashop
+    if (!$sync || $sync === 'order') {
+        // array of params for import order
+        $params = array();
+        // check if the GET parameters are availables
+        if (Tools::getIsset('force_product')) {
+            $params['force_product'] = (bool)Tools::getValue('force_product');
+        }
+        if (Tools::getIsset('preprod_mode')) {
+            $params['preprod_mode'] = (bool)Tools::getValue('preprod_mode');
+        }
+        if (Tools::getIsset('log_output')) {
+            $params['log_output'] = (bool)Tools::getValue('log_output');
+        }
+        if (Tools::getIsset('days') && is_numeric(Tools::getValue('days'))) {
+            $params['days'] = (int)Tools::getValue('days');
+        }
+        if (Tools::getIsset('limit') && is_numeric(Tools::getValue('limit'))) {
+            $params['limit'] = (int)Tools::getValue('limit');
+        }
+        if (Tools::getIsset('marketplace_sku')) {
+            $params['marketplace_sku'] = (string)Tools::getValue('marketplace_sku');
+        }
+        if (Tools::getIsset('marketplace_name')) {
+            $params['marketplace_name'] = (string)Tools::getValue('marketplace_name');
+        }
+        if (Tools::getIsset('delivery_address_id')) {
+            $params['delivery_address_id'] = (int)Tools::getValue('delivery_address_id');
+        }
+        if (Tools::getIsset('shop_id') && is_numeric(Tools::getValue('shop_id'))) {
+            $params['shop_id'] = (int)Tools::getValue('shop_id');
+        }
+        $params['type'] = 'cron';
+        // import orders
+        $import = new LengowImport($params);
+        $import->exec();
     }
-    if (Tools::getIsset('preprod_mode')) {
-        $params['preprod_mode'] = (bool)Tools::getValue('preprod_mode');
+    // sync actions between Lengow and Prestashop
+    if (!$sync || $sync === 'action') {
+        LengowAction::checkFinishAction();
+        LengowAction::checkActionNotSent();
     }
-    if (Tools::getIsset('log_output')) {
-        $params['log_output'] = (bool)Tools::getValue('log_output');
+    // sync options between Lengow and Prestashop
+    if (!$sync || $sync === 'option') {
+        LengowSync::setCmsOption();
     }
-    if (Tools::getIsset('days') && is_numeric(Tools::getValue('days'))) {
-        $params['days'] = (int)Tools::getValue('days');
+    // sync option is not valid
+    if ($sync && ($sync !== 'order' && $sync !== 'action' && $sync !== 'option')) {
+        header('HTTP/1.1 400 Bad Request');
+        die('Action: '.$sync.' is not a valid action');
     }
-    if (Tools::getIsset('limit') && is_numeric(Tools::getValue('limit'))) {
-        $params['limit'] = (int)Tools::getValue('limit');
-    }
-    if (Tools::getIsset('marketplace_sku')) {
-        $params['marketplace_sku'] = (string)Tools::getValue('marketplace_sku');
-    }
-    if (Tools::getIsset('marketplace_name')) {
-        $params['marketplace_name'] = (string)Tools::getValue('marketplace_name');
-    }
-    if (Tools::getIsset('delivery_address_id')) {
-        $params['delivery_address_id'] = (int)Tools::getValue('delivery_address_id');
-    }
-    if (Tools::getIsset('shop_id') && is_numeric(Tools::getValue('shop_id'))) {
-        $params['shop_id'] = (int)Tools::getValue('shop_id');
-    }
-    $params['type'] = 'cron';
-    // import orders
-    $import = new LengowImport($params);
-    $import->exec();
-}
-
-// sync actions between Lengow and Prestashop
-if (!$sync || $sync === 'action') {
-    LengowAction::checkFinishAction();
-    LengowAction::checkActionNotSent();
-}
-
-// sync options between Lengow and Prestashop
-if (!$sync || $sync === 'option') {
-    LengowSync::setCmsOption();
-}
-
-// sync option is not valid
-if ($sync && ($sync !== 'order' && $sync !== 'action' && $sync !== 'option')) {
-    header('HTTP/1.1 400 Bad Request');
-    die('Action: '.$sync.' is not a valid action');
 }
