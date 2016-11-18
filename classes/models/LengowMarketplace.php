@@ -228,9 +228,9 @@ class LengowMarketplace
     public function getDefaultValue($name)
     {
         if (array_key_exists($name, $this->argValues)) {
-            $defautlValue = $this->argValues[$name]['default_value'];
-            if (!empty($defautlValue)) {
-                return $defautlValue;
+            $defaultValue = $this->argValues[$name]['default_value'];
+            if (!empty($defaultValue)) {
+                return $defaultValue;
             }
         }
         return false;
@@ -408,8 +408,8 @@ class LengowMarketplace
                         $params[$arg] = date('c');
                         break;
                     default:
-                        $defautlValue = $this->getDefaultValue((string)$arg);
-                        $paramValue = $defautlValue ? $defautlValue : $arg.' not available';
+                        $defaultValue = $this->getDefaultValue((string)$arg);
+                        $paramValue = $defaultValue ? $defaultValue : $arg.' not available';
                         $params[$arg] = $paramValue;
                         break;
                 }
