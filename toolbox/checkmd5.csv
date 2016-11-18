@@ -45,7 +45,7 @@
 /classes/models/LengowConnector.php|607158f1879936f4a7f76d197a8cc570
 /classes/models/LengowException.php|c7961cca967225bbcc127f32663afa82
 /classes/models/LengowCart.php|ff1a63dab722918e56af4caf68617ed7
-/classes/models/LengowMarketplace.php|f6e86fa24020b7a696a8289eb4260dfd
+/classes/models/LengowMarketplace.php|23f62943b46e25b8e24d24800eb2b48c
 /classes/models/LengowAddress.php|65ee610172efade5fed63c75940d5cd3
 /classes/models/LengowCarrierCountry.php|435257ba775dfc588b72e93a39e1c94e
 /classes/models/LengowSpecificPrice.php|fc1f5e0e227cca82cbd70063ec45b75f
@@ -390,7 +390,7 @@
 /views/templates/admin/lengow_home/helpers/view/view.tpl|61484443bedb44484da1acda81f9aadf
 /views/templates/admin/lengow_home/helpers/view/status.tpl|b3fc27749a547d37971f30e0dcfeff1c
 /views/templates/admin/lengow_home/helpers/view/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/templates/admin/lengow_home/helpers/view/new.tpl|ced9d188e6b6195399b22415c3e120b3
+/views/templates/admin/lengow_home/helpers/view/new.tpl|debfc21473e13ddc53f3eb4d47250bff
 /views/templates/admin/lengow_home/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_order/layout.tpl|fe6327cc36a4e40b01b293cde4d57c30
 /views/templates/admin/lengow_order/helpers/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
