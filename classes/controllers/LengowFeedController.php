@@ -117,6 +117,7 @@ class LengowFeedController extends LengowController
                     break;
                 case 'check_shop':
                     $shops = LengowShop::findAll(true);
+                    $link = new LengowLink();
                     $result = array();
                     foreach ($shops as $idShop) {
                         $checkShop = LengowSync::checkSyncShop($idShop['id_shop']);
@@ -137,8 +138,10 @@ class LengowFeedController extends LengowController
                             if (!$this->toolbox) {
                                 $data['tooltip'] = $this->locale->t('product.screen.lengow_shop_no_sync');
                                 $data['original_title'] = $this->locale->t('product.screen.sync_your_shop');
-                                $data['header_title'] = '<a href="https://my.lengow.io/company/store" target="_blank">
-                                    <span>'.$this->locale->t('product.screen.sync_your_shop') . '</span></a>';
+                                $data['header_title'] = '<a href="'
+                                    .$link->getAbsoluteAdminLink('AdminLengowHome')
+                                    .'&isSync=true">
+                                    <span>'.$this->locale->t('product.screen.sync_your_shop').'</span></a>';
                             } else {
                                 $data['header_title'] = $this->locale->t('product.screen.lengow_shop_no_sync');
                             }
