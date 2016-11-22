@@ -56,7 +56,7 @@
 /classes/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/controllers/LengowController.php|0f15400d36e6318a9f227722004b43d6
 /classes/controllers/LengowHomeController.php|a9ce81d77f6dce26410215b9c3b1512f
-/classes/controllers/LengowFeedController.php|56e1e8b9d3026fdda8ad9af779f714d9
+/classes/controllers/LengowFeedController.php|0994ba5ef5d05cde12b616c61d3c1006
 /classes/controllers/LengowOrderController.php|14cbcc67f0413a32c13795428bdc5e9d
 /classes/controllers/LengowLegalsController.php|96a0b781ded3f2b48dc2c838da6b3364
 /classes/controllers/LengowOrderSettingController.php|3814853533684fdc1957a5b88eb218c0
@@ -456,7 +456,7 @@
 /views/css/lengow-layout.css|5e02d262ee42ed2980d9d8a8041da819
 /views/css/bootstrap-datepicker.css|d5260247b97663d887f4efe8ec894353
 /views/css/select2.css|8969ac4614d64a13dfc32e1eb4e731f7
-/views/css/lengow-pages.css|0b481aab45133bc2806adf51a80eb97b
+/views/css/lengow-pages.css|d4e21b6e85322b97307bd685f32d98bd
 /views/css/lengow_bootstrap_14.css|ab53ffab507aca8386902d748952c60d
 /views/css/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/fonts/fontawesome-webfont.ttf|a3de2170e4e9df77161ea5d3f31b2668
@@ -472,7 +472,7 @@
 /views/js/select2.js|2565df263f3a062418fb9ef1202d7e4e
 /views/js/jquery.1.12.0.min.js|e63f1452800f328881a789956054aca3
 /views/js/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/js/lengow/home.js|6145fb2ef8bec4510e5b1ec92ce6f5fd
+/views/js/lengow/home.js|c2b1f44b693cbb9b12abf2f4232f3b01
 /views/js/lengow/admin.js|fc5a838608f40d650a76e7d7c466f298
 /views/js/lengow/main_setting.js|04ca1432d83324754c6ee85e7ed672c3
 /views/js/lengow/order.js|5ce58add01c98c730b356b4ba755c98a
