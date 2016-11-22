@@ -540,8 +540,8 @@ class LengowOrder extends Order
                     && count($orderLogs) == 0
                     && !array_key_exists($result['id_order'], $unsentOrders)
                 ) {
-                    $actionType = $result['state'] == LengowMain::getOrderState('canceled') ? 'cancel' : 'ship';
-                    $unsentOrders[$result['id_order']] = $actionType;
+                    $action = $result['id_order_state'] == LengowMain::getOrderState('canceled') ? 'cancel' : 'ship';
+                    $unsentOrders[$result['id_order']] = $action;
                 }
             }
             if (count($unsentOrders) > 0) {

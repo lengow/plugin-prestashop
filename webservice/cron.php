@@ -27,7 +27,6 @@ require_once $currentDirectory.'config'.$sep.'config.inc.php';
 Configuration::set('PS_SHOP_ENABLE', true);
 require_once $currentDirectory.'init.php';
 require_once $currentDirectory.'modules'.$sep.'lengow'.$sep.'lengow.php';
-
 // check if Lengow is installed and enabled
 $lengow = new Lengow();
 if (!Module::isInstalled($lengow->name)) {
@@ -38,7 +37,6 @@ if (!Module::isInstalled($lengow->name)) {
     header('HTTP/1.1 400 Bad Request');
     die('Lengow module is not installed');
 }
-
 // check IP access and Token
 $token = Tools::getIsset('token') ? Tools::getValue('token') : '';
 if (!LengowMain::checkWebservicesAccess($token)) {
@@ -50,9 +48,8 @@ if (!LengowMain::checkWebservicesAccess($token)) {
         die('Unauthorized access for IP : ' . $_SERVER['REMOTE_ADDR']);
     }
 }
-
 // get all shop informations
-if (Tools::getIsset('get_sync') && (bool)Tools::getValue('get_sync')) {
+if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
     echo Tools::JsonEncode(LengowSync::getSyncData());
 } else {
     // get sync action if exists
