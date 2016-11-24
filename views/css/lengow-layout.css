@@ -5,6 +5,9 @@
 .lengow_body {
   background: #f7f7f7;
 }
+.cms-global{
+  padding: 100px 15px 30px;
+}
 
 .lengow_body .nobootstrap {
   background: transparent;
@@ -90,7 +93,6 @@
 /* SECTIONS */
 
 .lgw-content-section {
-  margin-bottom: 60px;
 }
 
 /* SPACING */
@@ -354,7 +356,7 @@ body.page-sidebar-closed .lengow-nav-bottom {
 }
 
 .lengow-nav .fa-2x {
-  font-size:1 8px;
+  font-size:18px;
   color: #858ca1;
   vertical-align: middle;
   transition: all 100ms ease;
@@ -445,6 +447,7 @@ body.page-sidebar-closed .lengow-nav-bottom {
 
 #lgw-footer {
   font-size: 12px;
+  padding-right:15px;
 }
 
 .page-sidebar #lgw-footer #content {

@@ -19,7 +19,6 @@
  *}
 
 <script type="text/javascript">$(document.body).addClass("adminlengowhome");</script>
-<div id="lengow_home_wrapper">
 {if $isNewMerchant || $isSync }
     {include file='./new.tpl'}
 {elseif ($merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] eq 0) || $merchantStatus['type'] == 'bad_payer'}
@@ -27,5 +26,4 @@
 {else}
     {include file='./connect.tpl'}
 {/if}
-</div>
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/home.js"></script>

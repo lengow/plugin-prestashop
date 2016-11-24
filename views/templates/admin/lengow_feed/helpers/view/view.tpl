@@ -18,71 +18,73 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<div class="lgw-container" id="lengow_feed_wrapper">
-    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
-        <div id="lgw-preprod" class="adminlengowfeed">
-            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
-        </div>
-    {/if}
-    {foreach from=$shopCollection item=shop}
-        <div class="lgw-box" id="block_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
-            <div class="lengow_shop_status">
-                <a href="#" class="lengow_check_shop lengow_check_shop_no_sync lengow_link_tooltip"
-                     data-original-title=""
-                     data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}">
-                </a>
-                <label class="lengow_shop_status_label">
-                </label>
+<div class="cms-global" id="lengow_feed_wrapper">
+    <div class="lgw-container">
+        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+            <div id="lgw-preprod" class="adminlengowfeed">
+                {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
             </div>
-            <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1&update_export_date=0"
-                class="lengow_export_feed lengow_link_tooltip"
-                data-original-title="{$locale->t('product.screen.button_download')|escape:'htmlall':'UTF-8'}"
-                target="_blank"><i class="fa fa-download"></i></a>
-            <h2 class="text-center catalog-title lengow_link_tooltip"
-                data-original-title="{$shop['shop']->name|escape:'htmlall':'UTF-8'} ({$shop['shop']->id|escape:'htmlall':'UTF-8'})
-                {$shop['shop']->domain|escape:'htmlall':'UTF-8'}">
-                {$shop['shop']->name|escape:'htmlall':'UTF-8'}
-            </h2>
-            <div class="text-center">
-                <div class="margin-standard text-center">
-                    <p class="products-exported">
-                        <span class="lengow_exported stats-big-value">{$shop['total_export_product']|escape:'htmlall':'UTF-8'}</span>
-                        {$locale->t('product.screen.nb_exported')|escape:'htmlall':'UTF-8'}
-                    </p>
-                    <p class="products-available small light">
-                        <span class="lengow_total stats-big-value">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span>
-                        {$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}
-                    </p>
-                </div>
-                <hr>
-                <div class="lgw-switch {if $shop['option_selected'] == 1} checked{/if}">
-                    <label>
-                        <div><span></span>
-                            <input
-                                type="checkbox"
-                                data-size="mini"
-                                data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
-                                data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
-                                name="lengow_export_selection"
-                                class="lengow_switch_option"
-                                data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}"
-                                data-action="change_option_selected"
-                                data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
-                                value="1" {if $shop['option_selected'] == 1} checked="checked"{/if}
-                                {if isset($toolbox) && $toolbox} disabled {/if}
-                            >
-                        </div> {$locale->t('product.screen.include_specific_product')|escape:'htmlall':'UTF-8'}
+        {/if}
+        {foreach from=$shopCollection item=shop}
+            <div class="lgw-box" id="block_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
+                <div class="lengow_shop_status">
+                    <a href="#" class="lengow_check_shop lengow_check_shop_no_sync lengow_link_tooltip"
+                         data-original-title=""
+                         data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}">
+                    </a>
+                    <label class="lengow_shop_status_label">
                     </label>
                 </div>
-                <i class="fa fa-info-circle lengow_link_tooltip"
-                   title="{$locale->t('product.screen.include_specific_product_support')|escape:'htmlall':'UTF-8'}"></i>
-            </div>
-            <div class="lengow_feed_block_footer">
-                <div class="lengow_feed_block_footer_content" style="{if !$shop['option_selected']}display:none;{/if}">
-                    {html_entity_decode($shop['list']|escape:'htmlall':'UTF-8')}
+                <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1&update_export_date=0"
+                    class="lengow_export_feed lengow_link_tooltip"
+                    data-original-title="{$locale->t('product.screen.button_download')|escape:'htmlall':'UTF-8'}"
+                    target="_blank"><i class="fa fa-download"></i></a>
+                <h2 class="text-center catalog-title lengow_link_tooltip"
+                    data-original-title="{$shop['shop']->name|escape:'htmlall':'UTF-8'} ({$shop['shop']->id|escape:'htmlall':'UTF-8'})
+                    {$shop['shop']->domain|escape:'htmlall':'UTF-8'}">
+                    {$shop['shop']->name|escape:'htmlall':'UTF-8'}
+                </h2>
+                <div class="text-center">
+                    <div class="margin-standard text-center">
+                        <p class="products-exported">
+                            <span class="lengow_exported stats-big-value">{$shop['total_export_product']|escape:'htmlall':'UTF-8'}</span>
+                            {$locale->t('product.screen.nb_exported')|escape:'htmlall':'UTF-8'}
+                        </p>
+                        <p class="products-available small light">
+                            <span class="lengow_total stats-big-value">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span>
+                            {$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}
+                        </p>
+                    </div>
+                    <hr>
+                    <div class="lgw-switch {if $shop['option_selected'] == 1} checked{/if}">
+                        <label>
+                            <div><span></span>
+                                <input
+                                    type="checkbox"
+                                    data-size="mini"
+                                    data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
+                                    data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
+                                    name="lengow_export_selection"
+                                    class="lengow_switch_option"
+                                    data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}"
+                                    data-action="change_option_selected"
+                                    data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
+                                    value="1" {if $shop['option_selected'] == 1} checked="checked"{/if}
+                                    {if isset($toolbox) && $toolbox} disabled {/if}
+                                >
+                            </div> {$locale->t('product.screen.include_specific_product')|escape:'htmlall':'UTF-8'}
+                        </label>
+                    </div>
+                    <i class="fa fa-info-circle lengow_link_tooltip"
+                       title="{$locale->t('product.screen.include_specific_product_support')|escape:'htmlall':'UTF-8'}"></i>
+                </div>
+                <div class="lengow_feed_block_footer">
+                    <div class="lengow_feed_block_footer_content" style="{if !$shop['option_selected']}display:none;{/if}">
+                        {html_entity_decode($shop['list']|escape:'htmlall':'UTF-8')}
+                    </div>
                 </div>
             </div>
-        </div>
-    {/foreach}
+        {/foreach}
+    </div>
 </div>
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/feed.js"></script>
