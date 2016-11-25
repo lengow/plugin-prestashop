@@ -91,7 +91,7 @@ class LengowLog extends LengowFile
                 'name'       => $match[1].'.txt'
             );
         }
-        return $logs;
+        return array_reverse($logs);
     }
 
     /**

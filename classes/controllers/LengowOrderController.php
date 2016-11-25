@@ -43,6 +43,14 @@ class LengowOrderController extends LengowController
         $this->context->smarty->assign('marketplaces', $marketplaces);
         $this->context->smarty->assign('days', $days);
         $this->context->smarty->assign('lengow_table', $this->buildTable());
+
+	    if (!LengowCarrier::isDefaultCarrierActive()) {
+		    $lengowLink = new LengowLink();
+		    $this->context->smarty->assign('notDefaultCarrier', $this->locale->t(
+			    'order.screen.no_carrier_warning_message',
+			    array('url' => $lengowLink->getAbsoluteAdminLink('AdminLengowOrderSetting'))
+		    ));
+	    }
         parent::display();
     }
 
@@ -251,15 +259,7 @@ class LengowOrderController extends LengowController
     public function assignWarningMessages()
     {
         $warningMessages = array();
-        $idDefaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
-        $defaultCarrier = LengowCarrier::getDefaultCarrier($idDefaultCountry);
         $lengowLink = new LengowLink();
-        if (!$defaultCarrier) {
-            $warningMessages[] = $this->locale->t(
-                'order.screen.no_carrier_warning_message',
-                array('url' => $lengowLink->getAbsoluteAdminLink('AdminLengowOrderSetting'))
-            );
-        }
         if (LengowConfiguration::get('LENGOW_IMPORT_SINGLE_ENABLED')) {
             $warningMessages[] = $this->locale->t('order.screen.import_single_warning_message');
         }

@@ -625,4 +625,15 @@ class LengowCarrier extends Carrier
         $db->delete(_DB_PREFIX_.'lengow_marketplace_carrier', 'id_country = '.(int)$idCountry);
         return $db;
     }
+
+	/**
+	 * Is default Carrier exist
+	 **
+	 * @return bool
+	 */
+	public static function isDefaultCarrierActive()
+	{
+		$idDefaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
+		return LengowCarrier::getDefaultCarrier($idDefaultCountry);
+	}
 }

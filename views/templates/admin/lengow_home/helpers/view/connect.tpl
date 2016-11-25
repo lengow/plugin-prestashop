@@ -55,7 +55,9 @@
                         <img src="/modules/lengow/views/img/home-orders.png" class="img-responsive">
                         <h2>
                             {$locale->t('dashboard.screen.orders_title')|escape:'htmlall':'UTF-8'}
-                            <span class="lgw-label lgw-label_red">{$total_pending_order|escape:'htmlall':'UTF-8'}</span>
+                            {if $total_pending_order > 0}
+                                <span class="lgw-label lgw-label_red">{$total_pending_order|escape:'htmlall':'UTF-8'}</span>
+                            {/if}
                         </h2>
                         <p>{$locale->t('dashboard.screen.orders_text')|escape:'htmlall':'UTF-8'}</p>
                     </div>
@@ -71,6 +73,7 @@
                 </a>
             </div>
         </div>
+        {if $stats['available']}
         <div class="lgw-box text-center">
             <div class="lgw-col-12 center-block">
                 <img src="/modules/lengow/views/img/picto-stats.png" class="img-responsive">
@@ -92,6 +95,7 @@
                 </a>
             </p>
         </div>
+        {/if}
         <div class="lgw-box">
             <h2>{$locale->t('dashboard.screen.some_help_title')|escape:'htmlall':'UTF-8'}</h2>
             <p>

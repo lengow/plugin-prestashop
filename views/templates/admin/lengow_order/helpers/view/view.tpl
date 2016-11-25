@@ -24,6 +24,11 @@
                 {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
+        {if $notDefaultCarrier}
+            <div class="lgw-box">
+                {html_entity_decode($notDefaultCarrier|escape:'htmlall':'UTF-8')}
+            </div>
+        {else}
         <div class="lgw-box">
             {if isset($toolbox) && $toolbox}
                 {include file='./header_toolbox.tpl'}
@@ -72,6 +77,7 @@
             </div>
             <!-- /TABLE -->
         </div>
+        {/if}
     </div>
 </div>
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/order.js"></script>

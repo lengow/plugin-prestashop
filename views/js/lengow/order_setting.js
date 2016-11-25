@@ -182,7 +182,7 @@ function addScoreCarrier(){
 
         // Submit form
 
-        $('#lengow_form_order_setting').submit(function( event ) {
+        $('.lengow_form').submit(function( event ) {
             event.preventDefault();
             var sendForm = true;
             var form = this;

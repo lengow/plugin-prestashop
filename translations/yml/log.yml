@@ -74,6 +74,7 @@ en:
       error_mondial_relay_not_found: "relay %{id_relay} could not be found"
       error_mondial_relay_missing_file: "missing file %{ps_module_dir}mondialrelay/classes/MRRelayDetail.php"
       error_colissimo_missing_file: "missing file %{ps_module_dir}socolissimo/classes/SCFields.php"
+      error_default_carrier_not_active: "import failed - default carrier not active"
       carrier_compatibility_ensured: "carrier compatibility ensured with carrier %{carrier_name}"
       order_synchronized_with_lengow: "order successfully synchronised with Lengow webservice (ORDER ID %{order_id})"
       order_not_synchronized_with_lengow: "WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})"

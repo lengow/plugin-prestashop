@@ -24,16 +24,7 @@
                 {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
-        <form method="POST">
-            <div class="lgw-box">
-                <input type="hidden" name="action" value="process">
-                <h2>{$locale->t('order_setting.screen.order_status_title')|escape:'htmlall':'UTF-8'}</h2>
-                <div>
-                    <p>{$locale->t('order_setting.screen.order_status_description')|escape:'htmlall':'UTF-8'}</p>
-                    <p>{html_entity_decode($matching|escape:'htmlall':'UTF-8')}</p>
-                </div>
-
-            </div>
+        <form class="lengow_form" method="POST">
             <div class="lgw-box">
                 <h2>{$locale->t('order_setting.screen.carrier_management_title')|escape:'htmlall':'UTF-8'}</h2>
                 <p>{$locale->t('order_setting.screen.carrier_management_description')|escape:'htmlall':'UTF-8'}</p>
@@ -55,6 +46,15 @@
                 <div class="select_country" style="display:none">
                     {include file='./select_country.tpl'}
                 </div>
+            </div>
+            <div class="lgw-box">
+                <input type="hidden" name="action" value="process">
+                <h2>{$locale->t('order_setting.screen.order_status_title')|escape:'htmlall':'UTF-8'}</h2>
+                <div>
+                    <p>{$locale->t('order_setting.screen.order_status_description')|escape:'htmlall':'UTF-8'}</p>
+                    <p>{html_entity_decode($matching|escape:'htmlall':'UTF-8')}</p>
+                </div>
+
             </div>
             <div class="lgw-box">
                 <h2>{$locale->t('order_setting.screen.import_setting_title')|escape:'htmlall':'UTF-8'}</h2>
