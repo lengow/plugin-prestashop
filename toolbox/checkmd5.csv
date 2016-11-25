@@ -17,10 +17,10 @@
 /classes/models/LengowImportOrder.php|468acb7a676f544ca867f2d2f1fa40ce
 /classes/models/LengowPaymentModule.php|e3e35493ecc49d67239bc7710fc9636a
 /classes/models/LengowCustomer.php|4dbb4c1dbfa441cbf242f6addae77c59
-/classes/models/LengowSync.php|c8ca6f009298470d2e2313422b40c840
+/classes/models/LengowSync.php|3c35dbc5348408b70d84a0b8c49689d6
 /classes/models/LengowCountry.php|5bbdcbb1cb8cac5201805d6d93dbb50d
 /classes/models/LengowHook.php|ddad731cbdcde8e096fc0d11a090aed2
-/classes/models/LengowImport.php|00dd9b2feb411f7e53b41ddec31888a9
+/classes/models/LengowImport.php|02cd9039ea6aa8c55344914042784961
 /classes/models/LengowFeed.php|7465eacbf9b2b65efdebd970c40d8066
 /classes/models/LengowCheck.php|e9e1b324a38c14196bc36ab64d7d2bdd
 /classes/models/LengowCron.php|a91c8a0ed5fa3594820d9e2506292964
@@ -28,13 +28,13 @@
 /classes/models/LengowInstall.php|778865149f30a6aa42b7e804c7f87eaf
 /classes/models/LengowOrderDetail.php|e025f3043dff57b93a135585557fbe6b
 /classes/models/LengowList.php|de7020cc8d919f5d5158208abe76d672
-/classes/models/LengowCarrier.php|e0766c4b622d816dbba9c409ebdf1fdb
+/classes/models/LengowCarrier.php|f1510a3155e9c5405d02a780ac3d9d61
 /classes/models/LengowTaxRule.php|2ef083d198bd59e1974c4855f58fe9b1
 /classes/models/LengowCurrency.php|35280e0bc82299e2d44ec623279ecc5a
 /classes/models/LengowMain.php|dba793e865e71aace86916f06e57d47a
-/classes/models/LengowLog.php|5564da6859e45610f7770b802a5606a6
+/classes/models/LengowLog.php|a8ba5db3131080c5ac465049766be005
 /classes/models/LengowGender.php|99286da6b6c6f6586d1ecff54c162cdf
-/classes/models/LengowOrder.php|17f291fb41a059aacb87527df5ef0b77
+/classes/models/LengowOrder.php|2205621aac466e4f5765b3f0a6119a1c
 /classes/models/LengowLink.php|f7677339b75b203ae3c7ecc04c5f0a96
 /classes/models/LengowExport.php|7f3a23d9efba965435aedf513a15b1dc
 /classes/models/LengowAction.php|fba8825da0a089b8afb65f50cb800ece
@@ -42,7 +42,7 @@
 /classes/models/LengowTranslation.php|e9daa51371898f0f17eb5b65e9f0421e
 /classes/models/LengowFile.php|7689bd90898245254bac0f15cc90a5be
 /classes/models/LengowShop.php|d77754ff64ffbdeb439984f9b6048cca
-/classes/models/LengowConnector.php|20155899bd0f89d48238e3c19143ffef
+/classes/models/LengowConnector.php|fa84cc009c41f88cc341b0333caeb80d
 /classes/models/LengowException.php|c7961cca967225bbcc127f32663afa82
 /classes/models/LengowCart.php|ff1a63dab722918e56af4caf68617ed7
 /classes/models/LengowMarketplace.php|60d52a3330ed8608faf4fdee07830b69
@@ -57,7 +57,7 @@
 /classes/controllers/LengowController.php|0f15400d36e6318a9f227722004b43d6
 /classes/controllers/LengowHomeController.php|a9ce81d77f6dce26410215b9c3b1512f
 /classes/controllers/LengowFeedController.php|0994ba5ef5d05cde12b616c61d3c1006
-/classes/controllers/LengowOrderController.php|14cbcc67f0413a32c13795428bdc5e9d
+/classes/controllers/LengowOrderController.php|09180dc83add813ad729e93921f31524
 /classes/controllers/LengowLegalsController.php|96a0b781ded3f2b48dc2c838da6b3364
 /classes/controllers/LengowOrderSettingController.php|3814853533684fdc1957a5b88eb218c0
 /classes/controllers/LengowHelpController.php|70687ac541688c45e284e67f83692ea4
@@ -386,7 +386,7 @@
 /views/templates/admin/lengow_help/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_home/layout.tpl|01d8ee8ad5432c7fa603e14228048dba
 /views/templates/admin/lengow_home/helpers/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/templates/admin/lengow_home/helpers/view/connect.tpl|28baa54e017455e5bc04043f57700629
+/views/templates/admin/lengow_home/helpers/view/connect.tpl|26de95536a18ea631e6f92b5a7321bec
 /views/templates/admin/lengow_home/helpers/view/view.tpl|207621a1c2fccbbba7aa511f86ac8d2e
 /views/templates/admin/lengow_home/helpers/view/status.tpl|f707cf09307ea3589ccd3576d6d1b284
 /views/templates/admin/lengow_home/helpers/view/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
@@ -394,7 +394,7 @@
 /views/templates/admin/lengow_home/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_order/layout.tpl|fe6327cc36a4e40b01b293cde4d57c30
 /views/templates/admin/lengow_order/helpers/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/templates/admin/lengow_order/helpers/view/view.tpl|432be55608a4a01c9e47dc18ab935983
+/views/templates/admin/lengow_order/helpers/view/view.tpl|fb0f463b6d53b963f74870e3bd5c8ef0
 /views/templates/admin/lengow_order/helpers/view/last_importation.tpl|7bbe6067be697777fd4a1bb9cbbca9e5
 /views/templates/admin/lengow_order/helpers/view/no_order.tpl|8dea127c9cf03aae44bdf58493c23645
 /views/templates/admin/lengow_order/helpers/view/header_toolbox.tpl|2e409dde9d35203aeaafdd64b6ef48ba
@@ -406,7 +406,7 @@
 /views/templates/admin/lengow_order_setting/helpers/view/marketplace_carrier.tpl|dbe08e6b8b2a5fe7891264a160e9e523
 /views/templates/admin/lengow_order_setting/helpers/view/select_country.tpl|aad87978dc35dd784c36d1a852fc5360
 /views/templates/admin/lengow_order_setting/helpers/view/default_carrier.tpl|17320a76c736ddd8a34846eadaf64724
-/views/templates/admin/lengow_order_setting/helpers/view/view.tpl|4ed7ab351b9a7129fab2fda9bab2b3fa
+/views/templates/admin/lengow_order_setting/helpers/view/view.tpl|5ae0cfaad83ab0b89550a62e94a512e0
 /views/templates/admin/lengow_order_setting/helpers/view/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_order_setting/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/lengow_feed/layout.tpl|e38a30cf78157b940edd80e14b08dcae
@@ -477,7 +477,7 @@
 /views/js/lengow/main_setting.js|04ca1432d83324754c6ee85e7ed672c3
 /views/js/lengow/order.js|5ce58add01c98c730b356b4ba755c98a
 /views/js/lengow/feed.js|c467bb5a9937be91a2cdb50e20795aee
-/views/js/lengow/order_setting.js|225c1b42ab82ffc166b810164f32b5a4
+/views/js/lengow/order_setting.js|b6b817f73743ee23cf4e8c6b4e887651
 /views/js/lengow/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /webservice/cron.php|b6e237031768896978880fc704b0c8f8

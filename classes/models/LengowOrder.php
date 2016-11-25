@@ -433,7 +433,11 @@ class LengowOrder extends Order
                 // create a new order history
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
-                $history->changeIdOrderState(LengowMain::getOrderState('shipped'), $this, true);
+                if (_PS_VERSION_ < '1.5') {
+                    $history->changeIdOrderState(LengowMain::getOrderState('shipped'), $this->id);
+                } else {
+                    $history->changeIdOrderState(LengowMain::getOrderState('shipped'), $this, true);
+                }
                 $history->validateFields();
                 $history->add();
                 if (!is_null($trackingNumber)) {
@@ -449,7 +453,11 @@ class LengowOrder extends Order
                 // create a new order history
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
-                $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this, true);
+                if (_PS_VERSION_ < '1.5') {
+                    $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this->id);
+                } else {
+                    $history->changeIdOrderState(LengowMain::getOrderState('shipped'), $this, true);
+                }
                 $history->validateFields();
                 $history->add();
                 return 'Canceled';

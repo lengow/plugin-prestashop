@@ -90,7 +90,7 @@ class LengowConnector
         '/v3.0/orders/actions/' => 15,
         '/v3.0/marketplaces'    => 10,
         '/v3.0/subscriptions'   => 5,
-        '/v3.0/stats'           => 5,
+        '/v3.0/stats'           => 3,
         '/v3.0/cms'             => 5,
     );
 
