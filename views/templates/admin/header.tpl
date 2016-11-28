@@ -53,7 +53,7 @@
         <li role="presentation" class="{if in_array($current_controller, $OrderTab)}active{/if}">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lengow_order_link">
                 {$locale->t('menu.order')|escape:'htmlall':'UTF-8'}
-                {if $total_pending_order}
+                {if $total_pending_order > 0}
                     <span class="lengow-nav-notif">{$total_pending_order|escape:'htmlall':'UTF-8'}</span>
                 {/if}
             </a>

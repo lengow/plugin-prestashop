@@ -39,18 +39,20 @@ class LengowOrderController extends LengowController
         }
         $marketplaces = array();
         $days = LengowConfiguration::get('LENGOW_IMPORT_DAYS');
+        // check if default carrier is available
+        $notDefaultCarrier = false;
+        if (!LengowCarrier::isDefaultCarrierActive()) {
+            $lengowLink = new LengowLink();
+            $notDefaultCarrier = $this->locale->t(
+                'order.screen.no_carrier_warning_message',
+                array('url' => $lengowLink->getAbsoluteAdminLink('AdminLengowOrderSetting'))
+            );
+        }
         $this->context->smarty->assign('shop', $shop);
         $this->context->smarty->assign('marketplaces', $marketplaces);
+        $this->context->smarty->assign('notDefaultCarrier', $notDefaultCarrier);
         $this->context->smarty->assign('days', $days);
         $this->context->smarty->assign('lengow_table', $this->buildTable());
-
-	    if (!LengowCarrier::isDefaultCarrierActive()) {
-		    $lengowLink = new LengowLink();
-		    $this->context->smarty->assign('notDefaultCarrier', $this->locale->t(
-			    'order.screen.no_carrier_warning_message',
-			    array('url' => $lengowLink->getAbsoluteAdminLink('AdminLengowOrderSetting'))
-		    ));
-	    }
         parent::display();
     }
 

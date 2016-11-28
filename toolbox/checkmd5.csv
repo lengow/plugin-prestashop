@@ -57,7 +57,7 @@
 /classes/controllers/LengowController.php|0f15400d36e6318a9f227722004b43d6
 /classes/controllers/LengowHomeController.php|a9ce81d77f6dce26410215b9c3b1512f
 /classes/controllers/LengowFeedController.php|0994ba5ef5d05cde12b616c61d3c1006
-/classes/controllers/LengowOrderController.php|09180dc83add813ad729e93921f31524
+/classes/controllers/LengowOrderController.php|44e65d747c7f578d218998b73815a3ec
 /classes/controllers/LengowLegalsController.php|96a0b781ded3f2b48dc2c838da6b3364
 /classes/controllers/LengowOrderSettingController.php|3814853533684fdc1957a5b88eb218c0
 /classes/controllers/LengowHelpController.php|70687ac541688c45e284e67f83692ea4
@@ -368,7 +368,7 @@
 /views/img/home-settings.png|4f7751e943137d3c10b71da358f7b1d7
 /views/templates/front/tagpage.tpl|30acc28cb76d896e2e4569fdcddf848d
 /views/templates/front/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/templates/admin/header.tpl|eeaf782616ba2a8a31d7e78db03fa5c6
+/views/templates/admin/header.tpl|45761e16d39f3896f8cfdfa656be1daa
 /views/templates/admin/footer.tpl|633ec4f9a585e7f89b5598b9fa6ee003
 /views/templates/admin/order/info.tpl|6bbb14cbca55b38148d2d02a4913943b
 /views/templates/admin/order/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
