@@ -456,7 +456,7 @@ class LengowOrder extends Order
                 if (_PS_VERSION_ < '1.5') {
                     $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this->id);
                 } else {
-                    $history->changeIdOrderState(LengowMain::getOrderState('shipped'), $this, true);
+                    $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this, true);
                 }
                 $history->validateFields();
                 $history->add();
