@@ -49,7 +49,10 @@ class LengowCheck
         if (!self::isCurlActivated()) {
             return false;
         }
-        $accountId = (integer)LengowMain::getIdAccount($idShop);
+        $accountId = LengowMain::getIdAccount($idShop);
+        if (is_null($accountId) || $accountId == 0 || !is_numeric($accountId)) {
+            return false;
+        }
         $connector  = new LengowConnector(
             LengowMain::getAccessToken($idShop),
             LengowMain::getSecretCustomer($idShop)
@@ -59,7 +62,7 @@ class LengowCheck
         } catch (LengowException $e) {
             return false;
         }
-        if (isset($result['token']) && $accountId != 0 && is_integer($accountId)) {
+        if (isset($result['token'])) {
             return true;
         } else {
             return false;
