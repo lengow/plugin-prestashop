@@ -322,7 +322,7 @@ class LengowConfiguration extends Configuration
                 if ($value) {
                     return $value['value'];
                 } else {
-                    return false;
+                    return null;
                 }
             } else {
                 return parent::get($key, $idLang, $idShopGroup, $idShop, $default);

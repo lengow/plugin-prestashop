@@ -35,6 +35,11 @@ class LengowFile
     public $folderName;
 
     /**
+     * @var string file link
+     */
+    public $link;
+
+    /**
      * @var ressource file hande
      */
     public $instance;

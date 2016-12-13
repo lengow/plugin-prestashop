@@ -1014,19 +1014,14 @@ class LengowMain
     {
         $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 's' : '';
         if (_PS_VERSION_ < '1.5') {
-            $base = (
-                defined('_PS_SHOP_DOMAIN_') ? 'http'.$isHttps.'://'._PS_SHOP_DOMAIN_ : _PS_BASE_URL_
-            ).__PS_BASE_URI__;
-            $url = $base.'modules/lengow/';
+            $base = defined('_PS_SHOP_DOMAIN_') ? 'http'.$isHttps.'://'._PS_SHOP_DOMAIN_ : _PS_BASE_URL_;
+            $base .= __PS_BASE_URI__;
         } else {
-            if (is_null($idShop)) {
-                $idShop = Context::getContext()->shop->id;
-            }
+            $idShop = is_null($idShop) ? Context::getContext()->shop->id : $idShop;
             $shopUrl = new ShopUrl($idShop);
-            $base = 'http'.$isHttps.'://'.$shopUrl->domain.$shopUrl->physical_uri;
-            $url = $base.'modules/lengow/';
+            $base = 'http'.$isHttps.'://'.$shopUrl->domain.$shopUrl->physical_uri.$shopUrl->virtual_uri;
         }
-        return $url;
+        return $base.'modules/lengow/';
     }
 
     /**

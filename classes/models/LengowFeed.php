@@ -290,12 +290,11 @@ class LengowFeed
             $rename = false;
             if (isset($oldFilePath)) {
                 $rename = $this->file->rename($oldFilePath);
-                $this->file->file_name = $oldFileName;
-
+                $this->file->fileName = $oldFileName;
             } else {
                 $sep = DIRECTORY_SEPARATOR;
                 $rename = $this->file->rename($this->file->getFolderPath().$sep.$oldFileName);
-                $this->file->file_name = $oldFileName;
+                $this->file->fileName = $oldFileName;
             }
             return $rename;
         }

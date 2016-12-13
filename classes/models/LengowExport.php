@@ -314,18 +314,32 @@ class LengowExport
             ? new Language($params["language_id"])
             : new Language(Configuration::get('PS_LANG_DEFAULT', null, null, $this->idShop))
         );
-        $this->exportLengowSelection = (isset($params["selection"])
-            ? (bool)$params["selection"]
-            : (bool)LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->idShop)
-        );
-        $this->exportOutStock = (isset($params["out_of_stock"])
-            ? (bool)$params["out_of_stock"]
-            : (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->idShop)
-        );
-        $this->exportVariation = (isset($params["variation"])
-            ? (bool)$params["variation"]
-            : (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->idShop)
-        );
+        // Get specific params in database
+        $selection = LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->idShop);
+        $outStock = LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->idShop);
+        $variation = LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->idShop);
+        // Set default value for new shop
+        if (is_null($selection)) {
+            LengowConfiguration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', 0, null, null, $this->idShop);
+            $selection = false;
+        } else {
+            $selection = (bool)$selection;
+        }
+        if (is_null($outStock)) {
+            LengowConfiguration::updateValue('LENGOW_EXPORT_OUT_STOCK', 1, null, null, $this->idShop);
+            $outStock = true;
+        } else {
+            $outStock = (bool)$outStock;
+        }
+        if (is_null($variation)) {
+            LengowConfiguration::updateValue('LENGOW_EXPORT_VARIATION_ENABLED', 1, null, null, $this->idShop);
+            $variation = true;
+        } else {
+            $variation = (bool)$variation;
+        }
+        $this->exportLengowSelection = isset($params["selection"]) ? (bool)$params["selection"] : $selection;
+        $this->exportOutStock = isset($params["out_of_stock"]) ? (bool)$params["out_of_stock"] : $outStock;
+        $this->exportVariation = isset($params["variation"]) ? (bool)$params["variation"] : $variation;
         $this->showInactiveProduct = (isset($params["inactive"]) ? (bool)$params["inactive"] : false);
         if ($this->stream) {
             $this->logOutput = false;
