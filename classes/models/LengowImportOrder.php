@@ -373,7 +373,7 @@ class LengowImportOrder
             $cart->validateLengow();
             $cart->force_product = $this->forceProduct;
             // add products to cart
-            $cart->addProducts($products, $this->forceProduct);
+            $cart->addProducts($products);
             // add cart to context
             $this->context->cart = $cart;
             // create payment
