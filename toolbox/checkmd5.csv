@@ -14,7 +14,7 @@
 /backward_compatibility/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /classes/models/LengowConfigurationForm.php|b82b1992ebdedc4b24f2665215d874c6
 /classes/models/LengowTool.php|bc42dce9ef6115cf89e94cf66dcd483f
-/classes/models/LengowImportOrder.php|468acb7a676f544ca867f2d2f1fa40ce
+/classes/models/LengowImportOrder.php|14cd2e9cac914aa24ebfe80d2ed674e1
 /classes/models/LengowPaymentModule.php|e3e35493ecc49d67239bc7710fc9636a
 /classes/models/LengowCustomer.php|4dbb4c1dbfa441cbf242f6addae77c59
 /classes/models/LengowSync.php|3c35dbc5348408b70d84a0b8c49689d6
@@ -42,7 +42,7 @@
 /classes/models/LengowTranslation.php|e9daa51371898f0f17eb5b65e9f0421e
 /classes/models/LengowFile.php|7689bd90898245254bac0f15cc90a5be
 /classes/models/LengowShop.php|d77754ff64ffbdeb439984f9b6048cca
-/classes/models/LengowConnector.php|fa84cc009c41f88cc341b0333caeb80d
+/classes/models/LengowConnector.php|b604594b151a4e5357872914425833b1
 /classes/models/LengowException.php|c7961cca967225bbcc127f32663afa82
 /classes/models/LengowCart.php|ff1a63dab722918e56af4caf68617ed7
 /classes/models/LengowMarketplace.php|60d52a3330ed8608faf4fdee07830b69
