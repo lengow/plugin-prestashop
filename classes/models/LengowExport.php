@@ -563,6 +563,11 @@ class LengowExport
             if ($this->limit > 0 && $productCount >= $this->limit) {
                 break;
             }
+            // clean data for next product.
+            unset($productDatas, $product);
+            if (function_exists('gc_collect_cycles')) {
+                gc_collect_cycles();
+            }
             $isFirst = false;
         }
         $success = $this->feed->end();

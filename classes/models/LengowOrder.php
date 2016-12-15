@@ -595,7 +595,7 @@ class LengowOrder extends Order
                 $this->checkAndChangeMarketplaceName($connector);
             }
             $result = $connector->patch(
-                '/v3.0/orders',
+                '/v3.0/orders/moi',
                 array(
                     'account_id'           => LengowMain::getIdAccount($idShop),
                     'marketplace_order_id' => $this->lengowMarketplaceSku,
