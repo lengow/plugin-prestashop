@@ -17,10 +17,10 @@
 /classes/models/LengowImportOrder.php|14cd2e9cac914aa24ebfe80d2ed674e1
 /classes/models/LengowPaymentModule.php|e3e35493ecc49d67239bc7710fc9636a
 /classes/models/LengowCustomer.php|4dbb4c1dbfa441cbf242f6addae77c59
-/classes/models/LengowSync.php|3c35dbc5348408b70d84a0b8c49689d6
+/classes/models/LengowSync.php|a5f2926ef6da23e0250a488c2d60c4f0
 /classes/models/LengowCountry.php|5bbdcbb1cb8cac5201805d6d93dbb50d
 /classes/models/LengowHook.php|ddad731cbdcde8e096fc0d11a090aed2
-/classes/models/LengowImport.php|02cd9039ea6aa8c55344914042784961
+/classes/models/LengowImport.php|9439f0e256d06c7e7627a5586a280639
 /classes/models/LengowFeed.php|02ab2c387f062be0f4fa5b7a3320a58d
 /classes/models/LengowCheck.php|08275d202b5eabdb285d8e7be7b0eb01
 /classes/models/LengowCron.php|a91c8a0ed5fa3594820d9e2506292964
@@ -28,13 +28,13 @@
 /classes/models/LengowInstall.php|778865149f30a6aa42b7e804c7f87eaf
 /classes/models/LengowOrderDetail.php|e025f3043dff57b93a135585557fbe6b
 /classes/models/LengowList.php|de7020cc8d919f5d5158208abe76d672
-/classes/models/LengowCarrier.php|f1510a3155e9c5405d02a780ac3d9d61
+/classes/models/LengowCarrier.php|5e59fb68cb7e158163742e89f9a02865
 /classes/models/LengowTaxRule.php|2ef083d198bd59e1974c4855f58fe9b1
 /classes/models/LengowCurrency.php|35280e0bc82299e2d44ec623279ecc5a
 /classes/models/LengowMain.php|fd3dc16ec74e35496d5d23e0c4e6bbdd
 /classes/models/LengowLog.php|a8ba5db3131080c5ac465049766be005
 /classes/models/LengowGender.php|99286da6b6c6f6586d1ecff54c162cdf
-/classes/models/LengowOrder.php|775d92d383fe1b8bbb51ea8e7f49062b
+/classes/models/LengowOrder.php|4814657a50b1b0e980632878dfbb9d03
 /classes/models/LengowLink.php|f7677339b75b203ae3c7ecc04c5f0a96
 /classes/models/LengowExport.php|20c78e2e2b47e045b068c01ceddb8baf
 /classes/models/LengowAction.php|fba8825da0a089b8afb65f50cb800ece
@@ -42,7 +42,7 @@
 /classes/models/LengowTranslation.php|e9daa51371898f0f17eb5b65e9f0421e
 /classes/models/LengowFile.php|52b0a1e3ab7b58788928e94b14003e91
 /classes/models/LengowShop.php|d77754ff64ffbdeb439984f9b6048cca
-/classes/models/LengowConnector.php|0b4fd215a174f51f8785a6e35d4e87d5
+/classes/models/LengowConnector.php|351a9cc45117694567109b434cca5d1c
 /classes/models/LengowException.php|c7961cca967225bbcc127f32663afa82
 /classes/models/LengowCart.php|ff1a63dab722918e56af4caf68617ed7
 /classes/models/LengowMarketplace.php|60d52a3330ed8608faf4fdee07830b69

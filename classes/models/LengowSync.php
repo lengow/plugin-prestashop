@@ -216,61 +216,62 @@ class LengowSync
      *
      * @return array
      */
-    public static function getStatistic($force = false) {
-	    if ( ! $force ) {
-		    $updatedAt = LengowConfiguration::getGlobalValue( 'LENGOW_ORDER_STAT_UPDATE' );
-		    if ( ( time() - strtotime( $updatedAt ) ) < self::$cacheTime ) {
-			    return Tools::JsonDecode( LengowConfiguration::getGlobalValue( 'LENGOW_ORDER_STAT' ), true );
-		    }
-	    }
-	    $return                = array();
-	    $return['total_order'] = 0;
-	    $return['nb_order']    = 0;
-	    $return['currency']    = '';
-	    $return['available']   = false;
-	    $currencyId            = 0;
-	    //get stats by shop
-	    $shopCollection = LengowShop::findAll( true );
-	    $i              = 0;
-	    $accountIds     = array();
-	    foreach ( $shopCollection as $s ) {
-		    $accountId = LengowMain::getIdAccount( $s['id_shop'] );
-		    if ( ! $accountId || in_array( $accountId, $accountIds ) || empty( $accountId ) ) {
-			    continue;
-		    }
-		    $result = LengowConnector::queryApi(
-			    'get',
-			    '/v3.0/stats',
-			    $s['id_shop'],
-			    array(
-				    'date_from' => date( 'c', strtotime( date( 'Y-m-d' ) . ' -10 years' ) ),
-				    'date_to'   => date( 'c' ),
-				    'metrics'   => 'year',
-			    )
-		    );
-		    if ( isset( $result->level0 ) ) {
-			    $stats = $result->level0[0];
-			    $return['total_order'] += $stats->revenue;
-			    $return['nb_order'] += $stats->transactions;
-			    $return['currency'] = $result->currency->iso_a3;
-		    } else {
-			    if ( LengowConfiguration::getGlobalValue( 'LENGOW_ORDER_STAT_UPDATE' ) ) {
-				    return Tools::JsonDecode( LengowConfiguration::getGlobalValue( 'LENGOW_ORDER_STAT' ), true );
-			    } else {
-				    return array(
-					    'total_order' => 0,
-					    'nb_order'    => 0,
-					    'currency'    => '',
-					    'available'   => false
-				    );
-			    }
-		    }
-		    $accountIds[] = $accountId;
-		    $i ++;
-	    }
-	    if ($return['total_order'] > 0 || $return['nb_order'] > 0) {
-		    $return['available'] = true;
-	    }
+    public static function getStatistic($force = false)
+    {
+        if (!$force) {
+            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE');
+            if ((time() - strtotime($updatedAt)) < self::$cacheTime) {
+                return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
+            }
+        }
+        $return = array();
+        $return['total_order'] = 0;
+        $return['nb_order'] = 0;
+        $return['currency'] = '';
+        $return['available'] = false;
+        $currencyId = 0;
+        //get stats by shop
+        $shopCollection = LengowShop::findAll(true);
+        $i = 0;
+        $accountIds = array();
+        foreach ($shopCollection as $s) {
+            $accountId = LengowMain::getIdAccount($s['id_shop']);
+            if (!$accountId || in_array($accountId, $accountIds) || empty($accountId)) {
+                continue;
+            }
+            $result = LengowConnector::queryApi(
+                'get',
+                '/v3.0/stats',
+                $s['id_shop'],
+                array(
+                    'date_from' => date('c', strtotime(date('Y-m-d').' -10 years')),
+                    'date_to'   => date('c'),
+                    'metrics'   => 'year',
+                )
+            );
+            if (isset($result->level0)) {
+                $stats = $result->level0[0];
+                $return['total_order'] += $stats->revenue;
+                $return['nb_order'] += $stats->transactions;
+                $return['currency'] = $result->currency->iso_a3;
+            } else {
+                if (LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE')) {
+                    return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
+                } else {
+                    return array(
+                        'total_order' => 0,
+                        'nb_order'    => 0,
+                        'currency'    => '',
+                        'available'   => false
+                    );
+                }
+            }
+            $accountIds[] = $accountId;
+            $i ++;
+        }
+        if ($return['total_order'] > 0 || $return['nb_order'] > 0) {
+            $return['available'] = true;
+        }
         if ($return['currency']) {
             $currencyId = LengowCurrency::getIdBySign($return['currency']);
         }

@@ -87,7 +87,7 @@ class LengowConnector
      */
     protected $lengowUrls = array (
         '/v3.0/orders'          => 15,
-        '/v3.0/orders/moi'      => 3,
+        '/v3.0/orders/moi/'     => 5,
         '/v3.0/orders/actions/' => 10,
         '/v3.0/marketplaces'    => 10,
         '/v3.0/subscriptions'   => 3,
@@ -365,6 +365,17 @@ class LengowConnector
                 }
                 $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
                 $opts[CURLOPT_POSTFIELDS] = $body;
+                break;
+            case "PATCH":
+                if (isset($token)) {
+                    $opts[CURLOPT_HTTPHEADER] = array_merge(
+                        $opts[CURLOPT_HTTPHEADER],
+                        array('Content-Type: application/json')
+                    );
+                }
+                $opts[CURLOPT_URL] = $url;
+                $opts[CURLOPT_POST] = count($args);
+                $opts[CURLOPT_POSTFIELDS] = Tools::JsonEncode($args);
                 break;
             default:
                 $opts[CURLOPT_URL] = $url;

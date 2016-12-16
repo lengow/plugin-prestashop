@@ -231,17 +231,12 @@ class LengowImport
         $error       = array();
         // clean logs
         LengowMain::cleanLog();
-
-	    if(!LengowCarrier::isDefaultCarrierActive()){
-	    	$message = LengowMain::setLogMessage('log.import.error_default_carrier_not_active');
-		    LengowMain::log(
-			    'Import',
-			    $message,
-			    $this->logOutput
-		    );
-		    $result['error'] = LengowMain::decodeLogMessage($message, 'en');
-		    return $result;
-	    }
+        // Check if default carrier is active
+        if (!LengowCarrier::isDefaultCarrierActive()) {
+            $message = LengowMain::setLogMessage('log.import.error_default_carrier_not_active');
+            LengowMain::log('Import', $message, $this->logOutput);
+            return array('error' => LengowMain::decodeLogMessage($message, 'en'));
+        }
         if (LengowImport::isInProcess() && !$this->preprodMode && !$this->importOneOrder) {
             $globalError = LengowMain::setLogMessage('lengow_log.error.import_in_progress');
             LengowMain::log('Import', $globalError, $this->logOutput);
