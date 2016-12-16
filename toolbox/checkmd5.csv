@@ -42,7 +42,7 @@
 /classes/models/LengowTranslation.php|e9daa51371898f0f17eb5b65e9f0421e
 /classes/models/LengowFile.php|52b0a1e3ab7b58788928e94b14003e91
 /classes/models/LengowShop.php|d77754ff64ffbdeb439984f9b6048cca
-/classes/models/LengowConnector.php|351a9cc45117694567109b434cca5d1c
+/classes/models/LengowConnector.php|61879a1425b8ca5d4c04cb54468144b6
 /classes/models/LengowException.php|c7961cca967225bbcc127f32663afa82
 /classes/models/LengowCart.php|ff1a63dab722918e56af4caf68617ed7
 /classes/models/LengowMarketplace.php|60d52a3330ed8608faf4fdee07830b69
