@@ -851,8 +851,9 @@ class LengowProduct extends Product
                     foreach ($idsApi as $idApi) {
                         if (!empty($idApi)) {
                             if ($attributeName == 'id') {
+                                // Compatibility with old plugins
                                 $id = str_replace('\_', '_', $idApi);
-                                $id = str_replace('X', '_', $idApi);
+                                $id = str_replace('X', '_', $id);
                                 $ids = explode('_', $id);
                                 $id = $ids[0];
                                 if (is_numeric($id) && $product->{$attributeName} == $id) {
@@ -870,8 +871,9 @@ class LengowProduct extends Product
                 foreach ($idsApi as $idApi) {
                     if (!empty($idApi)) {
                         if ($attributeName == 'id') {
+                            // Compatibility with old plugins
                             $id = str_replace('\_', '_', $idApi);
-                            $id = str_replace('X', '_', $idApi);
+                            $id = str_replace('X', '_', $id);
                             $ids = explode('_', $id);
                             $id = $ids[0];
                             if (is_numeric($id) && $product->{$attributeName} == $id) {
@@ -929,23 +931,26 @@ class LengowProduct extends Product
                 return LengowProduct::findProduct('upc', $attributeValue, $idShop);
             default:
                 $idsProduct = array();
+                // Compatibility with old plugins
                 $sku = str_replace('\_', '_', $attributeValue);
                 $sku = str_replace('X', '_', $sku);
                 $sku = explode('_', $sku);
-                $idsProduct['id_product'] = $sku[0];
-                if (isset($sku[1])) {
-                    $idsProduct['id_product_attribute'] = $sku[1];
-                }
-                $idBool = LengowProduct::checkProductId($idsProduct['id_product'], $apiDatas);
-                $idAttBool = true;
-                if (isset($idsProduct['id_product_attribute'])) {
-                    $idAttBool = LengowProduct::checkProductAttributeId(
-                        new LengowProduct($idsProduct['id_product']),
-                        $idsProduct['id_product_attribute']
-                    );
-                }
-                if ($idBool && $idAttBool) {
-                    return $idsProduct;
+                if (isset($sku[0]) && preg_match('/^[0-9]*$/', $sku[0])) {
+                    $idsProduct['id_product'] = (int)$sku[0];
+                    if (isset($sku[1]) && preg_match('/^[0-9]*$/', $sku[1]) && $sku[1] != 0) {
+                        $idsProduct['id_product_attribute'] = $sku[1];
+                    }
+                    $idBool = LengowProduct::checkProductId($idsProduct['id_product'], $apiDatas);
+                    $idAttBool = true;
+                    if (isset($idsProduct['id_product_attribute'])) {
+                        $idAttBool = LengowProduct::checkProductAttributeId(
+                            new LengowProduct($idsProduct['id_product']),
+                            $idsProduct['id_product_attribute']
+                        );
+                    }
+                    if ($idBool && $idAttBool) {
+                        return $idsProduct;
+                    }
                 }
                 return false;
         }
@@ -981,10 +986,11 @@ class LengowProduct extends Product
      */
     protected static function checkProductAttributeId($product, $idProductAttribute)
     {
-        if ($idProductAttribute != 0) {
-            if (!array_key_exists($idProductAttribute, $product->getCombinations())) {
-                return false;
-            }
+        if ($idProductAttribute == 0) {
+            return false;
+        }
+        if (!array_key_exists($idProductAttribute, $product->getCombinations())) {
+            return false;
         }
         return true;
     }

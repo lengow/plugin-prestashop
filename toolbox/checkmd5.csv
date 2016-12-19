@@ -50,7 +50,7 @@
 /classes/models/LengowCarrierCountry.php|435257ba775dfc588b72e93a39e1c94e
 /classes/models/LengowSpecificPrice.php|fc1f5e0e227cca82cbd70063ec45b75f
 /classes/models/index.php|ed8e273082cc0a58535dc2b454435f38
-/classes/models/LengowProduct.php|554d83dd989815cd6b7d21aa293f1c40
+/classes/models/LengowProduct.php|232ed462fcbc20fbbaba992396f5320f
 /classes/models/LengowOption.php|d4a9606714ab9a94fa92b5b3e8e8c24b
 /classes/models/LengowConfiguration.php|4d85089adee587eac6d80aaf60f2cf42
 /classes/index.php|ed8e273082cc0a58535dc2b454435f38
