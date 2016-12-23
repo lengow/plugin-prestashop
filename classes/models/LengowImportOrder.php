@@ -374,6 +374,8 @@ class LengowImportOrder
             $cart->force_product = $this->forceProduct;
             // add products to cart
             $cart->addProducts($products);
+            // Clean cart products
+            $cart->cleanCart($products);
             // add cart to context
             $this->context->cart = $cart;
             // create payment

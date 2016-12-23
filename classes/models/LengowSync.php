@@ -168,7 +168,7 @@ class LengowSync
                 return false;
             }
         }
-        $options = Tools::JsonEncode(Self::getOptionData());
+        $options = Tools::jsonEncode(self::getOptionData());
         LengowConnector::queryApi('put', '/v3.0/cms', null, array(), $options);
         LengowConfiguration::updateGlobalValue('LENGOW_OPTION_CMS_UPDATE', date('Y-m-d H:i:s'));
         return true;
@@ -186,7 +186,7 @@ class LengowSync
         if (!$force) {
             $updatedAt =  LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE');
             if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < self::$cacheTime) {
-                return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
+                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
             }
         }
         $result = LengowConnector::queryApi(
@@ -201,7 +201,7 @@ class LengowSync
                 $status['day'] = 0;
             }
             if ($status) {
-                LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS', Tools::JsonEncode($status));
+                LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS', Tools::jsonEncode($status));
                 LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE', date('Y-m-d H:i:s'));
                 return $status;
             }
@@ -221,7 +221,7 @@ class LengowSync
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE');
             if ((time() - strtotime($updatedAt)) < self::$cacheTime) {
-                return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
+                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
             }
         }
         $return = array();
@@ -256,7 +256,7 @@ class LengowSync
                 $return['currency'] = $result->currency->iso_a3;
             } else {
                 if (LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE')) {
-                    return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
+                    return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
                 } else {
                     return array(
                         'total_order' => 0,
@@ -281,7 +281,7 @@ class LengowSync
             $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
         }
         $return['nb_order'] = (int)$return['nb_order'];
-        LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT', Tools::JsonEncode($return));
+        LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT', Tools::jsonEncode($return));
         LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT_UPDATE', date('Y-m-d H:i:s'));
         return $return;
     }

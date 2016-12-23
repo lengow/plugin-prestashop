@@ -325,7 +325,7 @@ class LengowCarrier extends Carrier
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_LIST_MARKET_UPDATE');
             if ((time() - strtotime($updatedAt)) < 10800) { //3 hours
-                return Tools::JsonDecode(LengowConfiguration::getGlobalValue('LENGOW_LIST_MARKETPLACE'), true);
+                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_LIST_MARKETPLACE'), true);
             }
         }
         $finalCarrier = array();
@@ -354,7 +354,7 @@ class LengowCarrier extends Carrier
                 }
             }
         }
-        LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKETPLACE', Tools::JsonEncode($finalCarrier));
+        LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKETPLACE', Tools::jsonEncode($finalCarrier));
         LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKET_UPDATE', date('Y-m-d H:i:s'));
         return $finalCarrier;
     }

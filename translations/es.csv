@@ -95,7 +95,7 @@ order.screen.button_resend_order|Enviar de nuevo los pedidos
 order.screen.cron|¿Deseas automatizar la actualización de los pedidos?
 order.screen.preprod_warning_message|Estás en el modo de pre-producción. Puedes importar los pedidos , pero no hay interacción con Lengow posible. <a href=%{url}>Cambie este</a>
 order.screen.import_single_warning_message|Su versión de PrestaShop está entre 1.5.2 y 1.5.4.Por razones de seguridad , sólo una orden será importado para la sincronización.
-order.screen.no_carrier_warning_message|No se puede importar pedidos : no se ha especificado un transportista por defecto.
+order.screen.no_carrier_warning_message|No se puede importar pedidos : no se ha especificado un transportista por defecto. <a href=%{url}>Cambie este</a>
 order.screen.not_imported|No importado
 order.screen.not_sent|No enviado
 order.screen.refresh_order|Actualizar pedido
@@ -248,7 +248,7 @@ lengow_log.error.account_id_empty|Account ID, Access Token o Secret está vacio 
 lengow_log.error.account_id_already_used|account ID %{account_id} está siendo actualmente utilizada  por la tienda %{name_shop} (%{id_shop})
 lengow_log.error.import_in_progress|importación ya ha comenzado
 lengow_log.error.rest_time_to_import|Por favor, espere %{rest_time} segundos antes de volver a re-importar pedidos
-lengow_log.error.no_product|Error Lengow: no hay productos en el pedido
+lengow_log.error.no_product|Lengow error: no hay productos en el pedido
 lengow_log.error.no_change_rate|Lengow error: no hay tipos de cambio disponibles para los precios de pedidos
 lengow_log.error.no_currency|Lengow error: ningun tipo de moneda en el pedido
 lengow_log.error.currency_not_available|moneda %{currency_iso} no está disponible en tu tienda
@@ -271,14 +271,15 @@ lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} n
 lengow_log.exception.order_line_required|la línea de pedido es requerida pero no se encuentra 
 lengow_log.exception.action_not_valid|la acción %{action} no es válida
 lengow_log.exception.marketplace_action_not_present|acción marketplace %{action} no está presente
-lengow_log.exception.shop_id_require|Se requiere ID de la tienda
+lengow_log.exception.shop_id_require|se requiere ID de la tienda
 lengow_log.exception.marketplace_name_require|es necesario el nombre del marketplace 
 lengow_log.exception.no_delivery_country_in_order|no puede encontrar el país de entrega en el pedido
 lengow_log.exception.match_carrier_with_country|necesitas relacionar el transportista %{carrier_name} con el país %{country_name}
-lengow_log.exception.arg_is_required|no se puede enviar el pedido:  %{arg_name} es requerido
+lengow_log.exception.arg_is_required|envío de acción imposible: %{arg_name} es requerido
+lengow_log.exception.action_not_created|creación de la acción imposible: %{error_message}
 lengow_log.exception.action_is_too_old|order action is too old. Please retry the call
 lengow_log.exception.cannot_load_order_status|no se puede cargar el estado del pedido
-lengow_log.exception.order_creation_failed|La creación del pedido Prestashop ha fallado 
+lengow_log.exception.order_creation_failed|la creación del pedido Prestashop ha fallado 
 lengow_log.exception.payment_module_not_active|el módulo de "pagos" no está activo
 lengow_log.exception.cart_cannot_be_loaded|la compra no se puede cargar, o bien un pedido ya ha sido colocado usando esta misma compra
 lengow_log.exception.delivery_country_not_active|el país de la dirección de entrega no está activo

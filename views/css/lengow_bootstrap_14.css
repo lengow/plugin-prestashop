@@ -17,6 +17,10 @@ h1,h2, h3, h4, h5, h6 {
   position: relative;
 }
 
+.cms-global {
+    padding: 20px 15px 0px;
+}
+
 .lengow-nav-top {
   margin-top: 20px;
 }
@@ -126,6 +130,10 @@ body.lengow_body #main {
 
 .table.lengow_table tr th {
   background: #F1F1F1 top left;
+}
+
+#lengow_order_wrapper, #lengow_form_order_setting {
+    padding-top: 30px;
 }
 
 #lgw-preprod.adminlengoworder,

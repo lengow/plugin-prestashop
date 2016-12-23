@@ -375,7 +375,7 @@ class LengowConnector
                 }
                 $opts[CURLOPT_URL] = $url;
                 $opts[CURLOPT_POST] = count($args);
-                $opts[CURLOPT_POSTFIELDS] = Tools::JsonEncode($args);
+                $opts[CURLOPT_POSTFIELDS] = Tools::jsonEncode($args);
                 break;
             default:
                 $opts[CURLOPT_URL] = $url;
@@ -484,6 +484,6 @@ class LengowConnector
         } catch (LengowException $e) {
             return false;
         }
-        return Tools::JsonDecode($results);
+        return Tools::jsonDecode($results);
     }
 }

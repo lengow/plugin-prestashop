@@ -6,6 +6,10 @@
   min-width: 1445px!important;
 }
 
+.cms-global {
+    padding: 20px 15px 30px;
+}
+
 #lgw-preprod {
   top: 165px;
   left: inherit;
@@ -114,10 +118,13 @@ body.lengow_body #main {
   margin-top: 190px;
 }
 
+#lengow_order_wrapper, #lengow_form_order_setting {
+    padding-top: 30px;
+}
+
 .lgw-container .table tr td.shop {
   min-width: 70px;
 }
-
 
 .lengow-nav-top {
   margin-top: 0px;

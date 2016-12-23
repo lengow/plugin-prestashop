@@ -75,6 +75,32 @@ class LengowCart extends Cart
     }
 
     /**
+     * Removes non-Lengow products from cart
+     *
+     * @param array $products list of products to be added
+     *
+     * @throws Exception
+     */
+    public function cleanCart($products = array())
+    {
+        $cartProducts = $this->getProducts();
+        if (count($cartProducts) == 0) {
+            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_product_to_cart'));
+        }
+        foreach ($cartProducts as $cartProduct) {
+            $idProduct = $cartProduct['id_product'];
+            $idProduct .= empty($cartProduct['id_product_attribute']) ? '' : '_'.$cartProduct['id_product_attribute'];
+            if (!array_key_exists($idProduct, $products)) {
+                if (empty($cartProduct['id_product_attribute'])) {
+                    $this->deleteProduct($cartProduct['id_product'], $cartProduct['id_product_attribute']);
+                } else {
+                    $this->deleteProduct($cartProduct['id_product']);
+                }
+            }
+        }
+    }
+
+    /**
      * @see Cart::updateQty()
      *
      * @param integer $quantity            quantity to add (or substract)

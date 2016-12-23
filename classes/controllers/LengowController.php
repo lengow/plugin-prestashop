@@ -37,6 +37,7 @@ class LengowController
         $this->context->smarty->assign('current_controller', get_class($this));
         $this->context->smarty->assign('lengow_configuration', new LengowConfiguration());
         $this->context->smarty->assign('locale', new LengowTranslation());
+        $this->context->smarty->assign('localeIsoCode', Context::getContext()->language->iso_code);
         $this->isNewMerchant = LengowMain::isNewMerchant();
         $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
         $this->merchantStatus =  LengowSync::getStatusAccount();

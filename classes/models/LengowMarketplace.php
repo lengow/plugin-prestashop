@@ -161,7 +161,6 @@ class LengowMarketplace
     {
         if (!array_key_exists($this->idShop, self::$markeplaces)) {
             $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $this->idShop);
-            // $result = json_decode(file_get_contents(dirname(__FILE__).'/marketplaces.json'));
             self::$markeplaces[$this->idShop] = $result;
         }
     }
@@ -393,12 +392,19 @@ class LengowMarketplace
                         break;
                     case 'tracking_url':
                         if ($trackingNumber != '') {
-                            $idCarrier = LengowCarrier::getActiveCarrierByCarrierId(
+                            $idActiveCarrier = LengowCarrier::getActiveCarrierByCarrierId(
                                 $order->id_carrier,
                                 $deliveryAddress->id_country
                             );
+                            $idCarrier = $idActiveCarrier ? $idActiveCarrier : $order->id_carrier;
                             $carrier = new Carrier($idCarrier);
-                            $params[$arg] = str_replace('@', $trackingNumber, $carrier->url);
+                            $trackingUrl = str_replace('@', $trackingNumber, $carrier->url);
+                            // Add default value if tracking url is empty
+                            if (Tools::strlen($trackingUrl) == 0) {
+                                $defaultValue = $this->getDefaultValue((string)$arg);
+                                $trackingUrl = $defaultValue ? $defaultValue : $arg.' not available';
+                            }
+                            $params[$arg] = $trackingUrl;
                         }
                         break;
                     case 'shipping_price':
@@ -487,6 +493,13 @@ class LengowMarketplace
                                 'action_id'       => $result->id,
                                 'parameters'      => $params,
                                 'marketplace_sku' => $order->lengowMarketplaceSku
+                            )
+                        );
+                    } else {
+                        throw new LengowException(
+                            LengowMain::setLogMessage(
+                                'lengow_log.exception.action_not_created',
+                                array('error_message' => Tools::jsonEncode($result))
                             )
                         );
                     }

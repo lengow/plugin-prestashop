@@ -23,6 +23,7 @@
     $(document).ready(function () {
         var href = $('#lengow_ajax_link').val();
         var syncLink = $('#lengow_sync_link').val();
+        var isoCode = $('#lengow_lang_iso').val();
         var syncIframe = document.getElementById('lengow_iframe');
         if (syncIframe) {
             syncIframe.onload = function () {
@@ -40,7 +41,7 @@
             if (syncLink) {
                 // syncIframe.src = 'http://cms.lengow.io/sync/';
                 // syncIframe.src = 'http://cms.lengow.net/sync/';
-                syncIframe.src = 'http://cms.lengow.rec/sync';
+                syncIframe.src = 'http://cms.lengow.rec/sync/';
                 // syncIframe.src = 'http://cms.lengow.dev/sync/';
             } else {
                 // syncIframe.src = 'http://cms.lengow.io/';
@@ -48,6 +49,7 @@
                 syncIframe.src = 'http://cms.lengow.rec/';
                 // syncIframe.src = 'http://cms.lengow.dev/';
             }
+            syncIframe.src = syncIframe.src+'?lang='+isoCode;
             $('#frame_loader').hide();
             $('#lengow_iframe').show();
         }

@@ -138,11 +138,11 @@ class ToolTest extends ModuleTestCase
         $this->assertTrue($tool->processLogin($this->accountId, $this->secretToken));
         $this->assertEquals(
             array('128.0.0.1'),
-            (array)json_decode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_1'))
+            (array)Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_1'))
         );
         $this->assertEquals(
             array('128.0.0.1'),
-            (array)json_decode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_2'))
+            (array)Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_2'))
         );
         $this->assertEquals('', LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_3'));
 

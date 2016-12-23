@@ -50,7 +50,7 @@ if (!LengowMain::checkWebservicesAccess($token)) {
 }
 // get all shop informations
 if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
-    echo Tools::JsonEncode(LengowSync::getSyncData());
+    echo Tools::jsonEncode(LengowSync::getSyncData());
 } else {
     // get sync action if exists
     $sync = false;

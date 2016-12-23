@@ -157,11 +157,14 @@ class LengowAction
      */
     public static function getActiveActionByShop($idShop, $load = true)
     {
-        $rows = Db::getInstance()->executeS(
-            'SELECT la.*, o.id_shop FROM '._DB_PREFIX_.'lengow_actions la
-            INNER JOIN '._DB_PREFIX_.'orders o ON (o.id_order = la.id_order)
-            WHERE id_shop='.(int)$idShop.' AND state = '.(int)self::STATE_NEW
-        );
+        if (_PS_VERSION_ < '1.5') {
+            $sql = 'SELECT * FROM '._DB_PREFIX_.'lengow_actions WHERE state = '.(int)self::STATE_NEW;
+        } else {
+            $sql = 'SELECT la.*, o.id_shop FROM '._DB_PREFIX_.'lengow_actions la
+                INNER JOIN '._DB_PREFIX_.'orders o ON (o.id_order = la.id_order)
+                WHERE id_shop='.(int)$idShop.' AND state = '.(int)self::STATE_NEW;
+        }
+        $rows = Db::getInstance()->executeS($sql);
         if (count($rows) > 0) {
             if ($load) {
                 $actions = array();
@@ -222,7 +225,7 @@ class LengowAction
     public static function createAction($params)
     {
         $insertParams = array(
-            'parameters'  => pSQL(Tools::JsonEncode($params['parameters'])),
+            'parameters'  => pSQL(Tools::jsonEncode($params['parameters'])),
             'id_order'    => (int)$params['id_order'],
             'action_id'   => (int)$params['action_id'],
             'action_type' => pSQL($params['action_type']),

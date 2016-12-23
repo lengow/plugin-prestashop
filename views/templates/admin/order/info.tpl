@@ -18,7 +18,7 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 <br />
-<fieldset>
+<fieldset {if $version < 1.5} style="width:400px" {/if}>
 	<legend>{$lengow_locale->t('admin.order.import_lengow')|escape:'htmlall':'UTF-8'}</legend>
 	<h4>{$lengow_locale->t('admin.order.imported_from_lengow')|escape:'htmlall':'UTF-8'}</h4>
 	<ul>
@@ -95,7 +95,7 @@
 <script type="text/javascript">
     function getValue() {
         var tracking_number = prompt("{$lengow_locale->t('admin.order.add_tracking_title')|escape:'htmlall':'UTF-8'}");
-        if (tracking_number.length > 0) {
+        if (tracking_number) {
         	var url = "{html_entity_decode($action_add_tracking|escape:'htmlall':'UTF-8')}" + tracking_number;
         	document.location.href=url;
         }

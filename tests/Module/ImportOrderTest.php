@@ -543,7 +543,7 @@ class ImportOrderTest extends ModuleTestCase
     public function getCarrierIdEmptyAddress()
     {
         $shippingAddress = (object) array();
-        $orderData = Tools::JsonDecode(
+        $orderData = Tools::jsonDecode(
             file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
         );
         $import = new LengowImportOrder(
@@ -576,7 +576,7 @@ class ImportOrderTest extends ModuleTestCase
     public function getCarrierIdEmptyAddressCountry()
     {
         $shippingAddress = (object) array('id_country' => 0);
-        $orderData = Tools::JsonDecode(
+        $orderData = Tools::jsonDecode(
             file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
         );
         $import = new LengowImportOrder(
@@ -609,7 +609,7 @@ class ImportOrderTest extends ModuleTestCase
     public function getCarrierIdRequireCarrierError()
     {
         $shippingAddress = (object) array('id_country' => 8);
-        $orderData = Tools::JsonDecode(
+        $orderData = Tools::jsonDecode(
             file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
         );
         $fixture = new Fixture();
@@ -652,7 +652,7 @@ class ImportOrderTest extends ModuleTestCase
     public function getCarrierIdRequireCarrier()
     {
         $shippingAddress = (object) array('id_country' => 8);
-        $orderData = Tools::JsonDecode(
+        $orderData = Tools::jsonDecode(
             file_get_contents(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id.json')
         );
         $import = new LengowImportOrder(
