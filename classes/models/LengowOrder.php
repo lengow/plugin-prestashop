@@ -529,22 +529,23 @@ class LengowOrder extends Order
      */
     public static function getUnsentOrderByStore($idShop)
     {
+        $date = date('Y-m-d h:m:i', strtotime('-5 days', time()));
         if (_PS_VERSION_ < '1.5') {
-            $sql = 'SELECT lo.`id`, oh.`id_order_state` FROM '._DB_PREFIX_.'lengow_orders lo
+            $sql = 'SELECT lo.`id`, oh.`id_order_state`, oh.`id_order` FROM '._DB_PREFIX_.'lengow_orders lo
                 INNER JOIN '._DB_PREFIX_.'order_history oh ON (oh.id_order = lo.id_order)
                 WHERE lo.`order_process_state` = '.(int)self::PROCESS_STATE_IMPORT
                 .' AND oh.`id_order_state` IN ('
                 .LengowMain::getOrderState('shipped').','.LengowMain::getOrderState('canceled')
-                .')';
+                .') AND oh.`date_add` >= "'.$date.'"';
         } else {
             $sql = 'SELECT lo.`id`, o.`id_shop`, o.`id_order`, oh.`id_order_state` FROM '._DB_PREFIX_.'lengow_orders lo
                 INNER JOIN '._DB_PREFIX_.'orders o ON (o.id_order = lo.id_order)
                 INNER JOIN '._DB_PREFIX_.'order_history oh ON (oh.id_order = lo.id_order)
-                WHERE o.`id_shop` ='.(int)$idShop
+                WHERE o.`id_shop` = '.(int)$idShop
                 .' AND lo.`order_process_state` = '.(int)self::PROCESS_STATE_IMPORT
                 .' AND oh.`id_order_state` IN ('
                 .LengowMain::getOrderState('shipped').','.LengowMain::getOrderState('canceled')
-                .')';
+                .') AND oh.`date_add` >= "'.$date.'"';
         }
         $results = Db::getInstance()->executeS($sql);
         if ($results) {
