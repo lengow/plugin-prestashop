@@ -40,6 +40,7 @@ class LengowHomeController extends LengowController
                 case 'sync':
                     $data = isset($_REQUEST['data']) ?$_REQUEST['data'] : false;
                     LengowSync::sync($data);
+                    LengowSync::getStatusAccount(true);
                     break;
                 case 'refresh_status':
                     LengowSync::getStatusAccount(true);

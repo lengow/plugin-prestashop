@@ -55,7 +55,7 @@
 /classes/models/LengowConfiguration.php|4d85089adee587eac6d80aaf60f2cf42
 /classes/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/controllers/LengowController.php|9cc996722c1a611aae068ca1e8a8d740
-/classes/controllers/LengowHomeController.php|a9ce81d77f6dce26410215b9c3b1512f
+/classes/controllers/LengowHomeController.php|bd716c2591a79905beb27923456a8a24
 /classes/controllers/LengowFeedController.php|0994ba5ef5d05cde12b616c61d3c1006
 /classes/controllers/LengowOrderController.php|44e65d747c7f578d218998b73815a3ec
 /classes/controllers/LengowLegalsController.php|96a0b781ded3f2b48dc2c838da6b3364
