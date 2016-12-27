@@ -28,7 +28,7 @@ class LengowMarketplace
      * @var array all valid actions
      */
     public static $validActions = array(
-        'ship' ,
+        'ship',
         'cancel'
     );
 

@@ -975,9 +975,15 @@ class LengowOrder extends Order
         if (self::isOrderImport($idOrderLengow)) {
             $lengowOrder = self::find($idOrderLengow);
             if ((int)$lengowOrder['id_order'] > 0) {
-                $action = LengowAction::getLastOrderActionType($lengowOrder['id_order']);
-                $action = $action ? $action : 'ship';
                 $order = new LengowOrder($lengowOrder['id_order']);
+                $action = LengowAction::getLastOrderActionType($lengowOrder['id_order']);
+                if (!$action) {
+                    if ($order->getCurrentState() == LengowMain::getOrderState('canceled')) {
+                        $action = 'cancel';
+                    } else {
+                        $action = 'ship';
+                    }
+                }
                 return $order->callAction($action);
             }
             return false;

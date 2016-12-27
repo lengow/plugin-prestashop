@@ -241,35 +241,39 @@ class LengowConfigurationForm
         if (isset($this->fields[$key]['type']) && $this->fields[$key]['type'] == 'checkbox') {
             $value = (int)$value;
             $oldValue = (int)$oldValue;
-        } elseif ($key == 'LENGOW_ACCESS_TOKEN' || $key == 'LENGOW_SECRET_TOKEN') {
-            $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
-            $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
         }
-        if ($oldValue != $value && !is_null($idShop)) {
-            LengowMain::log(
-                'Setting',
-                LengowMain::setLogMessage(
-                    'log.setting.setting_change_for_shop',
-                    array(
-                        'key'       => $key,
-                        'old_value' => $oldValue,
-                        'value'     => $value,
-                        'shop_id'   => $idShop
+        if ($oldValue != $value) {
+            if ($key == 'LENGOW_ACCESS_TOKEN' || $key == 'LENGOW_SECRET_TOKEN') {
+                $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
+                $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
+            }
+            if (!is_null($idShop)) {
+                LengowMain::log(
+                    'Setting',
+                    LengowMain::setLogMessage(
+                        'log.setting.setting_change_for_shop',
+                        array(
+                            'key'       => $key,
+                            'old_value' => $oldValue,
+                            'value'     => $value,
+                            'shop_id'   => $idShop
+                        )
                     )
-                )
-            );
-        } elseif ($oldValue != $value) {
-            LengowMain::log(
-                'Setting',
-                LengowMain::setLogMessage(
-                    'log.setting.setting_change',
-                    array(
-                        'key'       => $key,
-                        'old_value' => $oldValue,
-                        'value'     => $value
+                );
+            } else {
+                LengowMain::log(
+                    'Setting',
+                    LengowMain::setLogMessage(
+                        'log.setting.setting_change',
+                        array(
+                            'key'       => $key,
+                            'old_value' => $oldValue,
+                            'value'     => $value
+                        )
                     )
-                )
-            );
+                );
+            }
         }
+        
     }
 }

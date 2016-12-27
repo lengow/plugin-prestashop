@@ -441,6 +441,7 @@ class LengowOrderController extends LengowController
             'lo.extra',
             'lo.delivery_country_iso',
             'lo.sent_marketplace',
+            'lo.order_process_state',
             'lo.order_item as nb_item',
             (_PS_VERSION_ < 1.5 ? 'o.id_order as reference' : 'o.reference'),
             'lo.order_date',
@@ -638,31 +639,15 @@ class LengowOrderController extends LengowController
      */
     public static function displayLogStatus($key, $value, $item)
     {
-        //check if order actions in progress
-        if ($item['id_order'] > 0) {
-            $lastActionType = LengowAction::getLastOrderActionType($item['id_order']);
-            if ($lastActionType) {
-                $messageLastAction = LengowMain::decodeLogMessage(
-                    'order.screen.action_sent',
-                    null,
-                    array('action_type' => $lastActionType)
-                );
-                $value = '<span class="lengow_link_tooltip lgw-label orange"
-                    data-html="true"
-                    data-original-title="'.LengowMain::decodeLogMessage('order.screen.action_waiting_return').'"
-                    >'.$messageLastAction.'</span>';
-                return $value;
-            }
-        }
-        $errorMessage = array();
-        $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
-        if (count($logCollection)>0) {
-            foreach ($logCollection as $row) {
-                $errorMessage[] = LengowMain::decodeLogMessage($row['message']);
-            }
-        }
-        $link = new LengowLink();
         if ($item[$key]) {
+            $errorMessage = array();
+            $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
+            if (count($logCollection)>0) {
+                foreach ($logCollection as $row) {
+                    $errorMessage[] = LengowMain::decodeLogMessage($row['message']);
+                }
+            }
+            $link = new LengowLink();
             $message = '<ul>'.join('', $errorMessage).'</ul>';
             if ($item[$key] == '2') {
                 $message = LengowMain::decodeLogMessage('order.screen.action_sent_not_work')
@@ -690,7 +675,23 @@ class LengowOrderController extends LengowController
                     >'.LengowMain::decodeLogMessage('order.screen.not_imported').' <i class="fa fa-refresh"></i></a>';
             }
         } else {
-            $value = '';
+            //check if order actions in progress
+            if ($item['id_order'] > 0 && $item['order_process_state'] == 1) {
+                $lastActionType = LengowAction::getLastOrderActionType($item['id_order']);
+                if ($lastActionType) {
+                    $messageLastAction = LengowMain::decodeLogMessage(
+                        'order.screen.action_sent',
+                        null,
+                        array('action_type' => $lastActionType)
+                    );
+                    $value = '<span class="lengow_link_tooltip lgw-label orange"
+                        data-html="true"
+                        data-original-title="'.LengowMain::decodeLogMessage('order.screen.action_waiting_return').'"
+                        >'.$messageLastAction.'</span>';
+                }
+            } else {
+                $value = '';
+            }
         }
         return $value;
     }
