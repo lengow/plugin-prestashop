@@ -16,6 +16,16 @@ Version 3.0.0
 	- Feature: Add new actions: re-import, resend and resync orders
 
 =============================================================
+Version 2.2.4
+=============================================================
+	- Feature: [import] Add new verification for create generate email function
+	- Feature: [import] Add new root for synchronise order with Lengow
+	- Feature: [import] Add new verification in matching products for compatibility with older versions of Lengow plugins
+	- Feature:[import] Add new function to removes non-Lengow products from cart
+	- Bugfix: [import] Change $this by $this→id in changeIdOrderState() for Presta 1.4
+	- Bugfix: [action] Fix bug with order action root
+
+=============================================================
 Version 2.2.3
 =============================================================
 
