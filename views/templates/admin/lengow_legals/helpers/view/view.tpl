@@ -17,38 +17,39 @@
  *  @copyright 2016 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
-
-<div class="lgw-container">
-    {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
-        <div id="lgw-preprod" class="adminlengowlegals">
-            {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+<div class="cms-global">
+    <div class="lgw-container">
+        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+            <div id="lgw-preprod" class="adminlengowlegals">
+                {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+            </div>
+        {/if}
+        <div class="lgw-box lengow_legals_wrapper">
+            <h3>SAS Lengow</h3>
+            {$locale->t('legals.screen.simplified_company')|escape:'htmlall':'UTF-8'}
+            <br />
+            {$locale->t('legals.screen.social_capital')|escape:'htmlall':'UTF-8'}
+            368 778 €
+            <br />
+            {$locale->t('legals.screen.cnil_declaration')|escape:'htmlall':'UTF-8'}
+            1748784 v 0
+            <br />
+            {$locale->t('legals.screen.company_registration_number')|escape:'htmlall':'UTF-8'}
+            513 381 434
+            <br />
+            {$locale->t('legals.screen.vat_identification_number')|escape:'htmlall':'UTF-8'}
+            FR42513381434
+            <h3>{$locale->t('legals.screen.address')|escape:'htmlall':'UTF-8'}</h3>
+            6 rue René Viviani<br />
+            44200 Nantes
+            <h3>{$locale->t('legals.screen.contact')|escape:'htmlall':'UTF-8'}</h3>
+            contact@lengow.com<br />
+            +33 (0)2 85 52 64 14
+            <h3>{$locale->t('legals.screen.hosting')|escape:'htmlall':'UTF-8'}</h3>
+            Linkbynet<br />
+            RCS Bobigny : 430 359 927<br />
+            5-9 Rue, de l’Industrie – 93200 Saint-Denis<br />
+            +33 (0)1 48 13 00 00
         </div>
-    {/if}
-    <div class="lgw-box lengow_legals_wrapper">
-        <h3>SAS Lengow</h3>
-        {$locale->t('legals.screen.simplified_company')|escape:'htmlall':'UTF-8'}
-        <br />
-        {$locale->t('legals.screen.social_capital')|escape:'htmlall':'UTF-8'}
-        368 778 €
-        <br />
-        {$locale->t('legals.screen.cnil_declaration')|escape:'htmlall':'UTF-8'}
-        1748784 v 0
-        <br />
-        {$locale->t('legals.screen.company_registration_number')|escape:'htmlall':'UTF-8'}
-        513 381 434
-        <br />
-        {$locale->t('legals.screen.vat_identification_number')|escape:'htmlall':'UTF-8'}
-        FR42513381434
-        <h3>{$locale->t('legals.screen.address')|escape:'htmlall':'UTF-8'}</h3>
-        6 rue René Viviani<br />
-        44200 Nantes
-        <h3>{$locale->t('legals.screen.contact')|escape:'htmlall':'UTF-8'}</h3>
-        contact@lengow.com<br />
-        +33 (0)2 85 52 64 14
-        <h3>{$locale->t('legals.screen.hosting')|escape:'htmlall':'UTF-8'}</h3>
-        Linkbynet<br />
-        RCS Bobigny : 430 359 927<br />
-        5-9 Rue, de l’Industrie – 93200 Saint-Denis<br />
-        +33 (0)1 48 13 00 00
     </div>
 </div>
