@@ -25,27 +25,22 @@
 class LengowMain
 {
     /**
-     * Version.
-     */
-    const VERSION = '1.0.0';
-
-    /**
      * @var LengowLog Lengow log file instance
      */
     public static $log;
 
     /**
-     * Registers.
+     * @var array marketplace registers
      */
     public static $registers;
 
     /**
-     * @var integer    life of log files in days
+     * @var integer life of log files in days
      */
     public static $logLife = 20;
 
     /**
-     * @var array    product ids available to track products
+     * @var array product ids available to track products
      */
     public static $trackerChoiceId = array(
         'id'  => 'Product ID',
@@ -55,7 +50,7 @@ class LengowMain
     );
 
     /**
-     * Lengow Authorized IPs
+     * @var array Lengow Authorized IPs
      */
     protected static $ipsLengow = array(
         '46.19.183.204',
@@ -98,9 +93,9 @@ class LengowMain
     /**
      * The Prestashop compare version with current version.
      *
-     * @param string $version The version to compare
+     * @param string $version the version to compare
      *
-     * @return boolean The comparaison
+     * @return boolean
      */
     public static function compareVersion($version = '1.4')
     {
@@ -119,9 +114,9 @@ class LengowMain
     }
 
     /**
-     * Get Lengow ID Account.
+     * Get Lengow ID Account
      *
-     * @param integer $idShop shop ID
+     * @param integer $idShop Prestashop shop id
      *
      * @return integer
      */
@@ -133,7 +128,7 @@ class LengowMain
     /**
      * Get access token
      *
-     * @param integer $idShop shop ID
+     * @param integer $idShop Prestashop shop id
      *
      * @return string
      */
@@ -145,7 +140,7 @@ class LengowMain
     /**
      * Get the secret
      *
-     * @param integer $idShop shop ID
+     * @param integer $idShop Prestashop shop id
      *
      * @return string
      */
@@ -157,7 +152,7 @@ class LengowMain
     /**
      * Recovers if a shop is active or not
      *
-     * @param integer $idShop shop ID
+     * @param integer $idShop Prestashop shop id
      *
      * @return string
      */
@@ -208,7 +203,7 @@ class LengowMain
     /**
      * Record the date of the last import
      *
-     * @param string $type (cron or manual)
+     * @param string $type last import type (cron or manual)
      *
      * @return boolean
      */
@@ -224,7 +219,7 @@ class LengowMain
     /**
      * Get last import (type and timestamp)
      *
-     * @return mixed
+     * @return array
      */
     public static function getLastImport()
     {
@@ -245,24 +240,10 @@ class LengowMain
     }
 
     /**
-     * Get tracker id options
-     *
-     * @return array
-     */
-    public static function getTrackerChoiceId()
-    {
-        $arrayChoiceId = array();
-        foreach (self::$trackerChoiceId as $name => $value) {
-            $arrayChoiceId[] = new LengowOption($name, $value);
-        }
-        return $arrayChoiceId;
-    }
-
-    /**
      * Get marketplace singleton
      *
-     * @param string  $name    markeplace name
-     * @param integer $idShop Shop ID
+     * @param string  $name   markeplace name
+     * @param integer $idShop Prestashop shop id
      *
      * @return array Lengow shipping names option
      */
@@ -277,9 +258,9 @@ class LengowMain
     /**
      * Clean html
      *
-     * @param string $html The html content
+     * @param string $html the html content
      *
-     * @return string Text cleaned.
+     * @return string Text cleaned
      */
     public static function cleanHtml($html)
     {
@@ -307,7 +288,7 @@ class LengowMain
     /**
      * Format float
      *
-     * @param float $float The float to format
+     * @param float $float the float to format
      *
      * @return float Float formated
      */
@@ -317,7 +298,7 @@ class LengowMain
     }
 
     /**
-     * Get host for generated email.
+     * Get host for generated email
      *
      * @return string Hostname
      */
@@ -334,8 +315,8 @@ class LengowMain
     /**
      * Check webservices access (export and import)
      *
-     * @param string $token   shop token
-     * @param string $idShop id shop
+     * @param string  $token  shop token
+     * @param integer $idShop Prestashop shop id
      *
      * @return boolean
      */
@@ -353,8 +334,8 @@ class LengowMain
     /**
      * Check if token is correct
      *
-     * @param string $token   shop token
-     * @param string $idShop id shop
+     * @param string  $token  shop token
+     * @param integer $idShop Prestashop shop id
      *
      * @return boolean
      */
@@ -370,7 +351,7 @@ class LengowMain
     /**
      * Generate token
      *
-     * @param Shop $idShop
+     * @param integer $idShop Prestashop shop id
      *
      * @return array
      */
@@ -420,7 +401,7 @@ class LengowMain
     /**
      * Check if we are in phpunit test
      *
-     * @return boolean.
+     * @return boolean
      */
     public static function inTest()
     {
@@ -436,10 +417,10 @@ class LengowMain
     /**
      * Writes log
      *
-     * @param string  $category       Category log
+     * @param string  $category       log category
      * @param string  $txt            log message
      * @param boolean $logOutput      output on screen
-     * @param string  $marketplaceSku lengow marketplace sku
+     * @param string  $marketplaceSku Lengow marketplace sku
      */
     public static function log($category, $txt, $logOutput = false, $marketplaceSku = null)
     {
@@ -450,8 +431,8 @@ class LengowMain
     /**
      * Set message with params for translation
      *
-     * @param string $key
-     * @param array  $params
+     * @param string $key    log key
+     * @param array  $params log parameters
      *
      * @return string
      */
@@ -472,9 +453,9 @@ class LengowMain
     /**
      * Decode message with params for translation
      *
-     * @param string $message
-     * @param string $isoCode
-     * @param mixed  $params
+     * @param string $message log message
+     * @param string $isoCode iso code for translation
+     * @param mixed  $params  log parameters
      *
      * @return string
      */
@@ -522,7 +503,7 @@ class LengowMain
     /**
      * Clean data
      *
-     * @param string $value The content
+     * @param string $value the content
      *
      * @return string
      */
@@ -760,9 +741,9 @@ class LengowMain
     /**
      * Check logs table and send mail for order not imported correctly
      *
-     * @param  boolean $logOutput See log or not
+     * @param boolean $logOutput see log or not
      *
-     * @return void
+     * @return mixed
      */
     public static function sendMailAlert($logOutput = false)
     {
@@ -831,7 +812,7 @@ class LengowMain
     /**
      * Mark log as sent by email
      *
-     * @param integer $idOrderLog
+     * @param integer $idOrderLog Lengow order log id
      */
     public static function logSent($idOrderLog)
     {
@@ -922,11 +903,11 @@ class LengowMain
     /**
      * Get prestashop state id corresponding to the current order state
      *
-     * @param string            $orderState  order state
+     * @param string            $orderState   order state
      * @param LengowMarketplace $marketplace  order marketplace
-     * @param bool              $shipmentByMp order shipped by mp
+     * @param boolean           $shipmentByMp order shipped by mp
      *
-     * @return int
+     * @return integer
      */
     public static function getPrestahopStateId($orderState, $marketplace, $shipmentByMp)
     {
@@ -946,7 +927,7 @@ class LengowMain
     /**
      * Get order state list
      *
-     * @param int $idLang
+     * @param integer $idLang Prestashop lang id
      *
      * @return array
      */
@@ -980,9 +961,9 @@ class LengowMain
     /**
      * Get webservices links
      *
-     * @param $idShop integer
+     * @param integer $idShop Prestashop shop id
      *
-     * @return array
+     * @return string
      */
     public static function getExportUrl($idShop = null)
     {
@@ -993,9 +974,9 @@ class LengowMain
     /**
      * Get webservices links
      *
-     * @param $idShop integer
+     * @param integer $idShop Prestashop shop id
      *
-     * @return array
+     * @return string
      */
     public static function getImportUrl($idShop = null)
     {
@@ -1006,7 +987,7 @@ class LengowMain
     /**
      * Get base url for Lengow webservices and files
      *
-     * @param $idShop integer
+     * @param integer $idShop Prestashop shop id
      *
      * @return string
      */
@@ -1027,9 +1008,9 @@ class LengowMain
     /**
      * Get Lengow technical error state id
      *
-     * @param integer $idLang lang id
+     * @param integer $idLang Prestashop lang id
      *
-     * @return mixed
+     * @return mixed (integer or false)
      */
     public static function getLengowErrorStateId($idLang = null)
     {
@@ -1062,7 +1043,7 @@ class LengowMain
     /**
      * Translates a camel case string into a string with underscores (e.g. firstName -&gt; first_name)
      *
-     * @param string $str String in camel case format
+     * @param string $str string in camel case format
      *
      * @return string
      */
@@ -1076,8 +1057,8 @@ class LengowMain
     /**
      * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName)
      *
-     * @param string  $str                    String in underscore format
-     * @param boolean $capitaliseFirstChar If true, capitalise the first char in $str
+     * @param string  $str                 string in underscore format
+     * @param boolean $capitaliseFirstChar if true, capitalise the first char in $str
      *
      * @return string
      */

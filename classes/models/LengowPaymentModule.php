@@ -30,16 +30,21 @@ class LengowPaymentModule extends PaymentModule
     public $name = 'lengow_payment';
 
     /**
+     * Create Prestashop order
      * Overrides PaymentModule::validateOrder()
      *
-     * @param integer   $idCart
-     * @param integer   $idOrderState
-     * @param string    $paymentMethod
-     * @param string    $message
-     * @param array     $lengowProducts
-     * @param float     $lengowShippingCosts
-     * @param float     $processingFees
-     * @param string    $lengowTrackingNumber
+     * @param integer $idCart               Prestashop cart id
+     * @param integer $idOrderState         Prestashop order state id
+     * @param string  $paymentMethod        name of the payment method
+     * @param string  $message              order message
+     * @param array   $lengowProducts       list of Lengow products
+     * @param float   $lengowShippingCosts  order shipping costs
+     * @param float   $processingFees       order processing fees
+     * @param string  $lengowTrackingNumber Lengow carrier tracking number
+     *
+     * @throws Exception cannot load order status / payment module not active / cart cannot be loaded
+     *                   delivery country not active / product is not listed / unable to save order
+     *                   unable to save order payment / order creation failed
      *
      * @return array
      */
@@ -476,18 +481,21 @@ class LengowPaymentModule extends PaymentModule
     }
   
     /**
+     * Create Prestashop order for 1.4 version
      * Overrides PaymentModule::validateOrder() for 1.4 version
      *
-     * @param integer   $idCart
-     * @param integer   $idOrderState
-     * @param float     $amountPaid
-     * @param string    $paymentMethod
-     * @param string    $message
-     * @param array     $lengowProducts
-     * @param float     $lengowShippingCosts
-     * @param float     $processingFees
-     * @param string    $lengowTrackingNumber
+     * @param integer $idCart               Prestashop cart id
+     * @param integer $idOrderState         Prestashop order state id
+     * @param float   $amountPaid           total amount paid
+     * @param string  $paymentMethod        name of the payment method
+     * @param string  $message              order message 
+     * @param array   $lengowProducts       list of Lengow products
+     * @param float   $lengowShippingCosts  order shipping costs
+     * @param float   $processingFees       order processing fees
+     * @param string  $lengowTrackingNumber Lengow carrier tracking number
      *
+     * @throws Exception product is not listed / cannot load order status / cart cannot be loaded 
+     *                   order creation failed
      * @return array
      */
     public function makeOrder14(
@@ -768,7 +776,7 @@ class LengowPaymentModule extends PaymentModule
     /**
      * Set context for payment module
      *
-     * @param Context $context context for import
+     * @param Context $context Prestashop context instance
      */
     public function setContext(Context $context)
     {

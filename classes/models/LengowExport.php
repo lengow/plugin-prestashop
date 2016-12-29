@@ -25,12 +25,12 @@
 class LengowExport
 {
     /**
-     * Default fields for export
+     * @var array default fields for export
      */
     public static $defaultFields;
 
     /**
-     * All available params for export
+     * @var array all available params for export
      */
     public static $exportParams = array(
         'mode',
@@ -53,7 +53,7 @@ class LengowExport
     );
 
     /**
-     * New fields for v3
+     * @var array new fields for v3
      */
     protected $newFields = array(
         'id'                             => 'id',
@@ -110,7 +110,7 @@ class LengowExport
     );
 
     /**
-     * Legacy fields for export
+     * @var array legacy fields for export
      */
     protected $legacyFields = array(
         'id_product'            => 'id',
@@ -171,92 +171,62 @@ class LengowExport
     );
 
     /**
-     * Format to return
+     * @var string format to return
      */
     protected $format;
 
     /**
-     * Product's Carrier
+     * @var Carrier Prestashop Carrier instance
      */
     protected $carrier;
 
     /**
-     * Feed
+     * @var LengowFeed Feed
      */
     protected $feed;
 
     /**
-     * Filename
+     * @var Filename
      */
     protected $filename;
 
     /**
-     * Full export products + attributes
-     */
-    protected $full = true;
-
-    /**
-     * Current Shop Id
+     * @var integer Prestashop shop id
      */
     protected $idShop;
 
     /**
-     * Export selected products
-     */
-    protected $all = false;
-
-    /**
-     * Max images
-     */
-    protected $maxImages = 10;
-
-    /**
-     * Attributes to export
-     */
-    protected $attributes = array();
-
-    /**
-     * Features to export
-     */
-    protected $features = array();
-
-    /**
-     * Stream return
+     * @var boolean stream return
      */
     protected $stream = true;
 
     /**
-     * Product data
+     * @var boolean export Lengow selection
      */
-    protected $data = array();
+    protected $selection = false;
 
     /**
-     * Export Lengow selection
+     * @var boolean export out of stock product
      */
-    protected $exportLengowSelection = false;
+    protected $outOfStock = false;
 
     /**
-     * Export out of stock product
+     * @var boolean export product variations
      */
-    protected $exportOutStock = false;
+    protected $variation = true;
 
     /**
-     * Export product variations
+     * @var boolean include active products
      */
-    protected $exportVariation = true;
+    protected $inactive = false;
 
     /**
-     * Include active products
-     */
-    protected $showInactiveProduct = false;
-
-    /**
-     * See log or not
+     * @var boolean see log or not
      */
     protected $logOutput;
 
     /**
-     * Use legacy fields
+     * @var boolean use legacy fields
      */
     protected $legacy = false;
 
@@ -266,17 +236,22 @@ class LengowExport
     protected $limit = 0;
 
     /**
+     * @var integer offset of total product
+     */
+    protected $offset = 0;
+
+    /**
      * @var array product ids to be exported
      */
     protected $productIds = array();
 
     /**
-     * Update export date.
+     * @var boolean update export date.
      */
     protected $updateExportDate;
 
     /**
-     * Cache combination
+     * @var array cache combination
      */
     protected $cacheCombination;
 
@@ -316,7 +291,7 @@ class LengowExport
         );
         // Get specific params in database
         $selection = LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->idShop);
-        $outStock = LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->idShop);
+        $outOfStock = LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->idShop);
         $variation = LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->idShop);
         // Set default value for new shop
         if (is_null($selection)) {
@@ -325,11 +300,11 @@ class LengowExport
         } else {
             $selection = (bool)$selection;
         }
-        if (is_null($outStock)) {
+        if (is_null($outOfStock)) {
             LengowConfiguration::updateValue('LENGOW_EXPORT_OUT_STOCK', 1, null, null, $this->idShop);
-            $outStock = true;
+            $outOfStock = true;
         } else {
-            $outStock = (bool)$outStock;
+            $outOfStock = (bool)$outOfStock;
         }
         if (is_null($variation)) {
             LengowConfiguration::updateValue('LENGOW_EXPORT_VARIATION_ENABLED', 1, null, null, $this->idShop);
@@ -337,10 +312,10 @@ class LengowExport
         } else {
             $variation = (bool)$variation;
         }
-        $this->exportLengowSelection = isset($params["selection"]) ? (bool)$params["selection"] : $selection;
-        $this->exportOutStock = isset($params["out_of_stock"]) ? (bool)$params["out_of_stock"] : $outStock;
-        $this->exportVariation = isset($params["variation"]) ? (bool)$params["variation"] : $variation;
-        $this->showInactiveProduct = (isset($params["inactive"]) ? (bool)$params["inactive"] : false);
+        $this->selection = isset($params["selection"]) ? (bool)$params["selection"] : $selection;
+        $this->outOfStock = isset($params["out_of_stock"]) ? (bool)$params["out_of_stock"] : $outOfStock;
+        $this->variation = isset($params["variation"]) ? (bool)$params["variation"] : $variation;
+        $this->inactive = (isset($params["inactive"]) ? (bool)$params["inactive"] : false);
         if ($this->stream) {
             $this->logOutput = false;
         } else {
@@ -359,7 +334,7 @@ class LengowExport
     /**
      * Check currency to export
      *
-     * @throws LengowException
+     * @throws LengowException illegal currency
      *
      * @return boolean
      */
@@ -374,7 +349,7 @@ class LengowExport
     /**
      * Set Carrier to export
      *
-     * @throws LengowException
+     * @throws LengowException no default carrier selected
      *
      * @return boolean
      */
@@ -393,7 +368,7 @@ class LengowExport
      *
      * @param string $format The export format
      *
-     * @throws LengowException
+     * @throws LengowException illegal export format
      *
      * @return boolean.
      */
@@ -427,9 +402,8 @@ class LengowExport
     }
 
     /**
-     * Execute the export
+     * Execute export process
      *
-     * @return mixed
      */
     public function exec()
     {
@@ -492,7 +466,9 @@ class LengowExport
      *
      * @param array $products list of products to be exported
      * @param array $fields   list of fields
-     * @param Shop  $shop     shop being exported
+     * @param Shop  $shop     Prestashop shop being exported
+     *
+     * @throws Exception folder not writable
      */
     public function export($products, $fields, $shop)
     {
@@ -591,8 +567,10 @@ class LengowExport
     /**
      * Load cache combinations
      *
-     * @param integer $productId product id
+     * @param integer $productId Prestashop product id
      * @param array   $fields    list of fields
+     *
+     * @throws Exception no product combination
      */
     public function loadCacheCombinations($productId, $fields)
     {
@@ -668,7 +646,7 @@ class LengowExport
      */
     public function getTotalExportProduct()
     {
-        if ($this->exportVariation) {
+        if ($this->variation) {
             $query = ' SELECT SUM(total) as total FROM ( ( ';
             $query.= 'SELECT COUNT(*) as total '.$this->buildTotalQuery();
             $query.= ' ) UNION ( ';
@@ -692,7 +670,7 @@ class LengowExport
     {
         $where = array();
         $query= ' FROM '._DB_PREFIX_.'product p';
-        if ($this->exportLengowSelection) {
+        if ($this->selection) {
             $query.= ' INNER JOIN '._DB_PREFIX_.'lengow_product lp ON (lp.id_product = p.id_product AND
             lp.id_shop = '.(int)$this->idShop.')';
         }
@@ -703,7 +681,7 @@ class LengowExport
             $query.= ' INNER JOIN '._DB_PREFIX_.'product_shop ps ON
             (ps.id_product = p.id_product AND ps.id_shop = '.(int)$this->idShop.') ';
         }
-        if (!$this->showInactiveProduct) {
+        if (!$this->inactive) {
             if (_PS_VERSION_ < '1.5') {
                 $where[] = ' p.active = 1 ';
             } else {
@@ -713,7 +691,7 @@ class LengowExport
         if (!(_PS_VERSION_ < '1.5')) {
             $where[] = ' ps.id_shop = '.(int)$this->idShop;
         }
-        if (!$this->exportOutStock) {
+        if (!$this->outOfStock) {
             if (_PS_VERSION_ >= '1.5') {
                 if ($variation) {
                     $query.= ' INNER JOIN '._DB_PREFIX_.'stock_available sa ON
@@ -742,11 +720,11 @@ class LengowExport
     /**
      * Get the products to export
      *
-     * @return array IDs product
+     * @return array
      */
     public function exportIds()
     {
-        if ($this->exportVariation) {
+        if ($this->variation) {
             $query = ' SELECT * FROM ( ( ';
             $query.= 'SELECT p.id_product, \'0\' as id_product_attribute '.$this->buildTotalQuery();
             $query.= ' ) UNION ( ';
@@ -788,7 +766,7 @@ class LengowExport
             }
         }
         // if export product variations -> get variations attributes
-        if ($this->exportVariation) {
+        if ($this->variation) {
             $attributes = AttributeGroup::getAttributesGroups($this->language->id);
             foreach ($attributes as $attribute) {
                 //dont export empty attributes
@@ -896,7 +874,7 @@ class LengowExport
     /**
      * Override this function in override/lengow.export.class.php to add header
      *
-     * @param array $fields
+     * @param array $fields fields to export
      *
      * @return array
      */
@@ -913,9 +891,9 @@ class LengowExport
     /**
      * Override this function to assign data for additional fields
      *
-     * @param LengowProduct $product
-     * @param integer       $idProductAttribute
-     * @param array         $arrayProduct
+     * @param LengowProduct $product            Lengow product instance
+     * @param integer       $idProductAttribute Prestashop product attribute id
+     * @param array         $arrayProduct       product data
      *
      * @return array
      */

@@ -27,7 +27,7 @@ class LengowTool
     /**
      * Is user log in ?
      *
-     * @return bool
+     * @return boolean
      */
     public function isLogged()
     {
@@ -45,6 +45,8 @@ class LengowTool
 
     /**
      * Get current uri
+     *
+     * @return string
      */
     public function getCurrentUri()
     {
@@ -54,8 +56,8 @@ class LengowTool
     /**
      * Process Login Form to log User
      *
-     * @param integer $accountId
-     * @param string  $secretToken
+     * @param integer $accountId   Lengow account id
+     * @param string  $secretToken Lengow secret token
      *
      * @return boolean
      */
@@ -107,7 +109,7 @@ class LengowTool
     /**
      * Check IP with number tentative
      *
-     * @param integer $counter
+     * @param integer $counter check ip counter
      *
      * @return void
      */
@@ -152,8 +154,8 @@ class LengowTool
     /**
      * Redirect toolbox
      *
-     * @param string $url
-     * @param string $baseUri
+     * @param string $url     url toolbox
+     * @param string $baseUri base uri
      *
      * @return void
      */

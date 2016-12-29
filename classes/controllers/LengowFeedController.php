@@ -21,6 +21,9 @@
 
 class LengowFeedController extends LengowController
 {
+    /**
+     * @var LengowList Lengow list instance
+     */
     protected $list;
 
     /**
@@ -241,21 +244,21 @@ class LengowFeedController extends LengowController
             'width'         => '5%',
         );
         $fieldsList['name'] = array(
-            'title'         => $this->locale->t('product.table.name'),
-            'class'         => 'feed_name',
-            'filter'        => true,
-            'filter_order'  => true,
-            'filter_key'    => 'pl.name',
-            'width'         => '20%',
+            'title'             => $this->locale->t('product.table.name'),
+            'class'             => 'feed_name',
+            'filter'            => true,
+            'filter_order'      => true,
+            'filter_key'        => 'pl.name',
+            'width'             => '20%',
             'display_callback'  => 'LengowFeedController::displayLink',
         );
         $fieldsList['reference'] = array(
-            'title'         => $this->locale->t('product.table.reference'),
-            'class'         => 'left',
-            'width'         => '14%',
-            'filter'        => true,
-            'filter_order'  => true,
-            'filter_key'    => 'p.reference',
+            'title'             => $this->locale->t('product.table.reference'),
+            'class'             => 'left',
+            'width'             => '14%',
+            'filter'            => true,
+            'filter_order'      => true,
+            'filter_key'        => 'p.reference',
             'display_callback'  => 'LengowFeedController::displayLink',
         );
         $fieldsList['category_name'] = array(
@@ -319,31 +322,31 @@ class LengowFeedController extends LengowController
         $from = 'FROM '._DB_PREFIX_.'product p';
 
         $join[] = ' INNER JOIN '._DB_PREFIX_.'product_lang pl ON (pl.id_product = p.id_product
-        AND pl.id_lang = 1 '.(_PS_VERSION_ < '1.5' ? '': ' AND pl.id_shop = '.(int)$idShop).')';
+            AND pl.id_lang = 1 '.(_PS_VERSION_ < '1.5' ? '': ' AND pl.id_shop = '.(int)$idShop).')';
         $join[] = ' LEFT JOIN '._DB_PREFIX_.'lengow_product lp ON (lp.id_product = p.id_product
-        AND lp.id_shop = '.(int)$idShop.' ) ';
+            AND lp.id_shop = '.(int)$idShop.' ) ';
         if (_PS_VERSION_ >= '1.5') {
             $join[] = 'INNER JOIN `'._DB_PREFIX_.'product_shop` ps ON (p.`id_product` = ps.`id_product`
-            AND ps.id_shop = ' . (int)$idShop . ') ';
+                AND ps.id_shop = ' . (int)$idShop . ') ';
             $join[] = ' LEFT JOIN '._DB_PREFIX_.'stock_available sav ON (sav.id_product = p.id_product
-            AND sav.id_product_attribute = 0 AND sav.id_shop = ' . (int)$idShop . ')';
+                AND sav.id_product_attribute = 0 AND sav.id_shop = ' . (int)$idShop . ')';
         }
         if (_PS_VERSION_ >= '1.5') {
             if (Shop::isFeatureActive()) {
                 $join[] = 'LEFT JOIN `'._DB_PREFIX_.'category_lang` cl
-                ON (ps.`id_category_default` = cl.`id_category`
-                AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = ' . (int)$idShop . ')';
+                    ON (ps.`id_category_default` = cl.`id_category`
+                    AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = ' . (int)$idShop . ')';
                 $join[] = 'LEFT JOIN `'._DB_PREFIX_.'shop` shop ON (shop.id_shop = ' . (int)$idShop . ') ';
             } else {
                 $join[] = 'LEFT JOIN `'._DB_PREFIX_.'category_lang` cl
-                ON (p.`id_category_default` = cl.`id_category`
-                AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = 1)';
+                    ON (p.`id_category_default` = cl.`id_category`
+                    AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = 1)';
             }
             $select[] = ' sav.quantity ';
             $where[] = ' ps.active = 1 ';
         } else {
             $join[] = 'LEFT JOIN `'._DB_PREFIX_.'category_lang` cl ON (p.`id_category_default` = cl.`id_category`
-            AND pl.`id_lang` = cl.`id_lang`)';
+                AND pl.`id_lang` = cl.`id_lang`)';
             $select[] = ' p.quantity ';
             $where[] = ' p.active = 1 ';
         }

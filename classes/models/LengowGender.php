@@ -26,7 +26,7 @@ class LengowGender extends Gender
 {
 
     /**
-     * Current alias of mister.
+     * @var array current alias of mister
      */
     public static $currentMale = array(
         'M',
@@ -42,7 +42,7 @@ class LengowGender extends Gender
     );
 
     /**
-     * Current alias of miss.
+     * @var array current alias of miss
      */
     public static $currentFemale = array(
         'Mme',
@@ -70,7 +70,7 @@ class LengowGender extends Gender
      *
      * @param $name The gender text
      *
-     * @return string
+     * @return mixed (string or integer)
      */
     public static function getGender($name)
     {

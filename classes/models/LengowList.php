@@ -25,25 +25,99 @@
 class LengowList
 {
     /**
-    * All params for lengow grid
+    * @var array list of fields
     */
     protected $fieldsList;
+
+    /**
+    * @var array collection of result
+    */
     protected $collection;
+
+    /**
+    * @var integer total number of results
+    */
     protected $total;
+
+    /**
+    * @var string name of the identifier
+    */
     protected $identifier;
+
+    /**
+    * @var boolean if attribute is selected
+    */
     protected $selection;
+
+    /**
+    * @var string specific selection condition
+    */
     protected $selectionCondition;
+
+    /**
+    * @var string name of Lengow controller
+    */
     protected $controller;
+
+    /**
+    * @var integer Prestashop shop id
+    */
     protected $shopId;
+
+    /**
+    * @var integer number of the current page
+    */
     protected $currentPage;
+
+    /**
+    * @var integer number of results per page
+    */
     protected $nbPerPage;
+
+    /**
+    * @var integer maximum number of pages
+    */
     protected $nbMaxPage;
+
+    /**
+    * @var array all params for sql request
+    */
     protected $sql;
+
+    /**
+    * @var string shop identifier 
+    */
     protected $id;
+
+    /**
+    * @var boolean is ajax request
+    */
     protected $ajax;
+
+    /**
+    * @var Context Prestashop context instance
+    */
     protected $context;
+
+    /**
+    * @var LengowTranslation Lengow translation instance
+    */
     protected $locale;
+
+    /**
+    * @var boolean Toolbox is open or not
+    */
     protected $toolbox;
+
+    /**
+    * @var string order value condition
+    */
+    protected $orderValue;
+
+    /**
+    * @var string order column condition
+    */
+    protected $orderColumn;
 
     /**
      * Construct
@@ -73,6 +147,8 @@ class LengowList
 
     /**
      * Display Table Header
+     *
+     * @param string $order order column condition
      *
      * @return string
      */
@@ -179,7 +255,7 @@ class LengowList
     /**
      * Display Table Row
      *
-     * @param string $item
+     * @param string $item item of the collection
      *
      * @return string
      */
@@ -326,7 +402,7 @@ class LengowList
     /**
      * Get Row
      *
-     * @param string $where
+     * @param string $where where conditions
      *
      * @return array
      */
@@ -346,7 +422,7 @@ class LengowList
     /**
      * Find value by key in fieldlist
      *
-     * @param $keyToSeach key search in field list
+     * @param string $keyToSeach key search in field list
      *
      * @return boolean
      */
@@ -363,10 +439,10 @@ class LengowList
     /**
      * Build Query
      *
-     * @param bool $total     Execute Total Query
-     * @param bool $selectAll
+     * @param bool $total     execute Total Query
+     * @param bool $selectAll select all results
      *
-     * @return string sql query
+     * @return string
      */
     public function buildQuery($total = false, $selectAll = false)
     {
@@ -471,7 +547,7 @@ class LengowList
     /**
      * Update collection
      *
-     * @param array $collection
+     * @param array $collection collection of result
      */
     public function updateCollection($collection)
     {
@@ -481,7 +557,7 @@ class LengowList
     /**
      * Render pagination
      *
-     * @param array $params
+     * @param array $params pagination params
      *
      * @return string
      */
@@ -560,7 +636,7 @@ class LengowList
     /**
      * Get currency by code
      *
-     * @param string $isoCode
+     * @param string $isoCode currency iso code
      *
      * @return array
      */

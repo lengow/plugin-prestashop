@@ -29,7 +29,7 @@ class LengowEmployee extends Employee
      *
      * @param boolean $activeOnly active employee or not
      *
-     * @return array Employees
+     * @return array
      */
     public static function getEmployees($activeOnly = true)
     {

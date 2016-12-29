@@ -40,7 +40,7 @@ class LengowShop extends Shop
     /**
      * Is feature active
      *
-     * @return mixed
+     * @return boolean 
      */
     public static function isFeatureActive()
     {
@@ -54,9 +54,9 @@ class LengowShop extends Shop
     /**
      * Find shop by token
      *
-     * @param string $token
+     * @param string $token Lengow shop token
      *
-     * @return mixed
+     * @return mixed (LengowShop or false)
      */
     public static function findByToken($token)
     {
@@ -82,7 +82,7 @@ class LengowShop extends Shop
     /**
      * Find all shop
      *
-     * @param boolean $forceContext
+     * @param boolean $forceContext force context to get all shops
      *
      * @return array
      */

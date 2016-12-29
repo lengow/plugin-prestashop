@@ -25,11 +25,6 @@
 class LengowImport
 {
     /**
-     * Version.
-     */
-    const VERSION = '1.0.1';
-
-    /**
      * @var boolean import is processing
      */
     public static $processing;
@@ -50,17 +45,17 @@ class LengowImport
     );
 
     /**
-     * @var integer lang id
+     * @var integer Prestashop lang id
      */
     protected $idLang;
 
     /**
-     * @var integer shop id
+     * @var integer Prestashop shop id
      */
     protected $idShop = null;
 
     /**
-     * @var integer shop group id
+     * @var integer Prestashop shop group id
      */
     protected $idShopGroup;
 
@@ -440,8 +435,8 @@ class LengowImport
     /**
      * Check credentials for a shop
      *
-     * @param integer $idShop   Shop Id
-     * @param string  $nameShop Shop name
+     * @param integer $idShop   Prestashop shop Id
+     * @param string  $nameShop Prestashop shop name
      *
      * @return boolean
      */
@@ -478,7 +473,7 @@ class LengowImport
     /**
      * Change Context for import
      *
-     * @param integer $idShop Shop Id
+     * @param integer $idShop Prestashop shop Id
      */
     protected function changeContext($idShop)
     {
@@ -497,7 +492,9 @@ class LengowImport
      *
      * @param LengowShop $shop
      *
-     * @return mixed
+     * @throws Exception no connection with the webservice / credentials not valid
+     *
+     * @return array
      */
     protected function getOrdersFromApi($shop)
     {
@@ -615,10 +612,10 @@ class LengowImport
     /**
      * Create or update order in prestashop
      *
-     * @param mixed   $orders  API orders
-     * @param integer $idShop Shop Id
+     * @param mixed   $orders API orders
+     * @param integer $idShop Prestashop shop Id
      *
-     * @return mixed
+     * @return mixed (false or array)
      */
     protected function importOrders($orders, $idShop)
     {
@@ -768,8 +765,8 @@ class LengowImport
     /**
      * Check if order status is valid for import
      *
-     * @param string            $orderStateMarketplace order state
-     * @param LengowMarketplace $marketplace             order marketplace
+     * @param string            $orderStateMarketplace Marketplace order state
+     * @param LengowMarketplace $marketplace           Lengow marketplace instance
      *
      * @return boolean
      */
@@ -804,7 +801,6 @@ class LengowImport
     }
 
     /**
-     * v3
      * Get Rest time to make re import order
      *
      * @return boolean

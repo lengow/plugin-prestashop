@@ -25,42 +25,94 @@
 class LengowHook
 {
     /**
-    * Constant for tag capsule and tracker
+    * @var string name of Prestashop homepage
     */
     const LENGOW_TRACK_HOMEPAGE = 'homepage';
+
+    /**
+    * @var string name of Prestashop classic page
+    */
     const LENGOW_TRACK_PAGE = 'page';
+
+    /**
+    * @var string name of Prestashop listepage page
+    */
     const LENGOW_TRACK_PAGE_LIST = 'listepage';
+
+    /**
+    * @var string name of Prestashop payment page
+    */
     const LENGOW_TRACK_PAGE_PAYMENT = 'payment';
+
+    /**
+    * @var string name of Prestashop basket page
+    */
     const LENGOW_TRACK_PAGE_CART = 'basket';
+
+    /**
+    * @var string name of Prestashop lead page
+    */
     const LENGOW_TRACK_PAGE_LEAD = 'lead';
+
+    /**
+    * @var string name of Prestashop confirmation page
+    */
     const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
 
     /**
-    * variables for tag capsule and tracker
+    * @var string Prestashop current page type
     */
     static private $currentPageType = 'page';
+
+    /**
+    * @var string Prestashop order id
+    */
     static private $idOrder = '';
+
+    /**
+    * @var string Prestashop cart id
+    */
     static private $idCart = '';
+
+    /**
+    * @var string order payment
+    */
     static private $orderPayment = '';
+
+    /**
+    * @var string order currency
+    */
     static private $orderCurrency = '';
+
+    /**
+    * @var string total order
+    */
     static private $orderTotal = '';
+
+    /**
+    * @var string product cart ids
+    */
     static private $idsProductCart = '';
+
+    /**
+    * @var string Prestashop category id
+    */
     static private $idCategory = '';
 
     /**
-    * array order is already shipped
+    * @var array order is already shipped
     */
     protected $alreadyShipped = array();
 
     /**
-    * lengow module
+    * @var Module Prestashop module instance
     */
     private $module;
 
     /**
      * Construct
      *
-     * @param lengow module $module
+     * @param Module $module Prestashop Lengow module instance
      */
     public function __construct($module)
     {
@@ -70,6 +122,8 @@ class LengowHook
 
     /**
      * Register Lengow Hook
+     *
+     * @return boolean
      */
     public function registerHooks()
     {
@@ -110,7 +164,7 @@ class LengowHook
     /**
      * Hook to display the icon
      *
-     * @param array $args Arguments of hook
+     * @param array $args arguments of hook
      */
     public function hookDisplayBackOfficeHeader($args)
     {
@@ -121,7 +175,7 @@ class LengowHook
     /**
      * Hook on Home page
      *
-     * @param array $args Arguments of hook
+     * @param array $args arguments of hook
      */
     public function hookHome($args)
     {
@@ -132,7 +186,7 @@ class LengowHook
     /**
      * Hook on Payment page
      *
-     * @param array $args Arguments of hook
+     * @param array $args arguments of hook
      */
     public function hookPaymentTop($args)
     {
@@ -143,7 +197,7 @@ class LengowHook
     /**
      * Generate tracker on front footer page
      *
-     * @param array $args Arguments of hook
+     * @param array $args arguments of hook
      *
      * @return mixed
      */
@@ -293,7 +347,7 @@ class LengowHook
     /**
      * Hook on order confirmation page to init order's product list
      *
-     * @param array $args Arguments of hook
+     * @param array $args arguments of hook
      */
     public function hookOrderConfirmation($args)
     {
@@ -340,9 +394,9 @@ class LengowHook
     /**
      * Hook on admin page's order
      *
-     * @param array $args Arguments of hook
+     * @param array $args arguments of hook
      *
-     * @return display
+     * @return mixed
      */
     public function hookAdminOrder($args)
     {
@@ -405,7 +459,7 @@ class LengowHook
     /**
      * Hook before an status' update to synchronize status with lengow
      *
-     * @param array $args Arguments of hook
+     * @param array $args arguments of hook
      */
     public function hookUpdateOrderStatus($args)
     {
@@ -420,7 +474,7 @@ class LengowHook
     /**
      * Hook after an status' update to synchronize status with lengow
      *
-     * @param array $args Arguments of hook
+     * @param array $args arguments of hook
      */
     public function hookPostUpdateOrderStatus($args)
     {
@@ -435,22 +489,19 @@ class LengowHook
             if ($idOrderState == LengowMain::getOrderState('shipped')) {
                 $lengowOrder->callAction('ship');
                 $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
-                return true;
             }
             // Call Lengow API WSDL to send refuse state order
             if ($idOrderState == LengowMain::getOrderState('canceled')) {
                 $lengowOrder->callAction('cancel');
                 $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
-                return true;
             }
         }
-        return false;
     }
 
     /**
      * Update, if isset tracking number
      *
-     * @param array $args Arguments of hook
+     * @param array $args arguments of hook
      */
     public function hookActionObjectUpdateAfter($args)
     {

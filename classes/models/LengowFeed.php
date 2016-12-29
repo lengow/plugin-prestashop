@@ -25,22 +25,22 @@
 class LengowFeed
 {
     /**
-     * Protection.
+     * @var string protection
      */
     const PROTECTION = '"';
 
     /**
-     * CSV separator
+     * @var string CSV separator
      */
     const CSV_SEPARATOR = '|';
 
     /**
-     * End of line.
+     * @var string end of line
      */
     const EOL = "\r\n";
 
     /**
-     * @var LengowFile temporary export file
+     * @var LengowFile Lengow file instance
      */
     protected $file;
 
@@ -87,10 +87,10 @@ class LengowFeed
     /**
      * Construct
      *
-     * @param boolean $stream
-     * @param string  $format
-     * @param boolean $legacy
-     * @param string  $shopName
+     * @param boolean $stream   export format
+     * @param string  $format   export streaming or in a file
+     * @param boolean $legacy   export legacy field or not
+     * @param string  $shopName Prestashop shop name
      *
      */
     public function __construct($stream, $format, $legacy, $shopName = null)
@@ -102,7 +102,6 @@ class LengowFeed
             $shopName = Context::getContext()->shop->name;
         }
         $this->shopFolder = $this->formatFields($shopName, 'shop');
-
         if (!$this->stream) {
             $this->initExportFile();
         }
@@ -110,6 +109,8 @@ class LengowFeed
 
     /**
      * Create export file
+     *
+     * @throws Exception unable to create folder
      */
     public function initExportFile()
     {
@@ -133,10 +134,10 @@ class LengowFeed
     /**
      * Write feed
      *
-     * @param string  $type         (header, body or footer)
+     * @param string  $type         data type (header, body or footer)
      * @param array   $data         export data
-     * @param boolean $isFirst
-     * @param boolean $maxCharacter Max characters for yaml format
+     * @param boolean $isFirst      is first product
+     * @param boolean $maxCharacter max characters for yaml format
      */
     public function write($type, $data = array(), $isFirst = null, $maxCharacter = null)
     {
@@ -165,7 +166,7 @@ class LengowFeed
     /**
      * Return feed header
      *
-     * @param array  $data   export data
+     * @param array $data export data
      *
      * @return string
      */
@@ -193,7 +194,7 @@ class LengowFeed
      * Get feed body
      *
      * @param array   $data         feed data
-     * @param boolean $isFirst     is first product
+     * @param boolean $isFirst      is first product
      * @param integer $maxCharacter max characters for yaml format
      *
      * @return string
@@ -275,7 +276,7 @@ class LengowFeed
     /**
      * Finalize export generation
      *
-     * @return bool
+     * @return boolean
      */
     public function end()
     {
@@ -389,7 +390,7 @@ class LengowFeed
     }
 
     /**
-     * For YAML, add spaces to have good indentation.
+     * For YAML, add spaces to have good indentation
      *
      * @param string $name    the field name
      * @param string $maxSize space limit

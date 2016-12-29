@@ -25,10 +25,13 @@
 class LengowCheck
 {
     /**
-     * @var $locale for translation
+     * @var LengowTranslation $locale Lengow translation instance
      */
     protected $locale;
 
+    /**
+    * Constructor
+    */
     public function __construct()
     {
         $this->locale = new LengowTranslation();
@@ -37,7 +40,7 @@ class LengowCheck
     /**
     * Check API Authentification
     *
-    * @param integer $idShop Shop ID
+    * @param integer $idShop Prestshop shop id
     *
     * @return boolean
     */
@@ -70,9 +73,9 @@ class LengowCheck
     }
 
     /**
-     * Get array of requirements and their status
+     * Get array of requirements for toolbox
      *
-     * @return mixed
+     * @return string
      */
     public function getCheckList()
     {
@@ -119,9 +122,9 @@ class LengowCheck
     }
 
     /**
-     * Get array of requirements and their status
+     * Get all global information for toolbox
      *
-     * @return mixed
+     * @return string
      */
     public function getGlobalInformation()
     {
@@ -154,9 +157,9 @@ class LengowCheck
     }
 
      /**
-     * Get array of requirements and their status
+     * Get all import information for toolbox
      *
-     * @return mixed
+     * @return string
      */
     public function getImportInformation()
     {
@@ -208,11 +211,11 @@ class LengowCheck
 
 
     /**
-     * Get array of requirements and their status
+     * Get all shop information for toolbox
      *
-     * @param LengowShop $shop
+     * @param LengowShop $shop Lengow shop instance
      *
-     * @return mixed
+     * @return string
      */
     public function getInformationByStore($shop)
     {
@@ -272,9 +275,9 @@ class LengowCheck
     }
 
     /**
-     * Get files checksum
+     * Get files checksum informations
      *
-     * @return mixed
+     * @return string
      */
     public function checkFileMd5()
     {
@@ -375,7 +378,7 @@ class LengowCheck
     /**
      * Get mail configuration informations
      *
-     * @return string
+     * @return array
      */
     public function getMailConfiguration()
     {
@@ -437,7 +440,9 @@ class LengowCheck
     /**
      * Get HTML Table content of checklist
      *
-     * @param array $checklist
+     * @param array $checklist all information for toolbox
+     *
+     * @return string
      */
     private function getAdminContent($checklist = array())
     {

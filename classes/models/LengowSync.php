@@ -25,7 +25,7 @@
 class LengowSync
 {
     /**
-     * Get Account Status every 5 hours
+     * @var integer get datas every 5 hours
      */
     protected static $cacheTime = 18000;
 
@@ -62,9 +62,9 @@ class LengowSync
     }
 
     /**
-     * Store Configuration Key From Lengow
+     * Set shop configuration key from Lengow
      *
-     * @param $params
+     * @param array $params Lengow API credentials 
      */
     public static function sync($params)
     {
@@ -101,9 +101,9 @@ class LengowSync
     }
 
     /**
-     * Check Synchronisation shop
+     * Check synchronisation shop
      *
-     * @param $idShop
+     * @param integer $idShop Prestashop shop id
      *
      * @return boolean
      */
@@ -114,7 +114,7 @@ class LengowSync
     }
 
     /**
-     * Get Sync Data (Inscription / Update)
+     * Get options for all shops
      *
      * @return array
      */
@@ -151,7 +151,7 @@ class LengowSync
     /**
      * Set CMS options
      *
-     * @param boolean $force Force cache Update
+     * @param boolean $force force cache update
      *
      * @return boolean
      */
@@ -177,7 +177,7 @@ class LengowSync
     /**
      * Get Status Account
      *
-     * @param boolean $force Force cache Update
+     * @param boolean $force force cache update
      *
      * @return mixed
      */
@@ -212,7 +212,7 @@ class LengowSync
     /**
      * Get Statistic with all shop
      *
-     * @param boolean $force Force cache Update
+     * @param boolean $force force cache update
      *
      * @return array
      */

@@ -25,27 +25,22 @@
 class LengowImportOrder
 {
     /**
-     * Version.
-     */
-    const VERSION = '1.0.1';
-
-    /**
-     * @var integer shop id
+     * @var integer Prestashop shop id
      */
     protected $idShop = null;
 
     /**
-     * @var integer shop group id
+     * @var integer Prestashop shop group id
      */
     protected $idShopGroup;
 
     /**
-     * @var integer lang id
+     * @var integer Prestashop lang id
      */
     protected $idLang;
 
     /**
-     * @var Context Context for import order
+     * @var Context Prestashop Context for import order
      */
     protected $context;
 
@@ -80,17 +75,17 @@ class LengowImportOrder
     protected $deliveryAddressId;
 
     /**
-     * @var mixed
+     * @var mixed API order data
      */
     protected $orderData;
 
     /**
-     * @var mixed
+     * @var mixed API package data
      */
     protected $packageData;
 
     /**
-     * @var boolean
+     * @var boolean is first package
      */
     protected $firstPackage;
 
@@ -105,70 +100,69 @@ class LengowImportOrder
     protected $idOrderLengow;
 
     /**
-     * @var LengowMarketplace
+     * @var LengowMarketplace Lengow marketplace instance
      */
     protected $marketplace;
 
     /**
-     * @var string
+     * @var string marketplace order state
      */
     protected $orderStateMarketplace;
 
     /**
-     * @var string
+     * @var string Lengow order state
      */
     protected $orderStateLengow;
 
     /**
-     * @var float
+     * @var float order processing fee
      */
     protected $processingFee;
 
     /**
-     * @var float
+     * @var float order shipping cost
      */
     protected $shippingCost;
 
     /**
-     * @var float
+     * @var float order total amount
      */
     protected $orderAmount;
 
     /**
-     * @var integer
+     * @var integer number of order items
      */
     protected $orderItems;
 
     /**
-     * @var string
+     * @var string carrier name
      */
     protected $carrierName = null;
 
     /**
-     * @var string
+     * @var string carrier method
      */
     protected $carrierMethod = null;
 
     /**
-     * @var string
+     * @var string carrier tracking number
      */
     protected $trackingNumber = null;
 
     /**
-     * @var boolean
+     * @var string carrier relay id
+     */
+    protected $relayId = null;
+
+    /**
+     * @var boolean if order shipped by marketplace
      */
     protected $shippedByMp = false;
 
     /**
-     * @var LengowAddress
+     * @var LengowAddress Lengow Address instance
      */
     protected $shippingAddress;
-
-    /**
-     * @var string
-     */
-    protected $relayId = null;
-
 
     /**
      * Construct the import manager
@@ -214,6 +208,8 @@ class LengowImportOrder
 
     /**
      * Create or update order
+     *
+     * @throws Exception order list is empty
      *
      * @return mixed
      */
@@ -484,8 +480,8 @@ class LengowImportOrder
      * Return an array of result for each order
      *
      * @param string  $typeResult    Type of result (new, update, error)
-     * @param integer $idOrderLengow ID of the lengow order record
-     * @param integer $idOrder       Order ID Prestashop
+     * @param integer $idOrderLengow Lengow order id
+     * @param integer $idOrder       Prestashop order id
      *
      * @return array
      */
@@ -507,7 +503,7 @@ class LengowImportOrder
     /**
      * Check the command and updates data if necessary
      *
-     * @param integer $idOrder Order ID Prestashop
+     * @param integer $idOrder Prestashop order id
      *
      * @return boolean
      */
@@ -817,8 +813,8 @@ class LengowImportOrder
     /**
      * Create and validate order
      *
-     * @param LengowCart $cart
-     * @param array      $products
+     * @param LengowCart $cart     Lengow cart instance
+     * @param array      $products List of Lengow products
      *
      * @return
      */
@@ -871,9 +867,9 @@ class LengowImportOrder
     /**
      * Create or load address based on API data
      *
-     * @param integer $idCustomer
-     * @param array   $addressDatas
-     * @param boolean $shippingData
+     * @param integer $idCustomer   Prestashop customer id
+     * @param array   $addressDatas address datas
+     * @param boolean $shippingData is shipping address 
      *
      * @return LengowAddress
      */
@@ -914,6 +910,8 @@ class LengowImportOrder
 
     /**
      * Get products from API data
+     *
+     * @throws Exception product is a parent / product no be found
      *
      * @return array list of products
      */
@@ -1032,6 +1030,8 @@ class LengowImportOrder
     /**
      * Get carrier id according to the tracking informations given in the API
      *
+     * @throws Exception shipping country no country / no default carrier for country
+     *
      * @return integer
      */
     protected function getCarrierId()
@@ -1116,8 +1116,8 @@ class LengowImportOrder
     /**
      * Add a comment to the order
      *
-     * @param integer $idOrder Order ID Prestashop
-     * @param string  $comment  Order Comment
+     * @param integer $idOrder Prestashop order id
+     * @param string  $comment order comment
      */
     protected function addCommentOrder($idOrder, $comment)
     {
@@ -1216,7 +1216,7 @@ class LengowImportOrder
     /**
      * Save order line in lengow orders line table
      *
-     * @param LengowOrder $order    order imported
+     * @param LengowOrder $order    Lengow order instance
      * @param array       $products order products
      *
      * @return boolean

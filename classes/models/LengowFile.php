@@ -47,9 +47,9 @@ class LengowFile
     /**
      * Construct
      *
-     * @param string $folderName
-     * @param string $fileName
-     * @param string $mode
+     * @param string $folderName Lengow folder name
+     * @param string $fileName   Lengow file name
+     * @param string $mode       type of access
      */
     public function __construct($folderName, $fileName = null, $mode = 'a+')
     {
@@ -120,7 +120,7 @@ class LengowFile
     /**
      * Get file link
      *
-     * @param Shop $shop shop
+     * @param Shop $shop Prestashop shop instance
      *
      * @return string
      */
@@ -164,7 +164,7 @@ class LengowFile
     /**
      * Rename file
      *
-     * @param string $newName
+     * @param string $newName new file name
      *
      * @return boolean
      */
@@ -186,7 +186,7 @@ class LengowFile
     /**
      * Check if current file exists
      *
-     * @return bool
+     * @return boolean
      */
     public function exists()
     {

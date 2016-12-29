@@ -25,9 +25,9 @@
 class LengowCron
 {
     /**
-     * Get select cron.
+     * Get select cron
      *
-     * @return string The select html
+     * @return string
      */
     public static function getFormCron()
     {
@@ -54,7 +54,7 @@ class LengowCron
     /**
      * Get the cron of import orders from Lengow
      *
-     * @return boolean Result of add tab on database.
+     * @return boolean
      */
     public static function getCron()
     {
@@ -80,8 +80,6 @@ class LengowCron
 
     /**
      * Add cron tasks to cronjobs table
-     *
-     * @param integer $id_shop shop id
      *
      * @return boolean
      */

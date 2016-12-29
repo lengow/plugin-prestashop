@@ -21,6 +21,9 @@
 
 class LengowOrderController extends LengowController
 {
+    /**
+     * @var LengowList Lengow list instance
+     */
     protected $list;
 
     /**
@@ -460,7 +463,7 @@ class LengowOrderController extends LengowController
         if (_PS_VERSION_ >= '1.5') {
             if (Shop::getContextShopID()) {
                 $join[] = 'INNER JOIN `'._DB_PREFIX_.'shop` shop ON (lo.id_shop = shop.id_shop
-                AND shop.id_shop = '.(int)Shop::getContextShopID().') ';
+                    AND shop.id_shop = '.(int)Shop::getContextShopID().') ';
             } else {
                 $join[] = 'LEFT JOIN `'._DB_PREFIX_.'shop` shop ON (lo.id_shop = shop.id_shop) ';
             }
@@ -507,13 +510,13 @@ class LengowOrderController extends LengowController
         $html= '<div class="lengow_table_top">';
         $html.= '<div class="lengow_toolbar">';
         $html.= '<a href="#" style="display:none;"
-                data-href="'.$lengowLink->getAbsoluteAdminLink('AdminLengowOrder', true).'"
-                class="lgw-btn lengow_link_tooltip lengow_mass_re_import btn btn-primary">
-                <i class="fa fa-download"></i> '.$this->locale->t('order.screen.button_reimport_order').'</a>';
+            data-href="'.$lengowLink->getAbsoluteAdminLink('AdminLengowOrder', true).'"
+            class="lgw-btn lengow_link_tooltip lengow_mass_re_import btn btn-primary">
+            <i class="fa fa-download"></i> '.$this->locale->t('order.screen.button_reimport_order').'</a>';
         $html.= '<a href="#" style="display:none;"
-                        data-href="'.$lengowLink->getAbsoluteAdminLink('AdminLengowOrder', true).'"
-                class="lgw-btn lengow_link_tooltip lengow_mass_re_send btn btn-primary">
-                <i class="fa fa-arrow-right"></i> '.$this->locale->t('order.screen.button_resend_order').'</a>';
+            data-href="'.$lengowLink->getAbsoluteAdminLink('AdminLengowOrder', true).'"
+            class="lgw-btn lengow_link_tooltip lengow_mass_re_send btn btn-primary">
+            <i class="fa fa-arrow-right"></i> '.$this->locale->t('order.screen.button_resend_order').'</a>';
         $html.= '</div>';
         $html.= $paginationBlock;
         $html.= '<div class="clearfix"></div>';

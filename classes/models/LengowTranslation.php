@@ -25,22 +25,22 @@
 class LengowTranslation
 {
     /**
-     * Version
+     * @var array all translations
      */
     protected static $translation = null;
 
     /**
-     * Fallback iso code
+     * @var string fallback iso code
      */
     public $fallbackIsoCode = 'en';
 
     /**
-     * Iso code
+     * @var string iso code
      */
     protected $isoCode = null;
 
     /**
-     * Force iso code for log and toolbox
+     * @var string force iso code for log and toolbox
      */
     public static $forceIsoCode = null;
 
@@ -55,9 +55,9 @@ class LengowTranslation
     /**
      * Translate message
      *
-     * @param string $message  localization key
-     * @param array  $args     replace word in string
-     * @param array  $isoCode iso code
+     * @param string $message localization key
+     * @param array  $args    argurments to replace word in string
+     * @param array  $isoCode translation iso code
      *
      * @return mixed
      */
@@ -89,8 +89,8 @@ class LengowTranslation
     /**
      * Translate string
      *
-     * @param string $text
-     * @param array  $args
+     * @param string $text localization key
+     * @param array  $args argurments to replace word in string
      *
      * @return string Final Translate string
      */
@@ -112,7 +112,7 @@ class LengowTranslation
     /**
      * Load csv file
      *
-     * @param string $isoCode
+     * @param string $isoCode  translation iso code
      * @param string $filename file location
      *
      * @return boolean

@@ -25,7 +25,7 @@
 class LengowProduct extends Product
 {
     /**
-     * array API nodes containing relevant data
+     * @var array API nodes containing relevant data
      */
     public static $productApiNodes = array(
         'marketplace_product_id',
@@ -37,55 +37,61 @@ class LengowProduct extends Product
     );
 
     /**
-     * current context
+     * @var Context Prestashop context instance
      */
     protected $context;
 
     /**
-     * product images
+     * @var array product images
      */
     protected $images;
-    protected $imageCombinations;
-    protected $imageSize;
-    protected $cover;
 
     /**
-     * default category
+     * @var string image size
+     */
+    protected $imageSize;
+
+    /**
+     * @var Category Prestashop category instance
      */
     protected $categoryDefault;
+
+    /**
+     * @var string name of the default category
+     */
     protected $categoryDefaultName;
 
     /**
-     * is product in sale
+     * @var boolean is product in sale
      */
     protected $isSale = false;
 
     /**
-     * Array combination of product's attributes
+     * @var array combination of product's attributes
      */
     protected $combinations = null;
 
     /**
-     * Array of product's features
+     * @var array product's features
      */
     protected $features;
 
-    /*
-     * Get Default Carrier
+    /**
+     * @var Carrier Prestashop carrier instance
      */
     protected $carrier;
 
     /**
-     * Variation.
+     * @var string all product variations
      */
     protected $variation;
 
     /**
      * Load a new product
      *
-     * @param integer $idProduct The ID product to load
-     * @param integer $idLang    The ID lang for product's content
-     * @param object  $params     The context
+     * @param integer $idProduct Prestashop product id
+     * @param integer $idLang    Prestashop lang id
+     * @param object  $params    all export parameters
      */
     public function __construct($idProduct = null, $idLang = null, $params = array())
     {
@@ -167,8 +173,8 @@ class LengowProduct extends Product
     /**
      * Get data of current product
      *
-     * @param string  $name               the data name
-     * @param integer $idProductAttribute the id product attribute
+     * @param string  $name               data name
+     * @param integer $idProductAttribute Prestashop product attribute id
      *
      * @return string
      */
@@ -522,7 +528,7 @@ class LengowProduct extends Product
     }
 
     /**
-     * Clear data cache.
+     * Clear data cache
      */
     public static function clear()
     {
@@ -543,7 +549,7 @@ class LengowProduct extends Product
     /**
      * Get data attribute of current product.
      *
-     * @param integer $idProductAttribute the id product atrribute
+     * @param integer $idProductAttribute Prestashop product attribute id
      * @param string  $name               the data name attribute
      *
      * @return string
@@ -556,7 +562,7 @@ class LengowProduct extends Product
     }
 
     /**
-     * Get data feature of current product.
+     * Get data feature of current product
      *
      * @param string $name the data name feature
      *
@@ -609,16 +615,16 @@ class LengowProduct extends Product
                                 $c['id_attribute']
                             )
                         ),
-                        'wholesale_price'      => isset($c['wholesale_price']) ? $c['wholesale_price'] : '',
-                        'price'                => $price,
-                        'ecotax'               => isset($c['ecotax']) ? $c['ecotax'] : '',
-                        'weight'               => $c['weight'],
-                        'reference'            => $c['reference'],
-                        'ean13'                => isset($c['ean13']) ? $c['ean13'] : '',
-                        'upc'                  => isset($c['upc']) ? $c['upc'] : '',
-                        'supplier_reference'   => isset($c['supplier_reference']) ? $c['supplier_reference'] : '',
-                        'minimal_quantity'     => isset($c['minimal_quantity']) ? $c['minimal_quantity'] : '',
-                        'images'               => isset($cImages[$attributeId]) ? $cImages[$attributeId] : array(),
+                        'wholesale_price'    => isset($c['wholesale_price']) ? $c['wholesale_price'] : '',
+                        'price'              => $price,
+                        'ecotax'             => isset($c['ecotax']) ? $c['ecotax'] : '',
+                        'weight'             => $c['weight'],
+                        'reference'          => $c['reference'],
+                        'ean13'              => isset($c['ean13']) ? $c['ean13'] : '',
+                        'upc'                => isset($c['upc']) ? $c['upc'] : '',
+                        'supplier_reference' => isset($c['supplier_reference']) ? $c['supplier_reference'] : '',
+                        'minimal_quantity'   => isset($c['minimal_quantity']) ? $c['minimal_quantity'] : '',
+                        'images'             => isset($cImages[$attributeId]) ? $cImages[$attributeId] : array(),
                     );
                 }
                 if (LengowMain::compareVersion()) {
@@ -673,7 +679,7 @@ class LengowProduct extends Product
      * OVERRIDE NATIVE FONCTION : add supplier_reference, ean13, upc, wholesale_price and ecotax
      * Get all available attribute groups
      *
-     * @param integer $idLang Language id
+     * @param integer $idLang Prestashop lang id
      *
      * @return array Attribute groups
      */
@@ -684,75 +690,75 @@ class LengowProduct extends Product
                 return array();
             }
             $sql = 'SELECT
-                    ag.`id_attribute_group`,
-                    ag.`is_color_group`,
-                    agl.`name` AS group_name,
-                    agl.`public_name` AS public_group_name,
-					a.`id_attribute`,
-                    al.`name` AS attribute_name,
-                    a.`color` AS attribute_color,
-                    pa.`id_product_attribute`,
-					IFNULL(stock.quantity, 0) as quantity,
-                    product_attribute_shop.`price`,
-                    product_attribute_shop.`ecotax`,
-                    pa.`weight`,
-					product_attribute_shop.`default_on`,
-                    pa.`reference`,
-                    product_attribute_shop.`unit_price_impact`,
-					pa.`minimal_quantity`,
-                    pa.`available_date`,
-                    ag.`group_type`,
-                    ps.`product_supplier_reference` AS `supplier_reference`,
-                    pa.`ean13`,
-                    pa.`upc`,
-                    pa.`wholesale_price`,
-                    pa.`ecotax`
-					FROM `'._DB_PREFIX_.'product_attribute` pa
-					'.Shop::addSqlAssociation('product_attribute', 'pa').'
-					'.Product::sqlStock('pa', 'pa').'
-					LEFT JOIN `'._DB_PREFIX_.'product_supplier` ps
-                    ON (ps.`id_product_attribute` = pa.`id_product_attribute` AND ps.`id_product` = '.(int)$this->id.')
-					LEFT JOIN `'._DB_PREFIX_.'product_attribute_combination` pac
-                    ON pac.`id_product_attribute` = pa.`id_product_attribute`
-					LEFT JOIN `'._DB_PREFIX_.'attribute` a ON a.`id_attribute` = pac.`id_attribute`
-					LEFT JOIN `'._DB_PREFIX_.'attribute_group` ag ON ag.`id_attribute_group` = a.`id_attribute_group`
-					LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al ON a.`id_attribute` = al.`id_attribute`
-					LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
-                    ON ag.`id_attribute_group` = agl.`id_attribute_group`
-					' . Shop::addSqlAssociation('attribute', 'a').'
-					WHERE pa.`id_product` = '.(int)$this->id.'
-						AND al.`id_lang` = '.(int)$idLang.'
-						AND agl.`id_lang` = '.(int)$idLang.'
-					GROUP BY id_attribute_group, id_product_attribute
-					ORDER BY ag.`position` ASC, a.`position` ASC, agl.`name` ASC';
+                ag.`id_attribute_group`,
+                ag.`is_color_group`,
+                agl.`name` AS group_name,
+                agl.`public_name` AS public_group_name,
+				a.`id_attribute`,
+                al.`name` AS attribute_name,
+                a.`color` AS attribute_color,
+                pa.`id_product_attribute`,
+				IFNULL(stock.quantity, 0) as quantity,
+                product_attribute_shop.`price`,
+                product_attribute_shop.`ecotax`,
+                pa.`weight`,
+				product_attribute_shop.`default_on`,
+                pa.`reference`,
+                product_attribute_shop.`unit_price_impact`,
+				pa.`minimal_quantity`,
+                pa.`available_date`,
+                ag.`group_type`,
+                ps.`product_supplier_reference` AS `supplier_reference`,
+                pa.`ean13`,
+                pa.`upc`,
+                pa.`wholesale_price`,
+                pa.`ecotax`
+				FROM `'._DB_PREFIX_.'product_attribute` pa
+				'.Shop::addSqlAssociation('product_attribute', 'pa').'
+				'.Product::sqlStock('pa', 'pa').'
+				LEFT JOIN `'._DB_PREFIX_.'product_supplier` ps
+                ON (ps.`id_product_attribute` = pa.`id_product_attribute` AND ps.`id_product` = '.(int)$this->id.')
+				LEFT JOIN `'._DB_PREFIX_.'product_attribute_combination` pac
+                ON pac.`id_product_attribute` = pa.`id_product_attribute`
+				LEFT JOIN `'._DB_PREFIX_.'attribute` a ON a.`id_attribute` = pac.`id_attribute`
+				LEFT JOIN `'._DB_PREFIX_.'attribute_group` ag ON ag.`id_attribute_group` = a.`id_attribute_group`
+				LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al ON a.`id_attribute` = al.`id_attribute`
+				LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
+                ON ag.`id_attribute_group` = agl.`id_attribute_group`
+				' . Shop::addSqlAssociation('attribute', 'a').'
+				WHERE pa.`id_product` = '.(int)$this->id.'
+					AND al.`id_lang` = '.(int)$idLang.'
+					AND agl.`id_lang` = '.(int)$idLang.'
+				GROUP BY id_attribute_group, id_product_attribute
+				ORDER BY ag.`position` ASC, a.`position` ASC, agl.`name` ASC';
         } else {
             $sql = 'SELECT 
-                    ag.`id_attribute_group`,
-                    ag.`is_color_group`,
-                    agl.`name` group_name,
-                    agl.`public_name` public_group_name,
-                    a.`id_attribute`,
-                    al.`name` attribute_name,
-					a.`color` attribute_color,
-                    pa.*
-					FROM `'._DB_PREFIX_.'product_attribute` pa
-					LEFT JOIN `'._DB_PREFIX_.'product_attribute_combination` pac
-                    ON (pac.`id_product_attribute` = pa.`id_product_attribute`)
-					LEFT JOIN `'._DB_PREFIX_.'attribute` a ON (a.`id_attribute` = pac.`id_attribute`)
-					LEFT JOIN `'._DB_PREFIX_.'attribute_group` ag ON (ag.`id_attribute_group` = a.`id_attribute_group`)
-					LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al ON (a.`id_attribute` = al.`id_attribute`)
-					LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
-                    ON (ag.`id_attribute_group` = agl.`id_attribute_group`)
-					WHERE pa.`id_product` = '.(int)$this->id.'
-                    AND al.`id_lang` = '.(int)$idLang.'
-                    AND agl.`id_lang` = '.(int)$idLang.'
-					ORDER BY agl.`public_name`, al.`name`';
+                ag.`id_attribute_group`,
+                ag.`is_color_group`,
+                agl.`name` group_name,
+                agl.`public_name` public_group_name,
+                a.`id_attribute`,
+                al.`name` attribute_name,
+				a.`color` attribute_color,
+                pa.*
+				FROM `'._DB_PREFIX_.'product_attribute` pa
+				LEFT JOIN `'._DB_PREFIX_.'product_attribute_combination` pac
+                ON (pac.`id_product_attribute` = pa.`id_product_attribute`)
+				LEFT JOIN `'._DB_PREFIX_.'attribute` a ON (a.`id_attribute` = pac.`id_attribute`)
+				LEFT JOIN `'._DB_PREFIX_.'attribute_group` ag ON (ag.`id_attribute_group` = a.`id_attribute_group`)
+				LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al ON (a.`id_attribute` = al.`id_attribute`)
+				LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
+                ON (ag.`id_attribute_group` = agl.`id_attribute_group`)
+				WHERE pa.`id_product` = '.(int)$this->id.'
+                AND al.`id_lang` = '.(int)$idLang.'
+                AND agl.`id_lang` = '.(int)$idLang.'
+				ORDER BY agl.`public_name`, al.`name`';
         }
         return Db::getInstance()->executeS($sql);
     }
 
     /**
-     * Get supplier reference.
+     * Get supplier reference
      *
      * @return string
      */
@@ -770,13 +776,13 @@ class LengowProduct extends Product
     }
 
     /**
-     * Publish or Un-publish to Lengow.
+     * Publish or Un-publish to Lengow
      *
-     * @param integer $productId the id product
-     * @param integer $value     1 : publish, 0 : unpublish
-     * @param integer $shopId    the id shop
+     * @param integer $productId Prestashop product id
+     * @param integer $value     publish value (1 : publish, 0 : unpublish)
+     * @param integer $shopId    Prestashop shop id
      *
-     * @return boolean.
+     * @return boolean
      */
     public static function publish($productId, $value, $shopId)
     {
@@ -815,10 +821,10 @@ class LengowProduct extends Product
     /**
      * For a given product, returns its real quantity
      *
-     * @param integer $idProduct
-     * @param integer $idProductAttribute
-     * @param integer $idWarehouse
-     * @param integer $idShop
+     * @param integer $idProduct          Prestashop product id
+     * @param integer $idProductAttribute Prestashop product attribute id
+     * @param integer $idWarehouse        Prestashop wharehouse id
+     * @param integer $idShop             Prestashop shop id
      *
      * @return integer
      */
@@ -837,18 +843,18 @@ class LengowProduct extends Product
     /**
      * Compares found id with API ids and checks if they match
      *
-     * @param LengowProduct $product
-     * @param array         $idsApi
+     * @param LengowProduct $product  Lengow product instance
+     * @param array         $apiDatas product ids from the API
      *
      * @return boolean if valid or not
      */
-    protected static function isValidId($product, $idsApi)
+    protected static function isValidId($product, $apiDatas)
     {
         $attributes = array('reference', 'ean13', 'upc', 'id');
         if (count($product->getCombinations()) > 0) {
             foreach ($product->getCombinations() as $combination) {
                 foreach ($attributes as $attributeName) {
-                    foreach ($idsApi as $idApi) {
+                    foreach ($apiDatas as $idApi) {
                         if (!empty($idApi)) {
                             if ($attributeName == 'id') {
                                 // Compatibility with old plugins
@@ -868,7 +874,7 @@ class LengowProduct extends Product
             }
         } else {
             foreach ($attributes as $attributeName) {
-                foreach ($idsApi as $idApi) {
+                foreach ($apiDatas as $idApi) {
                     if (!empty($idApi)) {
                         if ($attributeName == 'id') {
                             // Compatibility with old plugins
@@ -893,7 +899,7 @@ class LengowProduct extends Product
     /**
      * Extract cart data from API
      *
-     * @param mixed $api
+     * @param mixed $api product datas
      *
      * @return array
      */
@@ -910,12 +916,12 @@ class LengowProduct extends Product
     /**
      * Retrieves the product sku
      *
-     * @param string  $attributeName
-     * @param string  $attributeValue
-     * @param integer $idShop
-     * @param array   $apiDatas
+     * @param string  $attributeName  attribute name
+     * @param string  $attributeValue attribute value
+     * @param integer $idShop         Prestashop shop id
+     * @param array   $apiDatas       product ids from the API
      *
-     * @return mixed
+     * @return mixed (array or false)
      */
     public static function matchProduct($attributeName, $attributeValue, $idShop, $apiDatas = array())
     {
@@ -959,18 +965,18 @@ class LengowProduct extends Product
     /**
      * Check if product id found is correct
      *
-     * @param integer $idProduct product id to be checked
-     * @param array   $idsApi    product ids from the API
+     * @param integer $idProduct Prestashop product id
+     * @param array   $apiDatas  product ids from the API
      *
      * @return boolean
      */
-    protected static function checkProductId($idProduct, $idsApi)
+    protected static function checkProductId($idProduct, $apiDatas)
     {
         if (empty($idProduct)) {
             return false;
         }
         $product = new LengowProduct($idProduct);
-        if ($product->name == '' || !self::isValidId($product, $idsApi)) {
+        if ($product->name == '' || !self::isValidId($product, $apiDatas)) {
             return false;
         }
         return true;
@@ -979,8 +985,8 @@ class LengowProduct extends Product
     /**
      * Check if the product attribute exists
      *
-     * @param integer $product
-     * @param integer $idProductAttribute
+     * @param LengowProduct $product            Lengow product instance
+     * @param integer       $idProductAttribute Prestashop product attribute id
      *
      * @return boolean
      */
@@ -998,11 +1004,11 @@ class LengowProduct extends Product
     /**
      * Return the product and its attribute ids
      *
-     * @param string  $key
-     * @param string  $value
-     * @param integer $idShop
+     * @param string  $key    attribute key
+     * @param string  $value  attribute value
+     * @param integer $idShop Prestashop shop id
      *
-     * @return integer
+     * @return mixed (integer or false)
      */
     protected static function findProduct($key, $value, $idShop)
     {
@@ -1046,11 +1052,11 @@ class LengowProduct extends Product
     /**
      * Search a product by its reference, ean, upc and id
      *
-     * @param type $attributeValue
-     * @param type $idShop
-     * @param type $apiDatas
+     * @param string  $attributeValue attribute value
+     * @param integer $idShop         Prestashop shop id
+     * @param array   $apiDatas       product ids from the API
      *
-     * @return array
+     * @return mixed (array or false)
      */
     public static function advancedSearch($attributeValue, $idShop, $apiDatas)
     {
@@ -1069,14 +1075,15 @@ class LengowProduct extends Product
         if ($find) {
             return $idsProduct;
         }
+        return false;
     }
 
     /**
      * Calculate product without taxes using TaxManager
      *
      * @param array   $product   product
-     * @param int     $idAddress address id used to get tax rate
-     * @param Context $context   order context
+     * @param integer $idAddress Prestashop address id used to get tax rate
+     * @param Context $context   Prestashop context instance
      *
      * @return float
      */
@@ -1100,7 +1107,7 @@ class LengowProduct extends Product
     /**
      * get image url of product variations
      *
-     * @return mixed false or attribute image collection
+     * @return mixed (false or array)
      */
     public function getImageUrlCombination()
     {
@@ -1127,7 +1134,7 @@ class LengowProduct extends Product
     /**
      * Get Max Image Type
      *
-     * @throws LengowException
+     * @throws LengowException cant find image size
      *
      * @return string
      */

@@ -27,8 +27,8 @@ class LengowCurrency
     /**
      * Get id currency by iso_code
      *
-     * @param string  $sign
-     * @param integer $idShop
+     * @param string  $sign   currency iso code
+     * @param integer $idShop Prestashop shop id
      *
      * @return integer
      */

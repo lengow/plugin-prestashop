@@ -21,15 +21,44 @@
 
 class LengowController
 {
-
+    /**
+     * @var Module Lengow module instance
+     */
     protected $module;
+
+    /**
+     * @var Context Prestashop context instance
+     */
     protected $context;
+
+    /**
+     * @var LengowTranslation Lengow translation instance
+     */
     protected $locale;
+
+    /**
+     * @var boolean If a new merchant or not
+     */
     protected $isNewMerchant;
+
+    /**
+     * @var array All account datas
+     */
     protected $merchantStatus;
+
+    /**
+     * @var boolean See toolbar or not
+     */
     protected $displayToolbar;
+
+    /**
+     * @var boolean Toolbox is open or not
+     */
     protected $toolbox;
 
+    /**
+     * Construct the main Lengow controller
+     */
     public function __construct()
     {
         $this->module = Module::getInstanceByName('lengow');

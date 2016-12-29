@@ -25,12 +25,12 @@
 class LengowConfigurationForm
 {
     /**
-     * @var array $fields
+     * @var array $fields checkbox keys
      */
     public $fields;
 
     /**
-     * @var $locale for translation
+     * @var LengowTranslation $locale Lengow translation instance
      */
     protected $locale;
 
@@ -46,8 +46,8 @@ class LengowConfigurationForm
     /**
     * Construct Lengow setting input for shop
     *
-    * @param integer $idShop      shop id
-    * @param array   $displayKeys names of lengow setting
+    * @param integer $idShop      Prestashop shop id
+    * @param array   $displayKeys names of Lengow setting
     *
     * @return string
     */
@@ -67,7 +67,7 @@ class LengowConfigurationForm
     /**
     * Construct Lengow setting input
     *
-    * @param array $displayKeys names of lengow setting
+    * @param array $displayKeys names of Lengow setting
     *
     * @return string
     */
@@ -87,9 +87,9 @@ class LengowConfigurationForm
     /**
     * Get lengow input
     *
-    * @param string  $key    name of lengow setting
-    * @param array   $input  all lengow settings
-    * @param integer $idShop shop id
+    * @param string  $key    name of Lengow setting
+    * @param array   $input  all Lengow settings
+    * @param integer $idShop Prestashop shop id
     *
     * @return string
     */
@@ -161,7 +161,7 @@ class LengowConfigurationForm
     /**
     * Save Lengow settings
     *
-    * @param array $checkboxKeys checkbox Lengow
+    * @param array $checkboxKeys Lengow checkbox
     */
     public function postProcess($checkboxKeys)
     {
@@ -227,9 +227,9 @@ class LengowConfigurationForm
     /**
     * Check value and create a log if necessary
     *
-    * @param string  $key    name of lengow setting
+    * @param string  $key    name of Lengow setting
     * @param mixed   $value  setting value
-    * @param integer $idShop shop id
+    * @param integer $idShop Prestashop shop id
     */
     public function checkAndLog($key, $value, $idShop = null)
     {

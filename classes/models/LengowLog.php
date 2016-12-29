@@ -30,7 +30,7 @@ class LengowLog extends LengowFile
     public static $lengowLogFolder = 'logs';
 
     /**
-     * @var LengowFile
+     * @var LengowFile Lengow file instance
      */
     protected $file;
 
@@ -52,10 +52,10 @@ class LengowLog extends LengowFile
     /**
      * Write log
      *
-     * @param string  $category       Category
+     * @param string  $category       log category
      * @param string  $message        log message
      * @param boolean $logOutput      display on screen
-     * @param string  $marketplaceSku lengow order id
+     * @param string  $marketplaceSku Lengow order id
      */
     public function write($category, $message = "", $logOutput = false, $marketplaceSku = null)
     {
@@ -74,7 +74,7 @@ class LengowLog extends LengowFile
     /**
      * Get log files path
      *
-     * @return mixed
+     * @return mixed (array or false)
      */
     public static function getPaths()
     {
@@ -116,6 +116,8 @@ class LengowLog extends LengowFile
 
     /**
      * Download log file
+     *
+     * @param string $file file name for a specific log file
      */
     public static function download($file = null)
     {

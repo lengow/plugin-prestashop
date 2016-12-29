@@ -25,12 +25,7 @@
 class LengowConnector
 {
     /**
-     * @var string connector version
-     */
-    const VERSION = '1.0';
-
-    /**
-     * @var string URL of the API Lengow
+     * @var string url of the API Lengow
      */
     // const LENGOW_API_URL = 'http://api.lengow.io:80';
     // const LENGOW_API_URL = 'http://api.lengow.net:80';
@@ -38,12 +33,12 @@ class LengowConnector
     // const LENGOW_API_URL = 'http://10.100.1.82:8081';
 
     /**
-     * @var string URL of the SANDBOX Lengow
+     * @var string url of the SANDBOX Lengow
      */
     const LENGOW_API_SANDBOX_URL = 'http://api.lengow.net:80';
 
     /**
-     * @var array Fixture for test
+     * @var array fixture for test
      */
     public static $testFixturePath;
 
@@ -98,8 +93,8 @@ class LengowConnector
     /**
      * Make a new Lengow API Connector.
      *
-     * @param string $accessToken Your access token
-     * @param string $secret       Your secret
+     * @param string $accessToken your access token
+     * @param string $secret      your secret
      */
     public function __construct($accessToken, $secret)
     {
@@ -110,9 +105,9 @@ class LengowConnector
     /**
      * Connection to the API
      *
-     * @param string $userToken The user token if is connected
+     * @param string $userToken the user token if is connected
      *
-     * @return mixed array [authorized token + account_id + user_id] or false
+     * @return mixed (array [authorized token + account_id + user_id] or false)
      */
     public function connect($userToken = '')
     {
@@ -142,9 +137,9 @@ class LengowConnector
      * @param array  $array  Lengow method API parameters
      * @param string $type   type of request GET|POST|PUT|HEAD|DELETE|PATCH
      * @param string $format return format of API
-     * @param string $body
+     * @param string $body   body datas for request
      *
-     * @return array The formated data response
+     * @return array
      */
     public function call($method, $array = array(), $type = 'GET', $format = 'json', $body = '')
     {
@@ -166,9 +161,9 @@ class LengowConnector
      * @param string $method Lengow method API call
      * @param array  $array  Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body
+     * @param string $body   body datas for request
      *
-     * @return array The formated data response
+     * @return array
      */
     public function get($method, $array = array(), $format = 'json', $body = '')
     {
@@ -191,9 +186,9 @@ class LengowConnector
      * @param string $method Lengow method API call
      * @param array  $array  Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body
+     * @param string $body   body datas for request
      *
-     * @return array The formated data response
+     * @return array
      */
     public function post($method, $array = array(), $format = 'json', $body = '')
     {
@@ -216,9 +211,9 @@ class LengowConnector
      * @param string $method Lengow method API call
      * @param array  $array  Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body
+     * @param string $body   body datas for request
      *
-     * @return array The formated data response
+     * @return array
      */
     public function head($method, $array = array(), $format = 'json', $body = '')
     {
@@ -231,9 +226,9 @@ class LengowConnector
      * @param string $method Lengow method API call
      * @param array  $array  Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body
+     * @param string $body   body datas for request
      *
-     * @return array The formated data response
+     * @return array
      */
     public function put($method, $array = array(), $format = 'json', $body = '')
     {
@@ -246,9 +241,9 @@ class LengowConnector
      * @param string $method Lengow method API call
      * @param array  $array  Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body
+     * @param string $body   body datas for request
      *
-     * @return array The formated data response
+     * @return array
      */
     public function delete($method, $array = array(), $format = 'json', $body = '')
     {
@@ -261,9 +256,9 @@ class LengowConnector
      * @param string $method Lengow method API call
      * @param array  $array  Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body
+     * @param string $body   body datas for request
      *
-     * @return array The formated data response
+     * @return array
      */
     public function patch($method, $array = array(), $format = 'json', $body = '')
     {
@@ -277,9 +272,9 @@ class LengowConnector
      * @param array  $args   Lengow method API parameters
      * @param string $type   type of request GET|POST|PUT|HEAD|DELETE|PATCH
      * @param string $format return format of API
-     * @param string $body
+     * @param string $body   body datas for request
      *
-     * @return array The formated data response
+     * @return array
      */
     private function callAction($api, $args, $type, $format = 'json', $body = '')
     {
@@ -290,10 +285,10 @@ class LengowConnector
     /**
      * Get data in specific format
      *
-     * @param mixed  $data
-     * @param string $format
+     * @param mixed  $data   Curl response data
+     * @param string $format return format of API
      *
-     * @return array The formated data response
+     * @return array
      */
     private function format($data, $format)
     {
@@ -316,9 +311,11 @@ class LengowConnector
      * @param string $url   Lengow API url
      * @param array  $args  Lengow method API parameters
      * @param string $token temporary access token
-     * @param string $body
+     * @param string $body  body datas for request
      *
-     * @return array The formated data response
+     * @throws Exception Get Curl error
+     *
+     * @return array
      */
     protected function makeRequest($type, $url, $args, $token, $body = '')
     {
@@ -419,7 +416,7 @@ class LengowConnector
     /**
      * Get Valid Account / Access / Secret
      *
-     * @param integer $idShop
+     * @param integer $idShop Prestashop shop id
      *
      * @return array
      */
@@ -456,13 +453,13 @@ class LengowConnector
     /**
      * Get result for a query Api
      *
-     * @param string  $type   (GET / POST / PUT / PATCH)
-     * @param string  $url
-     * @param integer $idShop
-     * @param array   $params
-     * @param string  $body
+     * @param string  $type   request type (GET / POST / PUT / PATCH)
+     * @param string  $url    request url
+     * @param integer $idShop Prestashop shop id
+     * @param array   $params request params
+     * @param string  $body   body datas for request
      *
-     * @return api result as array
+     * @return mixed
      */
     public static function queryApi($type, $url, $idShop = null, $params = array(), $body = '')
     {

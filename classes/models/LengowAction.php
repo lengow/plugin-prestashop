@@ -82,7 +82,7 @@ class LengowAction
     /**
      * Load action data
      *
-     * @param array $row
+     * @param array $row All action datas
      */
     public function load($row)
     {
@@ -100,7 +100,7 @@ class LengowAction
     /**
      * Find by ID
      *
-     * @param integer $actionId
+     * @param integer $actionId Lengow action id
      *
      * @return boolean
      */
@@ -119,11 +119,11 @@ class LengowAction
     /**
      * Find active actions by order id
      *
-     * @param integer $idOrder
-     * @param string  $actionType (ship or cancel)
-     * @param boolean $load
+     * @param integer $idOrder    Prestashop order id
+     * @param string  $actionType action type (null, ship or cancel)
+     * @param boolean $load       load LengowAction or not
      *
-     * @return mixed
+     * @return mixed (false or array)
      */
     public static function getActiveActionByOrderId($idOrder, $actionType = null, $load = true)
     {
@@ -150,10 +150,10 @@ class LengowAction
     /**
      * Get active action by shop
      *
-     * @param integer $idShop
-     * @param boolean $load
+     * @param integer $idShop Prestashop shop id
+     * @param boolean $load   load LengowAction or not
      *
-     * @return mixed
+     * @return mixed (false or array)
      */
     public static function getActiveActionByShop($idShop, $load = true)
     {
@@ -183,9 +183,9 @@ class LengowAction
     /**
      * Get last order action type to re-send action
      *
-     * @param integer $idOrder
+     * @param integer $idOrder Prestashop order id
      *
-     * @return mixed
+     * @return mixed (false or string)
      */
     public static function getLastOrderActionType($idOrder)
     {
@@ -203,7 +203,7 @@ class LengowAction
     /**
      * Find
      *
-     * @param integer $id
+     * @param integer $id Lengow action id
      *
      * @return boolean
      */
@@ -220,7 +220,7 @@ class LengowAction
     /**
      * Create action
      *
-     * @param array $params
+     * @param array $params action params
      */
     public static function createAction($params)
     {
@@ -252,7 +252,7 @@ class LengowAction
     /**
      * Update action
      *
-     * @param array $params
+     * @param array $params action params
      *
      * @return boolean
      */
@@ -291,7 +291,7 @@ class LengowAction
     /**
      * Finish action
      *
-     * @param integer $id
+     * @param integer $id Lengow action id
      */
     public static function finishAction($id)
     {
@@ -321,7 +321,7 @@ class LengowAction
      * Removes all actions for one order Prestashop
      *
      * @param integer $idOrder    Prestashop order id
-     * @param string  $actionType type (null, ship or cancel)
+     * @param string  $actionType action type (null, ship or cancel)
      *
      * @return boolean
      */
@@ -344,7 +344,7 @@ class LengowAction
     /**
      * Remove old actions > 3 days
      *
-     * @param string $actionType type (null, ship or cancel)
+     * @param string $actionType action type (null, ship or cancel)
      *
      * @return boolean
      */
@@ -387,7 +387,7 @@ class LengowAction
     /**
      * Check if active actions are finished
      *
-     * @return bool
+     * @return boolean
      */
     public static function checkFinishAction()
     {
@@ -497,7 +497,7 @@ class LengowAction
     /**
      * Check if actions are not sent
      *
-     * @return bool
+     * @return boolean
      */
     public static function checkActionNotSent()
     {

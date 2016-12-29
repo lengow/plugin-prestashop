@@ -898,6 +898,7 @@ margin-bottom: 15px;
   list-style: none;
   padding: 0px;
   border-right: 1px solid #d7d7d7;
+  border-left: 1px solid #d7d7d7;
 }
 
 .lgw-container .accordion input[type="radio"],
@@ -913,8 +914,6 @@ margin-bottom: 15px;
   float: left;
   list-style: none;
   box-sizing: border-box;
-  border-left: 1px solid #d7d7d7;
-  border-bottom: 1px solid #d7d7d7;
 }
 
 .delete_lengow_default_carrier {

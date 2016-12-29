@@ -42,8 +42,9 @@ class LengowCart extends Cart
      *
      * @param array $products list of products to be added
      *
+     * @throws Exception Cannot add product to cart / No quantity for product
+     *
      * @return boolean
-     * @throws Exception
      */
     public function addProducts($products = array())
     {
@@ -79,7 +80,7 @@ class LengowCart extends Cart
      *
      * @param array $products list of products to be added
      *
-     * @throws Exception
+     * @throws Exception Cannot add product to cart
      */
     public function cleanCart($products = array())
     {
@@ -103,14 +104,14 @@ class LengowCart extends Cart
     /**
      * @see Cart::updateQty()
      *
-     * @param integer $quantity            quantity to add (or substract)
-     * @param integer $idProduct           product ID
-     * @param integer $idProductAttribute  attribute ID if needed
-     * @param string  $idCustomization     
-     * @param string  $operator            indicate if quantity must be increased or decreased
-     * @param integer $idAddressDelivery
-     * @param string  $shop
-     * @param string  $autoAddCartRule
+     * @param integer $quantity           quantity to add (or substract)
+     * @param integer $idProduct          Prestashop product id
+     * @param integer $idProductAttribute attribute id if needed
+     * @param string  $idCustomization    Prestashop customization id 
+     * @param string  $operator           indicate if quantity must be increased or decreased
+     * @param integer $idAddressDelivery  Prestashop address delivery id
+     * @param string  $shop               Shop instance
+     * @param string  $autoAddCartRule    add auto cart rule
      *
      * @return boolean
      */
@@ -339,7 +340,7 @@ class LengowCart extends Cart
     /**
      * Validate Lengow
      *
-     * @return bool true if object is valid
+     * @return boolean true if object is valid
      */
     public function validateLengow()
     {

@@ -162,34 +162,4 @@ class MarketplaceTest extends ModuleTestCase
             )
         );
     }
-
-    /**
-     * Test isRequireCarrier
-     * @test
-     * @covers LengowMarketplace::isRequireCarrier
-     */
-    public function isRequireCarrier()
-    {
-        //reset marketplace file
-        LengowMain::$registers = array();
-        $marketplaceFile =  _PS_MODULE_DIR_.
-            'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id_optional_carrier.json';
-        LengowMarketplace::$MARKETPLACES = array(
-            1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
-            2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
-        );
-        $marketplace = LengowMain::getMarketplaceSingleton("galeries_lafayette", 1);
-        $this->assertFalse($marketplace->isRequireCarrier());
-
-        //reset marketplace file
-        LengowMain::$registers = array();
-        $marketplaceFile =  _PS_MODULE_DIR_.
-            'lengow/tests/Module/Fixtures/ImportOrder/get_carrier_id_require_carrier.json';
-        LengowMarketplace::$MARKETPLACES = array(
-            1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
-            2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
-        );
-        $marketplace = LengowMain::getMarketplaceSingleton("galeries_lafayette", 1);
-        $this->assertTrue($marketplace->isRequireCarrier());
-    }
 }

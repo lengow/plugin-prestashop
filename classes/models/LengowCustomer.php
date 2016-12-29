@@ -27,7 +27,7 @@ class LengowCustomer extends Customer
     /**
      * Definition array for prestashop 1.4
      *
-     * @var array
+     * @var array Lengow field definition
      */
     public static $definitionLengow = array(
         'lastname'  => array('required' => true, 'size' => 32),
@@ -37,7 +37,7 @@ class LengowCustomer extends Customer
     );
 
     /**
-     * @var string full name
+     * @var string customer full name
      */
     public $fullName;
 
@@ -78,7 +78,7 @@ class LengowCustomer extends Customer
     /**
      * Validate Lengow
      *
-     * @return bool true if object is valid
+     * @return boolean true if object is valid
      */
     public function validateLengow()
     {
@@ -107,7 +107,7 @@ class LengowCustomer extends Customer
     /**
      * Modify a field according to the type of error
      *
-     * @param string $fieldName  incorrect field
+     * @param string $fieldName incorrect field
      * @param string $errorType type of error
      */
     public function validateFieldLengow($fieldName, $errorType)
@@ -219,10 +219,10 @@ class LengowCustomer extends Customer
     /**
      * Retrieve customers by email address and id shop
      *
-     * @param string  $email
-     * @param integer $idShop
+     * @param string  $email  customer email
+     * @param integer $idShop Prestashop shop id
      *
-     * @return array
+     * @return LengowCustomer
      */
     public function getByEmailAndShop($email, $idShop)
     {

@@ -33,7 +33,7 @@ class LengowMarketplace
     );
 
     /**
-     * @var mixed all markeplaces allowed for an account ID
+     * @var array all markeplaces allowed for an account ID
      */
     public static $markeplaces = array();
     
@@ -95,8 +95,8 @@ class LengowMarketplace
     /**
     * Construct a new Markerplace instance with marketplace API
     *
-    * @param string  $name   The name of the marketplace
-    * @param integer $idShop ID Shop for connector
+    * @param string  $name   name of the marketplace
+    * @param integer $idShop Prestashop shop id
     */
     public function __construct($name, $idShop = null)
     {
@@ -178,51 +178,54 @@ class LengowMarketplace
     /**
     * Get the real lengow's state
     *
-    * @param string $name The marketplace state
+    * @param string $name marketplace order state
     *
-    * @return string The lengow state
+    * @return mixed (string or false)
     */
     public function getStateLengow($name)
     {
         if (array_key_exists($name, $this->statesLengow)) {
             return $this->statesLengow[$name];
         }
+        return false;
     }
 
     /**
     * Get the marketplace's state
     *
-    * @param string $name The lengow state
+    * @param string $name Lengow order state
     *
-    * @return array
+    * @return mixed (string or false)
     */
     public function getState($name)
     {
         if (array_key_exists($name, $this->states)) {
             return $this->states[$name];
         }
+        return false;
     }
 
     /**
     * Get the action with parameters
     *
-    * @param string $name The action's name
+    * @param string $name action's name
     *
-    * @return array
+    * @return mixed (array or false)
     */
     public function getAction($name)
     {
         if (array_key_exists($name, $this->actions)) {
             return $this->actions[$name];
         }
+        return false;
     }
 
     /**
     * Get the default value for argument
     *
-    * @param string $name The argument's name
+    * @param string $name argument's name
     *
-    * @return mixed
+    * @return mixed (string or false)
     */
     public function getDefaultValue($name)
     {
@@ -231,58 +234,6 @@ class LengowMarketplace
             if (!empty($defaultValue)) {
                 return $defaultValue;
             }
-        }
-        return false;
-    }
-
-    /**
-     * Get carrier name by code
-     *
-     * @param string $code carrier given in the API
-     *
-     * @return mixed
-     */
-    public function getCarrierByCode($code)
-    {
-        if (array_key_exists($code, $this->carriers)) {
-            return $this->carriers[$code];
-        }
-        if (array_key_exists(Tools::strtoupper($code), $this->carriers)) {
-            return $this->carriers[Tools::strtoupper($code)];
-        }
-        return false;
-    }
-
-    /**
-    * Check if a status is valid for action
-    *
-    * @param array   $actionStatus valid status for action
-    * @param integer $idStatus     curent status id
-    *
-    * @return boolean
-    */
-    public function isValidState($actionStatus, $idStatus)
-    {
-        foreach ($actionStatus as $status) {
-            if ($idStatus == LengowMain::getOrderState($status)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Is carrier require when shipping
-     *
-     * @return boolean
-     */
-    public function isRequireCarrier()
-    {
-        if (!isset($this->actions['ship']['args'])) {
-            return false;
-        }
-        if (in_array("carrier", $this->actions['ship']['args'])) {
-            return true;
         }
         return false;
     }
@@ -313,9 +264,12 @@ class LengowMarketplace
     /**
      * Call API action and create action in lengow_actions table
      *
-     * @param string      $action
-     * @param LengowOrder $order
-     * @param string      $idOrderLine
+     * @param string      $action      Lengow order actions type (ship or cancel)
+     * @param LengowOrder $order       Lengow order instance
+     * @param string      $idOrderLine Lengow order line id
+     *
+     * @throws Exception marketplace action not present / shop id required / marketplace name required
+     *                   argument is required / action not created
      *
      * @return boolean
      */
@@ -327,7 +281,7 @@ class LengowMarketplace
                     LengowMain::setLogMessage('lengow_log.exception.action_not_valid', array('action' => $action))
                 );
             }
-            if (!isset($this->actions[$action])) {
+            if (!$this->getAction($action)) {
                 throw new LengowException(
                     LengowMain::setLogMessage(
                         'lengow_log.exception.marketplace_action_not_present',
@@ -346,7 +300,7 @@ class LengowMarketplace
                 );
             }
             $params = array();
-            $actions = $this->actions[$action];
+            $actions = $this->getAction($action);
             if (isset($actions['args']) && isset($actions['optional_args'])) {
                 $allArgs = array_merge($actions['args'], $actions['optional_args']);
             } elseif (isset($actions['args'])) {
@@ -543,7 +497,7 @@ class LengowMarketplace
     /**
      * Get Marketplace Sku by Shop
      *
-     * @param $idShop
+     * @param integer $idShop Prestashop shop id
      *
      * @return array
      */

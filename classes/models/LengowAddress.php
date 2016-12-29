@@ -141,7 +141,7 @@ class LengowAddress extends Address
     /**
      * Extract firstname and lastname from a name field
      *
-     * @param string $fullName
+     * @param string $fullName customer fullname
      *
      * @return array
      */
@@ -162,7 +162,7 @@ class LengowAddress extends Address
     /**
      * Clean firstname or lastname to Prestashop
      *
-     * @param string $name Name
+     * @param string $name customer name
      *
      * @return string
      */
@@ -174,7 +174,7 @@ class LengowAddress extends Address
     /**
      * Hash address with md5
      *
-     * @param string $address Full address
+     * @param string $address customer full address
      *
      * @return string Hash
      */
@@ -215,7 +215,7 @@ class LengowAddress extends Address
     /**
      * Assign API data
      *
-     * @param array $data API data
+     * @param array $data API datas
      *
      * @return LengowAddress
      */
@@ -248,7 +248,7 @@ class LengowAddress extends Address
     /**
      * Validate Lengow
      *
-     * @return bool true if object is valid
+     * @return boolean true if object is valid
      */
     public function validateLengow()
     {

@@ -27,7 +27,7 @@ class LengowBackup extends Backup
     /**
      * Creates a new backup file
      *
-     * @return bool true on successful backup
+     * @return boolean true on successful backup
      */
     public function add()
     {

@@ -283,8 +283,8 @@ class LengowConfiguration extends Configuration
     /**
     * Get Lengow global value
     *
-    * @param string  $key    lengow configuration key
-    * @param integer $idLang id lang
+    * @param string  $key    Lengow configuration key
+    * @param integer $idLang Prestashop lang id
     *
     * @return mixed
     */
@@ -300,10 +300,10 @@ class LengowConfiguration extends Configuration
     /**
     * Get Lengow value by shop
     *
-    * @param string  $key         lengow configuration key
-    * @param integer $idLang      id lang
-    * @param integer $idShopGroup id shop group
-    * @param integer $idShop      id shop
+    * @param string  $key         Lengow configuration key
+    * @param integer $idLang      Prestashop lang id
+    * @param integer $idShopGroup Prestashop shop group id
+    * @param integer $idShop      Prestashop shop id
     * @param integer $default     default value (compatibility version 1.7)
     *
     * @return mixed
@@ -333,8 +333,8 @@ class LengowConfiguration extends Configuration
     /**
     * Update Lengow global value
     *
-    * @param string  $key    lengow configuration key
-    * @param integer $values lengow configuration value
+    * @param string  $key    Lengow configuration key
+    * @param integer $values Lengow configuration value
     * @param boolean $html   compatibility new version
     */
     public static function updateGlobalValue($key, $values, $html = false)
@@ -349,11 +349,11 @@ class LengowConfiguration extends Configuration
     /**
     * Update Lengow value by shop
     *
-    * @param string  $key         lengow configuration key
-    * @param integer $values      lengow configuration value
+    * @param string  $key         Lengow configuration key
+    * @param integer $values      Lengow configuration value
     * @param boolean $html        compatibility new version
-    * @param integer $idShopGroup id shop group
-    * @param integer $idShop      id shop
+    * @param integer $idShopGroup Prestashop shop group id
+    * @param integer $idShop      Prestashop shop id
     */
     public static function updateValue($key, $values, $html = false, $idShopGroup = null, $idShop = null)
     {
@@ -442,7 +442,7 @@ class LengowConfiguration extends Configuration
     /**
      * Get Values by shop or global
      *
-     * @param integer $idShop
+     * @param integer $idShop Prestashop shop id
      *
      * @return array
      */

@@ -44,7 +44,7 @@ class LengowCarrierCountry
     /**
      * Returns carrier's list by id lengow carrier
      *
-     * @param integer $idLengowCarrier
+     * @param integer $idLengowCarrier Lengow carrier id
      *
      * @return array
      */
@@ -81,7 +81,7 @@ class LengowCarrierCountry
     /**
      * Find CountryCarrier By Country
      *
-     * @param integer $idCountry
+     * @param integer $idCountry Prestashop country id
      *
      * @return mixed
      */
@@ -109,7 +109,7 @@ class LengowCarrierCountry
     /**
      * Get all id countries by carriers
      *
-     * @param array $listCarrier
+     * @param array $listCarrier Prestashop carrier list
      *
      * @return array
      */
@@ -125,7 +125,7 @@ class LengowCarrierCountry
     /**
      * Insert a new carrier country in the table
      *
-     * @param integer $idCountry
+     * @param integer $idCountry Prestashop country id
      *
      * @return action
      */
@@ -150,7 +150,7 @@ class LengowCarrierCountry
     /**
      * Delete a carrier country
      *
-     * @param integer $idCountry
+     * @param integer $idCountry Prestashop country id
      *
      * @return action
      */

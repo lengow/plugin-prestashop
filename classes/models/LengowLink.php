@@ -25,14 +25,14 @@
 class LengowLink extends LinkCore
 {
     /**
-    * Use in toolbox to get specific link
+    * @var boolean use in toolbox to get specific link
     */
     protected static $forceLink;
 
     /**
      * Reset option
      *
-     * @param boolean $forceLink
+     * @param boolean $forceLink use in toolbox to get specific link
      *
      * @return boolean Result of reset process
      */
@@ -44,8 +44,8 @@ class LengowLink extends LinkCore
     /**
      * Get absolute admin link
      *
-     * @param string  $controller       name of the controller
-     * @param boolean $ajax             if link use ajax
+     * @param string  $controller      name of the controller
+     * @param boolean $ajax            if link use ajax
      * @param boolean $adminPrestashop if link is a prestashop controller
      *
      * @return string

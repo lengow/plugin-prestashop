@@ -25,22 +25,22 @@
 class LengowInstall
 {
     /**
-    * lengow module
+    * @var Module module Lengow instance
     */
     private $lengowModule;
 
     /**
-    * lengow hook class
+    * @var lengowHook lengow hook class
     */
     private $lengowHook;
 
     /**
-    * installation status
+    * @var boolean installation status
     */
     protected static $installationStatus;
 
     /**
-    * All module tabs
+    * @var array all module tabs
     */
     static private $tabs = array(
         'tab.home'          => array('name' => 'AdminLengowHome', 'active' => true),
@@ -53,7 +53,7 @@ class LengowInstall
     );
 
     /**
-    * All module tables
+    * @var array all module tables
     */
     static public $tables = array(
         'lengow_actions',
@@ -77,7 +77,7 @@ class LengowInstall
     /**
      * Reset option
      *
-     * @return boolean Result of reset process
+     * @return boolean result of reset process
      */
     public function reset()
     {
@@ -87,7 +87,7 @@ class LengowInstall
     /**
      * Install otpion
      *
-     * @return boolean Result of install process
+     * @return boolean result of install process
      */
     public function install()
     {
@@ -97,7 +97,7 @@ class LengowInstall
     /**
      * Uninstall option
      *
-     * @return boolean Result of uninstall process
+     * @return boolean result of uninstall process
      */
     public function uninstall()
     {
@@ -107,7 +107,7 @@ class LengowInstall
     /**
      * Add admin Tab (Controller)
      *
-     * @return boolean Result of add tab on database.
+     * @return boolean result of add tab on database.
      */
     private function createTab()
     {
@@ -155,7 +155,7 @@ class LengowInstall
     /**
      * Remove admin tab
      *
-     * @return boolean Result of tab uninstallation
+     * @return boolean result of tab uninstallation
      */
     private static function uninstallTab()
     {
@@ -188,7 +188,7 @@ class LengowInstall
     /**
      * Add error status to reimport order
      *
-     * @return void
+     * @return boolean result of add status process
      */
     private function addStatusError()
     {
@@ -256,7 +256,7 @@ class LengowInstall
     /**
      * Update process
      *
-     * @return boolean Result of update process
+     * @return boolean result of update process
      */
     public function update()
     {
@@ -285,8 +285,8 @@ class LengowInstall
     /**
      * Checks if a field exists in BDD
      *
-     * @param string $table
-     * @param string $field
+     * @param string $table Lengow table
+     * @param string $field Lengow field
      *
      * @return boolean
      */
@@ -301,8 +301,8 @@ class LengowInstall
     /**
      * Checks if a field exists in BDD and Dropped It
      *
-     * @param string $table
-     * @param string $field
+     * @param string $table Lengow table
+     * @param string $field Lengow field
      *
      * @return boolean
      */
@@ -318,8 +318,8 @@ class LengowInstall
     /**
      * Rename configuration key
      *
-     * @param string $oldName
-     * @param string $newName
+     * @param string $oldName old configuration name
+     * @param string $newName new configuration name
      */
     public static function renameConfigurationKey($oldName, $newName)
     {
@@ -331,7 +331,7 @@ class LengowInstall
     /**
      * Set Installation Status
      *
-     * @param boolean $status Installation Status
+     * @param boolean $status installation status
      */
     public static function setInstallationStatus($status)
     {
@@ -339,7 +339,7 @@ class LengowInstall
     }
 
     /**
-     * Is Installation In Progress
+     * Is Installation in progress
      *
      * @return boolean
      */
@@ -351,7 +351,7 @@ class LengowInstall
     /**
      * Drop Lengow tables
      *
-     * @return bool
+     * @return boolean
      */
     public static function dropTable()
     {
@@ -384,7 +384,7 @@ class LengowInstall
     /**
      * Delete old files
      *
-     * @param array $listFiles
+     * @param array $listFiles list of files to delete
      */
     public static function removeFiles($listFiles)
     {
@@ -403,9 +403,9 @@ class LengowInstall
     /**
      * Delete old folders
      *
-     * @param string $dirPath
+     * @param string $dirPath list of folders to delete
      *
-     * @return bool
+     * @return boolean
      */
     public static function deleteDir($dirPath)
     {
