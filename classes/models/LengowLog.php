@@ -76,7 +76,7 @@ class LengowLog extends LengowFile
     /**
      * Get log files path
      *
-     * @return mixed (array or false)
+     * @return array|false
      */
     public static function getPaths()
     {

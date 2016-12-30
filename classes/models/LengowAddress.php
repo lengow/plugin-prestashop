@@ -111,7 +111,7 @@ class LengowAddress extends Address
     *
     * @param string $alias address alias
     *
-    * @return mixed LengowAddress or false
+    * @return LengowAddress|false
     */
     public static function getByAlias($alias)
     {
@@ -131,7 +131,7 @@ class LengowAddress extends Address
     *
     * @param string $alias address alias
     *
-    * @return mixed Address or false
+    * @return Address|false
     */
     public static function getByHash($alias)
     {

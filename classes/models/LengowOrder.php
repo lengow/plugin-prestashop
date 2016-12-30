@@ -238,7 +238,7 @@ class LengowOrder extends Order
      * @param integer $deliveryAddressId Lengow devivery address id
      * @param string  $marketplaceLegacy old marketplace name for v2 compatibility
      *
-     * @return mixed (integer or false)
+     * @return integer|false
      */
     public static function getOrderIdFromLengowOrders(
         $marketplaceSku,
@@ -276,7 +276,7 @@ class LengowOrder extends Order
      * @param string  $marketplaceSku    Lengow order id
      * @param integer $deliveryAddressId Lengow delivery address id
      *
-     * @return mixed (integer or false)
+     * @return integer|false
      */
     public static function getIdFromLengowOrders($marketplaceSku, $deliveryAddressId)
     {
@@ -316,7 +316,7 @@ class LengowOrder extends Order
      * @param integer $idOrder           Prestashop order id
      * @param integer $deliveryAddressId Lengow delivery address id
      *
-     * @return mixed (integer or false)
+     * @return integer|false
      */
     public static function getIdFromLengowDeliveryAddress($idOrder, $deliveryAddressId)
     {
@@ -394,7 +394,7 @@ class LengowOrder extends Order
      * @param mixed  $orderData        order data
      * @param mixed  $packageData      package data
      *
-     * @return mixed (string or false)
+     * @return string|false
      */
     public function updateState($orderStateLengow, $orderData, $packageData)
     {
@@ -466,7 +466,7 @@ class LengowOrder extends Order
     /**
      * Cancel and re-import order
      *
-     * @return mixed (integer or false)
+     * @return integer|false
      */
     public function cancelAndreImportOrder()
     {
@@ -522,7 +522,7 @@ class LengowOrder extends Order
      *
      * @param integer $idShop Prestashop shop id
      *
-     * @return mixed (array or false)
+     * @return array|false
      */
     public static function getUnsentOrderByStore($idShop)
     {
@@ -699,7 +699,7 @@ class LengowOrder extends Order
      *
      * @param string $type order log type (import or send)
      *
-     * @return mixed (integer or null)
+     * @return integer|null
      */
     public static function getOrderLogType($type = null)
     {
@@ -724,7 +724,7 @@ class LengowOrder extends Order
      * @param integer $deliveryAddressId Lengow delivery address id
      * @param string  $type              order log type (import or send)
      *
-     * @return mixed
+     * @return array|false
      */
     public static function orderIsInError($marketplaceSku, $deliveryAddressId, $type = 'import')
     {
@@ -746,7 +746,7 @@ class LengowOrder extends Order
      * @param string  $type          order log type (import or send)
      * @param boolean $finished      log finished (true or false)
      *
-     * @return mixed
+     * @return array|false
      */
     public static function getOrderLogs($idOrderLengow, $type = null, $finished = null)
     {
@@ -903,7 +903,7 @@ class LengowOrder extends Order
      *
      * @param integer $idOrderLengow Lengow order id
      *
-     * @return mixed
+     * @return array|false
      */
     public static function reImportOrder($idOrderLengow)
     {
@@ -925,6 +925,7 @@ class LengowOrder extends Order
             );
             return $import->exec();
         }
+        return false;
     }
 
     /**
@@ -966,7 +967,7 @@ class LengowOrder extends Order
      *
      * @param integer $idOrderLengow Lengow order id
      *
-     * @return mixed
+     * @return boolean
      */
     public static function reSendOrder($idOrderLengow)
     {
@@ -986,6 +987,7 @@ class LengowOrder extends Order
             }
             return false;
         }
+        return false;
     }
 
     /**
@@ -1097,7 +1099,7 @@ class LengowOrder extends Order
     /**
      * Get order line by API
      *
-     * @return mixed (array or false)
+     * @return array|false
      */
     public function getOrderLineByApi()
     {

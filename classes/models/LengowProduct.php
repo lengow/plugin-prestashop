@@ -923,7 +923,7 @@ class LengowProduct extends Product
      * @param integer $idShop         Prestashop shop id
      * @param array   $apiDatas       product ids from the API
      *
-     * @return mixed (array or false)
+     * @return array|false
      */
     public static function matchProduct($attributeName, $attributeValue, $idShop, $apiDatas = array())
     {
@@ -1010,7 +1010,7 @@ class LengowProduct extends Product
      * @param string  $value  attribute value
      * @param integer $idShop Prestashop shop id
      *
-     * @return mixed (integer or false)
+     * @return integer|false
      */
     protected static function findProduct($key, $value, $idShop)
     {
@@ -1058,7 +1058,7 @@ class LengowProduct extends Product
      * @param integer $idShop         Prestashop shop id
      * @param array   $apiDatas       product ids from the API
      *
-     * @return mixed (array or false)
+     * @return array|false
      */
     public static function advancedSearch($attributeValue, $idShop, $apiDatas)
     {
@@ -1109,7 +1109,7 @@ class LengowProduct extends Product
     /**
      * get image url of product variations
      *
-     * @return mixed (false or array)
+     * @return array|false
      */
     public function getImageUrlCombination()
     {

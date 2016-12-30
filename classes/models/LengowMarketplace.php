@@ -182,7 +182,7 @@ class LengowMarketplace
     *
     * @param string $name marketplace order state
     *
-    * @return mixed (string or false)
+    * @return string|false
     */
     public function getStateLengow($name)
     {
@@ -197,7 +197,7 @@ class LengowMarketplace
     *
     * @param string $name Lengow order state
     *
-    * @return mixed (string or false)
+    * @return string|false
     */
     public function getState($name)
     {
@@ -212,7 +212,7 @@ class LengowMarketplace
     *
     * @param string $name action's name
     *
-    * @return mixed (array or false)
+    * @return array|false
     */
     public function getAction($name)
     {
@@ -227,7 +227,7 @@ class LengowMarketplace
     *
     * @param string $name argument's name
     *
-    * @return mixed (string or false)
+    * @return string|false
     */
     public function getDefaultValue($name)
     {

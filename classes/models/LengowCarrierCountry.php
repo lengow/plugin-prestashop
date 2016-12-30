@@ -85,7 +85,7 @@ class LengowCarrierCountry
      *
      * @param integer $idCountry Prestashop country id
      *
-     * @return mixed
+     * @return array|false
      */
     public static function findByCountry($idCountry)
     {

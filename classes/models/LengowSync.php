@@ -181,7 +181,7 @@ class LengowSync
      *
      * @param boolean $force force cache update
      *
-     * @return mixed
+     * @return array|false
      */
     public static function getStatusAccount($force = false)
     {

@@ -125,7 +125,7 @@ class LengowAction
      * @param string  $actionType action type (null, ship or cancel)
      * @param boolean $load       load LengowAction or not
      *
-     * @return mixed (false or array)
+     * @return array|false
      */
     public static function getActiveActionByOrderId($idOrder, $actionType = null, $load = true)
     {
@@ -155,7 +155,7 @@ class LengowAction
      * @param integer $idShop Prestashop shop id
      * @param boolean $load   load LengowAction or not
      *
-     * @return mixed (false or array)
+     * @return array|false
      */
     public static function getActiveActionByShop($idShop, $load = true)
     {
@@ -187,7 +187,7 @@ class LengowAction
      *
      * @param integer $idOrder Prestashop order id
      *
-     * @return mixed (false or string)
+     * @return array|false
      */
     public static function getLastOrderActionType($idOrder)
     {

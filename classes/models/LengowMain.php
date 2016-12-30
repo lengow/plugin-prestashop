@@ -1012,7 +1012,7 @@ class LengowMain
      *
      * @param integer $idLang Prestashop lang id
      *
-     * @return mixed (integer or false)
+     * @return integer|false
      */
     public static function getLengowErrorStateId($idLang = null)
     {

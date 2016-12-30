@@ -109,7 +109,7 @@ class LengowConnector
      *
      * @param string $userToken the user token if is connected
      *
-     * @return mixed (array [authorized token + account_id + user_id] or false)
+     * @return array|false
      */
     public function connect($userToken = '')
     {

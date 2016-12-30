@@ -61,7 +61,7 @@ class LengowTranslation
      * @param array  $args    argurments to replace word in string
      * @param array  $isoCode translation iso code
      *
-     * @return mixed
+     * @return string
      */
     public function t($message, $args = array(), $isoCode = null)
     {

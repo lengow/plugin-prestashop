@@ -213,7 +213,7 @@ class LengowImportOrder
      *
      * @throws LengowException order list is empty
      *
-     * @return mixed
+     * @return array|false
      */
     public function importOrder()
     {
@@ -629,7 +629,7 @@ class LengowImportOrder
      *
      * @param array $externalIds external ids return by API
      *
-     * @return mixed
+     * @return integer|false
      */
     protected function checkExternalIds($externalIds)
     {

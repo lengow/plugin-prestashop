@@ -58,7 +58,7 @@ class LengowShop extends Shop
      *
      * @param string $token Lengow shop token
      *
-     * @return mixed (LengowShop or false)
+     * @return LengowShop|false
      */
     public static function findByToken($token)
     {

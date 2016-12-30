@@ -305,7 +305,7 @@ class LengowCarrier extends Carrier
      * @param string  $marketplaceCarrierSku Lengow carrier sku
      * @param integer $idCountry             Prestashop country id
      *
-     * @return mixed (false or integer)
+     * @return integer|false
      */
     public static function getIdCarrierByMarketplaceCarrierSku($marketplaceCarrierSku, $idCountry)
     {
@@ -474,7 +474,7 @@ class LengowCarrier extends Carrier
      *
      * @param mixed $idCountry Prestashop country id
      *
-     * @return mixed (false or Carrier)
+     * @return Carrier|false
      */
     public static function getDefaultCarrier($idCountry = false)
     {
@@ -525,7 +525,7 @@ class LengowCarrier extends Carrier
      * @param integer $idCarrier Prestashop carrier id
      * @param integer $idCountry Prestashop country id
      *
-     * @return mixed (false or integer)
+     * @return integer|false
      */
     public static function getActiveCarrierByCarrierId($idCarrier, $idCountry)
     {

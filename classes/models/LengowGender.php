@@ -72,7 +72,7 @@ class LengowGender extends Gender
      *
      * @param $name The gender text
      *
-     * @return mixed (string or integer)
+     * @return string|integer
      */
     public static function getGender($name)
     {

@@ -617,7 +617,7 @@ class LengowImport
      * @param mixed   $orders API orders
      * @param integer $idShop Prestashop shop Id
      *
-     * @return mixed (false or array)
+     * @return array|false
      */
     protected function importOrders($orders, $idShop)
     {
