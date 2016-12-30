@@ -52,6 +52,8 @@ class LengowFile
      * @param string $folderName Lengow folder name
      * @param string $fileName   Lengow file name
      * @param string $mode       type of access
+     *
+     * @throws LengowException unable to create file
      */
     public function __construct($folderName, $fileName = null, $mode = 'a+')
     {

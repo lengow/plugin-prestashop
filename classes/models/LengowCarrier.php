@@ -49,6 +49,8 @@ class LengowCarrier extends Carrier
      * @param integer       $idCarrier       Prestashop carrier id
      * @param LengowAddress $shippingAddress order shipping address
      *
+     * @throws LengowException mondial relay not found
+     *
      * @return integer -1 = compatibility not ensured, 0 = not a carrier module, 1 = compatibility ensured
      */
     public static function carrierCompatibility($idCustomer, $idCart, $idCarrier, $shippingAddress)
@@ -96,6 +98,8 @@ class LengowCarrier extends Carrier
      * @param integer       $idCart          Prestashop cart id
      * @param integer       $idCustomer      Prestashop customer id
      * @param LengowAddress $shippingAddress shipping address
+     *
+     * @throws LengowException colissimo missing file
      *
      * @return boolean
      */
@@ -226,6 +230,8 @@ class LengowCarrier extends Carrier
      *
      * @param integer $idAddressDelivery Prestashop shipping address id
      * @param string  $idRelay           relay id
+     *
+     * @throws LengowException mondial relay missing file
      *
      * @return boolean
      */

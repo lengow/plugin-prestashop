@@ -470,7 +470,7 @@ class LengowExport
      * @param array $fields   list of fields
      * @param Shop  $shop     Prestashop shop being exported
      *
-     * @throws Exception folder not writable
+     * @throws LengowException folder not writable
      */
     public function export($products, $fields, $shop)
     {
@@ -572,7 +572,7 @@ class LengowExport
      * @param integer $productId Prestashop product id
      * @param array   $fields    list of fields
      *
-     * @throws Exception no product combination
+     * @throws LengowException no product combination
      */
     public function loadCacheCombinations($productId, $fields)
     {

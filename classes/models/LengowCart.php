@@ -44,7 +44,7 @@ class LengowCart extends Cart
      *
      * @param array $products list of products to be added
      *
-     * @throws Exception Cannot add product to cart / No quantity for product
+     * @throws LengowException Cannot add product to cart / No quantity for product
      *
      * @return boolean
      */
@@ -341,6 +341,8 @@ class LengowCart extends Cart
 
     /**
      * Validate Lengow
+     *
+     * @throws LengowException invalid object
      *
      * @return boolean true if object is valid
      */

@@ -270,8 +270,8 @@ class LengowMarketplace
      * @param LengowOrder $order       Lengow order instance
      * @param string      $idOrderLine Lengow order line id
      *
-     * @throws Exception marketplace action not present / shop id required / marketplace name required
-     *                   argument is required / action not created
+     * @throws LengowException marketplace action not present / shop id required / marketplace name required
+     *                         argument is required / action not created
      *
      * @return boolean
      */

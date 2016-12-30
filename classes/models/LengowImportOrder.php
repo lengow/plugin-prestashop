@@ -211,7 +211,7 @@ class LengowImportOrder
     /**
      * Create or update order
      *
-     * @throws Exception order list is empty
+     * @throws LengowException order list is empty
      *
      * @return mixed
      */
@@ -913,7 +913,7 @@ class LengowImportOrder
     /**
      * Get products from API data
      *
-     * @throws Exception product is a parent / product no be found
+     * @throws LengowException product is a parent / product no be found
      *
      * @return array list of products
      */
@@ -1032,7 +1032,7 @@ class LengowImportOrder
     /**
      * Get carrier id according to the tracking informations given in the API
      *
-     * @throws Exception shipping country no country / no default carrier for country
+     * @throws LengowException shipping country no country / no default carrier for country
      *
      * @return integer
      */

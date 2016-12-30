@@ -112,7 +112,7 @@ class LengowFeed
     /**
      * Create export file
      *
-     * @throws Exception unable to create folder
+     * @throws LengowException unable to create folder
      */
     public function initExportFile()
     {

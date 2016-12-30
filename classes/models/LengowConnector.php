@@ -315,7 +315,7 @@ class LengowConnector
      * @param string $token temporary access token
      * @param string $body  body datas for request
      *
-     * @throws Exception Get Curl error
+     * @throws LengowException get Curl error
      *
      * @return array
      */

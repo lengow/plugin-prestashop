@@ -248,6 +248,8 @@ class LengowAddress extends Address
     /**
      * Validate Lengow
      *
+     * @throws LengowException invalid object
+     *
      * @return boolean true if object is valid
      */
     public function validateLengow()

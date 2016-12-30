@@ -494,7 +494,7 @@ class LengowImport
      *
      * @param LengowShop $shop
      *
-     * @throws Exception no connection with the webservice / credentials not valid
+     * @throws LengowException no connection with the webservice / credentials not valid
      *
      * @return array
      */

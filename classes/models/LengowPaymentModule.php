@@ -44,9 +44,9 @@ class LengowPaymentModule extends PaymentModule
      * @param float   $processingFees       order processing fees
      * @param string  $lengowTrackingNumber Lengow carrier tracking number
      *
-     * @throws Exception cannot load order status / payment module not active / cart cannot be loaded
-     *                   delivery country not active / product is not listed / unable to save order
-     *                   unable to save order payment / order creation failed
+     * @throws LengowException cannot load order status / payment module not active / cart cannot be loaded
+     *                         delivery country not active / product is not listed / unable to save order
+     *                         unable to save order payment / order creation failed
      *
      * @return array
      */
@@ -496,8 +496,8 @@ class LengowPaymentModule extends PaymentModule
      * @param float   $processingFees       order processing fees
      * @param string  $lengowTrackingNumber Lengow carrier tracking number
      *
-     * @throws Exception product is not listed / cannot load order status / cart cannot be loaded 
-     *                   order creation failed
+     * @throws LengowException product is not listed / cannot load order status / cart cannot be loaded 
+     *                         order creation failed
      * @return array
      */
     public function makeOrder14(

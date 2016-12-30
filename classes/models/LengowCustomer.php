@@ -78,6 +78,8 @@ class LengowCustomer extends Customer
     /**
      * Validate Lengow
      *
+     * @throws LengowException invalid object
+     *
      * @return boolean true if object is valid
      */
     public function validateLengow()
