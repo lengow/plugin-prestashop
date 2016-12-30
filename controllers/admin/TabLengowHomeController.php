@@ -22,8 +22,7 @@
  */
 
 /**
- * The AdminTab Lengow home Class
- *
+ * Admin Lengow Home 14 Class
  */
 class AdminLengowHome14 extends AdminTab
 {

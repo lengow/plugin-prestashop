@@ -23,6 +23,9 @@
 
 require_once _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'loader.php';
 
+/**
+ * Lengow
+ */
 class Lengow extends Module
 {
     /**

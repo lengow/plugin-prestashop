@@ -21,6 +21,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Admin Lengow help Controller Class
+ */
 class AdminLengowHelpController extends ModuleAdminController
 {
     /**

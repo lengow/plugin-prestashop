@@ -22,8 +22,7 @@
  */
 
 /**
- * The AdminTab Lengow feed Class
- *
+ * Admin Lengow Main Setting 14 Class
  */
 class AdminLengowMainSetting14 extends AdminTab
 {

@@ -21,6 +21,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/**
+ * Lengow Main Setting Controller Class
+ */
 class LengowMainSettingController extends LengowController
 {
     /**

@@ -22,8 +22,7 @@
  */
 
 /**
- * The AdminTab Lengow order Class
- *
+ * Admin Lengow Order Setting 14 Class
  */
 class AdminLengowOrderSetting14 extends AdminTab
 {
