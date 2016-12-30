@@ -30,7 +30,7 @@ class LengowCart extends Cart
     public $forceProduct = true;
 
     /**
-     * @var array definition_lengow
+     * @var array definition array for prestashop 1.4
      */
     public static $definitionLengow = array(
         'id_currency' => array('required' => true),

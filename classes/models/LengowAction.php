@@ -25,12 +25,12 @@
 class LengowAction
 {
     /**
-    * integer action state for new action
+    * @var integer action state for new action
     */
     const STATE_NEW = 0;
 
     /**
-    * integer action state for action finished
+    * @var integer action state for action finished
     */
     const STATE_FINISH = 1;
 

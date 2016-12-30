@@ -66,9 +66,7 @@ class LengowAddress extends Address
     );
 
     /**
-     * Definition array for prestashop 1.4
-     *
-     * @var array
+     * @var array definition array for prestashop 1.4
      */
     public static $definitionLengow = array(
         'id_country'   =>  array('required' => true),

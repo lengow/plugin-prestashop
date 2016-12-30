@@ -25,9 +25,7 @@
 class LengowCustomer extends Customer
 {
     /**
-     * Definition array for prestashop 1.4
-     *
-     * @var array Lengow field definition
+     * @var array definition array for prestashop 1.4
      */
     public static $definitionLengow = array(
         'lastname'  => array('required' => true, 'size' => 32),
