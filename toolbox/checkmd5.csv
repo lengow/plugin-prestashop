@@ -17,7 +17,7 @@
 /classes/models/LengowImportOrder.php|e9466ce97928e4ad0fd3d2899af12f99
 /classes/models/LengowPaymentModule.php|8397e8142b7e5eb90dce670e9cbfd002
 /classes/models/LengowCustomer.php|bca0ce370a1cda988feacbb213e580fa
-/classes/models/LengowSync.php|2284566ead538dee5413a154b33960d2
+/classes/models/LengowSync.php|b1363d390d404ba831baa7ab60bce922
 /classes/models/LengowCountry.php|b7919f8c32b5241373db2193f95a1300
 /classes/models/LengowHook.php|cefadb1ddb01fa9d55fcc8e2ec2e4aec
 /classes/models/LengowImport.php|175f2bf4a342b4643915997de91121f9
@@ -48,7 +48,7 @@
 /classes/models/LengowMarketplace.php|4a0f55100eb45d362f7a1a0188b327ff
 /classes/models/LengowAddress.php|65415c62402977c74d86fb82017b1d5b
 /classes/models/LengowCarrierCountry.php|8843f1c2bd0e256b63ece4659a33e8fa
-/classes/models/LengowSpecificPrice.php|afc8135e9ed8dba35051289be841d5c7
+/classes/models/LengowSpecificPrice.php|f4511d491f656938d750bc838f7e7b1f
 /classes/models/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/models/LengowProduct.php|8400fd12fa60ee4347920f3816dfc0c9
 /classes/models/LengowConfiguration.php|378eb4dc6bf48a7d1d84cd7bf826bfc8

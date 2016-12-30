@@ -26,7 +26,7 @@
  */
 class LengowSpecificPrice extends SpecificPrice
 {
-	/**
+    /**
      * Clear specific price
      */
     public static function clear()

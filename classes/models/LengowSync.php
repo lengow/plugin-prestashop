@@ -66,7 +66,7 @@ class LengowSync
     /**
      * Set shop configuration key from Lengow
      *
-     * @param array $params Lengow API credentials 
+     * @param array $params Lengow API credentials
      */
     public static function sync($params)
     {
