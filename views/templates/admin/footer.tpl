@@ -1,5 +1,5 @@
 {*
- * Copyright 2015 Lengow SAS.
+ * Copyright 2017 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -14,7 +14,7 @@
  * under the License.
  *
  *  @author    Team Connector <team-connector@lengow.com>
- *  @copyright 2015 Lengow SAS
+ *  @copyright 2017 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
@@ -28,7 +28,7 @@
             {/if}
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowLegals')|escape:'htmlall':'UTF-8'}" class="sub-link" title="Legal">{$locale->t('footer.legals')|escape:'htmlall':'UTF-8'}</a>
                 | {$locale->t('footer.plugin_lengow')|escape:'htmlall':'UTF-8'} -
-                copyright © 2016 <a href="{$locale->t('footer.lengow_link_url')|escape:'htmlall':'UTF-8'}" target="_blank" class="sub-link" title="Lengow.com">Lengow</a>
+                copyright © 2017 <a href="{$locale->t('footer.lengow_link_url')|escape:'htmlall':'UTF-8'}" target="_blank" class="sub-link" title="Lengow.com">Lengow</a>
             </p>
         </div>
     </div>
