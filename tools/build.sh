@@ -112,6 +112,9 @@ echo "- Remove Test folder : ""$VERT""DONE""$NORMAL"""
 #remove TMP FOLDER_TRANSLATION
 remove_directory $FOLDER_TRANSLATION
 echo "- Remove Translation yml folder : ""$VERT""DONE""$NORMAL"""
+# Remove config.xml
+find $FOLDER_TMP -name "config.xml" -delete
+echo "- Delete config.xml : ""$VERT""DONE""$NORMAL"""
 # Remove config_fr.xml
 find $FOLDER_TMP -name "config_fr.xml" -delete
 echo "- Delete config_fr.xml : ""$VERT""DONE""$NORMAL"""
