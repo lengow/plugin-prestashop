@@ -14,11 +14,11 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Module
- * @package   Lengow
- * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
- * @license   http://www.apache.org/licenses/LICENSE-2.0
+ * @category   Lengow
+ * @package    lengow
+ * @author     Team Connector <team-connector@lengow.com>
+ * @copyright  2017 Lengow SAS
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
  */
 
 require_once _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'loader.php';

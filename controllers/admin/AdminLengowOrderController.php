@@ -14,11 +14,12 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Prestashop_Controller
- * @package   AdminLengowOrderController
- * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
- * @license   http://www.apache.org/licenses/LICENSE-2.0
+ * @category    Lengow
+ * @package     lengow
+ * @subpackage  controllers
+ * @author      Team Connector <team-connector@lengow.com>
+ * @copyright   2017 Lengow SAS
+ * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
 /**

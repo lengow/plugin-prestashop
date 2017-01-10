@@ -14,11 +14,34 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Webservice
- * @package   Export
- * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
- * @license   http://www.apache.org/licenses/LICENSE-2.0
+ * @category    Lengow
+ * @package     lengow
+ * @subpackage  webservice
+ * @author      Team Connector <team-connector@lengow.com>
+ * @copyright   2017 Lengow SAS
+ * @license     http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+/**
+ * List params
+ * string  mode               Number of products exported
+ * string  format             Format of exported files ('csv','yaml','xml','json')
+ * boolean stream             Stream file (1) or generate a file on server (0)
+ * integer offset             Offset of total product
+ * integer limit              Limit number of exported product
+ * boolean selection          Export product selection (1) or all products (0)
+ * boolean out_of_stock       Export out of stock product (1) Export only product in stock (0)
+ * string  product_ids        List of product id separate with comma (1,2,3)
+ * string  product_types      Product type separate with comma (external,grouped,simple,variable)
+ * boolean variation          Export product Variation (1) Export parent product only (0)
+ * boolean inactive           Export inactive product (1) or not (0) 
+ * integer shop               Export a specific shop
+ * string  currency           Convert prices with a specific currency
+ * string  language           Translate content with a specific language
+ * boolean legacy_fields      Export feed with v2 fields (1) or v3 fields (0)
+ * boolean log_output         See logs (1) or not (0)
+ * boolean update_export_date Change last export date in data base (1) or not (0)
+ * boolean get_params         See export parameters and authorized values in json format (1) or not (0)
  */
 
 @set_time_limit(0);

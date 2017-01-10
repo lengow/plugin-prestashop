@@ -14,11 +14,12 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Model
- * @package   LengowImport
- * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
- * @license   http://www.apache.org/licenses/LICENSE-2.0
+ * @category    Lengow
+ * @package     lengow
+ * @subpackage  classes
+ * @author      Team Connector <team-connector@lengow.com>
+ * @copyright   2017 Lengow SAS
+ * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
 /**
@@ -714,7 +715,7 @@ class LengowImport
                     continue;
                 }
                 // Sync to lengow if no preprod_mode
-                if (!$this->preprodMode && $order['order_new'] == true) {
+                if (!$this->preprodMode && isset($order['order_new']) && $order['order_new'] == true) {
                     $lengowOrder = new LengowOrder((int)$order['order_id']);
                     $synchro = $lengowOrder->synchronizeOrder($this->connector, $this->logOutput);
                     if ($synchro) {
@@ -736,11 +737,11 @@ class LengowImport
                     return $order;
                 }
                 if ($order) {
-                    if ($order['order_new'] == true) {
+                    if (isset($order['order_new']) && $order['order_new'] == true) {
                         $orderNew++;
-                    } elseif ($order['order_update'] == true) {
+                    } elseif (isset($order['order_update']) && $order['order_update'] == true) {
                         $orderUpdate++;
-                    } elseif ($order['order_error'] == true) {
+                    } elseif (isset($order['order_error']) && $order['order_error'] == true) {
                         $orderError++;
                     }
                 }

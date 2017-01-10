@@ -14,11 +14,27 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Webservice
- * @package   Cron
- * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
- * @license   http://www.apache.org/licenses/LICENSE-2.0
+ * @category    Lengow
+ * @package     lengow
+ * @subpackage  webservice
+ * @author      Team Connector <team-connector@lengow.com>
+ * @copyright   2017 Lengow SAS
+ * @license     http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+/**
+ * List params
+ * string  sync                Number of products exported
+ * integer days                Import period
+ * integer limit               Number of orders to import
+ * integer shop_id             Shop id to import
+ * string  $marketplace_sku    Lengow marketplace order id to import
+ * string  marketplace_name    Lengow marketplace name to import
+ * integer delivery_address_id Lengow delivery address id to import
+ * boolean force_product       Force import product when quantity is insufficient (1) or not (0)
+ * boolean preprod_mode        Activate preprod mode
+ * boolean log_output          See logs (1) or not (0)
+ * boolean get_sync            See synchronisation parameters in json format (1) or not (0)
  */
 
 @set_time_limit(0);
