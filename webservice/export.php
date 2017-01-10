@@ -32,7 +32,6 @@
  * boolean selection          Export product selection (1) or all products (0)
  * boolean out_of_stock       Export out of stock product (1) Export only product in stock (0)
  * string  product_ids        List of product id separate with comma (1,2,3)
- * string  product_types      Product type separate with comma (external,grouped,simple,variable)
  * boolean variation          Export product Variation (1) Export parent product only (0)
  * boolean inactive           Export inactive product (1) or not (0) 
  * integer shop               Export a specific shop
