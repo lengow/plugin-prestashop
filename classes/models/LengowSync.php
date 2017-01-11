@@ -28,7 +28,7 @@
 class LengowSync
 {
     /**
-     * @var integer get datas every 5 hours
+     * @var integer cache time for statistic, account status and cms options
      */
     protected static $cacheTime = 18000;
 
@@ -104,7 +104,7 @@ class LengowSync
     }
 
     /**
-     * Check synchronisation shop
+     * Check that a shop is activated and has account id and tokens non-empty
      *
      * @param integer $idShop Prestashop shop id
      *

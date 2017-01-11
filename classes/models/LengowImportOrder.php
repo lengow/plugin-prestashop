@@ -916,7 +916,7 @@ class LengowImportOrder
      *
      * @throws LengowException product is a parent / product no be found
      *
-     * @return array list of products
+     * @return array
      */
     protected function getProducts()
     {

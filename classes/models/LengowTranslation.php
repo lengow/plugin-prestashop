@@ -95,7 +95,7 @@ class LengowTranslation
      * @param string $text localization key
      * @param array  $args argurments to replace word in string
      *
-     * @return string Final Translate string
+     * @return string
      */
     protected function translateFinal($text, $args)
     {

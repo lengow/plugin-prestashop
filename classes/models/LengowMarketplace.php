@@ -100,6 +100,8 @@ class LengowMarketplace
     *
     * @param string  $name   name of the marketplace
     * @param integer $idShop Prestashop shop id
+    *
+    * @throws LengowException marketplace not present
     */
     public function __construct($name, $idShop = null)
     {

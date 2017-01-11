@@ -90,8 +90,8 @@ class LengowFeed
     /**
      * Construct
      *
-     * @param boolean $stream   export format
-     * @param string  $format   export streaming or in a file
+     * @param boolean $stream   export streaming or in a file
+     * @param string  $format   export format
      * @param boolean $legacy   export legacy field or not
      * @param string  $shopName Prestashop shop name
      *

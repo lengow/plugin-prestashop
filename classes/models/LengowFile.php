@@ -125,14 +125,10 @@ class LengowFile
     /**
      * Get file link
      *
-     * @param Shop $shop Prestashop shop instance
-     *
      * @return string
      */
-    public function getLink($shop = null)
+    public function getLink()
     {
-        // This line is useless, but Prestashop validator require it
-        $shop = $shop;
         if (empty($this->link)) {
             if (!$this->exists()) {
                 $this->link = null;
