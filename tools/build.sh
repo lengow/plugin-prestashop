@@ -85,6 +85,8 @@ echo "- Create files checksum : ""$VERT""DONE""$NORMAL"""
 remove_directory $FOLDER_TMP
 #copy files
 cp -rRp $FOLDER $FOLDER_TMP
+# Remove dod
+remove_files $FOLDER_TMP "dod.md"
 # Remove Readme
 remove_files $FOLDER_TMP "README.md"
 # Remove .gitignore
