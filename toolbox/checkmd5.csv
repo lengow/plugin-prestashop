@@ -368,7 +368,7 @@
 /views/templates/front/tagpage.tpl|f040d02eb2f79ed7d50e72f7f707db0e
 /views/templates/front/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/header.tpl|cae433f3f53eae7bff1885096802da0a
-/views/templates/admin/footer.tpl|b00b269acc974016f871151a3faa8649
+/views/templates/admin/footer.tpl|22ba08071b2c0adbde9c5af77e50c54a
 /views/templates/admin/order/info.tpl|406acc5d3c8aae083c6b74ed36fde99c
 /views/templates/admin/order/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
 /views/templates/admin/order/info_16.tpl|f62476ced9cbc2f453037ea856007570
@@ -471,7 +471,7 @@
 /views/js/select2.js|2565df263f3a062418fb9ef1202d7e4e
 /views/js/jquery.1.12.0.min.js|e63f1452800f328881a789956054aca3
 /views/js/index.php|cc057e2d93b0f026c7e6ca1a5c8343e8
-/views/js/lengow/home.js|e8dd592352d2a2acd4231deb07c44da8
+/views/js/lengow/home.js|10f6531041d252e09150d753abfd0d9b
 /views/js/lengow/admin.js|4ae494a8ad0305c51a3f33442a428bc0
 /views/js/lengow/main_setting.js|64d84b84b1ce1a2c7ab25ad8894a618c
 /views/js/lengow/order.js|aff6525549b26661b5cf6849cd15dfd2
