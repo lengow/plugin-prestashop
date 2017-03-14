@@ -197,7 +197,7 @@ fr:
   help:
     screen:
       title: "Demandez de l'aide à notre équipe Support !"
-      contain_text_support: "Des questions, un feedback sur Lengow... transmettez vos demandes au "
+      contain_text_support: "Des questions, un feedback sur Lengow... transmettez vos demandes au"
       title_lengow_support: "support Lengow."
       link_lengow_support: "https://supportlengow.zendesk.com/hc/fr/requests/new"
       need_some_help: "Besoin d'aide ?"
@@ -256,7 +256,7 @@ fr:
     lengow_cron_enabled_title: "Utilisez l'éditeur de tâche Cron"
     lengow_global_token_title: "Lengow global Token"
     lengow_authorized_ip_title: "IP autorisée(s)"
-    lengow_authorized_ip_legend: "IP autorisée(s) séparée(s) par :"
+    lengow_authorized_ip_legend: "IP autorisée(s) séparée(s) par ;"
     lengow_tracking_enabled_title: "Activer le tracking Lengow"
     lengow_tracking_id_title: "ID Tracking Lengow"
     lengow_order_stat_title: "Statistiques des commandes"

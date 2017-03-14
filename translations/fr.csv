@@ -176,7 +176,7 @@ global_setting.screen.plugin_deleted|Désinstallation terminée !
 global_setting.screen.setting_saving|Enregistrement en cours...
 global_setting.screen.setting_saved|Enregistrement terminé !
 help.screen.title|Demandez de l'aide à notre équipe Support !
-help.screen.contain_text_support|Des questions, un feedback sur Lengow... transmettez vos demandes au 
+help.screen.contain_text_support|Des questions, un feedback sur Lengow... transmettez vos demandes au
 help.screen.title_lengow_support|support Lengow.
 help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/fr/requests/new
 help.screen.need_some_help|Besoin d'aide ?
@@ -232,7 +232,7 @@ lengow_setting.lengow_last_import_manual_title|Dernier import manuel
 lengow_setting.lengow_cron_enabled_title|Utilisez l'éditeur de tâche Cron
 lengow_setting.lengow_global_token_title|Lengow global Token
 lengow_setting.lengow_authorized_ip_title|IP autorisée(s)
-lengow_setting.lengow_authorized_ip_legend|IP autorisée(s) séparée(s) par :
+lengow_setting.lengow_authorized_ip_legend|IP autorisée(s) séparée(s) par ;
 lengow_setting.lengow_tracking_enabled_title|Activer le tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_order_stat_title|Statistiques des commandes

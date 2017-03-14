@@ -256,7 +256,7 @@ it:
     lengow_cron_enabled_title: "Usa il modulo Crontab PrestaShop"
     lengow_global_token_title: "Lengow global Token"
     lengow_authorized_ip_title: "IP Autorizzati"
-    lengow_authorized_ip_legend: "IP Autorizzati separati da:"
+    lengow_authorized_ip_legend: "IP Autorizzati separati da ;"
     lengow_tracking_enabled_title: "Attiva il tracking Lengow"
     lengow_tracking_id_title: "ID Tracking Lengow"
     lengow_order_stat_title: "Stato ordini"

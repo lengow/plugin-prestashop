@@ -176,7 +176,7 @@ global_setting.screen.plugin_deleted|Delete!
 global_setting.screen.setting_saving|Saving...
 global_setting.screen.setting_saved|Saved!
 help.screen.title|Get a little help from your support team!
-help.screen.contain_text_support|Ask us anything about Lengow or share feedback at
+help.screen.contain_text_support|Ask us anything about Lengow or share feedback with
 help.screen.title_lengow_support|Lengow Support.
 help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Need some help?
@@ -231,8 +231,8 @@ lengow_setting.lengow_last_import_cron_title|Last Cron import
 lengow_setting.lengow_last_import_manual_title|Last manual import
 lengow_setting.lengow_cron_enabled_title|Use Crontab module PrestaShop
 lengow_setting.lengow_global_token_title|Lengow global Token
-lengow_setting.lengow_authorized_ip_title|Authorised IP
-lengow_setting.lengow_authorized_ip_legend|Authorized IP separated by:
+lengow_setting.lengow_authorized_ip_title|Authorised IPs
+lengow_setting.lengow_authorized_ip_legend|Authorised IP separated by ;
 lengow_setting.lengow_tracking_enabled_title|Activate Lengow tracking
 lengow_setting.lengow_tracking_id_title|Lengow Tracking ID
 lengow_setting.lengow_order_stat_title|Order statistics

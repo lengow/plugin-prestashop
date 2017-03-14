@@ -197,7 +197,7 @@ en:
   help:
     screen:
       title: "Get a little help from your support team!"
-      contain_text_support: "Ask us anything about Lengow or share feedback at"
+      contain_text_support: "Ask us anything about Lengow or share feedback with"
       title_lengow_support: "Lengow Support."
       link_lengow_support: "https://supportlengow.zendesk.com/hc/en-us/requests/new"
       need_some_help: "Need some help?"
@@ -255,8 +255,8 @@ en:
     lengow_last_import_manual_title: "Last manual import"
     lengow_cron_enabled_title: "Use Crontab module PrestaShop"
     lengow_global_token_title: "Lengow global Token"
-    lengow_authorized_ip_title: "Authorised IP"
-    lengow_authorized_ip_legend: "Authorized IP separated by:"
+    lengow_authorized_ip_title: "Authorised IPs"
+    lengow_authorized_ip_legend: "Authorised IP separated by ;"
     lengow_tracking_enabled_title: "Activate Lengow tracking"
     lengow_tracking_id_title: "Lengow Tracking ID"
     lengow_order_stat_title: "Order statistics"
