@@ -14,9 +14,6 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Lengow
- * @package   lengow
- * @subpackage classes
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -48,7 +45,7 @@ class LengowAction
     public $idOrder;
 
     /**
-     * @var integer Lengow action id 
+     * @var integer Lengow action id
      */
     public $actionId;
 

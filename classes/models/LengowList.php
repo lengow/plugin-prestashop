@@ -14,9 +14,6 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Lengow
- * @package   lengow
- * @subpackage classes
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -88,7 +85,7 @@ class LengowList
     protected $sql;
 
     /**
-    * @var string shop identifier 
+    * @var string shop identifier
     */
     protected $id;
 
@@ -509,7 +506,6 @@ class LengowList
             } else {
                 $sql = 'SELECT COUNT("'.pSQL($firstColumn).'") as total';
             }
-
         } elseif ($selectAll == true) {
             $sql = 'SELECT '.$this->fieldsList['id_product']['filter_key'];
         } else {

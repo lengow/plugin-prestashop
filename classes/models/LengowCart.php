@@ -14,9 +14,6 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Lengow
- * @package   lengow
- * @subpackage classes
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -110,7 +107,7 @@ class LengowCart extends Cart
      * @param integer $quantity           quantity to add (or substract)
      * @param integer $idProduct          Prestashop product id
      * @param integer $idProductAttribute attribute id if needed
-     * @param string  $idCustomization    Prestashop customization id 
+     * @param string  $idCustomization    Prestashop customization id
      * @param string  $operator           indicate if quantity must be increased or decreased
      * @param integer $idAddressDelivery  Prestashop address delivery id
      * @param string  $shop               Shop instance
@@ -190,7 +187,7 @@ class LengowCart extends Cart
                 $productQty = (int)$result2['quantity'];
                 // Quantity for product pack
                 if (Pack::isPack($idProduct)) {
-                    $productQty = Pack::getQuantity($idProduct, $idProductAttribute);
+                    $productQty = Product::getQuantity($idProduct, $idProductAttribute);
                 }
                 $newQty = (int)$result['quantity'] + (int)$quantity;
                 $qty = '+ '.(int)$quantity;
@@ -249,7 +246,7 @@ class LengowCart extends Cart
                 $result2 = Db::getInstance()->getRow($sql);
                 // Quantity for product pack
                 if (_PS_VERSION_ > '1.4' && Pack::isPack($idProduct)) {
-                    $result2['quantity'] = Pack::getQuantity($idProduct, $idProductAttribute);
+                    $result2['quantity'] = Product::getQuantity($idProduct, $idProductAttribute);
                 }
                 if (!Product::isAvailableWhenOutOfStock((int)$result2['out_of_stock']) && !$this->forceProduct) {
                     if ((int)$quantity > $result2['quantity']) {

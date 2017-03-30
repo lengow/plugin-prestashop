@@ -13,10 +13,7 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations
  * under the License.
- * 
- * @category  Lengow
- * @package   lengow
- * @subpackage classes
+ *
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -529,7 +526,7 @@ class LengowFeedController extends LengowController
                     .'" target="_blank">'.$value.'</a>';
                 } else {
                     return '<a href="' .
-                        $link->getAdminLink('AdminProducts', true, ['id_product' => $item['id_product']]).
+                        $link->getAdminLink('AdminProducts', true, array('id_product' => $item['id_product'])).
                         '" target="_blank">'.$value.'</a>';
                 }
             } else {

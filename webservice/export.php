@@ -14,9 +14,6 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Lengow
- * @package   lengow
- * @subpackage webservice
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -33,7 +30,7 @@
  * boolean out_of_stock       Export out of stock product (1) Export only product in stock (0)
  * string  product_ids        List of product id separate with comma (1,2,3)
  * boolean variation          Export product Variation (1) Export parent product only (0)
- * boolean inactive           Export inactive product (1) or not (0) 
+ * boolean inactive           Export inactive product (1) or not (0)
  * integer shop               Export a specific shop
  * string  currency           Convert prices with a specific currency
  * string  language           Translate content with a specific language

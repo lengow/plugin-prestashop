@@ -14,9 +14,6 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Lengow
- * @package   lengow
- * @subpackage classes
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -491,13 +488,13 @@ class LengowPaymentModule extends PaymentModule
      * @param integer $idOrderState         Prestashop order state id
      * @param float   $amountPaid           total amount paid
      * @param string  $paymentMethod        name of the payment method
-     * @param string  $message              order message 
+     * @param string  $message              order message
      * @param array   $lengowProducts       list of Lengow products
      * @param float   $lengowShippingCosts  order shipping costs
      * @param float   $processingFees       order processing fees
      * @param string  $lengowTrackingNumber Lengow carrier tracking number
      *
-     * @throws LengowException product is not listed / cannot load order status / cart cannot be loaded 
+     * @throws LengowException product is not listed / cannot load order status / cart cannot be loaded
      *                         order creation failed
      * @return array
      */

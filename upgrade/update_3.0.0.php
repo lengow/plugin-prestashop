@@ -14,9 +14,6 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Lengow
- * @package   lengow
- * @subpackage upgrade
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -76,24 +73,24 @@ $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'lengow_product` (
 	`id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`id_product` INTEGER(11) UNSIGNED NOT NULL,
 	`id_shop` INTEGER(11) UNSIGNED NOT NULL DEFAULT 1,
-	`id_shop_group` INTEGER(11) UNSIGNED NOT NULL DEFAULT 1,
-	`id_lang` INTEGER(11) UNSIGNED NOT NULL DEFAULT 1,
 	PRIMARY KEY ( `id` ),
-	INDEX (`id_shop`),
-	INDEX (`id_shop_group`),
-	INDEX (`id_lang`)
+	INDEX (`id_shop`)
 ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
 Db::getInstance()->execute($sql);
 // alter product table for old versions
 if (Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'lengow_product\'')) {
     if (!LengowInstall::checkFieldExists('lengow_product', 'id')) {
-        Db::getInstance()->execute(
-            'ALTER TABLE '._DB_PREFIX_.'lengow_product DROP PRIMARY KEY'
-        );
+        Db::getInstance()->execute('ALTER TABLE '._DB_PREFIX_.'lengow_product DROP PRIMARY KEY');
         Db::getInstance()->execute(
             'ALTER TABLE '._DB_PREFIX_.'lengow_product
             ADD `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST'
         );
+    }
+    if (LengowInstall::checkFieldExists('lengow_product', 'id_shop_group')) {
+        Db::getInstance()->execute('ALTER TABLE '._DB_PREFIX_.'lengow_product DROP `id_shop_group`');
+    }
+    if (LengowInstall::checkFieldExists('lengow_product', 'id_lang')) {
+        Db::getInstance()->execute('ALTER TABLE '._DB_PREFIX_.'lengow_product DROP `id_lang`');
     }
 }
 

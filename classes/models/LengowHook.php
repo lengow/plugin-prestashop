@@ -14,9 +14,6 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  *
- * @category  Lengow
- * @package   lengow
- * @subpackage classes
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -354,16 +351,13 @@ class LengowHook
      */
     public function hookOrderConfirmation($args)
     {
-        self::$currentPageType = self::LENGOW_TRACK_PAGE_CONFIRMATION;
-        self::$idOrder = $args['objOrder']->id;
-        self::$idCart = $args['objOrder']->id_cart;
-        self::$orderTotal = Tools::ps_round($args['total_to_pay'], 2);
-        $paymentMethod = Tools::strtolower(str_replace(' ', '_', $args['objOrder']->payment));
-        self::$orderPayment = LengowMain::replaceAccentedChars($paymentMethod);
-        self::$orderCurrency = $args['currencyObj']->iso_code;
-        $productsList = $args['objOrder']->getProducts();
         $i = 0;
         $productsCart = array();
+        $order = isset($args['objOrder']) ? $args['objOrder'] : $args['order'];
+        $orderTotal = Tools::ps_round($order->total_paid, 2);
+        $paymentMethod = LengowMain::replaceAccentedChars(Tools::strtolower(str_replace(' ', '_', $order->payment)));
+        $currency = new Currency($order->id_currency);
+        $productsList = $order->getProducts();
         foreach ($productsList as $p) {
             $i++;
             switch (LengowConfiguration::get('LENGOW_TRACKING_ID')) {
@@ -384,14 +378,21 @@ class LengowHook
                     }
                     break;
             }
+            $price = isset($p['product_price_wt']) ? $p['product_price_wt'] : $p['unit_price_tax_incl'];
             // Basket Product
             $productsCart[] = array(
                 'product_id' => $idProduct,
-                'price'      => Tools::ps_round($p['unit_price_tax_incl'], 2),
+                'price'      => Tools::ps_round($price, 2),
                 'quantity'   => $p['product_quantity']
             );
         }
         self::$idsProductCart = Tools::jsonEncode($productsCart);
+        self::$currentPageType = self::LENGOW_TRACK_PAGE_CONFIRMATION;
+        self::$idOrder = $order->id;
+        self::$idCart = $order->id_cart;
+        self::$orderTotal = $orderTotal;
+        self::$orderPayment = $paymentMethod;
+        self::$orderCurrency = $currency->iso_code;
     }
 
     /**
