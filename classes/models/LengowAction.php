@@ -25,13 +25,13 @@
 class LengowAction
 {
     /**
-    * @var integer action state for new action
-    */
+     * @var integer action state for new action
+     */
     const STATE_NEW = 0;
 
     /**
-    * @var integer action state for action finished
-    */
+     * @var integer action state for action finished
+     */
     const STATE_FINISH = 1;
 
     /**
@@ -86,15 +86,15 @@ class LengowAction
      */
     public function load($row)
     {
-        $this->id         = (int)$row['id'];
-        $this->idOrder    = (int)$row['id_order'];
-        $this->actionId   = (int)$row['action_id'];
+        $this->id = (int)$row['id'];
+        $this->idOrder = (int)$row['id_order'];
+        $this->actionId = (int)$row['action_id'];
         $this->actionType = $row['action_type'];
-        $this->retry      = $row['retry'];
+        $this->retry = $row['retry'];
         $this->parameters = $row['parameters'];
-        $this->state      = $row['state'];
-        $this->createdAt  = $row['created_at'];
-        $this->updatedAt  = $row['updated_at'];
+        $this->state = $row['state'];
+        $this->createdAt = $row['created_at'];
+        $this->updatedAt = $row['updated_at'];
     }
 
     /**
@@ -107,7 +107,7 @@ class LengowAction
     public function findByActionId($actionId)
     {
         $row = Db::getInstance()->getRow(
-            'SELECT * FROM '._DB_PREFIX_.'lengow_actions la WHERE action_id = '.(int)$actionId
+            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la WHERE action_id = ' . (int)$actionId
         );
         if ($row) {
             $this->load($row);
@@ -119,18 +119,18 @@ class LengowAction
     /**
      * Find active actions by order id
      *
-     * @param integer $idOrder    Prestashop order id
-     * @param string  $actionType action type (null, ship or cancel)
-     * @param boolean $load       load LengowAction or not
+     * @param integer $idOrder Prestashop order id
+     * @param string $actionType action type (null, ship or cancel)
+     * @param boolean $load load LengowAction or not
      *
      * @return array|false
      */
     public static function getActiveActionByOrderId($idOrder, $actionType = null, $load = true)
     {
-        $sqlType = is_null($actionType) ? '' : ' AND  action_type = "'.pSQL($actionType).'"';
+        $sqlType = is_null($actionType) ? '' : ' AND  action_type = "' . pSQL($actionType) . '"';
         $rows = Db::getInstance()->executeS(
-            'SELECT * FROM '._DB_PREFIX_.'lengow_actions la
-            WHERE state = '.self::STATE_NEW.$sqlType.' AND id_order='.(int)$idOrder
+            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la
+            WHERE state = ' . self::STATE_NEW . $sqlType . ' AND id_order=' . (int)$idOrder
         );
         if (count($rows) > 0) {
             if ($load) {
@@ -151,18 +151,18 @@ class LengowAction
      * Get active action by shop
      *
      * @param integer $idShop Prestashop shop id
-     * @param boolean $load   load LengowAction or not
+     * @param boolean $load load LengowAction or not
      *
      * @return array|false
      */
     public static function getActiveActionByShop($idShop, $load = true)
     {
         if (_PS_VERSION_ < '1.5') {
-            $sql = 'SELECT * FROM '._DB_PREFIX_.'lengow_actions WHERE state = '.(int)self::STATE_NEW;
+            $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions WHERE state = ' . (int)self::STATE_NEW;
         } else {
-            $sql = 'SELECT la.*, o.id_shop FROM '._DB_PREFIX_.'lengow_actions la
-                INNER JOIN '._DB_PREFIX_.'orders o ON (o.id_order = la.id_order)
-                WHERE id_shop='.(int)$idShop.' AND state = '.(int)self::STATE_NEW;
+            $sql = 'SELECT la.*, o.id_shop FROM ' . _DB_PREFIX_ . 'lengow_actions la
+                INNER JOIN ' . _DB_PREFIX_ . 'orders o ON (o.id_order = la.id_order)
+                WHERE id_shop=' . (int)$idShop . ' AND state = ' . (int)self::STATE_NEW;
         }
         $rows = Db::getInstance()->executeS($sql);
         if (count($rows) > 0) {
@@ -190,8 +190,8 @@ class LengowAction
     public static function getLastOrderActionType($idOrder)
     {
         $rows = Db::getInstance()->executeS(
-            'SELECT action_type FROM '._DB_PREFIX_.'lengow_actions
-            WHERE state = '.self::STATE_NEW.' AND id_order='.(int)$idOrder
+            'SELECT action_type FROM ' . _DB_PREFIX_ . 'lengow_actions
+            WHERE state = ' . self::STATE_NEW . ' AND id_order=' . (int)$idOrder
         );
         if (count($rows) > 0) {
             $lastAction = end($rows);
@@ -209,7 +209,7 @@ class LengowAction
      */
     public function find($id)
     {
-        $row = Db::getInstance()->getRow('SELECT * FROM '._DB_PREFIX_.'lengow_actions la WHERE id = '.(int)$id);
+        $row = Db::getInstance()->getRow('SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la WHERE id = ' . (int)$id);
         if ($row) {
             $this->load($row);
             return true;
@@ -225,19 +225,19 @@ class LengowAction
     public static function createAction($params)
     {
         $insertParams = array(
-            'parameters'  => pSQL(Tools::jsonEncode($params['parameters'])),
-            'id_order'    => (int)$params['id_order'],
-            'action_id'   => (int)$params['action_id'],
+            'parameters' => pSQL(Tools::jsonEncode($params['parameters'])),
+            'id_order' => (int)$params['id_order'],
+            'action_id' => (int)$params['action_id'],
             'action_type' => pSQL($params['action_type']),
-            'state'       => (int)self::STATE_NEW,
-            'created_at'  => date('Y-m-d h:m:i'),
-            'updated_at'  => date('Y-m-d h:m:i'),
+            'state' => (int)self::STATE_NEW,
+            'created_at' => date('Y-m-d h:m:i'),
+            'updated_at' => date('Y-m-d h:m:i'),
         );
         if (isset($params['parameters']['line'])) {
             $insertParams['order_line_sku'] = $params['parameters']['line'];
         }
         if (_PS_VERSION_ < '1.5') {
-            Db::getInstance()->autoExecute(_DB_PREFIX_.'lengow_actions', $insertParams, 'INSERT');
+            Db::getInstance()->autoExecute(_DB_PREFIX_ . 'lengow_actions', $insertParams, 'INSERT');
         } else {
             Db::getInstance()->insert('lengow_actions', $insertParams);
         }
@@ -263,9 +263,9 @@ class LengowAction
             if ($action->state == self::STATE_NEW) {
                 if (_PS_VERSION_ < '1.5') {
                     Db::getInstance()->autoExecute(
-                        _DB_PREFIX_.'lengow_actions',
+                        _DB_PREFIX_ . 'lengow_actions',
                         array(
-                            'retry'      => $action->retry + 1,
+                            'retry' => $action->retry + 1,
                             'updated_at' => date('Y-m-d h:m:i'),
                         ),
                         'UPDATE',
@@ -276,7 +276,7 @@ class LengowAction
                     Db::getInstance()->update(
                         'lengow_actions',
                         array(
-                            'retry'      => $action->retry + 1,
+                            'retry' => $action->retry + 1,
                             'updated_at' => date('Y-m-d h:m:i'),
                         ),
                         'id = ' . $action->id
@@ -297,22 +297,22 @@ class LengowAction
     {
         if (_PS_VERSION_ < '1.5') {
             Db::getInstance()->autoExecute(
-                _DB_PREFIX_.'lengow_actions',
+                _DB_PREFIX_ . 'lengow_actions',
                 array(
-                    'state'      => (int)self::STATE_FINISH,
+                    'state' => (int)self::STATE_FINISH,
                     'updated_at' => date('Y-m-d h:m:i'),
                 ),
                 'UPDATE',
-                'id = '.(int)$id
+                'id = ' . (int)$id
             );
         } else {
             Db::getInstance()->update(
                 'lengow_actions',
                 array(
-                    'state'      => (int)self::STATE_FINISH,
+                    'state' => (int)self::STATE_FINISH,
                     'updated_at' => date('Y-m-d h:m:i'),
                 ),
-                'id = '.(int)$id
+                'id = ' . (int)$id
             );
         }
     }
@@ -320,17 +320,17 @@ class LengowAction
     /**
      * Removes all actions for one order Prestashop
      *
-     * @param integer $idOrder    Prestashop order id
-     * @param string  $actionType action type (null, ship or cancel)
+     * @param integer $idOrder Prestashop order id
+     * @param string $actionType action type (null, ship or cancel)
      *
      * @return boolean
      */
     public static function finishAllActions($idOrder, $actionType = null)
     {
-        $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "'.pSQL($actionType).'"';
+        $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
         $rows = Db::getInstance()->executeS(
-            'SELECT * FROM '._DB_PREFIX_.'lengow_actions
-            WHERE id_order ='.(int)$idOrder.' AND state = '.(int)self::STATE_NEW.$sqlActionType
+            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
+            WHERE id_order =' . (int)$idOrder . ' AND state = ' . (int)self::STATE_NEW . $sqlActionType
         );
         if (count($rows) > 0) {
             foreach ($rows as $row) {
@@ -351,11 +351,11 @@ class LengowAction
     public static function finishAllOldActions($actionType = null)
     {
         // get all old order action (+ 3 days)
-        $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "'.pSQL($actionType).'"';
+        $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
         $date = date('Y-m-d h:m:i', strtotime('-3 days', time()));
         $rows = Db::getInstance()->executeS(
-            'SELECT * FROM '._DB_PREFIX_.'lengow_actions
-            WHERE created_at <= "'.$date.'" AND state = '.(int)self::STATE_NEW.$sqlActionType
+            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
+            WHERE created_at <= "' . $date . '" AND state = ' . (int)self::STATE_NEW . $sqlActionType
         );
         if (count($rows) > 0) {
             foreach ($rows as $row) {
@@ -405,7 +405,7 @@ class LengowAction
                         'log.order_action.start_for_shop',
                         array(
                             'name_shop' => $shop->name,
-                            'id_shop'   => (int)$shop->id
+                            'id_shop' => (int)$shop->id
                         )
                     )
                 );
@@ -423,9 +423,9 @@ class LengowAction
                         '/v3.0/orders/actions/',
                         (int)$shop->id,
                         array(
-                            'updated_from' => date('c', strtotime(date('Y-m-d').' -3days')),
-                            'updated_to'   => date('c'),
-                            'page'         => $page
+                            'updated_from' => date('c', strtotime(date('Y-m-d') . ' -3days')),
+                            'updated_to' => date('c'),
+                            'page' => $page
                         )
                     );
                     if (!is_object($results) || isset($results->error)) {
@@ -515,7 +515,7 @@ class LengowAction
                         'log.order_action.start_not_sent_for_store',
                         array(
                             'name_shop' => $shop->name,
-                            'id_shop'   => (int)$shop->id
+                            'id_shop' => (int)$shop->id
                         )
                     )
                 );

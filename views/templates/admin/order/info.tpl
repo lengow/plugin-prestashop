@@ -62,7 +62,7 @@
 		</li>
 		<li>
 			{$lengow_locale->t('admin.order.shipped_by_marketplace')|escape:'htmlall':'UTF-8'} :
-			<strong>{$sent_markeplace|escape:'htmlall':'UTF-8'}</strong>
+			<strong>{$sent_marketplace|escape:'htmlall':'UTF-8'}</strong>
 		</li>
 	</ul>
 	<br />

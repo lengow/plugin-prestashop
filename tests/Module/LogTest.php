@@ -16,7 +16,7 @@ class LogTest extends ModuleTestCase
 
         self::$client = new Client(
             array(
-                'base_uri' => 'http://'.CURRENT_DOMAIN,
+                'base_uri' => 'http://' . CURRENT_DOMAIN,
                 'allow_redirects' => false,
                 'headers' => array('PHPUNIT_LENGOW_TEST' => 'toto'),
                 'exceptions' => false,
@@ -47,7 +47,7 @@ class LogTest extends ModuleTestCase
         $log->write('categ', 'this is a test');
         $lastLine = $this::readLastLine($log->getFileName());
         $date = substr($lastLine, 0, 26);
-        $message = substr($lastLine, 30, strlen($lastLine)-30);
+        $message = substr($lastLine, 30, strlen($lastLine) - 30);
         $this->assertValidDatetime($date, 'Y-m-d H:i:s.u');
         $this->assertEquals($message, '[categ] this is a test');
     }
@@ -64,7 +64,7 @@ class LogTest extends ModuleTestCase
 
         $this->assertTrue(file_exists($log->getFileName()));
 
-        $response =self::$client->get('modules/lengow/logs/logs-'.date('Y-m-d').'.txt');
+        $response = self::$client->get('modules/lengow/logs/logs-' . date('Y-m-d') . '.txt');
         $this->assertEquals('403', $response->getStatusCode());
     }
 }

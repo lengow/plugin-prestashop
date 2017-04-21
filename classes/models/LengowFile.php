@@ -48,8 +48,8 @@ class LengowFile
      * Construct
      *
      * @param string $folderName Lengow folder name
-     * @param string $fileName   Lengow file name
-     * @param string $mode       type of access
+     * @param string $fileName Lengow file name
+     * @param string $mode type of access
      *
      * @throws LengowException unable to create file
      */
@@ -63,7 +63,7 @@ class LengowFile
                 LengowMain::setLogMessage(
                     'log.export.error_unable_to_create_file',
                     array(
-                        'file_name'   => $fileName,
+                        'file_name' => $fileName,
                         'folder_name' => $folderName
                     )
                 )
@@ -130,7 +130,7 @@ class LengowFile
                 $this->link = null;
             }
             $base = LengowMain::getLengowBaseUrl();
-            $this->link = $base.$this->folderName.'/'.$this->fileName;
+            $this->link = $base . $this->folderName . '/' . $this->fileName;
         }
         return $this->link;
     }
@@ -143,7 +143,7 @@ class LengowFile
     public function getPath()
     {
         $sep = DIRECTORY_SEPARATOR;
-        return LengowMain::getLengowFolder().$sep.$this->folderName.$sep.$this->fileName;
+        return LengowMain::getLengowFolder() . $sep . $this->folderName . $sep . $this->fileName;
     }
 
     /**
@@ -154,7 +154,7 @@ class LengowFile
     public function getFolderPath()
     {
         $sep = DIRECTORY_SEPARATOR;
-        return LengowMain::getLengowFolder().$sep.$this->folderName;
+        return LengowMain::getLengowFolder() . $sep . $this->folderName;
     }
 
     /**
@@ -200,7 +200,7 @@ class LengowFile
     public static function getFilesFromFolder($folder)
     {
         $sep = DIRECTORY_SEPARATOR;
-        $folderPath = LengowMain::getLengowFolder().$sep.$folder;
+        $folderPath = LengowMain::getLengowFolder() . $sep . $folder;
         if (!file_exists($folderPath)) {
             return false;
         }

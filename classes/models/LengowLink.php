@@ -25,8 +25,8 @@
 class LengowLink extends LinkCore
 {
     /**
-    * @var boolean use in toolbox to get specific link
-    */
+     * @var boolean use in toolbox to get specific link
+     */
     protected static $forceLink;
 
     /**
@@ -44,8 +44,8 @@ class LengowLink extends LinkCore
     /**
      * Get absolute admin link
      *
-     * @param string  $controller      name of the controller
-     * @param boolean $ajax            if link use ajax
+     * @param string $controller name of the controller
+     * @param boolean $ajax if link use ajax
      * @param boolean $adminPrestashop if link is a prestashop controller
      *
      * @return string
@@ -57,18 +57,18 @@ class LengowLink extends LinkCore
             return self::$forceLink;
         }
         if (_PS_VERSION_ < '1.5' && !$adminPrestashop) {
-            $controller.= "14";
+            $controller .= "14";
         }
-        $adminPath = Tools::getShopDomainSsl(true, true).
-            __PS_BASE_URI__.Tools::substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);
+        $adminPath = Tools::getShopDomainSsl(true, true) .
+            __PS_BASE_URI__ . Tools::substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);
         if (_PS_VERSION_ < '1.6') {
             if (_PS_VERSION_ < '1.5' && $ajax) {
-                $adminPath.= '/ajax-tab.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
+                $adminPath .= '/ajax-tab.php?tab=' . $controller . '&token=' . Tools::getAdminTokenLite($controller);
             } else {
-                $adminPath.= '/index.php?tab='.$controller.'&token='.Tools::getAdminTokenLite($controller);
+                $adminPath .= '/index.php?tab=' . $controller . '&token=' . Tools::getAdminTokenLite($controller);
             }
         } elseif (_PS_VERSION_ < '1.7') {
-            $adminPath.= '/'.$this->getAdminLink($controller);
+            $adminPath .= '/' . $this->getAdminLink($controller);
         } else {
             $adminPath = $this->getAdminLink($controller);
         }

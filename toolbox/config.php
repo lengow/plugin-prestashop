@@ -21,9 +21,9 @@
 
 require 'conf.inc.php';
 
-$action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
-$accessToken = isset($_REQUEST['access_token']) ?  $_REQUEST['access_token'] : null;
-$secretToken = isset($_REQUEST['secret_token']) ?  $_REQUEST['secret_token'] : null;
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
+$accessToken = isset($_REQUEST['access_token']) ? $_REQUEST['access_token'] : null;
+$secretToken = isset($_REQUEST['secret_token']) ? $_REQUEST['secret_token'] : null;
 $fullAccess = isset($_REQUEST['access']) ? $_REQUEST['access'] : null;
 
 $locale = new LengowTranslation();
@@ -33,7 +33,7 @@ $form = new LengowConfigurationForm(array("fields" => LengowConfiguration::getKe
 if (_PS_VERSION_ < '1.5') {
     $shopCollection = array(array('id_shop' => 1));
 } else {
-    $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+    $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
     $shopCollection = Db::getInstance()->ExecuteS($sql);
 }
 
@@ -56,13 +56,13 @@ switch ($action) {
                 'LENGOW_TRACKING_ENABLED',
             )
         );
-        Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
+        Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/config.php', '');
         break;
     case "get_default_settings":
         if ($fullAccess && $fullAccess == 'admin') {
             LengowConfiguration::resetAll(true);
         }
-        Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
+        Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/config.php', '');
         break;
     case "update_settings":
         if ($fullAccess && $fullAccess == 'admin') {
@@ -79,100 +79,103 @@ switch ($action) {
                 Context::getContext()->cookie->profile = $tempProfile;
             }
         }
-        Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/config.php', '');
+        Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/config.php', '');
         break;
 }
 
 require 'views/header.php';
 ?>
 
-<div class="container">
-    <h1><?php echo $locale->t('toolbox.menu.configuration'); ?></h1>
-    <form class="form-horizontal" method="POST">
-        <input type="hidden" name="action" value="update"/>
-        <fieldset>
-            <h3 class="start-block"><?php echo $locale->t('toolbox.configuration.shop_credentials'); ?></h3>
-        <?php
-        foreach ($shopCollection as $row) {
-            $shop = new LengowShop($row['id_shop']);
-            echo '<h4 style="text-align:center">'.$shop->name.' ('.$shop->id.')</h4>';
-            echo $form->buildShopInputs(
-                $shop->id,
-                array(
-                    'LENGOW_SHOP_ACTIVE',
-                    'LENGOW_ACCOUNT_ID',
-                    'LENGOW_ACCESS_TOKEN',
-                    'LENGOW_SECRET_TOKEN',
-                    'LENGOW_EXPORT_VARIATION_ENABLED',
-                    'LENGOW_EXPORT_OUT_STOCK',
-                    'LENGOW_EXPORT_SELECTION_ENABLED',
-                )
-            );
-            echo '</fieldset>';
-        }
-        echo '<fieldset><h3 class="start-block">'.$locale->t('toolbox.configuration.export_setting').'</h3>';
-        echo $form->buildInputs(
-            array(
-                'LENGOW_EXPORT_FORMAT',
-                'LENGOW_EXPORT_FILE_ENABLED',
-            )
-        );
-        echo '</fieldset>';
-        echo '<fieldset><h3 class="start-block">'.$locale->t('toolbox.configuration.import_setting').'</h3>';
-        echo $form->buildInputs(
-            array(
-                'LENGOW_ORDER_ID_PROCESS',
-                'LENGOW_ORDER_ID_SHIPPED',
-                'LENGOW_ORDER_ID_SHIPPEDBYMP',
-                'LENGOW_ORDER_ID_CANCEL',
-                'LENGOW_IMPORT_FORCE_PRODUCT',
-                'LENGOW_IMPORT_PROCESSING_FEE',
-                'LENGOW_IMPORT_DAYS',
-                'LENGOW_IMPORT_SHIP_MP_ENABLED',
-                'LENGOW_IMPORT_STOCK_SHIP_MP',
-                'LENGOW_IMPORT_SINGLE_ENABLED',
-            )
-        );
-        echo '</fieldset>';
-        echo '<fieldset><h3 class="start-block">'.$locale->t('toolbox.configuration.global_setting').'</h3>';
-        echo $form->buildInputs(
-            array(
-                'LENGOW_AUTHORIZED_IP',
-                'LENGOW_IMPORT_PREPROD_ENABLED',
-                'LENGOW_REPORT_MAIL_ENABLED',
-                'LENGOW_REPORT_MAIL_ADDRESS',
-                'LENGOW_TRACKING_ENABLED',
-                'LENGOW_TRACKING_ID',
-            )
-        );
-        echo '</fieldset>';
-        ?>
-        <div class="form-group">
-            <button type="submit" class="btn-success lgw-btn">
-                <?php echo $locale->t('toolbox.configuration.button_save'); ?>
-            </button>
-            <?php
-            if ($fullAccess && $fullAccess == 'admin') {
+    <div class="container">
+        <h1><?php echo $locale->t('toolbox.menu.configuration'); ?></h1>
+        <form class="form-horizontal" method="POST">
+            <input type="hidden" name="action" value="update"/>
+            <fieldset>
+                <h3 class="start-block"><?php echo $locale->t('toolbox.configuration.shop_credentials'); ?></h3>
+                <?php
+                foreach ($shopCollection as $row) {
+                    $shop = new LengowShop($row['id_shop']);
+                    echo '<h4 style="text-align:center">' . $shop->name . ' (' . $shop->id . ')</h4>';
+                    echo $form->buildShopInputs(
+                        $shop->id,
+                        array(
+                            'LENGOW_SHOP_ACTIVE',
+                            'LENGOW_ACCOUNT_ID',
+                            'LENGOW_ACCESS_TOKEN',
+                            'LENGOW_SECRET_TOKEN',
+                            'LENGOW_EXPORT_VARIATION_ENABLED',
+                            'LENGOW_EXPORT_OUT_STOCK',
+                            'LENGOW_EXPORT_SELECTION_ENABLED',
+                        )
+                    );
+                    echo '</fieldset>';
+                }
+                echo '<fieldset><h3 class="start-block">'
+                    . $locale->t('toolbox.configuration.export_setting') . '</h3>';
+                echo $form->buildInputs(
+                    array(
+                        'LENGOW_EXPORT_FORMAT',
+                        'LENGOW_EXPORT_FILE_ENABLED',
+                    )
+                );
+                echo '</fieldset>';
+                echo '<fieldset><h3 class="start-block">'
+                    . $locale->t('toolbox.configuration.import_setting') . '</h3>';
+                echo $form->buildInputs(
+                    array(
+                        'LENGOW_ORDER_ID_PROCESS',
+                        'LENGOW_ORDER_ID_SHIPPED',
+                        'LENGOW_ORDER_ID_SHIPPEDBYMP',
+                        'LENGOW_ORDER_ID_CANCEL',
+                        'LENGOW_IMPORT_FORCE_PRODUCT',
+                        'LENGOW_IMPORT_PROCESSING_FEE',
+                        'LENGOW_IMPORT_DAYS',
+                        'LENGOW_IMPORT_SHIP_MP_ENABLED',
+                        'LENGOW_IMPORT_STOCK_SHIP_MP',
+                        'LENGOW_IMPORT_SINGLE_ENABLED',
+                    )
+                );
+                echo '</fieldset>';
+                echo '<fieldset><h3 class="start-block">'
+                    . $locale->t('toolbox.configuration.global_setting') . '</h3>';
+                echo $form->buildInputs(
+                    array(
+                        'LENGOW_AUTHORIZED_IP',
+                        'LENGOW_IMPORT_PREPROD_ENABLED',
+                        'LENGOW_REPORT_MAIL_ENABLED',
+                        'LENGOW_REPORT_MAIL_ADDRESS',
+                        'LENGOW_TRACKING_ENABLED',
+                        'LENGOW_TRACKING_ID',
+                    )
+                );
+                echo '</fieldset>';
                 ?>
-                <a class="lgw-btn btn-success"
-                    href="/modules/lengow/toolbox/config.php?action=get_default_settings&access=admin"
-                    onclick="return confirm(
-                        '<?php echo  $locale->t('toolbox.configuration.check_get_default_settings'); ?>'
-                    )">
-                    <?php echo $locale->t('toolbox.configuration.get_default_settings'); ?>
-                </a>
-                <a class="lgw-btn btn-success"
-                    href="/modules/lengow/toolbox/config.php?action=update_settings&access=admin"
-                    onclick="return confirm(
-                        '<?php echo  $locale->t('toolbox.configuration.check_update_settings'); ?>'
-                    )">
-                    <?php echo  $locale->t('toolbox.configuration.update_settings'); ?>
-                </a>
-            <?php
-            }
-            ?>
-        </div>
-    </form>
-</div>
+                <div class="form-group">
+                    <button type="submit" class="btn-success lgw-btn">
+                        <?php echo $locale->t('toolbox.configuration.button_save'); ?>
+                    </button>
+                    <?php
+                    if ($fullAccess && $fullAccess == 'admin') {
+                        ?>
+                        <a class="lgw-btn btn-success"
+                           href="/modules/lengow/toolbox/config.php?action=get_default_settings&access=admin"
+                           onclick="return confirm(
+                               '<?php echo $locale->t('toolbox.configuration.check_get_default_settings'); ?>'
+                               )">
+                            <?php echo $locale->t('toolbox.configuration.get_default_settings'); ?>
+                        </a>
+                        <a class="lgw-btn btn-success"
+                           href="/modules/lengow/toolbox/config.php?action=update_settings&access=admin"
+                           onclick="return confirm(
+                               '<?php echo $locale->t('toolbox.configuration.check_update_settings'); ?>'
+                               )">
+                            <?php echo $locale->t('toolbox.configuration.update_settings'); ?>
+                        </a>
+                        <?php
+                    }
+                    ?>
+                </div>
+        </form>
+    </div>
 <?php
 require 'views/footer.php';

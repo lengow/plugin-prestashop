@@ -26,7 +26,7 @@ $check = new LengowCheck();
 if (_PS_VERSION_ < '1.5') {
     $shopCollection = array(array('id_shop' => 1));
 } else {
-    $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+    $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
     $shopCollection = Db::getInstance()->ExecuteS($sql);
 }
 
@@ -38,7 +38,7 @@ if (_PS_VERSION_ < '1.5') {
         <h3><i class="fa fa-cog"></i> <?php echo $locale->t('toolbox.index.global_information'); ?></h3>
         <?php echo $check->getGlobalInformation(); ?>
         <h3><i class="fa fa-download"></i> <?php echo $locale->t('toolbox.index.import_information'); ?></h3>
-        <?php echo $check->getImportInformation(); ?>      
+        <?php echo $check->getImportInformation(); ?>
         <h3><i class="fa fa-upload"></i> <?php echo $locale->t('toolbox.index.export_information'); ?></h3>
         <?php
         foreach ($shopCollection as $row) {

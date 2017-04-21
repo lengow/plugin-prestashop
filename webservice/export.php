@@ -43,12 +43,12 @@
 @set_time_limit(0);
 @ini_set('memory_limit', '512M');
 
-$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME'])."/");
+$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
 $sep = DIRECTORY_SEPARATOR;
-require_once $currentDirectory.'config'.$sep.'config.inc.php';
+require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 Configuration::set('PS_SHOP_ENABLE', true);
-require_once $currentDirectory.'init.php';
-require_once $currentDirectory.'modules/lengow/lengow.php';
+require_once $currentDirectory . 'init.php';
+require_once $currentDirectory . 'modules/lengow/lengow.php';
 
 $lengow = new Lengow();
 // check if Lengow is installed and enabled
@@ -65,10 +65,10 @@ $token = Tools::getIsset('token') ? Tools::getValue('token') : '';
 if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)) {
     if (Tools::strlen($token) > 0) {
         header('HTTP/1.1 403 Forbidden');
-        die('Unauthorized access for this token : '.$token);
+        die('Unauthorized access for this token : ' . $token);
     } else {
         header('HTTP/1.1 403 Forbidden');
-        die('Unauthorized access for IP : '.$_SERVER['REMOTE_ADDR']);
+        die('Unauthorized access for IP : ' . $_SERVER['REMOTE_ADDR']);
     }
 }
 // get params data
@@ -109,7 +109,7 @@ $ids = Tools::getIsset('ids') ? Tools::getValue('ids') : null;
 if (Tools::getIsset('product_ids') || !is_null($ids)) {
     $ids = !is_null($ids) ? $ids : Tools::getValue('product_ids');
     if (Tools::strlen($ids) > 0) {
-        $ids = str_replace(array(';','|',':'), ',', $ids);
+        $ids = str_replace(array(';', '|', ':'), ',', $ids);
         $ids = preg_replace('/[^0-9\,]/', '', $ids);
         $productIds = explode(',', $ids);
     }
@@ -177,19 +177,19 @@ $logOutput = Tools::getIsset('log_output') ? (bool)Tools::getValue('log_output')
 
 $export = new LengowExport(
     array(
-        'format'             => $format,
-        'stream'             => $stream,
-        'product_ids'        => $productIds,
-        'limit'              => $limit,
-        'offset'             => $offset,
-        'out_of_stock'       => $outOfStock,
-        'variation'          => $variation,
-        'inactive'           => $inactive,
-        'legacy_fields'      => $legacyFields,
-        'selection'          => $selection,
-        'language_id'        => $languageId,
+        'format' => $format,
+        'stream' => $stream,
+        'product_ids' => $productIds,
+        'limit' => $limit,
+        'offset' => $offset,
+        'out_of_stock' => $outOfStock,
+        'variation' => $variation,
+        'inactive' => $inactive,
+        'legacy_fields' => $legacyFields,
+        'selection' => $selection,
+        'language_id' => $languageId,
         'update_export_date' => $updateExportDate,
-        'log_output'         => $logOutput,
+        'log_output' => $logOutput,
     )
 );
 

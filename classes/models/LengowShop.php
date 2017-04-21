@@ -66,7 +66,7 @@ class LengowShop extends Shop
             if ($currentShop = Shop::getContextShopID()) {
                 $results = array(array('id_shop' => $currentShop));
             } else {
-                $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+                $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
                 $results = Db::getInstance()->ExecuteS($sql);
             }
         }
@@ -94,7 +94,7 @@ class LengowShop extends Shop
             if (!$forceContext && $currentShop = Shop::getContextShopID()) {
                 $results = array(array('id_shop' => $currentShop));
             } else {
-                $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1 ORDER BY id_shop';
+                $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1 ORDER BY id_shop';
                 $results = Db::getInstance()->ExecuteS($sql);
             }
         }

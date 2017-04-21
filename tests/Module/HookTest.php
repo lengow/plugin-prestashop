@@ -41,15 +41,15 @@ class HookTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
 
-        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
+        $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         LengowMarketplace::$MARKETPLACES = array(
             1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
             2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
         );
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
 
         $this->assertTableEmpty('lengow_actions');
@@ -57,15 +57,15 @@ class HookTest extends ModuleTestCase
         $hook = new LengowHook(Module::getInstanceByName('lengow'));
         $hook->hookPostUpdateOrderStatus(
             array(
-                'id_order'       => 1,
+                'id_order' => 1,
                 'newOrderStatus' => new OrderState(LengowMain::getOrderState('shipped'))
             )
         );
-        $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 0));
+        $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 0));
 
         $ret = $hook->hookPostUpdateOrderStatus(
             array(
-                'id_order'       => 10,
+                'id_order' => 10,
                 'newOrderStatus' => new OrderState(LengowMain::getOrderState('shipped'))
             )
         );

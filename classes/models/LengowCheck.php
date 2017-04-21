@@ -30,20 +30,20 @@ class LengowCheck
     protected $locale;
 
     /**
-    * Constructor
-    */
+     * Constructor
+     */
     public function __construct()
     {
         $this->locale = new LengowTranslation();
     }
 
     /**
-    * Check API Authentification
-    *
-    * @param integer $idShop Prestshop shop id
-    *
-    * @return boolean
-    */
+     * Check API Authentication
+     *
+     * @param integer $idShop Prestashop shop id
+     *
+     * @return boolean
+     */
     public static function isValidAuth($idShop = null)
     {
         if (LengowMain::inTest()) {
@@ -56,7 +56,7 @@ class LengowCheck
         if (is_null($accountId) || $accountId == 0 || !is_numeric($accountId)) {
             return false;
         }
-        $connector  = new LengowConnector(
+        $connector = new LengowConnector(
             LengowMain::getAccessToken($idShop),
             LengowMain::getSecretCustomer($idShop)
         );
@@ -81,29 +81,29 @@ class LengowCheck
     {
         $checklist = array();
         $checklist[] = array(
-            'title'      => $this->locale->t('toolbox.index.curl_message'),
-            'help'       => $this->locale->t('toolbox.index.curl_help'),
-            'help_link'  => $this->locale->t('toolbox.index.curl_help_link'),
+            'title' => $this->locale->t('toolbox.index.curl_message'),
+            'help' => $this->locale->t('toolbox.index.curl_help'),
+            'help_link' => $this->locale->t('toolbox.index.curl_help_link'),
             'help_label' => $this->locale->t('toolbox.index.curl_help_label'),
-            'state'      => (int)self::isCurlActivated()
+            'state' => (int)self::isCurlActivated()
         );
         $checklist[] = array(
-            'title'      => $this->locale->t('toolbox.index.simple_xml_message'),
-            'help'       => $this->locale->t('toolbox.index.simple_xml_help'),
-            'help_link'  => $this->locale->t('toolbox.index.simple_xml_help_link'),
+            'title' => $this->locale->t('toolbox.index.simple_xml_message'),
+            'help' => $this->locale->t('toolbox.index.simple_xml_help'),
+            'help_link' => $this->locale->t('toolbox.index.simple_xml_help_link'),
             'help_label' => $this->locale->t('toolbox.index.simple_xml_help_label'),
-            'state'      => (int)self::isSimpleXMLActivated()
+            'state' => (int)self::isSimpleXMLActivated()
         );
         $checklist[] = array(
-            'title'      => $this->locale->t('toolbox.index.json_php_message'),
-            'help'       => $this->locale->t('toolbox.index.json_php_help'),
-            'help_link'  => $this->locale->t('toolbox.index.json_php_help_link'),
+            'title' => $this->locale->t('toolbox.index.json_php_message'),
+            'help' => $this->locale->t('toolbox.index.json_php_help'),
+            'help_link' => $this->locale->t('toolbox.index.json_php_help_link'),
             'help_label' => $this->locale->t('toolbox.index.json_php_help_label'),
-            'state'      => (int)self::isJsonActivated()
+            'state' => (int)self::isJsonActivated()
         );
         $checklist[] = array(
             'title' => $this->locale->t('toolbox.index.shop_functionality_message'),
-            'help'  => $this->locale->t('toolbox.index.shop_functionality_help'),
+            'help' => $this->locale->t('toolbox.index.shop_functionality_help'),
             'state' => (int)self::isShopActivated()
         );
         $mailCheck = $this->getMailConfiguration();
@@ -112,11 +112,11 @@ class LengowCheck
             'state' => $mailCheck['state']
         );
         $checklist[] = array(
-            'title'      => $this->locale->t('toolbox.index.checksum_message'),
-            'help'       => $this->locale->t('toolbox.index.checksum_help'),
-            'help_link'  => '/modules/lengow/toolbox/checksum.php',
+            'title' => $this->locale->t('toolbox.index.checksum_message'),
+            'help' => $this->locale->t('toolbox.index.checksum_help'),
+            'help_link' => '/modules/lengow/toolbox/checksum.php',
             'help_label' => $this->locale->t('toolbox.index.checksum_help_label'),
-            'state'      => (int)self::getFileModified()
+            'state' => (int)self::getFileModified()
         );
         return $this->getAdminContent($checklist);
     }
@@ -130,19 +130,19 @@ class LengowCheck
     {
         $checklist = array();
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.prestashop_version'),
+            'title' => $this->locale->t('toolbox.index.prestashop_version'),
             'message' => _PS_VERSION_
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.plugin_version'),
+            'title' => $this->locale->t('toolbox.index.plugin_version'),
             'message' => LengowConfiguration::getGlobalValue('LENGOW_VERSION')
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.ip_server'),
+            'title' => $this->locale->t('toolbox.index.ip_server'),
             'message' => $_SERVER['SERVER_ADDR']
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.ip_authorized'),
+            'title' => $this->locale->t('toolbox.index.ip_authorized'),
             'message' => LengowConfiguration::get('LENGOW_AUTHORIZED_IP')
         );
         $checklist[] = array(
@@ -156,7 +156,7 @@ class LengowCheck
         return $this->getAdminContent($checklist);
     }
 
-     /**
+    /**
      * Get all import information for toolbox
      *
      * @return string
@@ -165,9 +165,9 @@ class LengowCheck
     {
         $lastImport = LengowMain::getLastImport();
         $lastImportDate = (
-            $lastImport['timestamp'] == 'none'
-                ? $this->locale->t('toolbox.index.last_import_none')
-                : date('Y-m-d H:i:s', $lastImport['timestamp'])
+        $lastImport['timestamp'] == 'none'
+            ? $this->locale->t('toolbox.index.last_import_none')
+            : date('Y-m-d H:i:s', $lastImport['timestamp'])
         );
         if ($lastImport['type'] == 'none') {
             $lastImportType = $this->locale->t('toolbox.index.last_import_none');
@@ -187,23 +187,23 @@ class LengowCheck
         }
         $checklist = array();
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.global_token'),
+            'title' => $this->locale->t('toolbox.index.global_token'),
             'message' => LengowConfiguration::get('LENGOW_GLOBAL_TOKEN')
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.url_import'),
+            'title' => $this->locale->t('toolbox.index.url_import'),
             'message' => LengowMain::getImportUrl()
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.import_in_progress'),
+            'title' => $this->locale->t('toolbox.index.import_in_progress'),
             'message' => $importInProgress
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.shop_last_import'),
+            'title' => $this->locale->t('toolbox.index.shop_last_import'),
             'message' => $lastImportDate
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.shop_type_import'),
+            'title' => $this->locale->t('toolbox.index.shop_type_import'),
             'message' => $lastImportType
         );
         return $this->getAdminContent($checklist);
@@ -229,7 +229,7 @@ class LengowCheck
         }
         $checklist = array();
         $checklist[] = array(
-            'header' => $shop->name.' ('.$shop->id.')'.' - http://'.$shop->domain
+            'header' => $shop->name . ' (' . $shop->id . ')' . ' - http://' . $shop->domain
         );
         $checklist[] = array(
             'title' => $this->locale->t('toolbox.index.shop_active_in_cms'),
@@ -240,11 +240,11 @@ class LengowCheck
             'state' => (int)LengowSync::checkSyncShop($shop->id)
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.shop_product_total'),
+            'title' => $this->locale->t('toolbox.index.shop_product_total'),
             'message' => $lengowExport->getTotalProduct()
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.shop_product_exported'),
+            'title' => $this->locale->t('toolbox.index.shop_product_exported'),
             'message' => $lengowExport->getTotalExportProduct()
         );
         $checklist[] = array(
@@ -260,15 +260,15 @@ class LengowCheck
             'state' => (int)LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $shop->id)
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.shop_export_token'),
+            'title' => $this->locale->t('toolbox.index.shop_export_token'),
             'message' => LengowConfiguration::get('LENGOW_SHOP_TOKEN', null, null, $shop->id)
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.url_export'),
+            'title' => $this->locale->t('toolbox.index.url_export'),
             'message' => LengowMain::getExportUrl($shop->id)
         );
         $checklist[] = array(
-            'title'   => $this->locale->t('toolbox.index.shop_last_export'),
+            'title' => $this->locale->t('toolbox.index.shop_last_export'),
             'message' => $lastExport
         );
         return $this->getAdminContent($checklist);
@@ -282,8 +282,8 @@ class LengowCheck
     public function checkFileMd5()
     {
         $checklist = array();
-        $fileName = _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'toolbox'.DIRECTORY_SEPARATOR.'checkmd5.csv';
-        $html = '<h3><i class="fa fa-commenting"></i> '.$this->locale->t('toolbox.checksum.summary').'</h3>';
+        $fileName = _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'toolbox' . DIRECTORY_SEPARATOR . 'checkmd5.csv';
+        $html = '<h3><i class="fa fa-commenting"></i> ' . $this->locale->t('toolbox.checksum.summary') . '</h3>';
         $fileCounter = 0;
         if (file_exists($fileName)) {
             $fileErrors = array();
@@ -291,7 +291,7 @@ class LengowCheck
             if (($file = fopen($fileName, "r")) !== false) {
                 while (($data = fgetcsv($file, 1000, "|")) !== false) {
                     $fileCounter++;
-                    $filePath = _PS_MODULE_DIR_.'lengow'.$data[0];
+                    $filePath = _PS_MODULE_DIR_ . 'lengow' . $data[0];
                     if (file_exists($filePath)) {
                         $fileMd = md5_file($filePath);
                         if ($fileMd !== $data[1]) {
@@ -330,23 +330,23 @@ class LengowCheck
                 ),
                 'state' => (count($fileDeletes) > 0 ? 0 : 1)
             );
-            $html.= $this->getAdminContent($checklist);
+            $html .= $this->getAdminContent($checklist);
             if (count($fileErrors) > 0) {
-                $html.= '<h3><i class="fa fa-list"></i> '
-                    .$this->locale->t('toolbox.checksum.list_modified_file').'</h3>';
-                $html.= $this->getAdminContent($fileErrors);
+                $html .= '<h3><i class="fa fa-list"></i> '
+                    . $this->locale->t('toolbox.checksum.list_modified_file') . '</h3>';
+                $html .= $this->getAdminContent($fileErrors);
             }
             if (count($fileDeletes) > 0) {
-                $html.= '<h3><i class="fa fa-list"></i> '
-                    .$this->locale->t('toolbox.checksum.list_deleted_file').'</h3>';
-                $html.= $this->getAdminContent($fileDeletes);
+                $html .= '<h3><i class="fa fa-list"></i> '
+                    . $this->locale->t('toolbox.checksum.list_deleted_file') . '</h3>';
+                $html .= $this->getAdminContent($fileDeletes);
             }
         } else {
             $checklist[] = array(
                 'title' => $this->locale->t('toolbox.checksum.file_not_exists'),
                 'state' => 0
             );
-            $html.= $this->getAdminContent($checklist);
+            $html .= $this->getAdminContent($checklist);
         }
         return $html;
     }
@@ -358,11 +358,11 @@ class LengowCheck
      */
     public static function getFileModified()
     {
-        $fileName = _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'toolbox'.DIRECTORY_SEPARATOR.'checkmd5.csv';
+        $fileName = _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'toolbox' . DIRECTORY_SEPARATOR . 'checkmd5.csv';
         if (file_exists($fileName)) {
             if (($file = fopen($fileName, "r")) !== false) {
                 while (($data = fgetcsv($file, 1000, "|")) !== false) {
-                    $filePath = _PS_MODULE_DIR_.'lengow'.$data[0];
+                    $filePath = _PS_MODULE_DIR_ . 'lengow' . $data[0];
                     $fileMd = md5_file($filePath);
                     if ($fileMd !== $data[1]) {
                         return false;
@@ -453,32 +453,32 @@ class LengowCheck
         foreach ($checklist as $check) {
             $out .= '<tr>';
             if (isset($check['header'])) {
-                $out.= '<td colspan="2" align="center" style="border:0"><h4>'.$check['header'].'</h4></td>';
+                $out .= '<td colspan="2" align="center" style="border:0"><h4>' . $check['header'] . '</h4></td>';
             } else {
-                $out.= '<td><b>'.$check['title'].'</b></td>';
+                $out .= '<td><b>' . $check['title'] . '</b></td>';
                 if (isset($check['state'])) {
                     if ($check['state'] == 1) {
-                        $out.= '<td align="right"><i class="fa fa-check lengow-green"></i></td>';
+                        $out .= '<td align="right"><i class="fa fa-check lengow-green"></i></td>';
                     } else {
-                        $out.= '<td align="right"><i class="fa fa-times lengow-red"></i></td>';
+                        $out .= '<td align="right"><i class="fa fa-times lengow-red"></i></td>';
                     }
                     if ($check['state'] === 0) {
                         if (isset($check['help']) && isset($check['help_link']) && isset($check['help_label'])) {
-                            $out.= '<tr><td colspan="2"><p>' . $check['help'];
+                            $out .= '<tr><td colspan="2"><p>' . $check['help'];
                             if (array_key_exists('help_link', $check) && $check['help_link'] != '') {
-                                $out.= '<br /><a target="_blank" href="'
-                                .$check['help_link'].'">'.$check['help_label'].'</a>';
+                                $out .= '<br /><a target="_blank" href="'
+                                    . $check['help_link'] . '">' . $check['help_label'] . '</a>';
                             }
-                            $out.= '</p></td></tr>';
+                            $out .= '</p></td></tr>';
                         }
                     }
                 } else {
-                    $out.= '<td align="right"><b>'.$check['message'].'</b></td>';
+                    $out .= '<td align="right"><b>' . $check['message'] . '</b></td>';
                 }
             }
-            $out.= '</tr>';
+            $out .= '</tr>';
         }
-        $out.= '</table>';
+        $out .= '</table>';
         return $out;
     }
 }

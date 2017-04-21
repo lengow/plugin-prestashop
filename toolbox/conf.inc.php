@@ -41,7 +41,7 @@ $_POST["id_shop"] = $tempIdShop;
 $_REQUEST["id_shop"] = $tempIdShop;
 
 if (_PS_VERSION_ < '1.5') {
-    require_once $currentDirectory.'images.inc.php';
+    require_once $currentDirectory . 'images.inc.php';
 }
 
 if (_PS_VERSION_ > '1.5') {
@@ -54,12 +54,12 @@ LengowTranslation::$forceIsoCode = 'en';
 
 if (!in_array($lengowTool->getCurrentUri(), array('/modules/lengow/toolbox/login.php'))) {
     if (!$lengowTool->isLogged()) {
-        Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/login.php', '');
+        Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/login.php', '');
     }
 }
 
 if ($lengowTool->getCurrentUri() == '/modules/lengow/toolbox/login.php' && $lengowTool->isLogged()) {
-    Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/', '');
+    Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/', '');
 }
 
 $employeeCollection = LengowEmployee::getEmployees(true);

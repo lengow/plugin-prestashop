@@ -21,19 +21,19 @@ ini_set("display_errors", 1);
 
 $listDefaultValues = array();
 
-$directory = dirname(dirname(__FILE__)).'/translations/yml/';
+$directory = dirname(dirname(__FILE__)) . '/translations/yml/';
 $listFiles = array_diff(scandir($directory), array('..', '.', 'index.php'));
 $listFiles = array_diff($listFiles, array('en.yml'));
 array_unshift($listFiles, "en.yml");
 
 foreach ($listFiles as $list) {
-    $ymlFile = yaml_parse_file($directory.$list);
-    $locale =  basename($directory.$list, '.yml');
+    $ymlFile = yaml_parse_file($directory . $list);
+    $locale = basename($directory . $list, '.yml');
 
     if ($list == 'log.yml') {
-        $fp = fopen(dirname(dirname(__FILE__)).'/translations/en.csv', 'a+');
+        $fp = fopen(dirname(dirname(__FILE__)) . '/translations/en.csv', 'a+');
     } else {
-        $fp = fopen(dirname(dirname(__FILE__)).'/translations/'.$locale.'.csv', 'w+');
+        $fp = fopen(dirname(dirname(__FILE__)) . '/translations/' . $locale . '.csv', 'w+');
     }
 
     foreach ($ymlFile as $language => $categories) {
@@ -46,12 +46,12 @@ function writeCsv($fp, $text, &$frontKey = array())
 {
     if (is_array($text)) {
         foreach ($text as $k => $v) {
-            $frontKey[]= $k;
+            $frontKey[] = $k;
             writeCsv($fp, $v, $frontKey);
             array_pop($frontKey);
         }
     } else {
-        $line = join('.', $frontKey).'|'.str_replace("\n", '<br />', $text).PHP_EOL;
+        $line = join('.', $frontKey) . '|' . str_replace("\n", '<br />', $text) . PHP_EOL;
         fwrite($fp, $line);
     }
 }

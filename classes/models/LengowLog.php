@@ -42,7 +42,7 @@ class LengowLog extends LengowFile
     public function __construct($fileName = null)
     {
         if (empty($fileName)) {
-            $this->fileName = 'logs-'.date('Y-m-d').'.txt';
+            $this->fileName = 'logs-' . date('Y-m-d') . '.txt';
         } else {
             $this->fileName = $fileName;
         }
@@ -52,20 +52,20 @@ class LengowLog extends LengowFile
     /**
      * Write log
      *
-     * @param string  $category       log category
-     * @param string  $message        log message
-     * @param boolean $logOutput      display on screen
-     * @param string  $marketplaceSku Lengow order id
+     * @param string $category log category
+     * @param string $message log message
+     * @param boolean $logOutput display on screen
+     * @param string $marketplaceSku Lengow order id
      */
     public function write($category, $message = "", $logOutput = false, $marketplaceSku = null)
     {
         $decodedMessage = LengowMain::decodeLogMessage($message, 'en');
-        $log = date('Y-m-d H:i:s').Tools::substr((string)microtime(), 1, 8);
-        $log .= ' - '.(empty($category) ? '' : '['.$category.'] ');
-        $log .= ''.(empty($marketplaceSku) ? '' : 'order '.$marketplaceSku.' : ');
-        $log .= $decodedMessage."\r\n";
+        $log = date('Y-m-d H:i:s') . Tools::substr((string)microtime(), 1, 8);
+        $log .= ' - ' . (empty($category) ? '' : '[' . $category . '] ');
+        $log .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ' : ');
+        $log .= $decodedMessage . "\r\n";
         if ($logOutput) {
-            echo $log.'<br />';
+            echo $log . '<br />';
             flush();
         }
         $this->file->write($log);
@@ -86,9 +86,9 @@ class LengowLog extends LengowFile
         foreach ($files as $file) {
             preg_match('/\/lengow\/logs\/logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt/', $file->getPath(), $match);
             $logs[] = array(
-                'full_path'  => $file->getPath(),
-                'short_path' => 'logs-'.$match[1].'.txt',
-                'name'       => $match[1].'.txt'
+                'full_path' => $file->getPath(),
+                'short_path' => 'logs-' . $match[1] . '.txt',
+                'name' => $match[1] . '.txt'
             );
         }
         return array_reverse($logs);
@@ -101,7 +101,7 @@ class LengowLog extends LengowFile
      */
     public function getFileName()
     {
-        return _PS_MODULE_LENGOW_DIR_.self::$lengowLogFolder.'/'.$this->fileName;
+        return _PS_MODULE_LENGOW_DIR_ . self::$lengowLogFolder . '/' . $this->fileName;
     }
 
     /**
@@ -122,11 +122,11 @@ class LengowLog extends LengowFile
     public static function download($file = null)
     {
         if ($file && preg_match('/^logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt$/', $file, $match)) {
-            $filename = _PS_MODULE_LENGOW_DIR_.self::$lengowLogFolder.'/'.$file;
+            $filename = _PS_MODULE_LENGOW_DIR_ . self::$lengowLogFolder . '/' . $file;
             $handle = fopen($filename, "r");
             $contents = fread($handle, filesize($filename));
             header('Content-type: text/plain');
-            header('Content-Disposition: attachment; filename="'.$match[1].'.txt"');
+            header('Content-Disposition: attachment; filename="' . $match[1] . '.txt"');
             echo $contents;
             exit();
         } else {

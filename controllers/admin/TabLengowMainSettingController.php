@@ -33,7 +33,7 @@ class AdminLengowMainSetting14 extends AdminTab
         $lengowController->postProcess();
 
         parent::__construct();
-        
+
         $lengowController->display();
     }
 

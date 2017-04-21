@@ -42,17 +42,17 @@ class LengowOrderSettingController extends LengowController
                 if ($carrier['id_country'] == $idCountry) {
                     $defaultCarrierCountries[$idCountry]['lengow_country_id'] = $carrier['id'];
                     $defaultCarrierCountries[$idCountry]['id_carrier'] = $carrier['id_carrier'];
-                    $defaultCarrierCountries[$idCountry]['iso_code'] =  $carrier['iso_code'];
-                    $defaultCarrierCountries[$idCountry]['name'] =  $carrier['name'];
+                    $defaultCarrierCountries[$idCountry]['iso_code'] = $carrier['iso_code'];
+                    $defaultCarrierCountries[$idCountry]['name'] = $carrier['name'];
                 }
             }
             $listCarrierByCountry[$idCountry] = LengowCarrier::getActiveCarriers($idCountry);
         }
         $mkpCarriers = LengowCarrier::getListMarketplaceCarrier();
         $marketplaceCarriers = array();
-        if (count($mkpCarriers) >0) {
+        if (count($mkpCarriers) > 0) {
             foreach ($mkpCarriers as $row) {
-                $marketplaceCarriers[$row['id_country']][]= $row;
+                $marketplaceCarriers[$row['id_country']][] = $row;
             }
         }
         $form = new LengowConfigurationForm(array("fields" => LengowConfiguration::getKeys()));
@@ -112,24 +112,24 @@ class LengowOrderSettingController extends LengowController
                 $countries = LengowCarrierCountry::getCountries();
                 $mkpCarriers = LengowCarrier::getListMarketplaceCarrier();
                 $marketplaceCarriers = array();
-                if (count($mkpCarriers) >0) {
+                if (count($mkpCarriers) > 0) {
                     foreach ($mkpCarriers as $row) {
-                        $marketplaceCarriers[$row['id_country']][]= $row;
+                        $marketplaceCarriers[$row['id_country']][] = $row;
                     }
                 }
                 $newMkpCarriers = LengowCarrier::getListMarketplaceCarrier();
                 $idCountries = LengowCarrierCountry::getIdCountries($newMkpCarriers);
                 $listCarrier = LengowCarrierCountry::listCarrierByCountry();
-                $carrierItem= array();
-                $listCarrierByCountry= array();
+                $carrierItem = array();
+                $listCarrierByCountry = array();
                 $defaultCarrierCountries = array();
                 $listCarrierByCountry[$idCountry] = LengowCarrier::getActiveCarriers($idCountry);
                 foreach ($listCarrier as $carrier) {
                     if ($carrier['id_country'] == $idCountry) {
                         $defaultCarrierCountries[$idCountry]['lengow_country_id'] = $carrier['id'];
                         $defaultCarrierCountries[$idCountry]['id_carrier'] = $carrier['id_carrier'];
-                        $defaultCarrierCountries[$idCountry]['iso_code'] =  $carrier['iso_code'];
-                        $defaultCarrierCountries[$idCountry]['name'] =  $carrier['name'];
+                        $defaultCarrierCountries[$idCountry]['iso_code'] = $carrier['iso_code'];
+                        $defaultCarrierCountries[$idCountry]['name'] = $carrier['name'];
                     }
                 }
                 $this->context->smarty->assign('defaultCarrierCountries', $defaultCarrierCountries);
@@ -181,10 +181,10 @@ class LengowOrderSettingController extends LengowController
                 foreach ($defaultCarriers as $key => $value) {
                     if (_PS_VERSION_ < '1.5') {
                         Db::getInstance()->autoExecute(
-                            _DB_PREFIX_.'lengow_carrier_country',
-                            array('id_carrier' => (int)$value > 0  ? (int)$value : null),
+                            _DB_PREFIX_ . 'lengow_carrier_country',
+                            array('id_carrier' => (int)$value > 0 ? (int)$value : null),
                             'UPDATE',
-                            'id = '.(int)$key,
+                            'id = ' . (int)$key,
                             0,
                             true,
                             true
@@ -192,8 +192,8 @@ class LengowOrderSettingController extends LengowController
                     } else {
                         Db::getInstance()->update(
                             'lengow_carrier_country',
-                            array('id_carrier' => (int)$value > 0  ? (int)$value : null),
-                            'id = '.(int)$key,
+                            array('id_carrier' => (int)$value > 0 ? (int)$value : null),
+                            'id = ' . (int)$key,
                             0,
                             true,
                             true
@@ -203,10 +203,10 @@ class LengowOrderSettingController extends LengowController
                 foreach ($defaultMarketplaceCarriers as $key => $value) {
                     if (_PS_VERSION_ < '1.5') {
                         Db::getInstance()->autoExecute(
-                            _DB_PREFIX_.'lengow_marketplace_carrier',
-                            array('id_carrier' => (int)$value > 0  ? (int)$value : null),
+                            _DB_PREFIX_ . 'lengow_marketplace_carrier',
+                            array('id_carrier' => (int)$value > 0 ? (int)$value : null),
                             'UPDATE',
-                            'id = '.(int)$key,
+                            'id = ' . (int)$key,
                             0,
                             true,
                             true
@@ -214,8 +214,8 @@ class LengowOrderSettingController extends LengowController
                     } else {
                         Db::getInstance()->update(
                             'lengow_marketplace_carrier',
-                            array('id_carrier' => (int)$value > 0  ? (int)$value : null),
-                            'id = '.(int)$key,
+                            array('id_carrier' => (int)$value > 0 ? (int)$value : null),
+                            'id = ' . (int)$key,
                             0,
                             true,
                             true

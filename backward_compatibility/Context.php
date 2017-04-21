@@ -40,7 +40,6 @@ if (version_compare(_PS_VERSION_, '1.4', '<')) {
         {
         }
 
-
         public static function getShops()
         {
             return array(
@@ -63,7 +62,6 @@ if (version_compare(_PS_VERSION_, '1.4', '<')) {
             fclose($fp);
         }
     }
-
 }
 
 // Not exist for 1.3 and 1.4
@@ -268,6 +266,7 @@ class ShopBackwardModule extends Shop
     public $id = 1;
     public $id_shop_group = 1;
     public $name = '';
+
     public function getContextType()
     {
         return ShopBackwardModule::CONTEXT_ALL;
@@ -354,7 +353,7 @@ class CustomerBackwardModule extends Customer
 
         /* Customer is valid only if it can be load and if object password is the same as database one */
         if ($this->logged == 1
-            && $this->id 
+            && $this->id
             && Validate::isUnsignedId($this->id)
             && Customer::checkPassword($this->id, $this->passwd)
         ) {

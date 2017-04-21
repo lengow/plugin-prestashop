@@ -45,11 +45,11 @@ class LengowConnector
     /**
      * @var array default options for curl
      */
-    public static $curlOpts = array (
+    public static $curlOpts = array(
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 10,
-        CURLOPT_USERAGENT      => 'lengow-php-sdk',
+        CURLOPT_TIMEOUT => 10,
+        CURLOPT_USERAGENT => 'lengow-php-sdk',
     );
 
     /**
@@ -80,21 +80,21 @@ class LengowConnector
     /**
      * @var array lengow url for curl timeout
      */
-    protected $lengowUrls = array (
-        '/v3.0/orders'          => 15,
-        '/v3.0/orders/moi/'     => 5,
+    protected $lengowUrls = array(
+        '/v3.0/orders' => 15,
+        '/v3.0/orders/moi/' => 5,
         '/v3.0/orders/actions/' => 10,
-        '/v3.0/marketplaces'    => 10,
-        '/v3.0/subscriptions'   => 3,
-        '/v3.0/stats'           => 3,
-        '/v3.0/cms'             => 3,
+        '/v3.0/marketplaces' => 10,
+        '/v3.0/subscriptions' => 3,
+        '/v3.0/stats' => 3,
+        '/v3.0/cms' => 3,
     );
 
     /**
      * Make a new Lengow API Connector.
      *
      * @param string $accessToken your access token
-     * @param string $secret      your secret
+     * @param string $secret your secret
      */
     public function __construct($accessToken, $secret)
     {
@@ -115,8 +115,8 @@ class LengowConnector
             '/access/get_token',
             array(
                 'access_token' => $this->accessToken,
-                'secret'       => $this->secret,
-                'user_token'   => $userToken
+                'secret' => $this->secret,
+                'user_token' => $userToken
             ),
             'POST'
         );
@@ -134,10 +134,10 @@ class LengowConnector
      * The API method
      *
      * @param string $method Lengow method API call
-     * @param array  $array  Lengow method API parameters
-     * @param string $type   type of request GET|POST|PUT|HEAD|DELETE|PATCH
+     * @param array $array Lengow method API parameters
+     * @param string $type type of request GET|POST|PUT|HEAD|DELETE|PATCH
      * @param string $format return format of API
-     * @param string $body   body datas for request
+     * @param string $body body datas for request
      *
      * @return array
      */
@@ -159,9 +159,9 @@ class LengowConnector
      * Get API call
      *
      * @param string $method Lengow method API call
-     * @param array  $array  Lengow method API parameters
+     * @param array $array Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body   body datas for request
+     * @param string $body body datas for request
      *
      * @return array
      */
@@ -184,9 +184,9 @@ class LengowConnector
      * Post API call
      *
      * @param string $method Lengow method API call
-     * @param array  $array  Lengow method API parameters
+     * @param array $array Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body   body datas for request
+     * @param string $body body datas for request
      *
      * @return array
      */
@@ -209,9 +209,9 @@ class LengowConnector
      * Head API call
      *
      * @param string $method Lengow method API call
-     * @param array  $array  Lengow method API parameters
+     * @param array $array Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body   body datas for request
+     * @param string $body body datas for request
      *
      * @return array
      */
@@ -224,9 +224,9 @@ class LengowConnector
      * Put API call
      *
      * @param string $method Lengow method API call
-     * @param array  $array  Lengow method API parameters
+     * @param array $array Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body   body datas for request
+     * @param string $body body datas for request
      *
      * @return array
      */
@@ -239,9 +239,9 @@ class LengowConnector
      * Delete API call
      *
      * @param string $method Lengow method API call
-     * @param array  $array  Lengow method API parameters
+     * @param array $array Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body   body datas for request
+     * @param string $body body datas for request
      *
      * @return array
      */
@@ -254,9 +254,9 @@ class LengowConnector
      * Patch API call
      *
      * @param string $method Lengow method API call
-     * @param array  $array  Lengow method API parameters
+     * @param array $array Lengow method API parameters
      * @param string $format return format of API
-     * @param string $body   body datas for request
+     * @param string $body body datas for request
      *
      * @return array
      */
@@ -268,11 +268,11 @@ class LengowConnector
     /**
      * Call API action
      *
-     * @param string $api    Lengow method API call
-     * @param array  $args   Lengow method API parameters
-     * @param string $type   type of request GET|POST|PUT|HEAD|DELETE|PATCH
+     * @param string $api Lengow method API call
+     * @param array $args Lengow method API parameters
+     * @param string $type type of request GET|POST|PUT|HEAD|DELETE|PATCH
      * @param string $format return format of API
-     * @param string $body   body datas for request
+     * @param string $body body datas for request
      *
      * @return array
      */
@@ -285,7 +285,7 @@ class LengowConnector
     /**
      * Get data in specific format
      *
-     * @param mixed  $data   Curl response data
+     * @param mixed $data Curl response data
      * @param string $format return format of API
      *
      * @return mixed
@@ -307,11 +307,11 @@ class LengowConnector
     /**
      * Make Curl request
      *
-     * @param string $type  Lengow method API call
-     * @param string $url   Lengow API url
-     * @param array  $args  Lengow method API parameters
+     * @param string $type Lengow method API call
+     * @param string $url Lengow API url
+     * @param array $args Lengow method API parameters
      * @param string $token temporary access token
-     * @param string $body  body datas for request
+     * @param string $body body datas for request
      *
      * @throws LengowException get Curl error
      *
@@ -329,7 +329,7 @@ class LengowConnector
             $opts[CURLOPT_TIMEOUT] = $this->lengowUrls[$url];
         }
         // get url for a specific environment
-        $url = self::LENGOW_API_URL.$url;
+        $url = self::LENGOW_API_URL . $url;
         $opts[CURLOPT_CUSTOMREQUEST] = Tools::strtoupper($type);
         $url = parse_url($url);
         $opts[CURLOPT_PORT] = $url['port'];
@@ -338,13 +338,13 @@ class LengowConnector
         $opts[CURLOPT_VERBOSE] = false;
         if (isset($token)) {
             $opts[CURLOPT_HTTPHEADER] = array(
-                'Authorization: '.$token,
+                'Authorization: ' . $token,
             );
         }
-        $url = $url['scheme'].'://'.$url['host'].$url['path'];
+        $url = $url['scheme'] . '://' . $url['host'] . $url['path'];
         switch ($type) {
             case 'GET':
-                $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
+                $opts[CURLOPT_URL] = $url . '?' . http_build_query($args);
                 LengowMain::log(
                     'Connector',
                     LengowMain::setLogMessage('log.connector.call_api', array('curl_url' => $opts[CURLOPT_URL]))
@@ -356,11 +356,11 @@ class LengowConnector
                         $opts[CURLOPT_HTTPHEADER],
                         array(
                             'Content-Type: application/json',
-                            'Content-Length: '.Tools::strlen($body)
+                            'Content-Length: ' . Tools::strlen($body)
                         )
                     );
                 }
-                $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
+                $opts[CURLOPT_URL] = $url . '?' . http_build_query($args);
                 $opts[CURLOPT_POSTFIELDS] = $body;
                 break;
             case 'PATCH':
@@ -399,7 +399,7 @@ class LengowConnector
             $errorCurl = LengowMain::setLogMessage(
                 'lengow_log.exception.error_curl',
                 array(
-                    'error_code'    => $errorNumber,
+                    'error_code' => $errorNumber,
                     'error_message' => $errorText
                 )
             );
@@ -456,11 +456,11 @@ class LengowConnector
     /**
      * Get result for a query Api
      *
-     * @param string  $type   request type (GET / POST / PUT / PATCH)
-     * @param string  $url    request url
+     * @param string $type request type (GET / POST / PUT / PATCH)
+     * @param string $url request url
      * @param integer $idShop Prestashop shop id
-     * @param array   $params request params
-     * @param string  $body   body datas for request
+     * @param array $params request params
+     * @param string $body body datas for request
      *
      * @return mixed
      */
@@ -474,7 +474,7 @@ class LengowConnector
             if (is_null($accountId)) {
                 return false;
             }
-            $connector  = new LengowConnector($accessToken, $secretToken);
+            $connector = new LengowConnector($accessToken, $secretToken);
             $results = $connector->$type(
                 $url,
                 array_merge(array('account_id' => $accountId), $params),

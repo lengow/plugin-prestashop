@@ -44,7 +44,7 @@ class LengowMainSettingController extends LengowController
                         $module->uninstall();
                         $link = new LengowLink();
                         $configLink = $link->getAbsoluteAdminLink('AdminModules', false, true);
-                        Tools::redirect($configLink.'&conf=13', '');
+                        Tools::redirect($configLink . '&conf=13', '');
                     }
                 }
                 $form = new LengowConfigurationForm(
@@ -62,7 +62,7 @@ class LengowMainSettingController extends LengowController
                 );
                 break;
             case 'download':
-                $file = isset($_REQUEST['file']) ?  $_REQUEST['file'] : null;
+                $file = isset($_REQUEST['file']) ? $_REQUEST['file'] : null;
                 LengowLog::download($file);
                 break;
             case 'download_all':
@@ -98,7 +98,7 @@ class LengowMainSettingController extends LengowController
         foreach ($shops as $s) {
             $shop = new LengowShop($s['id_shop']);
             $form->fields['LENGOW_SHOP_ACTIVE']['label'] = $shop->name;
-            $preprodWrapper.= '<div class="grey-frame">'.$form->buildShopInputs(
+            $preprodWrapper .= '<div class="grey-frame">' . $form->buildShopInputs(
                 $shop->id,
                 array(
                     'LENGOW_SHOP_ACTIVE',
@@ -106,7 +106,7 @@ class LengowMainSettingController extends LengowController
                     'LENGOW_ACCESS_TOKEN',
                     'LENGOW_SECRET_TOKEN',
                 )
-            ).'</div>';
+            ) . '</div>';
         }
         $listFile = LengowLog::getPaths();
         $this->context->smarty->assign('list_file', $listFile);

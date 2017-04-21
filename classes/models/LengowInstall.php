@@ -25,36 +25,36 @@
 class LengowInstall
 {
     /**
-    * @var Lengow Lengow module instance
-    */
+     * @var Lengow Lengow module instance
+     */
     private $lengowModule;
 
     /**
-    * @var lengowHook lengow hook class
-    */
+     * @var lengowHook lengow hook class
+     */
     private $lengowHook;
 
     /**
-    * @var boolean installation status
-    */
+     * @var boolean installation status
+     */
     protected static $installationStatus;
 
     /**
-    * @var array all module tabs
-    */
+     * @var array all module tabs
+     */
     static private $tabs = array(
-        'tab.home'          => array('name' => 'AdminLengowHome', 'active' => true),
-        'tab.product'       => array('name' => 'AdminLengowFeed', 'active' => false),
-        'tab.order'         => array('name' => 'AdminLengowOrder', 'active' => false),
+        'tab.home' => array('name' => 'AdminLengowHome', 'active' => true),
+        'tab.product' => array('name' => 'AdminLengowFeed', 'active' => false),
+        'tab.order' => array('name' => 'AdminLengowOrder', 'active' => false),
         'tab.order_setting' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
-        'tab.help'          => array('name' => 'AdminLengowHelp', 'active' => false),
-        'tab.main_setting'  => array('name' => 'AdminLengowMainSetting', 'active' => false),
-        'tab.legals'        => array('name' => 'AdminLengowLegals', 'active' => false)
+        'tab.help' => array('name' => 'AdminLengowHelp', 'active' => false),
+        'tab.main_setting' => array('name' => 'AdminLengowMainSetting', 'active' => false),
+        'tab.legals' => array('name' => 'AdminLengowLegals', 'active' => false)
     );
 
     /**
-    * @var array all module tables
-    */
+     * @var array all module tables
+     */
     static public $tables = array(
         'lengow_actions',
         'lengow_carrier_country',
@@ -133,7 +133,7 @@ class LengowInstall
         foreach (self::$tabs as $name => $values) {
             $tab = new Tab();
             if (_PS_VERSION_ < '1.5') {
-                $tab->class_name = $values['name']."14";
+                $tab->class_name = $values['name'] . "14";
                 $tab->id_parent = $tabParent->id;
             } else {
                 $tab->class_name = $values['name'];
@@ -161,7 +161,7 @@ class LengowInstall
      */
     private static function uninstallTab()
     {
-        $sql = 'SELECT `id_tab`, `class_name` FROM `'._DB_PREFIX_.'tab` WHERE `module` = \'lengow\'';
+        $sql = 'SELECT `id_tab`, `class_name` FROM `' . _DB_PREFIX_ . 'tab` WHERE `module` = \'lengow\'';
         $tabs = Db::getInstance()->executeS($sql);
         // remove all tabs Lengow
         foreach ($tabs as $value) {
@@ -197,11 +197,12 @@ class LengowInstall
         // Add Lengow order error status
         if (_PS_VERSION_ >= '1.5') {
             $states = Db::getInstance()->ExecuteS(
-                'SELECT * FROM '._DB_PREFIX_.'order_state WHERE module_name = \''.pSQL($this->lengowModule->name).'\''
+                'SELECT * FROM ' . _DB_PREFIX_ . 'order_state
+                WHERE module_name = \'' . pSQL($this->lengowModule->name) . '\''
             );
         } else {
             $states = Db::getInstance()->ExecuteS(
-                'SELECT * FROM '. _DB_PREFIX_.'order_state_lang
+                'SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang
                 WHERE name = \'Technical error - Lengow\' OR name = \'Erreur technique - Lengow\' LIMIT 1'
             );
         }
@@ -236,18 +237,18 @@ class LengowInstall
 
                 if (_PS_VERSION_ < '1.5') {
                     Db::getInstance()->autoExecute(
-                        _DB_PREFIX_.'order_state_lang',
+                        _DB_PREFIX_ . 'order_state_lang',
                         array('name' => $name),
                         'UPDATE',
-                        '`id_order_state` = \''.(int)$idOrderState
-                        .'\' AND `id_lang` = \''.(int)$language['id_lang'].'\''
+                        '`id_order_state` = \'' . (int)$idOrderState
+                        . '\' AND `id_lang` = \'' . (int)$language['id_lang'] . '\''
                     );
                 } else {
                     Db::getInstance()->update(
                         'order_state_lang',
                         array('name' => $name),
-                        '`id_order_state` = \''.(int)$idOrderState
-                        .'\' AND `id_lang` = \''.(int)$language['id_lang'].'\''
+                        '`id_order_state` = \'' . (int)$idOrderState
+                        . '\' AND `id_lang` = \'' . (int)$language['id_lang'] . '\''
                     );
                 }
             }
@@ -296,7 +297,7 @@ class LengowInstall
      */
     public static function checkFieldExists($table, $field)
     {
-        $sql = 'SHOW COLUMNS FROM '._DB_PREFIX_.$table.' LIKE \''.$field.'\'';
+        $sql = 'SHOW COLUMNS FROM ' . _DB_PREFIX_ . $table . ' LIKE \'' . $field . '\'';
         $result = Db::getInstance()->executeS($sql);
         $exists = count($result) > 0 ? true : false;
         return $exists;
@@ -314,7 +315,7 @@ class LengowInstall
     {
         if (self::checkFieldExists($table, $field)) {
             Db::getInstance()->execute(
-                'ALTER TABLE '._DB_PREFIX_.$table.' DROP COLUMN `'.$field.'`'
+                'ALTER TABLE ' . _DB_PREFIX_ . $table . ' DROP COLUMN `' . $field . '`'
             );
         }
     }
@@ -360,7 +361,7 @@ class LengowInstall
     public static function dropTable()
     {
         foreach (self::$tables as $table) {
-            Db::getInstance()->Execute('DROP TABLE IF EXISTS '._DB_PREFIX_.$table);
+            Db::getInstance()->Execute('DROP TABLE IF EXISTS ' . _DB_PREFIX_ . $table);
         }
         return true;
     }
@@ -376,10 +377,10 @@ class LengowInstall
             $listFile = array_diff(scandir($directory), array('..', '.'));
             if (count($listFile) > 0) {
                 if (!file_exists($directoryBackup . 'override')) {
-                    mkdir($directoryBackup.'override', 0755);
+                    mkdir($directoryBackup . 'override', 0755);
                 }
                 foreach ($listFile as $file) {
-                    copy($directory.$file, $directoryBackup.'override/'.$file);
+                    copy($directory . $file, $directoryBackup . 'override/' . $file);
                 }
             }
         }
@@ -410,7 +411,7 @@ class LengowInstall
     public static function removeFiles($listFiles)
     {
         foreach ($listFiles as $file) {
-            $filePath = _PS_MODULE_LENGOW_DIR_.$file;
+            $filePath = _PS_MODULE_LENGOW_DIR_ . $file;
             if (file_exists($filePath)) {
                 if (is_dir($filePath)) {
                     self::deleteDir($filePath);
@@ -453,8 +454,8 @@ class LengowInstall
      */
     public static function createTabImage()
     {
-        $filePath = _PS_MODULE_LENGOW_DIR_.'views/img/AdminLengowHome.gif';
-        $fileDest = _PS_MODULE_LENGOW_DIR_.'AdminLengowHome.gif';
+        $filePath = _PS_MODULE_LENGOW_DIR_ . 'views/img/AdminLengowHome.gif';
+        $fileDest = _PS_MODULE_LENGOW_DIR_ . 'AdminLengowHome.gif';
         if (!file_exists($fileDest) && LengowMain::compareVersion('1.5') == 0) {
             copy($filePath, $fileDest);
         }

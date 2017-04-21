@@ -48,9 +48,9 @@ class FeedFormatTest extends ModuleTestCase
         );
         $export = new LengowExport(
             array(
-                'out_stock'        => true,
+                'out_stock' => true,
                 'export_variation' => true,
-                'log_output'       => false,
+                'log_output' => false,
             )
         );
         $export->exec();
@@ -72,9 +72,9 @@ class FeedFormatTest extends ModuleTestCase
         $export = new LengowExport(
             array(
                 'show_inactive_product' => true,
-                'out_stock'             => true,
-                'export_variation'      => true,
-                'log_output'            => false,
+                'out_stock' => true,
+                'export_variation' => true,
+                'log_output' => false,
             )
         );
         $export->exec();

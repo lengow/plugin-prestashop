@@ -21,8 +21,8 @@
 
 require 'conf.inc.php';
 
-$action = isset($_REQUEST['action']) ?  $_REQUEST['action'] : null;
-$file = isset($_REQUEST['file']) ?  $_REQUEST['file'] : null;
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
+$file = isset($_REQUEST['file']) ? $_REQUEST['file'] : null;
 
 $locale = new LengowTranslation();
 
@@ -39,23 +39,23 @@ $listFile = LengowLog::getPaths();
 
 require 'views/header.php';
 ?>
-<div class="container">
-<h1><?php echo $locale->t('toolbox.log.log_files'); ?></h1>
+    <div class="container">
+        <h1><?php echo $locale->t('toolbox.log.log_files'); ?></h1>
 
-<ul class="list-group">
-    <?php
-    foreach ($listFile as $file) {
-        echo '<li class="list-group-item">';
-        echo '<a href="/modules/lengow/toolbox/log.php?action=download&file='.urlencode($file['short_path']).'">
-    <i class="fa fa-download"></i> '.$file['name'].'</a>';
-        echo '</li>';
-    }
-    echo '<li class="list-group-item">';
-    echo '<a href="/modules/lengow/toolbox/log.php?action=download_all">
-        <i class="fa fa-download"></i> '.$locale->t('toolbox.log.download_all').'</a>';
-    echo '</li>';
-    ?>
-</ul>
-</div><!-- /.container -->
+        <ul class="list-group">
+            <?php
+            foreach ($listFile as $file) {
+                echo '<li class="list-group-item">';
+                echo '<a href="/modules/lengow/toolbox/log.php?action=download&file=' . urlencode($file['short_path'])
+                    . '"><i class="fa fa-download"></i> ' . $file['name'] . '</a>';
+                echo '</li>';
+            }
+            echo '<li class="list-group-item">';
+            echo '<a href="/modules/lengow/toolbox/log.php?action=download_all">
+        <i class="fa fa-download"></i> ' . $locale->t('toolbox.log.download_all') . '</a>';
+            echo '</li>';
+            ?>
+        </ul>
+    </div><!-- /.container -->
 <?php
 require 'views/footer.php';

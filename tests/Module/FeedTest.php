@@ -32,12 +32,12 @@ class FeedTest extends ModuleTestCase
         Module::getInstanceByName('lengow');
 
         $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/attribute_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/attribute_product.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/features.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/before_feed.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/simple_product.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/variation_product.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/pack_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/before_feed.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/variation_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/pack_product.yml');
     }
 
     /**
@@ -90,8 +90,8 @@ class FeedTest extends ModuleTestCase
         $export = new LengowExport(
             array(
                 'export_variation' => false,
-                'limit'            => 4,
-                'log_output'       => false
+                'limit' => 4,
+                'log_output' => false
             )
         );
         $export->exec();
@@ -108,9 +108,9 @@ class FeedTest extends ModuleTestCase
         $export = new LengowExport(
             array(
                 'export_variation' => true,
-                'offset'           => 2,
-                'limit'            => 4,
-                'log_output'       => false
+                'offset' => 2,
+                'limit' => 4,
+                'log_output' => false
             )
         );
         $export->exec();
@@ -132,8 +132,8 @@ class FeedTest extends ModuleTestCase
         $export = new LengowExport(
             array(
                 'export_variation' => true,
-                'product_ids'      => array(10),
-                'log_output'       => false
+                'product_ids' => array(10),
+                'log_output' => false
             )
         );
         $export->exec();
@@ -151,7 +151,7 @@ class FeedTest extends ModuleTestCase
         $export = new LengowExport(
             array(
                 'show_inactive_product' => true,
-                'log_output'            => false
+                'log_output' => false
             )
         );
         $export->exec();
@@ -169,8 +169,8 @@ class FeedTest extends ModuleTestCase
     {
         $export = new LengowExport(
             array(
-                'product_ids' => array(1,2),
-                'log_output'  => false,
+                'product_ids' => array(1, 2),
+                'log_output' => false,
             )
         );
         $export->exec();
@@ -204,8 +204,8 @@ class FeedTest extends ModuleTestCase
         $export = new LengowExport(
             array(
                 'export_variation' => true,
-                'product_ids'      => array(10),
-                'log_output'       => false
+                'product_ids' => array(10),
+                'log_output' => false
             )
         );
         $export->exec();
@@ -223,10 +223,10 @@ class FeedTest extends ModuleTestCase
     {
         $export = new LengowExport(
             array(
-                'out_stock'               => true,
-                'export_features'         => false,
+                'out_stock' => true,
+                'export_features' => false,
                 'export_lengow_selection' => false,
-                'log_output'              => false
+                'log_output' => false
             )
         );
         $this->assertEquals(12, $export->getTotalExportProduct());
@@ -246,7 +246,7 @@ class FeedTest extends ModuleTestCase
         $export = new LengowExport(
             array(
                 'product_ids' => array(1),
-                'log_output'  => false
+                'log_output' => false
             )
         );
         $export->exec();

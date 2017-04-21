@@ -100,36 +100,36 @@ class ProductTest extends ModuleTestCase
         $fixture->loadFixture(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Product/no_lengow_selection.yml'
         );
-        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product');
+        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_product');
         $this->assertEquals(0, $result[0]['total'], 'Product selection is empty');
 
         LengowProduct::publish(1, 1, 1);
 
-        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product');
+        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_product');
         $this->assertEquals(1, $result[0]['total'], 'One product is selected');
 
         LengowProduct::publish(1, 0, 1);
-        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product');
+        $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_product');
         $this->assertEquals(0, $result[0]['total'], 'Product selection is empty');
 
         LengowProduct::publish(1, 1, 1);
         LengowProduct::publish(1, 1, 2);
         $result = Db::getInstance()->executeS(
-            'SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product WHERE id_shop = 1 '
+            'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_product WHERE id_shop = 1 '
         );
         $this->assertEquals(1, $result[0]['total'], 'One product for shop 1');
         $result = Db::getInstance()->executeS(
-            'SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product WHERE id_shop = 2 '
+            'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_product WHERE id_shop = 2 '
         );
         $this->assertEquals(1, $result[0]['total'], 'One product for shop 2');
 
         LengowProduct::publish(1, 0, 1);
         $result = Db::getInstance()->executeS(
-            'SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product WHERE id_shop = 1 '
+            'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_product WHERE id_shop = 1 '
         );
         $this->assertEquals(0, $result[0]['total'], 'No product for shop 1');
         $result = Db::getInstance()->executeS(
-            'SELECT COUNT(*) as total FROM '._DB_PREFIX_.'lengow_product WHERE id_shop = 2 '
+            'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_product WHERE id_shop = 2 '
         );
         $this->assertEquals(1, $result[0]['total'], 'One product for shop 2');
     }
@@ -160,10 +160,10 @@ class ProductTest extends ModuleTestCase
         $this->assertEquals('DESCRIPTION001', $product->getData('description'));
         $this->assertEquals('SHORTDESCRIPTION001', $product->getData('short_description'));
         $this->assertEquals('<strong>DESCRIPTION001</strong>', $product->getData('description_html'));
-        $this->assertEquals(round((4.9*1.2)+2, 2), round($product->getData('price'), 2));
+        $this->assertEquals(round((4.9 * 1.2) + 2, 2), round($product->getData('price'), 2));
         $this->assertEquals(0, round($product->getData('wholesale_price'), 2));
-        $this->assertEquals(round(4.9+2, 2), round($product->getData('price_duty_free'), 2));
-        $this->assertEquals(round(4.9*1.2+2, 2), round($product->getData('price_sale'), 2));
+        $this->assertEquals(round(4.9 + 2, 2), round($product->getData('price_duty_free'), 2));
+        $this->assertEquals(round(4.9 * 1.2 + 2, 2), round($product->getData('price_sale'), 2));
         $this->assertEquals(0, round($product->getData('price_sale_percent'), 2));
         $this->assertEquals(10, $product->getData('quantity'));
         $this->assertEquals(4.5, $product->getData('weight'));
@@ -216,10 +216,10 @@ class ProductTest extends ModuleTestCase
         $this->assertEquals('DESCRIPTION010', $product->getData('description'));
         $this->assertEquals('SHORTDESCRIPTION010', $product->getData('short_description'));
         $this->assertEquals('DESCRIPTION010', $product->getData('description_html'));
-        $this->assertEquals(round(5.9*1.2+3, 2), round($product->getData('price'), 2));
+        $this->assertEquals(round(5.9 * 1.2 + 3, 2), round($product->getData('price'), 2));
         $this->assertEquals(0, round($product->getData('wholesale_price'), 2));
-        $this->assertEquals(round(5.9+3, 2), round($product->getData('price_duty_free'), 2));
-        $this->assertEquals(round(5.9*1.2+3, 2), round($product->getData('price_sale'), 2));
+        $this->assertEquals(round(5.9 + 3, 2), round($product->getData('price_duty_free'), 2));
+        $this->assertEquals(round(5.9 * 1.2 + 3, 2), round($product->getData('price_sale'), 2));
         $this->assertEquals(0, round($product->getData('price_sale_percent'), 2));
         $this->assertEquals(0, $product->getData('quantity'));
         $this->assertEquals(1.4, $product->getData('weight'));
@@ -268,10 +268,10 @@ class ProductTest extends ModuleTestCase
         $this->assertEquals('SHORTDESCRIPTION010', $product->getData('short_description', 11));
         $this->assertEquals('DESCRIPTION010', $product->getData('description_html', 11));
         //todo see if price is correct for attribute
-        $this->assertEquals(round(5.9*1.2+3, 2), round($product->getData('price', 11), 2));
+        $this->assertEquals(round(5.9 * 1.2 + 3, 2), round($product->getData('price', 11), 2));
         $this->assertEquals(0, round($product->getData('wholesale_price', 11), 2));
-        $this->assertEquals(round(5.9+3, 2), round($product->getData('price_duty_free', 11), 2));
-        $this->assertEquals(round(5.9*1.2+3, 2), round($product->getData('price_sale', 11), 2));
+        $this->assertEquals(round(5.9 + 3, 2), round($product->getData('price_duty_free', 11), 2));
+        $this->assertEquals(round(5.9 * 1.2 + 3, 2), round($product->getData('price_sale', 11), 2));
         $this->assertEquals(0, round($product->getData('price_sale_percent'), 2));
         $this->assertEquals(10, $product->getData('quantity', 11));
         $this->assertEquals(6.6, $product->getData('weight', 11));

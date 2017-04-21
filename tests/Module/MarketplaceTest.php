@@ -65,13 +65,13 @@ class MarketplaceTest extends ModuleTestCase
         $fixture->truncate('lengow_marketplace_carrier');
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
         $order = new LengowOrder(1);
         $this->assertTrue($order->callAction('ship'));
 
-        $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 0));
+        $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 0));
     }
 
     /**
@@ -89,15 +89,15 @@ class MarketplaceTest extends ModuleTestCase
 
         //reset marketplace file
         LengowMain::$registers = array();
-        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Marketplace/require_carrier_args.json';
+        $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Marketplace/require_carrier_args.json';
         LengowMarketplace::$MARKETPLACES = array(
             1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
             2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
         );
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
         $order = new LengowOrder(1);
         $this->assertTrue(!$order->callAction('ship'));
@@ -128,7 +128,7 @@ class MarketplaceTest extends ModuleTestCase
 
         $this->assertTableContain(
             'lengow_logs_import',
-            array('id' => '1',  'id_order_lengow' => '1', 'message' => 'Forbidden')
+            array('id' => '1', 'id_order_lengow' => '1', 'message' => 'Forbidden')
         );
     }
 
@@ -147,8 +147,8 @@ class MarketplaceTest extends ModuleTestCase
         $marketplace = LengowMain::getMarketplaceSingleton('galeries_lafayette', '1');
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
         $order = new LengowOrder(1);
         $this->assertFalse($marketplace->callAction('ship', $order));

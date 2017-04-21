@@ -98,7 +98,7 @@ class TaxCalculator
 
     /**
      * Get total rate
-     * 
+     *
      * @return float total taxes rate
      */
     public function getTotalRate()
@@ -123,14 +123,14 @@ class TaxCalculator
 
     /**
      * Get all taxe names
-     * 
+     *
      * @return string
      */
     public function getTaxesName()
     {
         $name = '';
         foreach ($this->taxes as $tax) {
-            $name .= $tax->name[(int)Context::getContext()->language->id].' - ';
+            $name .= $tax->name[(int)Context::getContext()->language->id] . ' - ';
         }
 
         $name = rtrim($name, ' - ');

@@ -31,7 +31,7 @@ $controller->display();
 
 require 'views/header.php';
 echo '<div class="full-container">';
-echo '<h1>'.$locale->t('toolbox.menu.product').'</h1>';
+echo '<h1>' . $locale->t('toolbox.menu.product') . '</h1>';
 echo $controller->forceDisplay();
 echo '</div><!-- /.container -->';
 require 'views/footer.php';

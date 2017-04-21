@@ -17,7 +17,7 @@ class InstallTest extends ModuleTestCase
 
         $fixture = new Fixture();
         $fixture->loadFixture(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/multi_shop.yml'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/multi_shop.yml'
         );
 
         Configuration::updatevalue('PS_MULTISHOP_FEATURE_ACTIVE', true);
@@ -98,15 +98,15 @@ class InstallTest extends ModuleTestCase
     {
         $fixture = new Fixture();
         $fixture->loadFixture(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Install/lengow_table.yml'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Install/lengow_table.yml'
         );
 
         foreach (LengowInstall::$tables as $table) {
-            $this->assertTableExist($table, 'Table '.$table.' exist');
+            $this->assertTableExist($table, 'Table ' . $table . ' exist');
         }
         LengowInstall::dropTable();
         foreach (LengowInstall::$tables as $table) {
-            $this->assertTableNotExist($table, 'Table '.$table.' don\'t exist');
+            $this->assertTableNotExist($table, 'Table ' . $table . ' don\'t exist');
         }
         $module = Module::getInstanceByName('lengow');
         $module->isInstalled('lengow');
@@ -122,7 +122,7 @@ class InstallTest extends ModuleTestCase
      */
     public function removeFiles()
     {
-        $filePath = _PS_MODULE_LENGOW_DIR_.'new_file.php';
+        $filePath = _PS_MODULE_LENGOW_DIR_ . 'new_file.php';
 
         $fp = fopen($filePath, 'w');
         $this->assertTrue((bool)$fp);
@@ -131,10 +131,10 @@ class InstallTest extends ModuleTestCase
         LengowInstall::removeFiles(array('new_file.php'));
         $this->assertFalse(file_exists($filePath));
 
-        $directoryPath = _PS_MODULE_LENGOW_DIR_.'new_directory';
+        $directoryPath = _PS_MODULE_LENGOW_DIR_ . 'new_directory';
 
         $this->assertTrue((bool)mkdir($directoryPath, 0700));
-        $fp = fopen($directoryPath.'/new_file.php', 'w');
+        $fp = fopen($directoryPath . '/new_file.php', 'w');
         $this->assertTrue((bool)$fp);
         $this->assertTrue(file_exists($directoryPath));
         LengowInstall::removeFiles(array('new_directory/'));

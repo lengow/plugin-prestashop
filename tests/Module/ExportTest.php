@@ -41,9 +41,9 @@ class ExportTest extends ModuleTestCase
     {
 
         $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/simple_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml');
 
-        $export = new LengowExport(array("product_ids" => array(1),"log_output" => false));
+        $export = new LengowExport(array("product_ids" => array(1), "log_output" => false));
         $export->exec();
         $filename = $export->getFileName();
         $this->assertFileExists($filename);
@@ -69,12 +69,12 @@ class ExportTest extends ModuleTestCase
     public function getTotalProduct()
     {
         $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
         $export = new LengowExport(
             array(
                 'export_variation' => false,
-                'log_output'       => false,
+                'log_output' => false,
             )
         );
         $this->assertEquals(3, $export->getTotalProduct());
@@ -82,7 +82,7 @@ class ExportTest extends ModuleTestCase
         $export = new LengowExport(
             array(
                 'export_variation' => true,
-                'log_output'       => false,
+                'log_output' => false,
             )
         );
         $this->assertEquals(10, $export->getTotalProduct());
@@ -100,14 +100,14 @@ class ExportTest extends ModuleTestCase
     {
 
         $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
 
         $export = new LengowExport(
             array(
                 'export_variation' => false,
-                'selection'        => false,
-                'log_output'       => false,
+                'selection' => false,
+                'log_output' => false,
             )
         );
         $this->assertEquals(2, $export->getTotalExportProduct());
@@ -115,19 +115,19 @@ class ExportTest extends ModuleTestCase
         $export = new LengowExport(
             array(
                 'export_variation' => true,
-                'selection'        => false,
-                'log_output'       => false,
+                'selection' => false,
+                'log_output' => false,
             )
         );
         $this->assertEquals(8, $export->getTotalExportProduct());
 
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/exported_total_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Export/exported_total_product.yml');
 
         $export = new LengowExport(
             array(
                 'export_variation' => false,
-                'selection'        => true,
-                'log_output'       => false,
+                'selection' => true,
+                'log_output' => false,
             )
         );
         $this->assertEquals(1, $export->getTotalExportProduct());
@@ -135,8 +135,8 @@ class ExportTest extends ModuleTestCase
         $export = new LengowExport(
             array(
                 'export_variation' => true,
-                'selection'        => true,
-                'log_output'       => false,
+                'selection' => true,
+                'log_output' => false,
             )
         );
         $this->assertEquals(7, $export->getTotalExportProduct());
@@ -150,14 +150,14 @@ class ExportTest extends ModuleTestCase
     public function getFields()
     {
         $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/features.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/features.yml');
 
         $export = new LengowExport(
             array(
                 'export_variation' => false,
-                'selection'        => false,
+                'selection' => false,
             )
         );
         $finalFields = array();
@@ -221,15 +221,15 @@ class ExportTest extends ModuleTestCase
         require_once('Fixtures/Export/LengowExportOverride.php');
 
         $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/no_features.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Export/count_total_product.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Export/count_total_product_2.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/no_features.yml');
 
 
         $export = new \LengowExportOverride(
             array(
                 'export_variation' => false,
-                'selection'        => false,
+                'selection' => false,
             )
         );
 

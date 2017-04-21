@@ -37,7 +37,7 @@ class LengowEmployee extends Employee
         $activeOnly = $activeOnly;
         return Db::getInstance()->ExecuteS(
             'SELECT `id_employee`, CONCAT(`firstname`, \' \', `lastname`) name
-            FROM `'._DB_PREFIX_.'employee`
+            FROM `' . _DB_PREFIX_ . 'employee`
             WHERE `active` = 1
             ORDER BY `email`'
         );

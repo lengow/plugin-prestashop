@@ -32,15 +32,21 @@ class LengowBackup extends Backup
     public function add()
     {
         if (!$this->psBackupAll) {
-            $ignoreInsertTable = array(_DB_PREFIX_.'connections', _DB_PREFIX_.'connections_page', _DB_PREFIX_
-                .'connections_source', _DB_PREFIX_.'guest', _DB_PREFIX_.'statssearch');
+            $ignoreInsertTable = array(
+                _DB_PREFIX_ . 'connections',
+                _DB_PREFIX_ . 'connections_page',
+                _DB_PREFIX_
+                . 'connections_source',
+                _DB_PREFIX_ . 'guest',
+                _DB_PREFIX_ . 'statssearch'
+            );
         } else {
             $ignoreInsertTable = array();
         }
         // Generate some random number, to make it extra hard to guess backup file names
         $rand = dechex(mt_rand(0, min(0xffffffff, mt_getrandmax())));
         $date = time();
-        $backupfile = $this->getRealBackupPath().$date.'-lengowbackup'.$rand.'.sql';
+        $backupfile = $this->getRealBackupPath() . $date . '-lengowbackup' . $rand . '.sql';
         // Figure out what compression is available and open the file
         if (function_exists('bzopen')) {
             $backupfile .= '.bz2';
@@ -52,46 +58,49 @@ class LengowBackup extends Backup
             $fp = @fopen($backupfile, 'w');
         }
         if ($fp === false) {
-            echo Tools::displayError('Unable to create backup file').' "'.addslashes($backupfile).'"';
+            echo Tools::displayError('Unable to create backup file') . ' "' . addslashes($backupfile) . '"';
             return false;
         }
         $this->id = realpath($backupfile);
-        fwrite($fp, '/* Backup for '.Tools::getHttpHost(false, false).__PS_BASE_URI__."\n * at ".date($date)."\n */\n");
-        fwrite($fp, "\n".'SET NAMES \'utf8\';'."\n\n");
+        fwrite(
+            $fp,
+            '/* Backup for ' . Tools::getHttpHost(false, false) . __PS_BASE_URI__ . "\n * at " . date($date) . "\n */\n"
+        );
+        fwrite($fp, "\n" . 'SET NAMES \'utf8\';' . "\n\n");
         $found = 0;
         foreach (LengowInstall::$tables as $table) {
-            $table = _DB_PREFIX_.$table;
+            $table = _DB_PREFIX_ . $table;
             // Export the table schema
             // This line is required by Prestashop validator
             $sql = str_replace('IF NOT EXISTS', '', 'SHOW CREATE TABLE IF NOT EXISTS');
-            $schema = Db::getInstance()->executeS($sql.'`'.$table.'`');
+            $schema = Db::getInstance()->executeS($sql . '`' . $table . '`');
             if (count($schema) != 1 || !isset($schema[0]['Table']) || !isset($schema[0]['Create Table'])) {
                 fclose($fp);
                 $this->delete();
-                echo Tools::displayError('An error occurred while backing up. Unable to obtain the schema of').
-                    ' "'.$table;
+                echo Tools::displayError('An error occurred while backing up. Unable to obtain the schema of')
+                    . ' "' . $table;
                 return false;
             }
-            fwrite($fp, '/* Scheme for table '.$schema[0]['Table']." */\n");
-            fwrite($fp, $schema[0]['Create Table'].";\n\n");
+            fwrite($fp, '/* Scheme for table ' . $schema[0]['Table'] . " */\n");
+            fwrite($fp, $schema[0]['Create Table'] . ";\n\n");
             if (!in_array($schema[0]['Table'], $ignoreInsertTable)) {
-                $data = Db::getInstance()->executeS('SELECT * FROM `'.$schema[0]['Table'].'`', false);
+                $data = Db::getInstance()->executeS('SELECT * FROM `' . $schema[0]['Table'] . '`', false);
                 $sizeof = DB::getInstance()->NumRows();
                 $lines = explode("\n", $schema[0]['Create Table']);
 
                 if ($data && $sizeof > 0) {
                     // Export the table data
-                    fwrite($fp, 'INSERT INTO `'.$schema[0]['Table']."` VALUES\n");
+                    fwrite($fp, 'INSERT INTO `' . $schema[0]['Table'] . "` VALUES\n");
                     $i = 1;
                     while ($row = DB::getInstance()->nextRow($data)) {
                         $s = '(';
                         foreach ($row as $field => $value) {
-                            $tmp = "'".pSQL($value, true)."',";
+                            $tmp = "'" . pSQL($value, true) . "',";
                             if ($tmp != "'',") {
                                 $s .= $tmp;
                             } else {
                                 foreach ($lines as $line) {
-                                    if (strpos($line, '`'.$field.'`') !== false) {
+                                    if (strpos($line, '`' . $field . '`') !== false) {
                                         if (preg_match('/(.*NOT NULL.*)/Ui', $line)) {
                                             $s .= "'',";
                                         } else {
@@ -104,7 +113,7 @@ class LengowBackup extends Backup
                         }
                         $s = rtrim($s, ',');
                         if ($i % 200 == 0 && $i < $sizeof) {
-                            $s .= ");\nINSERT INTO `".$schema[0]['Table']."` VALUES\n";
+                            $s .= ");\nINSERT INTO `" . $schema[0]['Table'] . "` VALUES\n";
                         } elseif ($i < $sizeof) {
                             $s .= "),\n";
                         } else {

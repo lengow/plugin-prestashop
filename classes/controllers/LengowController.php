@@ -73,7 +73,7 @@ class LengowController
         $this->context->smarty->assign('lengowVersion', $this->module->version);
         $this->isNewMerchant = LengowMain::isNewMerchant();
         $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
-        $this->merchantStatus =  LengowSync::getStatusAccount();
+        $this->merchantStatus = LengowSync::getStatusAccount();
         $this->context->smarty->assign('merchantStatus', $this->merchantStatus);
         $this->locale = new LengowTranslation();
         $this->context->smarty->assign('lengow_link', new LengowLink());
@@ -118,7 +118,7 @@ class LengowController
                 $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
                 echo $module->display(
                     _PS_MODULE_LENGOW_DIR_,
-                    'views/templates/admin/'.$path.'/helpers/view/view.tpl'
+                    'views/templates/admin/' . $path . '/helpers/view/view.tpl'
                 );
                 echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/footer.tpl');
             }
@@ -134,6 +134,6 @@ class LengowController
         $lengowMain = new LengowMain();
         $className = get_class($this);
         $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
-        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/'.$path.'/helpers/view/view.tpl');
+        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/' . $path . '/helpers/view/view.tpl');
     }
 }

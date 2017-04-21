@@ -136,7 +136,7 @@ class LengowFeedController extends LengowController
                                 $data['tooltip'] = $this->locale->t('product.screen.shop_not_index');
                             } else {
                                 $data['tooltip'] = $this->locale->t('product.screen.shop_last_indexation') .
-                                    ' : '.strftime("%A %e %B %Y @ %R", strtotime($syncDate));
+                                    ' : ' . strftime("%A %e %B %Y @ %R", strtotime($syncDate));
                             }
                             $data['original_title'] = $this->locale->t('product.screen.lengow_shop_sync');
                         } else {
@@ -145,9 +145,9 @@ class LengowFeedController extends LengowController
                                 $data['tooltip'] = $this->locale->t('product.screen.lengow_shop_no_sync');
                                 $data['original_title'] = $this->locale->t('product.screen.sync_your_shop');
                                 $data['header_title'] = '<a href="'
-                                    .$link->getAbsoluteAdminLink('AdminLengowHome')
-                                    .'&isSync=true">
-                                    <span>'.$this->locale->t('product.screen.sync_your_shop').'</span></a>';
+                                    . $link->getAbsoluteAdminLink('AdminLengowHome')
+                                    . '&isSync=true">
+                                    <span>' . $this->locale->t('product.screen.sync_your_shop') . '</span></a>';
                             } else {
                                 $data['header_title'] = $this->locale->t('product.screen.lengow_shop_no_sync');
                             }
@@ -173,7 +173,7 @@ class LengowFeedController extends LengowController
             if ($currentShop = Shop::getContextShopID()) {
                 $results = array(array('id_shop' => $currentShop));
             } else {
-                $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+                $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
                 $results = Db::getInstance()->ExecuteS($sql);
             }
         }
@@ -181,23 +181,23 @@ class LengowFeedController extends LengowController
             $shop = new LengowShop($row['id_shop']);
             $lengowExport = new LengowExport(array("shop_id" => $shop->id));
             $shopCollection[] = array(
-                'shop'                 => $shop,
-                'link'                 => LengowMain::getExportUrl($shop->id),
-                'total_product'        => $lengowExport->getTotalProduct(),
+                'shop' => $shop,
+                'link' => LengowMain::getExportUrl($shop->id),
+                'total_product' => $lengowExport->getTotalProduct(),
                 'total_export_product' => $lengowExport->getTotalExportProduct(),
-                'last_export'          => LengowConfiguration::get(
+                'last_export' => LengowConfiguration::get(
                     'LENGOW_LAST_EXPORT',
                     null,
                     null,
                     $shop->id
                 ),
-                'option_selected'      => LengowConfiguration::get(
+                'option_selected' => LengowConfiguration::get(
                     'LENGOW_EXPORT_SELECTION_ENABLED',
                     null,
                     null,
                     $shop->id
                 ),
-                'list'                 => $this->buildTable($shop->id)
+                'list' => $this->buildTable($shop->id)
             );
         }
         $this->context->smarty->assign('shopCollection', $shopCollection);
@@ -233,59 +233,59 @@ class LengowFeedController extends LengowController
         $fieldsList = array();
 
         $fieldsList['id_product'] = array(
-            'title'         => $this->locale->t('product.table.id_product'),
-            'class'         => 'center',
-            'width'         => '5%',
-            'filter'        => true,
-            'filter_order'  => true,
-            'filter_key'    => 'p.id_product',
+            'title' => $this->locale->t('product.table.id_product'),
+            'class' => 'center',
+            'width' => '5%',
+            'filter' => true,
+            'filter_order' => true,
+            'filter_key' => 'p.id_product',
         );
         $fieldsList['image'] = array(
-            'title'         => $this->locale->t('product.table.image'),
-            'class'         => 'center',
-            'image'         => 'p',
-            'width'         => '5%',
+            'title' => $this->locale->t('product.table.image'),
+            'class' => 'center',
+            'image' => 'p',
+            'width' => '5%',
         );
         $fieldsList['name'] = array(
-            'title'             => $this->locale->t('product.table.name'),
-            'class'             => 'feed_name',
-            'filter'            => true,
-            'filter_order'      => true,
-            'filter_key'        => 'pl.name',
-            'width'             => '20%',
-            'display_callback'  => 'LengowFeedController::displayLink',
+            'title' => $this->locale->t('product.table.name'),
+            'class' => 'feed_name',
+            'filter' => true,
+            'filter_order' => true,
+            'filter_key' => 'pl.name',
+            'width' => '20%',
+            'display_callback' => 'LengowFeedController::displayLink',
         );
         $fieldsList['reference'] = array(
-            'title'             => $this->locale->t('product.table.reference'),
-            'class'             => 'left',
-            'width'             => '14%',
-            'filter'            => true,
-            'filter_order'      => true,
-            'filter_key'        => 'p.reference',
-            'display_callback'  => 'LengowFeedController::displayLink',
+            'title' => $this->locale->t('product.table.reference'),
+            'class' => 'left',
+            'width' => '14%',
+            'filter' => true,
+            'filter_order' => true,
+            'filter_key' => 'p.reference',
+            'display_callback' => 'LengowFeedController::displayLink',
         );
         $fieldsList['category_name'] = array(
-            'title'         => $this->locale->t('product.table.category_name'),
-            'width'         => '14%',
-            'filter'        => true,
-            'filter_order'  => true,
-            'filter_key'    => 'cl.name',
+            'title' => $this->locale->t('product.table.category_name'),
+            'width' => '14%',
+            'filter' => true,
+            'filter_order' => true,
+            'filter_key' => 'cl.name',
         );
         $fieldsList['price'] = array(
-            'title'         => $this->locale->t('product.table.price'),
-            'width'         => '9%',
-            'filter_order'  => true,
-            'type'          => 'price',
-            'class'         => 'left',
-            'filter_key'    => 'p.price'
+            'title' => $this->locale->t('product.table.price'),
+            'width' => '9%',
+            'filter_order' => true,
+            'type' => 'price',
+            'class' => 'left',
+            'filter_key' => 'p.price'
         );
         $fieldsList['price_final'] = array(
-            'title'         => $this->locale->t('product.table.final_price'),
-            'width'         => '7%',
-            'type'          => 'price',
-            'class'         => 'left',
-            'havingFilter'  => true,
-            'orderby'       => false
+            'title' => $this->locale->t('product.table.final_price'),
+            'width' => '7%',
+            'type' => 'price',
+            'class' => 'left',
+            'havingFilter' => true,
+            'orderby' => false
         );
         if (_PS_VERSION_ >= '1.5') {
             $quantityFilterKey = 'sav.quantity';
@@ -293,20 +293,20 @@ class LengowFeedController extends LengowController
             $quantityFilterKey = 'p.quantity';
         }
         $fieldsList['quantity'] = array(
-            'title'         => $this->locale->t('product.table.quantity'),
-            'width'         => '7%',
-            'filter_order'  => true,
-            'class'         => 'left',
-            'filter_key'    => $quantityFilterKey,
-            'orderby'       => true,
+            'title' => $this->locale->t('product.table.quantity'),
+            'width' => '7%',
+            'filter_order' => true,
+            'class' => 'left',
+            'filter_key' => $quantityFilterKey,
+            'orderby' => true,
         );
         $fieldsList['id_lengow_product'] = array(
-            'title'         => $this->locale->t('product.table.lengow_status'),
-            'width'         => '10%',
-            'class'         => 'center no-link',
-            'type'          => 'switch_product',
-            'filter_order'  => true,
-            'filter_key'    => 'id_lengow_product'
+            'title' => $this->locale->t('product.table.lengow_status'),
+            'width' => '10%',
+            'class' => 'center no-link',
+            'type' => 'switch_product',
+            'filter_order' => true,
+            'filter_key' => 'id_lengow_product'
         );
 
         $join = array();
@@ -322,33 +322,33 @@ class LengowFeedController extends LengowController
             "cl.name as category_name",
             "'' as search"
         );
-        $from = 'FROM '._DB_PREFIX_.'product p';
+        $from = 'FROM ' . _DB_PREFIX_ . 'product p';
 
-        $join[] = ' INNER JOIN '._DB_PREFIX_.'product_lang pl ON (pl.id_product = p.id_product
-            AND pl.id_lang = 1 '.(_PS_VERSION_ < '1.5' ? '': ' AND pl.id_shop = '.(int)$idShop).')';
-        $join[] = ' LEFT JOIN '._DB_PREFIX_.'lengow_product lp ON (lp.id_product = p.id_product
-            AND lp.id_shop = '.(int)$idShop.' ) ';
+        $join[] = ' INNER JOIN ' . _DB_PREFIX_ . 'product_lang pl ON (pl.id_product = p.id_product
+            AND pl.id_lang = 1 ' . (_PS_VERSION_ < '1.5' ? '' : ' AND pl.id_shop = ' . (int)$idShop) . ')';
+        $join[] = ' LEFT JOIN ' . _DB_PREFIX_ . 'lengow_product lp ON (lp.id_product = p.id_product
+            AND lp.id_shop = ' . (int)$idShop . ' ) ';
         if (_PS_VERSION_ >= '1.5') {
-            $join[] = 'INNER JOIN `'._DB_PREFIX_.'product_shop` ps ON (p.`id_product` = ps.`id_product`
+            $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'product_shop` ps ON (p.`id_product` = ps.`id_product`
                 AND ps.id_shop = ' . (int)$idShop . ') ';
-            $join[] = ' LEFT JOIN '._DB_PREFIX_.'stock_available sav ON (sav.id_product = p.id_product
+            $join[] = ' LEFT JOIN ' . _DB_PREFIX_ . 'stock_available sav ON (sav.id_product = p.id_product
                 AND sav.id_product_attribute = 0 AND sav.id_shop = ' . (int)$idShop . ')';
         }
         if (_PS_VERSION_ >= '1.5') {
             if (Shop::isFeatureActive()) {
-                $join[] = 'LEFT JOIN `'._DB_PREFIX_.'category_lang` cl
+                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
                     ON (ps.`id_category_default` = cl.`id_category`
                     AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = ' . (int)$idShop . ')';
-                $join[] = 'LEFT JOIN `'._DB_PREFIX_.'shop` shop ON (shop.id_shop = ' . (int)$idShop . ') ';
+                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (shop.id_shop = ' . (int)$idShop . ') ';
             } else {
-                $join[] = 'LEFT JOIN `'._DB_PREFIX_.'category_lang` cl
+                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
                     ON (p.`id_category_default` = cl.`id_category`
                     AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = 1)';
             }
             $select[] = ' sav.quantity ';
             $where[] = ' ps.active = 1 ';
         } else {
-            $join[] = 'LEFT JOIN `'._DB_PREFIX_.'category_lang` cl ON (p.`id_category_default` = cl.`id_category`
+            $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl ON (p.`id_category_default` = cl.`id_category`
                 AND pl.`id_lang` = cl.`id_lang`)';
             $select[] = ' p.quantity ';
             $where[] = ' p.active = 1 ';
@@ -360,21 +360,21 @@ class LengowFeedController extends LengowController
 
         $this->list = new LengowList(
             array(
-                'id'            => 'shop_'.$idShop,
-                'fields_list'   => $fieldsList,
-                'identifier'    => 'id_product',
-                'selection'     => true,
-                'controller'    => 'AdminLengowFeed',
-                'shop_id'       => $idShop,
-                'current_page'  => $currentPage,
-                'ajax'          => true,
-                'order_value'   => $orderValue,
-                'order_column'  => $orderColumn,
-                'sql'           => array(
+                'id' => 'shop_' . $idShop,
+                'fields_list' => $fieldsList,
+                'identifier' => 'id_product',
+                'selection' => true,
+                'controller' => 'AdminLengowFeed',
+                'shop_id' => $idShop,
+                'current_page' => $currentPage,
+                'ajax' => true,
+                'order_value' => $orderValue,
+                'order_column' => $orderColumn,
+                'sql' => array(
                     'select' => $select,
-                    'from'   => $from,
-                    'join'   => $join,
-                    'where'  => $where,
+                    'from' => $from,
+                    'join' => $join,
+                    'where' => $where,
                 )
             )
         );
@@ -431,8 +431,8 @@ class LengowFeedController extends LengowController
                         $idImage = $coverImage['id_image'];
                         $imageProduct = new Image($idImage);
                         $collection[$i]['image'] = cacheImage(
-                            _PS_IMG_DIR_.'p/'.$imageProduct->getExistingImgPath().'.jpg',
-                            'product_mini_'.(int)($productId).'.jpg',
+                            _PS_IMG_DIR_ . 'p/' . $imageProduct->getExistingImgPath() . '.jpg',
+                            'product_mini_' . (int)($productId) . '.jpg',
                             45,
                             'jpg'
                         );
@@ -441,10 +441,11 @@ class LengowFeedController extends LengowController
                     $coverImage = Product::getCover($collection[$i]['id_product'], $tempContext);
                     if ($coverImage) {
                         $idImage = $coverImage['id_image'];
-                        $pathToImage = _PS_IMG_DIR_.'p/'.Image::getImgFolderStatic($idImage).(int)$idImage.'.jpg';
+                        $pathToImage = _PS_IMG_DIR_ . 'p/' . Image::getImgFolderStatic($idImage)
+                            . (int)$idImage . '.jpg';
                         $collection[$i]['image'] = ImageManager::thumbnail(
                             $pathToImage,
-                            'product_mini_'.$collection[$i]['id_product'].'_'.$idShop.'.jpg',
+                            'product_mini_' . $collection[$i]['id_product'] . '_' . $idShop . '.jpg',
                             45,
                             'jpg'
                         );
@@ -455,49 +456,49 @@ class LengowFeedController extends LengowController
         $this->list->updateCollection($collection);
         $paginationBlock = $this->list->renderPagination(array('nav_class' => 'lgw-pagination'));
         $lengowLink = new LengowLink();
-        $html= '<div class="lengow_table_top">';
-        $html.= '<div class="lengow_toolbar">';
+        $html = '<div class="lengow_table_top">';
+        $html .= '<div class="lengow_toolbar">';
         if (!$this->toolbox) {
             $messageRemoveConfirmation = $this->locale->t(
                 'product.screen.remove_confirmation',
                 array('nb' => $this->list->getTotal())
             );
-            $html.= '<a href="#" data-id_shop="'.$idShop.'" style="display:none;"
-                data-href="'.$lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true).'"
-                data-message="'.$messageRemoveConfirmation.'"
+            $html .= '<a href="#" data-id_shop="' . $idShop . '" style="display:none;"
+                data-href="' . $lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true) . '"
+                data-message="' . $messageRemoveConfirmation . '"
                 data-action="lengow_export_action"
                 data-export-action="lengow_remove_from_export"
                 class="lgw-btn lgw-btn-red lengow_remove_from_export">
-                <i class="fa fa-minus"></i> '.$this->locale->t('product.screen.remove_from_export').'</a>';
+                <i class="fa fa-minus"></i> ' . $this->locale->t('product.screen.remove_from_export') . '</a>';
             $messageAddConfirmation = $this->locale->t(
                 'product.screen.add_confirmation',
                 array('nb' => $this->list->getTotal())
             );
-            $html.= '<a href="#" data-id_shop="'.$idShop.'" style="display:none;"
-                data-href="'.$lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true).'"
-                data-message="'.$messageAddConfirmation.'"
+            $html .= '<a href="#" data-id_shop="' . $idShop . '" style="display:none;"
+                data-href="' . $lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true) . '"
+                data-message="' . $messageAddConfirmation . '"
                 data-action="lengow_export_action"
                 data-export-action="lengow_add_to_export"
                 class="lgw-btn lengow_add_to_export">
-                <i class="fa fa-plus"></i> '.$this->locale->t('product.screen.add_from_export').'</a>';
-            $html.= '<div class="lengow_select_all_shop lgw-container" style="display:none;">';
-            $html.= '<input type="checkbox" id="select_all_shop_'.$idShop.'"/>&nbsp;&nbsp;';
-            $html.= '<span>'.$this->locale->t(
+                <i class="fa fa-plus"></i> ' . $this->locale->t('product.screen.add_from_export') . '</a>';
+            $html .= '<div class="lengow_select_all_shop lgw-container" style="display:none;">';
+            $html .= '<input type="checkbox" id="select_all_shop_' . $idShop . '"/>&nbsp;&nbsp;';
+            $html .= '<span>' . $this->locale->t(
                 'product.screen.select_all_products',
                 array('nb' => $this->list->getTotal())
             );
-            $html.= '</span>';
-            $html.= '</div>';
+            $html .= '</span>';
+            $html .= '</div>';
         }
-        $html.= '</div>';
-        $html.= $paginationBlock;
-        $html.= '<div class="clearfix"></div>';
-        $html.= '</div>';
-        $html.= $this->list->display();
-        $html.= '<div class="lengow_table_bottom">';
-        $html.= $paginationBlock;
-        $html.= '<div class="clearfix"></div>';
-        $html.= '</div>';
+        $html .= '</div>';
+        $html .= $paginationBlock;
+        $html .= '<div class="clearfix"></div>';
+        $html .= '</div>';
+        $html .= $this->list->display();
+        $html .= '<div class="lengow_table_bottom">';
+        $html .= $paginationBlock;
+        $html .= '<div class="clearfix"></div>';
+        $html .= '</div>';
 
         return $html;
     }
@@ -505,9 +506,9 @@ class LengowFeedController extends LengowController
     /**
      * Get product link
      *
-     * @param string $key   row key
+     * @param string $key row key
      * @param string $value row value
-     * @param array  $item  item values
+     * @param array $item item values
      *
      * @return string
      */
@@ -520,14 +521,15 @@ class LengowFeedController extends LengowController
         if ($item['id_product']) {
             if (!$toolbox) {
                 if (_PS_VERSION_ < '1.7') {
-                    return '<a href="'.
-                    $link->getAbsoluteAdminLink((_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'), false, true).
-                    '&updateproduct&id_product='.$item['id_product']
-                    .'" target="_blank">'.$value.'</a>';
+                    return '<a href="' . $link->getAbsoluteAdminLink(
+                        (_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'),
+                        false,
+                        true
+                    ) . '&updateproduct&id_product=' . $item['id_product'] . '" target="_blank">' . $value . '</a>';
                 } else {
                     return '<a href="' .
-                        $link->getAdminLink('AdminProducts', true, array('id_product' => $item['id_product'])).
-                        '" target="_blank">'.$value.'</a>';
+                    $link->getAdminLink('AdminProducts', true, array('id_product' => $item['id_product'])) .
+                    '" target="_blank">' . $value . '</a>';
                 }
             } else {
                 return $value;

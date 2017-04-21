@@ -33,14 +33,14 @@ class LengowPaymentModule extends PaymentModule
      * Create Prestashop order
      * Overrides PaymentModule::validateOrder()
      *
-     * @param integer $idCart               Prestashop cart id
-     * @param integer $idOrderState         Prestashop order state id
-     * @param string  $paymentMethod        name of the payment method
-     * @param string  $message              order message
-     * @param array   $lengowProducts       list of Lengow products
-     * @param float   $lengowShippingCosts  order shipping costs
-     * @param float   $processingFees       order processing fees
-     * @param string  $lengowTrackingNumber Lengow carrier tracking number
+     * @param integer $idCart Prestashop cart id
+     * @param integer $idOrderState Prestashop order state id
+     * @param string $paymentMethod name of the payment method
+     * @param string $message order message
+     * @param array $lengowProducts list of Lengow products
+     * @param float $lengowShippingCosts order shipping costs
+     * @param float $processingFees order processing fees
+     * @param string $lengowTrackingNumber Lengow carrier tracking number
      *
      * @throws LengowException cannot load order status / payment module not active / cart cannot be loaded
      *                         delivery country not active / product is not listed / unable to save order
@@ -141,7 +141,7 @@ class LengowPaymentModule extends PaymentModule
                     foreach ($data['package_list'] as $idPackage) {
                         // Force id carrier when carrier is not found
                         if ($idCarrier != $this->context->cart->id_carrier) {
-                            $idCarrier =  $this->context->cart->id_carrier;
+                            $idCarrier = $this->context->cart->id_carrier;
                         }
                         // Rewrite the id_warehouse
                         if (method_exists($this->context->cart, 'getPackageIdWarehouse')) {
@@ -391,7 +391,7 @@ class LengowPaymentModule extends PaymentModule
                     $customerMessage->private = 0;
                     $customerMessage->add();
                 }
-                
+
                 foreach ($this->context->cart->getProducts() as $product) {
                     if ($orderStatus->logable) {
                         ProductSale::addProductSale((int)$product['id_product'], (int)$product['cart_quantity']);
@@ -454,20 +454,20 @@ class LengowPaymentModule extends PaymentModule
 
         return $orderList;
     }
-  
+
     /**
      * Create Prestashop order for 1.4 version
      * Overrides PaymentModule::validateOrder() for 1.4 version
      *
-     * @param integer $idCart               Prestashop cart id
-     * @param integer $idOrderState         Prestashop order state id
-     * @param float   $amountPaid           total amount paid
-     * @param string  $paymentMethod        name of the payment method
-     * @param string  $message              order message
-     * @param array   $lengowProducts       list of Lengow products
-     * @param float   $lengowShippingCosts  order shipping costs
-     * @param float   $processingFees       order processing fees
-     * @param string  $lengowTrackingNumber Lengow carrier tracking number
+     * @param integer $idCart Prestashop cart id
+     * @param integer $idOrderState Prestashop order state id
+     * @param float $amountPaid total amount paid
+     * @param string $paymentMethod name of the payment method
+     * @param string $message order message
+     * @param array $lengowProducts list of Lengow products
+     * @param float $lengowShippingCosts order shipping costs
+     * @param float $processingFees order processing fees
+     * @param string $lengowTrackingNumber Lengow carrier tracking number
      *
      * @throws LengowException product is not listed / cannot load order status / cart cannot be loaded
      *                         order creation failed
@@ -519,7 +519,7 @@ class LengowPaymentModule extends PaymentModule
             $productList = array();
             foreach ($products as &$product) {
                 $sku = $product['id_product'];
-                $sku .= empty($product['id_product_attribute']) ? '' : '_'.$product['id_product_attribute'];
+                $sku .= empty($product['id_product_attribute']) ? '' : '_' . $product['id_product_attribute'];
                 if (isset($lengowProducts[$sku])) {
                     $product['price_wt'] = $lengowProducts[$sku]['price_unit'];
                     $product['price'] = Tools::ps_round(
@@ -586,7 +586,7 @@ class LengowPaymentModule extends PaymentModule
                 }
                 // Insert products from cart into order_detail table
                 $db = Db::getInstance();
-                $query = 'INSERT INTO `'._DB_PREFIX_.'order_detail`
+                $query = 'INSERT INTO `' . _DB_PREFIX_ . 'order_detail`
 					(`id_order`,
                     `product_id`,
                     `product_attribute_id`,
@@ -655,40 +655,40 @@ class LengowPaymentModule extends PaymentModule
                         $ecotaxTaxRate = Tax::getProductEcotaxRate($order->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
                     }
                     $productName = (isset($product['attributes']) && $product['attributes'] != null)
-                        ? ' - '.$product['attributes']
+                        ? ' - ' . $product['attributes']
                         : '';
-                    $query .= '('.(int)($order->id).',
-						'.(int)($product['id_product']).',
-						'.(isset($product['id_product_attribute'])
+                    $query .= '(' . (int)($order->id) . ',
+						' . (int)($product['id_product']) . ',
+						' . (isset($product['id_product_attribute'])
                             ? (int)($product['id_product_attribute'])
                             : 'null'
-                        ).',
-						\''.pSQL($product['name'].$productName).'\',
-						'.(int)($product['cart_quantity']).',
-						'.$quantityInStock.',
-						'.(float)$product['price'].',
-						'.pSQL('0.00').',
-						'.(float)(Group::getReduction((int)($order->id_customer))).',
-						'.pSQL('0.00').',
-						'.pSQL('0').',
-						'.(empty($product['ean13']) ? 'null' : '\''.pSQL($product['ean13']).'\'').',
-						'.(empty($product['upc']) ? 'null' : '\''.pSQL($product['upc']).'\'').',
-						'.(empty($product['reference']) ? 'null' : '\''.pSQL($product['reference']).'\'') . ',
-						'.(empty($product['supplier_reference'])
+                        ) . ',
+						\'' . pSQL($product['name'] . $productName) . '\',
+						' . (int)($product['cart_quantity']) . ',
+						' . $quantityInStock . ',
+						' . (float)$product['price'] . ',
+						' . pSQL('0.00') . ',
+						' . (float)(Group::getReduction((int)($order->id_customer))) . ',
+						' . pSQL('0.00') . ',
+						' . pSQL('0') . ',
+						' . (empty($product['ean13']) ? 'null' : '\'' . pSQL($product['ean13']) . '\'') . ',
+						' . (empty($product['upc']) ? 'null' : '\'' . pSQL($product['upc']) . '\'') . ',
+						' . (empty($product['reference']) ? 'null' : '\'' . pSQL($product['reference']) . '\'') . ',
+						' . (empty($product['supplier_reference'])
                             ? 'null'
-                            : '\''.pSQL($product['supplier_reference']).'\''
-                        ).',
-						'.(float)($product['id_product_attribute']
+                            : '\'' . pSQL($product['supplier_reference']) . '\''
+                        ) . ',
+						' . (float)($product['id_product_attribute']
                             ? $product['weight_attribute']
                             : $product['weight']
-                        ).',
-						\''.(empty($taxRate) ? '' : pSQL($product['tax'])).'\',
-						'.(float)($taxRate).',
-						'.(float)Tools::convertPrice((float)$product['ecotax'], (int)$order->id_currency).',
-						'.(float)$ecotaxTaxRate.',
-						'.pSQL('0').',
-						\''.pSQL($deadline).'\',
-						\''.pSQL($downloadHash).'\'),';
+                        ) . ',
+						\'' . (empty($taxRate) ? '' : pSQL($product['tax'])) . '\',
+						' . (float)($taxRate) . ',
+						' . (float)Tools::convertPrice((float)$product['ecotax'], (int)$order->id_currency) . ',
+						' . (float)$ecotaxTaxRate . ',
+						' . pSQL('0') . ',
+						\'' . pSQL($deadline) . '\',
+						\'' . pSQL($downloadHash) . '\'),';
                 } // end foreach ($products)
                 $query = rtrim($query, ',');
                 $db->Execute($query);
@@ -699,7 +699,7 @@ class LengowPaymentModule extends PaymentModule
                     $message->id_order = (int)$order->id;
                     $message->update();
                 }
-                
+
                 $orderStatus = new OrderState((int)$idOrderState, (int)$order->id_lang);
                 if (Validate::isLoadedObject($orderStatus)) {
                     $products = $this->context->cart->getProducts();

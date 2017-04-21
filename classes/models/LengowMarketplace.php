@@ -36,12 +36,12 @@ class LengowMarketplace
      * @var array all marketplaces allowed for an account ID
      */
     public static $marketplaces = array();
-    
+
     /**
      * @var mixed the current marketplace
      */
     public $marketplace;
-    
+
     /**
      * @var string the code of the marketplace
      */
@@ -61,22 +61,22 @@ class LengowMarketplace
      * @var integer ID Shop
      */
     public $idShop;
-    
+
     /**
      * @var boolean if the marketplace is loaded
      */
     public $isLoaded = false;
-    
+
     /**
      * @var array Lengow states => marketplace states
      */
     public $statesLengow = array();
-    
+
     /**
      * @var array marketplace states => Lengow states
      */
     public $states = array();
-    
+
     /**
      * @var array all possible actions of the marketplace
      */
@@ -86,20 +86,20 @@ class LengowMarketplace
      * @var array all possible values for actions of the marketplace
      */
     public $argValues = array();
-   
+
     /**
      * @var array all carriers of the marketplace
      */
     public $carriers = array();
 
     /**
-    * Construct a new Marketplace instance with marketplace API
-    *
-    * @param string  $name   name of the marketplace
-    * @param integer $idShop Prestashop shop id
-    *
-    * @throws LengowException marketplace not present
-    */
+     * Construct a new Marketplace instance with marketplace API
+     *
+     * @param string $name name of the marketplace
+     * @param integer $idShop Prestashop shop id
+     *
+     * @throws LengowException marketplace not present
+     */
     public function __construct($name, $idShop = null)
     {
         $this->idShop = $idShop;
@@ -149,9 +149,9 @@ class LengowMarketplace
                         ? (bool)$argDescription->accept_free_values
                         : true;
                     $this->argValues[(string)$argKey] = array(
-                        'default_value'      => $defaultValue,
+                        'default_value' => $defaultValue,
                         'accept_free_values' => $acceptFreeValue,
-                        'valid_values'       => $validValues
+                        'valid_values' => $validValues
                     );
                 }
             }
@@ -176,22 +176,22 @@ class LengowMarketplace
     }
 
     /**
-    * If marketplace exist in xml configuration file
-    *
-    * @return boolean
-    */
+     * If marketplace exist in xml configuration file
+     *
+     * @return boolean
+     */
     public function isLoaded()
     {
         return $this->isLoaded;
     }
 
     /**
-    * Get the real lengow's state
-    *
-    * @param string $name marketplace order state
-    *
-    * @return string|false
-    */
+     * Get the real lengow's state
+     *
+     * @param string $name marketplace order state
+     *
+     * @return string|false
+     */
     public function getStateLengow($name)
     {
         if (array_key_exists($name, $this->statesLengow)) {
@@ -201,12 +201,12 @@ class LengowMarketplace
     }
 
     /**
-    * Get the marketplace's state
-    *
-    * @param string $name Lengow order state
-    *
-    * @return string|false
-    */
+     * Get the marketplace's state
+     *
+     * @param string $name Lengow order state
+     *
+     * @return string|false
+     */
     public function getState($name)
     {
         if (array_key_exists($name, $this->states)) {
@@ -216,12 +216,12 @@ class LengowMarketplace
     }
 
     /**
-    * Get the action with parameters
-    *
-    * @param string $name action's name
-    *
-    * @return array|false
-    */
+     * Get the action with parameters
+     *
+     * @param string $name action's name
+     *
+     * @return array|false
+     */
     public function getAction($name)
     {
         if (array_key_exists($name, $this->actions)) {
@@ -231,12 +231,12 @@ class LengowMarketplace
     }
 
     /**
-    * Get the default value for argument
-    *
-    * @param string $name argument's name
-    *
-    * @return string|false
-    */
+     * Get the default value for argument
+     *
+     * @param string $name argument's name
+     *
+     * @return string|false
+     */
     public function getDefaultValue($name)
     {
         if (array_key_exists($name, $this->argValues)) {
@@ -274,9 +274,9 @@ class LengowMarketplace
     /**
      * Call API action and create action in lengow_actions table
      *
-     * @param string      $action      Lengow order actions type (ship or cancel)
-     * @param LengowOrder $order       Lengow order instance
-     * @param string      $idOrderLine Lengow order line id
+     * @param string $action Lengow order actions type (ship or cancel)
+     * @param LengowOrder $order Lengow order instance
+     * @param string $idOrderLine Lengow order line id
      *
      * @throws LengowException marketplace action not present / shop id required / marketplace name required
      *                         argument is required / action not created
@@ -347,7 +347,7 @@ class LengowMarketplace
                             );
                         }
                         if ($order->lengowCarrier != '') {
-                            $carrierName = (string) $order->lengowCarrier;
+                            $carrierName = (string)$order->lengowCarrier;
                         } else {
                             $carrier = new Carrier($order->id_carrier);
                             $carrierName = $carrier->name;
@@ -366,7 +366,7 @@ class LengowMarketplace
                             // Add default value if tracking url is empty
                             if (Tools::strlen($trackingUrl) == 0) {
                                 $defaultValue = $this->getDefaultValue((string)$arg);
-                                $trackingUrl = $defaultValue ? $defaultValue : $arg.' not available';
+                                $trackingUrl = $defaultValue ? $defaultValue : $arg . ' not available';
                             }
                             $params[$arg] = $trackingUrl;
                         }
@@ -379,7 +379,7 @@ class LengowMarketplace
                         break;
                     default:
                         $defaultValue = $this->getDefaultValue((string)$arg);
-                        $paramValue = $defaultValue ? $defaultValue : $arg.' not available';
+                        $paramValue = $defaultValue ? $defaultValue : $arg . ' not available';
                         $params[$arg] = $paramValue;
                         break;
                 }
@@ -422,20 +422,20 @@ class LengowMarketplace
                 foreach ($result->results as $row) {
                     $update = LengowAction::updateAction(
                         array(
-                            'id_order'    => $order->id,
+                            'id_order' => $order->id,
                             'action_type' => $action,
-                            'action_id'   => $row->id,
-                            'parameters'  => $params
+                            'action_id' => $row->id,
+                            'parameters' => $params
                         )
                     );
                     // if update doesn't work, create new action
                     if (!$update) {
                         LengowAction::createAction(
                             array(
-                                'id_order'        => $order->id,
-                                'action_type'     => $action,
-                                'action_id'       => $row->id,
-                                'parameters'      => $params,
+                                'id_order' => $order->id,
+                                'action_type' => $action,
+                                'action_id' => $row->id,
+                                'parameters' => $params,
                                 'marketplace_sku' => $order->lengowMarketplaceSku
                             )
                         );
@@ -452,10 +452,10 @@ class LengowMarketplace
                     if (isset($result->id)) {
                         LengowAction::createAction(
                             array(
-                                'id_order'        => $order->id,
-                                'action_type'     => $action,
-                                'action_id'       => $result->id,
-                                'parameters'      => $params,
+                                'id_order' => $order->id,
+                                'action_type' => $action,
+                                'action_id' => $result->id,
+                                'parameters' => $params,
                                 'marketplace_sku' => $order->lengowMarketplaceSku
                             )
                         );
@@ -471,7 +471,7 @@ class LengowMarketplace
                 // Create log for call action
                 $paramList = false;
                 foreach ($params as $param => $value) {
-                    $paramList.= !$paramList ? '"'.$param.'": '.$value : ' -- "'.$param.'": '.$value;
+                    $paramList .= !$paramList ? '"' . $param . '": ' . $value : ' -- "' . $param . '": ' . $value;
                 }
                 LengowMain::log(
                     'API-OrderAction',
@@ -484,7 +484,7 @@ class LengowMarketplace
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[Prestashop Error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
+            $errorMessage = '[Prestashop Error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
         }
         if (isset($errorMessage)) {
             if ($order->lengowProcessState != LengowOrder::PROCESS_STATE_FINISH) {

@@ -87,10 +87,10 @@ class LengowFeed
     /**
      * Construct
      *
-     * @param boolean $stream   export streaming or in a file
-     * @param string  $format   export format
-     * @param boolean $legacy   export legacy field or not
-     * @param string  $shopName Prestashop shop name
+     * @param boolean $stream export streaming or in a file
+     * @param string $format export format
+     * @param boolean $legacy export legacy field or not
+     * @param string $shopName Prestashop shop name
      *
      */
     public function __construct($stream, $format, $legacy, $shopName = null)
@@ -115,8 +115,8 @@ class LengowFeed
     public function initExportFile()
     {
         $sep = DIRECTORY_SEPARATOR;
-        $this->exportFolder = self::$lengowExportFolder.$sep.$this->shopFolder;
-        $folderPath = LengowMain::getLengowFolder().$sep.$this->exportFolder;
+        $this->exportFolder = self::$lengowExportFolder . $sep . $this->shopFolder;
+        $folderPath = LengowMain::getLengowFolder() . $sep . $this->exportFolder;
         if (!file_exists($folderPath)) {
             if (!mkdir($folderPath)) {
                 throw new LengowException(
@@ -127,16 +127,16 @@ class LengowFeed
                 );
             }
         }
-        $fileName = 'flux-'.Context::getContext()->language->iso_code.'-'.time().'.'.$this->format;
+        $fileName = 'flux-' . Context::getContext()->language->iso_code . '-' . time() . '.' . $this->format;
         $this->file = new LengowFile($this->exportFolder, $fileName);
     }
 
     /**
      * Write feed
      *
-     * @param string  $type         data type (header, body or footer)
-     * @param array   $data         export data
-     * @param boolean $isFirst      is first product
+     * @param string $type data type (header, body or footer)
+     * @param array $data export data
+     * @param boolean $isFirst is first product
      * @param boolean $maxCharacter max characters for yaml format
      */
     public function write($type, $data = array(), $isFirst = null, $maxCharacter = null)
@@ -176,24 +176,24 @@ class LengowFeed
             case 'csv':
                 $header = '';
                 foreach ($data as $field) {
-                    $header .= self::PROTECTION.$this->formatFields($field).self::PROTECTION.self::CSV_SEPARATOR;
+                    $header .= self::PROTECTION . $this->formatFields($field) . self::PROTECTION . self::CSV_SEPARATOR;
                 }
-                return rtrim($header, self::CSV_SEPARATOR).self::EOL;
+                return rtrim($header, self::CSV_SEPARATOR) . self::EOL;
             case 'xml':
-                return '<?xml version="1.0" encoding="UTF-8"?>'.self::EOL
-                . '<catalog>'.self::EOL;
+                return '<?xml version="1.0" encoding="UTF-8"?>' . self::EOL
+                . '<catalog>' . self::EOL;
             case 'json':
                 return '{"catalog":[';
             case 'yaml':
-                return '"catalog":'.self::EOL;
+                return '"catalog":' . self::EOL;
         }
     }
 
     /**
      * Get feed body
      *
-     * @param array   $data         feed data
-     * @param boolean $isFirst      is first product
+     * @param array $data feed data
+     * @param boolean $isFirst is first product
      * @param integer $maxCharacter max characters for yaml format
      *
      * @return string
@@ -204,16 +204,16 @@ class LengowFeed
             case 'csv':
                 $content = '';
                 foreach ($data as $value) {
-                    $content .= self::PROTECTION.$value.self::PROTECTION.self::CSV_SEPARATOR;
+                    $content .= self::PROTECTION . $value . self::PROTECTION . self::CSV_SEPARATOR;
                 }
-                return rtrim($content, self::CSV_SEPARATOR).self::EOL;
+                return rtrim($content, self::CSV_SEPARATOR) . self::EOL;
             case 'xml':
                 $content = '<product>';
                 foreach ($data as $field => $value) {
                     $field = $this->formatFields($field);
-                    $content .= '<'.$field.'><![CDATA['.$value.']]></'.$field.'>'.self::EOL;
+                    $content .= '<' . $field . '><![CDATA[' . $value . ']]></' . $field . '>' . self::EOL;
                 }
-                $content .= '</product>'.self::EOL;
+                $content .= '</product>' . self::EOL;
                 return $content;
             case 'json':
                 $content = $isFirst ? '' : ',';
@@ -230,11 +230,11 @@ class LengowFeed
                 } else {
                     $maxCharacter = $maxCharacter + 2;
                 }
-                $content = '  '.self::PROTECTION.'product'.self::PROTECTION.':'.self::EOL;
+                $content = '  ' . self::PROTECTION . 'product' . self::PROTECTION . ':' . self::EOL;
                 foreach ($data as $field => $value) {
                     $field = $this->formatFields($field);
-                    $content .= '    '.self::PROTECTION.$field.self::PROTECTION.':';
-                    $content .= $this->indentYaml($field, $maxCharacter).(string)$value.self::EOL;
+                    $content .= '    ' . self::PROTECTION . $field . self::PROTECTION . ':';
+                    $content .= $this->indentYaml($field, $maxCharacter) . (string)$value . self::EOL;
                 }
                 return $content;
         }
@@ -281,7 +281,7 @@ class LengowFeed
     {
         $this->write('footer');
         if (!$this->stream) {
-            $oldFileName = 'flux-'.Context::getContext()->language->iso_code.'.'.$this->format;
+            $oldFileName = 'flux-' . Context::getContext()->language->iso_code . '.' . $this->format;
             $oldFile = new LengowFile($this->exportFolder, $oldFileName);
             if ($oldFile->exists()) {
                 $oldFilePath = $oldFile->getPath();
@@ -293,7 +293,7 @@ class LengowFeed
                 $this->file->fileName = $oldFileName;
             } else {
                 $sep = DIRECTORY_SEPARATOR;
-                $rename = $this->file->rename($this->file->getFolderPath().$sep.$oldFileName);
+                $rename = $this->file->rename($this->file->getFolderPath() . $sep . $oldFileName);
                 $this->file->fileName = $oldFileName;
             }
             return $rename;
@@ -382,7 +382,7 @@ class LengowFeed
                     preg_replace(
                         '/[^a-zA-Z0-9_]+/',
                         '',
-                        str_replace(array(' ','\''), '_', LengowMain::replaceAccentedChars($str))
+                        str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($str))
                     )
                 );
         }
@@ -391,7 +391,7 @@ class LengowFeed
     /**
      * For YAML, add spaces to have good indentation
      *
-     * @param string $name    the field name
+     * @param string $name the field name
      * @param string $maxSize space limit
      *
      * @return string

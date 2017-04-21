@@ -36,7 +36,7 @@ class AdminLengowLegalsController extends ModuleAdminController
         $this->list_no_link = true;
         $this->template = 'layout.tpl';
         $this->display = 'view';
-        
+
         parent::__construct();
 
         $lengowController = new LengowLegalsController();

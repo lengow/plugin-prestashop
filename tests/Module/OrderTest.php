@@ -26,7 +26,7 @@ class OrderTest extends ModuleTestCase
         //load module
         Module::getInstanceByName('lengow');
 
-        LengowMain::$registers =array();
+        LengowMain::$registers = array();
 
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
         Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
@@ -58,14 +58,14 @@ class OrderTest extends ModuleTestCase
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml'
         );
         LengowConnector::$testFixturePath =
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/re_import.json';
-        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/re_import.json';
+        $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
 
-        $this->assertTableContain('lengow_orders', array('id' => '1',  'id_order' => 'NULL'));
+        $this->assertTableContain('lengow_orders', array('id' => '1', 'id_order' => 'NULL'));
         LengowOrder::reImportOrder(1);
-        $this->assertTableContain('lengow_orders', array('id' => '1',  'id_order' => '1'));
+        $this->assertTableContain('lengow_orders', array('id' => '1', 'id_order' => '1'));
     }
 
     /**
@@ -80,31 +80,31 @@ class OrderTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
 
-        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
+        $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
         $order = new LengowOrder(1);
         $this->assertTrue($order->callAction('ship'));
 
-        $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 0));
+        $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 0));
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_queued.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_queued.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
         $this->assertTrue($order->callAction('ship'));
-        $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 1));
+        $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 1));
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_queued.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_queued.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
         $this->assertTrue($order->callAction('ship'));
-        $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 2));
+        $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 2));
 
 
         $fixture = new Fixture();
@@ -126,12 +126,12 @@ class OrderTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
         $fixture->truncate('lengow_marketplace_carrier');
 
-        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Marketplace/require_carrier_args.json';
+        $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Marketplace/require_carrier_args.json';
         LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post.json',
         );
         $order = new LengowOrder(1);
         $this->assertFalse($order->callAction('ship'));
@@ -157,45 +157,45 @@ class OrderTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
 
-        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces_line.json';
+        $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces_line.json';
         LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol1.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol2.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol3.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol1.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol2.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol3.json',
         );
         $order = new LengowOrder(1);
         $this->assertTrue($order->callAction('ship'));
 
-        $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 0));
-        $this->assertTableContain('lengow_actions', array('id' => '2',  'id_order' => '1', 'retry' => 0));
-        $this->assertTableContain('lengow_actions', array('id' => '3',  'id_order' => '1', 'retry' => 0));
+        $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 0));
+        $this->assertTableContain('lengow_actions', array('id' => '2', 'id_order' => '1', 'retry' => 0));
+        $this->assertTableContain('lengow_actions', array('id' => '3', 'id_order' => '1', 'retry' => 0));
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol1.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol1.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol2.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol2.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol3.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol3.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol1.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol1.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol2.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol2.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol3.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol3.json',
         );
         $this->assertTrue($order->callAction('ship'));
-        $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 1));
+        $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 1));
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol1.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol1.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol2.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol2.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol3.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol3.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol1.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol1.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol2.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol2.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_queued_ol3.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_post_ol3.json',
         );
         $this->assertTrue($order->callAction('ship'));
-        $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 2));
+        $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 2));
     }
 
 
@@ -217,30 +217,30 @@ class OrderTest extends ModuleTestCase
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
 
-        $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
+        $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/cancel_tracking_post.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/cancel_tracking_post.json',
         );
         $order = new LengowOrder(1);
         $this->assertTrue($order->callAction('cancel'));
 
-        $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 0));
+        $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 0));
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_queued.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/cancel_tracking_post.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_queued.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/cancel_tracking_post.json',
         );
         $this->assertTrue($order->callAction('cancel'));
-        $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 1));
+        $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 1));
 
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/send_tracking_queued.json',
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Order/cancel_tracking_post.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/send_tracking_queued.json',
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/cancel_tracking_post.json',
         );
         $this->assertTrue($order->callAction('cancel'));
-        $this->assertTableContain('lengow_actions', array('id' => '1',  'id_order' => '1', 'retry' => 2));
+        $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 2));
     }
 }

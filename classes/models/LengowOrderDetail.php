@@ -28,7 +28,7 @@ class LengowOrderDetail extends OrderDetail
      * Set a new price of product
      *
      * @param float $newPrice new price of product
-     * @param float $tax      tax apply
+     * @param float $tax tax apply
      */
     public function changePrice($newPrice, $tax)
     {
@@ -51,15 +51,15 @@ class LengowOrderDetail extends OrderDetail
     /**
      * Get Order Lines
      *
-     * @param integer $idOrder   Prestashop order id
+     * @param integer $idOrder Prestashop order id
      * @param integer $idProduct Prestashop product id
      *
      * @return array list of order line
      */
     public static function findByOrderIdProductId($idOrder, $idProduct)
     {
-        $sql = 'SELECT id_order_detail FROM `'._DB_PREFIX_.'order_detail`
-            WHERE product_id = '.(int)$idProduct.' AND id_order='.(int)$idOrder;
+        $sql = 'SELECT id_order_detail FROM `' . _DB_PREFIX_ . 'order_detail`
+            WHERE product_id = ' . (int)$idProduct . ' AND id_order=' . (int)$idOrder;
         $row = Db::getInstance()->getRow($sql);
         return $row['id_order_detail'];
     }

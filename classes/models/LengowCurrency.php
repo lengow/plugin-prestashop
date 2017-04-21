@@ -27,7 +27,7 @@ class LengowCurrency
     /**
      * Get id currency by iso_code
      *
-     * @param string  $sign   currency iso code
+     * @param string $sign currency iso code
      * @param integer $idShop Prestashop shop id
      *
      * @return integer
@@ -35,14 +35,14 @@ class LengowCurrency
     public static function getIdBySign($sign, $idShop = 0)
     {
         if (_PS_VERSION_ < '1.5') {
-            $sql = "SELECT id_currency FROM "._DB_PREFIX_."currency WHERE iso_code = '".pSQL($sign)."' ";
+            $sql = "SELECT id_currency FROM " . _DB_PREFIX_ . "currency WHERE iso_code = '" . pSQL($sign) . "' ";
             $result = Db::getInstance()->getRow($sql);
             return $result['id_currency'];
         } else {
-            $idCache = 'Currency::getIdBySign_'.pSQL($sign).'-'.(int)$idShop;
+            $idCache = 'Currency::getIdBySign_' . pSQL($sign) . '-' . (int)$idShop;
             if (!Cache::isStored($idCache)) {
                 $query = Currency::getIdByQuery($idShop);
-                $query->where('iso_code = \''.pSQL($sign).'\'');
+                $query->where('iso_code = \'' . pSQL($sign) . '\'');
                 $result = (int)Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($query->build());
                 Cache::store($idCache, $result);
                 return $result;

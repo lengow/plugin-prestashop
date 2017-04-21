@@ -56,8 +56,8 @@ class LengowTranslation
      * Translate message
      *
      * @param string $message localization key
-     * @param array  $args    argurments to replace word in string
-     * @param array  $isoCode translation iso code
+     * @param array $args arguments to replace word in string
+     * @param array $isoCode translation iso code
      *
      * @return string
      */
@@ -81,7 +81,7 @@ class LengowTranslation
             if (isset(self::$translation[$this->fallbackIsoCode][$message])) {
                 return $this->translateFinal(self::$translation[$this->fallbackIsoCode][$message], $args);
             } else {
-                return 'Missing Translation ['.$message.']';
+                return 'Missing Translation [' . $message . ']';
             }
         }
     }
@@ -90,7 +90,7 @@ class LengowTranslation
      * Translate string
      *
      * @param string $text localization key
-     * @param array  $args argurments to replace word in string
+     * @param array $args arguments to replace word in string
      *
      * @return string
      */
@@ -100,7 +100,7 @@ class LengowTranslation
             $params = array();
             $values = array();
             foreach ($args as $key => $value) {
-                $params[] = '%{'.$key.'}';
+                $params[] = '%{' . $key . '}';
                 $values[] = $value;
             }
             return str_replace($params, $values, $text);
@@ -112,7 +112,7 @@ class LengowTranslation
     /**
      * Load csv file
      *
-     * @param string $isoCode  translation iso code
+     * @param string $isoCode translation iso code
      * @param string $filename file location
      *
      * @return boolean
@@ -120,8 +120,8 @@ class LengowTranslation
     public function loadFile($isoCode, $filename = null)
     {
         if (!$filename) {
-            $filename = _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'translations'.
-                DIRECTORY_SEPARATOR.$isoCode.'.csv';
+            $filename = _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'translations' .
+                DIRECTORY_SEPARATOR . $isoCode . '.csv';
         }
         $translation = array();
         if (file_exists($filename)) {

@@ -40,7 +40,7 @@ class LengowTool
     public function logOff()
     {
         unset(Context::getContext()->cookie->lengow_toolbox);
-        Tools::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/', '');
+        Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/', '');
     }
 
     /**
@@ -56,8 +56,8 @@ class LengowTool
     /**
      * Process Login Form to log User
      *
-     * @param integer $accountId   Lengow account id
-     * @param string  $secretToken Lengow secret token
+     * @param integer $accountId Lengow account id
+     * @param string $secretToken Lengow secret token
      *
      * @return boolean
      */
@@ -65,13 +65,16 @@ class LengowTool
     {
         if (Tools::strlen($accountId) > 0 && Tools::strlen($secretToken) > 0) {
             if ($this->checkBlockedIp()) {
-                return self::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/login.php?blockedIP=1', '');
+                return self::redirect(
+                    _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/login.php?blockedIP=1',
+                    ''
+                );
             }
         }
         if (_PS_VERSION_ < '1.5') {
             $shopCollection = array(array('id_shop' => 1));
         } else {
-            $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+            $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
             $shopCollection = Db::getInstance()->ExecuteS($sql);
         }
         foreach ($shopCollection as $shop) {
@@ -81,7 +84,7 @@ class LengowTool
                 if ($ai == $accountId && $st == $secretToken) {
                     Context::getContext()->cookie->lengow_toolbox = true;
                     $this->unblockIp();
-                    return self::redirect(_PS_BASE_URL_.__PS_BASE_URI__.'modules/lengow/toolbox/', '');
+                    return self::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/', '');
                 }
             }
         }
@@ -119,16 +122,16 @@ class LengowTool
         if ($counter > 3 || LengowMain::checkIP()) {
             return;
         }
-        $blockedIp = Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_'.$counter));
+        $blockedIp = Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_' . $counter));
         if (!is_array($blockedIp) || !in_array($remoteIp, $blockedIp)) {
             LengowConfiguration::updateGlobalValue(
-                'LENGOW_ACCESS_BLOCK_IP_'.$counter,
+                'LENGOW_ACCESS_BLOCK_IP_' . $counter,
                 is_array($blockedIp)
-                ? Tools::jsonEncode(array_merge($blockedIp, array($remoteIp)))
-                : Tools::jsonEncode(array($remoteIp))
+                    ? Tools::jsonEncode(array_merge($blockedIp, array($remoteIp)))
+                    : Tools::jsonEncode(array($remoteIp))
             );
         } else {
-            $this->checkIp($counter+1);
+            $this->checkIp($counter + 1);
         }
     }
 
@@ -139,12 +142,12 @@ class LengowTool
     {
         $remoteIp = $_SERVER['REMOTE_ADDR'];
         for ($i = 1; $i <= 3; $i++) {
-            $blockedIp = Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_'.$i));
+            $blockedIp = Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_' . $i));
             if (is_array($blockedIp)) {
                 $blockedIp = array_diff($blockedIp, array($remoteIp));
                 $blockedIp = reset($blockedIp);
                 LengowConfiguration::updateGlobalValue(
-                    'LENGOW_ACCESS_BLOCK_IP_'.$i,
+                    'LENGOW_ACCESS_BLOCK_IP_' . $i,
                     empty($blockedIp) ? '' : Tools::jsonEncode($blockedIp)
                 );
             }
@@ -154,8 +157,8 @@ class LengowTool
     /**
      * Redirect toolbox
      *
-     * @param string $url     url toolbox
-     * @param mixed  $baseUri base uri
+     * @param string $url url toolbox
+     * @param mixed $baseUri base uri
      *
      * @return mixed
      */

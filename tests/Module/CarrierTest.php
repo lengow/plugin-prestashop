@@ -35,7 +35,7 @@ class CarrierTest extends ModuleTestCase
     public function getListMarketplaceCarrierAPI()
     {
         LengowConnector::$testFixturePath =
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         $carrierCollection = LengowCarrier::getListMarketplaceCarrierAPI();
         $testCarrier = array(
             array('code' => 'LAPOSTE', 'name' => 'La Poste'),
@@ -68,9 +68,9 @@ class CarrierTest extends ModuleTestCase
         $this->assertTableContain(
             'lengow_marketplace_carrier',
             array(
-                'marketplace_carrier_sku'  => 'WTFCARRIER',
+                'marketplace_carrier_sku' => 'WTFCARRIER',
                 'marketplace_carrier_name' => 'What a beautiful carrier',
-                'id_country'               => '8'
+                'id_country' => '8'
             )
         );
     }
@@ -88,7 +88,7 @@ class CarrierTest extends ModuleTestCase
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Carrier/marketplace_carrier.yml'
         );
         LengowConnector::$testFixturePath =
-            _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         LengowCarrier::syncListMarketplace();
 
         $defaultCountryId = Configuration::get('PS_COUNTRY_DEFAULT');
@@ -96,28 +96,28 @@ class CarrierTest extends ModuleTestCase
             'lengow_marketplace_carrier',
             array(
                 'marketplace_carrier_sku' => 'LAPOSTE',
-                'id_country'              => $defaultCountryId
+                'id_country' => $defaultCountryId
             )
         );
         $this->assertTableContain(
             'lengow_marketplace_carrier',
             array(
                 'marketplace_carrier_sku' => 'LAPOSTE_RELAY',
-                'id_country'              => $defaultCountryId
+                'id_country' => $defaultCountryId
             )
         );
         $this->assertTableContain(
             'lengow_marketplace_carrier',
             array(
                 'marketplace_carrier_sku' => 'MONDIALRELAY',
-                'id_country'              => $defaultCountryId
+                'id_country' => $defaultCountryId
             )
         );
         $this->assertTableContain(
             'lengow_marketplace_carrier',
             array(
                 'marketplace_carrier_sku' => 'MONDIALRELAY_RELAY',
-                'id_country'              => $defaultCountryId
+                'id_country' => $defaultCountryId
             )
         );
     }

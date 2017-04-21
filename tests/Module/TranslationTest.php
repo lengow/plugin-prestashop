@@ -25,10 +25,10 @@ class TranslationTest extends ModuleTestCase
     public function loadFile()
     {
         $translation = new \LengowTranslation();
-        $return = $translation->loadFile('en', _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Translation/en.csv');
+        $return = $translation->loadFile('en', _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Translation/en.csv');
         $this->assertTrue($return);
 
-        $return = $translation->loadFile('en', _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Translation/empty.csv');
+        $return = $translation->loadFile('en', _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Translation/empty.csv');
         $this->assertFalse($return);
 
         $return = $translation->loadFile('en', '/missing_files.csv');
@@ -44,9 +44,9 @@ class TranslationTest extends ModuleTestCase
     public function t()
     {
         $translation = new \LengowTranslation();
-        $return = $translation->loadFile('en', _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Translation/en.csv');
+        $return = $translation->loadFile('en', _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Translation/en.csv');
         $this->assertTrue($return);
-        $return = $translation->loadFile('fr', _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Translation/fr.csv');
+        $return = $translation->loadFile('fr', _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Translation/fr.csv');
         $this->assertTrue($return);
 
         $this->assertEquals('Un', $translation->t('order.screen.one'));
@@ -63,9 +63,9 @@ class TranslationTest extends ModuleTestCase
     public function translateFinal()
     {
         $translation = new \LengowTranslation();
-        $return = $translation->loadFile('en', _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Translation/en.csv');
+        $return = $translation->loadFile('en', _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Translation/en.csv');
         $this->assertTrue($return);
-        $return = $translation->loadFile('fr', _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Translation/fr.csv');
+        $return = $translation->loadFile('fr', _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Translation/fr.csv');
         $this->assertTrue($return);
 
         $this->assertEquals('Question : %{first}/%{second}=%{third}', $translation->t('order.screen.question'));

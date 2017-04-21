@@ -69,19 +69,19 @@ class LengowAddress extends Address
      * @var array definition array for prestashop 1.4
      */
     public static $definitionLengow = array(
-        'id_country'   =>  array('required' => true),
-        'alias'        =>  array('required' => true, 'size' => 32),
-        'company'      =>  array('size' => 32),
-        'lastname'     =>  array('required' => true, 'size' => 32),
-        'firstname'    =>  array('required' => true, 'size' => 32),
-        'address1'     =>  array('required' => true, 'size' => 128),
-        'address2'     =>  array('size' => 128),
-        'postcode'     =>  array('size' => 12),
-        'city'         =>  array('required' => true, 'size' => 64),
-        'other'        =>  array('size' => 300),
-        'phone'        =>  array('check' => true, 'size' => 16),
-        'phone_mobile' =>  array('check' => true, 'size' => 16),
-        'phone_office' =>  array('check' => true),
+        'id_country' => array('required' => true),
+        'alias' => array('required' => true, 'size' => 32),
+        'company' => array('size' => 32),
+        'lastname' => array('required' => true, 'size' => 32),
+        'firstname' => array('required' => true, 'size' => 32),
+        'address1' => array('required' => true, 'size' => 128),
+        'address2' => array('size' => 128),
+        'postcode' => array('size' => 12),
+        'city' => array('required' => true, 'size' => 64),
+        'other' => array('size' => 300),
+        'phone' => array('check' => true, 'size' => 16),
+        'phone_mobile' => array('check' => true, 'size' => 16),
+        'phone_office' => array('check' => true),
     );
 
     /**
@@ -105,18 +105,18 @@ class LengowAddress extends Address
     public $idRelay;
 
     /**
-    * Specify if an address is already in base
-    *
-    * @param string $alias address alias
-    *
-    * @return LengowAddress|false
-    */
+     * Specify if an address is already in base
+     *
+     * @param string $alias address alias
+     *
+     * @return LengowAddress|false
+     */
     public static function getByAlias($alias)
     {
         $row = Db::getInstance()->getRow(
             'SELECT `id_address`
-            FROM '._DB_PREFIX_.'address a
-            WHERE a.`alias` = "'.pSQL($alias).'"'
+            FROM ' . _DB_PREFIX_ . 'address a
+            WHERE a.`alias` = "' . pSQL($alias) . '"'
         );
         if ($row['id_address'] > 0) {
             return new LengowAddress($row['id_address']);
@@ -125,12 +125,12 @@ class LengowAddress extends Address
     }
 
     /**
-    * Hash an alias and get the address with unique hash
-    *
-    * @param string $alias address alias
-    *
-    * @return LengowAddress|false
-    */
+     * Hash an alias and get the address with unique hash
+     *
+     * @param string $alias address alias
+     *
+     * @return LengowAddress|false
+     */
     public static function getByHash($alias)
     {
         return self::getByAlias(self::hash($alias));
@@ -148,12 +148,12 @@ class LengowAddress extends Address
         self::cleanName($fullName);
         $arrayName = explode(' ', $fullName);
         $lastName = $arrayName[0];
-        $firstName = str_replace($lastName.' ', '', $fullName);
+        $firstName = str_replace($lastName . ' ', '', $fullName);
         $lastName = empty($lastName) ? '' : self::cleanName($lastName);
         $firstName = empty($firstName) ? '' : self::cleanName($firstName);
         return array(
             'firstname' => Tools::ucfirst(Tools::strtolower($firstName)),
-            'lastname'  => Tools::ucfirst(Tools::strtolower($lastName))
+            'lastname' => Tools::ucfirst(Tools::strtolower($lastName))
         );
     }
 
@@ -229,8 +229,8 @@ class LengowAddress extends Address
         if (isset($data['id_relay'])) {
             $this->idRelay = $data['id_relay'];
             $this->other .= empty($this->other)
-                ? 'Relay id: '.$this->idRelay
-                : ' Relay id: '.$this->idRelay;
+                ? 'Relay id: ' . $this->idRelay
+                : ' Relay id: ' . $this->idRelay;
         }
         $this->postcode = $data['zipcode'];
         $this->city = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['city']);

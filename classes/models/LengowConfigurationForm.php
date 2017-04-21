@@ -35,8 +35,8 @@ class LengowConfigurationForm
     protected $locale;
 
     /**
-    * Construct
-    */
+     * Construct
+     */
     public function __construct($params)
     {
         $this->fields = isset($params['fields']) ? $params['fields'] : false;
@@ -44,20 +44,20 @@ class LengowConfigurationForm
     }
 
     /**
-    * Construct Lengow setting input for shop
-    *
-    * @param integer $idShop      Prestashop shop id
-    * @param array   $displayKeys names of Lengow setting
-    *
-    * @return string
-    */
+     * Construct Lengow setting input for shop
+     *
+     * @param integer $idShop Prestashop shop id
+     * @param array $displayKeys names of Lengow setting
+     *
+     * @return string
+     */
     public function buildShopInputs($idShop, $displayKeys)
     {
         $html = '';
         foreach ($displayKeys as $key) {
             if (isset($this->fields[$key])) {
                 if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
-                    $html.= $this->input($key, $this->fields[$key], $idShop);
+                    $html .= $this->input($key, $this->fields[$key], $idShop);
                 }
             }
         }
@@ -65,12 +65,12 @@ class LengowConfigurationForm
     }
 
     /**
-    * Construct Lengow setting input
-    *
-    * @param array $displayKeys names of Lengow setting
-    *
-    * @return string
-    */
+     * Construct Lengow setting input
+     *
+     * @param array $displayKeys names of Lengow setting
+     *
+     * @return string
+     */
     public function buildInputs($displayKeys)
     {
         $html = '';
@@ -85,18 +85,18 @@ class LengowConfigurationForm
     }
 
     /**
-    * Get lengow input
-    *
-    * @param string  $key    name of Lengow setting
-    * @param array   $input  all Lengow settings
-    * @param integer $idShop Prestashop shop id
-    *
-    * @return string
-    */
+     * Get lengow input
+     *
+     * @param string $key name of Lengow setting
+     * @param array $input all Lengow settings
+     * @param integer $idShop Prestashop shop id
+     *
+     * @return string
+     */
     public function input($key, $input, $idShop = null)
     {
         $html = '';
-        $name = $idShop ?  $key.'['.$idShop.']' : $key;
+        $name = $idShop ? $key . '[' . $idShop . ']' : $key;
         if ($idShop) {
             $value = LengowConfiguration::get($key, null, null, $idShop);
         } else {
@@ -107,68 +107,68 @@ class LengowConfigurationForm
         $legend = isset($input['legend']) ? $input['legend'] : '';
         $label = isset($input['label']) ? $input['label'] : '';
         $placeholder = isset($input['placeholder']) ? $input['placeholder'] : '';
-        $html.= '<div class="form-group '.Tools::strtolower($name).'">';
+        $html .= '<div class="form-group ' . Tools::strtolower($name) . '">';
         switch ($inputType) {
             case 'checkbox':
                 $checked = $value ? 'checked' : '';
-                $html.='<div class="lgw-switch '.$checked.'"><label><div><span></span>';
-                $html.='<input name="'.$name.'" type="checkbox" '.$checked.' '.$readonly.' >';
-                $html.='</div>'.$label;
-                $html.='</label></div></div>';
+                $html .= '<div class="lgw-switch ' . $checked . '"><label><div><span></span>';
+                $html .= '<input name="' . $name . '" type="checkbox" ' . $checked . ' ' . $readonly . ' >';
+                $html .= '</div>' . $label;
+                $html .= '</label></div></div>';
                 if (!empty($legend)) {
-                    $html.= '<span class="legend" style="display:block;">'.$legend.'</span>';
+                    $html .= '<span class="legend" style="display:block;">' . $legend . '</span>';
                 }
                 break;
             case 'text':
-                $html.= '<label class="control-label">'.$label.'</label>
-                    <input type="text" name="'.$name.'"
-                        class="form-control" placeholder="'.$placeholder.'"
-                        value="'.$value.'" '.$readonly.'>
+                $html .= '<label class="control-label">' . $label . '</label>
+                    <input type="text" name="' . $name . '"
+                        class="form-control" placeholder="' . $placeholder . '"
+                        value="' . $value . '" ' . $readonly . '>
                     </div>';
                 if (!empty($legend)) {
-                    $html.= '<span class="legend" style="display:block;">'.$legend.'</span>';
+                    $html .= '<span class="legend" style="display:block;">' . $legend . '</span>';
                 }
                 break;
             case 'select':
-                $html.= '<label class="control-label">'.$label.'</label>
+                $html .= '<label class="control-label">' . $label . '</label>
 
-                    <select class="form-control lengow_select" name="'.$name.'">';
+                    <select class="form-control lengow_select" name="' . $name . '">';
                 foreach ($input['collection'] as $row) {
-                    $selected =  $row['id'] == $value ? 'selected' : '';
-                    $html.='<option value="'.$row['id'].'" '.$selected.'>'.$row['text'].'</option>';
+                    $selected = $row['id'] == $value ? 'selected' : '';
+                    $html .= '<option value="' . $row['id'] . '" ' . $selected . '>' . $row['text'] . '</option>';
                 }
-                $html.= '</select><span class="legend" style="display:block;">'.$legend.'</span></div>';
+                $html .= '</select><span class="legend" style="display:block;">' . $legend . '</span></div>';
                 break;
             case 'day':
-                $html.= '<label class="control-label">'.$label.'</label>
+                $html .= '<label class="control-label">' . $label . '</label>
                         <div class="input-group">
-                            <input type="number" name="'.$name.'" class="form-control" value="'.$value.'" '
-                            .$readonly.' min="1" max="99">
+                            <input type="number" name="' . $name . '" class="form-control" value="' . $value . '" '
+                    . $readonly . ' min="1" max="99">
                             <div class="input-group-addon">
-                                <div class="unit">'.$this->locale->t('order_setting.screen.nb_days').'</div>
+                                <div class="unit">' . $this->locale->t('order_setting.screen.nb_days') . '</div>
                             </div>
                             <div class="clearfix"></div>
                         </div>';
                 if (!empty($legend)) {
-                    $html.= '<span class="legend" style="display:block;">'.$legend.'</span>';
+                    $html .= '<span class="legend" style="display:block;">' . $legend . '</span>';
                 }
-                $html.= '</div>';
+                $html .= '</div>';
                 break;
         }
         return $html;
     }
 
     /**
-    * Save Lengow settings
-    *
-    * @param array $checkboxKeys Lengow checkbox
-    */
+     * Save Lengow settings
+     *
+     * @param array $checkboxKeys Lengow checkbox
+     */
     public function postProcess($checkboxKeys)
     {
         if (_PS_VERSION_ < '1.5') {
             $shopCollection = array(array('id_shop' => 1));
         } else {
-            $sql = 'SELECT id_shop FROM '._DB_PREFIX_.'shop WHERE active = 1';
+            $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
             $shopCollection = Db::getInstance()->ExecuteS($sql);
         }
         foreach ($_REQUEST as $key => $value) {
@@ -176,7 +176,8 @@ class LengowConfigurationForm
                 if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
                     foreach ($value as $idShop => $shopValue) {
                         if (isset($this->fields[$key]['type']) &&
-                            $this->fields[$key]['type'] == 'checkbox' && $shopValue == 'on') {
+                            $this->fields[$key]['type'] == 'checkbox' && $shopValue == 'on'
+                        ) {
                             $shopValue = true;
                         }
                         $this->checkAndLog($key, $shopValue, $idShop);
@@ -188,7 +189,8 @@ class LengowConfigurationForm
                         LengowConfiguration::updateGlobalValue($key, join(',', $value));
                     } else {
                         if (isset($this->fields[$key]['type']) &&
-                            $this->fields[$key]['type'] == 'checkbox' && $value == 'on') {
+                            $this->fields[$key]['type'] == 'checkbox' && $value == 'on'
+                        ) {
                             $value = true;
                         }
                         $this->checkAndLog($key, $value);
@@ -225,12 +227,12 @@ class LengowConfigurationForm
     }
 
     /**
-    * Check value and create a log if necessary
-    *
-    * @param string  $key    name of Lengow setting
-    * @param mixed   $value  setting value
-    * @param integer $idShop Prestashop shop id
-    */
+     * Check value and create a log if necessary
+     *
+     * @param string $key name of Lengow setting
+     * @param mixed $value setting value
+     * @param integer $idShop Prestashop shop id
+     */
     public function checkAndLog($key, $value, $idShop = null)
     {
         if (is_null($idShop)) {
@@ -253,10 +255,10 @@ class LengowConfigurationForm
                     LengowMain::setLogMessage(
                         'log.setting.setting_change_for_shop',
                         array(
-                            'key'       => $key,
+                            'key' => $key,
                             'old_value' => $oldValue,
-                            'value'     => $value,
-                            'shop_id'   => $idShop
+                            'value' => $value,
+                            'shop_id' => $idShop
                         )
                     )
                 );
@@ -266,9 +268,9 @@ class LengowConfigurationForm
                     LengowMain::setLogMessage(
                         'log.setting.setting_change',
                         array(
-                            'key'       => $key,
+                            'key' => $key,
                             'old_value' => $oldValue,
-                            'value'     => $value
+                            'value' => $value
                         )
                     )
                 );

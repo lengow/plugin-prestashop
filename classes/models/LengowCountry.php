@@ -35,13 +35,13 @@ class LengowCountry
     {
         $idLang = Context::getContext()->language->id;
         if ($idLang > 0) {
-            $where = "AND id_lang = '".pSQL(Context::getContext()->language->id)."'";
+            $where = "AND id_lang = '" . pSQL(Context::getContext()->language->id) . "'";
         } else {
             $where = '';
         }
-        $sql = "SELECT name FROM "._DB_PREFIX_."country c INNER JOIN "._DB_PREFIX_."country_lang cl
-        ON (cl.id_country = c.id_country)
-        WHERE iso_code = '".pSQL($isoCode)."' ".$where;
+        $sql = "SELECT name FROM " . _DB_PREFIX_ . "country c INNER JOIN " . _DB_PREFIX_ . "country_lang cl
+            ON (cl.id_country = c.id_country)
+            WHERE iso_code = '" . pSQL($isoCode) . "' " . $where;
         $result = Db::getInstance()->getRow($sql);
         return $result['name'];
     }

@@ -56,118 +56,118 @@ class LengowExport
      * @var array new fields for v3
      */
     protected $newFields = array(
-        'id'                             => 'id',
-        'sku'                            => 'reference',
-        'sku_supplier'                   => 'supplier_reference',
-        'ean'                            => 'ean',
-        'upc'                            => 'upc',
-        'name'                           => 'name',
-        'quantity'                       => 'quantity',
-        'minimal_quantity'               => 'minimal_quantity',
-        'availability'                   => 'available',
-        'is_virtual'                     => 'is_virtual',
-        'condition'                      => 'condition',
-        'category'                       => 'breadcrumb',
-        'status'                         => 'active',
-        'url'                            => 'url',
-        'url_rewrite'                    => 'url_rewrite',
-        'price_excl_tax'                 => 'price_sale_duty_free',
-        'price_incl_tax'                 => 'price_sale',
+        'id' => 'id',
+        'sku' => 'reference',
+        'sku_supplier' => 'supplier_reference',
+        'ean' => 'ean',
+        'upc' => 'upc',
+        'name' => 'name',
+        'quantity' => 'quantity',
+        'minimal_quantity' => 'minimal_quantity',
+        'availability' => 'available',
+        'is_virtual' => 'is_virtual',
+        'condition' => 'condition',
+        'category' => 'breadcrumb',
+        'status' => 'active',
+        'url' => 'url',
+        'url_rewrite' => 'url_rewrite',
+        'price_excl_tax' => 'price_sale_duty_free',
+        'price_incl_tax' => 'price_sale',
         'price_before_discount_excl_tax' => 'price_duty_free',
         'price_before_discount_incl_tax' => 'price',
-        'discount_percent'               => 'price_sale_percent',
-        'discount_start_date'            => 'sale_from',
-        'discount_end_date'              => 'sale_to',
-        'ecotax'                         => 'ecotax',
-        'shipping_cost'                  => 'price_shipping',
-        'shipping_delay'                 => 'delivery_time',
-        'currency'                       => 'currency',
-        'image_url_1'                    => 'image_1',
-        'image_url_2'                    => 'image_2',
-        'image_url_3'                    => 'image_3',
-        'image_url_4'                    => 'image_4',
-        'image_url_5'                    => 'image_5',
-        'image_url_6'                    => 'image_6',
-        'image_url_7'                    => 'image_7',
-        'image_url_8'                    => 'image_8',
-        'image_url_9'                    => 'image_9',
-        'image_url_10'                   => 'image_10',
-        'type'                           => 'type',
-        'parent_id'                      => 'id_parent',
-        'variation'                      => 'variation',
-        'language'                       => 'language',
-        'description'                    => 'description',
-        'description_html'               => 'description_html',
-        'description_short'              => 'short_description',
-        'description_short_html'         => 'short_description_html',
-        'tags'                           => 'tags',
-        'meta_title'                     => 'meta_title',
-        'meta_keyword'                   => 'meta_keywords',
-        'meta_description'               => 'meta_description',
-        'manufacturer'                   => 'manufacturer',
-        'supplier'                       => 'supplier',
-        'weight'                         => 'weight',
+        'discount_percent' => 'price_sale_percent',
+        'discount_start_date' => 'sale_from',
+        'discount_end_date' => 'sale_to',
+        'ecotax' => 'ecotax',
+        'shipping_cost' => 'price_shipping',
+        'shipping_delay' => 'delivery_time',
+        'currency' => 'currency',
+        'image_url_1' => 'image_1',
+        'image_url_2' => 'image_2',
+        'image_url_3' => 'image_3',
+        'image_url_4' => 'image_4',
+        'image_url_5' => 'image_5',
+        'image_url_6' => 'image_6',
+        'image_url_7' => 'image_7',
+        'image_url_8' => 'image_8',
+        'image_url_9' => 'image_9',
+        'image_url_10' => 'image_10',
+        'type' => 'type',
+        'parent_id' => 'id_parent',
+        'variation' => 'variation',
+        'language' => 'language',
+        'description' => 'description',
+        'description_html' => 'description_html',
+        'description_short' => 'short_description',
+        'description_short_html' => 'short_description_html',
+        'tags' => 'tags',
+        'meta_title' => 'meta_title',
+        'meta_keyword' => 'meta_keywords',
+        'meta_description' => 'meta_description',
+        'manufacturer' => 'manufacturer',
+        'supplier' => 'supplier',
+        'weight' => 'weight',
     );
 
     /**
      * @var array legacy fields for export
      */
     protected $legacyFields = array(
-        'id_product'            => 'id',
-        'name_product'          => 'name',
-        'reference_product'     => 'reference',
-        'supplier_reference'    => 'supplier_reference',
-        'manufacturer'          => 'manufacturer',
-        'category'              => 'breadcrumb',
-        'description'           => 'description',
-        'description_short'     => 'short_description',
-        'price_product'         => 'price',
-        'wholesale_price'       => 'wholesale_price',
-        'price_ht'              => 'price_duty_free',
-        'price_reduction'       => 'price_sale',
+        'id_product' => 'id',
+        'name_product' => 'name',
+        'reference_product' => 'reference',
+        'supplier_reference' => 'supplier_reference',
+        'manufacturer' => 'manufacturer',
+        'category' => 'breadcrumb',
+        'description' => 'description',
+        'description_short' => 'short_description',
+        'price_product' => 'price',
+        'wholesale_price' => 'wholesale_price',
+        'price_ht' => 'price_duty_free',
+        'price_reduction' => 'price_sale',
         'pourcentage_reduction' => 'price_sale_percent',
-        'quantity'              => 'quantity',
-        'weight'                => 'weight',
-        'ean'                   => 'ean',
-        'upc'                   => 'upc',
-        'ecotax'                => 'ecotax',
-        'active'                => 'active',
-        'available_product'     => 'available',
-        'url_product'           => 'url',
-        'fdp'                   => 'price_shipping',
-        'id_mere'               => 'id_parent',
-        'delais_livraison'      => 'delivery_time',
-        'image_product_1'       => 'image_1',
-        'image_product_2'       => 'image_2',
-        'image_product_3'       => 'image_3',
-        'image_product_4'       => 'image_4',
-        'image_product_5'       => 'image_5',
-        'image_product_6'       => 'image_6',
-        'image_product_7'       => 'image_7',
-        'image_product_8'       => 'image_8',
-        'image_product_9'       => 'image_9',
-        'image_product_10'      => 'image_10',
-        'reduction_from'        => 'sale_from',
-        'reduction_to'          => 'sale_to',
-        'meta_keywords'         => 'meta_keywords',
-        'meta_description'      => 'meta_description',
-        'url_rewrite'           => 'url_rewrite',
-        'product_type'          => 'type',
-        'product_variation'     => 'variation',
-        'currency'              => 'currency',
-        'condition'             => 'condition',
-        'supplier'              => 'supplier',
-        'minimal_quantity'      => 'minimal_quantity',
-        'is_virtual'            => 'is_virtual',
-        'available_for_order'   => 'available_for_order',
-        'available_date'        => 'available_date',
-        'show_price'            => 'show_price',
-        'visibility'            => 'visibility',
-        'available_now'         => 'available_now',
-        'available_later'       => 'available_later',
-        'stock_availables'      => 'stock_availables',
-        'description_html'      => 'description_html',
-        'availability'          => 'availability',
+        'quantity' => 'quantity',
+        'weight' => 'weight',
+        'ean' => 'ean',
+        'upc' => 'upc',
+        'ecotax' => 'ecotax',
+        'active' => 'active',
+        'available_product' => 'available',
+        'url_product' => 'url',
+        'fdp' => 'price_shipping',
+        'id_mere' => 'id_parent',
+        'delais_livraison' => 'delivery_time',
+        'image_product_1' => 'image_1',
+        'image_product_2' => 'image_2',
+        'image_product_3' => 'image_3',
+        'image_product_4' => 'image_4',
+        'image_product_5' => 'image_5',
+        'image_product_6' => 'image_6',
+        'image_product_7' => 'image_7',
+        'image_product_8' => 'image_8',
+        'image_product_9' => 'image_9',
+        'image_product_10' => 'image_10',
+        'reduction_from' => 'sale_from',
+        'reduction_to' => 'sale_to',
+        'meta_keywords' => 'meta_keywords',
+        'meta_description' => 'meta_description',
+        'url_rewrite' => 'url_rewrite',
+        'product_type' => 'type',
+        'product_variation' => 'variation',
+        'currency' => 'currency',
+        'condition' => 'condition',
+        'supplier' => 'supplier',
+        'minimal_quantity' => 'minimal_quantity',
+        'is_virtual' => 'is_virtual',
+        'available_for_order' => 'available_for_order',
+        'available_date' => 'available_date',
+        'show_price' => 'show_price',
+        'visibility' => 'visibility',
+        'available_now' => 'available_now',
+        'available_later' => 'available_later',
+        'stock_availables' => 'stock_availables',
+        'description_html' => 'description_html',
+        'availability' => 'availability',
     );
 
     /**
@@ -275,7 +275,7 @@ class LengowExport
         $this->offset = (isset($params["offset"]) ? $params["offset"] : false);
         $this->productIds = (isset($params["product_ids"]) ? $params["product_ids"] : false);
         $this->stream = (isset($params["stream"]) ? $params["stream"] : false);
-        $this->limit =  (isset($params["limit"]) ? (int)$params["limit"] : false);
+        $this->limit = (isset($params["limit"]) ? (int)$params["limit"] : false);
         $this->idShop = (int)(isset($params["shop_id"]) ? (int)$params["shop_id"] : Context::getContext()->shop->id);
         $this->language = (isset($params["language_id"])
             ? new Language($params["language_id"])
@@ -406,7 +406,7 @@ class LengowExport
                     'log.export.start_for_shop',
                     array(
                         'name_shop' => $shop->name,
-                        'id_shop'   => $shop->id
+                        'id_shop' => $shop->id
                     )
                 ),
                 $this->logOutput
@@ -434,7 +434,7 @@ class LengowExport
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[Prestashop error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
+            $errorMessage = '[Prestashop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
         }
         if (isset($errorMessage)) {
             $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
@@ -453,8 +453,8 @@ class LengowExport
      * Export products
      *
      * @param array $products list of products to be exported
-     * @param array $fields   list of fields
-     * @param Shop  $shop     Prestashop shop being exported
+     * @param array $fields list of fields
+     * @param Shop $shop Prestashop shop being exported
      *
      * @throws LengowException folder not writable
      */
@@ -483,9 +483,9 @@ class LengowExport
                     $p['id_product'],
                     $this->language->id,
                     array(
-                        "carrier"    => $this->carrier,
+                        "carrier" => $this->carrier,
                         "image_size" => LengowProduct::getMaxImageType(),
-                        "language"   => $this->language
+                        "language" => $this->language
                     )
                 );
                 foreach ($fields as $field) {
@@ -556,7 +556,7 @@ class LengowExport
      * Load cache combinations
      *
      * @param integer $productId Prestashop product id
-     * @param array   $fields    list of fields
+     * @param array $fields list of fields
      *
      * @throws LengowException no product combination
      *
@@ -572,7 +572,7 @@ class LengowExport
             $productId,
             $this->language->id,
             array(
-                "carrier"    => $this->carrier,
+                "carrier" => $this->carrier,
                 "image_size" => LengowProduct::getMaxImageType()
             )
         );
@@ -606,8 +606,8 @@ class LengowExport
     public function getTotalProduct()
     {
         if (_PS_VERSION_ >= '1.5') {
-            $join = ' INNER JOIN '._DB_PREFIX_.'product_shop ps ON
-            (ps.id_product = p.id_product AND ps.id_shop = '.(int)$this->idShop.') ';
+            $join = ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps ON
+            (ps.id_product = p.id_product AND ps.id_shop = ' . (int)$this->idShop . ') ';
         } else {
             $join = '';
         }
@@ -617,14 +617,14 @@ class LengowExport
             $where = ' WHERE ps.active = 1 ';
         }
         $query = ' SELECT SUM(total) as total FROM (';
-        $query.= ' ( SELECT COUNT(*) as total';
-        $query.= ' FROM '._DB_PREFIX_.'product p '.$join.' '.$where.')';
-        $query.= ' UNION ';
-        $query.= ' ( SELECT COUNT(*) as total';
-        $query.= ' FROM '._DB_PREFIX_.'product p';
-        $query.= ' INNER JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product)';
-        $query.= ' '.$join.' '.$where.' ) ';
-        $query.= '  ) as tmp ';
+        $query .= ' ( SELECT COUNT(*) as total';
+        $query .= ' FROM ' . _DB_PREFIX_ . 'product p ' . $join . ' ' . $where . ')';
+        $query .= ' UNION ';
+        $query .= ' ( SELECT COUNT(*) as total';
+        $query .= ' FROM ' . _DB_PREFIX_ . 'product p';
+        $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_attribute pa ON (pa.id_product = p.id_product)';
+        $query .= ' ' . $join . ' ' . $where . ' ) ';
+        $query .= '  ) as tmp ';
         $collection = Db::getInstance()->executeS($query);
         return $collection[0]['total'];
     }
@@ -638,12 +638,12 @@ class LengowExport
     {
         if ($this->variation) {
             $query = ' SELECT SUM(total) as total FROM ( ( ';
-            $query.= 'SELECT COUNT(*) as total '.$this->buildTotalQuery();
-            $query.= ' ) UNION ( ';
-            $query.= 'SELECT COUNT(*) as total '.$this->buildTotalQuery(true);
-            $query.= ' ) ) as tmp';
+            $query .= 'SELECT COUNT(*) as total ' . $this->buildTotalQuery();
+            $query .= ' ) UNION ( ';
+            $query .= 'SELECT COUNT(*) as total ' . $this->buildTotalQuery(true);
+            $query .= ' ) ) as tmp';
         } else {
-            $query = 'SELECT COUNT(*) as total '.$this->buildTotalQuery();
+            $query = 'SELECT COUNT(*) as total ' . $this->buildTotalQuery();
         }
         $collection = Db::getInstance()->executeS($query);
         return $collection[0]['total'];
@@ -659,17 +659,17 @@ class LengowExport
     public function buildTotalQuery($variation = false)
     {
         $where = array();
-        $query= ' FROM '._DB_PREFIX_.'product p';
+        $query = ' FROM ' . _DB_PREFIX_ . 'product p';
         if ($this->selection) {
-            $query.= ' INNER JOIN '._DB_PREFIX_.'lengow_product lp ON (lp.id_product = p.id_product AND
-            lp.id_shop = '.(int)$this->idShop.')';
+            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'lengow_product lp ON (lp.id_product = p.id_product AND
+            lp.id_shop = ' . (int)$this->idShop . ')';
         }
         if ($variation) {
-            $query.= ' INNER JOIN '._DB_PREFIX_.'product_attribute pa ON (pa.id_product = p.id_product) ';
+            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_attribute pa ON (pa.id_product = p.id_product) ';
         }
         if (_PS_VERSION_ >= '1.5') {
-            $query.= ' INNER JOIN '._DB_PREFIX_.'product_shop ps ON
-            (ps.id_product = p.id_product AND ps.id_shop = '.(int)$this->idShop.') ';
+            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps ON
+            (ps.id_product = p.id_product AND ps.id_shop = ' . (int)$this->idShop . ') ';
         }
         if (!$this->inactive) {
             if (_PS_VERSION_ < '1.5') {
@@ -679,30 +679,30 @@ class LengowExport
             }
         }
         if (!(_PS_VERSION_ < '1.5')) {
-            $where[] = ' ps.id_shop = '.(int)$this->idShop;
+            $where[] = ' ps.id_shop = ' . (int)$this->idShop;
         }
         if (!$this->outOfStock) {
             if (_PS_VERSION_ >= '1.5') {
                 if ($variation) {
-                    $query.= ' INNER JOIN '._DB_PREFIX_.'stock_available sa ON
+                    $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
                     (sa.id_product=p.id_product
                     AND pa.id_product_attribute = sa.id_product_attribute
-                    AND sa.id_shop = '.(int)$this->idShop.'
+                    AND sa.id_shop = ' . (int)$this->idShop . '
                     AND sa.quantity > 0)';
                 } else {
-                    $query.= ' INNER JOIN '._DB_PREFIX_.'stock_available sa ON
+                    $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
                     (sa.id_product=p.id_product AND id_product_attribute = 0 AND sa.quantity > 0
-                    AND sa.id_shop = '.(int)$this->idShop.' )';
+                    AND sa.id_shop = ' . (int)$this->idShop . ' )';
                 }
             } else {
                 $where[] = ' p.`quantity` > 0';
             }
         }
         if ($this->productIds != null) {
-            $where[] = ' p.`id_product` IN ('.implode(',', $this->productIds).')';
+            $where[] = ' p.`id_product` IN (' . implode(',', $this->productIds) . ')';
         }
-        if (count($where)>0) {
-            $query.= ' WHERE '.join(' AND ', $where);
+        if (count($where) > 0) {
+            $query .= ' WHERE ' . join(' AND ', $where);
         }
         return $query;
     }
@@ -716,18 +716,18 @@ class LengowExport
     {
         if ($this->variation) {
             $query = ' SELECT * FROM ( ( ';
-            $query.= 'SELECT p.id_product, \'0\' as id_product_attribute '.$this->buildTotalQuery();
-            $query.= ' ) UNION ( ';
-            $query.=  'SELECT p.id_product, pa.id_product_attribute '.$this->buildTotalQuery(true);
-            $query.= ' ) ) as tmp ORDER BY id_product, id_product_attribute';
+            $query .= 'SELECT p.id_product, \'0\' as id_product_attribute ' . $this->buildTotalQuery();
+            $query .= ' ) UNION ( ';
+            $query .= 'SELECT p.id_product, pa.id_product_attribute ' . $this->buildTotalQuery(true);
+            $query .= ' ) ) as tmp ORDER BY id_product, id_product_attribute';
         } else {
-            $query = 'SELECT p.id_product, \'0\' as id_product_attribute '.$this->buildTotalQuery();
+            $query = 'SELECT p.id_product, \'0\' as id_product_attribute ' . $this->buildTotalQuery();
         }
         if ($this->limit > 0) {
             if ($this->offset > 0) {
-                $query.= ' LIMIT '.((int)$this->offset).', '.(int)$this->limit.' ';
+                $query .= ' LIMIT ' . ((int)$this->offset) . ', ' . (int)$this->limit . ' ';
             } else {
-                $query.= ' LIMIT 0,'.(int)$this->limit.' ';
+                $query .= ' LIMIT 0,' . (int)$this->limit . ' ';
             }
         }
         return Db::getInstance()->executeS($query);
@@ -750,7 +750,7 @@ class LengowExport
         $features = Feature::getFeatures($this->language->id);
         foreach ($features as $feature) {
             if (in_array($feature['name'], $fields)) {
-                $fields[] = $feature['name'].'_1';
+                $fields[] = $feature['name'] . '_1';
             } else {
                 $fields[] = $feature['name'];
             }
@@ -766,7 +766,7 @@ class LengowExport
                 if (!in_array($attribute['name'], $fields)) {
                     $fields[] = $attribute['name'];
                 } else {
-                    $fields[] = $attribute['name'].'_2';
+                    $fields[] = $attribute['name'] . '_2';
                 }
             }
         }
@@ -853,8 +853,8 @@ class LengowExport
             }
             $params[$param] = array(
                 'authorized_values' => $authorizedValue,
-                'type'              => $type,
-                'example'           => $example
+                'type' => $type,
+                'example' => $example
             );
         }
 
@@ -881,9 +881,9 @@ class LengowExport
     /**
      * Override this function to assign data for additional fields
      *
-     * @param LengowProduct $product            Lengow product instance
-     * @param integer       $idProductAttribute Prestashop product attribute id
-     * @param array         $arrayProduct       product data
+     * @param LengowProduct $product Lengow product instance
+     * @param integer $idProductAttribute Prestashop product attribute id
+     * @param array $arrayProduct product data
      *
      * @return array
      */

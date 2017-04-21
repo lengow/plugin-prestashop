@@ -23,7 +23,7 @@ class SyncTest extends ModuleTestCase
         Module::getInstanceByName('lengow');
 
         $fixture = new Fixture();
-        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/multi_shop.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/multi_shop.yml');
         LengowConfiguration::updatevalue('PS_MULTISHOP_FEATURE_ACTIVE', true);
         LengowConfiguration::updateValue('LENGOW_SHOP_TOKEN', '1f65ze4f5e6z4fze654fe', false, null, 1);
         LengowConfiguration::updateValue('LENGOW_SHOP_TOKEN', 'fg56ze4fgze654fze65fe', false, null, 2);

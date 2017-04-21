@@ -41,7 +41,7 @@ class LengowHomeController extends LengowController
                     echo Tools::jsonEncode($data);
                     break;
                 case 'sync':
-                    $data = isset($_REQUEST['data']) ?$_REQUEST['data'] : false;
+                    $data = isset($_REQUEST['data']) ? $_REQUEST['data'] : false;
                     LengowSync::sync($data);
                     LengowSync::getStatusAccount(true);
                     break;
@@ -66,7 +66,7 @@ class LengowHomeController extends LengowController
         }
         $lengowLink = new LengowLink();
         $this->context->smarty->assign('lengow_ajax_link', $lengowLink->getAbsoluteAdminLink('AdminLengowHome', true));
-        $refreshStatus = $lengowLink->getAbsoluteAdminLink('AdminLengowHome').'&action=refresh_status';
+        $refreshStatus = $lengowLink->getAbsoluteAdminLink('AdminLengowHome') . '&action=refresh_status';
         $this->context->smarty->assign('refresh_status', $refreshStatus);
         parent::display();
     }

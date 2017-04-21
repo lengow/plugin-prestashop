@@ -53,13 +53,13 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $module = Module::getInstanceByName('lengow');
         if ($module) {
             $fixture = new Fixture();
-            $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/currency.yml');
-            $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/marketplace_carrier.yml');
-            $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/carrier.yml');
-            $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Main/order_state.yml');
+            $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Main/currency.yml');
+            $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Main/marketplace_carrier.yml');
+            $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Main/carrier.yml');
+            $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Main/order_state.yml');
 
             //load default marketplace
-            $marketplaceFile =  _PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
+            $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
 
             LengowMarketplace::$MARKETPLACES = array(
                 1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
@@ -140,7 +140,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      * @param  string filename
      * @param  string nbLine
      * @param  string newFilename
-     * @param  string  $message
+     * @param  string $message
      * @throws PHPUnit_Framework_AssertionFailedError
      */
     public static function assertFileNbLine($filename, $nbLine, $newFilename, $message = '')
@@ -154,10 +154,10 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
             $nbLine++;
         }
 
-        $newFilename = str_replace('flux-fr.csv', $newFilename.'.'.$extension, $filename);
+        $newFilename = str_replace('flux-fr.csv', $newFilename . '.' . $extension, $filename);
         copy($filename, $newFilename);
 
-        $findLine= exec("cat $filename | wc -l");
+        $findLine = exec("cat $filename | wc -l");
         self::assertEquals($nbLine, $findLine, $message);
     }
 
@@ -239,7 +239,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      * @param  string filename
      * @param  string nbLine
      * @param  string newFilename
-     * @param  string  $message
+     * @param  string $message
      * @throws PHPUnit_Framework_AssertionFailedError
      */
     public static function assertFileValues($filename, $productId, $values, $message = '')
@@ -249,8 +249,8 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $i = 0;
         if (($handle = fopen($filename, "r")) !== false) {
             while (($data = fgetcsv($handle, 1000, "|")) !== false) {
-                if ($i==0) {
-                    $j=0;
+                if ($i == 0) {
+                    $j = 0;
                     foreach ($data as $column) {
                         $headers[str_replace('"', '', $column)] = $j;
                         $j++;
@@ -296,15 +296,15 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $whereSql = array();
         foreach ($where as $key => $value) {
             if ($value === 'NULL') {
-                $whereSql[]= ' `'.$key.'` IS NULL';
+                $whereSql[] = ' `' . $key . '` IS NULL';
             } else {
-                $whereSql[]= ' `'.$key.'` = "'.pSQL($value).'" ';
+                $whereSql[] = ' `' . $key . '` = "' . pSQL($value) . '" ';
             }
         }
-        $whereSql = ' WHERE '.join(' AND ', $whereSql);
-        $sql = 'SELECT COUNT(*) as total FROM '._DB_PREFIX_.$table.$whereSql;
+        $whereSql = ' WHERE ' . join(' AND ', $whereSql);
+        $sql = 'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . $table . $whereSql;
         if ($message == "") {
-            $message = 'Cant find row with ['. $whereSql.'] IN ['.$table.']';
+            $message = 'Cant find row with [' . $whereSql . '] IN [' . $table . ']';
         }
         $result = Db::getInstance()->ExecuteS($sql);
         self::assertTrue((bool)$result[0]["total"], $message);
@@ -322,15 +322,15 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $whereSql = array();
         foreach ($where as $key => $value) {
             if ($value === 'NULL') {
-                $whereSql[]= ' `'.$key.'` IS NULL';
+                $whereSql[] = ' `' . $key . '` IS NULL';
             } else {
-                $whereSql[]= ' `'.$key.'` = "'.pSQL($value).'" ';
+                $whereSql[] = ' `' . $key . '` = "' . pSQL($value) . '" ';
             }
         }
-        $whereSql = ' WHERE '.join(' AND ', $whereSql);
-        $sql = 'SELECT COUNT(*) as total FROM '._DB_PREFIX_.$table.$whereSql;
+        $whereSql = ' WHERE ' . join(' AND ', $whereSql);
+        $sql = 'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . $table . $whereSql;
         if ($message == "") {
-            $message = 'Cant find row with ['. $whereSql.'] IN ['.$table.']';
+            $message = 'Cant find row with [' . $whereSql . '] IN [' . $table . ']';
         }
         $result = Db::getInstance()->ExecuteS($sql);
         self::assertFalse((bool)$result[0]["total"], $message);
@@ -343,16 +343,16 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertTableEmpty($tableName, $message = '')
     {
-        $result = Db::getInstance()->ExecuteS('SELECT COUNT(*) as total FROM '._DB_PREFIX_.$tableName);
+        $result = Db::getInstance()->ExecuteS('SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . $tableName);
         self::assertTrue(!(bool)$result[0]["total"], $message);
     }
 
     /**
      * Call protected/private method of a class.
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object Instantiated object that we will run method on.
      * @param string $methodName Method name to call
-     * @param array  $parameters Array of parameters to pass into method.
+     * @param array $parameters Array of parameters to pass into method.
      *
      * @return mixed Method return.
      */
@@ -386,7 +386,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertTableExist($tableName, $message = '')
     {
-        $result = Db::getInstance()->ExecuteS("SHOW TABLES LIKE '"._DB_PREFIX_.$tableName."'");
+        $result = Db::getInstance()->ExecuteS("SHOW TABLES LIKE '" . _DB_PREFIX_ . $tableName . "'");
         return (bool)$result;
     }
 
@@ -398,7 +398,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertTableNotExist($tableName, $message = '')
     {
-        $result = Db::getInstance()->ExecuteS("SHOW TABLES LIKE '"._DB_PREFIX_.$tableName."'");
+        $result = Db::getInstance()->ExecuteS("SHOW TABLES LIKE '" . _DB_PREFIX_ . $tableName . "'");
         return !(bool)$result;
     }
 }

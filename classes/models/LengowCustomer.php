@@ -28,10 +28,10 @@ class LengowCustomer extends Customer
      * @var array definition array for prestashop 1.4
      */
     public static $definitionLengow = array(
-        'lastname'  => array('required' => true, 'size' => 32),
+        'lastname' => array('required' => true, 'size' => 32),
         'firstname' => array('required' => true, 'size' => 32),
-        'email'     => array('required' => true, 'size' => 128),
-        'passwd'    => array('required' => true, 'size' => 32),
+        'email' => array('required' => true, 'size' => 128),
+        'passwd' => array('required' => true, 'size' => 32),
     );
 
     /**
@@ -219,7 +219,7 @@ class LengowCustomer extends Customer
     /**
      * Retrieve customers by email address and id shop
      *
-     * @param string  $email  customer email
+     * @param string $email customer email
      * @param integer $idShop Prestashop shop id
      *
      * @return LengowCustomer
@@ -227,9 +227,9 @@ class LengowCustomer extends Customer
     public function getByEmailAndShop($email, $idShop)
     {
         $sql = 'SELECT *
-            FROM `'._DB_PREFIX_.'customer`
-            WHERE `email` = \''.pSQL($email).'\'
-            '.(_PS_VERSION_ < 1.5 ? '' : ' AND `id_shop` = \''.$idShop.'\'').'
+            FROM `' . _DB_PREFIX_ . 'customer`
+            WHERE `email` = \'' . pSQL($email) . '\'
+            ' . (_PS_VERSION_ < 1.5 ? '' : ' AND `id_shop` = \'' . $idShop . '\'') . '
             AND `deleted` = \'0\'';
         $result = Db::getInstance()->getRow($sql);
         if (!$result) {

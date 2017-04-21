@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-require_once _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR.'loader.php';
+require_once _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'loader.php';
 
 /**
  * Lengow
@@ -52,7 +52,7 @@ class Lengow extends Module
 
         if (_PS_VERSION_ < '1.5') {
             $sep = DIRECTORY_SEPARATOR;
-            require_once _PS_MODULE_DIR_.$this->name.$sep.'backward_compatibility'.$sep.'backward.php';
+            require_once _PS_MODULE_DIR_ . $this->name . $sep . 'backward_compatibility' . $sep . 'backward.php';
             $this->context = Context::getContext();
             $this->smarty = $this->context->smarty;
         }

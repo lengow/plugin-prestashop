@@ -36,12 +36,12 @@
 
 @set_time_limit(0);
 
-$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME'])."/");
+$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
 $sep = DIRECTORY_SEPARATOR;
-require_once $currentDirectory.'config'.$sep.'config.inc.php';
+require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 Configuration::set('PS_SHOP_ENABLE', true);
-require_once $currentDirectory.'init.php';
-require_once $currentDirectory.'modules'.$sep.'lengow'.$sep.'lengow.php';
+require_once $currentDirectory . 'init.php';
+require_once $currentDirectory . 'modules' . $sep . 'lengow' . $sep . 'lengow.php';
 // check if Lengow is installed and enabled
 $lengow = new Lengow();
 if (!Module::isInstalled($lengow->name)) {
@@ -123,6 +123,6 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
     // sync option is not valid
     if ($sync && ($sync !== 'order' && $sync !== 'action' && $sync !== 'option')) {
         header('HTTP/1.1 400 Bad Request');
-        die('Action: '.$sync.' is not a valid action');
+        die('Action: ' . $sync . ' is not a valid action');
     }
 }

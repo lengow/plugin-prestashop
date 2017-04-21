@@ -38,12 +38,12 @@ class LengowSync
     {
         $data = array();
         $data['domain_name'] = $_SERVER["SERVER_NAME"];
-        $data['token']  = LengowMain::getToken();
+        $data['token'] = LengowMain::getToken();
         $data['type'] = 'prestashop';
-        $data['version']  = _PS_VERSION_;
+        $data['version'] = _PS_VERSION_;
         $data['plugin_version'] = LengowConfiguration::getGlobalValue('LENGOW_VERSION');
         $data['email'] = LengowConfiguration::get('PS_SHOP_EMAIL');
-        $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+        $data['return_url'] = 'http://' . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $idShop = $row['id_shop'];
@@ -71,7 +71,7 @@ class LengowSync
         foreach ($params as $shopToken => $values) {
             if ($shop = LengowShop::findByToken($shopToken)) {
                 $listKey = array(
-                    'account_id'   => false,
+                    'account_id' => false,
                     'access_token' => false,
                     'secret_token' => false
                 );
@@ -81,7 +81,7 @@ class LengowSync
                     }
                     if (Tools::strlen($v) > 0) {
                         $listKey[$k] = true;
-                        LengowConfiguration::updateValue('LENGOW_'.Tools::strtoupper($k), $v, false, null, $shop->id);
+                        LengowConfiguration::updateValue('LENGOW_' . Tools::strtoupper($k), $v, false, null, $shop->id);
                     }
                 }
                 $findFalseValue = false;
@@ -110,7 +110,7 @@ class LengowSync
     public static function checkSyncShop($idShop)
     {
         return LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $idShop)
-            && LengowCheck::isValidAuth($idShop);
+        && LengowCheck::isValidAuth($idShop);
     }
 
     /**
@@ -122,11 +122,11 @@ class LengowSync
     {
         $data = array();
         $data['cms'] = array(
-            'token'          => LengowMain::getToken(),
-            'type'           => 'prestashop',
-            'version'        => _PS_VERSION_,
+            'token' => LengowMain::getToken(),
+            'type' => 'prestashop',
+            'version' => _PS_VERSION_,
             'plugin_version' => LengowConfiguration::getGlobalValue('LENGOW_VERSION'),
-            'options'        => LengowConfiguration::getAllValues()
+            'options' => LengowConfiguration::getAllValues()
         );
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
@@ -134,15 +134,15 @@ class LengowSync
             $lengowExport = new LengowExport(array("shop_id" => $idShop));
             $shop = new LengowShop($idShop);
             $data['shops'][] = array(
-                'enabled'                 => LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $shop->id),
-                'token'                   => LengowMain::getToken($idShop),
-                'store_name'              => $shop->name,
-                'domain_url'              => $shop->domain,
-                'feed_url'                => LengowMain::getExportUrl($shop->id),
-                'cron_url'                => LengowMain::getImportUrl(),
-                'total_product_number'    => $lengowExport->getTotalProduct(),
+                'enabled' => LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $shop->id),
+                'token' => LengowMain::getToken($idShop),
+                'store_name' => $shop->name,
+                'domain_url' => $shop->domain,
+                'feed_url' => LengowMain::getExportUrl($shop->id),
+                'cron_url' => LengowMain::getImportUrl(),
+                'total_product_number' => $lengowExport->getTotalProduct(),
                 'exported_product_number' => $lengowExport->getTotalExportProduct(),
-                'options'                 => LengowConfiguration::getAllValues($shop->id)
+                'options' => LengowConfiguration::getAllValues($shop->id)
             );
         }
         return $data;
@@ -163,7 +163,7 @@ class LengowSync
             return false;
         }
         if (!$force) {
-            $updatedAt =  LengowConfiguration::getGlobalValue('LENGOW_OPTION_CMS_UPDATE');
+            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_OPTION_CMS_UPDATE');
             if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < self::$cacheTime) {
                 return false;
             }
@@ -184,7 +184,7 @@ class LengowSync
     public static function getStatusAccount($force = false)
     {
         if (!$force) {
-            $updatedAt =  LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE');
+            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE');
             if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < self::$cacheTime) {
                 return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
             }
@@ -196,7 +196,7 @@ class LengowSync
         if (isset($result->subscription)) {
             $status = array();
             $status['type'] = $result->subscription->billing_offer->type;
-            $status['day'] = - round((strtotime(date("c")) - strtotime($result->subscription->renewal)) / 86400);
+            $status['day'] = -round((strtotime(date("c")) - strtotime($result->subscription->renewal)) / 86400);
             if ($status['day'] < 0) {
                 $status['day'] = 0;
             }
@@ -248,9 +248,9 @@ class LengowSync
                 '/v3.0/stats',
                 $s['id_shop'],
                 array(
-                    'date_from' => date('c', strtotime(date('Y-m-d').' -10 years')),
-                    'date_to'   => date('c'),
-                    'metrics'   => 'year',
+                    'date_from' => date('c', strtotime(date('Y-m-d') . ' -10 years')),
+                    'date_to' => date('c'),
+                    'metrics' => 'year',
                 )
             );
             if (isset($result->level0)) {
@@ -264,14 +264,14 @@ class LengowSync
                 } else {
                     return array(
                         'total_order' => 0,
-                        'nb_order'    => 0,
-                        'currency'    => '',
-                        'available'   => false
+                        'nb_order' => 0,
+                        'currency' => '',
+                        'available' => false
                     );
                 }
             }
             $accountIds[] = $accountId;
-            $i ++;
+            $i++;
         }
         if ($return['total_order'] > 0 || $return['nb_order'] > 0) {
             $return['available'] = true;

@@ -19,13 +19,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR);
+define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR);
 $sep = DIRECTORY_SEPARATOR;
 
 $notInPresta14 = array('LengowGender.php');
 
 if (_PS_VERSION_ < '1.5') {
-    require_once _PS_MODULE_LENGOW_DIR_.'backward_compatibility'.$sep.'backward.php';
+    require_once _PS_MODULE_LENGOW_DIR_ . 'backward_compatibility' . $sep . 'backward.php';
 }
 
 if (_PS_VERSION_ < '1.5') {
@@ -51,10 +51,10 @@ function lengowAutoloader($className)
     if (Tools::substr($className, 0, 6) == 'Lengow') {
         if (Tools::substr($className, -10) == 'Controller') {
             $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/controllers/';
-            include $directory.$className.'.php';
+            include $directory . $className . '.php';
         } else {
             $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/models/';
-            include $directory.$className.'.php';
+            include $directory . $className . '.php';
         }
     }
 }
