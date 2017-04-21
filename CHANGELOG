@@ -7,13 +7,26 @@ Version 3.0.0
 	- Feature: Add new product selection by shop
 	- Feature: Add new lengow order with new page
 	- Feature: Add new help page
-	- Feature: Add new Toolbox page with all Lengow informations
+	- Feature: Add new Toolbox page with all Lengow data
 	- Feature: Add new legals page
 	- Feature: Add new lengow simple tag
 	- Feature: New lengow settings with cleaning old options
 	- Feature: Creating new accounts directly from the module
 	- Feature: Management actions and error return
-	- Feature: Add new actions: re-import, resend and resync orders
+	- Feature: Add new actions: re-import, resend and re-sync orders
+
+=============================================================
+Version 2.2.5
+=============================================================
+    - Feature: Rewrite for compatibility with the new Prestashop validator
+    - Feature: Deleting the override folder for compatibility with Prestashop 1.7
+    - Bugfix: [export] Add anchor for product url
+    - Bugfix: [export] Add export features option for Prestashop 1.4
+    - Bugfix: [import] Add a correction for dom colissimo
+    - Bugfix: [import] No translation in lengow log controller
+    - Bugfix: [action] Get marketplace return and errors in logs
+    - Bugfix: [action] Notice for default value in description argument
+    - Bugfix: [tracking] Add a correction for Prestashop 1.7 in hookOrderConfirmation
 
 =============================================================
 Version 2.2.4
