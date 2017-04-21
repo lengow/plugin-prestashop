@@ -304,7 +304,7 @@ class LengowConfiguration extends Configuration
     * @param integer $idLang      Prestashop lang id
     * @param integer $idShopGroup Prestashop shop group id
     * @param integer $idShop      Prestashop shop id
-    * @param integer $default     default value (compatibility version 1.7)
+    * @param boolean $default     default value (compatibility version 1.7)
     *
     * @return mixed
     */
@@ -456,11 +456,11 @@ class LengowConfiguration extends Configuration
             }
             if ($idShop) {
                 if (isset($value['shop']) && $value['shop']) {
-                    $rows[$key] = LengowConfiguration::get($key, null, false, $idShop);
+                    $rows[$key] = self::get($key, null, false, $idShop);
                 }
             } else {
                 if (isset($value['global']) && $value['global']) {
-                    $rows[$key] = LengowConfiguration::getGlobalValue($key);
+                    $rows[$key] = self::getGlobalValue($key);
                 }
             }
         }

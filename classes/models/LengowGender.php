@@ -24,7 +24,6 @@
  */
 class LengowGender extends Gender
 {
-
     /**
      * @var array current alias of mister
      */
@@ -68,7 +67,7 @@ class LengowGender extends Gender
     /**
      * Get the real gender
      *
-     * @param $name The gender text
+     * @param string $name the gender text
      *
      * @return string|integer
      */

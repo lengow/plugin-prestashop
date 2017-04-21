@@ -33,9 +33,9 @@ class LengowMarketplace
     );
 
     /**
-     * @var array all markeplaces allowed for an account ID
+     * @var array all marketplaces allowed for an account ID
      */
-    public static $markeplaces = array();
+    public static $marketplaces = array();
     
     /**
      * @var mixed the current marketplace
@@ -93,7 +93,7 @@ class LengowMarketplace
     public $carriers = array();
 
     /**
-    * Construct a new Markerplace instance with marketplace API
+    * Construct a new Marketplace instance with marketplace API
     *
     * @param string  $name   name of the marketplace
     * @param integer $idShop Prestashop shop id
@@ -105,7 +105,7 @@ class LengowMarketplace
         $this->idShop = $idShop;
         $this->loadApiMarketplace();
         $this->name = Tools::strtolower($name);
-        if (!isset(self::$markeplaces[$this->idShop]->{$this->name})) {
+        if (!isset(self::$marketplaces[$this->idShop]->{$this->name})) {
             throw new LengowException(
                 LengowMain::setLogMessage(
                     'lengow_log.exception.marketplace_not_present',
@@ -113,7 +113,7 @@ class LengowMarketplace
                 )
             );
         }
-        $this->marketplace = self::$markeplaces[$this->idShop]->{$this->name};
+        $this->marketplace = self::$marketplaces[$this->idShop]->{$this->name};
         if (!empty($this->marketplace)) {
             $this->legacyCode = $this->marketplace->legacy_code;
             $this->labelName = $this->marketplace->name;
@@ -133,16 +133,24 @@ class LengowMarketplace
                 foreach ($action->optional_args as $optionalArg) {
                     $this->actions[(string)$key]['optional_args'][(string)$optionalArg] = $optionalArg;
                 }
-                foreach ($action->args_description as $key => $argDescription) {
+                foreach ($action->args_description as $argKey => $argDescription) {
                     $validValues = array();
                     if (isset($argDescription->valid_values)) {
                         foreach ($argDescription->valid_values as $code => $validValue) {
-                            $validValues[(string)$code] = (string)$validValue->label;
+                            $validValues[(string)$code] = isset($validValue->label)
+                                ? (string)$validValue->label
+                                : (string)$validValue;
                         }
                     }
-                    $this->argValues[(string)$key] = array(
-                        'default_value'      => (string)$argDescription->default_value,
-                        'accept_free_values' => (bool)$argDescription->accept_free_values,
+                    $defaultValue = isset($argDescription->default_value)
+                        ? (string)$argDescription->default_value
+                        : '';
+                    $acceptFreeValue = isset($argDescription->accept_free_values)
+                        ? (bool)$argDescription->accept_free_values
+                        : true;
+                    $this->argValues[(string)$argKey] = array(
+                        'default_value'      => $defaultValue,
+                        'accept_free_values' => $acceptFreeValue,
                         'valid_values'       => $validValues
                     );
                 }
@@ -161,9 +169,9 @@ class LengowMarketplace
      */
     public function loadApiMarketplace()
     {
-        if (!array_key_exists($this->idShop, self::$markeplaces)) {
+        if (!array_key_exists($this->idShop, self::$marketplaces)) {
             $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $this->idShop);
-            self::$markeplaces[$this->idShop] = $result;
+            self::$marketplaces[$this->idShop] = $result;
         }
     }
 

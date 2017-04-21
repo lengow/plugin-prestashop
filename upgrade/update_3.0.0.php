@@ -469,12 +469,9 @@ LengowInstall::removeFiles(
         'webservice/lengow.php',
         'AdminLengow14.php',
         'AdminLengowLog14.php',
-        'config_fr.xml',
-        'config_it.xml',
-        'config_es.xml',
-        'config_gb.xml',
-        'config_de.xml',
     )
 );
+// Delete config files
+LengowInstall::removeConfigFiles();
 // Copy AdminLengowHome.gif for version 1.5
 LengowInstall::createTabImage();

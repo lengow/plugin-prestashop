@@ -47,9 +47,9 @@ class LengowCustomer extends Customer
     public static function getFieldDefinition()
     {
         if (_PS_VERSION_ < 1.5) {
-            return LengowCustomer::$definitionLengow;
+            return self::$definitionLengow;
         }
-        return LengowCustomer::$definition['fields'];
+        return self::$definition['fields'];
     }
 
     /**
@@ -78,11 +78,11 @@ class LengowCustomer extends Customer
      *
      * @throws LengowException invalid object
      *
-     * @return boolean true if object is valid
+     * @return boolean
      */
     public function validateLengow()
     {
-        $definition = LengowCustomer::getFieldDefinition();
+        $definition = self::getFieldDefinition();
         foreach ($definition as $fieldName => $constraints) {
             if (isset($constraints['required']) && $constraints['required']) {
                 if (!$this->{$fieldName}) {
@@ -175,7 +175,7 @@ class LengowCustomer extends Customer
             case 'other':
                 $addressFullArray = explode(' ', $this->address_full);
                 if (count($addressFullArray) < 1) {
-                    $definition = LengowCustomer::getFieldDefinition();
+                    $definition = self::getFieldDefinition();
                     $address1MaxLength = $definition['address1']['size'];
                     $address2MaxLength = $definition['address1']['size'];
                     $otherMaxLength = $definition['other']['size'];

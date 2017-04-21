@@ -43,7 +43,6 @@ class LengowOrderController extends LengowController
         foreach ($shops as $s) {
             $shop[$s['id_shop']] = new LengowShop($s['id_shop']);
         }
-        $marketplaces = array();
         $days = LengowConfiguration::get('LENGOW_IMPORT_DAYS');
         // check if default carrier is available
         $notDefaultCarrier = false;
@@ -55,7 +54,6 @@ class LengowOrderController extends LengowController
             );
         }
         $this->context->smarty->assign('shop', $shop);
-        $this->context->smarty->assign('marketplaces', $marketplaces);
         $this->context->smarty->assign('notDefaultCarrier', $notDefaultCarrier);
         $this->context->smarty->assign('days', $days);
         $this->context->smarty->assign('lengow_table', $this->buildTable());
@@ -208,19 +206,6 @@ class LengowOrderController extends LengowController
                     $orderUrl = $prestashopOrderController.'&id_order='.$idOrder.'&vieworder';
                     Tools::redirectAdmin($orderUrl);
                     break;
-                case 'load_marketplace':
-                    $idShop = Tools::getValue('shop_id');
-                    $marketplaces = LengowMarketplace::getMarketplacesByShop($idShop);
-                    $this->context->smarty->assign('marketplaces', $marketplaces);
-                    $module = Module::getInstanceByName('lengow');
-                    $displaySelectMarketplace = $module->display(
-                        _PS_MODULE_LENGOW_DIR_,
-                        'views/templates/admin/lengow_order/helpers/view/select_marketplace.tpl'
-                    );
-                    $data = array();
-                    $data['select_marketplace'] = preg_replace('/\r|\n/', '', addslashes($displaySelectMarketplace));
-                    echo Tools::jsonEncode($data);
-                    exit();
                 case 'cancel_re_import':
                     $idOrder = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
                     $lengowOrder = new LengowOrder($idOrder);
@@ -286,7 +271,7 @@ class LengowOrderController extends LengowController
     }
 
     /**
-     * Get all last importation informations
+     * Get all last importation data
      */
     public function assignLastImportationInfos()
     {
@@ -568,9 +553,9 @@ class LengowOrderController extends LengowController
     /**
      * Generate lengow state
      *
-     * @param string $key
-     * @param string $value
-     * @param string $item
+     * @param string $key   row key
+     * @param string $value row value
+     * @param array  $item  item values
      *
      * @return string
      */
@@ -589,9 +574,9 @@ class LengowOrderController extends LengowController
     /**
      * Generate order link
      *
-     * @param string $key
-     * @param string $value
-     * @param string $item
+     * @param string $key   row key
+     * @param string $value row value
+     * @param array  $item  item values
      *
      * @return string
      */
@@ -620,9 +605,9 @@ class LengowOrderController extends LengowController
     /**
      * Generate lengow marketplace name
      *
-     * @param string $key
-     * @param string $value
-     * @param string $item
+     * @param string $key   row key
+     * @param string $value row value
+     * @param array  $item  item values
      *
      * @return string
      */
@@ -637,9 +622,9 @@ class LengowOrderController extends LengowController
     /**
      * Generate logs and lengow action
      *
-     * @param string $key
-     * @param string $value
-     * @param string $item
+     * @param string $key   row key
+     * @param string $value row value
+     * @param array  $item  item values
      *
      * @return string
      */
@@ -654,7 +639,6 @@ class LengowOrderController extends LengowController
                 }
             }
             $link = new LengowLink();
-            $message = '<ul>'.join('', $errorMessage).'</ul>';
             if ($item[$key] == '2') {
                 $message = LengowMain::decodeLogMessage('order.screen.action_sent_not_work')
                     .'<br/>'.join('<br/>', $errorMessage);
@@ -703,11 +687,11 @@ class LengowOrderController extends LengowController
     }
 
     /**
-     * Generate extra informations (only for toolbox)
+     * Generate extra data (only for toolbox)
      *
-     * @param string $key
-     * @param string $value
-     * @param string $item
+     * @param string $key   row key
+     * @param string $value row value
+     * @param array  $item  item values
      *
      * @return string
      */

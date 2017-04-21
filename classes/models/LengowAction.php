@@ -70,12 +70,12 @@ class LengowAction
     public $state;
 
     /**
-     * @var date action created at
+     * @var string action created at
      */
     public $createdAt;
 
     /**
-     * @var date updated at
+     * @var string updated at
      */
     public $updatedAt;
 

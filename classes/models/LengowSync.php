@@ -37,26 +37,26 @@ class LengowSync
     public static function getSyncData()
     {
         $data = array();
-        $data['domain_name']    = $_SERVER["SERVER_NAME"];
-        $data['token']          = LengowMain::getToken();
-        $data['type']           = 'prestashop';
-        $data['version']        = _PS_VERSION_;
+        $data['domain_name'] = $_SERVER["SERVER_NAME"];
+        $data['token']  = LengowMain::getToken();
+        $data['type'] = 'prestashop';
+        $data['version']  = _PS_VERSION_;
         $data['plugin_version'] = LengowConfiguration::getGlobalValue('LENGOW_VERSION');
-        $data['email']          = LengowConfiguration::get('PS_SHOP_EMAIL');
-        $data['return_url']     = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+        $data['email'] = LengowConfiguration::get('PS_SHOP_EMAIL');
+        $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $idShop = $row['id_shop'];
             $lengowExport = new LengowExport(array("shop_id" => $idShop));
             $shop = new LengowShop($idShop);
-            $data['shops'][$row['id_shop']]['token']                   = LengowMain::getToken($idShop);
-            $data['shops'][$row['id_shop']]['name']                    = $shop->name;
-            $data['shops'][$row['id_shop']]['domain']                  = $shop->domain;
-            $data['shops'][$row['id_shop']]['feed_url']                = LengowMain::getExportUrl($shop->id);
-            $data['shops'][$row['id_shop']]['cron_url']                = LengowMain::getImportUrl();
-            $data['shops'][$row['id_shop']]['total_product_number']    = $lengowExport->getTotalProduct();
+            $data['shops'][$row['id_shop']]['token'] = LengowMain::getToken($idShop);
+            $data['shops'][$row['id_shop']]['name'] = $shop->name;
+            $data['shops'][$row['id_shop']]['domain'] = $shop->domain;
+            $data['shops'][$row['id_shop']]['feed_url'] = LengowMain::getExportUrl($shop->id);
+            $data['shops'][$row['id_shop']]['cron_url'] = LengowMain::getImportUrl();
+            $data['shops'][$row['id_shop']]['total_product_number'] = $lengowExport->getTotalProduct();
             $data['shops'][$row['id_shop']]['exported_product_number'] = $lengowExport->getTotalExportProduct();
-            $data['shops'][$row['id_shop']]['configured']              = self::checkSyncShop($shop->id);
+            $data['shops'][$row['id_shop']]['configured'] = self::checkSyncShop($shop->id);
         }
         return $data;
     }

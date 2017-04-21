@@ -61,6 +61,7 @@ class LengowCron
         if (!Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'cronjobs\'')) {
             return false;
         }
+        $idShop = 1;
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
             $idShop = $s['id_shop'];
@@ -88,6 +89,7 @@ class LengowCron
         if (!Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'cronjobs\'')) {
             return false;
         }
+        $idShop = 1;
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
             $idShop = $s['id_shop'];
@@ -139,6 +141,7 @@ class LengowCron
         if (!Db::getInstance()->executeS('SHOW TABLES LIKE \''._DB_PREFIX_.'cronjobs\'')) {
             return true;
         }
+        $idShop = 1;
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
             $idShop = $s['id_shop'];

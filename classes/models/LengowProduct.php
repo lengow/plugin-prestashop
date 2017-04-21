@@ -91,7 +91,7 @@ class LengowProduct extends Product
      *
      * @param integer $idProduct Prestashop product id
      * @param integer $idLang    Prestashop lang id
-     * @param object  $params    all export parameters
+     * @param array   $params    all export parameters
      */
     public function __construct($idProduct = null, $idLang = null, $params = array())
     {
@@ -309,6 +309,20 @@ class LengowProduct extends Product
                 return $this->available_now;
             case 'url':
                 if (version_compare(_PS_VERSION_, '1.5', '>')) {
+                    if (version_compare(_PS_VERSION_, '1.6.1.0', '>')) {
+                        return $this->context->link->getProductLink(
+                            $this,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            $idProductAttribute,
+                            true,
+                            false,
+                            true
+                        );
+                    }
                     if (version_compare(_PS_VERSION_, '1.6.0.14', '>')) {
                         return $this->context->link->getProductLink(
                             $this,
@@ -373,13 +387,13 @@ class LengowProduct extends Product
                 } else {
                     $idTaxRulesGroup = $this->carrier->getIdTaxRulesGroup();
                 }
-                $taxeRules = LengowTaxRule::getLengowTaxRulesByGroupId(
+                $taxRules = LengowTaxRule::getLengowTaxRulesByGroupId(
                     Configuration::get('PS_LANG_DEFAULT'),
                     $idTaxRulesGroup
                 );
-                foreach ($taxeRules as $taxeRule) {
-                    if (isset($taxeRule['id_country']) && $taxeRule['id_country'] == $defaultCountry) {
-                        $tr = new TaxRule($taxeRule['id_tax_rule']);
+                foreach ($taxRules as $taxRule) {
+                    if (isset($taxRule['id_country']) && $taxRule['id_country'] == $defaultCountry) {
+                        $tr = new TaxRule($taxRule['id_tax_rule']);
                     }
                 }
                 if (isset($tr)) {
@@ -424,6 +438,20 @@ class LengowProduct extends Product
                 return LengowMain::cleanData($this->meta_description);
             case 'url_rewrite':
                 if (version_compare(_PS_VERSION_, '1.4', '>')) {
+                    if (version_compare(_PS_VERSION_, '1.6.1.0', '>')) {
+                        return $this->context->link->getProductLink(
+                            $this,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            $idProductAttribute,
+                            false,
+                            false,
+                            true
+                        );
+                    }
                     return $this->context->link->getProductLink(
                         $this,
                         $this->link_rewrite,
@@ -528,26 +556,7 @@ class LengowProduct extends Product
     }
 
     /**
-     * Clear data cache
-     */
-    public static function clear()
-    {
-        self::$_taxCalculationMethod = null;
-        self::$_prices = array();
-        self::$_pricesLevel2 = array();
-        self::$_incat = array();
-        self::$_cart_quantity = array();
-        self::$_tax_rules_group = array();
-        self::$_cacheFeatures = array();
-        self::$_frontFeaturesCache = array();
-        self::$producPropertiesCache = array();
-        if (_PS_VERSION_ >= '1.5') {
-            self::$cacheStock = array();
-        }
-    }
-
-    /**
-     * Get data attribute of current product.
+     * Get data attribute of current product
      *
      * @param integer $idProductAttribute Prestashop product attribute id
      * @param string  $name               the data name attribute
@@ -658,7 +667,7 @@ class LengowProduct extends Product
     /**
      * Get combinations of current product
      *
-     * @return array All combinations
+     * @return array
      */
     public function getCombinations()
     {
@@ -668,7 +677,7 @@ class LengowProduct extends Product
     /**
      * Get count images of current product
      *
-     * @return integer The number of images
+     * @return integer
      */
     public function getCountImages()
     {
@@ -681,7 +690,7 @@ class LengowProduct extends Product
      *
      * @param integer $idLang Prestashop lang id
      *
-     * @return array Attribute groups
+     * @return array
      */
     public function getAttributesGroups($idLang)
     {
@@ -906,7 +915,7 @@ class LengowProduct extends Product
     public static function extractProductDataFromAPI($api)
     {
         $temp = array();
-        foreach (LengowProduct::$productApiNodes as $node) {
+        foreach (self::$productApiNodes as $node) {
             $temp[$node] = $api->{$node};
         }
         $temp['price_unit'] = (float)$temp['amount'] / (float)$temp['quantity'];
@@ -930,11 +939,11 @@ class LengowProduct extends Product
         }
         switch (Tools::strtolower($attributeName)) {
             case 'reference':
-                return LengowProduct::findProduct('reference', $attributeValue, $idShop);
+                return self::findProduct('reference', $attributeValue, $idShop);
             case 'ean':
-                return LengowProduct::findProduct('ean13', $attributeValue, $idShop);
+                return self::findProduct('ean13', $attributeValue, $idShop);
             case 'upc':
-                return LengowProduct::findProduct('upc', $attributeValue, $idShop);
+                return self::findProduct('upc', $attributeValue, $idShop);
             default:
                 $idsProduct = array();
                 // Compatibility with old plugins
@@ -946,10 +955,10 @@ class LengowProduct extends Product
                     if (isset($sku[1]) && preg_match('/^[0-9]*$/', $sku[1]) && $sku[1] != 0) {
                         $idsProduct['id_product_attribute'] = $sku[1];
                     }
-                    $idBool = LengowProduct::checkProductId($idsProduct['id_product'], $apiDatas);
+                    $idBool = self::checkProductId($idsProduct['id_product'], $apiDatas);
                     $idAttBool = true;
                     if (isset($idsProduct['id_product_attribute'])) {
-                        $idAttBool = LengowProduct::checkProductAttributeId(
+                        $idAttBool = self::checkProductAttributeId(
                             new LengowProduct($idsProduct['id_product']),
                             $idsProduct['id_product_attribute']
                         );

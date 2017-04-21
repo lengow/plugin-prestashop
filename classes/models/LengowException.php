@@ -24,5 +24,4 @@
  */
 class LengowException extends Exception
 {
-
 }

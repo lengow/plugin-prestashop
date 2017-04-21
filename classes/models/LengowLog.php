@@ -46,7 +46,7 @@ class LengowLog extends LengowFile
         } else {
             $this->fileName = $fileName;
         }
-        $this->file = new LengowFile(LengowLog::$lengowLogFolder, $this->fileName);
+        $this->file = new LengowFile(self::$lengowLogFolder, $this->fileName);
     }
 
     /**
@@ -78,7 +78,7 @@ class LengowLog extends LengowFile
      */
     public static function getPaths()
     {
-        $files = LengowLog::getFiles();
+        $files = self::getFiles();
         if (empty($files)) {
             return false;
         }
@@ -101,7 +101,7 @@ class LengowLog extends LengowFile
      */
     public function getFileName()
     {
-        return _PS_MODULE_LENGOW_DIR_.LengowLog::$lengowLogFolder.'/'.$this->fileName;
+        return _PS_MODULE_LENGOW_DIR_.self::$lengowLogFolder.'/'.$this->fileName;
     }
 
     /**
@@ -111,7 +111,7 @@ class LengowLog extends LengowFile
      */
     public static function getFiles()
     {
-        return LengowFile::getFilesFromFolder(LengowLog::$lengowLogFolder);
+        return LengowFile::getFilesFromFolder(self::$lengowLogFolder);
     }
 
     /**
@@ -122,7 +122,7 @@ class LengowLog extends LengowFile
     public static function download($file = null)
     {
         if ($file && preg_match('/^logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt$/', $file, $match)) {
-            $filename = _PS_MODULE_LENGOW_DIR_.LengowLog::$lengowLogFolder.'/'.$file;
+            $filename = _PS_MODULE_LENGOW_DIR_.self::$lengowLogFolder.'/'.$file;
             $handle = fopen($filename, "r");
             $contents = fread($handle, filesize($filename));
             header('Content-type: text/plain');

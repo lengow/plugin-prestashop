@@ -22,11 +22,7 @@
 define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.DIRECTORY_SEPARATOR);
 $sep = DIRECTORY_SEPARATOR;
 
-$notInPresta14 = array('LengowSpecificprice.php', 'LengowGender.php');
-$GLOBALS['OVERRIDE_FOLDER'] = 'override';
-$GLOBALS['INSTALL_FOLDER'] = 'install';
-$GLOBALS['MODELS_FOLDER'] = 'models';
-$GLOBALS['FILES'] = array();
+$notInPresta14 = array('LengowGender.php');
 
 if (_PS_VERSION_ < '1.5') {
     require_once _PS_MODULE_LENGOW_DIR_.'backward_compatibility'.$sep.'backward.php';

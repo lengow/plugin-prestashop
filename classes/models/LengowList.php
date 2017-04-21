@@ -80,6 +80,16 @@ class LengowList
     protected $nbMaxPage;
 
     /**
+     * @var integer pagination from
+     */
+    protected $paginationFrom;
+
+    /**
+     * @var integer pagination to
+     */
+    protected $paginationTo;
+
+    /**
     * @var array all params for sql request
     */
     protected $sql;
@@ -105,6 +115,11 @@ class LengowList
     protected $locale;
 
     /**
+     * @var array Prestashop currency by iso code
+     */
+    protected $currencyCode;
+
+    /**
     * @var boolean Toolbox is open or not
     */
     protected $toolbox;
@@ -124,22 +139,22 @@ class LengowList
      */
     public function __construct($params)
     {
-        $this->id                 = $params['id'];
-        $this->fieldsList         = $params['fields_list'];
-        $this->identifier         = $params['identifier'];
-        $this->selection          = $params['selection'];
+        $this->id = $params['id'];
+        $this->fieldsList = $params['fields_list'];
+        $this->identifier = $params['identifier'];
+        $this->selection = $params['selection'];
         $this->selectionCondition = isset($params['selection_condition']) ? $params['selection_condition'] : false ;
-        $this->controller         = $params['controller'];
-        $this->shopId             = isset($params['shop_id']) ? $params['shop_id'] : null;
-        $this->currentPage        = isset($params['current_page']) ? $params['current_page'] : 1;
-        $this->nbPerPage          = isset($params['nbPerPage']) ? $params['nbPerPage'] : 20;
-        $this->sql                = $params['sql'];
-        $this->ajax               = isset($params['ajax']) ? (bool)$params['ajax'] : false;
-        $this->orderValue         = isset($params['order_value']) ? $params['order_value'] : '';
-        $this->orderColumn        = isset($params['order_column']) ? $params['order_column'] : '';
-        $this->toolbox            = Context::getContext()->smarty->getVariable('toolbox')->value;
-        $this->locale             = new LengowTranslation();
-        $this->context            = Context::getContext();
+        $this->controller = $params['controller'];
+        $this->shopId = isset($params['shop_id']) ? $params['shop_id'] : null;
+        $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
+        $this->nbPerPage = isset($params['nbPerPage']) ? $params['nbPerPage'] : 20;
+        $this->sql = $params['sql'];
+        $this->ajax = isset($params['ajax']) ? (bool)$params['ajax'] : false;
+        $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
+        $this->orderColumn = isset($params['order_column']) ? $params['order_column'] : '';
+        $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
+        $this->locale = new LengowTranslation();
+        $this->context = Context::getContext();
         if (_PS_VERSION_ < 1.5) {
             $this->context->smarty->ps_language = $this->context->language;
         }
@@ -420,16 +435,16 @@ class LengowList
     }
 
     /**
-     * Find value by key in fieldlist
+     * Find value by key in field list
      *
-     * @param string $keyToSeach key search in field list
+     * @param string $keyToSearch key search in field list
      *
      * @return boolean
      */
-    public function findValueByKey($keyToSeach)
+    public function findValueByKey($keyToSearch)
     {
         foreach ($this->fieldsList as $key => $value) {
-            if ($keyToSeach == $key) {
+            if ($keyToSearch == $key) {
                 return $value;
             }
         }
@@ -637,7 +652,7 @@ class LengowList
      *
      * @param string $isoCode currency iso code
      *
-     * @return array
+     * @return Currency
      */
     private function getCurrencyByCode($isoCode)
     {

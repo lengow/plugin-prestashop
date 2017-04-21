@@ -11,8 +11,6 @@
 #     - Remove tests folder
 #     - Remove .git Folder and .gitignore
 
-
-
 remove_if_exist(){
     if [ -f $1 ]; then
       rm $1
@@ -105,7 +103,7 @@ echo "- Clean logs folder : ""$VERT""DONE""$NORMAL"""
 # Clean export folder
 remove_directories $FOLDER_EXPORT
 echo "- Clean export folder : ""$VERT""DONE""$NORMAL"""
-# Clean export folder
+# Clean tools folder
 remove_directory $FOLDER_TOOLS
 echo "- Remove Tools folder : ""$VERT""DONE""$NORMAL"""
 # Remove Test folder

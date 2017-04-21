@@ -107,11 +107,11 @@ class LengowCart extends Cart
      * @param integer $quantity           quantity to add (or substract)
      * @param integer $idProduct          Prestashop product id
      * @param integer $idProductAttribute attribute id if needed
-     * @param string  $idCustomization    Prestashop customization id
+     * @param mixed   $idCustomization    Prestashop customization id
      * @param string  $operator           indicate if quantity must be increased or decreased
      * @param integer $idAddressDelivery  Prestashop address delivery id
-     * @param string  $shop               Shop instance
-     * @param string  $autoAddCartRule    add auto cart rule
+     * @param Shop    $shop               Shop instance
+     * @param boolean $autoAddCartRule    add auto cart rule
      *
      * @return boolean
      */
@@ -147,7 +147,7 @@ class LengowCart extends Cart
             $minimalQuantity = (int)$product->minimal_quantity;
         }
         if (!Validate::isLoadedObject($product)) {
-            die(Tools::displayError());
+            return false;
         }
         if (isset(self::$_nbProducts[$this->id])) {
             unset(self::$_nbProducts[$this->id]);
@@ -318,17 +318,15 @@ class LengowCart extends Cart
     public static function getFieldDefinition()
     {
         if (_PS_VERSION_ < 1.5) {
-            return LengowCart::$definitionLengow;
+            return self::$definitionLengow;
         }
-        return LengowCart::$definition['fields'];
+        return self::$definition['fields'];
     }
 
     /**
      * Assign API data
      *
      * @param array $data API data
-     *
-     * @return LengowAddress
      */
     public function assign($data = array())
     {
@@ -346,7 +344,7 @@ class LengowCart extends Cart
      */
     public function validateLengow()
     {
-        $definition = LengowCart::getFieldDefinition();
+        $definition = self::getFieldDefinition();
         foreach ($definition as $fieldName => $constraints) {
             if (isset($constraints['required']) && $constraints['required']) {
                 if (!$this->{$fieldName}) {
@@ -409,6 +407,8 @@ class LengowCart extends Cart
      * Modify a field to fit its size
      *
      * @param string $fieldName field name
+     *
+     * @return string
      */
     public function validateSizeLengow($fieldName)
     {

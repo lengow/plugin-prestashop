@@ -115,7 +115,7 @@ class LengowFeed
     public function initExportFile()
     {
         $sep = DIRECTORY_SEPARATOR;
-        $this->exportFolder = LengowFeed::$lengowExportFolder.$sep.$this->shopFolder;
+        $this->exportFolder = self::$lengowExportFolder.$sep.$this->shopFolder;
         $folderPath = LengowMain::getLengowFolder().$sep.$this->exportFolder;
         if (!file_exists($folderPath)) {
             if (!mkdir($folderPath)) {
@@ -176,17 +176,16 @@ class LengowFeed
             case 'csv':
                 $header = '';
                 foreach ($data as $field) {
-                    $header .= LengowFeed::PROTECTION.$this->formatFields($field)
-                        .LengowFeed::PROTECTION.LengowFeed::CSV_SEPARATOR;
+                    $header .= self::PROTECTION.$this->formatFields($field).self::PROTECTION.self::CSV_SEPARATOR;
                 }
-                return rtrim($header, LengowFeed::CSV_SEPARATOR).LengowFeed::EOL;
+                return rtrim($header, self::CSV_SEPARATOR).self::EOL;
             case 'xml':
-                return '<?xml version="1.0" encoding="UTF-8"?>'.LengowFeed::EOL
-                . '<catalog>'.LengowFeed::EOL;
+                return '<?xml version="1.0" encoding="UTF-8"?>'.self::EOL
+                . '<catalog>'.self::EOL;
             case 'json':
                 return '{"catalog":[';
             case 'yaml':
-                return '"catalog":'.LengowFeed::EOL;
+                return '"catalog":'.self::EOL;
         }
     }
 
@@ -205,16 +204,16 @@ class LengowFeed
             case 'csv':
                 $content = '';
                 foreach ($data as $value) {
-                    $content .= LengowFeed::PROTECTION.$value.LengowFeed::PROTECTION.LengowFeed::CSV_SEPARATOR;
+                    $content .= self::PROTECTION.$value.self::PROTECTION.self::CSV_SEPARATOR;
                 }
-                return rtrim($content, LengowFeed::CSV_SEPARATOR).LengowFeed::EOL;
+                return rtrim($content, self::CSV_SEPARATOR).self::EOL;
             case 'xml':
                 $content = '<product>';
                 foreach ($data as $field => $value) {
                     $field = $this->formatFields($field);
-                    $content .= '<'.$field.'><![CDATA['.$value.']]></'.$field.'>'.LengowFeed::EOL;
+                    $content .= '<'.$field.'><![CDATA['.$value.']]></'.$field.'>'.self::EOL;
                 }
-                $content .= '</product>'.LengowFeed::EOL;
+                $content .= '</product>'.self::EOL;
                 return $content;
             case 'json':
                 $content = $isFirst ? '' : ',';
@@ -231,11 +230,11 @@ class LengowFeed
                 } else {
                     $maxCharacter = $maxCharacter + 2;
                 }
-                $content = '  '.LengowFeed::PROTECTION.'product'.LengowFeed::PROTECTION.':'.LengowFeed::EOL;
+                $content = '  '.self::PROTECTION.'product'.self::PROTECTION.':'.self::EOL;
                 foreach ($data as $field => $value) {
                     $field = $this->formatFields($field);
-                    $content .= '    '.LengowFeed::PROTECTION.$field.LengowFeed::PROTECTION.':';
-                    $content .= $this->indentYaml($field, $maxCharacter).(string)$value.LengowFeed::EOL;
+                    $content .= '    '.self::PROTECTION.$field.self::PROTECTION.':';
+                    $content .= $this->indentYaml($field, $maxCharacter).(string)$value.self::EOL;
                 }
                 return $content;
         }

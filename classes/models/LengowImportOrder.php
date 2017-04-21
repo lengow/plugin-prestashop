@@ -50,7 +50,7 @@ class LengowImportOrder
     protected $forceProduct = true;
 
     /**
-     * @var boolean use preprod mode
+     * @var boolean use pre-prod mode
      */
     protected $preprodMode = false;
 
@@ -167,7 +167,7 @@ class LengowImportOrder
     /**
      * Construct the import manager
      *
-     * @param array params optional options
+     * @param array $params optional options
      *
      * integer  id_shop             Id shop for current order
      * integer  id_shop_group       Id shop group for current order
@@ -427,9 +427,9 @@ class LengowImportOrder
                     );
                     // if more than one order (different warehouses)
                     LengowMain::log('Import', $successMessage, $this->logOutput, $this->marketplaceSku);
+                    // ensure carrier compatibility with SoColissimo & Mondial Relay
+                    $this->checkCarrierCompatibility($order);
                 }
-                // ensure carrier compatibility with SoColissimo & Mondial Relay
-                $this->checkCarrierCompatibility($order);
             }
             // add quantity back for re-import order and order shipped by marketplace
             if ($this->isReimported
@@ -505,7 +505,7 @@ class LengowImportOrder
      *
      * @param integer $idOrder Prestashop order id
      *
-     * @return boolean
+     * @return array|false
      */
     protected function checkAndUpdateOrder($idOrder)
     {
@@ -631,7 +631,6 @@ class LengowImportOrder
      */
     protected function checkExternalIds($externalIds)
     {
-        $lineId = false;
         $idOrderPrestashop = false;
         if (!is_null($externalIds) && count($externalIds) > 0) {
             foreach ($externalIds as $externalId) {
@@ -719,14 +718,14 @@ class LengowImportOrder
      */
     protected function getCustomerName()
     {
-        $firstname = (string)$this->orderData->billing_address->first_name;
-        $lastname = (string)$this->orderData->billing_address->last_name;
-        $firstname = Tools::ucfirst(Tools::strtolower($firstname));
-        $lastname = Tools::ucfirst(Tools::strtolower($lastname));
-        if (empty($firstname) && empty($lastname)) {
+        $firstName = (string)$this->orderData->billing_address->first_name;
+        $lastName = (string)$this->orderData->billing_address->last_name;
+        $firstName = Tools::ucfirst(Tools::strtolower($firstName));
+        $lastName = Tools::ucfirst(Tools::strtolower($lastName));
+        if (empty($firstName) && empty($lastName)) {
             return (string)$this->orderData->billing_address->full_name;
         } else {
-            return $firstname.' '.$lastname;
+            return $firstName.' '.$lastName;
         }
     }
 
@@ -816,11 +815,11 @@ class LengowImportOrder
      * @param LengowCart $cart     Lengow cart instance
      * @param array      $products List of Lengow products
      *
-     * @return
+     * @return array
      */
     protected function createAndValidatePayment($cart, $products)
     {
-        $idOrderState = LengowMain::getPrestahopStateId(
+        $idOrderState = LengowMain::getPrestashopStateId(
             $this->orderStateMarketplace,
             $this->marketplace,
             $this->shippedByMp
@@ -836,7 +835,6 @@ class LengowImportOrder
             .'Shipping : '.(float)$this->shippingCost.' | '."\r\n"
             .'Message : '.(string)$this->orderData->comments."\r\n";
         // validate order
-        $orderLists = array();
         if (_PS_VERSION_ >= '1.5') {
             $orderLists = $payment->makeOrder(
                 $cart->id,
@@ -942,10 +940,9 @@ class LengowImportOrder
                     continue;
                 }
             }
-            $ids = false;
             $idsProduct = array(
                 'idMerchant' => (string)$productDatas['merchant_product_id']->id,
-                'idMP' => (string)$productDatas['marketplace_product_id']
+                'idMP'       => (string)$productDatas['marketplace_product_id']
             );
             $found = false;
             foreach ($idsProduct as $attributeName => $attributeValue) {
@@ -1028,7 +1025,7 @@ class LengowImportOrder
     }
  
     /**
-     * Get carrier id according to the tracking informations given in the API
+     * Get carrier id according to the tracking data given in the API
      *
      * @throws LengowException shipping country no country / no default carrier for country
      *

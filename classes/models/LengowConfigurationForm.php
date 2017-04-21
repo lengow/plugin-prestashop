@@ -217,7 +217,7 @@ class LengowConfigurationForm
             }
             if ((!isset($value['shop']) || !$value['shop'])) {
                 if (!isset($_REQUEST[$key])) {
-                    $this->checkAndLog($key, false, $idShop);
+                    $this->checkAndLog($key, false);
                     LengowConfiguration::updateGlobalValue($key, false);
                 }
             }

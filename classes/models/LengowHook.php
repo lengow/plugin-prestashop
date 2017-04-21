@@ -105,14 +105,14 @@ class LengowHook
     protected $alreadyShipped = array();
 
     /**
-    * @var Module Prestashop module instance
+    * @var Lengow Lengow module instance
     */
     private $module;
 
     /**
      * Construct
      *
-     * @param Module $module Prestashop Lengow module instance
+     * @param Lengow $module Lengow module instance
      */
     public function __construct($module)
     {
@@ -163,47 +163,35 @@ class LengowHook
 
     /**
      * Hook to display the icon
-     *
-     * @param array $args arguments of hook
      */
-    public function hookDisplayBackOfficeHeader($args)
+    public function hookDisplayBackOfficeHeader()
     {
         $this->context->controller->addCss(_PS_MODULE_LENGOW_DIR_.'views/css/lengow-tab.css');
-        $args = 0; // Prestashop validator
     }
 
     /**
      * Hook on Home page
-     *
-     * @param array $args arguments of hook
      */
-    public function hookHome($args)
+    public function hookHome()
     {
         self::$currentPageType = self::LENGOW_TRACK_HOMEPAGE;
-        $args = 0; // Prestashop validator
     }
 
     /**
      * Hook on Payment page
-     *
-     * @param array $args arguments of hook
      */
-    public function hookPaymentTop($args)
+    public function hookPaymentTop()
     {
         self::$currentPageType = self::LENGOW_TRACK_PAGE;
-        $args = 0; // Prestashop validator
     }
 
     /**
      * Generate tracker on front footer page
      *
-     * @param array $args arguments of hook
-     *
      * @return mixed
      */
-    public function hookFooter($args)
+    public function hookFooter()
     {
-        $args = 0; // Prestashop validator
         if (!LengowConfiguration::get('LENGOW_TRACKING_ENABLED')) {
             return '';
         }

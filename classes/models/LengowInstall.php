@@ -25,7 +25,7 @@
 class LengowInstall
 {
     /**
-    * @var Module module Lengow instance
+    * @var Lengow Lengow module instance
     */
     private $lengowModule;
 
@@ -67,6 +67,8 @@ class LengowInstall
 
     /**
      * Construct
+     *
+     * @param Lengow $module Lengow module instance
      */
     public function __construct($module)
     {
@@ -75,9 +77,9 @@ class LengowInstall
     }
 
     /**
-     * Reset option
+     * Reset options
      *
-     * @return boolean result of reset process
+     * @return boolean
      */
     public function reset()
     {
@@ -85,9 +87,9 @@ class LengowInstall
     }
 
     /**
-     * Install otpion
+     * Install options
      *
-     * @return boolean result of install process
+     * @return boolean
      */
     public function install()
     {
@@ -97,7 +99,7 @@ class LengowInstall
     /**
      * Uninstall option
      *
-     * @return boolean result of uninstall process
+     * @return boolean
      */
     public function uninstall()
     {
@@ -107,7 +109,7 @@ class LengowInstall
     /**
      * Add admin Tab (Controller)
      *
-     * @return boolean result of add tab on database.
+     * @return boolean
      */
     private function createTab()
     {
@@ -277,7 +279,9 @@ class LengowInstall
         // set default value for old version
         $this->setDefaultValues();
         // update lengow version
-        LengowConfiguration::updateGlobalValue('LENGOW_VERSION', $numberVersion);
+        if (isset($numberVersion)) {
+            LengowConfiguration::updateGlobalValue('LENGOW_VERSION', $numberVersion);
+        }
         self::setInstallationStatus(false);
         return true;
     }
@@ -378,6 +382,23 @@ class LengowInstall
                     copy($directory.$file, $directoryBackup.'override/'.$file);
                 }
             }
+        }
+    }
+
+    /**
+     * Delete all lengow config files
+     */
+    public static function removeConfigFiles()
+    {
+        $configFiles = array();
+        $files = scandir(_PS_MODULE_LENGOW_DIR_);
+        foreach ($files as $file) {
+            if (preg_match('/^config[_a-zA-Z]*\.xml$/', $file)) {
+                $configFiles[] = $file;
+            }
+        }
+        if (count($configFiles) > 0) {
+            self::removeFiles($configFiles);
         }
     }
 

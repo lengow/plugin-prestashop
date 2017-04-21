@@ -288,7 +288,7 @@ class LengowConnector
      * @param mixed  $data   Curl response data
      * @param string $format return format of API
      *
-     * @return array
+     * @return mixed
      */
     private function format($data, $format)
     {
@@ -422,6 +422,9 @@ class LengowConnector
      */
     public static function getAccessId($idShop = null)
     {
+        $accountId = '';
+        $accessToken = '';
+        $secretToken = '';
         if ($idShop) {
             $accountId = LengowMain::getIdAccount($idShop);
             $accessToken = LengowMain::getAccessToken($idShop);

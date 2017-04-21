@@ -330,7 +330,6 @@ log.export.error_folder_not_writable|export file generation did not end properly
 log.export.error_no_product_combination|unable to retrieve product combinations
 log.export.error_illegal_currency|illegal currency
 log.export.error_no_carrier_selected|you must select a default carrier in Lengow import parameters
-log.export.error_illegal_export_format|illegal export format
 log.export.error_unable_to_create_folder|unable to create folder %{folder_path}. Make sure it is writable
 log.export.error_unable_to_create_file|unable to create file %{file_name} in %{folder_name}
 log.export.error_cant_find_image_size|can't find image type size, check your table ps_image_type

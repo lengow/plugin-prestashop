@@ -56,21 +56,21 @@ class LengowCarrier extends Carrier
         // SoColissimo
         if ($idCarrier == Configuration::get('SOCOLISSIMO_CARRIER_ID')) {
             if (!LengowMain::isSoColissimoAvailable()) {
-                return LengowCarrier::COMPATIBILITY_KO;
+                return self::COMPATIBILITY_KO;
             }
-            return LengowCarrier::addSoColissimo(
+            return self::addSoColissimo(
                 $idCart,
                 $idCustomer,
                 $shippingAddress
-            ) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
+            ) ? self::COMPATIBILITY_OK : self::COMPATIBILITY_KO;
         } else {
             // Mondial Relay
             if (!LengowMain::isMondialRelayAvailable()) {
-                return LengowCarrier::COMPATIBILITY_KO;
+                return self::COMPATIBILITY_KO;
             }
             $mr = new MondialRelay();
             if ($mr->isMondialRelayCarrier($idCarrier)) {
-                $relay = LengowCarrier::getMRRelay($shippingAddress->id, $shippingAddress->idRelay, $mr);
+                $relay = self::getMRRelay($shippingAddress->id, $shippingAddress->idRelay, $mr);
                 if (!$relay) {
                     throw new LengowException(
                         LengowMain::setLogMessage(
@@ -79,15 +79,12 @@ class LengowCarrier extends Carrier
                         )
                     );
                 }
-                return LengowCarrier::addMondialRelay(
-                    $relay,
-                    $idCustomer,
-                    $idCarrier,
-                    $idCart
-                ) ? LengowCarrier::COMPATIBILITY_OK : LengowCarrier::COMPATIBILITY_KO;
+                return self::addMondialRelay($relay, $idCustomer, $idCarrier, $idCart)
+                    ? self::COMPATIBILITY_OK
+                    : self::COMPATIBILITY_KO;
             }
         }
-        return LengowCarrier::NO_COMPATIBLITY;
+        return self::NO_COMPATIBLITY;
     }
 
     /**
@@ -226,8 +223,9 @@ class LengowCarrier extends Carrier
     /**
      * Check if relay ID is correct
      *
-     * @param integer $idAddressDelivery Prestashop shipping address id
-     * @param string  $idRelay           relay id
+     * @param integer       $idAddressDelivery Prestashop shipping address id
+     * @param string        $idRelay           relay id
+     * @param MondialRelay  $mr                Mondial Relay module
      *
      * @throws LengowException mondial relay missing file
      *
@@ -313,7 +311,7 @@ class LengowCarrier extends Carrier
             WHERE id_country = '.(int)$idCountry.' AND marketplace_carrier_sku = "'.pSQL($marketplaceCarrierSku).'"';
             $row = Db::getInstance()->getRow($sql);
             if ($row) {
-                return LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], (int)$idCountry);
+                return self::getActiveCarrierByCarrierId($row["id_carrier"], (int)$idCountry);
             }
         }
         return false;
@@ -483,7 +481,7 @@ class LengowCarrier extends Carrier
             $row = Db::getInstance()->getRow($sql);
             if ($row) {
                 // get newest carrier id
-                $idCarrier = LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], $idCountry);
+                $idCarrier = self::getActiveCarrierByCarrierId($row["id_carrier"], $idCountry);
             }
         } else {
             $idCountry = (int)Configuration::get('PS_COUNTRY_DEFAULT');
@@ -493,7 +491,7 @@ class LengowCarrier extends Carrier
             $row = Db::getInstance()->getRow($sql);
             if ($row) {
                 // get newest carrier id
-                $idCarrier = LengowCarrier::getActiveCarrierByCarrierId($row["id_carrier"], $idCountry);
+                $idCarrier = self::getActiveCarrierByCarrierId($row["id_carrier"], $idCountry);
             }
             // get first carrier id with prestashop tables for default country
             if (!$idCarrier) {
@@ -639,6 +637,6 @@ class LengowCarrier extends Carrier
     public static function isDefaultCarrierActive()
     {
         $idDefaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
-        return LengowCarrier::getDefaultCarrier($idDefaultCountry);
+        return self::getDefaultCarrier($idDefaultCountry);
     }
 }

@@ -228,17 +228,17 @@ class LengowMain
     /**
      * Get marketplace singleton
      *
-     * @param string  $name   markeplace name
+     * @param string  $name   marketplace name
      * @param integer $idShop Prestashop shop id
      *
-     * @return array Lengow shipping names option
+     * @return array
      */
     public static function getMarketplaceSingleton($name, $idShop = null)
     {
-        if (!isset(LengowMain::$registers[$name])) {
-            LengowMain::$registers[$name] = new LengowMarketplace($name, $idShop);
+        if (!isset(self::$registers[$name])) {
+            self::$registers[$name] = new LengowMarketplace($name, $idShop);
         }
-        return LengowMain::$registers[$name];
+        return self::$registers[$name];
     }
 
     /**
@@ -246,7 +246,7 @@ class LengowMain
      *
      * @param string $html the html content
      *
-     * @return string Text cleaned
+     * @return string
      */
     public static function cleanHtml($html)
     {
@@ -276,7 +276,7 @@ class LengowMain
      *
      * @param float $float the float to format
      *
-     * @return float Float formated
+     * @return float
      */
     public static function formatNumber($float)
     {
@@ -327,7 +327,7 @@ class LengowMain
      */
     public static function checkToken($token, $idShop = null)
     {
-        $storeToken = LengowMain::getToken($idShop);
+        $storeToken = self::getToken($idShop);
         if ($token == $storeToken) {
             return true;
         }
@@ -373,7 +373,7 @@ class LengowMain
         $ips = LengowConfiguration::getGlobalValue('LENGOW_AUTHORIZED_IP');
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
         $ips = array_filter(explode(';', $ips));
-        $authorizedIps = count($ips) > 0 ? array_merge($ips, LengowMain::$ipsLengow) : LengowMain::$ipsLengow;
+        $authorizedIps = count($ips) > 0 ? array_merge($ips, self::$ipsLengow) : self::$ipsLengow;
         if (!self::inTest()) {
             $authorizedIps[] = $_SERVER['SERVER_ADDR'];
         }
@@ -410,7 +410,7 @@ class LengowMain
      */
     public static function log($category, $txt, $logOutput = false, $marketplaceSku = null)
     {
-        $log = LengowMain::getLogInstance();
+        $log = self::getLogInstance();
         $log->write($category, $txt, $logOutput, $marketplaceSku);
     }
 
@@ -473,7 +473,7 @@ class LengowMain
         $logFiles = LengowLog::getFiles();
         $days = array();
         $days[] = 'logs-'.date('Y-m-d').'.txt';
-        for ($i = 1; $i < LengowMain::$logLife; $i++) {
+        for ($i = 1; $i < self::$logLife; $i++) {
             $days[] = 'logs-'.date('Y-m-d', strtotime('-'.$i.'day')).'.txt';
         }
         if (empty($logFiles)) {
@@ -747,18 +747,18 @@ class LengowMain
             return true;
         }
         foreach ($logs as $log) {
-            $mailBody .= '<li>'.LengowMain::decodeLogMessage(
+            $mailBody .= '<li>'.self::decodeLogMessage(
                 'lengow_log.mail_report.order',
                 null,
                 array('marketplace_sku' => $log['marketplace_sku'])
             );
             if ($log['message'] != '') {
-                $mailBody .= ' - '.LengowMain::decodeLogMessage($log['message']);
+                $mailBody .= ' - '.self::decodeLogMessage($log['message']);
             } else {
-                $mailBody .= ' - '.LengowMain::decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+                $mailBody .= ' - '.self::decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
             }
             $mailBody .= '</li>';
-            LengowMain::logSent($log['id']);
+            self::logSent($log['id']);
         }
         $datas = array(
             '{mail_title}' => 'Lengow imports logs',
@@ -780,15 +780,15 @@ class LengowMain
                 _PS_MODULE_DIR_.'lengow/views/templates/mails/',
                 true
             )) {
-                LengowMain::log(
+                self::log(
                     'MailReport',
-                    LengowMain::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
+                    self::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
                     $logOutput
                 );
             } else {
-                LengowMain::log(
+                self::log(
                     'MailReport',
-                    LengowMain::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
+                    self::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
                     $logOutput
                 );
             }
@@ -851,7 +851,7 @@ class LengowMain
         $supportedVersion = '2.1.0';
         $sep = DIRECTORY_SEPARATOR;
         $moduleDir = _PS_MODULE_DIR_.$moduleName.$sep;
-        if (!LengowMain::isModuleInstalled($moduleName)) {
+        if (!self::isModuleInstalled($moduleName)) {
             return false;
         }
         require_once($moduleDir.$moduleName.'.php');
@@ -874,7 +874,7 @@ class LengowMain
         $supportedVersion = '2.8.5';
         $sep = DIRECTORY_SEPARATOR;
         $moduleDir = _PS_MODULE_DIR_.$moduleName.$sep;
-        if (!LengowMain::isModuleInstalled($moduleName)) {
+        if (!self::isModuleInstalled($moduleName)) {
             return false;
         }
         require_once($moduleDir.$moduleName.'.php');
@@ -895,18 +895,18 @@ class LengowMain
      *
      * @return integer
      */
-    public static function getPrestahopStateId($orderState, $marketplace, $shipmentByMp)
+    public static function getPrestashopStateId($orderState, $marketplace, $shipmentByMp)
     {
         if ($marketplace->getStateLengow($orderState) == 'shipped'
             || $marketplace->getStateLengow($orderState) == 'closed'
         ) {
             if ($shipmentByMp) {
-                return LengowMain::getOrderState('shippedByMp');
+                return self::getOrderState('shippedByMp');
             } else {
-                return LengowMain::getOrderState('shipped');
+                return self::getOrderState('shipped');
             }
         } else {
-            return LengowMain::getOrderState('accepted');
+            return self::getOrderState('accepted');
         }
     }
 
@@ -920,7 +920,7 @@ class LengowMain
     public static function getOrderStates($idLang)
     {
         $states = OrderState::getOrderStates($idLang);
-        $idStateLengow = LengowMain::getLengowErrorStateId();
+        $idStateLengow = self::getLengowErrorStateId();
         $index = 0;
         foreach ($states as $state) {
             if ($state['id_order_state'] == $idStateLengow) {
@@ -938,10 +938,10 @@ class LengowMain
      */
     public static function getLogInstance()
     {
-        if (is_null(LengowMain::$log)) {
-            LengowMain::$log = new LengowLog();
+        if (is_null(self::$log)) {
+            self::$log = new LengowLog();
         }
-        return LengowMain::$log;
+        return self::$log;
     }
 
     /**
@@ -953,8 +953,8 @@ class LengowMain
      */
     public static function getExportUrl($idShop = null)
     {
-        $base = LengowMain::getLengowBaseUrl($idShop);
-        return $base.'webservice/export.php?token='.LengowMain::getToken($idShop);
+        $base = self::getLengowBaseUrl($idShop);
+        return $base.'webservice/export.php?token='.self::getToken($idShop);
     }
 
     /**
@@ -966,12 +966,12 @@ class LengowMain
      */
     public static function getImportUrl($idShop = null)
     {
-        $base = LengowMain::getLengowBaseUrl($idShop);
-        return $base.'webservice/cron.php?token='.LengowMain::getToken();
+        $base = self::getLengowBaseUrl($idShop);
+        return $base.'webservice/cron.php?token='.self::getToken();
     }
 
     /**
-     * Get base url for Lengow webservices and files
+     * Get base url for Lengow webservice and files
      *
      * @param integer $idShop Prestashop shop id
      *
@@ -1058,13 +1058,13 @@ class LengowMain
     }
 
     /**
-     * Check if is a new marchant
+     * Check if is a new merchant
      *
      * @return boolean
      */
     public static function isNewMerchant()
     {
-        $shops = LengowShop::findAll();
+        $shops = LengowShop::findAll(true);
         foreach ($shops as $shop) {
             $accountId = LengowConfiguration::get('LENGOW_ACCOUNT_ID', false, null, $shop['id_shop']);
             if (Tools::strlen($accountId) > 0) {

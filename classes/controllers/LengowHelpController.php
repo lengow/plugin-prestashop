@@ -24,7 +24,6 @@
  */
 class LengowHelpController extends LengowController
 {
-
     /**
      * Process Post Parameters
      */

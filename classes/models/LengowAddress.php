@@ -129,7 +129,7 @@ class LengowAddress extends Address
     *
     * @param string $alias address alias
     *
-    * @return Address|false
+    * @return LengowAddress|false
     */
     public static function getByHash($alias)
     {
@@ -137,23 +137,23 @@ class LengowAddress extends Address
     }
 
     /**
-     * Extract firstname and lastname from a name field
+     * Extract first name and last name from a name field
      *
-     * @param string $fullName customer fullname
+     * @param string $fullName customer full name
      *
      * @return array
      */
     public static function extractNames($fullName)
     {
-        LengowAddress::cleanName($fullName);
+        self::cleanName($fullName);
         $arrayName = explode(' ', $fullName);
-        $lastname = $arrayName[0];
-        $firstname = str_replace($lastname.' ', '', $fullName);
-        $lastname = empty($lastname) ? '' : self::cleanName($lastname);
-        $firstname = empty($firstname) ? '' : self::cleanName($firstname);
+        $lastName = $arrayName[0];
+        $firstName = str_replace($lastName.' ', '', $fullName);
+        $lastName = empty($lastName) ? '' : self::cleanName($lastName);
+        $firstName = empty($firstName) ? '' : self::cleanName($firstName);
         return array(
-            'firstname' => Tools::ucfirst(Tools::strtolower($firstname)),
-            'lastname'  => Tools::ucfirst(Tools::strtolower($lastname))
+            'firstname' => Tools::ucfirst(Tools::strtolower($firstName)),
+            'lastname'  => Tools::ucfirst(Tools::strtolower($lastName))
         );
     }
 
@@ -191,7 +191,7 @@ class LengowAddress extends Address
     public static function extractAddressDataFromAPI($api)
     {
         $temp = array();
-        foreach (LengowAddress::$addressApiNodes as $node) {
+        foreach (self::$addressApiNodes as $node) {
             $temp[$node] = (string)$api->{$node};
         }
         return $temp;
@@ -205,9 +205,9 @@ class LengowAddress extends Address
     public static function getFieldDefinition()
     {
         if (_PS_VERSION_ < 1.5) {
-            return LengowAddress::$definitionLengow;
+            return self::$definitionLengow;
         }
-        return LengowAddress::$definition['fields'];
+        return self::$definition['fields'];
     }
 
     /**
@@ -239,7 +239,7 @@ class LengowAddress extends Address
         $this->phone_mobile = $data['phone_mobile'];
         $this->phoneOffice = $data['phone_office'];
         $this->fullAddress = $data['address_full'];
-        $this->alias = LengowAddress::hash($this->fullAddress);
+        $this->alias = self::hash($this->fullAddress);
         return $this;
     }
 
@@ -252,7 +252,7 @@ class LengowAddress extends Address
      */
     public function validateLengow()
     {
-        $definition = LengowAddress::getFieldDefinition();
+        $definition = self::getFieldDefinition();
         foreach ($definition as $fieldName => $constraints) {
             if (isset($constraints['required']) && $constraints['required']
                 || isset($constraints['check']) && $constraints['check']
@@ -260,12 +260,12 @@ class LengowAddress extends Address
                 || $fieldName == 'phone_mobile'
             ) {
                 if (empty($this->{$fieldName})) {
-                    $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_EMPTY_ERROR);
+                    $this->validateFieldLengow($fieldName, self::LENGOW_EMPTY_ERROR);
                 }
             }
             if (isset($constraints['size'])) {
                 if (Tools::strlen($this->{$fieldName}) > $constraints['size']) {
-                    $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_SIZE_ERROR);
+                    $this->validateFieldLengow($fieldName, self::LENGOW_SIZE_ERROR);
                 }
             }
         }
@@ -287,10 +287,10 @@ class LengowAddress extends Address
     public function validateFieldLengow($fieldName, $errorType)
     {
         switch ($errorType) {
-            case LengowAddress::LENGOW_EMPTY_ERROR:
+            case self::LENGOW_EMPTY_ERROR:
                 $this->validateEmptyLengow($fieldName);
                 break;
-            case LengowAddress::LENGOW_SIZE_ERROR:
+            case self::LENGOW_SIZE_ERROR:
                 $this->validateSizeLengow($fieldName);
                 break;
             default:
@@ -313,12 +313,12 @@ class LengowAddress extends Address
                 } else {
                     $fieldName = 'lastname';
                 }
-                $names = LengowAddress::extractNames($this->{$fieldName});
+                $names = self::extractNames($this->{$fieldName});
                 $this->firstname = $names['firstname'];
                 $this->lastname = $names['lastname'];
                 // check full name if last_name and first_name are empty
                 if (empty($this->firstname) && empty($this->lastname)) {
-                    $names = LengowAddress::extractNames($this->fullName);
+                    $names = self::extractNames($this->fullName);
                 }
                 $this->firstname = $names['firstname'];
                 $this->lastname = $names['lastname'];
@@ -374,7 +374,7 @@ class LengowAddress extends Address
             case 'other':
                 $fullAddressArray = explode(' ', $this->fullAddress);
                 if (count($fullAddressArray) < 1) {
-                    $definition = LengowAddress::getFieldDefinition();
+                    $definition = self::getFieldDefinition();
                     $address1Maxlength = $definition['address1']['size'];
                     $address2Maxlength = $definition['address1']['size'];
                     $otherMaxlength = $definition['other']['size'];

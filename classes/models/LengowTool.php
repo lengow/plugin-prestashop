@@ -155,9 +155,9 @@ class LengowTool
      * Redirect toolbox
      *
      * @param string $url     url toolbox
-     * @param string $baseUri base uri
+     * @param mixed  $baseUri base uri
      *
-     * @return void
+     * @return mixed
      */
     public static function redirect($url, $baseUri = __PS_BASE_URI__)
     {

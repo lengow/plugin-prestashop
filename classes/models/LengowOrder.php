@@ -75,7 +75,7 @@ class LengowOrder extends Order
     public $lengowIdFlux;
 
     /**
-     * @var decimal Total paid on marketplace
+     * @var float Total paid on marketplace
      */
     public $lengowTotalPaid;
 
@@ -120,7 +120,7 @@ class LengowOrder extends Order
     public $lengowProcessState;
 
     /**
-     * @var date marketplace order date
+     * @var string marketplace order date
      */
     public $lengowOrderDate;
 
@@ -547,7 +547,7 @@ class LengowOrder extends Order
             $unsentOrders = array();
             foreach ($results as $result) {
                 $activeAction = LengowAction::getActiveActionByOrderId($result['id_order']);
-                $orderLogs = LengowOrder::getOrderLogs($result['id'], 'send', false);
+                $orderLogs = self::getOrderLogs($result['id'], 'send', false);
                 if (!$activeAction
                     && count($orderLogs) == 0
                     && !array_key_exists($result['id_order'], $unsentOrders)
@@ -874,7 +874,7 @@ class LengowOrder extends Order
      *
      * @param integer $idOrder Prestashop order id
      *
-     * @return array list of order line
+     * @return array
      */
     public static function findOrderLineIds($idOrder)
     {
@@ -885,7 +885,7 @@ class LengowOrder extends Order
     /**
      * Check if order is already imported
      *
-     * @param integer $id Lengow order id
+     * @param integer $idOrderLengow Lengow order id
      *
      * @return boolean
      */

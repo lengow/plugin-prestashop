@@ -27,7 +27,7 @@ class LengowCountry
     /**
      * Get Name country By iso_code
      *
-     * @param $isoCode country iso code
+     * @param string $isoCode country iso code
      *
      * @return string
      */

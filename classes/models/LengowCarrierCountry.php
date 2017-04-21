@@ -126,8 +126,6 @@ class LengowCarrierCountry
      * Insert a new carrier country in the table
      *
      * @param integer $idCountry Prestashop country id
-     *
-     * @return action
      */
     public static function insert($idCountry)
     {
@@ -144,20 +142,16 @@ class LengowCarrierCountry
                 array('id_country' => (int)$idCountry)
             );
         }
-        return $db;
     }
 
     /**
      * Delete a carrier country
      *
      * @param integer $idCountry Prestashop country id
-     *
-     * @return action
      */
     public static function delete($idCountry)
     {
         $db = DB::getInstance();
         $db->delete(_DB_PREFIX_.'lengow_carrier_country', 'id_country = '.(int)$idCountry);
-        return $db;
     }
 }

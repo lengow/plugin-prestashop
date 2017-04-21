@@ -172,7 +172,7 @@
                 var data = {
                     action: 'update_order',
                     shop_id: $(this).parents('.lengow_form_update_order').find('#select_shop').val(),
-                    marketplace_name: $(this).parents('.lengow_form_update_order').find('#select_mkp').val(),
+                    marketplace_name: $(this).parents('.lengow_form_update_order').find('#sku_mkp').val(),
                     marketplace_sku: $(this).parents('.lengow_form_update_order').find('#sku_order').val(),
                     delivery_address_id: $(this).parents('.lengow_form_update_order').find('#delivery_adress_id').val(),
                 };
@@ -222,20 +222,6 @@
             } else {
                 $('#error_update_some_orders').html('<p>Please complete all fields</p>');
                 return false
-            }
-        });
-
-        $('.lengow_form_update_order').on('change', '#select_shop', function() {
-            var href = $(this).data('href');
-            if ($(this).val() !== "") {
-                var data = {
-                    action: 'load_marketplace',
-                    shop_id: $(this).val()
-                };
-
-                $.getJSON(href, data, function(content) {
-                    lengow_jquery("#select_marketplace").html(content['select_marketplace']);
-                });
             }
         });
 

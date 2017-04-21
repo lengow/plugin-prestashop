@@ -24,15 +24,14 @@
         <div class="form-group">
             <label for="select_shop">{$locale->t('toolbox.order.shop')|escape:'htmlall':'UTF-8'}</label>
             <select name="" id="select_shop" data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
-                <option value=""></option>
                 {foreach from=$shop item=shopItem}
                     <option value="{$shopItem->id|escape:'htmlall':'UTF-8'}">{$shopItem->name|escape:'htmlall':'UTF-8'}</option>
                 {/foreach}
             </select>
         </div>
         <div class="form-group">
-            <label for="select_mkp">{$locale->t('toolbox.order.marketplace_name')|escape:'htmlall':'UTF-8'}</label>
-            <span id="select_marketplace">{include file='./select_marketplace.tpl'}</span>
+            <label for="sku_mkp">{$locale->t('toolbox.order.marketplace_name')|escape:'htmlall':'UTF-8'}</label>
+            <input type="text" id="sku_mkp">
         </div>
         <div class="form-group">
             <label for="sku_order">{$locale->t('toolbox.order.order_sku')|escape:'htmlall':'UTF-8'}</label>
@@ -57,7 +56,6 @@
         <div class="form-group">
             <label for="select_shop">{$locale->t('toolbox.order.shop')|escape:'htmlall':'UTF-8'}</label>
             <select name="" id="select_shop">
-                <option value=""></option>
                 {foreach from=$shop item=shopItem}
                     <option value="{$shopItem->id|escape:'htmlall':'UTF-8'}">{$shopItem->name|escape:'htmlall':'UTF-8'}</option>
                 {/foreach}

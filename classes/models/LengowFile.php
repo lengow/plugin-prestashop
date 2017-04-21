@@ -40,7 +40,7 @@ class LengowFile
     public $link;
 
     /**
-     * @var ressource file hande
+     * @var resource a file pointer resource
      */
     public $instance;
 
@@ -57,8 +57,7 @@ class LengowFile
     {
         $this->fileName = $fileName;
         $this->folderName = $folderName;
-
-        $this->instance = LengowFile::getRessource($this->getPath(), $mode);
+        $this->instance = self::getRessource($this->getPath(), $mode);
         if (!is_resource($this->instance)) {
             throw new LengowException(
                 LengowMain::setLogMessage(
@@ -196,7 +195,7 @@ class LengowFile
      *
      * @param string $folder folder name
      *
-     * @return array
+     * @return array|false
      */
     public static function getFilesFromFolder($folder)
     {

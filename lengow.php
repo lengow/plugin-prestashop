@@ -87,6 +87,8 @@ class Lengow extends Module
 
     /**
      * Install process
+     *
+     * @return boolean
      */
     public function install()
     {
@@ -98,6 +100,8 @@ class Lengow extends Module
 
     /**
      * Uninstall process
+     *
+     * @return boolean
      */
     public function uninstall()
     {
@@ -109,6 +113,8 @@ class Lengow extends Module
 
     /**
      * Reset process
+     *
+     * @return boolean
      */
     public function reset()
     {
@@ -117,42 +123,36 @@ class Lengow extends Module
 
     /**
      * Hook to display the icon
-     *
-     * @param array $args Arguments of hook
      */
-    public function hookDisplayBackOfficeHeader($args)
+    public function hookDisplayBackOfficeHeader()
     {
-        return $this->hookClass->hookDisplayBackOfficeHeader($args);
+        $this->hookClass->hookDisplayBackOfficeHeader();
     }
 
     /**
      * Hook on Home page
-     *
-     * @param array $args Arguments of hook
      */
-    public function hookHome($args)
+    public function hookHome()
     {
-        return $this->hookClass->hookHome($args);
+        $this->hookClass->hookHome();
     }
 
     /**
      * Hook on Payment page
-     *
-     * @param array $args Arguments of hook
      */
-    public function hookPaymentTop($args)
+    public function hookPaymentTop()
     {
-        return $this->hookClass->hookPaymentTop($args);
+        $this->hookClass->hookPaymentTop();
     }
 
     /**
      * Hook for generate tracker on front footer page
      *
-     * @param array $args Arguments of hook
+     * @return mixed
      */
-    public function hookFooter($args)
+    public function hookFooter()
     {
-        return $this->hookClass->hookFooter($args);
+        return $this->hookClass->hookFooter();
     }
 
     /**
@@ -162,7 +162,7 @@ class Lengow extends Module
      */
     public function hookOrderConfirmation($args)
     {
-        return $this->hookClass->hookOrderConfirmation($args);
+        $this->hookClass->hookOrderConfirmation($args);
     }
 
     /**
@@ -172,7 +172,7 @@ class Lengow extends Module
      */
     public function hookUpdateOrderStatus($args)
     {
-        return $this->hookClass->hookUpdateOrderStatus($args);
+        $this->hookClass->hookUpdateOrderStatus($args);
     }
 
     /**
@@ -182,7 +182,7 @@ class Lengow extends Module
      */
     public function hookPostUpdateOrderStatus($args)
     {
-        return $this->hookClass->hookPostUpdateOrderStatus($args);
+        $this->hookClass->hookPostUpdateOrderStatus($args);
     }
 
     /**
@@ -192,13 +192,15 @@ class Lengow extends Module
      */
     public function hookActionObjectUpdateAfter($args)
     {
-        return $this->hookClass->hookActionObjectUpdateAfter($args);
+        $this->hookClass->hookActionObjectUpdateAfter($args);
     }
 
     /**
      * Hook on admin page's order
      *
      * @param array $args Arguments of hook
+     *
+     * @return mixed
      */
     public function hookAdminOrder($args)
     {

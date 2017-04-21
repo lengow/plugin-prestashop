@@ -186,11 +186,6 @@ class LengowExport
     protected $feed;
 
     /**
-     * @var Filename
-     */
-    protected $filename;
-
-    /**
      * @var integer Prestashop shop id
      */
     protected $idShop;
@@ -258,7 +253,7 @@ class LengowExport
     /**
      * Construct new Lengow export.
      *
-     * @param array params optional options
+     * @param array $params optional options
      * int     limit              The number of product to be exported
      * int     offset             From what product export
      * int     shop_id            Shop id for export
@@ -273,9 +268,6 @@ class LengowExport
      * boolean legacy_fields      Export with legacy fields (1) | Export with new fields (0)
      * boolean update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1)
      *                                | Do not update 'LENGOW_LAST_EXPORT' when exporting from toolbox (0)
-     * boolean log_output         See logs (only when stream = 0) (1) | no logs (0)
-     *
-     * @return LengowExport
      */
     public function __construct($params = array())
     {
@@ -328,7 +320,6 @@ class LengowExport
         $this->legacy = isset($params['legacy_fields']) ? (bool)$params['legacy_fields'] : null;
         $this->checkCurrency();
         $this->setCarrier();
-        return $this;
     }
 
     /**
@@ -370,14 +361,11 @@ class LengowExport
      *
      * @throws LengowException illegal export format
      *
-     * @return boolean.
+     * @return boolean
      */
     public function setFormat($format)
     {
-        if (!in_array($format, LengowFeed::$availabeFormats)) {
-            throw new LengowException(LengowMain::setLogMessage('log.export.error_illegal_export_format'));
-        }
-        $this->format = $format;
+        $this->format = in_array($format, LengowFeed::$availabeFormats) ? $format : 'csv';
         return true;
     }
 
@@ -398,7 +386,7 @@ class LengowExport
                 $this->legacy = false;
             }
         }
-        LengowExport::$defaultFields = $this->legacy ? $this->legacyFields : $this->newFields;
+        self::$defaultFields = $this->legacy ? $this->legacyFields : $this->newFields;
     }
 
     /**
@@ -501,9 +489,9 @@ class LengowExport
                     )
                 );
                 foreach ($fields as $field) {
-                    if (isset(LengowExport::$defaultFields[$field])) {
+                    if (isset(self::$defaultFields[$field])) {
                         $productDatas[$field] = $product->getData(
-                            LengowExport::$defaultFields[$field],
+                            self::$defaultFields[$field],
                             null
                         );
                     } else {
@@ -571,6 +559,8 @@ class LengowExport
      * @param array   $fields    list of fields
      *
      * @throws LengowException no product combination
+     *
+     * @return array
      */
     public function loadCacheCombinations($productId, $fields)
     {
@@ -593,9 +583,9 @@ class LengowExport
         foreach ($combinations as $combination) {
             $paId = $combination['id_product_attribute'];
             foreach ($fields as $field) {
-                if (isset(LengowExport::$defaultFields[$field])) {
+                if (isset(self::$defaultFields[$field])) {
                     $this->cacheCombination[$productId][$paId][$field] = $product->getData(
-                        LengowExport::$defaultFields[$field],
+                        self::$defaultFields[$field],
                         $paId
                     );
                 } else {
@@ -662,7 +652,7 @@ class LengowExport
     /**
      * Get Count export product
      *
-     * @param boolean $variation (count variation product)
+     * @param boolean $variation count variation product
      *
      * @return string
      */
