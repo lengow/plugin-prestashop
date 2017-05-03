@@ -749,24 +749,28 @@ class LengowExport
         //Features
         $features = Feature::getFeatures($this->language->id);
         foreach ($features as $feature) {
-            if (in_array($feature['name'], $fields)) {
-                $fields[] = $feature['name'] . '_1';
-            } else {
+            if (!in_array($feature['name'], $fields)) {
                 $fields[] = $feature['name'];
+            } else {
+                if ($this->legacy) {
+                    $fields[] = $feature['name'] . '_1';
+                }
             }
         }
         // if export product variations -> get variations attributes
         if ($this->variation) {
             $attributes = AttributeGroup::getAttributesGroups($this->language->id);
             foreach ($attributes as $attribute) {
-                //dont export empty attributes
+                // don't export empty attributes
                 if ($attribute['name'] == '') {
                     continue;
                 }
                 if (!in_array($attribute['name'], $fields)) {
                     $fields[] = $attribute['name'];
                 } else {
-                    $fields[] = $attribute['name'] . '_2';
+                    if ($this->legacy) {
+                        $fields[] = $attribute['name'] . '_2';
+                    }
                 }
             }
         }
