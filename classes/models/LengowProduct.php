@@ -953,8 +953,14 @@ class LengowProduct extends Product
                 $sku = explode('_', $sku);
                 if (isset($sku[0]) && preg_match('/^[0-9]*$/', $sku[0])) {
                     $idsProduct['id_product'] = (int)$sku[0];
-                    if (isset($sku[1]) && preg_match('/^[0-9]*$/', $sku[1]) && $sku[1] != 0) {
-                        $idsProduct['id_product_attribute'] = $sku[1];
+                    if (isset($sku[1])) {
+                        if (preg_match('/^[0-9]*$/', $sku[1])) {
+                            if ($sku[1] != 0) {
+                                $idsProduct['id_product_attribute'] = $sku[1];
+                            }
+                        } else {
+                            return false;
+                        }
                     }
                     $idBool = self::checkProductId($idsProduct['id_product'], $apiDatas);
                     $idAttBool = true;
