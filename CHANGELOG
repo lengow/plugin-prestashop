@@ -3,7 +3,7 @@ Version 3.0.0
 =============================================================
 
 	- Feature: Full rewrite for the new platform Lengow
-	- Feature: Add new lengow Dashbord
+	- Feature: Add new lengow Dashboard
 	- Feature: Add new product selection by shop
 	- Feature: Add new lengow order with new page
 	- Feature: Add new help page
@@ -14,6 +14,11 @@ Version 3.0.0
 	- Feature: Creating new accounts directly from the module
 	- Feature: Management actions and error return
 	- Feature: Add new actions: re-import, resend and re-sync orders
+
+=============================================================
+Version 2.2.6
+=============================================================
+    - Bugfix: [import] get product when reference begins by numbers
 
 =============================================================
 Version 2.2.5
