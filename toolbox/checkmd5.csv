@@ -49,7 +49,7 @@
 /classes/models/LengowAddress.php|a382676c3e6fa40eaac0a9afcacd17e1
 /classes/models/LengowCarrierCountry.php|ef0d0b51e78c2f4dac3ebda41ea4f44d
 /classes/models/index.php|ed8e273082cc0a58535dc2b454435f38
-/classes/models/LengowProduct.php|c7eec7c63016720e5aedacafa89037c8
+/classes/models/LengowProduct.php|29f49994bfd01a6c819fa38252a9c195
 /classes/models/LengowConfiguration.php|8528e6fb93a86dbe55a66884545373cf
 /classes/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/controllers/LengowController.php|08b495003e1e8f34e47c8284154885d4

@@ -951,12 +951,13 @@ class LengowProduct extends Product
                 $sku = str_replace('\_', '_', $attributeValue);
                 $sku = str_replace('X', '_', $sku);
                 $sku = explode('_', $sku);
-                if (isset($sku[0]) && preg_match('/^[0-9]*$/', $sku[0])) {
+                if (isset($sku[0]) && preg_match('/^[0-9]*$/', $sku[0]) && count($sku) < 3) {
                     $idsProduct['id_product'] = (int)$sku[0];
                     if (isset($sku[1])) {
-                        if (preg_match('/^[0-9]*$/', $sku[1])) {
+                        if (preg_match('/^[0-9]*$/', $sku[1]) && count($sku) === 2) {
+                            // Compatibility with old plugins -> XXX_0 product without variation
                             if ($sku[1] != 0) {
-                                $idsProduct['id_product_attribute'] = $sku[1];
+                                $idsProduct['id_product_attribute'] = (int)$sku[1];
                             }
                         } else {
                             return false;
