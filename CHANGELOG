@@ -17,6 +17,7 @@ Version 3.0.0
 =============================================================
 Version 2.2.6
 =============================================================
+	- Bugfix: Change tabs attribute by lengowTabs for Prestashop 1.7.1.1
     - Bugfix: [import] get product when reference begins by numbers
 
 =============================================================
