@@ -380,29 +380,24 @@ class LengowConnector
                 $opts[CURLOPT_POSTFIELDS] = http_build_query($args);
                 break;
         }
-        // Exectute url request
+        // Execute url request
         curl_setopt_array($ch, $opts);
         $result = curl_exec($ch);
         $errorNumber = curl_errno($ch);
         $errorText = curl_error($ch);
-        if (in_array($errorNumber, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
-            $timeout = LengowMain::setLogMessage('lengow_log.exception.timeout_api');
-            $errorMessage = LengowMain::setLogMessage(
-                'log.connector.error_api',
-                array('error_code' => LengowMain::decodeLogMessage($timeout, 'en'))
-            );
-            LengowMain::log('Connector', $errorMessage);
-            throw new LengowException($timeout);
-        }
         curl_close($ch);
         if ($result === false) {
-            $errorCurl = LengowMain::setLogMessage(
-                'lengow_log.exception.error_curl',
-                array(
-                    'error_code' => $errorNumber,
-                    'error_message' => $errorText
-                )
-            );
+            if (in_array($errorNumber, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
+                $errorCurl = LengowMain::setLogMessage('lengow_log.exception.timeout_api');;
+            } else {
+                $errorCurl = LengowMain::setLogMessage(
+                    'lengow_log.exception.error_curl',
+                    array(
+                        'error_code' => $errorNumber,
+                        'error_message' => $errorText
+                    )
+                );
+            }
             $errorMessage = LengowMain::setLogMessage(
                 'log.connector.error_api',
                 array('error_code' => LengowMain::decodeLogMessage($errorCurl, 'en'))
