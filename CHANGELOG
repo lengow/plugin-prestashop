@@ -15,6 +15,12 @@ Version 3.0.0
 	- Feature: Add new actions: re-import, resend and re-sync orders
 
 =============================================================
+Version 2.2.7
+=============================================================
+	- Feature: [action] Add new carrier_name parameter for action
+	- Bugfix: [import] Fix bug import order with tracking data
+
+=============================================================
 Version 2.2.6
 =============================================================
     - Feature: [export] Get a specific format for csv stream

@@ -337,6 +337,7 @@ class LengowMarketplace
                         $params[$arg] = $trackingNumber;
                         break;
                     case 'carrier':
+                    case 'carrier_name':
                     case 'shipping_method':
                         if (!isset($deliveryAddress->id_country) || $deliveryAddress->id_country == 0) {
                             if (isset($actions['optional_args']) && in_array('carrier', $actions['optional_args'])) {
