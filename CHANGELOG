@@ -15,6 +15,12 @@ Version 3.0.0
 	- Feature: Add new actions: re-import, resend and re-sync orders
 
 =============================================================
+Version 2.2.8
+=============================================================
+	- Bugfix: [import] Stop import for order without billing address
+	- Bugfix: [import] Get a specific state for order shipping by marketplace
+
+=============================================================
 Version 2.2.7
 =============================================================
 	- Feature: [action] Add new carrier_name parameter for action
