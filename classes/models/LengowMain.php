@@ -231,7 +231,7 @@ class LengowMain
      * @param string $name marketplace name
      * @param integer $idShop Prestashop shop id
      *
-     * @return array
+     * @return LengowMarketplace
      */
     public static function getMarketplaceSingleton($name, $idShop = null)
     {
@@ -890,25 +890,24 @@ class LengowMain
     /**
      * Get prestashop state id corresponding to the current order state
      *
-     * @param string $orderState order state
-     * @param LengowMarketplace $marketplace order marketplace
-     * @param boolean $shipmentByMp order shipped by mp
+     * @param string $orderStateMarketplace order state marketplace
+     * @param LengowMarketplace $marketplace Lengow marketplace instance
+     * @param boolean $shipmentByMp order shipped by marketplace
      *
      * @return integer
      */
-    public static function getPrestashopStateId($orderState, $marketplace, $shipmentByMp)
+    public static function getPrestashopStateId($orderStateMarketplace, $marketplace, $shipmentByMp)
     {
-        if ($marketplace->getStateLengow($orderState) == 'shipped'
-            || $marketplace->getStateLengow($orderState) == 'closed'
+        if ($shipmentByMp) {
+            $orderState = 'shippedByMp';
+        } elseif ($marketplace->getStateLengow($orderStateMarketplace) == 'shipped'
+            || $marketplace->getStateLengow($orderStateMarketplace) == 'closed'
         ) {
-            if ($shipmentByMp) {
-                return self::getOrderState('shippedByMp');
-            } else {
-                return self::getOrderState('shipped');
-            }
+            $orderState = 'shipped';
         } else {
-            return self::getOrderState('accepted');
+            $orderState = 'accepted';
         }
+        return self::getOrderState($orderState);
     }
 
     /**

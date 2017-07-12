@@ -986,10 +986,16 @@ class LengowImportOrder
                     }
                     $idFull .= isset($ids['id_product_attribute']) ? '_' . $ids['id_product_attribute'] : '';
                     if (array_key_exists($idFull, $products)) {
-                        $products[$idFull]['quantity'] += (integer)$productDatas['quantity'];
+                        $products[$idFull]['quantity'] += (int)$productDatas['quantity'];
                         $products[$idFull]['amount'] += (float)$productDatas['amount'];
+                        $products[$idFull]['order_line_ids'][] = $productDatas['marketplace_order_line_id'];
                     } else {
-                        $products[$idFull] = $productDatas;
+                        $products[$idFull] = array(
+                            'quantity' => (int)$productDatas['quantity'],
+                            'amount' => (float)$productDatas['amount'],
+                            'price_unit' => $productDatas['price_unit'],
+                            'order_line_ids' => array($productDatas['marketplace_order_line_id'])
+                        );
                     }
                     LengowMain::log(
                         'Import',
@@ -1013,12 +1019,12 @@ class LengowImportOrder
                     ? (string)$productDatas['merchant_product_id']->id
                     : (string)$productDatas['marketplace_product_id']
                 );
-                $errorMessage = LengowMain::setLogMessage(
-                    'lengow_log.exception.product_not_be_found',
-                    array('product_id' => $idProduct)
+                throw new LengowException(
+                    LengowMain::setLogMessage(
+                        'lengow_log.exception.product_not_be_found',
+                        array('product_id' => $idProduct)
+                    )
                 );
-                LengowMain::log('Import', $errorMessage, $this->logOutput, $this->marketplaceSku);
-                throw new LengowException($errorMessage);
             }
         }
         return $products;
@@ -1222,30 +1228,31 @@ class LengowImportOrder
     {
         $orderLineSaved = false;
         foreach ($products as $idProduct => $values) {
-            $idOrderLine = $values['marketplace_order_line_id'];
-            $idOrderDetail = LengowOrderDetail::findByOrderIdProductId($order->id, $idProduct);
-            if (_PS_VERSION_ < '1.5') {
-                $result = Db::getInstance()->autoExecute(
-                    _DB_PREFIX_ . 'lengow_order_line',
-                    array(
-                        'id_order' => (int)$order->id,
-                        'id_order_line' => pSQL($idOrderLine),
-                        'id_order_detail' => (int)$idOrderDetail,
-                    ),
-                    'INSERT'
-                );
-            } else {
-                $result = Db::getInstance()->insert(
-                    'lengow_order_line',
-                    array(
-                        'id_order' => (int)$order->id,
-                        'id_order_line' => pSQL($idOrderLine),
-                        'id_order_detail' => (int)$idOrderDetail,
-                    )
-                );
-            }
-            if ($result) {
-                $orderLineSaved .= (!$orderLineSaved ? $idOrderLine : ' / ' . $idOrderLine);
+            foreach ($values['order_line_ids'] as $idOrderLine) {
+                $idOrderDetail = LengowOrderDetail::findByOrderIdProductId($order->id, $idProduct);
+                if (_PS_VERSION_ < '1.5') {
+                    $result = Db::getInstance()->autoExecute(
+                        _DB_PREFIX_ . 'lengow_order_line',
+                        array(
+                            'id_order' => (int)$order->id,
+                            'id_order_line' => pSQL($idOrderLine),
+                            'id_order_detail' => (int)$idOrderDetail,
+                        ),
+                        'INSERT'
+                    );
+                } else {
+                    $result = Db::getInstance()->insert(
+                        'lengow_order_line',
+                        array(
+                            'id_order' => (int)$order->id,
+                            'id_order_line' => pSQL($idOrderLine),
+                            'id_order_detail' => (int)$idOrderDetail,
+                        )
+                    );
+                }
+                if ($result) {
+                    $orderLineSaved .= !$orderLineSaved ? $idOrderLine : ' / ' . $idOrderLine;
+                }
             }
         }
         return $orderLineSaved;

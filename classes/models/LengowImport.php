@@ -38,7 +38,6 @@ class LengowImport
      * @var array valid states lengow to create a Lengow order
      */
     public static $lengowStates = array(
-        'accepted',
         'waiting_shipment',
         'shipped',
         'closed'
