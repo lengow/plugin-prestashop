@@ -388,7 +388,7 @@ class LengowConnector
         curl_close($ch);
         if ($result === false) {
             if (in_array($errorNumber, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
-                $errorCurl = LengowMain::setLogMessage('lengow_log.exception.timeout_api');;
+                $errorCurl = LengowMain::setLogMessage('lengow_log.exception.timeout_api');
             } else {
                 $errorCurl = LengowMain::setLogMessage(
                     'lengow_log.exception.error_curl',
