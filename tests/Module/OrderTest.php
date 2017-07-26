@@ -29,10 +29,9 @@ class OrderTest extends ModuleTestCase
         LengowMain::$registers = array();
 
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
-        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing');
+        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing');
+        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing');
     }
 
     /**
@@ -45,10 +44,9 @@ class OrderTest extends ModuleTestCase
     {
 
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
-        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing');
+        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing');
+        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing');
 
         $fixture = new Fixture();
         $fixture->loadFixture(
@@ -148,10 +146,9 @@ class OrderTest extends ModuleTestCase
     public function sendTrackingOrderLine()
     {
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
-        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing');
+        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing');
+        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing');
 
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
@@ -208,17 +205,16 @@ class OrderTest extends ModuleTestCase
     public function callActionCancel()
     {
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
-        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing');
+        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing');
+        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing');
 
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_actions.yml');
 
         $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
-        LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
+        LengowMarketplace::$marketplaces = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
 
         LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',

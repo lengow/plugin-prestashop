@@ -244,9 +244,8 @@ lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
 lengow_log.error.no_notification|No new notification on order
-lengow_log.error.account_id_empty|Account ID, Access Token or Secret is empty in shop %{name_shop} (%{id_shop})
-lengow_log.error.account_id_already_used|account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})
-lengow_log.error.import_in_progress|import has already begun
+lengow_log.error.credentials_not_valid|Account ID, token access or secret token are not valid
+lengow_log.error.account_id_already_used|Account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})
 lengow_log.error.rest_time_to_import|Please wait %{rest_time} seconds before re-importing orders
 lengow_log.error.no_product|Lengow error: no products in the order
 lengow_log.error.no_change_rate|Lengow error: no exchange rates available for order prices
@@ -262,7 +261,6 @@ lengow_log.exception.no_product_to_cart|no product to be added to cart
 lengow_log.exception.cannot_add_product_to_cart|cannot add product %{product_id} to cart (invalid ID format)
 lengow_log.exception.no_quantity_for_product|product %{product_id} could not be added to cart. Make sure it is available to order or that there is enough in stock
 lengow_log.exception.no_connection_webservice|connection didn't work with the Lengow webservice in shop %{name_shop} (%{id_shop})
-lengow_log.exception.crendentials_not_valid|account ID, token access or secret token are not valid in shop %{name_shop} (%{id_shop})
 lengow_log.exception.error_lengow_webservice|Lengow webservice: %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|order could not be saved
 lengow_log.exception.carrier_shipping_address_no_country|shipping address doesn't contain the country
@@ -295,13 +293,19 @@ admin.order.imported_from_lengow|This order has been imported from Lengow
 admin.order.lengow_order_id|Lengow order ID
 admin.order.marketplace|Marketplace
 admin.order.feed_id|Feed ID
+admin.order.delivery_address_id|Delivery Address ID
 admin.order.total_paid|Total amount paid on Marketplace
-admin.order.carrier_from_marketplace|Carrier from marketplace
-admin.order.method_from_marketplace|Shipping method from marketplace
-admin.order.tracking_number|Tracking number
+admin.order.commission|Commission
+admin.order.currency|Currency
+admin.order.customer_name|Customer name
 admin.order.customer_email|Customer email
-admin.order.message|Message
+admin.order.carrier|Carrier from marketplace
+admin.order.carrier_method|Shipping method from marketplace
+admin.order.carrier_id_relay|ID relay
+admin.order.carrier_tracking|Tracking number
 admin.order.shipped_by_marketplace|Shipped by marketplace
+admin.order.message|Message
+admin.order.imported_at|Imported at
 admin.order.cancel_and_reimport|Re-import order
 admin.order.check_cancel_and_reimport|Do you really want to re-import the order?
 admin.order.synchronize_id|Synchronize ID
@@ -337,7 +341,7 @@ log.import.preprod_mode_active|warning ! Pre-prod mode is activated
 log.import.start|## start %{type} import ##
 log.import.end|## end %{type} import ##
 log.import.start_for_shop|start import in shop %{name_shop} (%{id_shop})
-log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and markeplace: %{marketplace_name} with account ID: %{account_id}
+log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and marketplace: %{marketplace_name} with account ID: %{account_id}
 log.import.find_all_orders|%{nb_order} order(s) found with account ID: %{account_id}
 log.import.nb_order_imported|%{nb_order} order(s) imported
 log.import.nb_order_updated|%{nb_order} order(s) updated
@@ -380,8 +384,8 @@ log.import.error_default_carrier_not_active|import failed - default carrier not 
 log.import.carrier_compatibility_ensured|carrier compatibility ensured with carrier %{carrier_name}
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
-log.order_action.start_for_shop|check completed actions in shop %{name_shop} (%{id_shop})
-log.order_action.start_not_sent_for_store|check actions not sent in shop %{name_shop} (%{id_shop})
+log.order_action.check_completed_action|check completed actions
+log.order_action.check_action_not_sent|check actions not sent
 log.order_action.try_to_send_action|try to send %{action} action (ORDER ID %{order_id})
 log.order_action.action_send|action %{action} was successfully sent (ORDER ID %{order_id})
 log.order_action.action_not_send|WARNING ! action %{action} could not be sent (ORDER ID %{order_id})
@@ -443,7 +447,6 @@ toolbox.index.last_import_none|none
 toolbox.index.last_import_cron|Cron
 toolbox.index.last_import_manual|manual
 toolbox.index.export_information|Export information (by shop)
-toolbox.index.shop_active_in_cms|Shop enabled in Prestashop
 toolbox.index.shop_active|Shop followed by Lengow
 toolbox.index.export_variation_enabled|Include product variations
 toolbox.index.export_out_stock_enabled|Include out of stock products
@@ -464,7 +467,7 @@ toolbox.order.import_one_order|Import order
 toolbox.order.button_import_shop_order|Import orders
 toolbox.order.order_import_success|Order %{marketplace_sku} from %{marketplace_name} is imported
 toolbox.order.order_import_failed|Order import failed (<a href='%{log_url}' target='_blank'>See logs for more information</a>)
-toolbox.configuration.shop_credentials|Shop credentials
+toolbox.configuration.shop_credentials|Credentials
 toolbox.configuration.export_setting|Export settings
 toolbox.configuration.import_setting|Import settings
 toolbox.configuration.global_setting|Global settings

@@ -240,6 +240,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'lengow_orders` (
     `order_item` INTEGER(11) UNSIGNED NULL,
     `currency` VARCHAR(3) NULL,
     `total_paid` DECIMAL(17,2) UNSIGNED NULL,
+    `commission` DECIMAL(17,2) UNSIGNED NULL,
     `customer_name` VARCHAR(255) NULL,
     `customer_email` VARCHAR(255) NULL,
     `carrier` VARCHAR(100),
@@ -319,6 +320,11 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_or
     if (!LengowInstall::checkFieldExists('lengow_orders', 'sent_marketplace')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `sent_marketplace` TINYINT(1) UNSIGNED DEFAULT 0'
+        );
+    }
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'commission')) {
+        Db::getInstance()->execute(
+            'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `commission` DECIMAL(17,2) UNSIGNED NULL'
         );
     }
     if (!LengowInstall::checkFieldExists('lengow_orders', 'currency')) {

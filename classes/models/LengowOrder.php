@@ -50,22 +50,7 @@ class LengowOrder extends Order
     public $lengowId;
 
     /**
-     * @var string Lengow order id
-     */
-    public $lengowMarketplaceSku;
-
-    /**
-     * @var string Marketplace's name
-     */
-    public $lengowMarketplaceName;
-
-    /**
-     * @var string Message
-     */
-    public $lengowMessage;
-
-    /**
-     * @var integer Shop ID
+     * @var integer Prestashop shop ID
      */
     public $lengowIdShop;
 
@@ -73,56 +58,6 @@ class LengowOrder extends Order
      * @var integer Lengow flux id
      */
     public $lengowIdFlux;
-
-    /**
-     * @var float Total paid on marketplace
-     */
-    public $lengowTotalPaid;
-
-    /**
-     * @var string Carrier from marketplace
-     */
-    public $lengowCarrier;
-
-    /**
-     * @var string Carrier Method from marketplace
-     */
-    public $lengowMethod;
-
-    /**
-     * @var string Tracking
-     */
-    public $lengowTracking;
-
-    /**
-     * @var string Id relay
-     */
-    public $lengowIdRelay;
-
-    /**
-     * @var boolean Shipped by markeplace
-     */
-    public $lengowSentMarketplace;
-
-    /**
-     * @var string Extra information (json node form import)
-     */
-    public $lengowExtra;
-
-    /**
-     * @var boolean order is reimported (ready to be reimported)
-     */
-    public $lengowIsReimported;
-
-    /**
-     * @var integer lengow process state (0 => error, 1 => imported, 2 => finished)
-     */
-    public $lengowProcessState;
-
-    /**
-     * @var string marketplace order date
-     */
-    public $lengowOrderDate;
 
     /**
      * @var integer id of the delivery address
@@ -135,6 +70,56 @@ class LengowOrder extends Order
     public $lengowDeliveryCountryIso;
 
     /**
+     * @var string Lengow order id
+     */
+    public $lengowMarketplaceSku;
+
+    /**
+     * @var string marketplace's code
+     */
+    public $lengowMarketplaceName;
+
+    /**
+     * @var string marketplace's label
+     */
+    public $lengowMarketplaceLabel;
+
+    /**
+     * @var string current Lengow state
+     */
+    public $lengowState;
+
+    /**
+     * @var integer Lengow process state (0 => error, 1 => imported, 2 => finished)
+     */
+    public $lengowProcessState;
+
+    /**
+     * @var string marketplace order date
+     */
+    public $lengowOrderDate;
+
+    /**
+     * @var integer number of items
+     */
+    public $lengowOrderItem;
+
+    /**
+     * @var string order currency
+     */
+    public $lengowCurrency;
+
+    /**
+     * @var float total paid on marketplace
+     */
+    public $lengowTotalPaid;
+
+    /**
+     * @var float commission on marketplace
+     */
+    public $lengowCommission;
+
+    /**
      * @var string the name of the customer
      */
     public $lengowCustomerName;
@@ -145,14 +130,49 @@ class LengowOrder extends Order
     public $lengowCustomerEmail;
 
     /**
-     * @var string current lengow state
+     * @var string carrier from marketplace
      */
-    public $lengowState;
+    public $lengowCarrier;
 
     /**
-     * @var integer number of items
+     * @var string carrier Method from marketplace
      */
-    public $lengowOrderItem;
+    public $lengowMethod;
+
+    /**
+     * @var string tracking
+     */
+    public $lengowTracking;
+
+    /**
+     * @var string id relay
+     */
+    public $lengowIdRelay;
+
+    /**
+     * @var boolean order shipped by marketplace
+     */
+    public $lengowSentMarketplace;
+
+    /**
+     * @var boolean order is reimported (ready to be reimported)
+     */
+    public $lengowIsReimported;
+
+    /**
+     * @var string message
+     */
+    public $lengowMessage;
+
+    /**
+     * @var string creation order date
+     */
+    public $lengowDateAdd;
+
+    /**
+     * @var string extra information (json node form import)
+     */
+    public $lengowExtra;
 
     /**
      * Construct a Lengow order based on Prestashop order
@@ -175,53 +195,61 @@ class LengowOrder extends Order
     {
         $query = 'SELECT
             lo.`id`,
-            lo.`marketplace_sku`,
             lo.`id_shop`,
             lo.`id_flux`,
+            lo.`delivery_address_id`,
+            lo.`delivery_country_iso`,
+            lo.`marketplace_sku`,
             lo.`marketplace_name`,
-            lo.`message`,
+            lo.`marketplace_label`,
+            lo.`order_lengow_state`,
+            lo.`order_process_state`,
+            lo.`order_date`,
+            lo.`order_item`,
+            lo.`currency`,
             lo.`total_paid`,
+            lo.`commission`,
+            lo.`customer_name`,
+            lo.`customer_email`,
             lo.`carrier`,
             lo.`method`,
             lo.`tracking`,
             lo.`id_relay`,
             lo.`sent_marketplace`,
-            lo.`extra`,
             lo.`is_reimported`,
-            lo.`order_process_state`,
-            lo.`order_date`,
-            lo.`delivery_address_id`,
-            lo.`delivery_country_iso`,
-            lo.`customer_name`,
-            lo.`customer_email`,
-            lo.`order_lengow_state`,
-            lo.`order_item`
+            lo.`message`,
+            lo.`date_add`,
+            lo.`extra`
             FROM `' . _DB_PREFIX_ . 'lengow_orders` lo
             WHERE lo.id_order = \'' . (int)$this->id . '\'
         ';
         if ($result = Db::getInstance()->getRow($query)) {
             $this->lengowId = $result['id'];
-            $this->lengowMarketplaceSku = $result['marketplace_sku'];
             $this->lengowIdShop = (int)$result['id_shop'];
             $this->lengowIdFlux = $result['id_flux'];
+            $this->lengowDeliveryAddressId = (int)$result['delivery_address_id'];
+            $this->lengowDeliveryCountryIso = $result['delivery_country_iso'];
+            $this->lengowMarketplaceSku = $result['marketplace_sku'];
             $this->lengowMarketplaceName = $result['marketplace_name'];
-            $this->lengowMessage = $result['message'];
+            $this->lengowMarketplaceLabel = $result['marketplace_label'];
+            $this->lengowState = $result['order_lengow_state'];
+            $this->lengowProcessState = (int)$result['order_process_state'];
+            $this->lengowOrderDate = $result['order_date'];
+            $this->lengowOrderItem = (int)$result['order_item'];
+            $this->lengowCurrency = $result['currency'];
             $this->lengowTotalPaid = $result['total_paid'];
+            $this->lengowCommission = $result['commission'];
+            $this->lengowCustomerName = $result['customer_name'];
+            $this->lengowCustomerEmail = $result['customer_email'];
             $this->lengowCarrier = $result['carrier'];
             $this->lengowMethod = $result['method'];
             $this->lengowTracking = $result['tracking'];
             $this->lengowIdRelay = $result['id_relay'];
             $this->lengowSentMarketplace = (bool)$result['sent_marketplace'];
-            $this->lengowExtra = $result['extra'];
             $this->lengowIsReimported = (bool)$result['is_reimported'];
-            $this->lengowProcessState = (int)$result['order_process_state'];
-            $this->lengowOrderDate = $result['order_date'];
-            $this->lengowDeliveryAddressId = (int)$result['delivery_address_id'];
-            $this->lengowDeliveryCountryIso = $result['delivery_country_iso'];
-            $this->lengowCustomerName = $result['customer_name'];
-            $this->lengowCustomerEmail = $result['customer_email'];
-            $this->lengowState = $result['order_lengow_state'];
-            $this->lengowOrderItem = (int)$result['order_item'];
+            $this->lengowMessage = $result['message'];
+            $this->lengowDateAdd = $result['date_add'];
+            $this->lengowExtra = $result['extra'];
             return true;
         } else {
             return false;
@@ -517,34 +545,20 @@ class LengowOrder extends Order
     }
 
     /**
-     * Get unset order by shop
-     *
-     * @param integer $idShop Prestashop shop id
+     * Get all unset orders
      *
      * @return array|false
      */
-    public static function getUnsentOrderByStore($idShop)
+    public static function getUnsentOrders()
     {
         $date = date('Y-m-d h:m:i', strtotime('-5 days', time()));
-        if (_PS_VERSION_ < '1.5') {
-            $sql = 'SELECT lo.`id`, oh.`id_order_state`, oh.`id_order`
-                FROM ' . _DB_PREFIX_ . 'lengow_orders lo
-                INNER JOIN ' . _DB_PREFIX_ . 'order_history oh ON (oh.id_order = lo.id_order)
-                WHERE lo.`order_process_state` = ' . (int)self::PROCESS_STATE_IMPORT
-                . ' AND oh.`id_order_state` IN ('
-                . LengowMain::getOrderState('shipped') . ',' . LengowMain::getOrderState('canceled')
-                . ') AND oh.`date_add` >= "' . $date . '"';
-        } else {
-            $sql = 'SELECT lo.`id`, o.`id_shop`, o.`id_order`, oh.`id_order_state`
-                FROM ' . _DB_PREFIX_ . 'lengow_orders lo
-                INNER JOIN ' . _DB_PREFIX_ . 'orders o ON (o.id_order = lo.id_order)
-                INNER JOIN ' . _DB_PREFIX_ . 'order_history oh ON (oh.id_order = lo.id_order)
-                WHERE o.`id_shop` = ' . (int)$idShop
-                . ' AND lo.`order_process_state` = ' . (int)self::PROCESS_STATE_IMPORT
-                . ' AND oh.`id_order_state` IN ('
-                . LengowMain::getOrderState('shipped') . ',' . LengowMain::getOrderState('canceled')
-                . ') AND oh.`date_add` >= "' . $date . '"';
-        }
+        $sql = 'SELECT lo.`id`, oh.`id_order_state`, oh.`id_order`
+            FROM ' . _DB_PREFIX_ . 'lengow_orders lo
+            INNER JOIN ' . _DB_PREFIX_ . 'order_history oh ON (oh.id_order = lo.id_order)
+            WHERE lo.`order_process_state` = ' . (int)self::PROCESS_STATE_IMPORT
+            . ' AND oh.`id_order_state` IN ('
+            . LengowMain::getOrderState('shipped') . ',' . LengowMain::getOrderState('canceled')
+            . ') AND oh.`date_add` >= "' . $date . '"';
         $results = Db::getInstance()->executeS($sql);
         if ($results) {
             $unsentOrders = array();
@@ -575,14 +589,11 @@ class LengowOrder extends Order
      */
     public function synchronizeOrder($connector = null)
     {
-        $idShop = (_PS_VERSION_ < 1.5 ? null : (int)$this->lengowIdShop);
+        list($accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
         // Get connector
         if (is_null($connector)) {
-            if (LengowCheck::isValidAuth($idShop)) {
-                $connector = new LengowConnector(
-                    LengowMain::getAccessToken($idShop),
-                    LengowMain::getSecretCustomer($idShop)
-                );
+            if (LengowConnector::isValidAuth()) {
+                $connector = new LengowConnector($accessToken, $secretToken);
             } else {
                 return false;
             }
@@ -604,7 +615,7 @@ class LengowOrder extends Order
             $result = $connector->patch(
                 '/v3.0/orders/moi/',
                 array(
-                    'account_id' => LengowMain::getIdAccount($idShop),
+                    'account_id' => $accountId,
                     'marketplace_order_id' => $this->lengowMarketplaceSku,
                     'marketplace' => $this->lengowMarketplaceName,
                     'merchant_order_id' => $prestaIds
@@ -631,14 +642,11 @@ class LengowOrder extends Order
      */
     public function checkAndChangeMarketplaceName($connector = null)
     {
-        $idShop = (_PS_VERSION_ < 1.5 ? null : (int)$this->lengowIdShop);
+        list($accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
         // get connector
         if (is_null($connector)) {
-            if (LengowCheck::isValidAuth($idShop)) {
-                $connector = new LengowConnector(
-                    LengowMain::getAccessToken($idShop),
-                    LengowMain::getSecretCustomer($idShop)
-                );
+            if (LengowConnector::isValidAuth()) {
+                $connector = new LengowConnector($accessToken, $secretToken);
             } else {
                 return false;
             }
@@ -648,7 +656,7 @@ class LengowOrder extends Order
             array(
                 'marketplace_order_id' => $this->lengowMarketplaceSku,
                 'marketplace' => $this->lengowMarketplaceName,
-                'account_id' => LengowMain::getIdAccount($idShop)
+                'account_id' => $accountId
             ),
             'stream'
         );
@@ -1031,10 +1039,7 @@ class LengowOrder extends Order
                 if ((int)$this->lengowIdFlux > 0) {
                     $this->checkAndChangeMarketplaceName();
                 }
-                $marketplace = LengowMain::getMarketplaceSingleton(
-                    $this->lengowMarketplaceName,
-                    $this->lengowIdShop
-                );
+                $marketplace = LengowMain::getMarketplaceSingleton($this->lengowMarketplaceName);
                 if ($marketplace->containOrderLine($action)) {
                     $orderLineCollection = self::findOrderLineIds($this->id);
                     // compatibility V2 and security
@@ -1109,7 +1114,6 @@ class LengowOrder extends Order
         $results = LengowConnector::queryApi(
             'get',
             '/v3.0/orders',
-            $this->lengowIdShop,
             array(
                 'marketplace_order_id' => $this->lengowMarketplaceSku,
                 'marketplace' => $this->lengowMarketplaceName,

@@ -32,22 +32,13 @@ class MarketplaceTest extends ModuleTestCase
      */
     public function containOrderLine()
     {
-        $marketplace = LengowMain::getMarketplaceSingleton(
-            'galeries_lafayette',
-            1
-        );
+        $marketplace = LengowMain::getMarketplaceSingleton('galeries_lafayette');
         $this->assertTrue(!$marketplace->containOrderLine('ship'));
 
-        $marketplace = LengowMain::getMarketplaceSingleton(
-            'cdiscount',
-            1
-        );
+        $marketplace = LengowMain::getMarketplaceSingleton('cdiscount');
         $this->assertTrue($marketplace->containOrderLine('ship'));
 
-        $marketplace = LengowMain::getMarketplaceSingleton(
-            'menlook',
-            1
-        );
+        $marketplace = LengowMain::getMarketplaceSingleton('menlook');
         $this->assertTrue($marketplace->containOrderLine('ship'));
     }
 
@@ -90,7 +81,7 @@ class MarketplaceTest extends ModuleTestCase
         //reset marketplace file
         LengowMain::$registers = array();
         $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Marketplace/require_carrier_args.json';
-        LengowMarketplace::$MARKETPLACES = array(
+        LengowMarketplace::$marketplaces = array(
             1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
             2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
         );
@@ -112,10 +103,9 @@ class MarketplaceTest extends ModuleTestCase
     public function callActionErrorApiAccess()
     {
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
-        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing');
+        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing');
+        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing');
 
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml');
@@ -123,7 +113,7 @@ class MarketplaceTest extends ModuleTestCase
         $fixture->truncate('lengow_logs_import');
 
         $order = new LengowOrder(1);
-        $marketplace = LengowMain::getMarketplaceSingleton('galeries_lafayette', '1');
+        $marketplace = LengowMain::getMarketplaceSingleton('galeries_lafayette');
         $this->assertFalse($marketplace->callAction('ship', $order));
 
         $this->assertTableContain(
@@ -144,7 +134,7 @@ class MarketplaceTest extends ModuleTestCase
         $fixture->truncate('lengow_actions');
         $fixture->truncate('lengow_logs_import');
 
-        $marketplace = LengowMain::getMarketplaceSingleton('galeries_lafayette', '1');
+        $marketplace = LengowMain::getMarketplaceSingleton('galeries_lafayette');
 
         LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking.json',

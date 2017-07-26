@@ -312,10 +312,9 @@ class LengowHook
         }
         // Generate tracker
         if (self::$currentPageType == self::LENGOW_TRACK_PAGE_CONFIRMATION) {
-            $idShop = $this->context->shop->id;
             $this->context->smarty->assign(
                 array(
-                    'account_id' => LengowMain::getIdAccount($idShop),
+                    'account_id' => LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_ID'),
                     'order_ref' => self::$idOrder,
                     'amount' => self::$orderTotal,
                     'currency_order' => self::$orderCurrency,
@@ -418,15 +417,20 @@ class LengowHook
             $templateDatas = array(
                 'marketplace_sku' => $lengowOrder->lengowMarketplaceSku,
                 'id_flux' => $lengowOrder->lengowIdFlux,
-                'marketplace_name' => $lengowOrder->lengowMarketplaceName,
+                'delivery_address_id' => $lengowOrder->lengowDeliveryAddressId,
+                'marketplace_label' => $lengowOrder->lengowMarketplaceLabel,
                 'total_paid' => $lengowOrder->lengowTotalPaid,
-                'carrier' => $lengowOrder->lengowCarrier,
-                'tracking_method' => $lengowOrder->lengowMethod,
-                'tracking' => $lengowOrder->lengowTracking,
-                'tracking_carrier' => $lengowOrder->lengowCarrier,
+                'commission' => $lengowOrder->lengowCommission,
+                'currency' => $lengowOrder->lengowCurrency,
+                'customer_name' => $lengowOrder->lengowCustomerName,
                 'customer_email' => $lengowOrder->lengowCustomerEmail,
+                'carrier' => $lengowOrder->lengowCarrier,
+                'carrier_method' => $lengowOrder->lengowMethod,
+                'carrier_tracking' => $lengowOrder->lengowTracking,
+                'carrier_id_relay' => $lengowOrder->lengowIdRelay,
                 'sent_marketplace' => $sentMarketplace,
                 'message' => $lengowOrder->lengowMessage,
+                'imported_at' => $lengowOrder->lengowDateAdd,
                 'action_synchronize' => $actionSynchronize,
                 'action_reimport' => $actionReimport,
                 'action_resend' => $actionResend,

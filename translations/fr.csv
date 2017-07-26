@@ -244,9 +244,7 @@ lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs
 lengow_log.error.no_notification|Pas de nouvelle notification sur vos commandes
-lengow_log.error.account_id_empty|ID du compte, access token ou secret token vides pour la boutique %{name_shop} (%{id_shop})
 lengow_log.error.account_id_already_used|l'ID du compte %{account_id} est déjà utilisé par la boutique %{name_shop} (%{id_shop})
-lengow_log.error.import_in_progress|L'import a déjà commencé
 lengow_log.error.rest_time_to_import|Attendez %{rest_time}  secondes avant d'importer de nouveau vos commandes
 lengow_log.error.no_product|Erreur Lengow : pas de produit dans cette commande
 lengow_log.error.no_change_rate|Erreur Lengow : pas de taux de change valide à appliquer sur les prix
@@ -262,7 +260,6 @@ lengow_log.exception.no_product_to_cart|il n'y a pas de produit ajouté au panie
 lengow_log.exception.cannot_add_product_to_cart|le produit %{product_id} ne peut etre ajouté au panier (format de l'ID non valide)
 lengow_log.exception.no_quantity_for_product|le produit %{product_id} ne peut être ajouté au panier. Vérifiez qu'il est bien disponible à la commande ou qu'il y a assez de stock
 lengow_log.exception.no_connection_webservice|la connexion ne se fait pas avec Lengow pour la boutique %{name_shop} (%{id_shop})
-lengow_log.exception.crendentials_not_valid|l'ID du compte, l'acces Token ou le secret Token secret ne sont pas valides pour la boutique %{name_shop} (%{id_shop})
 lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - %{error_message} pour la boutique %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|la commande ne peut être sauvegardée
 lengow_log.exception.carrier_shipping_address_no_country|l'adresse d'expédition ne contient pas de pays

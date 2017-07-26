@@ -79,7 +79,7 @@
                 {$locale->t('menu.jump_to_lengow')|escape:'htmlall':'UTF-8'}
             </a>
         </li>
-        {if $merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] neq 0}
+        {if $merchantStatus['type'] == 'free_trial' && !$merchantStatus['expired']}
             <li class="lengow_float_right" id="menucountertrial">
                 <div class="lgw-block">
                     {$locale->t('menu.counter', ['counter' => $merchantStatus['day']])|escape:'htmlall':'UTF-8'}

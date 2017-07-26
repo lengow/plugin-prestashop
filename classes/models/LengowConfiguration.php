@@ -50,15 +50,15 @@ class LengowConfiguration extends Configuration
             }
             $keys = array(
                 'LENGOW_ACCOUNT_ID' => array(
-                    'shop' => true,
+                    'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_account_id_title'),
                 ),
                 'LENGOW_ACCESS_TOKEN' => array(
-                    'shop' => true,
+                    'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_access_token_title'),
                 ),
                 'LENGOW_SECRET_TOKEN' => array(
-                    'shop' => true,
+                    'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_secret_token_title'),
                 ),
                 'LENGOW_SHOP_ACTIVE' => array(
@@ -362,6 +362,38 @@ class LengowConfiguration extends Configuration
         } else {
             parent::updateValue($key, $values, $html, $idShopGroup, $idShop);
         }
+    }
+
+    /**
+     * Get Valid Account / Access token / Secret token
+     *
+     * @return array
+     */
+    public static function getAccessIds()
+    {
+        $accountId = LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_ID');
+        $accessToken = LengowConfiguration::getGlobalValue('LENGOW_ACCESS_TOKEN');
+        $secretToken = LengowConfiguration::getGlobalValue('LENGOW_SECRET_TOKEN');
+        if (Tools::strlen($accountId) > 0
+            && Tools::strlen($accessToken) > 0
+            && Tools::strlen($secretToken) > 0
+        ) {
+            return array($accountId, $accessToken, $secretToken);
+        } else {
+            return array(null, null, null);
+        }
+    }
+
+    /**
+     * Recovers if a shop is active or not
+     *
+     * @param integer $idShop Prestashop shop id
+     *
+     * @return boolean
+     */
+    public static function shopIsActive($idShop = null)
+    {
+        return (bool)LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, null, $idShop);
     }
 
     /**

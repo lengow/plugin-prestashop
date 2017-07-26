@@ -53,9 +53,9 @@ class ImportTest extends ModuleTestCase
     public function chargeConfig()
     {
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
-        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing');
+        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing');
+        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing');
     }
 
     /**
@@ -262,13 +262,10 @@ class ImportTest extends ModuleTestCase
         $this->chargeFixture();
 
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        Configuration::set('LENGOW_ACCOUNT_ID', '', null, 1);
-        Configuration::set('LENGOW_ACCESS_TOKEN', '', null, 1);
-        Configuration::set('LENGOW_SECRET_TOKEN', '', null, 1);
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 2);
-        Configuration::set('LENGOW_ACCOUNT_ID', '', null, 2);
-        Configuration::set('LENGOW_ACCESS_TOKEN', '', null, 2);
-        Configuration::set('LENGOW_SECRET_TOKEN', '', null, 2);
+        Configuration::set('LENGOW_ACCOUNT_ID', '');
+        Configuration::set('LENGOW_ACCESS_TOKEN', '');
+        Configuration::set('LENGOW_SECRET_TOKEN', '');
 
         $import = new LengowImport(array('log_output' => false));
         $result = $import->exec();
@@ -351,9 +348,9 @@ class ImportTest extends ModuleTestCase
      */
     public function checkCredentials()
     {
-        LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', $this->accountId, false, null, 1);
-        LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', $this->secretToken, false, null, 1);
-        LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', $this->accessToken, false, null, 1);
+        LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', $this->accountId);
+        LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', $this->secretToken);
+        LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', $this->accessToken);
 
         $import = new LengowImport();
         $this->assertTrue(
@@ -380,7 +377,7 @@ class ImportTest extends ModuleTestCase
      */
     public function checkState()
     {
-        $marketplace = LengowMain::getMarketplaceSingleton('galeries_lafayette', 1);
+        $marketplace = LengowMain::getMarketplaceSingleton('galeries_lafayette');
 
         $this->assertFalse(LengowImport::checkState(null, $marketplace), '[Check State] Order state is empty');
         $this->assertFalse(

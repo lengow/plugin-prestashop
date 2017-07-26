@@ -24,7 +24,7 @@
                 {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
-        {if $merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] neq 0}
+        {if $merchantStatus['type'] == 'free_trial' && !$merchantStatus['expired']}
             <p class="text-right" id="menucountertrial">
                 {$locale->t('menu.counter', ['counter' => $merchantStatus['day']])|escape:'htmlall':'UTF-8'}
                 <a href="http://my.lengow.io/" target="_blank">

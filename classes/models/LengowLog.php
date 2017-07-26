@@ -60,7 +60,7 @@ class LengowLog extends LengowFile
     public function write($category, $message = "", $logOutput = false, $marketplaceSku = null)
     {
         $decodedMessage = LengowMain::decodeLogMessage($message, 'en');
-        $log = date('Y-m-d H:i:s') . Tools::substr((string)microtime(), 1, 8);
+        $log = date('Y-m-d H:i:s');
         $log .= ' - ' . (empty($category) ? '' : '[' . $category . '] ');
         $log .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ' : ');
         $log .= $decodedMessage . "\r\n";

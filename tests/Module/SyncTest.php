@@ -77,9 +77,9 @@ class SyncTest extends ModuleTestCase
     {
 
         //set correct data
-        LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', '', false, null, 1);
-        LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', '', false, null, 1);
-        LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', '', false, null, 1);
+        LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', '');
+        LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', '');
+        LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', '');
         LengowConfiguration::updateValue('LENGOW_SHOP_ACTIVE', '', false, null, 1);
         LengowConfiguration::updateValue('LENGOW_SHOP_TOKEN', '1f65ze4f5e6z4fze654fe', false, null, 1);
 
@@ -94,16 +94,15 @@ class SyncTest extends ModuleTestCase
         $sync = new \LengowSync();
         $sync->sync($data);
 
-        $this->assertEquals('160', LengowConfiguration::get('LENGOW_ACCOUNT_ID', false, null, 1));
-        $this->assertEquals('fzg16re54g65er4g1er65', LengowConfiguration::get('LENGOW_ACCESS_TOKEN', false, null, 1));
-        $this->assertEquals('ger65g4165er4g1r65e4g', LengowConfiguration::get('LENGOW_SECRET_TOKEN', false, null, 1));
+        $this->assertEquals('160', LengowConfiguration::get('LENGOW_ACCOUNT_ID'));
+        $this->assertEquals('fzg16re54g65er4g1er65', LengowConfiguration::get('LENGOW_ACCESS_TOKEN'));
+        $this->assertEquals('ger65g4165er4g1r65e4g', LengowConfiguration::get('LENGOW_SECRET_TOKEN'));
         $this->assertEquals(true, LengowConfiguration::get('LENGOW_SHOP_ACTIVE', false, null, 1));
 
-
         //key empty
-        LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', '', false, null, 1);
-        LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', '', false, null, 1);
-        LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', '', false, null, 1);
+        LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', '');
+        LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', '');
+        LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', '');
         LengowConfiguration::updateValue('LENGOW_SHOP_ACTIVE', '', false, null, 1);
         LengowConfiguration::updateValue('LENGOW_SHOP_TOKEN', '1f65ze4f5e6z4fze654fe', false, null, 1);
 
@@ -118,15 +117,15 @@ class SyncTest extends ModuleTestCase
         $sync = new \LengowSync();
         $sync->sync($data);
 
-        $this->assertEquals('160', LengowConfiguration::get('LENGOW_ACCOUNT_ID', false, null, 1));
-        $this->assertEquals('fzg16re54g65er4g1er65', LengowConfiguration::get('LENGOW_ACCESS_TOKEN', false, null, 1));
-        $this->assertEquals('', LengowConfiguration::get('LENGOW_SECRET_TOKEN', false, null, 1));
+        $this->assertEquals('160', LengowConfiguration::get('LENGOW_ACCOUNT_ID'));
+        $this->assertEquals('fzg16re54g65er4g1er65', LengowConfiguration::get('LENGOW_ACCESS_TOKEN'));
+        $this->assertEquals('', LengowConfiguration::get('LENGOW_SECRET_TOKEN'));
         $this->assertEquals(false, LengowConfiguration::get('LENGOW_SHOP_ACTIVE', false, null, 1));
 
         //missing key
-        LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', '', false, null, 1);
-        LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', '', false, null, 1);
-        LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', '', false, null, 1);
+        LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', '');
+        LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', '');
+        LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', '');
         LengowConfiguration::updateValue('LENGOW_SHOP_ACTIVE', '', false, null, 1);
         LengowConfiguration::updateValue('LENGOW_SHOP_TOKEN', '1f65ze4f5e6z4fze654fe', false, null, 1);
 
@@ -140,9 +139,9 @@ class SyncTest extends ModuleTestCase
         $sync = new \LengowSync();
         $sync->sync($data);
 
-        $this->assertEquals('160', LengowConfiguration::get('LENGOW_ACCOUNT_ID', false, null, 1));
-        $this->assertEquals('fzg16re54g65er4g1er65', LengowConfiguration::get('LENGOW_ACCESS_TOKEN', false, null, 1));
-        $this->assertEquals('', LengowConfiguration::get('LENGOW_SECRET_TOKEN', false, null, 1));
+        $this->assertEquals('160', LengowConfiguration::get('LENGOW_ACCOUNT_ID'));
+        $this->assertEquals('fzg16re54g65er4g1er65', LengowConfiguration::get('LENGOW_ACCESS_TOKEN'));
+        $this->assertEquals('', LengowConfiguration::get('LENGOW_SECRET_TOKEN'));
         $this->assertEquals(false, LengowConfiguration::get('LENGOW_SHOP_ACTIVE', false, null, 1));
 
     }

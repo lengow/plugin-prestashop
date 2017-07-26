@@ -375,13 +375,9 @@ class LengowExport
     public function setLegacyFields()
     {
         if (is_null($this->legacy)) {
-            $result = LengowConnector::queryApi(
-                'get',
-                '/v3.0/subscriptions',
-                $this->idShop
-            );
-            if (isset($result->legacy)) {
-                $this->legacy = (bool)$result->legacy;
+            $result = LengowConnector::queryApi('get', '/v3.0/plans');
+            if (isset($result->accountVersion)) {
+                $this->legacy = $result->accountVersion === 'v2' ? true : false;
             } else {
                 $this->legacy = false;
             }

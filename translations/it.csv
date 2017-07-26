@@ -244,9 +244,7 @@ lengow_log.error.nb_order_imported|%{nb_order} ordine importato
 lengow_log.error.nb_order_updated|%{nb_order} ordine aggiornato
 lengow_log.error.nb_order_with_error|%{nb_order} errore numero ordine
 lengow_log.error.no_notification|Nessuna notifica negli ordini
-lengow_log.error.account_id_empty|ID Cliente, Token o Token Segreto vuoto per lo shop %{name_shop} (%{id_shop})
 lengow_log.error.account_id_already_used|ID %{account_id}  conto già utilizzato da %{name_shop} (%{id_shop})
-lengow_log.error.import_in_progress|importazione in corso
 lengow_log.error.rest_time_to_import|Attendi %{rest_time} secondi prima di reimportare gli ordini
 lengow_log.error.no_product|Lengow error: nessun prodotto nell'ordine
 lengow_log.error.no_change_rate|Lengow error: nessun exchange rates disponibile per order prices
@@ -262,7 +260,6 @@ lengow_log.exception.no_product_to_cart|nessun prodotto in carrello
 lengow_log.exception.cannot_add_product_to_cart|impossibile aggiungere il prodotto %{product_id} in carrello (invalid ID format)
 lengow_log.exception.no_quantity_for_product|il prodotto %{product_id} non puo' essere aggiunto in carrello. Assicurati che sia reso disponibi all'acquisto o che abbia abbastanza stock
 lengow_log.exception.no_connection_webservice|La connessione con il web service Lengow non funziona per lo shop %{name_shop} (%{id_shop})
-lengow_log.exception.crendentials_not_valid|ID Cliente, il gettone token o il gettone segreto non sono validi per lo shop %{name_shop} (%{id_shop})
 lengow_log.exception.error_lengow_webservice|Errore Lengow Webservice : %{error_code} - %{error_message} di negozio %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|impossibile salvare l'ordine
 lengow_log.exception.carrier_shipping_address_no_country|nessun trasportatore per indirizzo di spedizione del paese

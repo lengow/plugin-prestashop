@@ -45,9 +45,9 @@ class ImportOrderTest extends ModuleTestCase
     public function chargeConfig()
     {
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
-        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing', null, 1);
-        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing', null, 1);
-        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing', null, 1);
+        Configuration::set('LENGOW_ACCOUNT_ID', 'nothing');
+        Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing');
+        Configuration::set('LENGOW_SECRET_TOKEN', 'nothing');
     }
 
     /**

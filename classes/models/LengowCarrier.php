@@ -339,12 +339,8 @@ class LengowCarrier extends Carrier
         }
         $finalCarrier = array();
         $findCarrier = array();
-        $shops = LengowShop::findAll(true);
-        foreach ($shops as $shop) {
-            $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $shop['id_shop']);
-            if (!$result) {
-                continue;
-            }
+        $result = LengowConnector::queryApi('get', '/v3.0/marketplaces');
+        if ($result) {
             $carrierCollection = array();
             foreach ($result as $values) {
                 if (isset($values->orders->carriers)) {
@@ -362,9 +358,9 @@ class LengowCarrier extends Carrier
                     $findCarrier[$code] = true;
                 }
             }
+            LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKETPLACE', Tools::jsonEncode($finalCarrier));
+            LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKET_UPDATE', date('Y-m-d H:i:s'));
         }
-        LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKETPLACE', Tools::jsonEncode($finalCarrier));
-        LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKET_UPDATE', date('Y-m-d H:i:s'));
         return $finalCarrier;
     }
 

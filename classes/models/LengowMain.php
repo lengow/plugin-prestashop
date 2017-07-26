@@ -56,12 +56,19 @@ class LengowMain
         '127.0.0.1',
         '10.0.4.150',
         '46.19.183.204',
+        '46.19.183.217',
         '46.19.183.218',
+        '46.19.183.219',
         '46.19.183.222',
+        '52.50.58.130',
         '89.107.175.172',
+        '89.107.175.185',
         '89.107.175.186',
+        '89.107.175.187',
         '90.63.241.226',
         '109.190.189.175',
+        '146.185.41.180',
+        '146.185.41.177',
         '185.61.176.129',
         '185.61.176.130',
         '185.61.176.131',
@@ -100,54 +107,6 @@ class LengowMain
     }
 
     /**
-     * Get Lengow ID Account
-     *
-     * @param integer $idShop Prestashop shop id
-     *
-     * @return integer
-     */
-    public static function getIdAccount($idShop = null)
-    {
-        return LengowConfiguration::get('LENGOW_ACCOUNT_ID', null, null, $idShop);
-    }
-
-    /**
-     * Get access token
-     *
-     * @param integer $idShop Prestashop shop id
-     *
-     * @return string
-     */
-    public static function getAccessToken($idShop = null)
-    {
-        return LengowConfiguration::get('LENGOW_ACCESS_TOKEN', null, null, $idShop);
-    }
-
-    /**
-     * Get the secret
-     *
-     * @param integer $idShop Prestashop shop id
-     *
-     * @return string
-     */
-    public static function getSecretCustomer($idShop = null)
-    {
-        return LengowConfiguration::get('LENGOW_SECRET_TOKEN', null, null, $idShop);
-    }
-
-    /**
-     * Recovers if a shop is active or not
-     *
-     * @param integer $idShop Prestashop shop id
-     *
-     * @return string
-     */
-    public static function getShopActive($idShop = null)
-    {
-        return LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, null, $idShop);
-    }
-
-    /**
      * Get the matching Prestashop order state id to the one given
      *
      * @param string $state state to be matched
@@ -179,7 +138,7 @@ class LengowMain
     {
         if (_PS_VERSION_ < '1.5.4.0') {
             Configuration::set('PS_MAIL_METHOD', 2);
-            // Set fictive stmp server to disable mail
+            // Set fictive smtp server to disable mail
             Configuration::set('PS_MAIL_SERVER', 'smtp.lengow.com');
         } else {
             Configuration::set('PS_MAIL_METHOD', 3);
@@ -229,14 +188,13 @@ class LengowMain
      * Get marketplace singleton
      *
      * @param string $name marketplace name
-     * @param integer $idShop Prestashop shop id
      *
      * @return LengowMarketplace
      */
-    public static function getMarketplaceSingleton($name, $idShop = null)
+    public static function getMarketplaceSingleton($name)
     {
         if (!isset(self::$registers[$name])) {
-            self::$registers[$name] = new LengowMarketplace($name, $idShop);
+            self::$registers[$name] = new LengowMarketplace($name);
         }
         return self::$registers[$name];
     }
@@ -945,7 +903,7 @@ class LengowMain
     }
 
     /**
-     * Get webservices links
+     * Get export url
      *
      * @param integer $idShop Prestashop shop id
      *
@@ -953,21 +911,17 @@ class LengowMain
      */
     public static function getExportUrl($idShop = null)
     {
-        $base = self::getLengowBaseUrl($idShop);
-        return $base . 'webservice/export.php?token=' . self::getToken($idShop);
+        return self::getLengowBaseUrl($idShop) . 'webservice/export.php?token=' . self::getToken($idShop);
     }
 
     /**
-     * Get webservices links
-     *
-     * @param integer $idShop Prestashop shop id
+     * Get import url
      *
      * @return string
      */
-    public static function getImportUrl($idShop = null)
+    public static function getImportUrl()
     {
-        $base = self::getLengowBaseUrl($idShop);
-        return $base . 'webservice/cron.php?token=' . self::getToken();
+        return self::getLengowBaseUrl() . 'webservice/cron.php?token=' . self::getToken();
     }
 
     /**
@@ -1055,22 +1009,5 @@ class LengowMain
         }
         $func = create_function('$c', 'return strtoupper($c[1]);');
         return preg_replace_callback('/_([a-z])/', $func, $str);
-    }
-
-    /**
-     * Check if is a new merchant
-     *
-     * @return boolean
-     */
-    public static function isNewMerchant()
-    {
-        $shops = LengowShop::findAll(true);
-        foreach ($shops as $shop) {
-            $accountId = LengowConfiguration::get('LENGOW_ACCOUNT_ID', false, null, $shop['id_shop']);
-            if (Tools::strlen($accountId) > 0) {
-                return false;
-            }
-        }
-        return true;
     }
 }
