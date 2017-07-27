@@ -50,7 +50,7 @@
 /classes/models/LengowCarrierCountry.php|ef0d0b51e78c2f4dac3ebda41ea4f44d
 /classes/models/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/models/LengowProduct.php|29f49994bfd01a6c819fa38252a9c195
-/classes/models/LengowConfiguration.php|711630f0bdeed78e08fe1f4f69c344f7
+/classes/models/LengowConfiguration.php|37eecda1fb9bc7be7ae2c721184d41b7
 /classes/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/controllers/LengowController.php|391b4938a3d797c69dfa93d249827fa3
 /classes/controllers/LengowHomeController.php|e613ab0dddecf52440768a813c814d54

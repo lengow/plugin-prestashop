@@ -398,7 +398,7 @@ class LengowConfiguration extends Configuration
     {
         $catalogIds = array();
         $shopCatalogIds = self::get('LENGOW_CATALOG_ID', null, null, $idShop);
-        if (strlen($shopCatalogIds) > 0 && $shopCatalogIds != 0) {
+        if (Tools::strlen($shopCatalogIds) > 0 && $shopCatalogIds != 0) {
             $ids = trim(str_replace(array("\r\n", ',', '-', '|', ' ', '/'), ';', $shopCatalogIds), ';');
             $ids = array_filter(explode(';', $ids));
             foreach ($ids as $id) {
