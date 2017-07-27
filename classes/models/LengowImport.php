@@ -139,9 +139,14 @@ class LengowImport
     protected $importOneOrder = false;
 
     /**
-     * @var array account ids already imported
+     * @var array shop catalog ids for import
      */
-    protected $accountIds = array();
+    protected $shopCatalogIds = array();
+
+    /**
+     * @var array catalog ids already imported
+     */
+    protected $catalogIds = array();
 
     /**
      * @var integer id of lengow order record
@@ -283,10 +288,16 @@ class LengowImport
                     );
                     try {
                         // check shop catalog ids
-                        $errorCredential = $this->checkCatalogIds((int)$shop->id, $shop->name);
-                        if ($errorCredential !== true) {
-                            LengowMain::log('Import', $errorCredential, $this->logOutput);
-                            $error[(int)$shop->id] = $errorCredential;
+                        if (!$this->checkCatalogIds($shop)) {
+                            $errorCatalogIds = LengowMain::setLogMessage(
+                                'lengow_log.error.no_catalog_for_shop',
+                                array(
+                                    'name_shop' => $shop->name,
+                                    'id_shop' => (int)$shop->id,
+                                )
+                            );
+                            LengowMain::log('Import', $errorCatalogIds, $this->logOutput);
+                            $error[(int)$shop->id] = $errorCatalogIds;
                             continue;
                         }
                         // change context with current shop id
@@ -451,26 +462,41 @@ class LengowImport
     /**
      * Check catalog ids for a shop
      *
-     * @param integer $idShop Prestashop shop Id
-     * @param string $nameShop Prestashop shop name
+     * @param LengowShop $shop Lengow shop instance
      *
      * @return boolean
      */
-    protected function checkCatalogIds($idShop, $nameShop)
+    protected function checkCatalogIds($shop)
     {
-        /*if (array_key_exists($this->accountId, $this->accountIds)) {
-            $message = LengowMain::setLogMessage(
-                'lengow_log.error.account_id_already_used',
-                array(
-                    'account_id' => $this->accountId,
-                    'name_shop' => $this->accountIds[$this->accountId]['name'],
-                    'id_shop' => $this->accountIds[$this->accountId]['id_shop'],
-                )
-            );
-            return $message;
+        if ($this->importOneOrder) {
+            return true;
         }
-        $this->accountIds[$this->accountId] = array('id_shop' => $idShop, 'name' => $nameShop);*/
-        return true;
+        $shopCatalogIds = array();
+        $catalogIds = LengowConfiguration::getCatalogIds((int)$shop->id);
+        foreach ($catalogIds as $catalogId) {
+            if (array_key_exists($catalogId, $this->catalogIds)) {
+                LengowMain::log(
+                    'Import',
+                    LengowMain::setLogMessage(
+                        'log.import.catalog_id_already_used',
+                        array(
+                            'catalog_id' => $catalogId,
+                            'name_shop' => $this->catalogIds[$catalogId]['name'],
+                            'id_shop' => $this->catalogIds[$catalogId]['shopId'],
+                        )
+                    ),
+                    $this->logOutput
+                );
+            } else {
+                $this->catalogIds[$catalogId] = array('shopId' => (int)$shop->id, 'name' => $shop->name);
+                $shopCatalogIds[] = $catalogId;
+            }
+        }
+        if (count($shopCatalogIds) > 0) {
+            $this->shopCatalogIds = $shopCatalogIds;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -523,7 +549,7 @@ class LengowImport
                     array(
                         'date_from' => date('Y-m-d', strtotime((string)$this->dateFrom)),
                         'date_to' => date('Y-m-d', strtotime((string)$this->dateTo)),
-                        'account_id' => $this->accountId
+                        'catalog_id' => implode(', ', $this->shopCatalogIds)
                     )
                 ),
                 $this->logOutput
@@ -546,6 +572,7 @@ class LengowImport
                     array(
                         'updated_from' => $this->dateFrom,
                         'updated_to' => $this->dateTo,
+                        'catalog_ids' => implode(',', $this->shopCatalogIds),
                         'account_id' => $this->accountId,
                         'page' => $page
                     ),

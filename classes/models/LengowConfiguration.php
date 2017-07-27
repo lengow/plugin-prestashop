@@ -66,6 +66,11 @@ class LengowConfiguration extends Configuration
                     'shop' => true,
                     'label' => $locale->t('lengow_setting.lengow_shop_active_title'),
                 ),
+                'LENGOW_CATALOG_ID' => array(
+                    'shop' => true,
+                    'label' => $locale->t('lengow_setting.lengow_catalog_id_title'),
+                    'legend' => $locale->t('lengow_setting.lengow_catalog_id_legend'),
+                ),
                 'LENGOW_SHOP_TOKEN' => array(
                     'readonly' => true,
                     'shop' => true,
@@ -371,17 +376,55 @@ class LengowConfiguration extends Configuration
      */
     public static function getAccessIds()
     {
-        $accountId = LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_ID');
-        $accessToken = LengowConfiguration::getGlobalValue('LENGOW_ACCESS_TOKEN');
-        $secretToken = LengowConfiguration::getGlobalValue('LENGOW_SECRET_TOKEN');
-        if (Tools::strlen($accountId) > 0
-            && Tools::strlen($accessToken) > 0
-            && Tools::strlen($secretToken) > 0
-        ) {
+        $accountId = self::getGlobalValue('LENGOW_ACCOUNT_ID');
+        $accessToken = self::getGlobalValue('LENGOW_ACCESS_TOKEN');
+        $secretToken = self::getGlobalValue('LENGOW_SECRET_TOKEN');
+        if (Tools::strlen($accountId) > 0 && Tools::strlen($accessToken) > 0 && Tools::strlen($secretToken) > 0) {
             return array($accountId, $accessToken, $secretToken);
         } else {
             return array(null, null, null);
         }
+    }
+
+
+    /**
+     * Get catalog ids for a specific shop
+     *
+     * @param integer $idShop Prestashop shop id
+     *
+     * @return array
+     */
+    public static function getCatalogIds($idShop)
+    {
+        $catalogIds = array();
+        $shopCatalogIds = self::get('LENGOW_CATALOG_ID', null, null, $idShop);
+        if (Tools::strlen($shopCatalogIds) > 0 && $shopCatalogIds != 0) {
+            $ids = trim(str_replace(array("\r\n", ',', '-', '|', ' ', '/'), ';', $shopCatalogIds), ';');
+            $ids = array_filter(explode(';', $ids));
+            foreach ($ids as $id) {
+                if (is_numeric($id) && $id > 0) {
+                    $catalogIds[] = (int)$id;
+                }
+            }
+        }
+        return $catalogIds;
+    }
+
+    /**
+     * Set catalog ids for a specific shop
+     *
+     * @param array $catalogIds Lengow catalog ids
+     * @param integer $idShop Prestashop shop id
+     */
+    public static function setCatalogIds($catalogIds, $idShop)
+    {
+        $shopCatalogIds = self::getCatalogIds($idShop);
+        foreach ($catalogIds as $catalogId) {
+            if (!in_array($catalogId, $shopCatalogIds) && is_numeric($catalogId) && $catalogId > 0) {
+                $shopCatalogIds[] = (int)$catalogId;
+            }
+        }
+        self::updateValue('LENGOW_CATALOG_ID', implode(';', $shopCatalogIds), false, null, $idShop);
     }
 
     /**

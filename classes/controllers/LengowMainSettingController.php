@@ -109,6 +109,7 @@ class LengowMainSettingController extends LengowController
                 $shop->id,
                 array(
                     'LENGOW_SHOP_ACTIVE',
+                    'LENGOW_CATALOG_ID',
                 )
             ) . '</div>';
         }

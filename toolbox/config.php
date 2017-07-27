@@ -108,6 +108,7 @@ require 'views/header.php';
                         $shop->id,
                         array(
                             'LENGOW_SHOP_ACTIVE',
+                            'LENGOW_CATALOG_ID',
                         )
                     );
                     echo '<br/>';

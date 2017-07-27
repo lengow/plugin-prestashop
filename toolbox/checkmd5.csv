@@ -19,8 +19,8 @@
 /classes/models/LengowCustomer.php|9876528937cc0eb70737950a31a7d559
 /classes/models/LengowSync.php|1140b68738c4ada6f4a71a003a1d5f16
 /classes/models/LengowCountry.php|f5ae5f1740bff4109ba5a56c46091447
-/classes/models/LengowHook.php|552596899d910208564380f30359f33b
-/classes/models/LengowImport.php|d874c0fae0f0efa3377d35965b9273cb
+/classes/models/LengowHook.php|1c939f52f95525b559bb5278e1410e98
+/classes/models/LengowImport.php|f81dbaaacaf58f54fefc8f6493e904c1
 /classes/models/LengowFeed.php|66c42c43e8629ebcdf0fd381479714f4
 /classes/models/LengowCheck.php|ca78bb9f8208156acf2f7f2fcf3a9a3b
 /classes/models/LengowCron.php|33fb521867f345a312ba3f7251face03
@@ -50,7 +50,7 @@
 /classes/models/LengowCarrierCountry.php|ef0d0b51e78c2f4dac3ebda41ea4f44d
 /classes/models/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/models/LengowProduct.php|29f49994bfd01a6c819fa38252a9c195
-/classes/models/LengowConfiguration.php|a9e844f60228cfbf0ad40cbc7870c78c
+/classes/models/LengowConfiguration.php|37eecda1fb9bc7be7ae2c721184d41b7
 /classes/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/controllers/LengowController.php|391b4938a3d797c69dfa93d249827fa3
 /classes/controllers/LengowHomeController.php|e613ab0dddecf52440768a813c814d54
@@ -60,7 +60,7 @@
 /classes/controllers/LengowOrderSettingController.php|10237d3bc59bd892cacb01901793a912
 /classes/controllers/LengowHelpController.php|1d8884f2ccf752e3fad5211b0ff0dea8
 /classes/controllers/index.php|ed8e273082cc0a58535dc2b454435f38
-/classes/controllers/LengowMainSettingController.php|7e2d5553d401ec2cc523dcaf0a10da76
+/classes/controllers/LengowMainSettingController.php|1a2b3c2b42e0e9491e90ba602cadd9db
 /controllers/admin/TabLengowOrderSettingController.php|1924fe8ae7bf0f53698b5f9bc369dabc
 /controllers/admin/AdminLengowOrderController.php|696550a0efacd77832740cf0e48221f8
 /controllers/admin/TabLengowHomeController.php|4d316716fef7a2e8174bb1d35d235a41
@@ -79,7 +79,7 @@
 /controllers/index.php|eb18f895c85303c2ced77482ec4ab525
 /toolbox/logoff.php|f134d5d1d67503c0b33d3786261b8838
 /toolbox/conf.inc.php|d798e27ba5b8f7df3a6d0a7027537b0c
-/toolbox/config.php|885d6d096e07cd6ccee1b6990aa0068f
+/toolbox/config.php|92563a488f308e6e45ee8fd43a6586c4
 /toolbox/login.php|6e954bb415dfedd509161023eb8b081b
 /toolbox/checksum.php|293158edbb195f522f019c241595e2a9
 /toolbox/log.php|c77f0999bca0b6631b07bd80b0c17942
@@ -471,7 +471,7 @@
 /views/js/index.php|eb18f895c85303c2ced77482ec4ab525
 /views/js/lengow/home.js|10f6531041d252e09150d753abfd0d9b
 /views/js/lengow/admin.js|4ae494a8ad0305c51a3f33442a428bc0
-/views/js/lengow/main_setting.js|64d84b84b1ce1a2c7ab25ad8894a618c
+/views/js/lengow/main_setting.js|c15746f77fd34931270e69216d91959d
 /views/js/lengow/order.js|a700bfe533a52c8d7543317cbd227584
 /views/js/lengow/feed.js|d9e32326c163fa4846bd6b9586669054
 /views/js/lengow/order_setting.js|4354498ec01264b3cd715828deb395fb
