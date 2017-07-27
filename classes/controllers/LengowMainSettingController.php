@@ -93,7 +93,14 @@ class LengowMainSettingController extends LengowController
                 'LENGOW_IMPORT_PREPROD_ENABLED',
             )
         );
-        $preprodWrapper = '';
+        $credentials = $form->buildInputs(
+            array(
+                'LENGOW_ACCOUNT_ID',
+                'LENGOW_ACCESS_TOKEN',
+                'LENGOW_SECRET_TOKEN',
+            )
+        );
+        $preprodWrapper = '<div class="grey-frame">' . $credentials . '</div>';
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
             $shop = new LengowShop($s['id_shop']);
@@ -102,9 +109,6 @@ class LengowMainSettingController extends LengowController
                 $shop->id,
                 array(
                     'LENGOW_SHOP_ACTIVE',
-                    'LENGOW_ACCOUNT_ID',
-                    'LENGOW_ACCESS_TOKEN',
-                    'LENGOW_SECRET_TOKEN',
                 )
             ) . '</div>';
         }

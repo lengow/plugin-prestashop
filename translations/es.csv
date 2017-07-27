@@ -244,9 +244,7 @@ lengow_log.error.nb_order_imported|%{nb_order} pedido(s) importada
 lengow_log.error.nb_order_updated|%{nb_order} pedido(s) actualizado
 lengow_log.error.nb_order_with_error|%{nb_order} pedido(s) con errores
 lengow_log.error.no_notification|No hay nueva notificación de pedido
-lengow_log.error.account_id_empty|Account ID, Access Token o Secret está vacio en la tienda %{name_shop} (%{id_shop})
 lengow_log.error.account_id_already_used|account ID %{account_id} está siendo actualmente utilizada  por la tienda %{name_shop} (%{id_shop})
-lengow_log.error.import_in_progress|importación ya ha comenzado
 lengow_log.error.rest_time_to_import|Por favor, espere %{rest_time} segundos antes de volver a re-importar pedidos
 lengow_log.error.no_product|Lengow error: no hay productos en el pedido
 lengow_log.error.no_change_rate|Lengow error: no hay tipos de cambio disponibles para los precios de pedidos
@@ -262,7 +260,6 @@ lengow_log.exception.no_product_to_cart|ningún producto añadido a la cesta
 lengow_log.exception.cannot_add_product_to_cart|no se puede añadir producto %{product_id} a la cesta (invalid ID format)
 lengow_log.exception.no_quantity_for_product|producto %{product_id} no se puede añadir a la cesta . Asegúrate de que esté disponible para el pedido o que hay bastantes en el stock
 lengow_log.exception.no_connection_webservice|la conexión no funciona con el webservice de Lengow en la tienda %{name_shop} (%{id_shop})
-lengow_log.exception.crendentials_not_valid|account ID, token access o secret token no son validos en la tienda %{name_shop} (%{id_shop})
 lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} en la tienda %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|el pedido no ha podido ser registrado
 lengow_log.exception.carrier_shipping_address_no_country|la dirección de envío no contiene el país

@@ -38,41 +38,6 @@ class LengowCheck
     }
 
     /**
-     * Check API Authentication
-     *
-     * @param integer $idShop Prestashop shop id
-     *
-     * @return boolean
-     */
-    public static function isValidAuth($idShop = null)
-    {
-        if (LengowMain::inTest()) {
-            return true;
-        }
-        if (!self::isCurlActivated()) {
-            return false;
-        }
-        $accountId = LengowMain::getIdAccount($idShop);
-        if (is_null($accountId) || $accountId == 0 || !is_numeric($accountId)) {
-            return false;
-        }
-        $connector = new LengowConnector(
-            LengowMain::getAccessToken($idShop),
-            LengowMain::getSecretCustomer($idShop)
-        );
-        try {
-            $result = $connector->connect();
-        } catch (LengowException $e) {
-            return false;
-        }
-        if (isset($result['token'])) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Get array of requirements for toolbox
      *
      * @return string
@@ -232,12 +197,8 @@ class LengowCheck
             'header' => $shop->name . ' (' . $shop->id . ')' . ' - http://' . $shop->domain
         );
         $checklist[] = array(
-            'title' => $this->locale->t('toolbox.index.shop_active_in_cms'),
-            'state' => (int)LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, null, $shop->id)
-        );
-        $checklist[] = array(
             'title' => $this->locale->t('toolbox.index.shop_active'),
-            'state' => (int)LengowSync::checkSyncShop($shop->id)
+            'state' => (int)LengowConfiguration::shopIsActive($shop->id)
         );
         $checklist[] = array(
             'title' => $this->locale->t('toolbox.index.shop_product_total'),

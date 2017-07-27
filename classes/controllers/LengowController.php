@@ -71,7 +71,7 @@ class LengowController
         $this->context->smarty->assign('locale', new LengowTranslation());
         $this->context->smarty->assign('localeIsoCode', Context::getContext()->language->iso_code);
         $this->context->smarty->assign('lengowVersion', $this->module->version);
-        $this->isNewMerchant = LengowMain::isNewMerchant();
+        $this->isNewMerchant = LengowConnector::isNewMerchant();
         $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
         $this->merchantStatus = LengowSync::getStatusAccount();
         $this->context->smarty->assign('merchantStatus', $this->merchantStatus);
@@ -80,7 +80,7 @@ class LengowController
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         // Show header or not
         if ($this->isNewMerchant
-            || ($this->merchantStatus['type'] == 'free_trial' && $this->merchantStatus['day'] == 0)
+            || ($this->merchantStatus['type'] == 'free_trial' && $this->merchantStatus['expired'])
             || $this->merchantStatus['type'] == 'bad_payer'
         ) {
             $this->displayToolbar = false;

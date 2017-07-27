@@ -388,7 +388,7 @@ class LengowConnector
         curl_close($ch);
         if ($result === false) {
             if (in_array($errorNumber, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
-                $errorCurl = LengowMain::setLogMessage('lengow_log.exception.timeout_api');;
+                $errorCurl = LengowMain::setLogMessage('lengow_log.exception.timeout_api');
             } else {
                 $errorCurl = LengowMain::setLogMessage(
                     'lengow_log.exception.error_curl',
@@ -409,42 +409,46 @@ class LengowConnector
     }
 
     /**
-     * Get Valid Account / Access / Secret
+     * Check if is a new merchant
      *
-     * @param integer $idShop Prestashop shop id
-     *
-     * @return array
+     * @return boolean
      */
-    public static function getAccessId($idShop = null)
+    public static function isNewMerchant()
     {
-        $accountId = '';
-        $accessToken = '';
-        $secretToken = '';
-        if ($idShop) {
-            $accountId = LengowMain::getIdAccount($idShop);
-            $accessToken = LengowMain::getAccessToken($idShop);
-            $secretToken = LengowMain::getSecretCustomer($idShop);
-        } else {
-            $shopCollection = LengowShop::findAll(true);
-            foreach ($shopCollection as $shop) {
-                $accountId = LengowMain::getIdAccount($shop['id_shop']);
-                $accessToken = LengowMain::getAccessToken($shop['id_shop']);
-                $secretToken = LengowMain::getSecretCustomer($shop['id_shop']);
-                if (Tools::strlen($accountId) > 0
-                    && Tools::strlen($accessToken) > 0
-                    && Tools::strlen($secretToken) > 0
-                ) {
-                    break;
-                }
-            }
+        list($accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
+        if (!is_null($accountId) && !is_null($accessToken) && !is_null($secretToken)) {
+            return false;
         }
-        if (Tools::strlen($accountId) > 0
-            && Tools::strlen($accessToken) > 0
-            && Tools::strlen($secretToken) > 0
-        ) {
-            return array($accountId, $accessToken, $secretToken);
+        return true;
+    }
+
+    /**
+     * Check API Authentication
+     *
+     * @return boolean
+     */
+    public static function isValidAuth()
+    {
+        if (LengowMain::inTest()) {
+            return true;
+        }
+        if (!LengowCheck::isCurlActivated()) {
+            return false;
+        }
+        list($accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
+        if (is_null($accountId) || $accountId == 0 || !is_numeric($accountId)) {
+            return false;
+        }
+        $connector = new LengowConnector($accessToken, $secretToken);
+        try {
+            $result = $connector->connect();
+        } catch (LengowException $e) {
+            return false;
+        }
+        if (isset($result['token'])) {
+            return true;
         } else {
-            return array(null, null, null);
+            return false;
         }
     }
 
@@ -453,19 +457,18 @@ class LengowConnector
      *
      * @param string $type request type (GET / POST / PUT / PATCH)
      * @param string $url request url
-     * @param integer $idShop Prestashop shop id
      * @param array $params request params
      * @param string $body body datas for request
      *
      * @return mixed
      */
-    public static function queryApi($type, $url, $idShop = null, $params = array(), $body = '')
+    public static function queryApi($type, $url, $params = array(), $body = '')
     {
         if (!in_array($type, array('get', 'post', 'put', 'patch'))) {
             return false;
         }
         try {
-            list($accountId, $accessToken, $secretToken) = self::getAccessId($idShop);
+            list($accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
             if (is_null($accountId)) {
                 return false;
             }

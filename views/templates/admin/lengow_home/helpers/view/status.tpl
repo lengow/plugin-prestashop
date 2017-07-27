@@ -21,7 +21,7 @@
     <div class="lgw-container">
         <div class="lgw-box">
             <div class="lgw-row">
-            {if $merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] eq 0}
+            {if $merchantStatus['type'] == 'free_trial' && $merchantStatus['expired']}
                 <div class="lgw-col-6 display-inline-block">
                     <h2 class="text-center">{$locale->t('status.screen.title_end_free_trial')|escape:'htmlall':'UTF-8'}</h2>
                     <h3 class="text-center">{$locale->t('status.screen.subtitle_end_free_trial')|escape:'htmlall':'UTF-8'}</h3>

@@ -718,33 +718,32 @@ class LengowOrderController extends LengowController
      */
     public function loadMessage($return)
     {
-        $message = array();
-        if (LengowImport::isInProcess()) {
-            $message[] = $this->locale->t(
-                'lengow_log.error.rest_time_to_import',
-                array('rest_time' => LengowImport::restTimeToImport())
-            );
+        $messages = array();
+        // if global error return this
+        if (isset($return['error'][0])) {
+            $messages[] =  LengowMain::decodeLogMessage($return['error'][0]);
+            return $messages;
         }
         if (isset($return['order_new']) && $return['order_new'] > 0) {
-            $message[] = $this->locale->t(
+            $messages[] = $this->locale->t(
                 'lengow_log.error.nb_order_imported',
                 array('nb_order' => (int)$return['order_new'])
             );
         }
         if (isset($return['order_update']) && $return['order_update'] > 0) {
-            $message[] = $this->locale->t(
+            $messages[] = $this->locale->t(
                 'lengow_log.error.nb_order_updated',
                 array('nb_order' => (int)$return['order_update'])
             );
         }
         if (isset($return['order_error']) && $return['order_error'] > 0) {
-            $message[] = $this->locale->t(
+            $messages[] = $this->locale->t(
                 'lengow_log.error.nb_order_with_error',
                 array('nb_order' => (int)$return['order_error'])
             );
         }
-        if (count($message) == 0) {
-            $message[] = $this->locale->t('lengow_log.error.no_notification');
+        if (count($messages) == 0) {
+            $messages[] = $this->locale->t('lengow_log.error.no_notification');
         }
         if (isset($return['error'])) {
             foreach ($return['error'] as $shop => $values) {
@@ -755,12 +754,12 @@ class LengowOrderController extends LengowController
                     $shopName = '';
                 }
                 if (is_array($values)) {
-                    $message[] = $shopName . join(', ', LengowMain::decodeLogMessage($values));
+                    $messages[] = $shopName . join(', ', LengowMain::decodeLogMessage($values));
                 } else {
-                    $message[] = $shopName . LengowMain::decodeLogMessage($values);
+                    $messages[] = $shopName . LengowMain::decodeLogMessage($values);
                 }
             }
         }
-        return $message;
+        return $messages;
     }
 }

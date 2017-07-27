@@ -58,11 +58,6 @@ class LengowMarketplace
     public $labelName;
 
     /**
-     * @var integer ID Shop
-     */
-    public $idShop;
-
-    /**
      * @var boolean if the marketplace is loaded
      */
     public $isLoaded = false;
@@ -96,16 +91,14 @@ class LengowMarketplace
      * Construct a new Marketplace instance with marketplace API
      *
      * @param string $name name of the marketplace
-     * @param integer $idShop Prestashop shop id
      *
      * @throws LengowException marketplace not present
      */
-    public function __construct($name, $idShop = null)
+    public function __construct($name)
     {
-        $this->idShop = $idShop;
         $this->loadApiMarketplace();
         $this->name = Tools::strtolower($name);
-        if (!isset(self::$marketplaces[$this->idShop]->{$this->name})) {
+        if (!isset(self::$marketplaces->{$this->name})) {
             throw new LengowException(
                 LengowMain::setLogMessage(
                     'lengow_log.exception.marketplace_not_present',
@@ -113,7 +106,7 @@ class LengowMarketplace
                 )
             );
         }
-        $this->marketplace = self::$marketplaces[$this->idShop]->{$this->name};
+        $this->marketplace = self::$marketplaces->{$this->name};
         if (!empty($this->marketplace)) {
             $this->legacyCode = $this->marketplace->legacy_code;
             $this->labelName = $this->marketplace->name;
@@ -169,9 +162,9 @@ class LengowMarketplace
      */
     public function loadApiMarketplace()
     {
-        if (!array_key_exists($this->idShop, self::$marketplaces)) {
-            $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $this->idShop);
-            self::$marketplaces[$this->idShop] = $result;
+        if (count(self::$marketplaces) === 0) {
+            $result = LengowConnector::queryApi('get', '/v3.0/marketplaces');
+            self::$marketplaces = $result;
         }
     }
 
@@ -413,7 +406,6 @@ class LengowMarketplace
             $result = LengowConnector::queryApi(
                 'get',
                 '/v3.0/orders/actions/',
-                $order->lengowIdShop,
                 array_merge($params, array("queued" => "True"))
             );
             if (isset($result->error) && isset($result->error->message)) {
@@ -444,12 +436,7 @@ class LengowMarketplace
                 }
             } else {
                 if (!LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
-                    $result = LengowConnector::queryApi(
-                        'post',
-                        '/v3.0/orders/actions/',
-                        $order->lengowIdShop,
-                        $params
-                    );
+                    $result = LengowConnector::queryApi('post', '/v3.0/orders/actions/', $params);
                     if (isset($result->id)) {
                         LengowAction::createAction(
                             array(
@@ -503,26 +490,5 @@ class LengowMarketplace
             );
             return false;
         }
-    }
-
-    /**
-     * Get Marketplace Sku by Shop
-     *
-     * @param integer $idShop Prestashop shop id
-     *
-     * @return array
-     */
-    public static function getMarketplacesByShop($idShop)
-    {
-        $marketplaceCollection = array();
-        $result = LengowConnector::queryApi('get', '/v3.0/marketplaces', $idShop);
-        if ($result) {
-            foreach ($result as $marketplaceSku => $value) {
-                // This line is useless, but Prestashop validator require it
-                $value = $value;
-                $marketplaceCollection[] = $marketplaceSku;
-            }
-        }
-        return $marketplaceCollection;
     }
 }

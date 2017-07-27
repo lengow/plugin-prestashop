@@ -24,7 +24,6 @@
  */
 class LengowHomeController extends LengowController
 {
-
     /**
      * Process Post Parameters
      */

@@ -197,10 +197,7 @@ class LengowImportOrder
         $this->packageData = $params['package_data'];
         $this->firstPackage = $params['first_package'];
         // get marketplace and Lengow order state
-        $this->marketplace = LengowMain::getMarketplaceSingleton(
-            (string)$this->orderData->marketplace,
-            $this->idShop
-        );
+        $this->marketplace = LengowMain::getMarketplaceSingleton((string)$this->orderData->marketplace);
         $this->marketplaceLabel = $this->marketplace->labelName;
         $this->orderStateMarketplace = (string)$this->orderData->marketplace_status;
         $this->orderStateLengow = $this->marketplace->getStateLengow($this->orderStateMarketplace);

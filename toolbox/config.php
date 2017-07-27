@@ -93,6 +93,14 @@ require 'views/header.php';
             <fieldset>
                 <h3 class="start-block"><?php echo $locale->t('toolbox.configuration.shop_credentials'); ?></h3>
                 <?php
+                echo $form->buildInputs(
+                    array(
+                        'LENGOW_ACCOUNT_ID',
+                        'LENGOW_ACCESS_TOKEN',
+                        'LENGOW_SECRET_TOKEN',
+                    )
+                );
+                echo '<br/>';
                 foreach ($shopCollection as $row) {
                     $shop = new LengowShop($row['id_shop']);
                     echo '<h4 style="text-align:center">' . $shop->name . ' (' . $shop->id . ')</h4>';
@@ -100,16 +108,24 @@ require 'views/header.php';
                         $shop->id,
                         array(
                             'LENGOW_SHOP_ACTIVE',
-                            'LENGOW_ACCOUNT_ID',
-                            'LENGOW_ACCESS_TOKEN',
-                            'LENGOW_SECRET_TOKEN',
-                            'LENGOW_EXPORT_VARIATION_ENABLED',
-                            'LENGOW_EXPORT_OUT_STOCK',
-                            'LENGOW_EXPORT_SELECTION_ENABLED',
                         )
                     );
-                    echo '</fieldset>';
+                    echo '<br/>';
                 }
+                echo '</fieldset>';
+                echo '<fieldset><h3 class="start-block">'
+                    . $locale->t('toolbox.configuration.global_setting') . '</h3>';
+                echo $form->buildInputs(
+                    array(
+                        'LENGOW_AUTHORIZED_IP',
+                        'LENGOW_IMPORT_PREPROD_ENABLED',
+                        'LENGOW_REPORT_MAIL_ENABLED',
+                        'LENGOW_REPORT_MAIL_ADDRESS',
+                        'LENGOW_TRACKING_ENABLED',
+                        'LENGOW_TRACKING_ID',
+                    )
+                );
+                echo '</fieldset>';
                 echo '<fieldset><h3 class="start-block">'
                     . $locale->t('toolbox.configuration.export_setting') . '</h3>';
                 echo $form->buildInputs(
@@ -118,6 +134,20 @@ require 'views/header.php';
                         'LENGOW_EXPORT_FILE_ENABLED',
                     )
                 );
+                echo '<br/>';
+                foreach ($shopCollection as $row) {
+                    $shop = new LengowShop($row['id_shop']);
+                    echo '<h4 style="text-align:center">' . $shop->name . ' (' . $shop->id . ')</h4>';
+                    echo $form->buildShopInputs(
+                        $shop->id,
+                        array(
+                            'LENGOW_EXPORT_VARIATION_ENABLED',
+                            'LENGOW_EXPORT_OUT_STOCK',
+                            'LENGOW_EXPORT_SELECTION_ENABLED',
+                        )
+                    );
+                    echo '<br/>';
+                }
                 echo '</fieldset>';
                 echo '<fieldset><h3 class="start-block">'
                     . $locale->t('toolbox.configuration.import_setting') . '</h3>';
@@ -133,19 +163,6 @@ require 'views/header.php';
                         'LENGOW_IMPORT_SHIP_MP_ENABLED',
                         'LENGOW_IMPORT_STOCK_SHIP_MP',
                         'LENGOW_IMPORT_SINGLE_ENABLED',
-                    )
-                );
-                echo '</fieldset>';
-                echo '<fieldset><h3 class="start-block">'
-                    . $locale->t('toolbox.configuration.global_setting') . '</h3>';
-                echo $form->buildInputs(
-                    array(
-                        'LENGOW_AUTHORIZED_IP',
-                        'LENGOW_IMPORT_PREPROD_ENABLED',
-                        'LENGOW_REPORT_MAIL_ENABLED',
-                        'LENGOW_REPORT_MAIL_ADDRESS',
-                        'LENGOW_TRACKING_ENABLED',
-                        'LENGOW_TRACKING_ID',
                     )
                 );
                 echo '</fieldset>';

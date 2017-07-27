@@ -21,7 +21,7 @@
 <script type="text/javascript">$(document.body).addClass("adminlengowhome");</script>
 {if $isNewMerchant || $isSync }
     {include file='./new.tpl'}
-{elseif ($merchantStatus['type'] == 'free_trial' && $merchantStatus['day'] eq 0) || $merchantStatus['type'] == 'bad_payer'}
+{elseif ($merchantStatus['type'] == 'free_trial' && $merchantStatus['expired']) || $merchantStatus['type'] == 'bad_payer'}
     {include file='./status.tpl'}
 {else}
     {include file='./connect.tpl'}

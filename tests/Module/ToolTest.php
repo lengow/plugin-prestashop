@@ -39,8 +39,8 @@ class ToolTest extends ModuleTestCase
      */
     public function processLogin()
     {
-        LengowConfiguration::updatevalue('LENGOW_ACCOUNT_ID', $this->accountId, false, null, 1);
-        LengowConfiguration::updatevalue('LENGOW_SECRET_TOKEN', $this->secretToken, false, null, 1);
+        LengowConfiguration::updatevalue('LENGOW_ACCOUNT_ID', $this->accountId);
+        LengowConfiguration::updatevalue('LENGOW_SECRET_TOKEN', $this->secretToken);
 
         LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_1', '');
         LengowConfiguration::updateGlobalValue('LENGOW_ACCESS_BLOCK_IP_2', '');

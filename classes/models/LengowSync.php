@@ -110,7 +110,7 @@ class LengowSync
     public static function checkSyncShop($idShop)
     {
         return LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, false, $idShop)
-        && LengowCheck::isValidAuth($idShop);
+            && LengowConnector::isValidAuth();
     }
 
     /**
@@ -157,7 +157,7 @@ class LengowSync
      */
     public static function setCmsOption($force = false)
     {
-        if (LengowMain::isNewMerchant()
+        if (LengowConnector::isNewMerchant()
             || LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')
         ) {
             return false;
@@ -169,7 +169,7 @@ class LengowSync
             }
         }
         $options = Tools::jsonEncode(self::getOptionData());
-        LengowConnector::queryApi('put', '/v3.0/cms', null, array(), $options);
+        LengowConnector::queryApi('put', '/v3.0/cms', array(), $options);
         LengowConfiguration::updateGlobalValue('LENGOW_OPTION_CMS_UPDATE', date('Y-m-d H:i:s'));
         return true;
     }
@@ -194,6 +194,7 @@ class LengowSync
             $status = array();
             $status['type'] = $result->isFreeTrial ? 'free_trial' : '';
             $status['day'] = (int)$result->leftDaysBeforeExpired;
+            $status['expired'] = (bool)$result->isExpired;
             if ($status['day'] < 0) {
                 $status['day'] = 0;
             }
@@ -225,50 +226,35 @@ class LengowSync
                 return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
             }
         }
-        $return = array();
-        $return['total_order'] = 0;
-        $return['nb_order'] = 0;
-        $return['currency'] = '';
-        $return['available'] = false;
         $currencyId = 0;
-        //get stats by shop
-        $shopCollection = LengowShop::findAll(true);
-        $i = 0;
-        $accountIds = array();
-        foreach ($shopCollection as $s) {
-            $accountId = LengowMain::getIdAccount($s['id_shop']);
-            if (!$accountId || in_array($accountId, $accountIds) || empty($accountId)) {
-                continue;
-            }
-            $result = LengowConnector::queryApi(
-                'get',
-                '/v3.0/stats',
-                $s['id_shop'],
-                array(
-                    'date_from' => date('c', strtotime(date('Y-m-d') . ' -10 years')),
-                    'date_to' => date('c'),
-                    'metrics' => 'year',
-                )
+        $result = LengowConnector::queryApi(
+            'get',
+            '/v3.0/stats',
+            array(
+                'date_from' => date('c', strtotime(date('Y-m-d') . ' -10 years')),
+                'date_to' => date('c'),
+                'metrics' => 'year',
+            )
+        );
+        if (isset($result->level0)) {
+            $stats = $result->level0[0];
+            $return = array(
+                'total_order' => $stats->revenue,
+                'nb_order' => (int)$stats->transactions,
+                'currency' => $result->currency->iso_a3,
+                'available' => false
             );
-            if (isset($result->level0)) {
-                $stats = $result->level0[0];
-                $return['total_order'] += $stats->revenue;
-                $return['nb_order'] += $stats->transactions;
-                $return['currency'] = $result->currency->iso_a3;
+        } else {
+            if (LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE')) {
+                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
             } else {
-                if (LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE')) {
-                    return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
-                } else {
-                    return array(
-                        'total_order' => 0,
-                        'nb_order' => 0,
-                        'currency' => '',
-                        'available' => false
-                    );
-                }
+                return array(
+                    'total_order' => 0,
+                    'nb_order' => 0,
+                    'currency' => '',
+                    'available' => false
+                );
             }
-            $accountIds[] = $accountId;
-            $i++;
         }
         if ($return['total_order'] > 0 || $return['nb_order'] > 0) {
             $return['available'] = true;
@@ -281,7 +267,6 @@ class LengowSync
         } else {
             $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
         }
-        $return['nb_order'] = (int)$return['nb_order'];
         LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT', Tools::jsonEncode($return));
         LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT_UPDATE', date('Y-m-d H:i:s'));
         return $return;

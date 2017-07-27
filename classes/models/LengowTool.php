@@ -71,21 +71,13 @@ class LengowTool
                 );
             }
         }
-        if (_PS_VERSION_ < '1.5') {
-            $shopCollection = array(array('id_shop' => 1));
-        } else {
-            $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
-            $shopCollection = Db::getInstance()->ExecuteS($sql);
-        }
-        foreach ($shopCollection as $shop) {
-            $ai = LengowConfiguration::get('LENGOW_ACCOUNT_ID', false, null, (int)$shop['id_shop']);
-            $st = LengowConfiguration::get('LENGOW_SECRET_TOKEN', false, null, (int)$shop['id_shop']);
-            if (Tools::strlen($ai) > 0 && Tools::strlen($st) > 0) {
-                if ($ai == $accountId && $st == $secretToken) {
-                    Context::getContext()->cookie->lengow_toolbox = true;
-                    $this->unblockIp();
-                    return self::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/', '');
-                }
+        $prestaAccountId = LengowConfiguration::get('LENGOW_ACCOUNT_ID');
+        $prestaSecretToken = LengowConfiguration::get('LENGOW_SECRET_TOKEN');
+        if (Tools::strlen($prestaAccountId) > 0 && Tools::strlen($prestaSecretToken) > 0) {
+            if ($prestaAccountId === $accountId && $prestaSecretToken === $secretToken) {
+                Context::getContext()->cookie->lengow_toolbox = true;
+                $this->unblockIp();
+                return self::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/', '');
             }
         }
         if (Tools::strlen($accountId) > 0 && Tools::strlen($secretToken) > 0) {
