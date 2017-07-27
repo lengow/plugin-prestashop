@@ -403,17 +403,14 @@ class LengowHook
             $actionReimport = $baseAction . '&action=cancel_re_import';
             $actionSynchronize = $baseAction . '&action=synchronize';
             $actionAddTracking = $baseAction . '&action=add_tracking&tracking_number=';
-            $actionType = ($lengowOrder->getCurrentState() == LengowMain::getOrderState('canceled')
+            $actionType = $lengowOrder->getCurrentState() == LengowMain::getOrderState('canceled')
                 ? 'cancel'
-                : 'ship'
-            );
+                : 'ship';
             $checkResendAction = $locale->t('admin.order.check_resend_action', array('action' => $actionType));
             $actionResend = $lengowOrderController . '&action=force_resend&action_type=' . $actionType;
-            $sentMarketplace = (
-            $lengowOrder->lengowSentMarketplace
+            $sentMarketplace = $lengowOrder->lengowSentMarketplace
                 ? $locale->t('product.screen.button_yes')
-                : $locale->t('product.screen.button_no')
-            );
+                : $locale->t('product.screen.button_no');
             $templateDatas = array(
                 'marketplace_sku' => $lengowOrder->lengowMarketplaceSku,
                 'id_flux' => $lengowOrder->lengowIdFlux,

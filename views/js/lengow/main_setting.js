@@ -127,10 +127,16 @@
         });
 
         function displayPreProdMode() {
+            var selector = $('#lengow_wrapper_preprod');
             if ($("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").prop('checked')) {
-                $('#lengow_wrapper_preprod').slideDown(150);
+                selector.slideDown(150);
+                var divLegend = selector.find('.legend');
+                divLegend.addClass("blue-frame");
+                divLegend.css('display', 'block');
+                divLegend.show();
             } else {
-                $('#lengow_wrapper_preprod').slideUp(150);
+                selector.slideUp(150);
+                selector.find('.legend').hide();
             }
         }
 
