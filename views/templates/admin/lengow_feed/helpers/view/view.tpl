@@ -27,14 +27,6 @@
         {/if}
         {foreach from=$shopCollection item=shop}
             <div class="lgw-box" id="block_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
-                <div class="lengow_shop_status">
-                    <a href="#" class="lengow_check_shop lengow_check_shop_no_sync lengow_link_tooltip"
-                         data-original-title=""
-                         data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}">
-                    </a>
-                    <label class="lengow_shop_status_label">
-                    </label>
-                </div>
                 <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1&update_export_date=0"
                     class="lengow_export_feed lengow_link_tooltip"
                     data-original-title="{$locale->t('product.screen.button_download')|escape:'htmlall':'UTF-8'}"

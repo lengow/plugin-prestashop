@@ -622,7 +622,7 @@ class LengowExport
         $query .= ' ' . $join . ' ' . $where . ' ) ';
         $query .= '  ) as tmp ';
         $collection = Db::getInstance()->executeS($query);
-        return $collection[0]['total'];
+        return (int)$collection[0]['total'];
     }
 
     /**
@@ -642,7 +642,7 @@ class LengowExport
             $query = 'SELECT COUNT(*) as total ' . $this->buildTotalQuery();
         }
         $collection = Db::getInstance()->executeS($query);
-        return $collection[0]['total'];
+        return (int)$collection[0]['total'];
     }
 
     /**

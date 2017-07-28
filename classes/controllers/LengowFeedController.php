@@ -121,41 +121,6 @@ class LengowFeedController extends LengowController
                     }
                     echo Tools::jsonEncode($data);
                     break;
-                case 'check_shop':
-                    $shops = LengowShop::findAll(true);
-                    $link = new LengowLink();
-                    $result = array();
-                    foreach ($shops as $idShop) {
-                        $checkShop = LengowSync::checkSyncShop($idShop['id_shop']);
-                        $data = array();
-                        $data['shop_id'] = $idShop['id_shop'];
-                        if ($checkShop) {
-                            $data['check_shop'] = true;
-                            $syncDate = LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $data['shop_id']);
-                            if ($syncDate == null) {
-                                $data['tooltip'] = $this->locale->t('product.screen.shop_not_index');
-                            } else {
-                                $data['tooltip'] = $this->locale->t('product.screen.shop_last_indexation') .
-                                    ' : ' . strftime("%A %e %B %Y @ %R", strtotime($syncDate));
-                            }
-                            $data['original_title'] = $this->locale->t('product.screen.lengow_shop_sync');
-                        } else {
-                            $data['check_shop'] = false;
-                            if (!$this->toolbox) {
-                                $data['tooltip'] = $this->locale->t('product.screen.lengow_shop_no_sync');
-                                $data['original_title'] = $this->locale->t('product.screen.sync_your_shop');
-                                $data['header_title'] = '<a href="'
-                                    . $link->getAbsoluteAdminLink('AdminLengowHome')
-                                    . '&isSync=true">
-                                    <span>' . $this->locale->t('product.screen.sync_your_shop') . '</span></a>';
-                            } else {
-                                $data['header_title'] = $this->locale->t('product.screen.lengow_shop_no_sync');
-                            }
-                        }
-                        $result[] = $data;
-                    }
-                    echo Tools::jsonEncode($result);
-                    break;
             }
             exit();
         }

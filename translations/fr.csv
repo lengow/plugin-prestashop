@@ -66,11 +66,6 @@ product.screen.add_confirmation|Voulez-vous vraiment ajouter %{nb} produits dans
 product.screen.remove_confirmation|Voulez-vous vraiment supprimer %{nb} produits de votre sélection ?
 product.screen.remove_from_export|Supprimer de mon export
 product.screen.add_from_export|Inclure dans mon export
-product.screen.lengow_shop_sync|Boutique synchronisée
-product.screen.lengow_shop_no_sync|Boutique non synchronisée
-product.screen.sync_your_shop|Synchroniser ma boutique avec Lengow
-product.screen.shop_last_indexation|Dernière indexation
-product.screen.shop_not_index|Pas encore indexé
 product.table.id_product|ID
 product.table.image|Image
 product.table.name|Nom
@@ -207,7 +202,7 @@ lengow_setting.lengow_export_format_title|Exportez le format par défaut
 lengow_setting.lengow_export_file_enabled_title|Exportez dans un fichier
 lengow_setting.lengow_export_file_enabled_legend|Il est conseillé d'activer cette option si vous avez 3 000 produits ou plus.
 lengow_setting.lengow_last_export_title|Dernier export
-lengow_setting.lengow_order_id_process_title|Commande en préparation
+lengow_setting.lengow_order_id_process_title|Commandes en préparation
 lengow_setting.lengow_order_id_shipped_title|Commandes expédiées
 lengow_setting.lengow_order_id_cancel_title|Commandes annulées
 lengow_setting.lengow_order_id_shippedbymp_title|Commandes expédiées par les places de marché
@@ -244,7 +239,6 @@ lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs
 lengow_log.error.no_notification|Pas de nouvelle notification sur vos commandes
-lengow_log.error.account_id_already_used|l'ID du compte %{account_id} est déjà utilisé par la boutique %{name_shop} (%{id_shop})
 lengow_log.error.rest_time_to_import|Attendez %{rest_time}  secondes avant d'importer de nouveau vos commandes
 lengow_log.error.no_product|Erreur Lengow : pas de produit dans cette commande
 lengow_log.error.no_change_rate|Erreur Lengow : pas de taux de change valide à appliquer sur les prix
@@ -293,12 +287,9 @@ admin.order.lengow_order_id|ID de commande Lengow
 admin.order.marketplace|Place de marché
 admin.order.feed_id|ID du flux
 admin.order.total_paid|Montant total payé sur les places de marché
-admin.order.carrier_from_marketplace|Transporteur des places de marché
-admin.order.method_from_marketplace|Mode d'expédition des places de marché
-admin.order.tracking_number|Numéro de tracking
 admin.order.customer_email|Email du client
-admin.order.message|Message
 admin.order.shipped_by_marketplace|Expédié par la place de marché
+admin.order.message|Message
 admin.order.cancel_and_reimport|Ré-importer la commande
 admin.order.check_cancel_and_reimport|Vous voulez vous vraiment réimporter la commande ?
 admin.order.synchronize_id|Synchronisez l'ID

@@ -77,11 +77,6 @@ en:
       remove_confirmation: "Do you really want to remove %{nb} products from your selection?"
       remove_from_export: "Remove from export"
       add_from_export: "Add to export"
-      lengow_shop_sync: "Shop synchronized"
-      lengow_shop_no_sync: "Shop not synchronized"
-      sync_your_shop: "Synchronize my shop with Lengow"
-      shop_last_indexation: "Last indexation"
-      shop_not_index: "Not indexed yet"
     table:
       id_product: "ID"
       image: "Image"

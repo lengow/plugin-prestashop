@@ -74,11 +74,15 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
             $sync = (string)Tools::getValue('sync');
         }
     }
+    // sync catalogs id between Lengow and Shopware
+    if (!$sync || $sync === 'catalog') {
+        LengowSync::syncCatalog();
+    }
     // sync orders between Lengow and Prestashop
     if (!$sync || $sync === 'order') {
         // array of params for import order
         $params = array();
-        // check if the GET parameters are availables
+        // check if the GET parameters are available
         if (Tools::getIsset('force_product')) {
             $params['force_product'] = (bool)Tools::getValue('force_product');
         }
@@ -121,7 +125,7 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
         LengowSync::setCmsOption();
     }
     // sync option is not valid
-    if ($sync && ($sync !== 'order' && $sync !== 'action' && $sync !== 'option')) {
+    if ($sync && !in_array($sync, LengowSync::$syncActions)) {
         header('HTTP/1.1 400 Bad Request');
         die('Action: ' . $sync . ' is not a valid action');
     }

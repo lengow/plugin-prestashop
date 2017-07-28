@@ -66,11 +66,6 @@ product.screen.add_confirmation|¿Realmente desea agregar %{nb} productos a la s
 product.screen.remove_confirmation|¿Estás seguro que quieres eliminar %{nb} productos de la selección?
 product.screen.remove_from_export|Sacar de la exportación
 product.screen.add_from_export|Añadir a la exportación
-product.screen.lengow_shop_sync|Tienda sincronizada
-product.screen.lengow_shop_no_sync|Tienda no sincronizada
-product.screen.sync_your_shop|Sincronizar mi tienda con Lengow
-product.screen.shop_last_indexation|Última indexación
-product.screen.shop_not_index|Aún no está indexado
 product.table.id_product|ID
 product.table.image|Imagen
 product.table.name|Nombre
@@ -244,7 +239,6 @@ lengow_log.error.nb_order_imported|%{nb_order} pedido(s) importada
 lengow_log.error.nb_order_updated|%{nb_order} pedido(s) actualizado
 lengow_log.error.nb_order_with_error|%{nb_order} pedido(s) con errores
 lengow_log.error.no_notification|No hay nueva notificación de pedido
-lengow_log.error.account_id_already_used|account ID %{account_id} está siendo actualmente utilizada  por la tienda %{name_shop} (%{id_shop})
 lengow_log.error.rest_time_to_import|Por favor, espere %{rest_time} segundos antes de volver a re-importar pedidos
 lengow_log.error.no_product|Lengow error: no hay productos en el pedido
 lengow_log.error.no_change_rate|Lengow error: no hay tipos de cambio disponibles para los precios de pedidos
@@ -293,12 +287,9 @@ admin.order.lengow_order_id|Lengow order ID
 admin.order.marketplace|Marketplace
 admin.order.feed_id|Feed ID
 admin.order.total_paid|Importe total pagado en el marketplace
-admin.order.carrier_from_marketplace|Transportista del marketplace
-admin.order.method_from_marketplace|Modo de envío del marketplace
-admin.order.tracking_number|Tracking número
 admin.order.customer_email|Correo electrónico del cliente
-admin.order.message|Mensaje
 admin.order.shipped_by_marketplace|Enviado por el marketplace
+admin.order.message|Mensaje
 admin.order.cancel_and_reimport|Volver a importar el pedido
 admin.order.check_cancel_and_reimport|¿Realmente desea volver a importar el pedido?
 admin.order.synchronize_id|Sincronizar ID

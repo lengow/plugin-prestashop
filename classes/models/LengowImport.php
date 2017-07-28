@@ -247,6 +247,10 @@ class LengowImport
             $globalError = LengowMain::setLogMessage('lengow_log.error.credentials_not_valid');
             LengowMain::log('Import', $globalError, $this->logOutput);
         } else {
+            // check Lengow catalogs for order synchronisation
+            if (!$this->preprodMode && !$this->importOneOrder && $this->typeImport === 'manual') {
+                LengowSync::syncCatalog();
+            }
             LengowMain::log(
                 'Import',
                 LengowMain::setLogMessage('log.import.start', array('type' => $this->typeImport)),
