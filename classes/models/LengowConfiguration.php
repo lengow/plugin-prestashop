@@ -398,7 +398,7 @@ class LengowConfiguration extends Configuration
             if (!in_array($key, array_keys($listKey))) {
                 continue;
             }
-            if (strlen($value) > 0) {
+            if (Tools::strlen($value) > 0) {
                 self::updateGlobalValue($key, $value);
             }
         }

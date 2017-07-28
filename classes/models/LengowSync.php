@@ -121,7 +121,6 @@ class LengowSync
                     break;
                 }
             }
-
         }
     }
 
