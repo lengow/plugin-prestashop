@@ -66,11 +66,6 @@ product.screen.add_confirmation|Do you really want to add %{nb} products to your
 product.screen.remove_confirmation|Do you really want to remove %{nb} products from your selection?
 product.screen.remove_from_export|Remove from export
 product.screen.add_from_export|Add to export
-product.screen.lengow_shop_sync|Shop synchronized
-product.screen.lengow_shop_no_sync|Shop not synchronized
-product.screen.sync_your_shop|Synchronize my shop with Lengow
-product.screen.shop_last_indexation|Last indexation
-product.screen.shop_not_index|Not indexed yet
 product.table.id_product|ID
 product.table.image|Image
 product.table.name|Name
@@ -451,6 +446,7 @@ toolbox.index.last_import_cron|Cron
 toolbox.index.last_import_manual|manual
 toolbox.index.export_information|Export information (by shop)
 toolbox.index.shop_active|Shop followed by Lengow
+toolbox.index.shop_catalogs_id|Lengow catalogs id synchronized
 toolbox.index.export_variation_enabled|Include product variations
 toolbox.index.export_out_stock_enabled|Include out of stock products
 toolbox.index.export_selection_enabled|Include specific products

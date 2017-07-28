@@ -148,6 +148,7 @@ en:
       last_import_manual: "manual"
       export_information: "Export information (by shop)"
       shop_active: "Shop followed by Lengow"
+      shop_catalogs_id: "Lengow catalogs id synchronized"
       export_variation_enabled: "Include product variations"
       export_out_stock_enabled: "Include out of stock products"
       export_selection_enabled: "Include specific products"

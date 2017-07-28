@@ -85,9 +85,9 @@ class LengowConnector
         '/v3.0/orders/moi/' => 5,
         '/v3.0/orders/actions/' => 10,
         '/v3.0/marketplaces' => 10,
-        '/v3.0/subscriptions' => 3,
+        '/v3.0/plans' => 3,
         '/v3.0/stats' => 3,
-        '/v3.0/cms' => 3,
+        '/v3.1/cms' => 3,
     );
 
     /**

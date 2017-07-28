@@ -201,6 +201,10 @@ class LengowCheck
             'state' => (int)LengowConfiguration::shopIsActive($shop->id)
         );
         $checklist[] = array(
+            'title' => $this->locale->t('toolbox.index.shop_catalogs_id'),
+            'message' => LengowConfiguration::get('LENGOW_CATALOG_ID', null, null, $shop->id)
+        );
+        $checklist[] = array(
             'title' => $this->locale->t('toolbox.index.shop_product_total'),
             'message' => $lengowExport->getTotalProduct()
         );

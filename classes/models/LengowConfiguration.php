@@ -386,6 +386,23 @@ class LengowConfiguration extends Configuration
         }
     }
 
+    /**
+     * Set Valid Account id / Access token / Secret token
+     *
+     * @param array $accessIds Account id / Access token / Secret token
+     */
+    public static function setAccessIds($accessIds)
+    {
+        $listKey = array('LENGOW_ACCOUNT_ID', 'LENGOW_ACCESS_TOKEN', 'LENGOW_SECRET_TOKEN');
+        foreach ($accessIds as $key => $value) {
+            if (!in_array($key, array_keys($listKey))) {
+                continue;
+            }
+            if (strlen($value) > 0) {
+                self::updateGlobalValue($key, $value);
+            }
+        }
+    }
 
     /**
      * Get catalog ids for a specific shop
@@ -437,6 +454,21 @@ class LengowConfiguration extends Configuration
     public static function shopIsActive($idShop = null)
     {
         return (bool)LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, null, $idShop);
+    }
+
+    /**
+     * Set active shop or not
+     *
+     * @param integer $idShop Prestashop shop id
+     */
+    public static function setActiveShop($idShop)
+    {
+        $active = true;
+        $shopCatalogIds = self::getCatalogIds($idShop);
+        if (count($shopCatalogIds) === 0) {
+            $active = false;
+        }
+        self::updateValue('LENGOW_SHOP_ACTIVE', $active, false, null, $idShop);
     }
 
     /**
