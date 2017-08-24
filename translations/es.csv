@@ -191,6 +191,8 @@ lengow_setting.lengow_account_id_title|ID Cuenta
 lengow_setting.lengow_access_token_title|Acceso Token
 lengow_setting.lengow_secret_token_title|Secret Token
 lengow_setting.lengow_shop_active_title|Activate Shop
+lengow_setting.lengow_catalog_id_title|ID de catálogos
+lengow_setting.lengow_catalog_id_legend|Su ID de catálogos para importar pedidos. Separarlos por '; '
 lengow_setting.lengow_shop_token_title|Shop Token
 lengow_setting.lengow_export_selection_enabled_title|Exportar solamente los elementos seleccionados
 lengow_setting.lengow_export_selection_enabled_legend|Activar esta opción si no deseas exportar todos los productos disponibles. Después, sólo selecciona los productos que deseas exportar
@@ -239,6 +241,8 @@ lengow_log.error.nb_order_imported|%{nb_order} pedido(s) importada
 lengow_log.error.nb_order_updated|%{nb_order} pedido(s) actualizado
 lengow_log.error.nb_order_with_error|%{nb_order} pedido(s) con errores
 lengow_log.error.no_notification|No hay nueva notificación de pedido
+lengow_log.error.credentials_not_valid|El ID de cuenta, el acceso de token o el token secreto no son válidos.
+lengow_log.error.no_catalog_for_shop|Ningún ID de catálogo válido para la tienda 1%{name_shop} ( 2%{id_shop})
 lengow_log.error.rest_time_to_import|Por favor, espere %{rest_time} segundos antes de volver a re-importar pedidos
 lengow_log.error.no_product|Lengow error: no hay productos en el pedido
 lengow_log.error.no_change_rate|Lengow error: no hay tipos de cambio disponibles para los precios de pedidos
@@ -286,10 +290,19 @@ admin.order.imported_from_lengow|Este pedido ha sido importado por Lengow
 admin.order.lengow_order_id|Lengow order ID
 admin.order.marketplace|Marketplace
 admin.order.feed_id|Feed ID
+admin.order.delivery_address_id|ID de dirección de entrega
 admin.order.total_paid|Importe total pagado en el marketplace
+admin.order.commission|Comisión
+admin.order.currency|Moneda
+admin.order.customer_name|Nombre del cliente
 admin.order.customer_email|Correo electrónico del cliente
+admin.order.carrier|Portador del mercado
+admin.order.carrier_method|Método de envío del mercado
+admin.order.carrier_id_relay|Relé de identificación
+admin.order.carrier_tracking|El número de rastreo
 admin.order.shipped_by_marketplace|Enviado por el marketplace
 admin.order.message|Mensaje
+admin.order.imported_at|Importado en
 admin.order.cancel_and_reimport|Volver a importar el pedido
 admin.order.check_cancel_and_reimport|¿Realmente desea volver a importar el pedido?
 admin.order.synchronize_id|Sincronizar ID

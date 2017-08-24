@@ -191,6 +191,8 @@ lengow_setting.lengow_account_id_title|ID du compte
 lengow_setting.lengow_access_token_title|Access Token
 lengow_setting.lengow_secret_token_title|Secret Token
 lengow_setting.lengow_shop_active_title|Activer la boutique
+lengow_setting.lengow_catalog_id_title|ID Catalogues
+lengow_setting.lengow_catalog_id_legend|Vos identifiants de catalogues pour importer vos commandes. Séparez les par des ";".
 lengow_setting.lengow_shop_token_title|Token de la boutique
 lengow_setting.lengow_export_selection_enabled_title|Exporter seulement la sélection
 lengow_setting.lengow_export_selection_enabled_legend|Activez cette option si vous ne voulez pas exporter tous les produits disponibles. Sélectionnez ensuite uniquement les produits à exporter.
@@ -239,6 +241,8 @@ lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs
 lengow_log.error.no_notification|Pas de nouvelle notification sur vos commandes
+lengow_log.error.credentials_not_valid|Votre identifiant de compte, votre jeton d'accès ou votre jeton secret ne sont pas valides.
+lengow_log.error.no_catalog_for_shop|Aucun identifiant de catalogue valide pour la boutique %{name_shop} (%{id_shop})
 lengow_log.error.rest_time_to_import|Attendez %{rest_time}  secondes avant d'importer de nouveau vos commandes
 lengow_log.error.no_product|Erreur Lengow : pas de produit dans cette commande
 lengow_log.error.no_change_rate|Erreur Lengow : pas de taux de change valide à appliquer sur les prix
@@ -286,10 +290,19 @@ admin.order.imported_from_lengow|Cette commande a été importée depuis Lengow.
 admin.order.lengow_order_id|ID de commande Lengow
 admin.order.marketplace|Place de marché
 admin.order.feed_id|ID du flux
+admin.order.delivery_address_id|Identifiant de l'adresse de livraison
 admin.order.total_paid|Montant total payé sur les places de marché
+admin.order.commission|Commission
+admin.order.currency|Devise
+admin.order.customer_name|Nom du client
 admin.order.customer_email|Email du client
+admin.order.carrier|Transporteurs de la marketplace
+admin.order.carrier_method|Modes de livraison de la marketplace
+admin.order.carrier_id_relay|ID relais
+admin.order.carrier_tracking|Numéro de suivi
 admin.order.shipped_by_marketplace|Expédié par la place de marché
 admin.order.message|Message
+admin.order.imported_at|Importé le
 admin.order.cancel_and_reimport|Ré-importer la commande
 admin.order.check_cancel_and_reimport|Vous voulez vous vraiment réimporter la commande ?
 admin.order.synchronize_id|Synchronisez l'ID

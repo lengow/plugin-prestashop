@@ -191,6 +191,8 @@ lengow_setting.lengow_account_id_title|ID Cliente
 lengow_setting.lengow_access_token_title|Token
 lengow_setting.lengow_secret_token_title|Token Segreto
 lengow_setting.lengow_shop_active_title|Negozio Attivo
+lengow_setting.lengow_catalog_id_title|Catalogo ID
+lengow_setting.lengow_catalog_id_legend|ID del catalogo per l'importazione degli ordini. Separarli da '; '
 lengow_setting.lengow_shop_token_title|Token Negozio
 lengow_setting.lengow_export_selection_enabled_title|Esporta solo la selezione
 lengow_setting.lengow_export_selection_enabled_legend|Attiva questa opzione se non vuoi esportare tutti i prodotti disponibile. Poi, seleziona solo i prodotti che vuoi esportare.
@@ -239,6 +241,8 @@ lengow_log.error.nb_order_imported|%{nb_order} ordine importato
 lengow_log.error.nb_order_updated|%{nb_order} ordine aggiornato
 lengow_log.error.nb_order_with_error|%{nb_order} errore numero ordine
 lengow_log.error.no_notification|Nessuna notifica negli ordini
+lengow_log.error.credentials_not_valid|L'account ID, l'accesso al token o il token segreto non sono validi
+lengow_log.error.no_catalog_for_shop|Nessun ID catalogo valido per il negozio 1%{name_shop} (2%{id_shop})
 lengow_log.error.rest_time_to_import|Attendi %{rest_time} secondi prima di reimportare gli ordini
 lengow_log.error.no_product|Lengow error: nessun prodotto nell'ordine
 lengow_log.error.no_change_rate|Lengow error: nessun exchange rates disponibile per order prices
@@ -286,10 +290,19 @@ admin.order.imported_from_lengow|Questo ordine è stato importato da Lengow
 admin.order.lengow_order_id|Ordine ID Lengow
 admin.order.marketplace|Marketplace
 admin.order.feed_id|ID Feed
+admin.order.delivery_address_id|ID indirizzo di consegna
 admin.order.total_paid|Totale pagato di Marketplace
+admin.order.commission|Commissione
+admin.order.currency|Moneta
+admin.order.customer_name|Nome del cliente
 admin.order.customer_email|Email cliente
+admin.order.carrier|Portatore dal mercato
+admin.order.carrier_method|Metodo di spedizione dal mercato
+admin.order.carrier_id_relay|Relè ID
+admin.order.carrier_tracking|Numero di identificazione
 admin.order.shipped_by_marketplace|Spedito da marketplace
 admin.order.message|Messaggio
+admin.order.imported_at|Importato a
 admin.order.cancel_and_reimport|Reimporta ordine
 admin.order.check_cancel_and_reimport|Vuoi veramente re-importare l'ordine?
 admin.order.synchronize_id|Sincronizza ID
