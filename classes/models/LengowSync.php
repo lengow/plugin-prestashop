@@ -142,7 +142,7 @@ class LengowSync
         foreach ($shopCollection as $row) {
             $idShop = $row['id_shop'];
             $lengowExport = new LengowExport(array("shop_id" => $idShop));
-            $data['cms']['shops'][] = array(
+            $data['shops'][] = array(
                 'token' => LengowMain::getToken($idShop),
                 'enabled' => LengowConfiguration::shopIsActive($idShop),
                 'total_product_number' => $lengowExport->getTotalProduct(),

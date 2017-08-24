@@ -453,7 +453,7 @@ class LengowConfiguration extends Configuration
      */
     public static function shopIsActive($idShop = null)
     {
-        return (bool)LengowConfiguration::get('LENGOW_SHOP_ACTIVE', null, null, $idShop);
+        return (bool)self::get('LENGOW_SHOP_ACTIVE', null, null, $idShop);
     }
 
     /**
