@@ -163,8 +163,7 @@ class LengowMarketplace
     public function loadApiMarketplace()
     {
         if (count(self::$marketplaces) === 0) {
-            $result = LengowConnector::queryApi('get', '/v3.0/marketplaces');
-            self::$marketplaces = $result;
+            self::$marketplaces = LengowConnector::queryApi('get', '/v3.0/marketplaces');
         }
     }
 
@@ -372,13 +371,16 @@ class LengowMarketplace
                         $params[$arg] = date('c');
                         break;
                     default:
+                        if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
+                            continue;
+                        }
                         $defaultValue = $this->getDefaultValue((string)$arg);
                         $paramValue = $defaultValue ? $defaultValue : $arg . ' not available';
                         $params[$arg] = $paramValue;
                         break;
                 }
             }
-            if ($idOrderLine) {
+            if (!is_null($idOrderLine)) {
                 $params['line'] = $idOrderLine;
             }
             if (isset($actions['args'])) {
