@@ -74,7 +74,7 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
             $sync = (string)Tools::getValue('sync');
         }
     }
-    // sync catalogs id between Lengow and Shopware
+    // sync catalogs id between Lengow and Prestashop
     if (!$sync || $sync === 'catalog') {
         LengowSync::syncCatalog();
     }
