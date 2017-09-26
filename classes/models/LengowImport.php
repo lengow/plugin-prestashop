@@ -231,12 +231,6 @@ class LengowImport
         $globalError = false;
         // clean logs
         LengowMain::cleanLog();
-        // Check if default carrier is active
-        if (!LengowCarrier::isDefaultCarrierActive()) {
-            $message = LengowMain::setLogMessage('log.import.error_default_carrier_not_active');
-            LengowMain::log('Import', $message, $this->logOutput);
-            return array('error' => LengowMain::decodeLogMessage($message, 'en'));
-        }
         if (self::isInProcess() && !$this->preprodMode && !$this->importOneOrder) {
             $globalError = LengowMain::setLogMessage(
                 'lengow_log.error.rest_time_to_import',
@@ -250,6 +244,7 @@ class LengowImport
             // check Lengow catalogs for order synchronisation
             if (!$this->preprodMode && !$this->importOneOrder && $this->typeImport === 'manual') {
                 LengowSync::syncCatalog();
+                LengowSync::syncCarrier();
             }
             LengowMain::log(
                 'Import',

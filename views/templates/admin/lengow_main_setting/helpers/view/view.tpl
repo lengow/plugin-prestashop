@@ -31,6 +31,11 @@
                 {html_entity_decode($mail_report|escape:'htmlall':'UTF-8')}
             </div>
             <div class="lgw-box">
+                <h2>{$locale->t('global_setting.screen.default_export_carrier_title')|escape:'htmlall':'UTF-8'}</h2>
+                <p>{$locale->t('global_setting.screen.default_export_carrier_description')|escape:'htmlall':'UTF-8'}</p>
+                {html_entity_decode($defaultExportCarrier|escape:'htmlall':'UTF-8')}
+            </div>
+            <div class="lgw-box">
                 <h2>{$locale->t('global_setting.screen.preprod_mode_title')|escape:'htmlall':'UTF-8'}</h2>
                 <p>{$locale->t('global_setting.screen.preprod_mode_description')|escape:'htmlall':'UTF-8'}</p>
                 {html_entity_decode($preprod_report|escape:'htmlall':'UTF-8')}

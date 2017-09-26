@@ -48,6 +48,11 @@ class LengowConfiguration extends Configuration
             foreach (LengowMain::$trackerChoiceId as $key => $value) {
                 $trackerIds[] = array('id' => $key, 'text' => $value);
             }
+            $carriers = array();
+            $activeCarriers = LengowCarrier::getActiveCarriers();
+            foreach ($activeCarriers as $key => $value) {
+                $carriers[] = array('id' => $key, 'text' => $value);
+            }
             $keys = array(
                 'LENGOW_ACCOUNT_ID' => array(
                     'global' => true,
@@ -114,6 +119,13 @@ class LengowConfiguration extends Configuration
                     'label' => $locale->t('lengow_setting.lengow_export_file_enabled_title'),
                     'legend' => $locale->t('lengow_setting.lengow_export_file_enabled_legend'),
                 ),
+                'LENGOW_EXPORT_CARRIER_DEFAULT' => array(
+                    'type' => 'select',
+                    'global' => true,
+                    'label' => $locale->t('lengow_setting.lengow_export_carrier_default_title'),
+                    'default_value' => count($carriers) > 0 ? (int)$carriers[0]['id'] : '',
+                    'collection' => $carriers,
+                ),
                 'LENGOW_LAST_EXPORT' => array(
                     'readonly' => true,
                     'shop' => true,
@@ -166,12 +178,6 @@ class LengowConfiguration extends Configuration
                     'label' => $locale->t('lengow_setting.lengow_import_processing_fee_title'),
                     'legend' => $locale->t('lengow_setting.lengow_import_processing_fee_legend'),
                     'default_value' => true,
-                ),
-                'LENGOW_CRON_ENABLED' => array(
-                    'type' => 'checkbox',
-                    'global' => true,
-                    'label' => $locale->t('lengow_setting.lengow_cron_enabled_title'),
-                    'default_value' => false,
                 ),
                 'LENGOW_IMPORT_PREPROD_ENABLED' => array(
                     'type' => 'checkbox',
@@ -251,13 +257,9 @@ class LengowConfiguration extends Configuration
                     'collection' => $trackerIds
                 ),
                 'LENGOW_ORDER_STAT' => array(
-                    'type' => 'json',
-                    'label' => $locale->t('lengow_setting.lengow_order_stat_title'),
                     'export' => false
                 ),
                 'LENGOW_ORDER_STAT_UPDATE' => array(
-                    'type' => 'datetime',
-                    'label' => $locale->t('lengow_setting.lengow_order_stat_update_title'),
                     'export' => false
                 ),
                 'LENGOW_VERSION' => array(
@@ -266,18 +268,18 @@ class LengowConfiguration extends Configuration
                     'default_value' => '',
                 ),
                 'LENGOW_ACCOUNT_STATUS' => array(
-                    'type' => 'json',
-                    'label' => $locale->t('lengow_setting.lengow_account_status_title'),
                     'export' => false
                 ),
                 'LENGOW_ACCOUNT_STATUS_UPDATE' => array(
-                    'type' => 'datetime',
-                    'label' => $locale->t('lengow_setting.lengow_account_status_update_title'),
                     'export' => false
                 ),
                 'LENGOW_OPTION_CMS_UPDATE' => array(
-                    'type' => 'datetime',
-                    'label' => $locale->t('lengow_setting.lengow_option_cms_update_title'),
+                    'export' => false
+                ),
+                'LENGOW_LIST_MARKET_UPDATE' => array(
+                    'export' => false
+                ),
+                'LENGOW_STATE_ERROR' => array(
                     'export' => false
                 ),
             );
@@ -405,6 +407,20 @@ class LengowConfiguration extends Configuration
     }
 
     /**
+     * Reset access ids for old customer
+     */
+    public static function resetAccessIds()
+    {
+        $accessIds = array('LENGOW_ACCOUNT_ID', 'LENGOW_ACCESS_TOKEN', 'LENGOW_SECRET_TOKEN');
+        foreach ($accessIds as $accessId) {
+            $value = self::getGlobalValue($accessId);
+            if (Tools::strlen($value) > 0) {
+                self::updateGlobalValue($accessId, '');
+            }
+        }
+    }
+
+    /**
      * Get catalog ids for a specific shop
      *
      * @param integer $idShop Prestashop shop id
@@ -508,7 +524,7 @@ class LengowConfiguration extends Configuration
                         self::updateValue($key, $val, false, null, $shop["id_shop"]);
                     } else {
                         $oldValue = self::get($key, false, null, $shop["id_shop"]);
-                        if ($oldValue == "") {
+                        if ($oldValue == '') {
                             self::updateValue($key, $val, false, null, $shop["id_shop"]);
                         }
                     }
@@ -518,7 +534,7 @@ class LengowConfiguration extends Configuration
                     self::updateValue($key, $val);
                 } else {
                     $oldValue = self::get($key);
-                    if ($oldValue == "") {
+                    if ($oldValue == '') {
                         self::updateValue($key, $val);
                     }
                 }

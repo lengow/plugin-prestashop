@@ -18,21 +18,49 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<div class="lengow_default_carrier"
-     data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting', true)|escape:'htmlall':'UTF-8'}"
-     id="lengow_country_{$defaultCarrierCountries[$id_country]['lengow_country_id']|escape:'htmlall':'UTF-8'}">
-    <p>{$locale->t('order_setting.screen.default_carrier')|escape:'htmlall':'UTF-8'}</p>
-    <select name="default_carrier[{$defaultCarrierCountries[$id_country]['lengow_country_id']|escape:'htmlall':'UTF-8'}]" class="carrier defaultCarrier lengow_select">
-        <option value="">{$locale->t('order_setting.screen.please_select_carrier')|escape:'htmlall':'UTF-8'}</option>
-        {foreach from=$listCarrierByCountry[$id_country] key=k item=c}
-            {if $defaultCarrierCountries[$id_country]['id_carrier'] eq $k}
-                <option value="{$k|escape:'htmlall':'UTF-8'}" selected="selected">{$c|escape:'htmlall':'UTF-8'}</option>
-            {else}
-                <option value="{$k|escape:'htmlall':'UTF-8'}">{$c|escape:'htmlall':'UTF-8'}</option>
-            {/if}
-        {/foreach}
-    </select>
-    <div class="default_carrier_missing" style="display:none;">
-        {$locale->t('order_setting.screen.no_default_carrier_selected')|escape:'htmlall':'UTF-8'}
+<div class="lgw-row">
+    <div class="lengow_default_carrier js-default-carrier lgw-col-6">
+        <p>
+            {$locale->t('order_setting.screen.default_carrier_prestashop')|escape:'htmlall':'UTF-8'}
+            <span class="label-required">*<span>
+        </p>
+        <select name="default_carriers[{$marketplace['id']|escape:'htmlall':'UTF-8'}][carrier]" class="carrier lengow_select required">
+            <option value="">{$locale->t('order_setting.screen.please_select_carrier_prestashop')|escape:'htmlall':'UTF-8'}</option>
+            {foreach from=$carriers key=k item=c}
+                {if $marketplace['id_carrier'] eq $k}
+                    <option value="{$k|escape:'htmlall':'UTF-8'}" selected="selected">{$c|escape:'htmlall':'UTF-8'}</option>
+                {else}
+                    <option value="{$k|escape:'htmlall':'UTF-8'}">{$c|escape:'htmlall':'UTF-8'}</option>
+                {/if}
+            {/foreach}
+        </select>
+        <div class="default_carrier_missing" style="display:none;">
+            {$locale->t('order_setting.screen.no_default_carrier_selected')|escape:'htmlall':'UTF-8'}
+        </div>
     </div>
+    {if isset($marketplace['carriers']) && $marketplace['carriers']|@count > 0}
+        <div class="lengow_default_carrier_marketplace js-default-carrier lgw-col-6">
+            <p>
+                {$locale->t('order_setting.screen.default_carrier_marketplace', ['marketplace_name' => $marketplace['label']])|escape:'htmlall':'UTF-8'}
+                {if $marketplace['carrier_required']}
+                    <span class="label-required">*<span>
+                {/if}
+            </p>
+            <select name="default_carriers[{$marketplace['id']|escape:'htmlall':'UTF-8'}][carrier_marketplace]" class="carrier lengow_select {if $marketplace['carrier_required']}required{/if}">
+                <option value="">{$locale->t('order_setting.screen.please_select_carrier_marketplace', ['marketplace_name' => $marketplace['label']])|escape:'htmlall':'UTF-8'}</option>
+                {foreach from=$marketplace['carriers'] item=carrier}
+                    {if $marketplace['id_carrier_marketplace'] eq $carrier['id_carrier_marketplace']}
+                        <option value="{$carrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}" selected="selected">{$carrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
+                    {else}
+                        <option value="{$carrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}">{$carrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
+                    {/if}
+                {/foreach}
+            </select>
+            {if $marketplace['carrier_required']}
+                <div class="default_carrier_missing" style="display:none;">
+                    {$locale->t('order_setting.screen.no_default_carrier_marketplace_selected')|escape:'htmlall':'UTF-8'}
+                </div>
+            {/if}
+        </div>
+    {/if}
 </div>

@@ -55,6 +55,15 @@ margin-bottom: 15px;
   background: white;
 }
 
+.lgw-container .blue-frame.mod-order-warning-message {
+  line-height: 20px;
+  margin-bottom: 40px;
+}
+
+.lgw-container .blue-frame.mod-order-notification {
+  margin-top: 30px;
+}
+
 /*************************************************/
 /*                    BUTTONS                    */
 /*************************************************/
@@ -670,7 +679,6 @@ margin-bottom: 15px;
 
 .lgw-container .table .img_no_result {
   background: transparent;
-  /*height: 208px;*/
   line-height: 21.4286px;
   margin: 0 auto;
   margin-bottom: 60px;
@@ -876,15 +884,16 @@ margin-bottom: 15px;
   background: #ffffff;
 }
 
-.lgw-container .accordion .country {
+.lgw-container .accordion .marketplace {
   border: 1px solid #d7d7d7;
   border-top: 0;
   margin-top: 0;
   margin-bottom: 0;
-  background: #fff;
+  background: #e1e1e1;
+  padding: 10px 15px 0px 15px;
   position: relative;
-  height: 51px;
-  overflow: hidden;
+  height: 30px;
+  /*overflow: hidden;*/
 }
 
 .lgw-container .accordion .score {
@@ -907,11 +916,9 @@ margin-bottom: 15px;
 }
 
 .lgw-container .accordion .sub > li {
-  height: 140px;
-  width: 33.33%;
   padding: 15px 30px;
   margin: 0px;
-  float: left;
+  border-bottom: 1px solid #d7d7d7;
   list-style: none;
   box-sizing: border-box;
 }
@@ -970,4 +977,71 @@ margin-bottom: 15px;
 
 .lgw-container .accordion  .fa-chevron-up {
   background: url('../img/carret-up.png') no-repeat right center;
+}
+
+.lgw-container .accordion  .lgw-arrow-right {
+  background: url('../img/arrow-right.png') no-repeat right center;
+  height: 43px;
+  width: 30px;
+}
+
+
+/*************************************************/
+/*                   LOADER                      */
+/*************************************************/
+
+.ajax-loading {
+  margin: 0 auto;
+  padding-top: 35px;
+  position: relative;
+  text-align: center;
+  width: 300px;
+}
+
+.ajax-loading-ball1,
+.ajax-loading-ball2 {
+  animation: sk-bounce 2.0s infinite ease-in-out;
+  background-color: hsl(196, 100%, 47%);
+  border-radius: 50%;
+  height: 40px;
+  left: 0;
+  opacity: 0.6;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40px;
+}
+
+.ajax-loading-ball2 {
+  animation-delay: -1.0s;
+}
+
+.ajax-loading-message{
+  color: #464646;
+  font-family: 'Lato', sans-serif;
+  line-height: 1.4;
+  font-size: 18px;
+  font-weight: 400;
+  margin: 15px 0 30px;
+}
+
+.ajax-loading.mod-matching-carrier {
+  margin-top: 150px;
+}
+
+.ajax-loading.mod-synchronise-order {
+  margin-bottom: 30px;
+}
+
+@keyframes sk-bounce {
+
+  0%, 100% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+  }
 }

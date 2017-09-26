@@ -88,10 +88,11 @@ class LengowMainSettingController extends LengowController
                 'LENGOW_REPORT_MAIL_ADDRESS',
             )
         );
+        $defaultExportCarrier = $form->buildInputs(
+            array('LENGOW_EXPORT_CARRIER_DEFAULT')
+        );
         $preprodReport = $form->buildInputs(
-            array(
-                'LENGOW_IMPORT_PREPROD_ENABLED',
-            )
+            array('LENGOW_IMPORT_PREPROD_ENABLED')
         );
         $credentials = $form->buildInputs(
             array(
@@ -116,6 +117,7 @@ class LengowMainSettingController extends LengowController
         $listFile = LengowLog::getPaths();
         $this->context->smarty->assign('list_file', $listFile);
         $this->context->smarty->assign('mail_report', $mailReport);
+        $this->context->smarty->assign('defaultExportCarrier', $defaultExportCarrier);
         $this->context->smarty->assign('preprod_report', $preprodReport);
         $this->context->smarty->assign('preprod_wrapper', $preprodWrapper);
         parent::display();

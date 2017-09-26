@@ -272,15 +272,14 @@ class LengowExport
     public function __construct($params = array())
     {
         $this->setFormat(isset($params["format"]) ? $params["format"] : 'csv');
-        $this->offset = (isset($params["offset"]) ? $params["offset"] : false);
-        $this->productIds = (isset($params["product_ids"]) ? $params["product_ids"] : false);
-        $this->stream = (isset($params["stream"]) ? $params["stream"] : false);
-        $this->limit = (isset($params["limit"]) ? (int)$params["limit"] : false);
-        $this->idShop = (int)(isset($params["shop_id"]) ? (int)$params["shop_id"] : Context::getContext()->shop->id);
-        $this->language = (isset($params["language_id"])
+        $this->offset = isset($params["offset"]) ? $params["offset"] : false;
+        $this->productIds = isset($params["product_ids"]) ? $params["product_ids"] : false;
+        $this->stream = isset($params["stream"]) ? $params["stream"] : false;
+        $this->limit = isset($params["limit"]) ? (int)$params["limit"] : false;
+        $this->idShop = (int)isset($params["shop_id"]) ? (int)$params["shop_id"] : Context::getContext()->shop->id;
+        $this->language = isset($params["language_id"])
             ? new Language($params["language_id"])
-            : new Language(Configuration::get('PS_LANG_DEFAULT', null, null, $this->idShop))
-        );
+            : new Language(Configuration::get('PS_LANG_DEFAULT', null, null, $this->idShop));
         // Get specific params in database
         $selection = LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->idShop);
         $outOfStock = LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->idShop);
@@ -307,13 +306,13 @@ class LengowExport
         $this->selection = isset($params["selection"]) ? (bool)$params["selection"] : $selection;
         $this->outOfStock = isset($params["out_of_stock"]) ? (bool)$params["out_of_stock"] : $outOfStock;
         $this->variation = isset($params["variation"]) ? (bool)$params["variation"] : $variation;
-        $this->inactive = (isset($params["inactive"]) ? (bool)$params["inactive"] : false);
+        $this->inactive = isset($params["inactive"]) ? (bool)$params["inactive"] : false;
         if ($this->stream) {
             $this->logOutput = false;
         } else {
             $this->logOutput = isset($params['log_output']) ? (bool)$params['log_output'] : true;
         }
-        $this->updateExportDate = (isset($params['update_export_date']) ? (bool)$params['update_export_date'] : true);
+        $this->updateExportDate = isset($params['update_export_date']) ? (bool)$params['update_export_date'] : true;
         if (!Context::getContext()->currency) {
             Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
         }
@@ -346,8 +345,8 @@ class LengowExport
      */
     public function setCarrier()
     {
-        $carrier = LengowCarrier::getDefaultCarrier();
-        if (!$carrier->id) {
+        $carrier = LengowCarrier::getDefaultExportCarrier();
+        if (!$carrier) {
             throw new LengowException(LengowMain::setLogMessage('log.export.error_no_carrier_selected'));
         }
         $this->carrier = $carrier;
@@ -479,9 +478,9 @@ class LengowExport
                     $p['id_product'],
                     $this->language->id,
                     array(
-                        "carrier" => $this->carrier,
-                        "image_size" => LengowProduct::getMaxImageType(),
-                        "language" => $this->language
+                        'carrier' => $this->carrier,
+                        'image_size' => LengowProduct::getMaxImageType(),
+                        'language' => $this->language
                     )
                 );
                 foreach ($fields as $field) {
@@ -568,8 +567,8 @@ class LengowExport
             $productId,
             $this->language->id,
             array(
-                "carrier" => $this->carrier,
-                "image_size" => LengowProduct::getMaxImageType()
+                'carrier' => $this->carrier,
+                'image_size' => LengowProduct::getMaxImageType()
             )
         );
         $combinations = $product->getCombinations();

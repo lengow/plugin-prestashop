@@ -114,10 +114,6 @@ class LengowCheck
             'title' => $this->locale->t('toolbox.index.preprod_disabled'),
             'state' => (LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED') ? 0 : 1)
         );
-        $checklist[] = array(
-            'title' => $this->locale->t('toolbox.index.cron_enable'),
-            'state' => (int)LengowCron::getCron()
-        );
         return $this->getAdminContent($checklist);
     }
 

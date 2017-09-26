@@ -78,6 +78,10 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
     if (!$sync || $sync === 'catalog') {
         LengowSync::syncCatalog();
     }
+    // sync marketplace and marketplace carrier between Lengow and Prestashop
+    if (!$sync || $sync === 'carrier') {
+        LengowSync::syncCarrier();
+    }
     // sync orders between Lengow and Prestashop
     if (!$sync || $sync === 'order') {
         // array of params for import order

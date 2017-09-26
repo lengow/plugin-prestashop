@@ -25,28 +25,18 @@
             </div>
         {/if}
         <form class="lengow_form" method="POST">
-            <div class="lgw-box">
-                <h2>{$locale->t('order_setting.screen.carrier_management_title')|escape:'htmlall':'UTF-8'}</h2>
-                <p>{$locale->t('order_setting.screen.carrier_management_description')|escape:'htmlall':'UTF-8'}</p>
-                <p>{$locale->t('order_setting.screen.country_wt_carrier')|escape:'htmlall':'UTF-8'}
-                    <a href="{$lengow_link->getAbsoluteAdminLink('AdminCarriers', false, true)|escape:'htmlall':'UTF-8'}">
-                        {$locale->t('order_setting.screen.please_setup_then')|escape:'htmlall':'UTF-8'}
-                    </a>
-                </p>
-                <div id="error_select_country"></div>
-                <div id="add_marketplace_country">
-                    <ul id="marketplace_country" class="accordion">
-                        {include file='./marketplace_carrier.tpl'}
-                    </ul>
+            {if $countries neq false}
+                <div class="lgw-box" id="carrier-matching">
+                    <div id="country_selector">
+                        {include file='./country_selector.tpl'}
+                    </div>
+                    <div id="marketplace_matching"></div>
+                    <div class="ajax-loading mod-matching-carrier" style="display: none">
+                        <div class="ajax-loading-ball1"></div>
+                        <div class="ajax-loading-ball2"></div>
+                    </div>
                 </div>
-                <a href="#" class="add-country">
-                    <i class="fa fa-plus"></i>
-                    {$locale->t('order_setting.screen.add_new_country')|escape:'htmlall':'UTF-8'}
-                </a>
-                <div class="select_country" style="display:none">
-                    {include file='./select_country.tpl'}
-                </div>
-            </div>
+            {/if}
             <div class="lgw-box">
                 <input type="hidden" name="action" value="process">
                 <h2>{$locale->t('order_setting.screen.order_status_title')|escape:'htmlall':'UTF-8'}</h2>
@@ -60,16 +50,6 @@
                 <h2>{$locale->t('order_setting.screen.import_setting_title')|escape:'htmlall':'UTF-8'}</h2>
                 {$locale->t('order_setting.screen.import_setting_description')|escape:'htmlall':'UTF-8'}
                 {html_entity_decode($import_params|escape:'htmlall':'UTF-8')}
-            </div>
-            <div class="lgw-box" id="cron_setting">
-                <h2>{$locale->t('order_setting.screen.cron_title')|escape:'htmlall':'UTF-8'}</span></h2>
-                {html_entity_decode($formCron|escape:'htmlall':'UTF-8')}
-                {if isset($moduleCron) && $moduleCron}
-                    {html_entity_decode($cron_param|escape:'htmlall':'UTF-8')}
-                {/if}
-                <p>-- {$locale->t('order_setting.screen.cron_if_not_exists')|escape:'htmlall':'UTF-8'} --</p>
-                <p>{$locale->t('order_setting.screen.cron_manual_installation')|escape:'htmlall':'UTF-8'}</p>
-                <code>*/15 * * * * wget {$import_url|escape:'htmlall':'UTF-8'}</code>
             </div>
             <button type="submit" class="lgw-btn lgw-btn-progression lengow_submit_order_setting">
                 <div class="btn-inner">

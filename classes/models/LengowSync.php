@@ -36,6 +36,7 @@ class LengowSync
         'order',
         'action',
         'catalog',
+        'carrier',
         'option'
     );
 
@@ -103,7 +104,7 @@ class LengowSync
      */
     public static function syncCatalog()
     {
-        if (LengowConnector::isNewMerchant() || LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')) {
+        if (LengowConnector::isNewMerchant()) {
             return false;
         }
         $result = LengowConnector::queryApi('get', '/v3.1/cms');
@@ -122,6 +123,32 @@ class LengowSync
                 }
             }
         }
+    }
+
+    /**
+     * Sync Lengow marketplaces and marketplace carriers
+     *
+     * @param boolean $force force cache update
+     *
+     * @return boolean
+     */
+    public static function syncCarrier($force = true)
+    {
+        if (LengowConnector::isNewMerchant()) {
+            return false;
+        }
+        if (!$force) {
+            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_LIST_MARKET_UPDATE');
+            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < self::$cacheTime) {
+                return false;
+            }
+        }
+        LengowMarketplace::syncMarketplaces();
+        LengowCarrier::syncCarrierMarketplace();
+        LengowCarrier::createDefaultCarrier();
+        LengowCarrier::cleanCarrierMarketplaceMatching();
+        LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKET_UPDATE', date('Y-m-d H:i:s'));
+        return true;
     }
 
     /**

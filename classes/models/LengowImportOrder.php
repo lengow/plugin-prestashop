@@ -1036,38 +1036,46 @@ class LengowImportOrder
      */
     protected function getCarrierId()
     {
-        $carrier = false;
+        $idCarrier = false;
         if (!isset($this->shippingAddress->id_country)) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country')
             );
         }
-        $orderIdCountry = $this->shippingAddress->id_country;
-        if ((int)$orderIdCountry == 0) {
+        $idCountry = (int)$this->shippingAddress->id_country;
+        if ($idCountry == 0) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country')
             );
         }
-        // get carrier id by carrier code
-        $carrierName = is_null($this->relayId) ? $this->carrierName : $this->carrierName . '_RELAY';
-        $idCarrier = LengowCarrier::getIdCarrierByMarketplaceCarrierSku($carrierName, $orderIdCountry);
-        if ($idCarrier && $idCarrier > 0) {
-            $carrier = new Carrier($idCarrier);
+        // get marketplace id by marketplace name
+        $idMarketplace = LengowMarketplace::getIdMarketplace($this->marketplace->name);
+        // get carrier id by carrier marketplace code
+        if ($this->carrierName) {
+            $idCarrier = LengowCarrier::getIdCarrierByCarrierMarketplaceName(
+                $idCountry,
+                $idMarketplace,
+                $this->carrierName
+            );
         }
-        if (!$carrier) {
+        if (!$idCarrier) {
             // get default carrier by country
-            $carrier = LengowCarrier::getDefaultCarrier($orderIdCountry);
-            if (!$carrier) {
-                $countryName = Country::getNameById($this->context->language->id, $orderIdCountry);
+            $idCarrier = LengowCarrier::getDefaultIdCarrier($idCountry, $idMarketplace, true);
+            if (!$idCarrier) {
+                LengowCarrier::createDefaultCarrier($idCountry, $idMarketplace);
+                $countryName = Country::getNameById($this->context->language->id, $idCountry);
                 throw new LengowException(
                     LengowMain::setLogMessage(
                         'lengow_log.exception.no_default_carrier_for_country',
-                        array('country_name' => $countryName)
+                        array(
+                            'country_name' => $countryName,
+                            'marketplace_name' => $this->marketplace->labelName
+                        )
                     )
                 );
             }
         }
-        return $carrier->id;
+        return $idCarrier;
     }
 
     /**

@@ -24,25 +24,18 @@
                 {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
-        {if $notDefaultCarrier}
-            <div class="lgw-box">
-                {html_entity_decode($notDefaultCarrier|escape:'htmlall':'UTF-8')}
-            </div>
-        {else}
         <div class="lgw-box">
             {if isset($toolbox) && $toolbox}
                 {include file='./header_toolbox.tpl'}
             {else}
-                {if $warning_message}
-                    <p class="blue-frame" style="line-height: 20px;">
-                        {html_entity_decode($warning_message|escape:'htmlall':'UTF-8')}
-                    </p>
-                {/if}
+                <div id="lengow_warning_message">
+                    {include file='./warning_message.tpl'}
+                </div>
                 <div class="lgw-col-8" style="padding:0;">
                     <div id="lengow_last_importation">
                         {include file='./last_importation.tpl'}
                     </div>
-                    <div id="lengow_wrapper_messages" class="blue-frame" style="display:none;"></div>
+                    <div id="lengow_wrapper_messages" class="blue-frame mod-order-notification" style="display:none;"></div>
                 </div>
             {/if}
             {if !isset($toolbox) || !$toolbox}
@@ -51,17 +44,14 @@
                         data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder', true)|escape:'htmlall':'UTF-8'}">
                         {$locale->t('order.screen.button_update_orders')|escape:'htmlall':'UTF-8'}
                     </a>
-                    {if not $cron_active}
-                        <p class="small light text-right">
-                            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}#cron_setting" class="sub-link">
-                                {$locale->t('order.screen.cron')|escape:'htmlall':'UTF-8'}
-                            </a>
-                        </p>
-                    {/if}
                 </div>
             {/if}
             <!-- UPDATE ORDERS -->
             <div id="lengow_charge_import_order" style="display:none">
+                <div class="ajax-loading mod-synchronise-order">
+                    <div class="ajax-loading-ball1"></div>
+                    <div class="ajax-loading-ball2"></div>
+                </div>
                 <p id="lengow_charge_lign1">{$locale->t('order.screen.import_charge_first')|escape:'htmlall':'UTF-8'}</p>
                 <p id="lengow_charge_lign2">{$locale->t('order.screen.import_charge_second')|escape:'htmlall':'UTF-8'}</p>
             </div>
@@ -77,7 +67,6 @@
             </div>
             <!-- /TABLE -->
         </div>
-        {/if}
     </div>
 </div>
 <script type="text/javascript" src="/modules/lengow/views/js/lengow/order.js"></script>

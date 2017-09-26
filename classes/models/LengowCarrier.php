@@ -40,6 +40,755 @@ class LengowCarrier extends Carrier
     const COMPATIBILITY_KO = -1;
 
     /**
+     * Get all active Prestashop carriers
+     *
+     * @param integer $idCountry Prestashop country id
+     *
+     * @return array
+     */
+    public static function getActiveCarriers($idCountry = null)
+    {
+        $carriers = array();
+        if ($idCountry) {
+            $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
+                INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
+                INNER JOIN ' . _DB_PREFIX_ . 'country co ON (co.id_zone = cz.id_zone)
+                WHERE c.active = 1 AND deleted = 0 AND co.id_country = ' . (int)$idCountry;
+        } else {
+            $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier WHERE active = 1 AND deleted = 0';
+        }
+        $collection = Db::getInstance()->ExecuteS($sql);
+        foreach ($collection as $row) {
+            if (_PS_VERSION_ < '1.5') {
+                $carriers[$row['id_carrier']] = $row['name'];
+            } else {
+                $carriers[$row['id_reference']] = $row['name'];
+            }
+        }
+        return $carriers;
+    }
+
+    /**
+     * Get Default export carrier
+     *
+     * @return Carrier|false
+     */
+    public static function getDefaultExportCarrier()
+    {
+        $idCarrier = (int)LengowConfiguration::getGlobalValue('LENGOW_EXPORT_CARRIER_DEFAULT');
+        if ($idCarrier > 0) {
+            $idCarrierActive = self::getIdActiveCarrierByIdCarrier($idCarrier);
+            // compatibility for Prestashop 1.4
+            $idCarrier = $idCarrierActive ? $idCarrierActive : $idCarrier;
+            $carrier = new Carrier($idCarrier);
+            if ($carrier->id) {
+                return $carrier;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get active carrier id by country and carrier
+     *
+     * @param integer $idCarrier Prestashop carrier id
+     * @param integer $idCountry Prestashop country id
+     *
+     * @return integer|false
+     */
+    public static function getIdActiveCarrierByIdCarrier($idCarrier, $idCountry = null)
+    {
+        // search with id_carrier for Prestashop 1.4 and id_reference for other versions
+        $idReference = _PS_VERSION_ < '1.5' ? 'c.id_carrier' : 'c.id_reference';
+        if ($idCountry) {
+            $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
+                INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
+                INNER JOIN ' . _DB_PREFIX_ . 'country co ON (co.id_zone = cz.id_zone)
+                WHERE ' . $idReference . ' = ' . (int)$idCarrier . ' AND co.id_country = ' . (int)$idCountry;
+        } else {
+            $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c WHERE ' . $idReference . ' = ' . (int)$idCarrier;
+        }
+        $row = Db::getInstance()->getRow($sql);
+        if ($row) {
+            if ((int)$row['deleted'] == 1) {
+                if (_PS_VERSION_ < '1.5') {
+                    return false;
+                }
+                if ($idCountry) {
+                    $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
+                        INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
+                        INNER JOIN ' . _DB_PREFIX_ . 'country co ON (co.id_zone = cz.id_zone)
+                        WHERE c.deleted = 0 AND c.active = 1 AND co.id_country = ' . (int)$idCountry
+                        . ' AND id_reference= ' . (int)$row['id_reference'];
+                } else {
+                    $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
+                        WHERE c.deleted = 0 AND c.active = 1 AND c.id_reference = ' . (int)$row['id_reference'];
+                }
+                $row2 = Db::getInstance()->getRow($sql);
+                if ($row2) {
+                    return (int)$row2['id_carrier'];
+                }
+            } else {
+                return (int)$row['id_carrier'];
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get reference carrier id by country and carrier
+     *
+     * @param integer $idCarrier Prestashop carrier id
+     * @param integer $idCountry Prestashop country id
+     *
+     * @return integer|false
+     */
+    public static function getIdReferenceByIdCarrier($idCarrier, $idCountry = null)
+    {
+        if ($idCountry) {
+            $sql = 'SELECT c.id_reference FROM ' . _DB_PREFIX_ . 'carrier as c
+                INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone as cz ON (cz.id_carrier = c.id_carrier)
+                INNER JOIN ' . _DB_PREFIX_ . 'country as co ON (co.id_zone = cz.id_zone)
+                WHERE c.id_carrier = ' . (int)$idCarrier . ' AND co.id_country = ' . (int)$idCountry;
+        } else {
+            $sql = 'SELECT c.id_reference FROM ' . _DB_PREFIX_ . 'carrier as c WHERE c.id_carrier = ' . (int)$idCarrier;
+        }
+        $result = Db::getInstance()->getRow($sql);
+        if ($result) {
+            return (int)$result['id_reference'];
+        }
+        return false;
+    }
+
+    /**
+     * Get carrier id by country id, marketplace id and carrier marketplace name
+     *
+     * @param integer $idCountry Prestashop country id
+     * @param string $idMarketplace Lengow marketplace id
+     * @param string $carrierMarketplaceName Lengow marketplace carrier name
+     *
+     * @return integer|false
+     */
+    public static function getIdCarrierByCarrierMarketplaceName($idCountry, $idMarketplace, $carrierMarketplaceName)
+    {
+        if ($carrierMarketplaceName != '') {
+            // find in lengow marketplace carrier country table
+            $result = Db::getInstance()->getRow(
+                'SELECT lmcc.id_carrier FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country as lmcc
+                INNER JOIN ' . _DB_PREFIX_ . 'lengow_carrier_marketplace as lcm
+                    ON lcm.id = lmcc.id_carrier_marketplace
+                WHERE lmcc.id_country = ' . (int)$idCountry . '
+                AND lmcc.id_marketplace = "' . (int)$idMarketplace . '"
+                AND lcm.carrier_marketplace_name = "' . pSQL($carrierMarketplaceName) . '"'
+            );
+            if ($result) {
+                return self::getIdActiveCarrierByIdCarrier($result["id_carrier"], (int)$idCountry);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get all carrier marketplace
+     *
+     * @return array
+     */
+    public static function getAllCarrierMarketplace()
+    {
+        $results = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace');
+        return is_array($results) ? $results : array();
+    }
+
+    /**
+     * Get all carriers marketplace by marketplace id
+     *
+     * @param integer $idMarketplace Lengow marketplace id
+     *
+     * @return array
+     */
+    public static function getAllCarrierMarketplaceByIdMarketplace($idMarketplace)
+    {
+        $results = Db::getInstance()->ExecuteS(
+            'SELECT 
+                lcm.carrier_marketplace_name,
+                lcm.carrier_marketplace_label,
+                lcm.id as id_carrier_marketplace,
+                lm.id as id_marketplace,
+                lmcm.id as id_marketplace_carrier_marketplace
+            FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace as lcm
+            INNER JOIN ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace as lmcm
+                ON lcm.id = lmcm.id_carrier_marketplace
+            INNER JOIN ' . _DB_PREFIX_ . 'lengow_marketplace as lm
+                ON lm.id = lmcm.id_marketplace
+            WHERE lm.id = "' . (int)$idMarketplace . '"'
+        );
+        return is_array($results) ? $results : array();
+    }
+
+    /**
+     * Get carrier marketplace id
+     *
+     * @param string $carrierMarketplaceName Lengow carrier marketplace name
+     *
+     * @return integer|false
+     */
+    public static function getIdCarrierMarketplace($carrierMarketplaceName)
+    {
+        $result = Db::getInstance()->ExecuteS(
+            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace
+            WHERE carrier_marketplace_name = "' . pSQL($carrierMarketplaceName) . '"'
+        );
+        return count($result) > 0 ? (int)$result[0]['id'] : false;
+    }
+
+    /**
+     * Get carrier marketplace
+     *
+     * @param string $idCarrierMarketplace Lengow carrier marketplace id
+     *
+     * @return integer|false
+     */
+    public static function getCarrierMarketplaceById($idCarrierMarketplace)
+    {
+        $result = Db::getInstance()->getRow(
+            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace WHERE id = ' . (int)$idCarrierMarketplace
+        );
+        return $result ? $result : false;
+    }
+
+    /**
+     * Sync Lengow carrier marketplaces
+     */
+    public static function syncCarrierMarketplace()
+    {
+        LengowMarketplace::loadApiMarketplace();
+        if (LengowMarketplace::$marketplaces && count(LengowMarketplace::$marketplaces) > 0) {
+            foreach (LengowMarketplace::$marketplaces as $marketplaceName => $marketplace) {
+                if (isset($marketplace->orders->carriers)) {
+                    $idMarketplace = LengowMarketplace::getIdMarketplace($marketplaceName);
+                    foreach ($marketplace->orders->carriers as $carrierMarketplaceName => $carrier) {
+                        $idCarrierMarketplace = self::getIdCarrierMarketplace($carrierMarketplaceName);
+                        if (!$idCarrierMarketplace) {
+                            $idCarrierMarketplace = self::insertCarrierMarketplace(
+                                $carrierMarketplaceName,
+                                $carrier->label
+                            );
+                        }
+                        if ($idMarketplace && $idCarrierMarketplace) {
+                            self::matchCarrierMarketplaceWithMarketplace($idMarketplace, $idCarrierMarketplace);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Insert a new carrier marketplace in the table
+     *
+     * @param string $carrierMarketplaceName Lengow carrier marketplace name
+     * @param string $carrierMarketplaceLabel Lengow carrier marketplace label
+     *
+     * @return integer|false
+     */
+    public static function insertCarrierMarketplace($carrierMarketplaceName, $carrierMarketplaceLabel)
+    {
+        $params = array(
+            'carrier_marketplace_name' => pSQL($carrierMarketplaceName),
+            'carrier_marketplace_label' => pSQL($carrierMarketplaceLabel)
+        );
+        $db = Db::getInstance();
+        if (_PS_VERSION_ < '1.5') {
+            $success = $db->autoExecute(_DB_PREFIX_ . 'lengow_carrier_marketplace', $params, 'INSERT');
+        } else {
+            $success = $db->insert('lengow_carrier_marketplace', $params);
+        }
+        return $success ? self::getIdCarrierMarketplace($carrierMarketplaceName) : false;
+    }
+
+    /**
+     * Match carrier marketplace with one marketplace
+     *
+     * @param string $idMarketplace Lengow marketplace id
+     * @param string $idCarrierMarketplace Lengow carrier marketplace id
+     *
+     * @return boolean
+     */
+    public static function matchCarrierMarketplaceWithMarketplace($idMarketplace, $idCarrierMarketplace)
+    {
+        $db = Db::getInstance();
+        $result = Db::getInstance()->ExecuteS(
+            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace
+            WHERE id_marketplace = ' . $idMarketplace . ' AND id_carrier_marketplace = ' . $idCarrierMarketplace
+        );
+        if (count($result) == 0) {
+            $params = array(
+                'id_marketplace' => pSQL($idMarketplace),
+                'id_carrier_marketplace' => pSQL($idCarrierMarketplace)
+            );
+            if (_PS_VERSION_ < '1.5') {
+                $success = $db->autoExecute(_DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace', $params, 'INSERT');
+            } else {
+                $success = $db->insert('lengow_marketplace_carrier_marketplace', $params);
+            }
+        } else {
+            $success = true;
+        }
+        return $success;
+    }
+
+    /**
+     * Clean carrier marketplace matching for old carriers
+     */
+    public static function cleanCarrierMarketplaceMatching()
+    {
+        LengowMarketplace::loadApiMarketplace();
+        if (LengowMarketplace::$marketplaces && count(LengowMarketplace::$marketplaces) > 0) {
+            foreach (LengowMarketplace::$marketplaces as $marketplaceName => $marketplace) {
+                $idMarketplace = LengowMarketplace::getIdMarketplace($marketplaceName);
+                if ($idMarketplace) {
+                    // get all carrier saved in database
+                    $carrierMarketplaces = self::getAllCarrierMarketplaceByIdMarketplace($idMarketplace);
+                    // get all current marketplace carriers with api
+                    $currentCarrierMarketplaces = array();
+                    if (isset($marketplace->orders->carriers)) {
+                        foreach ($marketplace->orders->carriers as $carrierMarketplaceName => $carrierMarketplace) {
+                            $currentCarrierMarketplaces[$carrierMarketplaceName] = $carrierMarketplace->label;
+                        }
+                    }
+                    // if the carrier is no longer on the marketplace, removal of matching
+                    foreach ($carrierMarketplaces as $carrierMarketplace) {
+                        if (!array_key_exists(
+                            $carrierMarketplace['carrier_marketplace_name'],
+                            $currentCarrierMarketplaces
+                        )) {
+                            // delete marketplace carrier matching
+                            Db::getInstance()->delete(
+                                _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace',
+                                'id = ' . (int)$carrierMarketplace['id_marketplace_carrier_marketplace']
+                            );
+                            $idCarrierMarketplace = (int)$carrierMarketplace['id_carrier_marketplace'];
+                            // delete carrier marketplace id  from default carrier if is matched
+                            self::cleanDefaultCarrierByIdMarketplace($idMarketplace, $idCarrierMarketplace);
+                            // delete carrier marketplace id from marketplace carrier country if is matched
+                            self::cleanMarketplaceCarrierCountryByIdMarketplace($idMarketplace, $idCarrierMarketplace);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Create default carrier for marketplace
+     *
+     * @param integer|null $idCountry Prestashop country id
+     * @param integer|null $idMarketplace Lengow marketplace id
+     */
+    public static function createDefaultCarrier($idCountry = null, $idMarketplace = null)
+    {
+        if (is_null($idCountry)) {
+            $idCountry = (int)Configuration::get('PS_COUNTRY_DEFAULT');
+        }
+        $marketplaces = LengowMarketplace::getAllMarketplaces();
+        foreach ($marketplaces as $marketplace) {
+            $id = (int)$marketplace['id'];
+            if (!is_null($idMarketplace) && $idMarketplace !== $id) {
+                continue;
+            }
+            if (!self::getIdDefaultCarrier($idCountry, $id)) {
+                self::insertDefaultCarrier($idCountry, $id);
+            }
+        }
+    }
+
+    /**
+     * Clean default carrier when match carrier marketplace is deleted
+     *
+     * @param integer $idMarketplace Lengow marketplace id
+     * @param integer $idCarrierMarketplace Lengow carrier marketplace id
+     */
+    public static function cleanDefaultCarrierByIdMarketplace($idMarketplace, $idCarrierMarketplace)
+    {
+        $results = Db::getInstance()->ExecuteS(
+            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
+            WHERE id_carrier_marketplace = ' . (int)$idCarrierMarketplace . '
+            AND id_marketplace = ' . (int)$idMarketplace
+        );
+        if (count($results) > 0) {
+            foreach ($results as $result) {
+                if (isset($result['id']) && $result['id'] > 0) {
+                    self::updateDefaultCarrier(
+                        (int)$result['id'],
+                        array('id_carrier_marketplace' => 0)
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * Get default carrier id
+     *
+     * @param integer $idCountry Prestashop country id
+     * @param integer $idMarketplace Lengow marketplace id
+     *
+     * @return integer|false
+     */
+    public static function getIdDefaultCarrier($idCountry, $idMarketplace)
+    {
+        $results = Db::getInstance()->ExecuteS(
+            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
+            WHERE id_country = ' . (int)$idCountry . ' AND id_marketplace = ' . (int)$idMarketplace
+        );
+        return count($results) > 0 ? (int)$results[0]['id'] : false;
+    }
+
+    /**
+     * Get default carrier by country and marketplace
+     *
+     * @param integer $idCountry Prestashop country id
+     * @param integer $idMarketplace Lengow marketplace id
+     * @param boolean $active get active carrier id
+     *
+     * @return integer|false
+     */
+    public static function getDefaultIdCarrier($idCountry, $idMarketplace, $active = false)
+    {
+        $idCarrier = false;
+        $result = Db::getInstance()->getRow(
+            'SELECT id_carrier FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
+            WHERE id_country = ' . (int)$idCountry . ' AND id_marketplace = ' . (int)$idMarketplace
+        );
+        if ($result
+            && isset($result['id_carrier'])
+            && !is_null($result['id_carrier'])
+            && (int)$result['id_carrier'] > 0
+        ) {
+            $idCarrier = (int)$result['id_carrier'];
+            $idCarrier = $active ? self::getIdActiveCarrierByIdCarrier($idCarrier, $idCountry) : $idCarrier;
+        }
+        return $idCarrier;
+    }
+
+    /**
+     * Get default carrier marketplace by country and marketplace
+     *
+     * @param integer $idCountry Prestashop country id
+     * @param integer $idMarketplace Lengow marketplace id
+     *
+     * @return integer|false
+     */
+    public static function getDefaultIdCarrierMarketplace($idCountry, $idMarketplace)
+    {
+        $idCarrier = false;
+        $result = Db::getInstance()->getRow(
+            'SELECT id_carrier_marketplace FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
+            WHERE id_country = ' . (int)$idCountry . ' AND id_marketplace = ' . (int)$idMarketplace
+        );
+        if ($result
+            && isset($result['id_carrier_marketplace'])
+            && !is_null($result['id_carrier_marketplace'])
+            && (int)$result['id_carrier_marketplace'] > 0
+        ) {
+            $idCarrier = (int)$result['id_carrier_marketplace'];
+        }
+        return $idCarrier;
+    }
+
+    /**
+     * Get default carriers not matched listed by country id
+     *
+     * @return array
+     */
+    public static function getDefaultCarrierNotMatched()
+    {
+        $defaultCarriers = array();
+        if (_PS_VERSION_ < '1.5') {
+            $sql = 'SELECT ldc.* FROM ' . _DB_PREFIX_ . 'lengow_default_carrier as ldc
+                LEFT JOIN ' . _DB_PREFIX_ . 'carrier as c ON c.id_carrier = ldc.id_carrier
+                WHERE ldc.id_carrier IS NULL OR ldc.id_carrier = 0 OR c.deleted = 1
+                ORDER BY ldc.id_country ASC';
+        } else {
+            $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
+                WHERE id_carrier IS NULL OR id_carrier = 0 ORDER BY id_country ASC';
+        }
+        $results = Db::getInstance()->executeS($sql);
+        if (is_array($results)) {
+            foreach ($results as $result) {
+                $defaultCarriers[(int)$result['id_country']][] = $result;
+            }
+        }
+        return $defaultCarriers;
+    }
+
+    /**
+     * Has default carriers not matched
+     *
+     * @return boolean
+     */
+    public static function hasDefaultCarrierNotMatched()
+    {
+        $carrierNotMatched = self::getDefaultCarrierNotMatched();
+        return count($carrierNotMatched) > 0 ? true : false;
+    }
+
+    /**
+     * Get a list of countries
+     *
+     * @return array|false
+     */
+    public static function getCountries()
+    {
+        $results = Db::getInstance()->executeS(
+            'SELECT ldc.id_country, c.iso_code, cl.name FROM ' . _DB_PREFIX_ . 'lengow_default_carrier as ldc
+            INNER JOIN ' . _DB_PREFIX_ . 'country as c ON ldc.id_country = c.id_country
+            INNER JOIN ' . _DB_PREFIX_ . 'country_lang as cl ON c.id_country = cl.id_country
+            AND cl.id_lang = ' . (int)Context::getContext()->language->id . '
+            GROUP BY ldc.id_country'
+        );
+        return count($results) > 0 ? $results : false;
+    }
+
+    /**
+     * Insert a new default carrier or a new default carrier marketplace
+     *
+     * @param integer $idCountry Prestashop country id
+     * @param integer $idMarketplace Lengow marketplace id
+     * @param array $additionalParams all additional parameters (id_carrier or id_carrier_marketplace)
+     *
+     * @return integer|false
+     */
+    public static function insertDefaultCarrier($idCountry, $idMarketplace, $additionalParams = array())
+    {
+        $params = array_merge(
+            array('id_country' => (int)$idCountry, 'id_marketplace' => (int)$idMarketplace),
+            $additionalParams
+        );
+        $db = Db::getInstance();
+        if (_PS_VERSION_ < '1.5') {
+            $success = $db->autoExecute(_DB_PREFIX_ . 'lengow_default_carrier', $params, 'INSERT');
+        } else {
+            $success = $db->insert('lengow_default_carrier', $params);
+        }
+        return $success ? self::getIdDefaultCarrier($idCountry, $idMarketplace) : false;
+    }
+
+    /**
+     * Update a default carrier or a default carrier marketplace
+     *
+     * @param integer $idDefaultCarrier Lengow default carrier id
+     * @param array $params all parameters to update default carrier (id_carrier or id_carrier_marketplace)
+     *
+     * @return integer|false
+     */
+    public static function updateDefaultCarrier($idDefaultCarrier, $params)
+    {
+        $db = Db::getInstance();
+        if (_PS_VERSION_ < '1.5') {
+            $success = $db->autoExecute(
+                _DB_PREFIX_ . 'lengow_default_carrier',
+                $params,
+                'UPDATE',
+                'id = ' . (int)$idDefaultCarrier
+            );
+        } else {
+            $success = $db->update('lengow_default_carrier', $params, 'id = ' . (int)$idDefaultCarrier);
+        }
+        return $success ? $idDefaultCarrier : false;
+    }
+
+    /**
+     * Get marketplace carrier country id
+     *
+     * @param integer $idCountry Prestashop country id
+     * @param integer $idMarketplace Lengow marketplace id
+     * @param integer $idCarrier Prestashop carrier id
+     *
+     * @return integer|false
+     */
+    public static function getIdMarketplaceCarrierCountry($idCountry, $idMarketplace, $idCarrier)
+    {
+        $result = Db::getInstance()->ExecuteS(
+            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
+            WHERE id_country = ' . (int)$idCountry . '
+            AND id_marketplace = ' . (int)$idMarketplace . '
+            AND id_carrier = ' . (int)$idCarrier
+        );
+        return count($result) > 0 ? (int)$result[0]['id'] : false;
+    }
+
+    /**
+     * Clean default carrier when match carrier marketplace is deleted
+     *
+     * @param integer $idMarketplace Lengow marketplace id
+     * @param integer $idCarrierMarketplace Lengow carrier marketplace id
+     */
+    public static function cleanMarketplaceCarrierCountryByIdMarketplace($idMarketplace, $idCarrierMarketplace)
+    {
+        $results = Db::getInstance()->ExecuteS(
+            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
+            WHERE id_carrier_marketplace = ' . (int)$idCarrierMarketplace . '
+            AND id_marketplace = ' . (int)$idMarketplace
+        );
+        if (count($results) > 0) {
+            foreach ($results as $result) {
+                if (isset($result['id']) && $result['id'] > 0) {
+                    self::updateMarketplaceCarrierCountry((int)$result['id'], 0);
+                }
+            }
+        }
+    }
+
+    /**
+     * Get marketplace carrier country id
+     *
+     * @param integer $idCountry Prestashop country id
+     * @param integer $idMarketplace Lengow marketplace id
+     * @param integer $idCarrier Prestashop carrier id
+     *
+     * @return integer|false
+     */
+    public static function getIdCarrierMarketplaceByMarketplaceCarrierCountry($idCountry, $idMarketplace, $idCarrier)
+    {
+        $result = Db::getInstance()->getRow(
+            'SELECT id_carrier_marketplace FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
+            WHERE id_country = ' . (int)$idCountry . '
+            AND id_marketplace = ' . (int)$idMarketplace . '
+            AND id_carrier = ' . (int)$idCarrier
+        );
+        if ($result && !is_null($result['id_carrier_marketplace']) && (int)$result['id_carrier_marketplace'] > 0) {
+            return (int)$result['id_carrier_marketplace'];
+        }
+        return false;
+    }
+
+    /**
+     * Get marketplace carrier country id
+     *
+     * @param integer $idCountry Prestashop country id
+     * @param integer $idMarketplace Lengow marketplace id
+     *
+     * @return integer|false
+     */
+    public static function getAllMarketplaceCarrierCountryByIdMarketplace($idCountry, $idMarketplace)
+    {
+        $carriers = array();
+        $results = Db::getInstance()->ExecuteS(
+            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
+            WHERE id_country = ' . (int)$idCountry . '
+            AND id_marketplace = ' . (int)$idMarketplace
+        );
+        if (count($results) > 0) {
+            foreach ($results as $result) {
+                $carriers[(int)$result['id_carrier']] = (int)$result['id_carrier_marketplace'];
+            }
+        }
+        return $carriers;
+    }
+
+    /**
+     * Insert a new marketplace carrier country
+     *
+     * @param integer $idCountry Prestashop country id
+     * @param integer $idMarketplace Lengow marketplace id
+     * @param integer $idCarrier Prestashop carrier id
+     * @param integer $idCarrierMarketplace Lengow carrier marketplace id
+     *
+     * @return integer|false
+     */
+    public static function insertMarketplaceCarrierCountry(
+        $idCountry,
+        $idMarketplace,
+        $idCarrier,
+        $idCarrierMarketplace
+    ) {
+        $params = array(
+            'id_country' => $idCountry,
+            'id_marketplace' => $idMarketplace,
+            'id_carrier' => $idCarrier,
+            'id_carrier_marketplace' => $idCarrierMarketplace
+        );
+        $db = Db::getInstance();
+        if (_PS_VERSION_ < '1.5') {
+            $success = $db->autoExecute(_DB_PREFIX_ . 'lengow_marketplace_carrier_country', $params, 'INSERT');
+        } else {
+            $success = $db->insert('lengow_marketplace_carrier_country', $params);
+        }
+        return $success ? self::getIdMarketplaceCarrierCountry($idCountry, $idMarketplace, $idCarrier) : false;
+    }
+
+    /**
+     * Update a marketplace carrier country
+     *
+     * @param integer $idMarketplaceCarrierCountry Lengow marketplace carrier country id
+     * @param integer $idCarrierMarketplace Lengow carrier marketplace id
+     *
+     * @return integer|false
+     */
+    public static function updateMarketplaceCarrierCountry($idMarketplaceCarrierCountry, $idCarrierMarketplace)
+    {
+        $db = Db::getInstance();
+        if (_PS_VERSION_ < '1.5') {
+            $success = $db->autoExecute(
+                _DB_PREFIX_ . 'lengow_marketplace_carrier_country',
+                array('id_carrier_marketplace' => $idCarrierMarketplace),
+                'UPDATE',
+                'id = ' . (int)$idMarketplaceCarrierCountry
+            );
+        } else {
+            $success = $db->update(
+                'lengow_marketplace_carrier_country',
+                array('id_carrier_marketplace' => $idCarrierMarketplace),
+                'id = ' . (int)$idMarketplaceCarrierCountry
+            );
+        }
+        return $success ? $idMarketplaceCarrierCountry : false;
+    }
+
+    /**
+     * Try to get a carrier marketplace code for action
+     *
+     * @param integer $idCountry Prestashop country id
+     * @param integer $idMarketplace Lengow marketplace id
+     * @param integer $idCarrier Prestashop carrier id
+     *
+     * @return string
+     */
+    public static function getCarrierMarketplaceCode($idCountry, $idMarketplace, $idCarrier)
+    {
+        $marketplaceCode = '';
+        if (_PS_VERSION_ >= '1.5') {
+            $idCarrier = self::getIdReferenceByIdCarrier($idCarrier, $idCountry);
+        }
+        // if the carrier is properly matched, get a specific carrier marketplace id
+        $idCarrierMarketplace = self::getIdCarrierMarketplaceByMarketplaceCarrierCountry(
+            $idCountry,
+            $idMarketplace,
+            $idCarrier
+        );
+        if (!$idCarrierMarketplace) {
+            // if the carrier is not matched, get a default carrier marketplace id
+            $idCarrierMarketplace = self::getDefaultIdCarrierMarketplace($idCountry, $idMarketplace);
+        }
+        if ($idCarrierMarketplace) {
+            // if the carrier marketplace is present, get carrier marketplace name
+            $carrierMarketplace = self::getCarrierMarketplaceById($idCarrierMarketplace);
+            if ($carrierMarketplace) {
+                $marketplaceCode = $carrierMarketplace['carrier_marketplace_name'];
+            }
+        }
+        // if the default carrier marketplace is not matched or empty, get Prestashop carrier name
+        if (Tools::strlen($marketplaceCode) == 0) {
+            $idActiveCarrier = self::getIdActiveCarrierByIdCarrier($idCarrier, $idCountry);
+            $idCarrier = $idActiveCarrier ? $idActiveCarrier : $idCarrier;
+            $carrier = new Carrier($idCarrier);
+            $marketplaceCode = $carrier->name;
+        }
+        return $marketplaceCode;
+    }
+
+    /**
      * Ensure carrier compatibility with SoColissimo and MondialRelay Modules
      *
      * @param integer $idCustomer Prestashop customer id
@@ -170,7 +919,7 @@ class LengowCarrier extends Carrier
                 ' . (isset($params['PRID']) ? '\'' . pSQL($params['PRID']) . '\'' : '\'\'') . ',
                 ' . (isset($params['CENAME']) ? '\'' . pSQL($params['CENAME']) . '\'' : '\'\'') . ',
                 ' . (
-                    isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\''
+                isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\''
                 ) . ',
                 ' . (isset($params['PRCOMPLADRESS']) ? '\'' . pSQL($params['PRCOMPLADRESS']) . '\'' : '\'\'') . ',
                 ' . (isset($params['PRNAME']) ? '\'' . pSQL($params['PRNAME']) . '\'' : '\'\'') . ',
@@ -197,7 +946,7 @@ class LengowCarrier extends Carrier
             $sql .= '\'' . pSQL($deliveryMode) . '\',\'\',
                 ' . (isset($params['CENAME']) ? '\'' . Tools::ucfirst(pSQL($params['CENAME'])) . '\'' : '\'\'') . ',
                 ' . (
-                    isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\''
+                isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\''
                 ) . ',
                 ' . (isset($params['CECOMPLADRESS']) ? '\'' . pSQL($params['CECOMPLADRESS']) . '\'' : '\'\'') . ',
                 ' . (isset($params['CEADRESS1']) ? '\'' . pSQL($params['CEADRESS1']) . '\'' : '\'\'') . ',
@@ -297,348 +1046,5 @@ class LengowCarrier extends Carrier
         }
         $query = rtrim($query, ', ') . ')';
         return $db->execute($query);
-    }
-
-    /**
-     * Get Id Carrier By Marketplace Carrier Sku And Country
-     *
-     * @param string $marketplaceCarrierSku Lengow carrier sku
-     * @param integer $idCountry Prestashop country id
-     *
-     * @return integer|false
-     */
-    public static function getIdCarrierByMarketplaceCarrierSku($marketplaceCarrierSku, $idCountry)
-    {
-        if ($marketplaceCarrierSku != '') {
-            // find in lengow marketplace carrier
-            $sql = 'SELECT id_carrier FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier lmc
-                WHERE id_country = ' . (int)$idCountry
-                . ' AND marketplace_carrier_sku = "' . pSQL($marketplaceCarrierSku) . '"';
-            $row = Db::getInstance()->getRow($sql);
-            if ($row) {
-                return self::getActiveCarrierByCarrierId($row["id_carrier"], (int)$idCountry);
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Get List Carrier in all Lengow Marketplace API
-     *
-     * @param boolean $force force Update
-     *
-     * @return array
-     */
-    public static function getListMarketplaceCarrierAPI($force = false)
-    {
-        if (!$force) {
-            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_LIST_MARKET_UPDATE');
-            if ((time() - strtotime($updatedAt)) < 10800) { //3 hours
-                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_LIST_MARKETPLACE'), true);
-            }
-        }
-        $finalCarrier = array();
-        $findCarrier = array();
-        $result = LengowConnector::queryApi('get', '/v3.0/marketplaces');
-        if ($result) {
-            $carrierCollection = array();
-            foreach ($result as $values) {
-                if (isset($values->orders->carriers)) {
-                    foreach ($values->orders->carriers as $key => $value) {
-                        $carrierCollection[$key] = $value->label;
-                    }
-                }
-            }
-            if ($carrierCollection) {
-                foreach ($carrierCollection as $code => $name) {
-                    if (!isset($findCarrier[$code])) {
-                        $finalCarrier[] = array('code' => $code, 'name' => $name);
-                        $finalCarrier[] = array('code' => $code . "_RELAY", 'name' => $name . ' Relay');
-                    }
-                    $findCarrier[$code] = true;
-                }
-            }
-            LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKETPLACE', Tools::jsonEncode($finalCarrier));
-            LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKET_UPDATE', date('Y-m-d H:i:s'));
-        }
-        return $finalCarrier;
-    }
-
-    /**
-     * Sync Marketplace's Carrier
-     */
-    public static function syncListMarketplace()
-    {
-        $defaultCountryId = Configuration::get('PS_COUNTRY_DEFAULT');
-        $carrierCollection = self::getListMarketplaceCarrierAPI(true);
-        $countryCollectionId = array();
-        foreach ($carrierCollection as $carrier) {
-            $countryCollection = Db::getInstance()->ExecuteS(
-                'SELECT DISTINCT(id_country) as id_country FROM ' . _DB_PREFIX_ . 'lengow_carrier_country'
-            );
-            foreach ($countryCollection as $country) {
-                $countryCollectionId[] = $country['id_country'];
-                self::insertCountryInMarketplace($carrier['code'], $carrier['name'], $country['id_country']);
-            }
-            $countryCollection = Db::getInstance()->ExecuteS(
-                'SELECT DISTINCT(id_country) as id_country FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier'
-            );
-            foreach ($countryCollection as $country) {
-                $countryCollectionId[] = $country['id_country'];
-                self::insertCountryInMarketplace($carrier['code'], $carrier['name'], $country['id_country']);
-            }
-            if (count($countryCollection) == 0 || !in_array($defaultCountryId, $countryCollectionId)) {
-                foreach ($carrierCollection as $carrier) {
-                    self::insertCountryInMarketplace($carrier['code'], $carrier['name'], $defaultCountryId);
-                }
-            }
-        }
-    }
-
-    /**
-     * Insert Data into lengow marketplace carrier table
-     *
-     * @param string $code country code iso
-     * @param string $name country name
-     * @param integer $idCountry Prestashop country id
-     *
-     * @param integer
-     */
-    public static function insertCountryInMarketplace($code, $name, $idCountry)
-    {
-        $result = Db::getInstance()->ExecuteS(
-            'SELECT id_country FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier
-                    WHERE marketplace_carrier_sku = "' . pSQL($code) . '" AND
-                    id_country = ' . (int)$idCountry
-        );
-        if (count($result) == 0) {
-            if (_PS_VERSION_ < '1.5') {
-                Db::getInstance()->autoExecute(
-                    _DB_PREFIX_ . 'lengow_marketplace_carrier',
-                    array(
-                        'id_country' => (int)$idCountry,
-                        'marketplace_carrier_sku' => pSQL($code),
-                        'marketplace_carrier_name' => pSQL($name),
-                    ),
-                    'INSERT'
-                );
-            } else {
-                Db::getInstance()->insert(
-                    'lengow_marketplace_carrier',
-                    array(
-                        'id_country' => (int)$idCountry,
-                        'marketplace_carrier_sku' => pSQL($code),
-                        'marketplace_carrier_name' => pSQL($name),
-                    )
-                );
-            }
-        }
-    }
-
-    /**
-     * Get all active carriers
-     *
-     * @param integer $idCountry Prestashop country id
-     *
-     * @return array
-     */
-    public static function getActiveCarriers($idCountry = null)
-    {
-        $carriers = array();
-        if ($idCountry) {
-            $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
-                INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
-                INNER JOIN ' . _DB_PREFIX_ . 'country co ON (co.id_zone = cz.id_zone)
-                WHERE c.active = 1 AND deleted = 0 AND co.id_country = ' . (int)$idCountry;
-        } else {
-            $sql = 'SELECT id_carrier, id_reference, name
-                FROM ' . _DB_PREFIX_ . 'carrier WHERE active = 1 AND deleted = 0';
-        }
-        $collection = Db::getInstance()->ExecuteS($sql);
-        foreach ($collection as $row) {
-            if (_PS_VERSION_ < '1.5') {
-                $carriers[$row['id_carrier']] = $row['name'];
-            } else {
-                $carriers[$row['id_reference']] = $row['name'];
-            }
-        }
-        return $carriers;
-    }
-
-
-    /**
-     * Get Default carrier
-     *
-     * @param mixed $idCountry Prestashop country id
-     *
-     * @return Carrier|false
-     */
-    public static function getDefaultCarrier($idCountry = false)
-    {
-        $idCarrier = false;
-        // get default id with lengow tables for a specific country id
-        if ($idCountry) {
-            $sql = 'SELECT id_carrier FROM ' . _DB_PREFIX_ . 'lengow_carrier_country
-                WHERE id_country = ' . (int)$idCountry;
-            $row = Db::getInstance()->getRow($sql);
-            if ($row) {
-                // get newest carrier id
-                $idCarrier = self::getActiveCarrierByCarrierId($row["id_carrier"], $idCountry);
-            }
-        } else {
-            $idCountry = (int)Configuration::get('PS_COUNTRY_DEFAULT');
-            // get default id with lengow tables without country id
-            $sql = 'SELECT id_carrier FROM ' . _DB_PREFIX_ . 'lengow_carrier_country
-                WHERE id_country = ' . $idCountry;
-            $row = Db::getInstance()->getRow($sql);
-            if ($row) {
-                // get newest carrier id
-                $idCarrier = self::getActiveCarrierByCarrierId($row["id_carrier"], $idCountry);
-            }
-            // get first carrier id with prestashop tables for default country
-            if (!$idCarrier) {
-                $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
-                    INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
-                    INNER JOIN ' . _DB_PREFIX_ . 'country co ON (co.id_zone = cz.id_zone)
-                    WHERE c.active = 1 AND deleted = 0 AND co.id_country = ' . $idCountry;
-                $row = Db::getInstance()->getRow($sql);
-                if ($row) {
-                    $idCarrier = (int)$row["id_carrier"];
-                }
-            }
-        }
-        if ($idCarrier) {
-            $carrier = new Carrier($idCarrier);
-            if ($carrier->id) {
-                return $carrier;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Get active carrier by country
-     *
-     * @param integer $idCarrier Prestashop carrier id
-     * @param integer $idCountry Prestashop country id
-     *
-     * @return integer|false
-     */
-    public static function getActiveCarrierByCarrierId($idCarrier, $idCountry)
-    {
-        // search with id_carrier for Prestashop 1.4 and id_reference for other versions
-        $idReference = _PS_VERSION_ < '1.5' ? 'c.id_carrier' : 'c.id_reference';
-        $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
-            INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
-            INNER JOIN ' . _DB_PREFIX_ . 'country co ON (co.id_zone = cz.id_zone)
-            WHERE ' . $idReference . ' = ' . (int)$idCarrier . ' AND co.id_country = ' . (int)$idCountry;
-        $row = Db::getInstance()->getRow($sql);
-        if ($row) {
-            if ((int)$row['deleted'] == 1) {
-                if (_PS_VERSION_ < '1.5') {
-                    return false;
-                }
-                $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
-                    INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
-                    INNER JOIN ' . _DB_PREFIX_ . 'country co ON (co.id_zone = cz.id_zone)
-                    WHERE c.deleted = 0 AND c.active = 1 AND co.id_country = ' . (int)$idCountry
-                    . ' AND id_reference= ' . (int)$row['id_reference'];
-                $row2 = Db::getInstance()->getRow($sql);
-                if ($row2) {
-                    return (int)$row2['id_carrier'];
-                }
-            } else {
-                return (int)$row['id_carrier'];
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Get List Carrier in all Lengow Marketplace
-     *
-     * @param integer $idCountry Prestashop country id
-     *
-     * @return array
-     */
-    public static function getListMarketplaceCarrier($idCountry = null)
-    {
-        $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
-        $condition = $idCountry ? 'WHERE lmc.id_country = ' . (int)$idCountry : '';
-        $sql = 'SELECT lmc.id, lmc.id_carrier, co.iso_code, cl.name, lmc.id_country, lmc.marketplace_carrier_sku,
-            lmc.marketplace_carrier_name FROM '
-            . _DB_PREFIX_ . 'lengow_marketplace_carrier lmc INNER JOIN '
-            . _DB_PREFIX_ . 'country co ON lmc.id_country=co.id_country INNER JOIN '
-            . _DB_PREFIX_ . 'country_lang cl ON co.id_country=cl.id_country
-            AND cl.id_lang= ' . (int)Context::getContext()->language->id
-            . ' ' . $condition . ' ORDER BY CASE WHEN co.id_country = ' . (int)$defaultCountry
-            . ' THEN 1 ELSE cl.name END ASC, marketplace_carrier_sku ASC;';
-
-        $collection = Db::getInstance()->ExecuteS($sql);
-
-        return $collection;
-    }
-
-    /**
-     * Insert a new marketplace carrier country in the table
-     *
-     * @param integer $idCountry Prestashop country id
-     *
-     * @return boolean
-     */
-    public static function insert($idCountry)
-    {
-        $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
-        $sql = 'SELECT marketplace_carrier_sku, marketplace_carrier_name 
-                FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier WHERE id_country = ' . (int)$defaultCountry;
-        $marketplaceCarriers = Db::getInstance()->executeS($sql);
-        foreach ($marketplaceCarriers as $key) {
-            if (_PS_VERSION_ < '1.5') {
-                DB::getInstance()->autoExecute(
-                    _DB_PREFIX_ . 'lengow_marketplace_carrier',
-                    array(
-                        'id_country' => (int)$idCountry,
-                        'marketplace_carrier_sku' => pSQL($key['marketplace_carrier_sku']),
-                        'marketplace_carrier_name' => pSQL($key['marketplace_carrier_name'])
-                    ),
-                    'INSERT'
-                );
-            } else {
-                DB::getInstance()->insert(
-                    'lengow_marketplace_carrier',
-                    array(
-                        'id_country' => (int)$idCountry,
-                        'marketplace_carrier_sku' => pSQL($key['marketplace_carrier_sku']),
-                        'marketplace_carrier_name' => pSQL($key['marketplace_carrier_name'])
-                    )
-                );
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Delete a marketplace carrier country
-     *
-     * @param integer $idCountry Prestashop country id
-     *
-     * @return action
-     */
-    public static function deleteMarketplaceCarrier($idCountry)
-    {
-        $db = DB::getInstance();
-        $db->delete(_DB_PREFIX_ . 'lengow_marketplace_carrier', 'id_country = ' . (int)$idCountry);
-        return $db;
-    }
-
-    /**
-     * Is default Carrier exist
-     **
-     * @return boolean
-     */
-    public static function isDefaultCarrierActive()
-    {
-        $idDefaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
-        return self::getDefaultCarrier($idDefaultCountry);
     }
 }

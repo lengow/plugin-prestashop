@@ -168,7 +168,10 @@ class LengowPaymentModule extends PaymentModule
                     $this->context->country = new Country($address->id_country, $this->context->cart->id_lang);
                     if (!$this->context->country->active) {
                         throw new LengowException(
-                            LengowMain::setLogMessage('lengow_log.exception.delivery_country_not_active')
+                            LengowMain::setLogMessage(
+                                'lengow_log.exception.delivery_country_not_active',
+                                array('country_name' => $this->context->country->name)
+                            )
                         );
                     }
                 }

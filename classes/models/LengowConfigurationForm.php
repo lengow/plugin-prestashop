@@ -36,6 +36,8 @@ class LengowConfigurationForm
 
     /**
      * Construct
+     *
+     * @param array $params construct parameters
      */
     public function __construct($params)
     {
@@ -131,7 +133,6 @@ class LengowConfigurationForm
                 break;
             case 'select':
                 $html .= '<label class="control-label">' . $label . '</label>
-
                     <select class="form-control lengow_select" name="' . $name . '">';
                 foreach ($input['collection'] as $row) {
                     $selected = $row['id'] == $value ? 'selected' : '';

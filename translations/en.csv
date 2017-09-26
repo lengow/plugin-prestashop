@@ -87,10 +87,9 @@ order.screen.import_manuel|Manual
 order.screen.button_update_orders|Synchronize Orders
 order.screen.button_reimport_order|Re-import Orders
 order.screen.button_resend_order|Resend Orders
-order.screen.cron|Want to automate your order updates?
 order.screen.preprod_warning_message|You are in pre-production mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>
 order.screen.import_single_warning_message|Your version of PrestaShop is between 1.5.2 and 1.5.4. For security reasons, only one order will be imported by synchronization.
-order.screen.no_carrier_warning_message|You can't import orders: you haven't specified a default carrier. <a href=%{url}>Change this</a>
+order.screen.no_carrier_warning_message|Some orders may not be able to import because it lacks a default carrier on one of your countries of delivery. <a href=%{url}>Change this</a>
 order.screen.not_imported|not imported
 order.screen.not_sent|not sent
 order.screen.refresh_order|refresh order
@@ -121,32 +120,31 @@ order.table.delivery_country|Country
 order.table.order_item|Quantity
 order.table.total_paid|Total
 order.table.extra|Extra
+order_setting.screen.carrier_management_title|Manage your carrier by country
+order_setting.screen.carrier_management_description|To retrieve all of your orders, select a default carrier for each delivery country
+order_setting.screen.marketplace|marketplace(s)
+order_setting.screen.see_delivery_countries|See all my delivery countries
+order_setting.screen.marketplace_matching_title|%{country_name} delivery methods
+order_setting.screen.marketplace_matching_description|Here you have the possibility to choose the different delivery methods for each of the orders destined for %{country_name} from marketplaces activated in your account.
+order_setting.screen.country_wt_carrier|Are you missing carriers in your list?
+order_setting.screen.please_setup_then|Manage carriers
+order_setting.screen.default_carrier_prestashop|Your default Prestashop carrier
+order_setting.screen.please_select_carrier_prestashop|Please select a Prestashop carrier
+order_setting.screen.no_default_carrier_selected|No default Prestashop carrier selected
+order_setting.screen.default_carrier_marketplace|Your default %{marketplace_name} carrier
+order_setting.screen.please_select_carrier_marketplace|Select the carrier code for %{marketplace_name}
+order_setting.screen.no_default_carrier_marketplace_selected|No default carrier code selected
+order_setting.screen.tooltip_default_carrier|You have not yet configured the default carrier for this channel
+order_setting.screen.no_carrier_enabled|You don't have any Prestashop asset carriers for %{country_name}.
+order_setting.screen.button_cancel|Cancel
 order_setting.screen.order_status_title|Order Status
 order_setting.screen.order_status_description|Match your Lengow order status to retrieve them in your orders easily
-order_setting.screen.carrier_management_title|Marketplace carrier management
-order_setting.screen.carrier_management_description|Select the default carrier that you would like to apply to your orders for each country that you are active in. Then, match your marketplace carrier with the PrestaShop carrier
-order_setting.screen.country_wt_carrier|Some countries may have no configured carriers, in which case,
-order_setting.screen.please_setup_then|please setup them
-order_setting.screen.add_new_country|Add a new country
-order_setting.screen.default_country|default
 order_setting.screen.import_setting_title|Order import
-order_setting.screen.select_a_country|Please choose a country...
 order_setting.screen.import_setting_description|Manage your import settings for marketplace orders here
 order_setting.screen.nb_days|days
-order_setting.screen.cron_title|Cron settings
-order_setting.screen.cron_description|Use the  Crontab Module to import orders from Lengow
-order_setting.screen.cron_not_configured|Cron import is not configured in your PrestaShop
-order_setting.screen.cron_configured|Cron Import exists in your PrestaShop
-order_setting.screen.cron_if_not_exists|or
-order_setting.screen.cron_install_plugin|You can install the 'Crontab' PrestaShop Plugin
-order_setting.screen.cron_manual_installation|If you are using an unix system, you can use unix crontab as follows:
-order_setting.screen.button_add_country|Add
-order_setting.screen.button_cancel_country|Cancel
-order_setting.screen.please_select_carrier|Please select a carrier...
-order_setting.screen.default_carrier|Default carrier
-order_setting.screen.no_default_carrier_selected|No default carrier selected
-order_setting.screen.confirmation_delete_carrier_country|Are you sure?
 global_setting.screen.notification_alert_title|Notifications & alerts
+global_setting.screen.default_export_carrier_title|Calculation of shipping costs
+global_setting.screen.default_export_carrier_description|The shipping costs for catalog generation will be calculated based on the selected carrier.
 global_setting.screen.preprod_mode_title|Pre-production Mode
 global_setting.screen.preprod_mode_description|Use pre-production mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your pre-production server ONLY
 global_setting.screen.log_file_title|Log Files
@@ -203,6 +201,7 @@ lengow_setting.lengow_export_out_stock_legend|Activate this option if you want t
 lengow_setting.lengow_export_format_title|Export the default format
 lengow_setting.lengow_export_file_enabled_title|Export in a file
 lengow_setting.lengow_export_file_enabled_legend|You should use this option if you have 3,000 products or more
+lengow_setting.lengow_export_carrier_default_title|Default export carrier
 lengow_setting.lengow_last_export_title|Last export
 lengow_setting.lengow_order_id_process_title|Orders in preparation
 lengow_setting.lengow_order_id_shipped_title|Shipped orders
@@ -226,17 +225,11 @@ lengow_setting.lengow_import_single_enabled_legend|Useful for PrestaShop version
 lengow_setting.lengow_import_in_progress_title|Import in progress
 lengow_setting.lengow_last_import_cron_title|Last Cron import
 lengow_setting.lengow_last_import_manual_title|Last manual import
-lengow_setting.lengow_cron_enabled_title|Use Crontab module PrestaShop
 lengow_setting.lengow_global_token_title|Lengow global Token
 lengow_setting.lengow_authorized_ip_title|Authorised IPs
 lengow_setting.lengow_authorized_ip_legend|Authorised IP separated by ;
 lengow_setting.lengow_tracking_enabled_title|Activate Lengow tracking
 lengow_setting.lengow_tracking_id_title|Lengow Tracking ID
-lengow_setting.lengow_order_stat_title|Order statistics
-lengow_setting.lengow_order_stat_update_title|Order statistics update
-lengow_setting.lengow_account_status_title|Account status
-lengow_setting.lengow_account_status_update_title|Account status update
-lengow_setting.lengow_option_cms_update_title|Option cms update
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
@@ -261,7 +254,7 @@ lengow_log.exception.no_connection_webservice|connection didn't work with the Le
 lengow_log.exception.error_lengow_webservice|Lengow webservice: %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|order could not be saved
 lengow_log.exception.carrier_shipping_address_no_country|shipping address doesn't contain the country
-lengow_log.exception.no_default_carrier_for_country|you must select a default carrier for the country : %{country_name}
+lengow_log.exception.no_default_carrier_for_country|you must select a default carrier for the country: %{country_name} and marketplace: %{marketplace_name}
 lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} does not feature in the marketplace list
 lengow_log.exception.order_line_required|order line is required but cannot be not found in order
 lengow_log.exception.action_not_valid|action %{action} is not valid
@@ -277,7 +270,7 @@ lengow_log.exception.cannot_load_order_status|cannot load order status
 lengow_log.exception.order_creation_failed|PrestaShop order creation failed
 lengow_log.exception.payment_module_not_active|payment module is not active
 lengow_log.exception.cart_cannot_be_loaded|cart cannot be loaded, or an order has already been placed using this cart
-lengow_log.exception.delivery_country_not_active|the country in the delivery address is not active
+lengow_log.exception.delivery_country_not_active|the country %{country_name} in the delivery address is not active
 lengow_log.exception.product_is_not_listed|product %{product_id} is not listed as part of the current order
 lengow_log.exception.unable_to_save_order|unable to save PrestaShop order - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
