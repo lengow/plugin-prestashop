@@ -365,6 +365,9 @@ class LengowMarketplace
                             $trackingUrl = str_replace('@', $trackingNumber, $carrier->url);
                             // Add default value if tracking url is empty
                             if (Tools::strlen($trackingUrl) == 0) {
+                                if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
+                                    continue;
+                                }
                                 $defaultValue = $this->getDefaultValue((string)$arg);
                                 $trackingUrl = $defaultValue ? $defaultValue : $arg . ' not available';
                             }
