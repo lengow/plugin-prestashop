@@ -585,7 +585,7 @@ class LengowList
         $html = '<nav id="nav_' . $this->id . '" class="' . $navClass . '">';
         $html .= '<div class="lgw-pagination-pages">';
         $html .= '<span class="lengow_number">' . $this->paginationFrom . '</span> -
-            <span class="lengow_number">' . $this->paginationTo . '</span>'
+            <span class="lengow_number">' . $this->paginationTo . '</span> '
             . $this->locale->t('product.table.pagination_of')
             . ' <span class="lengow_number">' . $this->total . '</span>';
         $html .= '</div>';

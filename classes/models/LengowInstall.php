@@ -56,13 +56,16 @@ class LengowInstall
      * @var array all module tables
      */
     static public $tables = array(
-        'lengow_actions',
-        'lengow_carrier_country',
-        'lengow_logs_import',
-        'lengow_marketplace_carrier',
         'lengow_orders',
         'lengow_order_line',
+        'lengow_logs_import',
         'lengow_product',
+        'lengow_actions',
+        'lengow_marketplace',
+        'lengow_carrier_marketplace',
+        'lengow_marketplace_carrier_marketplace',
+        'lengow_default_carrier',
+        'lengow_marketplace_carrier_country',
     );
 
     /**
@@ -103,7 +106,7 @@ class LengowInstall
      */
     public function uninstall()
     {
-        return LengowCron::removeCronTasks() && $this->uninstallTab();
+        return $this->uninstallTab();
     }
 
     /**
@@ -157,7 +160,7 @@ class LengowInstall
     /**
      * Remove admin tab
      *
-     * @return boolean result of tab uninstallation
+     * @return boolean result of tab uninstalling
      */
     private static function uninstallTab()
     {
@@ -279,6 +282,10 @@ class LengowInstall
         $this->createTab();
         // set default value for old version
         $this->setDefaultValues();
+        // reset access id for old customer
+        if (LengowConfiguration::getGlobalValue('LENGOW_VERSION') < '3.0.0') {
+            LengowConfiguration::resetAccessIds();
+        }
         // update lengow version
         if (isset($numberVersion)) {
             LengowConfiguration::updateGlobalValue('LENGOW_VERSION', $numberVersion);
@@ -328,9 +335,9 @@ class LengowInstall
      */
     public static function renameConfigurationKey($oldName, $newName)
     {
-        $tempValue = LengowConfiguration::get($oldName);
-        LengowConfiguration::updatevalue($newName, $tempValue);
-        LengowConfiguration::deleteByName($oldName);
+        $tempValue = LengowConfiguration::getGlobalValue($oldName);
+        LengowConfiguration::updateGlobalValue($newName, $tempValue);
+        Configuration::deleteByName($oldName);
     }
 
     /**

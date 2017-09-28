@@ -45,4 +45,22 @@ class LengowCountry
         $result = Db::getInstance()->getRow($sql);
         return $result['name'];
     }
+
+    /**
+     * Get country by id
+     *
+     * @param integer $idCountry Prestashop country id
+     *
+     * @return array|false
+     */
+    public static function getCountry($idCountry)
+    {
+        $result = Db::getInstance()->getRow(
+            'SELECT c.id_country, c.iso_code, cl.name FROM ' . _DB_PREFIX_ . 'country as c
+            INNER JOIN ' . _DB_PREFIX_ . 'country_lang as cl ON c.id_country = cl.id_country
+            AND cl.id_lang = ' . (int)Context::getContext()->language->id . '
+            WHERE c.id_country = ' . (int)$idCountry
+        );
+        return $result;
+    }
 }

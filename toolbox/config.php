@@ -122,6 +122,7 @@ require 'views/header.php';
                         'LENGOW_IMPORT_PREPROD_ENABLED',
                         'LENGOW_REPORT_MAIL_ENABLED',
                         'LENGOW_REPORT_MAIL_ADDRESS',
+                        'LENGOW_EXPORT_CARRIER_DEFAULT',
                         'LENGOW_TRACKING_ENABLED',
                         'LENGOW_TRACKING_ID',
                     )

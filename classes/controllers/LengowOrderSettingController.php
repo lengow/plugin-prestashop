@@ -29,32 +29,10 @@ class LengowOrderSettingController extends LengowController
      */
     public function display()
     {
-        $importUrl = LengowMain::getImportUrl();
-        $this->context->smarty->assign('import_url', $importUrl);
-        $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
-        $countries = LengowCarrierCountry::getCountries();
-        $listCarrier = LengowCarrierCountry::listCarrierByCountry();
-        $idCountries = LengowCarrierCountry::getIdCountries($listCarrier);
-        $defaultCarrierCountries = array();
-        $listCarrierByCountry = array();
-        foreach ($idCountries as $idCountry) {
-            foreach ($listCarrier as $carrier) {
-                if ($carrier['id_country'] == $idCountry) {
-                    $defaultCarrierCountries[$idCountry]['lengow_country_id'] = $carrier['id'];
-                    $defaultCarrierCountries[$idCountry]['id_carrier'] = $carrier['id_carrier'];
-                    $defaultCarrierCountries[$idCountry]['iso_code'] = $carrier['iso_code'];
-                    $defaultCarrierCountries[$idCountry]['name'] = $carrier['name'];
-                }
-            }
-            $listCarrierByCountry[$idCountry] = LengowCarrier::getActiveCarriers($idCountry);
-        }
-        $mkpCarriers = LengowCarrier::getListMarketplaceCarrier();
-        $marketplaceCarriers = array();
-        if (count($mkpCarriers) > 0) {
-            foreach ($mkpCarriers as $row) {
-                $marketplaceCarriers[$row['id_country']][] = $row;
-            }
-        }
+        $countries = LengowCarrier::getCountries();
+        $marketplaceCounters = LengowMarketplace::getMarketplaceCounters();
+        $defaultCarrierNotMatched = LengowCarrier::getDefaultCarrierNotMatched();
+        $showCarrierNotification = count($defaultCarrierNotMatched) > 0 ? true : false;
         $form = new LengowConfigurationForm(array("fields" => LengowConfiguration::getKeys()));
         $matching = $form->buildInputs(
             array(
@@ -71,18 +49,12 @@ class LengowOrderSettingController extends LengowController
                 'LENGOW_IMPORT_STOCK_SHIP_MP'
             )
         );
-        $cronParam = $form->buildInputs(array('LENGOW_CRON_ENABLED'));
-        $form = LengowCron::getFormCron();
-        $this->context->smarty->assign('formCron', $form);
-        $this->context->smarty->assign('default_country', $defaultCountry);
-        $this->context->smarty->assign('countries', $countries);
-        $this->context->smarty->assign('cron_param', $cronParam);
-        $this->context->smarty->assign('defaultCarrierCountries', $defaultCarrierCountries);
-        $this->context->smarty->assign('listCarrierByCountry', $listCarrierByCountry);
-        $this->context->smarty->assign('marketplace_carriers', $marketplaceCarriers);
-        $this->context->smarty->assign('id_countries', $idCountries);
         $this->context->smarty->assign('matching', $matching);
         $this->context->smarty->assign('import_params', $importParams);
+        $this->context->smarty->assign('countries', $countries);
+        $this->context->smarty->assign('marketplaceCounters', $marketplaceCounters);
+        $this->context->smarty->assign('defaultCarrierNotMatched', $defaultCarrierNotMatched);
+        $this->context->smarty->assign('showCarrierNotification', $showCarrierNotification);
         parent::display();
     }
 
@@ -91,146 +63,71 @@ class LengowOrderSettingController extends LengowController
      */
     public function postProcess()
     {
-        $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
-        if (Tools::getIsset('default_carrier')) {
-            $defaultCarriers = Tools::getValue('default_carrier');
-        } else {
-            $defaultCarriers = array();
-        }
-        if (Tools::getIsset('default_marketplace_carrier')) {
-            $defaultMarketplaceCarriers = Tools::getValue('default_marketplace_carrier');
-        } else {
-            $defaultMarketplaceCarriers = array();
-        }
         $action = Tools::getValue('action');
-
+        $idCountry = Tools::getIsset('id_country') ? (int)Tools::getValue('id_country') : false;
+        $defaultCarriers = Tools::getIsset('default_carriers') ? Tools::getValue('default_carriers') : array();
+        $carrierMarketplaces = Tools::getIsset('carrier_marketplaces')
+            ? Tools::getValue('carrier_marketplaces')
+            : array();
         switch ($action) {
-            case 'add_country':
-                $idCountry = Tools::getValue('id_country');
-                LengowCarrierCountry::insert($idCountry);
-                LengowCarrier::insert($idCountry);
-                $countries = LengowCarrierCountry::getCountries();
-                $mkpCarriers = LengowCarrier::getListMarketplaceCarrier();
-                $marketplaceCarriers = array();
-                if (count($mkpCarriers) > 0) {
-                    foreach ($mkpCarriers as $row) {
-                        $marketplaceCarriers[$row['id_country']][] = $row;
-                    }
-                }
-                $newMkpCarriers = LengowCarrier::getListMarketplaceCarrier();
-                $idCountries = LengowCarrierCountry::getIdCountries($newMkpCarriers);
-                $listCarrier = LengowCarrierCountry::listCarrierByCountry();
-                $carrierItem = array();
-                $listCarrierByCountry = array();
-                $defaultCarrierCountries = array();
-                $listCarrierByCountry[$idCountry] = LengowCarrier::getActiveCarriers($idCountry);
-                foreach ($listCarrier as $carrier) {
-                    if ($carrier['id_country'] == $idCountry) {
-                        $defaultCarrierCountries[$idCountry]['lengow_country_id'] = $carrier['id'];
-                        $defaultCarrierCountries[$idCountry]['id_carrier'] = $carrier['id_carrier'];
-                        $defaultCarrierCountries[$idCountry]['iso_code'] = $carrier['iso_code'];
-                        $defaultCarrierCountries[$idCountry]['name'] = $carrier['name'];
-                    }
-                }
-                $this->context->smarty->assign('defaultCarrierCountries', $defaultCarrierCountries);
-                $this->context->smarty->assign('listCarrierByCountry', $listCarrierByCountry);
-                $this->context->smarty->assign('carrierItem', $carrierItem);
-                $this->context->smarty->assign('countries', $countries);
-                $this->context->smarty->assign('marketplace_carriers', $marketplaceCarriers);
-                $this->context->smarty->assign('id_countries', $idCountries);
-                $this->context->smarty->assign('default_country', $defaultCountry);
+            case 'open_marketplace_matching':
+                $idCountry = (int)Tools::getValue('idCountry');
+                $country = LengowCountry::getCountry($idCountry);
+                $marketplaces = LengowMarketplace::getAllMarketplaceDataByCountry($idCountry);
+                $carriers = LengowCarrier::getActiveCarriers($idCountry);
+                $this->context->smarty->assign('country', $country);
+                $this->context->smarty->assign('marketplaces', $marketplaces);
+                $this->context->smarty->assign('carriers', $carriers);
                 $module = Module::getInstanceByName('lengow');
-                $displayMarketplaceCarrier = $module->display(
+                $displayMarketplaceMatching = $module->display(
                     _PS_MODULE_LENGOW_DIR_,
-                    'views/templates/admin/lengow_order_setting/helpers/view/marketplace_carrier.tpl'
+                    'views/templates/admin/lengow_order_setting/helpers/view/marketplace_matching.tpl'
                 );
-                $displayCountries = $module->display(
-                    _PS_MODULE_LENGOW_DIR_,
-                    'views/templates/admin/lengow_order_setting/helpers/view/select_country.tpl'
-                );
-                $data = array();
-                $data['marketplace_carrier'] = preg_replace('/\r|\n/', '', $displayMarketplaceCarrier);
-                $data['countries'] = $displayCountries;
-                echo Tools::jsonEncode($data);
-                exit();
-            case 'delete_country':
-                $idCountry = Tools::getValue('id_country');
-                LengowCarrierCountry::delete($idCountry);
-                $countries = LengowCarrierCountry::getCountries();
-                LengowCarrier::deleteMarketplaceCarrier($idCountry);
-                $mkpCarriers = LengowCarrier::getListMarketplaceCarrier();
-                foreach ($mkpCarriers as $row) {
-                    $carrierItem[$row['id_country']] = $row;
-                }
-                $idCountries = LengowCarrierCountry::getIdCountries($mkpCarriers);
-                $this->context->smarty->assign('countries', $countries);
-                $this->context->smarty->assign('id_countries', $idCountries);
-                $this->context->smarty->assign('mkp_carriers', $mkpCarriers);
-                $this->context->smarty->assign('default_country', $defaultCountry);
-                $module = Module::getInstanceByName('lengow');
-                $displayCountries = $module->display(
-                    _PS_MODULE_LENGOW_DIR_,
-                    'views/templates/admin/lengow_order_setting/helpers/view/select_country.tpl'
-                );
-                $data = array();
-                $data['countries'] = $displayCountries;
-                $data['id_country'] = $idCountry;
+                $data = array('marketplace_matching' => preg_replace('/\r|\n/', '', $displayMarketplaceMatching));
                 echo Tools::jsonEncode($data);
                 exit();
             case 'process':
-                foreach ($defaultCarriers as $key => $value) {
-                    if (_PS_VERSION_ < '1.5') {
-                        Db::getInstance()->autoExecute(
-                            _DB_PREFIX_ . 'lengow_carrier_country',
-                            array('id_carrier' => (int)$value > 0 ? (int)$value : null),
-                            'UPDATE',
-                            'id = ' . (int)$key,
-                            0,
-                            true,
-                            true
+                // save carrier matching
+                if ($idCountry) {
+                    foreach ($defaultCarriers as $idMarketplace => $value) {
+                        $idCarrier = isset($value['carrier']) ? (int)$value['carrier'] : null;
+                        $idCarrierMarketplace = isset($value['carrier_marketplace'])
+                            ? (int)$value['carrier_marketplace']
+                            : null;
+                        $params = array(
+                            'id_carrier' => $idCarrier,
+                            'id_carrier_marketplace' => $idCarrierMarketplace
                         );
-                    } else {
-                        Db::getInstance()->update(
-                            'lengow_carrier_country',
-                            array('id_carrier' => (int)$value > 0 ? (int)$value : null),
-                            'id = ' . (int)$key,
-                            0,
-                            true,
-                            true
-                        );
+                        $id = LengowCarrier::getIdDefaultCarrier($idCountry, (int)$idMarketplace);
+                        if ($id) {
+                            LengowCarrier::updateDefaultCarrier($id, $params);
+                        } else {
+                            LengowCarrier::insertDefaultCarrier($idCountry, (int)$idMarketplace, $params);
+                        }
+                    }
+                    foreach ($carrierMarketplaces as $idMarketplace => $value) {
+                        foreach ($value as $idCarrier => $idCarrierMarketplace) {
+                            $idCarrierMarketplace = (int)$idCarrierMarketplace > 0 ? (int)$idCarrierMarketplace : null;
+                            $id = LengowCarrier::getIdMarketplaceCarrierCountry(
+                                $idCountry,
+                                $idMarketplace,
+                                $idCarrier
+                            );
+                            if ($id) {
+                                LengowCarrier::updateMarketplaceCarrierCountry($id, $idCarrierMarketplace);
+                            } else {
+                                LengowCarrier::insertMarketplaceCarrierCountry(
+                                    $idCountry,
+                                    $idMarketplace,
+                                    $idCarrier,
+                                    $idCarrierMarketplace
+                                );
+                            }
+                        }
                     }
                 }
-                foreach ($defaultMarketplaceCarriers as $key => $value) {
-                    if (_PS_VERSION_ < '1.5') {
-                        Db::getInstance()->autoExecute(
-                            _DB_PREFIX_ . 'lengow_marketplace_carrier',
-                            array('id_carrier' => (int)$value > 0 ? (int)$value : null),
-                            'UPDATE',
-                            'id = ' . (int)$key,
-                            0,
-                            true,
-                            true
-                        );
-                    } else {
-                        Db::getInstance()->update(
-                            'lengow_marketplace_carrier',
-                            array('id_carrier' => (int)$value > 0 ? (int)$value : null),
-                            'id = ' . (int)$key,
-                            0,
-                            true,
-                            true
-                        );
-                    }
-                }
+                // save other settings
                 $form = new LengowConfigurationForm(array("fields" => LengowConfiguration::getKeys()));
-                if (isset($_REQUEST['LENGOW_CRON_ENABLED'])) {
-                    LengowCron::addCronTasks();
-                } else {
-                    $moduleCron = Module::getInstanceByName('cronjobs');
-                    if ($moduleCron && $moduleCron->active) {
-                        LengowCron::removeCronTasks();
-                    }
-                }
                 $form->postProcess(
                     array(
                         'LENGOW_IMPORT_SHIP_MP_ENABLED',
@@ -240,9 +137,7 @@ class LengowOrderSettingController extends LengowController
                 );
                 break;
             default:
-                LengowCarrier::syncListMarketplace();
-                LengowCarrierCountry::createDefaultCarrier();
-                LengowCarrierCountry::listCarrierByCountry();
+                LengowSync::syncCarrier();
                 break;
         }
     }

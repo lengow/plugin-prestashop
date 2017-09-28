@@ -87,10 +87,8 @@ order.screen.import_manuel|Manuel
 order.screen.button_update_orders|Synchroniser les commandes
 order.screen.button_reimport_order|Réimporter mes commandes
 order.screen.button_resend_order|Renvoyer mes commandes
-order.screen.cron|Vous voulez automatiser la mise à jour de vos commandes ?
-order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <br /><a href=%{url}>Retourner en mode production ?</a>
+order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production ?</a>
 order.screen.import_single_warning_message|La version de votre module est comprise entre la 1.5.2 et la 1.5.4. Pour des raisons de sécurité, vous ne pouvez importer qu'une seule commande par synchronisation.
-order.screen.no_carrier_warning_message|Vous ne pouvez pas importer les commandes car vous n'avez pas encore défini de transporteur par défaut. <a href=%{url}>Configuration des transporteurs</a>
 order.screen.not_imported|Pas importée
 order.screen.not_sent|Non envoyé
 order.screen.refresh_order|Actualiser ma commande
@@ -123,29 +121,9 @@ order.table.total_paid|Total
 order.table.extra|Extra
 order_setting.screen.order_status_title|Statut des commandes
 order_setting.screen.order_status_description|Attribuez des statuts Lengow à vos commandes pour les retrouver facilement parmi l'ensemble de vos commandes.
-order_setting.screen.carrier_management_title|Gestion des transporteurs pour les places de marché
-order_setting.screen.carrier_management_description|Pour chaque pays où vous livrez vos produits, sélectionnez le transporteur par défaut à appliquer à vos commandes. Puis faites correspondre vos transporteurs des places de marché avec les transporteurs proposés par PrestaShop.
-order_setting.screen.country_wt_carrier|Si il manque des transporteurs pour certains pays,
-order_setting.screen.please_setup_then|paramétrez-les !
-order_setting.screen.add_new_country|Ajouter un nouveau pays
-order_setting.screen.default_country|par défaut
 order_setting.screen.import_setting_title|Import des commandes
-order_setting.screen.select_a_country|Choisissez un pays... 
 order_setting.screen.import_setting_description|Gérez ici vos paramètres d'import pour les commandes provenant des places de marché.
 order_setting.screen.nb_days|jours
-order_setting.screen.cron_title|Paramètres du CRON
-order_setting.screen.cron_description|Utilisez l'éditeur de tâche Cron pour importer les commandes depuis Lengow.
-order_setting.screen.cron_not_configured|Les imports Cron ne sont pas configurés dans votre PrestaShop.
-order_setting.screen.cron_configured|Les imports Cron existent dans votre PrestaShop.
-order_setting.screen.cron_if_not_exists|ou
-order_setting.screen.cron_install_plugin|Vous pouvez installer l'éditeur de tâche Cron pour le plugin PrestaShop
-order_setting.screen.cron_manual_installation|Si vous utilisez un système unix, vous pouvez utiliser le CRON unix cette manière :
-order_setting.screen.button_add_country|Ajouter
-order_setting.screen.button_cancel_country|Annuler
-order_setting.screen.please_select_carrier|Choisissez un transporteur... 
-order_setting.screen.default_carrier|Transporteur par défaut
-order_setting.screen.no_default_carrier_selected|Pas de transporteur par défaut sélectionné
-order_setting.screen.confirmation_delete_carrier_country|Etes-vous sûr ?
 global_setting.screen.notification_alert_title|Notifications & alertes
 global_setting.screen.preprod_mode_title|Mode Préproduction
 global_setting.screen.preprod_mode_description|Utilisez la pré-production pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ces paramètres UNIQUEMENT sur votre serveur de préproduction.
@@ -226,17 +204,11 @@ lengow_setting.lengow_import_single_enabled_legend|Utile pour les versions Prest
 lengow_setting.lengow_import_in_progress_title|Import en cours
 lengow_setting.lengow_last_import_cron_title|Dernier import CRON
 lengow_setting.lengow_last_import_manual_title|Dernier import manuel
-lengow_setting.lengow_cron_enabled_title|Utilisez l'éditeur de tâche Cron
 lengow_setting.lengow_global_token_title|Lengow global Token
 lengow_setting.lengow_authorized_ip_title|IP autorisée(s)
 lengow_setting.lengow_authorized_ip_legend|IP autorisée(s) séparée(s) par ;
 lengow_setting.lengow_tracking_enabled_title|Activer le tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
-lengow_setting.lengow_order_stat_title|Statistiques des commandes
-lengow_setting.lengow_order_stat_update_title|Mise à jour des statistiques de commandes
-lengow_setting.lengow_account_status_title|Statut du compte
-lengow_setting.lengow_account_status_update_title|Statut du compte à jour
-lengow_setting.lengow_option_cms_update_title|Mise à jour des options cms
 lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs
@@ -261,7 +233,6 @@ lengow_log.exception.no_connection_webservice|la connexion ne se fait pas avec L
 lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - %{error_message} pour la boutique %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|la commande ne peut être sauvegardée
 lengow_log.exception.carrier_shipping_address_no_country|l'adresse d'expédition ne contient pas de pays
-lengow_log.exception.no_default_carrier_for_country|vous devez sélectionner un transporteur par défaut pour le pays : %{country_name}
 lengow_log.exception.marketplace_not_present|Erreur Lengow : la place de marché %{marketplace_name} n’apparaît pas dans la liste des places de marché
 lengow_log.exception.order_line_required|numéro de la ligne de commande requis, non trouvé dans la commande
 lengow_log.exception.action_not_valid|l'action %{action} n'est pas valide
@@ -277,7 +248,6 @@ lengow_log.exception.cannot_load_order_status|chargement impossible des statuts 
 lengow_log.exception.order_creation_failed|la création de la commande PrestaShop a échoué
 lengow_log.exception.payment_module_not_active|le module de paiement n'est pas activé
 lengow_log.exception.cart_cannot_be_loaded|le panier n'a pu être chargé ou une commande a déjà été passée pour ce panier
-lengow_log.exception.delivery_country_not_active|le pays dans l'adresse de livraison n'est pas actif
 lengow_log.exception.product_is_not_listed|le produit %{product_id} n'est pas présent dans la commande en cours
 lengow_log.exception.unable_to_save_order|impossible de sauvegarder la commande PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossible de sauvegarder le paiement de la commande PrestaShop

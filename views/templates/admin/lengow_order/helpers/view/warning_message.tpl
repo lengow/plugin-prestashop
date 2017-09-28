@@ -18,16 +18,8 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<ul class="nav nav-pills lengow-nav lengow-nav-bottom">
-	<li role="presentation" class="{if $current_controller == 'LengowOrderController'}active{/if}">
-		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">
-			{$locale->t('menu.order_overview')|escape:'htmlall':'UTF-8'}
-		</a>
-	</li>
-	<li role="presentation" class="{if $current_controller == 'LengowOrderSettingController'}active{/if}">
-		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}">
-			{$locale->t('menu.order_parameter')|escape:'htmlall':'UTF-8'}
-			<span class="js-alert-matching {if $showCarrierNotification }alert-matching{/if}"></span>
-		</a>
-	</li>
-</ul>
+{if $warning_message}
+	<p class="blue-frame mod-order-warning-message">
+		{html_entity_decode($warning_message|escape:'htmlall':'UTF-8')}
+	</p>
+{/if}

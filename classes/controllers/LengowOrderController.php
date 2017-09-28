@@ -44,18 +44,9 @@ class LengowOrderController extends LengowController
             $shop[$s['id_shop']] = new LengowShop($s['id_shop']);
         }
         $days = LengowConfiguration::get('LENGOW_IMPORT_DAYS');
-        // check if default carrier is available
-        $notDefaultCarrier = false;
-        if (!LengowCarrier::isDefaultCarrierActive()) {
-            $lengowLink = new LengowLink();
-            $notDefaultCarrier = $this->locale->t(
-                'order.screen.no_carrier_warning_message',
-                array('url' => $lengowLink->getAbsoluteAdminLink('AdminLengowOrderSetting'))
-            );
-        }
         $this->context->smarty->assign('shop', $shop);
-        $this->context->smarty->assign('notDefaultCarrier', $notDefaultCarrier);
         $this->context->smarty->assign('days', $days);
+        $this->context->smarty->assign('showCarrierNotification', LengowCarrier::hasDefaultCarrierNotMatched());
         $this->context->smarty->assign('lengow_table', $this->buildTable());
         parent::display();
     }
@@ -115,7 +106,12 @@ class LengowOrderController extends LengowController
                     $return = $import->exec();
                     $message = $this->loadMessage($return);
                     $this->assignLastImportationInfos();
+                    $this->assignWarningMessages();
                     $module = Module::getInstanceByName('lengow');
+                    $displayWarningMessage = $module->display(
+                        _PS_MODULE_LENGOW_DIR_,
+                        'views/templates/admin/lengow_order/helpers/view/warning_message.tpl'
+                    );
                     $displayLastImportation = $module->display(
                         _PS_MODULE_LENGOW_DIR_,
                         'views/templates/admin/lengow_order/helpers/view/last_importation.tpl'
@@ -131,9 +127,11 @@ class LengowOrderController extends LengowController
                     }
                     $data = array();
                     $data['message'] = '<div class=\"lengow_alert\">' . join('<br/>', $message) . '</div>';
+                    $data['warning_message'] = preg_replace('/\r|\n/', '', $displayWarningMessage);
                     $data['last_importation'] = preg_replace('/\r|\n/', '', $displayLastImportation);
                     $data['import_orders'] = $this->locale->t('order.screen.button_update_orders');
                     $data['list_order'] = preg_replace('/\r|\n/', '', $displayListOrder);
+                    $data['show_carrier_notification'] = LengowCarrier::hasDefaultCarrierNotMatched();
                     echo Tools::jsonEncode($data);
                     break;
                 case 'update_order':
@@ -262,6 +260,12 @@ class LengowOrderController extends LengowController
                 array('url' => $lengowLink->getAbsoluteAdminLink('AdminLengowMainSetting'))
             );
         }
+        if (LengowCarrier::hasDefaultCarrierNotMatched()) {
+            $warningMessages[] = $this->locale->t(
+                'order.screen.no_carrier_warning_message',
+                array('url' => $lengowLink->getAbsoluteAdminLink('AdminLengowOrderSetting'))
+            );
+        }
         if (count($warningMessages) > 0) {
             $message = join('<br/>', $warningMessages);
         } else {
@@ -281,7 +285,6 @@ class LengowOrderController extends LengowController
             'last_import_type' => $lastImport['type'],
             'link' => LengowMain::getImportUrl()
         );
-        $this->context->smarty->assign('cron_active', LengowCron::getCron());
         $this->context->smarty->assign('report_mail_address', LengowConfiguration::getReportEmailAddress());
         $this->context->smarty->assign('orderCollection', $orderCollection);
     }

@@ -143,8 +143,10 @@ if (Tools::getIsset('inactive') || !is_null($inactive)) {
     $inactive = false;
 }
 // shop
-if (Tools::getIsset('shop')) {
-    if ($shop = new Shop((int)Tools::getValue('shop'))) {
+if (Tools::getIsset('shop') && _PS_VERSION_ >= '1.5') {
+    $shop = new Shop((int)Tools::getValue('shop'));
+    if ($shop->id) {
+        $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
         Context::getContext()->shop = $shop;
     }
 }

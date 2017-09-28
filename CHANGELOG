@@ -9,10 +9,20 @@ Version 3.0.0
 	- Feature: Add new Toolbox page with all Lengow data
 	- Feature: Add new legals page
 	- Feature: Add new lengow simple tag
+	- Feature: Add new carrier matching
 	- Feature: New lengow settings with cleaning old options
 	- Feature: Creating new accounts directly from the module
 	- Feature: Management actions and error return
 	- Feature: Add new actions: re-import, resend and re-sync orders
+
+=============================================================
+Version 2.2.9
+=============================================================
+	- Bugfix: [export] Retrieval of the Lengow selection for the multi-shop
+	- Bugfix: [export] Get specific product images by shop
+	- Bugfix: [action] Get additional argument if argument list is empty
+	- Bugfix: [action] Recovery and display of the return of the api
+	- Bugfix: [action] Don't send default value for additional argument
 
 =============================================================
 Version 2.2.8

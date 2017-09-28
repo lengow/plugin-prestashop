@@ -147,10 +147,13 @@
 
             $.getJSON(href, data, function(content) {
                 lengow_jquery("#lengow_wrapper_messages").html(content['message']);
+                lengow_jquery("#lengow_warning_message").html(content['warning_message']);
                 lengow_jquery("#lengow_last_importation").html(content['last_importation']);
                 lengow_jquery("#lengow_import_orders").html(content['import_orders']);
                 lengow_jquery("#lengow_order_table_wrapper").html(content['list_order']);
-
+                if (content['show_carrier_notification']) {
+                    $('.lengow-nav .js-alert-matching').addClass('alert-matching')
+                }
                 init_tooltip();
                 reload_table_js();
                 $('#lengow_charge_import_order').fadeOut(150);
