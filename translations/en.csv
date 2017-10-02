@@ -89,7 +89,7 @@ order.screen.button_reimport_order|Re-import Orders
 order.screen.button_resend_order|Resend Orders
 order.screen.preprod_warning_message|You are in pre-production mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>
 order.screen.import_single_warning_message|Your version of PrestaShop is between 1.5.2 and 1.5.4. For security reasons, only one order will be imported by synchronization.
-order.screen.no_carrier_warning_message|Some orders may not be able to import because it lacks a default carrier on one of your countries of delivery. <a href=%{url}>Change this</a>
+order.screen.no_carrier_warning_message|Some of your orders may not be imported because you haven't specified a default carrier on one of your countries of delivery. <a href=%{url}>Change this</a>
 order.screen.not_imported|not imported
 order.screen.not_sent|not sent
 order.screen.refresh_order|refresh order
@@ -121,21 +121,21 @@ order.table.order_item|Quantity
 order.table.total_paid|Total
 order.table.extra|Extra
 order_setting.screen.carrier_management_title|Manage your carrier by country
-order_setting.screen.carrier_management_description|To retrieve all of your orders, select a default carrier for each delivery country
+order_setting.screen.carrier_management_description|Select a default carrier for each delivery country and marketplace to retrieve all of your orders.
 order_setting.screen.marketplace|marketplace(s)
 order_setting.screen.see_delivery_countries|See all my delivery countries
 order_setting.screen.marketplace_matching_title|%{country_name} delivery methods
-order_setting.screen.marketplace_matching_description|Here you have the possibility to choose the different delivery methods for each of the orders destined for %{country_name} from marketplaces activated in your account.
-order_setting.screen.country_wt_carrier|Are you missing carriers in your list?
+order_setting.screen.marketplace_matching_description|Here you have the possibility to choose the different delivery methods for each of your orders on all marketplaces activated in your account for the following country: %{country_name} 
+order_setting.screen.country_wt_carrier|Some carriers are missing from your list?
 order_setting.screen.please_setup_then|Manage carriers
-order_setting.screen.default_carrier_prestashop|Your default Prestashop carrier
-order_setting.screen.please_select_carrier_prestashop|Please select a Prestashop carrier
-order_setting.screen.no_default_carrier_selected|No default Prestashop carrier selected
+order_setting.screen.default_carrier_prestashop|Your default PrestaShop carrier
+order_setting.screen.please_select_carrier_prestashop|Please select a PrestaShop carrier
+order_setting.screen.no_default_carrier_selected|No default PrestaShop carrier selected
 order_setting.screen.default_carrier_marketplace|Your default %{marketplace_name} carrier
 order_setting.screen.please_select_carrier_marketplace|Select the carrier code for %{marketplace_name}
 order_setting.screen.no_default_carrier_marketplace_selected|No default carrier code selected
-order_setting.screen.tooltip_default_carrier|You have not yet configured the default carrier for this channel
-order_setting.screen.no_carrier_enabled|You don't have any Prestashop asset carriers for %{country_name}.
+order_setting.screen.tooltip_default_carrier|You have not yet configured the default carrier for this marketplace
+order_setting.screen.no_carrier_enabled|You don't have any Prestashop carriers activated for %{country_name}.
 order_setting.screen.button_cancel|Cancel
 order_setting.screen.order_status_title|Order Status
 order_setting.screen.order_status_description|Match your Lengow order status to retrieve them in your orders easily
@@ -254,7 +254,7 @@ lengow_log.exception.no_connection_webservice|connection didn't work with the Le
 lengow_log.exception.error_lengow_webservice|Lengow webservice: %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|order could not be saved
 lengow_log.exception.carrier_shipping_address_no_country|shipping address doesn't contain the country
-lengow_log.exception.no_default_carrier_for_country|you must select a default carrier for the country: %{country_name} and marketplace: %{marketplace_name}
+lengow_log.exception.no_default_carrier_for_country|You must select a default carrier for the country: %{country_name} and the marketplace: %{marketplace_name}
 lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} does not feature in the marketplace list
 lengow_log.exception.order_line_required|order line is required but cannot be not found in order
 lengow_log.exception.action_not_valid|action %{action} is not valid
