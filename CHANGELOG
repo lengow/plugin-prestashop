@@ -1,6 +1,7 @@
 =============================================================
 Version 3.0.0
 =============================================================
+
 	- Feature: Full rewrite for the new platform Lengow
 	- Feature: Add new lengow Dashboard
 	- Feature: Add new product selection by shop
@@ -18,6 +19,7 @@ Version 3.0.0
 =============================================================
 Version 2.2.9
 =============================================================
+
 	- Bugfix: [export] Retrieval of the Lengow selection for the multi-shop
 	- Bugfix: [export] Get specific product images by shop
 	- Bugfix: [action] Get additional argument if argument list is empty
@@ -27,18 +29,21 @@ Version 2.2.9
 =============================================================
 Version 2.2.8
 =============================================================
+
 	- Bugfix: [import] Stop import for order without billing address
 	- Bugfix: [import] Get a specific state for order shipping by marketplace
 
 =============================================================
 Version 2.2.7
 =============================================================
+
 	- Feature: [action] Add new carrier_name parameter for action
 	- Bugfix: [import] Fix bug import order with tracking data
 
 =============================================================
 Version 2.2.6
 =============================================================
+
     - Feature: [export] Get a specific format for csv stream
 	- Feature: [import] Get product when reference begins by numbers
 	- Bugfix: Change tabs attribute by lengowTabs for Prestashop 1.7.1.1
@@ -47,6 +52,7 @@ Version 2.2.6
 =============================================================
 Version 2.2.5
 =============================================================
+
     - Feature: Rewrite for compatibility with the new Prestashop validator
     - Feature: Deleting the override folder for compatibility with Prestashop 1.7
     - Bugfix: [export] Add anchor for product url
@@ -60,6 +66,7 @@ Version 2.2.5
 =============================================================
 Version 2.2.4
 =============================================================
+
 	- Feature: [import] Add new verification for create generate email function
 	- Feature: [import] Add new root for synchronise order with Lengow
 	- Feature: [import] Add new verification in matching products for compatibility with older versions of Lengow plugins
