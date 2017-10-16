@@ -46,10 +46,10 @@
             contact@lengow.com<br />
             +33 (0)2 85 52 64 14
             <h3>{$locale->t('legals.screen.hosting')|escape:'htmlall':'UTF-8'}</h3>
-            Linkbynet<br />
-            RCS Bobigny : 430 359 927<br />
-            5-9 Rue, de l’Industrie – 93200 Saint-Denis<br />
-            +33 (0)1 48 13 00 00
+            OXALIDE<br />
+            RCS Paris : 803 816 529<br />
+            25 Boulevard de Strasbourg – 75010 Paris<br />
+            +33 (0)1 75 77 16 66
         </div>
     </div>
 </div>
