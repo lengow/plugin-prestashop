@@ -90,11 +90,13 @@ class LengowSync
                 'LENGOW_SECRET_TOKEN' => $params['secret_token']
             )
         );
-        foreach ($params['shops'] as $shopToken => $shopCatalogIds) {
-            $shop = LengowShop::findByToken($shopToken);
-            if ($shop) {
-                LengowConfiguration::setCatalogIds($shopCatalogIds['catalog_ids'], (int)$shop->id);
-                LengowConfiguration::setActiveShop((int)$shop->id);
+        if (isset($params['shops'])) {
+            foreach ($params['shops'] as $shopToken => $shopCatalogIds) {
+                $shop = LengowShop::findByToken($shopToken);
+                if ($shop) {
+                    LengowConfiguration::setCatalogIds($shopCatalogIds['catalog_ids'], (int)$shop->id);
+                    LengowConfiguration::setActiveShop((int)$shop->id);
+                }
             }
         }
     }
