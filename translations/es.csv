@@ -89,6 +89,7 @@ order.screen.button_reimport_order|Importar de nuevo los pedidos
 order.screen.button_resend_order|Enviar de nuevo los pedidos
 order.screen.preprod_warning_message|Estás en el modo de pre-producción. Puedes importar los pedidos , pero no hay interacción con Lengow posible. <a href=%{url}>Cambie este</a>
 order.screen.import_single_warning_message|Su versión de PrestaShop está entre 1.5.2 y 1.5.4.Por razones de seguridad , sólo una orden será importado para la sincronización.
+order.screen.no_carrier_warning_message|Algunos de sus pedidos no se pueden importar porque no ha especificado un proveedor predeterminado en uno de sus países de entrega. <a href=%{url}>Modifique esto</a>
 order.screen.not_imported|No importado
 order.screen.not_sent|No enviado
 order.screen.refresh_order|Actualizar pedido
@@ -119,12 +120,31 @@ order.table.delivery_country|País
 order.table.order_item|Cantidad
 order.table.total_paid|Total
 order.table.extra|Extra
+order_setting.screen.carrier_management_title|Administre su operador por país
+order_setting.screen.carrier_management_description|Selecciona el transportista por defecto que desea aplicar a tus pedidos para cada país y cada marketplace en el que estás activo.
+order_setting.screen.marketplace|Marketplace(s)
+order_setting.screen.see_delivery_countries|Ver todos mis países de entrega
+order_setting.screen.marketplace_matching_title|%{country_name} métodos de entrega
+order_setting.screen.marketplace_matching_description|Aquí tiene la posibilidad de elegir los diferentes métodos de entrega para cada uno de los pedidos destinados a %{country_name} para cada mercado activado en su cuenta
+order_setting.screen.country_wt_carrier|¿ Faltan algunos transportistas en tu lista?
+order_setting.screen.please_setup_then|Administrar operadores
+order_setting.screen.default_carrier_prestashop|Su proveedor de PrestaShop predeterminado
+order_setting.screen.please_select_carrier_prestashop|Por favor, selecciona un transportista PrestaShop
+order_setting.screen.no_default_carrier_selected|No se seleccionó ningún proveedor predeterminado de PrestaShop
+order_setting.screen.default_carrier_marketplace|Su operador predeterminado%{marketplace_name}
+order_setting.screen.please_select_carrier_marketplace|Seleccione el código del operador para %{marketplace_name}
+order_setting.screen.no_default_carrier_marketplace_selected|No se seleccionó ningún código de operador predeterminado
+order_setting.screen.tooltip_default_carrier|Aún no ha configurado el proveedor predeterminado para este mercado
+order_setting.screen.no_carrier_enabled|No tiene proveedor predeterminado para %{country_name}.
+order_setting.screen.button_cancel|Cancelar
 order_setting.screen.order_status_title|Pedido Estado
 order_setting.screen.order_status_description|Empareje el estado de los pedido Lengow para recuperarlos fácilmente entre sus pedidos
 order_setting.screen.import_setting_title|Pedido importación
 order_setting.screen.import_setting_description|Gestiona los parámetros de importación aquí para los pedidos de los marketplaces
 order_setting.screen.nb_days|dias
 global_setting.screen.notification_alert_title|Notificaciones & alertas
+global_setting.screen.default_export_carrier_title|Cálculo de los gastos de envío
+global_setting.screen.default_export_carrier_description|Los costes de envío para su catálogo se calcularán en función del operador seleccionado.
 global_setting.screen.preprod_mode_title|Modo de pre-producción
 global_setting.screen.preprod_mode_description|Utiliza el modo de pre-producción para pruebas y para simular pedidos ficticios. Ten en cuenta que hay que activar esta configuración en el servidor de pre-producción SOLAMENTE
 global_setting.screen.log_file_title|Logs archivos
@@ -181,6 +201,7 @@ lengow_setting.lengow_export_out_stock_legend|Active esta opción si desea expor
 lengow_setting.lengow_export_format_title|Exportar el formato por defecto
 lengow_setting.lengow_export_file_enabled_title|Exportar en un archivo
 lengow_setting.lengow_export_file_enabled_legend|Debes utilizar esta opción si tiene 3.000 o más productos
+lengow_setting.lengow_export_carrier_default_title|Transportista por defecto
 lengow_setting.lengow_last_export_title|Última exportación
 lengow_setting.lengow_order_id_process_title|Pedidos en preparación
 lengow_setting.lengow_order_id_shipped_title|Pedidos enviados
@@ -233,6 +254,7 @@ lengow_log.exception.no_connection_webservice|la conexión no funciona con el we
 lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} en la tienda %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|el pedido no ha podido ser registrado
 lengow_log.exception.carrier_shipping_address_no_country|la dirección de envío no contiene el país
+lengow_log.exception.no_default_carrier_for_country|Debe seleccionar un proveedor predeterminado para el país: %{country_name}y marketplace: %{marketplace_name}
 lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} no figura en la lista del mercado
 lengow_log.exception.order_line_required|la línea de pedido es requerida pero no se encuentra 
 lengow_log.exception.action_not_valid|la acción %{action} no es válida
@@ -248,6 +270,7 @@ lengow_log.exception.cannot_load_order_status|no se puede cargar el estado del p
 lengow_log.exception.order_creation_failed|la creación del pedido Prestashop ha fallado 
 lengow_log.exception.payment_module_not_active|el módulo de "pagos" no está activo
 lengow_log.exception.cart_cannot_be_loaded|la compra no se puede cargar, o bien un pedido ya ha sido colocado usando esta misma compra
+lengow_log.exception.delivery_country_not_active|el país %{country_name} en la dirección de entrega no está activo
 lengow_log.exception.product_is_not_listed|producto %{product_id} no aparece como parte del pedido actual
 lengow_log.exception.unable_to_save_order|no se ha podido guardar el pedido PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment

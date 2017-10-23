@@ -124,8 +124,8 @@ order_setting.screen.carrier_management_title|Gestion des transporteurs par pays
 order_setting.screen.carrier_management_description|Pour chaque pays où vous livrez vos produits et pour chaque place de marché, sélectionnez le transporteur par défaut à appliquer à vos commandes.
 order_setting.screen.marketplace|marketplace(s)
 order_setting.screen.see_delivery_countries|Voir tous mes pays de livraison
-order_setting.screen.marketplace_matching_title|%{country_name}: modes de livraison
-order_setting.screen.marketplace_matching_description|Choisissez ici les différents modes de livraison à attribuer à chacune de vos commandes pour le pays suivant : %{country_name}. Vous pouvez le faire pour les différentes places de marché activées dans votre compte.
+order_setting.screen.marketplace_matching_title|%{country_name} : modes de livraison
+order_setting.screen.marketplace_matching_description|Choisissez ici les différents modes de livraison à attribuer à chacune de vos commandes pour le pays %{country_name}. <br />Vous pouvez le faire pour les différentes places de marché activées dans votre compte.
 order_setting.screen.country_wt_carrier|Des transporteurs sont manquants dans cette liste ?
 order_setting.screen.please_setup_then|Gérez les transporteurs
 order_setting.screen.default_carrier_prestashop|Votre transporteur PrestaShop par défaut
