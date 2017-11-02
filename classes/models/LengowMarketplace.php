@@ -249,15 +249,17 @@ class LengowMarketplace
      */
     public function containOrderLine($action)
     {
-        $actions = $this->actions[$action];
-        if (isset($actions['args']) && is_array($actions['args'])) {
-            if (in_array('line', $actions['args'])) {
-                return true;
+        if (isset($this->actions[$action])) {
+            $actions = $this->actions[$action];
+            if (isset($actions['args']) && is_array($actions['args'])) {
+                if (in_array('line', $actions['args'])) {
+                    return true;
+                }
             }
-        }
-        if (isset($actions['optional_args']) && is_array($actions['optional_args'])) {
-            if (in_array('line', $actions['optional_args'])) {
-                return true;
+            if (isset($actions['optional_args']) && is_array($actions['optional_args'])) {
+                if (in_array('line', $actions['optional_args'])) {
+                    return true;
+                }
             }
         }
         return false;
