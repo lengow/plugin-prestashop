@@ -756,11 +756,7 @@ class LengowOrderController extends LengowController
                 } else {
                     $shopName = '';
                 }
-                if (is_array($values)) {
-                    $messages[] = $shopName . join(', ', LengowMain::decodeLogMessage($values));
-                } else {
-                    $messages[] = $shopName . LengowMain::decodeLogMessage($values);
-                }
+                $messages[] = $shopName . LengowMain::decodeLogMessage($values);
             }
         }
         return $messages;
