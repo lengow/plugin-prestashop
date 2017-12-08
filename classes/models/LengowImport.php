@@ -420,6 +420,7 @@ class LengowImport
                 && $this->typeImport === 'manual'
             ) {
                 LengowAction::checkFinishAction();
+                LengowAction::checkOldAction();
                 LengowAction::checkActionNotSent();
             }
         }

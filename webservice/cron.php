@@ -122,6 +122,7 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
     // sync actions between Lengow and Prestashop
     if (!$sync || $sync === 'action') {
         LengowAction::checkFinishAction();
+        LengowAction::checkOldAction();
         LengowAction::checkActionNotSent();
     }
     // sync options between Lengow and Prestashop

@@ -376,6 +376,7 @@ log.import.carrier_compatibility_ensured|carrier compatibility ensured with carr
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
 log.order_action.check_completed_action|check completed actions
+log.order_action.check_old_action|check and finish old actions
 log.order_action.check_action_not_sent|check actions not sent
 log.order_action.try_to_send_action|try to send %{action} action (ORDER ID %{order_id})
 log.order_action.action_send|action %{action} was successfully sent (ORDER ID %{order_id})

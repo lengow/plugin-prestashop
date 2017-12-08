@@ -336,49 +336,6 @@ class LengowAction
     }
 
     /**
-     * Remove old actions > 3 days
-     *
-     * @param string $actionType action type (null, ship or cancel)
-     *
-     * @return boolean
-     */
-    public static function finishAllOldActions($actionType = null)
-    {
-        // get all old order action (+ 3 days)
-        $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
-        $date = date('Y-m-d h:m:i', strtotime('-3 days', time()));
-        $rows = Db::getInstance()->executeS(
-            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
-            WHERE created_at <= "' . $date . '" AND state = ' . (int)self::STATE_NEW . $sqlActionType
-        );
-        if (count($rows) > 0) {
-            foreach ($rows as $row) {
-                // Finish action in lengow_action table
-                self::finishAction($row['id']);
-                $orderLengow = new LengowOrder($row['id_order']);
-                if ($orderLengow->lengowProcessState != LengowOrder::PROCESS_STATE_FINISH) {
-                    // If action is denied -> create order error
-                    $errorMessage = LengowMain::setLogMessage('lengow_log.exception.action_is_too_old');
-                    LengowOrder::addOrderLog($orderLengow->lengowId, $errorMessage, 'send');
-                    $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
-                    LengowMain::log(
-                        'API-OrderAction',
-                        LengowMain::setLogMessage(
-                            'log.order_action.call_action_failed',
-                            array('decoded_message' => $decodedMessage)
-                        ),
-                        false,
-                        $orderLengow->lengowMarketplaceSku
-                    );
-                }
-                unset($orderLengow);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Check if active actions are finished
      *
      * @return boolean
@@ -466,9 +423,51 @@ class LengowAction
                 }
             }
         }
-        // Clean actions after 3 days
-        self::finishAllOldActions();
         return true;
+    }
+
+    /**
+     * Remove old actions > 3 days
+     *
+     * @param string $actionType action type (null, ship or cancel)
+     *
+     * @return boolean
+     */
+    public static function checkOldAction($actionType = null)
+    {
+        LengowMain::log('API-OrderAction', LengowMain::setLogMessage('log.order_action.check_old_action'));
+        // get all old order action (+ 3 days)
+        $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
+        $date = date('Y-m-d h:m:i', strtotime('-3 days', time()));
+        $rows = Db::getInstance()->executeS(
+            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
+            WHERE created_at <= "' . $date . '" AND state = ' . (int)self::STATE_NEW . $sqlActionType
+        );
+        if (count($rows) > 0) {
+            foreach ($rows as $row) {
+                // Finish action in lengow_action table
+                self::finishAction($row['id']);
+                $orderLengow = new LengowOrder($row['id_order']);
+                if ($orderLengow->lengowProcessState != LengowOrder::PROCESS_STATE_FINISH) {
+                    // If action is denied -> create order error
+                    $errorMessage = LengowMain::setLogMessage('lengow_log.exception.action_is_too_old');
+                    LengowOrder::addOrderLog($orderLengow->lengowId, $errorMessage, 'send');
+                    $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
+                    LengowMain::log(
+                        'API-OrderAction',
+                        LengowMain::setLogMessage(
+                            'log.order_action.call_action_failed',
+                            array('decoded_message' => $decodedMessage)
+                        ),
+                        false,
+                        $orderLengow->lengowMarketplaceSku
+                    );
+                }
+                unset($orderLengow);
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
