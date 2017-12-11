@@ -435,6 +435,9 @@ class LengowAction
      */
     public static function checkOldAction($actionType = null)
     {
+        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')) {
+            return false;
+        }
         LengowMain::log('API-OrderAction', LengowMain::setLogMessage('log.order_action.check_old_action'));
         // get all old order action (+ 3 days)
         $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
