@@ -117,6 +117,24 @@ class LengowAction
     }
 
     /**
+     * Get action by action id
+     *
+     * @param integer $actionId Lengow action id
+     *
+     * @return integer|false
+     */
+    public static function getActionByActionId($actionId)
+    {
+        $row = Db::getInstance()->getRow(
+            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_actions WHERE action_id = ' . (int)$actionId
+        );
+        if ($row) {
+            return (int)$row['id'];
+        }
+        return false;
+    }
+
+    /**
      * Find active actions by order id
      *
      * @param integer $idOrder Prestashop order id
@@ -179,7 +197,7 @@ class LengowAction
      *
      * @param integer $idOrder Prestashop order id
      *
-     * @return array|false
+     * @return string|false
      */
     public static function getLastOrderActionType($idOrder)
     {
@@ -224,8 +242,7 @@ class LengowAction
             'action_id' => (int)$params['action_id'],
             'action_type' => pSQL($params['action_type']),
             'state' => (int)self::STATE_NEW,
-            'created_at' => date('Y-m-d h:m:i'),
-            'updated_at' => date('Y-m-d h:m:i'),
+            'created_at' => date('Y-m-d h:m:i')
         );
         if (isset($params['parameters']['line'])) {
             $insertParams['order_line_sku'] = $params['parameters']['line'];

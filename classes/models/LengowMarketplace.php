@@ -417,6 +417,8 @@ class LengowMarketplace
             $params['marketplace_order_id'] = $order->lengowMarketplaceSku;
             $params['marketplace'] = $order->lengowMarketplaceName;
             $params['action_type'] = $action;
+            $sendAction = true;
+            // check if action is already created
             $result = LengowConnector::queryApi(
                 'get',
                 '/v3.0/orders/actions/',
@@ -427,16 +429,21 @@ class LengowMarketplace
             }
             if (isset($result->count) && $result->count > 0) {
                 foreach ($result->results as $row) {
-                    $update = LengowAction::updateAction(
-                        array(
-                            'id_order' => $order->id,
-                            'action_type' => $action,
-                            'action_id' => $row->id,
-                            'parameters' => $params
-                        )
-                    );
-                    // if update doesn't work, create new action
-                    if (!$update) {
+                    $orderActionId = LengowAction::getActionByActionId($row->id);
+                    if ($orderActionId) {
+                        $update = LengowAction::updateAction(
+                            array(
+                                'id_order' => $order->id,
+                                'action_type' => $action,
+                                'action_id' => $row->id,
+                                'parameters' => $params
+                            )
+                        );
+                        if ($update) {
+                            $sendAction = false;
+                        }
+                    } else {
+                        // if update doesn't work, create new action
                         LengowAction::createAction(
                             array(
                                 'id_order' => $order->id,
@@ -446,9 +453,11 @@ class LengowMarketplace
                                 'marketplace_sku' => $order->lengowMarketplaceSku
                             )
                         );
+                        $sendAction = false;
                     }
                 }
-            } else {
+            }
+            if ($sendAction) {
                 if (!LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
                     $result = LengowConnector::queryApi('post', '/v3.0/orders/actions/', $params);
                     if (isset($result->id)) {
