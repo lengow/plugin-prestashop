@@ -802,8 +802,11 @@ class LengowCarrier extends Carrier
      */
     public static function carrierCompatibility($idCustomer, $idCart, $idCarrier, $shippingAddress)
     {
-        // SoColissimo
-        if ($idCarrier == Configuration::get('SOCOLISSIMO_CARRIER_ID')) {
+        // get SoColissimo carrier id
+        $soColissimoCarrierId =_PS_VERSION_ < '1.7'
+            ? Configuration::get('SOCOLISSIMO_CARRIER_ID')
+            : Configuration::get('COLISSIMO_CARRIER_ID');
+        if ($idCarrier == $soColissimoCarrierId) {
             if (!LengowMain::isSoColissimoAvailable()) {
                 return self::COMPATIBILITY_KO;
             }
@@ -850,12 +853,14 @@ class LengowCarrier extends Carrier
     public static function addSoColissimo($idCart, $idCustomer, $shippingAddress)
     {
         $sep = DIRECTORY_SEPARATOR;
-        $loaded = include_once _PS_MODULE_DIR_ . 'socolissimo' . $sep . 'classes' . $sep . 'SCFields.php';
+        $moduleName = _PS_VERSION_ < '1.7' ? 'socolissimo' : 'colissimo_simplicite';
+        $filePath = _PS_MODULE_DIR_ . $moduleName . $sep . 'classes' . $sep . 'SCFields.php';
+        $loaded = include_once $filePath;
         if (!$loaded) {
             throw new LengowException(
                 LengowMain::setLogMessage(
                     'log.import.error_colissimo_missing_file',
-                    array('ps_module_dir' => _PS_MODULE_DIR_)
+                    array('file_path' => $filePath)
                 )
             );
         }
@@ -889,7 +894,8 @@ class LengowCarrier extends Carrier
         $params['CEZIPCODE'] = (string)$shippingAddress->postcode;
         $params['CETOWN'] = (string)$shippingAddress->city;
         $params['PRPAYS'] = (string)Country::getIsoById($shippingAddress->id_country);
-        $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'socolissimo_delivery_info
+        $tableName = _PS_VERSION_ < '1.7' ? 'socolissimo_delivery_info' : 'colissimo_delivery_info';
+        $sql = 'INSERT INTO ' . _DB_PREFIX_ . $tableName . '
             (`id_cart`,
             `id_customer`,
             `delivery_mode`,

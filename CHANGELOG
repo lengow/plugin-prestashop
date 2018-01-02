@@ -17,6 +17,12 @@ Version 3.0.0
 	- Feature: Add new actions: re-import, resend and re-sync orders
 
 =============================================================
+Version 2.2.10
+=============================================================
+
+	- Feature: [import] Added compatibility with the new 4.x version of the Colissimo Simplicite plugin
+
+=============================================================
 Version 2.2.9
 =============================================================
 

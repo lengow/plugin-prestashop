@@ -370,7 +370,7 @@ log.import.error_no_delivery_address|Import order failed - Lengow error: no deli
 log.import.error_carrier_not_found|carrier %{carrier_name} could not be found in your PrestaShop
 log.import.error_mondial_relay_not_found|relay %{id_relay} could not be found
 log.import.error_mondial_relay_missing_file|missing file %{ps_module_dir}mondialrelay/classes/MRRelayDetail.php
-log.import.error_colissimo_missing_file|missing file %{ps_module_dir}socolissimo/classes/SCFields.php
+log.import.error_colissimo_missing_file|missing file %{file_path}
 log.import.error_default_carrier_not_active|import failed - default carrier not active
 log.import.carrier_compatibility_ensured|carrier compatibility ensured with carrier %{carrier_name}
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})

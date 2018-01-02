@@ -802,7 +802,7 @@ class LengowMain
     /**
      * Check if Mondial Relay is installed, active and if version is supported
      *
-     * @return boolean true if installed and active
+     * @return boolean
      */
     public static function isMondialRelayAvailable()
     {
@@ -825,11 +825,11 @@ class LengowMain
     /**
      * Check is soColissimo is installed, activated and if version is supported
      *
-     * @return boolean true if installed and active
+     * @return boolean
      */
     public static function isSoColissimoAvailable()
     {
-        $moduleName = 'socolissimo';
+        $moduleName = _PS_VERSION_ < '1.7' ? 'socolissimo' : 'colissimo_simplicite';
         $supportedVersion = '2.8.5';
         $sep = DIRECTORY_SEPARATOR;
         $moduleDir = _PS_MODULE_DIR_ . $moduleName . $sep;
@@ -837,7 +837,7 @@ class LengowMain
             return false;
         }
         require_once($moduleDir . $moduleName . '.php');
-        $soColissimo = new Socolissimo();
+        $soColissimo = _PS_VERSION_ < '1.7' ? new Socolissimo() : new Colissimo_simplicite();
         if (version_compare($soColissimo->version, $supportedVersion, '>=')) {
             return true;
         } else {
