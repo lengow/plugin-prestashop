@@ -21,6 +21,7 @@ Version 2.2.10
 =============================================================
 
 	- Feature: [import] Added compatibility with the new 4.x version of the Colissimo Simplicite plugin
+	- Bugfix: [export] Get a specific ean, upc or reference when product attribute is equal at 1
 
 =============================================================
 Version 2.2.9
