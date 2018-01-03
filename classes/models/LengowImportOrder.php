@@ -882,15 +882,33 @@ class LengowImportOrder
         $addressDatas['address_full'] .= !empty($addressDatas['zipcode']) ? $addressDatas['zipcode'] . ' ' : '';
         $addressDatas['address_full'] .= !empty($addressDatas['city']) ? $addressDatas['city'] . ' ' : '';
         $addressDatas['address_full'] .= !empty($addressDatas['common_country_iso_a2'])
-            ? $addressDatas['common_country_iso_a2'] . ' '
+            ? $addressDatas['common_country_iso_a2']
             : '';
-        $address = LengowAddress::getByHash($addressDatas['address_full']);
+        $address = LengowAddress::getByHash(trim($addressDatas['address_full']));
         // if address exists => check if names are the same
         if ($address) {
             if ($address->id_customer == $idCustomer
                 && $address->lastname == $addressDatas['last_name']
                 && $address->firstname == $addressDatas['first_name']
             ) {
+                // Add specific phone number when shipping and billing are the same
+                if (empty($address->phone_mobile) || $address->phone_mobile == $address->phone) {
+                    $newPhone = false;
+                    $phoneHome = LengowMain::cleanPhone($addressDatas['phone_home']);
+                    $phoneMobile = LengowMain::cleanPhone($addressDatas['phone_mobile']);
+                    $phoneOffice = LengowMain::cleanPhone($addressDatas['phone_office']);
+                    if (!empty($phoneHome) && $phoneOffice != $address->phone) {
+                        $newPhone = $phoneHome;
+                    } elseif (!empty($phoneMobile) && $phoneOffice != $address->phone) {
+                        $newPhone = $phoneMobile;
+                    } elseif (!empty($phoneOffice) && $phoneOffice != $address->phone) {
+                        $newPhone = $phoneOffice;
+                    }
+                    if ($newPhone) {
+                        $address->phone_mobile = $newPhone;
+                        $address->update();
+                    }
+                }
                 if (isset($addressDatas['id_relay'])) {
                     $address->idRelay = $addressDatas['id_relay'];
                 }
