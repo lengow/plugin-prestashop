@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2016 Lengow SAS.
+ * Copyright 2017 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,15 +15,58 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2016 Lengow SAS
+ * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
-
+/**
+ * Lengow Home Controller Class
+ */
 class LengowHomeController extends LengowController
 {
+    /**
+     * Process Post Parameters
+     */
+    public function postProcess()
+    {
+        $isSync = isset($_REQUEST['isSync']) ? $_REQUEST['isSync'] : false;
+        $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
+        if ($action) {
+            switch ($action) {
+                case 'get_sync_data':
+                    $data = array();
+                    $data['function'] = 'sync';
+                    $data['parameters'] = LengowSync::getSyncData();
+                    echo Tools::jsonEncode($data);
+                    break;
+                case 'sync':
+                    $data = isset($_REQUEST['data']) ? $_REQUEST['data'] : false;
+                    LengowSync::sync($data);
+                    LengowSync::getStatusAccount(true);
+                    break;
+                case 'refresh_status':
+                    LengowSync::getStatusAccount(true);
+                    $lengowLink = new LengowLink();
+                    Tools::redirectAdmin($lengowLink->getAbsoluteAdminLink('AdminLengowHome'));
+                    break;
+            }
+            exit();
+        }
+        $this->context->smarty->assign('isSync', $isSync);
+    }
 
+    /**
+     * Display data page
+     */
+    public function display()
+    {
+        if (!$this->isNewMerchant) {
+            $this->context->smarty->assign('stats', LengowSync::getStatistic());
+        }
+        $lengowLink = new LengowLink();
+        $this->context->smarty->assign('lengow_ajax_link', $lengowLink->getAbsoluteAdminLink('AdminLengowHome', true));
+        $refreshStatus = $lengowLink->getAbsoluteAdminLink('AdminLengowHome') . '&action=refresh_status';
+        $this->context->smarty->assign('refresh_status', $refreshStatus);
+        parent::display();
+    }
 }

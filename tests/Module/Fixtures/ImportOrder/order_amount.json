@@ -1,0 +1,170 @@
+{
+  "count": 1,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "marketplace": "galeries_lafayette",
+      "account_id": 155,
+      "marketplace_country_iso2": "FR",
+      "marketplace_order_id": "1300435653833-A",
+      "merchant_order_id": [],
+      "marketplace_status": "SHIPPED",
+      "lengow_status": "shipped",
+      "workflow_rank": 6,
+      "marketplace_order_date": "2015-11-23T17:08:00.098728Z",
+      "total_order": "26.50",
+      "total_tax": null,
+      "commission": null,
+      "processing_fee": "3.50",
+      "shipping": "5.00",
+      "currency": {
+        "iso_a3": "EUR",
+        "symbol": "€",
+        "name": "Euro"
+      },
+      "comments": "product NAME003 is canceled",
+      "invoice_number": null,
+      "invoice_url": null,
+      "payments": [
+        {
+          "id": 1628,
+          "checkout": null,
+          "status": null,
+          "type": "paypal",
+          "settled_at": null,
+          "channel_order_marketplace": 741
+        }
+      ],
+      "packages": [
+        {
+          "cart": [
+            {
+              "marketplace_order_line_id": "1300435653833-A-1",
+              "marketplace_product_id": "1",
+              "merchant_product_id": {
+                "field": null,
+                "id": null
+              },
+              "marketplace_package_id": null,
+              "marketplace_status": null,
+              "lengow_status": null,
+              "title": "NAME001",
+              "category": null,
+              "url_product": null,
+              "url_image": null,
+              "amount": "14.70",
+              "tax": null,
+              "discount": null,
+              "quantity": 3,
+              "created_at": "2015-11-17T10:02:49Z",
+              "updated_at": "2015-11-24T07:01:51Z"
+            },
+            {
+              "marketplace_order_line_id": "1300435653833-A-2",
+              "marketplace_product_id": "2",
+              "merchant_product_id": {
+                "field": null,
+                "id": null
+              },
+              "marketplace_package_id": null,
+              "marketplace_status": null,
+              "lengow_status": null,
+              "title": "NAME002",
+              "category": null,
+              "url_product": null,
+              "url_image": null,
+              "amount": "11.80",
+              "tax": null,
+              "discount": null,
+              "quantity": 2,
+              "created_at": "2015-11-17T10:02:49Z",
+              "updated_at": "2015-11-24T07:01:51Z"
+            },
+            {
+              "marketplace_order_line_id": "1300435653833-A-3",
+              "marketplace_product_id": "3",
+              "merchant_product_id": {
+                "field": null,
+                "id": null
+              },
+              "marketplace_package_id": null,
+              "marketplace_status": "CANCELED",
+              "lengow_status": "canceled",
+              "title": "NAME003",
+              "category": null,
+              "url_product": null,
+              "url_image": null,
+              "amount": "6.90",
+              "tax": null,
+              "discount": null,
+              "quantity": 1,
+              "created_at": "2015-11-17T10:02:49Z",
+              "updated_at": "2015-11-24T07:01:51Z"
+            }
+          ],
+          "delivery": {
+            "id": 7526,
+            "type": "delivery",
+            "company": null,
+            "civility": "Madame",
+            "first_name": "yvette",
+            "last_name": "alcalde",
+            "first_line": "348 CHEMIN DES FUMADES",
+            "second_line": null,
+            "complement": null,
+            "zipcode": "06220",
+            "city": "VALLAURIS",
+            "phone_home": null,
+            "phone_office": null,
+            "phone_mobile": "0615016432",
+            "full_address": null,
+            "email": null,
+            "common_country_iso_a2": "FR",
+            "trackings": [
+              {
+                "number": "8V4564654654",
+                "method": "follow-up letter",
+                "carrier": "LAPOSTE",
+                "url": null,
+                "is_delivered_by_marketplace": false,
+                "parcel_weight": null,
+                "shipped_at": null,
+                "relay":
+                  { 
+                    "id": null,
+                    "name": null
+                  },
+                "marketplace_order_line_ids": [
+                  "1300435653833-A-1"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "billing_address": {
+        "id": 7527,
+        "type": "billing",
+        "company": null,
+        "civility": "Madame",
+        "first_name": "yvette",
+        "last_name": "alcalde",
+        "first_line": "348 CHEMIN DES FUMADES",
+        "second_line": null,
+        "complement": null,
+        "zipcode": "06220",
+        "city": "VALLAURIS",
+        "phone_home": null,
+        "phone_office": null,
+        "phone_mobile": "0615016432",
+        "full_address": null,
+        "email": null,
+        "common_country_iso_a2": "FR"
+      },
+      "contact_address": null,
+      "imported_at": "2015-11-23T17:10:50.098728Z",
+      "updated_at": "2015-11-25T14:09:23.449078Z"
+    }
+  ]
+}

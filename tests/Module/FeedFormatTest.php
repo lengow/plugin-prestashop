@@ -9,7 +9,7 @@ use Module;
 use Configuration;
 use LengowMain;
 use LengowExport;
-use LengowExportException;
+use LengowException;
 use Assert;
 
 class FeedFormatTest extends ModuleTestCase
@@ -22,12 +22,9 @@ class FeedFormatTest extends ModuleTestCase
     public function setUp()
     {
         parent::setUp();
-        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
-        Configuration::updatevalue('LENGOW_EXPORT_FULLNAME', 0);
-        Configuration::updatevalue('LENGOW_EXPORT_FILE', 0);
-        Configuration::updatevalue('LENGOW_EXPORT_SELECTION', 0);
-        Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
+        Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
+        Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
 
         //load module
         Module::getInstanceByName('lengow');
@@ -49,10 +46,13 @@ class FeedFormatTest extends ModuleTestCase
         $fixture->loadFixture(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/multi_line_product.yml'
         );
-        $export = new LengowExport(array(
-            "out_stock" => true,
-            "export_variation" => true,
-        ));
+        $export = new LengowExport(
+            array(
+                'out_stock' => true,
+                'export_variation' => true,
+                'log_output' => false,
+            )
+        );
         $export->exec();
         $this->assertFileNbLine($export->getFileName(), 1, 'multi_line');
     }
@@ -69,11 +69,14 @@ class FeedFormatTest extends ModuleTestCase
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Export/quote_product.yml'
         );
 
-        $export = new LengowExport(array(
-            "show_inactive_product" => true,
-            "out_stock" => true,
-            "export_variation" => true,
-        ));
+        $export = new LengowExport(
+            array(
+                'show_inactive_product' => true,
+                'out_stock' => true,
+                'export_variation' => true,
+                'log_output' => false,
+            )
+        );
         $export->exec();
         $this->assertFileValues($export->getFileName(), 101, array("NAME_PRODUCT" => "THIS ' IS ' A   Test"));
         $this->assertFileValues($export->getFileName(), 101, array("DESCRIPTION" => "THIS ' IS ' A Test"));

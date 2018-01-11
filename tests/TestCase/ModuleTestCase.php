@@ -11,6 +11,15 @@ use SplFileInfo;
 use Configuration;
 use Product;
 use Shop;
+use Currency;
+use Cache;
+use LengowLog;
+use Module;
+use Tools;
+use Language;
+use LengowMarketplace;
+use LengowConnector;
+use LengowConfiguration;
 
 class ModuleTestCase extends PHPUnit_Framework_TestCase
 {
@@ -18,6 +27,9 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         require_once(_PS_CONFIG_DIR_ . '/config.inc.php');
+        if (!defined('PS_UNIT_TEST')) {
+            define('PS_UNIT_TEST', true);
+        }
     }
 
     public static function tearDownAfterClass()
@@ -33,19 +45,45 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
 
         Shop::setContext(Shop::CONTEXT_ALL);
-        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
     }
 
     public function setUp()
     {
-        $employee = new Employee();
-        $employee->getByEmail("pub@prestashop.com");
+        //load module
+        $module = Module::getInstanceByName('lengow');
+        if ($module) {
+            $fixture = new Fixture();
+            $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Main/currency.yml');
+            $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Main/marketplace_carrier.yml');
+            $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Main/carrier.yml');
+            $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Main/order_state.yml');
 
-        $context = Context::getContext();
-        $context->employee = $employee;
+            //load default marketplace
+            $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
 
-        Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
-        Product::flushPriceCache();
+            LengowMarketplace::$MARKETPLACES = array(
+                1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
+                2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
+            );
+
+            LengowConnector::$testFixturePath = null;
+
+            $employee = new Employee();
+            $employee->getByEmail("pub@prestashop.com");
+
+            $context = Context::getContext();
+            $context->employee = $employee;
+            $context->currency = new Currency(1);
+            $context->language = new Language(1);
+
+            Configuration::updateGlobalValue('LENGOW_ORDER_ID_PROCESS', 2);
+            Configuration::updateGlobalValue('LENGOW_ORDER_ID_SHIPPED', 4);
+            Configuration::updateGlobalValue('LENGOW_ORDER_ID_CANCEL', 6);
+
+            Configuration::updatevalue('PS_REWRITING_SETTINGS', 1);
+            Product::flushPriceCache();
+            Cache::getInstance()->flush();
+        }
     }
 
     /**
@@ -102,7 +140,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      * @param  string filename
      * @param  string nbLine
      * @param  string newFilename
-     * @param  string  $message
+     * @param  string $message
      * @throws PHPUnit_Framework_AssertionFailedError
      */
     public static function assertFileNbLine($filename, $nbLine, $newFilename, $message = '')
@@ -116,10 +154,10 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
             $nbLine++;
         }
 
-        $newFilename = str_replace('flux-fr.csv', $newFilename.'.'.$extension, $filename);
+        $newFilename = str_replace('flux-fr.csv', $newFilename . '.' . $extension, $filename);
         copy($filename, $newFilename);
 
-        $findLine= exec("cat $filename | wc -l");
+        $findLine = exec("cat $filename | wc -l");
         self::assertEquals($nbLine, $findLine, $message);
     }
 
@@ -201,7 +239,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      * @param  string filename
      * @param  string nbLine
      * @param  string newFilename
-     * @param  string  $message
+     * @param  string $message
      * @throws PHPUnit_Framework_AssertionFailedError
      */
     public static function assertFileValues($filename, $productId, $values, $message = '')
@@ -211,8 +249,8 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $i = 0;
         if (($handle = fopen($filename, "r")) !== false) {
             while (($data = fgetcsv($handle, 1000, "|")) !== false) {
-                if ($i==0) {
-                    $j=0;
+                if ($i == 0) {
+                    $j = 0;
                     foreach ($data as $column) {
                         $headers[str_replace('"', '', $column)] = $j;
                         $j++;
@@ -231,11 +269,90 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Assert Array has key
+     *
+     * @param $keys
+     * @param $array
+     */
+    public static function assertKeysExistInArray($keys, $array)
+    {
+        if (!is_array($keys) || count($keys) == 0) {
+            self::assertTrue(false, 'Keys Array is empty');
+        }
+        foreach ($keys as $key) {
+            self::assertArrayHasKey($key, $array);
+        }
+    }
+
+    /**
+     * Asset Mysql Table contain data
+     * @param $table
+     * @param $where
+     * @param $message
+     */
+    public static function assertTableContain($table, $where, $message = "")
+    {
+
+        $whereSql = array();
+        foreach ($where as $key => $value) {
+            if ($value === 'NULL') {
+                $whereSql[] = ' `' . $key . '` IS NULL';
+            } else {
+                $whereSql[] = ' `' . $key . '` = "' . pSQL($value) . '" ';
+            }
+        }
+        $whereSql = ' WHERE ' . join(' AND ', $whereSql);
+        $sql = 'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . $table . $whereSql;
+        if ($message == "") {
+            $message = 'Cant find row with [' . $whereSql . '] IN [' . $table . ']';
+        }
+        $result = Db::getInstance()->ExecuteS($sql);
+        self::assertTrue((bool)$result[0]["total"], $message);
+    }
+
+    /**
+     * Asset Mysql Table not contain data
+     * @param $table
+     * @param $where
+     * @param $message
+     */
+    public static function assertTableNotContain($table, $where, $message = "")
+    {
+
+        $whereSql = array();
+        foreach ($where as $key => $value) {
+            if ($value === 'NULL') {
+                $whereSql[] = ' `' . $key . '` IS NULL';
+            } else {
+                $whereSql[] = ' `' . $key . '` = "' . pSQL($value) . '" ';
+            }
+        }
+        $whereSql = ' WHERE ' . join(' AND ', $whereSql);
+        $sql = 'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . $table . $whereSql;
+        if ($message == "") {
+            $message = 'Cant find row with [' . $whereSql . '] IN [' . $table . ']';
+        }
+        $result = Db::getInstance()->ExecuteS($sql);
+        self::assertFalse((bool)$result[0]["total"], $message);
+    }
+
+    /**
+     * Test if table is empty
+     * @param $tableName
+     * @param string $message
+     */
+    public function assertTableEmpty($tableName, $message = '')
+    {
+        $result = Db::getInstance()->ExecuteS('SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . $tableName);
+        self::assertTrue(!(bool)$result[0]["total"], $message);
+    }
+
+    /**
      * Call protected/private method of a class.
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object Instantiated object that we will run method on.
      * @param string $methodName Method name to call
-     * @param array  $parameters Array of parameters to pass into method.
+     * @param array $parameters Array of parameters to pass into method.
      *
      * @return mixed Method return.
      */
@@ -246,5 +363,42 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
+    }
+
+
+    /**
+     * Test if last line of log contain text
+     * @param $text
+     * @param string $message
+     */
+    public function assertLogContain($text, $message = '')
+    {
+        $log = new LengowLog();
+        $lastLine = $this::readLastLine($log->getFileName());
+        self::assertTrue((bool)strpos($lastLine, $text), $message);
+    }
+
+    /**
+     * Test if table exist
+     * @param string $tableName
+     * @param string $message
+     * @return boolean
+     */
+    public function assertTableExist($tableName, $message = '')
+    {
+        $result = Db::getInstance()->ExecuteS("SHOW TABLES LIKE '" . _DB_PREFIX_ . $tableName . "'");
+        return (bool)$result;
+    }
+
+    /**
+     * Test if table not exist
+     * @param string $tableName
+     * @param string $message
+     * @return boolean
+     */
+    public function assertTableNotExist($tableName, $message = '')
+    {
+        $result = Db::getInstance()->ExecuteS("SHOW TABLES LIKE '" . _DB_PREFIX_ . $tableName . "'");
+        return !(bool)$result;
     }
 }

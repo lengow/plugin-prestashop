@@ -1,0 +1,371 @@
+{
+  "galeries_lafayette": {
+    "orders": {
+      "carriers": {
+        "LAPOSTE": {
+          "label": "La Poste"
+        },
+        "CHRONOPOST": {
+          "label": "Chronopost"
+        },
+        "MONDIALRELAY": {
+          "label": "Mondial Relay"
+        }
+      },
+      "status": {
+        "closed": [
+          "RECEIVED",
+          "CLOSED"
+        ],
+        "refused": [
+          "REFUSED"
+        ],
+        "refunded": [
+          "REFUNDED"
+        ],
+        "waiting_shipment": [
+          "SHIPPING"
+        ],
+        "accepted": [
+          "WAITING_DEBIT",
+          "WAITING_DEBIT_PAYMENT"
+        ],
+        "shipped": [
+          "SHIPPED"
+        ],
+        "waiting_acceptance": [
+          "WAITING_ACCEPTANCE"
+        ],
+        "new": [
+          "STAGING"
+        ],
+        "canceled": [
+          "CANCELED"
+        ],
+        "refunding": [
+          "WAITING_REFUND",
+          "WAITING_REFUND_PAYMENT"
+        ]
+      },
+      "actions": {
+        "accept": {
+          "args": [],
+          "optional_args": [
+            "line",
+            "carrier"
+          ],
+          "status": [
+            "waiting_acceptance"
+          ]
+        },
+        "cancel": {
+          "args": [],
+          "optional_args": [
+            "line"
+          ],
+          "status": [
+            "waiting_acceptance"
+          ]
+        },
+        "refund": {
+          "args": [
+            "reason_code"
+          ],
+          "optional_args": [
+            "line"
+          ],
+          "status": [
+            "waiting_refund"
+          ]
+        },
+        "refuse": {
+          "args": [],
+          "optional_args": [
+            "line"
+          ],
+          "status": [
+            "waiting_acceptance"
+          ]
+        },
+        "ship": {
+          "args": [
+            "tracking_number",
+            "carrier"
+          ],
+          "optional_args": [],
+          "status": [
+            "waiting_shipment"
+          ]
+        }
+      }
+    },
+    "name": "Galeries Lafayette",
+    "homepage": "http://www.galerieslafayette.com",
+    "logo": "http://static.galerieslafayette.com//assets/common/images/0-nav/logo_GL_HD.jpg",
+    "description": "Coming soon: description",
+    "country": "FRA"
+  },
+  "menlook": {
+    "orders": {
+      "carriers": {
+        "LAPOSTE": {
+          "label": "La Poste"
+        },
+        "MONDIALRELAY": {
+          "label": "Mondial Relay"
+        },
+        "GLS": {
+          "label": "Gls"
+        }
+      },
+      "status": {
+        "closed": [
+          "RECEIVED",
+          "CLOSED"
+        ],
+        "refused": [
+          "REFUSED"
+        ],
+        "refunded": [
+          "REFUNDED"
+        ],
+        "waiting_shipment": [
+          "SHIPPING"
+        ],
+        "accepted": [
+          "WAITING_DEBIT",
+          "WAITING_DEBIT_PAYMENT"
+        ],
+        "shipped": [
+          "SHIPPED"
+        ],
+        "waiting_acceptance": [
+          "WAITING_ACCEPTANCE"
+        ],
+        "new": [
+          "STAGING"
+        ],
+        "canceled": [
+          "CANCELED"
+        ],
+        "refunding": [
+          "WAITING_REFUND",
+          "WAITING_REFUND_PAYMENT"
+        ]
+      },
+      "actions": {
+        "accept": {
+          "args": [
+            "line"
+          ],
+          "optional_args": [],
+          "status": [
+            "waiting_acceptance"
+          ]
+        },
+        "refuse": {
+          "args": [
+            "line"
+          ],
+          "optional_args": [],
+          "status": [
+            "waiting_acceptance"
+          ]
+        },
+        "ship": {
+          "args": [
+            "line",
+            "carrier"
+          ],
+          "optional_args": [
+            "tracking_number",
+            "tracking_url"
+          ],
+          "status": [
+            "waiting_shipment"
+          ]
+        }
+      }
+    },
+    "name": "Menlook",
+    "homepage": "http://www.menlook.com",
+    "logo": "http://static1.fashionbeans.com/resources/images/new/logos/menlook.jpg",
+    "description": "Coming soon: description",
+    "country": "GBR"
+  },
+  "darty": {
+    "orders": {
+      "carriers": {},
+      "status": {
+        "closed": [
+          "RECEIVED",
+          "CLOSED"
+        ],
+        "refused": [
+          "REFUSED"
+        ],
+        "refunded": [
+          "REFUNDED"
+        ],
+        "waiting_shipment": [
+          "SHIPPING"
+        ],
+        "accepted": [
+          "WAITING_DEBIT",
+          "WAITING_DEBIT_PAYMENT"
+        ],
+        "shipped": [
+          "SHIPPED"
+        ],
+        "waiting_acceptance": [
+          "WAITING_ACCEPTANCE"
+        ],
+        "new": [
+          "STAGING"
+        ],
+        "canceled": [
+          "CANCELED"
+        ],
+        "refunding": [
+          "WAITING_REFUND",
+          "WAITING_REFUND_PAYMENT"
+        ]
+      },
+      "actions": {
+        "accept": {
+          "args": [],
+          "optional_args": [
+            "line"
+          ],
+          "status": [
+            "waiting_acceptance"
+          ]
+        },
+        "refund": {
+          "args": [
+            "reason_code"
+          ],
+          "optional_args": [
+            "line"
+          ],
+          "status": [
+            "waiting_refund"
+          ]
+        },
+        "refuse": {
+          "args": [],
+          "optional_args": [
+            "line"
+          ],
+          "status": [
+            "waiting_acceptance"
+          ]
+        },
+        "ship": {
+          "args": [
+            "tracking_number"
+          ],
+          "optional_args": [
+            "carrier"
+          ],
+          "status": [
+            "waiting_shipment"
+          ]
+        }
+      }
+    },
+    "name": "Darty",
+    "homepage": "http://www.darty.com",
+    "logo": "http://www.resumetarget.com/blog/wp-content/uploads/2013/05/google-adwords-logo.jpg",
+    "description": "Coming soon: description",
+    "country": "FRA"
+  },
+  "cdiscount": {
+    "orders": {
+      "carriers": {},
+      "status": {
+        "closed": [
+          "RECEIVED",
+          "CLOSED"
+        ],
+        "refused": [
+          "REFUSED"
+        ],
+        "refunded": [
+          "REFUNDED"
+        ],
+        "waiting_shipment": [
+          "SHIPPING"
+        ],
+        "accepted": [
+          "WAITING_DEBIT",
+          "WAITING_DEBIT_PAYMENT"
+        ],
+        "shipped": [
+          "SHIPPED"
+        ],
+        "waiting_acceptance": [
+          "WAITING_ACCEPTANCE"
+        ],
+        "new": [
+          "STAGING"
+        ],
+        "canceled": [
+          "CANCELED"
+        ],
+        "refunding": [
+          "WAITING_REFUND",
+          "WAITING_REFUND_PAYMENT"
+        ]
+      },
+      "actions": {
+        "accept": {
+          "args": [],
+          "optional_args": [
+            "line"
+          ],
+          "status": [
+            "waiting_acceptance"
+          ]
+        },
+        "refund": {
+          "args": [
+            "reason_code"
+          ],
+          "optional_args": [
+            "line"
+          ],
+          "status": [
+            "waiting_refund"
+          ]
+        },
+        "refuse": {
+          "args": [],
+          "optional_args": [
+            "line"
+          ],
+          "status": [
+            "waiting_acceptance"
+          ]
+        },
+        "ship": {
+          "args": [
+            "tracking_number"
+          ],
+          "optional_args": [
+            "line",
+            "carrier"
+          ],
+          "status": [
+            "waiting_shipment"
+          ]
+        }
+      }
+    },
+    "name": "Cdiscount",
+    "homepage": "http://www.cdiscount.com",
+    "logo": "http://www.resumetarget.com/blog/wp-content/uploads/2013/05/google-adwords-logo.jpg",
+    "description": "Coming soon: description",
+    "country": "FRA"
+  }
+}

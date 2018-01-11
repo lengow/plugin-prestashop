@@ -51,10 +51,10 @@ class ControllerTestCase extends PHPUnit_Framework_TestCase
         );
         $cookieContent = '';
         foreach ($content as $key => $value) {
-            $cookieContent .= $key.'|'.$value.'¤';
+            $cookieContent .= $key . '|' . $value . '¤';
         }
-        $cookieContent .= 'checksum|'.crc32(_COOKIE_IV_.$cookieContent);
-        $cookieName = 'PrestaShop-'.md5(_PS_VERSION_.'psAdmin'.CURRENT_DOMAIN);
+        $cookieContent .= 'checksum|' . crc32(_COOKIE_IV_ . $cookieContent);
+        $cookieName = 'PrestaShop-' . md5(_PS_VERSION_ . 'psAdmin' . CURRENT_DOMAIN);
         if (!Configuration::get('PS_CIPHER_ALGORITHM') || !defined('_RIJNDAEL_KEY_')) {
             $cipherTool = new Blowfish(_COOKIE_KEY_, _COOKIE_IV_);
         } else {
@@ -74,7 +74,7 @@ class ControllerTestCase extends PHPUnit_Framework_TestCase
         self::$cookie->setCookie($cookie);
         self::$client = new Client(
             array(
-                'base_uri' => 'http://'.CURRENT_DOMAIN,
+                'base_uri' => 'http://' . CURRENT_DOMAIN,
                 'cookies' => self::$cookie,
                 'allow_redirects' => false,
             )
@@ -87,6 +87,5 @@ class ControllerTestCase extends PHPUnit_Framework_TestCase
             $module = Module::getInstanceByName('lengow');
             $module->install();
         }
-
     }
 }

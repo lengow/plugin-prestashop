@@ -24,12 +24,12 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
-if ((bool)Configuration::get('PS_MOBILE_DEVICE'))
+if ((bool)Configuration::get('PS_MOBILE_DEVICE')) {
     require_once(_PS_MODULE_DIR_ . '/mobile_theme/Mobile_Detect.php');
+}
 
 // Retro 1.3, 'class_exists' cause problem with autoload... */
-if (version_compare(_PS_VERSION_, '1.4', '<'))
-{
+if (version_compare(_PS_VERSION_, '1.4', '<')) {
     // Not exist for 1.3
     class Shop extends ObjectModel
     {
@@ -39,7 +39,6 @@ if (version_compare(_PS_VERSION_, '1.4', '<'))
         public function __construct()
         {
         }
-
 
         public static function getShops()
         {
@@ -63,7 +62,6 @@ if (version_compare(_PS_VERSION_, '1.4', '<'))
             fclose($fp);
         }
     }
-
 }
 
 // Not exist for 1.3 and 1.4
@@ -157,17 +155,20 @@ class Context
 
         $this->controller = new ControllerBackwardModule();
         if (is_object($cookie)) {
-            if (!defined('_PS_CURRENCY_DEFAULT_'))
+            if (!defined('_PS_CURRENCY_DEFAULT_')) {
                 define('_PS_CURRENCY_DEFAULT_', Configuration::get('PS_CURRENCY_DEFAULT'));
-            if ($cookie->id_currency)
+            }
+            if ($cookie->id_currency) {
                 $this->currency = new Currency((int)$cookie->id_currency);
-            else
+            } else {
                 $this->currency = new Currency((int)_PS_CURRENCY_DEFAULT_);
+            }
             $this->language = new Language((int)$cookie->id_lang);
-            if ((int)$cookie->id_country)
+            if ((int)$cookie->id_country) {
                 $this->country = new Country((int)$cookie->id_country);
-            else
+            } else {
                 $this->country = new Country(Country::getDefaultCountryId());
+            }
             $this->customer = new CustomerBackwardModule((int)$cookie->id_customer);
             $this->employee = new Employee((int)$cookie->id_employee);
         } else {
@@ -180,8 +181,9 @@ class Context
 
         $this->shop = new ShopBackwardModule();
 
-        if ((bool)Configuration::get('PS_MOBILE_DEVICE'))
+        if ((bool)Configuration::get('PS_MOBILE_DEVICE')) {
             $this->mobile_detect = new Mobile_Detect();
+        }
     }
 
     public function getMobileDevice()
@@ -191,16 +193,19 @@ class Context
             if ($this->checkMobileContext()) {
                 switch ((int)Configuration::get('PS_MOBILE_DEVICE')) {
                     case 0: // Only for mobile device
-                        if ($this->mobile_detect->isMobile() && !$this->mobile_detect->isTablet())
+                        if ($this->mobile_detect->isMobile() && !$this->mobile_detect->isTablet()) {
                             $this->mobile_device = true;
+                        }
                         break;
                     case 1: // Only for touchpads
-                        if ($this->mobile_detect->isTablet() && !$this->mobile_detect->isMobile())
+                        if ($this->mobile_detect->isTablet() && !$this->mobile_detect->isMobile()) {
                             $this->mobile_device = true;
+                        }
                         break;
                     case 2: // For touchpad or mobile devices
-                        if ($this->mobile_detect->isMobile() || $this->mobile_detect->isTablet())
+                        if ($this->mobile_detect->isMobile() || $this->mobile_detect->isTablet()) {
                             $this->mobile_device = true;
+                        }
                         break;
                 }
             }
@@ -223,8 +228,9 @@ class Context
      */
     public static function getContext()
     {
-        if (!isset(self::$instance))
+        if (!isset(self::$instance)) {
             self::$instance = new Context();
+        }
         return self::$instance;
     }
 
@@ -243,8 +249,9 @@ class Context
      */
     public static function shop()
     {
-        if (!self::$instance->shop->getContextType())
+        if (!self::$instance->shop->getContextType()) {
             return ShopBackwardModule::CONTEXT_ALL;
+        }
         return self::$instance->shop->getContextType();
     }
 }
@@ -259,6 +266,7 @@ class ShopBackwardModule extends Shop
     public $id = 1;
     public $id_shop_group = 1;
     public $name = '';
+
     public function getContextType()
     {
         return ShopBackwardModule::CONTEXT_ALL;
@@ -313,10 +321,11 @@ class ControllerBackwardModule
 
     public function addJquery()
     {
-        if (_PS_VERSION_ < '1.5')
+        if (_PS_VERSION_ < '1.5') {
             $this->addJS(_PS_JS_DIR_ . 'jquery/jquery-1.4.4.min.js');
-        elseif (_PS_VERSION_ >= '1.5')
+        } elseif (_PS_VERSION_ >= '1.5') {
             $this->addJS(_PS_JS_DIR_ . 'jquery/jquery-1.7.2.min.js');
+        }
     }
 
 }
@@ -338,12 +347,18 @@ class CustomerBackwardModule extends Customer
      */
     public function isLogged($with_guest = false)
     {
-        if (!$with_guest && $this->is_guest == 1)
+        if (!$with_guest && $this->is_guest == 1) {
             return false;
+        }
 
         /* Customer is valid only if it can be load and if object password is the same as database one */
-        if ($this->logged == 1 && $this->id && Validate::isUnsignedId($this->id) && Customer::checkPassword($this->id, $this->passwd))
+        if ($this->logged == 1
+            && $this->id
+            && Validate::isUnsignedId($this->id)
+            && Customer::checkPassword($this->id, $this->passwd)
+        ) {
             return true;
+        }
         return false;
     }
 }

@@ -1,0 +1,305 @@
+module.state_technical_error|Erreur technique - Lengow
+tab.home|Accueil
+tab.product|Produits
+tab.order|Commandes
+tab.order_setting|Paramètres des commandes
+tab.help|Aide
+tab.main_setting|Paramétrages principaux
+tab.legals|Mentions légales
+menu.product|Produits
+menu.order|Commandes
+menu.jump_to_lengow|Accéder à Lengow
+menu.preprod_active|mode préproduction 
+menu.counter|Période d'essai : %{counter} jour(s) restant(s).
+menu.upgrade_account|Souscrire
+menu.order_overview|Vue d'ensemble
+menu.order_parameter|Paramètres des commandes
+menu.help|Aide
+menu.global_parameter|Paramètres principaux
+footer.legals|Mentions légales
+footer.plugin_lengow|Lengow Prestashop Module
+footer.lengow_link_url|http://www.lengow.com/fr/
+dashboard.screen.welcome_back|Bonjour ! Bienvenue parmi nous !
+dashboard.screen.go_to_lengow|Aller sur la plateforme Lengow
+dashboard.screen.products_title|Produits
+dashboard.screen.products_text|Consulter tous vos produits disponibles pour préparer votre catalogue
+dashboard.screen.orders_title|Commandes
+dashboard.screen.orders_text|Gérer vos commandes directement sur votre tableau de bord PrestaShop.
+dashboard.screen.settings_title|Paramètrage
+dashboard.screen.settings_text|Configurer les principaux paramètres de votre plugin PrestaShop
+dashboard.screen.partner_business|Lengow, partenaire de votre activité e-commerce
+dashboard.screen.stat_turnover|Chiffre d'affaires
+dashboard.screen.stat_nb_orders|Commandes
+dashboard.screen.stat_more_stats|Plus de statistiques ?
+dashboard.screen.some_help_title|Besoin d'aide ?
+dashboard.screen.get_in_touch|Prenez contact avec les équipes Lengow.
+dashboard.screen.visit_help_center|Visitez notre Help Center
+dashboard.screen.configure_plugin|pour plus d'informations sur la configuration de votre plugin PrestaShop
+status.screen.title_end_free_trial|Toutes les bonnes choses ont une fin...
+status.screen.subtitle_end_free_trial|Vous avez atteint la fin de votre période d'essai !
+status.screen.first_description_end_free_trial|Vos 15 jours d'essai gratuit sur la plateforme Lengow sont maintenant terminés. Nous espérons qu'ils ont été bénéfiques à votre activité e-commerce.
+status.screen.second_description_end_free_trial|Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les importations vont être momentanément stoppées.
+status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration. Pour conserver l'intégralité des paramètres que vous avez défini, pensez à souscrire dès maintenant !
+status.screen.subtitle_bad_payer|Votre compte est temporairement fermé.
+status.screen.first_description_bad_payer|Nous sommes désolé mais nous devons temporairement limiter l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire.
+status.screen.second_description_bad_payer|La publication de vos catalogues est aussi suspendue. Nous vous recommandons de prendre contact avec nous rapidement par mail
+status.screen.phone_bad_payer|ou par téléphone au +33 (0)2 85 52 64 15.
+status.screen.third_description_bad_payer|Nous espérons vous revoir très rapidement parmi nous
+status.screen.facturation_button|Voir mes informations de facturation
+status.screen.upgrade_account_button|Je suis prêt à souscrire !
+status.screen.refresh_action|Actualiser mon compte
+product.screen.nb_exported|produits exportés 
+product.screen.nb_available|produits disponibles
+product.screen.include_specific_product|Inclure une sélection de produits
+product.screen.include_specific_product_support|Utilisez cette option pour sélectionner vos produits individuellement
+product.screen.no_result_found|Désolé, nous n'avons trouvé aucun élément correspondant à votre demande.<br />Souhaitez-vous modifier votre recherche ?
+product.screen.no_product_selected|Sélectionnez un produit
+product.screen.date_from|Du
+product.screen.date_to|Au
+product.screen.button_copy|Copier
+product.screen.button_download|Télécharger
+product.screen.button_yes|Oui
+product.screen.button_no|Non
+product.screen.button_search|Rechercher
+product.screen.select_all_products|Sélectionnez l'ensemble de vos produits (%{nb} products)
+product.screen.add_confirmation|Voulez-vous vraiment ajouter %{nb} produits dans votre sélection ?
+product.screen.remove_confirmation|Voulez-vous vraiment supprimer %{nb} produits de votre sélection ?
+product.screen.remove_from_export|Supprimer de mon export
+product.screen.add_from_export|Inclure dans mon export
+product.table.id_product|ID
+product.table.image|Image
+product.table.name|Nom
+product.table.reference|SKU
+product.table.category_name|Catégorie
+product.table.price|Prix de base
+product.table.final_price|Prix final
+product.table.quantity|Quantité
+product.table.lengow_status|Inclure dans l'export ?
+product.table.pagination_of|sur
+order.screen.import_charge_first|Commandes en cours de récupération...
+order.screen.import_charge_second|Restez avec nous, cela ne va pas durer longtemps (2 min d'attente en moyenne)
+order.screen.all_order_will_be_sent_to|Les rapports d'erreurs de vos commandes seront envoyés par email à
+order.screen.change_this|Vous voulez modifier cela ?
+order.screen.last_order_importation|Dernière synchronisation
+order.screen.no_order_importation|Aucune synchronisation pour le moment
+order.screen.import_auto|Auto
+order.screen.import_manuel|Manuel
+order.screen.button_update_orders|Synchroniser les commandes
+order.screen.button_reimport_order|Réimporter mes commandes
+order.screen.button_resend_order|Renvoyer mes commandes
+order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production ?</a>
+order.screen.import_single_warning_message|La version de votre module est comprise entre la 1.5.2 et la 1.5.4. Pour des raisons de sécurité, vous ne pouvez importer qu'une seule commande par synchronisation.
+order.screen.no_carrier_warning_message|Certaines de vos commandes ne vont pas pouvoir être importées car vous n'avez pas encore défini de transporteur par défaut pour certains pays de livraison. <a href=%{url}>Configurer les transporteurs</a>
+order.screen.not_imported|Pas importée
+order.screen.not_sent|Non envoyé
+order.screen.refresh_order|Actualiser ma commande
+order.screen.order_not_imported|Votre commande n'a pas été importée dans PrestaShop.
+order.screen.action_sent|Action %{action_type} envoyée
+order.screen.action_waiting_return|Action envoyée, en attente d'une réponse.
+order.screen.action_sent_not_work|Erreur sur l'action envoyée à la place de marché.
+order.screen.no_order_title|Le meilleur est encore à venir ! 
+order.screen.no_order_description|Vos produits sont bien visibles, vos ventes sont sur le point de décoller
+order.screen.action_success|Succès
+order.screen.action_error|Erreur
+order.screen.status_not_synchronized|Non synchronisé
+order.screen.status_accepted|Accepté
+order.screen.status_waiting_shipment|En attente d'expédition
+order.screen.status_shipped|Expédié
+order.screen.status_closed|Fermé
+order.screen.status_refunded|Remboursé
+order.screen.status_canceled|Annulé
+order.screen.status_shipped_by_mkp|Expédié par la place de marché
+order.table.action_lengow|Actions
+order.table.order_lengow_state|Statut Lengow
+order.table.marketplace_name|Place de marché
+order.table.shop_name|Boutique
+order.table.marketplace_sku|ID Commande
+order.table.reference_prestashop|Référence
+order.table.order_date|Date
+order.table.delivery_country|Pays
+order.table.order_item|Quantité
+order.table.total_paid|Total
+order.table.extra|Extra
+order_setting.screen.carrier_management_title|Gestion des transporteurs par pays
+order_setting.screen.carrier_management_description|Pour chaque pays où vous livrez vos produits et pour chaque place de marché, sélectionnez le transporteur par défaut à appliquer à vos commandes.
+order_setting.screen.marketplace|marketplace(s)
+order_setting.screen.see_delivery_countries|Voir tous mes pays de livraison
+order_setting.screen.marketplace_matching_title|%{country_name} : modes de livraison
+order_setting.screen.marketplace_matching_description|Choisissez ici les différents modes de livraison à attribuer à chacune de vos commandes pour le pays %{country_name}. <br />Vous pouvez le faire pour les différentes places de marché activées dans votre compte.
+order_setting.screen.country_wt_carrier|Des transporteurs sont manquants dans cette liste ?
+order_setting.screen.please_setup_then|Gérez les transporteurs
+order_setting.screen.default_carrier_prestashop|Votre transporteur PrestaShop par défaut
+order_setting.screen.please_select_carrier_prestashop|Sélectionnez un transporteur PrestaShop
+order_setting.screen.no_default_carrier_selected|Pas de transporteur PrestaShop par défaut défini
+order_setting.screen.default_carrier_marketplace|Votre transporteur %{marketplace_name} par défaut
+order_setting.screen.please_select_carrier_marketplace|Sélectionnez le code transporteur pour %{marketplace_name}
+order_setting.screen.no_default_carrier_marketplace_selected|Pas de code transporteur par défaut défini
+order_setting.screen.tooltip_default_carrier|Vous n'avez pas encore configuré le transporteur par défaut pour cette place de marché
+order_setting.screen.no_carrier_enabled|You don't have any Prestashop carriers selected for %{country_name}
+order_setting.screen.button_cancel|Annuler
+order_setting.screen.order_status_title|Statut des commandes
+order_setting.screen.order_status_description|Attribuez des statuts Lengow à vos commandes pour les retrouver facilement parmi l'ensemble de vos commandes.
+order_setting.screen.import_setting_title|Import des commandes
+order_setting.screen.import_setting_description|Gérez ici vos paramètres d'import pour les commandes provenant des places de marché.
+order_setting.screen.nb_days|jours
+global_setting.screen.notification_alert_title|Notifications & alertes
+global_setting.screen.default_export_carrier_title|Calcul des frais de livraison
+global_setting.screen.default_export_carrier_description|Les frais de livraison de votre catalogue vont être calculés en fonction du transporteur choisi
+global_setting.screen.preprod_mode_title|Mode Préproduction
+global_setting.screen.preprod_mode_description|Utilisez la pré-production pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ces paramètres UNIQUEMENT sur votre serveur de préproduction.
+global_setting.screen.log_file_title|Fichiers de Log
+global_setting.screen.log_file_description|Retrouvez ci-dessous tout l'historique des logs (commandes importées, messages d'erreurs...). Ils seront sauvegardés ici pendant 20 jours.
+global_setting.screen.please_choose_log|Choisissez un fichier de log...
+global_setting.screen.download_all_files|Télécharger tous les fichiers
+global_setting.screen.uninstall_module|Désinstaller la totalité du module
+global_setting.screen.uninstall_module_description|Vous pouvez désinstaller ici l'intégralité du module Lengow et l'ensemble des données liées
+global_setting.screen.all_data_will_be_lost|Toutes les données vont être perdues (données et paramétrages) et l'ensemble de votre historique va être supprimé.
+global_setting.screen.you_will_find_a_backup|Après la désinstallation du module, vous retrouverez une sauvegarde de votre base de données Lengow dans votre
+global_setting.screen.prestashop_backup|Backup PrestaShop
+global_setting.screen.i_want_uninstall|Je veux désinstaller le module Lengow
+global_setting.screen.button_i_want_uninstall|Désinstaller le module Lengow
+global_setting.screen.title_modal_uninstall|Désinstaller le module Lengow
+global_setting.screen.cancel_i_want_uninstall|Annuler
+global_setting.screen.to_uninstall_type|Pour finaliser la désinstallation, copiez le texte suivant
+global_setting.screen.i_am_sure|JE SUIS SUR
+global_setting.screen.button_download_file|Télécharger les fichiers de log
+global_setting.screen.button_save|Sauvegarder les changements
+global_setting.screen.plugin_deleting|Désinstallation en cours...
+global_setting.screen.plugin_deleted|Désinstallation terminée !
+global_setting.screen.setting_saving|Enregistrement en cours...
+global_setting.screen.setting_saved|Enregistrement terminé !
+help.screen.title|Demandez de l'aide à notre équipe Support !
+help.screen.contain_text_support|Des questions, un feedback sur Lengow... transmettez vos demandes au
+help.screen.title_lengow_support|support Lengow.
+help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/fr/requests/new
+help.screen.need_some_help|Besoin d'aide ?
+help.screen.contain_text_support_hour|Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h).
+help.screen.find_answer|Vous pouvez aussi consulter
+help.screen.link_prestashop_guide|notre guide dédié à PrestaShop
+help.screen.knowledge_link_url|https://fr.lengow.help/help/prestashop
+legals.screen.simplified_company|Société par actions simplifiées
+legals.screen.social_capital|Capital social :
+legals.screen.cnil_declaration|Déclaration CNIL :
+legals.screen.company_registration_number|RCS de Nantes :
+legals.screen.vat_identification_number|Numéro de TVA intracommunautaire :
+legals.screen.address|Adresse
+legals.screen.contact|Contact
+legals.screen.hosting|Hébergement
+lengow_setting.lengow_account_id_title|ID du compte
+lengow_setting.lengow_access_token_title|Access Token
+lengow_setting.lengow_secret_token_title|Secret Token
+lengow_setting.lengow_shop_active_title|Activer la boutique
+lengow_setting.lengow_catalog_id_title|ID Catalogues
+lengow_setting.lengow_catalog_id_legend|Vos identifiants de catalogues pour importer vos commandes. Séparez les par des ";".
+lengow_setting.lengow_shop_token_title|Token de la boutique
+lengow_setting.lengow_export_selection_enabled_title|Exporter seulement la sélection
+lengow_setting.lengow_export_selection_enabled_legend|Activez cette option si vous ne voulez pas exporter tous les produits disponibles. Sélectionnez ensuite uniquement les produits à exporter.
+lengow_setting.lengow_export_variation_enabled_title|Exporter les produits déclinés
+lengow_setting.lengow_export_variation_enabled_legend|Activez cette option si vous souhaitez exporter l'ensemble de vos déclinaisons produits
+lengow_setting.lengow_export_out_stock_title|Export des produit hors stock
+lengow_setting.lengow_export_out_stock_legend|Activez cette option si vous souhaitez exporter vos produits hors stock
+lengow_setting.lengow_export_format_title|Exportez le format par défaut
+lengow_setting.lengow_export_file_enabled_title|Exportez dans un fichier
+lengow_setting.lengow_export_file_enabled_legend|Il est conseillé d'activer cette option si vous avez 3 000 produits ou plus.
+lengow_setting.lengow_export_carrier_default_title|Transporteur par défaut
+lengow_setting.lengow_last_export_title|Dernier export
+lengow_setting.lengow_order_id_process_title|Commandes en préparation
+lengow_setting.lengow_order_id_shipped_title|Commandes expédiées
+lengow_setting.lengow_order_id_cancel_title|Commandes annulées
+lengow_setting.lengow_order_id_shippedbymp_title|Commandes expédiées par les places de marché
+lengow_setting.lengow_import_force_product_title|Forcer les produits
+lengow_setting.lengow_import_force_product_legend|Activez cette option si vous souhaitez importer automatiquement vos produits hors stock et produits inactifs.
+lengow_setting.lengow_import_days_title|Réimporter toutes les commandes passées depuis :
+lengow_setting.lengow_import_days_legend|Activez cette option si vous avez des commandes en erreur en attente. Cela vous permet de réimporter les commandes passées depuis le dernier import réussi.
+lengow_setting.lengow_import_processing_fee_title|Importer les frais de traitement
+lengow_setting.lengow_import_processing_fee_legend|Activez cette option si vous souhaitez importer dans vos commandes les frais de traitement des places de marché.
+lengow_setting.lengow_import_preprod_enabled_title|Activer le mode préproduction
+lengow_setting.lengow_import_ship_mp_enabled_title|Import des commandes expédiées par les places de marché
+lengow_setting.lengow_import_stock_ship_mp_title|Je veux diminuer mon stock
+lengow_setting.lengow_import_stock_ship_mp_legend|Activez cette option pour prendre en compte les commandes des places de marché sur les stocks de votre backoffice PrestaShop.
+lengow_setting.lengow_report_mail_enabled_title|Je veux être notifié en cas de problème lors de l'importation de mes commandes
+lengow_setting.lengow_report_mail_address_title|Email à utiliser pour l'envoi des emails de rapport
+lengow_setting.lengow_report_mail_address_legend|Pour ajouter plusieurs emails, utilisez des " ; " pour les séparer
+lengow_setting.lengow_import_single_enabled_title|Limité à une commande par import
+lengow_setting.lengow_import_single_enabled_legend|Utile pour les versions PrestaShop 1.5.2 à 1.5.4. *(cela évite d'importer deux fois les commandes)
+lengow_setting.lengow_import_in_progress_title|Import en cours
+lengow_setting.lengow_last_import_cron_title|Dernier import CRON
+lengow_setting.lengow_last_import_manual_title|Dernier import manuel
+lengow_setting.lengow_global_token_title|Lengow global Token
+lengow_setting.lengow_authorized_ip_title|IP autorisée(s)
+lengow_setting.lengow_authorized_ip_legend|IP autorisée(s) séparée(s) par ;
+lengow_setting.lengow_tracking_enabled_title|Activer le tracking Lengow
+lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
+lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
+lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
+lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs
+lengow_log.error.no_notification|Pas de nouvelle notification sur vos commandes
+lengow_log.error.credentials_not_valid|Votre identifiant de compte, votre jeton d'accès ou votre jeton secret ne sont pas valides.
+lengow_log.error.no_catalog_for_shop|Aucun identifiant de catalogue valide pour la boutique %{name_shop} (%{id_shop})
+lengow_log.error.rest_time_to_import|Attendez %{rest_time}  secondes avant d'importer de nouveau vos commandes
+lengow_log.error.no_product|Erreur Lengow : pas de produit dans cette commande
+lengow_log.error.no_change_rate|Erreur Lengow : pas de taux de change valide à appliquer sur les prix
+lengow_log.error.no_currency|Erreur Lengow : pas de devise dans cette commande
+lengow_log.error.currency_not_available|la devise %{currency_iso} n'est pas disponible dans votre boutique.
+lengow_log.error.no_country_for_delivery_address|Erreur Lengow : l'adresse de livraison ne contient pas de pays
+lengow_log.error.no_billing_address|Erreur Lengow : pas d'adresse de facturation dans cette commande
+lengow_log.error.no_country_for_billing_address|Erreur Lengow : l'adresse de facturation ne contient pas de pays
+lengow_log.error.order_not_found|Erreur Lengow : la commande n'a pas été trouvée dans le flux Lengow
+lengow_log.exception.product_not_be_found|le produit %{product_id} ne peut être trouvé
+lengow_log.exception.product_is_a_parent|le produit %{product_id}  est un ID parent. Les déclinaisons du produit sont nécessaires
+lengow_log.exception.no_product_to_cart|il n'y a pas de produit ajouté au panier
+lengow_log.exception.cannot_add_product_to_cart|le produit %{product_id} ne peut etre ajouté au panier (format de l'ID non valide)
+lengow_log.exception.no_quantity_for_product|le produit %{product_id} ne peut être ajouté au panier. Vérifiez qu'il est bien disponible à la commande ou qu'il y a assez de stock
+lengow_log.exception.no_connection_webservice|la connexion ne se fait pas avec Lengow pour la boutique %{name_shop} (%{id_shop})
+lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - %{error_message} pour la boutique %{name_shop} (%{id_shop})
+lengow_log.exception.order_list_is_empty|la commande ne peut être sauvegardée
+lengow_log.exception.carrier_shipping_address_no_country|l'adresse d'expédition ne contient pas de pays
+lengow_log.exception.no_default_carrier_for_country|Vous devez sélectionner un transporteur par défaut pour le pays %{country_name}et la place de marché %{marketplace_name}
+lengow_log.exception.marketplace_not_present|Erreur Lengow : la place de marché %{marketplace_name} n’apparaît pas dans la liste des places de marché
+lengow_log.exception.order_line_required|numéro de la ligne de commande requis, non trouvé dans la commande
+lengow_log.exception.action_not_valid|l'action %{action} n'est pas valide
+lengow_log.exception.marketplace_action_not_present|l'action %{action} n'est pas présente pour cette place de marché
+lengow_log.exception.shop_id_require|l'ID de la boutique est requis
+lengow_log.exception.marketplace_name_require|le nom de la place de marché est requis
+lengow_log.exception.no_delivery_country_in_order|nous ne trouvons pas le pays de livraison dans cette commande
+lengow_log.exception.match_carrier_with_country|vous devez faire correspondre le transporteur %{carrier_name} avec le pays %{country_name}
+lengow_log.exception.arg_is_required|envoi d'action impossible : %{arg_name} est requis
+lengow_log.exception.action_not_created|création d'action impossible : %{error_message}
+lengow_log.exception.action_is_too_old|l'action est trop ancienne. Réessayez de nouveau
+lengow_log.exception.cannot_load_order_status|chargement impossible des statuts de commande
+lengow_log.exception.order_creation_failed|la création de la commande PrestaShop a échoué
+lengow_log.exception.payment_module_not_active|le module de paiement n'est pas activé
+lengow_log.exception.cart_cannot_be_loaded|le panier n'a pu être chargé ou une commande a déjà été passée pour ce panier
+lengow_log.exception.delivery_country_not_active|Le pays %{country_name}dans l'adresse de livraison n'est pas actif.
+lengow_log.exception.product_is_not_listed|le produit %{product_id} n'est pas présent dans la commande en cours
+lengow_log.exception.unable_to_save_order|impossible de sauvegarder la commande PrestaShop - %{error}
+lengow_log.exception.unable_to_save_order_payment|impossible de sauvegarder le paiement de la commande PrestaShop
+lengow_log.exception.timeout_api|l'API a été bloquée par un timeout
+lengow_log.exception.error_curl|Curl erreur %{error_code} - %{error_message}
+lengow_log.mail_report.order|commande %{marketplace_sku}
+lengow_log.mail_report.no_error_in_report_mail|Pas de message d'erreur, contacter le support via https://supportlengow.zendesk.com/agent/
+admin.order.import_lengow|Import Lengow
+admin.order.imported_from_lengow|Cette commande a été importée depuis Lengow.
+admin.order.lengow_order_id|ID de commande Lengow
+admin.order.marketplace|Place de marché
+admin.order.feed_id|ID du flux
+admin.order.delivery_address_id|Identifiant de l'adresse de livraison
+admin.order.total_paid|Montant total payé sur les places de marché
+admin.order.commission|Commission
+admin.order.currency|Devise
+admin.order.customer_name|Nom du client
+admin.order.customer_email|Email du client
+admin.order.carrier|Transporteurs de la marketplace
+admin.order.carrier_method|Modes de livraison de la marketplace
+admin.order.carrier_id_relay|ID relais
+admin.order.carrier_tracking|Numéro de suivi
+admin.order.shipped_by_marketplace|Expédié par la place de marché
+admin.order.message|Message
+admin.order.imported_at|Importé le
+admin.order.cancel_and_reimport|Ré-importer la commande
+admin.order.check_cancel_and_reimport|Vous voulez vous vraiment réimporter la commande ?
+admin.order.synchronize_id|Synchronisez l'ID
+admin.order.resend_action|Renvoyer l'action
+admin.order.add_tracking|Ajouter votre numéro de tracking
+admin.order.add_tracking_title|Merci de compléter votre numéro de tracking
+admin.order.check_resend_action|Vous voulez vous vraiment renvoyer l'action %{action} ?

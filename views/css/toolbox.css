@@ -1,0 +1,665 @@
+/*************************************************/
+/*                   GLOBAL                      */
+/*************************************************/
+
+body {
+  padding-top: 60px;
+}
+
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.full-container {
+  margin: 0 40px;
+}
+
+#lengow_header_toolbox_order {
+  width: 100%;
+}
+
+#lengow_header_toolbox_order td {
+  width: 33%;
+  vertical-align: top;
+}
+
+.lengow-green {
+  color: green;
+}
+
+.lengow-red {
+  color: red;
+}
+
+.lgw-btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 5px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #fff !important;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+  text-decoration: none !important;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  line-height: 100%;
+  border: 0;
+  background: none;
+}
+
+#lengow_no_result_message {
+  padding: 30px;
+  text-align: center;
+}
+
+span.img_no_result {
+  background: transparent;
+  height: 208px;
+  width: 395px;
+  display: block;
+  margin: 0 auto;
+}
+
+span.title_no_result {
+  display: block;
+  font-size: 15px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #c3c3c3;
+}
+
+legend {
+  margin-top: 10px;
+}
+
+.lengow_export_feed {
+  margin-right: 0px;
+}
+
+a.lengow_link_tooltip {
+  float: right;
+  padding: 0 5px;
+  margin-top: 0;
+  color: #555;
+}
+
+.lengow_check_shop {
+  float: left;
+  margin-right: 15px;
+  margin-top: 4px;
+  width: 5px;
+  height: 5px;
+  padding:5px;
+  border-radius: 10px;
+}
+
+#lgw-preprod {
+  color: white;
+  background: #e55a4d;
+  padding: 5px 10px;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  font-size: 12px;
+}
+
+/*************************************************/
+/*                 PRODUCT PAGE                  */
+/*************************************************/
+
+#lengow_feed_wrapper {
+  padding: 20px 60px;
+  min-width: 980px;
+}
+
+.lengow_feed_block {
+  background: white;
+  margin-bottom: 20px;
+}
+
+.lengow_feed_block_header_title {
+  background: #AAAAAA;
+  color: white;
+  padding: 5px 0;
+  border-radius: 2px;
+}
+
+.lengow_feed_block_header_title .title {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 20px;
+}
+
+.lengow_feed_block_header_title .url {
+  padding-left: 20px;
+}
+
+.lengow_feed_block_header_content {
+  border: 1px solid #E3E5E6;
+}
+
+.lengow_feed_block_footer_content {
+  background: white;
+}
+
+.lengow_feed_block_content_left {
+  padding: 20px;
+  height: 150px;
+}
+
+.lengow_feed_block_content_right {
+  float: right;
+  width: 300px;
+  height: 150px;
+  border-left: 1px solid #E3E5E6;
+  font-size: 16px;
+  padding: 20px;
+}
+
+.lengow_feed_block_content_right .lengow_link_tooltip {
+  float: right;
+}
+
+#lengow_feed_wrapper .lengow_exported {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#lengow_feed_wrapper .lengow_total {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#lengow_feed_wrapper .lengow_select_text {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+#lengow_feed_wrapper .lengow_feed_block_content_left input {
+  width: 500px;
+  height: 20px;
+  padding: 0 5px 0 2px;
+  margin-right: 5px;
+  border:1px solid #E3E5E6;
+}
+
+#lengow_feed_wrapper .lengow_feed_block_content_left a {
+  text-decoration: underline;
+}
+
+#lengow_feed_wrapper a.lengow_copy {
+  margin-right: 5px;
+}
+
+#lengow_feed_wrapper .lengow_feed_block_content_left a {
+  text-decoration: underline;
+}
+
+.lengow_check_shop span {
+  color: #464646;
+}
+
+.lengow_check_shop_no_sync:after {
+  cursor: default;
+  content: "\25cf";
+  font-size: 28px;
+  color: #da493b;
+  position: absolute;
+  top: -10px;
+  right: -3px;
+}
+
+.lengow_check_shop_sync:after {
+  cursor: default;
+  content: "\25cf";
+  font-size: 28px;
+  color: #45bf7b;
+  position: absolute;
+  top: -10px;
+  right: -3px;
+}
+
+.lengow_check_shop {
+  position: absolute;
+}
+
+.lengow_shop_status_label {
+  margin-left: 20px;
+}
+
+/*************************************************/
+/*                 ORDER PAGE                    */
+/*************************************************/
+
+.lengow_alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+#lengow_no_order_message {
+  padding: 30px;
+  text-align:center;
+  font-size: 18px;
+  color:#61687d;
+}
+
+span.title_no_order {
+  display: block;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #FFFFFF;
+}
+
+#lengow_charge_import_order {
+  position: absolute;
+  text-align: center;
+  z-index: 100;
+  color: #61687d;
+}
+
+#lengow_charge_import_order #lengow_charge_lign1, #lengow_charge_import_order #lengow_charge_lign2 {
+  font-size: 2.5em;
+}
+
+#lengow_charge_import_order #lengow_charge_lign3{
+  font-size: 1.5em;
+}
+
+#lengow_charge_import_order_background {
+  position: absolute;
+  background-color: white;
+  z-index: 90;
+  opacity: 0.7;
+}
+
+#lengow_charge_import_order #lengow_charge_lign1 {
+  font-weight: bold;
+}
+
+#lengow_charge_import_order p {
+  margin: 0;
+}
+
+#lengow_order_wrapper .btn {
+  width: 150px;
+  margin: 0 5px;
+}
+
+#lengow_update_order, #lengow_update_some_orders {
+  margin: 20px 5px 0 5px;
+}
+
+#lengow_charge_import_order {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  background: rgba(255,255,255,.95);
+  text-align: center;
+  padding-top: 150px;
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.lengow_import_order_toolbox {
+  padding-bottom: 10px;
+}
+
+.lengow_import_order_toolbox select, .lengow_import_order_toolbox input {
+  display: block;
+  width: 200px;
+  height: 25px;
+}
+
+.lengow_import_order_toolbox h4 {
+  border-bottom: 1px solid #CCCCCC;
+}
+
+/*************************************************/
+/*                CONFIGURATION                  */
+/*************************************************/
+
+.checkbox label, .radio label {
+  padding-left: 0px;
+}
+
+.lgw-label_text {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+span.legend {
+  margin-bottom: 15px;
+  display: block;
+  font-style: italic;
+}
+
+.start-block {
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  margin-top: 50px;
+}
+
+
+/*************************************************/
+/*                 COMPONENTS                    */
+/*************************************************/
+
+/*************************************************/
+/*                    TABLE                      */
+/*************************************************/
+
+.lengow_table_top {
+  height: 40px;
+  margin: 20px 0 10px 0;
+}
+
+.lengow_table_bottom {
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+/*************************************************/
+/*                 PAGINATION                    */
+/*************************************************/
+
+.lgw-pagination {
+  float: right;
+}
+
+.lgw-pagination-pages {
+  font-size: 13px;
+  display: block;
+  text-align: right;
+}
+
+.lgw-pagination-btns {
+  list-style: none;
+  margin: 5px 0 15px;
+  display: inline-block;
+  padding: 0;
+}
+
+.lgw-pagination-arrow {
+  margin-right: 15px;
+}
+
+.lgw-pagination-btns li {
+  display: inline-block;
+}
+
+.lgw-pagination-btns a {
+  display: block;
+  border: 1px solid #d7d7d7;
+  border-right: 0;
+  padding: 0;
+  height: 30px;
+  width: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #555;
+}
+
+.lgw-pagination-btns li:first-child a {
+  border-radius: 3px 0 0 3px;
+}
+
+.lgw-pagination-btns li:last-child a {
+  border-right: 1px solid #d7d7d7;
+  border-radius: 0 3px 3px 0;
+}
+
+.lgw-pagination-btns a:hover {
+  text-decoration: none;
+  background: #f7f7f7;
+  color: #555;
+}
+
+.lgw-pagination-btns .disabled a {
+  background: #ebebeb;
+  color: #828282;
+  pointer-events: none;
+}
+
+/*************************************************/
+/*                   TOOLBAR                     */
+/*************************************************/
+
+.lengow_toolbar {
+  float: left;
+}
+
+.lengow_toolbar .lgw-btn {
+  margin-right: 10px;
+}
+
+.lengow_toolbar input {
+  margin-top: 10px;
+}
+
+.lengow_select_all_shop input {
+  margin-left: 10px;
+  vertical-align: sub;
+}
+
+.lengow_select_all_shop span {
+  margin-left: 5px;
+}
+
+.lengow_select_all_shop {
+  display: inline-block;
+}
+
+/*************************************************/
+/*                  SWITCH                       */
+/*************************************************/
+
+
+.lgw-switch {
+  display: inline-block;
+  padding-left: 0;
+  margin-top: 15px;
+}
+
+.lgw-switch input[type="checkbox"] {
+  display: block;
+  margin: 0;
+  padding: 0;
+  opacity: .01;
+  position: absolute;
+}
+
+.lgw-switch div {
+  width: 46px;
+  float: left;
+  padding: 2px;
+  border-radius: 50px;
+  margin-right: 7px;
+  height: 22px;
+  border: 0;
+  background: #d7d7d7;
+  transition: all 100ms ease;
+}
+
+.lgw-switch span {
+  display: block;
+  height: 18px;
+  width: 18px;
+  background: white;
+  border-radius: 50%;
+  left: 0;
+  top: 0;
+  position: relative;
+  transition: all 100ms ease;
+}
+
+.lgw-switch:hover div,
+.lgw-switch:focus div {
+  background-color: #c0c0c0;
+}
+
+.lgw-switch.checked div {
+  background: #7ac279;
+}
+
+.lgw-switch.checked span {
+  left: 24px;
+}
+
+.lgw-switch.checked:hover div,
+.lgw-switch.checked:focus div {
+  background: #66b165;
+}
+
+/*************************************************/
+/*                  TOOLTIP                      */
+/*************************************************/
+
+.lengow_tooltip {
+  position: absolute;
+  z-index: 1070;
+  display: block;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: left;
+  text-align: start;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  word-break: normal;
+  word-spacing: normal;
+  word-wrap: normal;
+  white-space: normal;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  line-break: auto;
+}
+
+.lengow_tooltip.in {
+  filter: alpha(opacity=90);
+  opacity: .9;
+}
+
+.lengow_tooltip.top {
+  padding: 5px 0;
+  margin-top: -3px;
+}
+
+.lengow_tooltip.right {
+  padding: 0 5px;
+  margin-left: 3px;
+}
+
+.lengow_tooltip.bottom {
+  padding: 5px 0;
+  margin-top: 3px;
+}
+
+.lengow_tooltip.left {
+  padding: 0 5px;
+  margin-left: -3px;
+}
+
+.lengow_tooltip .tooltip-inner {
+  max-width: 200px;
+  padding: 3px 8px;
+  color: #fff;
+  text-align: center;
+  background-color: #000;
+  border-radius: 4px;
+}
+
+.lengow_tooltip .tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+
+.lengow_tooltip.top .tooltip-arrow {
+  bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: #000;
+}
+
+.lengow_tooltip.top-left .tooltip-arrow {
+  right: 5px;
+  bottom: 0;
+  margin-bottom: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: #000;
+}
+
+.lengow_tooltip.top-right .tooltip-arrow {
+  bottom: 0;
+  left: 5px;
+  margin-bottom: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: #000;
+}
+
+.lengow_tooltip.right .tooltip-arrow {
+  top: 50%;
+  left: 0;
+  margin-top: -5px;
+  border-width: 5px 5px 5px 0;
+  border-right-color: #000;
+}
+
+.lengow_tooltip.left .tooltip-arrow {
+  top: 50%;
+  right: 0;
+  margin-top: -5px;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #000;
+}
+
+.lengow_tooltip.bottom .tooltip-arrow {
+  top: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #000;
+}
+
+.lengow_tooltip.bottom-left .tooltip-arrow {
+  top: 0;
+  right: 5px;
+  margin-top: -5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #000;
+}
+
+.lengow_tooltip.bottom-right .tooltip-arrow {
+  top: 0;
+  left: 5px;
+  margin-top: -5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #000;
+}

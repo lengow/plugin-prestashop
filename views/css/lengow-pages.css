@@ -1,0 +1,462 @@
+/*************************************************/
+/*                     GLOBAL                    */
+/*************************************************/
+
+.page-sidebar #content{
+  padding: 0;
+}
+
+.lengow-nav #menucountertrial {
+  padding: 0 15px;
+}
+
+.lengow-nav #menucountertrial a {
+  display: inline-block;
+  text-decoration: underline;
+  padding: 0 0px;
+  margin-left: 5px;
+}
+
+.lengow-nav #menucountertrial a:hover {
+  background: none;
+  color: #00aeef;
+  text-decoration: underline;
+}
+
+/*************************************************/
+/*                     CONNECT                   */
+/*************************************************/
+
+.adminlengowhome #lengow_iframe {
+  width: 100%;
+  min-width: 990px;
+  overflow:visible;
+  height:calc(100vh - 150px);
+  margin: 0 auto;
+}
+
+.lgw-connect {
+  margin: 0 auto;
+  float: none;
+}
+
+body.lgw-home-iframe button {
+  margin: 15px auto!important;
+  display: block!important;
+  font-size: inherit;
+}
+
+body.lgw-home-iframe .lgw-container {
+  width: inherit;
+}
+
+body.lgw-home-iframe .lgw-content-section img {
+  margin-bottom: 60px;
+}
+
+
+body.lgw-home-iframe .lgw-content-section p {
+  margin: 25px 0;
+}
+
+
+/*************************************************/
+/*                      HOME                     */
+/*************************************************/
+
+#lengow_home_wrapper{
+  padding-top: 40px;
+}
+
+.adminlengowhome .lengow-nav {
+  display:none;
+}
+
+.adminlengowhome #lgw-preprod {
+  color: white;
+  background: #e55a4d;
+  padding: 5px 10px;
+  position: absolute;
+  left: 0px;
+  font-size: 12px;
+  z-index: 2;
+  top: 0px;
+}
+
+.adminlengowhome .lgw-label_red {
+  padding: 0 8px;
+}
+
+.lgw-home-header {
+  height: 240px;
+  color: white;
+  padding: 60px 30px 0;
+  background: #2e3340;
+}
+
+.lgw-home-header h1 {
+  margin: 15px 0 5px;
+  font-weight: 300;
+}
+
+.adminlengowhome .lgw-row h5 {
+  margin: 0;
+  padding: 0;
+  font-style: initial;
+  font-size: 15px;
+}
+.lgw-home-stats {
+  margin: 60px 0 30px;
+}
+
+.lgw-home-menu .lgw-box {
+  min-height: 280px;
+}
+
+.adminlengowhome .lgw-container .lgw-btn-white {
+  background-color: #fff;
+  border: 1px solid #d7d7d7;
+  color: #00aeef;
+}
+
+.adminlengowhome .lgw-container .lgw-btn-white:hover,
+.adminlengowhome .lgw-container .lgw-btn-white:focus {
+  background-color: #f7f7f7;
+  color: #555;
+}
+
+/*************************************************/
+/*                    PRODUCTS                   */
+/*************************************************/
+
+.adminlengowfeed .lgw-container {
+  min-width: 1100px;
+  max-width: 1400px;
+  width: auto;
+}
+
+.lengow_feed_block_header_title {
+  border-bottom: 1px solid #e1e1e1;
+  padding: 15px 15px;
+  box-sizing: border-box;
+  margin-bottom: 0px;
+}
+
+.lengow_feed_block_header_title a {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 2;
+}
+
+.lengow_feed_block_header_title a:hover {
+  color: #464646;
+}
+
+.lengow_check_shop span {
+  color: #464646;
+  position: relative;
+  padding-right: 25px;
+}
+
+.lengow_check_shop_no_sync:after {
+  cursor: default;
+  content: "\25cf";
+  font-size: 28px;
+  color: #d7d7d7;
+  position: absolute;
+  top: -10px;
+  right: -3px;
+}
+
+.lengow_shop_status_label span {
+  color: #555;
+  font-weight: normal;
+  font: 400 12px/1.42857 "Open Sans",Helvetica,Arial,sans-serif;
+  text-decoration: underline;
+}
+
+.lengow_shop_status_label span:hover {
+  color: #00aeef;
+}
+
+.lengow_check_shop_sync:after {
+  cursor: default;
+  content: "\25cf";
+  font-size: 28px;
+  color: #45bf7b;
+  position: absolute;
+  top: -10px;
+  right: -3px;
+}
+
+.lengow_shop_status_label {
+  margin-top: -17px;
+}
+
+.lengow_shop_status_label a:hover {
+  text-decoration: none;
+}
+
+.lengow_check_shop {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+
+.lengow_export_feed {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+}
+
+.lengow_feed_block_header_content input[type="text"] {
+  max-width: 400px;
+}
+
+.adminlengowfeed .lgw-row .lengow_feed_block_header_content_result p {
+  margin: 0;
+  padding: 0;
+  font-style: initial;
+  font-size: 15px;
+  display: inline-block;
+}
+
+.lengow_select_all_shop {
+  padding:0 10px;
+}
+
+.adminlengowfeed .lgw-pagination-pages {
+  margin: 5px 0px 5px 5px;
+}
+
+.lengow_copy {
+  background:transparent;
+  border:0;
+  outline:none;
+}
+
+.lengow_copy:hover {
+  color:#00aeef;
+}
+
+.adminlengowfeed .products-exported{
+  font-size:17px;
+  margin-bottom:-10px;
+}
+
+.adminlengowfeed .products-exported .stats-big-value {
+  font-size:32px;
+}
+
+.adminlengowfeed .products-available .stats-big-value {
+  font-size:19px;
+}
+
+.adminlengowfeed .catalog-title{
+  cursor: default;
+  margin-bottom: 15px;
+}
+
+
+/*************************************************/
+/*                     ORDERS                    */
+/*************************************************/
+
+#lengow_order_wrapper,
+#lengow_form_order_setting{
+  padding-top: 160px;
+}
+
+.adminlengoworder .lengow-nav {
+  min-width: 1450px;
+}
+
+.adminlengoworder .nobootstrap,
+.adminlengowordersetting .nobootstrap {
+  padding-top: 154px;
+}
+
+.adminlengoworder .lgw-container {
+  /*min-width:1250px;*/
+  /*min-width: 1330px;*/
+  min-width: 1450px;
+  width:100%;
+}
+
+.lengow_datepicker_box {
+  min-width: 180px;
+}
+
+.adminlengoworder table input[type="text"].lengow_datepicker {
+  width: 70px;
+  padding: 0 7px;
+  font-size: 13px;
+}
+
+.adminlengoworder table input[type="text"].lengow_datepicker:first-child {
+  margin-right: 3px;
+}
+
+.adminlengoworder #lgw-preprod,
+.adminlengowordersetting #lgw-preprod {
+  top: 110px;
+}
+
+.adminlengowordersetting .add_lengow_default_carrier {
+  margin-right: 10px;
+}
+
+#lengow_wrapper_messages {
+  max-width: 600px;
+}
+
+#lengow_charge_import_order {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  background: rgba(255,255,255,.95);
+  text-align: center;
+  padding-top: 150px;
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.select_country {
+  margin: 0;
+  padding: 25px;
+  border: 1px solid #d7d7d7;
+  border-top: 0;
+  background: #f7f7f7;
+}
+
+.lgw-container .add-country {
+  border: 1px solid #d7d7d7;
+  border-top: 0;
+  display: block;
+  padding: 15px 40px 15px 25px;
+  color: #555;
+  background: #f7f7f7;
+  transition: all 100ms ease;
+}
+
+.lgw-container .add-country:hover{
+  color:#555;
+}
+
+/*************************************************/
+/*               ORDER SETTINGS                   */
+/*************************************************/
+
+.lgw-box-link-matching .lgw-box {
+  top: 0;
+  color: #555;
+  text-decoration: none;
+  padding: 40px 10px;
+  border: 1px solid #e1e1e1;
+  border-radius: 0;
+  transition: top 100ms ease;
+  box-shadow: none;
+}
+
+a.lgw-box-link-matching:hover {
+  text-decoration: none;
+}
+
+.lgw-box-link-matching:hover .lgw-box {
+  top:-6px;
+  box-shadow: none;
+}
+
+.lgw-container #country-list,
+.lgw-container #marketplace-list {
+  margin-top: 30px;
+}
+
+.lgw-container .marketplace-name {
+  font-weight: 700;
+}
+
+.lgw-container .marketplace-name {
+  font-weight: 700;
+}
+
+.lgw-container .carrier-name {
+  margin-top: 10px;
+}
+
+#marketplace_matching .fa-angle-left {
+  padding-right: 5px;
+}
+
+#marketplace_matching .flag {
+  padding-right: 10px;
+}
+
+#marketplace_matching a {
+  text-decoration: none;
+}
+
+#marketplace_matching .alert-carrier {
+  margin-top: 15px;
+}
+
+#marketplace_matching .alert-matching,
+#country-list .alert-matching,
+.lengow-nav .alert-matching {
+  margin-left: 5px;
+  margin-top: -3px;
+  display: inline-block;
+  vertical-align: middle;
+  white-space: nowrap;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+  background-color: #4a90e2;
+}
+
+#country-list .alert-matching {
+  position: absolute;
+  top: 8px;
+  right: 5px;
+}
+
+#marketplace_matching button.lengow_submit_order_setting {
+  margin-top: 30px;
+}
+
+#marketplace_matching a.cancel {
+  margin-left: 30px;
+}
+
+#marketplace_matching span.label-required {
+  color: #e55a4d;
+}
+
+#carrier-matching {
+  min-height: 350px;
+}
+
+/*************************************************/
+/*               MAIN SETTINGS                   */
+/*************************************************/
+
+.lgw-container #download_log {
+  display:none;
+}
+
+#lengow_no_order_message {
+  height: 300px;
+  padding: 130px 30px 30px 30px;
+  text-align: center;
+  font-size: 18px;
+  color: #828282;
+}
+
+.default_carrier_missing{
+  color: #e55a4d;
+  font-size: 13px;
+}

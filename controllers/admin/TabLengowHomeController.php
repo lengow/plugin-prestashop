@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2016 Lengow SAS.
+ * Copyright 2017 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,29 +15,32 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2016 Lengow SAS
+ * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
 /**
- * The AdminTab Lengow home Class
- *
+ * Admin Lengow Home 14 Class
  */
 class AdminLengowHome14 extends AdminTab
 {
+    /**
+     * Construct
+     */
     public function __construct()
     {
-        $this->lengow_controller = new LengowHomeController(array(
-            'breadcrumb_title' => 'Home'
-        ));
-        $this->lengow_controller->postProcess();
+        $lengowController = new LengowHomeController();
+        $lengowController->postProcess();
 
         parent::__construct();
-        $this->lengow_controller->display();
+
+        $lengowController->display();
     }
 
+    /**
+     * Display data page
+     */
     public function display()
     {
-
     }
 }

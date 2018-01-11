@@ -1,64 +1,82 @@
-<div id="lengow_feed_wrapper">
-    {foreach from=$shopCollection  item=shop}
-        <div class="lengow_feed_block" id="block_{$shop['shop']->id}">
-            <div class="lengow_feed_block_header">
-                <div class="lengow_feed_block_header_title">
-                    <span class="title">{$shop['shop']->name}</span><span class="url">http://{$shop['shop']->domain}</span>
-                </div>
-                <div class="lengow_feed_block_header_content">
-                    <div class="lengow_feed_block_content_right">
-                        <span class="lengow_exported">{$shop['total_export_product']}</span> exported<br/>
-                        <span class="lengow_total">{$shop['total_product']}</span> available<br/>
-                        <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
-                               name="lengow_export_selection" class="lengow_switch lengow_switch_option"
-                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)}"
-                               data-action="change_option_product_variation"
-                               data-id_shop="{$shop['shop']->id}"
-                               value="1" {if $shop['option_variation'] == 1} checked="checked"{/if}>
-                        <span class="lengow_select_text">Include product variation</span>
-                        <i class="fa fa-info-circle lengow_link_tooltip" title="Dum apud Persas, ut supra narravimus, perfidia regis motus agitat insperatos, et in eois tractibus bella rediviva consurgunt, anno sexto decimo et eo diutius pos"></i>
-                        <br/>
-                        <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
-                               name="lengow_export_selection" class="lengow_switch lengow_switch_option"
-                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)}"
-                               data-action="change_option_product_out_of_stock"
-                               data-id_shop="{$shop['shop']->id}"
-                               value="1" {if $shop['option_product_out_of_stock'] == 1} checked="checked"{/if}>
-                        <span class="lengow_select_text">Include out of stock product</span>
-                        <i class="fa fa-info-circle lengow_link_tooltip" title="Dum apud Persas, ut supra narravimus, perfidia regis motus agitat insperatos, et in eois tractibus bella rediviva consurgunt, anno sexto decimo et eo diutius pos"></i>
-                        <br/>
-                        <input type="checkbox" data-size="mini" data-on-text="Yes" data-off-text="No"
-                               name="lengow_export_selection" class="lengow_switch lengow_switch_option"
-                               data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)}"
-                               data-action="change_option_selected"
-                               data-id_shop="{$shop['shop']->id}"
-                               value="1" {if $shop['option_selected'] == 1} checked="checked"{/if}>
-                        <span class="lengow_select_text">Select specific products</span>
-                        <i class="fa fa-info-circle lengow_link_tooltip" title="Dum apud Persas, ut supra narravimus, perfidia regis motus agitat insperatos, et in eois tractibus bella rediviva consurgunt, anno sexto decimo et eo diutius pos"></i>
-                    </div>
-                    <div class="lengow_feed_block_content_left">
-                        This is your exported catalog. Copy this link in your Lengow platform<br/>
-                        <input id="link_shop_{$shop['shop']->id}" value="{$shop['link']}" readonly>
-                        <a class="lengow_copy" data-clipboard-target="#link_shop_{$shop['shop']->id}">Copy</a>
-                        <a href="{$shop['link']}&stream=1" target="_blank">Download</a><br/>
-                        {if $shop['last_export']}
-                            Last exportation {$shop['last_export']}<br/>
-                        {else}
-                            No export<br/>
-                        {/if}
-                        <a class="lengow_btn" href="{$shop['link']}" target="_blank">Launch new Export</a>
-                    </div>
-                    <div class="lengow_clear"></div>
-                </div>
-            </div>
+{*
+ * Copyright 2017 Lengow SAS.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ *	 http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ *  @author	   Team Connector <team-connector@lengow.com>
+ *  @copyright 2017 Lengow SAS
+ *  @license   http://www.apache.org/licenses/LICENSE-2.0
+ *}
 
-            <div class="lengow_feed_block_footer">
-                <div class="lengow_feed_block_footer_content" style="{if !$shop['option_selected']}display:none;{/if}">
-                    {$shop['list']}
+<div class="cms-global" id="lengow_feed_wrapper">
+    <div class="lgw-container">
+        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
+            <div id="lgw-preprod" class="adminlengowfeed">
+                {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+            </div>
+        {/if}
+        {foreach from=$shopCollection item=shop}
+            <div class="lgw-box" id="block_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
+                <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1&update_export_date=0"
+                    class="lengow_export_feed lengow_link_tooltip"
+                    data-original-title="{$locale->t('product.screen.button_download')|escape:'htmlall':'UTF-8'}"
+                    target="_blank"><i class="fa fa-download"></i></a>
+                <h2 class="text-center catalog-title lengow_link_tooltip"
+                    data-original-title="{$shop['shop']->name|escape:'htmlall':'UTF-8'} ({$shop['shop']->id|escape:'htmlall':'UTF-8'})
+                    {$shop['shop']->domain|escape:'htmlall':'UTF-8'}">
+                    {$shop['shop']->name|escape:'htmlall':'UTF-8'}
+                </h2>
+                <div class="text-center">
+                    <div class="margin-standard text-center">
+                        <p class="products-exported">
+                            <span class="lengow_exported stats-big-value">{$shop['total_export_product']|escape:'htmlall':'UTF-8'}</span>
+                            {$locale->t('product.screen.nb_exported')|escape:'htmlall':'UTF-8'}
+                        </p>
+                        <p class="products-available small light">
+                            <span class="lengow_total stats-big-value">{$shop['total_product']|escape:'htmlall':'UTF-8'}</span>
+                            {$locale->t('product.screen.nb_available')|escape:'htmlall':'UTF-8'}
+                        </p>
+                    </div>
+                    <hr>
+                    <div class="lgw-switch {if $shop['option_selected'] == 1} checked{/if}">
+                        <label>
+                            <div><span></span>
+                                <input
+                                    type="checkbox"
+                                    data-size="mini"
+                                    data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
+                                    data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
+                                    name="lengow_export_selection"
+                                    class="lengow_switch_option"
+                                    data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}"
+                                    data-action="change_option_selected"
+                                    data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
+                                    value="1" {if $shop['option_selected'] == 1} checked="checked"{/if}
+                                    {if isset($toolbox) && $toolbox} disabled {/if}
+                                >
+                            </div> {$locale->t('product.screen.include_specific_product')|escape:'htmlall':'UTF-8'}
+                        </label>
+                    </div>
+                    <i class="fa fa-info-circle lengow_link_tooltip"
+                       title="{$locale->t('product.screen.include_specific_product_support')|escape:'htmlall':'UTF-8'}"></i>
+                </div>
+                <div class="lengow_feed_block_footer">
+                    <div class="lengow_feed_block_footer_content" style="{if !$shop['option_selected']}display:none;{/if}">
+                        {html_entity_decode($shop['list']|escape:'htmlall':'UTF-8')}
+                    </div>
                 </div>
             </div>
-        </div>
-    {/foreach}
+        {/foreach}
+    </div>
 </div>
-
-<script type="text/javascript" src="/modules/lengow/views/js/feed.js"></script>
+<script type="text/javascript" src="/modules/lengow/views/js/lengow/feed.js"></script>

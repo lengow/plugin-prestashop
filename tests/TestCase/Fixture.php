@@ -29,6 +29,11 @@ class Fixture
             "id_shop" => 1,
             "id_shop_group" => 1,
             "id_lang" => 1,
+        ),
+        "lengow_orders" => array(
+            "id_shop" => 1,
+            "id_shop_group" => 1,
+            "id_lang" => 1,
         )
     );
     private $dateValues = array(
@@ -57,10 +62,10 @@ class Fixture
         }
     }
 
-    public function loadData($table_name, $values)
+    public function loadData($tableName, $values)
     {
-        if (isset($this->defaultValues[$table_name])) {
-            foreach ($this->defaultValues[$table_name] as $key => $value) {
+        if (isset($this->defaultValues[$tableName])) {
+            foreach ($this->defaultValues[$tableName] as $key => $value) {
                 if (!isset($values[$key])) {
                     $values[$key] = $value;
                 }
@@ -69,7 +74,7 @@ class Fixture
         foreach ($values as $key => &$value) {
             $value = addslashes($value);
         }
-        if (in_array($table_name, $this->dateValues)) {
+        if (in_array($tableName, $this->dateValues)) {
             if (!isset($values["date_add"])) {
                 $values["date_add"] = date('Y-m-d H:m:i');
             }
@@ -77,6 +82,11 @@ class Fixture
                 $values["date_upd"] = date('Y-m-d H:m:i');
             }
         }
-        Db::getInstance()->insert($table_name, $values);
+        Db::getInstance()->insert($tableName, $values);
+    }
+
+    public function truncate($tableName)
+    {
+        Db::getInstance()->execute('TRUNCATE ' . _DB_PREFIX_ . $tableName);
     }
 }

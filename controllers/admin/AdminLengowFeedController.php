@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2016 Lengow SAS.
+ * Copyright 2017 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,28 +15,20 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2016 Lengow SAS
+ * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
-
-require_once _PS_MODULE_DIR_.'lengow/lengow.php';
 
 /**
- * The Lengow's Configuration Admin Controller.
- *
+ * Admin Lengow feed Controller Class
  */
 class AdminLengowFeedController extends ModuleAdminController
 {
     /**
-     * Construct the admin selection of products
+     * Construct
      */
     public function __construct()
     {
-        $this->context = Context::getContext();
-        $this->context->smarty->assign('lengow_link', new LengowLink());
         $this->lang = true;
         $this->explicitSelect = true;
         $this->lite_display = true;
@@ -47,10 +39,8 @@ class AdminLengowFeedController extends ModuleAdminController
 
         parent::__construct();
 
-        $this->lengow_controller = new LengowFeedController(array(
-            'breadcrumb_title' => 'Product'
-        ));
-        $this->lengow_controller->postProcess();
-        $this->lengow_controller->display();
+        $lengowController = new LengowFeedController();
+        $lengowController->postProcess();
+        $lengowController->display();
     }
 }

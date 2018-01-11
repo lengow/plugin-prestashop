@@ -17,7 +17,7 @@ class HomeControllerTest extends ControllerTestCase
 
     public function index()
     {
-        $url = '/admin-dev/'.self::$context->link->getAdminLink('AdminLengowHome');
+        $url = '/admin-dev/' . self::$context->link->getAdminLink('AdminLengowHome');
         $response = self::$client->get($url);
         $this->assertEquals(200, $response->getStatusCode());
         //todo test more things

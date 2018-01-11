@@ -4,7 +4,7 @@ product:
     id_supplier: 1
     id_manufacturer: 1
     price: 4.90
-    reference: SIMPLEKU001
+    reference: SIMPLESKU001
     supplier_reference: SUPPLIERSKU001
     ean13: 9805120221231
   -
@@ -12,7 +12,7 @@ product:
     id_supplier: 1
     id_manufacturer: 1
     price: 5.90
-    reference: SIMPLEKU002
+    reference: SIMPLESKU002
     supplier_reference: SUPPLIERSKU002
     ean13: 9805120221232
     condition: used
@@ -22,7 +22,7 @@ product:
     id_manufacturer: 1
     price: 6.90
     active: 0
-    reference: SIMPLEKU003
+    reference: SIMPLESKU003
     supplier_reference: SUPPLIERSKU003
     ean13: 9805120221233
 product_supplier:
@@ -68,7 +68,7 @@ product_lang:
     id_product: 2
     id_shop: 1
     id_lang: 1
-    name: NAME001
+    name: NAME002
     description: DESCRIPTION002
     description_short: SHORTDESCRIPTION002
     link_rewrite: URL002
@@ -109,3 +109,5 @@ category_product:
   -
     id_product: 3
     id_category: 9
+product_attribute:
+product_attribute_shop:

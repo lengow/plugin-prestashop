@@ -1,2 +1,6 @@
 .idea
 logs/*.txt
+export/*
+!export/index.php
+config.xml
+**/.DS_Store

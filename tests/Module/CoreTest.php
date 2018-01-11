@@ -9,8 +9,8 @@ use Db;
 use Module;
 use Configuration;
 use LengowMain;
-use LengowExport;
-use LengowExportException;
+use LengowConfiguration;
+use LengowException;
 use Assert;
 
 class CoreTest extends ModuleTestCase
@@ -24,7 +24,7 @@ class CoreTest extends ModuleTestCase
 
         self::$client = new Client(
             array(
-                'base_uri' => 'http://'.CURRENT_DOMAIN,
+                'base_uri' => 'http://' . CURRENT_DOMAIN,
                 'allow_redirects' => false,
                 'headers' => array('PHPUNIT_LENGOW_TEST' => 'toto')
             )
@@ -60,8 +60,8 @@ class CoreTest extends ModuleTestCase
 
         LengowMain::getToken($shopId);
         $token = Configuration::get('LENGOW_SHOP_TOKEN', null, null, $shopId);
-        $this->assertTrue(strlen($token)>0, 'token is set with non empty value');
-        $this->assertTrue(strlen($token)==32, 'token is equal to 32');
+        $this->assertTrue(strlen($token) > 0, 'token is set with non empty value');
+        $this->assertTrue(strlen($token) == 32, 'token is equal to 32');
 
         LengowMain::getToken($shopId);
         $this->assertEquals($token, LengowMain::getToken($shopId), 'token is not update when already set');
@@ -76,15 +76,14 @@ class CoreTest extends ModuleTestCase
     {
         $shopId = 1;
 
-        Configuration::updatevalue('LENGOW_CARRIER_DEFAULT', 1);
         Configuration::updatevalue('LENGOW_EXPORT_FORMAT', 'csv');
 
-        Configuration::updatevalue('LENGOW_AUTHORIZED_IP', '');
+        LengowConfiguration::updateGlobalValue('LENGOW_AUTHORIZED_IP', '');
         $exportUrl = LengowMain::getExportUrl($shopId);
         $response = self::$client->get($exportUrl);
         $body = $response->getBody()->getContents();
         $this->assertRegExp(
-            '/Export \-\ init/',
+            '/\[Export\] ##/',
             substr($body, 0, 100),
             'Access Authorized'
         );
@@ -93,15 +92,15 @@ class CoreTest extends ModuleTestCase
         $response = self::$client->get($exportUrl);
         $body = $response->getBody()->getContents();
         $this->assertTrue(
-            (bool) preg_match('/^Unauthorized\ access\ for IP/', substr($body, 0, 120)),
+            (bool)preg_match('/^Unauthorized\ access\ for IP/', substr($body, 0, 120)),
             'Access Unauthorized'
         );
 
-        Configuration::updatevalue('LENGOW_AUTHORIZED_IP', '127.0.0.1');
+        LengowConfiguration::updateGlobalValue('LENGOW_AUTHORIZED_IP', '127.0.0.1');
         $response = self::$client->get($exportUrl);
         $body = $response->getBody()->getContents();
         $this->assertTrue(
-            (bool) preg_match('/Export \-\ init/', substr($body, 0, 50)),
+            (bool)preg_match('/\[Export\] ##/', substr($body, 0, 50)),
             'Access Authorized'
         );
     }

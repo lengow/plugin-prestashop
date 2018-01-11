@@ -1,0 +1,7 @@
+.lengow_filter input[type="submit"] {
+  padding: 8px 11px;
+}
+
+#lengow_feed_wrapper .lengow_feed_block_content_left input {
+  width: 500px;
+}

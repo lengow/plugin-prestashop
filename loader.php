@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2016 Lengow SAS.
+ * Copyright 2017 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,27 +15,17 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2016 Lengow SAS
+ * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_.'lengow'.$sep);
+define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR);
+$sep = DIRECTORY_SEPARATOR;
 
-$notInPresta14 = array('lengow.specificprice.class.php', 'lengow.gender.class.php');
-$GLOBALS['OVERRIDE_FOLDER'] = 'override';
-$GLOBALS['INSTALL_FOLDER'] = 'install';
-$GLOBALS['MODELS_FOLDER'] = 'models';
-$GLOBALS['FILES'] = array();
+$notInPresta14 = array('LengowGender.php');
 
 if (_PS_VERSION_ < '1.5') {
-    require_once _PS_MODULE_LENGOW_DIR_.'backward_compatibility'.$sep.'backward.php';
-}
-
-$directory = _PS_MODULE_LENGOW_DIR_ . 'interface/';
-$listClassFile = array_diff(scandir($directory), array('..', '.'));
-
-foreach ($listClassFile as $list) {
-    require_once $directory . $list;
+    require_once _PS_MODULE_LENGOW_DIR_ . 'backward_compatibility' . $sep . 'backward.php';
 }
 
 if (_PS_VERSION_ < '1.5') {
@@ -58,13 +48,13 @@ if (_PS_VERSION_ < '1.5') {
 
 function lengowAutoloader($className)
 {
-    if (substr($className, 0, 6) == 'Lengow') {
-        if (substr($className, -10) == 'Controller') {
+    if (Tools::substr($className, 0, 6) == 'Lengow') {
+        if (Tools::substr($className, -10) == 'Controller') {
             $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/controllers/';
-            include $directory.$className.'.php';
+            include $directory . $className . '.php';
         } else {
             $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/models/';
-            include $directory.str_replace('lengow', 'lengow.', strtolower($className)).'.class.php';
+            include $directory . $className . '.php';
         }
     }
 }
