@@ -286,6 +286,10 @@ class LengowInstall
         if (LengowConfiguration::getGlobalValue('LENGOW_VERSION') < '3.0.0') {
             LengowConfiguration::resetAccessIds();
         }
+        // Delete config files
+        self::removeConfigFiles();
+        // Copy AdminLengowHome.gif for version 1.5
+        self::createTabImage();
         // update lengow version
         if (isset($numberVersion)) {
             LengowConfiguration::updateGlobalValue('LENGOW_VERSION', $numberVersion);
@@ -295,10 +299,47 @@ class LengowInstall
     }
 
     /**
+     * Checks if a table exists in BDD
+     *
+     * @param string $table Lengow table
+     *
+     * @throws PrestaShopDatabaseException
+     *
+     * @return boolean
+     */
+    public static function checkTableExists($table)
+    {
+        $sql = 'SHOW TABLES LIKE \'' . _DB_PREFIX_ . $table . '\'';
+        $result = Db::getInstance()->executeS($sql);
+        $exists = count($result) > 0 ? true : false;
+        return $exists;
+    }
+
+    /**
+     * Checks if index exists in table
+     *
+     * @param string $table Lengow table
+     * @param string $index Lengow index
+     *
+     * @throws PrestaShopDatabaseException
+     *
+     * @return boolean
+     */
+    public static function checkIndexExists($table, $index)
+    {
+        $sql = 'SHOW INDEXES FROM ' . _DB_PREFIX_ . $table . ' WHERE `Column_name` = \'' . $index . '\'';
+        $result = Db::getInstance()->executeS($sql);
+        $exists = count($result) > 0 ? true : false;
+        return $exists;
+    }
+
+    /**
      * Checks if a field exists in BDD
      *
      * @param string $table Lengow table
      * @param string $field Lengow field
+     *
+     * @throws PrestaShopDatabaseException
      *
      * @return boolean
      */
@@ -316,7 +357,7 @@ class LengowInstall
      * @param string $table Lengow table
      * @param string $field Lengow field
      *
-     * @return boolean
+     * @throws PrestaShopDatabaseException
      */
     public static function checkFieldAndDrop($table, $field)
     {

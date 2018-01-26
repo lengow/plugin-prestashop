@@ -1003,8 +1003,6 @@ class LengowOrder extends Order
      *
      * @param string $action Lengow Actions type (ship or cancel)
      *
-     * @throws LengowException order line is required
-     *
      * @return boolean
      */
     public function callAction($action)

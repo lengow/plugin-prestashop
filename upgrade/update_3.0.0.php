@@ -107,11 +107,12 @@ $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'lengow_product` (
 	`id_product` INTEGER(11) UNSIGNED NOT NULL,
 	`id_shop` INTEGER(11) UNSIGNED NOT NULL DEFAULT 1,
 	PRIMARY KEY ( `id` ),
+	INDEX (`id_product`),
 	INDEX (`id_shop`)
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 Db::getInstance()->execute($sql);
 // alter product table for old versions
-if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_product\'')) {
+if (LengowInstall::checkTableExists('lengow_product')) {
     if (!LengowInstall::checkFieldExists('lengow_product', 'id')) {
         Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . 'lengow_product DROP PRIMARY KEY');
         Db::getInstance()->execute(
@@ -140,11 +141,13 @@ $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_order_line (
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 Db::getInstance()->execute($sql);
 // alter order_line table for old versions
-if (!LengowInstall::checkFieldExists('lengow_order_line', 'id_order_detail')) {
-    Db::getInstance()->execute(
-        'ALTER TABLE `' . _DB_PREFIX_ . 'lengow_order_line`
-        ADD `id_order_detail` INTEGER(11) UNSIGNED NULL AFTER `id_order_line`'
-    );
+if (LengowInstall::checkTableExists('lengow_order_line')) {
+    if (!LengowInstall::checkFieldExists('lengow_order_line', 'id_order_detail')) {
+        Db::getInstance()->execute(
+            'ALTER TABLE `' . _DB_PREFIX_ . 'lengow_order_line`
+            ADD `id_order_detail` INTEGER(11) UNSIGNED NULL AFTER `id_order_line`'
+        );
+    }
 }
 
 // *********************************************************
@@ -159,11 +162,12 @@ $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_logs_import (
     `mail` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
     `id_order_lengow` INTEGER(11) NOT NULL,
     `type` TINYINT(1) NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+	INDEX (`id_order_lengow`)
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 Db::getInstance()->execute($sql);
 //add missing field for old plugins
-if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_logs_import\'')) {
+if (LengowInstall::checkTableExists('lengow_logs_import')) {
     if (LengowInstall::checkFieldExists('lengow_logs_import', 'is_finished')) {
         Db::getInstance()->execute(
             'ALTER TABLE  ' . _DB_PREFIX_ . 'lengow_logs_import CHANGE `is_finished` `is_finished` TINYINT(1) DEFAULT 0'
@@ -199,9 +203,7 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_lo
     }
 }
 // data migration to the new system
-if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_orders\'')
-    && Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_logs_import\'')
-) {
+if (LengowInstall::checkTableExists('lengow_orders') && LengowInstall::checkTableExists('lengow_logs_import')) {
     if (LengowInstall::checkFieldExists('lengow_logs_import', 'lengow_order_id')
         && LengowInstall::checkFieldExists('lengow_logs_import', 'delivery_address_id')
         && LengowInstall::checkFieldExists('lengow_orders', 'delivery_address_id')
@@ -286,16 +288,17 @@ $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'lengow_orders` (
     `date_add` DATETIME NOT NULL,
     `extra` TEXT,
     PRIMARY KEY(id),
-    INDEX (`id_flux`),
+    INDEX (`id_order`),
     INDEX (`id_shop`),
     INDEX (`id_shop_group`),
+    INDEX (`id_flux`),
     INDEX (`marketplace_sku`),
     INDEX (`marketplace_name`),
     INDEX (`date_add`)
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 Db::getInstance()->execute($sql);
 //add missing field for old plugins
-if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_orders\'')) {
+if (LengowInstall::checkTableExists('lengow_orders')) {
     if (LengowInstall::checkFieldExists('lengow_orders', 'id_flux')) {
         Db::getInstance()->execute(
             'ALTER TABLE  ' . _DB_PREFIX_ . 'lengow_orders CHANGE `id_flux` `id_flux` INTEGER(11) UNSIGNED NULL'
@@ -519,7 +522,3 @@ LengowInstall::removeFiles(
         'AdminLengowLog14.php',
     )
 );
-// Delete config files
-LengowInstall::removeConfigFiles();
-// Copy AdminLengowHome.gif for version 1.5
-LengowInstall::createTabImage();
