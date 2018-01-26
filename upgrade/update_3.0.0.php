@@ -514,6 +514,7 @@ LengowInstall::removeFiles(
         'views/templates/admin/dashboard/',
         'views/templates/admin/form.tpl',
         'webservice/lengow.php',
+        'webservice/import.php',
         'AdminLengow14.php',
         'AdminLengowLog14.php',
     )
