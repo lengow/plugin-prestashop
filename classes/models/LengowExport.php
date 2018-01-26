@@ -364,7 +364,7 @@ class LengowExport
      */
     public function setFormat($format)
     {
-        $this->format = in_array($format, LengowFeed::$availabeFormats) ? $format : 'csv';
+        $this->format = in_array($format, LengowFeed::$availableFormats) ? $format : 'csv';
         return true;
     }
 
@@ -799,7 +799,7 @@ class LengowExport
                     $example = 'size';
                     break;
                 case 'format':
-                    $authorizedValue = LengowFeed::$availabeFormats;
+                    $authorizedValue = LengowFeed::$availableFormats;
                     $type = 'string';
                     $example = 'csv';
                     break;

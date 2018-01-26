@@ -41,7 +41,7 @@ class LengowConfiguration extends Configuration
                 $orderStates[] = array('id' => $state['id_order_state'], 'text' => $state['name']);
             }
             $exportFormats = array();
-            foreach (LengowFeed::$availabeFormats as $value) {
+            foreach (LengowFeed::$availableFormats as $value) {
                 $exportFormats[] = array('id' => $value, 'text' => $value);
             }
             $trackerIds = array();
