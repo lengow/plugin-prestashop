@@ -137,7 +137,7 @@ class LengowExport
         'fdp' => 'price_shipping',
         'id_mere' => 'id_parent',
         'delais_livraison' => 'delivery_time',
-        'image_product_1' => 'image_1',
+        'image_product' => 'image_1',
         'image_product_2' => 'image_2',
         'image_product_3' => 'image_3',
         'image_product_4' => 'image_4',

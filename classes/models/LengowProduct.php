@@ -551,6 +551,8 @@ class LengowProduct extends Product
                     isset($this->combinations[$idProductAttribute]['attributes'][$name][1])
                 ) {
                     return LengowMain::cleanData($this->combinations[$idProductAttribute]['attributes'][$name][1]);
+                } elseif (isset($this->{$name})) {
+                    return LengowMain::cleanData($this->{$name});
                 }
                 return '';
         }
