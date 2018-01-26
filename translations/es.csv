@@ -131,7 +131,7 @@ order_setting.screen.please_setup_then|Administrar operadores
 order_setting.screen.default_carrier_prestashop|Su proveedor de PrestaShop predeterminado
 order_setting.screen.please_select_carrier_prestashop|Por favor, selecciona un transportista PrestaShop
 order_setting.screen.no_default_carrier_selected|No se seleccionó ningún proveedor predeterminado de PrestaShop
-order_setting.screen.default_carrier_marketplace|Su operador predeterminado%{marketplace_name}
+order_setting.screen.default_carrier_marketplace|Su operador predeterminado %{marketplace_name}
 order_setting.screen.please_select_carrier_marketplace|Seleccione el código del operador para %{marketplace_name}
 order_setting.screen.no_default_carrier_marketplace_selected|No se seleccionó ningún código de operador predeterminado
 order_setting.screen.tooltip_default_carrier|Aún no ha configurado el proveedor predeterminado para este mercado
@@ -209,7 +209,7 @@ lengow_setting.lengow_order_id_cancel_title|Pedidos cancelados
 lengow_setting.lengow_order_id_shippedbymp_title|Pedidos enviados de los marketplaces
 lengow_setting.lengow_import_force_product_title|Forzar los productos
 lengow_setting.lengow_import_force_product_legend|Activa esta opción si deseas forzar la importación de "fuera de stocks" / "productos inactivos"
-lengow_setting.lengow_import_days_title|Re-import all orders made since
+lengow_setting.lengow_import_days_title|Reimportar todos los pedidos efectuados desde
 lengow_setting.lengow_import_days_legend|Activar esta opción si tiene pedidos pendientes incorrectos. Esto te permite volver a importar todas los pedidos que han sido procesados ​​durante este período con problemas
 lengow_setting.lengow_import_processing_fee_title|Importar las cuotas de procesamiento
 lengow_setting.lengow_import_processing_fee_legend|Active esta opción si desea incorporar en su pedido la tarifa de gestión de expedición de las Marketplaces
@@ -235,7 +235,7 @@ lengow_log.error.nb_order_updated|%{nb_order} pedido(s) actualizado
 lengow_log.error.nb_order_with_error|%{nb_order} pedido(s) con errores
 lengow_log.error.no_notification|No hay nueva notificación de pedido
 lengow_log.error.credentials_not_valid|El ID de cuenta, el acceso de token o el token secreto no son válidos.
-lengow_log.error.no_catalog_for_shop|Ningún ID de catálogo válido para la tienda 1%{name_shop} ( 2%{id_shop})
+lengow_log.error.no_catalog_for_shop|Ningún ID de catálogo válido para la tienda %{name_shop} (%{id_shop})
 lengow_log.error.rest_time_to_import|Por favor, espere %{rest_time} segundos antes de volver a re-importar pedidos
 lengow_log.error.no_product|Lengow error: no hay productos en el pedido
 lengow_log.error.no_change_rate|Lengow error: no hay tipos de cambio disponibles para los precios de pedidos
@@ -254,7 +254,7 @@ lengow_log.exception.no_connection_webservice|la conexión no funciona con el we
 lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} en la tienda %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|el pedido no ha podido ser registrado
 lengow_log.exception.carrier_shipping_address_no_country|la dirección de envío no contiene el país
-lengow_log.exception.no_default_carrier_for_country|Debe seleccionar un proveedor predeterminado para el país: %{country_name}y marketplace: %{marketplace_name}
+lengow_log.exception.no_default_carrier_for_country|Debe seleccionar un proveedor predeterminado para el país: %{country_name} y marketplace: %{marketplace_name}
 lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} no figura en la lista del mercado
 lengow_log.exception.order_line_required|la línea de pedido es requerida pero no se encuentra 
 lengow_log.exception.action_not_valid|la acción %{action} no es válida
