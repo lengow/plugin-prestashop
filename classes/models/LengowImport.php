@@ -207,7 +207,7 @@ class LengowImport
             ? (bool)$params['preprod_mode']
             : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')
         );
-        $this->typeImport = (isset($params['type']) ? $params['type'] : 'manual');
+        $this->typeImport = isset($params['type']) ? $params['type'] : 'manual';
         $this->forceProduct = (
         isset($params['force_product'])
             ? (bool)$params['force_product']
