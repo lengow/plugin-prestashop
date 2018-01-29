@@ -44,6 +44,7 @@ switch ($action) {
                 'LENGOW_SHOP_ACTIVE',
                 'LENGOW_EXPORT_VARIATION_ENABLED',
                 'LENGOW_EXPORT_OUT_STOCK',
+                'LENGOW_EXPORT_INACTIVE',
                 'LENGOW_EXPORT_SELECTION_ENABLED',
                 'LENGOW_EXPORT_FILE_ENABLED',
                 'LENGOW_IMPORT_FORCE_PRODUCT',
@@ -146,6 +147,7 @@ require 'views/header.php';
                             'LENGOW_EXPORT_VARIATION_ENABLED',
                             'LENGOW_EXPORT_OUT_STOCK',
                             'LENGOW_EXPORT_SELECTION_ENABLED',
+                            'LENGOW_EXPORT_INACTIVE',
                         )
                     );
                     echo '<br/>';

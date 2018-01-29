@@ -125,7 +125,7 @@ order_setting.screen.carrier_management_description|Selecciona el transportista 
 order_setting.screen.marketplace|Marketplace(s)
 order_setting.screen.see_delivery_countries|Ver todos mis países de entrega
 order_setting.screen.marketplace_matching_title|%{country_name} métodos de entrega
-order_setting.screen.marketplace_matching_description|Aquí tiene la posibilidad de elegir los diferentes métodos de entrega para cada uno de los pedidos destinados a %{country_name} para cada mercado activado en su cuenta
+order_setting.screen.marketplace_matching_description|Aquí tiene la posibilidad de elegir los diferentes métodos de entrega para cada uno de los pedidos destinados a %{country_name} para cada mercado activado en su cuenta.
 order_setting.screen.country_wt_carrier|¿ Faltan algunos transportistas en tu lista?
 order_setting.screen.please_setup_then|Administrar operadores
 order_setting.screen.default_carrier_prestashop|Su proveedor de PrestaShop predeterminado
@@ -198,6 +198,8 @@ lengow_setting.lengow_export_variation_enabled_title|Exportar las variaciones de
 lengow_setting.lengow_export_variation_enabled_legend|Si no quieres exportar las variaciones, desactive esta opción
 lengow_setting.lengow_export_out_stock_title|Exporte los productos sin stock
 lengow_setting.lengow_export_out_stock_legend|Active esta opción si desea exportar productos sin stock
+lengow_setting.lengow_export_inactive_title|Exportar los productos inactivos
+lengow_setting.lengow_export_inactive_legend|Si desea exportar los productos inactivos, active esta opción
 lengow_setting.lengow_export_format_title|Exportar el formato por defecto
 lengow_setting.lengow_export_file_enabled_title|Exportar en un archivo
 lengow_setting.lengow_export_file_enabled_legend|Debes utilizar esta opción si tiene 3.000 o más productos

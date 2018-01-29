@@ -105,6 +105,14 @@ class LengowConfiguration extends Configuration
                     'legend' => $locale->t('lengow_setting.lengow_export_out_stock_legend'),
                     'default_value' => true
                 ),
+                'LENGOW_EXPORT_INACTIVE' => array(
+                    'type' => 'checkbox',
+                    'readonly' => true,
+                    'shop' => true,
+                    'label' => $locale->t('lengow_setting.lengow_export_inactive_title'),
+                    'legend' => $locale->t('lengow_setting.lengow_export_inactive_legend'),
+                    'default_value' => false
+                ),
                 'LENGOW_EXPORT_FORMAT' => array(
                     'type' => 'select',
                     'global' => true,

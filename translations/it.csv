@@ -125,7 +125,7 @@ order_setting.screen.carrier_management_description|Alcuni ordini potrebbero non
 order_setting.screen.marketplace|MarketPlace
 order_setting.screen.see_delivery_countries|Vedi tutti i miei paesi di spedizione
 order_setting.screen.marketplace_matching_title|%{country_name} metodi di spedizione
-order_setting.screen.marketplace_matching_description|Qui é possibile scegliere diversi metodi di spedizione per ordini destinati in %{country_name} per ogni marketplace attivo nell'account
+order_setting.screen.marketplace_matching_description|Qui é possibile scegliere diversi metodi di spedizione per ordini destinati in %{country_name} per ogni marketplace attivo nell'account.
 order_setting.screen.country_wt_carrier|Alcuni trasportatori non sono nella lista?
 order_setting.screen.please_setup_then|Gestisci i trasportatori
 order_setting.screen.default_carrier_prestashop|Il tuo trasportatore di default in PrestaShop
@@ -198,6 +198,8 @@ lengow_setting.lengow_export_variation_enabled_title|Esportare i prodotti con va
 lengow_setting.lengow_export_variation_enabled_legend|Se non vuoi esportare tutte le varianti dei tuoi prodotti, disabilita questa opzione
 lengow_setting.lengow_export_out_stock_title|Esportati prodotti con quantità = 0
 lengow_setting.lengow_export_out_stock_legend|Attiva questa opzione se vuoi esportare prodotti con quantità = 0
+lengow_setting.lengow_export_inactive_title|Esporta i prodotti inattivi
+lengow_setting.lengow_export_inactive_legend|Se desideri esportare i prodotti disabilitati attiva questa opzione
 lengow_setting.lengow_export_format_title|Esporta formato
 lengow_setting.lengow_export_file_enabled_title|Esporta in un file
 lengow_setting.lengow_export_file_enabled_legend|E' consigliato attivare questa opzione se avete 3.000 o piu' prodotti nel vostro flusso.

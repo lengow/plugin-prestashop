@@ -140,7 +140,7 @@ if (Tools::getValue('active')) {
 if (Tools::getIsset('inactive') || !is_null($inactive)) {
     $inactive = !is_null($inactive) ? $inactive : (bool)Tools::getValue('inactive');
 } else {
-    $inactive = false;
+    $inactive = (bool)LengowConfiguration::get('LENGOW_EXPORT_INACTIVE');
 }
 // shop
 if (Tools::getIsset('shop') && _PS_VERSION_ >= '1.5') {

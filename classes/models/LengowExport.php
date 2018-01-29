@@ -254,10 +254,10 @@ class LengowExport
      * Construct new Lengow export.
      *
      * @param array $params optional options
-     * int     limit              The number of product to be exported
-     * int     offset             From what product export
-     * int     shop_id            Shop id for export
-     * int     language_id        language for export
+     * integer limit              The number of product to be exported
+     * integer offset             From what product export
+     * integer shop_id            Shop id for export
+     * integer language_id        language for export
      * string  product_ids        Ids product to export
      * string  format             Export Format (csv|yaml|xml|json)
      * boolean stream             Display file when call script (1) | Save File (0)
@@ -284,6 +284,7 @@ class LengowExport
         $selection = LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $this->idShop);
         $outOfStock = LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $this->idShop);
         $variation = LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->idShop);
+        $inactive = LengowConfiguration::get('LENGOW_EXPORT_INACTIVE', null, null, $this->idShop);
         // Set default value for new shop
         if (is_null($selection)) {
             LengowConfiguration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', 0, null, null, $this->idShop);
@@ -303,10 +304,16 @@ class LengowExport
         } else {
             $variation = (bool)$variation;
         }
-        $this->selection = isset($params["selection"]) ? (bool)$params["selection"] : $selection;
-        $this->outOfStock = isset($params["out_of_stock"]) ? (bool)$params["out_of_stock"] : $outOfStock;
-        $this->variation = isset($params["variation"]) ? (bool)$params["variation"] : $variation;
-        $this->inactive = isset($params["inactive"]) ? (bool)$params["inactive"] : false;
+        if (is_null($inactive)) {
+            LengowConfiguration::updateValue('LENGOW_EXPORT_INACTIVE', 0, null, null, $this->idShop);
+            $inactive = false;
+        } else {
+            $inactive = (bool)$inactive;
+        }
+        $this->selection = isset($params['selection']) ? (bool)$params['selection'] : $selection;
+        $this->outOfStock = isset($params['out_of_stock']) ? (bool)$params['out_of_stock'] : $outOfStock;
+        $this->variation = isset($params['variation']) ? (bool)$params['variation'] : $variation;
+        $this->inactive = isset($params['inactive']) ? (bool)$params['inactive'] : $inactive;
         if ($this->stream) {
             $this->logOutput = false;
         } else {
@@ -317,8 +324,80 @@ class LengowExport
             Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
         }
         $this->legacy = isset($params['legacy_fields']) ? (bool)$params['legacy_fields'] : null;
-        $this->checkCurrency();
-        $this->setCarrier();
+    }
+
+    /**
+     * Set format to export
+     *
+     * @param string $format The export format
+     */
+    public function setFormat($format)
+    {
+        $this->format = in_array($format, LengowFeed::$availableFormats) ? $format : 'csv';
+    }
+
+    /**
+     * Execute export process
+     *
+     */
+    public function exec()
+    {
+        try {
+            // Clean logs
+            LengowMain::cleanLog();
+            LengowMain::log('Export', LengowMain::setLogMessage('log.export.start'), $this->logOutput);
+            $shop = new LengowShop($this->idShop);
+            LengowMain::log(
+                'Export',
+                LengowMain::setLogMessage(
+                    'log.export.start_for_shop',
+                    array(
+                        'name_shop' => $shop->name,
+                        'id_shop' => $shop->id
+                    )
+                ),
+                $this->logOutput
+            );
+            // Check currency for export
+            $this->checkCurrency();
+            // Set carrier for the calculation of the shipping cost
+            $this->setCarrier();
+            // Set legacy fields option
+            $this->setLegacyFields();
+            // Get fields to export
+            $exportFields = $this->getFields();
+            // Get products to be exported
+            $products = $this->exportIds();
+            LengowMain::log(
+                'Export',
+                LengowMain::setLogMessage('log.export.nb_product_found', array("nb_product" => count($products))),
+                $this->logOutput
+            );
+            $this->export($products, $exportFields, $shop);
+            if ($this->updateExportDate) {
+                LengowConfiguration::updateValue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), false, null, $this->idShop);
+            }
+            LengowMain::log(
+                'Export',
+                LengowMain::setLogMessage('log.export.end'),
+                $this->logOutput
+            );
+        } catch (LengowException $e) {
+            $errorMessage = $e->getMessage();
+        } catch (Exception $e) {
+            $errorMessage = '[Prestashop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+        }
+        if (isset($errorMessage)) {
+            $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
+            LengowMain::log(
+                'Export',
+                LengowMain::setLogMessage(
+                    'log.export.export_failed',
+                    array('decoded_message' => $decodedMessage)
+                ),
+                $this->logOutput
+            );
+        }
     }
 
     /**
@@ -354,21 +433,6 @@ class LengowExport
     }
 
     /**
-     * Set format to export
-     *
-     * @param string $format The export format
-     *
-     * @throws LengowException illegal export format
-     *
-     * @return boolean
-     */
-    public function setFormat($format)
-    {
-        $this->format = in_array($format, LengowFeed::$availableFormats) ? $format : 'csv';
-        return true;
-    }
-
-    /**
      * Set or not legacy fields to export
      */
     public function setLegacyFields()
@@ -382,66 +446,6 @@ class LengowExport
             }
         }
         self::$defaultFields = $this->legacy ? $this->legacyFields : $this->newFields;
-    }
-
-    /**
-     * Execute export process
-     *
-     */
-    public function exec()
-    {
-        try {
-            // clean logs
-            LengowMain::cleanLog();
-            LengowMain::log('Export', LengowMain::setLogMessage('log.export.start'), $this->logOutput);
-            $shop = new LengowShop($this->idShop);
-            LengowMain::log(
-                'Export',
-                LengowMain::setLogMessage(
-                    'log.export.start_for_shop',
-                    array(
-                        'name_shop' => $shop->name,
-                        'id_shop' => $shop->id
-                    )
-                ),
-                $this->logOutput
-            );
-            // set legacy fields option
-            $this->setLegacyFields();
-            // get fields to export
-            $exportFields = $this->getFields();
-            // get products to be exported
-            $products = $this->exportIds();
-            LengowMain::log(
-                'Export',
-                LengowMain::setLogMessage('log.export.nb_product_found', array("nb_product" => count($products))),
-                $this->logOutput
-            );
-            $this->export($products, $exportFields, $shop);
-            if ($this->updateExportDate) {
-                LengowConfiguration::updateValue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), false, null, $this->idShop);
-            }
-            LengowMain::log(
-                'Export',
-                LengowMain::setLogMessage('log.export.end'),
-                $this->logOutput
-            );
-        } catch (LengowException $e) {
-            $errorMessage = $e->getMessage();
-        } catch (Exception $e) {
-            $errorMessage = '[Prestashop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
-        }
-        if (isset($errorMessage)) {
-            $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
-            LengowMain::log(
-                'Export',
-                LengowMain::setLogMessage(
-                    'log.export.export_failed',
-                    array('decoded_message' => $decodedMessage)
-                ),
-                $this->logOutput
-            );
-        }
     }
 
     /**
@@ -493,7 +497,7 @@ class LengowExport
                         $productDatas[$field] = $product->getData($field, null);
                     }
                 }
-                // write parent product
+                // Write parent product
                 $this->feed->write('body', $productDatas, $isFirst, $maxCharacter);
                 $productCount++;
             }
@@ -522,7 +526,7 @@ class LengowExport
             if ($this->limit > 0 && $productCount >= $this->limit) {
                 break;
             }
-            // clean data for next product.
+            // Clean data for next product
             unset($productDatas, $product);
             if (function_exists('gc_collect_cycles')) {
                 gc_collect_cycles();
@@ -620,8 +624,12 @@ class LengowExport
         $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_attribute pa ON (pa.id_product = p.id_product)';
         $query .= ' ' . $join . ' ' . $where . ' ) ';
         $query .= '  ) as tmp ';
-        $collection = Db::getInstance()->executeS($query);
-        return (int)$collection[0]['total'];
+        try {
+            $collection = Db::getInstance()->executeS($query);
+            return (int)$collection[0]['total'];
+        } catch (PrestaShopDatabaseException $e) {
+            return 0;
+        }
     }
 
     /**
@@ -640,8 +648,12 @@ class LengowExport
         } else {
             $query = 'SELECT COUNT(*) as total ' . $this->buildTotalQuery();
         }
-        $collection = Db::getInstance()->executeS($query);
-        return (int)$collection[0]['total'];
+        try {
+            $collection = Db::getInstance()->executeS($query);
+            return (int)$collection[0]['total'];
+        } catch (PrestaShopDatabaseException $e) {
+            return 0;
+        }
     }
 
     /**
@@ -725,7 +737,11 @@ class LengowExport
                 $query .= ' LIMIT 0,' . (int)$this->limit . ' ';
             }
         }
-        return Db::getInstance()->executeS($query);
+        try {
+            return Db::getInstance()->executeS($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return array();
+        }
     }
 
     /**
@@ -752,7 +768,7 @@ class LengowExport
                 }
             }
         }
-        // if export product variations -> get variations attributes
+        // If export product variations -> get variations attributes
         if ($this->variation) {
             $attributes = AttributeGroup::getAttributesGroups($this->language->id);
             foreach ($attributes as $attribute) {
@@ -892,7 +908,7 @@ class LengowExport
          * Write here your process
          * $arrayProduct['my_header_value'] = 'your value';
          */
-        // This two lines are useless, but Prestashop validator require it.
+        // This two lines are useless, but Prestashop validator require it
         $product = $product;
         $idProductAttribute = $idProductAttribute;
         return $arrayProduct;
