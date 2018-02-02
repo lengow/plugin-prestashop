@@ -87,7 +87,7 @@ class LengowConfiguration extends Configuration
                     'shop' => true,
                     'label' => $locale->t('lengow_setting.lengow_export_selection_enabled_title'),
                     'legend' => $locale->t('lengow_setting.lengow_export_selection_enabled_legend'),
-                    'default_value' => false
+                    'default_value' => false,
                 ),
                 'LENGOW_EXPORT_VARIATION_ENABLED' => array(
                     'type' => 'checkbox',
@@ -103,7 +103,7 @@ class LengowConfiguration extends Configuration
                     'shop' => true,
                     'label' => $locale->t('lengow_setting.lengow_export_out_stock_title'),
                     'legend' => $locale->t('lengow_setting.lengow_export_out_stock_legend'),
-                    'default_value' => true
+                    'default_value' => true,
                 ),
                 'LENGOW_EXPORT_INACTIVE' => array(
                     'type' => 'checkbox',
@@ -111,7 +111,7 @@ class LengowConfiguration extends Configuration
                     'shop' => true,
                     'label' => $locale->t('lengow_setting.lengow_export_inactive_title'),
                     'legend' => $locale->t('lengow_setting.lengow_export_inactive_legend'),
-                    'default_value' => false
+                    'default_value' => false,
                 ),
                 'LENGOW_EXPORT_FORMAT' => array(
                     'type' => 'select',
@@ -126,6 +126,7 @@ class LengowConfiguration extends Configuration
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_export_file_enabled_title'),
                     'legend' => $locale->t('lengow_setting.lengow_export_file_enabled_legend'),
+                    'default_value' => false,
                 ),
                 'LENGOW_EXPORT_CARRIER_DEFAULT' => array(
                     'type' => 'select',
@@ -191,6 +192,7 @@ class LengowConfiguration extends Configuration
                     'type' => 'checkbox',
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_import_preprod_enabled_title'),
+                    'default_value' => false,
                 ),
                 'LENGOW_IMPORT_SHIP_MP_ENABLED' => array(
                     'type' => 'checkbox',
@@ -209,14 +211,14 @@ class LengowConfiguration extends Configuration
                     'type' => 'checkbox',
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_report_mail_enabled_title'),
-                    'default_value' => true
+                    'default_value' => true,
                 ),
                 'LENGOW_REPORT_MAIL_ADDRESS' => array(
                     'type' => 'text',
                     'global' => true,
                     'placeholder' => $locale->t('lengow_setting.lengow_report_mail_address_title'),
                     'legend' => $locale->t('lengow_setting.lengow_report_mail_address_legend'),
-                    'default_value' => ''
+                    'default_value' => '',
                 ),
                 'LENGOW_IMPORT_SINGLE_ENABLED' => array(
                     'type' => 'checkbox',
@@ -234,12 +236,12 @@ class LengowConfiguration extends Configuration
                 'LENGOW_LAST_IMPORT_CRON' => array(
                     'readonly' => true,
                     'global' => true,
-                    'label' => $locale->t('lengow_setting.lengow_last_import_cron_title')
+                    'label' => $locale->t('lengow_setting.lengow_last_import_cron_title'),
                 ),
                 'LENGOW_LAST_IMPORT_MANUAL' => array(
                     'readonly' => true,
                     'global' => true,
-                    'label' => $locale->t('lengow_setting.lengow_last_import_manual_title')
+                    'label' => $locale->t('lengow_setting.lengow_last_import_manual_title'),
                 ),
                 'LENGOW_GLOBAL_TOKEN' => array(
                     'readonly' => true,
@@ -262,33 +264,32 @@ class LengowConfiguration extends Configuration
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_tracking_id_title'),
                     'default_value' => 'id',
-                    'collection' => $trackerIds
+                    'collection' => $trackerIds,
                 ),
                 'LENGOW_ORDER_STAT' => array(
-                    'export' => false
+                    'export' => false,
                 ),
                 'LENGOW_ORDER_STAT_UPDATE' => array(
-                    'export' => false
+                    'export' => false,
                 ),
                 'LENGOW_VERSION' => array(
                     'type' => 'text',
                     'global' => true,
-                    'default_value' => '',
                 ),
                 'LENGOW_ACCOUNT_STATUS' => array(
-                    'export' => false
+                    'export' => false,
                 ),
                 'LENGOW_ACCOUNT_STATUS_UPDATE' => array(
-                    'export' => false
+                    'export' => false,
                 ),
                 'LENGOW_OPTION_CMS_UPDATE' => array(
-                    'export' => false
+                    'export' => false,
                 ),
                 'LENGOW_LIST_MARKET_UPDATE' => array(
-                    'export' => false
+                    'export' => false,
                 ),
                 'LENGOW_STATE_ERROR' => array(
-                    'export' => false
+                    'export' => false,
                 ),
             );
         }
@@ -377,6 +378,20 @@ class LengowConfiguration extends Configuration
         } else {
             parent::updateValue($key, $values, $html, $idShopGroup, $idShop);
         }
+    }
+
+    /**
+     * Check if Lengow configuration key exist
+     *
+     * @param string $key Lengow configuration key
+     *
+     * @return boolean
+     */
+    public static function checkKeyExists($key)
+    {
+        $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration WHERE `name` = \'' . pSQL($key) . '\'';
+        $value = Db::getInstance()->getRow($sql);
+        return $value ? true : false;
     }
 
     /**
@@ -521,25 +536,25 @@ class LengowConfiguration extends Configuration
         $shops = LengowShop::findAll(true);
         $keys = self::getKeys();
         foreach ($keys as $key => $value) {
-            if (isset($value['default_value'])) {
-                $val = $value['default_value'];
-            } else {
-                $val = '';
-            }
+            $val = isset($value['default_value']) ? $value['default_value'] : '';
             if (isset($value['shop']) && $value['shop']) {
                 foreach ($shops as $shop) {
                     if ($overwrite) {
-                        self::updateValue($key, $val, false, null, $shop["id_shop"]);
+                        if (isset($value['default_value'])) {
+                            self::updateValue($key, $val, false, null, $shop['id_shop']);
+                        }
                     } else {
-                        $oldValue = self::get($key, false, null, $shop["id_shop"]);
+                        $oldValue = self::get($key, false, null, $shop['id_shop']);
                         if ($oldValue == '') {
-                            self::updateValue($key, $val, false, null, $shop["id_shop"]);
+                            self::updateValue($key, $val, false, null, $shop['id_shop']);
                         }
                     }
                 }
             } else {
                 if ($overwrite) {
-                    self::updateValue($key, $val);
+                    if (isset($value['default_value'])) {
+                        self::updateValue($key, $val);
+                    }
                 } else {
                     $oldValue = self::get($key);
                     if ($oldValue == '') {
@@ -564,6 +579,7 @@ class LengowConfiguration extends Configuration
     public static function deleteAll()
     {
         $keys = self::getKeys();
+        LengowMain::log('Setting', LengowMain::setLogMessage('log.setting.setting_delete'));
         foreach ($keys as $key => $value) {
             // This line is useless, but Prestashop validator require it
             $value = $value;

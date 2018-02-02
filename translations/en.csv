@@ -305,14 +305,23 @@ admin.order.resend_action|Resend Action
 admin.order.add_tracking|Add Tracking Number
 admin.order.add_tracking_title|Please enter your tracking number
 admin.order.check_resend_action|Do you really want to send the following action: %{action}?
+log.install.install_start|## start install for version %{version} ##
+log.install.install_end|## end install for version %{version} ##
+log.install.table_created|adding table %{name} in database
+log.install.table_already_created|skipping table %{name} : already existing in database
 log.install.install_tab|install tab %{class_name}
-log.install.uninstall_tab|uninstall tab %{class_name}
-log.hook.registering_hook_success|registering hook - %{hook}: success
-log.hook.registering_hook_error|registering hook - %{hook}: error
-log.cron.creation_success|Lengow import cron task sucessfully created
-log.cron.creation_error|Lengow import cron task could not be created
-log.cron.delete_success|cron task(s) sucessfully removed
-log.cron.delete_error|cron task(s) could not be removed
+log.install.add_technical_error_status|adding Lengow technical error status
+log.install.update_technical_error_status|update translations for Lengow technical error status
+log.install.registering_hook_success|registering hook - %{hook}: success
+log.install.registering_hook_error|registering hook - %{hook}: error
+log.install.update_start|## start updating for version %{old_version} to %{new_version} ##
+log.install.update_end|## end updating for version %{old_version} to %{new_version} ##
+log.install.add_upgrade_version|adding SQL patch required for the plugin version %{version}
+log.uninstall.uninstall_start|## start uninstall for version %{version} ##
+log.uninstall.uninstall_end|## end uninstall for version %{version} ##
+log.uninstall.dump_sql_created|creating the sql backup of lengow tables
+log.uninstall.uninstall_tab|uninstall tab %{class_name}
+log.uninstall.table_dropped|removing table %{name} in database
 log.mail_report.send_mail_to|report email sent to %{emails}
 log.mail_report.unable_send_mail_to|unable to send report email to %{emails}
 log.export.start|## start export ##
@@ -389,8 +398,9 @@ log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}
 log.connector.error_api|API call failed - %{error_code}
-log.setting.setting_reset|All Lengow settings were reset
-log.setting.setting_updated|All Lengow settings were updated
+log.setting.setting_delete|all Lengow settings were deleted
+log.setting.setting_reset|all Lengow settings were reset
+log.setting.setting_updated|all Lengow settings were updated
 log.setting.setting_change|%{key} - old value %{old_value} replaced with %{value}
 log.setting.setting_change_for_shop|%{key} - old value %{old_value} replaced with %{value} for shop %{shop_id}
 toolbox.menu.lengow_toolbox|Lengow Toolbox

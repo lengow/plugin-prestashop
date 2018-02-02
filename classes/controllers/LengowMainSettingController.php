@@ -38,6 +38,7 @@ class LengowMainSettingController extends LengowController
                 ) {
                     $backup = new LengowBackup();
                     if ($backup->add()) {
+                        LengowMain::log('Uninstall', LengowMain::setLogMessage('log.uninstall.dump_sql_created'));
                         LengowConfiguration::deleteAll();
                         LengowInstall::dropTable();
                         $module = Module::getInstanceByName('lengow');
