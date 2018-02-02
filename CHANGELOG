@@ -1,4 +1,15 @@
 =============================================================
+Version 3.0.1
+=============================================================
+
+    - Feature: Complete refactoring of the installation and update processes
+    - Bugfix: Add indexes to database to speed up the display of product and order grids
+    - Bugfix: [export] Migration from global product selection to a multi-shop selection
+    - Bugfix: [export] Retrieval of all export settings for older versions
+	- Bugfix: [export] Recovering the right shop name for older versions
+	- Bugfix: [export] Change image_product attribute for legacy fields
+
+=============================================================
 Version 3.0.0
 =============================================================
 
