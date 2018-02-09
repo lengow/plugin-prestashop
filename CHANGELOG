@@ -8,6 +8,7 @@ Version 3.0.1
     - Bugfix: [export] Retrieval of all export settings for older versions
 	- Bugfix: [export] Recovering the right shop name for older versions
 	- Bugfix: [export] Change image_product attribute for legacy fields
+	- Bugfix: [action] Removing of action errors when orders are completed
 
 =============================================================
 Version 3.0.0

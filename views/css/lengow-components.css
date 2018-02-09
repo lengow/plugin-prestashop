@@ -549,11 +549,11 @@ margin-bottom: 15px;
 /*************************************************/
 
 .lgw-pagination {
+  font-size: 12px;
   float: right;
 }
 
 .lgw-pagination-pages {
-  font-size: 13px;
   display: block;
   text-align: right;
 }
