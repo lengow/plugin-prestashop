@@ -437,7 +437,7 @@ class LengowOrder extends Order
             $params['tracking'] = pSQL($trackingNumber);
         }
         if ($orderProcessState == self::PROCESS_STATE_FINISH) {
-            // Finish actions and order log if lengow order is shipped, closed or cancel
+            // Finish actions and order log if lengow order is shipped, closed, cancel or refunded
             LengowAction::finishAllActions((int)$this->id);
             self::finishOrderLogs((int)$this->lengowId, 'send');
             if ((int)$this->lengowProcessState != $orderProcessState) {
