@@ -820,16 +820,16 @@ class LengowOrder extends Order
     /**
      * Removes all order logs
      *
-     * @param integer $id Lengow order log id
+     * @param integer $idOrderLengow Lengow order id
      * @param string $type order log type (import or send)
      *
      * @return boolean
      */
-    public static function finishOrderLogs($id, $type = 'import')
+    public static function finishOrderLogs($idOrderLengow, $type = 'import')
     {
         $logType = self::getOrderLogType($type);
         $query = 'SELECT `id` FROM `' . _DB_PREFIX_ . 'lengow_logs_import`
-            WHERE `id_order_lengow` = \'' . (int)$id . '\'
+            WHERE `id_order_lengow` = \'' . (int)$idOrderLengow . '\'
             AND `type` = \'' . (int)$logType . '\'';
         $orderLogs = Db::getInstance()->executeS($query);
         $updateSuccess = 0;
