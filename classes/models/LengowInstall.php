@@ -460,7 +460,7 @@ class LengowInstall
     {
         // Create table lengow_product
         $name = 'lengow_product';
-        if (!LengowInstall::checkTableExists('lengow_product')) {
+        if (!self::checkTableExists('lengow_product')) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_product` INTEGER(11) UNSIGNED NOT NULL,
@@ -479,7 +479,7 @@ class LengowInstall
         }
         // Create table lengow_orders
         $name = 'lengow_orders';
-        if (!LengowInstall::checkTableExists($name)) {
+        if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_order` INTEGER(11) UNSIGNED NULL,
@@ -530,7 +530,7 @@ class LengowInstall
 
         // Create table lengow_order_line
         $name = 'lengow_order_line';
-        if (!LengowInstall::checkTableExists($name)) {
+        if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_order` INTEGER(11) UNSIGNED NOT NULL,
@@ -549,7 +549,7 @@ class LengowInstall
 
         // Create table lengow_logs_import
         $name = 'lengow_logs_import';
-        if (!LengowInstall::checkTableExists($name)) {
+        if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `is_finished` TINYINT(1) DEFAULT 0,
@@ -572,7 +572,7 @@ class LengowInstall
 
         // Create table lengow_actions
         $name = 'lengow_actions';
-        if (!LengowInstall::checkTableExists($name)) {
+        if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_order` INTEGER(11) UNSIGNED NOT NULL,
@@ -599,7 +599,7 @@ class LengowInstall
 
         // Create table lengow_marketplace
         $name = 'lengow_marketplace';
-        if (!LengowInstall::checkTableExists($name)) {
+        if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `marketplace_name` VARCHAR(100) NOT NULL,
@@ -618,7 +618,7 @@ class LengowInstall
 
         // Create table lengow_carrier_marketplace
         $name = 'lengow_carrier_marketplace';
-        if (!LengowInstall::checkTableExists($name)) {
+        if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `carrier_marketplace_name` VARCHAR(100) NOT NULL,
@@ -636,7 +636,7 @@ class LengowInstall
 
         // Create table lengow_marketplace_carrier_marketplace
         $name = 'lengow_marketplace_carrier_marketplace';
-        if (!LengowInstall::checkTableExists($name)) {
+        if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_marketplace` INTEGER(11) UNSIGNED NOT NULL,
@@ -656,7 +656,7 @@ class LengowInstall
 
         // Create table lengow_default_carrier
         $name = 'lengow_default_carrier';
-        if (!LengowInstall::checkTableExists($name)) {
+        if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_country` INTEGER(11) UNSIGNED NOT NULL,
@@ -680,7 +680,7 @@ class LengowInstall
 
         // Create table lengow_marketplace_carrier_country
         $name = 'lengow_marketplace_carrier_country';
-        if (!LengowInstall::checkTableExists($name)) {
+        if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_country` INTEGER(11) UNSIGNED NOT NULL,
