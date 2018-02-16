@@ -158,17 +158,6 @@ body.lengow_body #main {
   margin-top: 138px;
 }
 
-/*
-body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a,
-body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:hover,
-body.lengow_body #content .nav.lengow-nav.lengow-nav-bottom a:focus{
-  line-height:25px;
-}
-
-div#scrollTop a{
-  bottom:140px;
-}*/
-
 @media all and (min-width: 978px) and (max-width: 992px) {
 
   body {

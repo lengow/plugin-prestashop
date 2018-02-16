@@ -50,6 +50,11 @@ class LengowFeed
     protected $content = '';
 
     /**
+     * @var boolean stream or file
+     */
+    protected $stream;
+
+    /**
      * @var string feed format
      */
     protected $format;
@@ -72,7 +77,7 @@ class LengowFeed
     /**
      * @var array formats available for export
      */
-    public static $availabeFormats = array(
+    public static $availableFormats = array(
         'csv',
         'yaml',
         'xml',
@@ -92,6 +97,7 @@ class LengowFeed
      * @param boolean $legacy export legacy field or not
      * @param string $shopName Prestashop shop name
      *
+     * @throws LengowException unable to create folder
      */
     public function __construct($stream, $format, $legacy, $shopName = null)
     {
@@ -101,7 +107,13 @@ class LengowFeed
         if (is_null($shopName)) {
             $shopName = Context::getContext()->shop->name;
         }
-        $this->shopFolder = $this->formatFields($shopName, 'shop');
+        $this->shopFolder = Tools::strtolower(
+            preg_replace(
+                '/[^a-zA-Z0-9_]+/',
+                '',
+                str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($shopName))
+            )
+        );
         if (!$this->stream) {
             $this->initExportFile();
         }

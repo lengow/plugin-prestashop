@@ -43,7 +43,7 @@ class Lengow extends Module
     {
         $this->name = 'lengow';
         $this->tab = 'export';
-        $this->version = '3.0.0';
+        $this->version = '3.0.1';
         $this->author = 'Lengow';
         $this->module_key = '92f99f52f2bc04ed999f02e7038f031c';
         $this->ps_versions_compliancy = array('min' => '1.4', 'max' => '1.7');
@@ -65,8 +65,10 @@ class Lengow extends Module
         $this->hookClass = new LengowHook($this);
 
         if (self::isInstalled($this->name)) {
-            if (LengowConfiguration::getGlobalValue('LENGOW_VERSION') != $this->version) {
-                $this->installClass->update();
+            $oldVersion = LengowConfiguration::getGlobalValue('LENGOW_VERSION');
+            if ($oldVersion != $this->version) {
+                LengowConfiguration::updateGlobalValue('LENGOW_VERSION', $this->version);
+                $this->installClass->update($oldVersion);
             }
         }
 

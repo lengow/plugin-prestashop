@@ -633,12 +633,12 @@ class LengowOrderController extends LengowController
      */
     public static function displayLogStatus($key, $value, $item)
     {
-        if ($item[$key]) {
+        if ($item[$key] && $item['order_process_state'] != LengowOrder::PROCESS_STATE_FINISH) {
             $errorMessage = array();
             $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
             if (count($logCollection) > 0) {
                 foreach ($logCollection as $row) {
-                    $errorMessage[] = LengowMain::decodeLogMessage($row['message']);
+                    $errorMessage[] = LengowMain::decodeLogMessage(LengowMain::cleanData($row['message']));
                 }
             }
             $link = new LengowLink();
@@ -669,7 +669,7 @@ class LengowOrderController extends LengowController
             }
         } else {
             //check if order actions in progress
-            if ($item['id_order'] > 0 && $item['order_process_state'] == 1) {
+            if ($item['id_order'] > 0 && $item['order_process_state'] == LengowOrder::PROCESS_STATE_IMPORT) {
                 $lastActionType = LengowAction::getLastOrderActionType($item['id_order']);
                 if ($lastActionType) {
                     $messageLastAction = LengowMain::decodeLogMessage(

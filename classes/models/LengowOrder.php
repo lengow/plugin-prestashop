@@ -437,8 +437,9 @@ class LengowOrder extends Order
             $params['tracking'] = pSQL($trackingNumber);
         }
         if ($orderProcessState == self::PROCESS_STATE_FINISH) {
-            // Finish actions if lengow order is shipped, closed or cancel
+            // Finish actions and order log if lengow order is shipped, closed, cancel or refunded
             LengowAction::finishAllActions((int)$this->id);
+            self::finishOrderLogs((int)$this->lengowId, 'send');
             if ((int)$this->lengowProcessState != $orderProcessState) {
                 $params['order_process_state'] = (int)$orderProcessState;
             }
@@ -697,6 +698,7 @@ class LengowOrder extends Order
             case 'closed':
             case 'refused':
             case 'canceled':
+            case 'refunded':
                 return self::PROCESS_STATE_FINISH;
             default:
                 return false;
@@ -818,16 +820,16 @@ class LengowOrder extends Order
     /**
      * Removes all order logs
      *
-     * @param integer $id Lengow order log id
+     * @param integer $idOrderLengow Lengow order id
      * @param string $type order log type (import or send)
      *
      * @return boolean
      */
-    public static function finishOrderLogs($id, $type = 'import')
+    public static function finishOrderLogs($idOrderLengow, $type = 'import')
     {
         $logType = self::getOrderLogType($type);
         $query = 'SELECT `id` FROM `' . _DB_PREFIX_ . 'lengow_logs_import`
-            WHERE `id_order_lengow` = \'' . (int)$id . '\'
+            WHERE `id_order_lengow` = \'' . (int)$idOrderLengow . '\'
             AND `type` = \'' . (int)$logType . '\'';
         $orderLogs = Db::getInstance()->executeS($query);
         $updateSuccess = 0;
@@ -925,7 +927,6 @@ class LengowOrder extends Order
             $import = new LengowImport(
                 array(
                     'id_order_lengow' => $idOrderLengow,
-                    'type' => 'import',
                     'marketplace_sku' => $lengowOrder['marketplace_sku'],
                     'marketplace_name' => $lengowOrder['marketplace_name'],
                     'delivery_address_id' => $lengowOrder['delivery_address_id'],
@@ -1003,8 +1004,6 @@ class LengowOrder extends Order
      * Send Order action
      *
      * @param string $action Lengow Actions type (ship or cancel)
-     *
-     * @throws LengowException order line is required
      *
      * @return boolean
      */

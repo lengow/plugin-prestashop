@@ -5,8 +5,13 @@
 .lengow_body {
   background: #f7f7f7;
 }
-.cms-global{
+
+body.page-sidebar .cms-global{
   padding: 100px 15px 30px;
+}
+
+body.page-topbar .cms-global{
+  padding: 30px 15px;
 }
 
 .lengow_body .nobootstrap {

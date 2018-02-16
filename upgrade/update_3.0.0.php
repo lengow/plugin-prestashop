@@ -22,96 +22,12 @@
 if (!LengowInstall::isInstallationInProgress()) {
     exit();
 }
-// *********************************************************
-//                        NEW DATA
-// *********************************************************
-// create table lengow_actions
-$sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'lengow_actions` (
-    `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `id_order` INTEGER(11) UNSIGNED NOT NULL,
-    `order_line_sku` VARCHAR(100) NULL,
-    `action_id` INTEGER(11) UNSIGNED NOT NULL,
-    `action_type` VARCHAR(32) NOT NULL,
-    `retry` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-    `parameters` TEXT NOT NULL,
-    `state` TINYINT(1) UNSIGNED NOT NULL,
-    `created_at` DATETIME NOT NULL,
-    `updated_at` DATETIME NOT NULL,
-    PRIMARY KEY(`id`),
-    INDEX (`id_order`),
-    INDEX (`action_type`)
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-Db::getInstance()->execute($sql);
-//create table lengow_marketplace
-$sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'lengow_marketplace` (
-    `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `marketplace_name` VARCHAR(100) NOT NULL,
-    `marketplace_label` VARCHAR(100) NOT NULL,
-    `carrier_required` TINYINT(1) DEFAULT 0,
-    PRIMARY KEY(`id`)
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-Db::getInstance()->execute($sql);
-// create table lengow_carrier_marketplace
-$sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_carrier_marketplace (
-    `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `carrier_marketplace_name` VARCHAR(100) NOT NULL,
-    `carrier_marketplace_label` VARCHAR(100) NOT NULL,
-    PRIMARY KEY(`id`)
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-Db::getInstance()->execute($sql);
-// create table lengow_marketplace_carrier_marketplace
-$sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace (
-    `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `id_marketplace` INTEGER(11) UNSIGNED NOT NULL,
-    `id_carrier_marketplace` INTEGER(11) UNSIGNED NOT NULL,
-    PRIMARY KEY(`id`),
-    INDEX (`id_marketplace`),
-    INDEX (`id_carrier_marketplace`)
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-Db::getInstance()->execute($sql);
-// create table lengow_default_carrier
-$sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_default_carrier (
-    `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `id_country` INTEGER(11) UNSIGNED NOT NULL,
-    `id_marketplace` INTEGER(11) UNSIGNED NOT NULL,
-    `id_carrier` INTEGER(11) UNSIGNED NULL,
-    `id_carrier_marketplace` INTEGER(11) UNSIGNED NULL,
-    PRIMARY KEY(`id`),
-    INDEX (`id_country`),
-    INDEX (`id_marketplace`),
-    INDEX (`id_carrier`),
-    INDEX (`id_carrier_marketplace`)
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-Db::getInstance()->execute($sql);
-// create table lengow_marketplace_carrier_country
-$sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country (
-    `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `id_country` INTEGER(11) UNSIGNED NOT NULL,
-    `id_marketplace` INTEGER(11) UNSIGNED NOT NULL,
-    `id_carrier` INTEGER(11) UNSIGNED NOT NULL,
-    `id_carrier_marketplace` INTEGER(11) UNSIGNED NULL,
-    PRIMARY KEY(`id`),
-    INDEX (`id_country`),
-    INDEX (`id_marketplace`),
-    INDEX (`id_carrier`),
-    INDEX (`id_carrier_marketplace`)
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-Db::getInstance()->execute($sql);
 
 // *********************************************************
 //                         lengow_product
 // *********************************************************
-// create table lengow_product
-$sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'lengow_product` (
-	`id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`id_product` INTEGER(11) UNSIGNED NOT NULL,
-	`id_shop` INTEGER(11) UNSIGNED NOT NULL DEFAULT 1,
-	PRIMARY KEY ( `id` ),
-	INDEX (`id_shop`)
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-Db::getInstance()->execute($sql);
-// alter product table for old versions
-if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_product\'')) {
+
+if (LengowInstall::checkTableExists('lengow_product')) {
     if (!LengowInstall::checkFieldExists('lengow_product', 'id')) {
         Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . 'lengow_product DROP PRIMARY KEY');
         Db::getInstance()->execute(
@@ -119,51 +35,62 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_pr
             ADD `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST'
         );
     }
-    if (LengowInstall::checkFieldExists('lengow_product', 'id_shop_group')) {
-        Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . 'lengow_product DROP `id_shop_group`');
-    }
-    if (LengowInstall::checkFieldExists('lengow_product', 'id_lang')) {
-        Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . 'lengow_product DROP `id_lang`');
+}
+// Data migration to the new system
+if (LengowInstall::checkTableExists('lengow_product')
+    && LengowInstall::checkFieldExists('lengow_product', 'id_product')
+    && LengowInstall::checkFieldExists('lengow_product', 'id_shop')
+    && LengowInstall::checkFieldExists('lengow_product', 'id_shop_group')
+    && LengowInstall::checkFieldExists('lengow_product', 'id_lang')
+) {
+    $idProducts = Db::getInstance()->executeS('SELECT DISTINCT id_product FROM `' . _DB_PREFIX_ . 'lengow_product`');
+    if (count($idProducts) > 0) {
+        Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'lengow_product SET id_shop = 1');
+        if (LengowShop::isFeatureActive()) {
+            $shops = LengowShop::findAll(true);
+            $insertValues = array();
+            foreach ($idProducts as $idProduct) {
+                if (isset($idProduct['id_product'])) {
+                    $insertValues[] = '(' . (int)$idProduct['id_product'] . ', :idShop)';
+                }
+            }
+            if (count($insertValues) > 0) {
+                $insertValueStr = join(', ', $insertValues);
+                foreach ($shops as $shop) {
+                    if (!isset($shop['id_shop']) || $shop['id_shop'] == 1) {
+                        continue;
+                    }
+                    $values = str_replace(':idShop', $shop['id_shop'], $insertValueStr);
+                    $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'lengow_product (id_product, id_shop) VALUES ' . $values;
+                    Db::getInstance()->execute($sql);
+                }
+            }
+        }
     }
 }
+// Drop old column from lengow_product table
+LengowInstall::checkFieldAndDrop('lengow_product', 'id_shop_group');
+LengowInstall::checkFieldAndDrop('lengow_product', 'id_lang');
+
 
 // *********************************************************
 //                         lengow_order_line
 // *********************************************************
-// create table lengow_order_line
-$sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_order_line (
-    `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `id_order` INTEGER(11) UNSIGNED NOT NULL,
-    `id_order_line` VARCHAR(100) NOT NULL,
-    `id_order_detail` INTEGER(11) UNSIGNED NULL,
-    PRIMARY KEY(`id`)
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-Db::getInstance()->execute($sql);
-// alter order_line table for old versions
-if (!LengowInstall::checkFieldExists('lengow_order_line', 'id_order_detail')) {
-    Db::getInstance()->execute(
-        'ALTER TABLE `' . _DB_PREFIX_ . 'lengow_order_line`
-        ADD `id_order_detail` INTEGER(11) UNSIGNED NULL AFTER `id_order_line`'
-    );
+
+if (LengowInstall::checkTableExists('lengow_order_line')) {
+    if (!LengowInstall::checkFieldExists('lengow_order_line', 'id_order_detail')) {
+        Db::getInstance()->execute(
+            'ALTER TABLE `' . _DB_PREFIX_ . 'lengow_order_line`
+            ADD `id_order_detail` INTEGER(11) UNSIGNED NULL AFTER `id_order_line`'
+        );
+    }
 }
 
 // *********************************************************
 //                         lengow_log_import
 // *********************************************************
-// Create table lengow_logs_import
-$sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_logs_import (
-    `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `is_finished` TINYINT(1) DEFAULT 0,
-    `message` TEXT DEFAULT NULL,
-    `date` DATETIME DEFAULT NULL,
-    `mail` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-    `id_order_lengow` INTEGER(11) NOT NULL,
-    `type` TINYINT(1) NOT NULL,
-    PRIMARY KEY(id)
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-Db::getInstance()->execute($sql);
-//add missing field for old plugins
-if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_logs_import\'')) {
+
+if (LengowInstall::checkTableExists('lengow_logs_import')) {
     if (LengowInstall::checkFieldExists('lengow_logs_import', 'is_finished')) {
         Db::getInstance()->execute(
             'ALTER TABLE  ' . _DB_PREFIX_ . 'lengow_logs_import CHANGE `is_finished` `is_finished` TINYINT(1) DEFAULT 0'
@@ -199,9 +126,7 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_lo
     }
 }
 // data migration to the new system
-if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_orders\'')
-    && Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_logs_import\'')
-) {
+if (LengowInstall::checkTableExists('lengow_orders') && LengowInstall::checkTableExists('lengow_logs_import')) {
     if (LengowInstall::checkFieldExists('lengow_logs_import', 'lengow_order_id')
         && LengowInstall::checkFieldExists('lengow_logs_import', 'delivery_address_id')
         && LengowInstall::checkFieldExists('lengow_orders', 'delivery_address_id')
@@ -254,48 +179,8 @@ LengowInstall::checkFieldAndDrop('lengow_logs_import', 'delivery_address_id');
 // *********************************************************
 //                         lengow_orders
 // *********************************************************
-// Create table lengow_orders
-$sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'lengow_orders` (
-    `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `id_order` INTEGER(11) UNSIGNED NULL,
-    `id_shop` INTEGER(11) UNSIGNED NOT NULL DEFAULT 1,
-    `id_shop_group` INTEGER(11) UNSIGNED NOT NULL DEFAULT 1,
-    `id_lang` INTEGER(11) UNSIGNED NOT NULL DEFAULT 1,
-    `id_flux` INTEGER(11) UNSIGNED NULL,
-    `delivery_address_id` INTEGER(11) UNSIGNED NULL,
-    `delivery_country_iso` VARCHAR(3) NULL,
-    `marketplace_sku` VARCHAR(100) NOT NULL,
-    `marketplace_name` VARCHAR(100) NULL,
-    `marketplace_label` VARCHAR(100) NULL,
-    `order_lengow_state` VARCHAR(32) NOT NULL,
-    `order_process_state` TINYINT(1) UNSIGNED NOT NULL,
-    `order_date` DATETIME NOT NULL,
-    `order_item` INTEGER(11) UNSIGNED NULL,
-    `currency` VARCHAR(3) NULL,
-    `total_paid` DECIMAL(17,2) UNSIGNED NULL,
-    `commission` DECIMAL(17,2) UNSIGNED NULL,
-    `customer_name` VARCHAR(255) NULL,
-    `customer_email` VARCHAR(255) NULL,
-    `carrier` VARCHAR(100),
-    `method` VARCHAR(100) NULL,
-    `tracking` VARCHAR(100),
-    `id_relay` VARCHAR(100) NULL,
-    `sent_marketplace` TINYINT(1) UNSIGNED DEFAULT 0,
-    `is_reimported` TINYINT(1) UNSIGNED DEFAULT 0,
-    `message` TEXT,
-    `date_add` DATETIME NOT NULL,
-    `extra` TEXT,
-    PRIMARY KEY(id),
-    INDEX (`id_flux`),
-    INDEX (`id_shop`),
-    INDEX (`id_shop_group`),
-    INDEX (`marketplace_sku`),
-    INDEX (`marketplace_name`),
-    INDEX (`date_add`)
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-Db::getInstance()->execute($sql);
-//add missing field for old plugins
-if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_orders\'')) {
+
+if (LengowInstall::checkTableExists('lengow_orders')) {
     if (LengowInstall::checkFieldExists('lengow_orders', 'id_flux')) {
         Db::getInstance()->execute(
             'ALTER TABLE  ' . _DB_PREFIX_ . 'lengow_orders CHANGE `id_flux` `id_flux` INTEGER(11) UNSIGNED NULL'
@@ -431,94 +316,22 @@ if (Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'lengow_or
 }
 
 // *********************************************************
-//                  Other install process
+//              Other install specific process
 // *********************************************************
-// Rename old settings
-LengowInstall::renameConfigurationKey('LENGOW_DEBUG', 'LENGOW_IMPORT_PREPROD_ENABLED');
-LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SHIPPED_BY_MP', 'LENGOW_IMPORT_SHIP_MP_ENABLED');
-LengowInstall::renameConfigurationKey('LENGOW_EXPORT_FILE', 'LENGOW_EXPORT_FILE_ENABLED');
-LengowInstall::renameConfigurationKey('LENGOW_CARRIER_DEFAULT', 'LENGOW_EXPORT_CARRIER_DEFAULT');
-LengowInstall::renameConfigurationKey('LENGOW_REPORT_MAIL', 'LENGOW_REPORT_MAIL_ENABLED');
-LengowInstall::renameConfigurationKey('LENGOW_EMAIL_ADDRESS', 'LENGOW_REPORT_MAIL_ADDRESS');
-LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SINGLE', 'LENGOW_IMPORT_SINGLE_ENABLED');
-LengowInstall::renameConfigurationKey('LENGOW_TRACKING', 'LENGOW_TRACKING_ENABLED');
-// Delete old settings
-$configurationToDelete = array(
-    'LENGOW_ID_ACCOUNT',
-    'LENGOW_SECRET',
-    'LENGOW_CRON',
-    'LENGOW_MIGRATE',
-    'LENGOW_MP_CONF',
-    'LENGOW_ID_CUSTOMER',
-    'LENGOW_ID_GROUP',
-    'LENGOW_TOKEN',
-    'LENGOW_SWITCH_V3',
-    'LENGOW_SWITCH_V2',
-    'LENGOW_IMAGE_TYPE',
-    'LENGOW_FEED_MANAGEMENT',
-    'LENGOW_FORCE_PRICE',
-    'LENGOW_LOGO_URL',
-    'LENGOW_EXPORT_NEW',
-    'LENGOW_EXPORT_FIELDS',
-    'LENGOW_EXPORT_FULLNAME',
-    'LENGOW_IMAGES_COUNT',
-    'LENGOW_IMPORT_METHOD_NAME',
-    'LENGOW_EXPORT_FEATURES',
-    'LENGOW_EXPORT_SELECT_FEATURES',
-    'LENGOW_EXPORT_SELECTION',
-    'LENGOW_IMPORT_CARRIER_DEFAULT',
-    'LENGOW_IMPORT_CARRIER_MP_ENABLED',
-    'LENGOW_IMPORT_FAKE_EMAIL',
-    'LENGOW_FLOW_DATA',
-    'LENGOW_CRON_EDITOR',
-    'LENGOW_EXPORT_TIMEOUT',
-    'LENGOW_EXPORT_DISABLED',
-    'LENGOW_PARENT_IMAGE',
-    'LENGOW_IMPORT_MARKETPLACES',
-    'LENGOW_IMPORT_SHIPPED_BY_MP',
-    'LENGOW_EXPORT_ALL_ATTRIBUTES',
-    'LENGOW_EXPORT_ALL_VARIATIONS',
-    'LENGOW_PLG_CONF',
-    'LENGOW_MP_SHIPPING_METHOD',
-);
-foreach ($configurationToDelete as $configName) {
-    Configuration::deleteByName($configName);
+
+if (LengowInstall::$oldVersion && LengowInstall::$oldVersion < '3.0.0') {
+    // Rename old settings
+    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_SELECTION', 'LENGOW_EXPORT_SELECTION_ENABLED', true);
+    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_ALL_VARIATIONS', 'LENGOW_EXPORT_VARIATION_ENABLED', true);
+    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_DISABLED', 'LENGOW_EXPORT_INACTIVE', true);
+    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_FILE', 'LENGOW_EXPORT_FILE_ENABLED');
+    LengowInstall::renameConfigurationKey('LENGOW_CARRIER_DEFAULT', 'LENGOW_EXPORT_CARRIER_DEFAULT');
+    LengowInstall::renameConfigurationKey('LENGOW_DEBUG', 'LENGOW_IMPORT_PREPROD_ENABLED');
+    LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SHIPPED_BY_MP', 'LENGOW_IMPORT_SHIP_MP_ENABLED');
+    LengowInstall::renameConfigurationKey('LENGOW_REPORT_MAIL', 'LENGOW_REPORT_MAIL_ENABLED');
+    LengowInstall::renameConfigurationKey('LENGOW_EMAIL_ADDRESS', 'LENGOW_REPORT_MAIL_ADDRESS');
+    LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SINGLE', 'LENGOW_IMPORT_SINGLE_ENABLED');
+    LengowInstall::renameConfigurationKey('LENGOW_TRACKING', 'LENGOW_TRACKING_ENABLED');
+    // Reset access id for old customer v2
+    LengowConfiguration::resetAccessIds();
 }
-// Save old override folder
-LengowInstall::saveOverride();
-// Delete old folders and files
-LengowInstall::removeFiles(
-    array(
-        'config/',
-        'interface/',
-        'override/',
-        'models/',
-        'translations/es.php',
-        'translations/fr.php',
-        'translations/it.php',
-        'v14/',
-        'controllers/AdminLengowController.php',
-        'controllers/AdminLengowLogController.php',
-        'controllers/TabLengowLogController.php',
-        'controllers/TabLengowLogController.php',
-        'translations/es.php',
-        'translations/fr.php',
-        'translations/it.php',
-        'views/img/process-icon-export-csv.png',
-        'views/img/view-lengow-en.png',
-        'views/img/view-lengow-es.png',
-        'views/img/view-lengow-fr.png',
-        'views/img/view-lengow-it.png',
-        'views/js/admin.js',
-        'views/js/chart.min.js',
-        'views/templates/admin/dashboard/',
-        'views/templates/admin/form.tpl',
-        'webservice/lengow.php',
-        'AdminLengow14.php',
-        'AdminLengowLog14.php',
-    )
-);
-// Delete config files
-LengowInstall::removeConfigFiles();
-// Copy AdminLengowHome.gif for version 1.5
-LengowInstall::createTabImage();

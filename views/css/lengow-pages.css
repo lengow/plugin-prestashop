@@ -263,8 +263,8 @@ body.lgw-home-iframe .lgw-content-section p {
 /*                     ORDERS                    */
 /*************************************************/
 
-#lengow_order_wrapper,
-#lengow_form_order_setting{
+body.page-sidebar #lengow_order_wrapper,
+body.page-sidebar #lengow_form_order_setting{
   padding-top: 160px;
 }
 

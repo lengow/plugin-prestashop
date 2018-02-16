@@ -47,7 +47,7 @@ class LengowShop extends Shop
         if (_PS_VERSION_ < '1.5') {
             return false;
         } else {
-            parent::isFeatureActive();
+            return parent::isFeatureActive();
         }
     }
 
