@@ -57,7 +57,7 @@ class LengowFile
     {
         $this->fileName = $fileName;
         $this->folderName = $folderName;
-        $this->instance = self::getRessource($this->getPath(), $mode);
+        $this->instance = self::getResource($this->getPath(), $mode);
         if (!is_resource($this->instance)) {
             throw new LengowException(
                 LengowMain::setLogMessage(
@@ -113,7 +113,7 @@ class LengowFile
      *
      * @return resource
      */
-    public static function getRessource($path, $mode = 'a+')
+    public static function getResource($path, $mode = 'a+')
     {
         return fopen($path, $mode);
     }

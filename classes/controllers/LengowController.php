@@ -25,7 +25,7 @@
 class LengowController
 {
     /**
-     * @var Module Lengow module instance
+     * @var Lengow Lengow module instance
      */
     protected $module;
 

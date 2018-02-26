@@ -295,14 +295,19 @@ class LengowOrderController extends LengowController
     public function assignNbOrderImported()
     {
         $sql = 'SELECT COUNT(*) as `total` FROM `' . _DB_PREFIX_ . 'lengow_orders`';
-        $nbOrderImported = Db::getInstance()->executeS($sql);
-        $this->context->smarty->assign('nb_order_imported', (int)$nbOrderImported[0]['total']);
+        try {
+            $totalOrders = Db::getInstance()->executeS($sql);
+            $nbOrderImported = (int)$totalOrders[0]['total'];
+        } catch (PrestaShopDatabaseException $e) {
+            $nbOrderImported = 0;
+        }
+        $this->context->smarty->assign('nb_order_imported', $nbOrderImported);
     }
 
     /**
      * Load all order information
      *
-     * @return array
+     * @return LengowList
      */
     public function loadTable()
     {
@@ -529,8 +534,13 @@ class LengowOrderController extends LengowController
     {
         $marketplaces = array();
         $sql = 'SELECT DISTINCT(marketplace_name) as name,
-        IFNULL(marketplace_label, marketplace_name) as marketplace_label FROM `' . _DB_PREFIX_ . 'lengow_orders`';
-        $collection = Db::getInstance()->executeS($sql);
+            IFNULL(marketplace_label, marketplace_name) as marketplace_label
+            FROM `' . _DB_PREFIX_ . 'lengow_orders`';
+        try {
+            $collection = Db::getInstance()->executeS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            $collection = array();
+        }
         foreach ($collection as $row) {
             $marketplaces[] = array('id' => $row['name'], 'text' => $row['marketplace_label']);
         }
@@ -546,7 +556,11 @@ class LengowOrderController extends LengowController
     {
         $shops = array();
         $sql = 'SELECT id_shop, name FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
-        $collection = Db::getInstance()->ExecuteS($sql);
+        try {
+            $collection = Db::getInstance()->ExecuteS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            $collection = array();
+        }
         foreach ($collection as $row) {
             $shops[] = array('id' => $row['id_shop'], 'text' => $row['name']);
         }

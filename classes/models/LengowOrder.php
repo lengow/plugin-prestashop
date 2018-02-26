@@ -283,7 +283,11 @@ class LengowOrder extends Order
             WHERE `marketplace_sku` = \'' . pSQL($marketplaceSku) . '\'
             AND `marketplace_name` IN (' . $in . ')
             AND `order_process_state` != 0';
-        $results = Db::getInstance()->executeS($query);
+        try {
+            $results = Db::getInstance()->executeS($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
         if (count($results) == 0) {
             return false;
         }
@@ -329,7 +333,11 @@ class LengowOrder extends Order
         $query = 'SELECT `marketplace_sku`
             FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `id_order` = \'' . (int)$idOrder . '\'';
-        $result = Db::getInstance()->executeS($query);
+        try {
+            $result = Db::getInstance()->executeS($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
         if (empty($result) || $result[0]['marketplace_sku'] == '') {
             return false;
         } else {
@@ -371,7 +379,11 @@ class LengowOrder extends Order
             WHERE `marketplace_sku` = \'' . pSQL($marketplaceSku) . '\'
             AND `marketplace_name` = \'' . pSQL(Tools::strtolower($marketplace)) . '\'
             AND `order_process_state` != \'0\'';
-        return Db::getInstance()->executeS($query);
+        try {
+            return Db::getInstance()->executeS($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return array();
+        }
     }
 
     /**
@@ -385,7 +397,11 @@ class LengowOrder extends Order
     {
         $query = 'SELECT `id_order_line` FROM `' . _DB_PREFIX_ . 'lengow_order_line`
             WHERE `id_order` = \'' . (int)$idOrder . '\'';
-        return Db::getInstance()->executeS($query);
+        try {
+            return Db::getInstance()->executeS($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return array();
+        }
     }
 
     /**
@@ -399,12 +415,16 @@ class LengowOrder extends Order
     public static function updateOrderLengow($id, $params)
     {
         if (_PS_VERSION_ < '1.5') {
-            return Db::getInstance()->autoExecute(
-                _DB_PREFIX_ . 'lengow_orders',
-                $params,
-                'UPDATE',
-                '`id` = \'' . (int)$id . '\''
-            );
+            try {
+                return Db::getInstance()->autoExecute(
+                    _DB_PREFIX_ . 'lengow_orders',
+                    $params,
+                    'UPDATE',
+                    '`id` = \'' . (int)$id . '\''
+                );
+            } catch (PrestaShopDatabaseException $e) {
+                return false;
+            }
         } else {
             return Db::getInstance()->update(
                 'lengow_orders',
@@ -560,7 +580,11 @@ class LengowOrder extends Order
             . ' AND oh.`id_order_state` IN ('
             . LengowMain::getOrderState('shipped') . ',' . LengowMain::getOrderState('canceled')
             . ') AND oh.`date_add` >= "' . $date . '"';
-        $results = Db::getInstance()->executeS($sql);
+        try {
+            $results = Db::getInstance()->executeS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            $results = false;
+        }
         if ($results) {
             $unsentOrders = array();
             foreach ($results as $result) {
@@ -613,15 +637,19 @@ class LengowOrder extends Order
             if ($this->lengowIdFlux != null) {
                 $this->checkAndChangeMarketplaceName($connector);
             }
-            $result = $connector->patch(
-                '/v3.0/orders/moi/',
-                array(
-                    'account_id' => $accountId,
-                    'marketplace_order_id' => $this->lengowMarketplaceSku,
-                    'marketplace' => $this->lengowMarketplaceName,
-                    'merchant_order_id' => $prestaIds
-                )
-            );
+            try {
+                $result = $connector->patch(
+                    '/v3.0/orders/moi/',
+                    array(
+                        'account_id' => $accountId,
+                        'marketplace_order_id' => $this->lengowMarketplaceSku,
+                        'marketplace' => $this->lengowMarketplaceName,
+                        'merchant_order_id' => $prestaIds
+                    )
+                );
+            } catch (Exception $e) {
+                return false;
+            }
             if (is_null($result)
                 || (isset($result['detail']) && $result['detail'] == 'Pas trouvé.')
                 || isset($result['error'])
@@ -652,15 +680,19 @@ class LengowOrder extends Order
                 return false;
             }
         }
-        $results = $connector->get(
-            '/v3.0/orders',
-            array(
-                'marketplace_order_id' => $this->lengowMarketplaceSku,
-                'marketplace' => $this->lengowMarketplaceName,
-                'account_id' => $accountId
-            ),
-            'stream'
-        );
+        try {
+            $results = $connector->get(
+                '/v3.0/orders',
+                array(
+                    'marketplace_order_id' => $this->lengowMarketplaceSku,
+                    'marketplace' => $this->lengowMarketplaceName,
+                    'account_id' => $accountId
+                ),
+                'stream'
+            );
+        } catch (Exception $e) {
+            return false;
+        }
         if (is_null($results)) {
             return false;
         }
@@ -775,7 +807,12 @@ class LengowOrder extends Order
         // check if log already exists for the given order id
         $query = 'SELECT `id`, `is_finished`, `message`, `date`, `type` FROM `' . _DB_PREFIX_ . 'lengow_logs_import`
             WHERE `id_order_lengow` = \'' . (int)$idOrderLengow . '\'' . $andType . $andFinished;
-        return Db::getInstance()->executeS($query);
+        try {
+            return Db::getInstance()->executeS($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return array();
+        }
+
     }
 
     /**
@@ -791,29 +828,33 @@ class LengowOrder extends Order
     public static function addOrderLog($idOrderLengow, $message = '', $type = 'import', $finished = 0)
     {
         $logType = self::getOrderLogType($type);
-        if (_PS_VERSION_ < '1.5') {
-            return Db::getInstance()->autoExecute(
-                _DB_PREFIX_ . 'lengow_logs_import',
-                array(
-                    'is_finished' => (int)$finished,
-                    'date' => date('Y-m-d H:i:s'),
-                    'message' => pSQL($message),
-                    'type' => (int)$logType,
-                    'id_order_lengow' => (int)$idOrderLengow
-                ),
-                'INSERT'
-            );
-        } else {
-            return Db::getInstance()->insert(
-                'lengow_logs_import',
-                array(
-                    'is_finished' => (int)$finished,
-                    'date' => date('Y-m-d H:i:s'),
-                    'message' => pSQL($message),
-                    'type' => (int)$logType,
-                    'id_order_lengow' => (int)$idOrderLengow
-                )
-            );
+        try {
+            if (_PS_VERSION_ < '1.5') {
+                return Db::getInstance()->autoExecute(
+                    _DB_PREFIX_ . 'lengow_logs_import',
+                    array(
+                        'is_finished' => (int)$finished,
+                        'date' => date('Y-m-d H:i:s'),
+                        'message' => pSQL($message),
+                        'type' => (int)$logType,
+                        'id_order_lengow' => (int)$idOrderLengow
+                    ),
+                    'INSERT'
+                );
+            } else {
+                return Db::getInstance()->insert(
+                    'lengow_logs_import',
+                    array(
+                        'is_finished' => (int)$finished,
+                        'date' => date('Y-m-d H:i:s'),
+                        'message' => pSQL($message),
+                        'type' => (int)$logType,
+                        'id_order_lengow' => (int)$idOrderLengow
+                    )
+                );
+            }
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
         }
     }
 
@@ -831,16 +872,24 @@ class LengowOrder extends Order
         $query = 'SELECT `id` FROM `' . _DB_PREFIX_ . 'lengow_logs_import`
             WHERE `id_order_lengow` = \'' . (int)$idOrderLengow . '\'
             AND `type` = \'' . (int)$logType . '\'';
-        $orderLogs = Db::getInstance()->executeS($query);
+        try {
+            $orderLogs = Db::getInstance()->executeS($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
         $updateSuccess = 0;
         foreach ($orderLogs as $orderLog) {
             if (_PS_VERSION_ < '1.5') {
-                $result = Db::getInstance()->autoExecute(
-                    _DB_PREFIX_ . 'lengow_logs_import',
-                    array('is_finished' => 1),
-                    'UPDATE',
-                    '`id` = \'' . (int)$orderLog['id'] . '\''
-                );
+                try {
+                    $result = Db::getInstance()->autoExecute(
+                        _DB_PREFIX_ . 'lengow_logs_import',
+                        array('is_finished' => 1),
+                        'UPDATE',
+                        '`id` = \'' . (int)$orderLog['id'] . '\''
+                    );
+                } catch (PrestaShopDatabaseException $e) {
+                    $result = false;
+                }
             } else {
                 $result = Db::getInstance()->update(
                     'lengow_logs_import',
@@ -892,7 +941,11 @@ class LengowOrder extends Order
     public static function findOrderLineIds($idOrder)
     {
         $sql = 'SELECT id_order_line FROM `' . _DB_PREFIX_ . 'lengow_order_line` WHERE id_order = ' . (int)$idOrder;
-        return Db::getInstance()->ExecuteS($sql);
+        try {
+            return Db::getInstance()->executeS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            return array();
+        }
     }
 
     /**
@@ -905,8 +958,12 @@ class LengowOrder extends Order
     public static function isOrderImport($idOrderLengow)
     {
         $sql = 'SELECT id_order FROM `' . _DB_PREFIX_ . 'lengow_orders` WHERE id = ' . (int)$idOrderLengow;
-        $result = Db::getInstance()->ExecuteS($sql);
-        return (bool)count($result);
+        try {
+            $result = Db::getInstance()->ExecuteS($sql);
+            return (bool)count($result);
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
     }
 
     /**

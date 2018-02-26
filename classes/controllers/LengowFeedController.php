@@ -88,7 +88,11 @@ class LengowFeedController extends LengowController
                     if ($selectAll == "true") {
                         $this->buildTable($idShop);
                         $sql = $this->list->buildQuery(false, true);
-                        $db = Db::getInstance()->executeS($sql);
+                        try {
+                            $db = Db::getInstance()->executeS($sql);
+                        } catch (PrestaShopDatabaseException $e) {
+                            $db = array();
+                        }
                         $all = array();
                         foreach ($db as $value) {
                             $all[] = $value['id_product'];
@@ -138,8 +142,12 @@ class LengowFeedController extends LengowController
             if ($currentShop = Shop::getContextShopID()) {
                 $results = array(array('id_shop' => $currentShop));
             } else {
-                $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
-                $results = Db::getInstance()->ExecuteS($sql);
+                try {
+                    $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
+                    $results = Db::getInstance()->ExecuteS($sql);
+                } catch (PrestaShopDatabaseException $e) {
+                    $results = array();
+                }
             }
         }
         foreach ($results as $row) {
@@ -351,7 +359,7 @@ class LengowFeedController extends LengowController
         $tempContext->employee = $this->context->employee;
         $tempContext->country = $this->context->country;
 
-        //calcul price
+        // Price calculation
         $nb = count($collection);
         if ($collection) {
             for ($i = 0; $i < $nb; $i++) {

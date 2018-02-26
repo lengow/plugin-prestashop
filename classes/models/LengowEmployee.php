@@ -35,11 +35,15 @@ class LengowEmployee extends Employee
     {
         // This line is useless, but Prestashop validator require it
         $activeOnly = $activeOnly;
-        return Db::getInstance()->ExecuteS(
-            'SELECT `id_employee`, CONCAT(`firstname`, \' \', `lastname`) name
-            FROM `' . _DB_PREFIX_ . 'employee`
-            WHERE `active` = 1
-            ORDER BY `email`'
-        );
+        try {
+            return Db::getInstance()->ExecuteS(
+                'SELECT `id_employee`, CONCAT(`firstname`, \' \', `lastname`) name
+                FROM `' . _DB_PREFIX_ . 'employee`
+                WHERE `active` = 1
+                ORDER BY `email`'
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            return array();
+        }
     }
 }

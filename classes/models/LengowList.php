@@ -136,6 +136,8 @@ class LengowList
 
     /**
      * Construct
+     *
+     * @param array $params list of parameters
      */
     public function __construct($params)
     {
@@ -393,10 +395,18 @@ class LengowList
     {
         $sql = $this->buildQuery();
         $sqlTotal = $this->buildQuery(true);
-        $this->collection = Db::getInstance()->executeS($sql, true, false);
+        try {
+            $this->collection = Db::getInstance()->executeS($sql, true, false);
+        } catch (PrestaShopDatabaseException $e) {
+            $this->collection = array();
+        }
         if (isset($this->sql['select_having']) && $this->sql['select_having']) {
-            Db::getInstance()->executeS($sqlTotal);
-            $this->total = Db::getInstance()->NumRows();
+            try {
+                Db::getInstance()->executeS($sqlTotal);
+                $this->total = Db::getInstance()->NumRows();
+            } catch (PrestaShopDatabaseException $e) {
+                $this->total = 0;
+            }
         } else {
             $this->total = Db::getInstance()->getValue($sqlTotal, false);
         }
@@ -431,7 +441,11 @@ class LengowList
         $tmp = $this->sql["where"];
         $this->sql["where"][] = $where;
         $sql = $this->buildQuery();
-        $collection = Db::getInstance()->executeS($sql, true, false);
+        try {
+            $collection = Db::getInstance()->executeS($sql, true, false);
+        } catch (PrestaShopDatabaseException $e) {
+            $collection = array();
+        }
         $this->sql["where"] = $tmp;
         return $collection[0];
     }

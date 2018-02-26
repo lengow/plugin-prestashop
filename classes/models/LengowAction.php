@@ -145,11 +145,15 @@ class LengowAction
      */
     public static function getActiveActionByOrderId($idOrder, $actionType = null, $load = true)
     {
-        $sqlType = is_null($actionType) ? '' : ' AND  action_type = "' . pSQL($actionType) . '"';
-        $rows = Db::getInstance()->executeS(
-            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la
-            WHERE state = ' . self::STATE_NEW . $sqlType . ' AND id_order=' . (int)$idOrder
-        );
+        try {
+            $sqlType = is_null($actionType) ? '' : ' AND  action_type = "' . pSQL($actionType) . '"';
+            $rows = Db::getInstance()->executeS(
+                'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la
+                WHERE state = ' . self::STATE_NEW . $sqlType . ' AND id_order=' . (int)$idOrder
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
         if (count($rows) > 0) {
             if ($load) {
                 $actions = array();
@@ -174,9 +178,13 @@ class LengowAction
      */
     public static function getActiveActions($load = true)
     {
-        $rows = Db::getInstance()->executeS(
-            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions WHERE state = ' . (int)self::STATE_NEW
-        );
+        try {
+            $rows = Db::getInstance()->executeS(
+                'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions WHERE state = ' . (int)self::STATE_NEW
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
         if (count($rows) > 0) {
             if ($load) {
                 $actions = array();
@@ -201,10 +209,14 @@ class LengowAction
      */
     public static function getLastOrderActionType($idOrder)
     {
-        $rows = Db::getInstance()->executeS(
-            'SELECT action_type FROM ' . _DB_PREFIX_ . 'lengow_actions
-            WHERE state = ' . self::STATE_NEW . ' AND id_order=' . (int)$idOrder
-        );
+        try {
+            $rows = Db::getInstance()->executeS(
+                'SELECT action_type FROM ' . _DB_PREFIX_ . 'lengow_actions
+                WHERE state = ' . self::STATE_NEW . ' AND id_order=' . (int)$idOrder
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
         if (count($rows) > 0) {
             $lastAction = end($rows);
             return (string)$lastAction['action_type'];
@@ -233,6 +245,8 @@ class LengowAction
      * Create action
      *
      * @param array $params action params
+     *
+     * @return boolean
      */
     public static function createAction($params)
     {
@@ -247,17 +261,22 @@ class LengowAction
         if (isset($params['parameters']['line'])) {
             $insertParams['order_line_sku'] = $params['parameters']['line'];
         }
-        if (_PS_VERSION_ < '1.5') {
-            Db::getInstance()->autoExecute(_DB_PREFIX_ . 'lengow_actions', $insertParams, 'INSERT');
-        } else {
-            Db::getInstance()->insert('lengow_actions', $insertParams);
+        try {
+            if (_PS_VERSION_ < '1.5') {
+                Db::getInstance()->autoExecute(_DB_PREFIX_ . 'lengow_actions', $insertParams, 'INSERT');
+            } else {
+                Db::getInstance()->insert('lengow_actions', $insertParams);
+            }
+            LengowMain::log(
+                'API-OrderAction',
+                LengowMain::setLogMessage('log.order_action.action_saved'),
+                false,
+                $params['marketplace_sku']
+            );
+            return true;
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
         }
-        LengowMain::log(
-            'API-OrderAction',
-            LengowMain::setLogMessage('log.order_action.action_saved'),
-            false,
-            $params['marketplace_sku']
-        );
     }
 
     /**
@@ -273,18 +292,21 @@ class LengowAction
         if ($action->findByActionId($params['action_id'])) {
             if ($action->state == self::STATE_NEW) {
                 if (_PS_VERSION_ < '1.5') {
-                    Db::getInstance()->autoExecute(
-                        _DB_PREFIX_ . 'lengow_actions',
-                        array(
-                            'retry' => $action->retry + 1,
-                            'updated_at' => date('Y-m-d h:m:i'),
-                        ),
-                        'UPDATE',
-                        'id = ' . $action->id
-                    );
-                    return true;
+                    try {
+                        return Db::getInstance()->autoExecute(
+                            _DB_PREFIX_ . 'lengow_actions',
+                            array(
+                                'retry' => $action->retry + 1,
+                                'updated_at' => date('Y-m-d h:m:i'),
+                            ),
+                            'UPDATE',
+                            'id = ' . $action->id
+                        );
+                    } catch (PrestaShopDatabaseException $e) {
+                        return false;
+                    }
                 } else {
-                    Db::getInstance()->update(
+                    return Db::getInstance()->update(
                         'lengow_actions',
                         array(
                             'retry' => $action->retry + 1,
@@ -292,7 +314,6 @@ class LengowAction
                         ),
                         'id = ' . $action->id
                     );
-                    return true;
                 }
             }
         }
@@ -303,21 +324,27 @@ class LengowAction
      * Finish action
      *
      * @param integer $id Lengow action id
+     *
+     * @return boolean
      */
     public static function finishAction($id)
     {
         if (_PS_VERSION_ < '1.5') {
-            Db::getInstance()->autoExecute(
-                _DB_PREFIX_ . 'lengow_actions',
-                array(
-                    'state' => (int)self::STATE_FINISH,
-                    'updated_at' => date('Y-m-d h:m:i'),
-                ),
-                'UPDATE',
-                'id = ' . (int)$id
-            );
+            try {
+                return Db::getInstance()->autoExecute(
+                    _DB_PREFIX_ . 'lengow_actions',
+                    array(
+                        'state' => (int)self::STATE_FINISH,
+                        'updated_at' => date('Y-m-d h:m:i'),
+                    ),
+                    'UPDATE',
+                    'id = ' . (int)$id
+                );
+            } catch (PrestaShopDatabaseException $e) {
+                return false;
+            }
         } else {
-            Db::getInstance()->update(
+            return Db::getInstance()->update(
                 'lengow_actions',
                 array(
                     'state' => (int)self::STATE_FINISH,
@@ -338,11 +365,15 @@ class LengowAction
      */
     public static function finishAllActions($idOrder, $actionType = null)
     {
-        $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
-        $rows = Db::getInstance()->executeS(
-            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
-            WHERE id_order =' . (int)$idOrder . ' AND state = ' . (int)self::STATE_NEW . $sqlActionType
-        );
+        try {
+            $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
+            $rows = Db::getInstance()->executeS(
+                'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
+                WHERE id_order =' . (int)$idOrder . ' AND state = ' . (int)self::STATE_NEW . $sqlActionType
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
         if (count($rows) > 0) {
             foreach ($rows as $row) {
                 self::finishAction($row['id']);
@@ -459,10 +490,14 @@ class LengowAction
         // get all old order action (+ 3 days)
         $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
         $date = date('Y-m-d h:m:i', strtotime('-3 days', time()));
-        $rows = Db::getInstance()->executeS(
-            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
-            WHERE created_at <= "' . $date . '" AND state = ' . (int)self::STATE_NEW . $sqlActionType
-        );
+        try {
+            $rows = Db::getInstance()->executeS(
+                'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
+                WHERE created_at <= "' . $date . '" AND state = ' . (int)self::STATE_NEW . $sqlActionType
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
         if (count($rows) > 0) {
             foreach ($rows as $row) {
                 // Finish action in lengow_action table

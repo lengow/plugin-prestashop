@@ -149,8 +149,6 @@ class LengowMain
      * Record the date of the last import
      *
      * @param string $type last import type (cron or manual)
-     *
-     * @return boolean
      */
     public static function updateDateImport($type)
     {
@@ -297,7 +295,7 @@ class LengowMain
      *
      * @param integer $idShop Prestashop shop id
      *
-     * @return array
+     * @return string
      */
     public static function getToken($idShop = null)
     {
@@ -687,20 +685,24 @@ class LengowMain
      *
      * @param boolean $logOutput see log or not
      *
-     * @return mixed
+     * @return boolean
      */
     public static function sendMailAlert($logOutput = false)
     {
         $cookie = Context::getContext()->cookie;
         $subject = 'Lengow imports logs';
         $mailBody = '';
-        $sqlLogs = 'SELECT lo.`marketplace_sku`, lli.`message`, lli.`id`
+        try {
+            $sqlLogs = 'SELECT lo.`marketplace_sku`, lli.`message`, lli.`id`
             FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
             INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo 
             ON lli.`id_order_lengow` = lo.`id`
             WHERE lli.`is_finished` = 0 AND lli.`mail` = 0
         ';
-        $logs = Db::getInstance()->ExecuteS($sqlLogs);
+            $logs = Db::getInstance()->ExecuteS($sqlLogs);
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
         if (empty($logs)) {
             return true;
         }
@@ -722,6 +724,7 @@ class LengowMain
             '{mail_title}' => 'Lengow imports logs',
             '{mail_body}' => $mailBody,
         );
+        $success = true;
         $emails = LengowConfiguration::getReportEmailAddress();
         foreach ($emails as $to) {
             if (!Mail::send(
@@ -744,38 +747,47 @@ class LengowMain
                     self::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
                     $logOutput
                 );
+                $success = false;
             } else {
                 self::log(
                     'MailReport',
                     self::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
                     $logOutput
                 );
+                $success = true;
             }
         }
+        return $success;
     }
 
     /**
      * Mark log as sent by email
      *
      * @param integer $idOrderLog Lengow order log id
+     *
+     * @return boolean
      */
     public static function logSent($idOrderLog)
     {
-        if (_PS_VERSION_ < '1.5') {
-            Db::getInstance()->autoExecute(
-                _DB_PREFIX_ . 'lengow_logs_import',
-                array('mail' => 1),
-                'UPDATE',
-                '`id` = \'' . (int)$idOrderLog . '\'',
-                1
-            );
-        } else {
-            Db::getInstance()->update(
-                'lengow_logs_import',
-                array('mail' => 1),
-                '`id` = \'' . (int)$idOrderLog . '\'',
-                1
-            );
+        try {
+            if (_PS_VERSION_ < '1.5') {
+                return Db::getInstance()->autoExecute(
+                    _DB_PREFIX_ . 'lengow_logs_import',
+                    array('mail' => 1),
+                    'UPDATE',
+                    '`id` = \'' . (int)$idOrderLog . '\'',
+                    1
+                );
+            } else {
+                return Db::getInstance()->update(
+                    'lengow_logs_import',
+                    array('mail' => 1),
+                    '`id` = \'' . (int)$idOrderLog . '\'',
+                    1
+                );
+            }
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
         }
     }
 
@@ -969,10 +981,14 @@ class LengowMain
                 }
             }
         } else {
-            $states = Db::getInstance()->ExecuteS(
-                'SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang
-                WHERE name = \'Technical error - Lengow\' OR name = \'Erreur technique - Lengow\' LIMIT 1'
-            );
+            try {
+                $states = Db::getInstance()->ExecuteS(
+                    'SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang
+                    WHERE name = \'Technical error - Lengow\' OR name = \'Erreur technique - Lengow\' LIMIT 1'
+                );
+            } catch (PrestaShopDatabaseException $e) {
+                return false;
+            }
             if (!empty($states)) {
                 return $states[0]['id_order_state'];
             }

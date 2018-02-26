@@ -272,9 +272,6 @@ class LengowMarketplace
      * @param LengowOrder $order Lengow order instance
      * @param string $idOrderLine Lengow order line id
      *
-     * @throws LengowException marketplace action not present / shop id required / marketplace name required
-     *                         argument is required / action not created
-     *
      * @return boolean
      */
     public function callAction($action, $order, $idOrderLine = null)
@@ -548,11 +545,15 @@ class LengowMarketplace
     public static function getMarketplaceCounters()
     {
         $marketplaceCounters = array();
-        $results = Db::getInstance()->executeS(
-            'SELECT ldc.id_country, COUNT(lm.id) as count FROM ' . _DB_PREFIX_ . 'lengow_default_carrier as ldc
-            INNER JOIN ' . _DB_PREFIX_ . 'lengow_marketplace as lm ON lm.id = ldc.id_marketplace
-            GROUP By ldc.id_country'
-        );
+        try {
+            $results = Db::getInstance()->executeS(
+                'SELECT ldc.id_country, COUNT(lm.id) as count FROM ' . _DB_PREFIX_ . 'lengow_default_carrier as ldc
+                INNER JOIN ' . _DB_PREFIX_ . 'lengow_marketplace as lm ON lm.id = ldc.id_marketplace
+                GROUP By ldc.id_country'
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            $results = false;
+        }
         if (is_array($results)) {
             foreach ($results as $result) {
                 $marketplaceCounters[(int)$result['id_country']] = (int)$result['count'];
@@ -580,7 +581,11 @@ class LengowMarketplace
                 FROM ' . _DB_PREFIX_ . 'lengow_marketplace as lm
                 ORDER BY marketplace_name';
         }
-        $results = Db::getInstance()->ExecuteS($sql);
+        try {
+            $results = Db::getInstance()->ExecuteS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            $results = false;
+        }
         return is_array($results) ? $results : array();
     }
 
@@ -628,10 +633,14 @@ class LengowMarketplace
      */
     public static function getIdMarketplace($marketplaceName)
     {
-        $result = Db::getInstance()->ExecuteS(
-            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace
-            WHERE marketplace_name = "' . pSQL($marketplaceName) . '"'
-        );
+        try {
+            $result = Db::getInstance()->ExecuteS(
+                'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace
+                WHERE marketplace_name = "' . pSQL($marketplaceName) . '"'
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            $result = array();
+        }
         return count($result) > 0 ? (int)$result[0]['id'] : false;
     }
 
@@ -647,25 +656,29 @@ class LengowMarketplace
     public static function insertMarketplace($marketplaceName, $marketplaceLabel, $carrierRequired)
     {
         $db = Db::getInstance();
-        if (_PS_VERSION_ < '1.5') {
-            $success = $db->autoExecute(
-                _DB_PREFIX_ . 'lengow_marketplace',
-                array(
-                    'marketplace_name' => pSQL($marketplaceName),
-                    'marketplace_label' => pSQL($marketplaceLabel),
-                    'carrier_required' => $carrierRequired
-                ),
-                'INSERT'
-            );
-        } else {
-            $success = $db->insert(
-                'lengow_marketplace',
-                array(
-                    'marketplace_name' => pSQL($marketplaceName),
-                    'marketplace_label' => pSQL($marketplaceLabel),
-                    'carrier_required' => $carrierRequired
-                )
-            );
+        try {
+            if (_PS_VERSION_ < '1.5') {
+                $success = $db->autoExecute(
+                    _DB_PREFIX_ . 'lengow_marketplace',
+                    array(
+                        'marketplace_name' => pSQL($marketplaceName),
+                        'marketplace_label' => pSQL($marketplaceLabel),
+                        'carrier_required' => $carrierRequired
+                    ),
+                    'INSERT'
+                );
+            } else {
+                $success = $db->insert(
+                    'lengow_marketplace',
+                    array(
+                        'marketplace_name' => pSQL($marketplaceName),
+                        'marketplace_label' => pSQL($marketplaceLabel),
+                        'carrier_required' => $carrierRequired
+                    )
+                );
+            }
+        } catch (PrestaShopDatabaseException $e) {
+            $success = false;
         }
         return $success ? self::getIdMarketplace($marketplaceName) : false;
     }
