@@ -256,7 +256,8 @@ class LengowAction
             'action_id' => (int)$params['action_id'],
             'action_type' => pSQL($params['action_type']),
             'state' => (int)self::STATE_NEW,
-            'created_at' => date('Y-m-d h:m:i')
+            'state' => (int)self::STATE_NEW,
+            'created_at' => date('Y-m-d H:i:s')
         );
         if (isset($params['parameters']['line'])) {
             $insertParams['order_line_sku'] = $params['parameters']['line'];
@@ -297,7 +298,7 @@ class LengowAction
                             _DB_PREFIX_ . 'lengow_actions',
                             array(
                                 'retry' => $action->retry + 1,
-                                'updated_at' => date('Y-m-d h:m:i'),
+                                'updated_at' => date('Y-m-d H:i:s'),
                             ),
                             'UPDATE',
                             'id = ' . $action->id
@@ -310,7 +311,7 @@ class LengowAction
                         'lengow_actions',
                         array(
                             'retry' => $action->retry + 1,
-                            'updated_at' => date('Y-m-d h:m:i'),
+                            'updated_at' => date('Y-m-d H:i:s'),
                         ),
                         'id = ' . $action->id
                     );
@@ -335,7 +336,7 @@ class LengowAction
                     _DB_PREFIX_ . 'lengow_actions',
                     array(
                         'state' => (int)self::STATE_FINISH,
-                        'updated_at' => date('Y-m-d h:m:i'),
+                        'updated_at' => date('Y-m-d H:i:s'),
                     ),
                     'UPDATE',
                     'id = ' . (int)$id
@@ -348,7 +349,7 @@ class LengowAction
                 'lengow_actions',
                 array(
                     'state' => (int)self::STATE_FINISH,
-                    'updated_at' => date('Y-m-d h:m:i'),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ),
                 'id = ' . (int)$id
             );
@@ -489,7 +490,7 @@ class LengowAction
         LengowMain::log('API-OrderAction', LengowMain::setLogMessage('log.order_action.check_old_action'));
         // get all old order action (+ 3 days)
         $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
-        $date = date('Y-m-d h:m:i', strtotime('-3 days', time()));
+        $date = date('Y-m-d H:i:s', strtotime('-3 days', time()));
         try {
             $rows = Db::getInstance()->executeS(
                 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions

@@ -345,6 +345,7 @@ class LengowOrderController extends LengowController
                 array('id' => 'accepted', 'text' => $this->locale->t('order.screen.status_accepted')),
                 array('id' => 'waiting_shipment', 'text' => $this->locale->t('order.screen.status_waiting_shipment')),
                 array('id' => 'shipped', 'text' => $this->locale->t('order.screen.status_shipped')),
+                array('id' => 'refunded', 'text' => $this->locale->t('order.screen.status_refunded')),
                 array('id' => 'closed', 'text' => $this->locale->t('order.screen.status_closed')),
                 array('id' => 'canceled', 'text' => $this->locale->t('order.screen.status_canceled')),
             ),
@@ -648,17 +649,17 @@ class LengowOrderController extends LengowController
     public static function displayLogStatus($key, $value, $item)
     {
         if ($item[$key] && $item['order_process_state'] != LengowOrder::PROCESS_STATE_FINISH) {
-            $errorMessage = array();
+            $errorMessages = array();
             $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
             if (count($logCollection) > 0) {
                 foreach ($logCollection as $row) {
-                    $errorMessage[] = LengowMain::decodeLogMessage(LengowMain::cleanData($row['message']));
+                    $errorMessages[] = LengowMain::cleanData(LengowMain::decodeLogMessage($row['message']));
                 }
             }
             $link = new LengowLink();
             if ($item[$key] == '2') {
                 $message = LengowMain::decodeLogMessage('order.screen.action_sent_not_work')
-                    . '<br/>' . join('<br/>', $errorMessage);
+                    . '<br/>' . join('<br/>', $errorMessages);
                 $value = '<a href="#"
                     class="lengow_re_send lengow_link_tooltip lgw-btn lgw-btn-white"
                     data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder', true) . '"
@@ -670,7 +671,7 @@ class LengowOrderController extends LengowController
                     >' . LengowMain::decodeLogMessage('order.screen.not_sent') . ' <i class="fa fa-refresh"></i></a>';
             } else {
                 $message = LengowMain::decodeLogMessage('order.screen.order_not_imported')
-                    . '<br/>' . join('<br/>', $errorMessage);
+                    . '<br/>' . join('<br/>', $errorMessages);
                 $value = '<a href="#"
                     class="lengow_re_import lengow_link_tooltip lgw-btn lgw-btn-white"
                     data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder', true) . '"

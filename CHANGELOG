@@ -2,7 +2,8 @@
 Version 3.0.2
 =============================================================
 
-
+    - Bugfix: Optimizing the display of errors in the order screen
+    - Bugfix: [action] Correction of the dates of creation and update of the actions
 
 =============================================================
 Version 3.0.1
