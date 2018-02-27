@@ -653,7 +653,11 @@ class LengowOrderController extends LengowController
             $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
             if (count($logCollection) > 0) {
                 foreach ($logCollection as $row) {
-                    $errorMessages[] = LengowMain::cleanData(LengowMain::decodeLogMessage($row['message']));
+                    if ($row['message'] != '') {
+                        $errorMessages[] = LengowMain::cleanData(LengowMain::decodeLogMessage($row['message']));
+                    } else {
+                        $errorMessages[] = LengowMain::decodeLogMessage('order.screen.no_error_message');
+                    }
                 }
             }
             $link = new LengowLink();

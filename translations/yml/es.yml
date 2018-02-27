@@ -111,6 +111,7 @@ es:
       action_sent: "Acción %{action_type} enviada"
       action_waiting_return: "Acción enviada, esperando por una respuesta"
       action_sent_not_work: "Acción enviada con error al marketplace"
+      no_error_message: "Error no identificado. Para más información, le rogamos que contacte con el soporte técnico de Lengow"
       no_order_title: "¡Lo mejor está aún por venir!"
       no_order_description: "Tus productos tienen gran visibilidad y tus ventas están a punto de incrementarse"
       action_success: "Éxito"

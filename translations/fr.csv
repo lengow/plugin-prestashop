@@ -97,6 +97,7 @@ order.screen.order_not_imported|Votre commande n'a pas été importée dans Pres
 order.screen.action_sent|Action %{action_type} envoyée
 order.screen.action_waiting_return|Action envoyée, en attente d'une réponse.
 order.screen.action_sent_not_work|Erreur sur l'action envoyée à la place de marché.
+order.screen.no_error_message|Erreur non identifiée, merci de contacter le support Lengow pour plus d'informations
 order.screen.no_order_title|Le meilleur est encore à venir ! 
 order.screen.no_order_description|Vos produits sont bien visibles, vos ventes sont sur le point de décoller
 order.screen.action_success|Succès

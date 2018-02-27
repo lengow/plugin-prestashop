@@ -111,6 +111,7 @@ it:
       action_sent: "action %{action_type} spedito"
       action_waiting_return: "Azione inviata in attesa di risposta"
       action_sent_not_work: "Azione di invio alla marketplace fallita"
+      no_error_message: "Errore non identificato, contattare il supporto Lengow per maggiori informazioni"
       no_order_title: "Il bello deve ancora venire!"
       no_order_description: "I tuoi prodotti hanno una grande visibilità e le tue vendite stanno per esplodere!"
       action_success: "Riuscito"

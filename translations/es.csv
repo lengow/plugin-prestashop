@@ -97,6 +97,7 @@ order.screen.order_not_imported|El pedido no se ha importado en PrestaShop
 order.screen.action_sent|Acción %{action_type} enviada
 order.screen.action_waiting_return|Acción enviada, esperando por una respuesta
 order.screen.action_sent_not_work|Acción enviada con error al marketplace
+order.screen.no_error_message|Error no identificado. Para más información, le rogamos que contacte con el soporte técnico de Lengow
 order.screen.no_order_title|¡Lo mejor está aún por venir!
 order.screen.no_order_description|Tus productos tienen gran visibilidad y tus ventas están a punto de incrementarse
 order.screen.action_success|Éxito

@@ -97,6 +97,7 @@ order.screen.order_not_imported|Gli ordini non sono stati importati in PrestaSho
 order.screen.action_sent|action %{action_type} spedito
 order.screen.action_waiting_return|Azione inviata in attesa di risposta
 order.screen.action_sent_not_work|Azione di invio alla marketplace fallita
+order.screen.no_error_message|Errore non identificato, contattare il supporto Lengow per maggiori informazioni
 order.screen.no_order_title|Il bello deve ancora venire!
 order.screen.no_order_description|I tuoi prodotti hanno una grande visibilità e le tue vendite stanno per esplodere!
 order.screen.action_success|Riuscito
