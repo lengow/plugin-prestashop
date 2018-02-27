@@ -175,7 +175,6 @@ class LengowConfigurationForm
             } catch (PrestaShopDatabaseException $e) {
                 $shopCollection = array(array('id_shop' => 1));
             }
-
         }
         foreach ($_REQUEST as $key => $value) {
             if (isset($this->fields[$key])) {

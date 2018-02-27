@@ -55,7 +55,6 @@ class LengowTaxRule extends TaxRule
             } catch (PrestaShopDatabaseException $e) {
                 return array();
             }
-
         }
         return TaxRule::getTaxRulesByGroupId($idLang, $idGroup);
     }

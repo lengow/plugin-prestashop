@@ -812,7 +812,6 @@ class LengowOrder extends Order
         } catch (PrestaShopDatabaseException $e) {
             return array();
         }
-
     }
 
     /**

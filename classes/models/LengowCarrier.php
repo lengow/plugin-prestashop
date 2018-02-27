@@ -353,7 +353,9 @@ class LengowCarrier extends Carrier
             try {
                 if (_PS_VERSION_ < '1.5') {
                     $success = $db->autoExecute(
-                        _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace', $params, 'INSERT'
+                        _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace',
+                        $params,
+                        'INSERT'
                     );
                 } else {
                     $success = $db->insert('lengow_marketplace_carrier_marketplace', $params);
