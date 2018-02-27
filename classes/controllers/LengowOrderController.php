@@ -585,7 +585,7 @@ class LengowOrderController extends LengowController
         if (empty($value)) {
             $value = 'not_synchronized';
         }
-        return '<span class="lgw-label lgw-label_' . $value . '">'
+        return '<span class="lgw-label lgw-label-' . $value . '">'
         . LengowMain::decodeLogMessage('order.screen.status_' . $value) . '</span>';
     }
 

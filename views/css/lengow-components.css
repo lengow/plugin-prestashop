@@ -262,12 +262,13 @@ margin-bottom: 15px;
   white-space: nowrap;
 }
 
-.lgw-label_red {
+.lgw-label.red,
+.lgw-label-refunded {
   color: white;
   background: #e55a4d;
 }
 
-.lgw-label_canceled {
+.lgw-label-canceled {
   background: transparent;
   border: 1px solid #e6594d;
   color: #e6594d;
@@ -280,15 +281,15 @@ margin-bottom: 15px;
 }
 
 .lgw-label.green,
-.lgw-label_shipped,
-.lgw-label_closed {
+.lgw-label-shipped,
+.lgw-label-closed {
   color: white;
   background: #7bc27a;
 }
 
 .lgw-label.blue,
-.lgw-label_accepted,
-.lgw-label_waiting_shipment {
+.lgw-label-accepted,
+.lgw-label-waiting_shipment {
   color: white;
   background: #00b0f0;
 }
