@@ -330,7 +330,7 @@ class LengowFeedController extends LengowController
         $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
         $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
         $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
-
+        $nbPerPage = isset($_REQUEST['nb_per_page']) ? $_REQUEST['nb_per_page'] : '';
         $this->list = new LengowList(
             array(
                 'id' => 'shop_' . $idShop,
@@ -343,6 +343,7 @@ class LengowFeedController extends LengowController
                 'ajax' => true,
                 'order_value' => $orderValue,
                 'order_column' => $orderColumn,
+                'nb_per_page' => $nbPerPage,
                 'sql' => array(
                     'select' => $select,
                     'from' => $from,

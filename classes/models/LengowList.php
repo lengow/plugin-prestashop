@@ -70,6 +70,11 @@ class LengowList
     protected $currentPage;
 
     /**
+     * @var array choice of number of results per page
+     */
+    protected $nbPerPageList;
+
+    /**
      * @var integer number of results per page
      */
     protected $nbPerPage;
@@ -149,7 +154,8 @@ class LengowList
         $this->controller = $params['controller'];
         $this->shopId = isset($params['shop_id']) ? $params['shop_id'] : null;
         $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
-        $this->nbPerPage = isset($params['nbPerPage']) ? $params['nbPerPage'] : 20;
+        $this->nbPerPageList = array(20, 50, 100, 200);
+        $this->nbPerPage = (isset($params['nb_per_page']) && $params['nb_per_page'] != null) ? $params['nb_per_page'] : 20;
         $this->sql = $params['sql'];
         $this->ajax = isset($params['ajax']) ? (bool)$params['ajax'] : false;
         $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
@@ -378,6 +384,7 @@ class LengowList
         $html = '<form id="form_table_' . $this->id . '" class="lengow_form_table"
         data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax) . '">';
         $html .= '<input type="hidden" name="p" value="' . $this->currentPage . '" />';
+        $html .= '<input type="hidden" name="nb_per_page" value="' . $this->nbPerPage . '" />';
         $html .= '<input type="hidden" name="order_value" value="' . $this->orderValue . '" />';
         $html .= '<input type="hidden" name="order_column" value="' . $this->orderColumn . '" />';
         $html .= $this->displayHeader($this->orderColumn) . $this->displayContent() . $this->displayFooter();
@@ -606,6 +613,14 @@ class LengowList
         if ($totalPage <= 1) {
             return $html . '</nav>';
         }
+        $html .= '<div id="lgw-pagination-select">';
+        $html .= '<select class="lgw-pagination-select-item" name="nb_per_page">';
+        foreach ($this->nbPerPageList as $itemPerPage) {
+            $html .= '<option value="' . $itemPerPage . '" ';
+            $html .=  ($this->nbPerPage == $itemPerPage) ? 'selected' : '';
+            $html .=  '>' . $itemPerPage . '</option>';
+        }
+        $html .= '</select></div>';
         $html .= '<ul class="lgw-pagination-btns lgw-pagination-arrow">';
         $class = ($this->currentPage == 1) ? 'disabled' : '';
         $html .= '<li class="' . $class . '"><a href="#" data-page="' . ($this->currentPage - 1) . '"

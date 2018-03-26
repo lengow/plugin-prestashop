@@ -96,6 +96,12 @@
             return false;
         });
 
+        $('#lengow_feed_wrapper').on('change', '.lgw-pagination-select-item', function () {
+            $('#lengow_feed_wrapper .lengow_form_table input[name="nb_per_page"]').val($('.lgw-pagination-select-item > option:selected').attr('value'));
+            $('#lengow_feed_wrapper .lengow_form_table').submit();
+            return false;
+        });
+
         // UPDATE BY INPUT
 
         var typingTimer;
@@ -129,6 +135,7 @@
                 if (content['bootstrap_switch_readonly']) {
                     lengow_jquery(".lengow_switch").bootstrapSwitch({readonly: true});
                 }
+                pluginsRender();
             });
 
             return false;
@@ -219,5 +226,13 @@
             };
             return false;
         });
+
+        pluginsRender();
+
     });
 })(lengow_jquery);
+
+function pluginsRender(){
+    // Selects
+    lengow_jquery('.lgw-pagination-select-item').select2({minimumResultsForSearch: Infinity});
+}

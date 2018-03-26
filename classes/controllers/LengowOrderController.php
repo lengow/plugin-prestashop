@@ -469,6 +469,7 @@ class LengowOrderController extends LengowController
         $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
         $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
         $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
+        $nbPerPage = isset($_REQUEST['nb_per_page']) ? $_REQUEST['nb_per_page'] : '';
         $list = new LengowList(
             array(
                 'id' => 'order',
@@ -480,6 +481,7 @@ class LengowOrderController extends LengowController
                 'current_page' => $currentPage,
                 'order_value' => $orderValue,
                 'order_column' => $orderColumn,
+                'nb_per_page' => $nbPerPage,
                 'ajax' => true,
                 'sql' => array(
                     'select' => $select,

@@ -30,6 +30,12 @@
             return false;
         });
 
+        $('#lengow_order_wrapper').on('change', '.lgw-pagination-select-item', function () {
+            $('#lengow_order_wrapper .lengow_form_table input[name="nb_per_page"]').val($('.lgw-pagination-select-item > option:selected').attr('value'));
+            $('#lengow_order_wrapper .lengow_form_table').submit();
+            return false;
+        });
+
         $('#lengow_order_wrapper').on('click', '.lengow_form_table .table_order', function () {
             $('#lengow_order_wrapper .lengow_form_table input[name="order_value"]').val($(this).attr('data-order'));
             $('#lengow_order_wrapper .lengow_form_table input[name="order_column"]').val($(this).attr('data-column'));
@@ -292,4 +298,5 @@ function reload_table_js() {
 function pluginsRender(){
     // Selects
     lengow_jquery('#form_table_order .table select').select2();
+    lengow_jquery('.lgw-pagination-select-item').select2({minimumResultsForSearch: Infinity});
 }
