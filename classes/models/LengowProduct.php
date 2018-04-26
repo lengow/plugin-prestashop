@@ -311,6 +311,23 @@ class LengowProduct extends Product
                 return $this->available_now;
             case 'url':
                 if (version_compare(_PS_VERSION_, '1.5', '>')) {
+                    if (version_compare(_PS_VERSION_, '1.7.1', '>=')) {
+                        $idProductAttribute = !$idProductAttribute
+                            ? $this->getDefaultAttribute($this->id)
+                            : $idProductAttribute;
+                        return  $this->context->link->getProductLink(
+                            $this,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            $idProductAttribute,
+                            true,
+                            false,
+                            true
+                        );
+                    }
                     if (version_compare(_PS_VERSION_, '1.6.1.0', '>')) {
                         return $this->context->link->getProductLink(
                             $this,
@@ -440,6 +457,23 @@ class LengowProduct extends Product
                 return LengowMain::cleanData($this->meta_description);
             case 'url_rewrite':
                 if (version_compare(_PS_VERSION_, '1.4', '>')) {
+                    if (version_compare(_PS_VERSION_, '1.7.1', '>=')) {
+                        $idProductAttribute = !$idProductAttribute
+                            ? $this->getDefaultAttribute($this->id)
+                            : $idProductAttribute;
+                        return $this->context->link->getProductLink(
+                            $this,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            $idProductAttribute,
+                            true,
+                            false,
+                            true
+                        );
+                    }
                     if (version_compare(_PS_VERSION_, '1.6.1.0', '>')) {
                         return $this->context->link->getProductLink(
                             $this,

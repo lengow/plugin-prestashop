@@ -43,9 +43,11 @@ Version 3.0.0
 Version 2.2.10
 =============================================================
 
+    - Feature: [export] Added product URL rewriting compatibility with Prestashop > 1.7.1
 	- Feature: [import] Added compatibility with the new 4.x version of the Colissimo Simplicite plugin
 	- Bugfix: [export] Get a specific ean, upc or reference when product attribute is equal at 1
 	- Bugfix: [import] Get delivery phone number when billing and shipping addresses are the same
+	- Bugfix: check IP server for the checklist of plugin configuration check
 
 =============================================================
 Version 2.2.9
