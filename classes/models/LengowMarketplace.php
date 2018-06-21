@@ -33,6 +33,14 @@ class LengowMarketplace
     );
 
     /**
+     * @var array Parameters to delete for Get call 
+     */
+    public static $getParamsToDelete = array(
+        'shipping_date',
+        'delivery_date',
+    );
+
+    /**
      * @var array all marketplaces allowed for an account ID
      */
     public static $marketplaces = array();
@@ -332,6 +340,7 @@ class LengowMarketplace
                     case 'carrier':
                     case 'carrier_name':
                     case 'shipping_method':
+                    case 'custom_carrier':
                         if ($order->lengowCarrier != '') {
                             $carrierName = (string)$order->lengowCarrier;
                         } else {
@@ -377,6 +386,7 @@ class LengowMarketplace
                         $params[$arg] = $order->total_shipping;
                         break;
                     case 'shipping_date':
+                    case 'delivery_date':
                         $params[$arg] = date('c');
                         break;
                     default:
@@ -417,9 +427,11 @@ class LengowMarketplace
             $sendAction = true;
             // check if action is already created
             $getParams = array_merge($params, array('queued' => 'True'));
-            // array key deletion for verification in get
-            if (isset($getParams['shipping_date'])) {
-                unset($getParams['shipping_date']);
+            // array key deletion for GET verification
+            foreach (self::$getParamsToDelete as $param) {
+                if (isset($getParams[$param])) {
+                    unset($getParams[$param]);
+                }
             }
             $result = LengowConnector::queryApi('get', '/v3.0/orders/actions/', $getParams);
             if (isset($result->error) && isset($result->error->message)) {
