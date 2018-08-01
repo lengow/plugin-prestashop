@@ -51,7 +51,7 @@
 /classes/models/LengowProduct.php|8cd63590da4e8f6607e25c7c76fee95d
 /classes/models/LengowConfiguration.php|5d22845d4fe452a07d74f4177b9391c9
 /classes/index.php|ed8e273082cc0a58535dc2b454435f38
-/classes/controllers/LengowController.php|f48a60edd990e3c31b0b598b18d2e96d
+/classes/controllers/LengowController.php|8db0524bc64041bd6e16e96b322c6072
 /classes/controllers/LengowHomeController.php|e613ab0dddecf52440768a813c814d54
 /classes/controllers/LengowFeedController.php|55b4810968312f9847999e6fc31be7c5
 /classes/controllers/LengowOrderController.php|75d7cc4444a4fefd1b01e90cde6769d8
@@ -474,7 +474,7 @@
 /views/js/select2.js|2565df263f3a062418fb9ef1202d7e4e
 /views/js/jquery.1.12.0.min.js|e63f1452800f328881a789956054aca3
 /views/js/index.php|eb18f895c85303c2ced77482ec4ab525
-/views/js/lengow/home.js|10f6531041d252e09150d753abfd0d9b
+/views/js/lengow/home.js|4c39e4f487044eb939a808656a6fe2cc
 /views/js/lengow/admin.js|4ae494a8ad0305c51a3f33442a428bc0
 /views/js/lengow/main_setting.js|26e65b64064bcb99afd24eb9b4ccf020
 /views/js/lengow/order.js|9ceaf2ce7296a633c3f070db67484e33

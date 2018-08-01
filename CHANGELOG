@@ -11,6 +11,7 @@ Version 3.0.2
     - Bugfix: [action] Correction of the dates of creation and update of the actions
     - Bugfix: [action] Deleting the shipping_date parameter in the action check request
     - Bugfix: Deleting the indefinite index user_id in the connector
+    - Bugfix: Language code recovery for the Lengow iframe
 
 =============================================================
 Version 3.0.1
