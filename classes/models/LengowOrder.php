@@ -438,12 +438,13 @@ class LengowOrder extends Order
      * Update order status
      *
      * @param string $orderStateLengow marketplace state
-     * @param mixed $orderData order data
      * @param mixed $packageData package data
+     *
+     * @throws Exception
      *
      * @return string|false
      */
-    public function updateState($orderStateLengow, $orderData, $packageData)
+    public function updateState($orderStateLengow, $packageData)
     {
         $orderProcessState = self::getOrderProcessState($orderStateLengow);
         $trackingNumber = count($packageData->delivery->trackings) > 0
@@ -453,7 +454,6 @@ class LengowOrder extends Order
         $params = array();
         if ($this->lengowState != $orderStateLengow) {
             $params['order_lengow_state'] = pSQL($orderStateLengow);
-            $params['extra'] = pSQL(Tools::jsonEncode($orderData));
             $params['tracking'] = pSQL($trackingNumber);
         }
         if ($orderProcessState == self::PROCESS_STATE_FINISH) {

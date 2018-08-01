@@ -259,8 +259,22 @@ class LengowImportOrder
             );
             return false;
         }
+        // get a record in the lengow order table
+        $this->idOrderLengow = LengowOrder::getIdFromLengowOrders($this->marketplaceSku, $this->deliveryAddressId);
         // if order is cancelled or new -> skip
         if (!LengowImport::checkState($this->orderStateMarketplace, $this->marketplace)) {
+            $orderProcessState = LengowOrder::getOrderProcessState($this->orderStateLengow);
+            // check and complete an order not imported if it is canceled or refunded
+            if ($this->idOrderLengow && $orderProcessState === LengowOrder::PROCESS_STATE_FINISH) {
+                LengowOrder::finishOrderLogs($this->idOrderLengow);
+                LengowOrder::updateOrderLengow(
+                    $this->idOrderLengow,
+                    array(
+                        'order_lengow_state' => $this->orderStateLengow,
+                        'order_process_state' => $orderProcessState
+                    )
+                );
+            }
             LengowMain::log(
                 'Import',
                 LengowMain::setLogMessage(
@@ -275,8 +289,7 @@ class LengowImportOrder
             );
             return false;
         }
-        // get a record in the lengow order table
-        $this->idOrderLengow = LengowOrder::getIdFromLengowOrders($this->marketplaceSku, $this->deliveryAddressId);
+        // create a new record in lengow order table if not exist
         if (!$this->idOrderLengow) {
             // created a record in the lengow order table
             if (!$this->createLengowOrder()) {
@@ -524,7 +537,7 @@ class LengowImportOrder
             return false;
         } else {
             try {
-                $orderUpdated = $order->updateState($this->orderStateLengow, $this->orderData, $this->packageData);
+                $orderUpdated = $order->updateState($this->orderStateLengow, $this->packageData);
                 if ($orderUpdated) {
                     $result['update'] = true;
                     LengowMain::log(

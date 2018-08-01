@@ -7,6 +7,7 @@ Version 3.0.2
     - Feature: Protocol change to https for API calls
     - Feature: Implementation of the matching of shipping methods in carrier matching
     - Feature: Managing delivery_date and custom_carrier parameters for sending action
+    - Feature: Check and complete an order not imported if it is canceled or refunded
     - Bugfix: Optimizing the display of errors in the order screen
     - Bugfix: [action] Correction of the dates of creation and update of the actions
     - Bugfix: [action] Deleting the shipping_date parameter in the action check request
