@@ -136,6 +136,8 @@ order_setting.screen.default_carrier_marketplace|Your default %{marketplace_name
 order_setting.screen.please_select_carrier_marketplace|Select the carrier code for %{marketplace_name}
 order_setting.screen.no_default_carrier_marketplace_selected|No default carrier code selected
 order_setting.screen.tooltip_default_carrier|You have not yet configured the default carrier for this marketplace
+order_setting.screen.matching_method_marketplace|Match the marketplace shipping methods with your PrestaShop carriers
+order_setting.screen.matching_carrier_marketplace|Match your PrestaShop carriers with the carriers proposed by the marketplace
 order_setting.screen.no_carrier_enabled|You don't have any Prestashop carriers activated for %{country_name}.
 order_setting.screen.button_cancel|Cancel
 order_setting.screen.order_status_title|Order Status

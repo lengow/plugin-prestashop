@@ -1078,6 +1078,14 @@ class LengowImportOrder
                 $this->carrierName
             );
         }
+        // get carrier id by method marketplace code
+        if (!$idCarrier && $this->carrierMethod) {
+            $idCarrier = LengowMethod::getIdCarrierByMethodMarketplaceName(
+                $idCountry,
+                $idMarketplace,
+                $this->carrierMethod
+            );
+        }
         if (!$idCarrier) {
             // get default carrier by country
             $idCarrier = LengowCarrier::getDefaultIdCarrier($idCountry, $idMarketplace, true);

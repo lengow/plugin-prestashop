@@ -139,8 +139,8 @@ it:
   order_setting:
     screen:
       carrier_management_title: "Gestisci i metodi di spedizione per paese"
-      carrier_management_description: "Alcuni ordini potrebbero non essere importati perché non é stato specificato il metodo di spedizione di default in uno dei paesi di spedizione."
-      marketplace: "MarketPlace"
+      carrier_management_description: "Seleziona il corriere di default che vuoi utilizare per i tuoi ordini per ogni paese nel quale sei attivo. Poi fai corrispondere il tuo trasportatore marketplace con il corriere PrestaShop"
+      marketplace: "Marketplace(s)"
       see_delivery_countries: "Vedi tutti i miei paesi di spedizione"
       marketplace_matching_title: "%{country_name} metodi di spedizione"
       marketplace_matching_description: "Qui é possibile scegliere diversi metodi di spedizione per ordini destinati in %{country_name} per ogni marketplace attivo nell'account."
@@ -153,6 +153,8 @@ it:
       please_select_carrier_marketplace: "Seleziona il codice trasportatore per %{marketplace_name}"
       no_default_carrier_marketplace_selected: "Nessun codice trasportatore di default selezionato"
       tooltip_default_carrier: "Non é stato ancora configurato il trasportatore di default per questo marketplace"
+      matching_method_marketplace: "Fa corrispondere i metodi di trasporto della marketplace con i vostri corrieri Prestashop"
+      matching_carrier_marketplace: "Fa corrispondere i vostri corrieri Prestashop con i corrieri proposti dalla marketplace"
       no_carrier_enabled: "Non c'è nessun trasportatore PrestaShop attivato per %{country_name}"
       button_cancel: "Cancella"
       order_status_title: "Ordini Stato"

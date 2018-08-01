@@ -153,6 +153,8 @@ en:
       please_select_carrier_marketplace: "Select the carrier code for %{marketplace_name}"
       no_default_carrier_marketplace_selected: "No default carrier code selected"
       tooltip_default_carrier: "You have not yet configured the default carrier for this marketplace"
+      matching_method_marketplace: "Match the marketplace shipping methods with your PrestaShop carriers"
+      matching_carrier_marketplace: "Match your PrestaShop carriers with the carriers proposed by the marketplace"
       no_carrier_enabled: "You don't have any Prestashop carriers activated for %{country_name}."
       button_cancel: "Cancel"
       order_status_title: "Order Status"

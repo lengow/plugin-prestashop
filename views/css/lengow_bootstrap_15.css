@@ -11,8 +11,7 @@
 }
 
 #lgw-preprod {
-  top: 165px;
-  left: inherit;
+  top: 88px;
 }
 
 .lengow-nav-top {
@@ -48,15 +47,11 @@ body.lengow_body #main {
   margin-top: 150px;
 }
 
-#lengow_home_wrapper,
-#lengow_feed_wrapper {
-  margin-top: 100px;
-}
-
 #lengow_order_wrapper,
 #lengow_mainsettings_wrapper,
 #lengow_form_order_setting,
-.lengow_help_wrapper {
+.lengow_help_wrapper,
+.lengow_legals_wrapper{
   margin-top:150px;
 }
 
@@ -76,10 +71,6 @@ body.lengow_body #main {
 /*************************************************/
 /*                      HOME                     */
 /*************************************************/
-
-.adminlengowhome #lgw-preprod {
-  top: 105px;
-}
 
 .lgw-home-header {
   background-size: 100%;
@@ -108,8 +99,7 @@ body.lengow_body #main {
 
 #lgw-preprod.adminlengoworder,
 #lgw-preprod.adminlengowordersetting {
-  top: 220px;
-  left: inherit;
+  top: 144px;
   z-index: 2;
 }
 
@@ -119,7 +109,7 @@ body.lengow_body #main {
 }
 
 #lengow_order_wrapper, #lengow_form_order_setting {
-    padding-top: 30px;
+  padding-top: 30px;
 }
 
 .lgw-container .table tr td.shop {
