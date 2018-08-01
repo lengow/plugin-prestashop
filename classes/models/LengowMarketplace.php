@@ -33,7 +33,7 @@ class LengowMarketplace
     );
 
     /**
-     * @var array Parameters to delete for Get call 
+     * @var array Parameters to delete for Get call
      */
     public static $getParamsToDelete = array(
         'shipping_date',
@@ -94,6 +94,11 @@ class LengowMarketplace
      * @var array all carriers of the marketplace
      */
     public $carriers = array();
+
+    /**
+     * @var array all shipping methods of the marketplace
+     */
+    public $shippingMethods = array();
 
     /**
      * Construct a new Marketplace instance with marketplace API
@@ -159,6 +164,11 @@ class LengowMarketplace
             if (isset($this->marketplace->orders->carriers)) {
                 foreach ($this->marketplace->orders->carriers as $key => $carrier) {
                     $this->carriers[(string)$key] = (string)$carrier->label;
+                }
+            }
+            if (isset($this->marketplace->orders->shipping_methods)) {
+                foreach ($this->marketplace->orders->shipping_methods as $key => $shippingMethods) {
+                    $this->shippingMethods[(string)$key] = (string)$shippingMethods->label;
                 }
             }
             $this->isLoaded = true;
@@ -621,12 +631,17 @@ class LengowMarketplace
                     'name' => $marketplace['marketplace_name'],
                     'label' => $marketplace['marketplace_label'],
                     'carriers' => LengowCarrier::getAllCarrierMarketplaceByIdMarketplace($idMarketplace),
+                    'methods' => LengowMethod::getAllMethodMarketplaceByIdMarketplace($idMarketplace),
                     'id_carrier' => LengowCarrier::getDefaultIdCarrier($idCountry, $idMarketplace),
                     'id_carrier_marketplace' => LengowCarrier::getDefaultIdCarrierMarketplace(
                         $idCountry,
                         $idMarketplace
                     ),
                     'carrier_matched' => LengowCarrier::getAllMarketplaceCarrierCountryByIdMarketplace(
+                        $idCountry,
+                        $idMarketplace
+                    ),
+                    'method_matched' => LengowMethod::getAllMarketplaceMethodCountryByIdMarketplace(
                         $idCountry,
                         $idMarketplace
                     ),

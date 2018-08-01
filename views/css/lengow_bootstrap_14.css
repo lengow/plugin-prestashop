@@ -7,7 +7,7 @@ h1,h2, h3, h4, h5, h6 {
 }
 
 #lgw-preprod {
-  top: 75px;
+  top: 70px;
   z-index: 1;
   left: 15px;
   position: absolute;
@@ -124,6 +124,10 @@ body.lengow_body #main {
   margin-top: 15px;
 }
 
+#lengow_mainsettings_wrapper .lgw-content-section {
+  margin-bottom: 0;
+}
+
 /*************************************************/
 /*                      ORDERS                   */
 /*************************************************/
@@ -138,8 +142,7 @@ body.lengow_body #main {
 
 #lgw-preprod.adminlengoworder,
 #lgw-preprod.adminlengowordersetting {
-  top: 130px;
-  left: inherit;
+  top: 127px;
   z-index: 2;
   position: absolute;
 }

@@ -52,6 +52,9 @@
                             <li>
                                 {include file='./default_carrier.tpl'}
                             </li>
+                            {if isset($carriers) && isset($marketplace['methods']) && $marketplace['methods']|@count > 0}
+                                {include file='./marketplace_method.tpl'}
+                            {/if}
                             {if isset($carriers) && isset($marketplace['carriers']) && $marketplace['carriers']|@count > 0}
                                 {include file='./marketplace_carrier.tpl'}
                             {/if}

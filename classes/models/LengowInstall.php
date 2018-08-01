@@ -527,7 +527,6 @@ class LengowInstall
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
-
         // Create table lengow_order_line
         $name = 'lengow_order_line';
         if (!self::checkTableExists($name)) {
@@ -546,7 +545,6 @@ class LengowInstall
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
-
         // Create table lengow_logs_import
         $name = 'lengow_logs_import';
         if (!self::checkTableExists($name)) {
@@ -569,7 +567,6 @@ class LengowInstall
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
-
         // Create table lengow_actions
         $name = 'lengow_actions';
         if (!self::checkTableExists($name)) {
@@ -596,7 +593,6 @@ class LengowInstall
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
-
         // Create table lengow_marketplace
         $name = 'lengow_marketplace';
         if (!self::checkTableExists($name)) {
@@ -615,7 +611,6 @@ class LengowInstall
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
-
         // Create table lengow_carrier_marketplace
         $name = 'lengow_carrier_marketplace';
         if (!self::checkTableExists($name)) {
@@ -623,6 +618,7 @@ class LengowInstall
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `carrier_marketplace_name` VARCHAR(100) NOT NULL,
                 `carrier_marketplace_label` VARCHAR(100) NOT NULL,
+                `carrier_lengow_code` VARCHAR(100) NULL,
                 PRIMARY KEY(`id`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
@@ -633,7 +629,24 @@ class LengowInstall
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
-
+        // Create table lengow_method_marketplace
+        $name = 'lengow_method_marketplace';
+        if (!self::checkTableExists($name)) {
+            $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
+                `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                `method_marketplace_name` VARCHAR(100) NOT NULL,
+                `method_marketplace_label` VARCHAR(100) NOT NULL,
+                `method_lengow_code` VARCHAR(100) NULL,
+                PRIMARY KEY(`id`)
+                ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+            Db::getInstance()->execute($sql);
+            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+        } else {
+            LengowMain::log(
+                'Install',
+                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+            );
+        }
         // Create table lengow_marketplace_carrier_marketplace
         $name = 'lengow_marketplace_carrier_marketplace';
         if (!self::checkTableExists($name)) {
@@ -653,7 +666,25 @@ class LengowInstall
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
-
+        // Create table lengow_marketplace_method_marketplace
+        $name = 'lengow_marketplace_method_marketplace';
+        if (!self::checkTableExists($name)) {
+            $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
+                `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                `id_marketplace` INTEGER(11) UNSIGNED NOT NULL,
+                `id_method_marketplace` INTEGER(11) UNSIGNED NOT NULL,
+                PRIMARY KEY(`id`),
+                INDEX (`id_marketplace`),
+                INDEX (`id_method_marketplace`)
+                ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+            Db::getInstance()->execute($sql);
+            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+        } else {
+            LengowMain::log(
+                'Install',
+                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+            );
+        }
         // Create table lengow_default_carrier
         $name = 'lengow_default_carrier';
         if (!self::checkTableExists($name)) {
@@ -677,7 +708,6 @@ class LengowInstall
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
-
         // Create table lengow_marketplace_carrier_country
         $name = 'lengow_marketplace_carrier_country';
         if (!self::checkTableExists($name)) {
@@ -692,6 +722,29 @@ class LengowInstall
                 INDEX (`id_marketplace`),
                 INDEX (`id_carrier`),
                 INDEX (`id_carrier_marketplace`)
+                ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+            Db::getInstance()->execute($sql);
+            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+        } else {
+            LengowMain::log(
+                'Install',
+                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+            );
+        }
+        // Create table lengow_marketplace_method_country
+        $name = 'lengow_marketplace_method_country';
+        if (!self::checkTableExists($name)) {
+            $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_marketplace_method_country (
+                `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                `id_country` INTEGER(11) UNSIGNED NOT NULL,
+                `id_marketplace` INTEGER(11) UNSIGNED NOT NULL,
+                `id_carrier` INTEGER(11) UNSIGNED NOT NULL,
+                `id_method_marketplace` INTEGER(11) UNSIGNED NULL,
+                PRIMARY KEY(`id`),
+                INDEX (`id_country`),
+                INDEX (`id_marketplace`),
+                INDEX (`id_carrier`),
+                INDEX (`id_method_marketplace`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
             LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));

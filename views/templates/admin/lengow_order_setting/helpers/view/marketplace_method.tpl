@@ -17,33 +17,32 @@
  *  @copyright 2017 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
-
 <li>
     <div class="lgw-row">
         <span class="matching-subtitle">
-            {$locale->t('order_setting.screen.matching_carrier_marketplace')|escape:'htmlall':'UTF-8'}
+            {$locale->t('order_setting.screen.matching_method_marketplace')|escape:'htmlall':'UTF-8'}
         </span>
     </div>
 </li>
-{foreach from=$carriers key=idCarrier item=carrier}
+{foreach from=$marketplace['methods'] item=method}
     <li>
         <div class="lgw-row">
             <div class="lgw-col-5 text-right carrier-name">
-                {$carrier|escape:'htmlall':'UTF-8'}
+                {$method['method_marketplace_label']|escape:'htmlall':'UTF-8'}
             </div>
             <div class="lgw-col-1">
                 <div class="lgw-arrow-right"></div>
             </div>
             <div class="lgw-col-6">
-                <select name="carrier_marketplaces[{$marketplace['id']|escape:'htmlall':'UTF-8'}][{$idCarrier|escape:'htmlall':'UTF-8'}]"
-                        class="carrier js-match-carrier lengow_select js-carrier-{$marketplace['id']|escape:'htmlall':'UTF-8'}"
+                <select name="method_marketplaces[{$marketplace['id']|escape:'htmlall':'UTF-8'}][{$method['id_method_marketplace']|escape:'htmlall':'UTF-8'}]"
+                        class="carrier lengow_select"
                         data-marketplace="{$marketplace['id']|escape:'htmlall':'UTF-8'}">
-                    <option value="">{$locale->t('order_setting.screen.please_select_carrier_marketplace', ['marketplace_name' => $marketplace['label']])|escape:'htmlall':'UTF-8'}</option>
-                    {foreach from=$marketplace['carriers'] item=carrier}
-                        {if isset($marketplace['carrier_matched'][$idCarrier]) && $marketplace['carrier_matched'][$idCarrier] eq $carrier['id_carrier_marketplace']}
-                            <option value="{$carrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}" selected="selected">{$carrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
+                    <option value="">{$locale->t('order_setting.screen.please_select_carrier_prestashop')|escape:'htmlall':'UTF-8'}</option>
+                    {foreach from=$carriers key=k item=c}
+                        {if isset($marketplace['method_matched'][$method['id_method_marketplace']]) && $marketplace['method_matched'][$method['id_method_marketplace']] eq $k}
+                            <option value="{$k|escape:'htmlall':'UTF-8'}" selected="selected">{$c|escape:'htmlall':'UTF-8'}</option>
                         {else}
-                            <option value="{$carrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}">{$carrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
+                            <option value="{$k|escape:'htmlall':'UTF-8'}">{$c|escape:'htmlall':'UTF-8'}</option>
                         {/if}
                     {/foreach}
                 </select>
