@@ -62,7 +62,11 @@
                 {if $nb_order_imported eq '0'}
                     {include file='./no_order.tpl'}
                 {else}
-                    {html_entity_decode($lengow_table|escape:'htmlall':'UTF-8')}
+                    {if $version > '1.7' && isset($toolbox) && $toolbox }
+                        {$lengow_table|escape:'htmlall':'UTF-8' nofilter}
+                    {else}
+                        {html_entity_decode($lengow_table|escape:'htmlall':'UTF-8')}
+                    {/if}
                 {/if}
             </div>
             <!-- /TABLE -->

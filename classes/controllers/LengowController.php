@@ -73,6 +73,7 @@ class LengowController
             'localeIsoCode',
             Tools::substr(Context::getContext()->language->language_code, 0, 2)
         );
+        $this->context->smarty->assign('version', _PS_VERSION_);
         $this->context->smarty->assign('lengowVersion', $this->module->version);
         $this->isNewMerchant = LengowConnector::isNewMerchant();
         $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
