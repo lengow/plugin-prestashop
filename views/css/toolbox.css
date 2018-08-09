@@ -440,6 +440,11 @@ span.legend {
   pointer-events: none;
 }
 
+#lgw-pagination-select {
+  margin-right: 25px;
+  display: inline-block;
+}
+
 /*************************************************/
 /*                   TOOLBAR                     */
 /*************************************************/

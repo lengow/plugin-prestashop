@@ -206,8 +206,6 @@ class LengowImportOrder
     /**
      * Create or update order
      *
-     * @throws LengowException order list is empty
-     *
      * @return array|false
      */
     public function importOrder()
@@ -261,8 +259,22 @@ class LengowImportOrder
             );
             return false;
         }
+        // get a record in the lengow order table
+        $this->idOrderLengow = LengowOrder::getIdFromLengowOrders($this->marketplaceSku, $this->deliveryAddressId);
         // if order is cancelled or new -> skip
         if (!LengowImport::checkState($this->orderStateMarketplace, $this->marketplace)) {
+            $orderProcessState = LengowOrder::getOrderProcessState($this->orderStateLengow);
+            // check and complete an order not imported if it is canceled or refunded
+            if ($this->idOrderLengow && $orderProcessState === LengowOrder::PROCESS_STATE_FINISH) {
+                LengowOrder::finishOrderLogs($this->idOrderLengow);
+                LengowOrder::updateOrderLengow(
+                    $this->idOrderLengow,
+                    array(
+                        'order_lengow_state' => $this->orderStateLengow,
+                        'order_process_state' => $orderProcessState
+                    )
+                );
+            }
             LengowMain::log(
                 'Import',
                 LengowMain::setLogMessage(
@@ -277,8 +289,7 @@ class LengowImportOrder
             );
             return false;
         }
-        // get a record in the lengow order table
-        $this->idOrderLengow = LengowOrder::getIdFromLengowOrders($this->marketplaceSku, $this->deliveryAddressId);
+        // create a new record in lengow order table if not exist
         if (!$this->idOrderLengow) {
             // created a record in the lengow order table
             if (!$this->createLengowOrder()) {
@@ -526,7 +537,7 @@ class LengowImportOrder
             return false;
         } else {
             try {
-                $orderUpdated = $order->updateState($this->orderStateLengow, $this->orderData, $this->packageData);
+                $orderUpdated = $order->updateState($this->orderStateLengow, $this->packageData);
                 if ($orderUpdated) {
                     $result['update'] = true;
                     LengowMain::log(
@@ -749,6 +760,8 @@ class LengowImportOrder
     /**
      * Create and load cart data
      *
+     * @throws LengowException
+     *
      * @return array
      */
     protected function getCartData()
@@ -811,6 +824,8 @@ class LengowImportOrder
      *
      * @param LengowCart $cart Lengow cart instance
      * @param array $products List of Lengow products
+     *
+     * @throws LengowException
      *
      * @return array
      */
@@ -1076,6 +1091,14 @@ class LengowImportOrder
                 $this->carrierName
             );
         }
+        // get carrier id by method marketplace code
+        if (!$idCarrier && $this->carrierMethod) {
+            $idCarrier = LengowMethod::getIdCarrierByMethodMarketplaceName(
+                $idCountry,
+                $idMarketplace,
+                $this->carrierMethod
+            );
+        }
         if (!$idCarrier) {
             // get default carrier by country
             $idCarrier = LengowCarrier::getDefaultIdCarrier($idCountry, $idMarketplace, true);
@@ -1216,17 +1239,21 @@ class LengowImportOrder
         } else {
             $params['message'] = pSQL((string)$this->orderData->comments);
         }
-        if (_PS_VERSION_ < '1.5') {
-            $result = Db::getInstance()->autoExecute(
-                _DB_PREFIX_ . 'lengow_orders',
-                $params,
-                'INSERT'
-            );
-        } else {
-            $result = Db::getInstance()->insert(
-                'lengow_orders',
-                $params
-            );
+        try {
+            if (_PS_VERSION_ < '1.5') {
+                $result = Db::getInstance()->autoExecute(
+                    _DB_PREFIX_ . 'lengow_orders',
+                    $params,
+                    'INSERT'
+                );
+            } else {
+                $result = Db::getInstance()->insert(
+                    'lengow_orders',
+                    $params
+                );
+            }
+        } catch (PrestaShopDatabaseException $e) {
+            $result = false;
         }
         if ($result) {
             $this->idOrderLengow = LengowOrder::getIdFromLengowOrders(
@@ -1253,25 +1280,29 @@ class LengowImportOrder
         foreach ($products as $idProduct => $values) {
             foreach ($values['order_line_ids'] as $idOrderLine) {
                 $idOrderDetail = LengowOrderDetail::findByOrderIdProductId($order->id, $idProduct);
-                if (_PS_VERSION_ < '1.5') {
-                    $result = Db::getInstance()->autoExecute(
-                        _DB_PREFIX_ . 'lengow_order_line',
-                        array(
-                            'id_order' => (int)$order->id,
-                            'id_order_line' => pSQL($idOrderLine),
-                            'id_order_detail' => (int)$idOrderDetail,
-                        ),
-                        'INSERT'
-                    );
-                } else {
-                    $result = Db::getInstance()->insert(
-                        'lengow_order_line',
-                        array(
-                            'id_order' => (int)$order->id,
-                            'id_order_line' => pSQL($idOrderLine),
-                            'id_order_detail' => (int)$idOrderDetail,
-                        )
-                    );
+                try {
+                    if (_PS_VERSION_ < '1.5') {
+                        $result = Db::getInstance()->autoExecute(
+                            _DB_PREFIX_ . 'lengow_order_line',
+                            array(
+                                'id_order' => (int)$order->id,
+                                'id_order_line' => pSQL($idOrderLine),
+                                'id_order_detail' => (int)$idOrderDetail,
+                            ),
+                            'INSERT'
+                        );
+                    } else {
+                        $result = Db::getInstance()->insert(
+                            'lengow_order_line',
+                            array(
+                                'id_order' => (int)$order->id,
+                                'id_order_line' => pSQL($idOrderLine),
+                                'id_order_detail' => (int)$idOrderDetail,
+                            )
+                        );
+                    }
+                } catch (PrestaShopDatabaseException $e) {
+                    $result = false;
                 }
                 if ($result) {
                     $orderLineSaved .= !$orderLineSaved ? $idOrderLine : ' / ' . $idOrderLine;

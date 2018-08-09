@@ -57,7 +57,11 @@ class LengowCarrier extends Carrier
         } else {
             $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier WHERE active = 1 AND deleted = 0';
         }
-        $collection = Db::getInstance()->ExecuteS($sql);
+        try {
+            $collection = Db::getInstance()->ExecuteS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            return $carriers;
+        }
         foreach ($collection as $row) {
             if (_PS_VERSION_ < '1.5') {
                 $carriers[$row['id_carrier']] = $row['name'];
@@ -195,7 +199,11 @@ class LengowCarrier extends Carrier
      */
     public static function getAllCarrierMarketplace()
     {
-        $results = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace');
+        try {
+            $results = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace');
+        } catch (PrestaShopDatabaseException $e) {
+            $results = false;
+        }
         return is_array($results) ? $results : array();
     }
 
@@ -208,20 +216,24 @@ class LengowCarrier extends Carrier
      */
     public static function getAllCarrierMarketplaceByIdMarketplace($idMarketplace)
     {
-        $results = Db::getInstance()->ExecuteS(
-            'SELECT 
-                lcm.carrier_marketplace_name,
-                lcm.carrier_marketplace_label,
-                lcm.id as id_carrier_marketplace,
-                lm.id as id_marketplace,
-                lmcm.id as id_marketplace_carrier_marketplace
-            FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace as lcm
-            INNER JOIN ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace as lmcm
-                ON lcm.id = lmcm.id_carrier_marketplace
-            INNER JOIN ' . _DB_PREFIX_ . 'lengow_marketplace as lm
-                ON lm.id = lmcm.id_marketplace
-            WHERE lm.id = "' . (int)$idMarketplace . '"'
-        );
+        try {
+            $results = Db::getInstance()->ExecuteS(
+                'SELECT 
+                    lcm.carrier_marketplace_name,
+                    lcm.carrier_marketplace_label,
+                    lcm.id as id_carrier_marketplace,
+                    lm.id as id_marketplace,
+                    lmcm.id as id_marketplace_carrier_marketplace
+                FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace as lcm
+                INNER JOIN ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace as lmcm
+                    ON lcm.id = lmcm.id_carrier_marketplace
+                INNER JOIN ' . _DB_PREFIX_ . 'lengow_marketplace as lm
+                    ON lm.id = lmcm.id_marketplace
+                WHERE lm.id = "' . (int)$idMarketplace . '"'
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            $results = false;
+        }
         return is_array($results) ? $results : array();
     }
 
@@ -234,11 +246,15 @@ class LengowCarrier extends Carrier
      */
     public static function getIdCarrierMarketplace($carrierMarketplaceName)
     {
-        $result = Db::getInstance()->ExecuteS(
-            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace
-            WHERE carrier_marketplace_name = "' . pSQL($carrierMarketplaceName) . '"'
-        );
-        return count($result) > 0 ? (int)$result[0]['id'] : false;
+        try {
+            $result = Db::getInstance()->ExecuteS(
+                'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace
+                WHERE carrier_marketplace_name = "' . pSQL($carrierMarketplaceName) . '"'
+            );
+            return count($result) > 0 ? (int)$result[0]['id'] : false;
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
     }
 
     /**
@@ -271,8 +287,23 @@ class LengowCarrier extends Carrier
                         if (!$idCarrierMarketplace) {
                             $idCarrierMarketplace = self::insertCarrierMarketplace(
                                 $carrierMarketplaceName,
-                                $carrier->label
+                                $carrier->label,
+                                isset($carrier->lengow_code) ? $carrier->lengow_code : null
                             );
+                        } else {
+                            $params = array();
+                            if (!is_null($carrier->label) && Tools::strlen($carrier->label) > 0) {
+                                $params['carrier_marketplace_label'] = $carrier->label;
+                            }
+                            if (isset($carrier->lengow_code)
+                                && !is_null($carrier->lengow_code)
+                                && Tools::strlen($carrier->lengow_code) > 0
+                            ) {
+                                $params['carrier_lengow_code'] = $carrier->lengow_code;
+                            }
+                            if (!empty($params)) {
+                                self::updateCarrierMarketplace($idCarrierMarketplace, $params);
+                            }
                         }
                         if ($idMarketplace && $idCarrierMarketplace) {
                             self::matchCarrierMarketplaceWithMarketplace($idMarketplace, $idCarrierMarketplace);
@@ -288,53 +319,120 @@ class LengowCarrier extends Carrier
      *
      * @param string $carrierMarketplaceName Lengow carrier marketplace name
      * @param string $carrierMarketplaceLabel Lengow carrier marketplace label
+     * @param string $carrierLengowCode Lengow carrier lengow code
      *
      * @return integer|false
      */
-    public static function insertCarrierMarketplace($carrierMarketplaceName, $carrierMarketplaceLabel)
-    {
+    public static function insertCarrierMarketplace(
+        $carrierMarketplaceName,
+        $carrierMarketplaceLabel,
+        $carrierLengowCode = null
+    ) {
         $params = array(
             'carrier_marketplace_name' => pSQL($carrierMarketplaceName),
-            'carrier_marketplace_label' => pSQL($carrierMarketplaceLabel)
+            'carrier_marketplace_label' => pSQL($carrierMarketplaceLabel),
         );
+        if (!is_null($carrierLengowCode) && Tools::strlen($carrierLengowCode) > 0) {
+            $params['carrier_lengow_code'] = pSQL($carrierLengowCode);
+        }
         $db = Db::getInstance();
-        if (_PS_VERSION_ < '1.5') {
-            $success = $db->autoExecute(_DB_PREFIX_ . 'lengow_carrier_marketplace', $params, 'INSERT');
-        } else {
-            $success = $db->insert('lengow_carrier_marketplace', $params);
+        try {
+            if (_PS_VERSION_ < '1.5') {
+                $success = $db->autoExecute(_DB_PREFIX_ . 'lengow_carrier_marketplace', $params, 'INSERT');
+            } else {
+                $success = $db->insert('lengow_carrier_marketplace', $params);
+            }
+        } catch (PrestaShopDatabaseException $e) {
+            $success = false;
         }
         return $success ? self::getIdCarrierMarketplace($carrierMarketplaceName) : false;
     }
 
     /**
+     * Update a carrier marketplace
+     *
+     * @param integer $idCarrierMarketplace Lengow carrier marketplace id
+     * @param array $params all parameters to update a carrier marketplace
+     *
+     * @return integer|false
+     */
+    public static function updateCarrierMarketplace($idCarrierMarketplace, $params)
+    {
+        $db = Db::getInstance();
+        if (_PS_VERSION_ < '1.5') {
+            try {
+                $success = $db->autoExecute(
+                    _DB_PREFIX_ . 'lengow_carrier_marketplace',
+                    $params,
+                    'UPDATE',
+                    'id = ' . (int)$idCarrierMarketplace
+                );
+            } catch (PrestaShopDatabaseException $e) {
+                $success = false;
+            }
+        } else {
+            $success = $db->update('lengow_carrier_marketplace', $params, 'id = ' . (int)$idCarrierMarketplace);
+        }
+        return $success ? $idCarrierMarketplace : false;
+    }
+
+    /**
      * Match carrier marketplace with one marketplace
      *
-     * @param string $idMarketplace Lengow marketplace id
-     * @param string $idCarrierMarketplace Lengow carrier marketplace id
+     * @param integer $idMarketplace Lengow marketplace id
+     * @param integer $idCarrierMarketplace Lengow carrier marketplace id
      *
      * @return boolean
      */
     public static function matchCarrierMarketplaceWithMarketplace($idMarketplace, $idCarrierMarketplace)
     {
         $db = Db::getInstance();
-        $result = Db::getInstance()->ExecuteS(
-            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace
-            WHERE id_marketplace = ' . $idMarketplace . ' AND id_carrier_marketplace = ' . $idCarrierMarketplace
-        );
+        try {
+            $result = Db::getInstance()->ExecuteS(
+                'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace
+                WHERE id_marketplace = ' . (int)$idMarketplace . '
+                AND id_carrier_marketplace = ' . (int)$idCarrierMarketplace
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            $result = array();
+        }
         if (count($result) == 0) {
             $params = array(
-                'id_marketplace' => pSQL($idMarketplace),
-                'id_carrier_marketplace' => pSQL($idCarrierMarketplace)
+                'id_marketplace' => (int)$idMarketplace,
+                'id_carrier_marketplace' => (int)$idCarrierMarketplace
             );
-            if (_PS_VERSION_ < '1.5') {
-                $success = $db->autoExecute(_DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace', $params, 'INSERT');
-            } else {
-                $success = $db->insert('lengow_marketplace_carrier_marketplace', $params);
+            try {
+                if (_PS_VERSION_ < '1.5') {
+                    $success = $db->autoExecute(
+                        _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace',
+                        $params,
+                        'INSERT'
+                    );
+                } else {
+                    $success = $db->insert('lengow_marketplace_carrier_marketplace', $params);
+                }
+            } catch (PrestaShopDatabaseException $e) {
+                $success = false;
             }
         } else {
             $success = true;
         }
         return $success;
+    }
+
+    /**
+     * Delete carrier marketplace matching
+     *
+     * @param integer $idMarketplaceCarrierMarketplace Lengow marketplace carrier marketplace id
+     *
+     * @return boolean
+     */
+    public static function deleteMarketplaceCarrierMarketplace($idMarketplaceCarrierMarketplace)
+    {
+        return Db::getInstance()->delete(
+            _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace',
+            'id = ' . (int)$idMarketplaceCarrierMarketplace
+        );
     }
 
     /**
@@ -363,9 +461,8 @@ class LengowCarrier extends Carrier
                             $currentCarrierMarketplaces
                         )) {
                             // delete marketplace carrier matching
-                            Db::getInstance()->delete(
-                                _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace',
-                                'id = ' . (int)$carrierMarketplace['id_marketplace_carrier_marketplace']
+                            self::deleteMarketplaceCarrierMarketplace(
+                                (int)$carrierMarketplace['id_marketplace_carrier_marketplace']
                             );
                             $idCarrierMarketplace = (int)$carrierMarketplace['id_carrier_marketplace'];
                             // delete carrier marketplace id  from default carrier if is matched
@@ -410,11 +507,15 @@ class LengowCarrier extends Carrier
      */
     public static function cleanDefaultCarrierByIdMarketplace($idMarketplace, $idCarrierMarketplace)
     {
-        $results = Db::getInstance()->ExecuteS(
-            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
-            WHERE id_carrier_marketplace = ' . (int)$idCarrierMarketplace . '
-            AND id_marketplace = ' . (int)$idMarketplace
-        );
+        try {
+            $results = Db::getInstance()->ExecuteS(
+                'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
+                WHERE id_carrier_marketplace = ' . (int)$idCarrierMarketplace . '
+                AND id_marketplace = ' . (int)$idMarketplace
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            $results = array();
+        }
         if (count($results) > 0) {
             foreach ($results as $result) {
                 if (isset($result['id']) && $result['id'] > 0) {
@@ -437,11 +538,15 @@ class LengowCarrier extends Carrier
      */
     public static function getIdDefaultCarrier($idCountry, $idMarketplace)
     {
-        $results = Db::getInstance()->ExecuteS(
-            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
-            WHERE id_country = ' . (int)$idCountry . ' AND id_marketplace = ' . (int)$idMarketplace
-        );
-        return count($results) > 0 ? (int)$results[0]['id'] : false;
+        try {
+            $results = Db::getInstance()->ExecuteS(
+                'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
+                WHERE id_country = ' . (int)$idCountry . ' AND id_marketplace = ' . (int)$idMarketplace
+            );
+            return count($results) > 0 ? (int)$results[0]['id'] : false;
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
     }
 
     /**
@@ -513,7 +618,11 @@ class LengowCarrier extends Carrier
             $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
                 WHERE id_carrier IS NULL OR id_carrier = 0 ORDER BY id_country ASC';
         }
-        $results = Db::getInstance()->executeS($sql);
+        try {
+            $results = Db::getInstance()->executeS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            $results = false;
+        }
         if (is_array($results)) {
             foreach ($results as $result) {
                 $defaultCarriers[(int)$result['id_country']][] = $result;
@@ -540,14 +649,18 @@ class LengowCarrier extends Carrier
      */
     public static function getCountries()
     {
-        $results = Db::getInstance()->executeS(
-            'SELECT ldc.id_country, c.iso_code, cl.name FROM ' . _DB_PREFIX_ . 'lengow_default_carrier as ldc
-            INNER JOIN ' . _DB_PREFIX_ . 'country as c ON ldc.id_country = c.id_country
-            INNER JOIN ' . _DB_PREFIX_ . 'country_lang as cl ON c.id_country = cl.id_country
-            AND cl.id_lang = ' . (int)Context::getContext()->language->id . '
-            GROUP BY ldc.id_country'
-        );
-        return count($results) > 0 ? $results : false;
+        try {
+            $results = Db::getInstance()->executeS(
+                'SELECT ldc.id_country, c.iso_code, cl.name FROM ' . _DB_PREFIX_ . 'lengow_default_carrier as ldc
+                INNER JOIN ' . _DB_PREFIX_ . 'country as c ON ldc.id_country = c.id_country
+                INNER JOIN ' . _DB_PREFIX_ . 'country_lang as cl ON c.id_country = cl.id_country
+                AND cl.id_lang = ' . (int)Context::getContext()->language->id . '
+                GROUP BY ldc.id_country'
+            );
+            return count($results) > 0 ? $results : false;
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
     }
 
     /**
@@ -566,10 +679,14 @@ class LengowCarrier extends Carrier
             $additionalParams
         );
         $db = Db::getInstance();
-        if (_PS_VERSION_ < '1.5') {
-            $success = $db->autoExecute(_DB_PREFIX_ . 'lengow_default_carrier', $params, 'INSERT');
-        } else {
-            $success = $db->insert('lengow_default_carrier', $params);
+        try {
+            if (_PS_VERSION_ < '1.5') {
+                $success = $db->autoExecute(_DB_PREFIX_ . 'lengow_default_carrier', $params, 'INSERT');
+            } else {
+                $success = $db->insert('lengow_default_carrier', $params);
+            }
+        } catch (PrestaShopDatabaseException $e) {
+            $success = false;
         }
         return $success ? self::getIdDefaultCarrier($idCountry, $idMarketplace) : false;
     }
@@ -586,12 +703,16 @@ class LengowCarrier extends Carrier
     {
         $db = Db::getInstance();
         if (_PS_VERSION_ < '1.5') {
-            $success = $db->autoExecute(
-                _DB_PREFIX_ . 'lengow_default_carrier',
-                $params,
-                'UPDATE',
-                'id = ' . (int)$idDefaultCarrier
-            );
+            try {
+                $success = $db->autoExecute(
+                    _DB_PREFIX_ . 'lengow_default_carrier',
+                    $params,
+                    'UPDATE',
+                    'id = ' . (int)$idDefaultCarrier
+                );
+            } catch (PrestaShopDatabaseException $e) {
+                $success = false;
+            }
         } else {
             $success = $db->update('lengow_default_carrier', $params, 'id = ' . (int)$idDefaultCarrier);
         }
@@ -609,28 +730,36 @@ class LengowCarrier extends Carrier
      */
     public static function getIdMarketplaceCarrierCountry($idCountry, $idMarketplace, $idCarrier)
     {
-        $result = Db::getInstance()->ExecuteS(
-            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
-            WHERE id_country = ' . (int)$idCountry . '
-            AND id_marketplace = ' . (int)$idMarketplace . '
-            AND id_carrier = ' . (int)$idCarrier
-        );
-        return count($result) > 0 ? (int)$result[0]['id'] : false;
+        try {
+            $result = Db::getInstance()->ExecuteS(
+                'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
+                WHERE id_country = ' . (int)$idCountry . '
+                AND id_marketplace = ' . (int)$idMarketplace . '
+                AND id_carrier = ' . (int)$idCarrier
+            );
+            return count($result) > 0 ? (int)$result[0]['id'] : false;
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
     }
 
     /**
-     * Clean default carrier when match carrier marketplace is deleted
+     * Clean table when match carrier marketplace is deleted
      *
      * @param integer $idMarketplace Lengow marketplace id
      * @param integer $idCarrierMarketplace Lengow carrier marketplace id
      */
     public static function cleanMarketplaceCarrierCountryByIdMarketplace($idMarketplace, $idCarrierMarketplace)
     {
-        $results = Db::getInstance()->ExecuteS(
-            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
-            WHERE id_carrier_marketplace = ' . (int)$idCarrierMarketplace . '
-            AND id_marketplace = ' . (int)$idMarketplace
-        );
+        try {
+            $results = Db::getInstance()->ExecuteS(
+                'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
+                WHERE id_carrier_marketplace = ' . (int)$idCarrierMarketplace . '
+                AND id_marketplace = ' . (int)$idMarketplace
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            $results = array();
+        }
         if (count($results) > 0) {
             foreach ($results as $result) {
                 if (isset($result['id']) && $result['id'] > 0) {
@@ -641,7 +770,7 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * Get marketplace carrier country id
+     * Get carrier marketplace id by marketplace, carrier and country
      *
      * @param integer $idCountry Prestashop country id
      * @param integer $idMarketplace Lengow marketplace id
@@ -669,16 +798,20 @@ class LengowCarrier extends Carrier
      * @param integer $idCountry Prestashop country id
      * @param integer $idMarketplace Lengow marketplace id
      *
-     * @return integer|false
+     * @return array
      */
     public static function getAllMarketplaceCarrierCountryByIdMarketplace($idCountry, $idMarketplace)
     {
         $carriers = array();
-        $results = Db::getInstance()->ExecuteS(
-            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
-            WHERE id_country = ' . (int)$idCountry . '
-            AND id_marketplace = ' . (int)$idMarketplace
-        );
+        try {
+            $results = Db::getInstance()->ExecuteS(
+                'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
+                WHERE id_country = ' . (int)$idCountry . '
+                AND id_marketplace = ' . (int)$idMarketplace
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            $results = array();
+        }
         if (count($results) > 0) {
             foreach ($results as $result) {
                 $carriers[(int)$result['id_carrier']] = (int)$result['id_carrier_marketplace'];
@@ -710,10 +843,14 @@ class LengowCarrier extends Carrier
             'id_carrier_marketplace' => $idCarrierMarketplace
         );
         $db = Db::getInstance();
-        if (_PS_VERSION_ < '1.5') {
-            $success = $db->autoExecute(_DB_PREFIX_ . 'lengow_marketplace_carrier_country', $params, 'INSERT');
-        } else {
-            $success = $db->insert('lengow_marketplace_carrier_country', $params);
+        try {
+            if (_PS_VERSION_ < '1.5') {
+                $success = $db->autoExecute(_DB_PREFIX_ . 'lengow_marketplace_carrier_country', $params, 'INSERT');
+            } else {
+                $success = $db->insert('lengow_marketplace_carrier_country', $params);
+            }
+        } catch (PrestaShopDatabaseException $e) {
+            $success = false;
         }
         return $success ? self::getIdMarketplaceCarrierCountry($idCountry, $idMarketplace, $idCarrier) : false;
     }
@@ -730,12 +867,16 @@ class LengowCarrier extends Carrier
     {
         $db = Db::getInstance();
         if (_PS_VERSION_ < '1.5') {
-            $success = $db->autoExecute(
-                _DB_PREFIX_ . 'lengow_marketplace_carrier_country',
-                array('id_carrier_marketplace' => $idCarrierMarketplace),
-                'UPDATE',
-                'id = ' . (int)$idMarketplaceCarrierCountry
-            );
+            try {
+                $success = $db->autoExecute(
+                    _DB_PREFIX_ . 'lengow_marketplace_carrier_country',
+                    array('id_carrier_marketplace' => $idCarrierMarketplace),
+                    'UPDATE',
+                    'id = ' . (int)$idMarketplaceCarrierCountry
+                );
+            } catch (PrestaShopDatabaseException $e) {
+                $success = false;
+            }
         } else {
             $success = $db->update(
                 'lengow_marketplace_carrier_country',
@@ -1010,9 +1151,13 @@ class LengowCarrier extends Carrier
             'relayPointNumList' => array($idRelay),
         );
         $mrRd = new MRRelayDetail($params, $mr);
-        $mrRd->init();
-        $mrRd->send();
-        $result = $mrRd->getResult();
+        try {
+            $mrRd->init();
+            $mrRd->send();
+            $result = $mrRd->getResult();
+        } catch (Exception $e) {
+            return false;
+        }
         if (empty($result['error'][0]) && array_key_exists($idRelay, $result['success'])) {
             return $result['success'][$idRelay];
         }

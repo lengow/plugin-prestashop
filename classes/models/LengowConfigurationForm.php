@@ -169,8 +169,12 @@ class LengowConfigurationForm
         if (_PS_VERSION_ < '1.5') {
             $shopCollection = array(array('id_shop' => 1));
         } else {
-            $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
-            $shopCollection = Db::getInstance()->ExecuteS($sql);
+            try {
+                $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
+                $shopCollection = Db::getInstance()->ExecuteS($sql);
+            } catch (PrestaShopDatabaseException $e) {
+                $shopCollection = array(array('id_shop' => 1));
+            }
         }
         foreach ($_REQUEST as $key => $value) {
             if (isset($this->fields[$key])) {

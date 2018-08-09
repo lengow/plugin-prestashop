@@ -295,14 +295,19 @@ class LengowOrderController extends LengowController
     public function assignNbOrderImported()
     {
         $sql = 'SELECT COUNT(*) as `total` FROM `' . _DB_PREFIX_ . 'lengow_orders`';
-        $nbOrderImported = Db::getInstance()->executeS($sql);
-        $this->context->smarty->assign('nb_order_imported', (int)$nbOrderImported[0]['total']);
+        try {
+            $totalOrders = Db::getInstance()->executeS($sql);
+            $nbOrderImported = (int)$totalOrders[0]['total'];
+        } catch (PrestaShopDatabaseException $e) {
+            $nbOrderImported = 0;
+        }
+        $this->context->smarty->assign('nb_order_imported', $nbOrderImported);
     }
 
     /**
      * Load all order information
      *
-     * @return array
+     * @return LengowList
      */
     public function loadTable()
     {
@@ -340,6 +345,7 @@ class LengowOrderController extends LengowController
                 array('id' => 'accepted', 'text' => $this->locale->t('order.screen.status_accepted')),
                 array('id' => 'waiting_shipment', 'text' => $this->locale->t('order.screen.status_waiting_shipment')),
                 array('id' => 'shipped', 'text' => $this->locale->t('order.screen.status_shipped')),
+                array('id' => 'refunded', 'text' => $this->locale->t('order.screen.status_refunded')),
                 array('id' => 'closed', 'text' => $this->locale->t('order.screen.status_closed')),
                 array('id' => 'canceled', 'text' => $this->locale->t('order.screen.status_canceled')),
             ),
@@ -463,6 +469,7 @@ class LengowOrderController extends LengowController
         $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
         $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
         $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
+        $nbPerPage = isset($_REQUEST['nb_per_page']) ? $_REQUEST['nb_per_page'] : '';
         $list = new LengowList(
             array(
                 'id' => 'order',
@@ -474,6 +481,7 @@ class LengowOrderController extends LengowController
                 'current_page' => $currentPage,
                 'order_value' => $orderValue,
                 'order_column' => $orderColumn,
+                'nb_per_page' => $nbPerPage,
                 'ajax' => true,
                 'sql' => array(
                     'select' => $select,
@@ -529,8 +537,13 @@ class LengowOrderController extends LengowController
     {
         $marketplaces = array();
         $sql = 'SELECT DISTINCT(marketplace_name) as name,
-        IFNULL(marketplace_label, marketplace_name) as marketplace_label FROM `' . _DB_PREFIX_ . 'lengow_orders`';
-        $collection = Db::getInstance()->executeS($sql);
+            IFNULL(marketplace_label, marketplace_name) as marketplace_label
+            FROM `' . _DB_PREFIX_ . 'lengow_orders`';
+        try {
+            $collection = Db::getInstance()->executeS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            $collection = array();
+        }
         foreach ($collection as $row) {
             $marketplaces[] = array('id' => $row['name'], 'text' => $row['marketplace_label']);
         }
@@ -546,7 +559,11 @@ class LengowOrderController extends LengowController
     {
         $shops = array();
         $sql = 'SELECT id_shop, name FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
-        $collection = Db::getInstance()->ExecuteS($sql);
+        try {
+            $collection = Db::getInstance()->ExecuteS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            $collection = array();
+        }
         foreach ($collection as $row) {
             $shops[] = array('id' => $row['id_shop'], 'text' => $row['name']);
         }
@@ -570,7 +587,7 @@ class LengowOrderController extends LengowController
         if (empty($value)) {
             $value = 'not_synchronized';
         }
-        return '<span class="lgw-label lgw-label_' . $value . '">'
+        return '<span class="lgw-label lgw-label-' . $value . '">'
         . LengowMain::decodeLogMessage('order.screen.status_' . $value) . '</span>';
     }
 
@@ -634,17 +651,21 @@ class LengowOrderController extends LengowController
     public static function displayLogStatus($key, $value, $item)
     {
         if ($item[$key] && $item['order_process_state'] != LengowOrder::PROCESS_STATE_FINISH) {
-            $errorMessage = array();
+            $errorMessages = array();
             $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
             if (count($logCollection) > 0) {
                 foreach ($logCollection as $row) {
-                    $errorMessage[] = LengowMain::decodeLogMessage(LengowMain::cleanData($row['message']));
+                    if ($row['message'] != '') {
+                        $errorMessages[] = LengowMain::cleanData(LengowMain::decodeLogMessage($row['message']));
+                    } else {
+                        $errorMessages[] = LengowMain::decodeLogMessage('order.screen.no_error_message');
+                    }
                 }
             }
             $link = new LengowLink();
             if ($item[$key] == '2') {
                 $message = LengowMain::decodeLogMessage('order.screen.action_sent_not_work')
-                    . '<br/>' . join('<br/>', $errorMessage);
+                    . '<br/>' . join('<br/>', $errorMessages);
                 $value = '<a href="#"
                     class="lengow_re_send lengow_link_tooltip lgw-btn lgw-btn-white"
                     data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder', true) . '"
@@ -656,7 +677,7 @@ class LengowOrderController extends LengowController
                     >' . LengowMain::decodeLogMessage('order.screen.not_sent') . ' <i class="fa fa-refresh"></i></a>';
             } else {
                 $message = LengowMain::decodeLogMessage('order.screen.order_not_imported')
-                    . '<br/>' . join('<br/>', $errorMessage);
+                    . '<br/>' . join('<br/>', $errorMessages);
                 $value = '<a href="#"
                     class="lengow_re_import lengow_link_tooltip lgw-btn lgw-btn-white"
                     data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder', true) . '"

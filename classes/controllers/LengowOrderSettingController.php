@@ -66,6 +66,9 @@ class LengowOrderSettingController extends LengowController
         $action = Tools::getValue('action');
         $idCountry = Tools::getIsset('id_country') ? (int)Tools::getValue('id_country') : false;
         $defaultCarriers = Tools::getIsset('default_carriers') ? Tools::getValue('default_carriers') : array();
+        $methodMarketplaces = Tools::getIsset('method_marketplaces')
+            ? Tools::getValue('method_marketplaces')
+            : array();
         $carrierMarketplaces = Tools::getIsset('carrier_marketplaces')
             ? Tools::getValue('carrier_marketplaces')
             : array();
@@ -89,6 +92,7 @@ class LengowOrderSettingController extends LengowController
             case 'process':
                 // save carrier matching
                 if ($idCountry) {
+                    // save default carriers
                     foreach ($defaultCarriers as $idMarketplace => $value) {
                         $idCarrier = isset($value['carrier']) ? (int)$value['carrier'] : null;
                         $idCarrierMarketplace = isset($value['carrier_marketplace'])
@@ -105,6 +109,28 @@ class LengowOrderSettingController extends LengowController
                             LengowCarrier::insertDefaultCarrier($idCountry, (int)$idMarketplace, $params);
                         }
                     }
+                    // save marketplace methods
+                    foreach ($methodMarketplaces as $idMarketplace => $value) {
+                        foreach ($value as $idMethodMarketplace => $idCarrier) {
+                            $idCarrier = (int)$idCarrier > 0 ? (int)$idCarrier : null;
+                            $id = LengowMethod::getIdMarketplaceMethodCountry(
+                                $idCountry,
+                                $idMarketplace,
+                                $idMethodMarketplace
+                            );
+                            if ($id) {
+                                LengowMethod::updateMarketplaceMethodCountry($id, $idCarrier);
+                            } else {
+                                LengowMethod::insertMarketplaceMethodCountry(
+                                    $idCountry,
+                                    $idMarketplace,
+                                    $idCarrier,
+                                    $idMethodMarketplace
+                                );
+                            }
+                        }
+                    }
+                    // save marketplace carriers
                     foreach ($carrierMarketplaces as $idMarketplace => $value) {
                         foreach ($value as $idCarrier => $idCarrierMarketplace) {
                             $idCarrierMarketplace = (int)$idCarrierMarketplace > 0 ? (int)$idCarrierMarketplace : null;
@@ -137,7 +163,7 @@ class LengowOrderSettingController extends LengowController
                 );
                 break;
             default:
-                LengowSync::syncCarrier();
+                LengowSync::syncCarrier(true);
                 break;
         }
     }

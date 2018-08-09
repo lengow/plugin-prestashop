@@ -92,6 +92,8 @@ class LengowProduct extends Product
      * @param integer $idProduct Prestashop product id
      * @param integer $idLang Prestashop lang id
      * @param array $params all export parameters
+     *
+     * @throws LengowException
      */
     public function __construct($idProduct = null, $idLang = null, $params = array())
     {
@@ -309,6 +311,23 @@ class LengowProduct extends Product
                 return $this->available_now;
             case 'url':
                 if (version_compare(_PS_VERSION_, '1.5', '>')) {
+                    if (version_compare(_PS_VERSION_, '1.7.1', '>=')) {
+                        $idProductAttribute = !$idProductAttribute
+                            ? $this->getDefaultAttribute($this->id)
+                            : $idProductAttribute;
+                        return  $this->context->link->getProductLink(
+                            $this,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            $idProductAttribute,
+                            true,
+                            false,
+                            true
+                        );
+                    }
                     if (version_compare(_PS_VERSION_, '1.6.1.0', '>')) {
                         return $this->context->link->getProductLink(
                             $this,
@@ -380,7 +399,7 @@ class LengowProduct extends Product
                 if ($this->additional_shipping_cost > 0) {
                     $shippingCost += $this->additional_shipping_cost;
                 }
-                // Tax calcul
+                // Tax calculation
                 $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
                 if (_PS_VERSION_ < '1.5') {
                     $idTaxRulesGroup = $this->carrier->id_tax_rules_group;
@@ -438,6 +457,23 @@ class LengowProduct extends Product
                 return LengowMain::cleanData($this->meta_description);
             case 'url_rewrite':
                 if (version_compare(_PS_VERSION_, '1.4', '>')) {
+                    if (version_compare(_PS_VERSION_, '1.7.1', '>=')) {
+                        $idProductAttribute = !$idProductAttribute
+                            ? $this->getDefaultAttribute($this->id)
+                            : $idProductAttribute;
+                        return $this->context->link->getProductLink(
+                            $this,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            $idProductAttribute,
+                            true,
+                            false,
+                            true
+                        );
+                    }
                     if (version_compare(_PS_VERSION_, '1.6.1.0', '>')) {
                         return $this->context->link->getProductLink(
                             $this,
@@ -766,7 +802,11 @@ class LengowProduct extends Product
                 AND agl.`id_lang` = ' . (int)$idLang . '
 				ORDER BY agl.`public_name`, al.`name`';
         }
-        return Db::getInstance()->executeS($sql);
+        try {
+            return Db::getInstance()->executeS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            return array();
+        }
     }
 
     /**
@@ -803,28 +843,32 @@ class LengowProduct extends Product
              WHERE id_product = ' . (int)$productId . ' AND id_shop = ' . (int)$shopId;
             Db::getInstance()->Execute($sql);
         } else {
-            $sql = 'SELECT id_product FROM ' . _DB_PREFIX_ . 'lengow_product
-            WHERE id_product = ' . (int)$productId . ' AND id_shop = ' . (int)$shopId;
-            $results = Db::getInstance()->ExecuteS($sql);
-            if (count($results) == 0) {
-                if (_PS_VERSION_ < '1.5') {
-                    Db::getInstance()->autoExecute(
-                        _DB_PREFIX_ . 'lengow_product',
-                        array(
-                            'id_product' => (int)$productId,
-                            'id_shop' => (int)$shopId
-                        ),
-                        'INSERT'
-                    );
-                } else {
-                    Db::getInstance()->insert(
-                        'lengow_product',
-                        array(
-                            'id_product' => (int)$productId,
-                            'id_shop' => (int)$shopId
-                        )
-                    );
+            try {
+                $sql = 'SELECT id_product FROM ' . _DB_PREFIX_ . 'lengow_product
+                    WHERE id_product = ' . (int)$productId . ' AND id_shop = ' . (int)$shopId;
+                $results = Db::getInstance()->ExecuteS($sql);
+                if (count($results) == 0) {
+                    if (_PS_VERSION_ < '1.5') {
+                        return Db::getInstance()->autoExecute(
+                            _DB_PREFIX_ . 'lengow_product',
+                            array(
+                                'id_product' => (int)$productId,
+                                'id_shop' => (int)$shopId
+                            ),
+                            'INSERT'
+                        );
+                    } else {
+                        return Db::getInstance()->insert(
+                            'lengow_product',
+                            array(
+                                'id_product' => (int)$productId,
+                                'id_shop' => (int)$shopId
+                            )
+                        );
+                    }
                 }
+            } catch (PrestaShopDatabaseException $e) {
+                return false;
             }
         }
         return true;
@@ -1160,7 +1204,11 @@ class LengowProduct extends Product
     public static function getMaxImageType()
     {
         $sql = 'SELECT name FROM ' . _DB_PREFIX_ . 'image_type WHERE products = 1 ORDER BY width DESC';
-        $result = Db::getInstance()->executeS($sql);
+        try {
+            $result = Db::getInstance()->executeS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            $result = false;
+        }
         if ($result) {
             return $result[0]['name'];
         } else {

@@ -42,7 +42,7 @@ class LengowCart extends Cart
      *
      * @param array $products list of products to be added
      *
-     * @throws LengowException Cannot add product to cart / No quantity for product
+     * @throws Exception|LengowException Cannot add product to cart / No quantity for product
      *
      * @return boolean
      */
@@ -112,6 +112,8 @@ class LengowCart extends Cart
      * @param integer $idAddressDelivery Prestashop address delivery id
      * @param Shop $shop Shop instance
      * @param boolean $autoAddCartRule add auto cart rule
+     *
+     * @throws Exception|PrestaShopDatabaseException
      *
      * @return boolean
      */

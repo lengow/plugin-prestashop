@@ -97,6 +97,7 @@ order.screen.order_not_imported|Gli ordini non sono stati importati in PrestaSho
 order.screen.action_sent|action %{action_type} spedito
 order.screen.action_waiting_return|Azione inviata in attesa di risposta
 order.screen.action_sent_not_work|Azione di invio alla marketplace fallita
+order.screen.no_error_message|Errore non identificato, contattare il supporto Lengow per maggiori informazioni
 order.screen.no_order_title|Il bello deve ancora venire!
 order.screen.no_order_description|I tuoi prodotti hanno una grande visibilità e le tue vendite stanno per esplodere!
 order.screen.action_success|Riuscito
@@ -121,8 +122,8 @@ order.table.order_item|Quantità
 order.table.total_paid|Totale
 order.table.extra|Extra
 order_setting.screen.carrier_management_title|Gestisci i metodi di spedizione per paese
-order_setting.screen.carrier_management_description|Alcuni ordini potrebbero non essere importati perché non é stato specificato il metodo di spedizione di default in uno dei paesi di spedizione.
-order_setting.screen.marketplace|MarketPlace
+order_setting.screen.carrier_management_description|Seleziona il corriere di default che vuoi utilizare per i tuoi ordini per ogni paese nel quale sei attivo. Poi fai corrispondere il tuo trasportatore marketplace con il corriere PrestaShop
+order_setting.screen.marketplace|Marketplace(s)
 order_setting.screen.see_delivery_countries|Vedi tutti i miei paesi di spedizione
 order_setting.screen.marketplace_matching_title|%{country_name} metodi di spedizione
 order_setting.screen.marketplace_matching_description|Qui é possibile scegliere diversi metodi di spedizione per ordini destinati in %{country_name} per ogni marketplace attivo nell'account.
@@ -135,6 +136,8 @@ order_setting.screen.default_carrier_marketplace|Il tuo trasportare di default p
 order_setting.screen.please_select_carrier_marketplace|Seleziona il codice trasportatore per %{marketplace_name}
 order_setting.screen.no_default_carrier_marketplace_selected|Nessun codice trasportatore di default selezionato
 order_setting.screen.tooltip_default_carrier|Non é stato ancora configurato il trasportatore di default per questo marketplace
+order_setting.screen.matching_method_marketplace|Fa corrispondere i metodi di trasporto della marketplace con i vostri corrieri Prestashop
+order_setting.screen.matching_carrier_marketplace|Fa corrispondere i vostri corrieri Prestashop con i corrieri proposti dalla marketplace
 order_setting.screen.no_carrier_enabled|Non c'è nessun trasportatore PrestaShop attivato per %{country_name}
 order_setting.screen.button_cancel|Cancella
 order_setting.screen.order_status_title|Ordini Stato

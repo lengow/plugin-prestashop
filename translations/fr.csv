@@ -97,6 +97,7 @@ order.screen.order_not_imported|Votre commande n'a pas été importée dans Pres
 order.screen.action_sent|Action %{action_type} envoyée
 order.screen.action_waiting_return|Action envoyée, en attente d'une réponse.
 order.screen.action_sent_not_work|Erreur sur l'action envoyée à la place de marché.
+order.screen.no_error_message|Erreur non identifiée, merci de contacter le support Lengow pour plus d'informations
 order.screen.no_order_title|Le meilleur est encore à venir ! 
 order.screen.no_order_description|Vos produits sont bien visibles, vos ventes sont sur le point de décoller
 order.screen.action_success|Succès
@@ -135,6 +136,8 @@ order_setting.screen.default_carrier_marketplace|Votre transporteur %{marketplac
 order_setting.screen.please_select_carrier_marketplace|Sélectionnez le code transporteur pour %{marketplace_name}
 order_setting.screen.no_default_carrier_marketplace_selected|Pas de code transporteur par défaut défini
 order_setting.screen.tooltip_default_carrier|Vous n'avez pas encore configuré le transporteur par défaut pour cette place de marché
+order_setting.screen.matching_method_marketplace|Faites correspondre les méthodes de transport de la place de marché avec vos transporteurs PrestaShop
+order_setting.screen.matching_carrier_marketplace|Faites correspondre vos transporteurs PrestaShop avec les transporteurs proposés par la place de marché
 order_setting.screen.no_carrier_enabled|You don't have any Prestashop carriers selected for %{country_name}
 order_setting.screen.button_cancel|Annuler
 order_setting.screen.order_status_title|Statut des commandes

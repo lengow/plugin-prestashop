@@ -43,7 +43,13 @@ if (LengowInstall::checkTableExists('lengow_product')
     && LengowInstall::checkFieldExists('lengow_product', 'id_shop_group')
     && LengowInstall::checkFieldExists('lengow_product', 'id_lang')
 ) {
-    $idProducts = Db::getInstance()->executeS('SELECT DISTINCT id_product FROM `' . _DB_PREFIX_ . 'lengow_product`');
+    try {
+        $idProducts = Db::getInstance()->executeS(
+            'SELECT DISTINCT id_product FROM `' . _DB_PREFIX_ . 'lengow_product`'
+        );
+    } catch (PrestaShopDatabaseException $e) {
+        $idProducts = array();
+    }
     if (count($idProducts) > 0) {
         Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'lengow_product SET id_shop = 1');
         if (LengowShop::isFeatureActive()) {

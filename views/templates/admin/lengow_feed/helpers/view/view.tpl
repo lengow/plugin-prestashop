@@ -72,7 +72,11 @@
                 </div>
                 <div class="lengow_feed_block_footer">
                     <div class="lengow_feed_block_footer_content" style="{if !$shop['option_selected']}display:none;{/if}">
-                        {html_entity_decode($shop['list']|escape:'htmlall':'UTF-8')}
+                        {if $version > '1.7' && isset($toolbox) && $toolbox }
+                            {$shop['list']|escape:'htmlall':'UTF-8' nofilter}
+                        {else}
+                            {html_entity_decode($shop['list']|escape:'htmlall':'UTF-8')}
+                        {/if}
                     </div>
                 </div>
             </div>

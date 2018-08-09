@@ -83,7 +83,7 @@ body.lgw-home-iframe .lgw-content-section p {
   top: 0px;
 }
 
-.adminlengowhome .lgw-label_red {
+.adminlengowhome .lgw-label.red {
   padding: 0 8px;
 }
 
@@ -380,12 +380,13 @@ a.lgw-box-link-matching:hover {
   font-weight: 700;
 }
 
-.lgw-container .marketplace-name {
-  font-weight: 700;
-}
-
 .lgw-container .carrier-name {
   margin-top: 10px;
+}
+
+.lgw-container .matching-subtitle {
+  color: #585a69;
+  font-weight: 600;
 }
 
 #marketplace_matching .fa-angle-left {
@@ -430,6 +431,9 @@ a.lgw-box-link-matching:hover {
 
 #marketplace_matching a.cancel {
   margin-left: 30px;
+  vertical-align: top;
+  margin-top: 40px;
+  display: inline-block;
 }
 
 #marketplace_matching span.label-required {
@@ -456,7 +460,13 @@ a.lgw-box-link-matching:hover {
   color: #828282;
 }
 
-.default_carrier_missing{
+.default_carrier_missing {
   color: #e55a4d;
   font-size: 13px;
+}
+
+#lengow_wrapper_delete button.btn-link {
+  vertical-align: top;
+  display: inline-block;
+  color: #00aeef;
 }

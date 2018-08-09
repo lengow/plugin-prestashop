@@ -147,8 +147,10 @@ class LengowSync
         }
         LengowMarketplace::syncMarketplaces();
         LengowCarrier::syncCarrierMarketplace();
+        LengowMethod::syncMethodMarketplace();
         LengowCarrier::createDefaultCarrier();
         LengowCarrier::cleanCarrierMarketplaceMatching();
+        LengowMethod::cleanMethodMarketplaceMatching();
         LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKET_UPDATE', date('Y-m-d H:i:s'));
         return true;
     }

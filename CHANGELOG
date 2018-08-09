@@ -1,4 +1,20 @@
 =============================================================
+Version 3.0.2
+=============================================================
+
+    - Feature: Adding refunded status to order filters
+    - Feature: Add drop-down list for number of items per page for products & orders
+    - Feature: Protocol change to https for API calls
+    - Feature: Implementation of the matching of shipping methods in carrier matching
+    - Feature: Managing delivery_date and custom_carrier parameters for sending action
+    - Feature: Check and complete an order not imported if it is canceled or refunded
+    - Bugfix: Optimizing the display of errors in the order screen
+    - Bugfix: [action] Correction of the dates of creation and update of the actions
+    - Bugfix: [action] Deleting the shipping_date parameter in the action check request
+    - Bugfix: Deleting the indefinite index user_id in the connector
+    - Bugfix: Language code recovery for the Lengow iframe
+
+=============================================================
 Version 3.0.1
 =============================================================
 
@@ -32,9 +48,11 @@ Version 3.0.0
 Version 2.2.10
 =============================================================
 
+    - Feature: [export] Added product URL rewriting compatibility with Prestashop > 1.7.1
 	- Feature: [import] Added compatibility with the new 4.x version of the Colissimo Simplicite plugin
 	- Bugfix: [export] Get a specific ean, upc or reference when product attribute is equal at 1
 	- Bugfix: [import] Get delivery phone number when billing and shipping addresses are the same
+	- Bugfix: check IP server for the checklist of plugin configuration check
 
 =============================================================
 Version 2.2.9

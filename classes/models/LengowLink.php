@@ -30,11 +30,9 @@ class LengowLink extends LinkCore
     protected static $forceLink;
 
     /**
-     * Reset option
+     * Set force link for toolbox
      *
      * @param boolean $forceLink use in toolbox to get specific link
-     *
-     * @return boolean Result of reset process
      */
     public static function forceLink($forceLink)
     {

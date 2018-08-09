@@ -56,7 +56,7 @@
                         <h2>
                             {$locale->t('dashboard.screen.orders_title')|escape:'htmlall':'UTF-8'}
                             {if $total_pending_order > 0}
-                                <span class="lgw-label lgw-label_red">{$total_pending_order|escape:'htmlall':'UTF-8'}</span>
+                                <span class="lgw-label lgw-label red">{$total_pending_order|escape:'htmlall':'UTF-8'}</span>
                             {/if}
                         </h2>
                         <p>{$locale->t('dashboard.screen.orders_text')|escape:'htmlall':'UTF-8'}</p>

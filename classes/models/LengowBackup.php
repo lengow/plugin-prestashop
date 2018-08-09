@@ -73,7 +73,11 @@ class LengowBackup extends Backup
             // Export the table schema
             // This line is required by Prestashop validator
             $sql = str_replace('IF NOT EXISTS', '', 'SHOW CREATE TABLE IF NOT EXISTS');
-            $schema = Db::getInstance()->executeS($sql . '`' . $table . '`');
+            try {
+                $schema = Db::getInstance()->executeS($sql . '`' . $table . '`');
+            } catch (PrestaShopDatabaseException $e) {
+                return false;
+            }
             if (count($schema) != 1 || !isset($schema[0]['Table']) || !isset($schema[0]['Create Table'])) {
                 fclose($fp);
                 $this->delete();
@@ -84,7 +88,11 @@ class LengowBackup extends Backup
             fwrite($fp, '/* Scheme for table ' . $schema[0]['Table'] . " */\n");
             fwrite($fp, $schema[0]['Create Table'] . ";\n\n");
             if (!in_array($schema[0]['Table'], $ignoreInsertTable)) {
-                $data = Db::getInstance()->executeS('SELECT * FROM `' . $schema[0]['Table'] . '`', false);
+                try {
+                    $data = Db::getInstance()->executeS('SELECT * FROM `' . $schema[0]['Table'] . '`', false);
+                } catch (PrestaShopDatabaseException $e) {
+                    return false;
+                }
                 $sizeof = DB::getInstance()->NumRows();
                 $lines = explode("\n", $schema[0]['Create Table']);
 

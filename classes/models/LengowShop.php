@@ -26,6 +26,10 @@ class LengowShop extends Shop
 {
     /**
      * Construct
+     *
+     * @param integer $id Prestashop shop id
+     * @param integer $idLang Prestashop lang id
+     * @param integer $idShop Prestashop shop id
      */
     public function __construct($id = null, $idLang = null, $idShop = null)
     {
@@ -66,8 +70,12 @@ class LengowShop extends Shop
             if ($currentShop = Shop::getContextShopID()) {
                 $results = array(array('id_shop' => $currentShop));
             } else {
-                $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
-                $results = Db::getInstance()->ExecuteS($sql);
+                try {
+                    $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
+                    $results = Db::getInstance()->ExecuteS($sql);
+                } catch (PrestaShopDatabaseException $e) {
+                    return false;
+                }
             }
         }
         foreach ($results as $row) {
@@ -95,7 +103,11 @@ class LengowShop extends Shop
                 $results = array(array('id_shop' => $currentShop));
             } else {
                 $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1 ORDER BY id_shop';
-                $results = Db::getInstance()->ExecuteS($sql);
+                try {
+                    $results = Db::getInstance()->ExecuteS($sql);
+                } catch (PrestaShopDatabaseException $e) {
+                    $results = array();
+                }
             }
         }
         return $results;

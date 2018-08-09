@@ -70,6 +70,11 @@ class LengowList
     protected $currentPage;
 
     /**
+     * @var array choice of number of results per page
+     */
+    protected $nbPerPageList;
+
+    /**
      * @var integer number of results per page
      */
     protected $nbPerPage;
@@ -136,6 +141,8 @@ class LengowList
 
     /**
      * Construct
+     *
+     * @param array $params list of parameters
      */
     public function __construct($params)
     {
@@ -147,7 +154,8 @@ class LengowList
         $this->controller = $params['controller'];
         $this->shopId = isset($params['shop_id']) ? $params['shop_id'] : null;
         $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
-        $this->nbPerPage = isset($params['nbPerPage']) ? $params['nbPerPage'] : 20;
+        $this->nbPerPageList = array(20, 50, 100, 200);
+        $this->nbPerPage = (isset($params['nb_per_page']) && $params['nb_per_page'] != null) ? $params['nb_per_page'] : 20;
         $this->sql = $params['sql'];
         $this->ajax = isset($params['ajax']) ? (bool)$params['ajax'] : false;
         $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
@@ -376,6 +384,7 @@ class LengowList
         $html = '<form id="form_table_' . $this->id . '" class="lengow_form_table"
         data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax) . '">';
         $html .= '<input type="hidden" name="p" value="' . $this->currentPage . '" />';
+        $html .= '<input type="hidden" name="nb_per_page" value="' . $this->nbPerPage . '" />';
         $html .= '<input type="hidden" name="order_value" value="' . $this->orderValue . '" />';
         $html .= '<input type="hidden" name="order_column" value="' . $this->orderColumn . '" />';
         $html .= $this->displayHeader($this->orderColumn) . $this->displayContent() . $this->displayFooter();
@@ -393,10 +402,18 @@ class LengowList
     {
         $sql = $this->buildQuery();
         $sqlTotal = $this->buildQuery(true);
-        $this->collection = Db::getInstance()->executeS($sql, true, false);
+        try {
+            $this->collection = Db::getInstance()->executeS($sql, true, false);
+        } catch (PrestaShopDatabaseException $e) {
+            $this->collection = array();
+        }
         if (isset($this->sql['select_having']) && $this->sql['select_having']) {
-            Db::getInstance()->executeS($sqlTotal);
-            $this->total = Db::getInstance()->NumRows();
+            try {
+                Db::getInstance()->executeS($sqlTotal);
+                $this->total = Db::getInstance()->NumRows();
+            } catch (PrestaShopDatabaseException $e) {
+                $this->total = 0;
+            }
         } else {
             $this->total = Db::getInstance()->getValue($sqlTotal, false);
         }
@@ -431,7 +448,11 @@ class LengowList
         $tmp = $this->sql["where"];
         $this->sql["where"][] = $where;
         $sql = $this->buildQuery();
-        $collection = Db::getInstance()->executeS($sql, true, false);
+        try {
+            $collection = Db::getInstance()->executeS($sql, true, false);
+        } catch (PrestaShopDatabaseException $e) {
+            $collection = array();
+        }
         $this->sql["where"] = $tmp;
         return $collection[0];
     }
@@ -592,6 +613,14 @@ class LengowList
         if ($totalPage <= 1) {
             return $html . '</nav>';
         }
+        $html .= '<div id="lgw-pagination-select">';
+        $html .= '<select class="lgw-pagination-select-item" name="nb_per_page">';
+        foreach ($this->nbPerPageList as $itemPerPage) {
+            $html .= '<option value="' . $itemPerPage . '" ';
+            $html .=  ($this->nbPerPage == $itemPerPage) ? 'selected' : '';
+            $html .=  '>' . $itemPerPage . '</option>';
+        }
+        $html .= '</select></div>';
         $html .= '<ul class="lgw-pagination-btns lgw-pagination-arrow">';
         $class = ($this->currentPage == 1) ? 'disabled' : '';
         $html .= '<li class="' . $class . '"><a href="#" data-page="' . ($this->currentPage - 1) . '"
