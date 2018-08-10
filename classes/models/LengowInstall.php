@@ -218,7 +218,7 @@ class LengowInstall
      */
     public function update($oldVersion = false)
     {
-        if (!self::isInstallationInProgress()) {
+        if (self::isInstallationInProgress()) {
             return true;
         }
         if ($oldVersion) {
