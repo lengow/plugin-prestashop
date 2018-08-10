@@ -25,7 +25,7 @@
 /classes/models/LengowFeed.php|63e52b29456e3402cfaa5e8472f7f318
 /classes/models/LengowCheck.php|a1ef4482c94d869438de225373cefd65
 /classes/models/LengowBackup.php|b925fe77481a09e3b1cda3506d809bc0
-/classes/models/LengowInstall.php|d3a6ce1e8c9fdc1368b4d84bca885de5
+/classes/models/LengowInstall.php|370a6982a3ca25549482f23a69d411ae
 /classes/models/LengowOrderDetail.php|4662cac96615a0a8287a6f2a607bc4bd
 /classes/models/LengowList.php|de286e67491fe948bd1e0beeaee18cf9
 /classes/models/LengowCarrier.php|555ebd77939086c7d830f5cb38091356
@@ -49,7 +49,7 @@
 /classes/models/LengowAddress.php|a382676c3e6fa40eaac0a9afcacd17e1
 /classes/models/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/models/LengowProduct.php|8cd63590da4e8f6607e25c7c76fee95d
-/classes/models/LengowConfiguration.php|5d22845d4fe452a07d74f4177b9391c9
+/classes/models/LengowConfiguration.php|26a281adc2bab76738e2417f76d5105c
 /classes/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/controllers/LengowController.php|22f041328b5dbd01ba03d29b70b48a76
 /classes/controllers/LengowHomeController.php|e613ab0dddecf52440768a813c814d54

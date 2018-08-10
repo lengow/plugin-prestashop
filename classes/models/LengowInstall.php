@@ -218,6 +218,9 @@ class LengowInstall
      */
     public function update($oldVersion = false)
     {
+        if (!self::isInstallationInProgress()) {
+            return true;
+        }
         if ($oldVersion) {
             self::$oldVersion = $oldVersion;
             LengowMain::log(
@@ -369,6 +372,7 @@ class LengowInstall
      */
     public static function setInstallationStatus($status)
     {
+        LengowConfiguration::updateGlobalValue('LENGOW_INSTALLATION_IN_PROGRESS', $status);
         self::$installationStatus = $status;
     }
 
@@ -379,7 +383,10 @@ class LengowInstall
      */
     public static function isInstallationInProgress()
     {
-        return self::$installationStatus;
+        $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration
+            WHERE `name` = \'LENGOW_INSTALLATION_IN_PROGRESS\'';
+        $value = Db::getInstance()->getRow($sql);
+        return $value ? (bool)$value['value'] : false;
     }
 
     /**
