@@ -13,6 +13,7 @@ Version 3.0.2
     - Bugfix: [action] Deleting the shipping_date parameter in the action check request
     - Bugfix: Deleting the indefinite index user_id in the connector
     - Bugfix: Language code recovery for the Lengow iframe
+    - Bugfix: Lengow multi-tab installation problem in the Prestashop menu
 
 =============================================================
 Version 3.0.1

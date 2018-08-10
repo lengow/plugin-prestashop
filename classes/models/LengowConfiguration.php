@@ -276,6 +276,9 @@ class LengowConfiguration extends Configuration
                     'type' => 'text',
                     'global' => true,
                 ),
+                'LENGOW_INSTALLATION_IN_PROGRESS' => array(
+                    'export' => false,
+                ),
                 'LENGOW_ACCOUNT_STATUS' => array(
                     'export' => false,
                 ),
