@@ -293,13 +293,13 @@ class LengowCarrier extends Carrier
                         } else {
                             $params = array();
                             if (!is_null($carrier->label) && Tools::strlen($carrier->label) > 0) {
-                                $params['carrier_marketplace_label'] = $carrier->label;
+                                $params['carrier_marketplace_label'] = pSQL($carrier->label);
                             }
                             if (isset($carrier->lengow_code)
                                 && !is_null($carrier->lengow_code)
                                 && Tools::strlen($carrier->lengow_code) > 0
                             ) {
-                                $params['carrier_lengow_code'] = $carrier->lengow_code;
+                                $params['carrier_lengow_code'] = pSQL($carrier->lengow_code);
                             }
                             if (!empty($params)) {
                                 self::updateCarrierMarketplace($idCarrierMarketplace, $params);

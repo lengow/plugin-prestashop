@@ -96,13 +96,13 @@ class LengowMethod
                         } else {
                             $params = array();
                             if (!is_null($method->label) && Tools::strlen($method->label) > 0) {
-                                $params['method_marketplace_label'] = $method->label;
+                                $params['method_marketplace_label'] = pSQL($method->label);
                             }
                             if (isset($method->lengow_code)
                                 && !is_null($method->lengow_code)
                                 && Tools::strlen($method->lengow_code) > 0
                             ) {
-                                $params['method_lengow_code'] = $method->lengow_code;
+                                $params['method_lengow_code'] = pSQL($method->lengow_code);
                             }
                             if (!empty($params)) {
                                 self::updateMethodMarketplace($idMethodMarketplace, $params);
