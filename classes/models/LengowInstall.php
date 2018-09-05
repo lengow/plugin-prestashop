@@ -35,9 +35,12 @@ class LengowInstall
         'lengow_actions',
         'lengow_marketplace',
         'lengow_carrier_marketplace',
+        'lengow_method_marketplace',
         'lengow_marketplace_carrier_marketplace',
+        'lengow_marketplace_method_marketplace',
         'lengow_default_carrier',
         'lengow_marketplace_carrier_country',
+        'lengow_marketplace_method_country',
     );
 
     /**
