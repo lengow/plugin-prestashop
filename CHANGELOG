@@ -4,6 +4,7 @@ Version 3.0.3
 
     - Bugfix: Switching from boolean to integer for checkbox type data
     - Bugfix: Additional verification for non-case sensitive Databases
+    - Bugfix: [export] Improved recovery of the store's export settings
 
 =============================================================
 Version 3.0.2
