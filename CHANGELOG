@@ -3,6 +3,7 @@ Version 3.0.3
 =============================================================
 
     - Bugfix: Switching from boolean to integer for checkbox type data
+    - Bugfix: Additional verification for non-case sensitive Databases
 
 =============================================================
 Version 3.0.2

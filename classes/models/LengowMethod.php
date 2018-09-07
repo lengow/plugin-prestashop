@@ -34,14 +34,22 @@ class LengowMethod
     public static function getIdMethodMarketplace($methodMarketplaceName)
     {
         try {
-            $result = Db::getInstance()->ExecuteS(
-                'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_method_marketplace
+            $results = Db::getInstance()->ExecuteS(
+                'SELECT id, method_marketplace_name FROM ' . _DB_PREFIX_ . 'lengow_method_marketplace
                 WHERE method_marketplace_name = "' . pSQL($methodMarketplaceName) . '"'
             );
-            return count($result) > 0 ? (int)$result[0]['id'] : false;
         } catch (PrestaShopDatabaseException $e) {
-            return false;
+            $results = array();
         }
+        // Additional verification for non-case sensitive Databases
+        if (count($results) > 0) {
+            foreach ($results as $result) {
+                if ($result['method_marketplace_name'] === $methodMarketplaceName) {
+                    return (int)$result['id'];
+                }
+            }
+        }
+        return false;
     }
 
     /**
