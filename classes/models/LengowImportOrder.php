@@ -1070,6 +1070,7 @@ class LengowImportOrder
     protected function getCarrierId()
     {
         $idCarrier = false;
+        $matchingFound = false;
         if (!isset($this->shippingAddress->id_country)) {
             throw new LengowException(
                 LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country')
@@ -1090,6 +1091,7 @@ class LengowImportOrder
                 $idMarketplace,
                 $this->carrierName
             );
+            $matchingFound = $idCarrier ? 'carrier' : false;
         }
         // get carrier id by method marketplace code
         if (!$idCarrier && $this->carrierMethod) {
@@ -1098,6 +1100,7 @@ class LengowImportOrder
                 $idMarketplace,
                 $this->carrierMethod
             );
+            $matchingFound = $idCarrier ? 'method' : false;
         }
         if (!$idCarrier) {
             // get default carrier by country
@@ -1116,6 +1119,36 @@ class LengowImportOrder
                 );
             }
         }
+        $carrier = new Carrier($idCarrier);
+        if ($matchingFound) {
+            LengowMain::log(
+                'Import',
+                LengowMain::setLogMessage(
+                    'log.import.match_carrier_found',
+                    array(
+                        'carrier_name' => $carrier->name,
+                        'id_carrier' => $carrier->id,
+                        'field_name' => $matchingFound,
+                        'field_value' => $matchingFound === 'carrier' ? $this->carrierName : $this->carrierMethod
+                    )
+                ),
+                $this->logOutput,
+                $this->marketplaceSku
+            );
+        } else {
+            LengowMain::log(
+                'Import',
+                LengowMain::setLogMessage(
+                    'log.import.match_default_carrier',
+                    array(
+                        'carrier_name' => $carrier->name,
+                        'id_carrier' => $carrier->id
+                    )
+                ),
+                $this->logOutput,
+                $this->marketplaceSku
+            );
+        }
         return $idCarrier;
     }
 
@@ -1127,31 +1160,19 @@ class LengowImportOrder
     protected function checkCarrierCompatibility($order)
     {
         try {
-            $carrierName = 'none';
-            if (!is_null($this->carrierName)) {
-                $carrierName = $this->carrierName;
-            } elseif (!is_null($this->carrierMethod)) {
-                $carrierName = $this->carrierMethod;
-            }
             $carrierCompatibility = LengowCarrier::carrierCompatibility(
                 $order->id_customer,
                 $order->id_cart,
                 $order->id_carrier,
                 $this->shippingAddress
             );
-            if ($carrierCompatibility < 0) {
-                throw new LengowException(
-                    LengowMain::setLogMessage(
-                        'log.import.error_carrier_not_found',
-                        array('carrier_name' => $carrierName)
-                    )
-                );
-            } elseif ($carrierCompatibility > 0) {
+            if ($carrierCompatibility > 0) {
+                $carrier = new Carrier($order->id_carrier);
                 LengowMain::log(
                     'Import',
                     LengowMain::setLogMessage(
                         'log.import.carrier_compatibility_ensured',
-                        array('carrier_name' => $carrierName)
+                        array('carrier_name' => $carrier->name)
                     ),
                     $this->logOutput,
                     $this->marketplaceSku

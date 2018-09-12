@@ -377,16 +377,17 @@ log.import.generate_unique_email|generate a unique email %{email}
 log.import.product_be_found|product id %{id_full} found with field %{attribute_name} (%{attribute_value})
 log.import.product_advanced_search|product not found with field %{attribute_name} (%{attribute_value}). Using advanced search
 log.import.product_state_canceled|product %{product_id} could not be added to cart - status: %{state_product}
+log.import.match_carrier_found|carrier "%{carrier_name}" (CARRIER ID %{id_carrier}) found with field %{field_name} (%{field_value})
+log.import.match_default_carrier|no carrier matching found, carrier "%{carrier_name}" (CARRIER ID %{id_carrier}) selected by default
 log.import.error_order_state_updated|error while updating status: %{error_message}
 log.import.error_no_package|import order failed - Lengow error: no package in the order
 log.import.error_wrong_package_number|import order failed - wrong package number
 log.import.error_no_delivery_address|Import order failed - Lengow error: no delivery address in the order
-log.import.error_carrier_not_found|carrier %{carrier_name} could not be found in your PrestaShop
 log.import.error_mondial_relay_not_found|relay %{id_relay} could not be found
 log.import.error_mondial_relay_missing_file|missing file %{ps_module_dir}mondialrelay/classes/MRRelayDetail.php
 log.import.error_colissimo_missing_file|missing file %{file_path}
 log.import.error_default_carrier_not_active|import failed - default carrier not active
-log.import.carrier_compatibility_ensured|carrier compatibility ensured with carrier %{carrier_name}
+log.import.carrier_compatibility_ensured|carrier compatibility ensured with carrier "%{carrier_name}"
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
 log.order_action.check_completed_action|check completed actions
