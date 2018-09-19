@@ -62,7 +62,7 @@ class LengowLog extends LengowFile
         $decodedMessage = LengowMain::decodeLogMessage($message, 'en');
         $log = date('Y-m-d H:i:s');
         $log .= ' - ' . (empty($category) ? '' : '[' . $category . '] ');
-        $log .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ' : ');
+        $log .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ': ');
         $log .= $decodedMessage . "\r\n";
         if ($logOutput) {
             echo $log . '<br />';

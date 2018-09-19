@@ -183,7 +183,7 @@ class LengowConfigurationForm
                         if (isset($this->fields[$key]['type']) &&
                             $this->fields[$key]['type'] == 'checkbox' && $shopValue == 'on'
                         ) {
-                            $shopValue = true;
+                            $shopValue = 1;
                         }
                         $this->checkAndLog($key, $shopValue, $idShop);
                         LengowConfiguration::updateValue($key, $shopValue, false, null, $idShop);
@@ -196,7 +196,7 @@ class LengowConfigurationForm
                         if (isset($this->fields[$key]['type']) &&
                             $this->fields[$key]['type'] == 'checkbox' && $value == 'on'
                         ) {
-                            $value = true;
+                            $value = 1;
                         }
                         $this->checkAndLog($key, $value);
                         LengowConfiguration::updateGlobalValue($key, $value);
@@ -212,8 +212,8 @@ class LengowConfigurationForm
                 }
                 if ($value['type'] == 'checkbox' && isset($value['shop']) && $value['shop']) {
                     if (!isset($_REQUEST[$key][$idShop])) {
-                        $this->checkAndLog($key, false, $idShop);
-                        LengowConfiguration::updateValue($key, false, false, null, $idShop);
+                        $this->checkAndLog($key, 0, $idShop);
+                        LengowConfiguration::updateValue($key, 0, false, null, $idShop);
                     }
                 }
             }
@@ -224,8 +224,8 @@ class LengowConfigurationForm
             }
             if ((!isset($value['shop']) || !$value['shop'])) {
                 if (!isset($_REQUEST[$key])) {
-                    $this->checkAndLog($key, false);
-                    LengowConfiguration::updateGlobalValue($key, false);
+                    $this->checkAndLog($key, 0);
+                    LengowConfiguration::updateGlobalValue($key, 0);
                 }
             }
         }

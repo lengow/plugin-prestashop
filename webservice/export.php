@@ -89,19 +89,28 @@ $stream = Tools::getIsset('stream')
 $offset = Tools::getIsset('offset') ? (int)Tools::getValue('offset') : null;
 // export limit
 $limit = Tools::getIsset('limit') ? (int)Tools::getValue('limit') : null;
+// export specific shop
+if (Tools::getIsset('shop') && _PS_VERSION_ >= '1.5') {
+    $shop = new Shop((int)Tools::getValue('shop'));
+    if ($shop->id) {
+        $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
+        Context::getContext()->shop = $shop;
+    }
+}
+$idShop = (int)Context::getContext()->shop->id;
 // export lengow selection
 $selection = Tools::getIsset('all') ? !(bool)Tools::getValue('all') : null;
 if (Tools::getIsset('selection') || !is_null($selection)) {
     $selection = !is_null($selection) ? $selection : (bool)Tools::getValue('selection');
 } else {
-    $selection = (bool)LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED');
+    $selection = (bool)LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $idShop);
 }
 // export out of stock products
 $outOfStock = Tools::getIsset('out_stock') ? (bool)Tools::getValue('out_stock') : null;
 if (Tools::getIsset('out_of_stock') || !is_null($outOfStock)) {
     $outOfStock = !is_null($outOfStock) ? $outOfStock : (bool)Tools::getValue('out_of_stock');
 } else {
-    $outOfStock = (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK');
+    $outOfStock = (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $idShop);
 }
 // export specific products
 $productIds = array();
@@ -126,7 +135,7 @@ if (Tools::getIsset('mode')) {
 if (Tools::getIsset('variation') || !is_null($variation)) {
     $variation = !is_null($variation) ? $variation : (bool)Tools::getValue('variation');
 } else {
-    $variation = (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED');
+    $variation = (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $idShop);
 }
 // export inactive products
 $inactive = null;
@@ -140,17 +149,9 @@ if (Tools::getValue('active')) {
 if (Tools::getIsset('inactive') || !is_null($inactive)) {
     $inactive = !is_null($inactive) ? $inactive : (bool)Tools::getValue('inactive');
 } else {
-    $inactive = (bool)LengowConfiguration::get('LENGOW_EXPORT_INACTIVE');
+    $inactive = (bool)LengowConfiguration::get('LENGOW_EXPORT_INACTIVE', null, null, $idShop);
 }
-// shop
-if (Tools::getIsset('shop') && _PS_VERSION_ >= '1.5') {
-    $shop = new Shop((int)Tools::getValue('shop'));
-    if ($shop->id) {
-        $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
-        Context::getContext()->shop = $shop;
-    }
-}
-// currency
+// convert price for a specific currency
 $currency = Tools::getIsset('cur') ? Tools::getValue('cur') : null;
 if (Tools::getIsset('currency') || !is_null($currency)) {
     $currency = !is_null($currency) ? $currency : Tools::getValue('currency');

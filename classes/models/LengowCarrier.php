@@ -247,14 +247,22 @@ class LengowCarrier extends Carrier
     public static function getIdCarrierMarketplace($carrierMarketplaceName)
     {
         try {
-            $result = Db::getInstance()->ExecuteS(
-                'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace
+            $results = Db::getInstance()->ExecuteS(
+                'SELECT id, carrier_marketplace_name FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace
                 WHERE carrier_marketplace_name = "' . pSQL($carrierMarketplaceName) . '"'
             );
-            return count($result) > 0 ? (int)$result[0]['id'] : false;
         } catch (PrestaShopDatabaseException $e) {
-            return false;
+            $results = array();
         }
+        // Additional verification for non-case sensitive Databases
+        if (count($results) > 0) {
+            foreach ($results as $result) {
+                if ($result['carrier_marketplace_name'] === $carrierMarketplaceName) {
+                    return (int)$result['id'];
+                }
+            }
+        }
+        return false;
     }
 
     /**
