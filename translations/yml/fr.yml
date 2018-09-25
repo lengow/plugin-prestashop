@@ -200,7 +200,7 @@ fr:
       contain_text_support_hour: "Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h)."
       find_answer: "Vous pouvez aussi consulter"
       link_prestashop_guide: "notre guide dédié à PrestaShop"
-      knowledge_link_url: "https://fr.lengow.help/help/prestashop"
+      knowledge_link_url: "https://supportlengow.zendesk.com/hc/fr/articles/360011970312"
   legals:
     screen:
       simplified_company: "Société par actions simplifiées"

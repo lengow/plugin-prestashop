@@ -200,7 +200,7 @@ es:
       contain_text_support_hour: "Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria)."
       find_answer: "Puedes también encontrar respuestas en nuestro"
       link_prestashop_guide: "Manual PrestaShop"
-      knowledge_link_url: "https://en.lengow.help/help/prestashop"
+      knowledge_link_url: "https://supportlengow.zendesk.com/hc/en-us/articles/360011970312"
   legals:
     screen:
       simplified_company: "Simplificado sociedad de responsabilidad limitada"

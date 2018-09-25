@@ -200,7 +200,7 @@ it:
       contain_text_support_hour: "Faremo il possibile per darti una risposta durante le ore di lavoro (dal Lunedi al Venerdi - 9h/18h)"
       find_answer: "Potresti trovare una risposta nella nostra  "
       link_prestashop_guide: "guida dedicata PrestaShop"
-      knowledge_link_url: "https://en.lengow.help/help/prestashop"
+      knowledge_link_url: "https://supportlengow.zendesk.com/hc/en-us/articles/360011970312"
   legals:
     screen:
       simplified_company: "Società responsabilità limitata"
