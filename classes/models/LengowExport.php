@@ -477,16 +477,16 @@ class LengowExport
         }
         foreach ($products as $p) {
             $productDatas = array();
+            $product = new LengowProduct(
+                $p['id_product'],
+                $this->language->id,
+                array(
+                    'carrier' => $this->carrier,
+                    'image_size' => LengowProduct::getMaxImageType(),
+                    'language' => $this->language
+                )
+            );
             if ($p['id_product'] && $p['id_product_attribute'] == 0) {
-                $product = new LengowProduct(
-                    $p['id_product'],
-                    $this->language->id,
-                    array(
-                        'carrier' => $this->carrier,
-                        'image_size' => LengowProduct::getMaxImageType(),
-                        'language' => $this->language
-                    )
-                );
                 foreach ($fields as $field) {
                     if (isset(self::$defaultFields[$field])) {
                         $productDatas[$field] = $product->getData(
@@ -497,6 +497,8 @@ class LengowExport
                         $productDatas[$field] = $product->getData($field, null);
                     }
                 }
+                // Get additional data
+                $productDatas = $this->setAdditionalFieldsValues($product, null, $productDatas);
                 // Write parent product
                 $this->feed->write('body', $productDatas, $isFirst, $maxCharacter);
                 $productCount++;
@@ -504,9 +506,15 @@ class LengowExport
             if ($p['id_product'] && $p['id_product_attribute'] > 0) {
                 $this->loadCacheCombinations($p['id_product'], $fields);
                 if (isset($this->cacheCombination[$p['id_product']][$p['id_product_attribute']])) {
+                    // Get additional data
+                    $combinationDatas = $this->setAdditionalFieldsValues(
+                        $product,
+                        $p['id_product_attribute'],
+                        $this->cacheCombination[$p['id_product']][$p['id_product_attribute']]
+                    );
                     $this->feed->write(
                         'body',
-                        $this->cacheCombination[$p['id_product']][$p['id_product_attribute']],
+                        $combinationDatas,
                         $isFirst,
                         $maxCharacter
                     );
