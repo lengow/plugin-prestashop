@@ -512,12 +512,7 @@ class LengowExport
                         $p['id_product_attribute'],
                         $this->cacheCombination[$p['id_product']][$p['id_product_attribute']]
                     );
-                    $this->feed->write(
-                        'body',
-                        $combinationDatas,
-                        $isFirst,
-                        $maxCharacter
-                    );
+                    $this->feed->write('body', $combinationDatas, $isFirst, $maxCharacter);
                     $productCount++;
                 }
             }
