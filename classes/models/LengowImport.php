@@ -188,33 +188,27 @@ class LengowImport
         } else {
             $this->marketplaceSku = null;
             // recovering the time interval
-            $days = (
-            isset($params['days'])
+            $days = isset($params['days'])
                 ? (int)$params['days']
-                : (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_DAYS')
-            );
+                : (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_DAYS');
             $this->dateFrom = date('c', strtotime(date('Y-m-d') . ' -' . $days . 'days'));
             $this->dateTo = date('c');
             if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_SINGLE_ENABLED')) {
                 $this->limit = 1;
             } else {
-                $this->limit = (isset($params['limit']) ? (int)$params['limit'] : 0);
+                $this->limit = isset($params['limit']) ? (int)$params['limit'] : 0;
             }
         }
         // get other params
-        $this->preprodMode = (
-        isset($params['preprod_mode'])
+        $this->preprodMode = isset($params['preprod_mode'])
             ? (bool)$params['preprod_mode']
-            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')
-        );
+            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED');
         $this->typeImport = isset($params['type']) ? $params['type'] : 'manual';
-        $this->forceProduct = (
-        isset($params['force_product'])
+        $this->forceProduct = isset($params['force_product'])
             ? (bool)$params['force_product']
-            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT')
-        );
-        $this->logOutput = (isset($params['log_output']) ? (bool)$params['log_output'] : false);
-        $this->idShop = (isset($params['shop_id']) ? (int)$params['shop_id'] : null);
+            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT');
+        $this->logOutput = isset($params['log_output']) ? (bool)$params['log_output'] : false;
+        $this->idShop = isset($params['shop_id']) ? (int)$params['shop_id'] : null;
     }
 
     /**
@@ -406,6 +400,7 @@ class LengowImport
                 LengowMain::setLogMessage('log.import.end', array('type' => $this->typeImport)),
                 $this->logOutput
             );
+            LengowMain::enableMail();
             // sending email in error for orders
             if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED')
                 && !$this->preprodMode

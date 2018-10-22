@@ -3,6 +3,8 @@ Version 3.0.4
 =============================================================
 
     - Feature: Adding links to the new Lengow help center
+    - Bugfix: [export] Data recovery for custom fields
+    - Bugfix: [import] Send email enabled for the report email
 
 =============================================================
 Version 3.0.3

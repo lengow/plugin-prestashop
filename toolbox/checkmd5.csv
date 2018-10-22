@@ -21,7 +21,7 @@
 /classes/models/LengowSync.php|8550692bdd4d2d00917eeefb34d18c3b
 /classes/models/LengowCountry.php|9272660d9cb039e52ef2fd1bfca33caa
 /classes/models/LengowHook.php|b46c2bffdce1124e1c20c3676f2cfaa4
-/classes/models/LengowImport.php|2895b5c7309577f7965590fe16504e57
+/classes/models/LengowImport.php|c42f8726ff012b5ea3660943c8c74281
 /classes/models/LengowFeed.php|63e52b29456e3402cfaa5e8472f7f318
 /classes/models/LengowCheck.php|a1ef4482c94d869438de225373cefd65
 /classes/models/LengowBackup.php|b925fe77481a09e3b1cda3506d809bc0
@@ -31,7 +31,7 @@
 /classes/models/LengowCarrier.php|e19c91ee84d60a59adbd68227eed2e00
 /classes/models/LengowTaxRule.php|809008cc79f5fa843fa87ac67f401a1e
 /classes/models/LengowCurrency.php|f2b2f0e3b8da77da54ce4cb70a4e88c0
-/classes/models/LengowMain.php|8df78fba3e7361825b203ee1160d2712
+/classes/models/LengowMain.php|7ff99de8cd6b096477614dadab4c7677
 /classes/models/LengowLog.php|45d6aa3a0e6bb30fb02fc7e496d4f0b0
 /classes/models/LengowGender.php|7ca9cd51973b5304383a07cf2df7b4c4
 /classes/models/LengowOrder.php|0e151e58045f5c60294bf81064253742
