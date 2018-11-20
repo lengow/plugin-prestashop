@@ -165,6 +165,11 @@ class LengowImportOrder
     protected $shippingAddress;
 
     /**
+     * @var string Marketplace order comment
+     */
+    protected $orderComment;
+
+    /**
      * Construct the import manager
      *
      * @param array $params optional options
@@ -207,6 +212,8 @@ class LengowImportOrder
      * Create or update order
      *
      * @return array|false
+     *
+     * @throws Exception|LengowException
      */
     public function importOrder()
     {
@@ -289,6 +296,8 @@ class LengowImportOrder
             );
             return false;
         }
+        // get order comment from marketplace
+        $this->orderComment = $this->getOrderComment();
         // create a new record in lengow order table if not exist
         if (!$this->idOrderLengow) {
             // created a record in the lengow order table
@@ -391,7 +400,7 @@ class LengowImportOrder
                 foreach ($orderLists as $order) {
                     // add order comment from marketplace to prestashop order
                     if (_PS_VERSION_ >= '1.5') {
-                        $this->addCommentOrder((int)$order->id, $this->orderData->comments);
+                        $this->addCommentOrder((int)$order->id, $this->orderComment);
                     }
                     $successMessage = LengowMain::setLogMessage(
                         'log.import.order_successfully_imported',
@@ -656,6 +665,21 @@ class LengowImportOrder
     }
 
     /**
+     * Get order comment from marketplace
+     *
+     * @return string
+     */
+    protected function getOrderComment()
+    {
+        if (isset($this->orderData->comments) && is_array($this->orderData->comments)) {
+            $orderComment = join(',', $this->orderData->comments);
+        } else {
+            $orderComment = (string)$this->orderData->comments;
+        }
+        return $orderComment;
+    }
+
+    /**
      * Get order amount
      *
      * @return float
@@ -843,9 +867,9 @@ class LengowImportOrder
         $message = 'Import Lengow | ' . "\r\n"
             . 'ID order : ' . (string)$this->orderData->marketplace_order_id . ' | ' . "\r\n"
             . 'Marketplace : ' . (string)$this->orderData->marketplace . ' | ' . "\r\n"
-            . 'Total paid : ' . (float)$this->orderAmount . ' | ' . "\r\n"
-            . 'Shipping : ' . (float)$this->shippingCost . ' | ' . "\r\n"
-            . 'Message : ' . (string)$this->orderData->comments . "\r\n";
+            . 'Total paid : ' . $this->orderAmount . ' | ' . "\r\n"
+            . 'Shipping : ' . $this->shippingCost . ' | ' . "\r\n"
+            . 'Message : ' . $this->orderComment . "\r\n";
         // validate order
         if (_PS_VERSION_ >= '1.5') {
             $orderLists = $payment->makeOrder(
@@ -1188,6 +1212,8 @@ class LengowImportOrder
      *
      * @param integer $idOrder Prestashop order id
      * @param string $comment order comment
+     *
+     * @throws Exception
      */
     protected function addCommentOrder($idOrder, $comment)
     {
@@ -1248,17 +1274,13 @@ class LengowImportOrder
             'delivery_address_id' => (int)$this->deliveryAddressId,
             'order_date' => date('Y-m-d H:i:s', strtotime($orderDate)),
             'order_lengow_state' => pSQL($this->orderStateLengow),
+            'message' => pSQL($this->orderComment),
             'date_add' => date('Y-m-d H:i:s'),
             'order_process_state' => 0,
             'is_reimported' => 0,
         );
         if (isset($this->orderData->currency->iso_a3)) {
             $params['currency'] = $this->orderData->currency->iso_a3;
-        }
-        if (isset($this->orderData->comments) && is_array($this->orderData->comments)) {
-            $params['message'] = pSQL(join(',', $this->orderData->comments));
-        } else {
-            $params['message'] = pSQL((string)$this->orderData->comments);
         }
         try {
             if (_PS_VERSION_ < '1.5') {
