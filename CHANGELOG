@@ -6,6 +6,7 @@ Version 3.0.4
     - Bugfix: [export] Data recovery for custom fields
     - Bugfix: [import] Send email enabled for the report email
     - Bugfix: [import] Array to string conversion for order comments
+    - Bugfix: [export] Modifying Legacy Fields for Image Fields
 
 =============================================================
 Version 3.0.3
