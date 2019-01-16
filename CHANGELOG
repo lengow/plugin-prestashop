@@ -8,6 +8,7 @@ Version 3.0.4
     - Bugfix: [import] Array to string conversion for order comments
     - Bugfix: [export] Modifying Legacy Fields for Image Fields
     - Bugfix: [import] New parameter in updateQty() function for version 1.7.3
+    - Bugfix: [import] Improved security to avoid duplicate synchronization
 
 =============================================================
 Version 3.0.3

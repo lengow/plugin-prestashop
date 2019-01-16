@@ -235,6 +235,11 @@ class LengowImport
             $globalError = LengowMain::setLogMessage('lengow_log.error.credentials_not_valid');
             LengowMain::log('Import', $globalError, $this->logOutput);
         } else {
+            if (!$this->importOneOrder) {
+                self::setInProcess();
+                // update last import date
+                LengowMain::updateDateImport($this->typeImport);
+            }
             // check Lengow catalogs for order synchronisation
             if (!$this->preprodMode && !$this->importOneOrder && $this->typeImport === 'manual') {
                 LengowSync::syncCatalog();
@@ -251,11 +256,6 @@ class LengowImport
                     LengowMain::setLogMessage('log.import.preprod_mode_active'),
                     $this->logOutput
                 );
-            }
-            if (!$this->importOneOrder) {
-                self::setInProcess();
-                // update last import date
-                LengowMain::updateDateImport($this->typeImport);
             }
             LengowMain::disableMail();
             // get all shops for import
