@@ -112,6 +112,7 @@ class LengowCart extends Cart
      * @param integer $idAddressDelivery Prestashop address delivery id
      * @param Shop $shop Shop instance
      * @param boolean $autoAddCartRule add auto cart rule
+     * @param boolean $skipAvailabilityCheckOutOfStock skip availability
      *
      * @throws Exception|PrestaShopDatabaseException
      *
@@ -125,13 +126,15 @@ class LengowCart extends Cart
         $operator = 'up',
         $idAddressDelivery = 0,
         Shop $shop = null,
-        $autoAddCartRule = true
+        $autoAddCartRule = true,
+        $skipAvailabilityCheckOutOfStock = false
     ) {
         if (!$shop) {
             $shop = Context::getContext()->shop;
         }
         // This line is useless, but Prestashop validator require it
         $autoAddCartRule = $autoAddCartRule;
+        $skipAvailabilityCheckOutOfStock = $skipAvailabilityCheckOutOfStock;
         $quantity = (int)$quantity;
         $idProduct = (int)$idProduct;
         $idProductAttribute = (int)$idProductAttribute;
