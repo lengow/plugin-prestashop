@@ -336,7 +336,7 @@ log.export.count_product|%{product_count} product(s) exported
 log.export.export_failed|export failed - %{decoded_message}
 log.export.your_feed_available_here|your feed is available here: %{feed_url}
 log.export.error_folder_not_writable|export file generation did not end properly. Please make sure the export folder is writable
-log.export.error_no_product_combination|unable to retrieve product combinations
+log.export.error_no_product_combination|unable to retrieve product combinations for product id %{product_id}
 log.export.error_illegal_currency|illegal currency
 log.export.error_no_carrier_selected|you must select a default carrier in Lengow import parameters
 log.export.error_unable_to_create_folder|unable to create folder %{folder_path}. Make sure it is writable
