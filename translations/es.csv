@@ -270,6 +270,7 @@ lengow_log.exception.no_delivery_country_in_order|no puede encontrar el país de
 lengow_log.exception.match_carrier_with_country|necesitas relacionar el transportista %{carrier_name} con el país %{country_name}
 lengow_log.exception.arg_is_required|envío de acción imposible: %{arg_name} es requerido
 lengow_log.exception.action_not_created|creación de la acción imposible: %{error_message}
+lengow_log.exception.action_not_created_api|la acción no puede crearse porque la API Lengow se encuentra indisponible. Inténtelo de nuevo
 lengow_log.exception.action_is_too_old|order action is too old. Please retry the call
 lengow_log.exception.cannot_load_order_status|no se puede cargar el estado del pedido
 lengow_log.exception.order_creation_failed|la creación del pedido Prestashop ha fallado 

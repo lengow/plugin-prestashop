@@ -270,6 +270,7 @@ lengow_log.exception.no_delivery_country_in_order|can't find the delivery countr
 lengow_log.exception.match_carrier_with_country|you need to match the carrier %{carrier_name} with the country %{country_name}
 lengow_log.exception.arg_is_required|can't send action: %{arg_name} is required
 lengow_log.exception.action_not_created|can't create action: %{error_message}
+lengow_log.exception.action_not_created_api|can't create action because Lengow API is unavailable. Please retry
 lengow_log.exception.action_is_too_old|order action is too old. Please retry the call
 lengow_log.exception.cannot_load_order_status|cannot load order status
 lengow_log.exception.order_creation_failed|PrestaShop order creation failed
