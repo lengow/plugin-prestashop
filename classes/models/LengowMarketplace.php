@@ -491,12 +491,16 @@ class LengowMarketplace
                             )
                         );
                     } else {
-                        throw new LengowException(
-                            LengowMain::setLogMessage(
+                        if ($result !== null) {
+                            $message = LengowMain::setLogMessage(
                                 'lengow_log.exception.action_not_created',
                                 array('error_message' => Tools::jsonEncode($result))
-                            )
-                        );
+                            );
+                        } else {
+                            // Generating a generic error message when the Lengow API is unavailable
+                            $message = LengowMain::setLogMessage('lengow_log.exception.action_not_created_api');
+                        }
+                        throw new LengowException($message);
                     }
                 }
                 // Create log for call action

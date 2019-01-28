@@ -84,6 +84,11 @@ class LengowMain
     );
 
     /**
+     * @var array Prestashop mail configuration
+     */
+    protected static $mailConfigurations = array();
+
+    /**
      * The Prestashop compare version with current version.
      *
      * @param string $version the version to compare
@@ -132,10 +137,27 @@ class LengowMain
     }
 
     /**
+     * Temporary enable mail sending
+     */
+    public static function enableMail()
+    {
+        if (isset(self::$mailConfigurations['method'])) {
+            Configuration::set('PS_MAIL_METHOD', (int)self::$mailConfigurations['method']);
+        }
+        if (_PS_VERSION_ < '1.5.4.0' && isset(self::$mailConfigurations['server'])) {
+            Configuration::set('PS_MAIL_SERVER', self::$mailConfigurations['server']);
+        }
+    }
+
+    /**
      * Temporary disable mail sending
      */
     public static function disableMail()
     {
+        self::$mailConfigurations = array(
+            'method' => Configuration::get('PS_MAIL_METHOD'),
+            'server' => Configuration::get('PS_MAIL_SERVER'),
+        );
         if (_PS_VERSION_ < '1.5.4.0') {
             Configuration::set('PS_MAIL_METHOD', 2);
             // Set fictive smtp server to disable mail

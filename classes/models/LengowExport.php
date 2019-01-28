@@ -140,13 +140,13 @@ class LengowExport
         'image_product' => 'image_1',
         'image_product_2' => 'image_2',
         'image_product_3' => 'image_3',
-        'image_product_4' => 'image_4',
-        'image_product_5' => 'image_5',
-        'image_product_6' => 'image_6',
-        'image_product_7' => 'image_7',
-        'image_product_8' => 'image_8',
-        'image_product_9' => 'image_9',
-        'image_product_10' => 'image_10',
+        'image_4' => 'image_4',
+        'image_5' => 'image_5',
+        'image_6' => 'image_6',
+        'image_7' => 'image_7',
+        'image_8' => 'image_8',
+        'image_9' => 'image_9',
+        'image_10' => 'image_10',
         'reduction_from' => 'sale_from',
         'reduction_to' => 'sale_to',
         'meta_keywords' => 'meta_keywords',
@@ -249,6 +249,11 @@ class LengowExport
      * @var array cache combination
      */
     protected $cacheCombination;
+
+    /**
+     * @var array excluded products for export
+     */
+    protected $excludedProducts;
 
     /**
      * Construct new Lengow export.
@@ -476,17 +481,21 @@ class LengowExport
             }
         }
         foreach ($products as $p) {
+            // Ignore products with faulty combinations
+            if (in_array($p['id_product'], $this->excludedProducts)) {
+                continue;
+            }
             $productDatas = array();
+            $product = new LengowProduct(
+                $p['id_product'],
+                $this->language->id,
+                array(
+                    'carrier' => $this->carrier,
+                    'image_size' => LengowProduct::getMaxImageType(),
+                    'language' => $this->language
+                )
+            );
             if ($p['id_product'] && $p['id_product_attribute'] == 0) {
-                $product = new LengowProduct(
-                    $p['id_product'],
-                    $this->language->id,
-                    array(
-                        'carrier' => $this->carrier,
-                        'image_size' => LengowProduct::getMaxImageType(),
-                        'language' => $this->language
-                    )
-                );
                 foreach ($fields as $field) {
                     if (isset(self::$defaultFields[$field])) {
                         $productDatas[$field] = $product->getData(
@@ -497,19 +506,34 @@ class LengowExport
                         $productDatas[$field] = $product->getData($field, null);
                     }
                 }
+                // Get additional data
+                $productDatas = $this->setAdditionalFieldsValues($product, null, $productDatas);
                 // Write parent product
                 $this->feed->write('body', $productDatas, $isFirst, $maxCharacter);
                 $productCount++;
             }
             if ($p['id_product'] && $p['id_product_attribute'] > 0) {
-                $this->loadCacheCombinations($p['id_product'], $fields);
-                if (isset($this->cacheCombination[$p['id_product']][$p['id_product_attribute']])) {
-                    $this->feed->write(
-                        'body',
-                        $this->cacheCombination[$p['id_product']][$p['id_product_attribute']],
-                        $isFirst,
-                        $maxCharacter
+                if (!$this->loadCacheCombinations($product, $fields)) {
+                    LengowMain::log(
+                        'Export',
+                        LengowMain::setLogMessage(
+                            'log.export.error_no_product_combination',
+                            array('product_id' => $product->id)
+                        ),
+                        $this->logOutput
                     );
+                    // Indicates that a product has failed combinations
+                    $this->excludedProducts[] = $product->id;
+                    continue;
+                }
+                if (isset($this->cacheCombination[$p['id_product']][$p['id_product_attribute']])) {
+                    // Get additional data
+                    $combinationDatas = $this->setAdditionalFieldsValues(
+                        $product,
+                        $p['id_product_attribute'],
+                        $this->cacheCombination[$p['id_product']][$p['id_product_attribute']]
+                    );
+                    $this->feed->write('body', $combinationDatas, $isFirst, $maxCharacter);
                     $productCount++;
                 }
             }
@@ -554,47 +578,34 @@ class LengowExport
     /**
      * Load cache combinations
      *
-     * @param integer $productId Prestashop product id
+     * @param LengowProduct $product Lengow product instance
      * @param array $fields list of fields
      *
-     * @throws LengowException no product combination
-     *
-     * @return array
+     * @return boolean
      */
-    public function loadCacheCombinations($productId, $fields)
+    public function loadCacheCombinations($product, $fields)
     {
-        if (isset($this->cacheCombination[$productId])) {
-            return $this->cacheCombination[$productId];
-        }
-        unset($this->cacheCombination);
-        $product = new LengowProduct(
-            $productId,
-            $this->language->id,
-            array(
-                'carrier' => $this->carrier,
-                'image_size' => LengowProduct::getMaxImageType()
-            )
-        );
-        $combinations = $product->getCombinations();
-        if (empty($combinations)) {
-            throw new LengowException(LengowMain::setLogMessage('log.export.error_no_product_combination'));
-        }
-        foreach ($combinations as $combination) {
-            $paId = $combination['id_product_attribute'];
-            foreach ($fields as $field) {
-                if (isset(self::$defaultFields[$field])) {
-                    $this->cacheCombination[$productId][$paId][$field] = $product->getData(
-                        self::$defaultFields[$field],
-                        $paId
-                    );
-                } else {
-                    $this->cacheCombination[$productId][$paId][$field] = $product->getData(
-                        $field,
-                        $paId
-                    );
+        if (!isset($this->cacheCombination[$product->id])) {
+            $this->cacheCombination = array();
+            $combinations = $product->getCombinations();
+            if (empty($combinations)) {
+                return false;
+            }
+            foreach ($combinations as $combination) {
+                $paId = $combination['id_product_attribute'];
+                foreach ($fields as $field) {
+                    if (isset(self::$defaultFields[$field])) {
+                        $this->cacheCombination[$product->id][$paId][$field] = $product->getData(
+                            self::$defaultFields[$field],
+                            $paId
+                        );
+                    } else {
+                        $this->cacheCombination[$product->id][$paId][$field] = $product->getData($field, $paId);
+                    }
                 }
             }
         }
+        return true;
     }
 
     /**

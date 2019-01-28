@@ -200,7 +200,7 @@ it:
       contain_text_support_hour: "Faremo il possibile per darti una risposta durante le ore di lavoro (dal Lunedi al Venerdi - 9h/18h)"
       find_answer: "Potresti trovare una risposta nella nostra  "
       link_prestashop_guide: "guida dedicata PrestaShop"
-      knowledge_link_url: "https://en.lengow.help/help/prestashop"
+      knowledge_link_url: "https://supportlengow.zendesk.com/hc/en-us/articles/360011970312"
   legals:
     screen:
       simplified_company: "Società responsabilità limitata"
@@ -297,6 +297,7 @@ it:
       match_carrier_with_country: "associa trasportatore %{carrier_name} al paese %{country_name}"
       arg_is_required: "invio dell'azione é impossibile: %{arg_name} é richiesto"
       action_not_created: "azione impossibile da realizzare : %{error_message}"
+      action_not_created_api: "impossibile creare l'azione poiché l'API Lengow é indisponibile. Riprovi"
       action_is_too_old: "azione ordine è troppo vecchio. Si prega di ripetere la chiamata"
       cannot_load_order_status: "impossibile caricare lo stato ordine"
       order_creation_failed: "creazione PrestaShop ordine fallita"

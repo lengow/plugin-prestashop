@@ -31,7 +31,7 @@ en:
       export_failed: "export failed - %{decoded_message}"
       your_feed_available_here: "your feed is available here: %{feed_url}"
       error_folder_not_writable: "export file generation did not end properly. Please make sure the export folder is writable"
-      error_no_product_combination: "unable to retrieve product combinations"
+      error_no_product_combination: "unable to retrieve product combinations for product id %{product_id}"
       error_illegal_currency: "illegal currency"
       error_no_carrier_selected: "you must select a default carrier in Lengow import parameters"
       error_unable_to_create_folder: "unable to create folder %{folder_path}. Make sure it is writable"

@@ -179,7 +179,7 @@ help.screen.need_some_help|Besoin d'aide ?
 help.screen.contain_text_support_hour|Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h).
 help.screen.find_answer|Vous pouvez aussi consulter
 help.screen.link_prestashop_guide|notre guide dédié à PrestaShop
-help.screen.knowledge_link_url|https://fr.lengow.help/help/prestashop
+help.screen.knowledge_link_url|https://supportlengow.zendesk.com/hc/fr/articles/360011970312
 legals.screen.simplified_company|Société par actions simplifiées
 legals.screen.social_capital|Capital social :
 legals.screen.cnil_declaration|Déclaration CNIL :
@@ -270,6 +270,7 @@ lengow_log.exception.no_delivery_country_in_order|nous ne trouvons pas le pays d
 lengow_log.exception.match_carrier_with_country|vous devez faire correspondre le transporteur %{carrier_name} avec le pays %{country_name}
 lengow_log.exception.arg_is_required|envoi d'action impossible : %{arg_name} est requis
 lengow_log.exception.action_not_created|création d'action impossible : %{error_message}
+lengow_log.exception.action_not_created_api|création d'action impossible car l'API Lengow n'est pas disponible. Réessayez de nouveau
 lengow_log.exception.action_is_too_old|l'action est trop ancienne. Réessayez de nouveau
 lengow_log.exception.cannot_load_order_status|chargement impossible des statuts de commande
 lengow_log.exception.order_creation_failed|la création de la commande PrestaShop a échoué

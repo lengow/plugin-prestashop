@@ -179,7 +179,7 @@ help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
 help.screen.find_answer|You can also find answers in our 
 help.screen.link_prestashop_guide|PrestaShop dedicated guide
-help.screen.knowledge_link_url|https://en.lengow.help/help/prestashop
+help.screen.knowledge_link_url|https://supportlengow.zendesk.com/hc/en-us/articles/360011970312
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:
 legals.screen.cnil_declaration|CNIL declaration:
@@ -270,6 +270,7 @@ lengow_log.exception.no_delivery_country_in_order|can't find the delivery countr
 lengow_log.exception.match_carrier_with_country|you need to match the carrier %{carrier_name} with the country %{country_name}
 lengow_log.exception.arg_is_required|can't send action: %{arg_name} is required
 lengow_log.exception.action_not_created|can't create action: %{error_message}
+lengow_log.exception.action_not_created_api|can't create action because Lengow API is unavailable. Please retry
 lengow_log.exception.action_is_too_old|order action is too old. Please retry the call
 lengow_log.exception.cannot_load_order_status|cannot load order status
 lengow_log.exception.order_creation_failed|PrestaShop order creation failed
@@ -335,7 +336,7 @@ log.export.count_product|%{product_count} product(s) exported
 log.export.export_failed|export failed - %{decoded_message}
 log.export.your_feed_available_here|your feed is available here: %{feed_url}
 log.export.error_folder_not_writable|export file generation did not end properly. Please make sure the export folder is writable
-log.export.error_no_product_combination|unable to retrieve product combinations
+log.export.error_no_product_combination|unable to retrieve product combinations for product id %{product_id}
 log.export.error_illegal_currency|illegal currency
 log.export.error_no_carrier_selected|you must select a default carrier in Lengow import parameters
 log.export.error_unable_to_create_folder|unable to create folder %{folder_path}. Make sure it is writable
