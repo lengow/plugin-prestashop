@@ -155,7 +155,9 @@ class LengowList
         $this->shopId = isset($params['shop_id']) ? $params['shop_id'] : null;
         $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
         $this->nbPerPageList = array(20, 50, 100, 200);
-        $this->nbPerPage = (isset($params['nb_per_page']) && $params['nb_per_page'] != null) ? $params['nb_per_page'] : 20;
+        $this->nbPerPage = (isset($params['nb_per_page']) && $params['nb_per_page'] != null)
+            ? $params['nb_per_page']
+            : 20;
         $this->sql = $params['sql'];
         $this->ajax = isset($params['ajax']) ? (bool)$params['ajax'] : false;
         $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';

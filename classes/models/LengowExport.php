@@ -513,7 +513,7 @@ class LengowExport
                 $productCount++;
             }
             if ($p['id_product'] && $p['id_product_attribute'] > 0) {
-                if(!$this->loadCacheCombinations($product, $fields)) {
+                if (!$this->loadCacheCombinations($product, $fields)) {
                     LengowMain::log(
                         'Export',
                         LengowMain::setLogMessage(

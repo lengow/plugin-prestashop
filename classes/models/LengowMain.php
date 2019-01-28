@@ -144,7 +144,7 @@ class LengowMain
         if (isset(self::$mailConfigurations['method'])) {
             Configuration::set('PS_MAIL_METHOD', (int)self::$mailConfigurations['method']);
         }
-        if (_PS_VERSION_ < '1.5.4.0' && isset(self::$mailConfigurations['server']) ) {
+        if (_PS_VERSION_ < '1.5.4.0' && isset(self::$mailConfigurations['server'])) {
             Configuration::set('PS_MAIL_SERVER', self::$mailConfigurations['server']);
         }
     }
