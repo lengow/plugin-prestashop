@@ -771,7 +771,7 @@ class LengowExport
         //Features
         $features = Feature::getFeatures($this->language->id);
         foreach ($features as $feature) {
-            if (!in_array($feature['name'], $fields)) {
+            if (!in_array(Tools::strtolower($feature['name']), $fields)) {
                 $fields[] = $feature['name'];
             } else {
                 if ($this->legacy) {
@@ -787,7 +787,7 @@ class LengowExport
                 if ($attribute['name'] == '') {
                     continue;
                 }
-                if (!in_array($attribute['name'], $fields)) {
+                if (!in_array(Tools::strtolower($attribute['name']), $fields)) {
                     $fields[] = $attribute['name'];
                 } else {
                     if ($this->legacy) {
