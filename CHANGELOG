@@ -3,6 +3,7 @@ Version 3.0.5
 =============================================================
 
     - Bugfix: [export] Deleting duplicate fields case-sensitive
+    - Bugfix: [export] Add default value for excluded products array
 
 =============================================================
 Version 3.0.4

@@ -253,7 +253,7 @@ class LengowExport
     /**
      * @var array excluded products for export
      */
-    protected $excludedProducts;
+    protected $excludedProducts = array();
 
     /**
      * Construct new Lengow export.
