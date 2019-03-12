@@ -298,7 +298,8 @@ class LengowFeedController extends LengowController
         $from = 'FROM ' . _DB_PREFIX_ . 'product p';
 
         $join[] = ' INNER JOIN ' . _DB_PREFIX_ . 'product_lang pl ON (pl.id_product = p.id_product
-            AND pl.id_lang = 1 ' . (_PS_VERSION_ < '1.5' ? '' : ' AND pl.id_shop = ' . (int)$idShop) . ')';
+            AND pl.id_lang = ' . $this->context->language->id .
+            (_PS_VERSION_ < '1.5' ? '' : ' AND pl.id_shop = ' . (int)$idShop) . ')';
         $join[] = ' LEFT JOIN ' . _DB_PREFIX_ . 'lengow_product lp ON (lp.id_product = p.id_product
             AND lp.id_shop = ' . (int)$idShop . ' ) ';
         if (_PS_VERSION_ >= '1.5') {
