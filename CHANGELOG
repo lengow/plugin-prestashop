@@ -1,4 +1,13 @@
 =============================================================
+Version 3.0.5
+=============================================================
+
+    - Bugfix: [export] Deleting duplicate fields case-sensitive
+    - Bugfix: [export] Add default value for excluded products array
+    - Bugfix: [export] Recovering parent images when no image is selected for the combination
+    - Bugfix: [export] Retrieving a default id_lang for product selection
+
+=============================================================
 Version 3.0.4
 =============================================================
 

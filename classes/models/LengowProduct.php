@@ -525,55 +525,17 @@ class LengowProduct extends Product
                     return 0;
                 }
                 return 1;
-            //speed up export
-            case 'image_1':
-            case 'image_2':
-            case 'image_3':
-            case 'image_4':
-            case 'image_5':
-            case 'image_6':
-            case 'image_7':
-            case 'image_8':
-            case 'image_9':
-            case 'image_10':
-                //speed up export
-                switch ($name) {
-                    case 'image_1':
-                        $idImage = 0;
-                        break;
-                    case 'image_2':
-                        $idImage = 1;
-                        break;
-                    case 'image_3':
-                        $idImage = 2;
-                        break;
-                    case 'image_4':
-                        $idImage = 3;
-                        break;
-                    case 'image_5':
-                        $idImage = 4;
-                        break;
-                    case 'image_6':
-                        $idImage = 5;
-                        break;
-                    case 'image_7':
-                        $idImage = 6;
-                        break;
-                    case 'image_8':
-                        $idImage = 7;
-                        break;
-                    case 'image_9':
-                        $idImage = 8;
-                        break;
-                    case 'image_10':
-                        $idImage = 9;
-                        break;
-                }
+            case (preg_match('`image_([0-9]+)`', $name) ? true : false):
+                $index = explode('_', $name);
+                $idImage = $index[1] - 1;
                 if ($idProductAttribute) {
-                    if (isset($this->combinations[$idProductAttribute]['images'][$idImage])) {
-                        return $this->combinations[$idProductAttribute]['images'][$idImage];
+                    $attributeImages = $this->combinations[$idProductAttribute]['images'];
+                    if (count($attributeImages) > 0) {
+                        if (isset($attributeImages[$idImage])) {
+                            return $attributeImages[$idImage];
+                        }
+                        return '';
                     }
-                    return '';
                 }
                 return isset($this->images[$idImage]) ? $this->context->link->getImageLink(
                     $this->link_rewrite,
