@@ -15,7 +15,7 @@ Version 3.0.5
 
 =============================================================
 Version 3.0.4
-=============================================================de l
+=============================================================
 
     - Feature: Adding links to the new Lengow help center
     - Feature: [action] Generating a generic error message when the Lengow API is unavailable
@@ -329,4 +329,56 @@ Version 2.0.4
 	- Feature: [import] Now compatible with soColissimo
 	- Feature: [import] Matching API Field for better product search
 	- Feature: [import] Prevent Prestashop bug when advanced stock is enabled
-	- Featu
+	- Feature: [import] Force carrier is modified by ValidateOrder
+	- Feature: [import] Block commands when product came from different warehouse
+	- Feature: [import] Add compatibility with Mondial Relay
+	- Feature: [import] Add order action to reimport order
+	- Feature: [import] Add order action to synchronize IDs
+	- Bugfix: Fix with tagcapsule
+	- Bugfix: [import] Fix bug with tax on invoice details
+	- Bugfix: Fix fatal error when uninstalling module in 1.4 version
+	- Bugfix: Fix bug during 1.4.2.5 installation
+	- Bugfix: Fix update tracking info on Amazon
+
+=============================================================
+Version 2.0.3.2
+=============================================================
+
+	- Feature: [import] Lastname and firstname inverted during import in delivery address
+	- Feature: [import] Add try/catch during import
+	- Feature: [import] Replace DB::getValue by ExecuteS in import
+	- Feature: [import] Search product by UPC, SKU, ID, Reference
+	- Bugfix: Fix bug with tagcapsule (Confirmation and payment)
+	- Bugfix: [import] Fix Clean phone method during import
+
+=============================================================
+Version 2.0.3
+=============================================================
+
+	- Feature: Allow override
+	- Feature: Add check configuration
+	- Feature: [export] Allow export feature without product variations
+	- Feature: Add log api
+	- Feature: Add log files list in admin modules
+	- Bugfix: [export] Fix - Possible warning during export
+	- Bugfix: [import] Fix - Disable mail during import (1.4)
+
+=============================================================
+Version 2.0.2
+=============================================================
+
+	- Feature: [export] Allow to export disabled products
+	- Feature: [export] Add manual export get parameters
+	- Feature: [export] Add attribute list selection to export
+	- Bugfix: [import] Fix - Import product with ID, EAN and SKU
+	- Bugfix: Fix - SSL mode on tracker
+	- Bugfix: Fix - Url export and import where multishop is active
+	- Bugfix: Fix other minors bug
+
+=============================================================
+Version 2.0.1
+=============================================================
+
+	- Feature: [import] Add cron to import
+	- Bugfix: Fix - Tracker
+	- Bugfix: Fix other minors bug
