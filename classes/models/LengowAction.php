@@ -437,6 +437,12 @@ class LengowAction
                 && isset($apiActions[$action['action_id']]->errors)
             ) {
                 if ($apiActions[$action['action_id']]->queued == false) {
+                    // Order action is waiting to return from the marketplace
+                    if ($apiActions[$action['action_id']]->processed == false
+                        && empty($apiActions[$action['action_id']]->errors)
+                    ) {
+                        continue;
+                    }
                     // Finish action in lengow_action table
                     self::finishAction($action['id']);
                     $orderLengow = new LengowOrder($action['id_order']);
@@ -444,7 +450,9 @@ class LengowAction
                     LengowOrder::finishOrderLogs($orderLengow->lengowId, 'send');
                     if ($orderLengow->lengowProcessState != LengowOrder::PROCESS_STATE_FINISH) {
                         // If action is accepted -> close order and finish all order actions
-                        if ($apiActions[$action['action_id']]->processed == true) {
+                        if ($apiActions[$action['action_id']]->processed == true
+                            && empty($apiActions[$action['action_id']]->errors)
+                        ) {
                             LengowOrder::updateOrderLengow(
                                 $orderLengow->lengowId,
                                 array('order_process_state' => LengowOrder::PROCESS_STATE_FINISH)

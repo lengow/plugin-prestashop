@@ -3,6 +3,7 @@ Version 3.0.6
 =============================================================
 
     - Bugfix: [export] Improved deletion of duplicate headers
+    - Bugfix: [action] Management of orders waiting to return from the marketplace
 
 =============================================================
 Version 3.0.5
