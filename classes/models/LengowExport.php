@@ -443,9 +443,9 @@ class LengowExport
     public function setLegacyFields()
     {
         if (is_null($this->legacy)) {
-            $result = LengowConnector::queryApi('get', '/v3.0/plans');
-            if (isset($result->accountVersion)) {
-                $this->legacy = $result->accountVersion === 'v2' ? true : false;
+            $merchantStatus = LengowSync::getStatusAccount();
+            if ($merchantStatus && isset($merchantStatus['legacy'])) {
+                $this->legacy = $merchantStatus['legacy'];
             } else {
                 $this->legacy = false;
             }

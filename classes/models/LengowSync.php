@@ -226,18 +226,15 @@ class LengowSync
         }
         $result = LengowConnector::queryApi('get', '/v3.0/plans');
         if (isset($result->isFreeTrial)) {
-            $status = array();
-            $status['type'] = $result->isFreeTrial ? 'free_trial' : '';
-            $status['day'] = (int)$result->leftDaysBeforeExpired;
-            $status['expired'] = (bool)$result->isExpired;
-            if ($status['day'] < 0) {
-                $status['day'] = 0;
-            }
-            if ($status) {
-                LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS', Tools::jsonEncode($status));
-                LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE', date('Y-m-d H:i:s'));
-                return $status;
-            }
+            $status = array(
+                'type' => $result->isFreeTrial ? 'free_trial' : '',
+                'day' => (int)$result->leftDaysBeforeExpired < 0 ? 0 : (int)$result->leftDaysBeforeExpired,
+                'expired' => (bool)$result->isExpired,
+                'legacy' => $result->accountVersion === 'v2' ? true : false
+            );
+            LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS', Tools::jsonEncode($status));
+            LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE', date('Y-m-d H:i:s'));
+            return $status;
         } else {
             if (LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE')) {
                 return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
