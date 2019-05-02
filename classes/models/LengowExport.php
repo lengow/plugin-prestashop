@@ -460,7 +460,7 @@ class LengowExport
      * @param array $fields list of fields
      * @param Shop $shop Prestashop shop being exported
      *
-     * @throws LengowException folder not writable
+     * @throws Exception|LengowException folder not writable
      */
     public function export($products, $fields, $shop)
     {
@@ -580,6 +580,8 @@ class LengowExport
      *
      * @param LengowProduct $product Lengow product instance
      * @param array $fields list of fields
+     *
+     * @throws Exception
      *
      * @return boolean
      */

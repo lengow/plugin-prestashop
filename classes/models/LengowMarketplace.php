@@ -563,7 +563,7 @@ class LengowMarketplace
     public static function syncMarketplaces()
     {
         self::loadApiMarketplace();
-        if (self::$marketplaces && count(self::$marketplaces) > 0) {
+        if (self::$marketplaces && !empty(self::$marketplaces)) {
             foreach (self::$marketplaces as $marketplaceName => $marketplace) {
                 if (!self::getIdMarketplace($marketplaceName) && isset($marketplace->name)) {
                     $carrierRequired = false;

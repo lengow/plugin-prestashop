@@ -89,7 +89,7 @@ class LengowMethod
     public static function syncMethodMarketplace()
     {
         LengowMarketplace::loadApiMarketplace();
-        if (LengowMarketplace::$marketplaces && count(LengowMarketplace::$marketplaces) > 0) {
+        if (LengowMarketplace::$marketplaces && !empty(LengowMarketplace::$marketplaces)) {
             foreach (LengowMarketplace::$marketplaces as $marketplaceName => $marketplace) {
                 if (isset($marketplace->orders->shipping_methods)) {
                     $idMarketplace = LengowMarketplace::getIdMarketplace($marketplaceName);
@@ -252,7 +252,7 @@ class LengowMethod
     public static function cleanMethodMarketplaceMatching()
     {
         LengowMarketplace::loadApiMarketplace();
-        if (LengowMarketplace::$marketplaces && count(LengowMarketplace::$marketplaces) > 0) {
+        if (LengowMarketplace::$marketplaces && !empty(LengowMarketplace::$marketplaces)) {
             foreach (LengowMarketplace::$marketplaces as $marketplaceName => $marketplace) {
                 $idMarketplace = LengowMarketplace::getIdMarketplace($marketplaceName);
                 if ($idMarketplace) {

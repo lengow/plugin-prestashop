@@ -5,6 +5,7 @@ Version 3.0.6
     - Bugfix: [export] Improved deletion of duplicate headers
     - Bugfix: [action] Management of orders waiting to return from the marketplace
     - Registering marketplace data in a json file
+    - Adding compatibility for php 7.2
 
 =============================================================
 Version 3.0.5
