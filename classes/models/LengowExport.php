@@ -766,19 +766,20 @@ class LengowExport
     {
         $fields = array();
         // Check field name to lower to avoid duplicates
-        $fieldsToLower = array();
+        $formattedFields = array();
         foreach (self::$defaultFields as $key => $value) {
             // This line is useless, but Prestashop validator require it
             $value = $value;
             $fields[] = $key;
-            $fieldsToLower[] = Tools::strtolower($key);
+            $formattedFields[] = LengowFeed::formatFields($key, $this->format, $this->legacy);
         }
         // Get product Features
         $features = Feature::getFeatures($this->language->id);
         foreach ($features as $feature) {
-            if (!in_array(Tools::strtolower($feature['name']), $fieldsToLower)) {
+            $formattedFeature = LengowFeed::formatFields($feature['name'], $this->format, $this->legacy);
+            if (!in_array($formattedFeature, $formattedFields)) {
                 $fields[] = $feature['name'];
-                $fieldsToLower[] = Tools::strtolower($feature['name']);
+                $formattedFields[] = $formattedFeature;
             } else {
                 if ($this->legacy) {
                     $fields[] = $feature['name'] . '_1';
@@ -793,9 +794,10 @@ class LengowExport
                 if ($attribute['name'] == '') {
                     continue;
                 }
-                if (!in_array(Tools::strtolower($attribute['name']), $fieldsToLower)) {
+                $formattedAttribute = LengowFeed::formatFields($attribute['name'], $this->format, $this->legacy);
+                if (!in_array($formattedAttribute, $formattedFields)) {
                     $fields[] = $attribute['name'];
-                    $fieldsToLower[] = Tools::strtolower($attribute['name']);
+                    $formattedFields[] = $formattedAttribute;
                 } else {
                     if ($this->legacy) {
                         $fields[] = $attribute['name'] . '_2';
