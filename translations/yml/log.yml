@@ -56,6 +56,7 @@ en:
       current_order_state_unavailable: "current order's status [%{order_state_marketplace}] makes it unavailable to import for marketplace %{marketplace_name}"
       order_successfully_imported: "order successfully imported (ORDER ID %{order_id})"
       import_failed: "import failed - %{decoded_message}"
+      marketplace_update_failed: "marketplace update failed - %{decoded_message}"
       order_import_failed: "import order failed - %{decoded_message}"
       lengow_order_saved: "order saved in Lengow orders table"
       lengow_order_not_saved: "WARNING ! Order could NOT be saved in Lengow orders table"

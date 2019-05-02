@@ -25,6 +25,11 @@
 class LengowMarketplace
 {
     /**
+     * @var string marketplace file name
+     */
+    public static $marketplaceJson = 'marketplaces.json';
+
+    /**
      * @var array all valid actions
      */
     public static $validActions = array(
@@ -41,9 +46,9 @@ class LengowMarketplace
     );
 
     /**
-     * @var array all marketplaces allowed for an account ID
+     * @var array all marketplaces
      */
-    public static $marketplaces = array();
+    public static $marketplaces = false;
 
     /**
      * @var mixed the current marketplace
@@ -56,7 +61,7 @@ class LengowMarketplace
     public $name;
 
     /**
-     * @var string the old code of the markeplace for v2 compatibility
+     * @var string the old code of the marketplace for v2 compatibility
      */
     public $legacyCode;
 
@@ -177,12 +182,25 @@ class LengowMarketplace
 
     /**
      * Load the json configuration of all marketplaces
+     *
+     * @param boolean $force force cache update
      */
-    public static function loadApiMarketplace()
+    public static function loadApiMarketplace($force = false)
     {
-        if (count(self::$marketplaces) === 0) {
-            self::$marketplaces = LengowConnector::queryApi('get', '/v3.0/marketplaces');
+        if (!self::$marketplaces || $force) {
+            self::$marketplaces = LengowSync::getMarketplaces($force);
         }
+    }
+
+    /**
+     * Get marketplaces.json path
+     *
+     * @return string
+     */
+    public static function getFilePath()
+    {
+        $sep = DIRECTORY_SEPARATOR;
+        return LengowMain::getLengowFolder() . $sep . LengowMain::$lengowConfigFolder . $sep . self::$marketplaceJson;
     }
 
     /**

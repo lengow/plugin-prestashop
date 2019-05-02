@@ -80,7 +80,8 @@ class LengowInstall
      * @var array all old files to remove
      */
     private $oldFiles = array(
-        'config/',
+        'config/marketplaces.xml',
+        'config/plugins.xml',
         'interface/',
         'override/',
         'models/',
@@ -119,6 +120,7 @@ class LengowInstall
         'LENGOW_CRON',
         'LENGOW_MIGRATE',
         'LENGOW_MP_CONF',
+        'LENGOW_MP_CONF_V3',
         'LENGOW_ID_CUSTOMER',
         'LENGOW_ID_GROUP',
         'LENGOW_TOKEN',

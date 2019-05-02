@@ -47,6 +47,7 @@ fi
 # Variables
 FOLDER_TMP="/tmp/lengow"
 FOLDER_LOGS="/tmp/lengow/logs"
+FOLDER_CONFIG="/tmp/lengow/config"
 FOLDER_EXPORT="/tmp/lengow/export"
 FOLDER_TEST="/tmp/lengow/tests"
 FOLDER_TOOLS="/tmp/lengow/tools"
@@ -97,6 +98,8 @@ remove_files $FOLDER_TMP ".DS_Store"
 remove_files $FOLDER_TMP "AdminLengowHome.gif"
 # Remove .idea
 remove_files $FOLDER_TMP ".idea"
+# Clean Config Folder
+remove_files $FOLDER_CONFIG "marketplaces.json"
 # Clean Log Folder
 remove_files $FOLDER_LOGS "*.txt"
 echo "- Clean logs folder : ""$VERT""DONE""$NORMAL"""

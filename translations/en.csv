@@ -360,6 +360,7 @@ log.import.order_shipped_by_marketplace|order shipped by %{marketplace_name}
 log.import.current_order_state_unavailable|current order's status [%{order_state_marketplace}] makes it unavailable to import for marketplace %{marketplace_name}
 log.import.order_successfully_imported|order successfully imported (ORDER ID %{order_id})
 log.import.import_failed|import failed - %{decoded_message}
+log.import.marketplace_update_failed|marketplace update failed - %{decoded_message}
 log.import.order_import_failed|import order failed - %{decoded_message}
 log.import.lengow_order_saved|order saved in Lengow orders table
 log.import.lengow_order_not_saved|WARNING ! Order could NOT be saved in Lengow orders table

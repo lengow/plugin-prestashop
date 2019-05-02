@@ -266,6 +266,9 @@ class LengowConfiguration extends Configuration
                     'default_value' => 'id',
                     'collection' => $trackerIds,
                 ),
+                'LENGOW_MARKETPLACE_UPDATE' => array(
+                    'export' => false,
+                ),
                 'LENGOW_ORDER_STAT' => array(
                     'export' => false,
                 ),

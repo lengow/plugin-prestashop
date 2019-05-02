@@ -27,9 +27,9 @@ class LengowConnector
     /**
      * @var string url of the API Lengow
      */
-    // const LENGOW_API_URL = 'https://api.lengow.io';
+    const LENGOW_API_URL = 'https://api.lengow.io';
     // const LENGOW_API_URL = 'https://api.lengow.net';
-    const LENGOW_API_URL = 'http://api.lengow.rec';
+    // const LENGOW_API_URL = 'http://api.lengow.rec';
     // const LENGOW_API_URL = 'http://10.100.1.82:8081';
 
     /**
@@ -66,11 +66,6 @@ class LengowConnector
      * @var string temporary token for the authorization
      */
     protected $token;
-
-    /**
-     * @var integer ID account
-     */
-    protected $accountId;
 
     /**
      * @var array lengow url for curl timeout
@@ -116,7 +111,6 @@ class LengowConnector
         );
         if (isset($data['token'])) {
             $this->token = $data['token'];
-            $this->accountId = $data['account_id'];
             return $data;
         } else {
             return false;
@@ -140,9 +134,6 @@ class LengowConnector
     {
         $this->connect();
         try {
-            if (!array_key_exists('account_id', $array)) {
-                $array['account_id'] = $this->accountId;
-            }
             $data = $this->callAction($method, $array, $type, $format, $body);
         } catch (LengowException $e) {
             return $e->getMessage();
@@ -355,7 +346,7 @@ class LengowConnector
         $url = $url['scheme'] . '://' . $url['host'] . $url['path'];
         switch ($type) {
             case 'GET':
-                $opts[CURLOPT_URL] = $url . '?' . http_build_query($args);
+                $opts[CURLOPT_URL] = $url . (!empty($args) ? '?' . http_build_query($args) : '');
                 LengowMain::log(
                     'Connector',
                     LengowMain::setLogMessage('log.connector.call_api', array('curl_url' => $opts[CURLOPT_URL]))

@@ -4,3 +4,4 @@ export/*
 !export/index.php
 config.xml
 **/.DS_Store
+config/marketplaces.json
