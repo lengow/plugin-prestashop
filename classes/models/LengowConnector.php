@@ -38,7 +38,7 @@ class LengowConnector
     const LENGOW_API_SANDBOX_URL = 'https://api.lengow.net';
 
     /**
-     * @var array fixture for test
+     * @var array|string fixture for test
      */
     public static $testFixturePath;
 

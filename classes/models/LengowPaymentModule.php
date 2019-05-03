@@ -41,10 +41,14 @@ class LengowPaymentModule extends PaymentModule
      * @param float $lengowShippingCosts order shipping costs
      * @param float $processingFees order processing fees
      * @param string $lengowTrackingNumber Lengow carrier tracking number
+     * @param integer $idOrderLengow id of the record Lengow order table
+     * @param string $orderStateLengow Lengow order state
+     * @param string $marketplaceSku id lengow of current order
+     * @param boolean $logOutput display log messages
      *
-     * @throws LengowException cannot load order status / payment module not active / cart cannot be loaded
-     *                         delivery country not active / product is not listed / unable to save order
-     *                         unable to save order payment / order creation failed
+     * @throws Exception|LengowException cannot load order status / payment module not active / cart cannot be loaded
+     *                                   delivery country not active / product is not listed / unable to save order
+     *                                   unable to save order payment / order creation failed
      *
      * @return array
      */
@@ -55,8 +59,12 @@ class LengowPaymentModule extends PaymentModule
         $message,
         $lengowProducts,
         $lengowShippingCosts,
-        $processingFees = null,
-        $lengowTrackingNumber = null
+        $processingFees,
+        $lengowTrackingNumber,
+        $idOrderLengow,
+        $orderStateLengow,
+        $marketplaceSku,
+        $logOutput
     ) {
         if (!isset($this->context)) {
             $this->context = Context::getContext();
@@ -253,7 +261,7 @@ class LengowPaymentModule extends PaymentModule
                 $order->total_discounts_tax_incl = 0;
                 $order->total_discounts = $order->total_discounts_tax_incl;
 
-                // calculate shipping tax free
+                // Calculate shipping tax free
                 $order->carrier_tax_rate = $carrier->getTaxesRate(
                     new Address($this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')})
                 );
@@ -265,7 +273,7 @@ class LengowPaymentModule extends PaymentModule
                 if (!is_null($lengowTrackingNumber)) {
                     $order->shipping_number = (string)$lengowTrackingNumber;
                 }
-                // add processing fees to wrapping fees
+                // Add processing fees to wrapping fees
                 $taxManager = TaxManagerFactory::getManager(
                     new LengowAddress($idAddress),
                     (int)Configuration::get('PS_GIFT_WRAPPING_TAX_RULES_GROUP')
@@ -290,15 +298,40 @@ class LengowPaymentModule extends PaymentModule
                 $order->invoice_date = '0000-00-00 00:00:00';
                 $order->delivery_date = '0000-00-00 00:00:00';
 
-                // Creating order
+                // Creating order in PrestaShop
                 $result = $order->add();
-
                 if (!$result) {
                     throw new LengowException(
                         LengowMain::setLogMessage(
                             'lengow_log.exception.unable_to_save_order',
                             array('error' => Db::getInstance()->getMsgError())
                         )
+                    );
+                }
+
+                // Update lengow_order table directly after creating the PrestaShop order
+                $success = LengowOrder::updateOrderLengow(
+                    $idOrderLengow,
+                    array(
+                        'id_order' => (int)$order->id,
+                        'order_process_state' => LengowOrder::getOrderProcessState($orderStateLengow),
+                        'order_lengow_state' => pSQL($orderStateLengow),
+                        'is_reimported' => 0
+                    )
+                );
+                if (!$success) {
+                    LengowMain::log(
+                        'Import',
+                        LengowMain::setLogMessage('log.import.lengow_order_not_updated'),
+                        $logOutput,
+                        $marketplaceSku
+                    );
+                } else {
+                    LengowMain::log(
+                        'Import',
+                        LengowMain::setLogMessage('log.import.lengow_order_updated'),
+                        $logOutput,
+                        $marketplaceSku
                     );
                 }
 
@@ -471,9 +504,13 @@ class LengowPaymentModule extends PaymentModule
      * @param float $lengowShippingCosts order shipping costs
      * @param float $processingFees order processing fees
      * @param string $lengowTrackingNumber Lengow carrier tracking number
+     * @param integer $idOrderLengow id of the record Lengow order table
+     * @param string $orderStateLengow Lengow order state
+     * @param string $marketplaceSku id lengow of current order
+     * @param boolean $logOutput display log messages
      *
-     * @throws LengowException product is not listed / cannot load order status / cart cannot be loaded
-     *                         order creation failed
+     * @throws Exception|LengowException product is not listed / cannot load order status / cart cannot be loaded
+     *                                   order creation failed
      * @return array
      */
     public function makeOrder14(
@@ -485,7 +522,11 @@ class LengowPaymentModule extends PaymentModule
         $lengowProducts,
         $lengowShippingCosts,
         $processingFees = null,
-        $lengowTrackingNumber = null
+        $lengowTrackingNumber = null,
+        $idOrderLengow,
+        $orderStateLengow,
+        $marketplaceSku,
+        $logOutput
     ) {
         if (!isset($this->context)) {
             $this->context = Context::getContext();
@@ -574,6 +615,33 @@ class LengowPaymentModule extends PaymentModule
             } else {
                 throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.cart_cannot_be_loaded'));
             }
+
+            // Update lengow_order table directly after creating the PrestaShop order
+            $success = LengowOrder::updateOrderLengow(
+                $idOrderLengow,
+                array(
+                    'id_order' => (int)$order->id,
+                    'order_process_state' => LengowOrder::getOrderProcessState($orderStateLengow),
+                    'order_lengow_state' => pSQL($orderStateLengow),
+                    'is_reimported' => 0
+                )
+            );
+            if (!$success) {
+                LengowMain::log(
+                    'Import',
+                    LengowMain::setLogMessage('log.import.lengow_order_not_updated'),
+                    $logOutput,
+                    $marketplaceSku
+                );
+            } else {
+                LengowMain::log(
+                    'Import',
+                    LengowMain::setLogMessage('log.import.lengow_order_updated'),
+                    $logOutput,
+                    $marketplaceSku
+                );
+            }
+
             // Next !
             if ($result && isset($order->id)) {
                 // Optional message to attach to this order
