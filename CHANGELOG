@@ -2,10 +2,11 @@
 Version 3.0.6
 =============================================================
 
+    - Feature: Registering marketplace data in a json file
+    - Feature: Optimization of API calls between PrestaShop and Lengow
     - Bugfix: [export] Improved deletion of duplicate headers
     - Bugfix: [action] Management of orders waiting to return from the marketplace
-    - Registering marketplace data in a json file
-    - Bugfix: Adding compatibility for php 7.2
+    - Bugfix: count() parameter must be an array for php 7.2
     - Bugfix: [action] Caching legacy export data
 
 =============================================================

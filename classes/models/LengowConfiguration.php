@@ -179,7 +179,7 @@ class LengowConfiguration extends Configuration
                     'type' => 'day',
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_import_days_title'),
-                    'default_value' => 5,
+                    'default_value' => 3,
                 ),
                 'LENGOW_IMPORT_PROCESSING_FEE' => array(
                     'type' => 'checkbox',

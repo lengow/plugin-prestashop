@@ -74,13 +74,17 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
             $sync = (string)Tools::getValue('sync');
         }
     }
+    $force = false;
+    if (Tools::getIsset('force')) {
+        $force = (bool)Tools::getValue('force');
+    }
     // sync catalogs id between Lengow and Prestashop
     if (!$sync || $sync === 'catalog') {
         LengowSync::syncCatalog();
     }
     // sync marketplace and marketplace carrier between Lengow and Prestashop
     if (!$sync || $sync === 'carrier') {
-        LengowSync::syncCarrier();
+        LengowSync::syncCarrier($force);
     }
     // sync orders between Lengow and Prestashop
     if (!$sync || $sync === 'order') {
@@ -126,8 +130,16 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
         LengowAction::checkActionNotSent();
     }
     // sync options between Lengow and Prestashop
-    if (!$sync || $sync === 'option') {
-        LengowSync::setCmsOption();
+    if (!$sync || $sync === 'cms_option') {
+        LengowSync::setCmsOption($force);
+    }
+    // sync status account between Lengow and Prestashop
+    if ($sync === 'status_account') {
+        LengowSync::getStatusAccount($force);
+    }
+    // sync statistics between Lengow and Prestashop
+    if ($sync === 'statistic') {
+        LengowSync::getStatistic($force);
     }
     // sync option is not valid
     if ($sync && !in_array($sync, LengowSync::$syncActions)) {
