@@ -8,6 +8,7 @@ Version 3.0.6
     - Bugfix: [action] Management of orders waiting to return from the marketplace
     - Bugfix: count() parameter must be an array for php 7.2
     - Bugfix: [action] Caching legacy export data
+    - Bugfix: Correction on the number of products per page in the pagination
 
 =============================================================
 Version 3.0.5
