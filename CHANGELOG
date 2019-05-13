@@ -1,9 +1,10 @@
 =============================================================
-Version 3.0.6
+Version 3.1.0
 =============================================================
 
     - Feature: Registering marketplace data in a json file
     - Feature: Optimization of API calls between PrestaShop and Lengow
+    - Feature: Disabling the Lengow tracker and changing the product ID
     - Bugfix: [export] Improved deletion of duplicate headers
     - Bugfix: [action] Management of orders waiting to return from the marketplace
     - Bugfix: count() parameter must be an array for php 7.2

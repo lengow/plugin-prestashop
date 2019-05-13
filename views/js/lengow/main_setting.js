@@ -47,6 +47,22 @@ function displayReportMail() {
     }
 }
 
+function displayTracker() {
+    var selector = $('.lengow_tracking_id');
+    if($('input[name="LENGOW_TRACKING_ENABLED"]').prop('checked')){
+        selector.slideDown(150);
+        var divLegend = selector.find('.legend');
+        divLegend.addClass("blue-frame");
+        divLegend.css('display', 'block');
+        divLegend.css('margin-top', '35px');
+        divLegend.show();
+    }
+    else{
+        selector.slideUp(150);
+        selector.find('.legend').hide();
+    }
+}
+
 function formatState(state) {
     var image = $(state.element).data('image');
     if (!state.id) { return state.text; }
@@ -126,6 +142,11 @@ function openModal(){
         displayReportMail();
         $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').on('change', function(){
             displayReportMail();
+        });
+        // display tracker
+        displayTracker();
+        $('input[name="LENGOW_TRACKING_ENABLED"]').on('change', function(){
+            displayTracker();
         });
         // display preprod mode
         displayPreProdMode();

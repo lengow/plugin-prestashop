@@ -148,6 +148,8 @@ order_setting.screen.nb_days|jours
 global_setting.screen.notification_alert_title|Notifications & alertes
 global_setting.screen.default_export_carrier_title|Calcul des frais de livraison
 global_setting.screen.default_export_carrier_description|Les frais de livraison de votre catalogue vont être calculés en fonction du transporteur choisi
+global_setting.screen.tracker_title|Tracker Lengow
+global_setting.screen.tracker_description|Ce tracker vous permet de récupérer les statistiques de commandes de votre site directement sur la plateforme Lengow.
 global_setting.screen.preprod_mode_title|Mode Préproduction
 global_setting.screen.preprod_mode_description|Utilisez la pré-production pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ces paramètres UNIQUEMENT sur votre serveur de préproduction.
 global_setting.screen.log_file_title|Fichiers de Log
@@ -235,6 +237,7 @@ lengow_setting.lengow_authorized_ip_title|IP autorisée(s)
 lengow_setting.lengow_authorized_ip_legend|IP autorisée(s) séparée(s) par ;
 lengow_setting.lengow_tracking_enabled_title|Activer le tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
+lengow_setting.lengow_tracking_id_legend|Le nom de l'identifiant unique indiqué dans Lengow
 lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs

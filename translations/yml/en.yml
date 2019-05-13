@@ -167,6 +167,8 @@ en:
       notification_alert_title: "Notifications & alerts"
       default_export_carrier_title: "Calculation of shipping costs"
       default_export_carrier_description: "The shipping costs for catalog generation will be calculated based on the selected carrier."
+      tracker_title: "Lengow tracker"
+      tracker_description: "This tracker allows you to retrieve order statistics generated on your site directly in Lengow."
       preprod_mode_title: "Pre-production Mode"
       preprod_mode_description: "Use pre-production mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your pre-production server ONLY"
       log_file_title: "Log Files"
@@ -259,6 +261,7 @@ en:
     lengow_authorized_ip_legend: "Authorised IP separated by ;"
     lengow_tracking_enabled_title: "Activate Lengow tracking"
     lengow_tracking_id_title: "Lengow Tracking ID"
+    lengow_tracking_id_legend: "The name of the unique identifier entered in the Lengow"
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} order(s) imported"
