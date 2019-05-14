@@ -149,6 +149,7 @@ class LengowExport
         'image_10' => 'image_10',
         'reduction_from' => 'sale_from',
         'reduction_to' => 'sale_to',
+        'meta_title' => 'meta_title',
         'meta_keywords' => 'meta_keywords',
         'meta_description' => 'meta_description',
         'url_rewrite' => 'url_rewrite',
