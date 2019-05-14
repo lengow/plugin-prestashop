@@ -178,6 +178,8 @@ class LengowProduct extends Product
      * @param string $name data name
      * @param integer $idProductAttribute Prestashop product attribute id
      *
+     * @throws Exception
+     *
      * @return string
      */
     public function getData($name, $idProductAttribute = null)
@@ -265,16 +267,15 @@ class LengowProduct extends Product
                     return self::getRealQuantity($this->id, $idProductAttribute);
                 }
                 return self::getRealQuantity($this->id);
-            case 'minimal_quantity':
-                if ($idProductAttribute && $this->combinations[$idProductAttribute]['minimal_quantity']) {
+            case 'minimal_quantity':if ($idProductAttribute && $this->combinations[$idProductAttribute]['minimal_quantity']) {
                     return $this->combinations[$idProductAttribute]['minimal_quantity'];
                 }
                 return $this->minimal_quantity;
             case 'weight':
                 if ($idProductAttribute && $this->combinations[$idProductAttribute]['weight']) {
-                    $weight = $this->weight + $this->combinations[$idProductAttribute]['weight'];
+                    $weight = (float)$this->weight + (float)$this->combinations[$idProductAttribute]['weight'];
                 } else {
-                    $weight = $this->weight;
+                    $weight = (float)$this->weight;
                 }
                 return LengowMain::formatNumber($weight) . Configuration::get('PS_WEIGHT_UNIT');
             case 'ean':

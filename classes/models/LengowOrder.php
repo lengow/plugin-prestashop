@@ -1002,7 +1002,7 @@ class LengowOrder extends Order
     public function canReSendOrder()
     {
         $orderActions = LengowAction::getActiveActionByOrderId((int)$this->id);
-        if (count($orderActions) > 0) {
+        if ($orderActions) {
             return false;
         }
         if ($this->lengowProcessState != self::PROCESS_STATE_FINISH &&

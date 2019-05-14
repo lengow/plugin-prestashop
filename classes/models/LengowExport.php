@@ -149,6 +149,7 @@ class LengowExport
         'image_10' => 'image_10',
         'reduction_from' => 'sale_from',
         'reduction_to' => 'sale_to',
+        'meta_title' => 'meta_title',
         'meta_keywords' => 'meta_keywords',
         'meta_description' => 'meta_description',
         'url_rewrite' => 'url_rewrite',
@@ -443,9 +444,9 @@ class LengowExport
     public function setLegacyFields()
     {
         if (is_null($this->legacy)) {
-            $result = LengowConnector::queryApi('get', '/v3.0/plans');
-            if (isset($result->accountVersion)) {
-                $this->legacy = $result->accountVersion === 'v2' ? true : false;
+            $merchantStatus = LengowSync::getStatusAccount();
+            if ($merchantStatus && isset($merchantStatus['legacy'])) {
+                $this->legacy = $merchantStatus['legacy'];
             } else {
                 $this->legacy = false;
             }
@@ -460,7 +461,7 @@ class LengowExport
      * @param array $fields list of fields
      * @param Shop $shop Prestashop shop being exported
      *
-     * @throws LengowException folder not writable
+     * @throws Exception|LengowException folder not writable
      */
     public function export($products, $fields, $shop)
     {
@@ -580,6 +581,8 @@ class LengowExport
      *
      * @param LengowProduct $product Lengow product instance
      * @param array $fields list of fields
+     *
+     * @throws Exception
      *
      * @return boolean
      */
@@ -763,16 +766,21 @@ class LengowExport
     protected function getFields()
     {
         $fields = array();
+        // Check field name to lower to avoid duplicates
+        $formattedFields = array();
         foreach (self::$defaultFields as $key => $value) {
             // This line is useless, but Prestashop validator require it
             $value = $value;
             $fields[] = $key;
+            $formattedFields[] = LengowFeed::formatFields($key, $this->format, $this->legacy);
         }
-        //Features
+        // Get product Features
         $features = Feature::getFeatures($this->language->id);
         foreach ($features as $feature) {
-            if (!in_array(Tools::strtolower($feature['name']), $fields)) {
+            $formattedFeature = LengowFeed::formatFields($feature['name'], $this->format, $this->legacy);
+            if (!in_array($formattedFeature, $formattedFields)) {
                 $fields[] = $feature['name'];
+                $formattedFields[] = $formattedFeature;
             } else {
                 if ($this->legacy) {
                     $fields[] = $feature['name'] . '_1';
@@ -787,8 +795,10 @@ class LengowExport
                 if ($attribute['name'] == '') {
                     continue;
                 }
-                if (!in_array(Tools::strtolower($attribute['name']), $fields)) {
+                $formattedAttribute = LengowFeed::formatFields($attribute['name'], $this->format, $this->legacy);
+                if (!in_array($formattedAttribute, $formattedFields)) {
                     $fields[] = $attribute['name'];
+                    $formattedFields[] = $formattedAttribute;
                 } else {
                     if ($this->legacy) {
                         $fields[] = $attribute['name'] . '_2';

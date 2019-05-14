@@ -56,7 +56,7 @@ class LengowMainSettingController extends LengowController
                 $form->postProcess(
                     array(
                         'LENGOW_REPORT_MAIL_ENABLED',
-                        'LENGOW_REPORT_MAIL_ADDRESS',
+                        'LENGOW_TRACKING_ENABLED',
                         'LENGOW_IMPORT_PREPROD_ENABLED',
                         'LENGOW_SHOP_ACTIVE',
                     )
@@ -92,6 +92,12 @@ class LengowMainSettingController extends LengowController
         $defaultExportCarrier = $form->buildInputs(
             array('LENGOW_EXPORT_CARRIER_DEFAULT')
         );
+        $tracker = $form->buildInputs(
+            array(
+                'LENGOW_TRACKING_ENABLED',
+                'LENGOW_TRACKING_ID'
+            )
+        );
         $preprodReport = $form->buildInputs(
             array('LENGOW_IMPORT_PREPROD_ENABLED')
         );
@@ -119,6 +125,7 @@ class LengowMainSettingController extends LengowController
         $this->context->smarty->assign('list_file', $listFile);
         $this->context->smarty->assign('mail_report', $mailReport);
         $this->context->smarty->assign('defaultExportCarrier', $defaultExportCarrier);
+        $this->context->smarty->assign('tracker', $tracker);
         $this->context->smarty->assign('preprod_report', $preprodReport);
         $this->context->smarty->assign('preprod_wrapper', $preprodWrapper);
         parent::display();

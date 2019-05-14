@@ -188,7 +188,8 @@ class LengowFeed
             case 'csv':
                 $header = '';
                 foreach ($data as $field) {
-                    $header .= self::PROTECTION . $this->formatFields($field) . self::PROTECTION . self::CSV_SEPARATOR;
+                    $header .= self::PROTECTION . self::formatFields($field, 'csv', $this->legacy)
+                        . self::PROTECTION . self::CSV_SEPARATOR;
                 }
                 return rtrim($header, self::CSV_SEPARATOR) . self::EOL;
             case 'xml':
@@ -222,7 +223,7 @@ class LengowFeed
             case 'xml':
                 $content = '<product>';
                 foreach ($data as $field => $value) {
-                    $field = $this->formatFields($field);
+                    $field = self::formatFields($field, 'xml');
                     $content .= '<' . $field . '><![CDATA[' . $value . ']]></' . $field . '>' . self::EOL;
                 }
                 $content .= '</product>' . self::EOL;
@@ -231,7 +232,7 @@ class LengowFeed
                 $content = $isFirst ? '' : ',';
                 $jsonArray = array();
                 foreach ($data as $field => $value) {
-                    $field = $this->formatFields($field);
+                    $field = self::formatFields($field, 'json');
                     $jsonArray[$field] = $value;
                 }
                 $content .= Tools::jsonEncode($jsonArray);
@@ -244,7 +245,7 @@ class LengowFeed
                 }
                 $content = '  ' . self::PROTECTION . 'product' . self::PROTECTION . ':' . self::EOL;
                 foreach ($data as $field => $value) {
-                    $field = $this->formatFields($field);
+                    $field = self::formatFields($field, 'yaml');
                     $content .= '    ' . self::PROTECTION . $field . self::PROTECTION . ':';
                     $content .= $this->indentYaml($field, $maxCharacter) . (string)$value . self::EOL;
                 }
@@ -356,14 +357,16 @@ class LengowFeed
      * Format field names according to the given format
      *
      * @param string $str field name
+     * @param string $format export format
+     * @param boolean $legacy export legacy field or not
      *
      * @return string
      */
-    protected function formatFields($str)
+    public static function formatFields($str, $format, $legacy = false)
     {
-        switch ($this->format) {
+        switch ($format) {
             case 'csv':
-                if ($this->legacy) {
+                if ($legacy) {
                     return Tools::substr(
                         Tools::strtoupper(
                             preg_replace(

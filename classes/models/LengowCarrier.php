@@ -286,7 +286,7 @@ class LengowCarrier extends Carrier
     public static function syncCarrierMarketplace()
     {
         LengowMarketplace::loadApiMarketplace();
-        if (LengowMarketplace::$marketplaces && count(LengowMarketplace::$marketplaces) > 0) {
+        if (LengowMarketplace::$marketplaces && !empty(LengowMarketplace::$marketplaces)) {
             foreach (LengowMarketplace::$marketplaces as $marketplaceName => $marketplace) {
                 if (isset($marketplace->orders->carriers)) {
                     $idMarketplace = LengowMarketplace::getIdMarketplace($marketplaceName);
@@ -449,7 +449,7 @@ class LengowCarrier extends Carrier
     public static function cleanCarrierMarketplaceMatching()
     {
         LengowMarketplace::loadApiMarketplace();
-        if (LengowMarketplace::$marketplaces && count(LengowMarketplace::$marketplaces) > 0) {
+        if (LengowMarketplace::$marketplaces && !empty(LengowMarketplace::$marketplaces)) {
             foreach (LengowMarketplace::$marketplaces as $marketplaceName => $marketplace) {
                 $idMarketplace = LengowMarketplace::getIdMarketplace($marketplaceName);
                 if ($idMarketplace) {

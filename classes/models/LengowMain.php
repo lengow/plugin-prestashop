@@ -40,6 +40,11 @@ class LengowMain
     public static $logLife = 20;
 
     /**
+     * @var string Lengow configuration folder name
+     */
+    public static $lengowConfigFolder = 'config';
+
+    /**
      * @var array product ids available to track products
      */
     public static $trackerChoiceId = array(

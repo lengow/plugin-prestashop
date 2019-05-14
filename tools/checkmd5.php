@@ -28,6 +28,7 @@ $filePaths = array(
     $base . '/AdminLengowMainSetting14.php',
     $base . '/AdminLengowOrder14.php',
     $base . '/AdminLengowOrderSetting14.php',
+    $base . '/config/index.php',
 );
 
 foreach ($listFolders as $folder) {

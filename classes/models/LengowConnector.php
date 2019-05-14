@@ -38,7 +38,7 @@ class LengowConnector
     const LENGOW_API_SANDBOX_URL = 'https://api.lengow.net';
 
     /**
-     * @var array fixture for test
+     * @var array|string fixture for test
      */
     public static $testFixturePath;
 
@@ -68,21 +68,16 @@ class LengowConnector
     protected $token;
 
     /**
-     * @var integer ID account
-     */
-    protected $accountId;
-
-    /**
      * @var array lengow url for curl timeout
      */
     protected $lengowUrls = array(
-        '/v3.0/orders' => 15,
-        '/v3.0/orders/moi/' => 5,
-        '/v3.0/orders/actions/' => 10,
-        '/v3.0/marketplaces' => 10,
-        '/v3.0/plans' => 3,
+        '/v3.0/orders' => 20,
+        '/v3.0/orders/moi/' => 10,
+        '/v3.0/orders/actions/' => 15,
+        '/v3.0/marketplaces' => 15,
+        '/v3.0/plans' => 5,
         '/v3.0/stats' => 3,
-        '/v3.1/cms' => 3,
+        '/v3.1/cms' => 5,
     );
 
     /**
@@ -116,7 +111,6 @@ class LengowConnector
         );
         if (isset($data['token'])) {
             $this->token = $data['token'];
-            $this->accountId = $data['account_id'];
             return $data;
         } else {
             return false;
@@ -140,9 +134,6 @@ class LengowConnector
     {
         $this->connect();
         try {
-            if (!array_key_exists('account_id', $array)) {
-                $array['account_id'] = $this->accountId;
-            }
             $data = $this->callAction($method, $array, $type, $format, $body);
         } catch (LengowException $e) {
             return $e->getMessage();
@@ -355,7 +346,7 @@ class LengowConnector
         $url = $url['scheme'] . '://' . $url['host'] . $url['path'];
         switch ($type) {
             case 'GET':
-                $opts[CURLOPT_URL] = $url . '?' . http_build_query($args);
+                $opts[CURLOPT_URL] = $url . (!empty($args) ? '?' . http_build_query($args) : '');
                 LengowMain::log(
                     'Connector',
                     LengowMain::setLogMessage('log.connector.call_api', array('curl_url' => $opts[CURLOPT_URL]))

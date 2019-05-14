@@ -241,7 +241,7 @@ class LengowImport
                 LengowMain::updateDateImport($this->typeImport);
             }
             // check Lengow catalogs for order synchronisation
-            if (!$this->preprodMode && !$this->importOneOrder && $this->typeImport === 'manual') {
+            if (!$this->importOneOrder && $this->typeImport === 'manual') {
                 LengowSync::syncCatalog();
                 LengowSync::syncCarrier();
             }

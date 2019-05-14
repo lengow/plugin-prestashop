@@ -1,4 +1,19 @@
 =============================================================
+Version 3.1.0
+=============================================================
+
+    - Feature: Registering marketplace data in a json file
+    - Feature: Optimization of API calls between PrestaShop and Lengow
+    - Feature: Disabling the Lengow tracker and changing the product ID
+    - Feature: Add meta_title field in legacy export feed
+    - Bugfix: [export] Improved deletion of duplicate headers
+    - Bugfix: [action] Management of orders waiting to return from the marketplace
+    - Bugfix: count() parameter must be an array for php 7.2
+    - Bugfix: [action] Caching legacy export data
+    - Bugfix: Correction on the number of products per page in the pagination
+    - Bugfix: Update of the lengow_order table directly after the creation of the PrestaShop order
+
+=============================================================
 Version 3.0.5
 =============================================================
 
@@ -78,14 +93,28 @@ Version 3.0.0
 	- Feature: Add new actions: re-import, resend and re-sync orders
 
 =============================================================
+Version 2.2.11
+=============================================================
+    - [action] Sending an action in v3 only for orders imported in v3
+    - Registering marketplace data in a json file
+    - [import] Enhanced security to avoid duplicate orders following v2 / v3 migration
+    - [import] Order management with multiple packages per address
+    - [export] Change declaration for the setMedia() function for php 7.2
+    - [export] Transforming the weight into float variable for php 7.2
+
+=============================================================
 Version 2.2.10
 =============================================================
-
-    - Feature: [export] Added product URL rewriting compatibility with Prestashop > 1.7.1
-	- Feature: [import] Added compatibility with the new 4.x version of the Colissimo Simplicite plugin
-	- Bugfix: [export] Get a specific ean, upc or reference when product attribute is equal at 1
-	- Bugfix: [import] Get delivery phone number when billing and shipping addresses are the same
-	- Bugfix: check IP server for the checklist of plugin configuration check
+	- [export] Added product URL rewriting compatibility with Prestashop > 1.7.1
+	- [import] Added compatibility with the new 4.x version of the Colissimo Simplicite plugin
+	- [export] Get a specific ean, upc or reference when product attribute is equal at 1
+	- [import] Get delivery phone number when billing and shipping addresses are the same
+	- [import] If orderDate -> comments is an empty array
+	- Check IP server for the checklist of plugin configuration check
+	- Adding class definition for lengow_logs_import for compatibility with version 1.7.4
+	- Added a new parameter in the updateQty() function for compatibility with version 1.7.3
+	- [export] Deleting a product from the Lengow selection directly in SQL query
+	- Adding links to the new Lengow help center
 
 =============================================================
 Version 2.2.9
@@ -177,7 +206,7 @@ Version 2.1.1
 =============================================================
 
 	- Feature: [export] Better data cleansing for Export
-	- Bugfix: [export] Fix stream with false columns -> empty attributes 
+	- Bugfix: [export] Fix stream with false columns -> empty attributes
 	- Bugfix: [export] Fix setAdditionalFields() and override
 	- Bugfix: [export] Fix selection of default fields if no field is selected
 	- Bugfix: [import] Fix import of several times the same product

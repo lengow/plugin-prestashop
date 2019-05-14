@@ -97,7 +97,7 @@
         });
 
         $('#lengow_feed_wrapper').on('change', '.lgw-pagination-select-item', function () {
-            $('#lengow_feed_wrapper .lengow_form_table input[name="nb_per_page"]').val($('.lgw-pagination-select-item > option:selected').attr('value'));
+            $('#lengow_feed_wrapper .lengow_form_table input[name="nb_per_page"]').val($(this).val());
             $('#lengow_feed_wrapper .lengow_form_table').submit();
             return false;
         });

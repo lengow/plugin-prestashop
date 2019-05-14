@@ -144,7 +144,7 @@ class LengowConfigurationForm
                 $html .= '<label class="control-label">' . $label . '</label>
                         <div class="input-group">
                             <input type="number" name="' . $name . '" class="form-control" value="' . $value . '" '
-                    . $readonly . ' min="1" max="99">
+                    . $readonly . ' min="1" max="30">
                             <div class="input-group-addon">
                                 <div class="unit">' . $this->locale->t('order_setting.screen.nb_days') . '</div>
                             </div>

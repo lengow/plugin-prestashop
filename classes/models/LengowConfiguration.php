@@ -179,7 +179,7 @@ class LengowConfiguration extends Configuration
                     'type' => 'day',
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_import_days_title'),
-                    'default_value' => 5,
+                    'default_value' => 3,
                 ),
                 'LENGOW_IMPORT_PROCESSING_FEE' => array(
                     'type' => 'checkbox',
@@ -257,14 +257,18 @@ class LengowConfiguration extends Configuration
                     'type' => 'checkbox',
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_tracking_enabled_title'),
-                    'default_value' => 1,
+                    'default_value' => 0,
                 ),
                 'LENGOW_TRACKING_ID' => array(
                     'type' => 'select',
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_tracking_id_title'),
+                    'legend' => $locale->t('lengow_setting.lengow_tracking_id_legend'),
                     'default_value' => 'id',
                     'collection' => $trackerIds,
+                ),
+                'LENGOW_MARKETPLACE_UPDATE' => array(
+                    'export' => false,
                 ),
                 'LENGOW_ORDER_STAT' => array(
                     'export' => false,

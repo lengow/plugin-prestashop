@@ -167,6 +167,8 @@ fr:
       notification_alert_title: "Notifications & alertes"
       default_export_carrier_title: "Calcul des frais de livraison"
       default_export_carrier_description: "Les frais de livraison de votre catalogue vont être calculés en fonction du transporteur choisi"
+      tracker_title: "Tracker Lengow"
+      tracker_description: "Ce tracker vous permet de récupérer les statistiques de commandes de votre site directement sur la plateforme Lengow."
       preprod_mode_title: "Mode Préproduction"
       preprod_mode_description: "Utilisez la pré-production pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ces paramètres UNIQUEMENT sur votre serveur de préproduction."
       log_file_title: "Fichiers de Log"
@@ -259,6 +261,7 @@ fr:
     lengow_authorized_ip_legend: "IP autorisée(s) séparée(s) par ;"
     lengow_tracking_enabled_title: "Activer le tracking Lengow"
     lengow_tracking_id_title: "ID Tracking Lengow"
+    lengow_tracking_id_legend: "Le nom de l'identifiant unique indiqué dans Lengow"
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} commande(s) importée(s)"
