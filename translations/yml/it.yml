@@ -240,7 +240,7 @@ it:
     lengow_order_id_shippedbymp_title: "Importa ordini spediti dai marketplace"
     lengow_import_force_product_title: "Forzare i prodotti"
     lengow_import_force_product_legend: "Attiva questa opzione se vuoi fozare l'importazione sei tuoi prodotti non disponibili/inattivi"
-    lengow_import_days_title: "Re-importa tutti gli ordini ricevuti dal:"
+    lengow_import_days_title: "Sincronizza tutti gli ordini aggiornati da"
     lengow_import_days_legend: "Attiva questa opzione se se hai ordini sospesi incorrettamente. Ti permetterà di importare di nuovo tutti gli rodini che sono stati processati durante questo periodo di blocco"
     lengow_import_processing_fee_title: "Importare le spese di trattamento"
     lengow_import_processing_fee_legend: "Attiva questa opzione se vuoi integrare la marketplaces fee nel tuo ordine"

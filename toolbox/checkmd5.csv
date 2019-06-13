@@ -13,7 +13,7 @@
 /backward_compatibility/backward.ini|a554002e34eb83072d221087d58a173c
 /backward_compatibility/Context.php|20ea7992e2089fc6e90a37af409da9bb
 /backward_compatibility/index.php|eb18f895c85303c2ced77482ec4ab525
-/classes/models/LengowConfigurationForm.php|ef1c5fb6d91735ca7348d371bd629ba2
+/classes/models/LengowConfigurationForm.php|7622a1e5d876627830c35c4a8d9d9f02
 /classes/models/LengowTool.php|52694113420e270308eb7b66c853896f
 /classes/models/LengowImportOrder.php|cc2ee449feb88e0bcf085b9d7f33b8eb
 /classes/models/LengowPaymentModule.php|95ff7650f58c33ef0d310a062614655b
@@ -22,7 +22,7 @@
 /classes/models/LengowSync.php|bff1c2b69f059d1acf8f0e34328e3f77
 /classes/models/LengowCountry.php|9272660d9cb039e52ef2fd1bfca33caa
 /classes/models/LengowHook.php|b46c2bffdce1124e1c20c3676f2cfaa4
-/classes/models/LengowImport.php|759b67a4647178bb2b66f80dc7149437
+/classes/models/LengowImport.php|99cd85e3a2e553b37914f2033d013a00
 /classes/models/LengowFeed.php|89111b71953bd422baf8dc39f4d90466
 /classes/models/LengowCheck.php|a1ef4482c94d869438de225373cefd65
 /classes/models/LengowBackup.php|b925fe77481a09e3b1cda3506d809bc0
@@ -408,7 +408,7 @@
 /views/templates/admin/lengow_order_setting/helpers/view/default_carrier.tpl|64cf76f232e87942e1ff8e477172f52f
 /views/templates/admin/lengow_order_setting/helpers/view/marketplace_matching.tpl|e010f742af6f59fdbe1d01a0e5c087b4
 /views/templates/admin/lengow_order_setting/helpers/view/marketplace_method.tpl|3cb45cfd650e868f6d55af2b73ddd327
-/views/templates/admin/lengow_order_setting/helpers/view/view.tpl|9b32a1416639987799e180a39c12b30f
+/views/templates/admin/lengow_order_setting/helpers/view/view.tpl|38ff61970a8d57231156cb893d26db16
 /views/templates/admin/lengow_order_setting/helpers/view/country_selector.tpl|eeddc42eef14b5f94125f7467240e072
 /views/templates/admin/lengow_order_setting/helpers/view/index.php|eb18f895c85303c2ced77482ec4ab525
 /views/templates/admin/lengow_order_setting/index.php|eb18f895c85303c2ced77482ec4ab525
@@ -483,6 +483,6 @@
 /views/js/lengow/order_setting.js|75dad32a303997927920b2a71aa6f98e
 /views/js/lengow/index.php|eb18f895c85303c2ced77482ec4ab525
 /views/index.php|eb18f895c85303c2ced77482ec4ab525
-/webservice/cron.php|6312a62403d70b7a65b35ac8fb8646c0
+/webservice/cron.php|7989f5d6ef5f562b45cb006ac9554cab
 /webservice/index.php|eb18f895c85303c2ced77482ec4ab525
 /webservice/export.php|130d34b944d9105f3f217101b97fd565

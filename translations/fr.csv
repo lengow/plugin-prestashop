@@ -216,7 +216,7 @@ lengow_setting.lengow_order_id_cancel_title|Commandes annulées
 lengow_setting.lengow_order_id_shippedbymp_title|Commandes expédiées par les places de marché
 lengow_setting.lengow_import_force_product_title|Forcer les produits
 lengow_setting.lengow_import_force_product_legend|Activez cette option si vous souhaitez importer automatiquement vos produits hors stock et produits inactifs.
-lengow_setting.lengow_import_days_title|Réimporter toutes les commandes passées depuis
+lengow_setting.lengow_import_days_title|Synchroniser toutes les commandes mises à jour depuis
 lengow_setting.lengow_import_days_legend|Activez cette option si vous avez des commandes en erreur en attente. Cela vous permet de réimporter les commandes passées depuis le dernier import réussi.
 lengow_setting.lengow_import_processing_fee_title|Importer les frais de traitement
 lengow_setting.lengow_import_processing_fee_legend|Activez cette option si vous souhaitez importer dans vos commandes les frais de traitement des places de marché.

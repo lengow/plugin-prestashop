@@ -240,7 +240,7 @@ en:
     lengow_order_id_shippedbymp_title: "Orders shipped by marketplace"
     lengow_import_force_product_title: "Force products"
     lengow_import_force_product_legend: "Enable this option if you want to force the importing of out of stock/inactive products"
-    lengow_import_days_title: "Re-import all orders made since:"
+    lengow_import_days_title: "Synchronize all orders updated since"
     lengow_import_days_legend: "Activate this option if you have incorrect pending orders. It lets you re-import all orders that have been processed during this faulty period"
     lengow_import_processing_fee_title: "Import processing fee"
     lengow_import_processing_fee_legend: "Enable this option if you want to incorporate the marketplace processing fee into your order"

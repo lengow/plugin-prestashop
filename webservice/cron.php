@@ -103,6 +103,12 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
         if (Tools::getIsset('days') && is_numeric(Tools::getValue('days'))) {
             $params['days'] = (int)Tools::getValue('days');
         }
+        if (Tools::getIsset('created_from')) {
+            $params['created_from'] = Tools::getValue('created_from');
+        }
+        if (Tools::getIsset('created_to')) {
+            $params['created_to'] = Tools::getValue('created_to');
+        }
         if (Tools::getIsset('limit') && is_numeric(Tools::getValue('limit'))) {
             $params['limit'] = (int)Tools::getValue('limit');
         }

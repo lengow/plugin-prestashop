@@ -48,8 +48,8 @@
             </div>
             <div class="lgw-box">
                 <h2>{$locale->t('order_setting.screen.import_setting_title')|escape:'htmlall':'UTF-8'}</h2>
-                {$locale->t('order_setting.screen.import_setting_description')|escape:'htmlall':'UTF-8'}
-                {html_entity_decode($import_params|escape:'htmlall':'UTF-8')}
+                <p>{$locale->t('order_setting.screen.import_setting_description')|escape:'htmlall':'UTF-8'}</p>
+                <p>{html_entity_decode($import_params|escape:'htmlall':'UTF-8')}</p>
             </div>
             <button type="submit" class="lgw-btn lgw-btn-progression lengow_submit_order_setting">
                 <div class="btn-inner">
