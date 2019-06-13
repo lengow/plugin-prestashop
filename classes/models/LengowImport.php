@@ -99,22 +99,22 @@ class LengowImport
     protected $forceProduct = true;
 
     /**
-     * @var string imports orders updated since
+     * @var string|false imports orders updated since
      */
     protected $updatedFrom = false;
 
     /**
-     * @var string imports orders updated until
+     * @var string|false imports orders updated until
      */
     protected $updatedTo = false;
 
     /**
-     * @var string imports orders created since
+     * @var string|false imports orders created since
      */
     protected $createdFrom = false;
 
     /**
-     * @var string imports orders created until
+     * @var string|false imports orders created until
      */
     protected $createdTo = false;
 

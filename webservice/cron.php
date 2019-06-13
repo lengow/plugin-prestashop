@@ -27,6 +27,8 @@
  * integer shop_id             Shop id to import
  * string  $marketplace_sku    Lengow marketplace order id to import
  * string  marketplace_name    Lengow marketplace name to import
+ * string  create_from         import of orders since
+ * string  created_to          import of orders until
  * integer delivery_address_id Lengow delivery address id to import
  * boolean force_product       Force import product when quantity is insufficient (1) or not (0)
  * boolean preprod_mode        Activate preprod mode

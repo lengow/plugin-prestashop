@@ -22,7 +22,7 @@
 /classes/models/LengowSync.php|bff1c2b69f059d1acf8f0e34328e3f77
 /classes/models/LengowCountry.php|9272660d9cb039e52ef2fd1bfca33caa
 /classes/models/LengowHook.php|b46c2bffdce1124e1c20c3676f2cfaa4
-/classes/models/LengowImport.php|99cd85e3a2e553b37914f2033d013a00
+/classes/models/LengowImport.php|e529cd54b458331bf6d8d4d57ea59fcd
 /classes/models/LengowFeed.php|89111b71953bd422baf8dc39f4d90466
 /classes/models/LengowCheck.php|a1ef4482c94d869438de225373cefd65
 /classes/models/LengowBackup.php|b925fe77481a09e3b1cda3506d809bc0
@@ -483,6 +483,6 @@
 /views/js/lengow/order_setting.js|75dad32a303997927920b2a71aa6f98e
 /views/js/lengow/index.php|eb18f895c85303c2ced77482ec4ab525
 /views/index.php|eb18f895c85303c2ced77482ec4ab525
-/webservice/cron.php|7989f5d6ef5f562b45cb006ac9554cab
+/webservice/cron.php|14c1b3100f320ac9222c1c38be310af8
 /webservice/index.php|eb18f895c85303c2ced77482ec4ab525
 /webservice/export.php|130d34b944d9105f3f217101b97fd565
