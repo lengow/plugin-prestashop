@@ -19,7 +19,7 @@
 /classes/models/LengowPaymentModule.php|95ff7650f58c33ef0d310a062614655b
 /classes/models/LengowMethod.php|79d866d30beba3ca349cd66b501d86d8
 /classes/models/LengowCustomer.php|9876528937cc0eb70737950a31a7d559
-/classes/models/LengowSync.php|bff1c2b69f059d1acf8f0e34328e3f77
+/classes/models/LengowSync.php|662dab4fbebb753b9608e9442601bbaf
 /classes/models/LengowCountry.php|9272660d9cb039e52ef2fd1bfca33caa
 /classes/models/LengowHook.php|b46c2bffdce1124e1c20c3676f2cfaa4
 /classes/models/LengowImport.php|e529cd54b458331bf6d8d4d57ea59fcd
@@ -43,14 +43,14 @@
 /classes/models/LengowTranslation.php|9b660d426e09a54cf0cdb5fd070825b6
 /classes/models/LengowFile.php|0db945b304aaef965e531dbc8da644d0
 /classes/models/LengowShop.php|66a729bfcc41720eb40a69e21c04d666
-/classes/models/LengowConnector.php|0fa1bcd55d175b038c1894ef51215743
+/classes/models/LengowConnector.php|6e0ffc5162030d2fba0355967783df9a
 /classes/models/LengowException.php|c25029800cbc155b26375415141e8824
 /classes/models/LengowCart.php|d9fbb497089ceb48d5e4b713f736452e
 /classes/models/LengowMarketplace.php|580bdfca2b42b4edb4d58d2117deac45
 /classes/models/LengowAddress.php|a382676c3e6fa40eaac0a9afcacd17e1
 /classes/models/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/models/LengowProduct.php|eebeb98789895d199207e38ae4e680c8
-/classes/models/LengowConfiguration.php|670cb124f4e00dcf005676899329374a
+/classes/models/LengowConfiguration.php|8f9deb87a1616e482b9f81c7da8fe63b
 /classes/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/controllers/LengowController.php|22f041328b5dbd01ba03d29b70b48a76
 /classes/controllers/LengowHomeController.php|e613ab0dddecf52440768a813c814d54
@@ -483,6 +483,6 @@
 /views/js/lengow/order_setting.js|75dad32a303997927920b2a71aa6f98e
 /views/js/lengow/index.php|eb18f895c85303c2ced77482ec4ab525
 /views/index.php|eb18f895c85303c2ced77482ec4ab525
-/webservice/cron.php|14c1b3100f320ac9222c1c38be310af8
+/webservice/cron.php|c309980751b058f3ee451b81aca07877
 /webservice/index.php|eb18f895c85303c2ced77482ec4ab525
 /webservice/export.php|130d34b944d9105f3f217101b97fd565

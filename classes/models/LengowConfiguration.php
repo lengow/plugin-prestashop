@@ -267,36 +267,43 @@ class LengowConfiguration extends Configuration
                     'default_value' => 'id',
                     'collection' => $trackerIds,
                 ),
-                'LENGOW_MARKETPLACE_UPDATE' => array(
-                    'export' => false,
-                ),
-                'LENGOW_ORDER_STAT' => array(
-                    'export' => false,
-                ),
-                'LENGOW_ORDER_STAT_UPDATE' => array(
-                    'export' => false,
-                ),
                 'LENGOW_VERSION' => array(
                     'type' => 'text',
                     'global' => true,
                 ),
+                'LENGOW_CATALOG_UPDATE' => array(
+                    'global' => true,
+                ),
+                'LENGOW_MARKETPLACE_UPDATE' => array(
+                    'global' => true,
+                ),
+                'LENGOW_ORDER_STAT' => array(
+                    'export' => false,
+                    'global' => true,
+                ),
+                'LENGOW_ORDER_STAT_UPDATE' => array(
+                    'global' => true,
+                ),
                 'LENGOW_INSTALLATION_IN_PROGRESS' => array(
                     'export' => false,
+                    'global' => true,
                 ),
                 'LENGOW_ACCOUNT_STATUS' => array(
                     'export' => false,
+                    'global' => true,
                 ),
                 'LENGOW_ACCOUNT_STATUS_UPDATE' => array(
-                    'export' => false,
+                    'global' => true,
                 ),
                 'LENGOW_OPTION_CMS_UPDATE' => array(
-                    'export' => false,
+                    'global' => true,
                 ),
                 'LENGOW_LIST_MARKET_UPDATE' => array(
-                    'export' => false,
+                    'global' => true,
                 ),
                 'LENGOW_STATE_ERROR' => array(
                     'export' => false,
+                    'global' => true,
                 ),
             );
         }

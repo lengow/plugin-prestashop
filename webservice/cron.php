@@ -82,7 +82,7 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
     }
     // sync catalogs id between Lengow and Prestashop
     if (!$sync || $sync === 'catalog') {
-        LengowSync::syncCatalog();
+        LengowSync::syncCatalog($force);
     }
     // sync marketplace and marketplace carrier between Lengow and Prestashop
     if (!$sync || $sync === 'carrier') {
