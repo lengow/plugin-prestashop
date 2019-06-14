@@ -517,7 +517,7 @@ class LengowMarketplace
     }
 
     /**
-     * Get all available values from an order
+     * Check required parameters and delete empty parameters
      *
      * @param string $action Lengow order actions type (ship or cancel)
      * @param array $params all available values
