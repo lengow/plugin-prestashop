@@ -294,7 +294,7 @@ fr:
       order_line_required: "numéro de la ligne de commande requis, non trouvé dans la commande"
       action_not_valid: "l'action %{action} n'est pas valide"
       marketplace_action_not_present: "l'action %{action} n'est pas présente pour cette place de marché"
-      shop_id_require: "l'ID de la boutique est requis"
+      marketplace_sku_require: "la référence commande marketplace est requise"
       marketplace_name_require: "le nom de la place de marché est requis"
       no_delivery_country_in_order: "nous ne trouvons pas le pays de livraison dans cette commande"
       match_carrier_with_country: "vous devez faire correspondre le transporteur %{carrier_name} avec le pays %{country_name}"

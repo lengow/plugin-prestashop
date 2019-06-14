@@ -294,7 +294,7 @@ it:
       order_line_required: "e' richiesta la linea d'ordine ma non puo' essere trovata nell'ordine"
       action_not_valid: "azione %{action} non valida"
       marketplace_action_not_present: "azione marketplace non disponibile"
-      shop_id_require: "ID shop richiesto"
+      marketplace_sku_require: "è richiesto il riferimento dell'ordine marketplace"
       marketplace_name_require: "richiesto nome marketplace"
       no_delivery_country_in_order: "nessun paese di consegna nell’ordine"
       match_carrier_with_country: "associa trasportatore %{carrier_name} al paese %{country_name}"

@@ -267,7 +267,7 @@ lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} d
 lengow_log.exception.order_line_required|order line is required but cannot be not found in order
 lengow_log.exception.action_not_valid|action %{action} is not valid
 lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} are not present
-lengow_log.exception.shop_id_require|shop ID is required
+lengow_log.exception.marketplace_sku_require|marketplace order reference is required
 lengow_log.exception.marketplace_name_require|marketplace name is required
 lengow_log.exception.no_delivery_country_in_order|can't find the delivery country in the order
 lengow_log.exception.match_carrier_with_country|you need to match the carrier %{carrier_name} with the country %{country_name}

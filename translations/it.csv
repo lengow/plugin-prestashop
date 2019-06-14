@@ -267,7 +267,7 @@ lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} n
 lengow_log.exception.order_line_required|e' richiesta la linea d'ordine ma non puo' essere trovata nell'ordine
 lengow_log.exception.action_not_valid|azione %{action} non valida
 lengow_log.exception.marketplace_action_not_present|azione marketplace non disponibile
-lengow_log.exception.shop_id_require|ID shop richiesto
+lengow_log.exception.marketplace_sku_require|è richiesto il riferimento dell'ordine marketplace
 lengow_log.exception.marketplace_name_require|richiesto nome marketplace
 lengow_log.exception.no_delivery_country_in_order|nessun paese di consegna nell’ordine
 lengow_log.exception.match_carrier_with_country|associa trasportatore %{carrier_name} al paese %{country_name}
