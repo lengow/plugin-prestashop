@@ -1168,6 +1168,7 @@ class LengowImportOrder
     {
         try {
             $carrierCompatibility = LengowCarrier::carrierCompatibility(
+                $order->id,
                 $order->id_customer,
                 $order->id_cart,
                 $order->id_carrier,

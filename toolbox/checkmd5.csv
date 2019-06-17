@@ -15,7 +15,7 @@
 /backward_compatibility/index.php|eb18f895c85303c2ced77482ec4ab525
 /classes/models/LengowConfigurationForm.php|7622a1e5d876627830c35c4a8d9d9f02
 /classes/models/LengowTool.php|52694113420e270308eb7b66c853896f
-/classes/models/LengowImportOrder.php|cc2ee449feb88e0bcf085b9d7f33b8eb
+/classes/models/LengowImportOrder.php|3561027b19cf18de08e0455da5349066
 /classes/models/LengowPaymentModule.php|95ff7650f58c33ef0d310a062614655b
 /classes/models/LengowMethod.php|79d866d30beba3ca349cd66b501d86d8
 /classes/models/LengowCustomer.php|9876528937cc0eb70737950a31a7d559
@@ -29,7 +29,7 @@
 /classes/models/LengowInstall.php|94c17a3f00c61838050fd159fffe25c7
 /classes/models/LengowOrderDetail.php|4662cac96615a0a8287a6f2a607bc4bd
 /classes/models/LengowList.php|62e580e27ac84c03d970408c1f6d8210
-/classes/models/LengowCarrier.php|514533cab64fad627eb6b1edd70d7d62
+/classes/models/LengowCarrier.php|73619e27133d057c466e37c8a0973b60
 /classes/models/LengowTaxRule.php|809008cc79f5fa843fa87ac67f401a1e
 /classes/models/LengowCurrency.php|f2b2f0e3b8da77da54ce4cb70a4e88c0
 /classes/models/LengowMain.php|2278ba466ce0fc35439c6825cbe8688b

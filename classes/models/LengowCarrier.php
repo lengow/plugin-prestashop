@@ -940,6 +940,7 @@ class LengowCarrier extends Carrier
     /**
      * Ensure carrier compatibility with SoColissimo and MondialRelay Modules
      *
+     * @param integer $idOrder Prestashop order id
      * @param integer $idCustomer Prestashop customer id
      * @param integer $idCart Prestashop cart id
      * @param integer $idCarrier Prestashop carrier id
@@ -949,7 +950,7 @@ class LengowCarrier extends Carrier
      *
      * @return integer -1 = compatibility not ensured, 0 = not a carrier module, 1 = compatibility ensured
      */
-    public static function carrierCompatibility($idCustomer, $idCart, $idCarrier, $shippingAddress)
+    public static function carrierCompatibility($idOrder, $idCustomer, $idCart, $idCarrier, $shippingAddress)
     {
         // get SoColissimo carrier id
         $soColissimoCarrierId =_PS_VERSION_ < '1.7'
@@ -980,7 +981,7 @@ class LengowCarrier extends Carrier
                         )
                     );
                 }
-                return self::addMondialRelay($relay, $idCustomer, $idCarrier, $idCart)
+                return self::addMondialRelay($relay, $idOrder, $idCustomer, $idCarrier, $idCart)
                     ? self::COMPATIBILITY_OK
                     : self::COMPATIBILITY_KO;
             }
@@ -1175,7 +1176,8 @@ class LengowCarrier extends Carrier
     /**
      * Save order in MR table
      *
-     * @param array $relay relay info
+     * @param mixed $relay relay info
+     * @param integer $idOrder Prestashop order id
      * @param integer $idCustomer Prestashop customer id
      * @param integer $idCarrier Prestashop carrier id
      * @param integer $idCart Prestashop cart id
@@ -1183,27 +1185,61 @@ class LengowCarrier extends Carrier
      *
      * @return boolean
      */
-    public static function addMondialRelay($relay, $idCustomer, $idCarrier, $idCart, $insurance = 0)
+    public static function addMondialRelay($relay, $idOrder, $idCustomer, $idCarrier, $idCart, $insurance = 0)
     {
-        $db = Db::getInstance();
-        $query = 'INSERT INTO `' . _DB_PREFIX_ . 'mr_selected` (`id_customer`, `id_method`, `id_cart`, MR_insurance, ';
+        $mdArrayKeys = array(
+            'Num',
+            'LgAdr1',
+            'LgAdr2',
+            'LgAdr3',
+            'LgAdr4',
+            'CP',
+            'Ville',
+            'Pays',
+        );
+        // get column names specific to the order
+        $query = 'INSERT INTO `' . _DB_PREFIX_ . 'mr_selected`
+            (`id_customer`,
+            `id_method`,
+            `id_cart`,
+            `id_order`,
+            `MR_insurance`,
+            `date_add`,';
+        // get column names specific to a relay
         if (is_array($relay)) {
             foreach ($relay as $nameKey => $value) {
-                $query .= '`MR_Selected_' . MRTools::bqSQL($nameKey) . '`, ';
+                $query .= '`MR_Selected_'.MRTools::bqSQL($nameKey).'`, ';
+            }
+        } elseif (is_object(($relay))) {
+            foreach ($mdArrayKeys as $key) {
+                if (isset($relay->{$key})) {
+                    $query .= '`MR_Selected_'.MRTools::bqSQL($key).'`, ';
+                }
             }
         }
+        // get specific values from an order
         $query = rtrim($query, ', ') . ') VALUES ('
             . (int)$idCustomer . ', '
             . (int)$idCarrier . ', '
             . (int)$idCart . ', '
-            . (int)$insurance . ', ';
-
+            . (int)$idOrder . ', '
+            . (int)$insurance . ', '
+            . 'NOW(), ';
+        // get specific values for a relay
         if (is_array($relay)) {
             foreach ($relay as $nameKey => $value) {
                 $query .= '"' . pSQL($value) . '", ';
             }
+        } elseif (is_object(($relay))) {
+            foreach ($mdArrayKeys as $key) {
+                if (isset($relay->{$key})) {
+                    $query .= '"' . pSQL($relay->{$key}) . '", ';
+                }
+            }
         }
+        // clean query and execute
         $query = rtrim($query, ', ') . ')';
+        $db = Db::getInstance();
         return $db->execute($query);
     }
 }
