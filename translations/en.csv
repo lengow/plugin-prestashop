@@ -395,6 +395,8 @@ log.import.error_default_carrier_not_active|import failed - default carrier not 
 log.import.carrier_compatibility_ensured|carrier compatibility ensured with carrier "%{carrier_name}"
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
+log.import.launch_validate_order_hook|launch validateOrder hook for other plugins
+log.import.validate_order_hook_failed|validateOrder hook failed - %{error_message}
 log.order_action.check_completed_action|check completed actions
 log.order_action.check_old_action|check and finish old actions
 log.order_action.check_action_not_sent|check actions not sent

@@ -88,6 +88,8 @@ en:
       carrier_compatibility_ensured: "carrier compatibility ensured with carrier \"%{carrier_name}\""
       order_synchronized_with_lengow: "order successfully synchronised with Lengow webservice (ORDER ID %{order_id})"
       order_not_synchronized_with_lengow: "WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})"
+      launch_validate_order_hook: "launch validateOrder hook for other plugins"
+      validate_order_hook_failed: "validateOrder hook failed - %{error_message}"
     order_action:
       check_completed_action: "check completed actions"
       check_old_action: "check and finish old actions"

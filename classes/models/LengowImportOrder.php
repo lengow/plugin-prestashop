@@ -422,6 +422,8 @@ class LengowImportOrder
                     );
                     // ensure carrier compatibility with SoColissimo & Mondial Relay
                     $this->checkCarrierCompatibility($order);
+                    // launch validateOrder hook for other plugin (uncomment if needed)
+                    // $this->launchValidateOrderHook($order);
                 }
             }
             // add quantity back for re-import order and order shipped by marketplace
@@ -1337,5 +1339,46 @@ class LengowImportOrder
             }
         }
         return $orderLineSaved;
+    }
+
+    /**
+     * Launch validateOrder hook for carrier plugins
+     *
+     * @param Order $order PrestaShop order instance
+     *
+     */
+    protected function launchValidateOrderHook($order)
+    {
+        LengowMain::log(
+            'Import',
+            LengowMain::setLogMessage('log.import.launch_validate_order_hook'),
+            $this->logOutput,
+            $this->marketplaceSku
+        );
+        try {
+            $cart = new Cart((int)$order->id_cart);
+            $customer = new Customer((int)$order->id_customer);
+            $currency = new Currency((int)$order->id_currency, null, (int)$this->context->shop->id);
+            $orderStatus = new OrderState((int)$order->current_state, $this->idLang);
+            // Hook validate order
+            Hook::exec('actionValidateOrder', array(
+                'cart' => $cart,
+                'order' => $order,
+                'customer' => $customer,
+                'currency' => $currency,
+                'orderStatus' => $orderStatus,
+            ));
+        } catch (Exception $e) {
+            $errorMessage = '[Prestashop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            LengowMain::log(
+                'Import',
+                LengowMain::setLogMessage(
+                    'log.import.validate_order_hook_failed',
+                    array('error_message' => $errorMessage)
+                ),
+                $this->logOutput,
+                $this->marketplaceSku
+            );
+        }
     }
 }
