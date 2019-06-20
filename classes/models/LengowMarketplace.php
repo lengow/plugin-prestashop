@@ -294,6 +294,26 @@ class LengowMarketplace
     }
 
     /**
+     * Is marketplace has carriers
+     *
+     * @return boolean
+     */
+    public function hasCarriers()
+    {
+        return !empty($this->carriers) ? true : false;
+    }
+
+    /**
+     * Is marketplace has shipping methods
+     *
+     * @return boolean
+     */
+    public function hasShippingMethods()
+    {
+        return !empty($this->shippingMethods) ? true : false;
+    }
+
+    /**
      * Call API action and create action in lengow_actions table
      *
      * @param string $action Lengow order actions type (ship or cancel)

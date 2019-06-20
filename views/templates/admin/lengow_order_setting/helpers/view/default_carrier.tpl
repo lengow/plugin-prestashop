@@ -26,11 +26,11 @@
         </p>
         <select name="default_carriers[{$marketplace['id']|escape:'htmlall':'UTF-8'}][carrier]" class="carrier lengow_select required">
             <option value="">{$locale->t('order_setting.screen.please_select_carrier_prestashop')|escape:'htmlall':'UTF-8'}</option>
-            {foreach from=$carriers key=k item=c}
-                {if $marketplace['id_carrier'] eq $k}
-                    <option value="{$k|escape:'htmlall':'UTF-8'}" selected="selected">{$c|escape:'htmlall':'UTF-8'}</option>
+            {foreach from=$carriers key=idCarrier item=carrier}
+                {if $marketplace['id_carrier'] eq $idCarrier}
+                    <option value="{$idCarrier|escape:'htmlall':'UTF-8'}" selected="selected">{$carrier['name']|escape:'htmlall':'UTF-8'}</option>
                 {else}
-                    <option value="{$k|escape:'htmlall':'UTF-8'}">{$c|escape:'htmlall':'UTF-8'}</option>
+                    <option value="{$idCarrier|escape:'htmlall':'UTF-8'}">{$carrier['name']|escape:'htmlall':'UTF-8'}</option>
                 {/if}
             {/foreach}
         </select>
@@ -48,11 +48,11 @@
             </p>
             <select name="default_carriers[{$marketplace['id']|escape:'htmlall':'UTF-8'}][carrier_marketplace]" class="carrier lengow_select {if $marketplace['carrier_required']}required{/if}">
                 <option value="">{$locale->t('order_setting.screen.please_select_carrier_marketplace', ['marketplace_name' => $marketplace['label']])|escape:'htmlall':'UTF-8'}</option>
-                {foreach from=$marketplace['carriers'] item=carrier}
-                    {if $marketplace['id_carrier_marketplace'] eq $carrier['id_carrier_marketplace']}
-                        <option value="{$carrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}" selected="selected">{$carrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
+                {foreach from=$marketplace['carriers'] item=marketplaceCarrier}
+                    {if $marketplace['id_carrier_marketplace'] eq $marketplaceCarrier['id_carrier_marketplace']}
+                        <option value="{$marketplaceCarrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}" selected="selected">{$marketplaceCarrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
                     {else}
-                        <option value="{$carrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}">{$carrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
+                        <option value="{$marketplaceCarrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}">{$marketplaceCarrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
                     {/if}
                 {/foreach}
             </select>

@@ -23,7 +23,6 @@ function displayPreProdMode() {
     if ($("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").prop('checked')) {
         selector.slideDown(150);
         var divLegend = selector.find('.legend');
-        divLegend.addClass("blue-frame");
         divLegend.css('display', 'block');
         divLegend.show();
     } else {
@@ -37,7 +36,6 @@ function displayReportMail() {
     if($('input[name="LENGOW_REPORT_MAIL_ENABLED"]').prop('checked')){
         selector.slideDown(150);
         var divLegend = selector.next('.legend');
-        divLegend.addClass("blue-frame");
         divLegend.css('display', 'block');
         divLegend.show();
     }
@@ -52,7 +50,6 @@ function displayTracker() {
     if($('input[name="LENGOW_TRACKING_ENABLED"]').prop('checked')){
         selector.slideDown(150);
         var divLegend = selector.find('.legend');
-        divLegend.addClass("blue-frame");
         divLegend.css('display', 'block');
         divLegend.css('margin-top', '35px');
         divLegend.show();

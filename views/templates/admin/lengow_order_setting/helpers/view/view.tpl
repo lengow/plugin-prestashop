@@ -29,6 +29,7 @@
                 <div class="lgw-box" id="carrier-matching">
                     <div id="country_selector">
                         {include file='./country_selector.tpl'}
+                        <p>{html_entity_decode($semantic_search|escape:'htmlall':'UTF-8')}</p>
                     </div>
                     <div id="marketplace_matching"></div>
                     <div class="ajax-loading mod-matching-carrier" style="display: none">
