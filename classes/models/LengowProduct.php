@@ -267,7 +267,8 @@ class LengowProduct extends Product
                     return self::getRealQuantity($this->id, $idProductAttribute);
                 }
                 return self::getRealQuantity($this->id);
-            case 'minimal_quantity':if ($idProductAttribute && $this->combinations[$idProductAttribute]['minimal_quantity']) {
+            case 'minimal_quantity':
+                if ($idProductAttribute && $this->combinations[$idProductAttribute]['minimal_quantity']) {
                     return $this->combinations[$idProductAttribute]['minimal_quantity'];
                 }
                 return $this->minimal_quantity;
