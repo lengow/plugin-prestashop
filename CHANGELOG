@@ -7,6 +7,7 @@ Version 3.1.1
     - Feature: [action] Refactoring and optimization of actions on orders
     - Feature: [import] Add semantic search for carrier match
     - Bugfix: [import] Updating Mondial Relay data in the specific plugin table
+    - Bugfix: [export] Display of disabled products in grid and counter
 
 =============================================================
 Version 3.1.0

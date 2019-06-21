@@ -320,12 +320,16 @@ class LengowFeedController extends LengowController
                     AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = 1)';
             }
             $select[] = ' sav.quantity ';
-            $where[] = ' ps.active = 1 ';
+            if (!LengowConfiguration::get('LENGOW_EXPORT_INACTIVE', null, null, (int)$idShop)) {
+                $where[] = ' ps.active = 1 ';
+            }
         } else {
             $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl ON (p.`id_category_default` = cl.`id_category`
                 AND pl.`id_lang` = cl.`id_lang`)';
             $select[] = ' p.quantity ';
-            $where[] = ' p.active = 1 ';
+            if (!LengowConfiguration::get('LENGOW_EXPORT_INACTIVE')) {
+                $where[] = ' p.active = 1 ';
+            }
         }
 
         $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
@@ -350,6 +354,7 @@ class LengowFeedController extends LengowController
                     'from' => $from,
                     'join' => $join,
                     'where' => $where,
+                    'order' => 'p.id_product ASC',
                 )
             )
         );
