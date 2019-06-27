@@ -843,7 +843,7 @@ class LengowImport
                 $lastImport = LengowMain::getLastImport();
                 if ($lastImport['timestamp'] !== 'none') {
                     // added security when changing configuration (catalog id or import days)
-                    if(self::checkLastUpdateDate($lastImport['timestamp'])) {
+                    if (self::checkLastUpdateDate($lastImport['timestamp'])) {
                         $currentTimestamp = time();
                         $intervalDay = (int) (($currentTimestamp - $lastImport['timestamp']) / 86400);
                         $intervalDay = $intervalDay === 0 ? 1 : $intervalDay;
