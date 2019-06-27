@@ -190,6 +190,7 @@ class LengowConfigurationForm
                             $shopValue = 1;
                         }
                         $this->checkAndLog($key, $shopValue, $idShop);
+                        $shopValue = $shopValue === '' ? null : $shopValue;
                         LengowConfiguration::updateValue($key, $shopValue, false, null, $idShop);
                     }
                 } else {
@@ -203,6 +204,7 @@ class LengowConfigurationForm
                             $value = 1;
                         }
                         $this->checkAndLog($key, $value);
+                        $value = $value === '' ? null : $value;
                         LengowConfiguration::updateGlobalValue($key, $value);
                     }
                 }

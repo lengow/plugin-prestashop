@@ -416,6 +416,46 @@ class LengowConfiguration extends Configuration
     }
 
     /**
+     * Get last update date for a specific key
+     *
+     * @param array $keys Lengow configuration keys
+     * @param integer $idShop Prestashop shop id
+     *
+     * @return array
+     */
+    public static function getLastUpdateDate($keys, $idShop = null)
+    {
+        $in = '';
+        foreach ($keys as $key) {
+            $in .= empty($in) ? '\'' . pSQL($key) . '\'' :  ',\'' . pSQL($key) . '\'';
+        }
+        if (_PS_VERSION_ < '1.5') {
+            $query = 'SELECT name, id_shop, date_upd  FROM ' . _DB_PREFIX_ . 'configuration
+                WHERE name IN (' . $in . ')';
+        } else {
+            $query = 'SELECT name, id_shop, date_upd  FROM ' . _DB_PREFIX_ . 'configuration
+                WHERE name IN (' . $in . ')' . ($idShop !== null ? 'AND `id_shop` = ' . (int)$idShop : '');
+        }
+        try {
+            $results = Db::getInstance()->executeS($query);
+            if (!empty($results)) {
+                $return = array();
+                foreach ($results as $result) {
+                    if ($idShop !== null || _PS_VERSION_ < '1.5') {
+                        $return[$result['name']] = strtotime($result['date_upd']);
+                    } else {
+                        $return[$result['name']][(int)$result['id_shop']] = strtotime($result['date_upd']);
+                    }
+                }
+                return $return;
+            }
+        } catch (PrestaShopDatabaseException $e) {
+            $results = array();
+        };
+        return $results;
+    }
+
+    /**
      * Get Valid Account / Access token / Secret token
      *
      * @return array
