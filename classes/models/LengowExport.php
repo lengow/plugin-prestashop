@@ -75,6 +75,7 @@ class LengowExport
         'price_incl_tax' => 'price_sale',
         'price_before_discount_excl_tax' => 'price_duty_free',
         'price_before_discount_incl_tax' => 'price',
+        'price_wholesale' => 'wholesale_price',
         'discount_percent' => 'price_sale_percent',
         'discount_start_date' => 'sale_from',
         'discount_end_date' => 'sale_to',
