@@ -216,7 +216,9 @@ lengow_setting.lengow_order_id_cancel_title|Cancelled orders
 lengow_setting.lengow_order_id_shippedbymp_title|Orders shipped by marketplace
 lengow_setting.lengow_import_force_product_title|Force products
 lengow_setting.lengow_import_force_product_legend|Enable this option if you want to force the importing of out of stock/inactive products
-lengow_setting.lengow_import_days_title|Re-import all orders made since:
+lengow_setting.lengow_carrier_semantic_enable_title|I want to activate the semantic matching of carriers option
+lengow_setting.lengow_carrier_semantic_enable_legend|With this option, match the carrier or shipping method indicated by the marketplace with the name of your PrestaShop carriers. This matching will be used only for marketplaces that do not indicate any carrier or shipping method.
+lengow_setting.lengow_import_days_title|Synchronize all orders updated since
 lengow_setting.lengow_import_days_legend|Activate this option if you have incorrect pending orders. It lets you re-import all orders that have been processed during this faulty period
 lengow_setting.lengow_import_processing_fee_title|Import processing fee
 lengow_setting.lengow_import_processing_fee_legend|Enable this option if you want to incorporate the marketplace processing fee into your order
@@ -267,7 +269,7 @@ lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} d
 lengow_log.exception.order_line_required|order line is required but cannot be not found in order
 lengow_log.exception.action_not_valid|action %{action} is not valid
 lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} are not present
-lengow_log.exception.shop_id_require|shop ID is required
+lengow_log.exception.marketplace_sku_require|marketplace order reference is required
 lengow_log.exception.marketplace_name_require|marketplace name is required
 lengow_log.exception.no_delivery_country_in_order|can't find the delivery country in the order
 lengow_log.exception.match_carrier_with_country|you need to match the carrier %{carrier_name} with the country %{country_name}
@@ -395,6 +397,8 @@ log.import.error_default_carrier_not_active|import failed - default carrier not 
 log.import.carrier_compatibility_ensured|carrier compatibility ensured with carrier "%{carrier_name}"
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
+log.import.launch_validate_order_hook|launch validateOrder hook for other plugins
+log.import.validate_order_hook_failed|validateOrder hook failed - %{error_message}
 log.order_action.check_completed_action|check completed actions
 log.order_action.check_old_action|check and finish old actions
 log.order_action.check_action_not_sent|check actions not sent

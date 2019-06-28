@@ -63,13 +63,111 @@ class LengowCarrier extends Carrier
             return $carriers;
         }
         foreach ($collection as $row) {
-            if (_PS_VERSION_ < '1.5') {
-                $carriers[$row['id_carrier']] = $row['name'];
-            } else {
-                $carriers[$row['id_reference']] = $row['name'];
-            }
+            $idCarrier = _PS_VERSION_ < '1.5' ? (int)$row['id_carrier'] : (int)$row['id_reference'];
+            $carriers[$idCarrier] = array(
+                'name' => $row['name'],
+                'external_module_name' => $row['external_module_name'],
+            );
         }
         return $carriers;
+    }
+
+    /**
+     * Get carrier id recovery by semantic search
+     *
+     * @param string $search Module name
+     * @param integer $idCountry Prestashop country id
+     * @param string $idRelay Delivery relay id
+     *
+     * @return integer|false
+     */
+    public static function getIdCarrierBySemanticSearch($search, $idCountry = null, $idRelay = null)
+    {
+        $idCarrier = self::getIdCarrierByCarrierName($search, $idCountry);
+        if (!$idCarrier) {
+            $idCarrier = self::getIdCarrierByExternalModuleName($search, $idCountry, $idRelay);
+        }
+        if ($idCarrier) {
+            $idCarrier = self::getIdActiveCarrierByIdCarrier($idCarrier, $idCountry);
+        }
+        return $idCarrier;
+    }
+
+    /**
+     * Get carrier id for a given name
+     *
+     * @param string $search Carrier name
+     * @param integer $idCountry Prestashop country id
+     *
+     * @return integer|false
+     */
+    public static function getIdCarrierByCarrierName($search, $idCountry = null)
+    {
+        $search = Tools::strtolower(str_replace(' ', '', $search));
+        $activeCarriers = self::getActiveCarriers($idCountry);
+        foreach ($activeCarriers as $idCarrier => $carrier) {
+            if (Tools::strtolower(str_replace(' ', '', $carrier['name'])) === $search) {
+                return (int)$idCarrier;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get carrier id by external module name
+     *
+     * @param string $search Module name
+     * @param integer $idCountry Prestashop country id
+     * @param string $idRelay Delivery relay id
+     *
+     * @return integer|false
+     */
+    public static function getIdCarrierByExternalModuleName($search, $idCountry = null, $idRelay = null)
+    {
+        $carriers = array();
+        $search = Tools::strtolower(str_replace(' ', '', $search));
+        $activeCarriers = self::getActiveCarriers($idCountry);
+        // use exact matching on the module name
+        foreach ($activeCarriers as $idCarrier => $carrier) {
+            if (empty($carrier['external_module_name'])) {
+                continue;
+            }
+            $externalModuleName = Tools::strtolower(str_replace(' ', '', $carrier['external_module_name']));
+            if ($externalModuleName === $search) {
+                $carriers[] = array(
+                    'id_carrier' => (int)$idCarrier,
+                    'external_module_name' => $carrier['external_module_name'],
+                );
+            }
+        }
+        // use approximately matching on the module name
+        if (empty($carriers)) {
+            foreach ($activeCarriers as $idCarrier => $carrier) {
+                if (empty($carrier['external_module_name'])) {
+                    continue;
+                }
+                $externalModuleName = Tools::strtolower(str_replace(' ', '', $carrier['external_module_name']));
+                similar_text($search, $externalModuleName, $percent);
+                if ($percent > 70) {
+                    $carriers[(int)$percent] = array(
+                        'id_carrier' => $idCarrier,
+                        'external_module_name' => $carrier['external_module_name'],
+                    );
+                }
+            }
+            krsort($carriers);
+        }
+        if (!empty($carriers)) {
+            $carrier = current($carriers);
+            if ($carrier['external_module_name'] === 'mondialrelay') {
+                $idMondialRelayCarrier = self::getIdMondialRelayCarrier($idRelay);
+                if ($idMondialRelayCarrier) {
+                    return $idMondialRelayCarrier;
+                }
+            }
+            return $carrier['id_carrier'];
+        }
+        return false;
     }
 
     /**
@@ -186,7 +284,7 @@ class LengowCarrier extends Carrier
                 AND lcm.carrier_marketplace_name = "' . pSQL($carrierMarketplaceName) . '"'
             );
             if ($result) {
-                return self::getIdActiveCarrierByIdCarrier($result["id_carrier"], (int)$idCountry);
+                return self::getIdActiveCarrierByIdCarrier($result['id_carrier'], (int)$idCountry);
             }
         }
         return false;
@@ -940,6 +1038,7 @@ class LengowCarrier extends Carrier
     /**
      * Ensure carrier compatibility with SoColissimo and MondialRelay Modules
      *
+     * @param integer $idOrder Prestashop order id
      * @param integer $idCustomer Prestashop customer id
      * @param integer $idCart Prestashop cart id
      * @param integer $idCarrier Prestashop carrier id
@@ -949,7 +1048,7 @@ class LengowCarrier extends Carrier
      *
      * @return integer -1 = compatibility not ensured, 0 = not a carrier module, 1 = compatibility ensured
      */
-    public static function carrierCompatibility($idCustomer, $idCart, $idCarrier, $shippingAddress)
+    public static function carrierCompatibility($idOrder, $idCustomer, $idCart, $idCarrier, $shippingAddress)
     {
         // get SoColissimo carrier id
         $soColissimoCarrierId =_PS_VERSION_ < '1.7'
@@ -980,7 +1079,7 @@ class LengowCarrier extends Carrier
                         )
                     );
                 }
-                return self::addMondialRelay($relay, $idCustomer, $idCarrier, $idCart)
+                return self::addMondialRelay($relay, $idOrder, $idCustomer, $idCarrier, $idCart)
                     ? self::COMPATIBILITY_OK
                     : self::COMPATIBILITY_KO;
             }
@@ -1129,6 +1228,28 @@ class LengowCarrier extends Carrier
     }
 
     /**
+     * Get mondial relay carrier id for a specific delivery mode
+     *
+     * @param string $idRelay Delivery relay id
+     *
+     * @return integer|false
+     */
+    public static function getIdMondialRelayCarrier($idRelay = null)
+    {
+        if (LengowInstall::checkTableExists('mr_method')) {
+            $sql = 'SELECT ' . (_PS_VERSION_ < '1.5' ? 'c.id_carrier' : 'c.id_reference as id_carrier') .
+                ' FROM ' . _DB_PREFIX_ . 'carrier c
+                INNER JOIN ' . _DB_PREFIX_ . 'mr_method mrm ON (mrm.id_carrier = c.id_carrier)
+                WHERE mrm.is_deleted = 0 AND dlv_mode = ' . ($idRelay === null ? '\'LD1\'' : '\'24R\'');
+            $result = Db::getInstance()->getRow($sql);
+            if ($result) {
+                return (int)$result['id_carrier'];
+            }
+        }
+        return false;
+    }
+
+    /**
      * Check if relay ID is correct
      *
      * @param integer $idAddressDelivery Prestashop shipping address id
@@ -1175,7 +1296,8 @@ class LengowCarrier extends Carrier
     /**
      * Save order in MR table
      *
-     * @param array $relay relay info
+     * @param mixed $relay relay info
+     * @param integer $idOrder Prestashop order id
      * @param integer $idCustomer Prestashop customer id
      * @param integer $idCarrier Prestashop carrier id
      * @param integer $idCart Prestashop cart id
@@ -1183,27 +1305,61 @@ class LengowCarrier extends Carrier
      *
      * @return boolean
      */
-    public static function addMondialRelay($relay, $idCustomer, $idCarrier, $idCart, $insurance = 0)
+    public static function addMondialRelay($relay, $idOrder, $idCustomer, $idCarrier, $idCart, $insurance = 0)
     {
-        $db = Db::getInstance();
-        $query = 'INSERT INTO `' . _DB_PREFIX_ . 'mr_selected` (`id_customer`, `id_method`, `id_cart`, MR_insurance, ';
+        $mdArrayKeys = array(
+            'Num',
+            'LgAdr1',
+            'LgAdr2',
+            'LgAdr3',
+            'LgAdr4',
+            'CP',
+            'Ville',
+            'Pays',
+        );
+        // get column names specific to the order
+        $query = 'INSERT INTO `' . _DB_PREFIX_ . 'mr_selected`
+            (`id_customer`,
+            `id_method`,
+            `id_cart`,
+            `id_order`,
+            `MR_insurance`,
+            `date_add`,';
+        // get column names specific to a relay
         if (is_array($relay)) {
             foreach ($relay as $nameKey => $value) {
-                $query .= '`MR_Selected_' . MRTools::bqSQL($nameKey) . '`, ';
+                $query .= '`MR_Selected_'.MRTools::bqSQL($nameKey).'`, ';
+            }
+        } elseif (is_object(($relay))) {
+            foreach ($mdArrayKeys as $key) {
+                if (isset($relay->{$key})) {
+                    $query .= '`MR_Selected_'.MRTools::bqSQL($key).'`, ';
+                }
             }
         }
+        // get specific values from an order
         $query = rtrim($query, ', ') . ') VALUES ('
             . (int)$idCustomer . ', '
             . (int)$idCarrier . ', '
             . (int)$idCart . ', '
-            . (int)$insurance . ', ';
-
+            . (int)$idOrder . ', '
+            . (int)$insurance . ', '
+            . 'NOW(), ';
+        // get specific values for a relay
         if (is_array($relay)) {
             foreach ($relay as $nameKey => $value) {
                 $query .= '"' . pSQL($value) . '", ';
             }
+        } elseif (is_object(($relay))) {
+            foreach ($mdArrayKeys as $key) {
+                if (isset($relay->{$key})) {
+                    $query .= '"' . pSQL($relay->{$key}) . '", ';
+                }
+            }
         }
+        // clean query and execute
         $query = rtrim($query, ', ') . ')';
+        $db = Db::getInstance();
         return $db->execute($query);
     }
 }

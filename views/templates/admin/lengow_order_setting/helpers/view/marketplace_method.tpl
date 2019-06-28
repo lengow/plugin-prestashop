@@ -38,11 +38,11 @@
                         class="carrier lengow_select"
                         data-marketplace="{$marketplace['id']|escape:'htmlall':'UTF-8'}">
                     <option value="">{$locale->t('order_setting.screen.please_select_carrier_prestashop')|escape:'htmlall':'UTF-8'}</option>
-                    {foreach from=$carriers key=k item=c}
-                        {if isset($marketplace['method_matched'][$method['id_method_marketplace']]) && $marketplace['method_matched'][$method['id_method_marketplace']] eq $k}
-                            <option value="{$k|escape:'htmlall':'UTF-8'}" selected="selected">{$c|escape:'htmlall':'UTF-8'}</option>
+                    {foreach from=$carriers key=idCarrier item=carrier}
+                        {if isset($marketplace['method_matched'][$method['id_method_marketplace']]) && $marketplace['method_matched'][$method['id_method_marketplace']] eq $idCarrier}
+                            <option value="{$idCarrier|escape:'htmlall':'UTF-8'}" selected="selected">{$carrier['name']|escape:'htmlall':'UTF-8'}</option>
                         {else}
-                            <option value="{$k|escape:'htmlall':'UTF-8'}">{$c|escape:'htmlall':'UTF-8'}</option>
+                            <option value="{$idCarrier|escape:'htmlall':'UTF-8'}">{$carrier['name']|escape:'htmlall':'UTF-8'}</option>
                         {/if}
                     {/foreach}
                 </select>

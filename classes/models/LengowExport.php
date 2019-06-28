@@ -75,6 +75,7 @@ class LengowExport
         'price_incl_tax' => 'price_sale',
         'price_before_discount_excl_tax' => 'price_duty_free',
         'price_before_discount_incl_tax' => 'price',
+        'price_wholesale' => 'wholesale_price',
         'discount_percent' => 'price_sale_percent',
         'discount_start_date' => 'sale_from',
         'discount_end_date' => 'sale_to',
@@ -624,15 +625,17 @@ class LengowExport
         } else {
             $join = '';
         }
-        if (_PS_VERSION_ < '1.5') {
-            $where = ' WHERE p.active = 1 ';
-        } else {
-            $where = ' WHERE ps.active = 1 ';
+        if (!$this->inactive) {
+            if (_PS_VERSION_ < '1.5') {
+                $where = ' WHERE p.active = 1 ';
+            } else {
+                $where = ' WHERE ps.active = 1 ';
+            }
         }
         $query = ' SELECT SUM(total) as total FROM (';
         $query .= ' ( SELECT COUNT(*) as total';
         $query .= ' FROM ' . _DB_PREFIX_ . 'product p ' . $join . ' ' . $where . ')';
-        $query .= ' UNION ';
+        $query .= ' UNION ALL ';
         $query .= ' ( SELECT COUNT(*) as total';
         $query .= ' FROM ' . _DB_PREFIX_ . 'product p';
         $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_attribute pa ON (pa.id_product = p.id_product)';
@@ -656,7 +659,7 @@ class LengowExport
         if ($this->variation) {
             $query = ' SELECT SUM(total) as total FROM ( ( ';
             $query .= 'SELECT COUNT(*) as total ' . $this->buildTotalQuery();
-            $query .= ' ) UNION ( ';
+            $query .= ' ) UNION ALL ( ';
             $query .= 'SELECT COUNT(*) as total ' . $this->buildTotalQuery(true);
             $query .= ' ) ) as tmp';
         } else {
@@ -738,7 +741,7 @@ class LengowExport
         if ($this->variation) {
             $query = ' SELECT * FROM ( ( ';
             $query .= 'SELECT p.id_product, \'0\' as id_product_attribute ' . $this->buildTotalQuery();
-            $query .= ' ) UNION ( ';
+            $query .= ' ) UNION ALL ( ';
             $query .= 'SELECT p.id_product, pa.id_product_attribute ' . $this->buildTotalQuery(true);
             $query .= ' ) ) as tmp ORDER BY id_product, id_product_attribute';
         } else {

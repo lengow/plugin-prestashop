@@ -422,6 +422,8 @@ class LengowImportOrder
                     );
                     // ensure carrier compatibility with SoColissimo & Mondial Relay
                     $this->checkCarrierCompatibility($order);
+                    // launch validateOrder hook for other plugin (uncomment if needed)
+                    // $this->launchValidateOrderHook($order);
                 }
             }
             // add quantity back for re-import order and order shipped by marketplace
@@ -1091,23 +1093,48 @@ class LengowImportOrder
         }
         // get marketplace id by marketplace name
         $idMarketplace = LengowMarketplace::getIdMarketplace($this->marketplace->name);
-        // get carrier id by carrier marketplace code
-        if ($this->carrierName) {
-            $idCarrier = LengowCarrier::getIdCarrierByCarrierMarketplaceName(
-                $idCountry,
-                $idMarketplace,
-                $this->carrierName
-            );
-            $matchingFound = $idCarrier ? 'carrier' : false;
-        }
-        // get carrier id by method marketplace code
-        if (!$idCarrier && $this->carrierMethod) {
-            $idCarrier = LengowMethod::getIdCarrierByMethodMarketplaceName(
-                $idCountry,
-                $idMarketplace,
-                $this->carrierMethod
-            );
-            $matchingFound = $idCarrier ? 'method' : false;
+        $hasCarriers = $this->marketplace->hasCarriers();
+        $hasShippingMethods = $this->marketplace->hasShippingMethods();
+        // if the marketplace has carriers or shipping method, use manual matching
+        if ($hasCarriers || $hasShippingMethods) {
+            // get carrier id by carrier marketplace code
+            if ($this->carrierName && $hasCarriers) {
+                $idCarrier = LengowCarrier::getIdCarrierByCarrierMarketplaceName(
+                    $idCountry,
+                    $idMarketplace,
+                    $this->carrierName
+                );
+                $matchingFound = $idCarrier ? 'carrier' : false;
+            }
+            // get carrier id by method marketplace code
+            if (!$idCarrier && $this->carrierMethod && $hasShippingMethods) {
+                $idCarrier = LengowMethod::getIdCarrierByMethodMarketplaceName(
+                    $idCountry,
+                    $idMarketplace,
+                    $this->carrierMethod
+                );
+                $matchingFound = $idCarrier ? 'method' : false;
+            }
+        } elseif (LengowConfiguration::getGlobalValue('LENGOW_CARRIER_SEMANTIC_ENABLE')) {
+            // if the marketplace has neither carrier nor shipping methods, use semantic matching
+            if ($this->carrierName) {
+                // carrier id recovery by semantic search on the carrier marketplace code
+                $idCarrier = LengowCarrier::getIdCarrierBySemanticSearch(
+                    $this->carrierName,
+                    $idCountry,
+                    $this->shippingAddress->idRelay
+                );
+                $matchingFound = $idCarrier ? 'carrier' : false;
+            }
+            if (!$idCarrier && $this->carrierMethod) {
+                // carrier id recovery by semantic search on the carrier marketplace shipping method
+                $idCarrier = LengowCarrier::getIdCarrierBySemanticSearch(
+                    $this->carrierMethod,
+                    $idCountry,
+                    $this->shippingAddress->idRelay
+                );
+                $matchingFound = $idCarrier ? 'method' : false;
+            }
         }
         if (!$idCarrier) {
             // get default carrier by country
@@ -1168,6 +1195,7 @@ class LengowImportOrder
     {
         try {
             $carrierCompatibility = LengowCarrier::carrierCompatibility(
+                $order->id,
                 $order->id_customer,
                 $order->id_cart,
                 $order->id_carrier,
@@ -1213,6 +1241,8 @@ class LengowImportOrder
      * Add quantity back to stock
      *
      * @param array $products list of products
+     *
+     * @throws Exception
      *
      * @return boolean
      */
@@ -1336,5 +1366,46 @@ class LengowImportOrder
             }
         }
         return $orderLineSaved;
+    }
+
+    /**
+     * Launch validateOrder hook for carrier plugins
+     *
+     * @param Order $order PrestaShop order instance
+     *
+     */
+    protected function launchValidateOrderHook($order)
+    {
+        LengowMain::log(
+            'Import',
+            LengowMain::setLogMessage('log.import.launch_validate_order_hook'),
+            $this->logOutput,
+            $this->marketplaceSku
+        );
+        try {
+            $cart = new Cart((int)$order->id_cart);
+            $customer = new Customer((int)$order->id_customer);
+            $currency = new Currency((int)$order->id_currency, null, (int)$this->context->shop->id);
+            $orderStatus = new OrderState((int)$order->current_state, $this->idLang);
+            // Hook validate order
+            Hook::exec('actionValidateOrder', array(
+                'cart' => $cart,
+                'order' => $order,
+                'customer' => $customer,
+                'currency' => $currency,
+                'orderStatus' => $orderStatus,
+            ));
+        } catch (Exception $e) {
+            $errorMessage = '[Prestashop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            LengowMain::log(
+                'Import',
+                LengowMain::setLogMessage(
+                    'log.import.validate_order_hook_failed',
+                    array('error_message' => $errorMessage)
+                ),
+                $this->logOutput,
+                $this->marketplaceSku
+            );
+        }
     }
 }

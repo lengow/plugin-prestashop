@@ -118,7 +118,7 @@ class LengowConfigurationForm
                 $html .= '</div>' . $label;
                 $html .= '</label></div></div>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
                 }
                 break;
             case 'text':
@@ -128,7 +128,7 @@ class LengowConfigurationForm
                         value="' . $value . '" ' . $readonly . '>
                     </div>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
                 }
                 break;
             case 'select':
@@ -138,20 +138,24 @@ class LengowConfigurationForm
                     $selected = $row['id'] == $value ? 'selected' : '';
                     $html .= '<option value="' . $row['id'] . '" ' . $selected . '>' . $row['text'] . '</option>';
                 }
-                $html .= '</select><span class="legend" style="display:block;">' . $legend . '</span></div>';
+                $html .= '</select>';
+                if (!empty($legend)) {
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                }
+                $html .= '</div>';
                 break;
             case 'day':
                 $html .= '<label class="control-label">' . $label . '</label>
                         <div class="input-group">
                             <input type="number" name="' . $name . '" class="form-control" value="' . $value . '" '
-                    . $readonly . ' min="1" max="30">
+                    . $readonly . ' min="1" max="' . LengowImport::$maxImportDays . '">
                             <div class="input-group-addon">
                                 <div class="unit">' . $this->locale->t('order_setting.screen.nb_days') . '</div>
                             </div>
                             <div class="clearfix"></div>
                         </div>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
                 }
                 $html .= '</div>';
                 break;
@@ -186,6 +190,7 @@ class LengowConfigurationForm
                             $shopValue = 1;
                         }
                         $this->checkAndLog($key, $shopValue, $idShop);
+                        $shopValue = $shopValue === '' ? null : $shopValue;
                         LengowConfiguration::updateValue($key, $shopValue, false, null, $idShop);
                     }
                 } else {
@@ -199,6 +204,7 @@ class LengowConfigurationForm
                             $value = 1;
                         }
                         $this->checkAndLog($key, $value);
+                        $value = $value === '' ? null : $value;
                         LengowConfiguration::updateGlobalValue($key, $value);
                     }
                 }

@@ -216,7 +216,9 @@ lengow_setting.lengow_order_id_cancel_title|Pedidos cancelados
 lengow_setting.lengow_order_id_shippedbymp_title|Pedidos enviados de los marketplaces
 lengow_setting.lengow_import_force_product_title|Forzar los productos
 lengow_setting.lengow_import_force_product_legend|Activa esta opción si deseas forzar la importación de "fuera de stocks" / "productos inactivos"
-lengow_setting.lengow_import_days_title|Reimportar todos los pedidos efectuados desde
+lengow_setting.lengow_carrier_semantic_enable_title|Quiero activar la opción de correspondencia semántica de transportistas
+lengow_setting.lengow_carrier_semantic_enable_legend|Con esta opción, haz corresponder el transportista o el método de envío indicado por la marketplace con el nombre de tus transportistas Prestashop.\nEsta correspondencia será utilizada unicamente con las marketplaces que no envien ningún transportista ni método de transporte.
+lengow_setting.lengow_import_days_title|Sincronizar todos los pedidos actualizados desde
 lengow_setting.lengow_import_days_legend|Activar esta opción si tiene pedidos pendientes incorrectos. Esto te permite volver a importar todas los pedidos que han sido procesados ​​durante este período con problemas
 lengow_setting.lengow_import_processing_fee_title|Importar las cuotas de procesamiento
 lengow_setting.lengow_import_processing_fee_legend|Active esta opción si desea incorporar en su pedido la tarifa de gestión de expedición de las Marketplaces
@@ -267,7 +269,7 @@ lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} n
 lengow_log.exception.order_line_required|la línea de pedido es requerida pero no se encuentra 
 lengow_log.exception.action_not_valid|la acción %{action} no es válida
 lengow_log.exception.marketplace_action_not_present|acción marketplace %{action} no está presente
-lengow_log.exception.shop_id_require|se requiere ID de la tienda
+lengow_log.exception.marketplace_sku_require|se requiere la referencia del pedido marketplace
 lengow_log.exception.marketplace_name_require|es necesario el nombre del marketplace 
 lengow_log.exception.no_delivery_country_in_order|no puede encontrar el país de entrega en el pedido
 lengow_log.exception.match_carrier_with_country|necesitas relacionar el transportista %{carrier_name} con el país %{country_name}

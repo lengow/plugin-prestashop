@@ -38,14 +38,6 @@ class LengowMarketplace
     );
 
     /**
-     * @var array Parameters to delete for Get call
-     */
-    public static $getParamsToDelete = array(
-        'shipping_date',
-        'delivery_date',
-    );
-
-    /**
      * @var array all marketplaces
      */
     public static $marketplaces = false;
@@ -302,246 +294,67 @@ class LengowMarketplace
     }
 
     /**
+     * Is marketplace has carriers
+     *
+     * @return boolean
+     */
+    public function hasCarriers()
+    {
+        return !empty($this->carriers) ? true : false;
+    }
+
+    /**
+     * Is marketplace has shipping methods
+     *
+     * @return boolean
+     */
+    public function hasShippingMethods()
+    {
+        return !empty($this->shippingMethods) ? true : false;
+    }
+
+    /**
      * Call API action and create action in lengow_actions table
      *
      * @param string $action Lengow order actions type (ship or cancel)
-     * @param LengowOrder $order Lengow order instance
+     * @param LengowOrder $lengowOrder Lengow order instance
      * @param string $idOrderLine Lengow order line id
      *
      * @return boolean
      */
-    public function callAction($action, $order, $idOrderLine = null)
+    public function callAction($action, $lengowOrder, $idOrderLine = null)
     {
         try {
-            if (!in_array($action, self::$validActions)) {
-                throw new LengowException(
-                    LengowMain::setLogMessage('lengow_log.exception.action_not_valid', array('action' => $action))
-                );
-            }
-            if (!$this->getAction($action)) {
-                throw new LengowException(
-                    LengowMain::setLogMessage(
-                        'lengow_log.exception.marketplace_action_not_present',
-                        array('action' => $action)
-                    )
-                );
-            }
-            if ((int)$order->lengowIdShop == 0) {
-                throw new LengowException(
-                    LengowMain::setLogMessage('lengow_log.exception.shop_id_require')
-                );
-            }
-            if (Tools::strlen($order->lengowMarketplaceName) == 0) {
-                throw new LengowException(
-                    LengowMain::setLogMessage('lengow_log.exception.marketplace_name_require')
-                );
-            }
-            $params = array();
-            $actions = $this->getAction($action);
-            if (isset($actions['args']) && isset($actions['optional_args'])) {
-                $allArgs = array_merge($actions['args'], $actions['optional_args']);
-            } elseif (!isset($actions['args']) && isset($actions['optional_args'])) {
-                $allArgs = $actions['optional_args'];
-            } elseif (isset($actions['args'])) {
-                $allArgs = $actions['args'];
-            } else {
-                $allArgs = array();
-            }
-            // get delivery address for carrier, shipping method and tracking url
-            $deliveryAddress = new Address($order->id_address_delivery);
-            // get tracking number for tracking number and tracking url
-            if (_PS_VERSION_ >= '1.5') {
-                $idOrderCarrier = $order->getIdOrderCarrier();
-                $orderCarrier = new OrderCarrier($idOrderCarrier);
-                $trackingNumber = $orderCarrier->tracking_number;
-                if ($trackingNumber == '') {
-                    $trackingNumber = $order->shipping_number;
-                }
-            } else {
-                $trackingNumber = $order->shipping_number;
-            }
-            foreach ($allArgs as $arg) {
-                switch ($arg) {
-                    case 'tracking_number':
-                        $params[$arg] = $trackingNumber;
-                        break;
-                    case 'carrier':
-                    case 'carrier_name':
-                    case 'shipping_method':
-                    case 'custom_carrier':
-                        if ($order->lengowCarrier != '') {
-                            $carrierName = (string)$order->lengowCarrier;
-                        } else {
-                            if (!isset($deliveryAddress->id_country) || $deliveryAddress->id_country == 0) {
-                                if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
-                                    continue;
-                                }
-                                throw new LengowException(
-                                    LengowMain::setLogMessage('lengow_log.exception.no_delivery_country_in_order')
-                                );
-                            }
-                            // get marketplace id by marketplace name
-                            $idMarketplace = LengowMarketplace::getIdMarketplace($order->lengowMarketplaceName);
-                            $carrierName = LengowCarrier::getCarrierMarketplaceCode(
-                                (int)$deliveryAddress->id_country,
-                                $idMarketplace,
-                                (int)$order->id_carrier
-                            );
-                        }
-                        $params[$arg] = $carrierName;
-                        break;
-                    case 'tracking_url':
-                        if ($trackingNumber != '') {
-                            $idActiveCarrier = LengowCarrier::getIdActiveCarrierByIdCarrier(
-                                (int)$order->id_carrier,
-                                (int)$deliveryAddress->id_country
-                            );
-                            $idCarrier = $idActiveCarrier ? $idActiveCarrier : (int)$order->id_carrier;
-                            $carrier = new Carrier($idCarrier);
-                            $trackingUrl = str_replace('@', $trackingNumber, $carrier->url);
-                            // Add default value if tracking url is empty
-                            if (Tools::strlen($trackingUrl) == 0) {
-                                if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
-                                    continue;
-                                }
-                                $defaultValue = $this->getDefaultValue((string)$arg);
-                                $trackingUrl = $defaultValue ? $defaultValue : $arg . ' not available';
-                            }
-                            $params[$arg] = $trackingUrl;
-                        }
-                        break;
-                    case 'shipping_price':
-                        $params[$arg] = $order->total_shipping;
-                        break;
-                    case 'shipping_date':
-                    case 'delivery_date':
-                        $params[$arg] = date('c');
-                        break;
-                    default:
-                        if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
-                            continue;
-                        }
-                        $defaultValue = $this->getDefaultValue((string)$arg);
-                        $paramValue = $defaultValue ? $defaultValue : $arg . ' not available';
-                        $params[$arg] = $paramValue;
-                        break;
-                }
-            }
+            // check the action and order data
+            $this->checkAction($action);
+            $this->checkOrderData($lengowOrder);
+            // get all required and optional arguments for a specific marketplace
+            $marketplaceArguments = $this->getMarketplaceArguments($action);
+            // get all available values from an order
+            $params = $this->getAllParams($action, $lengowOrder, $marketplaceArguments);
+            // check required arguments and clean value for empty optionals arguments
+            $params = $this->checkAndCleanParams($action, $params);
+            // complete the values with the specific values of the account
             if (!is_null($idOrderLine)) {
                 $params['line'] = $idOrderLine;
             }
-            if (isset($actions['args'])) {
-                foreach ($actions['args'] as $arg) {
-                    if (!isset($params[$arg]) || Tools::strlen($params[$arg]) == 0) {
-                        throw new LengowException(
-                            LengowMain::setLogMessage(
-                                'lengow_log.exception.arg_is_required',
-                                array('arg_name' => $arg)
-                            )
-                        );
-                    }
-                }
-            }
-            if (isset($actions['optional_args'])) {
-                foreach ($actions['optional_args'] as $arg) {
-                    if (isset($params[$arg]) && Tools::strlen($params[$arg]) == 0) {
-                        unset($params[$arg]);
-                    }
-                }
-            }
-            $params['marketplace_order_id'] = $order->lengowMarketplaceSku;
-            $params['marketplace'] = $order->lengowMarketplaceName;
+            $params['marketplace_order_id'] = $lengowOrder->lengowMarketplaceSku;
+            $params['marketplace'] = $lengowOrder->lengowMarketplaceName;
             $params['action_type'] = $action;
-            $sendAction = true;
-            // check if action is already created
-            $getParams = array_merge($params, array('queued' => 'True'));
-            // array key deletion for GET verification
-            foreach (self::$getParamsToDelete as $param) {
-                if (isset($getParams[$param])) {
-                    unset($getParams[$param]);
-                }
+            // checks whether the action is already created to not return an action
+            $canSendAction = LengowAction::canSendAction($params, $lengowOrder);
+            if ($canSendAction) {
+                // send a new action on the order via the Lengow API
+                LengowAction::sendAction($params, $lengowOrder);
             }
-            $result = LengowConnector::queryApi('get', '/v3.0/orders/actions/', $getParams);
-            if (isset($result->error) && isset($result->error->message)) {
-                throw new LengowException($result->error->message);
-            }
-            if (isset($result->count) && $result->count > 0) {
-                foreach ($result->results as $row) {
-                    $orderActionId = LengowAction::getActionByActionId($row->id);
-                    if ($orderActionId) {
-                        $update = LengowAction::updateAction(
-                            array(
-                                'id_order' => $order->id,
-                                'action_type' => $action,
-                                'action_id' => $row->id,
-                                'parameters' => $params
-                            )
-                        );
-                        if ($update) {
-                            $sendAction = false;
-                        }
-                    } else {
-                        // if update doesn't work, create new action
-                        LengowAction::createAction(
-                            array(
-                                'id_order' => $order->id,
-                                'action_type' => $action,
-                                'action_id' => $row->id,
-                                'parameters' => $params,
-                                'marketplace_sku' => $order->lengowMarketplaceSku
-                            )
-                        );
-                        $sendAction = false;
-                    }
-                }
-            }
-            if ($sendAction) {
-                if (!LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
-                    $result = LengowConnector::queryApi('post', '/v3.0/orders/actions/', $params);
-                    if (isset($result->id)) {
-                        LengowAction::createAction(
-                            array(
-                                'id_order' => $order->id,
-                                'action_type' => $action,
-                                'action_id' => $result->id,
-                                'parameters' => $params,
-                                'marketplace_sku' => $order->lengowMarketplaceSku
-                            )
-                        );
-                    } else {
-                        if ($result !== null) {
-                            $message = LengowMain::setLogMessage(
-                                'lengow_log.exception.action_not_created',
-                                array('error_message' => Tools::jsonEncode($result))
-                            );
-                        } else {
-                            // Generating a generic error message when the Lengow API is unavailable
-                            $message = LengowMain::setLogMessage('lengow_log.exception.action_not_created_api');
-                        }
-                        throw new LengowException($message);
-                    }
-                }
-                // Create log for call action
-                $paramList = false;
-                foreach ($params as $param => $value) {
-                    $paramList .= !$paramList ? '"' . $param . '": ' . $value : ' -- "' . $param . '": ' . $value;
-                }
-                LengowMain::log(
-                    'API-OrderAction',
-                    LengowMain::setLogMessage('log.order_action.call_tracking', array('parameters' => $paramList)),
-                    false,
-                    $order->lengowMarketplaceSku
-                );
-            }
-            return true;
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
             $errorMessage = '[Prestashop Error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
         }
         if (isset($errorMessage)) {
-            if ($order->lengowProcessState != LengowOrder::PROCESS_STATE_FINISH) {
-                LengowOrder::addOrderLog($order->lengowId, $errorMessage, 'send');
+            if ($lengowOrder->lengowProcessState != LengowOrder::PROCESS_STATE_FINISH) {
+                LengowOrder::addOrderLog($lengowOrder->lengowId, $errorMessage, 'send');
             }
             $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
             LengowMain::log(
@@ -551,10 +364,211 @@ class LengowMarketplace
                     array('decoded_message' => $decodedMessage)
                 ),
                 false,
-                $order->lengowMarketplaceSku
+                $lengowOrder->lengowMarketplaceSku
             );
             return false;
         }
+        return true;
+    }
+
+    /**
+     * Check if the action is valid and present on the marketplace
+     *
+     * @param string $action Lengow order actions type (ship or cancel)
+     *
+     * @throws LengowException action not valid / marketplace action not present
+     */
+    protected function checkAction($action)
+    {
+        if (!in_array($action, self::$validActions)) {
+            throw new LengowException(
+                LengowMain::setLogMessage('lengow_log.exception.action_not_valid', array('action' => $action))
+            );
+        }
+        if (!$this->getAction($action)) {
+            throw new LengowException(
+                LengowMain::setLogMessage(
+                    'lengow_log.exception.marketplace_action_not_present',
+                    array('action' => $action)
+                )
+            );
+        }
+    }
+
+    /**
+     * Check if the essential data of the order are present
+     *
+     * @param LengowOrder $lengowOrder Lengow order instance
+     *
+     * @throws LengowException marketplace sku is required / marketplace name is required
+     */
+    protected function checkOrderData($lengowOrder)
+    {
+        if (Tools::strlen($lengowOrder->lengowMarketplaceSku) === 0) {
+            throw new LengowException(
+                LengowMain::setLogMessage('lengow_log.exception.marketplace_sku_require')
+            );
+        }
+        if (Tools::strlen($lengowOrder->lengowMarketplaceName) === 0) {
+            throw new LengowException(
+                LengowMain::setLogMessage('lengow_log.exception.marketplace_name_require')
+            );
+        }
+    }
+
+    /**
+     * Get all marketplace arguments for a specific action
+     *
+     * @param string $action Lengow order actions type (ship or cancel)
+     *
+     * @return array
+     */
+    protected function getMarketplaceArguments($action)
+    {
+        $actions = $this->getAction($action);
+        if (isset($actions['args']) && isset($actions['optional_args'])) {
+            $marketplaceArguments = array_merge($actions['args'], $actions['optional_args']);
+        } elseif (!isset($actions['args']) && isset($actions['optional_args'])) {
+            $marketplaceArguments = $actions['optional_args'];
+        } elseif (isset($actions['args'])) {
+            $marketplaceArguments = $actions['args'];
+        } else {
+            $marketplaceArguments = array();
+        }
+        return $marketplaceArguments;
+    }
+
+    /**
+     * Get all available values from an order
+     *
+     * @param string $action Lengow order actions type (ship or cancel)
+     * @param LengowOrder $lengowOrder Lengow order instance
+     * @param array $marketplaceArguments All marketplace arguments for a specific action
+     *
+     * @throws Exception|LengowException no delivery country in order
+     *
+     * @return array
+     */
+    protected function getAllParams($action, $lengowOrder, $marketplaceArguments)
+    {
+        $params = array();
+        $actions = $this->getAction($action);
+        // get delivery address for carrier, shipping method and tracking url
+        $deliveryAddress = new Address($lengowOrder->id_address_delivery);
+        // get tracking number for tracking number and tracking url
+        if (_PS_VERSION_ >= '1.5') {
+            $idOrderCarrier = $lengowOrder->getIdOrderCarrier();
+            $orderCarrier = new OrderCarrier($idOrderCarrier);
+            $trackingNumber = $orderCarrier->tracking_number;
+            if ($trackingNumber == '') {
+                $trackingNumber = $lengowOrder->shipping_number;
+            }
+        } else {
+            $trackingNumber = $lengowOrder->shipping_number;
+        }
+        foreach ($marketplaceArguments as $arg) {
+            switch ($arg) {
+                case 'tracking_number':
+                    $params[$arg] = $trackingNumber;
+                    break;
+                case 'carrier':
+                case 'carrier_name':
+                case 'shipping_method':
+                case 'custom_carrier':
+                    if ($lengowOrder->lengowCarrier != '') {
+                        $carrierName = (string)$lengowOrder->lengowCarrier;
+                    } else {
+                        if (!isset($deliveryAddress->id_country) || $deliveryAddress->id_country == 0) {
+                            if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
+                                continue;
+                            }
+                            throw new LengowException(
+                                LengowMain::setLogMessage('lengow_log.exception.no_delivery_country_in_order')
+                            );
+                        }
+                        // get marketplace id by marketplace name
+                        $idMarketplace = LengowMarketplace::getIdMarketplace($lengowOrder->lengowMarketplaceName);
+                        $carrierName = LengowCarrier::getCarrierMarketplaceCode(
+                            (int)$deliveryAddress->id_country,
+                            $idMarketplace,
+                            (int)$lengowOrder->id_carrier
+                        );
+                    }
+                    $params[$arg] = $carrierName;
+                    break;
+                case 'tracking_url':
+                    if ($trackingNumber != '') {
+                        $idActiveCarrier = LengowCarrier::getIdActiveCarrierByIdCarrier(
+                            (int)$lengowOrder->id_carrier,
+                            (int)$deliveryAddress->id_country
+                        );
+                        $idCarrier = $idActiveCarrier ? $idActiveCarrier : (int)$lengowOrder->id_carrier;
+                        $carrier = new Carrier($idCarrier);
+                        $trackingUrl = str_replace('@', $trackingNumber, $carrier->url);
+                        // add default value if tracking url is empty
+                        if (Tools::strlen($trackingUrl) == 0) {
+                            if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
+                                continue;
+                            }
+                            $defaultValue = $this->getDefaultValue((string)$arg);
+                            $trackingUrl = $defaultValue ? $defaultValue : $arg . ' not available';
+                        }
+                        $params[$arg] = $trackingUrl;
+                    }
+                    break;
+                case 'shipping_price':
+                    $params[$arg] = $lengowOrder->total_shipping;
+                    break;
+                case 'shipping_date':
+                case 'delivery_date':
+                    $params[$arg] = date('c');
+                    break;
+                default:
+                    if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
+                        continue;
+                    }
+                    $defaultValue = $this->getDefaultValue((string)$arg);
+                    $paramValue = $defaultValue ? $defaultValue : $arg . ' not available';
+                    $params[$arg] = $paramValue;
+                    break;
+            }
+        }
+        return $params;
+    }
+
+    /**
+     * Check required parameters and delete empty parameters
+     *
+     * @param string $action Lengow order actions type (ship or cancel)
+     * @param array $params all available values
+     *
+     * @throws Exception argument is required
+     *
+     * @return array
+     */
+    protected function checkAndCleanParams($action, $params)
+    {
+        $actions = $this->getAction($action);
+        if (isset($actions['args'])) {
+            foreach ($actions['args'] as $arg) {
+                if (!isset($params[$arg]) || Tools::strlen($params[$arg]) == 0) {
+                    throw new LengowException(
+                        LengowMain::setLogMessage(
+                            'lengow_log.exception.arg_is_required',
+                            array('arg_name' => $arg)
+                        )
+                    );
+                }
+            }
+        }
+        if (isset($actions['optional_args'])) {
+            foreach ($actions['optional_args'] as $arg) {
+                if (isset($params[$arg]) && Tools::strlen($params[$arg]) == 0) {
+                    unset($params[$arg]);
+                }
+            }
+        }
+        return $params;
     }
 
     /**

@@ -36,22 +36,22 @@ class LengowConfiguration extends Configuration
             $langId = (int)Context::getContext()->cookie->id_lang;
             $locale = new LengowTranslation();
             $orderStates = array();
-            $os = OrderState::getOrderStates($langId);
-            foreach ($os as $state) {
-                $orderStates[] = array('id' => $state['id_order_state'], 'text' => $state['name']);
+            $allOrderStates = OrderState::getOrderStates($langId);
+            foreach ($allOrderStates as $orderState) {
+                $orderStates[] = array('id' => $orderState['id_order_state'], 'text' => $orderState['name']);
             }
             $exportFormats = array();
             foreach (LengowFeed::$availableFormats as $value) {
                 $exportFormats[] = array('id' => $value, 'text' => $value);
             }
-            $trackerIds = array();
-            foreach (LengowMain::$trackerChoiceId as $key => $value) {
-                $trackerIds[] = array('id' => $key, 'text' => $value);
+            $trackers = array();
+            foreach (LengowMain::$trackerChoiceId as $idTracker => $tracker) {
+                $trackers[] = array('id' => $idTracker, 'text' => $tracker);
             }
             $carriers = array();
             $activeCarriers = LengowCarrier::getActiveCarriers();
-            foreach ($activeCarriers as $key => $value) {
-                $carriers[] = array('id' => $key, 'text' => $value);
+            foreach ($activeCarriers as $idCarrier => $carrier) {
+                $carriers[] = array('id' => $idCarrier, 'text' => $carrier['name']);
             }
             $keys = array(
                 'LENGOW_ACCOUNT_ID' => array(
@@ -175,6 +175,13 @@ class LengowConfiguration extends Configuration
                     'legend' => $locale->t('lengow_setting.lengow_import_force_product_legend'),
                     'default_value' => 1,
                 ),
+                'LENGOW_CARRIER_SEMANTIC_ENABLE' => array(
+                    'type' => 'checkbox',
+                    'global' => true,
+                    'label' => $locale->t('lengow_setting.lengow_carrier_semantic_enable_title'),
+                    'legend' => $locale->t('lengow_setting.lengow_carrier_semantic_enable_legend'),
+                    'default_value' => 0,
+                ),
                 'LENGOW_IMPORT_DAYS' => array(
                     'type' => 'day',
                     'global' => true,
@@ -265,38 +272,45 @@ class LengowConfiguration extends Configuration
                     'label' => $locale->t('lengow_setting.lengow_tracking_id_title'),
                     'legend' => $locale->t('lengow_setting.lengow_tracking_id_legend'),
                     'default_value' => 'id',
-                    'collection' => $trackerIds,
-                ),
-                'LENGOW_MARKETPLACE_UPDATE' => array(
-                    'export' => false,
-                ),
-                'LENGOW_ORDER_STAT' => array(
-                    'export' => false,
-                ),
-                'LENGOW_ORDER_STAT_UPDATE' => array(
-                    'export' => false,
+                    'collection' => $trackers,
                 ),
                 'LENGOW_VERSION' => array(
                     'type' => 'text',
                     'global' => true,
                 ),
+                'LENGOW_CATALOG_UPDATE' => array(
+                    'global' => true,
+                ),
+                'LENGOW_MARKETPLACE_UPDATE' => array(
+                    'global' => true,
+                ),
+                'LENGOW_ORDER_STAT' => array(
+                    'export' => false,
+                    'global' => true,
+                ),
+                'LENGOW_ORDER_STAT_UPDATE' => array(
+                    'global' => true,
+                ),
                 'LENGOW_INSTALLATION_IN_PROGRESS' => array(
                     'export' => false,
+                    'global' => true,
                 ),
                 'LENGOW_ACCOUNT_STATUS' => array(
                     'export' => false,
+                    'global' => true,
                 ),
                 'LENGOW_ACCOUNT_STATUS_UPDATE' => array(
-                    'export' => false,
+                    'global' => true,
                 ),
                 'LENGOW_OPTION_CMS_UPDATE' => array(
-                    'export' => false,
+                    'global' => true,
                 ),
                 'LENGOW_LIST_MARKET_UPDATE' => array(
-                    'export' => false,
+                    'global' => true,
                 ),
                 'LENGOW_STATE_ERROR' => array(
                     'export' => false,
+                    'global' => true,
                 ),
             );
         }
@@ -399,6 +413,46 @@ class LengowConfiguration extends Configuration
         $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration WHERE `name` = \'' . pSQL($key) . '\'';
         $value = Db::getInstance()->getRow($sql);
         return $value ? true : false;
+    }
+
+    /**
+     * Get last update date for a specific key
+     *
+     * @param array $keys Lengow configuration keys
+     * @param integer $idShop Prestashop shop id
+     *
+     * @return array
+     */
+    public static function getLastUpdateDate($keys, $idShop = null)
+    {
+        $in = '';
+        foreach ($keys as $key) {
+            $in .= empty($in) ? '\'' . pSQL($key) . '\'' :  ',\'' . pSQL($key) . '\'';
+        }
+        if (_PS_VERSION_ < '1.5') {
+            $query = 'SELECT name, id_shop, date_upd  FROM ' . _DB_PREFIX_ . 'configuration
+                WHERE name IN (' . $in . ')';
+        } else {
+            $query = 'SELECT name, id_shop, date_upd  FROM ' . _DB_PREFIX_ . 'configuration
+                WHERE name IN (' . $in . ')' . ($idShop !== null ? 'AND `id_shop` = ' . (int)$idShop : '');
+        }
+        try {
+            $results = Db::getInstance()->executeS($query);
+            if (!empty($results)) {
+                $return = array();
+                foreach ($results as $result) {
+                    if ($idShop !== null || _PS_VERSION_ < '1.5') {
+                        $return[$result['name']] = strtotime($result['date_upd']);
+                    } else {
+                        $return[$result['name']][(int)$result['id_shop']] = strtotime($result['date_upd']);
+                    }
+                }
+                return $return;
+            }
+        } catch (PrestaShopDatabaseException $e) {
+            $results = array();
+        };
+        return $results;
     }
 
     /**

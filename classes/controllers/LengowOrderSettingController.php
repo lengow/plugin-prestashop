@@ -49,7 +49,13 @@ class LengowOrderSettingController extends LengowController
                 'LENGOW_IMPORT_STOCK_SHIP_MP'
             )
         );
+        $semanticSearch =  $form->buildInputs(
+            array(
+                'LENGOW_CARRIER_SEMANTIC_ENABLE',
+            )
+        );
         $this->context->smarty->assign('matching', $matching);
+        $this->context->smarty->assign('semantic_search', $semanticSearch);
         $this->context->smarty->assign('import_params', $importParams);
         $this->context->smarty->assign('countries', $countries);
         $this->context->smarty->assign('marketplaceCounters', $marketplaceCounters);
@@ -158,7 +164,8 @@ class LengowOrderSettingController extends LengowController
                     array(
                         'LENGOW_IMPORT_SHIP_MP_ENABLED',
                         'LENGOW_IMPORT_STOCK_SHIP_MP',
-                        'LENGOW_CRON_ENABLED'
+                        'LENGOW_CRON_ENABLED',
+                        'LENGOW_CARRIER_SEMANTIC_ENABLE',
                     )
                 );
                 break;

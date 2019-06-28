@@ -106,7 +106,6 @@ function changeStockMP() {
     if ($("input[name='LENGOW_IMPORT_SHIP_MP_ENABLED']").prop('checked')) {
         selector.slideDown(150);
         var divLegend = selector.next('.legend');
-        divLegend.addClass("blue-frame");
         divLegend.css('display', 'block');
         divLegend.show();
     } else {

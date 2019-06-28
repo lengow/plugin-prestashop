@@ -27,6 +27,8 @@
  * integer shop_id             Shop id to import
  * string  $marketplace_sku    Lengow marketplace order id to import
  * string  marketplace_name    Lengow marketplace name to import
+ * string  create_from         import of orders since
+ * string  created_to          import of orders until
  * integer delivery_address_id Lengow delivery address id to import
  * boolean force_product       Force import product when quantity is insufficient (1) or not (0)
  * boolean preprod_mode        Activate preprod mode
@@ -80,7 +82,7 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
     }
     // sync catalogs id between Lengow and Prestashop
     if (!$sync || $sync === 'catalog') {
-        LengowSync::syncCatalog();
+        LengowSync::syncCatalog($force);
     }
     // sync marketplace and marketplace carrier between Lengow and Prestashop
     if (!$sync || $sync === 'carrier') {
@@ -102,6 +104,12 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
         }
         if (Tools::getIsset('days') && is_numeric(Tools::getValue('days'))) {
             $params['days'] = (int)Tools::getValue('days');
+        }
+        if (Tools::getIsset('created_from')) {
+            $params['created_from'] = Tools::getValue('created_from');
+        }
+        if (Tools::getIsset('created_to')) {
+            $params['created_to'] = Tools::getValue('created_to');
         }
         if (Tools::getIsset('limit') && is_numeric(Tools::getValue('limit'))) {
             $params['limit'] = (int)Tools::getValue('limit');

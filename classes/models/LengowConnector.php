@@ -33,11 +33,6 @@ class LengowConnector
     // const LENGOW_API_URL = 'http://10.100.1.82:8081';
 
     /**
-     * @var string url of the SANDBOX Lengow
-     */
-    const LENGOW_API_SANDBOX_URL = 'https://api.lengow.net';
-
-    /**
      * @var array|string fixture for test
      */
     public static $testFixturePath;
@@ -49,7 +44,7 @@ class LengowConnector
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 10,
-        CURLOPT_USERAGENT => 'lengow-php-sdk',
+        CURLOPT_USERAGENT => 'lengow-cms-prestashop',
     );
 
     /**
@@ -76,7 +71,7 @@ class LengowConnector
         '/v3.0/orders/actions/' => 15,
         '/v3.0/marketplaces' => 15,
         '/v3.0/plans' => 5,
-        '/v3.0/stats' => 3,
+        '/v3.0/stats' => 5,
         '/v3.1/cms' => 5,
     );
 
@@ -196,23 +191,6 @@ class LengowConnector
     }
 
     /**
-     * Head API call
-     *
-     * @param string $method Lengow method API call
-     * @param array $array Lengow method API parameters
-     * @param string $format return format of API
-     * @param string $body body datas for request
-     *
-     * @throws LengowException get Curl error
-     *
-     * @return mixed
-     */
-    public function head($method, $array = array(), $format = 'json', $body = '')
-    {
-        return $this->call($method, $array, 'HEAD', $format, $body);
-    }
-
-    /**
      * Put API call
      *
      * @param string $method Lengow method API call
@@ -227,23 +205,6 @@ class LengowConnector
     public function put($method, $array = array(), $format = 'json', $body = '')
     {
         return $this->call($method, $array, 'PUT', $format, $body);
-    }
-
-    /**
-     * Delete API call
-     *
-     * @param string $method Lengow method API call
-     * @param array $array Lengow method API parameters
-     * @param string $format return format of API
-     * @param string $body body datas for request
-     *
-     * @throws LengowException get Curl error
-     *
-     * @return mixed
-     */
-    public function delete($method, $array = array(), $format = 'json', $body = '')
-    {
-        return $this->call($method, $array, 'DELETE', $format, $body);
     }
 
     /**
@@ -268,7 +229,7 @@ class LengowConnector
      *
      * @param string $api Lengow method API call
      * @param array $args Lengow method API parameters
-     * @param string $type type of request GET|POST|PUT|HEAD|DELETE|PATCH
+     * @param string $type type of request GET|POST|PUT|PATCH
      * @param string $format return format of API
      * @param string $body body datas for request
      *

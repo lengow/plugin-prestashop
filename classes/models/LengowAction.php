@@ -35,6 +35,14 @@ class LengowAction
     const STATE_FINISH = 1;
 
     /**
+     * @var array Parameters to delete for Get call
+     */
+    public static $getParamsToDelete = array(
+        'shipping_date',
+        'delivery_date',
+    );
+
+    /**
      * @var integer Lengow action record id
      */
     public $id;
@@ -242,6 +250,112 @@ class LengowAction
     }
 
     /**
+     * Indicates whether an action can be created if it does not already exist
+     *
+     * @param array $params all available values
+     * @param LengowOrder $lengowOrder Lengow order instance
+     *
+     * @throws LengowException
+     *
+     * @return boolean
+     */
+    public static function canSendAction($params, $lengowOrder)
+    {
+        $sendAction = true;
+        $getParams = array_merge($params, array('queued' => 'True'));
+        // array key deletion for GET verification
+        foreach (self::$getParamsToDelete as $param) {
+            if (isset($getParams[$param])) {
+                unset($getParams[$param]);
+            }
+        }
+        $result = LengowConnector::queryApi('get', '/v3.0/orders/actions/', $getParams);
+        if (isset($result->error) && isset($result->error->message)) {
+            throw new LengowException($result->error->message);
+        }
+        if (isset($result->count) && $result->count > 0) {
+            foreach ($result->results as $row) {
+                $orderActionId = self::getActionByActionId($row->id);
+                if ($orderActionId) {
+                    $update = self::updateAction(
+                        array(
+                            'id_order' => $lengowOrder->id,
+                            'action_type' => $params['action_type'],
+                            'action_id' => $row->id,
+                            'parameters' => $params,
+                        )
+                    );
+                    if ($update) {
+                        $sendAction = false;
+                    }
+                } else {
+                    // if update doesn't work, create new action
+                    self::createAction(
+                        array(
+                            'id_order' => $lengowOrder->id,
+                            'action_type' => $params['action_type'],
+                            'action_id' => $row->id,
+                            'parameters' => $params,
+                            'marketplace_sku' => $lengowOrder->lengowMarketplaceSku,
+                        )
+                    );
+                    $sendAction = false;
+                }
+            }
+        }
+        return $sendAction;
+    }
+
+    /**
+     * Send a new action on the order via the Lengow API
+     *
+     * @param array $params all available values
+     * @param LengowOrder $lengowOrder Lengow order instance
+     *
+     * @throws LengowException
+     */
+    public static function sendAction($params, $lengowOrder)
+    {
+        if (!LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
+            $result = LengowConnector::queryApi('post', '/v3.0/orders/actions/', $params);
+            if (isset($result->id)) {
+                self::createAction(
+                    array(
+                        'id_order' => $lengowOrder->id,
+                        'action_type' => $params['action_type'],
+                        'action_id' => $result->id,
+                        'parameters' => $params,
+                        'marketplace_sku' => $lengowOrder->lengowMarketplaceSku,
+                    )
+                );
+            } else {
+                if ($result !== null) {
+                    $message = LengowMain::setLogMessage(
+                        'lengow_log.exception.action_not_created',
+                        array('error_message' => Tools::jsonEncode($result))
+                    );
+                } else {
+                    // generating a generic error message when the Lengow API is unavailable
+                    $message = LengowMain::setLogMessage('lengow_log.exception.action_not_created_api');
+                }
+                throw new LengowException($message);
+            }
+        }
+        // create log for call action
+        $paramList = false;
+        foreach ($params as $param => $value) {
+            $paramList .= !$paramList ? '"' . $param . '": ' . $value : ' -- "' . $param . '": ' . $value;
+        }
+        LengowMain::log(
+            'API-OrderAction',
+            LengowMain::setLogMessage('log.order_action.call_tracking', array('parameters' => $paramList)),
+            false,
+            $lengowOrder->lengowMarketplaceSku
+        );
+    }
+
+
+    /**
      * Create action
      *
      * @param array $params action params
@@ -255,7 +369,6 @@ class LengowAction
             'id_order' => (int)$params['id_order'],
             'action_id' => (int)$params['action_id'],
             'action_type' => pSQL($params['action_type']),
-            'state' => (int)self::STATE_NEW,
             'state' => (int)self::STATE_NEW,
             'created_at' => date('Y-m-d H:i:s')
         );

@@ -29,7 +29,7 @@
     <li>
         <div class="lgw-row">
             <div class="lgw-col-5 text-right carrier-name">
-                {$carrier|escape:'htmlall':'UTF-8'}
+                {$carrier['name']|escape:'htmlall':'UTF-8'}
             </div>
             <div class="lgw-col-1">
                 <div class="lgw-arrow-right"></div>
@@ -39,11 +39,11 @@
                         class="carrier js-match-carrier lengow_select js-carrier-{$marketplace['id']|escape:'htmlall':'UTF-8'}"
                         data-marketplace="{$marketplace['id']|escape:'htmlall':'UTF-8'}">
                     <option value="">{$locale->t('order_setting.screen.please_select_carrier_marketplace', ['marketplace_name' => $marketplace['label']])|escape:'htmlall':'UTF-8'}</option>
-                    {foreach from=$marketplace['carriers'] item=carrier}
-                        {if isset($marketplace['carrier_matched'][$idCarrier]) && $marketplace['carrier_matched'][$idCarrier] eq $carrier['id_carrier_marketplace']}
-                            <option value="{$carrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}" selected="selected">{$carrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
+                    {foreach from=$marketplace['carriers'] item=marketplaceCarrier}
+                        {if isset($marketplace['carrier_matched'][$idCarrier]) && $marketplace['carrier_matched'][$idCarrier] eq $marketplaceCarrier['id_carrier_marketplace']}
+                            <option value="{$marketplaceCarrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}" selected="selected">{$marketplaceCarrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
                         {else}
-                            <option value="{$carrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}">{$carrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
+                            <option value="{$marketplaceCarrier['id_carrier_marketplace']|escape:'htmlall':'UTF-8'}">{$marketplaceCarrier['carrier_marketplace_label']|escape:'htmlall':'UTF-8'}</option>
                         {/if}
                     {/foreach}
                 </select>
