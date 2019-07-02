@@ -155,7 +155,7 @@ fr:
       tooltip_default_carrier: "Vous n'avez pas encore configuré le transporteur par défaut pour cette place de marché"
       matching_method_marketplace: "Faites correspondre les méthodes de transport de la place de marché avec vos transporteurs PrestaShop"
       matching_carrier_marketplace: "Faites correspondre vos transporteurs PrestaShop avec les transporteurs proposés par la place de marché"
-      no_carrier_enabled: "You don't have any Prestashop carriers selected for %{country_name}"
+      no_carrier_enabled: "Vous n'avez aucun transporteur PrestaShop d'activé pour %{country_name}"
       button_cancel: "Annuler"
       order_status_title: "Statut des commandes"
       order_status_description: "Attribuez des statuts Lengow à vos commandes pour les retrouver facilement parmi l'ensemble de vos commandes."

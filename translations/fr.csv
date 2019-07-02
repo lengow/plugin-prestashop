@@ -138,7 +138,7 @@ order_setting.screen.no_default_carrier_marketplace_selected|Pas de code transpo
 order_setting.screen.tooltip_default_carrier|Vous n'avez pas encore configuré le transporteur par défaut pour cette place de marché
 order_setting.screen.matching_method_marketplace|Faites correspondre les méthodes de transport de la place de marché avec vos transporteurs PrestaShop
 order_setting.screen.matching_carrier_marketplace|Faites correspondre vos transporteurs PrestaShop avec les transporteurs proposés par la place de marché
-order_setting.screen.no_carrier_enabled|You don't have any Prestashop carriers selected for %{country_name}
+order_setting.screen.no_carrier_enabled|Vous n'avez aucun transporteur PrestaShop d'activé pour %{country_name}
 order_setting.screen.button_cancel|Annuler
 order_setting.screen.order_status_title|Statut des commandes
 order_setting.screen.order_status_description|Attribuez des statuts Lengow à vos commandes pour les retrouver facilement parmi l'ensemble de vos commandes.
