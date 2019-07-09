@@ -65,12 +65,12 @@ class LengowSync
             'email' => LengowConfiguration::get('PS_SHOP_EMAIL'),
             'cron_url' => LengowMain::getImportUrl(),
             'return_url' => 'http://' . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"],
-            'shops' => array()
+            'shops' => array(),
         );
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $idShop = $row['id_shop'];
-            $lengowExport = new LengowExport(array("shop_id" => $idShop));
+            $lengowExport = new LengowExport(array('shop_id' => $idShop));
             $shop = new LengowShop($idShop);
             $data['shops'][$idShop] = array(
                 'token' => LengowMain::getToken($idShop),
@@ -79,7 +79,7 @@ class LengowSync
                 'feed_url' => LengowMain::getExportUrl($shop->id),
                 'total_product_number' => $lengowExport->getTotalProduct(),
                 'exported_product_number' => $lengowExport->getTotalExportProduct(),
-                'enabled' => LengowConfiguration::shopIsActive($idShop)
+                'enabled' => LengowConfiguration::shopIsActive($idShop),
             );
         }
         return $data;
@@ -96,7 +96,7 @@ class LengowSync
             array(
                 'LENGOW_ACCOUNT_ID' => $params['account_id'],
                 'LENGOW_ACCESS_TOKEN' => $params['access_token'],
-                'LENGOW_SECRET_TOKEN' => $params['secret_token']
+                'LENGOW_SECRET_TOKEN' => $params['secret_token'],
             )
         );
         if (isset($params['shops'])) {
@@ -108,6 +108,8 @@ class LengowSync
                 }
             }
         }
+        // Save last update date for a specific settings (change synchronisation interval time)
+        LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', date('Y-m-d H:i:s'));
     }
 
     /**
@@ -119,6 +121,7 @@ class LengowSync
      */
     public static function syncCatalog($force = false)
     {
+        $settingUpdated = false;
         if (LengowConnector::isNewMerchant()) {
             return false;
         }
@@ -136,13 +139,23 @@ class LengowSync
                     foreach ($cms->shops as $cmsShop) {
                         $shop = LengowShop::findByToken($cmsShop->token);
                         if ($shop) {
-                            LengowConfiguration::setCatalogIds($cmsShop->catalog_ids, (int)$shop->id);
-                            LengowConfiguration::setActiveShop((int)$shop->id);
+                            $catalogIdsChange = LengowConfiguration::setCatalogIds(
+                                $cmsShop->catalog_ids,
+                                (int)$shop->id
+                            );
+                            $activeStoreChange = LengowConfiguration::setActiveShop((int)$shop->id);
+                            if (!$settingUpdated && ($catalogIdsChange || $activeStoreChange)) {
+                                $settingUpdated = true;
+                            }
                         }
                     }
                     break;
                 }
             }
+        }
+        // Save last update date for a specific settings (change synchronisation interval time)
+        if ($settingUpdated) {
+            LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', date('Y-m-d H:i:s'));
         }
         LengowConfiguration::updateGlobalValue('LENGOW_CATALOG_UPDATE', date('Y-m-d H:i:s'));
         return true;
@@ -189,7 +202,7 @@ class LengowSync
             'version' => _PS_VERSION_,
             'plugin_version' => LengowConfiguration::getGlobalValue('LENGOW_VERSION'),
             'options' => LengowConfiguration::getAllValues(),
-            'shops' => array()
+            'shops' => array(),
         );
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
@@ -200,7 +213,7 @@ class LengowSync
                 'enabled' => LengowConfiguration::shopIsActive($idShop),
                 'total_product_number' => $lengowExport->getTotalProduct(),
                 'exported_product_number' => $lengowExport->getTotalExportProduct(),
-                'options' => LengowConfiguration::getAllValues($idShop)
+                'options' => LengowConfiguration::getAllValues($idShop),
             );
         }
         return $data;
@@ -295,7 +308,7 @@ class LengowSync
                 'total_order' => $stats->revenue,
                 'nb_order' => (int)$stats->transactions,
                 'currency' => $result->currency->iso_a3,
-                'available' => false
+                'available' => false,
             );
         } else {
             if (LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE')) {
@@ -305,7 +318,7 @@ class LengowSync
                     'total_order' => 0,
                     'nb_order' => 0,
                     'currency' => '',
-                    'available' => false
+                    'available' => false,
                 );
             }
         }

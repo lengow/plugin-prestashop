@@ -841,14 +841,12 @@ class LengowImport
                 $importDays = $days > self::$maxImportDays ? self::$maxImportDays : $days;
             } else {
                 $lastImport = LengowMain::getLastImport();
-                if ($lastImport['timestamp'] !== 'none') {
-                    // added security when changing configuration (catalog id or import days)
-                    if (self::checkLastUpdateDate($lastImport['timestamp'])) {
-                        $currentTimestamp = time();
-                        $intervalDay = (int) (($currentTimestamp - $lastImport['timestamp']) / 86400);
-                        $intervalDay = $intervalDay === 0 ? 1 : $intervalDay;
-                        $importDays = $intervalDay > $importDays ? $importDays : $intervalDay;
-                    }
+                $lastSettingUpdate = LengowConfiguration::getGlobalValue('LENGOW_LAST_SETTING_UPDATE');
+                if ($lastImport['timestamp'] !== 'none' && $lastImport['timestamp'] > strtotime($lastSettingUpdate)) {
+                    $currentTimestamp = time();
+                    $intervalDay = (int) (($currentTimestamp - $lastImport['timestamp']) / 86400);
+                    $intervalDay = $intervalDay === 0 ? 1 : $intervalDay;
+                    $importDays = $intervalDay > $importDays ? $importDays : $intervalDay;
                 }
             }
             $this->updatedFrom = date('c', (time() - $importDays * 86400));
@@ -928,32 +926,5 @@ class LengowImport
     {
         self::$processing = false;
         return LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_IN_PROGRESS', -1);
-    }
-
-    /**
-     * Check if an import parameter has been updated since the last synchronization
-     *
-     * @param int $lastImport Last import timestamp
-     *
-     * @return boolean
-     */
-    public static function checkLastUpdateDate($lastImport)
-    {
-        $results = LengowConfiguration::getLastUpdateDate(array('LENGOW_CATALOG_ID', 'LENGOW_IMPORT_DAYS'));
-        if (!empty($results)) {
-            if (isset($results['LENGOW_CATALOG_ID'])) {
-                $catalogIdLastUpdate = max($results['LENGOW_CATALOG_ID']);
-                if ($catalogIdLastUpdate > $lastImport) {
-                    return false;
-                }
-            }
-            if (isset($results['LENGOW_IMPORT_DAYS'])) {
-                $importDayLastUpdate = max($results['LENGOW_IMPORT_DAYS']);
-                if ($importDayLastUpdate > $lastImport) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }

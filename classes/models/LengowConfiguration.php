@@ -308,6 +308,9 @@ class LengowConfiguration extends Configuration
                 'LENGOW_LIST_MARKET_UPDATE' => array(
                     'global' => true,
                 ),
+                'LENGOW_LAST_SETTING_UPDATE' => array(
+                    'global' => true,
+                ),
                 'LENGOW_STATE_ERROR' => array(
                     'export' => false,
                     'global' => true,
@@ -416,46 +419,6 @@ class LengowConfiguration extends Configuration
     }
 
     /**
-     * Get last update date for a specific key
-     *
-     * @param array $keys Lengow configuration keys
-     * @param integer $idShop Prestashop shop id
-     *
-     * @return array
-     */
-    public static function getLastUpdateDate($keys, $idShop = null)
-    {
-        $in = '';
-        foreach ($keys as $key) {
-            $in .= empty($in) ? '\'' . pSQL($key) . '\'' :  ',\'' . pSQL($key) . '\'';
-        }
-        if (_PS_VERSION_ < '1.5') {
-            $query = 'SELECT name, id_shop, date_upd  FROM ' . _DB_PREFIX_ . 'configuration
-                WHERE name IN (' . $in . ')';
-        } else {
-            $query = 'SELECT name, id_shop, date_upd  FROM ' . _DB_PREFIX_ . 'configuration
-                WHERE name IN (' . $in . ')' . ($idShop !== null ? 'AND `id_shop` = ' . (int)$idShop : '');
-        }
-        try {
-            $results = Db::getInstance()->executeS($query);
-            if (!empty($results)) {
-                $return = array();
-                foreach ($results as $result) {
-                    if ($idShop !== null || _PS_VERSION_ < '1.5') {
-                        $return[$result['name']] = strtotime($result['date_upd']);
-                    } else {
-                        $return[$result['name']][(int)$result['id_shop']] = strtotime($result['date_upd']);
-                    }
-                }
-                return $return;
-            }
-        } catch (PrestaShopDatabaseException $e) {
-            $results = array();
-        };
-        return $results;
-    }
-
-    /**
      * Get Valid Account / Access token / Secret token
      *
      * @return array
@@ -532,16 +495,21 @@ class LengowConfiguration extends Configuration
      *
      * @param array $catalogIds Lengow catalog ids
      * @param integer $idShop Prestashop shop id
+     *
+     * @return boolean
      */
     public static function setCatalogIds($catalogIds, $idShop)
     {
+        $valueChange = false;
         $shopCatalogIds = self::getCatalogIds($idShop);
         foreach ($catalogIds as $catalogId) {
             if (!in_array($catalogId, $shopCatalogIds) && is_numeric($catalogId) && $catalogId > 0) {
                 $shopCatalogIds[] = (int)$catalogId;
+                $valueChange = true;
             }
         }
         self::updateValue('LENGOW_CATALOG_ID', implode(';', $shopCatalogIds), false, null, $idShop);
+        return $valueChange;
     }
 
     /**
@@ -560,15 +528,15 @@ class LengowConfiguration extends Configuration
      * Set active shop or not
      *
      * @param integer $idShop Prestashop shop id
+     *
+     * @return boolean
      */
     public static function setActiveShop($idShop)
     {
-        $active = true;
-        $shopCatalogIds = self::getCatalogIds($idShop);
-        if (count($shopCatalogIds) === 0) {
-            $active = false;
-        }
-        self::updateValue('LENGOW_SHOP_ACTIVE', $active, false, null, $idShop);
+        $shopIsActive = self::shopIsActive($idShop);
+        $shopHasCatalog = count(self::getCatalogIds($idShop)) > 0;
+        self::updateValue('LENGOW_SHOP_ACTIVE', $shopHasCatalog, false, null, $idShop);
+        return $shopIsActive !== $shopHasCatalog ? true : false;
     }
 
     /**

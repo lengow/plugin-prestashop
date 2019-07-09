@@ -35,6 +35,22 @@ class LengowConfigurationForm
     protected $locale;
 
     /**
+     * @var array Secret settings list to hide
+     */
+    protected $secretSettings = array(
+        'LENGOW_ACCESS_TOKEN',
+        'LENGOW_SECRET_TOKEN',
+    );
+
+    /**
+     * @var array list of settings for the date of the last update
+     */
+    protected $updatedSettings = array(
+        'LENGOW_CATALOG_ID',
+        'LENGOW_IMPORT_DAYS',
+    );
+
+    /**
      * Construct
      *
      * @param array $params construct parameters
@@ -185,7 +201,7 @@ class LengowConfigurationForm
                 if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
                     foreach ($value as $idShop => $shopValue) {
                         if (isset($this->fields[$key]['type']) &&
-                            $this->fields[$key]['type'] == 'checkbox' && $shopValue == 'on'
+                            $this->fields[$key]['type'] === 'checkbox' && $shopValue === 'on'
                         ) {
                             $shopValue = 1;
                         }
@@ -199,7 +215,7 @@ class LengowConfigurationForm
                         LengowConfiguration::updateGlobalValue($key, join(',', $value));
                     } else {
                         if (isset($this->fields[$key]['type']) &&
-                            $this->fields[$key]['type'] == 'checkbox' && $value == 'on'
+                            $this->fields[$key]['type'] === 'checkbox' && $value === 'on'
                         ) {
                             $value = 1;
                         }
@@ -216,7 +232,7 @@ class LengowConfigurationForm
                 if (!in_array($key, $checkboxKeys)) {
                     continue;
                 }
-                if ($value['type'] == 'checkbox' && isset($value['shop']) && $value['shop']) {
+                if ($value['type'] === 'checkbox' && isset($value['shop']) && $value['shop']) {
                     if (!isset($_REQUEST[$key][$idShop])) {
                         $this->checkAndLog($key, 0, $idShop);
                         LengowConfiguration::updateValue($key, 0, false, null, $idShop);
@@ -251,12 +267,12 @@ class LengowConfigurationForm
         } else {
             $oldValue = LengowConfiguration::get($key, null, null, $idShop);
         }
-        if (isset($this->fields[$key]['type']) && $this->fields[$key]['type'] == 'checkbox') {
+        if (isset($this->fields[$key]['type']) && $this->fields[$key]['type'] === 'checkbox') {
             $value = (int)$value;
             $oldValue = (int)$oldValue;
         }
         if ($oldValue != $value) {
-            if ($key == 'LENGOW_ACCESS_TOKEN' || $key == 'LENGOW_SECRET_TOKEN') {
+            if (in_array($key, $this->secretSettings)) {
                 $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
                 $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
             }
@@ -269,7 +285,7 @@ class LengowConfigurationForm
                             'key' => $key,
                             'old_value' => $oldValue,
                             'value' => $value,
-                            'shop_id' => $idShop
+                            'shop_id' => $idShop,
                         )
                     )
                 );
@@ -281,10 +297,14 @@ class LengowConfigurationForm
                         array(
                             'key' => $key,
                             'old_value' => $oldValue,
-                            'value' => $value
+                            'value' => $value,
                         )
                     )
                 );
+            }
+            // Save last update date for a specific settings (change synchronisation interval time)
+            if (in_array($key, $this->updatedSettings)) {
+                LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', date('Y-m-d H:i:s'));
             }
         }
     }
