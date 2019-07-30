@@ -28,7 +28,7 @@ $fullAccess = isset($_REQUEST['access']) ? $_REQUEST['access'] : null;
 
 $locale = new LengowTranslation();
 
-$form = new LengowConfigurationForm(array("fields" => LengowConfiguration::getKeys()));
+$form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
 
 if (_PS_VERSION_ < '1.5') {
     $shopCollection = array(array('id_shop' => 1));
@@ -38,7 +38,7 @@ if (_PS_VERSION_ < '1.5') {
 }
 
 switch ($action) {
-    case "update":
+    case 'update':
         $form->postProcess(
             array(
                 'LENGOW_SHOP_ACTIVE',
@@ -59,14 +59,14 @@ switch ($action) {
         );
         Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/config.php', '');
         break;
-    case "get_default_settings":
-        if ($fullAccess && $fullAccess == 'admin') {
+    case 'get_default_settings':
+        if ($fullAccess && $fullAccess === 'admin') {
             LengowConfiguration::resetAll(true);
         }
         Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/config.php', '');
         break;
-    case "update_settings":
-        if ($fullAccess && $fullAccess == 'admin') {
+    case 'update_settings':
+        if ($fullAccess && $fullAccess === 'admin') {
             if (_PS_VERSION_ < '1.5') {
                 $tempProfile = Context::getContext()->cookie->profile;
                 Context::getContext()->cookie->profile = 1;

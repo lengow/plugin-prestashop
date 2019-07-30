@@ -26,7 +26,7 @@ class FeedFormatTest extends ModuleTestCase
         Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
 
-        //load module
+        // load module
         Module::getInstanceByName('lengow');
 
         $fixture = new Fixture();
@@ -78,9 +78,9 @@ class FeedFormatTest extends ModuleTestCase
             )
         );
         $export->exec();
-        $this->assertFileValues($export->getFileName(), 101, array("NAME_PRODUCT" => "THIS ' IS ' A   Test"));
-        $this->assertFileValues($export->getFileName(), 101, array("DESCRIPTION" => "THIS ' IS ' A Test"));
-        $this->assertFileValues($export->getFileName(), 101, array("DESCRIPTION_SHORT" => "THIS ' IS ' A Test"));
+        $this->assertFileValues($export->getFileName(), 101, array('NAME_PRODUCT' => "THIS ' IS ' A   Test"));
+        $this->assertFileValues($export->getFileName(), 101, array('DESCRIPTION' => "THIS ' IS ' A Test"));
+        $this->assertFileValues($export->getFileName(), 101, array('DESCRIPTION_SHORT' => "THIS ' IS ' A Test"));
         $this->assertFileNbLine($export->getFileName(), 1, 'quote');
     }
 }

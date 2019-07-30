@@ -50,11 +50,6 @@ class LengowHook
     const LENGOW_TRACK_PAGE_CART = 'basket';
 
     /**
-     * @var string name of Prestashop lead page
-     */
-    const LENGOW_TRACK_PAGE_LEAD = 'lead';
-
-    /**
      * @var string name of Prestashop confirmation page
      */
     const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
@@ -129,7 +124,7 @@ class LengowHook
     {
         $error = false;
         $lengowHooks = array(
-            // Common version
+            // common version
             'footer' => '1.4',
             'postUpdateOrderStatus' => '1.4',
             'paymentTop' => '1.4',
@@ -137,10 +132,10 @@ class LengowHook
             'home' => '1.4',
             'updateOrderStatus' => '1.4',
             'orderConfirmation' => '1.4',
-            // Version 1.5
+            // version 1.5
             'actionObjectUpdateAfter' => '1.5',
-            // Version 1.6
-            'displayBackOfficeHeader' => '1.6'
+            // version 1.6
+            'displayBackOfficeHeader' => '1.6',
         );
         foreach ($lengowHooks as $hook => $version) {
             if ($version <= Tools::substr(_PS_VERSION_, 0, 3)) {
@@ -158,7 +153,7 @@ class LengowHook
                 }
             }
         }
-        return ($error ? false : true);
+        return $error ? false : true;
     }
 
     /**
@@ -207,7 +202,7 @@ class LengowHook
                 self::$currentPageType = self::LENGOW_TRACK_HOMEPAGE;
             }
         }
-        // ID category
+        // id category
         if (!(self::$idCategory = (int)Tools::getValue('id_category'))) {
             if (isset($_SERVER['HTTP_REFERER'])
                 && preg_match(
@@ -223,8 +218,12 @@ class LengowHook
                     self::$idCategory = (int)$regs[5];
                 }
             } elseif ($idProduct = (int)Tools::getValue('id_product')) {
-                $product = new Product($idProduct);
-                self::$idCategory = $product->id_category_default;
+                try {
+                    $product = new Product($idProduct);
+                    self::$idCategory = $product->id_category_default;
+                } catch (Exception $e) {
+                    self::$idCategory = 0;
+                }
             }
             if (self::$idCategory == 0) {
                 self::$idCategory = '';
@@ -232,23 +231,26 @@ class LengowHook
         } else {
             self::$currentPageType = self::LENGOW_TRACK_PAGE_LIST;
         }
-        // Basket
-        if (self::$currentPageType == self::LENGOW_TRACK_PAGE_CART ||
-            self::$currentPageType == self::LENGOW_TRACK_PAGE_PAYMENT
+        // basket
+        if (self::$currentPageType === self::LENGOW_TRACK_PAGE_CART ||
+            self::$currentPageType === self::LENGOW_TRACK_PAGE_PAYMENT
         ) {
-            self::$orderTotal = $this->context->cart->getOrderTotal();
+            try {
+                $orderTotal = $this->context->cart->getOrderTotal();
+            } catch (Exception $e) {
+                $orderTotal = 0;
+            }
+            self::$orderTotal = $orderTotal;
         }
-        // Product IDS
-        if (self::$currentPageType == self::LENGOW_TRACK_PAGE_LIST
-            || self::$currentPageType == self::LENGOW_TRACK_PAGE
-            || self::$currentPageType == self::LENGOW_TRACK_PAGE_CART
+        // product ids
+        if (self::$currentPageType === self::LENGOW_TRACK_PAGE_LIST
+            || self::$currentPageType === self::LENGOW_TRACK_PAGE
+            || self::$currentPageType === self::LENGOW_TRACK_PAGE_CART
         ) {
             $productsCart = array();
-            $products = (
-            isset($this->context->smarty->tpl_vars['products'])
+            $products = isset($this->context->smarty->tpl_vars['products'])
                 ? $this->context->smarty->tpl_vars['products']->value
-                : array()
-            );
+                : array();
             if (!empty($products)) {
                 $i = 1;
                 foreach ($products as $p) {
@@ -273,8 +275,8 @@ class LengowHook
                         }
                         $productDatas = array(
                             'product_id' => $idProduct,
-                            'price' => (isset($p->price_wt) ? $p->price_wt : $p->price),
-                            'quantity' => $p->quantity
+                            'price' => isset($p->price_wt) ? $p->price_wt : $p->price,
+                            'quantity' => $p->quantity,
                         );
                     } else {
                         switch (LengowConfiguration::get('LENGOW_TRACKING_ID')) {
@@ -297,8 +299,8 @@ class LengowHook
                         }
                         $productDatas = array(
                             'product_id' => $idProduct,
-                            'price' => (isset($p['price_wt']) ? $p['price_wt'] : $p['price']),
-                            'quantity' => $p['quantity']
+                            'price' => isset($p['price_wt']) ? $p['price_wt'] : $p['price'],
+                            'quantity' => $p['quantity'],
                         );
                     }
                     $productsCart[] = $productDatas;
@@ -310,8 +312,8 @@ class LengowHook
         if (!isset($this->smarty)) {
             $this->smarty = $this->context->smarty;
         }
-        // Generate tracker
-        if (self::$currentPageType == self::LENGOW_TRACK_PAGE_CONFIRMATION) {
+        // generate Lengow tracker
+        if (self::$currentPageType === self::LENGOW_TRACK_PAGE_CONFIRMATION) {
             $this->context->smarty->assign(
                 array(
                     'account_id' => LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_ID'),
@@ -323,7 +325,7 @@ class LengowHook
                     'cart_number' => self::$idCart,
                     'newbiz' => 1,
                     'valid' => 1,
-                    'page_type' => self::$currentPageType
+                    'page_type' => self::$currentPageType,
                 )
             );
             return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/front/tagpage.tpl');
@@ -366,11 +368,11 @@ class LengowHook
                     break;
             }
             $price = isset($p['product_price_wt']) ? $p['product_price_wt'] : $p['unit_price_tax_incl'];
-            // Basket Product
+            // basket product
             $productsCart[] = array(
                 'product_id' => $idProduct,
                 'price' => Tools::ps_round($price, 2),
-                'quantity' => $p['product_quantity']
+                'quantity' => $p['product_quantity'],
             );
         }
         self::$idsProductCart = Tools::jsonEncode($productsCart);
@@ -403,7 +405,7 @@ class LengowHook
             $actionReimport = $baseAction . '&action=cancel_re_import';
             $actionSynchronize = $baseAction . '&action=synchronize';
             $actionAddTracking = $baseAction . '&action=add_tracking&tracking_number=';
-            $actionType = $lengowOrder->getCurrentState() == LengowMain::getOrderState('canceled')
+            $actionType = $lengowOrder->getCurrentState() === LengowMain::getOrderState('canceled')
                 ? 'cancel'
                 : 'ship';
             $checkResendAction = $locale->t('admin.order.check_resend_action', array('action' => $actionType));
@@ -438,7 +440,7 @@ class LengowHook
                 'preprod_mode' => (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED'),
                 'can_resend_action' => $canResendAction,
                 'can_add_tracking' => $canAddTracking,
-                'check_resend_action' => $checkResendAction
+                'check_resend_action' => $checkResendAction,
             );
             $this->context->smarty->assign($templateDatas);
             if (_PS_VERSION_ >= '1.6') {
@@ -457,9 +459,9 @@ class LengowHook
     public function hookUpdateOrderStatus($args)
     {
         $lengowOrder = new LengowOrder($args['id_order']);
-        // Not send state if we are on lengow import module
+        // not send state if we are on lengow import module
         if (LengowOrder::isFromLengow($args['id_order']) &&
-            LengowImport::$currentOrder != $lengowOrder->lengowMarketplaceSku
+            LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
         ) {
             LengowMain::disableMail();
         }
@@ -475,17 +477,17 @@ class LengowHook
         $lengowOrder = new LengowOrder($args['id_order']);
         // do nothing if order is not from Lengow or is being imported
         if (LengowOrder::isFromLengow($args['id_order'])
-            && LengowImport::$currentOrder != $lengowOrder->lengowMarketplaceSku
+            && LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
             && !array_key_exists($lengowOrder->lengowMarketplaceSku, $this->alreadyShipped)
         ) {
             $newOrderState = $args['newOrderStatus'];
-            $idOrderState = $newOrderState->id;
-            if ($idOrderState == LengowMain::getOrderState('shipped')) {
+            $idOrderState = (int)$newOrderState->id;
+            if ($idOrderState === LengowMain::getOrderState('shipped')) {
                 $lengowOrder->callAction('ship');
                 $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
             }
-            // Call Lengow API WSDL to send refuse state order
-            if ($idOrderState == LengowMain::getOrderState('canceled')) {
+            // call Lengow API WSDL to send refuse state order
+            if ($idOrderState === LengowMain::getOrderState('canceled')) {
                 $lengowOrder->callAction('cancel');
                 $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
             }
@@ -502,13 +504,11 @@ class LengowHook
         if ($args['object'] instanceof Order) {
             if (LengowOrder::isFromLengow($args['object']->id)) {
                 $lengowOrder = new LengowOrder($args['object']->id);
-                if ($lengowOrder->shipping_number != ''
-                    && $args['object']->current_state == LengowMain::getOrderState('shipped')
-                    && LengowImport::$currentOrder != $lengowOrder->lengowMarketplaceSku
+                if ($lengowOrder->shipping_number !== ''
+                    && (int)$args['object']->current_state === LengowMain::getOrderState('shipped')
+                    && LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
                     && !array_key_exists($lengowOrder->lengowMarketplaceSku, $this->alreadyShipped)
                 ) {
-                    $params = array();
-                    $params['id_order'] = $args['object']->id;
                     $lengowOrder->callAction('ship');
                     $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
                 }

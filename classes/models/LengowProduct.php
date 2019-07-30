@@ -33,7 +33,7 @@ class LengowProduct extends Product
         'merchant_product_id',
         'marketplace_order_line_id',
         'quantity',
-        'amount'
+        'amount',
     );
 
     /**
@@ -67,7 +67,7 @@ class LengowProduct extends Product
     protected $isSale = false;
 
     /**
-     * @var array combination of product's attributes
+     * @var array|null combination of product's attributes
      */
     protected $combinations = null;
 
@@ -89,8 +89,8 @@ class LengowProduct extends Product
     /**
      * Load a new product
      *
-     * @param integer $idProduct Prestashop product id
-     * @param integer $idLang Prestashop lang id
+     * @param integer|null $idProduct Prestashop product id
+     * @param integer|null $idLang Prestashop lang id
      * @param array $params all export parameters
      *
      * @throws LengowException
@@ -98,11 +98,11 @@ class LengowProduct extends Product
     public function __construct($idProduct = null, $idLang = null, $params = array())
     {
         parent::__construct($idProduct, false, $idLang);
-        $this->carrier = isset($params["carrier"]) ? $params["carrier"] : null;
-        $this->imageSize = isset($params["image_size"]) ? $params["image_size"] : self::getMaxImageType();
+        $this->carrier = isset($params['carrier']) ? $params['carrier'] : null;
+        $this->imageSize = isset($params['image_size']) ? $params['image_size'] : self::getMaxImageType();
         $this->context = Context::getContext();
-        $this->context->language = isset($params["language"]) ? $params["language"] : Context::getContext()->language;
-        // The applicable tax may be BOTH the product one AND the state one (moreover this variable is some deadcode)
+        $this->context->language = isset($params['language']) ? $params['language'] : Context::getContext()->language;
+        // the applicable tax may be BOTH the product one and the state one (moreover this variable is some deadcode)
         $this->tax_name = 'deprecated';
         $this->manufacturer_name = Manufacturer::getNameById((int)$this->id_manufacturer);
         $this->supplier_name = Supplier::getNameById((int)$this->id_supplier);
@@ -125,7 +125,7 @@ class LengowProduct extends Product
         $this->new = $this->isNew();
         $this->base_price = $this->price;
         if ($this->id) {
-            //reset attribute cache
+            // reset attribute cache
             if (LengowMain::inTest()) {
                 Product::getDefaultAttribute($this->id, 0, true);
             }
@@ -176,7 +176,7 @@ class LengowProduct extends Product
      * Get data of current product
      *
      * @param string $name data name
-     * @param integer $idProductAttribute Prestashop product attribute id
+     * @param integer|null $idProductAttribute Prestashop product attribute id
      *
      * @throws Exception
      *
@@ -257,7 +257,6 @@ class LengowProduct extends Product
                     $price = $this->getPrice(true, null, 2, null, false, false, 1);
                     $priceSale = $this->getPrice(true, null, 2, null, true, true, 1);
                 }
-
                 if ($priceSale && $price) {
                     return LengowMain::formatNumber(($priceSale / $price) * 100);
                 }
@@ -368,7 +367,7 @@ class LengowProduct extends Product
                 }
                 return $this->context->link->getProductLink($this);
             case 'price_shipping':
-                if ($idProductAttribute && $idProductAttribute != null) {
+                if ($idProductAttribute && $idProductAttribute !== null) {
                     $price = $this->getData('price_sale', $idProductAttribute);
                     $weight = $this->getData('weight', $idProductAttribute);
                 } else {
@@ -382,27 +381,23 @@ class LengowProduct extends Product
                 }
                 $shippingMethod = $this->carrier->getShippingMethod();
                 $shippingCost = 0;
-                if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shippingMethod != Carrier::SHIPPING_METHOD_FREE) {
-                    if ($shippingMethod == Carrier::SHIPPING_METHOD_WEIGHT) {
+                if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shippingMethod !== Carrier::SHIPPING_METHOD_FREE) {
+                    if ($shippingMethod === Carrier::SHIPPING_METHOD_WEIGHT) {
                         $shippingCost = LengowMain::formatNumber(
                             $this->carrier->getDeliveryPriceByWeight($weight, (int)$idZone)
                         );
                     } else {
                         $shippingCost = LengowMain::formatNumber(
-                            $this->carrier->getDeliveryPriceByPrice(
-                                $price,
-                                (int)$idZone,
-                                (int)$idCurrency
-                            )
+                            $this->carrier->getDeliveryPriceByPrice($price, (int)$idZone, (int)$idCurrency)
                         );
                     }
                 }
-                // Check if product have single shipping cost
+                // check if product have single shipping cost
                 if ($this->additional_shipping_cost > 0) {
                     $shippingCost += $this->additional_shipping_cost;
                 }
-                // Tax calculation
-                $defaultCountry = Configuration::get('PS_COUNTRY_DEFAULT');
+                // tax calculation
+                $defaultCountry = (int)Configuration::get('PS_COUNTRY_DEFAULT');
                 if (_PS_VERSION_ < '1.5') {
                     $idTaxRulesGroup = $this->carrier->id_tax_rules_group;
                 } else {
@@ -413,7 +408,7 @@ class LengowProduct extends Product
                     $idTaxRulesGroup
                 );
                 foreach ($taxRules as $taxRule) {
-                    if (isset($taxRule['id_country']) && $taxRule['id_country'] == $defaultCountry) {
+                    if (isset($taxRule['id_country']) && (int)$taxRule['id_country'] === $defaultCountry) {
                         $tr = new TaxRule($taxRule['id_tax_rule']);
                     }
                 }
@@ -422,8 +417,8 @@ class LengowProduct extends Product
                     $taxCalculator = new TaxCalculator(array($t));
                     $taxes = $taxCalculator->getTaxesAmount($shippingCost);
                     if (!empty($taxes)) {
-                        foreach ($taxes as $taxe) {
-                            $shippingCost += $taxe;
+                        foreach ($taxes as $tax) {
+                            $shippingCost += $tax;
                         }
                     }
                 }
@@ -559,33 +554,6 @@ class LengowProduct extends Product
     }
 
     /**
-     * Get data attribute of current product
-     *
-     * @param integer $idProductAttribute Prestashop product attribute id
-     * @param string $name the data name attribute
-     *
-     * @return string
-     */
-    public function getDataAttribute($idProductAttribute, $name)
-    {
-        return isset($this->combinations[$idProductAttribute]['attributes'][$name][1])
-            ? $this->combinations[$idProductAttribute]['attributes'][$name][1]
-            : '';
-    }
-
-    /**
-     * Get data feature of current product
-     *
-     * @param string $name the data name feature
-     *
-     * @return string
-     */
-    public function getDataFeature($name)
-    {
-        return isset($this->features[$name]['value']) ? $this->features[$name]['value'] : '';
-    }
-
-    /**
      * Make the feature of current product
      */
     public function makeFeatures()
@@ -615,7 +583,7 @@ class LengowProduct extends Product
                     $combArray[$attributeId]['attributes'][$c['group_name']] = array(
                         $c['group_name'],
                         $c['attribute_name'],
-                        $c['id_attribute']
+                        $c['id_attribute'],
                     );
                 } else {
                     $combArray[$attributeId] = array(
@@ -624,7 +592,7 @@ class LengowProduct extends Product
                             $c['group_name'] => array(
                                 $c['group_name'],
                                 $c['attribute_name'],
-                                $c['id_attribute']
+                                $c['id_attribute'],
                             )
                         ),
                         'wholesale_price' => isset($c['wholesale_price']) ? $c['wholesale_price'] : '',
@@ -647,7 +615,7 @@ class LengowProduct extends Product
         if (isset($combArray)) {
             foreach ($combArray as $idProductAttribute => $productAttribute) {
                 $name = '';
-                /* In order to keep the same attributes order */
+                // in order to keep the same attributes order
                 asort($productAttribute['attributes']);
                 foreach ($productAttribute['attributes'] as $attribute) {
                     $name .= $attribute[0] . ', ';
@@ -675,16 +643,6 @@ class LengowProduct extends Product
     public function getCombinations()
     {
         return $this->combinations;
-    }
-
-    /**
-     * Get count images of current product
-     *
-     * @return integer
-     */
-    public function getCountImages()
-    {
-        return count($this->images);
     }
 
     /**
@@ -780,12 +738,12 @@ class LengowProduct extends Product
      */
     public function getSupplierReference()
     {
-        if ($this->supplier_reference != '' || _PS_VERSION_ < '1.5') {
+        if ($this->supplier_reference !== '' || _PS_VERSION_ < '1.5') {
             return $this->supplier_reference;
         }
         $sql = 'SELECT `product_supplier_reference`
             FROM `' . _DB_PREFIX_ . 'product_supplier`
-            WHERE `id_product` = \'' . pSQL($this->id) . '\'
+            WHERE `id_product` = \'' . (int)$this->id . '\'
             AND `id_product_attribute` = 0';
         $result = Db::getInstance()->getRow($sql);
         return $result['product_supplier_reference'];
@@ -811,13 +769,13 @@ class LengowProduct extends Product
                 $sql = 'SELECT id_product FROM ' . _DB_PREFIX_ . 'lengow_product
                     WHERE id_product = ' . (int)$productId . ' AND id_shop = ' . (int)$shopId;
                 $results = Db::getInstance()->ExecuteS($sql);
-                if (count($results) == 0) {
+                if (count($results) === 0) {
                     if (_PS_VERSION_ < '1.5') {
                         return Db::getInstance()->autoExecute(
                             _DB_PREFIX_ . 'lengow_product',
                             array(
                                 'id_product' => (int)$productId,
-                                'id_shop' => (int)$shopId
+                                'id_shop' => (int)$shopId,
                             ),
                             'INSERT'
                         );
@@ -826,7 +784,7 @@ class LengowProduct extends Product
                             'lengow_product',
                             array(
                                 'id_product' => (int)$productId,
-                                'id_shop' => (int)$shopId
+                                'id_shop' => (int)$shopId,
                             )
                         );
                     }
@@ -843,15 +801,15 @@ class LengowProduct extends Product
      *
      * @param integer $idProduct Prestashop product id
      * @param integer $idProductAttribute Prestashop product attribute id
-     * @param integer $idWarehouse Prestashop wharehouse id
-     * @param integer $idShop Prestashop shop id
+     * @param integer|null $idWarehouse Prestashop wharehouse id
+     * @param integer|null $idShop Prestashop shop id
      *
      * @return integer
      */
     public static function getRealQuantity($idProduct, $idProductAttribute = 0, $idWarehouse = null, $idShop = null)
     {
         if (version_compare(_PS_VERSION_, '1.5', '<')) {
-            if ($idProductAttribute == 0 || $idProductAttribute == null) {
+            if ($idProductAttribute === 0 || $idProductAttribute === null) {
                 return Product::getQuantity($idProduct);
             }
             return Product::getQuantity($idProduct, $idProductAttribute);
@@ -876,8 +834,8 @@ class LengowProduct extends Product
                 foreach ($attributes as $attributeName) {
                     foreach ($apiDatas as $idApi) {
                         if (!empty($idApi)) {
-                            if ($attributeName == 'id') {
-                                // Compatibility with old plugins
+                            if ($attributeName === 'id') {
+                                // compatibility with old plugins
                                 $id = str_replace('\_', '_', $idApi);
                                 $id = str_replace('X', '_', $id);
                                 $ids = explode('_', $id);
@@ -896,8 +854,8 @@ class LengowProduct extends Product
             foreach ($attributes as $attributeName) {
                 foreach ($apiDatas as $idApi) {
                     if (!empty($idApi)) {
-                        if ($attributeName == 'id') {
-                            // Compatibility with old plugins
+                        if ($attributeName === 'id') {
+                            // compatibility with old plugins
                             $id = str_replace('\_', '_', $idApi);
                             $id = str_replace('X', '_', $id);
                             $ids = explode('_', $id);
@@ -941,6 +899,8 @@ class LengowProduct extends Product
      * @param integer $idShop Prestashop shop id
      * @param array $apiDatas product ids from the API
      *
+     * @throws LengowException
+     *
      * @return array|false
      */
     public static function matchProduct($attributeName, $attributeValue, $idShop, $apiDatas = array())
@@ -957,7 +917,7 @@ class LengowProduct extends Product
                 return self::findProduct('upc', $attributeValue, $idShop);
             default:
                 $idsProduct = array();
-                // Compatibility with old plugins
+                // compatibility with old plugins
                 $sku = str_replace('\_', '_', $attributeValue);
                 $sku = str_replace('X', '_', $sku);
                 $sku = explode('_', $sku);
@@ -965,7 +925,7 @@ class LengowProduct extends Product
                     $idsProduct['id_product'] = (int)$sku[0];
                     if (isset($sku[1])) {
                         if (preg_match('/^[0-9]*$/', $sku[1]) && count($sku) === 2) {
-                            // Compatibility with old plugins -> XXX_0 product without variation
+                            // compatibility with old plugins -> XXX_0 product without variation
                             if ($sku[1] != 0) {
                                 $idsProduct['id_product_attribute'] = (int)$sku[1];
                             }
@@ -995,6 +955,8 @@ class LengowProduct extends Product
      * @param integer $idProduct Prestashop product id
      * @param array $apiDatas product ids from the API
      *
+     * @throws LengowException
+     *
      * @return boolean
      */
     protected static function checkProductId($idProduct, $apiDatas)
@@ -1019,7 +981,7 @@ class LengowProduct extends Product
      */
     protected static function checkProductAttributeId($product, $idProductAttribute)
     {
-        if ($idProductAttribute == 0) {
+        if ($idProductAttribute === 0) {
             return false;
         }
         if (!array_key_exists($idProductAttribute, $product->getCombinations())) {
@@ -1050,7 +1012,7 @@ class LengowProduct extends Product
             $query->where('p.' . pSQL($key) . ' = \'' . pSQL($value) . '\'');
             $query->where('ps.`id_shop` = \'' . (int)$idShop . '\'');
             $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
-            // If no result, search in attribute
+            // if no result, search in attribute
             if ($result == '') {
                 $query = new DbQuery();
                 $query->select('pa.id_product, pa.id_product_attribute');
@@ -1083,11 +1045,14 @@ class LengowProduct extends Product
      * @param integer $idShop Prestashop shop id
      * @param array $apiDatas product ids from the API
      *
+     * @throws LengowException
+     *
      * @return array|false
      */
     public static function advancedSearch($attributeValue, $idShop, $apiDatas)
     {
-        $attributes = array('reference', 'ean', 'upc', 'ids'); // Product class attribute to search
+        // product class attribute to search
+        $attributes = array('reference', 'ean', 'upc', 'ids');
         $idsProduct = array();
         $find = false;
         $i = 0;

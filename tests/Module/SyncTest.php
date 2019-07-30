@@ -19,7 +19,7 @@ class SyncTest extends ModuleTestCase
     public function setUp()
     {
         parent::setUp();
-        //load module
+        // load module
         Module::getInstanceByName('lengow');
 
         $fixture = new Fixture();
@@ -75,8 +75,7 @@ class SyncTest extends ModuleTestCase
      */
     public function sync()
     {
-
-        //set correct data
+        // set correct data
         LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', '');
         LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', '');
         LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', '');
@@ -122,7 +121,7 @@ class SyncTest extends ModuleTestCase
         $this->assertEquals('', LengowConfiguration::get('LENGOW_SECRET_TOKEN'));
         $this->assertEquals(false, LengowConfiguration::get('LENGOW_SHOP_ACTIVE', false, null, 1));
 
-        //missing key
+        // missing key
         LengowConfiguration::updateValue('LENGOW_ACCOUNT_ID', '');
         LengowConfiguration::updateValue('LENGOW_ACCESS_TOKEN', '');
         LengowConfiguration::updateValue('LENGOW_SECRET_TOKEN', '');
@@ -143,6 +142,5 @@ class SyncTest extends ModuleTestCase
         $this->assertEquals('fzg16re54g65er4g1er65', LengowConfiguration::get('LENGOW_ACCESS_TOKEN'));
         $this->assertEquals('', LengowConfiguration::get('LENGOW_SECRET_TOKEN'));
         $this->assertEquals(false, LengowConfiguration::get('LENGOW_SHOP_ACTIVE', false, null, 1));
-
     }
 }

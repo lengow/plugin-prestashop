@@ -23,7 +23,7 @@ class OrderTest extends ModuleTestCase
     {
         parent::setUp();
 
-        //load module
+        // load module
         Module::getInstanceByName('lengow');
 
         LengowMain::$registers = array();
@@ -42,24 +42,17 @@ class OrderTest extends ModuleTestCase
      */
     public function reImportOrder()
     {
-
         Configuration::set('LENGOW_SHOP_ACTIVE', true, null, 1);
         Configuration::set('LENGOW_ACCOUNT_ID', 'nothing');
         Configuration::set('LENGOW_ACCESS_TOKEN', 'nothing');
         Configuration::set('LENGOW_SECRET_TOKEN', 'nothing');
 
         $fixture = new Fixture();
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/re_import.yml'
-        );
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml'
-        );
-        LengowConnector::$testFixturePath =
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/re_import.json';
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/re_import.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml');
+        LengowConnector::$testFixturePath = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/re_import.json';
         $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         LengowMarketplace::$MARKETPLACES = array(1 => Tools::jsonDecode(file_get_contents($marketplaceFile)));
-
 
         $this->assertTableContain('lengow_orders', array('id' => '1', 'id_order' => 'NULL'));
         LengowOrder::reImportOrder(1);
@@ -103,7 +96,6 @@ class OrderTest extends ModuleTestCase
         );
         $this->assertTrue($order->callAction('ship'));
         $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 2));
-
 
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/empty_tracking_order.yml');

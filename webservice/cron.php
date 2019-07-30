@@ -25,9 +25,9 @@
  * integer days                Import period
  * integer limit               Number of orders to import
  * integer shop_id             Shop id to import
- * string  $marketplace_sku    Lengow marketplace order id to import
+ * string  marketplace_sku     Lengow marketplace order id to import
  * string  marketplace_name    Lengow marketplace name to import
- * string  create_from         import of orders since
+ * string  created_from        import of orders since
  * string  created_to          import of orders until
  * integer delivery_address_id Lengow delivery address id to import
  * boolean force_product       Force import product when quantity is insufficient (1) or not (0)
@@ -38,7 +38,7 @@
 
 @set_time_limit(0);
 
-$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
+$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . '/');
 $sep = DIRECTORY_SEPARATOR;
 require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 Configuration::set('PS_SHOP_ENABLE', true);

@@ -82,10 +82,10 @@ class LengowController
         $this->locale = new LengowTranslation();
         $this->context->smarty->assign('lengow_link', new LengowLink());
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
-        // Show header or not
+        // show header or not
         if ($this->isNewMerchant
-            || ($this->merchantStatus['type'] == 'free_trial' && $this->merchantStatus['expired'])
-            || $this->merchantStatus['type'] == 'bad_payer'
+            || ($this->merchantStatus['type'] === 'free_trial' && $this->merchantStatus['expired'])
+            || $this->merchantStatus['type'] === 'bad_payer'
         ) {
             $this->displayToolbar = false;
         } else {
@@ -116,7 +116,7 @@ class LengowController
                 echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');
                 $lengowMain = new LengowMain();
                 $className = get_class($this);
-                if (Tools::substr($className, 0, 11) == 'LengowOrder') {
+                if (Tools::substr($className, 0, 11) === 'LengowOrder') {
                     echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header_order.tpl');
                 }
                 $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));

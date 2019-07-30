@@ -27,9 +27,9 @@ class LengowShop extends Shop
     /**
      * Construct
      *
-     * @param integer $id Prestashop shop id
-     * @param integer $idLang Prestashop lang id
-     * @param integer $idShop Prestashop shop id
+     * @param integer|null $id Prestashop shop id
+     * @param integer|null $idLang Prestashop lang id
+     * @param integer|null $idShop Prestashop shop id
      */
     public function __construct($id = null, $idLang = null, $idShop = null)
     {
@@ -79,7 +79,7 @@ class LengowShop extends Shop
             }
         }
         foreach ($results as $row) {
-            if ($token == LengowMain::getToken($row['id_shop'])) {
+            if ($token === LengowMain::getToken($row['id_shop'])) {
                 $shop = new LengowShop($row['id_shop']);
                 return $shop;
             }

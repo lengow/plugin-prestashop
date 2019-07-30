@@ -30,9 +30,8 @@ class ProductTest extends ModuleTestCase
         Configuration::updatevalue('LENGOW_EXPORT_FILE_ENABLED', 0);
         Configuration::updatevalue('LENGOW_EXPORT_SELECTION_ENABLED', 0);
 
-        //load module
+        // load module
         Module::getInstanceByName('lengow');
-
     }
 
     /**
@@ -43,11 +42,8 @@ class ProductTest extends ModuleTestCase
      */
     public function getImageUrlCombination()
     {
-
         $fixture = new Fixture();
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/max_image.yml'
-        );
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/max_image.yml');
 
         $productId = $productAttributeId = $langId = 1;
 
@@ -65,9 +61,7 @@ class ProductTest extends ModuleTestCase
     public function getMaxImageTypeWhenEmpty()
     {
         $fixture = new Fixture();
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Product/empty_image_type.yml'
-        );
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Product/empty_image_type.yml');
         LengowProduct::getMaxImageType();
     }
 
@@ -80,9 +74,7 @@ class ProductTest extends ModuleTestCase
     public function getMaxImageType()
     {
         $fixture = new Fixture();
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Product/get_max_image_type.yml'
-        );
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Product/get_max_image_type.yml');
 
         $name = LengowProduct::getMaxImageType();
         $this->assertEquals('thickbox_default', $name, 'Max size is thickbox_default');
@@ -97,9 +89,7 @@ class ProductTest extends ModuleTestCase
     public function publish()
     {
         $fixture = new Fixture();
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Product/no_lengow_selection.yml'
-        );
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Product/no_lengow_selection.yml');
         $result = Db::getInstance()->executeS('SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_product');
         $this->assertEquals(0, $result[0]['total'], 'Product selection is empty');
 
@@ -144,9 +134,7 @@ class ProductTest extends ModuleTestCase
     public function getData()
     {
         $fixture = new Fixture();
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Product/get_data.yml'
-        );
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Product/get_data.yml');
 
         $product = new LengowProduct(1, 1, array('carrier' => new LengowCarrier(1)));
 
@@ -171,19 +159,13 @@ class ProductTest extends ModuleTestCase
         $this->assertEquals('156416510654', $product->getData('upc'));
         $this->assertEquals(2.0, $product->getData('ecotax'));
         $this->assertEquals(true, $product->getData('active'));
-        //$this->assertEquals(true, $product->getData('available'));
         $this->assertEquals('http://prestashop.unit.test/1-URL001-9805120221231.html', $product->getData('url'));
         $this->assertEquals(0, $product->getData('price_shipping'));
         $this->assertEquals(1, $product->getData('id_parent'));
         $this->assertEquals('Retrait en magasin', $product->getData('delivery_time'));
-        //$this->assertEquals(1, $product->getData('sale_from'));
-        //$this->assertEquals(1, $product->getData('sale_to'));
         $this->assertEquals('METAKEYWORDS001', $product->getData('meta_keywords'));
         $this->assertEquals('METADESCRIPTION001', $product->getData('meta_description'));
-        $this->assertEquals(
-            'http://prestashop.unit.test/1-URL001-9805120221231.html',
-            $product->getData('url_rewrite')
-        );
+        $this->assertEquals('http://prestashop.unit.test/1-URL001-9805120221231.html', $product->getData('url_rewrite'));
         $this->assertEquals('simple', $product->getData('type'));
         $this->assertEquals(null, $product->getData('variation'));
         $this->assertEquals('EUR', $product->getData('currency'));
@@ -227,13 +209,10 @@ class ProductTest extends ModuleTestCase
         $this->assertEquals('156441510123', $product->getData('upc'));
         $this->assertEquals(3.0, $product->getData('ecotax'));
         $this->assertEquals(true, $product->getData('active'));
-        //$this->assertEquals(true, $product->getData('available'));
         $this->assertEquals('http://prestashop.unit.test/10-URL010-9805145721231.html', $product->getData('url'));
         $this->assertEquals(0, $product->getData('price_shipping'));
         $this->assertEquals(10, $product->getData('id_parent'));
         $this->assertEquals('Retrait en magasin', $product->getData('delivery_time'));
-        //$this->assertEquals(1, $product->getData('sale_from'));
-        //$this->assertEquals(1, $product->getData('sale_to'));
         $this->assertEquals('METAKEYWORDS010', $product->getData('meta_keywords'));
         $this->assertEquals('METADESCRIPTION010', $product->getData('meta_description'));
         $this->assertEquals(
@@ -241,7 +220,6 @@ class ProductTest extends ModuleTestCase
             $product->getData('url_rewrite')
         );
         $this->assertEquals('parent', $product->getData('type'));
-        //$this->assertEquals(null, $product->getData('variation'));
         $this->assertEquals('EUR', $product->getData('currency'));
         $this->assertEquals('new', $product->getData('condition'));
         $this->assertEquals('SUPPLIER1', $product->getData('supplier'));
@@ -267,7 +245,6 @@ class ProductTest extends ModuleTestCase
         $this->assertEquals('DESCRIPTION010', $product->getData('description', 11));
         $this->assertEquals('SHORTDESCRIPTION010', $product->getData('short_description', 11));
         $this->assertEquals('DESCRIPTION010', $product->getData('description_html', 11));
-        //todo see if price is correct for attribute
         $this->assertEquals(round(5.9 * 1.2 + 3, 2), round($product->getData('price', 11), 2));
         $this->assertEquals(0, round($product->getData('wholesale_price', 11), 2));
         $this->assertEquals(round(5.9 + 3, 2), round($product->getData('price_duty_free', 11), 2));
@@ -279,7 +256,6 @@ class ProductTest extends ModuleTestCase
         $this->assertEquals('156441510123', $product->getData('upc', 11));
         $this->assertEquals(1.1, $product->getData('ecotax', 11));
         $this->assertEquals(true, $product->getData('active', 11));
-        //$this->assertEquals(true, $product->getData('available'));
         $this->assertEquals(
             'http://prestashop.unit.test/10-URL010-9805145721231.html#/pointure-35',
             $product->getData('url', 11)
@@ -287,8 +263,6 @@ class ProductTest extends ModuleTestCase
         $this->assertEquals(0, $product->getData('price_shipping'));
         $this->assertEquals(10, $product->getData('id_parent', 11));
         $this->assertEquals('Retrait en magasin', $product->getData('delivery_time'));
-        //$this->assertEquals(1, $product->getData('sale_from'));
-        //$this->assertEquals(1, $product->getData('sale_to'));
         $this->assertEquals('METAKEYWORDS010', $product->getData('meta_keywords', 11));
         $this->assertEquals('METADESCRIPTION010', $product->getData('meta_description', 11));
         $this->assertEquals(
@@ -296,7 +270,6 @@ class ProductTest extends ModuleTestCase
             $product->getData('url_rewrite', 11)
         );
         $this->assertEquals('child', $product->getData('type', 11));
-        //$this->assertEquals(null, $product->getData('variation'));
         $this->assertEquals('EUR', $product->getData('currency', 11));
         $this->assertEquals('new', $product->getData('condition', 11));
         $this->assertEquals('SUPPLIER1', $product->getData('supplier', 11));

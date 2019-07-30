@@ -76,7 +76,7 @@ class TranslationTest extends ModuleTestCase
                 array(
                     'first' => '10',
                     'second' => '2',
-                    'third' => '5'
+                    'third' => '5',
                 )
             )
         );

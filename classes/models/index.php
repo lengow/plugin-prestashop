@@ -24,4 +24,4 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
-// Don't put a redirect script 
+// don't put a redirect script

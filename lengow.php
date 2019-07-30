@@ -66,7 +66,7 @@ class Lengow extends Module
 
         if (self::isInstalled($this->name)) {
             $oldVersion = LengowConfiguration::getGlobalValue('LENGOW_VERSION');
-            if ($oldVersion != $this->version) {
+            if ($oldVersion !== $this->version) {
                 LengowConfiguration::updateGlobalValue('LENGOW_VERSION', $this->version);
                 $this->installClass->update($oldVersion);
             }

@@ -32,7 +32,7 @@ class LogTest extends ModuleTestCase
     public function load()
     {
         $module = Module::getInstanceByName('lengow');
-        $this->assertTrue((boolean)$module, 'Load Lengow Module');
+        $this->assertTrue((bool)$module, 'Load Lengow Module');
         $this->assertEquals($module->name, 'lengow');
     }
 

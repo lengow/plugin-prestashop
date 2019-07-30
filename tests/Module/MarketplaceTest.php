@@ -78,12 +78,12 @@ class MarketplaceTest extends ModuleTestCase
         $fixture->truncate('lengow_actions');
         $fixture->truncate('lengow_marketplace_carrier');
 
-        //reset marketplace file
+        // reset marketplace file
         LengowMain::$registers = array();
         $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Marketplace/require_carrier_args.json';
         LengowMarketplace::$marketplaces = array(
             1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
-            2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
+            2 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
         );
 
         LengowConnector::$testFixturePath = array(
@@ -148,7 +148,7 @@ class MarketplaceTest extends ModuleTestCase
             array(
                 'id' => '1',
                 'id_order_lengow' => '1',
-                'message' => 'lengow_log.exception.arg_is_required[arg_name==tracking_number]'
+                'message' => 'lengow_log.exception.arg_is_required[arg_name==tracking_number]',
             )
         );
     }

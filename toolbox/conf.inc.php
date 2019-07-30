@@ -19,26 +19,26 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-$currentDirectory = str_replace('modules/lengow/toolbox/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
+$currentDirectory = str_replace('modules/lengow/toolbox/', '', dirname($_SERVER['SCRIPT_FILENAME']) . '/');
 
-//bypass id_shop from ps 1.6 check
+// bypass id_shop from ps 1.6 check
 $tempIdShop = null;
-if (isset($_REQUEST["id_shop"])) {
-    $tempIdShop = $_REQUEST["id_shop"];
+if (isset($_REQUEST['id_shop'])) {
+    $tempIdShop = $_REQUEST['id_shop'];
 }
-$_POST["id_shop"] = null;
-$_GET["id_shop"] = null;
-$_REQUEST["id_shop"] = null;
+$_POST['id_shop'] = null;
+$_GET['id_shop'] = null;
+$_REQUEST['id_shop'] = null;
 
 $sep = DIRECTORY_SEPARATOR;
 require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules/lengow/lengow.php';
 
-//bypass id_shop from ps 1.6 check
-$_GET["id_shop"] = $tempIdShop;
-$_POST["id_shop"] = $tempIdShop;
-$_REQUEST["id_shop"] = $tempIdShop;
+// bypass id_shop from ps 1.6 check
+$_GET['id_shop'] = $tempIdShop;
+$_POST['id_shop'] = $tempIdShop;
+$_REQUEST['id_shop'] = $tempIdShop;
 
 if (_PS_VERSION_ < '1.5') {
     require_once $currentDirectory . 'images.inc.php';
@@ -58,7 +58,7 @@ if (!in_array($lengowTool->getCurrentUri(), array('/modules/lengow/toolbox/login
     }
 }
 
-if ($lengowTool->getCurrentUri() == '/modules/lengow/toolbox/login.php' && $lengowTool->isLogged()) {
+if ($lengowTool->getCurrentUri() === '/modules/lengow/toolbox/login.php' && $lengowTool->isLogged()) {
     Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/', '');
 }
 

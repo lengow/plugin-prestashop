@@ -61,8 +61,8 @@ class LengowCart extends Cart
                     )
                 );
             }
-            $idProduct = $ids[0];
-            $idProductAttribute = isset($ids[1]) ? $ids[1] : null;
+            $idProduct = (int)$ids[0];
+            $idProductAttribute = isset($ids[1]) ? (int)$ids[1] : null;
             if (!$this->updateQty($product['quantity'], $idProduct, $idProductAttribute)) {
                 throw new LengowException(
                     LengowMain::setLogMessage(
@@ -85,7 +85,7 @@ class LengowCart extends Cart
     public function cleanCart($products = array())
     {
         $cartProducts = $this->getProducts();
-        if (count($cartProducts) == 0) {
+        if (empty($cartProducts)) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_product_to_cart'));
         }
         foreach ($cartProducts as $cartProduct) {
@@ -104,13 +104,13 @@ class LengowCart extends Cart
     /**
      * @see Cart::updateQty()
      *
-     * @param integer $quantity quantity to add (or substract)
+     * @param integer $quantity quantity to add (or subtract)
      * @param integer $idProduct Prestashop product id
-     * @param integer $idProductAttribute attribute id if needed
+     * @param integer|null $idProductAttribute attribute id if needed
      * @param mixed $idCustomization Prestashop customization id
      * @param string $operator indicate if quantity must be increased or decreased
      * @param integer $idAddressDelivery Prestashop address delivery id
-     * @param Shop $shop Shop instance
+     * @param Shop|null $shop Shop instance
      * @param boolean $autoAddCartRule add auto cart rule
      * @param boolean $skipAvailabilityCheckOutOfStock skip availability
      *
@@ -141,7 +141,7 @@ class LengowCart extends Cart
         $product = new Product($idProduct, false, Configuration::get('PS_LANG_DEFAULT'), $shop->id);
         if ($idProductAttribute) {
             $combination = new Combination((int)$idProductAttribute);
-            if ($combination->id_product != $idProduct) {
+            if ($combination->id_product !== $idProduct) {
                 return false;
             }
         }
@@ -180,13 +180,13 @@ class LengowCart extends Cart
 							FROM `' . _DB_PREFIX_ . 'product` p
 							' . (!empty($idProductAttribute) ? 'LEFT JOIN `' . _DB_PREFIX_ .
                             'product_attribute` pa ON p.`id_product` = pa.`id_product`' : '') . '
-							WHERE p.`id_product` = ' . (int)($idProduct) .
+							WHERE p.`id_product` = ' . (int)$idProduct .
                         (!empty($idProductAttribute) ?
                             ' AND `id_product_attribute` = ' . (int)$idProductAttribute : '');
                 } else {
                     $sql = 'SELECT stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity
 							FROM ' . _DB_PREFIX_ . 'product p
-							' . Product::sqlStock('p', (int)$idProductAttribute, true, $shop) . '
+							' . Product::sqlStock('p', $idProductAttribute, true, $shop) . '
 							WHERE p.id_product = ' . (int)$idProduct;
                 }
                 $result2 = Db::getInstance()->getRow($sql);
@@ -195,8 +195,8 @@ class LengowCart extends Cart
                 if (Pack::isPack($idProduct)) {
                     $productQty = Product::getQuantity($idProduct, $idProductAttribute);
                 }
-                $newQty = (int)$result['quantity'] + (int)$quantity;
-                $qty = '+ ' . (int)$quantity;
+                $newQty = (int)$result['quantity'] + $quantity;
+                $qty = '+ ' . $quantity;
                 // force here
                 if (!Product::isAvailableWhenOutOfStock((int)$result2['out_of_stock']) && !$this->forceProduct) {
                     if ($newQty > $productQty) {
@@ -205,7 +205,7 @@ class LengowCart extends Cart
                 }
                 /* Delete product from cart */
                 if ($newQty <= 0) {
-                    return $this->deleteProduct((int)$idProduct, (int)$idProductAttribute, (int)$idCustomization);
+                    return $this->deleteProduct($idProduct, $idProductAttribute, (int)$idCustomization);
                 } elseif ((int)$newQty < $minimalQuantity && !$this->forceProduct) {
                     return false;
                 } else {
@@ -223,7 +223,7 @@ class LengowCart extends Cart
                         Db::getInstance()->execute(
                             'UPDATE `' . _DB_PREFIX_ . 'cart_product`
                             SET `quantity` = `quantity` ' . $qty . ', `date_add` = NOW()
-                            WHERE `id_product` = ' . (int)$idProduct .
+                            WHERE `id_product` = ' . $idProduct .
                             (!empty($idProductAttribute) ?
                                 ' AND `id_product_attribute` = ' . (int)$idProductAttribute : '') . '
                             AND `id_cart` = ' . (int)$this->id .
@@ -246,7 +246,7 @@ class LengowCart extends Cart
                 } else {
                     $sql = 'SELECT stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity
 						FROM ' . _DB_PREFIX_ . 'product p
-						' . Product::sqlStock('p', (int)$idProductAttribute, true, $shop) . '
+						' . Product::sqlStock('p', $idProductAttribute, true, $shop) . '
 						WHERE p.id_product = ' . (int)$idProduct;
                 }
                 $result2 = Db::getInstance()->getRow($sql);
@@ -255,7 +255,7 @@ class LengowCart extends Cart
                     $result2['quantity'] = Product::getQuantity($idProduct, $idProductAttribute);
                 }
                 if (!Product::isAvailableWhenOutOfStock((int)$result2['out_of_stock']) && !$this->forceProduct) {
-                    if ((int)$quantity > $result2['quantity']) {
+                    if ($quantity > $result2['quantity']) {
                         return false;
                     }
                 }
@@ -268,7 +268,7 @@ class LengowCart extends Cart
                         'id_product' => (int)$idProduct,
                         'id_product_attribute' => (int)$idProductAttribute,
                         'id_cart' => (int)$this->id,
-                        'quantity' => (int)$quantity,
+                        'quantity' => $quantity,
                         'date_add' => date('Y-m-d H:i:s'),
                     );
 
@@ -284,7 +284,7 @@ class LengowCart extends Cart
                         'id_cart' => (int)$this->id,
                         'id_address_delivery' => (int)$idAddressDelivery,
                         'id_shop' => (int)$shop->id,
-                        'quantity' => (int)$quantity,
+                        'quantity' => $quantity,
                         'date_add' => date('Y-m-d H:i:s'),
                     );
                     $resultAdd = Db::getInstance()->insert('cart_product', $values);
@@ -304,10 +304,10 @@ class LengowCart extends Cart
         }
         if ($product->customizable) {
             return $this->_updateCustomizationQuantity(
-                (int)$quantity,
+                $quantity,
                 (int)$idCustomization,
-                (int)$idProduct,
-                (int)$idProductAttribute,
+                $idProduct,
+                $idProductAttribute,
                 (int)$idAddressDelivery,
                 $operator
             );
@@ -346,7 +346,9 @@ class LengowCart extends Cart
      *
      * @throws LengowException invalid object
      *
-     * @return boolean true if object is valid
+     * @throws Exception
+     *
+     * @return boolean
      */
     public function validateLengow()
     {

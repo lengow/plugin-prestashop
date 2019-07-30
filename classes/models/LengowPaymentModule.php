@@ -71,7 +71,7 @@ class LengowPaymentModule extends PaymentModule
         }
         $this->context->cart = new Cart($idCart);
         $this->context->customer = new Customer($this->context->cart->id_customer);
-        // The tax cart is loaded before the customer so re-cache the tax calculation method
+        // the tax cart is loaded before the customer so re-cache the tax calculation method
         if (method_exists($this->context->cart, 'setTaxCalculationMethod')) {
             $this->context->cart->setTaxCalculationMethod();
         }
@@ -91,12 +91,12 @@ class LengowPaymentModule extends PaymentModule
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.payment_module_not_active'));
         }
 
-        // Does order already exists ?
+        // does order already exists ?
         if (!Validate::isLoadedObject($this->context->cart) || $this->context->cart->OrderExists() != false) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.cart_cannot_be_loaded'));
         }
 
-        // For each package, generate an order
+        // for each package, generate an order
         $deliveryOptionList = $this->context->cart->getDeliveryOptionList(null, true);
         $packageList = $this->context->cart->getPackageList(true);
         $cartDeliveryOption = $this->context->cart->getDeliveryOption(null, true, false);
@@ -107,7 +107,7 @@ class LengowPaymentModule extends PaymentModule
             ) {
                 $carrierAssigned = false;
                 foreach ($package as $key => $val) {
-                    // This line is useless, but Prestashop validator require it
+                    // this line is useless, but Prestashop validator require it
                     $val = $val;
                     // force carrier to be the one chosen in Lengow config
                     $carrierOptions = explode(',', $key);
@@ -147,11 +147,11 @@ class LengowPaymentModule extends PaymentModule
             foreach ($cartDeliveryOption as $idAddress => $keyCarriers) {
                 foreach ($deliveryOptionList[$idAddress][$keyCarriers]['carrier_list'] as $idCarrier => $data) {
                     foreach ($data['package_list'] as $idPackage) {
-                        // Force id carrier when carrier is not found
+                        // force id carrier when carrier is not found
                         if ($idCarrier != $this->context->cart->id_carrier) {
                             $idCarrier = $this->context->cart->id_carrier;
                         }
-                        // Rewrite the id_warehouse
+                        // rewrite the id_warehouse
                         if (method_exists($this->context->cart, 'getPackageIdWarehouse')) {
                             $idWarehouse = (int)$this->context->cart->getPackageIdWarehouse(
                                 $packageList[$idAddress][$idPackage],
@@ -171,7 +171,7 @@ class LengowPaymentModule extends PaymentModule
             foreach ($packageByAddress as $idPackage => $package) {
                 $order = new Order();
 
-                if (Configuration::get('PS_TAX_ADDRESS_TYPE') == 'id_address_delivery') {
+                if (Configuration::get('PS_TAX_ADDRESS_TYPE') === 'id_address_delivery') {
                     $address = new Address($idAddress);
                     $this->context->country = new Country($address->id_country, $this->context->cart->id_lang);
                     if (!$this->context->country->active) {
@@ -213,7 +213,7 @@ class LengowPaymentModule extends PaymentModule
                 $order->mobile_theme = false;
                 $order->conversion_rate = $this->context->currency->conversion_rate;
 
-                // Get precision for round
+                // get precision for round
                 $precision = 2;
                 if (defined('_PS_PRICE_COMPUTE_PRECISION_')) {
                     $precision = _PS_PRICE_COMPUTE_PRECISION_;
@@ -261,7 +261,7 @@ class LengowPaymentModule extends PaymentModule
                 $order->total_discounts_tax_incl = 0;
                 $order->total_discounts = $order->total_discounts_tax_incl;
 
-                // Calculate shipping tax free
+                // calculate shipping tax free
                 $order->carrier_tax_rate = $carrier->getTaxesRate(
                     new Address($this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')})
                 );
@@ -273,7 +273,7 @@ class LengowPaymentModule extends PaymentModule
                 if (!is_null($lengowTrackingNumber)) {
                     $order->shipping_number = (string)$lengowTrackingNumber;
                 }
-                // Add processing fees to wrapping fees
+                // add processing fees to wrapping fees
                 $taxManager = TaxManagerFactory::getManager(
                     new LengowAddress($idAddress),
                     (int)Configuration::get('PS_GIFT_WRAPPING_TAX_RULES_GROUP')
@@ -298,7 +298,7 @@ class LengowPaymentModule extends PaymentModule
                 $order->invoice_date = '0000-00-00 00:00:00';
                 $order->delivery_date = '0000-00-00 00:00:00';
 
-                // Creating order in PrestaShop
+                // creating order in PrestaShop
                 $result = $order->add();
                 if (!$result) {
                     throw new LengowException(
@@ -309,14 +309,14 @@ class LengowPaymentModule extends PaymentModule
                     );
                 }
 
-                // Update lengow_order table directly after creating the PrestaShop order
+                // update lengow_order table directly after creating the PrestaShop order
                 $success = LengowOrder::updateOrderLengow(
                     $idOrderLengow,
                     array(
                         'id_order' => (int)$order->id,
                         'order_process_state' => LengowOrder::getOrderProcessState($orderStateLengow),
                         'order_lengow_state' => pSQL($orderStateLengow),
-                        'is_reimported' => 0
+                        'is_reimported' => 0,
                     )
                 );
                 if (!$success) {
@@ -337,7 +337,7 @@ class LengowPaymentModule extends PaymentModule
 
                 $orderList[] = $order;
 
-                // Insert new Order detail list using cart for the current order
+                // insert new Order detail list using cart for the current order
                 $orderDetail = new LengowOrderDetail(null, null, $this->context);
                 if ($packageList[$idAddress][$idPackage]['id_warehouse'] != '') {
                     $orderDetail->createList(
@@ -361,7 +361,7 @@ class LengowPaymentModule extends PaymentModule
                 }
                 $orderDetailList[] = $orderDetail;
 
-                // Adding an entry in order_carrier table
+                // adding an entry in order_carrier table
                 if (!is_null($carrier)) {
                     $orderCarrier = new OrderCarrier();
                     $orderCarrier->id_order = (int)$order->id;
@@ -378,7 +378,7 @@ class LengowPaymentModule extends PaymentModule
             }
         }
 
-        // Register Payment only if the order status validate the order
+        // register payment only if the order status validate the order
         if ($orderStatus->logable && isset($order)) {
             $idTransaction = null;
             if (!$order->addOrderPayment($order->total_paid_tax_incl, null, $idTransaction)) {
@@ -401,14 +401,14 @@ class LengowPaymentModule extends PaymentModule
                         $msg->add();
                     }
                 }
-                // Specify order id for message
+                // specify order id for message
                 $oldMessage = Message::getMessageByCartId((int)$this->context->cart->id);
                 if ($oldMessage) {
                     $updateMessage = new Message((int)$oldMessage['id_message']);
                     $updateMessage->id_order = (int)$order->id;
                     $updateMessage->update();
 
-                    // Add this message in the customer thread
+                    // add this message in the customer thread
                     $customerThread = new CustomerThread();
                     $customerThread->id_contact = 0;
                     $customerThread->id_customer = (int)$order->id_customer;
@@ -434,13 +434,13 @@ class LengowPaymentModule extends PaymentModule
                     }
                 }
 
-                // Set the order status
+                // set the order status
                 $newHistory = new OrderHistory();
                 $newHistory->id_order = (int)$order->id;
                 $newHistory->changeIdOrderState((int)$idOrderState, $order, true);
                 $newHistory->addWithemail(true, null);
 
-                // Switch to back order if needed
+                // switch to back order if needed
                 if (Configuration::get('PS_STOCK_MANAGEMENT') && $orderDetail->getStockState()) {
                     $history = new OrderHistory();
                     $history->id_order = (int)$order->id;
@@ -458,7 +458,7 @@ class LengowPaymentModule extends PaymentModule
 
                 unset($orderDetail);
 
-                // Order is reloaded because the status just changed
+                // order is reloaded because the status just changed
                 $order = new Order($order->id);
 
                 // updates stock in shops
@@ -477,13 +477,13 @@ class LengowPaymentModule extends PaymentModule
             }
         }
 
-        // Update Order Details Tax in case cart rules have free shipping
+        // update Order Details Tax in case cart rules have free shipping
         foreach ($order->getOrderDetailList() as $detail) {
             $orderDetail = new OrderDetail($detail['id_order_detail']);
             $orderDetail->updateTaxAmount($order);
         }
 
-        // Use the last order as currentOrder
+        // use the last order as currentOrder
         if (isset($order) && $order->id) {
             $this->currentOrder = (int)$order->id;
         }
@@ -535,9 +535,9 @@ class LengowPaymentModule extends PaymentModule
         $this->context->customer = new Customer($this->context->cart->id_customer);
         $this->context->language = new Language($this->context->cart->id_lang);
 
-        // Does order already exists ?
+        // does order already exists ?
         if (Validate::isLoadedObject($this->context->cart) && $this->context->cart->OrderExists() == false) {
-            // Copying data from cart
+            // copying data from cart
             $order = new Order();
             $order->id_carrier = (int)$this->context->cart->id_carrier;
             $order->id_customer = (int)$this->context->cart->id_customer;
@@ -609,21 +609,21 @@ class LengowPaymentModule extends PaymentModule
             );
             $order->total_paid = (float)$amountPaid;
             $order->invoice_date = '0000-00-00 00:00:00';
-            // Creating order
+            // creating order
             if ($this->context->cart->OrderExists() == false) {
                 $result = $order->add();
             } else {
                 throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.cart_cannot_be_loaded'));
             }
 
-            // Update lengow_order table directly after creating the PrestaShop order
+            // update lengow_order table directly after creating the PrestaShop order
             $success = LengowOrder::updateOrderLengow(
                 $idOrderLengow,
                 array(
                     'id_order' => (int)$order->id,
                     'order_process_state' => LengowOrder::getOrderProcessState($orderStateLengow),
                     'order_lengow_state' => pSQL($orderStateLengow),
-                    'is_reimported' => 0
+                    'is_reimported' => 0,
                 )
             );
             if (!$success) {
@@ -642,9 +642,9 @@ class LengowPaymentModule extends PaymentModule
                 );
             }
 
-            // Next !
+            // next !
             if ($result && isset($order->id)) {
-                // Optional message to attach to this order
+                // optional message to attach to this order
                 if (isset($message) && !empty($message)) {
                     $msg = new Message();
                     $message = strip_tags($message, '<br>');
@@ -655,7 +655,7 @@ class LengowPaymentModule extends PaymentModule
                         $msg->add();
                     }
                 }
-                // Insert products from cart into order_detail table
+                // insert products from cart into order_detail table
                 $db = Db::getInstance();
                 $query = 'INSERT INTO `' . _DB_PREFIX_ . 'order_detail`
 					(`id_order`,
@@ -701,7 +701,7 @@ class LengowPaymentModule extends PaymentModule
                         Product::updateDefaultAttribute($product['id_product']);
                     }
 
-                    // Add some informations for virtual products
+                    // add some informations for virtual products
                     $deadline = '0000-00-00 00:00:00';
                     $downloadHash = null;
                     if ($idProductDownload = ProductDownload::getIdFromIdProduct((int)($product['id_product']))) {
@@ -709,7 +709,7 @@ class LengowPaymentModule extends PaymentModule
                         $deadline = $productDownload->getDeadLine();
                         $downloadHash = $productDownload->getHash();
                     }
-                    // Exclude VAT
+                    // exclude VAT
                     if (Tax::excludeTaxeOption()) {
                         $product['tax'] = 0;
                         $product['rate'] = 0;
@@ -760,10 +760,11 @@ class LengowPaymentModule extends PaymentModule
 						' . pSQL('0') . ',
 						\'' . pSQL($deadline) . '\',
 						\'' . pSQL($downloadHash) . '\'),';
-                } // end foreach ($products)
+                }
+                // end foreach ($products)
                 $query = rtrim($query, ',');
                 $db->Execute($query);
-                // Specify order id for message
+                // specify order id for message
                 $oldMessage = Message::getMessageByCartId((int)($this->context->cart->id));
                 if ($oldMessage) {
                     $message = new Message((int)$oldMessage['id_message']);
@@ -792,13 +793,13 @@ class LengowPaymentModule extends PaymentModule
                     $history->save();
                 }
 
-                // Set order state in order history ONLY even if the "out of stock" status has not been yet reached
-                // So you migth have two order states
+                // set order state in order history ONLY even if the "out of stock" status has not been yet reached
+                // so you might have two order states
                 $newHistory = new OrderHistory();
                 $newHistory->id_order = (int)$order->id;
                 $newHistory->changeIdOrderState((int)$idOrderState, (int)$order->id);
                 $newHistory->save();
-                // Order is reloaded because the status just changed
+                // order is reloaded because the status just changed
                 $order = new Order($order->id);
 
                 $this->currentOrder = (int)($order->id);

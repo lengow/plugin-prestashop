@@ -33,27 +33,23 @@ class LengowOrderSettingController extends LengowController
         $marketplaceCounters = LengowMarketplace::getMarketplaceCounters();
         $defaultCarrierNotMatched = LengowCarrier::getDefaultCarrierNotMatched();
         $showCarrierNotification = count($defaultCarrierNotMatched) > 0 ? true : false;
-        $form = new LengowConfigurationForm(array("fields" => LengowConfiguration::getKeys()));
+        $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
         $matching = $form->buildInputs(
             array(
                 'LENGOW_ORDER_ID_PROCESS',
                 'LENGOW_ORDER_ID_SHIPPED',
                 'LENGOW_ORDER_ID_CANCEL',
-                'LENGOW_ORDER_ID_SHIPPEDBYMP'
+                'LENGOW_ORDER_ID_SHIPPEDBYMP',
             )
         );
         $importParams = $form->buildInputs(
             array(
                 'LENGOW_IMPORT_DAYS',
                 'LENGOW_IMPORT_SHIP_MP_ENABLED',
-                'LENGOW_IMPORT_STOCK_SHIP_MP'
+                'LENGOW_IMPORT_STOCK_SHIP_MP',
             )
         );
-        $semanticSearch =  $form->buildInputs(
-            array(
-                'LENGOW_CARRIER_SEMANTIC_ENABLE',
-            )
-        );
+        $semanticSearch = $form->buildInputs(array('LENGOW_CARRIER_SEMANTIC_ENABLE'));
         $this->context->smarty->assign('matching', $matching);
         $this->context->smarty->assign('semantic_search', $semanticSearch);
         $this->context->smarty->assign('import_params', $importParams);
@@ -106,7 +102,7 @@ class LengowOrderSettingController extends LengowController
                             : null;
                         $params = array(
                             'id_carrier' => $idCarrier,
-                            'id_carrier_marketplace' => $idCarrierMarketplace
+                            'id_carrier_marketplace' => $idCarrierMarketplace,
                         );
                         $id = LengowCarrier::getIdDefaultCarrier($idCountry, (int)$idMarketplace);
                         if ($id) {
@@ -159,7 +155,7 @@ class LengowOrderSettingController extends LengowController
                     }
                 }
                 // save other settings
-                $form = new LengowConfigurationForm(array("fields" => LengowConfiguration::getKeys()));
+                $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
                 $form->postProcess(
                     array(
                         'LENGOW_IMPORT_SHIP_MP_ENABLED',

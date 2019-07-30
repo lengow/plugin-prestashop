@@ -100,7 +100,7 @@ class LengowConnector
             '/access/get_token',
             array(
                 'access_token' => $this->accessToken,
-                'secret' => $this->secret
+                'secret' => $this->secret,
             ),
             'POST'
         );
@@ -256,11 +256,11 @@ class LengowConnector
         switch ($format) {
             case 'json':
                 return Tools::jsonDecode($data, true);
-            case 'csv':
-                return $data;
             case 'xml':
                 return simplexml_load_string($data);
+            case 'csv':
             case 'stream':
+            default:
                 return $data;
         }
     }
@@ -276,7 +276,7 @@ class LengowConnector
      *
      * @throws LengowException get Curl error
      *
-     * @return array
+     * @return mixed
      */
     protected function makeRequest($type, $url, $args, $token, $body = '')
     {
@@ -319,7 +319,7 @@ class LengowConnector
                         $opts[CURLOPT_HTTPHEADER],
                         array(
                             'Content-Type: application/json',
-                            'Content-Length: ' . Tools::strlen($body)
+                            'Content-Length: ' . Tools::strlen($body),
                         )
                     );
                 }
@@ -357,7 +357,7 @@ class LengowConnector
                     'lengow_log.exception.error_curl',
                     array(
                         'error_code' => $errorNumber,
-                        'error_message' => $errorText
+                        'error_message' => $errorText,
                     )
                 );
             }

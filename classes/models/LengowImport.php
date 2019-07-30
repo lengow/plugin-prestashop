@@ -35,6 +35,11 @@ class LengowImport
     public static $currentOrder = -1;
 
     /**
+     * @var integer min import days
+     */
+    public static $minImportDays = 1;
+
+    /**
      * @var integer max import days for old versions
      */
     public static $maxImportDays = 10;
@@ -45,7 +50,7 @@ class LengowImport
     public static $lengowStates = array(
         'waiting_shipment',
         'shipped',
-        'closed'
+        'closed',
     );
 
     /**
@@ -54,7 +59,7 @@ class LengowImport
     protected $idLang;
 
     /**
-     * @var integer Prestashop shop id
+     * @var integer|null Prestashop shop id
      */
     protected $idShop = null;
 
@@ -74,17 +79,17 @@ class LengowImport
     protected $logOutput = false;
 
     /**
-     * @var string marketplace order sku
+     * @var string|null marketplace order sku
      */
     protected $marketplaceSku = null;
 
     /**
-     * @var string marketplace name
+     * @var string|null marketplace name
      */
     protected $marketplaceName = null;
 
     /**
-     * @var integer delivery address id
+     * @var integer|null delivery address id
      */
     protected $deliveryAddressId = null;
 
@@ -279,7 +284,7 @@ class LengowImport
             foreach ($shops as $shop) {
                 // clean context
                 $this->context = null;
-                if (!is_null($this->idShop) && (int)$shop['id_shop'] != $this->idShop) {
+                if (!is_null($this->idShop) && (int)$shop['id_shop'] !== $this->idShop) {
                     continue;
                 }
                 $shop = new LengowShop((int)$shop['id_shop']);
@@ -290,7 +295,7 @@ class LengowImport
                             'log.import.start_for_shop',
                             array(
                                 'name_shop' => $shop->name,
-                                'id_shop' => (int)$shop->id
+                                'id_shop' => (int)$shop->id,
                             )
                         ),
                         $this->logOutput
@@ -323,7 +328,7 @@ class LengowImport
                                         'nb_order' => $totalOrders,
                                         'marketplace_sku' => $this->marketplaceSku,
                                         'marketplace_name' => $this->marketplaceName,
-                                        'account_id' => $this->accountId
+                                        'account_id' => $this->accountId,
                                     )
                                 ),
                                 $this->logOutput
@@ -335,7 +340,7 @@ class LengowImport
                                     'log.import.find_all_orders',
                                     array(
                                         'nb_order' => $totalOrders,
-                                        'account_id' => $this->accountId
+                                        'account_id' => $this->accountId,
                                     )
                                 ),
                                 $this->logOutput
@@ -423,13 +428,13 @@ class LengowImport
             );
             LengowMain::enableMail();
             // sending email in error for orders
-            if (LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED')
+            if ((bool)LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED')
                 && !$this->preprodMode
                 && !$this->importOneOrder
             ) {
                 LengowMain::sendMailAlert($this->logOutput);
             }
-            //check if order action is finish (Ship / Cancel)
+            // check if order action is finish (Ship / Cancel)
             if (!LengowMain::inTest()
                 && !$this->preprodMode
                 && !$this->importOneOrder
@@ -455,7 +460,7 @@ class LengowImport
                 'order_new' => $orderNew,
                 'order_update' => $orderUpdate,
                 'order_error' => $orderError,
-                'error' => $error
+                'error' => $error,
             );
         }
     }
@@ -552,7 +557,7 @@ class LengowImport
                     'log.import.connector_get_order',
                     array(
                         'marketplace_sku' => $this->marketplaceSku,
-                        'marketplace_name' => $this->marketplaceName
+                        'marketplace_name' => $this->marketplaceName,
                     )
                 ),
                 $this->logOutput
@@ -567,7 +572,7 @@ class LengowImport
                     array(
                         'date_from' => date('Y-m-d H:i:s', strtotime($dateFrom)),
                         'date_to' => date('Y-m-d H:i:s', strtotime($dateTo)),
-                        'catalog_id' => implode(', ', $this->shopCatalogIds)
+                        'catalog_id' => implode(', ', $this->shopCatalogIds),
                     )
                 ),
                 $this->logOutput
@@ -580,7 +585,7 @@ class LengowImport
                     array(
                         'marketplace_order_id' => $this->marketplaceSku,
                         'marketplace' => $this->marketplaceName,
-                        'account_id' => $this->accountId
+                        'account_id' => $this->accountId,
                     ),
                     'stream'
                 );
@@ -615,7 +620,7 @@ class LengowImport
                         'lengow_log.exception.no_connection_webservice',
                         array(
                             'name_shop' => $shop->name,
-                            'id_shop' => (int)$shop->id
+                            'id_shop' => (int)$shop->id,
                         )
                     )
                 );
@@ -627,7 +632,7 @@ class LengowImport
                         'lengow_log.exception.no_connection_webservice',
                         array(
                             'name_shop' => $shop->name,
-                            'id_shop' => (int)$shop->id
+                            'id_shop' => (int)$shop->id,
                         )
                     )
                 );
@@ -640,12 +645,12 @@ class LengowImport
                             'error_code' => $results->error->code,
                             'error_message' => $results->error->message,
                             'name_shop' => $shop->name,
-                            'id_shop' => (int)$shop->id
+                            'id_shop' => (int)$shop->id,
                         )
                     )
                 );
             }
-            // Construct array orders
+            // construct array orders
             foreach ($results->results as $order) {
                 $orders[] = $order;
             }
@@ -681,7 +686,7 @@ class LengowImport
             // set current order to cancel hook updateOrderStatus
             self::$currentOrder = $marketplaceSku;
             // if order contains no package
-            if (count($orderData->packages) == 0) {
+            if (count($orderData->packages) === 0) {
                 LengowMain::log(
                     'Import',
                     LengowMain::setLogMessage('log.import.error_no_package'),
@@ -704,7 +709,7 @@ class LengowImport
                     continue;
                 }
                 $packageDeliveryAddressId = (int)$packageData->delivery->id;
-                $firstPackage = ($nbPackage > 1 ? false : true);
+                $firstPackage = $nbPackage > 1 ? false : true;
                 // check the package for re-import order
                 if ($this->importOneOrder) {
                     if (!is_null($this->deliveryAddressId)
@@ -734,7 +739,7 @@ class LengowImport
                             'delivery_address_id' => $packageDeliveryAddressId,
                             'order_data' => $orderData,
                             'package_data' => $packageData,
-                            'first_package' => $firstPackage
+                            'first_package' => $firstPackage,
                         )
                     );
                     $order = $importOrder->importOrder();
@@ -758,34 +763,34 @@ class LengowImport
                     unset($errorMessage);
                     continue;
                 }
-                // Sync to lengow if no preprod_mode
-                if (!$this->preprodMode && isset($order['order_new']) && $order['order_new'] == true) {
-                    $lengowOrder = new LengowOrder((int)$order['order_id']);
-                    $synchro = $lengowOrder->synchronizeOrder($this->connector);
-                    if ($synchro) {
-                        $synchroMessage = LengowMain::setLogMessage(
-                            'log.import.order_synchronized_with_lengow',
-                            array('order_id' => $order['order_id'])
-                        );
-                    } else {
-                        $synchroMessage = LengowMain::setLogMessage(
-                            'log.import.order_not_synchronized_with_lengow',
-                            array('order_id' => $order['order_id'])
-                        );
-                    }
-                    LengowMain::log('Import', $synchroMessage, $this->logOutput, $marketplaceSku);
-                    unset($lengowOrder);
-                }
                 if (isset($order)) {
+                    // sync to lengow if no preprod_mode
+                    if (!$this->preprodMode && isset($order['order_new']) && $order['order_new']) {
+                        $lengowOrder = new LengowOrder((int)$order['order_id']);
+                        $synchro = $lengowOrder->synchronizeOrder($this->connector);
+                        if ($synchro) {
+                            $synchroMessage = LengowMain::setLogMessage(
+                                'log.import.order_synchronized_with_lengow',
+                                array('order_id' => $order['order_id'])
+                            );
+                        } else {
+                            $synchroMessage = LengowMain::setLogMessage(
+                                'log.import.order_not_synchronized_with_lengow',
+                                array('order_id' => $order['order_id'])
+                            );
+                        }
+                        LengowMain::log('Import', $synchroMessage, $this->logOutput, $marketplaceSku);
+                        unset($lengowOrder);
+                    }
                     // if re-import order -> return order data
                     if ($this->importOneOrder) {
                         return $order;
                     }
-                    if (isset($order['order_new']) && $order['order_new'] == true) {
+                    if (isset($order['order_new']) && $order['order_new']) {
                         $orderNew++;
-                    } elseif (isset($order['order_update']) && $order['order_update'] == true) {
+                    } elseif (isset($order['order_update']) && $order['order_update']) {
                         $orderUpdate++;
-                    } elseif (isset($order['order_error']) && $order['order_error'] == true) {
+                    } elseif (isset($order['order_error']) && $order['order_error']) {
                         $orderError++;
                     }
                 }
@@ -793,7 +798,7 @@ class LengowImport
                 self::$currentOrder = -1;
                 unset($importOrder, $order);
                 // if limit is set
-                if ($this->limit > 0 && $orderNew == $this->limit) {
+                if ($this->limit > 0 && $orderNew === $this->limit) {
                     $importFinished = true;
                     break;
                 }
@@ -805,7 +810,7 @@ class LengowImport
         return array(
             'order_new' => $orderNew,
             'order_update' => $orderUpdate,
-            'order_error' => $orderError
+            'order_error' => $orderError,
         );
     }
 
@@ -836,6 +841,7 @@ class LengowImport
             // order recovery updated since ... days
             $importDays = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_DAYS');
             // add security for older versions of the plugin
+            $importDays = $importDays < self::$minImportDays ? self::$minImportDays : $importDays;
             $importDays = $importDays > self::$maxImportDays ? self::$maxImportDays : $importDays;
             if ($days) {
                 $importDays = $days > self::$maxImportDays ? self::$maxImportDays : $days;

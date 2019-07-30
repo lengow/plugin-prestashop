@@ -34,11 +34,11 @@ class LengowMarketplace
      */
     public static $validActions = array(
         'ship',
-        'cancel'
+        'cancel',
     );
 
     /**
-     * @var array all marketplaces
+     * @var array|false all marketplaces
      */
     public static $marketplaces = false;
 
@@ -154,7 +154,7 @@ class LengowMarketplace
                     $this->argValues[(string)$argKey] = array(
                         'default_value' => $defaultValue,
                         'accept_free_values' => $acceptFreeValue,
-                        'valid_values' => $validValues
+                        'valid_values' => $validValues,
                     );
                 }
             }
@@ -196,16 +196,6 @@ class LengowMarketplace
     }
 
     /**
-     * If marketplace exist in xml configuration file
-     *
-     * @return boolean
-     */
-    public function isLoaded()
-    {
-        return $this->isLoaded;
-    }
-
-    /**
      * Get the real lengow's state
      *
      * @param string $name marketplace order state
@@ -216,21 +206,6 @@ class LengowMarketplace
     {
         if (array_key_exists($name, $this->statesLengow)) {
             return $this->statesLengow[$name];
-        }
-        return false;
-    }
-
-    /**
-     * Get the marketplace's state
-     *
-     * @param string $name Lengow order state
-     *
-     * @return string|false
-     */
-    public function getState($name)
-    {
-        if (array_key_exists($name, $this->states)) {
-            return $this->states[$name];
         }
         return false;
     }
@@ -318,7 +293,7 @@ class LengowMarketplace
      *
      * @param string $action Lengow order actions type (ship or cancel)
      * @param LengowOrder $lengowOrder Lengow order instance
-     * @param string $idOrderLine Lengow order line id
+     * @param string|null $idOrderLine Lengow order line id
      *
      * @return boolean
      */
@@ -478,7 +453,7 @@ class LengowMarketplace
                     if ($lengowOrder->lengowCarrier != '') {
                         $carrierName = (string)$lengowOrder->lengowCarrier;
                     } else {
-                        if (!isset($deliveryAddress->id_country) || $deliveryAddress->id_country == 0) {
+                        if (!isset($deliveryAddress->id_country) || (int)$deliveryAddress->id_country === 0) {
                             if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
                                 continue;
                             }
@@ -506,7 +481,7 @@ class LengowMarketplace
                         $carrier = new Carrier($idCarrier);
                         $trackingUrl = str_replace('@', $trackingNumber, $carrier->url);
                         // add default value if tracking url is empty
-                        if (Tools::strlen($trackingUrl) == 0) {
+                        if (Tools::strlen($trackingUrl) === 0) {
                             if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
                                 continue;
                             }
@@ -551,7 +526,7 @@ class LengowMarketplace
         $actions = $this->getAction($action);
         if (isset($actions['args'])) {
             foreach ($actions['args'] as $arg) {
-                if (!isset($params[$arg]) || Tools::strlen($params[$arg]) == 0) {
+                if (!isset($params[$arg]) || Tools::strlen($params[$arg]) === 0) {
                     throw new LengowException(
                         LengowMain::setLogMessage(
                             'lengow_log.exception.arg_is_required',
@@ -563,7 +538,7 @@ class LengowMarketplace
         }
         if (isset($actions['optional_args'])) {
             foreach ($actions['optional_args'] as $arg) {
-                if (isset($params[$arg]) && Tools::strlen($params[$arg]) == 0) {
+                if (isset($params[$arg]) && Tools::strlen($params[$arg]) === 0) {
                     unset($params[$arg]);
                 }
             }
@@ -681,7 +656,7 @@ class LengowMarketplace
                         $idCountry,
                         $idMarketplace
                     ),
-                    'carrier_required' => (bool)$marketplace['carrier_required']
+                    'carrier_required' => (bool)$marketplace['carrier_required'],
                 );
             }
         }
@@ -727,7 +702,7 @@ class LengowMarketplace
                     array(
                         'marketplace_name' => pSQL($marketplaceName),
                         'marketplace_label' => pSQL($marketplaceLabel),
-                        'carrier_required' => $carrierRequired
+                        'carrier_required' => $carrierRequired,
                     ),
                     'INSERT'
                 );
@@ -737,7 +712,7 @@ class LengowMarketplace
                     array(
                         'marketplace_name' => pSQL($marketplaceName),
                         'marketplace_label' => pSQL($marketplaceLabel),
-                        'carrier_required' => $carrierRequired
+                        'carrier_required' => $carrierRequired,
                     )
                 );
             }

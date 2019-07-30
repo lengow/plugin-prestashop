@@ -48,7 +48,7 @@ class LengowFile
      * Construct
      *
      * @param string $folderName Lengow folder name
-     * @param string $fileName Lengow file name
+     * @param string|null $fileName Lengow file name
      * @param string $mode type of access
      *
      * @throws LengowException unable to create file
@@ -64,7 +64,7 @@ class LengowFile
                     'log.export.error_unable_to_create_file',
                     array(
                         'file_name' => $fileName,
-                        'folder_name' => $folderName
+                        'folder_name' => $folderName,
                     )
                 )
             );
@@ -189,7 +189,6 @@ class LengowFile
         return file_exists($this->getPath());
     }
 
-
     /**
      * Get a file list for a given folder
      *
@@ -207,8 +206,12 @@ class LengowFile
         $folderContent = scandir($folderPath);
         $files = array();
         foreach ($folderContent as $file) {
-            if (!preg_match('/^\.[a-zA-Z\.]+$|^\.$|index\.php/', $file)) {
-                $files[] = new LengowFile($folder, $file);
+            try {
+                if (!preg_match('/^\.[a-zA-Z\.]+$|^\.$|index\.php/', $file)) {
+                    $files[] = new LengowFile($folder, $file);
+                }
+            } catch (LengowException $e) {
+                continue;
             }
         }
         return $files;

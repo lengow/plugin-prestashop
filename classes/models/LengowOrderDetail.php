@@ -25,42 +25,18 @@
 class LengowOrderDetail extends OrderDetail
 {
     /**
-     * Set a new price of product
-     *
-     * @param float $newPrice new price of product
-     * @param float $tax tax apply
-     */
-    public function changePrice($newPrice, $tax)
-    {
-        $tax = 1 + (0.01 * $tax);
-        $this->reduction_amount = 0.00;
-        $this->reduction_percent = 0.00;
-        $this->reduction_amount_tax_incl = 0.00;
-        $this->reduction_amount_tax_excl = 0.00;
-        $this->product_price = LengowMain::formatNumber($newPrice / $tax);
-        if (_PS_VERSION_ >= '1.5') {
-            $this->unit_price_tax_incl = LengowMain::formatNumber($newPrice);
-            $this->unit_price_tax_excl = LengowMain::formatNumber($newPrice / $tax);
-            $this->total_price_tax_incl = LengowMain::formatNumber($newPrice * $this->product_quantity);
-            $this->total_price_tax_excl = LengowMain::formatNumber(($newPrice * $this->product_quantity) / $tax);
-        }
-        $this->product_quantity_discount = 0.00;
-        $this->save();
-    }
-
-    /**
      * Get Order Lines
      *
      * @param integer $idOrder Prestashop order id
-     * @param integer $idProduct Prestashop product id
+     * @param integer|string $idProduct Prestashop product id
      *
-     * @return array list of order line
+     * @return integer
      */
     public static function findByOrderIdProductId($idOrder, $idProduct)
     {
         $sql = 'SELECT id_order_detail FROM `' . _DB_PREFIX_ . 'order_detail`
-            WHERE product_id = ' . (int)$idProduct . ' AND id_order=' . (int)$idOrder;
+            WHERE product_id = ' . (int)$idProduct . ' AND id_order = ' . $idOrder;
         $row = Db::getInstance()->getRow($sql);
-        return $row['id_order_detail'];
+        return (int)$row['id_order_detail'];
     }
 }

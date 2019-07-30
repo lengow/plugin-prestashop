@@ -22,7 +22,7 @@ class HookTest extends ModuleTestCase
     {
         parent::setUp();
 
-        //load module
+        // load module
         Module::getInstanceByName('lengow');
 
         LengowMain::$registers = array();
@@ -44,7 +44,7 @@ class HookTest extends ModuleTestCase
         $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
         LengowMarketplace::$MARKETPLACES = array(
             1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
-            2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
+            2 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
         );
 
         LengowConnector::$testFixturePath = array(
@@ -58,7 +58,7 @@ class HookTest extends ModuleTestCase
         $hook->hookPostUpdateOrderStatus(
             array(
                 'id_order' => 1,
-                'newOrderStatus' => new OrderState(LengowMain::getOrderState('shipped'))
+                'newOrderStatus' => new OrderState(LengowMain::getOrderState('shipped')),
             )
         );
         $this->assertTableContain('lengow_actions', array('id' => '1', 'id_order' => '1', 'retry' => 0));

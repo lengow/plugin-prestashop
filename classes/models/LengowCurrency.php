@@ -30,12 +30,14 @@ class LengowCurrency
      * @param string $sign currency iso code
      * @param integer $idShop Prestashop shop id
      *
+     * @throws Exception
+     *
      * @return integer
      */
     public static function getIdBySign($sign, $idShop = 0)
     {
         if (_PS_VERSION_ < '1.5') {
-            $sql = "SELECT id_currency FROM " . _DB_PREFIX_ . "currency WHERE iso_code = '" . pSQL($sign) . "' ";
+            $sql = 'SELECT id_currency FROM ' . _DB_PREFIX_ . 'currency WHERE iso_code = \'' . pSQL($sign) . '\' ';
             $result = Db::getInstance()->getRow($sql);
             return $result['id_currency'];
         } else {

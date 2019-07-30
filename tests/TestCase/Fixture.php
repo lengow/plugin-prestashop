@@ -6,50 +6,48 @@ use Db;
 
 class Fixture
 {
-
     private $alreadyTruncate = array();
 
     private $defaultValues = array(
-        "product" => array(
-            "id_supplier" => 1,
-            "id_manufacturer" => 1,
-            "id_category_default" => 1,
-            "price" => 1.8,
-            "active" => 1,
-            "redirect_type" => "404",
-            "condition" => "new",
+        'product' => array(
+            'id_supplier' => 1,
+            'id_manufacturer' => 1,
+            'id_category_default' => 1,
+            'price' => 1.8,
+            'active' => 1,
+            'redirect_type' => '404',
+            'condition' => 'new',
         ),
-        "product_shop" => array(
-            "active" => 1
+        'product_shop' => array(
+            'active' => 1
         ),
-        "image_lang" => array(
-            "id_lang" => 1
+        'image_lang' => array(
+            'id_lang' => 1
         ),
-        "lengow_product" => array(
-            "id_shop" => 1,
-            "id_shop_group" => 1,
-            "id_lang" => 1,
+        'lengow_product' => array(
+            'id_shop' => 1,
+            'id_shop_group' => 1,
+            'id_lang' => 1,
         ),
-        "lengow_orders" => array(
-            "id_shop" => 1,
-            "id_shop_group" => 1,
-            "id_lang" => 1,
-        )
-    );
-    private $dateValues = array(
-        "product",
-        "product_shop"
+        'lengow_orders' => array(
+            'id_shop' => 1,
+            'id_shop_group' => 1,
+            'id_lang' => 1,
+        ),
     );
 
+    private $dateValues = array(
+        'product',
+        'product_shop',
+    );
 
     public function loadFixture($file, $params = array())
     {
-
-        $truncate = isset($params["force_truncate"]) ? $params["force_truncate"] : false;
+        $truncate = isset($params['force_truncate']) ? $params['force_truncate'] : false;
 
         $yml = \yaml_parse_file($file);
         foreach ($yml as $tableName => $row) {
-            //don't re-truncate tables
+            // don't re-truncate tables
             if ($truncate || !isset($this->alreadyTruncate[$tableName])) {
                 Db::getInstance()->execute('TRUNCATE ' . _DB_PREFIX_ . $tableName);
                 $this->alreadyTruncate[$tableName] = true;
@@ -75,11 +73,11 @@ class Fixture
             $value = addslashes($value);
         }
         if (in_array($tableName, $this->dateValues)) {
-            if (!isset($values["date_add"])) {
-                $values["date_add"] = date('Y-m-d H:m:i');
+            if (!isset($values['date_add'])) {
+                $values['date_add'] = date('Y-m-d H:m:i');
             }
-            if (!isset($values["date_upd"])) {
-                $values["date_upd"] = date('Y-m-d H:m:i');
+            if (!isset($values['date_upd'])) {
+                $values['date_upd'] = date('Y-m-d H:m:i');
             }
         }
         Db::getInstance()->insert($tableName, $values);

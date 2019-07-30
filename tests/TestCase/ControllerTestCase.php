@@ -47,7 +47,7 @@ class ControllerTestCase extends PHPUnit_Framework_TestCase
             'email' => self::$employee->email,
             'profile' => self::$employee->id_profile,
             'passwd' => self::$employee->passwd,
-            'remote_addr' => ip2long("127.0.0.1"),
+            'remote_addr' => ip2long('127.0.0.1'),
         );
         $cookieContent = '';
         foreach ($content as $key => $value) {

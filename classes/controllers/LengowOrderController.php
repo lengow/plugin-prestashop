@@ -151,7 +151,7 @@ class LengowOrderController extends LengowController
                             null,
                             array(
                                 'marketplace_sku' => $result['marketplace_sku'],
-                                'marketplace_name' => $result['marketplace_name']
+                                'marketplace_name' => $result['marketplace_name'],
                             )
                         );
                     } else {
@@ -229,7 +229,7 @@ class LengowOrderController extends LengowController
                 case 'add_tracking':
                     $idOrder = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
                     $trackingNumber = isset($_REQUEST['tracking_number']) ? $_REQUEST['tracking_number'] : '';
-                    if ($trackingNumber != '' && _PS_VERSION_ < '1.5' && $idOrder > 0) {
+                    if ($trackingNumber !== '' && _PS_VERSION_ < '1.5' && $idOrder > 0) {
                         $order = new Order($idOrder);
                         $order->shipping_number = $trackingNumber;
                         $order->update();
@@ -283,7 +283,7 @@ class LengowOrderController extends LengowController
         $orderCollection = array(
             'last_import_date' => $lastImport['timestamp'],
             'last_import_type' => $lastImport['type'],
-            'link' => LengowMain::getImportUrl()
+            'link' => LengowMain::getImportUrl(),
         );
         $this->context->smarty->assign('report_mail_address', LengowConfiguration::getReportEmailAddress());
         $this->context->smarty->assign('orderCollection', $orderCollection);
@@ -329,7 +329,7 @@ class LengowOrderController extends LengowController
             'filter_type' => 'select',
             'filter_collection' => array(
                 array('id' => 1, 'text' => $this->locale->t('order.screen.action_success')),
-                array('id' => 2, 'text' => $this->locale->t('order.screen.action_error'))
+                array('id' => 2, 'text' => $this->locale->t('order.screen.action_error')),
             ),
         );
         $fieldsList['lengow_status'] = array(
@@ -370,7 +370,7 @@ class LengowOrderController extends LengowController
                 'filter_order' => true,
                 'filter_key' => 'shop.id_shop',
                 'filter_type' => 'select',
-                'filter_collection' => $this->getShops()
+                'filter_collection' => $this->getShops(),
             );
         }
         $fieldsList['marketplace_sku'] = array(
@@ -448,7 +448,7 @@ class LengowOrderController extends LengowController
             'lo.order_lengow_state as lengow_status',
             'lo.id_order',
             'lo.currency',
-            "'' as search"
+            "'' as search",
         );
         $selectHaving = array(
             ' (SELECT IFNULL(lli.type, 0) FROM ' . _DB_PREFIX_ . 'lengow_logs_import lli
@@ -489,7 +489,7 @@ class LengowOrderController extends LengowController
                     'join' => $join,
                     'select_having' => $selectHaving,
                     'order' => 'IF (order_lengow_state = "waiting_shipment",1,0) DESC, order_date DESC',
-                )
+                ),
             )
         );
         return $list;
@@ -581,7 +581,7 @@ class LengowOrderController extends LengowController
      */
     public static function displayLengowState($key, $value, $item)
     {
-        // This two lines are useless, but Prestashop validator require it
+        // this two lines are useless, but Prestashop validator require it
         $key = $key;
         $item = $item;
         if (empty($value)) {
@@ -602,7 +602,7 @@ class LengowOrderController extends LengowController
      */
     public static function displayOrderLink($key, $value, $item)
     {
-        // This line is useless, but Prestashop validator require it
+        // this line is useless, but Prestashop validator require it
         $key = $key;
         $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $link = new LengowLink();
@@ -614,7 +614,7 @@ class LengowOrderController extends LengowController
                 return $value;
             }
         } else {
-            if ($key == 'reference' && $item['sent_marketplace'] == 1) {
+            if ($key === 'reference' && (bool)$item['sent_marketplace']) {
                 return '<span class="lgw-label">'
                 . LengowMain::decodeLogMessage('order.screen.status_shipped_by_mkp') . '</span>';
             }
@@ -633,7 +633,7 @@ class LengowOrderController extends LengowController
      */
     public static function displayMarketplaceName($key, $value, $item)
     {
-        // This two lines are useless, but Prestashop validator require it
+        // this two lines are useless, but Prestashop validator require it
         $key = $key;
         $value = $value;
         return $item['marketplace_label'];
@@ -650,12 +650,12 @@ class LengowOrderController extends LengowController
      */
     public static function displayLogStatus($key, $value, $item)
     {
-        if ($item[$key] && $item['order_process_state'] != LengowOrder::PROCESS_STATE_FINISH) {
+        if ($item[$key] && (int)$item['order_process_state'] !== LengowOrder::PROCESS_STATE_FINISH) {
             $errorMessages = array();
             $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
             if (count($logCollection) > 0) {
                 foreach ($logCollection as $row) {
-                    if ($row['message'] != '') {
+                    if ($row['message'] !== '') {
                         $errorMessages[] = LengowMain::cleanData(LengowMain::decodeLogMessage($row['message']));
                     } else {
                         $errorMessages[] = LengowMain::decodeLogMessage('order.screen.no_error_message');
@@ -663,7 +663,7 @@ class LengowOrderController extends LengowController
                 }
             }
             $link = new LengowLink();
-            if ($item[$key] == '2') {
+            if ((int)$item[$key] === 2) {
                 $message = LengowMain::decodeLogMessage('order.screen.action_sent_not_work')
                     . '<br/>' . join('<br/>', $errorMessages);
                 $value = '<a href="#"
@@ -689,8 +689,8 @@ class LengowOrderController extends LengowController
                     . LengowMain::decodeLogMessage('order.screen.not_imported') . ' <i class="fa fa-refresh"></i></a>';
             }
         } else {
-            //check if order actions in progress
-            if ($item['id_order'] > 0 && $item['order_process_state'] == LengowOrder::PROCESS_STATE_IMPORT) {
+            // check if order actions in progress
+            if ($item['id_order'] > 0 && (int)$item['order_process_state'] === LengowOrder::PROCESS_STATE_IMPORT) {
                 $lastActionType = LengowAction::getLastOrderActionType($item['id_order']);
                 if ($lastActionType) {
                     $messageLastAction = LengowMain::decodeLogMessage(
@@ -721,7 +721,7 @@ class LengowOrderController extends LengowController
      */
     public static function displayLengowExtra($key, $value, $item)
     {
-        // This line is useless, but Prestashop validator require it
+        // this line is useless, but Prestashop validator require it
         $key = $key;
         if (!empty($value)) {
             $value = htmlentities($value);
@@ -766,7 +766,7 @@ class LengowOrderController extends LengowController
                 array('nb_order' => (int)$return['order_error'])
             );
         }
-        if (count($messages) == 0) {
+        if (count($messages) === 0) {
             $messages[] = $this->locale->t('lengow_log.error.no_notification');
         }
         if (isset($return['error'])) {

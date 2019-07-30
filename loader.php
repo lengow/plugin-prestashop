@@ -48,8 +48,8 @@ if (_PS_VERSION_ < '1.5') {
 
 function lengowAutoloader($className)
 {
-    if (Tools::substr($className, 0, 6) == 'Lengow') {
-        if (Tools::substr($className, -10) == 'Controller') {
+    if (Tools::substr($className, 0, 6) === 'Lengow') {
+        if (Tools::substr($className, -10) === 'Controller') {
             $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/controllers/';
             include $directory . $className . '.php';
         } else {

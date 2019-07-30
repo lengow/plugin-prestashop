@@ -108,7 +108,7 @@ class LengowSync
                 }
             }
         }
-        // Save last update date for a specific settings (change synchronisation interval time)
+        // save last update date for a specific settings (change synchronisation interval time)
         LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', date('Y-m-d H:i:s'));
     }
 
@@ -153,7 +153,7 @@ class LengowSync
                 }
             }
         }
-        // Save last update date for a specific settings (change synchronisation interval time)
+        // save last update date for a specific settings (change synchronisation interval time)
         if ($settingUpdated) {
             LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', date('Y-m-d H:i:s'));
         }
@@ -207,7 +207,7 @@ class LengowSync
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $idShop = $row['id_shop'];
-            $lengowExport = new LengowExport(array("shop_id" => $idShop));
+            $lengowExport = new LengowExport(array('shop_id' => $idShop));
             $data['shops'][] = array(
                 'token' => LengowMain::getToken($idShop),
                 'enabled' => LengowConfiguration::shopIsActive($idShop),
@@ -326,7 +326,11 @@ class LengowSync
             $return['available'] = true;
         }
         if ($return['currency']) {
-            $currencyId = LengowCurrency::getIdBySign($return['currency']);
+            try {
+                $currencyId = LengowCurrency::getIdBySign($return['currency']);
+            } catch (Exception $e) {
+                $currencyId = 0;
+            }
         }
         if ($currencyId > 0) {
             $return['total_order'] = Tools::displayPrice($return['total_order'], new Currency($currencyId));
@@ -354,17 +358,17 @@ class LengowSync
                 && (time() - strtotime($updatedAt)) < self::$cacheTimes['marketplace']
                 && file_exists($filePath)
             ) {
-                // Recovering data with the marketplaces.json file
+                // recovering data with the marketplaces.json file
                 $marketplacesData = Tools::file_get_contents($filePath);
                 if ($marketplacesData) {
                     return Tools::jsonDecode($marketplacesData);
                 }
             }
         }
-        // Recovering data with the API
+        // recovering data with the API
         $result = LengowConnector::queryApi('get', '/v3.0/marketplaces');
         if ($result && is_object($result) && !isset($result->error)) {
-            // Updated marketplaces.json file
+            // updated marketplaces.json file
             try {
                 $marketplaceFile = new LengowFile(
                     LengowMain::$lengowConfigFolder,
@@ -385,7 +389,7 @@ class LengowSync
             }
             return $result;
         } else {
-            // If the API does not respond, use marketplaces.json if it exists
+            // if the API does not respond, use marketplaces.json if it exists
             if (file_exists($filePath)) {
                 $marketplacesData = Tools::file_get_contents($filePath);
                 if ($marketplacesData) {

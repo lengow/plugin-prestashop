@@ -5,7 +5,6 @@ define('CURRENT_DOMAIN', 'prestashop.unit.test');
 $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 $_SERVER['SERVER_ADDR'] = '99.99.99.99';
 
-//$rootDirectory = "/var/www/presta_1_5/";
 $rootDirectory = "/var/www/test/presta_1_6/";
 require_once($rootDirectory . 'config/defines.inc.php');
 
