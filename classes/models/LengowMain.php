@@ -729,10 +729,10 @@ class LengowMain
             $mailBody = '';
             foreach ($orderLogs as $log) {
                 $mailBody .= '<li>'.self::decodeLogMessage(
-                        'lengow_log.mail_report.order',
-                        null,
-                        array('marketplace_sku' => $log['marketplace_sku'])
-                    );
+                    'lengow_log.mail_report.order',
+                    null,
+                    array('marketplace_sku' => $log['marketplace_sku'])
+                );
                 if ($log['message'] !== '') {
                     $mailBody .= ' - '.self::decodeLogMessage($log['message']);
                 } else {
