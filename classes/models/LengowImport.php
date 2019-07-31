@@ -426,15 +426,7 @@ class LengowImport
                 LengowMain::setLogMessage('log.import.end', array('type' => $this->typeImport)),
                 $this->logOutput
             );
-            LengowMain::enableMail();
-            // sending email in error for orders
-            if ((bool)LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED')
-                && !$this->preprodMode
-                && !$this->importOneOrder
-            ) {
-                LengowMain::sendMailAlert($this->logOutput);
-            }
-            // check if order action is finish (Ship / Cancel)
+            // check if order action is finish (ship or cancel)
             if (!LengowMain::inTest()
                 && !$this->preprodMode
                 && !$this->importOneOrder
@@ -443,6 +435,14 @@ class LengowImport
                 LengowAction::checkFinishAction();
                 LengowAction::checkOldAction();
                 LengowAction::checkActionNotSent();
+            }
+            // sending email in error for orders
+            LengowMain::enableMail();
+            if ((bool)LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED')
+                && !$this->preprodMode
+                && !$this->importOneOrder
+            ) {
+                LengowMain::sendMailAlert($this->logOutput);
             }
         }
         if ($globalError) {

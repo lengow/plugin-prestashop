@@ -721,106 +721,79 @@ class LengowMain
      */
     public static function sendMailAlert($logOutput = false)
     {
-        $cookie = Context::getContext()->cookie;
-        $subject = 'Lengow imports logs';
-        $mailBody = '';
-        try {
-            $sqlLogs = 'SELECT lo.`marketplace_sku`, lli.`message`, lli.`id`
-                FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
-                INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo 
-                ON lli.`id_order_lengow` = lo.`id`
-                WHERE lli.`is_finished` = 0 AND lli.`mail` = 0
-            ';
-            $logs = Db::getInstance()->ExecuteS($sqlLogs);
-        } catch (PrestaShopDatabaseException $e) {
-            return false;
-        }
-        if (empty($logs)) {
-            return true;
-        }
-        foreach ($logs as $log) {
-            $mailBody .= '<li>' . self::decodeLogMessage(
-                'lengow_log.mail_report.order',
-                null,
-                array('marketplace_sku' => $log['marketplace_sku'])
-            );
-            if ($log['message'] !== '') {
-                $mailBody .= ' - ' . self::decodeLogMessage($log['message']);
-            } else {
-                $mailBody .= ' - ' . self::decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
-            }
-            $mailBody .= '</li>';
-            self::logSent($log['id']);
-        }
-        $datas = array(
-            '{mail_title}' => 'Lengow imports logs',
-            '{mail_body}' => $mailBody,
-        );
         $success = true;
-        $emails = LengowConfiguration::getReportEmailAddress();
-        foreach ($emails as $to) {
-            if (!Mail::send(
-                (int)$cookie->id_lang,
-                'report',
-                $subject,
-                $datas,
-                $to,
-                null,
-                null,
-                null,
-                null,
-                null,
-                _PS_MODULE_DIR_ . 'lengow/views/templates/mails/',
-                true
-            )
+        // recovery of all errors not yet sent by email
+        $orderLogs = LengowOrder::getAllOrderLogsNotSent();
+        if (!empty($orderLogs)) {
+            // construction of the report e-mail
+            $mailBody = '';
+            foreach ($orderLogs as $log) {
+                $mailBody .= '<li>'.self::decodeLogMessage(
+                        'lengow_log.mail_report.order',
+                        null,
+                        array('marketplace_sku' => $log['marketplace_sku'])
+                    );
+                if ($log['message'] !== '') {
+                    $mailBody .= ' - '.self::decodeLogMessage($log['message']);
+                } else {
+                    $mailBody .= ' - '.self::decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+                }
+                $mailBody .= '</li>';
+                LengowOrder::logSent((int)$log['id']);
+            }
+            $subject = 'Lengow imports logs';
+            $datas = array(
+                '{mail_title}' => $subject,
+                '{mail_body}'  => $mailBody,
+            );
+            // send an email if the template exists for the locale
+            $emails = LengowConfiguration::getReportEmailAddress();
+            $idLang = (int)Context::getContext()->cookie->id_lang;
+            $iso = Language::getIsoById($idLang);
+            if (file_exists(_PS_MODULE_DIR_ . 'lengow/mails/' . $iso . '/report.txt')
+                && file_exists(_PS_MODULE_DIR_ . 'lengow/mails/' . $iso . '/report.html')
             ) {
+                foreach ($emails as $to) {
+                    $mailSent = Mail::send(
+                        $idLang,
+                        'report',
+                        $subject,
+                        $datas,
+                        $to,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        _PS_MODULE_DIR_.'lengow/mails/',
+                        true
+                    );
+                    if (!$mailSent) {
+                        self::log(
+                            'MailReport',
+                            self::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
+                            $logOutput
+                        );
+                        $success = false;
+                    } else {
+                        self::log(
+                            'MailReport',
+                            self::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
+                            $logOutput
+                        );
+                        $success = true;
+                    }
+                }
+            } else {
                 self::log(
                     'MailReport',
-                    self::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
+                    self::setLogMessage('log.mail_report.template_not_exist', array('iso_code' => $iso)),
                     $logOutput
                 );
                 $success = false;
-            } else {
-                self::log(
-                    'MailReport',
-                    self::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
-                    $logOutput
-                );
-                $success = true;
             }
         }
         return $success;
-    }
-
-    /**
-     * Mark log as sent by email
-     *
-     * @param integer $idOrderLog Lengow order log id
-     *
-     * @return boolean
-     */
-    public static function logSent($idOrderLog)
-    {
-        try {
-            if (_PS_VERSION_ < '1.5') {
-                return Db::getInstance()->autoExecute(
-                    _DB_PREFIX_ . 'lengow_logs_import',
-                    array('mail' => 1),
-                    'UPDATE',
-                    '`id` = \'' . (int)$idOrderLog . '\'',
-                    1
-                );
-            } else {
-                return Db::getInstance()->update(
-                    'lengow_logs_import',
-                    array('mail' => 1),
-                    '`id` = \'' . (int)$idOrderLog . '\'',
-                    1
-                );
-            }
-        } catch (PrestaShopDatabaseException $e) {
-            return false;
-        }
     }
 
     /**

@@ -23,6 +23,7 @@ en:
     mail_report:
       send_mail_to: "report email sent to %{emails}"
       unable_send_mail_to: "unable to send report email to %{emails}"
+      template_not_exist: "the mail report template does not exist for the locale %{iso_code}"
     export:
       start: "## start export ##"
       end: "## end export ##"

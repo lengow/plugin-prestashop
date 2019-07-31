@@ -334,6 +334,7 @@ log.uninstall.uninstall_tab|uninstall tab %{class_name}
 log.uninstall.table_dropped|removing table %{name} in database
 log.mail_report.send_mail_to|report email sent to %{emails}
 log.mail_report.unable_send_mail_to|unable to send report email to %{emails}
+log.mail_report.template_not_exist|the mail report template does not exist for the locale %{iso_code}
 log.export.start|## start export ##
 log.export.end|## end export ##
 log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})

@@ -881,6 +881,58 @@ class LengowOrder extends Order
     }
 
     /**
+     * Get all order errors not yet sent by email
+     *
+     * @return array
+     */
+    public static function getAllOrderLogsNotSent()
+    {
+        try {
+            $sqlLogs = 'SELECT lo.`marketplace_sku`, lli.`message`, lli.`id`
+                FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
+                INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo 
+                ON lli.`id_order_lengow` = lo.`id`
+                WHERE lli.`is_finished` = 0 AND lli.`mail` = 0
+            ';
+            $orderLogs = Db::getInstance()->ExecuteS($sqlLogs);
+        } catch (PrestaShopDatabaseException $e) {
+            $orderLogs = array();
+        }
+        return $orderLogs;
+    }
+
+    /**
+     * Mark log as sent by email
+     *
+     * @param integer $idOrderLog Lengow order log id
+     *
+     * @return boolean
+     */
+    public static function logSent($idOrderLog)
+    {
+        try {
+            if (_PS_VERSION_ < '1.5') {
+                return Db::getInstance()->autoExecute(
+                    _DB_PREFIX_ . 'lengow_logs_import',
+                    array('mail' => 1),
+                    'UPDATE',
+                    '`id` = \'' . (int)$idOrderLog . '\'',
+                    1
+                );
+            } else {
+                return Db::getInstance()->update(
+                    'lengow_logs_import',
+                    array('mail' => 1),
+                    '`id` = \'' . (int)$idOrderLog . '\'',
+                    1
+                );
+            }
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
+    }
+
+    /**
      * Find Lengow Order by Lengow order id
      *
      * @param integer $idOrderLengow Lengow order id
