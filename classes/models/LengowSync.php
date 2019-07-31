@@ -25,7 +25,7 @@
 class LengowSync
 {
     /**
-     * @var array cache time for catalog, carrier, statistic, account status, cms options and marketplace synchronisation
+     * @var array cache time for catalog, carrier, statistic, account status, options and marketplace synchronisation
      */
     protected static $cacheTimes = array(
         'catalog' => 21600,

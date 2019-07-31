@@ -91,22 +91,22 @@ function openModal(){
 
 (function ($) {
     $(document).ready(function () {
-        // MODAL
-        // Open modal
+        // modal
+        // open modal
         $('.lgw-modal-delete').click(function(){
             window.location.hash = 'delete';
             return false;
         });
-        // Open modal on loading
+        // open modal on loading
         if(window.location.hash) {
             openModal();
         }
-        // Delete modal
+        // delete modal
         $('.js-close-this-modal').click(function(){
             window.location.hash = '';
             return false;
         });
-        // Check hash modal
+        // check hash modal
         var hash = window.location.hash;
         setInterval(function(){
             if (window.location.hash != hash) {
@@ -161,7 +161,7 @@ function openModal(){
                 window.location.href = $('#select_log').val();
             }
         });
-        // Submit form
+        // submit form
         $( ".lengow_form" ).submit(function( event ) {
             event.preventDefault();
             var form = this;

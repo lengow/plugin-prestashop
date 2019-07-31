@@ -842,6 +842,7 @@ class LengowImportOrder
         $message = 'Import Lengow | ' . "\r\n"
             . 'ID order : ' . (string)$this->orderData->marketplace_order_id . ' | ' . "\r\n"
             . 'Marketplace : ' . (string)$this->orderData->marketplace . ' | ' . "\r\n"
+            . 'Delivery address id : ' . (int)$this->packageData->delivery->id . ' | ' . "\r\n"
             . 'Total paid : ' . $this->orderAmount . ' | ' . "\r\n"
             . 'Shipping : ' . $this->shippingCost . ' | ' . "\r\n"
             . 'Message : ' . $this->orderComment . "\r\n";

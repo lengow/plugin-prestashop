@@ -405,7 +405,7 @@ class LengowHook
             $actionReimport = $baseAction . '&action=cancel_re_import';
             $actionSynchronize = $baseAction . '&action=synchronize';
             $actionAddTracking = $baseAction . '&action=add_tracking&tracking_number=';
-            $actionType = $lengowOrder->getCurrentState() === LengowMain::getOrderState('canceled')
+            $actionType = (int)$lengowOrder->getCurrentState() === LengowMain::getOrderState('canceled')
                 ? 'cancel'
                 : 'ship';
             $checkResendAction = $locale->t('admin.order.check_resend_action', array('action' => $actionType));

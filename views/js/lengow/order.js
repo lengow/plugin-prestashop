@@ -242,12 +242,12 @@
             return false;
         });
 
-        // UPDATE BY SELECT
+        // update by select
         $('#lengow_order_table_wrapper').on('change', 'thead select', function(){
             lengow_jquery('#lengow_order_wrapper .lengow_form_table').submit();
         });
 
-        //UPDATE BY INPUTS
+        // update by inputs
         var typingTimer;
         $('#lengow_order_table_wrapper').on('keyup', 'thead input[type="text"]', function () {
           clearTimeout(typingTimer);
@@ -268,7 +268,7 @@
             return false;
         });
 
-        // Table header filters
+        // table header filters
         pluginsRender();
 
     });
@@ -296,7 +296,7 @@ function reload_table_js() {
 }
 
 function pluginsRender(){
-    // Selects
+    // selects
     lengow_jquery('#form_table_order .table select').select2();
     lengow_jquery('.lgw-pagination-select-item').select2({minimumResultsForSearch: Infinity});
 }

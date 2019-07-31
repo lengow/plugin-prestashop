@@ -448,9 +448,9 @@ class LengowOrder extends Order
         // get prestashop equivalent state id to Lengow API state
         $idOrderState = LengowMain::getOrderState($orderStateLengow);
         // if state is different between API and Prestashop
-        if ($this->getCurrentState() !== $idOrderState) {
+        if ((int)$this->getCurrentState() !== $idOrderState) {
             // change state process to shipped
-            if ($this->getCurrentState() === LengowMain::getOrderState('accepted')
+            if ((int)$this->getCurrentState() === LengowMain::getOrderState('accepted')
                 && ($orderStateLengow === 'shipped' || $orderStateLengow === 'closed')
             ) {
                 // create a new order history
@@ -469,8 +469,8 @@ class LengowOrder extends Order
                     $this->update();
                 }
                 return 'Shipped';
-            } elseif (($this->getCurrentState() === LengowMain::getOrderState('accepted')
-                    || $this->getCurrentState() === LengowMain::getOrderState('shipped')
+            } elseif (((int)$this->getCurrentState() === LengowMain::getOrderState('accepted')
+                    || (int)$this->getCurrentState() === LengowMain::getOrderState('shipped')
                 ) && ($orderStateLengow === 'canceled' || $orderStateLengow === 'refused')
             ) {
                 // create a new order history
@@ -509,7 +509,7 @@ class LengowOrder extends Order
             )
         );
         $result = $import->exec();
-        if ((isset($result['order_id']) && (int)$result['order_id'] !== $this->id)
+        if ((isset($result['order_id']) && (int)$result['order_id'] !== (int)$this->id)
             && (isset($result['order_new']) && $result['order_new'])
         ) {
             $this->setStateToError();
@@ -538,7 +538,7 @@ class LengowOrder extends Order
     {
         $idErrorLengowState = LengowMain::getLengowErrorStateId();
         // update order to Lengow error state if not already updated
-        if ($this->getCurrentState() !== $idErrorLengowState) {
+        if ($idErrorLengowState && (int)$this->getCurrentState() !== $idErrorLengowState) {
             $this->setCurrentState($idErrorLengowState, Context::getContext()->employee->id);
         }
     }
@@ -968,8 +968,8 @@ class LengowOrder extends Order
             return false;
         }
         if ($this->lengowProcessState !== self::PROCESS_STATE_FINISH &&
-            ($this->getCurrentState() === LengowMain::getOrderState('shipped')
-                || $this->getCurrentState() === LengowMain::getOrderState('canceled')
+            ((int)$this->getCurrentState() === LengowMain::getOrderState('shipped')
+                || (int)$this->getCurrentState() === LengowMain::getOrderState('canceled')
             )
         ) {
             return true;
@@ -1005,7 +1005,7 @@ class LengowOrder extends Order
                 $order = new LengowOrder($lengowOrder['id_order']);
                 $action = LengowAction::getLastOrderActionType($lengowOrder['id_order']);
                 if (!$action) {
-                    if ($order->getCurrentState() === LengowMain::getOrderState('canceled')) {
+                    if ((int)$order->getCurrentState() === LengowMain::getOrderState('canceled')) {
                         $action = 'cancel';
                     } else {
                         $action = 'ship';

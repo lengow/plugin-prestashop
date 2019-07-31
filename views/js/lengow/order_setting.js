@@ -68,7 +68,7 @@ function toggleCountry($head) {
 }
 
 function pluginsRender() {
-    // Selects
+    // selects
     lengow_jquery('#marketplace_matching select').select2();
 }
 
@@ -148,7 +148,7 @@ function checkRequiredSelect() {
     var sendForm = true;
     $('.default_carrier_missing').hide();
     $('select.required').each(function () {
-        // If Carrier not matched
+        // if Carrier not matched
         if ($(this).val() == '') {
             sendForm = false;
             $(this).parents('.sub').show();
@@ -163,7 +163,7 @@ function checkRequiredSelect() {
     $(document).ready(function () {
         // close stock mp div
         changeStockMP();
-        // Open marketplace list
+        // open marketplace list
         $('#lengow_form_order_setting').on('click', '.js-lengow-open-matching', function () {
             $("#country_selector").hide();
             $('.ajax-loading').show();
@@ -177,12 +177,12 @@ function checkRequiredSelect() {
                 $('.ajax-loading').hide();
             });
         });
-        // Close marketplace list
+        // close marketplace list
         $('#lengow_form_order_setting').on('click', '.js-lengow-back-country', function () {
             $("#marketplace_matching").empty();
             $("#country_selector").show();
         });
-        // Toggle countries
+        // toggle countries
         $("#lengow_form_order_setting").on('click', '.js-marketplace',function() {
             toggleCountry($(this).closest('.lengow_marketplace'));
         });
@@ -205,7 +205,7 @@ function checkRequiredSelect() {
                 initDefaultCarrier($(this).val());
             }
         });
-        // Submit form
+        // submit form
         $('.lengow_form').submit(function(event) {
             event.preventDefault();
             var form = this;

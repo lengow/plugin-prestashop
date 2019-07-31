@@ -20,7 +20,7 @@
 
 (function ($) {
     $(document).ready(function () {
-        /* SWITCH TOGGLE */
+        /* switch toggle */
         lengow_jquery('body').on('change', '.lgw-switch', function(event) {
             var check = lengow_jquery(this);
             var checked = check.find('input').prop('checked');

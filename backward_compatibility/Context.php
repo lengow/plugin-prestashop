@@ -28,9 +28,9 @@ if ((bool)Configuration::get('PS_MOBILE_DEVICE')) {
     require_once(_PS_MODULE_DIR_ . '/mobile_theme/Mobile_Detect.php');
 }
 
-// Retro 1.3, 'class_exists' cause problem with autoload... */
+// retro 1.3, 'class_exists' cause problem with autoload... */
 if (version_compare(_PS_VERSION_, '1.4', '<')) {
-    // Not exist for 1.3
+    // not exist for 1.3
     class Shop extends ObjectModel
     {
         public $id = 1;
@@ -64,7 +64,7 @@ if (version_compare(_PS_VERSION_, '1.4', '<')) {
     }
 }
 
-// Not exist for 1.3 and 1.4
+// not exist for 1.3 and 1.4
 class Context
 {
     /**
@@ -192,17 +192,17 @@ class Context
             $this->mobile_device = false;
             if ($this->checkMobileContext()) {
                 switch ((int)Configuration::get('PS_MOBILE_DEVICE')) {
-                    case 0: // Only for mobile device
+                    case 0: // only for mobile device
                         if ($this->mobile_detect->isMobile() && !$this->mobile_detect->isTablet()) {
                             $this->mobile_device = true;
                         }
                         break;
-                    case 1: // Only for touchpads
+                    case 1: // only for touchpads
                         if ($this->mobile_detect->isTablet() && !$this->mobile_detect->isMobile()) {
                             $this->mobile_device = true;
                         }
                         break;
-                    case 2: // For touchpad or mobile devices
+                    case 2: // for touchpad or mobile devices
                         if ($this->mobile_detect->isMobile() || $this->mobile_detect->isTablet()) {
                             $this->mobile_device = true;
                         }
@@ -272,7 +272,7 @@ class ShopBackwardModule extends Shop
         return ShopBackwardModule::CONTEXT_ALL;
     }
 
-    // Simulate shop for 1.3 / 1.4
+    // simulate shop for 1.3 / 1.4
     public function getID()
     {
         return 1;
@@ -351,7 +351,7 @@ class CustomerBackwardModule extends Customer
             return false;
         }
 
-        /* Customer is valid only if it can be load and if object password is the same as database one */
+        /* customer is valid only if it can be load and if object password is the same as database one */
         if ($this->logged == 1
             && $this->id
             && Validate::isUnsignedId($this->id)

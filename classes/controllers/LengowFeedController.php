@@ -85,7 +85,7 @@ class LengowFeedController extends LengowController
                     $selectAll = isset($_REQUEST['select_all']) ? $_REQUEST['select_all'] : null;
                     $exportAction = isset($_REQUEST['export_action']) ? $_REQUEST['export_action'] : null;
                     $data = array();
-                    if ($selectAll === "true") {
+                    if ($selectAll === 'true') {
                         $this->buildTable($idShop);
                         $sql = $this->list->buildQuery(false, true);
                         try {

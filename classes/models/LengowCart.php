@@ -132,7 +132,7 @@ class LengowCart extends Cart
         if (!$shop) {
             $shop = Context::getContext()->shop;
         }
-        // This line is useless, but Prestashop validator require it
+        // this line is useless, but Prestashop validator require it
         $autoAddCartRule = $autoAddCartRule;
         $skipAvailabilityCheckOutOfStock = $skipAvailabilityCheckOutOfStock;
         $quantity = (int)$quantity;
@@ -141,11 +141,11 @@ class LengowCart extends Cart
         $product = new Product($idProduct, false, Configuration::get('PS_LANG_DEFAULT'), $shop->id);
         if ($idProductAttribute) {
             $combination = new Combination((int)$idProductAttribute);
-            if ($combination->id_product !== $idProduct) {
+            if ((int)$combination->id_product !== $idProduct) {
                 return false;
             }
         }
-        /* If we have a product combination, the minimal quantity is set with the one of this combination */
+        // if we have a product combination, the minimal quantity is set with the one of this combination
         if (!empty($idProductAttribute)) {
             $minimalQuantity = (int)Attribute::getAttributeMinimalQty($idProductAttribute);
         } else {
@@ -165,14 +165,14 @@ class LengowCart extends Cart
         ) {
             return false;
         } else {
-            /* Check if the product is already in the cart */
+            // check if the product is already in the cart
             $result = $this->containsProduct(
                 $idProduct,
                 $idProductAttribute,
                 (int)$idCustomization,
                 (int)$idAddressDelivery
             );
-            /* Update quantity if product already exist */
+            // update quantity if product already exist
             if ($result) {
                 // always add product to cart in import
                 if (_PS_VERSION_ < '1.5') {
@@ -186,24 +186,24 @@ class LengowCart extends Cart
                 } else {
                     $sql = 'SELECT stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity
 							FROM ' . _DB_PREFIX_ . 'product p
-							' . Product::sqlStock('p', $idProductAttribute, true, $shop) . '
+							' . Product::sqlStock('p', (int)$idProductAttribute, true, $shop) . '
 							WHERE p.id_product = ' . (int)$idProduct;
                 }
                 $result2 = Db::getInstance()->getRow($sql);
                 $productQty = (int)$result2['quantity'];
-                // Quantity for product pack
+                // quantity for product pack
                 if (Pack::isPack($idProduct)) {
                     $productQty = Product::getQuantity($idProduct, $idProductAttribute);
                 }
-                $newQty = (int)$result['quantity'] + $quantity;
-                $qty = '+ ' . $quantity;
+                $newQty = (int)$result['quantity'] + (int)$quantity;
+                $qty = '+ ' . (int)$quantity;
                 // force here
                 if (!Product::isAvailableWhenOutOfStock((int)$result2['out_of_stock']) && !$this->forceProduct) {
                     if ($newQty > $productQty) {
                         return false;
                     }
                 }
-                /* Delete product from cart */
+                // delete product from cart
                 if ($newQty <= 0) {
                     return $this->deleteProduct($idProduct, $idProductAttribute, (int)$idCustomization);
                 } elseif ((int)$newQty < $minimalQuantity && !$this->forceProduct) {
@@ -223,7 +223,7 @@ class LengowCart extends Cart
                         Db::getInstance()->execute(
                             'UPDATE `' . _DB_PREFIX_ . 'cart_product`
                             SET `quantity` = `quantity` ' . $qty . ', `date_add` = NOW()
-                            WHERE `id_product` = ' . $idProduct .
+                            WHERE `id_product` = ' . (int)$idProduct .
                             (!empty($idProductAttribute) ?
                                 ' AND `id_product_attribute` = ' . (int)$idProductAttribute : '') . '
                             AND `id_cart` = ' . (int)$this->id .
@@ -246,16 +246,16 @@ class LengowCart extends Cart
                 } else {
                     $sql = 'SELECT stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity
 						FROM ' . _DB_PREFIX_ . 'product p
-						' . Product::sqlStock('p', $idProductAttribute, true, $shop) . '
+						' . Product::sqlStock('p', (int)$idProductAttribute, true, $shop) . '
 						WHERE p.id_product = ' . (int)$idProduct;
                 }
                 $result2 = Db::getInstance()->getRow($sql);
-                // Quantity for product pack
+                // quantity for product pack
                 if (_PS_VERSION_ > '1.4' && Pack::isPack($idProduct)) {
                     $result2['quantity'] = Product::getQuantity($idProduct, $idProductAttribute);
                 }
                 if (!Product::isAvailableWhenOutOfStock((int)$result2['out_of_stock']) && !$this->forceProduct) {
-                    if ($quantity > $result2['quantity']) {
+                    if ((int)$quantity > $result2['quantity']) {
                         return false;
                     }
                 }
@@ -268,7 +268,7 @@ class LengowCart extends Cart
                         'id_product' => (int)$idProduct,
                         'id_product_attribute' => (int)$idProductAttribute,
                         'id_cart' => (int)$this->id,
-                        'quantity' => $quantity,
+                        'quantity' => (int)$quantity,
                         'date_add' => date('Y-m-d H:i:s'),
                     );
 
@@ -284,7 +284,7 @@ class LengowCart extends Cart
                         'id_cart' => (int)$this->id,
                         'id_address_delivery' => (int)$idAddressDelivery,
                         'id_shop' => (int)$shop->id,
-                        'quantity' => $quantity,
+                        'quantity' => (int)$quantity,
                         'date_add' => date('Y-m-d H:i:s'),
                     );
                     $resultAdd = Db::getInstance()->insert('cart_product', $values);

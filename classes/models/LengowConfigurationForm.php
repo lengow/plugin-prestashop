@@ -147,8 +147,13 @@ class LengowConfigurationForm
             case 'day':
                 $html .= '<label class="control-label">' . $label . '</label>
                         <div class="input-group">
-                            <input type="number" name="' . $name . '" class="form-control" value="' . $value . '" '
-                    . $readonly . ' min="' . LengowImport::$minImportDays . '" max="' . LengowImport::$maxImportDays . '">
+                            <input type="number"
+                                name="' . $name . '"
+                                class="form-control"
+                                value="' . $value . '" '
+                                . $readonly . '
+                                min="' . LengowImport::$minImportDays . '"
+                                max="' . LengowImport::$maxImportDays . '">
                             <div class="input-group-addon">
                                 <div class="unit">' . $this->locale->t('order_setting.screen.nb_days') . '</div>
                             </div>
@@ -262,7 +267,7 @@ class LengowConfigurationForm
                     $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
                     $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
                 }
-                if ( ! is_null($idShop)) {
+                if (!is_null($idShop)) {
                     LengowMain::log(
                         'Setting',
                         LengowMain::setLogMessage(
@@ -288,7 +293,7 @@ class LengowConfigurationForm
                         )
                     );
                 }
-                // Save last update date for a specific settings (change synchronisation interval time)
+                // save last update date for a specific settings (change synchronisation interval time)
                 if (isset($setting['update']) && $setting['update']) {
                     LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', date('Y-m-d H:i:s'));
                 }

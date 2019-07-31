@@ -102,7 +102,7 @@
             return false;
         });
 
-        // UPDATE BY INPUT
+        // update by input
 
         var typingTimer;
         var idShop;

@@ -280,10 +280,10 @@ class LengowConnector
      */
     protected function makeRequest($type, $url, $args, $token, $body = '')
     {
-        // Define CURLE_OPERATION_TIMEDOUT for old php versions
+        // define CURLE_OPERATION_TIMEDOUT for old php versions
         defined('CURLE_OPERATION_TIMEDOUT') || define('CURLE_OPERATION_TIMEDOUT', CURLE_OPERATION_TIMEOUTED);
         $ch = curl_init();
-        // Options
+        // define curl default options
         $opts = self::$curlOpts;
         // get special timeout for specific Lengow API
         if (array_key_exists($url, $this->lengowUrls)) {
@@ -343,7 +343,7 @@ class LengowConnector
                 $opts[CURLOPT_POSTFIELDS] = http_build_query($args);
                 break;
         }
-        // Execute url request
+        // execute url request
         curl_setopt_array($ch, $opts);
         $result = curl_exec($ch);
         $errorNumber = curl_errno($ch);

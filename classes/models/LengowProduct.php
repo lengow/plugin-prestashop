@@ -374,21 +374,21 @@ class LengowProduct extends Product
                     $price = $this->getData('price_sale');
                     $weight = $this->getData('weight');
                 }
-                $idZone = $this->context->country->id_zone;
-                $idCurrency = $this->context->cart->id_currency;
+                $idZone = (int)$this->context->country->id_zone;
+                $idCurrency = (int)$this->context->cart->id_currency;
                 if (!$this->carrier) {
                     return LengowMain::formatNumber(0);
                 }
-                $shippingMethod = $this->carrier->getShippingMethod();
+                $shippingMethod = (int)$this->carrier->getShippingMethod();
                 $shippingCost = 0;
                 if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shippingMethod !== Carrier::SHIPPING_METHOD_FREE) {
                     if ($shippingMethod === Carrier::SHIPPING_METHOD_WEIGHT) {
                         $shippingCost = LengowMain::formatNumber(
-                            $this->carrier->getDeliveryPriceByWeight($weight, (int)$idZone)
+                            $this->carrier->getDeliveryPriceByWeight($weight, $idZone)
                         );
                     } else {
                         $shippingCost = LengowMain::formatNumber(
-                            $this->carrier->getDeliveryPriceByPrice($price, (int)$idZone, (int)$idCurrency)
+                            $this->carrier->getDeliveryPriceByPrice($price, $idZone, $idCurrency)
                         );
                     }
                 }
