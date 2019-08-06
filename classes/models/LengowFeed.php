@@ -186,6 +186,7 @@ class LengowFeed
     {
         switch ($this->format) {
             case 'csv':
+            default:
                 $header = '';
                 foreach ($data as $field) {
                     $header .= self::PROTECTION . self::formatFields($field, 'csv', $this->legacy)
@@ -215,6 +216,7 @@ class LengowFeed
     {
         switch ($this->format) {
             case 'csv':
+            default:
                 $content = '';
                 foreach ($data as $value) {
                     $content .= self::PROTECTION . $value . self::PROTECTION . self::CSV_SEPARATOR;
@@ -344,6 +346,7 @@ class LengowFeed
     {
         switch ($this->format) {
             case 'csv':
+            default:
                 return 'Content-Type: text/csv; charset=UTF-8';
             case 'xml':
                 return 'Content-Type: application/xml; charset=UTF-8';
