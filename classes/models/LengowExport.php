@@ -61,6 +61,7 @@ class LengowExport
         'sku_supplier' => 'sku_supplier',
         'ean' => 'ean',
         'upc' => 'upc',
+        'isbn' => 'isbn',
         'name' => 'name',
         'quantity' => 'quantity',
         'minimal_quantity' => 'minimal_quantity',

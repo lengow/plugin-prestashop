@@ -195,6 +195,8 @@ class LengowProduct extends Product
                 return $this->getProductData('ean13', $idProductAttribute);
             case 'upc':
                 return $this->getProductData('upc', $idProductAttribute);
+            case 'isbn':
+                return $this->getProductData('isbn', $idProductAttribute);
             case 'name':
                 return LengowMain::cleanData($this->name);
             case 'quantity':
@@ -336,6 +338,7 @@ class LengowProduct extends Product
                         'reference' => $c['reference'],
                         'ean13' => isset($c['ean13']) ? $c['ean13'] : '',
                         'upc' => isset($c['upc']) ? $c['upc'] : '',
+                        'isbn' => isset($c['isbn']) ? $c['isbn'] : '',
                         'supplier_reference' => isset($c['supplier_reference']) ? $c['supplier_reference'] : '',
                         'minimal_quantity' => isset($c['minimal_quantity']) ? $c['minimal_quantity'] : '',
                         'images' => isset($cImages[$attributeId]) ? $cImages[$attributeId] : array(),
@@ -414,6 +417,7 @@ class LengowProduct extends Product
                 ps.`product_supplier_reference` AS `supplier_reference`,
                 pa.`ean13`,
                 pa.`upc`,
+                ' . (version_compare(_PS_VERSION_, '1.7.0', '>=') ? 'pa.`isbn`,' : '') . '
                 pa.`wholesale_price`,
                 pa.`ecotax`
 				FROM `' . _DB_PREFIX_ . 'product_attribute` pa
@@ -508,7 +512,6 @@ class LengowProduct extends Product
                 $result = Db::getInstance()->getRow($sql);
                 $supplierReference = $result['product_supplier_reference'];
             }
-
         }
         return $supplierReference;
     }
@@ -920,6 +923,8 @@ class LengowProduct extends Product
                 return self::findProduct('ean13', $attributeValue, $idShop);
             case 'upc':
                 return self::findProduct('upc', $attributeValue, $idShop);
+            case 'isbn':
+                return self::findProduct('isbn', $attributeValue, $idShop);
             default:
                 $idsProduct = array();
                 // compatibility with old plugins
@@ -1006,7 +1011,7 @@ class LengowProduct extends Product
      */
     protected static function findProduct($key, $value, $idShop)
     {
-        if (empty($key) || empty($value)) {
+        if (empty($key) || empty($value) || ($key === 'isbn' && version_compare(_PS_VERSION_, '1.7.0', '<'))) {
             return false;
         }
         if (_PS_VERSION_ >= '1.5') {
@@ -1057,7 +1062,7 @@ class LengowProduct extends Product
     public static function advancedSearch($attributeValue, $idShop, $apiDatas)
     {
         // product class attribute to search
-        $attributes = array('reference', 'ean', 'upc', 'ids');
+        $attributes = array('reference', 'ean', 'upc', 'isbn', 'ids');
         $idsProduct = array();
         $find = false;
         $i = 0;
