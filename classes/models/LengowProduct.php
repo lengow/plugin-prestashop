@@ -93,7 +93,7 @@ class LengowProduct extends Product
      * @param integer|null $idLang Prestashop lang id
      * @param array $params all export parameters
      *
-     * @throws LengowException
+     * @throws Exception|LengowException
      */
     public function __construct($idProduct = null, $idLang = null, $params = array())
     {
@@ -186,359 +186,93 @@ class LengowProduct extends Product
     {
         switch ($name) {
             case 'id':
-                if ($idProductAttribute) {
-                    return $this->id . '_' . $idProductAttribute;
-                }
-                return $this->id;
+                return $idProductAttribute ? $this->id . '_' . $idProductAttribute : $this->id;
+            case 'sku':
+                return LengowMain::cleanData($this->getProductData('reference', $idProductAttribute));
+            case 'sku_supplier':
+                return LengowMain::cleanData($this->getSupplierReference($idProductAttribute));
+            case 'ean':
+                return $this->getProductData('ean13', $idProductAttribute);
+            case 'upc':
+                return $this->getProductData('upc', $idProductAttribute);
             case 'name':
                 return LengowMain::cleanData($this->name);
-            case 'reference':
-                if ($idProductAttribute && $this->combinations[$idProductAttribute]['reference']) {
-                    return $this->combinations[$idProductAttribute]['reference'];
-                }
-                return LengowMain::cleanData($this->reference);
-            case 'supplier_reference':
-                if ($idProductAttribute && $this->combinations[$idProductAttribute]['supplier_reference']) {
-                    return $this->combinations[$idProductAttribute]['supplier_reference'];
-                }
-                return LengowMain::cleanData($this->getSupplierReference());
-            case 'manufacturer':
-                return LengowMain::cleanData($this->manufacturer_name);
-            case 'category':
-                return LengowMain::cleanData($this->categoryDefaultName);
-            case 'breadcrumb':
-                if ($this->categoryDefault) {
-                    $breadcrumb = '';
-                    $categories = $this->categoryDefault->getParentsCategories();
-                    foreach ($categories as $category) {
-                        $breadcrumb = $category['name'] . ' > ' . $breadcrumb;
-                    }
-                    return rtrim($breadcrumb, ' > ');
-                }
-                return LengowMain::cleanData($this->categoryDefaultName);
-            case 'description':
-                return LengowMain::cleanHtml(LengowMain::cleanData($this->description));
-            case 'short_description':
-                return LengowMain::cleanHtml(LengowMain::cleanData($this->description_short));
-            case 'description_html':
-                return LengowMain::cleanData($this->description);
-            case 'short_description_html':
-                return LengowMain::cleanData($this->description_short);
-            case 'price':
-                if ($idProductAttribute) {
-                    return $this->getPrice(true, $idProductAttribute, 2, null, false, false, 1);
-                }
-                return $this->getPrice(true, null, 2, null, false, false, 1);
-            case 'wholesale_price':
-                if ($idProductAttribute && $this->combinations[$idProductAttribute]['wholesale_price']) {
-                    return LengowMain::formatNumber($this->combinations[$idProductAttribute]['wholesale_price']);
-                }
-                return LengowMain::formatNumber($this->wholesale_price);
-            case 'price_duty_free':
-                if ($idProductAttribute) {
-                    return $this->getPrice(false, $idProductAttribute, 2, null, false, false, 1);
-                }
-                return $this->getPrice(false, null, 2, null, false, false, 1);
-            case 'price_sale':
-                if ($idProductAttribute) {
-                    return $this->getPrice(true, $idProductAttribute, 2, null, false, true, 1);
-                }
-                return $this->getPrice(true, null, 2, null, false, true, 1);
-            case 'price_sale_duty_free':
-                if ($idProductAttribute) {
-                    return $this->getPrice(false, $idProductAttribute, 2, null, false, true, 1);
-                }
-                return $this->getPrice(false, null, 2, null, false, true, 1);
-            case 'price_sale_percent':
-                if ($idProductAttribute) {
-                    $price = $this->getPrice(true, $idProductAttribute, 2, null, false, false, 1);
-                    $priceSale = $this->getPrice(true, $idProductAttribute, 2, null, true, true, 1);
-                } else {
-                    $price = $this->getPrice(true, null, 2, null, false, false, 1);
-                    $priceSale = $this->getPrice(true, null, 2, null, true, true, 1);
-                }
-                if ($priceSale && $price) {
-                    return LengowMain::formatNumber(($priceSale / $price) * 100);
-                }
-                return 0;
             case 'quantity':
-                if ($idProductAttribute) {
-                    return self::getRealQuantity($this->id, $idProductAttribute);
-                }
-                return self::getRealQuantity($this->id);
+                return self::getRealQuantity($this->id, $idProductAttribute);
             case 'minimal_quantity':
-                if ($idProductAttribute && $this->combinations[$idProductAttribute]['minimal_quantity']) {
-                    return $this->combinations[$idProductAttribute]['minimal_quantity'];
-                }
-                return $this->minimal_quantity;
-            case 'weight':
-                if ($idProductAttribute && $this->combinations[$idProductAttribute]['weight']) {
-                    $weight = (float)$this->weight + (float)$this->combinations[$idProductAttribute]['weight'];
-                } else {
-                    $weight = (float)$this->weight;
-                }
-                return LengowMain::formatNumber($weight) . Configuration::get('PS_WEIGHT_UNIT');
-            case 'ean':
-                if ($idProductAttribute && $this->combinations[$idProductAttribute]['ean13']) {
-                    return $this->combinations[$idProductAttribute]['ean13'];
-                }
-                return $this->ean13;
-            case 'upc':
-                if ($idProductAttribute && $this->combinations[$idProductAttribute]['upc']) {
-                    return $this->combinations[$idProductAttribute]['upc'];
-                }
-                return $this->upc;
-            case 'ecotax':
-                if ($idProductAttribute && $this->combinations[$idProductAttribute]['ecotax']) {
-                    return LengowMain::formatNumber($this->combinations[$idProductAttribute]['ecotax']);
-                }
-                if (isset($this->ecotaxinfos)) {
-                    return LengowMain::formatNumber(($this->ecotaxinfos > 0) ? $this->ecotaxinfos : $this->ecotax);
-                }
-                return LengowMain::formatNumber($this->ecotax);
-            case 'active':
-                return $this->active ? 'Enabled' : 'Disabled';
-            case 'language':
-                return $this->context->language->iso_code;
-            case 'available':
-                if ($idProductAttribute) {
-                    $quantity = self::getRealQuantity($this->id, $idProductAttribute);
-                } else {
-                    $quantity = self::getRealQuantity($this->id);
-                }
-                if ($quantity <= 0) {
-                    return $this->available_later;
-                }
-                return $this->available_now;
-            case 'url':
-                if (version_compare(_PS_VERSION_, '1.5', '>')) {
-                    if (version_compare(_PS_VERSION_, '1.7.1', '>=')) {
-                        $idProductAttribute = !$idProductAttribute
-                            ? $this->getDefaultAttribute($this->id)
-                            : $idProductAttribute;
-                        return  $this->context->link->getProductLink(
-                            $this,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            $idProductAttribute,
-                            true,
-                            false,
-                            true
-                        );
-                    }
-                    if (version_compare(_PS_VERSION_, '1.6.1.0', '>')) {
-                        return $this->context->link->getProductLink(
-                            $this,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            $idProductAttribute,
-                            true,
-                            false,
-                            true
-                        );
-                    }
-                    if (version_compare(_PS_VERSION_, '1.6.0.14', '>')) {
-                        return $this->context->link->getProductLink(
-                            $this,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            $idProductAttribute,
-                            true
-                        );
-                    }
-                    return $this->context->link->getProductLink(
-                        $this,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        $idProductAttribute
-                    );
-                }
-                return $this->context->link->getProductLink($this);
-            case 'price_shipping':
-                if ($idProductAttribute && $idProductAttribute !== null) {
-                    $price = $this->getData('price_sale', $idProductAttribute);
-                    $weight = $this->getData('weight', $idProductAttribute);
-                } else {
-                    $price = $this->getData('price_sale');
-                    $weight = $this->getData('weight');
-                }
-                $idZone = (int)$this->context->country->id_zone;
-                $idCurrency = (int)$this->context->cart->id_currency;
-                if (!$this->carrier) {
-                    return LengowMain::formatNumber(0);
-                }
-                $shippingMethod = (int)$this->carrier->getShippingMethod();
-                $shippingCost = 0;
-                if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shippingMethod !== Carrier::SHIPPING_METHOD_FREE) {
-                    if ($shippingMethod === Carrier::SHIPPING_METHOD_WEIGHT) {
-                        $shippingCost = LengowMain::formatNumber(
-                            $this->carrier->getDeliveryPriceByWeight($weight, $idZone)
-                        );
-                    } else {
-                        $shippingCost = LengowMain::formatNumber(
-                            $this->carrier->getDeliveryPriceByPrice($price, $idZone, $idCurrency)
-                        );
-                    }
-                }
-                // check if product have single shipping cost
-                if ($this->additional_shipping_cost > 0) {
-                    $shippingCost += $this->additional_shipping_cost;
-                }
-                // tax calculation
-                $defaultCountry = (int)Configuration::get('PS_COUNTRY_DEFAULT');
-                if (_PS_VERSION_ < '1.5') {
-                    $idTaxRulesGroup = $this->carrier->id_tax_rules_group;
-                } else {
-                    $idTaxRulesGroup = $this->carrier->getIdTaxRulesGroup();
-                }
-                $taxRules = LengowTaxRule::getLengowTaxRulesByGroupId(
-                    Configuration::get('PS_LANG_DEFAULT'),
-                    $idTaxRulesGroup
-                );
-                foreach ($taxRules as $taxRule) {
-                    if (isset($taxRule['id_country']) && (int)$taxRule['id_country'] === $defaultCountry) {
-                        $tr = new TaxRule($taxRule['id_tax_rule']);
-                    }
-                }
-                if (isset($tr)) {
-                    $t = new Tax($tr->id_tax);
-                    $taxCalculator = new TaxCalculator(array($t));
-                    $taxes = $taxCalculator->getTaxesAmount($shippingCost);
-                    if (!empty($taxes)) {
-                        foreach ($taxes as $tax) {
-                            $shippingCost += $tax;
-                        }
-                    }
-                }
-                return LengowMain::formatNumber($shippingCost);
-            case 'id_parent':
-                return $this->id;
-            case 'delivery_time':
-                return $this->carrier->delay[$this->context->language->id];
-            case 'sale_from':
-                return $this->isSale ? $this->specificPrice['from'] : '';
-            case 'sale_to':
-                return $this->isSale ? $this->specificPrice['to'] : '';
-            case 'tags':
-                if (_PS_VERSION_ < '1.5') {
-                    $results = Tag::getProductTags($this->id);
-                    if (!($results && array_key_exists($this->context->language->id, $results))) {
-                        return '';
-                    }
-                    $tags = '';
-                    foreach ($results[$this->context->language->id] as $tagName) {
-                        $tags .= $tagName . ', ';
-                    }
-                    $tags = rtrim($tags, ', ');
-                } else {
-                    $tags = $this->getTags($this->context->language->id);
-                }
-                return LengowMain::cleanData($tags);
-            case 'meta_title':
-                return LengowMain::cleanData($this->meta_title);
-            case 'meta_keywords':
-                return LengowMain::cleanData($this->meta_keywords);
-            case 'meta_description':
-                return LengowMain::cleanData($this->meta_description);
-            case 'url_rewrite':
-                if (version_compare(_PS_VERSION_, '1.4', '>')) {
-                    if (version_compare(_PS_VERSION_, '1.7.1', '>=')) {
-                        $idProductAttribute = !$idProductAttribute
-                            ? $this->getDefaultAttribute($this->id)
-                            : $idProductAttribute;
-                        return $this->context->link->getProductLink(
-                            $this,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            $idProductAttribute,
-                            true,
-                            false,
-                            true
-                        );
-                    }
-                    if (version_compare(_PS_VERSION_, '1.6.1.0', '>')) {
-                        return $this->context->link->getProductLink(
-                            $this,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            $idProductAttribute,
-                            false,
-                            false,
-                            true
-                        );
-                    }
-                    return $this->context->link->getProductLink(
-                        $this,
-                        $this->link_rewrite,
-                        null,
-                        null,
-                        null,
-                        null,
-                        $idProductAttribute
-                    );
-                }
-                return $this->context->link->getProductLink($this, $this->link_rewrite);
-            case 'type':
-                if ($idProductAttribute) {
-                    return 'child';
-                }
-                if (empty($this->combinations)) {
-                    return 'simple';
-                }
-                return 'parent';
-            case 'variation':
-                return $this->variation;
-            case 'currency':
-                return Context::getContext()->currency->iso_code;
+                return (int)$this->getProductData('minimal_quantity', $idProductAttribute);
+            case 'availability':
+                return self::getRealQuantity($this->id, $idProductAttribute) <= 0
+                    ? $this->available_later
+                    : $this->available_now;
             case 'condition':
                 return $this->condition;
-            case 'supplier':
-                return $this->supplier_name;
-            case 'availability':
-                if ($idProductAttribute) {
-                    $quantity = self::getRealQuantity($this->id, $idProductAttribute);
-                } else {
-                    $quantity = self::getRealQuantity($this->id);
-                }
-                if ($quantity <= 0 && !$this->isAvailableWhenOutOfStock($this->out_of_stock)) {
-                    return 0;
-                }
-                return 1;
+            case 'category':
+                return LengowMain::cleanData($this->getBreadcrumb());
+            case 'status':
+                return $this->active ? 'Enabled' : 'Disabled';
+            case 'url':
+                return $this->getProductUrl($idProductAttribute);
+            case 'url_rewrite':
+                return $this->getProductUrl($idProductAttribute, true);
+            case 'price_excl_tax':
+                return $this->getPrice(false, $idProductAttribute, 2, null, false, true, 1);
+            case 'price_incl_tax':
+                return $this->getPrice(true, $idProductAttribute, 2, null, false, true, 1);
+            case 'price_before_discount_excl_tax':
+                return $this->getPrice(false, $idProductAttribute, 2, null, false, false, 1);
+            case 'price_before_discount_incl_tax':
+                return $this->getPrice(true, $idProductAttribute, 2, null, false, false, 1);
+            case 'price_wholesale':
+                return LengowMain::formatNumber($this->getProductData('wholesale_price', $idProductAttribute));
+            case 'discount_percent':
+                $price = $this->getPrice(true, $idProductAttribute, 2, null, false, false, 1);
+                $priceSale = $this->getPrice(true, $idProductAttribute, 2, null, true, true, 1);
+                return ($priceSale && $price) ? LengowMain::formatNumber(($priceSale / $price) * 100) : 0;
+            case 'discount_start_date':
+                return $this->isSale ? $this->specificPrice['from'] : '';
+            case 'discount_end_date':
+                return $this->isSale ? $this->specificPrice['to'] : '';
+            case 'ecotax':
+                return LengowMain::formatNumber($this->getEcotax($idProductAttribute));
+            case 'shipping_cost':
+                return $this->getShippingCost($idProductAttribute);
+            case 'shipping_delay':
+                return $this->carrier->delay[$this->context->language->id];
+            case 'currency':
+                return Context::getContext()->currency->iso_code;
             case (preg_match('`image_([0-9]+)`', $name) ? true : false):
-                $index = explode('_', $name);
-                $idImage = $index[1] - 1;
-                if ($idProductAttribute) {
-                    $attributeImages = $this->combinations[$idProductAttribute]['images'];
-                    if (count($attributeImages) > 0) {
-                        if (isset($attributeImages[$idImage])) {
-                            return $attributeImages[$idImage];
-                        }
-                        return '';
-                    }
-                }
-                return isset($this->images[$idImage]) ? $this->context->link->getImageLink(
-                    $this->link_rewrite,
-                    $this->id . '-' . $this->images[$idImage]['id_image'],
-                    $this->imageSize
-                ) : '';
+                return $this->getImageLink($name, $idProductAttribute);
+            case 'type':
+                return $this->getProductType($idProductAttribute);
+            case 'parent_id':
+                return $this->id;
+            case 'variation':
+                return $this->variation;
+            case 'language':
+                return $this->context->language->iso_code;
+            case 'description':
+                return LengowMain::cleanHtml(LengowMain::cleanData($this->description));
+            case 'description_html':
+                return LengowMain::cleanData($this->description);
+            case 'short_description':
+                return LengowMain::cleanHtml(LengowMain::cleanData($this->description_short));
+            case 'short_description_html':
+                return LengowMain::cleanData($this->description_short);
+            case 'tags':
+                return LengowMain::cleanData($this->getTagList());
+            case 'manufacturer':
+                return LengowMain::cleanData($this->manufacturer_name);
+            case 'supplier':
+                return LengowMain::cleanData($this->supplier_name);
+            case 'weight':
+                return LengowMain::formatNumber($this->getWeight($idProductAttribute));
+            case 'weight_unit':
+                return Configuration::get('PS_WEIGHT_UNIT');
+            case 'available':
+                return (self::getRealQuantity($this->id, $idProductAttribute) <= 0
+                    && !$this->isAvailableWhenOutOfStock($this->out_of_stock)
+                ) ? 0 : 1;
             default:
                 if (isset($this->features[$name])) {
                     return LengowMain::cleanData($this->features[$name]['value']);
@@ -646,7 +380,6 @@ class LengowProduct extends Product
     }
 
     /**
-     * OVERRIDE NATIVE FONCTION : add supplier_reference, ean13, upc, wholesale_price and ecotax
      * Get all available attribute groups
      *
      * @param integer $idLang Prestashop lang id
@@ -732,21 +465,315 @@ class LengowProduct extends Product
     }
 
     /**
+     * For a given product, returns its real quantity
+     *
+     * @param integer $idProduct Prestashop product id
+     * @param integer $idProductAttribute Prestashop product attribute id
+     * @param integer|null $idWarehouse Prestashop wharehouse id
+     * @param integer|null $idShop Prestashop shop id
+     *
+     * @return integer
+     */
+    public static function getRealQuantity($idProduct, $idProductAttribute = 0, $idWarehouse = null, $idShop = null)
+    {
+        if (version_compare(_PS_VERSION_, '1.5', '<')) {
+            if ($idProductAttribute === 0 || $idProductAttribute === null) {
+                return Product::getQuantity($idProduct);
+            }
+            return Product::getQuantity($idProduct, $idProductAttribute);
+        } else {
+            return parent::getRealQuantity($idProduct, $idProductAttribute, $idWarehouse, $idShop);
+        }
+    }
+
+    /**
      * Get supplier reference
+     *
+     * @param integer $idProductAttribute Prestashop product attribute id
      *
      * @return string
      */
-    public function getSupplierReference()
+    protected function getSupplierReference($idProductAttribute)
     {
-        if ($this->supplier_reference !== '' || _PS_VERSION_ < '1.5') {
-            return $this->supplier_reference;
+        if ($idProductAttribute && $this->combinations[$idProductAttribute]['supplier_reference']) {
+            $supplierReference = $this->combinations[$idProductAttribute]['supplier_reference'];
+        } else {
+            if ($this->supplier_reference !== '' || _PS_VERSION_ < '1.5') {
+                $supplierReference = $this->supplier_reference;
+            } else {
+                $sql = 'SELECT `product_supplier_reference`
+                    FROM `'._DB_PREFIX_.'product_supplier`
+                    WHERE `id_product` = \'' . (int)$this->id . '\'
+                    AND `id_product_attribute` = 0';
+                $result = Db::getInstance()->getRow($sql);
+                $supplierReference = $result['product_supplier_reference'];
+            }
+
         }
-        $sql = 'SELECT `product_supplier_reference`
-            FROM `' . _DB_PREFIX_ . 'product_supplier`
-            WHERE `id_product` = \'' . (int)$this->id . '\'
-            AND `id_product_attribute` = 0';
-        $result = Db::getInstance()->getRow($sql);
-        return $result['product_supplier_reference'];
+        return $supplierReference;
+    }
+
+    /**
+     * Get product breadcrumb from default category
+     *
+     * @return string
+     */
+    protected function getBreadcrumb()
+    {
+        if ($this->categoryDefault) {
+            $breadcrumb = '';
+            $categories = $this->categoryDefault->getParentsCategories();
+            foreach ($categories as $category) {
+                $breadcrumb = $category['name'] . ' > ' . $breadcrumb;
+            }
+            $breadcrumb = rtrim($breadcrumb, ' > ');
+        } else {
+            $breadcrumb = $this->categoryDefaultName;
+        }
+        return $breadcrumb;
+    }
+
+    /**
+     * Get product url for all different version of PrestaShop
+     *
+     * @param integer|null $idProductAttribute Prestashop product attribute id
+     * @param boolean $rewrite rewrite product url or not
+     *
+     * @return string
+     */
+    protected function getProductUrl($idProductAttribute = null, $rewrite = false)
+    {
+        try {
+            if (version_compare(_PS_VERSION_, '1.5', '<')) {
+                $productUrl = $this->context->link->getProductLink($this, $rewrite ? $this->link_rewrite : null);
+            } elseif (version_compare(_PS_VERSION_, '1.6.1.1', '<')) {
+                $productUrl = $this->context->link->getProductLink(
+                    $this,
+                    $rewrite ? $this->link_rewrite : null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    $idProductAttribute,
+                    (_PS_VERSION_ === '1.6.1.0' && !$rewrite) ? true : false
+                );
+            } else {
+                if (version_compare(_PS_VERSION_, '1.7.1', '>=') && $idProductAttribute === null) {
+                    $idProductAttribute = $this->getDefaultAttribute($this->id);
+                }
+                $productUrl = $this->context->link->getProductLink(
+                    $this,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    $idProductAttribute,
+                    (version_compare(_PS_VERSION_, '1.7.1', '<') && $rewrite) ? false : true,
+                    false,
+                    true
+                );
+            }
+        } catch (Exception $e) {
+            $productUrl = '';
+        }
+        return $productUrl;
+    }
+
+    /**
+     * Get ecotax
+     *
+     * @param integer|null $idProductAttribute Prestashop product attribute id
+     *
+     * @return float
+     */
+    protected function getEcotax($idProductAttribute = null)
+    {
+        $ecotax = 0;
+        if ($idProductAttribute && $this->combinations[$idProductAttribute]['ecotax']) {
+            $ecotax = $this->combinations[$idProductAttribute]['ecotax'];
+        }
+        if ($ecotax == 0) {
+            $ecotax = (isset($this->ecotaxinfos) && $this->ecotaxinfos > 0) ? $this->ecotaxinfos : $this->ecotax;
+        }
+        return (float)$ecotax;
+    }
+
+    /**
+     * Get shipping cost
+     *
+     * @param integer|null $idProductAttribute Prestashop product attribute id
+     *
+     * @throws Exception
+     *
+     * @return float
+     */
+    protected function getShippingCost($idProductAttribute = null)
+    {
+        if ($idProductAttribute && $idProductAttribute !== null) {
+            $price = $this->getData('price_incl_tax', $idProductAttribute);
+            $weight = $this->getData('weight', $idProductAttribute);
+        } else {
+            $price = $this->getData('price_incl_tax');
+            $weight = $this->getData('weight');
+        }
+        $idZone = (int)$this->context->country->id_zone;
+        $idCurrency = (int)$this->context->cart->id_currency;
+        if (!$this->carrier) {
+            return LengowMain::formatNumber(0);
+        }
+        $shippingMethod = (int)$this->carrier->getShippingMethod();
+        $shippingCost = 0;
+        if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shippingMethod !== Carrier::SHIPPING_METHOD_FREE) {
+            if ($shippingMethod === Carrier::SHIPPING_METHOD_WEIGHT) {
+                $shippingCost = LengowMain::formatNumber(
+                    $this->carrier->getDeliveryPriceByWeight($weight, $idZone)
+                );
+            } else {
+                $shippingCost = LengowMain::formatNumber(
+                    $this->carrier->getDeliveryPriceByPrice($price, $idZone, $idCurrency)
+                );
+            }
+        }
+        // check if product have single shipping cost
+        if ($this->additional_shipping_cost > 0) {
+            $shippingCost += $this->additional_shipping_cost;
+        }
+        // tax calculation
+        $defaultCountry = (int)Configuration::get('PS_COUNTRY_DEFAULT');
+        if (_PS_VERSION_ < '1.5') {
+            $idTaxRulesGroup = $this->carrier->id_tax_rules_group;
+        } else {
+            $idTaxRulesGroup = $this->carrier->getIdTaxRulesGroup();
+        }
+        $taxRules = LengowTaxRule::getLengowTaxRulesByGroupId(
+            Configuration::get('PS_LANG_DEFAULT'),
+            $idTaxRulesGroup
+        );
+        foreach ($taxRules as $taxRule) {
+            if (isset($taxRule['id_country']) && (int)$taxRule['id_country'] === $defaultCountry) {
+                $tr = new TaxRule($taxRule['id_tax_rule']);
+            }
+        }
+        if (isset($tr)) {
+            $t = new Tax($tr->id_tax);
+            $taxCalculator = new TaxCalculator(array($t));
+            $taxes = $taxCalculator->getTaxesAmount($shippingCost);
+            if (!empty($taxes)) {
+                foreach ($taxes as $tax) {
+                    $shippingCost += $tax;
+                }
+            }
+        }
+        return LengowMain::formatNumber($shippingCost);
+    }
+
+    /**
+     * Get image link
+     *
+     * @param string $name name of product attribute
+     * @param integer|null $idProductAttribute Prestashop product attribute id
+     *
+     * @return string
+     */
+    protected function getImageLink($name, $idProductAttribute = null)
+    {
+        $index = explode('_', $name);
+        $idImage = $index[1] - 1;
+        if ($idProductAttribute) {
+            $attributeImages = $this->combinations[$idProductAttribute]['images'];
+            if (count($attributeImages) > 0) {
+                if (isset($attributeImages[$idImage])) {
+                    return $attributeImages[$idImage];
+                }
+                return '';
+            }
+        }
+        return isset($this->images[$idImage]) ? $this->context->link->getImageLink(
+            $this->link_rewrite,
+            $this->id . '-' . $this->images[$idImage]['id_image'],
+            $this->imageSize
+        ) : '';
+    }
+
+    /**
+     * Get product type (simple, parent or child)
+     *
+     * @param integer|null $idProductAttribute Prestashop product attribute id
+     *
+     * @return string
+     */
+    protected function getProductType($idProductAttribute = null)
+    {
+        if ($idProductAttribute) {
+            $type = 'child';
+        } elseif (empty($this->combinations)) {
+            $type = 'simple';
+        } else {
+            $type = 'parent';
+        }
+        return $type;
+    }
+
+    /**
+     * Returns all tags to string
+     *
+     * @return string
+     */
+    protected function getTagList()
+    {
+        if (_PS_VERSION_ < '1.5') {
+            $results = Tag::getProductTags($this->id);
+            if (!($results && array_key_exists($this->context->language->id, $results))) {
+                return '';
+            }
+            $tags = '';
+            foreach ($results[$this->context->language->id] as $tagName) {
+                $tags .= $tagName . ', ';
+            }
+            $tags = rtrim($tags, ', ');
+        } else {
+            $tags = $this->getTags($this->context->language->id);
+        }
+        return $tags;
+    }
+
+    /**
+     * Get product weight without unit
+     *
+     * @param integer|null $idProductAttribute Prestashop product attribute id
+     *
+     * @return string
+     */
+    protected function getWeight($idProductAttribute = null)
+    {
+        if ($idProductAttribute && $this->combinations[$idProductAttribute]['weight']) {
+            $weight = (float)$this->weight + (float)$this->combinations[$idProductAttribute]['weight'];
+        } else {
+            $weight = (float)$this->weight;
+        }
+        return $weight;
+    }
+
+    /**
+     * Get a specific attribute from a parent or a combination
+     *
+     * @param string $name name of product attribute
+     * @param integer|null $idProductAttribute Prestashop product attribute id
+     *
+     * @return string
+     */
+    protected function getProductData($name, $idProductAttribute = null)
+    {
+        $value = false;
+        if ($idProductAttribute && $this->combinations[$idProductAttribute][$name]) {
+            $value = $this->combinations[$idProductAttribute][$name];
+        }
+        // if the value of the combination is not given, we take that of the parent
+        if (!$value || $value == 0 || $value === '') {
+            $value = $this->{$name};
+        }
+        return $value;
     }
 
     /**
@@ -794,28 +821,6 @@ class LengowProduct extends Product
             }
         }
         return true;
-    }
-
-    /**
-     * For a given product, returns its real quantity
-     *
-     * @param integer $idProduct Prestashop product id
-     * @param integer $idProductAttribute Prestashop product attribute id
-     * @param integer|null $idWarehouse Prestashop wharehouse id
-     * @param integer|null $idShop Prestashop shop id
-     *
-     * @return integer
-     */
-    public static function getRealQuantity($idProduct, $idProductAttribute = 0, $idWarehouse = null, $idShop = null)
-    {
-        if (version_compare(_PS_VERSION_, '1.5', '<')) {
-            if ($idProductAttribute === 0 || $idProductAttribute === null) {
-                return Product::getQuantity($idProduct);
-            }
-            return Product::getQuantity($idProduct, $idProductAttribute);
-        } else {
-            return parent::getRealQuantity($idProduct, $idProductAttribute, $idWarehouse, $idShop);
-        }
     }
 
     /**
@@ -965,7 +970,7 @@ class LengowProduct extends Product
             return false;
         }
         $product = new LengowProduct($idProduct);
-        if ($product->name == '' || !self::isValidId($product, $apiDatas)) {
+        if ($product->name === '' || !self::isValidId($product, $apiDatas)) {
             return false;
         }
         return true;
