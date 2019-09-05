@@ -30,7 +30,7 @@ class LengowTaxRule extends TaxRule
      * @param integer $idLang Prestashop lang id
      * @param integer $idGroup Prestashop group id
      *
-     * @return array list of tax rules
+     * @return array
      */
     public static function getLengowTaxRulesByGroupId($idLang, $idGroup)
     {

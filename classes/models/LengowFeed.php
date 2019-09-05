@@ -65,7 +65,7 @@ class LengowFeed
     protected $legacy;
 
     /**
-     * @var string export shop folder
+     * @var string|null export shop folder
      */
     protected $shopFolder = null;
 
@@ -148,8 +148,8 @@ class LengowFeed
      *
      * @param string $type data type (header, body or footer)
      * @param array $data export data
-     * @param boolean $isFirst is first product
-     * @param boolean $maxCharacter max characters for yaml format
+     * @param boolean|null $isFirst is first product
+     * @param boolean|null $maxCharacter max characters for yaml format
      */
     public function write($type, $data = array(), $isFirst = null, $maxCharacter = null)
     {
@@ -157,7 +157,7 @@ class LengowFeed
             case 'header':
                 if ($this->stream) {
                     header($this->getHtmlHeader());
-                    if ($this->format == 'csv') {
+                    if ($this->format === 'csv') {
                         header('Content-Disposition: attachment; filename=feed.csv');
                     }
                 }
@@ -186,6 +186,7 @@ class LengowFeed
     {
         switch ($this->format) {
             case 'csv':
+            default:
                 $header = '';
                 foreach ($data as $field) {
                     $header .= self::PROTECTION . self::formatFields($field, 'csv', $this->legacy)
@@ -215,6 +216,7 @@ class LengowFeed
     {
         switch ($this->format) {
             case 'csv':
+            default:
                 $content = '';
                 foreach ($data as $value) {
                     $content .= self::PROTECTION . $value . self::PROTECTION . self::CSV_SEPARATOR;
@@ -238,7 +240,7 @@ class LengowFeed
                 $content .= Tools::jsonEncode($jsonArray);
                 return $content;
             case 'yaml':
-                if ($maxCharacter % 2 == 1) {
+                if ($maxCharacter % 2 === 1) {
                     $maxCharacter = $maxCharacter + 1;
                 } else {
                     $maxCharacter = $maxCharacter + 2;
@@ -288,6 +290,8 @@ class LengowFeed
     /**
      * Finalize export generation
      *
+     * @throws LengowException
+     *
      * @return boolean
      */
     public function end()
@@ -300,7 +304,6 @@ class LengowFeed
                 $oldFilePath = $oldFile->getPath();
                 $oldFile->delete();
             }
-            $rename = false;
             if (isset($oldFilePath)) {
                 $rename = $this->file->rename($oldFilePath);
                 $this->file->fileName = $oldFileName;
@@ -343,6 +346,7 @@ class LengowFeed
     {
         switch ($this->format) {
             case 'csv':
+            default:
                 return 'Content-Type: text/csv; charset=UTF-8';
             case 'xml':
                 return 'Content-Type: application/xml; charset=UTF-8';

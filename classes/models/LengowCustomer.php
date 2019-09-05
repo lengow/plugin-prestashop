@@ -76,7 +76,7 @@ class LengowCustomer extends Customer
     /**
      * Validate Lengow
      *
-     * @throws LengowException invalid object
+     * @throws Exception|LengowException invalid object
      *
      * @return boolean
      */
@@ -134,7 +134,7 @@ class LengowCustomer extends Customer
         switch ($fieldName) {
             case 'lastname':
             case 'firstname':
-                if ($fieldName == 'lastname') {
+                if ($fieldName === 'lastname') {
                     $fieldName = 'firstname';
                 } else {
                     $fieldName = 'lastname';
@@ -222,7 +222,7 @@ class LengowCustomer extends Customer
      * @param string $email customer email
      * @param integer $idShop Prestashop shop id
      *
-     * @return LengowCustomer
+     * @return LengowCustomer|false
      */
     public function getByEmailAndShop($email, $idShop)
     {

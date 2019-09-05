@@ -52,9 +52,9 @@ class LengowFeedController extends LengowController
                         $data = array();
                         $data['shop_id'] = $idShop;
                         if ($state) {
-                            $data["state"] = true;
+                            $data['state'] = true;
                         } else {
-                            $data["state"] = false;
+                            $data['state'] = false;
                         }
                         $result = array_merge($data, $this->reloadTotal($idShop));
                         echo Tools::jsonEncode($result);
@@ -85,7 +85,7 @@ class LengowFeedController extends LengowController
                     $selectAll = isset($_REQUEST['select_all']) ? $_REQUEST['select_all'] : null;
                     $exportAction = isset($_REQUEST['export_action']) ? $_REQUEST['export_action'] : null;
                     $data = array();
-                    if ($selectAll == "true") {
+                    if ($selectAll === 'true') {
                         $this->buildTable($idShop);
                         $sql = $this->list->buildQuery(false, true);
                         try {
@@ -98,7 +98,7 @@ class LengowFeedController extends LengowController
                             $all[] = $value['id_product'];
                         }
                         foreach ($all as $id) {
-                            if ($exportAction == 'lengow_add_to_export') {
+                            if ($exportAction === 'lengow_add_to_export') {
                                 LengowProduct::publish($id, 1, $idShop);
                             } else {
                                 LengowProduct::publish($id, 0, $idShop);
@@ -110,9 +110,9 @@ class LengowFeedController extends LengowController
                         $data = array_merge($data, $this->reloadTotal($idShop));
                     } elseif ($selection) {
                         foreach ($selection as $id => $v) {
-                            // This line is useless, but Prestashop validator require it
+                            // this line is useless, but Prestashop validator require it
                             $v = $v;
-                            if ($exportAction == 'lengow_add_to_export') {
+                            if ($exportAction === 'lengow_add_to_export') {
                                 LengowProduct::publish($id, 1, $idShop);
                             } else {
                                 LengowProduct::publish($id, 0, $idShop);
@@ -152,7 +152,7 @@ class LengowFeedController extends LengowController
         }
         foreach ($results as $row) {
             $shop = new LengowShop($row['id_shop']);
-            $lengowExport = new LengowExport(array("shop_id" => $shop->id));
+            $lengowExport = new LengowExport(array('shop_id' => $shop->id));
             $shopCollection[] = array(
                 'shop' => $shop,
                 'link' => LengowMain::getExportUrl($shop->id),
@@ -170,7 +170,7 @@ class LengowFeedController extends LengowController
                     null,
                     $shop->id
                 ),
-                'list' => $this->buildTable($shop->id)
+                'list' => $this->buildTable($shop->id),
             );
         }
         $this->context->smarty->assign('shopCollection', $shopCollection);
@@ -186,7 +186,7 @@ class LengowFeedController extends LengowController
      */
     public function reloadTotal($idShop)
     {
-        $lengowExport = new LengowExport(array("shop_id" => $idShop));
+        $lengowExport = new LengowExport(array('shop_id' => $idShop));
         $result = array();
         $result['total_export_product'] = $lengowExport->getTotalExportProduct();
         $result['total_product'] = $lengowExport->getTotalProduct();
@@ -250,7 +250,7 @@ class LengowFeedController extends LengowController
             'filter_order' => true,
             'type' => 'price',
             'class' => 'left',
-            'filter_key' => 'p.price'
+            'filter_key' => 'p.price',
         );
         $fieldsList['price_final'] = array(
             'title' => $this->locale->t('product.table.final_price'),
@@ -258,7 +258,7 @@ class LengowFeedController extends LengowController
             'type' => 'price',
             'class' => 'left',
             'havingFilter' => true,
-            'orderby' => false
+            'orderby' => false,
         );
         if (_PS_VERSION_ >= '1.5') {
             $quantityFilterKey = 'sav.quantity';
@@ -279,21 +279,21 @@ class LengowFeedController extends LengowController
             'class' => 'center no-link',
             'type' => 'switch_product',
             'filter_order' => true,
-            'filter_key' => 'id_lengow_product'
+            'filter_key' => 'id_lengow_product',
         );
 
         $join = array();
         $where = array();
 
         $select = array(
-            "p.id_product",
-            "p.reference",
-            "p.price",
-            "pl.name",
-            "0 as price_final",
-            "IF(lp.id_product, 1, 0) as id_lengow_product",
-            "cl.name as category_name",
-            "'' as search"
+            'p.id_product',
+            'p.reference',
+            'p.price',
+            'pl.name',
+            '0 as price_final',
+            'IF(lp.id_product, 1, 0) as id_lengow_product',
+            'cl.name as category_name',
+            "'' as search",
         );
         $from = 'FROM ' . _DB_PREFIX_ . 'product p';
 
@@ -355,7 +355,7 @@ class LengowFeedController extends LengowController
                     'join' => $join,
                     'where' => $where,
                     'order' => 'p.id_product ASC',
-                )
+                ),
             )
         );
 
@@ -366,7 +366,7 @@ class LengowFeedController extends LengowController
         $tempContext->employee = $this->context->employee;
         $tempContext->country = $this->context->country;
 
-        // Price calculation
+        // price calculation
         $nb = count($collection);
         if ($collection) {
             for ($i = 0; $i < $nb; $i++) {
@@ -490,11 +490,13 @@ class LengowFeedController extends LengowController
      * @param string $value row value
      * @param array $item item values
      *
+     * @throws Exception
+     *
      * @return string
      */
     public static function displayLink($key, $value, $item)
     {
-        // This line is useless, but Prestashop validator require it
+        // this line is useless, but Prestashop validator require it
         $key = $key;
         $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $link = new LengowLink();

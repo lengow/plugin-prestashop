@@ -320,6 +320,7 @@ log.install.table_created|adding table %{name} in database
 log.install.table_already_created|skipping table %{name} : already existing in database
 log.install.install_tab|install tab %{class_name}
 log.install.add_technical_error_status|adding Lengow technical error status
+log.install.add_technical_error_status_failed|adding Lengow technical error status failed: %{error_message}
 log.install.update_technical_error_status|update translations for Lengow technical error status
 log.install.registering_hook_success|registering hook - %{hook}: success
 log.install.registering_hook_error|registering hook - %{hook}: error
@@ -333,6 +334,7 @@ log.uninstall.uninstall_tab|uninstall tab %{class_name}
 log.uninstall.table_dropped|removing table %{name} in database
 log.mail_report.send_mail_to|report email sent to %{emails}
 log.mail_report.unable_send_mail_to|unable to send report email to %{emails}
+log.mail_report.template_not_exist|the mail report template does not exist for the locale %{iso_code}
 log.export.start|## start export ##
 log.export.end|## end export ##
 log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})

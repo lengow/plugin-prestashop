@@ -27,7 +27,9 @@ class LengowBackup extends Backup
     /**
      * Creates a new backup file
      *
-     * @return boolean true on successful backup
+     * @throws Exception
+     *
+     * @return boolean
      */
     public function add()
     {
@@ -35,19 +37,18 @@ class LengowBackup extends Backup
             $ignoreInsertTable = array(
                 _DB_PREFIX_ . 'connections',
                 _DB_PREFIX_ . 'connections_page',
-                _DB_PREFIX_
-                . 'connections_source',
+                _DB_PREFIX_ . 'connections_source',
                 _DB_PREFIX_ . 'guest',
-                _DB_PREFIX_ . 'statssearch'
+                _DB_PREFIX_ . 'statssearch',
             );
         } else {
             $ignoreInsertTable = array();
         }
-        // Generate some random number, to make it extra hard to guess backup file names
+        // generate some random number, to make it extra hard to guess backup file names
         $rand = dechex(mt_rand(0, min(0xffffffff, mt_getrandmax())));
         $date = time();
         $backupfile = $this->getRealBackupPath() . $date . '-lengowbackup' . $rand . '.sql';
-        // Figure out what compression is available and open the file
+        // figure out what compression is available and open the file
         if (function_exists('bzopen')) {
             $backupfile .= '.bz2';
             $fp = @bzopen($backupfile, 'w');
@@ -70,15 +71,15 @@ class LengowBackup extends Backup
         $found = 0;
         foreach (LengowInstall::$tables as $table) {
             $table = _DB_PREFIX_ . $table;
-            // Export the table schema
-            // This line is required by Prestashop validator
+            // export the table schema
+            // this line is required by Prestashop validator
             $sql = str_replace('IF NOT EXISTS', '', 'SHOW CREATE TABLE IF NOT EXISTS');
             try {
                 $schema = Db::getInstance()->executeS($sql . '`' . $table . '`');
             } catch (PrestaShopDatabaseException $e) {
                 return false;
             }
-            if (count($schema) != 1 || !isset($schema[0]['Table']) || !isset($schema[0]['Create Table'])) {
+            if (count($schema) !== 1 || !isset($schema[0]['Table']) || !isset($schema[0]['Create Table'])) {
                 fclose($fp);
                 $this->delete();
                 echo Tools::displayError('An error occurred while backing up. Unable to obtain the schema of')
@@ -97,14 +98,14 @@ class LengowBackup extends Backup
                 $lines = explode("\n", $schema[0]['Create Table']);
 
                 if ($data && $sizeof > 0) {
-                    // Export the table data
+                    // export the table data
                     fwrite($fp, 'INSERT INTO `' . $schema[0]['Table'] . "` VALUES\n");
                     $i = 1;
                     while ($row = DB::getInstance()->nextRow($data)) {
                         $s = '(';
                         foreach ($row as $field => $value) {
                             $tmp = "'" . pSQL($value, true) . "',";
-                            if ($tmp != "'',") {
+                            if ($tmp !== "'',") {
                                 $s .= $tmp;
                             } else {
                                 foreach ($lines as $line) {
@@ -120,7 +121,7 @@ class LengowBackup extends Backup
                             }
                         }
                         $s = rtrim($s, ',');
-                        if ($i % 200 == 0 && $i < $sizeof) {
+                        if ($i % 200 === 0 && $i < $sizeof) {
                             $s .= ");\nINSERT INTO `" . $schema[0]['Table'] . "` VALUES\n";
                         } elseif ($i < $sizeof) {
                             $s .= "),\n";
@@ -135,7 +136,7 @@ class LengowBackup extends Backup
             $found++;
         }
         fclose($fp);
-        if ($found == 0) {
+        if ($found === 0) {
             $this->delete();
             echo Tools::displayError('No valid tables were found to backup.');
             return false;

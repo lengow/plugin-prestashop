@@ -24,7 +24,7 @@ require 'conf.inc.php';
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
 $accountId = isset($_REQUEST['account_id']) ? $_REQUEST['account_id'] : null;
 $secretToken = isset($_REQUEST['secret_token']) ? $_REQUEST['secret_token'] : null;
-$blockedIP = isset($_REQUEST['blockedIP']) ? $_REQUEST['blockedIP'] : false;
+$blockedIp = isset($_REQUEST['blockedIP']) ? $_REQUEST['blockedIP'] : false;
 $lengowTool = new LengowTool();
 
 switch ($action) {
@@ -34,7 +34,7 @@ switch ($action) {
 }
 
 require 'views/header.php';
-if ($blockedIP) {
+if ($blockedIp) {
     echo '<div class="alert alert-danger" role="alert">Your IP Address has ben blocked</div>';
 }
 ?>

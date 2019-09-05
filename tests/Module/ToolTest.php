@@ -27,7 +27,7 @@ class ToolTest extends ModuleTestCase
     public function setUp()
     {
         parent::setUp();
-        //load module
+        // load module
         Module::getInstanceByName('lengow');
     }
 

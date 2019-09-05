@@ -34,14 +34,14 @@ remove_directories(){
     find $DIRECTORY -maxdepth 1 -mindepth 1 -type d -exec rm -rf {} \;
     echo "- Delete $FILE : ""$VERT""DONE""$NORMAL"""
 }
-# Check parameters
+# check parameters
 if [ -z "$1" ]; then
 	echo 'Version parameter is not set'
 	echo
 	exit 0
 else
 	VERSION="$1"
-	ARCHIVE_NAME='lengow.'$VERSION'.zip'
+	ARCHIVE_NAME='lengow.prestashop.'$VERSION'.zip'
 fi
 
 # Variables
@@ -74,63 +74,63 @@ if [ ! -d "$FOLDER" ]; then
 	exit 0
 fi
 
-# Generate translations
+# generate translations
 php translate.php
 echo "- Generate translations : ""$VERT""DONE""$NORMAL"""
-# Create files checksum
+# create files checksum
 php checkmd5.php
 echo "- Create files checksum : ""$VERT""DONE""$NORMAL"""
-#remove TMP FOLDER
+# remove TMP FOLDER
 remove_directory $FOLDER_TMP
-#copy files
+# copy files
 cp -rRp $FOLDER $FOLDER_TMP
-# Remove dod
+# remove dod
 remove_files $FOLDER_TMP "dod.md"
-# Remove Readme
+# remove Readme
 remove_files $FOLDER_TMP "README.md"
-# Remove .gitignore
+# remove .gitignore
 remove_files $FOLDER_TMP ".gitignore"
-# Remove .git
+# remove .git
 remove_files $FOLDER_TMP ".git"
-# Remove .DS_Store
+# remove .DS_Store
 remove_files $FOLDER_TMP ".DS_Store"
-# Remove .AdminLengowHome.gif
+# remove .AdminLengowHome.gif
 remove_files $FOLDER_TMP "AdminLengowHome.gif"
-# Remove .idea
+# remove .idea
 remove_files $FOLDER_TMP ".idea"
-# Clean Config Folder
+# clean Config Folder
 remove_files $FOLDER_CONFIG "marketplaces.json"
-# Clean Log Folder
+# clean Log Folder
 remove_files $FOLDER_LOGS "*.txt"
 echo "- Clean logs folder : ""$VERT""DONE""$NORMAL"""
-# Clean export folder
+# clean export folder
 remove_directories $FOLDER_EXPORT
 echo "- Clean export folder : ""$VERT""DONE""$NORMAL"""
-# Clean tools folder
+# clean tools folder
 remove_directory $FOLDER_TOOLS
 echo "- Remove Tools folder : ""$VERT""DONE""$NORMAL"""
-# Remove Test folder
+# remove Test folder
 remove_directory $FOLDER_TEST
 echo "- Remove Test folder : ""$VERT""DONE""$NORMAL"""
-#remove TMP FOLDER_TRANSLATION
+# remove TMP FOLDER_TRANSLATION
 remove_directory $FOLDER_TRANSLATION
 echo "- Remove Translation yml folder : ""$VERT""DONE""$NORMAL"""
-# Remove config.xml
+# remove config.xml
 find $FOLDER_TMP -name "config.xml" -delete
 echo "- Delete config.xml : ""$VERT""DONE""$NORMAL"""
-# Remove config_fr.xml
+# remove config_fr.xml
 find $FOLDER_TMP -name "config_fr.xml" -delete
 echo "- Delete config_fr.xml : ""$VERT""DONE""$NORMAL"""
-# Remove config_es.xml
+# remove config_es.xml
 find $FOLDER_TMP -name "config_es.xml" -delete
 echo "- Delete config_es.xml : ""$VERT""DONE""$NORMAL"""
-# Remove config_it.xml
+# remove config_it.xml
 find $FOLDER_TMP -name "config_it.xml" -delete
 echo "- Delete config_it.xml : ""$VERT""DONE""$NORMAL"""
-# Remove todo.txt
+# remove todo.txt
 find $FOLDER_TMP -name "todo.txt" -delete
 echo "- todo.txt : ""$VERT""DONE""$NORMAL"""
-# Make zip
+# make zip
 cd /tmp
 zip "-r" $ARCHIVE_NAME "lengow"
 echo "- Build archive : ""$VERT""DONE""$NORMAL"""

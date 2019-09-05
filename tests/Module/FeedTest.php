@@ -77,7 +77,7 @@ class FeedTest extends ModuleTestCase
      */
     public function setFormat()
     {
-        new LengowExport(array("format" => "mp3"));
+        new LengowExport(array('format' => 'mp3'));
     }
 
     /**
@@ -91,7 +91,7 @@ class FeedTest extends ModuleTestCase
             array(
                 'export_variation' => false,
                 'limit' => 4,
-                'log_output' => false
+                'log_output' => false,
             )
         );
         $export->exec();

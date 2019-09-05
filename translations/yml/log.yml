@@ -7,6 +7,7 @@ en:
       table_already_created: "skipping table %{name} : already existing in database"
       install_tab: "install tab %{class_name}"
       add_technical_error_status: "adding Lengow technical error status"
+      add_technical_error_status_failed: "adding Lengow technical error status failed: %{error_message}"
       update_technical_error_status: "update translations for Lengow technical error status"
       registering_hook_success: "registering hook - %{hook}: success"
       registering_hook_error: "registering hook - %{hook}: error"
@@ -22,6 +23,7 @@ en:
     mail_report:
       send_mail_to: "report email sent to %{emails}"
       unable_send_mail_to: "unable to send report email to %{emails}"
+      template_not_exist: "the mail report template does not exist for the locale %{iso_code}"
     export:
       start: "## start export ##"
       end: "## end export ##"

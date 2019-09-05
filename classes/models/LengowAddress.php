@@ -153,7 +153,7 @@ class LengowAddress extends Address
         $firstName = empty($firstName) ? '' : self::cleanName($firstName);
         return array(
             'firstname' => Tools::ucfirst(Tools::strtolower($firstName)),
-            'lastname' => Tools::ucfirst(Tools::strtolower($lastName))
+            'lastname' => Tools::ucfirst(Tools::strtolower($lastName)),
         );
     }
 
@@ -228,9 +228,7 @@ class LengowAddress extends Address
         $this->other = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['complement']);
         if (isset($data['id_relay'])) {
             $this->idRelay = $data['id_relay'];
-            $this->other .= empty($this->other)
-                ? 'Relay id: ' . $this->idRelay
-                : ' Relay id: ' . $this->idRelay;
+            $this->other .= empty($this->other) ? 'Relay id: ' . $this->idRelay : ' Relay id: ' . $this->idRelay;
         }
         $this->postcode = $data['zipcode'];
         $this->city = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['city']);
@@ -246,9 +244,9 @@ class LengowAddress extends Address
     /**
      * Validate Lengow
      *
-     * @throws LengowException invalid object
+     * @throws Exception|LengowException invalid object
      *
-     * @return boolean true if object is valid
+     * @return boolean
      */
     public function validateLengow()
     {
@@ -256,8 +254,8 @@ class LengowAddress extends Address
         foreach ($definition as $fieldName => $constraints) {
             if (isset($constraints['required']) && $constraints['required']
                 || isset($constraints['check']) && $constraints['check']
-                || $fieldName == 'phone'
-                || $fieldName == 'phone_mobile'
+                || $fieldName === 'phone'
+                || $fieldName === 'phone_mobile'
             ) {
                 if (empty($this->{$fieldName})) {
                     $this->validateFieldLengow($fieldName, self::LENGOW_EMPTY_ERROR);
@@ -308,7 +306,7 @@ class LengowAddress extends Address
         switch ($fieldName) {
             case 'lastname':
             case 'firstname':
-                if ($fieldName == 'lastname') {
+                if ($fieldName === 'lastname') {
                     $fieldName = 'firstname';
                 } else {
                     $fieldName = 'lastname';
@@ -343,14 +341,14 @@ class LengowAddress extends Address
                 $this->phone = LengowMain::cleanPhone($this->phone);
                 $this->phone_mobile = LengowMain::cleanPhone($this->phone_mobile);
                 $this->phoneOffice = LengowMain::cleanPhone($this->phoneOffice);
-                if ($fieldName == 'phone') {
+                if ($fieldName === 'phone') {
                     if (!empty($this->phoneOffice)) {
                         $this->phone = $this->phoneOffice;
                     } elseif (!empty($this->phone_mobile)) {
                         $this->phone = $this->phone_mobile;
                     }
                 }
-                if ($fieldName == 'phone_mobile') {
+                if ($fieldName === 'phone_mobile') {
                     if (!empty($this->phoneOffice)) {
                         $this->phone_mobile = $this->phoneOffice;
                     }

@@ -16,9 +16,7 @@ class InstallTest extends ModuleTestCase
         parent::setUpBeforeClass();
 
         $fixture = new Fixture();
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/multi_shop.yml'
-        );
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/multi_shop.yml');
 
         Configuration::updatevalue('PS_MULTISHOP_FEATURE_ACTIVE', true);
     }
@@ -43,7 +41,7 @@ class InstallTest extends ModuleTestCase
             $module->install();
         }
 
-        $this->assertTrue((boolean)$module, 'Load Lengow Module');
+        $this->assertTrue((bool)$module, 'Load Lengow Module');
         $this->assertTrue($module->uninstall(), 'Uninstall Lengow Module');
     }
 
@@ -56,7 +54,7 @@ class InstallTest extends ModuleTestCase
     public function load()
     {
         $module = Module::getInstanceByName('lengow');
-        $this->assertTrue((boolean)$module, 'Load Lengow Module');
+        $this->assertTrue((bool)$module, 'Load Lengow Module');
         $this->assertEquals($module->name, 'lengow', 'Module name is lengow');
     }
 
@@ -71,9 +69,9 @@ class InstallTest extends ModuleTestCase
     public function install()
     {
         $module = Module::getInstanceByName('lengow');
-        $this->assertTrue((boolean)$module, 'Load Lengow Module');
+        $this->assertTrue((bool)$module, 'Load Lengow Module');
 
-        //desinstall module if install
+        // uninstall module if install
         if ($module->isInstalled('lengow')) {
             $module = Module::getInstanceByName('lengow');
             $module->uninstall();
@@ -97,9 +95,7 @@ class InstallTest extends ModuleTestCase
     public function dropTable()
     {
         $fixture = new Fixture();
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Install/lengow_table.yml'
-        );
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Install/lengow_table.yml');
 
         foreach (LengowInstall::$tables as $table) {
             $this->assertTableExist($table, 'Table ' . $table . ' exist');

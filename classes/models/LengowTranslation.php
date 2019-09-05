@@ -25,7 +25,7 @@
 class LengowTranslation
 {
     /**
-     * @var array all translations
+     * @var array|null all translations
      */
     protected static $translation = null;
 
@@ -35,12 +35,12 @@ class LengowTranslation
     public $fallbackIsoCode = 'en';
 
     /**
-     * @var string iso code
+     * @var string|null iso code
      */
     protected $isoCode = null;
 
     /**
-     * @var string force iso code for log and toolbox
+     * @var string|null force iso code for log and toolbox
      */
     public static $forceIsoCode = null;
 
@@ -57,7 +57,7 @@ class LengowTranslation
      *
      * @param string $message localization key
      * @param array $args arguments to replace word in string
-     * @param array $isoCode translation iso code
+     * @param array|null $isoCode translation iso code
      *
      * @return string
      */
@@ -113,7 +113,7 @@ class LengowTranslation
      * Load csv file
      *
      * @param string $isoCode translation iso code
-     * @param string $filename file location
+     * @param string|null $filename file location
      *
      * @return boolean
      */
@@ -125,8 +125,8 @@ class LengowTranslation
         }
         $translation = array();
         if (file_exists($filename)) {
-            if (($handle = fopen($filename, "r")) !== false) {
-                while (($data = fgetcsv($handle, 1000, "|")) !== false) {
+            if (($handle = fopen($filename, 'r')) !== false) {
+                while (($data = fgetcsv($handle, 1000, '|')) !== false) {
                     $translation[$data[0]] = $data[1];
                 }
                 fclose($handle);

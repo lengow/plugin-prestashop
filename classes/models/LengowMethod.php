@@ -41,7 +41,7 @@ class LengowMethod
         } catch (PrestaShopDatabaseException $e) {
             $results = array();
         }
-        // Additional verification for non-case sensitive Databases
+        // additional verification for non-case sensitive Databases
         if (count($results) > 0) {
             foreach ($results as $result) {
                 if ($result['method_marketplace_name'] === $methodMarketplaceName) {
@@ -141,7 +141,7 @@ class LengowMethod
     ) {
         $params = array(
             'method_marketplace_name' => pSQL($methodMarketplaceName),
-            'method_marketplace_label' => pSQL($methodMarketplaceLabel)
+            'method_marketplace_label' => pSQL($methodMarketplaceLabel),
         );
         if (!is_null($methodLengowCode) && Tools::strlen($methodLengowCode) > 0) {
             $params['method_lengow_code'] = pSQL($methodLengowCode);
@@ -207,10 +207,10 @@ class LengowMethod
         } catch (PrestaShopDatabaseException $e) {
             $result = array();
         }
-        if (count($result) == 0) {
+        if (count($result) === 0) {
             $params = array(
                 'id_marketplace' => (int)$idMarketplace,
-                'id_method_marketplace' => (int)$idMethodMarketplace
+                'id_method_marketplace' => (int)$idMethodMarketplace,
             );
             try {
                 if (_PS_VERSION_ < '1.5') {
@@ -413,7 +413,7 @@ class LengowMethod
             'id_country' => $idCountry,
             'id_marketplace' => $idMarketplace,
             'id_carrier' => $idCarrier,
-            'id_method_marketplace' => $idMethodMarketplace
+            'id_method_marketplace' => $idMethodMarketplace,
         );
         $db = Db::getInstance();
         try {

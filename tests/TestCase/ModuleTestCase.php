@@ -34,22 +34,12 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
     public static function tearDownAfterClass()
     {
-//        $fixture = new Fixture();
-//        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/attribute_product.yml');
-//        $fixture->loadFixture(_PS_MODULE_DIR_ .'lengow/tests/Module/Fixtures/features.yml');
-//        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/before_feed.yml');
-//        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/simple_product.yml');
-//        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/variation_product.yml');
-//        $fixture->loadFixture(_PS_MODULE_DIR_.'lengow/tests/Module/Fixtures/pack_product.yml');
-//
-
-
         Shop::setContext(Shop::CONTEXT_ALL);
     }
 
     public function setUp()
     {
-        //load module
+        // load module
         $module = Module::getInstanceByName('lengow');
         if ($module) {
             $fixture = new Fixture();
@@ -58,12 +48,12 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
             $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Main/carrier.yml');
             $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Main/order_state.yml');
 
-            //load default marketplace
+            // load default marketplace
             $marketplaceFile = _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Connector/marketplaces.json';
 
             LengowMarketplace::$MARKETPLACES = array(
                 1 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
-                2 => Tools::jsonDecode(file_get_contents($marketplaceFile))
+                2 => Tools::jsonDecode(file_get_contents($marketplaceFile)),
             );
 
             LengowConnector::$testFixturePath = null;
@@ -145,12 +135,11 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      */
     public static function assertFileNbLine($filename, $nbLine, $newFilename, $message = '')
     {
-
         $info = new SplFileInfo($filename);
         $extension = $info->getExtension();
 
-        //add one line for csv header
-        if ($extension == "csv") {
+        // add one line for csv header
+        if ($extension === 'csv') {
             $nbLine++;
         }
 
@@ -172,8 +161,8 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      */
     public static function assertFileColumnEqual($filename, $columns, $message = '')
     {
-        if (($handle = fopen($filename, "r")) !== false) {
-            while (($data = fgetcsv($handle, 1000, "|")) !== false) {
+        if (($handle = fopen($filename, 'r')) !== false) {
+            while (($data = fgetcsv($handle, 1000, '|')) !== false) {
                 self::assertEquals($data, $columns, $message);
                 break;
             }
@@ -191,8 +180,8 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      */
     public static function assertFileColumnContain($filename, $columns, $message = '')
     {
-        if (($handle = fopen($filename, "r")) !== false) {
-            while (($data = fgetcsv($handle, 1000, "|")) !== false) {
+        if (($handle = fopen($filename, 'r')) !== false) {
+            while (($data = fgetcsv($handle, 1000, '|')) !== false) {
 
                 $find = true;
                 foreach ($columns as $column) {
@@ -217,8 +206,8 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      */
     public static function assertFileColumnNotContain($filename, $columns, $message = '')
     {
-        if (($handle = fopen($filename, "r")) !== false) {
-            while (($data = fgetcsv($handle, 1000, "|")) !== false) {
+        if (($handle = fopen($filename, 'r')) !== false) {
+            while (($data = fgetcsv($handle, 1000, '|')) !== false) {
 
                 $find = false;
                 foreach ($columns as $column) {
@@ -247,16 +236,16 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         $headers = array();
 
         $i = 0;
-        if (($handle = fopen($filename, "r")) !== false) {
-            while (($data = fgetcsv($handle, 1000, "|")) !== false) {
-                if ($i == 0) {
+        if (($handle = fopen($filename, 'r')) !== false) {
+            while (($data = fgetcsv($handle, 1000, '|')) !== false) {
+                if ($i === 0) {
                     $j = 0;
                     foreach ($data as $column) {
                         $headers[str_replace('"', '', $column)] = $j;
                         $j++;
                     }
                 } else {
-                    if ($data[$headers["ID_PRODUCT"]] === (string)$productId) {
+                    if ($data[$headers['ID_PRODUCT']] === (string)$productId) {
                         foreach ($values as $key => $value) {
                             self::assertEquals($data[$headers[$key]], $value, $message);
                         }
@@ -276,7 +265,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      */
     public static function assertKeysExistInArray($keys, $array)
     {
-        if (!is_array($keys) || count($keys) == 0) {
+        if (!is_array($keys) || count($keys) === 0) {
             self::assertTrue(false, 'Keys Array is empty');
         }
         foreach ($keys as $key) {
@@ -286,13 +275,15 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Asset Mysql Table contain data
+     *
      * @param $table
      * @param $where
      * @param $message
+     *
+     * @throws \PrestaShopDatabaseException
      */
-    public static function assertTableContain($table, $where, $message = "")
+    public static function assertTableContain($table, $where, $message = '')
     {
-
         $whereSql = array();
         foreach ($where as $key => $value) {
             if ($value === 'NULL') {
@@ -303,7 +294,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         }
         $whereSql = ' WHERE ' . join(' AND ', $whereSql);
         $sql = 'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . $table . $whereSql;
-        if ($message == "") {
+        if ($message === '') {
             $message = 'Cant find row with [' . $whereSql . '] IN [' . $table . ']';
         }
         $result = Db::getInstance()->ExecuteS($sql);
@@ -312,13 +303,15 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Asset Mysql Table not contain data
+     *
      * @param $table
      * @param $where
      * @param $message
+     *
+     * @throws \PrestaShopDatabaseException
      */
-    public static function assertTableNotContain($table, $where, $message = "")
+    public static function assertTableNotContain($table, $where, $message = '')
     {
-
         $whereSql = array();
         foreach ($where as $key => $value) {
             if ($value === 'NULL') {
@@ -329,7 +322,7 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
         }
         $whereSql = ' WHERE ' . join(' AND ', $whereSql);
         $sql = 'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . $table . $whereSql;
-        if ($message == "") {
+        if ($message === '') {
             $message = 'Cant find row with [' . $whereSql . '] IN [' . $table . ']';
         }
         $result = Db::getInstance()->ExecuteS($sql);
@@ -338,8 +331,11 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Test if table is empty
+     *
      * @param $tableName
      * @param string $message
+     *
+     * @throws \PrestaShopDatabaseException
      */
     public function assertTableEmpty($tableName, $message = '')
     {
@@ -354,7 +350,9 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
      * @param string $methodName Method name to call
      * @param array $parameters Array of parameters to pass into method.
      *
-     * @return mixed Method return.
+     * @throws \ReflectionException
+     *
+     * @return mixed
      */
     public function invokeMethod(&$object, $methodName, array $parameters = array())
     {
@@ -368,8 +366,11 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Test if last line of log contain text
+     *
      * @param $text
      * @param string $message
+     *
+     * @throws \LengowException
      */
     public function assertLogContain($text, $message = '')
     {
@@ -380,8 +381,12 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Test if table exist
+     *
      * @param string $tableName
      * @param string $message
+     *
+     * @throws \PrestaShopDatabaseException
+     *
      * @return boolean
      */
     public function assertTableExist($tableName, $message = '')
@@ -392,8 +397,12 @@ class ModuleTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Test if table not exist
+     *
      * @param string $tableName
-     * @param string $message
+     * @param string
+     *
+     * @throws \PrestaShopDatabaseException
+     *
      * @return boolean
      */
     public function assertTableNotExist($tableName, $message = '')

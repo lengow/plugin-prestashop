@@ -34,10 +34,15 @@ class LengowMainSettingController extends LengowController
             case 'process':
                 $security = LengowMain::decodeLogMessage('global_setting.screen.i_am_sure');
                 if (isset($_REQUEST['uninstall_textbox']) &&
-                    trim($_REQUEST['uninstall_textbox']) == $security
+                    trim($_REQUEST['uninstall_textbox']) === $security
                 ) {
-                    $backup = new LengowBackup();
-                    if ($backup->add()) {
+                    try {
+                        $backup = new LengowBackup();
+                        $success = $backup->add();
+                    } catch (Exception $e) {
+                        $success = false;
+                    }
+                    if ($success) {
                         LengowMain::log('Uninstall', LengowMain::setLogMessage('log.uninstall.dump_sql_created'));
                         LengowConfiguration::deleteAll();
                         LengowInstall::dropTable();
@@ -50,7 +55,7 @@ class LengowMainSettingController extends LengowController
                 }
                 $form = new LengowConfigurationForm(
                     array(
-                        "fields" => LengowConfiguration::getKeys(),
+                        'fields' => LengowConfiguration::getKeys(),
                     )
                 );
                 $form->postProcess(
@@ -77,11 +82,7 @@ class LengowMainSettingController extends LengowController
      */
     public function display()
     {
-        $form = new LengowConfigurationForm(
-            array(
-                "fields" => LengowConfiguration::getKeys(),
-            )
-        );
+        $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
         $form->fields['LENGOW_REPORT_MAIL_ADDRESS']['label'] = '';
         $mailReport = $form->buildInputs(
             array(
@@ -89,18 +90,14 @@ class LengowMainSettingController extends LengowController
                 'LENGOW_REPORT_MAIL_ADDRESS',
             )
         );
-        $defaultExportCarrier = $form->buildInputs(
-            array('LENGOW_EXPORT_CARRIER_DEFAULT')
-        );
+        $defaultExportCarrier = $form->buildInputs(array('LENGOW_EXPORT_CARRIER_DEFAULT'));
         $tracker = $form->buildInputs(
             array(
                 'LENGOW_TRACKING_ENABLED',
-                'LENGOW_TRACKING_ID'
+                'LENGOW_TRACKING_ID',
             )
         );
-        $preprodReport = $form->buildInputs(
-            array('LENGOW_IMPORT_PREPROD_ENABLED')
-        );
+        $preprodReport = $form->buildInputs(array('LENGOW_IMPORT_PREPROD_ENABLED'));
         $credentials = $form->buildInputs(
             array(
                 'LENGOW_ACCOUNT_ID',

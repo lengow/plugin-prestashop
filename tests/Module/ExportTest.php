@@ -43,7 +43,7 @@ class ExportTest extends ModuleTestCase
         $fixture = new Fixture();
         $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml');
 
-        $export = new LengowExport(array("product_ids" => array(1), "log_output" => false));
+        $export = new LengowExport(array('product_ids' => array(1), 'log_output' => false));
         $export->exec();
         $filename = $export->getFileName();
         $this->assertFileExists($filename);
@@ -52,7 +52,7 @@ class ExportTest extends ModuleTestCase
         unlink($filename);
         $this->assertFileNotExists($filename);
 
-        $export = new LengowExport(array("product_ids" => array(1), "log_output" => false));
+        $export = new LengowExport(array('product_ids' => array(1), 'log_output' => false));
         $export->exec();
         $filename = $export->getFileName();
         $this->assertFileExists($filename);
@@ -185,7 +185,7 @@ class ExportTest extends ModuleTestCase
      * Test Export Format Empty
      *
      * @test
-     * @expectedException        LengowException
+     * @expectedException LengowException
      * @expectedExceptionMessage log.export.error_illegal_export_format
      * @covers LengowExport::setFormat
      */
@@ -199,7 +199,7 @@ class ExportTest extends ModuleTestCase
      * Test Export Empty Currency
      *
      * @test
-     * @expectedException        LengowException
+     * @expectedException LengowException
      * @expectedExceptionMessage log.export.error_illegal_currency
      * @covers LengowExport::checkCurrency
      */

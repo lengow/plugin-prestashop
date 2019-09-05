@@ -50,25 +50,31 @@ class LengowLink extends LinkCore
      */
     public function getAbsoluteAdminLink($controller, $ajax = false, $adminPrestashop = false)
     {
-        //use in toolbox to get specific link
+        // use in toolbox to get specific link
         if (self::$forceLink) {
             return self::$forceLink;
         }
         if (_PS_VERSION_ < '1.5' && !$adminPrestashop) {
-            $controller .= "14";
+            $controller .= '14';
         }
         $adminPath = Tools::getShopDomainSsl(true, true) .
             __PS_BASE_URI__ . Tools::substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);
-        if (_PS_VERSION_ < '1.6') {
-            if (_PS_VERSION_ < '1.5' && $ajax) {
-                $adminPath .= '/ajax-tab.php?tab=' . $controller . '&token=' . Tools::getAdminTokenLite($controller);
+        try {
+            if (_PS_VERSION_ < '1.6') {
+                if (_PS_VERSION_ < '1.5' && $ajax) {
+                    $adminPath .= '/ajax-tab.php?tab=' . $controller
+                        . '&token=' . Tools::getAdminTokenLite($controller);
+                } else {
+                    $adminPath .= '/index.php?tab=' . $controller
+                        . '&token=' . Tools::getAdminTokenLite($controller);
+                }
+            } elseif (_PS_VERSION_ < '1.7') {
+                $adminPath .= '/' . $this->getAdminLink($controller);
             } else {
-                $adminPath .= '/index.php?tab=' . $controller . '&token=' . Tools::getAdminTokenLite($controller);
+                $adminPath = $this->getAdminLink($controller);
             }
-        } elseif (_PS_VERSION_ < '1.7') {
-            $adminPath .= '/' . $this->getAdminLink($controller);
-        } else {
-            $adminPath = $this->getAdminLink($controller);
+        } catch (Exception $e) {
+            return '';
         }
         return $adminPath;
     }

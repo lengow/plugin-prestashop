@@ -128,15 +128,15 @@ class LengowMain
         switch ($state) {
             case 'accepted':
             case 'waiting_shipment':
-                return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_PROCESS');
+                return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_PROCESS');
             case 'shipped':
             case 'closed':
-                return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPED');
+                return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPED');
             case 'refused':
             case 'canceled':
-                return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_CANCEL');
+                return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_CANCEL');
             case 'shippedByMp':
-                return LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPEDBYMP');
+                return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPEDBYMP');
         }
         return false;
     }
@@ -165,7 +165,7 @@ class LengowMain
         );
         if (_PS_VERSION_ < '1.5.4.0') {
             Configuration::set('PS_MAIL_METHOD', 2);
-            // Set fictive smtp server to disable mail
+            // set fictive smtp server to disable mail
             Configuration::set('PS_MAIL_SERVER', 'smtp.lengow.com');
         } else {
             Configuration::set('PS_MAIL_METHOD', 3);
@@ -213,6 +213,8 @@ class LengowMain
      * Get marketplace singleton
      *
      * @param string $name marketplace name
+     *
+     * @throws LengowException
      *
      * @return LengowMarketplace
      */
@@ -285,7 +287,7 @@ class LengowMain
      * Check webservice access (export and import)
      *
      * @param string $token shop token
-     * @param integer $idShop Prestashop shop id
+     * @param integer|null $idShop Prestashop shop id
      *
      * @return boolean
      */
@@ -304,14 +306,14 @@ class LengowMain
      * Check if token is correct
      *
      * @param string $token shop token
-     * @param integer $idShop Prestashop shop id
+     * @param integer|null $idShop Prestashop shop id
      *
      * @return boolean
      */
     public static function checkToken($token, $idShop = null)
     {
         $storeToken = self::getToken($idShop);
-        if ($token == $storeToken) {
+        if ($token === $storeToken) {
             return true;
         }
         return false;
@@ -320,7 +322,7 @@ class LengowMain
     /**
      * Generate token
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer|null $idShop Prestashop shop id
      *
      * @return string
      */
@@ -377,7 +379,7 @@ class LengowMain
         if (defined('PS_UNIT_TEST')) {
             return true;
         }
-        if (isset($_SERVER['HTTP_USER_AGENT']) && Tools::substr($_SERVER['HTTP_USER_AGENT'], 0, 10) == 'GuzzleHttp') {
+        if (isset($_SERVER['HTTP_USER_AGENT']) && Tools::substr($_SERVER['HTTP_USER_AGENT'], 0, 10) === 'GuzzleHttp') {
             return true;
         }
         return false;
@@ -389,25 +391,27 @@ class LengowMain
      * @param string $category log category
      * @param string $txt log message
      * @param boolean $logOutput output on screen
-     * @param string $marketplaceSku Lengow marketplace sku
+     * @param string|null $marketplaceSku Lengow marketplace sku
      */
     public static function log($category, $txt, $logOutput = false, $marketplaceSku = null)
     {
         $log = self::getLogInstance();
-        $log->write($category, $txt, $logOutput, $marketplaceSku);
+        if ($log) {
+            $log->write($category, $txt, $logOutput, $marketplaceSku);
+        }
     }
 
     /**
      * Set message with params for translation
      *
      * @param string $key log key
-     * @param array $params log parameters
+     * @param array|null $params log parameters
      *
      * @return string
      */
     public static function setLogMessage($key, $params = null)
     {
-        if (is_null($params) || (is_array($params) && count($params) == 0)) {
+        if (is_null($params) || (is_array($params) && count($params) === 0)) {
             return $key;
         }
         $allParams = array();
@@ -423,8 +427,8 @@ class LengowMain
      * Decode message with params for translation
      *
      * @param string $message log message
-     * @param string $isoCode iso code for translation
-     * @param mixed $params log parameters
+     * @param string|null $isoCode iso code for translation
+     * @param array|null $params log parameters
      *
      * @return string
      */
@@ -453,12 +457,13 @@ class LengowMain
      */
     public static function cleanLog()
     {
-        $logFiles = LengowLog::getFiles();
         $days = array();
         $days[] = 'logs-' . date('Y-m-d') . '.txt';
         for ($i = 1; $i < self::$logLife; $i++) {
             $days[] = 'logs-' . date('Y-m-d', strtotime('-' . $i . 'day')) . '.txt';
         }
+        /** @var LengowFile[] $logFiles */
+        $logFiles = LengowLog::getFiles();
         if (empty($logFiles)) {
             return;
         }
@@ -511,7 +516,7 @@ class LengowMain
                 chr(29),
                 chr(28),
                 "\n",
-                "\r"
+                "\r",
             ),
             array(
                 ' ',
@@ -528,7 +533,7 @@ class LengowMain
                 '',
                 '',
                 '',
-                ''
+                '',
             ),
             $value
         );
@@ -656,7 +661,7 @@ class LengowMain
             /* AE */
             '/[\x{00C6}]/u',
             /* OE */
-            '/[\x{0152}]/u'
+            '/[\x{0152}]/u',
         );
         // ö to oe
         // å to aa
@@ -702,7 +707,7 @@ class LengowMain
             'U',
             'Z',
             'AE',
-            'OE'
+            'OE',
         );
         return preg_replace($patterns, $replacements, $str);
     }
@@ -716,106 +721,79 @@ class LengowMain
      */
     public static function sendMailAlert($logOutput = false)
     {
-        $cookie = Context::getContext()->cookie;
-        $subject = 'Lengow imports logs';
-        $mailBody = '';
-        try {
-            $sqlLogs = 'SELECT lo.`marketplace_sku`, lli.`message`, lli.`id`
-            FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
-            INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo 
-            ON lli.`id_order_lengow` = lo.`id`
-            WHERE lli.`is_finished` = 0 AND lli.`mail` = 0
-        ';
-            $logs = Db::getInstance()->ExecuteS($sqlLogs);
-        } catch (PrestaShopDatabaseException $e) {
-            return false;
-        }
-        if (empty($logs)) {
-            return true;
-        }
-        foreach ($logs as $log) {
-            $mailBody .= '<li>' . self::decodeLogMessage(
-                'lengow_log.mail_report.order',
-                null,
-                array('marketplace_sku' => $log['marketplace_sku'])
-            );
-            if ($log['message'] != '') {
-                $mailBody .= ' - ' . self::decodeLogMessage($log['message']);
-            } else {
-                $mailBody .= ' - ' . self::decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
-            }
-            $mailBody .= '</li>';
-            self::logSent($log['id']);
-        }
-        $datas = array(
-            '{mail_title}' => 'Lengow imports logs',
-            '{mail_body}' => $mailBody,
-        );
         $success = true;
-        $emails = LengowConfiguration::getReportEmailAddress();
-        foreach ($emails as $to) {
-            if (!Mail::send(
-                (int)$cookie->id_lang,
-                'report',
-                $subject,
-                $datas,
-                $to,
-                null,
-                null,
-                null,
-                null,
-                null,
-                _PS_MODULE_DIR_ . 'lengow/views/templates/mails/',
-                true
-            )
+        // recovery of all errors not yet sent by email
+        $orderLogs = LengowOrder::getAllOrderLogsNotSent();
+        if (!empty($orderLogs)) {
+            // construction of the report e-mail
+            $mailBody = '';
+            foreach ($orderLogs as $log) {
+                $mailBody .= '<li>'.self::decodeLogMessage(
+                    'lengow_log.mail_report.order',
+                    null,
+                    array('marketplace_sku' => $log['marketplace_sku'])
+                );
+                if ($log['message'] !== '') {
+                    $mailBody .= ' - '.self::decodeLogMessage($log['message']);
+                } else {
+                    $mailBody .= ' - '.self::decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+                }
+                $mailBody .= '</li>';
+                LengowOrder::logSent((int)$log['id']);
+            }
+            $subject = 'Lengow imports logs';
+            $datas = array(
+                '{mail_title}' => $subject,
+                '{mail_body}'  => $mailBody,
+            );
+            // send an email if the template exists for the locale
+            $emails = LengowConfiguration::getReportEmailAddress();
+            $idLang = (int)Context::getContext()->cookie->id_lang;
+            $iso = Language::getIsoById($idLang);
+            if (file_exists(_PS_MODULE_DIR_ . 'lengow/mails/' . $iso . '/report.txt')
+                && file_exists(_PS_MODULE_DIR_ . 'lengow/mails/' . $iso . '/report.html')
             ) {
+                foreach ($emails as $to) {
+                    $mailSent = Mail::send(
+                        $idLang,
+                        'report',
+                        $subject,
+                        $datas,
+                        $to,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        _PS_MODULE_DIR_.'lengow/mails/',
+                        true
+                    );
+                    if (!$mailSent) {
+                        self::log(
+                            'MailReport',
+                            self::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
+                            $logOutput
+                        );
+                        $success = false;
+                    } else {
+                        self::log(
+                            'MailReport',
+                            self::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
+                            $logOutput
+                        );
+                        $success = true;
+                    }
+                }
+            } else {
                 self::log(
                     'MailReport',
-                    self::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
+                    self::setLogMessage('log.mail_report.template_not_exist', array('iso_code' => $iso)),
                     $logOutput
                 );
                 $success = false;
-            } else {
-                self::log(
-                    'MailReport',
-                    self::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
-                    $logOutput
-                );
-                $success = true;
             }
         }
         return $success;
-    }
-
-    /**
-     * Mark log as sent by email
-     *
-     * @param integer $idOrderLog Lengow order log id
-     *
-     * @return boolean
-     */
-    public static function logSent($idOrderLog)
-    {
-        try {
-            if (_PS_VERSION_ < '1.5') {
-                return Db::getInstance()->autoExecute(
-                    _DB_PREFIX_ . 'lengow_logs_import',
-                    array('mail' => 1),
-                    'UPDATE',
-                    '`id` = \'' . (int)$idOrderLog . '\'',
-                    1
-                );
-            } else {
-                return Db::getInstance()->update(
-                    'lengow_logs_import',
-                    array('mail' => 1),
-                    '`id` = \'' . (int)$idOrderLog . '\'',
-                    1
-                );
-            }
-        } catch (PrestaShopDatabaseException $e) {
-            return false;
-        }
     }
 
     /**
@@ -897,8 +875,8 @@ class LengowMain
     {
         if ($shipmentByMp) {
             $orderState = 'shippedByMp';
-        } elseif ($marketplace->getStateLengow($orderStateMarketplace) == 'shipped'
-            || $marketplace->getStateLengow($orderStateMarketplace) == 'closed'
+        } elseif ($marketplace->getStateLengow($orderStateMarketplace) === 'shipped'
+            || $marketplace->getStateLengow($orderStateMarketplace) === 'closed'
         ) {
             $orderState = 'shipped';
         } else {
@@ -931,12 +909,16 @@ class LengowMain
     /**
      * Get log Instance
      *
-     * @return LengowLog
+     * @return LengowLog|false
      */
     public static function getLogInstance()
     {
         if (is_null(self::$log)) {
-            self::$log = new LengowLog();
+            try {
+                self::$log = new LengowLog();
+            } catch (LengowException $e) {
+                return false;
+            }
         }
         return self::$log;
     }
@@ -944,7 +926,7 @@ class LengowMain
     /**
      * Get export url
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer|null $idShop Prestashop shop id
      *
      * @return string
      */
@@ -966,7 +948,7 @@ class LengowMain
     /**
      * Get base url for Lengow webservice and files
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer|null $idShop Prestashop shop id
      *
      * @return string
      */
@@ -977,9 +959,13 @@ class LengowMain
             $base = defined('_PS_SHOP_DOMAIN_') ? 'http' . $isHttps . '://' . _PS_SHOP_DOMAIN_ : _PS_BASE_URL_;
             $base .= __PS_BASE_URI__;
         } else {
-            $idShop = is_null($idShop) ? Context::getContext()->shop->id : $idShop;
-            $shopUrl = new ShopUrl($idShop);
-            $base = 'http' . $isHttps . '://' . $shopUrl->domain . $shopUrl->physical_uri . $shopUrl->virtual_uri;
+            try {
+                $idShop = is_null($idShop) ? Context::getContext()->shop->id : $idShop;
+                $shopUrl = new ShopUrl($idShop);
+                $base = 'http' . $isHttps . '://' . $shopUrl->domain . $shopUrl->physical_uri . $shopUrl->virtual_uri;
+            } catch (Exception $e) {
+                $base = _PS_BASE_URL_ . __PS_BASE_URI__;
+            }
         }
         return $base . 'modules/lengow/';
     }
@@ -987,7 +973,7 @@ class LengowMain
     /**
      * Get Lengow technical error state id
      *
-     * @param integer $idLang Prestashop lang id
+     * @param integer|null $idLang Prestashop lang id
      *
      * @return integer|false
      */
@@ -1003,7 +989,7 @@ class LengowMain
             }
             $states = OrderState::getOrderStates($idLang);
             foreach ($states as $state) {
-                if ($state['module_name'] == 'lengow') {
+                if ($state['module_name'] === 'lengow') {
                     return $state['id_order_state'];
                 }
             }

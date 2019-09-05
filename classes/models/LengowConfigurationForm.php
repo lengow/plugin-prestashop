@@ -91,7 +91,7 @@ class LengowConfigurationForm
      *
      * @param string $key name of Lengow setting
      * @param array $input all Lengow settings
-     * @param integer $idShop Prestashop shop id
+     * @param integer|null $idShop Prestashop shop id
      *
      * @return string
      */
@@ -147,8 +147,13 @@ class LengowConfigurationForm
             case 'day':
                 $html .= '<label class="control-label">' . $label . '</label>
                         <div class="input-group">
-                            <input type="number" name="' . $name . '" class="form-control" value="' . $value . '" '
-                    . $readonly . ' min="1" max="' . LengowImport::$maxImportDays . '">
+                            <input type="number"
+                                name="' . $name . '"
+                                class="form-control"
+                                value="' . $value . '" '
+                                . $readonly . '
+                                min="' . LengowImport::$minImportDays . '"
+                                max="' . LengowImport::$maxImportDays . '">
                             <div class="input-group-addon">
                                 <div class="unit">' . $this->locale->t('order_setting.screen.nb_days') . '</div>
                             </div>
@@ -185,7 +190,7 @@ class LengowConfigurationForm
                 if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
                     foreach ($value as $idShop => $shopValue) {
                         if (isset($this->fields[$key]['type']) &&
-                            $this->fields[$key]['type'] == 'checkbox' && $shopValue == 'on'
+                            $this->fields[$key]['type'] === 'checkbox' && $shopValue === 'on'
                         ) {
                             $shopValue = 1;
                         }
@@ -199,7 +204,7 @@ class LengowConfigurationForm
                         LengowConfiguration::updateGlobalValue($key, join(',', $value));
                     } else {
                         if (isset($this->fields[$key]['type']) &&
-                            $this->fields[$key]['type'] == 'checkbox' && $value == 'on'
+                            $this->fields[$key]['type'] === 'checkbox' && $value === 'on'
                         ) {
                             $value = 1;
                         }
@@ -216,7 +221,7 @@ class LengowConfigurationForm
                 if (!in_array($key, $checkboxKeys)) {
                     continue;
                 }
-                if ($value['type'] == 'checkbox' && isset($value['shop']) && $value['shop']) {
+                if ($value['type'] === 'checkbox' && isset($value['shop']) && $value['shop']) {
                     if (!isset($_REQUEST[$key][$idShop])) {
                         $this->checkAndLog($key, 0, $idShop);
                         LengowConfiguration::updateValue($key, 0, false, null, $idShop);
@@ -246,45 +251,52 @@ class LengowConfigurationForm
      */
     public function checkAndLog($key, $value, $idShop = null)
     {
-        if (is_null($idShop)) {
-            $oldValue = LengowConfiguration::getGlobalValue($key);
-        } else {
-            $oldValue = LengowConfiguration::get($key, null, null, $idShop);
-        }
-        if (isset($this->fields[$key]['type']) && $this->fields[$key]['type'] == 'checkbox') {
-            $value = (int)$value;
-            $oldValue = (int)$oldValue;
-        }
-        if ($oldValue != $value) {
-            if ($key == 'LENGOW_ACCESS_TOKEN' || $key == 'LENGOW_SECRET_TOKEN') {
-                $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
-                $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
-            }
-            if (!is_null($idShop)) {
-                LengowMain::log(
-                    'Setting',
-                    LengowMain::setLogMessage(
-                        'log.setting.setting_change_for_shop',
-                        array(
-                            'key' => $key,
-                            'old_value' => $oldValue,
-                            'value' => $value,
-                            'shop_id' => $idShop
-                        )
-                    )
-                );
+        if (array_key_exists($key, $this->fields)) {
+            $setting = $this->fields[$key];
+            if (is_null($idShop)) {
+                $oldValue = LengowConfiguration::getGlobalValue($key);
             } else {
-                LengowMain::log(
-                    'Setting',
-                    LengowMain::setLogMessage(
-                        'log.setting.setting_change',
-                        array(
-                            'key' => $key,
-                            'old_value' => $oldValue,
-                            'value' => $value
+                $oldValue = LengowConfiguration::get($key, null, null, $idShop);
+            }
+            if (isset($setting['type']) && $setting['type'] === 'checkbox') {
+                $value = (int)$value;
+                $oldValue = (int)$oldValue;
+            }
+            if ($oldValue != $value) {
+                if (isset($setting['secret']) && $setting['secret']) {
+                    $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
+                    $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
+                }
+                if (!is_null($idShop)) {
+                    LengowMain::log(
+                        'Setting',
+                        LengowMain::setLogMessage(
+                            'log.setting.setting_change_for_shop',
+                            array(
+                                'key' => $key,
+                                'old_value' => $oldValue,
+                                'value'=> $value,
+                                'shop_id' => $idShop,
+                            )
                         )
-                    )
-                );
+                    );
+                } else {
+                    LengowMain::log(
+                        'Setting',
+                        LengowMain::setLogMessage(
+                            'log.setting.setting_change',
+                            array(
+                                'key' => $key,
+                                'old_value' => $oldValue,
+                                'value' => $value,
+                            )
+                        )
+                    );
+                }
+                // save last update date for a specific settings (change synchronisation interval time)
+                if (isset($setting['update']) && $setting['update']) {
+                    LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', date('Y-m-d H:i:s'));
+                }
             }
         }
     }

@@ -1,4 +1,13 @@
 =============================================================
+Version 3.1.2
+=============================================================
+
+    - Feature: [export] Refactoring and optimization of product data recovery
+    - Feature: [export] Add isbn field in export feed for PrestaShop 1.7
+    - Bugfix: [import] Moving email templates for PrestaShop 1.7
+    - Bugfix: Fixed the module update process
+
+=============================================================
 Version 3.1.1
 =============================================================
 

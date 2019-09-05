@@ -43,7 +43,7 @@
 @set_time_limit(0);
 @ini_set('memory_limit', '512M');
 
-$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . "/");
+$currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . '/');
 $sep = DIRECTORY_SEPARATOR;
 require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 Configuration::set('PS_SHOP_ENABLE', true);
@@ -74,7 +74,7 @@ if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)
 // get params data
 $getParams = Tools::getIsset('get_params') ? (bool)Tools::getValue('get_params') : false;
 // get mode 
-$mode = (Tools::getIsset('mode') && (Tools::getValue('mode') == 'size' || Tools::getValue('mode') == 'total'))
+$mode = (Tools::getIsset('mode') && (Tools::getValue('mode') === 'size' || Tools::getValue('mode') === 'total'))
     ? Tools::getValue('mode')
     : null;
 // export format (csv, yaml, xml, json)
@@ -126,9 +126,9 @@ if (Tools::getIsset('product_ids') || !is_null($ids)) {
 // export product variation
 $variation = null;
 if (Tools::getIsset('mode')) {
-    if (Tools::getValue('mode') == 'simple') {
+    if (Tools::getValue('mode') === 'simple') {
         $variation = false;
-    } elseif (Tools::getValue('mode') == 'full') {
+    } elseif (Tools::getValue('mode') === 'full') {
         $variation = true;
     }
 }
@@ -140,9 +140,9 @@ if (Tools::getIsset('variation') || !is_null($variation)) {
 // export inactive products
 $inactive = null;
 if (Tools::getValue('active')) {
-    if (Tools::getValue('active') == 'enabled') {
+    if (Tools::getValue('active') === 'enabled') {
         $inactive = false;
-    } elseif (Tools::getValue('active') == 'all') {
+    } elseif (Tools::getValue('active') === 'all') {
         $inactive = true;
     }
 }
@@ -155,8 +155,8 @@ if (Tools::getIsset('inactive') || !is_null($inactive)) {
 $currency = Tools::getIsset('cur') ? Tools::getValue('cur') : null;
 if (Tools::getIsset('currency') || !is_null($currency)) {
     $currency = !is_null($currency) ? $currency : Tools::getValue('currency');
-    $idCurrency = Currency::getIdByIsoCode($currency);
-    if ($idCurrency != 0) {
+    $idCurrency = (int)Currency::getIdByIsoCode($currency);
+    if ($idCurrency !== 0) {
         Context::getContext()->currency = new Currency($idCurrency);
     }
 }
@@ -165,7 +165,7 @@ $language = Tools::getIsset('lang') ? Tools::getValue('lang') : null;
 if (Tools::getIsset('language') || !is_null($language)) {
     $language = !is_null($language) ? $language : Tools::getValue('language');
     $languageId = (int)Language::getIdByIso($language);
-    if ($languageId == 0) {
+    if ($languageId === 0) {
         $languageId = Context::getContext()->language->id;
     }
 } else {
@@ -198,9 +198,9 @@ $export = new LengowExport(
 
 if ($getParams) {
     echo $export->getExportParams();
-} elseif ($mode == 'size') {
+} elseif ($mode === 'size') {
     echo $export->getTotalExportProduct();
-} elseif ($mode == 'total') {
+} elseif ($mode === 'total') {
     echo $export->getTotalProduct();
 } else {
     $export->exec();

@@ -24,7 +24,7 @@ class ImportOrderTest extends ModuleTestCase
     public function setUp()
     {
         parent::setUp();
-        //load module
+        // load module
         Module::getInstanceByName('lengow');
     }
 
@@ -34,12 +34,8 @@ class ImportOrderTest extends ModuleTestCase
         $fixture->truncate('orders');
         $fixture->truncate('lengow_logs_import');
         $fixture->truncate('lengow_orders');
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/euro_currency.yml'
-        );
-        $fixture->loadFixture(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml'
-        );
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/euro_currency.yml');
+        $fixture->loadFixture(_PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/simple_product.yml');
     }
 
     public function chargeConfig()
@@ -63,7 +59,7 @@ class ImportOrderTest extends ModuleTestCase
         LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_currency.json',
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_currency_data.json',
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_price_data.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_price_data.json',
         );
         $import = new LengowImport(array('log_output' => false));
         $result = $import->exec();
@@ -74,7 +70,7 @@ class ImportOrderTest extends ModuleTestCase
             'lengow_orders',
             array(
                 'marketplace_sku' => '1300435653833-A',
-                'order_process_state' => 0
+                'order_process_state' => 0,
             ),
             '[Check Currency Shop] Check if order is present in Lengow Orders table'
         );
@@ -83,7 +79,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'message' => 'lengow_log.error.currency_not_available[currency_iso==GBP]',
                 'id_order_lengow' => '1',
-                'type' => '1'
+                'type' => '1',
             ),
             '[Check Currency Shop] Check if currency is present for a shop'
         );
@@ -97,7 +93,7 @@ class ImportOrderTest extends ModuleTestCase
             'lengow_orders',
             array(
                 'marketplace_sku' => '1300435653834-A',
-                'order_process_state' => 0
+                'order_process_state' => 0,
             ),
             '[Check Currency Data] Check if order is present in Lengow Orders table'
         );
@@ -106,7 +102,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'message' => 'lengow_log.error.no_currency',
                 'id_order_lengow' => '2',
-                'type' => '1'
+                'type' => '1',
             ),
             '[Check Currency Data] Check if the order contains a currency'
         );
@@ -120,7 +116,7 @@ class ImportOrderTest extends ModuleTestCase
             'lengow_orders',
             array(
                 'marketplace_sku' => '1300435653835-A',
-                'order_process_state' => 0
+                'order_process_state' => 0,
             ),
             '[Check Currency Prices] Check if order is present in Lengow Orders table'
         );
@@ -129,7 +125,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'message' => 'lengow_log.error.no_change_rate',
                 'id_order_lengow' => '3',
-                'type' => '1'
+                'type' => '1',
             ),
             '[Check Currency Prices] Check if the order contains prices with a correct currency'
         );
@@ -147,7 +143,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->chargeFixture();
         LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_billing_address.json',
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_billing_country.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_billing_country.json',
         );
 
         $import = new LengowImport(array('log_output' => false));
@@ -159,7 +155,7 @@ class ImportOrderTest extends ModuleTestCase
             'lengow_orders',
             array(
                 'marketplace_sku' => '1300435653836-A',
-                'order_process_state' => 0
+                'order_process_state' => 0,
             ),
             '[Check Billing Address] Check if order is present in Lengow Orders table'
         );
@@ -168,7 +164,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'message' => 'lengow_log.error.no_billing_address',
                 'id_order_lengow' => '1',
-                'type' => '1'
+                'type' => '1',
             ),
             '[Check Billing Address] Check if the order contains billing address'
         );
@@ -182,7 +178,7 @@ class ImportOrderTest extends ModuleTestCase
             'lengow_orders',
             array(
                 'marketplace_sku' => '1300435653837-A',
-                'order_process_state' => 0
+                'order_process_state' => 0,
             ),
             '[Check Billing Country] Check if order is present in Lengow Orders table'
         );
@@ -191,7 +187,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'message' => 'lengow_log.error.no_country_for_billing_address',
                 'id_order_lengow' => '2',
-                'type' => '1'
+                'type' => '1',
             ),
             '[Check Billing Country] Check if the order contains billing address country'
         );
@@ -220,7 +216,7 @@ class ImportOrderTest extends ModuleTestCase
             'lengow_orders',
             array(
                 'marketplace_sku' => '1300435653838-A',
-                'order_process_state' => 0
+                'order_process_state' => 0,
             ),
             '[Check Delivery Country] Check if order is present in Lengow Orders table'
         );
@@ -229,7 +225,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'message' => 'lengow_log.error.no_country_for_delivery_address',
                 'id_order_lengow' => '1',
-                'type' => '1'
+                'type' => '1',
             ),
             '[Check Delivery Country] Check if the order contains delivery address'
         );
@@ -258,7 +254,7 @@ class ImportOrderTest extends ModuleTestCase
             'lengow_orders',
             array(
                 'marketplace_sku' => '1300435653833-A',
-                'order_process_state' => 0
+                'order_process_state' => 0,
             ),
             '[Check Product Data] Check if order is present in Lengow Orders table'
         );
@@ -267,7 +263,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'message' => 'lengow_log.error.no_product',
                 'id_order_lengow' => '1',
-                'type' => '1'
+                'type' => '1',
             ),
             '[Check Product Data] Check if the order contains a product'
         );
@@ -284,7 +280,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->chargeConfig();
         $this->chargeFixture();
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_shipped_mp.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_shipped_mp.json',
         );
 
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_STOCK_SHIP_MP', false);
@@ -301,7 +297,7 @@ class ImportOrderTest extends ModuleTestCase
                 'id_order' => 'NULL',
                 'marketplace_sku' => '1300435653833-A',
                 'order_process_state' => '2',
-                'sent_marketplace' => '1'
+                'sent_marketplace' => '1',
             ),
             '[Not Import Order Shipped By MP] Check if order is present in Lengow Orders table'
         );
@@ -309,7 +305,7 @@ class ImportOrderTest extends ModuleTestCase
             'stock_available',
             array(
                 'id_product' => '1',
-                'quantity' => '10'
+                'quantity' => '10',
             ),
             '[Not Import Order Shipped By MP] Check if the stock is not decremented'
         );
@@ -326,7 +322,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->chargeConfig();
         $this->chargeFixture();
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_shipped_mp.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_shipped_mp.json',
         );
 
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_STOCK_SHIP_MP', true);
@@ -343,7 +339,7 @@ class ImportOrderTest extends ModuleTestCase
                 'id_order' => '1',
                 'marketplace_sku' => '1300435653833-A',
                 'order_process_state' => '2',
-                'sent_marketplace' => '1'
+                'sent_marketplace' => '1',
             ),
             '[Import Order Shipped By MP With Stock] Check if order is present in Lengow Orders table'
         );
@@ -351,7 +347,7 @@ class ImportOrderTest extends ModuleTestCase
             'stock_available',
             array(
                 'id_product' => '1',
-                'quantity' => '9'
+                'quantity' => '9',
             ),
             '[Import Order Shipped By MP With Stock] Check if the stock is decremented'
         );
@@ -385,7 +381,7 @@ class ImportOrderTest extends ModuleTestCase
                 'id_order' => '1',
                 'marketplace_sku' => '1300435653833-A',
                 'order_process_state' => '2',
-                'sent_marketplace' => '1'
+                'sent_marketplace' => '1',
             ),
             '[Import Order Shipped By MP With Stock] Check if order is present in Lengow Orders table'
         );
@@ -393,7 +389,7 @@ class ImportOrderTest extends ModuleTestCase
             'stock_available',
             array(
                 'id_product' => '1',
-                'quantity' => '10'
+                'quantity' => '10',
             ),
             '[Import Order Shipped By MP With Stock] Check if the stock is decremented'
         );
@@ -412,7 +408,7 @@ class ImportOrderTest extends ModuleTestCase
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml'
         );
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/allready_imported.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/allready_imported.json',
         );
         $import = new LengowImport(array('log_output' => false));
         $result = $import->exec();
@@ -435,7 +431,7 @@ class ImportOrderTest extends ModuleTestCase
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_update_1.json',
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_update_2.json',
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_update_3.json',
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_update_4.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_update_4.json',
         );
 
         $import = new LengowImport(array('log_output' => false));
@@ -461,7 +457,7 @@ class ImportOrderTest extends ModuleTestCase
                 'marketplace_sku' => '1300435653833-A',
                 'order_process_state' => '1',
                 'tracking' => '',
-                'order_lengow_state' => 'accepted'
+                'order_lengow_state' => 'accepted',
             ),
             '[Check And Update Order Accepted] Check if order is present in Lengow Orders table'
         );
@@ -470,7 +466,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'id_order' => '1',
                 'shipping_number' => '',
-                'current_state' => '2'
+                'current_state' => '2',
             ),
             '[Check And Update Order Accepted] Check if order is present in Orders Prestashop table'
         );
@@ -490,7 +486,7 @@ class ImportOrderTest extends ModuleTestCase
                 'marketplace_sku' => '1300435653833-A',
                 'order_process_state' => '2',
                 'tracking' => '8D00432154798',
-                'order_lengow_state' => 'shipped'
+                'order_lengow_state' => 'shipped',
             ),
             '[Check And Update Order Shipped] Check if order is present in Lengow Orders table'
         );
@@ -499,7 +495,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'id_order' => '1',
                 'shipping_number' => '8D00432154798',
-                'current_state' => '4'
+                'current_state' => '4',
             ),
             '[Check And Update Order Shipped] Check if order is present in Orders Prestashop table'
         );
@@ -518,7 +514,7 @@ class ImportOrderTest extends ModuleTestCase
                 'id_order' => '1',
                 'marketplace_sku' => '1300435653833-A',
                 'order_process_state' => '2',
-                'order_lengow_state' => 'canceled'
+                'order_lengow_state' => 'canceled',
             ),
             '[Check And Update Order Canceled] Check if order is present in Lengow Orders table'
         );
@@ -526,7 +522,7 @@ class ImportOrderTest extends ModuleTestCase
             'orders',
             array(
                 'id_order' => '1',
-                'current_state' => '6'
+                'current_state' => '6',
             ),
             '[Check And Update Order Canceled] Check if order is present in Orders Prestashop table'
         );
@@ -700,7 +696,7 @@ class ImportOrderTest extends ModuleTestCase
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/Order/simple_order.yml'
         );
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_external_id.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_external_id.json',
         );
         $import = new LengowImport(array('log_output' => false));
         $result = $import->exec();
@@ -727,7 +723,7 @@ class ImportOrderTest extends ModuleTestCase
         LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_amount.json',
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_amount_wt_fees.json',
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_amount_wt_shipping.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_amount_wt_shipping.json',
         );
 
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_PROCESSING_FEE', true);
@@ -744,7 +740,7 @@ class ImportOrderTest extends ModuleTestCase
                 'id_order' => '1',
                 'marketplace_sku' => '1300435653833-A',
                 'total_paid' => '35.00',
-                'order_item' => '5'
+                'order_item' => '5',
             ),
             '[Get Order Amount] Check if order is present in Lengow Orders table'
         );
@@ -758,7 +754,7 @@ class ImportOrderTest extends ModuleTestCase
                 'total_wrapping' => '3.500000',
                 'total_shipping' => '5.000000',
                 'module' => 'lengow_payment',
-                'payment' => 'galeries_lafayette'
+                'payment' => 'galeries_lafayette',
             ),
             '[Get Order Amount] Check if order is present in Orders Prestashop table'
         );
@@ -776,7 +772,7 @@ class ImportOrderTest extends ModuleTestCase
                 'id_order' => '2',
                 'marketplace_sku' => '1300435653834-A',
                 'total_paid' => '31.50',
-                'order_item' => '5'
+                'order_item' => '5',
             ),
             '[Get Order Amount] Check if order is present in Lengow Orders table'
         );
@@ -790,7 +786,7 @@ class ImportOrderTest extends ModuleTestCase
                 'total_wrapping' => '0.000000',
                 'total_shipping' => '5.000000',
                 'module' => 'lengow_payment',
-                'payment' => 'galeries_lafayette'
+                'payment' => 'galeries_lafayette',
             ),
             '[Get Order Amount] Check if order is present in Orders Prestashop table'
         );
@@ -806,7 +802,7 @@ class ImportOrderTest extends ModuleTestCase
                 'id_order' => '3',
                 'marketplace_sku' => '1300435653835-A',
                 'total_paid' => '26.50',
-                'order_item' => '5'
+                'order_item' => '5',
             ),
             '[Get Order Amount] Check if order is present in Lengow Orders table'
         );
@@ -820,7 +816,7 @@ class ImportOrderTest extends ModuleTestCase
                 'total_wrapping' => '0.000000',
                 'total_shipping' => '0.000000',
                 'module' => 'lengow_payment',
-                'payment' => 'galeries_lafayette'
+                'payment' => 'galeries_lafayette',
             ),
             '[Get Order Amount] Check if order is present in Orders Prestashop table'
         );
@@ -837,7 +833,7 @@ class ImportOrderTest extends ModuleTestCase
         $this->chargeConfig();
         $this->chargeFixture();
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_shipped_mp.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_shipped_mp.json',
         );
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_STOCK_SHIP_MP', true);
         LengowConfiguration::updateGlobalValue('LENGOW_IMPORT_SHIP_MP_ENABLED', true);
@@ -854,7 +850,7 @@ class ImportOrderTest extends ModuleTestCase
                 'carrier' => 'LAPOSTE',
                 'method' => 'follow-up letter',
                 'tracking' => '8V4564654654',
-                'sent_marketplace' => '1'
+                'sent_marketplace' => '1',
             ),
             '[Load Tracking Data] Check if order is present in Lengow Orders table'
         );
@@ -874,7 +870,7 @@ class ImportOrderTest extends ModuleTestCase
         $fixture->truncate('message');
         LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_amount_wt_fees.json',
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_update_2.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/check_update_2.json',
         );
 
         $import = new LengowImport(array('log_output' => false));
@@ -887,7 +883,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'id_order' => '1',
                 'marketplace_sku' => '1300435653834-A',
-                'message' => 'product NAME003 is canceled'
+                'message' => 'product NAME003 is canceled',
             ),
             '[Add Comment Order] Check if order is present in Lengow Orders table'
         );
@@ -896,7 +892,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'id_order' => '1',
                 'message' => 'product NAME003 is canceled',
-                'private' => '1'
+                'private' => '1',
             ),
             '[Add Comment Order] Check if order is present in message Prestashop table'
         );
@@ -911,7 +907,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'id_order' => '2',
                 'marketplace_sku' => '1300435653833-A',
-                'message' => ''
+                'message' => '',
             ),
             '[Add Comment Order] Check if order is present in Lengow Orders table'
         );
@@ -920,7 +916,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'id_order' => '2',
                 'message' => '',
-                'private' => '1'
+                'private' => '1',
             ),
             '[Add Comment Order] Check if order is present in message Prestashop table'
         );
@@ -971,7 +967,7 @@ class ImportOrderTest extends ModuleTestCase
                 'order_item' => '5',
                 'delivery_country_iso' => 'FR',
                 'customer_name' => 'Yvette Alcalde',
-                'order_lengow_state' => 'shipped'
+                'order_lengow_state' => 'shipped',
             ),
             '[Add Comment Order] Check if order is present in Lengow Orders table'
         );
@@ -991,7 +987,7 @@ class ImportOrderTest extends ModuleTestCase
         $fixture->truncate('lengow_order_line');
         $fixture->truncate('order_detail');
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_line_saved.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_line_saved.json',
         );
 
         $import = new LengowImport(array('log_output' => false));
@@ -1004,7 +1000,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'id_order' => '1',
                 'id_order_line' => '1300435653833-A-1',
-                'id_order_detail' => '1'
+                'id_order_detail' => '1',
             ),
             '[Save Lengow Order Line] Check if order is present in Lengow Order Line table'
         );
@@ -1013,7 +1009,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'id_order' => '1',
                 'id_order_line' => '1300435653833-A-2',
-                'id_order_detail' => '2'
+                'id_order_detail' => '2',
             ),
             '[Save Lengow Order Line] Check if order is present in Lengow Order Line table'
         );
@@ -1022,7 +1018,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'id_order' => '1',
                 'id_order_line' => '1300435653833-A-3',
-                'id_order_detail' => '3'
+                'id_order_detail' => '3',
             ),
             '[Save Lengow Order Line] Check if order is present in Lengow Order Line table'
         );
@@ -1041,7 +1037,7 @@ class ImportOrderTest extends ModuleTestCase
         $fixture = new Fixture();
         $fixture->truncate('order_detail');
         LengowConnector::$testFixturePath = array(
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_line_saved.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_line_saved.json',
         );
         $import = new LengowImport(array('log_output' => false));
         $result = $import->exec();
@@ -1058,7 +1054,7 @@ class ImportOrderTest extends ModuleTestCase
                 'product_reference' => 'SIMPLESKU001',
                 'product_quantity' => '3',
                 'product_price' => '4.900000',
-                'total_price_tax_incl' => '14.700000'
+                'total_price_tax_incl' => '14.700000',
             ),
             '[Get Products] Check if order is present in Orders Detail Prestashop table'
         );
@@ -1072,7 +1068,7 @@ class ImportOrderTest extends ModuleTestCase
                 'product_reference' => 'SIMPLESKU002',
                 'product_quantity' => '2',
                 'product_price' => '5.900000',
-                'total_price_tax_incl' => '11.800000'
+                'total_price_tax_incl' => '11.800000',
             ),
             '[Get Products] Check if order is present in Orders Detail Prestashop table'
         );
@@ -1086,7 +1082,7 @@ class ImportOrderTest extends ModuleTestCase
                 'product_reference' => 'SIMPLESKU003',
                 'product_quantity' => '1',
                 'product_price' => '6.900000',
-                'total_price_tax_incl' => '6.900000'
+                'total_price_tax_incl' => '6.900000',
             ),
             '[Get Products] Check if order is present in Orders Detail Prestashop table'
         );
@@ -1111,7 +1107,7 @@ class ImportOrderTest extends ModuleTestCase
         );
         LengowConnector::$testFixturePath = array(
             _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_customer.json',
-            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_customer_2.json'
+            _PS_MODULE_DIR_ . 'lengow/tests/Module/Fixtures/ImportOrder/order_customer_2.json',
         );
         $import = new LengowImport(array('log_output' => false));
         $result = $import->exec();
@@ -1136,7 +1132,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'id_order' => '1',
                 'marketplace_sku' => '1300435653835-A',
-                'customer_name' => 'Yvette Alcalde'
+                'customer_name' => 'Yvette Alcalde',
             ),
             '[Get Customer] Check if order is present in Lengow Orders table'
         );
@@ -1152,7 +1148,7 @@ class ImportOrderTest extends ModuleTestCase
                 'id_customer' => '2',
                 'email' => 'generated-email+1300435653836-A@prestashop.unit',
                 'firstname' => 'pierre',
-                'lastname' => 'dupond'
+                'lastname' => 'dupond',
             ),
             '[Get Customer] Check if order is present in Customer Prestashop table'
         );
@@ -1160,7 +1156,7 @@ class ImportOrderTest extends ModuleTestCase
             'orders',
             array(
                 'id_order' => '2',
-                'id_customer' => '2'
+                'id_customer' => '2',
             ),
             '[Get Customer] Check if order is present in Orders Prestashop table'
         );
@@ -1169,7 +1165,7 @@ class ImportOrderTest extends ModuleTestCase
             array(
                 'id_order' => '2',
                 'marketplace_sku' => '1300435653836-A',
-                'customer_name' => 'Pierre Dupond'
+                'customer_name' => 'Pierre Dupond',
             ),
             '[Get Customer] Check if order is present in Lengow Orders table'
         );

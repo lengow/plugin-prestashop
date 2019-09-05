@@ -38,6 +38,8 @@ class LengowLog extends LengowFile
      * Construct
      *
      * @param string $fileName log file name
+     *
+     * @throws LengowException
      */
     public function __construct($fileName = null)
     {
@@ -55,9 +57,9 @@ class LengowLog extends LengowFile
      * @param string $category log category
      * @param string $message log message
      * @param boolean $logOutput display on screen
-     * @param string $marketplaceSku Lengow order id
+     * @param string|null $marketplaceSku Lengow order id
      */
-    public function write($category, $message = "", $logOutput = false, $marketplaceSku = null)
+    public function write($category, $message = '', $logOutput = false, $marketplaceSku = null)
     {
         $decodedMessage = LengowMain::decodeLogMessage($message, 'en');
         $log = date('Y-m-d H:i:s');
@@ -88,7 +90,7 @@ class LengowLog extends LengowFile
             $logs[] = array(
                 'full_path' => $file->getPath(),
                 'short_path' => 'logs-' . $match[1] . '.txt',
-                'name' => $match[1] . '.txt'
+                'name' => $match[1] . '.txt',
             );
         }
         return array_reverse($logs);
@@ -117,13 +119,13 @@ class LengowLog extends LengowFile
     /**
      * Download log file
      *
-     * @param string $file file name for a specific log file
+     * @param string|null $file file name for a specific log file
      */
     public static function download($file = null)
     {
         if ($file && preg_match('/^logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt$/', $file, $match)) {
             $filename = _PS_MODULE_LENGOW_DIR_ . self::$lengowLogFolder . '/' . $file;
-            $handle = fopen($filename, "r");
+            $handle = fopen($filename, 'r');
             $contents = fread($handle, filesize($filename));
             header('Content-type: text/plain');
             header('Content-Disposition: attachment; filename="' . $match[1] . '.txt"');
@@ -134,7 +136,7 @@ class LengowLog extends LengowFile
             header('Content-type: text/plain');
             header('Content-Disposition: attachment; filename="logs.txt"');
             foreach ($files as $file) {
-                $handle = fopen($file['full_path'], "r");
+                $handle = fopen($file['full_path'], 'r');
                 $contents = fread($handle, filesize($file['full_path']));
                 echo $contents;
             }
