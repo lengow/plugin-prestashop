@@ -3,6 +3,7 @@ Version 3.1.3
 =============================================================
 
     - Bugfix: Recovery of all active shops when searching by token
+    - Bugfix: Implementation of dynamic link in templates for JS and CSS scripts
 
 =============================================================
 Version 3.1.2

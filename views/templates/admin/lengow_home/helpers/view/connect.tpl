@@ -33,7 +33,7 @@
             </p>
         {/if}
         <div class="lgw-box lgw-home-header text-center">
-            <img src="/modules/lengow/views/img/lengow-white-big.png" alt="lengow">
+            <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/lengow-white-big.png" alt="lengow">
             <h1>{$locale->t('dashboard.screen.welcome_back')|escape:'htmlall':'UTF-8'}</h1>
             <a href="http://my.lengow.io/" class="lgw-btn" target="_blank">
                 {$locale->t('dashboard.screen.go_to_lengow')|escape:'htmlall':'UTF-8'}
@@ -43,7 +43,7 @@
             <div class="lgw-col-4">
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                     <div class="lgw-box">
-                        <img src="/modules/lengow/views/img/home-products.png" class="img-responsive">
+                        <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/home-products.png" class="img-responsive">
                         <h2>{$locale->t('dashboard.screen.products_title')|escape:'htmlall':'UTF-8'}</h2>
                         <p>{$locale->t('dashboard.screen.products_text')|escape:'htmlall':'UTF-8'}</p>
                     </div>
@@ -52,7 +52,7 @@
             <div class="lgw-col-4">
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                     <div class="lgw-box">
-                        <img src="/modules/lengow/views/img/home-orders.png" class="img-responsive">
+                        <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/home-orders.png" class="img-responsive">
                         <h2>
                             {$locale->t('dashboard.screen.orders_title')|escape:'htmlall':'UTF-8'}
                             {if $total_pending_order > 0}
@@ -66,7 +66,7 @@
             <div class="lgw-col-4">
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}" class="lgw-box-link">
                     <div class="lgw-box">
-                        <img src="/modules/lengow/views/img/home-settings.png" class="img-responsive">
+                        <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/home-settings.png" class="img-responsive">
                         <h2>{$locale->t('dashboard.screen.settings_title')|escape:'htmlall':'UTF-8'}</h2>
                         <p>{$locale->t('dashboard.screen.settings_text')|escape:'htmlall':'UTF-8'}</p>
                     </div>
@@ -76,7 +76,7 @@
         {if $stats['available']}
         <div class="lgw-box text-center">
             <div class="lgw-col-12 center-block">
-                <img src="/modules/lengow/views/img/picto-stats.png" class="img-responsive">
+                <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/picto-stats.png" class="img-responsive">
             </div>
             <h2>{$locale->t('dashboard.screen.partner_business')|escape:'htmlall':'UTF-8'}</h2>
             <div class="lgw-row lgw-home-stats">

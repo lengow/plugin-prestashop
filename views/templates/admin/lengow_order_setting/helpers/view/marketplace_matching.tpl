@@ -22,7 +22,7 @@
     {$locale->t('order_setting.screen.see_delivery_countries')|escape:'htmlall':'UTF-8'}
 </a>
 <h2>
-    <img src="/modules/lengow/views/img/flag/{$country['iso_code']|escape:'htmlall':'UTF-8'}.png" alt="{$country['name']|escape:'htmlall':'UTF-8'}" class="flag">
+    <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/flag/{$country['iso_code']|escape:'htmlall':'UTF-8'}.png" alt="{$country['name']|escape:'htmlall':'UTF-8'}" class="flag">
     {$locale->t('order_setting.screen.marketplace_matching_title', ['country_name' => $country['name']])|escape:'htmlall':'UTF-8'}
 </h2>
 <p>

@@ -345,7 +345,8 @@ class LengowList
                         case 'flag_country':
                             if ($item[$key]) {
                                 $isoCode = Tools::strtoupper($item[$key]);
-                                $value = '<img src="/modules/lengow/views/img/flag/' . $isoCode . '.png"
+                                $value = '<img src="' . __PS_BASE_URI__
+                                    . 'modules/lengow/views/img/flag/' . $isoCode . '.png"
                                     class="lengow_link_tooltip"
                                     data-original-title="' . LengowCountry::getNameByIso($isoCode) . '"/>';
                             } else {

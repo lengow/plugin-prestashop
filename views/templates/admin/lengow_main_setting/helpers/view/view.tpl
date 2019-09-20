@@ -99,7 +99,7 @@
                                 <div class="scrollable no-margin">
                                     <div class="scrollable-in">
                                         <div class="lgw-content-section text-center">
-                                            <img src="/modules/lengow/views/img/laser-gun.png">
+                                            <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/laser-gun.png">
                                             <h2><span>{$locale->t('global_setting.screen.title_modal_uninstall')|escape:'htmlall':'UTF-8'}</span></h2>
                                             <p>
                                                 {$locale->t('global_setting.screen.all_data_will_be_lost')|escape:'htmlall':'UTF-8'}<br/><br/>
@@ -145,4 +145,4 @@
         </form>
     </div>
 </div>
-<script type="text/javascript" src="/modules/lengow/views/js/lengow/main_setting.js"></script>
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/main_setting.js"></script>
