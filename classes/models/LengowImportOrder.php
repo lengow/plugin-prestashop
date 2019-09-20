@@ -810,6 +810,11 @@ class LengowImportOrder
             $this->shippingAddress->phone_mobile = $billingAddress->phone_mobile;
             $this->shippingAddress->update();
         }
+        // get VAT number on the billing address if is empty
+        if (empty($this->shippingAddress->vat_number) && !empty($billingAddress->vat_number)) {
+            $this->shippingAddress->vat_number = $billingAddress->vat_number;
+            $this->shippingAddress->update();
+        }
         $cartDatas['id_address_delivery'] = $this->shippingAddress->id;
         // get currency
         $cartDatas['id_currency'] = (int)Currency::getIdByIsoCode((string)$this->orderData->currency->iso_a3);
