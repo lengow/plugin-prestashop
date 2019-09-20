@@ -79,10 +79,10 @@
 /controllers/index.php|eb18f895c85303c2ced77482ec4ab525
 /toolbox/logoff.php|f134d5d1d67503c0b33d3786261b8838
 /toolbox/conf.inc.php|e240696c299d8dda8e16f9623f8ef737
-/toolbox/config.php|14e9126a15df3c8419a918bd1113c67b
+/toolbox/config.php|76879b080ce7b0feb48136d78650e1b6
 /toolbox/login.php|2267764e7c51774ec00025864c5795e7
 /toolbox/checksum.php|293158edbb195f522f019c241595e2a9
-/toolbox/log.php|94fb9bd5ed0a5bcd358a7a251fc616d6
+/toolbox/log.php|d1c60bd06eb9e2d4d0bff183ecd95d80
 /toolbox/order.php|e624805c51de8c0e05f6c4ca53db1b23
 /toolbox/views/header.php|07e8dc256a24c90761fdff50f3e0815a
 /toolbox/views/footer.php|4780d9cad3c4aecd920b50a0e0a4597c
