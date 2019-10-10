@@ -241,7 +241,7 @@ fr:
     lengow_import_force_product_title: "Forcer les produits"
     lengow_import_force_product_legend: "Activez cette option si vous souhaitez importer automatiquement vos produits hors stock et produits inactifs."
     lengow_carrier_semantic_enable_title: "Je veux activer l'option de correspondance sémantique des transporteurs"
-    lengow_carrier_semantic_enable_legend: "Avec cette option, faites correspondre le transporteur ou la méthode de transport indiqué par la marketplace avec le nom de vos transporteurs PrestaShop. Cette correspondance sera utilisée uniquement pour les marketplaces ne renvoyant aucun transporteur ni méthode de transport."
+    lengow_carrier_semantic_enable_legend: "Avec cette option, faites correspondre le transporteur ou la méthode de transport indiqué par la marketplace avec le nom de vos transporteurs PrestaShop."
     lengow_import_days_title: "Synchroniser toutes les commandes mises à jour depuis"
     lengow_import_days_legend: "Activez cette option si vous avez des commandes en erreur en attente. Cela vous permet de réimporter les commandes passées depuis le dernier import réussi."
     lengow_import_processing_fee_title: "Importer les frais de traitement"

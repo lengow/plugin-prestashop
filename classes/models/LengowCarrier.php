@@ -535,10 +535,10 @@ class LengowCarrier extends Carrier
      */
     public static function deleteMarketplaceCarrierMarketplace($idMarketplaceCarrierMarketplace)
     {
-        return Db::getInstance()->delete(
-            _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace',
-            'id = ' . (int)$idMarketplaceCarrierMarketplace
-        );
+        $table = _PS_VERSION_ < '1.5'
+            ? _DB_PREFIX_ . 'lengow_marketplace_carrier_marketplace'
+            : 'lengow_marketplace_carrier_marketplace';
+        return Db::getInstance()->delete($table, 'id = ' . (int)$idMarketplaceCarrierMarketplace);
     }
 
     /**

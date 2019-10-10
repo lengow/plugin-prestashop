@@ -1097,38 +1097,10 @@ class LengowImportOrder
         $idMarketplace = LengowMarketplace::getIdMarketplace($this->marketplace->name);
         $hasCarriers = $this->marketplace->hasCarriers();
         $hasShippingMethods = $this->marketplace->hasShippingMethods();
-        // if the marketplace has carriers or shipping method, use manual matching
-        if ($hasCarriers || $hasShippingMethods) {
-            // get carrier id by carrier marketplace code
-            if ($this->carrierName && $hasCarriers) {
-                $idCarrier = LengowCarrier::getIdCarrierByCarrierMarketplaceName(
-                    $idCountry,
-                    $idMarketplace,
-                    $this->carrierName
-                );
-                $matchingFound = $idCarrier ? 'carrier' : false;
-            }
-            // get carrier id by method marketplace code
-            if (!$idCarrier && $this->carrierMethod && $hasShippingMethods) {
-                $idCarrier = LengowMethod::getIdCarrierByMethodMarketplaceName(
-                    $idCountry,
-                    $idMarketplace,
-                    $this->carrierMethod
-                );
-                $matchingFound = $idCarrier ? 'method' : false;
-            }
-        } elseif ((bool)LengowConfiguration::getGlobalValue('LENGOW_CARRIER_SEMANTIC_ENABLE')) {
-            // if the marketplace has neither carrier nor shipping methods, use semantic matching
-            if ($this->carrierName) {
-                // carrier id recovery by semantic search on the carrier marketplace code
-                $idCarrier = LengowCarrier::getIdCarrierBySemanticSearch(
-                    $this->carrierName,
-                    $idCountry,
-                    $this->shippingAddress->idRelay
-                );
-                $matchingFound = $idCarrier ? 'carrier' : false;
-            }
-            if (!$idCarrier && $this->carrierMethod) {
+        // if the marketplace has neither carrier nor shipping methods, use semantic matching
+        if ((bool)LengowConfiguration::getGlobalValue('LENGOW_CARRIER_SEMANTIC_ENABLE')) {
+            // semantic search first on the method for marketplaces working with custom shipping methods
+            if (!$idCarrier && $this->carrierMethod && !$hasShippingMethods) {
                 // carrier id recovery by semantic search on the carrier marketplace shipping method
                 $idCarrier = LengowCarrier::getIdCarrierBySemanticSearch(
                     $this->carrierMethod,
@@ -1137,6 +1109,34 @@ class LengowImportOrder
                 );
                 $matchingFound = $idCarrier ? 'method' : false;
             }
+            if (!$idCarrier && $this->carrierName && !$hasCarriers) {
+                // carrier id recovery by semantic search on the carrier marketplace code
+                $idCarrier = LengowCarrier::getIdCarrierBySemanticSearch(
+                    $this->carrierName,
+                    $idCountry,
+                    $this->shippingAddress->idRelay
+                );
+                $matchingFound = $idCarrier ? 'carrier' : false;
+            }
+        }
+        // if the marketplace has carriers or shipping method, use manual matching
+        if (!$idCarrier && $this->carrierName && $hasCarriers) {
+            // get carrier id by carrier marketplace code
+            $idCarrier = LengowCarrier::getIdCarrierByCarrierMarketplaceName(
+                $idCountry,
+                $idMarketplace,
+                $this->carrierName
+            );
+            $matchingFound = $idCarrier ? 'carrier' : false;
+        }
+        if (!$idCarrier && $this->carrierMethod && $hasShippingMethods) {
+            // get carrier id by method marketplace code
+            $idCarrier = LengowMethod::getIdCarrierByMethodMarketplaceName(
+                $idCountry,
+                $idMarketplace,
+                $this->carrierMethod
+            );
+            $matchingFound = $idCarrier ? 'method' : false;
         }
         if (!$idCarrier) {
             // get default carrier by country
