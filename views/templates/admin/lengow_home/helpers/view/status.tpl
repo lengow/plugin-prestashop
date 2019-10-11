@@ -42,7 +42,7 @@
                 </div>
                 <div class="lgw-col-6">
                     <div class="vertical-center">
-                        <img src="/modules/lengow/views/img/logo-blue.png" class="center-block" alt="lengow"/>
+                        <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/logo-blue.png" class="center-block" alt="lengow"/>
                     </div>
                 </div>
             {else}
@@ -68,7 +68,7 @@
                 </div>
                 <div class="lgw-col-6">
                     <div class="vertical-center">
-                        <img src="/modules/lengow/views/img/logo-blue.png" class="center-block" alt="lengow"/>
+                        <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/logo-blue.png" class="center-block" alt="lengow"/>
                     </div>
                 </div>
             {/if}

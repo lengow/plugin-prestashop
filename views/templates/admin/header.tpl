@@ -21,27 +21,27 @@
 <script type="text/javascript">$(document.body).addClass('lengow_body');</script>
 
 <!-- PLUGINS -->
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/bootstrap-datepicker.css">
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/font-awesome.css">
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
+<link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/bootstrap-datepicker.css">
+<link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/select2.css">
 <!-- STYLE LENGOW -->
 <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic|Open+Sans:700,600,800,400,300" type="text/css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-layout.css">
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-components.css">
-<link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow-pages.css">
+<link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow-layout.css">
+<link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow-components.css">
+<link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow-pages.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 {if version_compare($smarty.const._PS_VERSION_,'1.5','<')&&version_compare($smarty.const._PS_VERSION_,'1.4','>=')}
-    <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_14.css">
+    <link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow_bootstrap_14.css">
 {/if}
 {if version_compare($smarty.const._PS_VERSION_,'1.6','<')&&version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
-    <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/lengow_bootstrap_15.css">
+    <link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow_bootstrap_15.css">
 {/if}
 
 {if $displayToolbar eq 1}
     <ul class="nav nav-pills lengow-nav lengow-nav-top">
         <li role="presentation" id="lengow_logo">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">
-                <img src="/modules/lengow/views/img/lengow-white.png" alt="lengow">
+                <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/lengow-white.png" alt="lengow">
             </a>
         </li>
         <li role="presentation" class="{if $current_controller == 'LengowFeedController'}active{/if}"><a href="
@@ -91,12 +91,12 @@
         {/if}
     </ul>
 {/if}
-<script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/jquery.1.12.0.min.js"></script>
 <script type="text/javascript">
     var lengow_jquery = $.noConflict(true);
 </script>
-<script type="text/javascript" src="/modules/lengow/views/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/modules/lengow/views/js/lengow/admin.js"></script>
-<script type="text/javascript" src="/modules/lengow/views/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="/modules/lengow/views/js/clipboard.js"></script>
-<script type="text/javascript" src="/modules/lengow/views/js/select2.js"></script>
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/admin.js"></script>
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/clipboard.js"></script>
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/select2.js"></script>

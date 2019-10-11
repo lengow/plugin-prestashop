@@ -79,7 +79,7 @@ class LengowCheck
         $checklist[] = array(
             'title' => $this->locale->t('toolbox.index.checksum_message'),
             'help' => $this->locale->t('toolbox.index.checksum_help'),
-            'help_link' => '/modules/lengow/toolbox/checksum.php',
+            'help_link' => __PS_BASE_URI__ . 'modules/lengow/toolbox/checksum.php',
             'help_label' => $this->locale->t('toolbox.index.checksum_help_label'),
             'state' => (int)self::getFileModified(),
         );

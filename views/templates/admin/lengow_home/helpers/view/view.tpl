@@ -26,4 +26,4 @@
 {else}
     {include file='./connect.tpl'}
 {/if}
-<script type="text/javascript" src="/modules/lengow/views/js/lengow/home.js"></script>
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/home.js"></script>

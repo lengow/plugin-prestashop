@@ -68,4 +68,4 @@
         </form>
     </div>
 </div>
-<script type="text/javascript" src="/modules/lengow/views/js/lengow/order_setting.js"></script>
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/order_setting.js"></script>

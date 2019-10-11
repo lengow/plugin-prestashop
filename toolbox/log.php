@@ -25,6 +25,7 @@ $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
 $file = isset($_REQUEST['file']) ? $_REQUEST['file'] : null;
 
 $locale = new LengowTranslation();
+$lengowPathUri = __PS_BASE_URI__ . 'modules/lengow/';
 
 switch ($action) {
     case 'download':
@@ -46,12 +47,13 @@ require 'views/header.php';
             <?php
             foreach ($listFile as $file) {
                 echo '<li class="list-group-item">';
-                echo '<a href="/modules/lengow/toolbox/log.php?action=download&file=' . urlencode($file['short_path'])
+                echo '<a href="' . $lengowPathUri
+                    . 'toolbox/log.php?action=download&file=' . urlencode($file['short_path'])
                     . '"><i class="fa fa-download"></i> ' . $file['name'] . '</a>';
                 echo '</li>';
             }
             echo '<li class="list-group-item">';
-            echo '<a href="/modules/lengow/toolbox/log.php?action=download_all">
+            echo '<a href="' . $lengowPathUri . 'toolbox/log.php?action=download_all">
         <i class="fa fa-download"></i> ' . $locale->t('toolbox.log.download_all') . '</a>';
             echo '</li>';
             ?>

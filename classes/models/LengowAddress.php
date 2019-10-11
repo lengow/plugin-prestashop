@@ -63,6 +63,7 @@ class LengowAddress extends Address
         'phone_home',
         'phone_office',
         'phone_mobile',
+        'vat_number',
     );
 
     /**
@@ -236,6 +237,7 @@ class LengowAddress extends Address
         $this->phone = $data['phone_home'];
         $this->phone_mobile = $data['phone_mobile'];
         $this->phoneOffice = $data['phone_office'];
+        $this->vat_number = $data['vat_number'];
         $this->fullAddress = $data['address_full'];
         $this->alias = self::hash($this->fullAddress);
         return $this;

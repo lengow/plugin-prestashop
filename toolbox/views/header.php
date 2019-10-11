@@ -19,6 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
+$lengowPathUri = __PS_BASE_URI__ . 'modules/lengow/';
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -27,19 +28,19 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Lengow Toolbox</title>
-        <link rel="stylesheet" href="/modules/lengow/views/css/bootstrap-3.3.6.css">
-        <link rel="stylesheet" href="/modules/lengow/views/css/toolbox.css">
-        <link rel="stylesheet" href="/modules/lengow/views/css/font-awesome.css">
-        <script type="text/javascript" src="/modules/lengow/views/js/jquery.1.12.0.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="/modules/lengow/views/css/select2.css">
+        <link rel="stylesheet" href="<?php echo $lengowPathUri; ?>views/css/bootstrap-3.3.6.css">
+        <link rel="stylesheet" href="<?php echo $lengowPathUri; ?>views/css/toolbox.css">
+        <link rel="stylesheet" href="<?php echo $lengowPathUri; ?>views/css/font-awesome.css">
+        <script type="text/javascript" src="<?php echo $lengowPathUri; ?>views/js/jquery.1.12.0.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $lengowPathUri; ?>views/css/select2.css">
         <script type="text/javascript">
             var lengow_jquery = $.noConflict(true);
         </script>
-        <script type="text/javascript" src="/modules/lengow/views/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/modules/lengow/views/js/lengow/admin.js"></script>
-        <script type="text/javascript" src="/modules/lengow/views/js/bootstrap-datepicker.js"></script>
-        <script type="text/javascript" src="/modules/lengow/views/js/clipboard.js"></script>
-        <script type="text/javascript" src="/modules/lengow/views/js/select2.js"></script>
+        <script type="text/javascript" src="<?php echo $lengowPathUri; ?>views/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="<?php echo $lengowPathUri; ?>views/js/lengow/admin.js"></script>
+        <script type="text/javascript" src="<?php echo $lengowPathUri; ?>views/js/bootstrap-datepicker.js"></script>
+        <script type="text/javascript" src="<?php echo $lengowPathUri; ?>views/js/clipboard.js"></script>
+        <script type="text/javascript" src="<?php echo $lengowPathUri; ?>views/js/select2.js"></script>
     </head>
 
 <body>
@@ -51,41 +52,41 @@ if ($lengowTool->isLogged()) {
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/modules/lengow/toolbox/index.php">
+                <a class="navbar-brand" href="<?php echo $lengowPathUri; ?>toolbox/index.php">
                     <i class="fa fa-rocket"></i> <?php echo $locale->t('toolbox.menu.lengow_toolbox'); ?>
                 </a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="/modules/lengow/toolbox/product.php">
+                        <a href="<?php echo $lengowPathUri; ?>toolbox/product.php">
                             <i class="fa fa-bicycle"></i> <?php echo $locale->t('toolbox.menu.product'); ?>
                         </a>
                     </li>
                     <li>
-                        <a href="/modules/lengow/toolbox/order.php">
+                        <a href="<?php echo $lengowPathUri; ?>toolbox/order.php">
                             <i class="fa fa-shopping-basket"></i> <?php echo $locale->t('toolbox.menu.order'); ?>
                         </a>
                     </li>
                     <li>
-                        <a href="/modules/lengow/toolbox/config.php">
+                        <a href="<?php echo $lengowPathUri; ?>toolbox/config.php">
                             <i class="fa fa-cog"></i> <?php echo $locale->t('toolbox.menu.configuration'); ?>
                         </a>
                     </li>
                     <li>
-                        <a href="/modules/lengow/toolbox/checksum.php">
+                        <a href="<?php echo $lengowPathUri; ?>toolbox/checksum.php">
                             <i class="fa fa-search"></i> <?php echo $locale->t('toolbox.menu.checksum'); ?>
                         </a>
                     </li>
                     <li>
-                        <a href="/modules/lengow/toolbox/log.php">
+                        <a href="<?php echo $lengowPathUri; ?>toolbox/log.php">
                             <i class="fa fa-file-text-o"></i> <?php echo $locale->t('toolbox.menu.log'); ?>
                         </a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/modules/lengow/toolbox/logoff.php">
+                        <a href="<?php echo $lengowPathUri; ?>toolbox/logoff.php">
                             <i class="fa fa-sign-out"></i> <?php echo $locale->t('toolbox.menu.log_off'); ?>
                         </a>
                     </li>

@@ -27,8 +27,10 @@ $secretToken = isset($_REQUEST['secret_token']) ? $_REQUEST['secret_token'] : nu
 $fullAccess = isset($_REQUEST['access']) ? $_REQUEST['access'] : null;
 
 $locale = new LengowTranslation();
-
 $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
+$lengowPathUri = __PS_BASE_URI__ . 'modules/lengow/';
+$actionGetDefaultSetting =  $lengowPathUri . 'toolbox/config.php?action=get_default_settings&access=admin';
+$actionUpdateSetting =  $lengowPathUri . 'toolbox/config.php?action=update_settings&access=admin';
 
 if (_PS_VERSION_ < '1.5') {
     $shopCollection = array(array('id_shop' => 1));
@@ -176,17 +178,17 @@ require 'views/header.php';
                         <?php echo $locale->t('toolbox.configuration.button_save'); ?>
                     </button>
                     <?php
-                    if ($fullAccess && $fullAccess == 'admin') {
+                    if ($fullAccess && $fullAccess === 'admin') {
                         ?>
                         <a class="lgw-btn btn-success"
-                           href="/modules/lengow/toolbox/config.php?action=get_default_settings&access=admin"
+                           href="<?php echo $actionGetDefaultSetting; ?>"
                            onclick="return confirm(
                                '<?php echo $locale->t('toolbox.configuration.check_get_default_settings'); ?>'
                                )">
                             <?php echo $locale->t('toolbox.configuration.get_default_settings'); ?>
                         </a>
                         <a class="lgw-btn btn-success"
-                           href="/modules/lengow/toolbox/config.php?action=update_settings&access=admin"
+                           href="<?php echo $actionUpdateSetting; ?>"
                            onclick="return confirm(
                                '<?php echo $locale->t('toolbox.configuration.check_update_settings'); ?>'
                                )">

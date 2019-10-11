@@ -240,10 +240,10 @@ class LengowMethod
      */
     public static function deleteMarketplaceMethodMarketplace($idMarketplaceMethodMarketplace)
     {
-        return Db::getInstance()->delete(
-            _DB_PREFIX_ . 'lengow_marketplace_method_marketplace',
-            'id = ' . (int)$idMarketplaceMethodMarketplace
-        );
+        $table = _PS_VERSION_ < '1.5'
+            ? _DB_PREFIX_ . 'lengow_marketplace_method_marketplace'
+            : 'lengow_marketplace_method_marketplace';
+        return Db::getInstance()->delete($table, 'id = ' . (int)$idMarketplaceMethodMarketplace);
     }
 
     /**
@@ -469,9 +469,9 @@ class LengowMethod
      */
     public static function deleteMarketplaceMethodCountry($idMarketplaceMethodCountry)
     {
-        return Db::getInstance()->delete(
-            _DB_PREFIX_ . 'lengow_marketplace_method_country',
-            'id = ' . (int)$idMarketplaceMethodCountry
-        );
+        $table = _PS_VERSION_ < '1.5'
+            ? _DB_PREFIX_ . 'lengow_marketplace_method_country'
+            : 'lengow_marketplace_method_country';
+        return Db::getInstance()->delete($table, 'id = ' . (int)$idMarketplaceMethodCountry);
     }
 }

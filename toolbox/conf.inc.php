@@ -52,13 +52,13 @@ $lengowTool = new LengowTool();
 $context = Context::getContext();
 LengowTranslation::$forceIsoCode = 'en';
 
-if (!in_array($lengowTool->getCurrentUri(), array('/modules/lengow/toolbox/login.php'))) {
+if (!in_array($lengowTool->getCurrentUri(), array(__PS_BASE_URI__ . 'modules/lengow/toolbox/login.php'))) {
     if (!$lengowTool->isLogged()) {
         Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/login.php', '');
     }
 }
 
-if ($lengowTool->getCurrentUri() === '/modules/lengow/toolbox/login.php' && $lengowTool->isLogged()) {
+if ($lengowTool->getCurrentUri() === __PS_BASE_URI__ . 'modules/lengow/toolbox/login.php' && $lengowTool->isLogged()) {
     Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/', '');
 }
 

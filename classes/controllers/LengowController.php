@@ -82,6 +82,9 @@ class LengowController
         $this->locale = new LengowTranslation();
         $this->context->smarty->assign('lengow_link', new LengowLink());
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
+        // get module path uri
+        $lengowPathUri = _PS_VERSION_ < '1.5' ? __PS_BASE_URI__ . 'modules/lengow/' : $this->module->getPathUri();
+        $this->context->smarty->assign('lengowPathUri', $lengowPathUri);
         // show header or not
         if ($this->isNewMerchant
             || ($this->merchantStatus['type'] === 'free_trial' && $this->merchantStatus['expired'])

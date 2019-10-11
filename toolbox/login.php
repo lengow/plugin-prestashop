@@ -39,7 +39,7 @@ if ($blockedIp) {
 }
 ?>
     <div class="container">
-        <form action="/modules/lengow/toolbox/login.php" method="POST">
+        <form action="<?php echo __PS_BASE_URI__; ?>modules/lengow/toolbox/login.php" method="POST">
             <input type="hidden" name="action" value="login"/>
             <div class="form-group">
                 <label for="exampleInputEmail1">Account Id</label>

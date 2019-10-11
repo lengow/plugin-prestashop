@@ -32,7 +32,7 @@
                         {if isset($defaultCarrierNotMatched[{$country['id_country']}]) && $defaultCarrierNotMatched[{$country['id_country']}]|count > 0}
                             <span class="alert-matching"></span>
                         {/if}
-                        <img src="/modules/lengow/views/img/flag/{$country['iso_code']|escape:'htmlall':'UTF-8'}.png"
+                        <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/flag/{$country['iso_code']|escape:'htmlall':'UTF-8'}.png"
                              alt="{$country['name']|escape:'htmlall':'UTF-8'}">
                         <p>{$country['name']|upper|escape:'htmlall':'UTF-8'}</p>
                         <p class="small light">
