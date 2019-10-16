@@ -824,7 +824,8 @@ class LengowMain
     public static function isMondialRelayAvailable()
     {
         $moduleName = 'mondialrelay';
-        $supportedVersion = '2.1.0';
+        $supportedMinVersion = '2.1.0';
+        $supportedMaxVersion = '3.0.0';
         $sep = DIRECTORY_SEPARATOR;
         $moduleDir = _PS_MODULE_DIR_ . $moduleName . $sep;
         if (!self::isModuleInstalled($moduleName)) {
@@ -832,7 +833,9 @@ class LengowMain
         }
         require_once($moduleDir . $moduleName . '.php');
         $mr = new MondialRelay();
-        if (version_compare($mr->version, $supportedVersion, '>=')) {
+        if (version_compare($mr->version, $supportedMinVersion, '>=')
+            && version_compare($mr->version, $supportedMaxVersion, '<')
+        ) {
             return true;
         } else {
             return false;
