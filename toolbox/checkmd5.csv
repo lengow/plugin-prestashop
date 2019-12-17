@@ -59,7 +59,7 @@
 /classes/models/LengowCurrency.php|0bbd3c9a7ee5aca02830dd4387c9bcfa
 /classes/models/LengowExport.php|dd7eb00e0bd62dd618ffce84bf605f34
 /classes/models/index.php|b5e38882437216d5e71c70683fac56de
-/classes/models/LengowMarketplace.php|7ce95a4299209bd4e0bb7b77a7d49783
+/classes/models/LengowMarketplace.php|64ee2ba1189b44cb12069cda2b025e50
 /classes/index.php|ed8e273082cc0a58535dc2b454435f38
 /controllers/admin/AdminLengowOrderController.php|696550a0efacd77832740cf0e48221f8
 /controllers/admin/TabLengowOrderSettingController.php|1924fe8ae7bf0f53698b5f9bc369dabc
