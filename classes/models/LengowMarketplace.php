@@ -455,7 +455,7 @@ class LengowMarketplace
                     } else {
                         if (!isset($deliveryAddress->id_country) || (int)$deliveryAddress->id_country === 0) {
                             if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
-                                continue;
+                                break;
                             }
                             throw new LengowException(
                                 LengowMain::setLogMessage('lengow_log.exception.no_delivery_country_in_order')
@@ -483,7 +483,7 @@ class LengowMarketplace
                         // add default value if tracking url is empty
                         if (Tools::strlen($trackingUrl) === 0) {
                             if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
-                                continue;
+                                break;
                             }
                             $defaultValue = $this->getDefaultValue((string)$arg);
                             $trackingUrl = $defaultValue ? $defaultValue : $arg . ' not available';
@@ -500,7 +500,7 @@ class LengowMarketplace
                     break;
                 default:
                     if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
-                        continue;
+                        break;
                     }
                     $defaultValue = $this->getDefaultValue((string)$arg);
                     $paramValue = $defaultValue ? $defaultValue : $arg . ' not available';
