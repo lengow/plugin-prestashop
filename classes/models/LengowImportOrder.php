@@ -254,6 +254,16 @@ class LengowImportOrder
                 return false;
             }
         }
+        // skip import if the order is anonymized
+        if ($this->orderData->anonymized) {
+        	LengowMain::log(
+	            'Import',
+	            LengowMain::setLogMessage('log.import.anonymized_order'),
+	            $this->logOutput,
+	            $this->marketplaceSku
+	        );
+        	return false;
+        }
         // checks if an external id already exists
         $idOrderPrestashop = $this->checkExternalIds($this->orderData->merchant_order_id);
         if ($idOrderPrestashop && !$this->preprodMode && !$this->isReimported) {
