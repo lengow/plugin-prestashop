@@ -105,8 +105,14 @@ en:
       can_not_load_order: "order action failed - Can't load order"
       call_action_failed: "order action failed - %{decoded_message}"
     connector:
-      call_api: "call %{curl_url}"
-      error_api: "API call failed - %{error_code}"
+      call_api: "call %{call_type} %{curl_url}"
+      error_api: "API call failed - %{error_code} - %{error_message}"
+      timeout_api: "API call has been blocked by a timeout"
+      error_curl: "Curl error %{error_code} - %{error_message}"
+      token_not_return: "no authorization token returned"
+      token_is_empty: "the returned authorization token is empty"
+      api_not_available: "Lengow APIs are not available"
+      retry_get_token: "API call failed - authorization token expired - attempt to recover a new token"
     setting:
       setting_delete: "all Lengow settings were deleted"
       setting_reset: "all Lengow settings were reset"

@@ -261,7 +261,7 @@ lengow_log.exception.no_product_to_cart|no product to be added to cart
 lengow_log.exception.cannot_add_product_to_cart|cannot add product %{product_id} to cart (invalid ID format)
 lengow_log.exception.no_quantity_for_product|product %{product_id} could not be added to cart. Make sure it is available to order or that there is enough in stock
 lengow_log.exception.no_connection_webservice|connection didn't work with the Lengow webservice in shop %{name_shop} (%{id_shop})
-lengow_log.exception.error_lengow_webservice|Lengow webservice: %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})
+lengow_log.exception.error_lengow_webservice|Lengow webservice: %{error_code} - "%{error_message}" in shop %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|order could not be saved
 lengow_log.exception.carrier_shipping_address_no_country|shipping address doesn't contain the country
 lengow_log.exception.no_default_carrier_for_country|You must select a default carrier for the country: %{country_name} and the marketplace: %{marketplace_name}
@@ -285,8 +285,6 @@ lengow_log.exception.delivery_country_not_active|the country %{country_name} in 
 lengow_log.exception.product_is_not_listed|product %{product_id} is not listed as part of the current order
 lengow_log.exception.unable_to_save_order|unable to save PrestaShop order - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
-lengow_log.exception.timeout_api|API call has been blocked by a timeout
-lengow_log.exception.error_curl|Curl error %{error_code} - %{error_message}
 lengow_log.mail_report.order|Order %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Import Lengow
@@ -412,8 +410,14 @@ log.order_action.action_saved|call tracking saved in lengow_actions table
 log.order_action.call_tracking|call tracking with parameters: %{parameters}
 log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
-log.connector.call_api|call %{curl_url}
-log.connector.error_api|API call failed - %{error_code}
+log.connector.call_api|call %{call_type} %{curl_url}
+log.connector.error_api|API call failed - %{error_code} - %{error_message}
+log.connector.timeout_api|API call has been blocked by a timeout
+log.connector.error_curl|Curl error %{error_code} - %{error_message}
+log.connector.token_not_return|no authorization token returned
+log.connector.token_is_empty|the returned authorization token is empty
+log.connector.api_not_available|Lengow APIs are not available
+log.connector.retry_get_token|API call failed - authorization token expired - attempt to recover a new token
 log.setting.setting_delete|all Lengow settings were deleted
 log.setting.setting_reset|all Lengow settings were reset
 log.setting.setting_updated|all Lengow settings were updated

@@ -80,6 +80,14 @@ class LengowConfiguration extends Configuration
                     'label' => $locale->t('lengow_setting.lengow_secret_token_title'),
                     'secret' => true,
                 ),
+                'LENGOW_AUTH_TOKEN' => array(
+	                'global' => true,
+	                'export' => false,
+                ),
+                'LENGOW_LAST_AUTH_TOKEN_UPDATE' => array(
+	                'global' => true,
+	                'export' => false,
+                ),
                 'LENGOW_SHOP_ACTIVE' => array(
                     'type' => 'checkbox',
                     'shop' => true,
@@ -491,7 +499,21 @@ class LengowConfiguration extends Configuration
         }
     }
 
-    /**
+	/**
+	 * Check if is a new merchant
+	 *
+	 * @return boolean
+	 */
+	public static function isNewMerchant()
+	{
+		list($accountId, $accessToken, $secretToken) = self::getAccessIds();
+		if (!is_null($accountId) && !is_null($accessToken) && !is_null($secretToken)) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
      * Get catalog ids for a specific shop
      *
      * @param integer $idShop Prestashop shop id

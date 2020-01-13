@@ -176,11 +176,12 @@ class LengowMarketplace
      * Load the json configuration of all marketplaces
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      */
-    public static function loadApiMarketplace($force = false)
+    public static function loadApiMarketplace($force = false, $logOutput = false)
     {
         if (!self::$marketplaces || $force) {
-            self::$marketplaces = LengowSync::getMarketplaces($force);
+            self::$marketplaces = LengowSync::getMarketplaces($force, $logOutput);
         }
     }
 

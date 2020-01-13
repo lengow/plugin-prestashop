@@ -261,7 +261,7 @@ lengow_log.exception.no_product_to_cart|il n'y a pas de produit ajouté au panie
 lengow_log.exception.cannot_add_product_to_cart|le produit %{product_id} ne peut etre ajouté au panier (format de l'ID non valide)
 lengow_log.exception.no_quantity_for_product|le produit %{product_id} ne peut être ajouté au panier. Vérifiez qu'il est bien disponible à la commande ou qu'il y a assez de stock
 lengow_log.exception.no_connection_webservice|la connexion ne se fait pas avec Lengow pour la boutique %{name_shop} (%{id_shop})
-lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - %{error_message} pour la boutique %{name_shop} (%{id_shop})
+lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - "%{error_message}" pour la boutique %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|la commande ne peut être sauvegardée
 lengow_log.exception.carrier_shipping_address_no_country|l'adresse d'expédition ne contient pas de pays
 lengow_log.exception.no_default_carrier_for_country|Vous devez sélectionner un transporteur par défaut pour le pays %{country_name} et la place de marché %{marketplace_name}
@@ -285,8 +285,6 @@ lengow_log.exception.delivery_country_not_active|Le pays %{country_name} dans l'
 lengow_log.exception.product_is_not_listed|le produit %{product_id} n'est pas présent dans la commande en cours
 lengow_log.exception.unable_to_save_order|impossible de sauvegarder la commande PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossible de sauvegarder le paiement de la commande PrestaShop
-lengow_log.exception.timeout_api|l'API a été bloquée par un timeout
-lengow_log.exception.error_curl|Curl erreur %{error_code} - %{error_message}
 lengow_log.mail_report.order|commande %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|Pas de message d'erreur, contacter le support via https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Import Lengow

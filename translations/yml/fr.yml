@@ -288,7 +288,7 @@ fr:
       cannot_add_product_to_cart: "le produit %{product_id} ne peut etre ajouté au panier (format de l'ID non valide)"
       no_quantity_for_product: "le produit %{product_id} ne peut être ajouté au panier. Vérifiez qu'il est bien disponible à la commande ou qu'il y a assez de stock"
       no_connection_webservice: "la connexion ne se fait pas avec Lengow pour la boutique %{name_shop} (%{id_shop})"
-      error_lengow_webservice: "l'API Lengow : %{error_code} - %{error_message} pour la boutique %{name_shop} (%{id_shop})"
+      error_lengow_webservice: "l'API Lengow : %{error_code} - \"%{error_message}\" pour la boutique %{name_shop} (%{id_shop})"
       order_list_is_empty: "la commande ne peut être sauvegardée"
       carrier_shipping_address_no_country: "l'adresse d'expédition ne contient pas de pays"
       no_default_carrier_for_country: "Vous devez sélectionner un transporteur par défaut pour le pays %{country_name} et la place de marché %{marketplace_name}"
@@ -312,8 +312,6 @@ fr:
       product_is_not_listed: "le produit %{product_id} n'est pas présent dans la commande en cours"
       unable_to_save_order: "impossible de sauvegarder la commande PrestaShop - %{error}"
       unable_to_save_order_payment: "impossible de sauvegarder le paiement de la commande PrestaShop"
-      timeout_api: "l'API a été bloquée par un timeout"
-      error_curl: "Curl erreur %{error_code} - %{error_message}"
     mail_report:
       order: "commande %{marketplace_sku}"
       no_error_in_report_mail: "Pas de message d'erreur, contacter le support via https://supportlengow.zendesk.com/agent/"

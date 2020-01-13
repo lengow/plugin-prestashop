@@ -3,7 +3,8 @@ Version 3.2.0
 =============================================================
 
     - Feature: Adding compatibility with php 7.3
-    - Feature : [import] Protection of the import of anonymized orders
+    - Feature: [import] Protection of the import of anonymized orders
+    - Feature: Refactoring and optimization of the connector class
 
 =============================================================
 Version 3.1.4
@@ -31,7 +32,7 @@ Version 3.1.2
 
 =============================================================
 Version 3.1.1
-=============================================================
+=============================================================git s
 
     - Feature: [import] Optimization of the order recovery system
     - Feature: [import] Setting up a cache for synchronizing catalogs ids

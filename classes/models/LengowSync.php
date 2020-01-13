@@ -45,6 +45,7 @@ class LengowSync
         'cms_option',
         'status_account',
         'statistic',
+        'marketplace',
         'action',
         'catalog',
     );
@@ -116,13 +117,14 @@ class LengowSync
      * Sync Lengow catalogs for order synchronisation
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public static function syncCatalog($force = false)
+    public static function syncCatalog($force = false, $logOutput = false)
     {
         $settingUpdated = false;
-        if (LengowConnector::isNewMerchant()) {
+        if (LengowConfiguration::isNewMerchant()) {
             return false;
         }
         if (!$force) {
@@ -131,7 +133,7 @@ class LengowSync
                 return false;
             }
         }
-        $result = LengowConnector::queryApi('get', '/v3.1/cms');
+        $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS, array(), '', $logOutput);
         if (isset($result->cms)) {
             $cmsToken = LengowMain::getToken();
             foreach ($result->cms as $cms) {
@@ -165,12 +167,13 @@ class LengowSync
      * Sync Lengow marketplaces and marketplace carriers
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public static function syncCarrier($force = false)
+    public static function syncCarrier($force = false, $logOutput = false)
     {
-        if (LengowConnector::isNewMerchant()) {
+        if (LengowConfiguration::isNewMerchant()) {
             return false;
         }
         if (!$force) {
@@ -179,7 +182,7 @@ class LengowSync
                 return false;
             }
         }
-        LengowMarketplace::loadApiMarketplace($force);
+        LengowMarketplace::loadApiMarketplace($force, $logOutput);
         LengowMarketplace::syncMarketplaces();
         LengowCarrier::syncCarrierMarketplace();
         LengowMethod::syncMethodMarketplace();
@@ -223,12 +226,15 @@ class LengowSync
      * Set CMS options
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public static function setCmsOption($force = false)
+    public static function setCmsOption($force = false, $logOutput = false)
     {
-        if (LengowConnector::isNewMerchant() || LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')) {
+        if (LengowConfiguration::isNewMerchant()
+            || LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')
+        ) {
             return false;
         }
         if (!$force) {
@@ -238,7 +244,7 @@ class LengowSync
             }
         }
         $options = Tools::jsonEncode(self::getOptionData());
-        LengowConnector::queryApi('put', '/v3.1/cms', array(), $options);
+        LengowConnector::queryApi(LengowConnector::PUT, LengowConnector::API_CMS, array(), $options, $logOutput);
         LengowConfiguration::updateGlobalValue('LENGOW_OPTION_CMS_UPDATE', date('Y-m-d H:i:s'));
         return true;
     }
@@ -247,10 +253,11 @@ class LengowSync
      * Get Status Account
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return array|false
      */
-    public static function getStatusAccount($force = false)
+    public static function getStatusAccount($force = false, $logOutput = false)
     {
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE');
@@ -258,7 +265,7 @@ class LengowSync
                 return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
             }
         }
-        $result = LengowConnector::queryApi('get', '/v3.0/plans');
+        $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_PLAN, array(), '', $logOutput);
         if (isset($result->isFreeTrial)) {
             $status = array(
                 'type' => $result->isFreeTrial ? 'free_trial' : '',
@@ -281,10 +288,11 @@ class LengowSync
      * Get Statistic with all shop
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return array
      */
-    public static function getStatistic($force = false)
+    public static function getStatistic($force = false, $logOutput = false)
     {
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE');
@@ -294,13 +302,15 @@ class LengowSync
         }
         $currencyId = 0;
         $result = LengowConnector::queryApi(
-            'get',
-            '/v3.0/stats',
+            LengowConnector::GET,
+            LengowConnector::API_STATISTIC,
             array(
                 'date_from' => date('c', strtotime(date('Y-m-d') . ' -10 years')),
                 'date_to' => date('c'),
                 'metrics' => 'year',
-            )
+            ),
+            '',
+            $logOutput
         );
         if (isset($result->level0)) {
             $stats = $result->level0[0];
@@ -333,7 +343,11 @@ class LengowSync
             }
         }
         if ($currencyId > 0) {
-            $return['total_order'] = Tools::displayPrice($return['total_order'], new Currency($currencyId));
+            try {
+                $return['total_order'] = Tools::displayPrice($return['total_order'], new Currency($currencyId));
+            } catch (Exception $e) {
+                $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
+            }
         } else {
             $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
         }
@@ -346,10 +360,11 @@ class LengowSync
      * Get marketplace data
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return array|false
      */
-    public static function getMarketplaces($force = false)
+    public static function getMarketplaces($force = false, $logOutput = false)
     {
         $filePath = LengowMarketplace::getFilePath();
         if (!$force) {
@@ -366,7 +381,13 @@ class LengowSync
             }
         }
         // recovering data with the API
-        $result = LengowConnector::queryApi('get', '/v3.0/marketplaces');
+        $result = LengowConnector::queryApi(
+            LengowConnector::GET,
+            LengowConnector::API_MARKETPLACE,
+            array(),
+            '',
+            $logOutput
+        );
         if ($result && is_object($result) && !isset($result->error)) {
             // updated marketplaces.json file
             try {
