@@ -75,7 +75,7 @@ class LengowController
         );
         $this->context->smarty->assign('version', _PS_VERSION_);
         $this->context->smarty->assign('lengowVersion', $this->module->version);
-        $this->isNewMerchant = LengowConnector::isNewMerchant();
+        $this->isNewMerchant = LengowConfiguration::isNewMerchant();
         $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
         $this->merchantStatus = LengowSync::getStatusAccount();
         $this->context->smarty->assign('merchantStatus', $this->merchantStatus);

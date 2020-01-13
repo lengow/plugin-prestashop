@@ -261,7 +261,7 @@ lengow_log.exception.no_product_to_cart|ningún producto añadido a la cesta
 lengow_log.exception.cannot_add_product_to_cart|no se puede añadir producto %{product_id} a la cesta (invalid ID format)
 lengow_log.exception.no_quantity_for_product|producto %{product_id} no se puede añadir a la cesta . Asegúrate de que esté disponible para el pedido o que hay bastantes en el stock
 lengow_log.exception.no_connection_webservice|la conexión no funciona con el webservice de Lengow en la tienda %{name_shop} (%{id_shop})
-lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} en la tienda %{name_shop} (%{id_shop})
+lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - "%{error_message}" en la tienda %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|el pedido no ha podido ser registrado
 lengow_log.exception.carrier_shipping_address_no_country|la dirección de envío no contiene el país
 lengow_log.exception.no_default_carrier_for_country|Debe seleccionar un proveedor predeterminado para el país: %{country_name} y marketplace: %{marketplace_name}
@@ -285,8 +285,6 @@ lengow_log.exception.delivery_country_not_active|el país %{country_name} en la 
 lengow_log.exception.product_is_not_listed|producto %{product_id} no aparece como parte del pedido actual
 lengow_log.exception.unable_to_save_order|no se ha podido guardar el pedido PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
-lengow_log.exception.timeout_api|la llamada a la API ha sido bloqueada a causa del tiempo de espera
-lengow_log.exception.error_curl|Curl error %{error_code} - %{error_message}
 lengow_log.mail_report.order|Pedido %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|ningún mensaje de error , póngase en contacto con el support via https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Import Lengow

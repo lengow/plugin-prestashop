@@ -261,7 +261,7 @@ lengow_log.exception.no_product_to_cart|nessun prodotto in carrello
 lengow_log.exception.cannot_add_product_to_cart|impossibile aggiungere il prodotto %{product_id} in carrello (invalid ID format)
 lengow_log.exception.no_quantity_for_product|il prodotto %{product_id} non puo' essere aggiunto in carrello. Assicurati che sia reso disponibi all'acquisto o che abbia abbastanza stock
 lengow_log.exception.no_connection_webservice|La connessione con il web service Lengow non funziona per lo shop %{name_shop} (%{id_shop})
-lengow_log.exception.error_lengow_webservice|Errore Lengow Webservice : %{error_code} - %{error_message} di negozio %{name_shop} (%{id_shop})
+lengow_log.exception.error_lengow_webservice|Errore Lengow Webservice : %{error_code} - "%{error_message}" di negozio %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|impossibile salvare l'ordine
 lengow_log.exception.carrier_shipping_address_no_country|nessun trasportatore per indirizzo di spedizione del paese
 lengow_log.exception.no_default_carrier_for_country|E' necessario un trasportatore di default per il paese: %{country_name} e marketplace: %{marketplace_name}
@@ -285,8 +285,6 @@ lengow_log.exception.delivery_country_not_active|Il paese %{country_name} nell'i
 lengow_log.exception.product_is_not_listed|prodotto %{product_id} non è inserito in questo ordine
 lengow_log.exception.unable_to_save_order|impossibile salvare PrestaShop ordine  - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossibile salvare PrestaShop pagamento ordine
-lengow_log.exception.timeout_api|chiamata API bloccata da timeout
-lengow_log.exception.error_curl|Curl errore %{error_code} - %{error_message}
 lengow_log.mail_report.order|Ordine %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|nessun errore nella mail di report https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Importazione Lengow
