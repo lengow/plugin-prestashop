@@ -405,7 +405,8 @@ class LengowSync
                     LengowMain::setLogMessage(
                         'log.import.marketplace_update_failed',
                         array('decoded_message' => LengowMain::decodeLogMessage($e->getMessage(), 'en'))
-                    )
+                    ),
+                    $logOutput
                 );
             }
             return $result;

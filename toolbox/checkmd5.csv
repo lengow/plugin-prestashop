@@ -32,7 +32,7 @@
 /classes/models/LengowConnector.php|e43b2b8b8a61e916eb5315086f648f5a
 /classes/models/LengowTaxRule.php|3b761db12eff6f1d7b0faf9d5cde3945
 /classes/models/LengowCustomer.php|ebaa7d15d5e980f432d7bc71f786e81b
-/classes/models/LengowSync.php|640a1e9030fb7d554ab49830d661a627
+/classes/models/LengowSync.php|9dd86702da6bb9e406887041dfb97853
 /classes/models/LengowEmployee.php|fad8fea4a3593f527a3e5e30608189a9
 /classes/models/LengowLog.php|a73a3a57231139c4c6eb797543416d50
 /classes/models/LengowCheck.php|a856b135d48310af29dfcd8885da5896
