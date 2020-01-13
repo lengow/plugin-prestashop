@@ -627,7 +627,7 @@ class LengowImport
                         'lengow_log.exception.error_lengow_webservice',
                         array(
                             'error_code' => $e->getCode(),
-                            'error_message' => LengowMain::decodeLogMessage($e->getMessage()),
+                            'error_message' => LengowMain::decodeLogMessage($e->getMessage(), 'en'),
                             'name_shop' => $shop->name,
                             'id_shop' => (int)$shop->id,
                         )
