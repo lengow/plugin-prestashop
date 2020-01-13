@@ -224,13 +224,13 @@ class LengowConnector
 	 *
 	 * @param string $type request type (GET / POST / PUT / PATCH)
 	 * @param string $api request api
-	 * @param array $params request params
+	 * @param array $args request params
 	 * @param string $body body data for request
 	 * @param boolean $logOutput see log or not
 	 *
 	 * @return mixed
 	 */
-	public static function queryApi($type, $api, $params = array(), $body = '', $logOutput = false)
+	public static function queryApi($type, $api, $args = array(), $body = '', $logOutput = false)
 	{
 		if (!in_array($type, array(self::GET, self::POST, self::PUT, self::PATCH))) {
 			return false;
@@ -241,10 +241,10 @@ class LengowConnector
 				return false;
 			}
 			$connector = new LengowConnector($accessToken, $secretToken);
-			$type = strtolower( $type );
+			$type = strtolower($type);
 			$results = $connector->$type(
                 $api,
-				array_merge(array('account_id' => $accountId), $params),
+				array_merge(array('account_id' => $accountId), $args),
 				'stream',
 				$body,
 				$logOutput
@@ -295,7 +295,7 @@ class LengowConnector
      * Get API call
      *
      * @param string $api Lengow method API call
-     * @param array $array Lengow method API parameters
+     * @param array $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
      * @param boolean $logOutput see log or not
@@ -304,7 +304,7 @@ class LengowConnector
      *
      * @return mixed
      */
-    public function get($api, $array = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
+    public function get($api, $args = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
     {
         if (LengowMain::inTest() && self::$testFixturePath) {
             if (is_array(self::$testFixturePath)) {
@@ -316,14 +316,14 @@ class LengowConnector
             }
             return $content;
         }
-        return $this->call($api, $array, self::GET, $format, $body, $logOutput);
+        return $this->call($api, $args, self::GET, $format, $body, $logOutput);
     }
 
     /**
      * Post API call
      *
      * @param string $api Lengow method API call
-     * @param array $array Lengow method API parameters
+     * @param array $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
      * @param boolean $logOutput see log or not
@@ -332,7 +332,7 @@ class LengowConnector
      *
      * @return mixed
      */
-    public function post($api, $array = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
+    public function post($api, $args = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
     {
         if (LengowMain::inTest() && self::$testFixturePath) {
             if (is_array(self::$testFixturePath)) {
@@ -344,14 +344,14 @@ class LengowConnector
             }
             return $content;
         }
-        return $this->call($api, $array, self::POST, $format, $body, $logOutput);
+        return $this->call($api, $args, self::POST, $format, $body, $logOutput);
     }
 
     /**
      * Put API call
      *
      * @param string $api Lengow method API call
-     * @param array $array Lengow method API parameters
+     * @param array $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
      * @param boolean $logOutput see log or not
@@ -360,16 +360,16 @@ class LengowConnector
      *
      * @return mixed
      */
-    public function put($api, $array = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
+    public function put($api, $args = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
     {
-        return $this->call($api, $array, self::PUT, $format, $body, $logOutput);
+        return $this->call($api, $args, self::PUT, $format, $body, $logOutput);
     }
 
     /**
      * Patch API call
      *
      * @param string $api Lengow method API call
-     * @param array $array Lengow method API parameters
+     * @param array $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
      * @param boolean $logOutput see log or not
@@ -378,9 +378,9 @@ class LengowConnector
      *
      * @return mixed
      */
-    public function patch($api, $array = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
+    public function patch($api, $args = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
     {
-        return $this->call($api, $array, self::PATCH, $format, $body, $logOutput);
+        return $this->call($api, $args, self::PATCH, $format, $body, $logOutput);
     }
 
     /**
