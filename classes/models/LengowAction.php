@@ -651,7 +651,8 @@ class LengowAction
      *
      * @return array|false
      */
-    public static function getOldActions() {
+    public static function getOldActions()
+    {
         $date = date('Y-m-d H:i:s', strtotime('-3 days', time()));
         $query = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
                 WHERE created_at <= "' . $date . '"

@@ -276,7 +276,7 @@ class LengowOrder extends Order
         $in = (is_null($marketplaceLegacy)
             ? '\'' . pSQL(Tools::strtolower($marketplace)) . '\''
             : '\'' . pSQL(Tools::strtolower($marketplace)) . '\', \''
-                . pSQL(Tools::strtolower($marketplaceLegacy)) . '\''
+            . pSQL(Tools::strtolower($marketplaceLegacy)) . '\''
         );
         $query = 'SELECT `id_order`, `delivery_address_id`,`id_flux` 
             FROM `' . _DB_PREFIX_ . 'lengow_orders`
@@ -556,7 +556,7 @@ class LengowOrder extends Order
             INNER JOIN ' . _DB_PREFIX_ . 'order_history oh ON (oh.id_order = lo.id_order)
             WHERE lo.`order_process_state` = ' . (int)self::PROCESS_STATE_IMPORT
             . ' AND oh.`id_order_state` IN ('
-                . LengowMain::getOrderState('shipped') . ',' . LengowMain::getOrderState('canceled')
+            . LengowMain::getOrderState('shipped') . ',' . LengowMain::getOrderState('canceled')
             . ') AND oh.`date_add` >= "' . $date . '"';
         try {
             $results = Db::getInstance()->executeS($sql);
@@ -627,7 +627,6 @@ class LengowOrder extends Order
                     LengowConnector::FORMAT_JSON,
                     '',
                     $logOutput
-
                 );
             } catch (Exception $e) {
                 $message = LengowMain::decodeLogMessage($e->getMessage(), 'en');

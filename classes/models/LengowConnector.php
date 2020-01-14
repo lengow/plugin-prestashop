@@ -32,110 +32,110 @@ class LengowConnector
     const LENGOW_API_URL = 'http://api.lengow.rec';
     // const LENGOW_API_URL = 'http://10.100.1.82:8081';
 
-	/**
-	 * @var string url of access token API
-	 */
-	const API_ACCESS_TOKEN = '/access/get_token';
+    /**
+     * @var string url of access token API
+     */
+    const API_ACCESS_TOKEN = '/access/get_token';
 
-	/**
-	 * @var string url of order API
-	 */
-	const API_ORDER = '/v3.0/orders';
+    /**
+     * @var string url of order API
+     */
+    const API_ORDER = '/v3.0/orders';
 
-	/**
-	 * @var string url of order merchant order id API
-	 */
-	const API_ORDER_MOI = '/v3.0/orders/moi/';
+    /**
+     * @var string url of order merchant order id API
+     */
+    const API_ORDER_MOI = '/v3.0/orders/moi/';
 
-	/**
-	 * @var string url of order action API
-	 */
-	const API_ORDER_ACTION = '/v3.0/orders/actions/';
+    /**
+     * @var string url of order action API
+     */
+    const API_ORDER_ACTION = '/v3.0/orders/actions/';
 
-	/**
-	 * @var string url of marketplace API
-	 */
-	const API_MARKETPLACE = '/v3.0/marketplaces';
+    /**
+     * @var string url of marketplace API
+     */
+    const API_MARKETPLACE = '/v3.0/marketplaces';
 
-	/**
-	 * @var string url of plan API
-	 */
-	const API_PLAN = '/v3.0/plans';
+    /**
+     * @var string url of plan API
+     */
+    const API_PLAN = '/v3.0/plans';
 
-	/**
-	 * @var string url of statistic API
-	 */
-	const API_STATISTIC = '/v3.0/stats';
+    /**
+     * @var string url of statistic API
+     */
+    const API_STATISTIC = '/v3.0/stats';
 
-	/**
-	 * @var string url of cms API
-	 */
-	const API_CMS = '/v3.1/cms';
+    /**
+     * @var string url of cms API
+     */
+    const API_CMS = '/v3.1/cms';
 
-	/**
-	 * @var string request GET
-	 */
-	const GET = 'GET';
+    /**
+     * @var string request GET
+     */
+    const GET = 'GET';
 
-	/**
-	 * @var string request POST
-	 */
-	const POST = 'POST';
+    /**
+     * @var string request POST
+     */
+    const POST = 'POST';
 
-	/**
-	 * @var string request PUT
-	 */
-	const PUT = 'PUT';
+    /**
+     * @var string request PUT
+     */
+    const PUT = 'PUT';
 
-	/**
-	 * @var string request PATCH
-	 */
-	const PATCH = 'PATCH';
+    /**
+     * @var string request PATCH
+     */
+    const PATCH = 'PATCH';
 
-	/**
-	 * @var string json format return
-	 */
-	const FORMAT_JSON = 'json';
+    /**
+     * @var string json format return
+     */
+    const FORMAT_JSON = 'json';
 
-	/**
-	 * @var string stream format return
-	 */
-	const FORMAT_STREAM = 'stream';
+    /**
+     * @var string stream format return
+     */
+    const FORMAT_STREAM = 'stream';
 
-	/**
-	 * @var string success code
-	 */
-	const CODE_200 = 200;
+    /**
+     * @var string success code
+     */
+    const CODE_200 = 200;
 
-	/**
-	 * @var string forbidden access code
-	 */
-	const CODE_403 = 403;
+    /**
+     * @var string forbidden access code
+     */
+    const CODE_403 = 403;
 
-	/**
-	 * @var string error server code
-	 */
-	const CODE_500 = 500;
+    /**
+     * @var string error server code
+     */
+    const CODE_500 = 500;
 
-	/**
-	 * @var string timeout server code
-	 */
-	const CODE_504 = 504;
+    /**
+     * @var string timeout server code
+     */
+    const CODE_504 = 504;
 
-	/**
-	 * @var array|string fixture for test
-	 */
-	public static $testFixturePath;
+    /**
+     * @var array|string fixture for test
+     */
+    public static $testFixturePath;
 
-	/**
-	 * @var integer Authorization token lifetime
-	 */
-	protected $tokenLifetime = 3000;
+    /**
+     * @var integer Authorization token lifetime
+     */
+    protected $tokenLifetime = 3000;
 
     /**
      * @var array default options for curl
      */
-	protected $curlOpts = array(
+    protected $curlOpts = array(
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 10,
@@ -161,13 +161,13 @@ class LengowConnector
      * @var array lengow url for curl timeout
      */
     protected $lengowUrls = array(
-	    self::API_ORDER => 20,
+        self::API_ORDER => 20,
         self::API_ORDER_MOI => 10,
         self::API_ORDER_ACTION => 15,
-	    self::API_MARKETPLACE => 15,
-	    self::API_PLAN => 5,
-	    self::API_STATISTIC => 5,
-	    self::API_CMS => 5,
+        self::API_MARKETPLACE => 15,
+        self::API_PLAN => 5,
+        self::API_STATISTIC => 5,
+        self::API_CMS => 5,
     );
 
     /**
@@ -182,87 +182,89 @@ class LengowConnector
         $this->secret = $secret;
     }
 
-	/**
-	 * Check API Authentication
-	 *
-	 * @param boolean $logOutput see log or not
-	 *
-	 * @return boolean
-	 */
-	public static function isValidAuth($logOutput = false)
-	{
-		if (LengowMain::inTest()) {
-			return true;
-		}
-		if (!LengowCheck::isCurlActivated()) {
-			return false;
-		}
-		list($accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
-		if (is_null($accountId) || $accountId == 0 || !is_numeric($accountId)) {
-			return false;
-		}
-		$connector = new LengowConnector($accessToken, $secretToken);
-		try {
-			$connector->connect(false, $logOutput);
-		} catch (LengowException $e) {
-			$message = LengowMain::decodeLogMessage($e->getMessage(), 'en');
-			$error = LengowMain::setLogMessage(
-				'log.connector.error_api',
-				array(
-					'error_code' => $e->getCode(),
-					'error_message' => $message,
-				)
-			);
-			LengowMain::log('Connector', $error, $logOutput);
-			return false;
-		}
-		return true;
-	}
+    /**
+     * Check API Authentication
+     *
+     * @param boolean $logOutput see log or not
+     *
+     * @return boolean
+     */
+    public static function isValidAuth($logOutput = false)
+    {
+        if (LengowMain::inTest()) {
+            return true;
+        }
+        if (!LengowCheck::isCurlActivated()) {
+            return false;
+        }
+        list($accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
+        if ($accountId === null || $accountId == 0 || !is_numeric($accountId)) {
+            return false;
+        }
+        $connector = new LengowConnector($accessToken, $secretToken);
+        try {
+            $connector->connect(false, $logOutput);
+        } catch (LengowException $e) {
+            $message = LengowMain::decodeLogMessage($e->getMessage(), 'en');
+            $error = LengowMain::setLogMessage(
+                'log.connector.error_api',
+                array(
+                    'error_code' => $e->getCode(),
+                    'error_message' => $message,
+                )
+            );
+            LengowMain::log('Connector', $error, $logOutput);
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 * Get result for a query Api
-	 *
-	 * @param string $type request type (GET / POST / PUT / PATCH)
-	 * @param string $api request api
-	 * @param array $args request params
-	 * @param string $body body data for request
-	 * @param boolean $logOutput see log or not
-	 *
-	 * @return mixed
-	 */
-	public static function queryApi($type, $api, $args = array(), $body = '', $logOutput = false)
-	{
-		if (!in_array($type, array(self::GET, self::POST, self::PUT, self::PATCH))) {
-			return false;
-		}
-		try {
-			list($accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
-			if (is_null($accountId)) {
-				return false;
-			}
-			$connector = new LengowConnector($accessToken, $secretToken);
-			$type = strtolower($type);
-			$results = $connector->$type(
+    /**
+     * Get result for a query Api
+     *
+     * @param string $type request type (GET / POST / PUT / PATCH)
+     * @param string $api request api
+     * @param array $args request params
+     * @param string $body body data for request
+     * @param boolean $logOutput see log or not
+     *
+     * @return mixed
+     */
+    public static function queryApi($type, $api, $args = array(), $body = '', $logOutput = false)
+    {
+        if (!in_array($type, array(self::GET, self::POST, self::PUT, self::PATCH))) {
+            return false;
+        }
+        try {
+            list($accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
+            if ($accountId === null) {
+                return false;
+            }
+            $connector = new LengowConnector($accessToken, $secretToken);
+            $type = Tools::strtolower($type);
+            $results = $connector->$type(
                 $api,
-				array_merge(array('account_id' => $accountId), $args),
-				'stream',
-				$body,
-				$logOutput
-			);
-		} catch (LengowException $e) {
-			$message = LengowMain::decodeLogMessage($e->getMessage(), 'en');
-			$error = LengowMain::setLogMessage(
-				'log.connector.error_api',
-				array(
-					'error_code' => $e->getCode(),
-					'error_message' => $message,
-				)
-			);
-			LengowMain::log('Connector', $error, $logOutput);
-			return false;
-		}
-		return Tools::jsonDecode($results);
-	}
+                array_merge(array('account_id' => $accountId), $args),
+                self::FORMAT_STREAM,
+                $body,
+                $logOutput
+            );
+        } catch (LengowException $e) {
+            $message = LengowMain::decodeLogMessage($e->getMessage(), 'en');
+            $error = LengowMain::setLogMessage(
+                'log.connector.error_api',
+                array(
+                    'error_code' => $e->getCode(),
+                    'error_message' => $message,
+                )
+            );
+            LengowMain::log('Connector', $error, $logOutput);
+
+            return false;
+        }
+
+        return Tools::jsonDecode($results);
+    }
 
     /**
      * Connection to the API
@@ -278,7 +280,7 @@ class LengowConnector
         $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_LAST_AUTH_TOKEN_UPDATE');
         if (!$force
             && $token !== null
-            && strlen($token) > 0
+            && Tools::strlen($token) > 0
             && $updatedAt !== null
             && (time() - $updatedAt) < $this->tokenLifetime
         ) {
@@ -447,7 +449,8 @@ class LengowConnector
      *
      * @return string
      */
-    private function getAuthorizationToken($logOutput) {
+    private function getAuthorizationToken($logOutput)
+    {
         $data = $this->callAction(
             self::API_ACCESS_TOKEN,
             array(
@@ -465,7 +468,7 @@ class LengowConnector
                 LengowMain::setLogMessage('log.connector.token_not_return'),
                 self::CODE_500
             );
-        } elseif (strlen($data['token']) === 0) {
+        } elseif (Tools::strlen($data['token']) === 0) {
             throw new LengowException(
                 LengowMain::setLogMessage('log.connector.token_is_empty'),
                 self::CODE_500
@@ -578,7 +581,8 @@ class LengowConnector
      * @throws LengowException
      *
      */
-    private function checkReturnRequest($result, $httpCode, $curlError, $curlErrorNumber) {
+    private function checkReturnRequest($result, $httpCode, $curlError, $curlErrorNumber)
+    {
         if ($result === false) {
             // recovery of Curl errors
             if (in_array($curlErrorNumber, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {

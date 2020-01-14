@@ -621,7 +621,7 @@ class LengowImport
                         $this->logOutput
                     );
                 }
-            } catch ( Exception $e ) {
+            } catch (Exception $e) {
                 throw new LengowException(
                     LengowMain::setLogMessage(
                         'lengow_log.exception.error_lengow_webservice',
@@ -834,7 +834,7 @@ class LengowImport
             // retrieval of orders created from ... until ...
             $createdFromTimestamp = strtotime($createdFrom);
             $createdToTimestamp = strtotime($createdTo) + 86399;
-            $intervalDay = (int) (($createdToTimestamp - $createdFromTimestamp) / 86400);
+            $intervalDay = (int)(($createdToTimestamp - $createdFromTimestamp) / 86400);
             if ($intervalDay > self::$maxImportDays) {
                 $dateFrom = date('c', $createdFromTimestamp);
                 $dateTo = date('c', ($createdFromTimestamp + self::$maxImportDays * 86400));
@@ -857,7 +857,7 @@ class LengowImport
                 $lastSettingUpdate = LengowConfiguration::getGlobalValue('LENGOW_LAST_SETTING_UPDATE');
                 if ($lastImport['timestamp'] !== 'none' && $lastImport['timestamp'] > strtotime($lastSettingUpdate)) {
                     $currentTimestamp = time();
-                    $intervalDay = (int) (($currentTimestamp - $lastImport['timestamp']) / 86400);
+                    $intervalDay = (int)(($currentTimestamp - $lastImport['timestamp']) / 86400);
                     $intervalDay = $intervalDay === 0 ? 1 : $intervalDay;
                     $importDays = $intervalDay > $importDays ? $importDays : $intervalDay;
                 }

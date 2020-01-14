@@ -213,9 +213,9 @@ class LengowImportOrder
     /**
      * Create or update order
      *
-     * @return array|false
-     *
      * @throws Exception|LengowException
+     *
+     * @return array|false
      */
     public function importOrder()
     {
@@ -256,13 +256,13 @@ class LengowImportOrder
         }
         // skip import if the order is anonymized
         if ($this->orderData->anonymized) {
-        	LengowMain::log(
-	            'Import',
-	            LengowMain::setLogMessage('log.import.anonymized_order'),
-	            $this->logOutput,
-	            $this->marketplaceSku
-	        );
-        	return false;
+            LengowMain::log(
+                'Import',
+                LengowMain::setLogMessage('log.import.anonymized_order'),
+                $this->logOutput,
+                $this->marketplaceSku
+            );
+            return false;
         }
         // checks if an external id already exists
         $idOrderPrestashop = $this->checkExternalIds($this->orderData->merchant_order_id);
