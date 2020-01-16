@@ -359,27 +359,11 @@ class LengowMain
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
         $ips = array_filter(explode(';', $ips));
         $authorizedIps = count($ips) > 0 ? array_merge($ips, self::$ipsLengow) : self::$ipsLengow;
-        if (!self::inTest()) {
+        if (isset($_SERVER['SERVER_ADDR'])) {
             $authorizedIps[] = $_SERVER['SERVER_ADDR'];
         }
         $hostnameIp = $_SERVER['REMOTE_ADDR'];
         if (in_array($hostnameIp, $authorizedIps)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check if we are in phpunit test
-     *
-     * @return boolean
-     */
-    public static function inTest()
-    {
-        if (defined('PS_UNIT_TEST')) {
-            return true;
-        }
-        if (isset($_SERVER['HTTP_USER_AGENT']) && Tools::substr($_SERVER['HTTP_USER_AGENT'], 0, 10) === 'GuzzleHttp') {
             return true;
         }
         return false;

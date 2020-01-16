@@ -65,10 +65,7 @@ class LengowTool
     {
         if (Tools::strlen($accountId) > 0 && Tools::strlen($secretToken) > 0) {
             if ($this->checkBlockedIp()) {
-                return self::redirect(
-                    _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/login.php?blockedIP=1',
-                    ''
-                );
+                self::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/login.php?blockedIP=1', '');
             }
         }
         $prestaAccountId = LengowConfiguration::get('LENGOW_ACCOUNT_ID');
@@ -77,7 +74,7 @@ class LengowTool
             if ($prestaAccountId === $accountId && $prestaSecretToken === $secretToken) {
                 Context::getContext()->cookie->lengow_toolbox = true;
                 $this->unblockIp();
-                return self::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/', '');
+                self::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/', '');
             }
         }
         if (Tools::strlen($accountId) > 0 && Tools::strlen($secretToken) > 0) {
@@ -151,14 +148,9 @@ class LengowTool
      *
      * @param string $url url toolbox
      * @param mixed $baseUri base uri
-     *
-     * @return mixed
      */
     public static function redirect($url, $baseUri = __PS_BASE_URI__)
     {
-        if (LengowMain::inTest()) {
-            return true;
-        }
         Tools::redirect($url, $baseUri);
     }
 }
