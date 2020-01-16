@@ -25,6 +25,21 @@
 class LengowImport
 {
     /**
+     * @var integer max import days for old versions
+     */
+    const MIN_IMPORT_DAYS = 1;
+
+    /**
+     * @var integer max import days for old versions
+     */
+    const MAX_IMPORT_DAYS = 10;
+
+    /**
+     * @var integer security interval time for cron synchronisation
+     */
+    const SECURITY_INTERVAL_TIME = 3600;
+
+    /**
      * @var boolean import is processing
      */
     public static $processing;
@@ -33,16 +48,6 @@ class LengowImport
      * @var string order id being imported
      */
     public static $currentOrder = -1;
-
-    /**
-     * @var integer min import days
-     */
-    public static $minImportDays = 1;
-
-    /**
-     * @var integer max import days for old versions
-     */
-    public static $maxImportDays = 10;
 
     /**
      * @var array valid states lengow to create a Lengow order
@@ -192,7 +197,17 @@ class LengowImport
      */
     public function __construct($params = array())
     {
-        // params for re-import order
+        // get generic params for synchronisation
+        $this->preprodMode = isset($params['preprod_mode'])
+            ? (bool)$params['preprod_mode']
+            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED');
+        $this->typeImport = isset($params['type']) ? $params['type'] : 'manual';
+        $this->forceProduct = isset($params['force_product'])
+            ? (bool)$params['force_product']
+            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT');
+        $this->logOutput = isset($params['log_output']) ? (bool)$params['log_output'] : false;
+        $this->idShop = isset($params['shop_id']) ? (int)$params['shop_id'] : null;
+        // get params for synchronise one or all orders
         if (array_key_exists('marketplace_sku', $params)
             && array_key_exists('marketplace_name', $params)
             && array_key_exists('shop_id', $params)
@@ -221,16 +236,6 @@ class LengowImport
                 $this->limit = isset($params['limit']) ? (int)$params['limit'] : 0;
             }
         }
-        // get other params
-        $this->preprodMode = isset($params['preprod_mode'])
-            ? (bool)$params['preprod_mode']
-            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED');
-        $this->typeImport = isset($params['type']) ? $params['type'] : 'manual';
-        $this->forceProduct = isset($params['force_product'])
-            ? (bool)$params['force_product']
-            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_FORCE_PRODUCT');
-        $this->logOutput = isset($params['log_output']) ? (bool)$params['log_output'] : false;
-        $this->idShop = isset($params['shop_id']) ? (int)$params['shop_id'] : null;
     }
 
     /**
@@ -834,9 +839,9 @@ class LengowImport
             $createdFromTimestamp = strtotime($createdFrom);
             $createdToTimestamp = strtotime($createdTo) + 86399;
             $intervalDay = (int)(($createdToTimestamp - $createdFromTimestamp) / 86400);
-            if ($intervalDay > self::$maxImportDays) {
+            if ($intervalDay > self::MAX_IMPORT_DAYS) {
                 $dateFrom = date('c', $createdFromTimestamp);
-                $dateTo = date('c', ($createdFromTimestamp + self::$maxImportDays * 86400));
+                $dateTo = date('c', ($createdFromTimestamp + self::MAX_IMPORT_DAYS * 86400));
             } else {
                 $dateFrom = date('c', $createdFromTimestamp);
                 $dateTo = date('c', $createdToTimestamp);
@@ -847,21 +852,27 @@ class LengowImport
             // order recovery updated since ... days
             $importDays = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_DAYS');
             // add security for older versions of the plugin
-            $importDays = $importDays < self::$minImportDays ? self::$minImportDays : $importDays;
-            $importDays = $importDays > self::$maxImportDays ? self::$maxImportDays : $importDays;
+            $importDays = $importDays < self::MIN_IMPORT_DAYS ? self::MIN_IMPORT_DAYS : $importDays;
+            $importDays = $importDays > self::MAX_IMPORT_DAYS ? self::MAX_IMPORT_DAYS : $importDays;
+            $maxIntervalTime = $importDays * 86400;
             if ($days) {
-                $importDays = $days > self::$maxImportDays ? self::$maxImportDays : $days;
+                $importDays = $days > self::MAX_IMPORT_DAYS ? self::MAX_IMPORT_DAYS : $days;
+                $intervalTime = $importDays * 86400;
             } else {
                 $lastImport = LengowMain::getLastImport();
                 $lastSettingUpdate = LengowConfiguration::getGlobalValue('LENGOW_LAST_SETTING_UPDATE');
-                if ($lastImport['timestamp'] !== 'none' && $lastImport['timestamp'] > strtotime($lastSettingUpdate)) {
-                    $currentTimestamp = time();
-                    $intervalDay = (int)(($currentTimestamp - $lastImport['timestamp']) / 86400);
-                    $intervalDay = $intervalDay === 0 ? 1 : $intervalDay;
-                    $importDays = $intervalDay > $importDays ? $importDays : $intervalDay;
+                if ($this->typeImport !== 'manual'
+                    && $lastImport['timestamp'] !== 'none'
+                    && $lastImport['timestamp'] > strtotime($lastSettingUpdate)
+                ) {
+                    $lastIntervalTime = time() - $lastImport['timestamp'];
+                    $intervalTime = $lastIntervalTime + self::SECURITY_INTERVAL_TIME;
+                    $intervalTime = $intervalTime > $maxIntervalTime ? $maxIntervalTime : $intervalTime;
+                } else {
+                    $intervalTime = $maxIntervalTime;
                 }
             }
-            $this->updatedFrom = date('c', (time() - $importDays * 86400));
+            $this->updatedFrom = date('c', (time() - $intervalTime));
             $this->updatedTo = date('c');
         }
     }

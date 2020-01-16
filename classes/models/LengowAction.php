@@ -653,10 +653,12 @@ class LengowAction
      */
     public static function getOldActions()
     {
-        $date = date('Y-m-d H:i:s', strtotime('-3 days', time()));
+        $date = date('Y-m-d H:i:s', strtotime('-1 days', time()));
+        var_dump($date);
         $query = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
                 WHERE created_at <= "' . $date . '"
                 AND state = ' . (int)self::STATE_NEW;
+        var_dump($query);die();
         try {
             $results = Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {
