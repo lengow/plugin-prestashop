@@ -427,8 +427,7 @@ class LengowImport
                 $this->logOutput
             );
             // check if order action is finish (ship or cancel)
-            if (!LengowMain::inTest()
-                && !$this->preprodMode
+            if (!$this->preprodMode
                 && !$this->importOneOrder
                 && $this->typeImport === 'manual'
             ) {

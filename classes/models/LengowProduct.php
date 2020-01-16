@@ -125,10 +125,6 @@ class LengowProduct extends Product
         $this->new = $this->isNew();
         $this->base_price = $this->price;
         if ($this->id) {
-            // reset attribute cache
-            if (LengowMain::inTest()) {
-                Product::getDefaultAttribute($this->id, 0, true);
-            }
             $this->price = Product::getPriceStatic(
                 (int)$this->id,
                 false,

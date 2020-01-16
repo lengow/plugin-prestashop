@@ -123,11 +123,6 @@ class LengowConnector
     const CODE_504 = 504;
 
     /**
-     * @var array|string fixture for test
-     */
-    public static $testFixturePath;
-
-    /**
      * @var integer Authorization token lifetime
      */
     protected $tokenLifetime = 3000;
@@ -191,9 +186,6 @@ class LengowConnector
      */
     public static function isValidAuth($logOutput = false)
     {
-        if (LengowMain::inTest()) {
-            return true;
-        }
         if (!LengowCheck::isCurlActivated()) {
             return false;
         }
@@ -308,16 +300,6 @@ class LengowConnector
      */
     public function get($api, $args = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
     {
-        if (LengowMain::inTest() && self::$testFixturePath) {
-            if (is_array(self::$testFixturePath)) {
-                $content = Tools::file_get_contents(self::$testFixturePath[0]);
-                array_shift(self::$testFixturePath);
-            } else {
-                $content = Tools::file_get_contents(self::$testFixturePath);
-                self::$testFixturePath = null;
-            }
-            return $content;
-        }
         return $this->call($api, $args, self::GET, $format, $body, $logOutput);
     }
 
@@ -336,16 +318,6 @@ class LengowConnector
      */
     public function post($api, $args = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
     {
-        if (LengowMain::inTest() && self::$testFixturePath) {
-            if (is_array(self::$testFixturePath)) {
-                $content = Tools::file_get_contents(self::$testFixturePath[0]);
-                array_shift(self::$testFixturePath);
-            } else {
-                $content = Tools::file_get_contents(self::$testFixturePath);
-                self::$testFixturePath = null;
-            }
-            return $content;
-        }
         return $this->call($api, $args, self::POST, $format, $body, $logOutput);
     }
 
