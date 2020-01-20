@@ -152,8 +152,8 @@ class LengowConfigurationForm
                                 class="form-control"
                                 value="' . $value . '" '
                                 . $readonly . '
-                                min="' . LengowImport::$minImportDays . '"
-                                max="' . LengowImport::$maxImportDays . '">
+                                min="' . (LengowImport::MIN_INTERVAL_TIME / 86400) . '"
+                                max="' . (LengowImport::MAX_INTERVAL_TIME / 86400) . '">
                             <div class="input-group-addon">
                                 <div class="unit">' . $this->locale->t('order_setting.screen.nb_days') . '</div>
                             </div>
