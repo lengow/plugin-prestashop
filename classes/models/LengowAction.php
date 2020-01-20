@@ -35,6 +35,16 @@ class LengowAction
     const STATE_FINISH = 1;
 
     /**
+     * @var integer max interval time for action synchronisation (3 days)
+     */
+    const MAX_INTERVAL_TIME = 259200;
+
+    /**
+     * @var integer security interval time for action synchronisation (2 hour)
+     */
+    const SECURITY_INTERVAL_TIME = 7200;
+
+    /**
      * @var array Parameters to delete for Get call
      */
     public static $getParamsToDelete = array(
@@ -498,6 +508,23 @@ class LengowAction
     }
 
     /**
+     * Get interval time for action synchronisation
+     *
+     * @return integer
+     */
+    public static function getIntervalTime()
+    {
+        $intervalTime = self::MAX_INTERVAL_TIME;
+        $lastActionSynchronisation = LengowConfiguration::getGlobalValue('LENGOW_LAST_ACTION_SYNC');
+        if ($lastActionSynchronisation) {
+            $lastIntervalTime = time() - (int)$lastActionSynchronisation;
+            $lastIntervalTime = $lastIntervalTime + self::SECURITY_INTERVAL_TIME;
+            $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
+        }
+        return $intervalTime;
+    }
+
+    /**
      * Check if active actions are finished
      *
      * @param boolean $logOutput see log or not
@@ -514,21 +541,35 @@ class LengowAction
             LengowMain::setLogMessage('log.order_action.check_completed_action'),
             $logOutput
         );
-        // get all active actions by shop
+        // get all active actions
         $activeActions = self::getActiveActions(false);
         if (!$activeActions) {
             return true;
         }
-        // get all actions with API for 3 days
+        // get all actions with API
         $page = 1;
         $apiActions = array();
+        $intervalTime = self::getIntervalTime();
+        $dateFrom = date('c', (time() - $intervalTime));
+        $dateTo = date('c');
+        LengowMain::log(
+            'API-OrderAction',
+            LengowMain::setLogMessage(
+                'log.import.connector_get_all_action',
+                array(
+                    'date_from' => date('Y-m-d H:i:s', strtotime($dateFrom)),
+                    'date_to' => date('Y-m-d H:i:s', strtotime($dateTo)),
+                )
+            ),
+            $logOutput
+        );
         do {
             $results = LengowConnector::queryApi(
                 LengowConnector::GET,
                 LengowConnector::API_ORDER_ACTION,
                 array(
-                    'updated_from' => date('c', strtotime(date('Y-m-d') . ' -3days')),
-                    'updated_to' => date('c'),
+                    'updated_from' => $dateFrom,
+                    'updated_to' => $dateTo,
                     'page' => $page,
                 ),
                 '',
@@ -544,8 +585,8 @@ class LengowAction
                 }
             }
             $page++;
-        } while ($results->next != null);
-        if (count($apiActions) === 0) {
+        } while ($results->next !== null);
+        if (empty($apiActions)) {
             return false;
         }
         // check foreach action if is complete
@@ -601,6 +642,7 @@ class LengowAction
                 }
             }
         }
+        LengowConfiguration::updateGlobalValue('LENGOW_LAST_ACTION_SYNC', time());
         return true;
     }
 
@@ -653,12 +695,10 @@ class LengowAction
      */
     public static function getOldActions()
     {
-        $date = date('Y-m-d H:i:s', strtotime('-1 days', time()));
-        var_dump($date);
+        $date = date('Y-m-d H:i:s', (time() - self::MAX_INTERVAL_TIME));
         $query = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
                 WHERE created_at <= "' . $date . '"
                 AND state = ' . (int)self::STATE_NEW;
-        var_dump($query);die();
         try {
             $results = Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {

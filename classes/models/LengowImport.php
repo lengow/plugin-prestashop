@@ -25,19 +25,19 @@
 class LengowImport
 {
     /**
-     * @var integer max import days for old versions
+     * @var integer max interval time for order synchronisation old versions (1 day)
      */
-    const MIN_IMPORT_DAYS = 1;
+    const MIN_INTERVAL_TIME = 86400;
 
     /**
-     * @var integer max import days for old versions
+     * @var integer max import days for old versions (10 days)
      */
-    const MAX_IMPORT_DAYS = 10;
+    const MAX_INTERVAL_TIME = 864000;
 
     /**
-     * @var integer security interval time for cron synchronisation
+     * @var integer security interval time for cron synchronisation (2 hours)
      */
-    const SECURITY_INTERVAL_TIME = 3600;
+    const SECURITY_INTERVAL_TIME = 7200;
 
     /**
      * @var boolean import is processing
@@ -224,8 +224,8 @@ class LengowImport
             }
         } else {
             $this->marketplaceSku = null;
-            // recovering the time interval
-            $this->getImportPeriod(
+            // set the time interval
+            $this->setIntervalTime(
                 isset($params['days']) ? (int)$params['days'] : false,
                 isset($params['created_from']) ? $params['created_from'] : false,
                 isset($params['created_to']) ? $params['created_to'] : false
@@ -826,22 +826,22 @@ class LengowImport
     }
 
     /**
-     * Get Import period
+     * Set interval time for order synchronisation
      *
      * @param integer|false $days Import period
      * @param string|false $createdFrom Import of orders since
      * @param string|false $createdTo Import of orders until
      */
-    protected function getImportPeriod($days, $createdFrom, $createdTo)
+    protected function setIntervalTime($days, $createdFrom, $createdTo)
     {
         if ($createdFrom && $createdTo) {
             // retrieval of orders created from ... until ...
             $createdFromTimestamp = strtotime($createdFrom);
             $createdToTimestamp = strtotime($createdTo) + 86399;
-            $intervalDay = (int)(($createdToTimestamp - $createdFromTimestamp) / 86400);
-            if ($intervalDay > self::MAX_IMPORT_DAYS) {
+            $intervalTime = (int)($createdToTimestamp - $createdFromTimestamp);
+            if ($intervalTime > self::MAX_INTERVAL_TIME) {
                 $dateFrom = date('c', $createdFromTimestamp);
-                $dateTo = date('c', ($createdFromTimestamp + self::MAX_IMPORT_DAYS * 86400));
+                $dateTo = date('c', ($createdFromTimestamp + self::MAX_INTERVAL_TIME));
             } else {
                 $dateFrom = date('c', $createdFromTimestamp);
                 $dateTo = date('c', $createdToTimestamp);
@@ -849,27 +849,25 @@ class LengowImport
             $this->createdFrom = $dateFrom;
             $this->createdTo = $dateTo;
         } else {
-            // order recovery updated since ... days
-            $importDays = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_DAYS');
-            // add security for older versions of the plugin
-            $importDays = $importDays < self::MIN_IMPORT_DAYS ? self::MIN_IMPORT_DAYS : $importDays;
-            $importDays = $importDays > self::MAX_IMPORT_DAYS ? self::MAX_IMPORT_DAYS : $importDays;
-            $maxIntervalTime = $importDays * 86400;
             if ($days) {
-                $importDays = $days > self::MAX_IMPORT_DAYS ? self::MAX_IMPORT_DAYS : $days;
-                $intervalTime = $importDays * 86400;
+                $intervalTime = $days * 86400;
+                $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
             } else {
+                // order recovery updated since ... days
+                $importDays = (int)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_DAYS');
+                $intervalTime = $importDays * 86400;
+                // add security for older versions of the plugin
+                $intervalTime = $intervalTime < self::MIN_INTERVAL_TIME ? self::MIN_INTERVAL_TIME : $intervalTime;
+                $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
+                // get dynamic interval time for cron synchronisation
                 $lastImport = LengowMain::getLastImport();
                 $lastSettingUpdate = LengowConfiguration::getGlobalValue('LENGOW_LAST_SETTING_UPDATE');
                 if ($this->typeImport !== 'manual'
                     && $lastImport['timestamp'] !== 'none'
                     && $lastImport['timestamp'] > strtotime($lastSettingUpdate)
                 ) {
-                    $lastIntervalTime = time() - $lastImport['timestamp'];
-                    $intervalTime = $lastIntervalTime + self::SECURITY_INTERVAL_TIME;
-                    $intervalTime = $intervalTime > $maxIntervalTime ? $maxIntervalTime : $intervalTime;
-                } else {
-                    $intervalTime = $maxIntervalTime;
+                    $lastIntervalTime = (time() - $lastImport['timestamp']) + self::SECURITY_INTERVAL_TIME;
+                    $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
                 }
             }
             $this->updatedFrom = date('c', (time() - $intervalTime));

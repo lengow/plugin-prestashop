@@ -5,6 +5,7 @@ Version 3.2.0
     - Feature: Adding compatibility with php 7.3
     - Feature: [import] Protection of the import of anonymized orders
     - Feature: Refactoring and optimization of the connector class
+    - Feature: Optimization of API calls for synchronisation of orders and actions
 
 =============================================================
 Version 3.1.4

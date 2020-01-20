@@ -40,13 +40,13 @@
             if (syncLink) {
                 // syncIframe.src = '//cms.lengow.io/sync/';
                 // syncIframe.src = '//cms.lengow.net/sync/';
-                syncIframe.src = '//cms.lengow.rec/sync/';
-                // syncIframe.src = '//cms.lengow.dev/sync/';
+                syncIframe.src = '//cms.rec.lengow.hom/sync/';
+                // syncIframe.src = '//cms.dev.lengow.hom/sync/';
             } else {
                 // syncIframe.src = '//cms.lengow.io/';
                 // syncIframe.src = '//cms.lengow.net/';
-                syncIframe.src = '//cms.lengow.rec/';
-                // syncIframe.src = '//cms.lengow.dev/';
+                syncIframe.src = '//cms.rec.lengow.hom/';
+                // syncIframe.src = '//cms.dev.lengow.hom/';
             }
             syncIframe.src = syncIframe.src+'?lang='+isoCode+'&clientType=prestashop';
             $('#frame_loader').hide();
