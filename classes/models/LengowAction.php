@@ -40,7 +40,7 @@ class LengowAction
     const MAX_INTERVAL_TIME = 259200;
 
     /**
-     * @var integer security interval time for action synchronisation (2 hour)
+     * @var integer security interval time for action synchronisation (2 hours)
      */
     const SECURITY_INTERVAL_TIME = 7200;
 
