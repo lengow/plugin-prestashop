@@ -546,19 +546,19 @@ class LengowAction
         if (!$activeActions) {
             return true;
         }
-        // get all actions with API
+        // get all actions with API (max 3 days)
         $page = 1;
         $apiActions = array();
         $intervalTime = self::getIntervalTime();
-        $dateFrom = date('c', (time() - $intervalTime));
-        $dateTo = date('c');
+        $dateFrom = time() - $intervalTime;
+        $dateTo = time();
         LengowMain::log(
             'API-OrderAction',
             LengowMain::setLogMessage(
                 'log.import.connector_get_all_action',
                 array(
-                    'date_from' => date('Y-m-d H:i:s', strtotime($dateFrom)),
-                    'date_to' => date('Y-m-d H:i:s', strtotime($dateTo)),
+                    'date_from' => date('Y-m-d H:i:s', $dateFrom),
+                    'date_to' => date('Y-m-d H:i:s', $dateTo),
                 )
             ),
             $logOutput
@@ -568,8 +568,8 @@ class LengowAction
                 LengowConnector::GET,
                 LengowConnector::API_ORDER_ACTION,
                 array(
-                    'updated_from' => $dateFrom,
-                    'updated_to' => $dateTo,
+                    'updated_from' => date('c', $dateFrom),
+                    'updated_to' => date('c', $dateTo),
                     'page' => $page,
                 ),
                 '',

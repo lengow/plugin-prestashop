@@ -109,22 +109,22 @@ class LengowImport
     protected $forceProduct = true;
 
     /**
-     * @var string|false imports orders updated since
+     * @var integer|false imports orders updated since (timestamp)
      */
     protected $updatedFrom = false;
 
     /**
-     * @var string|false imports orders updated until
+     * @var integer|false imports orders updated until (timestamp)
      */
     protected $updatedTo = false;
 
     /**
-     * @var string|false imports orders created since
+     * @var integer|false imports orders created since (timestamp)
      */
     protected $createdFrom = false;
 
     /**
-     * @var string|false imports orders created until
+     * @var integer|false imports orders created until (timestamp)
      */
     protected $createdTo = false;
 
@@ -576,8 +576,8 @@ class LengowImport
                 LengowMain::setLogMessage(
                     'log.import.connector_get_all_order',
                     array(
-                        'date_from' => date('Y-m-d H:i:s', strtotime($dateFrom)),
-                        'date_to' => date('Y-m-d H:i:s', strtotime($dateTo)),
+                        'date_from' => date('Y-m-d H:i:s', $dateFrom),
+                        'date_to' => date('Y-m-d H:i:s', $dateTo),
                         'catalog_id' => implode(', ', $this->shopCatalogIds),
                     )
                 ),
@@ -601,13 +601,13 @@ class LengowImport
                 } else {
                     if ($this->createdFrom && $this->createdTo) {
                         $timeParams = array(
-                            'marketplace_order_date_from' => $this->createdFrom,
-                            'marketplace_order_date_to' => $this->createdTo,
+                            'marketplace_order_date_from' => date('c', $this->createdFrom),
+                            'marketplace_order_date_to' => date('c', $this->createdTo),
                         );
                     } else {
                         $timeParams = array(
-                            'updated_from' => $this->updatedFrom,
-                            'updated_to' => $this->updatedTo,
+                            'updated_from' => date('c', $this->updatedFrom),
+                            'updated_to' => date('c', $this->updatedTo),
                         );
                     }
                     $results = $this->connector->get(
@@ -839,15 +839,10 @@ class LengowImport
             $createdFromTimestamp = strtotime($createdFrom);
             $createdToTimestamp = strtotime($createdTo) + 86399;
             $intervalTime = (int)($createdToTimestamp - $createdFromTimestamp);
-            if ($intervalTime > self::MAX_INTERVAL_TIME) {
-                $dateFrom = date('c', $createdFromTimestamp);
-                $dateTo = date('c', ($createdFromTimestamp + self::MAX_INTERVAL_TIME));
-            } else {
-                $dateFrom = date('c', $createdFromTimestamp);
-                $dateTo = date('c', $createdToTimestamp);
-            }
-            $this->createdFrom = $dateFrom;
-            $this->createdTo = $dateTo;
+            $this->createdFrom = $createdFromTimestamp;
+            $this->createdTo = $intervalTime > self::MAX_INTERVAL_TIME
+                ? $createdFromTimestamp + self::MAX_INTERVAL_TIME
+                : $createdToTimestamp;
         } else {
             if ($days) {
                 $intervalTime = $days * 86400;
@@ -870,8 +865,8 @@ class LengowImport
                     $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
                 }
             }
-            $this->updatedFrom = date('c', (time() - $intervalTime));
-            $this->updatedTo = date('c');
+            $this->updatedFrom = time() - $intervalTime;
+            $this->updatedTo = time();
         }
     }
 
