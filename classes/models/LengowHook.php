@@ -429,7 +429,7 @@ class LengowHook
                 'carrier_id_relay' => $lengowOrder->lengowIdRelay,
                 'sent_marketplace' => $sentMarketplace,
                 'message' => $lengowOrder->lengowMessage,
-                'imported_at' => $lengowOrder->lengowDateAdd,
+                'imported_at' => LengowMain::getDateInCorrectFormat(strtotime($lengowOrder->lengowDateAdd)),
                 'action_synchronize' => $actionSynchronize,
                 'action_reimport' => $actionReimport,
                 'action_resend' => $actionResend,

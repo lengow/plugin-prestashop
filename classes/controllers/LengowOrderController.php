@@ -281,7 +281,9 @@ class LengowOrderController extends LengowController
     {
         $lastImport = LengowMain::getLastImport();
         $orderCollection = array(
-            'last_import_date' => $lastImport['timestamp'],
+            'last_import_date' => $lastImport['timestamp'] !== 'none'
+                ? LengowMain::getDateInCorrectFormat($lastImport['timestamp'])
+                : '',
             'last_import_type' => $lastImport['type'],
             'link' => LengowMain::getImportUrl(),
         );

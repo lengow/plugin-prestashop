@@ -21,7 +21,7 @@
 {if $orderCollection['last_import_type'] != 'none'}
 	<p>
 		{$locale->t('order.screen.last_order_importation')|escape:'htmlall':'UTF-8'}
-	 	: <b>{$orderCollection['last_import_date']|date_format:"%A %e %B %Y @ %R"|escape:'htmlall':'UTF-8'}</b>
+	 	: <b>{$orderCollection['last_import_date']|escape:'htmlall':'UTF-8'}</b>
 {else}
 	{$locale->t('order.screen.no_order_importation')|escape:'htmlall':'UTF-8'}
 {/if}

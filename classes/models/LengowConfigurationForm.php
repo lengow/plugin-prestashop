@@ -295,7 +295,7 @@ class LengowConfigurationForm
                 }
                 // save last update date for a specific settings (change synchronisation interval time)
                 if (isset($setting['update']) && $setting['update']) {
-                    LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', date('Y-m-d H:i:s'));
+                    LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', time());
                 }
             }
         }
