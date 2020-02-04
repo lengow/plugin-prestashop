@@ -125,11 +125,9 @@ class LengowCheck
     public function getImportInformation()
     {
         $lastImport = LengowMain::getLastImport();
-        $lastImportDate = (
-        $lastImport['timestamp'] === 'none'
+        $lastImportDate = $lastImport['timestamp'] === 'none'
             ? $this->locale->t('toolbox.index.last_import_none')
-            : date('Y-m-d H:i:s', $lastImport['timestamp'])
-        );
+            : LengowMain::getDateInCorrectFormat($lastImport['timestamp'], true);
         if ($lastImport['type'] === 'none') {
             $lastImportType = $this->locale->t('toolbox.index.last_import_none');
         } elseif ($lastImport['type'] === 'cron') {
@@ -181,10 +179,9 @@ class LengowCheck
     public function getInformationByStore($shop)
     {
         $lengowExport = new LengowExport(array('shop_id' => $shop->id));
-        if (!is_null(LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id))
-            && LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id) !== ''
-        ) {
-            $lastExport = LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id);
+        $lastExportDate = LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id);
+        if ($lastExportDate !== null && $lastExportDate !== '') {
+            $lastExport = LengowMain::getDateInCorrectFormat(strtotime($lastExportDate), true);
         } else {
             $lastExport = $this->locale->t('toolbox.index.last_import_none');
         }

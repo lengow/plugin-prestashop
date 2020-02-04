@@ -856,10 +856,10 @@ class LengowImport
                 $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
                 // get dynamic interval time for cron synchronisation
                 $lastImport = LengowMain::getLastImport();
-                $lastSettingUpdate = LengowConfiguration::getGlobalValue('LENGOW_LAST_SETTING_UPDATE');
+                $lastSettingUpdate = (int)LengowConfiguration::getGlobalValue('LENGOW_LAST_SETTING_UPDATE');
                 if ($this->typeImport !== 'manual'
                     && $lastImport['timestamp'] !== 'none'
-                    && $lastImport['timestamp'] > strtotime($lastSettingUpdate)
+                    && $lastImport['timestamp'] > $lastSettingUpdate
                 ) {
                     $lastIntervalTime = (time() - $lastImport['timestamp']) + self::SECURITY_INTERVAL_TIME;
                     $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
