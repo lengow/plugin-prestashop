@@ -130,7 +130,7 @@ class LengowCheck
             : LengowMain::getDateInCorrectFormat($lastImport['timestamp'], true);
         if ($lastImport['type'] === 'none') {
             $lastImportType = $this->locale->t('toolbox.index.last_import_none');
-        } elseif ($lastImport['type'] === 'cron') {
+        } elseif ($lastImport['type'] === LengowImport::TYPE_CRON) {
             $lastImportType = $this->locale->t('toolbox.index.last_import_cron');
         } else {
             $lastImportType = $this->locale->t('toolbox.index.last_import_manual');

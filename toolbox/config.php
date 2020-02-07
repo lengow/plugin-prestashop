@@ -77,7 +77,7 @@ switch ($action) {
             $module = Module::getInstanceByName('lengow');
             $install = new LengowInstall($module);
             $install->update();
-            LengowTranslation::$forceIsoCode = 'en';
+            LengowTranslation::$forceIsoCode = LengowTranslation::DEFAULT_ISO_CODE;
             if (_PS_VERSION_ < '1.5') {
                 Context::getContext()->cookie->profile = $tempProfile;
             }

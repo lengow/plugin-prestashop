@@ -25,14 +25,14 @@
 class LengowTranslation
 {
     /**
+     * @var string default iso code
+     */
+    const DEFAULT_ISO_CODE = 'en';
+
+    /**
      * @var array|null all translations
      */
     protected static $translation = null;
-
-    /**
-     * @var string fallback iso code
-     */
-    public $fallbackIsoCode = 'en';
 
     /**
      * @var string|null iso code
@@ -75,11 +75,11 @@ class LengowTranslation
         if (isset(self::$translation[$isoCode][$message])) {
             return $this->translateFinal(self::$translation[$isoCode][$message], $args);
         } else {
-            if (!isset(self::$translation[$this->fallbackIsoCode])) {
-                $this->loadFile($this->fallbackIsoCode);
+            if (!isset(self::$translation[self::DEFAULT_ISO_CODE])) {
+                $this->loadFile(self::DEFAULT_ISO_CODE);
             }
-            if (isset(self::$translation[$this->fallbackIsoCode][$message])) {
-                return $this->translateFinal(self::$translation[$this->fallbackIsoCode][$message], $args);
+            if (isset(self::$translation[self::DEFAULT_ISO_CODE][$message])) {
+                return $this->translateFinal(self::$translation[self::DEFAULT_ISO_CODE][$message], $args);
             } else {
                 return 'Missing Translation [' . $message . ']';
             }

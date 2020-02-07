@@ -25,8 +25,8 @@
 class LengowInstall
 {
     /**
-    * @var array all module tables
-    */
+     * @var array all module tables
+     */
     public static $tables = array(
         'lengow_orders',
         'lengow_order_line',
@@ -181,7 +181,7 @@ class LengowInstall
     public function install()
     {
         LengowMain::log(
-            'Install',
+            LengowLog::CODE_INSTALL,
             LengowMain::setLogMessage('log.install.install_start', array('version' => $this->lengowModule->version))
         );
         $oldVersion = LengowConfiguration::getGlobalValue('LENGOW_VERSION');
@@ -189,7 +189,7 @@ class LengowInstall
         $this->setDefaultValues();
         $this->update($oldVersion);
         LengowMain::log(
-            'Install',
+            LengowLog::CODE_INSTALL,
             LengowMain::setLogMessage('log.install.install_end', array('version' => $this->lengowModule->version))
         );
         return true;
@@ -203,12 +203,12 @@ class LengowInstall
     public function uninstall()
     {
         LengowMain::log(
-            'Uninstall',
+            LengowLog::CODE_UNINSTALL,
             LengowMain::setLogMessage('log.uninstall.uninstall_start', array('version' => $this->lengowModule->version))
         );
         $this->uninstallTab();
         LengowMain::log(
-            'Uninstall',
+            LengowLog::CODE_UNINSTALL,
             LengowMain::setLogMessage('log.uninstall.uninstall_end', array('version' => $this->lengowModule->version))
         );
         return true;
@@ -229,7 +229,7 @@ class LengowInstall
         if ($oldVersion) {
             self::$oldVersion = $oldVersion;
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage(
                     'log.install.update_start',
                     array('old_version' => $oldVersion, 'new_version' => $this->lengowModule->version)
@@ -246,7 +246,7 @@ class LengowInstall
             include _PS_MODULE_LENGOW_DIR_ . 'upgrade/' . $file;
             $numberVersion = preg_replace('/update_|\.php$/', '', $file);
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.add_upgrade_version', array('version' => $numberVersion))
             );
         }
@@ -274,7 +274,7 @@ class LengowInstall
         self::setInstallationStatus(false);
         if ($oldVersion) {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage(
                     'log.install.update_end',
                     array('old_version' => $oldVersion, 'new_version' => $this->lengowModule->version)
@@ -362,7 +362,7 @@ class LengowInstall
     {
         foreach (self::$tables as $table) {
             LengowMain::log(
-                'Uninstall',
+                LengowLog::CODE_UNINSTALL,
                 LengowMain::setLogMessage('log.uninstall.table_dropped', array('name' => $table))
             );
             Db::getInstance()->Execute('DROP TABLE IF EXISTS ' . _DB_PREFIX_ . $table);
@@ -483,10 +483,13 @@ class LengowInstall
                 INDEX (`id_shop`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -533,10 +536,13 @@ class LengowInstall
                 INDEX (`date_add`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -551,10 +557,13 @@ class LengowInstall
                 PRIMARY KEY(`id`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -573,10 +582,13 @@ class LengowInstall
                 INDEX (`id_order_lengow`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -599,10 +611,13 @@ class LengowInstall
                 INDEX (`action_type`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -617,10 +632,13 @@ class LengowInstall
                 PRIMARY KEY(`id`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -635,10 +653,13 @@ class LengowInstall
                 PRIMARY KEY(`id`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -653,10 +674,13 @@ class LengowInstall
                 PRIMARY KEY(`id`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -672,10 +696,13 @@ class LengowInstall
                 INDEX (`id_carrier_marketplace`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -691,10 +718,13 @@ class LengowInstall
                 INDEX (`id_method_marketplace`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -714,10 +744,13 @@ class LengowInstall
                 INDEX (`id_carrier_marketplace`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -737,10 +770,13 @@ class LengowInstall
                 INDEX (`id_carrier_marketplace`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -760,10 +796,13 @@ class LengowInstall
                 INDEX (`id_method_marketplace`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.table_created', array('name' => $name)));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+            );
         } else {
             LengowMain::log(
-                'Install',
+                LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
             );
         }
@@ -816,7 +855,7 @@ class LengowInstall
                 }
                 $tab->add();
                 LengowMain::log(
-                    'Install',
+                    LengowLog::CODE_INSTALL,
                     LengowMain::setLogMessage('log.install.install_tab', array('class_name' => $tab->class_name))
                 );
             }
@@ -847,7 +886,7 @@ class LengowInstall
                     $tab->delete();
                 }
                 LengowMain::log(
-                    'Uninstall',
+                    LengowLog::CODE_UNINSTALL,
                     LengowMain::setLogMessage(
                         'log.uninstall.uninstall_tab',
                         array('class_name' => $value['class_name'])
@@ -919,7 +958,7 @@ class LengowInstall
                 LengowMain::log('Install', LengowMain::setLogMessage('log.install.add_technical_error_status'));
             } catch (Exception $e) {
                 LengowMain::log(
-                    'Install',
+                    LengowLog::CODE_INSTALL,
                     LengowMain::setLogMessage(
                         'log.install.add_technical_error_status_failed',
                         array('error_message' => $e->getMessage())
@@ -953,7 +992,10 @@ class LengowInstall
                     );
                 }
             }
-            LengowMain::log('Install', LengowMain::setLogMessage('log.install.update_technical_error_status'));
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.update_technical_error_status')
+            );
         }
         return true;
     }

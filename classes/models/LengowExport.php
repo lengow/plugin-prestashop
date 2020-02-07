@@ -354,10 +354,10 @@ class LengowExport
         try {
             // clean logs
             LengowMain::cleanLog();
-            LengowMain::log('Export', LengowMain::setLogMessage('log.export.start'), $this->logOutput);
+            LengowMain::log(LengowLog::CODE_EXPORT, LengowMain::setLogMessage('log.export.start'), $this->logOutput);
             $shop = new LengowShop($this->idShop);
             LengowMain::log(
-                'Export',
+                LengowLog::CODE_EXPORT,
                 LengowMain::setLogMessage(
                     'log.export.start_for_shop',
                     array(
@@ -378,7 +378,7 @@ class LengowExport
             // get products to be exported
             $products = $this->exportIds();
             LengowMain::log(
-                'Export',
+                LengowLog::CODE_EXPORT,
                 LengowMain::setLogMessage('log.export.nb_product_found', array('nb_product' => count($products))),
                 $this->logOutput
             );
@@ -387,7 +387,7 @@ class LengowExport
                 LengowConfiguration::updateValue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), false, null, $this->idShop);
             }
             LengowMain::log(
-                'Export',
+                LengowLog::CODE_EXPORT,
                 LengowMain::setLogMessage('log.export.end'),
                 $this->logOutput
             );
@@ -397,9 +397,9 @@ class LengowExport
             $errorMessage = '[Prestashop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
         }
         if (isset($errorMessage)) {
-            $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
+            $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
             LengowMain::log(
-                'Export',
+                LengowLog::CODE_EXPORT,
                 LengowMain::setLogMessage(
                     'log.export.export_failed',
                     array('decoded_message' => $decodedMessage)
@@ -520,7 +520,7 @@ class LengowExport
             if ($idProduct && $idProductAttribute > 0) {
                 if (!$this->loadCacheCombinations($product, $fields)) {
                     LengowMain::log(
-                        'Export',
+                        LengowLog::CODE_EXPORT,
                         LengowMain::setLogMessage(
                             'log.export.error_no_product_combination',
                             array('product_id' => $product->id)
@@ -544,7 +544,7 @@ class LengowExport
             }
             if ($productCount > 0 && $productCount % 50 === 0) {
                 LengowMain::log(
-                    'Export',
+                    LengowLog::CODE_EXPORT,
                     LengowMain::setLogMessage(
                         'log.export.count_product',
                         array('product_count' => $productCount)
@@ -572,7 +572,7 @@ class LengowExport
             $feedUrl = $this->feed->getUrl();
             if ($feedUrl && php_sapi_name() !== 'cli') {
                 LengowMain::log(
-                    'Export',
+                    LengowLog::CODE_EXPORT,
                     LengowMain::setLogMessage('log.export.your_feed_available_here', array('feed_url' => $feedUrl)),
                     $this->logOutput
                 );

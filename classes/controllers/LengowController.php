@@ -111,7 +111,7 @@ class LengowController
     {
         $this->context->smarty->assign(
             'total_pending_order',
-            LengowOrder::getTotalOrderByStatus('waiting_shipment')
+            LengowOrder::getTotalOrderByStatus(LengowOrder::STATE_WAITING_SHIPMENT)
         );
         if (_PS_VERSION_ < '1.5') {
             if (!$this->toolbox) {

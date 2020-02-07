@@ -25,6 +25,46 @@
 class LengowLog extends LengowFile
 {
     /**
+     * @var string install log code
+     */
+    const CODE_INSTALL = 'Install';
+
+    /**
+     * @var string uninstall log code
+     */
+    const CODE_UNINSTALL = 'Uninstall';
+
+    /**
+     * @var string setting log code
+     */
+    const CODE_SETTING = 'Setting';
+
+    /**
+     * @var string connector log code
+     */
+    const CODE_CONNECTOR = 'Connector';
+
+    /**
+     * @var string export log code
+     */
+    const CODE_EXPORT = 'Export';
+
+    /**
+     * @var string import log code
+     */
+    const CODE_IMPORT = 'Import';
+
+    /**
+     * @var string action log code
+     */
+    const CODE_ACTION = 'Action';
+
+    /**
+     * @var string mail report code
+     */
+    const CODE_MAIL_REPORT = 'Mail Report';
+
+    /**
      * @var string name of logs folder
      */
     public static $lengowLogFolder = 'logs';
@@ -61,7 +101,7 @@ class LengowLog extends LengowFile
      */
     public function write($category, $message = '', $logOutput = false, $marketplaceSku = null)
     {
-        $decodedMessage = LengowMain::decodeLogMessage($message, 'en');
+        $decodedMessage = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
         $log = date('Y-m-d H:i:s');
         $log .= ' - ' . (empty($category) ? '' : '[' . $category . '] ');
         $log .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ': ');

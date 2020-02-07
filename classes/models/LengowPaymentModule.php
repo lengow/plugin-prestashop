@@ -321,14 +321,14 @@ class LengowPaymentModule extends PaymentModule
                 );
                 if (!$success) {
                     LengowMain::log(
-                        'Import',
+                        LengowLog::CODE_IMPORT,
                         LengowMain::setLogMessage('log.import.lengow_order_not_updated'),
                         $logOutput,
                         $marketplaceSku
                     );
                 } else {
                     LengowMain::log(
-                        'Import',
+                        LengowLog::CODE_IMPORT,
                         LengowMain::setLogMessage('log.import.lengow_order_updated'),
                         $logOutput,
                         $marketplaceSku
@@ -628,14 +628,14 @@ class LengowPaymentModule extends PaymentModule
             );
             if (!$success) {
                 LengowMain::log(
-                    'Import',
+                    LengowLog::CODE_IMPORT,
                     LengowMain::setLogMessage('log.import.lengow_order_not_updated'),
                     $logOutput,
                     $marketplaceSku
                 );
             } else {
                 LengowMain::log(
-                    'Import',
+                    LengowLog::CODE_IMPORT,
                     LengowMain::setLogMessage('log.import.lengow_order_updated'),
                     $logOutput,
                     $marketplaceSku

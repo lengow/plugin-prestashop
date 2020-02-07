@@ -33,8 +33,8 @@ class LengowMarketplace
      * @var array all valid actions
      */
     public static $validActions = array(
-        'ship',
-        'cancel',
+        LengowAction::TYPE_SHIP,
+        LengowAction::TYPE_CANCEL,
     );
 
     /**
@@ -256,12 +256,12 @@ class LengowMarketplace
         if (isset($this->actions[$action])) {
             $actions = $this->actions[$action];
             if (isset($actions['args']) && is_array($actions['args'])) {
-                if (in_array('line', $actions['args'])) {
+                if (in_array(LengowAction::ARG_LINE, $actions['args'])) {
                     return true;
                 }
             }
             if (isset($actions['optional_args']) && is_array($actions['optional_args'])) {
-                if (in_array('line', $actions['optional_args'])) {
+                if (in_array(LengowAction::ARG_LINE, $actions['optional_args'])) {
                     return true;
                 }
             }
@@ -312,11 +312,11 @@ class LengowMarketplace
             $params = $this->checkAndCleanParams($action, $params);
             // complete the values with the specific values of the account
             if (!is_null($idOrderLine)) {
-                $params['line'] = $idOrderLine;
+                $params[LengowAction::ARG_LINE] = $idOrderLine;
             }
             $params['marketplace_order_id'] = $lengowOrder->lengowMarketplaceSku;
             $params['marketplace'] = $lengowOrder->lengowMarketplaceName;
-            $params['action_type'] = $action;
+            $params[LengowAction::ARG_ACTION_TYPE] = $action;
             // checks whether the action is already created to not return an action
             $canSendAction = LengowAction::canSendAction($params, $lengowOrder);
             if ($canSendAction) {
@@ -332,9 +332,9 @@ class LengowMarketplace
             if ($lengowOrder->lengowProcessState != LengowOrder::PROCESS_STATE_FINISH) {
                 LengowOrder::addOrderLog($lengowOrder->lengowId, $errorMessage, 'send');
             }
-            $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
+            $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
             LengowMain::log(
-                'API-OrderAction',
+                LengowLog::CODE_ACTION,
                 LengowMain::setLogMessage(
                     'log.order_action.call_action_failed',
                     array('decoded_message' => $decodedMessage)
@@ -444,13 +444,13 @@ class LengowMarketplace
         }
         foreach ($marketplaceArguments as $arg) {
             switch ($arg) {
-                case 'tracking_number':
+                case LengowAction::ARG_TRACKING_NUMBER:
                     $params[$arg] = $trackingNumber;
                     break;
-                case 'carrier':
-                case 'carrier_name':
-                case 'shipping_method':
-                case 'custom_carrier':
+                case LengowAction::ARG_CARRIER:
+                case LengowAction::ARG_CARRIER_NAME:
+                case LengowAction::ARG_SHIPPING_METHOD:
+                case LengowAction::ARG_CUSTOM_CARRIER:
                     if ($lengowOrder->lengowCarrier != '') {
                         $carrierName = (string)$lengowOrder->lengowCarrier;
                     } else {
@@ -472,7 +472,7 @@ class LengowMarketplace
                     }
                     $params[$arg] = $carrierName;
                     break;
-                case 'tracking_url':
+                case LengowAction::ARG_TRACKING_URL:
                     if ($trackingNumber != '') {
                         $idActiveCarrier = LengowCarrier::getIdActiveCarrierByIdCarrier(
                             (int)$lengowOrder->id_carrier,
@@ -492,11 +492,11 @@ class LengowMarketplace
                         $params[$arg] = $trackingUrl;
                     }
                     break;
-                case 'shipping_price':
+                case LengowAction::ARG_SHIPPING_PRICE:
                     $params[$arg] = $lengowOrder->total_shipping;
                     break;
-                case 'shipping_date':
-                case 'delivery_date':
+                case LengowAction::ARG_SHIPPING_DATE:
+                case LengowAction::ARG_DELIVERY_DATE:
                     $params[$arg] = date('c');
                     break;
                 default:
