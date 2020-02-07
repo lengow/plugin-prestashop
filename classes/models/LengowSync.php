@@ -25,7 +25,7 @@
 class LengowSync
 {
     /**
-     * @var string cms type.
+     * @var string cms type
      */
     const CMS_TYPE = 'prestashop';
 
