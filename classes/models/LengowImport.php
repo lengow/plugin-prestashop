@@ -49,7 +49,6 @@ class LengowImport
      */
     const TYPE_CRON = 'cron';
 
-
     /**
      * @var boolean import is processing
      */
