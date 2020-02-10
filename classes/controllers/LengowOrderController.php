@@ -198,7 +198,7 @@ class LengowOrderController extends LengowController
                             array('order_id' => $idOrder)
                         );
                     }
-                    LengowMain::log('Import', $synchroMessage, false, $lengowOrder->lengowMarketplaceSku);
+                    LengowMain::log(LengowLog::CODE_IMPORT, $synchroMessage, false, $lengowOrder->lengowMarketplaceSku);
                     $lengowLink = new LengowLink();
                     $prestashopOrderController = $lengowLink->getAbsoluteAdminLink('AdminOrders', false, true);
                     $orderUrl = $prestashopOrderController . '&id_order=' . $idOrder . '&vieworder';
@@ -218,7 +218,7 @@ class LengowOrderController extends LengowController
                     break;
                 case 'force_resend':
                     $idOrder = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
-                    $actionType = isset($_REQUEST['action_type']) ? $_REQUEST['action_type'] : 'ship';
+                    $actionType = isset($_REQUEST['action_type']) ? $_REQUEST['action_type'] : LengowAction::TYPE_SHIP;
                     $lengowOrder = new LengowOrder($idOrder);
                     $lengowOrder->callAction($actionType);
                     $lengowLink = new LengowLink();
@@ -344,12 +344,30 @@ class LengowOrderController extends LengowController
             'filter_key' => 'lo.order_lengow_state',
             'filter_type' => 'select',
             'filter_collection' => array(
-                array('id' => 'accepted', 'text' => $this->locale->t('order.screen.status_accepted')),
-                array('id' => 'waiting_shipment', 'text' => $this->locale->t('order.screen.status_waiting_shipment')),
-                array('id' => 'shipped', 'text' => $this->locale->t('order.screen.status_shipped')),
-                array('id' => 'refunded', 'text' => $this->locale->t('order.screen.status_refunded')),
-                array('id' => 'closed', 'text' => $this->locale->t('order.screen.status_closed')),
-                array('id' => 'canceled', 'text' => $this->locale->t('order.screen.status_canceled')),
+                array(
+                    'id' => LengowOrder::STATE_ACCEPTED,
+                    'text' => $this->locale->t('order.screen.status_accepted'),
+                ),
+                array(
+                    'id' => LengowOrder::STATE_WAITING_SHIPMENT,
+                    'text' => $this->locale->t('order.screen.status_waiting_shipment'),
+                ),
+                array(
+                    'id' => LengowOrder::STATE_SHIPPED,
+                    'text' => $this->locale->t('order.screen.status_shipped'),
+                ),
+                array(
+                    'id' => LengowOrder::STATE_REFUNDED,
+                    'text' => $this->locale->t('order.screen.status_refunded'),
+                ),
+                array(
+                    'id' => LengowOrder::STATE_CLOSED,
+                    'text' => $this->locale->t('order.screen.status_closed'),
+                ),
+                array(
+                    'id' => LengowOrder::STATE_CANCELED,
+                    'text' => $this->locale->t('order.screen.status_canceled'),
+                ),
             ),
         );
         $fieldsList['marketplace_name'] = array(
@@ -590,7 +608,7 @@ class LengowOrderController extends LengowController
             $value = 'not_synchronized';
         }
         return '<span class="lgw-label lgw-label-' . $value . '">'
-        . LengowMain::decodeLogMessage('order.screen.status_' . $value) . '</span>';
+            . LengowMain::decodeLogMessage('order.screen.status_' . $value) . '</span>';
     }
 
     /**
@@ -611,14 +629,14 @@ class LengowOrderController extends LengowController
         if ($item['id_order']) {
             if (!$toolbox) {
                 return '<a href="' . $link->getAbsoluteAdminLink('AdminOrders', false, true)
-                . '&vieworder&id_order=' . $item['id_order'] . '" target="_blank">' . $value . '</a>';
+                    . '&vieworder&id_order=' . $item['id_order'] . '" target="_blank">' . $value . '</a>';
             } else {
                 return $value;
             }
         } else {
             if ($key === 'reference' && (bool)$item['sent_marketplace']) {
                 return '<span class="lgw-label">'
-                . LengowMain::decodeLogMessage('order.screen.status_shipped_by_mkp') . '</span>';
+                    . LengowMain::decodeLogMessage('order.screen.status_shipped_by_mkp') . '</span>';
             }
             return $value;
         }
@@ -747,7 +765,7 @@ class LengowOrderController extends LengowController
         $messages = array();
         // if global error return this
         if (isset($return['error'][0])) {
-            $messages[] =  LengowMain::decodeLogMessage($return['error'][0]);
+            $messages[] = LengowMain::decodeLogMessage($return['error'][0]);
             return $messages;
         }
         if (isset($return['order_new']) && $return['order_new'] > 0) {

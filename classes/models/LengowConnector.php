@@ -197,7 +197,7 @@ class LengowConnector
         try {
             $connector->connect(false, $logOutput);
         } catch (LengowException $e) {
-            $message = LengowMain::decodeLogMessage($e->getMessage(), 'en');
+            $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
             $error = LengowMain::setLogMessage(
                 'log.connector.error_api',
                 array(
@@ -205,7 +205,7 @@ class LengowConnector
                     'error_message' => $message,
                 )
             );
-            LengowMain::log('Connector', $error, $logOutput);
+            LengowMain::log(LengowLog::CODE_CONNECTOR, $error, $logOutput);
             return false;
         }
         return true;
@@ -242,7 +242,7 @@ class LengowConnector
                 $logOutput
             );
         } catch (LengowException $e) {
-            $message = LengowMain::decodeLogMessage($e->getMessage(), 'en');
+            $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
             $error = LengowMain::setLogMessage(
                 'log.connector.error_api',
                 array(
@@ -250,7 +250,7 @@ class LengowConnector
                     'error_message' => $message,
                 )
             );
-            LengowMain::log('Connector', $error, $logOutput);
+            LengowMain::log(LengowLog::CODE_CONNECTOR, $error, $logOutput);
 
             return false;
         }
@@ -379,7 +379,7 @@ class LengowConnector
         } catch (LengowException $e) {
             if ($e->getCode() === self::CODE_403) {
                 LengowMain::log(
-                    'Connector',
+                    LengowLog::CODE_CONNECTOR,
                     LengowMain::setLogMessage('log.connector.retry_get_token'),
                     $logOutput
                 );
@@ -522,7 +522,7 @@ class LengowConnector
                 break;
         }
         LengowMain::log(
-            'Connector',
+            LengowLog::CODE_CONNECTOR,
             LengowMain::setLogMessage(
                 'log.connector.call_api',
                 array(

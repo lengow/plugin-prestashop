@@ -35,6 +35,71 @@ class LengowAction
     const STATE_FINISH = 1;
 
     /**
+     * @var string action type ship
+     */
+    const TYPE_SHIP = 'ship';
+
+    /**
+     * @var string action type cancel
+     */
+    const TYPE_CANCEL = 'cancel';
+
+    /**
+     * @var string action argument action type
+     */
+    const ARG_ACTION_TYPE = 'action_type';
+
+    /**
+     * @var string action argument line
+     */
+    const ARG_LINE = 'line';
+
+    /**
+     * @var string action argument carrier
+     */
+    const ARG_CARRIER = 'carrier';
+
+    /**
+     * @var string action argument carrier name
+     */
+    const ARG_CARRIER_NAME = 'carrier_name';
+
+    /**
+     * @var string action argument custom carrier
+     */
+    const ARG_CUSTOM_CARRIER = 'custom_carrier';
+
+    /**
+     * @var string action argument shipping method
+     */
+    const ARG_SHIPPING_METHOD = 'shipping_method';
+
+    /**
+     * @var string action argument tracking number
+     */
+    const ARG_TRACKING_NUMBER = 'tracking_number';
+
+    /**
+     * @var string action argument tracking url
+     */
+    const ARG_TRACKING_URL = 'tracking_url';
+
+    /**
+     * @var string action argument shipping price
+     */
+    const ARG_SHIPPING_PRICE = 'shipping_price';
+
+    /**
+     * @var string action argument shipping date
+     */
+    const ARG_SHIPPING_DATE = 'shipping_date';
+
+    /**
+     * @var string action argument delivery date
+     */
+    const ARG_DELIVERY_DATE = 'delivery_date';
+
+    /**
      * @var integer max interval time for action synchronisation (3 days)
      */
     const MAX_INTERVAL_TIME = 259200;
@@ -48,8 +113,8 @@ class LengowAction
      * @var array Parameters to delete for Get call
      */
     public static $getParamsToDelete = array(
-        'shipping_date',
-        'delivery_date',
+        self::ARG_SHIPPING_DATE,
+        self::ARG_DELIVERY_DATE,
     );
 
     /**
@@ -290,7 +355,7 @@ class LengowAction
                     $update = self::updateAction(
                         array(
                             'id_order' => $lengowOrder->id,
-                            'action_type' => $params['action_type'],
+                            'action_type' => $params[self::ARG_ACTION_TYPE],
                             'action_id' => $row->id,
                             'parameters' => $params,
                         )
@@ -303,7 +368,7 @@ class LengowAction
                     self::createAction(
                         array(
                             'id_order' => $lengowOrder->id,
-                            'action_type' => $params['action_type'],
+                            'action_type' => $params[self::ARG_ACTION_TYPE],
                             'action_id' => $row->id,
                             'parameters' => $params,
                             'marketplace_sku' => $lengowOrder->lengowMarketplaceSku,
@@ -332,7 +397,7 @@ class LengowAction
                 self::createAction(
                     array(
                         'id_order' => $lengowOrder->id,
-                        'action_type' => $params['action_type'],
+                        'action_type' => $params[self::ARG_ACTION_TYPE],
                         'action_id' => $result->id,
                         'parameters' => $params,
                         'marketplace_sku' => $lengowOrder->lengowMarketplaceSku,
@@ -357,7 +422,7 @@ class LengowAction
             $paramList .= !$paramList ? '"' . $param . '": ' . $value : ' -- "' . $param . '": ' . $value;
         }
         LengowMain::log(
-            'API-OrderAction',
+            LengowLog::CODE_ACTION,
             LengowMain::setLogMessage('log.order_action.call_tracking', array('parameters' => $paramList)),
             false,
             $lengowOrder->lengowMarketplaceSku
@@ -382,8 +447,8 @@ class LengowAction
             'state' => (int)self::STATE_NEW,
             'created_at' => date('Y-m-d H:i:s'),
         );
-        if (isset($params['parameters']['line'])) {
-            $insertParams['order_line_sku'] = $params['parameters']['line'];
+        if (isset($params['parameters'][self::ARG_LINE])) {
+            $insertParams['order_line_sku'] = $params['parameters'][self::ARG_LINE];
         }
         try {
             if (_PS_VERSION_ < '1.5') {
@@ -392,7 +457,7 @@ class LengowAction
                 Db::getInstance()->insert('lengow_actions', $insertParams);
             }
             LengowMain::log(
-                'API-OrderAction',
+                LengowLog::CODE_ACTION,
                 LengowMain::setLogMessage('log.order_action.action_saved'),
                 false,
                 $params['marketplace_sku']
@@ -537,7 +602,7 @@ class LengowAction
             return false;
         }
         LengowMain::log(
-            'API-OrderAction',
+            LengowLog::CODE_ACTION,
             LengowMain::setLogMessage('log.order_action.check_completed_action'),
             $logOutput
         );
@@ -553,7 +618,7 @@ class LengowAction
         $dateFrom = time() - $intervalTime;
         $dateTo = time();
         LengowMain::log(
-            'API-OrderAction',
+            LengowLog::CODE_ACTION,
             LengowMain::setLogMessage(
                 'log.import.connector_get_all_action',
                 array(
@@ -628,7 +693,7 @@ class LengowAction
                                 'send'
                             );
                             LengowMain::log(
-                                'API-OrderAction',
+                                LengowLog::CODE_ACTION,
                                 LengowMain::setLogMessage(
                                     'log.order_action.call_action_failed',
                                     array('decoded_message' => $apiActions[$action['action_id']]->errors)
@@ -658,7 +723,11 @@ class LengowAction
         if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')) {
             return false;
         }
-        LengowMain::log('API-OrderAction', LengowMain::setLogMessage('log.order_action.check_old_action'), $logOutput);
+        LengowMain::log(
+            LengowLog::CODE_ACTION,
+            LengowMain::setLogMessage('log.order_action.check_old_action'),
+            $logOutput
+        );
         // get all old order action (+ 3 days)
         $actions = self::getOldActions();
         if ($actions) {
@@ -670,9 +739,9 @@ class LengowAction
                     // if action is denied -> create order error
                     $errorMessage = LengowMain::setLogMessage('lengow_log.exception.action_is_too_old');
                     LengowOrder::addOrderLog($orderLengow->lengowId, $errorMessage, 'send');
-                    $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
+                    $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
                     LengowMain::log(
-                        'API-OrderAction',
+                        LengowLog::CODE_ACTION,
                         LengowMain::setLogMessage(
                             'log.order_action.call_action_failed',
                             array('decoded_message' => $decodedMessage)
@@ -721,7 +790,7 @@ class LengowAction
             return false;
         }
         LengowMain::log(
-            'API-OrderAction',
+            LengowLog::CODE_ACTION,
             LengowMain::setLogMessage('log.order_action.check_action_not_sent'),
             $logOutput
         );

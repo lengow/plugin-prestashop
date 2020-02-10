@@ -642,9 +642,9 @@ class LengowConfiguration extends Configuration
             }
         }
         if ($overwrite) {
-            LengowMain::log('Setting', LengowMain::setLogMessage('log.setting.setting_reset'));
+            LengowMain::log(LengowLog::CODE_SETTING, LengowMain::setLogMessage('log.setting.setting_reset'));
         } else {
-            LengowMain::log('Setting', LengowMain::setLogMessage('log.setting.setting_updated'));
+            LengowMain::log(LengowLog::CODE_SETTING, LengowMain::setLogMessage('log.setting.setting_updated'));
         }
         return true;
     }
@@ -657,7 +657,7 @@ class LengowConfiguration extends Configuration
     public static function deleteAll()
     {
         $keys = self::getKeys();
-        LengowMain::log('Setting', LengowMain::setLogMessage('log.setting.setting_delete'));
+        LengowMain::log(LengowLog::CODE_SETTING, LengowMain::setLogMessage('log.setting.setting_delete'));
         foreach ($keys as $key => $value) {
             // this line is useless, but Prestashop validator require it
             $value = $value;

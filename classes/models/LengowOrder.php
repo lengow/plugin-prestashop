@@ -45,6 +45,41 @@ class LengowOrder extends Order
     const PROCESS_STATE_FINISH = 2;
 
     /**
+     * @var string order state accepted
+     */
+    const STATE_ACCEPTED = 'accepted';
+
+    /**
+     * @var string order state waiting_shipment
+     */
+    const STATE_WAITING_SHIPMENT = 'waiting_shipment';
+
+    /**
+     * @var string order state shipped
+     */
+    const STATE_SHIPPED = 'shipped';
+
+    /**
+     * @var string order state closed
+     */
+    const STATE_CLOSED = 'closed';
+
+    /**
+     * @var string order state refused
+     */
+    const STATE_REFUSED = 'refused';
+
+    /**
+     * @var string order state canceled
+     */
+    const STATE_CANCELED = 'canceled';
+
+    /**
+     * @var string order state refunded
+     */
+    const STATE_REFUNDED = 'refunded';
+
+    /**
      * @var string Lengow order record id
      */
     public $lengowId;
@@ -450,16 +485,16 @@ class LengowOrder extends Order
         // if state is different between API and Prestashop
         if ((int)$this->getCurrentState() !== $idOrderState) {
             // change state process to shipped
-            if ((int)$this->getCurrentState() === LengowMain::getOrderState('accepted')
-                && ($orderStateLengow === 'shipped' || $orderStateLengow === 'closed')
+            if ((int)$this->getCurrentState() === LengowMain::getOrderState(self::STATE_ACCEPTED)
+                && ($orderStateLengow === self::STATE_SHIPPED || $orderStateLengow === self::STATE_CLOSED)
             ) {
                 // create a new order history
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
                 if (_PS_VERSION_ < '1.5') {
-                    $history->changeIdOrderState(LengowMain::getOrderState('shipped'), $this->id);
+                    $history->changeIdOrderState(LengowMain::getOrderState(self::STATE_SHIPPED), $this->id);
                 } else {
-                    $history->changeIdOrderState(LengowMain::getOrderState('shipped'), $this, true);
+                    $history->changeIdOrderState(LengowMain::getOrderState(self::STATE_SHIPPED), $this, true);
                 }
                 $history->validateFields();
                 $history->add();
@@ -469,17 +504,17 @@ class LengowOrder extends Order
                     $this->update();
                 }
                 return 'Shipped';
-            } elseif (((int)$this->getCurrentState() === LengowMain::getOrderState('accepted')
-                    || (int)$this->getCurrentState() === LengowMain::getOrderState('shipped')
-                ) && ($orderStateLengow === 'canceled' || $orderStateLengow === 'refused')
+            } elseif (((int)$this->getCurrentState() === LengowMain::getOrderState(self::STATE_ACCEPTED)
+                    || (int)$this->getCurrentState() === LengowMain::getOrderState(self::STATE_SHIPPED)
+                ) && ($orderStateLengow === self::STATE_CANCELED || $orderStateLengow === self::STATE_REFUSED)
             ) {
                 // create a new order history
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
                 if (_PS_VERSION_ < '1.5') {
-                    $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this->id);
+                    $history->changeIdOrderState(LengowMain::getOrderState(self::STATE_CANCELED), $this->id);
                 } else {
-                    $history->changeIdOrderState(LengowMain::getOrderState('canceled'), $this, true);
+                    $history->changeIdOrderState(LengowMain::getOrderState(self::STATE_CANCELED), $this, true);
                 }
                 $history->validateFields();
                 $history->add();
@@ -556,7 +591,7 @@ class LengowOrder extends Order
             INNER JOIN ' . _DB_PREFIX_ . 'order_history oh ON (oh.id_order = lo.id_order)
             WHERE lo.`order_process_state` = ' . (int)self::PROCESS_STATE_IMPORT
             . ' AND oh.`id_order_state` IN ('
-            . LengowMain::getOrderState('shipped') . ',' . LengowMain::getOrderState('canceled')
+            . LengowMain::getOrderState(self::STATE_SHIPPED) . ',' . LengowMain::getOrderState(self::STATE_CANCELED)
             . ') AND oh.`date_add` >= "' . $date . '"';
         try {
             $results = Db::getInstance()->executeS($sql);
@@ -572,9 +607,9 @@ class LengowOrder extends Order
                     && count($orderLogs) === 0
                     && !array_key_exists($result['id_order'], $unsentOrders)
                 ) {
-                    $action = (int)$result['id_order_state'] === LengowMain::getOrderState('canceled')
-                        ? 'cancel'
-                        : 'ship';
+                    $action = (int)$result['id_order_state'] === LengowMain::getOrderState(self::STATE_CANCELED)
+                        ? LengowAction::TYPE_CANCEL
+                        : LengowAction::TYPE_SHIP;
                     $unsentOrders[$result['id_order']] = $action;
                 }
             }
@@ -629,7 +664,7 @@ class LengowOrder extends Order
                     $logOutput
                 );
             } catch (Exception $e) {
-                $message = LengowMain::decodeLogMessage($e->getMessage(), 'en');
+                $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
                 $error = LengowMain::setLogMessage(
                     'log.connector.error_api',
                     array(
@@ -637,7 +672,7 @@ class LengowOrder extends Order
                         'error_message' => $message,
                     )
                 );
-                LengowMain::log('Connector', $error, $logOutput);
+                LengowMain::log(LengowLog::CODE_CONNECTOR, $error, $logOutput);
                 return false;
             }
             if (is_null($result)
@@ -684,7 +719,7 @@ class LengowOrder extends Order
                 $logOutput
             );
         } catch (Exception $e) {
-            $message = LengowMain::decodeLogMessage($e->getMessage(), 'en');
+            $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
             $error = LengowMain::setLogMessage(
                 'log.connector.error_api',
                 array(
@@ -725,14 +760,14 @@ class LengowOrder extends Order
     public static function getOrderProcessState($state)
     {
         switch ($state) {
-            case 'accepted':
-            case 'waiting_shipment':
+            case self::STATE_ACCEPTED:
+            case self::STATE_WAITING_SHIPMENT:
                 return self::PROCESS_STATE_IMPORT;
-            case 'shipped':
-            case 'closed':
-            case 'refused':
-            case 'canceled':
-            case 'refunded':
+            case self::STATE_SHIPPED:
+            case self::STATE_CLOSED:
+            case self::STATE_REFUSED:
+            case self::STATE_CANCELED:
+            case self::STATE_REFUNDED:
                 return self::PROCESS_STATE_FINISH;
             default:
                 return false;
@@ -1045,8 +1080,8 @@ class LengowOrder extends Order
             return false;
         }
         if ($this->lengowProcessState !== self::PROCESS_STATE_FINISH &&
-            ((int)$this->getCurrentState() === LengowMain::getOrderState('shipped')
-                || (int)$this->getCurrentState() === LengowMain::getOrderState('canceled')
+            ((int)$this->getCurrentState() === LengowMain::getOrderState(self::STATE_SHIPPED)
+                || (int)$this->getCurrentState() === LengowMain::getOrderState(self::STATE_CANCELED)
             )
         ) {
             return true;
@@ -1082,11 +1117,9 @@ class LengowOrder extends Order
                 $order = new LengowOrder($lengowOrder['id_order']);
                 $action = LengowAction::getLastOrderActionType($lengowOrder['id_order']);
                 if (!$action) {
-                    if ((int)$order->getCurrentState() === LengowMain::getOrderState('canceled')) {
-                        $action = 'cancel';
-                    } else {
-                        $action = 'ship';
-                    }
+                    $action = (int)$order->getCurrentState() === LengowMain::getOrderState(self::STATE_CANCELED)
+                        ? LengowAction::TYPE_CANCEL
+                        : LengowAction::TYPE_SHIP;
                 }
                 return $order->callAction($action);
             }
@@ -1163,7 +1196,7 @@ class LengowOrder extends Order
                 if ($this->lengowProcessState !== self::PROCESS_STATE_FINISH) {
                     self::addOrderLog($this->lengowId, $errorMessage, 'send');
                 }
-                $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
+                $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
                 LengowMain::log(
                     'API-OrderAction',
                     LengowMain::setLogMessage(

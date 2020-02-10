@@ -74,18 +74,18 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
     // get sync action if exists
     $sync = Tools::getIsset('sync') ? Tools::getValue('sync') : false;
     // sync catalogs id between Lengow and Prestashop
-    if (!$sync || $sync === 'catalog') {
+    if (!$sync || $sync === LengowSync::SYNC_CATALOG) {
         LengowSync::syncCatalog($force, $logOutput);
     }
     // sync marketplace and marketplace carrier between Lengow and Prestashop
-    if (!$sync || $sync === 'carrier') {
+    if (!$sync || $sync === LengowSync::SYNC_CARRIER) {
         LengowSync::syncCarrier($force, $logOutput);
     }
     // sync orders between Lengow and Prestashop
-    if (!$sync || $sync === 'order') {
+    if (!$sync || $sync === LengowSync::SYNC_ORDER) {
         // array of params for import order
         $params = array(
-            'type' => 'cron',
+            'type' => LengowImport::TYPE_CRON,
             'log_output' => $logOutput,
         );
         // check if the GET parameters are available
@@ -124,25 +124,25 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
         $import->exec();
     }
     // sync actions between Lengow and Prestashop
-    if (!$sync || $sync === 'action') {
+    if (!$sync || $sync === LengowSync::SYNC_ACTION) {
         LengowAction::checkFinishAction($logOutput);
         LengowAction::checkOldAction($logOutput);
         LengowAction::checkActionNotSent($logOutput);
     }
     // sync options between Lengow and Prestashop
-    if (!$sync || $sync === 'cms_option') {
+    if (!$sync || $sync === LengowSync::SYNC_CMS_OPTION) {
         LengowSync::setCmsOption($force, $logOutput);
     }
     // sync marketplaces between Lengow and Prestashop
-    if ($sync === 'marketplace') {
+    if ($sync === LengowSync::SYNC_MARKETPLACE) {
         LengowSync::getMarketplaces($force, $logOutput);
     }
     // sync status account between Lengow and Prestashop
-    if ($sync === 'status_account') {
+    if ($sync === LengowSync::SYNC_STATUS_ACCOUNT) {
         LengowSync::getStatusAccount($force, $logOutput);
     }
     // sync statistics between Lengow and Prestashop
-    if ($sync === 'statistic') {
+    if ($sync === LengowSync::SYNC_STATISTIC) {
         LengowSync::getStatistic($force, $logOutput);
     }
     // sync option is not valid

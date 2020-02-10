@@ -43,7 +43,10 @@ class LengowMainSettingController extends LengowController
                         $success = false;
                     }
                     if ($success) {
-                        LengowMain::log('Uninstall', LengowMain::setLogMessage('log.uninstall.dump_sql_created'));
+                        LengowMain::log(
+                            LengowLog::CODE_UNINSTALL,
+                            LengowMain::setLogMessage('log.uninstall.dump_sql_created')
+                        );
                         LengowConfiguration::deleteAll();
                         LengowInstall::dropTable();
                         $module = Module::getInstanceByName('lengow');

@@ -405,9 +405,10 @@ class LengowHook
             $actionReimport = $baseAction . '&action=cancel_re_import';
             $actionSynchronize = $baseAction . '&action=synchronize';
             $actionAddTracking = $baseAction . '&action=add_tracking&tracking_number=';
-            $actionType = (int)$lengowOrder->getCurrentState() === LengowMain::getOrderState('canceled')
-                ? 'cancel'
-                : 'ship';
+            $orderCurrentState = (int)$lengowOrder->getCurrentState();
+            $actionType = $orderCurrentState === LengowMain::getOrderState(LengowOrder::STATE_CANCELED)
+                ? LengowAction::TYPE_CANCEL
+                : LengowAction::TYPE_SHIP;
             $checkResendAction = $locale->t('admin.order.check_resend_action', array('action' => $actionType));
             $actionResend = $lengowOrderController . '&action=force_resend&action_type=' . $actionType;
             $sentMarketplace = $lengowOrder->lengowSentMarketplace
@@ -482,13 +483,13 @@ class LengowHook
         ) {
             $newOrderState = $args['newOrderStatus'];
             $idOrderState = (int)$newOrderState->id;
-            if ($idOrderState === LengowMain::getOrderState('shipped')) {
-                $lengowOrder->callAction('ship');
+            if ($idOrderState === LengowMain::getOrderState(LengowOrder::STATE_SHIPPED)) {
+                $lengowOrder->callAction(LengowAction::TYPE_SHIP);
                 $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
             }
             // call Lengow API WSDL to send refuse state order
-            if ($idOrderState === LengowMain::getOrderState('canceled')) {
-                $lengowOrder->callAction('cancel');
+            if ($idOrderState === LengowMain::getOrderState(LengowOrder::STATE_CANCELED)) {
+                $lengowOrder->callAction(LengowAction::TYPE_CANCEL);
                 $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
             }
         }
@@ -505,11 +506,11 @@ class LengowHook
             if (LengowOrder::isFromLengow($args['object']->id)) {
                 $lengowOrder = new LengowOrder($args['object']->id);
                 if ($lengowOrder->shipping_number !== ''
-                    && (int)$args['object']->current_state === LengowMain::getOrderState('shipped')
+                    && (int)$args['object']->current_state === LengowMain::getOrderState(LengowOrder::STATE_SHIPPED)
                     && LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
                     && !array_key_exists($lengowOrder->lengowMarketplaceSku, $this->alreadyShipped)
                 ) {
-                    $lengowOrder->callAction('ship');
+                    $lengowOrder->callAction(LengowAction::TYPE_SHIP);
                     $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
                 }
             }

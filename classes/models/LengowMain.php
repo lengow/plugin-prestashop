@@ -126,14 +126,14 @@ class LengowMain
     public static function getOrderState($state)
     {
         switch ($state) {
-            case 'accepted':
-            case 'waiting_shipment':
+            case LengowOrder::STATE_ACCEPTED:
+            case LengowOrder::STATE_WAITING_SHIPMENT:
                 return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_PROCESS');
-            case 'shipped':
-            case 'closed':
+            case LengowOrder::STATE_SHIPPED:
+            case LengowOrder::STATE_CLOSED:
                 return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPED');
-            case 'refused':
-            case 'canceled':
+            case LengowOrder::STATE_REFUSED:
+            case LengowOrder::STATE_CANCELED:
                 return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_CANCEL');
             case 'shippedByMp':
                 return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPEDBYMP');
@@ -179,7 +179,7 @@ class LengowMain
      */
     public static function updateDateImport($type)
     {
-        if ($type === 'cron') {
+        if ($type === LengowImport::TYPE_CRON) {
             LengowConfiguration::updateGlobalValue('LENGOW_LAST_IMPORT_CRON', time());
         } else {
             LengowConfiguration::updateGlobalValue('LENGOW_LAST_IMPORT_MANUAL', time());
@@ -197,14 +197,14 @@ class LengowMain
         $timestampManual = LengowConfiguration::getGlobalValue('LENGOW_LAST_IMPORT_MANUAL');
         if ($timestampCron && $timestampManual) {
             if ((int)$timestampCron > (int)$timestampManual) {
-                return array('type' => 'cron', 'timestamp' => (int)$timestampCron);
+                return array('type' => LengowImport::TYPE_CRON, 'timestamp' => (int)$timestampCron);
             } else {
-                return array('type' => 'manual', 'timestamp' => (int)$timestampManual);
+                return array('type' => LengowImport::TYPE_MANUAL, 'timestamp' => (int)$timestampManual);
             }
         } elseif ($timestampCron && !$timestampManual) {
-            return array('type' => 'cron', 'timestamp' => (int)$timestampCron);
+            return array('type' => LengowImport::TYPE_CRON, 'timestamp' => (int)$timestampCron);
         } elseif ($timestampManual && !$timestampCron) {
-            return array('type' => 'manual', 'timestamp' => (int)$timestampManual);
+            return array('type' => LengowImport::TYPE_MANUAL, 'timestamp' => (int)$timestampManual);
         }
         return array('type' => 'none', 'timestamp' => 'none');
     }
@@ -772,14 +772,14 @@ class LengowMain
                     );
                     if (!$mailSent) {
                         self::log(
-                            'MailReport',
+                            LengowLog::CODE_MAIL_REPORT,
                             self::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
                             $logOutput
                         );
                         $success = false;
                     } else {
                         self::log(
-                            'MailReport',
+                            LengowLog::CODE_MAIL_REPORT,
                             self::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
                             $logOutput
                         );
@@ -788,7 +788,7 @@ class LengowMain
                 }
             } else {
                 self::log(
-                    'MailReport',
+                    LengowLog::CODE_MAIL_REPORT,
                     self::setLogMessage('log.mail_report.template_not_exist', array('iso_code' => $iso)),
                     $logOutput
                 );
@@ -880,12 +880,12 @@ class LengowMain
     {
         if ($shipmentByMp) {
             $orderState = 'shippedByMp';
-        } elseif ($marketplace->getStateLengow($orderStateMarketplace) === 'shipped'
-            || $marketplace->getStateLengow($orderStateMarketplace) === 'closed'
+        } elseif ($marketplace->getStateLengow($orderStateMarketplace) === LengowOrder::STATE_SHIPPED
+            || $marketplace->getStateLengow($orderStateMarketplace) === LengowOrder::STATE_CLOSED
         ) {
-            $orderState = 'shipped';
+            $orderState = LengowOrder::STATE_SHIPPED;
         } else {
-            $orderState = 'accepted';
+            $orderState = LengowOrder::STATE_ACCEPTED;
         }
         return self::getOrderState($orderState);
     }

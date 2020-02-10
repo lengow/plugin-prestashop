@@ -50,7 +50,7 @@ if (_PS_VERSION_ > '1.5') {
 
 $lengowTool = new LengowTool();
 $context = Context::getContext();
-LengowTranslation::$forceIsoCode = 'en';
+LengowTranslation::$forceIsoCode = LengowTranslation::DEFAULT_ISO_CODE;
 
 if (!in_array($lengowTool->getCurrentUri(), array(__PS_BASE_URI__ . 'modules/lengow/toolbox/login.php'))) {
     if (!$lengowTool->isLogged()) {
