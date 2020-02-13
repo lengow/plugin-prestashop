@@ -88,7 +88,6 @@ class LengowController
         // show header or not
         if ($this->isNewMerchant
             || ($this->merchantStatus['type'] === 'free_trial' && $this->merchantStatus['expired'])
-            || $this->merchantStatus['type'] === 'bad_payer'
         ) {
             $this->displayToolbar = false;
         } else {

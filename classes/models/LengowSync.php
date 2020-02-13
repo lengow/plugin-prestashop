@@ -50,11 +50,6 @@ class LengowSync
     const SYNC_STATUS_ACCOUNT = 'status_account';
 
     /**
-     * @var string sync statistic action
-     */
-    const SYNC_STATISTIC = 'statistic';
-
-    /**
      * @var string sync marketplace action
      */
     const SYNC_MARKETPLACE = 'marketplace';
@@ -70,14 +65,13 @@ class LengowSync
     const SYNC_ACTION = 'action';
 
     /**
-     * @var array cache time for catalog, carrier, statistic, account status, options and marketplace synchronisation
+     * @var array cache time for catalog, carrier, account status, options and marketplace synchronisation
      */
     protected static $cacheTimes = array(
         self::SYNC_CATALOG => 21600,
         self::SYNC_CARRIER => 86400,
         self::SYNC_CMS_OPTION => 86400,
         self::SYNC_STATUS_ACCOUNT => 86400,
-        self::SYNC_STATISTIC => 86400,
         self::SYNC_MARKETPLACE => 43200,
     );
 
@@ -89,7 +83,6 @@ class LengowSync
         self::SYNC_CARRIER,
         self::SYNC_CMS_OPTION,
         self::SYNC_STATUS_ACCOUNT,
-        self::SYNC_STATISTIC,
         self::SYNC_MARKETPLACE,
         self::SYNC_ACTION,
         self::SYNC_CATALOG,
@@ -327,78 +320,6 @@ class LengowSync
             }
         }
         return false;
-    }
-
-    /**
-     * Get Statistic with all shop
-     *
-     * @param boolean $force force cache update
-     * @param boolean $logOutput see log or not
-     *
-     * @return array
-     */
-    public static function getStatistic($force = false, $logOutput = false)
-    {
-        if (!$force) {
-            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE');
-            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_STATISTIC]) {
-                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
-            }
-        }
-        $currencyId = 0;
-        $result = LengowConnector::queryApi(
-            LengowConnector::GET,
-            LengowConnector::API_STATISTIC,
-            array(
-                'date_from' => date('c', strtotime(date('Y-m-d') . ' -10 years')),
-                'date_to' => date('c'),
-                'metrics' => 'year',
-            ),
-            '',
-            $logOutput
-        );
-        if (isset($result->level0)) {
-            $stats = $result->level0[0];
-            $return = array(
-                'total_order' => $stats->revenue,
-                'nb_order' => (int)$stats->transactions,
-                'currency' => $result->currency->iso_a3,
-                'available' => false,
-            );
-        } else {
-            if (LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT_UPDATE')) {
-                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ORDER_STAT'), true);
-            } else {
-                return array(
-                    'total_order' => 0,
-                    'nb_order' => 0,
-                    'currency' => '',
-                    'available' => false,
-                );
-            }
-        }
-        if ($return['total_order'] > 0 || $return['nb_order'] > 0) {
-            $return['available'] = true;
-        }
-        if ($return['currency']) {
-            try {
-                $currencyId = LengowCurrency::getIdBySign($return['currency']);
-            } catch (Exception $e) {
-                $currencyId = 0;
-            }
-        }
-        if ($currencyId > 0) {
-            try {
-                $return['total_order'] = Tools::displayPrice($return['total_order'], new Currency($currencyId));
-            } catch (Exception $e) {
-                $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
-            }
-        } else {
-            $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
-        }
-        LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT', Tools::jsonEncode($return));
-        LengowConfiguration::updateGlobalValue('LENGOW_ORDER_STAT_UPDATE', time());
-        return $return;
     }
 
     /**

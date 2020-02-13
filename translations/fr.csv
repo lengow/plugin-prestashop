@@ -27,10 +27,6 @@ dashboard.screen.orders_title|Commandes
 dashboard.screen.orders_text|Gérer vos commandes directement sur votre tableau de bord PrestaShop.
 dashboard.screen.settings_title|Paramètrage
 dashboard.screen.settings_text|Configurer les principaux paramètres de votre plugin PrestaShop
-dashboard.screen.partner_business|Lengow, partenaire de votre activité e-commerce
-dashboard.screen.stat_turnover|Chiffre d'affaires
-dashboard.screen.stat_nb_orders|Commandes
-dashboard.screen.stat_more_stats|Plus de statistiques ?
 dashboard.screen.some_help_title|Besoin d'aide ?
 dashboard.screen.get_in_touch|Prenez contact avec les équipes Lengow.
 dashboard.screen.visit_help_center|Visitez notre Help Center
@@ -40,12 +36,6 @@ status.screen.subtitle_end_free_trial|Vous avez atteint la fin de votre période
 status.screen.first_description_end_free_trial|Vos 15 jours d'essai gratuit sur la plateforme Lengow sont maintenant terminés. Nous espérons qu'ils ont été bénéfiques à votre activité e-commerce.
 status.screen.second_description_end_free_trial|Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les importations vont être momentanément stoppées.
 status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration. Pour conserver l'intégralité des paramètres que vous avez défini, pensez à souscrire dès maintenant !
-status.screen.subtitle_bad_payer|Votre compte est temporairement fermé.
-status.screen.first_description_bad_payer|Nous sommes désolé mais nous devons temporairement limiter l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire.
-status.screen.second_description_bad_payer|La publication de vos catalogues est aussi suspendue. Nous vous recommandons de prendre contact avec nous rapidement par mail
-status.screen.phone_bad_payer|ou par téléphone au +33 (0)2 85 52 64 15.
-status.screen.third_description_bad_payer|Nous espérons vous revoir très rapidement parmi nous
-status.screen.facturation_button|Voir mes informations de facturation
 status.screen.upgrade_account_button|Je suis prêt à souscrire !
 status.screen.refresh_action|Actualiser mon compte
 product.screen.nb_exported|produits exportés 
