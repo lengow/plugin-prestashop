@@ -65,7 +65,7 @@ class LengowSync
     const SYNC_ACTION = 'action';
 
     /**
-     * @var array cache time for catalog, carrier, statistic, account status, options and marketplace synchronisation
+     * @var array cache time for catalog, carrier, account status, options and marketplace synchronisation
      */
     protected static $cacheTimes = array(
         self::SYNC_CATALOG => 21600,
