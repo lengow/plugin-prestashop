@@ -80,15 +80,11 @@ class LengowInstall
      * @var array all old files to remove
      */
     private $oldFiles = array(
+        'AdminLengow14.php',
+        'AdminLengowLog14.php',
+        'classes/models/LengowCurrency.php',
         'config/marketplaces.xml',
         'config/plugins.xml',
-        'interface/',
-        'override/',
-        'models/',
-        'translations/es.php',
-        'translations/fr.php',
-        'translations/it.php',
-        'v14/',
         'controllers/AdminLengowController.php',
         'controllers/AdminLengowLogController.php',
         'controllers/TabLengowLogController.php',
@@ -96,6 +92,10 @@ class LengowInstall
         'translations/es.php',
         'translations/fr.php',
         'translations/it.php',
+        'interface/',
+        'models/',
+        'override/',
+        'v14/',
         'views/img/process-icon-export-csv.png',
         'views/img/view-lengow-en.png',
         'views/img/view-lengow-es.png',
@@ -107,8 +107,6 @@ class LengowInstall
         'views/templates/admin/form.tpl',
         'webservice/lengow.php',
         'webservice/import.php',
-        'AdminLengow14.php',
-        'AdminLengowLog14.php',
     );
 
     /**
@@ -150,6 +148,8 @@ class LengowInstall
         'LENGOW_PLG_CONF',
         'LENGOW_MP_SHIPPING_METHOD',
         'LENGOW_IS_IMPORT',
+        'LENGOW_ORDER_STAT',
+        'LENGOW_ORDER_STAT_UPDATE',
     );
 
     /**

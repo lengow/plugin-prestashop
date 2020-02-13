@@ -308,13 +308,6 @@ class LengowConfiguration extends Configuration
                 'LENGOW_MARKETPLACE_UPDATE' => array(
                     'global' => true,
                 ),
-                'LENGOW_ORDER_STAT' => array(
-                    'export' => false,
-                    'global' => true,
-                ),
-                'LENGOW_ORDER_STAT_UPDATE' => array(
-                    'global' => true,
-                ),
                 'LENGOW_INSTALLATION_IN_PROGRESS' => array(
                     'export' => false,
                     'global' => true,

@@ -27,10 +27,6 @@ dashboard.screen.orders_title|Pedidos
 dashboard.screen.orders_text|Gestiona tus pedidos directamente en el panel PrestaShop
 dashboard.screen.settings_title|Ajustes
 dashboard.screen.settings_text|Configura los parametros de tu plugin PrestaShop
-dashboard.screen.partner_business|Lengow, colaborador en tu business
-dashboard.screen.stat_turnover|Ventas 
-dashboard.screen.stat_nb_orders|Pedidos
-dashboard.screen.stat_more_stats|¿Quieres ver más estadísticas?
 dashboard.screen.some_help_title|¿Necesitas ayuda?
 dashboard.screen.get_in_touch|Ponte en contacto con Lengow
 dashboard.screen.visit_help_center|Visita nuestro Centro de Ayuda
@@ -40,12 +36,6 @@ status.screen.subtitle_end_free_trial|Usted ha llegado al final de su periodo de
 status.screen.first_description_end_free_trial|Su período de prueba gratuito de 15 días en Lengow ya ha expirado.Sabemos que es una noticia triste,pero lo mejor está por venir! Esperamos sinceramente que Lengow haya ayudado a mejorar su negocio.
 status.screen.second_description_end_free_trial|Su cuenta será suspendida hasta que adquiera una nueva suscripción.También se suspenderán todas las distribuciones y indexaciones existentes.
 status.screen.third_description_end_free_trial|No olvides que las cuentas de prueba serán borradas 30 dias después del final del periodo de prueba. Asegúrese de suscribirse para no perder el trabajo desempeñado en la configuración de sus canales.
-status.screen.subtitle_bad_payer|Su cuenta ha sido cerrada temporalmente
-status.screen.first_description_bad_payer|Sentimos informarle que hemos tenido que limitar el acceso a su cuenta de forma temporal debido a que el pago automático de su suscripción ha fallado.
-status.screen.second_description_bad_payer|La publicación de su catálogo ha sido suspendida.Le sugerimos que se ponga en contacto con nosotros a
-status.screen.phone_bad_payer|o por teléfono al +34 911 898 135
-status.screen.third_description_bad_payer|Esperamos trabajar con ustedes de nuevo en un futuro próximo.
-status.screen.facturation_button|Ver la información de facturación
 status.screen.upgrade_account_button|Está bien, estoy listo para suscribirme!
 status.screen.refresh_action|Refrescar mi cuenta
 product.screen.nb_exported|productos exportados

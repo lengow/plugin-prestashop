@@ -141,10 +141,6 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
     if ($sync === LengowSync::SYNC_STATUS_ACCOUNT) {
         LengowSync::getStatusAccount($force, $logOutput);
     }
-    // sync statistics between Lengow and Prestashop
-    if ($sync === LengowSync::SYNC_STATISTIC) {
-        LengowSync::getStatistic($force, $logOutput);
-    }
     // sync option is not valid
     if ($sync && !in_array($sync, LengowSync::$syncActions)) {
         header('HTTP/1.1 400 Bad Request');

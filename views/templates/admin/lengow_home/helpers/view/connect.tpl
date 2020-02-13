@@ -73,29 +73,6 @@
                 </a>
             </div>
         </div>
-        {if $stats['available']}
-        <div class="lgw-box text-center">
-            <div class="lgw-col-12 center-block">
-                <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/picto-stats.png" class="img-responsive">
-            </div>
-            <h2>{$locale->t('dashboard.screen.partner_business')|escape:'htmlall':'UTF-8'}</h2>
-            <div class="lgw-row lgw-home-stats">
-                <div class="lgw-col-4 lgw-col-offset-2">
-                    <h5>{$locale->t('dashboard.screen.stat_turnover')|escape:'htmlall':'UTF-8'}</h5>
-                    <span class="stats-big-value">{$stats['total_order']|escape:'htmlall':'UTF-8'}</span>
-                </div>
-                <div class="lgw-col-4">
-                    <h5>{$locale->t('dashboard.screen.stat_nb_orders')|escape:'htmlall':'UTF-8'}</h5>
-                    <span class="stats-big-value">{$stats['nb_order']|escape:'htmlall':'UTF-8'}</span>
-                </div>
-            </div>
-            <p>
-                <a href="http://my.lengow.io/" target="_blank" class="lgw-btn lgw-btn-white">
-                    {$locale->t('dashboard.screen.stat_more_stats')|escape:'htmlall':'UTF-8'}
-                </a>
-            </p>
-        </div>
-        {/if}
         <div class="lgw-box">
             <h2>{$locale->t('dashboard.screen.some_help_title')|escape:'htmlall':'UTF-8'}</h2>
             <p>
