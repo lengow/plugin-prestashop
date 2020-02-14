@@ -299,7 +299,7 @@ class LengowImport
             foreach ($shops as $shop) {
                 // clean context
                 $this->context = null;
-                if (!is_null($this->idShop) && (int)$shop['id_shop'] !== $this->idShop) {
+                if ($this->idShop !== null && (int)$shop['id_shop'] !== $this->idShop) {
                     continue;
                 }
                 $shop = new LengowShop((int)$shop['id_shop']);
@@ -530,7 +530,7 @@ class LengowImport
                 $shopCatalogIds[] = $catalogId;
             }
         }
-        if (count($shopCatalogIds) > 0) {
+        if (!empty($shopCatalogIds)) {
             $this->shopCatalogIds = $shopCatalogIds;
             return true;
         }
@@ -682,7 +682,7 @@ class LengowImport
                 $orders[] = $order;
             }
             $page++;
-            $finish = (is_null($results->next) || $this->importOneOrder) ? true : false;
+            $finish = ($results->next === null || $this->importOneOrder) ? true : false;
         } while ($finish != true);
         return $orders;
     }
@@ -713,7 +713,7 @@ class LengowImport
             // set current order to cancel hook updateOrderStatus
             self::$currentOrder = $marketplaceSku;
             // if order contains no package
-            if (count($orderData->packages) === 0) {
+            if (empty($orderData->packages)) {
                 LengowMain::log(
                     LengowLog::CODE_IMPORT,
                     LengowMain::setLogMessage('log.import.error_no_package'),
@@ -739,7 +739,7 @@ class LengowImport
                 $firstPackage = $nbPackage > 1 ? false : true;
                 // check the package for re-import order
                 if ($this->importOneOrder) {
-                    if (!is_null($this->deliveryAddressId)
+                    if ($this->deliveryAddressId !== null
                         && $this->deliveryAddressId != $packageDeliveryAddressId
                     ) {
                         LengowMain::log(

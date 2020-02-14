@@ -253,7 +253,7 @@ class LengowConfigurationForm
     {
         if (array_key_exists($key, $this->fields)) {
             $setting = $this->fields[$key];
-            if (is_null($idShop)) {
+            if ($idShop === null) {
                 $oldValue = LengowConfiguration::getGlobalValue($key);
             } else {
                 $oldValue = LengowConfiguration::get($key, null, null, $idShop);
@@ -267,7 +267,7 @@ class LengowConfigurationForm
                     $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
                     $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
                 }
-                if (!is_null($idShop)) {
+                if ($idShop !== null) {
                     LengowMain::log(
                         LengowLog::CODE_SETTING,
                         LengowMain::setLogMessage(

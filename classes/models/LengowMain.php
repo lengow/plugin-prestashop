@@ -346,7 +346,7 @@ class LengowMain
      */
     public static function getToken($idShop = null)
     {
-        if (is_null($idShop)) {
+        if ($idShop === null) {
             $token = LengowConfiguration::getGlobalValue('LENGOW_GLOBAL_TOKEN');
             if ($token && Tools::strlen($token) > 0) {
                 return $token;
@@ -376,7 +376,7 @@ class LengowMain
         $ips = LengowConfiguration::getGlobalValue('LENGOW_AUTHORIZED_IP');
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
         $ips = array_filter(explode(';', $ips));
-        $authorizedIps = count($ips) > 0 ? array_merge($ips, self::$ipsLengow) : self::$ipsLengow;
+        $authorizedIps = !empty($ips) ? array_merge($ips, self::$ipsLengow) : self::$ipsLengow;
         if (isset($_SERVER['SERVER_ADDR'])) {
             $authorizedIps[] = $_SERVER['SERVER_ADDR'];
         }
@@ -413,7 +413,7 @@ class LengowMain
      */
     public static function setLogMessage($key, $params = null)
     {
-        if (is_null($params) || (is_array($params) && count($params) === 0)) {
+        if ($params === null || (is_array($params) && empty($params))) {
             return $key;
         }
         $allParams = array();
@@ -439,7 +439,7 @@ class LengowMain
         if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
             if (isset($result[1])) {
                 $key = $result[1];
-                if (isset($result[4]) && is_null($params)) {
+                if (isset($result[4]) && $params === null) {
                     $strParam = $result[4];
                     $allParams = explode('|', $strParam);
                     foreach ($allParams as $param) {
@@ -918,7 +918,7 @@ class LengowMain
      */
     public static function getLogInstance()
     {
-        if (is_null(self::$log)) {
+        if (self::$log === null) {
             try {
                 self::$log = new LengowLog();
             } catch (LengowException $e) {
@@ -965,7 +965,7 @@ class LengowMain
             $base .= __PS_BASE_URI__;
         } else {
             try {
-                $idShop = is_null($idShop) ? Context::getContext()->shop->id : $idShop;
+                $idShop = $idShop === null ? Context::getContext()->shop->id : $idShop;
                 $shopUrl = new ShopUrl($idShop);
                 $base = 'http' . $isHttps . '://' . $shopUrl->domain . $shopUrl->physical_uri . $shopUrl->virtual_uri;
             } catch (Exception $e) {

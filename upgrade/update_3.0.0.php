@@ -50,7 +50,7 @@ if (LengowInstall::checkTableExists('lengow_product')
     } catch (PrestaShopDatabaseException $e) {
         $idProducts = array();
     }
-    if (count($idProducts) > 0) {
+    if (!empty($idProducts)) {
         Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'lengow_product SET id_shop = 1');
         if (LengowShop::isFeatureActive()) {
             $shops = LengowShop::findAll(true);
@@ -60,7 +60,7 @@ if (LengowInstall::checkTableExists('lengow_product')
                     $insertValues[] = '(' . (int)$idProduct['id_product'] . ', :idShop)';
                 }
             }
-            if (count($insertValues) > 0) {
+            if (!empty($insertValues)) {
                 $insertValueStr = join(', ', $insertValues);
                 foreach ($shops as $shop) {
                     if (!isset($shop['id_shop']) || $shop['id_shop'] == 1) {
@@ -150,7 +150,7 @@ if (LengowInstall::checkTableExists('lengow_orders') && LengowInstall::checkTabl
         );
         foreach ($results as $result) {
             if (LengowInstall::checkFieldExists('lengow_orders', 'marketplace_sku')) {
-                $orderLineQuery = is_null($result['delivery_address_id'])
+                $orderLineQuery = $result['delivery_address_id'] === null
                     ? ' IS NULL'
                     : ' = \'' . $result['delivery_address_id'] . '\'';
                 $idOrder = Db::getInstance()->getRow(

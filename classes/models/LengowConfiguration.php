@@ -155,7 +155,7 @@ class LengowConfiguration extends Configuration
                     'type' => 'select',
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_export_carrier_default_title'),
-                    'default_value' => count($carriers) > 0 ? (int)$carriers[0]['id'] : '',
+                    'default_value' => !empty($carriers) ? (int)$carriers[0]['id'] : '',
                     'collection' => $carriers,
                 ),
                 'LENGOW_LAST_EXPORT' => array(
@@ -503,7 +503,7 @@ class LengowConfiguration extends Configuration
     public static function isNewMerchant()
     {
         list($accountId, $accessToken, $secretToken) = self::getAccessIds();
-        if (!is_null($accountId) && !is_null($accessToken) && !is_null($secretToken)) {
+        if ($accountId !== null && $accessToken !== null && $secretToken !== null) {
             return false;
         }
         return true;
@@ -576,7 +576,7 @@ class LengowConfiguration extends Configuration
     public static function setActiveShop($idShop)
     {
         $shopIsActive = self::shopIsActive($idShop);
-        $shopHasCatalog = count(self::getCatalogIds($idShop)) > 0;
+        $shopHasCatalog = !empty(self::getCatalogIds($idShop));
         self::updateValue('LENGOW_SHOP_ACTIVE', $shopHasCatalog, false, null, $idShop);
         return $shopIsActive !== $shopHasCatalog ? true : false;
     }

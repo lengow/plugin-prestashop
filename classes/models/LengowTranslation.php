@@ -63,10 +63,10 @@ class LengowTranslation
      */
     public function t($message, $args = array(), $isoCode = null)
     {
-        if (!is_null(self::$forceIsoCode)) {
+        if (self::$forceIsoCode !== null) {
             $isoCode = self::$forceIsoCode;
         }
-        if (is_null($isoCode)) {
+        if ($isoCode === null) {
             $isoCode = $this->isoCode;
         }
         if (!isset(self::$translation[$isoCode])) {
@@ -133,6 +133,6 @@ class LengowTranslation
             }
         }
         self::$translation[$isoCode] = $translation;
-        return count($translation) > 0;
+        return !empty($translation) ? true : false;
     }
 }

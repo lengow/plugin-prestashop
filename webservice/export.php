@@ -100,23 +100,23 @@ if (Tools::getIsset('shop') && _PS_VERSION_ >= '1.5') {
 $idShop = (int)Context::getContext()->shop->id;
 // export lengow selection
 $selection = Tools::getIsset('all') ? !(bool)Tools::getValue('all') : null;
-if (Tools::getIsset('selection') || !is_null($selection)) {
-    $selection = !is_null($selection) ? $selection : (bool)Tools::getValue('selection');
+if (Tools::getIsset('selection') || $selection !== null) {
+    $selection = $selection !== null ? $selection : (bool)Tools::getValue('selection');
 } else {
     $selection = (bool)LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $idShop);
 }
 // export out of stock products
 $outOfStock = Tools::getIsset('out_stock') ? (bool)Tools::getValue('out_stock') : null;
-if (Tools::getIsset('out_of_stock') || !is_null($outOfStock)) {
-    $outOfStock = !is_null($outOfStock) ? $outOfStock : (bool)Tools::getValue('out_of_stock');
+if (Tools::getIsset('out_of_stock') || $outOfStock !== null) {
+    $outOfStock = $outOfStock !== null ? $outOfStock : (bool)Tools::getValue('out_of_stock');
 } else {
     $outOfStock = (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $idShop);
 }
 // export specific products
 $productIds = array();
 $ids = Tools::getIsset('ids') ? Tools::getValue('ids') : null;
-if (Tools::getIsset('product_ids') || !is_null($ids)) {
-    $ids = !is_null($ids) ? $ids : Tools::getValue('product_ids');
+if (Tools::getIsset('product_ids') || $ids !== null) {
+    $ids = $ids !== null ? $ids : Tools::getValue('product_ids');
     if (Tools::strlen($ids) > 0) {
         $ids = str_replace(array(';', '|', ':'), ',', $ids);
         $ids = preg_replace('/[^0-9\,]/', '', $ids);
@@ -132,8 +132,8 @@ if (Tools::getIsset('mode')) {
         $variation = true;
     }
 }
-if (Tools::getIsset('variation') || !is_null($variation)) {
-    $variation = !is_null($variation) ? $variation : (bool)Tools::getValue('variation');
+if (Tools::getIsset('variation') || $variation !== null) {
+    $variation = $variation !== null ? $variation : (bool)Tools::getValue('variation');
 } else {
     $variation = (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $idShop);
 }
@@ -146,15 +146,15 @@ if (Tools::getValue('active')) {
         $inactive = true;
     }
 }
-if (Tools::getIsset('inactive') || !is_null($inactive)) {
-    $inactive = !is_null($inactive) ? $inactive : (bool)Tools::getValue('inactive');
+if (Tools::getIsset('inactive') || $inactive !== null) {
+    $inactive = $inactive !== null ? $inactive : (bool)Tools::getValue('inactive');
 } else {
     $inactive = (bool)LengowConfiguration::get('LENGOW_EXPORT_INACTIVE', null, null, $idShop);
 }
 // convert price for a specific currency
 $currency = Tools::getIsset('cur') ? Tools::getValue('cur') : null;
-if (Tools::getIsset('currency') || !is_null($currency)) {
-    $currency = !is_null($currency) ? $currency : Tools::getValue('currency');
+if (Tools::getIsset('currency') || $currency !== null) {
+    $currency = $currency !== null ? $currency : Tools::getValue('currency');
     $idCurrency = (int)Currency::getIdByIsoCode($currency);
     if ($idCurrency !== 0) {
         Context::getContext()->currency = new Currency($idCurrency);
@@ -162,8 +162,8 @@ if (Tools::getIsset('currency') || !is_null($currency)) {
 }
 // define language
 $language = Tools::getIsset('lang') ? Tools::getValue('lang') : null;
-if (Tools::getIsset('language') || !is_null($language)) {
-    $language = !is_null($language) ? $language : Tools::getValue('language');
+if (Tools::getIsset('language') || $language !== null) {
+    $language = $language !== null ? $language : Tools::getValue('language');
     $languageId = (int)Language::getIdByIso($language);
     if ($languageId === 0) {
         $languageId = Context::getContext()->language->id;

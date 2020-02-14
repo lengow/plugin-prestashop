@@ -229,7 +229,7 @@ class LengowAction
     public static function getActiveActionByOrderId($idOrder, $actionType = null, $load = true)
     {
         try {
-            $sqlType = is_null($actionType) ? '' : ' AND  action_type = "' . pSQL($actionType) . '"';
+            $sqlType = $actionType === null ? '' : ' AND  action_type = "' . pSQL($actionType) . '"';
             $rows = Db::getInstance()->executeS(
                 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la
                 WHERE state = ' . (int)self::STATE_NEW . $sqlType . ' AND id_order=' . (int)$idOrder
@@ -237,7 +237,7 @@ class LengowAction
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
-        if (count($rows) > 0) {
+        if (!empty($rows)) {
             if ($load) {
                 $actions = array();
                 foreach ($rows as $row) {
@@ -268,7 +268,7 @@ class LengowAction
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
-        if (count($rows) > 0) {
+        if (!empty($rows)) {
             if ($load) {
                 $actions = array();
                 foreach ($rows as $row) {
@@ -300,7 +300,7 @@ class LengowAction
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
-        if (count($rows) > 0) {
+        if (!empty($rows)) {
             $lastAction = end($rows);
             return (string)$lastAction['action_type'];
         }
@@ -555,7 +555,7 @@ class LengowAction
     public static function finishAllActions($idOrder, $actionType = null)
     {
         try {
-            $sqlActionType = is_null($actionType) ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
+            $sqlActionType = $actionType === null ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
             $rows = Db::getInstance()->executeS(
                 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
                 WHERE id_order =' . (int)$idOrder . ' AND state = ' . (int)self::STATE_NEW . $sqlActionType
@@ -563,7 +563,7 @@ class LengowAction
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
-        if (count($rows) > 0) {
+        if (!empty($rows)) {
             foreach ($rows as $row) {
                 self::finishAction($row['id']);
             }

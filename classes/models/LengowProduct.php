@@ -274,7 +274,7 @@ class LengowProduct extends Product
             default:
                 if (isset($this->features[$name])) {
                     return LengowMain::cleanData($this->features[$name]['value']);
-                } elseif (!is_null($idProductAttribute) &&
+                } elseif ($idProductAttribute !== null &&
                     isset($this->combinations[$idProductAttribute]['attributes'][$name][1])
                 ) {
                     return LengowMain::cleanData($this->combinations[$idProductAttribute]['attributes'][$name][1]);
@@ -681,7 +681,7 @@ class LengowProduct extends Product
         $idImage = $index[1] - 1;
         if ($idProductAttribute) {
             $attributeImages = $this->combinations[$idProductAttribute]['images'];
-            if (count($attributeImages) > 0) {
+            if (!empty($attributeImages)) {
                 if (isset($attributeImages[$idImage])) {
                     return $attributeImages[$idImage];
                 }
@@ -795,7 +795,7 @@ class LengowProduct extends Product
                 $sql = 'SELECT id_product FROM ' . _DB_PREFIX_ . 'lengow_product
                     WHERE id_product = ' . (int)$productId . ' AND id_shop = ' . (int)$shopId;
                 $results = Db::getInstance()->ExecuteS($sql);
-                if (count($results) === 0) {
+                if (empty($results)) {
                     if (_PS_VERSION_ < '1.5') {
                         return Db::getInstance()->autoExecute(
                             _DB_PREFIX_ . 'lengow_product',
@@ -833,7 +833,7 @@ class LengowProduct extends Product
     protected static function isValidId($product, $apiDatas)
     {
         $attributes = array('reference', 'ean13', 'upc', 'id');
-        if (count($product->getCombinations()) > 0) {
+        if (!empty($product->getCombinations())) {
             foreach ($product->getCombinations() as $combination) {
                 foreach ($attributes as $attributeName) {
                     foreach ($apiDatas as $idApi) {

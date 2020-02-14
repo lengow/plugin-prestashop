@@ -273,19 +273,19 @@ class LengowCheck
             );
             $checklist[] = array(
                 'title' => $this->locale->t('toolbox.checksum.file_modified', array('nb_file' => count($fileErrors))),
-                'state' => count($fileErrors) > 0 ? 0 : 1,
+                'state' => !empty($fileErrors) ? 0 : 1,
             );
             $checklist[] = array(
                 'title' => $this->locale->t('toolbox.checksum.file_deleted', array('nb_file' => count($fileDeletes))),
-                'state' => count($fileDeletes) > 0 ? 0 : 1,
+                'state' => !empty($fileDeletes) ? 0 : 1,
             );
             $html .= $this->getAdminContent($checklist);
-            if (count($fileErrors) > 0) {
+            if (!empty($fileErrors)) {
                 $html .= '<h3><i class="fa fa-list"></i> '
                     . $this->locale->t('toolbox.checksum.list_modified_file') . '</h3>';
                 $html .= $this->getAdminContent($fileErrors);
             }
-            if (count($fileDeletes) > 0) {
+            if (!empty($fileDeletes)) {
                 $html .= '<h3><i class="fa fa-list"></i> '
                     . $this->locale->t('toolbox.checksum.list_deleted_file') . '</h3>';
                 $html .= $this->getAdminContent($fileDeletes);

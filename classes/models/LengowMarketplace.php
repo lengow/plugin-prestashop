@@ -311,7 +311,7 @@ class LengowMarketplace
             // check required arguments and clean value for empty optionals arguments
             $params = $this->checkAndCleanParams($action, $params);
             // complete the values with the specific values of the account
-            if (!is_null($idOrderLine)) {
+            if ($idOrderLine !== null) {
                 $params[LengowAction::ARG_LINE] = $idOrderLine;
             }
             $params['marketplace_order_id'] = $lengowOrder->lengowMarketplaceSku;
@@ -681,7 +681,7 @@ class LengowMarketplace
         } catch (PrestaShopDatabaseException $e) {
             $result = array();
         }
-        return count($result) > 0 ? (int)$result[0]['id'] : false;
+        return !empty($result) ? (int)$result[0]['id'] : false;
     }
 
     /**

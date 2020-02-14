@@ -270,7 +270,7 @@ class LengowPaymentModule extends PaymentModule
                 $order->total_shipping_tax_excl = (float)Tools::ps_round($totalShippingTaxExcl, $precision);
                 $order->total_shipping_tax_incl = (float)Tools::ps_round($lengowShippingCosts, $precision);
                 $order->total_shipping = $order->total_shipping_tax_incl;
-                if (!is_null($lengowTrackingNumber)) {
+                if ($lengowTrackingNumber !== null) {
                     $order->shipping_number = (string)$lengowTrackingNumber;
                 }
                 // add processing fees to wrapping fees
@@ -362,14 +362,14 @@ class LengowPaymentModule extends PaymentModule
                 $orderDetailList[] = $orderDetail;
 
                 // adding an entry in order_carrier table
-                if (!is_null($carrier)) {
+                if ($carrier !== null) {
                     $orderCarrier = new OrderCarrier();
                     $orderCarrier->id_order = (int)$order->id;
                     $orderCarrier->id_carrier = (int)$idCarrier;
                     $orderCarrier->weight = (float)$order->getTotalWeight();
                     $orderCarrier->shipping_cost_tax_excl = (float)$order->total_shipping_tax_excl;
                     $orderCarrier->shipping_cost_tax_incl = (float)$order->total_shipping_tax_incl;
-                    if (!is_null($lengowTrackingNumber)) {
+                    if ($lengowTrackingNumber !== null) {
                         $orderCarrier->tracking_number = (string)$lengowTrackingNumber;
                     }
                     $orderCarrier->validateFields();
@@ -600,7 +600,7 @@ class LengowPaymentModule extends PaymentModule
             $order->total_wrapping = (float)$processingFees;
 
             $order->total_shipping = (float)$lengowShippingCosts;
-            if (!is_null($lengowTrackingNumber)) {
+            if ($lengowTrackingNumber !== null) {
                 $order->shipping_number = (string)$lengowTrackingNumber;
             }
             $order->carrier_tax_rate = (float)Tax::getCarrierTaxRate(

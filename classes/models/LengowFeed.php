@@ -139,7 +139,7 @@ class LengowFeed
         $this->stream = $stream;
         $this->format = $format;
         $this->legacy = $legacy;
-        if (is_null($shopName)) {
+        if ($shopName === null) {
             $shopName = Context::getContext()->shop->name;
         }
         $this->shopFolder = Tools::strtolower(

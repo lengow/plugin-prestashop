@@ -167,7 +167,7 @@ class LengowSync
         }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_CATALOG_UPDATE');
-            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_CATALOG]) {
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_CATALOG]) {
                 return false;
             }
         }
@@ -216,7 +216,7 @@ class LengowSync
         }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_LIST_MARKET_UPDATE');
-            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_CARRIER]) {
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_CARRIER]) {
                 return false;
             }
         }
@@ -277,7 +277,7 @@ class LengowSync
         }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_OPTION_CMS_UPDATE');
-            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_CMS_OPTION]) {
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_CMS_OPTION]) {
                 return false;
             }
         }
@@ -299,7 +299,7 @@ class LengowSync
     {
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE');
-            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
                 return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
             }
         }
@@ -335,7 +335,7 @@ class LengowSync
         $filePath = LengowMarketplace::getFilePath();
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_MARKETPLACE_UPDATE');
-            if (!is_null($updatedAt)
+            if ($updatedAt !== null
                 && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_MARKETPLACE]
                 && file_exists($filePath)
             ) {

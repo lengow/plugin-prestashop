@@ -179,7 +179,7 @@ class LengowList
      */
     public function displayHeader($order)
     {
-        $tableClass = count($this->collection) === 0 ? 'table_no_result' : '';
+        $tableClass = empty($this->collection) ? 'table_no_result' : '';
         $newOrder = (empty($this->orderValue) || $this->orderValue === 'ASC') ? 'DESC' : 'ASC';
         $html = '<table class="lengow_table table table-bordered table-striped table-hover ' . $tableClass . '"
             id="table_' . $this->id . '">';
@@ -264,7 +264,7 @@ class LengowList
     public function displayContent()
     {
         $html = '<tbody>';
-        if (count($this->collection) === 0) {
+        if (empty($this->collection)) {
             $html .= '<tr><td colspan="100%" align="center"><div id="lengow_no_result_message">
                 <span class="img_no_result"></span>
                 <h2 class="title_no_result">' . $this->locale->t('product.screen.no_result_found') . '</h2>

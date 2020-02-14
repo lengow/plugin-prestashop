@@ -295,25 +295,25 @@ class LengowExport
         $variation = LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->idShop);
         $inactive = LengowConfiguration::get('LENGOW_EXPORT_INACTIVE', null, null, $this->idShop);
         // set default value for new shop
-        if (is_null($selection)) {
+        if ($selection === null) {
             LengowConfiguration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', 0, null, null, $this->idShop);
             $selection = false;
         } else {
             $selection = (bool)$selection;
         }
-        if (is_null($outOfStock)) {
+        if ($outOfStock === null) {
             LengowConfiguration::updateValue('LENGOW_EXPORT_OUT_STOCK', 1, null, null, $this->idShop);
             $outOfStock = true;
         } else {
             $outOfStock = (bool)$outOfStock;
         }
-        if (is_null($variation)) {
+        if ($variation === null) {
             LengowConfiguration::updateValue('LENGOW_EXPORT_VARIATION_ENABLED', 1, null, null, $this->idShop);
             $variation = true;
         } else {
             $variation = (bool)$variation;
         }
-        if (is_null($inactive)) {
+        if ($inactive === null) {
             LengowConfiguration::updateValue('LENGOW_EXPORT_INACTIVE', 0, null, null, $this->idShop);
             $inactive = false;
         } else {
@@ -446,7 +446,7 @@ class LengowExport
      */
     public function setLegacyFields()
     {
-        if (is_null($this->legacy)) {
+        if ($this->legacy === null) {
             $merchantStatus = LengowSync::getStatusAccount();
             if ($merchantStatus && isset($merchantStatus['legacy'])) {
                 $this->legacy = $merchantStatus['legacy'];
@@ -730,10 +730,10 @@ class LengowExport
                 $where[] = ' p.`quantity` > 0';
             }
         }
-        if (count($this->productIds) > 0) {
+        if (!empty($this->productIds)) {
             $where[] = ' p.`id_product` IN (' . implode(',', $this->productIds) . ')';
         }
-        if (count($where) > 0) {
+        if (!empty($where)) {
             $query .= ' WHERE ' . join(' AND ', $where);
         }
         return $query;

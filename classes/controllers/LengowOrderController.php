@@ -266,7 +266,7 @@ class LengowOrderController extends LengowController
                 array('url' => $lengowLink->getAbsoluteAdminLink('AdminLengowOrderSetting'))
             );
         }
-        if (count($warningMessages) > 0) {
+        if (!empty($warningMessages)) {
             $message = join('<br/>', $warningMessages);
         } else {
             $message = false;
@@ -673,7 +673,7 @@ class LengowOrderController extends LengowController
         if ($item[$key] && (int)$item['order_process_state'] !== LengowOrder::PROCESS_STATE_FINISH) {
             $errorMessages = array();
             $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
-            if (count($logCollection) > 0) {
+            if (!empty($logCollection)) {
                 foreach ($logCollection as $row) {
                     if ($row['message'] !== '') {
                         $errorMessages[] = LengowMain::cleanData(LengowMain::decodeLogMessage($row['message']));
@@ -786,7 +786,7 @@ class LengowOrderController extends LengowController
                 array('nb_order' => (int)$return['order_error'])
             );
         }
-        if (count($messages) === 0) {
+        if (empty($messages)) {
             $messages[] = $this->locale->t('lengow_log.error.no_notification');
         }
         if (isset($return['error'])) {

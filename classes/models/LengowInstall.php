@@ -296,7 +296,7 @@ class LengowInstall
         $sql = 'SHOW TABLES LIKE \'' . _DB_PREFIX_ . $table . '\'';
         try {
             $result = Db::getInstance()->executeS($sql);
-            return count($result) > 0 ? true : false;
+            return !empty($result) ? true : false;
         } catch (PrestaShopDatabaseException $e) {
             return true;
         }
@@ -315,7 +315,7 @@ class LengowInstall
         $sql = 'SHOW INDEXES FROM ' . _DB_PREFIX_ . $table . ' WHERE `Column_name` = \'' . $index . '\'';
         try {
             $result = Db::getInstance()->executeS($sql);
-            return count($result) > 0 ? true : false;
+            return !empty($result) ? true : false;
         } catch (PrestaShopDatabaseException $e) {
             return true;
         }
@@ -334,7 +334,7 @@ class LengowInstall
         $sql = 'SHOW COLUMNS FROM ' . _DB_PREFIX_ . $table . ' LIKE \'' . $field . '\'';
         try {
             $result = Db::getInstance()->executeS($sql);
-            return count($result) > 0 ? true : false;
+            return !empty($result) ? true : false;
         } catch (PrestaShopDatabaseException $e) {
             return true;
         }
@@ -454,7 +454,7 @@ class LengowInstall
                 $shops = LengowShop::findAll(true);
                 foreach ($shops as $shop) {
                     $shopValue = LengowConfiguration::get($oldKey, false, null, $shop['id_shop']);
-                    $shopValue = is_null($shopValue) ? $globalValue : $shopValue;
+                    $shopValue = $shopValue === null ? $globalValue : $shopValue;
                     LengowConfiguration::updateValue($newKey, $shopValue, false, null, $shop['id_shop']);
                 }
             } else {
@@ -1054,7 +1054,7 @@ class LengowInstall
         $directory = _PS_MODULE_LENGOW_DIR_ . 'override/';
         if (file_exists($directory)) {
             $listFile = array_diff(scandir($directory), array('..', '.'));
-            if (count($listFile) > 0) {
+            if (!empty($listFile)) {
                 if (!file_exists($directoryBackup . 'override')) {
                     mkdir($directoryBackup . 'override', 0755);
                 }
