@@ -203,7 +203,7 @@ class LengowFeed
                 $body = $this->getBody($data, $isFirst, $maxCharacter);
                 $this->flush($body);
                 break;
-            case self::BODY:
+            case self::FOOTER:
                 $footer = $this->getFooter();
                 $this->flush($footer);
                 break;

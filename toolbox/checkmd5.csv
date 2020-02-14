@@ -28,7 +28,7 @@
 /classes/models/LengowCart.php|72558861f51dcca5c8fddb48208c36ba
 /classes/models/LengowMain.php|28bc236cd9ddaa0c7edecdc3aa27c587
 /classes/models/LengowException.php|c25029800cbc155b26375415141e8824
-/classes/models/LengowFeed.php|5379a39bc3ec366395b72b01e5507fca
+/classes/models/LengowFeed.php|5912d4c31c1535a0d35b8e239c571278
 /classes/models/LengowConnector.php|17f17928019005eae8679281e2eaa77e
 /classes/models/LengowTaxRule.php|3b761db12eff6f1d7b0faf9d5cde3945
 /classes/models/LengowCustomer.php|ebaa7d15d5e980f432d7bc71f786e81b
