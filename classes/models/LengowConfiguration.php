@@ -140,7 +140,7 @@ class LengowConfiguration extends Configuration
                     'type' => 'select',
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_export_format_title'),
-                    'default_value' => 'csv',
+                    'default_value' => LengowFeed::FORMAT_CSV,
                     'collection' => $exportFormats,
                 ),
                 'LENGOW_EXPORT_FILE_ENABLED' => array(

@@ -280,7 +280,7 @@ class LengowExport
      */
     public function __construct($params = array())
     {
-        $this->setFormat(isset($params['format']) ? $params['format'] : 'csv');
+        $this->setFormat(isset($params['format']) ? $params['format'] : LengowFeed::FORMAT_CSV);
         $this->offset = isset($params['offset']) ? (int)$params['offset'] : false;
         $this->productIds = isset($params['product_ids']) ? $params['product_ids'] : array();
         $this->stream = isset($params['stream']) ? $params['stream'] : false;
@@ -342,7 +342,7 @@ class LengowExport
      */
     public function setFormat($format)
     {
-        $this->format = in_array($format, LengowFeed::$availableFormats) ? $format : 'csv';
+        $this->format = in_array($format, LengowFeed::$availableFormats) ? $format : LengowFeed::FORMAT_CSV;
     }
 
     /**
@@ -475,7 +475,7 @@ class LengowExport
             $this->legacy,
             isset($shop->name) ? $shop->name : 'default'
         );
-        $this->feed->write('header', $fields);
+        $this->feed->write(LengowFeed::HEADER, $fields);
         $isFirst = true;
         // get the maximum of character for yaml format
         $maxCharacter = 0;
@@ -513,7 +513,7 @@ class LengowExport
                 // get additional data
                 $productDatas = $this->setAdditionalFieldsValues($product, null, $productDatas);
                 // write parent product
-                $this->feed->write('body', $productDatas, $isFirst, $maxCharacter);
+                $this->feed->write(LengowFeed::BODY, $productDatas, $isFirst, $maxCharacter);
                 $productCount++;
             }
             // export combinations
@@ -538,7 +538,7 @@ class LengowExport
                         $idProductAttribute,
                         $this->cacheCombination[$idProduct][$idProductAttribute]
                     );
-                    $this->feed->write('body', $combinationDatas, $isFirst, $maxCharacter);
+                    $this->feed->write(LengowFeed::BODY, $combinationDatas, $isFirst, $maxCharacter);
                     $productCount++;
                 }
             }
@@ -849,7 +849,7 @@ class LengowExport
                 case 'format':
                     $authorizedValue = LengowFeed::$availableFormats;
                     $type = 'string';
-                    $example = 'csv';
+                    $example = LengowFeed::FORMAT_CSV;
                     break;
                 case 'shop':
                     $availableShops = array();
