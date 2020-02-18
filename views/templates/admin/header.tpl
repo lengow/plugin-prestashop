@@ -75,7 +75,7 @@
             </a>
         </li>
         <li class="lengow_float_right" id="menugotosolution">
-            <a href="http://my.lengow.io/" target="_blank">
+            <a href="//my.{$lengowUrl|escape:'htmlall':'UTF-8'}" target="_blank">
                 {$locale->t('menu.jump_to_lengow')|escape:'htmlall':'UTF-8'}
             </a>
         </li>
@@ -83,8 +83,18 @@
             <li class="lengow_float_right" id="menucountertrial">
                 <div class="lgw-block">
                     {$locale->t('menu.counter', ['counter' => $merchantStatus['day']])|escape:'htmlall':'UTF-8'}
-                    <a href="http://my.lengow.io/" target="_blank">
+                    <a href="//my.{$lengowUrl|escape:'htmlall':'UTF-8'}" target="_blank">
                         {$locale->t('menu.upgrade_account')|escape:'htmlall':'UTF-8'}
+                    </a>
+                </div>
+            </li>
+        {/if}
+        {if $pluginData && $pluginData['version'] > $lengowVersion}
+            <li class="lengow_float_right" id="menupluginavailable">
+                <div class="lgw-block">
+                    {$locale->t('menu.new_version_available', ['version' => $pluginData['version']])|escape:'htmlall':'UTF-8'}
+                    <a href="//my.{$lengowUrl|escape:'htmlall':'UTF-8'}{$pluginData['download_link']|escape:'htmlall':'UTF-8'}" target="_blank">
+                        {$locale->t('menu.download_plugin')|escape:'htmlall':'UTF-8'}
                     </a>
                 </div>
             </li>

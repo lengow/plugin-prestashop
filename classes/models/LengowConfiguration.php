@@ -331,6 +331,14 @@ class LengowConfiguration extends Configuration
                 'LENGOW_LAST_ACTION_SYNC' => array(
                     'global' => true,
                 ),
+                'LENGOW_PLUGIN_VERSION' => array(
+                    'export' => false,
+                    'global' => true,
+                ),
+                'LENGOW_PLUGIN_VERSION_UPDATE' => array(
+                    'export' => false,
+                    'global' => true,
+                ),
                 'LENGOW_STATE_ERROR' => array(
                     'export' => false,
                     'global' => true,

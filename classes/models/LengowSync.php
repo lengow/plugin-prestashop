@@ -65,6 +65,11 @@ class LengowSync
     const SYNC_ACTION = 'action';
 
     /**
+     * @var string sync plugin version action
+     */
+    const SYNC_PLUGIN_DATA = 'plugin';
+
+    /**
      * @var array cache time for catalog, carrier, account status, options and marketplace synchronisation
      */
     protected static $cacheTimes = array(
@@ -73,6 +78,7 @@ class LengowSync
         self::SYNC_CMS_OPTION => 86400,
         self::SYNC_STATUS_ACCOUNT => 86400,
         self::SYNC_MARKETPLACE => 43200,
+        self::SYNC_PLUGIN_DATA => 86400,
     );
 
     /**
@@ -86,6 +92,7 @@ class LengowSync
         self::SYNC_MARKETPLACE,
         self::SYNC_ACTION,
         self::SYNC_CATALOG,
+        self::SYNC_PLUGIN_DATA,
     );
 
     /**
@@ -388,6 +395,56 @@ class LengowSync
                 if ($marketplacesData) {
                     return Tools::jsonDecode($marketplacesData);
                 }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get Lengow plugin data (last version and download link)
+     *
+     * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
+     *
+     * @return array|false
+     */
+    public static function getPluginData($force = false, $logOutput = false)
+    {
+        if (LengowConfiguration::isNewMerchant()) {
+            return false;
+        }
+        if (!$force) {
+            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_PLUGIN_DATA_UPDATE');
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_PLUGIN_DATA]) {
+                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_PLUGIN_DATA'), true);
+            }
+        }
+        $plugins = LengowConnector::queryApi(
+            LengowConnector::GET,
+            LengowConnector::API_PLUGIN,
+            array(),
+            '',
+            $logOutput
+        );
+        if ($plugins) {
+            $pluginData = false;
+            foreach ($plugins as $plugin) {
+                if ($plugin->type === self::CMS_TYPE) {
+                    $pluginData = array(
+                        'version' => $plugin->version,
+                        'download_link' => $plugin->archive,
+                    );
+                    break;
+                }
+            }
+            if ($pluginData) {
+                LengowConfiguration::updateGlobalValue('LENGOW_PLUGIN_DATA', Tools::jsonEncode($pluginData));
+                LengowConfiguration::updateGlobalValue('LENGOW_PLUGIN_DATA_UPDATE', time());
+                return $pluginData;
+            }
+        } else {
+            if (LengowConfiguration::getGlobalValue('LENGOW_PLUGIN_DATA')) {
+                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_PLUGIN_DATA'), true);
             }
         }
         return false;

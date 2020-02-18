@@ -27,7 +27,7 @@
                 <p class="pull-right">
             {/if}
                 <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowLegals')|escape:'htmlall':'UTF-8'}" class="sub-link" title="Legal">{$locale->t('footer.legals')|escape:'htmlall':'UTF-8'}</a>
-                | {$locale->t('footer.plugin_lengow')|escape:'htmlall':'UTF-8'} - v.{$lengowVersion|escape:'htmlall':'UTF-8'}
+                | {$locale->t('footer.plugin_lengow')|escape:'htmlall':'UTF-8'} - v.{$lengowVersion|escape:'htmlall':'UTF-8'} {if $lengowUrl === 'lengow.net'}<span class="lgw-label-preprod">preprod</span>{/if}
                 | copyright © {$smarty.now|date_format:'%Y'|escape:'htmlall':'UTF-8'} <a href="{$locale->t('footer.lengow_link_url')|escape:'htmlall':'UTF-8'}" target="_blank" class="sub-link" title="Lengow.com">Lengow</a>
             </p>
         </div>
