@@ -22,7 +22,7 @@
 /classes/controllers/LengowHelpController.php|1d8884f2ccf752e3fad5211b0ff0dea8
 /classes/controllers/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/controllers/LengowHomeController.php|13dc86eaf9de53e1e952453368d28df2
-/classes/models/LengowProduct.php|af4f452ae8c5c942d77fcc083617b49b
+/classes/models/LengowProduct.php|60e6a72e8568fd447e6c40036d7ab8f5
 /classes/models/LengowOrderDetail.php|a11e09d78c325fa18a51e6b42f489b9a
 /classes/models/LengowPaymentModule.php|06c932210cf23dae04b284ed731dcd88
 /classes/models/LengowCart.php|72558861f51dcca5c8fddb48208c36ba
@@ -51,7 +51,7 @@
 /classes/models/LengowShop.php|d8bfcd1f9186faeb41e2f804c0583d2c
 /classes/models/LengowAction.php|72ee459a3f74c48e929af8c68d138f2c
 /classes/models/LengowTool.php|1719200650089f8e324a44a9aa094196
-/classes/models/LengowConfiguration.php|f1752c153684c58ebdc671ccd8f1d5f2
+/classes/models/LengowConfiguration.php|b1056cbfc540fb73db8a1353abf57056
 /classes/models/LengowLink.php|952925148a27a6c325b2420a17414020
 /classes/models/LengowOrder.php|ba2203de89f83dabd2ab47dc3e649dd5
 /classes/models/LengowTranslation.php|4cc02547d19866717531bf8c9c21dd0e
@@ -102,7 +102,7 @@
 /views/css/bootstrap-3.3.6.css|2f624089c65f12185e79925bc5a7fc42
 /views/css/toolbox.css|c266f5bde976004671dc87bb92014ed7
 /views/css/lengow_bootstrap_min-980.css|72857f0e7af8daf9de2f1ef7cc708ddf
-/views/css/lengow-pages.css|75a549e94e0c3a9cfec53459306fdc61
+/views/css/lengow-pages.css|a260265dd94f92576792da8dd1859a18
 /views/css/lengow-layout.css|242879fdded9ae018411ede8986ca922
 /views/css/lengow_bootstrap_15.css|88276005f3939f2967b999f30b0ffcf6
 /views/css/index.php|eb18f895c85303c2ced77482ec4ab525
