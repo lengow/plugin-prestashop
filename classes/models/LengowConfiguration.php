@@ -331,11 +331,11 @@ class LengowConfiguration extends Configuration
                 'LENGOW_LAST_ACTION_SYNC' => array(
                     'global' => true,
                 ),
-                'LENGOW_PLUGIN_VERSION' => array(
+                'LENGOW_PLUGIN_DATA' => array(
                     'export' => false,
                     'global' => true,
                 ),
-                'LENGOW_PLUGIN_VERSION_UPDATE' => array(
+                'LENGOW_PLUGIN_DATA_UPDATE' => array(
                     'export' => false,
                     'global' => true,
                 ),
