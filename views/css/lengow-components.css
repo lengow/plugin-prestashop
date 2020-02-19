@@ -306,6 +306,8 @@ margin-bottom: 15px;
   background: #e55a4d;
   height: 20px;
   line-height: 20px;
+  font-size: 10px;
+  font-weight: bold;
   padding: 0 5px;
   border-radius: 5px;
   display: inline-block;
