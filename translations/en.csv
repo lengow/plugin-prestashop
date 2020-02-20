@@ -390,6 +390,7 @@ log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synch
 log.import.launch_validate_order_hook|launch validateOrder hook for other plugins
 log.import.validate_order_hook_failed|validateOrder hook failed - %{error_message}
 log.import.anonymized_order|Order is anonymized and has not been imported
+log.import.old_order|Order is older than 3 months and has not been imported
 log.import.connector_get_all_action|get order actions between %{date_from} and %{date_to}
 log.order_action.check_completed_action|check completed actions
 log.order_action.check_old_action|check and finish old actions

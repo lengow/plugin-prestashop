@@ -4,6 +4,7 @@ Version 3.2.0
 
     - Feature: Adding compatibility with php 7.3
     - Feature: [import] Protection of the import of anonymized orders
+    - Feature: [import] Protection of the import of orders older than 3 months
     - Feature: Refactoring and optimization of the connector class
     - Feature: Optimization of API calls for synchronisation of orders and actions
     - Bugfix: Refactoring and optimization of dates with the correct locale

@@ -93,6 +93,7 @@ en:
       launch_validate_order_hook: "launch validateOrder hook for other plugins"
       validate_order_hook_failed: "validateOrder hook failed - %{error_message}"
       anonymized_order: "Order is anonymized and has not been imported"
+      old_order: "Order is older than 3 months and has not been imported"
       connector_get_all_action: "get order actions between %{date_from} and %{date_to}"
     order_action:
       check_completed_action: "check completed actions"
