@@ -1303,13 +1303,12 @@ class LengowImportOrder
         $orderDate = $this->orderData->marketplace_order_date !== null
             ? (string)$this->orderData->marketplace_order_date
             : (string)$this->orderData->imported_at;
-        $marketplace = Tools::strtolower((string)$this->orderData->marketplace);
         $params = array(
             'marketplace_sku' => pSQL($this->marketplaceSku),
             'id_shop' => (int)$this->idShop,
             'id_shop_group' => (int)$this->idShopGroup,
             'id_lang' => (int)$this->idLang,
-            'marketplace_name' => pSQL($marketplace),
+            'marketplace_name' => pSQL($this->marketplace->name),
             'marketplace_label' => pSQL((string)$this->marketplaceLabel),
             'delivery_address_id' => (int)$this->deliveryAddressId,
             'order_date' => date('Y-m-d H:i:s', strtotime($orderDate)),
@@ -1334,7 +1333,7 @@ class LengowImportOrder
         if ($result) {
             $this->idOrderLengow = LengowOrder::getIdFromLengowOrders(
                 $this->marketplaceSku,
-                $marketplace,
+                $this->marketplace->name,
                 $this->deliveryAddressId
             );
             return true;
