@@ -340,14 +340,16 @@ class LengowOrder extends Order
      * Get ID record from lengow orders table
      *
      * @param string $marketplaceSku Lengow order id
+     * @param string $marketplace marketplace name
      * @param integer $deliveryAddressId Lengow delivery address id
      *
      * @return integer|false
      */
-    public static function getIdFromLengowOrders($marketplaceSku, $deliveryAddressId)
+    public static function getIdFromLengowOrders($marketplaceSku, $marketplace, $deliveryAddressId)
     {
         $query = 'SELECT `id` FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `marketplace_sku` = \'' . pSQL($marketplaceSku) . '\'
+            AND `marketplace_name` = \'' . pSQL($marketplace) . '\'
             AND `delivery_address_id` = \'' . (int)$deliveryAddressId . '\'';
         $result = Db::getInstance()->getRow($query);
         if ($result) {
