@@ -25,7 +25,15 @@
 class LengowConnector
 {
     /**
-     * @var string url of the API Lengow
+     * @var string url of Lengow solution
+     */
+    // const LENGOW_URL = 'lengow.io';
+    // const LENGOW_URL = 'lengow.net';
+    const LENGOW_URL = 'rec.lengow.hom';
+    // const LENGOW_URL = 'dev.lengow.hom';
+
+    /**
+     * @var string url of the Lengow API
      */
     // const LENGOW_API_URL = 'https://api.lengow.io';
     // const LENGOW_API_URL = 'https://api.lengow.net';
@@ -66,6 +74,11 @@ class LengowConnector
      * @var string url of cms API
      */
     const API_CMS = '/v3.1/cms';
+
+    /**
+     * @var string url of plugin API
+     */
+    const API_PLUGIN = '/v3.0/plugins';
 
     /**
      * @var string request GET
@@ -157,6 +170,7 @@ class LengowConnector
         self::API_MARKETPLACE => 15,
         self::API_PLAN => 5,
         self::API_CMS => 5,
+        self::API_PLUGIN => 5,
     );
 
     /**

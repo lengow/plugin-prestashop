@@ -6,18 +6,21 @@
   padding: 0;
 }
 
-.lengow-nav #menucountertrial {
-  padding: 0 15px;
+.lengow-nav #menucountertrial,
+.lengow-nav #menupluginavailable {
+  padding: 0 5px;
 }
 
-.lengow-nav #menucountertrial a {
+.lengow-nav #menucountertrial a,
+.lengow-nav #menupluginavailable a {
   display: inline-block;
   text-decoration: underline;
   padding: 0 0px;
   margin-left: 5px;
 }
 
-.lengow-nav #menucountertrial a:hover {
+.lengow-nav #menucountertrial a:hover,
+.lengow-nav #menupluginavailable a:hover {
   background: none;
   color: #00aeef;
   text-decoration: underline;
@@ -119,10 +122,9 @@ body.lgw-home-iframe .lgw-content-section p {
   color: #00aeef;
 }
 
-.adminlengowhome .lgw-container .lgw-btn-white:hover,
-.adminlengowhome .lgw-container .lgw-btn-white:focus {
-  background-color: #f7f7f7;
-  color: #555;
+#lengow_home_wrapper #alert-counter-trial,
+#lengow_home_wrapper #alert-plugin-available {
+  margin-bottom: 10px;
 }
 
 /*************************************************/
