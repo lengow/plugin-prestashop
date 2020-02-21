@@ -9,6 +9,7 @@ Version 3.2.0
     - Feature: Optimization of API calls for synchronisation of orders and actions
     - Feature: Display of an alert when the plugin is no longer up to date
     - Bugfix: Refactoring and optimization of dates with the correct locale
+    - Bugfix: [import] Enhanced security for orders that change their marketplace name
 
 =============================================================
 Version 3.1.4

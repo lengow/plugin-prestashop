@@ -315,7 +315,11 @@ class LengowImportOrder
             return false;
         }
         // get a record in the lengow order table
-        $this->idOrderLengow = LengowOrder::getIdFromLengowOrders($this->marketplaceSku, $this->deliveryAddressId);
+        $this->idOrderLengow = LengowOrder::getIdFromLengowOrders(
+            $this->marketplaceSku,
+            $this->marketplace->name,
+            $this->deliveryAddressId
+        );
         // if order is cancelled or new -> skip
         if (!LengowImport::checkState($this->orderStateMarketplace, $this->marketplace)) {
             $orderProcessState = LengowOrder::getOrderProcessState($this->orderStateLengow);
@@ -1317,17 +1321,15 @@ class LengowImportOrder
      */
     protected function createLengowOrder()
     {
-        if ($this->orderData->marketplace_order_date !== null) {
-            $orderDate = (string)$this->orderData->marketplace_order_date;
-        } else {
-            $orderDate = (string)$this->orderData->imported_at;
-        }
+        $orderDate = $this->orderData->marketplace_order_date !== null
+            ? (string)$this->orderData->marketplace_order_date
+            : (string)$this->orderData->imported_at;
         $params = array(
             'marketplace_sku' => pSQL($this->marketplaceSku),
             'id_shop' => (int)$this->idShop,
             'id_shop_group' => (int)$this->idShopGroup,
             'id_lang' => (int)$this->idLang,
-            'marketplace_name' => pSQL(Tools::strtolower((string)$this->orderData->marketplace)),
+            'marketplace_name' => pSQL($this->marketplace->name),
             'marketplace_label' => pSQL((string)$this->marketplaceLabel),
             'delivery_address_id' => (int)$this->deliveryAddressId,
             'order_date' => date('Y-m-d H:i:s', strtotime($orderDate)),
@@ -1350,7 +1352,11 @@ class LengowImportOrder
             $result = false;
         }
         if ($result) {
-            $this->idOrderLengow = LengowOrder::getIdFromLengowOrders($this->marketplaceSku, $this->deliveryAddressId);
+            $this->idOrderLengow = LengowOrder::getIdFromLengowOrders(
+                $this->marketplaceSku,
+                $this->marketplace->name,
+                $this->deliveryAddressId
+            );
             return true;
         } else {
             return false;
