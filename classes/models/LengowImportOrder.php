@@ -287,7 +287,7 @@ class LengowImportOrder
                 return false;
             }
             // skip import if the order is older than 3 months
-            $dateTimeOrder = new DateTime($this->orderData->marketplace_order_data);
+            $dateTimeOrder = new DateTime($this->orderData->marketplace_order_date);
             $interval = $dateTimeOrder->diff(new DateTime());
             $monthsInterval = $interval->m + ($interval->y * 12);
             if ($monthsInterval >= LengowImport::MONTH_INTERVAL_TIME) {
