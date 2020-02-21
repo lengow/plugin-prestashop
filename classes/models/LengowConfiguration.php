@@ -331,6 +331,14 @@ class LengowConfiguration extends Configuration
                 'LENGOW_LAST_ACTION_SYNC' => array(
                     'global' => true,
                 ),
+                'LENGOW_PLUGIN_DATA' => array(
+                    'export' => false,
+                    'global' => true,
+                ),
+                'LENGOW_PLUGIN_DATA_UPDATE' => array(
+                    'export' => false,
+                    'global' => true,
+                ),
                 'LENGOW_STATE_ERROR' => array(
                     'export' => false,
                     'global' => true,
@@ -576,7 +584,8 @@ class LengowConfiguration extends Configuration
     public static function setActiveShop($idShop)
     {
         $shopIsActive = self::shopIsActive($idShop);
-        $shopHasCatalog = !empty(self::getCatalogIds($idShop));
+        $catalogIds = self::getCatalogIds($idShop);
+        $shopHasCatalog = !empty($catalogIds);
         self::updateValue('LENGOW_SHOP_ACTIVE', $shopHasCatalog, false, null, $idShop);
         return $shopIsActive !== $shopHasCatalog ? true : false;
     }

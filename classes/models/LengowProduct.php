@@ -833,8 +833,9 @@ class LengowProduct extends Product
     protected static function isValidId($product, $apiDatas)
     {
         $attributes = array('reference', 'ean13', 'upc', 'id');
-        if (!empty($product->getCombinations())) {
-            foreach ($product->getCombinations() as $combination) {
+        $combinations = $product->getCombinations();
+        if (!empty($combinations)) {
+            foreach ($combinations as $combination) {
                 foreach ($attributes as $attributeName) {
                     foreach ($apiDatas as $idApi) {
                         if (!empty($idApi)) {

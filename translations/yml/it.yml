@@ -20,6 +20,8 @@ it:
     order_parameter: "Parametro"
     help: "Aiuto"
     global_parameter: "Impostazioni Generali"
+    new_version_available: "È disponibile una nuova versione %{version}!"
+    download_plugin: "Scaricare"
   footer:
     legals: "Condizioni Legali"
     plugin_lengow: "Lengow plugin PrestaShop"

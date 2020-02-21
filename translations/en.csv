@@ -16,6 +16,8 @@ menu.order_overview|Overview
 menu.order_parameter|Settings
 menu.help|Help
 menu.global_parameter|General settings
+menu.new_version_available|A new version %{version} is available!
+menu.download_plugin|Download
 footer.legals|Legal notices
 footer.plugin_lengow|Lengow Prestashop Plugin
 footer.lengow_link_url|http://www.lengow.com/
