@@ -40,6 +40,11 @@ class LengowImport
     const SECURITY_INTERVAL_TIME = 7200;
 
     /**
+     * @var integer interval of months for cron synchronisation
+     */
+    const MONTH_INTERVAL_TIME = 3;
+
+    /**
      * @var string manual import type
      */
     const TYPE_MANUAL = 'manual';
@@ -767,6 +772,7 @@ class LengowImport
                             'order_data' => $orderData,
                             'package_data' => $packageData,
                             'first_package' => $firstPackage,
+                            'import_one_order' => $this->importOneOrder,
                         )
                     );
                     $order = $importOrder->importOrder();
