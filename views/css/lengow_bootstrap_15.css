@@ -10,7 +10,7 @@
     padding: 20px 15px 30px;
 }
 
-#lgw-preprod {
+#lgw-debug {
   top: 88px;
 }
 
@@ -90,7 +90,7 @@ body.lengow_body #main {
 /*                      SETTINGS                 */
 /*************************************************/
 
-#lengow_mainsettings_wrapper.activePreprod {
+#lengow_mainsettings_wrapper.activeDebug {
   margin-top: 138px;
 }
 
@@ -98,14 +98,14 @@ body.lengow_body #main {
 /*                      ORDERS                   */
 /*************************************************/
 
-#lgw-preprod.adminlengoworder,
-#lgw-preprod.adminlengowordersetting {
+#lgw-debug.adminlengoworder,
+#lgw-debug.adminlengowordersetting {
   top: 144px;
   z-index: 2;
 }
 
-#lengow_order_wrapper.activePreprod,
-#lengow_form_order_setting.activePreprod {
+#lengow_order_wrapper.activeDebug,
+#lengow_form_order_setting.activeDebug {
   margin-top: 190px;
 }
 
@@ -129,7 +129,7 @@ body.lengow_body #main {
 /*                      FEEDS                    */
 /*************************************************/
 
-#lengow_feed_wrapper.activePreprod {
+#lengow_feed_wrapper.activeDebug {
   margin-top: 137px;
 }
 
@@ -145,7 +145,7 @@ body.lengow_body #main {
 /*                      HELP                     */
 /*************************************************/
 
-.lengow_help_wrapper.activePreprod {
+.lengow_help_wrapper.activeDebug {
   margin-top: 138px;
 }
 

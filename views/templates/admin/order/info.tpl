@@ -91,7 +91,7 @@
 		</li>
 	</ul>
 	<br />
-	{if !$preprod_mode}
+	{if !$debug_mode}
 		<div class"button-command-prev-next">
 			<a class="button" 
 				href="{$action_reimport|escape:'htmlall':'UTF-8'}" 

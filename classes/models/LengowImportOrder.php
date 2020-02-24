@@ -65,9 +65,9 @@ class LengowImportOrder
     protected $forceProduct = true;
 
     /**
-     * @var boolean use pre-prod mode
+     * @var boolean use debug mode
      */
-    protected $preprodMode = false;
+    protected $debugMode = false;
 
     /**
      * @var boolean display log messages
@@ -199,7 +199,7 @@ class LengowImportOrder
      * integer  id_lang             Id lang for current order
      * mixed    context             Context for current order
      * boolean  force_product       force import of products
-     * boolean  preprod_mode        preprod mode
+     * boolean  debug_mode          debug mode
      * boolean  log_output          display log messages
      * string   marketplace_sku     order marketplace sku
      * integer  delivery_address_id order delivery address id
@@ -216,7 +216,7 @@ class LengowImportOrder
         $this->idLang = $params['id_lang'];
         $this->context = $params['context'];
         $this->forceProduct = $params['force_product'];
-        $this->preprodMode = $params['preprod_mode'];
+        $this->debugMode = $params['debug_mode'];
         $this->logOutput = $params['log_output'];
         $this->marketplaceSku = $params['marketplace_sku'];
         $this->deliveryAddressId = $params['delivery_address_id'];
@@ -302,7 +302,7 @@ class LengowImportOrder
         }
         // checks if an external id already exists
         $idOrderPrestashop = $this->checkExternalIds($this->orderData->merchant_order_id);
-        if ($idOrderPrestashop && !$this->preprodMode && !$this->isReimported) {
+        if ($idOrderPrestashop && !$this->debugMode && !$this->isReimported) {
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(

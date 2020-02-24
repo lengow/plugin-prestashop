@@ -111,8 +111,8 @@ class LengowCheck
             'message' => LengowConfiguration::get('LENGOW_AUTHORIZED_IP'),
         );
         $checklist[] = array(
-            'title' => $this->locale->t('toolbox.index.preprod_disabled'),
-            'state' => (bool)LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED') ? 0 : 1,
+            'title' => $this->locale->t('toolbox.index.debug_disabled'),
+            'state' => LengowConfiguration::debugModeIsActive() ? 0 : 1,
         );
         return $this->getAdminContent($checklist);
     }

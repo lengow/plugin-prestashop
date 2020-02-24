@@ -31,7 +31,7 @@
  * string  created_to          import of orders until
  * integer delivery_address_id Lengow delivery address id to import
  * boolean force_product       Force import product when quantity is insufficient (1) or not (0)
- * boolean preprod_mode        Activate preprod mode
+ * boolean debug_mode          Activate debug mode
  * boolean log_output          See logs (1) or not (0)
  * boolean get_sync            See synchronisation parameters in json format (1) or not (0)
  */
@@ -92,8 +92,8 @@ if (Tools::getIsset('get_sync') && Tools::getValue('get_sync') == 1) {
         if (Tools::getIsset('force_product')) {
             $params['force_product'] = (bool)Tools::getValue('force_product');
         }
-        if (Tools::getIsset('preprod_mode')) {
-            $params['preprod_mode'] = (bool)Tools::getValue('preprod_mode');
+        if (Tools::getIsset('debug_mode')) {
+            $params['debug_mode'] = (bool)Tools::getValue('debug_mode');
         }
         if (Tools::getIsset('days') && is_numeric(Tools::getValue('days'))) {
             $params['days'] = (int)Tools::getValue('days');

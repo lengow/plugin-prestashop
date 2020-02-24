@@ -51,7 +51,7 @@ switch ($action) {
                 'LENGOW_EXPORT_FILE_ENABLED',
                 'LENGOW_IMPORT_FORCE_PRODUCT',
                 'LENGOW_IMPORT_PROCESSING_FEE',
-                'LENGOW_IMPORT_PREPROD_ENABLED',
+                'LENGOW_IMPORT_DEBUG_ENABLED',
                 'LENGOW_IMPORT_SHIP_MP_ENABLED',
                 'LENGOW_IMPORT_STOCK_SHIP_MP',
                 'LENGOW_REPORT_MAIL_ENABLED',
@@ -122,7 +122,7 @@ require 'views/header.php';
                 echo $form->buildInputs(
                     array(
                         'LENGOW_AUTHORIZED_IP',
-                        'LENGOW_IMPORT_PREPROD_ENABLED',
+                        'LENGOW_IMPORT_DEBUG_ENABLED',
                         'LENGOW_REPORT_MAIL_ENABLED',
                         'LENGOW_REPORT_MAIL_ADDRESS',
                         'LENGOW_EXPORT_CARRIER_DEFAULT',
