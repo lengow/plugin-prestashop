@@ -20,9 +20,9 @@
 
 <div class="cms-global" id="lengow_feed_wrapper">
     <div class="lgw-container">
-        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
-            <div id="lgw-preprod" class="adminlengowfeed">
-                {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        {if $lengow_configuration->debugModeIsActive()}
+            <div id="lgw-debug" class="adminlengowfeed">
+                {$locale->t('menu.debug_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
         {foreach from=$shopCollection item=shop}

@@ -95,7 +95,7 @@
 					</li>
 				</ul>
 			</div>
-			{if !$preprod_mode}
+			{if !$debug_mode}
 				<div class="btn-group">
 					<a class="btn btn-default" 
 						href="{$action_reimport|escape:'htmlall':'UTF-8'}"

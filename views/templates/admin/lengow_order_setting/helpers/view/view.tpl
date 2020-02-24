@@ -19,9 +19,9 @@
  *}
 <div id="lengow_form_order_setting" class="cms-global">
     <div class="lgw-container">
-        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
-            <div id="lgw-preprod" class="adminlengowordersetting">
-                {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        {if $lengow_configuration->debugModeIsActive()}
+            <div id="lgw-debug" class="adminlengowordersetting">
+                {$locale->t('menu.debug_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
         <form class="lengow_form" method="POST">

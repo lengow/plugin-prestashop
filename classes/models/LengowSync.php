@@ -277,9 +277,7 @@ class LengowSync
      */
     public static function setCmsOption($force = false, $logOutput = false)
     {
-        if (LengowConfiguration::isNewMerchant()
-            || LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')
-        ) {
+        if (LengowConfiguration::isNewMerchant() || LengowConfiguration::debugModeIsActive()) {
             return false;
         }
         if (!$force) {

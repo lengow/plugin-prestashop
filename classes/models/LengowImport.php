@@ -89,9 +89,9 @@ class LengowImport
     protected $idShopGroup;
 
     /**
-     * @var boolean use pre-prod mode
+     * @var boolean use debug mode
      */
-    protected $preprodMode = false;
+    protected $debugMode = false;
 
     /**
      * @var boolean display log messages
@@ -208,14 +208,14 @@ class LengowImport
      * integer days                import period
      * integer limit               number of orders to import
      * boolean log_output          display log messages
-     * boolean preprod_mode        preprod mode
+     * boolean debug_mode          debug mode
      */
     public function __construct($params = array())
     {
         // get generic params for synchronisation
-        $this->preprodMode = isset($params['preprod_mode'])
-            ? (bool)$params['preprod_mode']
-            : (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED');
+        $this->debugMode = isset($params['debug_mode'])
+            ? (bool)$params['debug_mode']
+            : LengowConfiguration::debugModeIsActive();
         $this->typeImport = isset($params['type']) ? $params['type'] : self::TYPE_MANUAL;
         $this->forceProduct = isset($params['force_product'])
             ? (bool)$params['force_product']
@@ -268,7 +268,7 @@ class LengowImport
         $syncOk = true;
         // clean logs
         LengowMain::cleanLog();
-        if (self::isInProcess() && !$this->preprodMode && !$this->importOneOrder) {
+        if (self::isInProcess() && !$this->debugMode && !$this->importOneOrder) {
             $globalError = LengowMain::setLogMessage(
                 'lengow_log.error.rest_time_to_import',
                 array('rest_time' => self::restTimeToImport())
@@ -291,10 +291,10 @@ class LengowImport
                 LengowMain::setLogMessage('log.import.start', array('type' => $this->typeImport)),
                 $this->logOutput
             );
-            if ($this->preprodMode) {
+            if ($this->debugMode) {
                 LengowMain::log(
                     LengowLog::CODE_IMPORT,
-                    LengowMain::setLogMessage('log.import.preprod_mode_active'),
+                    LengowMain::setLogMessage('log.import.debug_mode_active'),
                     $this->logOutput
                 );
             }
@@ -450,7 +450,7 @@ class LengowImport
                 $this->logOutput
             );
             // check if order action is finish (ship or cancel)
-            if (!$this->preprodMode
+            if (!$this->debugMode
                 && !$this->importOneOrder
                 && $this->typeImport === self::TYPE_MANUAL
             ) {
@@ -461,7 +461,7 @@ class LengowImport
             // sending email in error for orders
             LengowMain::enableMail();
             if ((bool)LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED')
-                && !$this->preprodMode
+                && !$this->debugMode
                 && !$this->importOneOrder
             ) {
                 LengowMain::sendMailAlert($this->logOutput);
@@ -712,7 +712,7 @@ class LengowImport
             }
             $nbPackage = 0;
             $marketplaceSku = (string)$orderData->marketplace_order_id;
-            if ($this->preprodMode) {
+            if ($this->debugMode) {
                 $marketplaceSku .= '--' . time();
             }
             // set current order to cancel hook updateOrderStatus
@@ -765,7 +765,7 @@ class LengowImport
                             'id_shop_group' => $this->idShopGroup,
                             'id_lang' => $this->idLang,
                             'force_product' => $this->forceProduct,
-                            'preprod_mode' => $this->preprodMode,
+                            'debug_mode' => $this->debugMode,
                             'log_output' => $this->logOutput,
                             'marketplace_sku' => $marketplaceSku,
                             'delivery_address_id' => $packageDeliveryAddressId,
@@ -797,8 +797,8 @@ class LengowImport
                     continue;
                 }
                 if (isset($order)) {
-                    // sync to lengow if no preprod_mode
-                    if (!$this->preprodMode && isset($order['order_new']) && $order['order_new']) {
+                    // sync to lengow if no debug_mode
+                    if (!$this->debugMode && isset($order['order_new']) && $order['order_new']) {
                         $lengowOrder = new LengowOrder((int)$order['order_id']);
                         $synchro = $lengowOrder->synchronizeOrder($this->connector, $this->logOutput);
                         if ($synchro) {

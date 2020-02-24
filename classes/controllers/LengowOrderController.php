@@ -254,9 +254,9 @@ class LengowOrderController extends LengowController
         if (LengowConfiguration::get('LENGOW_IMPORT_SINGLE_ENABLED')) {
             $warningMessages[] = $this->locale->t('order.screen.import_single_warning_message');
         }
-        if (LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
+        if (LengowConfiguration::debugModeIsActive()) {
             $warningMessages[] = $this->locale->t(
-                'order.screen.preprod_warning_message',
+                'order.screen.debug_warning_message',
                 array('url' => $lengowLink->getAbsoluteAdminLink('AdminLengowMainSetting'))
             );
         }

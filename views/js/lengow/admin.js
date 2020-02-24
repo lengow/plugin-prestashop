@@ -32,13 +32,13 @@
         init_tooltip();
         var clipboard = new Clipboard('.lengow_copy');
 
-        var preprodExist=$('#lgw-preprod').length;
-        if (preprodExist > 0){
-            $("#lengow_feed_wrapper").addClass('activePreprod');
-            $("#lengow_order_wrapper").addClass('activePreprod');
-            $("#lengow_form_order_setting").addClass('activePreprod');
-            $("#lengow_mainsettings_wrapper").addClass('activePreprod');
-            $(".lengow_help_wrapper").addClass('activePreprod');
+        var debugExist=$('#lgw-debug').length;
+        if (debugExist > 0){
+            $("#lengow_feed_wrapper").addClass('activeDebug');
+            $("#lengow_order_wrapper").addClass('activeDebug');
+            $("#lengow_form_order_setting").addClass('activeDebug');
+            $("#lengow_mainsettings_wrapper").addClass('activeDebug');
+            $(".lengow_help_wrapper").addClass('activeDebug');
         }
     });
 })(lengow_jquery);

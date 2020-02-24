@@ -65,7 +65,7 @@ class LengowMainSettingController extends LengowController
                     array(
                         'LENGOW_REPORT_MAIL_ENABLED',
                         'LENGOW_TRACKING_ENABLED',
-                        'LENGOW_IMPORT_PREPROD_ENABLED',
+                        'LENGOW_IMPORT_DEBUG_ENABLED',
                         'LENGOW_SHOP_ACTIVE',
                     )
                 );
@@ -100,7 +100,7 @@ class LengowMainSettingController extends LengowController
                 'LENGOW_TRACKING_ID',
             )
         );
-        $preprodReport = $form->buildInputs(array('LENGOW_IMPORT_PREPROD_ENABLED'));
+        $debugReport = $form->buildInputs(array('LENGOW_IMPORT_DEBUG_ENABLED'));
         $credentials = $form->buildInputs(
             array(
                 'LENGOW_ACCOUNT_ID',
@@ -108,12 +108,12 @@ class LengowMainSettingController extends LengowController
                 'LENGOW_SECRET_TOKEN',
             )
         );
-        $preprodWrapper = '<div class="grey-frame">' . $credentials . '</div>';
+        $debugWrapper = '<div class="grey-frame">' . $credentials . '</div>';
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
             $shop = new LengowShop($s['id_shop']);
             $form->fields['LENGOW_SHOP_ACTIVE']['label'] = $shop->name;
-            $preprodWrapper .= '<div class="grey-frame">' . $form->buildShopInputs(
+            $debugWrapper .= '<div class="grey-frame">' . $form->buildShopInputs(
                 $shop->id,
                 array(
                     'LENGOW_SHOP_ACTIVE',
@@ -126,8 +126,8 @@ class LengowMainSettingController extends LengowController
         $this->context->smarty->assign('mail_report', $mailReport);
         $this->context->smarty->assign('defaultExportCarrier', $defaultExportCarrier);
         $this->context->smarty->assign('tracker', $tracker);
-        $this->context->smarty->assign('preprod_report', $preprodReport);
-        $this->context->smarty->assign('preprod_wrapper', $preprodWrapper);
+        $this->context->smarty->assign('debug_report', $debugReport);
+        $this->context->smarty->assign('debug_wrapper', $debugWrapper);
         parent::display();
     }
 }

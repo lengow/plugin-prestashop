@@ -18,9 +18,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-function displayPreProdMode() {
-    var selector = $('#lengow_wrapper_preprod');
-    if ($("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").prop('checked')) {
+function displayDebugMode() {
+    var selector = $('#lengow_wrapper_debug');
+    if ($("input[name='LENGOW_IMPORT_DEBUG_ENABLED']").prop('checked')) {
         selector.slideDown(150);
         var divLegend = selector.find('.legend');
         divLegend.css('display', 'block');
@@ -145,10 +145,10 @@ function openModal(){
         $('input[name="LENGOW_TRACKING_ENABLED"]').on('change', function(){
             displayTracker();
         });
-        // display preprod mode
-        displayPreProdMode();
-        $("input[name='LENGOW_IMPORT_PREPROD_ENABLED']").on('change', function () {
-            displayPreProdMode();
+        // display debug mode
+        displayDebugMode();
+        $("input[name='LENGOW_IMPORT_DEBUG_ENABLED']").on('change', function () {
+            displayDebugMode();
         });
         // display log block
         $('#select_log').change(function(){

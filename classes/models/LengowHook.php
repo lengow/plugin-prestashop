@@ -438,7 +438,7 @@ class LengowHook
                 'order_id' => $args['id_order'],
                 'version' => _PS_VERSION_,
                 'lengow_locale' => $locale,
-                'preprod_mode' => (bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED'),
+                'debug_mode' => LengowConfiguration::debugModeIsActive(),
                 'can_resend_action' => $canResendAction,
                 'can_add_tracking' => $canAddTracking,
                 'check_resend_action' => $checkResendAction,

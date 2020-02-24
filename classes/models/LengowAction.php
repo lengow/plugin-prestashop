@@ -391,7 +391,7 @@ class LengowAction
      */
     public static function sendAction($params, $lengowOrder)
     {
-        if (!LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED')) {
+        if (!LengowConfiguration::debugModeIsActive()) {
             $result = LengowConnector::queryApi(LengowConnector::POST, LengowConnector::API_ORDER_ACTION, $params);
             if (isset($result->id)) {
                 self::createAction(
@@ -598,7 +598,7 @@ class LengowAction
      */
     public static function checkFinishAction($logOutput = false)
     {
-        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')) {
+        if (LengowConfiguration::debugModeIsActive()) {
             return false;
         }
         LengowMain::log(
@@ -720,7 +720,7 @@ class LengowAction
      */
     public static function checkOldAction($logOutput = false)
     {
-        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')) {
+        if (LengowConfiguration::debugModeIsActive()) {
             return false;
         }
         LengowMain::log(
@@ -786,7 +786,7 @@ class LengowAction
      */
     public static function checkActionNotSent($logOutput = false)
     {
-        if (LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED')) {
+        if (LengowConfiguration::debugModeIsActive()) {
             return false;
         }
         LengowMain::log(

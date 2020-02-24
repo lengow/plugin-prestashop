@@ -19,9 +19,9 @@
  *}
 <div class="cms-global">
     <div class="lgw-container" id="lengow_mainsettings_wrapper" xmlns="http://www.w3.org/1999/html">
-        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
-            <div id="lgw-preprod" class="adminlengowmainsetting">
-                {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        {if $lengow_configuration->debugModeIsActive()}
+            <div id="lgw-debug" class="adminlengowmainsetting">
+                {$locale->t('menu.debug_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
         <form class="lengow_form" method="POST">
@@ -41,11 +41,11 @@
                 {html_entity_decode($tracker|escape:'htmlall':'UTF-8')}
             </div>
             <div class="lgw-box">
-                <h2>{$locale->t('global_setting.screen.preprod_mode_title')|escape:'htmlall':'UTF-8'}</h2>
-                <p>{$locale->t('global_setting.screen.preprod_mode_description')|escape:'htmlall':'UTF-8'}</p>
-                {html_entity_decode($preprod_report|escape:'htmlall':'UTF-8')}
-                <div id="lengow_wrapper_preprod" style="display:none;">
-                    {html_entity_decode($preprod_wrapper|escape:'htmlall':'UTF-8')}
+                <h2>{$locale->t('global_setting.screen.debug_mode_title')|escape:'htmlall':'UTF-8'}</h2>
+                <p>{$locale->t('global_setting.screen.debug_mode_description')|escape:'htmlall':'UTF-8'}</p>
+                {html_entity_decode($debug_report|escape:'htmlall':'UTF-8')}
+                <div id="lengow_wrapper_debug" style="display:none;">
+                    {html_entity_decode($debug_wrapper|escape:'htmlall':'UTF-8')}
                 </div>
             </div>
             <div class="lgw-box">

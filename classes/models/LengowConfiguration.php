@@ -219,10 +219,10 @@ class LengowConfiguration extends Configuration
                     'legend' => $locale->t('lengow_setting.lengow_import_processing_fee_legend'),
                     'default_value' => 1,
                 ),
-                'LENGOW_IMPORT_PREPROD_ENABLED' => array(
+                'LENGOW_IMPORT_DEBUG_ENABLED' => array(
                     'type' => 'checkbox',
                     'global' => true,
-                    'label' => $locale->t('lengow_setting.lengow_import_preprod_enabled_title'),
+                    'label' => $locale->t('lengow_setting.lengow_import_debug_enabled_title'),
                     'default_value' => 0,
                 ),
                 'LENGOW_IMPORT_SHIP_MP_ENABLED' => array(
@@ -588,6 +588,16 @@ class LengowConfiguration extends Configuration
         $shopHasCatalog = !empty($catalogIds);
         self::updateValue('LENGOW_SHOP_ACTIVE', $shopHasCatalog, false, null, $idShop);
         return $shopIsActive !== $shopHasCatalog ? true : false;
+    }
+
+    /**
+     * Recovers if Debug Mode is active or not
+     *
+     * @return boolean
+     */
+    public static function debugModeIsActive()
+    {
+        return (bool)self::get('LENGOW_IMPORT_DEBUG_ENABLED');
     }
 
     /**

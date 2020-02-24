@@ -332,7 +332,7 @@ if (LengowInstall::$oldVersion && LengowInstall::$oldVersion < '3.0.0') {
     LengowInstall::renameConfigurationKey('LENGOW_EXPORT_DISABLED', 'LENGOW_EXPORT_INACTIVE', true);
     LengowInstall::renameConfigurationKey('LENGOW_EXPORT_FILE', 'LENGOW_EXPORT_FILE_ENABLED');
     LengowInstall::renameConfigurationKey('LENGOW_CARRIER_DEFAULT', 'LENGOW_EXPORT_CARRIER_DEFAULT');
-    LengowInstall::renameConfigurationKey('LENGOW_DEBUG', 'LENGOW_IMPORT_PREPROD_ENABLED');
+    LengowInstall::renameConfigurationKey('LENGOW_DEBUG', 'LENGOW_IMPORT_DEBUG_ENABLED');
     LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SHIPPED_BY_MP', 'LENGOW_IMPORT_SHIP_MP_ENABLED');
     LengowInstall::renameConfigurationKey('LENGOW_REPORT_MAIL', 'LENGOW_REPORT_MAIL_ENABLED');
     LengowInstall::renameConfigurationKey('LENGOW_EMAIL_ADDRESS', 'LENGOW_REPORT_MAIL_ADDRESS');

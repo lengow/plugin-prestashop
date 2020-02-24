@@ -9,7 +9,7 @@ tab.legals|Legal
 menu.product|Productos
 menu.order|Pedidos
 menu.jump_to_lengow|Pasar a Lengow
-menu.preprod_active|Modo de pre-producción
+menu.debug_active|Debug Mode
 menu.counter|Período de prueba: %{counter} día(s) izquierda.
 menu.upgrade_account|Suscribir
 menu.order_overview|Visión de conjunto
@@ -79,7 +79,7 @@ order.screen.import_manuel|Manual
 order.screen.button_update_orders|Sincronizar los pedidos
 order.screen.button_reimport_order|Importar de nuevo los pedidos
 order.screen.button_resend_order|Enviar de nuevo los pedidos
-order.screen.preprod_warning_message|Estás en el modo de pre-producción. Puedes importar los pedidos , pero no hay interacción con Lengow posible. <a href=%{url}>Cambie este</a>
+order.screen.debug_warning_message|Estás en el Debug Mode. Puedes importar los pedidos , pero no hay interacción con Lengow posible. <a href=%{url}>Cambie este</a>
 order.screen.import_single_warning_message|Su versión de PrestaShop está entre 1.5.2 y 1.5.4.Por razones de seguridad , sólo una orden será importado para la sincronización.
 order.screen.no_carrier_warning_message|Algunos de sus pedidos no se pueden importar porque no ha especificado un proveedor predeterminado en uno de sus países de entrega. <a href=%{url}>Modifique esto</a>
 order.screen.not_imported|No importado
@@ -142,8 +142,8 @@ global_setting.screen.default_export_carrier_title|Cálculo de los gastos de env
 global_setting.screen.default_export_carrier_description|Los costes de envío para su catálogo se calcularán en función del operador seleccionado.
 global_setting.screen.tracker_title|Lengow tracker
 global_setting.screen.tracker_description|Este tracker te permite recuperar las estadísticas de pedidos de tu página web directamente en la plataforma Lengow.
-global_setting.screen.preprod_mode_title|Modo de pre-producción
-global_setting.screen.preprod_mode_description|Utiliza el modo de pre-producción para pruebas y para simular pedidos ficticios. Ten en cuenta que hay que activar esta configuración en el servidor de pre-producción SOLAMENTE
+global_setting.screen.debug_mode_title|Debug Mode
+global_setting.screen.debug_mode_description|Utiliza el Debug Mode para pruebas y para simular pedidos ficticios. Ten en cuenta que hay que activar esta configuración en el servidor de pre-producción SOLAMENTE
 global_setting.screen.log_file_title|Logs archivos
 global_setting.screen.log_file_description|Encuentra todos los registros de mantenimiento aqui debajo (pedidos importados , informes de errores ... ). Ellos serán registrados aquí durante 20 días.
 global_setting.screen.please_choose_log|Por favor, seleccione un archivo de registro ...
@@ -214,7 +214,7 @@ lengow_setting.lengow_import_days_title|Sincronizar todos los pedidos actualizad
 lengow_setting.lengow_import_days_legend|Activar esta opción si tiene pedidos pendientes incorrectos. Esto te permite volver a importar todas los pedidos que han sido procesados ​​durante este período con problemas
 lengow_setting.lengow_import_processing_fee_title|Importar las cuotas de procesamiento
 lengow_setting.lengow_import_processing_fee_legend|Active esta opción si desea incorporar en su pedido la tarifa de gestión de expedición de las Marketplaces
-lengow_setting.lengow_import_preprod_enabled_title|Activate Pre-production Mode
+lengow_setting.lengow_import_debug_enabled_title|Activate Debug Mode
 lengow_setting.lengow_import_ship_mp_enabled_title|Importar los pedidos enviados por las Marketplaces
 lengow_setting.lengow_import_stock_ship_mp_title|Quiero disminuir mi stock
 lengow_setting.lengow_import_stock_ship_mp_legend|Utiliza esta opción para tener en cuenta la variacion de stock de los pedidos del marketplaces en el backoffice de PrestaShop.

@@ -19,9 +19,9 @@
  *}
 <div class="cms-global">
     <div class="lgw-container">
-        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
-            <div id="lgw-preprod" class="adminlengowlegals">
-                {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        {if $lengow_configuration->debugModeIsActive()}
+            <div id="lgw-debug" class="adminlengowlegals">
+                {$locale->t('menu.debug_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
         <div class="lgw-box lengow_legals_wrapper">
