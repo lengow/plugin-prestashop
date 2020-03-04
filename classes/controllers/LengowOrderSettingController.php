@@ -32,7 +32,7 @@ class LengowOrderSettingController extends LengowController
         $countries = LengowCarrier::getCountries();
         $marketplaceCounters = LengowMarketplace::getMarketplaceCounters();
         $defaultCarrierNotMatched = LengowCarrier::getDefaultCarrierNotMatched();
-        $showCarrierNotification = count($defaultCarrierNotMatched) > 0 ? true : false;
+        $showCarrierNotification = !empty($defaultCarrierNotMatched) ? true : false;
         $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
         $matching = $form->buildInputs(
             array(

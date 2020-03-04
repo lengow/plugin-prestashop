@@ -280,7 +280,7 @@ class LengowExport
      */
     public function __construct($params = array())
     {
-        $this->setFormat(isset($params['format']) ? $params['format'] : 'csv');
+        $this->setFormat(isset($params['format']) ? $params['format'] : LengowFeed::FORMAT_CSV);
         $this->offset = isset($params['offset']) ? (int)$params['offset'] : false;
         $this->productIds = isset($params['product_ids']) ? $params['product_ids'] : array();
         $this->stream = isset($params['stream']) ? $params['stream'] : false;
@@ -295,25 +295,25 @@ class LengowExport
         $variation = LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $this->idShop);
         $inactive = LengowConfiguration::get('LENGOW_EXPORT_INACTIVE', null, null, $this->idShop);
         // set default value for new shop
-        if (is_null($selection)) {
+        if ($selection === null) {
             LengowConfiguration::updateValue('LENGOW_EXPORT_SELECTION_ENABLED', 0, null, null, $this->idShop);
             $selection = false;
         } else {
             $selection = (bool)$selection;
         }
-        if (is_null($outOfStock)) {
+        if ($outOfStock === null) {
             LengowConfiguration::updateValue('LENGOW_EXPORT_OUT_STOCK', 1, null, null, $this->idShop);
             $outOfStock = true;
         } else {
             $outOfStock = (bool)$outOfStock;
         }
-        if (is_null($variation)) {
+        if ($variation === null) {
             LengowConfiguration::updateValue('LENGOW_EXPORT_VARIATION_ENABLED', 1, null, null, $this->idShop);
             $variation = true;
         } else {
             $variation = (bool)$variation;
         }
-        if (is_null($inactive)) {
+        if ($inactive === null) {
             LengowConfiguration::updateValue('LENGOW_EXPORT_INACTIVE', 0, null, null, $this->idShop);
             $inactive = false;
         } else {
@@ -342,7 +342,7 @@ class LengowExport
      */
     public function setFormat($format)
     {
-        $this->format = in_array($format, LengowFeed::$availableFormats) ? $format : 'csv';
+        $this->format = in_array($format, LengowFeed::$availableFormats) ? $format : LengowFeed::FORMAT_CSV;
     }
 
     /**
@@ -354,10 +354,10 @@ class LengowExport
         try {
             // clean logs
             LengowMain::cleanLog();
-            LengowMain::log('Export', LengowMain::setLogMessage('log.export.start'), $this->logOutput);
+            LengowMain::log(LengowLog::CODE_EXPORT, LengowMain::setLogMessage('log.export.start'), $this->logOutput);
             $shop = new LengowShop($this->idShop);
             LengowMain::log(
-                'Export',
+                LengowLog::CODE_EXPORT,
                 LengowMain::setLogMessage(
                     'log.export.start_for_shop',
                     array(
@@ -378,7 +378,7 @@ class LengowExport
             // get products to be exported
             $products = $this->exportIds();
             LengowMain::log(
-                'Export',
+                LengowLog::CODE_EXPORT,
                 LengowMain::setLogMessage('log.export.nb_product_found', array('nb_product' => count($products))),
                 $this->logOutput
             );
@@ -387,7 +387,7 @@ class LengowExport
                 LengowConfiguration::updateValue('LENGOW_LAST_EXPORT', date('Y-m-d H:i:s'), false, null, $this->idShop);
             }
             LengowMain::log(
-                'Export',
+                LengowLog::CODE_EXPORT,
                 LengowMain::setLogMessage('log.export.end'),
                 $this->logOutput
             );
@@ -397,9 +397,9 @@ class LengowExport
             $errorMessage = '[Prestashop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
         }
         if (isset($errorMessage)) {
-            $decodedMessage = LengowMain::decodeLogMessage($errorMessage, 'en');
+            $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
             LengowMain::log(
-                'Export',
+                LengowLog::CODE_EXPORT,
                 LengowMain::setLogMessage(
                     'log.export.export_failed',
                     array('decoded_message' => $decodedMessage)
@@ -446,7 +446,7 @@ class LengowExport
      */
     public function setLegacyFields()
     {
-        if (is_null($this->legacy)) {
+        if ($this->legacy === null) {
             $merchantStatus = LengowSync::getStatusAccount();
             if ($merchantStatus && isset($merchantStatus['legacy'])) {
                 $this->legacy = $merchantStatus['legacy'];
@@ -475,7 +475,7 @@ class LengowExport
             $this->legacy,
             isset($shop->name) ? $shop->name : 'default'
         );
-        $this->feed->write('header', $fields);
+        $this->feed->write(LengowFeed::HEADER, $fields);
         $isFirst = true;
         // get the maximum of character for yaml format
         $maxCharacter = 0;
@@ -513,14 +513,14 @@ class LengowExport
                 // get additional data
                 $productDatas = $this->setAdditionalFieldsValues($product, null, $productDatas);
                 // write parent product
-                $this->feed->write('body', $productDatas, $isFirst, $maxCharacter);
+                $this->feed->write(LengowFeed::BODY, $productDatas, $isFirst, $maxCharacter);
                 $productCount++;
             }
             // export combinations
             if ($idProduct && $idProductAttribute > 0) {
                 if (!$this->loadCacheCombinations($product, $fields)) {
                     LengowMain::log(
-                        'Export',
+                        LengowLog::CODE_EXPORT,
                         LengowMain::setLogMessage(
                             'log.export.error_no_product_combination',
                             array('product_id' => $product->id)
@@ -538,13 +538,13 @@ class LengowExport
                         $idProductAttribute,
                         $this->cacheCombination[$idProduct][$idProductAttribute]
                     );
-                    $this->feed->write('body', $combinationDatas, $isFirst, $maxCharacter);
+                    $this->feed->write(LengowFeed::BODY, $combinationDatas, $isFirst, $maxCharacter);
                     $productCount++;
                 }
             }
             if ($productCount > 0 && $productCount % 50 === 0) {
                 LengowMain::log(
-                    'Export',
+                    LengowLog::CODE_EXPORT,
                     LengowMain::setLogMessage(
                         'log.export.count_product',
                         array('product_count' => $productCount)
@@ -572,7 +572,7 @@ class LengowExport
             $feedUrl = $this->feed->getUrl();
             if ($feedUrl && php_sapi_name() !== 'cli') {
                 LengowMain::log(
-                    'Export',
+                    LengowLog::CODE_EXPORT,
                     LengowMain::setLogMessage('log.export.your_feed_available_here', array('feed_url' => $feedUrl)),
                     $this->logOutput
                 );
@@ -730,10 +730,10 @@ class LengowExport
                 $where[] = ' p.`quantity` > 0';
             }
         }
-        if (count($this->productIds) > 0) {
+        if (!empty($this->productIds)) {
             $where[] = ' p.`id_product` IN (' . implode(',', $this->productIds) . ')';
         }
-        if (count($where) > 0) {
+        if (!empty($where)) {
             $query .= ' WHERE ' . join(' AND ', $where);
         }
         return $query;
@@ -849,7 +849,7 @@ class LengowExport
                 case 'format':
                     $authorizedValue = LengowFeed::$availableFormats;
                     $type = 'string';
-                    $example = 'csv';
+                    $example = LengowFeed::FORMAT_CSV;
                     break;
                 case 'shop':
                     $availableShops = array();

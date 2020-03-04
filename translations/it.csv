@@ -9,13 +9,15 @@ tab.legals|Condizioni Legali
 menu.product|Prodotto
 menu.order|Ordine
 menu.jump_to_lengow|Vai su Lengow
-menu.preprod_active|Attiva Preproduzione
+menu.debug_active|Debug Mode
 menu.counter|Periodo di prova: %{counter} giorno(s) a sinistra
 menu.upgrade_account|Iscriviti
 menu.order_overview|Panoramica
 menu.order_parameter|Parametro
 menu.help|Aiuto
 menu.global_parameter|Impostazioni Generali
+menu.new_version_available|È disponibile una nuova versione %{version}!
+menu.download_plugin|Scaricare
 footer.legals|Condizioni Legali
 footer.plugin_lengow|Lengow plugin PrestaShop
 footer.lengow_link_url|http://www.lengow.com/it/
@@ -27,10 +29,6 @@ dashboard.screen.orders_title|Ordini
 dashboard.screen.orders_text|Gestisci i tuoi ordini direttamente nel tuo PrestaShop
 dashboard.screen.settings_title|Impostazioni
 dashboard.screen.settings_text|Configura le impostazioni principali del tuo plugin PrestaShop
-dashboard.screen.partner_business|Lengow, il tuo business partner
-dashboard.screen.stat_turnover|Fatturato
-dashboard.screen.stat_nb_orders|Ordini
-dashboard.screen.stat_more_stats|Hai bisogno di più statistiche?
 dashboard.screen.some_help_title|Hai bisogno d'aiuto?
 dashboard.screen.get_in_touch|Resta in contatto con Lengow.
 dashboard.screen.visit_help_center|Visita il nostro Help Center
@@ -40,12 +38,6 @@ status.screen.subtitle_end_free_trial|Hai raggiunto la fine del tuo periodo di p
 status.screen.first_description_end_free_trial|Il tuo periodo di prova di 15 giorni su Lengow é scaduto. Che brutta notizia, ma il meglio deve ancora arrivare! Ci auguriamo che Lengow vi abbia aiutato a migliorare il vostro business.
 status.screen.second_description_end_free_trial|Il tuo account sarà sospeso fino a quando non sarà acquistata una nuova licenza. Tutte le pubblicazioni e indicizzazioni in corso saranno sospese
 status.screen.third_description_end_free_trial|Non dimenticare che l'account di prova sarà eliminato dopo 30 giorni dalla fine del periodo di prova. Iscriviti in modo da non perdere il lavoro fatto fino ad ora sui tuoi canali.
-status.screen.subtitle_bad_payer|Il tuo account é stato temporaneamente chiuso
-status.screen.first_description_bad_payer|Siamo spiacenti, purtroppo dobbiamo limitare temporaneamente l'accesso al tuo account perché il pagamento automatico non é andato a buon fine.
-status.screen.second_description_bad_payer|La pubblicazione del tuo catalogo é stata sospesa. Ti consigliamo di metterti in contatto con noi a
-status.screen.phone_bad_payer|oppure telefonicamente al +39 02 94752876
-status.screen.third_description_bad_payer|Ci auguriamo di lavorare di nuovo insieme un giorno.
-status.screen.facturation_button|Vedi le mie informazioni di fatturazione
 status.screen.upgrade_account_button|Ok, sono pronto per iscrivermi!
 status.screen.refresh_action|Aggiorna il mio account
 product.screen.nb_exported|prodotto esportato
@@ -87,7 +79,7 @@ order.screen.import_manuel|Manuale
 order.screen.button_update_orders|Sincronizza Ordini
 order.screen.button_reimport_order|Importa ancora ordine
 order.screen.button_resend_order|Nuovo Invio Ordine
-order.screen.preprod_warning_message|Sei in modalità pre-produzione. Puoi importare gli ordini, ma non è possibile alcuna interazione con Lengow. <a href=%{url}>Cambia questo</a>
+order.screen.debug_warning_message|Sei in Debug Mode. Puoi importare gli ordini, ma non è possibile alcuna interazione con Lengow. <a href=%{url}>Cambia questo</a>
 order.screen.import_single_warning_message|La tua versione di PrestaShop é tra la 1.5.2 e 1.5.4. Per ragioni di sicurezza, solo un ordine sarà importato via sincronizzazione.
 order.screen.no_carrier_warning_message|Alcuni ordini potrebbero non essere importati perché non é stato specificato il metodo di spedizione di default in uno dei paesi di spedizione. <a href=%{url}>Modifica</a>
 order.screen.not_imported|non importato
@@ -150,8 +142,8 @@ global_setting.screen.default_export_carrier_title|Calcolo costi di spedizione
 global_setting.screen.default_export_carrier_description|Il costo di spedizione del catalogo sarà calcolato in base al trasportatore selezionato
 global_setting.screen.tracker_title|Lengow tracker
 global_setting.screen.tracker_description|Questo tracker ti permette di recuperare le statistiche degli ordini della tua pagina web direttamente nella piattaforma Lengow.
-global_setting.screen.preprod_mode_title|Modalità Preproduzione
-global_setting.screen.preprod_mode_description|Utilizza la modalità pre-production per testare e generare ordini fittizzi. Nota bene, devi attivare questa impostazione SOLAMENTE nel tuo pre-preduction server.
+global_setting.screen.debug_mode_title|Debug Mode
+global_setting.screen.debug_mode_description|Utilizza Debug Mode per testare e generare ordini fittizzi. Nota bene, devi attivare questa impostazione SOLAMENTE nel tuo pre-preduction server
 global_setting.screen.log_file_title|Log File
 global_setting.screen.log_file_description|Trovi tutti i log di manutenzione di seguito (ordini importati,rapporti di errore...). Sarano registrati qui per 20 giorni.
 global_setting.screen.please_choose_log|Seleziona Log...
@@ -222,7 +214,7 @@ lengow_setting.lengow_import_days_title|Sincronizza tutti gli ordini aggiornati 
 lengow_setting.lengow_import_days_legend|Attiva questa opzione se se hai ordini sospesi incorrettamente. Ti permetterà di importare di nuovo tutti gli rodini che sono stati processati durante questo periodo di blocco
 lengow_setting.lengow_import_processing_fee_title|Importare le spese di trattamento
 lengow_setting.lengow_import_processing_fee_legend|Attiva questa opzione se vuoi integrare la marketplaces fee nel tuo ordine
-lengow_setting.lengow_import_preprod_enabled_title|Attiva la modalità di pre-produzione
+lengow_setting.lengow_import_debug_enabled_title|Attiva Debug Mode
 lengow_setting.lengow_import_ship_mp_enabled_title|Importa ordini spediti da marketplaces
 lengow_setting.lengow_import_stock_ship_mp_title|Voglio ridurre il mio stock
 lengow_setting.lengow_import_stock_ship_mp_legend|Utilizza questa opzione per importare i tuoi ordini marketplace nel tuo backoffice PrestaShop
@@ -261,7 +253,7 @@ lengow_log.exception.no_product_to_cart|nessun prodotto in carrello
 lengow_log.exception.cannot_add_product_to_cart|impossibile aggiungere il prodotto %{product_id} in carrello (invalid ID format)
 lengow_log.exception.no_quantity_for_product|il prodotto %{product_id} non puo' essere aggiunto in carrello. Assicurati che sia reso disponibi all'acquisto o che abbia abbastanza stock
 lengow_log.exception.no_connection_webservice|La connessione con il web service Lengow non funziona per lo shop %{name_shop} (%{id_shop})
-lengow_log.exception.error_lengow_webservice|Errore Lengow Webservice : %{error_code} - %{error_message} di negozio %{name_shop} (%{id_shop})
+lengow_log.exception.error_lengow_webservice|Errore Lengow Webservice : %{error_code} - "%{error_message}" di negozio %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|impossibile salvare l'ordine
 lengow_log.exception.carrier_shipping_address_no_country|nessun trasportatore per indirizzo di spedizione del paese
 lengow_log.exception.no_default_carrier_for_country|E' necessario un trasportatore di default per il paese: %{country_name} e marketplace: %{marketplace_name}
@@ -285,8 +277,6 @@ lengow_log.exception.delivery_country_not_active|Il paese %{country_name} nell'i
 lengow_log.exception.product_is_not_listed|prodotto %{product_id} non è inserito in questo ordine
 lengow_log.exception.unable_to_save_order|impossibile salvare PrestaShop ordine  - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossibile salvare PrestaShop pagamento ordine
-lengow_log.exception.timeout_api|chiamata API bloccata da timeout
-lengow_log.exception.error_curl|Curl errore %{error_code} - %{error_message}
 lengow_log.mail_report.order|Ordine %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|nessun errore nella mail di report https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Importazione Lengow

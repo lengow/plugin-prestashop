@@ -152,8 +152,8 @@ class LengowConfigurationForm
                                 class="form-control"
                                 value="' . $value . '" '
                                 . $readonly . '
-                                min="' . LengowImport::$minImportDays . '"
-                                max="' . LengowImport::$maxImportDays . '">
+                                min="' . (LengowImport::MIN_INTERVAL_TIME / 86400) . '"
+                                max="' . (LengowImport::MAX_INTERVAL_TIME / 86400) . '">
                             <div class="input-group-addon">
                                 <div class="unit">' . $this->locale->t('order_setting.screen.nb_days') . '</div>
                             </div>
@@ -253,7 +253,7 @@ class LengowConfigurationForm
     {
         if (array_key_exists($key, $this->fields)) {
             $setting = $this->fields[$key];
-            if (is_null($idShop)) {
+            if ($idShop === null) {
                 $oldValue = LengowConfiguration::getGlobalValue($key);
             } else {
                 $oldValue = LengowConfiguration::get($key, null, null, $idShop);
@@ -267,22 +267,22 @@ class LengowConfigurationForm
                     $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
                     $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
                 }
-                if (!is_null($idShop)) {
+                if ($idShop !== null) {
                     LengowMain::log(
-                        'Setting',
+                        LengowLog::CODE_SETTING,
                         LengowMain::setLogMessage(
                             'log.setting.setting_change_for_shop',
                             array(
                                 'key' => $key,
                                 'old_value' => $oldValue,
-                                'value'=> $value,
+                                'value' => $value,
                                 'shop_id' => $idShop,
                             )
                         )
                     );
                 } else {
                     LengowMain::log(
-                        'Setting',
+                        LengowLog::CODE_SETTING,
                         LengowMain::setLogMessage(
                             'log.setting.setting_change',
                             array(
@@ -295,7 +295,7 @@ class LengowConfigurationForm
                 }
                 // save last update date for a specific settings (change synchronisation interval time)
                 if (isset($setting['update']) && $setting['update']) {
-                    LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', date('Y-m-d H:i:s'));
+                    LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', time());
                 }
             }
         }

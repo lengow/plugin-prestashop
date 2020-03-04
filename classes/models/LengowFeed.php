@@ -40,6 +40,41 @@ class LengowFeed
     const EOL = "\r\n";
 
     /**
+     * @var string csv format
+     */
+    const FORMAT_CSV = 'csv';
+
+    /**
+     * @var string yaml format
+     */
+    const FORMAT_YAML = 'yaml';
+
+    /**
+     * @var string xml format
+     */
+    const FORMAT_XML = 'xml';
+
+    /**
+     * @var string json format
+     */
+    const FORMAT_JSON = 'json';
+
+    /**
+     * @var string header content
+     */
+    const HEADER = 'header';
+
+    /**
+     * @var string body content
+     */
+    const BODY = 'body';
+
+    /**
+     * @var string footer content
+     */
+    const FOOTER = 'footer';
+
+    /**
      * @var LengowFile Lengow file instance
      */
     protected $file;
@@ -78,10 +113,10 @@ class LengowFeed
      * @var array formats available for export
      */
     public static $availableFormats = array(
-        'csv',
-        'yaml',
-        'xml',
-        'json',
+        self::FORMAT_CSV,
+        self::FORMAT_YAML,
+        self::FORMAT_XML,
+        self::FORMAT_JSON,
     );
 
     /**
@@ -104,7 +139,7 @@ class LengowFeed
         $this->stream = $stream;
         $this->format = $format;
         $this->legacy = $legacy;
-        if (is_null($shopName)) {
+        if ($shopName === null) {
             $shopName = Context::getContext()->shop->name;
         }
         $this->shopFolder = Tools::strtolower(
@@ -154,21 +189,21 @@ class LengowFeed
     public function write($type, $data = array(), $isFirst = null, $maxCharacter = null)
     {
         switch ($type) {
-            case 'header':
+            case self::HEADER:
                 if ($this->stream) {
                     header($this->getHtmlHeader());
-                    if ($this->format === 'csv') {
+                    if ($this->format === self::FORMAT_CSV) {
                         header('Content-Disposition: attachment; filename=feed.csv');
                     }
                 }
                 $header = $this->getHeader($data);
                 $this->flush($header);
                 break;
-            case 'body':
+            case self::BODY:
                 $body = $this->getBody($data, $isFirst, $maxCharacter);
                 $this->flush($body);
                 break;
-            case 'footer':
+            case self::FOOTER:
                 $footer = $this->getFooter();
                 $this->flush($footer);
                 break;
@@ -189,16 +224,16 @@ class LengowFeed
             default:
                 $header = '';
                 foreach ($data as $field) {
-                    $header .= self::PROTECTION . self::formatFields($field, 'csv', $this->legacy)
+                    $header .= self::PROTECTION . self::formatFields($field, self::FORMAT_CSV, $this->legacy)
                         . self::PROTECTION . self::CSV_SEPARATOR;
                 }
                 return rtrim($header, self::CSV_SEPARATOR) . self::EOL;
-            case 'xml':
+            case self::FORMAT_XML:
                 return '<?xml version="1.0" encoding="UTF-8"?>' . self::EOL
                 . '<catalog>' . self::EOL;
-            case 'json':
+            case self::FORMAT_JSON:
                 return '{"catalog":[';
-            case 'yaml':
+            case self::FORMAT_YAML:
                 return '"catalog":' . self::EOL;
         }
     }
@@ -215,31 +250,31 @@ class LengowFeed
     protected function getBody($data, $isFirst, $maxCharacter)
     {
         switch ($this->format) {
-            case 'csv':
+            case self::FORMAT_CSV:
             default:
                 $content = '';
                 foreach ($data as $value) {
                     $content .= self::PROTECTION . $value . self::PROTECTION . self::CSV_SEPARATOR;
                 }
                 return rtrim($content, self::CSV_SEPARATOR) . self::EOL;
-            case 'xml':
+            case self::FORMAT_XML:
                 $content = '<product>';
                 foreach ($data as $field => $value) {
-                    $field = self::formatFields($field, 'xml');
+                    $field = self::formatFields($field, self::FORMAT_XML);
                     $content .= '<' . $field . '><![CDATA[' . $value . ']]></' . $field . '>' . self::EOL;
                 }
                 $content .= '</product>' . self::EOL;
                 return $content;
-            case 'json':
+            case self::FORMAT_JSON:
                 $content = $isFirst ? '' : ',';
                 $jsonArray = array();
                 foreach ($data as $field => $value) {
-                    $field = self::formatFields($field, 'json');
+                    $field = self::formatFields($field, self::FORMAT_JSON);
                     $jsonArray[$field] = $value;
                 }
                 $content .= Tools::jsonEncode($jsonArray);
                 return $content;
-            case 'yaml':
+            case self::FORMAT_YAML:
                 if ($maxCharacter % 2 === 1) {
                     $maxCharacter = $maxCharacter + 1;
                 } else {
@@ -247,7 +282,7 @@ class LengowFeed
                 }
                 $content = '  ' . self::PROTECTION . 'product' . self::PROTECTION . ':' . self::EOL;
                 foreach ($data as $field => $value) {
-                    $field = self::formatFields($field, 'yaml');
+                    $field = self::formatFields($field, self::FORMAT_YAML);
                     $content .= '    ' . self::PROTECTION . $field . self::PROTECTION . ':';
                     $content .= $this->indentYaml($field, $maxCharacter) . (string)$value . self::EOL;
                 }
@@ -263,9 +298,9 @@ class LengowFeed
     protected function getFooter()
     {
         switch ($this->format) {
-            case 'xml':
+            case self::FORMAT_XML:
                 return '</catalog>';
-            case 'json':
+            case self::FORMAT_JSON:
                 return ']}';
             default:
                 return '';
@@ -296,7 +331,7 @@ class LengowFeed
      */
     public function end()
     {
-        $this->write('footer');
+        $this->write(self::FOOTER);
         if (!$this->stream) {
             $oldFileName = 'flux-' . Context::getContext()->language->iso_code . '.' . $this->format;
             $oldFile = new LengowFile($this->exportFolder, $oldFileName);
@@ -345,14 +380,14 @@ class LengowFeed
     protected function getHtmlHeader()
     {
         switch ($this->format) {
-            case 'csv':
+            case self::FORMAT_CSV:
             default:
                 return 'Content-Type: text/csv; charset=UTF-8';
-            case 'xml':
+            case self::FORMAT_XML:
                 return 'Content-Type: application/xml; charset=UTF-8';
-            case 'json':
+            case self::FORMAT_JSON:
                 return 'Content-Type: application/json; charset=UTF-8';
-            case 'yaml':
+            case self::FORMAT_YAML:
                 return 'Content-Type: text/x-yaml; charset=UTF-8';
         }
     }
@@ -369,7 +404,7 @@ class LengowFeed
     public static function formatFields($str, $format, $legacy = false)
     {
         switch ($format) {
-            case 'csv':
+            case self::FORMAT_CSV:
                 if ($legacy) {
                     return Tools::substr(
                         Tools::strtoupper(

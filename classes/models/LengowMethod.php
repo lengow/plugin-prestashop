@@ -42,7 +42,7 @@ class LengowMethod
             $results = array();
         }
         // additional verification for non-case sensitive Databases
-        if (count($results) > 0) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 if ($result['method_marketplace_name'] === $methodMarketplaceName) {
                     return (int)$result['id'];
@@ -103,11 +103,11 @@ class LengowMethod
                             );
                         } else {
                             $params = array();
-                            if (!is_null($method->label) && Tools::strlen($method->label) > 0) {
+                            if ($method->label !== null && Tools::strlen($method->label) > 0) {
                                 $params['method_marketplace_label'] = pSQL($method->label);
                             }
                             if (isset($method->lengow_code)
-                                && !is_null($method->lengow_code)
+                                && $method->lengow_code !== null
                                 && Tools::strlen($method->lengow_code) > 0
                             ) {
                                 $params['method_lengow_code'] = pSQL($method->lengow_code);
@@ -143,7 +143,7 @@ class LengowMethod
             'method_marketplace_name' => pSQL($methodMarketplaceName),
             'method_marketplace_label' => pSQL($methodMarketplaceLabel),
         );
-        if (!is_null($methodLengowCode) && Tools::strlen($methodLengowCode) > 0) {
+        if ($methodLengowCode !== null && Tools::strlen($methodLengowCode) > 0) {
             $params['method_lengow_code'] = pSQL($methodLengowCode);
         }
         $db = Db::getInstance();
@@ -207,7 +207,7 @@ class LengowMethod
         } catch (PrestaShopDatabaseException $e) {
             $result = array();
         }
-        if (count($result) === 0) {
+        if (empty($result)) {
             $params = array(
                 'id_marketplace' => (int)$idMarketplace,
                 'id_method_marketplace' => (int)$idMethodMarketplace,
@@ -305,7 +305,7 @@ class LengowMethod
                 AND id_marketplace = ' . (int)$idMarketplace . '
                 AND id_method_marketplace = ' . (int)$idMethodMarketplace
             );
-            return count($result) > 0 ? (int)$result[0]['id'] : false;
+            return !empty($result) ? (int)$result[0]['id'] : false;
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
@@ -328,7 +328,7 @@ class LengowMethod
         } catch (PrestaShopDatabaseException $e) {
             $results = array();
         }
-        if (count($results) > 0) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 if (isset($result['id']) && $result['id'] > 0) {
                     self::deleteMarketplaceMethodCountry((int)$result['id']);
@@ -385,7 +385,7 @@ class LengowMethod
         } catch (PrestaShopDatabaseException $e) {
             $results = array();
         }
-        if (count($results) > 0) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 $methods[(int)$result['id_method_marketplace']] = (int)$result['id_carrier'];
             }

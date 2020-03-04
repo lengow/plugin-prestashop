@@ -6,8 +6,8 @@ h1,h2, h3, h4, h5, h6 {
   color: inherit;
 }
 
-#lgw-preprod {
-  top: 70px;
+#lgw-debug {
+  top: 65px;
   z-index: 1;
   left: 15px;
   position: absolute;
@@ -51,6 +51,10 @@ body.lengow_body #main {
     padding-top: 0;
     background: inherit;
     min-height: 730px;
+}
+
+#lgw-footer {
+  margin-top: 80px;
 }
 
 #lgw-footer p {
@@ -97,11 +101,13 @@ body.lengow_body #main {
 /*                      HOME                     */
 /*************************************************/
 
-.adminlengowhome #lgw-preprod {
+.adminlengowhome #lgw-debug {
   margin-top: -10px;
   margin-bottom: 10px;
   position: inherit;
   display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
 }
 
 .lgw-home-header {
@@ -120,7 +126,7 @@ body.lengow_body #main {
 /*                      SETTINGS                 */
 /*************************************************/
 
-#lengow_mainsettings_wrapper.activePreprod {
+#lengow_mainsettings_wrapper.activeDebug {
   margin-top: 15px;
 }
 
@@ -140,15 +146,15 @@ body.lengow_body #main {
     padding-top: 30px;
 }
 
-#lgw-preprod.adminlengoworder,
-#lgw-preprod.adminlengowordersetting {
-  top: 127px;
+#lgw-debug.adminlengoworder,
+#lgw-debug.adminlengowordersetting {
+  top: 123px;
   z-index: 2;
   position: absolute;
 }
 
-#lengow_order_wrapper.activePreprod,
-#lengow_form_order_setting.activePreprod {
+#lengow_order_wrapper.activeDebug,
+#lengow_form_order_setting.activeDebug {
   margin-top: 8px;
 }
 
@@ -168,7 +174,7 @@ body.lengow_body #main {
 /*                      FEEDS                    */
 /*************************************************/
 
-#lengow_feed_wrapper.activePreprod {
+#lengow_feed_wrapper.activeDebug {
   margin-top: 15px;
 }
 

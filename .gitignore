@@ -3,5 +3,6 @@ logs/*.txt
 export/*
 !export/index.php
 config.xml
+config_fr.xml
 **/.DS_Store
 config/marketplaces.json

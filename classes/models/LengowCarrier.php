@@ -353,7 +353,7 @@ class LengowCarrier extends Carrier
             $results = array();
         }
         // additional verification for non-case sensitive Databases
-        if (count($results) > 0) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 if ($result['carrier_marketplace_name'] === $carrierMarketplaceName) {
                     return (int)$result['id'];
@@ -398,11 +398,11 @@ class LengowCarrier extends Carrier
                             );
                         } else {
                             $params = array();
-                            if (!is_null($carrier->label) && Tools::strlen($carrier->label) > 0) {
+                            if ($carrier->label !== null && Tools::strlen($carrier->label) > 0) {
                                 $params['carrier_marketplace_label'] = pSQL($carrier->label);
                             }
                             if (isset($carrier->lengow_code)
-                                && !is_null($carrier->lengow_code)
+                                && $carrier->lengow_code !== null
                                 && Tools::strlen($carrier->lengow_code) > 0
                             ) {
                                 $params['carrier_lengow_code'] = pSQL($carrier->lengow_code);
@@ -438,7 +438,7 @@ class LengowCarrier extends Carrier
             'carrier_marketplace_name' => pSQL($carrierMarketplaceName),
             'carrier_marketplace_label' => pSQL($carrierMarketplaceLabel),
         );
-        if (!is_null($carrierLengowCode) && Tools::strlen($carrierLengowCode) > 0) {
+        if ($carrierLengowCode !== null && Tools::strlen($carrierLengowCode) > 0) {
             $params['carrier_lengow_code'] = pSQL($carrierLengowCode);
         }
         $db = Db::getInstance();
@@ -502,7 +502,7 @@ class LengowCarrier extends Carrier
         } catch (PrestaShopDatabaseException $e) {
             $result = array();
         }
-        if (count($result) === 0) {
+        if (empty($result)) {
             $params = array(
                 'id_marketplace' => (int)$idMarketplace,
                 'id_carrier_marketplace' => (int)$idCarrierMarketplace,
@@ -590,13 +590,13 @@ class LengowCarrier extends Carrier
      */
     public static function createDefaultCarrier($idCountry = null, $idMarketplace = null)
     {
-        if (is_null($idCountry)) {
+        if ($idCountry === null) {
             $idCountry = (int)Configuration::get('PS_COUNTRY_DEFAULT');
         }
         $marketplaces = LengowMarketplace::getAllMarketplaces();
         foreach ($marketplaces as $marketplace) {
             $id = (int)$marketplace['id'];
-            if (!is_null($idMarketplace) && $idMarketplace !== $id) {
+            if ($idMarketplace !== null && $idMarketplace !== $id) {
                 continue;
             }
             if (!self::getIdDefaultCarrier($idCountry, $id)) {
@@ -622,7 +622,7 @@ class LengowCarrier extends Carrier
         } catch (PrestaShopDatabaseException $e) {
             $results = array();
         }
-        if (count($results) > 0) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 if (isset($result['id']) && $result['id'] > 0) {
                     self::updateDefaultCarrier(
@@ -649,7 +649,7 @@ class LengowCarrier extends Carrier
                 'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
                 WHERE id_country = ' . (int)$idCountry . ' AND id_marketplace = ' . (int)$idMarketplace
             );
-            return count($results) > 0 ? (int)$results[0]['id'] : false;
+            return !empty($results) ? (int)$results[0]['id'] : false;
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
@@ -673,7 +673,7 @@ class LengowCarrier extends Carrier
         );
         if ($result
             && isset($result['id_carrier'])
-            && !is_null($result['id_carrier'])
+            && $result['id_carrier'] !== null
             && (int)$result['id_carrier'] > 0
         ) {
             $idCarrier = (int)$result['id_carrier'];
@@ -699,7 +699,7 @@ class LengowCarrier extends Carrier
         );
         if ($result
             && isset($result['id_carrier_marketplace'])
-            && !is_null($result['id_carrier_marketplace'])
+            && $result['id_carrier_marketplace'] !== null
             && (int)$result['id_carrier_marketplace'] > 0
         ) {
             $idCarrier = (int)$result['id_carrier_marketplace'];
@@ -745,7 +745,7 @@ class LengowCarrier extends Carrier
     public static function hasDefaultCarrierNotMatched()
     {
         $carrierNotMatched = self::getDefaultCarrierNotMatched();
-        return count($carrierNotMatched) > 0 ? true : false;
+        return !empty($carrierNotMatched) ? true : false;
     }
 
     /**
@@ -763,7 +763,7 @@ class LengowCarrier extends Carrier
                 AND cl.id_lang = ' . (int)Context::getContext()->language->id . '
                 GROUP BY ldc.id_country'
             );
-            return count($results) > 0 ? $results : false;
+            return !empty($results) ? $results : false;
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
@@ -843,7 +843,7 @@ class LengowCarrier extends Carrier
                 AND id_marketplace = ' . (int)$idMarketplace . '
                 AND id_carrier = ' . (int)$idCarrier
             );
-            return count($result) > 0 ? (int)$result[0]['id'] : false;
+            return !empty($result) ? (int)$result[0]['id'] : false;
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
@@ -866,7 +866,7 @@ class LengowCarrier extends Carrier
         } catch (PrestaShopDatabaseException $e) {
             $results = array();
         }
-        if (count($results) > 0) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 if (isset($result['id']) && $result['id'] > 0) {
                     self::updateMarketplaceCarrierCountry((int)$result['id'], 0);
@@ -892,7 +892,7 @@ class LengowCarrier extends Carrier
             AND id_marketplace = ' . (int)$idMarketplace . '
             AND id_carrier = ' . (int)$idCarrier
         );
-        if ($result && !is_null($result['id_carrier_marketplace']) && (int)$result['id_carrier_marketplace'] > 0) {
+        if ($result && $result['id_carrier_marketplace'] !== null && (int)$result['id_carrier_marketplace'] > 0) {
             return (int)$result['id_carrier_marketplace'];
         }
         return false;
@@ -918,7 +918,7 @@ class LengowCarrier extends Carrier
         } catch (PrestaShopDatabaseException $e) {
             $results = array();
         }
-        if (count($results) > 0) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 $carriers[(int)$result['id_carrier']] = (int)$result['id_carrier_marketplace'];
             }

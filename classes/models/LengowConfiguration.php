@@ -80,6 +80,14 @@ class LengowConfiguration extends Configuration
                     'label' => $locale->t('lengow_setting.lengow_secret_token_title'),
                     'secret' => true,
                 ),
+                'LENGOW_AUTH_TOKEN' => array(
+                    'global' => true,
+                    'export' => false,
+                ),
+                'LENGOW_LAST_AUTH_TOKEN_UPDATE' => array(
+                    'global' => true,
+                    'export' => false,
+                ),
                 'LENGOW_SHOP_ACTIVE' => array(
                     'type' => 'checkbox',
                     'shop' => true,
@@ -132,7 +140,7 @@ class LengowConfiguration extends Configuration
                     'type' => 'select',
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_export_format_title'),
-                    'default_value' => 'csv',
+                    'default_value' => LengowFeed::FORMAT_CSV,
                     'collection' => $exportFormats,
                 ),
                 'LENGOW_EXPORT_FILE_ENABLED' => array(
@@ -147,7 +155,7 @@ class LengowConfiguration extends Configuration
                     'type' => 'select',
                     'global' => true,
                     'label' => $locale->t('lengow_setting.lengow_export_carrier_default_title'),
-                    'default_value' => count($carriers) > 0 ? (int)$carriers[0]['id'] : '',
+                    'default_value' => !empty($carriers) ? (int)$carriers[0]['id'] : '',
                     'collection' => $carriers,
                 ),
                 'LENGOW_LAST_EXPORT' => array(
@@ -211,10 +219,10 @@ class LengowConfiguration extends Configuration
                     'legend' => $locale->t('lengow_setting.lengow_import_processing_fee_legend'),
                     'default_value' => 1,
                 ),
-                'LENGOW_IMPORT_PREPROD_ENABLED' => array(
+                'LENGOW_IMPORT_DEBUG_ENABLED' => array(
                     'type' => 'checkbox',
                     'global' => true,
-                    'label' => $locale->t('lengow_setting.lengow_import_preprod_enabled_title'),
+                    'label' => $locale->t('lengow_setting.lengow_import_debug_enabled_title'),
                     'default_value' => 0,
                 ),
                 'LENGOW_IMPORT_SHIP_MP_ENABLED' => array(
@@ -300,13 +308,6 @@ class LengowConfiguration extends Configuration
                 'LENGOW_MARKETPLACE_UPDATE' => array(
                     'global' => true,
                 ),
-                'LENGOW_ORDER_STAT' => array(
-                    'export' => false,
-                    'global' => true,
-                ),
-                'LENGOW_ORDER_STAT_UPDATE' => array(
-                    'global' => true,
-                ),
                 'LENGOW_INSTALLATION_IN_PROGRESS' => array(
                     'export' => false,
                     'global' => true,
@@ -325,6 +326,17 @@ class LengowConfiguration extends Configuration
                     'global' => true,
                 ),
                 'LENGOW_LAST_SETTING_UPDATE' => array(
+                    'global' => true,
+                ),
+                'LENGOW_LAST_ACTION_SYNC' => array(
+                    'global' => true,
+                ),
+                'LENGOW_PLUGIN_DATA' => array(
+                    'export' => false,
+                    'global' => true,
+                ),
+                'LENGOW_PLUGIN_DATA_UPDATE' => array(
+                    'export' => false,
                     'global' => true,
                 ),
                 'LENGOW_STATE_ERROR' => array(
@@ -492,6 +504,20 @@ class LengowConfiguration extends Configuration
     }
 
     /**
+     * Check if is a new merchant
+     *
+     * @return boolean
+     */
+    public static function isNewMerchant()
+    {
+        list($accountId, $accessToken, $secretToken) = self::getAccessIds();
+        if ($accountId !== null && $accessToken !== null && $secretToken !== null) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Get catalog ids for a specific shop
      *
      * @param integer $idShop Prestashop shop id
@@ -558,9 +584,20 @@ class LengowConfiguration extends Configuration
     public static function setActiveShop($idShop)
     {
         $shopIsActive = self::shopIsActive($idShop);
-        $shopHasCatalog = count(self::getCatalogIds($idShop)) > 0;
+        $catalogIds = self::getCatalogIds($idShop);
+        $shopHasCatalog = !empty($catalogIds);
         self::updateValue('LENGOW_SHOP_ACTIVE', $shopHasCatalog, false, null, $idShop);
         return $shopIsActive !== $shopHasCatalog ? true : false;
+    }
+
+    /**
+     * Recovers if Debug Mode is active or not
+     *
+     * @return boolean
+     */
+    public static function debugModeIsActive()
+    {
+        return (bool)self::get('LENGOW_IMPORT_DEBUG_ENABLED');
     }
 
     /**
@@ -617,9 +654,9 @@ class LengowConfiguration extends Configuration
             }
         }
         if ($overwrite) {
-            LengowMain::log('Setting', LengowMain::setLogMessage('log.setting.setting_reset'));
+            LengowMain::log(LengowLog::CODE_SETTING, LengowMain::setLogMessage('log.setting.setting_reset'));
         } else {
-            LengowMain::log('Setting', LengowMain::setLogMessage('log.setting.setting_updated'));
+            LengowMain::log(LengowLog::CODE_SETTING, LengowMain::setLogMessage('log.setting.setting_updated'));
         }
         return true;
     }
@@ -632,7 +669,7 @@ class LengowConfiguration extends Configuration
     public static function deleteAll()
     {
         $keys = self::getKeys();
-        LengowMain::log('Setting', LengowMain::setLogMessage('log.setting.setting_delete'));
+        LengowMain::log(LengowLog::CODE_SETTING, LengowMain::setLogMessage('log.setting.setting_delete'));
         foreach ($keys as $key => $value) {
             // this line is useless, but Prestashop validator require it
             $value = $value;

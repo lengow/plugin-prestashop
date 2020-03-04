@@ -126,14 +126,14 @@ class LengowMain
     public static function getOrderState($state)
     {
         switch ($state) {
-            case 'accepted':
-            case 'waiting_shipment':
+            case LengowOrder::STATE_ACCEPTED:
+            case LengowOrder::STATE_WAITING_SHIPMENT:
                 return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_PROCESS');
-            case 'shipped':
-            case 'closed':
+            case LengowOrder::STATE_SHIPPED:
+            case LengowOrder::STATE_CLOSED:
                 return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPED');
-            case 'refused':
-            case 'canceled':
+            case LengowOrder::STATE_REFUSED:
+            case LengowOrder::STATE_CANCELED:
                 return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_CANCEL');
             case 'shippedByMp':
                 return (int)LengowConfiguration::getGlobalValue('LENGOW_ORDER_ID_SHIPPEDBYMP');
@@ -179,7 +179,7 @@ class LengowMain
      */
     public static function updateDateImport($type)
     {
-        if ($type === 'cron') {
+        if ($type === LengowImport::TYPE_CRON) {
             LengowConfiguration::updateGlobalValue('LENGOW_LAST_IMPORT_CRON', time());
         } else {
             LengowConfiguration::updateGlobalValue('LENGOW_LAST_IMPORT_MANUAL', time());
@@ -197,16 +197,34 @@ class LengowMain
         $timestampManual = LengowConfiguration::getGlobalValue('LENGOW_LAST_IMPORT_MANUAL');
         if ($timestampCron && $timestampManual) {
             if ((int)$timestampCron > (int)$timestampManual) {
-                return array('type' => 'cron', 'timestamp' => (int)$timestampCron);
+                return array('type' => LengowImport::TYPE_CRON, 'timestamp' => (int)$timestampCron);
             } else {
-                return array('type' => 'manual', 'timestamp' => (int)$timestampManual);
+                return array('type' => LengowImport::TYPE_MANUAL, 'timestamp' => (int)$timestampManual);
             }
         } elseif ($timestampCron && !$timestampManual) {
-            return array('type' => 'cron', 'timestamp' => (int)$timestampCron);
+            return array('type' => LengowImport::TYPE_CRON, 'timestamp' => (int)$timestampCron);
         } elseif ($timestampManual && !$timestampCron) {
-            return array('type' => 'manual', 'timestamp' => (int)$timestampManual);
+            return array('type' => LengowImport::TYPE_MANUAL, 'timestamp' => (int)$timestampManual);
         }
         return array('type' => 'none', 'timestamp' => 'none');
+    }
+
+    /**
+     * Get date in local date
+     *
+     * @param integer $timestamp linux timestamp
+     * @param boolean $second see seconds or not
+     *
+     * @return string
+     */
+    public static function getDateInCorrectFormat($timestamp, $second = false)
+    {
+        if ($second) {
+            $format = 'l d F Y @ H:i:s';
+        } else {
+            $format = 'l d F Y @ H:i';
+        }
+        return date($format, $timestamp);
     }
 
     /**
@@ -328,7 +346,7 @@ class LengowMain
      */
     public static function getToken($idShop = null)
     {
-        if (is_null($idShop)) {
+        if ($idShop === null) {
             $token = LengowConfiguration::getGlobalValue('LENGOW_GLOBAL_TOKEN');
             if ($token && Tools::strlen($token) > 0) {
                 return $token;
@@ -358,28 +376,12 @@ class LengowMain
         $ips = LengowConfiguration::getGlobalValue('LENGOW_AUTHORIZED_IP');
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
         $ips = array_filter(explode(';', $ips));
-        $authorizedIps = count($ips) > 0 ? array_merge($ips, self::$ipsLengow) : self::$ipsLengow;
-        if (!self::inTest()) {
+        $authorizedIps = !empty($ips) ? array_merge($ips, self::$ipsLengow) : self::$ipsLengow;
+        if (isset($_SERVER['SERVER_ADDR'])) {
             $authorizedIps[] = $_SERVER['SERVER_ADDR'];
         }
         $hostnameIp = $_SERVER['REMOTE_ADDR'];
         if (in_array($hostnameIp, $authorizedIps)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check if we are in phpunit test
-     *
-     * @return boolean
-     */
-    public static function inTest()
-    {
-        if (defined('PS_UNIT_TEST')) {
-            return true;
-        }
-        if (isset($_SERVER['HTTP_USER_AGENT']) && Tools::substr($_SERVER['HTTP_USER_AGENT'], 0, 10) === 'GuzzleHttp') {
             return true;
         }
         return false;
@@ -411,7 +413,7 @@ class LengowMain
      */
     public static function setLogMessage($key, $params = null)
     {
-        if (is_null($params) || (is_array($params) && count($params) === 0)) {
+        if ($params === null || (is_array($params) && empty($params))) {
             return $key;
         }
         $allParams = array();
@@ -437,7 +439,7 @@ class LengowMain
         if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
             if (isset($result[1])) {
                 $key = $result[1];
-                if (isset($result[4]) && is_null($params)) {
+                if (isset($result[4]) && $params === null) {
                     $strParam = $result[4];
                     $allParams = explode('|', $strParam);
                     foreach ($allParams as $param) {
@@ -770,14 +772,14 @@ class LengowMain
                     );
                     if (!$mailSent) {
                         self::log(
-                            'MailReport',
+                            LengowLog::CODE_MAIL_REPORT,
                             self::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
                             $logOutput
                         );
                         $success = false;
                     } else {
                         self::log(
-                            'MailReport',
+                            LengowLog::CODE_MAIL_REPORT,
                             self::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
                             $logOutput
                         );
@@ -786,7 +788,7 @@ class LengowMain
                 }
             } else {
                 self::log(
-                    'MailReport',
+                    LengowLog::CODE_MAIL_REPORT,
                     self::setLogMessage('log.mail_report.template_not_exist', array('iso_code' => $iso)),
                     $logOutput
                 );
@@ -878,12 +880,12 @@ class LengowMain
     {
         if ($shipmentByMp) {
             $orderState = 'shippedByMp';
-        } elseif ($marketplace->getStateLengow($orderStateMarketplace) === 'shipped'
-            || $marketplace->getStateLengow($orderStateMarketplace) === 'closed'
+        } elseif ($marketplace->getStateLengow($orderStateMarketplace) === LengowOrder::STATE_SHIPPED
+            || $marketplace->getStateLengow($orderStateMarketplace) === LengowOrder::STATE_CLOSED
         ) {
-            $orderState = 'shipped';
+            $orderState = LengowOrder::STATE_SHIPPED;
         } else {
-            $orderState = 'accepted';
+            $orderState = LengowOrder::STATE_ACCEPTED;
         }
         return self::getOrderState($orderState);
     }
@@ -916,7 +918,7 @@ class LengowMain
      */
     public static function getLogInstance()
     {
-        if (is_null(self::$log)) {
+        if (self::$log === null) {
             try {
                 self::$log = new LengowLog();
             } catch (LengowException $e) {
@@ -963,7 +965,7 @@ class LengowMain
             $base .= __PS_BASE_URI__;
         } else {
             try {
-                $idShop = is_null($idShop) ? Context::getContext()->shop->id : $idShop;
+                $idShop = $idShop === null ? Context::getContext()->shop->id : $idShop;
                 $shopUrl = new ShopUrl($idShop);
                 $base = 'http' . $isHttps . '://' . $shopUrl->domain . $shopUrl->physical_uri . $shopUrl->virtual_uri;
             } catch (Exception $e) {

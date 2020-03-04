@@ -40,21 +40,6 @@ class LengowController
     protected $locale;
 
     /**
-     * @var boolean If a new merchant or not
-     */
-    protected $isNewMerchant;
-
-    /**
-     * @var array All account datas
-     */
-    protected $merchantStatus;
-
-    /**
-     * @var boolean See toolbar or not
-     */
-    protected $displayToolbar;
-
-    /**
      * @var boolean Toolbox is open or not
      */
     protected $toolbox;
@@ -69,32 +54,30 @@ class LengowController
         $this->context->smarty->assign('current_controller', get_class($this));
         $this->context->smarty->assign('lengow_configuration', new LengowConfiguration());
         $this->context->smarty->assign('locale', new LengowTranslation());
-        $this->context->smarty->assign(
-            'localeIsoCode',
-            Tools::substr(Context::getContext()->language->language_code, 0, 2)
-        );
+        $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
+        $this->context->smarty->assign('localeIsoCode', $localeIsoCode);
         $this->context->smarty->assign('version', _PS_VERSION_);
         $this->context->smarty->assign('lengowVersion', $this->module->version);
-        $this->isNewMerchant = LengowConnector::isNewMerchant();
-        $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
-        $this->merchantStatus = LengowSync::getStatusAccount();
-        $this->context->smarty->assign('merchantStatus', $this->merchantStatus);
+        $isNewMerchant = LengowConfiguration::isNewMerchant();
+        $this->context->smarty->assign('isNewMerchant', $isNewMerchant);
+        $merchantStatus = LengowSync::getStatusAccount();
+        $this->context->smarty->assign('merchantStatus', $merchantStatus);
+        $pluginData = LengowSync::getPluginData();
+        $this->context->smarty->assign('pluginData', $pluginData);
         $this->locale = new LengowTranslation();
         $this->context->smarty->assign('lengow_link', new LengowLink());
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         // get module path uri
         $lengowPathUri = _PS_VERSION_ < '1.5' ? __PS_BASE_URI__ . 'modules/lengow/' : $this->module->getPathUri();
         $this->context->smarty->assign('lengowPathUri', $lengowPathUri);
+        $this->context->smarty->assign('lengowUrl', LengowConnector::LENGOW_URL);
         // show header or not
-        if ($this->isNewMerchant
-            || ($this->merchantStatus['type'] === 'free_trial' && $this->merchantStatus['expired'])
-            || $this->merchantStatus['type'] === 'bad_payer'
-        ) {
-            $this->displayToolbar = false;
+        if ($isNewMerchant || ($merchantStatus['type'] === 'free_trial' && $merchantStatus['expired'])) {
+            $displayToolbar = false;
         } else {
-            $this->displayToolbar = true;
+            $displayToolbar = true;
         }
-        $this->context->smarty->assign('displayToolbar', $this->displayToolbar);
+        $this->context->smarty->assign('displayToolbar', $displayToolbar);
     }
 
     /**
@@ -111,7 +94,7 @@ class LengowController
     {
         $this->context->smarty->assign(
             'total_pending_order',
-            LengowOrder::getTotalOrderByStatus('waiting_shipment')
+            LengowOrder::getTotalOrderByStatus(LengowOrder::STATE_WAITING_SHIPMENT)
         );
         if (_PS_VERSION_ < '1.5') {
             if (!$this->toolbox) {

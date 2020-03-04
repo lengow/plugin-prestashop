@@ -27,5 +27,6 @@
 
 <input type="hidden" id="lengow_ajax_link" value="{$lengow_ajax_link|escape:'htmlall':'UTF-8'}">
 <input type="hidden" id="lengow_sync_link" value="{$isSync|escape:'htmlall':'UTF-8'}">
+<input type="hidden" id="lengow_url" value="{$lengowUrl|escape:'htmlall':'UTF-8'}">
 <input type="hidden" id="lengow_lang_iso" value="{$localeIsoCode|escape:'htmlall':'UTF-8'}">
 <script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/home.js"></script>

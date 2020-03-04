@@ -50,7 +50,7 @@ if (LengowInstall::checkTableExists('lengow_product')
     } catch (PrestaShopDatabaseException $e) {
         $idProducts = array();
     }
-    if (count($idProducts) > 0) {
+    if (!empty($idProducts)) {
         Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'lengow_product SET id_shop = 1');
         if (LengowShop::isFeatureActive()) {
             $shops = LengowShop::findAll(true);
@@ -60,7 +60,7 @@ if (LengowInstall::checkTableExists('lengow_product')
                     $insertValues[] = '(' . (int)$idProduct['id_product'] . ', :idShop)';
                 }
             }
-            if (count($insertValues) > 0) {
+            if (!empty($insertValues)) {
                 $insertValueStr = join(', ', $insertValues);
                 foreach ($shops as $shop) {
                     if (!isset($shop['id_shop']) || $shop['id_shop'] == 1) {
@@ -150,7 +150,7 @@ if (LengowInstall::checkTableExists('lengow_orders') && LengowInstall::checkTabl
         );
         foreach ($results as $result) {
             if (LengowInstall::checkFieldExists('lengow_orders', 'marketplace_sku')) {
-                $orderLineQuery = is_null($result['delivery_address_id'])
+                $orderLineQuery = $result['delivery_address_id'] === null
                     ? ' IS NULL'
                     : ' = \'' . $result['delivery_address_id'] . '\'';
                 $idOrder = Db::getInstance()->getRow(
@@ -332,7 +332,7 @@ if (LengowInstall::$oldVersion && LengowInstall::$oldVersion < '3.0.0') {
     LengowInstall::renameConfigurationKey('LENGOW_EXPORT_DISABLED', 'LENGOW_EXPORT_INACTIVE', true);
     LengowInstall::renameConfigurationKey('LENGOW_EXPORT_FILE', 'LENGOW_EXPORT_FILE_ENABLED');
     LengowInstall::renameConfigurationKey('LENGOW_CARRIER_DEFAULT', 'LENGOW_EXPORT_CARRIER_DEFAULT');
-    LengowInstall::renameConfigurationKey('LENGOW_DEBUG', 'LENGOW_IMPORT_PREPROD_ENABLED');
+    LengowInstall::renameConfigurationKey('LENGOW_DEBUG', 'LENGOW_IMPORT_DEBUG_ENABLED');
     LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SHIPPED_BY_MP', 'LENGOW_IMPORT_SHIP_MP_ENABLED');
     LengowInstall::renameConfigurationKey('LENGOW_REPORT_MAIL', 'LENGOW_REPORT_MAIL_ENABLED');
     LengowInstall::renameConfigurationKey('LENGOW_EMAIL_ADDRESS', 'LENGOW_REPORT_MAIL_ADDRESS');

@@ -9,13 +9,15 @@ tab.legals|Mentions légales
 menu.product|Produits
 menu.order|Commandes
 menu.jump_to_lengow|Accéder à Lengow
-menu.preprod_active|mode préproduction 
+menu.debug_active|Debug Mode
 menu.counter|Période d'essai : %{counter} jour(s) restant(s).
 menu.upgrade_account|Souscrire
 menu.order_overview|Vue d'ensemble
 menu.order_parameter|Paramètres des commandes
 menu.help|Aide
 menu.global_parameter|Paramètres principaux
+menu.new_version_available|La nouvelle version %{version} est disponible !
+menu.download_plugin|Télécharger
 footer.legals|Mentions légales
 footer.plugin_lengow|Lengow Prestashop Module
 footer.lengow_link_url|http://www.lengow.com/fr/
@@ -27,10 +29,6 @@ dashboard.screen.orders_title|Commandes
 dashboard.screen.orders_text|Gérer vos commandes directement sur votre tableau de bord PrestaShop.
 dashboard.screen.settings_title|Paramètrage
 dashboard.screen.settings_text|Configurer les principaux paramètres de votre plugin PrestaShop
-dashboard.screen.partner_business|Lengow, partenaire de votre activité e-commerce
-dashboard.screen.stat_turnover|Chiffre d'affaires
-dashboard.screen.stat_nb_orders|Commandes
-dashboard.screen.stat_more_stats|Plus de statistiques ?
 dashboard.screen.some_help_title|Besoin d'aide ?
 dashboard.screen.get_in_touch|Prenez contact avec les équipes Lengow.
 dashboard.screen.visit_help_center|Visitez notre Help Center
@@ -40,12 +38,6 @@ status.screen.subtitle_end_free_trial|Vous avez atteint la fin de votre période
 status.screen.first_description_end_free_trial|Vos 15 jours d'essai gratuit sur la plateforme Lengow sont maintenant terminés. Nous espérons qu'ils ont été bénéfiques à votre activité e-commerce.
 status.screen.second_description_end_free_trial|Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les importations vont être momentanément stoppées.
 status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration. Pour conserver l'intégralité des paramètres que vous avez défini, pensez à souscrire dès maintenant !
-status.screen.subtitle_bad_payer|Votre compte est temporairement fermé.
-status.screen.first_description_bad_payer|Nous sommes désolé mais nous devons temporairement limiter l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire.
-status.screen.second_description_bad_payer|La publication de vos catalogues est aussi suspendue. Nous vous recommandons de prendre contact avec nous rapidement par mail
-status.screen.phone_bad_payer|ou par téléphone au +33 (0)2 85 52 64 15.
-status.screen.third_description_bad_payer|Nous espérons vous revoir très rapidement parmi nous
-status.screen.facturation_button|Voir mes informations de facturation
 status.screen.upgrade_account_button|Je suis prêt à souscrire !
 status.screen.refresh_action|Actualiser mon compte
 product.screen.nb_exported|produits exportés 
@@ -87,7 +79,7 @@ order.screen.import_manuel|Manuel
 order.screen.button_update_orders|Synchroniser les commandes
 order.screen.button_reimport_order|Réimporter mes commandes
 order.screen.button_resend_order|Renvoyer mes commandes
-order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production ?</a>
+order.screen.debug_warning_message|Vous êtes en Debug Mode. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Désactiver le Debug Mode ?</a>
 order.screen.import_single_warning_message|La version de votre module est comprise entre la 1.5.2 et la 1.5.4. Pour des raisons de sécurité, vous ne pouvez importer qu'une seule commande par synchronisation.
 order.screen.no_carrier_warning_message|Certaines de vos commandes ne vont pas pouvoir être importées car vous n'avez pas encore défini de transporteur par défaut pour certains pays de livraison. <a href=%{url}>Configurer les transporteurs</a>
 order.screen.not_imported|Pas importée
@@ -150,8 +142,8 @@ global_setting.screen.default_export_carrier_title|Calcul des frais de livraison
 global_setting.screen.default_export_carrier_description|Les frais de livraison de votre catalogue vont être calculés en fonction du transporteur choisi
 global_setting.screen.tracker_title|Tracker Lengow
 global_setting.screen.tracker_description|Ce tracker vous permet de récupérer les statistiques de commandes de votre site directement sur la plateforme Lengow.
-global_setting.screen.preprod_mode_title|Mode Préproduction
-global_setting.screen.preprod_mode_description|Utilisez la pré-production pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ces paramètres UNIQUEMENT sur votre serveur de préproduction.
+global_setting.screen.debug_mode_title|Debug Mode
+global_setting.screen.debug_mode_description|Utilisez le Debug Mode pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ce paramètre UNIQUEMENT sur votre serveur de préproduction
 global_setting.screen.log_file_title|Fichiers de Log
 global_setting.screen.log_file_description|Retrouvez ci-dessous tout l'historique des logs (commandes importées, messages d'erreurs...). Ils seront sauvegardés ici pendant 20 jours.
 global_setting.screen.please_choose_log|Choisissez un fichier de log...
@@ -222,7 +214,7 @@ lengow_setting.lengow_import_days_title|Synchroniser toutes les commandes mises 
 lengow_setting.lengow_import_days_legend|Activez cette option si vous avez des commandes en erreur en attente. Cela vous permet de réimporter les commandes passées depuis le dernier import réussi.
 lengow_setting.lengow_import_processing_fee_title|Importer les frais de traitement
 lengow_setting.lengow_import_processing_fee_legend|Activez cette option si vous souhaitez importer dans vos commandes les frais de traitement des places de marché.
-lengow_setting.lengow_import_preprod_enabled_title|Activer le mode préproduction
+lengow_setting.lengow_import_debug_enabled_title|Activer le Debug Mode
 lengow_setting.lengow_import_ship_mp_enabled_title|Import des commandes expédiées par les places de marché
 lengow_setting.lengow_import_stock_ship_mp_title|Je veux diminuer mon stock
 lengow_setting.lengow_import_stock_ship_mp_legend|Activez cette option pour prendre en compte les commandes des places de marché sur les stocks de votre backoffice PrestaShop.
@@ -261,7 +253,7 @@ lengow_log.exception.no_product_to_cart|il n'y a pas de produit ajouté au panie
 lengow_log.exception.cannot_add_product_to_cart|le produit %{product_id} ne peut etre ajouté au panier (format de l'ID non valide)
 lengow_log.exception.no_quantity_for_product|le produit %{product_id} ne peut être ajouté au panier. Vérifiez qu'il est bien disponible à la commande ou qu'il y a assez de stock
 lengow_log.exception.no_connection_webservice|la connexion ne se fait pas avec Lengow pour la boutique %{name_shop} (%{id_shop})
-lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - %{error_message} pour la boutique %{name_shop} (%{id_shop})
+lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - "%{error_message}" pour la boutique %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|la commande ne peut être sauvegardée
 lengow_log.exception.carrier_shipping_address_no_country|l'adresse d'expédition ne contient pas de pays
 lengow_log.exception.no_default_carrier_for_country|Vous devez sélectionner un transporteur par défaut pour le pays %{country_name} et la place de marché %{marketplace_name}
@@ -285,8 +277,6 @@ lengow_log.exception.delivery_country_not_active|Le pays %{country_name} dans l'
 lengow_log.exception.product_is_not_listed|le produit %{product_id} n'est pas présent dans la commande en cours
 lengow_log.exception.unable_to_save_order|impossible de sauvegarder la commande PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossible de sauvegarder le paiement de la commande PrestaShop
-lengow_log.exception.timeout_api|l'API a été bloquée par un timeout
-lengow_log.exception.error_curl|Curl erreur %{error_code} - %{error_message}
 lengow_log.mail_report.order|commande %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|Pas de message d'erreur, contacter le support via https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Import Lengow

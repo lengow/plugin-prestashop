@@ -8,7 +8,6 @@
 #     - Clean logs folder
 #     - Clean translation folder
 #     - Remove tools folder
-#     - Remove tests folder
 #     - Remove .git Folder and .gitignore
 
 remove_if_exist(){
@@ -49,7 +48,6 @@ FOLDER_TMP="/tmp/lengow"
 FOLDER_LOGS="/tmp/lengow/logs"
 FOLDER_CONFIG="/tmp/lengow/config"
 FOLDER_EXPORT="/tmp/lengow/export"
-FOLDER_TEST="/tmp/lengow/tests"
 FOLDER_TOOLS="/tmp/lengow/tools"
 FOLDER_TRANSLATION="/tmp/lengow/translations/yml"
 
@@ -109,9 +107,6 @@ echo "- Clean export folder : ""$VERT""DONE""$NORMAL"""
 # clean tools folder
 remove_directory $FOLDER_TOOLS
 echo "- Remove Tools folder : ""$VERT""DONE""$NORMAL"""
-# remove Test folder
-remove_directory $FOLDER_TEST
-echo "- Remove Test folder : ""$VERT""DONE""$NORMAL"""
 # remove TMP FOLDER_TRANSLATION
 remove_directory $FOLDER_TRANSLATION
 echo "- Remove Translation yml folder : ""$VERT""DONE""$NORMAL"""

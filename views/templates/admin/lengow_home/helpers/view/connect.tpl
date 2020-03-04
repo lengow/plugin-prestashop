@@ -19,23 +19,33 @@
  *}
 <div id="lengow_home_wrapper" class="cms-global">
     <div class="lgw-container">
-        {if $lengow_configuration->getGlobalValue('LENGOW_IMPORT_PREPROD_ENABLED') eq '1'}
-            <div id="lgw-preprod" class="adminlengowhome">
-                {$locale->t('menu.preprod_active')|escape:'htmlall':'UTF-8'}
+        {if $lengow_configuration->debugModeIsActive()}
+            <div id="lgw-debug" class="adminlengowhome">
+                {$locale->t('menu.debug_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
-        {if $merchantStatus['type'] == 'free_trial' && !$merchantStatus['expired']}
-            <p class="text-right" id="menucountertrial">
-                {$locale->t('menu.counter', ['counter' => $merchantStatus['day']])|escape:'htmlall':'UTF-8'}
-                <a href="http://my.lengow.io/" target="_blank">
-                    {$locale->t('menu.upgrade_account')|escape:'htmlall':'UTF-8'}
-                </a>
-            </p>
-        {/if}
+        <div class="lgw-row">
+            <div class="text-left lgw-col-6" id="alert-plugin-available">
+                {if $pluginData && $pluginData['version'] > $lengowVersion}
+                    {$locale->t('menu.new_version_available', ['version' => $pluginData['version']])|escape:'htmlall':'UTF-8'}
+                    <a href="//my.{$lengowUrl|escape:'htmlall':'UTF-8'}{$pluginData['download_link']|escape:'htmlall':'UTF-8'}" target="_blank">
+                        {$locale->t('menu.download_plugin')|escape:'htmlall':'UTF-8'}
+                    </a>
+                {/if}
+            </div>
+            <div class="text-right lgw-col-6" id="alert-counter-trial">
+                {if $merchantStatus['type'] == 'free_trial' && !$merchantStatus['expired']}
+                    {$locale->t('menu.counter', ['counter' => $merchantStatus['day']])|escape:'htmlall':'UTF-8'}
+                    <a href="http://my.{$lengowUrl|escape:'htmlall':'UTF-8'}" target="_blank">
+                        {$locale->t('menu.upgrade_account')|escape:'htmlall':'UTF-8'}
+                    </a>
+                {/if}
+            </div>
+        </div>
         <div class="lgw-box lgw-home-header text-center">
             <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/lengow-white-big.png" alt="lengow">
             <h1>{$locale->t('dashboard.screen.welcome_back')|escape:'htmlall':'UTF-8'}</h1>
-            <a href="http://my.lengow.io/" class="lgw-btn" target="_blank">
+            <a href="//my.{$lengowUrl|escape:'htmlall':'UTF-8'}" class="lgw-btn" target="_blank">
                 {$locale->t('dashboard.screen.go_to_lengow')|escape:'htmlall':'UTF-8'}
             </a>
         </div>
@@ -73,29 +83,6 @@
                 </a>
             </div>
         </div>
-        {if $stats['available']}
-        <div class="lgw-box text-center">
-            <div class="lgw-col-12 center-block">
-                <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/picto-stats.png" class="img-responsive">
-            </div>
-            <h2>{$locale->t('dashboard.screen.partner_business')|escape:'htmlall':'UTF-8'}</h2>
-            <div class="lgw-row lgw-home-stats">
-                <div class="lgw-col-4 lgw-col-offset-2">
-                    <h5>{$locale->t('dashboard.screen.stat_turnover')|escape:'htmlall':'UTF-8'}</h5>
-                    <span class="stats-big-value">{$stats['total_order']|escape:'htmlall':'UTF-8'}</span>
-                </div>
-                <div class="lgw-col-4">
-                    <h5>{$locale->t('dashboard.screen.stat_nb_orders')|escape:'htmlall':'UTF-8'}</h5>
-                    <span class="stats-big-value">{$stats['nb_order']|escape:'htmlall':'UTF-8'}</span>
-                </div>
-            </div>
-            <p>
-                <a href="http://my.lengow.io/" target="_blank" class="lgw-btn lgw-btn-white">
-                    {$locale->t('dashboard.screen.stat_more_stats')|escape:'htmlall':'UTF-8'}
-                </a>
-            </p>
-        </div>
-        {/if}
         <div class="lgw-box">
             <h2>{$locale->t('dashboard.screen.some_help_title')|escape:'htmlall':'UTF-8'}</h2>
             <p>

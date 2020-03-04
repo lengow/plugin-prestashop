@@ -111,8 +111,8 @@ class LengowCheck
             'message' => LengowConfiguration::get('LENGOW_AUTHORIZED_IP'),
         );
         $checklist[] = array(
-            'title' => $this->locale->t('toolbox.index.preprod_disabled'),
-            'state' => (bool)LengowConfiguration::get('LENGOW_IMPORT_PREPROD_ENABLED') ? 0 : 1,
+            'title' => $this->locale->t('toolbox.index.debug_disabled'),
+            'state' => LengowConfiguration::debugModeIsActive() ? 0 : 1,
         );
         return $this->getAdminContent($checklist);
     }
@@ -125,14 +125,12 @@ class LengowCheck
     public function getImportInformation()
     {
         $lastImport = LengowMain::getLastImport();
-        $lastImportDate = (
-        $lastImport['timestamp'] === 'none'
+        $lastImportDate = $lastImport['timestamp'] === 'none'
             ? $this->locale->t('toolbox.index.last_import_none')
-            : date('Y-m-d H:i:s', $lastImport['timestamp'])
-        );
+            : LengowMain::getDateInCorrectFormat($lastImport['timestamp'], true);
         if ($lastImport['type'] === 'none') {
             $lastImportType = $this->locale->t('toolbox.index.last_import_none');
-        } elseif ($lastImport['type'] === 'cron') {
+        } elseif ($lastImport['type'] === LengowImport::TYPE_CRON) {
             $lastImportType = $this->locale->t('toolbox.index.last_import_cron');
         } else {
             $lastImportType = $this->locale->t('toolbox.index.last_import_manual');
@@ -181,10 +179,9 @@ class LengowCheck
     public function getInformationByStore($shop)
     {
         $lengowExport = new LengowExport(array('shop_id' => $shop->id));
-        if (!is_null(LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id))
-            && LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id) !== ''
-        ) {
-            $lastExport = LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id);
+        $lastExportDate = LengowConfiguration::get('LENGOW_LAST_EXPORT', null, null, $shop->id);
+        if ($lastExportDate !== null && $lastExportDate !== '') {
+            $lastExport = LengowMain::getDateInCorrectFormat(strtotime($lastExportDate), true);
         } else {
             $lastExport = $this->locale->t('toolbox.index.last_import_none');
         }
@@ -276,19 +273,19 @@ class LengowCheck
             );
             $checklist[] = array(
                 'title' => $this->locale->t('toolbox.checksum.file_modified', array('nb_file' => count($fileErrors))),
-                'state' => count($fileErrors) > 0 ? 0 : 1,
+                'state' => !empty($fileErrors) ? 0 : 1,
             );
             $checklist[] = array(
                 'title' => $this->locale->t('toolbox.checksum.file_deleted', array('nb_file' => count($fileDeletes))),
-                'state' => count($fileDeletes) > 0 ? 0 : 1,
+                'state' => !empty($fileDeletes) ? 0 : 1,
             );
             $html .= $this->getAdminContent($checklist);
-            if (count($fileErrors) > 0) {
+            if (!empty($fileErrors)) {
                 $html .= '<h3><i class="fa fa-list"></i> '
                     . $this->locale->t('toolbox.checksum.list_modified_file') . '</h3>';
                 $html .= $this->getAdminContent($fileErrors);
             }
-            if (count($fileDeletes) > 0) {
+            if (!empty($fileDeletes)) {
                 $html .= '<h3><i class="fa fa-list"></i> '
                     . $this->locale->t('toolbox.checksum.list_deleted_file') . '</h3>';
                 $html .= $this->getAdminContent($fileDeletes);

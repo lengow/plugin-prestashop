@@ -22,6 +22,7 @@
     $(document).ready(function () {
         var href = $('#lengow_ajax_link').val();
         var syncLink = $('#lengow_sync_link').val();
+        var lengowUrl = $('#lengow_url').val();
         var isoCode = $('#lengow_lang_iso').val();
         var syncIframe = document.getElementById('lengow_iframe');
         if (syncIframe) {
@@ -37,17 +38,7 @@
                     }
                 });
             };
-            if (syncLink) {
-                // syncIframe.src = '//cms.lengow.io/sync/';
-                // syncIframe.src = '//cms.lengow.net/sync/';
-                syncIframe.src = '//cms.lengow.rec/sync/';
-                // syncIframe.src = '//cms.lengow.dev/sync/';
-            } else {
-                // syncIframe.src = '//cms.lengow.io/';
-                // syncIframe.src = '//cms.lengow.net/';
-                syncIframe.src = '//cms.lengow.rec/';
-                // syncIframe.src = '//cms.lengow.dev/';
-            }
+            syncIframe.src = syncLink ? '//cms.'+lengowUrl+'/sync/' : '//cms.'+lengowUrl+'/';
             syncIframe.src = syncIframe.src+'?lang='+isoCode+'&clientType=prestashop';
             $('#frame_loader').hide();
             $('#lengow_iframe').show();
