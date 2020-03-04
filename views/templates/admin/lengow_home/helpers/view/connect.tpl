@@ -45,7 +45,7 @@
         <div class="lgw-box lgw-home-header text-center">
             <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/lengow-white-big.png" alt="lengow">
             <h1>{$locale->t('dashboard.screen.welcome_back')|escape:'htmlall':'UTF-8'}</h1>
-            <a href="http://my.lengow.io/" class="lgw-btn" target="_blank">
+            <a href="//my.{$lengowUrl|escape:'htmlall':'UTF-8'}" class="lgw-btn" target="_blank">
                 {$locale->t('dashboard.screen.go_to_lengow')|escape:'htmlall':'UTF-8'}
             </a>
         </div>
