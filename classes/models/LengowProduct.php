@@ -769,7 +769,7 @@ class LengowProduct extends Product
             $value = $this->combinations[$idProductAttribute][$name];
         }
         // if the value of the combination is not given, we take that of the parent
-        if (!$value || $value == 0 || $value === '') {
+        if (!$value || $value === 0 || $value === '0' || $value === '') {
             $value = $this->{$name};
         }
         return $value;

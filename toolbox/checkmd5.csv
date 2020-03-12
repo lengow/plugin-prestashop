@@ -1,4 +1,4 @@
-/lengow.php|a305022336a9e244ab4bf1abb4a0242c
+/lengow.php|17f0204e769fb5db646dcaeeeab2f249
 /loader.php|53bb146fb161d44d1bfa2ccd13cd565b
 /AdminLengowFeed14.php|6390074bac3ed8e343ed45bde617df51
 /AdminLengowHelp14.php|46a34f6bdb1df84daccbd2090e56500d
@@ -22,14 +22,14 @@
 /classes/controllers/LengowHelpController.php|1d8884f2ccf752e3fad5211b0ff0dea8
 /classes/controllers/index.php|ed8e273082cc0a58535dc2b454435f38
 /classes/controllers/LengowHomeController.php|13dc86eaf9de53e1e952453368d28df2
-/classes/models/LengowProduct.php|60e6a72e8568fd447e6c40036d7ab8f5
+/classes/models/LengowProduct.php|2587a71c115a8e0cc344cd99643d4334
 /classes/models/LengowOrderDetail.php|a11e09d78c325fa18a51e6b42f489b9a
 /classes/models/LengowPaymentModule.php|06c932210cf23dae04b284ed731dcd88
 /classes/models/LengowCart.php|72558861f51dcca5c8fddb48208c36ba
 /classes/models/LengowMain.php|b893b08562f01d2cac591172b49dbedd
 /classes/models/LengowException.php|c25029800cbc155b26375415141e8824
 /classes/models/LengowFeed.php|f612190b776f2fd00742cc5c8c8b1148
-/classes/models/LengowConnector.php|cd3125fbea9f529e042d08a984ca15b8
+/classes/models/LengowConnector.php|f82ca2c66f6ecae623c3d386a0737b22
 /classes/models/LengowTaxRule.php|3b761db12eff6f1d7b0faf9d5cde3945
 /classes/models/LengowCustomer.php|ebaa7d15d5e980f432d7bc71f786e81b
 /classes/models/LengowSync.php|7ab66f421e89ff1b40bda70ef0b9f6a8
@@ -49,7 +49,7 @@
 /classes/models/LengowImport.php|76361e1275ec15349a2a1a9834f92b48
 /classes/models/LengowCarrier.php|dfab23f04013b57d674cc82e60173a1a
 /classes/models/LengowShop.php|d8bfcd1f9186faeb41e2f804c0583d2c
-/classes/models/LengowAction.php|13c69277b9d0c5d0a243d1707850fcb4
+/classes/models/LengowAction.php|b2f784661c8e1c9daab5b19e0a324b8d
 /classes/models/LengowTool.php|1719200650089f8e324a44a9aa094196
 /classes/models/LengowConfiguration.php|1a47b6887b9e56658ac6002f0be782b4
 /classes/models/LengowLink.php|952925148a27a6c325b2420a17414020
