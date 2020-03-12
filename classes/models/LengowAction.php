@@ -404,7 +404,7 @@ class LengowAction
                     )
                 );
             } else {
-                if ($result !== null) {
+                if ($result && $result !== null) {
                     $message = LengowMain::setLogMessage(
                         'lengow_log.exception.action_not_created',
                         array('error_message' => Tools::jsonEncode($result))
