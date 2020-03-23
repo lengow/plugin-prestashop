@@ -52,12 +52,15 @@ class LengowController
         $this->module = Module::getInstanceByName('lengow');
         $this->context = Context::getContext();
         $this->context->smarty->assign('current_controller', get_class($this));
-        $this->context->smarty->assign('lengow_configuration', new LengowConfiguration());
         $this->context->smarty->assign('locale', new LengowTranslation());
         $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
         $this->context->smarty->assign('localeIsoCode', $localeIsoCode);
         $this->context->smarty->assign('version', _PS_VERSION_);
         $this->context->smarty->assign('lengowVersion', $this->module->version);
+        $multiShop = _PS_VERSION_ >= '1.5' && Shop::isFeatureActive();
+        $this->context->smarty->assign('multiShop', $multiShop);
+        $debugMode = LengowConfiguration::debugModeIsActive();
+        $this->context->smarty->assign('debugMode', $debugMode);
         $isNewMerchant = LengowConfiguration::isNewMerchant();
         $this->context->smarty->assign('isNewMerchant', $isNewMerchant);
         $merchantStatus = LengowSync::getStatusAccount();

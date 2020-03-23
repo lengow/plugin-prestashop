@@ -80,6 +80,26 @@ class LengowOrder extends Order
     const STATE_REFUNDED = 'refunded';
 
     /**
+     * @var string order type prime
+     */
+    const TYPE_PRIME = 'is_prime';
+
+    /**
+     * @var string order type express
+     */
+    const TYPE_EXPRESS = 'is_express';
+
+    /**
+     * @var string order type business
+     */
+    const TYPE_BUSINESS = 'is_business';
+
+    /**
+     * @var string order type delivered by marketplace
+     */
+    const TYPE_DELIVERED_BY_MARKETPLACE = 'is_delivered_by_marketplace';
+
+    /**
      * @var string Lengow order record id
      */
     public $lengowId;
@@ -138,6 +158,11 @@ class LengowOrder extends Order
      * @var integer number of items
      */
     public $lengowOrderItem;
+
+    /**
+     * @var array order types (is_express, is_prime...)
+     */
+    public $lengowOrderTypes;
 
     /**
      * @var string order currency
@@ -241,6 +266,7 @@ class LengowOrder extends Order
             lo.`order_process_state`,
             lo.`order_date`,
             lo.`order_item`,
+            lo.`order_types`,
             lo.`currency`,
             lo.`total_paid`,
             lo.`commission`,
@@ -271,6 +297,9 @@ class LengowOrder extends Order
             $this->lengowProcessState = (int)$result['order_process_state'];
             $this->lengowOrderDate = $result['order_date'];
             $this->lengowOrderItem = (int)$result['order_item'];
+            $this->lengowOrderTypes = $result['order_types'] !== null
+                ? Tools::jsonDecode($result['order_types'], true)
+                : array();
             $this->lengowCurrency = $result['currency'];
             $this->lengowTotalPaid = $result['total_paid'];
             $this->lengowCommission = $result['commission'];
@@ -1262,6 +1291,49 @@ class LengowOrder extends Order
         }
         $return = $orderLines[$this->lengowDeliveryAddressId];
         return !empty($return) ? $return : false;
+    }
+
+    /**
+     * Check if order is express
+     *
+     * @return boolean
+     */
+    public function isExpress()
+    {
+        if (array_key_exists(self::TYPE_EXPRESS, $this->lengowOrderTypes)
+            || array_key_exists(self::TYPE_PRIME, $this->lengowOrderTypes)
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if order is B2B
+     *
+     * @return boolean
+     */
+    public function isBusiness()
+    {
+        if (array_key_exists(self::TYPE_BUSINESS, $this->lengowOrderTypes)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if order is delivered by marketplace
+     *
+     * @return boolean
+     */
+    public function isDeliveredByMarketplace()
+    {
+        if (array_key_exists(self::TYPE_DELIVERED_BY_MARKETPLACE, $this->lengowOrderTypes)
+            || $this->lengowSentMarketplace
+        ) {
+            return true;
+        }
+        return false;
     }
 
     /**

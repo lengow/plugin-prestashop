@@ -14,6 +14,10 @@
   top: 88px;
 }
 
+#lgw-debug.multi-shop {
+  top: 154px;
+}
+
 .lengow-nav-top {
   margin-top: 20px !important;
 }
@@ -85,6 +89,9 @@ body.lengow_body #main {
   top: inherit;
 }
 
+#lgw-debug.adminlengowhome.multi-shop {
+  top: 70px;
+}
 
 /*************************************************/
 /*                      SETTINGS                 */
@@ -102,6 +109,11 @@ body.lengow_body #main {
 #lgw-debug.adminlengowordersetting {
   top: 144px;
   z-index: 2;
+}
+
+#lgw-debug.adminlengoworder.multi-shop,
+#lgw-debug.adminlengowordersetting.multi-shop {
+  top: 210px;
 }
 
 #lengow_order_wrapper.activeDebug,

@@ -283,8 +283,6 @@ body.page-sidebar #lengow_form_order_setting{
 }
 
 .adminlengoworder .lgw-container {
-  /*min-width:1250px;*/
-  /*min-width: 1330px;*/
   min-width: 1450px;
   width:100%;
 }
@@ -301,6 +299,13 @@ body.page-sidebar #lengow_form_order_setting{
 
 .adminlengoworder table input[type="text"].lengow_datepicker:first-child {
   margin-right: 3px;
+}
+
+.adminlengoworder table .lgw-order-status {
+  padding: 0 7px;
+  height: auto;
+  text-align: center;
+  border-radius: 10px;
 }
 
 .adminlengoworder #lgw-debug,

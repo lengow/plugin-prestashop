@@ -19,8 +19,8 @@
  *}
 <div class="cms-global">
     <div class="lgw-container" id="lengow_mainsettings_wrapper" xmlns="http://www.w3.org/1999/html">
-        {if $lengow_configuration->debugModeIsActive()}
-            <div id="lgw-debug" class="adminlengowmainsetting">
+        {if $debugMode}
+            <div id="lgw-debug" class="adminlengowmainsetting {if $multiShop}multi-shop{/if}">
                 {$locale->t('menu.debug_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}

@@ -82,8 +82,34 @@
 						<strong>{$carrier_tracking|escape:'htmlall':'UTF-8'}</strong>
 					</li>
 					<li>
-						{$lengow_locale->t('admin.order.shipped_by_marketplace')|escape:'htmlall':'UTF-8'} :
-						<strong>{$sent_marketplace|escape:'htmlall':'UTF-8'}</strong>
+						{$lengow_locale->t('admin.order.is_express')|escape:'htmlall':'UTF-8'} :
+						<strong>
+							{if !$is_express}
+								{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
+							{else}
+								{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
+							{/if}
+						</strong>
+					</li>
+					<li>
+						{$lengow_locale->t('admin.order.is_delivered_by_marketplace')|escape:'htmlall':'UTF-8'} :
+						<strong>
+							{if !$is_delivered_by_marketplace}
+								{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
+							{else}
+								{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
+							{/if}
+						</strong>
+					</li>
+					<li>
+						{$lengow_locale->t('admin.order.is_business')|escape:'htmlall':'UTF-8'} :
+						<strong>
+							{if !$is_business}
+								{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
+							{else}
+								{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
+							{/if}
+						</strong>
 					</li>
 					<li>
 						{$lengow_locale->t('admin.order.message')|escape:'htmlall':'UTF-8'} :

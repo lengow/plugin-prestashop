@@ -102,16 +102,20 @@ order.screen.status_closed|Closed
 order.screen.status_refunded|Refunded
 order.screen.status_canceled|Canceled
 order.screen.status_shipped_by_mkp|Shipped by Marketplace
+order.screen.type_express|Express delivery
+order.screen.type_delivered_by_marketplace|Shipped by Marketplace
+order.screen.type_business|Business
 order.table.action_lengow|Actions
-order.table.order_lengow_state|Status Lengow
+order.table.order_lengow_state|Status
+order.table.order_types|Types
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Shop
-order.table.marketplace_sku|ID order
+order.table.marketplace_sku|Order ID
 order.table.reference_prestashop|Reference
+order.table.customer|Customer Name
 order.table.order_date|Date
 order.table.delivery_country|Country
-order.table.order_item|Quantity
-order.table.total_paid|Total
+order.table.total_paid|Amount
 order.table.extra|Extra
 order_setting.screen.carrier_management_title|Manage your carrier by country
 order_setting.screen.carrier_management_description|Select a default carrier for each delivery country and marketplace to retrieve all of your orders.
@@ -294,7 +298,9 @@ admin.order.carrier|Carrier from marketplace
 admin.order.carrier_method|Shipping method from marketplace
 admin.order.carrier_id_relay|ID relay
 admin.order.carrier_tracking|Tracking number
-admin.order.shipped_by_marketplace|Shipped by marketplace
+admin.order.is_express|Express delivery
+admin.order.is_delivered_by_marketplace|Shipped by Marketplace
+admin.order.is_business|Business
 admin.order.message|Message
 admin.order.imported_at|Imported at
 admin.order.cancel_and_reimport|Re-import order

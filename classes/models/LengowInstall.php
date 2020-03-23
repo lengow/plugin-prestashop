@@ -513,6 +513,7 @@ class LengowInstall
                 `order_process_state` TINYINT(1) UNSIGNED NOT NULL,
                 `order_date` DATETIME NOT NULL,
                 `order_item` INTEGER(11) UNSIGNED NULL,
+                `order_types` TEXT NULL,
                 `currency` VARCHAR(3) NULL,
                 `total_paid` DECIMAL(17,2) UNSIGNED NULL,
                 `commission` DECIMAL(17,2) UNSIGNED NULL,

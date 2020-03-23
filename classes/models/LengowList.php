@@ -536,6 +536,20 @@ class LengowList
                                 $where[] = ' ' . pSQL($fieldValue['filter_key']) . ' <= "' . $to . ' 23:59:59"';
                             }
                             break;
+                        case 'order_types':
+                            if (Tools::strlen($value) > 0) {
+                                if ($value === LengowOrder::TYPE_EXPRESS) {
+                                    $where[] = ' (lo.order_types LIKE "%' . pSQL(LengowOrder::TYPE_EXPRESS) . '%"
+                                        OR lo.order_types LIKE "%' . pSQL(LengowOrder::TYPE_PRIME) . '%")';
+                                } elseif ($value === LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE) {
+                                    $where[] = ' (lo.order_types LIKE "%'
+                                        . pSQL(LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE) . '%"
+                                        OR lo.sent_marketplace = 1)';
+                                } else {
+                                    $where[] = ' ' . pSQL($fieldValue['filter_key']) . ' LIKE "%' . pSQL($value) . '%"';
+                                }
+                            }
+                            break;
                     }
                 }
             }
