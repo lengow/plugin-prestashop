@@ -100,6 +100,11 @@ class LengowOrder extends Order
     const TYPE_DELIVERED_BY_MARKETPLACE = 'is_delivered_by_marketplace';
 
     /**
+     * @var string label fulfillment for old orders without order type
+     */
+    const LABEL_FULFILLMENT = 'Fulfillment';
+
+    /**
      * @var string Lengow order record id
      */
     public $lengowId;

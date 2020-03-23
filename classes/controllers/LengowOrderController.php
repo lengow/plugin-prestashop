@@ -650,7 +650,7 @@ class LengowOrderController extends LengowController
         ) {
             $iconLabel = isset($orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE])
                 ? $orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE]
-                : 'Fulfillment';
+                : LengowOrder::LABEL_FULFILLMENT;
             $return .= self::generateOrderTypeIcon($iconLabel, 'green-light', 'mod-delivery');
         }
         if (array_key_exists(LengowOrder::TYPE_BUSINESS, $orderTypes)) {
