@@ -367,7 +367,7 @@ class LengowOrderController extends LengowController
         );
         $fieldsList['order_types'] = array(
             'title' => $this->locale->t('order.table.order_types'),
-            'class' => 'text-center link  no-link nowrap',
+            'class' => 'text-center link no-link nowrap',
             'type' => 'order_types',
             'display_callback' => 'LengowOrderController::displayOrderTypes',
             'filter' => true,
