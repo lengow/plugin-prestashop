@@ -101,17 +101,20 @@ order.screen.status_shipped|Enviado
 order.screen.status_closed|Cerrado
 order.screen.status_refunded|Reintegrado
 order.screen.status_canceled|Cancelado
-order.screen.status_shipped_by_mkp|Enviado por el Marketplace
+order.screen.type_express|Entrega urgente
+order.screen.type_delivered_by_marketplace|Enviado por Marketplace
+order.screen.type_business|Business
 order.table.action_lengow|Acciones
-order.table.order_lengow_state|Estado de Lengow
+order.table.order_lengow_state|Estado
+order.table.order_types|Tipos
 order.table.marketplace_name|Marketplace
 order.table.shop_name|Tienda
-order.table.marketplace_sku|ID order
+order.table.marketplace_sku|ID del pedido
 order.table.reference_prestashop|Referencia
+order.table.customer|Nombre del cliente
 order.table.order_date|Fecha
 order.table.delivery_country|País
-order.table.order_item|Cantidad
-order.table.total_paid|Total
+order.table.total_paid|Precio
 order.table.extra|Extra
 order_setting.screen.carrier_management_title|Administre su operador por país
 order_setting.screen.carrier_management_description|Selecciona el transportista por defecto que desea aplicar a tus pedidos para cada país y cada marketplace en el que estás activo
@@ -281,7 +284,7 @@ lengow_log.mail_report.order|Pedido %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|ningún mensaje de error , póngase en contacto con el support via https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Import Lengow
 admin.order.imported_from_lengow|Este pedido ha sido importado por Lengow
-admin.order.lengow_order_id|Lengow order ID
+admin.order.lengow_order_id|ID del pedido Lengow
 admin.order.marketplace|Marketplace
 admin.order.feed_id|Feed ID
 admin.order.delivery_address_id|ID de dirección de entrega
@@ -290,11 +293,13 @@ admin.order.commission|Comisión
 admin.order.currency|Moneda
 admin.order.customer_name|Nombre del cliente
 admin.order.customer_email|Correo electrónico del cliente
-admin.order.carrier|Portador del mercado
-admin.order.carrier_method|Método de envío del mercado
+admin.order.carrier|Portador del marketplace
+admin.order.carrier_method|Método de envío del marketplace
 admin.order.carrier_id_relay|Relé de identificación
 admin.order.carrier_tracking|El número de rastreo
-admin.order.shipped_by_marketplace|Enviado por el marketplace
+admin.order.is_express|Entrega urgente
+admin.order.is_business|Business
+admin.order.is_delivered_by_marketplace|Enviado por Marketplace
 admin.order.message|Mensaje
 admin.order.imported_at|Importado en
 admin.order.cancel_and_reimport|Volver a importar el pedido

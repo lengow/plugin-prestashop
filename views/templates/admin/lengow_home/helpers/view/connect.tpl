@@ -19,8 +19,8 @@
  *}
 <div id="lengow_home_wrapper" class="cms-global">
     <div class="lgw-container">
-        {if $lengow_configuration->debugModeIsActive()}
-            <div id="lgw-debug" class="adminlengowhome">
+        {if $debugMode}
+            <div id="lgw-debug" class="adminlengowhome {if $multiShop}multi-shop{/if}">
                 {$locale->t('menu.debug_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
