@@ -637,15 +637,13 @@ class LengowOrderController extends LengowController
     {
         $return = '<div>';
         $orderTypes = $value !== null ? Tools::jsonDecode($value, true) : array();
-        if (array_key_exists(LengowOrder::TYPE_EXPRESS, $orderTypes)
-            || array_key_exists(LengowOrder::TYPE_PRIME, $orderTypes)
-        ) {
+        if (isset($orderTypes[LengowOrder::TYPE_EXPRESS]) || isset($orderTypes[LengowOrder::TYPE_PRIME])) {
             $iconLabel = isset($orderTypes[LengowOrder::TYPE_PRIME])
                 ? $orderTypes[LengowOrder::TYPE_PRIME]
                 : $orderTypes[LengowOrder::TYPE_EXPRESS];
             $return .= self::generateOrderTypeIcon($iconLabel, 'orange-light', 'mod-chrono');
         }
-        if (array_key_exists(LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE, $orderTypes)
+        if (isset($orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE])
             || ($key === 'order_types' && (bool)$item['sent_marketplace'])
         ) {
             $iconLabel = isset($orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE])
@@ -653,7 +651,7 @@ class LengowOrderController extends LengowController
                 : LengowOrder::LABEL_FULFILLMENT;
             $return .= self::generateOrderTypeIcon($iconLabel, 'green-light', 'mod-delivery');
         }
-        if (array_key_exists(LengowOrder::TYPE_BUSINESS, $orderTypes)) {
+        if (isset($orderTypes[LengowOrder::TYPE_BUSINESS])) {
             $return .= self::generateOrderTypeIcon($orderTypes[LengowOrder::TYPE_BUSINESS], 'blue-light', 'mod-pro');
         }
         $return .= '</div>';
@@ -862,7 +860,7 @@ class LengowOrderController extends LengowController
         return '
             <div class="lgw-label ' . $iconColor . ' icon-solo lengow_link_tooltip" 
                  data-original-title="' . $iconLabel . '">
-                <span class="lgw-icon ' . $iconMod . '">
+                <span class="lgw-icon ' . $iconMod . '"></span>
             </div>
         ';
     }

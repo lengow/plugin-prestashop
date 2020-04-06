@@ -1305,9 +1305,7 @@ class LengowOrder extends Order
      */
     public function isExpress()
     {
-        if (array_key_exists(self::TYPE_EXPRESS, $this->lengowOrderTypes)
-            || array_key_exists(self::TYPE_PRIME, $this->lengowOrderTypes)
-        ) {
+        if (isset($this->lengowOrderTypes[self::TYPE_EXPRESS]) || isset($this->lengowOrderTypes[self::TYPE_PRIME])) {
             return true;
         }
         return false;
@@ -1320,7 +1318,7 @@ class LengowOrder extends Order
      */
     public function isBusiness()
     {
-        if (array_key_exists(self::TYPE_BUSINESS, $this->lengowOrderTypes)) {
+        if (isset($this->lengowOrderTypes[self::TYPE_BUSINESS])) {
             return true;
         }
         return false;
@@ -1333,9 +1331,7 @@ class LengowOrder extends Order
      */
     public function isDeliveredByMarketplace()
     {
-        if (array_key_exists(self::TYPE_DELIVERED_BY_MARKETPLACE, $this->lengowOrderTypes)
-            || $this->lengowSentMarketplace
-        ) {
+        if (isset($this->lengowOrderTypes[self::TYPE_DELIVERED_BY_MARKETPLACE]) || $this->lengowSentMarketplace) {
             return true;
         }
         return false;
