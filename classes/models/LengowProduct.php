@@ -770,7 +770,7 @@ class LengowProduct extends Product
         }
         // if the value of the combination is not given, we take that of the parent
         if (!$value || $value === 0 || $value === '0' || $value === '') {
-            $value = $this->{$name};
+            $value = isset($this->{$name}) ? $this->{$name} : '';
         }
         return $value;
     }
