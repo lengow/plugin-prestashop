@@ -62,7 +62,7 @@ To make a support request to Lengow, use [our helpdesk](https://support.lengow.c
 Lengow for PrestaShop is available under license (Apache-2.0). If you want to contribute code (features or bugfixes), you have to create a pull request via Github and include valid license information.
 
 The `master` branch contains the latest stable version of the plugin. The `dev` branch contains the version under development.
-All Pull requests must be made on the `dev` branch and must be validated by 2 reviewers working at Lengow.
+All Pull requests must be made on the `dev` branch and must be validated by reviewers working at Lengow.
 
 By default the plugin is made to work on our pre-production environment (my.lengow.net).
 To change this environment, you must modify the two constants present in the file `lengow/classes/models/LengowConnector.php`
