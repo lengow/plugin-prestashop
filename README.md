@@ -31,7 +31,7 @@ Follow the instruction below if you want to install Lengow for PrestaShop using 
 
 1.) Clone the git repository in the PrestaShop `modules` folder using:
 
-    git clone git@github.com:lengow/plugin-prestashop.git
+    git clone git@github.com:lengow/plugin-prestashop.git lengow
 
 In case you wish to contribute to the plugin, fork the `dev` branch rather than cloning it, and create a pull request via Github. For further information please read the section "Become a contributor" of this document.
 
