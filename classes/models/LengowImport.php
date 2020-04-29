@@ -574,6 +574,7 @@ class LengowImport
     {
         $page = 1;
         $orders = array();
+        $currencyConversion = (bool)LengowConfiguration::get('LENGOW_CURRENCY_CONVERSION');
         if ($this->importOneOrder) {
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
@@ -610,6 +611,7 @@ class LengowImport
                         array(
                             'marketplace_order_id' => $this->marketplaceSku,
                             'marketplace' => $this->marketplaceName,
+                            'no_currency_conversion' => $currencyConversion,
                             'account_id' => $this->accountId,
                         ),
                         LengowConnector::FORMAT_STREAM,
@@ -636,6 +638,7 @@ class LengowImport
                                 'catalog_ids' => implode(',', $this->shopCatalogIds),
                                 'account_id' => $this->accountId,
                                 'page' => $page,
+                                'no_currency_conversion' => $currencyConversion,
                             )
                         ),
                         LengowConnector::FORMAT_STREAM,

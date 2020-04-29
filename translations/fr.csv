@@ -88,7 +88,7 @@ order.screen.refresh_order|Actualiser ma commande
 order.screen.order_not_imported|Votre commande n'a pas été importée dans PrestaShop.
 order.screen.action_sent|Action %{action_type} envoyée
 order.screen.action_waiting_return|Action envoyée, en attente d'une réponse.
-order.screen.action_sent_not_work|Erreur sur l'action envoyée à la place de marché.
+order.screen.action_sent_not_work|Erreur sur l'action envoyée à la marketplace.
 order.screen.no_error_message|Erreur non identifiée, merci de contacter le support Lengow pour plus d'informations
 order.screen.no_order_title|Le meilleur est encore à venir ! 
 order.screen.no_order_description|Vos produits sont bien visibles, vos ventes sont sur le point de décoller
@@ -235,6 +235,9 @@ lengow_setting.lengow_authorized_ip_legend|IP autorisée(s) séparée(s) par ;
 lengow_setting.lengow_tracking_enabled_title|Activer le tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_tracking_id_legend|Le nom de l'identifiant unique indiqué dans Lengow
+lengow_setting.lengow_currency_conversion_title|Convertir la devise de vos commandes
+lengow_setting.lengow_currency_conversion_legend|Toutes les commandes importées dans Prestashop seront automatiquement convertis dans la devise choisie dans Lengow
+lengow_setting.lengow_currency_conversion_switch|Activer la conversion de devises
 lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs
@@ -259,12 +262,11 @@ lengow_log.exception.no_connection_webservice|la connexion ne se fait pas avec L
 lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - "%{error_message}" pour la boutique %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|la commande ne peut être sauvegardée
 lengow_log.exception.carrier_shipping_address_no_country|l'adresse d'expédition ne contient pas de pays
-lengow_log.exception.no_default_carrier_for_country|Vous devez sélectionner un transporteur par défaut pour le pays %{country_name} et la marketplace
- %{marketplace_name}
+lengow_log.exception.no_default_carrier_for_country|Vous devez sélectionner un transporteur par défaut pour le pays %{country_name} et la marketplace %{marketplace_name}
 lengow_log.exception.marketplace_not_present|Erreur Lengow : la marketplace %{marketplace_name} n’apparaît pas dans la liste des marketplaces
 lengow_log.exception.order_line_required|numéro de la ligne de commande requis, non trouvé dans la commande
 lengow_log.exception.action_not_valid|l'action %{action} n'est pas valide
-lengow_log.exception.marketplace_action_not_present|l'action %{action} n'est pas présente pour cette place de marché
+lengow_log.exception.marketplace_action_not_present|l'action %{action} n'est pas présente pour cette marketplace
 lengow_log.exception.marketplace_sku_require|la référence commande marketplace est requise
 lengow_log.exception.marketplace_name_require|le nom de la marketplace est requis
 lengow_log.exception.no_delivery_country_in_order|nous ne trouvons pas le pays de livraison dans cette commande
