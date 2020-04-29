@@ -169,7 +169,7 @@ require 'views/header.php';
                         'LENGOW_IMPORT_SHIP_MP_ENABLED',
                         'LENGOW_IMPORT_STOCK_SHIP_MP',
                         'LENGOW_IMPORT_SINGLE_ENABLED',
-                        'LENGOW_DEVISE_CONVERSION',
+                        'LENGOW_CURRENCY_CONVERSION',
                     )
                 );
                 echo '</fieldset>';
