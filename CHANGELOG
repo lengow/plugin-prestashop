@@ -3,6 +3,7 @@ Version 3.2.2
 =============================================================
 
     - Feature: [import] Addition of order types in the order management screen
+	- Feature: [import] Addition of the currency conversion option in the order option panel
 	- Bugfix: Add isset in case some var were unset causing multiple php notice
 
 =============================================================
