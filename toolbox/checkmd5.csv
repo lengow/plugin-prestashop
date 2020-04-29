@@ -58,7 +58,7 @@
 /classes/models/LengowConfiguration.php|e6d73a13476fd77cbffb49a64f6ba188
 /classes/models/LengowCart.php|72558861f51dcca5c8fddb48208c36ba
 /classes/models/LengowMain.php|b893b08562f01d2cac591172b49dbedd
-/classes/models/LengowConnector.php|f82ca2c66f6ecae623c3d386a0737b22
+/classes/models/LengowConnector.php|5a18c2850835ebbab8c59f3e7e5d04a6
 /classes/index.php|ed8e273082cc0a58535dc2b454435f38
 /controllers/admin/TabLengowMainSettingController.php|5c6a094ae660d650044981443a3438cd
 /controllers/admin/AdminLengowOrderSettingController.php|44f75d5922a8277be6a79dc43d579c99
