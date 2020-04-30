@@ -574,7 +574,7 @@ class LengowImport
     {
         $page = 1;
         $orders = array();
-        $currencyConversion = (bool)LengowConfiguration::get('LENGOW_CURRENCY_CONVERSION');
+        $currencyConversion = !(bool)LengowConfiguration::get('LENGOW_CURRENCY_CONVERSION');
         if ($this->importOneOrder) {
             LengowMain::log(
                 LengowLog::CODE_IMPORT,

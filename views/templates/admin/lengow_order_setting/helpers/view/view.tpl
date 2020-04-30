@@ -53,13 +53,11 @@
                 <p>{html_entity_decode($import_params|escape:'htmlall':'UTF-8')}</p>
             </div>
             <div class="lgw-box">
-                <div id="devise_conversion">
-                    <h2>
-                        {$locale->t('lengow_setting.lengow_currency_conversion_title')|escape:'htmlall':'UTF-8'}
-                    </h2>
-                    <p>{$locale->t('lengow_setting.lengow_currency_conversion_legend')|escape:'htmlall':'UTF-8'}</p>
-                    <p>{html_entity_decode($currency_conversion|escape:'htmlall':'UTF-8')}</p>
-                </div>
+                <h2>
+                    {$locale->t('lengow_setting.lengow_currency_conversion_title')|escape:'htmlall':'UTF-8'}
+                </h2>
+                <p>{$locale->t('lengow_setting.lengow_currency_conversion_legend')|escape:'htmlall':'UTF-8'}</p>
+                <p>{html_entity_decode($currency_conversion|escape:'htmlall':'UTF-8')}</p>
             </div>
             <button type="submit" class="lgw-btn lgw-btn-progression lengow_submit_order_setting">
                 <div class="btn-inner">

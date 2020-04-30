@@ -260,7 +260,7 @@ es:
     lengow_tracking_id_title: "Lengow Tracking ID"
     lengow_tracking_id_legend: "El nombre del identificador único indicado en Lengow"
     lengow_currency_conversion_title: "Convierte la divisa de tu pedido"
-    lengow_currency_conversion_legend: "All orders imported into Prestashop will be automatically converted into the currency you've selected in Lengow"
+    lengow_currency_conversion_legend: "Todos los pedidos importados a Magento serán transformados automáticamente con la moneda que seleccionaste en Lengow"
     lengow_currency_conversion_switch: "Activa la conversion"
   lengow_log:
     error:
