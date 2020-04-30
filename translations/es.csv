@@ -235,6 +235,9 @@ lengow_setting.lengow_authorized_ip_legend|Authorized IP separada por ;
 lengow_setting.lengow_tracking_enabled_title|Activar el seguimiento Lengow
 lengow_setting.lengow_tracking_id_title|Lengow Tracking ID
 lengow_setting.lengow_tracking_id_legend|El nombre del identificador único indicado en Lengow
+lengow_setting.lengow_currency_conversion_title|Convierte la divisa de tu pedido
+lengow_setting.lengow_currency_conversion_legend|Todos los pedidos importados a Magento serán transformados automáticamente con la moneda que seleccionaste en Lengow
+lengow_setting.lengow_currency_conversion_switch|Activa la conversion
 lengow_log.error.nb_order_imported|%{nb_order} pedido(s) importada
 lengow_log.error.nb_order_updated|%{nb_order} pedido(s) actualizado
 lengow_log.error.nb_order_with_error|%{nb_order} pedido(s) con errores

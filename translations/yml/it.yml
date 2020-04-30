@@ -259,6 +259,9 @@ it:
     lengow_tracking_enabled_title: "Attiva il tracking Lengow"
     lengow_tracking_id_title: "ID Tracking Lengow"
     lengow_tracking_id_legend: "Il numero degli id unici indicati in Lengow"
+    lengow_currency_conversion_title: "Converti la divisa del tuo ordine"
+    lengow_currency_conversion_legend: "Tutti gli ordini importati in Prestashop saranno automaticamente importati nella Divisa che hai selezionato in Lengow"
+    lengow_currency_conversion_switch: "Attivare la conversione"
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} ordine importato"

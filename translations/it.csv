@@ -107,9 +107,9 @@ order.screen.type_business|Business
 order.table.action_lengow|Azione
 order.table.order_lengow_state|Stato
 order.table.order_types|Tipi
-order.table.marketplace_name|MarketPlace
+order.table.marketplace_name|Marketplace
 order.table.shop_name|Negozio
-order.table.marketplace_sku|ID ordine
+order.table.marketplace_sku|ID Ordine
 order.table.reference_prestashop|Riferimento
 order.table.customer|Nome del cliente
 order.table.order_date|Data
@@ -235,6 +235,9 @@ lengow_setting.lengow_authorized_ip_legend|IP Autorizzati separati da ;
 lengow_setting.lengow_tracking_enabled_title|Attiva il tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_tracking_id_legend|Il numero degli id unici indicati in Lengow
+lengow_setting.lengow_currency_conversion_title|Converti la divisa del tuo ordine
+lengow_setting.lengow_currency_conversion_legend|Tutti gli ordini importati in Prestashop saranno automaticamente importati nella Divisa che hai selezionato in Lengow
+lengow_setting.lengow_currency_conversion_switch|Attivare la conversione
 lengow_log.error.nb_order_imported|%{nb_order} ordine importato
 lengow_log.error.nb_order_updated|%{nb_order} ordine aggiornato
 lengow_log.error.nb_order_with_error|%{nb_order} errore numero ordine
