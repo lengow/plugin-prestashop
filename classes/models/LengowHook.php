@@ -435,7 +435,7 @@ class LengowHook
                 'check_resend_action' => $locale->t('admin.order.check_resend_action', array('action' => $actionType)),
             );
             $this->context->smarty->assign($templateData);
-            if (_PS_VERSION_ >= '1.6') {
+            if (version_compare(_PS_VERSION_, '1.6', '>=')) {
                 return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info_16.tpl');
             } else {
                 return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info.tpl');
