@@ -25,11 +25,6 @@
 class LengowAddress extends Address
 {
     /**
-     * @var string code ISO A2 for France
-     */
-    const ISO_A2_FR = 'FR';
-
-    /**
      * @var string code ISO A2 for Spain
      */
     const ISO_A2_ES = 'ES';
