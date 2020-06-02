@@ -713,7 +713,7 @@ class LengowAddress extends Address
     }
 
     /**
-     * Get short code from interval postcodes
+     * Get iso code from interval postcodes
      *
      * @param integer $postcode address postcode
      * @param array $intervalPostcodes postcode intervals
@@ -754,7 +754,7 @@ class LengowAddress extends Address
     }
 
     /**
-     * Search Magento region id by state return by api
+     * Search state id by state return by api
      *
      * @param integer $idCountry PrestaShop country id
      * @param string $stateRegion address state region
