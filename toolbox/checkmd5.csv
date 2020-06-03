@@ -44,7 +44,7 @@
 /classes/models/LengowMethod.php|3a4c51e8869a105c85e2c07a20d6f4cc
 /classes/models/LengowEmployee.php|fad8fea4a3593f527a3e5e30608189a9
 /classes/models/LengowConfigurationForm.php|587545f731c69c5e8bc7857032cf17e0
-/classes/models/LengowConnector.php|5a18c2850835ebbab8c59f3e7e5d04a6
+/classes/models/LengowConnector.php|ee45cdc16673b0c2cd128df17f0beb30
 /classes/models/LengowCustomer.php|ebaa7d15d5e980f432d7bc71f786e81b
 /classes/models/LengowBackup.php|8ade7dcbc3ee84d73c6a784c7bda3ceb
 /classes/models/LengowSync.php|7ab66f421e89ff1b40bda70ef0b9f6a8
