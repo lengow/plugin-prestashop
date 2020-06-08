@@ -667,10 +667,11 @@ class LengowAddress extends Address
     {
         $idState = 0;
         $countryIsoA2 = $addressData['common_country_iso_a2'];
+        $stateRegion = $addressData['state_region'];
         if (in_array($countryIsoA2, array(self::ISO_A2_ES, self::ISO_A2_IT))) {
             $idState = $this->searchIdStateByPostcode($idCountry, $countryIsoA2, $addressData['zipcode']);
         } elseif (!empty($stateRegion)) {
-            $idState = $this->searchIdStateByStateRegion($idCountry, $addressData['state_region']);
+            $idState = $this->searchIdStateByStateRegion($idCountry, $stateRegion);
         }
         return $idState;
     }
@@ -687,7 +688,7 @@ class LengowAddress extends Address
     protected function searchIdStateByPostcode($idCountry, $countryIsoA2, $postcode)
     {
         $idState = 0;
-        $postcodeSubstr = substr(str_pad($postcode, 5, '0', STR_PAD_LEFT), 0, 2);
+        $postcodeSubstr = Tools::substr(str_pad($postcode, 5, '0', STR_PAD_LEFT), 0, 2);
         switch ($countryIsoA2) {
             case self::ISO_A2_ES:
                 $isoCode = isset($this->regionCodes[$countryIsoA2][$postcodeSubstr])
@@ -745,8 +746,8 @@ class LengowAddress extends Address
      */
     protected function getIdStateByIsoAndCountry($isoCode, $idCountry)
     {
-        $idState = Db::getInstance()->getValue('
-            SELECT `id_state`
+        $idState = Db::getInstance()->getValue(
+            'SELECT `id_state`
             FROM `' . _DB_PREFIX_ . 'state`
             WHERE `iso_code` = \'' . pSQL($isoCode) . '\' AND `id_country` = ' . $idCountry
         );
@@ -803,7 +804,7 @@ class LengowAddress extends Address
      */
     protected function cleanString($string)
     {
-        $string = strtolower(str_replace(array(' ', '-', '_', '.'), '', trim($string)));
+        $string = Tools::strtolower(str_replace(array(' ', '-', '_', '.'), '', trim($string)));
         $string = LengowMain::replaceAccentedChars(html_entity_decode($string));
         return $string;
     }
