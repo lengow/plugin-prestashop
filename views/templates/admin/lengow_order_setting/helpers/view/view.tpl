@@ -19,8 +19,8 @@
  *}
 <div id="lengow_form_order_setting" class="cms-global">
     <div class="lgw-container">
-        {if $lengow_configuration->debugModeIsActive()}
-            <div id="lgw-debug" class="adminlengowordersetting">
+        {if $debugMode}
+            <div id="lgw-debug" class="adminlengowordersetting {if $multiShop}multi-shop{/if}">
                 {$locale->t('menu.debug_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
@@ -51,6 +51,13 @@
                 <h2>{$locale->t('order_setting.screen.import_setting_title')|escape:'htmlall':'UTF-8'}</h2>
                 <p>{$locale->t('order_setting.screen.import_setting_description')|escape:'htmlall':'UTF-8'}</p>
                 <p>{html_entity_decode($import_params|escape:'htmlall':'UTF-8')}</p>
+            </div>
+            <div class="lgw-box">
+                <h2>
+                    {$locale->t('lengow_setting.lengow_currency_conversion_title')|escape:'htmlall':'UTF-8'}
+                </h2>
+                <p>{$locale->t('lengow_setting.lengow_currency_conversion_legend')|escape:'htmlall':'UTF-8'}</p>
+                <p>{html_entity_decode($currency_conversion|escape:'htmlall':'UTF-8')}</p>
             </div>
             <button type="submit" class="lgw-btn lgw-btn-progression lengow_submit_order_setting">
                 <div class="btn-inner">

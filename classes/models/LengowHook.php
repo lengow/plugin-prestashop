@@ -394,27 +394,16 @@ class LengowHook
     public function hookAdminOrder($args)
     {
         if (LengowOrder::isFromLengow($args['id_order'])) {
-            $lengowOrder = new LengowOrder($args['id_order']);
-            // get actions re-import, synchronize orders, add tracking and resend actions
             $lengowLink = new LengowLink();
             $locale = new LengowTranslation();
-            $canResendAction = $lengowOrder->canReSendOrder();
-            $canAddTracking = $lengowOrder->canAddTracking();
+            $lengowOrder = new LengowOrder($args['id_order']);
             $lengowOrderController = $lengowLink->getAbsoluteAdminLink('AdminLengowOrder');
             $baseAction = $lengowOrderController . '&id_order=' . $lengowOrder->id;
-            $actionReimport = $baseAction . '&action=cancel_re_import';
-            $actionSynchronize = $baseAction . '&action=synchronize';
-            $actionAddTracking = $baseAction . '&action=add_tracking&tracking_number=';
             $orderCurrentState = (int)$lengowOrder->getCurrentState();
             $actionType = $orderCurrentState === LengowMain::getOrderState(LengowOrder::STATE_CANCELED)
                 ? LengowAction::TYPE_CANCEL
                 : LengowAction::TYPE_SHIP;
-            $checkResendAction = $locale->t('admin.order.check_resend_action', array('action' => $actionType));
-            $actionResend = $lengowOrderController . '&action=force_resend&action_type=' . $actionType;
-            $sentMarketplace = $lengowOrder->lengowSentMarketplace
-                ? $locale->t('product.screen.button_yes')
-                : $locale->t('product.screen.button_no');
-            $templateDatas = array(
+            $templateData = array(
                 'marketplace_sku' => $lengowOrder->lengowMarketplaceSku,
                 'id_flux' => $lengowOrder->lengowIdFlux,
                 'delivery_address_id' => $lengowOrder->lengowDeliveryAddressId,
@@ -428,26 +417,29 @@ class LengowHook
                 'carrier_method' => $lengowOrder->lengowMethod,
                 'carrier_tracking' => $lengowOrder->lengowTracking,
                 'carrier_id_relay' => $lengowOrder->lengowIdRelay,
-                'sent_marketplace' => $sentMarketplace,
+                'is_express' => $lengowOrder->isExpress(),
+                'is_delivered_by_marketplace' => $lengowOrder->isDeliveredByMarketplace(),
+                'is_business' => $lengowOrder->isBusiness(),
                 'message' => $lengowOrder->lengowMessage,
                 'imported_at' => LengowMain::getDateInCorrectFormat(strtotime($lengowOrder->lengowDateAdd)),
-                'action_synchronize' => $actionSynchronize,
-                'action_reimport' => $actionReimport,
-                'action_resend' => $actionResend,
-                'action_add_tracking' => $actionAddTracking,
+                'action_synchronize' => $baseAction . '&action=synchronize',
+                'action_reimport' => $baseAction . '&action=cancel_re_import',
+                'action_resend' => $lengowOrderController . '&action=force_resend&action_type=' . $actionType,
+                'action_add_tracking' => $baseAction . '&action=add_tracking&tracking_number=',
                 'order_id' => $args['id_order'],
                 'version' => _PS_VERSION_,
                 'lengow_locale' => $locale,
                 'debug_mode' => LengowConfiguration::debugModeIsActive(),
-                'can_resend_action' => $canResendAction,
-                'can_add_tracking' => $canAddTracking,
-                'check_resend_action' => $checkResendAction,
+                'can_resend_action' => $lengowOrder->canReSendOrder(),
+                'can_add_tracking' => $lengowOrder->canAddTracking(),
+                'check_resend_action' => $locale->t('admin.order.check_resend_action', array('action' => $actionType)),
             );
-            $this->context->smarty->assign($templateDatas);
-            if (_PS_VERSION_ >= '1.6') {
+            $this->context->smarty->assign($templateData);
+            if (version_compare(_PS_VERSION_, '1.6', '>=')) {
                 return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info_16.tpl');
+            } else {
+                return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info.tpl');
             }
-            return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info.tpl');
         }
         return '';
     }

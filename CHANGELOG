@@ -1,4 +1,14 @@
 =============================================================
+Version 3.2.2
+=============================================================
+
+    - Feature: [import] Addition of order types in the order management screen
+    - Feature: [import] Addition of the currency conversion option in the order option panel
+    - Feature: [import] Integration of the region code in the delivery and billing addresses
+    - Bugfix: Add isset in case some var were unset causing multiple php notice
+    - Bugfix: Update of the access token when recovering an http 401 code
+
+=============================================================
 Version 3.2.1
 =============================================================
 

@@ -212,6 +212,13 @@ class LengowConfiguration extends Configuration
                     'default_value' => 3,
                     'update' => true,
                 ),
+                'LENGOW_CURRENCY_CONVERSION' => array(
+                    'type' => 'checkbox',
+                    'global' => true,
+                    'label' => $locale->t('lengow_setting.lengow_currency_conversion_switch'),
+                    'default_value' => 1,
+                    'update' => true,
+                ),
                 'LENGOW_IMPORT_PROCESSING_FEE' => array(
                     'type' => 'checkbox',
                     'global' => true,

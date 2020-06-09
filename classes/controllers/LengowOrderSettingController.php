@@ -49,10 +49,16 @@ class LengowOrderSettingController extends LengowController
                 'LENGOW_IMPORT_STOCK_SHIP_MP',
             )
         );
+        $currencyConversion = $form->buildInputs(
+            array(
+                'LENGOW_CURRENCY_CONVERSION'
+            )
+        );
         $semanticSearch = $form->buildInputs(array('LENGOW_CARRIER_SEMANTIC_ENABLE'));
         $this->context->smarty->assign('matching', $matching);
         $this->context->smarty->assign('semantic_search', $semanticSearch);
         $this->context->smarty->assign('import_params', $importParams);
+        $this->context->smarty->assign('currency_conversion', $currencyConversion);
         $this->context->smarty->assign('countries', $countries);
         $this->context->smarty->assign('marketplaceCounters', $marketplaceCounters);
         $this->context->smarty->assign('defaultCarrierNotMatched', $defaultCarrierNotMatched);
@@ -162,6 +168,7 @@ class LengowOrderSettingController extends LengowController
                         'LENGOW_IMPORT_STOCK_SHIP_MP',
                         'LENGOW_CRON_ENABLED',
                         'LENGOW_CARRIER_SEMANTIC_ENABLE',
+                        'LENGOW_CURRENCY_CONVERSION'
                     )
                 );
                 break;

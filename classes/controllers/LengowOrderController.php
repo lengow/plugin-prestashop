@@ -37,7 +37,7 @@ class LengowOrderController extends LengowController
         $this->assignLastImportationInfos();
         $this->assignNbOrderImported();
         $this->assignWarningMessages();
-        // datas for toolbox
+        // data for toolbox
         $shop = array();
         $shops = LengowShop::findAll();
         foreach ($shops as $s) {
@@ -287,6 +287,8 @@ class LengowOrderController extends LengowController
             'last_import_type' => $lastImport['type'],
             'link' => LengowMain::getImportUrl(),
         );
+        $reportMailEnabled = (bool)LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED');
+        $this->context->smarty->assign('reportMailEnabled', $reportMailEnabled);
         $this->context->smarty->assign('report_mail_address', LengowConfiguration::getReportEmailAddress());
         $this->context->smarty->assign('orderCollection', $orderCollection);
     }
@@ -313,17 +315,11 @@ class LengowOrderController extends LengowController
      */
     public function loadTable()
     {
-        if (_PS_VERSION_ >= '1.5' && Shop::isFeatureActive() && !Shop::getContextShopID()) {
-            $width = '10%';
-        } else {
-            $width = '12%';
-        }
         $fieldsList = array();
         $fieldsList['log_status'] = array(
             'title' => $this->locale->t('order.table.action_lengow'),
-            'class' => 'lengow_status no-link',
+            'class' => 'lengow_status no-link nowrap',
             'type' => 'log_status',
-            'width' => $width,
             'display_callback' => 'LengowOrderController::displayLogStatus',
             'filter' => true,
             'filter_order' => true,
@@ -337,7 +333,6 @@ class LengowOrderController extends LengowController
         $fieldsList['lengow_status'] = array(
             'title' => $this->locale->t('order.table.order_lengow_state'),
             'class' => 'text-center link  no-link',
-            'width' => $width,
             'display_callback' => 'LengowOrderController::displayLengowState',
             'filter' => true,
             'filter_order' => true,
@@ -370,10 +365,41 @@ class LengowOrderController extends LengowController
                 ),
             ),
         );
+        $fieldsList['order_types'] = array(
+            'title' => $this->locale->t('order.table.order_types'),
+            'class' => 'text-center link no-link nowrap',
+            'type' => 'order_types',
+            'display_callback' => 'LengowOrderController::displayOrderTypes',
+            'filter' => true,
+            'filter_order' => true,
+            'filter_key' => 'lo.order_types',
+            'filter_type' => 'select',
+            'filter_collection' => array(
+                array(
+                    'id' => LengowOrder::TYPE_EXPRESS,
+                    'text' => $this->locale->t('order.screen.type_express'),
+                ),
+                array(
+                    'id' => LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE,
+                    'text' => $this->locale->t('order.screen.type_delivered_by_marketplace'),
+                ),
+                array(
+                    'id' => LengowOrder::TYPE_BUSINESS,
+                    'text' => $this->locale->t('order.screen.type_business'),
+                ),
+            ),
+        );
+        $fieldsList['marketplace_sku'] = array(
+            'title' => $this->locale->t('order.table.marketplace_sku'),
+            'class' => 'link no-link',
+            'display_callback' => 'LengowOrderController::displayOrderLink',
+            'filter' => true,
+            'filter_order' => true,
+            'filter_key' => 'lo.marketplace_sku',
+        );
         $fieldsList['marketplace_name'] = array(
             'title' => $this->locale->t('order.table.marketplace_name'),
-            'class' => 'link',
-            'width' => $width,
+            'class' => 'link nowrap',
             'display_callback' => 'LengowOrderController::displayMarketplaceName',
             'filter' => true,
             'filter_order' => true,
@@ -381,10 +407,9 @@ class LengowOrderController extends LengowController
             'filter_type' => 'select',
             'filter_collection' => $this->getMarketplaces(),
         );
-        if (_PS_VERSION_ >= '1.5') {
+        if (_PS_VERSION_ >= '1.5' && Shop::isFeatureActive() && !Shop::getContextShopID()) {
             $fieldsList['shop_name'] = array(
                 'class' => 'link shop',
-                'width' => $width,
                 'title' => $this->locale->t('order.table.shop_name'),
                 'filter' => true,
                 'filter_order' => true,
@@ -393,29 +418,25 @@ class LengowOrderController extends LengowController
                 'filter_collection' => $this->getShops(),
             );
         }
-        $fieldsList['marketplace_sku'] = array(
-            'title' => $this->locale->t('order.table.marketplace_sku'),
-            'width' => '14%',
-            'class' => 'link no-link',
-            'display_callback' => 'LengowOrderController::displayOrderLink',
-            'filter' => true,
-            'filter_order' => true,
-            'filter_key' => 'lo.marketplace_sku',
-        );
         $fieldsList['reference'] = array(
             'title' => $this->locale->t('order.table.reference_prestashop'),
             'class' => 'link reference no-link',
-            'width' => $width,
             'display_callback' => 'LengowOrderController::displayOrderLink',
             'filter' => true,
             'filter_order' => true,
             'filter_key' => 'o.reference',
         );
+        $fieldsList['customer_name'] = array(
+            'title' => $this->locale->t('order.table.customer'),
+            'class' => 'link no-link',
+            'filter' => true,
+            'filter_order' => true,
+            'filter_key' => 'lo.customer_name',
+        );
         $fieldsList['order_date'] = array(
             'title' => $this->locale->t('order.table.order_date'),
             'class' => 'link',
             'type' => 'date',
-            'width' => $width,
             'filter' => true,
             'filter_type' => 'date',
             'filter_key' => 'lo.order_date',
@@ -424,21 +445,12 @@ class LengowOrderController extends LengowController
         $fieldsList['delivery_country_iso'] = array(
             'title' => $this->locale->t('order.table.delivery_country'),
             'class' => 'link',
-            'width' => '5%',
             'type' => 'flag_country',
             'filter_key' => 'lo.delivery_country_iso',
             'filter_order' => true,
         );
-        $fieldsList['nb_item'] = array(
-            'title' => $this->locale->t('order.table.order_item'),
-            'width' => '5%',
-            'class' => 'link text-right',
-            'filter_key' => 'lo.order_item',
-            'filter_order' => true,
-        );
         $fieldsList['total_paid'] = array(
             'title' => $this->locale->t('order.table.total_paid'),
-            'width' => '7%',
             'type' => 'price',
             'class' => 'link nowrap',
             'filter_key' => 'lo.total_paid',
@@ -462,7 +474,8 @@ class LengowOrderController extends LengowController
             'lo.delivery_country_iso',
             'lo.sent_marketplace',
             'lo.order_process_state',
-            'lo.order_item as nb_item',
+            'lo.order_types',
+            'lo.customer_name',
             (_PS_VERSION_ < 1.5 ? 'o.id_order as reference' : 'o.reference'),
             'lo.order_date',
             'lo.order_lengow_state as lengow_status',
@@ -607,8 +620,42 @@ class LengowOrderController extends LengowController
         if (empty($value)) {
             $value = 'not_synchronized';
         }
-        return '<span class="lgw-label lgw-label-' . $value . '">'
+        return '<span class="lgw-label lgw-order-status lgw-label-' . $value . '">'
             . LengowMain::decodeLogMessage('order.screen.status_' . $value) . '</span>';
+    }
+
+    /**
+     * Generate order types
+     *
+     * @param string $key row key
+     * @param string $value row value
+     * @param array $item item values
+     *
+     * @return string
+     */
+    public static function displayOrderTypes($key, $value, $item)
+    {
+        $return = '<div>';
+        $orderTypes = $value !== null ? Tools::jsonDecode($value, true) : array();
+        if (isset($orderTypes[LengowOrder::TYPE_EXPRESS]) || isset($orderTypes[LengowOrder::TYPE_PRIME])) {
+            $iconLabel = isset($orderTypes[LengowOrder::TYPE_PRIME])
+                ? $orderTypes[LengowOrder::TYPE_PRIME]
+                : $orderTypes[LengowOrder::TYPE_EXPRESS];
+            $return .= self::generateOrderTypeIcon($iconLabel, 'orange-light', 'mod-chrono');
+        }
+        if (isset($orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE])
+            || ($key === 'order_types' && (bool)$item['sent_marketplace'])
+        ) {
+            $iconLabel = isset($orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE])
+                ? $orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE]
+                : LengowOrder::LABEL_FULFILLMENT;
+            $return .= self::generateOrderTypeIcon($iconLabel, 'green-light', 'mod-delivery');
+        }
+        if (isset($orderTypes[LengowOrder::TYPE_BUSINESS])) {
+            $return .= self::generateOrderTypeIcon($orderTypes[LengowOrder::TYPE_BUSINESS], 'blue-light', 'mod-pro');
+        }
+        $return .= '</div>';
+        return $return;
     }
 
     /**
@@ -634,10 +681,6 @@ class LengowOrderController extends LengowController
                 return $value;
             }
         } else {
-            if ($key === 'reference' && (bool)$item['sent_marketplace']) {
-                return '<span class="lgw-label">'
-                    . LengowMain::decodeLogMessage('order.screen.status_shipped_by_mkp') . '</span>';
-            }
             return $value;
         }
     }
@@ -801,5 +844,24 @@ class LengowOrderController extends LengowController
             }
         }
         return $messages;
+    }
+
+    /**
+     * Generate order type icon
+     *
+     * @param string $iconLabel icon label for tooltip
+     * @param string $iconColor icon background color
+     * @param string $iconMod icon mod for image
+     *
+     * @return string
+     */
+    public static function generateOrderTypeIcon($iconLabel, $iconColor, $iconMod)
+    {
+        return '
+            <div class="lgw-label ' . $iconColor . ' icon-solo lengow_link_tooltip" 
+                 data-original-title="' . $iconLabel . '">
+                <span class="lgw-icon ' . $iconMod . '"></span>
+            </div>
+        ';
     }
 }

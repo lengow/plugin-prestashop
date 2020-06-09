@@ -88,7 +88,7 @@ order.screen.refresh_order|Actualiser ma commande
 order.screen.order_not_imported|Votre commande n'a pas été importée dans PrestaShop.
 order.screen.action_sent|Action %{action_type} envoyée
 order.screen.action_waiting_return|Action envoyée, en attente d'une réponse.
-order.screen.action_sent_not_work|Erreur sur l'action envoyée à la place de marché.
+order.screen.action_sent_not_work|Erreur sur l'action envoyée à la marketplace.
 order.screen.no_error_message|Erreur non identifiée, merci de contacter le support Lengow pour plus d'informations
 order.screen.no_order_title|Le meilleur est encore à venir ! 
 order.screen.no_order_description|Vos produits sont bien visibles, vos ventes sont sur le point de décoller
@@ -101,24 +101,27 @@ order.screen.status_shipped|Expédié
 order.screen.status_closed|Fermé
 order.screen.status_refunded|Remboursé
 order.screen.status_canceled|Annulé
-order.screen.status_shipped_by_mkp|Expédié par la place de marché
+order.screen.type_express|Livraison Express
+order.screen.type_delivered_by_marketplace|Expédié par la marketplace
+order.screen.type_business|Business
 order.table.action_lengow|Actions
-order.table.order_lengow_state|Statut Lengow
-order.table.marketplace_name|Place de marché
+order.table.order_lengow_state|Statut
+order.table.order_types|Types
+order.table.marketplace_name|Marketplace
 order.table.shop_name|Boutique
-order.table.marketplace_sku|ID Commande
+order.table.marketplace_sku|N° de commande
 order.table.reference_prestashop|Référence
+order.table.customer|Nom du client
 order.table.order_date|Date
 order.table.delivery_country|Pays
-order.table.order_item|Quantité
-order.table.total_paid|Total
+order.table.total_paid|Montant
 order.table.extra|Extra
 order_setting.screen.carrier_management_title|Gestion des transporteurs par pays
-order_setting.screen.carrier_management_description|Pour chaque pays où vous livrez vos produits et pour chaque place de marché, sélectionnez le transporteur par défaut à appliquer à vos commandes.
+order_setting.screen.carrier_management_description|Pour chaque pays où vous livrez vos produits et pour chaque marketplace, sélectionnez le transporteur par défaut à appliquer à vos commandes.
 order_setting.screen.marketplace|marketplace(s)
 order_setting.screen.see_delivery_countries|Voir tous mes pays de livraison
 order_setting.screen.marketplace_matching_title|%{country_name} : modes de livraison
-order_setting.screen.marketplace_matching_description|Choisissez ici les différents modes de livraison à attribuer à chacune de vos commandes pour le pays %{country_name}. Vous pouvez le faire pour les différentes places de marché activées dans votre compte.
+order_setting.screen.marketplace_matching_description|Choisissez ici les différents modes de livraison à attribuer à chacune de vos commandes pour le pays %{country_name}. Vous pouvez le faire pour les différentes marketplaces activées dans votre compte.
 order_setting.screen.country_wt_carrier|Des transporteurs sont manquants dans cette liste ?
 order_setting.screen.please_setup_then|Gérez les transporteurs
 order_setting.screen.default_carrier_prestashop|Votre transporteur PrestaShop par défaut
@@ -127,15 +130,15 @@ order_setting.screen.no_default_carrier_selected|Pas de transporteur PrestaShop 
 order_setting.screen.default_carrier_marketplace|Votre transporteur %{marketplace_name} par défaut
 order_setting.screen.please_select_carrier_marketplace|Sélectionnez le code transporteur pour %{marketplace_name}
 order_setting.screen.no_default_carrier_marketplace_selected|Pas de code transporteur par défaut défini
-order_setting.screen.tooltip_default_carrier|Vous n'avez pas encore configuré le transporteur par défaut pour cette place de marché
-order_setting.screen.matching_method_marketplace|Faites correspondre les méthodes de transport de la place de marché avec vos transporteurs PrestaShop
-order_setting.screen.matching_carrier_marketplace|Faites correspondre vos transporteurs PrestaShop avec les transporteurs proposés par la place de marché
+order_setting.screen.tooltip_default_carrier|Vous n'avez pas encore configuré le transporteur par défaut pour cette marketplace
+order_setting.screen.matching_method_marketplace|Faites correspondre les méthodes de transport de la marketplace avec vos transporteurs PrestaShop
+order_setting.screen.matching_carrier_marketplace|Faites correspondre vos transporteurs PrestaShop avec les transporteurs proposés par la marketplace
 order_setting.screen.no_carrier_enabled|Vous n'avez aucun transporteur PrestaShop d'activé pour %{country_name}
 order_setting.screen.button_cancel|Annuler
 order_setting.screen.order_status_title|Statut des commandes
 order_setting.screen.order_status_description|Attribuez des statuts Lengow à vos commandes pour les retrouver facilement parmi l'ensemble de vos commandes.
 order_setting.screen.import_setting_title|Import des commandes
-order_setting.screen.import_setting_description|Gérez ici vos paramètres d'import pour les commandes provenant des places de marché.
+order_setting.screen.import_setting_description|Gérez ici vos paramètres d'import pour les commandes provenant des marketplaces.
 order_setting.screen.nb_days|jours
 global_setting.screen.notification_alert_title|Notifications & alertes
 global_setting.screen.default_export_carrier_title|Calcul des frais de livraison
@@ -205,7 +208,7 @@ lengow_setting.lengow_last_export_title|Dernier export
 lengow_setting.lengow_order_id_process_title|Commandes en préparation
 lengow_setting.lengow_order_id_shipped_title|Commandes expédiées
 lengow_setting.lengow_order_id_cancel_title|Commandes annulées
-lengow_setting.lengow_order_id_shippedbymp_title|Commandes expédiées par les places de marché
+lengow_setting.lengow_order_id_shippedbymp_title|Commandes expédiées par les marketplaces
 lengow_setting.lengow_import_force_product_title|Forcer les produits
 lengow_setting.lengow_import_force_product_legend|Activez cette option si vous souhaitez importer automatiquement vos produits hors stock et produits inactifs.
 lengow_setting.lengow_carrier_semantic_enable_title|Je veux activer l'option de correspondance sémantique des transporteurs
@@ -213,11 +216,11 @@ lengow_setting.lengow_carrier_semantic_enable_legend|Avec cette option, faites c
 lengow_setting.lengow_import_days_title|Synchroniser toutes les commandes mises à jour depuis
 lengow_setting.lengow_import_days_legend|Activez cette option si vous avez des commandes en erreur en attente. Cela vous permet de réimporter les commandes passées depuis le dernier import réussi.
 lengow_setting.lengow_import_processing_fee_title|Importer les frais de traitement
-lengow_setting.lengow_import_processing_fee_legend|Activez cette option si vous souhaitez importer dans vos commandes les frais de traitement des places de marché.
+lengow_setting.lengow_import_processing_fee_legend|Activez cette option si vous souhaitez importer dans vos commandes les frais de traitement des marketplaces.
 lengow_setting.lengow_import_debug_enabled_title|Activer le Debug Mode
-lengow_setting.lengow_import_ship_mp_enabled_title|Import des commandes expédiées par les places de marché
+lengow_setting.lengow_import_ship_mp_enabled_title|Import des commandes expédiées par les marketplaces
 lengow_setting.lengow_import_stock_ship_mp_title|Je veux diminuer mon stock
-lengow_setting.lengow_import_stock_ship_mp_legend|Activez cette option pour prendre en compte les commandes des places de marché sur les stocks de votre backoffice PrestaShop.
+lengow_setting.lengow_import_stock_ship_mp_legend|Activez cette option pour prendre en compte les commandes des marketplaces sur les stocks de votre backoffice PrestaShop.
 lengow_setting.lengow_report_mail_enabled_title|Je veux être notifié en cas de problème lors de l'importation de mes commandes
 lengow_setting.lengow_report_mail_address_title|Email à utiliser pour l'envoi des emails de rapport
 lengow_setting.lengow_report_mail_address_legend|Pour ajouter plusieurs emails, utilisez des " ; " pour les séparer
@@ -232,6 +235,9 @@ lengow_setting.lengow_authorized_ip_legend|IP autorisée(s) séparée(s) par ;
 lengow_setting.lengow_tracking_enabled_title|Activer le tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_tracking_id_legend|Le nom de l'identifiant unique indiqué dans Lengow
+lengow_setting.lengow_currency_conversion_title|Convertir la devise de vos commandes
+lengow_setting.lengow_currency_conversion_legend|Toutes les commandes importées dans Prestashop seront automatiquement converties dans la devise choisie dans Lengow
+lengow_setting.lengow_currency_conversion_switch|Activer la conversion de devises
 lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs
@@ -256,13 +262,13 @@ lengow_log.exception.no_connection_webservice|la connexion ne se fait pas avec L
 lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - "%{error_message}" pour la boutique %{name_shop} (%{id_shop})
 lengow_log.exception.order_list_is_empty|la commande ne peut être sauvegardée
 lengow_log.exception.carrier_shipping_address_no_country|l'adresse d'expédition ne contient pas de pays
-lengow_log.exception.no_default_carrier_for_country|Vous devez sélectionner un transporteur par défaut pour le pays %{country_name} et la place de marché %{marketplace_name}
-lengow_log.exception.marketplace_not_present|Erreur Lengow : la place de marché %{marketplace_name} n’apparaît pas dans la liste des places de marché
+lengow_log.exception.no_default_carrier_for_country|Vous devez sélectionner un transporteur par défaut pour le pays %{country_name} et la marketplace %{marketplace_name}
+lengow_log.exception.marketplace_not_present|Erreur Lengow : la marketplace %{marketplace_name} n’apparaît pas dans la liste des marketplaces
 lengow_log.exception.order_line_required|numéro de la ligne de commande requis, non trouvé dans la commande
 lengow_log.exception.action_not_valid|l'action %{action} n'est pas valide
-lengow_log.exception.marketplace_action_not_present|l'action %{action} n'est pas présente pour cette place de marché
+lengow_log.exception.marketplace_action_not_present|l'action %{action} n'est pas présente pour cette marketplace
 lengow_log.exception.marketplace_sku_require|la référence commande marketplace est requise
-lengow_log.exception.marketplace_name_require|le nom de la place de marché est requis
+lengow_log.exception.marketplace_name_require|le nom de la marketplace est requis
 lengow_log.exception.no_delivery_country_in_order|nous ne trouvons pas le pays de livraison dans cette commande
 lengow_log.exception.match_carrier_with_country|vous devez faire correspondre le transporteur %{carrier_name} avec le pays %{country_name}
 lengow_log.exception.arg_is_required|envoi d'action impossible : %{arg_name} est requis
@@ -281,20 +287,22 @@ lengow_log.mail_report.order|commande %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|Pas de message d'erreur, contacter le support via https://supportlengow.zendesk.com/agent/
 admin.order.import_lengow|Import Lengow
 admin.order.imported_from_lengow|Cette commande a été importée depuis Lengow.
-admin.order.lengow_order_id|ID de commande Lengow
-admin.order.marketplace|Place de marché
+admin.order.lengow_order_id|N° de commande Lengow
+admin.order.marketplace|Marketplace
 admin.order.feed_id|ID du flux
 admin.order.delivery_address_id|Identifiant de l'adresse de livraison
-admin.order.total_paid|Montant total payé sur les places de marché
+admin.order.total_paid|Montant total payé sur la marketplace
 admin.order.commission|Commission
 admin.order.currency|Devise
 admin.order.customer_name|Nom du client
 admin.order.customer_email|Email du client
-admin.order.carrier|Transporteurs de la marketplace
-admin.order.carrier_method|Modes de livraison de la marketplace
+admin.order.carrier|Transporteur de la marketplace
+admin.order.carrier_method|Mode de livraison de la marketplace
 admin.order.carrier_id_relay|ID relais
 admin.order.carrier_tracking|Numéro de suivi
-admin.order.shipped_by_marketplace|Expédié par la place de marché
+admin.order.is_express|Livraison Express
+admin.order.is_business|Business
+admin.order.is_delivered_by_marketplace|Expédié par la marketplace
 admin.order.message|Message
 admin.order.imported_at|Importé le
 admin.order.cancel_and_reimport|Ré-importer la commande

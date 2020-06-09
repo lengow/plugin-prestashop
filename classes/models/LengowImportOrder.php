@@ -155,6 +155,11 @@ class LengowImportOrder
     protected $orderItems;
 
     /**
+     * @var array order types (is_express, is_prime...)
+     */
+    protected $orderTypes;
+
+    /**
      * @var string|null carrier name
      */
     protected $carrierName = null;
@@ -350,6 +355,8 @@ class LengowImportOrder
         }
         // get order comment from marketplace
         $this->orderComment = $this->getOrderComment();
+        // load order types data
+        $this->loadOrderTypesData();
         // create a new record in lengow order table if not exist
         if (!$this->idOrderLengow) {
             // created a record in the lengow order table
@@ -704,6 +711,23 @@ class LengowImportOrder
     }
 
     /**
+     * Get order types data and update Lengow order record
+     */
+    protected function loadOrderTypesData()
+    {
+        $orderTypes = array();
+        if ($this->orderData->order_types !== null && !empty($this->orderData->order_types)) {
+            foreach ($this->orderData->order_types as $orderType) {
+                $orderTypes[$orderType->type] = $orderType->label;
+                if ($orderType->type === LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE) {
+                    $this->shippedByMp = true;
+                }
+            }
+        }
+        $this->orderTypes = $orderTypes;
+    }
+
+    /**
      * Get order amount
      *
      * @return float
@@ -754,16 +778,13 @@ class LengowImportOrder
      */
     protected function loadTrackingData()
     {
-        $trackings = $this->packageData->delivery->trackings;
-        if (!empty($trackings)) {
-            $tracking = $trackings[0];
+        $tracks = $this->packageData->delivery->trackings;
+        if (!empty($tracks)) {
+            $tracking = $tracks[0];
             $this->carrierName = $tracking->carrier !== null ? (string)$tracking->carrier : null;
             $this->carrierMethod = $tracking->method !== null ? (string)$tracking->method : null;
             $this->trackingNumber = $tracking->number !== null ? (string)$tracking->number : null;
             $this->relayId = $tracking->relay->id !== null ? (string)$tracking->relay->id : null;
-            if ($tracking->is_delivered_by_marketplace !== null && $tracking->is_delivered_by_marketplace) {
-                $this->shippedByMp = true;
-            }
         }
     }
 
@@ -1334,6 +1355,7 @@ class LengowImportOrder
             'delivery_address_id' => (int)$this->deliveryAddressId,
             'order_date' => date('Y-m-d H:i:s', strtotime($orderDate)),
             'order_lengow_state' => pSQL($this->orderStateLengow),
+            'order_types' => Tools::jsonEncode($this->orderTypes),
             'message' => pSQL($this->orderComment),
             'date_add' => date('Y-m-d H:i:s'),
             'order_process_state' => 0,
