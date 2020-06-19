@@ -171,12 +171,12 @@ global_setting.screen.setting_saved|¡Guardado!
 help.screen.title|Obtener un poco de ayuda de tu equipo de ayuda!
 help.screen.contain_text_support|Preguntenos lo necesite saber o bien enviones sus comentarios
 help.screen.title_lengow_support|al soporte de Lengow
-help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
+help.screen.link_lengow_support|https://www.lengow.com/support/
 help.screen.need_some_help|¿Necesitas ayuda?
 help.screen.contain_text_support_hour|Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria).
 help.screen.find_answer|Puedes también encontrar respuestas en nuestro
 help.screen.link_prestashop_guide|Manual PrestaShop
-help.screen.knowledge_link_url|https://supportlengow.zendesk.com/hc/en-us/articles/360011970312
+help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/ob0HZ6F7so
 legals.screen.simplified_company|Simplificado sociedad de responsabilidad limitada
 legals.screen.social_capital|Capital social:
 legals.screen.cnil_declaration|Declaración CNIL:
@@ -284,7 +284,7 @@ lengow_log.exception.product_is_not_listed|producto %{product_id} no aparece com
 lengow_log.exception.unable_to_save_order|no se ha podido guardar el pedido PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
 lengow_log.mail_report.order|Pedido %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|ningún mensaje de error , póngase en contacto con el support via https://supportlengow.zendesk.com/agent/
+lengow_log.mail_report.no_error_in_report_mail|ningún mensaje de error , póngase en contacto con el support via https://www.lengow.com/support/
 admin.order.import_lengow|Import Lengow
 admin.order.imported_from_lengow|Este pedido ha sido importado por Lengow
 admin.order.lengow_order_id|ID del pedido Lengow

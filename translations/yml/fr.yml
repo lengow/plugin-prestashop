@@ -192,12 +192,12 @@ fr:
       title: "Demandez de l'aide à notre équipe Support !"
       contain_text_support: "Des questions, un feedback sur Lengow... transmettez vos demandes au"
       title_lengow_support: "support Lengow."
-      link_lengow_support: "https://supportlengow.zendesk.com/hc/fr/requests/new"
+      link_lengow_support: "https://www.lengow.com/fr/support/"
       need_some_help: "Besoin d'aide ?"
       contain_text_support_hour: "Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h)."
       find_answer: "Vous pouvez aussi consulter"
       link_prestashop_guide: "notre guide dédié à PrestaShop"
-      knowledge_link_url: "https://supportlengow.zendesk.com/hc/fr/articles/360011970312"
+      knowledge_link_url: "https://support.lengow.com/kb/guide/fr/ob0HZ6F7so"
   legals:
     screen:
       simplified_company: "Société par actions simplifiées"
@@ -312,7 +312,7 @@ fr:
       unable_to_save_order_payment: "impossible de sauvegarder le paiement de la commande PrestaShop"
     mail_report:
       order: "commande %{marketplace_sku}"
-      no_error_in_report_mail: "Pas de message d'erreur, contacter le support via https://supportlengow.zendesk.com/agent/"
+      no_error_in_report_mail: "Pas de message d'erreur, contacter le support via https://www.lengow.com/fr/support/"
   admin:
     order:
       import_lengow: "Import Lengow"
