@@ -322,6 +322,7 @@ it:
       feed_id: "ID Feed"
       delivery_address_id: "ID indirizzo di consegna"
       total_paid: "Totale pagato di Marketplace"
+      customer_vat_number: "Numero IVA"
       commission: "Commissione"
       currency: "Moneta"
       customer_name: "Nome del cliente"
