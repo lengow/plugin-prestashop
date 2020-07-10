@@ -292,6 +292,7 @@ admin.order.marketplace|Marketplace
 admin.order.feed_id|ID du flux
 admin.order.delivery_address_id|Identifiant de l'adresse de livraison
 admin.order.total_paid|Montant total payé sur la marketplace
+admin.order.customer_vat_number|numéro de TVA
 admin.order.commission|Commission
 admin.order.currency|Devise
 admin.order.customer_name|Nom du client

@@ -322,6 +322,7 @@ en:
       feed_id: "Feed ID"
       delivery_address_id: "Delivery Address ID"
       total_paid: "Total amount paid on Marketplace"
+      customer_vat_number: "VAT number"
       commission: "Commission"
       currency: "Currency"
       customer_name: "Customer name"

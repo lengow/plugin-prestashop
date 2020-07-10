@@ -292,6 +292,7 @@ admin.order.marketplace|Marketplace
 admin.order.feed_id|ID Feed
 admin.order.delivery_address_id|ID indirizzo di consegna
 admin.order.total_paid|Totale pagato di Marketplace
+admin.order.customer_vat_number|numero IVA
 admin.order.commission|Commissione
 admin.order.currency|Moneta
 admin.order.customer_name|Nome del cliente

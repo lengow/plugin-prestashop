@@ -46,6 +46,10 @@
 			<strong>{$total_paid|escape:'htmlall':'UTF-8'}</strong>
 		</li>
 		<li>
+			{$lengow_locale->t('admin.order.customer_vat_number')|escape:'htmlall':'UTF-8'} :
+			<strong>{$customer_vat_number|escape:'htmlall':'UTF-8'}</strong>
+		</li>
+		<li>
 			{$lengow_locale->t('admin.order.commission')|escape:'htmlall':'UTF-8'} :
 			<strong>{$commission|escape:'htmlall':'UTF-8'}</strong>
 		</li>

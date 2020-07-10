@@ -516,6 +516,7 @@ class LengowInstall
                 `order_types` TEXT NULL,
                 `currency` VARCHAR(3) NULL,
                 `total_paid` DECIMAL(17,2) UNSIGNED NULL,
+                `customer_vat_number` TEXT NULL,
                 `commission` DECIMAL(17,2) UNSIGNED NULL,
                 `customer_name` VARCHAR(255) NULL,
                 `customer_email` VARCHAR(255) NULL,

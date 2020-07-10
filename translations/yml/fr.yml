@@ -322,6 +322,7 @@ fr:
       feed_id: "ID du flux"
       delivery_address_id: "Identifiant de l'adresse de livraison"
       total_paid: "Montant total payé sur la marketplace"
+      customer_vat_number: "numéro de TVA"
       commission: "Commission"
       currency: "Devise"
       customer_name: "Nom du client"
