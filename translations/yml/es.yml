@@ -322,7 +322,7 @@ es:
       feed_id: "Feed ID"
       delivery_address_id: "ID de dirección de entrega"
       total_paid: "Importe total pagado en el marketplace"
-      customer_vat_number: "número IVA"
+      customer_vat_number: "Número IVA"
       commission: "Comisión"
       currency: "Moneda"
       customer_name: "Nombre del cliente"

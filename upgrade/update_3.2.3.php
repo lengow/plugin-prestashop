@@ -29,6 +29,6 @@ if (!LengowInstall::isInstallationInProgress()) {
 
 if (LengowInstall::checkTableExists('lengow_orders')) {
 	if (!LengowInstall::checkFieldExists('lengow_orders', 'customer_vat_number')) {
-		Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `customer_vat_number` TEXT NULL');
+		Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `customer_vat_number` VARCHAR(100) NULL');
 	}
 }
