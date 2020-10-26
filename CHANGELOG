@@ -1,4 +1,12 @@
 =============================================================
+Version 3.2.3
+=============================================================
+
+    - Feature: Adding new links to the Lengow Help Center and Support
+    - Feature: Adding customer_vat_number in admin order detail & lengow_order table
+    - Bugfix: Always load iframe over HTTPS
+
+=============================================================
 Version 3.2.2
 =============================================================
 

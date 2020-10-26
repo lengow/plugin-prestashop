@@ -179,6 +179,11 @@ class LengowOrder extends Order
      */
     public $lengowTotalPaid;
 
+	/**
+	 * @var string Customer vat number
+	 */
+	public $lengowCustomerVatNumber;
+
     /**
      * @var float commission on marketplace
      */
@@ -274,6 +279,7 @@ class LengowOrder extends Order
             lo.`order_types`,
             lo.`currency`,
             lo.`total_paid`,
+            lo.`customer_vat_number`,
             lo.`commission`,
             lo.`customer_name`,
             lo.`customer_email`,
@@ -307,6 +313,9 @@ class LengowOrder extends Order
                 : array();
             $this->lengowCurrency = $result['currency'];
             $this->lengowTotalPaid = $result['total_paid'];
+            $this->lengowCustomerVatNumber = $result['customer_vat_number'] !== null
+                ? $result['customer_vat_number']
+                : '';
             $this->lengowCommission = $result['commission'];
             $this->lengowCustomerName = $result['customer_name'];
             $this->lengowCustomerEmail = $result['customer_email'];

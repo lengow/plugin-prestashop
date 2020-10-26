@@ -38,8 +38,8 @@
                     }
                 });
             };
-            syncIframe.src = syncLink ? '//cms.'+lengowUrl+'/sync/' : '//cms.'+lengowUrl+'/';
-            syncIframe.src = syncIframe.src+'?lang='+isoCode+'&clientType=prestashop';
+            syncIframe.src = (syncLink ? 'https://cms.' + lengowUrl + '/sync/' : 'https://cms.' + lengowUrl + '/')
+                + '?lang=' + isoCode + '&clientType=prestashop';
             $('#frame_loader').hide();
             $('#lengow_iframe').show();
         }

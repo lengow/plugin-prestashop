@@ -192,12 +192,12 @@ es:
       title: "Obtener un poco de ayuda de tu equipo de ayuda!"
       contain_text_support: "Preguntenos lo necesite saber o bien enviones sus comentarios"
       title_lengow_support: "al soporte de Lengow"
-      link_lengow_support: "https://supportlengow.zendesk.com/hc/en-us/requests/new"
+      link_lengow_support: "https://www.lengow.com/support/"
       need_some_help: "¿Necesitas ayuda?"
       contain_text_support_hour: "Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria)."
       find_answer: "Puedes también encontrar respuestas en nuestro"
       link_prestashop_guide: "Manual PrestaShop"
-      knowledge_link_url: "https://supportlengow.zendesk.com/hc/en-us/articles/360011970312"
+      knowledge_link_url: "https://support.lengow.com/kb/guide/en/ob0HZ6F7so"
   legals:
     screen:
       simplified_company: "Simplificado sociedad de responsabilidad limitada"
@@ -312,7 +312,7 @@ es:
       unable_to_save_order_payment: "unable to save PrestaShop order payment"
     mail_report:
       order: "Pedido %{marketplace_sku}"
-      no_error_in_report_mail: "ningún mensaje de error , póngase en contacto con el support via https://supportlengow.zendesk.com/agent/"
+      no_error_in_report_mail: "ningún mensaje de error , póngase en contacto con el support via https://www.lengow.com/support/"
   admin:
     order:
       import_lengow: "Import Lengow"
@@ -322,6 +322,7 @@ es:
       feed_id: "Feed ID"
       delivery_address_id: "ID de dirección de entrega"
       total_paid: "Importe total pagado en el marketplace"
+      customer_vat_number: "Número IVA"
       commission: "Comisión"
       currency: "Moneda"
       customer_name: "Nombre del cliente"

@@ -171,12 +171,12 @@ global_setting.screen.setting_saved|Salvato!
 help.screen.title|Chiedi aiuto al nostro supporto tecnico!
 help.screen.contain_text_support|Contattaci o condividi i tuoi feedback con
 help.screen.title_lengow_support|il Supporto Lengow
-help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
+help.screen.link_lengow_support|https://www.lengow.com/support/
 help.screen.need_some_help|Hai bisogno d'aiuto ?
 help.screen.contain_text_support_hour|Faremo il possibile per darti una risposta durante le ore di lavoro (dal Lunedi al Venerdi - 9h/18h)
 help.screen.find_answer|Potresti trovare una risposta nella nostra  
 help.screen.link_prestashop_guide|guida dedicata PrestaShop
-help.screen.knowledge_link_url|https://supportlengow.zendesk.com/hc/en-us/articles/360011970312
+help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/ob0HZ6F7so
 legals.screen.simplified_company|Società responsabilità limitata
 legals.screen.social_capital|Capitale sociale:
 legals.screen.cnil_declaration|Dichiarazione CNIL:
@@ -284,7 +284,7 @@ lengow_log.exception.product_is_not_listed|prodotto %{product_id} non è inserit
 lengow_log.exception.unable_to_save_order|impossibile salvare PrestaShop ordine  - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossibile salvare PrestaShop pagamento ordine
 lengow_log.mail_report.order|Ordine %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|nessun errore nella mail di report https://supportlengow.zendesk.com/agent/
+lengow_log.mail_report.no_error_in_report_mail|nessun errore nella mail di report https://www.lengow.com/support/
 admin.order.import_lengow|Importazione Lengow
 admin.order.imported_from_lengow|Questo ordine è stato importato da Lengow
 admin.order.lengow_order_id|ID Ordine Lengow
@@ -292,6 +292,7 @@ admin.order.marketplace|Marketplace
 admin.order.feed_id|ID Feed
 admin.order.delivery_address_id|ID indirizzo di consegna
 admin.order.total_paid|Totale pagato di Marketplace
+admin.order.customer_vat_number|Numero IVA
 admin.order.commission|Commissione
 admin.order.currency|Moneta
 admin.order.customer_name|Nome del cliente

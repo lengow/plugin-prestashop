@@ -1356,6 +1356,7 @@ class LengowImportOrder
             'order_date' => date('Y-m-d H:i:s', strtotime($orderDate)),
             'order_lengow_state' => pSQL($this->orderStateLengow),
             'order_types' => Tools::jsonEncode($this->orderTypes),
+            'customer_vat_number' => $this->getVatNumberFromOrderData(),
             'message' => pSQL($this->orderComment),
             'date_add' => date('Y-m-d H:i:s'),
             'order_process_state' => 0,
@@ -1384,6 +1385,20 @@ class LengowImportOrder
             return false;
         }
     }
+
+	/**
+	 * Get vat_number from lengow order data
+	 *
+	 * @return string|null
+	 */
+	protected function getVatNumberFromOrderData() {
+		if (isset($this->orderData->billing_address->vat_number)) {
+			return $this->orderData->billing_address->vat_number;
+		} else if (isset($this->packageData->delivery->vat_number)) {
+			return $this->packageData->delivery->vat_number;
+		}
+		return null;
+	}
 
     /**
      * Save order line in lengow orders line table

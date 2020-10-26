@@ -411,6 +411,7 @@ class LengowHook
                 'total_paid' => $lengowOrder->lengowTotalPaid,
                 'commission' => $lengowOrder->lengowCommission,
                 'currency' => $lengowOrder->lengowCurrency,
+                'customer_vat_number' => $lengowOrder->lengowCustomerVatNumber,
                 'customer_name' => $lengowOrder->lengowCustomerName,
                 'customer_email' => $lengowOrder->lengowCustomerEmail,
                 'carrier' => $lengowOrder->lengowCarrier,
