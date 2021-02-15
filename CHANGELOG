@@ -3,6 +3,7 @@ Version 3.2.4
 =============================================================
 
     - Bugfix: [import] Correction of the SQL query retrieving the product by an attribute value
+    - Bugfix: Use of the native SQL count to retrieve the number of elements in the grids
 
 =============================================================
 Version 3.2.3
