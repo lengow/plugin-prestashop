@@ -554,6 +554,7 @@ class LengowImport
         $this->context = Context::getContext()->cloneContext();
         if (_PS_VERSION_ >= '1.5') {
             if ($shop = new Shop($idShop)) {
+                $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
                 $this->context->shop = $shop;
             }
         }
