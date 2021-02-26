@@ -73,7 +73,7 @@ if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)
 }
 // get params data
 $getParams = Tools::getIsset('get_params') ? (bool)Tools::getValue('get_params') : false;
-// get mode 
+// get mode
 $mode = (Tools::getIsset('mode') && (Tools::getValue('mode') === 'size' || Tools::getValue('mode') === 'total'))
     ? Tools::getValue('mode')
     : null;

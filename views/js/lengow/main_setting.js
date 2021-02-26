@@ -45,6 +45,18 @@ function displayReportMail() {
     }
 }
 
+function displayShopManagement() {
+    var selector = $('.lengow_catalog_id');
+    selector.each(function() {
+        var idShop = $( this ).attr('data-id_shop');
+        if($('input[name="LENGOW_SHOP_ACTIVE[' + idShop + ']"]').prop('checked')){
+            $( this ).slideDown(150);
+        } else{
+            $( this ).slideUp(150);
+        }
+    });
+}
+
 function displayTracker() {
     var selector = $('.lengow_tracking_id');
     if($('input[name="LENGOW_TRACKING_ENABLED"]').prop('checked')){
@@ -115,7 +127,7 @@ function openModal(){
                     killModal();
                 }
                 else{
-                    if( $('.lgw-modal.open').length == 0 ){
+                    if($('.lgw-modal.open').length == 0){
                         openModal();
                     }
                 }
@@ -124,7 +136,7 @@ function openModal(){
         // confirm delete modal
         $('.js-confirm-delete').keyup(function(){
             var confirm = $(this).data('confirm');
-            if( $(this).val() == confirm ){
+            if($(this).val() == confirm){
                 $('.lengow_submit_delete_module')
                     .removeClass('lgw-btn-disabled')
                     .addClass('lgw-btn-red');
@@ -137,32 +149,37 @@ function openModal(){
         });
         // display report mail
         displayReportMail();
-        $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').on('change', function(){
+        $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').change(function(){
             displayReportMail();
         });
         // display tracker
         displayTracker();
-        $('input[name="LENGOW_TRACKING_ENABLED"]').on('change', function(){
+        $('input[name="LENGOW_TRACKING_ENABLED"]').change(function(){
             displayTracker();
+        });
+        // display shop management
+        displayShopManagement()
+        $('.lengow_shop_active input').change(function() {
+            displayShopManagement();
         });
         // display debug mode
         displayDebugMode();
-        $("input[name='LENGOW_IMPORT_DEBUG_ENABLED']").on('change', function () {
+        $('input[name="LENGOW_IMPORT_DEBUG_ENABLED"]').change(function () {
             displayDebugMode();
         });
         // display log block
-        $('#select_log').change(function(){
+        $('#select_log').change(function() {
             if ($('#select_log').val() !== null) {
                 $("#download_log" ).show();
             }
         });
-        $('#download_log').on('click', function() {
+        $('#download_log').click(function() {
             if ($('#select_log').val() !== null) {
                 window.location.href = $('#select_log').val();
             }
         });
         // submit form
-        $( ".lengow_form" ).submit(function( event ) {
+        $('.lengow_form').submit(function( event ) {
             event.preventDefault();
             var form = this;
             $('.lengow_form button[type="submit"]').addClass('loading');
@@ -173,7 +190,7 @@ function openModal(){
             }, 1000);
         });
         // load select 2 format
-        $(".lengow_select").select2({
+        $('.lengow_select').select2({
             templateResult: formatState
         });
     });

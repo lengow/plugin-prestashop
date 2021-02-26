@@ -18,15 +18,17 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<div class="lgw-content-section text-center">
-  <div id="frame_loader">
-      <i class="fa fa-circle-o-notch fa-spin" style="font-size:100px;margin-top:100px;color:white;"></i>
-  </div>
-  <iframe id="lengow_iframe" scrolling="yes" style="display: none; overflow-y: hidden;' width='580' height='400' frameborder='0' seamless='seamless'" frameBorder="0"></iframe>
+<div id="lengow_home_wrapper" class="cms-global">
+    <div class="lgw-container lgw-connection text-center">
+        <div class="lgw-content-section">
+            <div class="lgw-logo">
+                <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/lengow-blue.png" alt="lengow">
+            </div>
+        </div>
+        <div id="lgw-connection-content">
+            {include file='./connection_home.tpl'}
+        </div>
+    </div>
 </div>
 
 <input type="hidden" id="lengow_ajax_link" value="{$lengow_ajax_link|escape:'htmlall':'UTF-8'}">
-<input type="hidden" id="lengow_sync_link" value="{$isSync|escape:'htmlall':'UTF-8'}">
-<input type="hidden" id="lengow_url" value="{$lengowUrl|escape:'htmlall':'UTF-8'}">
-<input type="hidden" id="lengow_lang_iso" value="{$localeIsoCode|escape:'htmlall':'UTF-8'}">
-<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/home.js"></script>

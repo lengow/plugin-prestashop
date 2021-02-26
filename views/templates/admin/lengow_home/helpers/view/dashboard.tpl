@@ -28,7 +28,7 @@
             <div class="text-left lgw-col-6" id="alert-plugin-available">
                 {if $pluginData && $pluginData['version'] > $lengowVersion}
                     {$locale->t('menu.new_version_available', ['version' => $pluginData['version']])|escape:'htmlall':'UTF-8'}
-                    <a href="//my.{$lengowUrl|escape:'htmlall':'UTF-8'}{$pluginData['download_link']|escape:'htmlall':'UTF-8'}" target="_blank">
+                    <a href="https://my.{$lengowUrl|escape:'htmlall':'UTF-8'}{$pluginData['download_link']|escape:'htmlall':'UTF-8'}" target="_blank">
                         {$locale->t('menu.download_plugin')|escape:'htmlall':'UTF-8'}
                     </a>
                 {/if}
@@ -36,7 +36,7 @@
             <div class="text-right lgw-col-6" id="alert-counter-trial">
                 {if $merchantStatus['type'] == 'free_trial' && !$merchantStatus['expired']}
                     {$locale->t('menu.counter', ['counter' => $merchantStatus['day']])|escape:'htmlall':'UTF-8'}
-                    <a href="http://my.{$lengowUrl|escape:'htmlall':'UTF-8'}" target="_blank">
+                    <a href="https://my.{$lengowUrl|escape:'htmlall':'UTF-8'}" target="_blank">
                         {$locale->t('menu.upgrade_account')|escape:'htmlall':'UTF-8'}
                     </a>
                 {/if}
@@ -45,7 +45,7 @@
         <div class="lgw-box lgw-home-header text-center">
             <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/lengow-white-big.png" alt="lengow">
             <h1>{$locale->t('dashboard.screen.welcome_back')|escape:'htmlall':'UTF-8'}</h1>
-            <a href="//my.{$lengowUrl|escape:'htmlall':'UTF-8'}" class="lgw-btn" target="_blank">
+            <a href="https://my.{$lengowUrl|escape:'htmlall':'UTF-8'}" class="lgw-btn" target="_blank">
                 {$locale->t('dashboard.screen.go_to_lengow')|escape:'htmlall':'UTF-8'}
             </a>
         </div>

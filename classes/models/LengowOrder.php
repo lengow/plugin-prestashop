@@ -179,10 +179,10 @@ class LengowOrder extends Order
      */
     public $lengowTotalPaid;
 
-	/**
-	 * @var string Customer vat number
-	 */
-	public $lengowCustomerVatNumber;
+    /**
+     * @var string Customer vat number
+     */
+    public $lengowCustomerVatNumber;
 
     /**
      * @var float commission on marketplace
@@ -692,17 +692,18 @@ class LengowOrder extends Order
             if ($this->lengowIdFlux !== null) {
                 $this->checkAndChangeMarketplaceName($connector, $logOutput);
             }
+            $body = array(
+                'account_id' => $accountId,
+                'marketplace_order_id' => $this->lengowMarketplaceSku,
+                'marketplace' => $this->lengowMarketplaceName,
+                'merchant_order_id' => $prestaIds,
+            );
             try {
                 $result = $connector->patch(
                     LengowConnector::API_ORDER_MOI,
-                    array(
-                        'account_id' => $accountId,
-                        'marketplace_order_id' => $this->lengowMarketplaceSku,
-                        'marketplace' => $this->lengowMarketplaceName,
-                        'merchant_order_id' => $prestaIds,
-                    ),
+                    array(),
                     LengowConnector::FORMAT_JSON,
-                    '',
+                    Tools::jsonEncode($body),
                     $logOutput
                 );
             } catch (Exception $e) {

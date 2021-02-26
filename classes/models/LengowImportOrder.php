@@ -1386,19 +1386,21 @@ class LengowImportOrder
         }
     }
 
-	/**
-	 * Get vat_number from lengow order data
-	 *
-	 * @return string|null
-	 */
-	protected function getVatNumberFromOrderData() {
-		if (isset($this->orderData->billing_address->vat_number)) {
-			return $this->orderData->billing_address->vat_number;
-		} else if (isset($this->packageData->delivery->vat_number)) {
-			return $this->packageData->delivery->vat_number;
-		}
-		return null;
-	}
+    /**
+     * Get vat_number from lengow order data
+     *
+     * @return string|null
+     */
+    protected function getVatNumberFromOrderData()
+    {
+        if (isset($this->orderData->billing_address->vat_number)) {
+            return $this->orderData->billing_address->vat_number;
+        }
+        if (isset($this->packageData->delivery->vat_number)) {
+            return $this->packageData->delivery->vat_number;
+        }
+        return null;
+    }
 
     /**
      * Save order line in lengow orders line table

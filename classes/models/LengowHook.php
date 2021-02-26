@@ -57,42 +57,42 @@ class LengowHook
     /**
      * @var string Prestashop current page type
      */
-    static private $currentPageType = 'page';
+    private static $currentPageType = 'page';
 
     /**
      * @var string Prestashop order id
      */
-    static private $idOrder = '';
+    private static $idOrder = '';
 
     /**
      * @var string Prestashop cart id
      */
-    static private $idCart = '';
+    private static $idCart = '';
 
     /**
      * @var string order payment
      */
-    static private $orderPayment = '';
+    private static $orderPayment = '';
 
     /**
      * @var string order currency
      */
-    static private $orderCurrency = '';
+    private static $orderCurrency = '';
 
     /**
      * @var string total order
      */
-    static private $orderTotal = '';
+    private static $orderTotal = '';
 
     /**
      * @var string product cart ids
      */
-    static private $idsProductCart = '';
+    private static $idsProductCart = '';
 
     /**
      * @var string Prestashop category id
      */
-    static private $idCategory = '';
+    private static $idCategory = '';
 
     /**
      * @var array order is already shipped

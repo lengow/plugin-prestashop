@@ -20,6 +20,13 @@ en:
       dump_sql_created: "creating the sql backup of lengow tables"
       uninstall_tab: "uninstall tab %{class_name}"
       table_dropped: "removing table %{name} in database"
+    connection:
+      cms_creation_success: "CMS successfully created with Lengow webservice (CMS token %{cms_token})"
+      cms_creation_failed: "WARNING! CMS could NOT be created with Lengow webservice (CMS token %{cms_token})"
+      cms_already_exist: "CMS already created in Lengow (CMS token %{cms_token})"
+      try_link_catalog: "try to associate catalogue IDs %{catalog_ids} to the shop (SHOP token %{shop_token}) for the PrestaShop shop ID %{shop_id}"
+      link_catalog_success: "catalogues successfully linked with Lengow webservice"
+      link_catalog_failed: "WARNING! catalogues could NOT be linked with Lengow webservice"
     mail_report:
       send_mail_to: "report email sent to %{emails}"
       unable_send_mail_to: "unable to send report email to %{emails}"

@@ -19,11 +19,11 @@
  *}
 
 <script type="text/javascript">$(document.body).addClass("adminlengowhome");</script>
-{if $isNewMerchant || $isSync }
-    {include file='./new.tpl'}
+{if $isNewMerchant }
+    {include file='./connection.tpl'}
 {elseif ($merchantStatus['type'] == 'free_trial' && $merchantStatus['expired'])}
     {include file='./status.tpl'}
 {else}
-    {include file='./connect.tpl'}
+    {include file='./dashboard.tpl'}
 {/if}
 <script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/home.js"></script>

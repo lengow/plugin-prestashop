@@ -109,7 +109,8 @@ class LengowConfigurationForm
         $legend = isset($input['legend']) ? $input['legend'] : '';
         $label = isset($input['label']) ? $input['label'] : '';
         $placeholder = isset($input['placeholder']) ? $input['placeholder'] : '';
-        $html .= '<div class="form-group ' . Tools::strtolower($name) . '">';
+        $html .= '<div class="form-group ' . Tools::strtolower($key) . '"'
+            . ($idShop ? ' data-id_shop="' . $idShop . '"' : '') . '>';
         switch ($inputType) {
             case 'checkbox':
                 $checked = $value ? 'checked' : '';

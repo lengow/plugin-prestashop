@@ -1024,24 +1024,12 @@ class LengowMain
     public function fromCamelCase($str)
     {
         $str[0] = Tools::strtolower($str[0]);
-        $func = create_function('$c', 'return "_" . strtolower($c[1]);');
-        return preg_replace_callback('/([A-Z])/', $func, $str);
-    }
-
-    /**
-     * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName)
-     *
-     * @param string $str string in underscore format
-     * @param boolean $capitaliseFirstChar if true, capitalise the first char in $str
-     *
-     * @return string
-     */
-    public function toCamelCase($str, $capitaliseFirstChar = false)
-    {
-        if ($capitaliseFirstChar) {
-            $str[0] = Tools::strtoupper($str[0]);
-        }
-        $func = create_function('$c', 'return strtoupper($c[1]);');
-        return preg_replace_callback('/_([a-z])/', $func, $str);
+        return preg_replace_callback(
+            '/([A-Z])/',
+            static function ($c) {
+                return "_" . Tools::strtolower($c[1]);
+            },
+            $str
+        );
     }
 }

@@ -109,11 +109,12 @@ class LengowMainSettingController extends LengowController
             )
         );
         $debugWrapper = '<div class="grey-frame">' . $credentials . '</div>';
+        $shopCatalog = '';
         $shops = LengowShop::findAll(true);
         foreach ($shops as $s) {
             $shop = new LengowShop($s['id_shop']);
-            $form->fields['LENGOW_SHOP_ACTIVE']['label'] = $shop->name;
-            $debugWrapper .= '<div class="grey-frame">' . $form->buildShopInputs(
+            $shopCatalog .= '<h4>' . $shop->name . '</h4>';
+            $shopCatalog .= '<div class="grey-frame">' . $form->buildShopInputs(
                 $shop->id,
                 array(
                     'LENGOW_SHOP_ACTIVE',
@@ -128,6 +129,7 @@ class LengowMainSettingController extends LengowController
         $this->context->smarty->assign('tracker', $tracker);
         $this->context->smarty->assign('debug_report', $debugReport);
         $this->context->smarty->assign('debug_wrapper', $debugWrapper);
+        $this->context->smarty->assign('shopCatalog', $shopCatalog);
         parent::display();
     }
 }

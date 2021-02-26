@@ -50,9 +50,8 @@ class LengowShop extends Shop
     {
         if (_PS_VERSION_ < '1.5') {
             return false;
-        } else {
-            return parent::isFeatureActive();
         }
+        return parent::isFeatureActive();
     }
 
     /**
@@ -76,8 +75,7 @@ class LengowShop extends Shop
         }
         foreach ($results as $row) {
             if ($token === LengowMain::getToken($row['id_shop'])) {
-                $shop = new LengowShop($row['id_shop']);
-                return $shop;
+                return new LengowShop($row['id_shop']);
             }
         }
         return false;
@@ -107,5 +105,25 @@ class LengowShop extends Shop
             }
         }
         return $results;
+    }
+
+    /**
+     * Get list of PrestaShop shops that have been activated in Lengow
+     *
+     * @param boolean $activeInLengow get only shop active in Lengow
+     *
+     * @return array
+     */
+    public static function getActiveShops($activeInLengow = false)
+    {
+        $result = array();
+        $shops = self::findAll(true);
+        foreach ($shops as $shop) {
+            $idShop = (int)$shop['id_shop'];
+            if (!$activeInLengow || LengowConfiguration::shopIsActive($idShop)) {
+                $result[] = new LengowShop($idShop);
+            }
+        }
+        return $result;
     }
 }
