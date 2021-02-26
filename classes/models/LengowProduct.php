@@ -1024,7 +1024,7 @@ class LengowProduct extends Product
                 $query = new DbQuery();
                 $query->select('pa.id_product, pa.id_product_attribute');
                 $query->from('product_attribute', 'pa');
-                $query->innerJoin('product_shop', 'ps', 'pa.id_product = pa.id_product');
+                $query->innerJoin('product_shop', 'ps', 'pa.id_product = ps.id_product');
                 $query->where('pa.' . pSQL($key) . ' = \'' . pSQL($value) . '\'');
                 $query->where('ps.`id_shop` = \'' . (int)$idShop . '\'');
                 $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);

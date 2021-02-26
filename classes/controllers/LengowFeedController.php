@@ -493,17 +493,18 @@ class LengowFeedController extends LengowController
         $link = new LengowLink();
         if ($item['id_product']) {
             if (!$toolbox) {
-                if (_PS_VERSION_ < '1.7') {
-                    return '<a href="' . $link->getAbsoluteAdminLink(
-                        (_PS_VERSION_ < '1.5' ? 'AdminCatalog' : 'AdminProducts'),
-                        false,
-                        true
-                    ) . '&updateproduct&id_product=' . $item['id_product'] . '" target="_blank">' . $value . '</a>';
+                if (version_compare(_PS_VERSION_, '1.7', '<')) {
+                    $controller = (version_compare(_PS_VERSION_, '1.5', '<') ? 'AdminCatalog' : 'AdminProducts');
+                    $href = $link->getAbsoluteAdminLink($controller, false, true)
+                        . '&updateproduct&id_product=' . $item['id_product'];
                 } else {
-                    return '<a href="' .
-                    $link->getAdminLink('AdminProducts', true, array('id_product' => $item['id_product'])) .
-                    '" target="_blank">' . $value . '</a>';
+                    $params = array(
+                        'updateproduct' => 1,
+                        'id_product' => $item['id_product'],
+                    );
+                    $href = $link->getAdminLink('AdminProducts', true, $params);
                 }
+                return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
             } else {
                 return $value;
             }

@@ -199,10 +199,7 @@ class LengowOrderController extends LengowController
                         );
                     }
                     LengowMain::log(LengowLog::CODE_IMPORT, $synchroMessage, false, $lengowOrder->lengowMarketplaceSku);
-                    $lengowLink = new LengowLink();
-                    $prestashopOrderController = $lengowLink->getAbsoluteAdminLink('AdminOrders', false, true);
-                    $orderUrl = $prestashopOrderController . '&id_order=' . $idOrder . '&vieworder';
-                    Tools::redirectAdmin($orderUrl);
+                    Tools::redirectAdmin(self::getOrderAdminLink($idOrder));
                     break;
                 case 'cancel_re_import':
                     $idOrder = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
@@ -211,20 +208,14 @@ class LengowOrderController extends LengowController
                     if (!$newIdOrder) {
                         $newIdOrder = $idOrder;
                     }
-                    $lengowLink = new LengowLink();
-                    $prestashopOrderController = $lengowLink->getAbsoluteAdminLink('AdminOrders', false, true);
-                    $orderUrl = $prestashopOrderController . '&id_order=' . $newIdOrder . '&vieworder';
-                    Tools::redirectAdmin($orderUrl);
+                    Tools::redirectAdmin(self::getOrderAdminLink($newIdOrder));
                     break;
                 case 'force_resend':
                     $idOrder = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
                     $actionType = isset($_REQUEST['action_type']) ? $_REQUEST['action_type'] : LengowAction::TYPE_SHIP;
                     $lengowOrder = new LengowOrder($idOrder);
                     $lengowOrder->callAction($actionType);
-                    $lengowLink = new LengowLink();
-                    $prestashopOrderController = $lengowLink->getAbsoluteAdminLink('AdminOrders', false, true);
-                    $orderUrl = $prestashopOrderController . '&id_order=' . $idOrder . '&vieworder';
-                    Tools::redirectAdmin($orderUrl);
+                    Tools::redirectAdmin(self::getOrderAdminLink($idOrder));
                     break;
                 case 'add_tracking':
                     $idOrder = isset($_REQUEST['id_order']) ? (int)$_REQUEST['id_order'] : 0;
@@ -234,10 +225,7 @@ class LengowOrderController extends LengowController
                         $order->shipping_number = $trackingNumber;
                         $order->update();
                     }
-                    $lengowLink = new LengowLink();
-                    $prestashopOrderController = $lengowLink->getAbsoluteAdminLink('AdminOrders', false, true);
-                    $orderUrl = $prestashopOrderController . '&id_order=' . $idOrder . '&vieworder';
-                    Tools::redirectAdmin($orderUrl);
+                    Tools::redirectAdmin(self::getOrderAdminLink($idOrder));
                     break;
             }
             exit();
@@ -672,17 +660,14 @@ class LengowOrderController extends LengowController
         // this line is useless, but Prestashop validator require it
         $key = $key;
         $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
-        $link = new LengowLink();
         if ($item['id_order']) {
             if (!$toolbox) {
-                return '<a href="' . $link->getAbsoluteAdminLink('AdminOrders', false, true)
-                    . '&vieworder&id_order=' . $item['id_order'] . '" target="_blank">' . $value . '</a>';
-            } else {
-                return $value;
+                $href = self::getOrderAdminLink($item['id_order']);
+                return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
             }
-        } else {
             return $value;
         }
+        return $value;
     }
 
     /**
@@ -863,5 +848,32 @@ class LengowOrderController extends LengowController
                 <span class="lgw-icon ' . $iconMod . '"></span>
             </div>
         ';
+    }
+
+    /**
+     * Generate link for order admin page
+     *
+     * @param integer $idOrder PrestaShop order id
+     *
+     * @return string
+     */
+    private static function getOrderAdminLink($idOrder)
+    {
+        $link = new LengowLink();
+        try {
+            if (version_compare(_PS_VERSION_, '1.7.7', '<')) {
+                $href = $link->getAbsoluteAdminLink('AdminOrders', false, true)
+                    . '&vieworder&id_order=' . $idOrder;
+            } else {
+                $params = array(
+                    'vieworder' => 1,
+                    'id_order' => $idOrder,
+                );
+                $href = $link->getAdminLink('AdminOrders', true, $params);
+            }
+        } catch (PrestaShopException $e) {
+            $href = '';
+        }
+        return $href;
     }
 }

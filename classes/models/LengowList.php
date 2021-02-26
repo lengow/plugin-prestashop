@@ -406,22 +406,13 @@ class LengowList
     public function executeQuery()
     {
         $sql = $this->buildQuery();
-        $sqlTotal = $this->buildQuery(true);
         try {
             $this->collection = Db::getInstance()->executeS($sql, true, false);
         } catch (PrestaShopDatabaseException $e) {
             $this->collection = array();
         }
-        if (isset($this->sql['select_having']) && $this->sql['select_having']) {
-            try {
-                Db::getInstance()->executeS($sqlTotal);
-                $this->total = Db::getInstance()->NumRows();
-            } catch (PrestaShopDatabaseException $e) {
-                $this->total = 0;
-            }
-        } else {
-            $this->total = Db::getInstance()->getValue($sqlTotal, false);
-        }
+        $sqlTotal = $this->buildQuery(true);
+        $this->total = Db::getInstance()->getValue($sqlTotal, false);
         $this->nbMaxPage = ceil($this->total / $this->nbPerPage);
         $this->paginationFrom = ($this->currentPage - 1) * $this->nbPerPage + 1;
         if ($this->total === 0) {
@@ -554,32 +545,25 @@ class LengowList
                 }
             }
         }
+        $value = $this->findValueByKey($this->identifier);
+        $firstColumn = $value['filter_key'];
         if ($total) {
-            $value = $this->findValueByKey($this->identifier);
-            $firstColumn = $value['filter_key'];
-            if (isset($this->sql['select_having']) && $this->sql['select_having']) {
-                $sql = 'SELECT "' . pSQL($firstColumn) . '" ';
-                $sql .= ', ' . join(',', $this->sql['select_having']);
-            } else {
-                $sql = 'SELECT COUNT("' . pSQL($firstColumn) . '") as total';
-            }
-        } elseif ($selectAll) {
-            $sql = 'SELECT ' . $this->fieldsList['id_product']['filter_key'];
+            $sql = 'SELECT COUNT("' . pSQL($firstColumn) . '") as total';
         } else {
-            $sql = 'SELECT ' . join(', ', $this->sql['select']);
-        }
-        if (isset($this->sql['select_having']) && $this->sql['select_having']) {
-            $sql .= ', ' . join(',', $this->sql['select_having']);
+            $sql = 'SELECT ' . ($selectAll ? pSQL($firstColumn) : implode(', ', $this->sql['select']));
+            if (!$selectAll && isset($this->sql['select_having']) && $this->sql['select_having']) {
+                $sql .= ', ' . implode(',', $this->sql['select_having']);
+            }
         }
         $sql .= ' ' . $this->sql['from'] . ' ';
         if ($this->sql['join']) {
-            $sql .= join(' ', $this->sql['join']);
+            $sql .= implode(' ', $this->sql['join']);
         }
         if ($where) {
-            $sql .= ' WHERE ' . join(' AND ', $where);
+            $sql .= ' WHERE ' . implode(' AND ', $where);
         }
         if ($having) {
-            $sql .= ' HAVING ' . join(' AND ', $having);
+            $sql .= ' HAVING ' . implode(' AND ', $having);
         }
         if (!$total && !$selectAll) {
             if (Tools::strlen($this->orderColumn) > 0 && in_array($this->orderValue, array('ASC', 'DESC'))) {
