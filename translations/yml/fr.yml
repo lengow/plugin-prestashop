@@ -211,7 +211,7 @@ fr:
       tracker_title: "Tracker Lengow"
       tracker_description: "Ce tracker vous permet de récupérer les statistiques de commandes de votre site directement sur la plateforme Lengow."
       shop_title: "Gestion de la boutique"
-      shop_description: "Liez vos différentes boutiques PrestaShop à Lengow afin d'importer vos commandes. Ces données sont automatiquement complétées et activées lors de la connexion avec Lengow. Vous pouvez néanmoins ajouter des catalogue ids dans les champs correspondant en les séparant par des \";\""
+      shop_description: "Liez vos différentes boutiques PrestaShop à Lengow afin d'importer vos commandes. Ces données sont automatiquement complétées et activées lors de la connexion avec Lengow. Vous pouvez néanmoins ajouter des catalogue ids dans les champs correspondants en les séparant par des \";\""
       debug_mode_title: "Debug Mode"
       debug_mode_description: "Utilisez le Debug Mode pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ce paramètre UNIQUEMENT sur votre serveur de préproduction"
       log_file_title: "Fichiers de Log"

@@ -188,7 +188,7 @@ global_setting.screen.default_export_carrier_description|Les frais de livraison 
 global_setting.screen.tracker_title|Tracker Lengow
 global_setting.screen.tracker_description|Ce tracker vous permet de récupérer les statistiques de commandes de votre site directement sur la plateforme Lengow.
 global_setting.screen.shop_title|Gestion de la boutique
-global_setting.screen.shop_description|Liez vos différentes boutiques PrestaShop à Lengow afin d'importer vos commandes. Ces données sont automatiquement complétées et activées lors de la connexion avec Lengow. Vous pouvez néanmoins ajouter des catalogue ids dans les champs correspondant en les séparant par des ";"
+global_setting.screen.shop_description|Liez vos différentes boutiques PrestaShop à Lengow afin d'importer vos commandes. Ces données sont automatiquement complétées et activées lors de la connexion avec Lengow. Vous pouvez néanmoins ajouter des catalogue ids dans les champs correspondants en les séparant par des ";"
 global_setting.screen.debug_mode_title|Debug Mode
 global_setting.screen.debug_mode_description|Utilisez le Debug Mode pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ce paramètre UNIQUEMENT sur votre serveur de préproduction
 global_setting.screen.log_file_title|Fichiers de Log
