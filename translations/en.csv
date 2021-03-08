@@ -1,5 +1,6 @@
 module.state_technical_error|Technical error - Lengow
 tab.home|Home
+tab.dashboard|Dashboard
 tab.product|Products
 tab.order|Orders
 tab.order_setting|Orders settings

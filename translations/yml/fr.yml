@@ -3,6 +3,7 @@ fr:
     state_technical_error: "Erreur technique - Lengow"
   tab:
     home: "Accueil"
+    dashboard: "Tableau de bord"
     product: "Produits"
     order: "Commandes"
     order_setting: "Paramètres des commandes"

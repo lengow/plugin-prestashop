@@ -40,7 +40,7 @@
 {if $displayToolbar eq 1}
     <ul class="nav nav-pills lengow-nav lengow-nav-top">
         <li role="presentation" id="lengow_logo">
-            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}">
+            <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowDashboard')|escape:'htmlall':'UTF-8'}">
                 <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/lengow-white.png" alt="lengow">
             </a>
         </li>

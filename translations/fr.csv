@@ -1,5 +1,6 @@
 module.state_technical_error|Erreur technique - Lengow
 tab.home|Accueil
+tab.dashboard|Tableau de bord
 tab.product|Produits
 tab.order|Commandes
 tab.order_setting|Paramètres des commandes

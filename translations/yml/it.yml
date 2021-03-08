@@ -3,6 +3,7 @@ it:
     state_technical_error: "Errore Tecnico"
   tab:
     home: "Home"
+    dashboard: "Cruscotto"
     product: "Prodotto"
     order: "Ordine"
     order_setting: "Impostazione Ordine"

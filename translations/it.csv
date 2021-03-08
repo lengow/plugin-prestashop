@@ -1,5 +1,6 @@
 module.state_technical_error|Errore Tecnico
 tab.home|Home
+tab.dashboard|Cruscotto
 tab.product|Prodotto
 tab.order|Ordine
 tab.order_setting|Impostazione Ordine

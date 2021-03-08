@@ -55,7 +55,7 @@
                 </p>
             </div>
             <div>
-                <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowHome')|escape:'htmlall':'UTF-8'}"
+                <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowDashboard')|escape:'htmlall':'UTF-8'}"
                    class="lgw-btn lgw-btn-green">
                     {$locale->t('connection.cms.success_button')|escape:'htmlall':'UTF-8'}
                 </a>

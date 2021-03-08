@@ -3,6 +3,7 @@ en:
     state_technical_error: "Technical error - Lengow"
   tab:
     home: "Home"
+    dashboard: "Dashboard"
     product: "Products"
     order: "Orders"
     order_setting: "Orders settings"

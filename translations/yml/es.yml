@@ -3,6 +3,7 @@ es:
     state_technical_error: "Error técnico - Lengow"
   tab:
     home: "Inicio"
+    dashboard: "Tablero de mandos"
     product: "Productos"
     order: "Pedidos"
     order_setting: "Ajustes de pedidos"

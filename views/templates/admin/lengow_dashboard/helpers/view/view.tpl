@@ -1,5 +1,5 @@
 {*
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -14,22 +14,13 @@
  * under the License.
  *
  *  @author	   Team Connector <team-connector@lengow.com>
- *  @copyright 2017 Lengow SAS
+ *  @copyright 2021 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
 <script type="text/javascript">$(document.body).addClass("adminlengowhome");</script>
-<div id="lengow_home_wrapper" class="cms-global">
-    <div class="lgw-container lgw-connection text-center">
-        <div class="lgw-content-section">
-            <div class="lgw-logo">
-                <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/lengow-blue.png" alt="lengow">
-            </div>
-        </div>
-        <div id="lgw-connection-content">
-            {include file='./connection_home.tpl'}
-        </div>
-    </div>
-</div>
-<input type="hidden" id="lengow_ajax_link" value="{$lengow_ajax_link|escape:'htmlall':'UTF-8'}">
-<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/home.js"></script>
+{if ($merchantStatus['type'] == 'free_trial' && $merchantStatus['expired'])}
+    {include file='./status.tpl'}
+{else}
+    {include file='./dashboard.tpl'}
+{/if}

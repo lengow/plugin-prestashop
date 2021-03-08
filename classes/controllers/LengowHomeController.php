@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -105,11 +105,6 @@ class LengowHomeController extends LengowController
                         )
                     );
                     break;
-                case 'refresh_status':
-                    LengowSync::getStatusAccount(true);
-                    $lengowLink = new LengowLink();
-                    Tools::redirectAdmin($lengowLink->getAbsoluteAdminLink('AdminLengowHome'));
-                    break;
             }
             exit();
         }
@@ -121,10 +116,15 @@ class LengowHomeController extends LengowController
     public function display()
     {
         $lengowLink = new LengowLink();
-        $this->context->smarty->assign('lengow_ajax_link', $lengowLink->getAbsoluteAdminLink('AdminLengowHome', true));
-        $refreshStatus = $lengowLink->getAbsoluteAdminLink('AdminLengowHome') . '&action=refresh_status';
-        $this->context->smarty->assign('refresh_status', $refreshStatus);
-        parent::display();
+        if ($this->isNewMerchant) {
+            $this->context->smarty->assign(
+                'lengow_ajax_link',
+                $lengowLink->getAbsoluteAdminLink('AdminLengowHome', true)
+            );
+            parent::display();
+        } else {
+            Tools::redirectAdmin($lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
+        }
     }
 
     /**
