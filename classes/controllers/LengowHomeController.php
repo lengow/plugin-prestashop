@@ -193,7 +193,8 @@ class LengowHomeController extends LengowController
      */
     private function hasCatalogToLink()
     {
-        if (empty(LengowShop::getActiveShops(true))) {
+        $activeShops = LengowShop::getActiveShops(true);
+        if (empty($activeShops)) {
             return LengowCatalog::hasCatalogNotLinked();
         }
         return false;
@@ -206,7 +207,8 @@ class LengowHomeController extends LengowController
      */
     private function getCatalogList()
     {
-        if (empty(LengowShop::getActiveShops(true))) {
+        $activeShops = LengowShop::getActiveShops(true);
+        if (empty($activeShops)) {
             $catalogList = LengowCatalog::getCatalogList();
         } else {
             // if cms already has one or more linked catalogs, nothing is done
