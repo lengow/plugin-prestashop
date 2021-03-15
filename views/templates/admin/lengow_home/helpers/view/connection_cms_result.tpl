@@ -26,13 +26,13 @@
         <div class="lgw-module-illu mod-connected">
             <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/connected-prestashop.png"
                  class="lgw-module-illu-module mod-connected"
-                 alt="">
+                 alt="prestashop">
             <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/connected-lengow.png"
                  class="lgw-module-illu-lengow mod-connected"
-                 alt="">
+                 alt="lengow">
             <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/connection-module.png"
                  class="lgw-module-illu-plug mod-connected"
-                 alt="">
+                 alt="connection">
         </div>
         {if $hasCatalogToLink}
             <div class="lgw-content-section">
@@ -68,13 +68,13 @@
         <div class="lgw-module-illu mod-disconnected">
             <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/connected-prestashop.png"
                  class="lgw-module-illu-module mod-disconnected"
-                 alt="">
+                 alt="prestashop">
             <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/connected-lengow.png"
                  class="lgw-module-illu-lengow mod-disconnected"
-                 alt="">
+                 alt="lengow">
             <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/unplugged.png"
                  class="lgw-module-illu-plug mod-disconnected"
-                 alt="">
+                 alt="unplugged">
         </div>
         <div class="lgw-content-section">
             {if $credentialsValid}

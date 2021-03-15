@@ -27,13 +27,13 @@
     <div class="lgw-module-illu">
         <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/connected-prestashop.png"
              class="lgw-module-illu-module"
-             alt="">
+             alt="prestashop">
         <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/connected-lengow.png"
              class="lgw-module-illu-lengow"
-             alt="">
+             alt="lengow">
         <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/plug-grey.png"
              class="lgw-module-illu-plug"
-             alt="">
+             alt="plug">
     </div>
     <p>{$locale->t('connection.home.description_fourth')|escape:'htmlall':'UTF-8'}</p>
     <div>

@@ -126,9 +126,9 @@
 /views/templates/admin/lengow_home/helpers/view/index.php|eb18f895c85303c2ced77482ec4ab525
 /views/templates/admin/lengow_home/helpers/view/view.tpl|8e0c9ac0a8269c60c6ae2f64203f5d32
 /views/templates/admin/lengow_home/helpers/view/connection_cms.tpl|602ebf86d9f010a815accfc6ae5d75ec
-/views/templates/admin/lengow_home/helpers/view/connection_catalog_failed.tpl|f11eadcf5c4725678fcb6b60bac4caa0
-/views/templates/admin/lengow_home/helpers/view/connection_home.tpl|3c07d232b752d411b5eb57908270e5d6
-/views/templates/admin/lengow_home/helpers/view/connection_cms_result.tpl|83c2628a0626ca1ec651990c04cf1f5c
+/views/templates/admin/lengow_home/helpers/view/connection_catalog_failed.tpl|e1b90a4a934ca999db22015c44818f83
+/views/templates/admin/lengow_home/helpers/view/connection_home.tpl|719d3053ad5fe0212ca04b836fe3ed15
+/views/templates/admin/lengow_home/helpers/view/connection_cms_result.tpl|c211c10323846f18c26f5ab695a1e21c
 /views/templates/admin/lengow_home/helpers/view/connection_catalog.tpl|761994719aed4e1b7a115429b09d8fd4
 /views/templates/admin/lengow_home/layout.tpl|d4e23ff27234d8621b4fc909e1aea5dd
 /views/templates/admin/header_order.tpl|193a1516ca4adf9af41ae2fca1e72ad8
@@ -172,7 +172,7 @@
 /views/js/index.php|eb18f895c85303c2ced77482ec4ab525
 /views/js/lengow/index.php|eb18f895c85303c2ced77482ec4ab525
 /views/js/lengow/main_setting.js|defd47c3fa3484362980bce24a2a630a
-/views/js/lengow/home.js|6eaa318864d33e7f8800d97af8012553
+/views/js/lengow/home.js|1f2e8c28ae870b3476483d3759f76964
 /views/js/lengow/order.js|719bb81b09a100a8dc2ce59fc95d553a
 /views/js/lengow/feed.js|1852dbbba85f053f29e831b56bb8a872
 /views/js/lengow/admin.js|be4b2ede1837c8531fc2ba4eb02c3f9c

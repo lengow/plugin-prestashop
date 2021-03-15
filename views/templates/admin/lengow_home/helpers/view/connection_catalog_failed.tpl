@@ -24,13 +24,13 @@
 <div class="lgw-module-illu mod-disconnected">
     <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/connected-prestashop.png"
          class="lgw-module-illu-module mod-disconnected"
-         alt="">
+         alt="prestashop">
     <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/connected-lengow.png"
          class="lgw-module-illu-lengow mod-disconnected"
-         alt="">
+         alt="lengow">
     <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/unplugged.png"
          class="lgw-module-illu-plug mod-disconnected"
-         alt="">
+         alt="unplugged">
 </div>
 <div class="lgw-content-section">
     <p>{$locale->t('connection.catalog.failed_description_first')|escape:'htmlall':'UTF-8'}</p>

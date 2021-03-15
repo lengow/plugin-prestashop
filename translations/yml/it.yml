@@ -360,7 +360,7 @@ it:
       unable_to_save_order_payment: "impossibile salvare PrestaShop pagamento ordine"
     mail_report:
       order: "Ordine %{marketplace_sku}"
-      no_error_in_report_mail: "nessun errore nella mail di report https://www.lengow.com/support/"
+      no_error_in_report_mail: "nessun errore nella mail di report https://supportlengow.zendesk.com/hc/en-us/requests/new"
     connection:
       status_draft: "Bozza"
       status_active: "Attivo"

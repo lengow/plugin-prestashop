@@ -328,7 +328,7 @@ lengow_log.exception.product_is_not_listed|producto %{product_id} no aparece com
 lengow_log.exception.unable_to_save_order|no se ha podido guardar el pedido PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
 lengow_log.mail_report.order|Pedido %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|ningún mensaje de error , póngase en contacto con el support via https://www.lengow.com/support/
+lengow_log.mail_report.no_error_in_report_mail|ningún mensaje de error , póngase en contacto con el support via https://supportlengow.zendesk.com/hc/en-us/requests/new
 lengow_log.connection.status_draft|Borrador
 lengow_log.connection.status_active|Activo
 lengow_log.connection.catalog|Catálogo %{catalog_id}

@@ -19,12 +19,12 @@
  */
 
 (function ($) {
-    $(document).ready(function () {
+    $(document).ready(function() {
 
         var connectionContent = $('#lgw-connection-content');
 
         // go to credentials form
-        connectionContent.on('click', '.js-go-to-credentials', function () {
+        connectionContent.on('click', '.js-go-to-credentials', function() {
             var href = $('#lengow_ajax_link').val();
             var data = {action: 'go_to_credentials'};
             $.getJSON(href, data, function(response) {
@@ -33,7 +33,7 @@
         });
 
         // go to catalog form
-        connectionContent.on('click', '.js-go-to-catalog', function () {
+        connectionContent.on('click', '.js-go-to-catalog', function() {
             var retry = $(this).attr('data-retry') !== 'false';
             var href = $('#lengow_ajax_link').val();
             var data = {action: 'go_to_catalog', retry: retry};
@@ -44,10 +44,10 @@
         });
 
         // active check credentials button
-        connectionContent.on('change', '.js-credentials-input', function () {
+        connectionContent.on('change', '.js-credentials-input', function() {
             var accessToken = $('input[name=lgwAccessToken]').val();
             var secret = $('input[name=lgwSecret]').val();
-            if(accessToken !== '' && secret !== ''){
+            if (accessToken !== '' && secret !== '') {
                 $('.js-connect-cms')
                     .removeClass('lgw-btn-disabled')
                     .addClass('lgw-btn-green');
@@ -59,12 +59,12 @@
         });
 
         // check api credentials
-        connectionContent.on('click', '.js-connect-cms', function () {
+        connectionContent.on('click', '.js-connect-cms', function() {
             var accessToken = $('input[name=lgwAccessToken]');
             var secret = $('input[name=lgwSecret]');
             $('.js-connect-cms').addClass('loading');
-            accessToken.prop('disabled', true );
-            secret.prop('disabled', true );
+            accessToken.prop('disabled', true);
+            secret.prop('disabled', true);
             var href = $('#lengow_ajax_link').val();
             var data = {
                 action: 'connect_cms',
@@ -77,7 +77,7 @@
         });
 
         // disable catalog option in select
-        connectionContent.on('change', '.js-catalog-linked', function () {
+        connectionContent.on('change', '.js-catalog-linked', function() {
             var currentShopId = $(this).attr('name');
             // get all catalogs selected by shop
             var catalogSelected = [];
@@ -118,7 +118,7 @@
         });
 
         // link catalog ids
-        connectionContent.on('click', '.js-link-catalog', function () {
+        connectionContent.on('click', '.js-link-catalog', function() {
             var catalogSelected = [];
             var shopSelect = $('.js-catalog-linked');
             shopSelect.each(function() {
@@ -135,7 +135,7 @@
                 }
             });
             $('.js-link-catalog').addClass('loading');
-            shopSelect.prop('disabled', true );
+            shopSelect.prop('disabled', true);
             var href = $('#lengow_ajax_link').val();
             var data = {
                 action: 'link_catalogs',
