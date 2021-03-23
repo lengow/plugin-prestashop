@@ -187,7 +187,7 @@ class LengowHomeController extends LengowController
     }
 
     /**
-     * Get all catalogs available in Lengow
+     * Check if account has catalog to link
      *
      * @return boolean
      */
@@ -209,12 +209,10 @@ class LengowHomeController extends LengowController
     {
         $activeShops = LengowShop::getActiveShops(true);
         if (empty($activeShops)) {
-            $catalogList = LengowCatalog::getCatalogList();
-        } else {
-            // if cms already has one or more linked catalogs, nothing is done
-            $catalogList = array();
+            return LengowCatalog::getCatalogList();
         }
-        return $catalogList;
+        // if cms already has one or more linked catalogs, nothing is done
+        return array();
     }
 
     /**

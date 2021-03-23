@@ -31,19 +31,17 @@ class LengowCatalog
      */
     public static function hasCatalogNotLinked()
     {
-        $hasCatalogNotLinked = false;
         $lengowCatalogs = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS_CATALOG);
         if (!$lengowCatalogs) {
-            return $hasCatalogNotLinked;
+            return false;
         }
         foreach ($lengowCatalogs as $catalog) {
             if (!is_object($catalog) || $catalog->shop) {
                 continue;
             }
-            $hasCatalogNotLinked = true;
-            break;
+            return true;
         }
-        return $hasCatalogNotLinked;
+        return false;
     }
 
     /**
