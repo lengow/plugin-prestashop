@@ -266,7 +266,11 @@ class LengowImport
         $error = array();
         $globalError = false;
         $syncOk = true;
-        $initialContextType = Context::getContext()->shop->getContextType();
+        // get initial context type
+        if (_PS_VERSION_ >= '1.5') {
+            $initialContextShop = Context::getContext()->shop;
+            $initialContextType = $initialContextShop::getContext();
+        }
         // clean logs
         LengowMain::cleanLog();
         if (self::isInProcess() && !$this->debugMode && !$this->importOneOrder) {
@@ -444,18 +448,20 @@ class LengowImport
                 LengowMain::updateDateImport($this->typeImport);
             }
             // clean Context type with initial type if different
-            if ($initialContextType !== Context::getContext()->shop->getContextType()) {
-                $contextShop = Context::getContext()->shop;
-                try {
-                    $contextShop::setContext($initialContextType);
-                } catch (Exception $e) {
-                    LengowMain::log(
-                        LengowLog::CODE_IMPORT,
-                        LengowMain::setLogMessage('log.import.clean_context_failed'),
-                        $this->logOutput
-                    );
+            if (_PS_VERSION_ >= '1.5') {
+                $currentContextShop = Context::getContext()->shop;
+                if ($initialContextType !== $currentContextShop::getContext()) {
+                    try {
+                        $currentContextShop::setContext($initialContextType);
+                    } catch (Exception $e) {
+                        LengowMain::log(
+                            LengowLog::CODE_IMPORT,
+                            LengowMain::setLogMessage('log.import.clean_context_failed'),
+                            $this->logOutput
+                        );
+                    }
+                    Context::getContext()->shop = $currentContextShop;
                 }
-                Context::getContext()->shop = $contextShop;
             }
             // finish import process
             self::setEnd();
