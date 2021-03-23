@@ -47,7 +47,7 @@
 /classes/models/LengowMethod.php|3a4c51e8869a105c85e2c07a20d6f4cc
 /classes/models/LengowHook.php|63700d8c1f6c700c31854569653e5c12
 /classes/models/LengowGender.php|dea9180e4a2a99f802b4d2b64c6b038a
-/classes/models/LengowImport.php|fd51f43a4ba6d226c8bf96f5ad38bd5f
+/classes/models/LengowImport.php|1364f362e3b5929a656e33654c65f9d0
 /classes/models/LengowConfigurationForm.php|06927638278f0e25918787459286eba7
 /classes/models/LengowInstall.php|e4bdd495a684500c2a9a8a8d2096053c
 /classes/models/LengowImportOrder.php|8f7dc955a16d123b230a92decdef07fc

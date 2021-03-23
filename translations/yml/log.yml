@@ -102,6 +102,7 @@ en:
       anonymized_order: "Order is anonymized and has not been imported"
       old_order: "Order is older than 3 months and has not been imported"
       connector_get_all_action: "get order actions between %{date_from} and %{date_to}"
+      clean_context_failed: "WARNING ! Cannot reset the context to its initial state"
     order_action:
       check_completed_action: "check completed actions"
       check_old_action: "check and finish old actions"

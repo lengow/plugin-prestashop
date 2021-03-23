@@ -266,6 +266,7 @@ class LengowImport
         $error = array();
         $globalError = false;
         $syncOk = true;
+        $initialContextType = Context::getContext()->shop->getContextType();
         // clean logs
         LengowMain::cleanLog();
         if (self::isInProcess() && !$this->debugMode && !$this->importOneOrder) {
@@ -441,6 +442,20 @@ class LengowImport
             // update last import date
             if (!$this->importOneOrder && $syncOk) {
                 LengowMain::updateDateImport($this->typeImport);
+            }
+            // clean Context type with initial type if different
+            if ($initialContextType !== Context::getContext()->shop->getContextType()) {
+                $contextShop = Context::getContext()->shop;
+                try {
+                    $contextShop::setContext($initialContextType);
+                } catch (Exception $e) {
+                    LengowMain::log(
+                        LengowLog::CODE_IMPORT,
+                        LengowMain::setLogMessage('log.import.clean_context_failed'),
+                        $this->logOutput
+                    );
+                }
+                Context::getContext()->shop = $contextShop;
             }
             // finish import process
             self::setEnd();
