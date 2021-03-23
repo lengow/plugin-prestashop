@@ -110,7 +110,6 @@ class LengowSync
             'plugin_version' => LengowConfiguration::getGlobalValue('LENGOW_VERSION'),
             'email' => LengowConfiguration::get('PS_SHOP_EMAIL'),
             'cron_url' => LengowMain::getImportUrl(),
-            'return_url' => 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'],
             'shops' => array(),
         );
         $shopCollection = LengowShop::findAll(true);
@@ -118,7 +117,7 @@ class LengowSync
             $idShop = $row['id_shop'];
             $lengowExport = new LengowExport(array('shop_id' => $idShop));
             $shop = new LengowShop($idShop);
-            $data['shops'][$idShop] = array(
+            $data['shops'][] = array(
                 'token' => LengowMain::getToken($idShop),
                 'shop_name' => $shop->name,
                 'domain_url' => $shop->domain,
@@ -132,33 +131,6 @@ class LengowSync
     }
 
     /**
-     * Set shop configuration key from Lengow
-     *
-     * @param array $params Lengow API credentials
-     */
-    public static function sync($params)
-    {
-        LengowConfiguration::setAccessIds(
-            array(
-                'LENGOW_ACCOUNT_ID' => $params['account_id'],
-                'LENGOW_ACCESS_TOKEN' => $params['access_token'],
-                'LENGOW_SECRET_TOKEN' => $params['secret_token'],
-            )
-        );
-        if (isset($params['shops'])) {
-            foreach ($params['shops'] as $shopToken => $shopCatalogIds) {
-                $shop = LengowShop::findByToken($shopToken);
-                if ($shop) {
-                    LengowConfiguration::setCatalogIds($shopCatalogIds['catalog_ids'], (int)$shop->id);
-                    LengowConfiguration::setActiveShop((int)$shop->id);
-                }
-            }
-        }
-        // save last update date for a specific settings (change synchronisation interval time)
-        LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', time());
-    }
-
-    /**
      * Sync Lengow catalogs for order synchronisation
      *
      * @param boolean $force force cache update
@@ -168,14 +140,15 @@ class LengowSync
      */
     public static function syncCatalog($force = false, $logOutput = false)
     {
+        $success = false;
         $settingUpdated = false;
         if (LengowConfiguration::isNewMerchant()) {
-            return false;
+            return $success;
         }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_CATALOG_UPDATE');
             if ($updatedAt !== null && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_CATALOG]) {
-                return false;
+                return $success;
             }
         }
         $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS, array(), '', $logOutput);
@@ -196,6 +169,7 @@ class LengowSync
                             }
                         }
                     }
+                    $success = true;
                     break;
                 }
             }
@@ -205,7 +179,7 @@ class LengowSync
             LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', time());
         }
         LengowConfiguration::updateGlobalValue('LENGOW_CATALOG_UPDATE', time());
-        return true;
+        return $success;
     }
 
     /**

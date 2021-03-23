@@ -1,5 +1,6 @@
 module.state_technical_error|Errore Tecnico
 tab.home|Home
+tab.dashboard|Cruscotto
 tab.product|Prodotto
 tab.order|Ordine
 tab.order_setting|Impostazione Ordine
@@ -21,6 +22,48 @@ menu.download_plugin|Scaricare
 footer.legals|Condizioni Legali
 footer.plugin_lengow|Lengow plugin PrestaShop
 footer.lengow_link_url|http://www.lengow.com/it/
+connection.home.description_first|Lengow ti aiuta a ottimizzare il tuo business in tutto il mondo!
+connection.home.description_second|Attraverso la piattaforma, puoi pubblicare automaticamente il tuo catalogo prodotti sui marketplaces, sui siti web di confronto dei prezzi, sulle reti di affiliazione e sulle campagne di retargeting.
+connection.home.description_third|Esplora le tue opportunità di crescita internazionale con 1.600 canali di vendita in 42 paesi diversi.
+connection.home.description_fourth|Solo un altro passo per installare il tuo plugin Lengow per PrestaShop
+connection.home.button|Collegare il mio PrestaShop con Lengow
+connection.home.no_account|Non hai un conto su Lengow?
+connection.home.no_account_sign_up|Iscriviti gratuitamente
+connection.cms.credentials_title|Inserisci le tue credenziali API Lengow
+connection.cms.credentials_description|Trova queste credenziali nelle impostazioni del tuo conto, sezione "A.P.I"
+connection.cms.credentials_help|Hai bisogno di aiuto?
+connection.cms.credentials_help_center|Controlla il nostro Centro Assistenza
+connection.cms.credentials_help_center_url|https://support.lengow.com/kb/en
+connection.cms.credentials_button|Connettiti a Lengow
+connection.cms.credentials_button_loading|Collegamento...
+connection.cms.credentials_placeholder_access_token|Inserisci il tuo access token
+connection.cms.credentials_placeholder_secret|Inserisci il tuo segreto
+connection.cms.success_title|Ben fatto! Lengow è ora collegato con il tuo PrestaShop
+connection.cms.success_description_first|Ora potrai utilizzare il plugin, configurare i prodotti e visualizzare i tuoi ordini.
+connection.cms.success_description_second|Per importare il tuo catalogo e configurare i tuoi canali,
+connection.cms.success_description_second_go_to_lengow|vai su Lengow.
+connection.cms.success_button|Vai al cruscotto
+connection.cms.success_description_first_catalog|Un ultimo passo per completare l'installazione:
+connection.cms.success_description_second_catalog|Collega i tuoi cataloghi Lengow ai tuoi negozi PrestaShop.
+connection.cms.success_button_catalog|Collega i cataloghi
+connection.cms.failed_title|Ooops! Impossibile collegare Lengow al tuo Prestashop
+connection.cms.failed_description|Non siamo stati in grado di effettuare il collegamento tra il tuo PrestaShop e Lengow.
+connection.cms.failed_description_first_credentials|Incapace di connettersi con le credenziali fornite.
+connection.cms.failed_description_second_credentials_prod|Si prega di verificare che queste credenziali corrispondano all'ambiente di produzione di Lengow. 
+connection.cms.failed_description_second_credentials_preprod|Si prega di verificare che queste credenziali corrispondano all'ambiente di pre-produzione di Lengow.
+connection.cms.failed_help|Se il problema persiste, potrai dare un'occhiata alla
+connection.cms.failed_help_center|"guida PrestaShop"
+connection.cms.failed_help_or|o contattare il nostro
+connection.cms.failed_help_customer_success_team|"Customer Success Team"
+connection.cms.failed_button|Riprova
+connection.catalog.link_title|Collega i tuoi negozi con Lengow
+connection.catalog.link_description|Per recuperare tutte le tue configurazioni esistenti (ordini, prodotti...) collega direttamente i seguenti negozi PrestaShop con il tuo catalogo o i tuoi cataloghi Lengow.
+connection.catalog.link_catalog_avalaible|i cataloghi sono disponibili e non sono collegati a un cms in Lengow.
+connection.catalog.link_button|Salva e vai al cruscotto
+connection.catalog.link_placeholder_catalog|Seleziona un catalogo
+connection.catalog.failed_title|Ooops! Impossibile collegare i tuoi cataloghi a Lengow
+connection.catalog.failed_description_first|Non siamo riusciti a collegare i tuoi cataloghi a Lengow.
+connection.catalog.failed_description_second|Potrai riprovare o compilare gli ID dei cataloghi direttamente nelle impostazioni del plugin.
 dashboard.screen.welcome_back|Ciao! Ben tornato!
 dashboard.screen.go_to_lengow|Vai su Lengow
 dashboard.screen.products_title|Prodotti
@@ -145,6 +188,8 @@ global_setting.screen.default_export_carrier_title|Calcolo costi di spedizione
 global_setting.screen.default_export_carrier_description|Il costo di spedizione del catalogo sarà calcolato in base al trasportatore selezionato
 global_setting.screen.tracker_title|Lengow tracker
 global_setting.screen.tracker_description|Questo tracker ti permette di recuperare le statistiche degli ordini della tua pagina web direttamente nella piattaforma Lengow.
+global_setting.screen.shop_title|Gestione del negozio
+global_setting.screen.shop_description|Collega i tuoi negozi PrestaShop a Lengow per importare i tuoi ordini. Questa parte viene completata automaticamente e attivata quando ci si connette con Lengow. Tuttavia è possibile aggiungere gli ID catalogo nei campi corrispondenti separandoli con ";"
 global_setting.screen.debug_mode_title|Debug Mode
 global_setting.screen.debug_mode_description|Utilizza Debug Mode per testare e generare ordini fittizzi. Nota bene, devi attivare questa impostazione SOLAMENTE nel tuo pre-preduction server
 global_setting.screen.log_file_title|Log File
@@ -171,12 +216,12 @@ global_setting.screen.setting_saved|Salvato!
 help.screen.title|Chiedi aiuto al nostro supporto tecnico!
 help.screen.contain_text_support|Contattaci o condividi i tuoi feedback con
 help.screen.title_lengow_support|il Supporto Lengow
-help.screen.link_lengow_support|https://www.lengow.com/support/
+help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Hai bisogno d'aiuto ?
 help.screen.contain_text_support_hour|Faremo il possibile per darti una risposta durante le ore di lavoro (dal Lunedi al Venerdi - 9h/18h)
 help.screen.find_answer|Potresti trovare una risposta nella nostra  
 help.screen.link_prestashop_guide|guida dedicata PrestaShop
-help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/ob0HZ6F7so
+help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864
 legals.screen.simplified_company|Società responsabilità limitata
 legals.screen.social_capital|Capitale sociale:
 legals.screen.cnil_declaration|Dichiarazione CNIL:
@@ -190,7 +235,6 @@ lengow_setting.lengow_access_token_title|Token
 lengow_setting.lengow_secret_token_title|Token Segreto
 lengow_setting.lengow_shop_active_title|Negozio Attivo
 lengow_setting.lengow_catalog_id_title|Catalogo ID
-lengow_setting.lengow_catalog_id_legend|ID del catalogo per l'importazione degli ordini. Separarli da '; '
 lengow_setting.lengow_shop_token_title|Token Negozio
 lengow_setting.lengow_export_selection_enabled_title|Esporta solo la selezione
 lengow_setting.lengow_export_selection_enabled_legend|Attiva questa opzione se non vuoi esportare tutti i prodotti disponibile. Poi, seleziona solo i prodotti che vuoi esportare.
@@ -284,7 +328,11 @@ lengow_log.exception.product_is_not_listed|prodotto %{product_id} non è inserit
 lengow_log.exception.unable_to_save_order|impossibile salvare PrestaShop ordine  - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossibile salvare PrestaShop pagamento ordine
 lengow_log.mail_report.order|Ordine %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|nessun errore nella mail di report https://www.lengow.com/support/
+lengow_log.mail_report.no_error_in_report_mail|nessun errore nella mail di report https://supportlengow.zendesk.com/hc/en-us/requests/new
+lengow_log.connection.status_draft|Bozza
+lengow_log.connection.status_active|Attivo
+lengow_log.connection.catalog|Catalogo %{catalog_id}
+lengow_log.connection.catalog_label|%{catalog_id} - %{catalog_name} - %{nb_products} prodotti - %{catalog_status}
 admin.order.import_lengow|Importazione Lengow
 admin.order.imported_from_lengow|Questo ordine è stato importato da Lengow
 admin.order.lengow_order_id|ID Ordine Lengow

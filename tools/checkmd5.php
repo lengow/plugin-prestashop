@@ -22,6 +22,7 @@ $listFolders = array(
 $filePaths = array(
     $base . '/lengow.php',
     $base . '/loader.php',
+    $base . '/AdminLengowDashboard14.php',
     $base . '/AdminLengowFeed14.php',
     $base . '/AdminLengowHelp14.php',
     $base . '/AdminLengowHome14.php',

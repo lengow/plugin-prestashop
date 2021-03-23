@@ -68,6 +68,7 @@ class LengowInstall
      */
     private $tabs = array(
         'tab.home' => array('name' => 'AdminLengowHome', 'active' => true),
+        'tab.dashboard' => array('name' => 'AdminLengowDashboard', 'active' => false),
         'tab.product' => array('name' => 'AdminLengowFeed', 'active' => false),
         'tab.order' => array('name' => 'AdminLengowOrder', 'active' => false),
         'tab.order_setting' => array('name' => 'AdminLengowOrderSetting', 'active' => false),

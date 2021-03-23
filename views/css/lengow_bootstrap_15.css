@@ -65,10 +65,16 @@ body.lengow_body #main {
   margin: 0 auto 2em auto;
   text-align: left;
 }
+
+.lgw-container.text-center {
+  text-align: center;
+}
+
 .lgw-pagination-arrow {
   margin-right: 15px;
   float: left;
 }
+
 .lgw-pagination-btns a .fa {
   line-height: 30px;
 }

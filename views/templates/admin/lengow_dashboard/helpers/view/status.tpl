@@ -1,5 +1,5 @@
 {*
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -14,7 +14,7 @@
  * under the License.
  *
  *  @author    Team Connector <team-connector@lengow.com>
- *  @copyright 2017 Lengow SAS
+ *  @copyright 2021 Lengow SAS
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 <div id="lengow_home_wrapper" class="cms-global">
@@ -28,7 +28,7 @@
                     <p class="text-center">{$locale->t('status.screen.second_description_end_free_trial')|escape:'htmlall':'UTF-8'}</p>
                     <p class="text-center">{html_entity_decode($locale->t('status.screen.third_description_end_free_trial')|escape:'htmlall':'UTF-8')}</p>
                     <div class="text-center">
-                        <a href="http://my.{$lengowUrl|escape:'htmlall':'UTF-8'}" class="lgw-btn" target="_blank">
+                        <a href="https://my.{$lengowUrl|escape:'htmlall':'UTF-8'}" class="lgw-btn" target="_blank">
                             {$locale->t('status.screen.upgrade_account_button')|escape:'htmlall':'UTF-8'}
                         </a>
                     </div>

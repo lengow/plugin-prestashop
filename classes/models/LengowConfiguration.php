@@ -96,7 +96,6 @@ class LengowConfiguration extends Configuration
                 'LENGOW_CATALOG_ID' => array(
                     'shop' => true,
                     'label' => $locale->t('lengow_setting.lengow_catalog_id_title'),
-                    'legend' => $locale->t('lengow_setting.lengow_catalog_id_legend'),
                     'update' => true,
                 ),
                 'LENGOW_SHOP_TOKEN' => array(
@@ -474,22 +473,23 @@ class LengowConfiguration extends Configuration
      * Set Valid Account id / Access token / Secret token
      *
      * @param array $accessIds Account id / Access token / Secret token
+     *
+     * @return boolean
      */
     public static function setAccessIds($accessIds)
     {
-        $listKey = array(
-            'LENGOW_ACCOUNT_ID',
-            'LENGOW_ACCESS_TOKEN',
-            'LENGOW_SECRET_TOKEN',
-        );
+        $count = 0;
+        $listKey = array('LENGOW_ACCOUNT_ID', 'LENGOW_ACCESS_TOKEN', 'LENGOW_SECRET_TOKEN');
         foreach ($accessIds as $key => $value) {
-            if (!in_array($key, array_keys($listKey))) {
+            if (!in_array($key, $listKey, true)) {
                 continue;
             }
-            if (Tools::strlen($value) > 0) {
+            if ($value !== '') {
+                $count++;
                 self::updateGlobalValue($key, $value);
             }
         }
+        return $count === count($listKey);
     }
 
     /**
@@ -497,11 +497,7 @@ class LengowConfiguration extends Configuration
      */
     public static function resetAccessIds()
     {
-        $accessIds = array(
-            'LENGOW_ACCOUNT_ID',
-            'LENGOW_ACCESS_TOKEN',
-            'LENGOW_SECRET_TOKEN',
-        );
+        $accessIds = array('LENGOW_ACCOUNT_ID', 'LENGOW_ACCESS_TOKEN', 'LENGOW_SECRET_TOKEN');
         foreach ($accessIds as $accessId) {
             $value = self::getGlobalValue($accessId);
             if (Tools::strlen($value) > 0) {
@@ -560,13 +556,27 @@ class LengowConfiguration extends Configuration
         $valueChange = false;
         $shopCatalogIds = self::getCatalogIds($idShop);
         foreach ($catalogIds as $catalogId) {
-            if (!in_array($catalogId, $shopCatalogIds) && is_numeric($catalogId) && $catalogId > 0) {
+            if ($catalogId > 0 && is_numeric($catalogId) && !in_array($catalogId, $shopCatalogIds, true)) {
                 $shopCatalogIds[] = (int)$catalogId;
                 $valueChange = true;
             }
         }
         self::updateValue('LENGOW_CATALOG_ID', implode(';', $shopCatalogIds), false, null, $idShop);
         return $valueChange;
+    }
+
+    /**
+     * Reset all catalog ids
+     */
+    public static function resetCatalogIds()
+    {
+        $shops = LengowShop::getActiveShops();
+        foreach ($shops as $shop) {
+            if (self::shopIsActive($shop->id)) {
+                self::updateValue('LENGOW_CATALOG_ID', '', false, null, $shop->id);
+                self::updateValue('LENGOW_SHOP_ACTIVE', false, false, null, $shop->id);
+            }
+        }
     }
 
     /**
@@ -594,7 +604,7 @@ class LengowConfiguration extends Configuration
         $catalogIds = self::getCatalogIds($idShop);
         $shopHasCatalog = !empty($catalogIds);
         self::updateValue('LENGOW_SHOP_ACTIVE', $shopHasCatalog, false, null, $idShop);
-        return $shopIsActive !== $shopHasCatalog ? true : false;
+        return $shopIsActive !== $shopHasCatalog;
     }
 
     /**

@@ -40,6 +40,11 @@ class LengowController
     protected $locale;
 
     /**
+     * @var boolean Check if is a new merchant
+     */
+    protected $isNewMerchant;
+
+    /**
      * @var boolean Toolbox is open or not
      */
     protected $toolbox;
@@ -61,8 +66,8 @@ class LengowController
         $this->context->smarty->assign('multiShop', $multiShop);
         $debugMode = LengowConfiguration::debugModeIsActive();
         $this->context->smarty->assign('debugMode', $debugMode);
-        $isNewMerchant = LengowConfiguration::isNewMerchant();
-        $this->context->smarty->assign('isNewMerchant', $isNewMerchant);
+        $this->isNewMerchant = LengowConfiguration::isNewMerchant();
+        $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
         $merchantStatus = LengowSync::getStatusAccount();
         $this->context->smarty->assign('merchantStatus', $merchantStatus);
         $pluginData = LengowSync::getPluginData();
@@ -75,7 +80,7 @@ class LengowController
         $this->context->smarty->assign('lengowPathUri', $lengowPathUri);
         $this->context->smarty->assign('lengowUrl', LengowConnector::LENGOW_URL);
         // show header or not
-        if ($isNewMerchant || ($merchantStatus['type'] === 'free_trial' && $merchantStatus['expired'])) {
+        if ($this->isNewMerchant || ($merchantStatus['type'] === 'free_trial' && $merchantStatus['expired'])) {
             $displayToolbar = false;
         } else {
             $displayToolbar = true;

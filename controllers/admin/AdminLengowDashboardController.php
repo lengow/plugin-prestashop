@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2020 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,22 +15,32 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2018 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!LengowInstall::isInstallationInProgress()) {
-    exit();
-}
+/**
+ * Admin Lengow dashboard Controller Class
+ */
+class AdminLengowDashboardController extends ModuleAdminController
+{
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        $this->lang = false;
+        $this->explicitSelect = true;
+        $this->lite_display = true;
+        $this->meta_title = 'Configuration';
+        $this->list_no_link = true;
+        $this->template = 'layout.tpl';
+        $this->display = 'view';
 
-// *********************************************************
-//                     lengow_orders
-// *********************************************************
+        parent::__construct();
 
-if (LengowInstall::checkTableExists('lengow_orders')) {
-    if (!LengowInstall::checkFieldExists('lengow_orders', 'customer_vat_number')) {
-        Db::getInstance()->execute(
-            'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `customer_vat_number` VARCHAR(100) NULL'
-        );
+        $lengowController = new LengowDashboardController();
+        $lengowController->postProcess();
+        $lengowController->display();
     }
 }

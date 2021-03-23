@@ -1,5 +1,6 @@
 module.state_technical_error|Technical error - Lengow
 tab.home|Home
+tab.dashboard|Dashboard
 tab.product|Products
 tab.order|Orders
 tab.order_setting|Orders settings
@@ -21,6 +22,48 @@ menu.download_plugin|Download
 footer.legals|Legal notices
 footer.plugin_lengow|Lengow Prestashop Plugin
 footer.lengow_link_url|http://www.lengow.com/
+connection.home.description_first|Lengow helps you optimize your business worldwide!
+connection.home.description_second|Through the platform, you can automatically publish your product catalogue on marketplaces, comparison websites, affiliate network, and retargeting campaigns.
+connection.home.description_third|Explore your opportunities for international growth with 1,600 sales channels in 42 different countries.
+connection.home.description_fourth|Just one more step to go to install your Lengow plugin for PrestaShop
+connection.home.button|Connect my PrestaShop with Lengow
+connection.home.no_account|You don't have a Lengow account?
+connection.home.no_account_sign_up|Sign up for free
+connection.cms.credentials_title|Please enter your API Lengow credentials
+connection.cms.credentials_description|Find these credentials in your account settings, section "A.P.I"
+connection.cms.credentials_help|Need help?
+connection.cms.credentials_help_center|Check out our Help Center
+connection.cms.credentials_help_center_url|https://support.lengow.com/kb/en
+connection.cms.credentials_button|Connect to Lengow
+connection.cms.credentials_button_loading|Connecting...
+connection.cms.credentials_placeholder_access_token|Enter your access token
+connection.cms.credentials_placeholder_secret|Enter your secret
+connection.cms.success_title|Well done! Lengow is now connected with your PrestaShop
+connection.cms.success_description_first|You can now use the plugin, configure your products and view your marketplace orders.
+connection.cms.success_description_second|To import your catalogue and configure your channels,
+connection.cms.success_description_second_go_to_lengow|go to Lengow.
+connection.cms.success_button|Go to dashboard
+connection.cms.success_description_first_catalog|One last step to complete the installation:
+connection.cms.success_description_second_catalog|Link your Lengow catalogs to your PrestaShop shops.
+connection.cms.success_button_catalog|Link catalogues
+connection.cms.failed_title|Ooops! Unable to connect Lengow to your PrestaShop
+connection.cms.failed_description|We were unable to make the connection between your PrestaShop and Lengow.
+connection.cms.failed_description_first_credentials|Unable to connect with credentials provided.
+connection.cms.failed_description_second_credentials_prod|Please verify that these credentials match Lengow's production environment.
+connection.cms.failed_description_second_credentials_preprod|Please verify that these credentials match Lengow's pre-production environment.
+connection.cms.failed_help|If the problem persists, you can take a look at
+connection.cms.failed_help_center|"PrestaShop guide"
+connection.cms.failed_help_or|or contact our
+connection.cms.failed_help_customer_success_team|"Customer Success Team"
+connection.cms.failed_button|Retry
+connection.catalog.link_title|Link your shops with Lengow
+connection.catalog.link_description|To retrieve all your existing configuration (orders, products...) directly link the following PrestaShop shops with your Lengow catalogue(s).
+connection.catalog.link_catalog_avalaible|catalogues are available and not linked to a cms in Lengow.
+connection.catalog.link_button|Save and go to the dashboard
+connection.catalog.link_placeholder_catalog|Select a catalogue
+connection.catalog.failed_title|Ooops! Unable to link your catalogues in Lengow
+connection.catalog.failed_description_first|We were unable to link your catalogues to Lengow.
+connection.catalog.failed_description_second|You can try again or fill in the catalogues IDs directly in the plugin settings.
 dashboard.screen.welcome_back|Hi! Welcome back!
 dashboard.screen.go_to_lengow|Go to Lengow
 dashboard.screen.products_title|Products
@@ -145,6 +188,8 @@ global_setting.screen.default_export_carrier_title|Calculation of shipping costs
 global_setting.screen.default_export_carrier_description|The shipping costs for catalog generation will be calculated based on the selected carrier.
 global_setting.screen.tracker_title|Lengow tracker
 global_setting.screen.tracker_description|This tracker allows you to retrieve order statistics generated on your site directly in Lengow.
+global_setting.screen.shop_title|Shop management
+global_setting.screen.shop_description|Link your PrestaShop shops to Lengow to import your orders. This part is automatically completed and activated when connecting with Lengow. However you can add catalog ids in the corresponding fields by separating them with ";"
 global_setting.screen.debug_mode_title|Debug Mode
 global_setting.screen.debug_mode_description|Use Debug Mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your pre-production server ONLY
 global_setting.screen.log_file_title|Log Files
@@ -171,12 +216,12 @@ global_setting.screen.setting_saved|Saved!
 help.screen.title|Get a little help from your support team!
 help.screen.contain_text_support|Ask us anything about Lengow or share feedback with
 help.screen.title_lengow_support|Lengow Support.
-help.screen.link_lengow_support|https://www.lengow.com/support/
+help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
 help.screen.find_answer|You can also find answers in our 
 help.screen.link_prestashop_guide|PrestaShop dedicated guide
-help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/ob0HZ6F7so
+help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:
 legals.screen.cnil_declaration|CNIL declaration:
@@ -190,7 +235,6 @@ lengow_setting.lengow_access_token_title|Access Token
 lengow_setting.lengow_secret_token_title|Secret Token
 lengow_setting.lengow_shop_active_title|Activate Shop
 lengow_setting.lengow_catalog_id_title|Catalogues ID
-lengow_setting.lengow_catalog_id_legend|Your catalogues ID to import orders. Separate them by ' ; '
 lengow_setting.lengow_shop_token_title|Shop Token
 lengow_setting.lengow_export_selection_enabled_title|Export the selection only
 lengow_setting.lengow_export_selection_enabled_legend|Activate this option if you do not want to export all available products. Then, select only the products you want to export
@@ -284,7 +328,11 @@ lengow_log.exception.product_is_not_listed|product %{product_id} is not listed a
 lengow_log.exception.unable_to_save_order|unable to save PrestaShop order - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
 lengow_log.mail_report.order|Order %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://www.lengow.com/support/
+lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/hc/en-us/requests/new
+lengow_log.connection.status_draft|Draft
+lengow_log.connection.status_active|Active
+lengow_log.connection.catalog|Catalogue %{catalog_id}
+lengow_log.connection.catalog_label|%{catalog_id} - %{catalog_name} - %{nb_products} products - %{catalog_status}
 admin.order.import_lengow|Import Lengow
 admin.order.imported_from_lengow|This order has been imported from Lengow
 admin.order.lengow_order_id|Lengow order ID
@@ -331,6 +379,12 @@ log.uninstall.uninstall_end|## end uninstall for version %{version} ##
 log.uninstall.dump_sql_created|creating the sql backup of lengow tables
 log.uninstall.uninstall_tab|uninstall tab %{class_name}
 log.uninstall.table_dropped|removing table %{name} in database
+log.connection.cms_creation_success|CMS successfully created with Lengow webservice (CMS token %{cms_token})
+log.connection.cms_creation_failed|WARNING! CMS could NOT be created with Lengow webservice (CMS token %{cms_token})
+log.connection.cms_already_exist|CMS already created in Lengow (CMS token %{cms_token})
+log.connection.try_link_catalog|try to associate catalogue IDs %{catalog_ids} to the shop (SHOP token %{shop_token}) for the PrestaShop shop ID %{shop_id}
+log.connection.link_catalog_success|catalogues successfully linked with Lengow webservice
+log.connection.link_catalog_failed|WARNING! catalogues could NOT be linked with Lengow webservice
 log.mail_report.send_mail_to|report email sent to %{emails}
 log.mail_report.unable_send_mail_to|unable to send report email to %{emails}
 log.mail_report.template_not_exist|the mail report template does not exist for the locale %{iso_code}

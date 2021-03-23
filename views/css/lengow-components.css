@@ -35,11 +35,10 @@ a.lgw-box-link:hover {
 }
 
 .lgw-container .grey-frame {
-background: #f7f7f7;
-padding: 30px;
-border: 1px solid #d7d7d7;
-border-radius: 3px;
-margin-bottom: 15px;
+  background: #f7f7f7;
+  padding: 30px 30px 15px;
+  border: 1px solid #d7d7d7;
+  border-radius: 3px;
 }
 
 .lgw-container .blue-frame {
