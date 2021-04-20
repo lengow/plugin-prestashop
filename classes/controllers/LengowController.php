@@ -100,10 +100,7 @@ class LengowController
      */
     public function display()
     {
-        $this->context->smarty->assign(
-            'total_pending_order',
-            LengowOrder::getTotalOrderByStatus(LengowOrder::STATE_WAITING_SHIPMENT)
-        );
+        $this->context->smarty->assign('total_pending_order', LengowOrder::countOrderToBeSent());
         if (_PS_VERSION_ < '1.5') {
             if (!$this->toolbox) {
                 $module = Module::getInstanceByName('lengow');

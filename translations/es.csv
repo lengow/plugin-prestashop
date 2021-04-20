@@ -186,6 +186,8 @@ order_setting.screen.nb_days|dias
 global_setting.screen.notification_alert_title|Notificaciones & alertas
 global_setting.screen.default_export_carrier_title|Cálculo de los gastos de envío
 global_setting.screen.default_export_carrier_description|Los costes de envío para su catálogo se calcularán en función del operador seleccionado.
+global_setting.screen.security_title|Autorización por IP
+global_setting.screen.security_description|Habilite esta opción si desea que su exportación esté protegida por IP. De forma predeterminada, su exportación está protegida por una clave única.
 global_setting.screen.tracker_title|Lengow tracker
 global_setting.screen.tracker_description|Este tracker te permite recuperar las estadísticas de pedidos de tu página web directamente en la plataforma Lengow.
 global_setting.screen.shop_title|Gestión de la tienda
@@ -274,8 +276,9 @@ lengow_setting.lengow_import_in_progress_title|Importación en curso
 lengow_setting.lengow_last_import_cron_title|Última importación Cron
 lengow_setting.lengow_last_import_manual_title|Última importación manual
 lengow_setting.lengow_global_token_title|Lengow global Token
+lengow_setting.lengow_ip_enable_title|Habilitar la autorización por IP
 lengow_setting.lengow_authorized_ip_title|Authorised IP
-lengow_setting.lengow_authorized_ip_legend|Authorized IP separada por ;
+lengow_setting.lengow_authorized_ip_legend|Par añadir varios IPs, separalos con un ";"
 lengow_setting.lengow_tracking_enabled_title|Activar el seguimiento Lengow
 lengow_setting.lengow_tracking_id_title|Lengow Tracking ID
 lengow_setting.lengow_tracking_id_legend|El nombre del identificador único indicado en Lengow

@@ -186,6 +186,8 @@ order_setting.screen.nb_days|days
 global_setting.screen.notification_alert_title|Notifications & alerts
 global_setting.screen.default_export_carrier_title|Calculation of shipping costs
 global_setting.screen.default_export_carrier_description|The shipping costs for catalog generation will be calculated based on the selected carrier.
+global_setting.screen.security_title|Authorisation by IP
+global_setting.screen.security_description|Enable this option if you want your export to be secured by IP. By default, your export is secured by a unique key.
 global_setting.screen.tracker_title|Lengow tracker
 global_setting.screen.tracker_description|This tracker allows you to retrieve order statistics generated on your site directly in Lengow.
 global_setting.screen.shop_title|Shop management
@@ -267,15 +269,16 @@ lengow_setting.lengow_import_stock_ship_mp_title|I want to decrease my stock
 lengow_setting.lengow_import_stock_ship_mp_legend|Use this option to take marketplaces orders into account for your PrestaShop backoffice
 lengow_setting.lengow_report_mail_enabled_title|I would like to be notified when there are issues regarding order importation and/or catalogue exportation
 lengow_setting.lengow_report_mail_address_title|Mail for the report email
-lengow_setting.lengow_report_mail_address_legend|To add several emails, use " ; " to separate them
+lengow_setting.lengow_report_mail_address_legend|To add several emails, use ";" to separate them
 lengow_setting.lengow_import_single_enabled_title|Limited to one order per import process
 lengow_setting.lengow_import_single_enabled_legend|Useful for PrestaShop versions from 1.5.2 to 1.5.4.* (avoids importing orders twice)
 lengow_setting.lengow_import_in_progress_title|Import in progress
 lengow_setting.lengow_last_import_cron_title|Last Cron import
 lengow_setting.lengow_last_import_manual_title|Last manual import
 lengow_setting.lengow_global_token_title|Lengow global Token
+lengow_setting.lengow_ip_enable_title|Enable authorisation by IP
 lengow_setting.lengow_authorized_ip_title|Authorised IPs
-lengow_setting.lengow_authorized_ip_legend|Authorised IP separated by ;
+lengow_setting.lengow_authorized_ip_legend|To add several IPs, use ";" to separate them
 lengow_setting.lengow_tracking_enabled_title|Activate Lengow tracking
 lengow_setting.lengow_tracking_id_title|Lengow Tracking ID
 lengow_setting.lengow_tracking_id_legend|The name of the unique identifier entered in the Lengow
@@ -504,7 +507,7 @@ toolbox.index.json_php_help_label|Go to JSON PHP extension manual
 toolbox.index.shop_functionality_message|Shop functionality
 toolbox.index.shop_functionality_help|Shop functionalities are disabled, order import is impossible: please enable them in the products settings section
 toolbox.index.mail_configuration_enabled|Email are enabled with custom settings
-toolbox.index.email_desactived|Email are disabled
+toolbox.index.email_disable|Email are disabled
 toolbox.index.error_mail_setting|Error on email settings: PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4
 toolbox.index.email_using_php_mail|Email using php mail function
 toolbox.index.checksum_message|Plugin files check
@@ -514,9 +517,11 @@ toolbox.index.global_information|Global information
 toolbox.index.prestashop_version|PrestaShop version
 toolbox.index.plugin_version|Plugin version
 toolbox.index.ip_server|Server IP
+toolbox.index.authorized_ip_enable|Authorisation by IP enabled
 toolbox.index.ip_authorized|IP authorised
 toolbox.index.debug_disabled|Debug Mode disabled
-toolbox.index.cron_enable|Cron job set in the Crontab module
+toolbox.index.write_permission|Read and write permission from media folder
+toolbox.index.toolbox_url|Toolbox URL
 toolbox.index.import_information|Import information (Global)
 toolbox.index.global_token|Import token
 toolbox.index.url_import|Import URL
@@ -528,12 +533,16 @@ toolbox.index.shop_type_import|Last import type
 toolbox.index.last_import_none|none
 toolbox.index.last_import_cron|Cron
 toolbox.index.last_import_manual|manual
+toolbox.index.nb_order_imported|Orders imported by Lengow
+toolbox.index.nb_order_to_be_sent|Orders waiting to be sent
+toolbox.index.nb_order_with_error|Orders with errors
 toolbox.index.export_information|Export information (by shop)
 toolbox.index.shop_active|Shop followed by Lengow
 toolbox.index.shop_catalogs_id|Lengow catalogs id synchronized
 toolbox.index.export_variation_enabled|Include product variations
 toolbox.index.export_out_stock_enabled|Include out of stock products
 toolbox.index.export_selection_enabled|Include specific products
+toolbox.index.export_inactive_enabled|Include disabled products
 toolbox.index.shop_export_token|Export token
 toolbox.index.shop_last_export|Last export
 toolbox.index.shop_product_total|Products available in the shop

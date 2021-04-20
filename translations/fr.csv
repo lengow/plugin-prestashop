@@ -185,7 +185,9 @@ order_setting.screen.import_setting_description|Gérez ici vos paramètres d'imp
 order_setting.screen.nb_days|jours
 global_setting.screen.notification_alert_title|Notifications & alertes
 global_setting.screen.default_export_carrier_title|Calcul des frais de livraison
-global_setting.screen.default_export_carrier_description|Les frais de livraison de votre catalogue vont être calculés en fonction du transporteur choisi
+global_setting.screen.default_export_carrier_description|Les frais de livraison de votre catalogue vont être calculés en fonction du transporteur choisi.
+global_setting.screen.security_title|Autorisation par IP
+global_setting.screen.security_description|Activez cette option si vous voulez sécuriser votre export par ip. Par défaut, votre export est sécurisé par une clé unique.
 global_setting.screen.tracker_title|Tracker Lengow
 global_setting.screen.tracker_description|Ce tracker vous permet de récupérer les statistiques de commandes de votre site directement sur la plateforme Lengow.
 global_setting.screen.shop_title|Gestion de la boutique
@@ -267,15 +269,16 @@ lengow_setting.lengow_import_stock_ship_mp_title|Je veux diminuer mon stock
 lengow_setting.lengow_import_stock_ship_mp_legend|Activez cette option pour prendre en compte les commandes des marketplaces sur les stocks de votre backoffice PrestaShop.
 lengow_setting.lengow_report_mail_enabled_title|Je veux être notifié en cas de problème lors de l'importation de mes commandes
 lengow_setting.lengow_report_mail_address_title|Email à utiliser pour l'envoi des emails de rapport
-lengow_setting.lengow_report_mail_address_legend|Pour ajouter plusieurs emails, utilisez des " ; " pour les séparer
+lengow_setting.lengow_report_mail_address_legend|Pour ajouter plusieurs emails, utilisez des ";" pour les séparer
 lengow_setting.lengow_import_single_enabled_title|Limité à une commande par import
 lengow_setting.lengow_import_single_enabled_legend|Utile pour les versions PrestaShop 1.5.2 à 1.5.4. *(cela évite d'importer deux fois les commandes)
 lengow_setting.lengow_import_in_progress_title|Import en cours
 lengow_setting.lengow_last_import_cron_title|Dernier import CRON
 lengow_setting.lengow_last_import_manual_title|Dernier import manuel
 lengow_setting.lengow_global_token_title|Lengow global Token
+lengow_setting.lengow_ip_enable_title|Activer l'autorisation par IP
 lengow_setting.lengow_authorized_ip_title|IP autorisée(s)
-lengow_setting.lengow_authorized_ip_legend|IP autorisée(s) séparée(s) par ;
+lengow_setting.lengow_authorized_ip_legend|Pour ajouter plusieurs Ips, utilisez des ";" pour les séparer
 lengow_setting.lengow_tracking_enabled_title|Activer le tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_tracking_id_legend|Le nom de l'identifiant unique indiqué dans Lengow

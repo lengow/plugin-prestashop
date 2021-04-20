@@ -120,11 +120,6 @@ class LengowFeed
     );
 
     /**
-     * @var string Lengow export folder
-     */
-    public static $lengowExportFolder = 'export';
-
-    /**
      * Construct
      *
      * @param boolean $stream export streaming or in a file
@@ -162,7 +157,7 @@ class LengowFeed
     public function initExportFile()
     {
         $sep = DIRECTORY_SEPARATOR;
-        $this->exportFolder = self::$lengowExportFolder . $sep . $this->shopFolder;
+        $this->exportFolder = LengowMain::FOLDER_EXPORT . $sep . $this->shopFolder;
         $folderPath = LengowMain::getLengowFolder() . $sep . $this->exportFolder;
         if (!file_exists($folderPath)) {
             if (!mkdir($folderPath)) {

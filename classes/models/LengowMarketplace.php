@@ -27,7 +27,7 @@ class LengowMarketplace
     /**
      * @var string marketplace file name
      */
-    public static $marketplaceJson = 'marketplaces.json';
+    const FILE_MARKETPLACE = 'marketplaces.json';
 
     /**
      * @var array all valid actions
@@ -193,7 +193,7 @@ class LengowMarketplace
     public static function getFilePath()
     {
         $sep = DIRECTORY_SEPARATOR;
-        return LengowMain::getLengowFolder() . $sep . LengowMain::$lengowConfigFolder . $sep . self::$marketplaceJson;
+        return LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_MARKETPLACE;
     }
 
     /**

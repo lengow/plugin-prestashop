@@ -237,7 +237,7 @@ class LengowConnector
      */
     public static function isValidAuth($logOutput = false)
     {
-        if (!LengowCheck::isCurlActivated()) {
+        if (!LengowToolbox::isCurlActivated()) {
             return false;
         }
         list($accountId, $accessToken, $secret) = LengowConfiguration::getAccessIds();
@@ -358,8 +358,8 @@ class LengowConnector
      */
     public function connect($force = false, $logOutput = false)
     {
-        $token = LengowConfiguration::getGlobalValue('LENGOW_AUTH_TOKEN');
-        $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_LAST_AUTH_TOKEN_UPDATE');
+        $token = LengowConfiguration::getGlobalValue(LengowConfiguration::AUTHORIZATION_TOKEN);
+        $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_AUTHORIZATION_TOKEN);
         if (!$force
             && $token !== null
             && $updatedAt !== null
@@ -369,8 +369,8 @@ class LengowConnector
             $authorizationToken = $token;
         } else {
             $authorizationToken = $this->getAuthorizationToken($logOutput);
-            LengowConfiguration::updateGlobalValue('LENGOW_AUTH_TOKEN', $authorizationToken);
-            LengowConfiguration::updateGlobalValue('LENGOW_LAST_AUTH_TOKEN_UPDATE', time());
+            LengowConfiguration::updateGlobalValue(LengowConfiguration::AUTHORIZATION_TOKEN, $authorizationToken);
+            LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_AUTHORIZATION_TOKEN, time());
         }
         $this->token = $authorizationToken;
     }

@@ -186,6 +186,8 @@ order_setting.screen.nb_days|giorni
 global_setting.screen.notification_alert_title|Attenzione
 global_setting.screen.default_export_carrier_title|Calcolo costi di spedizione
 global_setting.screen.default_export_carrier_description|Il costo di spedizione del catalogo sarà calcolato in base al trasportatore selezionato
+global_setting.screen.security_title|Autorizzazione tramite IP
+global_setting.screen.security_description|Abilita questa opzione se desideri che la tua esportazione sia protetta da IP. Per impostazione predefinita, l'esportazione è protetta da una chiave univoca.
 global_setting.screen.tracker_title|Lengow tracker
 global_setting.screen.tracker_description|Questo tracker ti permette di recuperare le statistiche degli ordini della tua pagina web direttamente nella piattaforma Lengow.
 global_setting.screen.shop_title|Gestione del negozio
@@ -267,15 +269,16 @@ lengow_setting.lengow_import_stock_ship_mp_title|Voglio ridurre il mio stock
 lengow_setting.lengow_import_stock_ship_mp_legend|Utilizza questa opzione per importare i tuoi ordini marketplace nel tuo backoffice PrestaShop
 lengow_setting.lengow_report_mail_enabled_title|Vorrei ricevere una notifica quando ci sono problemi in merito all'importazione degli ordini e/o esportazione catalogo
 lengow_setting.lengow_report_mail_address_title|Indirizzo email report Lengow
-lengow_setting.lengow_report_mail_address_legend|Per aggiungere diverse email, usa " ; " per separarli
+lengow_setting.lengow_report_mail_address_legend|Per aggiungere diverse email, usa ";" per separarli
 lengow_setting.lengow_import_single_enabled_title|Limitato a un solo ordine per processo di importazione
 lengow_setting.lengow_import_single_enabled_legend|Adatto alle versioni PrestaShop da 1.5.2 a 1.5.4.* (evita di importare gli ordini due volte)
 lengow_setting.lengow_import_in_progress_title|Importazione in corso
 lengow_setting.lengow_last_import_cron_title|Cron ultima importazione
 lengow_setting.lengow_last_import_manual_title|Ultimo import manuale
 lengow_setting.lengow_global_token_title|Lengow global Token
+lengow_setting.lengow_ip_enable_title|Abilita l'autorizzazione tramite IP
 lengow_setting.lengow_authorized_ip_title|IP Autorizzati
-lengow_setting.lengow_authorized_ip_legend|IP Autorizzati separati da ;
+lengow_setting.lengow_authorized_ip_legend|Per aggiungere diverse IPs, usa ";" per separarli
 lengow_setting.lengow_tracking_enabled_title|Attiva il tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_tracking_id_legend|Il numero degli id unici indicati in Lengow

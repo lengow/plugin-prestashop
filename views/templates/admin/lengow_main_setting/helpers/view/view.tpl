@@ -36,6 +36,11 @@
                 {html_entity_decode($defaultExportCarrier|escape:'htmlall':'UTF-8')}
             </div>
             <div class="lgw-box">
+                <h2>{$locale->t('global_setting.screen.security_title')|escape:'htmlall':'UTF-8'}</h2>
+                <p>{$locale->t('global_setting.screen.security_description')|escape:'htmlall':'UTF-8'}</p>
+                {html_entity_decode($ipSecurity|escape:'htmlall':'UTF-8')}
+            </div>
+            <div class="lgw-box">
                 <h2>{$locale->t('global_setting.screen.tracker_title')|escape:'htmlall':'UTF-8'}</h2>
                 <p>{$locale->t('global_setting.screen.tracker_description')|escape:'htmlall':'UTF-8'}</p>
                 {html_entity_decode($tracker|escape:'htmlall':'UTF-8')}
@@ -61,9 +66,8 @@
                         {$locale->t('global_setting.screen.please_choose_log')|escape:'htmlall':'UTF-8'}
                     </option>
                     {foreach from=$list_file item=file}
-                        <option value="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting', true)|escape:'htmlall':'UTF-8'}&action=download&file={$file['short_path']|escape:'htmlall':'UTF-8'}">
-                        {assign var=file_name value="."|explode:$file['name']}
-                        {$file_name[0]|date_format:"%A %e %B %Y"|escape:'htmlall':'UTF-8'}</option>
+                        <option value="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting', true)|escape:'htmlall':'UTF-8'}&action=download&date={$file['date']|escape:'htmlall':'UTF-8'}">
+                        {$file['date']|date_format:"%A %e %B %Y"|escape:'htmlall':'UTF-8'}</option>
                     {/foreach}
                     <option value="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting', true)|escape:'htmlall':'UTF-8'}&action=download_all" >
                         {$locale->t('global_setting.screen.download_all_files')|escape:'htmlall':'UTF-8'}

@@ -43,7 +43,7 @@ class LengowOrderController extends LengowController
         foreach ($shops as $s) {
             $shop[$s['id_shop']] = new LengowShop($s['id_shop']);
         }
-        $days = LengowConfiguration::get('LENGOW_IMPORT_DAYS');
+        $days = LengowConfiguration::get(LengowConfiguration::SYNCHRONIZATION_DAY_INTERVAL);
         $this->context->smarty->assign('shop', $shop);
         $this->context->smarty->assign('days', $days);
         $this->context->smarty->assign('showCarrierNotification', LengowCarrier::hasDefaultCarrierNotMatched());
@@ -90,17 +90,17 @@ class LengowOrderController extends LengowController
                     break;
                 case 'import_all':
                     if (_PS_VERSION_ < '1.5') {
-                        $import = new LengowImport(array('log_output' => false));
+                        $import = new LengowImport(array(LengowImport::PARAM_LOG_OUTPUT => false));
                     } else {
                         if (Shop::getContextShopID()) {
                             $import = new LengowImport(
                                 array(
-                                    'shop_id' => Shop::getContextShopID(),
-                                    'log_output' => false,
+                                    LengowImport::PARAM_SHOP_ID => Shop::getContextShopID(),
+                                    LengowImport::PARAM_LOG_OUTPUT => false,
                                 )
                             );
                         } else {
-                            $import = new LengowImport(array('log_output' => false));
+                            $import = new LengowImport(array(LengowImport::PARAM_LOG_OUTPUT => false));
                         }
                     }
                     $return = $import->exec();
@@ -137,10 +137,10 @@ class LengowOrderController extends LengowController
                 case 'update_order':
                     $import = new LengowImport(
                         array(
-                            'marketplace_sku' => Tools::getValue('marketplace_sku'),
-                            'marketplace_name' => Tools::getValue('marketplace_name'),
-                            'delivery_address_id' => Tools::getValue('delivery_address_id'),
-                            'shop_id' => Tools::getValue('shop_id'),
+                            LengowImport::PARAM_MARKETPLACE_SKU => Tools::getValue('marketplace_sku'),
+                            LengowImport::PARAM_MARKETPLACE_NAME => Tools::getValue('marketplace_name'),
+                            LengowImport::PARAM_DELIVERY_ADDRESS_ID => Tools::getValue('delivery_address_id'),
+                            LengowImport::PARAM_SHOP_ID => Tools::getValue('shop_id'),
                         )
                     );
                     $result = $import->exec();
@@ -170,9 +170,9 @@ class LengowOrderController extends LengowController
                 case 'update_some_orders':
                     $import = new LengowImport(
                         array(
-                            'log_output' => false,
-                            'days' => Tools::getValue('days'),
-                            'shop_id' => Tools::getValue('shop_id'),
+                            LengowImport::PARAM_LOG_OUTPUT => false,
+                            LengowImport::PARAM_DAYS => Tools::getValue('days'),
+                            LengowImport::PARAM_SHOP_ID => Tools::getValue('shop_id'),
                         )
                     );
                     $return = $import->exec();
@@ -239,7 +239,7 @@ class LengowOrderController extends LengowController
     {
         $warningMessages = array();
         $lengowLink = new LengowLink();
-        if (LengowConfiguration::get('LENGOW_IMPORT_SINGLE_ENABLED')) {
+        if (LengowConfiguration::get(LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED)) {
             $warningMessages[] = $this->locale->t('order.screen.import_single_warning_message');
         }
         if (LengowConfiguration::debugModeIsActive()) {
@@ -273,9 +273,9 @@ class LengowOrderController extends LengowController
                 ? LengowMain::getDateInCorrectFormat($lastImport['timestamp'])
                 : '',
             'last_import_type' => $lastImport['type'],
-            'link' => LengowMain::getImportUrl(),
+            'link' => LengowMain::getCronUrl(),
         );
-        $reportMailEnabled = (bool)LengowConfiguration::getGlobalValue('LENGOW_REPORT_MAIL_ENABLED');
+        $reportMailEnabled = (bool)LengowConfiguration::getGlobalValue(LengowConfiguration::REPORT_MAIL_ENABLED);
         $this->context->smarty->assign('reportMailEnabled', $reportMailEnabled);
         $this->context->smarty->assign('report_mail_address', LengowConfiguration::getReportEmailAddress());
         $this->context->smarty->assign('orderCollection', $orderCollection);

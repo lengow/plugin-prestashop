@@ -29,44 +29,14 @@ class LengowSync
      */
     const CMS_TYPE = 'prestashop';
 
-    /**
-     * @var string sync catalog action
-     */
+    /* Sync actions */
     const SYNC_CATALOG = 'catalog';
-
-    /**
-     * @var string sync carrier action
-     */
     const SYNC_CARRIER = 'carrier';
-
-    /**
-     * @var string sync cms option action
-     */
     const SYNC_CMS_OPTION = 'cms_option';
-
-    /**
-     * @var string sync status account action
-     */
     const SYNC_STATUS_ACCOUNT = 'status_account';
-
-    /**
-     * @var string sync marketplace action
-     */
     const SYNC_MARKETPLACE = 'marketplace';
-
-    /**
-     * @var string sync order action
-     */
     const SYNC_ORDER = 'order';
-
-    /**
-     * @var string sync action action
-     */
     const SYNC_ACTION = 'action';
-
-    /**
-     * @var string sync plugin version action
-     */
     const SYNC_PLUGIN_DATA = 'plugin';
 
     /**
@@ -107,15 +77,16 @@ class LengowSync
             'token' => LengowMain::getToken(),
             'type' => self::CMS_TYPE,
             'version' => _PS_VERSION_,
-            'plugin_version' => LengowConfiguration::getGlobalValue('LENGOW_VERSION'),
+            'plugin_version' => LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION),
             'email' => LengowConfiguration::get('PS_SHOP_EMAIL'),
-            'cron_url' => LengowMain::getImportUrl(),
+            'cron_url' => LengowMain::getCronUrl(),
+            'toolbox_url' => LengowMain::getToolboxUrl(),
             'shops' => array(),
         );
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $idShop = $row['id_shop'];
-            $lengowExport = new LengowExport(array('shop_id' => $idShop));
+            $lengowExport = new LengowExport(array(LengowExport::PARAM_SHOP_ID => $idShop));
             $shop = new LengowShop($idShop);
             $data['shops'][] = array(
                 'token' => LengowMain::getToken($idShop),
@@ -146,8 +117,8 @@ class LengowSync
             return $success;
         }
         if (!$force) {
-            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_CATALOG_UPDATE');
-            if ($updatedAt !== null && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_CATALOG]) {
+            $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_CATALOG);
+            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CATALOG]) {
                 return $success;
             }
         }
@@ -176,9 +147,9 @@ class LengowSync
         }
         // save last update date for a specific settings (change synchronisation interval time)
         if ($settingUpdated) {
-            LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', time());
+            LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_SETTING, time());
         }
-        LengowConfiguration::updateGlobalValue('LENGOW_CATALOG_UPDATE', time());
+        LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_CATALOG, time());
         return $success;
     }
 
@@ -196,8 +167,8 @@ class LengowSync
             return false;
         }
         if (!$force) {
-            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_LIST_MARKET_UPDATE');
-            if ($updatedAt !== null && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_CARRIER]) {
+            $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE_LIST);
+            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CARRIER]) {
                 return false;
             }
         }
@@ -208,7 +179,7 @@ class LengowSync
         LengowCarrier::createDefaultCarrier();
         LengowCarrier::cleanCarrierMarketplaceMatching();
         LengowMethod::cleanMethodMarketplaceMatching();
-        LengowConfiguration::updateGlobalValue('LENGOW_LIST_MARKET_UPDATE', time());
+        LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE_LIST, time());
         return true;
     }
 
@@ -222,14 +193,14 @@ class LengowSync
         $data = array(
             'token' => LengowMain::getToken(),
             'version' => _PS_VERSION_,
-            'plugin_version' => LengowConfiguration::getGlobalValue('LENGOW_VERSION'),
+            'plugin_version' => LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION),
             'options' => LengowConfiguration::getAllValues(),
             'shops' => array(),
         );
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $idShop = $row['id_shop'];
-            $lengowExport = new LengowExport(array('shop_id' => $idShop));
+            $lengowExport = new LengowExport(array(LengowExport::PARAM_SHOP_ID => $idShop));
             $data['shops'][] = array(
                 'token' => LengowMain::getToken($idShop),
                 'enabled' => LengowConfiguration::shopIsActive($idShop),
@@ -255,14 +226,14 @@ class LengowSync
             return false;
         }
         if (!$force) {
-            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_OPTION_CMS_UPDATE');
-            if ($updatedAt !== null && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_CMS_OPTION]) {
+            $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_OPTION_CMS);
+            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CMS_OPTION]) {
                 return false;
             }
         }
         $options = Tools::jsonEncode(self::getOptionData());
         LengowConnector::queryApi(LengowConnector::PUT, LengowConnector::API_CMS, array(), $options, $logOutput);
-        LengowConfiguration::updateGlobalValue('LENGOW_OPTION_CMS_UPDATE', time());
+        LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_OPTION_CMS, time());
         return true;
     }
 
@@ -277,26 +248,34 @@ class LengowSync
     public static function getStatusAccount($force = false, $logOutput = false)
     {
         if (!$force) {
-            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE');
-            if ($updatedAt !== null && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
-                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
+            $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_ACCOUNT_STATUS_DATA);
+            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
+                return Tools::jsonDecode(
+                    LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_STATUS_DATA ),
+                    true
+                );
             }
         }
         $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_PLAN, array(), '', $logOutput);
         if (isset($result->isFreeTrial)) {
             $status = array(
                 'type' => $result->isFreeTrial ? 'free_trial' : '',
-                'day' => (int)$result->leftDaysBeforeExpired < 0 ? 0 : (int)$result->leftDaysBeforeExpired,
-                'expired' => (bool)$result->isExpired,
-                'legacy' => $result->accountVersion === 'v2' ? true : false
+                'day' => (int) $result->leftDaysBeforeExpired < 0 ? 0 : (int) $result->leftDaysBeforeExpired,
+                'expired' => (bool) $result->isExpired,
+                'legacy' => $result->accountVersion === 'v2'
             );
-            LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS', Tools::jsonEncode($status));
-            LengowConfiguration::updateGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE', time());
+            LengowConfiguration::updateGlobalValue(
+                LengowConfiguration::ACCOUNT_STATUS_DATA ,
+                Tools::jsonEncode($status)
+            );
+            LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_ACCOUNT_STATUS_DATA, time());
             return $status;
-        } else {
-            if (LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS_UPDATE')) {
-                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_STATUS'), true);
-            }
+        }
+        if (LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_STATUS_DATA)) {
+            return Tools::jsonDecode(
+                LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_STATUS_DATA),
+                true
+            );
         }
         return false;
     }
@@ -313,9 +292,9 @@ class LengowSync
     {
         $filePath = LengowMarketplace::getFilePath();
         if (!$force) {
-            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_MARKETPLACE_UPDATE');
+            $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE);
             if ($updatedAt !== null
-                && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_MARKETPLACE]
+                && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_MARKETPLACE]
                 && file_exists($filePath)
             ) {
                 // recovering data with the marketplaces.json file
@@ -337,13 +316,13 @@ class LengowSync
             // updated marketplaces.json file
             try {
                 $marketplaceFile = new LengowFile(
-                    LengowMain::$lengowConfigFolder,
-                    LengowMarketplace::$marketplaceJson,
+                    LengowMain::FOLDER_CONFIG,
+                    LengowMarketplace::FILE_MARKETPLACE,
                     'w'
                 );
                 $marketplaceFile->write(Tools::jsonEncode($result));
                 $marketplaceFile->close();
-                LengowConfiguration::updateGlobalValue('LENGOW_MARKETPLACE_UPDATE', time());
+                LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE, time());
             } catch (LengowException $e) {
                 LengowMain::log(
                     LengowLog::CODE_IMPORT,
@@ -386,9 +365,9 @@ class LengowSync
             return false;
         }
         if (!$force) {
-            $updatedAt = LengowConfiguration::getGlobalValue('LENGOW_PLUGIN_DATA_UPDATE');
-            if ($updatedAt !== null && (time() - (int)$updatedAt) < self::$cacheTimes[self::SYNC_PLUGIN_DATA]) {
-                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_PLUGIN_DATA'), true);
+            $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_DATA);
+            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_PLUGIN_DATA]) {
+                return Tools::jsonDecode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
             }
         }
         $plugins = LengowConnector::queryApi(
@@ -410,13 +389,16 @@ class LengowSync
                 }
             }
             if ($pluginData) {
-                LengowConfiguration::updateGlobalValue('LENGOW_PLUGIN_DATA', Tools::jsonEncode($pluginData));
-                LengowConfiguration::updateGlobalValue('LENGOW_PLUGIN_DATA_UPDATE', time());
+                LengowConfiguration::updateGlobalValue(
+                    LengowConfiguration::PLUGIN_DATA,
+                    Tools::jsonEncode($pluginData)
+                );
+                LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_DATA, time());
                 return $pluginData;
             }
         } else {
-            if (LengowConfiguration::getGlobalValue('LENGOW_PLUGIN_DATA')) {
-                return Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_PLUGIN_DATA'), true);
+            if (LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA)) {
+                return Tools::jsonDecode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
             }
         }
         return false;

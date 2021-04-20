@@ -187,7 +187,7 @@ class LengowHook
      */
     public function hookFooter()
     {
-        if (!LengowConfiguration::get('LENGOW_TRACKING_ENABLED')) {
+        if (!(bool) LengowConfiguration::get(LengowConfiguration::TRACKING_ENABLED)) {
             return '';
         }
         $currentController = $this->context->controller;
@@ -255,7 +255,7 @@ class LengowHook
                 $i = 1;
                 foreach ($products as $p) {
                     if (is_object($p)) {
-                        switch (LengowConfiguration::get('LENGOW_TRACKING_ID')) {
+                        switch (LengowConfiguration::get(LengowConfiguration::TRACKING_ID)) {
                             case 'upc':
                                 $idProduct = $p->upc;
                                 break;
@@ -279,7 +279,7 @@ class LengowHook
                             'quantity' => $p->quantity,
                         );
                     } else {
-                        switch (LengowConfiguration::get('LENGOW_TRACKING_ID')) {
+                        switch (LengowConfiguration::get(LengowConfiguration::TRACKING_ID)) {
                             case 'upc':
                                 $idProduct = $p['upc'];
                                 break;
@@ -316,7 +316,7 @@ class LengowHook
         if (self::$currentPageType === self::LENGOW_TRACK_PAGE_CONFIRMATION) {
             $this->context->smarty->assign(
                 array(
-                    'account_id' => LengowConfiguration::getGlobalValue('LENGOW_ACCOUNT_ID'),
+                    'account_id' => LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_ID),
                     'order_ref' => self::$idOrder,
                     'amount' => self::$orderTotal,
                     'currency_order' => self::$orderCurrency,
@@ -349,7 +349,7 @@ class LengowHook
         $productsList = $order->getProducts();
         foreach ($productsList as $p) {
             $i++;
-            switch (LengowConfiguration::get('LENGOW_TRACKING_ID')) {
+            switch (LengowConfiguration::get(LengowConfiguration::TRACKING_ID)) {
                 case 'upc':
                     $idProduct = $p['upc'];
                     break;

@@ -120,8 +120,9 @@ class LengowTranslation
     public function loadFile($isoCode, $filename = null)
     {
         if (!$filename) {
-            $filename = _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'translations' .
-                DIRECTORY_SEPARATOR . $isoCode . '.csv';
+            $sep = DIRECTORY_SEPARATOR;
+            $filename = LengowMain::getLengowFolder()
+                . $sep . LengowMain::FOLDER_TRANSLATION . $sep . $isoCode . '.csv';
         }
         $translation = array();
         if (file_exists($filename)) {
@@ -135,6 +136,6 @@ class LengowTranslation
             }
         }
         self::$translation[$isoCode] = $translation;
-        return !empty($translation) ? true : false;
+        return !empty($translation);
     }
 }

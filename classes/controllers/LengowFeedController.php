@@ -42,13 +42,13 @@ class LengowFeedController extends LengowController
                     $idShop = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
-                            'LENGOW_EXPORT_SELECTION_ENABLED',
+                            LengowConfiguration::SELECTION_ENABLED,
                             $state,
                             null,
                             null,
                             $idShop
                         );
-                        $state = LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $idShop);
+                        $state = LengowConfiguration::get(LengowConfiguration::SELECTION_ENABLED, null, null, $idShop);
                         $data = array();
                         $data['shop_id'] = $idShop;
                         if ($state) {
@@ -152,20 +152,14 @@ class LengowFeedController extends LengowController
         }
         foreach ($results as $row) {
             $shop = new LengowShop($row['id_shop']);
-            $lengowExport = new LengowExport(array('shop_id' => $shop->id));
+            $lengowExport = new LengowExport(array(LengowExport::PARAM_SHOP_ID => $shop->id));
             $shopCollection[] = array(
                 'shop' => $shop,
                 'link' => LengowMain::getExportUrl($shop->id),
                 'total_product' => $lengowExport->getTotalProduct(),
                 'total_export_product' => $lengowExport->getTotalExportProduct(),
-                'last_export' => LengowConfiguration::get(
-                    'LENGOW_LAST_EXPORT',
-                    null,
-                    null,
-                    $shop->id
-                ),
                 'option_selected' => LengowConfiguration::get(
-                    'LENGOW_EXPORT_SELECTION_ENABLED',
+                    LengowConfiguration::SELECTION_ENABLED,
                     null,
                     null,
                     $shop->id
@@ -186,7 +180,7 @@ class LengowFeedController extends LengowController
      */
     public function reloadTotal($idShop)
     {
-        $lengowExport = new LengowExport(array('shop_id' => $idShop));
+        $lengowExport = new LengowExport(array(LengowExport::PARAM_SHOP_ID => $idShop));
         $result = array();
         $result['total_export_product'] = $lengowExport->getTotalExportProduct();
         $result['total_product'] = $lengowExport->getTotalProduct();
@@ -311,14 +305,14 @@ class LengowFeedController extends LengowController
                     AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = 1)';
             }
             $select[] = ' sav.quantity ';
-            if (!LengowConfiguration::get('LENGOW_EXPORT_INACTIVE', null, null, (int)$idShop)) {
+            if (!LengowConfiguration::get(LengowConfiguration::INACTIVE_ENABLED, null, null, (int)$idShop)) {
                 $where[] = ' ps.active = 1 ';
             }
         } else {
             $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl ON (p.`id_category_default` = cl.`id_category`
                 AND pl.`id_lang` = cl.`id_lang`)';
             $select[] = ' p.quantity ';
-            if (!LengowConfiguration::get('LENGOW_EXPORT_INACTIVE')) {
+            if (!LengowConfiguration::get(LengowConfiguration::INACTIVE_ENABLED)) {
                 $where[] = ' p.active = 1 ';
             }
         }

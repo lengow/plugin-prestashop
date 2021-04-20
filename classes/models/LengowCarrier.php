@@ -177,7 +177,7 @@ class LengowCarrier extends Carrier
      */
     public static function getDefaultExportCarrier()
     {
-        $idCarrier = (int)LengowConfiguration::getGlobalValue('LENGOW_EXPORT_CARRIER_DEFAULT');
+        $idCarrier = (int)LengowConfiguration::getGlobalValue(LengowConfiguration::DEFAULT_EXPORT_CARRIER_ID);
         if ($idCarrier > 0) {
             $idCarrierActive = self::getIdActiveCarrierByIdCarrier($idCarrier);
             // compatibility for Prestashop 1.4

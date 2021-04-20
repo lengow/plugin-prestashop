@@ -421,7 +421,7 @@ class LengowImportOrder
                     $this->logOutput,
                     $this->marketplaceSku
                 );
-                if (!LengowConfiguration::getGlobalValue('LENGOW_IMPORT_SHIP_MP_ENABLED')) {
+                if (!LengowConfiguration::getGlobalValue(LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED)) {
                     LengowOrder::updateOrderLengow(
                         $this->idOrderLengow,
                         array('order_process_state' => 2)
@@ -452,41 +452,45 @@ class LengowImportOrder
             // if no order in list
             if (empty($orderLists)) {
                 throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.order_list_is_empty'));
-            } else {
-                foreach ($orderLists as $order) {
-                    // add order comment from marketplace to prestashop order
-                    if (_PS_VERSION_ >= '1.5') {
-                        $this->addCommentOrder((int)$order->id, $this->orderComment);
-                    }
-                    // save order line id in lengow_order_line table
-                    $orderLineSaved = $this->saveLengowOrderLine($order, $products);
-                    LengowMain::log(
-                        LengowLog::CODE_IMPORT,
-                        LengowMain::setLogMessage(
-                            'log.import.lengow_order_line_saved',
-                            array('order_line_saved' => $orderLineSaved)
-                        ),
-                        $this->logOutput,
-                        $this->marketplaceSku
-                    );
-                    LengowMain::log(
-                        LengowLog::CODE_IMPORT,
-                        LengowMain::setLogMessage(
-                            'log.import.order_successfully_imported',
-                            array('order_id' => $order->id)
-                        ),
-                        $this->logOutput,
-                        $this->marketplaceSku
-                    );
-                    // ensure carrier compatibility with SoColissimo & Mondial Relay
-                    $this->checkCarrierCompatibility($order);
-                    // launch validateOrder hook for other plugin (uncomment if needed)
-                    // $this->launchValidateOrderHook($order);
+            }
+            foreach ($orderLists as $order) {
+                // add order comment from marketplace to prestashop order
+                if (_PS_VERSION_ >= '1.5') {
+                    $this->addCommentOrder((int)$order->id, $this->orderComment);
                 }
+                // save order line id in lengow_order_line table
+                $orderLineSaved = $this->saveLengowOrderLine($order, $products);
+                LengowMain::log(
+                    LengowLog::CODE_IMPORT,
+                    LengowMain::setLogMessage(
+                        'log.import.lengow_order_line_saved',
+                        array('order_line_saved' => $orderLineSaved)
+                    ),
+                    $this->logOutput,
+                    $this->marketplaceSku
+                );
+                LengowMain::log(
+                    LengowLog::CODE_IMPORT,
+                    LengowMain::setLogMessage(
+                        'log.import.order_successfully_imported',
+                        array('order_id' => $order->id)
+                    ),
+                    $this->logOutput,
+                    $this->marketplaceSku
+                );
+                // ensure carrier compatibility with SoColissimo & Mondial Relay
+                $this->checkCarrierCompatibility($order);
+                // launch validateOrder hook for other plugin (uncomment if needed)
+                // $this->launchValidateOrderHook($order);
             }
             // add quantity back for re-import order and order shipped by marketplace
             if ($this->isReimported
-                || ($this->shippedByMp && !LengowConfiguration::getGlobalValue('LENGOW_IMPORT_STOCK_SHIP_MP'))
+                || (
+                    $this->shippedByMp
+                    && !(bool) LengowConfiguration::getGlobalValue(
+                        LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED
+                    )
+                )
             ) {
                 if ($this->isReimported) {
                     $logMessage = LengowMain::setLogMessage('log.import.quantity_back_reimported_order');
@@ -737,7 +741,9 @@ class LengowImportOrder
         $this->processingFee = (float)$this->orderData->processing_fee;
         $this->shippingCost = (float)$this->orderData->shipping;
         // rewrite processing fees and shipping cost
-        if (!(bool)LengowConfiguration::getGlobalValue('LENGOW_IMPORT_PROCESSING_FEE') || !$this->firstPackage) {
+        if (!$this->firstPackage
+            || !(bool) LengowConfiguration::getGlobalValue(LengowConfiguration::IMPORT_PROCESSING_FEE_ENABLED)
+        ) {
             $this->processingFee = 0;
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
@@ -1168,7 +1174,7 @@ class LengowImportOrder
         $hasCarriers = $this->marketplace->hasCarriers();
         $hasShippingMethods = $this->marketplace->hasShippingMethods();
         // if the marketplace has neither carrier nor shipping methods, use semantic matching
-        if ((bool)LengowConfiguration::getGlobalValue('LENGOW_CARRIER_SEMANTIC_ENABLE')) {
+        if ((bool) LengowConfiguration::getGlobalValue(LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED)) {
             // semantic search first on the method for marketplaces working with custom shipping methods
             if (!$idCarrier && $this->carrierMethod && !$hasShippingMethods) {
                 // carrier id recovery by semantic search on the carrier marketplace shipping method

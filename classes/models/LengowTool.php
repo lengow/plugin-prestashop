@@ -68,8 +68,8 @@ class LengowTool
                 self::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/login.php?blockedIP=1', '');
             }
         }
-        $prestaAccountId = LengowConfiguration::get('LENGOW_ACCOUNT_ID');
-        $prestaSecretToken = LengowConfiguration::get('LENGOW_SECRET_TOKEN');
+        $prestaAccountId = LengowConfiguration::get(LengowConfiguration::ACCOUNT_ID);
+        $prestaSecretToken = LengowConfiguration::get(LengowConfiguration::SECRET);
         if (Tools::strlen($prestaAccountId) > 0 && Tools::strlen($prestaSecretToken) > 0) {
             if ($prestaAccountId === $accountId && $prestaSecretToken === $secretToken) {
                 Context::getContext()->cookie->lengow_toolbox = true;
@@ -92,10 +92,7 @@ class LengowTool
     {
         $remoteIp = $_SERVER['REMOTE_ADDR'];
         $blockedIp = Tools::jsonDecode(LengowConfiguration::get('LENGOW_ACCESS_BLOCK_IP_3'));
-        if (is_array($blockedIp) && in_array($remoteIp, $blockedIp)) {
-            return true;
-        }
-        return false;
+        return is_array($blockedIp) && in_array($remoteIp, $blockedIp, true);
     }
 
     /**
@@ -112,7 +109,7 @@ class LengowTool
             return;
         }
         $blockedIp = Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_' . $counter));
-        if (!is_array($blockedIp) || !in_array($remoteIp, $blockedIp)) {
+        if (!is_array($blockedIp) || !in_array($remoteIp, $blockedIp, true)) {
             LengowConfiguration::updateGlobalValue(
                 'LENGOW_ACCESS_BLOCK_IP_' . $counter,
                 is_array($blockedIp)

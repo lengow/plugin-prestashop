@@ -36,25 +36,21 @@ class LengowOrderSettingController extends LengowController
         $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
         $matching = $form->buildInputs(
             array(
-                'LENGOW_ORDER_ID_PROCESS',
-                'LENGOW_ORDER_ID_SHIPPED',
-                'LENGOW_ORDER_ID_CANCEL',
-                'LENGOW_ORDER_ID_SHIPPEDBYMP',
+                LengowConfiguration::WAITING_SHIPMENT_ORDER_ID,
+                LengowConfiguration::SHIPPED_ORDER_ID,
+                LengowConfiguration::CANCELED_ORDER_ID,
+                LengowConfiguration::SHIPPED_BY_MARKETPLACE_ORDER_ID,
             )
         );
         $importParams = $form->buildInputs(
             array(
-                'LENGOW_IMPORT_DAYS',
-                'LENGOW_IMPORT_SHIP_MP_ENABLED',
-                'LENGOW_IMPORT_STOCK_SHIP_MP',
+                LengowConfiguration::SYNCHRONIZATION_DAY_INTERVAL,
+                LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED,
+                LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
             )
         );
-        $currencyConversion = $form->buildInputs(
-            array(
-                'LENGOW_CURRENCY_CONVERSION'
-            )
-        );
-        $semanticSearch = $form->buildInputs(array('LENGOW_CARRIER_SEMANTIC_ENABLE'));
+        $currencyConversion = $form->buildInputs(array(LengowConfiguration::CURRENCY_CONVERSION_ENABLED));
+        $semanticSearch = $form->buildInputs(array(LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED));
         $this->context->smarty->assign('matching', $matching);
         $this->context->smarty->assign('semantic_search', $semanticSearch);
         $this->context->smarty->assign('import_params', $importParams);
@@ -164,11 +160,10 @@ class LengowOrderSettingController extends LengowController
                 $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
                 $form->postProcess(
                     array(
-                        'LENGOW_IMPORT_SHIP_MP_ENABLED',
-                        'LENGOW_IMPORT_STOCK_SHIP_MP',
-                        'LENGOW_CRON_ENABLED',
-                        'LENGOW_CARRIER_SEMANTIC_ENABLE',
-                        'LENGOW_CURRENCY_CONVERSION'
+                        LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED,
+                        LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
+                        LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED,
+                        LengowConfiguration::CURRENCY_CONVERSION_ENABLED,
                     )
                 );
                 break;

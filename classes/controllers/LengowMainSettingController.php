@@ -63,16 +63,17 @@ class LengowMainSettingController extends LengowController
                 );
                 $form->postProcess(
                     array(
-                        'LENGOW_REPORT_MAIL_ENABLED',
-                        'LENGOW_TRACKING_ENABLED',
-                        'LENGOW_IMPORT_DEBUG_ENABLED',
-                        'LENGOW_SHOP_ACTIVE',
+                        LengowConfiguration::REPORT_MAIL_ENABLED,
+                        LengowConfiguration::TRACKING_ENABLED,
+                        LengowConfiguration::AUTHORIZED_IP_ENABLED,
+                        LengowConfiguration::DEBUG_MODE_ENABLED,
+                        LengowConfiguration::SHOP_ACTIVE,
                     )
                 );
                 break;
             case 'download':
-                $file = isset($_REQUEST['file']) ? $_REQUEST['file'] : null;
-                LengowLog::download($file);
+                $date = isset($_REQUEST[LengowLog::LOG_DATE]) ? $_REQUEST[LengowLog::LOG_DATE] : null;
+                LengowLog::download($date);
                 break;
             case 'download_all':
                 LengowLog::download();
@@ -86,26 +87,32 @@ class LengowMainSettingController extends LengowController
     public function display()
     {
         $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
-        $form->fields['LENGOW_REPORT_MAIL_ADDRESS']['label'] = '';
+        $form->fields[LengowConfiguration::REPORT_MAILS][LengowConfiguration::PARAM_LABEL] = '';
         $mailReport = $form->buildInputs(
             array(
-                'LENGOW_REPORT_MAIL_ENABLED',
-                'LENGOW_REPORT_MAIL_ADDRESS',
+                LengowConfiguration::REPORT_MAIL_ENABLED,
+                LengowConfiguration::REPORT_MAILS,
             )
         );
-        $defaultExportCarrier = $form->buildInputs(array('LENGOW_EXPORT_CARRIER_DEFAULT'));
+        $defaultExportCarrier = $form->buildInputs(array(LengowConfiguration::DEFAULT_EXPORT_CARRIER_ID));
         $tracker = $form->buildInputs(
             array(
-                'LENGOW_TRACKING_ENABLED',
-                'LENGOW_TRACKING_ID',
+                LengowConfiguration::TRACKING_ENABLED,
+                LengowConfiguration::TRACKING_ID,
             )
         );
-        $debugReport = $form->buildInputs(array('LENGOW_IMPORT_DEBUG_ENABLED'));
+        $ipSecurity = $form->buildInputs(
+            array(
+                LengowConfiguration::AUTHORIZED_IP_ENABLED,
+                LengowConfiguration::AUTHORIZED_IPS,
+            )
+        );
+        $debugReport = $form->buildInputs(array(LengowConfiguration::DEBUG_MODE_ENABLED));
         $credentials = $form->buildInputs(
             array(
-                'LENGOW_ACCOUNT_ID',
-                'LENGOW_ACCESS_TOKEN',
-                'LENGOW_SECRET_TOKEN',
+                LengowConfiguration::ACCOUNT_ID,
+                LengowConfiguration::ACCESS_TOKEN,
+                LengowConfiguration::SECRET,
             )
         );
         $debugWrapper = '<div class="grey-frame">' . $credentials . '</div>';
@@ -117,8 +124,8 @@ class LengowMainSettingController extends LengowController
             $shopCatalog .= '<div class="grey-frame">' . $form->buildShopInputs(
                 $shop->id,
                 array(
-                    'LENGOW_SHOP_ACTIVE',
-                    'LENGOW_CATALOG_ID',
+                    LengowConfiguration::SHOP_ACTIVE,
+                    LengowConfiguration::CATALOG_IDS,
                 )
             ) . '</div>';
         }
@@ -127,6 +134,7 @@ class LengowMainSettingController extends LengowController
         $this->context->smarty->assign('mail_report', $mailReport);
         $this->context->smarty->assign('defaultExportCarrier', $defaultExportCarrier);
         $this->context->smarty->assign('tracker', $tracker);
+        $this->context->smarty->assign('ipSecurity', $ipSecurity);
         $this->context->smarty->assign('debug_report', $debugReport);
         $this->context->smarty->assign('debug_wrapper', $debugWrapper);
         $this->context->smarty->assign('shopCatalog', $shopCatalog);

@@ -327,17 +327,20 @@ if (LengowInstall::checkTableExists('lengow_orders')) {
 
 if (LengowInstall::$oldVersion && LengowInstall::$oldVersion < '3.0.0') {
     // Rename old settings
-    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_SELECTION', 'LENGOW_EXPORT_SELECTION_ENABLED', true);
-    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_ALL_VARIATIONS', 'LENGOW_EXPORT_VARIATION_ENABLED', true);
-    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_DISABLED', 'LENGOW_EXPORT_INACTIVE', true);
-    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_FILE', 'LENGOW_EXPORT_FILE_ENABLED');
-    LengowInstall::renameConfigurationKey('LENGOW_CARRIER_DEFAULT', 'LENGOW_EXPORT_CARRIER_DEFAULT');
-    LengowInstall::renameConfigurationKey('LENGOW_DEBUG', 'LENGOW_IMPORT_DEBUG_ENABLED');
-    LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SHIPPED_BY_MP', 'LENGOW_IMPORT_SHIP_MP_ENABLED');
-    LengowInstall::renameConfigurationKey('LENGOW_REPORT_MAIL', 'LENGOW_REPORT_MAIL_ENABLED');
-    LengowInstall::renameConfigurationKey('LENGOW_EMAIL_ADDRESS', 'LENGOW_REPORT_MAIL_ADDRESS');
-    LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SINGLE', 'LENGOW_IMPORT_SINGLE_ENABLED');
-    LengowInstall::renameConfigurationKey('LENGOW_TRACKING', 'LENGOW_TRACKING_ENABLED');
+    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_SELECTION', LengowConfiguration::SELECTION_ENABLED, true);
+    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_ALL_VARIATIONS', LengowConfiguration::VARIATION_ENABLED, true);
+    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_DISABLED', LengowConfiguration::INACTIVE_ENABLED, true);
+    LengowInstall::renameConfigurationKey('LENGOW_EXPORT_FILE', LengowConfiguration::EXPORT_FILE_ENABLED);
+    LengowInstall::renameConfigurationKey('LENGOW_CARRIER_DEFAULT', LengowConfiguration::DEFAULT_EXPORT_CARRIER_ID);
+    LengowInstall::renameConfigurationKey('LENGOW_DEBUG', LengowConfiguration::DEBUG_MODE_ENABLED);
+    LengowInstall::renameConfigurationKey(
+        'LENGOW_IMPORT_SHIPPED_BY_MP',
+        LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED
+    );
+    LengowInstall::renameConfigurationKey('LENGOW_REPORT_MAIL', LengowConfiguration::REPORT_MAIL_ENABLED);
+    LengowInstall::renameConfigurationKey('LENGOW_EMAIL_ADDRESS', LengowConfiguration::REPORT_MAILS);
+    LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SINGLE', LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED);
+    LengowInstall::renameConfigurationKey('LENGOW_TRACKING', LengowConfiguration::TRACKING_ENABLED);
     // Reset access id for old customer v2
     LengowConfiguration::resetAccessIds();
 }

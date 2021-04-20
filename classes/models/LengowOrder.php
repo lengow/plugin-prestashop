@@ -581,11 +581,11 @@ class LengowOrder extends Order
         }
         $import = new LengowImport(
             array(
-                'id_order_lengow' => $this->lengowId,
-                'marketplace_sku' => $this->lengowMarketplaceSku,
-                'marketplace_name' => $this->lengowMarketplaceName,
-                'delivery_address_id' => $this->lengowDeliveryAddressId,
-                'shop_id' => $this->lengowIdShop,
+                LengowImport::PARAM_ID_ORDER_LENGOW => $this->lengowId,
+                LengowImport::PARAM_MARKETPLACE_SKU => $this->lengowMarketplaceSku,
+                LengowImport::PARAM_MARKETPLACE_NAME => $this->lengowMarketplaceName,
+                LengowImport::PARAM_DELIVERY_ADDRESS_ID => $this->lengowDeliveryAddressId,
+                LengowImport::PARAM_SHOP_ID => $this->lengowIdShop,
             )
         );
         $result = $import->exec();
@@ -1099,11 +1099,11 @@ class LengowOrder extends Order
             $lengowOrder = self::find($idOrderLengow);
             $import = new LengowImport(
                 array(
-                    'id_order_lengow' => $idOrderLengow,
-                    'marketplace_sku' => $lengowOrder['marketplace_sku'],
-                    'marketplace_name' => $lengowOrder['marketplace_name'],
-                    'delivery_address_id' => $lengowOrder['delivery_address_id'],
-                    'shop_id' => $lengowOrder['id_shop'],
+                    LengowImport::PARAM_ID_ORDER_LENGOW => $idOrderLengow,
+                    LengowImport::PARAM_MARKETPLACE_SKU => $lengowOrder['marketplace_sku'],
+                    LengowImport::PARAM_MARKETPLACE_NAME => $lengowOrder['marketplace_name'],
+                    LengowImport::PARAM_DELIVERY_ADDRESS_ID => $lengowOrder['delivery_address_id'],
+                    LengowImport::PARAM_SHOP_ID => $lengowOrder['id_shop'],
                 )
             );
             return $import->exec();
@@ -1348,16 +1348,41 @@ class LengowOrder extends Order
     }
 
     /**
-     * Get Total Order By Statuses
-     *
-     * @param string $status Lengow order state
+     * Return the number of Lengow orders imported in PrestaShop
      *
      * @return integer
      */
-    public static function getTotalOrderByStatus($status)
+    public static function countOrderImportedByLengow()
     {
-        $sql = 'SELECT COUNT(*) as total FROM `' . _DB_PREFIX_ . 'lengow_orders`
-        WHERE order_lengow_state = "' . pSQL($status) . '"';
+        $sql = 'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_orders WHERE id_order IS NOT NULL';
+        $row = Db::getInstance()->getRow($sql);
+        return (int)$row['total'];
+    }
+
+    /**
+     * Return the number of Lengow orders with error
+     *
+     * @return integer
+     */
+    public static function countOrderWithError()
+    {
+        $sql = '
+            SELECT COUNT(DISTINCT lo.id) as total FROM ' . _DB_PREFIX_ . 'lengow_orders as lo 
+            LEFT JOIN ' . _DB_PREFIX_ . 'lengow_logs_import as lli ON lli.id_order_lengow = lo.id
+            WHERE lli.is_finished = 0
+        ';
+        $row = Db::getInstance()->getRow($sql);
+        return (int)$row['total'];
+    }
+
+    /**
+     * Return the number of Lengow orders to be sent
+     *
+     * @return integer
+     */
+    public static function countOrderToBeSent()
+    {
+        $sql = 'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_orders WHERE order_process_state = 1';
         $row = Db::getInstance()->getRow($sql);
         return (int)$row['total'];
     }

@@ -186,7 +186,7 @@ class LengowInstall
             LengowLog::CODE_INSTALL,
             LengowMain::setLogMessage('log.install.install_start', array('version' => $this->lengowModule->version))
         );
-        $oldVersion = LengowConfiguration::getGlobalValue('LENGOW_VERSION');
+        $oldVersion = LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION);
         $oldVersion = $oldVersion ? $oldVersion : false;
         $this->setDefaultValues();
         $this->update($oldVersion);
@@ -272,7 +272,7 @@ class LengowInstall
         // copy AdminLengowHome.gif for version 1.5
         $this->createTabImage();
         // update Lengow version for install process
-        LengowConfiguration::updateGlobalValue('LENGOW_VERSION', $this->lengowModule->version);
+        LengowConfiguration::updateGlobalValue(LengowConfiguration::PLUGIN_VERSION, $this->lengowModule->version);
         self::setInstallationStatus(false);
         if ($oldVersion) {
             LengowMain::log(
@@ -379,7 +379,7 @@ class LengowInstall
      */
     public static function setInstallationStatus($status)
     {
-        LengowConfiguration::updateGlobalValue('LENGOW_INSTALLATION_IN_PROGRESS', (int)$status);
+        LengowConfiguration::updateGlobalValue(LengowConfiguration::INSTALLATION_IN_PROGRESS, (int)$status);
         self::$installationStatus = $status;
     }
 
@@ -958,7 +958,7 @@ class LengowInstall
                     );
                 }
                 $lengowState->add();
-                LengowConfiguration::updateValue('LENGOW_STATE_ERROR', $lengowState->id);
+                LengowConfiguration::updateValue(LengowConfiguration::LENGOW_ERROR_STATE_ID, $lengowState->id);
                 LengowMain::log('Install', LengowMain::setLogMessage('log.install.add_technical_error_status'));
             } catch (Exception $e) {
                 LengowMain::log(
@@ -971,7 +971,7 @@ class LengowInstall
             }
         } else {
             $idOrderState = $states[0]['id_order_state'];
-            LengowConfiguration::updateValue('LENGOW_STATE_ERROR', $idOrderState);
+            LengowConfiguration::updateValue(LengowConfiguration::LENGOW_ERROR_STATE_ID, $idOrderState);
             $languages = Language::getLanguages(false);
             foreach ($languages as $language) {
                 $name = LengowMain::decodeLogMessage('module.state_technical_error', $language['iso_code']);

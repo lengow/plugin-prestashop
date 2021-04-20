@@ -580,10 +580,12 @@ class LengowAction
     public static function getIntervalTime()
     {
         $intervalTime = self::MAX_INTERVAL_TIME;
-        $lastActionSynchronisation = LengowConfiguration::getGlobalValue('LENGOW_LAST_ACTION_SYNC');
+        $lastActionSynchronisation = LengowConfiguration::getGlobalValue(
+            LengowConfiguration::LAST_UPDATE_ACTION_SYNCHRONIZATION
+        );
         if ($lastActionSynchronisation) {
             $lastIntervalTime = time() - (int)$lastActionSynchronisation;
-            $lastIntervalTime = $lastIntervalTime + self::SECURITY_INTERVAL_TIME;
+            $lastIntervalTime += self::SECURITY_INTERVAL_TIME;
             $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
         }
         return $intervalTime;
@@ -707,7 +709,7 @@ class LengowAction
                 }
             }
         }
-        LengowConfiguration::updateGlobalValue('LENGOW_LAST_ACTION_SYNC', time());
+        LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_ACTION_SYNCHRONIZATION, time());
         return true;
     }
 
