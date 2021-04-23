@@ -26,7 +26,7 @@ class LengowToolbox
 {
     /* Toolbox GET params */
     const PARAM_TOKEN = 'token';
-    const PARAM_ACTION = 'action';
+    const PARAM_TOOLBOX_ACTION = 'toolbox_action';
     const PARAM_DATE = 'date';
     const PARAM_TYPE = 'type';
 
@@ -355,7 +355,8 @@ class LengowToolbox
         if (!empty($logs)) {
             $logs[] = array(
                 LengowLog::LOG_DATE => null,
-                LengowLog::LOG_LINK => LengowMain::getToolboxUrl() . '&' . self::PARAM_ACTION . '=' . self::ACTION_LOG,
+                LengowLog::LOG_LINK => LengowMain::getToolboxUrl()
+                    . '&' . self::PARAM_TOOLBOX_ACTION . '=' . self::ACTION_LOG,
             );
         }
         return $logs;

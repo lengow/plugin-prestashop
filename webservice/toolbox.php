@@ -55,8 +55,8 @@ if (!LengowMain::checkWebservicesAccess($token)) {
     die($errorMessage);
 }
 
-$action = Tools::getIsset(LengowToolbox::PARAM_ACTION)
-    ? Tools::getValue(LengowToolbox::PARAM_ACTION)
+$action = Tools::getIsset(LengowToolbox::PARAM_TOOLBOX_ACTION)
+    ? Tools::getValue(LengowToolbox::PARAM_TOOLBOX_ACTION)
     : LengowToolbox::ACTION_DATA;
 // check if toolbox action is valid
 if (!in_array($action, LengowToolbox::$toolboxActions, true)) {

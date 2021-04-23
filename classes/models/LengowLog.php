@@ -101,7 +101,7 @@ class LengowLog extends LengowFile
             $logs[] = array(
                 self::LOG_DATE => $date,
                 self::LOG_LINK => LengowMain::getToolboxUrl()
-                    . '&' . LengowToolbox::PARAM_ACTION . '=' . LengowToolbox::ACTION_LOG
+                    . '&' . LengowToolbox::PARAM_TOOLBOX_ACTION . '=' . LengowToolbox::ACTION_LOG
                     . '&' . LengowToolbox::PARAM_DATE . '=' . urlencode($date),
             );
         }
