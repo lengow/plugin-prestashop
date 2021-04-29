@@ -326,7 +326,7 @@ class LengowMain
         ) {
             return true;
         }
-        if (self::checkIP()) {
+        if (self::checkIp()) {
             return true;
         }
         return false;
@@ -378,10 +378,9 @@ class LengowMain
      *
      * @return boolean
      */
-    public static function checkIP()
+    public static function checkIp()
     {
-        $authorizedIps = LengowConfiguration::getAuthorizedIps();
-        $authorizedIps = array_merge($authorizedIps, self::$ipsLengow);
+        $authorizedIps = array_merge(LengowConfiguration::getAuthorizedIps(), self::$ipsLengow);
         if (isset($_SERVER['SERVER_ADDR'])) {
             $authorizedIps[] = $_SERVER['SERVER_ADDR'];
         }

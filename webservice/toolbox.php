@@ -21,9 +21,9 @@
 
 /**
  * List params
- * string action toolbox specific action
- * string type   type of data to display
- * string date   date of the log to export
+ * string toolbox_action toolbox specific action
+ * string type           type of data to display
+ * string date           date of the log to export
  */
 
 @set_time_limit(0);

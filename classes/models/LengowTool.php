@@ -105,7 +105,7 @@ class LengowTool
     public function checkIp($counter = 1)
     {
         $remoteIp = $_SERVER['REMOTE_ADDR'];
-        if ($counter > 3 || LengowMain::checkIP()) {
+        if ($counter > 3 || LengowMain::checkIp()) {
             return;
         }
         $blockedIp = Tools::jsonDecode(LengowConfiguration::getGlobalValue('LENGOW_ACCESS_BLOCK_IP_' . $counter));

@@ -520,7 +520,7 @@ toolbox.index.ip_server|Server IP
 toolbox.index.authorized_ip_enable|Authorisation by IP enabled
 toolbox.index.ip_authorized|IP authorised
 toolbox.index.debug_disabled|Debug Mode disabled
-toolbox.index.write_permission|Read and write permission from media folder
+toolbox.index.write_permission|Read and write permission for media folder
 toolbox.index.toolbox_url|Toolbox URL
 toolbox.index.import_information|Import information (Global)
 toolbox.index.global_token|Import token

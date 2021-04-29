@@ -654,7 +654,7 @@ class LengowConnector
         if (!in_array($httpCode, $this->successCodes, true)) {
             $result = $this->format($result);
             // recovery of Lengow Api errors
-            if (isset($result['error'], $result['error']['message'])) {
+            if (isset($result['error']['message'])) {
                 throw new LengowException($result['error']['message'], $httpCode);
             }
             throw new LengowException(LengowMain::setLogMessage('log.connector.api_not_available'), $httpCode);

@@ -931,13 +931,11 @@ class LengowConfiguration extends Configuration
         if (isset($keyParams[self::PARAM_RETURN])) {
             switch ($keyParams[self::PARAM_RETURN]) {
                 case self::RETURN_TYPE_BOOLEAN:
-                    $value = (bool) $value;
-                    break;
+                    return (bool) $value;
                 case self::RETURN_TYPE_INTEGER:
-                    $value = (int) $value;
-                    break;
+                    return (int) $value;
                 case self::RETURN_TYPE_ARRAY:
-                    $value = !empty($value)
+                    return !empty($value)
                         ? explode(';', trim(str_replace(array("\r\n", ',', ' '), ';', $value), ';'))
                         : array();
             }

@@ -120,9 +120,6 @@ class LengowToolbox
                 return self::getChecklistData();
             case self::DATA_TYPE_CHECKSUM:
                 return self::getChecksumData();
-            default:
-            case self::DATA_TYPE_CMS:
-                return self::getCmsData();
             case self::DATA_TYPE_LOG:
                 return self::getLogData();
             case self::DATA_TYPE_OPTION:
@@ -133,6 +130,9 @@ class LengowToolbox
                 return self::getShopData();
             case self::DATA_TYPE_SYNCHRONIZATION:
                 return self::getSynchronizationData();
+            default:
+            case self::DATA_TYPE_CMS:
+                return self::getCmsData();
         }
     }
 
@@ -333,7 +333,7 @@ class LengowToolbox
         $fileModifiedCounter = count($fileModified);
         $fileDeletedCounter = count($fileDeleted);
         $md5Success =  $md5Available && !($fileModifiedCounter > 0) && !($fileDeletedCounter > 0);
-        return [
+        return array(
             self::CHECKSUM_AVAILABLE => $md5Available,
             self::CHECKSUM_SUCCESS => $md5Success,
             self::CHECKSUM_NUMBER_FILES_CHECKED => $fileCounter,
@@ -341,7 +341,7 @@ class LengowToolbox
             self::CHECKSUM_NUMBER_FILES_DELETED => $fileDeletedCounter,
             self::CHECKSUM_FILE_MODIFIED => $fileModified,
             self::CHECKSUM_FILE_DELETED => $fileDeleted,
-        ];
+        );
     }
 
     /**
