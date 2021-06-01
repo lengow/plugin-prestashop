@@ -39,6 +39,24 @@ class LengowSync
     const SYNC_ACTION = 'action';
     const SYNC_PLUGIN_DATA = 'plugin';
 
+    /* Plugin link types */
+    const LINK_TYPE_HELP_CENTER = 'help_center';
+    const LINK_TYPE_CHANGELOG = 'changelog';
+    const LINK_TYPE_UPDATE_GUIDE = 'update_guide';
+    const LINK_TYPE_SUPPORT = 'support';
+
+    /* Default plugin links */
+    const LINK_HELP_CENTER = 'https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864';
+    const LINK_CHANGELOG = 'https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864,113076,257675';
+    const LINK_UPDATE_GUIDE = 'https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864,121742';
+    const LINK_SUPPORT = 'https://help-support.lengow.com/hc/en-us/requests/new';
+
+    /* Api iso codes */
+    const API_ISO_CODE_EN = 'en';
+    const API_ISO_CODE_FR = 'fr';
+    const API_ISO_CODE_ES = 'es';
+    const API_ISO_CODE_IT = 'it';
+
     /**
      * @var array cache time for catalog, carrier, account status, options and marketplace synchronisation
      */
@@ -63,6 +81,26 @@ class LengowSync
         self::SYNC_ACTION,
         self::SYNC_CATALOG,
         self::SYNC_PLUGIN_DATA,
+    );
+
+    /**
+     * @var array iso code correspondence for plugin links
+     */
+    public static $genericIsoCodes = array(
+        self::API_ISO_CODE_EN => LengowTranslation::ISO_CODE_EN,
+        self::API_ISO_CODE_FR => LengowTranslation::ISO_CODE_FR,
+        self::API_ISO_CODE_ES => LengowTranslation::ISO_CODE_ES,
+        self::API_ISO_CODE_IT => LengowTranslation::ISO_CODE_IT,
+    );
+
+    /**
+     * @var array default plugin links when the API is not available
+     */
+    public static $defaultPluginLinks = array(
+        self::LINK_TYPE_HELP_CENTER => self::LINK_HELP_CENTER,
+        self::LINK_TYPE_CHANGELOG => self::LINK_CHANGELOG,
+        self::LINK_TYPE_UPDATE_GUIDE => self::LINK_UPDATE_GUIDE,
+        self::LINK_TYPE_SUPPORT => self::LINK_SUPPORT,
     );
 
     /**
@@ -132,9 +170,9 @@ class LengowSync
                         if ($shop) {
                             $catalogIdsChange = LengowConfiguration::setCatalogIds(
                                 $cmsShop->catalog_ids,
-                                (int)$shop->id
+                                (int) $shop->id
                             );
-                            $activeStoreChange = LengowConfiguration::setActiveShop((int)$shop->id);
+                            $activeStoreChange = LengowConfiguration::setActiveShop((int) $shop->id);
                             if (!$settingUpdated && ($catalogIdsChange || $activeStoreChange)) {
                                 $settingUpdated = true;
                             }
@@ -251,7 +289,7 @@ class LengowSync
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_ACCOUNT_STATUS_DATA);
             if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
                 return Tools::jsonDecode(
-                    LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_STATUS_DATA ),
+                    LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_STATUS_DATA),
                     true
                 );
             }
@@ -265,7 +303,7 @@ class LengowSync
                 'legacy' => $result->accountVersion === 'v2'
             );
             LengowConfiguration::updateGlobalValue(
-                LengowConfiguration::ACCOUNT_STATUS_DATA ,
+                LengowConfiguration::ACCOUNT_STATUS_DATA,
                 Tools::jsonEncode($status)
             );
             LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_ACCOUNT_STATUS_DATA, time());
@@ -361,9 +399,6 @@ class LengowSync
      */
     public static function getPluginData($force = false, $logOutput = false)
     {
-        if (LengowConfiguration::isNewMerchant()) {
-            return false;
-        }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_DATA);
             if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_PLUGIN_DATA]) {
@@ -381,9 +416,22 @@ class LengowSync
             $pluginData = false;
             foreach ($plugins as $plugin) {
                 if ($plugin->type === self::CMS_TYPE) {
+                    $pluginLinks = array();
+                    if (!empty($plugin->links)) {
+                        foreach ($plugin->links as $link) {
+                            if (in_array($link->language->iso_a2, self::$genericIsoCodes, true)) {
+                                $genericIsoCode = self::$genericIsoCodes[$link->language->iso_a2];
+                                $pluginLinks[$genericIsoCode][$link->link_type] = $link->link;
+                            }
+                        }
+                    }
                     $pluginData = array(
                         'version' => $plugin->version,
                         'download_link' => $plugin->archive,
+                        'cms_min_version' => '1.4',
+                        'cms_max_version' => '1.7',
+                        'links' => $pluginLinks,
+                        'extensions' => $plugin->extensions,
                     );
                     break;
                 }
@@ -402,5 +450,39 @@ class LengowSync
             }
         }
         return false;
+    }
+
+    /**
+     * Get an array of plugin links for a specific iso code
+     *
+     * @param string|null $isoCode
+     *
+     * @return array
+     */
+    public static function getPluginLinks($isoCode = null)
+    {
+        $pluginData = self::getPluginData();
+        if (!$pluginData) {
+            return self::$defaultPluginLinks;
+        }
+        // check if the links are available in the locale
+        $isoCode = $isoCode ?: LengowTranslation::DEFAULT_ISO_CODE;
+        $localeLinks = isset($pluginData['links'][$isoCode]) ? $pluginData['links'][$isoCode] : false;
+        $defaultLocaleLinks = isset($pluginData['links'][LengowTranslation::DEFAULT_ISO_CODE])
+            ? $pluginData['links'][LengowTranslation::DEFAULT_ISO_CODE]
+            : false;
+        // for each type of link, we check if the link is translated
+        $pluginLinks = array();
+        foreach (self::$defaultPluginLinks as $linkType => $defaultLink) {
+            if ($localeLinks && isset($localeLinks[$linkType])) {
+                $link = $localeLinks[$linkType];
+            } elseif ($defaultLocaleLinks && isset($defaultLocaleLinks[$linkType])) {
+                $link = $defaultLocaleLinks[$linkType];
+            } else {
+                $link = $defaultLink;
+            }
+            $pluginLinks[$linkType] = $link;
+        }
+        return $pluginLinks;
     }
 }

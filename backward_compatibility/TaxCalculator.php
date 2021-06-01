@@ -68,7 +68,7 @@ class TaxCalculator
         }
 
         $this->taxes = $taxes;
-        $this->computation_method = (int)$computation_method;
+        $this->computation_method = (int) $computation_method;
     }
 
     /**
@@ -118,7 +118,7 @@ class TaxCalculator
             }
         }
 
-        return (float)$taxes;
+        return (float) $taxes;
     }
 
     /**
@@ -130,7 +130,7 @@ class TaxCalculator
     {
         $name = '';
         foreach ($this->taxes as $tax) {
-            $name .= $tax->name[(int)Context::getContext()->language->id] . ' - ';
+            $name .= $tax->name[(int) Context::getContext()->language->id] . ' - ';
         }
 
         $name = rtrim($name, ' - ');

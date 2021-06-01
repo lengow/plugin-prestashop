@@ -32,7 +32,7 @@ class LengowOrderSettingController extends LengowController
         $countries = LengowCarrier::getCountries();
         $marketplaceCounters = LengowMarketplace::getMarketplaceCounters();
         $defaultCarrierNotMatched = LengowCarrier::getDefaultCarrierNotMatched();
-        $showCarrierNotification = !empty($defaultCarrierNotMatched) ? true : false;
+        $showCarrierNotification = !empty($defaultCarrierNotMatched);
         $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
         $matching = $form->buildInputs(
             array(
@@ -68,7 +68,7 @@ class LengowOrderSettingController extends LengowController
     public function postProcess()
     {
         $action = Tools::getValue('action');
-        $idCountry = Tools::getIsset('id_country') ? (int)Tools::getValue('id_country') : false;
+        $idCountry = Tools::getIsset('id_country') ? (int) Tools::getValue('id_country') : false;
         $defaultCarriers = Tools::getIsset('default_carriers') ? Tools::getValue('default_carriers') : array();
         $methodMarketplaces = Tools::getIsset('method_marketplaces')
             ? Tools::getValue('method_marketplaces')
@@ -78,7 +78,7 @@ class LengowOrderSettingController extends LengowController
             : array();
         switch ($action) {
             case 'open_marketplace_matching':
-                $idCountry = (int)Tools::getValue('idCountry');
+                $idCountry = (int) Tools::getValue('idCountry');
                 $country = LengowCountry::getCountry($idCountry);
                 $marketplaces = LengowMarketplace::getAllMarketplaceDataByCountry($idCountry);
                 $carriers = LengowCarrier::getActiveCarriers($idCountry);
@@ -98,25 +98,25 @@ class LengowOrderSettingController extends LengowController
                 if ($idCountry) {
                     // save default carriers
                     foreach ($defaultCarriers as $idMarketplace => $value) {
-                        $idCarrier = isset($value['carrier']) ? (int)$value['carrier'] : null;
+                        $idCarrier = isset($value['carrier']) ? (int) $value['carrier'] : null;
                         $idCarrierMarketplace = isset($value['carrier_marketplace'])
-                            ? (int)$value['carrier_marketplace']
+                            ? (int) $value['carrier_marketplace']
                             : null;
                         $params = array(
                             'id_carrier' => $idCarrier,
                             'id_carrier_marketplace' => $idCarrierMarketplace,
                         );
-                        $id = LengowCarrier::getIdDefaultCarrier($idCountry, (int)$idMarketplace);
+                        $id = LengowCarrier::getIdDefaultCarrier($idCountry, (int) $idMarketplace);
                         if ($id) {
                             LengowCarrier::updateDefaultCarrier($id, $params);
                         } else {
-                            LengowCarrier::insertDefaultCarrier($idCountry, (int)$idMarketplace, $params);
+                            LengowCarrier::insertDefaultCarrier($idCountry, (int) $idMarketplace, $params);
                         }
                     }
                     // save marketplace methods
                     foreach ($methodMarketplaces as $idMarketplace => $value) {
                         foreach ($value as $idMethodMarketplace => $idCarrier) {
-                            $idCarrier = (int)$idCarrier > 0 ? (int)$idCarrier : null;
+                            $idCarrier = (int) $idCarrier > 0 ? (int) $idCarrier : null;
                             $id = LengowMethod::getIdMarketplaceMethodCountry(
                                 $idCountry,
                                 $idMarketplace,
@@ -137,7 +137,9 @@ class LengowOrderSettingController extends LengowController
                     // save marketplace carriers
                     foreach ($carrierMarketplaces as $idMarketplace => $value) {
                         foreach ($value as $idCarrier => $idCarrierMarketplace) {
-                            $idCarrierMarketplace = (int)$idCarrierMarketplace > 0 ? (int)$idCarrierMarketplace : null;
+                            $idCarrierMarketplace = (int) $idCarrierMarketplace > 0
+                                ? (int) $idCarrierMarketplace
+                                : null;
                             $id = LengowCarrier::getIdMarketplaceCarrierCountry(
                                 $idCountry,
                                 $idMarketplace,

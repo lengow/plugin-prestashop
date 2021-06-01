@@ -57,7 +57,7 @@ if (LengowInstall::checkTableExists('lengow_product')
             $insertValues = array();
             foreach ($idProducts as $idProduct) {
                 if (isset($idProduct['id_product'])) {
-                    $insertValues[] = '(' . (int)$idProduct['id_product'] . ', :idShop)';
+                    $insertValues[] = '(' . (int) $idProduct['id_product'] . ', :idShop)';
                 }
             }
             if (!empty($insertValues)) {
@@ -161,7 +161,7 @@ if (LengowInstall::checkTableExists('lengow_orders') && LengowInstall::checkTabl
                 if ($idOrder) {
                     Db::getInstance()->execute(
                         'UPDATE ' . _DB_PREFIX_ . 'lengow_logs_import
-                        SET `id_order_lengow` = \'' . (int)$idOrder['id'] . '\', `type` = 1
+                        SET `id_order_lengow` = \'' . (int) $idOrder['id'] . '\', `type` = 1
                         WHERE `lengow_order_id` = \'' . $result['lengow_order_id'] . '\'
                         AND `delivery_address_id`' . $orderLineQuery
                     );

@@ -47,22 +47,22 @@ class LengowBackup extends Backup
         // generate some random number, to make it extra hard to guess backup file names
         $rand = dechex(mt_rand(0, min(0xffffffff, mt_getrandmax())));
         $date = time();
-        $backupfile = $this->getRealBackupPath() . $date . '-lengowbackup' . $rand . '.sql';
+        $backupFile = $this->getRealBackupPath() . $date . '-lengowbackup' . $rand . '.sql';
         // figure out what compression is available and open the file
         if (function_exists('bzopen')) {
-            $backupfile .= '.bz2';
-            $fp = @bzopen($backupfile, 'w');
+            $backupFile .= '.bz2';
+            $fp = @bzopen($backupFile, 'w');
         } elseif (function_exists('gzopen')) {
-            $backupfile .= '.gz';
-            $fp = @gzopen($backupfile, 'w');
+            $backupFile .= '.gz';
+            $fp = @gzopen($backupFile, 'w');
         } else {
-            $fp = @fopen($backupfile, 'w');
+            $fp = @fopen($backupFile, 'w');
         }
         if ($fp === false) {
-            echo Tools::displayError('Unable to create backup file') . ' "' . addslashes($backupfile) . '"';
+            echo Tools::displayError('Unable to create backup file') . ' "' . addslashes($backupFile) . '"';
             return false;
         }
-        $this->id = realpath($backupfile);
+        $this->id = realpath($backupFile);
         fwrite(
             $fp,
             '/* Backup for ' . Tools::getHttpHost(false, false) . __PS_BASE_URI__ . "\n * at " . date($date) . "\n */\n"
@@ -88,7 +88,7 @@ class LengowBackup extends Backup
             }
             fwrite($fp, '/* Scheme for table ' . $schema[0]['Table'] . " */\n");
             fwrite($fp, $schema[0]['Create Table'] . ";\n\n");
-            if (!in_array($schema[0]['Table'], $ignoreInsertTable)) {
+            if (!in_array($schema[0]['Table'], $ignoreInsertTable, true)) {
                 try {
                     $data = Db::getInstance()->executeS('SELECT * FROM `' . $schema[0]['Table'] . '`', false);
                 } catch (PrestaShopDatabaseException $e) {

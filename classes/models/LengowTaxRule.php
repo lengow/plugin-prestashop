@@ -46,10 +46,10 @@ class LengowTaxRule extends TaxRule
 			        g.`id_state`
         		FROM `' . _DB_PREFIX_ . 'tax_rule` g
         		LEFT JOIN `' . _DB_PREFIX_ . 'country_lang` c ON (g.`id_country` = c.`id_country`
-        		AND `id_lang` = ' . (int)$idLang . ')
+        		AND `id_lang` = ' . (int) $idLang . ')
         		LEFT JOIN `' . _DB_PREFIX_ . 'state` s ON (g.`id_state` = s.`id_state`)
         		LEFT JOIN `' . _DB_PREFIX_ . 'tax` t ON (g.`id_tax` = t.`id_tax`)
-        		WHERE `id_tax_rules_group` = ' . (int)$idGroup . '
+        		WHERE `id_tax_rules_group` = ' . (int) $idGroup . '
         		ORDER BY `country_name` ASC, `state_name` ASC'
                 );
             } catch (PrestaShopDatabaseException $e) {

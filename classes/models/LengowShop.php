@@ -119,7 +119,7 @@ class LengowShop extends Shop
         $result = array();
         $shops = self::findAll(true);
         foreach ($shops as $shop) {
-            $idShop = (int)$shop['id_shop'];
+            $idShop = (int) $shop['id_shop'];
             if (!$activeInLengow || LengowConfiguration::shopIsActive($idShop)) {
                 $result[] = new LengowShop($idShop);
             }

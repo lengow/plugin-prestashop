@@ -115,15 +115,14 @@ class LengowHomeController extends LengowController
      */
     public function display()
     {
-        $lengowLink = new LengowLink();
         if ($this->isNewMerchant) {
             $this->context->smarty->assign(
                 'lengow_ajax_link',
-                $lengowLink->getAbsoluteAdminLink('AdminLengowHome', true)
+                $this->lengowLink->getAbsoluteAdminLink('AdminLengowHome', true)
             );
             parent::display();
         } else {
-            Tools::redirectAdmin($lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
+            Tools::redirectAdmin($this->lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
         }
     }
 

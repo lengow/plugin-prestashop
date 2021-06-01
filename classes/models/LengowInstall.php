@@ -187,7 +187,7 @@ class LengowInstall
             LengowMain::setLogMessage('log.install.install_start', array('version' => $this->lengowModule->version))
         );
         $oldVersion = LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION);
-        $oldVersion = $oldVersion ? $oldVersion : false;
+        $oldVersion = $oldVersion ?: false;
         $this->setDefaultValues();
         $this->update($oldVersion);
         LengowMain::log(
@@ -298,7 +298,7 @@ class LengowInstall
         $sql = 'SHOW TABLES LIKE \'' . _DB_PREFIX_ . $table . '\'';
         try {
             $result = Db::getInstance()->executeS($sql);
-            return !empty($result) ? true : false;
+            return !empty($result);
         } catch (PrestaShopDatabaseException $e) {
             return true;
         }
@@ -317,7 +317,7 @@ class LengowInstall
         $sql = 'SHOW INDEXES FROM ' . _DB_PREFIX_ . $table . ' WHERE `Column_name` = \'' . $index . '\'';
         try {
             $result = Db::getInstance()->executeS($sql);
-            return !empty($result) ? true : false;
+            return !empty($result);
         } catch (PrestaShopDatabaseException $e) {
             return true;
         }
@@ -336,7 +336,7 @@ class LengowInstall
         $sql = 'SHOW COLUMNS FROM ' . _DB_PREFIX_ . $table . ' LIKE \'' . $field . '\'';
         try {
             $result = Db::getInstance()->executeS($sql);
-            return !empty($result) ? true : false;
+            return !empty($result);
         } catch (PrestaShopDatabaseException $e) {
             return true;
         }
@@ -379,7 +379,7 @@ class LengowInstall
      */
     public static function setInstallationStatus($status)
     {
-        LengowConfiguration::updateGlobalValue(LengowConfiguration::INSTALLATION_IN_PROGRESS, (int)$status);
+        LengowConfiguration::updateGlobalValue(LengowConfiguration::INSTALLATION_IN_PROGRESS, (int) $status);
         self::$installationStatus = $status;
     }
 
@@ -393,7 +393,7 @@ class LengowInstall
         $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration
             WHERE `name` = \'LENGOW_INSTALLATION_IN_PROGRESS\'';
         $value = Db::getInstance()->getRow($sql);
-        return $value ? (bool)$value['value'] : false;
+        return $value && (bool) $value['value'];
     }
 
     /**
@@ -885,7 +885,7 @@ class LengowInstall
         // remove all tabs Lengow
         foreach ($tabs as $value) {
             try {
-                $tab = new Tab((int)$value['id_tab']);
+                $tab = new Tab((int) $value['id_tab']);
                 if ($tab->id != 0) {
                     $tab->delete();
                 }
@@ -981,8 +981,8 @@ class LengowInstall
                             _DB_PREFIX_ . 'order_state_lang',
                             array('name' => $name),
                             'UPDATE',
-                            '`id_order_state` = \'' . (int)$idOrderState
-                            . '\' AND `id_lang` = \'' . (int)$language['id_lang'] . '\''
+                            '`id_order_state` = \'' . (int) $idOrderState
+                            . '\' AND `id_lang` = \'' . (int) $language['id_lang'] . '\''
                         );
                     } catch (PrestaShopDatabaseException $e) {
                         continue;
@@ -991,8 +991,8 @@ class LengowInstall
                     Db::getInstance()->update(
                         'order_state_lang',
                         array('name' => $name),
-                        '`id_order_state` = \'' . (int)$idOrderState
-                        . '\' AND `id_lang` = \'' . (int)$language['id_lang'] . '\''
+                        '`id_order_state` = \'' . (int) $idOrderState
+                        . '\' AND `id_lang` = \'' . (int) $language['id_lang'] . '\''
                     );
                 }
             }

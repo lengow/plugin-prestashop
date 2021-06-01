@@ -156,7 +156,7 @@ class LengowMain
     public static function enableMail()
     {
         if (isset(self::$mailConfigurations['method'])) {
-            Configuration::set('PS_MAIL_METHOD', (int)self::$mailConfigurations['method']);
+            Configuration::set('PS_MAIL_METHOD', (int) self::$mailConfigurations['method']);
         }
         if (_PS_VERSION_ < '1.5.4.0' && isset(self::$mailConfigurations['server'])) {
             Configuration::set('PS_MAIL_SERVER', self::$mailConfigurations['server']);
@@ -205,16 +205,16 @@ class LengowMain
         $timestampCron = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_CRON_SYNCHRONIZATION);
         $timestampManual = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_MANUAL_SYNCHRONIZATION);
         if ($timestampCron && $timestampManual) {
-            if ((int)$timestampCron > (int)$timestampManual) {
-                return array('type' => LengowImport::TYPE_CRON, 'timestamp' => (int)$timestampCron);
+            if ((int) $timestampCron > (int) $timestampManual) {
+                return array('type' => LengowImport::TYPE_CRON, 'timestamp' => (int) $timestampCron);
             }
-            return array('type' => LengowImport::TYPE_MANUAL, 'timestamp' => (int)$timestampManual);
+            return array('type' => LengowImport::TYPE_MANUAL, 'timestamp' => (int) $timestampManual);
         }
         if ($timestampCron && !$timestampManual) {
-            return array('type' => LengowImport::TYPE_CRON, 'timestamp' => (int)$timestampCron);
+            return array('type' => LengowImport::TYPE_CRON, 'timestamp' => (int) $timestampCron);
         }
         if ($timestampManual && !$timestampCron) {
-            return array('type' => LengowImport::TYPE_MANUAL, 'timestamp' => (int)$timestampManual);
+            return array('type' => LengowImport::TYPE_MANUAL, 'timestamp' => (int) $timestampManual);
         }
         return array('type' => 'none', 'timestamp' => 'none');
     }
@@ -280,8 +280,7 @@ class LengowMain
         $string = str_replace('&#150;', '-', $string);
         $string = str_replace(chr(9), ' ', $string);
         $string = str_replace(chr(10), ' ', $string);
-        $string = str_replace(chr(13), ' ', $string);
-        return $string;
+        return str_replace(chr(13), ' ', $string);
     }
 
     /**
@@ -501,7 +500,7 @@ class LengowMain
         );
         $value = preg_replace('/[\s]+/', ' ', $value);
         $value = trim($value);
-        $value = str_replace(
+        return str_replace(
             array(
                 '&nbsp;',
                 '|',
@@ -538,7 +537,6 @@ class LengowMain
             ),
             $value
         );
-        return $value;
     }
 
     /**
@@ -728,27 +726,32 @@ class LengowMain
             // construction of the report e-mail
             $mailBody = '';
             foreach ($orderLogs as $log) {
-                $mailBody .= '<li>'.self::decodeLogMessage(
+                $mailBody .= '<li>' . self::decodeLogMessage(
                     'lengow_log.mail_report.order',
                     null,
                     array('marketplace_sku' => $log['marketplace_sku'])
                 );
                 if ($log['message'] !== '') {
-                    $mailBody .= ' - '.self::decodeLogMessage($log['message']);
+                    $mailBody .= ' - ' . self::decodeLogMessage($log['message']);
                 } else {
-                    $mailBody .= ' - '.self::decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+                    $pluginLinks = LengowSync::getPluginLinks();
+                    $mailBody .= ' - '. self::decodeLogMessage(
+                        'lengow_log.mail_report.no_error_in_report_mail',
+                        null,
+                        array('support_link' => $pluginLinks[LengowSync::LINK_TYPE_SUPPORT])
+                    );
                 }
                 $mailBody .= '</li>';
-                LengowOrder::logSent((int)$log['id']);
+                LengowOrder::logSent((int) $log['id']);
             }
             $subject = 'Lengow imports logs';
-            $datas = array(
+            $data = array(
                 '{mail_title}' => $subject,
                 '{mail_body}'  => $mailBody,
             );
             // send an email if the template exists for the locale
             $emails = LengowConfiguration::getReportEmailAddress();
-            $idLang = (int)Context::getContext()->cookie->id_lang;
+            $idLang = (int) Context::getContext()->cookie->id_lang;
             $iso = Language::getIsoById($idLang);
             if (file_exists(_PS_MODULE_DIR_ . 'lengow/mails/' . $iso . '/report.txt')
                 && file_exists(_PS_MODULE_DIR_ . 'lengow/mails/' . $iso . '/report.html')
@@ -758,14 +761,14 @@ class LengowMain
                         $idLang,
                         'report',
                         $subject,
-                        $datas,
+                        $data,
                         $to,
                         null,
                         null,
                         null,
                         null,
                         null,
-                        _PS_MODULE_DIR_.'lengow/mails/',
+                        _PS_MODULE_DIR_ . 'lengow/mails/',
                         true
                     );
                     if (!$mailSent) {
@@ -808,10 +811,8 @@ class LengowMain
         if (!Module::isInstalled($moduleName)) {
             return false;
         }
-        if (_PS_VERSION_ >= '1.5') {
-            if (!Module::isEnabled($moduleName)) {
-                return false;
-            }
+        if ((_PS_VERSION_ >= '1.5') && !Module::isEnabled($moduleName)) {
+            return false;
         }
         return true;
     }
@@ -833,13 +834,8 @@ class LengowMain
         }
         require_once($moduleDir . $moduleName . '.php');
         $mr = new MondialRelay();
-        if (version_compare($mr->version, $supportedMinVersion, '>=')
-            && version_compare($mr->version, $supportedMaxVersion, '<')
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+        return version_compare($mr->version, $supportedMinVersion, '>=')
+            && version_compare($mr->version, $supportedMaxVersion, '<');
     }
 
     /**
@@ -860,9 +856,8 @@ class LengowMain
         $soColissimo = _PS_VERSION_ < '1.7' ? new Socolissimo() : new Colissimo_simplicite();
         if (version_compare($soColissimo->version, $supportedVersion, '>=')) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

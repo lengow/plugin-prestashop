@@ -282,8 +282,8 @@ class LengowConfigurationForm
             if (isset($setting[LengowConfiguration::PARAM_TYPE])
                 && $setting[LengowConfiguration::PARAM_TYPE] === self::TYPE_CHECKBOX
             ) {
-                $value = (int)$value;
-                $oldValue = (int)$oldValue;
+                $value = (int) $value;
+                $oldValue = (int) $oldValue;
             }
             if ($oldValue != $value) {
                 if (isset($setting[LengowConfiguration::PARAM_SECRET])

@@ -40,10 +40,20 @@ class LengowExport
     const PARAM_SHOP_ID = 'shop_id';
     const PARAM_CURRENCY = 'currency';
     const PARAM_LANGUAGE = 'language';
+    const PARAM_LANGUAGE_ID = 'language_id';
     const PARAM_LEGACY_FIELDS = 'legacy_fields';
     const PARAM_LOG_OUTPUT = 'log_output';
     const PARAM_UPDATE_EXPORT_DATE = 'update_export_date';
     const PARAM_GET_PARAMS = 'get_params';
+
+    /* Legacy export GET params for old versions */
+    const PARAM_LEGACY_SELECTION = 'all';
+    const PARAM_LEGACY_OUT_OF_STOCK = 'out_stock';
+    const PARAM_LEGACY_PRODUCT_IDS = 'ids';
+    const PARAM_LEGACY_VARIATION = 'mode';
+    const PARAM_LEGACY_INACTIVE = 'active';
+    const PARAM_LEGACY_CURRENCY = 'lang';
+    const PARAM_LEGACY_LANGUAGE = 'lang';
 
     /**
      * @var array default fields for export
@@ -306,9 +316,12 @@ class LengowExport
         $this->productIds = isset($params[self::PARAM_PRODUCT_IDS]) ? $params[self::PARAM_PRODUCT_IDS] : array();
         $this->stream = isset($params[self::PARAM_STREAM]) ? $params[self::PARAM_STREAM] : false;
         $this->limit = isset($params[self::PARAM_LIMIT]) ? (int) $params[self::PARAM_LIMIT] : false;
-        $this->idShop = (int)(isset($params['shop_id']) ? $params['shop_id'] : Context::getContext()->shop->id);
-        $this->language = isset($params['language_id'])
-            ? new Language($params['language_id'])
+        $this->idShop = (int) (isset($params[self::PARAM_SHOP_ID])
+            ? $params[self::PARAM_SHOP_ID]
+            : Context::getContext()->shop->id
+        );
+        $this->language = isset($params[self::PARAM_LANGUAGE_ID])
+            ? new Language($params[self::PARAM_LANGUAGE_ID])
             : new Language(Configuration::get('PS_LANG_DEFAULT', null, null, $this->idShop));
         // get specific params in database
         $selection = LengowConfiguration::get(LengowConfiguration::SELECTION_ENABLED, null, null, $this->idShop);
@@ -320,40 +333,39 @@ class LengowExport
             LengowConfiguration::updateValue(LengowConfiguration::SELECTION_ENABLED, 0, null, null, $this->idShop);
             $selection = false;
         } else {
-            $selection = (bool)$selection;
+            $selection = (bool) $selection;
         }
         if ($outOfStock === null) {
             LengowConfiguration::updateValue(LengowConfiguration::OUT_OF_STOCK_ENABLED, 1, null, null, $this->idShop);
             $outOfStock = true;
         } else {
-            $outOfStock = (bool)$outOfStock;
+            $outOfStock = (bool) $outOfStock;
         }
         if ($variation === null) {
             LengowConfiguration::updateValue(LengowConfiguration::VARIATION_ENABLED, 1, null, null, $this->idShop);
             $variation = true;
         } else {
-            $variation = (bool)$variation;
+            $variation = (bool) $variation;
         }
         if ($inactive === null) {
             LengowConfiguration::updateValue(LengowConfiguration::INACTIVE_ENABLED, 0, null, null, $this->idShop);
             $inactive = false;
         } else {
-            $inactive = (bool)$inactive;
+            $inactive = (bool) $inactive;
         }
         $this->selection = isset($params[self::PARAM_SELECTION]) ? (bool) $params[self::PARAM_SELECTION] : $selection;
         $this->outOfStock = isset($params[self::PARAM_OUT_OF_STOCK])
-            ? (bool)$params[self::PARAM_OUT_OF_STOCK]
+            ? (bool) $params[self::PARAM_OUT_OF_STOCK]
             : $outOfStock;
         $this->variation = isset($params[self::PARAM_VARIATION]) ? (bool) $params[self::PARAM_VARIATION] : $variation;
         $this->inactive = isset($params[self::PARAM_INACTIVE]) ? (bool) $params[self::PARAM_INACTIVE] : $inactive;
         if ($this->stream) {
             $this->logOutput = false;
         } else {
-            $this->logOutput = isset($params[self::PARAM_LOG_OUTPUT]) ? (bool) $params[self::PARAM_LOG_OUTPUT] : true;
+            $this->logOutput = !isset($params[self::PARAM_LOG_OUTPUT]) || $params[self::PARAM_LOG_OUTPUT];
         }
-        $this->updateExportDate = isset($params[self::PARAM_UPDATE_EXPORT_DATE])
-            ? (bool) $params[self::PARAM_UPDATE_EXPORT_DATE]
-            : true;
+        $this->updateExportDate = !isset($params[self::PARAM_UPDATE_EXPORT_DATE])
+            || $params[self::PARAM_UPDATE_EXPORT_DATE];
         if (!Context::getContext()->currency) {
             Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
         }
@@ -516,13 +528,13 @@ class LengowExport
             }
         }
         foreach ($products as $p) {
-            $idProduct = (int)$p['id_product'];
-            $idProductAttribute = (int)$p['id_product_attribute'];
+            $idProduct = (int) $p['id_product'];
+            $idProductAttribute = (int) $p['id_product_attribute'];
             // ignore products with faulty combinations
             if (in_array($idProduct, $this->excludedProducts, true)) {
                 continue;
             }
-            $productDatas = array();
+            $productData = array();
             $product = new LengowProduct(
                 $idProduct,
                 $this->language->id,
@@ -536,15 +548,15 @@ class LengowExport
             if ($idProduct && $idProductAttribute === 0) {
                 foreach ($fields as $field) {
                     if (isset(self::$defaultFields[$field])) {
-                        $productDatas[$field] = $product->getData(self::$defaultFields[$field]);
+                        $productData[$field] = $product->getData(self::$defaultFields[$field]);
                     } else {
-                        $productDatas[$field] = $product->getData($field);
+                        $productData[$field] = $product->getData($field);
                     }
                 }
                 // get additional data
-                $productDatas = self::setAdditionalFieldsValues($product, null, $productDatas);
+                $productData = self::setAdditionalFieldsValues($product, null, $productData);
                 // write parent product
-                $this->feed->write(LengowFeed::BODY, $productDatas, $isFirst, $maxCharacter);
+                $this->feed->write(LengowFeed::BODY, $productData, $isFirst, $maxCharacter);
                 $productCount++;
             }
             // export combinations
@@ -587,7 +599,7 @@ class LengowExport
                 break;
             }
             // clean data for next product
-            unset($productDatas, $product);
+            unset($productData, $product);
             if (function_exists('gc_collect_cycles')) {
                 gc_collect_cycles();
             }
@@ -630,7 +642,7 @@ class LengowExport
                 return false;
             }
             foreach ($combinations as $combination) {
-                $idProductAttribute = (int)$combination['id_product_attribute'];
+                $idProductAttribute = (int) $combination['id_product_attribute'];
                 foreach ($fields as $field) {
                     if (isset(self::$defaultFields[$field])) {
                         $this->cacheCombination[$product->id][$idProductAttribute][$field] = $product->getData(
@@ -658,7 +670,7 @@ class LengowExport
     {
         if (_PS_VERSION_ >= '1.5') {
             $join = ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps ON
-                (ps.id_product = p.id_product AND ps.id_shop = ' . (int)$this->idShop . ') ';
+                (ps.id_product = p.id_product AND ps.id_shop = ' . (int) $this->idShop . ') ';
         } else {
             $join = '';
         }
@@ -682,7 +694,7 @@ class LengowExport
         $query .= '  ) as tmp ';
         try {
             $collection = Db::getInstance()->executeS($query);
-            return (int)$collection[0]['total'];
+            return (int) $collection[0]['total'];
         } catch (PrestaShopDatabaseException $e) {
             return 0;
         }
@@ -706,7 +718,7 @@ class LengowExport
         }
         try {
             $collection = Db::getInstance()->executeS($query);
-            return (int)$collection[0]['total'];
+            return (int) $collection[0]['total'];
         } catch (PrestaShopDatabaseException $e) {
             return 0;
         }
@@ -725,14 +737,14 @@ class LengowExport
         $query = ' FROM ' . _DB_PREFIX_ . 'product p';
         if ($this->selection) {
             $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'lengow_product lp ON (lp.id_product = p.id_product AND
-            lp.id_shop = ' . (int)$this->idShop . ')';
+            lp.id_shop = ' . (int) $this->idShop . ')';
         }
         if ($variation) {
             $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_attribute pa ON (pa.id_product = p.id_product) ';
         }
         if (_PS_VERSION_ >= '1.5') {
             $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps ON
-            (ps.id_product = p.id_product AND ps.id_shop = ' . (int)$this->idShop . ') ';
+            (ps.id_product = p.id_product AND ps.id_shop = ' . (int) $this->idShop . ') ';
         }
         if (!$this->inactive) {
             if (_PS_VERSION_ < '1.5') {
@@ -742,7 +754,7 @@ class LengowExport
             }
         }
         if (!(_PS_VERSION_ < '1.5')) {
-            $where[] = ' ps.id_shop = ' . (int)$this->idShop;
+            $where[] = ' ps.id_shop = ' . (int) $this->idShop;
         }
         if (!$this->outOfStock) {
             if (_PS_VERSION_ >= '1.5') {
@@ -750,12 +762,12 @@ class LengowExport
                     $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
                     (sa.id_product=p.id_product
                     AND pa.id_product_attribute = sa.id_product_attribute
-                    AND sa.id_shop = ' . (int)$this->idShop . '
+                    AND sa.id_shop = ' . (int) $this->idShop . '
                     AND sa.quantity > 0)';
                 } else {
                     $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
                     (sa.id_product=p.id_product AND id_product_attribute = 0 AND sa.quantity > 0
-                    AND sa.id_shop = ' . (int)$this->idShop . ' )';
+                    AND sa.id_shop = ' . (int) $this->idShop . ' )';
                 }
             } else {
                 $where[] = ' p.`quantity` > 0';

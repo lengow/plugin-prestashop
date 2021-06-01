@@ -19,9 +19,23 @@ menu.help|Help
 menu.global_parameter|General settings
 menu.new_version_available|A new version %{version} is available!
 menu.download_plugin|Download
+update.version_available|New version available!
+update.start_now|Start now benefiting the new features, improvements and bug fixes summed up in our
+update.link_changelog|changelog.
+update.step_one|Step 1
+update.download_last_version|Download the latest plugin version below.
+update.plugin_compatibility|Compatible with PrestaShop %{cms_min_version} to %{cms_max_version}
+update.extension_required|Requires %{name} extension %{min_version} to %{max_version}
+update.step_two|Step 2
+update.link_follow|Follow
+update.update_procedure|the update procedure (easy and fast).
+update.not_working|Not working? Contact our
+update.customer_success_team|Customer Success team
+update.button_download_version|Lengow PrestaShop %{version}
+update.button_remind_me_later|Not now, remind me later
 footer.legals|Legal notices
 footer.plugin_lengow|Lengow Prestashop Plugin
-footer.lengow_link_url|http://www.lengow.com/
+footer.lengow_link_url|https://www.lengow.com/
 connection.home.description_first|Lengow helps you optimize your business worldwide!
 connection.home.description_second|Through the platform, you can automatically publish your product catalogue on marketplaces, comparison websites, affiliate network, and retargeting campaigns.
 connection.home.description_third|Explore your opportunities for international growth with 1,600 sales channels in 42 different countries.
@@ -33,7 +47,6 @@ connection.cms.credentials_title|Please enter your API Lengow credentials
 connection.cms.credentials_description|Find these credentials in your account settings, section "A.P.I"
 connection.cms.credentials_help|Need help?
 connection.cms.credentials_help_center|Check out our Help Center
-connection.cms.credentials_help_center_url|https://support.lengow.com/kb/en
 connection.cms.credentials_button|Connect to Lengow
 connection.cms.credentials_button_loading|Connecting...
 connection.cms.credentials_placeholder_access_token|Enter your access token
@@ -218,12 +231,10 @@ global_setting.screen.setting_saved|Saved!
 help.screen.title|Get a little help from your support team!
 help.screen.contain_text_support|Ask us anything about Lengow or share feedback with
 help.screen.title_lengow_support|Lengow Support.
-help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
 help.screen.find_answer|You can also find answers in our 
 help.screen.link_prestashop_guide|PrestaShop dedicated guide
-help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:
 legals.screen.cnil_declaration|CNIL declaration:
@@ -331,7 +342,7 @@ lengow_log.exception.product_is_not_listed|product %{product_id} is not listed a
 lengow_log.exception.unable_to_save_order|unable to save PrestaShop order - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
 lengow_log.mail_report.order|Order %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/hc/en-us/requests/new
+lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via %{support_link}
 lengow_log.connection.status_draft|Draft
 lengow_log.connection.status_active|Active
 lengow_log.connection.catalog|Catalogue %{catalog_id}
@@ -494,15 +505,15 @@ toolbox.menu.log_off|Log out
 toolbox.index.checklist_information|Checklist
 toolbox.index.curl_message|Lengow needs the CURL PHP extension
 toolbox.index.curl_help|The CURL extension is not installed or enabled in your PHP installation. Check the manual to get more information on how to install or enable CURL on your system
-toolbox.index.curl_help_link|http://www.php.net/manual/en/curl.setup.php
+toolbox.index.curl_help_link|https://www.php.net/manual/en/curl.setup.php
 toolbox.index.curl_help_label|Go to Curl PHP extension manual
 toolbox.index.simple_xml_message|Lengow needs the SimpleXML PHP extension
 toolbox.index.simple_xml_help|The SimpleXML extension is not installed or enabled in your PHP installation. Check the manual to get more information on how to install or enable SimpleXML on your system
-toolbox.index.simple_xml_help_link|http://www.php.net/manual/en/book.simplexml.php
+toolbox.index.simple_xml_help_link|https://www.php.net/manual/en/book.simplexml.php
 toolbox.index.simple_xml_help_label|Go to SimpleXML PHP extension manual
 toolbox.index.json_php_message|Lengow needs the JSON PHP extension
 toolbox.index.json_php_help|The JSON extension is not installed or enabled in your PHP installation
-toolbox.index.json_php_help_link|http://www.php.net/manual/fr/book.json.php
+toolbox.index.json_php_help_link|https://www.php.net/manual/en/book.json.php
 toolbox.index.json_php_help_label|Go to JSON PHP extension manual
 toolbox.index.shop_functionality_message|Shop functionality
 toolbox.index.shop_functionality_help|Shop functionalities are disabled, order import is impossible: please enable them in the products settings section

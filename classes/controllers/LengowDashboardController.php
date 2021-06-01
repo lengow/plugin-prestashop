@@ -34,8 +34,12 @@ class LengowDashboardController extends LengowController
             switch ($action) {
                 case 'refresh_status':
                     LengowSync::getStatusAccount(true);
-                    $lengowLink = new LengowLink();
-                    Tools::redirectAdmin($lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
+                    Tools::redirectAdmin($this->lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
+                    break;
+                case 'remind_me_later':
+                    $timestamp = time() + (7 * 86400);
+                    LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL, $timestamp);
+                    echo Tools::jsonEncode(array('success' => true));
                     break;
             }
             exit();
@@ -47,8 +51,7 @@ class LengowDashboardController extends LengowController
      */
     public function display()
     {
-        $lengowLink = new LengowLink();
-        $refreshStatus = $lengowLink->getAbsoluteAdminLink('AdminLengowDashboard') . '&action=refresh_status';
+        $refreshStatus = $this->lengowLink->getAbsoluteAdminLink('AdminLengowDashboard') . '&action=refresh_status';
         $this->context->smarty->assign('refresh_status', $refreshStatus);
         parent::display();
     }

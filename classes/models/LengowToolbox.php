@@ -332,7 +332,7 @@ class LengowToolbox
         }
         $fileModifiedCounter = count($fileModified);
         $fileDeletedCounter = count($fileDeleted);
-        $md5Success =  $md5Available && !($fileModifiedCounter > 0) && !($fileDeletedCounter > 0);
+        $md5Success = $md5Available && !($fileModifiedCounter > 0) && !($fileDeletedCounter > 0);
         return array(
             self::CHECKSUM_AVAILABLE => $md5Available,
             self::CHECKSUM_SUCCESS => $md5Success,

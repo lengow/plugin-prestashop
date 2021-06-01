@@ -12,15 +12,16 @@
 }
 
 .lengow-nav #menucountertrial a,
-.lengow-nav #menupluginavailable a {
+.lengow-nav #menupluginavailable button {
   display: inline-block;
+  color: white;
   text-decoration: underline;
   padding: 0 0px;
   margin-left: 5px;
 }
 
 .lengow-nav #menucountertrial a:hover,
-.lengow-nav #menupluginavailable a:hover {
+.lengow-nav #menupluginavailable button:hover {
   background: none;
   color: #00aeef;
   text-decoration: underline;

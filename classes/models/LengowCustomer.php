@@ -61,14 +61,14 @@ class LengowCustomer extends Customer
      */
     public function assign($data = array())
     {
-        $this->company = LengowAddress::cleanName((string)$data['company']);
+        $this->company = LengowAddress::cleanName((string) $data['company']);
         $this->email = $data['email'];
         $this->firstname = $data['first_name'];
         $this->lastname = $data['last_name'];
         $this->fullName = $data['full_name'];
         $this->passwd = md5(rand());
         if (_PS_VERSION_ >= '1.5') {
-            $this->id_gender = LengowGender::getGender((string)$data['civility']);
+            $this->id_gender = LengowGender::getGender((string) $data['civility']);
         }
         return $this;
     }
@@ -189,13 +189,15 @@ class LengowCustomer extends Customer
                             }
                             $this->address1 .= $addressPart;
                             continue;
-                        } elseif (Tools::strlen($this->address2) < $address2MaxLength) {
+                        }
+                        if (Tools::strlen($this->address2) < $address2MaxLength) {
                             if (!empty($this->address2)) {
                                 $this->address2 .= ' ';
                             }
                             $this->address2 .= $addressPart;
                             continue;
-                        } elseif (Tools::strlen($this->other) < $otherMaxLength) {
+                        }
+                        if (Tools::strlen($this->other) < $otherMaxLength) {
                             if (!empty($this->other)) {
                                 $this->other .= ' ';
                             }

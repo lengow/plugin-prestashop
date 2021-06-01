@@ -169,13 +169,13 @@ class LengowAction
      */
     public function load($row)
     {
-        $this->id = (int)$row['id'];
-        $this->idOrder = (int)$row['id_order'];
-        $this->actionId = (int)$row['action_id'];
+        $this->id = (int) $row['id'];
+        $this->idOrder = (int) $row['id_order'];
+        $this->actionId = (int) $row['action_id'];
         $this->actionType = $row['action_type'];
         $this->retry = $row['retry'];
         $this->parameters = $row['parameters'];
-        $this->state = (int)$row['state'];
+        $this->state = (int) $row['state'];
         $this->createdAt = $row['created_at'];
         $this->updatedAt = $row['updated_at'];
     }
@@ -190,7 +190,7 @@ class LengowAction
     public function findByActionId($actionId)
     {
         $row = Db::getInstance()->getRow(
-            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la WHERE action_id = ' . (int)$actionId
+            'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la WHERE action_id = ' . (int) $actionId
         );
         if ($row) {
             $this->load($row);
@@ -209,10 +209,10 @@ class LengowAction
     public static function getActionByActionId($actionId)
     {
         $row = Db::getInstance()->getRow(
-            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_actions WHERE action_id = ' . (int)$actionId
+            'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_actions WHERE action_id = ' . (int) $actionId
         );
         if ($row) {
-            return (int)$row['id'];
+            return (int) $row['id'];
         }
         return false;
     }
@@ -232,7 +232,7 @@ class LengowAction
             $sqlType = $actionType === null ? '' : ' AND  action_type = "' . pSQL($actionType) . '"';
             $rows = Db::getInstance()->executeS(
                 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la
-                WHERE state = ' . (int)self::STATE_NEW . $sqlType . ' AND id_order=' . (int)$idOrder
+                WHERE state = ' . (int) self::STATE_NEW . $sqlType . ' AND id_order=' . (int) $idOrder
             );
         } catch (PrestaShopDatabaseException $e) {
             return false;
@@ -245,9 +245,8 @@ class LengowAction
                     $actions[] = $action->load($row);
                 }
                 return $actions;
-            } else {
-                return $rows;
             }
+            return $rows;
         }
         return false;
     }
@@ -263,7 +262,7 @@ class LengowAction
     {
         try {
             $rows = Db::getInstance()->executeS(
-                'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions WHERE state = ' . (int)self::STATE_NEW
+                'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions WHERE state = ' . self::STATE_NEW
             );
         } catch (PrestaShopDatabaseException $e) {
             return false;
@@ -276,9 +275,8 @@ class LengowAction
                     $actions[] = $action->load($row);
                 }
                 return $actions;
-            } else {
-                return $rows;
             }
+            return $rows;
         }
         return false;
     }
@@ -295,14 +293,14 @@ class LengowAction
         try {
             $rows = Db::getInstance()->executeS(
                 'SELECT action_type FROM ' . _DB_PREFIX_ . 'lengow_actions
-                WHERE state = ' . (int)self::STATE_NEW . ' AND id_order=' . (int)$idOrder
+                WHERE state = ' . self::STATE_NEW . ' AND id_order=' . (int) $idOrder
             );
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
         if (!empty($rows)) {
             $lastAction = end($rows);
-            return (string)$lastAction['action_type'];
+            return (string) $lastAction['action_type'];
         }
         return false;
     }
@@ -316,7 +314,7 @@ class LengowAction
      */
     public function find($id)
     {
-        $row = Db::getInstance()->getRow('SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la WHERE id = ' . (int)$id);
+        $row = Db::getInstance()->getRow('SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la WHERE id = ' . (int) $id);
         if ($row) {
             $this->load($row);
             return true;
@@ -345,7 +343,7 @@ class LengowAction
             }
         }
         $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_ORDER_ACTION, $getParams);
-        if (isset($result->error) && isset($result->error->message)) {
+        if (isset($result->error, $result->error->message)) {
             throw new LengowException($result->error->message);
         }
         if (isset($result->count) && $result->count > 0) {
@@ -404,7 +402,7 @@ class LengowAction
                     )
                 );
             } else {
-                if ($result && $result !== null) {
+                if ($result) {
                     $message = LengowMain::setLogMessage(
                         'lengow_log.exception.action_not_created',
                         array('error_message' => Tools::jsonEncode($result))
@@ -441,10 +439,10 @@ class LengowAction
     {
         $insertParams = array(
             'parameters' => pSQL(Tools::jsonEncode($params['parameters'])),
-            'id_order' => (int)$params['id_order'],
-            'action_id' => (int)$params['action_id'],
+            'id_order' => (int) $params['id_order'],
+            'action_id' => (int) $params['action_id'],
             'action_type' => pSQL($params['action_type']),
-            'state' => (int)self::STATE_NEW,
+            'state' => self::STATE_NEW,
             'created_at' => date('Y-m-d H:i:s'),
         );
         if (isset($params['parameters'][self::ARG_LINE])) {
@@ -494,16 +492,15 @@ class LengowAction
                     } catch (PrestaShopDatabaseException $e) {
                         return false;
                     }
-                } else {
-                    return Db::getInstance()->update(
-                        'lengow_actions',
-                        array(
-                            'retry' => $action->retry + 1,
-                            'updated_at' => date('Y-m-d H:i:s'),
-                        ),
-                        'id = ' . $action->id
-                    );
                 }
+                return Db::getInstance()->update(
+                    'lengow_actions',
+                    array(
+                        'retry' => $action->retry + 1,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ),
+                    'id = ' . $action->id
+                );
             }
         }
         return false;
@@ -523,25 +520,24 @@ class LengowAction
                 return Db::getInstance()->autoExecute(
                     _DB_PREFIX_ . 'lengow_actions',
                     array(
-                        'state' => (int)self::STATE_FINISH,
+                        'state' => self::STATE_FINISH,
                         'updated_at' => date('Y-m-d H:i:s'),
                     ),
                     'UPDATE',
-                    'id = ' . (int)$id
+                    'id = ' . (int) $id
                 );
             } catch (PrestaShopDatabaseException $e) {
                 return false;
             }
-        } else {
-            return Db::getInstance()->update(
-                'lengow_actions',
-                array(
-                    'state' => (int)self::STATE_FINISH,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ),
-                'id = ' . (int)$id
-            );
         }
+        return Db::getInstance()->update(
+            'lengow_actions',
+            array(
+                'state' => self::STATE_FINISH,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ),
+            'id = ' . (int) $id
+        );
     }
 
     /**
@@ -558,7 +554,7 @@ class LengowAction
             $sqlActionType = $actionType === null ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
             $rows = Db::getInstance()->executeS(
                 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
-                WHERE id_order =' . (int)$idOrder . ' AND state = ' . (int)self::STATE_NEW . $sqlActionType
+                WHERE id_order =' . (int) $idOrder . ' AND state = ' . self::STATE_NEW . $sqlActionType
             );
         } catch (PrestaShopDatabaseException $e) {
             return false;
@@ -584,7 +580,7 @@ class LengowAction
             LengowConfiguration::LAST_UPDATE_ACTION_SYNCHRONIZATION
         );
         if ($lastActionSynchronisation) {
-            $lastIntervalTime = time() - (int)$lastActionSynchronisation;
+            $lastIntervalTime = time() - (int) $lastActionSynchronisation;
             $lastIntervalTime += self::SECURITY_INTERVAL_TIME;
             $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
         }
@@ -769,14 +765,14 @@ class LengowAction
         $date = date('Y-m-d H:i:s', (time() - self::MAX_INTERVAL_TIME));
         $query = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
                 WHERE created_at <= "' . $date . '"
-                AND state = ' . (int)self::STATE_NEW;
+                AND state = ' . self::STATE_NEW;
         try {
             $results = Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
 
-        return $results ? $results : false;
+        return $results ?: false;
     }
 
     /**

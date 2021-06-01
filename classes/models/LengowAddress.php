@@ -432,7 +432,7 @@ class LengowAddress extends Address
     {
         $temp = array();
         foreach (self::$addressApiNodes as $node) {
-            $temp[$node] = (string)$api->{$node};
+            $temp[$node] = (string) $api->{$node};
         }
         return $temp;
     }
@@ -590,10 +590,8 @@ class LengowAddress extends Address
                         $this->phone = $this->phone_mobile;
                     }
                 }
-                if ($fieldName === 'phone_mobile') {
-                    if (!empty($this->phoneOffice)) {
-                        $this->phone_mobile = $this->phoneOffice;
-                    }
+                if (($fieldName === 'phone_mobile') && !empty($this->phoneOffice)) {
+                    $this->phone_mobile = $this->phoneOffice;
                 }
                 break;
             default:
@@ -628,13 +626,15 @@ class LengowAddress extends Address
                             }
                             $this->address1 .= $addressPart;
                             continue;
-                        } elseif (Tools::strlen($this->address2) < $address2Maxlength) {
+                        }
+                        if (Tools::strlen($this->address2) < $address2Maxlength) {
                             if (!empty($this->address2)) {
                                 $this->address2 .= ' ';
                             }
                             $this->address2 .= $addressPart;
                             continue;
-                        } elseif (Tools::strlen($this->other) < $otherMaxlength) {
+                        }
+                        if (Tools::strlen($this->other) < $otherMaxlength) {
                             if (!empty($this->other)) {
                                 $this->other .= ' ';
                             }
@@ -668,7 +668,7 @@ class LengowAddress extends Address
         $idState = 0;
         $countryIsoA2 = $addressData['common_country_iso_a2'];
         $stateRegion = $addressData['state_region'];
-        if (in_array($countryIsoA2, array(self::ISO_A2_ES, self::ISO_A2_IT))) {
+        if (in_array($countryIsoA2, array(self::ISO_A2_ES, self::ISO_A2_IT), true)) {
             $idState = $this->searchIdStateByPostcode($idCountry, $countryIsoA2, $addressData['zipcode']);
         } elseif (!empty($stateRegion)) {
             $idState = $this->searchIdStateByStateRegion($idCountry, $stateRegion);
@@ -700,7 +700,7 @@ class LengowAddress extends Address
                     ? $this->regionCodes[$countryIsoA2][$postcodeSubstr]
                     : false;
                 if ($isoCode && is_array($isoCode) && !empty($isoCode)) {
-                    $isoCode = $this->getIsoCodeFromIntervalPostcodes((int)$postcode, $isoCode);
+                    $isoCode = $this->getIsoCodeFromIntervalPostcodes((int) $postcode, $isoCode);
                 }
                 break;
             default:
@@ -726,8 +726,8 @@ class LengowAddress extends Address
         foreach ($intervalPostcodes as $intervalPostcode => $isoCode) {
             $intervalPostcodes = explode('-', $intervalPostcode);
             if (!empty($intervalPostcodes) && count($intervalPostcodes) === 2) {
-                $minPostcode = is_numeric($intervalPostcodes[0]) ? (int)$intervalPostcodes[0] : false;
-                $maxPostcode = is_numeric($intervalPostcodes[1]) ? (int)$intervalPostcodes[1] : false;
+                $minPostcode = is_numeric($intervalPostcodes[0]) ? (int) $intervalPostcodes[0] : false;
+                $maxPostcode = is_numeric($intervalPostcodes[1]) ? (int) $intervalPostcodes[1] : false;
                 if (($minPostcode && $maxPostcode) && ($postcode >= $minPostcode && $postcode <= $maxPostcode)) {
                     return $isoCode;
                 }
@@ -751,7 +751,7 @@ class LengowAddress extends Address
             FROM `' . _DB_PREFIX_ . 'state`
             WHERE `iso_code` = \'' . pSQL($isoCode) . '\' AND `id_country` = ' . $idCountry
         );
-        return (int)$idState;
+        return (int) $idState;
     }
 
     /**
@@ -772,7 +772,7 @@ class LengowAddress extends Address
             foreach ($countryStates as $countryState) {
                 $isoCodeCleaned = $this->cleanString($countryState['iso_code']);
                 if ($stateRegionCleaned === $isoCodeCleaned) {
-                    $idState = (int)$countryState['id_state'];
+                    $idState = (int) $countryState['id_state'];
                     break;
                 }
             }
@@ -783,7 +783,7 @@ class LengowAddress extends Address
                     $nameCleaned = $this->cleanString($countryState['name']);
                     similar_text($stateRegionCleaned, $nameCleaned, $percent);
                     if ($percent > 70) {
-                        $results[(int)$percent] = (int)$countryState['id_state'];
+                        $results[(int) $percent] = (int) $countryState['id_state'];
                     }
                 }
                 if (!empty($results)) {
@@ -805,7 +805,6 @@ class LengowAddress extends Address
     protected function cleanString($string)
     {
         $string = Tools::strtolower(str_replace(array(' ', '-', '_', '.'), '', trim($string)));
-        $string = LengowMain::replaceAccentedChars(html_entity_decode($string));
-        return $string;
+        return LengowMain::replaceAccentedChars(html_entity_decode($string));
     }
 }

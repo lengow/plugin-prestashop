@@ -23,10 +23,25 @@ it:
     global_parameter: "Impostazioni Generali"
     new_version_available: "È disponibile una nuova versione %{version}!"
     download_plugin: "Scaricare"
+  update:
+    version_available: "Nuova versione disponibile!"
+    start_now: "Inizia ora a beneficiare delle nuove funzionalità, miglioramenti e correzioni di bug riassunti nei nostri"
+    link_changelog: "log delle modifiche."
+    step_one: "Passo 1"
+    download_last_version: "Scarica l'ultima versione del plugin di seguito."
+    plugin_compatibility: "Compatibile con PrestaShop da %{cms_min_version} a %{cms_max_version}"
+    extension_required: "Richiede l'estensione %{name} %{min_version} a %{max_version}"
+    step_two: "Passo 2"
+    link_follow: "Segui"
+    update_procedure: "la procedura di aggiornamento (facile e veloce)."
+    not_working: "¿No funciona? Contattare il nostro"
+    customer_success_team: "Customer Success team"
+    button_download_version: "Lengow PrestaShop %{version}"
+    button_remind_me_later: "Non ora, ricordamelo più tardi"
   footer:
     legals: "Condizioni Legali"
     plugin_lengow: "Lengow plugin PrestaShop"
-    lengow_link_url: "http://www.lengow.com/it/"
+    lengow_link_url: "https://www.lengow.com/it/"
   connection:
     home:
       description_first: "Lengow ti aiuta a ottimizzare il tuo business in tutto il mondo!"
@@ -41,7 +56,6 @@ it:
       credentials_description: "Trova queste credenziali nelle impostazioni del tuo conto, sezione \"A.P.I\""
       credentials_help: "Hai bisogno di aiuto?"
       credentials_help_center: "Controlla il nostro Centro Assistenza"
-      credentials_help_center_url: "https://support.lengow.com/kb/en"
       credentials_button: "Connettiti a Lengow"
       credentials_button_loading: "Collegamento..."
       credentials_placeholder_access_token: "Inserisci il tuo access token"
@@ -243,12 +257,10 @@ it:
       title: "Chiedi aiuto al nostro supporto tecnico!"
       contain_text_support: "Contattaci o condividi i tuoi feedback con"
       title_lengow_support: "il Supporto Lengow"
-      link_lengow_support: "https://supportlengow.zendesk.com/hc/en-us/requests/new"
       need_some_help: "Hai bisogno d'aiuto ?"
       contain_text_support_hour: "Faremo il possibile per darti una risposta durante le ore di lavoro (dal Lunedi al Venerdi - 9h/18h)"
       find_answer: "Potresti trovare una risposta nella nostra  "
       link_prestashop_guide: "guida dedicata PrestaShop"
-      knowledge_link_url: "https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864"
   legals:
     screen:
       simplified_company: "Società responsabilità limitata"
@@ -363,7 +375,7 @@ it:
       unable_to_save_order_payment: "impossibile salvare PrestaShop pagamento ordine"
     mail_report:
       order: "Ordine %{marketplace_sku}"
-      no_error_in_report_mail: "nessun errore nella mail di report https://supportlengow.zendesk.com/hc/en-us/requests/new"
+      no_error_in_report_mail: "nessun errore nella mail di report %{support_link}"
     connection:
       status_draft: "Bozza"
       status_active: "Attivo"

@@ -242,7 +242,7 @@ class LengowToolboxElement
                 ),
                 array(
                     self::DATA_TITLE => $this->locale->t('toolbox.index.shop_catalogs_id'),
-                    self::DATA_MESSAGE => implode (', ' , $data[LengowToolbox::SHOP_CATALOG_IDS]),
+                    self::DATA_MESSAGE => implode(', ', $data[LengowToolbox::SHOP_CATALOG_IDS]),
                 ),
                 array(
                     self::DATA_TITLE => $this->locale->t('toolbox.index.shop_product_total'),
@@ -431,13 +431,13 @@ class LengowToolboxElement
                             $check[self::DATA_HELP_LABEL]
                         )
                     ) {
-                            $out .= '<tr><td colspan="2"><p>' . $check[self::DATA_HELP];
-                            if (array_key_exists(self::DATA_HELP_LINK, $check) && $check[self::DATA_HELP_LINK] !== '') {
-                                $out .= '<br /><a target="_blank" href="'
-                                    . $check[self::DATA_HELP_LINK] . '">' . $check[self::DATA_HELP_LABEL] . '</a>';
-                            }
-                            $out .= '</p></td></tr>';
+                        $out .= '<tr><td colspan="2"><p>' . $check[self::DATA_HELP];
+                        if (array_key_exists(self::DATA_HELP_LINK, $check) && $check[self::DATA_HELP_LINK] !== '') {
+                            $out .= '<br /><a target="_blank" href="'
+                                . $check[self::DATA_HELP_LINK] . '">' . $check[self::DATA_HELP_LABEL] . '</a>';
                         }
+                        $out .= '</p></td></tr>';
+                    }
                 } else {
                     $out .= '<td align="right"><b>' . $check[self::DATA_MESSAGE] . '</b></td>';
                 }

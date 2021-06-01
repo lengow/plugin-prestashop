@@ -77,6 +77,7 @@ class LengowConfiguration extends Configuration
     const LAST_UPDATE_SETTING = 'LENGOW_LAST_SETTING_UPDATE';
     const LAST_UPDATE_PLUGIN_DATA = 'LENGOW_PLUGIN_DATA_UPDATE';
     const LAST_UPDATE_AUTHORIZATION_TOKEN = 'LENGOW_LAST_AUTH_TOKEN_UPDATE';
+    const LAST_UPDATE_PLUGIN_MODAL = 'LENGOW_LAST_PLUGIN_MODAL';
 
     /* Configuration parameters */
     const PARAM_COLLECTION = 'collection';
@@ -154,6 +155,7 @@ class LengowConfiguration extends Configuration
         self::LAST_UPDATE_SETTING => 'last_update_setting',
         self::LAST_UPDATE_PLUGIN_DATA => 'last_update_plugin_data',
         self::LAST_UPDATE_AUTHORIZATION_TOKEN => 'last_update_authorization_token',
+        self::LAST_UPDATE_PLUGIN_MODAL => 'last_update_plugin_modal',
     );
 
     /**
@@ -369,7 +371,7 @@ class LengowConfiguration extends Configuration
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_export_carrier_default_title'),
-                    self::PARAM_DEFAULT_VALUE => !empty($carriers) ? (int)$carriers[0]['id'] : '',
+                    self::PARAM_DEFAULT_VALUE => !empty($carriers) ? (int) $carriers[0]['id'] : '',
                     self::PARAM_COLLECTION => $carriers,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
                 ),
@@ -528,6 +530,10 @@ class LengowConfiguration extends Configuration
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
                 ),
+                self::LAST_UPDATE_PLUGIN_MODAL => array(
+                    self::PARAM_GLOBAL => true,
+                    self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
+                ),
             );
         }
         return isset($key, $keys[$key]) ? $keys[$key] : $keys;
@@ -568,7 +574,7 @@ class LengowConfiguration extends Configuration
         if (Shop::isFeatureActive() && $idShop > 1) {
             $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration
                WHERE `name` = \'' . pSQL($key) . '\'
-               AND `id_shop` = \'' . (int)$idShop . '\'
+               AND `id_shop` = \'' . (int) $idShop . '\'
             ';
             $value = Db::getInstance()->getRow($sql);
             if ($value) {
@@ -624,7 +630,7 @@ class LengowConfiguration extends Configuration
     {
         $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration WHERE `name` = \'' . pSQL($key) . '\'';
         $value = Db::getInstance()->getRow($sql);
-        return $value ? true : false;
+        return (bool) $value;
     }
 
     /**
@@ -839,7 +845,7 @@ class LengowConfiguration extends Configuration
                         }
                     } else {
                         $oldValue = self::get($key, false, null, $shop['id_shop']);
-                        if (!$oldValue || $oldValue === null) {
+                        if (!$oldValue) {
                             self::updateValue($key, $val, false, null, $shop['id_shop']);
                         }
                     }
@@ -851,7 +857,7 @@ class LengowConfiguration extends Configuration
                     }
                 } else {
                     $oldValue = self::get($key);
-                    if (!$oldValue || $oldValue === null) {
+                    if (!$oldValue) {
                         self::updateValue($key, $val);
                     }
                 }

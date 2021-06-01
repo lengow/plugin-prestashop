@@ -31,7 +31,7 @@ class LengowTool
      */
     public function isLogged()
     {
-        return (bool)Context::getContext()->cookie->lengow_toolbox;
+        return (bool) Context::getContext()->cookie->lengow_toolbox;
     }
 
     /**

@@ -246,7 +246,7 @@ class LengowImport
                 $this->deliveryAddressId = $params[self::PARAM_DELIVERY_ADDRESS_ID];
             }
             if (isset($params[self::PARAM_ID_ORDER_LENGOW])) {
-                $this->idOrderLengow = (int)$params[self::PARAM_ID_ORDER_LENGOW];
+                $this->idOrderLengow = (int) $params[self::PARAM_ID_ORDER_LENGOW];
             }
         } else {
             $this->marketplaceSku = null;
@@ -256,7 +256,7 @@ class LengowImport
                 isset($params[self::PARAM_CREATED_FROM]) ? $params[self::PARAM_CREATED_FROM] : false,
                 isset($params[self::PARAM_CREATED_TO]) ? $params[self::PARAM_CREATED_TO] : false
             );
-            if ((bool) LengowConfiguration::getGlobalValue(LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED)) {
+            if (LengowConfiguration::getGlobalValue(LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED)) {
                 $this->limit = 1;
             } else {
                 $this->limit = isset($params[self::PARAM_LIMIT]) ? (int) $params[self::PARAM_LIMIT] : 0;
@@ -320,18 +320,18 @@ class LengowImport
             foreach ($shops as $shop) {
                 // clean context
                 $this->context = null;
-                if ($this->idShop !== null && (int)$shop['id_shop'] !== $this->idShop) {
+                if ($this->idShop !== null && (int) $shop['id_shop'] !== $this->idShop) {
                     continue;
                 }
-                $shop = new LengowShop((int)$shop['id_shop']);
-                if (LengowConfiguration::shopIsActive((int)$shop->id)) {
+                $shop = new LengowShop((int) $shop['id_shop']);
+                if (LengowConfiguration::shopIsActive((int) $shop->id)) {
                     LengowMain::log(
                         LengowLog::CODE_IMPORT,
                         LengowMain::setLogMessage(
                             'log.import.start_for_shop',
                             array(
                                 'name_shop' => $shop->name,
-                                'id_shop' => (int)$shop->id,
+                                'id_shop' => (int) $shop->id,
                             )
                         ),
                         $this->logOutput
@@ -343,15 +343,15 @@ class LengowImport
                                 'lengow_log.error.no_catalog_for_shop',
                                 array(
                                     'name_shop' => $shop->name,
-                                    'id_shop' => (int)$shop->id,
+                                    'id_shop' => (int) $shop->id,
                                 )
                             );
                             LengowMain::log(LengowLog::CODE_IMPORT, $errorCatalogIds, $this->logOutput);
-                            $error[(int)$shop->id] = $errorCatalogIds;
+                            $error[(int) $shop->id] = $errorCatalogIds;
                             continue;
                         }
                         // change context with current shop id
-                        $this->changeContext((int)$shop->id);
+                        $this->changeContext((int) $shop->id);
                         // get orders from Lengow API
                         $orders = $this->getOrdersFromApi($shop);
                         $totalOrders = count($orders);
@@ -384,14 +384,15 @@ class LengowImport
                         }
                         if ($totalOrders <= 0 && $this->importOneOrder) {
                             throw new LengowException('lengow_log.error.order_not_found');
-                        } elseif ($totalOrders <= 0) {
+                        }
+                        if ($totalOrders <= 0) {
                             continue;
                         }
                         if (isset($this->idOrderLengow) && $this->idOrderLengow) {
                             LengowOrder::finishOrderLogs($this->idOrderLengow, 'import');
                         }
                         // import orders in prestashop
-                        $result = $this->importOrders($orders, (int)$shop->id);
+                        $result = $this->importOrders($orders, (int) $shop->id);
                         if (!$this->importOneOrder) {
                             $orderNew += $result['order_new'];
                             $orderUpdate += $result['order_update'];
@@ -421,7 +422,7 @@ class LengowImport
                             ),
                             $this->logOutput
                         );
-                        $error[(int)$shop->id] = $errorMessage;
+                        $error[(int) $shop->id] = $errorMessage;
                         unset($errorMessage);
                         continue;
                     }
@@ -494,7 +495,7 @@ class LengowImport
             LengowMain::enableMail();
             if (!$this->debugMode
                 && !$this->importOneOrder
-                && (bool) LengowConfiguration::getGlobalValue(LengowConfiguration::REPORT_MAIL_ENABLED)
+                && LengowConfiguration::getGlobalValue(LengowConfiguration::REPORT_MAIL_ENABLED)
             ) {
                 LengowMain::sendMailAlert($this->logOutput);
             }
@@ -546,7 +547,7 @@ class LengowImport
             return true;
         }
         $shopCatalogIds = array();
-        $catalogIds = LengowConfiguration::getCatalogIds((int)$shop->id);
+        $catalogIds = LengowConfiguration::getCatalogIds((int) $shop->id);
         foreach ($catalogIds as $catalogId) {
             if (array_key_exists($catalogId, $this->catalogIds)) {
                 LengowMain::log(
@@ -562,7 +563,7 @@ class LengowImport
                     $this->logOutput
                 );
             } else {
-                $this->catalogIds[$catalogId] = array('shopId' => (int)$shop->id, 'name' => $shop->name);
+                $this->catalogIds[$catalogId] = array('shopId' => (int) $shop->id, 'name' => $shop->name);
                 $shopCatalogIds[] = $catalogId;
             }
         }
@@ -620,8 +621,8 @@ class LengowImport
                 $this->logOutput
             );
         } else {
-            $dateFrom = $this->createdFrom ? $this->createdFrom : $this->updatedFrom;
-            $dateTo = $this->createdTo ? $this->createdTo : $this->updatedTo;
+            $dateFrom = $this->createdFrom ?: $this->updatedFrom;
+            $dateTo = $this->createdTo ?: $this->updatedTo;
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(
@@ -689,7 +690,7 @@ class LengowImport
                                 LengowTranslation::DEFAULT_ISO_CODE
                             ),
                             'name_shop' => $shop->name,
-                            'id_shop' => (int)$shop->id,
+                            'id_shop' => (int) $shop->id,
                         )
                     )
                 );
@@ -700,7 +701,7 @@ class LengowImport
                         'lengow_log.exception.no_connection_webservice',
                         array(
                             'name_shop' => $shop->name,
-                            'id_shop' => (int)$shop->id,
+                            'id_shop' => (int) $shop->id,
                         )
                     )
                 );
@@ -712,7 +713,7 @@ class LengowImport
                         'lengow_log.exception.no_connection_webservice',
                         array(
                             'name_shop' => $shop->name,
-                            'id_shop' => (int)$shop->id,
+                            'id_shop' => (int) $shop->id,
                         )
                     )
                 );
@@ -746,7 +747,7 @@ class LengowImport
                 self::setInProcess();
             }
             $nbPackage = 0;
-            $marketplaceSku = (string)$orderData->marketplace_order_id;
+            $marketplaceSku = (string) $orderData->marketplace_order_id;
             if ($this->debugMode) {
                 $marketplaceSku .= '--' . time();
             }
@@ -834,7 +835,7 @@ class LengowImport
                 if (isset($order)) {
                     // sync to lengow if no debug_mode
                     if (!$this->debugMode && isset($order['order_new']) && $order['order_new']) {
-                        $lengowOrder = new LengowOrder((int)$order['order_id']);
+                        $lengowOrder = new LengowOrder((int) $order['order_id']);
                         $synchro = $lengowOrder->synchronizeOrder($this->connector, $this->logOutput);
                         if ($synchro) {
                             $synchroMessage = LengowMain::setLogMessage(

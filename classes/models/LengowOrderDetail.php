@@ -35,8 +35,8 @@ class LengowOrderDetail extends OrderDetail
     public static function findByOrderIdProductId($idOrder, $idProduct)
     {
         $sql = 'SELECT id_order_detail FROM `' . _DB_PREFIX_ . 'order_detail`
-            WHERE product_id = ' . (int)$idProduct . ' AND id_order = ' . $idOrder;
+            WHERE product_id = ' . (int) $idProduct . ' AND id_order = ' . $idOrder;
         $row = Db::getInstance()->getRow($sql);
-        return (int)$row['id_order_detail'];
+        return (int) $row['id_order_detail'];
     }
 }

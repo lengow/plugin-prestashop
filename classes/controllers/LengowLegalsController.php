@@ -25,13 +25,6 @@
 class LengowLegalsController extends LengowController
 {
     /**
-     * Process Post Parameters
-     */
-    public function postProcess()
-    {
-    }
-
-    /**
      * Display data page
      */
     public function display()

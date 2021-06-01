@@ -26,11 +26,11 @@
         {/if}
         <div class="lgw-row">
             <div class="text-left lgw-col-6" id="alert-plugin-available">
-                {if $pluginData && $pluginData['version'] > $lengowVersion}
+                {if !$pluginIsUpToDate }
                     {$locale->t('menu.new_version_available', ['version' => $pluginData['version']])|escape:'htmlall':'UTF-8'}
-                    <a href="https://my.{$lengowUrl|escape:'htmlall':'UTF-8'}{$pluginData['download_link']|escape:'htmlall':'UTF-8'}" target="_blank">
+                    <button class="btn-link mod-blue mod-inline js-upgrade-plugin-modal-open">
                         {$locale->t('menu.download_plugin')|escape:'htmlall':'UTF-8'}
-                    </a>
+                    </button>
                 {/if}
             </div>
             <div class="text-right lgw-col-6" id="alert-counter-trial">
@@ -91,7 +91,7 @@
                 </a>
             </p>
             <p>
-                <a href="{$locale->t('help.screen.knowledge_link_url')|escape:'htmlall':'UTF-8'}" target="_blank">{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}</a>
+                <a href="{$helpCenterLink|escape:'htmlall':'UTF-8'}" target="_blank">{$locale->t('dashboard.screen.visit_help_center')|escape:'htmlall':'UTF-8'}</a>
                 {$locale->t('dashboard.screen.configure_plugin')|escape:'htmlall':'UTF-8'}
             </p>
         </div>

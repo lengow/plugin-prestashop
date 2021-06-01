@@ -93,7 +93,7 @@ if (Tools::getIsset(LengowImport::PARAM_GET_SYNC) && Tools::getValue(LengowImpor
         if (Tools::getIsset(LengowImport::PARAM_FORCE_PRODUCT)) {
             $params[LengowImport::PARAM_FORCE_PRODUCT] = (bool) Tools::getValue(LengowImport::PARAM_FORCE_PRODUCT);
         }
-        if (Tools::getIsset(LengowImport::PARAM_DEBUG_MODE )) {
+        if (Tools::getIsset(LengowImport::PARAM_DEBUG_MODE)) {
             $params[LengowImport::PARAM_DEBUG_MODE] = (bool) Tools::getValue(LengowImport::PARAM_DEBUG_MODE);
         }
         if (Tools::getIsset(LengowImport::PARAM_DAYS) && is_numeric(Tools::getValue(LengowImport::PARAM_DAYS))) {

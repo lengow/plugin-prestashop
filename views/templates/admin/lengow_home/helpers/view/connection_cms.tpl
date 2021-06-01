@@ -35,7 +35,7 @@
         <p>{$locale->t('connection.cms.credentials_description')|escape:'htmlall':'UTF-8'}</p>
         <p>
             {$locale->t('connection.cms.credentials_help')|escape:'htmlall':'UTF-8'}
-            <a href="{$locale->t('connection.cms.credentials_help_center_url')|escape:'htmlall':'UTF-8'}" target="_blank">
+            <a href="{$helpCenterLink|escape:'htmlall':'UTF-8'}" target="_blank">
                 {$locale->t('connection.cms.credentials_help_center')|escape:'htmlall':'UTF-8'}
             </a>
         </p>

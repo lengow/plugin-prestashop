@@ -217,6 +217,13 @@ class LengowConnector
     );
 
     /**
+     * @var array API requiring no authorization for the call url
+     */
+    protected static $apiWithoutAuthorizations = array(
+        self::API_PLUGIN,
+    );
+
+    /**
      * Make a new Lengow API Connector.
      *
      * @param string $accessToken your access token
@@ -271,7 +278,7 @@ class LengowConnector
      * @param string $body body data for request
      * @param boolean $logOutput see log or not
      *
-     * @return mixed
+     * @return array|false
      */
     public static function queryApi($type, $api, $args = array(), $body = '', $logOutput = false)
     {
@@ -279,19 +286,15 @@ class LengowConnector
             return false;
         }
         try {
+            $authorizationRequired = !in_array($api, self::$apiWithoutAuthorizations, true);
             list($accountId, $accessToken, $secret) = LengowConfiguration::getAccessIds();
-            if ($accountId === null) {
+            if ($accountId === null && $authorizationRequired) {
                 return false;
             }
             $connector = new LengowConnector($accessToken, $secret);
             $type = Tools::strtolower($type);
-            $results = $connector->$type(
-                $api,
-                array_merge(array('account_id' => $accountId), $args),
-                self::FORMAT_STREAM,
-                $body,
-                $logOutput
-            );
+            $args = $authorizationRequired ? array_merge(array('account_id' => $accountId), $args) : $args;
+            $results = $connector->$type($api, $args, self::FORMAT_STREAM, $body, $logOutput);
         } catch (LengowException $e) {
             $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
             $error = LengowMain::setLogMessage(
@@ -464,7 +467,9 @@ class LengowConnector
     private function call($api, $args, $type, $format, $body, $logOutput)
     {
         try {
-            $this->connect(false, $logOutput);
+            if (!in_array($api, self::$apiWithoutAuthorizations, true)) {
+                $this->connect(false, $logOutput);
+            }
             $data = $this->callAction($api, $args, $type, $format, $body, $logOutput);
         } catch (LengowException $e) {
             if (in_array($e->getCode(), $this->authorizationCodes, true)) {
@@ -473,7 +478,9 @@ class LengowConnector
                     LengowMain::setLogMessage('log.connector.retry_get_token'),
                     $logOutput
                 );
-                $this->connect(true, $logOutput);
+                if (!in_array($api, self::$apiWithoutAuthorizations, true)) {
+                    $this->connect(true, $logOutput);
+                }
                 $data = $this->callAction($api, $args, $type, $format, $body, $logOutput);
             } else {
                 throw new LengowException($e->getMessage(), $e->getCode());

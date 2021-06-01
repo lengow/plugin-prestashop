@@ -28,22 +28,17 @@
             <h2>{$locale->t('help.screen.title')|escape:'htmlall':'UTF-8'}</h2>
             <p>
                 {$locale->t('help.screen.contain_text_support')|escape:'htmlall':'UTF-8'}
-                {*{html_entity_decode($mailto|escape:'htmlall':'UTF-8')}*}
-                <a href="{$locale->t('help.screen.link_lengow_support')|escape:'htmlall':'UTF-8'}"
-                   target="_blank"
-                   title="Lengow Support">
-                    {$locale->t('help.screen.title_lengow_support')|escape:'htmlall':'UTF-8'}</a>
+                <a href="{$supportLink|escape:'htmlall':'UTF-8'}" target="_blank" title="Lengow Support">
+                    {$locale->t('help.screen.title_lengow_support')|escape:'htmlall':'UTF-8'}
+                </a>
             </p>
             <p>{$locale->t('help.screen.contain_text_support_hour')|escape:'htmlall':'UTF-8'}</p>
             <p>
                 {$locale->t('help.screen.find_answer')|escape:'htmlall':'UTF-8'}
-                <a href="{$locale->t('help.screen.knowledge_link_url')|escape:'htmlall':'UTF-8'}"
-                    target="_blank"
-                    title="Help Center">
+                <a href="{$helpCenterLink|escape:'htmlall':'UTF-8'}" target="_blank" title="Help Center">
                     {$locale->t('help.screen.link_prestashop_guide')|escape:'htmlall':'UTF-8'}
                 </a>
             </p>
         </div>
     </div>
-    <input type="hidden" id="lengow_ajax_link" value="{$lengow_ajax_link|escape:'htmlall':'UTF-8'}">
 </div>

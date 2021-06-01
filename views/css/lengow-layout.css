@@ -48,7 +48,7 @@ body.page-topbar .cms-global{
  clear: both;
  content: " ";
  display: block;
- width: 100%;
+/* width: 100%;*/
 }
 
 .lgw-col-9,
@@ -112,6 +112,11 @@ body.page-topbar .cms-global{
 /* SECTIONS */
 
 .lgw-content-section {
+  margin-bottom: 60px;
+}
+
+.lgw-content-section.mod-small {
+  margin-bottom: 30px;
 }
 
 /* SPACING */
@@ -123,13 +128,22 @@ body.page-topbar .cms-global{
 .no-margin {
   margin: 0 !important;
 }
+
 .no-margin-top {
   margin-top: 0 !important;
 }
 
+.no-margin-bottom {
+  margin-bottom: 0!important;
+}
+
 .vertical-center {
   margin-top: 50%;
+}
 
+.flexbox-vertical-center {
+  align-items: center;
+  display: flex;
 }
 
 .margin-standard {
@@ -155,6 +169,19 @@ body.page-topbar .cms-global{
 b,
 .bold {
   font-weight: 600;
+}
+
+.text-lesser {
+  color: #999;
+  font-size: 14.1px;
+}
+
+.text-italic {
+  font-style: italic;
+}
+
+.text-small {
+  font-size: 12px;
 }
 
 /*************************************************/
@@ -329,16 +356,15 @@ hr {
 .lengow-nav {
   font-size: 13px;
   position: absolute;
-  /*position: fixed;*/
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   right: 0;
   height: 54px;
   margin: 0;
   padding: 0 25px;
   background: #3f4452;
   list-style: none;
-  z-index: 300;
+  z-index: 70;
 }
 
 body.page-sidebar-closed .lengow-nav,

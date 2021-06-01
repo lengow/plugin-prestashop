@@ -99,16 +99,20 @@ if (_PS_VERSION_ >= '1.5' && Tools::getIsset(LengowExport::PARAM_SHOP)) {
         Context::getContext()->shop = $shop;
     }
 }
-$idShop = (int)Context::getContext()->shop->id;
+$idShop = (int) Context::getContext()->shop->id;
 // export lengow selection
-$selection = Tools::getIsset('all') ? !(bool) Tools::getValue('all') : null;
+$selection = Tools::getIsset(LengowExport::PARAM_LEGACY_SELECTION)
+    ? !(bool) Tools::getValue(LengowExport::PARAM_LEGACY_SELECTION)
+    : null;
 if ($selection !== null || Tools::getIsset(LengowExport::PARAM_SELECTION)) {
     $selection = $selection !== null ? $selection : (bool) Tools::getValue(LengowExport::PARAM_LIMIT);
 } else {
     $selection = (bool) LengowConfiguration::get(LengowConfiguration::SELECTION_ENABLED, null, null, $idShop);
 }
 // export out of stock products
-$outOfStock = Tools::getIsset('out_stock') ? (bool) Tools::getValue('out_stock') : null;
+$outOfStock = Tools::getIsset(LengowExport::PARAM_LEGACY_OUT_OF_STOCK)
+    ? (bool) Tools::getValue(LengowExport::PARAM_LEGACY_OUT_OF_STOCK)
+    : null;
 if ($outOfStock !== null || Tools::getIsset(LengowExport::PARAM_OUT_OF_STOCK)) {
     $outOfStock = $outOfStock !== null ? $outOfStock : (bool) Tools::getValue(LengowExport::PARAM_OUT_OF_STOCK);
 } else {
@@ -116,7 +120,9 @@ if ($outOfStock !== null || Tools::getIsset(LengowExport::PARAM_OUT_OF_STOCK)) {
 }
 // export specific products
 $productIds = array();
-$ids = Tools::getIsset('ids') ? Tools::getValue('ids') : null;
+$ids = Tools::getIsset(LengowExport::PARAM_LEGACY_PRODUCT_IDS)
+    ? Tools::getValue(LengowExport::PARAM_LEGACY_PRODUCT_IDS)
+    : null;
 if ($ids !== null || Tools::getIsset(LengowExport::PARAM_PRODUCT_IDS)) {
     $ids = $ids !== null ? $ids : Tools::getValue(LengowExport::PARAM_PRODUCT_IDS);
     if (Tools::strlen($ids) > 0) {
@@ -127,34 +133,36 @@ if ($ids !== null || Tools::getIsset(LengowExport::PARAM_PRODUCT_IDS)) {
 }
 // export product variation
 $variation = null;
-if (Tools::getIsset('mode')) {
-    if (Tools::getValue('mode') === 'simple') {
+if (Tools::getIsset(LengowExport::PARAM_LEGACY_VARIATION)) {
+    if (Tools::getValue(LengowExport::PARAM_LEGACY_VARIATION) === 'simple') {
         $variation = false;
-    } elseif (Tools::getValue('mode') === 'full') {
+    } elseif (Tools::getValue(LengowExport::PARAM_LEGACY_VARIATION) === 'full') {
         $variation = true;
     }
 }
 if ($variation !== null || Tools::getIsset(LengowExport::PARAM_VARIATION)) {
-    $variation = $variation !== null ? $variation : (bool)Tools::getValue(LengowExport::PARAM_VARIATION);
+    $variation = $variation !== null ? $variation : (bool) Tools::getValue(LengowExport::PARAM_VARIATION);
 } else {
     $variation = (bool) LengowConfiguration::get(LengowConfiguration::VARIATION_ENABLED, null, null, $idShop);
 }
 // export inactive products
 $inactive = null;
-if (Tools::getValue('active')) {
-    if (Tools::getValue('active') === 'enabled') {
+if (Tools::getValue(LengowExport::PARAM_LEGACY_INACTIVE)) {
+    if (Tools::getValue(LengowExport::PARAM_LEGACY_INACTIVE) === 'enabled') {
         $inactive = false;
-    } elseif (Tools::getValue('active') === 'all') {
+    } elseif (Tools::getValue(LengowExport::PARAM_LEGACY_INACTIVE) === 'all') {
         $inactive = true;
     }
 }
 if ($inactive !== null || Tools::getIsset(LengowExport::PARAM_INACTIVE)) {
-    $inactive = $inactive !== null ? $inactive : (bool)Tools::getValue(LengowExport::PARAM_INACTIVE);
+    $inactive = $inactive !== null ? $inactive : (bool) Tools::getValue(LengowExport::PARAM_INACTIVE);
 } else {
     $inactive = (bool) LengowConfiguration::get(LengowConfiguration::INACTIVE_ENABLED, null, null, $idShop);
 }
 // convert price for a specific currency
-$currency = Tools::getIsset('cur') ? Tools::getValue('cur') : null;
+$currency = Tools::getIsset(LengowExport::PARAM_LEGACY_CURRENCY)
+    ? Tools::getValue(LengowExport::PARAM_LEGACY_CURRENCY)
+    : null;
 if ($currency !== null || Tools::getIsset(LengowExport::PARAM_CURRENCY)) {
     $currency = $currency !== null ? $currency : Tools::getValue(LengowExport::PARAM_CURRENCY);
     $idCurrency = (int) Currency::getIdByIsoCode($currency);
@@ -163,7 +171,9 @@ if ($currency !== null || Tools::getIsset(LengowExport::PARAM_CURRENCY)) {
     }
 }
 // define language
-$language = Tools::getIsset('lang') ? Tools::getValue('lang') : null;
+$language = Tools::getIsset(LengowExport::PARAM_LEGACY_LANGUAGE)
+    ? Tools::getValue(LengowExport::PARAM_LEGACY_LANGUAGE)
+    : null;
 if ($language !== null || Tools::getIsset(LengowExport::PARAM_LANGUAGE)) {
     $language = $language !== null ? $language : Tools::getValue(LengowExport::PARAM_LANGUAGE);
     $languageId = (int) Language::getIdByIso($language);
@@ -198,7 +208,7 @@ $export = new LengowExport(
         LengowExport::PARAM_INACTIVE => $inactive,
         LengowExport::PARAM_LEGACY_FIELDS => $legacyFields,
         LengowExport::PARAM_SELECTION => $selection,
-        'language_id' => $languageId,
+        LengowExport::PARAM_LANGUAGE_ID => $languageId,
         LengowExport::PARAM_UPDATE_EXPORT_DATE => $updateExportDate,
         LengowExport::PARAM_LOG_OUTPUT => $logOutput,
     )

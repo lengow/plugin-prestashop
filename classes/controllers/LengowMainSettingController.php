@@ -51,8 +51,7 @@ class LengowMainSettingController extends LengowController
                         LengowInstall::dropTable();
                         $module = Module::getInstanceByName('lengow');
                         $module->uninstall();
-                        $link = new LengowLink();
-                        $configLink = $link->getAbsoluteAdminLink('AdminModules', false, true);
+                        $configLink = $this->lengowLink->getAbsoluteAdminLink('AdminModules', false, true);
                         Tools::redirect($configLink . '&conf=13', '');
                     }
                 }

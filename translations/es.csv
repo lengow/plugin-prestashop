@@ -19,9 +19,23 @@ menu.help|Ayuda
 menu.global_parameter|Parámetros generales
 menu.new_version_available|¡Una nueva versión %{version} está disponible!
 menu.download_plugin|Descargue
+update.version_available|¡Nueva versión disponible!
+update.start_now|Empiece ahora a beneficiarse de las nuevas funciones, mejoras y correcciones de errores resumidas en nuestras
+update.link_changelog|páginas de registros de cambios.
+update.step_one|Paso 1
+update.download_last_version|Descargue la última versión del complemento a continuación.
+update.plugin_compatibility|Compatible con PrestaShop %{cms_min_version} a %{cms_max_version}
+update.extension_required|Requiere la extensión de %{name} %{min_version} a %{max_version}
+update.step_two|Paso 2
+update.link_follow|Siga
+update.update_procedure|el procedimiento de actualización (fácil y rápido).
+update.not_working|¿No funciona? Póngase en contacto con nuestro
+update.customer_success_team|equipo de Éxito del cliente
+update.button_download_version|Lengow PrestaShop %{version}
+update.button_remind_me_later|Ahora no, recuérdamelo más tarde
 footer.legals|Legal
 footer.plugin_lengow|Lengow PrestaShop Plugin
-footer.lengow_link_url|http://www.lengow.com/es/
+footer.lengow_link_url|https://www.lengow.com/es/
 connection.home.description_first|Lengow le ayuda a optimizar su negocio en todo el mundo!
 connection.home.description_second|A través de la plataforma, puede publicar automáticamente su catálogo de productos en los marketplaces, sitios web de comparación, red de afiliados y campañas de retargeting.
 connection.home.description_third|Explore sus oportunidades de crecimiento internacional con 1.600 canales de venta en 42 países diferentes.
@@ -33,7 +47,6 @@ connection.cms.credentials_title|Por favor, introduzca sus credenciales de API L
 connection.cms.credentials_description|Encontrará estas credenciales en la configuración de su cuenta, sección "A.P.I"
 connection.cms.credentials_help|¿Necesita ayuda?
 connection.cms.credentials_help_center|Consulte nuestro Centro de Ayuda
-connection.cms.credentials_help_center_url|https://support.lengow.com/kb/en
 connection.cms.credentials_button|Conectar con Lengow
 connection.cms.credentials_button_loading|Conectando...
 connection.cms.credentials_placeholder_access_token|Introduzca su access token
@@ -218,12 +231,10 @@ global_setting.screen.setting_saved|¡Guardado!
 help.screen.title|Obtener un poco de ayuda de tu equipo de ayuda!
 help.screen.contain_text_support|Preguntenos lo necesite saber o bien enviones sus comentarios
 help.screen.title_lengow_support|al soporte de Lengow
-help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|¿Necesitas ayuda?
 help.screen.contain_text_support_hour|Haremos todo lo que esté de nuestra parte para contactarte en horario de oficina (de lunes a viernes - 09 a.m.-6 p.m. / Francia Zona horaria).
 help.screen.find_answer|Puedes también encontrar respuestas en nuestro
 help.screen.link_prestashop_guide|Manual PrestaShop
-help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864
 legals.screen.simplified_company|Simplificado sociedad de responsabilidad limitada
 legals.screen.social_capital|Capital social:
 legals.screen.cnil_declaration|Declaración CNIL:
@@ -331,7 +342,7 @@ lengow_log.exception.product_is_not_listed|producto %{product_id} no aparece com
 lengow_log.exception.unable_to_save_order|no se ha podido guardar el pedido PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
 lengow_log.mail_report.order|Pedido %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|ningún mensaje de error , póngase en contacto con el support via https://supportlengow.zendesk.com/hc/en-us/requests/new
+lengow_log.mail_report.no_error_in_report_mail|ningún mensaje de error , póngase en contacto con el support via %{support_link}
 lengow_log.connection.status_draft|Borrador
 lengow_log.connection.status_active|Activo
 lengow_log.connection.catalog|Catálogo %{catalog_id}
