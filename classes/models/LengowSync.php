@@ -419,7 +419,7 @@ class LengowSync
                     $pluginLinks = array();
                     if (!empty($plugin->links)) {
                         foreach ($plugin->links as $link) {
-                            if (in_array($link->language->iso_a2, self::$genericIsoCodes, true)) {
+                            if (array_key_exists($link->language->iso_a2, self::$genericIsoCodes)) {
                                 $genericIsoCode = self::$genericIsoCodes[$link->language->iso_a2];
                                 $pluginLinks[$genericIsoCode][$link->link_type] = $link->link;
                             }

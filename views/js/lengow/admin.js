@@ -75,6 +75,7 @@
                 var modalBox = $('#upgrade-plugin.is-open');
                 modalBox.removeClass('is-open');
                 setTimeout(function() {
+                    $('.js-upgrade-plugin-modal-remind-me').hide();
                     modalBox.hide();
                 }, 250);
             });
