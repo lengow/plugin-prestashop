@@ -975,13 +975,34 @@ class LengowMain
         } else {
             try {
                 $idShop = $idShop === null ? Context::getContext()->shop->id : $idShop;
-                $shopUrl = new ShopUrl($idShop);
+                $shopUrl = self::getMainShopUrl($idShop);
                 $base = 'http' . $isHttps . '://' . $shopUrl->domain . $shopUrl->physical_uri . $shopUrl->virtual_uri;
             } catch (Exception $e) {
                 $base = _PS_BASE_URL_ . __PS_BASE_URI__;
             }
         }
         return $base . 'modules/lengow/';
+    }
+
+    /**
+     * Get main shop url for a specific shop
+     *
+     * @param integer $idShop Prestashop shop id
+     *
+     * @throws Exception
+     *
+     * @return ShopUrl
+     */
+    public static function getMainShopUrl($idShop)
+    {
+        $shopUrls = ShopUrl::getShopUrls($idShop);
+        /** @var ShopUrl[] $shopUrls */
+        foreach ($shopUrls as $shopUrl) {
+            if ($shopUrl->main) {
+                return $shopUrl;
+            }
+        }
+        return new ShopUrl($idShop);
     }
 
     /**
