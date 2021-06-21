@@ -100,6 +100,11 @@ class LengowHook
     protected $alreadyShipped = array();
 
     /**
+     * @var array order is already displayed - only for 1.5 versions
+     */
+    protected $alreadyDisplayed = array();
+
+    /**
      * @var Lengow Lengow module instance
      */
     private $module;
@@ -393,7 +398,9 @@ class LengowHook
      */
     public function hookAdminOrder($args)
     {
-        if (LengowOrder::isFromLengow($args['id_order'])) {
+        if (!array_key_exists($args['id_order'], $this->alreadyDisplayed)
+            && LengowOrder::isFromLengow($args['id_order'])
+        ) {
             $lengowLink = new LengowLink();
             $locale = new LengowTranslation();
             $lengowOrder = new LengowOrder($args['id_order']);
@@ -422,7 +429,8 @@ class LengowHook
                 'is_delivered_by_marketplace' => $lengowOrder->isDeliveredByMarketplace(),
                 'is_business' => $lengowOrder->isBusiness(),
                 'message' => $lengowOrder->lengowMessage,
-                'imported_at' => LengowMain::getDateInCorrectFormat(strtotime($lengowOrder->lengowDateAdd)),
+                'imported_at' => $lengowOrder->lengowDateAdd,
+                'extra' => $lengowOrder->lengowExtra,
                 'action_synchronize' => $baseAction . '&action=synchronize',
                 'action_reimport' => $baseAction . '&action=cancel_re_import',
                 'action_resend' => $lengowOrderController . '&action=force_resend&action_type=' . $actionType,
@@ -436,6 +444,7 @@ class LengowHook
                 'check_resend_action' => $locale->t('admin.order.check_resend_action', array('action' => $actionType)),
             );
             $this->context->smarty->assign($templateData);
+            $this->alreadyDisplayed[$args['id_order']] = true;
             if (version_compare(_PS_VERSION_, '1.6', '>=')) {
                 return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info_16.tpl');
             }

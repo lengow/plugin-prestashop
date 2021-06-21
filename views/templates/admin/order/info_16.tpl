@@ -25,106 +25,79 @@
 				{$lengow_locale->t('admin.order.imported_from_lengow')|escape:'htmlall':'UTF-8'}
 			</div>
 			<div class="card-body">
-				<div class="well info-block">
-					<ul>
-						<li>
-							{$lengow_locale->t('admin.order.lengow_order_id')|escape:'htmlall':'UTF-8'} :
-							<strong>{$marketplace_sku|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						{if $id_flux != 0}
-							<li>
-								{$lengow_locale->t('admin.order.feed_id')|escape:'htmlall':'UTF-8'} :
-								<strong>{$id_flux|escape:'htmlall':'UTF-8'}</strong>
-							</li>
-						{else}
-							<li>
-								{$lengow_locale->t('admin.order.delivery_address_id')|escape:'htmlall':'UTF-8'} :
-								<strong>{$delivery_address_id|escape:'htmlall':'UTF-8'}</strong>
-							</li>
-						{/if}
-						<li>
-							{$lengow_locale->t('admin.order.marketplace')|escape:'htmlall':'UTF-8'} :
-							<strong>{$marketplace_label|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.total_paid')|escape:'htmlall':'UTF-8'} :
-							<strong>{$total_paid|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.customer_vat_number')|escape:'htmlall':'UTF-8'} :
-							<strong>{$customer_vat_number|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.commission')|escape:'htmlall':'UTF-8'} :
-							<strong>{$commission|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.currency')|escape:'htmlall':'UTF-8'} :
-							<strong>{$currency|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.customer_name')|escape:'htmlall':'UTF-8'} :
-							<strong>{$customer_name|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.customer_email')|escape:'htmlall':'UTF-8'} :
-							<strong>{$customer_email|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.carrier')|escape:'htmlall':'UTF-8'} :
-							<strong>{$carrier|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.carrier_method')|escape:'htmlall':'UTF-8'} :
-							<strong>{$carrier_method|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.carrier_id_relay')|escape:'htmlall':'UTF-8'} :
-							<strong>{$carrier_id_relay|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.carrier_tracking')|escape:'htmlall':'UTF-8'} :
-							<strong>{$carrier_tracking|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.is_express')|escape:'htmlall':'UTF-8'} :
-							<strong>
-								{if !$is_express}
-									{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
+				<div class="info-block mt-2">
+					<div class="row">
+						<div class="col-md-6">
+							<dl class="well list-detail">
+								<dt>{$lengow_locale->t('admin.order.lengow_order_id')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{$marketplace_sku|escape:'htmlall':'UTF-8'}</dd>
+								<dt>{$lengow_locale->t('admin.order.marketplace')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{$marketplace_label|escape:'htmlall':'UTF-8'}</dd>
+								<dt>{$lengow_locale->t('admin.order.currency')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{$currency|escape:'htmlall':'UTF-8'}</dd>
+								<dt>{$lengow_locale->t('admin.order.total_paid')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{$total_paid|escape:'htmlall':'UTF-8'}</dd>
+								<dt>{$lengow_locale->t('admin.order.commission')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{if $commission}{$commission|escape:'htmlall':'UTF-8'}{else}--{/if}</dd>
+								{if $id_flux != 0}
+									<dt>{$lengow_locale->t('admin.order.feed_id')|escape:'htmlall':'UTF-8'}</dt>
+									<dd>{$id_flux|escape:'htmlall':'UTF-8'}</dd>
 								{else}
-									{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
+									<dt>{$lengow_locale->t('admin.order.delivery_address_id')|escape:'htmlall':'UTF-8'}</dt>
+									<dd>{$delivery_address_id|escape:'htmlall':'UTF-8'}</dd>
 								{/if}
-							</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.is_delivered_by_marketplace')|escape:'htmlall':'UTF-8'} :
-							<strong>
-								{if !$is_delivered_by_marketplace}
-									{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
-								{else}
-									{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
-								{/if}
-							</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.is_business')|escape:'htmlall':'UTF-8'} :
-							<strong>
-								{if !$is_business}
-									{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
-								{else}
-									{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
-								{/if}
-							</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.message')|escape:'htmlall':'UTF-8'} :
-							<strong>{$message|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-						<li>
-							{$lengow_locale->t('admin.order.imported_at')|escape:'htmlall':'UTF-8'} :
-							<strong>{$imported_at|escape:'htmlall':'UTF-8'}</strong>
-						</li>
-					</ul>
+								<dt>{$lengow_locale->t('admin.order.customer_name')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{$customer_name|escape:'htmlall':'UTF-8'}</dd>
+								<dt>{$lengow_locale->t('admin.order.customer_email')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{if $customer_email}{$customer_email|escape:'htmlall':'UTF-8'}{else}--{/if}</dd>
+								<dt>{$lengow_locale->t('admin.order.is_express')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>
+									{if $is_express}
+										{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
+									{else}
+										{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
+									{/if}
+								</dd>
+								<dt>{$lengow_locale->t('admin.order.is_delivered_by_marketplace')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>
+									{if $is_delivered_by_marketplace}
+										{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
+									{else}
+										{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
+									{/if}
+								</dd>
+								<dt>{$lengow_locale->t('admin.order.is_business')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>
+									{if $is_business}
+										{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
+									{else}
+										{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
+									{/if}
+								</dd>
+								<dt>{$lengow_locale->t('admin.order.customer_vat_number')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{if $customer_vat_number}{$customer_vat_number|escape:'htmlall':'UTF-8'}{else}--{/if}</dd>
+							</dl>
+						</div>
+						<div class="col-md-6">
+							<dl class="well list-detail">
+								<dt>{$lengow_locale->t('admin.order.carrier')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{if $carrier}{$carrier|escape:'htmlall':'UTF-8'}{else}--{/if}</dd>
+								<dt>{$lengow_locale->t('admin.order.carrier_method')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{if $carrier_method}{$carrier_method|escape:'htmlall':'UTF-8'}{else}--{/if}</dd>
+								<dt>{$lengow_locale->t('admin.order.carrier_id_relay')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{if $carrier_id_relay}{$carrier_id_relay|escape:'htmlall':'UTF-8'}{else}--{/if}</dd>
+								<dt>{$lengow_locale->t('admin.order.carrier_tracking')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{if $carrier_tracking}{$carrier_tracking|escape:'htmlall':'UTF-8'}{else}--{/if}</dd>
+								<dt>{$lengow_locale->t('admin.order.message')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>{if $message}{$message|escape:'htmlall':'UTF-8'}{else}--{/if}</dd>
+								<dt>{$lengow_locale->t('admin.order.imported_at')|escape:'htmlall':'UTF-8'}</dt>
+								<dd><i class="icon-calendar-o text-muted"></i> {dateFormat date=$imported_at full=true}</dd>
+								<dt>{$lengow_locale->t('admin.order.json_format')|escape:'htmlall':'UTF-8'}</dt>
+								<dd>
+									<textarea readonly style="overflow-wrap: break-word; resize: none; height: 236px; width: 100%">{$extra|escape:'htmlall':'UTF-8'}</textarea>
+								</dd>
+						</div>
+					</div>
 				</div>
 				{if !$debug_mode}
 					<div class="text-left mt-3">

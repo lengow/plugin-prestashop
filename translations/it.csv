@@ -368,6 +368,7 @@ admin.order.is_business|Business
 admin.order.is_delivered_by_marketplace|Spedito dal Marketplace
 admin.order.message|Messaggio
 admin.order.imported_at|Importato a
+admin.order.json_format|Formato JSON
 admin.order.cancel_and_reimport|Reimporta ordine
 admin.order.check_cancel_and_reimport|Vuoi veramente re-importare l'ordine?
 admin.order.synchronize_id|Sincronizza ID

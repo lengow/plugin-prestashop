@@ -404,6 +404,7 @@ it:
       is_delivered_by_marketplace: "Spedito dal Marketplace"
       message: "Messaggio"
       imported_at: "Importato a"
+      json_format: "Formato JSON"
       cancel_and_reimport: "Reimporta ordine"
       check_cancel_and_reimport: "Vuoi veramente re-importare l'ordine?"
       synchronize_id: "Sincronizza ID"
