@@ -115,15 +115,14 @@ class LengowHomeController extends LengowController
      */
     public function display()
     {
-        $lengowLink = new LengowLink();
         if ($this->isNewMerchant) {
             $this->context->smarty->assign(
                 'lengow_ajax_link',
-                $lengowLink->getAbsoluteAdminLink('AdminLengowHome', true)
+                $this->lengowLink->getAbsoluteAdminLink('AdminLengowHome', true)
             );
             parent::display();
         } else {
-            Tools::redirectAdmin($lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
+            Tools::redirectAdmin($this->lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
         }
     }
 
@@ -142,9 +141,9 @@ class LengowHomeController extends LengowController
         if ($accountId) {
             $accessIdsSaved = LengowConfiguration::setAccessIds(
                 array(
-                    'LENGOW_ACCOUNT_ID' => $accountId,
-                    'LENGOW_ACCESS_TOKEN' => $accessToken,
-                    'LENGOW_SECRET_TOKEN' => $secret,
+                    LengowConfiguration::ACCOUNT_ID => $accountId,
+                    LengowConfiguration::ACCESS_TOKEN => $accessToken,
+                    LengowConfiguration::SECRET => $secret,
                 )
             );
         }
@@ -236,7 +235,7 @@ class LengowHomeController extends LengowController
                 LengowConfiguration::setActiveShop($idShop);
             }
             // save last update date for a specific settings (change synchronisation interval time)
-            LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', time());
+            LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_SETTING, time());
             // link all catalogs selected by API
             $catalogsLinked = LengowCatalog::linkCatalogs($catalogsByShops);
             $messageKey = $catalogsLinked

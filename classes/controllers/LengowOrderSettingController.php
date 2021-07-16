@@ -32,29 +32,25 @@ class LengowOrderSettingController extends LengowController
         $countries = LengowCarrier::getCountries();
         $marketplaceCounters = LengowMarketplace::getMarketplaceCounters();
         $defaultCarrierNotMatched = LengowCarrier::getDefaultCarrierNotMatched();
-        $showCarrierNotification = !empty($defaultCarrierNotMatched) ? true : false;
+        $showCarrierNotification = !empty($defaultCarrierNotMatched);
         $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
         $matching = $form->buildInputs(
             array(
-                'LENGOW_ORDER_ID_PROCESS',
-                'LENGOW_ORDER_ID_SHIPPED',
-                'LENGOW_ORDER_ID_CANCEL',
-                'LENGOW_ORDER_ID_SHIPPEDBYMP',
+                LengowConfiguration::WAITING_SHIPMENT_ORDER_ID,
+                LengowConfiguration::SHIPPED_ORDER_ID,
+                LengowConfiguration::CANCELED_ORDER_ID,
+                LengowConfiguration::SHIPPED_BY_MARKETPLACE_ORDER_ID,
             )
         );
         $importParams = $form->buildInputs(
             array(
-                'LENGOW_IMPORT_DAYS',
-                'LENGOW_IMPORT_SHIP_MP_ENABLED',
-                'LENGOW_IMPORT_STOCK_SHIP_MP',
+                LengowConfiguration::SYNCHRONIZATION_DAY_INTERVAL,
+                LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED,
+                LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
             )
         );
-        $currencyConversion = $form->buildInputs(
-            array(
-                'LENGOW_CURRENCY_CONVERSION'
-            )
-        );
-        $semanticSearch = $form->buildInputs(array('LENGOW_CARRIER_SEMANTIC_ENABLE'));
+        $currencyConversion = $form->buildInputs(array(LengowConfiguration::CURRENCY_CONVERSION_ENABLED));
+        $semanticSearch = $form->buildInputs(array(LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED));
         $this->context->smarty->assign('matching', $matching);
         $this->context->smarty->assign('semantic_search', $semanticSearch);
         $this->context->smarty->assign('import_params', $importParams);
@@ -72,7 +68,7 @@ class LengowOrderSettingController extends LengowController
     public function postProcess()
     {
         $action = Tools::getValue('action');
-        $idCountry = Tools::getIsset('id_country') ? (int)Tools::getValue('id_country') : false;
+        $idCountry = Tools::getIsset('id_country') ? (int) Tools::getValue('id_country') : false;
         $defaultCarriers = Tools::getIsset('default_carriers') ? Tools::getValue('default_carriers') : array();
         $methodMarketplaces = Tools::getIsset('method_marketplaces')
             ? Tools::getValue('method_marketplaces')
@@ -82,7 +78,7 @@ class LengowOrderSettingController extends LengowController
             : array();
         switch ($action) {
             case 'open_marketplace_matching':
-                $idCountry = (int)Tools::getValue('idCountry');
+                $idCountry = (int) Tools::getValue('idCountry');
                 $country = LengowCountry::getCountry($idCountry);
                 $marketplaces = LengowMarketplace::getAllMarketplaceDataByCountry($idCountry);
                 $carriers = LengowCarrier::getActiveCarriers($idCountry);
@@ -102,25 +98,25 @@ class LengowOrderSettingController extends LengowController
                 if ($idCountry) {
                     // save default carriers
                     foreach ($defaultCarriers as $idMarketplace => $value) {
-                        $idCarrier = isset($value['carrier']) ? (int)$value['carrier'] : null;
+                        $idCarrier = isset($value['carrier']) ? (int) $value['carrier'] : null;
                         $idCarrierMarketplace = isset($value['carrier_marketplace'])
-                            ? (int)$value['carrier_marketplace']
+                            ? (int) $value['carrier_marketplace']
                             : null;
                         $params = array(
                             'id_carrier' => $idCarrier,
                             'id_carrier_marketplace' => $idCarrierMarketplace,
                         );
-                        $id = LengowCarrier::getIdDefaultCarrier($idCountry, (int)$idMarketplace);
+                        $id = LengowCarrier::getIdDefaultCarrier($idCountry, (int) $idMarketplace);
                         if ($id) {
                             LengowCarrier::updateDefaultCarrier($id, $params);
                         } else {
-                            LengowCarrier::insertDefaultCarrier($idCountry, (int)$idMarketplace, $params);
+                            LengowCarrier::insertDefaultCarrier($idCountry, (int) $idMarketplace, $params);
                         }
                     }
                     // save marketplace methods
                     foreach ($methodMarketplaces as $idMarketplace => $value) {
                         foreach ($value as $idMethodMarketplace => $idCarrier) {
-                            $idCarrier = (int)$idCarrier > 0 ? (int)$idCarrier : null;
+                            $idCarrier = (int) $idCarrier > 0 ? (int) $idCarrier : null;
                             $id = LengowMethod::getIdMarketplaceMethodCountry(
                                 $idCountry,
                                 $idMarketplace,
@@ -141,7 +137,9 @@ class LengowOrderSettingController extends LengowController
                     // save marketplace carriers
                     foreach ($carrierMarketplaces as $idMarketplace => $value) {
                         foreach ($value as $idCarrier => $idCarrierMarketplace) {
-                            $idCarrierMarketplace = (int)$idCarrierMarketplace > 0 ? (int)$idCarrierMarketplace : null;
+                            $idCarrierMarketplace = (int) $idCarrierMarketplace > 0
+                                ? (int) $idCarrierMarketplace
+                                : null;
                             $id = LengowCarrier::getIdMarketplaceCarrierCountry(
                                 $idCountry,
                                 $idMarketplace,
@@ -164,11 +162,10 @@ class LengowOrderSettingController extends LengowController
                 $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
                 $form->postProcess(
                     array(
-                        'LENGOW_IMPORT_SHIP_MP_ENABLED',
-                        'LENGOW_IMPORT_STOCK_SHIP_MP',
-                        'LENGOW_CRON_ENABLED',
-                        'LENGOW_CARRIER_SEMANTIC_ENABLE',
-                        'LENGOW_CURRENCY_CONVERSION'
+                        LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED,
+                        LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
+                        LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED,
+                        LengowConfiguration::CURRENCY_CONVERSION_ENABLED,
                     )
                 );
                 break;

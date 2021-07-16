@@ -38,6 +38,7 @@
 {/if}
 
 {if $displayToolbar eq 1}
+<div class="lgw-container">
     <ul class="nav nav-pills lengow-nav lengow-nav-top">
         <li role="presentation" id="lengow_logo">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowDashboard')|escape:'htmlall':'UTF-8'}">
@@ -89,17 +90,18 @@
                 </div>
             </li>
         {/if}
-        {if $pluginData && $pluginData['version'] > $lengowVersion}
+        {if !$pluginIsUpToDate }
             <li class="lengow_float_right" id="menupluginavailable">
                 <div class="lgw-block">
                     {$locale->t('menu.new_version_available', ['version' => $pluginData['version']])|escape:'htmlall':'UTF-8'}
-                    <a href="https://my.{$lengowUrl|escape:'htmlall':'UTF-8'}{$pluginData['download_link']|escape:'htmlall':'UTF-8'}" target="_blank">
+                    <button class="btn-link mod-inline js-upgrade-plugin-modal-open">
                         {$locale->t('menu.download_plugin')|escape:'htmlall':'UTF-8'}
-                    </a>
+                    </button>
                 </div>
             </li>
         {/if}
     </ul>
+</div>
 {/if}
 <script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/jquery.1.12.0.min.js"></script>
 <script type="text/javascript">

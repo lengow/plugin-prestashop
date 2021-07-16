@@ -79,10 +79,10 @@ class LengowPaymentModule extends PaymentModule
             ShopUrl::resetMainDomainCache();
         }
 
-        $idCurrency = (int)$this->context->cart->id_currency;
+        $idCurrency = (int) $this->context->cart->id_currency;
         $this->context->currency = new Currency($idCurrency, null, $this->context->shop->id);
 
-        $orderStatus = new OrderState((int)$idOrderState, (int)$this->context->language->id);
+        $orderStatus = new OrderState((int) $idOrderState, (int) $this->context->language->id);
         if (!Validate::isLoadedObject($orderStatus)) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.cannot_load_order_status'));
         }
@@ -153,9 +153,9 @@ class LengowPaymentModule extends PaymentModule
                         }
                         // rewrite the id_warehouse
                         if (method_exists($this->context->cart, 'getPackageIdWarehouse')) {
-                            $idWarehouse = (int)$this->context->cart->getPackageIdWarehouse(
+                            $idWarehouse = (int) $this->context->cart->getPackageIdWarehouse(
                                 $packageList[$idAddress][$idPackage],
-                                (int)$idCarrier
+                                (int) $idCarrier
                             );
                             $packageList[$idAddress][$idPackage]['id_warehouse'] = $idWarehouse;
                         }
@@ -189,18 +189,18 @@ class LengowPaymentModule extends PaymentModule
                 } else {
                     $carrier = new Carrier($this->context->cart->id_carrier, $this->context->cart->id_lang);
                 }
-                $order->id_carrier = (int)$carrier->id;
-                $idCarrier = (int)$carrier->id;
+                $order->id_carrier = (int) $carrier->id;
+                $idCarrier = (int) $carrier->id;
 
-                $order->id_customer = (int)$this->context->cart->id_customer;
-                $order->id_address_invoice = (int)$this->context->cart->id_address_invoice;
-                $order->id_address_delivery = (int)$idAddress;
+                $order->id_customer = (int) $this->context->cart->id_customer;
+                $order->id_address_invoice = (int) $this->context->cart->id_address_invoice;
+                $order->id_address_delivery = (int) $idAddress;
                 $order->id_currency = $this->context->currency->id;
-                $order->id_lang = (int)$this->context->cart->id_lang;
-                $order->id_cart = (int)$this->context->cart->id;
+                $order->id_lang = (int) $this->context->cart->id_lang;
+                $order->id_cart = (int) $this->context->cart->id;
                 $order->reference = $reference;
-                $order->id_shop = (int)$this->context->shop->id;
-                $order->id_shop_group = (int)$this->context->shop->id_shop_group;
+                $order->id_shop = (int) $this->context->shop->id;
+                $order->id_shop_group = (int) $this->context->shop->id_shop_group;
 
                 $order->secure_key = pSQL($this->context->customer->secure_key);
                 $order->payment = $paymentMethod;
@@ -208,7 +208,7 @@ class LengowPaymentModule extends PaymentModule
                     $order->module = $this->name;
                 }
                 $order->recyclable = $this->context->cart->recyclable;
-                $order->gift = (int)$this->context->cart->gift;
+                $order->gift = (int) $this->context->cart->gift;
                 $order->gift_message = $this->context->cart->gift_message;
                 $order->mobile_theme = false;
                 $order->conversion_rate = $this->context->currency->conversion_rate;
@@ -234,9 +234,9 @@ class LengowPaymentModule extends PaymentModule
                             ),
                             $precision
                         );
-                        $product['total'] = (float)$product['price'] * (int)$product['quantity'];
+                        $product['total'] = (float) $product['price'] * (int) $product['quantity'];
                         $product['total_wt'] = Tools::ps_round(
-                            (float)$product['price_wt'] * (int)$product['quantity'],
+                            (float) $product['price_wt'] * (int) $product['quantity'],
                             $precision
                         );
                         // total tax free
@@ -254,8 +254,8 @@ class LengowPaymentModule extends PaymentModule
                 }
 
                 $order->product_list = $package['product_list'];
-                $order->total_products = (float)Tools::ps_round($totalProducts, $precision);
-                $order->total_products_wt = (float)Tools::ps_round($totalProductsWt, $precision);
+                $order->total_products = (float) Tools::ps_round($totalProducts, $precision);
+                $order->total_products_wt = (float) Tools::ps_round($totalProductsWt, $precision);
                 $order->total_paid_real = 0;
                 $order->total_discounts_tax_excl = 0;
                 $order->total_discounts_tax_incl = 0;
@@ -267,30 +267,30 @@ class LengowPaymentModule extends PaymentModule
                 );
                 $totalShippingTaxExcl = $lengowShippingCosts / (1 + ($order->carrier_tax_rate / 100));
 
-                $order->total_shipping_tax_excl = (float)Tools::ps_round($totalShippingTaxExcl, $precision);
-                $order->total_shipping_tax_incl = (float)Tools::ps_round($lengowShippingCosts, $precision);
+                $order->total_shipping_tax_excl = (float) Tools::ps_round($totalShippingTaxExcl, $precision);
+                $order->total_shipping_tax_incl = (float) Tools::ps_round($lengowShippingCosts, $precision);
                 $order->total_shipping = $order->total_shipping_tax_incl;
                 if ($lengowTrackingNumber !== null) {
-                    $order->shipping_number = (string)$lengowTrackingNumber;
+                    $order->shipping_number = (string) $lengowTrackingNumber;
                 }
                 // add processing fees to wrapping fees
                 $taxManager = TaxManagerFactory::getManager(
                     new LengowAddress($idAddress),
-                    (int)Configuration::get('PS_GIFT_WRAPPING_TAX_RULES_GROUP')
+                    (int) Configuration::get('PS_GIFT_WRAPPING_TAX_RULES_GROUP')
                 );
                 $taxCalculator = $taxManager->getTaxCalculator();
-                $order->total_wrapping_tax_excl = (float)Tools::ps_round(
-                    $taxCalculator->removeTaxes((float)$processingFees),
+                $order->total_wrapping_tax_excl = (float) Tools::ps_round(
+                    $taxCalculator->removeTaxes((float) $processingFees),
                     $precision
                 );
-                $order->total_wrapping_tax_incl = (float)$processingFees;
+                $order->total_wrapping_tax_incl = (float) $processingFees;
                 $order->total_wrapping = $order->total_wrapping_tax_incl;
-                $order->total_paid_tax_excl = (float)Tools::ps_round(
-                    (float)$totalProducts + (float)$totalShippingTaxExcl + (float)$order->total_wrapping_tax_excl,
+                $order->total_paid_tax_excl = (float) Tools::ps_round(
+                    (float) $totalProducts + (float) $totalShippingTaxExcl + (float) $order->total_wrapping_tax_excl,
                     $precision
                 );
-                $order->total_paid_tax_incl = (float)Tools::ps_round(
-                    (float)$totalProductsWt + (float)$order->total_shipping_tax_incl + (float)$processingFees,
+                $order->total_paid_tax_incl = (float) Tools::ps_round(
+                    (float) $totalProductsWt + (float) $order->total_shipping_tax_incl + (float) $processingFees,
                     $precision
                 );
                 $order->total_paid = $order->total_paid_tax_incl;
@@ -313,7 +313,7 @@ class LengowPaymentModule extends PaymentModule
                 $success = LengowOrder::updateOrderLengow(
                     $idOrderLengow,
                     array(
-                        'id_order' => (int)$order->id,
+                        'id_order' => (int) $order->id,
                         'order_process_state' => LengowOrder::getOrderProcessState($orderStateLengow),
                         'order_lengow_state' => pSQL($orderStateLengow),
                         'is_reimported' => 0,
@@ -364,13 +364,13 @@ class LengowPaymentModule extends PaymentModule
                 // adding an entry in order_carrier table
                 if ($carrier !== null) {
                     $orderCarrier = new OrderCarrier();
-                    $orderCarrier->id_order = (int)$order->id;
-                    $orderCarrier->id_carrier = (int)$idCarrier;
-                    $orderCarrier->weight = (float)$order->getTotalWeight();
-                    $orderCarrier->shipping_cost_tax_excl = (float)$order->total_shipping_tax_excl;
-                    $orderCarrier->shipping_cost_tax_incl = (float)$order->total_shipping_tax_incl;
+                    $orderCarrier->id_order = (int) $order->id;
+                    $orderCarrier->id_carrier = (int) $idCarrier;
+                    $orderCarrier->weight = (float) $order->getTotalWeight();
+                    $orderCarrier->shipping_cost_tax_excl = (float) $order->total_shipping_tax_excl;
+                    $orderCarrier->shipping_cost_tax_incl = (float) $order->total_shipping_tax_incl;
                     if ($lengowTrackingNumber !== null) {
-                        $orderCarrier->tracking_number = (string)$lengowTrackingNumber;
+                        $orderCarrier->tracking_number = (string) $lengowTrackingNumber;
                     }
                     $orderCarrier->validateFields();
                     $orderCarrier->add();
@@ -396,25 +396,25 @@ class LengowPaymentModule extends PaymentModule
                     $message = strip_tags($message, '<br>');
                     if (Validate::isCleanHtml($message)) {
                         $msg->message = $message;
-                        $msg->id_order = (int)$order->id;
+                        $msg->id_order = (int) $order->id;
                         $msg->private = 1;
                         $msg->add();
                     }
                 }
                 // specify order id for message
-                $oldMessage = Message::getMessageByCartId((int)$this->context->cart->id);
+                $oldMessage = Message::getMessageByCartId((int) $this->context->cart->id);
                 if ($oldMessage) {
-                    $updateMessage = new Message((int)$oldMessage['id_message']);
-                    $updateMessage->id_order = (int)$order->id;
+                    $updateMessage = new Message((int) $oldMessage['id_message']);
+                    $updateMessage->id_order = (int) $order->id;
                     $updateMessage->update();
 
                     // add this message in the customer thread
                     $customerThread = new CustomerThread();
                     $customerThread->id_contact = 0;
-                    $customerThread->id_customer = (int)$order->id_customer;
-                    $customerThread->id_shop = (int)$this->context->shop->id;
-                    $customerThread->id_order = (int)$order->id;
-                    $customerThread->id_lang = (int)$this->context->language->id;
+                    $customerThread->id_customer = (int) $order->id_customer;
+                    $customerThread->id_shop = (int) $this->context->shop->id;
+                    $customerThread->id_order = (int) $order->id;
+                    $customerThread->id_lang = (int) $this->context->language->id;
                     $customerThread->email = $this->context->customer->email;
                     $customerThread->status = 'open';
                     $customerThread->token = Tools::passwdGen(12);
@@ -430,20 +430,20 @@ class LengowPaymentModule extends PaymentModule
 
                 foreach ($this->context->cart->getProducts() as $product) {
                     if ($orderStatus->logable) {
-                        ProductSale::addProductSale((int)$product['id_product'], (int)$product['cart_quantity']);
+                        ProductSale::addProductSale((int) $product['id_product'], (int) $product['cart_quantity']);
                     }
                 }
 
                 // set the order status
                 $newHistory = new OrderHistory();
-                $newHistory->id_order = (int)$order->id;
-                $newHistory->changeIdOrderState((int)$idOrderState, $order, true);
+                $newHistory->id_order = (int) $order->id;
+                $newHistory->changeIdOrderState((int) $idOrderState, $order, true);
                 $newHistory->addWithemail(true, null);
 
                 // switch to back order if needed
                 if (Configuration::get('PS_STOCK_MANAGEMENT') && $orderDetail->getStockState()) {
                     $history = new OrderHistory();
-                    $history->id_order = (int)$order->id;
+                    $history->id_order = (int) $order->id;
                     if (version_compare(_PS_VERSION_, '1.6.0.11', '<')) {
                         $history->changeIdOrderState(Configuration::get('PS_OS_OUTOFSTOCK'), $order, true);
                     }
@@ -485,7 +485,7 @@ class LengowPaymentModule extends PaymentModule
 
         // use the last order as currentOrder
         if (isset($order) && $order->id) {
-            $this->currentOrder = (int)$order->id;
+            $this->currentOrder = (int) $order->id;
         }
 
         return $orderList;
@@ -539,20 +539,20 @@ class LengowPaymentModule extends PaymentModule
         if (Validate::isLoadedObject($this->context->cart) && $this->context->cart->OrderExists() == false) {
             // copying data from cart
             $order = new Order();
-            $order->id_carrier = (int)$this->context->cart->id_carrier;
-            $order->id_customer = (int)$this->context->cart->id_customer;
-            $order->id_address_invoice = (int)$this->context->cart->id_address_invoice;
-            $order->id_address_delivery = (int)$this->context->cart->id_address_delivery;
-            $order->id_currency = (int)$this->context->cart->id_currency;
-            $order->id_lang = (int)$this->context->cart->id_lang;
-            $order->id_cart = (int)$this->context->cart->id;
+            $order->id_carrier = (int) $this->context->cart->id_carrier;
+            $order->id_customer = (int) $this->context->cart->id_customer;
+            $order->id_address_invoice = (int) $this->context->cart->id_address_invoice;
+            $order->id_address_delivery = (int) $this->context->cart->id_address_delivery;
+            $order->id_currency = (int) $this->context->cart->id_currency;
+            $order->id_lang = (int) $this->context->cart->id_lang;
+            $order->id_cart = (int) $this->context->cart->id;
             $order->secure_key = pSQL($this->context->customer->secure_key);
             $order->payment = $paymentMethod;
             if (isset($this->name)) {
                 $order->module = $this->name;
             }
             $order->recyclable = $this->context->cart->recyclable;
-            $order->gift = (int)$this->context->cart->gift;
+            $order->gift = (int) $this->context->cart->gift;
             $order->gift_message = $this->context->cart->gift_message;
             $currency = new Currency($order->id_currency);
             $order->conversion_rate = $currency->conversion_rate;
@@ -574,11 +574,11 @@ class LengowPaymentModule extends PaymentModule
                         ),
                         2
                     );
-                    $product['total'] = (float)$product['price'] * (int)$product['quantity'];
-                    $product['total_wt'] = Tools::ps_round((float)$product['price_wt'] * (int)$product['quantity'], 2);
+                    $product['total'] = (float) $product['price'] * (int) $product['quantity'];
+                    $product['total_wt'] = Tools::ps_round((float) $product['price_wt'] * (int) $product['quantity'], 2);
 
                     // total tax free
-                    $totalProducts += (float)$product['total'];
+                    $totalProducts += (float) $product['total'];
                     // total with taxes
                     $totalProductsWt += $product['total_wt'];
 
@@ -592,22 +592,22 @@ class LengowPaymentModule extends PaymentModule
                     );
                 }
             }
-            $order->total_products = (float)Tools::ps_round($totalProducts, 2);
-            $order->total_products_wt = (float)Tools::ps_round($totalProductsWt, 2);
-            $order->total_paid_real = (float)$amountPaid;
+            $order->total_products = (float) Tools::ps_round($totalProducts, 2);
+            $order->total_products_wt = (float) Tools::ps_round($totalProductsWt, 2);
+            $order->total_paid_real = (float) $amountPaid;
 
             // put marketplace processing fees into wrapping
-            $order->total_wrapping = (float)$processingFees;
+            $order->total_wrapping = (float) $processingFees;
 
-            $order->total_shipping = (float)$lengowShippingCosts;
+            $order->total_shipping = (float) $lengowShippingCosts;
             if ($lengowTrackingNumber !== null) {
-                $order->shipping_number = (string)$lengowTrackingNumber;
+                $order->shipping_number = (string) $lengowTrackingNumber;
             }
-            $order->carrier_tax_rate = (float)Tax::getCarrierTaxRate(
+            $order->carrier_tax_rate = (float) Tax::getCarrierTaxRate(
                 $this->context->cart->id_carrier,
-                (int)$this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')}
+                (int) $this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')}
             );
-            $order->total_paid = (float)$amountPaid;
+            $order->total_paid = (float) $amountPaid;
             $order->invoice_date = '0000-00-00 00:00:00';
             // creating order
             if ($this->context->cart->OrderExists() == false) {
@@ -620,7 +620,7 @@ class LengowPaymentModule extends PaymentModule
             $success = LengowOrder::updateOrderLengow(
                 $idOrderLengow,
                 array(
-                    'id_order' => (int)$order->id,
+                    'id_order' => (int) $order->id,
                     'order_process_state' => LengowOrder::getOrderProcessState($orderStateLengow),
                     'order_lengow_state' => pSQL($orderStateLengow),
                     'is_reimported' => 0,
@@ -650,7 +650,7 @@ class LengowPaymentModule extends PaymentModule
                     $message = strip_tags($message, '<br>');
                     if (Validate::isCleanHtml($message)) {
                         $msg->message = $message;
-                        $msg->id_order = (int)$order->id;
+                        $msg->id_order = (int) $order->id;
                         $msg->private = 1;
                         $msg->add();
                     }
@@ -684,15 +684,15 @@ class LengowPaymentModule extends PaymentModule
 				VALUES ';
                 $outOfStock = false;
                 foreach ($productList as $product) {
-                    $productQuantity = (int)(Product::getQuantity(
-                        (int)($product['id_product']),
-                        ($product['id_product_attribute'] ? (int)($product['id_product_attribute']) : null)
+                    $productQuantity = (int) (Product::getQuantity(
+                        (int) ($product['id_product']),
+                        ($product['id_product_attribute'] ? (int) ($product['id_product_attribute']) : null)
                     ));
-                    $quantityInStock = ($productQuantity - (int)($product['cart_quantity']) < 0)
+                    $quantityInStock = ($productQuantity - (int) ($product['cart_quantity']) < 0)
                         ? $productQuantity
-                        : (int)($product['cart_quantity']);
+                        : (int) ($product['cart_quantity']);
                     if ($idOrderState != _PS_OS_CANCELED_ && $idOrderState != _PS_OS_ERROR_) {
-                        if (Product::updateQuantity($product, (int)$order->id)) {
+                        if (Product::updateQuantity($product, (int) $order->id)) {
                             $product['stock_quantity'] -= $product['cart_quantity'];
                         }
                         if ($product['stock_quantity'] < 0 && Configuration::get('PS_STOCK_MANAGEMENT')) {
@@ -704,8 +704,8 @@ class LengowPaymentModule extends PaymentModule
                     // add some informations for virtual products
                     $deadline = '0000-00-00 00:00:00';
                     $downloadHash = null;
-                    if ($idProductDownload = ProductDownload::getIdFromIdProduct((int)($product['id_product']))) {
-                        $productDownload = new ProductDownload((int)($idProductDownload));
+                    if ($idProductDownload = ProductDownload::getIdFromIdProduct((int) ($product['id_product']))) {
+                        $productDownload = new ProductDownload((int) ($idProductDownload));
                         $deadline = $productDownload->getDeadLine();
                         $downloadHash = $productDownload->getHash();
                     }
@@ -716,7 +716,7 @@ class LengowPaymentModule extends PaymentModule
                         $taxRate = 0;
                     } else {
                         $taxRate = Tax::getProductTaxRate(
-                            (int)($product['id_product']),
+                            (int) ($product['id_product']),
                             $this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')}
                         );
                     }
@@ -728,18 +728,18 @@ class LengowPaymentModule extends PaymentModule
                     $productName = (isset($product['attributes']) && $product['attributes'] != null)
                         ? ' - ' . $product['attributes']
                         : '';
-                    $query .= '(' . (int)($order->id) . ',
-						' . (int)($product['id_product']) . ',
+                    $query .= '(' . (int) ($order->id) . ',
+						' . (int) ($product['id_product']) . ',
 						' . (isset($product['id_product_attribute'])
-                            ? (int)($product['id_product_attribute'])
+                            ? (int) ($product['id_product_attribute'])
                             : 'null'
                         ) . ',
 						\'' . pSQL($product['name'] . $productName) . '\',
-						' . (int)($product['cart_quantity']) . ',
+						' . (int) ($product['cart_quantity']) . ',
 						' . $quantityInStock . ',
-						' . (float)$product['price'] . ',
+						' . (float) $product['price'] . ',
 						' . pSQL('0.00') . ',
-						' . (float)(Group::getReduction((int)($order->id_customer))) . ',
+						' . (float) (Group::getReduction((int) ($order->id_customer))) . ',
 						' . pSQL('0.00') . ',
 						' . pSQL('0') . ',
 						' . (empty($product['ean13']) ? 'null' : '\'' . pSQL($product['ean13']) . '\'') . ',
@@ -749,14 +749,14 @@ class LengowPaymentModule extends PaymentModule
                             ? 'null'
                             : '\'' . pSQL($product['supplier_reference']) . '\''
                         ) . ',
-						' . (float)($product['id_product_attribute']
+						' . (float) ($product['id_product_attribute']
                             ? $product['weight_attribute']
                             : $product['weight']
                         ) . ',
 						\'' . (empty($taxRate) ? '' : pSQL($product['tax'])) . '\',
-						' . (float)($taxRate) . ',
-						' . (float)Tools::convertPrice((float)$product['ecotax'], (int)$order->id_currency) . ',
-						' . (float)$ecotaxTaxRate . ',
+						' . (float) ($taxRate) . ',
+						' . (float) Tools::convertPrice((float) $product['ecotax'], (int) $order->id_currency) . ',
+						' . (float) $ecotaxTaxRate . ',
 						' . pSQL('0') . ',
 						\'' . pSQL($deadline) . '\',
 						\'' . pSQL($downloadHash) . '\'),';
@@ -765,19 +765,19 @@ class LengowPaymentModule extends PaymentModule
                 $query = rtrim($query, ',');
                 $db->Execute($query);
                 // specify order id for message
-                $oldMessage = Message::getMessageByCartId((int)($this->context->cart->id));
+                $oldMessage = Message::getMessageByCartId((int) ($this->context->cart->id));
                 if ($oldMessage) {
-                    $message = new Message((int)$oldMessage['id_message']);
-                    $message->id_order = (int)$order->id;
+                    $message = new Message((int) $oldMessage['id_message']);
+                    $message->id_order = (int) $order->id;
                     $message->update();
                 }
 
-                $orderStatus = new OrderState((int)$idOrderState, (int)$order->id_lang);
+                $orderStatus = new OrderState((int) $idOrderState, (int) $order->id_lang);
                 if (Validate::isLoadedObject($orderStatus)) {
                     $products = $this->context->cart->getProducts();
                     foreach ($products as $product) {
                         if ($orderStatus->logable) {
-                            ProductSale::addProductSale((int)$product['id_product'], (int)$product['cart_quantity']);
+                            ProductSale::addProductSale((int) $product['id_product'], (int) $product['cart_quantity']);
                         }
                     }
                 } else {
@@ -788,21 +788,21 @@ class LengowPaymentModule extends PaymentModule
 
                 if (isset($outOfStock) && $outOfStock) {
                     $history = new OrderHistory();
-                    $history->id_order = (int)$order->id;
-                    $history->changeIdOrderState(_PS_OS_OUTOFSTOCK_, (int)$order->id);
+                    $history->id_order = (int) $order->id;
+                    $history->changeIdOrderState(_PS_OS_OUTOFSTOCK_, (int) $order->id);
                     $history->save();
                 }
 
                 // set order state in order history ONLY even if the "out of stock" status has not been yet reached
                 // so you might have two order states
                 $newHistory = new OrderHistory();
-                $newHistory->id_order = (int)$order->id;
-                $newHistory->changeIdOrderState((int)$idOrderState, (int)$order->id);
+                $newHistory->id_order = (int) $order->id;
+                $newHistory->changeIdOrderState((int) $idOrderState, (int) $order->id);
                 $newHistory->save();
                 // order is reloaded because the status just changed
                 $order = new Order($order->id);
 
-                $this->currentOrder = (int)($order->id);
+                $this->currentOrder = (int) ($order->id);
 
                 return array($order);
             } else {

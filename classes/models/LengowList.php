@@ -159,7 +159,7 @@ class LengowList
             ? $params['nb_per_page']
             : 20;
         $this->sql = $params['sql'];
-        $this->ajax = isset($params['ajax']) ? (bool)$params['ajax'] : false;
+        $this->ajax = isset($params['ajax']) && $params['ajax'];
         $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
         $this->orderColumn = isset($params['order_column']) ? $params['order_column'] : '';
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
@@ -374,8 +374,7 @@ class LengowList
      */
     public function displayFooter()
     {
-        $html = '</table>';
-        return $html;
+        return '</table>';
     }
 
     /**
@@ -691,7 +690,6 @@ class LengowList
      */
     private function getCurrencyByCode($isoCode)
     {
-        $currency = null;
         if ($isoCode) {
             if (isset($this->currencyCode[$isoCode])) {
                 return $this->currencyCode[$isoCode];
@@ -703,15 +701,14 @@ class LengowList
                 $this->currencyCode[$isoCode] = $this->context->currency;
             }
             return $this->currencyCode[$isoCode];
-        } else {
-            return $this->context->currency;
         }
+        return $this->context->currency;
     }
 
     /**
      * Get total product
      *
-     * @return string
+     * @return integer
      */
     public function getTotal()
     {

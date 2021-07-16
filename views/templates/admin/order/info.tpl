@@ -84,30 +84,30 @@
 		<li>
 			{$lengow_locale->t('admin.order.is_express')|escape:'htmlall':'UTF-8'} :
 			<strong>
-				{if !$is_express}
-					{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
-				{else}
+				{if $is_express}
 					{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
+				{else}
+					{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
 				{/if}
 			</strong>
 		</li>
 		<li>
 			{$lengow_locale->t('admin.order.is_delivered_by_marketplace')|escape:'htmlall':'UTF-8'} :
 			<strong>
-				{if !$is_delivered_by_marketplace}
-					{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
-				{else}
+				{if $is_delivered_by_marketplace}
 					{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
+				{else}
+					{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
 				{/if}
 			</strong>
 		</li>
 		<li>
 			{$lengow_locale->t('admin.order.is_business')|escape:'htmlall':'UTF-8'} :
 			<strong>
-				{if !$is_business}
-					{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
-				{else}
+				{if $is_business}
 					{$lengow_locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}
+				{else}
+					{$lengow_locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}
 				{/if}
 			</strong>
 		</li>
@@ -118,6 +118,10 @@
 		<li>
 			{$lengow_locale->t('admin.order.imported_at')|escape:'htmlall':'UTF-8'} :
 			<strong>{$imported_at|escape:'htmlall':'UTF-8'}</strong>
+		</li>
+		<li>
+			{$lengow_locale->t('admin.order.json_format')|escape:'htmlall':'UTF-8'} :
+			<textarea readonly style="overflow-wrap: break-word; resize: none; height: 150px; width: 100%;">{$extra|escape:'htmlall':'UTF-8'}</textarea>
 		</li>
 	</ul>
 	<br />

@@ -45,7 +45,7 @@ class LengowMethod
         if (!empty($results)) {
             foreach ($results as $result) {
                 if ($result['method_marketplace_name'] === $methodMarketplaceName) {
-                    return (int)$result['id'];
+                    return (int) $result['id'];
                 }
             }
         }
@@ -75,7 +75,7 @@ class LengowMethod
                     ON lmm.id = lmmm.id_method_marketplace
                 INNER JOIN ' . _DB_PREFIX_ . 'lengow_marketplace as lm
                     ON lm.id = lmmm.id_marketplace
-                WHERE lm.id = "' . (int)$idMarketplace . '"'
+                WHERE lm.id = "' . (int) $idMarketplace . '"'
             );
         } catch (PrestaShopDatabaseException $e) {
             $results = false;
@@ -176,13 +176,13 @@ class LengowMethod
                     _DB_PREFIX_ . 'lengow_method_marketplace',
                     $params,
                     'UPDATE',
-                    'id = ' . (int)$idMethodMarketplace
+                    'id = ' . (int) $idMethodMarketplace
                 );
             } catch (PrestaShopDatabaseException $e) {
                 $success = false;
             }
         } else {
-            $success = $db->update('lengow_method_marketplace', $params, 'id = ' . (int)$idMethodMarketplace);
+            $success = $db->update('lengow_method_marketplace', $params, 'id = ' . (int) $idMethodMarketplace);
         }
         return $success ? $idMethodMarketplace : false;
     }
@@ -201,16 +201,16 @@ class LengowMethod
         try {
             $result = Db::getInstance()->ExecuteS(
                 'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_method_marketplace
-                WHERE id_marketplace = ' . (int)$idMarketplace . '
-                AND id_method_marketplace = ' . (int)$idMethodMarketplace
+                WHERE id_marketplace = ' . (int) $idMarketplace . '
+                AND id_method_marketplace = ' . (int) $idMethodMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
             $result = array();
         }
         if (empty($result)) {
             $params = array(
-                'id_marketplace' => (int)$idMarketplace,
-                'id_method_marketplace' => (int)$idMethodMarketplace,
+                'id_marketplace' => (int) $idMarketplace,
+                'id_method_marketplace' => (int) $idMethodMarketplace,
             );
             try {
                 if (_PS_VERSION_ < '1.5') {
@@ -243,7 +243,7 @@ class LengowMethod
         $table = _PS_VERSION_ < '1.5'
             ? _DB_PREFIX_ . 'lengow_marketplace_method_marketplace'
             : 'lengow_marketplace_method_marketplace';
-        return Db::getInstance()->delete($table, 'id = ' . (int)$idMarketplaceMethodMarketplace);
+        return Db::getInstance()->delete($table, 'id = ' . (int) $idMarketplaceMethodMarketplace);
     }
 
     /**
@@ -273,12 +273,12 @@ class LengowMethod
                         )) {
                             // delete marketplace method matching
                             self::deleteMarketplaceMethodMarketplace(
-                                (int)$methodMarketplace['id_marketplace_method_marketplace']
+                                (int) $methodMarketplace['id_marketplace_method_marketplace']
                             );
                             // delete method marketplace id from marketplace method country if is matched
                             self::cleanMarketplaceMethodCountryByIdMarketplace(
                                 $idMarketplace,
-                                (int)$methodMarketplace['id_method_marketplace']
+                                (int) $methodMarketplace['id_method_marketplace']
                             );
                         }
                     }
@@ -301,11 +301,11 @@ class LengowMethod
         try {
             $result = Db::getInstance()->ExecuteS(
                 'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_method_country
-                WHERE id_country = ' . (int)$idCountry . '
-                AND id_marketplace = ' . (int)$idMarketplace . '
-                AND id_method_marketplace = ' . (int)$idMethodMarketplace
+                WHERE id_country = ' . (int) $idCountry . '
+                AND id_marketplace = ' . (int) $idMarketplace . '
+                AND id_method_marketplace = ' . (int) $idMethodMarketplace
             );
-            return !empty($result) ? (int)$result[0]['id'] : false;
+            return !empty($result) ? (int) $result[0]['id'] : false;
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
@@ -322,8 +322,8 @@ class LengowMethod
         try {
             $results = Db::getInstance()->ExecuteS(
                 'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_marketplace_method_country
-                WHERE id_method_marketplace = ' . (int)$idMethodMarketplace . '
-                AND id_marketplace = ' . (int)$idMarketplace
+                WHERE id_method_marketplace = ' . (int) $idMethodMarketplace . '
+                AND id_marketplace = ' . (int) $idMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
             $results = array();
@@ -331,7 +331,7 @@ class LengowMethod
         if (!empty($results)) {
             foreach ($results as $result) {
                 if (isset($result['id']) && $result['id'] > 0) {
-                    self::deleteMarketplaceMethodCountry((int)$result['id']);
+                    self::deleteMarketplaceMethodCountry((int) $result['id']);
                 }
             }
         }
@@ -354,12 +354,12 @@ class LengowMethod
                 'SELECT lmmc.id_carrier FROM ' . _DB_PREFIX_ . 'lengow_marketplace_method_country as lmmc
                 INNER JOIN ' . _DB_PREFIX_ . 'lengow_method_marketplace as lmm
                     ON lmm.id = lmmc.id_method_marketplace
-                WHERE lmmc.id_country = ' . (int)$idCountry . '
-                AND lmmc.id_marketplace = "' . (int)$idMarketplace . '"
+                WHERE lmmc.id_country = ' . (int) $idCountry . '
+                AND lmmc.id_marketplace = "' . (int) $idMarketplace . '"
                 AND lmm.method_marketplace_name = "' . pSQL($methodMarketplaceName) . '"'
             );
             if ($result) {
-                return LengowCarrier::getIdActiveCarrierByIdCarrier($result["id_carrier"], (int)$idCountry);
+                return LengowCarrier::getIdActiveCarrierByIdCarrier($result["id_carrier"], (int) $idCountry);
             }
         }
         return false;
@@ -379,15 +379,15 @@ class LengowMethod
         try {
             $results = Db::getInstance()->ExecuteS(
                 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_marketplace_method_country
-                WHERE id_country = ' . (int)$idCountry . '
-                AND id_marketplace = ' . (int)$idMarketplace
+                WHERE id_country = ' . (int) $idCountry . '
+                AND id_marketplace = ' . (int) $idMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
             $results = array();
         }
         if (!empty($results)) {
             foreach ($results as $result) {
-                $methods[(int)$result['id_method_marketplace']] = (int)$result['id_carrier'];
+                $methods[(int) $result['id_method_marketplace']] = (int) $result['id_carrier'];
             }
         }
         return $methods;
@@ -445,7 +445,7 @@ class LengowMethod
                     _DB_PREFIX_ . 'lengow_marketplace_method_country',
                     array('id_carrier' => $idCarrier),
                     'UPDATE',
-                    'id = ' . (int)$idMarketplaceMethodCountry
+                    'id = ' . (int) $idMarketplaceMethodCountry
                 );
             } catch (PrestaShopDatabaseException $e) {
                 $success = false;
@@ -454,7 +454,7 @@ class LengowMethod
             $success = $db->update(
                 'lengow_marketplace_method_country',
                 array('id_carrier' => $idCarrier),
-                'id = ' . (int)$idMarketplaceMethodCountry
+                'id = ' . (int) $idMarketplaceMethodCountry
             );
         }
         return $success ? $idMarketplaceMethodCountry : false;
@@ -472,6 +472,6 @@ class LengowMethod
         $table = _PS_VERSION_ < '1.5'
             ? _DB_PREFIX_ . 'lengow_marketplace_method_country'
             : 'lengow_marketplace_method_country';
-        return Db::getInstance()->delete($table, 'id = ' . (int)$idMarketplaceMethodCountry);
+        return Db::getInstance()->delete($table, 'id = ' . (int) $idMarketplaceMethodCountry);
     }
 }

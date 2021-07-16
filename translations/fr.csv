@@ -19,9 +19,23 @@ menu.help|Aide
 menu.global_parameter|Paramètres principaux
 menu.new_version_available|La nouvelle version %{version} est disponible !
 menu.download_plugin|Télécharger
+update.version_available|Nouvelle version disponible !
+update.start_now|Commencez dès maintenant à profiter des nouvelles fonctionnalités, améliorations et corrections de bugs résumées sur notre
+update.link_changelog|journal des modifications.
+update.step_one|Étape 1
+update.download_last_version|Téléchargez la dernière version du plugin ci-dessous.
+update.plugin_compatibility|Compatible avec PrestaShop %{cms_min_version} à %{cms_max_version}
+update.extension_required|Nécessite l'extension %{name} %{min_version} à %{max_version}
+update.step_two|Étape 2
+update.link_follow|Suivez
+update.update_procedure|la procédure de mise à jour (simple et rapide).
+update.not_working|Ça ne fonctionne pas ? Contactez notre
+update.customer_success_team|équipe Customer Success
+update.button_download_version|Lengow PrestaShop %{version}
+update.button_remind_me_later|Pas maintenant, rappelez-moi plus tard
 footer.legals|Mentions légales
 footer.plugin_lengow|Lengow Prestashop Module
-footer.lengow_link_url|http://www.lengow.com/fr/
+footer.lengow_link_url|https://www.lengow.com/fr/
 connection.home.description_first|Lengow vous aide à optimiser votre entreprise dans le monde entier !
 connection.home.description_second|Grâce à la plateforme, vous pouvez publier automatiquement votre catalogue de produits sur des places de marché, des sites de comparaison, un réseau d'affiliés et des campagnes de reciblage.
 connection.home.description_third|Explorez vos possibilités de croissance internationale grâce à 1 600 canaux de vente dans 42 pays différents.
@@ -33,7 +47,6 @@ connection.cms.credentials_title|Veuillez entrer vos identifiants API Lengow
 connection.cms.credentials_description|Vous trouverez ces informations dans les paramètres de votre compte, section "A.P.I"
 connection.cms.credentials_help|Besoin d'aide ?
 connection.cms.credentials_help_center|Consultez notre centre d'aide
-connection.cms.credentials_help_center_url|https://support.lengow.com/kb/fr
 connection.cms.credentials_button|Se connecter à Lengow
 connection.cms.credentials_button_loading|Connexion...
 connection.cms.credentials_placeholder_access_token|Entrez votre jeton d'accès
@@ -185,7 +198,9 @@ order_setting.screen.import_setting_description|Gérez ici vos paramètres d'imp
 order_setting.screen.nb_days|jours
 global_setting.screen.notification_alert_title|Notifications & alertes
 global_setting.screen.default_export_carrier_title|Calcul des frais de livraison
-global_setting.screen.default_export_carrier_description|Les frais de livraison de votre catalogue vont être calculés en fonction du transporteur choisi
+global_setting.screen.default_export_carrier_description|Les frais de livraison de votre catalogue vont être calculés en fonction du transporteur choisi.
+global_setting.screen.security_title|Autorisation par IP
+global_setting.screen.security_description|Activez cette option si vous voulez sécuriser votre export par ip. Par défaut, votre export est sécurisé par une clé unique.
 global_setting.screen.tracker_title|Tracker Lengow
 global_setting.screen.tracker_description|Ce tracker vous permet de récupérer les statistiques de commandes de votre site directement sur la plateforme Lengow.
 global_setting.screen.shop_title|Gestion de la boutique
@@ -216,12 +231,10 @@ global_setting.screen.setting_saved|Enregistrement terminé !
 help.screen.title|Demandez de l'aide à notre équipe Support !
 help.screen.contain_text_support|Des questions, un feedback sur Lengow... transmettez vos demandes au
 help.screen.title_lengow_support|support Lengow.
-help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/fr/requests/new
 help.screen.need_some_help|Besoin d'aide ?
 help.screen.contain_text_support_hour|Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h).
 help.screen.find_answer|Vous pouvez aussi consulter
 help.screen.link_prestashop_guide|notre guide dédié à PrestaShop
-help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/fr/prestashop-ob0HZ6F7so/Steps/25864
 legals.screen.simplified_company|Société par actions simplifiées
 legals.screen.social_capital|Capital social :
 legals.screen.cnil_declaration|Déclaration CNIL :
@@ -267,15 +280,16 @@ lengow_setting.lengow_import_stock_ship_mp_title|Je veux diminuer mon stock
 lengow_setting.lengow_import_stock_ship_mp_legend|Activez cette option pour prendre en compte les commandes des marketplaces sur les stocks de votre backoffice PrestaShop.
 lengow_setting.lengow_report_mail_enabled_title|Je veux être notifié en cas de problème lors de l'importation de mes commandes
 lengow_setting.lengow_report_mail_address_title|Email à utiliser pour l'envoi des emails de rapport
-lengow_setting.lengow_report_mail_address_legend|Pour ajouter plusieurs emails, utilisez des " ; " pour les séparer
+lengow_setting.lengow_report_mail_address_legend|Pour ajouter plusieurs emails, utilisez des ";" pour les séparer
 lengow_setting.lengow_import_single_enabled_title|Limité à une commande par import
 lengow_setting.lengow_import_single_enabled_legend|Utile pour les versions PrestaShop 1.5.2 à 1.5.4. *(cela évite d'importer deux fois les commandes)
 lengow_setting.lengow_import_in_progress_title|Import en cours
 lengow_setting.lengow_last_import_cron_title|Dernier import CRON
 lengow_setting.lengow_last_import_manual_title|Dernier import manuel
 lengow_setting.lengow_global_token_title|Lengow global Token
+lengow_setting.lengow_ip_enable_title|Activer l'autorisation par IP
 lengow_setting.lengow_authorized_ip_title|IP autorisée(s)
-lengow_setting.lengow_authorized_ip_legend|IP autorisée(s) séparée(s) par ;
+lengow_setting.lengow_authorized_ip_legend|Pour ajouter plusieurs Ips, utilisez des ";" pour les séparer
 lengow_setting.lengow_tracking_enabled_title|Activer le tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_tracking_id_legend|Le nom de l'identifiant unique indiqué dans Lengow
@@ -328,7 +342,7 @@ lengow_log.exception.product_is_not_listed|le produit %{product_id} n'est pas pr
 lengow_log.exception.unable_to_save_order|impossible de sauvegarder la commande PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossible de sauvegarder le paiement de la commande PrestaShop
 lengow_log.mail_report.order|commande %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|Pas de message d'erreur, contacter le support via https://supportlengow.zendesk.com/hc/fr/requests/new
+lengow_log.mail_report.no_error_in_report_mail|Pas de message d'erreur, contacter le support via %{support_link}
 lengow_log.connection.status_draft|Incomplet
 lengow_log.connection.status_active|Actif
 lengow_log.connection.catalog|Catalogue %{catalog_id}
@@ -354,6 +368,7 @@ admin.order.is_business|Business
 admin.order.is_delivered_by_marketplace|Expédié par la marketplace
 admin.order.message|Message
 admin.order.imported_at|Importé le
+admin.order.json_format|Format JSON
 admin.order.cancel_and_reimport|Ré-importer la commande
 admin.order.check_cancel_and_reimport|Vous voulez vous vraiment réimporter la commande ?
 admin.order.synchronize_id|Synchronisez l'ID

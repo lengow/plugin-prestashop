@@ -43,20 +43,20 @@ switch ($action) {
     case 'update':
         $form->postProcess(
             array(
-                'LENGOW_SHOP_ACTIVE',
-                'LENGOW_EXPORT_VARIATION_ENABLED',
-                'LENGOW_EXPORT_OUT_STOCK',
-                'LENGOW_EXPORT_INACTIVE',
-                'LENGOW_EXPORT_SELECTION_ENABLED',
-                'LENGOW_EXPORT_FILE_ENABLED',
-                'LENGOW_IMPORT_FORCE_PRODUCT',
-                'LENGOW_IMPORT_PROCESSING_FEE',
-                'LENGOW_IMPORT_DEBUG_ENABLED',
-                'LENGOW_IMPORT_SHIP_MP_ENABLED',
-                'LENGOW_IMPORT_STOCK_SHIP_MP',
-                'LENGOW_REPORT_MAIL_ENABLED',
-                'LENGOW_IMPORT_SINGLE_ENABLED',
-                'LENGOW_TRACKING_ENABLED',
+                LengowConfiguration::SHOP_ACTIVE,
+                LengowConfiguration::VARIATION_ENABLED,
+                LengowConfiguration::OUT_OF_STOCK_ENABLED,
+                LengowConfiguration::INACTIVE_ENABLED,
+                LengowConfiguration::SELECTION_ENABLED,
+                LengowConfiguration::EXPORT_FILE_ENABLED,
+                LengowConfiguration::FORCE_PRODUCT_ENABLED,
+                LengowConfiguration::IMPORT_PROCESSING_FEE_ENABLED,
+                LengowConfiguration::DEBUG_MODE_ENABLED,
+                LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED,
+                LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
+                LengowConfiguration::REPORT_MAIL_ENABLED,
+                LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED,
+                LengowConfiguration::TRACKING_ENABLED,
             )
         );
         Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/config.php', '');
@@ -98,9 +98,9 @@ require 'views/header.php';
                 <?php
                 echo $form->buildInputs(
                     array(
-                        'LENGOW_ACCOUNT_ID',
-                        'LENGOW_ACCESS_TOKEN',
-                        'LENGOW_SECRET_TOKEN',
+                        LengowConfiguration::ACCOUNT_ID,
+                        LengowConfiguration::ACCESS_TOKEN,
+                        LengowConfiguration::SECRET,
                     )
                 );
                 echo '<br/>';
@@ -110,8 +110,8 @@ require 'views/header.php';
                     echo $form->buildShopInputs(
                         $shop->id,
                         array(
-                            'LENGOW_SHOP_ACTIVE',
-                            'LENGOW_CATALOG_ID',
+                            LengowConfiguration::SHOP_ACTIVE,
+                            LengowConfiguration::CATALOG_IDS,
                         )
                     );
                     echo '<br/>';
@@ -121,13 +121,13 @@ require 'views/header.php';
                     . $locale->t('toolbox.configuration.global_setting') . '</h3>';
                 echo $form->buildInputs(
                     array(
-                        'LENGOW_AUTHORIZED_IP',
-                        'LENGOW_IMPORT_DEBUG_ENABLED',
-                        'LENGOW_REPORT_MAIL_ENABLED',
-                        'LENGOW_REPORT_MAIL_ADDRESS',
-                        'LENGOW_EXPORT_CARRIER_DEFAULT',
-                        'LENGOW_TRACKING_ENABLED',
-                        'LENGOW_TRACKING_ID',
+                        LengowConfiguration::AUTHORIZED_IPS,
+                        LengowConfiguration::DEBUG_MODE_ENABLED,
+                        LengowConfiguration::REPORT_MAIL_ENABLED,
+                        LengowConfiguration::REPORT_MAILS,
+                        LengowConfiguration::DEFAULT_EXPORT_CARRIER_ID,
+                        LengowConfiguration::TRACKING_ENABLED,
+                        LengowConfiguration::TRACKING_ID,
                     )
                 );
                 echo '</fieldset>';
@@ -135,8 +135,8 @@ require 'views/header.php';
                     . $locale->t('toolbox.configuration.export_setting') . '</h3>';
                 echo $form->buildInputs(
                     array(
-                        'LENGOW_EXPORT_FORMAT',
-                        'LENGOW_EXPORT_FILE_ENABLED',
+                        LengowConfiguration::EXPORT_FORMAT,
+                        LengowConfiguration::EXPORT_FILE_ENABLED,
                     )
                 );
                 echo '<br/>';
@@ -146,10 +146,10 @@ require 'views/header.php';
                     echo $form->buildShopInputs(
                         $shop->id,
                         array(
-                            'LENGOW_EXPORT_VARIATION_ENABLED',
-                            'LENGOW_EXPORT_OUT_STOCK',
-                            'LENGOW_EXPORT_SELECTION_ENABLED',
-                            'LENGOW_EXPORT_INACTIVE',
+                            LengowConfiguration::VARIATION_ENABLED,
+                            LengowConfiguration::OUT_OF_STOCK_ENABLED,
+                            LengowConfiguration::SELECTION_ENABLED,
+                            LengowConfiguration::INACTIVE_ENABLED,
                         )
                     );
                     echo '<br/>';
@@ -159,17 +159,17 @@ require 'views/header.php';
                     . $locale->t('toolbox.configuration.import_setting') . '</h3>';
                 echo $form->buildInputs(
                     array(
-                        'LENGOW_ORDER_ID_PROCESS',
-                        'LENGOW_ORDER_ID_SHIPPED',
-                        'LENGOW_ORDER_ID_SHIPPEDBYMP',
-                        'LENGOW_ORDER_ID_CANCEL',
-                        'LENGOW_IMPORT_FORCE_PRODUCT',
-                        'LENGOW_IMPORT_PROCESSING_FEE',
-                        'LENGOW_IMPORT_DAYS',
-                        'LENGOW_IMPORT_SHIP_MP_ENABLED',
-                        'LENGOW_IMPORT_STOCK_SHIP_MP',
-                        'LENGOW_IMPORT_SINGLE_ENABLED',
-                        'LENGOW_CURRENCY_CONVERSION',
+                        LengowConfiguration::WAITING_SHIPMENT_ORDER_ID,
+                        LengowConfiguration::SHIPPED_ORDER_ID,
+                        LengowConfiguration::SHIPPED_BY_MARKETPLACE_ORDER_ID,
+                        LengowConfiguration::CANCELED_ORDER_ID,
+                        LengowConfiguration::FORCE_PRODUCT_ENABLED,
+                        LengowConfiguration::IMPORT_PROCESSING_FEE_ENABLED,
+                        LengowConfiguration::SYNCHRONIZATION_DAY_INTERVAL,
+                        LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED,
+                        LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
+                        LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED,
+                        LengowConfiguration::CURRENCY_CONVERSION_ENABLED,
                     )
                 );
                 echo '</fieldset>';

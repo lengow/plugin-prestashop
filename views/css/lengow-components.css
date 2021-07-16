@@ -145,6 +145,17 @@ a.lgw-box-link:hover {
   outline: none;
 }
 
+.lgw-container .btn-link.mod-inline {
+  padding: 0;
+  margin: 0 0 0 5px;
+  text-decoration: underline;
+}
+
+.lgw-container .btn-link.mod-blue {
+  color: #00aeef;
+  text-decoration: none;
+}
+
 .lgw-container .btn-link:hover {
   text-decoration: underline;
   color: #00aeef;
@@ -507,6 +518,82 @@ a.lgw-box-link:hover {
   padding: 5px 20px 13px 20px;
   border-radius: 5px;
   background: #fff;
+}
+
+/*************************************************/
+/*                    MODAL                      */
+/*************************************************/
+
+.lgw-modalbox {
+  background-color: rgba(7, 18, 71, .3);
+  display: none;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  opacity: 0;
+  overflow: hidden;
+  top: 0;
+  transition: all 250ms ease;
+  width: 100%;
+  z-index: 1500;
+}
+
+.lgw-modalbox-content {
+  background: white;
+  box-shadow: 0 0px 20px 0 rgba(0,0,0,0.15);
+  border: 1px solid #e1e1e1;
+  border-radius: 3px;
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
+  transform: translate(0,calc(-45% + 0.5px));
+  transition: all 250ms ease;
+  width: 60%;
+  top: 50%;
+}
+
+.lgw-modalbox-close {
+  align-items: center;
+  background: url(../img/modal-close.png) no-repeat white center;
+  background-size: 40%;
+  box-shadow: 0 0 2px rgba(0, 0, 0, .2);
+  border-radius: 50%;
+  display: flex;
+  height: 33px;
+  justify-content: center;
+  position: absolute;
+  right: 20px;
+  top: 12px;
+  transition: all 250ms ease;
+  width: 33px;
+  z-index: 10;
+}
+
+.lgw-modalbox-close:hover,
+.lgw-modalbox-close:focus {
+  box-shadow: 0 0 2px rgba(95, 0, 0, .2);
+  cursor: pointer;
+}
+
+.lgw-modalbox-body {
+  margin: 0 0;
+  max-height: calc(100vh - 350px);
+  overflow-y: auto;
+  padding: 30px;
+}
+
+.lgw-modalbox.is-open .lgw-modalbox-content {
+  transform: translate(0,calc(-50% + .5px));
+}
+
+.lgw-modalbox.mod-size-medium .lgw-modalbox-content {
+  width: auto;
+  max-width: 990px;
+}
+
+.lgw-modalbox.is-open {
+  display: block;
+  opacity: 1;
 }
 
 /*************************************************/

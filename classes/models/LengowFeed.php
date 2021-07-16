@@ -120,11 +120,6 @@ class LengowFeed
     );
 
     /**
-     * @var string Lengow export folder
-     */
-    public static $lengowExportFolder = 'export';
-
-    /**
      * Construct
      *
      * @param boolean $stream export streaming or in a file
@@ -162,7 +157,7 @@ class LengowFeed
     public function initExportFile()
     {
         $sep = DIRECTORY_SEPARATOR;
-        $this->exportFolder = self::$lengowExportFolder . $sep . $this->shopFolder;
+        $this->exportFolder = LengowMain::FOLDER_EXPORT . $sep . $this->shopFolder;
         $folderPath = LengowMain::getLengowFolder() . $sep . $this->exportFolder;
         if (!file_exists($folderPath)) {
             if (!mkdir($folderPath)) {
@@ -276,15 +271,15 @@ class LengowFeed
                 return $content;
             case self::FORMAT_YAML:
                 if ($maxCharacter % 2 === 1) {
-                    $maxCharacter = $maxCharacter + 1;
+                    $maxCharacter++;
                 } else {
-                    $maxCharacter = $maxCharacter + 2;
+                    $maxCharacter += 2;
                 }
                 $content = '  ' . self::PROTECTION . 'product' . self::PROTECTION . ':' . self::EOL;
                 foreach ($data as $field => $value) {
                     $field = self::formatFields($field, self::FORMAT_YAML);
                     $content .= '    ' . self::PROTECTION . $field . self::PROTECTION . ':';
-                    $content .= $this->indentYaml($field, $maxCharacter) . (string)$value . self::EOL;
+                    $content .= $this->indentYaml($field, $maxCharacter) . $value . self::EOL;
                 }
                 return $content;
         }
@@ -417,20 +412,18 @@ class LengowFeed
                         0,
                         58
                     );
-                } else {
-                    return Tools::substr(
-                        Tools::strtolower(
-                            preg_replace(
-                                '/[^a-zA-Z0-9_]+/',
-                                '',
-                                str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($str))
-                            )
-                        ),
-                        0,
-                        58
-                    );
                 }
-                break;
+                return Tools::substr(
+                    Tools::strtolower(
+                        preg_replace(
+                            '/[^a-zA-Z0-9_]+/',
+                            '',
+                            str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($str))
+                        )
+                    ),
+                    0,
+                    58
+                );
             default:
                 return Tools::strtolower(
                     preg_replace(

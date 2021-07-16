@@ -1,4 +1,13 @@
 =============================================================
+Version 3.3.1
+=============================================================
+
+    - Feature: Outsourcing of the toolbox via webservice
+    - Feature: Setting up a modal for the plugin update
+    - Feature: Addition of the JSON field in the order template
+    - Bugfix: Retrieving the main shop url for feed and cron urls
+
+=============================================================
 Version 3.3.0
 =============================================================
 

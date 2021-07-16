@@ -28,4 +28,67 @@
             </p>
         </div>
     </div>
+    {if !$pluginIsUpToDate}
+        <!-- Modal Update plugin -->
+        <div id="upgrade-plugin" class="lgw-modalbox mod-size-medium {if $showPluginUpgradeModal }is-open{/if}">
+            <div class="lgw-modalbox-content">
+                <span class="lgw-modalbox-close js-upgrade-plugin-modal-close"></span>
+                <div class="lgw-modalbox-body">
+                    <div class="lgw-row flexbox-vertical-center">
+                        <div class="lgw-col-5 text-center">
+                            <img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/plugin-update.png" alt="">
+                        </div>
+                        <div class="lgw-col-7">
+                            <h1>{$locale->t('update.version_available')|escape:'htmlall':'UTF-8'}</h1>
+                            <p>
+                                {$locale->t('update.start_now')|escape:'htmlall':'UTF-8'}
+                                <a href="{$changelogLink|escape:'htmlall':'UTF-8'}" target="_blank">
+                                    {$locale->t('update.link_changelog')|escape:'htmlall':'UTF-8'}
+                                </a>
+                            </p>
+                            <div class="lgw-content-section mod-small">
+                                <h2 class="no-margin-bottom">{$locale->t('update.step_one')|escape:'htmlall':'UTF-8'}</h2>
+                                <p class="no-margin-bottom">
+                                    {$locale->t('update.download_last_version')|escape:'htmlall':'UTF-8'}
+                                </p>
+                                <p class="text-lesser text-italic">
+                                    {$locale->t('update.plugin_compatibility', ['cms_min_version' => $pluginData['cms_min_version'], 'cms_max_version' => $pluginData['cms_max_version']])|escape:'htmlall':'UTF-8'}
+                                    {foreach from=$pluginData['extensions'] item=extension}
+                                        <br />
+                                        {$locale->t('update.extension_required', ['name' => $extension['name'], 'min_version' => $extension['min_version'], 'max_version' => $extension['max_version']])|escape:'htmlall':'UTF-8'}
+                                    {/foreach}
+                                </p>
+                            </div>
+                            <div class="lgw-content-section mod-small">
+                                <h2 class="no-margin-bottom">{$locale->t('update.step_two')|escape:'htmlall':'UTF-8'}</h2>
+                                <p class="no-margin-bottom">
+                                    <a href="{$updateGuideLink|escape:'htmlall':'UTF-8'}" target="_blank">
+                                        {$locale->t('update.link_follow')|escape:'htmlall':'UTF-8'}
+                                    </a>
+                                    {$locale->t('update.update_procedure')|escape:'htmlall':'UTF-8'}
+                                </p>
+                                <p class="text-lesser text-italic">
+                                    {$locale->t('update.not_working')|escape:'htmlall':'UTF-8'}
+                                    <a href="{$supportLink|escape:'htmlall':'UTF-8'}" target="_blank">
+                                        {$locale->t('update.customer_success_team')|escape:'htmlall':'UTF-8'}
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="flexbox-vertical-center margin-standard">
+                                <a class="lgw-btn no-margin-top" href="https://my.{$lengowUrl|escape:'htmlall':'UTF-8'}{$pluginData['download_link']|escape:'htmlall':'UTF-8'}" target="_blank">
+                                    {$locale->t('update.button_download_version', ['version' => $pluginData['version']])|escape:'htmlall':'UTF-8'}
+                                </a>
+                                {if $showPluginUpgradeModal}
+                                    <button class="btn-link sub-link no-margin-top text-small js-upgrade-plugin-modal-remind-me">
+                                        {$locale->t('update.button_remind_me_later')|escape:'htmlall':'UTF-8'}
+                                    </button>
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="lengow_modal_ajax_link" value="{$lengowModalAjaxLink|escape:'htmlall':'UTF-8'}">
+        </div>
+    {/if}
 </div>

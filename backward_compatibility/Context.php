@@ -24,7 +24,7 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
-if ((bool)Configuration::get('PS_MOBILE_DEVICE')) {
+if ((bool) Configuration::get('PS_MOBILE_DEVICE')) {
     require_once(_PS_MODULE_DIR_ . '/mobile_theme/Mobile_Detect.php');
 }
 
@@ -58,7 +58,7 @@ if (version_compare(_PS_VERSION_, '1.4', '<')) {
         public static function AddLog($message, $severity = 2)
         {
             $fp = fopen(dirname(__FILE__) . '/../logs.txt', 'a+');
-            fwrite($fp, '[' . (int)$severity . '] ' . Tools::safeOutput($message));
+            fwrite($fp, '[' . (int) $severity . '] ' . Tools::safeOutput($message));
             fclose($fp);
         }
     }
@@ -159,18 +159,18 @@ class Context
                 define('_PS_CURRENCY_DEFAULT_', Configuration::get('PS_CURRENCY_DEFAULT'));
             }
             if ($cookie->id_currency) {
-                $this->currency = new Currency((int)$cookie->id_currency);
+                $this->currency = new Currency((int) $cookie->id_currency);
             } else {
-                $this->currency = new Currency((int)_PS_CURRENCY_DEFAULT_);
+                $this->currency = new Currency((int) _PS_CURRENCY_DEFAULT_);
             }
-            $this->language = new Language((int)$cookie->id_lang);
-            if ((int)$cookie->id_country) {
-                $this->country = new Country((int)$cookie->id_country);
+            $this->language = new Language((int) $cookie->id_lang);
+            if ((int) $cookie->id_country) {
+                $this->country = new Country((int) $cookie->id_country);
             } else {
                 $this->country = new Country(Country::getDefaultCountryId());
             }
-            $this->customer = new CustomerBackwardModule((int)$cookie->id_customer);
-            $this->employee = new Employee((int)$cookie->id_employee);
+            $this->customer = new CustomerBackwardModule((int) $cookie->id_customer);
+            $this->employee = new Employee((int) $cookie->id_employee);
         } else {
             $this->currency = null;
             $this->language = null;
@@ -181,7 +181,7 @@ class Context
 
         $this->shop = new ShopBackwardModule();
 
-        if ((bool)Configuration::get('PS_MOBILE_DEVICE')) {
+        if ((bool) Configuration::get('PS_MOBILE_DEVICE')) {
             $this->mobile_detect = new Mobile_Detect();
         }
     }
@@ -191,7 +191,7 @@ class Context
         if (is_null($this->mobile_device)) {
             $this->mobile_device = false;
             if ($this->checkMobileContext()) {
-                switch ((int)Configuration::get('PS_MOBILE_DEVICE')) {
+                switch ((int) Configuration::get('PS_MOBILE_DEVICE')) {
                     case 0: // only for mobile device
                         if ($this->mobile_detect->isMobile() && !$this->mobile_detect->isTablet()) {
                             $this->mobile_device = true;
@@ -217,7 +217,7 @@ class Context
     protected function checkMobileContext()
     {
         return isset($_SERVER['HTTP_USER_AGENT'])
-        && (bool)Configuration::get('PS_MOBILE_DEVICE')
+        && (bool) Configuration::get('PS_MOBILE_DEVICE')
         && !Context::getContext()->cookie->no_mobile;
     }
 

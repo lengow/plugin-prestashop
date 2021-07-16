@@ -19,9 +19,23 @@ menu.help|Aiuto
 menu.global_parameter|Impostazioni Generali
 menu.new_version_available|È disponibile una nuova versione %{version}!
 menu.download_plugin|Scaricare
+update.version_available|Nuova versione disponibile!
+update.start_now|Inizia ora a beneficiare delle nuove funzionalità, miglioramenti e correzioni di bug riassunti nei nostri
+update.link_changelog|log delle modifiche.
+update.step_one|Passo 1
+update.download_last_version|Scarica l'ultima versione del plugin di seguito.
+update.plugin_compatibility|Compatibile con PrestaShop da %{cms_min_version} a %{cms_max_version}
+update.extension_required|Richiede l'estensione %{name} %{min_version} a %{max_version}
+update.step_two|Passo 2
+update.link_follow|Segui
+update.update_procedure|la procedura di aggiornamento (facile e veloce).
+update.not_working|¿No funciona? Contattare il nostro
+update.customer_success_team|Customer Success team
+update.button_download_version|Lengow PrestaShop %{version}
+update.button_remind_me_later|Non ora, ricordamelo più tardi
 footer.legals|Condizioni Legali
 footer.plugin_lengow|Lengow plugin PrestaShop
-footer.lengow_link_url|http://www.lengow.com/it/
+footer.lengow_link_url|https://www.lengow.com/it/
 connection.home.description_first|Lengow ti aiuta a ottimizzare il tuo business in tutto il mondo!
 connection.home.description_second|Attraverso la piattaforma, puoi pubblicare automaticamente il tuo catalogo prodotti sui marketplaces, sui siti web di confronto dei prezzi, sulle reti di affiliazione e sulle campagne di retargeting.
 connection.home.description_third|Esplora le tue opportunità di crescita internazionale con 1.600 canali di vendita in 42 paesi diversi.
@@ -33,7 +47,6 @@ connection.cms.credentials_title|Inserisci le tue credenziali API Lengow
 connection.cms.credentials_description|Trova queste credenziali nelle impostazioni del tuo conto, sezione "A.P.I"
 connection.cms.credentials_help|Hai bisogno di aiuto?
 connection.cms.credentials_help_center|Controlla il nostro Centro Assistenza
-connection.cms.credentials_help_center_url|https://support.lengow.com/kb/en
 connection.cms.credentials_button|Connettiti a Lengow
 connection.cms.credentials_button_loading|Collegamento...
 connection.cms.credentials_placeholder_access_token|Inserisci il tuo access token
@@ -186,6 +199,8 @@ order_setting.screen.nb_days|giorni
 global_setting.screen.notification_alert_title|Attenzione
 global_setting.screen.default_export_carrier_title|Calcolo costi di spedizione
 global_setting.screen.default_export_carrier_description|Il costo di spedizione del catalogo sarà calcolato in base al trasportatore selezionato
+global_setting.screen.security_title|Autorizzazione tramite IP
+global_setting.screen.security_description|Abilita questa opzione se desideri che la tua esportazione sia protetta da IP. Per impostazione predefinita, l'esportazione è protetta da una chiave univoca.
 global_setting.screen.tracker_title|Lengow tracker
 global_setting.screen.tracker_description|Questo tracker ti permette di recuperare le statistiche degli ordini della tua pagina web direttamente nella piattaforma Lengow.
 global_setting.screen.shop_title|Gestione del negozio
@@ -216,12 +231,10 @@ global_setting.screen.setting_saved|Salvato!
 help.screen.title|Chiedi aiuto al nostro supporto tecnico!
 help.screen.contain_text_support|Contattaci o condividi i tuoi feedback con
 help.screen.title_lengow_support|il Supporto Lengow
-help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Hai bisogno d'aiuto ?
 help.screen.contain_text_support_hour|Faremo il possibile per darti una risposta durante le ore di lavoro (dal Lunedi al Venerdi - 9h/18h)
 help.screen.find_answer|Potresti trovare una risposta nella nostra  
 help.screen.link_prestashop_guide|guida dedicata PrestaShop
-help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864
 legals.screen.simplified_company|Società responsabilità limitata
 legals.screen.social_capital|Capitale sociale:
 legals.screen.cnil_declaration|Dichiarazione CNIL:
@@ -267,15 +280,16 @@ lengow_setting.lengow_import_stock_ship_mp_title|Voglio ridurre il mio stock
 lengow_setting.lengow_import_stock_ship_mp_legend|Utilizza questa opzione per importare i tuoi ordini marketplace nel tuo backoffice PrestaShop
 lengow_setting.lengow_report_mail_enabled_title|Vorrei ricevere una notifica quando ci sono problemi in merito all'importazione degli ordini e/o esportazione catalogo
 lengow_setting.lengow_report_mail_address_title|Indirizzo email report Lengow
-lengow_setting.lengow_report_mail_address_legend|Per aggiungere diverse email, usa " ; " per separarli
+lengow_setting.lengow_report_mail_address_legend|Per aggiungere diverse email, usa ";" per separarli
 lengow_setting.lengow_import_single_enabled_title|Limitato a un solo ordine per processo di importazione
 lengow_setting.lengow_import_single_enabled_legend|Adatto alle versioni PrestaShop da 1.5.2 a 1.5.4.* (evita di importare gli ordini due volte)
 lengow_setting.lengow_import_in_progress_title|Importazione in corso
 lengow_setting.lengow_last_import_cron_title|Cron ultima importazione
 lengow_setting.lengow_last_import_manual_title|Ultimo import manuale
 lengow_setting.lengow_global_token_title|Lengow global Token
+lengow_setting.lengow_ip_enable_title|Abilita l'autorizzazione tramite IP
 lengow_setting.lengow_authorized_ip_title|IP Autorizzati
-lengow_setting.lengow_authorized_ip_legend|IP Autorizzati separati da ;
+lengow_setting.lengow_authorized_ip_legend|Per aggiungere diverse IPs, usa ";" per separarli
 lengow_setting.lengow_tracking_enabled_title|Attiva il tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_tracking_id_legend|Il numero degli id unici indicati in Lengow
@@ -328,7 +342,7 @@ lengow_log.exception.product_is_not_listed|prodotto %{product_id} non è inserit
 lengow_log.exception.unable_to_save_order|impossibile salvare PrestaShop ordine  - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossibile salvare PrestaShop pagamento ordine
 lengow_log.mail_report.order|Ordine %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|nessun errore nella mail di report https://supportlengow.zendesk.com/hc/en-us/requests/new
+lengow_log.mail_report.no_error_in_report_mail|nessun errore nella mail di report %{support_link}
 lengow_log.connection.status_draft|Bozza
 lengow_log.connection.status_active|Attivo
 lengow_log.connection.catalog|Catalogo %{catalog_id}
@@ -354,6 +368,7 @@ admin.order.is_business|Business
 admin.order.is_delivered_by_marketplace|Spedito dal Marketplace
 admin.order.message|Messaggio
 admin.order.imported_at|Importato a
+admin.order.json_format|Formato JSON
 admin.order.cancel_and_reimport|Reimporta ordine
 admin.order.check_cancel_and_reimport|Vuoi veramente re-importare l'ordine?
 admin.order.synchronize_id|Sincronizza ID

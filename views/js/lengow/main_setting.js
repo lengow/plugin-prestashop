@@ -57,6 +57,20 @@ function displayShopManagement() {
     });
 }
 
+function displayIpSecurity() {
+    var selector = $('.lengow_authorized_ip');
+    if($('input[name="LENGOW_IP_ENABLED"]').prop('checked')){
+        selector.slideDown(150);
+        var divLegend = selector.next('.legend');
+        divLegend.css('display', 'block');
+        divLegend.show();
+    }
+    else{
+        selector.slideUp(150);
+        selector.next('.legend').hide();
+    }
+}
+
 function displayTracker() {
     var selector = $('.lengow_tracking_id');
     if($('input[name="LENGOW_TRACKING_ENABLED"]').prop('checked')){
@@ -151,6 +165,11 @@ function openModal(){
         displayReportMail();
         $('input[name="LENGOW_REPORT_MAIL_ENABLED"]').change(function(){
             displayReportMail();
+        });
+        // display ip security
+        displayIpSecurity();
+        $('input[name="LENGOW_IP_ENABLED"]').change(function(){
+            displayIpSecurity();
         });
         // display tracker
         displayTracker();

@@ -24,20 +24,4 @@
  */
 class LengowHelpController extends LengowController
 {
-    /**
-     * Process Post Parameters
-     */
-    public function postProcess()
-    {
-    }
-
-    /**
-     * Display data page
-     */
-    public function display()
-    {
-        $lengowLink = new LengowLink();
-        $this->context->smarty->assign('lengow_ajax_link', $lengowLink->getAbsoluteAdminLink('AdminLengowHelp', true));
-        parent::display();
-    }
 }

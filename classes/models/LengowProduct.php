@@ -104,8 +104,8 @@ class LengowProduct extends Product
         $this->context->language = isset($params['language']) ? $params['language'] : Context::getContext()->language;
         // the applicable tax may be BOTH the product one and the state one (moreover this variable is some deadcode)
         $this->tax_name = 'deprecated';
-        $this->manufacturer_name = Manufacturer::getNameById((int)$this->id_manufacturer);
-        $this->supplier_name = Supplier::getNameById((int)$this->id_supplier);
+        $this->manufacturer_name = Manufacturer::getNameById((int) $this->id_manufacturer);
+        $this->supplier_name = Supplier::getNameById((int) $this->id_supplier);
         $address = null;
         if (is_object($this->context->cart)
             && $this->context->cart->{Configuration::get('PS_TAX_ADDRESS_TYPE')} != null
@@ -126,7 +126,7 @@ class LengowProduct extends Product
         $this->base_price = $this->price;
         if ($this->id) {
             $this->price = Product::getPriceStatic(
-                (int)$this->id,
+                (int) $this->id,
                 false,
                 null,
                 2,
@@ -146,7 +146,7 @@ class LengowProduct extends Product
             $this->loadStockData();
         }
         if ($this->id_category_default && $this->id_category_default > 1) {
-            $this->categoryDefault = new Category((int)$this->id_category_default, $idLang);
+            $this->categoryDefault = new Category((int) $this->id_category_default, $idLang);
             $this->categoryDefaultName = $this->categoryDefault->name;
         } else {
             $categories = self::getProductCategories($this->id);
@@ -198,7 +198,7 @@ class LengowProduct extends Product
             case 'quantity':
                 return self::getRealQuantity($this->id, $idProductAttribute);
             case 'minimal_quantity':
-                return (int)$this->getProductData('minimal_quantity', $idProductAttribute);
+                return (int) $this->getProductData('minimal_quantity', $idProductAttribute);
             case 'availability':
                 return self::getRealQuantity($this->id, $idProductAttribute) <= 0
                     ? $this->available_later
@@ -274,11 +274,13 @@ class LengowProduct extends Product
             default:
                 if (isset($this->features[$name])) {
                     return LengowMain::cleanData($this->features[$name]['value']);
-                } elseif ($idProductAttribute !== null &&
-                    isset($this->combinations[$idProductAttribute]['attributes'][$name][1])
+                }
+                if ($idProductAttribute !== null
+                    && isset($this->combinations[$idProductAttribute]['attributes'][$name][1])
                 ) {
                     return LengowMain::cleanData($this->combinations[$idProductAttribute]['attributes'][$name][1]);
-                } elseif (isset($this->{$name})) {
+                }
+                if (isset($this->{$name})) {
                     return LengowMain::cleanData($this->{$name});
                 }
                 return '';
@@ -420,7 +422,7 @@ class LengowProduct extends Product
 				' . Shop::addSqlAssociation('product_attribute', 'pa') . '
 				' . Product::sqlStock('pa', 'pa') . '
 				LEFT JOIN `' . _DB_PREFIX_ . 'product_supplier` ps
-                ON (ps.`id_product_attribute` = pa.`id_product_attribute` AND ps.`id_product` = ' . (int)$this->id . ')
+                ON (ps.`id_product_attribute` = pa.`id_product_attribute` AND ps.`id_product` = ' . (int) $this->id . ')
 				LEFT JOIN `' . _DB_PREFIX_ . 'product_attribute_combination` pac
                 ON pac.`id_product_attribute` = pa.`id_product_attribute`
 				LEFT JOIN `' . _DB_PREFIX_ . 'attribute` a ON a.`id_attribute` = pac.`id_attribute`
@@ -429,9 +431,9 @@ class LengowProduct extends Product
 				LEFT JOIN `' . _DB_PREFIX_ . 'attribute_group_lang` agl
                 ON ag.`id_attribute_group` = agl.`id_attribute_group`
 				' . Shop::addSqlAssociation('attribute', 'a') . '
-				WHERE pa.`id_product` = ' . (int)$this->id . '
-					AND al.`id_lang` = ' . (int)$idLang . '
-					AND agl.`id_lang` = ' . (int)$idLang . '
+				WHERE pa.`id_product` = ' . (int) $this->id . '
+					AND al.`id_lang` = ' . (int) $idLang . '
+					AND agl.`id_lang` = ' . (int) $idLang . '
 				GROUP BY id_attribute_group, id_product_attribute
 				ORDER BY ag.`position` ASC, a.`position` ASC, agl.`name` ASC';
         } else {
@@ -452,9 +454,9 @@ class LengowProduct extends Product
 				LEFT JOIN `' . _DB_PREFIX_ . 'attribute_lang` al ON (a.`id_attribute` = al.`id_attribute`)
 				LEFT JOIN `' . _DB_PREFIX_ . 'attribute_group_lang` agl
                 ON (ag.`id_attribute_group` = agl.`id_attribute_group`)
-				WHERE pa.`id_product` = ' . (int)$this->id . '
-                AND al.`id_lang` = ' . (int)$idLang . '
-                AND agl.`id_lang` = ' . (int)$idLang . '
+				WHERE pa.`id_product` = ' . (int) $this->id . '
+                AND al.`id_lang` = ' . (int) $idLang . '
+                AND agl.`id_lang` = ' . (int) $idLang . '
 				ORDER BY agl.`public_name`, al.`name`';
         }
         try {
@@ -481,9 +483,8 @@ class LengowProduct extends Product
                 return Product::getQuantity($idProduct);
             }
             return Product::getQuantity($idProduct, $idProductAttribute);
-        } else {
-            return parent::getRealQuantity($idProduct, $idProductAttribute, $idWarehouse, $idShop);
         }
+        return parent::getRealQuantity($idProduct, $idProductAttribute, $idWarehouse, $idShop);
     }
 
     /**
@@ -503,7 +504,7 @@ class LengowProduct extends Product
             } else {
                 $sql = 'SELECT `product_supplier_reference`
                     FROM `'._DB_PREFIX_.'product_supplier`
-                    WHERE `id_product` = \'' . (int)$this->id . '\'
+                    WHERE `id_product` = \'' . (int) $this->id . '\'
                     AND `id_product_attribute` = 0';
                 $result = Db::getInstance()->getRow($sql);
                 $supplierReference = $result['product_supplier_reference'];
@@ -554,7 +555,7 @@ class LengowProduct extends Product
                     null,
                     null,
                     $idProductAttribute,
-                    (_PS_VERSION_ === '1.6.1.0' && !$rewrite) ? true : false
+                    _PS_VERSION_ === '1.6.1.0' && !$rewrite
                 );
             } else {
                 if (version_compare(_PS_VERSION_, '1.7.1', '>=') && $idProductAttribute === null) {
@@ -568,7 +569,7 @@ class LengowProduct extends Product
                     null,
                     null,
                     $idProductAttribute,
-                    (version_compare(_PS_VERSION_, '1.7.1', '<') && $rewrite) ? false : true,
+                    !((version_compare(_PS_VERSION_, '1.7.1', '<') && $rewrite)),
                     false,
                     true
                 );
@@ -595,7 +596,7 @@ class LengowProduct extends Product
         if ($ecotax == 0) {
             $ecotax = (isset($this->ecotaxinfos) && $this->ecotaxinfos > 0) ? $this->ecotaxinfos : $this->ecotax;
         }
-        return (float)$ecotax;
+        return (float) $ecotax;
     }
 
     /**
@@ -616,12 +617,12 @@ class LengowProduct extends Product
             $price = $this->getData('price_incl_tax');
             $weight = $this->getData('weight');
         }
-        $idZone = (int)$this->context->country->id_zone;
-        $idCurrency = (int)$this->context->cart->id_currency;
+        $idZone = (int) $this->context->country->id_zone;
+        $idCurrency = (int) $this->context->cart->id_currency;
         if (!$this->carrier) {
             return LengowMain::formatNumber(0);
         }
-        $shippingMethod = (int)$this->carrier->getShippingMethod();
+        $shippingMethod = (int) $this->carrier->getShippingMethod();
         $shippingCost = 0;
         if (!defined('Carrier::SHIPPING_METHOD_FREE') || $shippingMethod !== Carrier::SHIPPING_METHOD_FREE) {
             if ($shippingMethod === Carrier::SHIPPING_METHOD_WEIGHT) {
@@ -639,7 +640,7 @@ class LengowProduct extends Product
             $shippingCost += $this->additional_shipping_cost;
         }
         // tax calculation
-        $defaultCountry = (int)Configuration::get('PS_COUNTRY_DEFAULT');
+        $defaultCountry = (int) Configuration::get('PS_COUNTRY_DEFAULT');
         if (_PS_VERSION_ < '1.5') {
             $idTaxRulesGroup = $this->carrier->id_tax_rules_group;
         } else {
@@ -650,7 +651,7 @@ class LengowProduct extends Product
             $idTaxRulesGroup
         );
         foreach ($taxRules as $taxRule) {
-            if (isset($taxRule['id_country']) && (int)$taxRule['id_country'] === $defaultCountry) {
+            if (isset($taxRule['id_country']) && (int) $taxRule['id_country'] === $defaultCountry) {
                 $tr = new TaxRule($taxRule['id_tax_rule']);
             }
         }
@@ -747,9 +748,9 @@ class LengowProduct extends Product
     protected function getWeight($idProductAttribute = null)
     {
         if ($idProductAttribute && $this->combinations[$idProductAttribute]['weight']) {
-            $weight = (float)$this->weight + (float)$this->combinations[$idProductAttribute]['weight'];
+            $weight = (float) $this->weight + (float) $this->combinations[$idProductAttribute]['weight'];
         } else {
-            $weight = (float)$this->weight;
+            $weight = (float) $this->weight;
         }
         return $weight;
     }
@@ -788,32 +789,31 @@ class LengowProduct extends Product
     {
         if (!$value) {
             $sql = 'DELETE FROM ' . _DB_PREFIX_ . 'lengow_product
-             WHERE id_product = ' . (int)$productId . ' AND id_shop = ' . (int)$shopId;
+             WHERE id_product = ' . (int) $productId . ' AND id_shop = ' . (int) $shopId;
             Db::getInstance()->Execute($sql);
         } else {
             try {
                 $sql = 'SELECT id_product FROM ' . _DB_PREFIX_ . 'lengow_product
-                    WHERE id_product = ' . (int)$productId . ' AND id_shop = ' . (int)$shopId;
+                    WHERE id_product = ' . (int) $productId . ' AND id_shop = ' . (int) $shopId;
                 $results = Db::getInstance()->ExecuteS($sql);
                 if (empty($results)) {
                     if (_PS_VERSION_ < '1.5') {
                         return Db::getInstance()->autoExecute(
                             _DB_PREFIX_ . 'lengow_product',
                             array(
-                                'id_product' => (int)$productId,
-                                'id_shop' => (int)$shopId,
+                                'id_product' => (int) $productId,
+                                'id_shop' => (int) $shopId,
                             ),
                             'INSERT'
                         );
-                    } else {
-                        return Db::getInstance()->insert(
-                            'lengow_product',
-                            array(
-                                'id_product' => (int)$productId,
-                                'id_shop' => (int)$shopId,
-                            )
-                        );
                     }
+                    return Db::getInstance()->insert(
+                        'lengow_product',
+                        array(
+                            'id_product' => (int) $productId,
+                            'id_shop' => (int) $shopId,
+                        )
+                    );
                 }
             } catch (PrestaShopDatabaseException $e) {
                 return false;
@@ -892,7 +892,7 @@ class LengowProduct extends Product
         foreach (self::$productApiNodes as $node) {
             $temp[$node] = $api->{$node};
         }
-        $temp['price_unit'] = (float)$temp['amount'] / (float)$temp['quantity'];
+        $temp['price_unit'] = (float) $temp['amount'] / (float) $temp['quantity'];
         return $temp;
     }
 
@@ -929,12 +929,12 @@ class LengowProduct extends Product
                 $sku = str_replace('X', '_', $sku);
                 $sku = explode('_', $sku);
                 if (isset($sku[0]) && preg_match('/^[0-9]*$/', $sku[0]) && count($sku) < 3) {
-                    $idsProduct['id_product'] = (int)$sku[0];
+                    $idsProduct['id_product'] = (int) $sku[0];
                     if (isset($sku[1])) {
                         if (preg_match('/^[0-9]*$/', $sku[1]) && count($sku) === 2) {
                             // compatibility with old plugins -> XXX_0 product without variation
                             if ($sku[1] != 0) {
-                                $idsProduct['id_product_attribute'] = (int)$sku[1];
+                                $idsProduct['id_product_attribute'] = (int) $sku[1];
                             }
                         } else {
                             return false;
@@ -972,10 +972,7 @@ class LengowProduct extends Product
             return false;
         }
         $product = new LengowProduct($idProduct);
-        if ($product->name === '' || !self::isValidId($product, $apiDatas)) {
-            return false;
-        }
-        return true;
+        return !($product->name === '' || !self::isValidId($product, $apiDatas));
     }
 
     /**
@@ -1017,7 +1014,7 @@ class LengowProduct extends Product
             $query->from('product', 'p');
             $query->innerJoin('product_shop', 'ps', 'p.id_product = ps.id_product');
             $query->where('p.' . pSQL($key) . ' = \'' . pSQL($value) . '\'');
-            $query->where('ps.`id_shop` = \'' . (int)$idShop . '\'');
+            $query->where('ps.`id_shop` = \'' . (int) $idShop . '\'');
             $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
             // if no result, search in attribute
             if ($result == '') {
@@ -1026,7 +1023,7 @@ class LengowProduct extends Product
                 $query->from('product_attribute', 'pa');
                 $query->innerJoin('product_shop', 'ps', 'pa.id_product = ps.id_product');
                 $query->where('pa.' . pSQL($key) . ' = \'' . pSQL($value) . '\'');
-                $query->where('ps.`id_shop` = \'' . (int)$idShop . '\'');
+                $query->where('ps.`id_shop` = \'' . (int) $idShop . '\'');
                 $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
             }
         } else {
@@ -1088,18 +1085,17 @@ class LengowProduct extends Product
      */
     public static function calculatePriceWithoutTax($product, $idAddress, $context)
     {
-        $taxAddress = new LengowAddress((int)$idAddress);
+        $taxAddress = new LengowAddress((int) $idAddress);
         if (_PS_VERSION_ >= '1.5') {
             $taxManager = TaxManagerFactory::getManager(
                 $taxAddress,
-                Product::getIdTaxRulesGroupByIdProduct((int)$product['id_product'], $context)
+                Product::getIdTaxRulesGroupByIdProduct((int) $product['id_product'], $context)
             );
             $taxCalculator = $taxManager->getTaxCalculator();
             return $taxCalculator->removeTaxes($product['price_wt']);
-        } else {
-            $rate = Tax::getProductTaxRate((int)$product['id_product'], (int)$idAddress);
-            return $product['price_wt'] / (1 + $rate / 100);
         }
+        $rate = Tax::getProductTaxRate((int) $product['id_product'], (int) $idAddress);
+        return $product['price_wt'] / (1 + $rate / 100);
     }
 
 
@@ -1147,8 +1143,7 @@ class LengowProduct extends Product
         }
         if ($result) {
             return $result[0]['name'];
-        } else {
-            throw new LengowException(LengowMain::setLogMessage('log.export.error_cant_find_image_size'));
         }
+        throw new LengowException(LengowMain::setLogMessage('log.export.error_cant_find_image_size'));
     }
 }

@@ -39,16 +39,16 @@ class LengowFeedController extends LengowController
             switch ($action) {
                 case 'change_option_selected':
                     $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
-                    $idShop = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
+                    $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
-                            'LENGOW_EXPORT_SELECTION_ENABLED',
+                            LengowConfiguration::SELECTION_ENABLED,
                             $state,
                             null,
                             null,
                             $idShop
                         );
-                        $state = LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $idShop);
+                        $state = LengowConfiguration::get(LengowConfiguration::SELECTION_ENABLED, null, null, $idShop);
                         $data = array();
                         $data['shop_id'] = $idShop;
                         if ($state) {
@@ -62,7 +62,7 @@ class LengowFeedController extends LengowController
                     break;
                 case 'select_product':
                     $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
-                    $idShop = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
+                    $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
                     $productId = isset($_REQUEST['id_product']) ? $_REQUEST['id_product'] : null;
                     if ($state !== null) {
                         LengowProduct::publish($productId, $state, $idShop);
@@ -70,7 +70,7 @@ class LengowFeedController extends LengowController
                     }
                     break;
                 case 'load_table':
-                    $idShop = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
+                    $idShop = isset($_REQUEST['id_shop']) ? (int )$_REQUEST['id_shop'] : null;
                     $data = array();
                     $data['shop_id'] = $idShop;
                     $data['footer_content'] = preg_replace('/\r|\n/', '', $this->buildTable($idShop));
@@ -80,7 +80,7 @@ class LengowFeedController extends LengowController
                     echo Tools::jsonEncode($data);
                     break;
                 case 'lengow_export_action':
-                    $idShop = isset($_REQUEST['id_shop']) ? (int)$_REQUEST['id_shop'] : null;
+                    $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
                     $selection = isset($_REQUEST['selection']) ? $_REQUEST['selection'] : null;
                     $selectAll = isset($_REQUEST['select_all']) ? $_REQUEST['select_all'] : null;
                     $exportAction = isset($_REQUEST['export_action']) ? $_REQUEST['export_action'] : null;
@@ -152,20 +152,14 @@ class LengowFeedController extends LengowController
         }
         foreach ($results as $row) {
             $shop = new LengowShop($row['id_shop']);
-            $lengowExport = new LengowExport(array('shop_id' => $shop->id));
+            $lengowExport = new LengowExport(array(LengowExport::PARAM_SHOP_ID => $shop->id));
             $shopCollection[] = array(
                 'shop' => $shop,
                 'link' => LengowMain::getExportUrl($shop->id),
                 'total_product' => $lengowExport->getTotalProduct(),
                 'total_export_product' => $lengowExport->getTotalExportProduct(),
-                'last_export' => LengowConfiguration::get(
-                    'LENGOW_LAST_EXPORT',
-                    null,
-                    null,
-                    $shop->id
-                ),
                 'option_selected' => LengowConfiguration::get(
-                    'LENGOW_EXPORT_SELECTION_ENABLED',
+                    LengowConfiguration::SELECTION_ENABLED,
                     null,
                     null,
                     $shop->id
@@ -186,7 +180,7 @@ class LengowFeedController extends LengowController
      */
     public function reloadTotal($idShop)
     {
-        $lengowExport = new LengowExport(array('shop_id' => $idShop));
+        $lengowExport = new LengowExport(array(LengowExport::PARAM_SHOP_ID => $idShop));
         $result = array();
         $result['total_export_product'] = $lengowExport->getTotalExportProduct();
         $result['total_product'] = $lengowExport->getTotalProduct();
@@ -290,35 +284,35 @@ class LengowFeedController extends LengowController
 
         $join[] = ' INNER JOIN ' . _DB_PREFIX_ . 'product_lang pl ON (pl.id_product = p.id_product
             AND pl.id_lang = ' . $this->context->language->id .
-            (_PS_VERSION_ < '1.5' ? '' : ' AND pl.id_shop = ' . (int)$idShop) . ')';
+            (_PS_VERSION_ < '1.5' ? '' : ' AND pl.id_shop = ' . (int) $idShop) . ')';
         $join[] = ' LEFT JOIN ' . _DB_PREFIX_ . 'lengow_product lp ON (lp.id_product = p.id_product
-            AND lp.id_shop = ' . (int)$idShop . ' ) ';
+            AND lp.id_shop = ' . (int) $idShop . ' ) ';
         if (_PS_VERSION_ >= '1.5') {
             $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'product_shop` ps ON (p.`id_product` = ps.`id_product`
-                AND ps.id_shop = ' . (int)$idShop . ') ';
+                AND ps.id_shop = ' . (int) $idShop . ') ';
             $join[] = ' LEFT JOIN ' . _DB_PREFIX_ . 'stock_available sav ON (sav.id_product = p.id_product
-                AND sav.id_product_attribute = 0 AND sav.id_shop = ' . (int)$idShop . ')';
+                AND sav.id_product_attribute = 0 AND sav.id_shop = ' . (int) $idShop . ')';
         }
         if (_PS_VERSION_ >= '1.5') {
             if (Shop::isFeatureActive()) {
                 $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
                     ON (ps.`id_category_default` = cl.`id_category`
-                    AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = ' . (int)$idShop . ')';
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (shop.id_shop = ' . (int)$idShop . ') ';
+                    AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = ' . (int) $idShop . ')';
+                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (shop.id_shop = ' . (int) $idShop . ') ';
             } else {
                 $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
                     ON (p.`id_category_default` = cl.`id_category`
                     AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = 1)';
             }
             $select[] = ' sav.quantity ';
-            if (!LengowConfiguration::get('LENGOW_EXPORT_INACTIVE', null, null, (int)$idShop)) {
+            if (!LengowConfiguration::get(LengowConfiguration::INACTIVE_ENABLED, null, null, (int) $idShop)) {
                 $where[] = ' ps.active = 1 ';
             }
         } else {
             $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl ON (p.`id_category_default` = cl.`id_category`
                 AND pl.`id_lang` = cl.`id_lang`)';
             $select[] = ' p.quantity ';
-            if (!LengowConfiguration::get('LENGOW_EXPORT_INACTIVE')) {
+            if (!LengowConfiguration::get(LengowConfiguration::INACTIVE_ENABLED)) {
                 $where[] = ' p.active = 1 ';
             }
         }
@@ -403,7 +397,7 @@ class LengowFeedController extends LengowController
                         $imageProduct = new Image($idImage);
                         $collection[$i]['image'] = cacheImage(
                             _PS_IMG_DIR_ . 'p/' . $imageProduct->getExistingImgPath() . '.jpg',
-                            'product_mini_' . (int)($productId) . '.jpg',
+                            'product_mini_' . (int) ($productId) . '.jpg',
                             45,
                             'jpg'
                         );
@@ -413,7 +407,7 @@ class LengowFeedController extends LengowController
                     if ($coverImage) {
                         $idImage = $coverImage['id_image'];
                         $pathToImage = _PS_IMG_DIR_ . 'p/' . Image::getImgFolderStatic($idImage)
-                            . (int)$idImage . '.jpg';
+                            . (int) $idImage . '.jpg';
                         $collection[$i]['image'] = ImageManager::thumbnail(
                             $pathToImage,
                             'product_mini_' . $collection[$i]['id_product'] . '_' . $idShop . '.jpg',
@@ -426,7 +420,6 @@ class LengowFeedController extends LengowController
         }
         $this->list->updateCollection($collection);
         $paginationBlock = $this->list->renderPagination(array('nav_class' => 'lgw-pagination'));
-        $lengowLink = new LengowLink();
         $html = '<div class="lengow_table_top">';
         $html .= '<div class="lengow_toolbar">';
         if (!$this->toolbox) {
@@ -435,7 +428,7 @@ class LengowFeedController extends LengowController
                 array('nb' => $this->list->getTotal())
             );
             $html .= '<a href="#" data-id_shop="' . $idShop . '" style="display:none;"
-                data-href="' . $lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true) . '"
+                data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true) . '"
                 data-message="' . $messageRemoveConfirmation . '"
                 data-action="lengow_export_action"
                 data-export-action="lengow_remove_from_export"
@@ -446,7 +439,7 @@ class LengowFeedController extends LengowController
                 array('nb' => $this->list->getTotal())
             );
             $html .= '<a href="#" data-id_shop="' . $idShop . '" style="display:none;"
-                data-href="' . $lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true) . '"
+                data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true) . '"
                 data-message="' . $messageAddConfirmation . '"
                 data-action="lengow_export_action"
                 data-export-action="lengow_add_to_export"
@@ -505,11 +498,9 @@ class LengowFeedController extends LengowController
                     $href = $link->getAdminLink('AdminProducts', true, $params);
                 }
                 return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
-            } else {
-                return $value;
             }
-        } else {
             return $value;
         }
+        return $value;
     }
 }

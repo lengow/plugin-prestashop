@@ -89,11 +89,11 @@
             {/if}
             <p>
                 {$locale->t('connection.cms.failed_help')|escape:'htmlall':'UTF-8'}
-                <a href="{$locale->t('help.screen.knowledge_link_url')|escape:'htmlall':'UTF-8'}" target="_blank">
+                <a href="{$helpCenterLink|escape:'htmlall':'UTF-8'}" target="_blank">
                     {$locale->t('connection.cms.failed_help_center')|escape:'htmlall':'UTF-8'}
                 </a>
                 {$locale->t('connection.cms.failed_help_or')|escape:'htmlall':'UTF-8'}
-                <a href="{$locale->t('help.screen.link_lengow_support')|escape:'htmlall':'UTF-8'}" target="_blank">
+                <a href="{$supportLink|escape:'htmlall':'UTF-8'}" target="_blank">
                     {$locale->t('connection.cms.failed_help_customer_success_team')|escape:'htmlall':'UTF-8'}
                 </a>
             </p>

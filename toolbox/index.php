@@ -22,30 +22,19 @@
 require 'conf.inc.php';
 require 'views/header.php';
 
-$check = new LengowCheck();
-if (_PS_VERSION_ < '1.5') {
-    $shopCollection = array(array('id_shop' => 1));
-} else {
-    $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
-    $shopCollection = Db::getInstance()->ExecuteS($sql);
-}
+$toolboxElement = new LengowToolboxElement();
 
 ?>
     <div class="container">
         <h1><?php echo $locale->t('toolbox.menu.lengow_toolbox'); ?></h1>
         <h3><i class="fa fa-check-square-o"></i> <?php echo $locale->t('toolbox.index.checklist_information'); ?></h3>
-        <?php echo $check->getCheckList(); ?>
+        <?php echo $toolboxElement->getCheckList(); ?>
         <h3><i class="fa fa-cog"></i> <?php echo $locale->t('toolbox.index.global_information'); ?></h3>
-        <?php echo $check->getGlobalInformation(); ?>
+        <?php echo $toolboxElement->getGlobalInformation(); ?>
         <h3><i class="fa fa-download"></i> <?php echo $locale->t('toolbox.index.import_information'); ?></h3>
-        <?php echo $check->getImportInformation(); ?>
+        <?php echo $toolboxElement->getImportInformation(); ?>
         <h3><i class="fa fa-upload"></i> <?php echo $locale->t('toolbox.index.export_information'); ?></h3>
-        <?php
-        foreach ($shopCollection as $row) {
-            $shop = new LengowShop($row['id_shop']);
-            echo $check->getInformationByStore($shop);
-        }
-        ?>
+        <?php echo $toolboxElement->getExportInformation(); ?>
     </div>
 <?php
 require 'views/footer.php';

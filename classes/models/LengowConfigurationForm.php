@@ -24,6 +24,12 @@
  */
 class LengowConfigurationForm
 {
+    /* Configuration form type */
+    const TYPE_TEXT = 'text';
+    const TYPE_CHECKBOX = 'checkbox';
+    const TYPE_SELECT = 'select';
+    const TYPE_DAY = 'day';
+
     /**
      * @var array $fields checkbox keys
      */
@@ -58,7 +64,9 @@ class LengowConfigurationForm
         $html = '';
         foreach ($displayKeys as $key) {
             if (isset($this->fields[$key])) {
-                if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
+                if (isset($this->fields[$key][LengowConfiguration::PARAM_SHOP])
+                    && $this->fields[$key][LengowConfiguration::PARAM_SHOP]
+                ) {
                     $html .= $this->input($key, $this->fields[$key], $idShop);
                 }
             }
@@ -78,8 +86,10 @@ class LengowConfigurationForm
         $html = '';
         foreach ($displayKeys as $key) {
             if (isset($this->fields[$key])) {
-                if (!isset($this->fields[$key]['shop']) || !$this->fields[$key]['shop']) {
-                    $html .= $this->input($key, $this->fields[$key], null);
+                if (!isset($this->fields[$key][LengowConfiguration::PARAM_SHOP])
+                    || !$this->fields[$key][LengowConfiguration::PARAM_SHOP]
+                ) {
+                    $html .= $this->input($key, $this->fields[$key]);
                 }
             }
         }
@@ -104,38 +114,42 @@ class LengowConfigurationForm
         } else {
             $value = LengowConfiguration::getGlobalValue($key);
         }
-        $readonly = isset($input['readonly']) && $input['readonly'] ? 'readonly' : '';
-        $inputType = isset($input['type']) ? $input['type'] : 'text';
-        $legend = isset($input['legend']) ? $input['legend'] : '';
-        $label = isset($input['label']) ? $input['label'] : '';
-        $placeholder = isset($input['placeholder']) ? $input['placeholder'] : '';
+        $inputType = isset($input[LengowConfiguration::PARAM_TYPE])
+            ? $input[LengowConfiguration::PARAM_TYPE]
+            : self::TYPE_TEXT;
+        $legend = isset($input[LengowConfiguration::PARAM_LEGEND]) ? $input[LengowConfiguration::PARAM_LEGEND] : '';
+        $label = isset($input[LengowConfiguration::PARAM_LABEL]) ? $input[LengowConfiguration::PARAM_LABEL] : '';
+        $placeholder = isset($input[LengowConfiguration::PARAM_PLACEHOLDER])
+            ? $input[LengowConfiguration::PARAM_PLACEHOLDER]
+            : '';
         $html .= '<div class="form-group ' . Tools::strtolower($key) . '"'
             . ($idShop ? ' data-id_shop="' . $idShop . '"' : '') . '>';
         switch ($inputType) {
-            case 'checkbox':
+            case self::TYPE_CHECKBOX:
                 $checked = $value ? 'checked' : '';
                 $html .= '<div class="lgw-switch ' . $checked . '"><label><div><span></span>';
-                $html .= '<input name="' . $name . '" type="checkbox" ' . $checked . ' ' . $readonly . ' >';
+                $html .= '<input name="' . $name . '" type="checkbox" ' . $checked . ' >';
                 $html .= '</div>' . $label;
                 $html .= '</label></div></div>';
                 if (!empty($legend)) {
                     $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
                 }
                 break;
-            case 'text':
+            case self::TYPE_TEXT:
                 $html .= '<label class="control-label">' . $label . '</label>
-                    <input type="text" name="' . $name . '"
-                        class="form-control" placeholder="' . $placeholder . '"
-                        value="' . $value . '" ' . $readonly . '>
+                    <input type="text"
+                           name="' . $name . '"
+                           class="form-control" placeholder="' . $placeholder . '"
+                           value="' . $value . '">
                     </div>';
                 if (!empty($legend)) {
                     $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
                 }
                 break;
-            case 'select':
+            case self::TYPE_SELECT:
                 $html .= '<label class="control-label">' . $label . '</label>
                     <select class="form-control lengow_select" name="' . $name . '">';
-                foreach ($input['collection'] as $row) {
+                foreach ($input[LengowConfiguration::PARAM_COLLECTION] as $row) {
                     $selected = $row['id'] == $value ? 'selected' : '';
                     $html .= '<option value="' . $row['id'] . '" ' . $selected . '>' . $row['text'] . '</option>';
                 }
@@ -145,16 +159,15 @@ class LengowConfigurationForm
                 }
                 $html .= '</div>';
                 break;
-            case 'day':
+            case self::TYPE_DAY:
                 $html .= '<label class="control-label">' . $label . '</label>
                         <div class="input-group">
                             <input type="number"
-                                name="' . $name . '"
-                                class="form-control"
-                                value="' . $value . '" '
-                                . $readonly . '
-                                min="' . (LengowImport::MIN_INTERVAL_TIME / 86400) . '"
-                                max="' . (LengowImport::MAX_INTERVAL_TIME / 86400) . '">
+                                   name="' . $name . '"
+                                   class="form-control"
+                                   value="' . $value . '"
+                                   min="' . (LengowImport::MIN_INTERVAL_TIME / 86400) . '"
+                                   max="' . (LengowImport::MAX_INTERVAL_TIME / 86400) . '">
                             <div class="input-group-addon">
                                 <div class="unit">' . $this->locale->t('order_setting.screen.nb_days') . '</div>
                             </div>
@@ -188,10 +201,13 @@ class LengowConfigurationForm
         }
         foreach ($_REQUEST as $key => $value) {
             if (isset($this->fields[$key])) {
-                if (isset($this->fields[$key]['shop']) && $this->fields[$key]['shop']) {
+                if (isset($this->fields[$key][LengowConfiguration::PARAM_SHOP])
+                    && $this->fields[$key][LengowConfiguration::PARAM_SHOP]
+                ) {
                     foreach ($value as $idShop => $shopValue) {
-                        if (isset($this->fields[$key]['type']) &&
-                            $this->fields[$key]['type'] === 'checkbox' && $shopValue === 'on'
+                        if (isset($this->fields[$key][LengowConfiguration::PARAM_TYPE])
+                            && $this->fields[$key][LengowConfiguration::PARAM_TYPE] === self::TYPE_CHECKBOX
+                            && $shopValue === 'on'
                         ) {
                             $shopValue = 1;
                         }
@@ -201,11 +217,12 @@ class LengowConfigurationForm
                     }
                 } else {
                     if (is_array($value)) {
-                        $this->checkAndLog($key, join(',', $value));
-                        LengowConfiguration::updateGlobalValue($key, join(',', $value));
+                        $this->checkAndLog($key, implode(',', $value));
+                        LengowConfiguration::updateGlobalValue($key, implode(',', $value));
                     } else {
-                        if (isset($this->fields[$key]['type']) &&
-                            $this->fields[$key]['type'] === 'checkbox' && $value === 'on'
+                        if (isset($this->fields[$key][LengowConfiguration::PARAM_TYPE])
+                            && $this->fields[$key][LengowConfiguration::PARAM_TYPE] === self::TYPE_CHECKBOX
+                            && $value === 'on'
                         ) {
                             $value = 1;
                         }
@@ -219,10 +236,13 @@ class LengowConfigurationForm
         foreach ($shopCollection as $shop) {
             $idShop = $shop['id_shop'];
             foreach ($this->fields as $key => $value) {
-                if (!in_array($key, $checkboxKeys)) {
+                if (!in_array($key, $checkboxKeys, true)) {
                     continue;
                 }
-                if ($value['type'] === 'checkbox' && isset($value['shop']) && $value['shop']) {
+                if ($value[LengowConfiguration::PARAM_TYPE] === self::TYPE_CHECKBOX
+                    && isset($value[LengowConfiguration::PARAM_SHOP])
+                    && $value[LengowConfiguration::PARAM_SHOP]
+                ) {
                     if (!isset($_REQUEST[$key][$idShop])) {
                         $this->checkAndLog($key, 0, $idShop);
                         LengowConfiguration::updateValue($key, 0, false, null, $idShop);
@@ -231,10 +251,10 @@ class LengowConfigurationForm
             }
         }
         foreach ($this->fields as $key => $value) {
-            if (!in_array($key, $checkboxKeys)) {
+            if (!in_array($key, $checkboxKeys, true)) {
                 continue;
             }
-            if ((!isset($value['shop']) || !$value['shop'])) {
+            if ((!isset($value[LengowConfiguration::PARAM_SHOP]) || !$value[LengowConfiguration::PARAM_SHOP])) {
                 if (!isset($_REQUEST[$key])) {
                     $this->checkAndLog($key, 0);
                     LengowConfiguration::updateGlobalValue($key, 0);
@@ -259,12 +279,16 @@ class LengowConfigurationForm
             } else {
                 $oldValue = LengowConfiguration::get($key, null, null, $idShop);
             }
-            if (isset($setting['type']) && $setting['type'] === 'checkbox') {
-                $value = (int)$value;
-                $oldValue = (int)$oldValue;
+            if (isset($setting[LengowConfiguration::PARAM_TYPE])
+                && $setting[LengowConfiguration::PARAM_TYPE] === self::TYPE_CHECKBOX
+            ) {
+                $value = (int) $value;
+                $oldValue = (int) $oldValue;
             }
             if ($oldValue != $value) {
-                if (isset($setting['secret']) && $setting['secret']) {
+                if (isset($setting[LengowConfiguration::PARAM_SECRET])
+                    && $setting[LengowConfiguration::PARAM_SECRET]
+                ) {
                     $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
                     $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
                 }
@@ -274,7 +298,7 @@ class LengowConfigurationForm
                         LengowMain::setLogMessage(
                             'log.setting.setting_change_for_shop',
                             array(
-                                'key' => $key,
+                                'key' => LengowConfiguration::$genericParamKeys[$key],
                                 'old_value' => $oldValue,
                                 'value' => $value,
                                 'shop_id' => $idShop,
@@ -287,7 +311,7 @@ class LengowConfigurationForm
                         LengowMain::setLogMessage(
                             'log.setting.setting_change',
                             array(
-                                'key' => $key,
+                                'key' => LengowConfiguration::$genericParamKeys[$key],
                                 'old_value' => $oldValue,
                                 'value' => $value,
                             )
@@ -295,8 +319,10 @@ class LengowConfigurationForm
                     );
                 }
                 // save last update date for a specific settings (change synchronisation interval time)
-                if (isset($setting['update']) && $setting['update']) {
-                    LengowConfiguration::updateGlobalValue('LENGOW_LAST_SETTING_UPDATE', time());
+                if (isset($setting[LengowConfiguration::PARAM_UPDATE])
+                    && $setting[LengowConfiguration::PARAM_UPDATE]
+                ) {
+                    LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_SETTING, time());
                 }
             }
         }

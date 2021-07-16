@@ -23,12 +23,12 @@ require 'conf.inc.php';
 require 'views/header.php';
 
 $locale = new LengowTranslation();
-$check = new LengowCheck();
+$toolboxElement = new LengowToolboxElement();
 
 ?>
     <div class="container">
         <h1><?php echo $locale->t('toolbox.checksum.checksum_integrity'); ?></h1>
-        <?php echo $check->checkFileMd5(); ?>
+        <?php echo $toolboxElement->checkFileMd5(); ?>
     </div>
 <?php
 require 'views/footer.php';

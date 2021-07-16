@@ -53,70 +53,78 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
 $lengow = new Lengow();
 // check if Lengow is installed and enabled
 if (!Module::isInstalled($lengow->name)) {
-    if (_PS_VERSION_ >= 1.5 && !Module::isEnabled($lengow->name)) {
-        header('HTTP/1.1 400 Bad Request');
-        die('Lengow module is not active');
-    }
+    $errorMessage = (_PS_VERSION_ >= 1.5 && !Module::isEnabled($lengow->name))
+        ? 'Lengow module is not active'
+        : 'Lengow module is not installed';
     header('HTTP/1.1 400 Bad Request');
-    die('Lengow module is not installed');
+    die($errorMessage);
 }
 // CheckIP
-$token = Tools::getIsset('token') ? Tools::getValue('token') : '';
+$token = Tools::getIsset(LengowExport::PARAM_TOKEN) ? Tools::getValue(LengowExport::PARAM_TOKEN) : '';
 if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)) {
-    if (Tools::strlen($token) > 0) {
-        header('HTTP/1.1 403 Forbidden');
-        die('Unauthorized access for this token : ' . $token);
+    if ($token === '' || (bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)) {
+        $errorMessage = 'Unauthorized access for IP: ' . $_SERVER['REMOTE_ADDR'];
     } else {
-        header('HTTP/1.1 403 Forbidden');
-        die('Unauthorized access for IP : ' . $_SERVER['REMOTE_ADDR']);
+        $errorMessage = 'Unauthorized access for this token : ' . $token;
     }
+    header('HTTP/1.1 403 Forbidden');
+    die($errorMessage);
 }
 // get params data
-$getParams = Tools::getIsset('get_params') ? (bool)Tools::getValue('get_params') : false;
+$getParams = Tools::getIsset(LengowExport::PARAM_GET_PARAMS)
+    ? (bool) Tools::getValue(LengowExport::PARAM_GET_PARAMS)
+    : false;
 // get mode
-$mode = (Tools::getIsset('mode') && (Tools::getValue('mode') === 'size' || Tools::getValue('mode') === 'total'))
-    ? Tools::getValue('mode')
-    : null;
+$mode = (
+    Tools::getIsset(LengowExport::PARAM_MODE)
+    && (Tools::getValue(LengowExport::PARAM_MODE) === 'size' || Tools::getValue(LengowExport::PARAM_MODE) === 'total')
+) ? Tools::getValue(LengowExport::PARAM_MODE) : null;
 // export format (csv, yaml, xml, json)
-$format = Tools::getIsset('format')
-    ? Tools::getValue('format')
-    : LengowConfiguration::getGlobalValue('LENGOW_EXPORT_FORMAT');
+$format = Tools::getIsset(LengowExport::PARAM_FORMAT)
+    ? Tools::getValue(LengowExport::PARAM_FORMAT)
+    : LengowConfiguration::getGlobalValue(LengowConfiguration::EXPORT_FORMAT);
 // export in file or not
-$stream = Tools::getIsset('stream')
-    ? (bool)Tools::getValue('stream')
-    : !(bool)LengowConfiguration::getGlobalValue('LENGOW_EXPORT_FILE_ENABLED');
+$stream = Tools::getIsset(LengowExport::PARAM_STREAM)
+    ? (bool) Tools::getValue(LengowExport::PARAM_STREAM)
+    : !(bool) LengowConfiguration::getGlobalValue(LengowConfiguration::EXPORT_FILE_ENABLED);
 // export offset
-$offset = Tools::getIsset('offset') ? (int)Tools::getValue('offset') : null;
+$offset = Tools::getIsset(LengowExport::PARAM_OFFSET) ? (int) Tools::getValue(LengowExport::PARAM_OFFSET) : null;
 // export limit
-$limit = Tools::getIsset('limit') ? (int)Tools::getValue('limit') : null;
+$limit = Tools::getIsset(LengowExport::PARAM_LIMIT) ? (int) Tools::getValue(LengowExport::PARAM_LIMIT) : null;
 // export specific shop
-if (Tools::getIsset('shop') && _PS_VERSION_ >= '1.5') {
-    $shop = new Shop((int)Tools::getValue('shop'));
+if (_PS_VERSION_ >= '1.5' && Tools::getIsset(LengowExport::PARAM_SHOP)) {
+    $shop = new Shop((int) Tools::getValue(LengowExport::PARAM_SHOP));
     if ($shop->id) {
         $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
         Context::getContext()->shop = $shop;
     }
 }
-$idShop = (int)Context::getContext()->shop->id;
+$idShop = (int) Context::getContext()->shop->id;
 // export lengow selection
-$selection = Tools::getIsset('all') ? !(bool)Tools::getValue('all') : null;
-if (Tools::getIsset('selection') || $selection !== null) {
-    $selection = $selection !== null ? $selection : (bool)Tools::getValue('selection');
+$selection = Tools::getIsset(LengowExport::PARAM_LEGACY_SELECTION)
+    ? !(bool) Tools::getValue(LengowExport::PARAM_LEGACY_SELECTION)
+    : null;
+if ($selection !== null || Tools::getIsset(LengowExport::PARAM_SELECTION)) {
+    $selection = $selection !== null ? $selection : (bool) Tools::getValue(LengowExport::PARAM_LIMIT);
 } else {
-    $selection = (bool)LengowConfiguration::get('LENGOW_EXPORT_SELECTION_ENABLED', null, null, $idShop);
+    $selection = (bool) LengowConfiguration::get(LengowConfiguration::SELECTION_ENABLED, null, null, $idShop);
 }
 // export out of stock products
-$outOfStock = Tools::getIsset('out_stock') ? (bool)Tools::getValue('out_stock') : null;
-if (Tools::getIsset('out_of_stock') || $outOfStock !== null) {
-    $outOfStock = $outOfStock !== null ? $outOfStock : (bool)Tools::getValue('out_of_stock');
+$outOfStock = Tools::getIsset(LengowExport::PARAM_LEGACY_OUT_OF_STOCK)
+    ? (bool) Tools::getValue(LengowExport::PARAM_LEGACY_OUT_OF_STOCK)
+    : null;
+if ($outOfStock !== null || Tools::getIsset(LengowExport::PARAM_OUT_OF_STOCK)) {
+    $outOfStock = $outOfStock !== null ? $outOfStock : (bool) Tools::getValue(LengowExport::PARAM_OUT_OF_STOCK);
 } else {
-    $outOfStock = (bool)LengowConfiguration::get('LENGOW_EXPORT_OUT_STOCK', null, null, $idShop);
+    $outOfStock = (bool) LengowConfiguration::get(LengowConfiguration::OUT_OF_STOCK_ENABLED, null, null, $idShop);
 }
 // export specific products
 $productIds = array();
-$ids = Tools::getIsset('ids') ? Tools::getValue('ids') : null;
-if (Tools::getIsset('product_ids') || $ids !== null) {
-    $ids = $ids !== null ? $ids : Tools::getValue('product_ids');
+$ids = Tools::getIsset(LengowExport::PARAM_LEGACY_PRODUCT_IDS)
+    ? Tools::getValue(LengowExport::PARAM_LEGACY_PRODUCT_IDS)
+    : null;
+if ($ids !== null || Tools::getIsset(LengowExport::PARAM_PRODUCT_IDS)) {
+    $ids = $ids !== null ? $ids : Tools::getValue(LengowExport::PARAM_PRODUCT_IDS);
     if (Tools::strlen($ids) > 0) {
         $ids = str_replace(array(';', '|', ':'), ',', $ids);
         $ids = preg_replace('/[^0-9\,]/', '', $ids);
@@ -125,46 +133,50 @@ if (Tools::getIsset('product_ids') || $ids !== null) {
 }
 // export product variation
 $variation = null;
-if (Tools::getIsset('mode')) {
-    if (Tools::getValue('mode') === 'simple') {
+if (Tools::getIsset(LengowExport::PARAM_LEGACY_VARIATION)) {
+    if (Tools::getValue(LengowExport::PARAM_LEGACY_VARIATION) === 'simple') {
         $variation = false;
-    } elseif (Tools::getValue('mode') === 'full') {
+    } elseif (Tools::getValue(LengowExport::PARAM_LEGACY_VARIATION) === 'full') {
         $variation = true;
     }
 }
-if (Tools::getIsset('variation') || $variation !== null) {
-    $variation = $variation !== null ? $variation : (bool)Tools::getValue('variation');
+if ($variation !== null || Tools::getIsset(LengowExport::PARAM_VARIATION)) {
+    $variation = $variation !== null ? $variation : (bool) Tools::getValue(LengowExport::PARAM_VARIATION);
 } else {
-    $variation = (bool)LengowConfiguration::get('LENGOW_EXPORT_VARIATION_ENABLED', null, null, $idShop);
+    $variation = (bool) LengowConfiguration::get(LengowConfiguration::VARIATION_ENABLED, null, null, $idShop);
 }
 // export inactive products
 $inactive = null;
-if (Tools::getValue('active')) {
-    if (Tools::getValue('active') === 'enabled') {
+if (Tools::getValue(LengowExport::PARAM_LEGACY_INACTIVE)) {
+    if (Tools::getValue(LengowExport::PARAM_LEGACY_INACTIVE) === 'enabled') {
         $inactive = false;
-    } elseif (Tools::getValue('active') === 'all') {
+    } elseif (Tools::getValue(LengowExport::PARAM_LEGACY_INACTIVE) === 'all') {
         $inactive = true;
     }
 }
-if (Tools::getIsset('inactive') || $inactive !== null) {
-    $inactive = $inactive !== null ? $inactive : (bool)Tools::getValue('inactive');
+if ($inactive !== null || Tools::getIsset(LengowExport::PARAM_INACTIVE)) {
+    $inactive = $inactive !== null ? $inactive : (bool) Tools::getValue(LengowExport::PARAM_INACTIVE);
 } else {
-    $inactive = (bool)LengowConfiguration::get('LENGOW_EXPORT_INACTIVE', null, null, $idShop);
+    $inactive = (bool) LengowConfiguration::get(LengowConfiguration::INACTIVE_ENABLED, null, null, $idShop);
 }
 // convert price for a specific currency
-$currency = Tools::getIsset('cur') ? Tools::getValue('cur') : null;
-if (Tools::getIsset('currency') || $currency !== null) {
-    $currency = $currency !== null ? $currency : Tools::getValue('currency');
-    $idCurrency = (int)Currency::getIdByIsoCode($currency);
+$currency = Tools::getIsset(LengowExport::PARAM_LEGACY_CURRENCY)
+    ? Tools::getValue(LengowExport::PARAM_LEGACY_CURRENCY)
+    : null;
+if ($currency !== null || Tools::getIsset(LengowExport::PARAM_CURRENCY)) {
+    $currency = $currency !== null ? $currency : Tools::getValue(LengowExport::PARAM_CURRENCY);
+    $idCurrency = (int) Currency::getIdByIsoCode($currency);
     if ($idCurrency !== 0) {
         Context::getContext()->currency = new Currency($idCurrency);
     }
 }
 // define language
-$language = Tools::getIsset('lang') ? Tools::getValue('lang') : null;
-if (Tools::getIsset('language') || $language !== null) {
-    $language = $language !== null ? $language : Tools::getValue('language');
-    $languageId = (int)Language::getIdByIso($language);
+$language = Tools::getIsset(LengowExport::PARAM_LEGACY_LANGUAGE)
+    ? Tools::getValue(LengowExport::PARAM_LEGACY_LANGUAGE)
+    : null;
+if ($language !== null || Tools::getIsset(LengowExport::PARAM_LANGUAGE)) {
+    $language = $language !== null ? $language : Tools::getValue(LengowExport::PARAM_LANGUAGE);
+    $languageId = (int) Language::getIdByIso($language);
     if ($languageId === 0) {
         $languageId = Context::getContext()->language->id;
     }
@@ -172,27 +184,33 @@ if (Tools::getIsset('language') || $language !== null) {
     $languageId = Context::getContext()->language->id;
 }
 // get legacy fields
-$legacyFields = Tools::getIsset('legacy_fields') ? (bool)Tools::getValue('legacy_fields') : null;
+$legacyFields = Tools::getIsset(LengowExport::PARAM_LEGACY_FIELDS)
+    ? (bool) Tools::getValue(LengowExport::PARAM_LEGACY_FIELDS)
+    : null;
 // update export date
-$updateExportDate = Tools::getIsset('update_export_date') ? (bool)Tools::getValue('update_export_date') : true;
+$updateExportDate = Tools::getIsset(LengowExport::PARAM_UPDATE_EXPORT_DATE)
+    ? (bool) Tools::getValue(LengowExport::PARAM_UPDATE_EXPORT_DATE)
+    : true;
 // See logs or not
-$logOutput = Tools::getIsset('log_output') ? (bool)Tools::getValue('log_output') : true;
+$logOutput = Tools::getIsset(LengowExport::PARAM_LOG_OUTPUT)
+    ? (bool) Tools::getValue(LengowExport::PARAM_LOG_OUTPUT)
+    : true;
 
 $export = new LengowExport(
     array(
-        'format' => $format,
-        'stream' => $stream,
-        'product_ids' => $productIds,
-        'limit' => $limit,
-        'offset' => $offset,
-        'out_of_stock' => $outOfStock,
-        'variation' => $variation,
-        'inactive' => $inactive,
-        'legacy_fields' => $legacyFields,
-        'selection' => $selection,
-        'language_id' => $languageId,
-        'update_export_date' => $updateExportDate,
-        'log_output' => $logOutput,
+        LengowExport::PARAM_FORMAT => $format,
+        LengowExport::PARAM_STREAM => $stream,
+        LengowExport::PARAM_PRODUCT_IDS => $productIds,
+        LengowExport::PARAM_LIMIT => $limit,
+        LengowExport::PARAM_OFFSET => $offset,
+        LengowExport::PARAM_OUT_OF_STOCK => $outOfStock,
+        LengowExport::PARAM_VARIATION => $variation,
+        LengowExport::PARAM_INACTIVE => $inactive,
+        LengowExport::PARAM_LEGACY_FIELDS => $legacyFields,
+        LengowExport::PARAM_SELECTION => $selection,
+        LengowExport::PARAM_LANGUAGE_ID => $languageId,
+        LengowExport::PARAM_UPDATE_EXPORT_DATE => $updateExportDate,
+        LengowExport::PARAM_LOG_OUTPUT => $logOutput,
     )
 );
 
