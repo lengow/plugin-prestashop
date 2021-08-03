@@ -23,12 +23,12 @@
  * List params
  * string  sync                Number of products exported
  * integer days                Import period
- * integer limit               Number of orders to import
+ * integer limit               Maximum number of new orders created
  * integer shop_id             Shop id to import
  * string  marketplace_sku     Lengow marketplace order id to import
  * string  marketplace_name    Lengow marketplace name to import
- * string  created_from        import of orders since
- * string  created_to          import of orders until
+ * string  created_from        Import of orders since
+ * string  created_to          Import of orders until
  * integer delivery_address_id Lengow delivery address id to import
  * boolean force_product       Force import product when quantity is insufficient (1) or not (0)
  * boolean debug_mode          Activate debug mode
@@ -92,6 +92,9 @@ if (Tools::getIsset(LengowImport::PARAM_GET_SYNC) && Tools::getValue(LengowImpor
         // check if the GET parameters are available
         if (Tools::getIsset(LengowImport::PARAM_FORCE_PRODUCT)) {
             $params[LengowImport::PARAM_FORCE_PRODUCT] = (bool) Tools::getValue(LengowImport::PARAM_FORCE_PRODUCT);
+        }
+        if (Tools::getIsset(LengowImport::PARAM_FORCE_SYNC)) {
+            $params[LengowImport::PARAM_FORCE_SYNC] = (bool) Tools::getValue(LengowImport::PARAM_FORCE_SYNC);
         }
         if (Tools::getIsset(LengowImport::PARAM_DEBUG_MODE)) {
             $params[LengowImport::PARAM_DEBUG_MODE] = (bool) Tools::getValue(LengowImport::PARAM_DEBUG_MODE);

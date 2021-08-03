@@ -107,7 +107,7 @@ class LengowMarketplace
     public function __construct($name)
     {
         self::loadApiMarketplace();
-        $this->name = Tools::strtolower($name);
+        $this->name = (string) Tools::strtolower($name);
         if (!isset(self::$marketplaces->{$this->name})) {
             throw new LengowException(
                 LengowMain::setLogMessage(
@@ -316,8 +316,8 @@ class LengowMarketplace
             if ($idOrderLine !== null) {
                 $params[LengowAction::ARG_LINE] = $idOrderLine;
             }
-            $params['marketplace_order_id'] = $lengowOrder->lengowMarketplaceSku;
-            $params['marketplace'] = $lengowOrder->lengowMarketplaceName;
+            $params[LengowImport::ARG_MARKETPLACE_ORDER_ID] = $lengowOrder->lengowMarketplaceSku;
+            $params[LengowImport::ARG_MARKETPLACE] = $lengowOrder->lengowMarketplaceName;
             $params[LengowAction::ARG_ACTION_TYPE] = $action;
             // checks whether the action is already created to not return an action
             $canSendAction = LengowAction::canSendAction($params, $lengowOrder);

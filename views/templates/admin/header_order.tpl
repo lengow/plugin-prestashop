@@ -18,7 +18,7 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<ul class="nav nav-pills lengow-nav lengow-nav-bottom">
+<ul class="nav nav-pills lengow-nav lengow-nav-bottom {if $multiShop}multi-shop{/if}">
 	<li role="presentation" class="{if $current_controller == 'LengowOrderController'}active{/if}">
 		<a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrder')|escape:'htmlall':'UTF-8'}">
 			{$locale->t('menu.order_overview')|escape:'htmlall':'UTF-8'}

@@ -69,6 +69,23 @@ switch ($action) {
         $date = Tools::getIsset(LengowToolbox::PARAM_DATE) ? Tools::getValue(LengowToolbox::PARAM_DATE) : null;
         LengowToolbox::downloadLog($date);
         break;
+    case LengowToolbox::ACTION_ORDER:
+        $result = LengowToolbox::syncOrders(
+            array(
+                LengowToolbox::PARAM_CREATED_TO => Tools::getValue(LengowToolbox::PARAM_CREATED_TO, null),
+                LengowToolbox::PARAM_CREATED_FROM => Tools::getValue(LengowToolbox::PARAM_CREATED_FROM, null),
+                LengowToolbox::PARAM_DAYS => Tools::getValue(LengowToolbox::PARAM_DAYS, null),
+                LengowToolbox::PARAM_FORCE => Tools::getValue(LengowToolbox::PARAM_FORCE, null),
+                LengowToolbox::PARAM_MARKETPLACE_NAME => Tools::getValue(LengowToolbox::PARAM_MARKETPLACE_NAME, null),
+                LengowToolbox::PARAM_MARKETPLACE_SKU => Tools::getValue(LengowToolbox::PARAM_MARKETPLACE_SKU, null),
+                LengowToolbox::PARAM_SHOP_ID => Tools::getValue(LengowToolbox::PARAM_SHOP_ID, null),
+            )
+        );
+        if (isset($result['error'])) {
+            header('HTTP/1.1 403 Forbidden');
+        }
+        echo Tools::jsonEncode($result);
+        break;
     default:
         $type = Tools::getIsset(LengowToolbox::PARAM_TYPE) ? Tools::getValue(LengowToolbox::PARAM_TYPE) : null;
         echo Tools::jsonEncode(LengowToolbox::getData($type));

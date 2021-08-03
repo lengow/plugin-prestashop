@@ -134,55 +134,6 @@ class LengowOrderController extends LengowController
                     $data['show_carrier_notification'] = LengowCarrier::hasDefaultCarrierNotMatched();
                     echo Tools::jsonEncode($data);
                     break;
-                case 'update_order':
-                    $import = new LengowImport(
-                        array(
-                            LengowImport::PARAM_MARKETPLACE_SKU => Tools::getValue('marketplace_sku'),
-                            LengowImport::PARAM_MARKETPLACE_NAME => Tools::getValue('marketplace_name'),
-                            LengowImport::PARAM_DELIVERY_ADDRESS_ID => Tools::getValue('delivery_address_id'),
-                            LengowImport::PARAM_SHOP_ID => Tools::getValue('shop_id'),
-                        )
-                    );
-                    $result = $import->exec();
-                    $message = array();
-                    if (isset($result['marketplace_sku'], $result['marketplace_name'])) {
-                        $message[] = LengowMain::decodeLogMessage(
-                            'toolbox.order.order_import_success',
-                            null,
-                            array(
-                                'marketplace_sku' => $result['marketplace_sku'],
-                                'marketplace_name' => $result['marketplace_name'],
-                            )
-                        );
-                    } else {
-                        $message[] = LengowMain::decodeLogMessage(
-                            'toolbox.order.order_import_failed',
-                            null,
-                            array('log_url' => '/modules/lengow/toolbox/log.php')
-                        );
-                    }
-                    $data = array();
-                    $data['message'] = '<div class=\"lengow_alert\">' . join('<br/>', $message) . '</div>';
-                    $data['update_order'] = $this->locale->t('toolbox.order.import_one_order');
-                    $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
-                    echo Tools::jsonEncode($data);
-                    break;
-                case 'update_some_orders':
-                    $import = new LengowImport(
-                        array(
-                            LengowImport::PARAM_LOG_OUTPUT => false,
-                            LengowImport::PARAM_DAYS => Tools::getValue('days'),
-                            LengowImport::PARAM_SHOP_ID => Tools::getValue('shop_id'),
-                        )
-                    );
-                    $return = $import->exec();
-                    $message = $this->loadMessage($return);
-                    $data = array();
-                    $data['message'] = '<div class=\"lengow_alert\">' . addslashes(join('<br/>', $message)) . '</div>';
-                    $data['update_some_orders'] = $this->locale->t('toolbox.order.button_import_shop_order');
-                    $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
-                    echo Tools::jsonEncode($data);
-                    break;
                 case 'synchronize':
                     $idOrder = isset($_REQUEST['id_order']) ? (int) $_REQUEST['id_order'] : 0;
                     $lengowOrder = new LengowOrder($idOrder);
@@ -789,33 +740,33 @@ class LengowOrderController extends LengowController
     {
         $messages = array();
         // if global error return this
-        if (isset($return['error'][0])) {
-            $messages[] = LengowMain::decodeLogMessage($return['error'][0]);
+        if (isset($return[LengowImport::ERRORS][0])) {
+            $messages[] = LengowMain::decodeLogMessage($return[LengowImport::ERRORS][0]);
             return $messages;
         }
-        if (isset($return['order_new']) && $return['order_new'] > 0) {
+        if (isset($return[LengowImport::NUMBER_ORDERS_CREATED]) && $return[LengowImport::NUMBER_ORDERS_CREATED] > 0) {
             $messages[] = $this->locale->t(
                 'lengow_log.error.nb_order_imported',
-                array('nb_order' => (int) $return['order_new'])
+                array('nb_order' => (int) $return[LengowImport::NUMBER_ORDERS_CREATED])
             );
         }
-        if (isset($return['order_update']) && $return['order_update'] > 0) {
+        if (isset($return[LengowImport::NUMBER_ORDERS_UPDATED]) && $return[LengowImport::NUMBER_ORDERS_UPDATED] > 0) {
             $messages[] = $this->locale->t(
                 'lengow_log.error.nb_order_updated',
-                array('nb_order' => (int) $return['order_update'])
+                array('nb_order' => (int) $return[LengowImport::NUMBER_ORDERS_UPDATED])
             );
         }
-        if (isset($return['order_error']) && $return['order_error'] > 0) {
+        if (isset($return[LengowImport::NUMBER_ORDERS_FAILED]) && $return[LengowImport::NUMBER_ORDERS_FAILED] > 0) {
             $messages[] = $this->locale->t(
                 'lengow_log.error.nb_order_with_error',
-                array('nb_order' => (int) $return['order_error'])
+                array('nb_order' => (int) $return[LengowImport::NUMBER_ORDERS_FAILED])
             );
         }
         if (empty($messages)) {
             $messages[] = $this->locale->t('lengow_log.error.no_notification');
         }
-        if (isset($return['error'])) {
-            foreach ($return['error'] as $shop => $values) {
+        if (isset($return[LengowImport::ERRORS])) {
+            foreach ($return[LengowImport::ERRORS] as $shop => $values) {
                 if ((int) $shop > 0) {
                     $shop = new LengowShop($shop);
                     $shopName = $shop->name . ' : ';

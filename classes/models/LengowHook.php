@@ -24,34 +24,12 @@
  */
 class LengowHook
 {
-    /**
-     * @var string name of Prestashop homepage
-     */
+    /* PrestaShop track pages */
     const LENGOW_TRACK_HOMEPAGE = 'homepage';
-
-    /**
-     * @var string name of Prestashop classic page
-     */
     const LENGOW_TRACK_PAGE = 'page';
-
-    /**
-     * @var string name of Prestashop listepage page
-     */
     const LENGOW_TRACK_PAGE_LIST = 'listepage';
-
-    /**
-     * @var string name of Prestashop payment page
-     */
     const LENGOW_TRACK_PAGE_PAYMENT = 'payment';
-
-    /**
-     * @var string name of Prestashop basket page
-     */
     const LENGOW_TRACK_PAGE_CART = 'basket';
-
-    /**
-     * @var string name of Prestashop confirmation page
-     */
     const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
 
     /**

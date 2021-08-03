@@ -24,79 +24,25 @@
  */
 class LengowAction
 {
-    /**
-     * @var integer action state for new action
-     */
+    /* Action states */
     const STATE_NEW = 0;
-
-    /**
-     * @var integer action state for action finished
-     */
     const STATE_FINISH = 1;
 
-    /**
-     * @var string action type ship
-     */
+    /* Action types */
     const TYPE_SHIP = 'ship';
-
-    /**
-     * @var string action type cancel
-     */
     const TYPE_CANCEL = 'cancel';
 
-    /**
-     * @var string action argument action type
-     */
+    /* Action API arguments */
     const ARG_ACTION_TYPE = 'action_type';
-
-    /**
-     * @var string action argument line
-     */
     const ARG_LINE = 'line';
-
-    /**
-     * @var string action argument carrier
-     */
     const ARG_CARRIER = 'carrier';
-
-    /**
-     * @var string action argument carrier name
-     */
     const ARG_CARRIER_NAME = 'carrier_name';
-
-    /**
-     * @var string action argument custom carrier
-     */
     const ARG_CUSTOM_CARRIER = 'custom_carrier';
-
-    /**
-     * @var string action argument shipping method
-     */
     const ARG_SHIPPING_METHOD = 'shipping_method';
-
-    /**
-     * @var string action argument tracking number
-     */
     const ARG_TRACKING_NUMBER = 'tracking_number';
-
-    /**
-     * @var string action argument tracking url
-     */
     const ARG_TRACKING_URL = 'tracking_url';
-
-    /**
-     * @var string action argument shipping price
-     */
     const ARG_SHIPPING_PRICE = 'shipping_price';
-
-    /**
-     * @var string action argument shipping date
-     */
     const ARG_SHIPPING_DATE = 'shipping_date';
-
-    /**
-     * @var string action argument delivery date
-     */
     const ARG_DELIVERY_DATE = 'delivery_date';
 
     /**
