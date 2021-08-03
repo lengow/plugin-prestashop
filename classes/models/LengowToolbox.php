@@ -25,14 +25,23 @@
 class LengowToolbox
 {
     /* Toolbox GET params */
+    const PARAM_CREATED_FROM = 'created_from';
+    const PARAM_CREATED_TO = 'created_to';
+    const PARAM_DATE = 'date';
+    const PARAM_DAYS = 'days';
+    const PARAM_FORCE = 'force';
+    const PARAM_MARKETPLACE_NAME = 'marketplace_name';
+    const PARAM_MARKETPLACE_SKU = 'marketplace_sku';
+    const PARAM_PROCESS = 'process';
+    const PARAM_SHOP_ID = 'shop_id';
     const PARAM_TOKEN = 'token';
     const PARAM_TOOLBOX_ACTION = 'toolbox_action';
-    const PARAM_DATE = 'date';
     const PARAM_TYPE = 'type';
 
     /* Toolbox Actions */
     const ACTION_DATA = 'data';
     const ACTION_LOG = 'log';
+    const ACTION_ORDER = 'order';
 
     /* Data type */
     const DATA_TYPE_ALL = 'all';
@@ -44,6 +53,9 @@ class LengowToolbox
     const DATA_TYPE_OPTION = 'option';
     const DATA_TYPE_SHOP = 'shop';
     const DATA_TYPE_SYNCHRONIZATION = 'synchronization';
+
+    /* Process type */
+    const PROCESS_TYPE_SYNC = 'sync';
 
     /* Toolbox Data  */
     const CHECKLIST = 'checklist';
@@ -102,6 +114,7 @@ class LengowToolbox
     public static $toolboxActions = array(
         self::ACTION_DATA,
         self::ACTION_LOG,
+        self::ACTION_ORDER,
     );
 
     /**
@@ -154,6 +167,25 @@ class LengowToolbox
     public static function isCurlActivated()
     {
         return function_exists('curl_version');
+    }
+
+    /**
+     * Start order synchronization based on specific parameters
+     *
+     * @param array $params synchronization parameters
+     */
+    public static function syncOrders($params = array())
+    {
+        // get all params for order synchronization
+        $params = self::filterParamsForSync($params);
+        $import = new LengowImport($params);
+        $result = $import->exec();
+        // if global error return error message and request http code
+        if (isset($result[LengowImport::ERRORS][0])) {
+            return self::generateErrorReturn(LengowConnector::CODE_403, $result[LengowImport::ERRORS][0]);
+        }
+        unset($result[LengowImport::ERRORS]);
+        return $result;
     }
 
     /**
@@ -401,5 +433,57 @@ class LengowToolbox
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * Filter parameters for order synchronization
+     *
+     * @param array $params synchronization params
+     *
+     * @return array
+     */
+    private static function filterParamsForSync($params = array())
+    {
+        $paramsFiltered = array(LengowImport::PARAM_TYPE => LengowImport::TYPE_TOOLBOX);
+        if (isset(
+            $params[self::PARAM_MARKETPLACE_SKU],
+            $params[self::PARAM_MARKETPLACE_NAME],
+            $params[self::PARAM_SHOP_ID]
+        )) {
+            // get all parameters to synchronize a specific order
+            $paramsFiltered[LengowImport::PARAM_MARKETPLACE_SKU] = $params[self::PARAM_MARKETPLACE_SKU];
+            $paramsFiltered[LengowImport::PARAM_MARKETPLACE_NAME] = $params[self::PARAM_MARKETPLACE_NAME];
+            $paramsFiltered[LengowImport::PARAM_SHOP_ID] = (int) $params[self::PARAM_SHOP_ID];
+        } elseif (isset($params[self::PARAM_CREATED_FROM], $params[self::PARAM_CREATED_TO])) {
+            // get all parameters to synchronize over a fixed period
+            $paramsFiltered[LengowImport::PARAM_CREATED_FROM] = $params[self::PARAM_CREATED_FROM];
+            $paramsFiltered[LengowImport::PARAM_CREATED_TO] = $params[self::PARAM_CREATED_TO];
+        } elseif (isset($params[self::PARAM_DAYS])) {
+            // get all parameters to synchronize over a time interval
+            $paramsFiltered[LengowImport::PARAM_DAYS] = (int) $params[self::PARAM_DAYS];
+        }
+        // force order synchronization by removing pending errors
+        if (isset($params[self::PARAM_FORCE])) {
+            $paramsFiltered[LengowImport::PARAM_FORCE_SYNC] = (bool) $params[self::PARAM_FORCE];
+        }
+        return $paramsFiltered;
+    }
+
+    /**
+     * Generates an error return for the Toolbox webservice
+     *
+     * @param integer $httpCode request http code
+     * @param string $error error message
+     *
+     * @return array
+     */
+    private static function generateErrorReturn($httpCode, $error)
+    {
+        return array(
+            'error' => array(
+                'message' => LengowMain::decodeLogMessage($error, LengowTranslation::DEFAULT_ISO_CODE),
+                'code' => $httpCode,
+            ),
+        );
     }
 }

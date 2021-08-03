@@ -24,19 +24,9 @@
  */
 class LengowCarrier extends Carrier
 {
-    /**
-     * integer Carrier compatibility ensured
-     */
+    /* Compatibility codes */
     const COMPATIBILITY_OK = 1;
-
-    /**
-     * integer not a carrier module
-     */
     const NO_COMPATIBILITY = 0;
-
-    /**
-     * integer Carrier compatibility not ensured
-     */
     const COMPATIBILITY_KO = -1;
 
     /**

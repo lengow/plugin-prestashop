@@ -24,79 +24,28 @@
  */
 class LengowOrder extends Order
 {
-    /**
-     * @var integer order log import type
-     */
+    /* Log order types */
     const TYPE_LOG_IMPORT = 1;
-
-    /**
-     * @var integer order log send type
-     */
     const TYPE_LOG_SEND = 2;
 
-    /**
-     * @var integer order process state for order imported
-     */
+    /* Order process states */
+    const PROCESS_STATE_NEW = 0;
     const PROCESS_STATE_IMPORT = 1;
-
-    /**
-     * @var integer order process state for order finished
-     */
     const PROCESS_STATE_FINISH = 2;
 
-    /**
-     * @var string order state accepted
-     */
+    /* Order states */
     const STATE_ACCEPTED = 'accepted';
-
-    /**
-     * @var string order state waiting_shipment
-     */
     const STATE_WAITING_SHIPMENT = 'waiting_shipment';
-
-    /**
-     * @var string order state shipped
-     */
     const STATE_SHIPPED = 'shipped';
-
-    /**
-     * @var string order state closed
-     */
     const STATE_CLOSED = 'closed';
-
-    /**
-     * @var string order state refused
-     */
     const STATE_REFUSED = 'refused';
-
-    /**
-     * @var string order state canceled
-     */
     const STATE_CANCELED = 'canceled';
-
-    /**
-     * @var string order state refunded
-     */
     const STATE_REFUNDED = 'refunded';
 
-    /**
-     * @var string order type prime
-     */
+    /* Order types */
     const TYPE_PRIME = 'is_prime';
-
-    /**
-     * @var string order type express
-     */
     const TYPE_EXPRESS = 'is_express';
-
-    /**
-     * @var string order type business
-     */
     const TYPE_BUSINESS = 'is_business';
-
-    /**
-     * @var string order type delivered by marketplace
-     */
     const TYPE_DELIVERED_BY_MARKETPLACE = 'is_delivered_by_marketplace';
 
     /**
@@ -370,10 +319,10 @@ class LengowOrder extends Order
         }
         foreach ($results as $result) {
             if ($result['delivery_address_id'] === null && $result['id_flux'] !== null) {
-                return $result['id_order'];
+                return (int) $result['id_order'];
             }
             if ((int) $result['delivery_address_id'] === $deliveryAddressId) {
-                return $result['id_order'];
+                return (int) $result['id_order'];
             }
         }
         return false;
@@ -590,12 +539,16 @@ class LengowOrder extends Order
             )
         );
         $result = $import->exec();
-        if ((isset($result['order_id']) && (int) $result['order_id'] !== (int) $this->id)
-            && (isset($result['order_new']) && $result['order_new'])
-        ) {
-            $this->setStateToError();
-            return (int) $result['order_id'];
+        if (!empty($result[LengowImport::ORDERS_CREATED])) {
+            $orderCreated = $result[LengowImport::ORDERS_CREATED][0];
+            if ($orderCreated[LengowImportOrder::MERCHANT_ORDER_ID] !== (int) $this->id) {
+                $this->setStateToError();
+                return (int) $orderCreated[LengowImportOrder::MERCHANT_ORDER_ID];
+            }
         }
+        // in the event of an error, all new order errors are finished and the order is reset
+        self::finishOrderLogs($this->lengowId);
+        self::updateOrderLengow($this->lengowId, array('is_reimported' => 0));
         return false;
     }
 
@@ -694,10 +647,10 @@ class LengowOrder extends Order
                 $this->checkAndChangeMarketplaceName($connector, $logOutput);
             }
             $body = array(
-                'account_id' => $accountId,
-                'marketplace_order_id' => $this->lengowMarketplaceSku,
-                'marketplace' => $this->lengowMarketplaceName,
-                'merchant_order_id' => $prestaIds,
+                LengowImport::ARG_ACCOUNT_ID => $accountId,
+                LengowImport::ARG_MARKETPLACE_ORDER_ID => $this->lengowMarketplaceSku,
+                LengowImport::ARG_MARKETPLACE => $this->lengowMarketplaceName,
+                LengowImport::ARG_MERCHANT_ORDER_ID => $prestaIds,
             );
             try {
                 $result = $connector->patch(
@@ -753,9 +706,9 @@ class LengowOrder extends Order
             $results = $connector->get(
                 LengowConnector::API_ORDER,
                 array(
-                    'marketplace_order_id' => $this->lengowMarketplaceSku,
-                    'marketplace' => $this->lengowMarketplaceName,
-                    'account_id' => $accountId,
+                    LengowImport::ARG_MARKETPLACE_ORDER_ID => $this->lengowMarketplaceSku,
+                    LengowImport::ARG_MARKETPLACE => $this->lengowMarketplaceName,
+                    LengowImport::ARG_ACCOUNT_ID => $accountId,
                 ),
                 LengowConnector::FORMAT_STREAM,
                 '',
@@ -1280,8 +1233,8 @@ class LengowOrder extends Order
             LengowConnector::GET,
             LengowConnector::API_ORDER,
             array(
-                'marketplace_order_id' => $this->lengowMarketplaceSku,
-                'marketplace' => $this->lengowMarketplaceName,
+                LengowImport::ARG_MARKETPLACE_ORDER_ID => $this->lengowMarketplaceSku,
+                LengowImport::ARG_MARKETPLACE => $this->lengowMarketplaceName,
             )
         );
         if (isset($results->count) && (int) $results->count === 0) {
