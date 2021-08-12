@@ -105,7 +105,7 @@ $selection = Tools::getIsset(LengowExport::PARAM_LEGACY_SELECTION)
     ? !(bool) Tools::getValue(LengowExport::PARAM_LEGACY_SELECTION)
     : null;
 if ($selection !== null || Tools::getIsset(LengowExport::PARAM_SELECTION)) {
-    $selection = $selection !== null ? $selection : (bool) Tools::getValue(LengowExport::PARAM_LIMIT);
+    $selection = $selection !== null ? $selection : (bool) Tools::getValue(LengowExport::PARAM_SELECTION);
 } else {
     $selection = (bool) LengowConfiguration::get(LengowConfiguration::SELECTION_ENABLED, null, null, $idShop);
 }
