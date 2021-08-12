@@ -424,7 +424,9 @@ log.import.start_for_shop|start import in shop %{name_shop} (%{id_shop})
 log.import.catalog_id_already_used|catalog ID %{catalog_id} is already used by shop %{name_shop} (%{id_shop})
 log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and marketplace: %{marketplace_name} with account ID: %{account_id}
 log.import.find_all_orders|%{nb_order} order(s) found with account ID: %{account_id}
-log.import.sync_result|%{number_orders_processed} orders processed, %{number_orders_created} created, %{number_orders_updated} updated, %{number_orders_failed} failed, %{number_orders_ignored} ignored and %{number_orders_not_formatted} not formatted
+log.import.nb_order_imported|%{nb_order} order(s) imported
+log.import.nb_order_updated|%{nb_order} order(s) updated
+log.import.nb_order_with_error|%{nb_order} order(s) with errors
 log.import.connector_get_order|get order with order ID: %{marketplace_sku} and marketplace: %{marketplace_name}
 log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} for catalogs ID: %{catalog_id}
 log.import.error_already_created|%{decoded_message} (created on the %{date_message})
@@ -440,7 +442,6 @@ log.import.lengow_order_not_saved|WARNING ! Order could NOT be saved in Lengow o
 log.import.lengow_order_updated|order updated in Lengow orders table
 log.import.lengow_order_not_updated|WARNING ! Order could NOT be updated in Lengow orders table
 log.import.lengow_order_line_saved|save order lines product: %{order_line_saved}
-log.import.lengow_order_line_not_saved|WARNING ! Order lines could NOT be saved in Lengow order lines table
 log.import.quantity_back_shipped_by_marketplace|adding quantity back to stock (order shipped by marketplace)
 log.import.quantity_back_reimported_order|adding quantity back to stock (order is re-imported)
 log.import.order_already_imported|order already imported (ORDER ID %{order_id})
@@ -458,7 +459,7 @@ log.import.match_default_carrier|no carrier matching found, carrier "%{carrier_n
 log.import.error_order_state_updated|error while updating status: %{error_message}
 log.import.error_no_package|import order failed - Lengow error: no package in the order
 log.import.error_wrong_package_number|import order failed - wrong package number
-log.import.error_no_delivery_address|import order failed - Lengow error: no delivery address in the order
+log.import.error_no_delivery_address|Import order failed - Lengow error: no delivery address in the order
 log.import.error_mondial_relay_not_found|relay %{id_relay} could not be found
 log.import.error_mondial_relay_missing_file|missing file %{ps_module_dir}mondialrelay/classes/MRRelayDetail.php
 log.import.error_colissimo_missing_file|missing file %{file_path}
@@ -468,14 +469,10 @@ log.import.order_synchronized_with_lengow|order successfully synchronised with L
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.launch_validate_order_hook|launch validateOrder hook for other plugins
 log.import.validate_order_hook_failed|validateOrder hook failed - %{error_message}
-log.import.anonymized_order|order is anonymized and has not been imported
-log.import.old_order|order is older than 3 months and has not been imported
-log.import.unable_verify_date|unable to check if the order is too old
-log.import.unable_create_order|cannot create the order - %{error_message}
-log.import.unable_delete_cart|cannot delete the cart created
+log.import.anonymized_order|Order is anonymized and has not been imported
+log.import.old_order|Order is older than 3 months and has not been imported
 log.import.connector_get_all_action|get order actions between %{date_from} and %{date_to}
 log.import.clean_context_failed|WARNING ! Cannot reset the context to its initial state
-log.import.unable_find_order|Unable to find the requested order
 log.order_action.check_completed_action|check completed actions
 log.order_action.check_old_action|check and finish old actions
 log.order_action.check_action_not_sent|check actions not sent
@@ -563,6 +560,17 @@ toolbox.index.shop_last_export|Last export
 toolbox.index.shop_product_total|Products available in the shop
 toolbox.index.shop_product_exported|Products exported in the shop
 toolbox.index.url_export|Export URL for this shop
+toolbox.order.shop|Shop
+toolbox.order.marketplace_name|Marketplace
+toolbox.order.order_sku|Sku order
+toolbox.order.delivery_address_id|Delivery address ID
+toolbox.order.import_days|Import days
+toolbox.order.import_shop_order|Import shop orders
+toolbox.order.import_all_order|Import all orders
+toolbox.order.import_one_order|Import order
+toolbox.order.button_import_shop_order|Import orders
+toolbox.order.order_import_success|Order %{marketplace_sku} from %{marketplace_name} is imported
+toolbox.order.order_import_failed|Order import failed (<a href='%{log_url}' target='_blank'>See logs for more information</a>)
 toolbox.configuration.shop_credentials|Credentials
 toolbox.configuration.export_setting|Export settings
 toolbox.configuration.import_setting|Import settings

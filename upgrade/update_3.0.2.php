@@ -27,11 +27,8 @@ if (!LengowInstall::isInstallationInProgress()) {
 //                         lengow_carrier_marketplace
 // *********************************************************
 
-if (LengowInstall::checkTableExists(LengowCarrier::TABLE_CARRIER_MARKETPLACE)) {
-    if (!LengowInstall::checkFieldExists(
-        LengowCarrier::TABLE_CARRIER_MARKETPLACE,
-        LengowCarrier::FIELD_CARRIER_LENGOW_CODE
-    )) {
+if (LengowInstall::checkTableExists('lengow_carrier_marketplace')) {
+    if (!LengowInstall::checkFieldExists('lengow_carrier_marketplace', 'carrier_lengow_code')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_carrier_marketplace ADD `carrier_lengow_code` VARCHAR(100) NULL'
         );

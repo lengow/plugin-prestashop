@@ -111,20 +111,17 @@ class LengowShop extends Shop
      * Get list of PrestaShop shops that have been activated in Lengow
      *
      * @param boolean $activeInLengow get only shop active in Lengow
-     * @param integer $idShop PrestaShop shop id
      *
      * @return array
      */
-    public static function getActiveShops($activeInLengow = false, $idShop = null)
+    public static function getActiveShops($activeInLengow = false)
     {
         $result = array();
         $shops = self::findAll(true);
         foreach ($shops as $shop) {
-            if ($idShop && (int) $shop['id_shop'] !== $idShop) {
-                continue;
-            }
-            if (!$activeInLengow || LengowConfiguration::shopIsActive((int) $shop['id_shop'])) {
-                $result[] = new LengowShop((int) $shop['id_shop']);
+            $idShop = (int) $shop['id_shop'];
+            if (!$activeInLengow || LengowConfiguration::shopIsActive($idShop)) {
+                $result[] = new LengowShop($idShop);
             }
         }
         return $result;

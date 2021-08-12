@@ -27,8 +27,8 @@ if (!LengowInstall::isInstallationInProgress()) {
 //                     lengow_orders
 // *********************************************************
 
-if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_CUSTOMER_VAT_NUMBER)) {
+if (LengowInstall::checkTableExists('lengow_orders')) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'customer_vat_number')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `customer_vat_number` VARCHAR(100) NULL'
         );

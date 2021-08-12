@@ -27,8 +27,8 @@ if (!LengowInstall::isInstallationInProgress()) {
 //                         lengow_product
 // *********************************************************
 
-if (LengowInstall::checkTableExists(LengowProduct::TABLE_PRODUCT)) {
-    if (!LengowInstall::checkFieldExists(LengowProduct::TABLE_PRODUCT, LengowProduct::FIELD_ID)) {
+if (LengowInstall::checkTableExists('lengow_product')) {
+    if (!LengowInstall::checkFieldExists('lengow_product', 'id')) {
         Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . 'lengow_product DROP PRIMARY KEY');
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_product
@@ -37,11 +37,11 @@ if (LengowInstall::checkTableExists(LengowProduct::TABLE_PRODUCT)) {
     }
 }
 // Data migration to the new system
-if (LengowInstall::checkTableExists(LengowProduct::TABLE_PRODUCT)
-    && LengowInstall::checkFieldExists(LengowProduct::TABLE_PRODUCT, LengowProduct::FIELD_PRODUCT_ID)
-    && LengowInstall::checkFieldExists(LengowProduct::TABLE_PRODUCT, LengowProduct::FIELD_SHOP_ID)
-    && LengowInstall::checkFieldExists(LengowProduct::TABLE_PRODUCT, 'id_shop_group')
-    && LengowInstall::checkFieldExists(LengowProduct::TABLE_PRODUCT, 'id_lang')
+if (LengowInstall::checkTableExists('lengow_product')
+    && LengowInstall::checkFieldExists('lengow_product', 'id_product')
+    && LengowInstall::checkFieldExists('lengow_product', 'id_shop')
+    && LengowInstall::checkFieldExists('lengow_product', 'id_shop_group')
+    && LengowInstall::checkFieldExists('lengow_product', 'id_lang')
 ) {
     try {
         $idProducts = Db::getInstance()->executeS(
@@ -56,8 +56,8 @@ if (LengowInstall::checkTableExists(LengowProduct::TABLE_PRODUCT)
             $shops = LengowShop::findAll(true);
             $insertValues = array();
             foreach ($idProducts as $idProduct) {
-                if (isset($idProduct[LengowProduct::FIELD_PRODUCT_ID])) {
-                    $insertValues[] = '(' . (int) $idProduct[LengowProduct::FIELD_PRODUCT_ID] . ', :idShop)';
+                if (isset($idProduct['id_product'])) {
+                    $insertValues[] = '(' . (int) $idProduct['id_product'] . ', :idShop)';
                 }
             }
             if (!empty($insertValues)) {
@@ -75,16 +75,16 @@ if (LengowInstall::checkTableExists(LengowProduct::TABLE_PRODUCT)
     }
 }
 // Drop old column from lengow_product table
-LengowInstall::checkFieldAndDrop(LengowProduct::TABLE_PRODUCT, 'id_shop_group');
-LengowInstall::checkFieldAndDrop(LengowProduct::TABLE_PRODUCT, 'id_lang');
+LengowInstall::checkFieldAndDrop('lengow_product', 'id_shop_group');
+LengowInstall::checkFieldAndDrop('lengow_product', 'id_lang');
 
 
 // *********************************************************
 //                         lengow_order_line
 // *********************************************************
 
-if (LengowInstall::checkTableExists(LengowOrderLine::TABLE_ORDER_LINE)) {
-    if (!LengowInstall::checkFieldExists(LengowOrderLine::TABLE_ORDER_LINE, LengowOrderLine::FIELD_ORDER_DETAIL_ID)) {
+if (LengowInstall::checkTableExists('lengow_order_line')) {
+    if (!LengowInstall::checkFieldExists('lengow_order_line', 'id_order_detail')) {
         Db::getInstance()->execute(
             'ALTER TABLE `' . _DB_PREFIX_ . 'lengow_order_line`
             ADD `id_order_detail` INTEGER(11) UNSIGNED NULL AFTER `id_order_line`'
@@ -96,22 +96,22 @@ if (LengowInstall::checkTableExists(LengowOrderLine::TABLE_ORDER_LINE)) {
 //                         lengow_log_import
 // *********************************************************
 
-if (LengowInstall::checkTableExists(LengowOrderError::TABLE_ORDER_ERROR)) {
-    if (LengowInstall::checkFieldExists(LengowOrderError::TABLE_ORDER_ERROR, LengowOrderError::FIELD_IS_FINISHED)) {
+if (LengowInstall::checkTableExists('lengow_logs_import')) {
+    if (LengowInstall::checkFieldExists('lengow_logs_import', 'is_finished')) {
         Db::getInstance()->execute(
             'ALTER TABLE  ' . _DB_PREFIX_ . 'lengow_logs_import CHANGE `is_finished` `is_finished` TINYINT(1) DEFAULT 0'
         );
     }
-    if (LengowInstall::checkFieldExists(LengowOrderError::TABLE_ORDER_ERROR, LengowOrderError::FIELD_MESSAGE)) {
+    if (LengowInstall::checkFieldExists('lengow_logs_import', 'message')) {
         Db::getInstance()->execute(
             'ALTER TABLE  ' . _DB_PREFIX_ . 'lengow_logs_import CHANGE `message` `message` TEXT NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrderError::TABLE_ORDER_ERROR, LengowOrderError::FIELD_MAIL)) {
+    if (!LengowInstall::checkFieldExists('lengow_logs_import', 'mail')) {
         $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_logs_import ADD `mail` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0';
         Db::getInstance()->execute($sql);
     }
-    if (!LengowInstall::checkFieldExists(LengowOrderError::TABLE_ORDER_ERROR, LengowOrderError::FIELD_ID)) {
+    if (!LengowInstall::checkFieldExists('lengow_logs_import', 'id')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_logs_import DROP PRIMARY KEY'
         );
@@ -120,27 +120,22 @@ if (LengowInstall::checkTableExists(LengowOrderError::TABLE_ORDER_ERROR)) {
             ADD `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST'
         );
     }
-    if (!LengowInstall::checkFieldExists(
-        LengowOrderError::TABLE_ORDER_ERROR,
-        LengowOrderError::FIELD_ORDER_LENGOW_ID
-    )) {
+    if (!LengowInstall::checkFieldExists('lengow_logs_import', 'id_order_lengow')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_logs_import ADD `id_order_lengow` INTEGER(11) NOT NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrderError::TABLE_ORDER_ERROR, LengowOrderError::FIELD_TYPE)) {
+    if (!LengowInstall::checkFieldExists('lengow_logs_import', 'type')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_logs_import ADD `type` TINYINT(1) NOT NULL'
         );
     }
 }
 // data migration to the new system
-if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)
-    && LengowInstall::checkTableExists(LengowOrderError::TABLE_ORDER_ERROR)
-) {
-    if (LengowInstall::checkFieldExists(LengowOrderError::TABLE_ORDER_ERROR, 'lengow_order_id')
-        && LengowInstall::checkFieldExists(LengowOrderError::TABLE_ORDER_ERROR, 'delivery_address_id')
-        && LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_DELIVERY_ADDRESS_ID)
+if (LengowInstall::checkTableExists('lengow_orders') && LengowInstall::checkTableExists('lengow_logs_import')) {
+    if (LengowInstall::checkFieldExists('lengow_logs_import', 'lengow_order_id')
+        && LengowInstall::checkFieldExists('lengow_logs_import', 'delivery_address_id')
+        && LengowInstall::checkFieldExists('lengow_orders', 'delivery_address_id')
     ) {
         // clean order line data (if empty => NULL)
         Db::getInstance()->execute(
@@ -154,7 +149,7 @@ if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)
             'SELECT `lengow_order_id`, `delivery_address_id` FROM `' . _DB_PREFIX_ . 'lengow_logs_import`'
         );
         foreach ($results as $result) {
-            if (LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_MARKETPLACE_SKU)) {
+            if (LengowInstall::checkFieldExists('lengow_orders', 'marketplace_sku')) {
                 $orderLineQuery = $result['delivery_address_id'] === null
                     ? ' IS NULL'
                     : ' = \'' . $result['delivery_address_id'] . '\'';
@@ -166,7 +161,7 @@ if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)
                 if ($idOrder) {
                     Db::getInstance()->execute(
                         'UPDATE ' . _DB_PREFIX_ . 'lengow_logs_import
-                        SET `id_order_lengow` = \'' . (int) $idOrder[LengowOrder::FIELD_ID] . '\', `type` = 1
+                        SET `id_order_lengow` = \'' . (int) $idOrder['id'] . '\', `type` = 1
                         WHERE `lengow_order_id` = \'' . $result['lengow_order_id'] . '\'
                         AND `delivery_address_id`' . $orderLineQuery
                     );
@@ -182,48 +177,48 @@ if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)
     }
 }
 // drop old column from log import table
-LengowInstall::checkFieldAndDrop(LengowOrderError::TABLE_ORDER_ERROR, 'lengow_order_id');
-LengowInstall::checkFieldAndDrop(LengowOrderError::TABLE_ORDER_ERROR, 'is_processing');
-LengowInstall::checkFieldAndDrop(LengowOrderError::TABLE_ORDER_ERROR, 'extra');
-LengowInstall::checkFieldAndDrop(LengowOrderError::TABLE_ORDER_ERROR, 'delivery_address_id');
+LengowInstall::checkFieldAndDrop('lengow_logs_import', 'lengow_order_id');
+LengowInstall::checkFieldAndDrop('lengow_logs_import', 'is_processing');
+LengowInstall::checkFieldAndDrop('lengow_logs_import', 'extra');
+LengowInstall::checkFieldAndDrop('lengow_logs_import', 'delivery_address_id');
 
 // *********************************************************
 //                         lengow_orders
 // *********************************************************
 
-if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
-    if (LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_FLUX_ID)) {
+if (LengowInstall::checkTableExists('lengow_orders')) {
+    if (LengowInstall::checkFieldExists('lengow_orders', 'id_flux')) {
         Db::getInstance()->execute(
             'ALTER TABLE  ' . _DB_PREFIX_ . 'lengow_orders CHANGE `id_flux` `id_flux` INTEGER(11) UNSIGNED NULL'
         );
     }
-    if (LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_ORDER_ID)) {
+    if (LengowInstall::checkFieldExists('lengow_orders', 'id_order')) {
         Db::getInstance()->execute(
             'ALTER TABLE  ' . _DB_PREFIX_ . 'lengow_orders CHANGE `id_order` `id_order` INTEGER(11) UNSIGNED NULL'
         );
     }
-    if (LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, 'id_order_lengow')) {
+    if (LengowInstall::checkFieldExists('lengow_orders', 'id_order_lengow')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders
             CHANGE `id_order_lengow` `marketplace_sku` VARCHAR(100) NOT NULL'
         );
     }
-    if (LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, 'marketplace')) {
+    if (LengowInstall::checkFieldExists('lengow_orders', 'marketplace')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders CHANGE `marketplace` `marketplace_name` VARCHAR(100) NULL'
         );
     }
-    if (LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_TOTAL_PAID)) {
+    if (LengowInstall::checkFieldExists('lengow_orders', 'total_paid')) {
         Db::getInstance()->execute(
             'ALTER TABLE  ' . _DB_PREFIX_ . 'lengow_orders CHANGE `total_paid` `total_paid` DECIMAL(17,2) UNSIGNED NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_IS_REIMPORTED)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'is_reimported')) {
         $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `is_reimported` TINYINT(1) UNSIGNED DEFAULT 0';
         Db::getInstance()->execute($sql);
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_IS_REIMPORTED)
-        && LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, 'is_disabled')
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'is_reimported')
+        && LengowInstall::checkFieldExists('lengow_orders', 'is_disabled')
     ) {
         Db::getInstance()->execute('DELETE FROM  ' . _DB_PREFIX_ . 'lengow_orders WHERE is_disabled = 1');
         Db::getInstance()->execute(
@@ -231,37 +226,37 @@ if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
             CHANGE `is_disabled` `is_reimported` TINYINT(1) UNSIGNED DEFAULT 0'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_MARKETPLACE_LABEL)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'marketplace_label')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `marketplace_label` VARCHAR(100) NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_DELIVERY_ADDRESS_ID)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'delivery_address_id')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `delivery_address_id` INTEGER(11) UNSIGNED NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_CARRIER_METHOD)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'method')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `method` VARCHAR(100) NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_SENT_MARKETPLACE)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'sent_marketplace')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `sent_marketplace` TINYINT(1) UNSIGNED DEFAULT 0'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_COMMISSION)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'commission')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `commission` DECIMAL(17,2) UNSIGNED NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_CURRENCY)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'currency')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `currency` VARCHAR(3) NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_ORDER_PROCESS_STATE)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'order_process_state')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `order_process_state` TINYINT(1) UNSIGNED NOT NULL'
         );
@@ -269,7 +264,7 @@ if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
             'UPDATE ' . _DB_PREFIX_ . 'lengow_orders SET `order_process_state` = 2'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_ORDER_DATE)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'order_date')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `order_date` DATETIME NOT NULL'
         );
@@ -277,7 +272,7 @@ if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
             'UPDATE ' . _DB_PREFIX_ . 'lengow_orders SET `order_date` = `date_add`'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_ORDER_ITEM)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'order_item')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `order_item` INTEGER(11) UNSIGNED NULL'
         );
@@ -290,32 +285,32 @@ if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
             SET lo.order_item = tmp.total'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_DELIVERY_COUNTRY_ISO)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'delivery_country_iso')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `delivery_country_iso` VARCHAR(3) NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_CARRIER_RELAY_ID)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'id_relay')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `id_relay` VARCHAR(100) NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_CUSTOMER_NAME)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'customer_name')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `customer_name` VARCHAR(255) NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_CUSTOMER_EMAIL)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'customer_email')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `customer_email` VARCHAR(255) NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_ORDER_LENGOW_STATE)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'order_lengow_state')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `order_lengow_state` VARCHAR(32) NOT NULL'
         );
     }
-    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_ID)) {
+    if (!LengowInstall::checkFieldExists('lengow_orders', 'id')) {
         Db::getInstance()->execute(
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders DROP PRIMARY KEY'
         );

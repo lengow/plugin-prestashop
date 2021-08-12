@@ -480,7 +480,6 @@ class LengowList
     public function buildQuery($total = false, $selectAll = false)
     {
         $where = isset($this->sql['where']) ? $this->sql['where'] : array();
-        $groupBy = false;
         $having = array();
         if (isset($_REQUEST['table_' . $this->id])) {
             foreach ($_REQUEST['table_' . $this->id] as $key => $value) {
@@ -489,7 +488,6 @@ class LengowList
                     switch ($type) {
                         case 'log_status':
                             if (Tools::strlen($value) > 0) {
-                                $groupBy = pSQL($fieldValue['filter_key']);
                                 switch ($value) {
                                     case 1:
                                         $having[] = ' ' . pSQL($fieldValue['filter_key']) . ' IS NULL';
@@ -550,9 +548,6 @@ class LengowList
         $firstColumn = $value['filter_key'];
         if ($total) {
             $sql = 'SELECT COUNT("' . pSQL($firstColumn) . '") as total';
-            if (isset($this->sql['select_having']) && $this->sql['select_having']) {
-                $sql .= ', ' . implode(',', $this->sql['select_having']);
-            }
         } else {
             $sql = 'SELECT ' . ($selectAll ? pSQL($firstColumn) : implode(', ', $this->sql['select']));
             if (!$selectAll && isset($this->sql['select_having']) && $this->sql['select_having']) {
@@ -565,9 +560,6 @@ class LengowList
         }
         if ($where) {
             $sql .= ' WHERE ' . implode(' AND ', $where);
-        }
-        if ($total && $groupBy) {
-            $sql .= ' GROUP BY ' . $groupBy;
         }
         if ($having) {
             $sql .= ' HAVING ' . implode(' AND ', $having);

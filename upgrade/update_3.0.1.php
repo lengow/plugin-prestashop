@@ -27,8 +27,8 @@ if (!LengowInstall::isInstallationInProgress()) {
 //                         lengow_product
 // *********************************************************
 
-if (LengowInstall::checkTableExists(LengowProduct::TABLE_PRODUCT)) {
-    if (!LengowInstall::checkIndexExists(LengowProduct::TABLE_PRODUCT, LengowProduct::FIELD_PRODUCT_ID)) {
+if (LengowInstall::checkTableExists('lengow_product')) {
+    if (!LengowInstall::checkIndexExists('lengow_product', 'id_product')) {
         Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . 'lengow_product ADD INDEX(`id_product`)');
     }
 }
@@ -37,11 +37,8 @@ if (LengowInstall::checkTableExists(LengowProduct::TABLE_PRODUCT)) {
 //                         lengow_log_import
 // *********************************************************
 
-if (LengowInstall::checkTableExists(LengowOrderError::TABLE_ORDER_ERROR)) {
-    if (!LengowInstall::checkIndexExists(
-        LengowOrderError::TABLE_ORDER_ERROR,
-        LengowOrderError::FIELD_ORDER_LENGOW_ID
-    )) {
+if (LengowInstall::checkTableExists('lengow_logs_import')) {
+    if (!LengowInstall::checkIndexExists('lengow_logs_import', 'id_order_lengow')) {
         Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . 'lengow_logs_import ADD INDEX(`id_order_lengow`)');
     }
 }
@@ -50,8 +47,8 @@ if (LengowInstall::checkTableExists(LengowOrderError::TABLE_ORDER_ERROR)) {
 //                         lengow_orders
 // *********************************************************
 
-if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
-    if (!LengowInstall::checkIndexExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_ORDER_ID)) {
+if (LengowInstall::checkTableExists('lengow_orders')) {
+    if (!LengowInstall::checkIndexExists('lengow_orders', 'id_order')) {
         Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD INDEX(`id_order`)');
     }
 }

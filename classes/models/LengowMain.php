@@ -721,7 +721,7 @@ class LengowMain
     {
         $success = true;
         // recovery of all errors not yet sent by email
-        $orderLogs = LengowOrderError::getAllOrderLogsNotSent();
+        $orderLogs = LengowOrder::getAllOrderLogsNotSent();
         if (!empty($orderLogs)) {
             // construction of the report e-mail
             $mailBody = '';
@@ -731,8 +731,8 @@ class LengowMain
                     null,
                     array('marketplace_sku' => $log['marketplace_sku'])
                 );
-                if ($log[LengowOrderError::FIELD_MESSAGE] !== '') {
-                    $mailBody .= ' - ' . self::decodeLogMessage($log[LengowOrderError::FIELD_MESSAGE]);
+                if ($log['message'] !== '') {
+                    $mailBody .= ' - ' . self::decodeLogMessage($log['message']);
                 } else {
                     $pluginLinks = LengowSync::getPluginLinks();
                     $mailBody .= ' - '. self::decodeLogMessage(
@@ -742,7 +742,7 @@ class LengowMain
                     );
                 }
                 $mailBody .= '</li>';
-                LengowOrderError::logSent((int) $log[LengowOrderError::FIELD_ID]);
+                LengowOrder::logSent((int) $log['id']);
             }
             $subject = 'Lengow imports logs';
             $data = array(

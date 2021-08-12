@@ -25,16 +25,6 @@
 class LengowProduct extends Product
 {
     /**
-     * @var string Lengow product table name
-     */
-    const TABLE_PRODUCT = 'lengow_product';
-
-    /* Product fields */
-    const FIELD_ID = 'id';
-    const FIELD_PRODUCT_ID = 'id_product';
-    const FIELD_SHOP_ID = 'id_shop';
-
-    /**
      * @var array API nodes containing relevant data
      */
     public static $productApiNodes = array(
@@ -656,7 +646,10 @@ class LengowProduct extends Product
         } else {
             $idTaxRulesGroup = $this->carrier->getIdTaxRulesGroup();
         }
-        $taxRules = LengowTaxRule::getLengowTaxRulesByGroupId(Configuration::get('PS_LANG_DEFAULT'), $idTaxRulesGroup);
+        $taxRules = LengowTaxRule::getLengowTaxRulesByGroupId(
+            Configuration::get('PS_LANG_DEFAULT'),
+            $idTaxRulesGroup
+        );
         foreach ($taxRules as $taxRule) {
             if (isset($taxRule['id_country']) && (int) $taxRule['id_country'] === $defaultCountry) {
                 $tr = new TaxRule($taxRule['id_tax_rule']);
@@ -806,19 +799,19 @@ class LengowProduct extends Product
                 if (empty($results)) {
                     if (_PS_VERSION_ < '1.5') {
                         return Db::getInstance()->autoExecute(
-                            _DB_PREFIX_ . self::TABLE_PRODUCT,
+                            _DB_PREFIX_ . 'lengow_product',
                             array(
-                                self::FIELD_PRODUCT_ID => (int) $productId,
-                                self::FIELD_SHOP_ID => (int) $shopId,
+                                'id_product' => (int) $productId,
+                                'id_shop' => (int) $shopId,
                             ),
                             'INSERT'
                         );
                     }
                     return Db::getInstance()->insert(
-                        self::TABLE_PRODUCT,
+                        'lengow_product',
                         array(
-                            self::FIELD_PRODUCT_ID => (int) $productId,
-                            self::FIELD_SHOP_ID => (int) $shopId,
+                            'id_product' => (int) $productId,
+                            'id_shop' => (int) $shopId,
                         )
                     );
                 }
