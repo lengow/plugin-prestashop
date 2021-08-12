@@ -105,6 +105,7 @@ en:
       unable_delete_cart: "cannot delete the cart created"
       connector_get_all_action: "get order actions between %{date_from} and %{date_to}"
       clean_context_failed: "WARNING ! Cannot reset the context to its initial state"
+      unable_find_order: "Unable to find the requested order"
     order_action:
       check_completed_action: "check completed actions"
       check_old_action: "check and finish old actions"

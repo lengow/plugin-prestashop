@@ -63,6 +63,7 @@ class LengowConnector
     const CODE_201 = 201;
     const CODE_401 = 401;
     const CODE_403 = 403;
+    const CODE_404 = 404;
     const CODE_500 = 500;
     const CODE_504 = 504;
 

@@ -27,8 +27,8 @@ if (!LengowInstall::isInstallationInProgress()) {
 //                     lengow_orders
 // *********************************************************
 
-if (LengowInstall::checkTableExists('lengow_orders')) {
-    if (!LengowInstall::checkFieldExists('lengow_orders', 'order_types')) {
+if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
+    if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_ORDER_TYPES)) {
         Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `order_types` TEXT NULL');
     }
 }

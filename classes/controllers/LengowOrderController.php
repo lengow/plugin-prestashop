@@ -303,7 +303,7 @@ class LengowOrderController extends LengowController
                 ),
             ),
         );
-        $fieldsList['order_types'] = array(
+        $fieldsList[LengowOrder::FIELD_ORDER_TYPES] = array(
             'title' => $this->locale->t('order.table.order_types'),
             'class' => 'text-center link no-link nowrap',
             'type' => 'order_types',
@@ -327,7 +327,7 @@ class LengowOrderController extends LengowController
                 ),
             ),
         );
-        $fieldsList['marketplace_sku'] = array(
+        $fieldsList[LengowOrder::FIELD_MARKETPLACE_SKU] = array(
             'title' => $this->locale->t('order.table.marketplace_sku'),
             'class' => 'link no-link',
             'display_callback' => 'LengowOrderController::displayOrderLink',
@@ -335,7 +335,7 @@ class LengowOrderController extends LengowController
             'filter_order' => true,
             'filter_key' => 'lo.marketplace_sku',
         );
-        $fieldsList['marketplace_name'] = array(
+        $fieldsList[LengowOrder::FIELD_MARKETPLACE_NAME] = array(
             'title' => $this->locale->t('order.table.marketplace_name'),
             'class' => 'link nowrap',
             'display_callback' => 'LengowOrderController::displayMarketplaceName',
@@ -364,14 +364,14 @@ class LengowOrderController extends LengowController
             'filter_order' => true,
             'filter_key' => 'o.reference',
         );
-        $fieldsList['customer_name'] = array(
+        $fieldsList[LengowOrder::FIELD_CUSTOMER_NAME] = array(
             'title' => $this->locale->t('order.table.customer'),
             'class' => 'link no-link',
             'filter' => true,
             'filter_order' => true,
             'filter_key' => 'lo.customer_name',
         );
-        $fieldsList['order_date'] = array(
+        $fieldsList[LengowOrder::FIELD_ORDER_DATE] = array(
             'title' => $this->locale->t('order.table.order_date'),
             'class' => 'link',
             'type' => 'date',
@@ -380,14 +380,14 @@ class LengowOrderController extends LengowController
             'filter_key' => 'lo.order_date',
             'filter_order' => true,
         );
-        $fieldsList['delivery_country_iso'] = array(
+        $fieldsList[LengowOrder::FIELD_DELIVERY_COUNTRY_ISO] = array(
             'title' => $this->locale->t('order.table.delivery_country'),
             'class' => 'link',
             'type' => 'flag_country',
             'filter_key' => 'lo.delivery_country_iso',
             'filter_order' => true,
         );
-        $fieldsList['total_paid'] = array(
+        $fieldsList[LengowOrder::FIELD_TOTAL_PAID] = array(
             'title' => $this->locale->t('order.table.total_paid'),
             'type' => 'price',
             'class' => 'link nowrap',
@@ -395,7 +395,7 @@ class LengowOrderController extends LengowController
             'filter_order' => true,
         );
         if ($this->toolbox) {
-            $fieldsList['extra'] = array(
+            $fieldsList[LengowOrder::FIELD_EXTRA] = array(
                 'title' => $this->locale->t('order.table.extra'),
                 'class' => 'no-link',
                 'type' => 'text',
@@ -580,7 +580,7 @@ class LengowOrderController extends LengowController
             $return .= self::generateOrderTypeIcon($iconLabel, 'orange-light', 'mod-chrono');
         }
         if (isset($orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE])
-            || ($key === 'order_types' && (bool) $item['sent_marketplace'])
+            || ($key === LengowOrder::FIELD_ORDER_TYPES && (bool) $item[LengowOrder::FIELD_SENT_MARKETPLACE])
         ) {
             $iconLabel = isset($orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE])
                 ? $orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE]
@@ -608,9 +608,9 @@ class LengowOrderController extends LengowController
         // this line is useless, but Prestashop validator require it
         $key = $key;
         $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
-        if ($item['id_order']) {
+        if ($item[LengowOrder::FIELD_ORDER_ID]) {
             if (!$toolbox) {
-                $href = self::getOrderAdminLink($item['id_order']);
+                $href = self::getOrderAdminLink($item[LengowOrder::FIELD_ORDER_ID]);
                 return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
             }
             return $value;
@@ -632,7 +632,7 @@ class LengowOrderController extends LengowController
         // this two lines are useless, but Prestashop validator require it
         $key = $key;
         $value = $value;
-        return $item['marketplace_label'];
+        return $item[LengowOrder::FIELD_MARKETPLACE_LABEL];
     }
 
     /**
@@ -646,13 +646,15 @@ class LengowOrderController extends LengowController
      */
     public static function displayLogStatus($key, $value, $item)
     {
-        if ($item[$key] && (int) $item['order_process_state'] !== LengowOrder::PROCESS_STATE_FINISH) {
+        if ($item[$key] && (int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE] !== LengowOrder::PROCESS_STATE_FINISH) {
             $errorMessages = array();
-            $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
+            $logCollection = LengowOrderError::getOrderLogs($item[LengowOrder::FIELD_ID], null, false);
             if (!empty($logCollection)) {
                 foreach ($logCollection as $row) {
-                    if ($row['message'] !== '') {
-                        $errorMessages[] = LengowMain::cleanData(LengowMain::decodeLogMessage($row['message']));
+                    if ($row[LengowOrderError::FIELD_MESSAGE] !== '') {
+                        $errorMessages[] = LengowMain::cleanData(
+                            LengowMain::decodeLogMessage($row[LengowOrderError::FIELD_MESSAGE])
+                        );
                     } else {
                         $errorMessages[] = LengowMain::decodeLogMessage('order.screen.no_error_message');
                     }
@@ -666,7 +668,7 @@ class LengowOrderController extends LengowController
                     class="lengow_re_send lengow_link_tooltip lgw-btn lgw-btn-white"
                     data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder', true) . '"
                     data-action="re_send"
-                    data-order="' . $item['id'] . '"
+                    data-order="' . $item[LengowOrder::FIELD_ID] . '"
                     data-type="' . $item[$key] . '"
                     data-html="true"
                     data-original-title="' . $message . '"
@@ -678,7 +680,7 @@ class LengowOrderController extends LengowController
                     class="lengow_re_import lengow_link_tooltip lgw-btn lgw-btn-white"
                     data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder', true) . '"
                     data-action="re_import"
-                    data-order="' . $item['id'] . '"
+                    data-order="' . $item[LengowOrder::FIELD_ID] . '"
                     data-type="' . $item[$key] . '"
                     data-html="true"
                     data-original-title="' . $message . '">'
@@ -686,8 +688,10 @@ class LengowOrderController extends LengowController
             }
         } else {
             // check if order actions in progress
-            if ($item['id_order'] > 0 && (int) $item['order_process_state'] === LengowOrder::PROCESS_STATE_IMPORT) {
-                $lastActionType = LengowAction::getLastOrderActionType($item['id_order']);
+            if ($item[LengowOrder::FIELD_ORDER_ID] > 0
+                && (int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE] === LengowOrder::PROCESS_STATE_IMPORT
+            ) {
+                $lastActionType = LengowAction::getLastOrderActionType($item[LengowOrder::FIELD_ORDER_ID]);
                 if ($lastActionType) {
                     $messageLastAction = LengowMain::decodeLogMessage(
                         'order.screen.action_sent',
@@ -721,9 +725,10 @@ class LengowOrderController extends LengowController
         $key = $key;
         if (!empty($value)) {
             $value = htmlentities($value);
-            return '<input id="link_extra_' . $item['id'] . '" value="' . $value . '" readonly>
+            return '<input id="link_extra_' . $item[LengowOrder::FIELD_ID] . '" value="' . $value . '" readonly>
                 <button href="#" class="lengow_copy lengow_link_tooltip" data-clipboard-target="#link_extra_'
-                . $item['id'] . '"data-original-title="' . LengowMain::decodeLogMessage('product.screen.button_copy')
+                . $item[LengowOrder::FIELD_ID] . '" data-original-title="'
+                . LengowMain::decodeLogMessage('product.screen.button_copy')
                 . '"><i class="fa fa-download"></i></button>';
         }
         return '';
