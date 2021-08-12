@@ -21,19 +21,20 @@
 
 /**
  * List params
- * string  sync                Number of products exported
- * integer days                Import period
+ * string  sync                Data type to synchronize
+ * integer days                Synchronization interval time
  * integer limit               Maximum number of new orders created
  * integer shop_id             Shop id to import
- * string  marketplace_sku     Lengow marketplace order id to import
- * string  marketplace_name    Lengow marketplace name to import
- * string  created_from        Import of orders since
- * string  created_to          Import of orders until
- * integer delivery_address_id Lengow delivery address id to import
+ * string  marketplace_sku     Lengow marketplace order id to synchronize
+ * string  marketplace_name    Lengow marketplace name to synchronize
+ * string  created_from        Synchronization of orders since
+ * string  created_to          Synchronization of orders until
+ * integer delivery_address_id Lengow delivery address id to synchronize
  * boolean force_product       Force import product when quantity is insufficient (1) or not (0)
- * boolean debug_mode          Activate debug mode
- * boolean log_output          See logs (1) or not (0)
- * boolean get_sync            See synchronisation parameters in json format (1) or not (0)
+ * boolean force_sync          Force synchronization order even if there are errors (1) or not (0)
+ * boolean debug_mode          Activate debug mode (1) or not (0)
+ * boolean log_output          Display log messages (1) or not (0)
+ * boolean get_sync            See synchronization parameters in json format (1) or not (0)
  */
 
 @set_time_limit(0);
@@ -56,10 +57,12 @@ if (!Module::isInstalled($lengow->name)) {
 // check IP access and Token
 $token = Tools::getIsset(LengowImport::PARAM_TOKEN) ? Tools::getValue(LengowImport::PARAM_TOKEN) : '';
 if (!LengowMain::checkWebservicesAccess($token)) {
-    if ($token === '' || (bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)) {
+    if ((bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)) {
         $errorMessage = 'Unauthorized access for IP: ' . $_SERVER['REMOTE_ADDR'];
     } else {
-        $errorMessage = 'Unauthorized access for this token : ' . $token;
+        $errorMessage = $token !== ''
+            ? 'Unauthorised access for this token: ' . $token
+            : 'Unauthorised access: token parameter is empty';
     }
     header('HTTP/1.1 403 Forbidden');
     die($errorMessage);

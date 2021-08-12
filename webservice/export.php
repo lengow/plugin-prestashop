@@ -62,10 +62,12 @@ if (!Module::isInstalled($lengow->name)) {
 // CheckIP
 $token = Tools::getIsset(LengowExport::PARAM_TOKEN) ? Tools::getValue(LengowExport::PARAM_TOKEN) : '';
 if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)) {
-    if ($token === '' || (bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)) {
+    if ((bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)) {
         $errorMessage = 'Unauthorized access for IP: ' . $_SERVER['REMOTE_ADDR'];
     } else {
-        $errorMessage = 'Unauthorized access for this token : ' . $token;
+        $errorMessage = $token !== ''
+            ? 'Unauthorised access for this token: ' . $token
+            : 'Unauthorised access: token parameter is empty';
     }
     header('HTTP/1.1 403 Forbidden');
     die($errorMessage);

@@ -475,6 +475,7 @@ log.import.unable_create_order|cannot create the order - %{error_message}
 log.import.unable_delete_cart|cannot delete the cart created
 log.import.connector_get_all_action|get order actions between %{date_from} and %{date_to}
 log.import.clean_context_failed|WARNING ! Cannot reset the context to its initial state
+log.import.unable_find_order|Unable to find the requested order
 log.order_action.check_completed_action|check completed actions
 log.order_action.check_old_action|check and finish old actions
 log.order_action.check_action_not_sent|check actions not sent

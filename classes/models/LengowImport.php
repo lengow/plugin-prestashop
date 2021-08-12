@@ -269,20 +269,20 @@ class LengowImport
      * Construct the import manager
      *
      * @param array $params optional options
-     * string  marketplace_sku     lengow marketplace order id to import
-     * string  marketplace_name    lengow marketplace name to import
-     * string  type                type of current import
-     * string  create_from         import of orders since
-     * string  created_to          import of orders until
-     * integer delivery_address_id Lengow delivery address id to import
-     * integer id_order_lengow     Lengow order id in Magento
-     * integer shop_id             shop id for current import
-     * integer days                import period
-     * integer limit               maximum number of new orders created
-     * boolean log_output          display log messages
-     * boolean debug_mode          debug mode
-     * boolean force_sync          force import order even if there are errors
-     * boolean force_product       force import product when quantity is insufficient (1) or not (0)
+     * string  marketplace_sku     Lengow marketplace order id to synchronize
+     * string  marketplace_name    Lengow marketplace name to synchronize
+     * string  type                Type of current synchronization
+     * string  created_from        Synchronization of orders since
+     * string  created_to          Synchronization of orders until
+     * integer delivery_address_id Lengow delivery address id to synchronize
+     * integer id_order_lengow     Lengow order id in PrestaShop
+     * integer shop_id             Shop id for current synchronization
+     * integer days                Synchronization interval time
+     * integer limit               Maximum number of new orders created
+     * boolean log_output          Display log messages
+     * boolean debug_mode          Activate debug mode
+     * boolean force_sync          Force synchronization order even if there are errors
+     * boolean force_product       Force import product when quantity is insufficient
      */
     public function __construct($params = array())
     {
@@ -522,8 +522,8 @@ class LengowImport
         if ($globalError) {
             $this->errors[0] = $globalError;
             if (isset($this->idOrderLengow) && $this->idOrderLengow) {
-                LengowOrder::finishOrderLogs($this->idOrderLengow);
-                LengowOrder::addOrderLog($this->idOrderLengow, $globalError);
+                LengowOrderError::finishOrderLogs($this->idOrderLengow);
+                LengowOrderError::addOrderLog($this->idOrderLengow, $globalError);
             }
             return false;
         }
@@ -680,8 +680,8 @@ class LengowImport
         }
         if (isset($errorMessage)) {
             if (isset($this->idOrderLengow) && $this->idOrderLengow) {
-                LengowOrder::finishOrderLogs($this->idOrderLengow);
-                LengowOrder::addOrderLog($this->idOrderLengow, $errorMessage);
+                LengowOrderError::finishOrderLogs($this->idOrderLengow);
+                LengowOrderError::addOrderLog($this->idOrderLengow, $errorMessage);
             }
             $decodedMessage = LengowMain::decodeLogMessage(
                 $errorMessage,

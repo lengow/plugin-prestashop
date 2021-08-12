@@ -411,7 +411,7 @@ class LengowHook
                 'extra' => $lengowOrder->lengowExtra,
                 'action_synchronize' => $baseAction . '&action=synchronize',
                 'action_reimport' => $baseAction . '&action=cancel_re_import',
-                'action_resend' => $lengowOrderController . '&action=force_resend&action_type=' . $actionType,
+                'action_resend' => $baseAction . '&action=force_resend&action_type=' . $actionType,
                 'action_add_tracking' => $baseAction . '&action=add_tracking&tracking_number=',
                 'order_id' => $args['id_order'],
                 'version' => _PS_VERSION_,

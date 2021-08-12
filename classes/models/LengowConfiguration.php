@@ -927,7 +927,7 @@ class LengowConfiguration extends Configuration
                     $value = self::get($key, null, false, $idShop);
                     $rows[self::$genericParamKeys[$key]] = self::getValueWithCorrectType($key, $value);
                 }
-            } else if (isset($keyParams[self::PARAM_GLOBAL]) && $keyParams[self::PARAM_GLOBAL]) {
+            } elseif (isset($keyParams[self::PARAM_GLOBAL]) && $keyParams[self::PARAM_GLOBAL]) {
                 $value = self::getGlobalValue($key);
                 $rows[self::$genericParamKeys[$key]] = self::getValueWithCorrectType($key, $value);
             }
