@@ -171,6 +171,69 @@
             });
         });
 
+        $('#lengow_order_wrapper').on('click', '#lengow_update_order', function() {
+            var button = $(this);
+            var href = $(this).data('href');
+            if (($(this).parents('.lengow_form_update_order').find('#select_shop').val() != "") &&
+                ($(this).parents('.lengow_form_update_order').find('#select_mkp').val() != "") &&
+                ($(this).parents('.lengow_form_update_order').find('#sku_order').val() != "")) {
+
+                var data = {
+                    action: 'update_order',
+                    shop_id: $(this).parents('.lengow_form_update_order').find('#select_shop').val(),
+                    marketplace_name: $(this).parents('.lengow_form_update_order').find('#sku_mkp').val(),
+                    marketplace_sku: $(this).parents('.lengow_form_update_order').find('#sku_order').val(),
+                    delivery_address_id: $(this).parents('.lengow_form_update_order').find('#delivery_adress_id').val(),
+                };
+
+                button.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+
+                $.getJSON(href, data, function(content) {
+                    lengow_jquery("#lengow_wrapper_messages").html(content['message']);
+                    lengow_jquery("#lengow_update_order").html(content['update_order']);
+                    lengow_jquery("#lengow_order_table_wrapper").html(content['order_table']);
+
+                    init_tooltip();
+                    reload_table_js();
+                });
+
+                $('#error_update_order').html('');
+            } else {
+                $('#error_update_order').html('<p>Please complete all fields</p>');
+                return false
+            }
+        });
+
+        $('#lengow_order_wrapper').on('click', '#lengow_update_some_orders', function() {
+            var button = $(this);
+            var href = $(this).data('href');
+            if (( $(this).parents('.lengow_form_update_some_orders').find('#select_shop').val() != "") &&
+                ($(this).parents('.lengow_form_update_some_orders').find('#import_days').val() != "")) {
+                var data = {
+                    action: 'update_some_orders',
+                    shop_id: $(this).parents('.lengow_form_update_some_orders').find('#select_shop').val(),
+                    days: $(this).parents('.lengow_form_update_some_orders').find('#import_days').val(),
+                    type: 'manuel'
+                };
+
+                button.html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+
+                $.getJSON(href, data, function(content) {
+                    lengow_jquery("#lengow_wrapper_messages").html(content['message']);
+                    lengow_jquery("#lengow_update_some_orders").html(content['update_some_orders']);
+                    lengow_jquery("#lengow_order_table_wrapper").html(content['order_table']);
+
+                    init_tooltip();
+                    reload_table_js();
+                });
+
+                $('#error_update_some_orders').html('');
+            } else {
+                $('#error_update_some_orders').html('<p>Please complete all fields</p>');
+                return false
+            }
+        });
+
         $('#lengow_order_wrapper').on('click', '#table_order td.link', function() {
             var link = $(this).parents('tr').find('td.reference a');
             if (link.length > 0){

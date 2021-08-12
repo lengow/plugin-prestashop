@@ -36,35 +36,114 @@ class LengowConnector
     // const LENGOW_API_URL = 'https://api.lengow.io';
     const LENGOW_API_URL = 'https://api.lengow.net';
 
-    /* Lengow API routes */
+    /**
+     * @var string url of access token API
+     */
     const API_ACCESS_TOKEN = '/access/get_token';
+
+    /**
+     * @var string url of order API
+     */
     const API_ORDER = '/v3.0/orders';
+
+    /**
+     * @var string url of order merchant order id API
+     */
     const API_ORDER_MOI = '/v3.0/orders/moi/';
+
+    /**
+     * @var string url of order action API
+     */
     const API_ORDER_ACTION = '/v3.0/orders/actions/';
+
+    /**
+     * @var string url of marketplace API
+     */
     const API_MARKETPLACE = '/v3.0/marketplaces';
+
+    /**
+     * @var string url of plan API
+     */
     const API_PLAN = '/v3.0/plans';
+
+    /**
+     * @var string url of cms API
+     */
     const API_CMS = '/v3.1/cms';
+
+    /**
+     * @var string url of cms catalog API
+     */
     const API_CMS_CATALOG = '/v3.1/cms/catalogs/';
+
+    /**
+     * @var string url of cms mapping API
+     */
     const API_CMS_MAPPING = '/v3.1/cms/mapping/';
+
+    /**
+     * @var string url of plugin API
+     */
     const API_PLUGIN = '/v3.0/plugins';
 
-    /* Request actions */
+    /**
+     * @var string request GET
+     */
     const GET = 'GET';
+
+    /**
+     * @var string request POST
+     */
     const POST = 'POST';
+
+    /**
+     * @var string request PUT
+     */
     const PUT = 'PUT';
+
+    /**
+     * @var string request PATCH
+     */
     const PATCH = 'PATCH';
 
-    /* Return formats */
+    /**
+     * @var string json format return
+     */
     const FORMAT_JSON = 'json';
+
+    /**
+     * @var string stream format return
+     */
     const FORMAT_STREAM = 'stream';
 
-    /* Http codes */
+    /**
+     * @var string success code
+     */
     const CODE_200 = 200;
+
+    /**
+     * @var string success create code
+     */
     const CODE_201 = 201;
+
+    /**
+     * @var string unauthorized access code
+     */
     const CODE_401 = 401;
+
+    /**
+     * @var string forbidden access code
+     */
     const CODE_403 = 403;
-    const CODE_404 = 404;
+
+    /**
+     * @var string error server code
+     */
     const CODE_500 = 500;
+
+    /**
+     * @var string timeout server code
+     */
     const CODE_504 = 504;
 
     /**
@@ -213,10 +292,8 @@ class LengowConnector
                 return false;
             }
             $connector = new LengowConnector($accessToken, $secret);
-            $type = (string) Tools::strtolower($type);
-            $args = $authorizationRequired
-                ? array_merge(array(LengowImport::ARG_ACCOUNT_ID => $accountId), $args)
-                : $args;
+            $type = Tools::strtolower($type);
+            $args = $authorizationRequired ? array_merge(array('account_id' => $accountId), $args) : $args;
             $results = $connector->$type($api, $args, self::FORMAT_STREAM, $body, $logOutput);
         } catch (LengowException $e) {
             $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);

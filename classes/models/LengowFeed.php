@@ -24,17 +24,6 @@
  */
 class LengowFeed
 {
-    /* Feed formats */
-    const FORMAT_CSV = 'csv';
-    const FORMAT_YAML = 'yaml';
-    const FORMAT_XML = 'xml';
-    const FORMAT_JSON = 'json';
-
-    /* Content types */
-    const HEADER = 'header';
-    const BODY = 'body';
-    const FOOTER = 'footer';
-
     /**
      * @var string protection
      */
@@ -49,6 +38,41 @@ class LengowFeed
      * @var string end of line
      */
     const EOL = "\r\n";
+
+    /**
+     * @var string csv format
+     */
+    const FORMAT_CSV = 'csv';
+
+    /**
+     * @var string yaml format
+     */
+    const FORMAT_YAML = 'yaml';
+
+    /**
+     * @var string xml format
+     */
+    const FORMAT_XML = 'xml';
+
+    /**
+     * @var string json format
+     */
+    const FORMAT_JSON = 'json';
+
+    /**
+     * @var string header content
+     */
+    const HEADER = 'header';
+
+    /**
+     * @var string body content
+     */
+    const BODY = 'body';
+
+    /**
+     * @var string footer content
+     */
+    const FOOTER = 'footer';
 
     /**
      * @var LengowFile Lengow file instance
@@ -78,7 +102,7 @@ class LengowFeed
     /**
      * @var string|null export shop folder
      */
-    protected $shopFolder;
+    protected $shopFolder = null;
 
     /**
      * @var string full export folder

@@ -181,7 +181,6 @@ class LengowHomeController extends LengowController
         // reset access ids if cms creation failed
         if (!$cmsConnected) {
             LengowConfiguration::resetAccessIds();
-            LengowConfiguration::resetAuthorizationToken();
         }
         return $cmsConnected;
     }

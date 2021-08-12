@@ -24,12 +24,34 @@
  */
 class LengowHook
 {
-    /* PrestaShop track pages */
+    /**
+     * @var string name of Prestashop homepage
+     */
     const LENGOW_TRACK_HOMEPAGE = 'homepage';
+
+    /**
+     * @var string name of Prestashop classic page
+     */
     const LENGOW_TRACK_PAGE = 'page';
+
+    /**
+     * @var string name of Prestashop listepage page
+     */
     const LENGOW_TRACK_PAGE_LIST = 'listepage';
+
+    /**
+     * @var string name of Prestashop payment page
+     */
     const LENGOW_TRACK_PAGE_PAYMENT = 'payment';
+
+    /**
+     * @var string name of Prestashop basket page
+     */
     const LENGOW_TRACK_PAGE_CART = 'basket';
+
+    /**
+     * @var string name of Prestashop confirmation page
+     */
     const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
 
     /**
@@ -411,7 +433,7 @@ class LengowHook
                 'extra' => $lengowOrder->lengowExtra,
                 'action_synchronize' => $baseAction . '&action=synchronize',
                 'action_reimport' => $baseAction . '&action=cancel_re_import',
-                'action_resend' => $baseAction . '&action=force_resend&action_type=' . $actionType,
+                'action_resend' => $lengowOrderController . '&action=force_resend&action_type=' . $actionType,
                 'action_add_tracking' => $baseAction . '&action=add_tracking&tracking_number=',
                 'order_id' => $args['id_order'],
                 'version' => _PS_VERSION_,

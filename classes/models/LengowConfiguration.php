@@ -81,7 +81,6 @@ class LengowConfiguration extends Configuration
 
     /* Configuration parameters */
     const PARAM_COLLECTION = 'collection';
-    const PARAM_RESET_TOKEN = 'reset_token';
     const PARAM_DEFAULT_VALUE = 'default_value';
     const PARAM_EXPORT = 'export';
     const PARAM_EXPORT_TOOLBOX = 'export_toolbox';
@@ -213,14 +212,12 @@ class LengowConfiguration extends Configuration
                     self::PARAM_EXPORT => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_access_token_title'),
                     self::PARAM_SECRET => true,
-                    self::PARAM_RESET_TOKEN => true,
                 ),
                 self::SECRET => array(
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_secret_token_title'),
                     self::PARAM_SECRET => true,
-                    self::PARAM_RESET_TOKEN => true,
                 ),
                 self::CMS_TOKEN => array(
                     self::PARAM_GLOBAL => true,
@@ -690,15 +687,6 @@ class LengowConfiguration extends Configuration
     }
 
     /**
-     * Reset authorization token
-     */
-    public static function resetAuthorizationToken()
-    {
-        self::updateGlobalValue(self::AUTHORIZATION_TOKEN, '');
-        self::updateGlobalValue(self::LAST_UPDATE_AUTHORIZATION_TOKEN, '');
-    }
-
-    /**
      * Check if is a new merchant
      *
      * @return boolean
@@ -927,7 +915,7 @@ class LengowConfiguration extends Configuration
                     $value = self::get($key, null, false, $idShop);
                     $rows[self::$genericParamKeys[$key]] = self::getValueWithCorrectType($key, $value);
                 }
-            } elseif (isset($keyParams[self::PARAM_GLOBAL]) && $keyParams[self::PARAM_GLOBAL]) {
+            } else if (isset($keyParams[self::PARAM_GLOBAL]) && $keyParams[self::PARAM_GLOBAL]) {
                 $value = self::getGlobalValue($key);
                 $rows[self::$genericParamKeys[$key]] = self::getValueWithCorrectType($key, $value);
             }
