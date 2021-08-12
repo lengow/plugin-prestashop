@@ -2,7 +2,7 @@
 Version 3.3.2
 =============================================================
 
-
+    - Bugfix: [export] Correction of the GET selection parameter for export
 
 =============================================================
 Version 3.3.1
