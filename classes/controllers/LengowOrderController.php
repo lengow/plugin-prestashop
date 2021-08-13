@@ -134,55 +134,6 @@ class LengowOrderController extends LengowController
                     $data['show_carrier_notification'] = LengowCarrier::hasDefaultCarrierNotMatched();
                     echo Tools::jsonEncode($data);
                     break;
-                case 'update_order':
-                    $import = new LengowImport(
-                        array(
-                            LengowImport::PARAM_MARKETPLACE_SKU => Tools::getValue('marketplace_sku'),
-                            LengowImport::PARAM_MARKETPLACE_NAME => Tools::getValue('marketplace_name'),
-                            LengowImport::PARAM_DELIVERY_ADDRESS_ID => Tools::getValue('delivery_address_id'),
-                            LengowImport::PARAM_SHOP_ID => Tools::getValue('shop_id'),
-                        )
-                    );
-                    $result = $import->exec();
-                    $message = array();
-                    if (isset($result['marketplace_sku'], $result['marketplace_name'])) {
-                        $message[] = LengowMain::decodeLogMessage(
-                            'toolbox.order.order_import_success',
-                            null,
-                            array(
-                                'marketplace_sku' => $result['marketplace_sku'],
-                                'marketplace_name' => $result['marketplace_name'],
-                            )
-                        );
-                    } else {
-                        $message[] = LengowMain::decodeLogMessage(
-                            'toolbox.order.order_import_failed',
-                            null,
-                            array('log_url' => '/modules/lengow/toolbox/log.php')
-                        );
-                    }
-                    $data = array();
-                    $data['message'] = '<div class=\"lengow_alert\">' . join('<br/>', $message) . '</div>';
-                    $data['update_order'] = $this->locale->t('toolbox.order.import_one_order');
-                    $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
-                    echo Tools::jsonEncode($data);
-                    break;
-                case 'update_some_orders':
-                    $import = new LengowImport(
-                        array(
-                            LengowImport::PARAM_LOG_OUTPUT => false,
-                            LengowImport::PARAM_DAYS => Tools::getValue('days'),
-                            LengowImport::PARAM_SHOP_ID => Tools::getValue('shop_id'),
-                        )
-                    );
-                    $return = $import->exec();
-                    $message = $this->loadMessage($return);
-                    $data = array();
-                    $data['message'] = '<div class=\"lengow_alert\">' . addslashes(join('<br/>', $message)) . '</div>';
-                    $data['update_some_orders'] = $this->locale->t('toolbox.order.button_import_shop_order');
-                    $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
-                    echo Tools::jsonEncode($data);
-                    break;
                 case 'synchronize':
                     $idOrder = isset($_REQUEST['id_order']) ? (int) $_REQUEST['id_order'] : 0;
                     $lengowOrder = new LengowOrder($idOrder);
@@ -352,7 +303,7 @@ class LengowOrderController extends LengowController
                 ),
             ),
         );
-        $fieldsList['order_types'] = array(
+        $fieldsList[LengowOrder::FIELD_ORDER_TYPES] = array(
             'title' => $this->locale->t('order.table.order_types'),
             'class' => 'text-center link no-link nowrap',
             'type' => 'order_types',
@@ -376,7 +327,7 @@ class LengowOrderController extends LengowController
                 ),
             ),
         );
-        $fieldsList['marketplace_sku'] = array(
+        $fieldsList[LengowOrder::FIELD_MARKETPLACE_SKU] = array(
             'title' => $this->locale->t('order.table.marketplace_sku'),
             'class' => 'link no-link',
             'display_callback' => 'LengowOrderController::displayOrderLink',
@@ -384,7 +335,7 @@ class LengowOrderController extends LengowController
             'filter_order' => true,
             'filter_key' => 'lo.marketplace_sku',
         );
-        $fieldsList['marketplace_name'] = array(
+        $fieldsList[LengowOrder::FIELD_MARKETPLACE_NAME] = array(
             'title' => $this->locale->t('order.table.marketplace_name'),
             'class' => 'link nowrap',
             'display_callback' => 'LengowOrderController::displayMarketplaceName',
@@ -413,14 +364,14 @@ class LengowOrderController extends LengowController
             'filter_order' => true,
             'filter_key' => 'o.reference',
         );
-        $fieldsList['customer_name'] = array(
+        $fieldsList[LengowOrder::FIELD_CUSTOMER_NAME] = array(
             'title' => $this->locale->t('order.table.customer'),
             'class' => 'link no-link',
             'filter' => true,
             'filter_order' => true,
             'filter_key' => 'lo.customer_name',
         );
-        $fieldsList['order_date'] = array(
+        $fieldsList[LengowOrder::FIELD_ORDER_DATE] = array(
             'title' => $this->locale->t('order.table.order_date'),
             'class' => 'link',
             'type' => 'date',
@@ -429,14 +380,14 @@ class LengowOrderController extends LengowController
             'filter_key' => 'lo.order_date',
             'filter_order' => true,
         );
-        $fieldsList['delivery_country_iso'] = array(
+        $fieldsList[LengowOrder::FIELD_DELIVERY_COUNTRY_ISO] = array(
             'title' => $this->locale->t('order.table.delivery_country'),
             'class' => 'link',
             'type' => 'flag_country',
             'filter_key' => 'lo.delivery_country_iso',
             'filter_order' => true,
         );
-        $fieldsList['total_paid'] = array(
+        $fieldsList[LengowOrder::FIELD_TOTAL_PAID] = array(
             'title' => $this->locale->t('order.table.total_paid'),
             'type' => 'price',
             'class' => 'link nowrap',
@@ -444,7 +395,7 @@ class LengowOrderController extends LengowController
             'filter_order' => true,
         );
         if ($this->toolbox) {
-            $fieldsList['extra'] = array(
+            $fieldsList[LengowOrder::FIELD_EXTRA] = array(
                 'title' => $this->locale->t('order.table.extra'),
                 'class' => 'no-link',
                 'type' => 'text',
@@ -629,7 +580,7 @@ class LengowOrderController extends LengowController
             $return .= self::generateOrderTypeIcon($iconLabel, 'orange-light', 'mod-chrono');
         }
         if (isset($orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE])
-            || ($key === 'order_types' && (bool) $item['sent_marketplace'])
+            || ($key === LengowOrder::FIELD_ORDER_TYPES && (bool) $item[LengowOrder::FIELD_SENT_MARKETPLACE])
         ) {
             $iconLabel = isset($orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE])
                 ? $orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE]
@@ -657,9 +608,9 @@ class LengowOrderController extends LengowController
         // this line is useless, but Prestashop validator require it
         $key = $key;
         $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
-        if ($item['id_order']) {
+        if ($item[LengowOrder::FIELD_ORDER_ID]) {
             if (!$toolbox) {
-                $href = self::getOrderAdminLink($item['id_order']);
+                $href = self::getOrderAdminLink($item[LengowOrder::FIELD_ORDER_ID]);
                 return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
             }
             return $value;
@@ -681,7 +632,7 @@ class LengowOrderController extends LengowController
         // this two lines are useless, but Prestashop validator require it
         $key = $key;
         $value = $value;
-        return $item['marketplace_label'];
+        return $item[LengowOrder::FIELD_MARKETPLACE_LABEL];
     }
 
     /**
@@ -695,13 +646,15 @@ class LengowOrderController extends LengowController
      */
     public static function displayLogStatus($key, $value, $item)
     {
-        if ($item[$key] && (int) $item['order_process_state'] !== LengowOrder::PROCESS_STATE_FINISH) {
+        if ($item[$key] && (int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE] !== LengowOrder::PROCESS_STATE_FINISH) {
             $errorMessages = array();
-            $logCollection = LengowOrder::getOrderLogs($item['id'], null, false);
+            $logCollection = LengowOrderError::getOrderLogs($item[LengowOrder::FIELD_ID], null, false);
             if (!empty($logCollection)) {
                 foreach ($logCollection as $row) {
-                    if ($row['message'] !== '') {
-                        $errorMessages[] = LengowMain::cleanData(LengowMain::decodeLogMessage($row['message']));
+                    if ($row[LengowOrderError::FIELD_MESSAGE] !== '') {
+                        $errorMessages[] = LengowMain::cleanData(
+                            LengowMain::decodeLogMessage($row[LengowOrderError::FIELD_MESSAGE])
+                        );
                     } else {
                         $errorMessages[] = LengowMain::decodeLogMessage('order.screen.no_error_message');
                     }
@@ -715,7 +668,7 @@ class LengowOrderController extends LengowController
                     class="lengow_re_send lengow_link_tooltip lgw-btn lgw-btn-white"
                     data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder', true) . '"
                     data-action="re_send"
-                    data-order="' . $item['id'] . '"
+                    data-order="' . $item[LengowOrder::FIELD_ID] . '"
                     data-type="' . $item[$key] . '"
                     data-html="true"
                     data-original-title="' . $message . '"
@@ -727,7 +680,7 @@ class LengowOrderController extends LengowController
                     class="lengow_re_import lengow_link_tooltip lgw-btn lgw-btn-white"
                     data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder', true) . '"
                     data-action="re_import"
-                    data-order="' . $item['id'] . '"
+                    data-order="' . $item[LengowOrder::FIELD_ID] . '"
                     data-type="' . $item[$key] . '"
                     data-html="true"
                     data-original-title="' . $message . '">'
@@ -735,8 +688,10 @@ class LengowOrderController extends LengowController
             }
         } else {
             // check if order actions in progress
-            if ($item['id_order'] > 0 && (int) $item['order_process_state'] === LengowOrder::PROCESS_STATE_IMPORT) {
-                $lastActionType = LengowAction::getLastOrderActionType($item['id_order']);
+            if ($item[LengowOrder::FIELD_ORDER_ID] > 0
+                && (int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE] === LengowOrder::PROCESS_STATE_IMPORT
+            ) {
+                $lastActionType = LengowAction::getLastOrderActionType($item[LengowOrder::FIELD_ORDER_ID]);
                 if ($lastActionType) {
                     $messageLastAction = LengowMain::decodeLogMessage(
                         'order.screen.action_sent',
@@ -770,9 +725,10 @@ class LengowOrderController extends LengowController
         $key = $key;
         if (!empty($value)) {
             $value = htmlentities($value);
-            return '<input id="link_extra_' . $item['id'] . '" value="' . $value . '" readonly>
+            return '<input id="link_extra_' . $item[LengowOrder::FIELD_ID] . '" value="' . $value . '" readonly>
                 <button href="#" class="lengow_copy lengow_link_tooltip" data-clipboard-target="#link_extra_'
-                . $item['id'] . '"data-original-title="' . LengowMain::decodeLogMessage('product.screen.button_copy')
+                . $item[LengowOrder::FIELD_ID] . '" data-original-title="'
+                . LengowMain::decodeLogMessage('product.screen.button_copy')
                 . '"><i class="fa fa-download"></i></button>';
         }
         return '';
@@ -789,33 +745,33 @@ class LengowOrderController extends LengowController
     {
         $messages = array();
         // if global error return this
-        if (isset($return['error'][0])) {
-            $messages[] = LengowMain::decodeLogMessage($return['error'][0]);
+        if (isset($return[LengowImport::ERRORS][0])) {
+            $messages[] = LengowMain::decodeLogMessage($return[LengowImport::ERRORS][0]);
             return $messages;
         }
-        if (isset($return['order_new']) && $return['order_new'] > 0) {
+        if (isset($return[LengowImport::NUMBER_ORDERS_CREATED]) && $return[LengowImport::NUMBER_ORDERS_CREATED] > 0) {
             $messages[] = $this->locale->t(
                 'lengow_log.error.nb_order_imported',
-                array('nb_order' => (int) $return['order_new'])
+                array('nb_order' => (int) $return[LengowImport::NUMBER_ORDERS_CREATED])
             );
         }
-        if (isset($return['order_update']) && $return['order_update'] > 0) {
+        if (isset($return[LengowImport::NUMBER_ORDERS_UPDATED]) && $return[LengowImport::NUMBER_ORDERS_UPDATED] > 0) {
             $messages[] = $this->locale->t(
                 'lengow_log.error.nb_order_updated',
-                array('nb_order' => (int) $return['order_update'])
+                array('nb_order' => (int) $return[LengowImport::NUMBER_ORDERS_UPDATED])
             );
         }
-        if (isset($return['order_error']) && $return['order_error'] > 0) {
+        if (isset($return[LengowImport::NUMBER_ORDERS_FAILED]) && $return[LengowImport::NUMBER_ORDERS_FAILED] > 0) {
             $messages[] = $this->locale->t(
                 'lengow_log.error.nb_order_with_error',
-                array('nb_order' => (int) $return['order_error'])
+                array('nb_order' => (int) $return[LengowImport::NUMBER_ORDERS_FAILED])
             );
         }
         if (empty($messages)) {
             $messages[] = $this->locale->t('lengow_log.error.no_notification');
         }
-        if (isset($return['error'])) {
-            foreach ($return['error'] as $shop => $values) {
+        if (isset($return[LengowImport::ERRORS])) {
+            foreach ($return[LengowImport::ERRORS] as $shop => $values) {
                 if ((int) $shop > 0) {
                     $shop = new LengowShop($shop);
                     $shopName = $shop->name . ' : ';

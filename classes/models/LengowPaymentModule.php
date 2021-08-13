@@ -313,10 +313,10 @@ class LengowPaymentModule extends PaymentModule
                 $success = LengowOrder::updateOrderLengow(
                     $idOrderLengow,
                     array(
-                        'id_order' => (int) $order->id,
-                        'order_process_state' => LengowOrder::getOrderProcessState($orderStateLengow),
-                        'order_lengow_state' => pSQL($orderStateLengow),
-                        'is_reimported' => 0,
+                        LengowOrder::FIELD_ORDER_ID => (int) $order->id,
+                        LengowOrder::FIELD_ORDER_PROCESS_STATE => LengowOrder::getOrderProcessState($orderStateLengow),
+                        LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($orderStateLengow),
+                        LengowOrder::FIELD_IS_REIMPORTED => 0,
                     )
                 );
                 if (!$success) {
@@ -449,7 +449,7 @@ class LengowPaymentModule extends PaymentModule
                     }
 
                     $history->changeIdOrderState(
-                        configuration::get($order->valid ? 'PS_OS_OUTOFSTOCK_PAID' : 'PS_OS_OUTOFSTOCK_UNPAID'),
+                        Configuration::get($order->valid ? 'PS_OS_OUTOFSTOCK_PAID' : 'PS_OS_OUTOFSTOCK_UNPAID'),
                         $order,
                         true
                     );
@@ -575,7 +575,10 @@ class LengowPaymentModule extends PaymentModule
                         2
                     );
                     $product['total'] = (float) $product['price'] * (int) $product['quantity'];
-                    $product['total_wt'] = Tools::ps_round((float) $product['price_wt'] * (int) $product['quantity'], 2);
+                    $product['total_wt'] = Tools::ps_round(
+                        (float) $product['price_wt'] * (int) $product['quantity'],
+                        2
+                    );
 
                     // total tax free
                     $totalProducts += (float) $product['total'];
@@ -620,10 +623,10 @@ class LengowPaymentModule extends PaymentModule
             $success = LengowOrder::updateOrderLengow(
                 $idOrderLengow,
                 array(
-                    'id_order' => (int) $order->id,
-                    'order_process_state' => LengowOrder::getOrderProcessState($orderStateLengow),
-                    'order_lengow_state' => pSQL($orderStateLengow),
-                    'is_reimported' => 0,
+                    LengowOrder::FIELD_ORDER_ID => (int) $order->id,
+                    LengowOrder::FIELD_ORDER_PROCESS_STATE => LengowOrder::getOrderProcessState($orderStateLengow),
+                    LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($orderStateLengow),
+                    LengowOrder::FIELD_IS_REIMPORTED => 0,
                 )
             );
             if (!$success) {

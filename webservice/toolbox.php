@@ -21,9 +21,17 @@
 
 /**
  * List params
- * string toolbox_action toolbox specific action
- * string type           type of data to display
- * string date           date of the log to export
+ * string  toolbox_action   Toolbox specific action
+ * string  type             Type of data to display
+ * string  created_from     Synchronization of orders since
+ * string  created_to       Synchronization of orders until
+ * string  date             Log date to download
+ * string  marketplace_name Lengow marketplace name to synchronize
+ * string  marketplace_sku  Lengow marketplace order id to synchronize
+ * string  process          Type of process for order action
+ * boolean force            Force synchronization order even if there are errors (1) or not (0)
+ * integer shop_id          Shop id to synchronize
+ * integer days             Synchronization interval time
  */
 
 @set_time_limit(0);
@@ -44,20 +52,20 @@ if (!Module::isInstalled($lengow->name)) {
     die($errorMessage);
 }
 // check IP access and Token
-$token = Tools::getIsset(LengowToolbox::PARAM_TOKEN) ? Tools::getValue(LengowToolbox::PARAM_TOKEN) : '';
+$token = Tools::getValue(LengowToolbox::PARAM_TOKEN, '');
 if (!LengowMain::checkWebservicesAccess($token)) {
-    if ($token === '' || (bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)) {
+    if ((bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)) {
         $errorMessage = 'Unauthorized access for IP: ' . $_SERVER['REMOTE_ADDR'];
     } else {
-        $errorMessage = 'Unauthorized access for this token : ' . $token;
+        $errorMessage = $token !== ''
+            ? 'Unauthorised access for this token: ' . $token
+            : 'Unauthorised access: token parameter is empty';
     }
     header('HTTP/1.1 403 Forbidden');
     die($errorMessage);
 }
 
-$action = Tools::getIsset(LengowToolbox::PARAM_TOOLBOX_ACTION)
-    ? Tools::getValue(LengowToolbox::PARAM_TOOLBOX_ACTION)
-    : LengowToolbox::ACTION_DATA;
+$action = Tools::getValue(LengowToolbox::PARAM_TOOLBOX_ACTION, LengowToolbox::ACTION_DATA);
 // check if toolbox action is valid
 if (!in_array($action, LengowToolbox::$toolboxActions, true)) {
     header('HTTP/1.1 400 Bad Request');
@@ -66,11 +74,44 @@ if (!in_array($action, LengowToolbox::$toolboxActions, true)) {
 
 switch ($action) {
     case LengowToolbox::ACTION_LOG:
-        $date = Tools::getIsset(LengowToolbox::PARAM_DATE) ? Tools::getValue(LengowToolbox::PARAM_DATE) : null;
+        $date = Tools::getValue(LengowToolbox::PARAM_DATE, null);
         LengowToolbox::downloadLog($date);
         break;
+    case LengowToolbox::ACTION_ORDER:
+        $process = Tools::getValue(LengowToolbox::PARAM_PROCESS, LengowToolbox::PROCESS_TYPE_SYNC);
+        if ($process === LengowToolbox::PROCESS_TYPE_GET_DATA) {
+            $result = LengowToolbox::getOrderData(
+                Tools::getValue(LengowToolbox::PARAM_MARKETPLACE_SKU, null),
+                Tools::getValue(LengowToolbox::PARAM_MARKETPLACE_NAME, null),
+                Tools::getValue(LengowToolbox::PARAM_TYPE, null)
+            );
+        } else {
+            $result = LengowToolbox::syncOrders(
+                array(
+                    LengowToolbox::PARAM_CREATED_TO => Tools::getValue(LengowToolbox::PARAM_CREATED_TO, null),
+                    LengowToolbox::PARAM_CREATED_FROM => Tools::getValue(LengowToolbox::PARAM_CREATED_FROM, null),
+                    LengowToolbox::PARAM_DAYS => Tools::getValue(LengowToolbox::PARAM_DAYS, null),
+                    LengowToolbox::PARAM_FORCE => Tools::getValue(LengowToolbox::PARAM_FORCE, null),
+                    LengowToolbox::PARAM_MARKETPLACE_NAME => Tools::getValue(
+                        LengowToolbox::PARAM_MARKETPLACE_NAME,
+                        null
+                    ),
+                    LengowToolbox::PARAM_MARKETPLACE_SKU => Tools::getValue(LengowToolbox::PARAM_MARKETPLACE_SKU, null),
+                    LengowToolbox::PARAM_SHOP_ID => Tools::getValue(LengowToolbox::PARAM_SHOP_ID, null),
+                )
+            );
+        }
+        if (isset($result[LengowToolbox::ERRORS][LengowToolbox::ERROR_CODE])) {
+            if ($result[LengowToolbox::ERRORS][LengowToolbox::ERROR_CODE] === LengowConnector::CODE_404) {
+                header('HTTP/1.1 404 Not Found');
+            } else {
+                header('HTTP/1.1 403 Forbidden');
+            }
+        }
+        echo Tools::jsonEncode($result);
+        break;
     default:
-        $type = Tools::getIsset(LengowToolbox::PARAM_TYPE) ? Tools::getValue(LengowToolbox::PARAM_TYPE) : null;
+        $type = Tools::getValue(LengowToolbox::PARAM_TYPE, null);
         echo Tools::jsonEncode(LengowToolbox::getData($type));
         break;
 }

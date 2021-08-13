@@ -324,6 +324,12 @@ class LengowConfigurationForm
                 ) {
                     LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_SETTING, time());
                 }
+                // reset the authorization token when a configuration parameter is changed
+                if (isset($setting[LengowConfiguration::PARAM_RESET_TOKEN])
+                    && $setting[LengowConfiguration::PARAM_RESET_TOKEN]
+                ) {
+                    LengowConfiguration::resetAuthorizationToken();
+                }
             }
         }
     }

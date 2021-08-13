@@ -22,10 +22,6 @@
   margin-top: 20px !important;
 }
 
-.lengow-nav-bottom {
-    margin-top: 75px!important;
-}
-
 .lengow-nav {
   top: inherit;
   padding: 0;
@@ -140,6 +136,10 @@ body.lengow_body #main {
 }
 
 .lengow-nav-bottom {
+  margin-top: 45px;
+}
+
+.lengow-nav-bottom.multi-shop {
   margin-top: 55px;
 }
 
