@@ -46,9 +46,9 @@ class LengowSync
     const LINK_TYPE_SUPPORT = 'support';
 
     /* Default plugin links */
-    const LINK_HELP_CENTER = 'https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864';
-    const LINK_CHANGELOG = 'https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864,113076,257675';
-    const LINK_UPDATE_GUIDE = 'https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864,121742';
+    const LINK_HELP_CENTER = 'https://support.lengow.com/kb/guide/en/ob0HZ6F7so';
+    const LINK_CHANGELOG = 'https://support.lengow.com/kb/guide/en/clDRVyFUBk';
+    const LINK_UPDATE_GUIDE = 'https://support.lengow.com/kb/guide/en/ob0HZ6F7so/Steps/25864,121742';
     const LINK_SUPPORT = 'https://help-support.lengow.com/hc/en-us/requests/new';
 
     /* Api iso codes */
