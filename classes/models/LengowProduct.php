@@ -166,7 +166,7 @@ class LengowProduct extends Product
             }
         }
         $this->images = $this->getImages($idLang);
-        $today = date('Y-m-d H:i:s');
+        $today = date(LengowMain::DATE_FULL);
         if (isset($this->specificPrice) && is_array($this->specificPrice)) {
             if (array_key_exists('from', $this->specificPrice) && array_key_exists('to', $this->specificPrice)) {
                 if ($this->specificPrice['from'] <= $today && $today <= $this->specificPrice['to']) {
@@ -371,7 +371,7 @@ class LengowProduct extends Product
                 if (LengowMain::compareVersion()) {
                     $combArray[$idProductAttribute]['available_date'] = (
                     $productAttribute['available_date'] != 0
-                        ? date('Y-m-d', strtotime($productAttribute['available_date']))
+                        ? date(LengowMain::DATE_DAY, strtotime($productAttribute['available_date']))
                         : '0000-00-00'
                     );
                 }

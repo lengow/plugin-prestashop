@@ -272,7 +272,7 @@ class LengowCart extends Cart
                     'id_product_attribute' => (int) $idProductAttribute,
                     'id_cart' => (int) $this->id,
                     'quantity' => (int) $quantity,
-                    'date_add' => date('Y-m-d H:i:s'),
+                    'date_add' => date(LengowMain::DATE_FULL),
                 );
 
                 if (_PS_VERSION_ < '1.5') {
@@ -288,7 +288,7 @@ class LengowCart extends Cart
                     'id_address_delivery' => (int) $idAddressDelivery,
                     'id_shop' => (int) $shop->id,
                     'quantity' => (int) $quantity,
-                    'date_add' => date('Y-m-d H:i:s'),
+                    'date_add' => date(LengowMain::DATE_FULL),
                 );
                 $resultAdd = Db::getInstance()->insert('cart_product', $values);
             }

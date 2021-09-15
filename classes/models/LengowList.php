@@ -513,18 +513,18 @@ class LengowList
                                 && preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $to)
                             ) {
                                 $from = DateTime::createFromFormat('d/m/Y', $from);
-                                $from = $from->format('Y-m-d');
+                                $from = $from->format(LengowMain::DATE_DAY);
                                 $to = DateTime::createFromFormat('d/m/Y', $to);
-                                $to = $to->format('Y-m-d');
+                                $to = $to->format(LengowMain::DATE_DAY);
                                 $where[] = ' ' . pSQL($fieldValue['filter_key']) . '
                                 BETWEEN "' . $from . ' 00:00:00" AND "' . $to . ' 23:59:59"';
                             } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $from)) {
                                 $from = DateTime::createFromFormat('d/m/Y', $from);
-                                $from = $from->format('Y-m-d');
+                                $from = $from->format(LengowMain::DATE_DAY);
                                 $where[] = ' ' . pSQL($fieldValue['filter_key']) . ' >= "' . $from . ' 00:00:00"';
                             } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $to)) {
                                 $to = DateTime::createFromFormat('d/m/Y', $to);
-                                $to = $to->format('Y-m-d');
+                                $to = $to->format(LengowMain::DATE_DAY);
                                 $where[] = ' ' . pSQL($fieldValue['filter_key']) . ' <= "' . $to . ' 23:59:59"';
                             }
                             break;

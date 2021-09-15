@@ -54,7 +54,7 @@ class LengowLog extends LengowFile
     public function __construct($fileName = null)
     {
         if (empty($fileName)) {
-            $this->fileName = 'logs-' . date('Y-m-d') . '.txt';
+            $this->fileName = 'logs-' . date(LengowMain::DATE_DAY) . '.txt';
         } else {
             $this->fileName = $fileName;
         }
@@ -72,7 +72,7 @@ class LengowLog extends LengowFile
     public function write($category, $message = '', $logOutput = false, $marketplaceSku = null)
     {
         $decodedMessage = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
-        $log = date('Y-m-d H:i:s');
+        $log = date(LengowMain::DATE_FULL);
         $log .= ' - ' . (empty($category) ? '' : '[' . $category . '] ');
         $log .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ': ');
         $log .= $decodedMessage . "\r\n";

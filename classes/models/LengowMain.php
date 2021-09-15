@@ -38,6 +38,11 @@ class LengowMain
     const WEBSERVICE_CRON = 'cron.php';
     const WEBSERVICE_TOOLBOX = 'toolbox.php';
 
+    /* Date formats */
+    const DATE_FULL = 'Y-m-d H:i:s';
+    const DATE_DAY = 'Y-m-d';
+    const DATE_ISO_8601 = 'c';
+
     /**
      * @var integer life of log files in days
      */
@@ -458,9 +463,9 @@ class LengowMain
     public static function cleanLog()
     {
         $days = array();
-        $days[] = 'logs-' . date('Y-m-d') . '.txt';
+        $days[] = 'logs-' . date(self::DATE_DAY) . '.txt';
         for ($i = 1; $i < self::LOG_LIFE; $i++) {
-            $days[] = 'logs-' . date('Y-m-d', strtotime('-' . $i . 'day')) . '.txt';
+            $days[] = 'logs-' . date(self::DATE_DAY, strtotime('-' . $i . 'day')) . '.txt';
         }
         /** @var LengowFile[] $logFiles */
         $logFiles = LengowLog::getFiles();

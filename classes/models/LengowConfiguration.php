@@ -81,7 +81,6 @@ class LengowConfiguration extends Configuration
 
     /* Configuration parameters */
     const PARAM_COLLECTION = 'collection';
-    const PARAM_RESET_TOKEN = 'reset_token';
     const PARAM_DEFAULT_VALUE = 'default_value';
     const PARAM_EXPORT = 'export';
     const PARAM_EXPORT_TOOLBOX = 'export_toolbox';
@@ -89,6 +88,7 @@ class LengowConfiguration extends Configuration
     const PARAM_LABEL = 'label';
     const PARAM_LEGEND = 'legend';
     const PARAM_PLACEHOLDER = 'placeholder';
+    const PARAM_RESET_TOKEN = 'reset_token';
     const PARAM_RETURN = 'return';
     const PARAM_SECRET = 'secret';
     const PARAM_SHOP = 'shop';

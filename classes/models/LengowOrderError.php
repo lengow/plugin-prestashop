@@ -134,7 +134,7 @@ class LengowOrderError
                         self::FIELD_TYPE => $type,
                         self::FIELD_IS_FINISHED => (int) $finished,
                         self::FIELD_ORDER_LENGOW_ID => (int) $idOrderLengow,
-                        self::FIELD_CREATED_AT => date('Y-m-d H:i:s'),
+                        self::FIELD_CREATED_AT => date(LengowMain::DATE_FULL),
                     ),
                     'INSERT'
                 );
@@ -146,7 +146,7 @@ class LengowOrderError
                     self::FIELD_TYPE => $type,
                     self::FIELD_IS_FINISHED => (int) $finished,
                     self::FIELD_ORDER_LENGOW_ID => (int) $idOrderLengow,
-                    self::FIELD_CREATED_AT => date('Y-m-d H:i:s'),
+                    self::FIELD_CREATED_AT => date(LengowMain::DATE_FULL),
                 )
             );
         } catch (PrestaShopDatabaseException $e) {

@@ -195,11 +195,6 @@ class LengowImportOrder
     private $orderItems;
 
     /**
-     * @var array order types (is_express, is_prime...)
-     */
-    private $orderTypes;
-
-    /**
      * @var string|null carrier name
      */
     private $carrierName;
@@ -363,8 +358,8 @@ class LengowImportOrder
         } catch (LengowException $e) {
             $this->errors[] = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
             LengowMain::log(LengowLog::CODE_IMPORT, $e->getMessage(), $this->logOutput, $this->marketplaceSku);
-            return false;
         }
+        return false;
     }
 
     /**
@@ -600,15 +595,10 @@ class LengowImportOrder
     {
         // load order comment from marketplace
         $this->loadOrderComment();
-        // load order types data and update Lengow order record
-        $this->loadOrderTypesData();
         // If the Lengow order already exists do not recreate it
         if ($this->idOrderLengow) {
             return true;
         }
-        $orderDate = $this->orderData->marketplace_order_date !== null
-            ? (string) $this->orderData->marketplace_order_date
-            : (string) $this->orderData->imported_at;
         $params = array(
             LengowOrder::FIELD_MARKETPLACE_SKU => pSQL($this->marketplaceSku),
             LengowOrder::FIELD_SHOP_ID => (int) $this->idShop,
@@ -617,12 +607,12 @@ class LengowImportOrder
             LengowOrder::FIELD_MARKETPLACE_NAME => pSQL($this->marketplace->name),
             LengowOrder::FIELD_MARKETPLACE_LABEL => pSQL((string) $this->marketplaceLabel),
             LengowOrder::FIELD_DELIVERY_ADDRESS_ID => (int) $this->deliveryAddressId,
-            LengowOrder::FIELD_ORDER_DATE => date('Y-m-d H:i:s', strtotime($orderDate)),
+            LengowOrder::FIELD_ORDER_DATE => $this->getOrderDate(),
             LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($this->orderStateLengow),
-            LengowOrder::FIELD_ORDER_TYPES => Tools::jsonEncode($this->orderTypes),
+            LengowOrder::FIELD_ORDER_TYPES => $this->getOrderTypesData(),
             LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => $this->getVatNumberFromOrderData(),
             LengowOrder::FIELD_MESSAGE => pSQL($this->orderComment),
-            LengowOrder::FIELD_CREATED_AT => date('Y-m-d H:i:s'),
+            LengowOrder::FIELD_CREATED_AT => date(LengowMain::DATE_FULL),
             LengowOrder::FIELD_ORDER_PROCESS_STATE => 0,
             LengowOrder::FIELD_IS_REIMPORTED => 0,
         );
@@ -681,9 +671,11 @@ class LengowImportOrder
     }
 
     /**
-     * Load order types data and update Lengow order record
+     * Get order types data and update Lengow order record
+     *
+     * @return string
      */
-    private function loadOrderTypesData()
+    private function getOrderTypesData()
     {
         $orderTypes = array();
         if ($this->orderData->order_types !== null && !empty($this->orderData->order_types)) {
@@ -694,7 +686,20 @@ class LengowImportOrder
                 }
             }
         }
-        $this->orderTypes = $orderTypes;
+        return Tools::jsonEncode($orderTypes);
+    }
+
+    /**
+     * Get order date in correct format
+     *
+     * @return string
+     */
+    private function getOrderDate()
+    {
+        $orderDate = $this->orderData->marketplace_order_date !== null
+            ? (string) $this->orderData->marketplace_order_date
+            : (string) $this->orderData->imported_at;
+        return date(LengowMain::DATE_FULL, strtotime($orderDate));
     }
 
     /**
@@ -878,6 +883,12 @@ class LengowImportOrder
         $lastName = Tools::ucfirst(Tools::strtolower($lastName));
         if (empty($firstName) && empty($lastName)) {
             return (string) $this->orderData->billing_address->full_name;
+        }
+        if (empty($firstName)) {
+            return $lastName;
+        }
+        if (empty($lastName)) {
+            return $firstName;
         }
         return $firstName . ' ' . $lastName;
     }

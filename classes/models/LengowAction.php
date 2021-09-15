@@ -410,7 +410,7 @@ class LengowAction
             self::FIELD_ACTION_ID => (int) $params[self::FIELD_ACTION_ID],
             self::FIELD_ACTION_TYPE => pSQL($params[self::FIELD_ACTION_TYPE]),
             self::FIELD_STATE => self::STATE_NEW,
-            self::FIELD_CREATED_AT => date('Y-m-d H:i:s'),
+            self::FIELD_CREATED_AT => date(LengowMain::DATE_FULL),
         );
         if (isset($params[self::FIELD_PARAMETERS][self::ARG_LINE])) {
             $insertParams[self::FIELD_ORDER_LINE_SKU] = $params[self::FIELD_PARAMETERS][self::ARG_LINE];
@@ -451,7 +451,7 @@ class LengowAction
                             _DB_PREFIX_ . self::TABLE_ACTION,
                             array(
                                 self::FIELD_RETRY => $action->retry + 1,
-                                self::FIELD_UPDATED_AT => date('Y-m-d H:i:s'),
+                                self::FIELD_UPDATED_AT => date(LengowMain::DATE_FULL),
                             ),
                             'UPDATE',
                             'id = ' . $action->id
@@ -464,7 +464,7 @@ class LengowAction
                     self::TABLE_ACTION,
                     array(
                         self::FIELD_RETRY => $action->retry + 1,
-                        self::FIELD_UPDATED_AT => date('Y-m-d H:i:s'),
+                        self::FIELD_UPDATED_AT => date(LengowMain::DATE_FULL),
                     ),
                     'id = ' . $action->id
                 );
@@ -488,7 +488,7 @@ class LengowAction
                     _DB_PREFIX_ . self::TABLE_ACTION,
                     array(
                         self::FIELD_STATE => self::STATE_FINISH,
-                        self::FIELD_UPDATED_AT => date('Y-m-d H:i:s'),
+                        self::FIELD_UPDATED_AT => date(LengowMain::DATE_FULL),
                     ),
                     'UPDATE',
                     'id = ' . (int) $id
@@ -501,7 +501,7 @@ class LengowAction
             self::TABLE_ACTION,
             array(
                 self::FIELD_STATE => self::STATE_FINISH,
-                self::FIELD_UPDATED_AT => date('Y-m-d H:i:s'),
+                self::FIELD_UPDATED_AT => date(LengowMain::DATE_FULL),
             ),
             'id = ' . (int) $id
         );
@@ -587,8 +587,8 @@ class LengowAction
             LengowMain::setLogMessage(
                 'log.import.connector_get_all_action',
                 array(
-                    'date_from' => date('Y-m-d H:i:s', $dateFrom),
-                    'date_to' => date('Y-m-d H:i:s', $dateTo),
+                    'date_from' => date(LengowMain::DATE_FULL, $dateFrom),
+                    'date_to' => date(LengowMain::DATE_FULL, $dateTo),
                 )
             ),
             $logOutput
@@ -598,9 +598,9 @@ class LengowAction
                 LengowConnector::GET,
                 LengowConnector::API_ORDER_ACTION,
                 array(
-                    'updated_from' => date('c', $dateFrom),
-                    'updated_to' => date('c', $dateTo),
-                    'page' => $page,
+                    LengowImport::ARG_UPDATED_FROM => date(LengowMain::DATE_ISO_8601, $dateFrom),
+                    LengowImport::ARG_UPDATED_TO => date(LengowMain::DATE_ISO_8601, $dateTo),
+                    LengowImport::ARG_PAGE => $page,
                 ),
                 '',
                 $logOutput
@@ -733,7 +733,7 @@ class LengowAction
      */
     public static function getOldActions()
     {
-        $date = date('Y-m-d H:i:s', (time() - self::MAX_INTERVAL_TIME));
+        $date = date(LengowMain::DATE_FULL, (time() - self::MAX_INTERVAL_TIME));
         $query = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
                 WHERE created_at <= "' . $date . '"
                 AND state = ' . self::STATE_NEW;

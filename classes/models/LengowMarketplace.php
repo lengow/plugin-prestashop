@@ -510,7 +510,7 @@ class LengowMarketplace
                     break;
                 case LengowAction::ARG_SHIPPING_DATE:
                 case LengowAction::ARG_DELIVERY_DATE:
-                    $params[$arg] = date('c');
+                    $params[$arg] = date(LengowMain::DATE_ISO_8601);
                     break;
                 default:
                     if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {

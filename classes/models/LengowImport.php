@@ -805,8 +805,8 @@ class LengowImport
                 LengowMain::setLogMessage(
                     'log.import.connector_get_all_order',
                     array(
-                        'date_from' => date('Y-m-d H:i:s', $dateFrom),
-                        'date_to' => date('Y-m-d H:i:s', $dateTo),
+                        'date_from' => date(LengowMain::DATE_FULL, $dateFrom),
+                        'date_to' => date(LengowMain::DATE_FULL, $dateTo),
                         'catalog_id' => implode(', ', $this->shopCatalogIds),
                     )
                 ),
@@ -831,13 +831,16 @@ class LengowImport
                 } else {
                     if ($this->createdFrom && $this->createdTo) {
                         $timeParams = array(
-                            self::ARG_MARKETPLACE_ORDER_DATE_FROM => date('c', $this->createdFrom),
-                            self::ARG_MARKETPLACE_ORDER_DATE_TO => date('c', $this->createdTo),
+                            self::ARG_MARKETPLACE_ORDER_DATE_FROM => date(
+                                LengowMain::DATE_ISO_8601,
+                                $this->createdFrom
+                            ),
+                            self::ARG_MARKETPLACE_ORDER_DATE_TO => date(LengowMain::DATE_ISO_8601, $this->createdTo),
                         );
                     } else {
                         $timeParams = array(
-                            self::ARG_UPDATED_FROM => date('c', $this->updatedFrom),
-                            self::ARG_UPDATED_TO => date('c', $this->updatedTo),
+                            self::ARG_UPDATED_FROM => date(LengowMain::DATE_ISO_8601, $this->updatedFrom),
+                            self::ARG_UPDATED_TO => date(LengowMain::DATE_ISO_8601, $this->updatedTo),
                         );
                     }
                     $results = $this->connector->get(
@@ -979,7 +982,6 @@ class LengowImport
                     // save the result of the order synchronization by type
                     $this->saveSynchronizationResult($result);
                     // clean import order process
-                    self::$currentOrder = -1;
                     unset($importOrder, $result);
                 } catch (Exception $e) {
                     $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
@@ -1002,6 +1004,8 @@ class LengowImport
                     break;
                 }
             }
+            // clean current order
+            self::$currentOrder = -1;
             if ($importFinished) {
                 break;
             }

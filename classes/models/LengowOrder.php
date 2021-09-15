@@ -638,7 +638,7 @@ class LengowOrder extends Order
      */
     public static function getUnsentOrders()
     {
-        $date = date('Y-m-d H:i:s', strtotime('-5 days', time()));
+        $date = date(LengowMain::DATE_FULL, strtotime('-5 days', time()));
         $sql = 'SELECT lo.`id`, oh.`id_order_state`, oh.`id_order`
             FROM ' . _DB_PREFIX_ . 'lengow_orders lo
             INNER JOIN ' . _DB_PREFIX_ . 'order_history oh ON (oh.id_order = lo.id_order)
