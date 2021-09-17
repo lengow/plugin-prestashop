@@ -407,7 +407,7 @@ class LengowHook
                 'is_delivered_by_marketplace' => $lengowOrder->isDeliveredByMarketplace(),
                 'is_business' => $lengowOrder->isBusiness(),
                 'message' => $lengowOrder->lengowMessage,
-                'imported_at' => $lengowOrder->lengowDateAdd,
+                'imported_at' => $lengowOrder->date_add,
                 'extra' => $lengowOrder->lengowExtra,
                 'action_synchronize' => $baseAction . '&action=synchronize',
                 'action_reimport' => $baseAction . '&action=cancel_re_import',

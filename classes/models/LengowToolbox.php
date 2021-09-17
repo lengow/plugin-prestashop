@@ -259,8 +259,8 @@ class LengowToolbox
     /**
      * Get all order data from a marketplace reference
      *
-     * @param string $marketplaceSku marketplace order reference
-     * @param string $marketplaceName marketplace code
+     * @param string|null $marketplaceSku marketplace order reference
+     * @param string|null $marketplaceName marketplace code
      * @param string $type Toolbox order data type
      *
      * @return array
@@ -277,7 +277,7 @@ class LengowToolbox
                 LengowMain::setLogMessage('log.import.unable_find_order')
             );
         }
-        $orders = [];
+        $orders = array();
         foreach ($lengowOrders as $data) {
             if ($type === self::DATA_TYPE_EXTRA) {
                 return self::getOrderExtraData($data);
@@ -703,7 +703,7 @@ class LengowToolbox
             self::ACTIONS => $lengowOrder ? self::getOrderActionData($lengowOrder->id) : array(),
             self::CREATED_AT => strtotime($data[LengowOrder::FIELD_CREATED_AT]),
             self::UPDATED_AT => strtotime($data[LengowOrder::FIELD_CREATED_AT]),
-            self::IMPORTED_AT => strtotime($data[LengowOrder::FIELD_CREATED_AT]),
+            self::IMPORTED_AT => $lengowOrder ? strtotime($lengowOrder->date_add) : 0,
         );
     }
 
