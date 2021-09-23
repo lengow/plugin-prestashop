@@ -600,10 +600,10 @@ class LengowImportOrder
             return true;
         }
         $params = array(
-            LengowOrder::FIELD_MARKETPLACE_SKU => pSQL($this->marketplaceSku),
             LengowOrder::FIELD_SHOP_ID => (int) $this->idShop,
             LengowOrder::FIELD_SHOP_GROUP_ID => (int) $this->idShopGroup,
             LengowOrder::FIELD_LANG_ID => (int) $this->idLang,
+            LengowOrder::FIELD_MARKETPLACE_SKU => pSQL($this->marketplaceSku),
             LengowOrder::FIELD_MARKETPLACE_NAME => pSQL($this->marketplace->name),
             LengowOrder::FIELD_MARKETPLACE_LABEL => pSQL((string) $this->marketplaceLabel),
             LengowOrder::FIELD_DELIVERY_ADDRESS_ID => (int) $this->deliveryAddressId,
@@ -612,14 +612,11 @@ class LengowImportOrder
             LengowOrder::FIELD_ORDER_TYPES => $this->getOrderTypesData(),
             LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => $this->getVatNumberFromOrderData(),
             LengowOrder::FIELD_MESSAGE => pSQL($this->orderComment),
-            LengowOrder::FIELD_CREATED_AT => date(LengowMain::DATE_FULL),
             LengowOrder::FIELD_EXTRA => pSQL(Tools::jsonEncode($this->orderData)),
+            LengowOrder::FIELD_CREATED_AT => date(LengowMain::DATE_FULL),
             LengowOrder::FIELD_ORDER_PROCESS_STATE => 0,
             LengowOrder::FIELD_IS_REIMPORTED => 0,
         );
-        if (isset($this->orderData->currency->iso_a3)) {
-            $params[LengowOrder::FIELD_CURRENCY] = $this->orderData->currency->iso_a3;
-        }
         try {
             if (_PS_VERSION_ < '1.5') {
                 $result = Db::getInstance()->autoExecute(_DB_PREFIX_ . LengowOrder::TABLE_ORDER, $params, 'INSERT');
@@ -738,6 +735,7 @@ class LengowImportOrder
         LengowOrder::updateOrderLengow(
             $this->idOrderLengow,
             array(
+                LengowOrder::FIELD_CURRENCY => (string) $this->orderData->currency->iso_a3,
                 LengowOrder::FIELD_TOTAL_PAID => $this->orderAmount,
                 LengowOrder::FIELD_ORDER_ITEM => $this->orderItems,
                 LengowOrder::FIELD_CUSTOMER_NAME => pSQL($this->getCustomerName()),
