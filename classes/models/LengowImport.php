@@ -319,9 +319,9 @@ class LengowImport
             $this->marketplaceSku = null;
             // set the time interval
             $this->setIntervalTime(
-                isset($params[self::PARAM_DAYS]) ? (int) $params[self::PARAM_DAYS] : false,
-                isset($params[self::PARAM_CREATED_FROM]) ? $params[self::PARAM_CREATED_FROM] : false,
-                isset($params[self::PARAM_CREATED_TO]) ? $params[self::PARAM_CREATED_TO] : false
+                isset($params[self::PARAM_DAYS]) ? (int) $params[self::PARAM_DAYS] : null,
+                isset($params[self::PARAM_CREATED_FROM]) ? $params[self::PARAM_CREATED_FROM] : null,
+                isset($params[self::PARAM_CREATED_TO]) ? $params[self::PARAM_CREATED_TO] : null
             );
             if (LengowConfiguration::getGlobalValue(LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED)) {
                 $this->limit = 1;
@@ -428,7 +428,7 @@ class LengowImport
         $timestamp = LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
         if ($timestamp > 0) {
             // security check : if last import is more than 60 seconds old => authorize new import to be launched
-            if (($timestamp + (60 * 1)) < time()) {
+            if (($timestamp + (60 * self::MINUTE_INTERVAL_TIME)) < time()) {
                 self::setEnd();
                 return false;
             }
@@ -454,11 +454,11 @@ class LengowImport
     /**
      * Set interval time for order synchronisation
      *
-     * @param integer|false $days Import period
-     * @param string|false $createdFrom Import of orders since
-     * @param string|false $createdTo Import of orders until
+     * @param integer|null $days Import period
+     * @param string|null $createdFrom Import of orders since
+     * @param string|null $createdTo Import of orders until
      */
-    private function setIntervalTime($days, $createdFrom, $createdTo)
+    private function setIntervalTime($days = null, $createdFrom = null, $createdTo = null)
     {
         if ($createdFrom && $createdTo) {
             // retrieval of orders created from ... until ...
@@ -676,7 +676,7 @@ class LengowImport
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[PrestaShop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
         }
         if (isset($errorMessage)) {
             if (isset($this->idOrderLengow) && $this->idOrderLengow) {

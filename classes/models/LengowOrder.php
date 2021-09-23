@@ -1103,7 +1103,7 @@ class LengowOrder extends Order
             } catch (LengowException $e) {
                 $errorMessage = $e->getMessage();
             } catch (Exception $e) {
-                $errorMessage = '[Prestashop error] "' . $e->getMessage()
+                $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
                     . '" ' . $e->getFile() . ' | ' . $e->getLine();
             }
             if (isset($errorMessage)) {

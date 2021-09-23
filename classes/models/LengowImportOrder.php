@@ -613,6 +613,7 @@ class LengowImportOrder
             LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => $this->getVatNumberFromOrderData(),
             LengowOrder::FIELD_MESSAGE => pSQL($this->orderComment),
             LengowOrder::FIELD_CREATED_AT => date(LengowMain::DATE_FULL),
+            LengowOrder::FIELD_EXTRA => pSQL(Tools::jsonEncode($this->orderData)),
             LengowOrder::FIELD_ORDER_PROCESS_STATE => 0,
             LengowOrder::FIELD_IS_REIMPORTED => 0,
         );
@@ -640,7 +641,7 @@ class LengowImportOrder
                 return true;
             }
         } catch (Exception $e) {
-            $errorMessage = '[Prestashop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(
@@ -978,7 +979,7 @@ class LengowImportOrder
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[Prestashop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
         }
         if (!isset($errorMessage)) {
             return true;
@@ -1677,7 +1678,7 @@ class LengowImportOrder
                 'orderStatus' => $orderStatus,
             ));
         } catch (Exception $e) {
-            $errorMessage = '[Prestashop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(
