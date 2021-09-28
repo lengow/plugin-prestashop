@@ -30,9 +30,6 @@
 <link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow-components.css">
 <link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow-pages.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-{if version_compare($smarty.const._PS_VERSION_,'1.5','<')&&version_compare($smarty.const._PS_VERSION_,'1.4','>=')}
-    <link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow_bootstrap_14.css">
-{/if}
 {if version_compare($smarty.const._PS_VERSION_,'1.6','<')&&version_compare($smarty.const._PS_VERSION_,'1.5','>=')}
     <link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow_bootstrap_15.css">
 {/if}

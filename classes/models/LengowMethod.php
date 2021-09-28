@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2018 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2018 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -173,11 +173,7 @@ class LengowMethod
         }
         $db = Db::getInstance();
         try {
-            if (_PS_VERSION_ < '1.5') {
-                $success = $db->autoExecute(_DB_PREFIX_ . self::TABLE_METHOD_MARKETPLACE, $params, 'INSERT');
-            } else {
-                $success = $db->insert(self::TABLE_METHOD_MARKETPLACE, $params);
-            }
+            $success = $db->insert(self::TABLE_METHOD_MARKETPLACE, $params);
         } catch (PrestaShopDatabaseException $e) {
             $success = false;
         }
@@ -195,20 +191,7 @@ class LengowMethod
     public static function updateMethodMarketplace($idMethodMarketplace, $params)
     {
         $db = Db::getInstance();
-        if (_PS_VERSION_ < '1.5') {
-            try {
-                $success = $db->autoExecute(
-                    _DB_PREFIX_ . self::TABLE_METHOD_MARKETPLACE,
-                    $params,
-                    'UPDATE',
-                    'id = ' . (int) $idMethodMarketplace
-                );
-            } catch (PrestaShopDatabaseException $e) {
-                $success = false;
-            }
-        } else {
-            $success = $db->update(self::TABLE_METHOD_MARKETPLACE, $params, 'id = ' . (int) $idMethodMarketplace);
-        }
+        $success = $db->update(self::TABLE_METHOD_MARKETPLACE, $params, 'id = ' . (int) $idMethodMarketplace);
         return $success ? $idMethodMarketplace : false;
     }
 
@@ -238,15 +221,7 @@ class LengowMethod
                 self::FIELD_METHOD_MARKETPLACE_ID => (int) $idMethodMarketplace,
             );
             try {
-                if (_PS_VERSION_ < '1.5') {
-                    $success = $db->autoExecute(
-                        _DB_PREFIX_ . self::TABLE_MARKETPLACE_METHOD_MARKETPLACE,
-                        $params,
-                        'INSERT'
-                    );
-                } else {
-                    $success = $db->insert(self::TABLE_MARKETPLACE_METHOD_MARKETPLACE, $params);
-                }
+                $success = $db->insert(self::TABLE_MARKETPLACE_METHOD_MARKETPLACE, $params);
             } catch (PrestaShopDatabaseException $e) {
                 $success = false;
             }
@@ -265,10 +240,10 @@ class LengowMethod
      */
     public static function deleteMarketplaceMethodMarketplace($idMarketplaceMethodMarketplace)
     {
-        $table = _PS_VERSION_ < '1.5'
-            ? _DB_PREFIX_ . self::TABLE_MARKETPLACE_METHOD_MARKETPLACE
-            : self::TABLE_MARKETPLACE_METHOD_MARKETPLACE;
-        return Db::getInstance()->delete($table, 'id = ' . (int) $idMarketplaceMethodMarketplace);
+        return Db::getInstance()->delete(
+            self::TABLE_MARKETPLACE_METHOD_MARKETPLACE,
+            'id = ' . (int) $idMarketplaceMethodMarketplace
+        );
     }
 
     /**
@@ -373,7 +348,7 @@ class LengowMethod
      */
     public static function getIdCarrierByMethodMarketplaceName($idCountry, $idMarketplace, $methodMarketplaceName)
     {
-        if ($methodMarketplaceName != '') {
+        if ($methodMarketplaceName) {
             // find in lengow marketplace method country table
             $result = Db::getInstance()->getRow(
                 'SELECT lmmc.id_carrier FROM ' . _DB_PREFIX_ . 'lengow_marketplace_method_country as lmmc
@@ -442,11 +417,7 @@ class LengowMethod
         );
         $db = Db::getInstance();
         try {
-            if (_PS_VERSION_ < '1.5') {
-                $success = $db->autoExecute(_DB_PREFIX_ . self::TABLE_MARKETPLACE_METHOD_COUNTRY, $params, 'INSERT');
-            } else {
-                $success = $db->insert(self::TABLE_MARKETPLACE_METHOD_COUNTRY, $params);
-            }
+            $success = $db->insert(self::TABLE_MARKETPLACE_METHOD_COUNTRY, $params);
         } catch (PrestaShopDatabaseException $e) {
             $success = false;
         }
@@ -464,24 +435,11 @@ class LengowMethod
     public static function updateMarketplaceMethodCountry($idMarketplaceMethodCountry, $idCarrier)
     {
         $db = Db::getInstance();
-        if (_PS_VERSION_ < '1.5') {
-            try {
-                $success = $db->autoExecute(
-                    _DB_PREFIX_ . self::TABLE_MARKETPLACE_METHOD_COUNTRY,
-                    array(self::FIELD_CARRIER_ID => $idCarrier),
-                    'UPDATE',
-                    'id = ' . (int) $idMarketplaceMethodCountry
-                );
-            } catch (PrestaShopDatabaseException $e) {
-                $success = false;
-            }
-        } else {
-            $success = $db->update(
-                self::TABLE_MARKETPLACE_METHOD_COUNTRY,
-                array(self::FIELD_CARRIER_ID => $idCarrier),
-                'id = ' . (int) $idMarketplaceMethodCountry
-            );
-        }
+        $success = $db->update(
+            self::TABLE_MARKETPLACE_METHOD_COUNTRY,
+            array(self::FIELD_CARRIER_ID => $idCarrier),
+            'id = ' . (int) $idMarketplaceMethodCountry
+        );
         return $success ? $idMarketplaceMethodCountry : false;
     }
 
@@ -494,9 +452,9 @@ class LengowMethod
      */
     public static function deleteMarketplaceMethodCountry($idMarketplaceMethodCountry)
     {
-        $table = _PS_VERSION_ < '1.5'
-            ? _DB_PREFIX_ . self::TABLE_MARKETPLACE_METHOD_COUNTRY
-            : self::TABLE_MARKETPLACE_METHOD_COUNTRY;
-        return Db::getInstance()->delete($table, 'id = ' . (int) $idMarketplaceMethodCountry);
+        return Db::getInstance()->delete(
+            self::TABLE_MARKETPLACE_METHOD_COUNTRY,
+            'id = ' . (int) $idMarketplaceMethodCountry
+        );
     }
 }

@@ -103,15 +103,13 @@ class LengowFeedController extends LengowController
                             } else {
                                 LengowProduct::publish($id, 0, $idShop);
                             }
-                            foreach ($selection as $id => $v) {
-                                $data['product_id'][] = $id;
+                            foreach (array_keys($selection) as $keyId) {
+                                $data['product_id'][] = $keyId;
                             }
                         }
                         $data = array_merge($data, $this->reloadTotal($idShop));
                     } elseif ($selection) {
-                        foreach ($selection as $id => $v) {
-                            // this line is useless, but Prestashop validator require it
-                            $v = $v;
+                        foreach (array_keys($selection) as $id) {
                             if ($exportAction === 'lengow_add_to_export') {
                                 LengowProduct::publish($id, 1, $idShop);
                             } else {
@@ -136,18 +134,14 @@ class LengowFeedController extends LengowController
     public function display()
     {
         $shopCollection = array();
-        if (_PS_VERSION_ < '1.5') {
-            $results = array(array('id_shop' => 1));
+        if ($currentShop = Shop::getContextShopID()) {
+            $results = array(array('id_shop' => $currentShop));
         } else {
-            if ($currentShop = Shop::getContextShopID()) {
-                $results = array(array('id_shop' => $currentShop));
-            } else {
-                try {
-                    $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
-                    $results = Db::getInstance()->ExecuteS($sql);
-                } catch (PrestaShopDatabaseException $e) {
-                    $results = array();
-                }
+            try {
+                $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
+                $results = Db::getInstance()->ExecuteS($sql);
+            } catch (PrestaShopDatabaseException $e) {
+                $results = array();
             }
         }
         foreach ($results as $row) {
@@ -247,11 +241,7 @@ class LengowFeedController extends LengowController
             'havingFilter' => true,
             'orderby' => false,
         );
-        if (_PS_VERSION_ >= '1.5') {
-            $quantityFilterKey = 'sav.quantity';
-        } else {
-            $quantityFilterKey = 'p.quantity';
-        }
+        $quantityFilterKey = 'sav.quantity';
         $fieldsList['quantity'] = array(
             'title' => $this->locale->t('product.table.quantity'),
             'filter_order' => true,
@@ -282,39 +272,31 @@ class LengowFeedController extends LengowController
         );
         $from = 'FROM ' . _DB_PREFIX_ . 'product p';
 
-        $join[] = ' INNER JOIN ' . _DB_PREFIX_ . 'product_lang pl ON (pl.id_product = p.id_product
+        $join[] = ' INNER JOIN ' . _DB_PREFIX_ .
+            'product_lang pl ON (
+            pl.id_product = p.id_product
             AND pl.id_lang = ' . $this->context->language->id .
-            (_PS_VERSION_ < '1.5' ? '' : ' AND pl.id_shop = ' . (int) $idShop) . ')';
+            ' AND pl.id_shop = ' . (int) $idShop . ')';
         $join[] = ' LEFT JOIN ' . _DB_PREFIX_ . 'lengow_product lp ON (lp.id_product = p.id_product
             AND lp.id_shop = ' . (int) $idShop . ' ) ';
-        if (_PS_VERSION_ >= '1.5') {
-            $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'product_shop` ps ON (p.`id_product` = ps.`id_product`
-                AND ps.id_shop = ' . (int) $idShop . ') ';
-            $join[] = ' LEFT JOIN ' . _DB_PREFIX_ . 'stock_available sav ON (sav.id_product = p.id_product
-                AND sav.id_product_attribute = 0 AND sav.id_shop = ' . (int) $idShop . ')';
-        }
-        if (_PS_VERSION_ >= '1.5') {
-            if (Shop::isFeatureActive()) {
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
-                    ON (ps.`id_category_default` = cl.`id_category`
-                    AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = ' . (int) $idShop . ')';
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (shop.id_shop = ' . (int) $idShop . ') ';
-            } else {
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
-                    ON (p.`id_category_default` = cl.`id_category`
-                    AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = 1)';
-            }
-            $select[] = ' sav.quantity ';
-            if (!LengowConfiguration::get(LengowConfiguration::INACTIVE_ENABLED, null, null, (int) $idShop)) {
-                $where[] = ' ps.active = 1 ';
-            }
+        $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'product_shop` ps ON (p.`id_product` = ps.`id_product`
+            AND ps.id_shop = ' . (int) $idShop . ') ';
+        $join[] = ' LEFT JOIN ' . _DB_PREFIX_ . 'stock_available sav ON (sav.id_product = p.id_product
+            AND sav.id_product_attribute = 0 AND sav.id_shop = ' . (int) $idShop . ')';
+
+        if (Shop::isFeatureActive()) {
+            $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
+                ON (ps.`id_category_default` = cl.`id_category`
+                AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = ' . (int) $idShop . ')';
+            $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (shop.id_shop = ' . (int) $idShop . ') ';
         } else {
-            $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl ON (p.`id_category_default` = cl.`id_category`
-                AND pl.`id_lang` = cl.`id_lang`)';
-            $select[] = ' p.quantity ';
-            if (!LengowConfiguration::get(LengowConfiguration::INACTIVE_ENABLED)) {
-                $where[] = ' p.active = 1 ';
-            }
+            $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'category_lang` cl
+                ON (p.`id_category_default` = cl.`id_category`
+                AND pl.`id_lang` = cl.`id_lang` AND cl.id_shop = 1)';
+        }
+        $select[] = ' sav.quantity ';
+        if (!LengowConfiguration::get(LengowConfiguration::INACTIVE_ENABLED, null, null, (int) $idShop)) {
+            $where[] = ' ps.active = 1 ';
         }
 
         $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
@@ -330,7 +312,6 @@ class LengowFeedController extends LengowController
                 'controller' => 'AdminLengowFeed',
                 'shop_id' => $idShop,
                 'current_page' => $currentPage,
-                'ajax' => true,
                 'order_value' => $orderValue,
                 'order_column' => $orderColumn,
                 'nb_per_page' => $nbPerPage,
@@ -356,65 +337,37 @@ class LengowFeedController extends LengowController
         if ($collection) {
             for ($i = 0; $i < $nb; $i++) {
                 $productId = $collection[$i]['id_product'];
-                if (_PS_VERSION_ < '1.5') {
-                    $collection[$i]['price_final'] = Product::getPriceStatic(
-                        $productId,
-                        true,
-                        null,
-                        2,
-                        null,
-                        false,
-                        true,
-                        1,
-                        true
-                    );
-                } else {
-                    $nothing = '';
-                    $collection[$i]['price_final'] = Product::getPriceStatic(
-                        $productId,
-                        true,
-                        null,
-                        2,
-                        null,
-                        false,
-                        true,
-                        1,
-                        true,
-                        null,
-                        null,
-                        null,
-                        $nothing,
-                        true,
-                        true,
-                        $tempContext
-                    );
-                }
+                $nothing = '';
+                $collection[$i]['price_final'] = Product::getPriceStatic(
+                    $productId,
+                    true,
+                    null,
+                    2,
+                    null,
+                    false,
+                    true,
+                    1,
+                    true,
+                    null,
+                    null,
+                    null,
+                    $nothing,
+                    true,
+                    true,
+                    $tempContext
+                );
                 $collection[$i]['image'] = '';
-                if (_PS_VERSION_ < '1.5') {
-                    $coverImage = Product::getCover($productId);
-                    if ($coverImage) {
-                        $idImage = $coverImage['id_image'];
-                        $imageProduct = new Image($idImage);
-                        $collection[$i]['image'] = cacheImage(
-                            _PS_IMG_DIR_ . 'p/' . $imageProduct->getExistingImgPath() . '.jpg',
-                            'product_mini_' . (int) ($productId) . '.jpg',
-                            45,
-                            'jpg'
-                        );
-                    }
-                } else {
-                    $coverImage = Product::getCover($collection[$i]['id_product'], $tempContext);
-                    if ($coverImage) {
-                        $idImage = $coverImage['id_image'];
-                        $pathToImage = _PS_IMG_DIR_ . 'p/' . Image::getImgFolderStatic($idImage)
-                            . (int) $idImage . '.jpg';
-                        $collection[$i]['image'] = ImageManager::thumbnail(
-                            $pathToImage,
-                            'product_mini_' . $collection[$i]['id_product'] . '_' . $idShop . '.jpg',
-                            45,
-                            'jpg'
-                        );
-                    }
+                $coverImage = Product::getCover($collection[$i]['id_product'], $tempContext);
+                if ($coverImage) {
+                    $idImage = $coverImage['id_image'];
+                    $pathToImage = _PS_IMG_DIR_ . 'p/' . Image::getImgFolderStatic($idImage)
+                        . (int) $idImage . '.jpg';
+                    $collection[$i]['image'] = ImageManager::thumbnail(
+                        $pathToImage,
+                        'product_mini_' . $collection[$i]['id_product'] . '_' . $idShop . '.jpg',
+                        45,
+                        'jpg'
+                    );
                 }
             }
         }
@@ -428,7 +381,7 @@ class LengowFeedController extends LengowController
                 array('nb' => $this->list->getTotal())
             );
             $html .= '<a href="#" data-id_shop="' . $idShop . '" style="display:none;"
-                data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true) . '"
+                data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed') . '"
                 data-message="' . $messageRemoveConfirmation . '"
                 data-action="lengow_export_action"
                 data-export-action="lengow_remove_from_export"
@@ -439,7 +392,7 @@ class LengowFeedController extends LengowController
                 array('nb' => $this->list->getTotal())
             );
             $html .= '<a href="#" data-id_shop="' . $idShop . '" style="display:none;"
-                data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed', true) . '"
+                data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed') . '"
                 data-message="' . $messageAddConfirmation . '"
                 data-action="lengow_export_action"
                 data-export-action="lengow_add_to_export"
@@ -487,8 +440,8 @@ class LengowFeedController extends LengowController
         if ($item['id_product']) {
             if (!$toolbox) {
                 if (version_compare(_PS_VERSION_, '1.7', '<')) {
-                    $controller = (version_compare(_PS_VERSION_, '1.5', '<') ? 'AdminCatalog' : 'AdminProducts');
-                    $href = $link->getAbsoluteAdminLink($controller, false, true)
+                    $controller = 'AdminProducts';
+                    $href = $link->getAbsoluteAdminLink($controller)
                         . '&updateproduct&id_product=' . $item['id_product'];
                 } else {
                     $params = array(

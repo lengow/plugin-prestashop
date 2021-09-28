@@ -458,7 +458,7 @@ class LengowToolbox
         $fileName = LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_TOOLBOX . $sep . self::FILE_CHECKMD5;
         if (file_exists($fileName)) {
             $md5Available = true;
-            if (($file = fopen($fileName, 'r')) !== false) {
+            if (($file = fopen($fileName, 'rb')) !== false) {
                 while (($data = fgetcsv($file, 1000, '|')) !== false) {
                     $fileCounter++;
                     $shortPath =  $data[0];
@@ -539,7 +539,7 @@ class LengowToolbox
         $sep = DIRECTORY_SEPARATOR;
         $filePath = LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_TEST;
         try {
-            $file = fopen($filePath, 'w+');
+            $file = fopen($filePath, 'wb+');
             if (!$file) {
                 return false;
             }

@@ -32,12 +32,8 @@ $lengowPathUri = __PS_BASE_URI__ . 'modules/lengow/';
 $actionGetDefaultSetting =  $lengowPathUri . 'toolbox/config.php?action=get_default_settings&access=admin';
 $actionUpdateSetting =  $lengowPathUri . 'toolbox/config.php?action=update_settings&access=admin';
 
-if (_PS_VERSION_ < '1.5') {
-    $shopCollection = array(array('id_shop' => 1));
-} else {
-    $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
-    $shopCollection = Db::getInstance()->ExecuteS($sql);
-}
+$sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
+$shopCollection = Db::getInstance()->ExecuteS($sql);
 
 switch ($action) {
     case 'update':
@@ -69,18 +65,11 @@ switch ($action) {
         break;
     case 'update_settings':
         if ($fullAccess && $fullAccess === 'admin') {
-            if (_PS_VERSION_ < '1.5') {
-                $tempProfile = Context::getContext()->cookie->profile;
-                Context::getContext()->cookie->profile = 1;
-            }
             LengowTranslation::$forceIsoCode = null;
             $module = Module::getInstanceByName('lengow');
             $install = new LengowInstall($module);
             $install->update();
             LengowTranslation::$forceIsoCode = LengowTranslation::DEFAULT_ISO_CODE;
-            if (_PS_VERSION_ < '1.5') {
-                Context::getContext()->cookie->profile = $tempProfile;
-            }
         }
         Tools::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/config.php', '');
         break;

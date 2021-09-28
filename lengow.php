@@ -50,13 +50,6 @@ class Lengow extends Module
 
         parent::__construct();
 
-        if (_PS_VERSION_ < '1.5') {
-            $sep = DIRECTORY_SEPARATOR;
-            require_once _PS_MODULE_DIR_ . $this->name . $sep . 'backward_compatibility' . $sep . 'backward.php';
-            $this->context = Context::getContext();
-            $this->smarty = $this->context->smarty;
-        }
-
         $this->displayName = $this->l('Lengow');
         $this->description = $this->l('Lengow allows you to easily export your product catalogue from your Prestashop store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister. Choose from our 1,800 available marketing channels!');
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall the Lengow module?');

@@ -89,19 +89,15 @@ class LengowOrderController extends LengowController
                     echo Tools::jsonEncode($data);
                     break;
                 case 'import_all':
-                    if (_PS_VERSION_ < '1.5') {
-                        $import = new LengowImport(array(LengowImport::PARAM_LOG_OUTPUT => false));
+                    if (Shop::getContextShopID()) {
+                        $import = new LengowImport(
+                            array(
+                                LengowImport::PARAM_SHOP_ID => Shop::getContextShopID(),
+                                LengowImport::PARAM_LOG_OUTPUT => false,
+                            )
+                        );
                     } else {
-                        if (Shop::getContextShopID()) {
-                            $import = new LengowImport(
-                                array(
-                                    LengowImport::PARAM_SHOP_ID => Shop::getContextShopID(),
-                                    LengowImport::PARAM_LOG_OUTPUT => false,
-                                )
-                            );
-                        } else {
-                            $import = new LengowImport(array(LengowImport::PARAM_LOG_OUTPUT => false));
-                        }
+                        $import = new LengowImport(array(LengowImport::PARAM_LOG_OUTPUT => false));
                     }
                     $return = $import->exec();
                     $message = $this->loadMessage($return);
@@ -345,7 +341,7 @@ class LengowOrderController extends LengowController
             'filter_type' => 'select',
             'filter_collection' => $this->getMarketplaces(),
         );
-        if (_PS_VERSION_ >= '1.5' && Shop::isFeatureActive() && !Shop::getContextShopID()) {
+        if (Shop::isFeatureActive() && !Shop::getContextShopID()) {
             $fieldsList['shop_name'] = array(
                 'class' => 'link shop',
                 'title' => $this->locale->t('order.table.shop_name'),
@@ -414,7 +410,7 @@ class LengowOrderController extends LengowController
             'lo.order_process_state',
             'lo.order_types',
             'lo.customer_name',
-            (_PS_VERSION_ < 1.5 ? 'o.id_order as reference' : 'o.reference'),
+            'o.reference',
             'lo.order_date',
             'lo.order_lengow_state as lengow_status',
             'lo.id_order',
@@ -428,15 +424,13 @@ class LengowOrderController extends LengowController
         $from = 'FROM ' . _DB_PREFIX_ . 'lengow_orders lo';
         $join = array();
         $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'orders` o ON (o.id_order = lo.id_order) ';
-        if (_PS_VERSION_ >= '1.5') {
-            if (Shop::getContextShopID()) {
-                $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'shop` shop ON (lo.id_shop = shop.id_shop
-                    AND shop.id_shop = ' . (int) Shop::getContextShopID() . ') ';
-            } else {
-                $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (lo.id_shop = shop.id_shop) ';
-            }
-            $select[] = 'shop.name as shop_name';
+        if (Shop::getContextShopID()) {
+            $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'shop` shop ON (lo.id_shop = shop.id_shop
+                AND shop.id_shop = ' . (int) Shop::getContextShopID() . ') ';
+        } else {
+            $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'shop` shop ON (lo.id_shop = shop.id_shop) ';
         }
+        $select[] = 'shop.name as shop_name';
         $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
         $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
         $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
@@ -453,7 +447,6 @@ class LengowOrderController extends LengowController
                 'order_value' => $orderValue,
                 'order_column' => $orderColumn,
                 'nb_per_page' => $nbPerPage,
-                'ajax' => true,
                 'sql' => array(
                     'select' => $select,
                     'from' => $from,
@@ -478,11 +471,11 @@ class LengowOrderController extends LengowController
         $html = '<div class="lengow_table_top">';
         $html .= '<div class="lengow_toolbar">';
         $html .= '<a href="#" style="display:none;"
-            data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowOrder', true) . '"
+            data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowOrder') . '"
             class="lgw-btn lengow_link_tooltip lengow_mass_re_import btn btn-primary">
             <i class="fa fa-download"></i> ' . $this->locale->t('order.screen.button_reimport_order') . '</a>';
         $html .= '<a href="#" style="display:none;"
-            data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowOrder', true) . '"
+            data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowOrder') . '"
             class="lgw-btn lengow_link_tooltip lengow_mass_re_send btn btn-primary">
             <i class="fa fa-arrow-right"></i> ' . $this->locale->t('order.screen.button_resend_order') . '</a>';
         $html .= '</div>';
@@ -629,9 +622,10 @@ class LengowOrderController extends LengowController
      */
     public static function displayMarketplaceName($key, $value, $item)
     {
-        // this two lines are useless, but Prestashop validator require it
+        // this line is useless, but Prestashop validator require it
         $key = $key;
         $value = $value;
+
         return $item[LengowOrder::FIELD_MARKETPLACE_LABEL];
     }
 
@@ -666,7 +660,7 @@ class LengowOrderController extends LengowController
                     . '<br/>' . join('<br/>', $errorMessages);
                 $value = '<a href="#"
                     class="lengow_re_send lengow_link_tooltip lgw-btn lgw-btn-white"
-                    data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder', true) . '"
+                    data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder') . '"
                     data-action="re_send"
                     data-order="' . $item[LengowOrder::FIELD_ID] . '"
                     data-type="' . $item[$key] . '"
@@ -678,7 +672,7 @@ class LengowOrderController extends LengowController
                     . '<br/>' . join('<br/>', $errorMessages);
                 $value = '<a href="#"
                     class="lengow_re_import lengow_link_tooltip lgw-btn lgw-btn-white"
-                    data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder', true) . '"
+                    data-href="' . $link->getAbsoluteAdminLink('AdminLengowOrder') . '"
                     data-action="re_import"
                     data-order="' . $item[LengowOrder::FIELD_ID] . '"
                     data-type="' . $item[$key] . '"
@@ -815,7 +809,7 @@ class LengowOrderController extends LengowController
         $link = new LengowLink();
         try {
             if (version_compare(_PS_VERSION_, '1.7.7', '<')) {
-                $href = $link->getAbsoluteAdminLink('AdminOrders', false, true)
+                $href = $link->getAbsoluteAdminLink('AdminOrders')
                     . '&vieworder&id_order=' . $idOrder;
             } else {
                 $params = array(

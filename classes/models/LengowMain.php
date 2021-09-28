@@ -277,15 +277,11 @@ class LengowMain
         $string = preg_replace($pattern, ' ', $string);
         $string = preg_replace('/[\s]+/', ' ', $string);
         $string = trim($string);
-        $string = str_replace('&nbsp;', ' ', $string);
-        $string = str_replace('|', ' ', $string);
-        $string = str_replace('"', '\'', $string);
-        $string = str_replace('’', '\'', $string);
-        $string = str_replace('&#39;', '\' ', $string);
-        $string = str_replace('&#150;', '-', $string);
-        $string = str_replace(chr(9), ' ', $string);
-        $string = str_replace(chr(10), ' ', $string);
-        return str_replace(chr(13), ' ', $string);
+        return str_replace(
+            array('&nbsp;', '|', '"', '’', '&#39;', '&#150;', chr(9), chr(10), chr(13)),
+            array(' ', ' ', '\'', '\'', '\' ', '-', ' ', ' ', ' '),
+            $string
+        );
     }
 
     /**
@@ -425,7 +421,7 @@ class LengowMain
             $value = str_replace(array('|', '=='), array('', ''), $value);
             $allParams[] = $param . '==' . $value;
         }
-        return $key . '[' . join('|', $allParams) . ']';
+        return $key . '[' . implode('|', $allParams) . ']';
     }
 
     /**
@@ -813,13 +809,7 @@ class LengowMain
      */
     public static function isModuleInstalled($moduleName)
     {
-        if (!Module::isInstalled($moduleName)) {
-            return false;
-        }
-        if ((_PS_VERSION_ >= '1.5') && !Module::isEnabled($moduleName)) {
-            return false;
-        }
-        return true;
+        return Module::isInstalled($moduleName) && Module::isEnabled($moduleName);
     }
 
     /**
@@ -901,7 +891,7 @@ class LengowMain
         $idStateLengow = self::getLengowErrorStateId();
         $index = 0;
         foreach ($states as $state) {
-            if ($state['id_order_state'] == $idStateLengow) {
+            if ((int) $state['id_order_state'] === $idStateLengow) {
                 unset($states[$index]);
             }
             $index++;
@@ -974,17 +964,12 @@ class LengowMain
     public static function getLengowBaseUrl($idShop = null)
     {
         $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 's' : '';
-        if (_PS_VERSION_ < '1.5') {
-            $base = defined('_PS_SHOP_DOMAIN_') ? 'http' . $isHttps . '://' . _PS_SHOP_DOMAIN_ : _PS_BASE_URL_;
-            $base .= __PS_BASE_URI__;
-        } else {
-            try {
-                $idShop = $idShop === null ? Context::getContext()->shop->id : $idShop;
-                $shopUrl = self::getMainShopUrl($idShop);
-                $base = 'http' . $isHttps . '://' . $shopUrl->domain . $shopUrl->physical_uri . $shopUrl->virtual_uri;
-            } catch (Exception $e) {
-                $base = _PS_BASE_URL_ . __PS_BASE_URI__;
-            }
+        try {
+            $idShop = $idShop === null ? Context::getContext()->shop->id : $idShop;
+            $shopUrl = self::getMainShopUrl($idShop);
+            $base = 'http' . $isHttps . '://' . $shopUrl->domain . $shopUrl->physical_uri . $shopUrl->virtual_uri;
+        } catch (Exception $e) {
+            $base = _PS_BASE_URL_ . __PS_BASE_URI__;
         }
         return $base . 'modules/lengow/';
     }
@@ -1015,38 +1000,24 @@ class LengowMain
      *
      * @param integer|null $idLang Prestashop lang id
      *
-     * @return integer|false
+     * @return integer|null
      */
     public static function getLengowErrorStateId($idLang = null)
     {
         $idErrorState = LengowConfiguration::getGlobalValue(LengowConfiguration::LENGOW_ERROR_STATE_ID);
         if ($idErrorState) {
-            return $idErrorState;
+            return (int) $idErrorState;
         }
-        if (_PS_VERSION_ >= '1.5') {
-            if (!$idLang) {
-                $idLang = Context::getContext()->language->id;
-            }
-            $states = OrderState::getOrderStates($idLang);
-            foreach ($states as $state) {
-                if ($state['module_name'] === 'lengow') {
-                    return $state['id_order_state'];
-                }
-            }
-        } else {
-            try {
-                $states = Db::getInstance()->ExecuteS(
-                    'SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang
-                    WHERE name = \'Technical error - Lengow\' OR name = \'Erreur technique - Lengow\' LIMIT 1'
-                );
-            } catch (PrestaShopDatabaseException $e) {
-                return false;
-            }
-            if (!empty($states)) {
-                return $states[0]['id_order_state'];
+        if (!$idLang) {
+            $idLang = Context::getContext()->language->id;
+        }
+        $states = OrderState::getOrderStates($idLang);
+        foreach ($states as $state) {
+            if ($state['module_name'] === 'lengow') {
+                return (int) $state['id_order_state'];
             }
         }
-        return false;
+        return null;
     }
 
     /**

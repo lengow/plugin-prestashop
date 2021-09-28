@@ -401,10 +401,8 @@ class LengowOrder extends Order
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
-        if (empty($result) || $result[0][self::FIELD_MARKETPLACE_SKU] == '') {
-            return false;
-        }
-        return true;
+
+        return !(empty($result) || $result[0][self::FIELD_MARKETPLACE_SKU] === '');
     }
 
     /**
@@ -478,20 +476,7 @@ class LengowOrder extends Order
      */
     public static function updateOrderLengow($id, $params)
     {
-        if (_PS_VERSION_ < '1.5') {
-            try {
-                return Db::getInstance()->autoExecute(
-                    _DB_PREFIX_ . self::TABLE_ORDER,
-                    $params,
-                    'UPDATE',
-                    '`id` = \'' . (int) $id . '\''
-                );
-            } catch (PrestaShopDatabaseException $e) {
-                return false;
-            }
-        } else {
-            return Db::getInstance()->update(self::TABLE_ORDER, $params, '`id` = \'' . (int) $id . '\'');
-        }
+        return Db::getInstance()->update(self::TABLE_ORDER, $params, '`id` = \'' . (int) $id . '\'');
     }
 
     /**
@@ -538,11 +523,7 @@ class LengowOrder extends Order
                 // create a new order history
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
-                if (_PS_VERSION_ < '1.5') {
-                    $history->changeIdOrderState(LengowMain::getOrderState(self::STATE_SHIPPED), $this->id);
-                } else {
-                    $history->changeIdOrderState(LengowMain::getOrderState(self::STATE_SHIPPED), $this, true);
-                }
+                $history->changeIdOrderState(LengowMain::getOrderState(self::STATE_SHIPPED), $this, true);
                 $history->validateFields();
                 $history->add();
                 if ($trackingNumber !== null) {
@@ -550,7 +531,7 @@ class LengowOrder extends Order
                     $this->validateFields();
                     $this->update();
                 }
-                return 'Shipped';
+                return Tools::ucfirst(self::STATE_SHIPPED);
             }
             if (($orderStateLengow === self::STATE_CANCELED || $orderStateLengow === self::STATE_REFUSED)
                 && ((int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_ACCEPTED)
@@ -560,14 +541,10 @@ class LengowOrder extends Order
                 // create a new order history
                 $history = new OrderHistory();
                 $history->id_order = $this->id;
-                if (_PS_VERSION_ < '1.5') {
-                    $history->changeIdOrderState(LengowMain::getOrderState(self::STATE_CANCELED), $this->id);
-                } else {
-                    $history->changeIdOrderState(LengowMain::getOrderState(self::STATE_CANCELED), $this, true);
-                }
+                $history->changeIdOrderState(LengowMain::getOrderState(self::STATE_CANCELED), $this, true);
                 $history->validateFields();
                 $history->add();
-                return 'Canceled';
+                return Tools::ucfirst(self::STATE_CANCELED);
             }
         }
         return false;
@@ -698,50 +675,46 @@ class LengowOrder extends Order
         }
         // get all order ids for a Lengow order
         $orderIds = self::getAllOrderIdsFromLengowOrder($this->lengowMarketplaceSku, $this->lengowMarketplaceName);
-        if (!empty($orderIds)) {
-            $prestaIds = array();
-            foreach ($orderIds as $orderId) {
-                $prestaIds[] = $orderId[self::FIELD_ORDER_ID];
-            }
-            // compatibility V2
-            if ($this->lengowIdFlux !== null) {
-                $this->checkAndChangeMarketplaceName($connector, $logOutput);
-            }
-            $body = array(
-                LengowImport::ARG_ACCOUNT_ID => $accountId,
-                LengowImport::ARG_MARKETPLACE_ORDER_ID => $this->lengowMarketplaceSku,
-                LengowImport::ARG_MARKETPLACE => $this->lengowMarketplaceName,
-                LengowImport::ARG_MERCHANT_ORDER_ID => $prestaIds,
-            );
-            try {
-                $result = $connector->patch(
-                    LengowConnector::API_ORDER_MOI,
-                    array(),
-                    LengowConnector::FORMAT_JSON,
-                    Tools::jsonEncode($body),
-                    $logOutput
-                );
-            } catch (Exception $e) {
-                $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
-                $error = LengowMain::setLogMessage(
-                    'log.connector.error_api',
-                    array(
-                        'error_code' => $e->getCode(),
-                        'error_message' => $message,
-                    )
-                );
-                LengowMain::log(LengowLog::CODE_CONNECTOR, $error, $logOutput);
-                return false;
-            }
-            if ($result === null
-                || (isset($result['detail']) && $result['detail'] === 'Pas trouvé.')
-                || isset($result['error'])
-            ) {
-                return false;
-            }
-            return true;
+        if (empty($orderIds)) {
+            return false;
         }
-        return false;
+        $prestaIds = array();
+        foreach ($orderIds as $orderId) {
+            $prestaIds[] = $orderId[self::FIELD_ORDER_ID];
+        }
+        // compatibility V2
+        if ($this->lengowIdFlux !== null) {
+            $this->checkAndChangeMarketplaceName($connector, $logOutput);
+        }
+        $body = array(
+            LengowImport::ARG_ACCOUNT_ID => $accountId,
+            LengowImport::ARG_MARKETPLACE_ORDER_ID => $this->lengowMarketplaceSku,
+            LengowImport::ARG_MARKETPLACE => $this->lengowMarketplaceName,
+            LengowImport::ARG_MERCHANT_ORDER_ID => $prestaIds,
+        );
+        try {
+            $result = $connector->patch(
+                LengowConnector::API_ORDER_MOI,
+                array(),
+                LengowConnector::FORMAT_JSON,
+                Tools::jsonEncode($body),
+                $logOutput
+            );
+            return !($result === null
+                || (isset($result['detail']) && $result['detail'] === 'Pas trouvé.')
+                || isset($result['error']));
+        } catch (Exception $e) {
+            $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
+            $error = LengowMain::setLogMessage(
+                'log.connector.error_api',
+                array(
+                    'error_code' => $e->getCode(),
+                    'error_message' => $message,
+                )
+            );
+            LengowMain::log(LengowLog::CODE_CONNECTOR, $error, $logOutput);
+            return false;
+        }
     }
 
     /**
@@ -1003,16 +976,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * Check if can add tracking
-     *
-     * @return boolean
-     */
-    public function canAddTracking()
-    {
-        return _PS_VERSION_ < '1.5' && $this->shipping_number === '';
-    }
-
-    /**
      * Re Send Order
      *
      * @param integer $idOrderLengow Lengow order id
@@ -1171,7 +1134,7 @@ class LengowOrder extends Order
                     LengowOrderLine::FIELD_ORDER_LINE_ID => (string) $product->marketplace_order_line_id,
                 );
             }
-            if ($this->lengowDeliveryAddressId == 0) {
+            if ($this->lengowDeliveryAddressId === 0) {
                 return !empty($productLines) ? $productLines : false;
             }
             $orderLines[(int) $package->delivery->id] = $productLines;

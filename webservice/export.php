@@ -53,7 +53,7 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
 $lengow = new Lengow();
 // check if Lengow is installed and enabled
 if (!Module::isInstalled($lengow->name)) {
-    $errorMessage = (_PS_VERSION_ >= 1.5 && !Module::isEnabled($lengow->name))
+    $errorMessage = (!Module::isEnabled($lengow->name))
         ? 'Lengow module is not active'
         : 'Lengow module is not installed';
     header('HTTP/1.1 400 Bad Request');
@@ -94,7 +94,7 @@ $offset = Tools::getIsset(LengowExport::PARAM_OFFSET) ? (int) Tools::getValue(Le
 // export limit
 $limit = Tools::getIsset(LengowExport::PARAM_LIMIT) ? (int) Tools::getValue(LengowExport::PARAM_LIMIT) : null;
 // export specific shop
-if (_PS_VERSION_ >= '1.5' && Tools::getIsset(LengowExport::PARAM_SHOP)) {
+if (Tools::getIsset(LengowExport::PARAM_SHOP)) {
     $shop = new Shop((int) Tools::getValue(LengowExport::PARAM_SHOP));
     if ($shop->id) {
         $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);

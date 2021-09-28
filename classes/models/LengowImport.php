@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -340,10 +340,8 @@ class LengowImport
     {
         $syncOk = true;
         // get initial context type
-        if (_PS_VERSION_ >= '1.5') {
-            $initialContextShop = Context::getContext()->shop;
-            $initialContextType = $initialContextShop::getContext();
-        }
+        $initialContextShop = Context::getContext()->shop;
+        $initialContextType = $initialContextShop::getContext();
         // checks if a synchronization is not already in progress
         if (!$this->canExecuteSynchronization()) {
             return $this->getResult();
@@ -382,20 +380,18 @@ class LengowImport
             LengowMain::updateDateImport($this->typeImport);
         }
         // clean Context type with initial type if different
-        if (_PS_VERSION_ >= '1.5') {
-            $currentContextShop = Context::getContext()->shop;
-            if (isset($initialContextType) && $initialContextType !== $currentContextShop::getContext()) {
-                try {
-                    $currentContextShop::setContext($initialContextType);
-                } catch (Exception $e) {
-                    LengowMain::log(
-                        LengowLog::CODE_IMPORT,
-                        LengowMain::setLogMessage('log.import.clean_context_failed'),
-                        $this->logOutput
-                    );
-                }
-                Context::getContext()->shop = $currentContextShop;
+        $currentContextShop = Context::getContext()->shop;
+        if (isset($initialContextType) && $initialContextType !== $currentContextShop::getContext()) {
+            try {
+                $currentContextShop::setContext($initialContextType);
+            } catch (Exception $e) {
+                LengowMain::log(
+                    LengowLog::CODE_IMPORT,
+                    LengowMain::setLogMessage('log.import.clean_context_failed'),
+                    $this->logOutput
+                );
             }
+            Context::getContext()->shop = $currentContextShop;
         }
         // complete synchronization and start all necessary processes
         $this->finishSynchronization();
@@ -426,15 +422,15 @@ class LengowImport
     public static function isInProcess()
     {
         $timestamp = LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
-        if ($timestamp > 0) {
-            // security check : if last import is more than 60 seconds old => authorize new import to be launched
-            if (($timestamp + (60 * self::MINUTE_INTERVAL_TIME)) < time()) {
-                self::setEnd();
-                return false;
-            }
-            return true;
+        if ($timestamp <= 0) {
+            return false;
         }
-        return false;
+        // security check : if last import is more than 60 seconds old => authorize new import to be launched
+        if (($timestamp + (60 * self::MINUTE_INTERVAL_TIME)) < time()) {
+            self::setEnd();
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -445,10 +441,7 @@ class LengowImport
     public static function restTimeToImport()
     {
         $timestamp = LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
-        if ($timestamp > 0) {
-            return $timestamp + (60 * self::MINUTE_INTERVAL_TIME) - time();
-        }
-        return 0;
+        return $timestamp > 0 ? $timestamp + (60 * self::MINUTE_INTERVAL_TIME) - time() : 0;
     }
 
     /**
@@ -468,35 +461,36 @@ class LengowImport
             $this->createdTo = $intervalTime > self::MAX_INTERVAL_TIME
                 ? $this->createdFrom + self::MAX_INTERVAL_TIME
                 : $createdToTimestamp;
-        } else {
-            if ($days) {
-                $intervalTime = $days * 86400;
-                $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
-            } else {
-                // order recovery updated since ... days
-                $importDays = (int) LengowConfiguration::getGlobalValue(
-                    LengowConfiguration::SYNCHRONIZATION_DAY_INTERVAL
-                );
-                $intervalTime = $importDays * 86400;
-                // add security for older versions of the plugin
-                $intervalTime = $intervalTime < self::MIN_INTERVAL_TIME ? self::MIN_INTERVAL_TIME : $intervalTime;
-                $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
-                // get dynamic interval time for cron synchronisation
-                $lastImport = LengowMain::getLastImport();
-                $lastSettingUpdate = (int) LengowConfiguration::getGlobalValue(
-                    LengowConfiguration::LAST_UPDATE_SETTING
-                );
-                if ($this->typeImport === self::TYPE_CRON
-                    && $lastImport['timestamp'] !== 'none'
-                    && $lastImport['timestamp'] > $lastSettingUpdate
-                ) {
-                    $lastIntervalTime = (time() - $lastImport['timestamp']) + self::SECURITY_INTERVAL_TIME;
-                    $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
-                }
-            }
-            $this->updatedFrom = time() - $intervalTime;
-            $this->updatedTo = time();
+
+            return ;
         }
+        if ($days) {
+            $intervalTime = $days * 86400;
+            $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
+        } else {
+            // order recovery updated since ... days
+            $importDays = (int) LengowConfiguration::getGlobalValue(
+                LengowConfiguration::SYNCHRONIZATION_DAY_INTERVAL
+            );
+            $intervalTime = $importDays * 86400;
+            // add security for older versions of the plugin
+            $intervalTime = $intervalTime < self::MIN_INTERVAL_TIME ? self::MIN_INTERVAL_TIME : $intervalTime;
+            $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
+            // get dynamic interval time for cron synchronisation
+            $lastImport = LengowMain::getLastImport();
+            $lastSettingUpdate = (int) LengowConfiguration::getGlobalValue(
+                LengowConfiguration::LAST_UPDATE_SETTING
+            );
+            if ($this->typeImport === self::TYPE_CRON
+                && $lastImport['timestamp'] !== 'none'
+                && $lastImport['timestamp'] > $lastSettingUpdate
+            ) {
+                $lastIntervalTime = (time() - $lastImport['timestamp']) + self::SECURITY_INTERVAL_TIME;
+                $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
+            }
+        }
+        $this->updatedFrom = time() - $intervalTime;
+        $this->updatedTo = time();
     }
 
     /**
@@ -622,10 +616,7 @@ class LengowImport
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage(
                 'log.import.start_for_shop',
-                array(
-                    'name_shop' => $shop->name,
-                    'id_shop' => $shop->id,
-                )
+                array('name_shop' => $shop->name, 'id_shop' => $shop->id)
             ),
             $this->logOutput
         );
@@ -761,11 +752,9 @@ class LengowImport
     private function changeContext($idShop)
     {
         $this->context = Context::getContext()->cloneContext();
-        if (_PS_VERSION_ >= '1.5') {
-            if ($shop = new Shop($idShop)) {
-                $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
-                $this->context->shop = $shop;
-            }
+        if ($shop = new Shop($idShop)) {
+            $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
+            $this->context->shop = $shop;
         }
         $this->idLang = $this->context->language->id;
         $this->idShopGroup = $this->context->shop->id_shop_group;
@@ -835,7 +824,10 @@ class LengowImport
                                 LengowMain::DATE_ISO_8601,
                                 $this->createdFrom
                             ),
-                            self::ARG_MARKETPLACE_ORDER_DATE_TO => date(LengowMain::DATE_ISO_8601, $this->createdTo),
+                            self::ARG_MARKETPLACE_ORDER_DATE_TO => date(
+                                LengowMain::DATE_ISO_8601,
+                                $this->createdTo
+                            ),
                         );
                     } else {
                         $timeParams = array(
@@ -948,13 +940,14 @@ class LengowImport
                 $packageDeliveryAddressId = (int) $packageData->delivery->id;
                 $firstPackage = !($nbPackage > 1);
                 // check the package for re-import order
-                if ($this->importOneOrder) {
-                    if ($this->deliveryAddressId !== null && $this->deliveryAddressId != $packageDeliveryAddressId) {
-                        $message = LengowMain::setLogMessage('log.import.error_no_delivery_address');
-                        LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput, $marketplaceSku);
-                        $this->addOrderNotFormatted($marketplaceSku, $message, $orderData);
-                        continue;
-                    }
+                if ($this->importOneOrder
+                    && $this->deliveryAddressId !== null
+                    && $this->deliveryAddressId != $packageDeliveryAddressId
+                ) {
+                    $message = LengowMain::setLogMessage('log.import.error_no_delivery_address');
+                    LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput, $marketplaceSku);
+                    $this->addOrderNotFormatted($marketplaceSku, $message, $orderData);
+                    continue;
                 }
                 try {
                     // try to import or update order
@@ -1119,23 +1112,19 @@ class LengowImport
 
     /**
      * Set import to "in process" state
-     *
-     * @return boolean
      */
     private static function setInProcess()
     {
         self::$processing = true;
-        return LengowConfiguration::updateGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS, time());
+        LengowConfiguration::updateGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS, time());
     }
 
     /**
      * Set import to finished
-     *
-     * @return boolean
      */
     private static function setEnd()
     {
         self::$processing = false;
-        return LengowConfiguration::updateGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS, -1);
+        LengowConfiguration::updateGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS, -1);
     }
 }

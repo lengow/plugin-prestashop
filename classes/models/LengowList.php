@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -159,15 +159,11 @@ class LengowList
             ? $params['nb_per_page']
             : 20;
         $this->sql = $params['sql'];
-        $this->ajax = isset($params['ajax']) && $params['ajax'];
         $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
         $this->orderColumn = isset($params['order_column']) ? $params['order_column'] : '';
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $this->locale = new LengowTranslation();
         $this->context = Context::getContext();
-        if (_PS_VERSION_ < 1.5) {
-            $this->context->smarty->ps_language = $this->context->language;
-        }
     }
 
     /**
@@ -306,59 +302,57 @@ class LengowList
         foreach ($this->fieldsList as $key => $values) {
             if (isset($values['display_callback'])) {
                 $value = call_user_func_array($values['display_callback'], array($key, $item[$key], $item));
-            } else {
-                if (isset($values['type'])) {
-                    switch ($values['type']) {
-                        case 'date':
-                            $value = Tools::dateFormat(
-                                array(
-                                    'date' => $item[$key],
-                                    'full' => true,
-                                ),
-                                $this->context->smarty
-                            );
-                            break;
-                        case 'price':
-                            if (isset($item['currency'])) {
-                                $value = Tools::displayPrice($item[$key], $this->getCurrencyByCode($item['currency']));
-                            } else {
-                                $value = Tools::displayPrice($item[$key]);
-                            }
-                            break;
-                        case 'switch_product':
-                            $status = $this->toolbox ? 'disabled' : '';
-                            $value = '<div class="lgw-switch ' . ($item[$key] ? 'checked' : '')
-                                . '"><label><div><span></span><input type="checkbox"
-                                data-size="mini"
-                                class="lengow_switch_product"
-                                data-on-text="' . $this->locale->t('product.screen.button_yes') . '"
-                                data-off-text="' . $this->locale->t('product.screen.button_no') . '"
-                                name="lengow_product_selection[' . $item[$this->identifier] . ']"
-                                lengow_product_selection_' . $item[$this->identifier] . '"
-                                data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax) . '"
-                                data-action="select_product"
-                                data-id_shop="' . $this->shopId . '"
-                                data-id_product="' . $item[$this->identifier] . '" ' .
-                                $status . ' ' .
-                                'value="1" ' . ($item[$key] ? 'checked="checked"' : '') . '/></div></label></div>';
-                            break;
-                        case 'flag_country':
-                            if ($item[$key]) {
-                                $isoCode = Tools::strtoupper($item[$key]);
-                                $value = '<img src="' . __PS_BASE_URI__
-                                    . 'modules/lengow/views/img/flag/' . $isoCode . '.png"
-                                    class="lengow_link_tooltip"
-                                    data-original-title="' . LengowCountry::getNameByIso($isoCode) . '"/>';
-                            } else {
-                                $value = '';
-                            }
-                            break;
-                        default:
-                            $value = $item[$key];
-                    }
-                } else {
-                    $value = $item[$key];
+            } elseif (isset($values['type'])) {
+                switch ($values['type']) {
+                    case 'date':
+                        $value = Tools::dateFormat(
+                            array(
+                                'date' => $item[$key],
+                                'full' => true,
+                            ),
+                            $this->context->smarty
+                        );
+                        break;
+                    case 'price':
+                        if (isset($item['currency'])) {
+                            $value = Tools::displayPrice($item[$key], $this->getCurrencyByCode($item['currency']));
+                        } else {
+                            $value = Tools::displayPrice($item[$key]);
+                        }
+                        break;
+                    case 'switch_product':
+                        $status = $this->toolbox ? 'disabled' : '';
+                        $value = '<div class="lgw-switch ' . ($item[$key] ? 'checked' : '')
+                            . '"><label><div><span></span><input type="checkbox"
+                            data-size="mini"
+                            class="lengow_switch_product"
+                            data-on-text="' . $this->locale->t('product.screen.button_yes') . '"
+                            data-off-text="' . $this->locale->t('product.screen.button_no') . '"
+                            name="lengow_product_selection[' . $item[$this->identifier] . ']"
+                            lengow_product_selection_' . $item[$this->identifier] . '"
+                            data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller) . '"
+                            data-action="select_product"
+                            data-id_shop="' . $this->shopId . '"
+                            data-id_product="' . $item[$this->identifier] . '" ' .
+                            $status . ' ' .
+                            'value="1" ' . ($item[$key] ? 'checked="checked"' : '') . '/></div></label></div>';
+                        break;
+                    case 'flag_country':
+                        if ($item[$key]) {
+                            $isoCode = Tools::strtoupper($item[$key]);
+                            $value = '<img src="' . __PS_BASE_URI__
+                                . 'modules/lengow/views/img/flag/' . $isoCode . '.png"
+                                class="lengow_link_tooltip"
+                                data-original-title="' . LengowCountry::getNameByIso($isoCode) . '"/>';
+                        } else {
+                            $value = '';
+                        }
+                        break;
+                    default:
+                        $value = $item[$key];
                 }
+            } else {
+                $value = $item[$key];
             }
             $class = isset($values['class']) ? $values['class'] : '';
             $html .= '<td class="' . $class . '">' . $value . '</td>';
@@ -386,7 +380,7 @@ class LengowList
     {
         $lengowLink = new LengowLink();
         $html = '<form id="form_table_' . $this->id . '" class="lengow_form_table"
-            data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax) . '">';
+            data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller) . '">';
         $html .= '<input type="hidden" name="p" value="' . $this->currentPage . '" />';
         $html .= '<input type="hidden" name="nb_per_page" value="' . $this->nbPerPage . '" />';
         $html .= '<input type="hidden" name="order_value" value="' . $this->orderValue . '" />';
@@ -578,10 +572,8 @@ class LengowList
                 if (isset($this->sql['order'])) {
                     $sql .= ', ' . $this->sql['order'];
                 }
-            } else {
-                if (isset($this->sql['order'])) {
-                    $sql .= ' ORDER BY ' . $this->sql['order'];
-                }
+            } elseif (isset($this->sql['order'])) {
+                $sql .= ' ORDER BY ' . $this->sql['order'];
             }
             if ($this->currentPage < 1) {
                 $this->currentPage = 1;
@@ -634,11 +626,11 @@ class LengowList
         $html .= '<ul class="lgw-pagination-btns lgw-pagination-arrow">';
         $class = ($this->currentPage == 1) ? 'disabled' : '';
         $html .= '<li class="' . $class . '"><a href="#" data-page="' . ($this->currentPage - 1) . '"
-            data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax)
+            data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller)
             . '&p=' . ($this->currentPage - 1) . '"><i class="fa fa-angle-left"></i></a></li>';
         $class = ($this->currentPage == $this->nbMaxPage) ? 'disabled' : '';
         $html .= '<li class="' . $class . '"><a href="#" data-page="' . ($this->currentPage + 1) . '"
-            data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax)
+            data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller)
             . '&p=' . ($this->currentPage + 1) . '"><i class="fa fa-angle-right"></i></a></li>';
         $html .= '</ul>';
         $html .= '<ul class="lgw-pagination-btns lgw-pagination-numbers">';
@@ -646,7 +638,7 @@ class LengowList
             $showLastSeparation = false;
             $class = ($this->currentPage == 1) ? 'disabled' : '';
             $html .= '<li class="' . $class . '"><a href="#" data-page="1"
-                data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax) . '&p=1">1</a></li>';
+                data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller) . '&p=1">1</a></li>';
             $from = $this->currentPage - 1;
             $to = $this->currentPage + 1;
             if ($from <= 2) {
@@ -657,16 +649,14 @@ class LengowList
             }
             if ($to > ($this->nbMaxPage - 1)) {
                 $to = $this->nbMaxPage - 1;
-            } else {
-                if ($this->currentPage < ($this->nbMaxPage - 2)) {
-                    $showLastSeparation = true;
-                }
+            } elseif ($this->currentPage < ($this->nbMaxPage - 2)) {
+                $showLastSeparation = true;
             }
             for ($i = $from; $i <= $to; $i++) {
                 $html .= '<li>';
                 $class = $i == $this->currentPage ? 'disabled' : '';
                 $html .= '<li class="' . $class . '"><a href="#" data-page="' . $i . '"
-                    data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax) . '&p=' . $i . '">'
+                    data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller) . '&p=' . $i . '">'
                     . $i . '</a></li>';
                 $html .= '</li>';
             }
@@ -675,13 +665,13 @@ class LengowList
             }
             $class = $this->currentPage == $this->nbMaxPage ? 'disabled' : '';
             $html .= '<li class="' . $class . '"><a href="#" data-page="' . $this->nbMaxPage . '"
-                data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax)
+                data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller)
                 . '&p=' . ($this->nbMaxPage) . '">' . $this->nbMaxPage . '</a></li>';
         } else {
             for ($i = 1; $i <= $totalPage; $i++) {
                 $class = $i == $this->currentPage ? 'disabled' : '';
                 $html .= '<li class="' . $class . '"><a href="#"  data-page="' . $i . '"
-                    data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller, $this->ajax) . '&p=' . $i . '">'
+                    data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller) . '&p=' . $i . '">'
                     . $i . '</a></li>';
             }
         }

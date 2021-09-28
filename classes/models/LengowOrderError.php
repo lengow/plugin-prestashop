@@ -126,19 +126,6 @@ class LengowOrderError
     public static function addOrderLog($idOrderLengow, $message = '', $type = self::TYPE_ERROR_IMPORT, $finished = 0)
     {
         try {
-            if (_PS_VERSION_ < '1.5') {
-                return Db::getInstance()->autoExecute(
-                    _DB_PREFIX_ . self::TABLE_ORDER_ERROR,
-                    array(
-                        self::FIELD_MESSAGE => pSQL($message),
-                        self::FIELD_TYPE => $type,
-                        self::FIELD_IS_FINISHED => (int) $finished,
-                        self::FIELD_ORDER_LENGOW_ID => (int) $idOrderLengow,
-                        self::FIELD_CREATED_AT => date(LengowMain::DATE_FULL),
-                    ),
-                    'INSERT'
-                );
-            }
             return Db::getInstance()->insert(
                 self::TABLE_ORDER_ERROR,
                 array(
@@ -174,24 +161,11 @@ class LengowOrderError
         }
         $updateSuccess = 0;
         foreach ($orderLogs as $orderLog) {
-            if (_PS_VERSION_ < '1.5') {
-                try {
-                    $result = Db::getInstance()->autoExecute(
-                        _DB_PREFIX_ . self::TABLE_ORDER_ERROR,
-                        array(self::FIELD_IS_FINISHED => 1),
-                        'UPDATE',
-                        '`id` = \'' . (int) $orderLog[self::FIELD_ID] . '\''
-                    );
-                } catch (PrestaShopDatabaseException $e) {
-                    $result = false;
-                }
-            } else {
-                $result = Db::getInstance()->update(
-                    self::TABLE_ORDER_ERROR,
-                    array(self::FIELD_IS_FINISHED => 1),
-                    '`id` = \'' . (int) $orderLog[self::FIELD_ID] . '\''
-                );
-            }
+            $result = Db::getInstance()->update(
+                self::TABLE_ORDER_ERROR,
+                array(self::FIELD_IS_FINISHED => 1),
+                '`id` = \'' . (int) $orderLog[self::FIELD_ID] . '\''
+            );
             if ($result) {
                 $updateSuccess++;
             }
@@ -230,15 +204,6 @@ class LengowOrderError
     public static function logSent($idOrderLog)
     {
         try {
-            if (_PS_VERSION_ < '1.5') {
-                return Db::getInstance()->autoExecute(
-                    _DB_PREFIX_ . self::TABLE_ORDER_ERROR,
-                    array(self::FIELD_MAIL => 1),
-                    'UPDATE',
-                    '`id` = \'' . (int) $idOrderLog . '\'',
-                    1
-                );
-            }
             return Db::getInstance()->update(
                 self::TABLE_ORDER_ERROR,
                 array(self::FIELD_MAIL => 1),

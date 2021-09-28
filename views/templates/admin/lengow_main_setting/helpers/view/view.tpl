@@ -66,10 +66,10 @@
                         {$locale->t('global_setting.screen.please_choose_log')|escape:'htmlall':'UTF-8'}
                     </option>
                     {foreach from=$list_file item=file}
-                        <option value="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting', true)|escape:'htmlall':'UTF-8'}&action=download&date={$file['date']|escape:'htmlall':'UTF-8'}">
+                        <option value="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}&action=download&date={$file['date']|escape:'htmlall':'UTF-8'}">
                         {$file['date']|date_format:"%A %e %B %Y"|escape:'htmlall':'UTF-8'}</option>
                     {/foreach}
-                    <option value="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting', true)|escape:'htmlall':'UTF-8'}&action=download_all" >
+                    <option value="{$lengow_link->getAbsoluteAdminLink('AdminLengowMainSetting')|escape:'htmlall':'UTF-8'}&action=download_all" >
                         {$locale->t('global_setting.screen.download_all_files')|escape:'htmlall':'UTF-8'}
                     </option>
                 </select>

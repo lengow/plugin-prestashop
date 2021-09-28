@@ -368,14 +368,8 @@ class LengowToolboxElement
             );
         }
         if ($mailMethod === 3) {
-            if (_PS_VERSION_ >= '1.5.0') {
-                return array(
-                    self::DATA_MESSAGE => $this->locale->t('toolbox.index.email_disable'),
-                    self::DATA_STATE => 0,
-                );
-            }
             return array(
-                self::DATA_MESSAGE => $this->locale->t('toolbox.index.error_mail_setting'),
+                self::DATA_MESSAGE => $this->locale->t('toolbox.index.email_disable'),
                 self::DATA_STATE => 0,
             );
         }

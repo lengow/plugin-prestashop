@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -63,12 +63,10 @@ class LengowConfigurationForm
     {
         $html = '';
         foreach ($displayKeys as $key) {
-            if (isset($this->fields[$key])) {
-                if (isset($this->fields[$key][LengowConfiguration::PARAM_SHOP])
-                    && $this->fields[$key][LengowConfiguration::PARAM_SHOP]
-                ) {
-                    $html .= $this->input($key, $this->fields[$key], $idShop);
-                }
+            if (isset($this->fields[$key], $this->fields[$key][LengowConfiguration::PARAM_SHOP])
+                && $this->fields[$key][LengowConfiguration::PARAM_SHOP]
+            ) {
+                $html .= $this->input($key, $this->fields[$key], $idShop);
             }
         }
         return $html;
@@ -108,10 +106,11 @@ class LengowConfigurationForm
     public function input($key, $input, $idShop = null)
     {
         $html = '';
-        $name = $idShop ? $key . '[' . $idShop . ']' : $key;
         if ($idShop) {
+            $name = $key . '[' . $idShop . ']';
             $value = LengowConfiguration::get($key, null, null, $idShop);
         } else {
+            $name = $key;
             $value = LengowConfiguration::getGlobalValue($key);
         }
         $inputType = isset($input[LengowConfiguration::PARAM_TYPE])
@@ -189,15 +188,11 @@ class LengowConfigurationForm
      */
     public function postProcess($checkboxKeys)
     {
-        if (_PS_VERSION_ < '1.5') {
+        try {
+            $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
+            $shopCollection = Db::getInstance()->ExecuteS($sql);
+        } catch (PrestaShopDatabaseException $e) {
             $shopCollection = array(array('id_shop' => 1));
-        } else {
-            try {
-                $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
-                $shopCollection = Db::getInstance()->ExecuteS($sql);
-            } catch (PrestaShopDatabaseException $e) {
-                $shopCollection = array(array('id_shop' => 1));
-            }
         }
         foreach ($_REQUEST as $key => $value) {
             if (isset($this->fields[$key])) {
@@ -215,21 +210,19 @@ class LengowConfigurationForm
                         $shopValue = $shopValue === '' ? null : $shopValue;
                         LengowConfiguration::updateValue($key, $shopValue, false, null, $idShop);
                     }
+                } elseif (is_array($value)) {
+                    $this->checkAndLog($key, implode(',', $value));
+                    LengowConfiguration::updateGlobalValue($key, implode(',', $value));
                 } else {
-                    if (is_array($value)) {
-                        $this->checkAndLog($key, implode(',', $value));
-                        LengowConfiguration::updateGlobalValue($key, implode(',', $value));
-                    } else {
-                        if (isset($this->fields[$key][LengowConfiguration::PARAM_TYPE])
-                            && $this->fields[$key][LengowConfiguration::PARAM_TYPE] === self::TYPE_CHECKBOX
-                            && $value === 'on'
-                        ) {
-                            $value = 1;
-                        }
-                        $this->checkAndLog($key, $value);
-                        $value = $value === '' ? null : $value;
-                        LengowConfiguration::updateGlobalValue($key, $value);
+                    if (isset($this->fields[$key][LengowConfiguration::PARAM_TYPE])
+                        && $this->fields[$key][LengowConfiguration::PARAM_TYPE] === self::TYPE_CHECKBOX
+                        && $value === 'on'
+                    ) {
+                        $value = 1;
                     }
+                    $this->checkAndLog($key, $value);
+                    $value = $value === '' ? null : $value;
+                    LengowConfiguration::updateGlobalValue($key, $value);
                 }
             }
         }

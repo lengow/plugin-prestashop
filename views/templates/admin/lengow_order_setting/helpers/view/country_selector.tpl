@@ -26,7 +26,7 @@
         {foreach from=$countries item=country}
             <div class="lgw-col-3">
                 <a href="#" class="js-lengow-open-matching lgw-box-link-matching"
-                   data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting', true)|escape:'htmlall':'UTF-8'}"
+                   data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowOrderSetting')|escape:'htmlall':'UTF-8'}"
                    data-id-country="{$country['id_country']|escape:'htmlall':'UTF-8'}">
                     <div class="lgw-box">
                         {if isset($defaultCarrierNotMatched[{$country['id_country']}]) && $defaultCarrierNotMatched[{$country['id_country']}]|count > 0}

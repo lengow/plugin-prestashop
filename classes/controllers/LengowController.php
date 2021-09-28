@@ -65,8 +65,8 @@ class LengowController
         $this->locale = new LengowTranslation();
         $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
-        $lengowPathUri = _PS_VERSION_ < '1.5' ? __PS_BASE_URI__ . 'modules/lengow/' : $this->module->getPathUri();
-        $multiShop = _PS_VERSION_ >= '1.5' && Shop::isFeatureActive();
+        $lengowPathUri = $this->module->getPathUri();
+        $multiShop = Shop::isFeatureActive();
         $this->isNewMerchant = LengowConfiguration::isNewMerchant();
         $debugMode = LengowConfiguration::debugModeIsActive();
         $merchantStatus = LengowSync::getStatusAccount();
@@ -79,7 +79,7 @@ class LengowController
         // recovery of all plugin data for plugin update
         $pluginIsUpToDate = true;
         $showPluginUpgradeModal = false;
-        $lengowModalAjaxLink = $this->lengowLink->getAbsoluteAdminLink('AdminLengowDashboard', true);
+        $lengowModalAjaxLink = $this->lengowLink->getAbsoluteAdminLink('AdminLengowDashboard');
         $pluginData = LengowSync::getPluginData();
         if ($pluginData && version_compare($pluginData['version'], $this->module->version, '>')) {
             $pluginIsUpToDate = false;
@@ -125,23 +125,6 @@ class LengowController
     public function display()
     {
         $this->context->smarty->assign('total_pending_order', LengowOrder::countOrderToBeSent());
-        if (_PS_VERSION_ < '1.5') {
-            if (!$this->toolbox) {
-                $module = Module::getInstanceByName('lengow');
-                echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header.tpl');
-                $lengowMain = new LengowMain();
-                $className = get_class($this);
-                if (Tools::substr($className, 0, 11) === 'LengowOrder') {
-                    echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/header_order.tpl');
-                }
-                $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
-                echo $module->display(
-                    _PS_MODULE_LENGOW_DIR_,
-                    'views/templates/admin/' . $path . '/helpers/view/view.tpl'
-                );
-                echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/footer.tpl');
-            }
-        }
     }
 
     /**

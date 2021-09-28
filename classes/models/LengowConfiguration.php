@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -543,22 +543,6 @@ class LengowConfiguration extends Configuration
     }
 
     /**
-     * Get Lengow global value
-     *
-     * @param string $key Lengow configuration key
-     * @param integer|null $idLang Prestashop lang id
-     *
-     * @return mixed
-     */
-    public static function getGlobalValue($key, $idLang = null)
-    {
-        if (_PS_VERSION_ < '1.5') {
-            return parent::get($key, $idLang);
-        }
-        return parent::getGlobalValue($key, $idLang);
-    }
-
-    /**
      * Get Lengow value by shop
      *
      * @param string $key Lengow configuration key
@@ -571,55 +555,15 @@ class LengowConfiguration extends Configuration
      */
     public static function get($key, $idLang = null, $idShopGroup = null, $idShop = null, $default = false)
     {
-        if (_PS_VERSION_ < '1.5') {
-            return parent::get($key, $idLang);
-        }
-        if (Shop::isFeatureActive() && $idShop > 1) {
+        if ($idShop > 1 && Shop::isFeatureActive()) {
             $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration
                WHERE `name` = \'' . pSQL($key) . '\'
                AND `id_shop` = \'' . (int) $idShop . '\'
             ';
             $value = Db::getInstance()->getRow($sql);
-            if ($value) {
-                return $value['value'];
-            }
-            return null;
+            return $value ? $value['value'] : null;
         }
         return parent::get($key, $idLang, $idShopGroup, $idShop, $default);
-    }
-
-    /**
-     * Update Lengow global value
-     *
-     * @param string $key Lengow configuration key
-     * @param mixed $values Lengow configuration value
-     * @param boolean $html compatibility new version
-     */
-    public static function updateGlobalValue($key, $values, $html = false)
-    {
-        if (_PS_VERSION_ < '1.5') {
-            parent::updateValue($key, $values, $html);
-        } else {
-            parent::updateGlobalValue($key, $values, $html);
-        }
-    }
-
-    /**
-     * Update Lengow value by shop
-     *
-     * @param string $key Lengow configuration key
-     * @param mixed $values Lengow configuration value
-     * @param boolean $html compatibility new version
-     * @param integer|null $idShopGroup Prestashop shop group id
-     * @param integer|null $idShop Prestashop shop id
-     */
-    public static function updateValue($key, $values, $html = false, $idShopGroup = null, $idShop = null)
-    {
-        if (_PS_VERSION_ < '1.5') {
-            parent::updateValue($key, $values, $html);
-        } else {
-            parent::updateValue($key, $values, $html, $idShopGroup, $idShop);
-        }
     }
 
     /**
@@ -720,7 +664,7 @@ class LengowConfiguration extends Configuration
     {
         $catalogIds = array();
         $shopCatalogIds = self::get(self::CATALOG_IDS, null, null, $idShop);
-        if (Tools::strlen($shopCatalogIds) > 0 && $shopCatalogIds != 0) {
+        if ($shopCatalogIds != 0 && Tools::strlen($shopCatalogIds) > 0) {
             $ids = trim(str_replace(array("\r\n", ',', '-', '|', ' ', '/'), ';', $shopCatalogIds), ';');
             $ids = array_filter(explode(';', $ids));
             foreach ($ids as $id) {
@@ -862,16 +806,14 @@ class LengowConfiguration extends Configuration
                         }
                     }
                 }
+            } elseif ($overwrite) {
+                if (isset($value[self::PARAM_DEFAULT_VALUE])) {
+                    self::updateValue($key, $val);
+                }
             } else {
-                if ($overwrite) {
-                    if (isset($value[self::PARAM_DEFAULT_VALUE])) {
-                        self::updateValue($key, $val);
-                    }
-                } else {
-                    $oldValue = self::get($key);
-                    if (!$oldValue) {
-                        self::updateValue($key, $val);
-                    }
+                $oldValue = self::get($key);
+                if (!$oldValue) {
+                    self::updateValue($key, $val);
                 }
             }
         }
@@ -892,9 +834,7 @@ class LengowConfiguration extends Configuration
     {
         $keys = self::getKeys();
         LengowMain::log(LengowLog::CODE_SETTING, LengowMain::setLogMessage('log.setting.setting_delete'));
-        foreach ($keys as $key => $value) {
-            // this line is useless, but Prestashop validator require it
-            $value = $value;
+        foreach (array_keys($keys) as $key) {
             self::deleteByName($key);
         }
         return true;

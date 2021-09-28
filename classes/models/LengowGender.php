@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -76,17 +76,17 @@ class LengowGender extends Gender
         if (empty($name)) {
             return '';
         }
-        if (in_array($name, self::$currentMale)) {
+        if (in_array($name, self::$currentMale, true)) {
             return 1;
-        } elseif (in_array($name, self::$currentFemale)) {
-            return 2;
-        } else {
-            $query = 'SELECT `id_gender` FROM `' . _DB_PREFIX_ . 'gender_lang`
-                WHERE `name` = \'' . pSQL($name) . '\' LIMIT 1;';
-            if ($result = Db::getInstance()->Execute($query)) {
-                return $result['id_gender'];
-            }
-            return '';
         }
+        if (in_array($name, self::$currentFemale, true)) {
+            return 2;
+        }
+        $query = 'SELECT `id_gender` FROM `' . _DB_PREFIX_ . 'gender_lang`
+            WHERE `name` = \'' . pSQL($name) . '\' LIMIT 1;';
+        if ($result = Db::getInstance()->Execute($query)) {
+            return $result['id_gender'];
+        }
+        return '';
     }
 }

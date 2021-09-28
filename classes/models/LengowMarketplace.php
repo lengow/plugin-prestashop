@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -159,9 +159,8 @@ class LengowMarketplace
                     $defaultValue = isset($argDescription->default_value)
                         ? (string) $argDescription->default_value
                         : '';
-                    $acceptFreeValue = isset($argDescription->accept_free_values)
-                        ? (bool) $argDescription->accept_free_values
-                        : true;
+                    $acceptFreeValue = !isset($argDescription->accept_free_values)
+                        || (bool) $argDescription->accept_free_values;
                     $this->argValues[(string) $argKey] = array(
                         'default_value' => $defaultValue,
                         'accept_free_values' => $acceptFreeValue,
@@ -445,14 +444,10 @@ class LengowMarketplace
         // get delivery address for carrier, shipping method and tracking url
         $deliveryAddress = new Address($lengowOrder->id_address_delivery);
         // get tracking number for tracking number and tracking url
-        if (_PS_VERSION_ >= '1.5') {
-            $idOrderCarrier = $lengowOrder->getIdOrderCarrier();
-            $orderCarrier = new OrderCarrier($idOrderCarrier);
-            $trackingNumber = $orderCarrier->tracking_number;
-            if ($trackingNumber === '') {
-                $trackingNumber = $lengowOrder->shipping_number;
-            }
-        } else {
+        $idOrderCarrier = $lengowOrder->getIdOrderCarrier();
+        $orderCarrier = new OrderCarrier($idOrderCarrier);
+        $trackingNumber = $orderCarrier->tracking_number;
+        if ($trackingNumber === '') {
             $trackingNumber = $lengowOrder->shipping_number;
         }
         foreach ($marketplaceArguments as $arg) {
@@ -710,26 +705,14 @@ class LengowMarketplace
     {
         $db = Db::getInstance();
         try {
-            if (_PS_VERSION_ < '1.5') {
-                $success = $db->autoExecute(
-                    _DB_PREFIX_ . self::TABLE_MARKETPLACE,
-                    array(
-                        self::FIELD_MARKETPLACE_NAME => pSQL($marketplaceName),
-                        self::FIELD_MARKETPLACE_LABEL => pSQL($marketplaceLabel),
-                        self::FIELD_CARRIER_REQUIRED => $carrierRequired,
-                    ),
-                    'INSERT'
-                );
-            } else {
-                $success = $db->insert(
-                    self::TABLE_MARKETPLACE,
-                    array(
-                        self::FIELD_MARKETPLACE_NAME  => pSQL($marketplaceName),
-                        self::FIELD_MARKETPLACE_LABEL => pSQL($marketplaceLabel),
-                        self::FIELD_CARRIER_REQUIRED => $carrierRequired,
-                    )
-                );
-            }
+            $success = $db->insert(
+                self::TABLE_MARKETPLACE,
+                array(
+                    self::FIELD_MARKETPLACE_NAME  => pSQL($marketplaceName),
+                    self::FIELD_MARKETPLACE_LABEL => pSQL($marketplaceLabel),
+                    self::FIELD_CARRIER_REQUIRED => $carrierRequired,
+                )
+            );
         } catch (PrestaShopDatabaseException $e) {
             $success = false;
         }

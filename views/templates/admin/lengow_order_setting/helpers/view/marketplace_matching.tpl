@@ -29,7 +29,7 @@
     {$locale->t('order_setting.screen.marketplace_matching_description', ['country_name' => $country['name']])|escape:'htmlall':'UTF-8'}
     {if isset($carriers) && $carriers|@count > 0}
         {$locale->t('order_setting.screen.country_wt_carrier')|escape:'htmlall':'UTF-8'}
-        <a href="{$lengow_link->getAbsoluteAdminLink('AdminCarriers', false, true)|escape:'htmlall':'UTF-8'}">
+        <a href="{$lengow_link->getAbsoluteAdminLink('AdminCarriers')|escape:'htmlall':'UTF-8'}">
             {$locale->t('order_setting.screen.please_setup_then')|escape:'htmlall':'UTF-8'}
         </a>
     {/if}
@@ -84,7 +84,7 @@
 {else}
     <div class="legend blue-frame alert-carrier">
         {$locale->t('order_setting.screen.no_carrier_enabled', ['country_name' => $country['name']])|escape:'htmlall':'UTF-8'}
-        <a href="{$lengow_link->getAbsoluteAdminLink('AdminCarriers', false, true)|escape:'htmlall':'UTF-8'}">
+        <a href="{$lengow_link->getAbsoluteAdminLink('AdminCarriers')|escape:'htmlall':'UTF-8'}">
             {$locale->t('order_setting.screen.please_setup_then')|escape:'htmlall':'UTF-8'}
         </a>
     </div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -79,7 +79,7 @@ class LengowBackup extends Backup
             } catch (PrestaShopDatabaseException $e) {
                 return false;
             }
-            if (count($schema) !== 1 || !isset($schema[0]['Table']) || !isset($schema[0]['Create Table'])) {
+            if (!isset($schema[0]['Table'], $schema[0]['Create Table']) || count($schema) !== 1) {
                 fclose($fp);
                 $this->delete();
                 echo Tools::displayError('An error occurred while backing up. Unable to obtain the schema of')

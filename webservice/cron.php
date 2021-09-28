@@ -48,7 +48,7 @@ require_once $currentDirectory . 'modules' . $sep . 'lengow' . $sep . 'lengow.ph
 // check if Lengow is installed and enabled
 $lengow = new Lengow();
 if (!Module::isInstalled($lengow->name)) {
-    $errorMessage = (_PS_VERSION_ >= 1.5 && !Module::isEnabled($lengow->name))
+    $errorMessage = (!Module::isEnabled($lengow->name))
         ? 'Lengow module is not active'
         : 'Lengow module is not installed';
     header('HTTP/1.1 400 Bad Request');

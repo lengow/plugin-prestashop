@@ -24,37 +24,16 @@ $sep = DIRECTORY_SEPARATOR;
 
 $notInPresta14 = array('LengowGender.php');
 
-if (_PS_VERSION_ < '1.5') {
-    require_once _PS_MODULE_LENGOW_DIR_ . 'backward_compatibility' . $sep . 'backward.php';
-}
-
-if (_PS_VERSION_ < '1.5') {
-    $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/models/';
-    $listClassFile = array_diff(scandir($directory), array('..', '.'));
-    foreach ($listClassFile as $list) {
-        if (in_array($list, $notInPresta14) && _PS_VERSION_ < '1.5') {
-            continue;
-        }
-        require_once $directory . $list;
-    }
-    $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/controllers/';
-    $listClassFile = array_diff(scandir($directory), array('..', '.'));
-    foreach ($listClassFile as $list) {
-        require_once $directory . $list;
-    }
-} else {
-    spl_autoload_register('lengowAutoloader');
-}
+spl_autoload_register('lengowAutoloader');
 
 function lengowAutoloader($className)
 {
     if (Tools::substr($className, 0, 6) === 'Lengow') {
         if (Tools::substr($className, -10) === 'Controller') {
             $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/controllers/';
-            include $directory . $className . '.php';
         } else {
             $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/models/';
-            include $directory . $className . '.php';
         }
+        include $directory . $className . '.php';
     }
 }

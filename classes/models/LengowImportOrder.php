@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -618,11 +618,7 @@ class LengowImportOrder
             LengowOrder::FIELD_IS_REIMPORTED => 0,
         );
         try {
-            if (_PS_VERSION_ < '1.5') {
-                $result = Db::getInstance()->autoExecute(_DB_PREFIX_ . LengowOrder::TABLE_ORDER, $params, 'INSERT');
-            } else {
-                $result = Db::getInstance()->insert(LengowOrder::TABLE_ORDER, $params);
-            }
+            $result = Db::getInstance()->insert(LengowOrder::TABLE_ORDER, $params);
             if ($result) {
                 $this->idOrderLengow = LengowOrder::getIdFromLengowOrders(
                     $this->marketplaceSku,
@@ -953,9 +949,7 @@ class LengowImportOrder
                 $this->idOrder = (int) $order->id;
                 $this->orderReference = LengowMain::compareVersion() ? $order->reference : $this->idOrder;
                 // add a comment to the PrestaShop order
-                if (_PS_VERSION_ >= '1.5') {
-                    $this->addCommentOrder((int) $order->id, $this->orderComment);
-                }
+                $this->addCommentOrder((int) $order->id, $this->orderComment);
                 // save order line id in lengow_order_line table
                 $this->saveLengowOrderLine($order, $products);
                 LengowMain::log(
@@ -1149,11 +1143,7 @@ class LengowImportOrder
     {
         // create PrestaShop Customer, addresses and load cart data
         $cartData = $this->getCartData();
-        if (_PS_VERSION_ < '1.5') {
-            $cart = new LengowCart($this->context->cart->id);
-        } else {
-            $cart = new LengowCart();
-        }
+        $cart = new LengowCart();
         $cart->assign($cartData);
         $cart->validateLengow();
         $cart->force_product = $this->forceProduct;
@@ -1280,34 +1270,32 @@ class LengowImportOrder
             : '';
         $address = LengowAddress::getByHash(trim($addressData['address_full']));
         // if address exists => check if names are the same
-        if ($address) {
-            if ($address->id_customer === $idCustomer
-                && $address->lastname === $addressData['last_name']
-                && $address->firstname === $addressData['first_name']
-            ) {
-                // Add specific phone number when shipping and billing are the same
-                if (empty($address->phone_mobile) || $address->phone_mobile === $address->phone) {
-                    $newPhone = false;
-                    $phoneHome = LengowMain::cleanPhone($addressData['phone_home']);
-                    $phoneMobile = LengowMain::cleanPhone($addressData['phone_mobile']);
-                    $phoneOffice = LengowMain::cleanPhone($addressData['phone_office']);
-                    if (!empty($phoneHome) && $phoneOffice !== $address->phone) {
-                        $newPhone = $phoneHome;
-                    } elseif (!empty($phoneMobile) && $phoneOffice !== $address->phone) {
-                        $newPhone = $phoneMobile;
-                    } elseif (!empty($phoneOffice) && $phoneOffice !== $address->phone) {
-                        $newPhone = $phoneOffice;
-                    }
-                    if ($newPhone) {
-                        $address->phone_mobile = $newPhone;
-                        $address->update();
-                    }
+        if ($address && $address->id_customer === $idCustomer
+            && $address->lastname === $addressData['last_name']
+            && $address->firstname === $addressData['first_name']
+        ) {
+            // Add specific phone number when shipping and billing are the same
+            if (empty($address->phone_mobile) || $address->phone_mobile === $address->phone) {
+                $newPhone = false;
+                $phoneHome = LengowMain::cleanPhone($addressData['phone_home']);
+                $phoneMobile = LengowMain::cleanPhone($addressData['phone_mobile']);
+                $phoneOffice = LengowMain::cleanPhone($addressData['phone_office']);
+                if (!empty($phoneHome) && $phoneOffice !== $address->phone) {
+                    $newPhone = $phoneHome;
+                } elseif (!empty($phoneMobile) && $phoneOffice !== $address->phone) {
+                    $newPhone = $phoneMobile;
+                } elseif (!empty($phoneOffice) && $phoneOffice !== $address->phone) {
+                    $newPhone = $phoneOffice;
                 }
-                if (isset($addressData['id_relay'])) {
-                    $address->idRelay = $addressData['id_relay'];
+                if ($newPhone) {
+                    $address->phone_mobile = $newPhone;
+                    $address->update();
                 }
-                return $address;
             }
+            if (isset($addressData['id_relay'])) {
+                $address->idRelay = $addressData['id_relay'];
+            }
+            return $address;
         }
         // construct LengowAddress and assign values
         $address = new LengowAddress();
@@ -1344,7 +1332,7 @@ class LengowImportOrder
         // if the marketplace has neither carrier nor shipping methods, use semantic matching
         if ((bool) LengowConfiguration::getGlobalValue(LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED)) {
             // semantic search first on the method for marketplaces working with custom shipping methods
-            if (!$idCarrier && $this->carrierMethod && !$hasShippingMethods) {
+            if ($this->carrierMethod && !$hasShippingMethods) {
                 // carrier id recovery by semantic search on the carrier marketplace shipping method
                 $idCarrier = LengowCarrier::getIdCarrierBySemanticSearch(
                     $this->carrierMethod,
@@ -1461,39 +1449,20 @@ class LengowImportOrder
             . 'Shipping : ' . $this->shippingCost . ' | ' . "\r\n"
             . 'Message : ' . $this->orderComment . "\r\n";
         // validate order
-        if (_PS_VERSION_ >= '1.5') {
-            $orderLists = $payment->makeOrder(
-                $cart->id,
-                $idOrderState,
-                $paymentMethod,
-                $message,
-                $products,
-                $this->shippingCost,
-                $this->processingFee,
-                $this->trackingNumber,
-                $this->idOrderLengow,
-                $this->orderStateLengow,
-                $this->marketplaceSku,
-                $this->logOutput
-            );
-        } else {
-            $orderLists = $payment->makeOrder14(
-                $cart->id,
-                $idOrderState,
-                $this->orderAmount,
-                $paymentMethod,
-                $message,
-                $products,
-                $this->shippingCost,
-                $this->processingFee,
-                $this->trackingNumber,
-                $this->idOrderLengow,
-                $this->orderStateLengow,
-                $this->marketplaceSku,
-                $this->logOutput
-            );
-        }
-        return $orderLists;
+        return $payment->makeOrder(
+            $cart->id,
+            $idOrderState,
+            $paymentMethod,
+            $message,
+            $products,
+            $this->shippingCost,
+            $this->processingFee,
+            $this->trackingNumber,
+            $this->idOrderLengow,
+            $this->orderStateLengow,
+            $this->marketplaceSku,
+            $this->logOutput
+        );
     }
 
     /**
@@ -1560,26 +1529,14 @@ class LengowImportOrder
             foreach ($values['order_line_ids'] as $idOrderLine) {
                 $idOrderDetail = LengowOrderDetail::findByOrderIdProductId($order->id, $idProduct);
                 try {
-                    if (_PS_VERSION_ < '1.5') {
-                        $result = Db::getInstance()->autoExecute(
-                            _DB_PREFIX_ . LengowOrderLine::TABLE_ORDER_LINE,
-                            array(
-                                LengowOrderLine::FIELD_ORDER_ID => (int) $order->id,
-                                LengowOrderLine::FIELD_ORDER_LINE_ID => pSQL($idOrderLine),
-                                LengowOrderLine::FIELD_ORDER_DETAIL_ID => (int) $idOrderDetail,
-                            ),
-                            'INSERT'
-                        );
-                    } else {
-                        $result = Db::getInstance()->insert(
-                            LengowOrderLine::TABLE_ORDER_LINE,
-                            array(
-                                LengowOrderLine::FIELD_ORDER_ID => (int) $order->id,
-                                LengowOrderLine::FIELD_ORDER_LINE_ID => pSQL($idOrderLine),
-                                LengowOrderLine::FIELD_ORDER_DETAIL_ID => (int) $idOrderDetail,
-                            )
-                        );
-                    }
+                    $result = Db::getInstance()->insert(
+                        LengowOrderLine::TABLE_ORDER_LINE,
+                        array(
+                            LengowOrderLine::FIELD_ORDER_ID => (int) $order->id,
+                            LengowOrderLine::FIELD_ORDER_LINE_ID => pSQL($idOrderLine),
+                            LengowOrderLine::FIELD_ORDER_DETAIL_ID => (int) $idOrderDetail,
+                        )
+                    );
                 } catch (PrestaShopDatabaseException $e) {
                     $result = false;
                 }
@@ -1630,21 +1587,12 @@ class LengowImportOrder
             foreach ($products as $sku => $productData) {
                 $idsProduct = explode('_', $sku);
                 $idProductAttribute = isset($idsProduct[1]) ? $idsProduct[1] : null;
-                if (_PS_VERSION_ < '1.5') {
-                    $product = new Product($idsProduct[0]);
-                    $product->addStockMvt(
-                        $productData['quantity'],
-                        (int)_STOCK_MOVEMENT_ORDER_REASON_,
-                        $idProductAttribute
-                    );
-                } else {
-                    StockAvailable::updateQuantity(
-                        (int) $idsProduct[0],
-                        $idProductAttribute,
-                        $productData['quantity'],
-                        $this->idShop
-                    );
-                }
+                StockAvailable::updateQuantity(
+                    (int) $idsProduct[0],
+                    $idProductAttribute,
+                    $productData['quantity'],
+                    $this->idShop
+                );
             }
         }
     }

@@ -1,6 +1,6 @@
 # Lengow for PrestaShop
 
-- **Requires at least:** 1.4
+- **Requires at least:** 1.5
 - **Tested up to:** 1.7.7
 - **Requires PHP:** 5.6
 - **Stable tag:** 3.3.2

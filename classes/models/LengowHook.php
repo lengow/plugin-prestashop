@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -193,7 +193,7 @@ class LengowHook
                     $_SERVER['HTTP_REFERER'],
                     $regs
                 )
-                && !strstr($_SERVER['HTTP_REFERER'], '.html')
+                && strpos($_SERVER['HTTP_REFERER'], '.html') === false
             ) {
                 if (isset($regs[2]) && is_numeric($regs[2])) {
                     self::$idCategory = (int) $regs[2];
@@ -418,7 +418,6 @@ class LengowHook
                 'lengow_locale' => $locale,
                 'debug_mode' => LengowConfiguration::debugModeIsActive(),
                 'can_resend_action' => $lengowOrder->canReSendOrder(),
-                'can_add_tracking' => $lengowOrder->canAddTracking(),
                 'check_resend_action' => $locale->t('admin.order.check_resend_action', array('action' => $actionType)),
             );
             $this->context->smarty->assign($templateData);
@@ -481,17 +480,15 @@ class LengowHook
      */
     public function hookActionObjectUpdateAfter($args)
     {
-        if ($args['object'] instanceof Order) {
-            if (LengowOrder::isFromLengow($args['object']->id)) {
-                $lengowOrder = new LengowOrder($args['object']->id);
-                if ($lengowOrder->shipping_number !== ''
-                    && LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
-                    && !array_key_exists($lengowOrder->lengowMarketplaceSku, $this->alreadyShipped)
-                    && (int) $args['object']->current_state === LengowMain::getOrderState(LengowOrder::STATE_SHIPPED)
-                ) {
-                    $lengowOrder->callAction(LengowAction::TYPE_SHIP);
-                    $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
-                }
+        if (($args['object'] instanceof Order) && LengowOrder::isFromLengow($args['object']->id)) {
+            $lengowOrder = new LengowOrder($args['object']->id);
+            if ($lengowOrder->shipping_number !== ''
+                && LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
+                && !array_key_exists($lengowOrder->lengowMarketplaceSku, $this->alreadyShipped)
+                && (int) $args['object']->current_state === LengowMain::getOrderState(LengowOrder::STATE_SHIPPED)
+            ) {
+                $lengowOrder->callAction(LengowAction::TYPE_SHIP);
+                $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
             }
         }
     }

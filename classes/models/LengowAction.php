@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -416,11 +416,7 @@ class LengowAction
             $insertParams[self::FIELD_ORDER_LINE_SKU] = $params[self::FIELD_PARAMETERS][self::ARG_LINE];
         }
         try {
-            if (_PS_VERSION_ < '1.5') {
-                Db::getInstance()->autoExecute(_DB_PREFIX_ . self::TABLE_ACTION, $insertParams, 'INSERT');
-            } else {
-                Db::getInstance()->insert(self::TABLE_ACTION, $insertParams);
-            }
+            Db::getInstance()->insert(self::TABLE_ACTION, $insertParams);
             LengowMain::log(
                 LengowLog::CODE_ACTION,
                 LengowMain::setLogMessage('log.order_action.action_saved'),
@@ -443,32 +439,16 @@ class LengowAction
     public static function updateAction($params)
     {
         $action = new LengowAction();
-        if ($action->findByActionId($params[self::FIELD_ACTION_ID])) {
-            if ($action->state === self::STATE_NEW) {
-                if (_PS_VERSION_ < '1.5') {
-                    try {
-                        return Db::getInstance()->autoExecute(
-                            _DB_PREFIX_ . self::TABLE_ACTION,
-                            array(
-                                self::FIELD_RETRY => $action->retry + 1,
-                                self::FIELD_UPDATED_AT => date(LengowMain::DATE_FULL),
-                            ),
-                            'UPDATE',
-                            'id = ' . $action->id
-                        );
-                    } catch (PrestaShopDatabaseException $e) {
-                        return false;
-                    }
-                }
-                return Db::getInstance()->update(
-                    self::TABLE_ACTION,
-                    array(
-                        self::FIELD_RETRY => $action->retry + 1,
-                        self::FIELD_UPDATED_AT => date(LengowMain::DATE_FULL),
-                    ),
-                    'id = ' . $action->id
-                );
-            }
+        // findByActionId method can update the action state
+        if ($action->findByActionId($params[self::FIELD_ACTION_ID]) && $action->state === self::STATE_NEW) {
+            return Db::getInstance()->update(
+                self::TABLE_ACTION,
+                array(
+                    self::FIELD_RETRY => $action->retry + 1,
+                    self::FIELD_UPDATED_AT => date(LengowMain::DATE_FULL),
+                ),
+                'id = ' . $action->id
+            );
         }
         return false;
     }
@@ -482,21 +462,6 @@ class LengowAction
      */
     public static function finishAction($id)
     {
-        if (_PS_VERSION_ < '1.5') {
-            try {
-                return Db::getInstance()->autoExecute(
-                    _DB_PREFIX_ . self::TABLE_ACTION,
-                    array(
-                        self::FIELD_STATE => self::STATE_FINISH,
-                        self::FIELD_UPDATED_AT => date(LengowMain::DATE_FULL),
-                    ),
-                    'UPDATE',
-                    'id = ' . (int) $id
-                );
-            } catch (PrestaShopDatabaseException $e) {
-                return false;
-            }
-        }
         return Db::getInstance()->update(
             self::TABLE_ACTION,
             array(
@@ -624,52 +589,51 @@ class LengowAction
             if (!isset($apiActions[$action[self::FIELD_ACTION_ID]])) {
                 continue;
             }
-            if (isset($apiActions[$action[self::FIELD_ACTION_ID]]->queued)
-                && isset($apiActions[$action[self::FIELD_ACTION_ID]]->processed)
-                && isset($apiActions[$action[self::FIELD_ACTION_ID]]->errors)
-            ) {
-                if ($apiActions[$action[self::FIELD_ACTION_ID]]->queued == false) {
-                    // order action is waiting to return from the marketplace
-                    if ($apiActions[$action[self::FIELD_ACTION_ID]]->processed == false
+            if (isset(
+                $apiActions[$action[self::FIELD_ACTION_ID]]->queued,
+                $apiActions[$action[self::FIELD_ACTION_ID]]->processed,
+                $apiActions[$action[self::FIELD_ACTION_ID]]->errors
+            ) && $apiActions[$action[self::FIELD_ACTION_ID]]->queued == false) {
+                // order action is waiting to return from the marketplace
+                if ($apiActions[$action[self::FIELD_ACTION_ID]]->processed == false
+                    && empty($apiActions[$action[self::FIELD_ACTION_ID]]->errors)
+                ) {
+                    continue;
+                }
+                // finish action in lengow_action table
+                self::finishAction($action[self::FIELD_ID]);
+                $orderLengow = new LengowOrder($action[self::FIELD_ORDER_ID]);
+                // finish all order logs send
+                LengowOrderError::finishOrderLogs($orderLengow->lengowId, LengowOrderError::TYPE_ERROR_SEND);
+                if ($orderLengow->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
+                    // if action is accepted -> close order and finish all order actions
+                    if ($apiActions[$action[self::FIELD_ACTION_ID]]->processed == true
                         && empty($apiActions[$action[self::FIELD_ACTION_ID]]->errors)
                     ) {
-                        continue;
+                        LengowOrder::updateOrderLengow(
+                            $orderLengow->lengowId,
+                            array(LengowOrder::FIELD_ORDER_PROCESS_STATE => LengowOrder::PROCESS_STATE_FINISH)
+                        );
+                        self::finishAllActions($orderLengow->id);
+                    } else {
+                        // if action is denied -> create order logs and finish all order actions
+                        LengowOrderError::addOrderLog(
+                            $orderLengow->lengowId,
+                            $apiActions[$action[self::FIELD_ACTION_ID]]->errors,
+                            LengowOrderError::TYPE_ERROR_SEND
+                        );
+                        LengowMain::log(
+                            LengowLog::CODE_ACTION,
+                            LengowMain::setLogMessage(
+                                'log.order_action.call_action_failed',
+                                array('decoded_message' => $apiActions[$action[self::FIELD_ACTION_ID]]->errors)
+                            ),
+                            $logOutput,
+                            $orderLengow->lengowMarketplaceSku
+                        );
                     }
-                    // finish action in lengow_action table
-                    self::finishAction($action[self::FIELD_ID]);
-                    $orderLengow = new LengowOrder($action[self::FIELD_ORDER_ID]);
-                    // finish all order logs send
-                    LengowOrderError::finishOrderLogs($orderLengow->lengowId, LengowOrderError::TYPE_ERROR_SEND);
-                    if ($orderLengow->lengowProcessState != LengowOrder::PROCESS_STATE_FINISH) {
-                        // if action is accepted -> close order and finish all order actions
-                        if ($apiActions[$action[self::FIELD_ACTION_ID]]->processed == true
-                            && empty($apiActions[$action[self::FIELD_ACTION_ID]]->errors)
-                        ) {
-                            LengowOrder::updateOrderLengow(
-                                $orderLengow->lengowId,
-                                array(LengowOrder::FIELD_ORDER_PROCESS_STATE => LengowOrder::PROCESS_STATE_FINISH)
-                            );
-                            self::finishAllActions($orderLengow->id);
-                        } else {
-                            // if action is denied -> create order logs and finish all order actions
-                            LengowOrderError::addOrderLog(
-                                $orderLengow->lengowId,
-                                $apiActions[$action[self::FIELD_ACTION_ID]]->errors,
-                                LengowOrderError::TYPE_ERROR_SEND
-                            );
-                            LengowMain::log(
-                                LengowLog::CODE_ACTION,
-                                LengowMain::setLogMessage(
-                                    'log.order_action.call_action_failed',
-                                    array('decoded_message' => $apiActions[$action[self::FIELD_ACTION_ID]]->errors)
-                                ),
-                                $logOutput,
-                                $orderLengow->lengowMarketplaceSku
-                            );
-                        }
-                    }
-                    unset($orderLengow);
                 }
+                unset($orderLengow);
             }
         }
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_ACTION_SYNCHRONIZATION, time());

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -43,31 +43,21 @@ class LengowLink extends LinkCore
      * Get absolute admin link
      *
      * @param string $controller name of the controller
-     * @param boolean $ajax if link use ajax
-     * @param boolean $adminPrestashop if link is a prestashop controller
      *
      * @return string
      */
-    public function getAbsoluteAdminLink($controller, $ajax = false, $adminPrestashop = false)
+    public function getAbsoluteAdminLink($controller)
     {
         // use in toolbox to get specific link
         if (self::$forceLink) {
             return self::$forceLink;
         }
-        if (_PS_VERSION_ < '1.5' && !$adminPrestashop) {
-            $controller .= '14';
-        }
         $adminPath = Tools::getShopDomainSsl(true, true) .
             __PS_BASE_URI__ . Tools::substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);
         try {
             if (_PS_VERSION_ < '1.6') {
-                if (_PS_VERSION_ < '1.5' && $ajax) {
-                    $adminPath .= '/ajax-tab.php?tab=' . $controller
-                        . '&token=' . Tools::getAdminTokenLite($controller);
-                } else {
-                    $adminPath .= '/index.php?tab=' . $controller
-                        . '&token=' . Tools::getAdminTokenLite($controller);
-                }
+                $adminPath .= '/index.php?tab=' . $controller
+                    . '&token=' . Tools::getAdminTokenLite($controller);
             } elseif (_PS_VERSION_ < '1.7') {
                 $adminPath .= '/' . $this->getAdminLink($controller);
             } else {
