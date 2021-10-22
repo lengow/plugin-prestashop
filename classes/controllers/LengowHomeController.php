@@ -118,7 +118,7 @@ class LengowHomeController extends LengowController
         if ($this->isNewMerchant) {
             $this->context->smarty->assign(
                 'lengow_ajax_link',
-                $this->lengowLink->getAbsoluteAdminLink('AdminLengowHome', true)
+                $this->lengowLink->getAbsoluteAdminLink('AdminLengowHome')
             );
             parent::display();
         } else {
@@ -181,6 +181,7 @@ class LengowHomeController extends LengowController
         // reset access ids if cms creation failed
         if (!$cmsConnected) {
             LengowConfiguration::resetAccessIds();
+            LengowConfiguration::resetAuthorizationToken();
         }
         return $cmsConnected;
     }

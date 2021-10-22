@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -54,7 +54,7 @@ class LengowLog extends LengowFile
     public function __construct($fileName = null)
     {
         if (empty($fileName)) {
-            $this->fileName = 'logs-' . date('Y-m-d') . '.txt';
+            $this->fileName = 'logs-' . date(LengowMain::DATE_DAY) . '.txt';
         } else {
             $this->fileName = $fileName;
         }
@@ -72,7 +72,7 @@ class LengowLog extends LengowFile
     public function write($category, $message = '', $logOutput = false, $marketplaceSku = null)
     {
         $decodedMessage = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
-        $log = date('Y-m-d H:i:s');
+        $log = date(LengowMain::DATE_FULL);
         $log .= ' - ' . (empty($category) ? '' : '[' . $category . '] ');
         $log .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ': ');
         $log .= $decodedMessage . "\r\n";
@@ -158,7 +158,7 @@ class LengowLog extends LengowFile
         if ($logFiles) {
             foreach ($logFiles as $logFile) {
                 $filePath = $logFile->getPath();
-                $handle = fopen($filePath, 'r');
+                $handle = fopen($filePath, 'rb');
                 $fileSize = filesize($filePath);
                 if ($fileSize > 0) {
                     $contents .= fread($handle, $fileSize);

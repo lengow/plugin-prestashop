@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -63,10 +63,8 @@ class LengowTool
      */
     public function processLogin($accountId, $secretToken)
     {
-        if (Tools::strlen($accountId) > 0 && Tools::strlen($secretToken) > 0) {
-            if ($this->checkBlockedIp()) {
-                self::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/login.php?blockedIP=1', '');
-            }
+        if (Tools::strlen($accountId) > 0 && Tools::strlen($secretToken) > 0 && $this->checkBlockedIp()) {
+            self::redirect(_PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/lengow/toolbox/login.php?blockedIP=1', '');
         }
         $prestaAccountId = LengowConfiguration::get(LengowConfiguration::ACCOUNT_ID);
         $prestaSecretToken = LengowConfiguration::get(LengowConfiguration::SECRET);

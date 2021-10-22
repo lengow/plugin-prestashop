@@ -60,15 +60,11 @@ class LengowCatalog
             if (!is_object($catalog) || $catalog->shop) {
                 continue;
             }
-            if ($catalog->name !== null) {
-                $name = $catalog->name;
-            } else {
-                $name = LengowMain::decodeLogMessage(
-                    'lengow_log.connection.catalog',
-                    null,
-                    array('catalog_id' => $catalog->id)
-                );
-            }
+            $name = $catalog->name ?: LengowMain::decodeLogMessage(
+                'lengow_log.connection.catalog',
+                null,
+                array('catalog_id' => $catalog->id)
+            );
             $status = $catalog->is_active
                 ? LengowMain::decodeLogMessage('lengow_log.connection.status_active')
                 : LengowMain::decodeLogMessage('lengow_log.connection.status_draft');
@@ -78,7 +74,7 @@ class LengowCatalog
                 array(
                     'catalog_id' => $catalog->id,
                     'catalog_name' => $name,
-                    'nb_products' => $catalog->products ? $catalog->products : 0,
+                    'nb_products' => $catalog->products ?: 0,
                     'catalog_status' => $status,
                 )
             );

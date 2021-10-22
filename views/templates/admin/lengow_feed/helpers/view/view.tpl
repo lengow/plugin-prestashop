@@ -58,7 +58,7 @@
                                     data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
                                     name="lengow_export_selection"
                                     class="lengow_switch_option"
-                                    data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed', true)|escape:'htmlall':'UTF-8'}"
+                                    data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}"
                                     data-action="change_option_selected"
                                     data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
                                     value="1" {if $shop['option_selected'] == 1} checked="checked"{/if}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -28,19 +28,19 @@ class LengowInstall
      * @var array all module tables
      */
     public static $tables = array(
-        'lengow_orders',
-        'lengow_order_line',
-        'lengow_logs_import',
-        'lengow_product',
-        'lengow_actions',
-        'lengow_marketplace',
-        'lengow_carrier_marketplace',
-        'lengow_method_marketplace',
-        'lengow_marketplace_carrier_marketplace',
-        'lengow_marketplace_method_marketplace',
-        'lengow_default_carrier',
-        'lengow_marketplace_carrier_country',
-        'lengow_marketplace_method_country',
+        LengowOrder::TABLE_ORDER,
+        LengowOrderLine::TABLE_ORDER_LINE,
+        LengowOrderError::TABLE_ORDER_ERROR,
+        LengowProduct::TABLE_PRODUCT,
+        LengowAction::TABLE_ACTION,
+        LengowMarketplace::TABLE_MARKETPLACE,
+        LengowCarrier::TABLE_CARRIER_MARKETPLACE,
+        LengowCarrier::TABLE_DEFAULT_CARRIER,
+        LengowCarrier::TABLE_MARKETPLACE_CARRIER_MARKETPLACE,
+        LengowCarrier::TABLE_MARKETPLACE_CARRIER_COUNTRY,
+        LengowMethod::TABLE_METHOD_MARKETPLACE,
+        LengowMethod::TABLE_MARKETPLACE_METHOD_MARKETPLACE,
+        LengowMethod::TABLE_MARKETPLACE_METHOD_COUNTRY,
     );
 
     /**
@@ -474,8 +474,8 @@ class LengowInstall
     private function createLengowTables()
     {
         // create table lengow_product
-        $name = 'lengow_product';
-        if (!self::checkTableExists('lengow_product')) {
+        $name = LengowProduct::TABLE_PRODUCT;
+        if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_product` INTEGER(11) UNSIGNED NOT NULL,
@@ -496,7 +496,7 @@ class LengowInstall
             );
         }
         // create table lengow_orders
-        $name = 'lengow_orders';
+        $name = LengowOrder::TABLE_ORDER;
         if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -551,7 +551,7 @@ class LengowInstall
             );
         }
         // create table lengow_order_line
-        $name = 'lengow_order_line';
+        $name = LengowOrderLine::TABLE_ORDER_LINE;
         if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -572,7 +572,7 @@ class LengowInstall
             );
         }
         // create table lengow_logs_import
-        $name = 'lengow_logs_import';
+        $name = LengowOrderError::TABLE_ORDER_ERROR;
         if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -597,7 +597,7 @@ class LengowInstall
             );
         }
         // create table lengow_actions
-        $name = 'lengow_actions';
+        $name = LengowAction::TABLE_ACTION;
         if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -626,7 +626,7 @@ class LengowInstall
             );
         }
         // create table lengow_marketplace
-        $name = 'lengow_marketplace';
+        $name = LengowMarketplace::TABLE_MARKETPLACE;
         if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -647,7 +647,7 @@ class LengowInstall
             );
         }
         // create table lengow_carrier_marketplace
-        $name = 'lengow_carrier_marketplace';
+        $name = LengowCarrier::TABLE_CARRIER_MARKETPLACE;
         if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -668,7 +668,7 @@ class LengowInstall
             );
         }
         // create table lengow_method_marketplace
-        $name = 'lengow_method_marketplace';
+        $name = LengowMethod::TABLE_METHOD_MARKETPLACE;
         if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -689,7 +689,7 @@ class LengowInstall
             );
         }
         // create table lengow_marketplace_carrier_marketplace
-        $name = 'lengow_marketplace_carrier_marketplace';
+        $name = LengowCarrier::TABLE_MARKETPLACE_CARRIER_MARKETPLACE;
         if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -711,7 +711,7 @@ class LengowInstall
             );
         }
         // create table lengow_marketplace_method_marketplace
-        $name = 'lengow_marketplace_method_marketplace';
+        $name = LengowMethod::TABLE_MARKETPLACE_METHOD_MARKETPLACE;
         if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -733,7 +733,7 @@ class LengowInstall
             );
         }
         // create table lengow_default_carrier
-        $name = 'lengow_default_carrier';
+        $name = LengowCarrier::TABLE_DEFAULT_CARRIER;
         if (!self::checkTableExists($name)) {
             $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -759,9 +759,9 @@ class LengowInstall
             );
         }
         // create table lengow_marketplace_carrier_country
-        $name = 'lengow_marketplace_carrier_country';
+        $name = LengowCarrier::TABLE_MARKETPLACE_CARRIER_COUNTRY;
         if (!self::checkTableExists($name)) {
-            $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country (
+            $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_country` INTEGER(11) UNSIGNED NOT NULL,
                 `id_marketplace` INTEGER(11) UNSIGNED NOT NULL,
@@ -785,9 +785,9 @@ class LengowInstall
             );
         }
         // create table lengow_marketplace_method_country
-        $name = 'lengow_marketplace_method_country';
+        $name = LengowMethod::TABLE_MARKETPLACE_METHOD_COUNTRY;
         if (!self::checkTableExists($name)) {
-            $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'lengow_marketplace_method_country (
+            $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . $name . ' (
                 `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_country` INTEGER(11) UNSIGNED NOT NULL,
                 `id_marketplace` INTEGER(11) UNSIGNED NOT NULL,
@@ -840,18 +840,10 @@ class LengowInstall
                 $tabParent = $tab;
             }
             foreach ($this->tabs as $name => $values) {
-                if (_PS_VERSION_ < '1.5' && $values['name'] === 'AdminLengowHome') {
-                    continue;
-                }
                 $tab = new Tab();
-                if (_PS_VERSION_ < '1.5') {
-                    $tab->class_name = $values['name'] . '14';
-                    $tab->id_parent = $tabParent->id;
-                } else {
-                    $tab->class_name = $values['name'];
-                    $tab->id_parent = $tabParent->id;
-                    $tab->active = $values['active'];
-                }
+                $tab->class_name = $values['name'];
+                $tab->id_parent = $tabParent->id;
+                $tab->active = $values['active'];
                 $tab->module = $this->lengowModule->name;
                 $languages = Language::getLanguages(false);
                 foreach ($languages as $language) {
@@ -922,17 +914,10 @@ class LengowInstall
     {
         // add Lengow order error status
         try {
-            if (_PS_VERSION_ >= '1.5') {
-                $states = Db::getInstance()->ExecuteS(
-                    'SELECT * FROM ' . _DB_PREFIX_ . 'order_state
-                    WHERE module_name = \'' . pSQL($this->lengowModule->name) . '\''
-                );
-            } else {
-                $states = Db::getInstance()->ExecuteS(
-                    'SELECT * FROM ' . _DB_PREFIX_ . 'order_state_lang
-                    WHERE name = \'Technical error - Lengow\' OR name = \'Erreur technique - Lengow\' LIMIT 1'
-                );
-            }
+            $states = Db::getInstance()->ExecuteS(
+                'SELECT * FROM ' . _DB_PREFIX_ . 'order_state
+                WHERE module_name = \'' . pSQL($this->lengowModule->name) . '\''
+            );
         } catch (PrestaShopDatabaseException $e) {
             $states = array();
         }
@@ -940,9 +925,7 @@ class LengowInstall
             try {
                 $lengowState = new OrderState();
                 $lengowState->send_email = false;
-                if (_PS_VERSION_ >= '1.5') {
-                    $lengowState->module_name = $this->lengowModule->name;
-                }
+                $lengowState->module_name = $this->lengowModule->name;
                 $lengowState->invoice = false;
                 $lengowState->delivery = false;
                 $lengowState->shipped = false;
@@ -975,26 +958,12 @@ class LengowInstall
             $languages = Language::getLanguages(false);
             foreach ($languages as $language) {
                 $name = LengowMain::decodeLogMessage('module.state_technical_error', $language['iso_code']);
-                if (_PS_VERSION_ < '1.5') {
-                    try {
-                        Db::getInstance()->autoExecute(
-                            _DB_PREFIX_ . 'order_state_lang',
-                            array('name' => $name),
-                            'UPDATE',
-                            '`id_order_state` = \'' . (int) $idOrderState
-                            . '\' AND `id_lang` = \'' . (int) $language['id_lang'] . '\''
-                        );
-                    } catch (PrestaShopDatabaseException $e) {
-                        continue;
-                    }
-                } else {
-                    Db::getInstance()->update(
-                        'order_state_lang',
-                        array('name' => $name),
-                        '`id_order_state` = \'' . (int) $idOrderState
-                        . '\' AND `id_lang` = \'' . (int) $language['id_lang'] . '\''
-                    );
-                }
+                Db::getInstance()->update(
+                    'order_state_lang',
+                    array('name' => $name),
+                    '`id_order_state` = \'' . (int) $idOrderState
+                    . '\' AND `id_lang` = \'' . (int) $language['id_lang'] . '\''
+                );
             }
             LengowMain::log(
                 LengowLog::CODE_INSTALL,

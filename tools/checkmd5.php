@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Check MD5 
+ * Check MD5
  */
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -22,13 +22,6 @@ $listFolders = array(
 $filePaths = array(
     $base . '/lengow.php',
     $base . '/loader.php',
-    $base . '/AdminLengowDashboard14.php',
-    $base . '/AdminLengowFeed14.php',
-    $base . '/AdminLengowHelp14.php',
-    $base . '/AdminLengowHome14.php',
-    $base . '/AdminLengowMainSetting14.php',
-    $base . '/AdminLengowOrder14.php',
-    $base . '/AdminLengowOrderSetting14.php',
     $base . '/config/index.php',
 );
 

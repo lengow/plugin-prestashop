@@ -103,8 +103,8 @@ class LengowOrderSettingController extends LengowController
                             ? (int) $value['carrier_marketplace']
                             : null;
                         $params = array(
-                            'id_carrier' => $idCarrier,
-                            'id_carrier_marketplace' => $idCarrierMarketplace,
+                            LengowCarrier::FIELD_CARRIER_ID => $idCarrier,
+                            LengowCarrier::FIELD_CARRIER_MARKETPLACE_ID => $idCarrierMarketplace,
                         );
                         $id = LengowCarrier::getIdDefaultCarrier($idCountry, (int) $idMarketplace);
                         if ($id) {

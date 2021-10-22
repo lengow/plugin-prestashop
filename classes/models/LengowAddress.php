@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -65,25 +65,6 @@ class LengowAddress extends Address
         'phone_office',
         'phone_mobile',
         'vat_number',
-    );
-
-    /**
-     * @var array definition array for prestashop 1.4
-     */
-    public static $definitionLengow = array(
-        'id_country' => array('required' => true),
-        'alias' => array('required' => true, 'size' => 32),
-        'company' => array('size' => 32),
-        'lastname' => array('required' => true, 'size' => 32),
-        'firstname' => array('required' => true, 'size' => 32),
-        'address1' => array('required' => true, 'size' => 128),
-        'address2' => array('size' => 128),
-        'postcode' => array('size' => 12),
-        'city' => array('required' => true, 'size' => 64),
-        'other' => array('size' => 300),
-        'phone' => array('check' => true, 'size' => 16),
-        'phone_mobile' => array('check' => true, 'size' => 16),
-        'phone_office' => array('check' => true),
     );
 
     /**
@@ -444,9 +425,6 @@ class LengowAddress extends Address
      */
     public static function getFieldDefinition()
     {
-        if (_PS_VERSION_ < 1.5) {
-            return self::$definitionLengow;
-        }
         return self::$definition['fields'];
     }
 
@@ -494,19 +472,16 @@ class LengowAddress extends Address
     {
         $definition = self::getFieldDefinition();
         foreach ($definition as $fieldName => $constraints) {
-            if (isset($constraints['required']) && $constraints['required']
-                || isset($constraints['check']) && $constraints['check']
-                || $fieldName === 'phone'
-                || $fieldName === 'phone_mobile'
+            if (((isset($constraints['required']) && $constraints['required'])
+                    || (isset($constraints['check']) && $constraints['check'])
+                    || $fieldName === 'phone'
+                    || $fieldName === 'phone_mobile')
+                && empty($this->{$fieldName})
             ) {
-                if (empty($this->{$fieldName})) {
-                    $this->validateFieldLengow($fieldName, self::LENGOW_EMPTY_ERROR);
-                }
+                $this->validateFieldLengow($fieldName, self::LENGOW_EMPTY_ERROR);
             }
-            if (isset($constraints['size'])) {
-                if (Tools::strlen($this->{$fieldName}) > $constraints['size']) {
-                    $this->validateFieldLengow($fieldName, self::LENGOW_SIZE_ERROR);
-                }
+            if (isset($constraints['size']) && Tools::strlen($this->{$fieldName}) > $constraints['size']) {
+                $this->validateFieldLengow($fieldName, self::LENGOW_SIZE_ERROR);
             }
         }
         // validateFields
@@ -559,9 +534,9 @@ class LengowAddress extends Address
                 // check full name if last_name and first_name are empty
                 if (empty($this->firstname) && empty($this->lastname)) {
                     $names = self::extractNames($this->fullName);
+                    $this->firstname = $names['firstname'];
+                    $this->lastname = $names['lastname'];
                 }
-                $this->firstname = $names['firstname'];
-                $this->lastname = $names['lastname'];
                 if (empty($this->firstname)) {
                     $this->firstname = '--';
                 }
@@ -595,7 +570,7 @@ class LengowAddress extends Address
                 }
                 break;
             default:
-                return;
+                break;
         }
     }
 
@@ -639,7 +614,6 @@ class LengowAddress extends Address
                                 $this->other .= ' ';
                             }
                             $this->other .= $addressPart;
-                            continue;
                         }
                     }
                 }
@@ -651,7 +625,7 @@ class LengowAddress extends Address
                 $this->phone_mobile = LengowMain::cleanPhone($this->phone_mobile);
                 break;
             default:
-                return;
+                break;
         }
     }
 

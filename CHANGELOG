@@ -1,4 +1,12 @@
 =============================================================
+Version 3.4.0
+=============================================================
+
+    - Feature: Integration of order synchronization in the toolbox webservice
+    - Feature: Retrieving the status of an order in the toolbox webservice
+    - Feature: Removal of compatibility with PrestaShop 1.4
+
+=============================================================
 Version 3.3.2
 =============================================================
 

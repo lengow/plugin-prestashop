@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -24,6 +24,17 @@
  */
 class LengowFeed
 {
+    /* Feed formats */
+    const FORMAT_CSV = 'csv';
+    const FORMAT_YAML = 'yaml';
+    const FORMAT_XML = 'xml';
+    const FORMAT_JSON = 'json';
+
+    /* Content types */
+    const HEADER = 'header';
+    const BODY = 'body';
+    const FOOTER = 'footer';
+
     /**
      * @var string protection
      */
@@ -38,41 +49,6 @@ class LengowFeed
      * @var string end of line
      */
     const EOL = "\r\n";
-
-    /**
-     * @var string csv format
-     */
-    const FORMAT_CSV = 'csv';
-
-    /**
-     * @var string yaml format
-     */
-    const FORMAT_YAML = 'yaml';
-
-    /**
-     * @var string xml format
-     */
-    const FORMAT_XML = 'xml';
-
-    /**
-     * @var string json format
-     */
-    const FORMAT_JSON = 'json';
-
-    /**
-     * @var string header content
-     */
-    const HEADER = 'header';
-
-    /**
-     * @var string body content
-     */
-    const BODY = 'body';
-
-    /**
-     * @var string footer content
-     */
-    const FOOTER = 'footer';
 
     /**
      * @var LengowFile Lengow file instance
@@ -102,7 +78,7 @@ class LengowFeed
     /**
      * @var string|null export shop folder
      */
-    protected $shopFolder = null;
+    protected $shopFolder;
 
     /**
      * @var string full export folder
@@ -159,15 +135,13 @@ class LengowFeed
         $sep = DIRECTORY_SEPARATOR;
         $this->exportFolder = LengowMain::FOLDER_EXPORT . $sep . $this->shopFolder;
         $folderPath = LengowMain::getLengowFolder() . $sep . $this->exportFolder;
-        if (!file_exists($folderPath)) {
-            if (!mkdir($folderPath)) {
-                throw new LengowException(
-                    LengowMain::setLogMessage(
-                        'log.export.error_unable_to_create_folder',
-                        array('folder_path' => $folderPath)
-                    )
-                );
-            }
+        if (!file_exists($folderPath) && !mkdir($folderPath) && !is_dir($folderPath)) {
+            throw new LengowException(
+                LengowMain::setLogMessage(
+                    'log.export.error_unable_to_create_folder',
+                    array('folder_path' => $folderPath)
+                )
+            );
         }
         $fileName = 'flux-' . Context::getContext()->language->iso_code . '-' . time() . '.' . $this->format;
         $this->file = new LengowFile($this->exportFolder, $fileName);

@@ -18,7 +18,7 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 <br />
-<fieldset {if $version < 1.5} style="width:400px" {/if}>
+<fieldset>
 	<legend>{$lengow_locale->t('admin.order.import_lengow')|escape:'htmlall':'UTF-8'}</legend>
 	<h4>{$lengow_locale->t('admin.order.imported_from_lengow')|escape:'htmlall':'UTF-8'}</h4>
 	<ul>
@@ -127,19 +127,14 @@
 	<br />
 	{if !$debug_mode}
 		<div class"button-command-prev-next">
-			<a class="button" 
-				href="{$action_reimport|escape:'htmlall':'UTF-8'}" 
+			<a class="button"
+				href="{$action_reimport|escape:'htmlall':'UTF-8'}"
 				onclick="return confirm('{$lengow_locale->t('admin.order.check_cancel_and_reimport')|escape:'htmlall':'UTF-8'}')">
 				{$lengow_locale->t('admin.order.cancel_and_reimport')|escape:'htmlall':'UTF-8'}
 			</a>
 			<a class="button" href="{$action_synchronize|escape:'htmlall':'UTF-8'}">
 				{$lengow_locale->t('admin.order.synchronize_id')|escape:'htmlall':'UTF-8'}
 			</a>
-			{if $can_add_tracking }
-				<a class="button" onclick="getValue()">
-					{$lengow_locale->t('admin.order.add_tracking')|escape:'htmlall':'UTF-8'}
-				</a>
-			{/if}
 			{if $can_resend_action}
 				<a class="button"
 					href="{$action_resend|escape:'htmlall':'UTF-8'}"
@@ -150,13 +145,3 @@
 		</div>
 	{/if}
 </fieldset>
-
-<script type="text/javascript">
-    function getValue() {
-        var tracking_number = prompt("{$lengow_locale->t('admin.order.add_tracking_title')|escape:'htmlall':'UTF-8'}");
-        if (tracking_number) {
-        	var url = "{html_entity_decode($action_add_tracking|escape:'htmlall':'UTF-8')}" + tracking_number;
-        	document.location.href=url;
-        }
-    }
-</script>

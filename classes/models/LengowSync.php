@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -46,9 +46,9 @@ class LengowSync
     const LINK_TYPE_SUPPORT = 'support';
 
     /* Default plugin links */
-    const LINK_HELP_CENTER = 'https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864';
-    const LINK_CHANGELOG = 'https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864,113076,257675';
-    const LINK_UPDATE_GUIDE = 'https://support.lengow.com/kb/guide/en/prestashop-ob0HZ6F7so/Steps/25864,121742';
+    const LINK_HELP_CENTER = 'https://support.lengow.com/kb/guide/en/ob0HZ6F7so';
+    const LINK_CHANGELOG = 'https://support.lengow.com/kb/guide/en/clDRVyFUBk';
+    const LINK_UPDATE_GUIDE = 'https://support.lengow.com/kb/guide/en/ob0HZ6F7so/Steps/25864,121742';
     const LINK_SUPPORT = 'https://help-support.lengow.com/hc/en-us/requests/new';
 
     /* Api iso codes */
@@ -377,13 +377,11 @@ class LengowSync
                 );
             }
             return $result;
-        } else {
-            // if the API does not respond, use marketplaces.json if it exists
-            if (file_exists($filePath)) {
-                $marketplacesData = Tools::file_get_contents($filePath);
-                if ($marketplacesData) {
-                    return Tools::jsonDecode($marketplacesData);
-                }
+        }
+        if (file_exists($filePath)) {
+            $marketplacesData = Tools::file_get_contents($filePath);
+            if ($marketplacesData) {
+                return Tools::jsonDecode($marketplacesData);
             }
         }
         return false;
@@ -456,10 +454,8 @@ class LengowSync
                 LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_DATA, time());
                 return $pluginData;
             }
-        } else {
-            if (LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA)) {
-                return Tools::jsonDecode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
-            }
+        } elseif (LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA)) {
+            return Tools::jsonDecode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
         }
         return false;
     }

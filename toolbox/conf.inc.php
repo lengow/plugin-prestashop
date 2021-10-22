@@ -40,13 +40,7 @@ $_GET['id_shop'] = $tempIdShop;
 $_POST['id_shop'] = $tempIdShop;
 $_REQUEST['id_shop'] = $tempIdShop;
 
-if (_PS_VERSION_ < '1.5') {
-    require_once $currentDirectory . 'images.inc.php';
-}
-
-if (_PS_VERSION_ > '1.5') {
-    Shop::setContext(Shop::CONTEXT_ALL);
-}
+Shop::setContext(Shop::CONTEXT_ALL);
 
 $lengowTool = new LengowTool();
 $context = Context::getContext();

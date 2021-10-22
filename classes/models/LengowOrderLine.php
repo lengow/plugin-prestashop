@@ -20,28 +20,34 @@
  */
 
 /**
- * Lengow Employee Class
+ * Lengow Order Line Class
  */
-class LengowEmployee extends Employee
+class LengowOrderLine
 {
     /**
-     * Return all employee id and email
+     * @var string Lengow order line table name
+     */
+    const TABLE_ORDER_LINE = 'lengow_order_line';
+
+    /* Order line fields */
+    const FIELD_ID = 'id';
+    const FIELD_ORDER_ID = 'id_order';
+    const FIELD_ORDER_LINE_ID = 'id_order_line';
+    const FIELD_ORDER_DETAIL_ID = 'id_order_detail';
+
+    /**
+     * Get Order Lines by Prestashop order id
      *
-     * @param boolean $activeOnly active employee or not
+     * @param integer $idOrder Prestashop order id
      *
      * @return array
      */
-    public static function getEmployees($activeOnly = true)
+    public static function findOrderLineIds($idOrder)
     {
-        // this line is useless, but Prestashop validator require it
-        $activeOnly = $activeOnly;
+        $sql = 'SELECT id_order_line FROM `' . _DB_PREFIX_ . 'lengow_order_line`
+            WHERE id_order = ' . (int) $idOrder;
         try {
-            return Db::getInstance()->ExecuteS(
-                'SELECT `id_employee`, CONCAT(`firstname`, \' \', `lastname`) name
-                FROM `' . _DB_PREFIX_ . 'employee`
-                WHERE `active` = 1
-                ORDER BY `email`'
-            );
+            return Db::getInstance()->executeS($sql);
         } catch (PrestaShopDatabaseException $e) {
             return array();
         }

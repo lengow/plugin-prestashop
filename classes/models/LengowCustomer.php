@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -24,16 +24,6 @@
  */
 class LengowCustomer extends Customer
 {
-    /**
-     * @var array definition array for prestashop 1.4
-     */
-    public static $definitionLengow = array(
-        'lastname' => array('required' => true, 'size' => 32),
-        'firstname' => array('required' => true, 'size' => 32),
-        'email' => array('required' => true, 'size' => 128),
-        'passwd' => array('required' => true, 'size' => 32),
-    );
-
     /**
      * @var string customer full name
      */
@@ -46,9 +36,6 @@ class LengowCustomer extends Customer
      */
     public static function getFieldDefinition()
     {
-        if (_PS_VERSION_ < 1.5) {
-            return self::$definitionLengow;
-        }
         return self::$definition['fields'];
     }
 
@@ -67,9 +54,7 @@ class LengowCustomer extends Customer
         $this->lastname = $data['last_name'];
         $this->fullName = $data['full_name'];
         $this->passwd = md5(rand());
-        if (_PS_VERSION_ >= '1.5') {
-            $this->id_gender = LengowGender::getGender((string) $data['civility']);
-        }
+        $this->id_gender = LengowGender::getGender((string) $data['civility']);
         return $this;
     }
 
@@ -84,15 +69,11 @@ class LengowCustomer extends Customer
     {
         $definition = self::getFieldDefinition();
         foreach ($definition as $fieldName => $constraints) {
-            if (isset($constraints['required']) && $constraints['required']) {
-                if (!$this->{$fieldName}) {
-                    $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_EMPTY_ERROR);
-                }
+            if (isset($constraints['required']) && $constraints['required'] && !$this->{$fieldName}) {
+                $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_EMPTY_ERROR);
             }
-            if (isset($constraints['size'])) {
-                if (Tools::strlen($this->{$fieldName}) > $constraints['size']) {
-                    $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_SIZE_ERROR);
-                }
+            if (isset($constraints['size']) && Tools::strlen($this->{$fieldName}) > $constraints['size']) {
+                $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_SIZE_ERROR);
             }
         }
         // validateFields
@@ -145,9 +126,9 @@ class LengowCustomer extends Customer
                 // check full name if last_name and first_name are empty
                 if (empty($this->firstname) && empty($this->lastname)) {
                     $names = LengowAddress::extractNames($this->fullName);
+                    $this->firstname = $names['firstname'];
+                    $this->lastname = $names['lastname'];
                 }
-                $this->firstname = $names['firstname'];
-                $this->lastname = $names['lastname'];
                 if (empty($this->firstname)) {
                     $this->firstname = '--';
                 }
@@ -155,10 +136,8 @@ class LengowCustomer extends Customer
                     $this->lastname = '--';
                 }
                 break;
-            case '':
-                break;
             default:
-                return;
+                break;
         }
     }
 
@@ -202,7 +181,6 @@ class LengowCustomer extends Customer
                                 $this->other .= ' ';
                             }
                             $this->other .= $addressPart;
-                            continue;
                         }
                     }
                 }
@@ -214,7 +192,7 @@ class LengowCustomer extends Customer
                 $this->phone_mobile = LengowMain::cleanPhone($this->phone_mobile);
                 break;
             default:
-                return;
+                break;
         }
     }
 
@@ -231,7 +209,7 @@ class LengowCustomer extends Customer
         $sql = 'SELECT *
             FROM `' . _DB_PREFIX_ . 'customer`
             WHERE `email` = \'' . pSQL($email) . '\'
-            ' . (_PS_VERSION_ < 1.5 ? '' : ' AND `id_shop` = \'' . $idShop . '\'') . '
+            ' . ' AND `id_shop` = \'' . $idShop . '\'' . '
             AND `deleted` = \'0\'';
         $result = Db::getInstance()->getRow($sql);
         if (!$result) {
@@ -239,7 +217,7 @@ class LengowCustomer extends Customer
         }
         $this->id = $result['id_customer'];
         foreach ($result as $key => $value) {
-            if (key_exists($key, $this)) {
+            if (array_key_exists($key, $this)) {
                 $this->{$key} = $value;
             }
         }

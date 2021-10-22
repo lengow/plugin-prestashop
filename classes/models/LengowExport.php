@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2021 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -241,6 +241,11 @@ class LengowExport
     protected $outOfStock = false;
 
     /**
+     * @var string export language
+     */
+    protected $language;
+
+    /**
      * @var boolean export product variations
      */
     protected $variation = true;
@@ -437,7 +442,7 @@ class LengowExport
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[Prestashop error] "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
         }
         if (isset($errorMessage)) {
             $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
@@ -668,20 +673,11 @@ class LengowExport
      */
     public function getTotalProduct()
     {
-        if (_PS_VERSION_ >= '1.5') {
-            $join = ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps ON
-                (ps.id_product = p.id_product AND ps.id_shop = ' . (int) $this->idShop . ') ';
-        } else {
-            $join = '';
-        }
+        $join = ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps 
+            ON (ps.id_product = p.id_product AND ps.id_shop = ' . (int) $this->idShop . ') ';
+        $where = '';
         if (!$this->inactive) {
-            if (_PS_VERSION_ < '1.5') {
-                $where = ' WHERE p.active = 1 ';
-            } else {
-                $where = ' WHERE ps.active = 1 ';
-            }
-        } else {
-            $where = '';
+            $where = ' WHERE ps.active = 1 ';
         }
         $query = ' SELECT SUM(total) as total FROM (';
         $query .= ' ( SELECT COUNT(*) as total';
@@ -736,41 +732,31 @@ class LengowExport
         $where = array();
         $query = ' FROM ' . _DB_PREFIX_ . 'product p';
         if ($this->selection) {
-            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'lengow_product lp ON (lp.id_product = p.id_product AND
-            lp.id_shop = ' . (int) $this->idShop . ')';
+            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'lengow_product lp 
+                ON (lp.id_product = p.id_product 
+                AND lp.id_shop = ' . (int) $this->idShop . ')';
         }
         if ($variation) {
-            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_attribute pa ON (pa.id_product = p.id_product) ';
+            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_attribute pa 
+                ON (pa.id_product = p.id_product) ';
         }
-        if (_PS_VERSION_ >= '1.5') {
-            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps ON
-            (ps.id_product = p.id_product AND ps.id_shop = ' . (int) $this->idShop . ') ';
-        }
+        $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps 
+            ON (ps.id_product = p.id_product AND ps.id_shop = ' . (int) $this->idShop . ') ';
         if (!$this->inactive) {
-            if (_PS_VERSION_ < '1.5') {
-                $where[] = ' p.active = 1 ';
-            } else {
-                $where[] = ' ps.active = 1 ';
-            }
+            $where[] = ' ps.active = 1 ';
         }
-        if (!(_PS_VERSION_ < '1.5')) {
-            $where[] = ' ps.id_shop = ' . (int) $this->idShop;
-        }
+        $where[] = ' ps.id_shop = ' . (int) $this->idShop;
         if (!$this->outOfStock) {
-            if (_PS_VERSION_ >= '1.5') {
-                if ($variation) {
-                    $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
-                    (sa.id_product=p.id_product
-                    AND pa.id_product_attribute = sa.id_product_attribute
-                    AND sa.id_shop = ' . (int) $this->idShop . '
-                    AND sa.quantity > 0)';
-                } else {
-                    $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
-                    (sa.id_product=p.id_product AND id_product_attribute = 0 AND sa.quantity > 0
-                    AND sa.id_shop = ' . (int) $this->idShop . ' )';
-                }
+            if ($variation) {
+                $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
+                (sa.id_product=p.id_product
+                AND pa.id_product_attribute = sa.id_product_attribute
+                AND sa.id_shop = ' . (int) $this->idShop . '
+                AND sa.quantity > 0)';
             } else {
-                $where[] = ' p.`quantity` > 0';
+                $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
+                (sa.id_product=p.id_product AND id_product_attribute = 0 AND sa.quantity > 0
+                AND sa.id_shop = ' . (int) $this->idShop . ' )';
             }
         }
         if (!empty($this->productIds)) {
@@ -822,9 +808,7 @@ class LengowExport
         $fields = array();
         // check field name to lower to avoid duplicates
         $formattedFields = array();
-        foreach (self::$defaultFields as $key => $value) {
-            // this line is useless, but Prestashop validator require it
-            $value = $value;
+        foreach (array_keys(self::$defaultFields) as $key) {
             $fields[] = $key;
             $formattedFields[] = LengowFeed::formatFields($key, $this->format, $this->legacy);
         }

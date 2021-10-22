@@ -53,7 +53,7 @@ require_once $currentDirectory . 'modules/lengow/lengow.php';
 $lengow = new Lengow();
 // check if Lengow is installed and enabled
 if (!Module::isInstalled($lengow->name)) {
-    $errorMessage = (_PS_VERSION_ >= 1.5 && !Module::isEnabled($lengow->name))
+    $errorMessage = (!Module::isEnabled($lengow->name))
         ? 'Lengow module is not active'
         : 'Lengow module is not installed';
     header('HTTP/1.1 400 Bad Request');
@@ -62,10 +62,12 @@ if (!Module::isInstalled($lengow->name)) {
 // CheckIP
 $token = Tools::getIsset(LengowExport::PARAM_TOKEN) ? Tools::getValue(LengowExport::PARAM_TOKEN) : '';
 if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)) {
-    if ($token === '' || (bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)) {
+    if ((bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)) {
         $errorMessage = 'Unauthorized access for IP: ' . $_SERVER['REMOTE_ADDR'];
     } else {
-        $errorMessage = 'Unauthorized access for this token : ' . $token;
+        $errorMessage = $token !== ''
+            ? 'Unauthorised access for this token: ' . $token
+            : 'Unauthorised access: token parameter is empty';
     }
     header('HTTP/1.1 403 Forbidden');
     die($errorMessage);
@@ -92,7 +94,7 @@ $offset = Tools::getIsset(LengowExport::PARAM_OFFSET) ? (int) Tools::getValue(Le
 // export limit
 $limit = Tools::getIsset(LengowExport::PARAM_LIMIT) ? (int) Tools::getValue(LengowExport::PARAM_LIMIT) : null;
 // export specific shop
-if (_PS_VERSION_ >= '1.5' && Tools::getIsset(LengowExport::PARAM_SHOP)) {
+if (Tools::getIsset(LengowExport::PARAM_SHOP)) {
     $shop = new Shop((int) Tools::getValue(LengowExport::PARAM_SHOP));
     if ($shop->id) {
         $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
