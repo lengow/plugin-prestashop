@@ -1,9 +1,9 @@
 # Lengow for PrestaShop
 
 - **Requires at least:** 1.5
-- **Tested up to:** 1.7.7
+- **Tested up to:** 1.7.8
 - **Requires PHP:** 5.6
-- **Stable tag:** 3.3.2
+- **Stable tag:** 3.4.0
 - **License:** Apache-2.0
 - **License URI:** http://www.apache.org/licenses/LICENSE-2.0
 
