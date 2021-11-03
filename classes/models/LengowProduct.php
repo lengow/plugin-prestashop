@@ -242,7 +242,7 @@ class LengowProduct extends Product
             case 'discount_end_date':
                 return $this->isSale ? $this->specificPrice['to'] : '';
             case 'ecotax':
-                return LengowMain::formatNumber($this->getEcotax($idProductAttribute));
+                return LengowMain::formatNumber($this->getEcotaxLengow($idProductAttribute));
             case 'shipping_cost':
                 return $this->getShippingCost($idProductAttribute);
             case 'shipping_delay':
@@ -252,7 +252,7 @@ class LengowProduct extends Product
             case (bool) preg_match('`image_([0-9]+)`', $name):
                 return $this->getImageLink($name, $idProductAttribute);
             case 'type':
-                return $this->getProductType($idProductAttribute);
+                return $this->getProductTypeLengow($idProductAttribute);
             case 'parent_id':
                 return $this->id;
             case 'variation':
@@ -572,7 +572,7 @@ class LengowProduct extends Product
      *
      * @return float
      */
-    protected function getEcotax($idProductAttribute = null)
+    protected function getEcotaxLengow($idProductAttribute = null)
     {
         $ecotax = 0;
         if ($idProductAttribute && $this->combinations[$idProductAttribute]['ecotax']) {
@@ -681,7 +681,7 @@ class LengowProduct extends Product
      *
      * @return string
      */
-    protected function getProductType($idProductAttribute = null)
+    protected function getProductTypeLengow($idProductAttribute = null)
     {
         if ($idProductAttribute) {
             $type = 'child';
