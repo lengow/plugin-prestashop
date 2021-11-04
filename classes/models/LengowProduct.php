@@ -394,10 +394,11 @@ class LengowProduct extends Product
      * Get all available attribute groups
      *
      * @param integer $idLang Prestashop lang id
+     * @param integer $id_product_attribute
      *
      * @return array
      */
-    public function getAttributesGroups($idLang)
+    public function getAttributesGroups($idLang, $id_product_attribute = null)
     {
         if (LengowMain::compareVersion()) {
             if (!Combination::isFeatureActive()) {

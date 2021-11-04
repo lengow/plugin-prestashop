@@ -9,7 +9,7 @@
 /classes/models/LengowMarketplace.php|cfb4f3cf83991f8368657f017dce0ace
 /classes/models/LengowFile.php|efd92e780beae7118f3bea44bd8fae1b
 /classes/models/LengowCart.php|249e4dfae31f4849bff18f60b4e03cf0
-/classes/models/LengowProduct.php|0350d9b2aa367fb13d2c6e83ced8acee
+/classes/models/LengowProduct.php|684d5b372a9563a3a1cffcf91871d83f
 /classes/models/LengowEmployee.php|59f610ad0242db8c325a20fe6fc19688
 /classes/models/LengowPaymentModule.php|9177ce0c7647246eb40cbdfef099f99c
 /classes/models/LengowOrder.php|26f2da6c7f442b70648f0df0d449bd7f
