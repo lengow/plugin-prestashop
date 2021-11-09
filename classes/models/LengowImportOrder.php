@@ -395,28 +395,28 @@ class LengowImportOrder
     {
         // if log import exist and not finished
         $importLog = LengowOrderError::getLastImportLogNotFinished($this->marketplaceSku, $this->deliveryAddressId);
-        if ($importLog) {
-            // force order synchronization by removing pending errors
-            if ($this->forceSync) {
-                LengowOrderError::finishOrderLogs($this->idOrderLengow);
-                return false;
-            }
-            $decodedMessage = LengowMain::decodeLogMessage(
-                $importLog[LengowOrderError::FIELD_MESSAGE],
-                LengowTranslation::DEFAULT_ISO_CODE
-            );
-            $message = LengowMain::setLogMessage(
-                'log.import.error_already_created',
-                array(
-                    'decoded_message' => $decodedMessage,
-                    'date_message' => $importLog[LengowOrderError::FIELD_CREATED_AT],
-                )
-            );
-            $this->errors[] = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
-            LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput, $this->marketplaceSku);
-            return true;
+        if (!$importLog) {
+            return false;
         }
-        return false;
+        // force order synchronization by removing pending errors
+        if ($this->forceSync) {
+            LengowOrderError::finishOrderLogs($this->idOrderLengow);
+            return false;
+        }
+        $decodedMessage = LengowMain::decodeLogMessage(
+            $importLog[LengowOrderError::FIELD_MESSAGE],
+            LengowTranslation::DEFAULT_ISO_CODE
+        );
+        $message = LengowMain::setLogMessage(
+            'log.import.error_already_created',
+            array(
+                'decoded_message' => $decodedMessage,
+                'date_message' => $importLog[LengowOrderError::FIELD_CREATED_AT],
+            )
+        );
+        $this->errors[] = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
+        LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput, $this->marketplaceSku);
+        return true;
     }
 
     /**
@@ -454,13 +454,13 @@ class LengowImportOrder
         try {
             $orderUpdated = $order->updateState($this->orderStateLengow, $this->packageData);
             if ($orderUpdated) {
-                $orderUpdated = true;
                 LengowMain::log(
                     LengowLog::CODE_IMPORT,
                     LengowMain::setLogMessage('log.import.state_updated_to', array('state_name' => $orderUpdated)),
                     $this->logOutput,
                     $this->marketplaceSku
                 );
+                $orderUpdated = true;
                 $stateName = '';
                 $availableStates = LengowMain::getOrderStates($this->idLang);
                 foreach ($availableStates as $state) {
