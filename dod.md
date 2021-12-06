@@ -6,7 +6,7 @@
 * Pas de modification de comportement de fonction :
 * Principe SOLID (au moins le S) :
 * Coding Style (PSR2) :
-* Vérification du Prestashop validator :
+* Vérification du PrestaShop validator :
 * Documentation Phpdoc au niveau du code :
 * Mise en place de log :
 * Mise en place de traductions :
@@ -31,7 +31,7 @@ Attention à ne pas modifier le comportement des fonctions déjà présentes
 ### Coding Style (PSR2) ###
 * http://www.php-fig.org/psr/psr-2/
 
-### Vérification du Prestashop validator ###
+### Vérification du PrestaShop validator ###
 * https://validator.prestashop.com/
 Voir https://lengow.atlassian.net/wiki/pages/viewpage.action?pageId=81887234 pour identifiants
 

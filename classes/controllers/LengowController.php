@@ -30,7 +30,7 @@ class LengowController
     protected $module;
 
     /**
-     * @var Context Prestashop context instance
+     * @var Context PrestaShop context instance
      */
     protected $context;
 

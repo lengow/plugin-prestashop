@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build archive for Prestashop module
+# Build archive for PrestaShop module
 # Step :
 #     - Remove .DS_Store
 #     - Remove .README.md
@@ -60,7 +60,7 @@ BLEU="\\033[1;36m"
 echo
 echo "#####################################################"
 echo "##                                                 ##"
-echo "##       ""$BLEU""Lengow Prestashop""$NORMAL"" - Build Module          ##"
+echo "##       ""$BLEU""Lengow PrestaShop""$NORMAL"" - Build Module          ##"
 echo "##                                                 ##"
 echo "#####################################################"
 echo

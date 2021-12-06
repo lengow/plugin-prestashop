@@ -184,7 +184,7 @@ Version 3.0.2
     - Bugfix: [action] Deleting the shipping_date parameter in the action check request
     - Bugfix: Deleting the indefinite index user_id in the connector
     - Bugfix: Language code recovery for the Lengow iframe
-    - Bugfix: Lengow multi-tab installation problem in the Prestashop menu
+    - Bugfix: Lengow multi-tab installation problem in the PrestaShop menu
 
 =============================================================
 Version 3.0.1
@@ -229,7 +229,7 @@ Version 2.2.11
 =============================================================
 Version 2.2.10
 =============================================================
-	- [export] Added product URL rewriting compatibility with Prestashop > 1.7.1
+	- [export] Added product URL rewriting compatibility with PrestaShop > 1.7.1
 	- [import] Added compatibility with the new 4.x version of the Colissimo Simplicite plugin
 	- [export] Get a specific ean, upc or reference when product attribute is equal at 1
 	- [import] Get delivery phone number when billing and shipping addresses are the same
@@ -270,22 +270,22 @@ Version 2.2.6
 
     - Feature: [export] Get a specific format for csv stream
 	- Feature: [import] Get product when reference begins by numbers
-	- Bugfix: Change tabs attribute by lengowTabs for Prestashop 1.7.1.1
+	- Bugfix: Change tabs attribute by lengowTabs for PrestaShop 1.7.1.1
 	- Bugfix: [import] Delete import for orders in accepted status
 
 =============================================================
 Version 2.2.5
 =============================================================
 
-    - Feature: Rewrite for compatibility with the new Prestashop validator
-    - Feature: Deleting the override folder for compatibility with Prestashop 1.7
+    - Feature: Rewrite for compatibility with the new PrestaShop validator
+    - Feature: Deleting the override folder for compatibility with PrestaShop 1.7
     - Bugfix: [export] Add anchor for product url
-    - Bugfix: [export] Add export features option for Prestashop 1.4
+    - Bugfix: [export] Add export features option for PrestaShop 1.4
     - Bugfix: [import] Add a correction for dom colissimo
     - Bugfix: [import] No translation in lengow log controller
     - Bugfix: [action] Get marketplace return and errors in logs
     - Bugfix: [action] Notice for default value in description argument
-    - Bugfix: [tracking] Add a correction for Prestashop 1.7 in hookOrderConfirmation
+    - Bugfix: [tracking] Add a correction for PrestaShop 1.7 in hookOrderConfirmation
 
 =============================================================
 Version 2.2.4
@@ -311,7 +311,7 @@ Version 2.2.2
 =============================================================
 
 	- Feature: [import] Add new legacy_code in marketplace class
-	- Feature: Add compatibility with Prestashop 1.7
+	- Feature: Add compatibility with PrestaShop 1.7
 
 =============================================================
 Version 2.2.1
@@ -348,7 +348,7 @@ Version 2.1
 	- Feature: [export] New LengowFile class
 	- Feature: Security updates - SQL injection
 	- Feature: [import] Search markeplace carrier improved
-	- Feature: Compatibility with Prestashop Cron Editor
+	- Feature: Compatibility with PrestaShop Cron Editor
 	- Feature: Better exception management
 	- Feature: New log writing process
 	- Feature: [export] Export in file improved
@@ -416,7 +416,7 @@ Version 2.0.5
 	- Feature: Send tracking when it's filled
 	- Feature: [export] Add function to add value in export
 	- Feature: Use set instead of updateValue in Configuration for mail
-	- Feature: Now compatible with Prestashop 1.6
+	- Feature: Now compatible with PrestaShop 1.6
 	- Feature: Improve zipcode verification
 	- Feature: Improve logs report
 	- Feature: Add try/catch on validateOrder
@@ -475,7 +475,7 @@ Version 2.0.4
 	- Feature: [import] Add option to force import disabled product or out of stock
 	- Feature: [import] Now compatible with soColissimo
 	- Feature: [import] Matching API Field for better product search
-	- Feature: [import] Prevent Prestashop bug when advanced stock is enabled
+	- Feature: [import] Prevent PrestaShop bug when advanced stock is enabled
 	- Feature: [import] Force carrier is modified by ValidateOrder
 	- Feature: [import] Block commands when product came from different warehouse
 	- Feature: [import] Add compatibility with Mondial Relay

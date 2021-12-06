@@ -101,7 +101,7 @@ class LengowFeed
      * @param boolean $stream export streaming or in a file
      * @param string $format export format
      * @param boolean $legacy export legacy field or not
-     * @param string $shopName Prestashop shop name
+     * @param string $shopName PrestaShop shop name
      *
      * @throws LengowException unable to create folder
      */

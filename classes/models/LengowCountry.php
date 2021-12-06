@@ -49,7 +49,7 @@ class LengowCountry
     /**
      * Get country by id
      *
-     * @param integer $idCountry Prestashop country id
+     * @param integer $idCountry PrestaShop country id
      *
      * @return array|false
      */

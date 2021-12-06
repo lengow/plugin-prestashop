@@ -379,7 +379,7 @@ class LengowAddress extends Address
     }
 
     /**
-     * Clean firstname or lastname to Prestashop
+     * Clean firstname or lastname to PrestaShop
      *
      * @param string $name customer name
      *

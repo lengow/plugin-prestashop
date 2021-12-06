@@ -159,7 +159,7 @@ en:
       shop_functionality_help: "Shop functionalities are disabled, order import is impossible: please enable them in the products settings section"
       mail_configuration_enabled: "Email are enabled with custom settings"
       email_disable: "Email are disabled"
-      error_mail_setting: "Error on email settings: PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4"
+      error_mail_setting: "Error on email settings: PS_MAIL_METHOD is 3 but this value is not allowed in PrestaShop 1.4"
       email_using_php_mail: "Email using php mail function"
       checksum_message: "Plugin files check"
       checksum_help: "Some files have been changed by the customer"

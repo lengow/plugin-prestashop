@@ -60,7 +60,7 @@ class LengowList
     protected $controller;
 
     /**
-     * @var integer Prestashop shop id
+     * @var integer PrestaShop shop id
      */
     protected $shopId;
 
@@ -110,7 +110,7 @@ class LengowList
     protected $ajax;
 
     /**
-     * @var Context Prestashop context instance
+     * @var Context PrestaShop context instance
      */
     protected $context;
 
@@ -120,7 +120,7 @@ class LengowList
     protected $locale;
 
     /**
-     * @var array Prestashop currency by iso code
+     * @var array PrestaShop currency by iso code
      */
     protected $currencyCode;
 

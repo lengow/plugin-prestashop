@@ -103,12 +103,12 @@ class LengowMain
     );
 
     /**
-     * @var array Prestashop mail configuration
+     * @var array PrestaShop mail configuration
      */
     protected static $mailConfigurations = array();
 
     /**
-     * The Prestashop compare version with current version.
+     * The PrestaShop compare version with current version.
      *
      * @param string $version the version to compare
      *
@@ -131,7 +131,7 @@ class LengowMain
     }
 
     /**
-     * Get the matching Prestashop order state id to the one given
+     * Get the matching PrestaShop order state id to the one given
      *
      * @param string $state state to be matched
      *
@@ -315,7 +315,7 @@ class LengowMain
      * Check webservice access (export and import)
      *
      * @param string $token shop token
-     * @param integer|null $idShop Prestashop shop id
+     * @param integer|null $idShop PrestaShop shop id
      *
      * @return boolean
      */
@@ -336,7 +336,7 @@ class LengowMain
      * Check if token is correct
      *
      * @param string $token shop token
-     * @param integer|null $idShop Prestashop shop id
+     * @param integer|null $idShop PrestaShop shop id
      *
      * @return boolean
      */
@@ -349,7 +349,7 @@ class LengowMain
     /**
      * Generate token
      *
-     * @param integer|null $idShop Prestashop shop id
+     * @param integer|null $idShop PrestaShop shop id
      *
      * @return string
      */
@@ -881,7 +881,7 @@ class LengowMain
     /**
      * Get order state list
      *
-     * @param integer $idLang Prestashop lang id
+     * @param integer $idLang PrestaShop lang id
      *
      * @return array
      */
@@ -919,7 +919,7 @@ class LengowMain
     /**
      * Get export webservice links
      *
-     * @param integer|null $idShop Prestashop shop id
+     * @param integer|null $idShop PrestaShop shop id
      *
      * @return string
      */
@@ -957,7 +957,7 @@ class LengowMain
     /**
      * Get base url for Lengow webservice and files
      *
-     * @param integer|null $idShop Prestashop shop id
+     * @param integer|null $idShop PrestaShop shop id
      *
      * @return string
      */
@@ -977,7 +977,7 @@ class LengowMain
     /**
      * Get main shop url for a specific shop
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer $idShop PrestaShop shop id
      *
      * @throws Exception
      *
@@ -998,7 +998,7 @@ class LengowMain
     /**
      * Get Lengow technical error state id
      *
-     * @param integer|null $idLang Prestashop lang id
+     * @param integer|null $idLang PrestaShop lang id
      *
      * @return integer|null
      */

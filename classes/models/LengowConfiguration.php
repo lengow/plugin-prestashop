@@ -546,9 +546,9 @@ class LengowConfiguration extends Configuration
      * Get Lengow value by shop
      *
      * @param string $key Lengow configuration key
-     * @param integer|null $idLang Prestashop lang id
-     * @param integer|null $idShopGroup Prestashop shop group id
-     * @param integer|null $idShop Prestashop shop id
+     * @param integer|null $idLang PrestaShop lang id
+     * @param integer|null $idShopGroup PrestaShop shop group id
+     * @param integer|null $idShop PrestaShop shop id
      * @param boolean $default default value (compatibility version 1.7)
      *
      * @return mixed
@@ -656,7 +656,7 @@ class LengowConfiguration extends Configuration
     /**
      * Get catalog ids for a specific shop
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer $idShop PrestaShop shop id
      *
      * @return array
      */
@@ -680,7 +680,7 @@ class LengowConfiguration extends Configuration
      * Set catalog ids for a specific shop
      *
      * @param array $catalogIds Lengow catalog ids
-     * @param integer $idShop Prestashop shop id
+     * @param integer $idShop PrestaShop shop id
      *
      * @return boolean
      */
@@ -715,7 +715,7 @@ class LengowConfiguration extends Configuration
     /**
      * Recovers if a shop is active or not
      *
-     * @param integer|null $idShop Prestashop shop id
+     * @param integer|null $idShop PrestaShop shop id
      *
      * @return boolean
      */
@@ -727,7 +727,7 @@ class LengowConfiguration extends Configuration
     /**
      * Set active shop or not
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer $idShop PrestaShop shop id
      *
      * @return boolean
      */
@@ -843,7 +843,7 @@ class LengowConfiguration extends Configuration
     /**
      * Get Values by shop or global
      *
-     * @param integer|null $idShop Prestashop shop id
+     * @param integer|null $idShop PrestaShop shop id
      * @param boolean $toolbox get all values for toolbox or not
      *
      * @return array

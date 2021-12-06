@@ -33,7 +33,7 @@ class LengowEmployee extends Employee
      */
     public static function getEmployees($activeOnly = true)
     {
-        // this line is useless, but Prestashop validator require it
+        // this line is useless, but PrestaShop validator require it
         $activeOnly = $activeOnly;
         try {
             return Db::getInstance()->ExecuteS(

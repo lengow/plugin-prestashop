@@ -338,7 +338,8 @@ class LengowMarketplace
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[PrestaShop Error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
+                . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
         }
         if (isset($errorMessage)) {
             if ($lengowOrder->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
@@ -608,7 +609,7 @@ class LengowMarketplace
     /**
      * Get all marketplaces
      *
-     * @param integer|boolean $idCountry Prestashop id country
+     * @param integer|boolean $idCountry PrestaShop id country
      *
      * @return array
      */
@@ -635,7 +636,7 @@ class LengowMarketplace
     /**
      * Get all marketplace data for carrier matching by country id
      *
-     * @param integer $idCountry Prestashop country id
+     * @param integer $idCountry PrestaShop country id
      *
      * @return array
      */

@@ -33,17 +33,17 @@ class LengowHook
     const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
 
     /**
-     * @var string Prestashop current page type
+     * @var string PrestaShop current page type
      */
     private static $currentPageType = 'page';
 
     /**
-     * @var string Prestashop order id
+     * @var string PrestaShop order id
      */
     private static $idOrder = '';
 
     /**
-     * @var string Prestashop cart id
+     * @var string PrestaShop cart id
      */
     private static $idCart = '';
 
@@ -68,7 +68,7 @@ class LengowHook
     private static $idsProductCart = '';
 
     /**
-     * @var string Prestashop category id
+     * @var string PrestaShop category id
      */
     private static $idCategory = '';
 

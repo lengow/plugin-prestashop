@@ -60,22 +60,22 @@ class LengowImportOrder
     const RESULT_IGNORED = 'ignored';
 
     /**
-     * @var integer|null Prestashop shop id
+     * @var integer|null PrestaShop shop id
      */
     private $idShop;
 
     /**
-     * @var integer Prestashop shop group id
+     * @var integer PrestaShop shop group id
      */
     private $idShopGroup;
 
     /**
-     * @var integer Prestashop lang id
+     * @var integer PrestaShop lang id
      */
     private $idLang;
 
     /**
-     * @var Context Prestashop Context for import order
+     * @var Context PrestaShop Context for import order
      */
     private $context;
 
@@ -422,7 +422,7 @@ class LengowImportOrder
     /**
      * Check the command and updates data if necessary
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      *
      * @return boolean
      */
@@ -449,7 +449,7 @@ class LengowImportOrder
         }
         // load data for return
         $this->idOrder = (int) $idOrder;
-        $this->orderReference = LengowMain::compareVersion() ? $order->reference : $this->idOrder;
+        $this->orderReference = $order->reference;
         $this->previousOrderStateLengow = $order->lengowState;
         try {
             $orderUpdated = $order->updateState($this->orderStateLengow, $this->packageData);
@@ -634,7 +634,8 @@ class LengowImportOrder
                 return true;
             }
         } catch (Exception $e) {
-            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
+                . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(
@@ -947,7 +948,7 @@ class LengowImportOrder
             foreach ($orders as $order) {
                 // load order data for return
                 $this->idOrder = (int) $order->id;
-                $this->orderReference = LengowMain::compareVersion() ? $order->reference : $this->idOrder;
+                $this->orderReference = $order->reference;
                 // add a comment to the PrestaShop order
                 $this->addCommentOrder((int) $order->id, $this->orderComment);
                 // save order line id in lengow_order_line table
@@ -971,7 +972,8 @@ class LengowImportOrder
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
+                . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
         }
         if (!isset($errorMessage)) {
             return true;
@@ -1233,7 +1235,7 @@ class LengowImportOrder
     private function getCustomer($customerData = array())
     {
         $customer = new LengowCustomer();
-        // check if customer already exists in Prestashop
+        // check if customer already exists in PrestaShop
         $customer->getByEmailAndShop($customerData['email'], $this->idShop);
         if ($customer->id) {
             return $customer;
@@ -1246,7 +1248,7 @@ class LengowImportOrder
     /**
      * Create or load address based on API data
      *
-     * @param integer $idCustomer Prestashop customer id
+     * @param integer $idCustomer PrestaShop customer id
      * @param array $addressData address data
      * @param boolean $shippingData is shipping address
      *
@@ -1500,7 +1502,7 @@ class LengowImportOrder
     /**
      * Add a comment to the PrestaShop order
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      * @param string $comment order comment
      *
      * @throws Exception
@@ -1624,7 +1626,8 @@ class LengowImportOrder
                 'orderStatus' => $orderStatus,
             ));
         } catch (Exception $e) {
-            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
+                . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(

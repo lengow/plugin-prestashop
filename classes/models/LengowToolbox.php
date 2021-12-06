@@ -602,7 +602,7 @@ class LengowToolbox
             $lengowOrder = null;
         }
         if ($lengowOrder) {
-            $merchantOrderReference = LengowMain::compareVersion() ? $lengowOrder->reference : $lengowOrder->id;
+            $merchantOrderReference = $lengowOrder->reference;
         }
         $orderReferences = array(
             self::ID => (int) $data[LengowOrder::FIELD_ID],

@@ -40,7 +40,7 @@ en:
     button_remind_me_later: "Not now, remind me later"
   footer:
     legals: "Legal notices"
-    plugin_lengow: "Lengow Prestashop Plugin"
+    plugin_lengow: "Lengow PrestaShop Plugin"
     lengow_link_url: "https://www.lengow.com/"
   connection:
     home:
@@ -211,7 +211,7 @@ en:
       tooltip_default_carrier: "You have not yet configured the default carrier for this marketplace"
       matching_method_marketplace: "Match the marketplace shipping methods with your PrestaShop carriers"
       matching_carrier_marketplace: "Match your PrestaShop carriers with the carriers proposed by the marketplace"
-      no_carrier_enabled: "You don't have any Prestashop carriers activated for %{country_name}."
+      no_carrier_enabled: "You don't have any PrestaShop carriers activated for %{country_name}."
       button_cancel: "Cancel"
       order_status_title: "Order Status"
       order_status_description: "Match your Lengow order status to retrieve them in your orders easily"
@@ -323,7 +323,7 @@ en:
     lengow_tracking_id_title: "Lengow Tracking ID"
     lengow_tracking_id_legend: "The name of the unique identifier entered in the Lengow"
     lengow_currency_conversion_title: "Convert the currency of your order"
-    lengow_currency_conversion_legend: "All orders imported into Prestashop will be automatically converted into the currency you've selected in Lengow"
+    lengow_currency_conversion_legend: "All orders imported into PrestaShop will be automatically converted into the currency you've selected in Lengow"
     lengow_currency_conversion_switch: "Activate conversion"
   lengow_log:
     error:

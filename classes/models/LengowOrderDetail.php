@@ -27,8 +27,8 @@ class LengowOrderDetail extends OrderDetail
     /**
      * Get Order Lines
      *
-     * @param integer $idOrder Prestashop order id
-     * @param integer|string $idProduct Prestashop product id
+     * @param integer $idOrder PrestaShop order id
+     * @param integer|string $idProduct PrestaShop product id
      *
      * @return integer
      */

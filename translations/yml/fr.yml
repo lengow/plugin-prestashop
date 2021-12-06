@@ -40,7 +40,7 @@ fr:
     button_remind_me_later: "Pas maintenant, rappelez-moi plus tard"
   footer:
     legals: "Mentions légales"
-    plugin_lengow: "Lengow Prestashop Module"
+    plugin_lengow: "Lengow PrestaShop Module"
     lengow_link_url: "https://www.lengow.com/fr/"
   connection:
     home:
@@ -323,7 +323,7 @@ fr:
     lengow_tracking_id_title: "ID Tracking Lengow"
     lengow_tracking_id_legend: "Le nom de l'identifiant unique indiqué dans Lengow"
     lengow_currency_conversion_title: "Convertir la devise de vos commandes"
-    lengow_currency_conversion_legend: "Toutes les commandes importées dans Prestashop seront automatiquement converties dans la devise choisie dans Lengow"
+    lengow_currency_conversion_legend: "Toutes les commandes importées dans PrestaShop seront automatiquement converties dans la devise choisie dans Lengow"
     lengow_currency_conversion_switch: "Activer la conversion de devises"
   lengow_log:
     error:

@@ -86,7 +86,7 @@ class LengowAction
     public $id;
 
     /**
-     * @var integer Prestashop order id
+     * @var integer PrestaShop order id
      */
     public $idOrder;
 
@@ -183,7 +183,7 @@ class LengowAction
     /**
      * Find actions by order id
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      * @param boolean $onlyActive get only active actions
      * @param string|null $actionType action type (ship or cancel)
      * @param boolean $load load LengowAction or not
@@ -251,7 +251,7 @@ class LengowAction
     /**
      * Get last order action type to re-send action
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      *
      * @return string|false
      */
@@ -473,9 +473,9 @@ class LengowAction
     }
 
     /**
-     * Removes all actions for one order Prestashop
+     * Removes all actions for one order PrestaShop
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      * @param string|null $actionType action type (null, ship or cancel)
      *
      * @return boolean

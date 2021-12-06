@@ -543,7 +543,7 @@ class LengowOrderController extends LengowController
      */
     public static function displayLengowState($key, $value, $item)
     {
-        // this two lines are useless, but Prestashop validator require it
+        // this two lines are useless, but PrestaShop validator require it
         $key = $key;
         $item = $item;
         if (empty($value)) {
@@ -598,7 +598,7 @@ class LengowOrderController extends LengowController
      */
     public static function displayOrderLink($key, $value, $item)
     {
-        // this line is useless, but Prestashop validator require it
+        // this line is useless, but PrestaShop validator require it
         $key = $key;
         $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         if ($item[LengowOrder::FIELD_ORDER_ID]) {
@@ -622,7 +622,7 @@ class LengowOrderController extends LengowController
      */
     public static function displayMarketplaceName($key, $value, $item)
     {
-        // this line is useless, but Prestashop validator require it
+        // this line is useless, but PrestaShop validator require it
         $key = $key;
         $value = $value;
 
@@ -715,7 +715,7 @@ class LengowOrderController extends LengowController
      */
     public static function displayLengowExtra($key, $value, $item)
     {
-        // this line is useless, but Prestashop validator require it
+        // this line is useless, but PrestaShop validator require it
         $key = $key;
         if (!empty($value)) {
             $value = htmlentities($value);

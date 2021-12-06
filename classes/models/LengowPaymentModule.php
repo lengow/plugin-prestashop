@@ -30,11 +30,11 @@ class LengowPaymentModule extends PaymentModule
     public $name = 'lengow_payment';
 
     /**
-     * Create Prestashop order
+     * Create PrestaShop order
      * Overrides PaymentModule::validateOrder()
      *
-     * @param integer $idCart Prestashop cart id
-     * @param integer $idOrderState Prestashop order state id
+     * @param integer $idCart PrestaShop cart id
+     * @param integer $idOrderState PrestaShop order state id
      * @param string $paymentMethod name of the payment method
      * @param string $message order message
      * @param array $lengowProducts list of Lengow products
@@ -490,7 +490,7 @@ class LengowPaymentModule extends PaymentModule
     /**
      * Set context for payment module
      *
-     * @param Context $context Prestashop context instance
+     * @param Context $context PrestaShop context instance
      */
     public function setContext(Context $context)
     {

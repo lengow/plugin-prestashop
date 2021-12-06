@@ -168,7 +168,7 @@ class LengowFeedController extends LengowController
     /**
      * Reload Total product / Exported product
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer $idShop PrestaShop shop id
      *
      * @return array Number of product exported/total for this shop
      */
@@ -185,7 +185,7 @@ class LengowFeedController extends LengowController
     /**
      * Build product grid
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer $idShop PrestaShop shop id
      *
      * @return string
      */
@@ -433,7 +433,7 @@ class LengowFeedController extends LengowController
      */
     public static function displayLink($key, $value, $item)
     {
-        // this line is useless, but Prestashop validator require it
+        // this line is useless, but PrestaShop validator require it
         $key = $key;
         $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $link = new LengowLink();
