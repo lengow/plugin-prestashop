@@ -96,6 +96,8 @@ remove_files $FOLDER_TMP ".DS_Store"
 remove_files $FOLDER_TMP "AdminLengowHome.gif"
 # remove .idea
 remove_files $FOLDER_TMP ".idea"
+# remove Jenkinsfile
+remove_files $FOLDER_TMP "Jenkinsfile"
 # clean Config Folder
 remove_files $FOLDER_CONFIG "marketplaces.json"
 # clean Log Folder
