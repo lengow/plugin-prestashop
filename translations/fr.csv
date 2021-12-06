@@ -34,7 +34,7 @@ update.customer_success_team|équipe Customer Success
 update.button_download_version|Lengow PrestaShop %{version}
 update.button_remind_me_later|Pas maintenant, rappelez-moi plus tard
 footer.legals|Mentions légales
-footer.plugin_lengow|Lengow Prestashop Module
+footer.plugin_lengow|Lengow PrestaShop Module
 footer.lengow_link_url|https://www.lengow.com/fr/
 connection.home.description_first|Lengow vous aide à optimiser votre entreprise dans le monde entier !
 connection.home.description_second|Grâce à la plateforme, vous pouvez publier automatiquement votre catalogue de produits sur des places de marché, des sites de comparaison, un réseau d'affiliés et des campagnes de reciblage.
@@ -294,7 +294,7 @@ lengow_setting.lengow_tracking_enabled_title|Activer le tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_tracking_id_legend|Le nom de l'identifiant unique indiqué dans Lengow
 lengow_setting.lengow_currency_conversion_title|Convertir la devise de vos commandes
-lengow_setting.lengow_currency_conversion_legend|Toutes les commandes importées dans Prestashop seront automatiquement converties dans la devise choisie dans Lengow
+lengow_setting.lengow_currency_conversion_legend|Toutes les commandes importées dans PrestaShop seront automatiquement converties dans la devise choisie dans Lengow
 lengow_setting.lengow_currency_conversion_switch|Activer la conversion de devises
 lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour

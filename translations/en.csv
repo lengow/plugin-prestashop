@@ -34,7 +34,7 @@ update.customer_success_team|Customer Success team
 update.button_download_version|Lengow PrestaShop %{version}
 update.button_remind_me_later|Not now, remind me later
 footer.legals|Legal notices
-footer.plugin_lengow|Lengow Prestashop Plugin
+footer.plugin_lengow|Lengow PrestaShop Plugin
 footer.lengow_link_url|https://www.lengow.com/
 connection.home.description_first|Lengow helps you optimize your business worldwide!
 connection.home.description_second|Through the platform, you can automatically publish your product catalogue on marketplaces, comparison websites, affiliate network, and retargeting campaigns.
@@ -189,7 +189,7 @@ order_setting.screen.no_default_carrier_marketplace_selected|No default carrier 
 order_setting.screen.tooltip_default_carrier|You have not yet configured the default carrier for this marketplace
 order_setting.screen.matching_method_marketplace|Match the marketplace shipping methods with your PrestaShop carriers
 order_setting.screen.matching_carrier_marketplace|Match your PrestaShop carriers with the carriers proposed by the marketplace
-order_setting.screen.no_carrier_enabled|You don't have any Prestashop carriers activated for %{country_name}.
+order_setting.screen.no_carrier_enabled|You don't have any PrestaShop carriers activated for %{country_name}.
 order_setting.screen.button_cancel|Cancel
 order_setting.screen.order_status_title|Order Status
 order_setting.screen.order_status_description|Match your Lengow order status to retrieve them in your orders easily
@@ -294,7 +294,7 @@ lengow_setting.lengow_tracking_enabled_title|Activate Lengow tracking
 lengow_setting.lengow_tracking_id_title|Lengow Tracking ID
 lengow_setting.lengow_tracking_id_legend|The name of the unique identifier entered in the Lengow
 lengow_setting.lengow_currency_conversion_title|Convert the currency of your order
-lengow_setting.lengow_currency_conversion_legend|All orders imported into Prestashop will be automatically converted into the currency you've selected in Lengow
+lengow_setting.lengow_currency_conversion_legend|All orders imported into PrestaShop will be automatically converted into the currency you've selected in Lengow
 lengow_setting.lengow_currency_conversion_switch|Activate conversion
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
@@ -523,7 +523,7 @@ toolbox.index.shop_functionality_message|Shop functionality
 toolbox.index.shop_functionality_help|Shop functionalities are disabled, order import is impossible: please enable them in the products settings section
 toolbox.index.mail_configuration_enabled|Email are enabled with custom settings
 toolbox.index.email_disable|Email are disabled
-toolbox.index.error_mail_setting|Error on email settings: PS_MAIL_METHOD is 3 but this value is not allowed in Prestashop 1.4
+toolbox.index.error_mail_setting|Error on email settings: PS_MAIL_METHOD is 3 but this value is not allowed in PrestaShop 1.4
 toolbox.index.email_using_php_mail|Email using php mail function
 toolbox.index.checksum_message|Plugin files check
 toolbox.index.checksum_help|Some files have been changed by the customer
