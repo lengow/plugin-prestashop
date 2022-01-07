@@ -121,13 +121,15 @@ class LengowCart extends Cart
         Shop $shop = null,
         $autoAddCartRule = true,
         $skipAvailabilityCheckOutOfStock = false,
-        $preserveGiftRemoval = true
+        $preserveGiftRemoval = true,
+        $useOrderPrices = false
     ) {
         if (!$shop) {
             $shop = Context::getContext()->shop;
         }
-        // this line is useless, but PrestaShop validator require it
+        // this line are useless, but PrestaShop validator require it
         $autoAddCartRule = $autoAddCartRule;
+        $useOrderPrices = $useOrderPrices;
         $skipAvailabilityCheckOutOfStock = $skipAvailabilityCheckOutOfStock;
         $preserveGiftRemoval = $preserveGiftRemoval;
         $quantity = (int) $quantity;
