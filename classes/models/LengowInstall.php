@@ -75,6 +75,7 @@ class LengowInstall
         'tab.help' => array('name' => 'AdminLengowHelp', 'active' => false),
         'tab.main_setting' => array('name' => 'AdminLengowMainSetting', 'active' => false),
         'tab.legals' => array('name' => 'AdminLengowLegals', 'active' => false),
+        'tab.toolbox' => array('name' => 'AdminLengowToolbox', 'active' => false),
     );
 
     /**

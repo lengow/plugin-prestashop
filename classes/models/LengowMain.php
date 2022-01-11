@@ -30,7 +30,6 @@ class LengowMain
     const FOLDER_LENGOW = 'lengow';
     const FOLDER_LOG = 'logs';
     const FOLDER_TRANSLATION = 'translations';
-    const FOLDER_TOOLBOX = 'toolbox';
     const FOLDER_WEBSERVICE = 'webservice';
 
     /* Lengow webservices */
@@ -993,6 +992,24 @@ class LengowMain
             }
         }
         return new ShopUrl($idShop);
+    }
+
+    /**
+     * Get cleaned shop name for shop export folder
+     *
+     * @param string $shopName PrestaShop shop name
+     *
+     * @return string
+     */
+    public static function getShopNameCleaned($shopName)
+    {
+        return Tools::strtolower(
+            preg_replace(
+                '/[^a-zA-Z0-9_]+/',
+                '',
+                str_replace(array(' ', '\''), '_', self::replaceAccentedChars($shopName))
+            )
+        );
     }
 
     /**

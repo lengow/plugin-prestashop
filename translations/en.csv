@@ -7,6 +7,7 @@ tab.order_setting|Orders settings
 tab.help|Help
 tab.main_setting|Main settings
 tab.legals|Legals
+tab.toolbox|Toolbox
 menu.product|Products
 menu.order|Orders
 menu.jump_to_lengow|Jump to Lengow
@@ -33,6 +34,7 @@ update.not_working|Not working? Contact our
 update.customer_success_team|Customer Success team
 update.button_download_version|Lengow PrestaShop %{version}
 update.button_remind_me_later|Not now, remind me later
+footer.toolbox|Toolbox
 footer.legals|Legal notices
 footer.plugin_lengow|Lengow PrestaShop Plugin
 footer.lengow_link_url|https://www.lengow.com/
@@ -243,6 +245,76 @@ legals.screen.vat_identification_number|VAT identification number:
 legals.screen.address|Address
 legals.screen.contact|Contact
 legals.screen.hosting|Hosting
+toolbox.screen.title|Lengow Toolbox
+toolbox.screen.global_information|Global information
+toolbox.screen.checklist_information|Checklist
+toolbox.screen.curl_message|Lengow needs the CURL PHP extension
+toolbox.screen.curl_help|The CURL extension is not installed or enabled in your PHP installation
+toolbox.screen.curl_help_link|https://www.php.net/manual/en/curl.setup.php
+toolbox.screen.curl_help_label|Go to Curl PHP extension manual
+toolbox.screen.simple_xml_message|Lengow needs the SimpleXML PHP extension
+toolbox.screen.simple_xml_help|The SimpleXML extension is not installed or enabled in your PHP installation
+toolbox.screen.simple_xml_help_link|https://www.php.net/manual/en/book.simplexml.php
+toolbox.screen.simple_xml_help_label|Go to SimpleXML PHP extension manual
+toolbox.screen.json_php_message|Lengow needs the JSON PHP extension
+toolbox.screen.json_php_help|The JSON extension is not installed or enabled in your PHP installation
+toolbox.screen.json_php_help_link|https://www.php.net/manual/en/book.json.php
+toolbox.screen.json_php_help_label|Go to JSON PHP extension manual
+toolbox.screen.shop_functionality_message|Shop functionality
+toolbox.screen.shop_functionality_help|Shop functionalities are disabled, order import is impossible: please enable them in the products settings section
+toolbox.screen.mail_configuration_enabled|Email are enabled with custom settings
+toolbox.screen.email_disable|Email are disabled
+toolbox.screen.email_using_php_mail|Email using php mail function
+toolbox.screen.checksum_message|Plugin files check
+toolbox.screen.checksum_help|Some files have been changed by the customer
+toolbox.screen.plugin_information|Plugin information
+toolbox.screen.prestashop_version|PrestaShop version
+toolbox.screen.plugin_version|Plugin version
+toolbox.screen.ip_server|Server IP
+toolbox.screen.authorized_ip_enable|Authorisation by IP enabled
+toolbox.screen.ip_authorized|IP authorised
+toolbox.screen.debug_disabled|Debug Mode disabled
+toolbox.screen.write_permission|Read and write permission on the plugin folders
+toolbox.screen.toolbox_url|Toolbox URL
+toolbox.screen.synchronization_information|Synchronization information
+toolbox.screen.global_token|Synchronization token
+toolbox.screen.url_import|Synchronization URL
+toolbox.screen.import_in_progress|Synchronization in progress
+toolbox.screen.no_import|No synchronization in progress
+toolbox.screen.rest_time_to_import|wait %{rest_time} seconds before the next synchronization
+toolbox.screen.shop_last_import|Last synchronization
+toolbox.screen.shop_type_import|Last synchronization type
+toolbox.screen.last_import_none|none
+toolbox.screen.last_import_cron|cron
+toolbox.screen.last_import_manual|manual
+toolbox.screen.nb_order_imported|Orders imported by Lengow
+toolbox.screen.nb_order_to_be_sent|Orders waiting to be sent
+toolbox.screen.nb_order_with_error|Orders with errors
+toolbox.screen.shop_information|Shop information
+toolbox.screen.export_information|Export information
+toolbox.screen.shop_active|Shop followed by Lengow
+toolbox.screen.shop_catalogs_id|Lengow catalogs id synchronized
+toolbox.screen.export_variation_enabled|Include product variations
+toolbox.screen.export_out_stock_enabled|Include out of stock products
+toolbox.screen.export_selection_enabled|Include specific products
+toolbox.screen.export_inactive_enabled|Include disabled products
+toolbox.screen.shop_export_token|Export token
+toolbox.screen.shop_last_export|Last export
+toolbox.screen.shop_product_total|Products available in the shop
+toolbox.screen.shop_product_exported|Products exported in the shop
+toolbox.screen.url_export|Export URL for this shop
+toolbox.screen.content_folder_media|Content folder Export
+toolbox.screen.folder_path|Folder path
+toolbox.screen.file_list|File list
+toolbox.screen.no_file_exported|No file exported
+toolbox.screen.checksum_integrity|File Checksum integrity
+toolbox.screen.file_not_exists|checkmd5.csv file is not available. Checking is impossible!
+toolbox.screen.summary|Summary
+toolbox.screen.file_checked|%{nb_file} file(s) checked
+toolbox.screen.file_modified|%{nb_file} file(s) changed
+toolbox.screen.file_deleted|%{nb_file} file(s) deleted
+toolbox.screen.list_modified_file|Files changed list
+toolbox.screen.list_deleted_file|Files deleted list
 lengow_setting.lengow_account_id_title|Account ID
 lengow_setting.lengow_access_token_title|Access Token
 lengow_setting.lengow_secret_token_title|Secret Token
@@ -499,86 +571,3 @@ log.setting.setting_reset|all Lengow settings were reset
 log.setting.setting_updated|all Lengow settings were updated
 log.setting.setting_change|%{key} - old value %{old_value} replaced with %{value}
 log.setting.setting_change_for_shop|%{key} - old value %{old_value} replaced with %{value} for shop %{shop_id}
-toolbox.menu.lengow_toolbox|Lengow Toolbox
-toolbox.menu.product|Products
-toolbox.menu.order|Orders
-toolbox.menu.configuration|Configuration
-toolbox.menu.checksum|Checksum
-toolbox.menu.log|Logs
-toolbox.menu.log_off|Log out
-toolbox.index.checklist_information|Checklist
-toolbox.index.curl_message|Lengow needs the CURL PHP extension
-toolbox.index.curl_help|The CURL extension is not installed or enabled in your PHP installation. Check the manual to get more information on how to install or enable CURL on your system
-toolbox.index.curl_help_link|https://www.php.net/manual/en/curl.setup.php
-toolbox.index.curl_help_label|Go to Curl PHP extension manual
-toolbox.index.simple_xml_message|Lengow needs the SimpleXML PHP extension
-toolbox.index.simple_xml_help|The SimpleXML extension is not installed or enabled in your PHP installation. Check the manual to get more information on how to install or enable SimpleXML on your system
-toolbox.index.simple_xml_help_link|https://www.php.net/manual/en/book.simplexml.php
-toolbox.index.simple_xml_help_label|Go to SimpleXML PHP extension manual
-toolbox.index.json_php_message|Lengow needs the JSON PHP extension
-toolbox.index.json_php_help|The JSON extension is not installed or enabled in your PHP installation
-toolbox.index.json_php_help_link|https://www.php.net/manual/en/book.json.php
-toolbox.index.json_php_help_label|Go to JSON PHP extension manual
-toolbox.index.shop_functionality_message|Shop functionality
-toolbox.index.shop_functionality_help|Shop functionalities are disabled, order import is impossible: please enable them in the products settings section
-toolbox.index.mail_configuration_enabled|Email are enabled with custom settings
-toolbox.index.email_disable|Email are disabled
-toolbox.index.error_mail_setting|Error on email settings: PS_MAIL_METHOD is 3 but this value is not allowed in PrestaShop 1.4
-toolbox.index.email_using_php_mail|Email using php mail function
-toolbox.index.checksum_message|Plugin files check
-toolbox.index.checksum_help|Some files have been changed by the customer
-toolbox.index.checksum_help_label|Go to Checksum page
-toolbox.index.global_information|Global information
-toolbox.index.prestashop_version|PrestaShop version
-toolbox.index.plugin_version|Plugin version
-toolbox.index.ip_server|Server IP
-toolbox.index.authorized_ip_enable|Authorisation by IP enabled
-toolbox.index.ip_authorized|IP authorised
-toolbox.index.debug_disabled|Debug Mode disabled
-toolbox.index.write_permission|Read and write permission for media folder
-toolbox.index.toolbox_url|Toolbox URL
-toolbox.index.import_information|Import information (Global)
-toolbox.index.global_token|Import token
-toolbox.index.url_import|Import URL
-toolbox.index.import_in_progress|Import in progress
-toolbox.index.no_import|No import in progress
-toolbox.index.rest_time_to_import|wait %{rest_time} seconds before the next import
-toolbox.index.shop_last_import|Last import
-toolbox.index.shop_type_import|Last import type
-toolbox.index.last_import_none|none
-toolbox.index.last_import_cron|Cron
-toolbox.index.last_import_manual|manual
-toolbox.index.nb_order_imported|Orders imported by Lengow
-toolbox.index.nb_order_to_be_sent|Orders waiting to be sent
-toolbox.index.nb_order_with_error|Orders with errors
-toolbox.index.export_information|Export information (by shop)
-toolbox.index.shop_active|Shop followed by Lengow
-toolbox.index.shop_catalogs_id|Lengow catalogs id synchronized
-toolbox.index.export_variation_enabled|Include product variations
-toolbox.index.export_out_stock_enabled|Include out of stock products
-toolbox.index.export_selection_enabled|Include specific products
-toolbox.index.export_inactive_enabled|Include disabled products
-toolbox.index.shop_export_token|Export token
-toolbox.index.shop_last_export|Last export
-toolbox.index.shop_product_total|Products available in the shop
-toolbox.index.shop_product_exported|Products exported in the shop
-toolbox.index.url_export|Export URL for this shop
-toolbox.configuration.shop_credentials|Credentials
-toolbox.configuration.export_setting|Export settings
-toolbox.configuration.import_setting|Import settings
-toolbox.configuration.global_setting|Global settings
-toolbox.configuration.get_default_settings|Get default settings
-toolbox.configuration.check_get_default_settings|Do you really want to reset all settings?
-toolbox.configuration.update_settings|Update settings
-toolbox.configuration.check_update_settings|Do you really want to update settings and Lengow tables?
-toolbox.configuration.button_save|Save settings
-toolbox.checksum.checksum_integrity|File Checksum integrity
-toolbox.checksum.file_not_exists|checkmd5.csv file is not available. Checking is impossible!
-toolbox.checksum.summary|Summary
-toolbox.checksum.file_checked|%{nb_file} files checked
-toolbox.checksum.file_modified|%{nb_file} files changed
-toolbox.checksum.file_deleted|%{nb_file} files deleted
-toolbox.checksum.list_modified_file|Files changed list
-toolbox.checksum.list_deleted_file|Files deleted list
-toolbox.log.log_files|Log Files
-toolbox.log.download_all|Download all files

@@ -113,13 +113,7 @@ class LengowFeed
         if ($shopName === null) {
             $shopName = Context::getContext()->shop->name;
         }
-        $this->shopFolder = Tools::strtolower(
-            preg_replace(
-                '/[^a-zA-Z0-9_]+/',
-                '',
-                str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($shopName))
-            )
-        );
+        $this->shopFolder = LengowMain::getShopNameCleaned($shopName);
         if (!$this->stream) {
             $this->initExportFile();
         }
@@ -189,7 +183,7 @@ class LengowFeed
     protected function getHeader($data)
     {
         switch ($this->format) {
-            case 'csv':
+            case self::FORMAT_CSV:
             default:
                 $header = '';
                 foreach ($data as $field) {

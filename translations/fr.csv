@@ -7,6 +7,7 @@ tab.order_setting|Paramètres des commandes
 tab.help|Aide
 tab.main_setting|Paramétrages principaux
 tab.legals|Mentions légales
+tab.toolbox|Toolbox
 menu.product|Produits
 menu.order|Commandes
 menu.jump_to_lengow|Accéder à Lengow
@@ -33,6 +34,7 @@ update.not_working|Ça ne fonctionne pas ? Contactez notre
 update.customer_success_team|équipe Customer Success
 update.button_download_version|Lengow PrestaShop %{version}
 update.button_remind_me_later|Pas maintenant, rappelez-moi plus tard
+footer.toolbox|Toolbox
 footer.legals|Mentions légales
 footer.plugin_lengow|Lengow PrestaShop Module
 footer.lengow_link_url|https://www.lengow.com/fr/
@@ -243,6 +245,76 @@ legals.screen.vat_identification_number|Numéro de TVA intracommunautaire :
 legals.screen.address|Adresse
 legals.screen.contact|Contact
 legals.screen.hosting|Hébergement
+toolbox.screen.title|Lengow Toolbox
+toolbox.screen.global_information|Information globale
+toolbox.screen.checklist_information|Checklist
+toolbox.screen.curl_message|Lengow a besoin de l'extension PHP CURL
+toolbox.screen.curl_help|L'extension CURL n'est pas installée ou activée dans votre installation PHP
+toolbox.screen.curl_help_link|https://www.php.net/manual/fr/curl.setup.php
+toolbox.screen.curl_help_label|Voir le manuel de l'extension Curl PHP
+toolbox.screen.simple_xml_message|Lengow a besoin de l'extension PHP SimpleXML
+toolbox.screen.simple_xml_help|L'extension SimpleXML n'est pas installée ou activée dans votre installation PHP
+toolbox.screen.simple_xml_help_link|https://www.php.net/manual/fr/book.simplexml.php
+toolbox.screen.simple_xml_help_label|Voir le manuel de l'extension SimpleXML PHP
+toolbox.screen.json_php_message|Lengow a besoin de l'extension PHP JSON
+toolbox.screen.json_php_help|L'extension JSON n'est pas installée ou activée dans votre installation PHP
+toolbox.screen.json_php_help_link|https://www.php.net/manual/fr/book.json.php
+toolbox.screen.json_php_help_label|Voir le manuel de l'extension JSON PHP
+toolbox.screen.shop_functionality_message|Fonctionnalité de la boutique
+toolbox.screen.shop_functionality_help|Les fonctionnalités de la boutique sont désactivées, l'import des commandes est impossible : merci de les activer dans la section paramètres des produits
+toolbox.screen.mail_configuration_enabled|Les e-mails sont activés avec des paramètres personnalisés
+toolbox.screen.email_disable|Les e-mails sont désactivés
+toolbox.screen.email_using_php_mail|E-mail en utilisant la fonction mail de php
+toolbox.screen.checksum_message|Vérification des fichiers du plugin
+toolbox.screen.checksum_help|Certains fichiers ont été modifiés par le client
+toolbox.screen.plugin_information|Informations sur le plugin
+toolbox.screen.prestashop_version|Version du PrestaShop
+toolbox.screen.plugin_version|Version du plugin
+toolbox.screen.ip_server|IP Serveur
+toolbox.screen.authorized_ip_enable|Autorisation par IP activée
+toolbox.screen.ip_authorized|IP autorisée(s)
+toolbox.screen.debug_disabled|Debug Mode désactivé
+toolbox.screen.write_permission|Autorisation de lecture et d'écriture sur les dossiers du plugin
+toolbox.screen.toolbox_url|URL de la toolbox
+toolbox.screen.synchronization_information|Information sur la synchronisation
+toolbox.screen.global_token|Token de synchronisation
+toolbox.screen.url_import|URL de synchronisation
+toolbox.screen.import_in_progress|Synchronisation en cours
+toolbox.screen.no_import|Pas de synchronisation en cours
+toolbox.screen.rest_time_to_import|attendre %{rest_time} secondes avant la prochaine synchronisation
+toolbox.screen.shop_last_import|Dernière synchronisation
+toolbox.screen.shop_type_import|Mode de la dernière synchronisation
+toolbox.screen.last_import_none|none
+toolbox.screen.last_import_cron|cron
+toolbox.screen.last_import_manual|manuelle
+toolbox.screen.nb_order_imported|Commandes importées par Lengow
+toolbox.screen.nb_order_to_be_sent|Commandes en attente d'expédition
+toolbox.screen.nb_order_with_error|Commandes en erreurs
+toolbox.screen.shop_information|Informations sur les boutiques
+toolbox.screen.export_information|Informations sur l'export
+toolbox.screen.shop_active|Boutique synchronisé avec Lengow
+toolbox.screen.shop_catalogs_id|Catalogue ids Lengow synchronisés
+toolbox.screen.export_variation_enabled|Inclus les variations de produits
+toolbox.screen.export_out_stock_enabled|Inclus les produits sans stock
+toolbox.screen.export_selection_enabled|Inclus une sélection de produits
+toolbox.screen.export_inactive_enabled|Inclus les produits désactivés
+toolbox.screen.shop_export_token|Token d'export
+toolbox.screen.shop_last_export|Dernier export
+toolbox.screen.shop_product_total|Produits disponibles de la boutique
+toolbox.screen.shop_product_exported|Produits exportés de la boutique
+toolbox.screen.url_export|URL d'export de la boutique
+toolbox.screen.content_folder_media|Contenu du dossier Export
+toolbox.screen.folder_path|Chemin du dossier
+toolbox.screen.file_list|Liste des fichiers
+toolbox.screen.no_file_exported|Aucun fichier d'exporté
+toolbox.screen.checksum_integrity|Intégrité des données
+toolbox.screen.file_not_exists|Le fichier checkmd5.csv n'est pas valide. Enregistrement impossible !
+toolbox.screen.summary|Sommaire
+toolbox.screen.file_checked|%{nb_file} fichier(s) vérifié(s)
+toolbox.screen.file_modified|%{nb_file} fichier(s) modifié(s)
+toolbox.screen.file_deleted|%{nb_file} fichier(s) supprimé(s)
+toolbox.screen.list_modified_file|Liste des fichiers modifiés
+toolbox.screen.list_deleted_file|Liste des fichiers supprimés
 lengow_setting.lengow_account_id_title|ID du compte
 lengow_setting.lengow_access_token_title|Access Token
 lengow_setting.lengow_secret_token_title|Secret Token

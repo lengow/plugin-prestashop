@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS.
+ * Copyright 2022 Lengow SAS.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -15,29 +15,32 @@
  * under the License.
  *
  * @author    Team Connector <team-connector@lengow.com>
- * @copyright 2017 Lengow SAS
+ * @copyright 2022 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-require 'conf.inc.php';
+/**
+ * Admin Lengow toolbox Controller Class
+ */
+class AdminLengowToolboxController extends ModuleAdminController
+{
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        $this->lang = true;
+        $this->explicitSelect = true;
+        $this->lite_display = true;
+        $this->meta_title = 'Toolbox';
+        $this->list_no_link = true;
+        $this->template = 'layout.tpl';
+        $this->display = 'view';
 
-LengowLink::forceLink('/modules/lengow/toolbox/product.php?t=1');
+        parent::__construct();
 
-$locale = new LengowTranslation();
-
-$controller = new LengowFeedController();
-$controller->postProcess();
-$controller->display();
-
-require 'views/header.php';
-echo '<div class="full-container">';
-echo '<h1>' . $locale->t('toolbox.menu.product') . '</h1>';
-echo $controller->forceDisplay();
-echo '</div><!-- /.container -->';
-require 'views/footer.php';
-
-?>
-
-<script>
-    lengow_jquery('.lengow_switch').bootstrapSwitch({readonly: true});
-</script>
+        $lengowController = new LengowToolboxController();
+        $lengowController->postProcess();
+        $lengowController->display();
+    }
+}

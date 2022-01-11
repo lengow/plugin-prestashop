@@ -7,22 +7,30 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $base = dirname(dirname(__FILE__));
-$fp = fopen(dirname(dirname(__FILE__)) . '/toolbox/checkmd5.csv', 'w+');
+$fp = fopen(dirname(dirname(__FILE__)) . '/config/checkmd5.csv', 'wb+');
 
 $listFolders = array(
-    '/backward_compatibility',
     '/classes',
     '/controllers',
-    '/toolbox',
+    '/mails',
     '/upgrade',
     '/views',
     '/webservice',
 );
 
 $filePaths = array(
+    $base . '/es.php',
+    $base . '/fr.php',
+    $base . '/index.php',
+    $base . '/it.php',
     $base . '/lengow.php',
     $base . '/loader.php',
     $base . '/config/index.php',
+    $base . '/translations/en.csv',
+    $base . '/translations/es.csv',
+    $base . '/translations/fr.csv',
+    $base . '/translations/index.php',
+    $base . '/translations/it.csv',
 );
 
 foreach ($listFolders as $folder) {

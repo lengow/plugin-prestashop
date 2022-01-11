@@ -311,8 +311,7 @@ class LengowExport
      * boolean inactive           Export active and inactive product (1) | Export Only active product (0)
      * boolean variation          Export product variation (1) | Export Only simple product (0)
      * boolean legacy_fields      Export with legacy fields (1) | Export with new fields (0)
-     * boolean update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1)
-     *                                | Do not update 'LENGOW_LAST_EXPORT' when exporting from toolbox (0)
+     * boolean update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1) or not
      */
     public function __construct($params = array())
     {

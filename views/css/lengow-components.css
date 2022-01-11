@@ -30,6 +30,11 @@ a.lgw-box-link:hover {
   box-shadow: 0 10px 10px 0 rgba(0,0,0,.05);
 }
 
+.lgw-box-content {
+  width: 96%;
+  padding: 2%;
+}
+
 .img-circle {
   border-radius: 50%;
 }

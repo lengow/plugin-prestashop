@@ -50,11 +50,6 @@ class LengowController
     protected $isNewMerchant;
 
     /**
-     * @var boolean Toolbox is open or not
-     */
-    protected $toolbox;
-
-    /**
      * Construct the main Lengow controller
      */
     public function __construct()
@@ -63,7 +58,6 @@ class LengowController
         $this->context = Context::getContext();
         $this->lengowLink = new LengowLink();
         $this->locale = new LengowTranslation();
-        $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
         $lengowPathUri = $this->module->getPathUri();
         $multiShop = Shop::isFeatureActive();
