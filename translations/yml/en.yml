@@ -299,7 +299,7 @@ en:
       plugin_information: "Plugin information"
       prestashop_version: "PrestaShop version"
       plugin_version: "Plugin version"
-      plugin_php_version: "PHP version"
+      php_version: "PHP version"
       ip_server: "Server IP"
       authorized_ip_enable: "Authorisation by IP enabled"
       ip_authorized: "IP authorised"
