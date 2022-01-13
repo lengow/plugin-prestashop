@@ -63,7 +63,6 @@ class LengowConfiguration extends Configuration
     const SHIPPED_BY_MARKETPLACE_STOCK_ENABLED = 'LENGOW_IMPORT_STOCK_SHIP_MP';
     const FORCE_PRODUCT_ENABLED = 'LENGOW_IMPORT_FORCE_PRODUCT';
     const IMPORT_PROCESSING_FEE_ENABLED = 'LENGOW_IMPORT_PROCESSING_FEE';
-    const IMPORT_SINGLE_ORDER_ENABLED = 'LENGOW_IMPORT_SINGLE_ENABLED';
     const SYNCHRONIZATION_IN_PROGRESS = 'LENGOW_IMPORT_IN_PROGRESS';
     const LAST_UPDATE_EXPORT = 'LENGOW_LAST_EXPORT';
     const LAST_UPDATE_CRON_SYNCHRONIZATION = 'LENGOW_LAST_IMPORT_CRON';
@@ -142,7 +141,6 @@ class LengowConfiguration extends Configuration
         self::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED => 'shipped_by_marketplace_stock_enabled',
         self::FORCE_PRODUCT_ENABLED => 'force_product_enabled',
         self::IMPORT_PROCESSING_FEE_ENABLED => 'import_processing_fee_enabled',
-        self::IMPORT_SINGLE_ORDER_ENABLED => 'import_single_order_enabled',
         self::SYNCHRONIZATION_IN_PROGRESS => 'synchronization_in_progress',
         self::LAST_UPDATE_EXPORT => 'last_update_export',
         self::LAST_UPDATE_CRON_SYNCHRONIZATION => 'last_update_cron_synchronization',
@@ -462,16 +460,6 @@ class LengowConfiguration extends Configuration
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_processing_fee_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_import_processing_fee_legend'),
                     self::PARAM_DEFAULT_VALUE => 1,
-                    self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::IMPORT_SINGLE_ORDER_ENABLED => array(
-                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
-                    self::PARAM_GLOBAL => true,
-                    self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_single_enabled_title'),
-                    self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_import_single_enabled_legend'),
-                    self::PARAM_DEFAULT_VALUE => (int) (
-                        version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
-                    ),
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
                 ),
                 self::SYNCHRONIZATION_IN_PROGRESS => array(

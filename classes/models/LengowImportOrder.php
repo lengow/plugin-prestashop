@@ -1073,9 +1073,6 @@ class LengowImportOrder
                     );
                     $ids = LengowProduct::advancedSearch($attributeValue, $this->idShop, $idsProduct);
                 }
-                // for testing => replace values
-                // $ids['id_product'] = '1';
-                // $ids['id_product_attribute'] = '1';
                 if (!empty($ids)) {
                     $idFull = $ids['id_product'];
                     if (!isset($ids['id_product_attribute'])) {

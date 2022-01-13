@@ -162,9 +162,6 @@ class LengowMain
         if (isset(self::$mailConfigurations['method'])) {
             Configuration::set('PS_MAIL_METHOD', (int) self::$mailConfigurations['method']);
         }
-        if (_PS_VERSION_ < '1.5.4.0' && isset(self::$mailConfigurations['server'])) {
-            Configuration::set('PS_MAIL_SERVER', self::$mailConfigurations['server']);
-        }
     }
 
     /**
@@ -176,13 +173,7 @@ class LengowMain
             'method' => Configuration::get('PS_MAIL_METHOD'),
             'server' => Configuration::get('PS_MAIL_SERVER'),
         );
-        if (_PS_VERSION_ < '1.5.4.0') {
-            Configuration::set('PS_MAIL_METHOD', 2);
-            // set fictive smtp server to disable mail
-            Configuration::set('PS_MAIL_SERVER', 'smtp.lengow.com');
-        } else {
-            Configuration::set('PS_MAIL_METHOD', 3);
-        }
+        Configuration::set('PS_MAIL_METHOD', 3);
     }
 
     /**

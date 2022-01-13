@@ -46,7 +46,7 @@ class Lengow extends Module
         $this->version = '3.4.2';
         $this->author = 'Lengow';
         $this->module_key = '92f99f52f2bc04ed999f02e7038f031c';
-        $this->ps_versions_compliancy = array('min' => '1.4', 'max' => '1.7');
+        $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.7');
 
         parent::__construct();
 

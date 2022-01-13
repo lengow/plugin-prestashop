@@ -153,6 +153,8 @@ class LengowInstall
         'LENGOW_IS_IMPORT',
         'LENGOW_ORDER_STAT',
         'LENGOW_ORDER_STAT_UPDATE',
+        'LENGOW_IMPORT_SINGLE',
+        'LENGOW_IMPORT_SINGLE_ENABLED',
     );
 
     /**
@@ -270,8 +272,6 @@ class LengowInstall
         $this->removeOldFiles();
         // delete config files
         $this->removeConfigFiles();
-        // copy AdminLengowHome.gif for version 1.5
-        $this->createTabImage();
         // update Lengow version for install process
         LengowConfiguration::updateGlobalValue(LengowConfiguration::PLUGIN_VERSION, $this->lengowModule->version);
         self::setInstallationStatus(false);
@@ -961,18 +961,6 @@ class LengowInstall
             );
         }
         return true;
-    }
-
-    /**
-     * Create tab image for version 1.5
-     */
-    private function createTabImage()
-    {
-        $filePath = _PS_MODULE_LENGOW_DIR_ . 'views/img/AdminLengow.gif';
-        $fileDest = _PS_MODULE_LENGOW_DIR_ . 'AdminLengow.gif';
-        if (!file_exists($fileDest) && LengowMain::compareVersion('1.5') == 0) {
-            copy($filePath, $fileDest);
-        }
     }
 
     /**

@@ -138,7 +138,6 @@ order.screen.button_update_orders|Sincronizza Ordini
 order.screen.button_reimport_order|Importa ancora ordine
 order.screen.button_resend_order|Nuovo Invio Ordine
 order.screen.debug_warning_message|Sei in Debug Mode. Puoi importare gli ordini, ma non è possibile alcuna interazione con Lengow. <a href=%{url}>Cambia questo</a>
-order.screen.import_single_warning_message|La tua versione di PrestaShop é tra la 1.5.2 e 1.5.4. Per ragioni di sicurezza, solo un ordine sarà importato via sincronizzazione.
 order.screen.no_carrier_warning_message|Alcuni ordini potrebbero non essere importati perché non é stato specificato il metodo di spedizione di default in uno dei paesi di spedizione. <a href=%{url}>Modifica</a>
 order.screen.not_imported|non importato
 order.screen.not_sent|non inviato
@@ -353,8 +352,6 @@ lengow_setting.lengow_import_stock_ship_mp_legend|Utilizza questa opzione per im
 lengow_setting.lengow_report_mail_enabled_title|Vorrei ricevere una notifica quando ci sono problemi in merito all'importazione degli ordini e/o esportazione catalogo
 lengow_setting.lengow_report_mail_address_title|Indirizzo email report Lengow
 lengow_setting.lengow_report_mail_address_legend|Per aggiungere diverse email, usa ";" per separarli
-lengow_setting.lengow_import_single_enabled_title|Limitato a un solo ordine per processo di importazione
-lengow_setting.lengow_import_single_enabled_legend|Adatto alle versioni PrestaShop da 1.5.2 a 1.5.4.* (evita di importare gli ordini due volte)
 lengow_setting.lengow_import_in_progress_title|Importazione in corso
 lengow_setting.lengow_last_import_cron_title|Cron ultima importazione
 lengow_setting.lengow_last_import_manual_title|Ultimo import manuale
@@ -445,6 +442,4 @@ admin.order.cancel_and_reimport|Reimporta ordine
 admin.order.check_cancel_and_reimport|Vuoi veramente re-importare l'ordine?
 admin.order.synchronize_id|Sincronizza ID
 admin.order.resend_action|Re-invia Azione
-admin.order.add_tracking|Aggiungi Numero Tracking
-admin.order.add_tracking_title|Per favore aggiungi Numero Tracking
 admin.order.check_resend_action|Vuoi veramente inviare di nuovo questa azione: %{action}?

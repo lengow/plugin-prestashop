@@ -323,11 +323,7 @@ class LengowImport
                 isset($params[self::PARAM_CREATED_FROM]) ? $params[self::PARAM_CREATED_FROM] : null,
                 isset($params[self::PARAM_CREATED_TO]) ? $params[self::PARAM_CREATED_TO] : null
             );
-            if (LengowConfiguration::getGlobalValue(LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED)) {
-                $this->limit = 1;
-            } else {
-                $this->limit = isset($params[self::PARAM_LIMIT]) ? (int) $params[self::PARAM_LIMIT] : 0;
-            }
+            $this->limit = isset($params[self::PARAM_LIMIT]) ? (int) $params[self::PARAM_LIMIT] : 0;
         }
     }
 

@@ -155,16 +155,6 @@ class LengowOrderController extends LengowController
                     $lengowOrder->callAction($actionType);
                     Tools::redirectAdmin(self::getOrderAdminLink($idOrder));
                     break;
-                case 'add_tracking':
-                    $idOrder = isset($_REQUEST['id_order']) ? (int) $_REQUEST['id_order'] : 0;
-                    $trackingNumber = isset($_REQUEST['tracking_number']) ? $_REQUEST['tracking_number'] : '';
-                    if ($trackingNumber !== '' && _PS_VERSION_ < '1.5' && $idOrder > 0) {
-                        $order = new Order($idOrder);
-                        $order->shipping_number = $trackingNumber;
-                        $order->update();
-                    }
-                    Tools::redirectAdmin(self::getOrderAdminLink($idOrder));
-                    break;
             }
             exit();
         }
@@ -176,9 +166,6 @@ class LengowOrderController extends LengowController
     public function assignWarningMessages()
     {
         $warningMessages = array();
-        if (LengowConfiguration::get(LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED)) {
-            $warningMessages[] = $this->locale->t('order.screen.import_single_warning_message');
-        }
         if (LengowConfiguration::debugModeIsActive()) {
             $warningMessages[] = $this->locale->t(
                 'order.screen.debug_warning_message',
