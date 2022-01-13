@@ -72,6 +72,7 @@ class LengowToolbox
     const PLUGIN = 'plugin';
     const PLUGIN_CMS_VERSION = 'cms_version';
     const PLUGIN_VERSION = 'plugin_version';
+    const PLUGIN_PHP_VERSION = 'php_version';
     const PLUGIN_DEBUG_MODE_DISABLE = 'debug_mode_disable';
     const PLUGIN_WRITE_PERMISSION = 'write_permission';
     const PLUGIN_SERVER_IP = 'server_ip';
@@ -362,6 +363,7 @@ class LengowToolbox
         return array(
             self::PLUGIN_CMS_VERSION => _PS_VERSION_,
             self::PLUGIN_VERSION => LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION),
+            self::PLUGIN_PHP_VERSION => PHP_VERSION,
             self::PLUGIN_DEBUG_MODE_DISABLE => !LengowConfiguration::debugModeIsActive(),
             self::PLUGIN_WRITE_PERMISSION => self::testWritePermission(),
             self::PLUGIN_SERVER_IP => $_SERVER['SERVER_ADDR'],

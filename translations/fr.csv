@@ -269,6 +269,7 @@ toolbox.screen.checksum_help|Certains fichiers ont été modifiés par le client
 toolbox.screen.plugin_information|Informations sur le plugin
 toolbox.screen.prestashop_version|Version du PrestaShop
 toolbox.screen.plugin_version|Version du plugin
+toolbox.screen.php_version|Version du PHP
 toolbox.screen.ip_server|IP Serveur
 toolbox.screen.authorized_ip_enable|Autorisation par IP activée
 toolbox.screen.ip_authorized|IP autorisée(s)
