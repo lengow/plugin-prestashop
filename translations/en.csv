@@ -269,6 +269,7 @@ toolbox.screen.checksum_help|Some files have been changed by the customer
 toolbox.screen.plugin_information|Plugin information
 toolbox.screen.prestashop_version|PrestaShop version
 toolbox.screen.plugin_version|Plugin version
+toolbox.screen.plugin_php_version|PHP version
 toolbox.screen.ip_server|Server IP
 toolbox.screen.authorized_ip_enable|Authorisation by IP enabled
 toolbox.screen.ip_authorized|IP authorised
