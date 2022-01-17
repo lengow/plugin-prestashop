@@ -5,6 +5,7 @@ Version 3.4.2
     - Feature: Integration of an internal toolbox with all Lengow information for support
     - Feature: Removal of compatibility with PrestaShop 1.5
     - Feature: Adding the PHP version in the toolbox
+    - Feature: Modification of the fallback urls of the Lengow Help Center
     - Bugfix: Add compatibility with 1.7.8.1
 
 =============================================================

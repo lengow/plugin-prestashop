@@ -46,10 +46,10 @@ class LengowSync
     const LINK_TYPE_SUPPORT = 'support';
 
     /* Default plugin links */
-    const LINK_HELP_CENTER = 'https://support.lengow.com/kb/guide/en/ob0HZ6F7so';
-    const LINK_CHANGELOG = 'https://support.lengow.com/kb/guide/en/clDRVyFUBk';
-    const LINK_UPDATE_GUIDE = 'https://support.lengow.com/kb/guide/en/ob0HZ6F7so/Steps/25864,121742';
-    const LINK_SUPPORT = 'https://help-support.lengow.com/hc/en-us/requests/new';
+    const LINK_HELP_CENTER = 'https://help.lengow.com/hc/en-us/articles/360011970312';
+    const LINK_CHANGELOG = 'https://help.lengow.com/hc/en-us/articles/360011215559';
+    const LINK_UPDATE_GUIDE = 'https://help.lengow.com/hc/en-us/articles/360011970312#12-update-the-plugin-version';
+    const LINK_SUPPORT = 'https://help.lengow.com/hc/en-us/requests/new';
 
     /* Api iso codes */
     const API_ISO_CODE_EN = 'en';

@@ -52,11 +52,11 @@ You can also start testing with lower permissions due to security reasons (644 f
 
 ### Where can I find Lengow documentation and user guides?
 
-For help setting up and configuring Lengow plugin please refer to our [user guide](https://support.lengow.com/hc/en-us/articles/360011970312-PrestaShop-For-new-Lengow-platform-users)
+For help setting up and configuring Lengow plugin please refer to our [user guide](https://help.lengow.com/hc/en-us/articles/360011970312)
 
 ### Where can I get support?
 
-To make a support request to Lengow, use [our helpdesk](https://support.lengow.com/hc/en-us/requests/new).
+To make a support request to Lengow, use [our helpdesk](https://help.lengow.com/hc/en-us/requests/new).
 
 
 ## Become a contributor
