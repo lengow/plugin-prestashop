@@ -155,6 +155,11 @@ class LengowImportOrder
     private $orderReference;
 
     /**
+     * @var string order types data
+     */
+    private $orderTypes;
+
+    /**
      * @var LengowMarketplace Lengow marketplace instance
      */
     private $marketplace;
@@ -595,6 +600,8 @@ class LengowImportOrder
     {
         // load order comment from marketplace
         $this->loadOrderComment();
+        // load order types data
+        $this->loadOrderTypesData();
         // If the Lengow order already exists do not recreate it
         if ($this->idOrderLengow) {
             return true;
@@ -609,7 +616,7 @@ class LengowImportOrder
             LengowOrder::FIELD_DELIVERY_ADDRESS_ID => (int) $this->deliveryAddressId,
             LengowOrder::FIELD_ORDER_DATE => $this->getOrderDate(),
             LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($this->orderStateLengow),
-            LengowOrder::FIELD_ORDER_TYPES => $this->getOrderTypesData(),
+            LengowOrder::FIELD_ORDER_TYPES => $this->orderTypes,
             LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => $this->getVatNumberFromOrderData(),
             LengowOrder::FIELD_MESSAGE => pSQL($this->orderComment),
             LengowOrder::FIELD_EXTRA => pSQL(Tools::jsonEncode($this->orderData)),
@@ -666,11 +673,9 @@ class LengowImportOrder
     }
 
     /**
-     * Get order types data and update Lengow order record
-     *
-     * @return string
+     * Load order types data and update Lengow order record
      */
-    private function getOrderTypesData()
+    private function loadOrderTypesData()
     {
         $orderTypes = array();
         if ($this->orderData->order_types !== null && !empty($this->orderData->order_types)) {
@@ -681,7 +686,7 @@ class LengowImportOrder
                 }
             }
         }
-        return Tools::jsonEncode($orderTypes);
+        $this->orderTypes = Tools::jsonEncode($orderTypes);
     }
 
     /**
