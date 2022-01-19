@@ -6,6 +6,7 @@ Version 3.4.2
     - Feature: Removal of compatibility with PrestaShop 1.5
     - Feature: Adding the PHP version in the toolbox
     - Feature: Modification of the fallback urls of the Lengow Help Center
+    - Feature: Adding extra field update date in external toolbox
     - Bugfix: Add compatibility with 1.7.8.1
     - BugFix: [Import] Loading of order types at each order synchronization
 
