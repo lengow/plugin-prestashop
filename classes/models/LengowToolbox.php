@@ -72,6 +72,7 @@ class LengowToolbox
     const PLUGIN = 'plugin';
     const PLUGIN_CMS_VERSION = 'cms_version';
     const PLUGIN_VERSION = 'plugin_version';
+    const PLUGIN_PHP_VERSION = 'php_version';
     const PLUGIN_DEBUG_MODE_DISABLE = 'debug_mode_disable';
     const PLUGIN_WRITE_PERMISSION = 'write_permission';
     const PLUGIN_SERVER_IP = 'server_ip';
@@ -165,6 +166,7 @@ class LengowToolbox
     const ACTION_PARAMETERS = 'parameters';
     const ACTION_RETRY = 'retry';
     const ACTION_FINISH = 'is_finished';
+    const EXTRA_UPDATED_AT = 'extra_updated_at';
 
     /* Process state labels */
     const PROCESS_STATE_NEW = 'new';
@@ -279,11 +281,19 @@ class LengowToolbox
         }
         $orders = array();
         foreach ($lengowOrders as $data) {
+            try {
+                $lengowOrder = $data[LengowOrder::FIELD_ORDER_ID]
+                    ? new LengowOrder((int) $data[LengowOrder::FIELD_ORDER_ID])
+                    : null;
+            } catch (Exception $e) {
+                $lengowOrder = null;
+            }
             if ($type === self::DATA_TYPE_EXTRA) {
-                return self::getOrderExtraData($data);
+                return self::getOrderExtraData($data, $lengowOrder);
             }
             $marketplaceLabel = $data[LengowOrder::FIELD_MARKETPLACE_LABEL];
-            $orders[] = self::getOrderDataByType($data, $type);
+            $orders[] = self::getOrderDataByType($type, $data, $lengowOrder);
+            unset($lengowOrder);
         }
         return array(
             self::ORDER_MARKETPLACE_SKU => $marketplaceSku,
@@ -362,6 +372,7 @@ class LengowToolbox
         return array(
             self::PLUGIN_CMS_VERSION => _PS_VERSION_,
             self::PLUGIN_VERSION => LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION),
+            self::PLUGIN_PHP_VERSION => PHP_VERSION,
             self::PLUGIN_DEBUG_MODE_DISABLE => !LengowConfiguration::debugModeIsActive(),
             self::PLUGIN_WRITE_PERMISSION => self::testWritePermission(),
             self::PLUGIN_SERVER_IP => $_SERVER['SERVER_ADDR'],
@@ -455,7 +466,7 @@ class LengowToolbox
         $fileModified = array();
         $fileDeleted = array();
         $sep = DIRECTORY_SEPARATOR;
-        $fileName = LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_TOOLBOX . $sep . self::FILE_CHECKMD5;
+        $fileName = LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_CHECKMD5;
         if (file_exists($fileName)) {
             $md5Available = true;
             if (($file = fopen($fileName, 'rb')) !== false) {
@@ -587,27 +598,18 @@ class LengowToolbox
     /**
      * Get array of all the data of the order
      *
-     * @param array $data All Lengow order data
      * @param string $type Toolbox order data type
+     * @param array $data All Lengow order data
+     * @param LengowOrder|null $lengowOrder Lengow order instance
      *
      * @return array
      */
-    private static function getOrderDataByType($data, $type)
+    private static function getOrderDataByType($type, $data, $lengowOrder = null)
     {
-        try {
-            $lengowOrder = $data[LengowOrder::FIELD_ORDER_ID]
-                ? new LengowOrder((int) $data[LengowOrder::FIELD_ORDER_ID])
-                : false;
-        } catch (Exception $e) {
-            $lengowOrder = null;
-        }
-        if ($lengowOrder) {
-            $merchantOrderReference = LengowMain::compareVersion() ? $lengowOrder->reference : $lengowOrder->id;
-        }
         $orderReferences = array(
             self::ID => (int) $data[LengowOrder::FIELD_ID],
             self::ORDER_MERCHANT_ORDER_ID  => $lengowOrder ? $lengowOrder->id : null,
-            self::ORDER_MERCHANT_ORDER_REFERENCE  => isset($merchantOrderReference) ? $merchantOrderReference : null,
+            self::ORDER_MERCHANT_ORDER_REFERENCE  => $lengowOrder ? $lengowOrder->reference : null,
             self::ORDER_DELIVERY_ADDRESS_ID => (int) $data[LengowOrder::FIELD_DELIVERY_ADDRESS_ID],
         );
         switch ($type) {
@@ -794,13 +796,18 @@ class LengowToolbox
     /**
      * Get all the data of the order at the time of import
      *
-     * @param array $lengowOrder All Lengow order data
+     * @param array $data All Lengow order data
+     * @param LengowOrder|null $lengowOrder Lengow order instance
      *
      * @return array
      */
-    private static function getOrderExtraData($lengowOrder)
+    private static function getOrderExtraData($data, $lengowOrder = null)
     {
-        return Tools::jsonDecode($lengowOrder[LengowOrder::FIELD_EXTRA], true);
+        $orderData = Tools::jsonDecode($data[LengowOrder::FIELD_EXTRA], true);
+        $orderData[self::EXTRA_UPDATED_AT] = $lengowOrder
+            ? strtotime($lengowOrder->date_add)
+            : strtotime($data[LengowOrder::FIELD_CREATED_AT]);
+        return $orderData;
     }
 
     /**

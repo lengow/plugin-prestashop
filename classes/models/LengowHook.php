@@ -33,17 +33,17 @@ class LengowHook
     const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
 
     /**
-     * @var string Prestashop current page type
+     * @var string PrestaShop current page type
      */
     private static $currentPageType = 'page';
 
     /**
-     * @var string Prestashop order id
+     * @var string PrestaShop order id
      */
     private static $idOrder = '';
 
     /**
-     * @var string Prestashop cart id
+     * @var string PrestaShop cart id
      */
     private static $idCart = '';
 
@@ -68,7 +68,7 @@ class LengowHook
     private static $idsProductCart = '';
 
     /**
-     * @var string Prestashop category id
+     * @var string PrestaShop category id
      */
     private static $idCategory = '';
 
@@ -76,11 +76,6 @@ class LengowHook
      * @var array order is already shipped
      */
     protected $alreadyShipped = array();
-
-    /**
-     * @var array order is already displayed - only for 1.5 versions
-     */
-    protected $alreadyDisplayed = array();
 
     /**
      * @var Lengow Lengow module instance
@@ -376,9 +371,7 @@ class LengowHook
      */
     public function hookAdminOrder($args)
     {
-        if (!array_key_exists($args['id_order'], $this->alreadyDisplayed)
-            && LengowOrder::isFromLengow($args['id_order'])
-        ) {
+        if (LengowOrder::isFromLengow($args['id_order'])) {
             $lengowLink = new LengowLink();
             $locale = new LengowTranslation();
             $lengowOrder = new LengowOrder($args['id_order']);
@@ -412,19 +405,12 @@ class LengowHook
                 'action_synchronize' => $baseAction . '&action=synchronize',
                 'action_reimport' => $baseAction . '&action=cancel_re_import',
                 'action_resend' => $baseAction . '&action=force_resend&action_type=' . $actionType,
-                'action_add_tracking' => $baseAction . '&action=add_tracking&tracking_number=',
-                'order_id' => $args['id_order'],
-                'version' => _PS_VERSION_,
                 'lengow_locale' => $locale,
                 'debug_mode' => LengowConfiguration::debugModeIsActive(),
                 'can_resend_action' => $lengowOrder->canReSendOrder(),
                 'check_resend_action' => $locale->t('admin.order.check_resend_action', array('action' => $actionType)),
             );
             $this->context->smarty->assign($templateData);
-            $this->alreadyDisplayed[$args['id_order']] = true;
-            if (version_compare(_PS_VERSION_, '1.6', '>=')) {
-                return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info_16.tpl');
-            }
             return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info.tpl');
         }
         return '';

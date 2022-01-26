@@ -63,7 +63,6 @@ class LengowConfiguration extends Configuration
     const SHIPPED_BY_MARKETPLACE_STOCK_ENABLED = 'LENGOW_IMPORT_STOCK_SHIP_MP';
     const FORCE_PRODUCT_ENABLED = 'LENGOW_IMPORT_FORCE_PRODUCT';
     const IMPORT_PROCESSING_FEE_ENABLED = 'LENGOW_IMPORT_PROCESSING_FEE';
-    const IMPORT_SINGLE_ORDER_ENABLED = 'LENGOW_IMPORT_SINGLE_ENABLED';
     const SYNCHRONIZATION_IN_PROGRESS = 'LENGOW_IMPORT_IN_PROGRESS';
     const LAST_UPDATE_EXPORT = 'LENGOW_LAST_EXPORT';
     const LAST_UPDATE_CRON_SYNCHRONIZATION = 'LENGOW_LAST_IMPORT_CRON';
@@ -142,7 +141,6 @@ class LengowConfiguration extends Configuration
         self::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED => 'shipped_by_marketplace_stock_enabled',
         self::FORCE_PRODUCT_ENABLED => 'force_product_enabled',
         self::IMPORT_PROCESSING_FEE_ENABLED => 'import_processing_fee_enabled',
-        self::IMPORT_SINGLE_ORDER_ENABLED => 'import_single_order_enabled',
         self::SYNCHRONIZATION_IN_PROGRESS => 'synchronization_in_progress',
         self::LAST_UPDATE_EXPORT => 'last_update_export',
         self::LAST_UPDATE_CRON_SYNCHRONIZATION => 'last_update_cron_synchronization',
@@ -464,16 +462,6 @@ class LengowConfiguration extends Configuration
                     self::PARAM_DEFAULT_VALUE => 1,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
                 ),
-                self::IMPORT_SINGLE_ORDER_ENABLED => array(
-                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
-                    self::PARAM_GLOBAL => true,
-                    self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_single_enabled_title'),
-                    self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_import_single_enabled_legend'),
-                    self::PARAM_DEFAULT_VALUE => (int) (
-                        version_compare(_PS_VERSION_, '1.5.2', '>') && version_compare(_PS_VERSION_, '1.5.5', '<')
-                    ),
-                    self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
                 self::SYNCHRONIZATION_IN_PROGRESS => array(
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT => false,
@@ -546,9 +534,9 @@ class LengowConfiguration extends Configuration
      * Get Lengow value by shop
      *
      * @param string $key Lengow configuration key
-     * @param integer|null $idLang Prestashop lang id
-     * @param integer|null $idShopGroup Prestashop shop group id
-     * @param integer|null $idShop Prestashop shop id
+     * @param integer|null $idLang PrestaShop lang id
+     * @param integer|null $idShopGroup PrestaShop shop group id
+     * @param integer|null $idShop PrestaShop shop id
      * @param boolean $default default value (compatibility version 1.7)
      *
      * @return mixed
@@ -656,7 +644,7 @@ class LengowConfiguration extends Configuration
     /**
      * Get catalog ids for a specific shop
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer $idShop PrestaShop shop id
      *
      * @return array
      */
@@ -680,7 +668,7 @@ class LengowConfiguration extends Configuration
      * Set catalog ids for a specific shop
      *
      * @param array $catalogIds Lengow catalog ids
-     * @param integer $idShop Prestashop shop id
+     * @param integer $idShop PrestaShop shop id
      *
      * @return boolean
      */
@@ -715,7 +703,7 @@ class LengowConfiguration extends Configuration
     /**
      * Recovers if a shop is active or not
      *
-     * @param integer|null $idShop Prestashop shop id
+     * @param integer|null $idShop PrestaShop shop id
      *
      * @return boolean
      */
@@ -727,7 +715,7 @@ class LengowConfiguration extends Configuration
     /**
      * Set active shop or not
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer $idShop PrestaShop shop id
      *
      * @return boolean
      */
@@ -843,7 +831,7 @@ class LengowConfiguration extends Configuration
     /**
      * Get Values by shop or global
      *
-     * @param integer|null $idShop Prestashop shop id
+     * @param integer|null $idShop PrestaShop shop id
      * @param boolean $toolbox get all values for toolbox or not
      *
      * @return array

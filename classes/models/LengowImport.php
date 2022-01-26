@@ -121,17 +121,17 @@ class LengowImport
     );
 
     /**
-     * @var integer Prestashop lang id
+     * @var integer PrestaShop lang id
      */
     private $idLang;
 
     /**
-     * @var integer|null Prestashop shop id
+     * @var integer|null PrestaShop shop id
      */
     private $idShop;
 
     /**
-     * @var integer Prestashop shop group id
+     * @var integer PrestaShop shop group id
      */
     private $idShopGroup;
 
@@ -323,11 +323,7 @@ class LengowImport
                 isset($params[self::PARAM_CREATED_FROM]) ? $params[self::PARAM_CREATED_FROM] : null,
                 isset($params[self::PARAM_CREATED_TO]) ? $params[self::PARAM_CREATED_TO] : null
             );
-            if (LengowConfiguration::getGlobalValue(LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED)) {
-                $this->limit = 1;
-            } else {
-                $this->limit = isset($params[self::PARAM_LIMIT]) ? (int) $params[self::PARAM_LIMIT] : 0;
-            }
+            $this->limit = isset($params[self::PARAM_LIMIT]) ? (int) $params[self::PARAM_LIMIT] : 0;
         }
     }
 
@@ -667,7 +663,8 @@ class LengowImport
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
+                . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
         }
         if (isset($errorMessage)) {
             if (isset($this->idOrderLengow) && $this->idOrderLengow) {
@@ -745,7 +742,7 @@ class LengowImport
     /**
      * Change Context for import
      *
-     * @param integer $idShop Prestashop shop Id
+     * @param integer $idShop PrestaShop shop Id
      *
      * @throws Exception
      */
@@ -904,7 +901,7 @@ class LengowImport
      * Create or update order in prestashop
      *
      * @param mixed $orders API orders
-     * @param integer $idShop Prestashop shop Id
+     * @param integer $idShop PrestaShop shop Id
      */
     private function importOrders($orders, $idShop)
     {
@@ -978,7 +975,7 @@ class LengowImport
                     unset($importOrder, $result);
                 } catch (Exception $e) {
                     $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
-                        . '" ' . $e->getFile() . ' | ' . $e->getLine();
+                        . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
                     LengowMain::log(
                         LengowLog::CODE_IMPORT,
                         LengowMain::setLogMessage(

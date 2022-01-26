@@ -86,7 +86,7 @@ class LengowAction
     public $id;
 
     /**
-     * @var integer Prestashop order id
+     * @var integer PrestaShop order id
      */
     public $idOrder;
 
@@ -183,7 +183,7 @@ class LengowAction
     /**
      * Find actions by order id
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      * @param boolean $onlyActive get only active actions
      * @param string|null $actionType action type (ship or cancel)
      * @param boolean $load load LengowAction or not
@@ -251,7 +251,7 @@ class LengowAction
     /**
      * Get last order action type to re-send action
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      *
      * @return string|false
      */
@@ -473,9 +473,9 @@ class LengowAction
     }
 
     /**
-     * Removes all actions for one order Prestashop
+     * Removes all actions for one order PrestaShop
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      * @param string|null $actionType action type (null, ship or cancel)
      *
      * @return boolean
@@ -589,15 +589,10 @@ class LengowAction
             if (!isset($apiActions[$action[self::FIELD_ACTION_ID]])) {
                 continue;
             }
-            if (isset(
-                $apiActions[$action[self::FIELD_ACTION_ID]]->queued,
-                $apiActions[$action[self::FIELD_ACTION_ID]]->processed,
-                $apiActions[$action[self::FIELD_ACTION_ID]]->errors
-            ) && $apiActions[$action[self::FIELD_ACTION_ID]]->queued == false) {
+            $apiAction = $apiActions[$action[self::FIELD_ACTION_ID]];
+            if (isset($apiAction->queued, $apiAction->processed, $apiAction->errors) && $apiAction->queued == false) {
                 // order action is waiting to return from the marketplace
-                if ($apiActions[$action[self::FIELD_ACTION_ID]]->processed == false
-                    && empty($apiActions[$action[self::FIELD_ACTION_ID]]->errors)
-                ) {
+                if ($apiAction->processed == false && empty($apiAction->errors)) {
                     continue;
                 }
                 // finish action in lengow_action table
@@ -607,9 +602,7 @@ class LengowAction
                 LengowOrderError::finishOrderLogs($orderLengow->lengowId, LengowOrderError::TYPE_ERROR_SEND);
                 if ($orderLengow->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
                     // if action is accepted -> close order and finish all order actions
-                    if ($apiActions[$action[self::FIELD_ACTION_ID]]->processed == true
-                        && empty($apiActions[$action[self::FIELD_ACTION_ID]]->errors)
-                    ) {
+                    if ($apiAction->processed == true && empty($apiAction->errors)) {
                         LengowOrder::updateOrderLengow(
                             $orderLengow->lengowId,
                             array(LengowOrder::FIELD_ORDER_PROCESS_STATE => LengowOrder::PROCESS_STATE_FINISH)
@@ -619,14 +612,14 @@ class LengowAction
                         // if action is denied -> create order logs and finish all order actions
                         LengowOrderError::addOrderLog(
                             $orderLengow->lengowId,
-                            $apiActions[$action[self::FIELD_ACTION_ID]]->errors,
+                            $apiAction->errors,
                             LengowOrderError::TYPE_ERROR_SEND
                         );
                         LengowMain::log(
                             LengowLog::CODE_ACTION,
                             LengowMain::setLogMessage(
                                 'log.order_action.call_action_failed',
-                                array('decoded_message' => $apiActions[$action[self::FIELD_ACTION_ID]]->errors)
+                                array('decoded_message' => $apiAction->errors)
                             ),
                             $logOutput,
                             $orderLengow->lengowMarketplaceSku

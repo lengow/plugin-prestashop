@@ -60,22 +60,22 @@ class LengowImportOrder
     const RESULT_IGNORED = 'ignored';
 
     /**
-     * @var integer|null Prestashop shop id
+     * @var integer|null PrestaShop shop id
      */
     private $idShop;
 
     /**
-     * @var integer Prestashop shop group id
+     * @var integer PrestaShop shop group id
      */
     private $idShopGroup;
 
     /**
-     * @var integer Prestashop lang id
+     * @var integer PrestaShop lang id
      */
     private $idLang;
 
     /**
-     * @var Context Prestashop Context for import order
+     * @var Context PrestaShop Context for import order
      */
     private $context;
 
@@ -153,6 +153,11 @@ class LengowImportOrder
      * @var integer PrestaShop order reference
      */
     private $orderReference;
+
+    /**
+     * @var string order types data
+     */
+    private $orderTypes;
 
     /**
      * @var LengowMarketplace Lengow marketplace instance
@@ -395,34 +400,34 @@ class LengowImportOrder
     {
         // if log import exist and not finished
         $importLog = LengowOrderError::getLastImportLogNotFinished($this->marketplaceSku, $this->deliveryAddressId);
-        if ($importLog) {
-            // force order synchronization by removing pending errors
-            if ($this->forceSync) {
-                LengowOrderError::finishOrderLogs($this->idOrderLengow);
-                return false;
-            }
-            $decodedMessage = LengowMain::decodeLogMessage(
-                $importLog[LengowOrderError::FIELD_MESSAGE],
-                LengowTranslation::DEFAULT_ISO_CODE
-            );
-            $message = LengowMain::setLogMessage(
-                'log.import.error_already_created',
-                array(
-                    'decoded_message' => $decodedMessage,
-                    'date_message' => $importLog[LengowOrderError::FIELD_CREATED_AT],
-                )
-            );
-            $this->errors[] = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
-            LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput, $this->marketplaceSku);
-            return true;
+        if (!$importLog) {
+            return false;
         }
-        return false;
+        // force order synchronization by removing pending errors
+        if ($this->forceSync) {
+            LengowOrderError::finishOrderLogs($this->idOrderLengow);
+            return false;
+        }
+        $decodedMessage = LengowMain::decodeLogMessage(
+            $importLog[LengowOrderError::FIELD_MESSAGE],
+            LengowTranslation::DEFAULT_ISO_CODE
+        );
+        $message = LengowMain::setLogMessage(
+            'log.import.error_already_created',
+            array(
+                'decoded_message' => $decodedMessage,
+                'date_message' => $importLog[LengowOrderError::FIELD_CREATED_AT],
+            )
+        );
+        $this->errors[] = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
+        LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput, $this->marketplaceSku);
+        return true;
     }
 
     /**
      * Check the command and updates data if necessary
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      *
      * @return boolean
      */
@@ -449,18 +454,18 @@ class LengowImportOrder
         }
         // load data for return
         $this->idOrder = (int) $idOrder;
-        $this->orderReference = LengowMain::compareVersion() ? $order->reference : $this->idOrder;
+        $this->orderReference = $order->reference;
         $this->previousOrderStateLengow = $order->lengowState;
         try {
             $orderUpdated = $order->updateState($this->orderStateLengow, $this->packageData);
             if ($orderUpdated) {
-                $orderUpdated = true;
                 LengowMain::log(
                     LengowLog::CODE_IMPORT,
                     LengowMain::setLogMessage('log.import.state_updated_to', array('state_name' => $orderUpdated)),
                     $this->logOutput,
                     $this->marketplaceSku
                 );
+                $orderUpdated = true;
                 $stateName = '';
                 $availableStates = LengowMain::getOrderStates($this->idLang);
                 foreach ($availableStates as $state) {
@@ -595,6 +600,8 @@ class LengowImportOrder
     {
         // load order comment from marketplace
         $this->loadOrderComment();
+        // load order types data
+        $this->loadOrderTypesData();
         // If the Lengow order already exists do not recreate it
         if ($this->idOrderLengow) {
             return true;
@@ -609,7 +616,7 @@ class LengowImportOrder
             LengowOrder::FIELD_DELIVERY_ADDRESS_ID => (int) $this->deliveryAddressId,
             LengowOrder::FIELD_ORDER_DATE => $this->getOrderDate(),
             LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($this->orderStateLengow),
-            LengowOrder::FIELD_ORDER_TYPES => $this->getOrderTypesData(),
+            LengowOrder::FIELD_ORDER_TYPES => $this->orderTypes,
             LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => $this->getVatNumberFromOrderData(),
             LengowOrder::FIELD_MESSAGE => pSQL($this->orderComment),
             LengowOrder::FIELD_EXTRA => pSQL(Tools::jsonEncode($this->orderData)),
@@ -634,7 +641,8 @@ class LengowImportOrder
                 return true;
             }
         } catch (Exception $e) {
-            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
+                . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(
@@ -665,11 +673,9 @@ class LengowImportOrder
     }
 
     /**
-     * Get order types data and update Lengow order record
-     *
-     * @return string
+     * Load order types data and update Lengow order record
      */
-    private function getOrderTypesData()
+    private function loadOrderTypesData()
     {
         $orderTypes = array();
         if ($this->orderData->order_types !== null && !empty($this->orderData->order_types)) {
@@ -680,7 +686,7 @@ class LengowImportOrder
                 }
             }
         }
-        return Tools::jsonEncode($orderTypes);
+        $this->orderTypes = Tools::jsonEncode($orderTypes);
     }
 
     /**
@@ -947,7 +953,7 @@ class LengowImportOrder
             foreach ($orders as $order) {
                 // load order data for return
                 $this->idOrder = (int) $order->id;
-                $this->orderReference = LengowMain::compareVersion() ? $order->reference : $this->idOrder;
+                $this->orderReference = $order->reference;
                 // add a comment to the PrestaShop order
                 $this->addCommentOrder((int) $order->id, $this->orderComment);
                 // save order line id in lengow_order_line table
@@ -971,7 +977,8 @@ class LengowImportOrder
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
+                . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
         }
         if (!isset($errorMessage)) {
             return true;
@@ -1071,9 +1078,6 @@ class LengowImportOrder
                     );
                     $ids = LengowProduct::advancedSearch($attributeValue, $this->idShop, $idsProduct);
                 }
-                // for testing => replace values
-                // $ids['id_product'] = '1';
-                // $ids['id_product_attribute'] = '1';
                 if (!empty($ids)) {
                     $idFull = $ids['id_product'];
                     if (!isset($ids['id_product_attribute'])) {
@@ -1233,7 +1237,7 @@ class LengowImportOrder
     private function getCustomer($customerData = array())
     {
         $customer = new LengowCustomer();
-        // check if customer already exists in Prestashop
+        // check if customer already exists in PrestaShop
         $customer->getByEmailAndShop($customerData['email'], $this->idShop);
         if ($customer->id) {
             return $customer;
@@ -1246,7 +1250,7 @@ class LengowImportOrder
     /**
      * Create or load address based on API data
      *
-     * @param integer $idCustomer Prestashop customer id
+     * @param integer $idCustomer PrestaShop customer id
      * @param array $addressData address data
      * @param boolean $shippingData is shipping address
      *
@@ -1500,7 +1504,7 @@ class LengowImportOrder
     /**
      * Add a comment to the PrestaShop order
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      * @param string $comment order comment
      *
      * @throws Exception
@@ -1624,7 +1628,8 @@ class LengowImportOrder
                 'orderStatus' => $orderStatus,
             ));
         } catch (Exception $e) {
-            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
+                . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(

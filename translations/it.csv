@@ -7,6 +7,7 @@ tab.order_setting|Impostazione Ordine
 tab.help|Aiuto
 tab.main_setting|Impostazioni Principali
 tab.legals|Condizioni Legali
+tab.toolbox|Toolbox
 menu.product|Prodotto
 menu.order|Ordine
 menu.jump_to_lengow|Vai su Lengow
@@ -33,6 +34,7 @@ update.not_working|¿No funciona? Contattare il nostro
 update.customer_success_team|Customer Success team
 update.button_download_version|Lengow PrestaShop %{version}
 update.button_remind_me_later|Non ora, ricordamelo più tardi
+footer.toolbox|Toolbox
 footer.legals|Condizioni Legali
 footer.plugin_lengow|Lengow plugin PrestaShop
 footer.lengow_link_url|https://www.lengow.com/it/
@@ -59,7 +61,7 @@ connection.cms.success_button|Vai al cruscotto
 connection.cms.success_description_first_catalog|Un ultimo passo per completare l'installazione:
 connection.cms.success_description_second_catalog|Collega i tuoi cataloghi Lengow ai tuoi negozi PrestaShop.
 connection.cms.success_button_catalog|Collega i cataloghi
-connection.cms.failed_title|Ooops! Impossibile collegare Lengow al tuo Prestashop
+connection.cms.failed_title|Ooops! Impossibile collegare Lengow al tuo PrestaShop
 connection.cms.failed_description|Non siamo stati in grado di effettuare il collegamento tra il tuo PrestaShop e Lengow.
 connection.cms.failed_description_first_credentials|Incapace di connettersi con le credenziali fornite.
 connection.cms.failed_description_second_credentials_prod|Si prega di verificare che queste credenziali corrispondano all'ambiente di produzione di Lengow. 
@@ -136,7 +138,6 @@ order.screen.button_update_orders|Sincronizza Ordini
 order.screen.button_reimport_order|Importa ancora ordine
 order.screen.button_resend_order|Nuovo Invio Ordine
 order.screen.debug_warning_message|Sei in Debug Mode. Puoi importare gli ordini, ma non è possibile alcuna interazione con Lengow. <a href=%{url}>Cambia questo</a>
-order.screen.import_single_warning_message|La tua versione di PrestaShop é tra la 1.5.2 e 1.5.4. Per ragioni di sicurezza, solo un ordine sarà importato via sincronizzazione.
 order.screen.no_carrier_warning_message|Alcuni ordini potrebbero non essere importati perché non é stato specificato il metodo di spedizione di default in uno dei paesi di spedizione. <a href=%{url}>Modifica</a>
 order.screen.not_imported|non importato
 order.screen.not_sent|non inviato
@@ -187,8 +188,8 @@ order_setting.screen.default_carrier_marketplace|Il tuo trasportare di default p
 order_setting.screen.please_select_carrier_marketplace|Seleziona il codice trasportatore per %{marketplace_name}
 order_setting.screen.no_default_carrier_marketplace_selected|Nessun codice trasportatore di default selezionato
 order_setting.screen.tooltip_default_carrier|Non é stato ancora configurato il trasportatore di default per questo marketplace
-order_setting.screen.matching_method_marketplace|Fa corrispondere i metodi di trasporto della marketplace con i vostri corrieri Prestashop
-order_setting.screen.matching_carrier_marketplace|Fa corrispondere i vostri corrieri Prestashop con i corrieri proposti dalla marketplace
+order_setting.screen.matching_method_marketplace|Fa corrispondere i metodi di trasporto della marketplace con i vostri corrieri PrestaShop
+order_setting.screen.matching_carrier_marketplace|Fa corrispondere i vostri corrieri PrestaShop con i corrieri proposti dalla marketplace
 order_setting.screen.no_carrier_enabled|Non c'è nessun trasportatore PrestaShop attivato per %{country_name}
 order_setting.screen.button_cancel|Cancella
 order_setting.screen.order_status_title|Ordini Stato
@@ -243,6 +244,77 @@ legals.screen.vat_identification_number|Partita IVA:
 legals.screen.address|Indirizzo
 legals.screen.contact|Contatti
 legals.screen.hosting|Hosting
+toolbox.screen.title|Lengow Toolbox
+toolbox.screen.global_information|Informazioni globali
+toolbox.screen.checklist_information|Checklist
+toolbox.screen.curl_message|Lengow ha bisogno dell'estensione PHP CURL
+toolbox.screen.curl_help|L'estensione CURL non è installata o abilitata nella tua installazione di PHP
+toolbox.screen.curl_help_link|https://www.php.net/manual/en/curl.setup.php
+toolbox.screen.curl_help_label|Vai al manuale dell'estensione PHP Curl
+toolbox.screen.simple_xml_message|Lengow ha bisogno dell'estensione SimpleXML PHP
+toolbox.screen.simple_xml_help|L'estensione SimpleXML non è installata o abilitata nella tua installazione di PHP
+toolbox.screen.simple_xml_help_link|https://www.php.net/manual/en/book.simplexml.php
+toolbox.screen.simple_xml_help_label|Vai al manuale dell'estensione SimpleXML PHP
+toolbox.screen.json_php_message|Lengow ha bisogno dell'estensione JSON PHP
+toolbox.screen.json_php_help|L'estensione JSON non è installata o abilitata nella tua installazione di PHP
+toolbox.screen.json_php_help_link|https://www.php.net/manual/en/book.json.php
+toolbox.screen.json_php_help_label|Vai al manuale dell'estensione JSON PHP
+toolbox.screen.shop_functionality_message|Funzionalità del negozio
+toolbox.screen.shop_functionality_help|Le funzionalità del negozio sono disabilitate, l'importazione degli ordini è impossibile: per favore abilitale nella sezione delle impostazioni dei prodotti
+toolbox.screen.mail_configuration_enabled|Email sono abilitate con impostazioni personalizzate
+toolbox.screen.email_disable|Email sono disabilitate
+toolbox.screen.email_using_php_mail|Email usando la funzione mail di php
+toolbox.screen.checksum_message|Controllo dei file dei plugin
+toolbox.screen.checksum_help|Alcuni file sono stati modificati dal cliente
+toolbox.screen.plugin_information|Informazioni sul plugin
+toolbox.screen.prestashop_version|Versione di PrestaShop
+toolbox.screen.plugin_version|Versione del plugin
+toolbox.screen.php_version|Versione PHP
+toolbox.screen.ip_server|IP del server
+toolbox.screen.authorized_ip_enable|Autorizzazione per IP abilitata
+toolbox.screen.ip_authorized|IP autorizzato
+toolbox.screen.debug_disabled|Debug Mode disabilitato
+toolbox.screen.write_permission|Permessi di lettura e scrittura sulle cartelle dei plugin
+toolbox.screen.toolbox_url|URL del Toolbox
+toolbox.screen.synchronization_information|Informazioni sulla sincronizzazione
+toolbox.screen.global_token|Token di sincronizzazione
+toolbox.screen.url_import|URL di sincronizzazione
+toolbox.screen.import_in_progress|Sincronizzazione in corso
+toolbox.screen.no_import|Nessuna sincronizzazione in corso
+toolbox.screen.rest_time_to_import|aspetta %{rest_time} secondi prima della prossima sincronizzazione
+toolbox.screen.shop_last_import|Ultima sincronizzazione
+toolbox.screen.shop_type_import|Ultimo tipo di sincronizzazione
+toolbox.screen.last_import_none|nessuno
+toolbox.screen.last_import_cron|cron
+toolbox.screen.last_import_manual|manuale
+toolbox.screen.nb_order_imported|Ordini importati da Lengow
+toolbox.screen.nb_order_to_be_sent|Ordini in attesa di essere inviati
+toolbox.screen.nb_order_with_error|Ordini con errori
+toolbox.screen.shop_information|Informazioni sui negozi
+toolbox.screen.export_information|Informazioni sull'esportazione
+toolbox.screen.shop_active|Negozio seguito da Lengow
+toolbox.screen.shop_catalogs_id|Lengow cataloghi id sincronizzati
+toolbox.screen.export_variation_enabled|Includere variazioni di prodotto
+toolbox.screen.export_out_stock_enabled|Includere i prodotti esauriti
+toolbox.screen.export_selection_enabled|Includere prodotti specifici
+toolbox.screen.export_inactive_enabled|Includere prodotti per disabili
+toolbox.screen.shop_export_token|Esportazione token
+toolbox.screen.shop_last_export|Ultima esportazione
+toolbox.screen.shop_product_total|Prodotti disponibili nel negozio
+toolbox.screen.shop_product_exported|Prodotti esportati nel negozio
+toolbox.screen.url_export|URL di esportazione per questo negozio
+toolbox.screen.content_folder_media|Cartella dei contenuti Export
+toolbox.screen.folder_path|Percorso della cartella
+toolbox.screen.file_list|Elenco dei file
+toolbox.screen.no_file_exported|Nessun file esportato
+toolbox.screen.checksum_integrity|Integrità del file Checksum
+toolbox.screen.file_not_exists|Il file checkmd5.csv non è disponibile. Il controllo è impossibile!
+toolbox.screen.summary|Sommario
+toolbox.screen.file_checked|%{nb_file} file controllati
+toolbox.screen.file_modified|%{nb_file} file modificati
+toolbox.screen.file_deleted|%{nb_file} file cancellati
+toolbox.screen.list_modified_file|Elenco dei file modificati
+toolbox.screen.list_deleted_file|Elenco dei file cancellati
 lengow_setting.lengow_account_id_title|ID Cliente
 lengow_setting.lengow_access_token_title|Token
 lengow_setting.lengow_secret_token_title|Token Segreto
@@ -269,7 +341,7 @@ lengow_setting.lengow_order_id_shippedbymp_title|Importa ordini spediti dai mark
 lengow_setting.lengow_import_force_product_title|Forzare i prodotti
 lengow_setting.lengow_import_force_product_legend|Attiva questa opzione se vuoi fozare l'importazione sei tuoi prodotti non disponibili/inattivi
 lengow_setting.lengow_carrier_semantic_enable_title|Voglio attivare l'opzione di corrispondenza semantica dei corrieri
-lengow_setting.lengow_carrier_semantic_enable_legend|Con questa opzione, fai corrispondere il corriere o il metodo di trasporto indicato dal marketplace con il nome dei vostri corrieri Prestashop.
+lengow_setting.lengow_carrier_semantic_enable_legend|Con questa opzione, fai corrispondere il corriere o il metodo di trasporto indicato dal marketplace con il nome dei vostri corrieri PrestaShop.
 lengow_setting.lengow_import_days_title|Sincronizza tutti gli ordini aggiornati da
 lengow_setting.lengow_import_days_legend|Attiva questa opzione se se hai ordini sospesi incorrettamente. Ti permetterà di importare di nuovo tutti gli rodini che sono stati processati durante questo periodo di blocco
 lengow_setting.lengow_import_processing_fee_title|Importare le spese di trattamento
@@ -281,8 +353,6 @@ lengow_setting.lengow_import_stock_ship_mp_legend|Utilizza questa opzione per im
 lengow_setting.lengow_report_mail_enabled_title|Vorrei ricevere una notifica quando ci sono problemi in merito all'importazione degli ordini e/o esportazione catalogo
 lengow_setting.lengow_report_mail_address_title|Indirizzo email report Lengow
 lengow_setting.lengow_report_mail_address_legend|Per aggiungere diverse email, usa ";" per separarli
-lengow_setting.lengow_import_single_enabled_title|Limitato a un solo ordine per processo di importazione
-lengow_setting.lengow_import_single_enabled_legend|Adatto alle versioni PrestaShop da 1.5.2 a 1.5.4.* (evita di importare gli ordini due volte)
 lengow_setting.lengow_import_in_progress_title|Importazione in corso
 lengow_setting.lengow_last_import_cron_title|Cron ultima importazione
 lengow_setting.lengow_last_import_manual_title|Ultimo import manuale
@@ -294,7 +364,7 @@ lengow_setting.lengow_tracking_enabled_title|Attiva il tracking Lengow
 lengow_setting.lengow_tracking_id_title|ID Tracking Lengow
 lengow_setting.lengow_tracking_id_legend|Il numero degli id unici indicati in Lengow
 lengow_setting.lengow_currency_conversion_title|Converti la divisa del tuo ordine
-lengow_setting.lengow_currency_conversion_legend|Tutti gli ordini importati in Prestashop saranno automaticamente importati nella Divisa che hai selezionato in Lengow
+lengow_setting.lengow_currency_conversion_legend|Tutti gli ordini importati in PrestaShop saranno automaticamente importati nella Divisa che hai selezionato in Lengow
 lengow_setting.lengow_currency_conversion_switch|Attivare la conversione
 lengow_log.error.nb_order_imported|%{nb_order} ordine importato
 lengow_log.error.nb_order_updated|%{nb_order} ordine aggiornato
@@ -373,6 +443,4 @@ admin.order.cancel_and_reimport|Reimporta ordine
 admin.order.check_cancel_and_reimport|Vuoi veramente re-importare l'ordine?
 admin.order.synchronize_id|Sincronizza ID
 admin.order.resend_action|Re-invia Azione
-admin.order.add_tracking|Aggiungi Numero Tracking
-admin.order.add_tracking_title|Per favore aggiungi Numero Tracking
 admin.order.check_resend_action|Vuoi veramente inviare di nuovo questa azione: %{action}?

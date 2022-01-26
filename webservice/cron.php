@@ -77,15 +77,15 @@ if (Tools::getIsset(LengowImport::PARAM_GET_SYNC) && Tools::getValue(LengowImpor
         : false;
     // get sync action if exists
     $sync = Tools::getIsset(LengowImport::PARAM_SYNC) ? Tools::getValue(LengowImport::PARAM_SYNC) : false;
-    // sync catalogs id between Lengow and Prestashop
+    // sync catalogs id between Lengow and PrestaShop
     if (!$sync || $sync === LengowSync::SYNC_CATALOG) {
         LengowSync::syncCatalog($force, $logOutput);
     }
-    // sync marketplace and marketplace carrier between Lengow and Prestashop
+    // sync marketplace and marketplace carrier between Lengow and PrestaShop
     if (!$sync || $sync === LengowSync::SYNC_CARRIER) {
         LengowSync::syncCarrier($force, $logOutput);
     }
-    // sync orders between Lengow and Prestashop
+    // sync orders between Lengow and PrestaShop
     if (!$sync || $sync === LengowSync::SYNC_ORDER) {
         // array of params for import order
         $params = array(
@@ -132,25 +132,25 @@ if (Tools::getIsset(LengowImport::PARAM_GET_SYNC) && Tools::getValue(LengowImpor
         $import = new LengowImport($params);
         $import->exec();
     }
-    // sync actions between Lengow and Prestashop
+    // sync actions between Lengow and PrestaShop
     if (!$sync || $sync === LengowSync::SYNC_ACTION) {
         LengowAction::checkFinishAction($logOutput);
         LengowAction::checkOldAction($logOutput);
         LengowAction::checkActionNotSent($logOutput);
     }
-    // sync options between Lengow and Prestashop
+    // sync options between Lengow and PrestaShop
     if (!$sync || $sync === LengowSync::SYNC_CMS_OPTION) {
         LengowSync::setCmsOption($force, $logOutput);
     }
-    // sync marketplaces between Lengow and Prestashop
+    // sync marketplaces between Lengow and PrestaShop
     if ($sync === LengowSync::SYNC_MARKETPLACE) {
         LengowSync::getMarketplaces($force, $logOutput);
     }
-    // sync status account between Lengow and Prestashop
+    // sync status account between Lengow and PrestaShop
     if ($sync === LengowSync::SYNC_STATUS_ACCOUNT) {
         LengowSync::getStatusAccount($force, $logOutput);
     }
-    // sync plugin data between Lengow and Prestashop
+    // sync plugin data between Lengow and PrestaShop
     if ($sync === LengowSync::SYNC_PLUGIN_DATA) {
         LengowSync::getPluginData($force, $logOutput);
     }

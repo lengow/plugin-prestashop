@@ -290,7 +290,7 @@ class LengowMethod
     /**
      * Get marketplace method country id
      *
-     * @param integer $idCountry Prestashop country id
+     * @param integer $idCountry PrestaShop country id
      * @param integer $idMarketplace Lengow marketplace id
      * @param integer $idMethodMarketplace Lengow method marketplace id
      *
@@ -340,7 +340,7 @@ class LengowMethod
     /**
      * Get carrier id by country id, marketplace id and method marketplace name
      *
-     * @param integer $idCountry Prestashop country id
+     * @param integer $idCountry PrestaShop country id
      * @param string $idMarketplace Lengow marketplace id
      * @param string $methodMarketplaceName Lengow marketplace method name
      *
@@ -368,7 +368,7 @@ class LengowMethod
     /**
      * Get
      *
-     * @param integer $idCountry Prestashop country id
+     * @param integer $idCountry PrestaShop country id
      * @param integer $idMarketplace Lengow marketplace id
      *
      * @return array
@@ -396,9 +396,9 @@ class LengowMethod
     /**
      * Insert a new marketplace method country
      *
-     * @param integer $idCountry Prestashop country id
+     * @param integer $idCountry PrestaShop country id
      * @param integer $idMarketplace Lengow marketplace id
-     * @param integer $idCarrier Prestashop carrier id
+     * @param integer $idCarrier PrestaShop carrier id
      * @param integer $idMethodMarketplace Lengow method marketplace id
      *
      * @return integer|false
@@ -428,7 +428,7 @@ class LengowMethod
      * Update a marketplace method country
      *
      * @param integer $idMarketplaceMethodCountry Lengow marketplace method country id
-     * @param integer $idCarrier Prestashop carrier id
+     * @param integer $idCarrier PrestaShop carrier id
      *
      * @return integer|false
      */

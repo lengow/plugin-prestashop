@@ -131,10 +131,6 @@
             $.getJSON(url, data, function(content) {
                 lengow_jquery("#block_" + content['shop_id']
                     + " .lengow_feed_block_footer_content").html(content['footer_content']);
-
-                if (content['bootstrap_switch_readonly']) {
-                    lengow_jquery(".lengow_switch").bootstrapSwitch({readonly: true});
-                }
                 pluginsRender();
             });
 

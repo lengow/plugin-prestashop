@@ -37,15 +37,6 @@ class LengowOrderController extends LengowController
         $this->assignLastImportationInfos();
         $this->assignNbOrderImported();
         $this->assignWarningMessages();
-        // data for toolbox
-        $shop = array();
-        $shops = LengowShop::findAll();
-        foreach ($shops as $s) {
-            $shop[$s['id_shop']] = new LengowShop($s['id_shop']);
-        }
-        $days = LengowConfiguration::get(LengowConfiguration::SYNCHRONIZATION_DAY_INTERVAL);
-        $this->context->smarty->assign('shop', $shop);
-        $this->context->smarty->assign('days', $days);
         $this->context->smarty->assign('showCarrierNotification', LengowCarrier::hasDefaultCarrierNotMatched());
         $this->context->smarty->assign('lengow_table', $this->buildTable());
         parent::display();
@@ -164,16 +155,6 @@ class LengowOrderController extends LengowController
                     $lengowOrder->callAction($actionType);
                     Tools::redirectAdmin(self::getOrderAdminLink($idOrder));
                     break;
-                case 'add_tracking':
-                    $idOrder = isset($_REQUEST['id_order']) ? (int) $_REQUEST['id_order'] : 0;
-                    $trackingNumber = isset($_REQUEST['tracking_number']) ? $_REQUEST['tracking_number'] : '';
-                    if ($trackingNumber !== '' && _PS_VERSION_ < '1.5' && $idOrder > 0) {
-                        $order = new Order($idOrder);
-                        $order->shipping_number = $trackingNumber;
-                        $order->update();
-                    }
-                    Tools::redirectAdmin(self::getOrderAdminLink($idOrder));
-                    break;
             }
             exit();
         }
@@ -185,9 +166,6 @@ class LengowOrderController extends LengowController
     public function assignWarningMessages()
     {
         $warningMessages = array();
-        if (LengowConfiguration::get(LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED)) {
-            $warningMessages[] = $this->locale->t('order.screen.import_single_warning_message');
-        }
         if (LengowConfiguration::debugModeIsActive()) {
             $warningMessages[] = $this->locale->t(
                 'order.screen.debug_warning_message',
@@ -390,14 +368,6 @@ class LengowOrderController extends LengowController
             'filter_key' => 'lo.total_paid',
             'filter_order' => true,
         );
-        if ($this->toolbox) {
-            $fieldsList[LengowOrder::FIELD_EXTRA] = array(
-                'title' => $this->locale->t('order.table.extra'),
-                'class' => 'no-link',
-                'type' => 'text',
-                'display_callback' => 'LengowOrderController::displayLengowExtra'
-            );
-        }
         $select = array(
             'lo.id',
             'lo.marketplace_sku',
@@ -543,7 +513,7 @@ class LengowOrderController extends LengowController
      */
     public static function displayLengowState($key, $value, $item)
     {
-        // this two lines are useless, but Prestashop validator require it
+        // this two lines are useless, but PrestaShop validator require it
         $key = $key;
         $item = $item;
         if (empty($value)) {
@@ -598,15 +568,11 @@ class LengowOrderController extends LengowController
      */
     public static function displayOrderLink($key, $value, $item)
     {
-        // this line is useless, but Prestashop validator require it
+        // this line is useless, but PrestaShop validator require it
         $key = $key;
-        $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         if ($item[LengowOrder::FIELD_ORDER_ID]) {
-            if (!$toolbox) {
-                $href = self::getOrderAdminLink($item[LengowOrder::FIELD_ORDER_ID]);
-                return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
-            }
-            return $value;
+            $href = self::getOrderAdminLink($item[LengowOrder::FIELD_ORDER_ID]);
+            return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
         }
         return $value;
     }
@@ -622,7 +588,7 @@ class LengowOrderController extends LengowController
      */
     public static function displayMarketplaceName($key, $value, $item)
     {
-        // this line is useless, but Prestashop validator require it
+        // this line is useless, but PrestaShop validator require it
         $key = $key;
         $value = $value;
 
@@ -702,30 +668,6 @@ class LengowOrderController extends LengowController
             }
         }
         return $value;
-    }
-
-    /**
-     * Generate extra data (only for toolbox)
-     *
-     * @param string $key row key
-     * @param string $value row value
-     * @param array $item item values
-     *
-     * @return string
-     */
-    public static function displayLengowExtra($key, $value, $item)
-    {
-        // this line is useless, but Prestashop validator require it
-        $key = $key;
-        if (!empty($value)) {
-            $value = htmlentities($value);
-            return '<input id="link_extra_' . $item[LengowOrder::FIELD_ID] . '" value="' . $value . '" readonly>
-                <button href="#" class="lengow_copy lengow_link_tooltip" data-clipboard-target="#link_extra_'
-                . $item[LengowOrder::FIELD_ID] . '" data-original-title="'
-                . LengowMain::decodeLogMessage('product.screen.button_copy')
-                . '"><i class="fa fa-download"></i></button>';
-        }
-        return '';
     }
 
     /**

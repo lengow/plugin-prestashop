@@ -338,7 +338,8 @@ class LengowMarketplace
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[PrestaShop Error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
+                . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
         }
         if (isset($errorMessage)) {
             if ($lengowOrder->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
@@ -563,17 +564,26 @@ class LengowMarketplace
         self::loadApiMarketplace();
         if (self::$marketplaces && !empty(self::$marketplaces)) {
             foreach (self::$marketplaces as $marketplaceName => $marketplace) {
-                if (isset($marketplace->name) && !self::getIdMarketplace($marketplaceName)) {
-                    $carrierRequired = false;
-                    if (isset($marketplace->orders->actions->ship)) {
-                        $action = $marketplace->orders->actions->ship;
-                        if (isset($action->args_description->carrier)) {
-                            $carrier = $action->args_description->carrier;
-                            if (isset($carrier->accept_free_values) && !$carrier->accept_free_values) {
-                                $carrierRequired = true;
-                            }
+                if (!isset($marketplace->name)) {
+                    continue;
+                }
+                $carrierRequired = false;
+                if (isset($marketplace->orders->actions->ship)) {
+                    $action = $marketplace->orders->actions->ship;
+                    if (!isset($action->args_description->carrier_name)
+                        && !isset($action->args_description->custom_carrier)
+                        && isset($action->args_description->carrier)
+                    ) {
+                        $carrier = $action->args_description->carrier;
+                        if (isset($carrier->accept_free_values) && !$carrier->accept_free_values) {
+                            $carrierRequired = true;
                         }
                     }
+                }
+                $idMarketplace = self::getIdMarketplace($marketplaceName);
+                if ($idMarketplace) {
+                    self::updateMarketplace($idMarketplace, $marketplace->name, $carrierRequired);
+                } else {
                     self::insertMarketplace($marketplaceName, $marketplace->name, $carrierRequired);
                 }
             }
@@ -608,7 +618,7 @@ class LengowMarketplace
     /**
      * Get all marketplaces
      *
-     * @param integer|boolean $idCountry Prestashop id country
+     * @param integer|boolean $idCountry PrestaShop id country
      *
      * @return array
      */
@@ -635,7 +645,7 @@ class LengowMarketplace
     /**
      * Get all marketplace data for carrier matching by country id
      *
-     * @param integer $idCountry Prestashop country id
+     * @param integer $idCountry PrestaShop country id
      *
      * @return array
      */
@@ -717,5 +727,28 @@ class LengowMarketplace
             $success = false;
         }
         return $success ? self::getIdMarketplace($marketplaceName) : false;
+    }
+
+    /**
+     * Update a marketplace in the table
+     *
+     * @param integer $idMarketplace Lengow marketplace id
+     * @param string $marketplaceLabel Lengow marketplace label
+     * @param boolean $carrierRequired carrier is required for ship action
+     *
+     * @return integer|false
+     */
+    public static function updateMarketplace($idMarketplace, $marketplaceLabel, $carrierRequired)
+    {
+        $db = Db::getInstance();
+        $success = $db->update(
+            self::TABLE_MARKETPLACE,
+            array(
+                self::FIELD_MARKETPLACE_LABEL => pSQL($marketplaceLabel),
+                self::FIELD_CARRIER_REQUIRED => $carrierRequired,
+            ),
+            'id = ' . (int) $idMarketplace
+        );
+        return $success ? $idMarketplace : false;
     }
 }

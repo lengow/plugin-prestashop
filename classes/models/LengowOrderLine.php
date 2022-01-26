@@ -36,9 +36,9 @@ class LengowOrderLine
     const FIELD_ORDER_DETAIL_ID = 'id_order_detail';
 
     /**
-     * Get Order Lines by Prestashop order id
+     * Get Order Lines by PrestaShop order id
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      *
      * @return array
      */

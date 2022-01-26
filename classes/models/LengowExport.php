@@ -211,7 +211,7 @@ class LengowExport
     protected $format;
 
     /**
-     * @var Carrier Prestashop Carrier instance
+     * @var Carrier PrestaShop Carrier instance
      */
     protected $carrier;
 
@@ -221,7 +221,7 @@ class LengowExport
     protected $feed;
 
     /**
-     * @var integer Prestashop shop id
+     * @var integer PrestaShop shop id
      */
     protected $idShop;
 
@@ -311,8 +311,7 @@ class LengowExport
      * boolean inactive           Export active and inactive product (1) | Export Only active product (0)
      * boolean variation          Export product variation (1) | Export Only simple product (0)
      * boolean legacy_fields      Export with legacy fields (1) | Export with new fields (0)
-     * boolean update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1)
-     *                                | Do not update 'LENGOW_LAST_EXPORT' when exporting from toolbox (0)
+     * boolean update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1) or not
      */
     public function __construct($params = array())
     {
@@ -442,7 +441,8 @@ class LengowExport
         } catch (LengowException $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[PrestaShop error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' | ' . $e->getLine();
+            $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
+                . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
         }
         if (isset($errorMessage)) {
             $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
@@ -510,7 +510,7 @@ class LengowExport
      *
      * @param array $products list of products to be exported
      * @param array $fields list of fields
-     * @param Shop $shop Prestashop shop being exported
+     * @param Shop $shop PrestaShop shop being exported
      *
      * @throws Exception|LengowException folder not writable
      */
@@ -956,7 +956,7 @@ class LengowExport
      * Override this function to assign data for additional fields
      *
      * @param LengowProduct $product Lengow product instance
-     * @param integer|null $idProductAttribute Prestashop product attribute id
+     * @param integer|null $idProductAttribute PrestaShop product attribute id
      * @param array|null $arrayProduct product data
      *
      * @return array
@@ -967,7 +967,7 @@ class LengowExport
          * Write here your process
          * $arrayProduct['my_header_value'] = 'your value';
          */
-        // this two lines are useless, but Prestashop validator require it
+        // this two lines are useless, but PrestaShop validator require it
         $product = $product;
         $idProductAttribute = $idProductAttribute;
         return $arrayProduct;

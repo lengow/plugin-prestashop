@@ -592,3 +592,25 @@ a.lgw-box-link-matching:hover {
   display: inline-block;
   color: #00aeef;
 }
+
+/*************************************************/
+/*                    TOOLBOX                    */
+/*************************************************/
+
+.adminlengowtoolbox .lgw-container {
+  min-width: 1100px;
+  max-width: 1400px;
+  width: auto;
+}
+
+.adminlengowtoolbox .lgw-check-green {
+  color: green;
+}
+
+.adminlengowtoolbox .lgw-check-red {
+  color: red;
+}
+
+.adminlengowtoolbox .lgw-container .table tr td {
+  max-width: none;
+}

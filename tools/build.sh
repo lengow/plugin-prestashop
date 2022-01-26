@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build archive for Prestashop module
+# Build archive for PrestaShop module
 # Step :
 #     - Remove .DS_Store
 #     - Remove .README.md
@@ -60,7 +60,7 @@ BLEU="\\033[1;36m"
 echo
 echo "#####################################################"
 echo "##                                                 ##"
-echo "##       ""$BLEU""Lengow Prestashop""$NORMAL"" - Build Module          ##"
+echo "##       ""$BLEU""Lengow PrestaShop""$NORMAL"" - Build Module          ##"
 echo "##                                                 ##"
 echo "#####################################################"
 echo
@@ -96,6 +96,8 @@ remove_files $FOLDER_TMP ".DS_Store"
 remove_files $FOLDER_TMP "AdminLengowHome.gif"
 # remove .idea
 remove_files $FOLDER_TMP ".idea"
+# remove Jenkinsfile
+remove_files $FOLDER_TMP "Jenkinsfile"
 # clean Config Folder
 remove_files $FOLDER_CONFIG "marketplaces.json"
 # clean Log Folder

@@ -75,6 +75,7 @@ class LengowInstall
         'tab.help' => array('name' => 'AdminLengowHelp', 'active' => false),
         'tab.main_setting' => array('name' => 'AdminLengowMainSetting', 'active' => false),
         'tab.legals' => array('name' => 'AdminLengowLegals', 'active' => false),
+        'tab.toolbox' => array('name' => 'AdminLengowToolbox', 'active' => false),
     );
 
     /**
@@ -152,6 +153,8 @@ class LengowInstall
         'LENGOW_IS_IMPORT',
         'LENGOW_ORDER_STAT',
         'LENGOW_ORDER_STAT_UPDATE',
+        'LENGOW_IMPORT_SINGLE',
+        'LENGOW_IMPORT_SINGLE_ENABLED',
     );
 
     /**
@@ -269,8 +272,6 @@ class LengowInstall
         $this->removeOldFiles();
         // delete config files
         $this->removeConfigFiles();
-        // copy AdminLengowHome.gif for version 1.5
-        $this->createTabImage();
         // update Lengow version for install process
         LengowConfiguration::updateGlobalValue(LengowConfiguration::PLUGIN_VERSION, $this->lengowModule->version);
         self::setInstallationStatus(false);
@@ -822,23 +823,12 @@ class LengowInstall
     private function createTab()
     {
         try {
-            if (LengowMain::compareVersion()) {
-                $tabParent = new Tab();
-                $tabParent->name[Configuration::get('PS_LANG_DEFAULT')] = 'Lengow';
-                $tabParent->module = 'lengow';
-                $tabParent->class_name = 'AdminLengow';
-                $tabParent->id_parent = 0;
-                $tabParent->add();
-            } else {
-                $tabParent = new Tab(Tab::getIdFromClassName('AdminCatalog'));
-                $tab = new Tab();
-                $tab->name[Configuration::get('PS_LANG_DEFAULT')] = 'Lengow';
-                $tab->module = 'lengow';
-                $tab->class_name = 'AdminLengowHome14';
-                $tab->id_parent = $tabParent->id;
-                $tab->add();
-                $tabParent = $tab;
-            }
+            $tabParent = new Tab();
+            $tabParent->name[Configuration::get('PS_LANG_DEFAULT')] = 'Lengow';
+            $tabParent->module = 'lengow';
+            $tabParent->class_name = 'AdminLengow';
+            $tabParent->id_parent = 0;
+            $tabParent->add();
             foreach ($this->tabs as $name => $values) {
                 $tab = new Tab();
                 $tab->class_name = $values['name'];
@@ -971,18 +961,6 @@ class LengowInstall
             );
         }
         return true;
-    }
-
-    /**
-     * Create tab image for version 1.5
-     */
-    private function createTabImage()
-    {
-        $filePath = _PS_MODULE_LENGOW_DIR_ . 'views/img/AdminLengow.gif';
-        $fileDest = _PS_MODULE_LENGOW_DIR_ . 'AdminLengow.gif';
-        if (!file_exists($fileDest) && LengowMain::compareVersion('1.5') == 0) {
-            copy($filePath, $fileDest);
-        }
     }
 
     /**

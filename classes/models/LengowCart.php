@@ -97,11 +97,11 @@ class LengowCart extends Cart
      * @see Cart::updateQty()
      *
      * @param integer $quantity quantity to add (or subtract)
-     * @param integer $idProduct Prestashop product id
+     * @param integer $idProduct PrestaShop product id
      * @param integer|null $idProductAttribute attribute id if needed
-     * @param mixed $idCustomization Prestashop customization id
+     * @param mixed $idCustomization PrestaShop customization id
      * @param string $operator indicate if quantity must be increased or decreased
-     * @param integer $idAddressDelivery Prestashop address delivery id
+     * @param integer $idAddressDelivery PrestaShop address delivery id
      * @param Shop|null $shop Shop instance
      * @param boolean $autoAddCartRule add auto cart rule
      * @param boolean $skipAvailabilityCheckOutOfStock skip availability
@@ -121,13 +121,15 @@ class LengowCart extends Cart
         Shop $shop = null,
         $autoAddCartRule = true,
         $skipAvailabilityCheckOutOfStock = false,
-        $preserveGiftRemoval = true
+        $preserveGiftRemoval = true,
+        $useOrderPrices = false
     ) {
         if (!$shop) {
             $shop = Context::getContext()->shop;
         }
-        // this line is useless, but Prestashop validator require it
+        // this line are useless, but PrestaShop validator require it
         $autoAddCartRule = $autoAddCartRule;
+        $useOrderPrices = $useOrderPrices;
         $skipAvailabilityCheckOutOfStock = $skipAvailabilityCheckOutOfStock;
         $preserveGiftRemoval = $preserveGiftRemoval;
         $quantity = (int) $quantity;

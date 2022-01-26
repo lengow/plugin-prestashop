@@ -72,7 +72,7 @@ class LengowBackup extends Backup
         foreach (LengowInstall::$tables as $table) {
             $table = _DB_PREFIX_ . $table;
             // export the table schema
-            // this line is required by Prestashop validator
+            // this line is required by PrestaShop validator
             $sql = str_replace('IF NOT EXISTS', '', 'SHOW CREATE TABLE IF NOT EXISTS');
             try {
                 $schema = Db::getInstance()->executeS($sql . '`' . $table . '`');

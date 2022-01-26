@@ -74,9 +74,6 @@ class LengowFeedController extends LengowController
                     $data = array();
                     $data['shop_id'] = $idShop;
                     $data['footer_content'] = preg_replace('/\r|\n/', '', $this->buildTable($idShop));
-                    if ($this->toolbox) {
-                        $data['bootstrap_switch_readonly'] = true;
-                    }
                     echo Tools::jsonEncode($data);
                     break;
                 case 'lengow_export_action':
@@ -168,7 +165,7 @@ class LengowFeedController extends LengowController
     /**
      * Reload Total product / Exported product
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer $idShop PrestaShop shop id
      *
      * @return array Number of product exported/total for this shop
      */
@@ -185,7 +182,7 @@ class LengowFeedController extends LengowController
     /**
      * Build product grid
      *
-     * @param integer $idShop Prestashop shop id
+     * @param integer $idShop PrestaShop shop id
      *
      * @return string
      */
@@ -375,38 +372,36 @@ class LengowFeedController extends LengowController
         $paginationBlock = $this->list->renderPagination(array('nav_class' => 'lgw-pagination'));
         $html = '<div class="lengow_table_top">';
         $html .= '<div class="lengow_toolbar">';
-        if (!$this->toolbox) {
-            $messageRemoveConfirmation = $this->locale->t(
-                'product.screen.remove_confirmation',
-                array('nb' => $this->list->getTotal())
-            );
-            $html .= '<a href="#" data-id_shop="' . $idShop . '" style="display:none;"
-                data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed') . '"
-                data-message="' . $messageRemoveConfirmation . '"
-                data-action="lengow_export_action"
-                data-export-action="lengow_remove_from_export"
-                class="lgw-btn lgw-btn-red lengow_remove_from_export">
-                <i class="fa fa-minus"></i> ' . $this->locale->t('product.screen.remove_from_export') . '</a>';
-            $messageAddConfirmation = $this->locale->t(
-                'product.screen.add_confirmation',
-                array('nb' => $this->list->getTotal())
-            );
-            $html .= '<a href="#" data-id_shop="' . $idShop . '" style="display:none;"
-                data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed') . '"
-                data-message="' . $messageAddConfirmation . '"
-                data-action="lengow_export_action"
-                data-export-action="lengow_add_to_export"
-                class="lgw-btn lengow_add_to_export">
-                <i class="fa fa-plus"></i> ' . $this->locale->t('product.screen.add_from_export') . '</a>';
-            $html .= '<div class="lengow_select_all_shop lgw-container" style="display:none;">';
-            $html .= '<input type="checkbox" id="select_all_shop_' . $idShop . '"/>&nbsp;&nbsp;';
-            $html .= '<span>' . $this->locale->t(
-                'product.screen.select_all_products',
-                array('nb' => $this->list->getTotal())
-            );
-            $html .= '</span>';
-            $html .= '</div>';
-        }
+        $messageRemoveConfirmation = $this->locale->t(
+            'product.screen.remove_confirmation',
+            array('nb' => $this->list->getTotal())
+        );
+        $html .= '<a href="#" data-id_shop="' . $idShop . '" style="display:none;"
+            data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed') . '"
+            data-message="' . $messageRemoveConfirmation . '"
+            data-action="lengow_export_action"
+            data-export-action="lengow_remove_from_export"
+            class="lgw-btn lgw-btn-red lengow_remove_from_export">
+            <i class="fa fa-minus"></i> ' . $this->locale->t('product.screen.remove_from_export') . '</a>';
+        $messageAddConfirmation = $this->locale->t(
+            'product.screen.add_confirmation',
+            array('nb' => $this->list->getTotal())
+        );
+        $html .= '<a href="#" data-id_shop="' . $idShop . '" style="display:none;"
+            data-href="' . $this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed') . '"
+            data-message="' . $messageAddConfirmation . '"
+            data-action="lengow_export_action"
+            data-export-action="lengow_add_to_export"
+            class="lgw-btn lengow_add_to_export">
+            <i class="fa fa-plus"></i> ' . $this->locale->t('product.screen.add_from_export') . '</a>';
+        $html .= '<div class="lengow_select_all_shop lgw-container" style="display:none;">';
+        $html .= '<input type="checkbox" id="select_all_shop_' . $idShop . '"/>&nbsp;&nbsp;';
+        $html .= '<span>' . $this->locale->t(
+            'product.screen.select_all_products',
+            array('nb' => $this->list->getTotal())
+        );
+        $html .= '</span>';
+        $html .= '</div>';
         $html .= '</div>';
         $html .= $paginationBlock;
         $html .= '<div class="clearfix"></div>';
@@ -433,26 +428,24 @@ class LengowFeedController extends LengowController
      */
     public static function displayLink($key, $value, $item)
     {
-        // this line is useless, but Prestashop validator require it
+        // this line is useless, but PrestaShop validator require it
         $key = $key;
-        $toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $link = new LengowLink();
         if ($item['id_product']) {
-            if (!$toolbox) {
-                if (version_compare(_PS_VERSION_, '1.7', '<')) {
-                    $controller = 'AdminProducts';
-                    $href = $link->getAbsoluteAdminLink($controller)
-                        . '&updateproduct&id_product=' . $item['id_product'];
-                } else {
-                    $params = array(
+            $controller = 'AdminProducts';
+            if (version_compare(_PS_VERSION_, '1.7', '<')) {
+                $href = $link->getAbsoluteAdminLink($controller) . '&updateproduct&id_product=' . $item['id_product'];
+            } else {
+                $href = $link->getAdminLink(
+                    $controller,
+                    true,
+                    array(
                         'updateproduct' => 1,
                         'id_product' => $item['id_product'],
-                    );
-                    $href = $link->getAdminLink('AdminProducts', true, $params);
-                }
-                return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
+                    )
+                );
             }
-            return $value;
+            return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
         }
         return $value;
     }

@@ -93,7 +93,7 @@ class LengowOrder extends Order
     public $lengowId;
 
     /**
-     * @var integer Prestashop shop ID
+     * @var integer PrestaShop shop ID
      */
     public $lengowIdShop;
 
@@ -228,10 +228,10 @@ class LengowOrder extends Order
     public $lengowExtra;
 
     /**
-     * Construct a Lengow order based on Prestashop order
+     * Construct a Lengow order based on PrestaShop order
      *
      * @param integer|null $id Lengow order id
-     * @param integer|null $idLang Prestashop id lang
+     * @param integer|null $idLang PrestaShop id lang
      */
     public function __construct($id = null, $idLang = null)
     {
@@ -317,7 +317,7 @@ class LengowOrder extends Order
     }
 
     /**
-     * Get Prestashop order id
+     * Get PrestaShop order id
      *
      * @param string $marketplaceSku Lengow order id
      * @param string $marketplace marketplace name
@@ -387,7 +387,7 @@ class LengowOrder extends Order
     /**
      * Check if a lengow order
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      *
      * @return boolean
      */
@@ -408,7 +408,7 @@ class LengowOrder extends Order
     /**
      * Get Id from Lengow delivery address id
      *
-     * @param integer $idOrder Prestashop order id
+     * @param integer $idOrder PrestaShop order id
      * @param integer $deliveryAddressId Lengow delivery address id
      *
      * @return integer|false
@@ -512,9 +512,9 @@ class LengowOrder extends Order
         if (!empty($params)) {
             self::updateOrderLengow((int) $this->lengowId, $params);
         }
-        // get prestashop equivalent state id to Lengow API state
+        // get PrestaShop equivalent state id to Lengow API state
         $idOrderState = LengowMain::getOrderState($orderStateLengow);
-        // if state is different between API and Prestashop
+        // if state is different between API and PrestaShop
         if ((int) $this->getCurrentState() !== $idOrderState) {
             // change state process to shipped
             if (($orderStateLengow === self::STATE_SHIPPED || $orderStateLengow === self::STATE_CLOSED)
@@ -821,17 +821,13 @@ class LengowOrder extends Order
      */
     public function getCurrentTrackingNumber()
     {
-        if (LengowMain::compareVersion()) {
-            try {
-                $orderCarrier = new OrderCarrier($this->getIdOrderCarrier());
-                $trackingNumber = $orderCarrier->tracking_number;
-            } catch (Exception $e) {
-                $trackingNumber = '';
-            }
-            if ($trackingNumber === '') {
-                $trackingNumber = $this->shipping_number;
-            }
-        } else {
+        try {
+            $orderCarrier = new OrderCarrier($this->getIdOrderCarrier());
+            $trackingNumber = $orderCarrier->tracking_number;
+        } catch (Exception $e) {
+            $trackingNumber = '';
+        }
+        if ($trackingNumber === '') {
             $trackingNumber = $this->shipping_number;
         }
         return $trackingNumber !== '' ? $trackingNumber : null;

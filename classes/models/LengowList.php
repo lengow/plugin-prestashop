@@ -60,7 +60,7 @@ class LengowList
     protected $controller;
 
     /**
-     * @var integer Prestashop shop id
+     * @var integer PrestaShop shop id
      */
     protected $shopId;
 
@@ -110,7 +110,7 @@ class LengowList
     protected $ajax;
 
     /**
-     * @var Context Prestashop context instance
+     * @var Context PrestaShop context instance
      */
     protected $context;
 
@@ -120,14 +120,9 @@ class LengowList
     protected $locale;
 
     /**
-     * @var array Prestashop currency by iso code
+     * @var array PrestaShop currency by iso code
      */
     protected $currencyCode;
-
-    /**
-     * @var boolean Toolbox is open or not
-     */
-    protected $toolbox;
 
     /**
      * @var string order value condition
@@ -161,7 +156,6 @@ class LengowList
         $this->sql = $params['sql'];
         $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
         $this->orderColumn = isset($params['order_column']) ? $params['order_column'] : '';
-        $this->toolbox = Context::getContext()->smarty->getVariable('toolbox')->value;
         $this->locale = new LengowTranslation();
         $this->context = Context::getContext();
     }
@@ -181,7 +175,7 @@ class LengowList
             id="table_' . $this->id . '">';
         $html .= '<thead>';
         $html .= '<tr>';
-        if ($this->selection && !$this->toolbox) {
+        if ($this->selection) {
             $html .= '<th></th>';
         }
         foreach ($this->fieldsList as $key => $values) {
@@ -201,7 +195,7 @@ class LengowList
         $html .= '</tr>';
 
         $html .= '<tr class="lengow_filter">';
-        if ($this->selection && !$this->toolbox) {
+        if ($this->selection) {
             $html .= '<th><input type="checkbox" id="select_' . $this->id . '"
                 class="lengow_select_all lengow_link_tooltip"/></th>';
         }
@@ -286,7 +280,7 @@ class LengowList
         $lengowLink = new LengowLink();
         $html = '';
         $html .= '<tr id=' . $this->id . '_' . $item[$this->identifier] . ' class="table_row">';
-        if ($this->selection && !$this->toolbox) {
+        if ($this->selection) {
             if ($this->selectionCondition) {
                 if ($item[$this->selectionCondition] > 0) {
                     $html .= '<td class="no-link"> <input type="checkbox" class="lengow_selection"
@@ -321,7 +315,6 @@ class LengowList
                         }
                         break;
                     case 'switch_product':
-                        $status = $this->toolbox ? 'disabled' : '';
                         $value = '<div class="lgw-switch ' . ($item[$key] ? 'checked' : '')
                             . '"><label><div><span></span><input type="checkbox"
                             data-size="mini"
@@ -333,9 +326,8 @@ class LengowList
                             data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller) . '"
                             data-action="select_product"
                             data-id_shop="' . $this->shopId . '"
-                            data-id_product="' . $item[$this->identifier] . '" ' .
-                            $status . ' ' .
-                            'value="1" ' . ($item[$key] ? 'checked="checked"' : '') . '/></div></label></div>';
+                            data-id_product="' . $item[$this->identifier] . '"
+                            value="1" ' . ($item[$key] ? 'checked="checked"' : '') . '/></div></label></div>';
                         break;
                     case 'flag_country':
                         if ($item[$key]) {

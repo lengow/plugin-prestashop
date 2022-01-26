@@ -25,21 +25,6 @@
 class LengowLink extends LinkCore
 {
     /**
-     * @var boolean use in toolbox to get specific link
-     */
-    protected static $forceLink;
-
-    /**
-     * Set force link for toolbox
-     *
-     * @param boolean $forceLink use in toolbox to get specific link
-     */
-    public static function forceLink($forceLink)
-    {
-        self::$forceLink = $forceLink;
-    }
-
-    /**
      * Get absolute admin link
      *
      * @param string $controller name of the controller
@@ -48,16 +33,11 @@ class LengowLink extends LinkCore
      */
     public function getAbsoluteAdminLink($controller)
     {
-        // use in toolbox to get specific link
-        if (self::$forceLink) {
-            return self::$forceLink;
-        }
         $adminPath = Tools::getShopDomainSsl(true, true) .
             __PS_BASE_URI__ . Tools::substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);
         try {
             if (_PS_VERSION_ < '1.6') {
-                $adminPath .= '/index.php?tab=' . $controller
-                    . '&token=' . Tools::getAdminTokenLite($controller);
+                $adminPath .= '/index.php?tab=' . $controller . '&token=' . Tools::getAdminTokenLite($controller);
             } elseif (_PS_VERSION_ < '1.7') {
                 $adminPath .= '/' . $this->getAdminLink($controller);
             } else {

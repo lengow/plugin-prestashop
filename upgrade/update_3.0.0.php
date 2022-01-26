@@ -344,7 +344,6 @@ if (LengowInstall::$oldVersion && LengowInstall::$oldVersion < '3.0.0') {
     );
     LengowInstall::renameConfigurationKey('LENGOW_REPORT_MAIL', LengowConfiguration::REPORT_MAIL_ENABLED);
     LengowInstall::renameConfigurationKey('LENGOW_EMAIL_ADDRESS', LengowConfiguration::REPORT_MAILS);
-    LengowInstall::renameConfigurationKey('LENGOW_IMPORT_SINGLE', LengowConfiguration::IMPORT_SINGLE_ORDER_ENABLED);
     LengowInstall::renameConfigurationKey('LENGOW_TRACKING', LengowConfiguration::TRACKING_ENABLED);
     // Reset access id for old customer v2
     LengowConfiguration::resetAccessIds();
