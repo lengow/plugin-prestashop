@@ -533,7 +533,7 @@ class LengowList
             }
         }
         $value = $this->findValueByKey($this->identifier);
-        $firstColumn = $value['filter_key'];
+        $firstColumn = $value ? $value['filter_key'] : '';
         if ($total) {
             $sql = 'SELECT COUNT("' . pSQL($firstColumn) . '") as total';
             if (isset($this->sql['select_having']) && $this->sql['select_having']) {

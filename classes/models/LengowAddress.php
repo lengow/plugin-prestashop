@@ -339,7 +339,7 @@ class LengowAddress extends Address
             FROM ' . _DB_PREFIX_ . 'address a
             WHERE a.`alias` = "' . pSQL($alias) . '"'
         );
-        if ($row['id_address'] > 0) {
+        if ($row && $row['id_address'] > 0) {
             return new LengowAddress($row['id_address']);
         }
         return false;
