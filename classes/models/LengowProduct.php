@@ -457,7 +457,7 @@ class LengowProduct extends Product
                 WHERE `id_product` = \'' . (int) $this->id . '\'
                 AND `id_product_attribute` = 0';
             $result = Db::getInstance()->getRow($sql);
-            $supplierReference = $result['product_supplier_reference'];
+            $supplierReference = $result['product_supplier_reference'] ?? '';
         }
         return $supplierReference;
     }
