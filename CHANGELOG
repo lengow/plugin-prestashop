@@ -8,6 +8,7 @@ Version 3.4.4
  - Bugfix: Fix import customer from order
  - Bugfix: Add ProductAttribute in LengowCart.php for compability for Prestashop 8 during import order in backoffice
  - Bugfix: Fix of the recording of the tracking_number when updating the status of an order on the backoffice side
+ - Bugfix: Deprecated hooks update in LengowHook.php
 
 =============================================================
 Version 3.4.3
