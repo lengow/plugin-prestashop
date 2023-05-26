@@ -372,7 +372,7 @@ class LengowAction
                 if ($result) {
                     $message = LengowMain::setLogMessage(
                         'lengow_log.exception.action_not_created',
-                        array('error_message' => Tools::jsonEncode($result))
+                        array('error_message' => json_encode($result))
                     );
                 } else {
                     // generating a generic error message when the Lengow API is unavailable
@@ -405,7 +405,7 @@ class LengowAction
     public static function createAction($params)
     {
         $insertParams = array(
-            self::FIELD_PARAMETERS => pSQL(Tools::jsonEncode($params[self::FIELD_PARAMETERS])),
+            self::FIELD_PARAMETERS => pSQL(json_encode($params[self::FIELD_PARAMETERS])),
             self::FIELD_ORDER_ID => (int) $params[self::FIELD_ORDER_ID],
             self::FIELD_ACTION_ID => (int) $params[self::FIELD_ACTION_ID],
             self::FIELD_ACTION_TYPE => pSQL($params[self::FIELD_ACTION_TYPE]),

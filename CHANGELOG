@@ -1,4 +1,15 @@
 =============================================================
+Version 3.4.4
+=============================================================
+
+ - Bugfix: Fixed compatible versions to unlock module installation in Prestashop 8.0
+ - Bugfix: Fixed Tools::jsonDecode() and Tools::jsonEncode() functions for json_decode() and json_encode
+ - Bugfix: Fixed import of orders in Prestashop backoffice due to the error in LengowAddress.php
+ - Bugfix: Fix import customer from order
+ - Bugfix: Add ProductAttribute in LengowCart.php for compability for Prestashop 8 during import order in backoffice
+ - Bugfix: Fix of the recording of the tracking_number when updating the status of an order on the backoffice side
+
+=============================================================
 Version 3.4.3
 =============================================================
 

@@ -53,7 +53,7 @@ class LengowOrderController extends LengowController
                 case 'load_table':
                     $data = array();
                     $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
-                    echo Tools::jsonEncode($data);
+                    echo json_encode($data);
                     break;
                 case 're_import':
                     $idOrderLengow = isset($_REQUEST['id']) ? (int) $_REQUEST['id'] : 0;
@@ -65,7 +65,7 @@ class LengowOrderController extends LengowController
                     $data = array();
                     $data['id_order_lengow'] = $idOrderLengow;
                     $data['html'] = $html;
-                    echo Tools::jsonEncode($data);
+                    echo json_encode($data);
                     break;
                 case 're_send':
                     $idOrderLengow = isset($_REQUEST['id']) ? (int) $_REQUEST['id'] : 0;
@@ -77,7 +77,7 @@ class LengowOrderController extends LengowController
                     $data = array();
                     $data['id_order_lengow'] = $idOrderLengow;
                     $data['html'] = $html;
-                    echo Tools::jsonEncode($data);
+                    echo json_encode($data);
                     break;
                 case 'import_all':
                     if (Shop::getContextShopID()) {
@@ -119,7 +119,7 @@ class LengowOrderController extends LengowController
                     $data['import_orders'] = $this->locale->t('order.screen.button_update_orders');
                     $data['list_order'] = preg_replace('/\r|\n/', '', $displayListOrder);
                     $data['show_carrier_notification'] = LengowCarrier::hasDefaultCarrierNotMatched();
-                    echo Tools::jsonEncode($data);
+                    echo json_encode($data);
                     break;
                 case 'synchronize':
                     $idOrder = isset($_REQUEST['id_order']) ? (int) $_REQUEST['id_order'] : 0;
@@ -535,7 +535,7 @@ class LengowOrderController extends LengowController
     public static function displayOrderTypes($key, $value, $item)
     {
         $return = '<div>';
-        $orderTypes = $value !== null ? Tools::jsonDecode($value, true) : array();
+        $orderTypes = $value !== null ? json_decode($value, true) : array();
         if (isset($orderTypes[LengowOrder::TYPE_EXPRESS]) || isset($orderTypes[LengowOrder::TYPE_PRIME])) {
             $iconLabel = isset($orderTypes[LengowOrder::TYPE_PRIME])
                 ? $orderTypes[LengowOrder::TYPE_PRIME]

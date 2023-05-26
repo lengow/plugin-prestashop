@@ -292,7 +292,7 @@ class LengowOrder extends Order
             $this->lengowOrderDate = $result[self::FIELD_ORDER_DATE];
             $this->lengowOrderItem = (int) $result[self::FIELD_ORDER_ITEM];
             $this->lengowOrderTypes = $result[self::FIELD_ORDER_TYPES] !== null
-                ? Tools::jsonDecode($result[self::FIELD_ORDER_TYPES], true)
+                ? json_decode($result[self::FIELD_ORDER_TYPES], true)
                 : array();
             $this->lengowCurrency = $result[self::FIELD_CURRENCY];
             $this->lengowTotalPaid = $result[self::FIELD_TOTAL_PAID];
@@ -527,7 +527,7 @@ class LengowOrder extends Order
                 $history->validateFields();
                 $history->add();
                 if ($trackingNumber !== null) {
-                    $this->shipping_number = $trackingNumber;
+                    $this->setWsShippingNumber($trackingNumber);
                     $this->validateFields();
                     $this->update();
                 }
@@ -697,7 +697,7 @@ class LengowOrder extends Order
                 LengowConnector::API_ORDER_MOI,
                 array(),
                 LengowConnector::FORMAT_JSON,
-                Tools::jsonEncode($body),
+                json_encode($body),
                 $logOutput
             );
             return !($result === null
@@ -763,7 +763,7 @@ class LengowOrder extends Order
         if ($results === null) {
             return false;
         }
-        $results = Tools::jsonDecode($results);
+        $results = json_decode($results);
         if (isset($results->error)) {
             return false;
         }
@@ -828,7 +828,7 @@ class LengowOrder extends Order
             $trackingNumber = '';
         }
         if ($trackingNumber === '') {
-            $trackingNumber = $this->shipping_number;
+            $trackingNumber = $this->setWsShippingNumber($trackingNumber);
         }
         return $trackingNumber !== '' ? $trackingNumber : null;
     }

@@ -38,7 +38,7 @@ class LengowHomeController extends LengowController
                         _PS_MODULE_LENGOW_DIR_,
                         'views/templates/admin/lengow_home/helpers/view/connection_cms.tpl'
                     );
-                    echo Tools::jsonEncode(
+                    echo json_encode(
                         array('content' => preg_replace('/\r|\n/', '', $displayContent))
                     );
                     break;
@@ -62,7 +62,7 @@ class LengowHomeController extends LengowController
                         _PS_MODULE_LENGOW_DIR_,
                         'views/templates/admin/lengow_home/helpers/view/connection_cms_result.tpl'
                     );
-                    echo Tools::jsonEncode(
+                    echo json_encode(
                         array(
                             'success' => $cmsConnected,
                             'content' => preg_replace('/\r|\n/', '', $displayContent),
@@ -81,7 +81,7 @@ class LengowHomeController extends LengowController
                         _PS_MODULE_LENGOW_DIR_,
                         'views/templates/admin/lengow_home/helpers/view/connection_catalog.tpl'
                     );
-                    echo Tools::jsonEncode(
+                    echo json_encode(
                         array('content' => preg_replace('/\r|\n/', '', $displayContent))
                     );
                     break;
@@ -98,7 +98,7 @@ class LengowHomeController extends LengowController
                         _PS_MODULE_LENGOW_DIR_,
                         'views/templates/admin/lengow_home/helpers/view/connection_catalog_failed.tpl'
                     );
-                    echo Tools::jsonEncode(
+                    echo json_encode(
                         array(
                             'success' => $catalogsLinked,
                             'content' => preg_replace('/\r|\n/', '', $displayConnectionResult),
@@ -160,7 +160,7 @@ class LengowHomeController extends LengowController
         $cmsToken = LengowMain::getToken();
         $cmsConnected = LengowSync::syncCatalog(true);
         if (!$cmsConnected) {
-            $syncData = Tools::jsonEncode(LengowSync::getSyncData());
+            $syncData = json_encode(LengowSync::getSyncData());
             $result = LengowConnector::queryApi(LengowConnector::POST, LengowConnector::API_CMS, array(), $syncData);
             if (isset($result->common_account)) {
                 $cmsConnected = true;

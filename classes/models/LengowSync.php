@@ -269,7 +269,7 @@ class LengowSync
                 return false;
             }
         }
-        $options = Tools::jsonEncode(self::getOptionData());
+        $options = json_encode(self::getOptionData());
         LengowConnector::queryApi(LengowConnector::PUT, LengowConnector::API_CMS, array(), $options, $logOutput);
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_OPTION_CMS, time());
         return true;
@@ -288,7 +288,7 @@ class LengowSync
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_ACCOUNT_STATUS_DATA);
             if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
-                return Tools::jsonDecode(
+                return json_decode(
                     LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_STATUS_DATA),
                     true
                 );
@@ -304,13 +304,13 @@ class LengowSync
             );
             LengowConfiguration::updateGlobalValue(
                 LengowConfiguration::ACCOUNT_STATUS_DATA,
-                Tools::jsonEncode($status)
+                json_encode($status)
             );
             LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_ACCOUNT_STATUS_DATA, time());
             return $status;
         }
         if (LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_STATUS_DATA)) {
-            return Tools::jsonDecode(
+            return json_decode(
                 LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_STATUS_DATA),
                 true
             );
@@ -338,7 +338,7 @@ class LengowSync
                 // recovering data with the marketplaces.json file
                 $marketplacesData = Tools::file_get_contents($filePath);
                 if ($marketplacesData) {
-                    return Tools::jsonDecode($marketplacesData);
+                    return json_decode($marketplacesData);
                 }
             }
         }
@@ -358,7 +358,7 @@ class LengowSync
                     LengowMarketplace::FILE_MARKETPLACE,
                     'w'
                 );
-                $marketplaceFile->write(Tools::jsonEncode($result));
+                $marketplaceFile->write(json_encode($result));
                 $marketplaceFile->close();
                 LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE, time());
             } catch (LengowException $e) {
@@ -381,7 +381,7 @@ class LengowSync
         if (file_exists($filePath)) {
             $marketplacesData = Tools::file_get_contents($filePath);
             if ($marketplacesData) {
-                return Tools::jsonDecode($marketplacesData);
+                return json_decode($marketplacesData);
             }
         }
         return false;
@@ -400,7 +400,7 @@ class LengowSync
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_DATA);
             if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_PLUGIN_DATA]) {
-                return Tools::jsonDecode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
+                return json_decode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
             }
         }
         $plugins = LengowConnector::queryApi(
@@ -449,13 +449,13 @@ class LengowSync
             if ($pluginData) {
                 LengowConfiguration::updateGlobalValue(
                     LengowConfiguration::PLUGIN_DATA,
-                    Tools::jsonEncode($pluginData)
+                    json_encode($pluginData)
                 );
                 LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_DATA, time());
                 return $pluginData;
             }
         } elseif (LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA)) {
-            return Tools::jsonDecode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
+            return json_decode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
         }
         return false;
     }
