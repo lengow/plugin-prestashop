@@ -875,7 +875,7 @@ class LengowImport
                     )
                 );
             }
-            $results = Tools::jsonDecode($results);
+            $results = json_decode($results);
             if (!is_object($results)) {
                 throw new LengowException(
                     LengowMain::setLogMessage(

@@ -33,8 +33,8 @@ class LengowConnector
     /**
      * @var string url of the Lengow API
      */
-    // const LENGOW_API_URL = 'https://api.lengow.io';
-    const LENGOW_API_URL = 'https://api.lengow.net';
+     // const LENGOW_API_URL = 'https://api.lengow.io';
+     const LENGOW_API_URL = 'https://api.lengow.net';
 
     /* Lengow API routes */
     const API_ACCESS_TOKEN = '/access/get_token';
@@ -232,7 +232,7 @@ class LengowConnector
             return false;
         }
 
-        return Tools::jsonDecode($results);
+        return json_decode($results);
     }
 
     /**
@@ -606,7 +606,7 @@ class LengowConnector
                 return $data;
             default:
             case self::FORMAT_JSON:
-                return Tools::jsonDecode($data, true);
+                return json_decode($data, true);
         }
     }
 }

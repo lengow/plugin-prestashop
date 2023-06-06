@@ -235,7 +235,7 @@ class LengowFeed
                     $field = self::formatFields($field, self::FORMAT_JSON);
                     $jsonArray[$field] = $value;
                 }
-                $content .= Tools::jsonEncode($jsonArray);
+                $content .= json_encode($jsonArray);
                 return $content;
             case self::FORMAT_YAML:
                 if ($maxCharacter % 2 === 1) {

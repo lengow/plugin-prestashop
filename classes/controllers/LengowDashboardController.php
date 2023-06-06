@@ -39,7 +39,7 @@ class LengowDashboardController extends LengowController
                 case 'remind_me_later':
                     $timestamp = time() + (7 * 86400);
                     LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL, $timestamp);
-                    echo Tools::jsonEncode(array('success' => true));
+                    echo json_encode(array('success' => true));
                     break;
             }
             exit();

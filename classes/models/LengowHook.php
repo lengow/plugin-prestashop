@@ -106,9 +106,9 @@ class LengowHook
             'footer' => '1.4',
             'postUpdateOrderStatus' => '1.4',
             'paymentTop' => '1.4',
-            'adminOrder' => '1.4',
+            'displayAdminOrder' => '1.4',
             'home' => '1.4',
-            'updateOrderStatus' => '1.4',
+            'actionOrderStatusUpdate' => '1.4',
             'orderConfirmation' => '1.4',
             // version 1.5
             'actionObjectUpdateAfter' => '1.5',
@@ -285,7 +285,7 @@ class LengowHook
                     $i++;
                 }
             }
-            self::$idsProductCart = Tools::jsonEncode($productsCart);
+            self::$idsProductCart = json_encode($productsCart);
         }
         if (!isset($this->smarty)) {
             $this->smarty = $this->context->smarty;
@@ -353,7 +353,7 @@ class LengowHook
                 'quantity' => $p['product_quantity'],
             );
         }
-        self::$idsProductCart = Tools::jsonEncode($productsCart);
+        self::$idsProductCart = json_encode($productsCart);
         self::$currentPageType = self::LENGOW_TRACK_PAGE_CONFIRMATION;
         self::$idOrder = $order->id;
         self::$idCart = $order->id_cart;
@@ -468,13 +468,19 @@ class LengowHook
     {
         if (($args['object'] instanceof Order) && LengowOrder::isFromLengow($args['object']->id)) {
             $lengowOrder = new LengowOrder($args['object']->id);
-            if ($lengowOrder->shipping_number !== ''
-                && LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
-                && !array_key_exists($lengowOrder->lengowMarketplaceSku, $this->alreadyShipped)
-                && (int) $args['object']->current_state === LengowMain::getOrderState(LengowOrder::STATE_SHIPPED)
-            ) {
-                $lengowOrder->callAction(LengowAction::TYPE_SHIP);
-                $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
+            
+            // Check if the tracking field has been updated
+            if (isset($args['object']->shipping_number) && !empty($args['object']->shipping_number)) {
+                $trackingNumber = $args['object']->shipping_number;
+                
+                if ($lengowOrder->setWsShippingNumber($trackingNumber) !== ''
+                    && LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
+                    && !array_key_exists($lengowOrder->lengowMarketplaceSku, $this->alreadyShipped)
+                    && (int) $args['object']->current_state === LengowMain::getOrderState(LengowOrder::STATE_SHIPPED)
+                ) {
+                    $lengowOrder->callAction(LengowAction::TYPE_SHIP);
+                    $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
+                }
             }
         }
     }

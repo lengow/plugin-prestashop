@@ -69,7 +69,7 @@ if (!LengowMain::checkWebservicesAccess($token)) {
 }
 
 if (Tools::getIsset(LengowImport::PARAM_GET_SYNC) && Tools::getValue(LengowImport::PARAM_GET_SYNC) == 1) {
-    echo Tools::jsonEncode(LengowSync::getSyncData());
+    echo json_encode(LengowSync::getSyncData());
 } else {
     $force = Tools::getIsset(LengowImport::PARAM_FORCE) ? (bool) Tools::getValue(LengowImport::PARAM_FORCE) : false;
     $logOutput = Tools::getIsset(LengowImport::PARAM_LOG_OUTPUT)

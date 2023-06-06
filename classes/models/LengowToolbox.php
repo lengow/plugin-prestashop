@@ -645,7 +645,7 @@ class LengowToolbox
      */
     private static function getAllOrderData($data, $lengowOrder = null)
     {
-        $orderTypes = Tools::jsonDecode($data[LengowOrder::FIELD_ORDER_TYPES], true);
+        $orderTypes = json_decode($data[LengowOrder::FIELD_ORDER_TYPES], true);
         return array(
             self::ORDER_DELIVERY_COUNTRY_ISO => $data[LengowOrder::FIELD_DELIVERY_COUNTRY_ISO],
             self::ORDER_PROCESS_STATE => self::getOrderProcessLabel(
@@ -759,7 +759,7 @@ class LengowToolbox
                 $orderActions[] = array(
                     self::ID => $action->id,
                     self::ACTION_ID => $action->actionId,
-                    self::ACTION_PARAMETERS => Tools::jsonDecode($action->parameters, true),
+                    self::ACTION_PARAMETERS => json_decode($action->parameters, true),
                     self::ACTION_RETRY => $action->retry,
                     self::ACTION_FINISH => $action->state === LengowAction::STATE_FINISH,
                     self::CREATED_AT => strtotime($action->createdAt),
@@ -803,7 +803,7 @@ class LengowToolbox
      */
     private static function getOrderExtraData($data, $lengowOrder = null)
     {
-        $orderData = Tools::jsonDecode($data[LengowOrder::FIELD_EXTRA], true);
+        $orderData = json_decode($data[LengowOrder::FIELD_EXTRA], true);
         $orderData[self::EXTRA_UPDATED_AT] = $lengowOrder
             ? strtotime($lengowOrder->date_add)
             : strtotime($data[LengowOrder::FIELD_CREATED_AT]);
