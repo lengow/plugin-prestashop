@@ -108,10 +108,10 @@ switch ($action) {
                 header('HTTP/1.1 403 Forbidden');
             }
         }
-        echo Tools::jsonEncode($result);
+        echo json_encode($result);
         break;
     default:
         $type = Tools::getValue(LengowToolbox::PARAM_TYPE, null);
-        echo Tools::jsonEncode(LengowToolbox::getData($type));
+        echo json_encode(LengowToolbox::getData($type));
         break;
 }

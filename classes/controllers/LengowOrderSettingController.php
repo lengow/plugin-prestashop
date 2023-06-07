@@ -91,7 +91,7 @@ class LengowOrderSettingController extends LengowController
                     'views/templates/admin/lengow_order_setting/helpers/view/marketplace_matching.tpl'
                 );
                 $data = array('marketplace_matching' => preg_replace('/\r|\n/', '', $displayMarketplaceMatching));
-                echo Tools::jsonEncode($data);
+                echo json_encode($data);
                 exit();
             case 'process':
                 // save carrier matching

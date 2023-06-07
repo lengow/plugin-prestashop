@@ -619,7 +619,7 @@ class LengowImportOrder
             LengowOrder::FIELD_ORDER_TYPES => $this->orderTypes,
             LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => $this->getVatNumberFromOrderData(),
             LengowOrder::FIELD_MESSAGE => pSQL($this->orderComment),
-            LengowOrder::FIELD_EXTRA => pSQL(Tools::jsonEncode($this->orderData)),
+            LengowOrder::FIELD_EXTRA => pSQL(json_encode($this->orderData)),
             LengowOrder::FIELD_CREATED_AT => date(LengowMain::DATE_FULL),
             LengowOrder::FIELD_ORDER_PROCESS_STATE => 0,
             LengowOrder::FIELD_IS_REIMPORTED => 0,
@@ -686,7 +686,7 @@ class LengowImportOrder
                 }
             }
         }
-        $this->orderTypes = Tools::jsonEncode($orderTypes);
+        $this->orderTypes = json_encode($orderTypes);
     }
 
     /**
@@ -751,7 +751,7 @@ class LengowImportOrder
                     (string) $this->packageData->delivery->common_country_iso_a2
                 ),
                 LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($this->orderStateLengow),
-                LengowOrder::FIELD_EXTRA => pSQL(Tools::jsonEncode($this->orderData)),
+                LengowOrder::FIELD_EXTRA => pSQL(json_encode($this->orderData)),
             )
         );
         return true;

@@ -932,7 +932,7 @@ class LengowExport
             );
         }
 
-        return Tools::jsonEncode($params);
+        return json_encode($params);
     }
 
     /**

@@ -131,7 +131,7 @@ class LengowCatalog
                 LengowConnector::POST,
                 LengowConnector::API_CMS_MAPPING,
                 array(),
-                Tools::jsonEncode($linkCatalogData)
+                json_encode($linkCatalogData)
             );
             if (isset($result->cms_token)) {
                 $catalogsLinked = true;
