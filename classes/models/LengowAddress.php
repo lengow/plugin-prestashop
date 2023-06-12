@@ -387,7 +387,7 @@ class LengowAddress extends Address
      */
     public static function cleanName($name)
     {
-        return LengowMain::replaceAccentedChars(trim(preg_replace('/[0-9!<>,;?=+()@#"�{}_$%:]/', '', $name)));
+        return LengowMain::replaceAccentedChars(trim(preg_replace('/[0-9!<>,;?=+()@#"�{}_$%:\/\\\]/', '', $name)));
     }
 
     /**
@@ -438,8 +438,8 @@ class LengowAddress extends Address
     public function assign($data = array())
     {
         $this->company = $data['company'];
-        $this->lastname = $data['last_name'];
-        $this->firstname = $data['first_name'];
+        $this->lastname = self::cleanName($data['last_name']);
+        $this->firstname = self::cleanName($data['first_name']);
         $this->fullName = $data['full_name'];
         $this->address1 = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['first_line']);
         $this->address2 = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['second_line']);

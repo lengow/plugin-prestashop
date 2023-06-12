@@ -50,9 +50,9 @@ class LengowCustomer extends Customer
     {
         $this->company = LengowAddress::cleanName((string) $data['company']);
         $this->email = $data['email'];
-        $this->firstname = $data['first_name'];
-        $this->lastname = $data['last_name'];
-        $this->fullName = $data['full_name'];
+        $this->firstname = LengowAddress::cleanName((string) $data['first_name']);
+        $this->lastname = LengowAddress::cleanName((string) $data['last_name']);
+        $this->fullName = LengowAddress::cleanName((string) $data['full_name']);
         $this->passwd = md5(rand());
         $this->id_gender = LengowGender::getGender((string) $data['civility']);
         return $this;
