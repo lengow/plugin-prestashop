@@ -52,6 +52,7 @@ class LengowConfiguration extends Configuration
     const EXPORT_FORMAT = 'LENGOW_EXPORT_FORMAT';
     const EXPORT_FILE_ENABLED = 'LENGOW_EXPORT_FILE_ENABLED';
     const DEFAULT_EXPORT_CARRIER_ID = 'LENGOW_EXPORT_CARRIER_DEFAULT';
+    const ENVIRONNEMENT_URL = 'ENVIRONNEMENT_URL';
     const WAITING_SHIPMENT_ORDER_ID = 'LENGOW_ORDER_ID_PROCESS';
     const SHIPPED_ORDER_ID = 'LENGOW_ORDER_ID_SHIPPED';
     const CANCELED_ORDER_ID = 'LENGOW_ORDER_ID_CANCEL';
@@ -98,6 +99,7 @@ class LengowConfiguration extends Configuration
     const RETURN_TYPE_BOOLEAN = 'boolean';
     const RETURN_TYPE_INTEGER = 'integer';
     const RETURN_TYPE_ARRAY = 'array';
+    const RETURN_TYPE_STRING = 'string';
 
     /**
      * @var array params correspondence keys for toolbox
@@ -130,6 +132,7 @@ class LengowConfiguration extends Configuration
         self::EXPORT_FORMAT => 'export_format',
         self::EXPORT_FILE_ENABLED => 'export_file_enabled',
         self::DEFAULT_EXPORT_CARRIER_ID => 'default_export_carrier_id',
+        self::ENVIRONNEMENT_URL => 'environement_url',
         self::WAITING_SHIPMENT_ORDER_ID => 'waiting_shipment_order_id',
         self::SHIPPED_ORDER_ID => 'shipped_order_id',
         self::CANCELED_ORDER_ID => 'canceled_order_id',
@@ -375,6 +378,12 @@ class LengowConfiguration extends Configuration
                     self::PARAM_DEFAULT_VALUE => !empty($carriers) ? (int) $carriers[0]['id'] : '',
                     self::PARAM_COLLECTION => $carriers,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
+                ),
+                self::ENVIRONNEMENT_URL => array(
+                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_OPTIONS,
+                    self::PARAM_GLOBAL => true,
+                    self::PARAM_DEFAULT_VALUE => '.net',
+                    self::PARAM_RETURN => self::RETURN_TYPE_STRING,
                 ),
                 self::WAITING_SHIPMENT_ORDER_ID => array(
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
@@ -750,6 +759,38 @@ class LengowConfiguration extends Configuration
             $emails[0] = self::get('PS_SHOP_EMAIL');
         }
         return $emails;
+    }
+
+    /**
+     * Get the value of URL_ENVIRONNEMENT from the form
+     *
+     * @return string The URL suffix (e.g., ".io", ".net")
+     */
+    public static function getUrlEnvironnement()
+    {
+        return self::get(self::ENVIRONNEMENT_URL);
+    }
+
+    /**
+     * Get the URL of the Lengow solution
+     *
+     * @return string
+     */
+    public static function getLengowUrl()
+    {
+        $urlEnvironnement = self::getUrlEnvironnement();
+        return 'lengow' . $urlEnvironnement;
+    }
+
+    /**
+     * Get the URL of the API Lengow solution
+     *
+     * @return string
+     */
+    public static function getApiLengowUrl()
+    {
+        $urlEnvironnement = self::getUrlEnvironnement();
+        return 'https://api.lengow' . $urlEnvironnement;
     }
 
     /**

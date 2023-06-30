@@ -29,6 +29,7 @@ class LengowConfigurationForm
     const TYPE_CHECKBOX = 'checkbox';
     const TYPE_SELECT = 'select';
     const TYPE_DAY = 'day';
+    const TYPE_OPTIONS ='options';
 
     /**
      * @var array $fields checkbox keys
@@ -172,6 +173,17 @@ class LengowConfigurationForm
                             </div>
                             <div class="clearfix"></div>
                         </div>';
+                if (!empty($legend)) {
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                }
+                $html .= '</div>';
+                break;
+            case self::TYPE_OPTIONS:
+                $html .= '<label class="control-label">' . $label . '</label>
+                              <select class="form-control lengow_select" name="' . $name . '">
+                                <option value=".io" ' . ($value == '.io' ? 'selected' : '') . '>Prod</option>
+                                <option value=".net" ' . ($value == '.net' ? 'selected' : '') . '>Preprod</option>
+                              </select>';
                 if (!empty($legend)) {
                     $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
                 }

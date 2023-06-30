@@ -24,17 +24,7 @@
  */
 class LengowConnector
 {
-    /**
-     * @var string url of Lengow solution
-     */
-    // const LENGOW_URL = 'lengow.io';
-    const LENGOW_URL = 'lengow.net';
 
-    /**
-     * @var string url of the Lengow API
-     */
-     // const LENGOW_API_URL = 'https://api.lengow.io';
-     const LENGOW_API_URL = 'https://api.lengow.net';
 
     /* Lengow API routes */
     const API_ACCESS_TOKEN = '/access/get_token';
@@ -498,7 +488,7 @@ class LengowConnector
             $opts[CURLOPT_TIMEOUT] = $this->lengowUrls[$api];
         }
         // get base url for a specific environment
-        $url = self::LENGOW_API_URL . $api;
+        $url = LengowConfiguration::getApiLengowUrl(). $api;
         $opts[CURLOPT_CUSTOMREQUEST] = Tools::strtoupper($type);
         $url = parse_url($url);
         if (isset($url['port'])) {
