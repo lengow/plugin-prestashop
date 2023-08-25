@@ -97,13 +97,13 @@ class LengowCart extends Cart
      * @see Cart::updateQty()
      *
      * @param integer $quantity quantity to add (or subtract)
-     * @param integer $idProduct PrestaShop product id
-     * @param integer|null $idProductAttribute attribute id if needed
-     * @param mixed $idCustomization PrestaShop customization id
+     * @param integer $id_product PrestaShop product id
+     * @param integer|null $id_product_attribute attribute id if needed
+     * @param mixed $id_customization PrestaShop customization id
      * @param string $operator indicate if quantity must be increased or decreased
      * @param integer $idAddressDelivery PrestaShop address delivery id
      * @param Shop|null $shop Shop instance
-     * @param boolean $autoAddCartRule add auto cart rule
+     * @param boolean $auto_add_cart_rule add auto cart rule
      * @param boolean $skipAvailabilityCheckOutOfStock skip availability
      * @param bool $preserveGiftRemoval preserve gift removal
      *
@@ -113,13 +113,13 @@ class LengowCart extends Cart
      */
     public function updateQty(
         $quantity,
-        $idProduct,
-        $idProductAttribute = null,
-        $idCustomization = false,
+        $id_product,
+        $id_product_attribute = null,
+        $id_customization = false,
         $operator = 'up',
-        $idAddressDelivery = 0,
+        $id_address_delivery = 0,
         Shop $shop = null,
-        $autoAddCartRule = true,
+        $auto_add_cart_rule = true,
         $skipAvailabilityCheckOutOfStock = false,
         $preserveGiftRemoval = true,
         $useOrderPrices = false
@@ -128,13 +128,13 @@ class LengowCart extends Cart
             $shop = Context::getContext()->shop;
         }
         // this line are useless, but PrestaShop validator require it
-        $autoAddCartRule = $autoAddCartRule;
+        $autoAddCartRule = $auto_add_cart_rule;
         $useOrderPrices = $useOrderPrices;
         $skipAvailabilityCheckOutOfStock = $skipAvailabilityCheckOutOfStock;
         $preserveGiftRemoval = $preserveGiftRemoval;
         $quantity = (int) $quantity;
-        $idProduct = (int) $idProduct;
-        $idProductAttribute = (int) $idProductAttribute;
+        $idProduct = (int) $id_product;
+        $idProductAttribute = (int) $id_product_attribute;
         $product = new Product($idProduct, false, Configuration::get('PS_LANG_DEFAULT'), $shop->id);
         if ($idProductAttribute) {
             $combination = new Combination((int) $idProductAttribute);
@@ -172,8 +172,8 @@ class LengowCart extends Cart
         $result = $this->containsProduct(
             $idProduct,
             $idProductAttribute,
-            (int) $idCustomization,
-            (int) $idAddressDelivery
+            (int) $id_customization,
+            (int) $id_address_delivery
         );
         // update quantity if product already exist
         if ($result) {
@@ -198,7 +198,7 @@ class LengowCart extends Cart
             }
             // delete product from cart
             if ($newQty <= 0) {
-                return $this->deleteProduct($idProduct, $idProductAttribute, (int) $idCustomization);
+                return $this->deleteProduct($idProduct, $idProductAttribute, (int) $id_customization);
             }
             if ($newQty < $minimalQuantity && !$this->forceProduct) {
                 return false;
@@ -211,7 +211,7 @@ class LengowCart extends Cart
                     ' AND `id_product_attribute` = ' . (int) $idProductAttribute : '') . '
                 AND `id_cart` = ' . (int) $this->id .
                 (Configuration::get('PS_ALLOW_MULTISHIPPING') && $this->isMultiAddressDelivery()
-                    ? ' AND `id_address_delivery` = ' . (int) $idAddressDelivery : '') . '
+                    ? ' AND `id_address_delivery` = ' . (int) $id_address_delivery : '') . '
                 LIMIT 1'
             );
         } else {
@@ -236,7 +236,7 @@ class LengowCart extends Cart
                 'id_product' => (int) $idProduct,
                 'id_product_attribute' => (int) $idProductAttribute,
                 'id_cart' => (int) $this->id,
-                'id_address_delivery' => (int) $idAddressDelivery,
+                'id_address_delivery' => (int) $id_address_delivery,
                 'id_shop' => (int) $shop->id,
                 'quantity' => (int) $quantity,
                 'date_add' => date(LengowMain::DATE_FULL),
@@ -255,10 +255,10 @@ class LengowCart extends Cart
         if ($product->customizable) {
             return $this->_updateCustomizationQuantity(
                 $quantity,
-                (int) $idCustomization,
+                (int) $id_customization,
                 $idProduct,
                 $idProductAttribute,
-                (int) $idAddressDelivery,
+                (int) $id_address_delivery,
                 $operator
             );
         }
