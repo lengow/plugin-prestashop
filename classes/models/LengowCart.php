@@ -121,8 +121,8 @@ class LengowCart extends Cart
         Shop $shop = null,
         $auto_add_cart_rule = true,
         $skipAvailabilityCheckOutOfStock = false,
-        $preserveGiftRemoval = true,
-        $useOrderPrices = false
+        bool $preserveGiftRemoval = true,
+        bool $useOrderPrices = false
     ) {
         if (!$shop) {
             $shop = Context::getContext()->shop;
