@@ -66,7 +66,7 @@ class LengowOrderError
      * Get last error not finished from a marketplace reference
      *
      * @param string $marketplaceSku Lengow order id
-     * @param string $marketplaceName Lengow market place name
+     * @param string $marketplaceName Lengow marketplace name
      * @param integer $type order log type (import or send)
      *
      * @return array|false
