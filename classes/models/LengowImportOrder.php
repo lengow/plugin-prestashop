@@ -25,39 +25,39 @@
 class LengowImportOrder
 {
     /* Import Order construct params */
-    const PARAM_SHOP_ID = 'shop_id';
-    const PARAM_SHOP_GROUP_ID = 'shop_group_id';
-    const PARAM_LANG_ID = 'lang_id';
-    const PARAM_CONTEXT = 'context';
-    const PARAM_FORCE_SYNC = 'force_sync';
-    const PARAM_FORCE_PRODUCT = 'force_product';
-    const PARAM_DEBUG_MODE = 'debug_mode';
-    const PARAM_LOG_OUTPUT = 'log_output';
-    const PARAM_MARKETPLACE_SKU = 'marketplace_sku';
-    const PARAM_DELIVERY_ADDRESS_ID = 'delivery_address_id';
-    const PARAM_ORDER_DATA = 'order_data';
-    const PARAM_PACKAGE_DATA = 'package_data';
-    const PARAM_FIRST_PACKAGE = 'first_package';
-    const PARAM_IMPORT_ONE_ORDER = 'import_one_order';
+    public const PARAM_SHOP_ID = 'shop_id';
+    public const PARAM_SHOP_GROUP_ID = 'shop_group_id';
+    public const PARAM_LANG_ID = 'lang_id';
+    public const PARAM_CONTEXT = 'context';
+    public const PARAM_FORCE_SYNC = 'force_sync';
+    public const PARAM_FORCE_PRODUCT = 'force_product';
+    public const PARAM_DEBUG_MODE = 'debug_mode';
+    public const PARAM_LOG_OUTPUT = 'log_output';
+    public const PARAM_MARKETPLACE_SKU = 'marketplace_sku';
+    public const PARAM_DELIVERY_ADDRESS_ID = 'delivery_address_id';
+    public const PARAM_ORDER_DATA = 'order_data';
+    public const PARAM_PACKAGE_DATA = 'package_data';
+    public const PARAM_FIRST_PACKAGE = 'first_package';
+    public const PARAM_IMPORT_ONE_ORDER = 'import_one_order';
 
     /* Import Order data */
-    const MERCHANT_ORDER_ID = 'merchant_order_id';
-    const MERCHANT_ORDER_REFERENCE = 'merchant_order_reference';
-    const LENGOW_ORDER_ID = 'lengow_order_id';
-    const MARKETPLACE_SKU = 'marketplace_sku';
-    const MARKETPLACE_NAME = 'marketplace_name';
-    const DELIVERY_ADDRESS_ID = 'delivery_address_id';
-    const SHOP_ID = 'shop_id';
-    const CURRENT_ORDER_STATUS = 'current_order_status';
-    const PREVIOUS_ORDER_STATUS = 'previous_order_status';
-    const ERRORS = 'errors';
-    const RESULT_TYPE = 'result_type';
+    public const MERCHANT_ORDER_ID = 'merchant_order_id';
+    public const MERCHANT_ORDER_REFERENCE = 'merchant_order_reference';
+    public const LENGOW_ORDER_ID = 'lengow_order_id';
+    public const MARKETPLACE_SKU = 'marketplace_sku';
+    public const MARKETPLACE_NAME = 'marketplace_name';
+    public const DELIVERY_ADDRESS_ID = 'delivery_address_id';
+    public const SHOP_ID = 'shop_id';
+    public const CURRENT_ORDER_STATUS = 'current_order_status';
+    public const PREVIOUS_ORDER_STATUS = 'previous_order_status';
+    public const ERRORS = 'errors';
+    public const RESULT_TYPE = 'result_type';
 
     /* Synchronisation results */
-    const RESULT_CREATED = 'created';
-    const RESULT_UPDATED = 'updated';
-    const RESULT_FAILED = 'failed';
-    const RESULT_IGNORED = 'ignored';
+    public const RESULT_CREATED = 'created';
+    public const RESULT_UPDATED = 'updated';
+    public const RESULT_FAILED = 'failed';
+    public const RESULT_IGNORED = 'ignored';
 
     /**
      * @var integer|null PrestaShop shop id
@@ -290,8 +290,7 @@ class LengowImportOrder
         // checks if a record already exists in the lengow order table
         $this->idOrderLengow = LengowOrder::getIdFromLengowOrders(
             $this->marketplaceSku,
-            $this->marketplace->name,
-            $this->deliveryAddressId
+            $this->marketplace->name
         );
         // checks if an order already has an error in progress
         if ($this->idOrderLengow && $this->orderErrorAlreadyExist()) {
@@ -301,9 +300,9 @@ class LengowImportOrder
         $idOrder = LengowOrder::getOrderIdFromLengowOrders(
             $this->marketplaceSku,
             $this->marketplace->name,
-            $this->deliveryAddressId,
             $this->marketplace->legacyCode
         );
+
         // update order state if already imported
         if ($idOrder) {
             $orderUpdated = $this->checkAndUpdateOrder($idOrder);
@@ -399,7 +398,10 @@ class LengowImportOrder
     private function orderErrorAlreadyExist()
     {
         // if log import exist and not finished
-        $importLog = LengowOrderError::getLastImportLogNotFinished($this->marketplaceSku, $this->deliveryAddressId);
+        $importLog = LengowOrderError::getLastImportLogNotFinished(
+            $this->marketplaceSku,
+            $this->marketplace->name
+        );
         if (!$importLog) {
             return false;
         }
@@ -629,8 +631,7 @@ class LengowImportOrder
             if ($result) {
                 $this->idOrderLengow = LengowOrder::getIdFromLengowOrders(
                     $this->marketplaceSku,
-                    $this->marketplace->name,
-                    $this->deliveryAddressId
+                    $this->marketplace->name
                 );
                 LengowMain::log(
                     LengowLog::CODE_IMPORT,
@@ -1174,6 +1175,7 @@ class LengowImportOrder
         $cartData['id_shop'] = $this->idShop;
         // get billing data
         $billingData = LengowAddress::extractAddressDataFromAPI($this->orderData->billing_address);
+
         // create customer based on billing data
         // generation of fictitious email
         $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
@@ -1278,6 +1280,10 @@ class LengowImportOrder
             && $address->lastname === $addressData['last_name']
             && $address->firstname === $addressData['first_name']
         ) {
+            //$addressData['phone_home'] = '0033164387735';
+            //$addressData['phone_mobile'] = '0033677181198';
+            //$addressData['phone_office'] = '0033677181195';
+
             // Add specific phone number when shipping and billing are the same
             if (empty($address->phone_mobile) || $address->phone_mobile === $address->phone) {
                 $newPhone = false;

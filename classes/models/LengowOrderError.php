@@ -27,20 +27,20 @@ class LengowOrderError
     /**
      * @var string Lengow order error table name
      */
-    const TABLE_ORDER_ERROR = 'lengow_logs_import';
+    public const TABLE_ORDER_ERROR = 'lengow_logs_import';
 
     /* Order error fields */
-    const FIELD_ID = 'id';
-    const FIELD_ORDER_LENGOW_ID = 'id_order_lengow';
-    const FIELD_TYPE = 'type';
-    const FIELD_MESSAGE = 'message';
-    const FIELD_IS_FINISHED = 'is_finished';
-    const FIELD_MAIL = 'mail';
-    const FIELD_CREATED_AT = 'date';
+    public const FIELD_ID = 'id';
+    public const FIELD_ORDER_LENGOW_ID = 'id_order_lengow';
+    public const FIELD_TYPE = 'type';
+    public const FIELD_MESSAGE = 'message';
+    public const FIELD_IS_FINISHED = 'is_finished';
+    public const FIELD_MAIL = 'mail';
+    public const FIELD_CREATED_AT = 'date';
 
     /* Log order types */
-    const TYPE_ERROR_IMPORT = 1;
-    const TYPE_ERROR_SEND = 2;
+    public const TYPE_ERROR_IMPORT = 1;
+    public const TYPE_ERROR_SEND = 2;
 
     /**
      * Check if a Lengow order is in error
@@ -66,23 +66,26 @@ class LengowOrderError
      * Get last error not finished from a marketplace reference
      *
      * @param string $marketplaceSku Lengow order id
-     * @param integer $deliveryAddressId Lengow delivery address id
+     * @param string $marketplaceName Lengow delivery address id
      * @param integer $type order log type (import or send)
      *
      * @return array|false
      */
     public static function getLastImportLogNotFinished(
         $marketplaceSku,
-        $deliveryAddressId,
+        $marketplaceName,
         $type = self::TYPE_ERROR_IMPORT
     ) {
+
+
         // check if log already exists for the given order id
         $query = 'SELECT lli.`message`, lli.`date` FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
             LEFT JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo ON lli.`id_order_lengow` = lo.`id`
-            WHERE lo.`marketplace_sku` = \'' . pSQL($marketplaceSku) . '\'
-            AND lo.`delivery_address_id` = \'' . (int) $deliveryAddressId . '\'
+            WHERE lo.`'.LengowOrder::FIELD_MARKETPLACE_SKU.'` = \'' . pSQL($marketplaceSku) . '\'
+            AND lo.`'.LengowOrder::FIELD_MARKETPLACE_NAME.'` = \'' . pSQL($marketplaceName) . '\'
             AND lli.`type` = \'' . $type . '\'
             AND lli.`is_finished` = 0';
+
         return Db::getInstance()->getRow($query);
     }
 

@@ -27,65 +27,65 @@ class LengowOrder extends Order
     /**
      * @var string Lengow order table name
      */
-    const TABLE_ORDER = 'lengow_orders';
+    public const TABLE_ORDER = 'lengow_orders';
 
     /* Order fields */
-    const FIELD_ID = 'id';
-    const FIELD_ORDER_ID = 'id_order';
-    const FIELD_SHOP_ID = 'id_shop';
-    const FIELD_SHOP_GROUP_ID = 'id_shop_group';
-    const FIELD_LANG_ID = 'id_lang';
-    const FIELD_FLUX_ID = 'id_flux';
-    const FIELD_DELIVERY_ADDRESS_ID = 'delivery_address_id';
-    const FIELD_DELIVERY_COUNTRY_ISO = 'delivery_country_iso';
-    const FIELD_MARKETPLACE_SKU = 'marketplace_sku';
-    const FIELD_MARKETPLACE_NAME = 'marketplace_name';
-    const FIELD_MARKETPLACE_LABEL = 'marketplace_label';
-    const FIELD_ORDER_LENGOW_STATE = 'order_lengow_state';
-    const FIELD_ORDER_PROCESS_STATE = 'order_process_state';
-    const FIELD_ORDER_DATE = 'order_date';
-    const FIELD_ORDER_ITEM = 'order_item';
-    const FIELD_ORDER_TYPES = 'order_types';
-    const FIELD_CURRENCY = 'currency';
-    const FIELD_TOTAL_PAID = 'total_paid';
-    const FIELD_COMMISSION = 'commission';
-    const FIELD_CUSTOMER_NAME = 'customer_name';
-    const FIELD_CUSTOMER_EMAIL = 'customer_email';
-    const FIELD_CUSTOMER_VAT_NUMBER = 'customer_vat_number';
-    const FIELD_CARRIER = 'carrier';
-    const FIELD_CARRIER_METHOD = 'method';
-    const FIELD_CARRIER_TRACKING = 'tracking';
-    const FIELD_CARRIER_RELAY_ID = 'id_relay';
-    const FIELD_SENT_MARKETPLACE = 'sent_marketplace';
-    const FIELD_IS_REIMPORTED = 'is_reimported';
-    const FIELD_MESSAGE = 'message';
-    const FIELD_CREATED_AT = 'date_add';
-    const FIELD_EXTRA = 'extra';
+    public const FIELD_ID = 'id';
+    public const FIELD_ORDER_ID = 'id_order';
+    public const FIELD_SHOP_ID = 'id_shop';
+    public const FIELD_SHOP_GROUP_ID = 'id_shop_group';
+    public const FIELD_LANG_ID = 'id_lang';
+    public const FIELD_FLUX_ID = 'id_flux';
+    public const FIELD_DELIVERY_ADDRESS_ID = 'delivery_address_id';
+    public const FIELD_DELIVERY_COUNTRY_ISO = 'delivery_country_iso';
+    public const FIELD_MARKETPLACE_SKU = 'marketplace_sku';
+    public const FIELD_MARKETPLACE_NAME = 'marketplace_name';
+    public const FIELD_MARKETPLACE_LABEL = 'marketplace_label';
+    public const FIELD_ORDER_LENGOW_STATE = 'order_lengow_state';
+    public const FIELD_ORDER_PROCESS_STATE = 'order_process_state';
+    public const FIELD_ORDER_DATE = 'order_date';
+    public const FIELD_ORDER_ITEM = 'order_item';
+    public const FIELD_ORDER_TYPES = 'order_types';
+    public const FIELD_CURRENCY = 'currency';
+    public const FIELD_TOTAL_PAID = 'total_paid';
+    public const FIELD_COMMISSION = 'commission';
+    public const FIELD_CUSTOMER_NAME = 'customer_name';
+    public const FIELD_CUSTOMER_EMAIL = 'customer_email';
+    public const FIELD_CUSTOMER_VAT_NUMBER = 'customer_vat_number';
+    public const FIELD_CARRIER = 'carrier';
+    public const FIELD_CARRIER_METHOD = 'method';
+    public const FIELD_CARRIER_TRACKING = 'tracking';
+    public const FIELD_CARRIER_RELAY_ID = 'id_relay';
+    public const FIELD_SENT_MARKETPLACE = 'sent_marketplace';
+    public const FIELD_IS_REIMPORTED = 'is_reimported';
+    public const FIELD_MESSAGE = 'message';
+    public const FIELD_CREATED_AT = 'date_add';
+    public const FIELD_EXTRA = 'extra';
 
     /* Order process states */
-    const PROCESS_STATE_NEW = 0;
-    const PROCESS_STATE_IMPORT = 1;
-    const PROCESS_STATE_FINISH = 2;
+    public const PROCESS_STATE_NEW = 0;
+    public const PROCESS_STATE_IMPORT = 1;
+    public const PROCESS_STATE_FINISH = 2;
 
     /* Order states */
-    const STATE_ACCEPTED = 'accepted';
-    const STATE_WAITING_SHIPMENT = 'waiting_shipment';
-    const STATE_SHIPPED = 'shipped';
-    const STATE_CLOSED = 'closed';
-    const STATE_REFUSED = 'refused';
-    const STATE_CANCELED = 'canceled';
-    const STATE_REFUNDED = 'refunded';
+    public const STATE_ACCEPTED = 'accepted';
+    public const STATE_WAITING_SHIPMENT = 'waiting_shipment';
+    public const STATE_SHIPPED = 'shipped';
+    public const STATE_CLOSED = 'closed';
+    public const STATE_REFUSED = 'refused';
+    public const STATE_CANCELED = 'canceled';
+    public const STATE_REFUNDED = 'refunded';
 
     /* Order types */
-    const TYPE_PRIME = 'is_prime';
-    const TYPE_EXPRESS = 'is_express';
-    const TYPE_BUSINESS = 'is_business';
-    const TYPE_DELIVERED_BY_MARKETPLACE = 'is_delivered_by_marketplace';
+    public const TYPE_PRIME = 'is_prime';
+    public const TYPE_EXPRESS = 'is_express';
+    public const TYPE_BUSINESS = 'is_business';
+    public const TYPE_DELIVERED_BY_MARKETPLACE = 'is_delivered_by_marketplace';
 
     /**
      * @var string label fulfillment for old orders without order type
      */
-    const LABEL_FULFILLMENT = 'Fulfillment';
+    public const LABEL_FULFILLMENT = 'Fulfillment';
 
     /**
      * @var string Lengow order record id
@@ -321,7 +321,6 @@ class LengowOrder extends Order
      *
      * @param string $marketplaceSku Lengow order id
      * @param string $marketplace marketplace name
-     * @param integer $deliveryAddressId Lengow delivery address id
      * @param string $marketplaceLegacy old marketplace name for v2 compatibility
      *
      * @return integer|false
@@ -329,19 +328,19 @@ class LengowOrder extends Order
     public static function getOrderIdFromLengowOrders(
         $marketplaceSku,
         $marketplace,
-        $deliveryAddressId,
         $marketplaceLegacy
     ) {
         // v2 compatibility
-        $in = ($marketplaceLegacy === null
+        $in = (
+            $marketplaceLegacy === null
             ? '\'' . pSQL(Tools::strtolower($marketplace)) . '\''
             : '\'' . pSQL(Tools::strtolower($marketplace)) . '\', \''
             . pSQL(Tools::strtolower($marketplaceLegacy)) . '\''
         );
-        $query = 'SELECT `id_order`, `delivery_address_id`,`id_flux` 
+        $query = 'SELECT `id_order`,`id_flux` 
             FROM `' . _DB_PREFIX_ . 'lengow_orders`
-            WHERE `marketplace_sku` = \'' . pSQL($marketplaceSku) . '\'
-            AND `marketplace_name` IN (' . $in . ')
+            WHERE `'.self::FIELD_MARKETPLACE_SKU.'` = \'' . pSQL($marketplaceSku) . '\'
+            AND `'.self::FIELD_MARKETPLACE_NAME.'` IN (' . $in . ')
             AND `order_process_state` != 0';
         try {
             $results = Db::getInstance()->executeS($query);
@@ -351,15 +350,8 @@ class LengowOrder extends Order
         if (empty($results)) {
             return false;
         }
-        foreach ($results as $result) {
-            if ($result[self::FIELD_DELIVERY_ADDRESS_ID] === null && $result[self::FIELD_FLUX_ID] !== null) {
-                return (int) $result[self::FIELD_ORDER_ID];
-            }
-            if ((int) $result[self::FIELD_DELIVERY_ADDRESS_ID] === $deliveryAddressId) {
-                return (int) $result[self::FIELD_ORDER_ID];
-            }
-        }
-        return false;
+
+        return (int) reset($results)['id_order'];
     }
 
     /**
@@ -367,16 +359,17 @@ class LengowOrder extends Order
      *
      * @param string $marketplaceSku Lengow order id
      * @param string $marketplace marketplace name
-     * @param integer $deliveryAddressId Lengow delivery address id
+     *
      *
      * @return integer|false
      */
-    public static function getIdFromLengowOrders($marketplaceSku, $marketplace, $deliveryAddressId)
+    public static function getIdFromLengowOrders($marketplaceSku, $marketplace)
     {
         $query = 'SELECT `id` FROM `' . _DB_PREFIX_ . 'lengow_orders`
-            WHERE `marketplace_sku` = \'' . pSQL($marketplaceSku) . '\'
-            AND `marketplace_name` = \'' . pSQL($marketplace) . '\'
-            AND `delivery_address_id` = \'' . (int) $deliveryAddressId . '\'';
+            WHERE `'.self::FIELD_MARKETPLACE_SKU.'` = "'. pSQL($marketplaceSku) .'"
+            AND `'.self::FIELD_MARKETPLACE_NAME.'` = "' . pSQL($marketplace).'"' ;
+
+
         $result = Db::getInstance()->getRow($query);
         if ($result) {
             return (int) $result[self::FIELD_ID];
@@ -534,7 +527,8 @@ class LengowOrder extends Order
                 return Tools::ucfirst(self::STATE_SHIPPED);
             }
             if (($orderStateLengow === self::STATE_CANCELED || $orderStateLengow === self::STATE_REFUSED)
-                && ((int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_ACCEPTED)
+                && (
+                    (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_ACCEPTED)
                     || (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_SHIPPED)
                 )
             ) {
@@ -962,7 +956,8 @@ class LengowOrder extends Order
             return false;
         }
         if ($this->lengowProcessState !== self::PROCESS_STATE_FINISH &&
-            ((int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_SHIPPED)
+            (
+                (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_SHIPPED)
                 || (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_CANCELED)
             )
         ) {
