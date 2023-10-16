@@ -111,6 +111,7 @@ class LengowToolbox
     public const CHECKSUM_NUMBER_FILES_DELETED = 'number_files_deleted';
     public const CHECKSUM_FILE_MODIFIED = 'file_modified';
     public const CHECKSUM_FILE_DELETED = 'file_deleted';
+    public const CHECKSUM_FILE_DETAILS = 'file_details';
     public const LOGS = 'logs';
 
     /* Toolbox order data  */
@@ -482,7 +483,7 @@ class LengowToolbox
                     if (file_exists($filePath)) {
                         $fileMd = md5_file($filePath);
                         if ($fileMd !== $data[1]) {
-                            $fileModified[] = $shortPath ;//.'|'.base64_encode(file_get_contents($filePath));
+                            $fileModified[] = $shortPath ;
                         }
                     } else {
                         $fileDeleted[] = $shortPath;
@@ -504,6 +505,7 @@ class LengowToolbox
             self::CHECKSUM_NUMBER_FILES_DELETED => $fileDeletedCounter,
             self::CHECKSUM_FILE_MODIFIED => $fileModified,
             self::CHECKSUM_FILE_DELETED => $fileDeleted,
+            self::CHECKSUM_FILE_DETAILS => 1
         );
     }
 
@@ -537,7 +539,8 @@ class LengowToolbox
                             }
                             $fileModified[] = [
                                 'sort_path' => $shortPath,
-                                'content_encoded' => base64_encode(file_get_contents($filePath))
+                                'content_encoded' => base64_encode(file_get_contents($filePath)),
+                                'checksum' => $fileMd
                             ];
                         }
                     } else {
