@@ -538,7 +538,7 @@ class LengowToolbox
                                 continue;
                             }
                             $fileModified[] = [
-                                'sort_path' => $shortPath,
+                                'short_path' => $shortPath,
                                 'content_encoded' => base64_encode(file_get_contents($filePath)),
                                 'checksum' => $fileMd
                             ];
@@ -552,7 +552,7 @@ class LengowToolbox
         } else {
             $md5Available = false;
         }
-        
+
         return array(
             self::CHECKSUM_FILE_MODIFIED => $fileModified,
             self::CHECKSUM_FILE_DELETED => $fileDeleted,

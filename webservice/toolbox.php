@@ -79,6 +79,7 @@ switch ($action) {
         break;
     case LengowToolbox::ACTION_ORDER:
         $process = Tools::getValue(LengowToolbox::PARAM_PROCESS, LengowToolbox::PROCESS_TYPE_SYNC);
+        $error = false;
         if ($process === LengowToolbox::PROCESS_TYPE_GET_DATA) {
             $result = LengowToolbox::getOrderData(
                 Tools::getValue(LengowToolbox::PARAM_MARKETPLACE_SKU, null),
@@ -102,15 +103,20 @@ switch ($action) {
             );
         }
         if (isset($result[LengowToolbox::ERRORS][LengowToolbox::ERROR_CODE])) {
+            $error = true;
             if ($result[LengowToolbox::ERRORS][LengowToolbox::ERROR_CODE] === LengowConnector::CODE_404) {
                 header('HTTP/1.1 404 Not Found');
             } else {
                 header('HTTP/1.1 403 Forbidden');
             }
         }
+        if (!$error) {
+            header('Content-Type: application/json');
+        }
         echo json_encode($result);
         break;
     default:
+        header('Content-Type: application/json');
         $type = Tools::getValue(LengowToolbox::PARAM_TYPE, null);
         echo json_encode(LengowToolbox::getData($type));
         break;
