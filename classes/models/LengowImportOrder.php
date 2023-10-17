@@ -742,6 +742,7 @@ class LengowImportOrder
                 LengowOrder::FIELD_ORDER_ITEM => $this->orderItems,
                 LengowOrder::FIELD_CUSTOMER_NAME => pSQL($this->getCustomerName()),
                 LengowOrder::FIELD_CUSTOMER_EMAIL => pSQL($this->getCustomerEmail()),
+                LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => pSQL($this->getVatNumberFromOrderData()),
                 LengowOrder::FIELD_CARRIER => pSQL($this->carrierName),
                 LengowOrder::FIELD_CARRIER_METHOD => pSQL($this->carrierMethod),
                 LengowOrder::FIELD_CARRIER_TRACKING => pSQL($this->trackingNumber),
