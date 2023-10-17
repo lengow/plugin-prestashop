@@ -481,6 +481,17 @@ class LengowImportOrder
                     $this->marketplaceSku
                 );
             }
+            $vatNumberData = $this->getVatNumberFromOrderData();
+            if ($order->lengowCustomerVatNumber !== $vatNumberData) {
+                $this->checkAndUpdateLengowOrderData();
+                $orderUpdated = true;
+                LengowMain::log(
+                    LengowLog::CODE_IMPORT,
+                    LengowMain::setLogMessage('log.import.lengow_order_updated'),
+                    $this->logOutput,
+                    $this->marketplaceSku
+                );
+            }
         } catch (Exception $e) {
             $errorMessage = $e->getMessage() . '"' . $e->getFile() . '|' . $e->getLine();
             LengowMain::log(
