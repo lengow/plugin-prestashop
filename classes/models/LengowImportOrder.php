@@ -1292,9 +1292,7 @@ class LengowImportOrder
             && $address->lastname === $addressData['last_name']
             && $address->firstname === $addressData['first_name']
         ) {
-            //$addressData['phone_home'] = '0033164387735';
-            //$addressData['phone_mobile'] = '0033677181198';
-            //$addressData['phone_office'] = '0033677181195';
+           
 
             // Add specific phone number when shipping and billing are the same
             if (empty($address->phone_mobile) || $address->phone_mobile === $address->phone) {
