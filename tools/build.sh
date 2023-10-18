@@ -24,8 +24,15 @@ remove_directory(){
 remove_files(){
     DIRECTORY=$1
     FILE=$2
-    find $DIRECTORY -name $FILE -nowarn -exec rm -rf {} \;
-    echo "- Delete $FILE : ""$VERT""DONE""$NORMAL"""
+    if [ -f "${DIRECTORY}/${FILE}" ]
+    then
+        find $DIRECTORY -name $FILE -nowarn -exec rm -rf {} \;
+        echo -e "- Delete ${FILE} : ${VERT}DONE${NORMAL}"
+    fi
+    if [ -d "${DIRECTORY}/${FILE}" ]
+    then
+        rm -Rf ${DIRECTORY}/${FILE}
+    fi
 }
 
 remove_directories(){
@@ -51,33 +58,38 @@ FOLDER_EXPORT="/tmp/lengow/export"
 FOLDER_TOOLS="/tmp/lengow/tools"
 FOLDER_TRANSLATION="/tmp/lengow/translations/yml"
 
-VERT="\\033[1;32m"
-ROUGE="\\033[1;31m"
-NORMAL="\\033[0;39m"
-BLEU="\\033[1;36m"
+VERT="\e[32m"
+ROUGE="\e[31m"
+NORMAL="\e[39m"
+BLEU="\e[36m"
 
-# Process
+
+# process
 echo
 echo "#####################################################"
 echo "##                                                 ##"
-echo "##       ""$BLEU""Lengow PrestaShop""$NORMAL"" - Build Module          ##"
+echo -e "##       "${BLEU}Lengow Magento${NORMAL}" - Build Module             ##"
 echo "##                                                 ##"
 echo "#####################################################"
 echo
-FOLDER="$(dirname "$(pwd)")"
-echo $FOLDER
+PWD=$(pwd)
+FOLDER=$(dirname ${PWD})
+echo ${FOLDER}
+
 if [ ! -d "$FOLDER" ]; then
-	echo "Folder doesn't exist : ""$ROUGE""ERROR""$NORMAL"""
+	echo -e "Folder doesn't exist : ${ROUGE}ERROR${NORMAL}"
 	echo
 	exit 0
 fi
+PHP=$(which php8.1)
+echo ${PHP}
 
 # generate translations
-php translate.php
-echo "- Generate translations : ""$VERT""DONE""$NORMAL"""
+${PHP} translate.php
+echo -e "- Generate translations : ${VERT}DONE${NORMAL}"
 # create files checksum
 php checkmd5.php
-echo "- Create files checksum : ""$VERT""DONE""$NORMAL"""
+echo -e "- Create files checksum : ${VERT}DONE${NORMAL}"
 # remove TMP FOLDER
 remove_directory $FOLDER_TMP
 # copy files
@@ -88,6 +100,8 @@ remove_files $FOLDER_TMP "dod.md"
 remove_files $FOLDER_TMP "README.md"
 # remove .gitignore
 remove_files $FOLDER_TMP ".gitignore"
+# remove php-cs-fixer-cache
+remove_files $FOLDER_TMP ".php-cs-fixer.cache"
 # remove .git
 remove_files $FOLDER_TMP ".git"
 # remove .DS_Store
@@ -102,36 +116,36 @@ remove_files $FOLDER_TMP "Jenkinsfile"
 remove_files $FOLDER_CONFIG "marketplaces.json"
 # clean Log Folder
 remove_files $FOLDER_LOGS "*.txt"
-echo "- Clean logs folder : ""$VERT""DONE""$NORMAL"""
+echo -e "- Clean logs folder : ${VERT}DONE${NORMAL}"
 # clean export folder
 remove_directories $FOLDER_EXPORT
-echo "- Clean export folder : ""$VERT""DONE""$NORMAL"""
+echo -e "- Clean export folder : ${VERT}DONE${NORMAL}"
 # clean tools folder
 remove_directory $FOLDER_TOOLS
-echo "- Remove Tools folder : ""$VERT""DONE""$NORMAL"""
+echo -e "- Remove Tools folder : ${VERT}DONE${NORMAL}"
 # remove TMP FOLDER_TRANSLATION
 remove_directory $FOLDER_TRANSLATION
-echo "- Remove Translation yml folder : ""$VERT""DONE""$NORMAL"""
+echo -e "- Remove Translation yml folder : ${VERT}DONE${NORMAL}"
 # remove config.xml
 find $FOLDER_TMP -name "config.xml" -delete
-echo "- Delete config.xml : ""$VERT""DONE""$NORMAL"""
+echo -e "- Delete config.xml : ${VERT}DONE${NORMAL}"
 # remove config_fr.xml
 find $FOLDER_TMP -name "config_fr.xml" -delete
-echo "- Delete config_fr.xml : ""$VERT""DONE""$NORMAL"""
+echo -e "- Delete config_fr.xml : ${VERT}DONE${NORMAL}"
 # remove config_es.xml
 find $FOLDER_TMP -name "config_es.xml" -delete
-echo "- Delete config_es.xml : ""$VERT""DONE""$NORMAL"""
+echo -e "- Delete config_es.xml : ${VERT}DONE${NORMAL}"
 # remove config_it.xml
 find $FOLDER_TMP -name "config_it.xml" -delete
-echo "- Delete config_it.xml : ""$VERT""DONE""$NORMAL"""
+echo -e "- Delete config_it.xml : ${VERT}DONE${NORMAL}"
 # remove todo.txt
 find $FOLDER_TMP -name "todo.txt" -delete
-echo "- todo.txt : ""$VERT""DONE""$NORMAL"""
+echo -e "- todo.txt : ${VERT}DONE${NORMAL}"
 # make zip
 cd /tmp
 zip "-r" $ARCHIVE_NAME "lengow"
-echo "- Build archive : ""$VERT""DONE""$NORMAL"""
-if [ -d  ~/Bureau ]
+echo -e "- Build archive : ${VERT}DONE${NORMAL}"
+if [ -d  "~/Bureau" ]
 then
     mv $ARCHIVE_NAME ~/Bureau
 else 
