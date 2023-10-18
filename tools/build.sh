@@ -38,7 +38,7 @@ remove_files(){
 remove_directories(){
     DIRECTORY=$1
     find $DIRECTORY -maxdepth 1 -mindepth 1 -type d -exec rm -rf {} \;
-    echo "- Delete $FILE : ""$VERT""DONE""$NORMAL"""
+    echo -e "- Delete $FILE : ${VERT}DONE${NORMAL}"
 }
 # check parameters
 if [ -z "$1" ]; then
@@ -75,6 +75,17 @@ echo
 PWD=$(pwd)
 FOLDER=$(dirname ${PWD})
 echo ${FOLDER}
+# remove TMP FOLDER
+if [ -d "${FOLDER_TMP}" ]
+then
+    rm -Rf ${FOLDER_TMP}
+fi
+# create folder
+if [ -d "${FOLDER_TMP}" ]
+then
+    rm -Rf ${FOLDER_TMP}
+fi
+mkdir ${FOLDER_TMP}
 
 if [ ! -d "$FOLDER" ]; then
 	echo -e "Folder doesn't exist : ${ROUGE}ERROR${NORMAL}"
