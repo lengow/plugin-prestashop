@@ -131,4 +131,9 @@ echo "- todo.txt : ""$VERT""DONE""$NORMAL"""
 cd /tmp
 zip "-r" $ARCHIVE_NAME "lengow"
 echo "- Build archive : ""$VERT""DONE""$NORMAL"""
-mv $ARCHIVE_NAME ~/Bureau
+if [ -d  ~/Bureau ]
+then
+    mv $ARCHIVE_NAME ~/Bureau
+else 
+    mv $ARCHIVE_NAME ~/shared
+fi
