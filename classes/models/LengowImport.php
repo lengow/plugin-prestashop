@@ -329,9 +329,7 @@ class LengowImport
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage(
                 'log.import.init_params',
-                array(
-                    'init_params' => json_encode($params)
-                )
+                ['init_params' => json_encode($params)]                
             ),
             $this->logOutput
         );
