@@ -99,7 +99,7 @@ echo ${PHP}
 ${PHP} translate.php
 echo -e "- Generate translations : ${VERT}DONE${NORMAL}"
 # create files checksum
-php checkmd5.php
+${PHP} checkmd5.php
 echo -e "- Create files checksum : ${VERT}DONE${NORMAL}"
 # remove TMP FOLDER
 remove_directory $FOLDER_TMP
