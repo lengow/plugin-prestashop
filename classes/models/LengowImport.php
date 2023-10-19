@@ -325,6 +325,16 @@ class LengowImport
             );
             $this->limit = isset($params[self::PARAM_LIMIT]) ? (int) $params[self::PARAM_LIMIT] : 0;
         }
+        LengowMain::log(
+            LengowLog::CODE_IMPORT,
+            LengowMain::setLogMessage(
+                'log.import.init_params',
+                array(
+                    'init_params' => json_encode($params)
+                )
+            ),
+            $this->logOutput
+        );
     }
 
     /**
