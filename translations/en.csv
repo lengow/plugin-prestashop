@@ -493,6 +493,7 @@ log.import.catalog_id_already_used|catalog ID %{catalog_id} is already used by s
 log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and marketplace: %{marketplace_name} with account ID: %{account_id}
 log.import.find_all_orders|%{nb_order} order(s) found with account ID: %{account_id}
 log.import.sync_result|%{number_orders_processed} orders processed, %{number_orders_created} created, %{number_orders_updated} updated, %{number_orders_failed} failed, %{number_orders_ignored} ignored and %{number_orders_not_formatted} not formatted
+log.import.init_params|import initialized with params : %{init_params}
 log.import.connector_get_order|get order with order ID: %{marketplace_sku} and marketplace: %{marketplace_name}
 log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} for catalogs ID: %{catalog_id}
 log.import.error_already_created|%{decoded_message} (created on the %{date_message})
