@@ -27,13 +27,11 @@ class LengowConnector
     /**
      * @var string url of Lengow solution
      */
-
     const LENGOW_URL = 'lengow.net';
 
     /**
      * @var string url of the Lengow API
      */
-
     const LENGOW_API_URL = 'https://api.lengow.net';
 
     /* Lengow API routes */
