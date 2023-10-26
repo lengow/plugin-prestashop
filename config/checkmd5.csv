@@ -26,7 +26,7 @@
 /classes/models/LengowConfigurationForm.php|7ccd502d343aa3685e752fd4707da2e4
 /classes/models/LengowCustomer.php|a054cef68aeeda86126a057bc559dbee
 /classes/models/LengowSync.php|7da99733d7490d5693e194471fcccf95
-/classes/models/LengowConnector.php|6760cbe0b97c466d9626f4bdadc3efe2
+/classes/models/LengowConnector.php|ded77bca19d9b2bdd4678f0f1d4eea2a
 /classes/models/LengowLink.php|791940858705ad4e19ca15d35cbb5900
 /classes/models/LengowInstall.php|b6be8c4b2e807da7335f563ad32d1340
 /classes/models/LengowException.php|6754a4ddcd8bebd230d84a0f1929f8e2

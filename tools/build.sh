@@ -49,6 +49,15 @@ else
 	VERSION="$1"
 	ARCHIVE_NAME='lengow.prestashop.'$VERSION'.zip'
 fi
+# Check parameters
+if [ -z "$2" ]; then
+	echo 'Deploy environment is not set: preprod or prod'
+	echo
+	exit 0
+fi
+if [ ! -z "$2" ] && [ "$2" == "preprod" ]; then
+        ARCHIVE_NAME="preprod__${ARCHIVE_NAME}"        
+fi
 
 # Variables
 FOLDER_TMP="/tmp/lengow"
@@ -62,6 +71,7 @@ VERT="\e[32m"
 ROUGE="\e[31m"
 NORMAL="\e[39m"
 BLEU="\e[36m"
+DEPLOY_ENV=$2
 
 
 # process
@@ -75,6 +85,13 @@ echo
 PWD=$(pwd)
 FOLDER=$(dirname ${PWD})
 echo ${FOLDER}
+# Change config for preprod
+if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "preprod" ]; then
+    sed -i 's/lengow.io/lengow.net/g' ${FOLDER}/classes/models/LengowConnector.php 
+fi
+if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "prod" ]; then
+    sed -i 's/lengow.net/lengow.io/g' ${FOLDER}/classes/models/LengowConnector.php 
+fi
 # remove TMP FOLDER
 if [ -d "${FOLDER_TMP}" ]
 then
