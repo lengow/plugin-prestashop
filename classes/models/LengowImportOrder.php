@@ -1190,8 +1190,12 @@ class LengowImportOrder
 
         // create customer based on billing data
         // generation of fictitious email
-        $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
-        $billingData['email'] = $this->marketplaceSku . '-' . $this->marketplace->name . '@' . $domain;
+
+        if ( (bool) LengowConfiguration::getGlobalValue(LengowConfiguration::ANONYMIZE_EMAIL)) {
+            $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
+            $billingData['email'] = md5($this->marketplaceSku . '-' . $this->marketplace->name) . '@' . strtolower($domain);
+        }
+
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.generate_unique_email', array('email' => $billingData['email'])),
@@ -1292,7 +1296,7 @@ class LengowImportOrder
             && $address->lastname === $addressData['last_name']
             && $address->firstname === $addressData['first_name']
         ) {
-           
+
 
             // Add specific phone number when shipping and billing are the same
             if (empty($address->phone_mobile) || $address->phone_mobile === $address->phone) {
