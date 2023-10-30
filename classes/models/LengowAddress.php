@@ -387,7 +387,9 @@ class LengowAddress extends Address
      */
     public static function cleanName($name)
     {
-        return LengowMain::replaceAccentedChars(trim(preg_replace('/[0-9!<>,;?=+()@#"�{}_$%:]/', '', $name)));
+        return LengowMain::replaceAccentedChars(
+            trim(preg_replace('/[0-9!<>,;?=+()@#"�{}_$%:]/', '', (string) $name))
+        );
     }
 
     /**
@@ -778,7 +780,9 @@ class LengowAddress extends Address
      */
     protected function cleanString($string)
     {
-        $string = Tools::strtolower(str_replace(array(' ', '-', '_', '.'), '', trim($string)));
+        $string = Tools::strtolower(
+            str_replace(array(' ', '-', '_', '.'), '', trim((string) $string))
+        );
         return LengowMain::replaceAccentedChars(html_entity_decode($string));
     }
 }

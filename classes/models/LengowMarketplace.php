@@ -120,6 +120,9 @@ class LengowMarketplace
         self::loadApiMarketplace();
         $this->name = (string) Tools::strtolower($name);
         if (!isset(self::$marketplaces->{$this->name})) {
+            self::loadApiMarketplace(true);
+        }
+        if (!isset(self::$marketplaces->{$this->name})) {
             throw new LengowException(
                 LengowMain::setLogMessage(
                     'lengow_log.exception.marketplace_not_present',

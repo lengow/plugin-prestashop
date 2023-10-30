@@ -1,4 +1,15 @@
 =============================================================
+Version 3.4.5
+=============================================================
+
+ - Feature:  Toolbox file details
+ - Feature:  Log import params initialized
+ - Feature:  Anonymize customer address e-mail in config 
+ - Bugfix:   Vat number sync update
+ - Bugfix:   Order duplicate when delivery_address_id changes
+ - Bugfix:   php8.1 address strings data not be null
+
+=============================================================
 Version 3.4.4
 =============================================================
 
