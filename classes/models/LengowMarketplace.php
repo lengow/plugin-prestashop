@@ -689,7 +689,7 @@ class LengowMarketplace
      *
      * @param string $marketplaceName Lengow marketplace name
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdMarketplace($marketplaceName)
     {
@@ -711,7 +711,7 @@ class LengowMarketplace
      * @param string $marketplaceLabel Lengow marketplace label
      * @param bool $carrierRequired carrier is required for ship action
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function insertMarketplace($marketplaceName, $marketplaceLabel, $carrierRequired)
     {
@@ -738,7 +738,7 @@ class LengowMarketplace
      * @param string $marketplaceLabel Lengow marketplace label
      * @param bool $carrierRequired carrier is required for ship action
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function updateMarketplace($idMarketplace, $marketplaceLabel, $carrierRequired)
     {

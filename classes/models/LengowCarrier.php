@@ -98,7 +98,7 @@ class LengowCarrier extends Carrier
      * @param int|null $idCountry PrestaShop country id
      * @param string|null $idRelay Delivery relay id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdCarrierBySemanticSearch($search, $idCountry = null, $idRelay = null)
     {
@@ -118,7 +118,7 @@ class LengowCarrier extends Carrier
      * @param string $search Carrier name
      * @param int|null $idCountry PrestaShop country id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdCarrierByCarrierName($search, $idCountry = null)
     {
@@ -139,7 +139,7 @@ class LengowCarrier extends Carrier
      * @param int|null $idCountry PrestaShop country id
      * @param string|null $idRelay Delivery relay id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdCarrierByExternalModuleName($search, $idCountry = null, $idRelay = null)
     {
@@ -214,7 +214,7 @@ class LengowCarrier extends Carrier
      * @param int $idCarrier PrestaShop carrier id
      * @param int|null $idCountry PrestaShop country id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdActiveCarrierByIdCarrier($idCarrier, $idCountry = null)
     {
@@ -254,7 +254,7 @@ class LengowCarrier extends Carrier
      * @param int $idCarrier PrestaShop carrier id
      * @param int|null $idCountry PrestaShop country id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdReferenceByIdCarrier($idCarrier, $idCountry = null)
     {
@@ -281,7 +281,7 @@ class LengowCarrier extends Carrier
      * @param string $idMarketplace Lengow marketplace id
      * @param string $carrierMarketplaceName Lengow marketplace carrier name
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdCarrierByCarrierMarketplaceName($idCountry, $idMarketplace, $carrierMarketplaceName)
     {
@@ -352,7 +352,7 @@ class LengowCarrier extends Carrier
      *
      * @param string $carrierMarketplaceName Lengow carrier marketplace name
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdCarrierMarketplace($carrierMarketplaceName)
     {
@@ -439,7 +439,7 @@ class LengowCarrier extends Carrier
      * @param string $carrierMarketplaceLabel Lengow carrier marketplace label
      * @param string|null $carrierLengowCode Lengow carrier lengow code
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function insertCarrierMarketplace(
         $carrierMarketplaceName,
@@ -464,7 +464,7 @@ class LengowCarrier extends Carrier
      * @param int $idCarrierMarketplace Lengow carrier marketplace id
      * @param array $params all parameters to update a carrier marketplace
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function updateCarrierMarketplace($idCarrierMarketplace, $params)
     {
@@ -619,7 +619,7 @@ class LengowCarrier extends Carrier
      * @param int $idCountry PrestaShop country id
      * @param int $idMarketplace Lengow marketplace id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdDefaultCarrier($idCountry, $idMarketplace)
     {
@@ -641,7 +641,7 @@ class LengowCarrier extends Carrier
      * @param int $idMarketplace Lengow marketplace id
      * @param bool $active get active carrier id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getDefaultIdCarrier($idCountry, $idMarketplace, $active = false)
     {
@@ -667,7 +667,7 @@ class LengowCarrier extends Carrier
      * @param int $idCountry PrestaShop country id
      * @param int $idMarketplace Lengow marketplace id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getDefaultIdCarrierMarketplace($idCountry, $idMarketplace)
     {
@@ -749,7 +749,7 @@ class LengowCarrier extends Carrier
      * @param int $idMarketplace Lengow marketplace id
      * @param array $additionalParams all additional parameters (id_carrier or id_carrier_marketplace)
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function insertDefaultCarrier($idCountry, $idMarketplace, $additionalParams = [])
     {
@@ -771,7 +771,7 @@ class LengowCarrier extends Carrier
      * @param int $idDefaultCarrier Lengow default carrier id
      * @param array $params all parameters to update default carrier (id_carrier or id_carrier_marketplace)
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function updateDefaultCarrier($idDefaultCarrier, $params)
     {
@@ -787,7 +787,7 @@ class LengowCarrier extends Carrier
      * @param int $idMarketplace Lengow marketplace id
      * @param int $idCarrier PrestaShop carrier id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdMarketplaceCarrierCountry($idCountry, $idMarketplace, $idCarrier)
     {
@@ -837,7 +837,7 @@ class LengowCarrier extends Carrier
      * @param int $idMarketplace Lengow marketplace id
      * @param int $idCarrier PrestaShop carrier id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdCarrierMarketplaceByMarketplaceCarrierCountry($idCountry, $idMarketplace, $idCarrier)
     {
@@ -892,7 +892,7 @@ class LengowCarrier extends Carrier
      * @param int $idCarrier PrestaShop carrier id
      * @param int $idCarrierMarketplace Lengow carrier marketplace id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function insertMarketplaceCarrierCountry(
         $idCountry,
@@ -917,7 +917,7 @@ class LengowCarrier extends Carrier
      * @param int $idMarketplaceCarrierCountry Lengow marketplace carrier country id
      * @param int $idCarrierMarketplace Lengow carrier marketplace id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function updateMarketplaceCarrierCountry($idMarketplaceCarrierCountry, $idCarrierMarketplace)
     {
@@ -981,7 +981,7 @@ class LengowCarrier extends Carrier
      *
      * @throws LengowException mondial relay not found
      *
-     * @return integer -1 = compatibility not ensured, 0 = not a carrier module, 1 = compatibility ensured
+     * @return int -1 = compatibility not ensured, 0 = not a carrier module, 1 = compatibility ensured
      */
     public static function carrierCompatibility($idOrder, $idCustomer, $idCart, $idCarrier, $shippingAddress)
     {
@@ -1166,7 +1166,7 @@ class LengowCarrier extends Carrier
      *
      * @param string|null $idRelay Delivery relay id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdMondialRelayCarrier($idRelay = null)
     {

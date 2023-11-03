@@ -94,7 +94,7 @@ class LengowOrderSettingController extends LengowController
                     'marketplace_matching' => preg_replace('/\r|\n/', '', $displayMarketplaceMatching)
                 ];
                 echo json_encode($data);
-                exit();
+                exit;
             case 'process':
                 // save carrier matching
                 if ($idCountry) {

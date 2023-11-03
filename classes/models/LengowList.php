@@ -697,7 +697,7 @@ class LengowList
     /**
      * Get total product
      *
-     * @return integer
+     * @return int
      */
     public function getTotal()
     {

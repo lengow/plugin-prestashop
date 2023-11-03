@@ -133,7 +133,7 @@ class LengowMain
      *
      * @param string $state state to be matched
      *
-     * @return integer
+     * @return int
      */
     public static function getOrderState($state)
     {
@@ -863,7 +863,7 @@ class LengowMain
      * @param LengowMarketplace $marketplace Lengow marketplace instance
      * @param bool $shipmentByMp order shipped by marketplace
      *
-     * @return integer
+     * @return int
      */
     public static function getPrestashopStateId($orderStateMarketplace, $marketplace, $shipmentByMp)
     {
@@ -1019,7 +1019,7 @@ class LengowMain
      *
      * @param int|null $idLang PrestaShop lang id
      *
-     * @return integer|null
+     * @return int|null
      */
     public static function getLengowErrorStateId($idLang = null)
     {

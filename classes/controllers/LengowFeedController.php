@@ -120,7 +120,7 @@ class LengowFeedController extends LengowController
                     echo json_encode($data);
                     break;
             }
-            exit();
+            exit;
         }
     }
 

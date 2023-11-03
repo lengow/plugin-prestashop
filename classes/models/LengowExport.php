@@ -669,7 +669,7 @@ class LengowExport
     /**
      * Get Total product (Active/Inactive, In Stock/ Out Stock)
      *
-     * @return integer
+     * @return int
      */
     public function getTotalProduct()
     {
@@ -699,7 +699,7 @@ class LengowExport
     /**
      * Get Count export product
      *
-     * @return integer
+     * @return int
      */
     public function getTotalExportProduct()
     {

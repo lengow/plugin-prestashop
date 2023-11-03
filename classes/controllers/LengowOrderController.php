@@ -155,7 +155,7 @@ class LengowOrderController extends LengowController
                     Tools::redirectAdmin(self::getOrderAdminLink($idOrder));
                     break;
             }
-            exit();
+            exit;
         }
     }
 

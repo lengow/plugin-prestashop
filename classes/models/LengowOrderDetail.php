@@ -29,7 +29,7 @@ class LengowOrderDetail extends OrderDetail
      * @param int $idOrder PrestaShop order id
      * @param int|string $idProduct PrestaShop product id
      *
-     * @return integer
+     * @return int
      */
     public static function findByOrderIdProductId($idOrder, $idProduct)
     {

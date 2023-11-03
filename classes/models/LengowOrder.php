@@ -322,7 +322,7 @@ class LengowOrder extends Order
      * @param string $marketplace marketplace name
      * @param string $marketplaceLegacy old marketplace name for v2 compatibility
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getOrderIdFromLengowOrders(
         $marketplaceSku,
@@ -360,7 +360,7 @@ class LengowOrder extends Order
      * @param string $marketplace marketplace name
      *
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdFromLengowOrders($marketplaceSku, $marketplace)
     {
@@ -403,7 +403,7 @@ class LengowOrder extends Order
      * @param int $idOrder PrestaShop order id
      * @param int $deliveryAddressId Lengow delivery address id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdFromLengowDeliveryAddress($idOrder, $deliveryAddressId)
     {
@@ -546,7 +546,7 @@ class LengowOrder extends Order
     /**
      * Cancel and re-import order
      *
-     * @return integer|false
+     * @return int|false
      */
     public function cancelAndreImportOrder()
     {
@@ -865,7 +865,7 @@ class LengowOrder extends Order
      *
      * @param string $state state to be matched
      *
-     * @return integer
+     * @return int
      */
     public static function getOrderProcessState($state)
     {
@@ -1166,7 +1166,7 @@ class LengowOrder extends Order
     /**
      * Return the number of Lengow orders imported in PrestaShop
      *
-     * @return integer
+     * @return int
      */
     public static function countOrderImportedByLengow()
     {
@@ -1178,7 +1178,7 @@ class LengowOrder extends Order
     /**
      * Return the number of Lengow orders with error
      *
-     * @return integer
+     * @return int
      */
     public static function countOrderWithError()
     {
@@ -1194,7 +1194,7 @@ class LengowOrder extends Order
     /**
      * Return the number of Lengow orders to be sent
      *
-     * @return integer
+     * @return int
      */
     public static function countOrderToBeSent()
     {

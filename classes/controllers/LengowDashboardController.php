@@ -41,7 +41,7 @@ class LengowDashboardController extends LengowController
                     echo json_encode(['success' => true]);
                     break;
             }
-            exit();
+            exit;
         }
     }
 

@@ -53,7 +53,7 @@ class LengowMethod
      *
      * @param string $methodMarketplaceName Lengow method marketplace name
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdMethodMarketplace($methodMarketplaceName)
     {
@@ -156,7 +156,7 @@ class LengowMethod
      * @param string $methodMarketplaceLabel Lengow method marketplace label
      * @param string $methodLengowCode Lengow method lengow code
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function insertMethodMarketplace(
         $methodMarketplaceName,
@@ -185,7 +185,7 @@ class LengowMethod
      * @param int $idMethodMarketplace Lengow method marketplace id
      * @param array $params all parameters to update a carrier method
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function updateMethodMarketplace($idMethodMarketplace, $params)
     {
@@ -293,7 +293,7 @@ class LengowMethod
      * @param int $idMarketplace Lengow marketplace id
      * @param int $idMethodMarketplace Lengow method marketplace id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdMarketplaceMethodCountry($idCountry, $idMarketplace, $idMethodMarketplace)
     {
@@ -343,7 +343,7 @@ class LengowMethod
      * @param string $idMarketplace Lengow marketplace id
      * @param string $methodMarketplaceName Lengow marketplace method name
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdCarrierByMethodMarketplaceName($idCountry, $idMarketplace, $methodMarketplaceName)
     {
@@ -400,7 +400,7 @@ class LengowMethod
      * @param int $idCarrier PrestaShop carrier id
      * @param int $idMethodMarketplace Lengow method marketplace id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function insertMarketplaceMethodCountry(
         $idCountry,
@@ -429,7 +429,7 @@ class LengowMethod
      * @param int $idMarketplaceMethodCountry Lengow marketplace method country id
      * @param int $idCarrier PrestaShop carrier id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function updateMarketplaceMethodCountry($idMarketplaceMethodCountry, $idCarrier)
     {

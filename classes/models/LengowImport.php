@@ -439,7 +439,7 @@ class LengowImport
     /**
      * Get Rest time to make a new order synchronization
      *
-     * @return integer
+     * @return int
      */
     public static function restTimeToImport()
     {

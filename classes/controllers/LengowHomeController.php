@@ -105,7 +105,7 @@ class LengowHomeController extends LengowController
                     );
                     break;
             }
-            exit();
+            exit;
         }
     }
 

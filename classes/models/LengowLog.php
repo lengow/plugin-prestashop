@@ -167,6 +167,6 @@ class LengowLog extends LengowFile
         header('Content-type: text/plain');
         header('Content-Disposition: attachment; filename="' . $fileName . '"');
         echo $contents;
-        exit();
+        exit;
     }
 }

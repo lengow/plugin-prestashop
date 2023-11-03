@@ -1,6 +1,9 @@
 <?php
 /**
  * french
+ * @author    Team Connector <team-connector@lengow.com>
+ * @copyright 2021 Lengow SAS
+ * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 $_MODULE = [];
 $_MODULE['<{lengow}prestashop>lengow_5bece808b0b66f50124ebc25494dc4d3'] = 'Lengow';

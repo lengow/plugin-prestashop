@@ -73,12 +73,12 @@ class LengowProduct extends Product
     /**
      * @var bool is product in sale
      */
-    protected $isSale = false;
+    protected $isSale;
 
     /**
      * @var array|null combination of product's attributes
      */
-    protected $combinations = null;
+    protected $combinations;
 
     /**
      * @var array product's features
@@ -107,6 +107,8 @@ class LengowProduct extends Product
     public function __construct($idProduct = null, $idLang = null, $params = [])
     {
         parent::__construct($idProduct, false, $idLang);
+        $this->isSale = false;
+        $this->combinations = null;
         $this->carrier = isset($params['carrier']) ? $params['carrier'] : null;
         $this->imageSize = isset($params['image_size']) ? $params['image_size'] : self::getMaxImageType();
         $this->context = Context::getContext();
@@ -911,7 +913,7 @@ class LengowProduct extends Product
      * @param string $value attribute value
      * @param int $idShop PrestaShop shop id
      *
-     * @return integer|false
+     * @return int|false
      */
     protected static function findProduct($key, $value, $idShop)
     {

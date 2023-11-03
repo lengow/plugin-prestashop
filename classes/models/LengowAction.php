@@ -166,7 +166,7 @@ class LengowAction
      *
      * @param int $actionId Lengow action id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getActionByActionId($actionId)
     {
@@ -505,7 +505,7 @@ class LengowAction
     /**
      * Get interval time for action synchronisation
      *
-     * @return integer
+     * @return int
      */
     public static function getIntervalTime()
     {

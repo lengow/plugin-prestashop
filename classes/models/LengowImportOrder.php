@@ -1331,7 +1331,7 @@ class LengowImportOrder
      *
      * @throws LengowException shipping country no country / no default carrier for country
      *
-     * @return integer
+     * @return int
      */
     private function getCarrierId()
     {

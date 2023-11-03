@@ -68,7 +68,7 @@ class LengowGender extends Gender
      *
      * @param string $name the gender text
      *
-     * @return string|integer
+     * @return string
      */
     public static function getGender($name)
     {
@@ -76,15 +76,15 @@ class LengowGender extends Gender
             return '';
         }
         if (in_array($name, self::$currentMale, true)) {
-            return 1;
+            return '1';
         }
         if (in_array($name, self::$currentFemale, true)) {
-            return 2;
+            return '2';
         }
         $query = 'SELECT `id_gender` FROM `' . _DB_PREFIX_ . 'gender_lang`
             WHERE `name` = \'' . pSQL($name) . '\' LIMIT 1;';
         if ($result = Db::getInstance()->Execute($query)) {
-            return $result['id_gender'];
+            return (string) $result['id_gender'];
         }
         return '';
     }
