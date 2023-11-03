@@ -128,8 +128,8 @@ class LengowPaymentModule extends PaymentModule
             }
         }
 
-        $orderList = array();
-        $orderDetailList = array();
+        $orderList = [];
+        $orderDetailList = [];
 
         do {
             $reference = Order::generateReference();

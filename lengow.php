@@ -87,33 +87,35 @@ class Lengow extends Module
     /**
      * Install process
      *
-     * @return boolean
+     * @return bool
      */
     public function install()
     {
         if (!parent::install()) {
             return false;
         }
+
         return $this->installClass->install();
     }
 
     /**
      * Uninstall process
      *
-     * @return boolean
+     * @return bool
      */
     public function uninstall()
     {
         if (!parent::uninstall()) {
             return false;
         }
+
         return $this->installClass->uninstall();
     }
 
     /**
      * Reset process
      *
-     * @return boolean
+     * @return bool
      */
     public function reset()
     {

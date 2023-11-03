@@ -27,7 +27,7 @@ class LengowCatalog
     /**
      * Check if the account has catalogs not linked to a cms
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasCatalogNotLinked()
     {
@@ -51,7 +51,7 @@ class LengowCatalog
      */
     public static function getCatalogList()
     {
-        $catalogList = array();
+        $catalogList = [];
         $lengowCatalogs = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS_CATALOG);
         if (!$lengowCatalogs) {
             return $catalogList;
@@ -91,7 +91,7 @@ class LengowCatalog
      *
      * @param array $catalogsByShops all catalog ids organised by shops
      *
-     * @return boolean
+     * @return bool
      */
     public static function linkCatalogs(array $catalogsByShops)
     {
@@ -102,7 +102,7 @@ class LengowCatalog
         }
         $linkCatalogData = array(
             'cms_token' => LengowMain::getToken(),
-            'shops' => array(),
+            'shops' => [],
         );
         foreach ($catalogsByShops as $idShop => $catalogIds) {
             if (empty($catalogIds)) {
@@ -130,7 +130,7 @@ class LengowCatalog
             $result = LengowConnector::queryApi(
                 LengowConnector::POST,
                 LengowConnector::API_CMS_MAPPING,
-                array(),
+                [],
                 json_encode($linkCatalogData)
             );
             if (isset($result->cms_token)) {

@@ -25,30 +25,30 @@
 class LengowFeed
 {
     /* Feed formats */
-    const FORMAT_CSV = 'csv';
-    const FORMAT_YAML = 'yaml';
-    const FORMAT_XML = 'xml';
-    const FORMAT_JSON = 'json';
+    public const FORMAT_CSV = 'csv';
+    public const FORMAT_YAML = 'yaml';
+    public const FORMAT_XML = 'xml';
+    public const FORMAT_JSON = 'json';
 
     /* Content types */
-    const HEADER = 'header';
-    const BODY = 'body';
-    const FOOTER = 'footer';
+    public const HEADER = 'header';
+    public const BODY = 'body';
+    public const FOOTER = 'footer';
 
     /**
      * @var string protection
      */
-    const PROTECTION = '"';
+    public const PROTECTION = '"';
 
     /**
      * @var string CSV separator
      */
-    const CSV_SEPARATOR = '|';
+    public const CSV_SEPARATOR = '|';
 
     /**
      * @var string end of line
      */
-    const EOL = "\r\n";
+    public const EOL = "\r\n";
 
     /**
      * @var LengowFile Lengow file instance
@@ -149,7 +149,7 @@ class LengowFeed
      * @param boolean|null $isFirst is first product
      * @param boolean|null $maxCharacter max characters for yaml format
      */
-    public function write($type, $data = array(), $isFirst = null, $maxCharacter = null)
+    public function write($type, $data = [], $isFirst = null, $maxCharacter = null)
     {
         switch ($type) {
             case self::HEADER:
@@ -230,7 +230,7 @@ class LengowFeed
                 return $content;
             case self::FORMAT_JSON:
                 $content = $isFirst ? '' : ',';
-                $jsonArray = array();
+                $jsonArray = [];
                 foreach ($data as $field => $value) {
                     $field = self::formatFields($field, self::FORMAT_JSON);
                     $jsonArray[$field] = $value;
@@ -290,7 +290,7 @@ class LengowFeed
      *
      * @throws LengowException
      *
-     * @return boolean
+     * @return bool
      */
     public function end()
     {

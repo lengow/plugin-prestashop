@@ -51,7 +51,7 @@ class LengowOrderController extends LengowController
         if ($action) {
             switch ($action) {
                 case 'load_table':
-                    $data = array();
+                    $data = [];
                     $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
                     echo json_encode($data);
                     break;
@@ -62,7 +62,7 @@ class LengowOrderController extends LengowController
                     $row = $list->getRow(' id = ' . $idOrderLengow);
                     $html = $list->displayRow($row);
                     $html = preg_replace('/\r|\n/', '', $html);
-                    $data = array();
+                    $data = [];
                     $data['id_order_lengow'] = $idOrderLengow;
                     $data['html'] = $html;
                     echo json_encode($data);
@@ -74,7 +74,7 @@ class LengowOrderController extends LengowController
                     $row = $list->getRow(' id = ' . $idOrderLengow);
                     $html = $list->displayRow($row);
                     $html = preg_replace('/\r|\n/', '', $html);
-                    $data = array();
+                    $data = [];
                     $data['id_order_lengow'] = $idOrderLengow;
                     $data['html'] = $html;
                     echo json_encode($data);
@@ -112,7 +112,7 @@ class LengowOrderController extends LengowController
                             'views/templates/admin/lengow_order/helpers/view/no_order.tpl'
                         );
                     }
-                    $data = array();
+                    $data = [];
                     $data['message'] = '<div class=\"lengow_alert\">' . join('<br/>', $message) . '</div>';
                     $data['warning_message'] = preg_replace('/\r|\n/', '', $displayWarningMessage);
                     $data['last_importation'] = preg_replace('/\r|\n/', '', $displayLastImportation);
@@ -165,7 +165,7 @@ class LengowOrderController extends LengowController
      */
     public function assignWarningMessages()
     {
-        $warningMessages = array();
+        $warningMessages = [];
         if (LengowConfiguration::debugModeIsActive()) {
             $warningMessages[] = $this->locale->t(
                 'order.screen.debug_warning_message',
@@ -227,7 +227,7 @@ class LengowOrderController extends LengowController
      */
     public function loadTable()
     {
-        $fieldsList = array();
+        $fieldsList = [];
         $fieldsList['log_status'] = array(
             'title' => $this->locale->t('order.table.action_lengow'),
             'class' => 'lengow_status no-link nowrap',
@@ -392,7 +392,7 @@ class LengowOrderController extends LengowController
             WHERE lli.id_order_lengow = lo.id AND lli.is_finished = 0 LIMIT 1) as log_status',
         );
         $from = 'FROM ' . _DB_PREFIX_ . 'lengow_orders lo';
-        $join = array();
+        $join = [];
         $join[] = 'LEFT JOIN `' . _DB_PREFIX_ . 'orders` o ON (o.id_order = lo.id_order) ';
         if (Shop::getContextShopID()) {
             $join[] = 'INNER JOIN `' . _DB_PREFIX_ . 'shop` shop ON (lo.id_shop = shop.id_shop
@@ -467,14 +467,14 @@ class LengowOrderController extends LengowController
      */
     public function getMarketplaces()
     {
-        $marketplaces = array();
+        $marketplaces = [];
         $sql = 'SELECT DISTINCT(marketplace_name) as name,
             IFNULL(marketplace_label, marketplace_name) as marketplace_label
             FROM `' . _DB_PREFIX_ . 'lengow_orders`';
         try {
             $collection = Db::getInstance()->executeS($sql);
         } catch (PrestaShopDatabaseException $e) {
-            $collection = array();
+            $collection = [];
         }
         foreach ($collection as $row) {
             $marketplaces[] = array('id' => $row['name'], 'text' => $row['marketplace_label']);
@@ -489,12 +489,12 @@ class LengowOrderController extends LengowController
      */
     public function getShops()
     {
-        $shops = array();
+        $shops = [];
         $sql = 'SELECT id_shop, name FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
         try {
             $collection = Db::getInstance()->ExecuteS($sql);
         } catch (PrestaShopDatabaseException $e) {
-            $collection = array();
+            $collection = [];
         }
         foreach ($collection as $row) {
             $shops[] = array('id' => $row['id_shop'], 'text' => $row['name']);
@@ -535,7 +535,7 @@ class LengowOrderController extends LengowController
     public static function displayOrderTypes($key, $value, $item)
     {
         $return = '<div>';
-        $orderTypes = $value !== null ? json_decode($value, true) : array();
+        $orderTypes = $value !== null ? json_decode($value, true) : [];
         if (isset($orderTypes[LengowOrder::TYPE_EXPRESS]) || isset($orderTypes[LengowOrder::TYPE_PRIME])) {
             $iconLabel = isset($orderTypes[LengowOrder::TYPE_PRIME])
                 ? $orderTypes[LengowOrder::TYPE_PRIME]
@@ -607,7 +607,7 @@ class LengowOrderController extends LengowController
     public static function displayLogStatus($key, $value, $item)
     {
         if ($item[$key] && (int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE] !== LengowOrder::PROCESS_STATE_FINISH) {
-            $errorMessages = array();
+            $errorMessages = [];
             $logCollection = LengowOrderError::getOrderLogs($item[LengowOrder::FIELD_ID], null, false);
             if (!empty($logCollection)) {
                 foreach ($logCollection as $row) {
@@ -679,7 +679,7 @@ class LengowOrderController extends LengowController
      */
     public function loadMessage($return)
     {
-        $messages = array();
+        $messages = [];
         // if global error return this
         if (isset($return[LengowImport::ERRORS][0])) {
             $messages[] = LengowMain::decodeLogMessage($return[LengowImport::ERRORS][0]);

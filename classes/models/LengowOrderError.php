@@ -47,7 +47,7 @@ class LengowOrderError
      *
      * @param integer $idLengowOrder Lengow order id
      *
-     * @return boolean
+     * @return bool
      */
     public static function lengowOrderIsInError($idLengowOrder)
     {
@@ -110,7 +110,7 @@ class LengowOrderError
         try {
             return Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {
-            return array();
+            return [];
         }
     }
 
@@ -122,7 +122,7 @@ class LengowOrderError
      * @param string $type order log type (import or send)
      * @param integer $finished error is finished
      *
-     * @return boolean
+     * @return bool
      */
     public static function addOrderLog($idOrderLengow, $message = '', $type = self::TYPE_ERROR_IMPORT, $finished = 0)
     {
@@ -148,7 +148,7 @@ class LengowOrderError
      * @param integer $idOrderLengow Lengow order id
      * @param string $type order log type (import or send)
      *
-     * @return boolean
+     * @return bool
      */
     public static function finishOrderLogs($idOrderLengow, $type = self::TYPE_ERROR_IMPORT)
     {
@@ -190,7 +190,7 @@ class LengowOrderError
             ';
             $orderLogs = Db::getInstance()->ExecuteS($sqlLogs);
         } catch (PrestaShopDatabaseException $e) {
-            $orderLogs = array();
+            $orderLogs = [];
         }
         return $orderLogs;
     }
@@ -200,7 +200,7 @@ class LengowOrderError
      *
      * @param integer $idOrderLog Lengow order log id
      *
-     * @return boolean
+     * @return bool
      */
     public static function logSent($idOrderLog)
     {

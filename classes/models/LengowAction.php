@@ -27,50 +27,50 @@ class LengowAction
     /**
      * @var string Lengow action table name
      */
-    const TABLE_ACTION = 'lengow_actions';
+    public const TABLE_ACTION = 'lengow_actions';
 
     /* Action fields */
-    const FIELD_ID = 'id';
-    const FIELD_ORDER_ID = 'id_order';
-    const FIELD_ORDER_LINE_SKU = 'order_line_sku';
-    const FIELD_ACTION_ID = 'action_id';
-    const FIELD_ACTION_TYPE = 'action_type';
-    const FIELD_RETRY = 'retry';
-    const FIELD_PARAMETERS = 'parameters';
-    const FIELD_STATE = 'state';
-    const FIELD_CREATED_AT = 'created_at';
-    const FIELD_UPDATED_AT = 'updated_at';
+    public const FIELD_ID = 'id';
+    public const FIELD_ORDER_ID = 'id_order';
+    public const FIELD_ORDER_LINE_SKU = 'order_line_sku';
+    public const FIELD_ACTION_ID = 'action_id';
+    public const FIELD_ACTION_TYPE = 'action_type';
+    public const FIELD_RETRY = 'retry';
+    public const FIELD_PARAMETERS = 'parameters';
+    public const FIELD_STATE = 'state';
+    public const FIELD_CREATED_AT = 'created_at';
+    public const FIELD_UPDATED_AT = 'updated_at';
 
     /* Action states */
-    const STATE_NEW = 0;
-    const STATE_FINISH = 1;
+    public const STATE_NEW = 0;
+    public const STATE_FINISH = 1;
 
     /* Action types */
-    const TYPE_SHIP = 'ship';
-    const TYPE_CANCEL = 'cancel';
+    public const TYPE_SHIP = 'ship';
+    public const TYPE_CANCEL = 'cancel';
 
     /* Action API arguments */
-    const ARG_ACTION_TYPE = 'action_type';
-    const ARG_LINE = 'line';
-    const ARG_CARRIER = 'carrier';
-    const ARG_CARRIER_NAME = 'carrier_name';
-    const ARG_CUSTOM_CARRIER = 'custom_carrier';
-    const ARG_SHIPPING_METHOD = 'shipping_method';
-    const ARG_TRACKING_NUMBER = 'tracking_number';
-    const ARG_TRACKING_URL = 'tracking_url';
-    const ARG_SHIPPING_PRICE = 'shipping_price';
-    const ARG_SHIPPING_DATE = 'shipping_date';
-    const ARG_DELIVERY_DATE = 'delivery_date';
+    public const ARG_ACTION_TYPE = 'action_type';
+    public const ARG_LINE = 'line';
+    public const ARG_CARRIER = 'carrier';
+    public const ARG_CARRIER_NAME = 'carrier_name';
+    public const ARG_CUSTOM_CARRIER = 'custom_carrier';
+    public const ARG_SHIPPING_METHOD = 'shipping_method';
+    public const ARG_TRACKING_NUMBER = 'tracking_number';
+    public const ARG_TRACKING_URL = 'tracking_url';
+    public const ARG_SHIPPING_PRICE = 'shipping_price';
+    public const ARG_SHIPPING_DATE = 'shipping_date';
+    public const ARG_DELIVERY_DATE = 'delivery_date';
 
     /**
      * @var integer max interval time for action synchronisation (3 days)
      */
-    const MAX_INTERVAL_TIME = 259200;
+    public const MAX_INTERVAL_TIME = 259200;
 
     /**
      * @var integer security interval time for action synchronisation (2 hours)
      */
-    const SECURITY_INTERVAL_TIME = 7200;
+    public const SECURITY_INTERVAL_TIME = 7200;
 
     /**
      * @var array Parameters to delete for Get call
@@ -148,7 +148,7 @@ class LengowAction
      *
      * @param integer $actionId Lengow action id
      *
-     * @return boolean
+     * @return bool
      */
     public function findByActionId($actionId)
     {
@@ -204,7 +204,7 @@ class LengowAction
         }
         if (!empty($rows)) {
             if ($load) {
-                $actions = array();
+                $actions = [];
                 foreach ($rows as $row) {
                     $action = new self();
                     $action->load($row);
@@ -235,9 +235,9 @@ class LengowAction
         }
         if (!empty($rows)) {
             if ($load) {
-                $actions = array();
+                $actions = [];
                 foreach ($rows as $row) {
-                    $action = new LengowAction;
+                    $action = new LengowAction();
                     $action->load($row);
                     $actions[] = $action;
                 }
@@ -277,7 +277,7 @@ class LengowAction
      *
      * @param integer $id Lengow action id
      *
-     * @return boolean
+     * @return bool
      */
     public function find($id)
     {
@@ -297,7 +297,7 @@ class LengowAction
      *
      * @throws LengowException
      *
-     * @return boolean
+     * @return bool
      */
     public static function canSendAction($params, $lengowOrder)
     {
@@ -400,7 +400,7 @@ class LengowAction
      *
      * @param array $params action params
      *
-     * @return boolean
+     * @return bool
      */
     public static function createAction($params)
     {
@@ -434,7 +434,7 @@ class LengowAction
      *
      * @param array $params action params
      *
-     * @return boolean
+     * @return bool
      */
     public static function updateAction($params)
     {
@@ -458,7 +458,7 @@ class LengowAction
      *
      * @param integer $id Lengow action id
      *
-     * @return boolean
+     * @return bool
      */
     public static function finishAction($id)
     {
@@ -478,7 +478,7 @@ class LengowAction
      * @param integer $idOrder PrestaShop order id
      * @param string|null $actionType action type (null, ship or cancel)
      *
-     * @return boolean
+     * @return bool
      */
     public static function finishAllActions($idOrder, $actionType = null)
     {
@@ -524,7 +524,7 @@ class LengowAction
      *
      * @param boolean $logOutput see log or not
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkFinishAction($logOutput = false)
     {
@@ -543,7 +543,7 @@ class LengowAction
         }
         // get all actions with API (max 3 days)
         $page = 1;
-        $apiActions = array();
+        $apiActions = [];
         $intervalTime = self::getIntervalTime();
         $dateFrom = time() - $intervalTime;
         $dateTo = time();
@@ -638,7 +638,7 @@ class LengowAction
      *
      * @param boolean $logOutput see log or not
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkOldAction($logOutput = false)
     {
@@ -708,7 +708,7 @@ class LengowAction
      *
      * @param boolean $logOutput see log or not
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkActionNotSent($logOutput = false)
     {

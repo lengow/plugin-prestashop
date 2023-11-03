@@ -242,7 +242,7 @@ class LengowOrder extends Order
     /**
      * Load information from lengow_orders table
      *
-     * @return boolean
+     * @return bool
      */
     protected function loadLengowFields()
     {
@@ -293,7 +293,7 @@ class LengowOrder extends Order
             $this->lengowOrderItem = (int) $result[self::FIELD_ORDER_ITEM];
             $this->lengowOrderTypes = $result[self::FIELD_ORDER_TYPES] !== null
                 ? json_decode($result[self::FIELD_ORDER_TYPES], true)
-                : array();
+                : [];
             $this->lengowCurrency = $result[self::FIELD_CURRENCY];
             $this->lengowTotalPaid = $result[self::FIELD_TOTAL_PAID];
             $this->lengowCustomerVatNumber = $result[self::FIELD_CUSTOMER_VAT_NUMBER] !== null
@@ -382,7 +382,7 @@ class LengowOrder extends Order
      *
      * @param integer $idOrder PrestaShop order id
      *
-     * @return boolean
+     * @return bool
      */
     public static function isFromLengow($idOrder)
     {
@@ -435,7 +435,7 @@ class LengowOrder extends Order
         try {
             return Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {
-            return array();
+            return [];
         }
     }
 
@@ -455,7 +455,7 @@ class LengowOrder extends Order
         try {
             return Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {
-            return array();
+            return [];
         }
     }
 
@@ -465,7 +465,7 @@ class LengowOrder extends Order
      * @param integer $id Id of the record
      * @param array $params Fields update
      *
-     * @return boolean
+     * @return bool
      */
     public static function updateOrderLengow($id, $params)
     {
@@ -489,7 +489,7 @@ class LengowOrder extends Order
             ? (string) $packageData->delivery->trackings[0]->number
             : null;
         // update Lengow order if necessary
-        $params = array();
+        $params = [];
         if ($this->lengowState !== $orderStateLengow) {
             $params[self::FIELD_ORDER_LENGOW_STATE] = pSQL($orderStateLengow);
             $params[self::FIELD_CARRIER_TRACKING] = pSQL($trackingNumber);
@@ -580,7 +580,7 @@ class LengowOrder extends Order
     /**
      * Mark order as is_reimported in lengow_orders table
      *
-     * @return boolean
+     * @return bool
      */
     public function isReimported()
     {
@@ -623,7 +623,7 @@ class LengowOrder extends Order
             $results = false;
         }
         if ($results) {
-            $unsentOrders = array();
+            $unsentOrders = [];
             foreach ($results as $result) {
                 $activeAction = LengowAction::getActionsByOrderId($result[self::FIELD_ORDER_ID], true);
                 $orderLogs = LengowOrderError::getOrderLogs(
@@ -654,7 +654,7 @@ class LengowOrder extends Order
      * @param LengowConnector|null $connector Lengow connector instance
      * @param boolean $logOutput see log or not
      *
-     * @return boolean
+     * @return bool
      */
     public function synchronizeOrder($connector = null, $logOutput = false)
     {
@@ -672,7 +672,7 @@ class LengowOrder extends Order
         if (empty($orderIds)) {
             return false;
         }
-        $prestaIds = array();
+        $prestaIds = [];
         foreach ($orderIds as $orderId) {
             $prestaIds[] = $orderId[self::FIELD_ORDER_ID];
         }
@@ -689,7 +689,7 @@ class LengowOrder extends Order
         try {
             $result = $connector->patch(
                 LengowConnector::API_ORDER_MOI,
-                array(),
+                [],
                 LengowConnector::FORMAT_JSON,
                 json_encode($body),
                 $logOutput
@@ -717,7 +717,7 @@ class LengowOrder extends Order
      * @param LengowConnector|null $connector Lengow connector instance
      * @param boolean $logOutput see log or not
      *
-     * @return boolean
+     * @return bool
      */
     public function checkAndChangeMarketplaceName($connector = null, $logOutput = false)
     {
@@ -854,7 +854,7 @@ class LengowOrder extends Order
     /**
      * Check if order has an action in progress
      *
-     * @return boolean
+     * @return bool
      */
     public function hasAnActionInProgress()
     {
@@ -890,7 +890,7 @@ class LengowOrder extends Order
      *
      * @param integer $idOrderLengow Lengow order id
      *
-     * @return boolean
+     * @return bool
      */
     public static function find($idOrderLengow)
     {
@@ -903,7 +903,7 @@ class LengowOrder extends Order
      *
      * @param integer $idOrderLengow Lengow order id
      *
-     * @return boolean
+     * @return bool
      */
     public static function isOrderImport($idOrderLengow)
     {
@@ -947,7 +947,7 @@ class LengowOrder extends Order
     /**
      * Check if can resend action order
      *
-     * @return boolean
+     * @return bool
      */
     public function canReSendOrder()
     {
@@ -971,7 +971,7 @@ class LengowOrder extends Order
      *
      * @param integer $idOrderLengow Lengow order id
      *
-     * @return boolean
+     * @return bool
      */
     public static function reSendOrder($idOrderLengow)
     {
@@ -997,7 +997,7 @@ class LengowOrder extends Order
      *
      * @param string $action Lengow Actions type (ship or cancel)
      *
-     * @return boolean
+     * @return bool
      */
     public function callAction($action)
     {
@@ -1042,7 +1042,7 @@ class LengowOrder extends Order
                             LengowMain::setLogMessage('lengow_log.exception.order_line_required')
                         );
                     }
-                    $results = array();
+                    $results = [];
                     foreach ($orderLineCollection as $row) {
                         $results[] = $marketplace->callAction(
                             $action,
@@ -1105,7 +1105,7 @@ class LengowOrder extends Order
      */
     public function getOrderLineByApi()
     {
-        $orderLines = array();
+        $orderLines = [];
         $results = LengowConnector::queryApi(
             LengowConnector::GET,
             LengowConnector::API_ORDER,
@@ -1119,7 +1119,7 @@ class LengowOrder extends Order
         }
         $orderData = $results->results[0];
         foreach ($orderData->packages as $package) {
-            $productLines = array();
+            $productLines = [];
             foreach ($package->cart as $product) {
                 $productLines[] = array(
                     LengowOrderLine::FIELD_ORDER_LINE_ID => (string) $product->marketplace_order_line_id,
@@ -1137,7 +1137,7 @@ class LengowOrder extends Order
     /**
      * Check if order is express
      *
-     * @return boolean
+     * @return bool
      */
     public function isExpress()
     {
@@ -1147,7 +1147,7 @@ class LengowOrder extends Order
     /**
      * Check if order is B2B
      *
-     * @return boolean
+     * @return bool
      */
     public function isBusiness()
     {
@@ -1157,7 +1157,7 @@ class LengowOrder extends Order
     /**
      * Check if order is delivered by marketplace
      *
-     * @return boolean
+     * @return bool
      */
     public function isDeliveredByMarketplace()
     {

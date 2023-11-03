@@ -162,7 +162,7 @@ class LengowFile
      *
      * @param string $newName new file name
      *
-     * @return boolean
+     * @return bool
      */
     public function rename($newName)
     {
@@ -182,7 +182,7 @@ class LengowFile
     /**
      * Check if current file exists
      *
-     * @return boolean
+     * @return bool
      */
     public function exists()
     {
@@ -204,7 +204,7 @@ class LengowFile
             return false;
         }
         $folderContent = scandir($folderPath);
-        $files = array();
+        $files = [];
         foreach ($folderContent as $file) {
             try {
                 if (!preg_match('/^\.[a-zA-Z\.]+$|^\.$|index\.php/', $file)) {

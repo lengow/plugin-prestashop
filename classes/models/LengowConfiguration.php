@@ -25,80 +25,80 @@
 class LengowConfiguration extends Configuration
 {
     /* Settings database key */
-    const ACCOUNT_ID = 'LENGOW_ACCOUNT_ID';
-    const ACCESS_TOKEN ='LENGOW_ACCESS_TOKEN';
-    const SECRET = 'LENGOW_SECRET_TOKEN';
-    const CMS_TOKEN = 'LENGOW_GLOBAL_TOKEN';
-    const AUTHORIZED_IP_ENABLED = 'LENGOW_IP_ENABLED';
-    const AUTHORIZED_IPS = 'LENGOW_AUTHORIZED_IP';
-    const TRACKING_ENABLED = 'LENGOW_TRACKING_ENABLED';
-    const TRACKING_ID = 'LENGOW_TRACKING_ID';
-    const DEBUG_MODE_ENABLED = 'LENGOW_IMPORT_DEBUG_ENABLED';
-    const REPORT_MAIL_ENABLED = 'LENGOW_REPORT_MAIL_ENABLED';
-    const REPORT_MAILS = 'LENGOW_REPORT_MAIL_ADDRESS';
-    const PLUGIN_VERSION = 'LENGOW_VERSION';
-    const INSTALLATION_IN_PROGRESS = 'LENGOW_INSTALLATION_IN_PROGRESS';
-    const LENGOW_ERROR_STATE_ID = 'LENGOW_STATE_ERROR';
-    const AUTHORIZATION_TOKEN = 'LENGOW_AUTH_TOKEN';
-    const PLUGIN_DATA = 'LENGOW_PLUGIN_DATA';
-    const ACCOUNT_STATUS_DATA = 'LENGOW_ACCOUNT_STATUS';
-    const SHOP_TOKEN = 'LENGOW_SHOP_TOKEN';
-    const SHOP_ACTIVE = 'LENGOW_SHOP_ACTIVE';
-    const CATALOG_IDS = 'LENGOW_CATALOG_ID';
-    const SELECTION_ENABLED = 'LENGOW_EXPORT_SELECTION_ENABLED';
-    const VARIATION_ENABLED = 'LENGOW_EXPORT_VARIATION_ENABLED';
-    const OUT_OF_STOCK_ENABLED = 'LENGOW_EXPORT_OUT_STOCK';
-    const INACTIVE_ENABLED = 'LENGOW_EXPORT_INACTIVE';
-    const EXPORT_FORMAT = 'LENGOW_EXPORT_FORMAT';
-    const EXPORT_FILE_ENABLED = 'LENGOW_EXPORT_FILE_ENABLED';
-    const DEFAULT_EXPORT_CARRIER_ID = 'LENGOW_EXPORT_CARRIER_DEFAULT';
-    const WAITING_SHIPMENT_ORDER_ID = 'LENGOW_ORDER_ID_PROCESS';
-    const SHIPPED_ORDER_ID = 'LENGOW_ORDER_ID_SHIPPED';
-    const CANCELED_ORDER_ID = 'LENGOW_ORDER_ID_CANCEL';
-    const SHIPPED_BY_MARKETPLACE_ORDER_ID = 'LENGOW_ORDER_ID_SHIPPEDBYMP';
-    const SYNCHRONIZATION_DAY_INTERVAL = 'LENGOW_IMPORT_DAYS';
-    const ANONYMIZE_EMAIL = 'LENGOW_ANONYMIZE_EMAIL';
-    const SEMANTIC_MATCHING_CARRIER_ENABLED = 'LENGOW_CARRIER_SEMANTIC_ENABLE';
-    const CURRENCY_CONVERSION_ENABLED = 'LENGOW_CURRENCY_CONVERSION';
-    const SHIPPED_BY_MARKETPLACE_ENABLED = 'LENGOW_IMPORT_SHIP_MP_ENABLED';
-    const SHIPPED_BY_MARKETPLACE_STOCK_ENABLED = 'LENGOW_IMPORT_STOCK_SHIP_MP';
-    const FORCE_PRODUCT_ENABLED = 'LENGOW_IMPORT_FORCE_PRODUCT';
-    const IMPORT_PROCESSING_FEE_ENABLED = 'LENGOW_IMPORT_PROCESSING_FEE';
-    const SYNCHRONIZATION_IN_PROGRESS = 'LENGOW_IMPORT_IN_PROGRESS';
-    const LAST_UPDATE_EXPORT = 'LENGOW_LAST_EXPORT';
-    const LAST_UPDATE_CRON_SYNCHRONIZATION = 'LENGOW_LAST_IMPORT_CRON';
-    const LAST_UPDATE_MANUAL_SYNCHRONIZATION = 'LENGOW_LAST_IMPORT_MANUAL';
-    const LAST_UPDATE_ACTION_SYNCHRONIZATION = 'LENGOW_LAST_ACTION_SYNC';
-    const LAST_UPDATE_CATALOG = 'LENGOW_CATALOG_UPDATE';
-    const LAST_UPDATE_MARKETPLACE = 'LENGOW_MARKETPLACE_UPDATE';
-    const LAST_UPDATE_ACCOUNT_STATUS_DATA = 'LENGOW_ACCOUNT_STATUS_UPDATE';
-    const LAST_UPDATE_OPTION_CMS = 'LENGOW_OPTION_CMS_UPDATE';
-    const LAST_UPDATE_MARKETPLACE_LIST = 'LENGOW_LIST_MARKET_UPDATE';
-    const LAST_UPDATE_SETTING = 'LENGOW_LAST_SETTING_UPDATE';
-    const LAST_UPDATE_PLUGIN_DATA = 'LENGOW_PLUGIN_DATA_UPDATE';
-    const LAST_UPDATE_AUTHORIZATION_TOKEN = 'LENGOW_LAST_AUTH_TOKEN_UPDATE';
-    const LAST_UPDATE_PLUGIN_MODAL = 'LENGOW_LAST_PLUGIN_MODAL';
+    public const ACCOUNT_ID = 'LENGOW_ACCOUNT_ID';
+    public const ACCESS_TOKEN = 'LENGOW_ACCESS_TOKEN';
+    public const SECRET = 'LENGOW_SECRET_TOKEN';
+    public const CMS_TOKEN = 'LENGOW_GLOBAL_TOKEN';
+    public const AUTHORIZED_IP_ENABLED = 'LENGOW_IP_ENABLED';
+    public const AUTHORIZED_IPS = 'LENGOW_AUTHORIZED_IP';
+    public const TRACKING_ENABLED = 'LENGOW_TRACKING_ENABLED';
+    public const TRACKING_ID = 'LENGOW_TRACKING_ID';
+    public const DEBUG_MODE_ENABLED = 'LENGOW_IMPORT_DEBUG_ENABLED';
+    public const REPORT_MAIL_ENABLED = 'LENGOW_REPORT_MAIL_ENABLED';
+    public const REPORT_MAILS = 'LENGOW_REPORT_MAIL_ADDRESS';
+    public const PLUGIN_VERSION = 'LENGOW_VERSION';
+    public const INSTALLATION_IN_PROGRESS = 'LENGOW_INSTALLATION_IN_PROGRESS';
+    public const LENGOW_ERROR_STATE_ID = 'LENGOW_STATE_ERROR';
+    public const AUTHORIZATION_TOKEN = 'LENGOW_AUTH_TOKEN';
+    public const PLUGIN_DATA = 'LENGOW_PLUGIN_DATA';
+    public const ACCOUNT_STATUS_DATA = 'LENGOW_ACCOUNT_STATUS';
+    public const SHOP_TOKEN = 'LENGOW_SHOP_TOKEN';
+    public const SHOP_ACTIVE = 'LENGOW_SHOP_ACTIVE';
+    public const CATALOG_IDS = 'LENGOW_CATALOG_ID';
+    public const SELECTION_ENABLED = 'LENGOW_EXPORT_SELECTION_ENABLED';
+    public const VARIATION_ENABLED = 'LENGOW_EXPORT_VARIATION_ENABLED';
+    public const OUT_OF_STOCK_ENABLED = 'LENGOW_EXPORT_OUT_STOCK';
+    public const INACTIVE_ENABLED = 'LENGOW_EXPORT_INACTIVE';
+    public const EXPORT_FORMAT = 'LENGOW_EXPORT_FORMAT';
+    public const EXPORT_FILE_ENABLED = 'LENGOW_EXPORT_FILE_ENABLED';
+    public const DEFAULT_EXPORT_CARRIER_ID = 'LENGOW_EXPORT_CARRIER_DEFAULT';
+    public const WAITING_SHIPMENT_ORDER_ID = 'LENGOW_ORDER_ID_PROCESS';
+    public const SHIPPED_ORDER_ID = 'LENGOW_ORDER_ID_SHIPPED';
+    public const CANCELED_ORDER_ID = 'LENGOW_ORDER_ID_CANCEL';
+    public const SHIPPED_BY_MARKETPLACE_ORDER_ID = 'LENGOW_ORDER_ID_SHIPPEDBYMP';
+    public const SYNCHRONIZATION_DAY_INTERVAL = 'LENGOW_IMPORT_DAYS';
+    public const ANONYMIZE_EMAIL = 'LENGOW_ANONYMIZE_EMAIL';
+    public const SEMANTIC_MATCHING_CARRIER_ENABLED = 'LENGOW_CARRIER_SEMANTIC_ENABLE';
+    public const CURRENCY_CONVERSION_ENABLED = 'LENGOW_CURRENCY_CONVERSION';
+    public const SHIPPED_BY_MARKETPLACE_ENABLED = 'LENGOW_IMPORT_SHIP_MP_ENABLED';
+    public const SHIPPED_BY_MARKETPLACE_STOCK_ENABLED = 'LENGOW_IMPORT_STOCK_SHIP_MP';
+    public const FORCE_PRODUCT_ENABLED = 'LENGOW_IMPORT_FORCE_PRODUCT';
+    public const IMPORT_PROCESSING_FEE_ENABLED = 'LENGOW_IMPORT_PROCESSING_FEE';
+    public const SYNCHRONIZATION_IN_PROGRESS = 'LENGOW_IMPORT_IN_PROGRESS';
+    public const LAST_UPDATE_EXPORT = 'LENGOW_LAST_EXPORT';
+    public const LAST_UPDATE_CRON_SYNCHRONIZATION = 'LENGOW_LAST_IMPORT_CRON';
+    public const LAST_UPDATE_MANUAL_SYNCHRONIZATION = 'LENGOW_LAST_IMPORT_MANUAL';
+    public const LAST_UPDATE_ACTION_SYNCHRONIZATION = 'LENGOW_LAST_ACTION_SYNC';
+    public const LAST_UPDATE_CATALOG = 'LENGOW_CATALOG_UPDATE';
+    public const LAST_UPDATE_MARKETPLACE = 'LENGOW_MARKETPLACE_UPDATE';
+    public const LAST_UPDATE_ACCOUNT_STATUS_DATA = 'LENGOW_ACCOUNT_STATUS_UPDATE';
+    public const LAST_UPDATE_OPTION_CMS = 'LENGOW_OPTION_CMS_UPDATE';
+    public const LAST_UPDATE_MARKETPLACE_LIST = 'LENGOW_LIST_MARKET_UPDATE';
+    public const LAST_UPDATE_SETTING = 'LENGOW_LAST_SETTING_UPDATE';
+    public const LAST_UPDATE_PLUGIN_DATA = 'LENGOW_PLUGIN_DATA_UPDATE';
+    public const LAST_UPDATE_AUTHORIZATION_TOKEN = 'LENGOW_LAST_AUTH_TOKEN_UPDATE';
+    public const LAST_UPDATE_PLUGIN_MODAL = 'LENGOW_LAST_PLUGIN_MODAL';
 
     /* Configuration parameters */
-    const PARAM_COLLECTION = 'collection';
-    const PARAM_DEFAULT_VALUE = 'default_value';
-    const PARAM_EXPORT = 'export';
-    const PARAM_EXPORT_TOOLBOX = 'export_toolbox';
-    const PARAM_GLOBAL = 'global';
-    const PARAM_LABEL = 'label';
-    const PARAM_LEGEND = 'legend';
-    const PARAM_PLACEHOLDER = 'placeholder';
-    const PARAM_RESET_TOKEN = 'reset_token';
-    const PARAM_RETURN = 'return';
-    const PARAM_SECRET = 'secret';
-    const PARAM_SHOP = 'shop';
-    const PARAM_TYPE = 'type';
-    const PARAM_UPDATE = 'update';
+    public const PARAM_COLLECTION = 'collection';
+    public const PARAM_DEFAULT_VALUE = 'default_value';
+    public const PARAM_EXPORT = 'export';
+    public const PARAM_EXPORT_TOOLBOX = 'export_toolbox';
+    public const PARAM_GLOBAL = 'global';
+    public const PARAM_LABEL = 'label';
+    public const PARAM_LEGEND = 'legend';
+    public const PARAM_PLACEHOLDER = 'placeholder';
+    public const PARAM_RESET_TOKEN = 'reset_token';
+    public const PARAM_RETURN = 'return';
+    public const PARAM_SECRET = 'secret';
+    public const PARAM_SHOP = 'shop';
+    public const PARAM_TYPE = 'type';
+    public const PARAM_UPDATE = 'update';
 
     /* Configuration value return type */
-    const RETURN_TYPE_BOOLEAN = 'boolean';
-    const RETURN_TYPE_INTEGER = 'integer';
-    const RETURN_TYPE_ARRAY = 'array';
+    public const RETURN_TYPE_BOOLEAN = 'boolean';
+    public const RETURN_TYPE_INTEGER = 'integer';
+    public const RETURN_TYPE_ARRAY = 'array';
 
     /**
      * @var array params correspondence keys for toolbox
@@ -172,7 +172,7 @@ class LengowConfiguration extends Configuration
         if ($keys === null) {
             $langId = (int) Context::getContext()->cookie->id_lang;
             $locale = new LengowTranslation();
-            $orderStates = array();
+            $orderStates = [];
             $allOrderStates = OrderState::getOrderStates($langId);
             foreach ($allOrderStates as $orderState) {
                 $orderStates[] = array(
@@ -180,21 +180,21 @@ class LengowConfiguration extends Configuration
                     'text' => $orderState['name'],
                 );
             }
-            $exportFormats = array();
+            $exportFormats = [];
             foreach (LengowFeed::$availableFormats as $value) {
                 $exportFormats[] = array(
                     'id' => $value,
                     'text' => $value,
                 );
             }
-            $trackers = array();
+            $trackers = [];
             foreach (LengowMain::$trackerChoiceId as $idTracker => $tracker) {
                 $trackers[] = array(
                     'id' => $idTracker,
                     'text' => $tracker,
                 );
             }
-            $carriers = array();
+            $carriers = [];
             $activeCarriers = LengowCarrier::getActiveCarriers();
             foreach ($activeCarriers as $idCarrier => $carrier) {
                 $carriers[] = array(
@@ -569,7 +569,7 @@ class LengowConfiguration extends Configuration
      *
      * @param string $key Lengow configuration key
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkKeyExists($key)
     {
@@ -599,7 +599,7 @@ class LengowConfiguration extends Configuration
      *
      * @param array $accessIds Account id / Access token / Secret token
      *
-     * @return boolean
+     * @return bool
      */
     public static function setAccessIds($accessIds)
     {
@@ -643,7 +643,7 @@ class LengowConfiguration extends Configuration
     /**
      * Check if is a new merchant
      *
-     * @return boolean
+     * @return bool
      */
     public static function isNewMerchant()
     {
@@ -660,7 +660,7 @@ class LengowConfiguration extends Configuration
      */
     public static function getCatalogIds($idShop)
     {
-        $catalogIds = array();
+        $catalogIds = [];
         $shopCatalogIds = self::get(self::CATALOG_IDS, null, null, $idShop);
         if ($shopCatalogIds != 0 && Tools::strlen($shopCatalogIds) > 0) {
             $ids = trim(str_replace(array("\r\n", ',', '-', '|', ' ', '/'), ';', $shopCatalogIds), ';');
@@ -680,7 +680,7 @@ class LengowConfiguration extends Configuration
      * @param array $catalogIds Lengow catalog ids
      * @param integer $idShop PrestaShop shop id
      *
-     * @return boolean
+     * @return bool
      */
     public static function setCatalogIds($catalogIds, $idShop)
     {
@@ -715,7 +715,7 @@ class LengowConfiguration extends Configuration
      *
      * @param integer|null $idShop PrestaShop shop id
      *
-     * @return boolean
+     * @return bool
      */
     public static function shopIsActive($idShop = null)
     {
@@ -727,7 +727,7 @@ class LengowConfiguration extends Configuration
      *
      * @param integer $idShop PrestaShop shop id
      *
-     * @return boolean
+     * @return bool
      */
     public static function setActiveShop($idShop)
     {
@@ -741,7 +741,7 @@ class LengowConfiguration extends Configuration
     /**
      * Recovers if Debug Mode is active or not
      *
-     * @return boolean
+     * @return bool
      */
     public static function debugModeIsActive()
     {
@@ -769,7 +769,7 @@ class LengowConfiguration extends Configuration
      */
     public static function getAuthorizedIps()
     {
-        $authorizedIps = array();
+        $authorizedIps = [];
         $ips = self::getGlobalValue(self::AUTHORIZED_IPS);
         if (!empty($ips)) {
             $authorizedIps = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
@@ -783,7 +783,7 @@ class LengowConfiguration extends Configuration
      *
      * @param boolean $overwrite rewrite all Lengow settings
      *
-     * @return boolean
+     * @return bool
      */
     public static function resetAll($overwrite = false)
     {
@@ -826,7 +826,7 @@ class LengowConfiguration extends Configuration
     /**
      * Delete all Lengow settings
      *
-     * @return boolean
+     * @return bool
      */
     public static function deleteAll()
     {
@@ -848,12 +848,13 @@ class LengowConfiguration extends Configuration
      */
     public static function getAllValues($idShop = null, $toolbox = false)
     {
-        $rows = array();
+        $rows = [];
         $keys = self::getKeys();
         foreach ($keys as $key => $keyParams) {
             $value = null;
             if ((isset($keyParams[self::PARAM_EXPORT]) && !$keyParams[self::PARAM_EXPORT])
-                || ($toolbox
+                || (
+                    $toolbox
                     && isset($keyParams[self::PARAM_EXPORT_TOOLBOX])
                     && !$keyParams[self::PARAM_EXPORT_TOOLBOX]
                 )
@@ -893,7 +894,7 @@ class LengowConfiguration extends Configuration
                 case self::RETURN_TYPE_ARRAY:
                     return !empty($value)
                         ? explode(';', trim(str_replace(array("\r\n", ',', ' '), ';', $value), ';'))
-                        : array();
+                        : [];
             }
         }
         return $value;

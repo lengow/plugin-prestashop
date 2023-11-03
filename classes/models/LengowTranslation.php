@@ -25,15 +25,15 @@
 class LengowTranslation
 {
     /* Plugin translation iso codes */
-    const ISO_CODE_EN = 'en';
-    const ISO_CODE_FR = 'fr';
-    const ISO_CODE_ES = 'es';
-    const ISO_CODE_IT = 'it';
+    public const ISO_CODE_EN = 'en';
+    public const ISO_CODE_FR = 'fr';
+    public const ISO_CODE_ES = 'es';
+    public const ISO_CODE_IT = 'it';
 
     /**
      * @var string default iso code
      */
-    const DEFAULT_ISO_CODE = self::ISO_CODE_EN;
+    public const DEFAULT_ISO_CODE = self::ISO_CODE_EN;
 
     /**
      * @var array|null all translations
@@ -67,7 +67,7 @@ class LengowTranslation
      *
      * @return string
      */
-    public function t($message, $args = array(), $isoCode = null)
+    public function t($message, $args = [], $isoCode = null)
     {
         if (self::$forceIsoCode !== null) {
             $isoCode = self::$forceIsoCode;
@@ -101,8 +101,8 @@ class LengowTranslation
     protected function translateFinal($text, $args)
     {
         if ($args) {
-            $params = array();
-            $values = array();
+            $params = [];
+            $values = [];
             foreach ($args as $key => $value) {
                 $params[] = '%{' . $key . '}';
                 $values[] = $value;
@@ -118,7 +118,7 @@ class LengowTranslation
      * @param string $isoCode translation iso code
      * @param string|null $filename file location
      *
-     * @return boolean
+     * @return bool
      */
     public function loadFile($isoCode, $filename = null)
     {
@@ -127,7 +127,7 @@ class LengowTranslation
             $filename = LengowMain::getLengowFolder()
                 . $sep . LengowMain::FOLDER_TRANSLATION . $sep . $isoCode . '.csv';
         }
-        $translation = array();
+        $translation = [];
         if (file_exists($filename)) {
             if (($handle = fopen($filename, 'rb')) !== false) {
                 while (($data = fgetcsv($handle, 1000, '|')) !== false) {

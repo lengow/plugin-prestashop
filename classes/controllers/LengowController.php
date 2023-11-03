@@ -136,7 +136,7 @@ class LengowController
     /**
      * Checks if the plugin upgrade modal should be displayed or not
      *
-     * @return boolean
+     * @return bool
      */
     private function showPluginUpgradeModal()
     {

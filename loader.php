@@ -18,14 +18,10 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR);
 $sep = DIRECTORY_SEPARATOR;
-
-$notInPresta14 = array('LengowGender.php');
-
+$notInPresta14 = ['LengowGender.php'];
 spl_autoload_register('lengowAutoloader');
-
 function lengowAutoloader($className)
 {
     if (Tools::substr($className, 0, 6) === 'Lengow') {

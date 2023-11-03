@@ -171,7 +171,7 @@ class LengowInstall
     /**
      * Reset options
      *
-     * @return boolean
+     * @return bool
      */
     public function reset()
     {
@@ -181,7 +181,7 @@ class LengowInstall
     /**
      * Install options
      *
-     * @return boolean
+     * @return bool
      */
     public function install()
     {
@@ -203,7 +203,7 @@ class LengowInstall
     /**
      * Uninstall option
      *
-     * @return boolean
+     * @return bool
      */
     public function uninstall()
     {
@@ -224,7 +224,7 @@ class LengowInstall
      *
      * @param boolean|string $oldVersion old version for update
      *
-     * @return boolean
+     * @return bool
      */
     public function update($oldVersion = false)
     {
@@ -292,7 +292,7 @@ class LengowInstall
      *
      * @param string $table Lengow table
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkTableExists($table)
     {
@@ -311,7 +311,7 @@ class LengowInstall
      * @param string $table Lengow table
      * @param string $index Lengow index
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkIndexExists($table, $index)
     {
@@ -330,7 +330,7 @@ class LengowInstall
      * @param string $table Lengow table
      * @param string $field Lengow field
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkFieldExists($table, $field)
     {
@@ -359,7 +359,7 @@ class LengowInstall
     /**
      * Drop Lengow tables
      *
-     * @return boolean
+     * @return bool
      */
     public static function dropTable()
     {
@@ -387,7 +387,7 @@ class LengowInstall
     /**
      * Is Installation in progress
      *
-     * @return boolean
+     * @return bool
      */
     public static function isInstallationInProgress()
     {
@@ -419,7 +419,7 @@ class LengowInstall
      *
      * @param string $dirPath list of folders to delete
      *
-     * @return boolean
+     * @return bool
      */
     public static function deleteDir($dirPath)
     {
@@ -470,7 +470,7 @@ class LengowInstall
     /**
      * Add Lengow tables
      *
-     * @return boolean
+     * @return bool
      */
     private function createLengowTables()
     {
@@ -818,7 +818,7 @@ class LengowInstall
     /**
      * Add admin Tab (Controller)
      *
-     * @return boolean
+     * @return bool
      */
     private function createTab()
     {
@@ -854,7 +854,7 @@ class LengowInstall
     /**
      * Remove admin tab
      *
-     * @return boolean
+     * @return bool
      */
     private function uninstallTab()
     {
@@ -862,7 +862,7 @@ class LengowInstall
             $sql = 'SELECT `id_tab`, `class_name` FROM `' . _DB_PREFIX_ . 'tab` WHERE `module` = \'lengow\'';
             $tabs = Db::getInstance()->executeS($sql);
         } catch (PrestaShopDatabaseException $e) {
-            $tabs = array();
+            $tabs = [];
         }
         // remove all tabs Lengow
         foreach ($tabs as $value) {
@@ -888,7 +888,7 @@ class LengowInstall
     /**
      * Set default value for Lengow configuration
      *
-     * @return boolean
+     * @return bool
      */
     private function setDefaultValues()
     {
@@ -898,7 +898,7 @@ class LengowInstall
     /**
      * Add error status to reimport order
      *
-     * @return boolean
+     * @return bool
      */
     private function addStatusError()
     {
@@ -909,7 +909,7 @@ class LengowInstall
                 WHERE module_name = \'' . pSQL($this->lengowModule->name) . '\''
             );
         } catch (PrestaShopDatabaseException $e) {
-            $states = array();
+            $states = [];
         }
         if (empty($states)) {
             try {

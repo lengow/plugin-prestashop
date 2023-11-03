@@ -17,9 +17,8 @@
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
- */
-
-/**
+ *
+ *
  * List params
  * string  toolbox_action   Toolbox specific action
  * string  type             Type of data to display
@@ -33,7 +32,6 @@
  * integer shop_id          Shop id to synchronize
  * integer days             Synchronization interval time
  */
-
 @set_time_limit(0);
 
 $currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . '/');
@@ -88,7 +86,7 @@ switch ($action) {
             );
         } else {
             $result = LengowToolbox::syncOrders(
-                array(
+                [
                     LengowToolbox::PARAM_CREATED_TO => Tools::getValue(LengowToolbox::PARAM_CREATED_TO, null),
                     LengowToolbox::PARAM_CREATED_FROM => Tools::getValue(LengowToolbox::PARAM_CREATED_FROM, null),
                     LengowToolbox::PARAM_DAYS => Tools::getValue(LengowToolbox::PARAM_DAYS, null),
@@ -99,7 +97,7 @@ switch ($action) {
                     ),
                     LengowToolbox::PARAM_MARKETPLACE_SKU => Tools::getValue(LengowToolbox::PARAM_MARKETPLACE_SKU, null),
                     LengowToolbox::PARAM_SHOP_ID => Tools::getValue(LengowToolbox::PARAM_SHOP_ID, null),
-                )
+                ]
             );
         }
         if (isset($result[LengowToolbox::ERRORS][LengowToolbox::ERROR_CODE])) {

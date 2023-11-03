@@ -36,9 +36,9 @@ class LengowCart extends Cart
      *
      * @throws Exception|LengowException Cannot add product to cart / No quantity for product
      *
-     * @return boolean
+     * @return bool
      */
-    public function addProducts($products = array())
+    public function addProducts($products = [])
     {
         if (!$products) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_product_to_cart'));
@@ -74,7 +74,7 @@ class LengowCart extends Cart
      *
      * @throws Exception Cannot add product to cart
      */
-    public function cleanCart($products = array())
+    public function cleanCart($products = [])
     {
         $cartProducts = $this->getProducts();
         if (empty($cartProducts)) {
@@ -109,7 +109,7 @@ class LengowCart extends Cart
      *
      * @throws Exception|PrestaShopDatabaseException
      *
-     * @return boolean
+     * @return bool
      */
     public function updateQty(
         $quantity,
@@ -280,7 +280,7 @@ class LengowCart extends Cart
      *
      * @param array $data API data
      */
-    public function assign($data = array())
+    public function assign($data = [])
     {
         foreach ($data as $field => $value) {
             $this->{$field} = $value;
@@ -294,7 +294,7 @@ class LengowCart extends Cart
      *
      * @throws Exception
      *
-     * @return boolean
+     * @return bool
      */
     public function validateLengow()
     {

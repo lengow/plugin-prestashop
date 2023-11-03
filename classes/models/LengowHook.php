@@ -25,12 +25,12 @@
 class LengowHook
 {
     /* PrestaShop track pages */
-    const LENGOW_TRACK_HOMEPAGE = 'homepage';
-    const LENGOW_TRACK_PAGE = 'page';
-    const LENGOW_TRACK_PAGE_LIST = 'listepage';
-    const LENGOW_TRACK_PAGE_PAYMENT = 'payment';
-    const LENGOW_TRACK_PAGE_CART = 'basket';
-    const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
+    public const LENGOW_TRACK_HOMEPAGE = 'homepage';
+    public const LENGOW_TRACK_PAGE = 'page';
+    public const LENGOW_TRACK_PAGE_LIST = 'listepage';
+    public const LENGOW_TRACK_PAGE_PAYMENT = 'payment';
+    public const LENGOW_TRACK_PAGE_CART = 'basket';
+    public const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
 
     /**
      * @var string PrestaShop current page type
@@ -75,7 +75,7 @@ class LengowHook
     /**
      * @var array order is already shipped
      */
-    protected $alreadyShipped = array();
+    protected $alreadyShipped = [];
 
     /**
      * @var Lengow Lengow module instance
@@ -96,7 +96,7 @@ class LengowHook
     /**
      * Register Lengow Hook
      *
-     * @return boolean
+     * @return bool
      */
     public function registerHooks()
     {
@@ -225,10 +225,10 @@ class LengowHook
             || self::$currentPageType === self::LENGOW_TRACK_PAGE
             || self::$currentPageType === self::LENGOW_TRACK_PAGE_CART
         ) {
-            $productsCart = array();
+            $productsCart = [];
             $products = isset($this->context->smarty->tpl_vars['products'])
                 ? $this->context->smarty->tpl_vars['products']->value
-                : array();
+                : [];
             if (!empty($products)) {
                 $i = 1;
                 foreach ($products as $p) {
@@ -319,7 +319,7 @@ class LengowHook
     public function hookOrderConfirmation($args)
     {
         $i = 0;
-        $productsCart = array();
+        $productsCart = [];
         $order = isset($args['objOrder']) ? $args['objOrder'] : $args['order'];
         $orderTotal = Tools::ps_round($order->total_paid, 2);
         $paymentMethod = LengowMain::replaceAccentedChars(Tools::strtolower(str_replace(' ', '_', $order->payment)));
@@ -468,11 +468,11 @@ class LengowHook
     {
         if (($args['object'] instanceof Order) && LengowOrder::isFromLengow($args['object']->id)) {
             $lengowOrder = new LengowOrder($args['object']->id);
-            
+
             // Check if the tracking field has been updated
             if (isset($args['object']->shipping_number) && !empty($args['object']->shipping_number)) {
                 $trackingNumber = $args['object']->shipping_number;
-                
+
                 if ($lengowOrder->setWsShippingNumber($trackingNumber) !== ''
                     && LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
                     && !array_key_exists($lengowOrder->lengowMarketplaceSku, $this->alreadyShipped)

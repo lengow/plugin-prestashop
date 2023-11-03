@@ -63,7 +63,7 @@ class LengowShop extends Shop
             try {
                 $results = Db::getInstance()->ExecuteS($sql);
             } catch (PrestaShopDatabaseException $e) {
-                $results = array();
+                $results = [];
             }
         }
         return $results;
@@ -79,7 +79,7 @@ class LengowShop extends Shop
      */
     public static function getActiveShops($activeInLengow = false, $idShop = null)
     {
-        $result = array();
+        $result = [];
         $shops = self::findAll(true);
         foreach ($shops as $shop) {
             if ($idShop && (int) $shop['id_shop'] !== $idShop) {

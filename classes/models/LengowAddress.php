@@ -27,22 +27,22 @@ class LengowAddress extends Address
     /**
      * @var string code ISO A2 for Spain
      */
-    const ISO_A2_ES = 'ES';
+    public const ISO_A2_ES = 'ES';
 
     /**
      * @var string code ISO A2 for Italy
      */
-    const ISO_A2_IT = 'IT';
+    public const ISO_A2_IT = 'IT';
 
     /**
      * @var integer constant error empty
      */
-    const LENGOW_EMPTY_ERROR = 1;
+    public const LENGOW_EMPTY_ERROR = 1;
 
     /**
      * @var integer constant error size
      */
-    const LENGOW_SIZE_ERROR = 2;
+    public const LENGOW_SIZE_ERROR = 2;
 
     /**
      * @var array API fields for an address
@@ -413,7 +413,7 @@ class LengowAddress extends Address
      */
     public static function extractAddressDataFromAPI($api)
     {
-        $temp = array();
+        $temp = [];
         foreach (self::$addressApiNodes as $node) {
             $temp[$node] = (string) $api->{$node};
         }
@@ -437,7 +437,7 @@ class LengowAddress extends Address
      *
      * @return LengowAddress
      */
-    public function assign($data = array())
+    public function assign($data = [])
     {
         $this->company = $data['company'];
         $this->lastname = $data['last_name'];
@@ -468,7 +468,7 @@ class LengowAddress extends Address
      *
      * @throws Exception|LengowException invalid object
      *
-     * @return boolean
+     * @return bool
      */
     public function validateLengow()
     {
@@ -754,7 +754,7 @@ class LengowAddress extends Address
             }
             // approximate search on the state name
             if (!$idState) {
-                $results = array();
+                $results = [];
                 foreach ($countryStates as $countryState) {
                     $nameCleaned = $this->cleanString($countryState['name']);
                     similar_text($stateRegionCleaned, $nameCleaned, $percent);

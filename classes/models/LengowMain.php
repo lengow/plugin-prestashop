@@ -25,27 +25,27 @@
 class LengowMain
 {
     /* Lengow plugin folders */
-    const FOLDER_CONFIG = 'config';
-    const FOLDER_EXPORT = 'export';
-    const FOLDER_LENGOW = 'lengow';
-    const FOLDER_LOG = 'logs';
-    const FOLDER_TRANSLATION = 'translations';
-    const FOLDER_WEBSERVICE = 'webservice';
+    public const FOLDER_CONFIG = 'config';
+    public const FOLDER_EXPORT = 'export';
+    public const FOLDER_LENGOW = 'lengow';
+    public const FOLDER_LOG = 'logs';
+    public const FOLDER_TRANSLATION = 'translations';
+    public const FOLDER_WEBSERVICE = 'webservice';
 
     /* Lengow webservices */
-    const WEBSERVICE_EXPORT = 'export.php';
-    const WEBSERVICE_CRON = 'cron.php';
-    const WEBSERVICE_TOOLBOX = 'toolbox.php';
+    public const WEBSERVICE_EXPORT = 'export.php';
+    public const WEBSERVICE_CRON = 'cron.php';
+    public const WEBSERVICE_TOOLBOX = 'toolbox.php';
 
     /* Date formats */
-    const DATE_FULL = 'Y-m-d H:i:s';
-    const DATE_DAY = 'Y-m-d';
-    const DATE_ISO_8601 = 'c';
+    public const DATE_FULL = 'Y-m-d H:i:s';
+    public const DATE_DAY = 'Y-m-d';
+    public const DATE_ISO_8601 = 'c';
 
     /**
      * @var integer life of log files in days
      */
-    const LOG_LIFE = 20;
+    public const LOG_LIFE = 20;
 
     /**
      * @var LengowLog Lengow log file instance
@@ -104,14 +104,14 @@ class LengowMain
     /**
      * @var array PrestaShop mail configuration
      */
-    protected static $mailConfigurations = array();
+    protected static $mailConfigurations = [];
 
     /**
      * The PrestaShop compare version with current version.
      *
      * @param string $version the version to compare
      *
-     * @return boolean
+     * @return bool
      */
     public static function compareVersion($version = '1.4')
     {
@@ -307,7 +307,7 @@ class LengowMain
      * @param string $token shop token
      * @param integer|null $idShop PrestaShop shop id
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkWebservicesAccess($token, $idShop = null)
     {
@@ -328,7 +328,7 @@ class LengowMain
      * @param string $token shop token
      * @param integer|null $idShop PrestaShop shop id
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkToken($token, $idShop = null)
     {
@@ -366,7 +366,7 @@ class LengowMain
     /**
      * Check if current IP is authorized
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkIp()
     {
@@ -406,7 +406,7 @@ class LengowMain
         if ($params === null || (is_array($params) && empty($params))) {
             return $key;
         }
-        $allParams = array();
+        $allParams = [];
         foreach ($params as $param => $value) {
             $value = str_replace(array('|', '=='), array('', ''), $value);
             $allParams[] = $param . '==' . $value;
@@ -448,7 +448,7 @@ class LengowMain
      */
     public static function cleanLog()
     {
-        $days = array();
+        $days = [];
         $days[] = 'logs-' . date(self::DATE_DAY) . '.txt';
         for ($i = 1; $i < self::LOG_LIFE; $i++) {
             $days[] = 'logs-' . date(self::DATE_DAY, strtotime('-' . $i . 'day')) . '.txt';
@@ -706,7 +706,7 @@ class LengowMain
      *
      * @param boolean $logOutput see log or not
      *
-     * @return boolean
+     * @return bool
      */
     public static function sendMailAlert($logOutput = false)
     {
@@ -795,7 +795,7 @@ class LengowMain
      *
      * @param string $moduleName name of module
      *
-     * @return boolean
+     * @return bool
      */
     public static function isModuleInstalled($moduleName)
     {
@@ -805,7 +805,7 @@ class LengowMain
     /**
      * Check if Mondial Relay is installed, active and if version is supported
      *
-     * @return boolean
+     * @return bool
      */
     public static function isMondialRelayAvailable()
     {
@@ -826,7 +826,7 @@ class LengowMain
     /**
      * Check is soColissimo is installed, activated and if version is supported
      *
-     * @return boolean
+     * @return bool
      */
     public static function isSoColissimoAvailable()
     {

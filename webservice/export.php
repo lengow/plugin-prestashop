@@ -121,14 +121,14 @@ if ($outOfStock !== null || Tools::getIsset(LengowExport::PARAM_OUT_OF_STOCK)) {
     $outOfStock = (bool) LengowConfiguration::get(LengowConfiguration::OUT_OF_STOCK_ENABLED, null, null, $idShop);
 }
 // export specific products
-$productIds = array();
+$productIds = [];
 $ids = Tools::getIsset(LengowExport::PARAM_LEGACY_PRODUCT_IDS)
     ? Tools::getValue(LengowExport::PARAM_LEGACY_PRODUCT_IDS)
     : null;
 if ($ids !== null || Tools::getIsset(LengowExport::PARAM_PRODUCT_IDS)) {
     $ids = $ids !== null ? $ids : Tools::getValue(LengowExport::PARAM_PRODUCT_IDS);
     if (Tools::strlen($ids) > 0) {
-        $ids = str_replace(array(';', '|', ':'), ',', $ids);
+        $ids = str_replace([';', '|', ':'], ',', $ids);
         $ids = preg_replace('/[^0-9\,]/', '', $ids);
         $productIds = explode(',', $ids);
     }
@@ -199,7 +199,7 @@ $logOutput = Tools::getIsset(LengowExport::PARAM_LOG_OUTPUT)
     : true;
 
 $export = new LengowExport(
-    array(
+    [
         LengowExport::PARAM_FORMAT => $format,
         LengowExport::PARAM_STREAM => $stream,
         LengowExport::PARAM_PRODUCT_IDS => $productIds,
@@ -213,7 +213,7 @@ $export = new LengowExport(
         LengowExport::PARAM_LANGUAGE_ID => $languageId,
         LengowExport::PARAM_UPDATE_EXPORT_DATE => $updateExportDate,
         LengowExport::PARAM_LOG_OUTPUT => $logOutput,
-    )
+    ]
 );
 
 if ($getParams) {

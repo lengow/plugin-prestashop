@@ -27,13 +27,13 @@ class LengowOrderLine
     /**
      * @var string Lengow order line table name
      */
-    const TABLE_ORDER_LINE = 'lengow_order_line';
+    public const TABLE_ORDER_LINE = 'lengow_order_line';
 
     /* Order line fields */
-    const FIELD_ID = 'id';
-    const FIELD_ORDER_ID = 'id_order';
-    const FIELD_ORDER_LINE_ID = 'id_order_line';
-    const FIELD_ORDER_DETAIL_ID = 'id_order_detail';
+    public const FIELD_ID = 'id';
+    public const FIELD_ORDER_ID = 'id_order';
+    public const FIELD_ORDER_LINE_ID = 'id_order_line';
+    public const FIELD_ORDER_DETAIL_ID = 'id_order_detail';
 
     /**
      * Get Order Lines by PrestaShop order id
@@ -49,7 +49,7 @@ class LengowOrderLine
         try {
             return Db::getInstance()->executeS($sql);
         } catch (PrestaShopDatabaseException $e) {
-            return array();
+            return [];
         }
     }
 }

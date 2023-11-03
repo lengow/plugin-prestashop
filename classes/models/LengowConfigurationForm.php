@@ -25,10 +25,10 @@
 class LengowConfigurationForm
 {
     /* Configuration form type */
-    const TYPE_TEXT = 'text';
-    const TYPE_CHECKBOX = 'checkbox';
-    const TYPE_SELECT = 'select';
-    const TYPE_DAY = 'day';
+    public const TYPE_TEXT = 'text';
+    public const TYPE_CHECKBOX = 'checkbox';
+    public const TYPE_SELECT = 'select';
+    public const TYPE_DAY = 'day';
 
     /**
      * @var array $fields checkbox keys

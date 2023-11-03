@@ -25,14 +25,14 @@
 class LengowToolboxElement
 {
     /* Array data for toolbox content creation */
-    const DATA_HEADER = 'header';
-    const DATA_TITLE = 'title';
-    const DATA_STATE = 'state';
-    const DATA_MESSAGE = 'message';
-    const DATA_SIMPLE = 'simple';
-    const DATA_HELP = 'help';
-    const DATA_HELP_LINK = 'help_link';
-    const DATA_HELP_LABEL = 'help_label';
+    public const DATA_HEADER = 'header';
+    public const DATA_TITLE = 'title';
+    public const DATA_STATE = 'state';
+    public const DATA_MESSAGE = 'message';
+    public const DATA_SIMPLE = 'simple';
+    public const DATA_HELP = 'help';
+    public const DATA_HELP_LINK = 'help_link';
+    public const DATA_HELP_LABEL = 'help_label';
 
     /**
      * @var LengowTranslation $locale Lengow translation instance
@@ -304,7 +304,7 @@ class LengowToolboxElement
             $shopPath = LengowMain::FOLDER_EXPORT . $sep . $shopNameCleaned . $sep;
             $folderPath = LengowMain::getLengowFolder() . $sep . $shopPath;
             $folderUrl = LengowMain::getLengowBaseUrl() . $shopPath;
-            $files = file_exists($folderPath) ? array_diff(scandir($folderPath), array('..', '.')) : array();
+            $files = file_exists($folderPath) ? array_diff(scandir($folderPath), array('..', '.')) : [];
             $checklist = array(
                 array(
                     self::DATA_HEADER => $data[LengowToolbox::SHOP_NAME]
@@ -341,7 +341,7 @@ class LengowToolboxElement
      */
     public function checkFileMd5()
     {
-        $checklist = array();
+        $checklist = [];
         $checksumData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_CHECKSUM);
         $html = '<h3><i class="fa fa-commenting"></i> ' . $this->locale->t('toolbox.screen.summary') . '</h3>';
         if ($checksumData[LengowToolbox::CHECKSUM_AVAILABLE]) {
@@ -368,7 +368,7 @@ class LengowToolboxElement
             );
             $html .= $this->getContent($checklist);
             if (!empty($checksumData[LengowToolbox::CHECKSUM_FILE_MODIFIED])) {
-                $fileModified = array();
+                $fileModified = [];
                 foreach ($checksumData[LengowToolbox::CHECKSUM_FILE_MODIFIED] as $file) {
                     $fileModified[] = array(
                         self::DATA_TITLE => $file,
@@ -380,7 +380,7 @@ class LengowToolboxElement
                 $html .= $this->getContent($fileModified);
             }
             if (!empty($checksumData[LengowToolbox::CHECKSUM_FILE_DELETED])) {
-                $fileDeleted = array();
+                $fileDeleted = [];
                 foreach ($checksumData[LengowToolbox::CHECKSUM_FILE_DELETED] as $file) {
                     $fileDeleted[] = array(
                         self::DATA_TITLE => $file,
@@ -430,7 +430,7 @@ class LengowToolboxElement
     /**
      * Check if shop functionality are enabled
      *
-     * @return boolean
+     * @return bool
      */
     private function isShopActivated()
     {
@@ -447,7 +447,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    private function getContent($checklist = array())
+    private function getContent($checklist = [])
     {
         if (empty($checklist)) {
             return null;

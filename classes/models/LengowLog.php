@@ -25,19 +25,19 @@
 class LengowLog extends LengowFile
 {
     /* Log category codes */
-    const CODE_INSTALL = 'Install';
-    const CODE_UNINSTALL = 'Uninstall';
-    const CODE_CONNECTION = 'Connection';
-    const CODE_SETTING = 'Setting';
-    const CODE_CONNECTOR = 'Connector';
-    const CODE_EXPORT = 'Export';
-    const CODE_IMPORT = 'Import';
-    const CODE_ACTION = 'Action';
-    const CODE_MAIL_REPORT = 'Mail Report';
+    public const CODE_INSTALL = 'Install';
+    public const CODE_UNINSTALL = 'Uninstall';
+    public const CODE_CONNECTION = 'Connection';
+    public const CODE_SETTING = 'Setting';
+    public const CODE_CONNECTOR = 'Connector';
+    public const CODE_EXPORT = 'Export';
+    public const CODE_IMPORT = 'Import';
+    public const CODE_ACTION = 'Action';
+    public const CODE_MAIL_REPORT = 'Mail Report';
 
     /* Log params for export */
-    const LOG_DATE = 'date';
-    const LOG_LINK = 'link';
+    public const LOG_DATE = 'date';
+    public const LOG_LINK = 'link';
 
     /**
      * @var LengowFile Lengow file instance
@@ -90,7 +90,7 @@ class LengowLog extends LengowFile
      */
     public static function getPaths()
     {
-        $logs = array();
+        $logs = [];
         $files = self::getFiles();
         if (empty($files)) {
             return $logs;
@@ -147,7 +147,7 @@ class LengowLog extends LengowFile
                 try {
                     $logFiles = array(new LengowFile(LengowMain::FOLDER_LOG, $file));
                 } catch (LengowException $e) {
-                    $logFiles = array();
+                    $logFiles = [];
                 }
             }
         } else {

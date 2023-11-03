@@ -88,10 +88,10 @@ if (Tools::getIsset(LengowImport::PARAM_GET_SYNC) && Tools::getValue(LengowImpor
     // sync orders between Lengow and PrestaShop
     if (!$sync || $sync === LengowSync::SYNC_ORDER) {
         // array of params for import order
-        $params = array(
+        $params = [
             LengowImport::PARAM_TYPE => LengowImport::TYPE_CRON,
             LengowImport::PARAM_LOG_OUTPUT => $logOutput,
-        );
+        ];
         // check if the GET parameters are available
         if (Tools::getIsset(LengowImport::PARAM_FORCE_PRODUCT)) {
             $params[LengowImport::PARAM_FORCE_PRODUCT] = (bool) Tools::getValue(LengowImport::PARAM_FORCE_PRODUCT);

@@ -27,37 +27,37 @@ class LengowCarrier extends Carrier
     /**
      * @var string Lengow carrier marketplace table name
      */
-    const TABLE_CARRIER_MARKETPLACE = 'lengow_carrier_marketplace';
+    public const TABLE_CARRIER_MARKETPLACE = 'lengow_carrier_marketplace';
 
     /**
      * @var string Lengow default carrier table name
      */
-    const TABLE_DEFAULT_CARRIER = 'lengow_default_carrier';
+    public const TABLE_DEFAULT_CARRIER = 'lengow_default_carrier';
 
     /**
      * @var string Lengow marketplace carrier marketplace table name
      */
-    const TABLE_MARKETPLACE_CARRIER_MARKETPLACE = 'lengow_marketplace_carrier_marketplace';
+    public const TABLE_MARKETPLACE_CARRIER_MARKETPLACE = 'lengow_marketplace_carrier_marketplace';
 
     /**
      * @var string Lengow marketplace carrier country table name
      */
-    const TABLE_MARKETPLACE_CARRIER_COUNTRY = 'lengow_marketplace_carrier_country';
+    public const TABLE_MARKETPLACE_CARRIER_COUNTRY = 'lengow_marketplace_carrier_country';
 
     /* Marketplace carrier fields */
-    const FIELD_ID = 'id';
-    const FIELD_CARRIER_MARKETPLACE_NAME = 'carrier_marketplace_name';
-    const FIELD_CARRIER_MARKETPLACE_LABEL = 'carrier_marketplace_label';
-    const FIELD_CARRIER_LENGOW_CODE = 'carrier_lengow_code';
-    const FIELD_COUNTRY_ID = 'id_country';
-    const FIELD_MARKETPLACE_ID = 'id_marketplace';
-    const FIELD_CARRIER_ID = 'id_carrier';
-    const FIELD_CARRIER_MARKETPLACE_ID = 'id_carrier_marketplace';
+    public const FIELD_ID = 'id';
+    public const FIELD_CARRIER_MARKETPLACE_NAME = 'carrier_marketplace_name';
+    public const FIELD_CARRIER_MARKETPLACE_LABEL = 'carrier_marketplace_label';
+    public const FIELD_CARRIER_LENGOW_CODE = 'carrier_lengow_code';
+    public const FIELD_COUNTRY_ID = 'id_country';
+    public const FIELD_MARKETPLACE_ID = 'id_marketplace';
+    public const FIELD_CARRIER_ID = 'id_carrier';
+    public const FIELD_CARRIER_MARKETPLACE_ID = 'id_carrier_marketplace';
 
     /* Compatibility codes */
-    const COMPATIBILITY_OK = 1;
-    const NO_COMPATIBILITY = 0;
-    const COMPATIBILITY_KO = -1;
+    public const COMPATIBILITY_OK = 1;
+    public const NO_COMPATIBILITY = 0;
+    public const COMPATIBILITY_KO = -1;
 
     /**
      * Get all active PrestaShop carriers
@@ -68,7 +68,7 @@ class LengowCarrier extends Carrier
      */
     public static function getActiveCarriers($idCountry = null)
     {
-        $carriers = array();
+        $carriers = [];
         if ($idCountry) {
             $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
                 INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
@@ -144,7 +144,7 @@ class LengowCarrier extends Carrier
      */
     public static function getIdCarrierByExternalModuleName($search, $idCountry = null, $idRelay = null)
     {
-        $carriers = array();
+        $carriers = [];
         $search = Tools::strtolower(str_replace(' ', '', $search));
         $activeCarriers = self::getActiveCarriers($idCountry);
         // use exact matching on the module name
@@ -315,7 +315,7 @@ class LengowCarrier extends Carrier
         } catch (PrestaShopDatabaseException $e) {
             $results = false;
         }
-        return is_array($results) ? $results : array();
+        return is_array($results) ? $results : [];
     }
 
     /**
@@ -345,7 +345,7 @@ class LengowCarrier extends Carrier
         } catch (PrestaShopDatabaseException $e) {
             $results = false;
         }
-        return is_array($results) ? $results : array();
+        return is_array($results) ? $results : [];
     }
 
     /**
@@ -363,7 +363,7 @@ class LengowCarrier extends Carrier
                 WHERE carrier_marketplace_name = "' . pSQL($carrierMarketplaceName) . '"'
             );
         } catch (PrestaShopDatabaseException $e) {
-            $results = array();
+            $results = [];
         }
         // additional verification for non-case sensitive Databases
         if (!empty($results)) {
@@ -410,7 +410,7 @@ class LengowCarrier extends Carrier
                                 isset($carrier->lengow_code) ? $carrier->lengow_code : null
                             );
                         } else {
-                            $params = array();
+                            $params = [];
                             if ($carrier->label !== null && Tools::strlen($carrier->label) > 0) {
                                 $params[self::FIELD_CARRIER_MARKETPLACE_LABEL] = pSQL($carrier->label);
                             }
@@ -480,7 +480,7 @@ class LengowCarrier extends Carrier
      * @param integer $idMarketplace Lengow marketplace id
      * @param integer $idCarrierMarketplace Lengow carrier marketplace id
      *
-     * @return boolean
+     * @return bool
      */
     public static function matchCarrierMarketplaceWithMarketplace($idMarketplace, $idCarrierMarketplace)
     {
@@ -492,7 +492,7 @@ class LengowCarrier extends Carrier
                 AND id_carrier_marketplace = ' . (int) $idCarrierMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
-            $result = array();
+            $result = [];
         }
         if (empty($result)) {
             $params = array(
@@ -511,7 +511,7 @@ class LengowCarrier extends Carrier
      *
      * @param integer $idMarketplaceCarrierMarketplace Lengow marketplace carrier marketplace id
      *
-     * @return boolean
+     * @return bool
      */
     public static function deleteMarketplaceCarrierMarketplace($idMarketplaceCarrierMarketplace)
     {
@@ -534,7 +534,7 @@ class LengowCarrier extends Carrier
                     // get all carrier saved in database
                     $carrierMarketplaces = self::getAllCarrierMarketplaceByIdMarketplace($idMarketplace);
                     // get all current marketplace carriers with api
-                    $currentCarrierMarketplaces = array();
+                    $currentCarrierMarketplaces = [];
                     if (isset($marketplace->orders->carriers)) {
                         foreach ($marketplace->orders->carriers as $carrierMarketplaceName => $carrierMarketplace) {
                             $currentCarrierMarketplaces[$carrierMarketplaceName] = $carrierMarketplace->label;
@@ -600,7 +600,7 @@ class LengowCarrier extends Carrier
                 AND id_marketplace = ' . (int) $idMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
-            $results = array();
+            $results = [];
         }
         if (!empty($results)) {
             foreach ($results as $result) {
@@ -694,7 +694,7 @@ class LengowCarrier extends Carrier
      */
     public static function getDefaultCarrierNotMatched()
     {
-        $defaultCarriers = array();
+        $defaultCarriers = [];
 
         $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
             WHERE id_carrier IS NULL OR id_carrier = 0 ORDER BY id_country ASC';
@@ -714,7 +714,7 @@ class LengowCarrier extends Carrier
     /**
      * Has default carriers not matched
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasDefaultCarrierNotMatched()
     {
@@ -752,7 +752,7 @@ class LengowCarrier extends Carrier
      *
      * @return integer|false
      */
-    public static function insertDefaultCarrier($idCountry, $idMarketplace, $additionalParams = array())
+    public static function insertDefaultCarrier($idCountry, $idMarketplace, $additionalParams = [])
     {
         $params = array_merge(
             array(self::FIELD_COUNTRY_ID => (int) $idCountry, self::FIELD_MARKETPLACE_ID => (int) $idMarketplace),
@@ -817,7 +817,7 @@ class LengowCarrier extends Carrier
                 AND id_marketplace = ' . (int) $idMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
-            $results = array();
+            $results = [];
         }
         if (!empty($results)) {
             foreach ($results as $result) {
@@ -864,7 +864,7 @@ class LengowCarrier extends Carrier
      */
     public static function getAllMarketplaceCarrierCountryByIdMarketplace($idCountry, $idMarketplace)
     {
-        $carriers = array();
+        $carriers = [];
         try {
             $results = Db::getInstance()->ExecuteS(
                 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
@@ -872,7 +872,7 @@ class LengowCarrier extends Carrier
                 AND id_marketplace = ' . (int) $idMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
-            $results = array();
+            $results = [];
         }
         if (!empty($results)) {
             foreach ($results as $result) {
@@ -984,7 +984,7 @@ class LengowCarrier extends Carrier
     public static function carrierCompatibility($idOrder, $idCustomer, $idCart, $idCarrier, $shippingAddress)
     {
         // get SoColissimo carrier id
-        $soColissimoCarrierId =_PS_VERSION_ < '1.7'
+        $soColissimoCarrierId = _PS_VERSION_ < '1.7'
             ? Configuration::get('SOCOLISSIMO_CARRIER_ID')
             : Configuration::get('COLISSIMO_CARRIER_ID');
         if ($idCarrier === (int) $soColissimoCarrierId) {
@@ -1028,7 +1028,7 @@ class LengowCarrier extends Carrier
      *
      * @throws LengowException colissimo missing file
      *
-     * @return boolean
+     * @return bool
      */
     public static function addSoColissimo($idCart, $idCustomer, $shippingAddress)
     {
@@ -1045,7 +1045,7 @@ class LengowCarrier extends Carrier
             );
         }
         $customer = new LengowCustomer($idCustomer);
-        $params = array();
+        $params = [];
         if (!empty($shippingAddress->idRelay)) {
             $deliveryMode = 'A2P';
             $soColissimo = new SCFields($deliveryMode);
@@ -1106,7 +1106,7 @@ class LengowCarrier extends Carrier
                 ' . (isset($params['CENAME']) ? '\'' . pSQL($params['CENAME']) . '\'' : '\'\'') . ',
                 ' . (
                 isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\''
-                ) . ',
+            ) . ',
                 ' . (isset($params['PRCOMPLADRESS']) ? '\'' . pSQL($params['PRCOMPLADRESS']) . '\'' : '\'\'') . ',
                 ' . (isset($params['PRNAME']) ? '\'' . pSQL($params['PRNAME']) . '\'' : '\'\'') . ',
                 ' . (isset($params['PRADRESS1']) ? '\'' . pSQL($params['PRADRESS1']) . '\'' : '\'\'') . ',
@@ -1120,20 +1120,20 @@ class LengowCarrier extends Carrier
                 ' . (isset($params['CECOMPANYNAME']) ? '\'' . pSQL($params['CECOMPANYNAME']) . '\'' : '\'\'') . ',
                 ' . (
                 isset($params['CEDELIVERYINFORMATION']) ? '\'' . pSQL($params['CEDELIVERYINFORMATION']) . '\'' : '\'\''
-                ) . ',
+            ) . ',
                 ' . (isset($params['CEDOORCODE1']) ? '\'' . pSQL($params['CEDOORCODE1']) . '\'' : '\'\'') . ',
                 ' . (isset($params['CEDOORCODE2']) ? '\'' . pSQL($params['CEDOORCODE2']) . '\'' : '\'\'') . ',
                 ' . (isset($params['CODERESEAU']) ? '\'' . pSQL($params['CODERESEAU']) . '\'' : '\'\'') . ',
                 ' . (isset($params['CENAME']) ? '\'' . Tools::ucfirst(pSQL($params['CENAME'])) . '\'' : '\'\'') . ',
                 ' . (
                 isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\''
-                ) . ')';
+            ) . ')';
         } else {
             $sql .= '\'' . pSQL($deliveryMode) . '\',\'\',
                 ' . (isset($params['CENAME']) ? '\'' . Tools::ucfirst(pSQL($params['CENAME'])) . '\'' : '\'\'') . ',
                 ' . (
                 isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\''
-                ) . ',
+            ) . ',
                 ' . (isset($params['CECOMPLADRESS']) ? '\'' . pSQL($params['CECOMPLADRESS']) . '\'' : '\'\'') . ',
                 ' . (isset($params['CEADRESS1']) ? '\'' . pSQL($params['CEADRESS1']) . '\'' : '\'\'') . ',
                 ' . (isset($params['CEADRESS4']) ? '\'' . pSQL($params['CEADRESS4']) . '\'' : '\'\'') . ',
@@ -1147,14 +1147,14 @@ class LengowCarrier extends Carrier
                 ' . (isset($params['CECOMPANYNAME']) ? '\'' . pSQL($params['CECOMPANYNAME']) . '\'' : '\'\'') . ',
                 ' . (
                 isset($params['CEDELIVERYINFORMATION']) ? '\'' . pSQL($params['CEDELIVERYINFORMATION']) . '\'' : '\'\''
-                ) . ',
+            ) . ',
                 ' . (isset($params['CEDOORCODE1']) ? '\'' . pSQL($params['CEDOORCODE1']) . '\'' : '\'\'') . ',
                 ' . (isset($params['CEDOORCODE2']) ? '\'' . pSQL($params['CEDOORCODE2']) . '\'' : '\'\'') . ',
                 ' . (isset($params['CODERESEAU']) ? '\'' . pSQL($params['CODERESEAU']) . '\'' : '\'\'') . ',
                 ' . (isset($params['CENAME']) ? '\'' . Tools::ucfirst(pSQL($params['CENAME'])) . '\'' : '\'\'') . ',
                 ' . (
                 isset($params['CEFIRSTNAME']) ? '\'' . Tools::ucfirst(pSQL($params['CEFIRSTNAME'])) . '\'' : '\'\''
-                ) . ')';
+            ) . ')';
         }
         return Db::getInstance()->execute($sql);
     }
@@ -1189,7 +1189,7 @@ class LengowCarrier extends Carrier
      *
      * @throws LengowException mondial relay missing file
      *
-     * @return boolean
+     * @return bool
      */
     public static function getMRRelay($idAddressDelivery, $idRelay, $mr)
     {
@@ -1234,7 +1234,7 @@ class LengowCarrier extends Carrier
      * @param integer $idCart PrestaShop cart id
      * @param integer $insurance insurance
      *
-     * @return boolean
+     * @return bool
      */
     public static function addMondialRelay($relay, $idOrder, $idCustomer, $idCarrier, $idCart, $insurance = 0)
     {

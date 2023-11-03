@@ -70,13 +70,13 @@ class LengowOrderSettingController extends LengowController
     {
         $action = Tools::getValue('action');
         $idCountry = Tools::getIsset('id_country') ? (int) Tools::getValue('id_country') : false;
-        $defaultCarriers = Tools::getIsset('default_carriers') ? Tools::getValue('default_carriers') : array();
+        $defaultCarriers = Tools::getIsset('default_carriers') ? Tools::getValue('default_carriers') : [];
         $methodMarketplaces = Tools::getIsset('method_marketplaces')
             ? Tools::getValue('method_marketplaces')
-            : array();
+            : [];
         $carrierMarketplaces = Tools::getIsset('carrier_marketplaces')
             ? Tools::getValue('carrier_marketplaces')
-            : array();
+            : [];
         switch ($action) {
             case 'open_marketplace_matching':
                 $idCountry = (int) Tools::getValue('idCountry');

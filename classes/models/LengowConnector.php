@@ -27,43 +27,43 @@ class LengowConnector
     /**
      * @var string url of Lengow solution
      */
-    const LENGOW_URL = 'lengow.net';
+    public const LENGOW_URL = 'lengow.net';
 
     /**
      * @var string url of the Lengow API
      */
-    const LENGOW_API_URL = 'https://api.lengow.net';
+    public const LENGOW_API_URL = 'https://api.lengow.net';
 
     /* Lengow API routes */
-    const API_ACCESS_TOKEN = '/access/get_token';
-    const API_ORDER = '/v3.0/orders';
-    const API_ORDER_MOI = '/v3.0/orders/moi/';
-    const API_ORDER_ACTION = '/v3.0/orders/actions/';
-    const API_MARKETPLACE = '/v3.0/marketplaces';
-    const API_PLAN = '/v3.0/plans';
-    const API_CMS = '/v3.1/cms';
-    const API_CMS_CATALOG = '/v3.1/cms/catalogs/';
-    const API_CMS_MAPPING = '/v3.1/cms/mapping/';
-    const API_PLUGIN = '/v3.0/plugins';
+    public const API_ACCESS_TOKEN = '/access/get_token';
+    public const API_ORDER = '/v3.0/orders';
+    public const API_ORDER_MOI = '/v3.0/orders/moi/';
+    public const API_ORDER_ACTION = '/v3.0/orders/actions/';
+    public const API_MARKETPLACE = '/v3.0/marketplaces';
+    public const API_PLAN = '/v3.0/plans';
+    public const API_CMS = '/v3.1/cms';
+    public const API_CMS_CATALOG = '/v3.1/cms/catalogs/';
+    public const API_CMS_MAPPING = '/v3.1/cms/mapping/';
+    public const API_PLUGIN = '/v3.0/plugins';
 
     /* Request actions */
-    const GET = 'GET';
-    const POST = 'POST';
-    const PUT = 'PUT';
-    const PATCH = 'PATCH';
+    public const GET = 'GET';
+    public const POST = 'POST';
+    public const PUT = 'PUT';
+    public const PATCH = 'PATCH';
 
     /* Return formats */
-    const FORMAT_JSON = 'json';
-    const FORMAT_STREAM = 'stream';
+    public const FORMAT_JSON = 'json';
+    public const FORMAT_STREAM = 'stream';
 
     /* Http codes */
-    const CODE_200 = 200;
-    const CODE_201 = 201;
-    const CODE_401 = 401;
-    const CODE_403 = 403;
-    const CODE_404 = 404;
-    const CODE_500 = 500;
-    const CODE_504 = 504;
+    public const CODE_200 = 200;
+    public const CODE_201 = 201;
+    public const CODE_401 = 401;
+    public const CODE_403 = 403;
+    public const CODE_404 = 404;
+    public const CODE_500 = 500;
+    public const CODE_504 = 504;
 
     /**
      * @var array success HTTP codes for request
@@ -159,7 +159,7 @@ class LengowConnector
      *
      * @param boolean $logOutput see log or not
      *
-     * @return boolean
+     * @return bool
      */
     public static function isValidAuth($logOutput = false)
     {
@@ -199,7 +199,7 @@ class LengowConnector
      *
      * @return array|false
      */
-    public static function queryApi($type, $api, $args = array(), $body = '', $logOutput = false)
+    public static function queryApi($type, $api, $args = [], $body = '', $logOutput = false)
     {
         if (!in_array($type, array(self::GET, self::POST, self::PUT, self::PATCH))) {
             return false;
@@ -312,7 +312,7 @@ class LengowConnector
      *
      * @return mixed
      */
-    public function get($api, $args = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
+    public function get($api, $args = [], $format = self::FORMAT_JSON, $body = '', $logOutput = false)
     {
         return $this->call($api, $args, self::GET, $format, $body, $logOutput);
     }
@@ -330,7 +330,7 @@ class LengowConnector
      *
      * @return mixed
      */
-    public function post($api, $args = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
+    public function post($api, $args = [], $format = self::FORMAT_JSON, $body = '', $logOutput = false)
     {
         return $this->call($api, $args, self::POST, $format, $body, $logOutput);
     }
@@ -348,7 +348,7 @@ class LengowConnector
      *
      * @return mixed
      */
-    public function put($api, $args = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
+    public function put($api, $args = [], $format = self::FORMAT_JSON, $body = '', $logOutput = false)
     {
         return $this->call($api, $args, self::PUT, $format, $body, $logOutput);
     }
@@ -366,7 +366,7 @@ class LengowConnector
      *
      * @return mixed
      */
-    public function patch($api, $args = array(), $format = self::FORMAT_JSON, $body = '', $logOutput = false)
+    public function patch($api, $args = [], $format = self::FORMAT_JSON, $body = '', $logOutput = false)
     {
         return $this->call($api, $args, self::PATCH, $format, $body, $logOutput);
     }

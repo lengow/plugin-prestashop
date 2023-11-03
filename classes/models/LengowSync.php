@@ -27,35 +27,35 @@ class LengowSync
     /**
      * @var string cms type
      */
-    const CMS_TYPE = 'prestashop';
+    public const CMS_TYPE = 'prestashop';
 
     /* Sync actions */
-    const SYNC_CATALOG = 'catalog';
-    const SYNC_CARRIER = 'carrier';
-    const SYNC_CMS_OPTION = 'cms_option';
-    const SYNC_STATUS_ACCOUNT = 'status_account';
-    const SYNC_MARKETPLACE = 'marketplace';
-    const SYNC_ORDER = 'order';
-    const SYNC_ACTION = 'action';
-    const SYNC_PLUGIN_DATA = 'plugin';
+    public const SYNC_CATALOG = 'catalog';
+    public const SYNC_CARRIER = 'carrier';
+    public const SYNC_CMS_OPTION = 'cms_option';
+    public const SYNC_STATUS_ACCOUNT = 'status_account';
+    public const SYNC_MARKETPLACE = 'marketplace';
+    public const SYNC_ORDER = 'order';
+    public const SYNC_ACTION = 'action';
+    public const SYNC_PLUGIN_DATA = 'plugin';
 
     /* Plugin link types */
-    const LINK_TYPE_HELP_CENTER = 'help_center';
-    const LINK_TYPE_CHANGELOG = 'changelog';
-    const LINK_TYPE_UPDATE_GUIDE = 'update_guide';
-    const LINK_TYPE_SUPPORT = 'support';
+    public const LINK_TYPE_HELP_CENTER = 'help_center';
+    public const LINK_TYPE_CHANGELOG = 'changelog';
+    public const LINK_TYPE_UPDATE_GUIDE = 'update_guide';
+    public const LINK_TYPE_SUPPORT = 'support';
 
     /* Default plugin links */
-    const LINK_HELP_CENTER = 'https://help.lengow.com/hc/en-us/articles/360011970312';
-    const LINK_CHANGELOG = 'https://help.lengow.com/hc/en-us/articles/360011215559';
-    const LINK_UPDATE_GUIDE = 'https://help.lengow.com/hc/en-us/articles/360011970312#12-update-the-plugin-version';
-    const LINK_SUPPORT = 'https://help.lengow.com/hc/en-us/requests/new';
+    public const LINK_HELP_CENTER = 'https://help.lengow.com/hc/en-us/articles/360011970312';
+    public const LINK_CHANGELOG = 'https://help.lengow.com/hc/en-us/articles/360011215559';
+    public const LINK_UPDATE_GUIDE = 'https://help.lengow.com/hc/en-us/articles/360011970312#12-update-the-plugin-version';
+    public const LINK_SUPPORT = 'https://help.lengow.com/hc/en-us/requests/new';
 
     /* Api iso codes */
-    const API_ISO_CODE_EN = 'en';
-    const API_ISO_CODE_FR = 'fr';
-    const API_ISO_CODE_ES = 'es';
-    const API_ISO_CODE_IT = 'it';
+    public const API_ISO_CODE_EN = 'en';
+    public const API_ISO_CODE_FR = 'fr';
+    public const API_ISO_CODE_ES = 'es';
+    public const API_ISO_CODE_IT = 'it';
 
     /**
      * @var array cache time for catalog, carrier, account status, options and marketplace synchronisation
@@ -119,7 +119,7 @@ class LengowSync
             'email' => LengowConfiguration::get('PS_SHOP_EMAIL'),
             'cron_url' => LengowMain::getCronUrl(),
             'toolbox_url' => LengowMain::getToolboxUrl(),
-            'shops' => array(),
+            'shops' => [],
         );
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
@@ -145,7 +145,7 @@ class LengowSync
      * @param boolean $force force cache update
      * @param boolean $logOutput see log or not
      *
-     * @return boolean
+     * @return bool
      */
     public static function syncCatalog($force = false, $logOutput = false)
     {
@@ -160,7 +160,7 @@ class LengowSync
                 return $success;
             }
         }
-        $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS, array(), '', $logOutput);
+        $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS, [], '', $logOutput);
         if (isset($result->cms)) {
             $cmsToken = LengowMain::getToken();
             foreach ($result->cms as $cms) {
@@ -197,7 +197,7 @@ class LengowSync
      * @param boolean $force force cache update
      * @param boolean $logOutput see log or not
      *
-     * @return boolean
+     * @return bool
      */
     public static function syncCarrier($force = false, $logOutput = false)
     {
@@ -233,7 +233,7 @@ class LengowSync
             'version' => _PS_VERSION_,
             'plugin_version' => LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION),
             'options' => LengowConfiguration::getAllValues(),
-            'shops' => array(),
+            'shops' => [],
         );
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
@@ -256,7 +256,7 @@ class LengowSync
      * @param boolean $force force cache update
      * @param boolean $logOutput see log or not
      *
-     * @return boolean
+     * @return bool
      */
     public static function setCmsOption($force = false, $logOutput = false)
     {
@@ -270,7 +270,7 @@ class LengowSync
             }
         }
         $options = json_encode(self::getOptionData());
-        LengowConnector::queryApi(LengowConnector::PUT, LengowConnector::API_CMS, array(), $options, $logOutput);
+        LengowConnector::queryApi(LengowConnector::PUT, LengowConnector::API_CMS, [], $options, $logOutput);
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_OPTION_CMS, time());
         return true;
     }
@@ -294,7 +294,7 @@ class LengowSync
                 );
             }
         }
-        $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_PLAN, array(), '', $logOutput);
+        $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_PLAN, [], '', $logOutput);
         if (isset($result->isFreeTrial)) {
             $status = array(
                 'type' => $result->isFreeTrial ? 'free_trial' : '',
@@ -346,7 +346,7 @@ class LengowSync
         $result = LengowConnector::queryApi(
             LengowConnector::GET,
             LengowConnector::API_MARKETPLACE,
-            array(),
+            [],
             '',
             $logOutput
         );
@@ -406,7 +406,7 @@ class LengowSync
         $plugins = LengowConnector::queryApi(
             LengowConnector::GET,
             LengowConnector::API_PLUGIN,
-            array(),
+            [],
             '',
             $logOutput
         );
@@ -416,7 +416,7 @@ class LengowSync
                 if ($plugin->type === self::CMS_TYPE) {
                     $cmsMinVersion = '';
                     $cmsMaxVersion = '';
-                    $pluginLinks = array();
+                    $pluginLinks = [];
                     $currentVersion = $plugin->version;
                     if (!empty($plugin->versions)) {
                         foreach ($plugin->versions as $version) {
@@ -480,7 +480,7 @@ class LengowSync
             ? $pluginData['links'][LengowTranslation::DEFAULT_ISO_CODE]
             : false;
         // for each type of link, we check if the link is translated
-        $pluginLinks = array();
+        $pluginLinks = [];
         foreach (self::$defaultPluginLinks as $linkType => $defaultLink) {
             if ($localeLinks && isset($localeLinks[$linkType])) {
                 $link = $localeLinks[$linkType];

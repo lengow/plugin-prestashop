@@ -46,7 +46,7 @@ class LengowCustomer extends Customer
      *
      * @return LengowCustomer
      */
-    public function assign($data = array())
+    public function assign($data = [])
     {
         $this->company = LengowAddress::cleanName((string) $data['company']);
         $this->email = $data['email'];
@@ -63,7 +63,7 @@ class LengowCustomer extends Customer
      *
      * @throws Exception|LengowException invalid object
      *
-     * @return boolean
+     * @return bool
      */
     public function validateLengow()
     {

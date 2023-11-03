@@ -27,12 +27,12 @@ class LengowProduct extends Product
     /**
      * @var string Lengow product table name
      */
-    const TABLE_PRODUCT = 'lengow_product';
+    public const TABLE_PRODUCT = 'lengow_product';
 
     /* Product fields */
-    const FIELD_ID = 'id';
-    const FIELD_PRODUCT_ID = 'id_product';
-    const FIELD_SHOP_ID = 'id_shop';
+    public const FIELD_ID = 'id';
+    public const FIELD_PRODUCT_ID = 'id_product';
+    public const FIELD_SHOP_ID = 'id_shop';
 
     /**
      * @var array API nodes containing relevant data
@@ -105,7 +105,7 @@ class LengowProduct extends Product
      *
      * @throws Exception|LengowException
      */
-    public function __construct($idProduct = null, $idLang = null, $params = array())
+    public function __construct($idProduct = null, $idLang = null, $params = [])
     {
         parent::__construct($idProduct, false, $idLang);
         $this->carrier = isset($params['carrier']) ? $params['carrier'] : null;
@@ -304,7 +304,7 @@ class LengowProduct extends Product
      */
     public function makeAttributes()
     {
-        $combArray = array();
+        $combArray = [];
         $combinations = $this->getAttributesGroups($this->context->language->id);
         if (is_array($combinations)) {
             $cImages = $this->getImageUrlCombination();
@@ -338,10 +338,11 @@ class LengowProduct extends Product
                         'isbn' => isset($c['isbn']) ? $c['isbn'] : '',
                         'supplier_reference' => isset($c['supplier_reference']) ? $c['supplier_reference'] : '',
                         'minimal_quantity' => isset($c['minimal_quantity']) ? $c['minimal_quantity'] : '',
-                        'images' => isset($cImages[$attributeId]) ? $cImages[$attributeId] : array(),
+                        'images' => isset($cImages[$attributeId]) ? $cImages[$attributeId] : [],
                     );
                 }
-                $combArray[$attributeId]['available_date'] = strftime($c['available_date']);
+                $available = new \DateTime($c['available_date']);
+                $combArray[$attributeId]['available_date'] = $available->format('Y-m-d');
             }
         }
         if (isset($combArray)) {
@@ -356,7 +357,7 @@ class LengowProduct extends Product
                     $this->variation = rtrim($name, ', ');
                 }
                 $combArray[$idProductAttribute]['available_date'] = (
-                $productAttribute['available_date'] != 0
+                    $productAttribute['available_date'] != 0
                     ? date(LengowMain::DATE_DAY, strtotime($productAttribute['available_date']))
                     : '0000-00-00'
                 );
@@ -386,7 +387,7 @@ class LengowProduct extends Product
     public function getAttributesGroups($idLang, $id_product_attribute = null)
     {
         if (!Combination::isFeatureActive()) {
-            return array();
+            return [];
         }
         $sql = 'SELECT
             ag.`id_attribute_group`,
@@ -434,7 +435,7 @@ class LengowProduct extends Product
         try {
             return Db::getInstance()->executeS($sql);
         } catch (PrestaShopDatabaseException $e) {
-            return array();
+            return [];
         }
     }
 
@@ -710,7 +711,7 @@ class LengowProduct extends Product
      * @param integer $value publish value (1 : publish, 0 : unpublish)
      * @param integer $shopId PrestaShop shop id
      *
-     * @return boolean
+     * @return bool
      */
     public static function publish($productId, $value, $shopId)
     {
@@ -745,7 +746,7 @@ class LengowProduct extends Product
      * @param LengowProduct $product Lengow product instance
      * @param array $apiDatas product ids from the API
      *
-     * @return boolean if valid or not
+     * @return bool if valid or not
      */
     protected static function isValidId($product, $apiDatas)
     {
@@ -805,7 +806,7 @@ class LengowProduct extends Product
      */
     public static function extractProductDataFromAPI($api)
     {
-        $temp = array();
+        $temp = [];
         foreach (self::$productApiNodes as $node) {
             $temp[$node] = $api->{$node};
         }
@@ -825,7 +826,7 @@ class LengowProduct extends Product
      *
      * @return array|false
      */
-    public static function matchProduct($attributeName, $attributeValue, $idShop, $apiDatas = array())
+    public static function matchProduct($attributeName, $attributeValue, $idShop, $apiDatas = [])
     {
         if (empty($attributeValue) || empty($attributeName)) {
             return false;
@@ -840,7 +841,7 @@ class LengowProduct extends Product
             case 'isbn':
                 return self::findProduct('isbn', $attributeValue, $idShop);
             default:
-                $idsProduct = array();
+                $idsProduct = [];
                 // compatibility with old plugins
                 $sku = str_replace(array('\_', 'X'), '_', $attributeValue);
                 $sku = explode('_', $sku);
@@ -880,7 +881,7 @@ class LengowProduct extends Product
      *
      * @throws LengowException
      *
-     * @return boolean
+     * @return bool
      */
     protected static function checkProductId($idProduct, $apiDatas)
     {
@@ -897,7 +898,7 @@ class LengowProduct extends Product
      * @param LengowProduct $product Lengow product instance
      * @param integer $idProductAttribute PrestaShop product attribute id
      *
-     * @return boolean
+     * @return bool
      */
     protected static function checkProductAttributeId($product, $idProductAttribute)
     {
@@ -953,7 +954,7 @@ class LengowProduct extends Product
     {
         // product class attribute to search
         $attributes = array('reference', 'ean', 'upc', 'isbn', 'ids');
-        $idsProduct = array();
+        $idsProduct = [];
         $find = false;
         $i = 0;
         $count = count($attributes);
@@ -998,7 +999,7 @@ class LengowProduct extends Product
      */
     public function getImageUrlCombination()
     {
-        $cImages = array();
+        $cImages = [];
         $psImages = $this->getCombinationImages($this->id_lang);
         $maxImage = 10;
         if ($psImages) {

@@ -27,27 +27,27 @@ class LengowMethod
     /**
      * @var string Lengow method marketplace table name
      */
-    const TABLE_METHOD_MARKETPLACE = 'lengow_method_marketplace';
+    public const TABLE_METHOD_MARKETPLACE = 'lengow_method_marketplace';
 
     /**
      * @var string Lengow marketplace method marketplace table name
      */
-    const TABLE_MARKETPLACE_METHOD_MARKETPLACE = 'lengow_marketplace_method_marketplace';
+    public const TABLE_MARKETPLACE_METHOD_MARKETPLACE = 'lengow_marketplace_method_marketplace';
 
     /**
      * @var string Lengow marketplace method country table name
      */
-    const TABLE_MARKETPLACE_METHOD_COUNTRY = 'lengow_marketplace_method_country';
+    public const TABLE_MARKETPLACE_METHOD_COUNTRY = 'lengow_marketplace_method_country';
 
     /* Marketplace method fields */
-    const FIELD_ID = 'id';
-    const FIELD_METHOD_MARKETPLACE_NAME = 'method_marketplace_name';
-    const FIELD_METHOD_MARKETPLACE_LABEL = 'method_marketplace_label';
-    const FIELD_METHOD_LENGOW_CODE = 'method_lengow_code';
-    const FIELD_COUNTRY_ID = 'id_country';
-    const FIELD_MARKETPLACE_ID = 'id_marketplace';
-    const FIELD_CARRIER_ID = 'id_carrier';
-    const FIELD_METHOD_MARKETPLACE_ID = 'id_method_marketplace';
+    public const FIELD_ID = 'id';
+    public const FIELD_METHOD_MARKETPLACE_NAME = 'method_marketplace_name';
+    public const FIELD_METHOD_MARKETPLACE_LABEL = 'method_marketplace_label';
+    public const FIELD_METHOD_LENGOW_CODE = 'method_lengow_code';
+    public const FIELD_COUNTRY_ID = 'id_country';
+    public const FIELD_MARKETPLACE_ID = 'id_marketplace';
+    public const FIELD_CARRIER_ID = 'id_carrier';
+    public const FIELD_METHOD_MARKETPLACE_ID = 'id_method_marketplace';
 
     /**
      * Get method marketplace id
@@ -64,7 +64,7 @@ class LengowMethod
                 WHERE method_marketplace_name = "' . pSQL($methodMarketplaceName) . '"'
             );
         } catch (PrestaShopDatabaseException $e) {
-            $results = array();
+            $results = [];
         }
         // additional verification for non-case sensitive Databases
         if (!empty($results)) {
@@ -105,7 +105,7 @@ class LengowMethod
         } catch (PrestaShopDatabaseException $e) {
             $results = false;
         }
-        return is_array($results) ? $results : array();
+        return is_array($results) ? $results : [];
     }
 
     /**
@@ -127,7 +127,7 @@ class LengowMethod
                                 isset($method->lengow_code) ? $method->lengow_code : null
                             );
                         } else {
-                            $params = array();
+                            $params = [];
                             if ($method->label !== null && Tools::strlen($method->label) > 0) {
                                 $params[self::FIELD_METHOD_MARKETPLACE_LABEL] = pSQL($method->label);
                             }
@@ -201,7 +201,7 @@ class LengowMethod
      * @param integer $idMarketplace Lengow marketplace id
      * @param integer $idMethodMarketplace Lengow method marketplace id
      *
-     * @return boolean
+     * @return bool
      */
     public static function matchMethodMarketplaceWithMarketplace($idMarketplace, $idMethodMarketplace)
     {
@@ -213,7 +213,7 @@ class LengowMethod
                 AND id_method_marketplace = ' . (int) $idMethodMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
-            $result = array();
+            $result = [];
         }
         if (empty($result)) {
             $params = array(
@@ -236,7 +236,7 @@ class LengowMethod
      *
      * @param integer $idMarketplaceMethodMarketplace Lengow marketplace method marketplace id
      *
-     * @return boolean
+     * @return bool
      */
     public static function deleteMarketplaceMethodMarketplace($idMarketplaceMethodMarketplace)
     {
@@ -259,7 +259,7 @@ class LengowMethod
                     // get all methods saved in database
                     $methodMarketplaces = self::getAllMethodMarketplaceByIdMarketplace($idMarketplace);
                     // get all current marketplace methods with api
-                    $currentMethodMarketplaces = array();
+                    $currentMethodMarketplaces = [];
                     if (isset($marketplace->orders->shipping_methods)) {
                         foreach ($marketplace->orders->shipping_methods as $methodMarketplaceName => $method) {
                             $currentMethodMarketplaces[$methodMarketplaceName] = $method->label;
@@ -326,7 +326,7 @@ class LengowMethod
                 AND id_marketplace = ' . (int) $idMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
-            $results = array();
+            $results = [];
         }
         if (!empty($results)) {
             foreach ($results as $result) {
@@ -375,7 +375,7 @@ class LengowMethod
      */
     public static function getAllMarketplaceMethodCountryByIdMarketplace($idCountry, $idMarketplace)
     {
-        $methods = array();
+        $methods = [];
         try {
             $results = Db::getInstance()->ExecuteS(
                 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_marketplace_method_country
@@ -383,7 +383,7 @@ class LengowMethod
                 AND id_marketplace = ' . (int) $idMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
-            $results = array();
+            $results = [];
         }
         if (!empty($results)) {
             foreach ($results as $result) {
@@ -448,7 +448,7 @@ class LengowMethod
      *
      * @param integer $idMarketplaceMethodCountry Lengow marketplace method country id
      *
-     * @return boolean
+     * @return bool
      */
     public static function deleteMarketplaceMethodCountry($idMarketplaceMethodCountry)
     {

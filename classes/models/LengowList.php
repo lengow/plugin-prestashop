@@ -394,7 +394,7 @@ class LengowList
         try {
             $this->collection = Db::getInstance()->executeS($sql, true, false);
         } catch (PrestaShopDatabaseException $e) {
-            $this->collection = array();
+            $this->collection = [];
         }
         $sqlTotal = $this->buildQuery(true);
         $this->total = Db::getInstance()->getValue($sqlTotal, false);
@@ -424,7 +424,7 @@ class LengowList
     public function getRow($where)
     {
         if (!isset($this->sql['where'])) {
-            $this->sql['where'] = array();
+            $this->sql['where'] = [];
         }
         $tmp = $this->sql['where'];
         $this->sql['where'][] = $where;
@@ -432,7 +432,7 @@ class LengowList
         try {
             $collection = Db::getInstance()->executeS($sql, true, false);
         } catch (PrestaShopDatabaseException $e) {
-            $collection = array();
+            $collection = [];
         }
         $this->sql['where'] = $tmp;
         return $collection[0];
@@ -443,7 +443,7 @@ class LengowList
      *
      * @param string $keyToSearch key search in field list
      *
-     * @return boolean
+     * @return bool
      */
     public function findValueByKey($keyToSearch)
     {
@@ -465,9 +465,9 @@ class LengowList
      */
     public function buildQuery($total = false, $selectAll = false)
     {
-        $where = isset($this->sql['where']) ? $this->sql['where'] : array();
+        $where = isset($this->sql['where']) ? $this->sql['where'] : [];
         $groupBy = false;
-        $having = array();
+        $having = [];
         if (isset($_REQUEST['table_' . $this->id])) {
             foreach ($_REQUEST['table_' . $this->id] as $key => $value) {
                 if ($fieldValue = $this->findValueByKey($key)) {
@@ -592,7 +592,7 @@ class LengowList
      *
      * @return string
      */
-    public function renderPagination($params = array())
+    public function renderPagination($params = [])
     {
         $navClass = isset($params['nav_class']) ? $params['nav_class'] : '';
         $lengowLink = new LengowLink();

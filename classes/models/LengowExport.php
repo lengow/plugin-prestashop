@@ -25,35 +25,35 @@
 class LengowExport
 {
     /* Export GET params */
-    const PARAM_TOKEN = 'token';
-    const PARAM_MODE = 'mode';
-    const PARAM_FORMAT = 'format';
-    const PARAM_STREAM = 'stream';
-    const PARAM_OFFSET = 'offset';
-    const PARAM_LIMIT = 'limit';
-    const PARAM_SELECTION = 'selection';
-    const PARAM_OUT_OF_STOCK = 'out_of_stock';
-    const PARAM_PRODUCT_IDS = 'product_ids';
-    const PARAM_VARIATION = 'variation';
-    const PARAM_INACTIVE = 'inactive';
-    const PARAM_SHOP = 'shop';
-    const PARAM_SHOP_ID = 'shop_id';
-    const PARAM_CURRENCY = 'currency';
-    const PARAM_LANGUAGE = 'language';
-    const PARAM_LANGUAGE_ID = 'language_id';
-    const PARAM_LEGACY_FIELDS = 'legacy_fields';
-    const PARAM_LOG_OUTPUT = 'log_output';
-    const PARAM_UPDATE_EXPORT_DATE = 'update_export_date';
-    const PARAM_GET_PARAMS = 'get_params';
+    public const PARAM_TOKEN = 'token';
+    public const PARAM_MODE = 'mode';
+    public const PARAM_FORMAT = 'format';
+    public const PARAM_STREAM = 'stream';
+    public const PARAM_OFFSET = 'offset';
+    public const PARAM_LIMIT = 'limit';
+    public const PARAM_SELECTION = 'selection';
+    public const PARAM_OUT_OF_STOCK = 'out_of_stock';
+    public const PARAM_PRODUCT_IDS = 'product_ids';
+    public const PARAM_VARIATION = 'variation';
+    public const PARAM_INACTIVE = 'inactive';
+    public const PARAM_SHOP = 'shop';
+    public const PARAM_SHOP_ID = 'shop_id';
+    public const PARAM_CURRENCY = 'currency';
+    public const PARAM_LANGUAGE = 'language';
+    public const PARAM_LANGUAGE_ID = 'language_id';
+    public const PARAM_LEGACY_FIELDS = 'legacy_fields';
+    public const PARAM_LOG_OUTPUT = 'log_output';
+    public const PARAM_UPDATE_EXPORT_DATE = 'update_export_date';
+    public const PARAM_GET_PARAMS = 'get_params';
 
     /* Legacy export GET params for old versions */
-    const PARAM_LEGACY_SELECTION = 'all';
-    const PARAM_LEGACY_OUT_OF_STOCK = 'out_stock';
-    const PARAM_LEGACY_PRODUCT_IDS = 'ids';
-    const PARAM_LEGACY_VARIATION = 'mode';
-    const PARAM_LEGACY_INACTIVE = 'active';
-    const PARAM_LEGACY_CURRENCY = 'lang';
-    const PARAM_LEGACY_LANGUAGE = 'lang';
+    public const PARAM_LEGACY_SELECTION = 'all';
+    public const PARAM_LEGACY_OUT_OF_STOCK = 'out_stock';
+    public const PARAM_LEGACY_PRODUCT_IDS = 'ids';
+    public const PARAM_LEGACY_VARIATION = 'mode';
+    public const PARAM_LEGACY_INACTIVE = 'active';
+    public const PARAM_LEGACY_CURRENCY = 'lang';
+    public const PARAM_LEGACY_LANGUAGE = 'lang';
 
     /**
      * @var array default fields for export
@@ -278,7 +278,7 @@ class LengowExport
     /**
      * @var array product ids to be exported
      */
-    protected $productIds = array();
+    protected $productIds = [];
 
     /**
      * @var boolean update export date.
@@ -293,7 +293,7 @@ class LengowExport
     /**
      * @var array excluded products for export
      */
-    protected $excludedProducts = array();
+    protected $excludedProducts = [];
 
     /**
      * Construct new Lengow export
@@ -313,14 +313,15 @@ class LengowExport
      * boolean legacy_fields      Export with legacy fields (1) | Export with new fields (0)
      * boolean update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1) or not
      */
-    public function __construct($params = array())
+    public function __construct($params = [])
     {
         $this->setFormat(isset($params[self::PARAM_FORMAT]) ? $params[self::PARAM_FORMAT] : LengowFeed::FORMAT_CSV);
         $this->offset = isset($params[self::PARAM_OFFSET]) ? (int) $params[self::PARAM_OFFSET] : false;
-        $this->productIds = isset($params[self::PARAM_PRODUCT_IDS]) ? $params[self::PARAM_PRODUCT_IDS] : array();
+        $this->productIds = isset($params[self::PARAM_PRODUCT_IDS]) ? $params[self::PARAM_PRODUCT_IDS] : [];
         $this->stream = isset($params[self::PARAM_STREAM]) ? $params[self::PARAM_STREAM] : false;
         $this->limit = isset($params[self::PARAM_LIMIT]) ? (int) $params[self::PARAM_LIMIT] : false;
-        $this->idShop = (int) (isset($params[self::PARAM_SHOP_ID])
+        $this->idShop = (int) (
+            isset($params[self::PARAM_SHOP_ID])
             ? $params[self::PARAM_SHOP_ID]
             : Context::getContext()->shop->id
         );
@@ -462,7 +463,7 @@ class LengowExport
      *
      * @throws LengowException illegal currency
      *
-     * @return boolean
+     * @return bool
      */
     public function checkCurrency()
     {
@@ -477,7 +478,7 @@ class LengowExport
      *
      * @throws LengowException no default carrier selected
      *
-     * @return boolean
+     * @return bool
      */
     public function setCarrier()
     {
@@ -539,7 +540,7 @@ class LengowExport
             if (in_array($idProduct, $this->excludedProducts, true)) {
                 continue;
             }
-            $productData = array();
+            $productData = [];
             $product = new LengowProduct(
                 $idProduct,
                 $this->language->id,
@@ -636,12 +637,12 @@ class LengowExport
      *
      * @throws Exception
      *
-     * @return boolean
+     * @return bool
      */
     public function loadCacheCombinations($product, $fields)
     {
         if (!isset($this->cacheCombination[$product->id])) {
-            $this->cacheCombination = array();
+            $this->cacheCombination = [];
             $combinations = $product->getCombinations();
             if (empty($combinations)) {
                 return false;
@@ -729,7 +730,7 @@ class LengowExport
      */
     public function buildTotalQuery($variation = false)
     {
-        $where = array();
+        $where = [];
         $query = ' FROM ' . _DB_PREFIX_ . 'product p';
         if ($this->selection) {
             $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'lengow_product lp 
@@ -794,7 +795,7 @@ class LengowExport
         try {
             return Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {
-            return array();
+            return [];
         }
     }
 
@@ -805,9 +806,9 @@ class LengowExport
      */
     protected function getFields()
     {
-        $fields = array();
+        $fields = [];
         // check field name to lower to avoid duplicates
-        $formattedFields = array();
+        $formattedFields = [];
         foreach (array_keys(self::$defaultFields) as $key) {
             $fields[] = $key;
             $formattedFields[] = LengowFeed::formatFields($key, $this->format, $this->legacy);
@@ -865,7 +866,7 @@ class LengowExport
      */
     public function getExportParams()
     {
-        $params = array();
+        $params = [];
         foreach (self::$exportParams as $param) {
             switch ($param) {
                 case self::PARAM_MODE:
@@ -879,7 +880,7 @@ class LengowExport
                     $example = LengowFeed::FORMAT_CSV;
                     break;
                 case self::PARAM_SHOP:
-                    $availableShops = array();
+                    $availableShops = [];
                     $shops = LengowShop::findAll(true);
                     foreach ($shops as $shop) {
                         $availableShops[] = $shop['id_shop'];
@@ -889,7 +890,7 @@ class LengowExport
                     $example = 1;
                     break;
                 case self::PARAM_CURRENCY:
-                    $availableCurrencies = array();
+                    $availableCurrencies = [];
                     $currencies = Currency::getCurrencies();
                     foreach ($currencies as $currency) {
                         $availableCurrencies[] = $currency['iso_code'];
@@ -899,7 +900,7 @@ class LengowExport
                     $example = 'EUR';
                     break;
                 case self::PARAM_LANGUAGE:
-                    $availableLanguages = array();
+                    $availableLanguages = [];
                     $languages = Language::getLanguages();
                     foreach ($languages as $language) {
                         $availableLanguages[] = $language['iso_code'];
