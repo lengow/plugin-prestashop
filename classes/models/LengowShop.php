@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Shop Class
  */
@@ -57,7 +56,7 @@ class LengowShop extends Shop
     public static function findAll($forceContext = false)
     {
         if (!$forceContext && $currentShop = Shop::getContextShopID()) {
-            $results = array(array('id_shop' => $currentShop));
+            $results = [['id_shop' => $currentShop]];
         } else {
             $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1 ORDER BY id_shop';
             try {

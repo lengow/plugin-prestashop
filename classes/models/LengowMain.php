@@ -18,7 +18,6 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Main Class
  */
@@ -43,7 +42,7 @@ class LengowMain
     public const DATE_ISO_8601 = 'c';
 
     /**
-     * @var integer life of log files in days
+     * @var int life of log files in days
      */
     public const LOG_LIFE = 20;
 
@@ -60,17 +59,17 @@ class LengowMain
     /**
      * @var array product ids available to track products
      */
-    public static $trackerChoiceId = array(
+    public static $trackerChoiceId = [
         'id' => 'Product ID',
         'ean' => 'Product EAN',
         'upc' => 'Product UPC',
         'ref' => 'Product Reference',
-    );
+    ];
 
     /**
      * @var array Lengow Authorized IPs
      */
-    protected static $ipsLengow = array(
+    protected static $ipsLengow = [
         '127.0.0.1',
         '10.0.4.150',
         '46.19.183.204',
@@ -99,7 +98,7 @@ class LengowMain
         '185.61.176.140',
         '185.61.176.141',
         '185.61.176.142',
-    );
+    ];
 
     /**
      * @var array PrestaShop mail configuration
@@ -169,10 +168,10 @@ class LengowMain
      */
     public static function disableMail()
     {
-        self::$mailConfigurations = array(
+        self::$mailConfigurations = [
             'method' => Configuration::get('PS_MAIL_METHOD'),
             'server' => Configuration::get('PS_MAIL_SERVER'),
-        );
+        ];
         Configuration::set('PS_MAIL_METHOD', 3);
     }
 
@@ -201,17 +200,29 @@ class LengowMain
         $timestampManual = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_MANUAL_SYNCHRONIZATION);
         if ($timestampCron && $timestampManual) {
             if ((int) $timestampCron > (int) $timestampManual) {
-                return array('type' => LengowImport::TYPE_CRON, 'timestamp' => (int) $timestampCron);
+                return [
+                    'type'      => LengowImport::TYPE_CRON,
+                    'timestamp' => (int) $timestampCron
+                ];
             }
-            return array('type' => LengowImport::TYPE_MANUAL, 'timestamp' => (int) $timestampManual);
+            return [
+                'type' => LengowImport::TYPE_MANUAL,
+                'timestamp' => (int) $timestampManual
+            ];
         }
         if ($timestampCron && !$timestampManual) {
-            return array('type' => LengowImport::TYPE_CRON, 'timestamp' => (int) $timestampCron);
+            return [
+                'type' => LengowImport::TYPE_CRON,
+                'timestamp' => (int) $timestampCron
+            ];
         }
         if ($timestampManual && !$timestampCron) {
-            return array('type' => LengowImport::TYPE_MANUAL, 'timestamp' => (int) $timestampManual);
+            return [
+                'type' => LengowImport::TYPE_MANUAL,
+                'timestamp' => (int) $timestampManual
+            ];
         }
-        return array('type' => 'none', 'timestamp' => 'none');
+        return ['type' => 'none', 'timestamp' => 'none'];
     }
 
     /**
@@ -268,8 +279,8 @@ class LengowMain
         $string = preg_replace('/[\s]+/', ' ', $string);
         $string = trim($string);
         return str_replace(
-            array('&nbsp;', '|', '"', '’', '&#39;', '&#150;', chr(9), chr(10), chr(13)),
-            array(' ', ' ', '\'', '\'', '\' ', '-', ' ', ' ', ' '),
+            ['&nbsp;', '|', '"', '’', '&#39;', '&#150;', chr(9), chr(10), chr(13)],
+            [' ', ' ', '\'', '\'', '\' ', '-', ' ', ' ', ' '],
             $string
         );
     }
@@ -408,7 +419,7 @@ class LengowMain
         }
         $allParams = [];
         foreach ($params as $param => $value) {
-            $value = str_replace(array('|', '=='), array('', ''), $value);
+            $value = str_replace(['|', '=='], ['', ''], $value);
             $allParams[] = $param . '==' . $value;
         }
         return $key . '[' . implode('|', $allParams) . ']';
@@ -492,7 +503,7 @@ class LengowMain
         $value = preg_replace('/[\s]+/', ' ', $value);
         $value = trim($value);
         return str_replace(
-            array(
+            [
                 '&nbsp;',
                 '|',
                 '"',
@@ -508,8 +519,8 @@ class LengowMain
                 chr(28),
                 "\n",
                 "\r",
-            ),
-            array(
+            ],
+            [
                 ' ',
                 ' ',
                 '\'',
@@ -525,7 +536,7 @@ class LengowMain
                 '',
                 '',
                 '',
-            ),
+            ],
             $value
         );
     }
@@ -539,7 +550,7 @@ class LengowMain
      */
     public static function cleanPhone($phone)
     {
-        $replace = array('.', ' ', '-', '/');
+        $replace = ['.', ' ', '-', '/'];
         if (!$phone) {
             return null;
         }
@@ -562,7 +573,7 @@ class LengowMain
           http://www.tachyonsoft.com/uc0000.htm
           http://www.tachyonsoft.com/uc0001.htm
         */
-        $patterns = array(
+        $patterns = [
             /* Lowercase */
             /* a */
             '/[\x{00E0}\x{00E1}\x{00E2}\x{00E3}\x{00E4}\x{00E5}\x{0101}\x{0103}\x{0105}]/u',
@@ -651,11 +662,11 @@ class LengowMain
             '/[\x{00C6}]/u',
             /* OE */
             '/[\x{0152}]/u',
-        );
+        ];
         // ö to oe
         // å to aa
         // ä to ae
-        $replacements = array(
+        $replacements = [
             'a',
             'c',
             'd',
@@ -697,7 +708,7 @@ class LengowMain
             'Z',
             'AE',
             'OE',
-        );
+        ];
         return preg_replace($patterns, $replacements, $str);
     }
 
@@ -720,7 +731,7 @@ class LengowMain
                 $mailBody .= '<li>' . self::decodeLogMessage(
                     'lengow_log.mail_report.order',
                     null,
-                    array('marketplace_sku' => $log['marketplace_sku'])
+                    ['marketplace_sku' => $log['marketplace_sku']]
                 );
                 if ($log[LengowOrderError::FIELD_MESSAGE] !== '') {
                     $mailBody .= ' - ' . self::decodeLogMessage($log[LengowOrderError::FIELD_MESSAGE]);
@@ -729,17 +740,17 @@ class LengowMain
                     $mailBody .= ' - '. self::decodeLogMessage(
                         'lengow_log.mail_report.no_error_in_report_mail',
                         null,
-                        array('support_link' => $pluginLinks[LengowSync::LINK_TYPE_SUPPORT])
+                        ['support_link' => $pluginLinks[LengowSync::LINK_TYPE_SUPPORT]]
                     );
                 }
                 $mailBody .= '</li>';
                 LengowOrderError::logSent((int) $log[LengowOrderError::FIELD_ID]);
             }
             $subject = 'Lengow imports logs';
-            $data = array(
+            $data = [
                 '{mail_title}' => $subject,
                 '{mail_body}'  => $mailBody,
-            );
+            ];
             // send an email if the template exists for the locale
             $emails = LengowConfiguration::getReportEmailAddress();
             $idLang = (int) Context::getContext()->cookie->id_lang;
@@ -765,14 +776,14 @@ class LengowMain
                     if (!$mailSent) {
                         self::log(
                             LengowLog::CODE_MAIL_REPORT,
-                            self::setLogMessage('log.mail_report.unable_send_mail_to', array('emails' => $to)),
+                            self::setLogMessage('log.mail_report.unable_send_mail_to', ['emails' => $to]),
                             $logOutput
                         );
                         $success = false;
                     } else {
                         self::log(
                             LengowLog::CODE_MAIL_REPORT,
-                            self::setLogMessage('log.mail_report.send_mail_to', array('emails' => $to)),
+                            self::setLogMessage('log.mail_report.send_mail_to', ['emails' => $to]),
                             $logOutput
                         );
                         $success = true;
@@ -781,7 +792,7 @@ class LengowMain
             } else {
                 self::log(
                     LengowLog::CODE_MAIL_REPORT,
-                    self::setLogMessage('log.mail_report.template_not_exist', array('iso_code' => $iso)),
+                    self::setLogMessage('log.mail_report.template_not_exist', ['iso_code' => $iso]),
                     $logOutput
                 );
                 $success = false;
@@ -998,7 +1009,7 @@ class LengowMain
             preg_replace(
                 '/[^a-zA-Z0-9_]+/',
                 '',
-                str_replace(array(' ', '\''), '_', self::replaceAccentedChars($shopName))
+                str_replace([' ', '\''], '_', self::replaceAccentedChars($shopName))
             )
         );
     }

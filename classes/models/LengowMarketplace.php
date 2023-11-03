@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Marketplace Class
  */
@@ -43,10 +42,10 @@ class LengowMarketplace
     /**
      * @var array all valid actions
      */
-    public static $validActions = array(
+    public static $validActions = [
         LengowAction::TYPE_SHIP,
         LengowAction::TYPE_CANCEL,
-    );
+    ];
 
     /**
      * @var array|false all marketplaces
@@ -74,7 +73,7 @@ class LengowMarketplace
     public $labelName;
 
     /**
-     * @var boolean if the marketplace is loaded
+     * @var bool if the marketplace is loaded
      */
     public $isLoaded = false;
 
@@ -126,7 +125,7 @@ class LengowMarketplace
             throw new LengowException(
                 LengowMain::setLogMessage(
                     'lengow_log.exception.marketplace_not_present',
-                    array('marketplace_name' => $this->name)
+                    ['marketplace_name' => $this->name]
                 )
             );
         }
@@ -164,11 +163,11 @@ class LengowMarketplace
                         : '';
                     $acceptFreeValue = !isset($argDescription->accept_free_values)
                         || (bool) $argDescription->accept_free_values;
-                    $this->argValues[(string) $argKey] = array(
+                    $this->argValues[(string) $argKey] = [
                         'default_value' => $defaultValue,
                         'accept_free_values' => $acceptFreeValue,
                         'valid_values' => $validValues,
-                    );
+                    ];
                 }
             }
             if (isset($this->marketplace->orders->carriers)) {
@@ -353,7 +352,7 @@ class LengowMarketplace
                 LengowLog::CODE_ACTION,
                 LengowMain::setLogMessage(
                     'log.order_action.call_action_failed',
-                    array('decoded_message' => $decodedMessage)
+                    ['decoded_message' => $decodedMessage]
                 ),
                 false,
                 $lengowOrder->lengowMarketplaceSku
@@ -374,14 +373,14 @@ class LengowMarketplace
     {
         if (!in_array($action, self::$validActions, true)) {
             throw new LengowException(
-                LengowMain::setLogMessage('lengow_log.exception.action_not_valid', array('action' => $action))
+                LengowMain::setLogMessage('lengow_log.exception.action_not_valid', ['action' => $action])
             );
         }
         if (!$this->getAction($action)) {
             throw new LengowException(
                 LengowMain::setLogMessage(
                     'lengow_log.exception.marketplace_action_not_present',
-                    array('action' => $action)
+                    ['action' => $action]
                 )
             );
         }
@@ -543,7 +542,7 @@ class LengowMarketplace
                     throw new LengowException(
                         LengowMain::setLogMessage(
                             'lengow_log.exception.arg_is_required',
-                            array('arg_name' => $arg)
+                            ['arg_name' => $arg]
                         )
                     );
                 }
@@ -659,7 +658,7 @@ class LengowMarketplace
         if ($marketplaces) {
             foreach ($marketplaces as $marketplace) {
                 $idMarketplace = (int) $marketplace[self::FIELD_ID];
-                $marketplaceData[] = array(
+                $marketplaceData[] = [
                     'id' => $idMarketplace,
                     'name' => $marketplace[self::FIELD_MARKETPLACE_NAME],
                     'label' => $marketplace[self::FIELD_MARKETPLACE_LABEL],
@@ -679,7 +678,7 @@ class LengowMarketplace
                         $idMarketplace
                     ),
                     'carrier_required' => (bool) $marketplace[self::FIELD_CARRIER_REQUIRED],
-                );
+                ];
             }
         }
         return $marketplaceData;
@@ -720,11 +719,11 @@ class LengowMarketplace
         try {
             $success = $db->insert(
                 self::TABLE_MARKETPLACE,
-                array(
+                [
                     self::FIELD_MARKETPLACE_NAME  => pSQL($marketplaceName),
                     self::FIELD_MARKETPLACE_LABEL => pSQL($marketplaceLabel),
                     self::FIELD_CARRIER_REQUIRED => $carrierRequired,
-                )
+                ]
             );
         } catch (PrestaShopDatabaseException $e) {
             $success = false;
@@ -746,10 +745,10 @@ class LengowMarketplace
         $db = Db::getInstance();
         $success = $db->update(
             self::TABLE_MARKETPLACE,
-            array(
+            [
                 self::FIELD_MARKETPLACE_LABEL => pSQL($marketplaceLabel),
                 self::FIELD_CARRIER_REQUIRED => $carrierRequired,
-            ),
+            ],
             'id = ' . (int) $idMarketplace
         );
         return $success ? $idMarketplace : false;

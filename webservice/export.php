@@ -18,7 +18,6 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * List params
  * string  mode               Number of products exported
@@ -39,7 +38,6 @@
  * boolean update_export_date Change last export date in data base (1) or not (0)
  * boolean get_params         See export parameters and authorized values in json format (1) or not (0)
  */
-
 @set_time_limit(0);
 @ini_set('memory_limit', '512M');
 

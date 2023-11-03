@@ -18,7 +18,6 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Order Setting Controller Class
  */
@@ -33,25 +32,25 @@ class LengowOrderSettingController extends LengowController
         $marketplaceCounters = LengowMarketplace::getMarketplaceCounters();
         $defaultCarrierNotMatched = LengowCarrier::getDefaultCarrierNotMatched();
         $showCarrierNotification = !empty($defaultCarrierNotMatched);
-        $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
+        $form = new LengowConfigurationForm(['fields' => LengowConfiguration::getKeys()]);
         $matching = $form->buildInputs(
-            array(
+            [
                 LengowConfiguration::WAITING_SHIPMENT_ORDER_ID,
                 LengowConfiguration::SHIPPED_ORDER_ID,
                 LengowConfiguration::CANCELED_ORDER_ID,
                 LengowConfiguration::SHIPPED_BY_MARKETPLACE_ORDER_ID,
-            )
+            ]
         );
         $importParams = $form->buildInputs(
-            array(
+            [
                 LengowConfiguration::SYNCHRONIZATION_DAY_INTERVAL,
                 LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED,
                 LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
                 LengowConfiguration::ANONYMIZE_EMAIL
-            )
+            ]
         );
-        $currencyConversion = $form->buildInputs(array(LengowConfiguration::CURRENCY_CONVERSION_ENABLED));
-        $semanticSearch = $form->buildInputs(array(LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED));
+        $currencyConversion = $form->buildInputs([LengowConfiguration::CURRENCY_CONVERSION_ENABLED]);
+        $semanticSearch = $form->buildInputs([LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED]);
         $this->context->smarty->assign('matching', $matching);
         $this->context->smarty->assign('semantic_search', $semanticSearch);
         $this->context->smarty->assign('import_params', $importParams);
@@ -91,7 +90,9 @@ class LengowOrderSettingController extends LengowController
                     _PS_MODULE_LENGOW_DIR_,
                     'views/templates/admin/lengow_order_setting/helpers/view/marketplace_matching.tpl'
                 );
-                $data = array('marketplace_matching' => preg_replace('/\r|\n/', '', $displayMarketplaceMatching));
+                $data = [
+                    'marketplace_matching' => preg_replace('/\r|\n/', '', $displayMarketplaceMatching)
+                ];
                 echo json_encode($data);
                 exit();
             case 'process':
@@ -103,10 +104,10 @@ class LengowOrderSettingController extends LengowController
                         $idCarrierMarketplace = isset($value['carrier_marketplace'])
                             ? (int) $value['carrier_marketplace']
                             : null;
-                        $params = array(
+                        $params = [
                             LengowCarrier::FIELD_CARRIER_ID => $idCarrier,
                             LengowCarrier::FIELD_CARRIER_MARKETPLACE_ID => $idCarrierMarketplace,
-                        );
+                        ];
                         $id = LengowCarrier::getIdDefaultCarrier($idCountry, (int) $idMarketplace);
                         if ($id) {
                             LengowCarrier::updateDefaultCarrier($id, $params);
@@ -160,15 +161,15 @@ class LengowOrderSettingController extends LengowController
                     }
                 }
                 // save other settings
-                $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
+                $form = new LengowConfigurationForm(['fields' => LengowConfiguration::getKeys()]);
                 $form->postProcess(
-                    array(
+                    [
                         LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED,
                         LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
                         LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED,
                         LengowConfiguration::CURRENCY_CONVERSION_ENABLED,
                         LengowConfiguration::ANONYMIZE_EMAIL
-                    )
+                    ]
                 );
                 break;
             default:

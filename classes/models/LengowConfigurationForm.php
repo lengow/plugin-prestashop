@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Configuration Form Class
  */
@@ -192,7 +191,7 @@ class LengowConfigurationForm
             $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
             $shopCollection = Db::getInstance()->ExecuteS($sql);
         } catch (PrestaShopDatabaseException $e) {
-            $shopCollection = array(array('id_shop' => 1));
+            $shopCollection = [['id_shop' => 1]];
         }
         foreach ($_REQUEST as $key => $value) {
             if (isset($this->fields[$key])) {
@@ -290,12 +289,12 @@ class LengowConfigurationForm
                         LengowLog::CODE_SETTING,
                         LengowMain::setLogMessage(
                             'log.setting.setting_change_for_shop',
-                            array(
+                            [
                                 'key' => LengowConfiguration::$genericParamKeys[$key],
                                 'old_value' => $oldValue,
                                 'value' => $value,
                                 'shop_id' => $idShop,
-                            )
+                            ]
                         )
                     );
                 } else {
@@ -303,11 +302,11 @@ class LengowConfigurationForm
                         LengowLog::CODE_SETTING,
                         LengowMain::setLogMessage(
                             'log.setting.setting_change',
-                            array(
+                            [
                                 'key' => LengowConfiguration::$genericParamKeys[$key],
                                 'old_value' => $oldValue,
                                 'value' => $value,
-                            )
+                            ]
                         )
                     );
                 }

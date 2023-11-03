@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Sync Class
  */
@@ -60,19 +59,19 @@ class LengowSync
     /**
      * @var array cache time for catalog, carrier, account status, options and marketplace synchronisation
      */
-    protected static $cacheTimes = array(
+    protected static $cacheTimes = [
         self::SYNC_CATALOG => 21600,
         self::SYNC_CARRIER => 86400,
         self::SYNC_CMS_OPTION => 86400,
         self::SYNC_STATUS_ACCOUNT => 86400,
         self::SYNC_MARKETPLACE => 43200,
         self::SYNC_PLUGIN_DATA => 86400,
-    );
+    ];
 
     /**
      * @var array valid sync actions
      */
-    public static $syncActions = array(
+    public static $syncActions = [
         self::SYNC_ORDER,
         self::SYNC_CARRIER,
         self::SYNC_CMS_OPTION,
@@ -81,27 +80,27 @@ class LengowSync
         self::SYNC_ACTION,
         self::SYNC_CATALOG,
         self::SYNC_PLUGIN_DATA,
-    );
+    ];
 
     /**
      * @var array iso code correspondence for plugin links
      */
-    public static $genericIsoCodes = array(
+    public static $genericIsoCodes = [
         self::API_ISO_CODE_EN => LengowTranslation::ISO_CODE_EN,
         self::API_ISO_CODE_FR => LengowTranslation::ISO_CODE_FR,
         self::API_ISO_CODE_ES => LengowTranslation::ISO_CODE_ES,
         self::API_ISO_CODE_IT => LengowTranslation::ISO_CODE_IT,
-    );
+    ];
 
     /**
      * @var array default plugin links when the API is not available
      */
-    public static $defaultPluginLinks = array(
+    public static $defaultPluginLinks = [
         self::LINK_TYPE_HELP_CENTER => self::LINK_HELP_CENTER,
         self::LINK_TYPE_CHANGELOG => self::LINK_CHANGELOG,
         self::LINK_TYPE_UPDATE_GUIDE => self::LINK_UPDATE_GUIDE,
         self::LINK_TYPE_SUPPORT => self::LINK_SUPPORT,
-    );
+    ];
 
     /**
      * Get Sync Data (Inscription / Update)
@@ -110,7 +109,7 @@ class LengowSync
      */
     public static function getSyncData()
     {
-        $data = array(
+        $data = [
             'domain_name' => $_SERVER['SERVER_NAME'],
             'token' => LengowMain::getToken(),
             'type' => self::CMS_TYPE,
@@ -120,13 +119,13 @@ class LengowSync
             'cron_url' => LengowMain::getCronUrl(),
             'toolbox_url' => LengowMain::getToolboxUrl(),
             'shops' => [],
-        );
+        ];
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $idShop = $row['id_shop'];
-            $lengowExport = new LengowExport(array(LengowExport::PARAM_SHOP_ID => $idShop));
+            $lengowExport = new LengowExport([LengowExport::PARAM_SHOP_ID => $idShop]);
             $shop = new LengowShop($idShop);
-            $data['shops'][] = array(
+            $data['shops'][] = [
                 'token' => LengowMain::getToken($idShop),
                 'shop_name' => $shop->name,
                 'domain_url' => $shop->domain,
@@ -134,7 +133,7 @@ class LengowSync
                 'total_product_number' => $lengowExport->getTotalProduct(),
                 'exported_product_number' => $lengowExport->getTotalExportProduct(),
                 'enabled' => LengowConfiguration::shopIsActive($idShop),
-            );
+            ];
         }
         return $data;
     }
@@ -228,24 +227,24 @@ class LengowSync
      */
     public static function getOptionData()
     {
-        $data = array(
+        $data = [
             'token' => LengowMain::getToken(),
             'version' => _PS_VERSION_,
             'plugin_version' => LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION),
             'options' => LengowConfiguration::getAllValues(),
             'shops' => [],
-        );
+        ];
         $shopCollection = LengowShop::findAll(true);
         foreach ($shopCollection as $row) {
             $idShop = $row['id_shop'];
-            $lengowExport = new LengowExport(array(LengowExport::PARAM_SHOP_ID => $idShop));
-            $data['shops'][] = array(
+            $lengowExport = new LengowExport([LengowExport::PARAM_SHOP_ID => $idShop]);
+            $data['shops'][] = [
                 'token' => LengowMain::getToken($idShop),
                 'enabled' => LengowConfiguration::shopIsActive($idShop),
                 'total_product_number' => $lengowExport->getTotalProduct(),
                 'exported_product_number' => $lengowExport->getTotalExportProduct(),
                 'options' => LengowConfiguration::getAllValues($idShop),
-            );
+            ];
         }
         return $data;
     }
@@ -296,12 +295,12 @@ class LengowSync
         }
         $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_PLAN, [], '', $logOutput);
         if (isset($result->isFreeTrial)) {
-            $status = array(
+            $status = [
                 'type' => $result->isFreeTrial ? 'free_trial' : '',
                 'day' => (int) $result->leftDaysBeforeExpired < 0 ? 0 : (int) $result->leftDaysBeforeExpired,
                 'expired' => (bool) $result->isExpired,
                 'legacy' => $result->accountVersion === 'v2'
-            );
+            ];
             LengowConfiguration::updateGlobalValue(
                 LengowConfiguration::ACCOUNT_STATUS_DATA,
                 json_encode($status)
@@ -366,12 +365,12 @@ class LengowSync
                     LengowLog::CODE_IMPORT,
                     LengowMain::setLogMessage(
                         'log.import.marketplace_update_failed',
-                        array(
+                        [
                             'decoded_message' => LengowMain::decodeLogMessage(
                                 $e->getMessage(),
                                 LengowTranslation::DEFAULT_ISO_CODE
                             )
-                        )
+                        ]
                     ),
                     $logOutput
                 );
@@ -435,14 +434,14 @@ class LengowSync
                             }
                         }
                     }
-                    $pluginData = array(
+                    $pluginData = [
                         'version' => $currentVersion,
                         'download_link' => $plugin->archive,
                         'cms_min_version' => $cmsMinVersion,
                         'cms_max_version' => $cmsMaxVersion,
                         'links' => $pluginLinks,
                         'extensions' => $plugin->extensions,
-                    );
+                    ];
                     break;
                 }
             }

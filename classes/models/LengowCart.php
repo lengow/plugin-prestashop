@@ -18,14 +18,13 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Cart Class
  */
 class LengowCart extends Cart
 {
     /**
-     * @var boolean add inactive & out of stock products to cart
+     * @var bool add inactive & out of stock products to cart
      */
     public $forceProduct = true;
 
@@ -49,7 +48,7 @@ class LengowCart extends Cart
                 throw new LengowException(
                     LengowMain::setLogMessage(
                         'lengow_log.exception.cannot_add_product_to_cart',
-                        array('product_id' => $id)
+                        ['product_id' => $id]
                     )
                 );
             }
@@ -59,7 +58,7 @@ class LengowCart extends Cart
                 throw new LengowException(
                     LengowMain::setLogMessage(
                         'lengow_log.exception.no_quantity_for_product',
-                        array('product_id' => $id)
+                        ['product_id' => $id]
                     )
                 );
             }
@@ -232,7 +231,7 @@ class LengowCart extends Cart
             if ($newQty < $minimalQuantity && !$this->forceProduct) {
                 return false;
             }
-            $values = array(
+            $values = [
                 'id_product' => (int) $idProduct,
                 'id_product_attribute' => (int) $idProductAttribute,
                 'id_cart' => (int) $this->id,
@@ -240,7 +239,7 @@ class LengowCart extends Cart
                 'id_shop' => (int) $shop->id,
                 'quantity' => (int) $quantity,
                 'date_add' => date(LengowMain::DATE_FULL),
-            );
+            ];
             $resultAdd = Db::getInstance()->insert('cart_product', $values);
             if (!$resultAdd) {
                 return false;

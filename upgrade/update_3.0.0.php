@@ -18,7 +18,6 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 if (!LengowInstall::isInstallationInProgress()) {
     exit();
 }
@@ -48,13 +47,13 @@ if (LengowInstall::checkTableExists(LengowProduct::TABLE_PRODUCT)
             'SELECT DISTINCT id_product FROM `' . _DB_PREFIX_ . 'lengow_product`'
         );
     } catch (PrestaShopDatabaseException $e) {
-        $idProducts = array();
+        $idProducts = [];
     }
     if (!empty($idProducts)) {
         Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'lengow_product SET id_shop = 1');
         if (LengowShop::isFeatureActive()) {
             $shops = LengowShop::findAll(true);
-            $insertValues = array();
+            $insertValues = [];
             foreach ($idProducts as $idProduct) {
                 if (isset($idProduct[LengowProduct::FIELD_PRODUCT_ID])) {
                     $insertValues[] = '(' . (int) $idProduct[LengowProduct::FIELD_PRODUCT_ID] . ', :idShop)';

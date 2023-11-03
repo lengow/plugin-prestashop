@@ -18,7 +18,6 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * List params
  * string  sync                Data type to synchronize
@@ -36,7 +35,6 @@
  * boolean log_output          Display log messages (1) or not (0)
  * boolean get_sync            See synchronization parameters in json format (1) or not (0)
  */
-
 @set_time_limit(0);
 
 $currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . '/');

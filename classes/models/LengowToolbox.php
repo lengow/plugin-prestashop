@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Toolbox Class
  */
@@ -192,11 +191,11 @@ class LengowToolbox
     /**
      * @var array valid toolbox actions
      */
-    public static $toolboxActions = array(
+    public static $toolboxActions = [
         self::ACTION_DATA,
         self::ACTION_LOG,
         self::ACTION_ORDER,
-    );
+    ];
 
     /**
      * Get all toolbox data
@@ -301,12 +300,12 @@ class LengowToolbox
             $orders[] = self::getOrderDataByType($type, $data, $lengowOrder);
             unset($lengowOrder);
         }
-        return array(
+        return [
             self::ORDER_MARKETPLACE_SKU => $marketplaceSku,
             self::ORDER_MARKETPLACE_NAME => $marketplaceName,
             self::ORDER_MARKETPLACE_LABEL => isset($marketplaceLabel) ? $marketplaceLabel : null,
             self::ORDERS => $orders,
-        );
+        ];
     }
 
     /**
@@ -326,7 +325,7 @@ class LengowToolbox
      */
     private static function getAllData()
     {
-        return array(
+        return [
             self::CHECKLIST => self::getChecklistData(),
             self::PLUGIN => self::getPluginData(),
             self::SYNCHRONIZATION => self::getSynchronizationData(),
@@ -334,7 +333,7 @@ class LengowToolbox
             self::SHOPS => self::getShopData(),
             self::CHECKSUM => self::getChecksumData(),
             self::LOGS => self::getLogData(),
-        );
+        ];
     }
 
     /**
@@ -344,12 +343,12 @@ class LengowToolbox
      */
     private static function getCmsData()
     {
-        return array(
+        return [
             self::CHECKLIST => self::getChecklistData(),
             self::PLUGIN => self::getPluginData(),
             self::SYNCHRONIZATION => self::getSynchronizationData(),
             self::CMS_OPTIONS => LengowConfiguration::getAllValues(null, true),
-        );
+        ];
     }
 
     /**
@@ -360,12 +359,12 @@ class LengowToolbox
     private static function getChecklistData()
     {
         $checksumData = self::getChecksumData();
-        return array(
+        return [
             self::CHECKLIST_CURL_ACTIVATED => self::isCurlActivated(),
             self::CHECKLIST_SIMPLE_XML_ACTIVATED => self::isSimpleXMLActivated(),
             self::CHECKLIST_JSON_ACTIVATED => self::isJsonActivated(),
             self::CHECKLIST_MD5_SUCCESS => $checksumData[self::CHECKSUM_SUCCESS],
-        );
+        ];
     }
 
     /**
@@ -375,7 +374,7 @@ class LengowToolbox
      */
     private static function getPluginData()
     {
-        return array(
+        return [
             self::PLUGIN_CMS_VERSION => _PS_VERSION_,
             self::PLUGIN_VERSION => LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION),
             self::PLUGIN_PHP_VERSION => PHP_VERSION,
@@ -387,7 +386,7 @@ class LengowToolbox
             ),
             self::PLUGIN_AUTHORIZED_IPS => LengowConfiguration::getAuthorizedIps(),
             self::PLUGIN_TOOLBOX_URL => LengowMain::getToolboxUrl(),
-        );
+        ];
     }
 
     /**
@@ -398,7 +397,7 @@ class LengowToolbox
     private static function getSynchronizationData()
     {
         $lastImport = LengowMain::getLastImport();
-        return array(
+        return [
             self::SYNCHRONIZATION_CMS_TOKEN => LengowMain::getToken(),
             self::SYNCHRONIZATION_CRON_URL => LengowMain::getCronUrl(),
             self::SYNCHRONIZATION_NUMBER_ORDERS_IMPORTED => LengowOrder::countOrderImportedByLengow(),
@@ -407,7 +406,7 @@ class LengowToolbox
             self::SYNCHRONIZATION_SYNCHRONIZATION_IN_PROGRESS => LengowImport::isInProcess(),
             self::SYNCHRONIZATION_LAST_SYNCHRONIZATION => $lastImport['type'] === 'none' ? 0 : $lastImport['timestamp'],
             self::SYNCHRONIZATION_LAST_SYNCHRONIZATION_TYPE => $lastImport['type'],
-        );
+        ];
     }
 
     /**
@@ -424,9 +423,9 @@ class LengowToolbox
         }
         foreach ($shops as $shop) {
             $idShop = $shop->id;
-            $lengowExport = new LengowExport(array(LengowExport::PARAM_SHOP_ID => $idShop));
+            $lengowExport = new LengowExport([LengowExport::PARAM_SHOP_ID => $idShop]);
             $lastExport = LengowConfiguration::get(LengowConfiguration::LAST_UPDATE_EXPORT, null, null, $idShop);
-            $exportData[] = array(
+            $exportData[] = [
                 self::SHOP_ID => $idShop,
                 self::SHOP_NAME => $shop->name,
                 self::SHOP_DOMAIN_URL => $shop->domain,
@@ -438,7 +437,7 @@ class LengowToolbox
                 self::SHOP_NUMBER_PRODUCTS_EXPORTED => $lengowExport->getTotalExportProduct(),
                 self::SHOP_LAST_EXPORT => empty($lastExport) ? 0 : (int) $lastExport,
                 self::SHOP_OPTIONS => LengowConfiguration::getAllValues($idShop, true),
-            );
+            ];
         }
         return $exportData;
     }
@@ -450,10 +449,10 @@ class LengowToolbox
      */
     private static function getOptionData()
     {
-        $optionData = array(
+        $optionData = [
             self::CMS_OPTIONS => LengowConfiguration::getAllValues(),
             self::SHOP_OPTIONS => [],
-        );
+        ];
         $shops = LengowShop::getActiveShops();
         foreach ($shops as $shop) {
             $optionData[self::SHOP_OPTIONS][] = LengowConfiguration::getAllValues($shop->id);
@@ -497,7 +496,7 @@ class LengowToolbox
         $fileModifiedCounter = count($fileModified);
         $fileDeletedCounter = count($fileDeleted);
         $md5Success = $md5Available && !($fileModifiedCounter > 0) && !($fileDeletedCounter > 0);
-        return array(
+        return [
             self::CHECKSUM_AVAILABLE => $md5Available,
             self::CHECKSUM_SUCCESS => $md5Success,
             self::CHECKSUM_NUMBER_FILES_CHECKED => $fileCounter,
@@ -506,7 +505,7 @@ class LengowToolbox
             self::CHECKSUM_FILE_MODIFIED => $fileModified,
             self::CHECKSUM_FILE_DELETED => $fileDeleted,
             self::CHECKSUM_FILE_DETAILS => 1
-        );
+        ];
     }
 
     /**
@@ -553,10 +552,10 @@ class LengowToolbox
             $md5Available = false;
         }
 
-        return array(
+        return [
             self::CHECKSUM_FILE_MODIFIED => $fileModified,
             self::CHECKSUM_FILE_DELETED => $fileDeleted,
-        );
+        ];
     }
 
     /**
@@ -568,11 +567,11 @@ class LengowToolbox
     {
         $logs = LengowLog::getPaths();
         if (!empty($logs)) {
-            $logs[] = array(
+            $logs[] = [
                 LengowLog::LOG_DATE => null,
                 LengowLog::LOG_LINK => LengowMain::getToolboxUrl()
                     . '&' . self::PARAM_TOOLBOX_ACTION . '=' . self::ACTION_LOG,
-            );
+            ];
         }
         return $logs;
     }
@@ -627,7 +626,7 @@ class LengowToolbox
      */
     private static function filterParamsForSync($params = [])
     {
-        $paramsFiltered = array(LengowImport::PARAM_TYPE => LengowImport::TYPE_TOOLBOX);
+        $paramsFiltered = [LengowImport::PARAM_TYPE => LengowImport::TYPE_TOOLBOX];
         if (isset(
             $params[self::PARAM_MARKETPLACE_SKU],
             $params[self::PARAM_MARKETPLACE_NAME],
@@ -663,27 +662,27 @@ class LengowToolbox
      */
     private static function getOrderDataByType($type, $data, $lengowOrder = null)
     {
-        $orderReferences = array(
+        $orderReferences = [
             self::ID => (int) $data[LengowOrder::FIELD_ID],
             self::ORDER_MERCHANT_ORDER_ID  => $lengowOrder ? $lengowOrder->id : null,
             self::ORDER_MERCHANT_ORDER_REFERENCE  => $lengowOrder ? $lengowOrder->reference : null,
             self::ORDER_DELIVERY_ADDRESS_ID => (int) $data[LengowOrder::FIELD_DELIVERY_ADDRESS_ID],
-        );
+        ];
         switch ($type) {
             case self::DATA_TYPE_ACTION:
-                $orderData = array(
+                $orderData = [
                     self::ACTIONS => $lengowOrder ? self::getOrderActionData($lengowOrder->id) : [],
-                );
+                ];
                 break;
             case self::DATA_TYPE_ERROR:
-                $orderData = array(
+                $orderData = [
                     self::ERRORS => self::getOrderErrorsData((int) $data[LengowOrder::FIELD_ID]),
-                );
+                ];
                 break;
             case self::DATA_TYPE_ORDER_STATUS:
-                $orderData = array(
+                $orderData = [
                     self::ORDER_STATUSES => $lengowOrder ? self::getOrderStatusesData($lengowOrder) : [],
-                );
+                ];
                 break;
             case self::DATA_TYPE_ORDER:
             default:
@@ -703,7 +702,7 @@ class LengowToolbox
     private static function getAllOrderData($data, $lengowOrder = null)
     {
         $orderTypes = json_decode($data[LengowOrder::FIELD_ORDER_TYPES], true);
-        return array(
+        return [
             self::ORDER_DELIVERY_COUNTRY_ISO => $data[LengowOrder::FIELD_DELIVERY_COUNTRY_ISO],
             self::ORDER_PROCESS_STATE => self::getOrderProcessLabel(
                 (int) $data[LengowOrder::FIELD_ORDER_PROCESS_STATE]
@@ -715,7 +714,7 @@ class LengowToolbox
             self::ORDER_MERCHANT_TOTAL_PAID => $lengowOrder ? (float) $lengowOrder->total_paid : null,
             self::ORDER_COMMISSION => (float) $data[LengowOrder::FIELD_COMMISSION],
             self::ORDER_CURRENCY => $data[LengowOrder::FIELD_CURRENCY],
-            self::CUSTOMER => array(
+            self::CUSTOMER => [
                 self::CUSTOMER_NAME => !empty($data[LengowOrder::FIELD_CUSTOMER_NAME])
                     ? $data[LengowOrder::FIELD_CUSTOMER_NAME]
                     : null,
@@ -725,18 +724,18 @@ class LengowToolbox
                 self::CUSTOMER_VAT_NUMBER => !empty($data[LengowOrder::FIELD_CUSTOMER_VAT_NUMBER])
                     ? $data[LengowOrder::FIELD_CUSTOMER_VAT_NUMBER]
                     : null,
-            ),
+            ],
             self::ORDER_DATE => strtotime($data[LengowOrder::FIELD_ORDER_DATE]),
-            self::ORDER_TYPES => array(
+            self::ORDER_TYPES => [
                 self::ORDER_TYPE_EXPRESS => isset($orderTypes[LengowOrder::TYPE_EXPRESS]),
                 self::ORDER_TYPE_PRIME => isset($orderTypes[LengowOrder::TYPE_PRIME]),
                 self::ORDER_TYPE_BUSINESS => isset($orderTypes[LengowOrder::TYPE_BUSINESS]),
                 self::ORDER_TYPE_DELIVERED_BY_MARKETPLACE => isset(
                     $orderTypes[LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE]
                 ),
-            ),
+            ],
             self::ORDER_ITEMS => (int) $data[LengowOrder::FIELD_ORDER_ITEM],
-            self::TRACKING => array(
+            self::TRACKING => [
                 self::TRACKING_CARRIER => !empty($data[LengowOrder::FIELD_CARRIER])
                     ? $data[LengowOrder::FIELD_CARRIER]
                     : null,
@@ -754,7 +753,7 @@ class LengowToolbox
                     ? $lengowOrder->getCurrentTrackingNumber()
                     : null,
                 self::TRACKING_MERCHANT_TRACKING_URL => $lengowOrder ? $lengowOrder->getCurrentTrackingUrl() : null,
-            ),
+            ],
             self::ORDER_IS_REIMPORTED => (bool) $data[LengowOrder::FIELD_IS_REIMPORTED],
             self::ORDER_IS_IN_ERROR => LengowOrderError::lengowOrderIsInError((int) $data[LengowOrder::FIELD_ID]),
             self::ERRORS => self::getOrderErrorsData((int) $data[LengowOrder::FIELD_ID]),
@@ -763,7 +762,7 @@ class LengowToolbox
             self::CREATED_AT => strtotime($data[LengowOrder::FIELD_CREATED_AT]),
             self::UPDATED_AT => strtotime($data[LengowOrder::FIELD_CREATED_AT]),
             self::IMPORTED_AT => $lengowOrder ? strtotime($lengowOrder->date_add) : 0,
-        );
+        ];
     }
 
     /**
@@ -780,7 +779,7 @@ class LengowToolbox
         if ($errors) {
             foreach ($errors as $error) {
                 $type = (int) $error[LengowOrderError::FIELD_TYPE];
-                $orderErrors[] = array(
+                $orderErrors[] = [
                     self::ID => (int) $error[LengowOrderError::FIELD_ID],
                     self::ERROR_TYPE => $type === LengowOrderError::TYPE_ERROR_IMPORT
                         ? self::TYPE_ERROR_IMPORT
@@ -793,7 +792,7 @@ class LengowToolbox
                     self::ERROR_REPORTED => (bool) $error[LengowOrderError::FIELD_MAIL],
                     self::CREATED_AT => strtotime($error[LengowOrderError::FIELD_CREATED_AT]),
                     self::UPDATED_AT => strtotime($error[LengowOrderError::FIELD_CREATED_AT]),
-                );
+                ];
             }
         }
         return $orderErrors;
@@ -813,7 +812,7 @@ class LengowToolbox
         if ($actions) {
             /** @var LengowAction[] $actions */
             foreach ($actions as $action) {
-                $orderActions[] = array(
+                $orderActions[] = [
                     self::ID => $action->id,
                     self::ACTION_ID => $action->actionId,
                     self::ACTION_PARAMETERS => json_decode($action->parameters, true),
@@ -821,7 +820,7 @@ class LengowToolbox
                     self::ACTION_FINISH => $action->state === LengowAction::STATE_FINISH,
                     self::CREATED_AT => strtotime($action->createdAt),
                     self::UPDATED_AT => $action->updatedAt ? strtotime($action->updatedAt) : 0,
-                );
+                ];
             }
         }
         return $orderActions;
@@ -841,11 +840,11 @@ class LengowToolbox
         $idLang = $idLang ?: (int) Configuration::get('PS_LANG_DEFAULT');
         $statuses = $lengowOrder->getHistory($idLang);
         foreach ($statuses as $status) {
-            $orderStatuses[] = array(
+            $orderStatuses[] = [
                 self::ORDER_MERCHANT_ORDER_STATUS => $status['ostate_name'],
                 self::ORDER_STATUS => self::getOrderStatusCorrespondence((int) $status['id_order_state']),
                 self::CREATED_AT => strtotime($status['date_add']),
-            );
+            ];
         }
         return $orderStatuses;
     }
@@ -921,11 +920,11 @@ class LengowToolbox
      */
     private static function generateErrorReturn($httpCode, $error)
     {
-        return array(
-            self::ERRORS => array(
+        return [
+            self::ERRORS => [
                 self::ERROR_MESSAGE => LengowMain::decodeLogMessage($error, LengowTranslation::DEFAULT_ISO_CODE),
                 self::ERROR_CODE => $httpCode,
-            ),
-        );
+            ],
+        ];
     }
 }

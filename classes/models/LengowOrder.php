@@ -18,7 +18,6 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Order Class
  */
@@ -93,17 +92,17 @@ class LengowOrder extends Order
     public $lengowId;
 
     /**
-     * @var integer PrestaShop shop ID
+     * @var int PrestaShop shop ID
      */
     public $lengowIdShop;
 
     /**
-     * @var integer Lengow flux id
+     * @var int Lengow flux id
      */
     public $lengowIdFlux;
 
     /**
-     * @var integer id of the delivery address
+     * @var int id of the delivery address
      */
     public $lengowDeliveryAddressId;
 
@@ -133,7 +132,7 @@ class LengowOrder extends Order
     public $lengowState;
 
     /**
-     * @var integer Lengow process state (0 => error, 1 => imported, 2 => finished)
+     * @var int Lengow process state (0 => error, 1 => imported, 2 => finished)
      */
     public $lengowProcessState;
 
@@ -143,7 +142,7 @@ class LengowOrder extends Order
     public $lengowOrderDate;
 
     /**
-     * @var integer number of items
+     * @var int number of items
      */
     public $lengowOrderItem;
 
@@ -203,12 +202,12 @@ class LengowOrder extends Order
     public $lengowIdRelay;
 
     /**
-     * @var boolean order shipped by marketplace
+     * @var bool order shipped by marketplace
      */
     public $lengowSentMarketplace;
 
     /**
-     * @var boolean order is reimported (ready to be reimported)
+     * @var bool order is reimported (ready to be reimported)
      */
     public $lengowIsReimported;
 
@@ -337,7 +336,7 @@ class LengowOrder extends Order
             : '\'' . pSQL(Tools::strtolower($marketplace)) . '\', \''
             . pSQL(Tools::strtolower($marketplaceLegacy)) . '\''
         );
-        $query = 'SELECT `id_order`,`id_flux` 
+        $query = 'SELECT `id_order`,`id_flux`
             FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `'.self::FIELD_MARKETPLACE_SKU.'` = \'' . pSQL($marketplaceSku) . '\'
             AND `'.self::FIELD_MARKETPLACE_NAME.'` IN (' . $in . ')
@@ -555,13 +554,13 @@ class LengowOrder extends Order
             return false;
         }
         $import = new LengowImport(
-            array(
+            [
                 LengowImport::PARAM_ID_ORDER_LENGOW => $this->lengowId,
                 LengowImport::PARAM_MARKETPLACE_SKU => $this->lengowMarketplaceSku,
                 LengowImport::PARAM_MARKETPLACE_NAME => $this->lengowMarketplaceName,
                 LengowImport::PARAM_DELIVERY_ADDRESS_ID => $this->lengowDeliveryAddressId,
                 LengowImport::PARAM_SHOP_ID => $this->lengowIdShop,
-            )
+            ]
         );
         $result = $import->exec();
         if (!empty($result[LengowImport::ORDERS_CREATED])) {
@@ -573,7 +572,7 @@ class LengowOrder extends Order
         }
         // in the event of an error, all new order errors are finished and the order is reset
         LengowOrderError::finishOrderLogs($this->lengowId);
-        self::updateOrderLengow($this->lengowId, array(self::FIELD_IS_REIMPORTED => 0));
+        self::updateOrderLengow($this->lengowId, [self::FIELD_IS_REIMPORTED => 0]);
         return false;
     }
 
@@ -680,12 +679,12 @@ class LengowOrder extends Order
         if ($this->lengowIdFlux !== null) {
             $this->checkAndChangeMarketplaceName($connector, $logOutput);
         }
-        $body = array(
+        $body = [
             LengowImport::ARG_ACCOUNT_ID => $accountId,
             LengowImport::ARG_MARKETPLACE_ORDER_ID => $this->lengowMarketplaceSku,
             LengowImport::ARG_MARKETPLACE => $this->lengowMarketplaceName,
             LengowImport::ARG_MERCHANT_ORDER_ID => $prestaIds,
-        );
+        ];
         try {
             $result = $connector->patch(
                 LengowConnector::API_ORDER_MOI,
@@ -701,10 +700,10 @@ class LengowOrder extends Order
             $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
             $error = LengowMain::setLogMessage(
                 'log.connector.error_api',
-                array(
+                [
                     'error_code' => $e->getCode(),
                     'error_message' => $message,
-                )
+                ]
             );
             LengowMain::log(LengowLog::CODE_CONNECTOR, $error, $logOutput);
             return false;
@@ -733,11 +732,11 @@ class LengowOrder extends Order
         try {
             $results = $connector->get(
                 LengowConnector::API_ORDER,
-                array(
+                [
                     LengowImport::ARG_MARKETPLACE_ORDER_ID => $this->lengowMarketplaceSku,
                     LengowImport::ARG_MARKETPLACE => $this->lengowMarketplaceName,
                     LengowImport::ARG_ACCOUNT_ID => $accountId,
-                ),
+                ],
                 LengowConnector::FORMAT_STREAM,
                 '',
                 $logOutput
@@ -746,10 +745,10 @@ class LengowOrder extends Order
             $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
             $error = LengowMain::setLogMessage(
                 'log.connector.error_api',
-                array(
+                [
                     'error_code' => $e->getCode(),
                     'error_message' => $message,
-                )
+                ]
             );
             LengowMain::log('Connector', $error, $logOutput);
             return false;
@@ -931,13 +930,13 @@ class LengowOrder extends Order
             );
             $lengowOrder = self::find($idOrderLengow);
             $import = new LengowImport(
-                array(
+                [
                     LengowImport::PARAM_ID_ORDER_LENGOW => $idOrderLengow,
                     LengowImport::PARAM_MARKETPLACE_SKU => $lengowOrder[self::FIELD_MARKETPLACE_SKU],
                     LengowImport::PARAM_MARKETPLACE_NAME => $lengowOrder[self::FIELD_MARKETPLACE_NAME],
                     LengowImport::PARAM_DELIVERY_ADDRESS_ID => $lengowOrder[self::FIELD_DELIVERY_ADDRESS_ID],
                     LengowImport::PARAM_SHOP_ID => $lengowOrder[self::FIELD_SHOP_ID],
-                )
+                ]
             );
             return $import->exec();
         }
@@ -1006,10 +1005,10 @@ class LengowOrder extends Order
             'API-OrderAction',
             LengowMain::setLogMessage(
                 'log.order_action.try_to_send_action',
-                array(
+                [
                     'action' => $action,
                     'order_id' => $this->id,
-                )
+                ]
             ),
             false,
             $this->lengowMarketplaceSku
@@ -1069,7 +1068,7 @@ class LengowOrder extends Order
                     'API-OrderAction',
                     LengowMain::setLogMessage(
                         'log.order_action.call_action_failed',
-                        array('decoded_message' => $decodedMessage)
+                        ['decoded_message' => $decodedMessage]
                     ),
                     false,
                     $this->lengowMarketplaceSku
@@ -1080,18 +1079,18 @@ class LengowOrder extends Order
         if ($success) {
             $message = LengowMain::setLogMessage(
                 'log.order_action.action_send',
-                array(
+                [
                     'action' => $action,
                     'order_id' => $this->id,
-                )
+                ]
             );
         } else {
             $message = LengowMain::setLogMessage(
                 'log.order_action.action_not_send',
-                array(
+                [
                     'action' => $action,
                     'order_id' => $this->id,
-                )
+                ]
             );
         }
         LengowMain::log('API-OrderAction', $message, false, $this->lengowMarketplaceSku);
@@ -1109,10 +1108,10 @@ class LengowOrder extends Order
         $results = LengowConnector::queryApi(
             LengowConnector::GET,
             LengowConnector::API_ORDER,
-            array(
+            [
                 LengowImport::ARG_MARKETPLACE_ORDER_ID => $this->lengowMarketplaceSku,
                 LengowImport::ARG_MARKETPLACE => $this->lengowMarketplaceName,
-            )
+            ]
         );
         if (isset($results->count) && (int) $results->count === 0) {
             return false;
@@ -1121,9 +1120,9 @@ class LengowOrder extends Order
         foreach ($orderData->packages as $package) {
             $productLines = [];
             foreach ($package->cart as $product) {
-                $productLines[] = array(
+                $productLines[] = [
                     LengowOrderLine::FIELD_ORDER_LINE_ID => (string) $product->marketplace_order_line_id,
-                );
+                ];
             }
             if ($this->lengowDeliveryAddressId === 0) {
                 return !empty($productLines) ? $productLines : false;
@@ -1184,7 +1183,7 @@ class LengowOrder extends Order
     public static function countOrderWithError()
     {
         $sql = '
-            SELECT COUNT(DISTINCT lo.id) as total FROM ' . _DB_PREFIX_ . 'lengow_orders as lo 
+            SELECT COUNT(DISTINCT lo.id) as total FROM ' . _DB_PREFIX_ . 'lengow_orders as lo
             LEFT JOIN ' . _DB_PREFIX_ . 'lengow_logs_import as lli ON lli.id_order_lengow = lo.id
             WHERE lli.is_finished = 0
         ';

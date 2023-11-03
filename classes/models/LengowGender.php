@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Gender Class
  */
@@ -27,7 +26,7 @@ class LengowGender extends Gender
     /**
      * @var array current alias of mister
      */
-    public static $currentMale = array(
+    public static $currentMale = [
         'M',
         'M.',
         'Mr',
@@ -38,12 +37,12 @@ class LengowGender extends Gender
         'mister',
         'm.',
         'mr ',
-    );
+    ];
 
     /**
      * @var array current alias of miss
      */
-    public static $currentFemale = array(
+    public static $currentFemale = [
         'Mme',
         'mme',
         'Mm',
@@ -62,7 +61,7 @@ class LengowGender extends Gender
         'miss',
         'Ms',
         'ms',
-    );
+    ];
 
     /**
      * Get the real gender

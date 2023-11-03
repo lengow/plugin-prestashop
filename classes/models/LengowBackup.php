@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Backup Class
  */
@@ -34,13 +33,13 @@ class LengowBackup extends Backup
     public function add()
     {
         if (!$this->psBackupAll) {
-            $ignoreInsertTable = array(
+            $ignoreInsertTable = [
                 _DB_PREFIX_ . 'connections',
                 _DB_PREFIX_ . 'connections_page',
                 _DB_PREFIX_ . 'connections_source',
                 _DB_PREFIX_ . 'guest',
                 _DB_PREFIX_ . 'statssearch',
-            );
+            ];
         } else {
             $ignoreInsertTable = [];
         }

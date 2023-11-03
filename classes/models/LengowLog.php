@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Log Class
  */
@@ -98,12 +97,12 @@ class LengowLog extends LengowFile
         foreach ($files as $file) {
             preg_match('/^logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt$/', $file->fileName, $match);
             $date = $match[1];
-            $logs[] = array(
+            $logs[] = [
                 self::LOG_DATE => $date,
                 self::LOG_LINK => LengowMain::getToolboxUrl()
                     . '&' . LengowToolbox::PARAM_TOOLBOX_ACTION . '=' . LengowToolbox::ACTION_LOG
                     . '&' . LengowToolbox::PARAM_DATE . '=' . urlencode($date),
-            );
+            ];
         }
         return array_reverse($logs);
     }
@@ -145,7 +144,7 @@ class LengowLog extends LengowFile
             $filePath = _PS_MODULE_LENGOW_DIR_ . LengowMain::FOLDER_LOG . $sep . $file;
             if (file_exists($filePath)) {
                 try {
-                    $logFiles = array(new LengowFile(LengowMain::FOLDER_LOG, $file));
+                    $logFiles = [new LengowFile(LengowMain::FOLDER_LOG, $file)];
                 } catch (LengowException $e) {
                     $logFiles = [];
                 }

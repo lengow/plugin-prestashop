@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Method Class
  */
@@ -88,7 +87,7 @@ class LengowMethod
     {
         try {
             $results = Db::getInstance()->ExecuteS(
-                'SELECT 
+                'SELECT
                     lmm.method_marketplace_name,
                     lmm.method_marketplace_label,
                     lmm.method_lengow_code,
@@ -164,10 +163,10 @@ class LengowMethod
         $methodMarketplaceLabel,
         $methodLengowCode = null
     ) {
-        $params = array(
+        $params = [
             self::FIELD_METHOD_MARKETPLACE_NAME => pSQL($methodMarketplaceName),
             self::FIELD_METHOD_MARKETPLACE_LABEL => pSQL($methodMarketplaceLabel),
-        );
+        ];
         if ($methodLengowCode !== null && Tools::strlen($methodLengowCode) > 0) {
             $params[self::FIELD_METHOD_LENGOW_CODE] = pSQL($methodLengowCode);
         }
@@ -216,10 +215,10 @@ class LengowMethod
             $result = [];
         }
         if (empty($result)) {
-            $params = array(
+            $params = [
                 self::FIELD_MARKETPLACE_ID => (int) $idMarketplace,
                 self::FIELD_METHOD_MARKETPLACE_ID => (int) $idMethodMarketplace,
-            );
+            ];
             try {
                 $success = $db->insert(self::TABLE_MARKETPLACE_METHOD_MARKETPLACE, $params);
             } catch (PrestaShopDatabaseException $e) {
@@ -409,12 +408,12 @@ class LengowMethod
         $idCarrier,
         $idMethodMarketplace
     ) {
-        $params = array(
+        $params = [
             self::FIELD_COUNTRY_ID => $idCountry,
             self::FIELD_MARKETPLACE_ID => $idMarketplace,
             self::FIELD_CARRIER_ID => $idCarrier,
             self::FIELD_METHOD_MARKETPLACE_ID => $idMethodMarketplace,
-        );
+        ];
         $db = Db::getInstance();
         try {
             $success = $db->insert(self::TABLE_MARKETPLACE_METHOD_COUNTRY, $params);
@@ -437,7 +436,7 @@ class LengowMethod
         $db = Db::getInstance();
         $success = $db->update(
             self::TABLE_MARKETPLACE_METHOD_COUNTRY,
-            array(self::FIELD_CARRIER_ID => $idCarrier),
+            [self::FIELD_CARRIER_ID => $idCarrier],
             'id = ' . (int) $idMarketplaceMethodCountry
         );
         return $success ? $idMarketplaceMethodCountry : false;

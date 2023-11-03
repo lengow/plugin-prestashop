@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Order Error Class
  */
@@ -129,13 +128,13 @@ class LengowOrderError
         try {
             return Db::getInstance()->insert(
                 self::TABLE_ORDER_ERROR,
-                array(
+                [
                     self::FIELD_MESSAGE => pSQL($message),
                     self::FIELD_TYPE => $type,
                     self::FIELD_IS_FINISHED => (int) $finished,
                     self::FIELD_ORDER_LENGOW_ID => (int) $idOrderLengow,
                     self::FIELD_CREATED_AT => date(LengowMain::DATE_FULL),
-                )
+                ]
             );
         } catch (PrestaShopDatabaseException $e) {
             return false;
@@ -164,7 +163,7 @@ class LengowOrderError
         foreach ($orderLogs as $orderLog) {
             $result = Db::getInstance()->update(
                 self::TABLE_ORDER_ERROR,
-                array(self::FIELD_IS_FINISHED => 1),
+                [self::FIELD_IS_FINISHED => 1],
                 '`id` = \'' . (int) $orderLog[self::FIELD_ID] . '\''
             );
             if ($result) {
@@ -184,7 +183,7 @@ class LengowOrderError
         try {
             $sqlLogs = 'SELECT lo.`marketplace_sku`, lli.`message`, lli.`id`
                 FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
-                INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo 
+                INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo
                 ON lli.`id_order_lengow` = lo.`id`
                 WHERE lli.`is_finished` = 0 AND lli.`mail` = 0
             ';
@@ -207,7 +206,7 @@ class LengowOrderError
         try {
             return Db::getInstance()->update(
                 self::TABLE_ORDER_ERROR,
-                array(self::FIELD_MAIL => 1),
+                [self::FIELD_MAIL => 1],
                 '`id` = \'' . (int) $idOrderLog . '\'',
                 1
             );

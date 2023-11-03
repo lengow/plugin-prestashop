@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Feed Class
  */
@@ -61,7 +60,7 @@ class LengowFeed
     protected $content = '';
 
     /**
-     * @var boolean stream or file
+     * @var bool stream or file
      */
     protected $stream;
 
@@ -71,7 +70,7 @@ class LengowFeed
     protected $format;
 
     /**
-     * @var boolean Use legacy fields
+     * @var bool Use legacy fields
      */
     protected $legacy;
 
@@ -88,12 +87,12 @@ class LengowFeed
     /**
      * @var array formats available for export
      */
-    public static $availableFormats = array(
+    public static $availableFormats = [
         self::FORMAT_CSV,
         self::FORMAT_YAML,
         self::FORMAT_XML,
         self::FORMAT_JSON,
-    );
+    ];
 
     /**
      * Construct
@@ -133,7 +132,7 @@ class LengowFeed
             throw new LengowException(
                 LengowMain::setLogMessage(
                     'log.export.error_unable_to_create_folder',
-                    array('folder_path' => $folderPath)
+                    ['folder_path' => $folderPath]
                 )
             );
         }
@@ -374,7 +373,7 @@ class LengowFeed
                             preg_replace(
                                 '/[^a-zA-Z0-9_]+/',
                                 '',
-                                str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($str))
+                                str_replace([' ', '\''], '_', LengowMain::replaceAccentedChars($str))
                             )
                         ),
                         0,
@@ -386,7 +385,7 @@ class LengowFeed
                         preg_replace(
                             '/[^a-zA-Z0-9_]+/',
                             '',
-                            str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($str))
+                            str_replace([' ', '\''], '_', LengowMain::replaceAccentedChars($str))
                         )
                     ),
                     0,
@@ -397,7 +396,7 @@ class LengowFeed
                     preg_replace(
                         '/[^a-zA-Z0-9_]+/',
                         '',
-                        str_replace(array(' ', '\''), '_', LengowMain::replaceAccentedChars($str))
+                        str_replace([' ', '\''], '_', LengowMain::replaceAccentedChars($str))
                     )
                 );
         }

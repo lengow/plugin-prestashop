@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Export class
  */
@@ -63,7 +62,7 @@ class LengowExport
     /**
      * @var array all available params for export
      */
-    public static $exportParams = array(
+    public static $exportParams = [
         self::PARAM_MODE,
         self::PARAM_FORMAT,
         self::PARAM_STREAM,
@@ -81,12 +80,12 @@ class LengowExport
         self::PARAM_LOG_OUTPUT,
         self::PARAM_UPDATE_EXPORT_DATE,
         self::PARAM_GET_PARAMS,
-    );
+    ];
 
     /**
      * @var array new fields for v3
      */
-    protected $newFields = array(
+    protected $newFields = [
         'id' => 'id',
         'sku' => 'sku',
         'sku_supplier' => 'sku_supplier',
@@ -141,12 +140,12 @@ class LengowExport
         'supplier' => 'supplier',
         'weight' => 'weight',
         'weight_unit' => 'weight_unit',
-    );
+    ];
 
     /**
      * @var array legacy fields for export
      */
-    protected $legacyFields = array(
+    protected $legacyFields = [
         'id_product' => 'id',
         'name_product' => 'name',
         'reference_product' => 'sku',
@@ -203,7 +202,7 @@ class LengowExport
         'stock_availables' => 'stock_availables',
         'description_html' => 'description_html',
         'availability' => 'available',
-    );
+    ];
 
     /**
      * @var string format to return
@@ -221,22 +220,22 @@ class LengowExport
     protected $feed;
 
     /**
-     * @var integer PrestaShop shop id
+     * @var int PrestaShop shop id
      */
     protected $idShop;
 
     /**
-     * @var boolean stream return
+     * @var bool stream return
      */
     protected $stream = true;
 
     /**
-     * @var boolean export Lengow selection
+     * @var bool export Lengow selection
      */
     protected $selection = false;
 
     /**
-     * @var boolean export out of stock product
+     * @var bool export out of stock product
      */
     protected $outOfStock = false;
 
@@ -246,32 +245,32 @@ class LengowExport
     protected $language;
 
     /**
-     * @var boolean export product variations
+     * @var bool export product variations
      */
     protected $variation = true;
 
     /**
-     * @var boolean include active products
+     * @var bool include active products
      */
     protected $inactive = false;
 
     /**
-     * @var boolean see log or not
+     * @var bool see log or not
      */
     protected $logOutput;
 
     /**
-     * @var boolean use legacy fields
+     * @var bool use legacy fields
      */
     protected $legacy = false;
 
     /**
-     * @var integer amount of products to export
+     * @var int amount of products to export
      */
     protected $limit = 0;
 
     /**
-     * @var integer offset of total product
+     * @var int offset of total product
      */
     protected $offset = 0;
 
@@ -281,7 +280,7 @@ class LengowExport
     protected $productIds = [];
 
     /**
-     * @var boolean update export date.
+     * @var bool update export date.
      */
     protected $updateExportDate;
 
@@ -402,10 +401,10 @@ class LengowExport
                 LengowLog::CODE_EXPORT,
                 LengowMain::setLogMessage(
                     'log.export.start_for_shop',
-                    array(
+                    [
                         'name_shop' => $shop->name,
                         'id_shop' => $shop->id,
-                    )
+                    ]
                 ),
                 $this->logOutput
             );
@@ -421,7 +420,7 @@ class LengowExport
             $products = $this->exportIds();
             LengowMain::log(
                 LengowLog::CODE_EXPORT,
-                LengowMain::setLogMessage('log.export.nb_product_found', array('nb_product' => count($products))),
+                LengowMain::setLogMessage('log.export.nb_product_found', ['nb_product' => count($products)]),
                 $this->logOutput
             );
             $this->export($products, $exportFields, $shop);
@@ -451,7 +450,7 @@ class LengowExport
                 LengowLog::CODE_EXPORT,
                 LengowMain::setLogMessage(
                     'log.export.export_failed',
-                    array('decoded_message' => $decodedMessage)
+                    ['decoded_message' => $decodedMessage]
                 ),
                 $this->logOutput
             );
@@ -544,11 +543,11 @@ class LengowExport
             $product = new LengowProduct(
                 $idProduct,
                 $this->language->id,
-                array(
+                [
                     'carrier' => $this->carrier,
                     'image_size' => LengowProduct::getMaxImageType(),
                     'language' => $this->language,
-                )
+                ]
             );
             // export simple and parent products
             if ($idProduct && $idProductAttribute === 0) {
@@ -572,7 +571,7 @@ class LengowExport
                         LengowLog::CODE_EXPORT,
                         LengowMain::setLogMessage(
                             'log.export.error_no_product_combination',
-                            array('product_id' => $product->id)
+                            ['product_id' => $product->id]
                         ),
                         $this->logOutput
                     );
@@ -596,7 +595,7 @@ class LengowExport
                     LengowLog::CODE_EXPORT,
                     LengowMain::setLogMessage(
                         'log.export.count_product',
-                        array('product_count' => $productCount)
+                        ['product_count' => $productCount]
                     ),
                     $this->logOutput
                 );
@@ -622,7 +621,7 @@ class LengowExport
             if ($feedUrl && php_sapi_name() !== 'cli') {
                 LengowMain::log(
                     LengowLog::CODE_EXPORT,
-                    LengowMain::setLogMessage('log.export.your_feed_available_here', array('feed_url' => $feedUrl)),
+                    LengowMain::setLogMessage('log.export.your_feed_available_here', ['feed_url' => $feedUrl]),
                     $this->logOutput
                 );
             }
@@ -674,7 +673,7 @@ class LengowExport
      */
     public function getTotalProduct()
     {
-        $join = ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps 
+        $join = ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps
             ON (ps.id_product = p.id_product AND ps.id_shop = ' . (int) $this->idShop . ') ';
         $where = '';
         if (!$this->inactive) {
@@ -733,15 +732,15 @@ class LengowExport
         $where = [];
         $query = ' FROM ' . _DB_PREFIX_ . 'product p';
         if ($this->selection) {
-            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'lengow_product lp 
-                ON (lp.id_product = p.id_product 
+            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'lengow_product lp
+                ON (lp.id_product = p.id_product
                 AND lp.id_shop = ' . (int) $this->idShop . ')';
         }
         if ($variation) {
-            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_attribute pa 
+            $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_attribute pa
                 ON (pa.id_product = p.id_product) ';
         }
-        $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps 
+        $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps
             ON (ps.id_product = p.id_product AND ps.id_shop = ' . (int) $this->idShop . ') ';
         if (!$this->inactive) {
             $where[] = ' ps.active = 1 ';
@@ -870,7 +869,7 @@ class LengowExport
         foreach (self::$exportParams as $param) {
             switch ($param) {
                 case self::PARAM_MODE:
-                    $authorizedValue = array('size', 'total');
+                    $authorizedValue = ['size', 'total'];
                     $type = 'string';
                     $example = 'size';
                     break;
@@ -921,16 +920,16 @@ class LengowExport
                     $example = '101,108,215';
                     break;
                 default:
-                    $authorizedValue = array(0, 1);
+                    $authorizedValue = [0, 1];
                     $type = 'integer';
                     $example = 1;
                     break;
             }
-            $params[$param] = array(
+            $params[$param] = [
                 'authorized_values' => $authorizedValue,
                 'type' => $type,
                 'example' => $example,
-            );
+            ];
         }
 
         return json_encode($params);

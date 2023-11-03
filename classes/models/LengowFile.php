@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow File Class
  */
@@ -62,10 +61,10 @@ class LengowFile
             throw new LengowException(
                 LengowMain::setLogMessage(
                     'log.export.error_unable_to_create_file',
-                    array(
+                    [
                         'file_name' => $fileName,
                         'folder_name' => $folderName,
-                    )
+                    ]
                 )
             );
         }

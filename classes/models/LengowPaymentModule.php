@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Payment Class
  */
@@ -174,7 +173,7 @@ class LengowPaymentModule extends PaymentModule
                         throw new LengowException(
                             LengowMain::setLogMessage(
                                 'lengow_log.exception.delivery_country_not_active',
-                                array('country_name' => $this->context->country->name)
+                                ['country_name' => $this->context->country->name]
                             )
                         );
                     }
@@ -243,7 +242,7 @@ class LengowPaymentModule extends PaymentModule
                         throw new LengowException(
                             LengowMain::setLogMessage(
                                 'lengow_log.exception.product_is_not_listed',
-                                array('product_id' => $sku)
+                                ['product_id' => $sku]
                             )
                         );
                     }
@@ -300,7 +299,7 @@ class LengowPaymentModule extends PaymentModule
                     throw new LengowException(
                         LengowMain::setLogMessage(
                             'lengow_log.exception.unable_to_save_order',
-                            array('error' => Db::getInstance()->getMsgError())
+                            ['error' => Db::getInstance()->getMsgError()]
                         )
                     );
                 }
@@ -308,12 +307,12 @@ class LengowPaymentModule extends PaymentModule
                 // update lengow_order table directly after creating the PrestaShop order
                 $success = LengowOrder::updateOrderLengow(
                     $idOrderLengow,
-                    array(
+                    [
                         LengowOrder::FIELD_ORDER_ID => (int) $order->id,
                         LengowOrder::FIELD_ORDER_PROCESS_STATE => LengowOrder::getOrderProcessState($orderStateLengow),
                         LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($orderStateLengow),
                         LengowOrder::FIELD_IS_REIMPORTED => 0,
-                    )
+                    ]
                 );
                 if (!$success) {
                     LengowMain::log(

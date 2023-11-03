@@ -1,7 +1,6 @@
 /*************************************************/
 /*                     GLOBAL                    */
 /*************************************************/
-
 .page-sidebar #content{
   padding: 0;
 }
@@ -30,7 +29,6 @@
 /*************************************************/
 /*                     CONNECT                   */
 /*************************************************/
-
 .lgw-connection {
   max-width: 800px;
   margin: 0 auto 40px;
@@ -178,7 +176,6 @@
 /*************************************************/
 /*                      HOME                     */
 /*************************************************/
-
 #lengow_home_wrapper{
   padding-top: 40px;
 }
@@ -245,7 +242,6 @@
 /*************************************************/
 /*                    PRODUCTS                   */
 /*************************************************/
-
 .adminlengowfeed .lgw-container {
   min-width: 1100px;
   max-width: 1400px;
@@ -379,7 +375,6 @@
 /*************************************************/
 /*                     ORDERS                    */
 /*************************************************/
-
 body.page-sidebar #lengow_order_wrapper,
 body.page-sidebar #lengow_form_order_setting{
   padding-top: 160px;
@@ -472,7 +467,6 @@ body.page-sidebar #lengow_form_order_setting{
 /*************************************************/
 /*               ORDER SETTINGS                   */
 /*************************************************/
-
 .lgw-box-link-matching .lgw-box {
   top: 0;
   color: #555;
@@ -569,7 +563,6 @@ a.lgw-box-link-matching:hover {
 /*************************************************/
 /*               MAIN SETTINGS                   */
 /*************************************************/
-
 .lgw-container #download_log {
   display:none;
 }
@@ -596,7 +589,6 @@ a.lgw-box-link-matching:hover {
 /*************************************************/
 /*                    TOOLBOX                    */
 /*************************************************/
-
 .adminlengowtoolbox .lgw-container {
   min-width: 1100px;
   max-width: 1400px;

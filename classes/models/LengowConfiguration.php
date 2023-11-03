@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Configuration Class
  */
@@ -103,7 +102,7 @@ class LengowConfiguration extends Configuration
     /**
      * @var array params correspondence keys for toolbox
      */
-    public static $genericParamKeys = array(
+    public static $genericParamKeys = [
         self::ACCOUNT_ID => 'account_id',
         self::ACCESS_TOKEN => 'access_token',
         self::SECRET => 'secret',
@@ -157,7 +156,7 @@ class LengowConfiguration extends Configuration
         self::LAST_UPDATE_PLUGIN_DATA => 'last_update_plugin_data',
         self::LAST_UPDATE_AUTHORIZATION_TOKEN => 'last_update_authorization_token',
         self::LAST_UPDATE_PLUGIN_MODAL => 'last_update_plugin_modal',
-    );
+    ];
 
     /**
      * Get all Lengow configuration keys
@@ -175,367 +174,367 @@ class LengowConfiguration extends Configuration
             $orderStates = [];
             $allOrderStates = OrderState::getOrderStates($langId);
             foreach ($allOrderStates as $orderState) {
-                $orderStates[] = array(
+                $orderStates[] = [
                     'id' => $orderState['id_order_state'],
                     'text' => $orderState['name'],
-                );
+                ];
             }
             $exportFormats = [];
             foreach (LengowFeed::$availableFormats as $value) {
-                $exportFormats[] = array(
+                $exportFormats[] = [
                     'id' => $value,
                     'text' => $value,
-                );
+                ];
             }
             $trackers = [];
             foreach (LengowMain::$trackerChoiceId as $idTracker => $tracker) {
-                $trackers[] = array(
+                $trackers[] = [
                     'id' => $idTracker,
                     'text' => $tracker,
-                );
+                ];
             }
             $carriers = [];
             $activeCarriers = LengowCarrier::getActiveCarriers();
             foreach ($activeCarriers as $idCarrier => $carrier) {
-                $carriers[] = array(
+                $carriers[] = [
                     'id' => $idCarrier,
                     'text' => $carrier['name'],
-                );
+                ];
             }
-            $keys = array(
-                self::ACCOUNT_ID => array(
+            $keys = [
+                self::ACCOUNT_ID => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_account_id_title'),
-                ),
-                self::ACCESS_TOKEN => array(
+                ],
+                self::ACCESS_TOKEN => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_access_token_title'),
                     self::PARAM_SECRET => true,
                     self::PARAM_RESET_TOKEN => true,
-                ),
-                self::SECRET => array(
+                ],
+                self::SECRET => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_secret_token_title'),
                     self::PARAM_SECRET => true,
                     self::PARAM_RESET_TOKEN => true,
-                ),
-                self::CMS_TOKEN => array(
+                ],
+                self::CMS_TOKEN => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT_TOOLBOX => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_global_token_title'),
-                ),
-                self::AUTHORIZED_IP_ENABLED => array(
+                ],
+                self::AUTHORIZED_IP_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT_TOOLBOX => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_ip_enable_title'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::AUTHORIZED_IPS => array(
+                ],
+                self::AUTHORIZED_IPS => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT_TOOLBOX => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_authorized_ip_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_authorized_ip_legend'),
                     self::PARAM_DEFAULT_VALUE => '',
                     self::PARAM_RETURN => self::RETURN_TYPE_ARRAY,
-                ),
-                self::TRACKING_ENABLED => array(
+                ],
+                self::TRACKING_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_tracking_enabled_title'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::TRACKING_ID => array(
+                ],
+                self::TRACKING_ID => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_tracking_id_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_tracking_id_legend'),
                     self::PARAM_DEFAULT_VALUE => 'id',
                     self::PARAM_COLLECTION => $trackers,
-                ),
-                self::DEBUG_MODE_ENABLED => array(
+                ],
+                self::DEBUG_MODE_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT_TOOLBOX => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_debug_enabled_title'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::REPORT_MAIL_ENABLED => array(
+                ],
+                self::REPORT_MAIL_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_report_mail_enabled_title'),
                     self::PARAM_DEFAULT_VALUE => 1,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::REPORT_MAILS => array(
+                ],
+                self::REPORT_MAILS => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_PLACEHOLDER => $locale->t('lengow_setting.lengow_report_mail_address_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_report_mail_address_legend'),
                     self::PARAM_DEFAULT_VALUE => '',
                     self::PARAM_RETURN => self::RETURN_TYPE_ARRAY,
-                ),
-                self::PLUGIN_VERSION => array(
+                ],
+                self::PLUGIN_VERSION => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT => false,
-                ),
-                self::INSTALLATION_IN_PROGRESS => array(
+                ],
+                self::INSTALLATION_IN_PROGRESS => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT => false,
-                ),
-                self::LENGOW_ERROR_STATE_ID => array(
+                ],
+                self::LENGOW_ERROR_STATE_ID => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::AUTHORIZATION_TOKEN => array(
+                ],
+                self::AUTHORIZATION_TOKEN => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT => false,
-                ),
-                self::PLUGIN_DATA => array(
+                ],
+                self::PLUGIN_DATA => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT => false,
-                ),
-                self::ACCOUNT_STATUS_DATA => array(
+                ],
+                self::ACCOUNT_STATUS_DATA => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT => false,
-                ),
-                self::SHOP_TOKEN => array(
+                ],
+                self::SHOP_TOKEN => [
                     self::PARAM_SHOP => true,
                     self::PARAM_EXPORT_TOOLBOX => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_shop_token_title'),
-                ),
-                self::SHOP_ACTIVE => array(
+                ],
+                self::SHOP_ACTIVE => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_SHOP => true,
                     self::PARAM_EXPORT_TOOLBOX => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_shop_active_title'),
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::CATALOG_IDS => array(
+                ],
+                self::CATALOG_IDS => [
                     self::PARAM_SHOP => true,
                     self::PARAM_EXPORT_TOOLBOX => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_catalog_id_title'),
                     self::PARAM_UPDATE => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_ARRAY,
-                ),
-                self::SELECTION_ENABLED => array(
+                ],
+                self::SELECTION_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_SHOP => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_export_selection_enabled_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_export_selection_enabled_legend'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::VARIATION_ENABLED => array(
+                ],
+                self::VARIATION_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_SHOP => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_export_variation_enabled_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_export_variation_enabled_legend'),
                     self::PARAM_DEFAULT_VALUE => 1,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::OUT_OF_STOCK_ENABLED => array(
+                ],
+                self::OUT_OF_STOCK_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_SHOP => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_export_out_stock_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_export_out_stock_legend'),
                     self::PARAM_DEFAULT_VALUE => 1,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::INACTIVE_ENABLED => array(
+                ],
+                self::INACTIVE_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_SHOP => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_export_inactive_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_export_inactive_legend'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::EXPORT_FORMAT => array(
+                ],
+                self::EXPORT_FORMAT => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_export_format_title'),
                     self::PARAM_DEFAULT_VALUE => LengowFeed::FORMAT_CSV,
                     self::PARAM_COLLECTION => $exportFormats,
-                ),
-                self::EXPORT_FILE_ENABLED => array(
+                ],
+                self::EXPORT_FILE_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_export_file_enabled_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_export_file_enabled_legend'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::DEFAULT_EXPORT_CARRIER_ID => array(
+                ],
+                self::DEFAULT_EXPORT_CARRIER_ID => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_export_carrier_default_title'),
                     self::PARAM_DEFAULT_VALUE => !empty($carriers) ? (int) $carriers[0]['id'] : '',
                     self::PARAM_COLLECTION => $carriers,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::WAITING_SHIPMENT_ORDER_ID => array(
+                ],
+                self::WAITING_SHIPMENT_ORDER_ID => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_order_id_process_title'),
                     self::PARAM_DEFAULT_VALUE => 2,
                     self::PARAM_COLLECTION => $orderStates,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::SHIPPED_ORDER_ID => array(
+                ],
+                self::SHIPPED_ORDER_ID => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_order_id_shipped_title'),
                     self::PARAM_DEFAULT_VALUE => 4,
                     self::PARAM_COLLECTION => $orderStates,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::CANCELED_ORDER_ID => array(
+                ],
+                self::CANCELED_ORDER_ID => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_order_id_cancel_title'),
                     self::PARAM_DEFAULT_VALUE => 6,
                     self::PARAM_COLLECTION => $orderStates,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::SHIPPED_BY_MARKETPLACE_ORDER_ID => array(
+                ],
+                self::SHIPPED_BY_MARKETPLACE_ORDER_ID => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_order_id_shippedbymp_title'),
                     self::PARAM_DEFAULT_VALUE => 4,
                     self::PARAM_COLLECTION => $orderStates,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::SYNCHRONIZATION_DAY_INTERVAL => array(
+                ],
+                self::SYNCHRONIZATION_DAY_INTERVAL => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_DAY,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_days_title'),
                     self::PARAM_DEFAULT_VALUE => 3,
                     self::PARAM_UPDATE => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::ANONYMIZE_EMAIL => array(
+                ],
+                self::ANONYMIZE_EMAIL => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_anonymize_email'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_UPDATE => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::SEMANTIC_MATCHING_CARRIER_ENABLED => array(
+                ],
+                self::SEMANTIC_MATCHING_CARRIER_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_carrier_semantic_enable_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_carrier_semantic_enable_legend'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::CURRENCY_CONVERSION_ENABLED => array(
+                ],
+                self::CURRENCY_CONVERSION_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_currency_conversion_switch'),
                     self::PARAM_DEFAULT_VALUE => 1,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::SHIPPED_BY_MARKETPLACE_ENABLED => array(
+                ],
+                self::SHIPPED_BY_MARKETPLACE_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_ship_mp_enabled_title'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED => array(
+                ],
+                self::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_stock_ship_mp_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_import_stock_ship_mp_legend'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::FORCE_PRODUCT_ENABLED => array(
+                ],
+                self::FORCE_PRODUCT_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_force_product_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_import_force_product_legend'),
                     self::PARAM_DEFAULT_VALUE => 1,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::IMPORT_PROCESSING_FEE_ENABLED => array(
+                ],
+                self::IMPORT_PROCESSING_FEE_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_processing_fee_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_import_processing_fee_legend'),
                     self::PARAM_DEFAULT_VALUE => 1,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
-                ),
-                self::SYNCHRONIZATION_IN_PROGRESS => array(
+                ],
+                self::SYNCHRONIZATION_IN_PROGRESS => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_in_progress_title'),
-                ),
-                self::LAST_UPDATE_EXPORT => array(
+                ],
+                self::LAST_UPDATE_EXPORT => [
                     self::PARAM_SHOP => true,
                     self::PARAM_EXPORT_TOOLBOX => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_last_export_title'),
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_CRON_SYNCHRONIZATION => array(
+                ],
+                self::LAST_UPDATE_CRON_SYNCHRONIZATION => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT_TOOLBOX => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_last_import_cron_title'),
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_MANUAL_SYNCHRONIZATION => array(
+                ],
+                self::LAST_UPDATE_MANUAL_SYNCHRONIZATION => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_EXPORT_TOOLBOX => false,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_last_import_manual_title'),
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_ACTION_SYNCHRONIZATION => array(
+                ],
+                self::LAST_UPDATE_ACTION_SYNCHRONIZATION => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_CATALOG => array(
+                ],
+                self::LAST_UPDATE_CATALOG => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_MARKETPLACE => array(
+                ],
+                self::LAST_UPDATE_MARKETPLACE => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_ACCOUNT_STATUS_DATA => array(
+                ],
+                self::LAST_UPDATE_ACCOUNT_STATUS_DATA => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_OPTION_CMS => array(
+                ],
+                self::LAST_UPDATE_OPTION_CMS => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_MARKETPLACE_LIST => array(
+                ],
+                self::LAST_UPDATE_MARKETPLACE_LIST => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_SETTING => array(
+                ],
+                self::LAST_UPDATE_SETTING => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_PLUGIN_DATA => array(
+                ],
+                self::LAST_UPDATE_PLUGIN_DATA => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_AUTHORIZATION_TOKEN => array(
+                ],
+                self::LAST_UPDATE_AUTHORIZATION_TOKEN => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-                self::LAST_UPDATE_PLUGIN_MODAL => array(
+                ],
+                self::LAST_UPDATE_PLUGIN_MODAL => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
-                ),
-            );
+                ],
+            ];
         }
         return isset($key, $keys[$key]) ? $keys[$key] : $keys;
     }
@@ -589,9 +588,9 @@ class LengowConfiguration extends Configuration
         $accessToken = self::getGlobalValue(self::ACCESS_TOKEN);
         $secretToken = self::getGlobalValue(self::SECRET);
         if (Tools::strlen($accountId) > 0 && Tools::strlen($accessToken) > 0 && Tools::strlen($secretToken) > 0) {
-            return array($accountId, $accessToken, $secretToken);
+            return [$accountId, $accessToken, $secretToken];
         }
-        return array(null, null, null);
+        return [null, null, null];
     }
 
     /**
@@ -604,7 +603,7 @@ class LengowConfiguration extends Configuration
     public static function setAccessIds($accessIds)
     {
         $count = 0;
-        $listKey = array(self::ACCOUNT_ID, self::ACCESS_TOKEN, self::SECRET);
+        $listKey = [self::ACCOUNT_ID, self::ACCESS_TOKEN, self::SECRET];
         foreach ($accessIds as $key => $value) {
             if (!in_array($key, $listKey, true)) {
                 continue;
@@ -622,7 +621,7 @@ class LengowConfiguration extends Configuration
      */
     public static function resetAccessIds()
     {
-        $accessIds = array(self::ACCOUNT_ID, self::ACCESS_TOKEN, self::SECRET);
+        $accessIds = [self::ACCOUNT_ID, self::ACCESS_TOKEN, self::SECRET];
         foreach ($accessIds as $accessId) {
             $value = self::getGlobalValue($accessId);
             if (Tools::strlen($value) > 0) {
@@ -663,7 +662,7 @@ class LengowConfiguration extends Configuration
         $catalogIds = [];
         $shopCatalogIds = self::get(self::CATALOG_IDS, null, null, $idShop);
         if ($shopCatalogIds != 0 && Tools::strlen($shopCatalogIds) > 0) {
-            $ids = trim(str_replace(array("\r\n", ',', '-', '|', ' ', '/'), ';', $shopCatalogIds), ';');
+            $ids = trim(str_replace(["\r\n", ',', '-', '|', ' ', '/'], ';', $shopCatalogIds), ';');
             $ids = array_filter(explode(';', $ids));
             foreach ($ids as $id) {
                 if (is_numeric($id) && $id > 0) {
@@ -772,7 +771,7 @@ class LengowConfiguration extends Configuration
         $authorizedIps = [];
         $ips = self::getGlobalValue(self::AUTHORIZED_IPS);
         if (!empty($ips)) {
-            $authorizedIps = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
+            $authorizedIps = trim(str_replace(["\r\n", ',', '-', '|', ' '], ';', $ips), ';');
             $authorizedIps = array_filter(explode(';', $authorizedIps));
         }
         return $authorizedIps;
@@ -893,7 +892,7 @@ class LengowConfiguration extends Configuration
                     return (int) $value;
                 case self::RETURN_TYPE_ARRAY:
                     return !empty($value)
-                        ? explode(';', trim(str_replace(array("\r\n", ',', ' '), ';', $value), ';'))
+                        ? explode(';', trim(str_replace(["\r\n", ',', ' '], ';', $value), ';'))
                         : [];
             }
         }

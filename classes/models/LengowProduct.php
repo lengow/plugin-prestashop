@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Product Class
  */
@@ -37,14 +36,14 @@ class LengowProduct extends Product
     /**
      * @var array API nodes containing relevant data
      */
-    public static $productApiNodes = array(
+    public static $productApiNodes = [
         'marketplace_product_id',
         'marketplace_status',
         'merchant_product_id',
         'marketplace_order_line_id',
         'quantity',
         'amount',
-    );
+    ];
 
     /**
      * @var Context PrestaShop context instance
@@ -72,7 +71,7 @@ class LengowProduct extends Product
     protected $categoryDefaultName;
 
     /**
-     * @var boolean is product in sale
+     * @var bool is product in sale
      */
     protected $isSale = false;
 
@@ -313,21 +312,21 @@ class LengowProduct extends Product
                 $priceToConvert = Tools::convertPrice($c['price'], $this->context->currency);
                 $price = Tools::displayPrice($priceToConvert, $this->context->currency);
                 if (array_key_exists($attributeId, $combArray)) {
-                    $combArray[$attributeId]['attributes'][$c['group_name']] = array(
+                    $combArray[$attributeId]['attributes'][$c['group_name']] = [
                         $c['group_name'],
                         $c['attribute_name'],
                         $c['id_attribute'],
-                    );
+                    ];
                 } else {
-                    $combArray[$attributeId] = array(
+                    $combArray[$attributeId] = [
                         'id_product_attribute' => $attributeId,
-                        'attributes' => array(
-                            $c['group_name'] => array(
+                        'attributes' => [
+                            $c['group_name'] => [
                                 $c['group_name'],
                                 $c['attribute_name'],
                                 $c['id_attribute'],
-                            )
-                        ),
+                            ]
+                        ],
                         'wholesale_price' => isset($c['wholesale_price']) ? $c['wholesale_price'] : '',
                         'price' => $price,
                         'ecotax' => isset($c['ecotax']) ? $c['ecotax'] : '',
@@ -339,7 +338,7 @@ class LengowProduct extends Product
                         'supplier_reference' => isset($c['supplier_reference']) ? $c['supplier_reference'] : '',
                         'minimal_quantity' => isset($c['minimal_quantity']) ? $c['minimal_quantity'] : '',
                         'images' => isset($cImages[$attributeId]) ? $cImages[$attributeId] : [],
-                    );
+                    ];
                 }
                 $available = new \DateTime($c['available_date']);
                 $combArray[$attributeId]['available_date'] = $available->format('Y-m-d');
@@ -598,7 +597,7 @@ class LengowProduct extends Product
         }
         if (isset($tr)) {
             $t = new Tax($tr->id_tax);
-            $taxCalculator = new TaxCalculator(array($t));
+            $taxCalculator = new TaxCalculator([$t]);
             $taxes = $taxCalculator->getTaxesAmount($shippingCost);
             if (!empty($taxes)) {
                 foreach ($taxes as $tax) {
@@ -727,10 +726,10 @@ class LengowProduct extends Product
                 if (empty($results)) {
                     return Db::getInstance()->insert(
                         self::TABLE_PRODUCT,
-                        array(
+                        [
                             self::FIELD_PRODUCT_ID => (int) $productId,
                             self::FIELD_SHOP_ID => (int) $shopId,
-                        )
+                        ]
                     );
                 }
             } catch (PrestaShopDatabaseException $e) {
@@ -750,7 +749,7 @@ class LengowProduct extends Product
      */
     protected static function isValidId($product, $apiDatas)
     {
-        $attributes = array('reference', 'ean13', 'upc', 'id');
+        $attributes = ['reference', 'ean13', 'upc', 'id'];
         $combinations = $product->getCombinations();
         if (!empty($combinations)) {
             foreach ($combinations as $combination) {
@@ -843,7 +842,7 @@ class LengowProduct extends Product
             default:
                 $idsProduct = [];
                 // compatibility with old plugins
-                $sku = str_replace(array('\_', 'X'), '_', $attributeValue);
+                $sku = str_replace(['\_', 'X'], '_', $attributeValue);
                 $sku = explode('_', $sku);
                 if (isset($sku[0]) && preg_match('/^[0-9]*$/', $sku[0]) && count($sku) < 3) {
                     $idsProduct['id_product'] = (int) $sku[0];
@@ -953,7 +952,7 @@ class LengowProduct extends Product
     public static function advancedSearch($attributeValue, $idShop, $apiDatas)
     {
         // product class attribute to search
-        $attributes = array('reference', 'ean', 'upc', 'isbn', 'ids');
+        $attributes = ['reference', 'ean', 'upc', 'isbn', 'ids'];
         $idsProduct = [];
         $find = false;
         $i = 0;

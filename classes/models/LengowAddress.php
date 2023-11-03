@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Address Class
  */
@@ -35,19 +34,19 @@ class LengowAddress extends Address
     public const ISO_A2_IT = 'IT';
 
     /**
-     * @var integer constant error empty
+     * @var int constant error empty
      */
     public const LENGOW_EMPTY_ERROR = 1;
 
     /**
-     * @var integer constant error size
+     * @var int constant error size
      */
     public const LENGOW_SIZE_ERROR = 2;
 
     /**
      * @var array API fields for an address
      */
-    public static $addressApiNodes = array(
+    public static $addressApiNodes = [
         'company',
         'civility',
         'email',
@@ -65,7 +64,7 @@ class LengowAddress extends Address
         'phone_office',
         'phone_mobile',
         'vat_number',
-    );
+    ];
 
     /**
      * @var string phone_office given in API
@@ -90,8 +89,8 @@ class LengowAddress extends Address
     /**
      * @var array All region codes for correspondence
      */
-    protected $regionCodes = array(
-        self::ISO_A2_ES => array(
+    protected $regionCodes = [
+        self::ISO_A2_ES => [
             '01' => 'ES-VI',
             '02' => 'ES-AB',
             '03' => 'ES-A',
@@ -144,8 +143,8 @@ class LengowAddress extends Address
             '50' => 'ES-Z',
             '51' => 'ES-CE',
             '52' => 'ES-ML',
-        ),
-        self::ISO_A2_IT => array(
+        ],
+        self::ISO_A2_IT => [
             '00' => 'RM',
             '01' => 'VT',
             '02' => 'RI',
@@ -153,13 +152,13 @@ class LengowAddress extends Address
             '04' => 'LT',
             '05' => 'TR',
             '06' => 'PG',
-            '07' => array(
+            '07' => [
                 '07000-07019' => 'SS',
                 '07020-07029' => 'OT',
                 '07030-07049' => 'SS',
                 '07050-07999' => 'SS',
-            ),
-            '08' => array(
+            ],
+            '08' => [
                 '08000-08010' => 'OR',
                 '08011-08012' => 'NU',
                 '08013-08013' => 'OR',
@@ -177,8 +176,8 @@ class LengowAddress extends Address
                 '08043-08043' => 'CA',
                 '08044-08049' => 'OG',
                 '08050-08999' => 'NU',
-            ),
-            '09' => array(
+            ],
+            '09' => [
                 '09000-09009' => 'CA',
                 '09010-09017' => 'CI',
                 '09018-09019' => 'CA',
@@ -188,65 +187,65 @@ class LengowAddress extends Address
                 '09100-09169' => 'CA',
                 '09170-09170' => 'OR',
                 '09171-09999' => 'CA',
-            ),
+            ],
             '10' => 'TO',
             '11' => 'AO',
-            '12' => array(
+            '12' => [
                 '12000-12070' => 'CN',
                 '12071-12071' => 'SV',
                 '12072-12999' => 'CN',
-            ),
-            '13' => array(
+            ],
+            '13' => [
                 '13000-13799' => 'VC',
                 '13800-13999' => 'BI',
-            ),
+            ],
             '14' => 'AT',
             '15' => 'AL',
             '16' => 'GE',
             '17' => 'SV',
-            '18' => array(
+            '18' => [
                 '18000-18024' => 'IM',
                 '18025-18025' => 'CN',
                 '18026-18999' => 'IM',
-            ),
+            ],
             '19' => 'SP',
-            '20' => array(
+            '20' => [
                 '20000-20799' => 'MI',
                 '20800-20999' => 'MB',
-            ),
+            ],
             '21' => 'VA',
             '22' => 'CO',
-            '23' => array(
+            '23' => [
                 '23000-23799' => 'SO',
                 '23800-23999' => 'LC',
-            ),
+            ],
             '24' => 'BG',
             '25' => 'BS',
-            '26' => array(
+            '26' => [
                 '26000-26799' => 'CR',
                 '26800-26999' => 'LO',
-            ),
+            ],
             '27' => 'PV',
-            '28' => array(
+            '28' => [
                 '28000-28799' => 'NO',
                 '28800-28999' => 'VB',
-            ),
+            ],
             '29' => 'PC',
             '30' => 'VE',
             '31' => 'TV',
             '32' => 'BL',
-            '33' => array(
+            '33' => [
                 '33000-33069' => 'UD',
                 '33070-33099' => 'PN',
                 '33100-33169' => 'UD',
                 '33170-33999' => 'PN',
-            ),
-            '34' => array(
+            ],
+            '34' => [
                 '34000-34069' => 'TS',
                 '34070-34099' => 'GO',
                 '34100-34169' => 'TS',
                 '34170-34999' => 'GO',
-            ),
+            ],
             '35' => 'PD',
             '36' => 'VI',
             '37' => 'VR',
@@ -259,10 +258,10 @@ class LengowAddress extends Address
             '44' => 'FE',
             '45' => 'RO',
             '46' => 'MN',
-            '47' => array(
+            '47' => [
                 '47000-47799' => 'FC',
                 '47800-47999' => 'RN',
-            ),
+            ],
             '48' => 'RA',
             '50' => 'FI',
             '51' => 'PT',
@@ -277,10 +276,10 @@ class LengowAddress extends Address
             '60' => 'AN',
             '61' => 'PU',
             '62' => 'MC',
-            '63' => array(
+            '63' => [
                 '63000-63799' => 'AP',
                 '63800-63999' => 'FM',
-            ),
+            ],
             '64' => 'TE',
             '65' => 'PE',
             '66' => 'CH',
@@ -298,21 +297,21 @@ class LengowAddress extends Address
             '83' => 'AV',
             '84' => 'SA',
             '85' => 'PZ',
-            '86' => array(
+            '86' => [
                 '86000-86069' => 'CB',
                 '86070-86099' => 'IS',
                 '86100-86169' => 'CB',
                 '86170-86999' => 'IS',
-            ),
+            ],
             '87' => 'CS',
-            '88' => array(
+            '88' => [
                 '88000-88799' => 'CZ',
                 '88800-88999' => 'KR',
-            ),
-            '89' => array(
+            ],
+            '89' => [
                 '89000-89799' => 'RC',
                 '89800-89999' => 'VV',
-            ),
+            ],
             '90' => 'PA',
             '91' => 'TP',
             '92' => 'AG',
@@ -322,8 +321,8 @@ class LengowAddress extends Address
             '96' => 'SR',
             '97' => 'RG',
             '98' => 'ME',
-        ),
-    );
+        ],
+    ];
 
     /**
      * Specify if an address is already in base
@@ -372,10 +371,10 @@ class LengowAddress extends Address
         $firstName = str_replace($lastName . ' ', '', $fullName);
         $lastName = empty($lastName) ? '' : self::cleanName($lastName);
         $firstName = empty($firstName) ? '' : self::cleanName($firstName);
-        return array(
+        return [
             'firstname' => Tools::ucfirst(Tools::strtolower($firstName)),
             'lastname' => Tools::ucfirst(Tools::strtolower($lastName)),
-        );
+        ];
     }
 
     /**
@@ -644,7 +643,7 @@ class LengowAddress extends Address
         $idState = 0;
         $countryIsoA2 = $addressData['common_country_iso_a2'];
         $stateRegion = $addressData['state_region'];
-        if (in_array($countryIsoA2, array(self::ISO_A2_ES, self::ISO_A2_IT), true)) {
+        if (in_array($countryIsoA2, [self::ISO_A2_ES, self::ISO_A2_IT], true)) {
             $idState = $this->searchIdStateByPostcode($idCountry, $countryIsoA2, $addressData['zipcode']);
         } elseif (!empty($stateRegion)) {
             $idState = $this->searchIdStateByStateRegion($idCountry, $stateRegion);
@@ -781,7 +780,7 @@ class LengowAddress extends Address
     protected function cleanString($string)
     {
         $string = Tools::strtolower(
-            str_replace(array(' ', '-', '_', '.'), '', trim((string) $string))
+            str_replace([' ', '-', '_', '.'], '', trim((string) $string))
         );
         return LengowMain::replaceAccentedChars(html_entity_decode($string));
     }

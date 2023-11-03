@@ -18,7 +18,6 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Controller Class
  */
@@ -45,7 +44,7 @@ class LengowController
     protected $locale;
 
     /**
-     * @var boolean Check if is a new merchant
+     * @var bool Check if is a new merchant
      */
     protected $isNewMerchant;
 

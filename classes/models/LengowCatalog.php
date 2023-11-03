@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Catalog Class
  */
@@ -63,7 +62,7 @@ class LengowCatalog
             $name = $catalog->name ?: LengowMain::decodeLogMessage(
                 'lengow_log.connection.catalog',
                 null,
-                array('catalog_id' => $catalog->id)
+                ['catalog_id' => $catalog->id]
             );
             $status = $catalog->is_active
                 ? LengowMain::decodeLogMessage('lengow_log.connection.status_active')
@@ -71,17 +70,17 @@ class LengowCatalog
             $label = LengowMain::decodeLogMessage(
                 'lengow_log.connection.catalog_label',
                 null,
-                array(
+                [
                     'catalog_id' => $catalog->id,
                     'catalog_name' => $name,
                     'nb_products' => $catalog->products ?: 0,
                     'catalog_status' => $status,
-                )
+                ]
             );
-            $catalogList[] = array(
+            $catalogList[] = [
                 'label' => $label,
                 'value' => $catalog->id,
-            );
+            ];
         }
         return $catalogList;
     }
@@ -100,29 +99,29 @@ class LengowCatalog
         if (empty($catalogsByShops)) {
             return $catalogsLinked;
         }
-        $linkCatalogData = array(
+        $linkCatalogData = [
             'cms_token' => LengowMain::getToken(),
             'shops' => [],
-        );
+        ];
         foreach ($catalogsByShops as $idShop => $catalogIds) {
             if (empty($catalogIds)) {
                 continue;
             }
             $hasCatalogToLink = true;
             $shopToken = LengowMain::getToken($idShop);
-            $linkCatalogData['shops'][] = array(
+            $linkCatalogData['shops'][] = [
                 'shop_token' => $shopToken,
                 'catalogs_id' => $catalogIds,
-            );
+            ];
             LengowMain::log(
                 LengowLog::CODE_CONNECTION,
                 LengowMain::setLogMessage(
                     'log.connection.try_link_catalog',
-                    array(
+                    [
                         'catalog_ids' => implode(', ', $catalogIds),
                         'shop_token' => $shopToken,
                         'shop_id' => $idShop,
-                    )
+                    ]
                 )
             );
         }
