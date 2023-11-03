@@ -768,7 +768,7 @@ class LengowToolbox
     /**
      * Get array of all the errors of a Lengow order
      *
-     * @param integer $idOrderLengow Lengow order id
+     * @param int $idOrderLengow Lengow order id
      *
      * @return array
      */
@@ -801,7 +801,7 @@ class LengowToolbox
     /**
      * Get array of all the actions of a Lengow order
      *
-     * @param integer $idOrder PrestaShop order id
+     * @param int $idOrder PrestaShop order id
      *
      * @return array
      */
@@ -869,7 +869,7 @@ class LengowToolbox
     /**
      * Get order process label
      *
-     * @param integer $orderProcess Lengow order process (new, import or finish)
+     * @param int $orderProcess Lengow order process (new, import or finish)
      *
      * @return string
      */
@@ -889,7 +889,7 @@ class LengowToolbox
     /**
      * Retrieves the correspondence between the PrestaShop and Lengow status
      *
-     * @param integer $idOrderState PrestaShop order state id
+     * @param int $idOrderState PrestaShop order state id
      *
      * @return string|null
      */
@@ -913,7 +913,7 @@ class LengowToolbox
     /**
      * Generates an error return for the Toolbox webservice
      *
-     * @param integer $httpCode request http code
+     * @param int $httpCode request http code
      * @param string $error error message
      *
      * @return array

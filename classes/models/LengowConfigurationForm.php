@@ -53,7 +53,7 @@ class LengowConfigurationForm
     /**
      * Construct Lengow setting input for shop
      *
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      * @param array $displayKeys names of Lengow setting
      *
      * @return string
@@ -98,7 +98,7 @@ class LengowConfigurationForm
      *
      * @param string $key name of Lengow setting
      * @param array $input all Lengow settings
-     * @param integer|null $idShop PrestaShop shop id
+     * @param int|null $idShop PrestaShop shop id
      *
      * @return string
      */
@@ -260,7 +260,7 @@ class LengowConfigurationForm
      *
      * @param string $key name of Lengow setting
      * @param mixed $value setting value
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      */
     public function checkAndLog($key, $value, $idShop = null)
     {

@@ -49,7 +49,7 @@ class LengowShop extends Shop
     /**
      * Find all shop
      *
-     * @param boolean $forceContext force context to get all shops
+     * @param bool $forceContext force context to get all shops
      *
      * @return array
      */
@@ -71,8 +71,8 @@ class LengowShop extends Shop
     /**
      * Get list of PrestaShop shops that have been activated in Lengow
      *
-     * @param boolean $activeInLengow get only shop active in Lengow
-     * @param integer $idShop PrestaShop shop id
+     * @param bool $activeInLengow get only shop active in Lengow
+     * @param int $idShop PrestaShop shop id
      *
      * @return array
      */

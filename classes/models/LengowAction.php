@@ -145,7 +145,7 @@ class LengowAction
     /**
      * Find by ID
      *
-     * @param integer $actionId Lengow action id
+     * @param int $actionId Lengow action id
      *
      * @return bool
      */
@@ -164,7 +164,7 @@ class LengowAction
     /**
      * Get action by action id
      *
-     * @param integer $actionId Lengow action id
+     * @param int $actionId Lengow action id
      *
      * @return integer|false
      */
@@ -182,10 +182,10 @@ class LengowAction
     /**
      * Find actions by order id
      *
-     * @param integer $idOrder PrestaShop order id
-     * @param boolean $onlyActive get only active actions
+     * @param int $idOrder PrestaShop order id
+     * @param bool $onlyActive get only active actions
      * @param string|null $actionType action type (ship or cancel)
-     * @param boolean $load load LengowAction or not
+     * @param bool $load load LengowAction or not
      *
      * @return array|false
      */
@@ -219,7 +219,7 @@ class LengowAction
     /**
      * Get all active actions
      *
-     * @param boolean $load load LengowAction or not
+     * @param bool $load load LengowAction or not
      *
      * @return array|false
      */
@@ -250,7 +250,7 @@ class LengowAction
     /**
      * Get last order action type to re-send action
      *
-     * @param integer $idOrder PrestaShop order id
+     * @param int $idOrder PrestaShop order id
      *
      * @return string|false
      */
@@ -274,7 +274,7 @@ class LengowAction
     /**
      * Find
      *
-     * @param integer $id Lengow action id
+     * @param int $id Lengow action id
      *
      * @return bool
      */
@@ -458,7 +458,7 @@ class LengowAction
     /**
      * Finish action
      *
-     * @param integer $id Lengow action id
+     * @param int $id Lengow action id
      *
      * @return bool
      */
@@ -477,7 +477,7 @@ class LengowAction
     /**
      * Removes all actions for one order PrestaShop
      *
-     * @param integer $idOrder PrestaShop order id
+     * @param int $idOrder PrestaShop order id
      * @param string|null $actionType action type (null, ship or cancel)
      *
      * @return bool
@@ -524,7 +524,7 @@ class LengowAction
     /**
      * Check if active actions are finished
      *
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @return bool
      */
@@ -638,7 +638,7 @@ class LengowAction
     /**
      * Remove old actions > 3 days
      *
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @return bool
      */
@@ -708,7 +708,7 @@ class LengowAction
     /**
      * Check if actions are not sent
      *
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @return bool
      */

@@ -141,8 +141,8 @@ class LengowSync
     /**
      * Sync Lengow catalogs for order synchronisation
      *
-     * @param boolean $force force cache update
-     * @param boolean $logOutput see log or not
+     * @param bool $force force cache update
+     * @param bool $logOutput see log or not
      *
      * @return bool
      */
@@ -193,8 +193,8 @@ class LengowSync
     /**
      * Sync Lengow marketplaces and marketplace carriers
      *
-     * @param boolean $force force cache update
-     * @param boolean $logOutput see log or not
+     * @param bool $force force cache update
+     * @param bool $logOutput see log or not
      *
      * @return bool
      */
@@ -252,8 +252,8 @@ class LengowSync
     /**
      * Set CMS options
      *
-     * @param boolean $force force cache update
-     * @param boolean $logOutput see log or not
+     * @param bool $force force cache update
+     * @param bool $logOutput see log or not
      *
      * @return bool
      */
@@ -277,8 +277,8 @@ class LengowSync
     /**
      * Get Status Account
      *
-     * @param boolean $force force cache update
-     * @param boolean $logOutput see log or not
+     * @param bool $force force cache update
+     * @param bool $logOutput see log or not
      *
      * @return array|false
      */
@@ -320,8 +320,8 @@ class LengowSync
     /**
      * Get marketplace data
      *
-     * @param boolean $force force cache update
-     * @param boolean $logOutput see log or not
+     * @param bool $force force cache update
+     * @param bool $logOutput see log or not
      *
      * @return array|false
      */
@@ -389,8 +389,8 @@ class LengowSync
     /**
      * Get Lengow plugin data (last version and download link)
      *
-     * @param boolean $force force cache update
-     * @param boolean $logOutput see log or not
+     * @param bool $force force cache update
+     * @param bool $logOutput see log or not
      *
      * @return array|false
      */

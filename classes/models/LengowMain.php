@@ -228,8 +228,8 @@ class LengowMain
     /**
      * Get date in local date
      *
-     * @param integer $timestamp linux timestamp
-     * @param boolean $second see seconds or not
+     * @param int $timestamp linux timestamp
+     * @param bool $second see seconds or not
      *
      * @return string
      */
@@ -316,7 +316,7 @@ class LengowMain
      * Check webservice access (export and import)
      *
      * @param string $token shop token
-     * @param integer|null $idShop PrestaShop shop id
+     * @param int|null $idShop PrestaShop shop id
      *
      * @return bool
      */
@@ -337,7 +337,7 @@ class LengowMain
      * Check if token is correct
      *
      * @param string $token shop token
-     * @param integer|null $idShop PrestaShop shop id
+     * @param int|null $idShop PrestaShop shop id
      *
      * @return bool
      */
@@ -350,7 +350,7 @@ class LengowMain
     /**
      * Generate token
      *
-     * @param integer|null $idShop PrestaShop shop id
+     * @param int|null $idShop PrestaShop shop id
      *
      * @return string
      */
@@ -393,7 +393,7 @@ class LengowMain
      *
      * @param string $category log category
      * @param string $txt log message
-     * @param boolean $logOutput output on screen
+     * @param bool $logOutput output on screen
      * @param string|null $marketplaceSku Lengow marketplace sku
      */
     public static function log($category, $txt, $logOutput = false, $marketplaceSku = null)
@@ -715,7 +715,7 @@ class LengowMain
     /**
      * Check logs table and send mail for order not imported correctly
      *
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @return bool
      */
@@ -861,7 +861,7 @@ class LengowMain
      *
      * @param string $orderStateMarketplace order state marketplace
      * @param LengowMarketplace $marketplace Lengow marketplace instance
-     * @param boolean $shipmentByMp order shipped by marketplace
+     * @param bool $shipmentByMp order shipped by marketplace
      *
      * @return integer
      */
@@ -882,7 +882,7 @@ class LengowMain
     /**
      * Get order state list
      *
-     * @param integer $idLang PrestaShop lang id
+     * @param int $idLang PrestaShop lang id
      *
      * @return array
      */
@@ -920,7 +920,7 @@ class LengowMain
     /**
      * Get export webservice links
      *
-     * @param integer|null $idShop PrestaShop shop id
+     * @param int|null $idShop PrestaShop shop id
      *
      * @return string
      */
@@ -958,7 +958,7 @@ class LengowMain
     /**
      * Get base url for Lengow webservice and files
      *
-     * @param integer|null $idShop PrestaShop shop id
+     * @param int|null $idShop PrestaShop shop id
      *
      * @return string
      */
@@ -978,7 +978,7 @@ class LengowMain
     /**
      * Get main shop url for a specific shop
      *
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      *
      * @throws Exception
      *
@@ -1017,7 +1017,7 @@ class LengowMain
     /**
      * Get Lengow technical error state id
      *
-     * @param integer|null $idLang PrestaShop lang id
+     * @param int|null $idLang PrestaShop lang id
      *
      * @return integer|null
      */

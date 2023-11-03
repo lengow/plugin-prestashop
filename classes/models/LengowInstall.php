@@ -221,7 +221,7 @@ class LengowInstall
     /**
      * Update process
      *
-     * @param boolean|string $oldVersion old version for update
+     * @param bool|string $oldVersion old version for update
      *
      * @return bool
      */
@@ -375,7 +375,7 @@ class LengowInstall
     /**
      * Set Installation Status
      *
-     * @param boolean $status installation status
+     * @param bool $status installation status
      */
     public static function setInstallationStatus($status)
     {
@@ -446,7 +446,7 @@ class LengowInstall
      *
      * @param string $oldKey old configuration key
      * @param string $newKey new configuration key
-     * @param boolean $shopConfiguration configuration by shop or global
+     * @param bool $shopConfiguration configuration by shop or global
      */
     public static function renameConfigurationKey($oldKey, $newKey, $shopConfiguration = false)
     {

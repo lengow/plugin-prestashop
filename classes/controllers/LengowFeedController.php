@@ -164,7 +164,7 @@ class LengowFeedController extends LengowController
     /**
      * Reload Total product / Exported product
      *
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      *
      * @return array Number of product exported/total for this shop
      */
@@ -181,7 +181,7 @@ class LengowFeedController extends LengowController
     /**
      * Build product grid
      *
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      *
      * @return string
      */

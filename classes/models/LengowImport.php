@@ -450,7 +450,7 @@ class LengowImport
     /**
      * Set interval time for order synchronisation
      *
-     * @param integer|null $days Import period
+     * @param int|null $days Import period
      * @param string|null $createdFrom Import of orders since
      * @param string|null $createdTo Import of orders until
      */
@@ -752,7 +752,7 @@ class LengowImport
     /**
      * Change Context for import
      *
-     * @param integer $idShop PrestaShop shop Id
+     * @param int $idShop PrestaShop shop Id
      *
      * @throws Exception
      */
@@ -911,7 +911,7 @@ class LengowImport
      * Create or update order in prestashop
      *
      * @param mixed $orders API orders
-     * @param integer $idShop PrestaShop shop Id
+     * @param int $idShop PrestaShop shop Id
      */
     private function importOrders($orders, $idShop)
     {

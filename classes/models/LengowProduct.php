@@ -98,8 +98,8 @@ class LengowProduct extends Product
     /**
      * Load a new product
      *
-     * @param integer|null $idProduct PrestaShop product id
-     * @param integer|null $idLang PrestaShop lang id
+     * @param int|null $idProduct PrestaShop product id
+     * @param int|null $idLang PrestaShop lang id
      * @param array $params all export parameters
      *
      * @throws Exception|LengowException
@@ -170,7 +170,7 @@ class LengowProduct extends Product
      * Get data of current product
      *
      * @param string $name data name
-     * @param integer|null $idProductAttribute PrestaShop product attribute id
+     * @param int|null $idProductAttribute PrestaShop product attribute id
      *
      * @throws Exception
      *
@@ -378,8 +378,8 @@ class LengowProduct extends Product
     /**
      * Get all available attribute groups
      *
-     * @param integer $idLang PrestaShop lang id
-     * @param integer $id_product_attribute
+     * @param int $idLang PrestaShop lang id
+     * @param int $id_product_attribute
      *
      * @return array
      */
@@ -441,7 +441,7 @@ class LengowProduct extends Product
     /**
      * Get supplier reference
      *
-     * @param integer $idProductAttribute PrestaShop product attribute id
+     * @param int $idProductAttribute PrestaShop product attribute id
      *
      * @return string
      */
@@ -485,8 +485,8 @@ class LengowProduct extends Product
     /**
      * Get product url for all different version of PrestaShop
      *
-     * @param integer|null $idProductAttribute PrestaShop product attribute id
-     * @param boolean $rewrite rewrite product url or not
+     * @param int|null $idProductAttribute PrestaShop product attribute id
+     * @param bool $rewrite rewrite product url or not
      *
      * @return string
      */
@@ -530,7 +530,7 @@ class LengowProduct extends Product
     /**
      * Get ecotax
      *
-     * @param integer|null $idProductAttribute PrestaShop product attribute id
+     * @param int|null $idProductAttribute PrestaShop product attribute id
      *
      * @return float
      */
@@ -549,7 +549,7 @@ class LengowProduct extends Product
     /**
      * Get shipping cost
      *
-     * @param integer|null $idProductAttribute PrestaShop product attribute id
+     * @param int|null $idProductAttribute PrestaShop product attribute id
      *
      * @throws Exception
      *
@@ -612,7 +612,7 @@ class LengowProduct extends Product
      * Get image link
      *
      * @param string $name name of product attribute
-     * @param integer|null $idProductAttribute PrestaShop product attribute id
+     * @param int|null $idProductAttribute PrestaShop product attribute id
      *
      * @return string
      */
@@ -639,7 +639,7 @@ class LengowProduct extends Product
     /**
      * Get product type (simple, parent or child)
      *
-     * @param integer|null $idProductAttribute PrestaShop product attribute id
+     * @param int|null $idProductAttribute PrestaShop product attribute id
      *
      * @return string
      */
@@ -668,7 +668,7 @@ class LengowProduct extends Product
     /**
      * Get product weight without unit
      *
-     * @param integer|null $idProductAttribute PrestaShop product attribute id
+     * @param int|null $idProductAttribute PrestaShop product attribute id
      *
      * @return string
      */
@@ -686,7 +686,7 @@ class LengowProduct extends Product
      * Get a specific attribute from a parent or a combination
      *
      * @param string $name name of product attribute
-     * @param integer|null $idProductAttribute PrestaShop product attribute id
+     * @param int|null $idProductAttribute PrestaShop product attribute id
      *
      * @return string
      */
@@ -706,9 +706,9 @@ class LengowProduct extends Product
     /**
      * Publish or Un-publish to Lengow
      *
-     * @param integer $productId PrestaShop product id
-     * @param integer $value publish value (1 : publish, 0 : unpublish)
-     * @param integer $shopId PrestaShop shop id
+     * @param int $productId PrestaShop product id
+     * @param int $value publish value (1 : publish, 0 : unpublish)
+     * @param int $shopId PrestaShop shop id
      *
      * @return bool
      */
@@ -818,7 +818,7 @@ class LengowProduct extends Product
      *
      * @param string $attributeName attribute name
      * @param string $attributeValue attribute value
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      * @param array $apiDatas product ids from the API
      *
      * @throws LengowException
@@ -875,7 +875,7 @@ class LengowProduct extends Product
     /**
      * Check if product id found is correct
      *
-     * @param integer $idProduct PrestaShop product id
+     * @param int $idProduct PrestaShop product id
      * @param array $apiDatas product ids from the API
      *
      * @throws LengowException
@@ -895,7 +895,7 @@ class LengowProduct extends Product
      * Check if the product attribute exists
      *
      * @param LengowProduct $product Lengow product instance
-     * @param integer $idProductAttribute PrestaShop product attribute id
+     * @param int $idProductAttribute PrestaShop product attribute id
      *
      * @return bool
      */
@@ -909,7 +909,7 @@ class LengowProduct extends Product
      *
      * @param string $key attribute key
      * @param string $value attribute value
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      *
      * @return integer|false
      */
@@ -942,7 +942,7 @@ class LengowProduct extends Product
      * Search a product by its reference, ean, upc and id
      *
      * @param string $attributeValue attribute value
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      * @param array $apiDatas product ids from the API
      *
      * @throws LengowException
@@ -974,7 +974,7 @@ class LengowProduct extends Product
      * Calculate product without taxes using TaxManager
      *
      * @param array $product product
-     * @param integer $idAddress PrestaShop address id used to get tax rate
+     * @param int $idAddress PrestaShop address id used to get tax rate
      * @param Context $context PrestaShop context instance
      *
      * @return float

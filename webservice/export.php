@@ -17,8 +17,6 @@
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
- */
-/**
  * List params
  * string  mode               Number of products exported
  * string  format             Format of exported files ('csv','yaml','xml','json')
@@ -55,7 +53,7 @@ if (!Module::isInstalled($lengow->name)) {
         ? 'Lengow module is not active'
         : 'Lengow module is not installed';
     header('HTTP/1.1 400 Bad Request');
-    die($errorMessage);
+    exit($errorMessage);
 }
 // CheckIP
 $token = Tools::getIsset(LengowExport::PARAM_TOKEN) ? Tools::getValue(LengowExport::PARAM_TOKEN) : '';
@@ -68,7 +66,7 @@ if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)
             : 'Unauthorised access: token parameter is empty';
     }
     header('HTTP/1.1 403 Forbidden');
-    die($errorMessage);
+    exit($errorMessage);
 }
 // get params data
 $getParams = Tools::getIsset(LengowExport::PARAM_GET_PARAMS)

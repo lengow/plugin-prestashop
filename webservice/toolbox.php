@@ -17,8 +17,6 @@
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
- *
- *
  * List params
  * string  toolbox_action   Toolbox specific action
  * string  type             Type of data to display
@@ -47,7 +45,7 @@ if (!Module::isInstalled($lengow->name)) {
         ? 'Lengow module is not active'
         : 'Lengow module is not installed';
     header('HTTP/1.1 400 Bad Request');
-    die($errorMessage);
+    exit($errorMessage);
 }
 // check IP access and Token
 $token = Tools::getValue(LengowToolbox::PARAM_TOKEN, '');
@@ -60,14 +58,14 @@ if (!LengowMain::checkWebservicesAccess($token)) {
             : 'Unauthorised access: token parameter is empty';
     }
     header('HTTP/1.1 403 Forbidden');
-    die($errorMessage);
+    exit($errorMessage);
 }
 
 $action = Tools::getValue(LengowToolbox::PARAM_TOOLBOX_ACTION, LengowToolbox::ACTION_DATA);
 // check if toolbox action is valid
 if (!in_array($action, LengowToolbox::$toolboxActions, true)) {
     header('HTTP/1.1 400 Bad Request');
-    die('Action: ' . $action . ' is not a valid action');
+    exit('Action: ' . $action . ' is not a valid action');
 }
 
 switch ($action) {

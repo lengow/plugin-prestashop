@@ -44,7 +44,7 @@ class LengowOrderError
     /**
      * Check if a Lengow order is in error
      *
-     * @param integer $idLengowOrder Lengow order id
+     * @param int $idLengowOrder Lengow order id
      *
      * @return bool
      */
@@ -66,7 +66,7 @@ class LengowOrderError
      *
      * @param string $marketplaceSku Lengow order id
      * @param string $marketplaceName Lengow marketplace name
-     * @param integer $type order log type (import or send)
+     * @param int $type order log type (import or send)
      *
      * @return array|false
      */
@@ -90,8 +90,8 @@ class LengowOrderError
      * Check if log already exists for the given order
      *
      * @param string $idOrderLengow Lengow order id
-     * @param integer|null $type order log type (import or send)
-     * @param boolean|null $finished log finished (true or false)
+     * @param int|null $type order log type (import or send)
+     * @param bool|null $finished log finished (true or false)
      *
      * @return array|false
      */
@@ -116,10 +116,10 @@ class LengowOrderError
     /**
      * Add log information in lengow_logs_import table
      *
-     * @param integer $idOrderLengow Lengow order id
+     * @param int $idOrderLengow Lengow order id
      * @param string $message error message
      * @param string $type order log type (import or send)
-     * @param integer $finished error is finished
+     * @param int $finished error is finished
      *
      * @return bool
      */
@@ -144,7 +144,7 @@ class LengowOrderError
     /**
      * Removes all order logs
      *
-     * @param integer $idOrderLengow Lengow order id
+     * @param int $idOrderLengow Lengow order id
      * @param string $type order log type (import or send)
      *
      * @return bool
@@ -197,7 +197,7 @@ class LengowOrderError
     /**
      * Mark log as sent by email
      *
-     * @param integer $idOrderLog Lengow order log id
+     * @param int $idOrderLog Lengow order log id
      *
      * @return bool
      */

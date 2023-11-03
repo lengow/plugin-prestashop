@@ -723,7 +723,7 @@ class LengowExport
     /**
      * Get Count export product
      *
-     * @param boolean $variation count variation product
+     * @param bool $variation count variation product
      *
      * @return string
      */
@@ -956,7 +956,7 @@ class LengowExport
      * Override this function to assign data for additional fields
      *
      * @param LengowProduct $product Lengow product instance
-     * @param integer|null $idProductAttribute PrestaShop product attribute id
+     * @param int|null $idProductAttribute PrestaShop product attribute id
      * @param array|null $arrayProduct product data
      *
      * @return array

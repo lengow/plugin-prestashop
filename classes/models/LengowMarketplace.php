@@ -187,8 +187,8 @@ class LengowMarketplace
     /**
      * Load the json configuration of all marketplaces
      *
-     * @param boolean $force force cache update
-     * @param boolean $logOutput see log or not
+     * @param bool $force force cache update
+     * @param bool $logOutput see log or not
      */
     public static function loadApiMarketplace($force = false, $logOutput = false)
     {
@@ -620,7 +620,7 @@ class LengowMarketplace
     /**
      * Get all marketplaces
      *
-     * @param integer|boolean $idCountry PrestaShop id country
+     * @param int|boolean $idCountry PrestaShop id country
      *
      * @return array
      */
@@ -647,7 +647,7 @@ class LengowMarketplace
     /**
      * Get all marketplace data for carrier matching by country id
      *
-     * @param integer $idCountry PrestaShop country id
+     * @param int $idCountry PrestaShop country id
      *
      * @return array
      */
@@ -709,7 +709,7 @@ class LengowMarketplace
      *
      * @param string $marketplaceName Lengow marketplace name
      * @param string $marketplaceLabel Lengow marketplace label
-     * @param boolean $carrierRequired carrier is required for ship action
+     * @param bool $carrierRequired carrier is required for ship action
      *
      * @return integer|false
      */
@@ -734,9 +734,9 @@ class LengowMarketplace
     /**
      * Update a marketplace in the table
      *
-     * @param integer $idMarketplace Lengow marketplace id
+     * @param int $idMarketplace Lengow marketplace id
      * @param string $marketplaceLabel Lengow marketplace label
-     * @param boolean $carrierRequired carrier is required for ship action
+     * @param bool $carrierRequired carrier is required for ship action
      *
      * @return integer|false
      */

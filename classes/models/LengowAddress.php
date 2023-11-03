@@ -633,7 +633,7 @@ class LengowAddress extends Address
     /**
      * Get country state if exist
      *
-     * @param integer $idCountry PrestaShop country id
+     * @param int $idCountry PrestaShop country id
      * @param array $addressData API address data
      *
      * @return integer
@@ -654,7 +654,7 @@ class LengowAddress extends Address
     /**
      * Search state by postcode for specific countries
      *
-     * @param integer $idCountry PrestaShop country id
+     * @param int $idCountry PrestaShop country id
      * @param string $countryIsoA2 country iso a2 code
      * @param string $postcode address postcode
      *
@@ -691,7 +691,7 @@ class LengowAddress extends Address
     /**
      * Get iso code from interval postcodes
      *
-     * @param integer $postcode address postcode
+     * @param int $postcode address postcode
      * @param array $intervalPostcodes postcode intervals
      *
      * @return string|false
@@ -715,7 +715,7 @@ class LengowAddress extends Address
      * Get a state id with its iso code
      *
      * @param string $isoCode State iso code
-     * @param integer $idCountry PrestaShop country id
+     * @param int $idCountry PrestaShop country id
      *
      * @return integer
      */
@@ -732,7 +732,7 @@ class LengowAddress extends Address
     /**
      * Search state id by state return by api
      *
-     * @param integer $idCountry PrestaShop country id
+     * @param int $idCountry PrestaShop country id
      * @param string $stateRegion address state region
      *
      * @return integer

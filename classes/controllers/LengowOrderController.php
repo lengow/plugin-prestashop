@@ -744,7 +744,7 @@ class LengowOrderController extends LengowController
     /**
      * Generate link for order admin page
      *
-     * @param integer $idOrder PrestaShop order id
+     * @param int $idOrder PrestaShop order id
      *
      * @return string
      */

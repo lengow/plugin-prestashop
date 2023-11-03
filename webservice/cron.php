@@ -17,8 +17,6 @@
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
- */
-/**
  * List params
  * string  sync                Data type to synchronize
  * integer days                Synchronization interval time
@@ -50,7 +48,7 @@ if (!Module::isInstalled($lengow->name)) {
         ? 'Lengow module is not active'
         : 'Lengow module is not installed';
     header('HTTP/1.1 400 Bad Request');
-    die($errorMessage);
+    exit($errorMessage);
 }
 // check IP access and Token
 $token = Tools::getIsset(LengowImport::PARAM_TOKEN) ? Tools::getValue(LengowImport::PARAM_TOKEN) : '';
@@ -63,7 +61,7 @@ if (!LengowMain::checkWebservicesAccess($token)) {
             : 'Unauthorised access: token parameter is empty';
     }
     header('HTTP/1.1 403 Forbidden');
-    die($errorMessage);
+    exit($errorMessage);
 }
 
 if (Tools::getIsset(LengowImport::PARAM_GET_SYNC) && Tools::getValue(LengowImport::PARAM_GET_SYNC) == 1) {
@@ -155,6 +153,6 @@ if (Tools::getIsset(LengowImport::PARAM_GET_SYNC) && Tools::getValue(LengowImpor
     // sync option is not valid
     if ($sync && !in_array($sync, LengowSync::$syncActions, true)) {
         header('HTTP/1.1 400 Bad Request');
-        die('Action: ' . $sync . ' is not a valid action');
+        exit('Action: ' . $sync . ' is not a valid action');
     }
 }

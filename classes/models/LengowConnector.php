@@ -156,7 +156,7 @@ class LengowConnector
     /**
      * Check API Authentication
      *
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @return bool
      */
@@ -194,7 +194,7 @@ class LengowConnector
      * @param string $api request api
      * @param array $args request params
      * @param string $body body data for request
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @return array|false
      */
@@ -237,7 +237,7 @@ class LengowConnector
      *
      * @param string $accessToken access token for api
      * @param string $secret secret for api
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @return int|null
      */
@@ -274,8 +274,8 @@ class LengowConnector
     /**
      * Connection to the API
      *
-     * @param boolean $force Force cache Update
-     * @param boolean $logOutput see log or not
+     * @param bool $force Force cache Update
+     * @param bool $logOutput see log or not
      *
      * @throws LengowException
      */
@@ -305,7 +305,7 @@ class LengowConnector
      * @param array $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @throws LengowException
      *
@@ -323,7 +323,7 @@ class LengowConnector
      * @param array $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @throws LengowException
      *
@@ -341,7 +341,7 @@ class LengowConnector
      * @param array $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @throws LengowException
      *
@@ -359,7 +359,7 @@ class LengowConnector
      * @param array $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @throws LengowException
      *
@@ -378,7 +378,7 @@ class LengowConnector
      * @param string $type type of request GET|POST|PUT|PATCH
      * @param string $format return format of API
      * @param string $body body data for request
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @throws LengowException
      *
@@ -417,7 +417,7 @@ class LengowConnector
      * @param string $type type of request GET|POST|PUT|PATCH
      * @param string $format return format of API
      * @param string $body body data for request
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @throws LengowException
      *
@@ -432,7 +432,7 @@ class LengowConnector
     /**
      * Get authorization token from Middleware
      *
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @throws LengowException
      *
@@ -477,7 +477,7 @@ class LengowConnector
      * @param array $args Lengow method API parameters
      * @param string $token temporary authorization token
      * @param string $body body data for request
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @throws LengowException
      *
@@ -553,7 +553,7 @@ class LengowConnector
      * Check return request and generate exception if needed
      *
      * @param string $result Curl return call
-     * @param integer $httpCode request http code
+     * @param int $httpCode request http code
      * @param string $curlError Curl error
      * @param string $curlErrorNumber Curl error number
      *

@@ -95,15 +95,15 @@ class LengowCart extends Cart
     /**
      * @see Cart::updateQty()
      *
-     * @param integer $quantity quantity to add (or subtract)
-     * @param integer $idProduct PrestaShop product id
-     * @param integer|null $idProductAttribute attribute id if needed
+     * @param int $quantity quantity to add (or subtract)
+     * @param int $idProduct PrestaShop product id
+     * @param int|null $idProductAttribute attribute id if needed
      * @param mixed $idCustomization PrestaShop customization id
      * @param string $operator indicate if quantity must be increased or decreased
-     * @param integer $idAddressDelivery PrestaShop address delivery id
+     * @param int $idAddressDelivery PrestaShop address delivery id
      * @param Shop|null $shop Shop instance
-     * @param boolean $autoAddCartRule add auto cart rule
-     * @param boolean $skipAvailabilityCheckOutOfStock skip availability
+     * @param bool $autoAddCartRule add auto cart rule
+     * @param bool $skipAvailabilityCheckOutOfStock skip availability
      * @param bool $preserveGiftRemoval preserve gift removal
      *
      * @throws Exception|PrestaShopDatabaseException

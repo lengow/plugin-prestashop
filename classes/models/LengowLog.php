@@ -65,7 +65,7 @@ class LengowLog extends LengowFile
      *
      * @param string $category log category
      * @param string $message log message
-     * @param boolean $logOutput display on screen
+     * @param bool $logOutput display on screen
      * @param string|null $marketplaceSku Lengow order id
      */
     public function write($category, $message = '', $logOutput = false, $marketplaceSku = null)

@@ -229,8 +229,8 @@ class LengowOrder extends Order
     /**
      * Construct a Lengow order based on PrestaShop order
      *
-     * @param integer|null $id Lengow order id
-     * @param integer|null $idLang PrestaShop id lang
+     * @param int|null $id Lengow order id
+     * @param int|null $idLang PrestaShop id lang
      */
     public function __construct($id = null, $idLang = null)
     {
@@ -379,7 +379,7 @@ class LengowOrder extends Order
     /**
      * Check if a lengow order
      *
-     * @param integer $idOrder PrestaShop order id
+     * @param int $idOrder PrestaShop order id
      *
      * @return bool
      */
@@ -400,8 +400,8 @@ class LengowOrder extends Order
     /**
      * Get Id from Lengow delivery address id
      *
-     * @param integer $idOrder PrestaShop order id
-     * @param integer $deliveryAddressId Lengow delivery address id
+     * @param int $idOrder PrestaShop order id
+     * @param int $deliveryAddressId Lengow delivery address id
      *
      * @return integer|false
      */
@@ -461,7 +461,7 @@ class LengowOrder extends Order
     /**
      * Update order Lengow
      *
-     * @param integer $id Id of the record
+     * @param int $id Id of the record
      * @param array $params Fields update
      *
      * @return bool
@@ -651,7 +651,7 @@ class LengowOrder extends Order
      * Synchronize order with Lengow API
      *
      * @param LengowConnector|null $connector Lengow connector instance
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @return bool
      */
@@ -714,7 +714,7 @@ class LengowOrder extends Order
      * Check and change the name of the marketplace for v3 compatibility
      *
      * @param LengowConnector|null $connector Lengow connector instance
-     * @param boolean $logOutput see log or not
+     * @param bool $logOutput see log or not
      *
      * @return bool
      */
@@ -887,7 +887,7 @@ class LengowOrder extends Order
     /**
      * Find Lengow Order by Lengow order id
      *
-     * @param integer $idOrderLengow Lengow order id
+     * @param int $idOrderLengow Lengow order id
      *
      * @return bool
      */
@@ -900,7 +900,7 @@ class LengowOrder extends Order
     /**
      * Check if order is already imported
      *
-     * @param integer $idOrderLengow Lengow order id
+     * @param int $idOrderLengow Lengow order id
      *
      * @return bool
      */
@@ -918,7 +918,7 @@ class LengowOrder extends Order
     /**
      * Re Import Order
      *
-     * @param integer $idOrderLengow Lengow order id
+     * @param int $idOrderLengow Lengow order id
      *
      * @return array|false
      */
@@ -968,7 +968,7 @@ class LengowOrder extends Order
     /**
      * Re Send Order
      *
-     * @param integer $idOrderLengow Lengow order id
+     * @param int $idOrderLengow Lengow order id
      *
      * @return bool
      */

@@ -428,7 +428,7 @@ class LengowImportOrder
     /**
      * Check the command and updates data if necessary
      *
-     * @param integer $idOrder PrestaShop order id
+     * @param int $idOrder PrestaShop order id
      *
      * @return bool
      */
@@ -1267,9 +1267,9 @@ class LengowImportOrder
     /**
      * Create or load address based on API data
      *
-     * @param integer $idCustomer PrestaShop customer id
+     * @param int $idCustomer PrestaShop customer id
      * @param array $addressData address data
-     * @param boolean $shippingData is shipping address
+     * @param bool $shippingData is shipping address
      *
      * @return LengowAddress
      */
@@ -1523,7 +1523,7 @@ class LengowImportOrder
     /**
      * Add a comment to the PrestaShop order
      *
-     * @param integer $idOrder PrestaShop order id
+     * @param int $idOrder PrestaShop order id
      * @param string $comment order comment
      *
      * @throws Exception

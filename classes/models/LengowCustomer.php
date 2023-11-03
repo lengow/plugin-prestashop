@@ -199,7 +199,7 @@ class LengowCustomer extends Customer
      * Retrieve customers by email address and id shop
      *
      * @param string $email customer email
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      *
      * @return LengowCustomer|false
      */

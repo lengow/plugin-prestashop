@@ -97,9 +97,9 @@ class LengowFeed
     /**
      * Construct
      *
-     * @param boolean $stream export streaming or in a file
+     * @param bool $stream export streaming or in a file
      * @param string $format export format
-     * @param boolean $legacy export legacy field or not
+     * @param bool $legacy export legacy field or not
      * @param string $shopName PrestaShop shop name
      *
      * @throws LengowException unable to create folder
@@ -145,8 +145,8 @@ class LengowFeed
      *
      * @param string $type data type (header, body or footer)
      * @param array $data export data
-     * @param boolean|null $isFirst is first product
-     * @param boolean|null $maxCharacter max characters for yaml format
+     * @param bool|null $isFirst is first product
+     * @param bool|null $maxCharacter max characters for yaml format
      */
     public function write($type, $data = [], $isFirst = null, $maxCharacter = null)
     {
@@ -204,8 +204,8 @@ class LengowFeed
      * Get feed body
      *
      * @param array $data feed data
-     * @param boolean $isFirst is first product
-     * @param integer $maxCharacter max characters for yaml format
+     * @param bool $isFirst is first product
+     * @param int $maxCharacter max characters for yaml format
      *
      * @return string
      */
@@ -359,7 +359,7 @@ class LengowFeed
      *
      * @param string $str field name
      * @param string $format export format
-     * @param boolean $legacy export legacy field or not
+     * @param bool $legacy export legacy field or not
      *
      * @return string
      */

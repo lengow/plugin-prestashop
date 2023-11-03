@@ -37,7 +37,7 @@ class LengowOrderLine
     /**
      * Get Order Lines by PrestaShop order id
      *
-     * @param integer $idOrder PrestaShop order id
+     * @param int $idOrder PrestaShop order id
      *
      * @return array
      */
