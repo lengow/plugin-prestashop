@@ -346,6 +346,8 @@ fr:
       list_modified_file: "Liste des fichiers modifiés"
       list_deleted_file: "Liste des fichiers supprimés"
   lengow_setting:
+    lengow_plugin_env_title: "Environnement du plugin"
+    lengow_plugin_env_legend: "Ne pas oublier de changer les tokens Access et Secret"  
     lengow_account_id_title: "ID du compte"
     lengow_access_token_title: "Access Token"
     lengow_secret_token_title: "Secret Token"

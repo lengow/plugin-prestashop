@@ -346,6 +346,8 @@ it:
       list_modified_file: "Elenco dei file modificati"
       list_deleted_file: "Elenco dei file cancellati"
   lengow_setting:
+    lengow_plugin_env_title: "Ambiente del Plug-in"
+    lengow_plugin_env_legend: "Non dimenticare di cambiare Accesso e Segreto tokens"    
     lengow_account_id_title: "ID Cliente"
     lengow_access_token_title: "Token"
     lengow_secret_token_title: "Token Segreto"
