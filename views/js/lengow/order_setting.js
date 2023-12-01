@@ -68,7 +68,7 @@ function toggleCountry($head) {
 
 function pluginsRender() {
     // selects
-    lengow_jquery('#marketplace_matching select').select2();
+    //engow_jquery('#marketplace_matching select').select2();
 }
 
 function disableCarrierMarketplace(idMarketplace) {

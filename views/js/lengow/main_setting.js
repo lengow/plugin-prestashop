@@ -208,6 +208,7 @@ function openModal(){
             }, 1000);
         });
         // load select 2 format
+        //if ty
         $('.lengow_select').select2({
             templateResult: formatState
         });

@@ -229,5 +229,5 @@
 
 function pluginsRender(){
     // Selects
-    lengow_jquery('.lgw-pagination-select-item').select2({minimumResultsForSearch: Infinity});
+    //lengow_jquery('.lgw-pagination-select-item').select2({minimumResultsForSearch: Infinity});
 }

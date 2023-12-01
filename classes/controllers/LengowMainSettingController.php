@@ -62,13 +62,13 @@ class LengowMainSettingController extends LengowController
                     )
                 );
                 $form->postProcess(
-                    array(
+                    [
                         LengowConfiguration::REPORT_MAIL_ENABLED,
                         LengowConfiguration::TRACKING_ENABLED,
                         LengowConfiguration::AUTHORIZED_IP_ENABLED,
                         LengowConfiguration::DEBUG_MODE_ENABLED,
                         LengowConfiguration::SHOP_ACTIVE,
-                    )
+                    ]
                 );
                 break;
             case 'download':
@@ -111,12 +111,12 @@ class LengowMainSettingController extends LengowController
         );
         $debugReport = $form->buildInputs(array(LengowConfiguration::DEBUG_MODE_ENABLED));
         $credentials = $form->buildInputs(
-            array(
+            [
                 LengowConfiguration::PLUGIN_ENV,
                 LengowConfiguration::ACCOUNT_ID,
                 LengowConfiguration::ACCESS_TOKEN,
                 LengowConfiguration::SECRET,
-            )
+            ]
         );
         $debugWrapper = '<div class="grey-frame">' . $credentials . '</div>';
         $shopCatalog = '';

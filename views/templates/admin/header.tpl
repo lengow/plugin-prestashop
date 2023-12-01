@@ -18,6 +18,11 @@
  *  @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/jquery.1.12.4.min.js"></script>
+<script type="text/javascript">
+    var lengow_jquery = $.noConflict(true);
+</script>
+
 <script type="text/javascript">$(document.body).addClass('lengow_body');</script>
 
 <!-- PLUGINS -->
@@ -97,12 +102,9 @@
     </ul>
 </div>
 {/if}
-<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/jquery.1.12.0.min.js"></script>
-<script type="text/javascript">
-    var lengow_jquery = $.noConflict(true);
-</script>
 <script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/admin.js"></script>
 <script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/clipboard.js"></script>
 <script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/select2.js"></script>
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/admin.js"></script>
+
