@@ -45,7 +45,7 @@ class LengowController
     protected $locale;
 
     /**
-     * @var boolean Check if is a new merchant
+     * @var bool Check if is a new merchant
      */
     protected $isNewMerchant;
 

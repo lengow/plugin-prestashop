@@ -549,7 +549,7 @@ class LengowConfiguration extends Configuration
      * @param integer|null $idLang PrestaShop lang id
      * @param integer|null $idShopGroup PrestaShop shop group id
      * @param integer|null $idShop PrestaShop shop id
-     * @param boolean $default default value (compatibility version 1.7)
+     * @param bool $default default value (compatibility version 1.7)
      *
      * @return mixed
      */
@@ -783,7 +783,7 @@ class LengowConfiguration extends Configuration
     /**
      * Reset all Lengow settings
      *
-     * @param boolean $overwrite rewrite all Lengow settings
+     * @param bool $overwrite rewrite all Lengow settings
      *
      * @return boolean
      */
@@ -844,7 +844,7 @@ class LengowConfiguration extends Configuration
      * Get Values by shop or global
      *
      * @param integer|null $idShop PrestaShop shop id
-     * @param boolean $toolbox get all values for toolbox or not
+     * @param bool $toolbox get all values for toolbox or not
      *
      * @return array
      */
