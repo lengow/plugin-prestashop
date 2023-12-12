@@ -176,6 +176,7 @@ fr:
       status_shipped: "Expédié"
       status_closed: "Fermé"
       status_refunded: "Remboursé"
+      status_partially_refunded: "Partiellement Remboursé"
       status_canceled: "Annulé"
       type_express: "Livraison Express"
       type_delivered_by_marketplace: "Expédié par la marketplace"

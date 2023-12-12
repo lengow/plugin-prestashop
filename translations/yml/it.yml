@@ -176,6 +176,7 @@ it:
       status_shipped: "Spedito"
       status_closed: "Chiuso"
       status_refunded: "Rimborsato"
+      status_partially_refunded: "Parzialmente rimborsato"
       status_canceled: "Cancellato"
       type_express: "Consegna espressa"
       type_delivered_by_marketplace: "Spedito dal Marketplace"

@@ -176,6 +176,7 @@ es:
       status_shipped: "Enviado"
       status_closed: "Cerrado"
       status_refunded: "Reintegrado"
+      status_partially_refunded: "Reintegrado Parcial"
       status_canceled: "Cancelado"
       type_express: "Entrega urgente"
       type_delivered_by_marketplace: "Enviado por Marketplace"

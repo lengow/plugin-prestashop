@@ -74,6 +74,7 @@ class LengowOrder extends Order
     public const STATE_REFUSED = 'refused';
     public const STATE_CANCELED = 'canceled';
     public const STATE_REFUNDED = 'refunded';
+    public const STATE_PARTIALLY_REFUNDED = 'partial_refunded';
 
     /* Order types */
     public const TYPE_PRIME = 'is_prime';

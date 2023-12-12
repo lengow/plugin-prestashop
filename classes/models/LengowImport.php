@@ -117,6 +117,7 @@ class LengowImport
         LengowOrder::STATE_WAITING_SHIPMENT,
         LengowOrder::STATE_SHIPPED,
         LengowOrder::STATE_CLOSED,
+        LengowOrder::STATE_PARTIALLY_REFUNDED
     ];
 
     /**

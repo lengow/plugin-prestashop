@@ -157,6 +157,7 @@ order.screen.status_waiting_shipment|Esperando envío
 order.screen.status_shipped|Enviado
 order.screen.status_closed|Cerrado
 order.screen.status_refunded|Reintegrado
+order.screen.status_partially_refunded|Reintegrado Parcial
 order.screen.status_canceled|Cancelado
 order.screen.type_express|Entrega urgente
 order.screen.type_delivered_by_marketplace|Enviado por Marketplace
