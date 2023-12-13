@@ -57,6 +57,7 @@ class LengowConfiguration extends Configuration
     public const SHIPPED_ORDER_ID = 'LENGOW_ORDER_ID_SHIPPED';
     public const CANCELED_ORDER_ID = 'LENGOW_ORDER_ID_CANCEL';
     public const SHIPPED_BY_MARKETPLACE_ORDER_ID = 'LENGOW_ORDER_ID_SHIPPEDBYMP';
+    public const ANONYMIZE_EMAIL = 'LENGOW_ANONYMIZE_EMAIL';
     public const SYNCHRONIZATION_DAY_INTERVAL = 'LENGOW_IMPORT_DAYS';
     public const SEMANTIC_MATCHING_CARRIER_ENABLED = 'LENGOW_CARRIER_SEMANTIC_ENABLE';
     public const CURRENCY_CONVERSION_ENABLED = 'LENGOW_CURRENCY_CONVERSION';
@@ -136,6 +137,7 @@ class LengowConfiguration extends Configuration
         self::WAITING_SHIPMENT_ORDER_ID => 'waiting_shipment_order_id',
         self::SHIPPED_ORDER_ID => 'shipped_order_id',
         self::CANCELED_ORDER_ID => 'canceled_order_id',
+        self::ANONYMIZE_EMAIL => 'anonymize_customer_email',
         self::SHIPPED_BY_MARKETPLACE_ORDER_ID => 'shipped_by_marketplace_order_id',
         self::SYNCHRONIZATION_DAY_INTERVAL => 'synchronization_day_interval',
         self::SEMANTIC_MATCHING_CARRIER_ENABLED => 'semantic_matching_carrier_enabled',
@@ -427,6 +429,14 @@ class LengowConfiguration extends Configuration
                     self::PARAM_DEFAULT_VALUE => 3,
                     self::PARAM_UPDATE => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
+                ),
+                self::ANONYMIZE_EMAIL => array(
+                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
+                    self::PARAM_GLOBAL => true,
+                    self::PARAM_LABEL => $locale->t('lengow_setting.lengow_anonymize_email'),
+                    self::PARAM_DEFAULT_VALUE => 0,
+                    self::PARAM_UPDATE => true,
+                    self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
                 ),
                 self::SEMANTIC_MATCHING_CARRIER_ENABLED => array(
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,

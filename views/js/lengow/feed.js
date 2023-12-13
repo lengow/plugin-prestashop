@@ -17,6 +17,7 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 (function ($) {
     $(document).ready(function () {
 
@@ -229,5 +230,5 @@
 
 function pluginsRender(){
     // Selects
-    //lengow_jquery('.lgw-pagination-select-item').select2({minimumResultsForSearch: Infinity});
+    lengow_jquery('.lgw-pagination-select-item').select2({minimumResultsForSearch: Infinity});
 }

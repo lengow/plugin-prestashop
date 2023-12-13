@@ -17,6 +17,7 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 function addScoreCarrier() {
     nbs = 0;
     var tooltipMessage = $('#marketplace-list').attr('data-tooltip-carrier');
@@ -68,7 +69,7 @@ function toggleCountry($head) {
 
 function pluginsRender() {
     // selects
-    //engow_jquery('#marketplace_matching select').select2();
+    lengow_jquery('#marketplace_matching select').select2();
 }
 
 function disableCarrierMarketplace(idMarketplace) {

@@ -1,6 +1,7 @@
 /*************************************************/
 /*                      BOXES                    */
 /*************************************************/
+
 .lgw-box {
   background: white;
   display: block;
@@ -70,6 +71,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                    BUTTONS                    */
 /*************************************************/
+
 .lgw-container .lgw-btn {
   border-radius: 3px;
   padding: 10px 20px;
@@ -103,6 +105,7 @@ a.lgw-box-link:hover {
 }
 
 /* WHITE */
+
 .lgw-container .lgw-btn-white {
   background-color: #fff;
   border:1px solid #d7d7d7;
@@ -116,6 +119,7 @@ a.lgw-box-link:hover {
 }
 
 /* GREEN */
+
 .lgw-container .lgw-btn-green {
   background-color: #7ac279;
 }
@@ -130,6 +134,7 @@ a.lgw-box-link:hover {
 }
 
 /* DISABLED */
+
 .lgw-container .lgw-btn-disabled {
   background: #c0c0c0;
   top: 0;
@@ -162,6 +167,7 @@ a.lgw-box-link:hover {
 }
 
 /* BTN PROGRESSION */
+
 .lgw-container .lgw-btn-progression {
   height: 36px;
   overflow: hidden;
@@ -257,6 +263,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                    LABELS                     */
 /*************************************************/
+
 .lgw-label {
   font-size: 13px;
   background :#ebebeb;
@@ -350,6 +357,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                    INPUTS                     */
 /*************************************************/
+
 .lgw-container .form-group,
 .lgw-container .form-group>div {
   float: none;
@@ -378,6 +386,7 @@ a.lgw-box-link:hover {
 }
 
 /* WITH UNIT */
+
 .input-group input[type="number"] {
   float: left;
   border-radius: 3px 0 0 3px;
@@ -405,6 +414,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                  DATEPICKER                   */
 /*************************************************/
+
 .datepicker-dropdown {
   z-index: 999 !important;
 }
@@ -412,6 +422,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                    SELECT                     */
 /*************************************************/
+
 .select2-container {
   display: block;
   width: 100% !important;
@@ -517,6 +528,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                    MODAL                      */
 /*************************************************/
+
 .lgw-modalbox {
   background-color: rgba(7, 18, 71, .3);
   display: none;
@@ -592,6 +604,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                    SWITCH                     */
 /*************************************************/
+
 .lgw-switch {
   display: inline-block;
   padding-left: 0;
@@ -664,6 +677,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                  PAGINATION                   */
 /*************************************************/
+
 .lgw-pagination {
   font-size: 12px;
   float: right;
@@ -725,6 +739,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                     TABLE                     */
 /*************************************************/
+
 .lgw-container .table {
   border: 0;
   width: 100%;
@@ -826,6 +841,7 @@ a.lgw-box-link:hover {
 }
 
 /* TABLE DROPDOWN */
+
 .lgw-container table .select2-selection--single .select2-selection__rendered {
   height: 30px;
   line-height: 30px;
@@ -848,6 +864,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                    TOOLTIP                    */
 /*************************************************/
+
 .lengow_tooltip {
   position: absolute;
   z-index: 1070;
@@ -982,6 +999,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                   ACCORDION                   */
 /*************************************************/
+
 .lgw-container .accordion {
   margin-left: 0;
   padding-left: 0;
@@ -1112,6 +1130,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                   LOADER                      */
 /*************************************************/
+
 .ajax-loading {
   margin: 0 auto;
   padding-top: 35px;
@@ -1171,6 +1190,7 @@ a.lgw-box-link:hover {
 /*************************************************/
 /*                     ICON                      */
 /*************************************************/
+
 .lgw-icon {
   speak: none;
   font-style: normal;
