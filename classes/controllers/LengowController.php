@@ -60,6 +60,9 @@ class LengowController
         $this->lengowLink = new LengowLink();
         $this->locale = new LengowTranslation();
         $this->isNewMerchant = LengowConfiguration::isNewMerchant();
+        $this->context->smarty->assign('locale', $this->locale);
+        $lengowPathUri = $this->module->getPathUri();
+        $this->context->smarty->assign('lengowPathUri', $lengowPathUri);
 
 
     }
@@ -116,10 +119,9 @@ class LengowController
 
     private function prepareDisplay()
     {
-        $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
-        $lengowPathUri = $this->module->getPathUri();
-        $multiShop = Shop::isFeatureActive();
 
+        $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
+        $multiShop = Shop::isFeatureActive();
         $debugMode = LengowConfiguration::debugModeIsActive();
         $merchantStatus = LengowSync::getStatusAccount();
         // show header or not
@@ -144,11 +146,9 @@ class LengowController
 
         $this->context->smarty->assign('current_controller', get_class($this));
         $this->context->smarty->assign('lengow_link', $this->lengowLink);
-        $this->context->smarty->assign('locale', $this->locale);
         $this->context->smarty->assign('localeIsoCode', $localeIsoCode);
         $this->context->smarty->assign('version', _PS_VERSION_);
         $this->context->smarty->assign('lengowVersion', $this->module->version);
-        $this->context->smarty->assign('lengowPathUri', $lengowPathUri);
         $this->context->smarty->assign('lengowUrl', LengowConfiguration::getLengowUrl());
         $this->context->smarty->assign('displayToolbar', $displayToolbar);
         $this->context->smarty->assign('pluginData', $pluginData);

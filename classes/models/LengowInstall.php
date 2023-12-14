@@ -190,6 +190,8 @@ class LengowInstall
         );
         $oldVersion = LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION);
         $oldVersion = $oldVersion ?: false;
+        // remove Lengow config
+        Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'configuration` WHERE name LIKE "LENGOW_%"');
         $this->setDefaultValues();
         $this->update($oldVersion);
         LengowMain::log(
@@ -210,11 +212,14 @@ class LengowInstall
             LengowLog::CODE_UNINSTALL,
             LengowMain::setLogMessage('log.uninstall.uninstall_start', ['version' => $this->lengowModule->version])
         );
+        // remove Lengow config
+        Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'configuration` WHERE name LIKE "LENGOW_%"');
         $this->uninstallTab();
         LengowMain::log(
             LengowLog::CODE_UNINSTALL,
             LengowMain::setLogMessage('log.uninstall.uninstall_end', ['version' => $this->lengowModule->version])
         );
+
         return true;
     }
 
@@ -242,6 +247,8 @@ class LengowInstall
         }
         // check if update is in progress
         self::setInstallationStatus(true);
+        // remove Lengow config
+        Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'configuration` WHERE name LIKE "LENGOW_%"');
         // create all Lengow tables
         $this->createLengowTables();
         // run sql script and configuration upgrade for specific version
