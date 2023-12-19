@@ -37,7 +37,7 @@
  * boolean get_params         See export parameters and authorized values in json format (1) or not (0)
  */
 @set_time_limit(0);
-@ini_set('memory_limit', '512M');
+@ini_set('memory_limit', '1024M');
 
 $currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . '/');
 $sep = DIRECTORY_SEPARATOR;

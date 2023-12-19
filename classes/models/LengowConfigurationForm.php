@@ -18,6 +18,7 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 /**
  * Lengow Configuration Form Class
  */
@@ -28,6 +29,7 @@ class LengowConfigurationForm
     public const TYPE_CHECKBOX = 'checkbox';
     public const TYPE_SELECT = 'select';
     public const TYPE_DAY = 'day';
+    public const TYPE_OPTIONS = 'options';
 
     /**
      * @var array $fields checkbox keys
@@ -53,7 +55,7 @@ class LengowConfigurationForm
     /**
      * Construct Lengow setting input for shop
      *
-     * @param int $idShop PrestaShop shop id
+     * @param integer $idShop PrestaShop shop id
      * @param array $displayKeys names of Lengow setting
      *
      * @return string
@@ -98,7 +100,7 @@ class LengowConfigurationForm
      *
      * @param string $key name of Lengow setting
      * @param array $input all Lengow settings
-     * @param int|null $idShop PrestaShop shop id
+     * @param integer|null $idShop PrestaShop shop id
      *
      * @return string
      */
@@ -176,6 +178,19 @@ class LengowConfigurationForm
                 }
                 $html .= '</div>';
                 break;
+            case self::TYPE_OPTIONS:
+                $html .= '<label class="control-label">' . $label .'</label>
+                                  <select class="form-control lengow_select" name="' . $name . '">
+                                    <option value="prod" ' . ($value == 'prod' ? 'selected' : '') . '>Prod</option>
+                                    <option value="pre-prod" ' . ($value == 'pre-prod' ? 'selected' : '') . '>Preprod</option>
+                                  </select>';
+                if (!empty($legend)) {
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                }
+
+                $html .= '</div>';
+
+                break;
         }
         return $html;
     }
@@ -191,7 +206,7 @@ class LengowConfigurationForm
             $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
             $shopCollection = Db::getInstance()->ExecuteS($sql);
         } catch (PrestaShopDatabaseException $e) {
-            $shopCollection = [['id_shop' => 1]];
+            $shopCollection = array(array('id_shop' => 1));
         }
         foreach ($_REQUEST as $key => $value) {
             if (isset($this->fields[$key])) {
@@ -260,7 +275,7 @@ class LengowConfigurationForm
      *
      * @param string $key name of Lengow setting
      * @param mixed $value setting value
-     * @param int $idShop PrestaShop shop id
+     * @param integer $idShop PrestaShop shop id
      */
     public function checkAndLog($key, $value, $idShop = null)
     {
@@ -289,12 +304,12 @@ class LengowConfigurationForm
                         LengowLog::CODE_SETTING,
                         LengowMain::setLogMessage(
                             'log.setting.setting_change_for_shop',
-                            [
+                            array(
                                 'key' => LengowConfiguration::$genericParamKeys[$key],
                                 'old_value' => $oldValue,
                                 'value' => $value,
                                 'shop_id' => $idShop,
-                            ]
+                            )
                         )
                     );
                 } else {
@@ -302,11 +317,11 @@ class LengowConfigurationForm
                         LengowLog::CODE_SETTING,
                         LengowMain::setLogMessage(
                             'log.setting.setting_change',
-                            [
+                            array(
                                 'key' => LengowConfiguration::$genericParamKeys[$key],
                                 'old_value' => $oldValue,
                                 'value' => $value,
-                            ]
+                            )
                         )
                     );
                 }

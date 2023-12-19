@@ -17,6 +17,7 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 function displayDebugMode() {
     var selector = $('#lengow_wrapper_debug');
     if ($("input[name='LENGOW_IMPORT_DEBUG_ENABLED']").prop('checked')) {

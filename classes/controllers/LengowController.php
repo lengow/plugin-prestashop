@@ -18,6 +18,7 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 /**
  * Lengow Controller Class
  */
@@ -53,14 +54,74 @@ class LengowController
      */
     public function __construct()
     {
+
         $this->module = Module::getInstanceByName('lengow');
         $this->context = Context::getContext();
         $this->lengowLink = new LengowLink();
         $this->locale = new LengowTranslation();
-        $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
-        $lengowPathUri = $this->module->getPathUri();
-        $multiShop = Shop::isFeatureActive();
         $this->isNewMerchant = LengowConfiguration::isNewMerchant();
+        $this->context->smarty->assign('locale', $this->locale);
+        $lengowPathUri = $this->module->getPathUri();
+        $this->context->smarty->assign('lengowPathUri', $lengowPathUri);
+
+
+    }
+
+    /**
+     * Process Post Parameters
+     */
+    public function postProcess()
+    {
+        $this->prepareDisplay();
+    }
+
+    /**
+     * Display data page
+     */
+    public function display()
+    {
+        $this->prepareDisplay();
+        $this->context->smarty->assign('total_pending_order', LengowOrder::countOrderToBeSent());
+    }
+
+    /**
+     * Force Display data page
+     */
+    public function forceDisplay()
+    {
+        $module = Module::getInstanceByName('lengow');
+        $lengowMain = new LengowMain();
+        $className = get_class($this);
+        $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
+        $this->prepareDisplay();
+        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/' . $path . '/helpers/view/view.tpl');
+    }
+
+    /**
+     * Checks if the plugin upgrade modal should be displayed or not
+     *
+     * @return boolean
+     */
+    private function showPluginUpgradeModal()
+    {
+        // never display the upgrade modal during the connection process
+        $className = get_class($this);
+        if (Tools::substr($className, 0, 10) === 'LengowHome') {
+            return false;
+        }
+        $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL);
+        if ($updatedAt !== null && (time() - (int) $updatedAt) < 86400) {
+            return false;
+        }
+        LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL, time());
+        return true;
+    }
+
+    private function prepareDisplay()
+    {
+
+        $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
+        $multiShop = Shop::isFeatureActive();
         $debugMode = LengowConfiguration::debugModeIsActive();
         $merchantStatus = LengowSync::getStatusAccount();
         // show header or not
@@ -82,14 +143,13 @@ class LengowController
         // get actual plugin urls in current language
         $pluginLinks = LengowSync::getPluginLinks($localeIsoCode);
         // assignment of all smarty variables for the entire plugin
+
         $this->context->smarty->assign('current_controller', get_class($this));
         $this->context->smarty->assign('lengow_link', $this->lengowLink);
-        $this->context->smarty->assign('locale', $this->locale);
         $this->context->smarty->assign('localeIsoCode', $localeIsoCode);
         $this->context->smarty->assign('version', _PS_VERSION_);
         $this->context->smarty->assign('lengowVersion', $this->module->version);
-        $this->context->smarty->assign('lengowPathUri', $lengowPathUri);
-        $this->context->smarty->assign('lengowUrl', LengowConnector::LENGOW_URL);
+        $this->context->smarty->assign('lengowUrl', LengowConfiguration::getLengowUrl());
         $this->context->smarty->assign('displayToolbar', $displayToolbar);
         $this->context->smarty->assign('pluginData', $pluginData);
         $this->context->smarty->assign('pluginIsUpToDate', $pluginIsUpToDate);
@@ -103,52 +163,5 @@ class LengowController
         $this->context->smarty->assign('debugMode', $debugMode);
         $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
         $this->context->smarty->assign('merchantStatus', $merchantStatus);
-    }
-
-    /**
-     * Process Post Parameters
-     */
-    public function postProcess()
-    {
-    }
-
-    /**
-     * Display data page
-     */
-    public function display()
-    {
-        $this->context->smarty->assign('total_pending_order', LengowOrder::countOrderToBeSent());
-    }
-
-    /**
-     * Force Display data page
-     */
-    public function forceDisplay()
-    {
-        $module = Module::getInstanceByName('lengow');
-        $lengowMain = new LengowMain();
-        $className = get_class($this);
-        $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
-        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/' . $path . '/helpers/view/view.tpl');
-    }
-
-    /**
-     * Checks if the plugin upgrade modal should be displayed or not
-     *
-     * @return bool
-     */
-    private function showPluginUpgradeModal()
-    {
-        // never display the upgrade modal during the connection process
-        $className = get_class($this);
-        if (Tools::substr($className, 0, 10) === 'LengowHome') {
-            return false;
-        }
-        $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL);
-        if ($updatedAt !== null && (time() - (int) $updatedAt) < 86400) {
-            return false;
-        }
-        LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL, time());
-        return true;
     }
 }

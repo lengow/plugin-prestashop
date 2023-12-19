@@ -18,6 +18,7 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 /**
  * Lengow Main Setting Controller Class
  */
@@ -29,6 +30,7 @@ class LengowMainSettingController extends LengowController
     public function postProcess()
     {
         $action = Tools::getValue('action');
+
         switch ($action) {
             case 'process':
                 $security = LengowMain::decodeLogMessage('global_setting.screen.i_am_sure');
@@ -55,9 +57,9 @@ class LengowMainSettingController extends LengowController
                     }
                 }
                 $form = new LengowConfigurationForm(
-                    [
+                    array(
                         'fields' => LengowConfiguration::getKeys(),
-                    ]
+                    )
                 );
                 $form->postProcess(
                     [
@@ -77,6 +79,7 @@ class LengowMainSettingController extends LengowController
                 LengowLog::download();
                 break;
         }
+
     }
 
     /**
@@ -84,30 +87,32 @@ class LengowMainSettingController extends LengowController
      */
     public function display()
     {
-        $form = new LengowConfigurationForm(['fields' => LengowConfiguration::getKeys()]);
+
+        $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
         $form->fields[LengowConfiguration::REPORT_MAILS][LengowConfiguration::PARAM_LABEL] = '';
         $mailReport = $form->buildInputs(
-            [
+            array(
                 LengowConfiguration::REPORT_MAIL_ENABLED,
                 LengowConfiguration::REPORT_MAILS,
-            ]
+            )
         );
-        $defaultExportCarrier = $form->buildInputs([LengowConfiguration::DEFAULT_EXPORT_CARRIER_ID]);
+        $defaultExportCarrier = $form->buildInputs(array(LengowConfiguration::DEFAULT_EXPORT_CARRIER_ID));
         $tracker = $form->buildInputs(
-            [
+            array(
                 LengowConfiguration::TRACKING_ENABLED,
                 LengowConfiguration::TRACKING_ID,
-            ]
+            )
         );
         $ipSecurity = $form->buildInputs(
-            [
+            array(
                 LengowConfiguration::AUTHORIZED_IP_ENABLED,
                 LengowConfiguration::AUTHORIZED_IPS,
-            ]
+            )
         );
-        $debugReport = $form->buildInputs([LengowConfiguration::DEBUG_MODE_ENABLED]);
+        $debugReport = $form->buildInputs(array(LengowConfiguration::DEBUG_MODE_ENABLED));
         $credentials = $form->buildInputs(
             [
+                LengowConfiguration::PLUGIN_ENV,
                 LengowConfiguration::ACCOUNT_ID,
                 LengowConfiguration::ACCESS_TOKEN,
                 LengowConfiguration::SECRET,
@@ -121,10 +126,10 @@ class LengowMainSettingController extends LengowController
             $shopCatalog .= '<h4>' . $shop->name . '</h4>';
             $shopCatalog .= '<div class="grey-frame">' . $form->buildShopInputs(
                 $shop->id,
-                [
+                array(
                     LengowConfiguration::SHOP_ACTIVE,
                     LengowConfiguration::CATALOG_IDS,
-                ]
+                )
             ) . '</div>';
         }
         $listFile = LengowLog::getPaths();

@@ -1145,6 +1145,7 @@ class LengowImportOrder
                 );
             }
         }
+
         return $products;
     }
 
@@ -1157,8 +1158,10 @@ class LengowImportOrder
      */
     private function createCart($products)
     {
+
         // create PrestaShop Customer, addresses and load cart data
         $cartData = $this->getCartData();
+
         $cart = new LengowCart();
         $cart->assign($cartData);
         $cart->validateLengow();
@@ -1169,6 +1172,7 @@ class LengowImportOrder
         $cart->cleanCart($products);
         // add cart to context
         $this->context->cart = $cart;
+
         return $cart;
     }
 
@@ -1181,6 +1185,7 @@ class LengowImportOrder
      */
     private function getCartData()
     {
+
         $cartData = [];
         $cartData['id_lang'] = $this->idLang;
         $cartData['id_shop'] = $this->idShop;
@@ -1194,15 +1199,17 @@ class LengowImportOrder
             $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
             $billingData['email'] = md5($this->marketplaceSku . '-' . $this->marketplace->name) . '@' . strtolower($domain);
         }
-
+        var_dump($billingData);
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.generate_unique_email', ['email' => $billingData['email']]),
             $this->logOutput,
             $this->marketplaceSku
         );
+
         // update Lengow order with customer name
         $customer = $this->getCustomer($billingData);
+       
         if (!$customer->id) {
             $customer->validateLengow();
         }

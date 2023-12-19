@@ -17,6 +17,7 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 function addScoreCarrier() {
     nbs = 0;
     var tooltipMessage = $('#marketplace-list').attr('data-tooltip-carrier');
