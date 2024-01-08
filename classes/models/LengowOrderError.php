@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Order Error Class
  */
@@ -45,9 +44,9 @@ class LengowOrderError
     /**
      * Check if a Lengow order is in error
      *
-     * @param integer $idLengowOrder Lengow order id
+     * @param int $idLengowOrder Lengow order id
      *
-     * @return boolean
+     * @return bool
      */
     public static function lengowOrderIsInError($idLengowOrder)
     {
@@ -67,7 +66,7 @@ class LengowOrderError
      *
      * @param string $marketplaceSku Lengow order id
      * @param string $marketplaceName Lengow marketplace name
-     * @param integer $type order log type (import or send)
+     * @param int $type order log type (import or send)
      *
      * @return array|false
      */
@@ -91,8 +90,8 @@ class LengowOrderError
      * Check if log already exists for the given order
      *
      * @param string $idOrderLengow Lengow order id
-     * @param integer|null $type order log type (import or send)
-     * @param boolean|null $finished log finished (true or false)
+     * @param int|null $type order log type (import or send)
+     * @param bool|null $finished log finished (true or false)
      *
      * @return array|false
      */
@@ -110,32 +109,32 @@ class LengowOrderError
         try {
             return Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {
-            return array();
+            return [];
         }
     }
 
     /**
      * Add log information in lengow_logs_import table
      *
-     * @param integer $idOrderLengow Lengow order id
+     * @param int $idOrderLengow Lengow order id
      * @param string $message error message
      * @param string $type order log type (import or send)
-     * @param integer $finished error is finished
+     * @param int $finished error is finished
      *
-     * @return boolean
+     * @return bool
      */
     public static function addOrderLog($idOrderLengow, $message = '', $type = self::TYPE_ERROR_IMPORT, $finished = 0)
     {
         try {
             return Db::getInstance()->insert(
                 self::TABLE_ORDER_ERROR,
-                array(
+                [
                     self::FIELD_MESSAGE => pSQL($message),
                     self::FIELD_TYPE => $type,
                     self::FIELD_IS_FINISHED => (int) $finished,
                     self::FIELD_ORDER_LENGOW_ID => (int) $idOrderLengow,
                     self::FIELD_CREATED_AT => date(LengowMain::DATE_FULL),
-                )
+                ]
             );
         } catch (PrestaShopDatabaseException $e) {
             return false;
@@ -145,10 +144,10 @@ class LengowOrderError
     /**
      * Removes all order logs
      *
-     * @param integer $idOrderLengow Lengow order id
+     * @param int $idOrderLengow Lengow order id
      * @param string $type order log type (import or send)
      *
-     * @return boolean
+     * @return bool
      */
     public static function finishOrderLogs($idOrderLengow, $type = self::TYPE_ERROR_IMPORT)
     {
@@ -164,7 +163,7 @@ class LengowOrderError
         foreach ($orderLogs as $orderLog) {
             $result = Db::getInstance()->update(
                 self::TABLE_ORDER_ERROR,
-                array(self::FIELD_IS_FINISHED => 1),
+                [self::FIELD_IS_FINISHED => 1],
                 '`id` = \'' . (int) $orderLog[self::FIELD_ID] . '\''
             );
             if ($result) {
@@ -184,13 +183,13 @@ class LengowOrderError
         try {
             $sqlLogs = 'SELECT lo.`marketplace_sku`, lli.`message`, lli.`id`
                 FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
-                INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo 
+                INNER JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo
                 ON lli.`id_order_lengow` = lo.`id`
                 WHERE lli.`is_finished` = 0 AND lli.`mail` = 0
             ';
             $orderLogs = Db::getInstance()->ExecuteS($sqlLogs);
         } catch (PrestaShopDatabaseException $e) {
-            $orderLogs = array();
+            $orderLogs = [];
         }
         return $orderLogs;
     }
@@ -198,16 +197,16 @@ class LengowOrderError
     /**
      * Mark log as sent by email
      *
-     * @param integer $idOrderLog Lengow order log id
+     * @param int $idOrderLog Lengow order log id
      *
-     * @return boolean
+     * @return bool
      */
     public static function logSent($idOrderLog)
     {
         try {
             return Db::getInstance()->update(
                 self::TABLE_ORDER_ERROR,
-                array(self::FIELD_MAIL => 1),
+                [self::FIELD_MAIL => 1],
                 '`id` = \'' . (int) $idOrderLog . '\'',
                 1
             );

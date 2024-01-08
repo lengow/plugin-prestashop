@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Install Class
  */
@@ -27,7 +26,7 @@ class LengowInstall
     /**
      * @var array all module tables
      */
-    public static $tables = array(
+    public static $tables = [
         LengowOrder::TABLE_ORDER,
         LengowOrderLine::TABLE_ORDER_LINE,
         LengowOrderError::TABLE_ORDER_ERROR,
@@ -41,7 +40,7 @@ class LengowInstall
         LengowMethod::TABLE_METHOD_MARKETPLACE,
         LengowMethod::TABLE_MARKETPLACE_METHOD_MARKETPLACE,
         LengowMethod::TABLE_MARKETPLACE_METHOD_COUNTRY,
-    );
+    ];
 
     /**
      * @var string old version for update scripts
@@ -49,7 +48,7 @@ class LengowInstall
     public static $oldVersion;
 
     /**
-     * @var boolean installation status
+     * @var bool installation status
      */
     protected static $installationStatus;
 
@@ -66,22 +65,22 @@ class LengowInstall
     /**
      * @var array all module tabs
      */
-    private $tabs = array(
-        'tab.home' => array('name' => 'AdminLengowHome', 'active' => true),
-        'tab.dashboard' => array('name' => 'AdminLengowDashboard', 'active' => false),
-        'tab.product' => array('name' => 'AdminLengowFeed', 'active' => false),
-        'tab.order' => array('name' => 'AdminLengowOrder', 'active' => false),
-        'tab.order_setting' => array('name' => 'AdminLengowOrderSetting', 'active' => false),
-        'tab.help' => array('name' => 'AdminLengowHelp', 'active' => false),
-        'tab.main_setting' => array('name' => 'AdminLengowMainSetting', 'active' => false),
-        'tab.legals' => array('name' => 'AdminLengowLegals', 'active' => false),
-        'tab.toolbox' => array('name' => 'AdminLengowToolbox', 'active' => false),
-    );
+    private $tabs = [
+        'tab.home' => ['name' => 'AdminLengowHome', 'active' => true],
+        'tab.dashboard' => ['name' => 'AdminLengowDashboard', 'active' => false],
+        'tab.product' => ['name' => 'AdminLengowFeed', 'active' => false],
+        'tab.order' => ['name' => 'AdminLengowOrder', 'active' => false],
+        'tab.order_setting' => ['name' => 'AdminLengowOrderSetting', 'active' => false],
+        'tab.help' => ['name' => 'AdminLengowHelp', 'active' => false],
+        'tab.main_setting' => ['name' => 'AdminLengowMainSetting', 'active' => false],
+        'tab.legals' => ['name' => 'AdminLengowLegals', 'active' => false],
+        'tab.toolbox' => ['name' => 'AdminLengowToolbox', 'active' => false],
+    ];
 
     /**
      * @var array all old files to remove
      */
-    private $oldFiles = array(
+    private $oldFiles = [
         'AdminLengow14.php',
         'AdminLengowLog14.php',
         'classes/models/LengowCurrency.php',
@@ -109,12 +108,12 @@ class LengowInstall
         'views/templates/admin/form.tpl',
         'webservice/lengow.php',
         'webservice/import.php',
-    );
+    ];
 
     /**
      * @var array old configuration keys to remove
      */
-    private $oldConfigurationKeys = array(
+    private $oldConfigurationKeys = [
         'LENGOW_ID_ACCOUNT',
         'LENGOW_SECRET',
         'LENGOW_CRON',
@@ -155,7 +154,7 @@ class LengowInstall
         'LENGOW_ORDER_STAT_UPDATE',
         'LENGOW_IMPORT_SINGLE',
         'LENGOW_IMPORT_SINGLE_ENABLED',
-    );
+    ];
 
     /**
      * Construct
@@ -171,7 +170,7 @@ class LengowInstall
     /**
      * Reset options
      *
-     * @return boolean
+     * @return bool
      */
     public function reset()
     {
@@ -181,21 +180,23 @@ class LengowInstall
     /**
      * Install options
      *
-     * @return boolean
+     * @return bool
      */
     public function install()
     {
         LengowMain::log(
             LengowLog::CODE_INSTALL,
-            LengowMain::setLogMessage('log.install.install_start', array('version' => $this->lengowModule->version))
+            LengowMain::setLogMessage('log.install.install_start', ['version' => $this->lengowModule->version])
         );
         $oldVersion = LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION);
         $oldVersion = $oldVersion ?: false;
+        // remove Lengow config
+        Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'configuration` WHERE name LIKE "LENGOW_%"');
         $this->setDefaultValues();
         $this->update($oldVersion);
         LengowMain::log(
             LengowLog::CODE_INSTALL,
-            LengowMain::setLogMessage('log.install.install_end', array('version' => $this->lengowModule->version))
+            LengowMain::setLogMessage('log.install.install_end', ['version' => $this->lengowModule->version])
         );
         return true;
     }
@@ -203,28 +204,31 @@ class LengowInstall
     /**
      * Uninstall option
      *
-     * @return boolean
+     * @return bool
      */
     public function uninstall()
     {
         LengowMain::log(
             LengowLog::CODE_UNINSTALL,
-            LengowMain::setLogMessage('log.uninstall.uninstall_start', array('version' => $this->lengowModule->version))
+            LengowMain::setLogMessage('log.uninstall.uninstall_start', ['version' => $this->lengowModule->version])
         );
+        // remove Lengow config
+        Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'configuration` WHERE name LIKE "LENGOW_%"');
         $this->uninstallTab();
         LengowMain::log(
             LengowLog::CODE_UNINSTALL,
-            LengowMain::setLogMessage('log.uninstall.uninstall_end', array('version' => $this->lengowModule->version))
+            LengowMain::setLogMessage('log.uninstall.uninstall_end', ['version' => $this->lengowModule->version])
         );
+
         return true;
     }
 
     /**
      * Update process
      *
-     * @param boolean|string $oldVersion old version for update
+     * @param bool|string $oldVersion old version for update
      *
-     * @return boolean
+     * @return bool
      */
     public function update($oldVersion = false)
     {
@@ -237,22 +241,24 @@ class LengowInstall
                 LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage(
                     'log.install.update_start',
-                    array('old_version' => $oldVersion, 'new_version' => $this->lengowModule->version)
+                    ['old_version' => $oldVersion, 'new_version' => $this->lengowModule->version]
                 )
             );
         }
         // check if update is in progress
         self::setInstallationStatus(true);
+        // remove Lengow config
+        Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'configuration` WHERE name LIKE "LENGOW_%"');
         // create all Lengow tables
         $this->createLengowTables();
         // run sql script and configuration upgrade for specific version
-        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_ . 'upgrade'), array('..', '.', 'index.php'));
+        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_ . 'upgrade'), ['..', '.', 'index.php']);
         foreach ($upgradeFiles as $file) {
             include _PS_MODULE_LENGOW_DIR_ . 'upgrade/' . $file;
             $numberVersion = preg_replace('/update_|\.php$/', '', $file);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.add_upgrade_version', array('version' => $numberVersion))
+                LengowMain::setLogMessage('log.install.add_upgrade_version', ['version' => $numberVersion])
             );
         }
         // register hooks
@@ -280,7 +286,7 @@ class LengowInstall
                 LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage(
                     'log.install.update_end',
-                    array('old_version' => $oldVersion, 'new_version' => $this->lengowModule->version)
+                    ['old_version' => $oldVersion, 'new_version' => $this->lengowModule->version]
                 )
             );
         }
@@ -292,7 +298,7 @@ class LengowInstall
      *
      * @param string $table Lengow table
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkTableExists($table)
     {
@@ -311,7 +317,7 @@ class LengowInstall
      * @param string $table Lengow table
      * @param string $index Lengow index
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkIndexExists($table, $index)
     {
@@ -330,7 +336,7 @@ class LengowInstall
      * @param string $table Lengow table
      * @param string $field Lengow field
      *
-     * @return boolean
+     * @return bool
      */
     public static function checkFieldExists($table, $field)
     {
@@ -359,14 +365,14 @@ class LengowInstall
     /**
      * Drop Lengow tables
      *
-     * @return boolean
+     * @return bool
      */
     public static function dropTable()
     {
         foreach (self::$tables as $table) {
             LengowMain::log(
                 LengowLog::CODE_UNINSTALL,
-                LengowMain::setLogMessage('log.uninstall.table_dropped', array('name' => $table))
+                LengowMain::setLogMessage('log.uninstall.table_dropped', ['name' => $table])
             );
             Db::getInstance()->Execute('DROP TABLE IF EXISTS ' . _DB_PREFIX_ . $table);
         }
@@ -376,7 +382,7 @@ class LengowInstall
     /**
      * Set Installation Status
      *
-     * @param boolean $status installation status
+     * @param bool $status installation status
      */
     public static function setInstallationStatus($status)
     {
@@ -387,7 +393,7 @@ class LengowInstall
     /**
      * Is Installation in progress
      *
-     * @return boolean
+     * @return bool
      */
     public static function isInstallationInProgress()
     {
@@ -419,7 +425,7 @@ class LengowInstall
      *
      * @param string $dirPath list of folders to delete
      *
-     * @return boolean
+     * @return bool
      */
     public static function deleteDir($dirPath)
     {
@@ -447,7 +453,7 @@ class LengowInstall
      *
      * @param string $oldKey old configuration key
      * @param string $newKey new configuration key
-     * @param boolean $shopConfiguration configuration by shop or global
+     * @param bool $shopConfiguration configuration by shop or global
      */
     public static function renameConfigurationKey($oldKey, $newKey, $shopConfiguration = false)
     {
@@ -470,7 +476,7 @@ class LengowInstall
     /**
      * Add Lengow tables
      *
-     * @return boolean
+     * @return bool
      */
     private function createLengowTables()
     {
@@ -488,12 +494,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_orders
@@ -543,12 +549,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_order_line
@@ -564,12 +570,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_logs_import
@@ -589,12 +595,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_actions
@@ -618,12 +624,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_marketplace
@@ -639,12 +645,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_carrier_marketplace
@@ -660,12 +666,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_method_marketplace
@@ -681,12 +687,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_marketplace_carrier_marketplace
@@ -703,12 +709,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_marketplace_method_marketplace
@@ -725,12 +731,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_default_carrier
@@ -751,12 +757,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_marketplace_carrier_country
@@ -777,12 +783,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
         // create table lengow_marketplace_method_country
@@ -803,12 +809,12 @@ class LengowInstall
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_created', ['name' => $name])
             );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.table_already_created', array('name' => $name))
+                LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
         }
 
@@ -818,7 +824,7 @@ class LengowInstall
     /**
      * Add admin Tab (Controller)
      *
-     * @return boolean
+     * @return bool
      */
     private function createTab()
     {
@@ -842,7 +848,7 @@ class LengowInstall
                 $tab->add();
                 LengowMain::log(
                     LengowLog::CODE_INSTALL,
-                    LengowMain::setLogMessage('log.install.install_tab', array('class_name' => $tab->class_name))
+                    LengowMain::setLogMessage('log.install.install_tab', ['class_name' => $tab->class_name])
                 );
             }
             return true;
@@ -854,7 +860,7 @@ class LengowInstall
     /**
      * Remove admin tab
      *
-     * @return boolean
+     * @return bool
      */
     private function uninstallTab()
     {
@@ -862,7 +868,7 @@ class LengowInstall
             $sql = 'SELECT `id_tab`, `class_name` FROM `' . _DB_PREFIX_ . 'tab` WHERE `module` = \'lengow\'';
             $tabs = Db::getInstance()->executeS($sql);
         } catch (PrestaShopDatabaseException $e) {
-            $tabs = array();
+            $tabs = [];
         }
         // remove all tabs Lengow
         foreach ($tabs as $value) {
@@ -875,7 +881,7 @@ class LengowInstall
                     LengowLog::CODE_UNINSTALL,
                     LengowMain::setLogMessage(
                         'log.uninstall.uninstall_tab',
-                        array('class_name' => $value['class_name'])
+                        ['class_name' => $value['class_name']]
                     )
                 );
             } catch (Exception $e) {
@@ -888,7 +894,7 @@ class LengowInstall
     /**
      * Set default value for Lengow configuration
      *
-     * @return boolean
+     * @return bool
      */
     private function setDefaultValues()
     {
@@ -898,7 +904,7 @@ class LengowInstall
     /**
      * Add error status to reimport order
      *
-     * @return boolean
+     * @return bool
      */
     private function addStatusError()
     {
@@ -909,7 +915,7 @@ class LengowInstall
                 WHERE module_name = \'' . pSQL($this->lengowModule->name) . '\''
             );
         } catch (PrestaShopDatabaseException $e) {
-            $states = array();
+            $states = [];
         }
         if (empty($states)) {
             try {
@@ -938,7 +944,7 @@ class LengowInstall
                     LengowLog::CODE_INSTALL,
                     LengowMain::setLogMessage(
                         'log.install.add_technical_error_status_failed',
-                        array('error_message' => $e->getMessage())
+                        ['error_message' => $e->getMessage()]
                     )
                 );
             }
@@ -950,7 +956,7 @@ class LengowInstall
                 $name = LengowMain::decodeLogMessage('module.state_technical_error', $language['iso_code']);
                 Db::getInstance()->update(
                     'order_state_lang',
-                    array('name' => $name),
+                    ['name' => $name],
                     '`id_order_state` = \'' . (int) $idOrderState
                     . '\' AND `id_lang` = \'' . (int) $language['id_lang'] . '\''
                 );
@@ -1004,7 +1010,7 @@ class LengowInstall
         $directoryBackup = _PS_MODULE_LENGOW_DIR_ . 'backup/';
         $directory = _PS_MODULE_LENGOW_DIR_ . 'override/';
         if (file_exists($directory)) {
-            $listFile = array_diff(scandir($directory), array('..', '.'));
+            $listFile = array_diff(scandir($directory), ['..', '.']);
             if (!empty($listFile)) {
                 if (!file_exists($directoryBackup . 'override')) {
                     mkdir($directoryBackup . 'override', 0755);

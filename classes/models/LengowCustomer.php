@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Customer Class
  */
@@ -46,7 +45,7 @@ class LengowCustomer extends Customer
      *
      * @return LengowCustomer
      */
-    public function assign($data = array())
+    public function assign($data = [])
     {
         $this->company = LengowAddress::cleanName((string) $data['company']);
         $this->email = $data['email'];
@@ -63,7 +62,7 @@ class LengowCustomer extends Customer
      *
      * @throws Exception|LengowException invalid object
      *
-     * @return boolean
+     * @return bool
      */
     public function validateLengow()
     {
@@ -200,7 +199,7 @@ class LengowCustomer extends Customer
      * Retrieve customers by email address and id shop
      *
      * @param string $email customer email
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      *
      * @return LengowCustomer|false
      */

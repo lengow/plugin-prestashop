@@ -18,14 +18,13 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Cart Class
  */
 class LengowCart extends Cart
 {
     /**
-     * @var boolean add inactive & out of stock products to cart
+     * @var bool add inactive & out of stock products to cart
      */
     public $forceProduct = true;
 
@@ -36,9 +35,9 @@ class LengowCart extends Cart
      *
      * @throws Exception|LengowException Cannot add product to cart / No quantity for product
      *
-     * @return boolean
+     * @return bool
      */
-    public function addProducts($products = array())
+    public function addProducts($products = [])
     {
         if (!$products) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_product_to_cart'));
@@ -49,7 +48,7 @@ class LengowCart extends Cart
                 throw new LengowException(
                     LengowMain::setLogMessage(
                         'lengow_log.exception.cannot_add_product_to_cart',
-                        array('product_id' => $id)
+                        ['product_id' => $id]
                     )
                 );
             }
@@ -59,7 +58,7 @@ class LengowCart extends Cart
                 throw new LengowException(
                     LengowMain::setLogMessage(
                         'lengow_log.exception.no_quantity_for_product',
-                        array('product_id' => $id)
+                        ['product_id' => $id]
                     )
                 );
             }
@@ -74,7 +73,7 @@ class LengowCart extends Cart
      *
      * @throws Exception Cannot add product to cart
      */
-    public function cleanCart($products = array())
+    public function cleanCart($products = [])
     {
         $cartProducts = $this->getProducts();
         if (empty($cartProducts)) {
@@ -96,20 +95,20 @@ class LengowCart extends Cart
     /**
      * @see Cart::updateQty()
      *
-     * @param integer $quantity quantity to add (or subtract)
-     * @param integer $idProduct PrestaShop product id
-     * @param integer|null $idProductAttribute attribute id if needed
+     * @param int $quantity quantity to add (or subtract)
+     * @param int $idProduct PrestaShop product id
+     * @param int|null $idProductAttribute attribute id if needed
      * @param mixed $idCustomization PrestaShop customization id
      * @param string $operator indicate if quantity must be increased or decreased
-     * @param integer $idAddressDelivery PrestaShop address delivery id
+     * @param int $idAddressDelivery PrestaShop address delivery id
      * @param Shop|null $shop Shop instance
-     * @param boolean $autoAddCartRule add auto cart rule
-     * @param boolean $skipAvailabilityCheckOutOfStock skip availability
+     * @param bool $autoAddCartRule add auto cart rule
+     * @param bool $skipAvailabilityCheckOutOfStock skip availability
      * @param bool $preserveGiftRemoval preserve gift removal
      *
      * @throws Exception|PrestaShopDatabaseException
      *
-     * @return boolean
+     * @return bool
      */
     public function updateQty(
         $quantity,
@@ -232,7 +231,7 @@ class LengowCart extends Cart
             if ($newQty < $minimalQuantity && !$this->forceProduct) {
                 return false;
             }
-            $values = array(
+            $values = [
                 'id_product' => (int) $idProduct,
                 'id_product_attribute' => (int) $idProductAttribute,
                 'id_cart' => (int) $this->id,
@@ -240,7 +239,7 @@ class LengowCart extends Cart
                 'id_shop' => (int) $shop->id,
                 'quantity' => (int) $quantity,
                 'date_add' => date(LengowMain::DATE_FULL),
-            );
+            ];
             $resultAdd = Db::getInstance()->insert('cart_product', $values);
             if (!$resultAdd) {
                 return false;
@@ -280,7 +279,7 @@ class LengowCart extends Cart
      *
      * @param array $data API data
      */
-    public function assign($data = array())
+    public function assign($data = [])
     {
         foreach ($data as $field => $value) {
             $this->{$field} = $value;
@@ -294,7 +293,7 @@ class LengowCart extends Cart
      *
      * @throws Exception
      *
-     * @return boolean
+     * @return bool
      */
     public function validateLengow()
     {

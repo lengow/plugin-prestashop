@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow List Class
  */
@@ -35,7 +34,7 @@ class LengowList
     protected $collection;
 
     /**
-     * @var integer total number of results
+     * @var int total number of results
      */
     protected $total;
 
@@ -45,7 +44,7 @@ class LengowList
     protected $identifier;
 
     /**
-     * @var boolean if attribute is selected
+     * @var bool if attribute is selected
      */
     protected $selection;
 
@@ -60,12 +59,12 @@ class LengowList
     protected $controller;
 
     /**
-     * @var integer PrestaShop shop id
+     * @var int PrestaShop shop id
      */
     protected $shopId;
 
     /**
-     * @var integer number of the current page
+     * @var int number of the current page
      */
     protected $currentPage;
 
@@ -75,22 +74,22 @@ class LengowList
     protected $nbPerPageList;
 
     /**
-     * @var integer number of results per page
+     * @var int number of results per page
      */
     protected $nbPerPage;
 
     /**
-     * @var integer maximum number of pages
+     * @var int maximum number of pages
      */
     protected $nbMaxPage;
 
     /**
-     * @var integer pagination from
+     * @var int pagination from
      */
     protected $paginationFrom;
 
     /**
-     * @var integer pagination to
+     * @var int pagination to
      */
     protected $paginationTo;
 
@@ -105,7 +104,7 @@ class LengowList
     protected $id;
 
     /**
-     * @var boolean is ajax request
+     * @var bool is ajax request
      */
     protected $ajax;
 
@@ -149,7 +148,7 @@ class LengowList
         $this->controller = $params['controller'];
         $this->shopId = isset($params['shop_id']) ? $params['shop_id'] : null;
         $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
-        $this->nbPerPageList = array(20, 50, 100, 200);
+        $this->nbPerPageList = [20, 50, 100, 200];
         $this->nbPerPage = (isset($params['nb_per_page']) && $params['nb_per_page'] != null)
             ? $params['nb_per_page']
             : 20;
@@ -295,15 +294,15 @@ class LengowList
         }
         foreach ($this->fieldsList as $key => $values) {
             if (isset($values['display_callback'])) {
-                $value = call_user_func_array($values['display_callback'], array($key, $item[$key], $item));
+                $value = call_user_func_array($values['display_callback'], [$key, $item[$key], $item]);
             } elseif (isset($values['type'])) {
                 switch ($values['type']) {
                     case 'date':
                         $value = Tools::dateFormat(
-                            array(
+                            [
                                 'date' => $item[$key],
                                 'full' => true,
-                            ),
+                            ],
                             $this->context->smarty
                         );
                         break;
@@ -394,7 +393,7 @@ class LengowList
         try {
             $this->collection = Db::getInstance()->executeS($sql, true, false);
         } catch (PrestaShopDatabaseException $e) {
-            $this->collection = array();
+            $this->collection = [];
         }
         $sqlTotal = $this->buildQuery(true);
         $this->total = Db::getInstance()->getValue($sqlTotal, false);
@@ -424,7 +423,7 @@ class LengowList
     public function getRow($where)
     {
         if (!isset($this->sql['where'])) {
-            $this->sql['where'] = array();
+            $this->sql['where'] = [];
         }
         $tmp = $this->sql['where'];
         $this->sql['where'][] = $where;
@@ -432,7 +431,7 @@ class LengowList
         try {
             $collection = Db::getInstance()->executeS($sql, true, false);
         } catch (PrestaShopDatabaseException $e) {
-            $collection = array();
+            $collection = [];
         }
         $this->sql['where'] = $tmp;
         return $collection[0];
@@ -443,7 +442,7 @@ class LengowList
      *
      * @param string $keyToSearch key search in field list
      *
-     * @return boolean
+     * @return bool
      */
     public function findValueByKey($keyToSearch)
     {
@@ -465,9 +464,9 @@ class LengowList
      */
     public function buildQuery($total = false, $selectAll = false)
     {
-        $where = isset($this->sql['where']) ? $this->sql['where'] : array();
+        $where = isset($this->sql['where']) ? $this->sql['where'] : [];
         $groupBy = false;
-        $having = array();
+        $having = [];
         if (isset($_REQUEST['table_' . $this->id])) {
             foreach ($_REQUEST['table_' . $this->id] as $key => $value) {
                 if ($fieldValue = $this->findValueByKey($key)) {
@@ -559,7 +558,7 @@ class LengowList
             $sql .= ' HAVING ' . implode(' AND ', $having);
         }
         if (!$total && !$selectAll) {
-            if (Tools::strlen($this->orderColumn) > 0 && in_array($this->orderValue, array('ASC', 'DESC'))) {
+            if (Tools::strlen($this->orderColumn) > 0 && in_array($this->orderValue, ['ASC', 'DESC'])) {
                 $sql .= ' ORDER BY ' . pSQL($this->orderColumn) . ' ' . $this->orderValue;
                 if (isset($this->sql['order'])) {
                     $sql .= ', ' . $this->sql['order'];
@@ -592,7 +591,7 @@ class LengowList
      *
      * @return string
      */
-    public function renderPagination($params = array())
+    public function renderPagination($params = [])
     {
         $navClass = isset($params['nav_class']) ? $params['nav_class'] : '';
         $lengowLink = new LengowLink();
@@ -698,7 +697,7 @@ class LengowList
     /**
      * Get total product
      *
-     * @return integer
+     * @return int
      */
     public function getTotal()
     {

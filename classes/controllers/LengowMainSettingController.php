@@ -30,6 +30,7 @@ class LengowMainSettingController extends LengowController
     public function postProcess()
     {
         $action = Tools::getValue('action');
+
         switch ($action) {
             case 'process':
                 $security = LengowMain::decodeLogMessage('global_setting.screen.i_am_sure');
@@ -61,13 +62,13 @@ class LengowMainSettingController extends LengowController
                     )
                 );
                 $form->postProcess(
-                    array(
+                    [
                         LengowConfiguration::REPORT_MAIL_ENABLED,
                         LengowConfiguration::TRACKING_ENABLED,
                         LengowConfiguration::AUTHORIZED_IP_ENABLED,
                         LengowConfiguration::DEBUG_MODE_ENABLED,
                         LengowConfiguration::SHOP_ACTIVE,
-                    )
+                    ]
                 );
                 break;
             case 'download':
@@ -78,6 +79,7 @@ class LengowMainSettingController extends LengowController
                 LengowLog::download();
                 break;
         }
+
     }
 
     /**
@@ -85,6 +87,7 @@ class LengowMainSettingController extends LengowController
      */
     public function display()
     {
+
         $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
         $form->fields[LengowConfiguration::REPORT_MAILS][LengowConfiguration::PARAM_LABEL] = '';
         $mailReport = $form->buildInputs(
@@ -108,11 +111,12 @@ class LengowMainSettingController extends LengowController
         );
         $debugReport = $form->buildInputs(array(LengowConfiguration::DEBUG_MODE_ENABLED));
         $credentials = $form->buildInputs(
-            array(
+            [
+                LengowConfiguration::PLUGIN_ENV,
                 LengowConfiguration::ACCOUNT_ID,
                 LengowConfiguration::ACCESS_TOKEN,
                 LengowConfiguration::SECRET,
-            )
+            ]
         );
         $debugWrapper = '<div class="grey-frame">' . $credentials . '</div>';
         $shopCatalog = '';

@@ -18,7 +18,6 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 require_once _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'loader.php';
 
 /**
@@ -43,7 +42,7 @@ class Lengow extends Module
     {
         $this->name = 'lengow';
         $this->tab = 'export';
-        $this->version = '3.4.5';
+        $this->version = '3.4.6';
         $this->author = 'Lengow';
         $this->module_key = '92f99f52f2bc04ed999f02e7038f031c';
         $this->ps_versions_compliancy = [
@@ -87,33 +86,35 @@ class Lengow extends Module
     /**
      * Install process
      *
-     * @return boolean
+     * @return bool
      */
     public function install()
     {
         if (!parent::install()) {
             return false;
         }
+
         return $this->installClass->install();
     }
 
     /**
      * Uninstall process
      *
-     * @return boolean
+     * @return bool
      */
     public function uninstall()
     {
         if (!parent::uninstall()) {
             return false;
         }
+
         return $this->installClass->uninstall();
     }
 
     /**
      * Reset process
      *
-     * @return boolean
+     * @return bool
      */
     public function reset()
     {

@@ -15,15 +15,14 @@
  * sudo apt-get install php5-dev libyaml-dev
  * sudo pecl install yaml
  */
-
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-$listDefaultValues = array();
+$listDefaultValues = [];
 
 $directory = dirname(dirname(__FILE__)) . '/translations/yml/';
-$listFiles = array_diff(scandir($directory), array('..', '.', 'index.php'));
-$listFiles = array_diff($listFiles, array('en.yml'));
+$listFiles = array_diff(scandir($directory), ['..', '.', 'index.php']);
+$listFiles = array_diff($listFiles, ['en.yml']);
 array_unshift($listFiles, "en.yml");
 
 foreach ($listFiles as $list) {
@@ -42,7 +41,7 @@ foreach ($listFiles as $list) {
     fclose($fp);
 }
 
-function writeCsv($fp, $text, &$frontKey = array())
+function writeCsv($fp, $text, &$frontKey = [])
 {
     if (is_array($text)) {
         foreach ($text as $k => $v) {

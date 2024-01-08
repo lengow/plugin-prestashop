@@ -157,6 +157,7 @@ order.screen.status_waiting_shipment|In attesa di spedizione
 order.screen.status_shipped|Spedito
 order.screen.status_closed|Chiuso
 order.screen.status_refunded|Rimborsato
+order.screen.status_partially_refunded|Parzialmente rimborsato
 order.screen.status_canceled|Cancellato
 order.screen.type_express|Consegna espressa
 order.screen.type_delivered_by_marketplace|Spedito dal Marketplace
@@ -315,6 +316,8 @@ toolbox.screen.file_modified|%{nb_file} file modificati
 toolbox.screen.file_deleted|%{nb_file} file cancellati
 toolbox.screen.list_modified_file|Elenco dei file modificati
 toolbox.screen.list_deleted_file|Elenco dei file cancellati
+lengow_setting.lengow_plugin_env_title|Ambiente del Plug-in
+lengow_setting.lengow_plugin_env_legend|Non dimenticare di cambiare Accesso e Segreto tokens
 lengow_setting.lengow_account_id_title|ID Cliente
 lengow_setting.lengow_access_token_title|Token
 lengow_setting.lengow_secret_token_title|Token Segreto

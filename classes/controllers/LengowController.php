@@ -45,7 +45,7 @@ class LengowController
     protected $locale;
 
     /**
-     * @var boolean Check if is a new merchant
+     * @var bool Check if is a new merchant
      */
     protected $isNewMerchant;
 
@@ -54,56 +54,17 @@ class LengowController
      */
     public function __construct()
     {
+
         $this->module = Module::getInstanceByName('lengow');
         $this->context = Context::getContext();
         $this->lengowLink = new LengowLink();
         $this->locale = new LengowTranslation();
-        $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
-        $lengowPathUri = $this->module->getPathUri();
-        $multiShop = Shop::isFeatureActive();
         $this->isNewMerchant = LengowConfiguration::isNewMerchant();
-        $debugMode = LengowConfiguration::debugModeIsActive();
-        $merchantStatus = LengowSync::getStatusAccount();
-        // show header or not
-        if ($this->isNewMerchant || ($merchantStatus['type'] === 'free_trial' && $merchantStatus['expired'])) {
-            $displayToolbar = false;
-        } else {
-            $displayToolbar = true;
-        }
-        // recovery of all plugin data for plugin update
-        $pluginIsUpToDate = true;
-        $showPluginUpgradeModal = false;
-        $lengowModalAjaxLink = $this->lengowLink->getAbsoluteAdminLink('AdminLengowDashboard');
-        $pluginData = LengowSync::getPluginData();
-        if ($pluginData && version_compare($pluginData['version'], $this->module->version, '>')) {
-            $pluginIsUpToDate = false;
-            // show upgrade plugin modal or not
-            $showPluginUpgradeModal = $this->showPluginUpgradeModal();
-        }
-        // get actual plugin urls in current language
-        $pluginLinks = LengowSync::getPluginLinks($localeIsoCode);
-        // assignment of all smarty variables for the entire plugin
-        $this->context->smarty->assign('current_controller', get_class($this));
-        $this->context->smarty->assign('lengow_link', $this->lengowLink);
         $this->context->smarty->assign('locale', $this->locale);
-        $this->context->smarty->assign('localeIsoCode', $localeIsoCode);
-        $this->context->smarty->assign('version', _PS_VERSION_);
-        $this->context->smarty->assign('lengowVersion', $this->module->version);
+        $lengowPathUri = $this->module->getPathUri();
         $this->context->smarty->assign('lengowPathUri', $lengowPathUri);
-        $this->context->smarty->assign('lengowUrl', LengowConnector::LENGOW_URL);
-        $this->context->smarty->assign('displayToolbar', $displayToolbar);
-        $this->context->smarty->assign('pluginData', $pluginData);
-        $this->context->smarty->assign('pluginIsUpToDate', $pluginIsUpToDate);
-        $this->context->smarty->assign('showPluginUpgradeModal', $showPluginUpgradeModal);
-        $this->context->smarty->assign('lengowModalAjaxLink', $lengowModalAjaxLink);
-        $this->context->smarty->assign('helpCenterLink', $pluginLinks[LengowSync::LINK_TYPE_HELP_CENTER]);
-        $this->context->smarty->assign('updateGuideLink', $pluginLinks[LengowSync::LINK_TYPE_UPDATE_GUIDE]);
-        $this->context->smarty->assign('changelogLink', $pluginLinks[LengowSync::LINK_TYPE_CHANGELOG]);
-        $this->context->smarty->assign('supportLink', $pluginLinks[LengowSync::LINK_TYPE_SUPPORT]);
-        $this->context->smarty->assign('multiShop', $multiShop);
-        $this->context->smarty->assign('debugMode', $debugMode);
-        $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
-        $this->context->smarty->assign('merchantStatus', $merchantStatus);
+
+
     }
 
     /**
@@ -111,6 +72,7 @@ class LengowController
      */
     public function postProcess()
     {
+        $this->prepareDisplay();
     }
 
     /**
@@ -118,6 +80,7 @@ class LengowController
      */
     public function display()
     {
+        $this->prepareDisplay();
         $this->context->smarty->assign('total_pending_order', LengowOrder::countOrderToBeSent());
     }
 
@@ -130,6 +93,7 @@ class LengowController
         $lengowMain = new LengowMain();
         $className = get_class($this);
         $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
+        $this->prepareDisplay();
         echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/' . $path . '/helpers/view/view.tpl');
     }
 
@@ -151,5 +115,53 @@ class LengowController
         }
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL, time());
         return true;
+    }
+
+    private function prepareDisplay()
+    {
+
+        $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
+        $multiShop = Shop::isFeatureActive();
+        $debugMode = LengowConfiguration::debugModeIsActive();
+        $merchantStatus = LengowSync::getStatusAccount();
+        // show header or not
+        if ($this->isNewMerchant || ($merchantStatus['type'] === 'free_trial' && $merchantStatus['expired'])) {
+            $displayToolbar = false;
+        } else {
+            $displayToolbar = true;
+        }
+        // recovery of all plugin data for plugin update
+        $pluginIsUpToDate = true;
+        $showPluginUpgradeModal = false;
+        $lengowModalAjaxLink = $this->lengowLink->getAbsoluteAdminLink('AdminLengowDashboard');
+        $pluginData = LengowSync::getPluginData();
+        if ($pluginData && version_compare($pluginData['version'], $this->module->version, '>')) {
+            $pluginIsUpToDate = false;
+            // show upgrade plugin modal or not
+            $showPluginUpgradeModal = $this->showPluginUpgradeModal();
+        }
+        // get actual plugin urls in current language
+        $pluginLinks = LengowSync::getPluginLinks($localeIsoCode);
+        // assignment of all smarty variables for the entire plugin
+
+        $this->context->smarty->assign('current_controller', get_class($this));
+        $this->context->smarty->assign('lengow_link', $this->lengowLink);
+        $this->context->smarty->assign('localeIsoCode', $localeIsoCode);
+        $this->context->smarty->assign('version', _PS_VERSION_);
+        $this->context->smarty->assign('lengowVersion', $this->module->version);
+        $this->context->smarty->assign('lengowUrl', LengowConfiguration::getLengowUrl());
+        $this->context->smarty->assign('displayToolbar', $displayToolbar);
+        $this->context->smarty->assign('pluginData', $pluginData);
+        $this->context->smarty->assign('pluginIsUpToDate', $pluginIsUpToDate);
+        $this->context->smarty->assign('showPluginUpgradeModal', $showPluginUpgradeModal);
+        $this->context->smarty->assign('lengowModalAjaxLink', $lengowModalAjaxLink);
+        $this->context->smarty->assign('helpCenterLink', $pluginLinks[LengowSync::LINK_TYPE_HELP_CENTER]);
+        $this->context->smarty->assign('updateGuideLink', $pluginLinks[LengowSync::LINK_TYPE_UPDATE_GUIDE]);
+        $this->context->smarty->assign('changelogLink', $pluginLinks[LengowSync::LINK_TYPE_CHANGELOG]);
+        $this->context->smarty->assign('supportLink', $pluginLinks[LengowSync::LINK_TYPE_SUPPORT]);
+        $this->context->smarty->assign('multiShop', $multiShop);
+        $this->context->smarty->assign('debugMode', $debugMode);
+        $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);
+        $this->context->smarty->assign('merchantStatus', $merchantStatus);
     }
 }

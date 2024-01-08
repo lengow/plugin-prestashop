@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Payment Class
  */
@@ -33,18 +32,18 @@ class LengowPaymentModule extends PaymentModule
      * Create PrestaShop order
      * Overrides PaymentModule::validateOrder()
      *
-     * @param integer $idCart PrestaShop cart id
-     * @param integer $idOrderState PrestaShop order state id
+     * @param int $idCart PrestaShop cart id
+     * @param int $idOrderState PrestaShop order state id
      * @param string $paymentMethod name of the payment method
      * @param string $message order message
      * @param array $lengowProducts list of Lengow products
      * @param float $lengowShippingCosts order shipping costs
      * @param float $processingFees order processing fees
      * @param string $lengowTrackingNumber Lengow carrier tracking number
-     * @param integer $idOrderLengow id of the record Lengow order table
+     * @param int $idOrderLengow id of the record Lengow order table
      * @param string $orderStateLengow Lengow order state
      * @param string $marketplaceSku id lengow of current order
-     * @param boolean $logOutput display log messages
+     * @param bool $logOutput display log messages
      *
      * @throws Exception|LengowException cannot load order status / payment module not active / cart cannot be loaded
      *                                   delivery country not active / product is not listed / unable to save order
@@ -128,8 +127,8 @@ class LengowPaymentModule extends PaymentModule
             }
         }
 
-        $orderList = array();
-        $orderDetailList = array();
+        $orderList = [];
+        $orderDetailList = [];
 
         do {
             $reference = Order::generateReference();
@@ -174,7 +173,7 @@ class LengowPaymentModule extends PaymentModule
                         throw new LengowException(
                             LengowMain::setLogMessage(
                                 'lengow_log.exception.delivery_country_not_active',
-                                array('country_name' => $this->context->country->name)
+                                ['country_name' => $this->context->country->name]
                             )
                         );
                     }
@@ -243,7 +242,7 @@ class LengowPaymentModule extends PaymentModule
                         throw new LengowException(
                             LengowMain::setLogMessage(
                                 'lengow_log.exception.product_is_not_listed',
-                                array('product_id' => $sku)
+                                ['product_id' => $sku]
                             )
                         );
                     }
@@ -300,7 +299,7 @@ class LengowPaymentModule extends PaymentModule
                     throw new LengowException(
                         LengowMain::setLogMessage(
                             'lengow_log.exception.unable_to_save_order',
-                            array('error' => Db::getInstance()->getMsgError())
+                            ['error' => Db::getInstance()->getMsgError()]
                         )
                     );
                 }
@@ -308,12 +307,12 @@ class LengowPaymentModule extends PaymentModule
                 // update lengow_order table directly after creating the PrestaShop order
                 $success = LengowOrder::updateOrderLengow(
                     $idOrderLengow,
-                    array(
+                    [
                         LengowOrder::FIELD_ORDER_ID => (int) $order->id,
                         LengowOrder::FIELD_ORDER_PROCESS_STATE => LengowOrder::getOrderProcessState($orderStateLengow),
                         LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($orderStateLengow),
                         LengowOrder::FIELD_IS_REIMPORTED => 0,
-                    )
+                    ]
                 );
                 if (!$success) {
                     LengowMain::log(

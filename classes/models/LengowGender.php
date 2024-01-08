@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Gender Class
  */
@@ -27,7 +26,7 @@ class LengowGender extends Gender
     /**
      * @var array current alias of mister
      */
-    public static $currentMale = array(
+    public static $currentMale = [
         'M',
         'M.',
         'Mr',
@@ -38,12 +37,12 @@ class LengowGender extends Gender
         'mister',
         'm.',
         'mr ',
-    );
+    ];
 
     /**
      * @var array current alias of miss
      */
-    public static $currentFemale = array(
+    public static $currentFemale = [
         'Mme',
         'mme',
         'Mm',
@@ -62,14 +61,14 @@ class LengowGender extends Gender
         'miss',
         'Ms',
         'ms',
-    );
+    ];
 
     /**
      * Get the real gender
      *
      * @param string $name the gender text
      *
-     * @return string|integer
+     * @return string
      */
     public static function getGender($name)
     {
@@ -77,15 +76,15 @@ class LengowGender extends Gender
             return '';
         }
         if (in_array($name, self::$currentMale, true)) {
-            return 1;
+            return '1';
         }
         if (in_array($name, self::$currentFemale, true)) {
-            return 2;
+            return '2';
         }
         $query = 'SELECT `id_gender` FROM `' . _DB_PREFIX_ . 'gender_lang`
             WHERE `name` = \'' . pSQL($name) . '\' LIMIT 1;';
         if ($result = Db::getInstance()->Execute($query)) {
-            return $result['id_gender'];
+            return (string) $result['id_gender'];
         }
         return '';
     }

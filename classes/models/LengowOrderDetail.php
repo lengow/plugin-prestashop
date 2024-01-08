@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Order Detail Class
  */
@@ -27,10 +26,10 @@ class LengowOrderDetail extends OrderDetail
     /**
      * Get Order Lines
      *
-     * @param integer $idOrder PrestaShop order id
-     * @param integer|string $idProduct PrestaShop product id
+     * @param int $idOrder PrestaShop order id
+     * @param int|string $idProduct PrestaShop product id
      *
-     * @return integer
+     * @return int
      */
     public static function findByOrderIdProductId($idOrder, $idProduct)
     {

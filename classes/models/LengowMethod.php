@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Method Class
  */
@@ -27,34 +26,34 @@ class LengowMethod
     /**
      * @var string Lengow method marketplace table name
      */
-    const TABLE_METHOD_MARKETPLACE = 'lengow_method_marketplace';
+    public const TABLE_METHOD_MARKETPLACE = 'lengow_method_marketplace';
 
     /**
      * @var string Lengow marketplace method marketplace table name
      */
-    const TABLE_MARKETPLACE_METHOD_MARKETPLACE = 'lengow_marketplace_method_marketplace';
+    public const TABLE_MARKETPLACE_METHOD_MARKETPLACE = 'lengow_marketplace_method_marketplace';
 
     /**
      * @var string Lengow marketplace method country table name
      */
-    const TABLE_MARKETPLACE_METHOD_COUNTRY = 'lengow_marketplace_method_country';
+    public const TABLE_MARKETPLACE_METHOD_COUNTRY = 'lengow_marketplace_method_country';
 
     /* Marketplace method fields */
-    const FIELD_ID = 'id';
-    const FIELD_METHOD_MARKETPLACE_NAME = 'method_marketplace_name';
-    const FIELD_METHOD_MARKETPLACE_LABEL = 'method_marketplace_label';
-    const FIELD_METHOD_LENGOW_CODE = 'method_lengow_code';
-    const FIELD_COUNTRY_ID = 'id_country';
-    const FIELD_MARKETPLACE_ID = 'id_marketplace';
-    const FIELD_CARRIER_ID = 'id_carrier';
-    const FIELD_METHOD_MARKETPLACE_ID = 'id_method_marketplace';
+    public const FIELD_ID = 'id';
+    public const FIELD_METHOD_MARKETPLACE_NAME = 'method_marketplace_name';
+    public const FIELD_METHOD_MARKETPLACE_LABEL = 'method_marketplace_label';
+    public const FIELD_METHOD_LENGOW_CODE = 'method_lengow_code';
+    public const FIELD_COUNTRY_ID = 'id_country';
+    public const FIELD_MARKETPLACE_ID = 'id_marketplace';
+    public const FIELD_CARRIER_ID = 'id_carrier';
+    public const FIELD_METHOD_MARKETPLACE_ID = 'id_method_marketplace';
 
     /**
      * Get method marketplace id
      *
      * @param string $methodMarketplaceName Lengow method marketplace name
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdMethodMarketplace($methodMarketplaceName)
     {
@@ -64,7 +63,7 @@ class LengowMethod
                 WHERE method_marketplace_name = "' . pSQL($methodMarketplaceName) . '"'
             );
         } catch (PrestaShopDatabaseException $e) {
-            $results = array();
+            $results = [];
         }
         // additional verification for non-case sensitive Databases
         if (!empty($results)) {
@@ -80,7 +79,7 @@ class LengowMethod
     /**
      * Get all methods marketplace by marketplace id
      *
-     * @param integer $idMarketplace Lengow marketplace id
+     * @param int $idMarketplace Lengow marketplace id
      *
      * @return array
      */
@@ -88,7 +87,7 @@ class LengowMethod
     {
         try {
             $results = Db::getInstance()->ExecuteS(
-                'SELECT 
+                'SELECT
                     lmm.method_marketplace_name,
                     lmm.method_marketplace_label,
                     lmm.method_lengow_code,
@@ -105,7 +104,7 @@ class LengowMethod
         } catch (PrestaShopDatabaseException $e) {
             $results = false;
         }
-        return is_array($results) ? $results : array();
+        return is_array($results) ? $results : [];
     }
 
     /**
@@ -127,7 +126,7 @@ class LengowMethod
                                 isset($method->lengow_code) ? $method->lengow_code : null
                             );
                         } else {
-                            $params = array();
+                            $params = [];
                             if ($method->label !== null && Tools::strlen($method->label) > 0) {
                                 $params[self::FIELD_METHOD_MARKETPLACE_LABEL] = pSQL($method->label);
                             }
@@ -157,17 +156,17 @@ class LengowMethod
      * @param string $methodMarketplaceLabel Lengow method marketplace label
      * @param string $methodLengowCode Lengow method lengow code
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function insertMethodMarketplace(
         $methodMarketplaceName,
         $methodMarketplaceLabel,
         $methodLengowCode = null
     ) {
-        $params = array(
+        $params = [
             self::FIELD_METHOD_MARKETPLACE_NAME => pSQL($methodMarketplaceName),
             self::FIELD_METHOD_MARKETPLACE_LABEL => pSQL($methodMarketplaceLabel),
-        );
+        ];
         if ($methodLengowCode !== null && Tools::strlen($methodLengowCode) > 0) {
             $params[self::FIELD_METHOD_LENGOW_CODE] = pSQL($methodLengowCode);
         }
@@ -183,10 +182,10 @@ class LengowMethod
     /**
      * Update a method marketplace
      *
-     * @param integer $idMethodMarketplace Lengow method marketplace id
+     * @param int $idMethodMarketplace Lengow method marketplace id
      * @param array $params all parameters to update a carrier method
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function updateMethodMarketplace($idMethodMarketplace, $params)
     {
@@ -198,10 +197,10 @@ class LengowMethod
     /**
      * Match method marketplace with one marketplace
      *
-     * @param integer $idMarketplace Lengow marketplace id
-     * @param integer $idMethodMarketplace Lengow method marketplace id
+     * @param int $idMarketplace Lengow marketplace id
+     * @param int $idMethodMarketplace Lengow method marketplace id
      *
-     * @return boolean
+     * @return bool
      */
     public static function matchMethodMarketplaceWithMarketplace($idMarketplace, $idMethodMarketplace)
     {
@@ -213,13 +212,13 @@ class LengowMethod
                 AND id_method_marketplace = ' . (int) $idMethodMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
-            $result = array();
+            $result = [];
         }
         if (empty($result)) {
-            $params = array(
+            $params = [
                 self::FIELD_MARKETPLACE_ID => (int) $idMarketplace,
                 self::FIELD_METHOD_MARKETPLACE_ID => (int) $idMethodMarketplace,
-            );
+            ];
             try {
                 $success = $db->insert(self::TABLE_MARKETPLACE_METHOD_MARKETPLACE, $params);
             } catch (PrestaShopDatabaseException $e) {
@@ -234,9 +233,9 @@ class LengowMethod
     /**
      * Delete method marketplace matching
      *
-     * @param integer $idMarketplaceMethodMarketplace Lengow marketplace method marketplace id
+     * @param int $idMarketplaceMethodMarketplace Lengow marketplace method marketplace id
      *
-     * @return boolean
+     * @return bool
      */
     public static function deleteMarketplaceMethodMarketplace($idMarketplaceMethodMarketplace)
     {
@@ -259,7 +258,7 @@ class LengowMethod
                     // get all methods saved in database
                     $methodMarketplaces = self::getAllMethodMarketplaceByIdMarketplace($idMarketplace);
                     // get all current marketplace methods with api
-                    $currentMethodMarketplaces = array();
+                    $currentMethodMarketplaces = [];
                     if (isset($marketplace->orders->shipping_methods)) {
                         foreach ($marketplace->orders->shipping_methods as $methodMarketplaceName => $method) {
                             $currentMethodMarketplaces[$methodMarketplaceName] = $method->label;
@@ -290,11 +289,11 @@ class LengowMethod
     /**
      * Get marketplace method country id
      *
-     * @param integer $idCountry PrestaShop country id
-     * @param integer $idMarketplace Lengow marketplace id
-     * @param integer $idMethodMarketplace Lengow method marketplace id
+     * @param int $idCountry PrestaShop country id
+     * @param int $idMarketplace Lengow marketplace id
+     * @param int $idMethodMarketplace Lengow method marketplace id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdMarketplaceMethodCountry($idCountry, $idMarketplace, $idMethodMarketplace)
     {
@@ -314,8 +313,8 @@ class LengowMethod
     /**
      * Clean table when match method marketplace is deleted
      *
-     * @param integer $idMarketplace Lengow marketplace id
-     * @param integer $idMethodMarketplace Lengow method marketplace id
+     * @param int $idMarketplace Lengow marketplace id
+     * @param int $idMethodMarketplace Lengow method marketplace id
      */
     public static function cleanMarketplaceMethodCountryByIdMarketplace($idMarketplace, $idMethodMarketplace)
     {
@@ -326,7 +325,7 @@ class LengowMethod
                 AND id_marketplace = ' . (int) $idMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
-            $results = array();
+            $results = [];
         }
         if (!empty($results)) {
             foreach ($results as $result) {
@@ -340,11 +339,11 @@ class LengowMethod
     /**
      * Get carrier id by country id, marketplace id and method marketplace name
      *
-     * @param integer $idCountry PrestaShop country id
+     * @param int $idCountry PrestaShop country id
      * @param string $idMarketplace Lengow marketplace id
      * @param string $methodMarketplaceName Lengow marketplace method name
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function getIdCarrierByMethodMarketplaceName($idCountry, $idMarketplace, $methodMarketplaceName)
     {
@@ -368,14 +367,14 @@ class LengowMethod
     /**
      * Get
      *
-     * @param integer $idCountry PrestaShop country id
-     * @param integer $idMarketplace Lengow marketplace id
+     * @param int $idCountry PrestaShop country id
+     * @param int $idMarketplace Lengow marketplace id
      *
      * @return array
      */
     public static function getAllMarketplaceMethodCountryByIdMarketplace($idCountry, $idMarketplace)
     {
-        $methods = array();
+        $methods = [];
         try {
             $results = Db::getInstance()->ExecuteS(
                 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_marketplace_method_country
@@ -383,7 +382,7 @@ class LengowMethod
                 AND id_marketplace = ' . (int) $idMarketplace
             );
         } catch (PrestaShopDatabaseException $e) {
-            $results = array();
+            $results = [];
         }
         if (!empty($results)) {
             foreach ($results as $result) {
@@ -396,12 +395,12 @@ class LengowMethod
     /**
      * Insert a new marketplace method country
      *
-     * @param integer $idCountry PrestaShop country id
-     * @param integer $idMarketplace Lengow marketplace id
-     * @param integer $idCarrier PrestaShop carrier id
-     * @param integer $idMethodMarketplace Lengow method marketplace id
+     * @param int $idCountry PrestaShop country id
+     * @param int $idMarketplace Lengow marketplace id
+     * @param int $idCarrier PrestaShop carrier id
+     * @param int $idMethodMarketplace Lengow method marketplace id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function insertMarketplaceMethodCountry(
         $idCountry,
@@ -409,12 +408,12 @@ class LengowMethod
         $idCarrier,
         $idMethodMarketplace
     ) {
-        $params = array(
+        $params = [
             self::FIELD_COUNTRY_ID => $idCountry,
             self::FIELD_MARKETPLACE_ID => $idMarketplace,
             self::FIELD_CARRIER_ID => $idCarrier,
             self::FIELD_METHOD_MARKETPLACE_ID => $idMethodMarketplace,
-        );
+        ];
         $db = Db::getInstance();
         try {
             $success = $db->insert(self::TABLE_MARKETPLACE_METHOD_COUNTRY, $params);
@@ -427,17 +426,17 @@ class LengowMethod
     /**
      * Update a marketplace method country
      *
-     * @param integer $idMarketplaceMethodCountry Lengow marketplace method country id
-     * @param integer $idCarrier PrestaShop carrier id
+     * @param int $idMarketplaceMethodCountry Lengow marketplace method country id
+     * @param int $idCarrier PrestaShop carrier id
      *
-     * @return integer|false
+     * @return int|false
      */
     public static function updateMarketplaceMethodCountry($idMarketplaceMethodCountry, $idCarrier)
     {
         $db = Db::getInstance();
         $success = $db->update(
             self::TABLE_MARKETPLACE_METHOD_COUNTRY,
-            array(self::FIELD_CARRIER_ID => $idCarrier),
+            [self::FIELD_CARRIER_ID => $idCarrier],
             'id = ' . (int) $idMarketplaceMethodCountry
         );
         return $success ? $idMarketplaceMethodCountry : false;
@@ -446,9 +445,9 @@ class LengowMethod
     /**
      * Delete marketplace method country matching
      *
-     * @param integer $idMarketplaceMethodCountry Lengow marketplace method country id
+     * @param int $idMarketplaceMethodCountry Lengow marketplace method country id
      *
-     * @return boolean
+     * @return bool
      */
     public static function deleteMarketplaceMethodCountry($idMarketplaceMethodCountry)
     {

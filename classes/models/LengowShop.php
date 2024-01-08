@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Shop Class
  */
@@ -50,20 +49,20 @@ class LengowShop extends Shop
     /**
      * Find all shop
      *
-     * @param boolean $forceContext force context to get all shops
+     * @param bool $forceContext force context to get all shops
      *
      * @return array
      */
     public static function findAll($forceContext = false)
     {
         if (!$forceContext && $currentShop = Shop::getContextShopID()) {
-            $results = array(array('id_shop' => $currentShop));
+            $results = [['id_shop' => $currentShop]];
         } else {
             $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1 ORDER BY id_shop';
             try {
                 $results = Db::getInstance()->ExecuteS($sql);
             } catch (PrestaShopDatabaseException $e) {
-                $results = array();
+                $results = [];
             }
         }
         return $results;
@@ -72,14 +71,14 @@ class LengowShop extends Shop
     /**
      * Get list of PrestaShop shops that have been activated in Lengow
      *
-     * @param boolean $activeInLengow get only shop active in Lengow
-     * @param integer $idShop PrestaShop shop id
+     * @param bool $activeInLengow get only shop active in Lengow
+     * @param int $idShop PrestaShop shop id
      *
      * @return array
      */
     public static function getActiveShops($activeInLengow = false, $idShop = null)
     {
-        $result = array();
+        $result = [];
         $shops = self::findAll(true);
         foreach ($shops as $shop) {
             if ($idShop && (int) $shop['id_shop'] !== $idShop) {

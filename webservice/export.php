@@ -17,9 +17,6 @@
  * @author    Team Connector <team-connector@lengow.com>
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
- */
-
-/**
  * List params
  * string  mode               Number of products exported
  * string  format             Format of exported files ('csv','yaml','xml','json')
@@ -39,9 +36,8 @@
  * boolean update_export_date Change last export date in data base (1) or not (0)
  * boolean get_params         See export parameters and authorized values in json format (1) or not (0)
  */
-
 @set_time_limit(0);
-@ini_set('memory_limit', '512M');
+@ini_set('memory_limit', '1024M');
 
 $currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . '/');
 $sep = DIRECTORY_SEPARATOR;
@@ -57,7 +53,7 @@ if (!Module::isInstalled($lengow->name)) {
         ? 'Lengow module is not active'
         : 'Lengow module is not installed';
     header('HTTP/1.1 400 Bad Request');
-    die($errorMessage);
+    exit($errorMessage);
 }
 // CheckIP
 $token = Tools::getIsset(LengowExport::PARAM_TOKEN) ? Tools::getValue(LengowExport::PARAM_TOKEN) : '';
@@ -70,7 +66,7 @@ if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)
             : 'Unauthorised access: token parameter is empty';
     }
     header('HTTP/1.1 403 Forbidden');
-    die($errorMessage);
+    exit($errorMessage);
 }
 // get params data
 $getParams = Tools::getIsset(LengowExport::PARAM_GET_PARAMS)
@@ -121,14 +117,14 @@ if ($outOfStock !== null || Tools::getIsset(LengowExport::PARAM_OUT_OF_STOCK)) {
     $outOfStock = (bool) LengowConfiguration::get(LengowConfiguration::OUT_OF_STOCK_ENABLED, null, null, $idShop);
 }
 // export specific products
-$productIds = array();
+$productIds = [];
 $ids = Tools::getIsset(LengowExport::PARAM_LEGACY_PRODUCT_IDS)
     ? Tools::getValue(LengowExport::PARAM_LEGACY_PRODUCT_IDS)
     : null;
 if ($ids !== null || Tools::getIsset(LengowExport::PARAM_PRODUCT_IDS)) {
     $ids = $ids !== null ? $ids : Tools::getValue(LengowExport::PARAM_PRODUCT_IDS);
     if (Tools::strlen($ids) > 0) {
-        $ids = str_replace(array(';', '|', ':'), ',', $ids);
+        $ids = str_replace([';', '|', ':'], ',', $ids);
         $ids = preg_replace('/[^0-9\,]/', '', $ids);
         $productIds = explode(',', $ids);
     }
@@ -199,7 +195,7 @@ $logOutput = Tools::getIsset(LengowExport::PARAM_LOG_OUTPUT)
     : true;
 
 $export = new LengowExport(
-    array(
+    [
         LengowExport::PARAM_FORMAT => $format,
         LengowExport::PARAM_STREAM => $stream,
         LengowExport::PARAM_PRODUCT_IDS => $productIds,
@@ -213,7 +209,7 @@ $export = new LengowExport(
         LengowExport::PARAM_LANGUAGE_ID => $languageId,
         LengowExport::PARAM_UPDATE_EXPORT_DATE => $updateExportDate,
         LengowExport::PARAM_LOG_OUTPUT => $logOutput,
-    )
+    ]
 );
 
 if ($getParams) {

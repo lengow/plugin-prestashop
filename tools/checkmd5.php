@@ -9,16 +9,16 @@ ini_set('display_errors', 1);
 $base = dirname(dirname(__FILE__));
 $fp = fopen(dirname(dirname(__FILE__)) . '/config/checkmd5.csv', 'wb+');
 
-$listFolders = array(
+$listFolders = [
     '/classes',
     '/controllers',
     '/mails',
     '/upgrade',
     '/views',
     '/webservice',
-);
+];
 
-$filePaths = array(
+$filePaths = [
     $base . '/es.php',
     $base . '/fr.php',
     $base . '/index.php',
@@ -31,7 +31,7 @@ $filePaths = array(
     $base . '/translations/fr.csv',
     $base . '/translations/index.php',
     $base . '/translations/it.csv',
-);
+];
 
 foreach ($listFolders as $folder) {
     if (file_exists($base . $folder)) {
@@ -41,7 +41,7 @@ foreach ($listFolders as $folder) {
 }
 foreach ($filePaths as $filePath) {
     if (file_exists($filePath)) {
-        $checksum = array(str_replace($base, '', $filePath) => md5_file($filePath));
+        $checksum = [str_replace($base, '', $filePath) => md5_file($filePath)];
         writeCsv($fp, $checksum);
     }
 }
@@ -49,7 +49,7 @@ fclose($fp);
 
 function explorer($path)
 {
-    $paths = array();
+    $paths = [];
     if (is_dir($path)) {
         $me = opendir($path);
         while ($child = readdir($me)) {
@@ -64,7 +64,7 @@ function explorer($path)
     return $paths;
 }
 
-function writeCsv($fp, $text, &$frontKey = array())
+function writeCsv($fp, $text, &$frontKey = [])
 {
     if (is_array($text)) {
         foreach ($text as $k => $v) {

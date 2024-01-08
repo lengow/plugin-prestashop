@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Home Controller Class
  */
@@ -39,7 +38,7 @@ class LengowHomeController extends LengowController
                         'views/templates/admin/lengow_home/helpers/view/connection_cms.tpl'
                     );
                     echo json_encode(
-                        array('content' => preg_replace('/\r|\n/', '', $displayContent))
+                        ['content' => preg_replace('/\r|\n/', '', $displayContent)]
                     );
                     break;
                 case 'connect_cms':
@@ -63,10 +62,10 @@ class LengowHomeController extends LengowController
                         'views/templates/admin/lengow_home/helpers/view/connection_cms_result.tpl'
                     );
                     echo json_encode(
-                        array(
+                        [
                             'success' => $cmsConnected,
                             'content' => preg_replace('/\r|\n/', '', $displayContent),
-                        )
+                        ]
                     );
                     break;
                 case 'go_to_catalog':
@@ -82,14 +81,14 @@ class LengowHomeController extends LengowController
                         'views/templates/admin/lengow_home/helpers/view/connection_catalog.tpl'
                     );
                     echo json_encode(
-                        array('content' => preg_replace('/\r|\n/', '', $displayContent))
+                        ['content' => preg_replace('/\r|\n/', '', $displayContent)]
                     );
                     break;
                 case 'link_catalogs':
                     $catalogsLinked = true;
                     $catalogSelected = Tools::getIsset('catalogSelected')
                         ? Tools::getValue('catalogSelected')
-                        : array();
+                        : [];
                     if (!empty($catalogSelected)) {
                         $catalogsLinked = $this->saveCatalogsLinked($catalogSelected);
                     }
@@ -99,14 +98,14 @@ class LengowHomeController extends LengowController
                         'views/templates/admin/lengow_home/helpers/view/connection_catalog_failed.tpl'
                     );
                     echo json_encode(
-                        array(
+                        [
                             'success' => $catalogsLinked,
                             'content' => preg_replace('/\r|\n/', '', $displayConnectionResult),
-                        )
+                        ]
                     );
                     break;
             }
-            exit();
+            exit;
         }
     }
 
@@ -132,7 +131,7 @@ class LengowHomeController extends LengowController
      * @param string $accessToken access token for api
      * @param string $secret secret for api
      *
-     * @return boolean
+     * @return bool
      */
     private function checkApiCredentials($accessToken, $secret)
     {
@@ -140,11 +139,11 @@ class LengowHomeController extends LengowController
         $accountId = LengowConnector::getAccountIdByCredentials($accessToken, $secret);
         if ($accountId) {
             $accessIdsSaved = LengowConfiguration::setAccessIds(
-                array(
+                [
                     LengowConfiguration::ACCOUNT_ID => $accountId,
                     LengowConfiguration::ACCESS_TOKEN => $accessToken,
                     LengowConfiguration::SECRET => $secret,
-                )
+                ]
             );
         }
         return $accessIdsSaved;
@@ -153,7 +152,7 @@ class LengowHomeController extends LengowController
     /**
      * Connect cms with Lengow
      *
-     * @return boolean
+     * @return bool
      */
     private function connectCms()
     {
@@ -161,7 +160,7 @@ class LengowHomeController extends LengowController
         $cmsConnected = LengowSync::syncCatalog(true);
         if (!$cmsConnected) {
             $syncData = json_encode(LengowSync::getSyncData());
-            $result = LengowConnector::queryApi(LengowConnector::POST, LengowConnector::API_CMS, array(), $syncData);
+            $result = LengowConnector::queryApi(LengowConnector::POST, LengowConnector::API_CMS, [], $syncData);
             if (isset($result->common_account)) {
                 $cmsConnected = true;
                 $messageKey = 'log.connection.cms_creation_success';
@@ -175,7 +174,7 @@ class LengowHomeController extends LengowController
             LengowLog::CODE_CONNECTION,
             LengowMain::setLogMessage(
                 $messageKey,
-                array('cms_token' => $cmsToken)
+                ['cms_token' => $cmsToken]
             )
         );
         // reset access ids if cms creation failed
@@ -189,7 +188,7 @@ class LengowHomeController extends LengowController
     /**
      * Check if account has catalog to link
      *
-     * @return boolean
+     * @return bool
      */
     private function hasCatalogToLink()
     {
@@ -212,7 +211,7 @@ class LengowHomeController extends LengowController
             return LengowCatalog::getCatalogList();
         }
         // if cms already has one or more linked catalogs, nothing is done
-        return array();
+        return [];
     }
 
     /**
@@ -220,12 +219,12 @@ class LengowHomeController extends LengowController
      *
      * @param array $catalogSelected
      *
-     * @return boolean
+     * @return bool
      */
     private function saveCatalogsLinked($catalogSelected)
     {
         $catalogsLinked = true;
-        $catalogsByShops = array();
+        $catalogsByShops = [];
         foreach ($catalogSelected as $catalog) {
             $catalogsByShops[$catalog['shopId']] = $catalog['catalogId'];
         }

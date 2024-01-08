@@ -18,7 +18,6 @@
  * @copyright 2022 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Toolbox Controller Class
  */

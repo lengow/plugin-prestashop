@@ -18,26 +18,25 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Log Class
  */
 class LengowLog extends LengowFile
 {
     /* Log category codes */
-    const CODE_INSTALL = 'Install';
-    const CODE_UNINSTALL = 'Uninstall';
-    const CODE_CONNECTION = 'Connection';
-    const CODE_SETTING = 'Setting';
-    const CODE_CONNECTOR = 'Connector';
-    const CODE_EXPORT = 'Export';
-    const CODE_IMPORT = 'Import';
-    const CODE_ACTION = 'Action';
-    const CODE_MAIL_REPORT = 'Mail Report';
+    public const CODE_INSTALL = 'Install';
+    public const CODE_UNINSTALL = 'Uninstall';
+    public const CODE_CONNECTION = 'Connection';
+    public const CODE_SETTING = 'Setting';
+    public const CODE_CONNECTOR = 'Connector';
+    public const CODE_EXPORT = 'Export';
+    public const CODE_IMPORT = 'Import';
+    public const CODE_ACTION = 'Action';
+    public const CODE_MAIL_REPORT = 'Mail Report';
 
     /* Log params for export */
-    const LOG_DATE = 'date';
-    const LOG_LINK = 'link';
+    public const LOG_DATE = 'date';
+    public const LOG_LINK = 'link';
 
     /**
      * @var LengowFile Lengow file instance
@@ -66,7 +65,7 @@ class LengowLog extends LengowFile
      *
      * @param string $category log category
      * @param string $message log message
-     * @param boolean $logOutput display on screen
+     * @param bool $logOutput display on screen
      * @param string|null $marketplaceSku Lengow order id
      */
     public function write($category, $message = '', $logOutput = false, $marketplaceSku = null)
@@ -90,7 +89,7 @@ class LengowLog extends LengowFile
      */
     public static function getPaths()
     {
-        $logs = array();
+        $logs = [];
         $files = self::getFiles();
         if (empty($files)) {
             return $logs;
@@ -98,12 +97,12 @@ class LengowLog extends LengowFile
         foreach ($files as $file) {
             preg_match('/^logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt$/', $file->fileName, $match);
             $date = $match[1];
-            $logs[] = array(
+            $logs[] = [
                 self::LOG_DATE => $date,
                 self::LOG_LINK => LengowMain::getToolboxUrl()
                     . '&' . LengowToolbox::PARAM_TOOLBOX_ACTION . '=' . LengowToolbox::ACTION_LOG
                     . '&' . LengowToolbox::PARAM_DATE . '=' . urlencode($date),
-            );
+            ];
         }
         return array_reverse($logs);
     }
@@ -145,9 +144,9 @@ class LengowLog extends LengowFile
             $filePath = _PS_MODULE_LENGOW_DIR_ . LengowMain::FOLDER_LOG . $sep . $file;
             if (file_exists($filePath)) {
                 try {
-                    $logFiles = array(new LengowFile(LengowMain::FOLDER_LOG, $file));
+                    $logFiles = [new LengowFile(LengowMain::FOLDER_LOG, $file)];
                 } catch (LengowException $e) {
-                    $logFiles = array();
+                    $logFiles = [];
                 }
             }
         } else {
@@ -168,6 +167,6 @@ class LengowLog extends LengowFile
         header('Content-type: text/plain');
         header('Content-Disposition: attachment; filename="' . $fileName . '"');
         echo $contents;
-        exit();
+        exit;
     }
 }

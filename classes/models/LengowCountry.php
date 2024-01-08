@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Country Class
  */
@@ -49,7 +48,7 @@ class LengowCountry
     /**
      * Get country by id
      *
-     * @param integer $idCountry PrestaShop country id
+     * @param int $idCountry PrestaShop country id
      *
      * @return array|false
      */

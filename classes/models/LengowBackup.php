@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Backup Class
  */
@@ -29,20 +28,20 @@ class LengowBackup extends Backup
      *
      * @throws Exception
      *
-     * @return boolean
+     * @return bool
      */
     public function add()
     {
         if (!$this->psBackupAll) {
-            $ignoreInsertTable = array(
+            $ignoreInsertTable = [
                 _DB_PREFIX_ . 'connections',
                 _DB_PREFIX_ . 'connections_page',
                 _DB_PREFIX_ . 'connections_source',
                 _DB_PREFIX_ . 'guest',
                 _DB_PREFIX_ . 'statssearch',
-            );
+            ];
         } else {
-            $ignoreInsertTable = array();
+            $ignoreInsertTable = [];
         }
         // generate some random number, to make it extra hard to guess backup file names
         $rand = dechex(mt_rand(0, min(0xffffffff, mt_getrandmax())));

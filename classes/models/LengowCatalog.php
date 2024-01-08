@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 /**
  * Lengow Catalog Class
  */
@@ -27,7 +26,7 @@ class LengowCatalog
     /**
      * Check if the account has catalogs not linked to a cms
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasCatalogNotLinked()
     {
@@ -51,7 +50,7 @@ class LengowCatalog
      */
     public static function getCatalogList()
     {
-        $catalogList = array();
+        $catalogList = [];
         $lengowCatalogs = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS_CATALOG);
         if (!$lengowCatalogs) {
             return $catalogList;
@@ -63,7 +62,7 @@ class LengowCatalog
             $name = $catalog->name ?: LengowMain::decodeLogMessage(
                 'lengow_log.connection.catalog',
                 null,
-                array('catalog_id' => $catalog->id)
+                ['catalog_id' => $catalog->id]
             );
             $status = $catalog->is_active
                 ? LengowMain::decodeLogMessage('lengow_log.connection.status_active')
@@ -71,17 +70,17 @@ class LengowCatalog
             $label = LengowMain::decodeLogMessage(
                 'lengow_log.connection.catalog_label',
                 null,
-                array(
+                [
                     'catalog_id' => $catalog->id,
                     'catalog_name' => $name,
                     'nb_products' => $catalog->products ?: 0,
                     'catalog_status' => $status,
-                )
+                ]
             );
-            $catalogList[] = array(
+            $catalogList[] = [
                 'label' => $label,
                 'value' => $catalog->id,
-            );
+            ];
         }
         return $catalogList;
     }
@@ -91,7 +90,7 @@ class LengowCatalog
      *
      * @param array $catalogsByShops all catalog ids organised by shops
      *
-     * @return boolean
+     * @return bool
      */
     public static function linkCatalogs(array $catalogsByShops)
     {
@@ -100,29 +99,29 @@ class LengowCatalog
         if (empty($catalogsByShops)) {
             return $catalogsLinked;
         }
-        $linkCatalogData = array(
+        $linkCatalogData = [
             'cms_token' => LengowMain::getToken(),
-            'shops' => array(),
-        );
+            'shops' => [],
+        ];
         foreach ($catalogsByShops as $idShop => $catalogIds) {
             if (empty($catalogIds)) {
                 continue;
             }
             $hasCatalogToLink = true;
             $shopToken = LengowMain::getToken($idShop);
-            $linkCatalogData['shops'][] = array(
+            $linkCatalogData['shops'][] = [
                 'shop_token' => $shopToken,
                 'catalogs_id' => $catalogIds,
-            );
+            ];
             LengowMain::log(
                 LengowLog::CODE_CONNECTION,
                 LengowMain::setLogMessage(
                     'log.connection.try_link_catalog',
-                    array(
+                    [
                         'catalog_ids' => implode(', ', $catalogIds),
                         'shop_token' => $shopToken,
                         'shop_id' => $idShop,
-                    )
+                    ]
                 )
             );
         }
@@ -130,7 +129,7 @@ class LengowCatalog
             $result = LengowConnector::queryApi(
                 LengowConnector::POST,
                 LengowConnector::API_CMS_MAPPING,
-                array(),
+                [],
                 json_encode($linkCatalogData)
             );
             if (isset($result->cms_token)) {
