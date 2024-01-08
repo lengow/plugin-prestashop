@@ -1209,7 +1209,7 @@ class LengowImportOrder
 
         // update Lengow order with customer name
         $customer = $this->getCustomer($billingData);
-       
+
         if (!$customer->id) {
             $customer->validateLengow();
         }
@@ -1398,6 +1398,19 @@ class LengowImportOrder
                 $idMarketplace,
                 $this->carrierMethod
             );
+
+            if (!$idCarrier) {
+                $matchedCarriers = LengowCarrier::getAllMarketplaceCarrierCountryByIdMarketplace($idCountry, $idMarketplace);
+                foreach ($matchedCarriers as $carrierIdMatched => $carrierMktpId) {
+                    if ($carrierMktpId === 0) {
+                        continue;
+                    }
+                    $carrierMktp = LengowCarrier::getCarrierMarketplaceById($carrierMktpId);
+                    if ($carrierMktp['carrier_marketplace_name'] === $this->carrierMethod) {
+                        $idCarrier = $carrierIdMatched;
+                    }
+                }
+            }
             $matchingFound = $idCarrier ? 'method' : false;
         }
         if (!$idCarrier) {
