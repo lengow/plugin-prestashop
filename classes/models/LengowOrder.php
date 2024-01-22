@@ -83,6 +83,11 @@ class LengowOrder extends Order
     public const TYPE_DELIVERED_BY_MARKETPLACE = 'is_delivered_by_marketplace';
 
     /**
+     * @const number of tries to sync order num
+     */
+    public const SYNCHRONIZE_TRIES = 5;
+
+    /**
      * @var string label fulfillment for old orders without order type
      */
     public const LABEL_FULFILLMENT = 'Fulfillment';
@@ -686,29 +691,38 @@ class LengowOrder extends Order
             LengowImport::ARG_MARKETPLACE => $this->lengowMarketplaceName,
             LengowImport::ARG_MERCHANT_ORDER_ID => $prestaIds,
         ];
-        try {
-            $result = $connector->patch(
-                LengowConnector::API_ORDER_MOI,
-                [],
-                LengowConnector::FORMAT_JSON,
-                json_encode($body),
-                $logOutput
-            );
-            return !($result === null
-                || (isset($result['detail']) && $result['detail'] === 'Pas trouvé.')
-                || isset($result['error']));
-        } catch (Exception $e) {
-            $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
-            $error = LengowMain::setLogMessage(
-                'log.connector.error_api',
-                [
-                    'error_code' => $e->getCode(),
-                    'error_message' => $message,
-                ]
-            );
-            LengowMain::log(LengowLog::CODE_CONNECTOR, $error, $logOutput);
-            return false;
-        }
+
+        $tries = self::SYNCHRONIZE_TRIES;
+        do {
+            try {
+                $result = $connector->patch(
+                    LengowConnector::API_ORDER_MOI,
+                    [],
+                    LengowConnector::FORMAT_JSON,
+                    json_encode($body),
+                    $logOutput
+                );
+                return !($result === null
+                    || (isset($result['detail']) && $result['detail'] === 'Pas trouvé.')
+                    || isset($result['error']));
+
+            } catch (Exception $e) {
+                $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
+                $error = LengowMain::setLogMessage(
+                    'log.connector.error_api',
+                    [
+                        'error_code' => $e->getCode(),
+                        'error_message' => $message,
+                    ]
+                );
+                LengowMain::log(LengowLog::CODE_CONNECTOR, $error, $logOutput);
+                usleep(250000);
+                $tries --;
+            }
+
+        } while ($tries > 0);
+
+        return false;
     }
 
     /**
