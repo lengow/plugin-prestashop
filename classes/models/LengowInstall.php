@@ -245,10 +245,6 @@ class LengowInstall
         }
         // check if update is in progress
         self::setInstallationStatus(true);
-        // remove Lengow config
-        if ($oldVersion) {
-            Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'configuration` WHERE name LIKE "LENGOW_%"');
-        }
         // create all Lengow tables
         $this->createLengowTables();
         // run sql script and configuration upgrade for specific version
