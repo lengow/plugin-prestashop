@@ -78,7 +78,7 @@ DEPLOY_ENV=$2
 echo
 echo "#####################################################"
 echo "##                                                 ##"
-echo -e "##       "${BLEU}Lengow Magento${NORMAL}" - Build Module             ##"
+echo -e "##       "${BLEU}Lengow Prestashop${NORMAL}" - Build Module             ##"
 echo "##                                                 ##"
 echo "#####################################################"
 echo
