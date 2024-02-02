@@ -476,6 +476,9 @@ class LengowPaymentModule extends PaymentModule
         foreach ($order->getOrderDetailList() as $detail) {
             $orderDetail = new OrderDetail($detail['id_order_detail']);
             $orderDetail->updateTaxAmount($order);
+            $orderDetail->product_price = $orderDetail->unit_price_tax_excl;
+            $orderDetail->original_product_price = $orderDetail->product_price;
+            $orderDetail->save();
         }
 
         // use the last order as currentOrder

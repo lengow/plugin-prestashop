@@ -1,9 +1,14 @@
 =============================================================
+Version 3.4.7
+============================================================= 
+ - BugFix  : product_price, original_price in OrderDetail
+ - BugFix  : synchronize order number 5 tries to API
+=============================================================
 Version 3.4.6
 =============================================================
  - Feature : Switch env from config prod/preprod
  - Feature : partial_refunded new state to accept
- - BugFix  : flush lengow config on uninstall / install / update
+ - BugFix  : flush lengow config on uninstall
  - BugFix  : add memory_limit for sync and export
 =============================================================
 Version 3.4.5

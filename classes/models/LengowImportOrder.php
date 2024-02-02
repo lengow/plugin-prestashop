@@ -1199,7 +1199,6 @@ class LengowImportOrder
             $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
             $billingData['email'] = md5($this->marketplaceSku . '-' . $this->marketplace->name) . '@' . strtolower($domain);
         }
-        var_dump($billingData);
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.generate_unique_email', ['email' => $billingData['email']]),
