@@ -56,7 +56,7 @@ if [ -z "$2" ]; then
 	exit 0
 fi
 if [ ! -z "$2" ] && [ "$2" == "preprod" ]; then
-        ARCHIVE_NAME="preprod__${ARCHIVE_NAME}"        
+        ARCHIVE_NAME="preprod__${ARCHIVE_NAME}"
 fi
 
 # Variables
@@ -87,10 +87,10 @@ FOLDER=$(dirname ${PWD})
 echo ${FOLDER}
 # Change config for preprod
 if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "preprod" ]; then
-    sed -i 's/lengow.io/lengow.net/g' ${FOLDER}/classes/models/LengowConnector.php 
+    sed -i 's/lengow.io/lengow.net/g' ${FOLDER}/classes/models/LengowConnector.php
 fi
 if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "prod" ]; then
-    sed -i 's/lengow.net/lengow.io/g' ${FOLDER}/classes/models/LengowConnector.php 
+    sed -i 's/lengow.net/lengow.io/g' ${FOLDER}/classes/models/LengowConnector.php
 fi
 # remove TMP FOLDER
 if [ -d "${FOLDER_TMP}" ]
@@ -176,6 +176,6 @@ echo -e "- Build archive : ${VERT}DONE${NORMAL}"
 if [ -d  "~/Bureau" ]
 then
     mv $ARCHIVE_NAME ~/Bureau
-else 
+else
     mv $ARCHIVE_NAME ~/shared
 fi
