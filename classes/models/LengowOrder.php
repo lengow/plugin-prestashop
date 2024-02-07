@@ -707,17 +707,19 @@ class LengowOrder extends Order
                     || isset($result['error']));
 
             } catch (Exception $e) {
-                $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
-                $error = LengowMain::setLogMessage(
-                    'log.connector.error_api',
-                    [
-                        'error_code' => $e->getCode(),
-                        'error_message' => $message,
-                    ]
-                );
-                LengowMain::log(LengowLog::CODE_CONNECTOR, $error, $logOutput);
-                usleep(250000);
                 $tries --;
+                if ($tries === 0) {
+                    $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
+                    $error = LengowMain::setLogMessage(
+                        'log.connector.error_api',
+                        [
+                            'error_code' => $e->getCode(),
+                            'error_message' => $message,
+                        ]
+                    );
+                    LengowMain::log(LengowLog::CODE_CONNECTOR, $error, $logOutput);
+                }
+                usleep(250000);
             }
 
         } while ($tries > 0);
