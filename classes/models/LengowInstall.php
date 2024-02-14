@@ -184,6 +184,9 @@ class LengowInstall
      */
     public function install()
     {
+        if (version_compare(_PS_VERSION_, '1.7', '<')) {
+            return false;
+        }
         LengowMain::log(
             LengowLog::CODE_INSTALL,
             LengowMain::setLogMessage('log.install.install_start', ['version' => $this->lengowModule->version])
