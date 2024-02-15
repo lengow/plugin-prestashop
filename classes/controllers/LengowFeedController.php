@@ -21,6 +21,8 @@
 /**
  * Lengow Feed Controller Class
  */
+
+if (!defined('_PS_VERSION_')) { exit; }
 class LengowFeedController extends LengowController
 {
     /**
@@ -36,7 +38,7 @@ class LengowFeedController extends LengowController
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
         if ($action) {
             switch ($action) {
-                case 'change_option_selected':
+                case 'change_option_selected__selection':
                     $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
                     $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
                     if ($state !== null) {
@@ -55,6 +57,73 @@ class LengowFeedController extends LengowController
                         } else {
                             $data['state'] = false;
                         }
+
+                        $result = array_merge($data, $this->reloadTotal($idShop));
+                        echo json_encode($result);
+                    }
+                    break;
+                case 'change_option_selected__out_of_stock':
+                    $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
+                    //$variation = isset()
+                    $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
+                    if ($state !== null) {
+                        LengowConfiguration::updatevalue(
+                            LengowConfiguration::OUT_OF_STOCK_ENABLED,
+                            $state,
+                            null,
+                            null,
+                            $idShop
+                        );
+                        $state = LengowConfiguration::get(LengowConfiguration::OUT_OF_STOCK_ENABLED, null, null, $idShop);
+                        $data = [];
+                        $data['shop_id'] = $idShop;
+                        $data['state'] = null;
+
+
+                        $result = array_merge($data, $this->reloadTotal($idShop));
+                        echo json_encode($result);
+                    }
+                    break;
+                case 'change_option_selected__variation':
+                    $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
+                    //$variation = isset()
+                    $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
+                    if ($state !== null) {
+                        LengowConfiguration::updatevalue(
+                            LengowConfiguration::VARIATION_ENABLED,
+                            $state,
+                            null,
+                            null,
+                            $idShop
+                        );
+                        $state = LengowConfiguration::get(LengowConfiguration::VARIATION_ENABLED, null, null, $idShop);
+                        $data = [];
+                        $data['shop_id'] = $idShop;
+                        $data['state'] = null;
+
+
+                        $result = array_merge($data, $this->reloadTotal($idShop));
+                        echo json_encode($result);
+                    }
+                    break;
+                case 'change_option_selected__inactive':
+                    $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
+                    //$variation = isset()
+                    $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
+                    if ($state !== null) {
+                        LengowConfiguration::updatevalue(
+                            LengowConfiguration::INACTIVE_ENABLED,
+                            $state,
+                            null,
+                            null,
+                            $idShop
+                        );
+                        $state = LengowConfiguration::get(LengowConfiguration::INACTIVE_ENABLED, null, null, $idShop);
+                        $data = [];
+                        $data['shop_id'] = $idShop;
+                        $data['state'] = null;
+
+
                         $result = array_merge($data, $this->reloadTotal($idShop));
                         echo json_encode($result);
                     }
@@ -449,3 +518,4 @@ class LengowFeedController extends LengowController
         return $value;
     }
 }
+
