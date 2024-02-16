@@ -41,8 +41,8 @@
             switch(className)
             {
                 case 'option-selection':
-                    lengow_jquery('.option-out-of-stock').prop('checked', false);
-                    lengow_jquery('.option-variation').prop('checked', false);
+                    lengow_jquery('.option-out-of-stock').prop('checked', true);
+                    lengow_jquery('.option-variation').prop('checked', true);
                     lengow_jquery('.option-inactive').prop('checked', false);
                 break;
                 default:
@@ -75,9 +75,13 @@
                    selector.slideUp(150);
                    lengow_jquery('.switch-selection').removeClass('checked');
                 } else {
-                    lengow_jquery('.switch-variation').removeClass('checked');
-                    lengow_jquery('.switch-out-of-stock').removeClass('checked');
-                    lengow_jquery('.switch-inactive').removeClass('checked');
+                    //window.location.reload();
+                    if (content['state'] === true) {
+                        console.log('add class checked');
+                        lengow_jquery('.switch-variation').addClass('checked');
+                        lengow_jquery('.switch-out-of-stock').addClass('checked');
+                        lengow_jquery('.switch-inactive').removeClass('checked');
+                    }
                 }
 
 
@@ -270,4 +274,5 @@ function pluginsRender(){
     // Selects
     lengow_jquery('.lgw-pagination-select-item').select2({minimumResultsForSearch: Infinity});
 }
+
 

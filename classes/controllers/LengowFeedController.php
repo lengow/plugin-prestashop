@@ -35,11 +35,11 @@ class LengowFeedController extends LengowController
      */
     public function postProcess()
     {
-        $action = Tools::getValue('action') ?? '';
+        $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
         if ($action) {
             switch ($action) {
                 case 'change_option_selected__selection':
-                    $state = (int) Tools::getValue('state_selection');
+                    $state = Tools::getValue('state_selection');
                     $idShop = (int) Tools::getValue('id_shop');
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
@@ -57,14 +57,14 @@ class LengowFeedController extends LengowController
                             $data['state'] = true;
                                 LengowConfiguration::updatevalue(
                                 LengowConfiguration::OUT_OF_STOCK_ENABLED,
-                                0,
+                                1,
                                 null,
                                 null,
                                 $idShop
                             );
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::VARIATION_ENABLED,
-                                0,
+                                1,
                                 null,
                                 null,
                                 $idShop
@@ -86,7 +86,7 @@ class LengowFeedController extends LengowController
                     }
                     break;
                 case 'change_option_selected__out_of_stock':
-                    $state = (int) Tools::getValue('state_out_of_stock');
+                    $state = Tools::getValue('state_out_of_stock');
                     $idShop = (int) Tools::getValue('id_shop');
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
@@ -117,7 +117,7 @@ class LengowFeedController extends LengowController
                     }
                     break;
                 case 'change_option_selected__variation':
-                    $state = (int) Tools::getValue('state_variation');
+                    $state = Tools::getValue('state_variation');
                     $idShop = (int) Tools::getValue('id_shop');
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
@@ -434,10 +434,10 @@ class LengowFeedController extends LengowController
             $where[] = ' ps.active = 1 ';
         }
 
-        $currentPage = (int) Tools::getValue('p') ?? 1;
-        $orderValue = Tools::getValue('order_value') ?? '';
-        $orderColumn = Tools::getValue('order_column') ?? '';
-        $nbPerPage = (int) Tools::getValue('nb_per_page') ?? 1;
+        $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
+        $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
+        $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
+        $nbPerPage = isset($_REQUEST['nb_per_page']) ? $_REQUEST['nb_per_page'] : '';
         $this->list = new LengowList(
             [
                 'id' => 'shop_' . $idShop,
