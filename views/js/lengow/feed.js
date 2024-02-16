@@ -35,27 +35,25 @@
             var href = $(this).attr('data-href');
             var action = $(this).attr('data-action');
             var idShop = $(this).attr('data-id_shop');
+
+
+            var className = $(this).attr('class').replace('lengow_switch_option ','');
+            switch(className)
+            {
+                case 'option-selection':
+                    lengow_jquery('.option-out-of-stock').prop('checked', false);
+                    lengow_jquery('.option-variation').prop('checked', false);
+                    lengow_jquery('.option-inactive').prop('checked', false);
+                break;
+                default:
+                     lengow_jquery('.option-selection').prop('checked', false);
+                break;
+            }
+
             var state_selection =  lengow_jquery('.option-selection').prop('checked');
             var state_out_of_stock =  lengow_jquery('.option-out-of-stock').prop('checked');
             var state_variation =  lengow_jquery('.option-variation').prop('checked');
             var state_inactive =  lengow_jquery('.option-inactive').prop('checked');
-
-            if (state_selection) {
-                lengow_jquery('.option-out-of-stock').prop('checked', false);
-                lengow_jquery('.option-variation').prop('checked', false);
-                lengow_jquery('.option-inactive').prop('checked', false);
-                var state_out_of_stock =  false;
-                var state_variation =  false;
-                var state_inactive =  false;
-
-            }
-
-            if (state_out_of_stock
-                    || state_variation
-                    || state_inactive) {
-                state_selection = false;
-            }
-
 
 
             var data = {
@@ -66,6 +64,7 @@
                 action: action,
                 id_shop: idShop
             };
+
 
             $.getJSON(href, data, function(content) {
                 var selector = lengow_jquery('#block_' + idShop + ' .lengow_feed_block_footer_content');
@@ -83,7 +82,8 @@
 
 
                 if (content['state'] != null) {
-                    if (content['state'] === true) {
+                    if (content['state'] === true
+                            && content['option'] === 'selection') {
                         selector.slideDown(150);
                     } else {
                         selector.slideUp(150);
