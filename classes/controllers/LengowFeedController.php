@@ -39,8 +39,8 @@ class LengowFeedController extends LengowController
         if ($action) {
             switch ($action) {
                 case 'change_option_selected__selection':
-                    $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
-                    $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
+                    $state = Tools::getValue('state_selection');
+                    $idShop = (int) Tools::getValue('id_shop');
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::SELECTION_ENABLED,
@@ -52,20 +52,42 @@ class LengowFeedController extends LengowController
                         $state = LengowConfiguration::get(LengowConfiguration::SELECTION_ENABLED, null, null, $idShop);
                         $data = [];
                         $data['shop_id'] = $idShop;
+                        $data['option'] = 'selection';
                         if ($state) {
                             $data['state'] = true;
+                                LengowConfiguration::updatevalue(
+                                LengowConfiguration::OUT_OF_STOCK_ENABLED,
+                                false,
+                                null,
+                                null,
+                                $idShop
+                            );
+                            LengowConfiguration::updatevalue(
+                                LengowConfiguration::VARIATION_ENABLED,
+                                false,
+                                null,
+                                null,
+                                $idShop
+                            );
+                            LengowConfiguration::updatevalue(
+                                LengowConfiguration::INACTIVE_ENABLED,
+                                false,
+                                null,
+                                null,
+                                $idShop
+                            );
                         } else {
                             $data['state'] = false;
                         }
+
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
                         echo json_encode($result);
                     }
                     break;
                 case 'change_option_selected__out_of_stock':
-                    $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
-                    //$variation = isset()
-                    $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
+                    $state = Tools::getValue('state_out_of_stock');
+                    $idShop = (int) Tools::getValue('id_shop');
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::OUT_OF_STOCK_ENABLED,
@@ -78,6 +100,16 @@ class LengowFeedController extends LengowController
                         $data = [];
                         $data['shop_id'] = $idShop;
                         $data['state'] = null;
+                        $data['option'] = 'out_of_stock';
+                        if ($state) {
+                            LengowConfiguration::updatevalue(
+                                LengowConfiguration::SELECTION_ENABLED,
+                                false,
+                                null,
+                                null,
+                                $idShop
+                            );
+                        }
 
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
@@ -85,9 +117,8 @@ class LengowFeedController extends LengowController
                     }
                     break;
                 case 'change_option_selected__variation':
-                    $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
-                    //$variation = isset()
-                    $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
+                    $state = Tools::getValue('state_variation');
+                    $idShop = (int) Tools::getValue('id_shop');
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::VARIATION_ENABLED,
@@ -100,6 +131,17 @@ class LengowFeedController extends LengowController
                         $data = [];
                         $data['shop_id'] = $idShop;
                         $data['state'] = null;
+                        $data['option'] = 'variation';
+                        if ($state) {
+                            LengowConfiguration::updatevalue(
+                                LengowConfiguration::SELECTION_ENABLED,
+                                false,
+                                null,
+                                null,
+                                $idShop
+                            );
+                        }
+
 
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
@@ -107,9 +149,8 @@ class LengowFeedController extends LengowController
                     }
                     break;
                 case 'change_option_selected__inactive':
-                    $state = isset($_REQUEST['state']) ? $_REQUEST['state'] : null;
-                    //$variation = isset()
-                    $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
+                    $state = Tools::getValue('state_inactive');
+                    $idShop = (int) Tools::getValue('id_shop');
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::INACTIVE_ENABLED,
@@ -122,6 +163,17 @@ class LengowFeedController extends LengowController
                         $data = [];
                         $data['shop_id'] = $idShop;
                         $data['state'] = null;
+                        $data['option'] = 'inactive';
+                        if ($state) {
+                            LengowConfiguration::updatevalue(
+                                LengowConfiguration::SELECTION_ENABLED,
+                                false,
+                                null,
+                                null,
+                                $idShop
+                            );
+                        }
+
 
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
@@ -217,8 +269,26 @@ class LengowFeedController extends LengowController
                 'link' => LengowMain::getExportUrl($shop->id),
                 'total_product' => $lengowExport->getTotalProduct(),
                 'total_export_product' => $lengowExport->getTotalExportProduct(),
-                'option_selected' => LengowConfiguration::get(
+                'option_selected__selection' => LengowConfiguration::get(
                     LengowConfiguration::SELECTION_ENABLED,
+                    null,
+                    null,
+                    $shop->id
+                ),
+                'option_selected__out_of_stock' => LengowConfiguration::get(
+                    LengowConfiguration::OUT_OF_STOCK_ENABLED,
+                    null,
+                    null,
+                    $shop->id
+                ),
+                'option_selected__variation' => LengowConfiguration::get(
+                    LengowConfiguration::VARIATION_ENABLED,
+                    null,
+                    null,
+                    $shop->id
+                ),
+                'option_selected__inactive' => LengowConfiguration::get(
+                    LengowConfiguration::INACTIVE_ENABLED,
                     null,
                     null,
                     $shop->id

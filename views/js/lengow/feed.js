@@ -35,9 +35,34 @@
             var href = $(this).attr('data-href');
             var action = $(this).attr('data-action');
             var idShop = $(this).attr('data-id_shop');
-            var state = $(this).prop('checked');
+            var state_selection =  lengow_jquery('.option-selection').prop('checked');
+            var state_out_of_stock =  lengow_jquery('.option-out-of-stock').prop('checked');
+            var state_variation =  lengow_jquery('.option-variation').prop('checked');
+            var state_inactive =  lengow_jquery('.option-inactive').prop('checked');
+
+            if (state_selection) {
+                lengow_jquery('.option-out-of-stock').prop('checked', false);
+                lengow_jquery('.option-variation').prop('checked', false);
+                lengow_jquery('.option-inactive').prop('checked', false);
+                var state_out_of_stock =  false;
+                var state_variation =  false;
+                var state_inactive =  false;
+
+            }
+
+            if (state_out_of_stock
+                    || state_variation
+                    || state_inactive) {
+                state_selection = false;
+            }
+
+
+
             var data = {
-                state: state ? 1 : 0,
+                state_selection: state_selection ? 1 : 0,
+                state_variation: state_variation ? 1 : 0,
+                state_out_of_stock : state_out_of_stock ? 1 :0,
+                state_inactive : state_inactive ? 1 : 0,
                 action: action,
                 id_shop: idShop
             };
@@ -46,6 +71,16 @@
                 var selector = lengow_jquery('#block_' + idShop + ' .lengow_feed_block_footer_content');
 
                 reloadTotal(content, idShop);
+
+                if (content['option'] !== 'selection'){
+                   selector.slideUp(150);
+                   lengow_jquery('.switch-selection').removeClass('checked');
+                } else {
+                    lengow_jquery('.switch-variation').removeClass('checked');
+                    lengow_jquery('.switch-out-of-stock').removeClass('checked');
+                    lengow_jquery('.switch-inactive').removeClass('checked');
+                }
+
 
                 if (content['state'] != null) {
                     if (content['state'] === true) {
@@ -63,6 +98,9 @@
             var idShop = $(this).attr('data-id_shop');
             var idProduct = $(this).attr('data-id_product');
             var state = $(this).prop('checked');
+
+
+
             var data = {
                 state: state ? 1 : 0,
                 action: action,
@@ -218,7 +256,7 @@
         $('.lengow_table').on('click', '.table_row td:not(.no-link)', function(){
             var url = $(this).closest('.table_row').find('.feed_name a').attr('href');
             if (url) {
-               window.open(url, '_blank'); 
+               window.open(url, '_blank');
             };
             return false;
         });
@@ -232,3 +270,4 @@ function pluginsRender(){
     // Selects
     lengow_jquery('.lgw-pagination-select-item').select2({minimumResultsForSearch: Infinity});
 }
+
