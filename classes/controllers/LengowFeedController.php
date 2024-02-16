@@ -35,7 +35,7 @@ class LengowFeedController extends LengowController
      */
     public function postProcess()
     {
-        $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
+        $action = Tools::getValue('action') ?? '';
         if ($action) {
             switch ($action) {
                 case 'change_option_selected__selection':
@@ -434,10 +434,10 @@ class LengowFeedController extends LengowController
             $where[] = ' ps.active = 1 ';
         }
 
-        $currentPage = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;
-        $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
-        $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
-        $nbPerPage = isset($_REQUEST['nb_per_page']) ? $_REQUEST['nb_per_page'] : '';
+        $currentPage = (int) Tools::getValue('p') ?? 1;
+        $orderValue = Tools::getValue('order_value') ?? '';
+        $orderColumn = Tools::getValue('order_column') ?? '';
+        $nbPerPage = (int) Tools::getValue('nb_per_page') ?? 1;
         $this->list = new LengowList(
             [
                 'id' => 'shop_' . $idShop,
