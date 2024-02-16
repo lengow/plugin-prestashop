@@ -116,6 +116,9 @@ es:
     screen:
       nb_exported: "productos exportados"
       nb_available: "productos disponibles"
+      include_variation_product: "Incluir los productos variados"
+      include_out_of_stock_product: "Incluir los productos fuera de stock"
+      include_inactive_product: "Incluir los productos inactivos"
       include_specific_product: "Incluir los productos seleccionados"
       include_specific_product_support: "Active esta opción para hacer la selección de tus productos a exportar"
       no_result_found: "Lo sentimos, no hay resultados para su búsqueda. \n¿Tal vez si intentas modificar tu solicitud?"

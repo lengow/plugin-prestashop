@@ -100,6 +100,9 @@ status.screen.upgrade_account_button|Está bien, estoy listo para suscribirme!
 status.screen.refresh_action|Refrescar mi cuenta
 product.screen.nb_exported|productos exportados
 product.screen.nb_available|productos disponibles
+product.screen.include_variation_product|Incluir los productos variados
+product.screen.include_out_of_stock_product|Incluir los productos fuera de stock
+product.screen.include_inactive_product|Incluir los productos inactivos
 product.screen.include_specific_product|Incluir los productos seleccionados
 product.screen.include_specific_product_support|Active esta opción para hacer la selección de tus productos a exportar
 product.screen.no_result_found|Lo sentimos, no hay resultados para su búsqueda. <br />¿Tal vez si intentas modificar tu solicitud?

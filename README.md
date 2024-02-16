@@ -3,7 +3,7 @@
 - **Requires at least:** 1.7
 - **Tested up to:** 8.1.3
 - **Requires PHP:** 7.4
-- **Stable tag:** 3.4.7
+- **Stable tag:** 3.4.8
 - **License:** Apache-2.0
 - **License URI:** http://www.apache.org/licenses/LICENSE-2.0
 
@@ -80,13 +80,13 @@ Start by installing Yaml Parser:
 
     sudo apt-get install php5-dev libyaml-dev
     sudo pecl install yaml
-    
+
 To translate the project, use specific key in php code and modify the *.yml files in the directory: `lengow/translations/yml/`
 
 Once the translations are finished, just run the translation update script in `lengow/tools` folder
 
     php translate.php
-    
+
 The plugin is translated into English, French, Spanish and Italian.
 
 ## Changelog

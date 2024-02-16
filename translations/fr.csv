@@ -100,6 +100,9 @@ status.screen.upgrade_account_button|Je suis prêt à souscrire !
 status.screen.refresh_action|Actualiser mon compte
 product.screen.nb_exported|produits exportés 
 product.screen.nb_available|produits disponibles
+product.screen.include_variation_product|Inclure les variations de produits
+product.screen.include_out_of_stock_product|Inclure les produits hors stock
+product.screen.include_inactive_product|Inclure les produits inactifs
 product.screen.include_specific_product|Inclure une sélection de produits
 product.screen.include_specific_product_support|Utilisez cette option pour sélectionner vos produits individuellement
 product.screen.no_result_found|Désolé, nous n'avons trouvé aucun élément correspondant à votre demande.<br />Souhaitez-vous modifier votre recherche ?

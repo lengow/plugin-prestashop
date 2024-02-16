@@ -116,7 +116,10 @@ it:
     screen:
       nb_exported: "prodotto esportato"
       nb_available: "prodotto disponibile"
-      include_specific_product: "Includi prodotto specifico "
+      include_variation_product: "Includi prodotti variabili"
+      include_out_of_stock_product: "Includi prodotti fuori stock"
+      include_inactive_product: "Includi prodotti inattivi"
+      include_specific_product: "Includi prodotti specifici"
       include_specific_product_support: "Usa questa opzione per selezionare i fuoi prodotti uno alla volta"
       no_result_found: "Scusa, nessun risultato trovato. \nPerfavore prova a cambiare la tua ricerca."
       no_product_selected: "Seleziona prodotto"

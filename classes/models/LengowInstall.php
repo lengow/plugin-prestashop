@@ -184,7 +184,7 @@ class LengowInstall
      */
     public function install()
     {
-        if (version_compare(_PS_VERSION_, '1.7', '<')) {
+        if (version_compare(_PS_VERSION_, '1.7.0.0', '<')) {
             return false;
         }
         LengowMain::log(

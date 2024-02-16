@@ -116,6 +116,9 @@ fr:
     screen:
       nb_exported: "produits exportés "
       nb_available: "produits disponibles"
+      include_variation_product: "Inclure les variations de produits"
+      include_out_of_stock_product: "Inclure les produits hors stock"
+      include_inactive_product: "Inclure les produits inactifs"
       include_specific_product: "Inclure une sélection de produits"
       include_specific_product_support: "Utilisez cette option pour sélectionner vos produits individuellement"
       no_result_found: "Désolé, nous n'avons trouvé aucun élément correspondant à votre demande.\nSouhaitez-vous modifier votre recherche ?"
