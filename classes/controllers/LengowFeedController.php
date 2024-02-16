@@ -39,7 +39,7 @@ class LengowFeedController extends LengowController
         if ($action) {
             switch ($action) {
                 case 'change_option_selected__selection':
-                    $state = Tools::getValue('state_selection');
+                    $state = (int) Tools::getValue('state_selection');
                     $idShop = (int) Tools::getValue('id_shop');
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
@@ -57,21 +57,21 @@ class LengowFeedController extends LengowController
                             $data['state'] = true;
                                 LengowConfiguration::updatevalue(
                                 LengowConfiguration::OUT_OF_STOCK_ENABLED,
-                                false,
+                                0,
                                 null,
                                 null,
                                 $idShop
                             );
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::VARIATION_ENABLED,
-                                false,
+                                0,
                                 null,
                                 null,
                                 $idShop
                             );
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::INACTIVE_ENABLED,
-                                false,
+                                0,
                                 null,
                                 null,
                                 $idShop
@@ -86,7 +86,7 @@ class LengowFeedController extends LengowController
                     }
                     break;
                 case 'change_option_selected__out_of_stock':
-                    $state = Tools::getValue('state_out_of_stock');
+                    $state = (int) Tools::getValue('state_out_of_stock');
                     $idShop = (int) Tools::getValue('id_shop');
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
@@ -104,7 +104,7 @@ class LengowFeedController extends LengowController
                         if ($state) {
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
-                                false,
+                                0,
                                 null,
                                 null,
                                 $idShop
@@ -117,7 +117,7 @@ class LengowFeedController extends LengowController
                     }
                     break;
                 case 'change_option_selected__variation':
-                    $state = Tools::getValue('state_variation');
+                    $state = (int) Tools::getValue('state_variation');
                     $idShop = (int) Tools::getValue('id_shop');
                     if ($state !== null) {
                         LengowConfiguration::updatevalue(
@@ -135,7 +135,7 @@ class LengowFeedController extends LengowController
                         if ($state) {
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
-                                false,
+                                0,
                                 null,
                                 null,
                                 $idShop
@@ -167,7 +167,7 @@ class LengowFeedController extends LengowController
                         if ($state) {
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
-                                false,
+                                0,
                                 null,
                                 null,
                                 $idShop
@@ -588,4 +588,5 @@ class LengowFeedController extends LengowController
         return $value;
     }
 }
+
 
