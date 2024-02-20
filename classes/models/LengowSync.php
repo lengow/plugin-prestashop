@@ -45,7 +45,7 @@ class LengowSync
     public const LINK_TYPE_SUPPORT = 'support';
 
     /* Default plugin links */
-    public const LINK_HELP_CENTER = 'https://help.lengow.com/hc/en-us/articles/360011970312';
+    public const LINK_HELP_CENTER = 'https://help.lengow.com/hc/en-us/articles/8951241159964-PrestaShop-Update-the-plugin-version';
     public const LINK_CHANGELOG = 'https://help.lengow.com/hc/en-us/articles/360011215559';
     public const LINK_UPDATE_GUIDE = 'https://help.lengow.com/hc/en-us/articles/360011970312#12-update-the-plugin-version';
     public const LINK_SUPPORT = 'https://help.lengow.com/hc/en-us/requests/new';
