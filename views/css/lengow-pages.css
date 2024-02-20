@@ -399,7 +399,7 @@
   flex-direction: column;
   visibility: hidden;
   position: fixed;
-  top: 280px;
+  top: 275px;
   transform: translateY(-50%);
   padding: 10px;
   width: 25%;

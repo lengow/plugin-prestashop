@@ -98,6 +98,7 @@ status.screen.second_description_end_free_trial|Votre compte va être désactiv�
 status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration. Pour conserver l'intégralité des paramètres que vous avez défini, pensez à souscrire dès maintenant !
 status.screen.upgrade_account_button|Je suis prêt à souscrire !
 status.screen.refresh_action|Actualiser mon compte
+product.screen.filter_exported|filtrer les produits exportés
 product.screen.nb_exported|produits exportés 
 product.screen.nb_available|produits disponibles
 product.screen.include_variation_product|Inclure les variations de produits

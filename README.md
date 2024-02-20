@@ -52,7 +52,7 @@ You can also start testing with lower permissions due to security reasons (644 f
 
 ### Where can I find Lengow documentation and user guides?
 
-For help setting up and configuring Lengow plugin please refer to our [user guide](https://help.lengow.com/hc/en-us/articles/360011970312)
+For help setting up and configuring Lengow plugin please refer to our [user guide](https://help.lengow.com/hc/en-us/articles/8951287563164-PrestaShop-Set-up-the-Plugin)
 
 ### Where can I get support?
 
@@ -66,11 +66,8 @@ Lengow for PrestaShop is available under license (Apache-2.0). If you want to co
 The `master` branch contains the latest stable version of the plugin. The `dev` branch contains the version under development.
 All Pull requests must be made on the `dev` branch and must be validated by reviewers working at Lengow.
 
-By default the plugin is made to work on our pre-production environment (my.lengow.net).
-To change this environment, you must modify the two constants present in the file `lengow/classes/models/LengowConnector.php`
-
-    const LENGOW_URL = 'lengow.net';
-    const LENGOW_API_URL = 'https://api.lengow.net';
+By default, the plugin is made to work on our production environment (my.lengow.io).
+The environment can be changed to pre-production (my.lengow.net) in the settings of this module, after active debug mode option.
 
 ### Translation
 

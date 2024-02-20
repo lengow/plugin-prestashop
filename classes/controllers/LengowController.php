@@ -155,10 +155,10 @@ class LengowController
         $this->context->smarty->assign('pluginIsUpToDate', $pluginIsUpToDate);
         $this->context->smarty->assign('showPluginUpgradeModal', $showPluginUpgradeModal);
         $this->context->smarty->assign('lengowModalAjaxLink', $lengowModalAjaxLink);
-        $this->context->smarty->assign('helpCenterLink', $pluginLinks[LengowSync::LINK_TYPE_HELP_CENTER]);
-        $this->context->smarty->assign('updateGuideLink', $pluginLinks[LengowSync::LINK_TYPE_UPDATE_GUIDE]);
-        $this->context->smarty->assign('changelogLink', $pluginLinks[LengowSync::LINK_TYPE_CHANGELOG]);
-        $this->context->smarty->assign('supportLink', $pluginLinks[LengowSync::LINK_TYPE_SUPPORT]);
+        $this->context->smarty->assign('helpCenterLink', LengowSync::LINK_HELP_CENTER);
+        $this->context->smarty->assign('updateGuideLink', LengowSync::LINK_UPDATE_GUIDE);
+        $this->context->smarty->assign('changelogLink', LengowSync::LINK_CHANGELOG);
+        $this->context->smarty->assign('supportLink', LengowSync::LINK_SUPPORT);
         $this->context->smarty->assign('multiShop', $multiShop);
         $this->context->smarty->assign('debugMode', $debugMode);
         $this->context->smarty->assign('isNewMerchant', $this->isNewMerchant);

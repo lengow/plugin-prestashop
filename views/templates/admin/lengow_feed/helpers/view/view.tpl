@@ -22,7 +22,9 @@
     <div class="lgw-container">
         <div class="filter-column">
             <div class="sticky-icon" id="sticky-icon">
-                <a title="Filtrer les produits exportés"><i style="font-size: 20px;color: #555" class="fa fa-filter"></i></a>
+                <a title="{$locale->t('product.screen.filter_exported')}">
+                    <i style="font-size: 20px;color: #555" class="fa fa-filter"></i>
+                </a>
             </div>
         </div>
         {if $debugMode}
@@ -73,8 +75,7 @@
                                     </div> {$locale->t('product.screen.include_variation_product')|escape:'htmlall':'UTF-8'}
                                 </label>
                             </div>
-                            <i class="fa fa-info-circle lengow_link_tooltip"
-                               title="{$locale->t('product.screen.include_specific_product_support')|escape:'htmlall':'UTF-8'}"></i>
+
                         </div>
                         <br>
                         <div class="switch-row">
@@ -96,8 +97,7 @@
                                     </div> {$locale->t('product.screen.include_out_of_stock_product')|escape:'htmlall':'UTF-8'}
                                 </label>
                             </div>
-                            <i class="fa fa-info-circle lengow_link_tooltip"
-                               title="{$locale->t('product.screen.include_specific_product_support')|escape:'htmlall':'UTF-8'}"></i>
+
                         </div>
                         <br>
                         <div class="switch-row">
@@ -119,8 +119,7 @@
                                     </div> {$locale->t('product.screen.include_inactive_product')|escape:'htmlall':'UTF-8'}
                                 </label>
                             </div>
-                            <i class="fa fa-info-circle lengow_link_tooltip"
-                               title="{$locale->t('product.screen.include_specific_product_support')|escape:'htmlall':'UTF-8'}"></i>
+                           
                         </div>
                         <br>
                         <div class="switch-row">

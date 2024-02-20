@@ -114,6 +114,7 @@ es:
       refresh_action: "Refrescar mi cuenta"
   product:
     screen:
+      filter_exported: "filtrar los productos exportados"  
       nb_exported: "productos exportados"
       nb_available: "productos disponibles"
       include_variation_product: "Incluir los productos variados"
