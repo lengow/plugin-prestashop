@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var url = $(this).closest('.table_row').find('.feed_name a').attr('href');
             if (url) {
                 window.open(url, '_blank');
-            }
+            };
             return false;
         });
 
@@ -304,5 +304,3 @@ function pluginsRender(){
     // Selects
     lengow_jquery('.lgw-pagination-select-item').select2({minimumResultsForSearch: Infinity});
 }
-
-

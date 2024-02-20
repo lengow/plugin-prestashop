@@ -157,4 +157,3 @@
     </div>
 </div>
 <script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/feed.js"></script>
-
