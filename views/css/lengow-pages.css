@@ -375,6 +375,42 @@
   margin-bottom: 15px;
 }
 
+.sticky-icon {
+  position: fixed;
+  top: 160px;
+  transform: translateY(-50%);
+  left: 230px;
+  z-index: 999;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.sticky-icon:hover {
+  color: #019ce2;
+}
+
+.sticky-switch {
+  visibility: hidden;
+  position: fixed;
+  top: 250px;
+  transform: translateY(-50%);
+  padding: 10px;
+  left: 230px;
+  width: 25%;
+  max-height: 100vh;
+  overflow-y: auto;
+  margin-left: 20px;
+  z-index: 998;
+  background-color: white;
+  border: 1px solid black;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.show-switch {
+  visibility: visible !important;
+  opacity: 1;
+}
 
 /*************************************************/
 /*                     ORDERS                    */
