@@ -463,13 +463,14 @@ class LengowSync
      * Get an array of plugin links for a specific iso code
      *
      * @param string|null $isoCode
+     * @param bool|null $default
      *
      * @return array
      */
-    public static function getPluginLinks($isoCode = null)
+    public static function getPluginLinks(?string $isoCode = null, ?bool $default = false)
     {
         $pluginData = self::getPluginData();
-        if (!$pluginData) {
+        if (!$pluginData || $default) {
             return self::$defaultPluginLinks;
         }
         // check if the links are available in the locale
