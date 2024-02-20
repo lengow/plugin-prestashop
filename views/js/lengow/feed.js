@@ -20,8 +20,8 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     const stickyIcon = document.getElementById('sticky-icon');
-    console.log('ok');
     const stickySwitches = document.querySelectorAll('.sticky-switch');
+
     stickyIcon.addEventListener('click', function() {
         stickySwitches.forEach(function(switchElem) {
             const isSwitchVisible = switchElem.classList.contains('show-switch');
@@ -32,7 +32,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    document.addEventListener('click', function(event) {
+        const clickedElement = event.target;
+        const isStickySwitch = clickedElement.closest('.sticky-switch');
+        const isStickyIcon = clickedElement.closest('#sticky-icon');
+
+        if (!isStickySwitch && !isStickyIcon) {
+            stickySwitches.forEach(function(switchElem) {
+                switchElem.classList.remove('show-switch');
+            });
+        }
+    });
 });
+
+
 
 (function ($) {
     $(document).ready(function () {
@@ -277,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var url = $(this).closest('.table_row').find('.feed_name a').attr('href');
             if (url) {
                 window.open(url, '_blank');
-            };
+            }
             return false;
         });
 

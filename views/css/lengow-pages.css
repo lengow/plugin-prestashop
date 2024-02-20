@@ -375,30 +375,35 @@
   margin-bottom: 15px;
 }
 
+.switch-row {
+  display: flex;
+  align-items: center;
+}
+
 .sticky-icon {
   position: fixed;
-  top: 160px;
+  top: 170px;
   transform: translateY(-50%);
-  left: 230px;
   z-index: 999;
   padding: 10px;
   cursor: pointer;
 }
 
-.sticky-icon:hover {
-  color: #019ce2;
+.sticky-icon a i:hover {
+  color: #019ce2 !important;
 }
 
 .sticky-switch {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   visibility: hidden;
   position: fixed;
-  top: 250px;
+  top: 280px;
   transform: translateY(-50%);
   padding: 10px;
-  left: 230px;
   width: 25%;
   max-height: 100vh;
-  overflow-y: auto;
   margin-left: 20px;
   z-index: 998;
   background-color: white;
@@ -411,6 +416,19 @@
   visibility: visible !important;
   opacity: 1;
 }
+
+.filter-column {
+  float: left;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.variation-row .lengow_tooltip  {
+  z-index: 999999 !important;
+}
+
+
 
 /*************************************************/
 /*                     ORDERS                    */
