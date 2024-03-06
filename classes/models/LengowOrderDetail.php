@@ -69,7 +69,6 @@ class LengowOrderDetail extends OrderDetail
      */
     public static function getOrderReturnTrackingNumber($orderId)
     {
-
         try {
             $order = new Order($orderId);
             $orderCarrier = new OrderCarrier((int) $order->getIdOrderCarrier());
