@@ -1,5 +1,3 @@
 services:
     PrestaShopBundle\Controller\Admin\Sell\Order\OrderController:      
       class: PrestaShop\Module\Lengow\Controller\AdminOrderController
-#    PrestaShopBundle\Form\Admin\Sell\Order\UpdateOrderShippingType:
-#      class: PrestaShop\Module\Lengow\Form\Admin\Sell\Order\UpdateOrderShippingType
