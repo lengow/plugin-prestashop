@@ -23,20 +23,6 @@ $autoloadPath = __DIR__ . '/vendor/autoload.php';
 if (file_exists($autoloadPath)) {
     require_once $autoloadPath;
 }
-
-//define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR);
-//
-//$sep = DIRECTORY_SEPARATOR;
-//$notInPresta14 = ['LengowGender.php'];
-//spl_autoload_register('lengowAutoloader');
-//function lengowAutoloader($className)
-//{
-//    if (Tools::substr($className, 0, 6) === 'Lengow') {
-//        if (Tools::substr($className, -10) === 'Controller') {
-//            $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/controllers/';
-//        } else {
-//            $directory = _PS_MODULE_LENGOW_DIR_ . 'classes/models/';
-//        }
-//        require_once $directory . $className . '.php';
-//    }
-//}
+if (!defined('_PS_MODULE_LENGOW_DIR_')) {
+    define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR);
+}
