@@ -134,6 +134,8 @@ remove_files $FOLDER_TMP ".php-cs-fixer.cache"
 remove_files $FOLDER_TMP ".git"
 # remove .DS_Store
 remove_files $FOLDER_TMP ".DS_Store"
+# remove composer.json
+remove_files $FOLDER_TMP "composer.json"
 # remove .AdminLengowHome.gif
 remove_files $FOLDER_TMP "AdminLengowHome.gif"
 # remove .idea

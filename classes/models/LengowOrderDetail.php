@@ -38,4 +38,52 @@ class LengowOrderDetail extends OrderDetail
         $row = Db::getInstance()->getRow($sql);
         return (int) $row['id_order_detail'];
     }
+
+    /**
+     *
+     * @param string $returnTrackingNumber
+     * @param int    $orderId
+     */
+    public static function updateOrderReturnTrackingNumber($returnTrackingNumber, $orderId)
+    {
+        try {
+            $returnTrackingNumber = pSQL($returnTrackingNumber);
+            $order = new Order($orderId);
+            $orderCarrier = new OrderCarrier((int) $order->getIdOrderCarrier());
+            $orderCarrier->return_tracking_number = $returnTrackingNumber;
+            $orderCarrier->update();
+
+        } catch (\Exception $e) {
+            LengowOrderError::addOrderLog(
+                $orderId,
+                '[PrestaShop error]: '.$e->getMessage(),
+                LengowOrderError::TYPE_ERROR_SEND
+            );
+        }
+    }
+
+    /**
+     *
+     * @param int $orderId
+     * @return string
+     */
+    public static function getOrderReturnTrackingNumber($orderId)
+    {
+
+        try {
+            $order = new Order($orderId);
+            $orderCarrier = new OrderCarrier((int) $order->getIdOrderCarrier());
+
+            return (string) $orderCarrier->return_tracking_number;
+
+        } catch (\Exception $e) {
+            LengowOrderError::addOrderLog(
+                $orderId,
+                '[PrestaShop error]: '.$e->getMessage(),
+                LengowOrderError::TYPE_ERROR_SEND
+            );
+        }
+
+        return '';
+    }
 }

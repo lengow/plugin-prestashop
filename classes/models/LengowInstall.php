@@ -184,7 +184,7 @@ class LengowInstall
      */
     public function install()
     {
-        if (version_compare(_PS_VERSION_, '1.7', '<')) {
+        if (version_compare(_PS_VERSION_, '1.7.0.0', '<')) {
             return false;
         }
         LengowMain::log(
@@ -815,6 +815,20 @@ class LengowInstall
                 LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.table_already_created', ['name' => $name])
             );
+        }
+
+        $name = 'order_carrier';
+        $column = LengowAction::ARG_RETURN_TRACKING_NUMBER;
+        if (self::checkTableExists($name) && !self::checkFieldExists($name, $column)) {
+            $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
+                    . 'ADD COLUMN `return_tracking_number` VARCHAR(64);';
+            Db::getInstance()->execute($sql);
+        } else {
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.column_already_created', ['name' => $column])
+            );
+
         }
 
         return true;

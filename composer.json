@@ -1,0 +1,16 @@
+{
+  "name" : "prestashop/lengow",
+  "description": "Lengow",
+  "autoload": {
+    "psr-4": {
+      "Lengow\\": "src/"
+
+    },
+    "classmap": [
+      "lengow.php",
+      "src/",
+      "classes/"
+    ]
+  },
+  "type" : "prestashop-module"
+}

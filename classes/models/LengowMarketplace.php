@@ -449,7 +449,8 @@ class LengowMarketplace
         // get tracking number for tracking number and tracking url
         $idOrderCarrier = $lengowOrder->getIdOrderCarrier();
         $orderCarrier = new OrderCarrier($idOrderCarrier);
-        $trackingNumber = $orderCarrier->tracking_number;
+        $trackingNumber = $orderCarrier->tracking_number ?? '';
+        $returnTrackingNumber = $orderCarrier->return_tracking_number ?? '';
         if ($trackingNumber === '') {
             $trackingNumber = $lengowOrder->shipping_number;
         }
@@ -458,10 +459,14 @@ class LengowMarketplace
                 case LengowAction::ARG_TRACKING_NUMBER:
                     $params[$arg] = $trackingNumber;
                     break;
+                case LengowAction::ARG_RETURN_TRACKING_NUMBER:
+                    $params[$arg] = $returnTrackingNumber;
+                    break;
                 case LengowAction::ARG_CARRIER:
                 case LengowAction::ARG_CARRIER_NAME:
                 case LengowAction::ARG_SHIPPING_METHOD:
                 case LengowAction::ARG_CUSTOM_CARRIER:
+                case LengowAction::ARG_RETURN_CARRIER:
                     if ((string) $lengowOrder->lengowCarrier !== '') {
                         $carrierName = (string) $lengowOrder->lengowCarrier;
                     } else {
