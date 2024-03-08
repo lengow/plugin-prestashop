@@ -54,7 +54,7 @@
                 {% if updateOrderShippingForm.return_tracking_number is defined %}
                     <div class="form-group">
                         <label class="form-control-label" for="">
-                            {{ 'Return Tracking number'|trans({}, 'Admin.Shipping.Feature') }}
+                            {{ 'Return Tracking number'|trans({}, 'order.screen.return_tracking_number_label') }}
                         </label>
                         {{ form_widget(updateOrderShippingForm.return_tracking_number) }}
                     </div>

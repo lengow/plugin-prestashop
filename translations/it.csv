@@ -162,6 +162,7 @@ order.screen.status_canceled|Cancellato
 order.screen.type_express|Consegna espressa
 order.screen.type_delivered_by_marketplace|Spedito dal Marketplace
 order.screen.type_business|Business
+order.screen.return_tracking_number_label|numero di reso
 order.table.action_lengow|Azione
 order.table.order_lengow_state|Stato
 order.table.order_types|Tipi
@@ -345,6 +346,8 @@ lengow_setting.lengow_import_force_product_title|Forzare i prodotti
 lengow_setting.lengow_import_force_product_legend|Attiva questa opzione se vuoi fozare l'importazione sei tuoi prodotti non disponibili/inattivi
 lengow_setting.lengow_carrier_semantic_enable_title|Voglio attivare l'opzione di corrispondenza semantica dei corrieri
 lengow_setting.lengow_carrier_semantic_enable_legend|Con questa opzione, fai corrispondere il corriere o il metodo di trasporto indicato dal marketplace con il nome dei vostri corrieri PrestaShop.
+lengow_setting.lengow_return_tracking_number_enable_title|voglio inviare il numero di reso
+lengow_setting.lengow_return_tracking_number_enable_legend|questa informazione è necessaria per alcuni markeplaces come Zalando
 lengow_setting.lengow_import_days_title|Sincronizza tutti gli ordini aggiornati da
 lengow_setting.lengow_anonymize_email|anonimizzare gli indirizzi e-mail dei clienti
 lengow_setting.lengow_import_days_legend|Attiva questa opzione se se hai ordini sospesi incorrettamente. Ti permetterà di importare di nuovo tutti gli rodini che sono stati processati durante questo periodo di blocco

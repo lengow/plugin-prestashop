@@ -162,6 +162,7 @@ order.screen.status_canceled|Annulé
 order.screen.type_express|Livraison Express
 order.screen.type_delivered_by_marketplace|Expédié par la marketplace
 order.screen.type_business|Business
+order.screen.return_tracking_number_label|numéro de retour
 order.table.action_lengow|Actions
 order.table.order_lengow_state|Statut
 order.table.order_types|Types
@@ -345,6 +346,8 @@ lengow_setting.lengow_import_force_product_title|Forcer les produits
 lengow_setting.lengow_import_force_product_legend|Activez cette option si vous souhaitez importer automatiquement vos produits hors stock et produits inactifs.
 lengow_setting.lengow_carrier_semantic_enable_title|Je veux activer l'option de correspondance sémantique des transporteurs
 lengow_setting.lengow_carrier_semantic_enable_legend|Avec cette option, faites correspondre le transporteur ou la méthode de transport indiqué par la marketplace avec le nom de vos transporteurs PrestaShop.
+lengow_setting.lengow_return_tracking_number_enable_title|Je veux envoyer le numéro de retour
+lengow_setting.lengow_return_tracking_number_enable_legend|Certaines marketplaces comme Zalando attendent cette information au moment de l'envoi'
 lengow_setting.lengow_import_days_title|Synchroniser toutes les commandes mises à jour depuis
 lengow_setting.lengow_anonymize_email|Anonymiser les adresses e-mail des clients
 lengow_setting.lengow_import_days_legend|Activez cette option si vous avez des commandes en erreur en attente. Cela vous permet de réimporter les commandes passées depuis le dernier import réussi.
