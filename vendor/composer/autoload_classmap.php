@@ -56,6 +56,4 @@ return array(
     'LengowToolboxElement' => $baseDir . '/classes/models/LengowToolboxElement.php',
     'LengowTranslation' => $baseDir . '/classes/models/LengowTranslation.php',
     'PrestaShop\\Module\\Lengow\\Controller\\AdminOrderController' => $baseDir . '/src/Controller/AdminOrderController.php',
-    'PrestaShop\\Module\\Lengow\\Core\\Domain\\Order\\CommandHandler\\UpdateOrderShippingDetailsHandlerInterface' => $baseDir . '/src/Core/Domain/Order/CommandHandler/UpdateOrderShippingDetailsHandlerInterface.php',
-    'PrestaShop\\Module\\Lengow\\Core\\Domain\\Order\\Command\\UpdateOrderShippingDetailsCommand' => $baseDir . '/src/Core/Domain/Order/Command/UpdateOrderShippingDetailsCommand.php',
 );

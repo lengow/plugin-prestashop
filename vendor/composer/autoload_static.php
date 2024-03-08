@@ -71,8 +71,6 @@ class ComposerStaticInit4bfa755ad204a2f10b057f94fa964aec
         'LengowToolboxElement' => __DIR__ . '/../..' . '/classes/models/LengowToolboxElement.php',
         'LengowTranslation' => __DIR__ . '/../..' . '/classes/models/LengowTranslation.php',
         'PrestaShop\\Module\\Lengow\\Controller\\AdminOrderController' => __DIR__ . '/../..' . '/src/Controller/AdminOrderController.php',
-        'PrestaShop\\Module\\Lengow\\Core\\Domain\\Order\\CommandHandler\\UpdateOrderShippingDetailsHandlerInterface' => __DIR__ . '/../..' . '/src/Core/Domain/Order/CommandHandler/UpdateOrderShippingDetailsHandlerInterface.php',
-        'PrestaShop\\Module\\Lengow\\Core\\Domain\\Order\\Command\\UpdateOrderShippingDetailsCommand' => __DIR__ . '/../..' . '/src/Core/Domain/Order/Command/UpdateOrderShippingDetailsCommand.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
