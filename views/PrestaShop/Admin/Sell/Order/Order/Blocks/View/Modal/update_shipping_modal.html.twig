@@ -57,10 +57,8 @@
                             {{ 'Return Tracking number'|trans({}, 'Admin.Shipping.Feature') }}
                         </label>
                         {{ form_widget(updateOrderShippingForm.return_tracking_number) }}
-                    {% endif %}
-
-
-                </div>
+                    </div>
+                {% endif %}
                 <div class="form-group">
                     <label class="form-control-label" for="{{ updateOrderShippingForm.new_carrier_id.vars.id }}">
                         {{ 'Carrier'|trans({}, 'Admin.Global') }}

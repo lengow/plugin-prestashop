@@ -45,7 +45,9 @@
         <th>{{ 'Weight'|trans({}, 'Admin.Global') }}</th>
         <th>{{ 'Shipping cost'|trans({}, 'Admin.Shipping.Feature') }}</th>
         <th>{{ 'Tracking number'|trans({}, 'Admin.Shipping.Feature') }}</th>
-        <th>{{ 'Return Tracking number'|trans({}, 'Admin.Shipping.Feature') }}</th>
+        {% if isActiveReturnTracking and returnTrackingNumber is defined %}
+            <th>{{ 'Return Tracking number'|trans({}, 'Admin.Shipping.Feature') }}</th>
+        {% endif %}
         <th></th>
       </tr>
     </thead>
@@ -68,7 +70,7 @@
           </td>
           <td>
 
-            {% if returnTrackingNumber is defined %}
+            {% if isActiveReturnTracking and returnTrackingNumber is defined %}
               {{ returnTrackingNumber }}
             {% endif %}
           </td>

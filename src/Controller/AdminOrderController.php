@@ -3,6 +3,7 @@
 namespace PrestaShop\Module\Lengow\Controller;
 
 use LengowOrderDetail;
+use LengowConfiguration;
 use Exception;
 use PrestaShop\PrestaShop\Core\Domain\Order\Command\UpdateOrderShippingDetailsCommand;
 use PrestaShop\PrestaShop\Core\Domain\CartRule\Exception\InvalidCartRuleDiscountValueException;
@@ -48,6 +49,12 @@ use PrestaShopBundle\Security\Annotation\AdminSecurity;
 class AdminOrderController extends OrderController
 {
     /**
+     *
+     * @var int
+     */
+    private int $orderId;
+
+    /**
      * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))")
      *
      * @param int $orderId
@@ -60,6 +67,7 @@ class AdminOrderController extends OrderController
 
 
         try {
+
             /** @var OrderForViewing $orderForViewing */
             $orderForViewing = $this->getQueryBus()->handle(new GetOrderForViewing($orderId, QuerySorting::DESC));
         } catch (OrderException $e) {
@@ -67,7 +75,7 @@ class AdminOrderController extends OrderController
 
             return $this->redirectToRoute('admin_orders_index');
         }
-
+        $this->orderId = $orderId;
         $formFactory = $this->get('form.factory');
         $updateOrderStatusForm = $formFactory->createNamed(
             'update_order_status',
@@ -121,11 +129,8 @@ class AdminOrderController extends OrderController
             'order_id' => $orderId,
         ]);
 
-        $returnTrackingNumber = LengowOrderDetail::getOrderReturnTrackingNumber($orderId);
-        $updateOrderShippingForm->add('return_tracking_number', TextType::class, [
-            'required' => false,
-            'data' => $returnTrackingNumber
-        ]);
+
+
 
         $currencyDataProvider = $this->container->get('prestashop.adapter.data_provider.currency');
         $orderCurrency = $currencyDataProvider->getCurrencyById($orderForViewing->getCurrencyId());
@@ -223,7 +228,8 @@ class AdminOrderController extends OrderController
             'paginationNumOptions' => $paginationNumOptions,
             'isAvailableQuantityDisplayed' => $this->configuration->getBoolean('PS_STOCK_MANAGEMENT'),
             'internalNoteForm' => $internalNoteForm->createView(),
-            'returnTrackingNumber' => $returnTrackingNumber
+            'returnTrackingNumber' => $this->getReturnTrackingNumber($this->orderId),
+            'isActiveReturnTracking' => $this->isActiveReturnTracking()
         ]);
     }
     /**
@@ -241,11 +247,9 @@ class AdminOrderController extends OrderController
      */
     public function updateShippingAction(int $orderId, Request $request): RedirectResponse
     {
+        $this->orderId = $orderId;
         $form = $this->createForm(UpdateOrderShippingType::class, [], [
             'order_id' => $orderId,
-        ]);
-        $form->add('return_tracking_number', TextType::class, [
-            'required' => false,
         ]);
 
         $form->handleRequest($request);
@@ -255,7 +259,8 @@ class AdminOrderController extends OrderController
 
             try {
 
-                if (!empty($data['return_tracking_number'])) {
+                if (!empty($data['return_tracking_number'])
+                        && $this->isActiveReturnTracking()) {
                     LengowOrderDetail::updateOrderReturnTrackingNumber(
                         $data['return_tracking_number'],
                         $orderId
@@ -452,9 +457,50 @@ class AdminOrderController extends OrderController
         ];
     }
 
+    /**
+     *
+     * @return bool
+     */
+    private function isActiveReturnTracking(): bool
+    {
+        return (bool) LengowConfiguration::getGlobalValue(
+            LengowConfiguration::RETURN_TRACKING_NUMBER_ENABLED
+        );
+    }
 
+    /**
+     *
+     * @param int $orderId
+     * @return string
+     */
+    private function getReturnTrackingNumber(int $orderId): string
+    {
+        return LengowOrderDetail::getOrderReturnTrackingNumber($orderId);
+    }
 
+    /**
+     *
+     * @param string $type
+     * @param mixed $data
+     * @param array $options
+     *
+     * @return mixed $form
+     */
+    protected function createForm($type, $data = null, array $options = [])
+    {
+        $form = parent::createForm($type, $data, $options);
 
+        if ($form->getName() === 'update_order_shipping'
+                && $this->isActiveReturnTracking()) {
 
+            $returnTrackingNumber = $this->getReturnTrackingNumber($this->orderId);
+            $form->add('return_tracking_number', TextType::class, [
+                'required' => false,
+                'data' => $returnTrackingNumber
+            ]);
+        }
+
+        return $form;
+    }
 
 }
