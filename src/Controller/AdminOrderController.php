@@ -45,6 +45,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
+use Symfony\Component\Form\FormInterface;
 
 class AdminOrderController extends OrderController
 {
@@ -486,7 +487,7 @@ class AdminOrderController extends OrderController
      *
      * @return mixed $form
      */
-    protected function createForm($type, $data = null, array $options = [])
+    protected function createForm(string $type, $data = null, array $options = []): FormInterface
     {
         $form = parent::createForm($type, $data, $options);
 
