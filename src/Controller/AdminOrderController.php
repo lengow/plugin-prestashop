@@ -129,10 +129,13 @@ class AdminOrderController extends OrderController
         ], [
             'order_id' => $orderId,
         ]);
-
-
-
-
+        if ($this->isActiveReturnTracking()) {
+            $returnTrackingNumber = $this->getReturnTrackingNumber($this->orderId);
+            $updateOrderShippingForm->add('return_tracking_number', TextType::class, [
+                'required' => false,
+                'data' => $returnTrackingNumber
+            ]);
+        }
         $currencyDataProvider = $this->container->get('prestashop.adapter.data_provider.currency');
         $orderCurrency = $currencyDataProvider->getCurrencyById($orderForViewing->getCurrencyId());
 
@@ -252,6 +255,12 @@ class AdminOrderController extends OrderController
         $form = $this->createForm(UpdateOrderShippingType::class, [], [
             'order_id' => $orderId,
         ]);
+        if ($this->isActiveReturnTracking()) {
+            $form->add('return_tracking_number', TextType::class, [
+                'required' => false
+
+            ]);
+        }
 
         $form->handleRequest($request);
 
@@ -477,31 +486,6 @@ class AdminOrderController extends OrderController
     private function getReturnTrackingNumber(int $orderId): string
     {
         return LengowOrderDetail::getOrderReturnTrackingNumber($orderId);
-    }
-
-    /**
-     *
-     * @param string $type
-     * @param mixed $data
-     * @param array $options
-     *
-     * @return mixed $form
-     */
-    protected function createForm(string $type, $data = null, array $options = []): FormInterface
-    {
-        $form = parent::createForm($type, $data, $options);
-
-        if ($form->getName() === 'update_order_shipping'
-                && $this->isActiveReturnTracking()) {
-
-            $returnTrackingNumber = $this->getReturnTrackingNumber($this->orderId);
-            $form->add('return_tracking_number', TextType::class, [
-                'required' => false,
-                'data' => $returnTrackingNumber
-            ]);
-        }
-
-        return $form;
     }
 
 }
