@@ -7,7 +7,7 @@
 /config/index.php|be8b25f88c14bddd7711e4585ebae316
 /translations/en.csv|e6b93f3e474227ad9536485680a01e91
 /translations/es.csv|8fb3e80b1ed3a102b4e691e5c6c0236f
-/translations/fr.csv|a593486f39ad50ec2d72e516b3bd676d
+/translations/fr.csv|0ca9b78c7aa545c4619323bc98998d94
 /translations/index.php|be8b25f88c14bddd7711e4585ebae316
 /translations/it.csv|e03758ab3cb3daa2de958838fb78fb99
 /classes/controllers/LengowHomeController.php|7cdeec9a73addc0eca5d252a3d09903f
@@ -457,7 +457,7 @@
 /views/templates/admin/lengow_order_setting/helpers/view/country_selector.tpl|a267b04ca30c63272a0518df44d2d132
 /views/templates/admin/lengow_order_setting/helpers/view/default_carrier.tpl|59082017288f80c73b1fde08de8fd088
 /views/templates/admin/lengow_order_setting/helpers/view/marketplace_matching.tpl|795fa9a03687067686437818681c1131
-/views/templates/admin/lengow_order_setting/helpers/view/view.tpl|064b2524739bf2de81dcf81a4c77ddde
+/views/templates/admin/lengow_order_setting/helpers/view/view.tpl|0092216298ae77341e1d769ddb46dc3c
 /views/templates/admin/lengow_order_setting/helpers/view/marketplace_carrier.tpl|52c4ee9821380783e3816deb28f8f22f
 /views/templates/admin/lengow_order_setting/helpers/view/index.php|be8b25f88c14bddd7711e4585ebae316
 /views/templates/admin/lengow_order_setting/helpers/view/marketplace_method.tpl|ebc5d69c98f9f796a83c1ae6a32420b0
