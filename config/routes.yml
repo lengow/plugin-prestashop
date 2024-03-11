@@ -11,3 +11,12 @@ admin_orders_view:
     expose: true
   requirements:
     orderId: \d+
+
+admin_orders_update_shipping:
+  path: /{orderId}/shipping
+  methods: [ POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::updateShippingAction'
+    _legacy_controller: AdminOrders
+  requirements:
+    orderId: \d+        
