@@ -821,7 +821,7 @@ class LengowInstall
         $column = LengowAction::ARG_RETURN_TRACKING_NUMBER;
         if (self::checkTableExists($name) && !self::checkFieldExists($name, $column)) {
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'ADD COLUMN `return_tracking_number` VARCHAR(64);';
+                    . 'ADD COLUMN `'.$column.'` VARCHAR(64);';
             Db::getInstance()->execute($sql);
         } else {
             LengowMain::log(
