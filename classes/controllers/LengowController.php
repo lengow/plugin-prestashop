@@ -117,7 +117,10 @@ class LengowController
         return true;
     }
 
-    private function prepareDisplay()
+    /**
+     * affect variables to template display
+     */
+    protected function prepareDisplay()
     {
 
         $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);

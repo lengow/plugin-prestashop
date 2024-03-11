@@ -28,6 +28,7 @@ class LengowHomeController extends LengowController
      */
     public function postProcess()
     {
+        $this->prepareDisplay();
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
         if ($action) {
             switch ($action) {

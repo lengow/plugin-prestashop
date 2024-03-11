@@ -1,3 +1,0 @@
-services:
-    PrestaShopBundle\Controller\Admin\Sell\Order\OrderController:      
-      class: PrestaShop\Module\Lengow\Controller\AdminOrderController
