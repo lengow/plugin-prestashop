@@ -758,4 +758,37 @@ class LengowMarketplace
         );
         return $success ? $idMarketplace : false;
     }
+
+    /**
+     *
+     * @return bool
+     */
+    public function hasReturnTrackingCarrier() : bool
+    {
+        $action =  $this->getAction(LengowAction::TYPE_SHIP);
+        if (!$action) {
+            return false;
+        }
+        $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_SHIP);
+
+        return in_array(LengowAction::ARG_RETURN_TRACKING_CARRIER, $arguments);
+
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function hasReturnTrackingNumber() : bool
+    {
+        $action = $this->getAction(LengowAction::TYPE_SHIP);
+        if (!$action) {
+            return false;
+        }
+        $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_SHIP);
+
+        return in_array(LengowAction::ARG_RETURN_TRACKING_NUMBER, $arguments);
+
+    }
+
 }

@@ -1008,6 +1008,14 @@ class LengowOrder extends Order
         return false;
     }
 
+    public function getMarketPlace()
+    {
+        return  LengowMain::getMarketplaceSingleton(
+            $this->lengowMarketplaceName
+        );
+
+    }
+
     /**
      * Send Order action
      *

@@ -3,7 +3,9 @@
 namespace PrestaShop\Module\Lengow\Controller;
 
 use LengowOrderDetail;
-use LengowConfiguration;
+use LengowOrder;
+use LengowTranslation;
+use LengowAction;
 use Exception;
 use PrestaShop\PrestaShop\Core\Domain\Order\Command\UpdateOrderShippingDetailsCommand;
 use PrestaShop\PrestaShop\Core\Domain\CartRule\Exception\InvalidCartRuleDiscountValueException;
@@ -49,11 +51,7 @@ use Symfony\Component\Form\FormInterface;
 
 class AdminOrderController extends OrderController
 {
-    /**
-     *
-     * @var int
-     */
-    private int $orderId;
+
 
     /**
      * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))")
@@ -76,7 +74,7 @@ class AdminOrderController extends OrderController
 
             return $this->redirectToRoute('admin_orders_index');
         }
-        $this->orderId = $orderId;
+        $locale = new LengowTranslation();
         $formFactory = $this->get('form.factory');
         $updateOrderStatusForm = $formFactory->createNamed(
             'update_order_status',
@@ -129,9 +127,9 @@ class AdminOrderController extends OrderController
         ], [
             'order_id' => $orderId,
         ]);
-        if ($this->isActiveReturnTracking()) {
-            $returnTrackingNumber = $this->getReturnTrackingNumber($this->orderId);
-            $updateOrderShippingForm->add('return_tracking_number', TextType::class, [
+        if ($this->isActiveReturnTracking($orderId)) {
+            $returnTrackingNumber = $this->getReturnTrackingNumber($orderId);
+            $updateOrderShippingForm->add(LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
                 'required' => false,
                 'data' => $returnTrackingNumber
             ]);
@@ -233,7 +231,8 @@ class AdminOrderController extends OrderController
             'isAvailableQuantityDisplayed' => $this->configuration->getBoolean('PS_STOCK_MANAGEMENT'),
             'internalNoteForm' => $internalNoteForm->createView(),
             'returnTrackingNumber' => $this->getReturnTrackingNumber($this->orderId),
-            'isActiveReturnTracking' => $this->isActiveReturnTracking()
+            'isActiveReturnTracking' => $this->isActiveReturnTracking(),
+            'returnTrackingNumberLabel' => $locale->t('order.screen.return_tracking_number_label')
         ]);
     }
     /**
@@ -251,14 +250,13 @@ class AdminOrderController extends OrderController
      */
     public function updateShippingAction(int $orderId, Request $request): RedirectResponse
     {
-        $this->orderId = $orderId;
+
         $form = $this->createForm(UpdateOrderShippingType::class, [], [
             'order_id' => $orderId,
         ]);
-        if ($this->isActiveReturnTracking()) {
-            $form->add('return_tracking_number', TextType::class, [
+        if ($this->isActiveReturnTracking($orderId)) {
+            $form->add(LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
                 'required' => false
-
             ]);
         }
 
@@ -269,8 +267,8 @@ class AdminOrderController extends OrderController
 
             try {
 
-                if (!empty($data['return_tracking_number'])
-                        && $this->isActiveReturnTracking()) {
+                if (!empty($data[LengowAction::ARG_RETURN_TRACKING_NUMBER])
+                        && $this->isActiveReturnTracking($orderId)) {
                     LengowOrderDetail::updateOrderReturnTrackingNumber(
                         $data['return_tracking_number'],
                         $orderId
@@ -471,11 +469,12 @@ class AdminOrderController extends OrderController
      *
      * @return bool
      */
-    private function isActiveReturnTracking(): bool
+    private function isActiveReturnTracking(int $orderId): bool
     {
-        return (bool) LengowConfiguration::getGlobalValue(
-            LengowConfiguration::RETURN_TRACKING_NUMBER_ENABLED
-        );
+        $lengowOrder = new LengowOrder($orderId);
+
+        return $lengowOrder->getMarketplace()->hasReturnTrackingNumber();
+
     }
 
     /**

@@ -51,10 +51,8 @@ class LengowOrderSettingController extends LengowController
         );
         $currencyConversion = $form->buildInputs([LengowConfiguration::CURRENCY_CONVERSION_ENABLED]);
         $semanticSearch = $form->buildInputs([LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED]);
-        $returnTracking = $form->buildInputs([LengowConfiguration::RETURN_TRACKING_NUMBER_ENABLED]);
         $this->context->smarty->assign('matching', $matching);
         $this->context->smarty->assign('semantic_search', $semanticSearch);
-        $this->context->smarty->assign('return_tracking', $returnTracking);
         $this->context->smarty->assign('import_params', $importParams);
         $this->context->smarty->assign('currency_conversion', $currencyConversion);
         $this->context->smarty->assign('countries', $countries);
@@ -169,7 +167,6 @@ class LengowOrderSettingController extends LengowController
                         LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED,
                         LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
                         LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED,
-                        LengowConfiguration::RETURN_TRACKING_NUMBER_ENABLED,
                         LengowConfiguration::CURRENCY_CONVERSION_ENABLED,
                         LengowConfiguration::ANONYMIZE_EMAIL
                     ]

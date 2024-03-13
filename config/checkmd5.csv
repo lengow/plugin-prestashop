@@ -5,13 +5,13 @@
 /lengow.php|afee1cf82419ca2d2fdef677d50090ec
 /loader.php|d6c4d5b54cd370b43123e8021f8ff6ef
 /config/index.php|be8b25f88c14bddd7711e4585ebae316
-/translations/en.csv|e6b93f3e474227ad9536485680a01e91
-/translations/es.csv|8fb3e80b1ed3a102b4e691e5c6c0236f
-/translations/fr.csv|0ca9b78c7aa545c4619323bc98998d94
+/translations/en.csv|2783b5acfa5fb438e7e45de678cf938d
+/translations/es.csv|9df62975f0d380da38317b721b8855b5
+/translations/fr.csv|3c92b29fa3e2b081aa3f2627ea8b348b
 /translations/index.php|be8b25f88c14bddd7711e4585ebae316
-/translations/it.csv|e03758ab3cb3daa2de958838fb78fb99
+/translations/it.csv|b1aec71af3b7a623db738aa7f42149d4
 /classes/controllers/LengowHomeController.php|4425c1a0649cdda2e072daabcd7df056
-/classes/controllers/LengowOrderSettingController.php|0e34fb127c3bd1e716e737ed5f1c13d3
+/classes/controllers/LengowOrderSettingController.php|8e05059fca5548dd9050d9d11c78540d
 /classes/controllers/LengowDashboardController.php|a134f00e4abaf5e00f648bb09c782342
 /classes/controllers/LengowMainSettingController.php|e36b3eb18668acacb065cff36718ca44
 /classes/controllers/LengowOrderController.php|723b350c3a764495b221293cd560bbf0
@@ -30,7 +30,7 @@
 /classes/models/LengowLink.php|b581058dd81536c028e0661e3c3c8a4e
 /classes/models/LengowInstall.php|fe06ec2e63f6ac18833d4ba22e3573bc
 /classes/models/LengowException.php|cae2699900570494aedd37f147d2b473
-/classes/models/LengowConfiguration.php|c20b36a38a37159abcfaef553337e185
+/classes/models/LengowConfiguration.php|9131c9f192d9907774c8961b2a770338
 /classes/models/LengowLog.php|e55e699febf04f146755a1e65e46b5de
 /classes/models/LengowHook.php|57eaf0d3e471a74605c16360df9bc494
 /classes/models/LengowGender.php|245feec7656bdd75cd574218700e01b9
@@ -44,7 +44,7 @@
 /classes/models/LengowPaymentModule.php|8865829a004015b6895a633ac8f0809d
 /classes/models/LengowMethod.php|1fc732f03c5fc06836e99914633b68db
 /classes/models/LengowOrderDetail.php|7552d85f5243725b16e250cdebe2550c
-/classes/models/LengowMarketplace.php|3ce99fbb90cf1a8796065f56338a688d
+/classes/models/LengowMarketplace.php|10cb6d1b66e4c149b2867dcbc2e17056
 /classes/models/LengowProduct.php|47c59ee4afc1f3620df3ecff4bbdc801
 /classes/models/LengowCart.php|82edee2c2bb769954b37b8dc18a9f6d2
 /classes/models/LengowMain.php|111614e8a875f5f8501b0647be5f9e3b
@@ -57,7 +57,7 @@
 /classes/models/LengowToolboxElement.php|710c8c067b7ffdb23498fb9ea4ccce13
 /classes/models/LengowImport.php|7381f9530a1af7f09a1502a2e3ea9c91
 /classes/models/LengowAction.php|11209d657f7d8e034bedd5b333bc095a
-/classes/models/LengowOrder.php|ea993204fac95c485ecc4ba0ee4a7c49
+/classes/models/LengowOrder.php|df57c3df3c914c99ccf5e224c53fac88
 /classes/models/LengowFile.php|7eb988d7c5c7ef20c596a625e2cb7efe
 /classes/index.php|a1bc811ddc842f715d4613ef27748bd8
 /controllers/admin/AdminLengowMainSettingController.php|122aad99912350828281732c1a17e0eb
@@ -415,9 +415,9 @@
 /views/fonts/fontawesome-webfont.ttf|a3de2170e4e9df77161ea5d3f31b2668
 /views/fonts/index.php|be8b25f88c14bddd7711e4585ebae316
 /views/fonts/FontAwesome.otf|87d8ca3ddc57e7d2da6226e480f90457
-/views/PrestaShop/Admin/Sell/Order/Order/Blocks/View/shipping.html.twig|c1bb164f06b80409551d1c9141d4dcc6
+/views/PrestaShop/Admin/Sell/Order/Order/Blocks/View/shipping.html.twig|86a07aa4d2dfecad3a662c77a10727b0
 /views/PrestaShop/Admin/Sell/Order/Order/Blocks/View/index.php|be8b25f88c14bddd7711e4585ebae316
-/views/PrestaShop/Admin/Sell/Order/Order/Blocks/View/Modal/update_shipping_modal.html.twig|b6bf54f4141dab50b04634b3ed0fc7ff
+/views/PrestaShop/Admin/Sell/Order/Order/Blocks/View/Modal/update_shipping_modal.html.twig|aa01d8d6a019ee80e6daa1ae17785a46
 /views/PrestaShop/Admin/Sell/Order/Order/Blocks/View/Modal/index.php|be8b25f88c14bddd7711e4585ebae316
 /views/PrestaShop/Admin/Sell/Order/Order/Blocks/index.php|be8b25f88c14bddd7711e4585ebae316
 /views/PrestaShop/Admin/Sell/Order/Order/index.php|be8b25f88c14bddd7711e4585ebae316
