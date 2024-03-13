@@ -230,8 +230,8 @@ class AdminOrderController extends OrderController
             'paginationNumOptions' => $paginationNumOptions,
             'isAvailableQuantityDisplayed' => $this->configuration->getBoolean('PS_STOCK_MANAGEMENT'),
             'internalNoteForm' => $internalNoteForm->createView(),
-            'returnTrackingNumber' => $this->getReturnTrackingNumber($this->orderId),
-            'isActiveReturnTracking' => $this->isActiveReturnTracking(),
+            'returnTrackingNumber' => $this->getReturnTrackingNumber($orderId),
+            'isActiveReturnTracking' => $this->isActiveReturnTracking($orderId),
             'returnTrackingNumberLabel' => $locale->t('order.screen.return_tracking_number_label')
         ]);
     }
