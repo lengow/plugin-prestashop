@@ -66,6 +66,14 @@
 
                     {{ form_widget(updateOrderShippingForm.new_carrier_id) }}
                 </div>
+                {% if updateOrderShippingForm.return_carrier is defined %}
+                    <div class="form-group">
+                        <label class="form-control-label" for="">
+                            {{ returnCarrierLabel }}
+                        </label>
+                        {{ form_widget(updateOrderShippingForm.return_carrier) }}
+                    </div>
+                {% endif %}
 
                 <div class="d-none">
                     {{ form_rest(updateOrderShippingForm) }}

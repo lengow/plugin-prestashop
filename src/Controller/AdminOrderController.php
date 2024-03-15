@@ -6,7 +6,9 @@ use LengowOrderDetail;
 use LengowOrder;
 use LengowTranslation;
 use LengowAction;
+use LengowCarrier;
 use Exception;
+use Order;
 use PrestaShop\PrestaShop\Core\Domain\Order\Command\UpdateOrderShippingDetailsCommand;
 use PrestaShop\PrestaShop\Core\Domain\CartRule\Exception\InvalidCartRuleDiscountValueException;
 use PrestaShop\PrestaShop\Core\Domain\Order\Exception\CannotEditDeliveredOrderProductException;
@@ -48,6 +50,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+//use PrestaShop\PrestaShop\Core\Form\ChoiceProvider\Carr
 
 class AdminOrderController extends OrderController
 {
@@ -127,11 +131,25 @@ class AdminOrderController extends OrderController
         ], [
             'order_id' => $orderId,
         ]);
-        if ($this->isActiveReturnTracking($orderId)) {
+        $isActiveReturnTrackingNumber = $this->isActiveReturnTrackingCarrier($orderId);
+        $isActiveReturnCarrier = $this->isActiveReturnTrackingCarrier($orderId);
+
+        if ($isActiveReturnTrackingNumber) {
             $returnTrackingNumber = $this->getReturnTrackingNumber($orderId);
             $updateOrderShippingForm->add(LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
                 'required' => false,
                 'data' => $returnTrackingNumber
+            ]);
+        }
+
+        if ($isActiveReturnCarrier) {
+            $returnCarrier = $this->getReturnCarrier($orderId);
+            $updateOrderShippingForm->add(LengowAction::ARG_RETURN_CARRIER, ChoiceType::class, [
+                'required' => false,
+                'data' => $returnCarrier,
+                'choices' => LengowCarrier::getCarriersChoices(
+                    $orderForViewing->getCustomer()->getLanguageId()
+                )
             ]);
         }
         $currencyDataProvider = $this->container->get('prestashop.adapter.data_provider.currency');
@@ -231,8 +249,12 @@ class AdminOrderController extends OrderController
             'isAvailableQuantityDisplayed' => $this->configuration->getBoolean('PS_STOCK_MANAGEMENT'),
             'internalNoteForm' => $internalNoteForm->createView(),
             'returnTrackingNumber' => $this->getReturnTrackingNumber($orderId),
-            'isActiveReturnTracking' => $this->isActiveReturnTracking($orderId),
-            'returnTrackingNumberLabel' => $locale->t('order.screen.return_tracking_number_label')
+            'returnCarrier' => $this->getReturnCarrier($orderId),
+            'isActiveReturnTrackingNumber' => $isActiveReturnTrackingNumber,
+            'isActiveReturnCarrier' => $isActiveReturnCarrier,
+            'returnTrackingNumberLabel' => $locale->t('order.screen.return_tracking_number_label'),
+            'returnCarrierLabel' => $locale->t('order.screen.return_carrier_label'),
+            'returnCarrierName' => $this->getReturnCarrierName($orderId)
         ]);
     }
     /**
@@ -254,9 +276,18 @@ class AdminOrderController extends OrderController
         $form = $this->createForm(UpdateOrderShippingType::class, [], [
             'order_id' => $orderId,
         ]);
-        if ($this->isActiveReturnTracking($orderId)) {
+        if ($this->isActiveReturnTrackingNumber($orderId)) {
             $form->add(LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
                 'required' => false
+            ]);
+        }
+        if ($this->isActiveReturnTrackingCarrier($orderId)) {
+            $order = new LengowOrder($orderId);
+            $form->add(LengowAction::ARG_RETURN_CARRIER, ChoiceType::class, [
+                'required' => false,
+                'choices' => LengowCarrier::getCarriersChoices(
+                    $order->id_lang
+                )
             ]);
         }
 
@@ -267,10 +298,15 @@ class AdminOrderController extends OrderController
 
             try {
 
-                if (!empty($data[LengowAction::ARG_RETURN_TRACKING_NUMBER])
-                        && $this->isActiveReturnTracking($orderId)) {
+                if (!empty($data[LengowAction::ARG_RETURN_TRACKING_NUMBER])) {
                     LengowOrderDetail::updateOrderReturnTrackingNumber(
-                        $data['return_tracking_number'],
+                        $data[LengowAction::ARG_RETURN_TRACKING_NUMBER],
+                        $orderId
+                    );
+                }
+                if (!empty($data[LengowAction::ARG_RETURN_CARRIER])) {
+                    LengowOrderDetail::updateOrderReturnCarrier(
+                        (int) $data[LengowAction::ARG_RETURN_CARRIER],
                         $orderId
                     );
                 }
@@ -296,6 +332,8 @@ class AdminOrderController extends OrderController
             } catch (Exception $e) {
                 $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
             }
+        } else {
+            //exit ('form not valid');
         }
 
         return $this->redirectToRoute('admin_orders_view', [
@@ -469,11 +507,23 @@ class AdminOrderController extends OrderController
      *
      * @return bool
      */
-    private function isActiveReturnTracking(int $orderId): bool
+    private function isActiveReturnTrackingNumber(int $orderId): bool
     {
         $lengowOrder = new LengowOrder($orderId);
 
         return $lengowOrder->getMarketplace()->hasReturnTrackingNumber();
+
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    private function isActiveReturnTrackingCarrier(int $orderId): bool
+    {
+        $lengowOrder = new LengowOrder($orderId);
+
+        return $lengowOrder->getMarketplace()->hasReturnTrackingCarrier();
 
     }
 
@@ -485,6 +535,26 @@ class AdminOrderController extends OrderController
     private function getReturnTrackingNumber(int $orderId): string
     {
         return LengowOrderDetail::getOrderReturnTrackingNumber($orderId);
+    }
+
+    /**
+     *
+     * @param int $orderId
+     * @return string
+     */
+    private function getReturnCarrier(int $orderId): string
+    {
+        return LengowOrderDetail::getOrderReturnCarrier($orderId);
+    }
+
+    /**
+     *
+     * @param int $orderId
+     * @return string
+     */
+    private function getReturnCarrierName(int $orderId): string
+    {
+        return LengowOrderDetail::getOrderReturnCarrierName($orderId);
     }
 
 }

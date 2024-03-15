@@ -6,6 +6,9 @@ class OrderCarrier extends OrderCarrierCore
     /** @var string */
     public $return_tracking_number;
 
+    /** @var string */
+    public $return_carrier;
+
     /**
      * @see ObjectModel::$definition
      */
@@ -22,6 +25,7 @@ class OrderCarrier extends OrderCarrierCore
             'tracking_number' => ['type' => self::TYPE_STRING, 'validate' => 'isTrackingNumber'],
             'date_add' => ['type' => self::TYPE_DATE, 'validate' => 'isDate'],
             'return_tracking_number' => ['type' => self::TYPE_STRING, 'validate' => 'isTrackingNumber'],
+            'return_carrier' => ['type' => self::TYPE_STRING, 'validate' => '']
         ],
     ];
 }

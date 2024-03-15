@@ -91,6 +91,16 @@ class LengowCarrier extends Carrier
         return $carriers;
     }
 
+    public static function getCarriersChoices($langId)
+    {
+        $carriers = parent::getCarriers($langId, true);
+        foreach ($carriers as $carrier) {
+            $carriersChoices[$carrier['name']] = $carrier['id_carrier'];
+        }
+
+        return $carriersChoices;
+    }
+
     /**
      * Get carrier id recovery by semantic search
      *
