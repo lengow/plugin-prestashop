@@ -95,7 +95,11 @@ class LengowCarrier extends Carrier
     {
         $carriers = parent::getCarriers($langId, true);
         foreach ($carriers as $carrier) {
-            $carriersChoices[$carrier['name']] = $carrier['id_carrier'];
+            $choiceId = $carrier['name'];
+            if (!empty($carrier['name'])) {
+                $choiceId .= ' (' . $carrier['delay'] . ')';
+            }
+            $carriersChoices[$choiceId] = $carrier['id_carrier'];
         }
 
         return $carriersChoices;
@@ -1306,3 +1310,4 @@ class LengowCarrier extends Carrier
         return $db->execute($query);
     }
 }
+

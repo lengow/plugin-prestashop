@@ -466,7 +466,6 @@ class LengowMarketplace
                 case LengowAction::ARG_CARRIER_NAME:
                 case LengowAction::ARG_SHIPPING_METHOD:
                 case LengowAction::ARG_CUSTOM_CARRIER:
-                case LengowAction::ARG_RETURN_CARRIER:
                     if ((string) $lengowOrder->lengowCarrier !== '') {
                         $carrierName = (string) $lengowOrder->lengowCarrier;
                     } else {
@@ -487,6 +486,16 @@ class LengowMarketplace
                         );
                     }
                     $params[$arg] = $carrierName;
+                    break;
+                case LengowAction::ARG_RETURN_CARRIER:
+                    $idReturnCarrier = LengowOrderDetail::getOrderReturnCarrier($lengowOrder->id);
+                    $idMarketplace = self::getIdMarketplace($lengowOrder->lengowMarketplaceName);
+                    $returnCarrierName = LengowCarrier::getCarrierMarketplaceCode(
+                        (int) $deliveryAddress->id_country,
+                        $idMarketplace,
+                        (int) $idReturnCarrier
+                    );
+                    $params[$arg] = $returnCarrierName;
                     break;
                 case LengowAction::ARG_TRACKING_URL:
                     if ($trackingNumber !== '') {
@@ -792,3 +801,4 @@ class LengowMarketplace
     }
 
 }
+
