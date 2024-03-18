@@ -434,7 +434,7 @@ class LengowNameParser {
     }
 
     /**
-     * Get marketplaces.json path
+     * Get parser.json path
      *
      * @return string
      */
