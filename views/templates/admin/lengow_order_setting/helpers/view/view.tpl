@@ -30,7 +30,6 @@
                     <div id="country_selector">
                         {include file='./country_selector.tpl'}
                         <p>{html_entity_decode($semantic_search|escape:'htmlall':'UTF-8')}</p>
-                        <p>{html_entity_decode($return_tracking|escape:'htmlall':'UTF-8')}</p>
                     </div>
                     <div id="marketplace_matching"></div>
                     <div class="ajax-loading mod-matching-carrier" style="display: none">
@@ -77,4 +76,5 @@
     </div>
 </div>
 <script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/order_setting.js"></script>
+
 
