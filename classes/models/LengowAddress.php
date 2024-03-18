@@ -365,15 +365,18 @@ class LengowAddress extends Address
      */
     public static function extractNames($fullName)
     {
-        self::cleanName($fullName);
-        $arrayName = explode(' ', $fullName);
-        $lastName = $arrayName[0];
-        $firstName = str_replace($lastName . ' ', '', $fullName);
-        $lastName = empty($lastName) ? '' : self::cleanName($lastName);
-        $firstName = empty($firstName) ? '' : self::cleanName($firstName);
+        $np = new LengowNameParser();
+        $np->setFullName($fullName);
+        $parsed = $np->parse();
+        $firstName = $np->getFirstName();
+        $middleName = $np->getMiddleName();
+        $lastName = $np->getLastName();
+
+        $fullLastName = trim($middleName . ' ' . $lastName);
+
         return [
             'firstname' => Tools::ucfirst(Tools::strtolower($firstName)),
-            'lastname' => Tools::ucfirst(Tools::strtolower($lastName)),
+            'lastname' => Tools::ucfirst(Tools::strtolower($fullLastName)),
         ];
     }
 
