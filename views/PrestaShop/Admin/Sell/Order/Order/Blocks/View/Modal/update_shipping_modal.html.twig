@@ -51,6 +51,13 @@
 
                     {{ form_widget(updateOrderShippingForm.tracking_number) }}
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="{{ updateOrderShippingForm.new_carrier_id.vars.id }}">
+                        {{ 'Carrier'|trans({}, 'Admin.Global') }}
+                    </label>
+
+                    {{ form_widget(updateOrderShippingForm.new_carrier_id) }}
+                </div>
                 {% if updateOrderShippingForm.return_tracking_number is defined %}
                     <div class="form-group">
                         <label class="form-control-label" for="">
@@ -59,13 +66,6 @@
                         {{ form_widget(updateOrderShippingForm.return_tracking_number) }}
                     </div>
                 {% endif %}
-                <div class="form-group">
-                    <label class="form-control-label" for="{{ updateOrderShippingForm.new_carrier_id.vars.id }}">
-                        {{ 'Carrier'|trans({}, 'Admin.Global') }}
-                    </label>
-
-                    {{ form_widget(updateOrderShippingForm.new_carrier_id) }}
-                </div>
                 {% if updateOrderShippingForm.return_carrier is defined %}
                     <div class="form-group">
                         <label class="form-control-label" for="">
