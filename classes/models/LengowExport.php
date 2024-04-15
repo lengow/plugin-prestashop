@@ -729,7 +729,9 @@ class LengowExport
      */
     public function buildTotalQuery($variation = false)
     {
+
         $where = [];
+
         $query = ' FROM ' . _DB_PREFIX_ . 'product p';
         if ($this->selection) {
             $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'lengow_product lp
@@ -748,11 +750,23 @@ class LengowExport
         $where[] = ' ps.id_shop = ' . (int) $this->idShop;
         if (!$this->outOfStock) {
             if ($variation) {
+                // verify if multishop and share stock is active
+                if (
+                    Configuration::get('PS_MULTISHOP_FEATURE_ACTIVE') == 1
+                    && Context::getContext()->shop->getContextShopGroup()->share_stock === 1
+                ) {
+                    $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
+                (sa.id_product=p.id_product
+                AND pa.id_product_attribute = sa.id_product_attribute
+                AND sa.id_shop = 0
+                AND sa.quantity > 0)';
+                } else {
                 $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
                 (sa.id_product=p.id_product
                 AND pa.id_product_attribute = sa.id_product_attribute
                 AND sa.id_shop = ' . (int) $this->idShop . '
                 AND sa.quantity > 0)';
+                }
             } else {
                 $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
                 (sa.id_product=p.id_product AND id_product_attribute = 0 AND sa.quantity > 0
