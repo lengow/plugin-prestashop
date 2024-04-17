@@ -98,7 +98,7 @@ status.screen.second_description_end_free_trial|Votre compte va être désactiv�
 status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration. Pour conserver l'intégralité des paramètres que vous avez défini, pensez à souscrire dès maintenant !
 status.screen.upgrade_account_button|Je suis prêt à souscrire !
 status.screen.refresh_action|Actualiser mon compte
-product.screen.nb_exported|produits exportés
+product.screen.nb_exported|produits exportés 
 product.screen.nb_available|produits disponibles
 product.screen.include_specific_product|Inclure une sélection de produits
 product.screen.include_specific_product_support|Utilisez cette option pour sélectionner vos produits individuellement
@@ -147,7 +147,7 @@ order.screen.action_sent|Action %{action_type} envoyée
 order.screen.action_waiting_return|Action envoyée, en attente d'une réponse.
 order.screen.action_sent_not_work|Erreur sur l'action envoyée à la marketplace.
 order.screen.no_error_message|Erreur non identifiée, merci de contacter le support Lengow pour plus d'informations
-order.screen.no_order_title|Le meilleur est encore à venir !
+order.screen.no_order_title|Le meilleur est encore à venir ! 
 order.screen.no_order_description|Vos produits sont bien visibles, vos ventes sont sur le point de décoller
 order.screen.action_success|Succès
 order.screen.action_error|Erreur
@@ -163,7 +163,6 @@ order.screen.type_express|Livraison Express
 order.screen.type_delivered_by_marketplace|Expédié par la marketplace
 order.screen.type_business|Business
 order.screen.return_tracking_number_label|Numéro de retour
-order.screen.return_carrier_label|Transp. de retour
 order.table.action_lengow|Actions
 order.table.order_lengow_state|Statut
 order.table.order_types|Types
