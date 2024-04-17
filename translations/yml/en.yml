@@ -186,6 +186,7 @@ en:
       type_delivered_by_marketplace: "Shipped by Marketplace"
       type_business: "Business"
       return_tracking_number_label: "Return tracking number"
+      return_carrier_label: "Return carrier"
     table:
       action_lengow: "Actions"
       order_lengow_state: "Status"

@@ -167,6 +167,7 @@ order.screen.type_express|Express delivery
 order.screen.type_delivered_by_marketplace|Shipped by Marketplace
 order.screen.type_business|Business
 order.screen.return_tracking_number_label|Return tracking number
+order.screen.return_carrier_label|Return carrier
 order.table.action_lengow|Actions
 order.table.order_lengow_state|Status
 order.table.order_types|Types
