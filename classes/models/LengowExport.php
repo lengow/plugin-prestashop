@@ -756,16 +756,16 @@ class LengowExport
                     && Context::getContext()->shop->getContextShopGroup()->share_stock === 1
                 ) {
                     $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
-                (sa.id_product=p.id_product
-                AND pa.id_product_attribute = sa.id_product_attribute
-                AND sa.id_shop = 0
-                AND sa.quantity > 0)';
+                        (sa.id_product=p.id_product
+                        AND pa.id_product_attribute = sa.id_product_attribute
+                        AND sa.id_shop = 0
+                        AND sa.quantity > 0)';
                 } else {
-                $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
-                (sa.id_product=p.id_product
-                AND pa.id_product_attribute = sa.id_product_attribute
-                AND sa.id_shop = ' . (int) $this->idShop . '
-                AND sa.quantity > 0)';
+                    $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
+                        (sa.id_product=p.id_product
+                        AND pa.id_product_attribute = sa.id_product_attribute
+                        AND sa.id_shop = ' . (int) $this->idShop . '
+                        AND sa.quantity > 0)';
                 }
             } else {
                 $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
