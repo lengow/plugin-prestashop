@@ -98,8 +98,12 @@ status.screen.second_description_end_free_trial|Your account will be suspended u
 status.screen.third_description_end_free_trial|Don't forget that trial accounts are deleted 30 days after the end of the trial period. Make sure to subscribe so you do not lose the work you've done building channels.
 status.screen.upgrade_account_button|It's ok, I'm ready to subscribe!
 status.screen.refresh_action|Refresh my account
+product.screen.filter_exported|filter exported products
 product.screen.nb_exported|products exported
 product.screen.nb_available|products available
+product.screen.include_variation_product|Include variants prodcuts
+product.screen.include_out_of_stock_product|Include out of stock products
+product.screen.include_inactive_product|Include inactive products
 product.screen.include_specific_product|Include specific products
 product.screen.include_specific_product_support|Use this option to select your products one by one
 product.screen.no_result_found|Sorry, no results found for your search.<br />Please try changing your request.

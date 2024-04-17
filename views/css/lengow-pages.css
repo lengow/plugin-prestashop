@@ -375,6 +375,54 @@
   margin-bottom: 15px;
 }
 
+.switch-row {
+  display: flex;
+  align-items: center;
+}
+
+.sticky-icon {
+  position: fixed;
+  top: 170px;
+  transform: translateY(-50%);
+  z-index: 999;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.sticky-icon a i:hover {
+  color: #019ce2 !important;
+}
+
+.sticky-switch {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  visibility: hidden;
+  position: fixed;
+  top: 275px;
+  transform: translateY(-50%);
+  padding: 10px;
+  width: 25%;
+  max-height: 100vh;
+  margin-left: 20px;
+  z-index: 998;
+  background-color: white;
+  border: 1px solid black;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.show-switch {
+  visibility: visible !important;
+  opacity: 1;
+}
+
+.filter-column {
+  float: left;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+}
 
 /*************************************************/
 /*                     ORDERS                    */

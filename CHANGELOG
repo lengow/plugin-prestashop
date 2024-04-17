@@ -3,6 +3,7 @@ Version 3.5.0
 =============================================================
  - BugFix: Mutlishop get store on store 0
  - Feature: Return tracking management during shipment
+ - Feature: Filters on product export page
 =============================================================
 Version 3.4.7
 =============================================================

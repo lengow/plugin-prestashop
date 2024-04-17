@@ -45,9 +45,9 @@ class LengowSync
     public const LINK_TYPE_SUPPORT = 'support';
 
     /* Default plugin links */
-    public const LINK_HELP_CENTER = 'https://help.lengow.com/hc/en-us/articles/360011970312';
+    public const LINK_HELP_CENTER = 'https://help.lengow.com/hc/en-us/articles/8951287563164-PrestaShop-Set-up-the-Plugin';
     public const LINK_CHANGELOG = 'https://help.lengow.com/hc/en-us/articles/360011215559';
-    public const LINK_UPDATE_GUIDE = 'https://help.lengow.com/hc/en-us/articles/360011970312#12-update-the-plugin-version';
+    public const LINK_UPDATE_GUIDE = 'https://help.lengow.com/hc/en-us/articles/8951241159964-PrestaShop-Update-the-plugin-version';
     public const LINK_SUPPORT = 'https://help.lengow.com/hc/en-us/requests/new';
 
     /* Api iso codes */
@@ -463,13 +463,14 @@ class LengowSync
      * Get an array of plugin links for a specific iso code
      *
      * @param string|null $isoCode
+     * @param bool|null $default
      *
      * @return array
      */
-    public static function getPluginLinks($isoCode = null)
+    public static function getPluginLinks(?string $isoCode = null, ?bool $default = false)
     {
         $pluginData = self::getPluginData();
-        if (!$pluginData) {
+        if (!$pluginData || $default) {
             return self::$defaultPluginLinks;
         }
         // check if the links are available in the locale
