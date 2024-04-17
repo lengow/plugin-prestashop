@@ -9,7 +9,7 @@
 /translations/es.csv|eda5fc34d49a20adadda715c84ea1807
 /translations/fr.csv|77a0a1984655d471f3d800dc82fd5732
 /translations/index.php|be8b25f88c14bddd7711e4585ebae316
-/translations/it.csv|1ad05e27c98b49aace252812632d9828
+/translations/it.csv|3d2561e961b0c4126e069058c61249f8
 /classes/controllers/LengowHomeController.php|4425c1a0649cdda2e072daabcd7df056
 /classes/controllers/LengowOrderSettingController.php|8e05059fca5548dd9050d9d11c78540d
 /classes/controllers/LengowDashboardController.php|a134f00e4abaf5e00f648bb09c782342
@@ -41,7 +41,7 @@
 /classes/models/LengowOrderLine.php|86df2f3686d85537fe813520154bf517
 /classes/models/LengowTranslation.php|75e62401b0c1ff7966cb0b1ac3514cfa
 /classes/models/LengowCountry.php|466d33c65ab33278533502c00188a320
-/classes/models/LengowPaymentModule.php|8865829a004015b6895a633ac8f0809d
+/classes/models/LengowPaymentModule.php|5d2d313f5120e2864012f73e75a337dc
 /classes/models/LengowMethod.php|1fc732f03c5fc06836e99914633b68db
 /classes/models/LengowOrderDetail.php|1c7afddd9691eff93bc15926a4992fd4
 /classes/models/LengowMarketplace.php|699ef81d2f7334f79dd6f1cc41874899
@@ -56,7 +56,7 @@
 /classes/models/index.php|a1bc811ddc842f715d4613ef27748bd8
 /classes/models/LengowToolboxElement.php|710c8c067b7ffdb23498fb9ea4ccce13
 /classes/models/LengowImport.php|7381f9530a1af7f09a1502a2e3ea9c91
-/classes/models/LengowAction.php|11209d657f7d8e034bedd5b333bc095a
+/classes/models/LengowAction.php|a2ee36b595bf58783f4b911688b91c41
 /classes/models/LengowOrder.php|df57c3df3c914c99ccf5e224c53fac88
 /classes/models/LengowFile.php|7eb988d7c5c7ef20c596a625e2cb7efe
 /classes/index.php|a1bc811ddc842f715d4613ef27748bd8

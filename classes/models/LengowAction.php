@@ -577,14 +577,17 @@ class LengowAction
             if (!is_object($results) || isset($results->error)) {
                 break;
             }
-            // construct array actions
-            foreach ($results->results as $action) {
-                if (isset($action->id)) {
-                    $apiActions[$action->id] = $action;
+            if (isset($results->results)) {
+                    // construct array actions
+                foreach ($results->results as $action) {
+                    if (isset($action->id)) {
+                        $apiActions[$action->id] = $action;
+                    }
                 }
             }
+
             $page++;
-        } while ($results->next !== null);
+        } while (!empty($results->next));
         if (empty($apiActions)) {
             return false;
         }
