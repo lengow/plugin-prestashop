@@ -113,6 +113,7 @@ class LengowHook
             'actionObjectUpdateAfter' => '1.5',
             // version 1.6
             'displayBackOfficeHeader' => '1.6',
+            'actionProductUpdate' => '1.6',
         ];
         foreach ($lengowHooks as $hook => $version) {
             if ($version <= Tools::substr(_PS_VERSION_, 0, 3)) {
@@ -482,5 +483,46 @@ class LengowHook
                 }
             }
         }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function hookActionProductUpdate($params)
+    {
+        $product = $params;
+        $productId = $product['id_product'];
+        $cacheId = "product_update_$productId";
+
+        $tableName = _DB_PREFIX_ . LengowProduct::TABLE_PRODUCT_UPDATED;
+        $sql = "SELECT `id_product` FROM `$tableName` WHERE `id_product` = $productId";
+        $result = Db::getInstance()->getValue($sql);
+
+        if ($result) {
+            return;
+        }
+
+        $sql = "INSERT INTO `$tableName` (`id_product`, `notified`, `updated_at`) VALUES ($productId, FALSE, NOW())";
+        Db::getInstance()->execute($sql);
+
+        $data = [
+            'product_id' => $productId,
+            'status' => 'updated',
+        ];
+
+        $return = LengowConnector::notifyApi($data);
+
+        if ($return->success === 'true') {
+            $sql = "UPDATE `$tableName` SET `notified` = TRUE WHERE `id_product` = $productId";
+            Db::getInstance()->execute($sql);
+        }
+
+        // Test log
+        $message = LengowMain::setLogMessage(
+            'product',
+            ['product_id' => "ActionProductUpdate:" . json_encode($return, JSON_THROW_ON_ERROR) . $productId]
+        );
+        LengowMain::log(LengowLog::CODE_EXPORT, $message);
+
     }
 }

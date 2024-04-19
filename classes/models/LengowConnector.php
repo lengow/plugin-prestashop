@@ -539,6 +539,31 @@ class LengowConnector
                 $opts[CURLOPT_POSTFIELDS] = http_build_query($args);
             }
         }
+
+        // Construire la requête cURL complète
+        $fullRequest = "curl -X $type";
+
+        // Ajouter l'en-tête d'autorisation si un token est fourni
+        if (!empty($token)) {
+            $fullRequest .= " -H 'Authorization: $token'";
+        }
+
+        // Ajouter les en-têtes supplémentaires si nécessaire
+        if (!empty($opts[CURLOPT_HTTPHEADER])) {
+            foreach ($opts[CURLOPT_HTTPHEADER] as $header) {
+                $fullRequest .= " -H '$header'";
+            }
+        }
+
+        // Ajouter les données de requête si elles existent
+        if (!empty($opts[CURLOPT_POSTFIELDS])) {
+            $body = addslashes($opts[CURLOPT_POSTFIELDS]);
+            // Si le type de contenu est JSON, ajoutez le type de contenu à l'en-tête
+            if (isset($opts[CURLOPT_HTTPHEADER]) && in_array('Content-Type: application/json', $opts[CURLOPT_HTTPHEADER])) {
+                $fullRequest .= " -H 'Content-Type: application/json'";
+            }
+            $fullRequest .= " -d '$body'";
+        }
         LengowMain::log(
             LengowLog::CODE_CONNECTOR,
             LengowMain::setLogMessage(
@@ -546,6 +571,7 @@ class LengowConnector
                 array(
                     'call_type' => $type,
                     'curl_url' => $opts[CURLOPT_URL],
+                    'full_request' => $fullRequest,
                 )
             ),
             $logOutput
@@ -616,5 +642,38 @@ class LengowConnector
             case self::FORMAT_JSON:
                 return json_decode($data, true);
         }
+    }
+
+    /**
+     * Send a POST request to the mock API and return the response.
+     *
+     * @param array $data The data to send as the request body.
+     *
+     * @return mixed
+     * @throws JsonException
+     */
+    public static function notifyApi(array $data = [])
+    {
+        $url = 'https://mockapi.weblabprototype.fr/v.3.0/updated';
+
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+
+        $jsonData = json_encode($data, JSON_THROW_ON_ERROR);
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        sleep(1);
+
+        $response = curl_exec($ch);
+
+        curl_close($ch);
+
+        return json_decode($response, false, 512, JSON_THROW_ON_ERROR);
     }
 }

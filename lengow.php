@@ -206,4 +206,9 @@ class Lengow extends Module
     {
         return $this->hookClass->hookAdminOrder($args);
     }
+
+    public function hookActionProductUpdate($params)
+    {
+        return $this->hookClass->hookActionProductUpdate($params);
+    }
 }
