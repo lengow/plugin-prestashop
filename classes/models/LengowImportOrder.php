@@ -981,8 +981,11 @@ class LengowImportOrder
                 );
                 // ensure carrier compatibility with SoColissimo & Mondial Relay
                 $this->checkCarrierCompatibility($order);
-                // launch validateOrder hook for other plugin (uncomment if needed)
-                // $this->launchValidateOrderHook($order);
+                if (LengowConfiguration::getGlobalValue(LengowConfiguration::ACTIVE_NEW_ORDER_HOOK)) {
+                    // launch validateOrder hook for other plugin
+                    $this->launchValidateOrderHook($order);
+                }
+
             }
             // add quantity back for re-import order and order shipped by marketplace
             $this->addQuantityBack($products);
@@ -1646,6 +1649,7 @@ class LengowImportOrder
      */
     private function launchValidateOrderHook($order)
     {
+        exit('validate hook is active');
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.launch_validate_order_hook'),

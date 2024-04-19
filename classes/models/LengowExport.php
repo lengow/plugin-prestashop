@@ -851,10 +851,6 @@ class LengowExport
                 if (!in_array($formattedAttribute, $formattedFields, true)) {
                     $fields[] = $attribute['name'];
                     $formattedFields[] = $formattedAttribute;
-                } else {
-                    if ($this->legacy) {
-                        $fields[] = $attribute['name'] . '_2';
-                    }
                 }
             }
         }
