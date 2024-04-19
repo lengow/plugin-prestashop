@@ -5,11 +5,11 @@
 /lengow.php|2b170fa6ec07fe0d015a03879f14dbbc
 /loader.php|d6c4d5b54cd370b43123e8021f8ff6ef
 /config/index.php|be8b25f88c14bddd7711e4585ebae316
-/translations/en.csv|8b49bfc650e54f1aa0c9e9669ed159fe
-/translations/es.csv|95cae18395e4e77ea1cfdadd5f6bebd9
-/translations/fr.csv|111bc336565abf16a19908681efb2f50
+/translations/en.csv|513695e0f6ddaf0407afdbdd9770ff55
+/translations/es.csv|2d748d421848eed541efa554238271ef
+/translations/fr.csv|5c84eb7cb5585f9ae5a4a2b41ab97477
 /translations/index.php|be8b25f88c14bddd7711e4585ebae316
-/translations/it.csv|f6a39cadace6585ea92e682382cf5e07
+/translations/it.csv|b0923be4533b6c46862b41a2df2ca4bc
 /classes/controllers/LengowHomeController.php|4425c1a0649cdda2e072daabcd7df056
 /classes/controllers/LengowOrderSettingController.php|e3cdb65b8f510fb2470ceeffae051371
 /classes/controllers/LengowDashboardController.php|a134f00e4abaf5e00f648bb09c782342
