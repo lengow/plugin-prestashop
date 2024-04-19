@@ -5,11 +5,11 @@
 /lengow.php|2b170fa6ec07fe0d015a03879f14dbbc
 /loader.php|d6c4d5b54cd370b43123e8021f8ff6ef
 /config/index.php|be8b25f88c14bddd7711e4585ebae316
-/translations/en.csv|54533224c16259d871e94d9bb00c339a
-/translations/es.csv|2d748d421848eed541efa554238271ef
-/translations/fr.csv|5c84eb7cb5585f9ae5a4a2b41ab97477
+/translations/en.csv|f03ff3c9e5811d99bbea5659a761f721
+/translations/es.csv|384a7b4cafb3ee8b282bdbc8bcb9819c
+/translations/fr.csv|8c8659700076eea26622834641b580f7
 /translations/index.php|be8b25f88c14bddd7711e4585ebae316
-/translations/it.csv|b0923be4533b6c46862b41a2df2ca4bc
+/translations/it.csv|f4a456a9039fe0f38c3b7fc06eb75653
 /classes/controllers/LengowHomeController.php|4425c1a0649cdda2e072daabcd7df056
 /classes/controllers/LengowOrderSettingController.php|e3cdb65b8f510fb2470ceeffae051371
 /classes/controllers/LengowDashboardController.php|a134f00e4abaf5e00f648bb09c782342
@@ -30,7 +30,7 @@
 /classes/models/LengowLink.php|b581058dd81536c028e0661e3c3c8a4e
 /classes/models/LengowInstall.php|a5c964d7c62e8c22046d82749a45c677
 /classes/models/LengowException.php|cae2699900570494aedd37f147d2b473
-/classes/models/LengowConfiguration.php|af3ec223afeb7de0049f439d1181c6d8
+/classes/models/LengowConfiguration.php|38b59a005c85188b74dad31c95d3dc72
 /classes/models/LengowLog.php|e55e699febf04f146755a1e65e46b5de
 /classes/models/LengowHook.php|57eaf0d3e471a74605c16360df9bc494
 /classes/models/LengowGender.php|245feec7656bdd75cd574218700e01b9

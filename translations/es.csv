@@ -354,6 +354,7 @@ lengow_setting.lengow_carrier_semantic_enable_legend|Con esta opción, haz corre
 lengow_setting.lengow_import_days_title|Sincronizar todos los pedidos actualizados desde
 lengow_setting.lengow_anonymize_email|Anonimizar las direcciones de correo electrónico de los clientes
 lengow_setting.lengow_active_new_order_hook|Activar el Hook de los nuevos pedidos (genera el evento)
+lengow_setting.lengow_active_new_order_hook_legend|Activará el evento de los nuevos pedidos para otros plugins
 lengow_setting.lengow_import_days_legend|Activar esta opción si tiene pedidos pendientes incorrectos. Esto te permite volver a importar todas los pedidos que han sido procesados ​​durante este período con problemas
 lengow_setting.lengow_import_processing_fee_title|Importar las cuotas de procesamiento
 lengow_setting.lengow_import_processing_fee_legend|Active esta opción si desea incorporar en su pedido la tarifa de gestión de expedición de las Marketplaces

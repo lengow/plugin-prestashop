@@ -444,6 +444,7 @@ class LengowConfiguration extends Configuration
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_active_new_order_hook'),
+                    self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_active_new_order_hook_legend'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_UPDATE => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,

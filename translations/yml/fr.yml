@@ -385,6 +385,7 @@ fr:
     lengow_import_days_title: "Synchroniser toutes les commandes mises à jour depuis"
     lengow_anonymize_email: "Anonymiser les adresses e-mail des clients"
     lengow_active_new_order_hook: "Activer le Hook des nouvelles commandes (déclenche l'événement)"
+    lengow_active_new_order_hook_legend: "Déclenchera l'événement des nouvelles commandes pour les autres plugins"
     lengow_import_days_legend: "Activez cette option si vous avez des commandes en erreur en attente. Cela vous permet de réimporter les commandes passées depuis le dernier import réussi."
     lengow_import_processing_fee_title: "Importer les frais de traitement"
     lengow_import_processing_fee_legend: "Activez cette option si vous souhaitez importer dans vos commandes les frais de traitement des marketplaces."
