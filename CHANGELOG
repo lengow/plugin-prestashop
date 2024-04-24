@@ -5,6 +5,7 @@ Version 3.5.0
  - Feature: Return tracking management during shipment
  - Feature: Filters on product export page
  - Feature: Hook newOrders activation from config import orders
+ - Feature: Add name parser if the only data available for customer name is fullname
 =============================================================
 Version 3.4.7
 =============================================================
