@@ -315,6 +315,35 @@ class LengowCarrier extends Carrier
         }
         return false;
     }
+    
+    /**
+     * Get carrier id by country id, marketplace id and carrier marketplace label
+     *
+     * @param type $idCountry
+     * @param type $idMarketplace
+     * @param type $carrierMarketplaceLabel
+     *
+     * @return int|false
+     */
+    public static function getIdCarrierByCarrierMarketplaceLabel($idCountry, $idMarketplace, $carrierMarketplaceLabel)
+    {
+        if ($carrierMarketplaceLabel !== '') {
+            // find in lengow marketplace carrier country table
+            $result = Db::getInstance()->getRow(
+                'SELECT lmcc.id_carrier FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country as lmcc
+                INNER JOIN ' . _DB_PREFIX_ . 'lengow_carrier_marketplace as lcm
+                    ON lcm.id = lmcc.id_carrier_marketplace
+                WHERE lmcc.id_country = ' . (int) $idCountry . '
+                AND lmcc.id_marketplace = "' . (int) $idMarketplace . '"
+                AND lcm.carrier_marketplace_label = "' . pSQL($carrierMarketplaceLabel) . '"'
+            );
+
+            if ($result) {
+                return self::getIdActiveCarrierByIdCarrier($result[self::FIELD_CARRIER_ID], (int) $idCountry);
+            }
+        }
+        return false;
+    }
 
     /**
      * Get all carrier marketplace
