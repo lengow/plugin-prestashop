@@ -3,6 +3,7 @@ Version 3.5.0
 =============================================================
  - BugFix: Mutlishop get store on store 0
  - BugFix: fix semantic carrier matching by name and label
+ - BugFix: identify business orders with payment_terms and billing infos
  - Feature: Return tracking management during shipment
  - Feature: Filters on product export page
  - Feature: Hook newOrders activation from config import orders
