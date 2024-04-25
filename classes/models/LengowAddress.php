@@ -365,6 +365,7 @@ class LengowAddress extends Address
      */
     public static function extractNames($fullName)
     {
+        self::cleanName($fullName);
         $np = new LengowNameParser();
         $np->setFullName($fullName);
         $parsed = $np->parse();
