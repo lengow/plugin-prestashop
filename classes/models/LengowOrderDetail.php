@@ -49,7 +49,7 @@ class LengowOrderDetail extends OrderDetail
         try {
             $returnTrackingNumber = pSQL($returnTrackingNumber);
             $order = new Order($orderId);
-            $orderCarrier = new OrderCarrier((int) $order->getIdOrderCarrier());
+            $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
             $orderCarrier->return_tracking_number = $returnTrackingNumber;
             $orderCarrier->update();
 
@@ -72,7 +72,7 @@ class LengowOrderDetail extends OrderDetail
         try {
             $returnCarrier = pSQL($returnCarrier);
             $order = new Order($orderId);
-            $orderCarrier = new OrderCarrier((int) $order->getIdOrderCarrier());
+            $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
             $orderCarrier->return_carrier = $returnCarrier;
             $orderCarrier->update();
 
@@ -94,7 +94,7 @@ class LengowOrderDetail extends OrderDetail
     {
         try {
             $order = new Order($orderId);
-            $orderCarrier = new OrderCarrier((int) $order->getIdOrderCarrier());
+            $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
 
             return (string) $orderCarrier->return_tracking_number;
 
@@ -118,7 +118,7 @@ class LengowOrderDetail extends OrderDetail
     {
         try {
             $order = new Order($orderId);
-            $orderCarrier = new OrderCarrier((int) $order->getIdOrderCarrier());
+            $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
 
             return (string) $orderCarrier->return_carrier;
 
@@ -144,7 +144,7 @@ class LengowOrderDetail extends OrderDetail
         try {
 
             $order = new Order($orderId);
-            $orderCarrier = new OrderCarrier((int) $order->getIdOrderCarrier());
+            $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
             $carrier = new LengowCarrier($orderCarrier->return_carrier);
 
             return (string) $carrier->name;

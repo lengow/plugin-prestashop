@@ -833,7 +833,7 @@ class LengowOrder extends Order
     public function getCurrentTrackingNumber()
     {
         try {
-            $orderCarrier = new OrderCarrier($this->getIdOrderCarrier());
+            $orderCarrier = new LengowOrderCarrier($this->getIdOrderCarrier());
             $trackingNumber = $orderCarrier->tracking_number;
         } catch (Exception $e) {
             $trackingNumber = '';

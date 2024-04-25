@@ -358,7 +358,7 @@ class LengowPaymentModule extends PaymentModule
 
                 // adding an entry in order_carrier table
                 if ($carrier !== null) {
-                    $orderCarrier = new OrderCarrier();
+                    $orderCarrier = new LengowOrderCarrier();
                     $orderCarrier->id_order = (int) $order->id;
                     $orderCarrier->id_carrier = (int) $idCarrier;
                     $orderCarrier->weight = (float) $order->getTotalWeight();

@@ -448,7 +448,7 @@ class LengowMarketplace
         $deliveryAddress = new Address($lengowOrder->id_address_delivery);
         // get tracking number for tracking number and tracking url
         $idOrderCarrier = $lengowOrder->getIdOrderCarrier();
-        $orderCarrier = new OrderCarrier($idOrderCarrier);
+        $orderCarrier = new LengowOrderCarrier($idOrderCarrier);
         $trackingNumber = $orderCarrier->tracking_number ?? '';
         $returnTrackingNumber = $orderCarrier->return_tracking_number ?? '';
         if ($trackingNumber === '') {

@@ -41,14 +41,15 @@
 /classes/models/LengowOrderLine.php|86df2f3686d85537fe813520154bf517
 /classes/models/LengowTranslation.php|75e62401b0c1ff7966cb0b1ac3514cfa
 /classes/models/LengowCountry.php|466d33c65ab33278533502c00188a320
-/classes/models/LengowPaymentModule.php|ba886c99034b7c3dd662d2a502f8a109
+/classes/models/LengowPaymentModule.php|a3acd41f12ec403fc36daa020bf9dc96
 /classes/models/LengowMethod.php|1fc732f03c5fc06836e99914633b68db
-/classes/models/LengowOrderDetail.php|1c7afddd9691eff93bc15926a4992fd4
-/classes/models/LengowMarketplace.php|699ef81d2f7334f79dd6f1cc41874899
+/classes/models/LengowOrderDetail.php|ae566ebcf391bc44e11ddbe59b22dd08
+/classes/models/LengowMarketplace.php|e49970d75eda249825899d7606770f00
 /classes/models/LengowProduct.php|47c59ee4afc1f3620df3ecff4bbdc801
 /classes/models/LengowCart.php|82edee2c2bb769954b37b8dc18a9f6d2
 /classes/models/LengowMain.php|111614e8a875f5f8501b0647be5f9e3b
 /classes/models/LengowList.php|09c2c0ba4609fd530ab8b0246d46b4db
+/classes/models/LengowOrderCarrier.php|a6c4ac9f02fa0f2e5de29df7dba6f235
 /classes/models/LengowCatalog.php|fe184f26056d2f50787738b9aa883746
 /classes/models/LengowNameParser.php|02225430d96c932b818697ddae810fee
 /classes/models/LengowShop.php|e4199d01e962eaf0243734af613d0d5f
@@ -58,7 +59,7 @@
 /classes/models/LengowToolboxElement.php|710c8c067b7ffdb23498fb9ea4ccce13
 /classes/models/LengowImport.php|7381f9530a1af7f09a1502a2e3ea9c91
 /classes/models/LengowAction.php|a2ee36b595bf58783f4b911688b91c41
-/classes/models/LengowOrder.php|cae745eaf6618f755635b7e97af7246b
+/classes/models/LengowOrder.php|bf2e2ae06985dc462cb720f2b10fe96f
 /classes/models/LengowFile.php|7eb988d7c5c7ef20c596a625e2cb7efe
 /classes/index.php|a1bc811ddc842f715d4613ef27748bd8
 /controllers/admin/AdminLengowMainSettingController.php|122aad99912350828281732c1a17e0eb
