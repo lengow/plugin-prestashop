@@ -220,6 +220,27 @@ class LengowInstall
             LengowLog::CODE_UNINSTALL,
             LengowMain::setLogMessage('log.uninstall.uninstall_end', ['version' => $this->lengowModule->version])
         );
+        $name = 'order_carrier';
+        $column = LengowAction::ARG_RETURN_TRACKING_NUMBER;
+        if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
+            $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
+                    . 'DROP COLUMN `'.$column.'`;';
+            Db::getInstance()->execute($sql);
+            LengowMain::log(
+                LengowLog::CODE_UNINSTALL,
+                LengowMain::setLogMessage('log.uninstall.column_deleted', ['name' => $column])
+            );
+        }
+        $column = LengowAction::ARG_RETURN_CARRIER;
+        if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
+            $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
+                    . 'DROP COLUMN `'.$column.'`;';
+            Db::getInstance()->execute($sql);
+            LengowMain::log(
+                LengowLog::CODE_UNINSTALL,
+                LengowMain::setLogMessage('log.uninstall.column_deleted', ['name' => $column])
+            );
+        }
 
         return true;
     }
@@ -823,6 +844,10 @@ class LengowInstall
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
                     . 'ADD COLUMN `'.$column.'` VARCHAR(64);';
             Db::getInstance()->execute($sql);
+             LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.column_created', ['name' => $column])
+            );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
@@ -835,6 +860,10 @@ class LengowInstall
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
                     . 'ADD COLUMN `'.$column.'` VARCHAR(64);';
             Db::getInstance()->execute($sql);
+             LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.column_created', ['name' => $column])
+            );
         } else {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
@@ -887,7 +916,7 @@ class LengowInstall
      *
      * @return bool
      */
-    private function uninstallTab()
+   private function uninstallTab()
     {
         try {
             $sql = 'SELECT `id_tab`, `class_name` FROM `' . _DB_PREFIX_ . 'tab` WHERE `module` = \'lengow\'';
