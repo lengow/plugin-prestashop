@@ -745,7 +745,7 @@ class LengowOrderController extends LengowController
         ';
     }
 
-    /**
+   /**
      * Generate link for order admin page
      *
      * @param int $idOrder PrestaShop order id
@@ -760,15 +760,21 @@ class LengowOrderController extends LengowController
                 $href = $link->getAbsoluteAdminLink('AdminOrders')
                     . '&vieworder&id_order=' . $idOrder;
             } else {
-                $params = [
-                    'vieworder' => 1,
-                    'id_order' => $idOrder,
+                $sfParams = [
+                    'orderId' => $idOrder
                 ];
-                $href = $link->getAdminLink('AdminOrders', true, $params);
+                $href = Link::getUrlSmarty(
+                    [
+                        'entity' => 'sf',
+                        'route' => 'admin_orders_view',
+                        'sf-params' => $sfParams
+                    ]
+                );
             }
         } catch (PrestaShopException $e) {
-            $href = '';
+            $href = '#';
         }
+
         return $href;
     }
 }

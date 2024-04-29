@@ -117,7 +117,10 @@ class LengowController
         return true;
     }
 
-    private function prepareDisplay()
+    /**
+     * affect variables to template display
+     */
+    protected function prepareDisplay()
     {
 
         $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
@@ -141,7 +144,7 @@ class LengowController
             $showPluginUpgradeModal = $this->showPluginUpgradeModal();
         }
         // get actual plugin urls in current language
-        $pluginLinks = LengowSync::getPluginLinks($localeIsoCode);
+        $pluginLinks = LengowSync::getPluginLinks($localeIsoCode, true);
         // assignment of all smarty variables for the entire plugin
 
         $this->context->smarty->assign('current_controller', get_class($this));

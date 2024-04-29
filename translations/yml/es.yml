@@ -114,8 +114,12 @@ es:
       refresh_action: "Refrescar mi cuenta"
   product:
     screen:
+      filter_exported: "filtrar los productos exportados"  
       nb_exported: "productos exportados"
       nb_available: "productos disponibles"
+      include_variation_product: "Incluir los productos variados"
+      include_out_of_stock_product: "Incluir los productos fuera de stock"
+      include_inactive_product: "Incluir los productos inactivos"
       include_specific_product: "Incluir los productos seleccionados"
       include_specific_product_support: "Active esta opción para hacer la selección de tus productos a exportar"
       no_result_found: "Lo sentimos, no hay resultados para su búsqueda. \n¿Tal vez si intentas modificar tu solicitud?"
@@ -181,6 +185,8 @@ es:
       type_express: "Entrega urgente"
       type_delivered_by_marketplace: "Enviado por Marketplace"
       type_business: "Business"
+      return_tracking_number_label: "Número de vuelta"
+      return_carrier_label: "Transportista de vuelta"
     table:
       action_lengow: "Acciones"
       order_lengow_state: "Estado"
@@ -378,6 +384,8 @@ es:
     lengow_carrier_semantic_enable_legend: "Con esta opción, haz corresponder el transportista o el método de envío indicado por la marketplace con el nombre de tus transportistas PrestaShop."
     lengow_import_days_title: "Sincronizar todos los pedidos actualizados desde"
     lengow_anonymize_email: "Anonimizar las direcciones de correo electrónico de los clientes"
+    lengow_active_new_order_hook: "Activar el Hook de los nuevos pedidos (genera el evento)"
+    lengow_active_new_order_hook_legend: "Activará el evento de los nuevos pedidos para otros plugins"
     lengow_import_days_legend: "Activar esta opción si tiene pedidos pendientes incorrectos. Esto te permite volver a importar todas los pedidos que han sido procesados ​​durante este período con problemas"
     lengow_import_processing_fee_title: "Importar las cuotas de procesamiento"
     lengow_import_processing_fee_legend: "Active esta opción si desea incorporar en su pedido la tarifa de gestión de expedición de las Marketplaces"

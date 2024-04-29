@@ -46,7 +46,8 @@ class LengowOrderSettingController extends LengowController
                 LengowConfiguration::SYNCHRONIZATION_DAY_INTERVAL,
                 LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED,
                 LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
-                LengowConfiguration::ANONYMIZE_EMAIL
+                LengowConfiguration::ANONYMIZE_EMAIL,
+                LengowConfiguration::ACTIVE_NEW_ORDER_HOOK
             ]
         );
         $currencyConversion = $form->buildInputs([LengowConfiguration::CURRENCY_CONVERSION_ENABLED]);
@@ -168,7 +169,8 @@ class LengowOrderSettingController extends LengowController
                         LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
                         LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED,
                         LengowConfiguration::CURRENCY_CONVERSION_ENABLED,
-                        LengowConfiguration::ANONYMIZE_EMAIL
+                        LengowConfiguration::ANONYMIZE_EMAIL,
+                        LengowConfiguration::ACTIVE_NEW_ORDER_HOOK
                     ]
                 );
                 break;

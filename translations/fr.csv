@@ -98,8 +98,12 @@ status.screen.second_description_end_free_trial|Votre compte va être désactiv�
 status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration. Pour conserver l'intégralité des paramètres que vous avez défini, pensez à souscrire dès maintenant !
 status.screen.upgrade_account_button|Je suis prêt à souscrire !
 status.screen.refresh_action|Actualiser mon compte
+product.screen.filter_exported|filtrer les produits exportés
 product.screen.nb_exported|produits exportés 
 product.screen.nb_available|produits disponibles
+product.screen.include_variation_product|Inclure les variations de produits
+product.screen.include_out_of_stock_product|Inclure les produits hors stock
+product.screen.include_inactive_product|Inclure les produits inactifs
 product.screen.include_specific_product|Inclure une sélection de produits
 product.screen.include_specific_product_support|Utilisez cette option pour sélectionner vos produits individuellement
 product.screen.no_result_found|Désolé, nous n'avons trouvé aucun élément correspondant à votre demande.<br />Souhaitez-vous modifier votre recherche ?
@@ -162,6 +166,8 @@ order.screen.status_canceled|Annulé
 order.screen.type_express|Livraison Express
 order.screen.type_delivered_by_marketplace|Expédié par la marketplace
 order.screen.type_business|Business
+order.screen.return_tracking_number_label|Numéro de retour
+order.screen.return_carrier_label|Transporteur de retour
 order.table.action_lengow|Actions
 order.table.order_lengow_state|Statut
 order.table.order_types|Types
@@ -347,6 +353,8 @@ lengow_setting.lengow_carrier_semantic_enable_title|Je veux activer l'option de 
 lengow_setting.lengow_carrier_semantic_enable_legend|Avec cette option, faites correspondre le transporteur ou la méthode de transport indiqué par la marketplace avec le nom de vos transporteurs PrestaShop.
 lengow_setting.lengow_import_days_title|Synchroniser toutes les commandes mises à jour depuis
 lengow_setting.lengow_anonymize_email|Anonymiser les adresses e-mail des clients
+lengow_setting.lengow_active_new_order_hook|Activer le Hook des nouvelles commandes (déclenche l'événement)
+lengow_setting.lengow_active_new_order_hook_legend|Déclenchera l'événement des nouvelles commandes pour les autres plugins
 lengow_setting.lengow_import_days_legend|Activez cette option si vous avez des commandes en erreur en attente. Cela vous permet de réimporter les commandes passées depuis le dernier import réussi.
 lengow_setting.lengow_import_processing_fee_title|Importer les frais de traitement
 lengow_setting.lengow_import_processing_fee_legend|Activez cette option si vous souhaitez importer dans vos commandes les frais de traitement des marketplaces.
