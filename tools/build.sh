@@ -134,6 +134,8 @@ remove_files $FOLDER_TMP ".php-cs-fixer.cache"
 remove_files $FOLDER_TMP ".git"
 # remove .DS_Store
 remove_files $FOLDER_TMP ".DS_Store"
+# remove composer.json
+remove_files $FOLDER_TMP "composer.json"
 # remove .AdminLengowHome.gif
 remove_files $FOLDER_TMP "AdminLengowHome.gif"
 # remove .idea
@@ -143,7 +145,7 @@ remove_files $FOLDER_TMP "Jenkinsfile"
 # clean Config Folder
 remove_files $FOLDER_CONFIG "marketplaces.json"
 # clean Log Folder
-remove_files $FOLDER_LOGS "*.txt"
+rm -f $FOLDER_LOGS/*.txt
 echo -e "- Clean logs folder : ${VERT}DONE${NORMAL}"
 # clean export folder
 remove_directories $FOLDER_EXPORT

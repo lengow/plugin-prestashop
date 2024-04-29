@@ -448,8 +448,9 @@ class LengowMarketplace
         $deliveryAddress = new Address($lengowOrder->id_address_delivery);
         // get tracking number for tracking number and tracking url
         $idOrderCarrier = $lengowOrder->getIdOrderCarrier();
-        $orderCarrier = new OrderCarrier($idOrderCarrier);
-        $trackingNumber = $orderCarrier->tracking_number;
+        $orderCarrier = new LengowOrderCarrier($idOrderCarrier);
+        $trackingNumber = $orderCarrier->tracking_number ?? '';
+        $returnTrackingNumber = $orderCarrier->return_tracking_number ?? '';
         if ($trackingNumber === '') {
             $trackingNumber = $lengowOrder->shipping_number;
         }
@@ -457,6 +458,9 @@ class LengowMarketplace
             switch ($arg) {
                 case LengowAction::ARG_TRACKING_NUMBER:
                     $params[$arg] = $trackingNumber;
+                    break;
+                case LengowAction::ARG_RETURN_TRACKING_NUMBER:
+                    $params[$arg] = $returnTrackingNumber;
                     break;
                 case LengowAction::ARG_CARRIER:
                 case LengowAction::ARG_CARRIER_NAME:
@@ -482,6 +486,16 @@ class LengowMarketplace
                         );
                     }
                     $params[$arg] = $carrierName;
+                    break;
+                case LengowAction::ARG_RETURN_CARRIER:
+                    $idReturnCarrier = LengowOrderDetail::getOrderReturnCarrier($lengowOrder->id);
+                    $idMarketplace = self::getIdMarketplace($lengowOrder->lengowMarketplaceName);
+                    $returnCarrierName = LengowCarrier::getCarrierMarketplaceCode(
+                        (int) $deliveryAddress->id_country,
+                        $idMarketplace,
+                        (int) $idReturnCarrier
+                    );
+                    $params[$arg] = $returnCarrierName;
                     break;
                 case LengowAction::ARG_TRACKING_URL:
                     if ($trackingNumber !== '') {
@@ -753,4 +767,38 @@ class LengowMarketplace
         );
         return $success ? $idMarketplace : false;
     }
+
+    /**
+     *
+     * @return bool
+     */
+    public function hasReturnTrackingCarrier() : bool
+    {
+        $action =  $this->getAction(LengowAction::TYPE_SHIP);
+        if (!$action) {
+            return false;
+        }
+        $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_SHIP);
+
+        return in_array(LengowAction::ARG_RETURN_CARRIER, $arguments);
+
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function hasReturnTrackingNumber() : bool
+    {
+        $action = $this->getAction(LengowAction::TYPE_SHIP);
+        if (!$action) {
+            return false;
+        }
+        $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_SHIP);
+
+        return in_array(LengowAction::ARG_RETURN_TRACKING_NUMBER, $arguments);
+
+    }
+
 }
+

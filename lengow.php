@@ -42,11 +42,11 @@ class Lengow extends Module
     {
         $this->name = 'lengow';
         $this->tab = 'export';
-        $this->version = '3.4.7';
+        $this->version = '3.5.0';
         $this->author = 'Lengow';
         $this->module_key = '92f99f52f2bc04ed999f02e7038f031c';
         $this->ps_versions_compliancy = [
-            'min' => '1.7.0.0',
+            'min' => '1.7.7.0',
             'max' => '8.99.99',
         ];
         $this->bootstrap = true;

@@ -981,8 +981,11 @@ class LengowImportOrder
                 );
                 // ensure carrier compatibility with SoColissimo & Mondial Relay
                 $this->checkCarrierCompatibility($order);
-                // launch validateOrder hook for other plugin (uncomment if needed)
-                // $this->launchValidateOrderHook($order);
+                if (LengowConfiguration::getGlobalValue(LengowConfiguration::ACTIVE_NEW_ORDER_HOOK)) {
+                    // launch validateOrder hook for other plugin
+                    $this->launchValidateOrderHook($order);
+                }
+
             }
             // add quantity back for re-import order and order shipped by marketplace
             $this->addQuantityBack($products);
@@ -1390,6 +1393,15 @@ class LengowImportOrder
             );
             $matchingFound = $idCarrier ? 'carrier' : false;
         }
+        if (!$idCarrier && $this->carrierName && $hasCarriers) {
+            // get carrier id by carrier marketplace label
+            $idCarrier = LengowCarrier::getIdCarrierByCarrierMarketplaceLabel(
+                $idCountry,
+                $idMarketplace,
+                $this->carrierName
+            );
+            $matchingFound = $idCarrier ? 'carrier' : false;
+        }
         if (!$idCarrier && $this->carrierMethod && $hasShippingMethods) {
             // get carrier id by method marketplace code
             $idCarrier = LengowMethod::getIdCarrierByMethodMarketplaceName(
@@ -1646,6 +1658,7 @@ class LengowImportOrder
      */
     private function launchValidateOrderHook($order)
     {
+        exit('validate hook is active');
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.launch_validate_order_hook'),

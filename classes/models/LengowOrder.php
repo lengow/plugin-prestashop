@@ -81,6 +81,7 @@ class LengowOrder extends Order
     public const TYPE_EXPRESS = 'is_express';
     public const TYPE_BUSINESS = 'is_business';
     public const TYPE_DELIVERED_BY_MARKETPLACE = 'is_delivered_by_marketplace';
+    public const FIELD_B2B_VALUE = 'B2B';
 
     /**
      * @const number of tries to sync order num
@@ -832,7 +833,7 @@ class LengowOrder extends Order
     public function getCurrentTrackingNumber()
     {
         try {
-            $orderCarrier = new OrderCarrier($this->getIdOrderCarrier());
+            $orderCarrier = new LengowOrderCarrier($this->getIdOrderCarrier());
             $trackingNumber = $orderCarrier->tracking_number;
         } catch (Exception $e) {
             $trackingNumber = '';
@@ -1008,6 +1009,14 @@ class LengowOrder extends Order
         return false;
     }
 
+    public function getMarketPlace()
+    {
+        return  LengowMain::getMarketplaceSingleton(
+            $this->lengowMarketplaceName
+        );
+
+    }
+
     /**
      * Send Order action
      *
@@ -1167,7 +1176,32 @@ class LengowOrder extends Order
      */
     public function isBusiness()
     {
-        return isset($this->lengowOrderTypes[self::TYPE_BUSINESS]);
+        if (isset($this->lengowOrderTypes[self::TYPE_BUSINESS])) {
+            return true;
+        }
+        $extraData = json_decode($this->lengowExtra, true);
+        $paymentInfo = $extraData['payments'][0] ?? [];
+        $billingInfo = $extraData['billing_address'] ?? [];
+
+        if (isset($paymentInfo['payment_terms'])) {
+            $fiscalNumber = $paymentInfo['payment_terms']['fiscalnb'] ?? '';
+            $vatNumber   = $paymentInfo['payment_terms']['vat_number'] ?? '';
+            $siretNumber = $paymentInfo['payment_terms']['siret_number'] ?? '';
+
+            if (!empty($fiscalNumber)
+                    || !empty($vatNumber)
+                    || !empty($siretNumber)) {
+                $this->lengowOrderTypes[self::TYPE_BUSINESS] = self::FIELD_B2B_VALUE;
+                return true;
+            }
+        }
+        if (!empty($billingInfo['vat_number'])
+            && !empty($billingInfo['company'])) {
+            $this->lengowOrderTypes[self::TYPE_BUSINESS] = self::FIELD_B2B_VALUE;
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -1220,3 +1254,4 @@ class LengowOrder extends Order
         return (int) $row['total'];
     }
 }
+
