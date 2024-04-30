@@ -1658,7 +1658,7 @@ class LengowImportOrder
      */
     private function launchValidateOrderHook($order)
     {
-        exit('validate hook is active');
+        
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.launch_validate_order_hook'),

@@ -37,7 +37,7 @@
 /classes/models/LengowToolbox.php|9758f601085e1c3f99276e7312831591
 /classes/models/LengowCarrier.php|72052622bbe20439e73233b0d2828fd2
 /classes/models/LengowOrderError.php|28ece1d7bf686dda2ec5a52dc919c5c8
-/classes/models/LengowImportOrder.php|66dea2b921a8ec4a03ba5eccecd56e33
+/classes/models/LengowImportOrder.php|88aebd7675b68363a5d94d52b6be85bf
 /classes/models/LengowOrderLine.php|86df2f3686d85537fe813520154bf517
 /classes/models/LengowTranslation.php|75e62401b0c1ff7966cb0b1ac3514cfa
 /classes/models/LengowCountry.php|466d33c65ab33278533502c00188a320
