@@ -2,7 +2,7 @@
 /fr.php|c9a03f5ccd0847021e24ce6be0cde568
 /index.php|be8b25f88c14bddd7711e4585ebae316
 /it.php|46ce2e47d8128fda9ea17684103d0e32
-/lengow.php|2b170fa6ec07fe0d015a03879f14dbbc
+/lengow.php|b3694c534b143e490c4bc67b6c085f53
 /loader.php|d6c4d5b54cd370b43123e8021f8ff6ef
 /config/index.php|be8b25f88c14bddd7711e4585ebae316
 /translations/en.csv|f03ff3c9e5811d99bbea5659a761f721
@@ -438,7 +438,7 @@
 /views/templates/admin/lengow_home/layout.tpl|d4e23ff27234d8621b4fc909e1aea5dd
 /views/templates/admin/lengow_home/index.php|be8b25f88c14bddd7711e4585ebae316
 /views/templates/admin/lengow_feed/helpers/index.php|be8b25f88c14bddd7711e4585ebae316
-/views/templates/admin/lengow_feed/helpers/view/view.tpl|1dce871ccb56582d5f545e32fb2d619a
+/views/templates/admin/lengow_feed/helpers/view/view.tpl|0d4877cdcea508fc2ecde8fdd77e4551
 /views/templates/admin/lengow_feed/helpers/view/index.php|be8b25f88c14bddd7711e4585ebae316
 /views/templates/admin/lengow_feed/layout.tpl|8296463aac5333e3d045024628ee14d7
 /views/templates/admin/lengow_feed/index.php|be8b25f88c14bddd7711e4585ebae316
