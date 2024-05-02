@@ -984,7 +984,7 @@ class LengowImportOrder
                 if (LengowConfiguration::getGlobalValue(LengowConfiguration::ACTIVE_NEW_ORDER_HOOK)) {
                     // launch validateOrder hook for other plugin
                     $this->launchValidateOrderHook($order);
-                }
+            }
 
             }
             // add quantity back for re-import order and order shipped by marketplace
@@ -1326,12 +1326,19 @@ class LengowImportOrder
             }
             if (isset($addressData['id_relay'])) {
                 $address->idRelay = $addressData['id_relay'];
+                $address->update();
             }
+            if (!empty($addressData['company'])) {
+                $address->company = $addressData['company'];
+                $address->update();
+            }
+            
             return $address;
         }
         // construct LengowAddress and assign values
         $address = new LengowAddress();
         $address->assign($addressData);
+
         return $address;
     }
 
@@ -1387,15 +1394,6 @@ class LengowImportOrder
         if (!$idCarrier && $this->carrierName && $hasCarriers) {
             // get carrier id by carrier marketplace code
             $idCarrier = LengowCarrier::getIdCarrierByCarrierMarketplaceName(
-                $idCountry,
-                $idMarketplace,
-                $this->carrierName
-            );
-            $matchingFound = $idCarrier ? 'carrier' : false;
-        }
-        if (!$idCarrier && $this->carrierName && $hasCarriers) {
-            // get carrier id by carrier marketplace label
-            $idCarrier = LengowCarrier::getIdCarrierByCarrierMarketplaceLabel(
                 $idCountry,
                 $idMarketplace,
                 $this->carrierName
@@ -1658,7 +1656,6 @@ class LengowImportOrder
      */
     private function launchValidateOrderHook($order)
     {
-        
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.launch_validate_order_hook'),
@@ -1693,3 +1690,4 @@ class LengowImportOrder
         }
     }
 }
+
