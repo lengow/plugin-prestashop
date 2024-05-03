@@ -1399,6 +1399,15 @@ class LengowImportOrder
             );
             $matchingFound = $idCarrier ? 'carrier' : false;
         }
+        if (!$idCarrier && $this->carrierName && $hasCarriers) {
+            // get carrier id by carrier marketplace label
+            $idCarrier = LengowCarrier::getIdCarrierByCarrierMarketplaceLabel(
+                $idCountry,
+                $idMarketplace,
+                $this->carrierName
+            );
+            $matchingFound = $idCarrier ? 'carrier' : false;
+        }
         if (!$idCarrier && $this->carrierMethod && $hasShippingMethods) {
             // get carrier id by method marketplace code
             $idCarrier = LengowMethod::getIdCarrierByMethodMarketplaceName(
