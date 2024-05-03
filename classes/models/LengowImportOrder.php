@@ -984,8 +984,7 @@ class LengowImportOrder
                 if (LengowConfiguration::getGlobalValue(LengowConfiguration::ACTIVE_NEW_ORDER_HOOK)) {
                     // launch validateOrder hook for other plugin
                     $this->launchValidateOrderHook($order);
-            }
-
+                }
             }
             // add quantity back for re-import order and order shipped by marketplace
             $this->addQuantityBack($products);
@@ -1332,7 +1331,7 @@ class LengowImportOrder
                 $address->company = $addressData['company'];
                 $address->update();
             }
-            
+
             return $address;
         }
         // construct LengowAddress and assign values
