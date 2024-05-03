@@ -114,7 +114,7 @@ it:
       refresh_action: "Aggiorna il mio account"
   product:
     screen:
-      filter_exported: "filtrare i prodotti esportati"  
+      filter_exported: "filtrare i prodotti esportati"
       nb_exported: "prodotto esportato"
       nb_available: "prodotto disponibile"
       include_variation_product: "Includi prodotti variabili"
@@ -354,7 +354,7 @@ it:
       list_deleted_file: "Elenco dei file cancellati"
   lengow_setting:
     lengow_plugin_env_title: "Ambiente del Plug-in"
-    lengow_plugin_env_legend: "Non dimenticare di cambiare Accesso e Segreto tokens"    
+    lengow_plugin_env_legend: "Non dimenticare di cambiare Accesso e Segreto tokens"
     lengow_account_id_title: "ID Cliente"
     lengow_access_token_title: "Token"
     lengow_secret_token_title: "Token Segreto"
@@ -381,7 +381,7 @@ it:
     lengow_import_force_product_title: "Forzare i prodotti"
     lengow_import_force_product_legend: "Attiva questa opzione se vuoi fozare l'importazione sei tuoi prodotti non disponibili/inattivi"
     lengow_carrier_semantic_enable_title: "Voglio attivare l'opzione di corrispondenza semantica dei corrieri"
-    lengow_carrier_semantic_enable_legend: "Con questa opzione, fai corrispondere il corriere o il metodo di trasporto indicato dal marketplace con il nome dei vostri corrieri PrestaShop."     
+    lengow_carrier_semantic_enable_legend: "Con questa opzione, fai corrispondere il corriere o il metodo di trasporto indicato dal marketplace con il nome dei vostri corrieri PrestaShop."
     lengow_import_days_title: "Sincronizza tutti gli ordini aggiornati da"
     lengow_anonymize_email: "anonimizzare gli indirizzi e-mail dei clienti"
     lengow_active_new_order_hook: "Attivare Hook di nuovi ordini (Attiva un evento)"
@@ -494,3 +494,5 @@ it:
       synchronize_id: "Sincronizza ID"
       resend_action: "Re-invia Azione"
       check_resend_action: "Vuoi veramente inviare di nuovo questa azione: %{action}?"
+      customer_shipping_phone: "Telefono per la spedizione del cliente"
+      customer_billing_phone: "Telefono per la fatturazione del cliente"
