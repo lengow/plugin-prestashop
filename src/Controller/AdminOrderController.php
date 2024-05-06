@@ -510,9 +510,11 @@ class AdminOrderController extends OrderController
     private function isActiveReturnTrackingNumber(int $orderId): bool
     {
         $lengowOrder = new LengowOrder($orderId);
-
-        return $lengowOrder->getMarketplace()->hasReturnTrackingNumber();
-
+        if ($lengowOrder->getMarketplace()) {
+            return $lengowOrder->getMarketplace()->hasReturnTrackingNumber();
+        }
+        
+        return false;
     }
 
     /**
@@ -522,9 +524,11 @@ class AdminOrderController extends OrderController
     private function isActiveReturnTrackingCarrier(int $orderId): bool
     {
         $lengowOrder = new LengowOrder($orderId);
-
-        return $lengowOrder->getMarketplace()->hasReturnTrackingCarrier();
-
+        if ($lengowOrder->getMarketplace()) {
+           return $lengowOrder->getMarketplace()->hasReturnTrackingCarrier();
+        }
+        
+        return false;
     }
 
     /**
