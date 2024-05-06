@@ -255,6 +255,9 @@ class LengowMain
      */
     public static function getMarketplaceSingleton($name)
     {
+        if (empty($name)) {
+            return null;
+        }
         if (!isset(self::$registers[$name])) {
             self::$registers[$name] = new LengowMarketplace($name);
         }
