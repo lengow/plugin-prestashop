@@ -40,6 +40,7 @@ fr:
     button_download_version: "Lengow PrestaShop %{version}"
     button_remind_me_later: "Pas maintenant, rappelez-moi plus tard"
   footer:
+    settings: "Paramètres"
     toolbox: "Toolbox"
     legals: "Mentions légales"
     plugin_lengow: "Lengow PrestaShop Module"
@@ -114,7 +115,7 @@ fr:
       refresh_action: "Actualiser mon compte"
   product:
     screen:
-      filter_exported: "filtrer les produits exportés"  
+      filter_exported: "filtrer les produits exportés"
       nb_exported: "produits exportés "
       nb_available: "produits disponibles"
       include_variation_product: "Inclure les variations de produits"
@@ -354,7 +355,7 @@ fr:
       list_deleted_file: "Liste des fichiers supprimés"
   lengow_setting:
     lengow_plugin_env_title: "Environnement du plugin"
-    lengow_plugin_env_legend: "Ne pas oublier de changer les tokens Access et Secret"  
+    lengow_plugin_env_legend: "Ne pas oublier de changer les tokens Access et Secret"
     lengow_account_id_title: "ID du compte"
     lengow_access_token_title: "Access Token"
     lengow_secret_token_title: "Secret Token"
@@ -381,7 +382,7 @@ fr:
     lengow_import_force_product_title: "Forcer les produits"
     lengow_import_force_product_legend: "Activez cette option si vous souhaitez importer automatiquement vos produits hors stock et produits inactifs."
     lengow_carrier_semantic_enable_title: "Je veux activer l'option de correspondance sémantique des transporteurs"
-    lengow_carrier_semantic_enable_legend: "Avec cette option, faites correspondre le transporteur ou la méthode de transport indiqué par la marketplace avec le nom de vos transporteurs PrestaShop."    
+    lengow_carrier_semantic_enable_legend: "Avec cette option, faites correspondre le transporteur ou la méthode de transport indiqué par la marketplace avec le nom de vos transporteurs PrestaShop."
     lengow_import_days_title: "Synchroniser toutes les commandes mises à jour depuis"
     lengow_anonymize_email: "Anonymiser les adresses e-mail des clients"
     lengow_active_new_order_hook: "Activer le Hook des nouvelles commandes (déclenche l'événement)"

@@ -40,6 +40,7 @@ en:
     button_download_version: "Lengow PrestaShop %{version}"
     button_remind_me_later: "Not now, remind me later"
   footer:
+    settings: "Settings"
     toolbox: "Toolbox"
     legals: "Legal notices"
     plugin_lengow: "Lengow PrestaShop Plugin"
@@ -114,7 +115,7 @@ en:
       refresh_action: "Refresh my account"
   product:
     screen:
-      filter_exported: "filter exported products"  
+      filter_exported: "filter exported products"
       nb_exported: "products exported"
       nb_available: "products available"
       include_variation_product: "Include variants prodcuts"
@@ -381,7 +382,7 @@ en:
     lengow_import_force_product_title: "Force products"
     lengow_import_force_product_legend: "Enable this option if you want to force the importing of out of stock/inactive products"
     lengow_carrier_semantic_enable_title: "I want to activate the semantic matching of carriers option"
-    lengow_carrier_semantic_enable_legend: "With this option, match the carrier or shipping method indicated by the marketplace with the name of your PrestaShop carriers."      
+    lengow_carrier_semantic_enable_legend: "With this option, match the carrier or shipping method indicated by the marketplace with the name of your PrestaShop carriers."
     lengow_import_days_title: "Synchronize all orders updated since"
     lengow_anonymize_email: "Anonymize customers e-mail address"
     lengow_active_new_order_hook: "Activate Hook for new Orders (trigger the event)"
