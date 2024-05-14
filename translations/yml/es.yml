@@ -40,6 +40,7 @@ es:
     button_download_version: "Lengow PrestaShop %{version}"
     button_remind_me_later: "Ahora no, recuérdamelo más tarde"
   footer:
+    settings: "Ajustes"
     toolbox: "Toolbox"
     legals: "Legal"
     plugin_lengow: "Lengow PrestaShop Plugin"
@@ -114,7 +115,7 @@ es:
       refresh_action: "Refrescar mi cuenta"
   product:
     screen:
-      filter_exported: "filtrar los productos exportados"  
+      filter_exported: "filtrar los productos exportados"
       nb_exported: "productos exportados"
       nb_available: "productos disponibles"
       include_variation_product: "Incluir los productos variados"
@@ -354,7 +355,7 @@ es:
       list_deleted_file: "Lista de archivos eliminados"
   lengow_setting:
     lengow_plugin_env_title: "Entorno del Plug-in"
-    lengow_plugin_env_legend: "No se olvide de cambiar Acceso y Secreto tokens"  
+    lengow_plugin_env_legend: "No se olvide de cambiar Acceso y Secreto tokens"
     lengow_account_id_title: "ID Cuenta"
     lengow_access_token_title: "Acceso Token"
     lengow_secret_token_title: "Secreto Token"

@@ -34,6 +34,7 @@ update.not_working|Ça ne fonctionne pas ? Contactez notre
 update.customer_success_team|équipe Customer Success
 update.button_download_version|Lengow PrestaShop %{version}
 update.button_remind_me_later|Pas maintenant, rappelez-moi plus tard
+footer.settings|Paramètres
 footer.toolbox|Toolbox
 footer.legals|Mentions légales
 footer.plugin_lengow|Lengow PrestaShop Module
