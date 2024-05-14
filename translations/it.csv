@@ -457,3 +457,5 @@ admin.order.check_cancel_and_reimport|Vuoi veramente re-importare l'ordine?
 admin.order.synchronize_id|Sincronizza ID
 admin.order.resend_action|Re-invia Azione
 admin.order.check_resend_action|Vuoi veramente inviare di nuovo questa azione: %{action}?
+admin.order.customer_shipping_phone|Telefono per la spedizione del cliente
+admin.order.customer_billing_phone|Telefono per la fatturazione del cliente

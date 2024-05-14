@@ -495,3 +495,5 @@ en:
       synchronize_id: "Synchronize ID"
       resend_action: "Resend Action"
       check_resend_action: "Do you really want to send the following action: %{action}?"
+      customer_shipping_phone: "Customer shipping phone"
+      customer_billing_phone: "Customer billing phone"

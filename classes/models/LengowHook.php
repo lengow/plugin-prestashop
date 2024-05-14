@@ -237,6 +237,20 @@ class LengowHook
             $actionType = $orderCurrentState === LengowMain::getOrderState(LengowOrder::STATE_CANCELED)
                 ? LengowAction::TYPE_CANCEL
                 : LengowAction::TYPE_SHIP;
+
+            if ( ! empty( $lengowOrder->lengowExtra ) ) {
+                try {
+                    $decoded = json_decode( $lengowOrder->lengowExtra, true, 512, JSON_THROW_ON_ERROR );
+                    $shipping_phone = $decoded['packages'][0]['delivery']['phone_mobile']
+                        ?? $decoded['packages'][0]['delivery']['phone_home']
+                        ?? $decoded['packages'][0]['delivery']['phone_office'];
+                    $billing_phone  = $decoded['billing_address']['phone_mobile']
+                        ?? $decoded['billing_address']['phone_home']
+                        ?? $decoded['billing_address']['phone_office'];
+                } catch ( JsonException $e ) {
+                }
+            }
+
             $templateData = [
                 'marketplace_sku' => $lengowOrder->lengowMarketplaceSku,
                 'id_flux' => $lengowOrder->lengowIdFlux,
@@ -265,6 +279,8 @@ class LengowHook
                 'debug_mode' => LengowConfiguration::debugModeIsActive(),
                 'can_resend_action' => $lengowOrder->canReSendOrder(),
                 'check_resend_action' => $locale->t('admin.order.check_resend_action', ['action' => $actionType]),
+                'customer_shipping_phone' => $shipping_phone ?? null,
+                'customer_billing_phone' => $billing_phone ?? null,
             ];
             $this->context->smarty->assign($templateData);
             return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info.tpl');

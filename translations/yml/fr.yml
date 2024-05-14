@@ -495,3 +495,5 @@ fr:
       synchronize_id: "Synchronisez l'ID"
       resend_action: "Renvoyer l'action"
       check_resend_action: "Vous voulez vous vraiment renvoyer l'action %{action} ?"
+      customer_shipping_phone: "Numéro de téléphone de livraison client"
+      customer_billing_phone: "Numéro de téléphone de facturation client"

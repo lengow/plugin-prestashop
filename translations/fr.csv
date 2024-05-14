@@ -457,3 +457,5 @@ admin.order.check_cancel_and_reimport|Vous voulez vous vraiment réimporter la c
 admin.order.synchronize_id|Synchronisez l'ID
 admin.order.resend_action|Renvoyer l'action
 admin.order.check_resend_action|Vous voulez vous vraiment renvoyer l'action %{action} ?
+admin.order.customer_shipping_phone|Numéro de téléphone de livraison client
+admin.order.customer_billing_phone|Numéro de téléphone de facturation client

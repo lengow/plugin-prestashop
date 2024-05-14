@@ -50,6 +50,14 @@
 								<dd>{$customer_name|escape:'htmlall':'UTF-8'}</dd>
 								<dt>{$lengow_locale->t('admin.order.customer_email')|escape:'htmlall':'UTF-8'}</dt>
 								<dd>{if $customer_email}{$customer_email|escape:'htmlall':'UTF-8'}{else}--{/if}</dd>
+                {if $customer_shipping_phone}
+                <dt>{$lengow_locale->t('admin.order.customer_shipping_phone')|escape:'htmlall':'UTF-8'}</dt>
+                <dd>{$customer_shipping_phone|escape:'htmlall':'UTF-8'}</dd>
+                {/if}
+                {if $customer_billing_phone and $customer_billing_phone != $customer_shipping_phone}
+                <dt>{$lengow_locale->t('admin.order.customer_billing_phone')|escape:'htmlall':'UTF-8'}</dt>
+                <dd>{$customer_billing_phone|escape:'htmlall':'UTF-8'}</dd>
+                {/if}
 								<dt>{$lengow_locale->t('admin.order.is_express')|escape:'htmlall':'UTF-8'}</dt>
 								<dd>
 									{if $is_express}
