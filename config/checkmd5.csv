@@ -51,7 +51,7 @@
 /classes/models/LengowList.php|09c2c0ba4609fd530ab8b0246d46b4db
 /classes/models/LengowOrderCarrier.php|a6c4ac9f02fa0f2e5de29df7dba6f235
 /classes/models/LengowCatalog.php|fe184f26056d2f50787738b9aa883746
-/classes/models/LengowNameParser.php|02225430d96c932b818697ddae810fee
+/classes/models/LengowNameParser.php|96433bdbdb33ec2e28831e4ca198a2ce
 /classes/models/LengowShop.php|e4199d01e962eaf0243734af613d0d5f
 /classes/models/LengowAddress.php|c3150dbe525c28f37d1e4aaf7a9c78b6
 /classes/models/LengowFeed.php|e113bec683031ef163c7098680e4c149
