@@ -201,8 +201,7 @@ class LengowLog extends LengowFile
                     ];
                     LengowMain::log(
                         $labels[$error['type']] ?? 'PHP',
-                        $error['type'] . ': ' . $error['message']
-                        . PHP_EOL . 'in ' . $error['file'] . ' on line ' . $error['line']
+                        $error['message'] . PHP_EOL . 'in ' . $error['file'] . ' on line ' . $error['line']
                     );
                 }
             }
