@@ -30,6 +30,7 @@
  * integer shop_id          Shop id to synchronize
  * integer days             Synchronization interval time
  */
+LengowLog::registerShutdownFunction();
 @set_time_limit(0);
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
@@ -41,6 +42,8 @@ require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
 Configuration::set('PS_SHOP_ENABLE', true);
 require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules' . $sep . 'lengow' . $sep . 'lengow.php';
+
+LengowLog::registerShutdownFunction();
 // check if Lengow is installed and enabled
 $lengow = new Lengow();
 if (!Module::isInstalled($lengow->name)) {
