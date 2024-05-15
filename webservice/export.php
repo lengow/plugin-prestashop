@@ -36,7 +36,6 @@
  * boolean update_export_date Change last export date in data base (1) or not (0)
  * boolean get_params         See export parameters and authorized values in json format (1) or not (0)
  */
-LengowLog::registerShutdownFunction();
 @set_time_limit(0);
 @ini_set('memory_limit', '1024M');
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
