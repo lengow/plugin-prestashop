@@ -1196,6 +1196,7 @@ class LengowImportOrder
 
         // create customer based on billing data
         // generation of fictitious email
+        $billingData['email'] = $this->getCustomerEmail();
 
         if ((bool) LengowConfiguration::getGlobalValue(LengowConfiguration::ANONYMIZE_EMAIL)) {
             $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
@@ -1698,4 +1699,5 @@ class LengowImportOrder
         }
     }
 }
+
 
