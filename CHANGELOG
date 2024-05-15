@@ -3,6 +3,7 @@ Version 3.5.1
 =============================================================
  - BugFix: address relay company updated
  - BugFix: parameters link in the footer
+ - BugFix: nameParser typehint
  - Feature: Add phone number to the order information in the "Lengow" tab
  - Feature: Lengow tracker is disabled
 =============================================================
