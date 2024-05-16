@@ -34,6 +34,7 @@ update.not_working|Not working? Contact our
 update.customer_success_team|Customer Success team
 update.button_download_version|Lengow PrestaShop %{version}
 update.button_remind_me_later|Not now, remind me later
+footer.settings|Settings
 footer.toolbox|Toolbox
 footer.legals|Legal notices
 footer.plugin_lengow|Lengow PrestaShop Plugin
@@ -456,6 +457,8 @@ admin.order.check_cancel_and_reimport|Do you really want to re-import the order?
 admin.order.synchronize_id|Synchronize ID
 admin.order.resend_action|Resend Action
 admin.order.check_resend_action|Do you really want to send the following action: %{action}?
+admin.order.customer_shipping_phone|Customer shipping phone
+admin.order.customer_billing_phone|Customer billing phone
 log.install.install_start|## start install for version %{version} ##
 log.install.install_end|## end install for version %{version} ##
 log.install.table_created|adding table %{name} in database

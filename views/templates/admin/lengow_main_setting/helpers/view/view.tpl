@@ -41,11 +41,6 @@
                 {html_entity_decode($ipSecurity|escape:'htmlall':'UTF-8')}
             </div>
             <div class="lgw-box">
-                <h2>{$locale->t('global_setting.screen.tracker_title')|escape:'htmlall':'UTF-8'}</h2>
-                <p>{$locale->t('global_setting.screen.tracker_description')|escape:'htmlall':'UTF-8'}</p>
-                {html_entity_decode($tracker|escape:'htmlall':'UTF-8')}
-            </div>
-            <div class="lgw-box">
                 <h2>{$locale->t('global_setting.screen.shop_title')|escape:'htmlall':'UTF-8'}</h2>
                 <p>{$locale->t('global_setting.screen.shop_description')|escape:'htmlall':'UTF-8'}</p>
                 {html_entity_decode($shopCatalog|escape:'htmlall':'UTF-8')}

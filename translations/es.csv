@@ -34,6 +34,7 @@ update.not_working|¿No funciona? Póngase en contacto con nuestro
 update.customer_success_team|equipo de Éxito del cliente
 update.button_download_version|Lengow PrestaShop %{version}
 update.button_remind_me_later|Ahora no, recuérdamelo más tarde
+footer.settings|Ajustes
 footer.toolbox|Toolbox
 footer.legals|Legal
 footer.plugin_lengow|Lengow PrestaShop Plugin
@@ -456,3 +457,5 @@ admin.order.check_cancel_and_reimport|¿Realmente desea volver a importar el ped
 admin.order.synchronize_id|Sincronizar ID
 admin.order.resend_action|Reenvie la accion
 admin.order.check_resend_action|¿Realmente desea enviar la siguiente acción: %{action} ?
+admin.order.customer_shipping_phone|Teléfono de envío al cliente
+admin.order.customer_billing_phone|Teléfono de facturación al cliente

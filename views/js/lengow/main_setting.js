@@ -171,11 +171,7 @@ function openModal(){
         $('input[name="LENGOW_IP_ENABLED"]').change(function(){
             displayIpSecurity();
         });
-        // display tracker
-        displayTracker();
-        $('input[name="LENGOW_TRACKING_ENABLED"]').change(function(){
-            displayTracker();
-        });
+        
         // display shop management
         displayShopManagement()
         $('.lengow_shop_active input').change(function() {
