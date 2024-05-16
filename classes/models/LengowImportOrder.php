@@ -985,7 +985,6 @@ class LengowImportOrder
                     // launch validateOrder hook for other plugin
                     $this->launchValidateOrderHook($order);
                 }
-
             }
             // add quantity back for re-import order and order shipped by marketplace
             $this->addQuantityBack($products);
@@ -1197,6 +1196,7 @@ class LengowImportOrder
 
         // create customer based on billing data
         // generation of fictitious email
+        $billingData['email'] = $this->getCustomerEmail();
 
         if ((bool) LengowConfiguration::getGlobalValue(LengowConfiguration::ANONYMIZE_EMAIL)) {
             $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
@@ -1326,12 +1326,19 @@ class LengowImportOrder
             }
             if (isset($addressData['id_relay'])) {
                 $address->idRelay = $addressData['id_relay'];
+                $address->update();
             }
+            if (!empty($addressData['company'])) {
+                $address->company = $addressData['company'];
+                $address->update();
+            }
+
             return $address;
         }
         // construct LengowAddress and assign values
         $address = new LengowAddress();
         $address->assign($addressData);
+
         return $address;
     }
 
@@ -1658,7 +1665,6 @@ class LengowImportOrder
      */
     private function launchValidateOrderHook($order)
     {
-        
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.launch_validate_order_hook'),
@@ -1693,3 +1699,5 @@ class LengowImportOrder
         }
     }
 }
+
+

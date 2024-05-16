@@ -136,7 +136,6 @@ class LengowMainSettingController extends LengowController
         $this->context->smarty->assign('list_file', $listFile);
         $this->context->smarty->assign('mail_report', $mailReport);
         $this->context->smarty->assign('defaultExportCarrier', $defaultExportCarrier);
-        $this->context->smarty->assign('tracker', $tracker);
         $this->context->smarty->assign('ipSecurity', $ipSecurity);
         $this->context->smarty->assign('debug_report', $debugReport);
         $this->context->smarty->assign('debug_wrapper', $debugWrapper);

@@ -22,7 +22,7 @@
     <div class="lgw-container">
         <div class="filter-column">
             <div class="sticky-icon" id="sticky-icon">
-                <a title="{$locale->t('product.screen.filter_exported')}">
+                <a title="{$locale->t('product.screen.filter_exported')|escape:'htmlall':'UTF-8'}">
                     <i style="font-size: 20px;color: #555" class="fa fa-filter"></i>
                 </a>
             </div>
@@ -119,7 +119,7 @@
                                     </div> {$locale->t('product.screen.include_inactive_product')|escape:'htmlall':'UTF-8'}
                                 </label>
                             </div>
-                           
+
                         </div>
                         <br>
                         <div class="switch-row">
