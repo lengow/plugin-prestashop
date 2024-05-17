@@ -49,6 +49,7 @@ Configuration::set('PS_SHOP_ENABLE', true);
 require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules/lengow/lengow.php';
 
+LengowLog::registerShutdownFunction();
 $lengow = new Lengow();
 // check if Lengow is installed and enabled
 if (!Module::isInstalled($lengow->name)) {
