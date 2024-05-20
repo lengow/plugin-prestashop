@@ -853,7 +853,6 @@ class LengowConfiguration extends Configuration
      */
     public static function deleteAll()
     {
-        
         Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'configuration` WHERE name LIKE "LENGOW_%"');
         return true;
     }
