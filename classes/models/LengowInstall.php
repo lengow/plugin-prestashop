@@ -213,34 +213,11 @@ class LengowInstall
             LengowLog::CODE_UNINSTALL,
             LengowMain::setLogMessage('log.uninstall.uninstall_start', ['version' => $this->lengowModule->version])
         );
-        // remove Lengow config
-        Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'configuration` WHERE name LIKE "LENGOW_%"');
         $this->uninstallTab();
         LengowMain::log(
             LengowLog::CODE_UNINSTALL,
             LengowMain::setLogMessage('log.uninstall.uninstall_end', ['version' => $this->lengowModule->version])
         );
-        $name = 'order_carrier';
-        $column = LengowAction::ARG_RETURN_TRACKING_NUMBER;
-        if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
-            $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'DROP COLUMN `'.$column.'`;';
-            Db::getInstance()->execute($sql);
-            LengowMain::log(
-                LengowLog::CODE_UNINSTALL,
-                LengowMain::setLogMessage('log.uninstall.column_deleted', ['name' => $column])
-            );
-        }
-        $column = LengowAction::ARG_RETURN_CARRIER;
-        if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
-            $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'DROP COLUMN `'.$column.'`;';
-            Db::getInstance()->execute($sql);
-            LengowMain::log(
-                LengowLog::CODE_UNINSTALL,
-                LengowMain::setLogMessage('log.uninstall.column_deleted', ['name' => $column])
-            );
-        }
 
         return true;
     }
@@ -395,6 +372,27 @@ class LengowInstall
                 LengowMain::setLogMessage('log.uninstall.table_dropped', ['name' => $table])
             );
             Db::getInstance()->execute('DROP TABLE IF EXISTS ' . _DB_PREFIX_ . $table);
+        }
+        $name = 'order_carrier';
+        $column = LengowAction::ARG_RETURN_TRACKING_NUMBER;
+        if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
+            $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
+                    . 'DROP COLUMN `'.$column.'`;';
+            Db::getInstance()->execute($sql);
+            LengowMain::log(
+                LengowLog::CODE_UNINSTALL,
+                LengowMain::setLogMessage('log.uninstall.column_deleted', ['name' => $column])
+            );
+        }
+        $column = LengowAction::ARG_RETURN_CARRIER;
+        if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
+            $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
+                    . 'DROP COLUMN `'.$column.'`;';
+            Db::getInstance()->execute($sql);
+            LengowMain::log(
+                LengowLog::CODE_UNINSTALL,
+                LengowMain::setLogMessage('log.uninstall.column_deleted', ['name' => $column])
+            );
         }
         return true;
     }
