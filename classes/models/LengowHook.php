@@ -115,6 +115,9 @@ class LengowHook
         ];
         foreach ($lengowHooks as $hook => $version) {
             if ($version <= Tools::substr(_PS_VERSION_, 0, 3)) {
+                if ($this->module->isRegisteredInHook($hook)) {
+                    continue;
+                }
                 if (!$this->module->registerHook($hook)) {
                     LengowMain::log(
                         LengowLog::CODE_INSTALL,
