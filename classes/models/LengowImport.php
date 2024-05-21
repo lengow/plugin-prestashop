@@ -1102,7 +1102,7 @@ class LengowImport
         // check if order action is finish (ship or cancel)
         if (!$this->debugMode
             && !$this->importOneOrder
-            && $this->typeImport === self::TYPE_MANUAL
+            && ($this->typeImport === self::TYPE_MANUAL || $this->typeImport === self::TYPE_CRON)
         ) {
             LengowAction::checkFinishAction($this->logOutput);
             LengowAction::checkOldAction($this->logOutput);

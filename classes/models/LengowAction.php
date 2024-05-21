@@ -733,6 +733,7 @@ class LengowAction
             foreach ($unsentOrders as $idOrder => $actionType) {
                 $lengowOrder = new LengowOrder($idOrder);
                 $lengowOrder->callAction($actionType);
+                usleep(250000);
             }
         }
         return true;
