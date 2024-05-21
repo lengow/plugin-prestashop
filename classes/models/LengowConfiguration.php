@@ -853,11 +853,7 @@ class LengowConfiguration extends Configuration
      */
     public static function deleteAll()
     {
-        $keys = self::getKeys();
-        LengowMain::log(LengowLog::CODE_SETTING, LengowMain::setLogMessage('log.setting.setting_delete'));
-        foreach (array_keys($keys) as $key) {
-            self::deleteByName($key);
-        }
+        Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'configuration` WHERE name LIKE "LENGOW_%"');
         return true;
     }
 
