@@ -169,6 +169,7 @@ order.screen.type_delivered_by_marketplace|Spedito dal Marketplace
 order.screen.type_business|Business
 order.screen.return_tracking_number_label|Numero di ritorno
 order.screen.return_carrier_label|Vettore di ritorno
+order.screen.not_provided|Non fornito dal marketplace
 order.table.action_lengow|Azione
 order.table.order_lengow_state|Stato
 order.table.order_types|Tipi
