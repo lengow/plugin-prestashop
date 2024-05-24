@@ -3,6 +3,7 @@ Version 3.5.2
 =============================================================
   - BugFix: FBA orders amazon_us default address data
   - BugFix: admin orders urls fixed
+  - Feature: log php error shutdown
 =============================================================
 Version 3.5.1
 =============================================================
