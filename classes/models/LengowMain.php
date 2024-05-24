@@ -251,7 +251,7 @@ class LengowMain
      *
      * @throws LengowException
      *
-     * @return LengowMarketplace
+     * @return LengowMarketplace|null
      */
     public static function getMarketplaceSingleton($name)
     {
@@ -269,7 +269,7 @@ class LengowMain
 
         return null;
     }
-    
+
     /**
      * Clean html
      *
