@@ -1192,7 +1192,11 @@ class LengowImportOrder
         $cartData['id_lang'] = $this->idLang;
         $cartData['id_shop'] = $this->idShop;
         // get billing data
-        $billingData = LengowAddress::extractAddressDataFromAPI($this->orderData->billing_address);
+        $billingAddressApi = LengowAddress::hydrateAddress(
+            $this->orderData,
+            $this->orderData->billing_address
+        );
+        $billingData = LengowAddress::extractAddressDataFromAPI($billingAddressApi);
 
         // create customer based on billing data
         // generation of fictitious email
@@ -1225,7 +1229,11 @@ class LengowImportOrder
         }
         $cartData['id_address_invoice'] = $billingAddress->id;
         // shipping
-        $shippingData = LengowAddress::extractAddressDataFromAPI($this->packageData->delivery);
+        $shippingAddressApi = LengowAddress::hydrateAddress(
+            $this->orderData,
+            $this->packageData->delivery
+        );
+        $shippingData = LengowAddress::extractAddressDataFromAPI($shippingAddressApi);
         $this->shippingAddress = $this->getAddress($customer->id, $shippingData, true);
         if (!$this->shippingAddress->id) {
             $this->shippingAddress->id_customer = $customer->id;

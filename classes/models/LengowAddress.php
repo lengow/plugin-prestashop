@@ -434,6 +434,61 @@ class LengowAddress extends Address
     }
 
     /**
+     * Hydrates address data
+     *
+     * @param Object $orderData
+     * @param Object $address
+     *
+     * @return Object
+     */
+    public static function hydrateAddress($orderData, $address)
+    {
+        $locale = new LengowTranslation();
+        $notProvided = $locale->t('order.screen.not_provided');
+        $notPhone = '0000000000';
+        $status = (string) $orderData->lengow_status;
+        $isDeliveredByMp = false;
+        if ($status !== LengowOrder::STATE_SHIPPED) {
+            return $address;
+        }
+
+        $types = $orderData->order_types;
+
+        foreach ($types as $orderType) {
+            if ($orderType->type === LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE) {
+                $isDeliveredByMp = true;
+            }
+        }
+
+        if (!$isDeliveredByMp) {
+            return $address;
+        }
+
+
+        if (is_null($address->first_name)
+                && is_null($address->last_name)
+                && is_null($address->full_name)) {
+            $address->first_name = $notProvided;
+            $address->last_name = $notProvided;
+            $address->full_name = $notProvided;
+        }
+
+        if (is_null($address->first_line)
+                && is_null($address->full_address)) {
+            $address->first_line = $notProvided;
+            $address->full_address = $notProvided;
+        }
+
+        if (is_null($address->phone_home)
+                && is_null($address->phone_mobile)) {
+            $address->phone_home = $notPhone;
+            $address->phone_mobile = $notPhone;
+        }
+
+        return $address;
+    }
+
+    /**
      * Assign API data
      *
      * @param array $data API datas
