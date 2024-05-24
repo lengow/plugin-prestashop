@@ -258,12 +258,18 @@ class LengowMain
         if (empty($name)) {
             return null;
         }
-        if (!isset(self::$registers[$name])) {
-            self::$registers[$name] = new LengowMarketplace($name);
+        try {
+            if (!isset(self::$registers[$name])) {
+                self::$registers[$name] = new LengowMarketplace($name);
+            }
+            return self::$registers[$name];
+        } catch (LengowException $e) {
+            self::log(LengowLog::CODE_ACTION, $e->getMessage());
         }
-        return self::$registers[$name];
-    }
 
+        return null;
+    }
+    
     /**
      * Clean html
      *
