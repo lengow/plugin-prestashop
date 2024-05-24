@@ -1008,6 +1008,11 @@ class LengowOrder extends Order
         return false;
     }
 
+    /**
+     * will search the marketplace linked to the order
+     *
+     * @return LengowMarketplace|null
+     */
     public function getMarketPlace()
     {
         return  LengowMain::getMarketplaceSingleton(
@@ -1055,6 +1060,14 @@ class LengowOrder extends Order
                     $this->checkAndChangeMarketplaceName();
                 }
                 $marketplace = LengowMain::getMarketplaceSingleton($this->lengowMarketplaceName);
+                if (is_null($marketplace)) {
+                    throw new LengowException(
+                        LengowMain::setLogMessage(
+                            'lengow_log.exception.marketplace_not_present',
+                            ['marketplace_name' => $this->lengowMarketplaceName]
+                        )
+                    );
+                }
                 if ($marketplace->containOrderLine($action)) {
                     $orderLineCollection = LengowOrderLine::findOrderLineIds($this->id);
                     // compatibility V2 and security

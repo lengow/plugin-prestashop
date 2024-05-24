@@ -353,6 +353,14 @@ class LengowImportOrder
         try {
             // get marketplace and Lengow order state
             $this->marketplace = LengowMain::getMarketplaceSingleton((string) $this->orderData->marketplace);
+            if (is_null($this->marketplace)) {
+                throw new LengowException(
+                    LengowMain::setLogMessage(
+                        'lengow_log.exception.marketplace_not_present',
+                        ['marketplace_name' => $this->orderData->marketplace]
+                    )
+                );
+            }
             $this->marketplaceLabel = $this->marketplace->labelName;
             $this->orderStateMarketplace = (string) $this->orderData->marketplace_status;
             $this->orderStateLengow = $this->marketplace->getStateLengow($this->orderStateMarketplace);
