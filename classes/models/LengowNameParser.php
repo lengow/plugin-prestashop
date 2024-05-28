@@ -22,7 +22,8 @@
 /**
  * Lengow Name Parser Class
  */
-class LengowNameParser {
+class LengowNameParser
+{
 
     /**
      * Array of possible name languages.
@@ -103,7 +104,8 @@ class LengowNameParser {
      * @param string $initString The Name String
      *
      */
-    public function __construct(string $initString = "") {
+    public function __construct(string $initString = "")
+    {
         $this->title = "";
         $this->first = "";
         $this->middle = "";
@@ -134,7 +136,9 @@ class LengowNameParser {
      * Destructor
      *
      */
-    public function __destruct() {}
+    public function __destruct()
+    {
+    }
 
     /**
      * Access Method

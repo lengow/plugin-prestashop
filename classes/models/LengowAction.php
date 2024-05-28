@@ -578,7 +578,7 @@ class LengowAction
                 break;
             }
             if (isset($results->results)) {
-                    // construct array actions
+                // construct array actions
                 foreach ($results->results as $action) {
                     if (isset($action->id)) {
                         $apiActions[$action->id] = $action;

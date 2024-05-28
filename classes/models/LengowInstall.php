@@ -842,7 +842,7 @@ class LengowInstall
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
                     . 'ADD COLUMN `'.$column.'` VARCHAR(64);';
             Db::getInstance()->execute($sql);
-             LengowMain::log(
+            LengowMain::log(
                 LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.column_created', ['name' => $column])
             );
@@ -851,14 +851,13 @@ class LengowInstall
                 LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.column_already_created', ['name' => $column])
             );
-
         }
         $column = LengowAction::ARG_RETURN_CARRIER;
         if (self::checkTableExists($name) && !self::checkFieldExists($name, $column)) {
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
                     . 'ADD COLUMN `'.$column.'` VARCHAR(64);';
             Db::getInstance()->execute($sql);
-             LengowMain::log(
+            LengowMain::log(
                 LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.column_created', ['name' => $column])
             );
@@ -867,7 +866,6 @@ class LengowInstall
                 LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.column_already_created', ['name' => $column])
             );
-
         }
 
         return true;
@@ -914,7 +912,7 @@ class LengowInstall
      *
      * @return bool
      */
-   private function uninstallTab()
+    private function uninstallTab()
     {
         try {
             $sql = 'SELECT `id_tab`, `class_name` FROM `' . _DB_PREFIX_ . 'tab` WHERE `module` = \'lengow\'';

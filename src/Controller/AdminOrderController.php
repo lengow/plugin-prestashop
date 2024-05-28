@@ -1,4 +1,24 @@
 <?php
+/**
+ * Copyright 2017 Lengow SAS.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ * @author    Team Connector <team-connector@lengow.com>
+ * @copyright 2017 Lengow SAS
+ * @license   http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 
 namespace PrestaShop\Module\Lengow\Controller;
 
@@ -51,7 +71,8 @@ use Symfony\Component\HttpFoundation\Response;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-//use PrestaShop\PrestaShop\Core\Form\ChoiceProvider\Carr
+
+
 
 class AdminOrderController extends OrderController
 {
@@ -67,8 +88,6 @@ class AdminOrderController extends OrderController
      */
     public function viewAction(int $orderId, Request $request): Response
     {
-
-
         try {
 
             /** @var OrderForViewing $orderForViewing */
@@ -82,13 +101,15 @@ class AdminOrderController extends OrderController
         $formFactory = $this->get('form.factory');
         $updateOrderStatusForm = $formFactory->createNamed(
             'update_order_status',
-            UpdateOrderStatusType::class, [
+            UpdateOrderStatusType::class,
+            [
                 'new_order_status_id' => $orderForViewing->getHistory()->getCurrentOrderStatusId(),
             ]
         );
         $updateOrderStatusActionBarForm = $formFactory->createNamed(
             'update_order_status_action_bar',
-            UpdateOrderStatusType::class, [
+            UpdateOrderStatusType::class,
+            [
                 'new_order_status_id' => $orderForViewing->getHistory()->getCurrentOrderStatusId(),
             ]
         );
@@ -133,7 +154,7 @@ class AdminOrderController extends OrderController
         ]);
         $isActiveReturnTrackingNumber = $this->isActiveReturnTrackingNumber($orderId);
         $isActiveReturnCarrier = $this->isActiveReturnTrackingCarrier($orderId);
-        
+
         if ($isActiveReturnTrackingNumber) {
             $returnTrackingNumber = $this->getReturnTrackingNumber($orderId);
             $updateOrderShippingForm->add(LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
@@ -272,7 +293,6 @@ class AdminOrderController extends OrderController
      */
     public function updateShippingAction(int $orderId, Request $request): RedirectResponse
     {
-
         $form = $this->createForm(UpdateOrderShippingType::class, [], [
             'order_id' => $orderId,
         ]);
@@ -297,7 +317,6 @@ class AdminOrderController extends OrderController
             $data = $form->getData();
 
             try {
-
                 if (!empty($data[LengowAction::ARG_RETURN_TRACKING_NUMBER])) {
                     LengowOrderDetail::updateOrderReturnTrackingNumber(
                         $data[LengowAction::ARG_RETURN_TRACKING_NUMBER],
@@ -513,7 +532,7 @@ class AdminOrderController extends OrderController
         if ($lengowOrder->getMarketplace()) {
             return $lengowOrder->getMarketplace()->hasReturnTrackingNumber();
         }
-        
+
         return false;
     }
 
@@ -525,9 +544,9 @@ class AdminOrderController extends OrderController
     {
         $lengowOrder = new LengowOrder($orderId);
         if ($lengowOrder->getMarketplace()) {
-           return $lengowOrder->getMarketplace()->hasReturnTrackingCarrier();
+            return $lengowOrder->getMarketplace()->hasReturnTrackingCarrier();
         }
-        
+
         return false;
     }
 
@@ -560,6 +579,4 @@ class AdminOrderController extends OrderController
     {
         return LengowOrderDetail::getOrderReturnCarrierName($orderId);
     }
-
 }
-

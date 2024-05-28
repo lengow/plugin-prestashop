@@ -781,7 +781,6 @@ class LengowMarketplace
         $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_SHIP);
 
         return in_array(LengowAction::ARG_RETURN_CARRIER, $arguments);
-
     }
 
     /**
@@ -797,8 +796,5 @@ class LengowMarketplace
         $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_SHIP);
 
         return in_array(LengowAction::ARG_RETURN_TRACKING_NUMBER, $arguments);
-
     }
-
 }
-

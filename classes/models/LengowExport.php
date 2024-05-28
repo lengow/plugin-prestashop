@@ -729,7 +729,6 @@ class LengowExport
      */
     public function buildTotalQuery($variation = false)
     {
-
         $where = [];
 
         $query = ' FROM ' . _DB_PREFIX_ . 'product p';

@@ -79,7 +79,6 @@ class LengowMainSettingController extends LengowController
                 LengowLog::download();
                 break;
         }
-
     }
 
     /**
@@ -87,7 +86,6 @@ class LengowMainSettingController extends LengowController
      */
     public function display()
     {
-
         $form = new LengowConfigurationForm(array('fields' => LengowConfiguration::getKeys()));
         $form->fields[LengowConfiguration::REPORT_MAILS][LengowConfiguration::PARAM_LABEL] = '';
         $mailReport = $form->buildInputs(

@@ -54,7 +54,6 @@ class LengowController
      */
     public function __construct()
     {
-
         $this->module = Module::getInstanceByName('lengow');
         $this->context = Context::getContext();
         $this->lengowLink = new LengowLink();
@@ -63,8 +62,6 @@ class LengowController
         $this->context->smarty->assign('locale', $this->locale);
         $lengowPathUri = $this->module->getPathUri();
         $this->context->smarty->assign('lengowPathUri', $lengowPathUri);
-
-
     }
 
     /**
@@ -122,7 +119,6 @@ class LengowController
      */
     protected function prepareDisplay()
     {
-
         $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
         $multiShop = Shop::isFeatureActive();
         $debugMode = LengowConfiguration::debugModeIsActive();

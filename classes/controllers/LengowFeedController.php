@@ -22,7 +22,9 @@
  * Lengow Feed Controller Class
  */
 
-if (!defined('_PS_VERSION_')) { exit; }
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowFeedController extends LengowController
 {
     /**
@@ -55,7 +57,7 @@ class LengowFeedController extends LengowController
                         $data['option'] = 'selection';
                         if ($state) {
                             $data['state'] = true;
-                                LengowConfiguration::updatevalue(
+                            LengowConfiguration::updatevalue(
                                 LengowConfiguration::OUT_OF_STOCK_ENABLED,
                                 1,
                                 null,
@@ -588,5 +590,3 @@ class LengowFeedController extends LengowController
         return $value;
     }
 }
-
-

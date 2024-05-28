@@ -705,7 +705,6 @@ class LengowOrder extends Order
                 return !($result === null
                     || (isset($result['detail']) && $result['detail'] === 'Pas trouvé.')
                     || isset($result['error']));
-
             } catch (Exception $e) {
                 $tries --;
                 if ($tries === 0) {
@@ -721,7 +720,6 @@ class LengowOrder extends Order
                 }
                 usleep(250000);
             }
-
         } while ($tries > 0);
 
         return false;
@@ -1018,7 +1016,6 @@ class LengowOrder extends Order
         return  LengowMain::getMarketplaceSingleton(
             $this->lengowMarketplaceName
         );
-
     }
 
     /**
@@ -1266,4 +1263,3 @@ class LengowOrder extends Order
         return (int) $row['total'];
     }
 }
-

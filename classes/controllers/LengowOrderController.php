@@ -745,13 +745,13 @@ class LengowOrderController extends LengowController
         ';
     }
 
-   /**
-     * Generate link for order admin page
-     *
-     * @param int $idOrder PrestaShop order id
-     *
-     * @return string
-     */
+    /**
+      * Generate link for order admin page
+      *
+      * @param int $idOrder PrestaShop order id
+      *
+      * @return string
+      */
     private static function getOrderAdminLink($idOrder)
     {
         $link = new LengowLink();

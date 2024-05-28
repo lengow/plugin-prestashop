@@ -1195,7 +1195,6 @@ class LengowImportOrder
      */
     private function getCartData()
     {
-
         $cartData = [];
         $cartData['id_lang'] = $this->idLang;
         $cartData['id_shop'] = $this->idShop;
@@ -1715,5 +1714,3 @@ class LengowImportOrder
         }
     }
 }
-
-

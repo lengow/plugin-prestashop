@@ -1339,4 +1339,3 @@ class LengowCarrier extends Carrier
         return $db->execute($query);
     }
 }
-

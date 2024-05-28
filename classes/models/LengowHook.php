@@ -241,16 +241,16 @@ class LengowHook
                 ? LengowAction::TYPE_CANCEL
                 : LengowAction::TYPE_SHIP;
 
-            if ( ! empty( $lengowOrder->lengowExtra ) ) {
+            if (! empty($lengowOrder->lengowExtra)) {
                 try {
-                    $decoded = json_decode( $lengowOrder->lengowExtra, true, 512, JSON_THROW_ON_ERROR );
+                    $decoded = json_decode($lengowOrder->lengowExtra, true, 512, JSON_THROW_ON_ERROR);
                     $shipping_phone = $decoded['packages'][0]['delivery']['phone_mobile']
                         ?? $decoded['packages'][0]['delivery']['phone_home']
                         ?? $decoded['packages'][0]['delivery']['phone_office'];
                     $billing_phone  = $decoded['billing_address']['phone_mobile']
                         ?? $decoded['billing_address']['phone_home']
                         ?? $decoded['billing_address']['phone_office'];
-                } catch ( JsonException $e ) {
+                } catch (JsonException $e) {
                 }
             }
 

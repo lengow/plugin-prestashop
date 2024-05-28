@@ -102,7 +102,6 @@ class LengowToolboxElement
      */
     public function getGlobalInformation()
     {
-
         $pluginData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_PLUGIN);
         $checklist = [
             [
