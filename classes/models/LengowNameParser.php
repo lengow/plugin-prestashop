@@ -19,9 +19,12 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-/**
+/*
  * Lengow Name Parser Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowNameParser
 {
     /**

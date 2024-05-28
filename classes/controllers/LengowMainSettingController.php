@@ -19,9 +19,12 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-/**
+/*
  * Lengow Main Setting Controller Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowMainSettingController extends LengowController
 {
     /**

@@ -19,9 +19,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-/**
+/*
  * Lengow Configuration Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class LengowConfiguration extends Configuration
 {
     /* Settings database key */

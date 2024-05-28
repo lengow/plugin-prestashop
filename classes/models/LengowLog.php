@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Log Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowLog extends LengowFile
 {
     /* Log category codes */
