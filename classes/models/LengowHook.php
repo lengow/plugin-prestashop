@@ -132,6 +132,7 @@ class LengowHook
                 }
             }
         }
+
         return !$error;
     }
 
@@ -185,7 +186,7 @@ class LengowHook
         $currency = new Currency($order->id_currency);
         $productsList = $order->getProducts();
         foreach ($productsList as $p) {
-            $i++;
+            ++$i;
             switch (LengowConfiguration::get(LengowConfiguration::TRACKING_ID)) {
                 case 'upc':
                     $idProduct = $p['upc'];
@@ -241,13 +242,13 @@ class LengowHook
                 ? LengowAction::TYPE_CANCEL
                 : LengowAction::TYPE_SHIP;
 
-            if (! empty($lengowOrder->lengowExtra)) {
+            if (!empty($lengowOrder->lengowExtra)) {
                 try {
                     $decoded = json_decode($lengowOrder->lengowExtra, true, 512, JSON_THROW_ON_ERROR);
                     $shipping_phone = $decoded['packages'][0]['delivery']['phone_mobile']
                         ?? $decoded['packages'][0]['delivery']['phone_home']
                         ?? $decoded['packages'][0]['delivery']['phone_office'];
-                    $billing_phone  = $decoded['billing_address']['phone_mobile']
+                    $billing_phone = $decoded['billing_address']['phone_mobile']
                         ?? $decoded['billing_address']['phone_home']
                         ?? $decoded['billing_address']['phone_office'];
                 } catch (JsonException $e) {
@@ -286,8 +287,10 @@ class LengowHook
                 'customer_billing_phone' => $billing_phone ?? null,
             ];
             $this->context->smarty->assign($templateData);
+
             return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info.tpl');
         }
+
         return '';
     }
 

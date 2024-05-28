@@ -158,8 +158,10 @@ class LengowAction
         );
         if ($row) {
             $this->load($row);
+
             return true;
         }
+
         return false;
     }
 
@@ -178,6 +180,7 @@ class LengowAction
         if ($row) {
             return (int) $row[self::FIELD_ID];
         }
+
         return false;
     }
 
@@ -194,11 +197,11 @@ class LengowAction
     public static function getActionsByOrderId($idOrder, $onlyActive = false, $actionType = null, $load = true)
     {
         try {
-            $sqlOnlyActive = $onlyActive ? ' AND  state = ' .  self::STATE_NEW : '';
+            $sqlOnlyActive = $onlyActive ? ' AND  state = ' . self::STATE_NEW : '';
             $sqlType = $actionType === null ? '' : ' AND  action_type = "' . pSQL($actionType) . '"';
             $rows = Db::getInstance()->executeS(
                 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
-                WHERE id_order=' . (int) $idOrder . ' '. $sqlOnlyActive . $sqlType
+                WHERE id_order=' . (int) $idOrder . ' ' . $sqlOnlyActive . $sqlType
             );
         } catch (PrestaShopDatabaseException $e) {
             return false;
@@ -211,10 +214,13 @@ class LengowAction
                     $action->load($row);
                     $actions[] = $action;
                 }
+
                 return $actions;
             }
+
             return $rows;
         }
+
         return false;
     }
 
@@ -242,10 +248,13 @@ class LengowAction
                     $action->load($row);
                     $actions[] = $action;
                 }
+
                 return $actions;
             }
+
             return $rows;
         }
+
         return false;
     }
 
@@ -268,8 +277,10 @@ class LengowAction
         }
         if (!empty($rows)) {
             $lastAction = end($rows);
+
             return (string) $lastAction[self::FIELD_ACTION_TYPE];
         }
+
         return false;
     }
 
@@ -285,8 +296,10 @@ class LengowAction
         $row = Db::getInstance()->getRow('SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la WHERE id = ' . (int) $id);
         if ($row) {
             $this->load($row);
+
             return true;
         }
+
         return false;
     }
 
@@ -296,9 +309,9 @@ class LengowAction
      * @param array $params all available values
      * @param LengowOrder $lengowOrder Lengow order instance
      *
-     * @throws LengowException
-     *
      * @return bool
+     *
+     * @throws LengowException
      */
     public static function canSendAction($params, $lengowOrder)
     {
@@ -344,6 +357,7 @@ class LengowAction
                 }
             }
         }
+
         return $sendAction;
     }
 
@@ -398,7 +412,6 @@ class LengowAction
         );
     }
 
-
     /**
      * Create action
      *
@@ -427,6 +440,7 @@ class LengowAction
                 false,
                 $params['marketplace_sku']
             );
+
             return true;
         } catch (PrestaShopDatabaseException $e) {
             return false;
@@ -454,6 +468,7 @@ class LengowAction
                 'id = ' . $action->id
             );
         }
+
         return false;
     }
 
@@ -499,8 +514,10 @@ class LengowAction
             foreach ($rows as $row) {
                 self::finishAction($row[self::FIELD_ID]);
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -520,6 +537,7 @@ class LengowAction
             $lastIntervalTime += self::SECURITY_INTERVAL_TIME;
             $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
         }
+
         return $intervalTime;
     }
 
@@ -586,7 +604,7 @@ class LengowAction
                 }
             }
 
-            $page++;
+            ++$page;
         } while (!empty($results->next));
         if (empty($apiActions)) {
             return false;
@@ -637,6 +655,7 @@ class LengowAction
             }
         }
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_ACTION_SYNCHRONIZATION, time());
+
         return true;
     }
 
@@ -685,8 +704,10 @@ class LengowAction
                 }
                 unset($orderLengow);
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -697,7 +718,7 @@ class LengowAction
      */
     public static function getOldActions()
     {
-        $date = date(LengowMain::DATE_FULL, (time() - self::MAX_INTERVAL_TIME));
+        $date = date(LengowMain::DATE_FULL, time() - self::MAX_INTERVAL_TIME);
         $query = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
                 WHERE created_at <= "' . $date . '"
                 AND state = ' . self::STATE_NEW;
@@ -736,6 +757,7 @@ class LengowAction
                 usleep(250000);
             }
         }
+
         return true;
     }
 }

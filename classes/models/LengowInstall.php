@@ -199,6 +199,7 @@ class LengowInstall
             LengowLog::CODE_INSTALL,
             LengowMain::setLogMessage('log.install.install_end', ['version' => $this->lengowModule->version])
         );
+
         return true;
     }
 
@@ -287,6 +288,7 @@ class LengowInstall
                 )
             );
         }
+
         return true;
     }
 
@@ -302,6 +304,7 @@ class LengowInstall
         $sql = 'SHOW TABLES LIKE \'' . _DB_PREFIX_ . $table . '\'';
         try {
             $result = Db::getInstance()->executeS($sql);
+
             return !empty($result);
         } catch (PrestaShopDatabaseException $e) {
             return true;
@@ -321,6 +324,7 @@ class LengowInstall
         $sql = 'SHOW INDEXES FROM ' . _DB_PREFIX_ . $table . ' WHERE `Column_name` = \'' . $index . '\'';
         try {
             $result = Db::getInstance()->executeS($sql);
+
             return !empty($result);
         } catch (PrestaShopDatabaseException $e) {
             return true;
@@ -340,6 +344,7 @@ class LengowInstall
         $sql = 'SHOW COLUMNS FROM ' . _DB_PREFIX_ . $table . ' LIKE \'' . $field . '\'';
         try {
             $result = Db::getInstance()->executeS($sql);
+
             return !empty($result);
         } catch (PrestaShopDatabaseException $e) {
             return true;
@@ -377,7 +382,7 @@ class LengowInstall
         $column = LengowAction::ARG_RETURN_TRACKING_NUMBER;
         if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'DROP COLUMN `'.$column.'`;';
+                    . 'DROP COLUMN `' . $column . '`;';
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_UNINSTALL,
@@ -387,13 +392,14 @@ class LengowInstall
         $column = LengowAction::ARG_RETURN_CARRIER;
         if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'DROP COLUMN `'.$column.'`;';
+                    . 'DROP COLUMN `' . $column . '`;';
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_UNINSTALL,
                 LengowMain::setLogMessage('log.uninstall.column_deleted', ['name' => $column])
             );
         }
+
         return true;
     }
 
@@ -418,6 +424,7 @@ class LengowInstall
         $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration
             WHERE `name` = \'LENGOW_INSTALLATION_IN_PROGRESS\'';
         $value = Db::getInstance()->getRow($sql);
+
         return $value && (bool) $value['value'];
     }
 
@@ -463,6 +470,7 @@ class LengowInstall
             }
         }
         rmdir($dirPath);
+
         return true;
     }
 
@@ -840,7 +848,7 @@ class LengowInstall
         $column = LengowAction::ARG_RETURN_TRACKING_NUMBER;
         if (self::checkTableExists($name) && !self::checkFieldExists($name, $column)) {
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'ADD COLUMN `'.$column.'` VARCHAR(64);';
+                    . 'ADD COLUMN `' . $column . '` VARCHAR(64);';
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
@@ -855,7 +863,7 @@ class LengowInstall
         $column = LengowAction::ARG_RETURN_CARRIER;
         if (self::checkTableExists($name) && !self::checkFieldExists($name, $column)) {
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'ADD COLUMN `'.$column.'` VARCHAR(64);';
+                    . 'ADD COLUMN `' . $column . '` VARCHAR(64);';
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
@@ -901,6 +909,7 @@ class LengowInstall
                     LengowMain::setLogMessage('log.install.install_tab', ['class_name' => $tab->class_name])
                 );
             }
+
             return true;
         } catch (Exception $e) {
             return false;
@@ -938,6 +947,7 @@ class LengowInstall
                 continue;
             }
         }
+
         return true;
     }
 
@@ -1016,6 +1026,7 @@ class LengowInstall
                 LengowMain::setLogMessage('log.install.update_technical_error_status')
             );
         }
+
         return true;
     }
 

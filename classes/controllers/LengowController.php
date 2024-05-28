@@ -97,7 +97,7 @@ class LengowController
     /**
      * Checks if the plugin upgrade modal should be displayed or not
      *
-     * @return boolean
+     * @return bool
      */
     private function showPluginUpgradeModal()
     {
@@ -111,6 +111,7 @@ class LengowController
             return false;
         }
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL, time());
+
         return true;
     }
 

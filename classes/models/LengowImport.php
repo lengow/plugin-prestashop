@@ -117,7 +117,7 @@ class LengowImport
         LengowOrder::STATE_WAITING_SHIPMENT,
         LengowOrder::STATE_SHIPPED,
         LengowOrder::STATE_CLOSED,
-        LengowOrder::STATE_PARTIALLY_REFUNDED
+        LengowOrder::STATE_PARTIALLY_REFUNDED,
     ];
 
     /**
@@ -269,20 +269,20 @@ class LengowImport
      * Construct the import manager
      *
      * @param array $params optional options
-     * string  marketplace_sku     Lengow marketplace order id to synchronize
-     * string  marketplace_name    Lengow marketplace name to synchronize
-     * string  type                Type of current synchronization
-     * string  created_from        Synchronization of orders since
-     * string  created_to          Synchronization of orders until
-     * integer delivery_address_id Lengow delivery address id to synchronize
-     * integer id_order_lengow     Lengow order id in PrestaShop
-     * integer shop_id             Shop id for current synchronization
-     * integer days                Synchronization interval time
-     * integer limit               Maximum number of new orders created
-     * boolean log_output          Display log messages
-     * boolean debug_mode          Activate debug mode
-     * boolean force_sync          Force synchronization order even if there are errors
-     * boolean force_product       Force import product when quantity is insufficient
+     *                      string  marketplace_sku     Lengow marketplace order id to synchronize
+     *                      string  marketplace_name    Lengow marketplace name to synchronize
+     *                      string  type                Type of current synchronization
+     *                      string  created_from        Synchronization of orders since
+     *                      string  created_to          Synchronization of orders until
+     *                      integer delivery_address_id Lengow delivery address id to synchronize
+     *                      integer id_order_lengow     Lengow order id in PrestaShop
+     *                      integer shop_id             Shop id for current synchronization
+     *                      integer days                Synchronization interval time
+     *                      integer limit               Maximum number of new orders created
+     *                      boolean log_output          Display log messages
+     *                      boolean debug_mode          Activate debug mode
+     *                      boolean force_sync          Force synchronization order even if there are errors
+     *                      boolean force_product       Force import product when quantity is insufficient
      */
     public function __construct($params = [])
     {
@@ -399,6 +399,7 @@ class LengowImport
         }
         // complete synchronization and start all necessary processes
         $this->finishSynchronization();
+
         return $result;
     }
 
@@ -415,6 +416,7 @@ class LengowImport
         if (empty($orderStateMarketplace)) {
             return false;
         }
+
         return in_array($marketplace->getStateLengow($orderStateMarketplace), self::$lengowStates, true);
     }
 
@@ -432,8 +434,10 @@ class LengowImport
         // security check : if last import is more than 60 seconds old => authorize new import to be launched
         if (($timestamp + (60 * self::MINUTE_INTERVAL_TIME)) < time()) {
             self::setEnd();
+
             return false;
         }
+
         return true;
     }
 
@@ -445,6 +449,7 @@ class LengowImport
     public static function restTimeToImport()
     {
         $timestamp = LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
+
         return $timestamp > 0 ? $timestamp + (60 * self::MINUTE_INTERVAL_TIME) - time() : 0;
     }
 
@@ -466,7 +471,7 @@ class LengowImport
                 ? $this->createdFrom + self::MAX_INTERVAL_TIME
                 : $createdToTimestamp;
 
-            return ;
+            return;
         }
         if ($days) {
             $intervalTime = $days * 86400;
@@ -523,8 +528,10 @@ class LengowImport
                 LengowOrderError::finishOrderLogs($this->idOrderLengow);
                 LengowOrderError::addOrderLog($this->idOrderLengow, $globalError);
             }
+
             return false;
         }
+
         return true;
     }
 
@@ -569,8 +576,10 @@ class LengowImport
         if (LengowConnector::isValidAuth($this->logOutput)) {
             list($this->accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
             $this->connector = new LengowConnector($accessToken, $secretToken);
+
             return true;
         }
+
         return false;
     }
 
@@ -591,6 +600,7 @@ class LengowImport
             + $nbOrdersFailed
             + $nbOrdersIgnored
             + $nbOrdersNotFormatted;
+
         return [
             self::NUMBER_ORDERS_PROCESSED => $nbOrdersProcessed,
             self::NUMBER_ORDERS_CREATED => $nbOrdersCreated,
@@ -693,8 +703,10 @@ class LengowImport
             );
             $this->errors[(int) $shop->id] = $errorMessage;
             unset($errorMessage);
+
             return false;
         }
+
         return true;
     }
 
@@ -728,14 +740,15 @@ class LengowImport
                 );
             } else {
                 $this->catalogIds[$catalogId] = [
-                    'shopId' => (int)    $shop->id,
-                    'name'   => (string) $shop->name
+                    'shopId' => (int) $shop->id,
+                    'name' => (string) $shop->name,
                 ];
                 $shopCatalogIds[] = $catalogId;
             }
         }
         if (!empty($shopCatalogIds)) {
             $this->shopCatalogIds = $shopCatalogIds;
+
             return true;
         }
         $message = LengowMain::setLogMessage(
@@ -747,6 +760,7 @@ class LengowImport
         );
         LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput);
         $this->errors[(int) $shop->id] = $message;
+
         return false;
     }
 
@@ -773,9 +787,9 @@ class LengowImport
      *
      * @param LengowShop $shop
      *
-     * @throws LengowException no connection with the webservice / credentials not valid
-     *
      * @return array
+     *
+     * @throws LengowException no connection with the webservice / credentials not valid
      */
     private function getOrdersFromApi($shop)
     {
@@ -860,51 +874,23 @@ class LengowImport
                     );
                 }
             } catch (Exception $e) {
-                throw new LengowException(
-                    LengowMain::setLogMessage(
-                        'lengow_log.exception.error_lengow_webservice',
-                        [
-                            'error_code' => $e->getCode(),
-                            'error_message' => LengowMain::decodeLogMessage(
-                                $e->getMessage(),
-                                LengowTranslation::DEFAULT_ISO_CODE
-                            ),
-                            'name_shop' => $shop->name,
-                            'id_shop' => (int) $shop->id,
-                        ]
-                    )
-                );
+                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.error_lengow_webservice', ['error_code' => $e->getCode(), 'error_message' => LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE), 'name_shop' => $shop->name, 'id_shop' => (int) $shop->id]));
             }
             if ($results === null) {
-                throw new LengowException(
-                    LengowMain::setLogMessage(
-                        'lengow_log.exception.no_connection_webservice',
-                        [
-                            'name_shop' => $shop->name,
-                            'id_shop' => (int) $shop->id,
-                        ]
-                    )
-                );
+                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_connection_webservice', ['name_shop' => $shop->name, 'id_shop' => (int) $shop->id]));
             }
             $results = json_decode($results);
             if (!is_object($results)) {
-                throw new LengowException(
-                    LengowMain::setLogMessage(
-                        'lengow_log.exception.no_connection_webservice',
-                        [
-                            'name_shop' => $shop->name,
-                            'id_shop' => (int) $shop->id,
-                        ]
-                    )
-                );
+                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_connection_webservice', ['name_shop' => $shop->name, 'id_shop' => (int) $shop->id]));
             }
             // construct array orders
             foreach ($results->results as $order) {
                 $orders[] = $order;
             }
-            $page++;
+            ++$page;
             $finish = $results->next === null || $this->importOneOrder;
         } while ($finish !== true);
+
         return $orders;
     }
 
@@ -937,7 +923,7 @@ class LengowImport
             }
             // start import
             foreach ($orderData->packages as $packageData) {
-                $nbPackage++;
+                ++$nbPackage;
                 // check whether the package contains a shipping address
                 if (!isset($packageData->delivery->id)) {
                     $message = LengowMain::setLogMessage('log.import.error_no_delivery_address');

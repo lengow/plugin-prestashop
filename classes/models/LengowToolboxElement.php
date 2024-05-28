@@ -34,7 +34,7 @@ class LengowToolboxElement
     public const DATA_HELP_LABEL = 'help_label';
 
     /**
-     * @var LengowTranslation $locale Lengow translation instance
+     * @var LengowTranslation Lengow translation instance
      */
     protected $locale;
 
@@ -92,6 +92,7 @@ class LengowToolboxElement
                 self::DATA_STATE => (int) $checklistData[LengowToolbox::CHECKLIST_MD5_SUCCESS],
             ],
         ];
+
         return $this->getContent($checklist);
     }
 
@@ -141,6 +142,7 @@ class LengowToolboxElement
                 self::DATA_MESSAGE => $pluginData[LengowToolbox::PLUGIN_TOOLBOX_URL],
             ],
         ];
+
         return $this->getContent($checklist);
     }
 
@@ -208,6 +210,7 @@ class LengowToolboxElement
                 self::DATA_MESSAGE => $lastImportType,
             ],
         ];
+
         return $this->getContent($checklist);
     }
 
@@ -284,6 +287,7 @@ class LengowToolboxElement
             ];
             $content .= $this->getContent($checklist);
         }
+
         return $content;
     }
 
@@ -326,11 +330,12 @@ class LengowToolboxElement
                 }
             } else {
                 $checklist[] = [
-                    self::DATA_SIMPLE => $this->locale->t('toolbox.screen.no_file_exported')
+                    self::DATA_SIMPLE => $this->locale->t('toolbox.screen.no_file_exported'),
                 ];
             }
             $content .= $this->getContent($checklist);
         }
+
         return $content;
     }
 
@@ -398,6 +403,7 @@ class LengowToolboxElement
             ];
             $html .= $this->getContent($checklist);
         }
+
         return $html;
     }
 
@@ -421,6 +427,7 @@ class LengowToolboxElement
                 self::DATA_STATE => 0,
             ];
         }
+
         return [
             self::DATA_MESSAGE => $this->locale->t('toolbox.screen.email_using_php_mail'),
             self::DATA_STATE => 1,
@@ -437,6 +444,7 @@ class LengowToolboxElement
         if (Configuration::get('PS_CATALOG_MODE')) {
             return false;
         }
+
         return true;
     }
 
@@ -483,6 +491,7 @@ class LengowToolboxElement
             $out .= '</tr>';
         }
         $out .= '</table>';
+
         return $out;
     }
 }

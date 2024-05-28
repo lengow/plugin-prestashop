@@ -104,6 +104,7 @@ class LengowLog extends LengowFile
                     . '&' . LengowToolbox::PARAM_DATE . '=' . urlencode($date),
             ];
         }
+
         return array_reverse($logs);
     }
 
@@ -115,6 +116,7 @@ class LengowLog extends LengowFile
     public function getFileName()
     {
         $sep = DIRECTORY_SEPARATOR;
+
         return _PS_MODULE_LENGOW_DIR_ . LengowMain::FOLDER_LOG . $sep . $this->fileName;
     }
 
@@ -135,7 +137,7 @@ class LengowLog extends LengowFile
      */
     public static function download($date = null)
     {
-        /** @var LengowFile[] $logFiles */
+        /* @var LengowFile[] $logFiles */
         if ($date && preg_match('/^(\d{4}-\d{2}-\d{2})$/', $date, $match)) {
             $logFiles = false;
             $file = 'logs-' . $date . '.txt';
@@ -182,22 +184,22 @@ class LengowLog extends LengowFile
                 $error = error_get_last();
                 if ($error) {
                     $labels = [
-                        E_ERROR => "E_ERROR",
-                        E_WARNING => "E_WARNING",
-                        E_PARSE => "E_PARSE",
-                        E_NOTICE => "E_NOTICE",
-                        E_CORE_ERROR => "E_CORE_ERROR",
-                        E_CORE_WARNING => "E_CORE_WARNING",
-                        E_COMPILE_ERROR => "E_COMPILE_ERROR",
-                        E_COMPILE_WARNING => "E_COMPILE_WARNING",
-                        E_USER_ERROR => "E_USER_ERROR",
-                        E_USER_WARNING => "E_USER_WARNING",
-                        E_USER_NOTICE => "E_USER_NOTICE",
-                        E_STRICT => "E_STRICT",
-                        E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR",
-                        E_DEPRECATED => "E_DEPRECATED",
-                        E_USER_DEPRECATED => "E_USER_DEPRECATED",
-                        E_ALL => "E_ALL"
+                        E_ERROR => 'E_ERROR',
+                        E_WARNING => 'E_WARNING',
+                        E_PARSE => 'E_PARSE',
+                        E_NOTICE => 'E_NOTICE',
+                        E_CORE_ERROR => 'E_CORE_ERROR',
+                        E_CORE_WARNING => 'E_CORE_WARNING',
+                        E_COMPILE_ERROR => 'E_COMPILE_ERROR',
+                        E_COMPILE_WARNING => 'E_COMPILE_WARNING',
+                        E_USER_ERROR => 'E_USER_ERROR',
+                        E_USER_WARNING => 'E_USER_WARNING',
+                        E_USER_NOTICE => 'E_USER_NOTICE',
+                        E_STRICT => 'E_STRICT',
+                        E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
+                        E_DEPRECATED => 'E_DEPRECATED',
+                        E_USER_DEPRECATED => 'E_USER_DEPRECATED',
+                        E_ALL => 'E_ALL',
                     ];
                     LengowMain::log(
                         $labels[$error['type']] ?? 'PHP',

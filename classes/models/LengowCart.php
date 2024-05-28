@@ -33,9 +33,9 @@ class LengowCart extends Cart
      *
      * @param array $products list of products to be added
      *
-     * @throws Exception|LengowException Cannot add product to cart / No quantity for product
-     *
      * @return bool
+     *
+     * @throws Exception|LengowException Cannot add product to cart / No quantity for product
      */
     public function addProducts($products = [])
     {
@@ -45,24 +45,15 @@ class LengowCart extends Cart
         foreach ($products as $id => $product) {
             $ids = explode('_', $id);
             if (count($ids) > 2) {
-                throw new LengowException(
-                    LengowMain::setLogMessage(
-                        'lengow_log.exception.cannot_add_product_to_cart',
-                        ['product_id' => $id]
-                    )
-                );
+                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.cannot_add_product_to_cart', ['product_id' => $id]));
             }
             $idProduct = (int) $ids[0];
             $idProductAttribute = isset($ids[1]) ? (int) $ids[1] : null;
             if (!$this->updateQty($product['quantity'], $idProduct, $idProductAttribute)) {
-                throw new LengowException(
-                    LengowMain::setLogMessage(
-                        'lengow_log.exception.no_quantity_for_product',
-                        ['product_id' => $id]
-                    )
-                );
+                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_quantity_for_product', ['product_id' => $id]));
             }
         }
+
         return true;
     }
 
@@ -106,9 +97,9 @@ class LengowCart extends Cart
      * @param bool $skipAvailabilityCheckOutOfStock skip availability
      * @param bool $preserveGiftRemoval preserve gift removal
      *
-     * @throws Exception|PrestaShopDatabaseException
-     *
      * @return bool
+     *
+     * @throws Exception|PrestaShopDatabaseException
      */
     public function updateQty(
         $quantity,
@@ -117,7 +108,7 @@ class LengowCart extends Cart
         $idCustomization = false,
         $operator = 'up',
         $idAddressDelivery = 0,
-        Shop $shop = null,
+        ?Shop $shop = null,
         $autoAddCartRule = true,
         $skipAvailabilityCheckOutOfStock = false,
         $preserveGiftRemoval = true,
@@ -144,7 +135,7 @@ class LengowCart extends Cart
         // if we have a product combination, the minimal quantity is set with the one of this combination
         if (!empty($idProductAttribute)) {
             $version = defined('_PS_VERSION_') ? _PS_VERSION_ : '';
-            //for PrestaShop 8.0 and higher
+            // for PrestaShop 8.0 and higher
             if (version_compare($version, '8.0.0.0', '>=')) {
                 $minimalQuantity = (int) ProductAttribute::getAttributeMinimalQty($idProductAttribute);
             } else {
@@ -162,8 +153,8 @@ class LengowCart extends Cart
         if (isset(self::$_totalWeight[$this->id])) {
             unset(self::$_totalWeight[$this->id]);
         }
-        if ((!$product->available_for_order && !$this->forceProduct) ||
-            (Configuration::get('PS_CATALOG_MODE') && !defined('_PS_ADMIN_DIR_'))
+        if ((!$product->available_for_order && !$this->forceProduct)
+            || (Configuration::get('PS_CATALOG_MODE') && !defined('_PS_ADMIN_DIR_'))
         ) {
             return false;
         }
@@ -223,7 +214,7 @@ class LengowCart extends Cart
             $result2['quantity'] = Product::getQuantity($idProduct, $idProductAttribute);
             if ((int) $quantity > $result2['quantity']
                 && !$this->forceProduct
-                && !Product::isAvailableWhenOutOfStock((int)$result2['out_of_stock'])
+                && !Product::isAvailableWhenOutOfStock((int) $result2['out_of_stock'])
             ) {
                 return false;
             }
@@ -261,6 +252,7 @@ class LengowCart extends Cart
                 $operator
             );
         }
+
         return true;
     }
 
@@ -289,11 +281,10 @@ class LengowCart extends Cart
     /**
      * Validate Lengow
      *
-     * @throws LengowException invalid object
-     *
-     * @throws Exception
-     *
      * @return bool
+     *
+     * @throws LengowException invalid object
+     * @throws Exception
      */
     public function validateLengow()
     {
@@ -312,6 +303,7 @@ class LengowCart extends Cart
             throw new LengowException($return);
         }
         $this->add();
+
         return true;
     }
 

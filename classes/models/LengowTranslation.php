@@ -86,6 +86,7 @@ class LengowTranslation
         if (isset(self::$translation[self::DEFAULT_ISO_CODE][$message])) {
             return $this->translateFinal(self::$translation[self::DEFAULT_ISO_CODE][$message], $args);
         }
+
         return 'Missing Translation [' . $message . ']';
     }
 
@@ -106,8 +107,10 @@ class LengowTranslation
                 $params[] = '%{' . $key . '}';
                 $values[] = $value;
             }
+
             return str_replace($params, $values, $text);
         }
+
         return $text;
     }
 
@@ -138,6 +141,7 @@ class LengowTranslation
             }
         }
         self::$translation[$isoCode] = $translation;
+
         return !empty($translation);
     }
 }

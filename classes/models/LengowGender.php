@@ -86,6 +86,7 @@ class LengowGender extends Gender
         if ($result = Db::getInstance()->Execute($query)) {
             return (string) $result['id_gender'];
         }
+
         return '';
     }
 }

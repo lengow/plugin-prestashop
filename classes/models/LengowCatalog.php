@@ -38,8 +38,10 @@ class LengowCatalog
             if (!is_object($catalog) || $catalog->shop) {
                 continue;
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -82,6 +84,7 @@ class LengowCatalog
                 'value' => $catalog->id,
             ];
         }
+
         return $catalogList;
     }
 
@@ -136,6 +139,7 @@ class LengowCatalog
                 $catalogsLinked = true;
             }
         }
+
         return $catalogsLinked;
     }
 }

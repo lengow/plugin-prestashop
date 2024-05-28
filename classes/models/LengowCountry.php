@@ -42,6 +42,7 @@ class LengowCountry
             INNER JOIN ' . _DB_PREFIX_ . 'country_lang cl ON (cl.id_country = c.id_country)
             WHERE iso_code = \'' . pSQL($isoCode) . '\' ' . $where;
         $result = Db::getInstance()->getRow($sql);
+
         return $result['name'];
     }
 

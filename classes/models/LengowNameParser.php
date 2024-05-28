@@ -24,75 +24,86 @@
  */
 class LengowNameParser
 {
-
     /**
      * Array of possible name languages.
+     *
      * @var array
      */
     private $languages;
 
     /**
      * Array of possible name titles.
+     *
      * @var array
      */
     private $titles;
 
     /**
      * Array of possible last name prefixes.
+     *
      * @var array
      */
     private $prefices;
 
     /**
      * Array of possible name suffices.
+     *
      * @var array;
      */
     private $suffices;
 
     /**
      * The TITLE ie. Dr., Mr. Mrs., etc...
+     *
      * @var string
      */
     private $title;
 
     /**
      * The FIRST Name
+     *
      * @var string
      */
     private $first;
 
     /**
      * The MIDDLE Name
+     *
      * @var string
      */
     private $middle;
 
     /**
      * The LAST Name
+     *
      * @var string
      */
     private $last;
 
     /**
      * Name addendum ie. III, Sr., etc...
+     *
      * @var string
      */
     private $suffix;
 
     /**
      * Full name string passed to class
+     *
      * @var string
      */
     private $fullName;
 
     /**
      * Set to false by default, but set to true if parse() is executed on a name that is not parseable
-     * @var boolean
+     *
+     * @var bool
      */
     private $notParseable;
 
     /**
      * File name for config parser
+     *
      * @var string
      */
     public const FILE_PARSER = 'parser.json';
@@ -102,31 +113,30 @@ class LengowNameParser
      * Setup the object, initialise the variables, and if instantiated with a name - parse it automagically
      *
      * @param string $initString The Name String
-     *
      */
-    public function __construct(string $initString = "")
+    public function __construct(string $initString = '')
     {
-        $this->title = "";
-        $this->first = "";
-        $this->middle = "";
-        $this->last = "";
-        $this->suffix = "";
+        $this->title = '';
+        $this->first = '';
+        $this->middle = '';
+        $this->last = '';
+        $this->suffix = '';
 
         $filePath = self::getParserFilePath();
         $paramsJson = Tools::file_get_contents($filePath);
         $params = json_decode($paramsJson, true);
 
         // added Military Titles
-        $this->languages = $params["language"];
-        $this->titles = $params["titles"];
+        $this->languages = $params['language'];
+        $this->titles = $params['titles'];
 
-        $this->prefices = $params["prefices"];
-        $this->suffices = $params["suffices"];
-        $this->fullName = "";
+        $this->prefices = $params['prefices'];
+        $this->suffices = $params['suffices'];
+        $this->fullName = '';
         $this->notParseable = false;
 
         // if initialized by value, set class variable and then parse
-        if ($initString != "") {
+        if ($initString != '') {
             $this->fullName = $initString;
             $this->parse();
         }
@@ -134,7 +144,6 @@ class LengowNameParser
 
     /**
      * Destructor
-     *
      */
     public function __destruct()
     {
@@ -142,7 +151,6 @@ class LengowNameParser
 
     /**
      * Access Method
-     *
      */
     public function getFirstName(): string
     {
@@ -151,7 +159,6 @@ class LengowNameParser
 
     /**
      * Access Method
-     *
      */
     public function getMiddleName(): string
     {
@@ -160,7 +167,6 @@ class LengowNameParser
 
     /**
      * Access Method
-     *
      */
     public function getLastName(): string
     {
@@ -169,7 +175,6 @@ class LengowNameParser
 
     /**
      * Access Method
-     *
      */
     public function getTitle(): string
     {
@@ -178,7 +183,6 @@ class LengowNameParser
 
     /**
      * Access Method
-     *
      */
     public function getSuffix(): string
     {
@@ -187,7 +191,6 @@ class LengowNameParser
 
     /**
      * Access Method
-     *
      */
     public function getNotParseable(): bool
     {
@@ -196,6 +199,7 @@ class LengowNameParser
 
     /**
      * Mutator Method
+     *
      * @param string $newFullName the new value to set fullName to
      */
     public function setFullName(string $newFullName): void
@@ -208,26 +212,25 @@ class LengowNameParser
      *
      * @param mixed $needle the needle to look for
      * @param array $haystack the haystack from which to look into
-     *
      */
     private function inArrayNorm($needle, array $haystack): bool
     {
         $needle = trim(strtolower(str_replace('.', '', $needle)));
+
         return in_array($needle, $haystack);
     }
 
     /**
      * Extract the elements of the full name into separate parts.
-     *
      */
     public function parse(): void
     {
         // reset values
-        $this->title = "";
-        $this->first = "";
-        $this->middle = "";
-        $this->last = "";
-        $this->suffix = "";
+        $this->title = '';
+        $this->first = '';
+        $this->middle = '';
+        $this->last = '';
+        $this->suffix = '';
         $this->notParseable = false;
 
         // break up name based on number of commas
@@ -235,29 +238,28 @@ class LengowNameParser
         $numPieces = count($pieces);
 
         switch ($numPieces) {
-
             // array(title first middle last suffix)
             case 1:
                 $subPieces = explode(' ', trim($pieces[0]));
                 $numSubPieces = count($subPieces);
-                for ($i = 0; $i < $numSubPieces; $i++) {
+                for ($i = 0; $i < $numSubPieces; ++$i) {
                     $current = trim($subPieces[$i]);
                     if ($i < ($numSubPieces - 1)) {
                         $next = trim($subPieces[$i + 1]);
                     } else {
-                        $next = "";
+                        $next = '';
                     }
                     if ($i == 0 && $this->inArrayNorm($current, $this->titles)) {
                         $this->title = $current;
                         continue;
                     }
-                    if ($this->first == "") {
+                    if ($this->first == '') {
                         $this->first = $current;
                         continue;
                     }
-                    if ($i == $numSubPieces - 2 && ($next != "") && $this->inArrayNorm($next, $this->suffices)) {
-                        if ($this->last != "") {
-                            $this->last .= " " . $current;
+                    if ($i == $numSubPieces - 2 && ($next != '') && $this->inArrayNorm($next, $this->suffices)) {
+                        if ($this->last != '') {
+                            $this->last .= ' ' . $current;
                         } else {
                             $this->last = $current;
                         }
@@ -265,35 +267,35 @@ class LengowNameParser
                         break;
                     }
                     if ($i == $numSubPieces - 1) {
-                        if ($this->last != "") {
-                            $this->last .= " " . $current;
+                        if ($this->last != '') {
+                            $this->last .= ' ' . $current;
                         } else {
                             $this->last = $current;
                         }
                         continue;
                     }
                     if ($this->inArrayNorm($current, $this->prefices)) {
-                        if ($this->last != "") {
-                            $this->last .= " " . $current;
+                        if ($this->last != '') {
+                            $this->last .= ' ' . $current;
                         } else {
                             $this->last = $current;
                         }
                         continue;
                     }
                     if ($next == 'y' || $next == 'Y') {
-                        if ($this->last != "") {
-                            $this->last .= " " . $current;
+                        if ($this->last != '') {
+                            $this->last .= ' ' . $current;
                         } else {
                             $this->last = $current;
                         }
                         continue;
                     }
-                    if ($this->last != "") {
-                        $this->last .= " " . $current;
+                    if ($this->last != '') {
+                        $this->last .= ' ' . $current;
                         continue;
                     }
-                    if ($this->middle != "") {
-                        $this->middle .= " " . $current;
+                    if ($this->middle != '') {
+                        $this->middle .= ' ' . $current;
                     } else {
                         $this->middle = $current;
                     }
@@ -302,88 +304,87 @@ class LengowNameParser
 
             default:
                 switch ($this->inArrayNorm($pieces[1], $this->suffices)) {
-
                     // array(title first middle last, suffix [, suffix])
                     case true:
                         $subPieces = explode(' ', trim($pieces[0]));
                         $numSubPieces = count($subPieces);
-                        for ($i = 0; $i < $numSubPieces; $i++) {
+                        for ($i = 0; $i < $numSubPieces; ++$i) {
                             $current = trim($subPieces[$i]);
                             if ($i < ($numSubPieces - 1)) {
                                 $next = trim($subPieces[$i + 1]);
                             } else {
-                                $next = "";
+                                $next = '';
                             }
                             if ($i == 0 && $this->inArrayNorm($current, $this->titles)) {
                                 $this->title = $current;
                                 continue;
                             }
-                            if ($this->first == "") {
+                            if ($this->first == '') {
                                 $this->first = $current;
                                 continue;
                             }
                             if ($i == $numSubPieces - 1) {
-                                if ($this->last != "") {
-                                    $this->last .= " " . $current;
+                                if ($this->last != '') {
+                                    $this->last .= ' ' . $current;
                                 } else {
                                     $this->last = $current;
                                 }
                                 continue;
                             }
                             if ($this->inArrayNorm($current, $this->prefices)) {
-                                if ($this->last != "") {
-                                    $this->last .= " " . $current;
+                                if ($this->last != '') {
+                                    $this->last .= ' ' . $current;
                                 } else {
                                     $this->last = $current;
                                 }
                                 continue;
                             }
                             if ($next == 'y' || $next == 'Y') {
-                                if ($this->last != "") {
-                                    $this->last .= " " . $current;
+                                if ($this->last != '') {
+                                    $this->last .= ' ' . $current;
                                 } else {
                                     $this->last = $current;
                                 }
                                 continue;
                             }
-                            if ($this->last != "") {
-                                $this->last .= " " . $current;
+                            if ($this->last != '') {
+                                $this->last .= ' ' . $current;
                                 continue;
                             }
-                            if ($this->middle != "") {
-                                $this->middle .= " " . $current;
+                            if ($this->middle != '') {
+                                $this->middle .= ' ' . $current;
                             } else {
                                 $this->middle = $current;
                             }
                         }
                         $this->suffix = trim($pieces[1]);
-                        for ($i = 2; $i < $numPieces; $i++) {
-                            $this->suffix .= ", " . trim($pieces[$i]);
+                        for ($i = 2; $i < $numPieces; ++$i) {
+                            $this->suffix .= ', ' . trim($pieces[$i]);
                         }
                         break;
 
-                    // array(last, title first middles[,] suffix [,suffix])
+                        // array(last, title first middles[,] suffix [,suffix])
                     case false:
                         $subPieces = explode(' ', trim($pieces[1]));
                         $numSubPieces = count($subPieces);
-                        for ($i = 0; $i < $numSubPieces; $i++) {
+                        for ($i = 0; $i < $numSubPieces; ++$i) {
                             $current = trim($subPieces[$i]);
                             if ($i < ($numSubPieces - 1)) {
                                 $next = trim($subPieces[$i + 1]);
                             } else {
-                                $next = "";
+                                $next = '';
                             }
                             if ($i == 0 && $this->inArrayNorm($current, $this->titles)) {
                                 $this->title = $current;
                                 continue;
                             }
-                            if ($this->first == "") {
+                            if ($this->first == '') {
                                 $this->first = $current;
                                 continue;
                             }
-                            if ($i == $numSubPieces - 2 && ($next != "") && $this->inArrayNorm($next, $this->suffices)) {
-                                if ($this->middle != "") {
-                                    $this->middle .= " " . $current;
+                            if ($i == $numSubPieces - 2 && ($next != '') && $this->inArrayNorm($next, $this->suffices)) {
+                                if ($this->middle != '') {
+                                    $this->middle .= ' ' . $current;
                                 } else {
                                     $this->middle = $current;
                                 }
@@ -394,21 +395,21 @@ class LengowNameParser
                                 $this->suffix = $current;
                                 continue;
                             }
-                            if ($this->middle != "") {
-                                $this->middle .= " " . $current;
+                            if ($this->middle != '') {
+                                $this->middle .= ' ' . $current;
                             } else {
                                 $this->middle = $current;
                             }
                         }
                         if (isset($pieces[2]) && $pieces[2]) {
-                            if ($this->last == "") {
+                            if ($this->last == '') {
                                 $this->suffix = trim($pieces[2]);
-                                for ($s = 3; $s < $numPieces; $s++) {
-                                    $this->suffix .= ", " . trim($pieces[$s]);
+                                for ($s = 3; $s < $numPieces; ++$s) {
+                                    $this->suffix .= ', ' . trim($pieces[$s]);
                                 }
                             } else {
-                                for ($s = 2; $s < $numPieces; $s++) {
-                                    $this->suffix .= ", " . trim($pieces[$s]);
+                                for ($s = 2; $s < $numPieces; ++$s) {
+                                    $this->suffix .= ', ' . trim($pieces[$s]);
                                 }
                             }
                         }
@@ -418,24 +419,24 @@ class LengowNameParser
                 unset($pieces);
                 break;
         }
-        if ($this->first == "" && $this->middle == "" && $this->last == "") {
+        if ($this->first == '' && $this->middle == '' && $this->last == '') {
             $this->notParseable = true;
         }
         $explodeMiddle = explode(' ', $this->middle);
         if (count($explodeMiddle) == 2
             && strrpos($this->middle, '.') === false) {
-            $this->first .= " " . array_shift($explodeMiddle);
+            $this->first .= ' ' . array_shift($explodeMiddle);
             $this->middle = reset($explodeMiddle);
         }
     }
 
     /**
      * Get parser.json path
-     *
      */
     public static function getParserFilePath(): string
     {
         $sep = DIRECTORY_SEPARATOR;
+
         return LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_PARSER;
     }
 }

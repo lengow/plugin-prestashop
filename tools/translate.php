@@ -16,14 +16,14 @@
  * sudo pecl install yaml
  */
 error_reporting(E_ALL);
-ini_set("display_errors", 1);
+ini_set('display_errors', 1);
 
 $listDefaultValues = [];
 
 $directory = dirname(dirname(__FILE__)) . '/translations/yml/';
 $listFiles = array_diff(scandir($directory), ['..', '.', 'index.php']);
 $listFiles = array_diff($listFiles, ['en.yml']);
-array_unshift($listFiles, "en.yml");
+array_unshift($listFiles, 'en.yml');
 
 foreach ($listFiles as $list) {
     $ymlFile = yaml_parse_file($directory . $list);

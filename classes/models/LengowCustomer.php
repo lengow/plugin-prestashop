@@ -54,15 +54,16 @@ class LengowCustomer extends Customer
         $this->fullName = $data['full_name'];
         $this->passwd = md5(rand());
         $this->id_gender = LengowGender::getGender((string) $data['civility']);
+
         return $this;
     }
 
     /**
      * Validate Lengow
      *
-     * @throws Exception|LengowException invalid object
-     *
      * @return bool
+     *
+     * @throws Exception|LengowException invalid object
      */
     public function validateLengow()
     {
@@ -81,6 +82,7 @@ class LengowCustomer extends Customer
             throw new LengowException($return);
         }
         $this->add();
+
         return true;
     }
 
@@ -208,7 +210,7 @@ class LengowCustomer extends Customer
         $sql = 'SELECT *
             FROM `' . _DB_PREFIX_ . 'customer`
             WHERE `email` = \'' . pSQL($email) . '\'
-            ' . ' AND `id_shop` = \'' . $idShop . '\'' . '
+             AND `id_shop` = \'' . $idShop . '\'' . '
             AND `deleted` = \'0\'';
         $result = Db::getInstance()->getRow($sql);
         if (!$result) {
@@ -220,6 +222,7 @@ class LengowCustomer extends Customer
                 $this->{$key} = $value;
             }
         }
+
         return $this;
     }
 }

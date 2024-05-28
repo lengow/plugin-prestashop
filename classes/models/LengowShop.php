@@ -43,6 +43,7 @@ class LengowShop extends Shop
                 return new self($row['id_shop']);
             }
         }
+
         return false;
     }
 
@@ -65,6 +66,7 @@ class LengowShop extends Shop
                 $results = [];
             }
         }
+
         return $results;
     }
 
@@ -88,6 +90,7 @@ class LengowShop extends Shop
                 $result[] = new LengowShop((int) $shop['id_shop']);
             }
         }
+
         return $result;
     }
 }

@@ -64,7 +64,7 @@ class LengowToolbox
     public const PROCESS_TYPE_GET_DATA = 'get_data';
     public const PROCESS_TYPE_SYNC = 'sync';
 
-    /* Toolbox data  */
+    /* Toolbox data */
     public const CHECKLIST = 'checklist';
     public const CHECKLIST_CURL_ACTIVATED = 'curl_activated';
     public const CHECKLIST_SIMPLE_XML_ACTIVATED = 'simple_xml_activated';
@@ -113,7 +113,7 @@ class LengowToolbox
     public const CHECKSUM_FILE_DETAILS = 'file_details';
     public const LOGS = 'logs';
 
-    /* Toolbox order data  */
+    /* Toolbox order data */
     public const ID = 'id';
     public const ORDERS = 'orders';
     public const ORDER_MARKETPLACE_SKU = 'marketplace_sku';
@@ -215,6 +215,7 @@ class LengowToolbox
                 return self::getChecksumData();
             case self::DATA_TYPE_MODIFIED_FILES:
                 $shortPathParam = (string) Tools::getValue(self::PARAM_SHORT_PATH);
+
                 return self::getModifiedFilesData(base64_decode($shortPathParam));
             case self::DATA_TYPE_LOG:
                 return self::getLogData();
@@ -260,6 +261,7 @@ class LengowToolbox
             return self::generateErrorReturn(LengowConnector::CODE_403, $result[LengowImport::ERRORS][0]);
         }
         unset($result[LengowImport::ERRORS]);
+
         return $result;
     }
 
@@ -300,6 +302,7 @@ class LengowToolbox
             $orders[] = self::getOrderDataByType($type, $data, $lengowOrder);
             unset($lengowOrder);
         }
+
         return [
             self::ORDER_MARKETPLACE_SKU => $marketplaceSku,
             self::ORDER_MARKETPLACE_NAME => $marketplaceName,
@@ -359,6 +362,7 @@ class LengowToolbox
     private static function getChecklistData()
     {
         $checksumData = self::getChecksumData();
+
         return [
             self::CHECKLIST_CURL_ACTIVATED => self::isCurlActivated(),
             self::CHECKLIST_SIMPLE_XML_ACTIVATED => self::isSimpleXMLActivated(),
@@ -397,6 +401,7 @@ class LengowToolbox
     private static function getSynchronizationData()
     {
         $lastImport = LengowMain::getLastImport();
+
         return [
             self::SYNCHRONIZATION_CMS_TOKEN => LengowMain::getToken(),
             self::SYNCHRONIZATION_CRON_URL => LengowMain::getCronUrl(),
@@ -439,6 +444,7 @@ class LengowToolbox
                 self::SHOP_OPTIONS => LengowConfiguration::getAllValues($idShop, true),
             ];
         }
+
         return $exportData;
     }
 
@@ -457,6 +463,7 @@ class LengowToolbox
         foreach ($shops as $shop) {
             $optionData[self::SHOP_OPTIONS][] = LengowConfiguration::getAllValues($shop->id);
         }
+
         return $optionData;
     }
 
@@ -476,13 +483,13 @@ class LengowToolbox
             $md5Available = true;
             if (($file = fopen($fileName, 'rb')) !== false) {
                 while (($data = fgetcsv($file, 1000, '|')) !== false) {
-                    $fileCounter++;
-                    $shortPath =  $data[0];
+                    ++$fileCounter;
+                    $shortPath = $data[0];
                     $filePath = LengowMain::getLengowFolder() . $data[0];
                     if (file_exists($filePath)) {
                         $fileMd = md5_file($filePath);
                         if ($fileMd !== $data[1]) {
-                            $fileModified[] = $shortPath ;
+                            $fileModified[] = $shortPath;
                         }
                     } else {
                         $fileDeleted[] = $shortPath;
@@ -496,6 +503,7 @@ class LengowToolbox
         $fileModifiedCounter = count($fileModified);
         $fileDeletedCounter = count($fileDeleted);
         $md5Success = $md5Available && !($fileModifiedCounter > 0) && !($fileDeletedCounter > 0);
+
         return [
             self::CHECKSUM_AVAILABLE => $md5Available,
             self::CHECKSUM_SUCCESS => $md5Success,
@@ -504,7 +512,7 @@ class LengowToolbox
             self::CHECKSUM_NUMBER_FILES_DELETED => $fileDeletedCounter,
             self::CHECKSUM_FILE_MODIFIED => $fileModified,
             self::CHECKSUM_FILE_DELETED => $fileDeleted,
-            self::CHECKSUM_FILE_DETAILS => 1
+            self::CHECKSUM_FILE_DETAILS => 1,
         ];
     }
 
@@ -527,8 +535,8 @@ class LengowToolbox
             $md5Available = true;
             if (($file = fopen($fileName, 'rb')) !== false) {
                 while (($data = fgetcsv($file, 1000, '|')) !== false) {
-                    $fileCounter++;
-                    $shortPath =  $data[0];
+                    ++$fileCounter;
+                    $shortPath = $data[0];
                     $filePath = LengowMain::getLengowFolder() . $data[0];
                     if (file_exists($filePath)) {
                         $fileMd = md5_file($filePath);
@@ -539,7 +547,7 @@ class LengowToolbox
                             $fileModified[] = [
                                 'short_path' => $shortPath,
                                 'content_encoded' => base64_encode(Tools::file_get_contents($filePath)),
-                                'checksum' => $fileMd
+                                'checksum' => $fileMd,
                             ];
                         }
                     } else {
@@ -573,6 +581,7 @@ class LengowToolbox
                     . '&' . self::PARAM_TOOLBOX_ACTION . '=' . self::ACTION_LOG,
             ];
         }
+
         return $logs;
     }
 
@@ -611,8 +620,9 @@ class LengowToolbox
                 return false;
             }
             unlink($filePath);
+
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -648,6 +658,7 @@ class LengowToolbox
         if (isset($params[self::PARAM_FORCE])) {
             $paramsFiltered[LengowImport::PARAM_FORCE_SYNC] = (bool) $params[self::PARAM_FORCE];
         }
+
         return $paramsFiltered;
     }
 
@@ -664,8 +675,8 @@ class LengowToolbox
     {
         $orderReferences = [
             self::ID => (int) $data[LengowOrder::FIELD_ID],
-            self::ORDER_MERCHANT_ORDER_ID  => $lengowOrder ? $lengowOrder->id : null,
-            self::ORDER_MERCHANT_ORDER_REFERENCE  => $lengowOrder ? $lengowOrder->reference : null,
+            self::ORDER_MERCHANT_ORDER_ID => $lengowOrder ? $lengowOrder->id : null,
+            self::ORDER_MERCHANT_ORDER_REFERENCE => $lengowOrder ? $lengowOrder->reference : null,
             self::ORDER_DELIVERY_ADDRESS_ID => (int) $data[LengowOrder::FIELD_DELIVERY_ADDRESS_ID],
         ];
         switch ($type) {
@@ -688,6 +699,7 @@ class LengowToolbox
             default:
                 $orderData = self::getAllOrderData($data, $lengowOrder);
         }
+
         return array_merge($orderReferences, $orderData);
     }
 
@@ -702,6 +714,7 @@ class LengowToolbox
     private static function getAllOrderData($data, $lengowOrder = null)
     {
         $orderTypes = json_decode($data[LengowOrder::FIELD_ORDER_TYPES], true);
+
         return [
             self::ORDER_DELIVERY_COUNTRY_ISO => $data[LengowOrder::FIELD_DELIVERY_COUNTRY_ISO],
             self::ORDER_PROCESS_STATE => self::getOrderProcessLabel(
@@ -795,6 +808,7 @@ class LengowToolbox
                 ];
             }
         }
+
         return $orderErrors;
     }
 
@@ -823,6 +837,7 @@ class LengowToolbox
                 ];
             }
         }
+
         return $orderActions;
     }
 
@@ -846,6 +861,7 @@ class LengowToolbox
                 self::CREATED_AT => strtotime($status['date_add']),
             ];
         }
+
         return $orderStatuses;
     }
 
@@ -863,6 +879,7 @@ class LengowToolbox
         $orderData[self::EXTRA_UPDATED_AT] = $lengowOrder
             ? strtotime($lengowOrder->date_add)
             : strtotime($data[LengowOrder::FIELD_CREATED_AT]);
+
         return $orderData;
     }
 

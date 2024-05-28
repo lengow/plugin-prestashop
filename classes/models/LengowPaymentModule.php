@@ -45,11 +45,11 @@ class LengowPaymentModule extends PaymentModule
      * @param string $marketplaceSku id lengow of current order
      * @param bool $logOutput display log messages
      *
+     * @return array
+     *
      * @throws Exception|LengowException cannot load order status / payment module not active / cart cannot be loaded
      *                                   delivery country not active / product is not listed / unable to save order
      *                                   unable to save order payment / order creation failed
-     *
-     * @return array
      */
     public function makeOrder(
         $idCart,
@@ -170,12 +170,7 @@ class LengowPaymentModule extends PaymentModule
                     $address = new Address($idAddress);
                     $this->context->country = new Country($address->id_country, $this->context->cart->id_lang);
                     if (!$this->context->country->active) {
-                        throw new LengowException(
-                            LengowMain::setLogMessage(
-                                'lengow_log.exception.delivery_country_not_active',
-                                ['country_name' => $this->context->country->name]
-                            )
-                        );
+                        throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.delivery_country_not_active', ['country_name' => $this->context->country->name]));
                     }
                 }
 
@@ -239,12 +234,7 @@ class LengowPaymentModule extends PaymentModule
                         // total with taxes
                         $totalProductsWt += $product['total_wt'];
                     } else {
-                        throw new LengowException(
-                            LengowMain::setLogMessage(
-                                'lengow_log.exception.product_is_not_listed',
-                                ['product_id' => $sku]
-                            )
-                        );
+                        throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.product_is_not_listed', ['product_id' => $sku]));
                     }
                 }
 
@@ -296,12 +286,7 @@ class LengowPaymentModule extends PaymentModule
                 // creating order in PrestaShop
                 $result = $order->add();
                 if (!$result) {
-                    throw new LengowException(
-                        LengowMain::setLogMessage(
-                            'lengow_log.exception.unable_to_save_order',
-                            ['error' => Db::getInstance()->getMsgError()]
-                        )
-                    );
+                    throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order', ['error' => Db::getInstance()->getMsgError()]));
                 }
 
                 // update lengow_order table directly after creating the PrestaShop order
@@ -377,9 +362,7 @@ class LengowPaymentModule extends PaymentModule
         if ($orderStatus->logable && isset($order)) {
             $idTransaction = null;
             if (!$order->addOrderPayment($order->total_paid_tax_incl, null, $idTransaction)) {
-                throw new LengowException(
-                    LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order_payment')
-                );
+                throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order_payment'));
             }
         }
 

@@ -1,0 +1,28 @@
+# Apache 2.2
+<IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+    <Files "cron.php">
+        Allow from all
+    </Files>
+    <Files "toolbox.php">
+        Allow from all
+    </Files>
+    <Files "export.php">
+        Allow from all
+    </Files>
+</IfModule>
+
+# Apache 2.4
+<IfModule mod_authz_core.c>
+    Require all denied
+    <Files "cron.php">
+        Require all granted
+    </Files>
+    <Files "toolbox.php">
+        Require all granted
+    </Files>
+    <Files "export.php">
+        Require all granted
+    </Files>
+</IfModule>

@@ -122,12 +122,7 @@ class LengowMarketplace
             self::loadApiMarketplace(true);
         }
         if (!isset(self::$marketplaces->{$this->name})) {
-            throw new LengowException(
-                LengowMain::setLogMessage(
-                    'lengow_log.exception.marketplace_not_present',
-                    ['marketplace_name' => $this->name]
-                )
-            );
+            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.marketplace_not_present', ['marketplace_name' => $this->name]));
         }
         $this->marketplace = self::$marketplaces->{$this->name};
         if (!empty($this->marketplace)) {
@@ -205,6 +200,7 @@ class LengowMarketplace
     public static function getFilePath()
     {
         $sep = DIRECTORY_SEPARATOR;
+
         return LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_MARKETPLACE;
     }
 
@@ -220,6 +216,7 @@ class LengowMarketplace
         if (array_key_exists($name, $this->statesLengow)) {
             return $this->statesLengow[$name];
         }
+
         return false;
     }
 
@@ -235,6 +232,7 @@ class LengowMarketplace
         if (array_key_exists($name, $this->actions)) {
             return $this->actions[$name];
         }
+
         return false;
     }
 
@@ -253,6 +251,7 @@ class LengowMarketplace
                 return $defaultValue;
             }
         }
+
         return false;
     }
 
@@ -280,6 +279,7 @@ class LengowMarketplace
                 return true;
             }
         }
+
         return false;
     }
 
@@ -357,8 +357,10 @@ class LengowMarketplace
                 false,
                 $lengowOrder->lengowMarketplaceSku
             );
+
             return false;
         }
+
         return true;
     }
 
@@ -372,17 +374,10 @@ class LengowMarketplace
     protected function checkAction($action)
     {
         if (!in_array($action, self::$validActions, true)) {
-            throw new LengowException(
-                LengowMain::setLogMessage('lengow_log.exception.action_not_valid', ['action' => $action])
-            );
+            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.action_not_valid', ['action' => $action]));
         }
         if (!$this->getAction($action)) {
-            throw new LengowException(
-                LengowMain::setLogMessage(
-                    'lengow_log.exception.marketplace_action_not_present',
-                    ['action' => $action]
-                )
-            );
+            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.marketplace_action_not_present', ['action' => $action]));
         }
     }
 
@@ -396,14 +391,10 @@ class LengowMarketplace
     protected function checkOrderData($lengowOrder)
     {
         if ($lengowOrder->lengowMarketplaceSku === '') {
-            throw new LengowException(
-                LengowMain::setLogMessage('lengow_log.exception.marketplace_sku_require')
-            );
+            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.marketplace_sku_require'));
         }
         if ($lengowOrder->lengowMarketplaceName === '') {
-            throw new LengowException(
-                LengowMain::setLogMessage('lengow_log.exception.marketplace_name_require')
-            );
+            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.marketplace_name_require'));
         }
     }
 
@@ -426,6 +417,7 @@ class LengowMarketplace
         } else {
             $marketplaceArguments = [];
         }
+
         return $marketplaceArguments;
     }
 
@@ -436,9 +428,9 @@ class LengowMarketplace
      * @param LengowOrder $lengowOrder Lengow order instance
      * @param array $marketplaceArguments All marketplace arguments for a specific action
      *
-     * @throws Exception|LengowException no delivery country in order
-     *
      * @return array
+     *
+     * @throws Exception|LengowException no delivery country in order
      */
     protected function getAllParams($action, $lengowOrder, $marketplaceArguments)
     {
@@ -473,9 +465,7 @@ class LengowMarketplace
                             if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
                                 break;
                             }
-                            throw new LengowException(
-                                LengowMain::setLogMessage('lengow_log.exception.no_delivery_country_in_order')
-                            );
+                            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_delivery_country_in_order'));
                         }
                         // get marketplace id by marketplace name
                         $idMarketplace = self::getIdMarketplace($lengowOrder->lengowMarketplaceName);
@@ -534,6 +524,7 @@ class LengowMarketplace
                     break;
             }
         }
+
         return $params;
     }
 
@@ -543,9 +534,9 @@ class LengowMarketplace
      * @param string $action Lengow order actions type (ship or cancel)
      * @param array $params all available values
      *
-     * @throws Exception argument is required
-     *
      * @return array
+     *
+     * @throws Exception argument is required
      */
     protected function checkAndCleanParams($action, $params)
     {
@@ -553,12 +544,7 @@ class LengowMarketplace
         if (isset($actions['args'])) {
             foreach ($actions['args'] as $arg) {
                 if (!isset($params[$arg]) || $params[$arg] === '') {
-                    throw new LengowException(
-                        LengowMain::setLogMessage(
-                            'lengow_log.exception.arg_is_required',
-                            ['arg_name' => $arg]
-                        )
-                    );
+                    throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.arg_is_required', ['arg_name' => $arg]));
                 }
             }
         }
@@ -569,6 +555,7 @@ class LengowMarketplace
                 }
             }
         }
+
         return $params;
     }
 
@@ -628,13 +615,14 @@ class LengowMarketplace
                 $marketplaceCounters[(int) $result[LengowCarrier::FIELD_COUNTRY_ID]] = (int) $result['count'];
             }
         }
+
         return $marketplaceCounters;
     }
 
     /**
      * Get all marketplaces
      *
-     * @param int|boolean $idCountry PrestaShop id country
+     * @param int|bool $idCountry PrestaShop id country
      *
      * @return array
      */
@@ -655,6 +643,7 @@ class LengowMarketplace
         } catch (PrestaShopDatabaseException $e) {
             $results = false;
         }
+
         return is_array($results) ? $results : [];
     }
 
@@ -695,6 +684,7 @@ class LengowMarketplace
                 ];
             }
         }
+
         return $marketplaceData;
     }
 
@@ -715,6 +705,7 @@ class LengowMarketplace
         } catch (PrestaShopDatabaseException $e) {
             $result = [];
         }
+
         return !empty($result) ? (int) $result[0][self::FIELD_ID] : false;
     }
 
@@ -734,7 +725,7 @@ class LengowMarketplace
             $success = $db->insert(
                 self::TABLE_MARKETPLACE,
                 [
-                    self::FIELD_MARKETPLACE_NAME  => pSQL($marketplaceName),
+                    self::FIELD_MARKETPLACE_NAME => pSQL($marketplaceName),
                     self::FIELD_MARKETPLACE_LABEL => pSQL($marketplaceLabel),
                     self::FIELD_CARRIER_REQUIRED => $carrierRequired,
                 ]
@@ -742,6 +733,7 @@ class LengowMarketplace
         } catch (PrestaShopDatabaseException $e) {
             $success = false;
         }
+
         return $success ? self::getIdMarketplace($marketplaceName) : false;
     }
 
@@ -765,16 +757,16 @@ class LengowMarketplace
             ],
             'id = ' . (int) $idMarketplace
         );
+
         return $success ? $idMarketplace : false;
     }
 
     /**
-     *
      * @return bool
      */
-    public function hasReturnTrackingCarrier() : bool
+    public function hasReturnTrackingCarrier(): bool
     {
-        $action =  $this->getAction(LengowAction::TYPE_SHIP);
+        $action = $this->getAction(LengowAction::TYPE_SHIP);
         if (!$action) {
             return false;
         }
@@ -784,10 +776,9 @@ class LengowMarketplace
     }
 
     /**
-     *
      * @return bool
      */
-    public function hasReturnTrackingNumber() : bool
+    public function hasReturnTrackingNumber(): bool
     {
         $action = $this->getAction(LengowAction::TYPE_SHIP);
         if (!$action) {

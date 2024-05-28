@@ -242,6 +242,7 @@ class LengowList
         }
         $html .= '</tr>';
         $html .= '</thead>';
+
         return $html;
     }
 
@@ -264,6 +265,7 @@ class LengowList
             }
         }
         $html .= '</tbody>';
+
         return $html;
     }
 
@@ -349,6 +351,7 @@ class LengowList
             $html .= '<td class="' . $class . '">' . $value . '</td>';
         }
         $html .= '</tr>';
+
         return $html;
     }
 
@@ -379,6 +382,7 @@ class LengowList
         $html .= $this->displayHeader($this->orderColumn) . $this->displayContent() . $this->displayFooter();
         $html .= '<input type="submit" value="Search" style="visibility: hidden"/>';
         $html .= '</form>';
+
         return $html;
     }
 
@@ -408,8 +412,10 @@ class LengowList
         }
         if ($this->nbMaxPage > 0 && $this->currentPage > $this->nbMaxPage) {
             $this->currentPage = $this->nbMaxPage;
+
             return $this->executeQuery();
         }
+
         return $this->collection;
     }
 
@@ -434,6 +440,7 @@ class LengowList
             $collection = [];
         }
         $this->sql['where'] = $tmp;
+
         return $collection[0];
     }
 
@@ -451,6 +458,7 @@ class LengowList
                 return $value;
             }
         }
+
         return false;
     }
 
@@ -571,6 +579,7 @@ class LengowList
             }
             $sql .= ' LIMIT ' . ($this->currentPage - 1) * $this->nbPerPage . ',' . $this->nbPerPage;
         }
+
         return $sql;
     }
 
@@ -610,8 +619,8 @@ class LengowList
         $html .= '<select class="lgw-pagination-select-item" name="nb_per_page">';
         foreach ($this->nbPerPageList as $itemPerPage) {
             $html .= '<option value="' . $itemPerPage . '" ';
-            $html .=  ($this->nbPerPage == $itemPerPage) ? 'selected' : '';
-            $html .=  '>' . $itemPerPage . '</option>';
+            $html .= ($this->nbPerPage == $itemPerPage) ? 'selected' : '';
+            $html .= '>' . $itemPerPage . '</option>';
         }
         $html .= '</select></div>';
         $html .= '<ul class="lgw-pagination-btns lgw-pagination-arrow">';
@@ -643,7 +652,7 @@ class LengowList
             } elseif ($this->currentPage < ($this->nbMaxPage - 2)) {
                 $showLastSeparation = true;
             }
-            for ($i = $from; $i <= $to; $i++) {
+            for ($i = $from; $i <= $to; ++$i) {
                 $html .= '<li>';
                 $class = $i == $this->currentPage ? 'disabled' : '';
                 $html .= '<li class="' . $class . '"><a href="#" data-page="' . $i . '"
@@ -657,9 +666,9 @@ class LengowList
             $class = $this->currentPage == $this->nbMaxPage ? 'disabled' : '';
             $html .= '<li class="' . $class . '"><a href="#" data-page="' . $this->nbMaxPage . '"
                 data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller)
-                . '&p=' . ($this->nbMaxPage) . '">' . $this->nbMaxPage . '</a></li>';
+                . '&p=' . $this->nbMaxPage . '">' . $this->nbMaxPage . '</a></li>';
         } else {
-            for ($i = 1; $i <= $totalPage; $i++) {
+            for ($i = 1; $i <= $totalPage; ++$i) {
                 $class = $i == $this->currentPage ? 'disabled' : '';
                 $html .= '<li class="' . $class . '"><a href="#"  data-page="' . $i . '"
                     data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller) . '&p=' . $i . '">'
@@ -667,6 +676,7 @@ class LengowList
             }
         }
         $html .= '</ul></nav>';
+
         return $html;
     }
 
@@ -689,8 +699,10 @@ class LengowList
             } else {
                 $this->currencyCode[$isoCode] = $this->context->currency;
             }
+
             return $this->currencyCode[$isoCode];
         }
+
         return $this->context->currency;
     }
 

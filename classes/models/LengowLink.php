@@ -45,6 +45,7 @@ class LengowLink extends LinkCore
         } catch (Exception $e) {
             return '';
         }
+
         return $adminPath;
     }
 }

@@ -55,6 +55,7 @@ class LengowOrderError
             WHERE lo.id = ' . (int) $idLengowOrder . ' AND lli.is_finished = 0 AND lo.order_process_state != 2';
         try {
             $results = Db::getInstance()->executeS($query);
+
             return !empty($results);
         } catch (PrestaShopDatabaseException $e) {
             return false;
@@ -78,8 +79,8 @@ class LengowOrderError
         // check if log already exists for the given order id
         $query = 'SELECT lli.`message`, lli.`date` FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
             LEFT JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo ON lli.`id_order_lengow` = lo.`id`
-            WHERE lo.`'.LengowOrder::FIELD_MARKETPLACE_SKU.'` = \'' . pSQL($marketplaceSku) . '\'
-            AND lo.`'.LengowOrder::FIELD_MARKETPLACE_NAME.'` = \'' . pSQL($marketplaceName) . '\'
+            WHERE lo.`' . LengowOrder::FIELD_MARKETPLACE_SKU . '` = \'' . pSQL($marketplaceSku) . '\'
+            AND lo.`' . LengowOrder::FIELD_MARKETPLACE_NAME . '` = \'' . pSQL($marketplaceName) . '\'
             AND lli.`type` = \'' . $type . '\'
             AND lli.`is_finished` = 0';
 
@@ -167,9 +168,10 @@ class LengowOrderError
                 '`id` = \'' . (int) $orderLog[self::FIELD_ID] . '\''
             );
             if ($result) {
-                $updateSuccess++;
+                ++$updateSuccess;
             }
         }
+
         return count($orderLogs) === $updateSuccess;
     }
 
@@ -191,6 +193,7 @@ class LengowOrderError
         } catch (PrestaShopDatabaseException $e) {
             $orderLogs = [];
         }
+
         return $orderLogs;
     }
 

@@ -408,6 +408,7 @@ class LengowOrderController extends LengowController
         $orderValue = isset($_REQUEST['order_value']) ? $_REQUEST['order_value'] : '';
         $orderColumn = isset($_REQUEST['order_column']) ? $_REQUEST['order_column'] : '';
         $nbPerPage = isset($_REQUEST['nb_per_page']) ? $_REQUEST['nb_per_page'] : '';
+
         return new LengowList(
             [
                 'id' => 'order',
@@ -460,6 +461,7 @@ class LengowOrderController extends LengowController
         $html .= $paginationBlock;
         $html .= '<div class="clearfix"></div>';
         $html .= '</div>';
+
         return $html;
     }
 
@@ -482,9 +484,10 @@ class LengowOrderController extends LengowController
         foreach ($collection as $row) {
             $marketplaces[] = [
                 'id' => $row['name'],
-                'text' => $row['marketplace_label']
+                'text' => $row['marketplace_label'],
             ];
         }
+
         return $marketplaces;
     }
 
@@ -505,6 +508,7 @@ class LengowOrderController extends LengowController
         foreach ($collection as $row) {
             $shops[] = ['id' => $row['id_shop'], 'text' => $row['name']];
         }
+
         return $shops;
     }
 
@@ -525,6 +529,7 @@ class LengowOrderController extends LengowController
         if (empty($value)) {
             $value = 'not_synchronized';
         }
+
         return '<span class="lgw-label lgw-order-status lgw-label-' . $value . '">'
             . LengowMain::decodeLogMessage('order.screen.status_' . $value) . '</span>';
     }
@@ -560,6 +565,7 @@ class LengowOrderController extends LengowController
             $return .= self::generateOrderTypeIcon($orderTypes[LengowOrder::TYPE_BUSINESS], 'blue-light', 'mod-pro');
         }
         $return .= '</div>';
+
         return $return;
     }
 
@@ -578,8 +584,10 @@ class LengowOrderController extends LengowController
         $key = $key;
         if ($item[LengowOrder::FIELD_ORDER_ID]) {
             $href = self::getOrderAdminLink($item[LengowOrder::FIELD_ORDER_ID]);
+
             return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
         }
+
         return $value;
     }
 
@@ -673,6 +681,7 @@ class LengowOrderController extends LengowController
                 $value = '';
             }
         }
+
         return $value;
     }
 
@@ -689,6 +698,7 @@ class LengowOrderController extends LengowController
         // if global error return this
         if (isset($return[LengowImport::ERRORS][0])) {
             $messages[] = LengowMain::decodeLogMessage($return[LengowImport::ERRORS][0]);
+
             return $messages;
         }
         if (isset($return[LengowImport::NUMBER_ORDERS_CREATED]) && $return[LengowImport::NUMBER_ORDERS_CREATED] > 0) {
@@ -723,6 +733,7 @@ class LengowOrderController extends LengowController
                 $messages[] = $shopName . LengowMain::decodeLogMessage($values);
             }
         }
+
         return $messages;
     }
 
@@ -746,12 +757,12 @@ class LengowOrderController extends LengowController
     }
 
     /**
-      * Generate link for order admin page
-      *
-      * @param int $idOrder PrestaShop order id
-      *
-      * @return string
-      */
+     * Generate link for order admin page
+     *
+     * @param int $idOrder PrestaShop order id
+     *
+     * @return string
+     */
     private static function getOrderAdminLink($idOrder)
     {
         $link = new LengowLink();
@@ -761,13 +772,13 @@ class LengowOrderController extends LengowController
                     . '&vieworder&id_order=' . $idOrder;
             } else {
                 $sfParams = [
-                    'orderId' => $idOrder
+                    'orderId' => $idOrder,
                 ];
                 $href = Link::getUrlSmarty(
                     [
                         'entity' => 'sf',
                         'route' => 'admin_orders_view',
-                        'sf-params' => $sfParams
+                        'sf-params' => $sfParams,
                     ]
                 );
             }
