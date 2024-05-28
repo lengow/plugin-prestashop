@@ -11,6 +11,21 @@
     <Files "export.php">
         Allow from all
     </Files>
+    <Files "*.css">
+        Require all granted
+    </Files>
+    <Files "*.js">
+        Allow from all
+    </Files>
+    <Files "*.png">
+        Allow from all
+    </Files>
+    <Files "*.woff">
+        Allow from all
+    </Files>
+    <Files "*.woff2">
+        Allow from all
+    </Files>
 </IfModule>
 
 # Apache 2.4
@@ -23,6 +38,21 @@
         Require all granted
     </Files>
     <Files "export.php">
+        Require all granted
+    </Files>
+    <Files "*.css">
+        Require all granted
+    </Files>
+    <Files "*.js">
+        Require all granted
+    </Files>
+    <Files "*.png">
+        Require all granted
+    </Files>
+    <Files "*.woff">
+        Require all granted
+    </Files>
+    <Files "*.woff2">
         Require all granted
     </Files>
 </IfModule>
