@@ -12,7 +12,7 @@
         Allow from all
     </Files>
     <Files "*.css">
-        Require all granted
+        Allow from all
     </Files>
     <Files "*.js">
         Allow from all
