@@ -19,7 +19,7 @@
 /classes/controllers/LengowLegalsController.php|14effece7503b9524c83f628d255d146
 /classes/controllers/LengowController.php|79069614553337166806e6d95a49a875
 /classes/controllers/LengowHelpController.php|e0b813a636dcf6a6910e8a2c7199931c
-/classes/controllers/index.php|543a797a07163bc6179ef2e5710fdb4c
+/classes/controllers/index.php|a90243841e2e64a4ee2965d4dfa12491
 /classes/controllers/LengowFeedController.php|b9a4e1bfe6836ad7a648de8a2a79bf77
 /classes/models/LengowBackup.php|0b4ad4d2a965e7df0df4639dc3230423
 /classes/models/LengowExport.php|4b80f5d76bc1612177829c8325a06057
@@ -55,13 +55,13 @@
 /classes/models/LengowShop.php|9f2898b82329096caedba902a30a0a6a
 /classes/models/LengowAddress.php|b6f361b8c5f658c41adb5b437166c5e3
 /classes/models/LengowFeed.php|0b1cac677bebaff745d54e60d20ef84e
-/classes/models/index.php|543a797a07163bc6179ef2e5710fdb4c
+/classes/models/index.php|a90243841e2e64a4ee2965d4dfa12491
 /classes/models/LengowToolboxElement.php|20dbd4958f8914acd3d9654b9cde026a
 /classes/models/LengowImport.php|86292645321d62c92729ae482b8a503a
 /classes/models/LengowAction.php|c697eb825f2d69baca255d94e0fa79d5
 /classes/models/LengowOrder.php|d92550e4eecbd837d77dfc1b1e0d85fa
 /classes/models/LengowFile.php|5a58b3cf03a99bfeb305abe048799206
-/classes/index.php|543a797a07163bc6179ef2e5710fdb4c
+/classes/index.php|a90243841e2e64a4ee2965d4dfa12491
 /controllers/admin/AdminLengowMainSettingController.php|cb8b24a5405860c955a6e56faba62d08
 /controllers/admin/AdminLengowOrderController.php|3f287ca4f413ed8256694d45f873980f
 /controllers/admin/AdminLengowHelpController.php|d17ee58a9f6d2ebd84d55e76e4fd6055
@@ -105,7 +105,7 @@
 /upgrade/update_3.2.2.php|192eb7b032dead89666ffe41b1ba8646
 /upgrade/update_3.2.3.php|7c168fc6b974f17dea3f4879acee71d6
 /upgrade/update_3.0.1.php|715cedb6c2f1d9651e84ea2a6b54939d
-/upgrade/index.php|1b9d630a3a7f9641720c5d4a1d1aacad
+/upgrade/index.php|a90243841e2e64a4ee2965d4dfa12491
 /upgrade/update_3.0.0.php|f1f09d1725b39114b4fa4e51583668c3
 /views/js/select2.js|2565df263f3a062418fb9ef1202d7e4e
 /views/js/clipboard.js|55db0ff82a3b6b247844ae0d07d85fc6
