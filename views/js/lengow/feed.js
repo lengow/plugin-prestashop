@@ -21,7 +21,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     const stickyIcon = document.getElementById('sticky-icon');
     const stickySwitches = document.querySelectorAll('.sticky-switch');
+    const lengowBoxes = document.querySelectorAll('.lgw-box');
 
+    if (lengowBoxes && lengowBoxes.length > 1) {
+        stickyIcon.style.display = 'none';
+    }
+    
     stickyIcon.addEventListener('click', function() {
         stickySwitches.forEach(function(switchElem) {
             const isSwitchVisible = switchElem.classList.contains('show-switch');
