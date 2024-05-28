@@ -20,6 +20,9 @@
  */
 require_once _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'loader.php';
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 /**
  * Lengow
  */

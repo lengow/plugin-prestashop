@@ -6,6 +6,9 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 $_MODULE = [];
 $_MODULE['<{lengow}prestashop>lengow_5bece808b0b66f50124ebc25494dc4d3'] = 'Lengow';
 $_MODULE['<{lengow}prestashop>lengow_75d51c9dc3497701321f7e5b8a8f0f58'] = 'Con Lengow puoi esportare facilmente i tuoi prodotti da PrestaShop e vendere su Amazon, Ebay, Facebook, Google Shopping… fai la tua scelta tra più di 1800 canali di diffusione !';

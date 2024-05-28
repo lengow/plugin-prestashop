@@ -38,6 +38,9 @@ header('Pragma: no-cache');
 $currentDirectory = str_replace('modules/lengow/webservice/', '', dirname($_SERVER['SCRIPT_FILENAME']) . '/');
 $sep = DIRECTORY_SEPARATOR;
 require_once $currentDirectory . 'config' . $sep . 'config.inc.php';
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 Configuration::set('PS_SHOP_ENABLE', true);
 require_once $currentDirectory . 'init.php';
 require_once $currentDirectory . 'modules' . $sep . 'lengow' . $sep . 'lengow.php';
