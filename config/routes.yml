@@ -5,7 +5,7 @@ admin_orders_view:
     _disable_module_prefix: true  
     _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::viewAction'
     _legacy_controller: AdminOrders
-    _legacy_link: AdminOrders
+    _legacy_link: AdminOrders:vieworder
     _legacy_parameters:
       id_order: orderId
   options:
