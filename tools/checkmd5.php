@@ -61,6 +61,7 @@ function explorer($path)
     } else {
         $paths[] = $path;
     }
+
     return $paths;
 }
 

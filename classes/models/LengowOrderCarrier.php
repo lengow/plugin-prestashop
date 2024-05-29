@@ -18,7 +18,6 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -34,7 +33,6 @@ class LengowOrderCarrier extends OrderCarrier
     public $return_carrier;
 
     /**
-     *
      * @param type $id
      * @param type $id_lang
      * @param type $id_shop

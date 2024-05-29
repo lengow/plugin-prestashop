@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Home Controller Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowHomeController extends LengowController
 {
     /**
@@ -147,6 +150,7 @@ class LengowHomeController extends LengowController
                 ]
             );
         }
+
         return $accessIdsSaved;
     }
 
@@ -183,6 +187,7 @@ class LengowHomeController extends LengowController
             LengowConfiguration::resetAccessIds();
             LengowConfiguration::resetAuthorizationToken();
         }
+
         return $cmsConnected;
     }
 
@@ -197,6 +202,7 @@ class LengowHomeController extends LengowController
         if (empty($activeShops)) {
             return LengowCatalog::hasCatalogNotLinked();
         }
+
         return false;
     }
 
@@ -211,6 +217,7 @@ class LengowHomeController extends LengowController
         if (empty($activeShops)) {
             return LengowCatalog::getCatalogList();
         }
+
         // if cms already has one or more linked catalogs, nothing is done
         return [];
     }
@@ -244,6 +251,7 @@ class LengowHomeController extends LengowController
                 : 'log.connection.link_catalog_failed';
             LengowMain::log(LengowLog::CODE_CONNECTION, LengowMain::setLogMessage($messageKey));
         }
+
         return $catalogsLinked;
     }
 }

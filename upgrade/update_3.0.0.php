@@ -18,6 +18,10 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 if (!LengowInstall::isInstallationInProgress()) {
     exit;
 }
@@ -76,7 +80,6 @@ if (LengowInstall::checkTableExists(LengowProduct::TABLE_PRODUCT)
 // Drop old column from lengow_product table
 LengowInstall::checkFieldAndDrop(LengowProduct::TABLE_PRODUCT, 'id_shop_group');
 LengowInstall::checkFieldAndDrop(LengowProduct::TABLE_PRODUCT, 'id_lang');
-
 
 // *********************************************************
 //                         lengow_order_line

@@ -18,11 +18,13 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Feed Controller Class
  */
 
-if (!defined('_PS_VERSION_')) { exit; }
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowFeedController extends LengowController
 {
     /**
@@ -55,7 +57,7 @@ class LengowFeedController extends LengowController
                         $data['option'] = 'selection';
                         if ($state) {
                             $data['state'] = true;
-                                LengowConfiguration::updatevalue(
+                            LengowConfiguration::updatevalue(
                                 LengowConfiguration::OUT_OF_STOCK_ENABLED,
                                 1,
                                 null,
@@ -79,7 +81,6 @@ class LengowFeedController extends LengowController
                         } else {
                             $data['state'] = false;
                         }
-
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
                         echo json_encode($result);
@@ -111,7 +112,6 @@ class LengowFeedController extends LengowController
                             );
                         }
 
-
                         $result = array_merge($data, $this->reloadTotal($idShop));
                         echo json_encode($result);
                     }
@@ -141,8 +141,6 @@ class LengowFeedController extends LengowController
                                 $idShop
                             );
                         }
-
-
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
                         echo json_encode($result);
@@ -174,8 +172,6 @@ class LengowFeedController extends LengowController
                             );
                         }
 
-
-
                         $result = array_merge($data, $this->reloadTotal($idShop));
                         echo json_encode($result);
                     }
@@ -190,7 +186,7 @@ class LengowFeedController extends LengowController
                     }
                     break;
                 case 'load_table':
-                    $idShop = isset($_REQUEST['id_shop']) ? (int )$_REQUEST['id_shop'] : null;
+                    $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
                     $data = [];
                     $data['shop_id'] = $idShop;
                     $data['footer_content'] = preg_replace('/\r|\n/', '', $this->buildTable($idShop));
@@ -470,7 +466,7 @@ class LengowFeedController extends LengowController
         // price calculation
         $nb = count($collection);
         if ($collection) {
-            for ($i = 0; $i < $nb; $i++) {
+            for ($i = 0; $i < $nb; ++$i) {
                 $productId = $collection[$i]['id_product'];
                 $nothing = '';
                 $collection[$i]['price_final'] = Product::getPriceStatic(
@@ -560,9 +556,9 @@ class LengowFeedController extends LengowController
      * @param string $value row value
      * @param array $item item values
      *
-     * @throws Exception
-     *
      * @return string
+     *
+     * @throws Exception
      */
     public static function displayLink($key, $value, $item)
     {
@@ -583,10 +579,10 @@ class LengowFeedController extends LengowController
                     ]
                 );
             }
+
             return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
         }
+
         return $value;
     }
 }
-
-

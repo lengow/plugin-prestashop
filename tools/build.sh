@@ -130,6 +130,8 @@ remove_files $FOLDER_TMP "README.md"
 remove_files $FOLDER_TMP ".gitignore"
 # remove php-cs-fixer-cache
 remove_files $FOLDER_TMP ".php-cs-fixer.cache"
+remove_files $FOLDER_TMP ".php-cs-fixer.dist.php"
+remove_files $FOLDER_TMP ".php_cs.cache"
 # remove .git
 remove_files $FOLDER_TMP ".git"
 # remove .DS_Store

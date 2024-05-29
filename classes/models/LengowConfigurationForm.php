@@ -19,9 +19,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-/**
+/*
  * Lengow Configuration Form Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class LengowConfigurationForm
 {
     /* Configuration form type */
@@ -32,12 +36,12 @@ class LengowConfigurationForm
     public const TYPE_OPTIONS = 'options';
 
     /**
-     * @var array $fields checkbox keys
+     * @var array checkbox keys
      */
     public $fields;
 
     /**
-     * @var LengowTranslation $locale Lengow translation instance
+     * @var LengowTranslation Lengow translation instance
      */
     protected $locale;
 
@@ -55,7 +59,7 @@ class LengowConfigurationForm
     /**
      * Construct Lengow setting input for shop
      *
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      * @param array $displayKeys names of Lengow setting
      *
      * @return string
@@ -70,6 +74,7 @@ class LengowConfigurationForm
                 $html .= $this->input($key, $this->fields[$key], $idShop);
             }
         }
+
         return $html;
     }
 
@@ -92,6 +97,7 @@ class LengowConfigurationForm
                 }
             }
         }
+
         return $html;
     }
 
@@ -100,7 +106,7 @@ class LengowConfigurationForm
      *
      * @param string $key name of Lengow setting
      * @param array $input all Lengow settings
-     * @param integer|null $idShop PrestaShop shop id
+     * @param int|null $idShop PrestaShop shop id
      *
      * @return string
      */
@@ -179,7 +185,7 @@ class LengowConfigurationForm
                 $html .= '</div>';
                 break;
             case self::TYPE_OPTIONS:
-                $html .= '<label class="control-label">' . $label .'</label>
+                $html .= '<label class="control-label">' . $label . '</label>
                                   <select class="form-control lengow_select" name="' . $name . '">
                                     <option value="prod" ' . ($value == 'prod' ? 'selected' : '') . '>Prod</option>
                                     <option value="pre-prod" ' . ($value == 'pre-prod' ? 'selected' : '') . '>Preprod</option>
@@ -192,6 +198,7 @@ class LengowConfigurationForm
 
                 break;
         }
+
         return $html;
     }
 
@@ -206,7 +213,7 @@ class LengowConfigurationForm
             $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
             $shopCollection = Db::getInstance()->ExecuteS($sql);
         } catch (PrestaShopDatabaseException $e) {
-            $shopCollection = array(array('id_shop' => 1));
+            $shopCollection = [['id_shop' => 1]];
         }
         foreach ($_REQUEST as $key => $value) {
             if (isset($this->fields[$key])) {
@@ -261,7 +268,7 @@ class LengowConfigurationForm
             if (!in_array($key, $checkboxKeys, true)) {
                 continue;
             }
-            if ((!isset($value[LengowConfiguration::PARAM_SHOP]) || !$value[LengowConfiguration::PARAM_SHOP])) {
+            if (!isset($value[LengowConfiguration::PARAM_SHOP]) || !$value[LengowConfiguration::PARAM_SHOP]) {
                 if (!isset($_REQUEST[$key])) {
                     $this->checkAndLog($key, 0);
                     LengowConfiguration::updateGlobalValue($key, 0);
@@ -275,7 +282,7 @@ class LengowConfigurationForm
      *
      * @param string $key name of Lengow setting
      * @param mixed $value setting value
-     * @param integer $idShop PrestaShop shop id
+     * @param int $idShop PrestaShop shop id
      */
     public function checkAndLog($key, $value, $idShop = null)
     {
@@ -296,20 +303,20 @@ class LengowConfigurationForm
                 if (isset($setting[LengowConfiguration::PARAM_SECRET])
                     && $setting[LengowConfiguration::PARAM_SECRET]
                 ) {
-                    $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
-                    $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
+                    $value = preg_replace('/[a-zA-Z0-9]/', '*', $value);
+                    $oldValue = preg_replace('/[a-zA-Z0-9]/', '*', $oldValue);
                 }
                 if ($idShop !== null) {
                     LengowMain::log(
                         LengowLog::CODE_SETTING,
                         LengowMain::setLogMessage(
                             'log.setting.setting_change_for_shop',
-                            array(
+                            [
                                 'key' => LengowConfiguration::$genericParamKeys[$key],
                                 'old_value' => $oldValue,
                                 'value' => $value,
                                 'shop_id' => $idShop,
-                            )
+                            ]
                         )
                     );
                 } else {
@@ -317,11 +324,11 @@ class LengowConfigurationForm
                         LengowLog::CODE_SETTING,
                         LengowMain::setLogMessage(
                             'log.setting.setting_change',
-                            array(
+                            [
                                 'key' => LengowConfiguration::$genericParamKeys[$key],
                                 'old_value' => $oldValue,
                                 'value' => $value,
-                            )
+                            ]
                         )
                     );
                 }

@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow File Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowFile
 {
     /**
@@ -58,15 +61,7 @@ class LengowFile
         $this->folderName = $folderName;
         $this->instance = self::getResource($this->getPath(), $mode);
         if (!is_resource($this->instance)) {
-            throw new LengowException(
-                LengowMain::setLogMessage(
-                    'log.export.error_unable_to_create_file',
-                    [
-                        'file_name' => $fileName,
-                        'folder_name' => $folderName,
-                    ]
-                )
-            );
+            throw new LengowException(LengowMain::setLogMessage('log.export.error_unable_to_create_file', ['file_name' => $fileName, 'folder_name' => $folderName]));
         }
     }
 
@@ -131,6 +126,7 @@ class LengowFile
             $base = LengowMain::getLengowBaseUrl();
             $this->link = $base . $this->folderName . '/' . $this->fileName;
         }
+
         return $this->link;
     }
 
@@ -142,6 +138,7 @@ class LengowFile
     public function getPath()
     {
         $sep = DIRECTORY_SEPARATOR;
+
         return LengowMain::getLengowFolder() . $sep . $this->folderName . $sep . $this->fileName;
     }
 
@@ -153,6 +150,7 @@ class LengowFile
     public function getFolderPath()
     {
         $sep = DIRECTORY_SEPARATOR;
+
         return LengowMain::getLengowFolder() . $sep . $this->folderName;
     }
 
@@ -213,6 +211,7 @@ class LengowFile
                 continue;
             }
         }
+
         return $files;
     }
 }

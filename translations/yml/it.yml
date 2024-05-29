@@ -188,6 +188,7 @@ it:
       type_business: "Business"
       return_tracking_number_label: "Numero di ritorno"
       return_carrier_label: "Vettore di ritorno"
+      not_provided: "Non fornito dal marketplace"
     table:
       action_lengow: "Azione"
       order_lengow_state: "Stato"

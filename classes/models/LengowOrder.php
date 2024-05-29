@@ -18,9 +18,12 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Order Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowOrder extends Order
 {
     /**
@@ -317,8 +320,10 @@ class LengowOrder extends Order
             $this->lengowMessage = $result[self::FIELD_MESSAGE];
             $this->lengowDateAdd = $result[self::FIELD_CREATED_AT];
             $this->lengowExtra = $result[self::FIELD_EXTRA];
+
             return true;
         }
+
         return false;
     }
 
@@ -345,8 +350,8 @@ class LengowOrder extends Order
         );
         $query = 'SELECT `id_order`,`id_flux`
             FROM `' . _DB_PREFIX_ . 'lengow_orders`
-            WHERE `'.self::FIELD_MARKETPLACE_SKU.'` = \'' . pSQL($marketplaceSku) . '\'
-            AND `'.self::FIELD_MARKETPLACE_NAME.'` IN (' . $in . ')
+            WHERE `' . self::FIELD_MARKETPLACE_SKU . '` = \'' . pSQL($marketplaceSku) . '\'
+            AND `' . self::FIELD_MARKETPLACE_NAME . '` IN (' . $in . ')
             AND `order_process_state` != 0';
         try {
             $results = Db::getInstance()->executeS($query);
@@ -366,20 +371,19 @@ class LengowOrder extends Order
      * @param string $marketplaceSku Lengow order id
      * @param string $marketplace marketplace name
      *
-     *
      * @return int|false
      */
     public static function getIdFromLengowOrders($marketplaceSku, $marketplace)
     {
         $query = 'SELECT `id` FROM `' . _DB_PREFIX_ . 'lengow_orders`
-            WHERE `'.self::FIELD_MARKETPLACE_SKU.'` = "'. pSQL($marketplaceSku) .'"
-            AND `'.self::FIELD_MARKETPLACE_NAME.'` = "' . pSQL($marketplace).'"' ;
-
+            WHERE `' . self::FIELD_MARKETPLACE_SKU . '` = "' . pSQL($marketplaceSku) . '"
+            AND `' . self::FIELD_MARKETPLACE_NAME . '` = "' . pSQL($marketplace) . '"';
 
         $result = Db::getInstance()->getRow($query);
         if ($result) {
             return (int) $result[self::FIELD_ID];
         }
+
         return false;
     }
 
@@ -421,6 +425,7 @@ class LengowOrder extends Order
         if ($result) {
             return $result[self::FIELD_ID];
         }
+
         return false;
     }
 
@@ -484,9 +489,9 @@ class LengowOrder extends Order
      * @param string $orderStateLengow marketplace state
      * @param mixed $packageData package data
      *
-     * @throws Exception
-     *
      * @return string|false
+     *
+     * @throws Exception
      */
     public function updateState($orderStateLengow, $packageData)
     {
@@ -530,6 +535,7 @@ class LengowOrder extends Order
                     $this->validateFields();
                     $this->update();
                 }
+
                 return Tools::ucfirst(self::STATE_SHIPPED);
             }
             if (($orderStateLengow === self::STATE_CANCELED || $orderStateLengow === self::STATE_REFUSED)
@@ -544,9 +550,11 @@ class LengowOrder extends Order
                 $history->changeIdOrderState(LengowMain::getOrderState(self::STATE_CANCELED), $this, true);
                 $history->validateFields();
                 $history->add();
+
                 return Tools::ucfirst(self::STATE_CANCELED);
             }
         }
+
         return false;
     }
 
@@ -574,12 +582,14 @@ class LengowOrder extends Order
             $orderCreated = $result[LengowImport::ORDERS_CREATED][0];
             if ($orderCreated[LengowImportOrder::MERCHANT_ORDER_ID] !== (int) $this->id) {
                 $this->setStateToError();
+
                 return (int) $orderCreated[LengowImportOrder::MERCHANT_ORDER_ID];
             }
         }
         // in the event of an error, all new order errors are finished and the order is reset
         LengowOrderError::finishOrderLogs($this->lengowId);
         self::updateOrderLengow($this->lengowId, [self::FIELD_IS_REIMPORTED => 0]);
+
         return false;
     }
 
@@ -593,6 +603,7 @@ class LengowOrder extends Order
         $query = 'UPDATE ' . _DB_PREFIX_ . 'lengow_orders
             SET `is_reimported` = 1
             WHERE `id_order`= \'' . (int) $this->id . '\'';
+
         return DB::getInstance()->execute($query);
     }
 
@@ -638,7 +649,6 @@ class LengowOrder extends Order
                     false
                 );
                 if (!$activeAction
-                    && empty($orderLogs)
                     && !array_key_exists($result[self::FIELD_ORDER_ID], $unsentOrders)
                 ) {
                     $action = (int) $result['id_order_state'] === LengowMain::getOrderState(self::STATE_CANCELED)
@@ -651,6 +661,7 @@ class LengowOrder extends Order
                 return $unsentOrders;
             }
         }
+
         return false;
     }
 
@@ -703,12 +714,12 @@ class LengowOrder extends Order
                     json_encode($body),
                     $logOutput
                 );
+
                 return !($result === null
                     || (isset($result['detail']) && $result['detail'] === 'Pas trouvé.')
                     || isset($result['error']));
-
             } catch (Exception $e) {
-                $tries --;
+                --$tries;
                 if ($tries === 0) {
                     $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
                     $error = LengowMain::setLogMessage(
@@ -722,7 +733,6 @@ class LengowOrder extends Order
                 }
                 usleep(250000);
             }
-
         } while ($tries > 0);
 
         return false;
@@ -769,6 +779,7 @@ class LengowOrder extends Order
                 ]
             );
             LengowMain::log('Connector', $error, $logOutput);
+
             return false;
         }
         if ($results === null) {
@@ -788,6 +799,7 @@ class LengowOrder extends Order
                 $this->loadLengowFields();
             }
         }
+
         return true;
     }
 
@@ -801,6 +813,7 @@ class LengowOrder extends Order
         try {
             $idLang = Language::getIdByIso(LengowTranslation::ISO_CODE_EN) ?: Configuration::get('PS_LANG_DEFAULT');
             $orderState = new OrderState($this->getCurrentState(), (int) $idLang);
+
             return $orderState->name !== '' ? $orderState->name : null;
         } catch (Exception $e) {
             return null;
@@ -822,6 +835,7 @@ class LengowOrder extends Order
         );
         $idCarrier = $idActiveCarrier ?: (int) $this->id_carrier;
         $carrier = new Carrier($idCarrier);
+
         return $carrier->name !== '' ? $carrier->name : null;
     }
 
@@ -841,6 +855,7 @@ class LengowOrder extends Order
         if ($trackingNumber === '') {
             $trackingNumber = $this->setWsShippingNumber($trackingNumber);
         }
+
         return $trackingNumber !== '' ? $trackingNumber : null;
     }
 
@@ -865,6 +880,7 @@ class LengowOrder extends Order
         $idCarrier = $idActiveCarrier ?: (int) $this->id_carrier;
         $carrier = new Carrier($idCarrier);
         $trackingUrl = str_replace('@', $trackingNumber, $carrier->url);
+
         return $trackingUrl !== '' ? $trackingUrl : null;
     }
 
@@ -912,6 +928,7 @@ class LengowOrder extends Order
     public static function find($idOrderLengow)
     {
         $sql = 'SELECT * FROM `' . _DB_PREFIX_ . 'lengow_orders` WHERE id = ' . (int) $idOrderLengow;
+
         return Db::getInstance()->getRow($sql);
     }
 
@@ -927,6 +944,7 @@ class LengowOrder extends Order
         $sql = 'SELECT id_order FROM `' . _DB_PREFIX_ . 'lengow_orders` WHERE id = ' . (int) $idOrderLengow;
         try {
             $result = Db::getInstance()->ExecuteS($sql);
+
             return !empty($result);
         } catch (PrestaShopDatabaseException $e) {
             return false;
@@ -956,8 +974,10 @@ class LengowOrder extends Order
                     LengowImport::PARAM_SHOP_ID => $lengowOrder[self::FIELD_SHOP_ID],
                 ]
             );
+
             return $import->exec();
         }
+
         return false;
     }
 
@@ -972,14 +992,15 @@ class LengowOrder extends Order
         if ($orderActions) {
             return false;
         }
-        if ($this->lengowProcessState !== self::PROCESS_STATE_FINISH &&
-            (
+        if ($this->lengowProcessState !== self::PROCESS_STATE_FINISH
+            && (
                 (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_SHIPPED)
                 || (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_CANCELED)
             )
         ) {
             return true;
         }
+
         return false;
     }
 
@@ -1002,19 +1023,26 @@ class LengowOrder extends Order
                         ? LengowAction::TYPE_CANCEL
                         : LengowAction::TYPE_SHIP;
                 }
+
                 return $order->callAction($action);
             }
+
             return false;
         }
+
         return false;
     }
 
+    /**
+     * will search the marketplace linked to the order
+     *
+     * @return LengowMarketplace|null
+     */
     public function getMarketPlace()
     {
-        return  LengowMain::getMarketplaceSingleton(
+        return LengowMain::getMarketplaceSingleton(
             $this->lengowMarketplaceName
         );
-
     }
 
     /**
@@ -1056,6 +1084,9 @@ class LengowOrder extends Order
                     $this->checkAndChangeMarketplaceName();
                 }
                 $marketplace = LengowMain::getMarketplaceSingleton($this->lengowMarketplaceName);
+                if (is_null($marketplace)) {
+                    throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.marketplace_not_present', ['marketplace_name' => $this->lengowMarketplaceName]));
+                }
                 if ($marketplace->containOrderLine($action)) {
                     $orderLineCollection = LengowOrderLine::findOrderLineIds($this->id);
                     // compatibility V2 and security
@@ -1063,9 +1094,7 @@ class LengowOrder extends Order
                         $orderLineCollection = $this->getOrderLineByApi();
                     }
                     if (!$orderLineCollection) {
-                        throw new LengowException(
-                            LengowMain::setLogMessage('lengow_log.exception.order_line_required')
-                        );
+                        throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.order_line_required'));
                     }
                     $results = [];
                     foreach ($orderLineCollection as $row) {
@@ -1120,6 +1149,7 @@ class LengowOrder extends Order
             );
         }
         LengowMain::log('API-OrderAction', $message, false, $this->lengowMarketplaceSku);
+
         return $success;
     }
 
@@ -1156,6 +1186,7 @@ class LengowOrder extends Order
             $orderLines[(int) $package->delivery->id] = $productLines;
         }
         $return = $orderLines[$this->lengowDeliveryAddressId];
+
         return !empty($return) ? $return : false;
     }
 
@@ -1185,19 +1216,21 @@ class LengowOrder extends Order
 
         if (isset($paymentInfo['payment_terms'])) {
             $fiscalNumber = $paymentInfo['payment_terms']['fiscalnb'] ?? '';
-            $vatNumber   = $paymentInfo['payment_terms']['vat_number'] ?? '';
+            $vatNumber = $paymentInfo['payment_terms']['vat_number'] ?? '';
             $siretNumber = $paymentInfo['payment_terms']['siret_number'] ?? '';
 
             if (!empty($fiscalNumber)
                     || !empty($vatNumber)
                     || !empty($siretNumber)) {
                 $this->lengowOrderTypes[self::TYPE_BUSINESS] = self::FIELD_B2B_VALUE;
+
                 return true;
             }
         }
         if (!empty($billingInfo['vat_number'])
             && !empty($billingInfo['company'])) {
             $this->lengowOrderTypes[self::TYPE_BUSINESS] = self::FIELD_B2B_VALUE;
+
             return true;
         }
 
@@ -1223,6 +1256,7 @@ class LengowOrder extends Order
     {
         $sql = 'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_orders WHERE id_order IS NOT NULL';
         $row = Db::getInstance()->getRow($sql);
+
         return (int) $row['total'];
     }
 
@@ -1239,6 +1273,7 @@ class LengowOrder extends Order
             WHERE lli.is_finished = 0
         ';
         $row = Db::getInstance()->getRow($sql);
+
         return (int) $row['total'];
     }
 
@@ -1251,7 +1286,7 @@ class LengowOrder extends Order
     {
         $sql = 'SELECT COUNT(*) as total FROM ' . _DB_PREFIX_ . 'lengow_orders WHERE order_process_state = 1';
         $row = Db::getInstance()->getRow($sql);
+
         return (int) $row['total'];
     }
 }
-

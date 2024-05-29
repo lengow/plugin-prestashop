@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Sync Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowSync
 {
     /**
@@ -135,6 +138,7 @@ class LengowSync
                 'enabled' => LengowConfiguration::shopIsActive($idShop),
             ];
         }
+
         return $data;
     }
 
@@ -187,6 +191,7 @@ class LengowSync
             LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_SETTING, time());
         }
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_CATALOG, time());
+
         return $success;
     }
 
@@ -217,6 +222,7 @@ class LengowSync
         LengowCarrier::cleanCarrierMarketplaceMatching();
         LengowMethod::cleanMethodMarketplaceMatching();
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE_LIST, time());
+
         return true;
     }
 
@@ -246,6 +252,7 @@ class LengowSync
                 'options' => LengowConfiguration::getAllValues($idShop),
             ];
         }
+
         return $data;
     }
 
@@ -271,6 +278,7 @@ class LengowSync
         $options = json_encode(self::getOptionData());
         LengowConnector::queryApi(LengowConnector::PUT, LengowConnector::API_CMS, [], $options, $logOutput);
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_OPTION_CMS, time());
+
         return true;
     }
 
@@ -299,13 +307,14 @@ class LengowSync
                 'type' => $result->isFreeTrial ? 'free_trial' : '',
                 'day' => (int) $result->leftDaysBeforeExpired < 0 ? 0 : (int) $result->leftDaysBeforeExpired,
                 'expired' => (bool) $result->isExpired,
-                'legacy' => $result->accountVersion === 'v2'
+                'legacy' => $result->accountVersion === 'v2',
             ];
             LengowConfiguration::updateGlobalValue(
                 LengowConfiguration::ACCOUNT_STATUS_DATA,
                 json_encode($status)
             );
             LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_ACCOUNT_STATUS_DATA, time());
+
             return $status;
         }
         if (LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_STATUS_DATA)) {
@@ -314,6 +323,7 @@ class LengowSync
                 true
             );
         }
+
         return false;
     }
 
@@ -369,12 +379,13 @@ class LengowSync
                             'decoded_message' => LengowMain::decodeLogMessage(
                                 $e->getMessage(),
                                 LengowTranslation::DEFAULT_ISO_CODE
-                            )
+                            ),
                         ]
                     ),
                     $logOutput
                 );
             }
+
             return $result;
         }
         if (file_exists($filePath)) {
@@ -383,6 +394,7 @@ class LengowSync
                 return json_decode($marketplacesData);
             }
         }
+
         return false;
     }
 
@@ -451,11 +463,13 @@ class LengowSync
                     json_encode($pluginData)
                 );
                 LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_DATA, time());
+
                 return $pluginData;
             }
         } elseif (LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA)) {
             return json_decode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
         }
+
         return false;
     }
 
@@ -491,6 +505,7 @@ class LengowSync
             }
             $pluginLinks[$linkType] = $link;
         }
+
         return $pluginLinks;
     }
 }

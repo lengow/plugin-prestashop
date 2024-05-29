@@ -18,17 +18,20 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Backup Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowBackup extends Backup
 {
     /**
      * Creates a new backup file
      *
-     * @throws Exception
-     *
      * @return bool
+     *
+     * @throws Exception
      */
     public function add()
     {
@@ -44,7 +47,7 @@ class LengowBackup extends Backup
             $ignoreInsertTable = [];
         }
         // generate some random number, to make it extra hard to guess backup file names
-        $rand = dechex(mt_rand(0, min(0xffffffff, mt_getrandmax())));
+        $rand = dechex(mt_rand(0, min(0xFFFFFFFF, mt_getrandmax())));
         $date = time();
         $backupFile = $this->getRealBackupPath() . $date . '-lengowbackup' . $rand . '.sql';
         // figure out what compression is available and open the file
@@ -59,6 +62,7 @@ class LengowBackup extends Backup
         }
         if ($fp === false) {
             echo Tools::displayError('Unable to create backup file') . ' "' . addslashes($backupFile) . '"';
+
             return false;
         }
         $this->id = realpath($backupFile);
@@ -83,6 +87,7 @@ class LengowBackup extends Backup
                 $this->delete();
                 echo Tools::displayError('An error occurred while backing up. Unable to obtain the schema of')
                     . ' "' . $table;
+
                 return false;
             }
             fwrite($fp, '/* Scheme for table ' . $schema[0]['Table'] . " */\n");
@@ -132,14 +137,16 @@ class LengowBackup extends Backup
                     }
                 }
             }
-            $found++;
+            ++$found;
         }
         fclose($fp);
         if ($found === 0) {
             $this->delete();
             echo Tools::displayError('No valid tables were found to backup.');
+
             return false;
         }
+
         return true;
     }
 }

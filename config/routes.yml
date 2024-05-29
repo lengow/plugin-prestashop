@@ -1,7 +1,8 @@
 admin_orders_view:
-  path: /orders/{orderId}/view
+  path: /sell/orders/{orderId}/view
   methods: [ GET, POST ]
   defaults:
+    _disable_module_prefix: true  
     _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::viewAction'
     _legacy_controller: AdminOrders
     _legacy_link: AdminOrders
@@ -13,9 +14,10 @@ admin_orders_view:
     orderId: \d+
 
 admin_orders_update_shipping:
-  path: /{orderId}/shipping
+  path: /sell/orders/{orderId}/shipping
   methods: [ POST ]
   defaults:
+    _disable_module_prefix: true  
     _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::updateShippingAction'
     _legacy_controller: AdminOrders
   requirements:

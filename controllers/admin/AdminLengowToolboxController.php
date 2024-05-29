@@ -18,9 +18,12 @@
  * @copyright 2022 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Admin Lengow toolbox Controller Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class AdminLengowToolboxController extends ModuleAdminController
 {
     /**
