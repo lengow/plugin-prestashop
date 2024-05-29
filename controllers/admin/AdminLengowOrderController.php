@@ -18,9 +18,12 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Admin Lengow order Controller Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class AdminLengowOrderController extends ModuleAdminController
 {
     /**

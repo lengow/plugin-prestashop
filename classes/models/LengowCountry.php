@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Country Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowCountry
 {
     /**
@@ -42,6 +45,7 @@ class LengowCountry
             INNER JOIN ' . _DB_PREFIX_ . 'country_lang cl ON (cl.id_country = c.id_country)
             WHERE iso_code = \'' . pSQL($isoCode) . '\' ' . $where;
         $result = Db::getInstance()->getRow($sql);
+
         return $result['name'];
     }
 

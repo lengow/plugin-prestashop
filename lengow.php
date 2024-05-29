@@ -20,6 +20,9 @@
  */
 require_once _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'loader.php';
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 /**
  * Lengow
  */
@@ -42,7 +45,7 @@ class Lengow extends Module
     {
         $this->name = 'lengow';
         $this->tab = 'export';
-        $this->version = '3.5.1';
+        $this->version = '3.5.2';
         $this->author = 'Lengow';
         $this->module_key = '92f99f52f2bc04ed999f02e7038f031c';
         $this->ps_versions_compliancy = [

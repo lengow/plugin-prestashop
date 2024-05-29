@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Feed Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowFeed
 {
     /* Feed formats */
@@ -129,12 +132,7 @@ class LengowFeed
         $this->exportFolder = LengowMain::FOLDER_EXPORT . $sep . $this->shopFolder;
         $folderPath = LengowMain::getLengowFolder() . $sep . $this->exportFolder;
         if (!file_exists($folderPath) && !mkdir($folderPath) && !is_dir($folderPath)) {
-            throw new LengowException(
-                LengowMain::setLogMessage(
-                    'log.export.error_unable_to_create_folder',
-                    ['folder_path' => $folderPath]
-                )
-            );
+            throw new LengowException(LengowMain::setLogMessage('log.export.error_unable_to_create_folder', ['folder_path' => $folderPath]));
         }
         $fileName = 'flux-' . Context::getContext()->language->iso_code . '-' . time() . '.' . $this->format;
         $this->file = new LengowFile($this->exportFolder, $fileName);
@@ -189,6 +187,7 @@ class LengowFeed
                     $header .= self::PROTECTION . self::formatFields($field, self::FORMAT_CSV, $this->legacy)
                         . self::PROTECTION . self::CSV_SEPARATOR;
                 }
+
                 return rtrim($header, self::CSV_SEPARATOR) . self::EOL;
             case self::FORMAT_XML:
                 return '<?xml version="1.0" encoding="UTF-8"?>' . self::EOL
@@ -218,6 +217,7 @@ class LengowFeed
                 foreach ($data as $value) {
                     $content .= self::PROTECTION . $value . self::PROTECTION . self::CSV_SEPARATOR;
                 }
+
                 return rtrim($content, self::CSV_SEPARATOR) . self::EOL;
             case self::FORMAT_XML:
                 $content = '<product>';
@@ -226,6 +226,7 @@ class LengowFeed
                     $content .= '<' . $field . '><![CDATA[' . $value . ']]></' . $field . '>' . self::EOL;
                 }
                 $content .= '</product>' . self::EOL;
+
                 return $content;
             case self::FORMAT_JSON:
                 $content = $isFirst ? '' : ',';
@@ -235,10 +236,11 @@ class LengowFeed
                     $jsonArray[$field] = $value;
                 }
                 $content .= json_encode($jsonArray);
+
                 return $content;
             case self::FORMAT_YAML:
                 if ($maxCharacter % 2 === 1) {
-                    $maxCharacter++;
+                    ++$maxCharacter;
                 } else {
                     $maxCharacter += 2;
                 }
@@ -248,6 +250,7 @@ class LengowFeed
                     $content .= '    ' . self::PROTECTION . $field . self::PROTECTION . ':';
                     $content .= $this->indentYaml($field, $maxCharacter) . $value . self::EOL;
                 }
+
                 return $content;
         }
     }
@@ -287,9 +290,9 @@ class LengowFeed
     /**
      * Finalize export generation
      *
-     * @throws LengowException
-     *
      * @return bool
+     *
+     * @throws LengowException
      */
     public function end()
     {
@@ -309,8 +312,10 @@ class LengowFeed
                 $rename = $this->file->rename($this->file->getFolderPath() . $sep . $oldFileName);
                 $this->file->fileName = $oldFileName;
             }
+
             return $rename;
         }
+
         return true;
     }
 
@@ -380,6 +385,7 @@ class LengowFeed
                         58
                     );
                 }
+
                 return Tools::substr(
                     Tools::strtolower(
                         preg_replace(
@@ -414,9 +420,10 @@ class LengowFeed
     {
         $strlen = Tools::strlen($name);
         $spaces = '';
-        for ($i = $strlen; $i < $maxSize; $i++) {
+        for ($i = $strlen; $i < $maxSize; ++$i) {
             $spaces .= ' ';
         }
+
         return $spaces;
     }
 }

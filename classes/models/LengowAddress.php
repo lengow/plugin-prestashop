@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Address Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowAddress extends Address
 {
     /**
@@ -341,6 +344,7 @@ class LengowAddress extends Address
         if ($row && $row['id_address'] > 0) {
             return new LengowAddress($row['id_address']);
         }
+
         return false;
     }
 
@@ -420,6 +424,7 @@ class LengowAddress extends Address
         foreach (self::$addressApiNodes as $node) {
             $temp[$node] = (string) $api->{$node};
         }
+
         return $temp;
     }
 
@@ -431,6 +436,60 @@ class LengowAddress extends Address
     public static function getFieldDefinition()
     {
         return self::$definition['fields'];
+    }
+
+    /**
+     * Hydrates address data
+     *
+     * @param object $orderData
+     * @param object $address
+     *
+     * @return object
+     */
+    public static function hydrateAddress($orderData, $address)
+    {
+        $locale = new LengowTranslation();
+        $notProvided = $locale->t('order.screen.not_provided');
+        $notPhone = '0000000000';
+        $status = (string) $orderData->lengow_status;
+        $isDeliveredByMp = false;
+        if ($status !== LengowOrder::STATE_SHIPPED) {
+            return $address;
+        }
+
+        $types = $orderData->order_types;
+
+        foreach ($types as $orderType) {
+            if ($orderType->type === LengowOrder::TYPE_DELIVERED_BY_MARKETPLACE) {
+                $isDeliveredByMp = true;
+            }
+        }
+
+        if (!$isDeliveredByMp) {
+            return $address;
+        }
+
+        if (is_null($address->first_name)
+                && is_null($address->last_name)
+                && is_null($address->full_name)) {
+            $address->first_name = $notProvided;
+            $address->last_name = $notProvided;
+            $address->full_name = $notProvided;
+        }
+
+        if (is_null($address->first_line)
+                && is_null($address->full_address)) {
+            $address->first_line = $notProvided;
+            $address->full_address = $notProvided;
+        }
+
+        if (is_null($address->phone_home)
+                && is_null($address->phone_mobile)) {
+            $address->phone_home = $notPhone;
+            $address->phone_mobile = $notPhone;
+        }
+
+        return $address;
     }
 
     /**
@@ -463,15 +522,16 @@ class LengowAddress extends Address
         $this->vat_number = $data['vat_number'];
         $this->fullAddress = $data['address_full'];
         $this->alias = self::hash($this->fullAddress);
+
         return $this;
     }
 
     /**
      * Validate Lengow
      *
-     * @throws Exception|LengowException invalid object
-     *
      * @return bool
+     *
+     * @throws Exception|LengowException invalid object
      */
     public function validateLengow()
     {
@@ -495,6 +555,7 @@ class LengowAddress extends Address
             throw new LengowException($return);
         }
         $this->add();
+
         return true;
     }
 
@@ -652,6 +713,7 @@ class LengowAddress extends Address
         } elseif (!empty($stateRegion)) {
             $idState = $this->searchIdStateByStateRegion($idCountry, $stateRegion);
         }
+
         return $idState;
     }
 
@@ -689,6 +751,7 @@ class LengowAddress extends Address
         if ($isoCode) {
             $idState = $this->getIdStateByIsoAndCountry($isoCode, $idCountry);
         }
+
         return $idState;
     }
 
@@ -712,6 +775,7 @@ class LengowAddress extends Address
                 }
             }
         }
+
         return false;
     }
 
@@ -730,6 +794,7 @@ class LengowAddress extends Address
             FROM `' . _DB_PREFIX_ . 'state`
             WHERE `iso_code` = \'' . pSQL($isoCode) . '\' AND `id_country` = ' . $idCountry
         );
+
         return (int) $idState;
     }
 
@@ -771,6 +836,7 @@ class LengowAddress extends Address
                 }
             }
         }
+
         return $idState;
     }
 
@@ -786,6 +852,7 @@ class LengowAddress extends Address
         $string = Tools::strtolower(
             str_replace([' ', '-', '_', '.'], '', trim((string) $string))
         );
+
         return LengowMain::replaceAccentedChars(html_entity_decode($string));
     }
 }

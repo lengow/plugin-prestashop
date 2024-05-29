@@ -19,9 +19,12 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
 
-/**
+/*
  * Lengow Controller Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowController
 {
     /**
@@ -54,7 +57,6 @@ class LengowController
      */
     public function __construct()
     {
-
         $this->module = Module::getInstanceByName('lengow');
         $this->context = Context::getContext();
         $this->lengowLink = new LengowLink();
@@ -63,8 +65,6 @@ class LengowController
         $this->context->smarty->assign('locale', $this->locale);
         $lengowPathUri = $this->module->getPathUri();
         $this->context->smarty->assign('lengowPathUri', $lengowPathUri);
-
-
     }
 
     /**
@@ -100,7 +100,7 @@ class LengowController
     /**
      * Checks if the plugin upgrade modal should be displayed or not
      *
-     * @return boolean
+     * @return bool
      */
     private function showPluginUpgradeModal()
     {
@@ -114,6 +114,7 @@ class LengowController
             return false;
         }
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL, time());
+
         return true;
     }
 
@@ -122,7 +123,6 @@ class LengowController
      */
     protected function prepareDisplay()
     {
-
         $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
         $multiShop = Shop::isFeatureActive();
         $debugMode = LengowConfiguration::debugModeIsActive();

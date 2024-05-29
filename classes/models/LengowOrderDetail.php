@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Order Detail Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowOrderDetail extends OrderDetail
 {
     /**
@@ -36,13 +39,13 @@ class LengowOrderDetail extends OrderDetail
         $sql = 'SELECT id_order_detail FROM `' . _DB_PREFIX_ . 'order_detail`
             WHERE product_id = ' . (int) $idProduct . ' AND id_order = ' . $idOrder;
         $row = Db::getInstance()->getRow($sql);
+
         return (int) $row['id_order_detail'];
     }
 
     /**
-     *
      * @param string $returnTrackingNumber
-     * @param int    $orderId
+     * @param int $orderId
      */
     public static function updateOrderReturnTrackingNumber($returnTrackingNumber, $orderId)
     {
@@ -52,20 +55,18 @@ class LengowOrderDetail extends OrderDetail
             $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
             $orderCarrier->return_tracking_number = $returnTrackingNumber;
             $orderCarrier->update();
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             LengowOrderError::addOrderLog(
                 $orderId,
-                '[PrestaShop error]: '.$e->getMessage(),
+                '[PrestaShop error]: ' . $e->getMessage(),
                 LengowOrderError::TYPE_ERROR_SEND
             );
         }
     }
 
     /**
-     *
      * @param string $returnTrackingNumber
-     * @param int    $orderId
+     * @param int $orderId
      */
     public static function updateOrderReturnCarrier($returnCarrier, $orderId)
     {
@@ -75,19 +76,18 @@ class LengowOrderDetail extends OrderDetail
             $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
             $orderCarrier->return_carrier = $returnCarrier;
             $orderCarrier->update();
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             LengowOrderError::addOrderLog(
                 $orderId,
-                '[PrestaShop error]: '.$e->getMessage(),
+                '[PrestaShop error]: ' . $e->getMessage(),
                 LengowOrderError::TYPE_ERROR_SEND
             );
         }
     }
 
     /**
-     *
      * @param int $orderId
+     *
      * @return string
      */
     public static function getOrderReturnTrackingNumber($orderId)
@@ -97,11 +97,10 @@ class LengowOrderDetail extends OrderDetail
             $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
 
             return (string) $orderCarrier->return_tracking_number;
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             LengowOrderError::addOrderLog(
                 $orderId,
-                '[PrestaShop error]: '.$e->getMessage(),
+                '[PrestaShop error]: ' . $e->getMessage(),
                 LengowOrderError::TYPE_ERROR_SEND
             );
         }
@@ -110,8 +109,8 @@ class LengowOrderDetail extends OrderDetail
     }
 
     /**
-     *
      * @param int $orderId
+     *
      * @return string
      */
     public static function getOrderReturnCarrier($orderId)
@@ -121,11 +120,10 @@ class LengowOrderDetail extends OrderDetail
             $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
 
             return (string) $orderCarrier->return_carrier;
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             LengowOrderError::addOrderLog(
                 $orderId,
-                '[PrestaShop error]: '.$e->getMessage(),
+                '[PrestaShop error]: ' . $e->getMessage(),
                 LengowOrderError::TYPE_ERROR_SEND
             );
         }
@@ -133,26 +131,23 @@ class LengowOrderDetail extends OrderDetail
         return '';
     }
 
-     /**
-     *
+    /**
      * @param int $orderId
+     *
      * @return string
      */
     public static function getOrderReturnCarrierName($orderId)
     {
-
         try {
-
             $order = new Order($orderId);
             $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
             $carrier = new LengowCarrier($orderCarrier->return_carrier);
 
             return (string) $carrier->name;
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             LengowOrderError::addOrderLog(
                 $orderId,
-                '[PrestaShop error]: '.$e->getMessage(),
+                '[PrestaShop error]: ' . $e->getMessage(),
                 LengowOrderError::TYPE_ERROR_SEND
             );
         }

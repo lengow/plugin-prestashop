@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Log Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowLog extends LengowFile
 {
     /* Log category codes */
@@ -104,6 +107,7 @@ class LengowLog extends LengowFile
                     . '&' . LengowToolbox::PARAM_DATE . '=' . urlencode($date),
             ];
         }
+
         return array_reverse($logs);
     }
 
@@ -115,6 +119,7 @@ class LengowLog extends LengowFile
     public function getFileName()
     {
         $sep = DIRECTORY_SEPARATOR;
+
         return _PS_MODULE_LENGOW_DIR_ . LengowMain::FOLDER_LOG . $sep . $this->fileName;
     }
 
@@ -135,7 +140,7 @@ class LengowLog extends LengowFile
      */
     public static function download($date = null)
     {
-        /** @var LengowFile[] $logFiles */
+        /* @var LengowFile[] $logFiles */
         if ($date && preg_match('/^(\d{4}-\d{2}-\d{2})$/', $date, $match)) {
             $logFiles = false;
             $file = 'logs-' . $date . '.txt';
@@ -168,5 +173,43 @@ class LengowLog extends LengowFile
         header('Content-Disposition: attachment; filename="' . $fileName . '"');
         echo $contents;
         exit;
+    }
+
+    /**
+     * Logs potential PHP fatal error on shutdown.
+     * Can be useful when the script crash silently
+     */
+    public static function registerShutdownFunction()
+    {
+        ini_set('log_errors_max_len', 10240);
+        register_shutdown_function(
+            function () {
+                $error = error_get_last();
+                if ($error) {
+                    $labels = [
+                        E_ERROR => 'E_ERROR',
+                        E_WARNING => 'E_WARNING',
+                        E_PARSE => 'E_PARSE',
+                        E_NOTICE => 'E_NOTICE',
+                        E_CORE_ERROR => 'E_CORE_ERROR',
+                        E_CORE_WARNING => 'E_CORE_WARNING',
+                        E_COMPILE_ERROR => 'E_COMPILE_ERROR',
+                        E_COMPILE_WARNING => 'E_COMPILE_WARNING',
+                        E_USER_ERROR => 'E_USER_ERROR',
+                        E_USER_WARNING => 'E_USER_WARNING',
+                        E_USER_NOTICE => 'E_USER_NOTICE',
+                        E_STRICT => 'E_STRICT',
+                        E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
+                        E_DEPRECATED => 'E_DEPRECATED',
+                        E_USER_DEPRECATED => 'E_USER_DEPRECATED',
+                        E_ALL => 'E_ALL',
+                    ];
+                    LengowMain::log(
+                        $labels[$error['type']] ?? 'PHP',
+                        $error['message'] . PHP_EOL . 'in ' . $error['file'] . ' on line ' . $error['line']
+                    );
+                }
+            }
+        );
     }
 }

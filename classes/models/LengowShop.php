@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Shop Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowShop extends Shop
 {
     /**
@@ -43,6 +46,7 @@ class LengowShop extends Shop
                 return new self($row['id_shop']);
             }
         }
+
         return false;
     }
 
@@ -65,6 +69,7 @@ class LengowShop extends Shop
                 $results = [];
             }
         }
+
         return $results;
     }
 
@@ -88,6 +93,7 @@ class LengowShop extends Shop
                 $result[] = new LengowShop((int) $shop['id_shop']);
             }
         }
+
         return $result;
     }
 }

@@ -18,10 +18,12 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-
 $autoloadPath = __DIR__ . '/vendor/autoload.php';
 if (file_exists($autoloadPath)) {
     require_once $autoloadPath;
+}
+if (!defined('_PS_VERSION_')) {
+    exit;
 }
 if (!defined('_PS_MODULE_LENGOW_DIR_')) {
     define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR);

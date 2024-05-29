@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Method Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowMethod
 {
     /**
@@ -73,6 +76,7 @@ class LengowMethod
                 }
             }
         }
+
         return false;
     }
 
@@ -104,6 +108,7 @@ class LengowMethod
         } catch (PrestaShopDatabaseException $e) {
             $results = false;
         }
+
         return is_array($results) ? $results : [];
     }
 
@@ -176,6 +181,7 @@ class LengowMethod
         } catch (PrestaShopDatabaseException $e) {
             $success = false;
         }
+
         return $success ? self::getIdMethodMarketplace($methodMarketplaceName) : false;
     }
 
@@ -191,6 +197,7 @@ class LengowMethod
     {
         $db = Db::getInstance();
         $success = $db->update(self::TABLE_METHOD_MARKETPLACE, $params, 'id = ' . (int) $idMethodMarketplace);
+
         return $success ? $idMethodMarketplace : false;
     }
 
@@ -227,6 +234,7 @@ class LengowMethod
         } else {
             $success = true;
         }
+
         return $success;
     }
 
@@ -304,6 +312,7 @@ class LengowMethod
                 AND id_marketplace = ' . (int) $idMarketplace . '
                 AND id_method_marketplace = ' . (int) $idMethodMarketplace
             );
+
             return !empty($result) ? (int) $result[0][self::FIELD_ID] : false;
         } catch (PrestaShopDatabaseException $e) {
             return false;
@@ -358,9 +367,10 @@ class LengowMethod
                 AND lmm.method_marketplace_name = "' . pSQL($methodMarketplaceName) . '"'
             );
             if ($result) {
-                return LengowCarrier::getIdActiveCarrierByIdCarrier($result["id_carrier"], (int) $idCountry);
+                return LengowCarrier::getIdActiveCarrierByIdCarrier($result['id_carrier'], (int) $idCountry);
             }
         }
+
         return false;
     }
 
@@ -389,6 +399,7 @@ class LengowMethod
                 $methods[(int) $result[self::FIELD_METHOD_MARKETPLACE_ID]] = (int) $result[self::FIELD_CARRIER_ID];
             }
         }
+
         return $methods;
     }
 
@@ -420,6 +431,7 @@ class LengowMethod
         } catch (PrestaShopDatabaseException $e) {
             $success = false;
         }
+
         return $success ? self::getIdMarketplaceMethodCountry($idCountry, $idMarketplace, $idMethodMarketplace) : false;
     }
 
@@ -439,6 +451,7 @@ class LengowMethod
             [self::FIELD_CARRIER_ID => $idCarrier],
             'id = ' . (int) $idMarketplaceMethodCountry
         );
+
         return $success ? $idMarketplaceMethodCountry : false;
     }
 

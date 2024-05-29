@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Catalog Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowCatalog
 {
     /**
@@ -38,8 +41,10 @@ class LengowCatalog
             if (!is_object($catalog) || $catalog->shop) {
                 continue;
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -82,6 +87,7 @@ class LengowCatalog
                 'value' => $catalog->id,
             ];
         }
+
         return $catalogList;
     }
 
@@ -136,6 +142,7 @@ class LengowCatalog
                 $catalogsLinked = true;
             }
         }
+
         return $catalogsLinked;
     }
 }

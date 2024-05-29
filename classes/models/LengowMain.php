@@ -18,9 +18,12 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Main Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowMain
 {
     /* Lengow plugin folders */
@@ -115,6 +118,7 @@ class LengowMain
     public static function compareVersion($version = '1.4')
     {
         $subVersion = Tools::substr(_PS_VERSION_, 0, 3);
+
         return version_compare($subVersion, $version);
     }
 
@@ -151,6 +155,7 @@ class LengowMain
             case 'shippedByMp':
                 return (int) LengowConfiguration::getGlobalValue(LengowConfiguration::SHIPPED_BY_MARKETPLACE_ORDER_ID);
         }
+
         return false;
     }
 
@@ -202,27 +207,29 @@ class LengowMain
         if ($timestampCron && $timestampManual) {
             if ((int) $timestampCron > (int) $timestampManual) {
                 return [
-                    'type'      => LengowImport::TYPE_CRON,
-                    'timestamp' => (int) $timestampCron
+                    'type' => LengowImport::TYPE_CRON,
+                    'timestamp' => (int) $timestampCron,
                 ];
             }
+
             return [
                 'type' => LengowImport::TYPE_MANUAL,
-                'timestamp' => (int) $timestampManual
+                'timestamp' => (int) $timestampManual,
             ];
         }
         if ($timestampCron && !$timestampManual) {
             return [
                 'type' => LengowImport::TYPE_CRON,
-                'timestamp' => (int) $timestampCron
+                'timestamp' => (int) $timestampCron,
             ];
         }
         if ($timestampManual && !$timestampCron) {
             return [
                 'type' => LengowImport::TYPE_MANUAL,
-                'timestamp' => (int) $timestampManual
+                'timestamp' => (int) $timestampManual,
             ];
         }
+
         return ['type' => 'none', 'timestamp' => 'none'];
     }
 
@@ -241,6 +248,7 @@ class LengowMain
         } else {
             $format = 'l d F Y @ H:i';
         }
+
         return date($format, $timestamp);
     }
 
@@ -249,19 +257,26 @@ class LengowMain
      *
      * @param string $name marketplace name
      *
-     * @throws LengowException
+     * @return LengowMarketplace|null
      *
-     * @return LengowMarketplace
+     * @throws LengowException
      */
     public static function getMarketplaceSingleton($name)
     {
         if (empty($name)) {
             return null;
         }
-        if (!isset(self::$registers[$name])) {
-            self::$registers[$name] = new LengowMarketplace($name);
+        try {
+            if (!isset(self::$registers[$name])) {
+                self::$registers[$name] = new LengowMarketplace($name);
+            }
+
+            return self::$registers[$name];
+        } catch (LengowException $e) {
+            self::log(LengowLog::CODE_ACTION, $e->getMessage());
         }
-        return self::$registers[$name];
+
+        return null;
     }
 
     /**
@@ -282,6 +297,7 @@ class LengowMain
         $string = preg_replace($pattern, ' ', $string);
         $string = preg_replace('/[\s]+/', ' ', $string);
         $string = trim($string);
+
         return str_replace(
             ['&nbsp;', '|', '"', '’', '&#39;', '&#150;', chr(9), chr(10), chr(13)],
             [' ', ' ', '\'', '\'', '\' ', '-', ' ', ' ', ' '],
@@ -313,6 +329,7 @@ class LengowMain
         if ($out[1]) {
             return $out[1];
         }
+
         return $domain;
     }
 
@@ -334,6 +351,7 @@ class LengowMain
         if (self::checkIp()) {
             return true;
         }
+
         return false;
     }
 
@@ -348,6 +366,7 @@ class LengowMain
     public static function checkToken($token, $idShop = null)
     {
         $storeToken = self::getToken($idShop);
+
         return $token === $storeToken;
     }
 
@@ -375,6 +394,7 @@ class LengowMain
             $token = bin2hex(openssl_random_pseudo_bytes(16));
             LengowConfiguration::updateValue(LengowConfiguration::SHOP_TOKEN, $token, null, null, $idShop);
         }
+
         return $token;
     }
 
@@ -389,6 +409,7 @@ class LengowMain
         if (isset($_SERVER['SERVER_ADDR'])) {
             $authorizedIps[] = $_SERVER['SERVER_ADDR'];
         }
+
         return in_array($_SERVER['REMOTE_ADDR'], $authorizedIps, true);
     }
 
@@ -426,6 +447,7 @@ class LengowMain
             $value = str_replace(['|', '=='], ['', ''], $value);
             $allParams[] = $param . '==' . $value;
         }
+
         return $key . '[' . implode('|', $allParams) . ']';
     }
 
@@ -455,6 +477,7 @@ class LengowMain
                 $message = $locale->t($key, $params, $isoCode);
             }
         }
+
         return $message;
     }
 
@@ -465,7 +488,7 @@ class LengowMain
     {
         $days = [];
         $days[] = 'logs-' . date(self::DATE_DAY) . '.txt';
-        for ($i = 1; $i < self::LOG_LIFE; $i++) {
+        for ($i = 1; $i < self::LOG_LIFE; ++$i) {
             $days[] = 'logs-' . date(self::DATE_DAY, strtotime('-' . $i . 'day')) . '.txt';
         }
         /** @var LengowFile[] $logFiles */
@@ -506,6 +529,7 @@ class LengowMain
         );
         $value = preg_replace('/[\s]+/', ' ', $value);
         $value = trim($value);
+
         return str_replace(
             [
                 '&nbsp;',
@@ -561,6 +585,7 @@ class LengowMain
         if (Validate::isPhoneNumber($phone)) {
             return str_replace($replace, '', $phone);
         }
+
         return str_replace($replace, '', preg_replace('/[^0-9]*/', '', $phone));
     }
 
@@ -713,6 +738,7 @@ class LengowMain
             'AE',
             'OE',
         ];
+
         return preg_replace($patterns, $replacements, $str);
     }
 
@@ -741,7 +767,7 @@ class LengowMain
                     $mailBody .= ' - ' . self::decodeLogMessage($log[LengowOrderError::FIELD_MESSAGE]);
                 } else {
                     $pluginLinks = LengowSync::getPluginLinks();
-                    $mailBody .= ' - '. self::decodeLogMessage(
+                    $mailBody .= ' - ' . self::decodeLogMessage(
                         'lengow_log.mail_report.no_error_in_report_mail',
                         null,
                         ['support_link' => $pluginLinks[LengowSync::LINK_TYPE_SUPPORT]]
@@ -753,7 +779,7 @@ class LengowMain
             $subject = 'Lengow imports logs';
             $data = [
                 '{mail_title}' => $subject,
-                '{mail_body}'  => $mailBody,
+                '{mail_body}' => $mailBody,
             ];
             // send an email if the template exists for the locale
             $emails = LengowConfiguration::getReportEmailAddress();
@@ -802,6 +828,7 @@ class LengowMain
                 $success = false;
             }
         }
+
         return $success;
     }
 
@@ -832,8 +859,9 @@ class LengowMain
         if (!self::isModuleInstalled($moduleName)) {
             return false;
         }
-        require_once($moduleDir . $moduleName . '.php');
+        require_once $moduleDir . $moduleName . '.php';
         $mr = new MondialRelay();
+
         return version_compare($mr->version, $supportedMinVersion, '>=')
             && version_compare($mr->version, $supportedMaxVersion, '<');
     }
@@ -852,11 +880,12 @@ class LengowMain
         if (!self::isModuleInstalled($moduleName)) {
             return false;
         }
-        require_once($moduleDir . $moduleName . '.php');
+        require_once $moduleDir . $moduleName . '.php';
         $soColissimo = _PS_VERSION_ < '1.7' ? new Socolissimo() : new Colissimo_simplicite();
         if (version_compare($soColissimo->version, $supportedVersion, '>=')) {
             return true;
         }
+
         return false;
     }
 
@@ -880,6 +909,7 @@ class LengowMain
         } else {
             $orderState = LengowOrder::STATE_ACCEPTED;
         }
+
         return self::getOrderState($orderState);
     }
 
@@ -899,8 +929,9 @@ class LengowMain
             if ((int) $state['id_order_state'] === $idStateLengow) {
                 unset($states[$index]);
             }
-            $index++;
+            ++$index;
         }
+
         return $states;
     }
 
@@ -918,6 +949,7 @@ class LengowMain
                 return false;
             }
         }
+
         return self::$log;
     }
 
@@ -931,6 +963,7 @@ class LengowMain
     public static function getExportUrl($idShop = null)
     {
         $sep = DIRECTORY_SEPARATOR;
+
         return self::getLengowBaseUrl($idShop) . self::FOLDER_WEBSERVICE . $sep . self::WEBSERVICE_EXPORT . '?'
             . LengowExport::PARAM_TOKEN . '=' . self::getToken($idShop);
     }
@@ -943,6 +976,7 @@ class LengowMain
     public static function getCronUrl()
     {
         $sep = DIRECTORY_SEPARATOR;
+
         return self::getLengowBaseUrl() . self::FOLDER_WEBSERVICE . $sep . self::WEBSERVICE_CRON . '?'
             . LengowImport::PARAM_TOKEN . '=' . self::getToken();
     }
@@ -955,6 +989,7 @@ class LengowMain
     public static function getToolboxUrl()
     {
         $sep = DIRECTORY_SEPARATOR;
+
         return self::getLengowBaseUrl() . self::FOLDER_WEBSERVICE . $sep . self::WEBSERVICE_TOOLBOX . '?'
             . LengowToolbox::PARAM_TOKEN . '=' . self::getToken();
     }
@@ -976,6 +1011,7 @@ class LengowMain
         } catch (Exception $e) {
             $base = _PS_BASE_URL_ . __PS_BASE_URI__;
         }
+
         return $base . 'modules/lengow/';
     }
 
@@ -984,9 +1020,9 @@ class LengowMain
      *
      * @param int $idShop PrestaShop shop id
      *
-     * @throws Exception
-     *
      * @return ShopUrl
+     *
+     * @throws Exception
      */
     public static function getMainShopUrl($idShop)
     {
@@ -997,6 +1033,7 @@ class LengowMain
                 return $shopUrl;
             }
         }
+
         return new ShopUrl($idShop);
     }
 
@@ -1040,6 +1077,7 @@ class LengowMain
                 return (int) $state['id_order_state'];
             }
         }
+
         return null;
     }
 
@@ -1053,10 +1091,11 @@ class LengowMain
     public function fromCamelCase($str)
     {
         $str[0] = Tools::strtolower($str[0]);
+
         return preg_replace_callback(
             '/([A-Z])/',
             static function ($c) {
-                return "_" . Tools::strtolower($c[1]);
+                return '_' . Tools::strtolower($c[1]);
             },
             $str
         );

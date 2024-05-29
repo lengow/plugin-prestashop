@@ -18,9 +18,12 @@
  * @copyright 2021 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Product Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowProduct extends Product
 {
     /**
@@ -174,9 +177,9 @@ class LengowProduct extends Product
      * @param string $name data name
      * @param int|null $idProductAttribute PrestaShop product attribute id
      *
-     * @throws Exception
-     *
      * @return string
+     *
+     * @throws Exception
      */
     public function getData($name, $idProductAttribute = null)
     {
@@ -226,6 +229,7 @@ class LengowProduct extends Product
             case 'discount_percent':
                 $price = $this->getPrice(true, $idProductAttribute, 2, null, false, false, 1);
                 $priceSale = $this->getPrice(true, $idProductAttribute, 2, null, true, true, 1);
+
                 return ($priceSale && $price) ? LengowMain::formatNumber(($priceSale / $price) * 100) : 0;
             case 'discount_start_date':
                 return $this->isSale ? $this->specificPrice['from'] : '';
@@ -283,6 +287,7 @@ class LengowProduct extends Product
                 if (isset($this->{$name})) {
                     return LengowMain::cleanData($this->{$name});
                 }
+
                 return '';
         }
     }
@@ -327,7 +332,7 @@ class LengowProduct extends Product
                                 $c['group_name'],
                                 $c['attribute_name'],
                                 $c['id_attribute'],
-                            ]
+                            ],
                         ],
                         'wholesale_price' => isset($c['wholesale_price']) ? $c['wholesale_price'] : '',
                         'price' => $price,
@@ -342,7 +347,7 @@ class LengowProduct extends Product
                         'images' => isset($cImages[$attributeId]) ? $cImages[$attributeId] : [],
                     ];
                 }
-                $available = new \DateTime($c['available_date']);
+                $available = new DateTime($c['available_date']);
                 $combArray[$attributeId]['available_date'] = $available->format('Y-m-d');
             }
         }
@@ -455,12 +460,13 @@ class LengowProduct extends Product
             $supplierReference = $this->supplier_reference;
         } else {
             $sql = 'SELECT `product_supplier_reference`
-                FROM `'._DB_PREFIX_.'product_supplier`
+                FROM `' . _DB_PREFIX_ . 'product_supplier`
                 WHERE `id_product` = \'' . (int) $this->id . '\'
                 AND `id_product_attribute` = 0';
             $result = Db::getInstance()->getRow($sql);
             $supplierReference = $result['product_supplier_reference'] ?? '';
         }
+
         return $supplierReference;
     }
 
@@ -481,6 +487,7 @@ class LengowProduct extends Product
         } else {
             $breadcrumb = $this->categoryDefaultName;
         }
+
         return $breadcrumb;
     }
 
@@ -518,7 +525,7 @@ class LengowProduct extends Product
                     null,
                     null,
                     $idProductAttribute,
-                    !((version_compare(_PS_VERSION_, '1.7.1', '<') && $rewrite)),
+                    !(version_compare(_PS_VERSION_, '1.7.1', '<') && $rewrite),
                     false,
                     true
                 );
@@ -526,6 +533,7 @@ class LengowProduct extends Product
         } catch (Exception $e) {
             $productUrl = '';
         }
+
         return $productUrl;
     }
 
@@ -545,6 +553,7 @@ class LengowProduct extends Product
         if ($ecotax == 0) {
             $ecotax = (isset($this->ecotaxinfos) && $this->ecotaxinfos > 0) ? $this->ecotaxinfos : $this->ecotax;
         }
+
         return (float) $ecotax;
     }
 
@@ -553,9 +562,9 @@ class LengowProduct extends Product
      *
      * @param int|null $idProductAttribute PrestaShop product attribute id
      *
-     * @throws Exception
-     *
      * @return float
+     *
+     * @throws Exception
      */
     protected function getShippingCost($idProductAttribute = null)
     {
@@ -607,6 +616,7 @@ class LengowProduct extends Product
                 }
             }
         }
+
         return LengowMain::formatNumber($shippingCost);
     }
 
@@ -628,9 +638,11 @@ class LengowProduct extends Product
                 if (isset($attributeImages[$idImage])) {
                     return $attributeImages[$idImage];
                 }
+
                 return '';
             }
         }
+
         return isset($this->images[$idImage]) ? $this->context->link->getImageLink(
             $this->link_rewrite,
             $this->id . '-' . $this->images[$idImage]['id_image'],
@@ -654,6 +666,7 @@ class LengowProduct extends Product
         } else {
             $type = 'parent';
         }
+
         return $type;
     }
 
@@ -681,6 +694,7 @@ class LengowProduct extends Product
         } else {
             $weight = (float) $this->weight;
         }
+
         return $weight;
     }
 
@@ -702,6 +716,7 @@ class LengowProduct extends Product
         if (!$value || $value === 0 || $value === '0' || $value === '') {
             $value = isset($this->{$name}) ? $this->{$name} : '';
         }
+
         return $value;
     }
 
@@ -738,6 +753,7 @@ class LengowProduct extends Product
                 return false;
             }
         }
+
         return true;
     }
 
@@ -795,6 +811,7 @@ class LengowProduct extends Product
                 }
             }
         }
+
         return false;
     }
 
@@ -812,6 +829,7 @@ class LengowProduct extends Product
             $temp[$node] = $api->{$node};
         }
         $temp['price_unit'] = (float) $temp['amount'] / (float) $temp['quantity'];
+
         return $temp;
     }
 
@@ -823,9 +841,9 @@ class LengowProduct extends Product
      * @param int $idShop PrestaShop shop id
      * @param array $apiDatas product ids from the API
      *
-     * @throws LengowException
-     *
      * @return array|false
+     *
+     * @throws LengowException
      */
     public static function matchProduct($attributeName, $attributeValue, $idShop, $apiDatas = [])
     {
@@ -870,6 +888,7 @@ class LengowProduct extends Product
                         return $idsProduct;
                     }
                 }
+
                 return false;
         }
     }
@@ -880,9 +899,9 @@ class LengowProduct extends Product
      * @param int $idProduct PrestaShop product id
      * @param array $apiDatas product ids from the API
      *
-     * @throws LengowException
-     *
      * @return bool
+     *
+     * @throws LengowException
      */
     protected static function checkProductId($idProduct, $apiDatas)
     {
@@ -890,6 +909,7 @@ class LengowProduct extends Product
             return false;
         }
         $product = new LengowProduct($idProduct);
+
         return !($product->name === '' || !self::isValidId($product, $apiDatas));
     }
 
@@ -937,6 +957,7 @@ class LengowProduct extends Product
             $query->where('ps.`id_shop` = \'' . (int) $idShop . '\'');
             $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
         }
+
         return $result;
     }
 
@@ -947,9 +968,9 @@ class LengowProduct extends Product
      * @param int $idShop PrestaShop shop id
      * @param array $apiDatas product ids from the API
      *
-     * @throws LengowException
-     *
      * @return array|false
+     *
+     * @throws LengowException
      */
     public static function advancedSearch($attributeValue, $idShop, $apiDatas)
     {
@@ -964,11 +985,12 @@ class LengowProduct extends Product
             if (!empty($idsProduct)) {
                 $find = true;
             }
-            $i++;
+            ++$i;
         }
         if ($find) {
             return $idsProduct;
         }
+
         return false;
     }
 
@@ -989,9 +1011,9 @@ class LengowProduct extends Product
             Product::getIdTaxRulesGroupByIdProduct((int) $product['id_product'], $context)
         );
         $taxCalculator = $taxManager->getTaxCalculator();
+
         return $taxCalculator->removeTaxes($product['price_wt']);
     }
-
 
     /**
      * get image url of product variations
@@ -1015,17 +1037,19 @@ class LengowProduct extends Product
                     }
                 }
             }
+
             return $cImages;
         }
+
         return false;
     }
 
     /**
      * Get Max Image Type
      *
-     * @throws LengowException cant find image size
-     *
      * @return string
+     *
+     * @throws LengowException cant find image size
      */
     public static function getMaxImageType()
     {

@@ -18,9 +18,12 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Order Setting Controller Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowOrderSettingController extends LengowController
 {
     /**
@@ -47,7 +50,7 @@ class LengowOrderSettingController extends LengowController
                 LengowConfiguration::SHIPPED_BY_MARKETPLACE_ENABLED,
                 LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED,
                 LengowConfiguration::ANONYMIZE_EMAIL,
-                LengowConfiguration::ACTIVE_NEW_ORDER_HOOK
+                LengowConfiguration::ACTIVE_NEW_ORDER_HOOK,
             ]
         );
         $currencyConversion = $form->buildInputs([LengowConfiguration::CURRENCY_CONVERSION_ENABLED]);
@@ -92,7 +95,7 @@ class LengowOrderSettingController extends LengowController
                     'views/templates/admin/lengow_order_setting/helpers/view/marketplace_matching.tpl'
                 );
                 $data = [
-                    'marketplace_matching' => preg_replace('/\r|\n/', '', $displayMarketplaceMatching)
+                    'marketplace_matching' => preg_replace('/\r|\n/', '', $displayMarketplaceMatching),
                 ];
                 echo json_encode($data);
                 exit;
@@ -170,7 +173,7 @@ class LengowOrderSettingController extends LengowController
                         LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED,
                         LengowConfiguration::CURRENCY_CONVERSION_ENABLED,
                         LengowConfiguration::ANONYMIZE_EMAIL,
-                        LengowConfiguration::ACTIVE_NEW_ORDER_HOOK
+                        LengowConfiguration::ACTIVE_NEW_ORDER_HOOK,
                     ]
                 );
                 break;

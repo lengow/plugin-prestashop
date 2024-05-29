@@ -18,9 +18,12 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-/**
+/*
  * Lengow Help Controller Class
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class LengowHelpController extends LengowController
 {
 }
