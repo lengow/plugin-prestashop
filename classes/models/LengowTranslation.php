@@ -54,10 +54,13 @@ class LengowTranslation
 
     /**
      * Construct
+     *
+     * @param string $isoCode
      */
-    public function __construct()
+    public function __construct($isoCode = '')
     {
-        $this->isoCode = Context::getContext()->language->iso_code;
+
+        $this->isoCode = !empty($isoCode) ? $isoCode : $this->getCurrentIsoCode();
     }
 
     /**
@@ -147,4 +150,15 @@ class LengowTranslation
 
         return !empty($translation);
     }
+
+    /**
+     * Returns current language is code
+     *
+     * @return string
+     */
+    protected function getCurrentIsoCode()
+    {
+        return Context::getContext()->language->iso_code;
+    }
 }
+

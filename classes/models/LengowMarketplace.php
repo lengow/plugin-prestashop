@@ -114,13 +114,17 @@ class LengowMarketplace
      * Construct a new Marketplace instance with marketplace API
      *
      * @param string $name name of the marketplace
+     * @param string $marketplacesData the json data
      *
      * @throws LengowException marketplace not present
      */
-    public function __construct($name)
+    public function __construct($name, $marketplacesData = '')
     {
-        self::loadApiMarketplace();
+
         $this->name = (string) Tools::strtolower($name);
+        if (!empty($marketplacesData)) {
+            self::$marketplaces = json_decode($marketplacesData);
+        }
         if (!isset(self::$marketplaces->{$this->name})) {
             self::loadApiMarketplace(true);
         }
@@ -792,3 +796,4 @@ class LengowMarketplace
         return in_array(LengowAction::ARG_RETURN_TRACKING_NUMBER, $arguments);
     }
 }
+
