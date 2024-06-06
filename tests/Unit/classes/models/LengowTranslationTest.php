@@ -15,8 +15,6 @@ class LengowTranslationTest extends TestCase
      */
     protected $translate;
 
-    //protected $translateClass = 'LengowTranslation';
-
     /**
      * setup
      *
@@ -24,7 +22,7 @@ class LengowTranslationTest extends TestCase
      */
     public function setup(): void
     {
-        $this->translate = new LengowTranslation('fr');
+        $this->translate = new LengowTranslation('en');
     }
 
     /**
