@@ -25,11 +25,12 @@
  */
 
 //php7.4 -d date.timezone=UTC ./vendor/phpunit/phpunit/phpunit -c modules/lengow/tests/Unit/phpunit.xml modules/lengow/tests/Unit
-define('_PS_IN_TEST_', false);
+//define('_PS_IN_TEST_', true);
 define('_PS_ROOT_DIR_', __DIR__ . '/../../../..');
 define('_PS_MODULE_DIR_', _PS_ROOT_DIR_ . '/modules/');
 require_once __DIR__ . '/../../../../config/defines.inc.php';
 require_once _PS_CONFIG_DIR_ . 'autoload.php';
+require_once _PS_CONFIG_DIR_ . 'config.inc.php';
 require_once __DIR__.'/../../vendor/autoload.php';
 require_once __DIR__.'/./Fixture.php';
 
@@ -44,4 +45,3 @@ if (!defined('_NEW_COOKIE_KEY_')) {
 if (!defined('__PS_BASE_URI__')) {
     define('__PS_BASE_URI__', '');
 }
-
