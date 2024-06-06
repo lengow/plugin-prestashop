@@ -1,33 +1,38 @@
 <?php
 
+
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowException;
+use LengowFile;
+use LengowMain;
 
-class LengowExceptionTest extends TestCase
+class LengowFileTest extends TestCase
 {
     /**
-     * @var Exception
+     *
+     * @var LengowFile
      */
-    protected $exception;
+    protected $file;
 
     /**
      * setup
      *
      * @return void
      */
-    public function setUp(): void
+    public function setup(): void
     {
-
-        $this->exception = new LengowException('Hello world');
+        $this->file = new LengowFile(LengowMain::FOLDER_LOG,'unit-test-log.txt');
     }
 
+    /**
+     * test class
+     */
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowException::class,
-            $this->exception,
+            LengowFile::class,
+            $this->file,
             '[Test Class Instantiation] Check class instantiation'
         );
     }
