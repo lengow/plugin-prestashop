@@ -4,16 +4,16 @@
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowExport;
+use LengowFeed;
 
 
-class LengowExportTest extends TestCase
+class LengowFeedTest extends TestCase
 {
     /**
      *
-     * @var LengowExport
+     * @var LengowFeed
      */
-    protected $export;
+    protected $feed;
 
     /**
      * setup
@@ -22,7 +22,7 @@ class LengowExportTest extends TestCase
      */
     public function setup(): void
     {
-        $this->export = new LengowExport([]);
+        $this->feed = new LengowFeed(false, LengowFeed::FORMAT_CSV, false);
     }
 
     /**
@@ -31,8 +31,8 @@ class LengowExportTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowExport::class,
-            $this->export,
+            LengowFeed::class,
+            $this->feed,
             '[Test Class Instantiation] Check class instantiation'
         );
     }

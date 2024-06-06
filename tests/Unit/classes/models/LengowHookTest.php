@@ -4,16 +4,17 @@
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowExport;
+use LengowHook;
+use Lengow;
 
 
-class LengowExportTest extends TestCase
+class LengowHookTest extends TestCase
 {
     /**
      *
-     * @var LengowExport
+     * @var LengowHook
      */
-    protected $export;
+    protected $hook;
 
     /**
      * setup
@@ -22,7 +23,8 @@ class LengowExportTest extends TestCase
      */
     public function setup(): void
     {
-        $this->export = new LengowExport([]);
+        $module = new Lengow();
+        $this->hook = new LengowHook($module);
     }
 
     /**
@@ -31,8 +33,8 @@ class LengowExportTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowExport::class,
-            $this->export,
+            LengowHook::class,
+            $this->hook,
             '[Test Class Instantiation] Check class instantiation'
         );
     }
