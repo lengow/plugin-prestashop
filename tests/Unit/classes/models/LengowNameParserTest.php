@@ -1,16 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowNameParser;
 
 class LengowNameParserTest extends TestCase
 {
     /**
-     *
-     * @var LengowNameParser
+     * @var \LengowNameParser
      */
     protected $nameParser;
 
@@ -21,7 +18,7 @@ class LengowNameParserTest extends TestCase
      */
     public function setup(): void
     {
-       $this->nameParser = new LengowNameParser();
+        $this->nameParser = new \LengowNameParser();
     }
 
     /**
@@ -30,7 +27,7 @@ class LengowNameParserTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowNameParser::class,
+            \LengowNameParser::class,
             $this->nameParser,
             '[Test Class Instantiation] Check class instantiation'
         );

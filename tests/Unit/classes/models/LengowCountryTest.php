@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowCountry;
-
 
 class LengowCountryTest extends TestCase
 {
     /**
-     *
-     * @var LengowCountry
+     * @var \LengowCountry
      */
     protected $country;
 
@@ -22,7 +18,7 @@ class LengowCountryTest extends TestCase
      */
     public function setup(): void
     {
-        $this->country = new LengowCountry();
+        $this->country = new \LengowCountry();
     }
 
     /**
@@ -31,7 +27,7 @@ class LengowCountryTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowCountry::class,
+            \LengowCountry::class,
             $this->country,
             '[Test Class Instantiation] Check class instantiation'
         );

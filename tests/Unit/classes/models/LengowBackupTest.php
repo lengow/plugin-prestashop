@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowBackup;
-
 
 class LengowBackupTest extends TestCase
 {
     /**
-     *
-     * @var LengowBackup
+     * @var \LengowBackup
      */
     protected $backup;
 
@@ -22,7 +18,7 @@ class LengowBackupTest extends TestCase
      */
     public function setup(): void
     {
-        $this->backup = new LengowBackup();
+        $this->backup = new \LengowBackup();
     }
 
     /**
@@ -31,7 +27,7 @@ class LengowBackupTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowBackup::class,
+            \LengowBackup::class,
             $this->backup,
             '[Test Class Instantiation] Check class instantiation'
         );

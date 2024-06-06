@@ -1,16 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowMarketplace;
 
 class LengowMarketplaceTest extends TestCase
 {
     /**
-     *
-     * @var LengowMarketplace
+     * @var \LengowMarketplace
      */
     protected $marketplace;
 
@@ -21,7 +18,7 @@ class LengowMarketplaceTest extends TestCase
      */
     public function setup(): void
     {
-       $this->marketplace = new LengowMarketplace(
+        $this->marketplace = new \LengowMarketplace(
             'amazon_fr',
             $this->getMarketplacesMock()
         );
@@ -33,7 +30,7 @@ class LengowMarketplaceTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowMarketplace::class,
+            \LengowMarketplace::class,
             $this->marketplace,
             '[Test Class Instantiation] Check class instantiation'
         );

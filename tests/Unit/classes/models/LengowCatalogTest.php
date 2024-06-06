@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowCatalog;
-
 
 class LengowCatalogTest extends TestCase
 {
     /**
-     *
-     * @var LengowCatalog
+     * @var \LengowCatalog
      */
     protected $catalog;
 
@@ -22,7 +18,7 @@ class LengowCatalogTest extends TestCase
      */
     public function setup(): void
     {
-        $this->catalog = new LengowCatalog();
+        $this->catalog = new \LengowCatalog();
     }
 
     /**
@@ -31,7 +27,7 @@ class LengowCatalogTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowCatalog::class,
+            \LengowCatalog::class,
             $this->catalog,
             '[Test Class Instantiation] Check class instantiation'
         );

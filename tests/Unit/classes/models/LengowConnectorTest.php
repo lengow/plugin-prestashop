@@ -4,13 +4,11 @@ namespace Lengow\Connector\Test\Unit\Model;
 
 use Lengow\Connector\Test\Unit\Fixture;
 use PHPUnit\Framework\TestCase;
-use LengowConnector;
 
 class LengowConnectorTest extends TestCase
 {
     /**
-     *
-     * @var LengowConnector
+     * @var \LengowConnector
      */
     protected $connector;
 
@@ -21,7 +19,7 @@ class LengowConnectorTest extends TestCase
      */
     public function setUp(): void
     {
-        $this->connector = new LengowConnector('12345678','123456789');
+        $this->connector = new \LengowConnector('12345678', '123456789');
     }
 
     /**
@@ -30,14 +28,14 @@ class LengowConnectorTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowConnector::class,
+            \LengowConnector::class,
             $this->connector,
             '[Test Class Instantiation] Check class instantiation'
         );
     }
 
     /**
-     * @covers LengowConnector::format
+     * @covers \LengowConnector::format
      */
     public function testFormat()
     {
@@ -54,7 +52,7 @@ class LengowConnectorTest extends TestCase
 
         $this->assertEquals(
             'simple,plop,/1233;variable',
-            $fixture->invokeMethod($this->connector, "format", ['simple,plop,/1233;variable', 'stream']),
+            $fixture->invokeMethod($this->connector, 'format', ['simple,plop,/1233;variable', 'stream']),
             '[Test Format] Check no specific format format'
         );
     }

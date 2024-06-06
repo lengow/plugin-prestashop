@@ -10,16 +10,13 @@
  * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
- * @package     Lengow_Connector
- * @subpackage  Test
+ *
  * @author      Team module <team-module@lengow.com>
  * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 namespace Lengow\Connector\Test\Unit;
-
-use Exception;
 
 class Fixture extends \PHPUnit\Framework\TestCase
 {
@@ -38,8 +35,9 @@ class Fixture extends \PHPUnit\Framework\TestCase
             $reflection = new \ReflectionClass(get_class($object));
             $method = $reflection->getMethod($methodName);
             $method->setAccessible(true);
+
             return $method->invokeArgs($object, $parameters);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -47,7 +45,7 @@ class Fixture extends \PHPUnit\Framework\TestCase
     /**
      * Return value of a private property using ReflectionClass
      *
-     * @param object &$object Instantiated object that we will run method on.
+     * @param object &$object Instantiated object that we will run method on
      * @param string $propertyName Class property
      *
      * @return mixed
@@ -58,8 +56,9 @@ class Fixture extends \PHPUnit\Framework\TestCase
             $reflection = new \ReflectionClass(get_class($object));
             $property = $reflection->getProperty($propertyName);
             $property->setAccessible(true);
+
             return $property->getValue($object);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -67,7 +66,7 @@ class Fixture extends \PHPUnit\Framework\TestCase
     /**
      * Set value of a private property using ReflectionClass
      *
-     * @param object &$object Instantiated object that we will run method on.
+     * @param object &$object Instantiated object that we will run method on
      * @param array $propertyNames Class properties
      * @param array $propertyValues Class value properties
      */
@@ -80,8 +79,7 @@ class Fixture extends \PHPUnit\Framework\TestCase
             } else {
                 $reflection = new \ReflectionClass(get_class($object));
             }
-
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $reflection = false;
         }
         if ($reflection) {
@@ -90,15 +88,13 @@ class Fixture extends \PHPUnit\Framework\TestCase
                     $property = $reflection->getProperty($propertyName);
                     $property->setAccessible(true);
                     $property->setValue($object, $propertyValues[$ii]);
-                    $ii++;
-                } catch (Exception $e) {
+                    ++$ii;
+                } catch (\Exception $e) {
                     continue;
                 }
             }
         }
     }
-
-
 
     /**
      * Get a fake class for mock function
@@ -127,7 +123,6 @@ class Fixture extends \PHPUnit\Framework\TestCase
                 ->setConstructorArgs($constructArgs)
                 ->getMock();
         } else {
-
             $mockFunction = $this->getMockBuilder(get_class($object))
                 ->setMethods($methodNames)
                 ->disableOriginalConstructor()
@@ -136,8 +131,9 @@ class Fixture extends \PHPUnit\Framework\TestCase
 
         foreach ($methodNames as $methodName) {
             $mockFunction->expects($this->any())->method($methodName)->will($this->returnValue($returns[$ii]));
-            $ii++;
+            ++$ii;
         }
+
         return $mockFunction;
     }
 }

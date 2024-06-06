@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowGender;
-
 
 class LengowGenderTest extends TestCase
 {
     /**
-     *
-     * @var LengowGender
+     * @var \LengowGender
      */
     protected $gender;
 
@@ -22,7 +18,7 @@ class LengowGenderTest extends TestCase
      */
     public function setup(): void
     {
-        $this->gender = new LengowGender();
+        $this->gender = new \LengowGender();
     }
 
     /**
@@ -31,7 +27,7 @@ class LengowGenderTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowGender::class,
+            \LengowGender::class,
             $this->gender,
             '[Test Class Instantiation] Check class instantiation'
         );

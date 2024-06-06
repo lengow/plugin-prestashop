@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowCustomer;
-
 
 class LengowCustomerTest extends TestCase
 {
     /**
-     *
-     * @var LengowCustomer
+     * @var \LengowCustomer
      */
     protected $customer;
 
@@ -22,7 +18,7 @@ class LengowCustomerTest extends TestCase
      */
     public function setup(): void
     {
-        $this->customer = new LengowCustomer();
+        $this->customer = new \LengowCustomer();
     }
 
     /**
@@ -31,7 +27,7 @@ class LengowCustomerTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowCustomer::class,
+            \LengowCustomer::class,
             $this->customer,
             '[Test Class Instantiation] Check class instantiation'
         );

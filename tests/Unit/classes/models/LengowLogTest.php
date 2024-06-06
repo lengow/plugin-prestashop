@@ -1,16 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowLog;
 
 class LengowLogTest extends TestCase
 {
     /**
-     *
-     * @var LengowLog
+     * @var \LengowLog
      */
     protected $log;
 
@@ -21,7 +18,7 @@ class LengowLogTest extends TestCase
      */
     public function setup(): void
     {
-        $this->log = new LengowLog();
+        $this->log = new \LengowLog();
     }
 
     /**
@@ -30,7 +27,7 @@ class LengowLogTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowLog::class,
+            \LengowLog::class,
             $this->log,
             '[Test Class Instantiation] Check class instantiation'
         );

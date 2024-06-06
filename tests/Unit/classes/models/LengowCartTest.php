@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowCart;
-
 
 class LengowCartTest extends TestCase
 {
     /**
-     *
-     * @var LengowCart
+     * @var \LengowCart
      */
     protected $cart;
 
@@ -22,7 +18,7 @@ class LengowCartTest extends TestCase
      */
     public function setup(): void
     {
-        $this->cart = new LengowCart();
+        $this->cart = new \LengowCart();
     }
 
     /**
@@ -31,7 +27,7 @@ class LengowCartTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowCart::class,
+            \LengowCart::class,
             $this->cart,
             '[Test Class Instantiation] Check class instantiation'
         );

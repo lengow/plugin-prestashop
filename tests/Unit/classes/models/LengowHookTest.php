@@ -1,18 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowHook;
-use Lengow;
-
 
 class LengowHookTest extends TestCase
 {
     /**
-     *
-     * @var LengowHook
+     * @var \LengowHook
      */
     protected $hook;
 
@@ -23,8 +18,8 @@ class LengowHookTest extends TestCase
      */
     public function setup(): void
     {
-        $module = new Lengow();
-        $this->hook = new LengowHook($module);
+        $module = new \Lengow();
+        $this->hook = new \LengowHook($module);
     }
 
     /**
@@ -33,7 +28,7 @@ class LengowHookTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowHook::class,
+            \LengowHook::class,
             $this->hook,
             '[Test Class Instantiation] Check class instantiation'
         );

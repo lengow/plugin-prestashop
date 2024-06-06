@@ -1,16 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowOrder;
 
 class LengowOrderTest extends TestCase
 {
     /**
-     *
-     * @var LengowOrder
+     * @var \LengowOrder
      */
     protected $order;
 
@@ -21,7 +18,7 @@ class LengowOrderTest extends TestCase
      */
     public function setup(): void
     {
-       $this->order = new LengowOrder();
+        $this->order = new \LengowOrder();
     }
 
     /**
@@ -30,7 +27,7 @@ class LengowOrderTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowOrder::class,
+            \LengowOrder::class,
             $this->order,
             '[Test Class Instantiation] Check class instantiation'
         );

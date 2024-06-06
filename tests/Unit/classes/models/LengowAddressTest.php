@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowAddress;
-
 
 class LengowAddressTest extends TestCase
 {
     /**
-     *
-     * @var LengowAddress
+     * @var \LengowAddress
      */
     protected $address;
 
@@ -22,7 +18,7 @@ class LengowAddressTest extends TestCase
      */
     public function setup(): void
     {
-        $this->address = new LengowAddress();
+        $this->address = new \LengowAddress();
     }
 
     /**
@@ -31,7 +27,7 @@ class LengowAddressTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowAddress::class,
+            \LengowAddress::class,
             $this->address,
             '[Test Class Instantiation] Check class instantiation'
         );

@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowFeed;
-
 
 class LengowFeedTest extends TestCase
 {
     /**
-     *
-     * @var LengowFeed
+     * @var \LengowFeed
      */
     protected $feed;
 
@@ -22,7 +18,7 @@ class LengowFeedTest extends TestCase
      */
     public function setup(): void
     {
-        $this->feed = new LengowFeed(false, LengowFeed::FORMAT_CSV, false);
+        $this->feed = new \LengowFeed(false, \LengowFeed::FORMAT_CSV, false);
     }
 
     /**
@@ -31,7 +27,7 @@ class LengowFeedTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowFeed::class,
+            \LengowFeed::class,
             $this->feed,
             '[Test Class Instantiation] Check class instantiation'
         );

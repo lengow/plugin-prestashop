@@ -1,16 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowOrderCarrier;
 
 class LengowOrderCarrierTest extends TestCase
 {
     /**
-     *
-     * @var LengowOrderCarrier
+     * @var \LengowOrderCarrier
      */
     protected $orderCarrier;
 
@@ -21,7 +18,7 @@ class LengowOrderCarrierTest extends TestCase
      */
     public function setup(): void
     {
-       $this->orderCarrier = new LengowOrderCarrier();
+        $this->orderCarrier = new \LengowOrderCarrier();
     }
 
     /**
@@ -30,7 +27,7 @@ class LengowOrderCarrierTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowOrderCarrier::class,
+            \LengowOrderCarrier::class,
             $this->orderCarrier,
             '[Test Class Instantiation] Check class instantiation'
         );

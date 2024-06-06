@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowCarrier;
-
 
 class LengowCarrierTest extends TestCase
 {
     /**
-     *
-     * @var LengowCarrier
+     * @var \LengowCarrier
      */
     protected $carrier;
 
@@ -22,7 +18,7 @@ class LengowCarrierTest extends TestCase
      */
     public function setup(): void
     {
-        $this->carrier = new LengowCarrier(1,1);
+        $this->carrier = new \LengowCarrier(1, 1);
     }
 
     /**
@@ -31,7 +27,7 @@ class LengowCarrierTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowCarrier::class,
+            \LengowCarrier::class,
             $this->carrier,
             '[Test Class Instantiation] Check class instantiation'
         );

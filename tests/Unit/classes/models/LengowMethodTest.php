@@ -1,16 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowMethod;
 
 class LengowMethodTest extends TestCase
 {
     /**
-     *
-     * @var LengowMethod
+     * @var \LengowMethod
      */
     protected $method;
 
@@ -21,7 +18,7 @@ class LengowMethodTest extends TestCase
      */
     public function setup(): void
     {
-       $this->method = new LengowMethod();
+        $this->method = new \LengowMethod();
     }
 
     /**
@@ -30,7 +27,7 @@ class LengowMethodTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowMethod::class,
+            \LengowMethod::class,
             $this->method,
             '[Test Class Instantiation] Check class instantiation'
         );

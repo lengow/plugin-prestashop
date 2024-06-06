@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Lengow\Connector\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use LengowConfigurationForm;
-
 
 class LengowConfigurationFormTest extends TestCase
 {
     /**
-     *
-     * @var LengowConfigurationForm
+     * @var \LengowConfigurationForm
      */
     protected $form;
 
@@ -22,7 +18,7 @@ class LengowConfigurationFormTest extends TestCase
      */
     public function setup(): void
     {
-        $this->form = new LengowConfigurationForm([]);
+        $this->form = new \LengowConfigurationForm([]);
     }
 
     /**
@@ -31,7 +27,7 @@ class LengowConfigurationFormTest extends TestCase
     public function testClassInstantiation()
     {
         $this->assertInstanceOf(
-            LengowConfigurationForm::class,
+            \LengowConfigurationForm::class,
             $this->form,
             '[Test Class Instantiation] Check class instantiation'
         );
