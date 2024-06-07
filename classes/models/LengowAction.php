@@ -200,6 +200,7 @@ class LengowAction
     public static function getActionsByOrderId($idOrder, $onlyActive = false, $actionType = null, $load = true)
     {
         try {
+
             $sqlOnlyActive = $onlyActive ? ' AND  state = ' . self::STATE_NEW : '';
             $sqlType = $actionType === null ? '' : ' AND  action_type = "' . pSQL($actionType) . '"';
             $rows = Db::getInstance()->executeS(
@@ -326,7 +327,12 @@ class LengowAction
                 unset($getParams[$param]);
             }
         }
-        $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_ORDER_ACTION, $getParams);
+
+        $result = LengowConnector::getInstance()->requestApi(
+                        LengowConnector::GET,
+                        LengowConnector::API_ORDER_ACTION,
+                        $getParams
+                    );
         if (isset($result->error, $result->error->message)) {
             throw new LengowException($result->error->message);
         }

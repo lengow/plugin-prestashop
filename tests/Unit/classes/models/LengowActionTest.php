@@ -284,4 +284,71 @@ class LengowActionTest extends TestCase
         );
         \Db::deleteTestingInstance();
     }
+
+    /**
+     * @covers \LengowAction::find
+     */
+    public function testFind()
+    {
+        $this->assertFalse(
+            $this->action->find(-1),
+            $this->testName.__METHOD__.' false'
+        );
+        $rowMock = [
+            \LengowAction::FIELD_ID => 123,
+            \LengowAction::FIELD_ORDER_ID => 1,
+            \LengowAction::FIELD_ACTION_ID => 456,
+            \LengowAction::FIELD_ACTION_TYPE => 'ship',
+            \LengowAction::FIELD_RETRY => 0,
+            \LengowAction::FIELD_PARAMETERS => [],
+            \LengowAction::FIELD_STATE => 1,
+            \LengowAction::FIELD_CREATED_AT => '1970-01-01 00:00:00',
+            \LengowAction::FIELD_UPDATED_AT => '1970-01-01 00:00:00'
+        ];
+
+        $dbMock = $this->getMockBuilder(\Db::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $dbMock->method('getRow')->willReturn($rowMock);
+        \Db::setInstanceForTesting($dbMock);
+        $result = $this->action->find($rowMock[\LengowAction::FIELD_ID]);
+        $this->assertTrue($result, $this->testName.__METHOD__.' true');
+        $this->assertEquals(
+            $rowMock[\LengowAction::FIELD_ACTION_ID],
+            $this->action->actionId,
+            $this->testName.__METHOD__.' action_id'
+        );
+        \Db::deleteTestingInstance();
+    }
+
+     /**
+     * @covers \LengowAction::canSendAction
+     */
+    public function testCanSendAction()
+    {
+        $mockParams = [
+            \LengowAction::ARG_CARRIER => 'DHL',
+            \LengowAction::ARG_CARRIER_NAME => 'DHL',
+            \LengowAction::ARG_SHIPPING_METHOD => 'DHL',
+            \LengowAction::ARG_ACTION_TYPE => 'ship'
+        ];
+        $lengowConnectorMock = $this->getMockBuilder(\LengowConnector::class)
+                                    ->disableOriginalConstructor()
+                                    ->getMock();
+        $lengowConnectorMock->method('requestApi')
+                            ->willReturn(json_decode('{"count":0}'));
+        \LengowConnector::setInstanceForTesting($lengowConnectorMock);
+        $lengowOrder = new \LengowOrder();
+        $result = \LengowAction::canSendAction($mockParams, $lengowOrder);
+        $this->assertTrue($result, $this->testName.__METHOD__.' true');
+        $lengowConnectorMock2 = $this->getMockBuilder(\LengowConnector::class)
+                                    ->disableOriginalConstructor()
+                                    ->getMock();
+        $lengowConnectorMock2->method('requestApi')
+                            ->willReturn(json_decode('{"count":1, "results":[{"id":1}]}'));
+        \LengowConnector::setInstanceForTesting($lengowConnectorMock2);
+        $result2 = \LengowAction::canSendAction($mockParams, $lengowOrder);
+        $this->assertFalse($result2, $this->testName.__METHOD__.' false');
+        \LengowConnector::disableTestingInstance();
+    }
 }

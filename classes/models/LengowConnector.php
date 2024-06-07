@@ -155,6 +155,9 @@ class LengowConnector
         self::API_PLUGIN,
     ];
 
+    /** @var array List of LengowConnector instances */
+    protected static $instance = [];
+
     /**
      * Make a new Lengow API Connector.
      *
@@ -165,6 +168,57 @@ class LengowConnector
     {
         $this->accessToken = $accessToken;
         $this->secret = $secret;
+    }
+
+    /**
+     * Returns a LengowConnector instance
+     *
+     * @param string $accessToken
+     * @param string $secret
+     *
+     * @return bool|\LengowConnector
+     */
+    public static function getInstance($accessToken = '', $secret = '')
+    {
+        if (isset(self::$instance[0])
+                && self::$instance[0] instanceof LengowConnector) {
+            return self::$instance[0];
+        }
+        list($accountIdFound, $accessTokenFound, $secretFound) = LengowConfiguration::getAccessIds();
+
+        if (empty($accessTokenFound)
+                || empty($secretFound)
+                || empty($accountIdFound)) {
+            return false;
+        }
+
+        if ($accessToken && $secret) {
+            $connector = new LengowConnector($accessToken, $secret);
+        } else {
+            $connector = new LengowConnector($accessTokenFound, $secretFound);
+        }
+
+        self::$instance[0] = $connector;
+
+        return $connector;
+    }
+
+    /**
+     * Will set the instance for testing
+     *
+     * @param LengowConnect $testConnector
+     */
+    public static function setInstanceForTesting($testConnector)
+    {
+        self::$instance[0] = $testConnector;
+    }
+
+    /**
+     * Will reset $intance array
+     */
+    public static function disableTestingInstance()
+    {
+        self::$instance = [];
     }
 
     /**
@@ -179,11 +233,8 @@ class LengowConnector
         if (!LengowToolbox::isCurlActivated()) {
             return false;
         }
-        list($accountId, $accessToken, $secret) = LengowConfiguration::getAccessIds();
-        if ($accountId === null) {
-            return false;
-        }
-        $connector = new LengowConnector($accessToken, $secret);
+
+        $connector = self::getInstance();
         try {
             $connector->connect(false, $logOutput);
         } catch (LengowException $e) {
@@ -225,7 +276,7 @@ class LengowConnector
             if ($accountId === null && $authorizationRequired) {
                 return false;
             }
-            $connector = new LengowConnector($accessToken, $secret);
+            $connector = self::getInstance($accessToken, $secret);
             $type = (string) Tools::strtolower($type);
             $args = $authorizationRequired
                 ? array_merge([LengowImport::ARG_ACCOUNT_ID => $accountId], $args)
@@ -259,7 +310,7 @@ class LengowConnector
      */
     public static function getAccountIdByCredentials($accessToken, $secret, $logOutput = false)
     {
-        $connector = new LengowConnector($accessToken, $secret);
+        $connector = self::getInstance($accessToken, $secret);
         try {
             $data = $connector->callAction(
                 self::API_ACCESS_TOKEN,
@@ -389,6 +440,51 @@ class LengowConnector
     }
 
     /**
+     * Get result for a request to Api
+     *
+     * @param string $type request type (GET / POST / PUT / PATCH)
+     * @param string $api request api
+     * @param array $args request params
+     * @param string $body body data for request
+     * @param bool $logOutput see log or not
+     *
+     * @return array|false
+     */
+    public function requestApi($type, $api, $args = [], $body = '', $logOutput = false)
+    {
+        if (!in_array($type, [self::GET, self::POST, self::PUT, self::PATCH])) {
+            return false;
+        }
+        try {
+            $authorizationRequired = !in_array($api, self::$apiWithoutAuthorizations, true);
+            list($accountId) = LengowConfiguration::getAccessIds();
+            if ($accountId === null && $authorizationRequired) {
+                return false;
+            }
+
+            $type = (string) Tools::strtolower($type);
+            $args = $authorizationRequired
+                ? array_merge([LengowImport::ARG_ACCOUNT_ID => $accountId], $args)
+                : $args;
+            $results = $this->$type($api, $args, self::FORMAT_STREAM, $body, $logOutput);
+        } catch (LengowException $e) {
+            $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
+            $error = LengowMain::setLogMessage(
+                'log.connector.error_api',
+                [
+                    'error_code' => $e->getCode(),
+                    'error_message' => $message,
+                ]
+            );
+            LengowMain::log(LengowLog::CODE_CONNECTOR, $error, $logOutput);
+
+            return false;
+        }
+
+        return json_decode($results);
+    }
+
+    /**
      * The API method
      *
      * @param string $api Lengow method API call
@@ -442,7 +538,7 @@ class LengowConnector
      *
      * @throws LengowException
      */
-    private function callAction($api, $args, $type, $format, $body, $logOutput)
+    protected function callAction($api, $args, $type, $format, $body, $logOutput)
     {
         $result = $this->makeRequest($type, $api, $args, $this->token, $body, $logOutput);
 
