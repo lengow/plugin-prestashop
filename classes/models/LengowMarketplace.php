@@ -120,7 +120,6 @@ class LengowMarketplace
      */
     public function __construct($name, $marketplacesData = '')
     {
-
         $this->name = (string) Tools::strtolower($name);
         if (!empty($marketplacesData)) {
             self::$marketplaces = json_decode($marketplacesData);
@@ -796,4 +795,3 @@ class LengowMarketplace
         return in_array(LengowAction::ARG_RETURN_TRACKING_NUMBER, $arguments);
     }
 }
-

@@ -59,7 +59,6 @@ class LengowTranslation
      */
     public function __construct($isoCode = '')
     {
-
         $this->isoCode = !empty($isoCode) ? $isoCode : $this->getCurrentIsoCode();
     }
 
@@ -161,4 +160,3 @@ class LengowTranslation
         return Context::getContext()->language->iso_code;
     }
 }
-

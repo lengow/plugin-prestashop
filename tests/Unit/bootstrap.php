@@ -25,7 +25,7 @@
  */
 
 // php7.4 -d date.timezone=UTC ./vendor/phpunit/phpunit/phpunit -c modules/lengow/tests/Unit/phpunit.xml modules/lengow/tests/Unit
-// define('_PS_IN_TEST_', true) need a database named test_._DB_NAME_;
+define('_PS_IN_TEST_', true);
 define('_PS_ROOT_DIR_', __DIR__ . '/../../../..');
 define('_PS_MODULE_DIR_', _PS_ROOT_DIR_ . '/modules/');
 require_once __DIR__ . '/../../../../config/defines.inc.php';
@@ -45,3 +45,5 @@ if (!defined('_NEW_COOKIE_KEY_')) {
 if (!defined('__PS_BASE_URI__')) {
     define('__PS_BASE_URI__', '');
 }
+
+
