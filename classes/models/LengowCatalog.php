@@ -33,7 +33,7 @@ class LengowCatalog
      */
     public static function hasCatalogNotLinked()
     {
-        $lengowCatalogs = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS_CATALOG);
+        $lengowCatalogs = LengowConnector::getInstance()->requestApi(LengowConnector::GET, LengowConnector::API_CMS_CATALOG);
         if (!$lengowCatalogs) {
             return false;
         }
@@ -56,7 +56,7 @@ class LengowCatalog
     public static function getCatalogList()
     {
         $catalogList = [];
-        $lengowCatalogs = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS_CATALOG);
+        $lengowCatalogs = LengowConnector::getInstance()->requestApi(LengowConnector::GET, LengowConnector::API_CMS_CATALOG);
         if (!$lengowCatalogs) {
             return $catalogList;
         }
@@ -132,7 +132,7 @@ class LengowCatalog
             );
         }
         if ($hasCatalogToLink) {
-            $result = LengowConnector::queryApi(
+            $result = LengowConnector::getInstance()->requestApi(
                 LengowConnector::POST,
                 LengowConnector::API_CMS_MAPPING,
                 [],

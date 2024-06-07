@@ -163,7 +163,7 @@ class LengowSync
                 return $success;
             }
         }
-        $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS, [], '', $logOutput);
+        $result = LengowConnector::getInstance()->requestApi(LengowConnector::GET, LengowConnector::API_CMS, [], '', $logOutput);
         if (isset($result->cms)) {
             $cmsToken = LengowMain::getToken();
             foreach ($result->cms as $cms) {
@@ -276,7 +276,7 @@ class LengowSync
             }
         }
         $options = json_encode(self::getOptionData());
-        LengowConnector::queryApi(LengowConnector::PUT, LengowConnector::API_CMS, [], $options, $logOutput);
+        LengowConnector::getInstance()->requestApi(LengowConnector::PUT, LengowConnector::API_CMS, [], $options, $logOutput);
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_OPTION_CMS, time());
 
         return true;
@@ -301,7 +301,7 @@ class LengowSync
                 );
             }
         }
-        $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_PLAN, [], '', $logOutput);
+        $result = LengowConnector::getInstance()->requestApi(LengowConnector::GET, LengowConnector::API_PLAN, [], '', $logOutput);
         if (isset($result->isFreeTrial)) {
             $status = [
                 'type' => $result->isFreeTrial ? 'free_trial' : '',
@@ -352,7 +352,7 @@ class LengowSync
             }
         }
         // recovering data with the API
-        $result = LengowConnector::queryApi(
+        $result = LengowConnector::getInstance()->requestApi(
             LengowConnector::GET,
             LengowConnector::API_MARKETPLACE,
             [],
@@ -414,7 +414,7 @@ class LengowSync
                 return json_decode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
             }
         }
-        $plugins = LengowConnector::queryApi(
+        $plugins = LengowConnector::getInstance()->requestApi(
             LengowConnector::GET,
             LengowConnector::API_PLUGIN,
             [],

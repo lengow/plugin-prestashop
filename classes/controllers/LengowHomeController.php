@@ -165,7 +165,7 @@ class LengowHomeController extends LengowController
         $cmsConnected = LengowSync::syncCatalog(true);
         if (!$cmsConnected) {
             $syncData = json_encode(LengowSync::getSyncData());
-            $result = LengowConnector::queryApi(LengowConnector::POST, LengowConnector::API_CMS, [], $syncData);
+            $result = LengowConnector::getInstance()->requestApi(LengowConnector::POST, LengowConnector::API_CMS, [], $syncData);
             if (isset($result->common_account)) {
                 $cmsConnected = true;
                 $messageKey = 'log.connection.cms_creation_success';

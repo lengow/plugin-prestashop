@@ -381,7 +381,7 @@ class LengowAction
     public static function sendAction($params, $lengowOrder)
     {
         if (!LengowConfiguration::debugModeIsActive()) {
-            $result = LengowConnector::queryApi(LengowConnector::POST, LengowConnector::API_ORDER_ACTION, $params);
+            $result = LengowConnector::getInstance()->requestApi(LengowConnector::POST, LengowConnector::API_ORDER_ACTION, $params);
             if (isset($result->id)) {
                 self::createAction(
                     [
@@ -590,7 +590,7 @@ class LengowAction
             $logOutput
         );
         do {
-            $results = LengowConnector::queryApi(
+            $results = LengowConnector::getInstance()->requestApi(
                 LengowConnector::GET,
                 LengowConnector::API_ORDER_ACTION,
                 [

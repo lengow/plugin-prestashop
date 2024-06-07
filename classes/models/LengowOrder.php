@@ -1161,7 +1161,7 @@ class LengowOrder extends Order
     public function getOrderLineByApi()
     {
         $orderLines = [];
-        $results = LengowConnector::queryApi(
+        $results = LengowConnector::getInstance()->requestApi(
             LengowConnector::GET,
             LengowConnector::API_ORDER,
             [
