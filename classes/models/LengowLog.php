@@ -99,7 +99,7 @@ class LengowLog extends LengowFile
         }
         foreach ($files as $file) {
             preg_match('/^logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt$/', $file->fileName, $match);
-            $date = $match[1];
+            $date = isset($match[1]) ? $match[1] : '';
             $logs[] = [
                 self::LOG_DATE => $date,
                 self::LOG_LINK => LengowMain::getToolboxUrl()

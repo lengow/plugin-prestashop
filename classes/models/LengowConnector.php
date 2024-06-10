@@ -184,18 +184,12 @@ class LengowConnector
                 && self::$instance instanceof LengowConnector) {
             return self::$instance;
         }
-        list($accountIdFound, $accessTokenFound, $secretFound) = LengowConfiguration::getAccessIds();
+        list($accountIdConfig, $accessTokenConfig, $secretConfig) = LengowConfiguration::getAccessIds();
 
-        if (empty($accessTokenFound)
-                || empty($secretFound)
-                || empty($accountIdFound)) {
-            return null;
-        }
-
-        if ($accessToken && $secret) {
-            $connector = new LengowConnector($accessToken, $secret);
+        if ($accountIdConfig) {
+            $connector = new LengowConnector($accessTokenConfig, $secretConfig);
         } else {
-            $connector = new LengowConnector($accessTokenFound, $secretFound);
+            $connector = new LengowConnector($accessToken, $secret);
         }
 
         self::$instance = $connector;
@@ -235,7 +229,11 @@ class LengowConnector
         }
 
         $connector = self::getInstance();
+        if (is_null($connector)) {
+            return false;
+        }
         try {
+
             $connector->connect(false, $logOutput);
         } catch (LengowException $e) {
             $message = LengowMain::decodeLogMessage($e->getMessage(), LengowTranslation::DEFAULT_ISO_CODE);
@@ -277,6 +275,9 @@ class LengowConnector
                 return false;
             }
             $connector = self::getInstance($accessToken, $secret);
+            if (is_null($connector)) {
+                return false;
+            }
             $type = (string) Tools::strtolower($type);
             $args = $authorizationRequired
                 ? array_merge([LengowImport::ARG_ACCOUNT_ID => $accountId], $args)
@@ -311,6 +312,9 @@ class LengowConnector
     public static function getAccountIdByCredentials($accessToken, $secret, $logOutput = false)
     {
         $connector = self::getInstance($accessToken, $secret);
+        if (is_null($connector)) {
+            return null;
+        }
         try {
             $data = $connector->callAction(
                 self::API_ACCESS_TOKEN,
