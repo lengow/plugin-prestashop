@@ -321,7 +321,7 @@ class LengowActionTest extends TestCase
         \Db::deleteTestingInstance();
     }
 
-     /**
+    /**
      * @covers \LengowAction::canSendAction
      */
     public function testCanSendAction()
@@ -351,4 +351,92 @@ class LengowActionTest extends TestCase
         $this->assertFalse($result2, $this->testName.__METHOD__.' false');
         \LengowConnector::disableTestingInstance();
     }
+
+    /**
+     * @covers \LengowAction::createAction()
+     */
+    public function testCreateAction()
+    {
+        $mockParams = [
+            \LengowAction::ARG_CARRIER => 'DHL',
+            \LengowAction::ARG_CARRIER_NAME => 'DHL',
+            \LengowAction::ARG_SHIPPING_METHOD => 'DHL',
+            \LengowAction::ARG_ACTION_TYPE => 'ship'
+        ];
+
+        $mockToSend = [
+            \LengowAction::FIELD_PARAMETERS => $mockParams,
+            \LengowAction::FIELD_ORDER_ID => 1,
+            \LengowAction::FIELD_ACTION_ID => 1,
+            \LengowAction::FIELD_ACTION_TYPE => 'ship',
+            'marketplace_sku' => 'amazon_fr-123456'
+        ];
+        $dbMock = $this->getMockBuilder(\Db::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $dbMock->method('insert')->willReturn(true);
+        \Db::setInstanceForTesting($dbMock);
+        $result = \LengowAction::createAction($mockToSend);
+        $this->assertTrue($result, $this->testName.__METHOD__.' true');
+
+        $dbMock2 = $this->getMockBuilder(\Db::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $dbMock2->method('insert')
+            ->willThrowException(new \PrestaShopDatabaseException('plop'));
+        \Db::setInstanceForTesting($dbMock2);
+        $resultFalse = \LengowAction::createAction($mockToSend);
+        $this->assertFalse($resultFalse, $this->testName.__METHOD__.' false');
+        \Db::deleteTestingInstance();
+    }
+
+    /**
+     * covers \LengowAction::updateAction
+     */
+    public function testUpdateAction()
+    {
+        $mockParams = [
+            \LengowAction::ARG_CARRIER => 'DHL',
+            \LengowAction::ARG_CARRIER_NAME => 'DHL',
+            \LengowAction::ARG_SHIPPING_METHOD => 'DHL',
+            \LengowAction::ARG_ACTION_TYPE => 'ship'
+        ];
+        $mockToSend = [
+            \LengowAction::FIELD_PARAMETERS => $mockParams,
+            \LengowAction::FIELD_ORDER_ID => 1,
+            \LengowAction::FIELD_ACTION_ID => 1,
+            \LengowAction::FIELD_ACTION_TYPE => 'ship',
+            'marketplace_sku' => 'amazon_fr-123456'
+        ];
+        $dbMock = $this->getMockBuilder(\Db::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $dbMock->method('getRow')->willReturn([]);
+        \Db::setInstanceForTesting($dbMock);
+        $resultFalse = \LengowAction::updateAction($mockToSend);
+        $this->assertFalse($resultFalse, $this->testName.__METHOD__.' false');
+        $dbMock2 = $this->getMockBuilder(\Db::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $dbMock2->method('getRow')->willReturn(
+            [
+                \LengowAction::FIELD_ID => 1,
+                \LengowAction::FIELD_RETRY => false,
+                \LengowAction::FIELD_ORDER_ID => 1,
+                \LengowAction::FIELD_ACTION_ID => 1,
+                \LengowAction::FIELD_ACTION_TYPE => 'ship',
+                \LengowAction::FIELD_PARAMETERS => $mockParams,
+                \LengowAction::FIELD_STATE => 'new',
+                \LengowAction::FIELD_CREATED_AT => date('Y-m-d H:i:s'),
+                \LengowAction::FIELD_UPDATED_AT => date('Y-m-d H:i:s')
+            ]
+        );
+        $dbMock2->method('update')->willReturn(true);
+        \Db::setInstanceForTesting($dbMock2);
+        $result = \LengowAction::updateAction($mockToSend);
+        $this->assertTrue($result, $this->testName.__METHOD__.' true');
+         \Db::deleteTestingInstance();
+    }
+
+
 }

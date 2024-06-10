@@ -155,8 +155,8 @@ class LengowConnector
         self::API_PLUGIN,
     ];
 
-    /** @var array List of LengowConnector instances */
-    protected static $instance = [];
+    /** @var LengowConnector|null instance */
+    protected static $instance;
 
     /**
      * Make a new Lengow API Connector.
@@ -176,20 +176,20 @@ class LengowConnector
      * @param string $accessToken
      * @param string $secret
      *
-     * @return bool|\LengowConnector
+     * @return null|\LengowConnector
      */
     public static function getInstance($accessToken = '', $secret = '')
     {
-        if (isset(self::$instance[0])
-                && self::$instance[0] instanceof LengowConnector) {
-            return self::$instance[0];
+        if (!empty(self::$instance)
+                && self::$instance instanceof LengowConnector) {
+            return self::$instance;
         }
         list($accountIdFound, $accessTokenFound, $secretFound) = LengowConfiguration::getAccessIds();
 
         if (empty($accessTokenFound)
                 || empty($secretFound)
                 || empty($accountIdFound)) {
-            return false;
+            return null;
         }
 
         if ($accessToken && $secret) {
@@ -198,7 +198,7 @@ class LengowConnector
             $connector = new LengowConnector($accessTokenFound, $secretFound);
         }
 
-        self::$instance[0] = $connector;
+        self::$instance = $connector;
 
         return $connector;
     }
@@ -206,11 +206,11 @@ class LengowConnector
     /**
      * Will set the instance for testing
      *
-     * @param LengowConnect $testConnector
+     * @param LengowConnector $testConnector
      */
     public static function setInstanceForTesting($testConnector)
     {
-        self::$instance[0] = $testConnector;
+        self::$instance = $testConnector;
     }
 
     /**
@@ -218,7 +218,7 @@ class LengowConnector
      */
     public static function disableTestingInstance()
     {
-        self::$instance = [];
+        self::$instance = null;
     }
 
     /**
