@@ -512,5 +512,37 @@ class LengowActionTest extends TestCase
         \Db::deleteTestingInstance();
     }
 
-
+    /**
+     * @covers \LengowAction::getOldActions
+     */
+    public function testGetOldActions()
+    {
+        $rowMock = [
+            \LengowAction::FIELD_ID => 123,
+            \LengowAction::FIELD_ORDER_ID => 1,
+            \LengowAction::FIELD_ACTION_ID => 456,
+            \LengowAction::FIELD_ACTION_TYPE => 'ship',
+            \LengowAction::FIELD_RETRY => 0,
+            \LengowAction::FIELD_PARAMETERS => [],
+            \LengowAction::FIELD_STATE => 1,
+            \LengowAction::FIELD_CREATED_AT => '1970-01-01 00:00:00',
+            \LengowAction::FIELD_UPDATED_AT => '1970-01-01 00:00:00'
+        ];
+        $dbMock = $this->getMockBuilder(\Db::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $dbMock->method('executeS')
+            ->willThrowException(new \PrestaShopDatabaseException('plop'));
+        \Db::setInstanceForTesting($dbMock);
+        $resultFalse = \LengowAction::getOldActions();
+        $this->assertFalse($resultFalse, $this->testName.__METHOD__.' false');
+        $dbMock2 = $this->getMockBuilder(\Db::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $dbMock2->method('executeS')->willReturn([$rowMock]);
+        \Db::setInstanceForTesting($dbMock2);
+        $resultArray = \LengowAction::getOldActions();
+        $this->assertEquals([$rowMock], $resultArray, $this->testName.__METHOD__.' array');
+        \Db::deleteTestingInstance();
+    }
 }
