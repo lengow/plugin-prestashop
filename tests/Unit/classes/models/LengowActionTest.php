@@ -458,7 +458,7 @@ class LengowActionTest extends TestCase
     }
 
     /**
-     * @covers \LengowAction::finishAllAction
+     * @covers \LengowAction::finishAllActions
      */
     public function testFinishAllAction()
     {
@@ -545,4 +545,5 @@ class LengowActionTest extends TestCase
         $this->assertEquals([$rowMock], $resultArray, $this->testName.__METHOD__.' array');
         \Db::deleteTestingInstance();
     }
+    
 }
