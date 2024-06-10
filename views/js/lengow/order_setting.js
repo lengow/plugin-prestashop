@@ -159,10 +159,24 @@ function checkRequiredSelect() {
     return sendForm;
 }
 
+function displayTypeOfAnonymizationEmail() {
+    var selector = $('.form-group.lengow_type_anonymize_email');
+    if ($("input[name='LENGOW_ANONYMIZE_EMAIL']").prop('checked')) {
+        selector.css('display', 'block');
+    } else {
+        selector.css('display', 'none');
+    }
+}
+
 (function ($) {
     $(document).ready(function () {
         // close stock mp div
         changeStockMP();
+        //close choice of type of anonymization email
+        displayTypeOfAnonymizationEmail();
+        $("input[name='LENGOW_ANONYMIZE_EMAIL']").change(function() {
+            displayTypeOfAnonymizationEmail();
+        });
         // open marketplace list
         $('#lengow_form_order_setting').on('click', '.js-lengow-open-matching', function () {
             $("#country_selector").hide();
