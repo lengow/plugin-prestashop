@@ -438,5 +438,79 @@ class LengowActionTest extends TestCase
          \Db::deleteTestingInstance();
     }
 
+    /**
+     * @covers \LengowAction::finishAction
+     */
+    public function testFinishAction()
+    {
+        $dbMock = $this->getMockBuilder(\Db::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $dbMock->method('update')->willReturn(false);
+        \Db::setInstanceForTesting($dbMock);
+        $resultFalse = \LengowAction::finishAction(1);
+        $this->assertFalse($resultFalse, $this->testName.__METHOD__.' false');
+        $dbMock->method('update')->willReturn(true);
+        \Db::setInstanceForTesting($dbMock);
+        $result = \LengowAction::finishAction(2);
+        $this->assertFalse($result, $this->testName.__METHOD__.' true');
+        \Db::deleteTestingInstance();
+    }
+
+    /**
+     * @covers \LengowAction::finishAllAction
+     */
+    public function testFinishAllAction()
+    {
+        $rowMock = [
+            \LengowAction::FIELD_ID => 123,
+            \LengowAction::FIELD_ORDER_ID => 1,
+            \LengowAction::FIELD_ACTION_ID => 456,
+            \LengowAction::FIELD_ACTION_TYPE => 'ship',
+            \LengowAction::FIELD_RETRY => 0,
+            \LengowAction::FIELD_PARAMETERS => [],
+            \LengowAction::FIELD_STATE => 1,
+            \LengowAction::FIELD_CREATED_AT => '1970-01-01 00:00:00',
+            \LengowAction::FIELD_UPDATED_AT => '1970-01-01 00:00:00'
+        ];
+        $dbMock = $this->getMockBuilder(\Db::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $dbMock->method('update')->willReturn(true);
+        $dbMock->method('executeS')->willReturn([]);
+        \Db::setInstanceForTesting($dbMock);
+        $resultFalse = \LengowAction::finishAllActions(1);
+        $this->assertFalse($resultFalse, $this->testName.__METHOD__.' false');
+        $dbMock->method('executeS')->willReturn([$rowMock]);
+        \Db::setInstanceForTesting($dbMock);
+        $result = \LengowAction::finishAllActions(2);
+        $this->assertFalse($result, $this->testName.__METHOD__.' true');
+        \Db::deleteTestingInstance();
+    }
+
+    /**
+     * @covers \LengowAction::getIntervalTime
+     */
+    public function testGetIntervalTime()
+    {
+        $dbMock = $this->getMockBuilder(\Db::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $dateLast = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $dateLast->sub(new \DateInterval("PT1H"));
+
+        $configMock = [
+            'name' => \LengowConfiguration::LAST_UPDATE_ACTION_SYNCHRONIZATION,
+            'value'=> $dateLast->getTimestamp(),
+            'id_lang' => 0
+        ];
+        $dbMock->method('executeS')->willReturn([$configMock]);
+        \Db::setInstanceForTesting($dbMock);
+        $result = \LengowAction::getIntervalTime();
+        $waited = \LengowAction::MAX_INTERVAL_TIME;
+        $this->assertEquals($waited, $result, $this->testName.__METHOD__.' 1 hour');
+        \Db::deleteTestingInstance();
+    }
+
 
 }
