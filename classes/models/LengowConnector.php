@@ -132,7 +132,7 @@ class LengowConnector
         self::API_ORDER_MOI => 10,
         self::API_ORDER_ACTION => 15,
         self::API_MARKETPLACE => 15,
-        self::API_PLAN => 5,
+        self::API_RESTRICTIONS => 5,
         self::API_CMS => 5,
         self::API_CMS_CATALOG => 10,
         self::API_CMS_MAPPING => 10,
