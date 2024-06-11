@@ -24,7 +24,7 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-// php7.4 -d date.timezone=UTC ./vendor/phpunit/phpunit/phpunit -c modules/lengow/tests/Unit/phpunit.xml modules/lengow/tests/Unit
+// php7.4 -d date.timezone=Europe/Paris ./vendor/phpunit/phpunit/phpunit -c modules/lengow/tests/Unit/phpunit.xml modules/lengow/tests/Unit
 define('_PS_IN_TEST_', true);
 define('_PS_ROOT_DIR_', __DIR__ . '/../../../..');
 define('_PS_MODULE_DIR_', _PS_ROOT_DIR_ . '/modules/');
