@@ -53,7 +53,7 @@ class LengowConnector
     public const API_ORDER_MOI = '/v3.0/orders/moi/';
     public const API_ORDER_ACTION = '/v3.0/orders/actions/';
     public const API_MARKETPLACE = '/v3.0/marketplaces';
-    public const API_PLAN = '/v3.0/plans';
+    public const API_RESTRICTIONS = '/v1.0/restrictions';
     public const API_CMS = '/v3.1/cms';
     public const API_CMS_CATALOG = '/v3.1/cms/catalogs/';
     public const API_CMS_MAPPING = '/v3.1/cms/mapping/';

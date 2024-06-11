@@ -301,7 +301,13 @@ class LengowSync
                 );
             }
         }
-        $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_PLAN, [], '', $logOutput);
+        $result = LengowConnector::queryApi(
+            LengowConnector::GET,
+            LengowConnector::API_RESTRICTIONS,
+            [],
+            '',
+            $logOutput
+        );
         if (isset($result->isFreeTrial)) {
             $status = [
                 'type' => $result->isFreeTrial ? 'free_trial' : '',
