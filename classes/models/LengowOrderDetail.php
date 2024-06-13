@@ -41,10 +41,13 @@ class LengowOrderDetail extends OrderDetail
             '`product_id`=' . (int)$idProduct
         ];
 
+        // Divide the product ID using the underscore character as a separator
         $ids = explode('_', (string)$idProduct);
 
+        // If a second element exists in the $ids array, it is considered the ID of the product attribute
         if (isset($ids[1])) {
             $productAttributeId = (int)$ids[1];
+            // Add condition for product attribute ID
             $whereArr[] = '`product_attribute_id`=' . $productAttributeId;
         }
 
