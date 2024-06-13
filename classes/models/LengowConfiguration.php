@@ -452,8 +452,8 @@ class LengowConfiguration extends Configuration
                     self::PARAM_LABEL => $locale->t("lengow_setting.lengow_type_anonymize_email"),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_COLLECTION => [
-                        ['id' => 0, 'text' => '{encrypted_marketplace_sku_order}@{host_name}'],
-                        ['id' => 1, 'text' => '{marketplace_sku_order}{marketplace_name}@{host_name}']
+                        ['id' => 0, 'text' => 'Encrypted (ex : dd5977970768e679d7140aa901385b15@domain-prestashop.fr)'],
+                        ['id' => 1, 'text' => 'Not encrypted (ex : SKU23424-la_redoute@domain-prestashop.fr)']
                     ],
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
                 ],
