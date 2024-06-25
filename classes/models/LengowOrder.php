@@ -352,7 +352,7 @@ class LengowOrder extends Order
             FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `' . self::FIELD_MARKETPLACE_SKU . '` = \'' . pSQL($marketplaceSku) . '\'
             AND `' . self::FIELD_MARKETPLACE_NAME . '` IN (' . $in . ')
-            AND `order_process_state` != 0';
+            AND (`id_order` IS NOT NULL AND `id_order` != 0)';
         try {
             $results = Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {
