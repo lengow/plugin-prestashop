@@ -47,7 +47,7 @@ class Lengow extends Module
     /**
      * @const string LENGOW MODULE KEY
      */
-    public const MODULE_KEY = '92f99f52f2bc04ed999f02e7038f031c';
+    public const MODULE_KEY = '';
     /**
      * @const array LENGOW MODULE COMPATIBILITY
      */
