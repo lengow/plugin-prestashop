@@ -66,6 +66,7 @@ FOLDER_CONFIG="/tmp/lengow/config"
 FOLDER_EXPORT="/tmp/lengow/export"
 FOLDER_TOOLS="/tmp/lengow/tools"
 FOLDER_TRANSLATION="/tmp/lengow/translations/yml"
+MODULE_KEY = "92f99f52f2bc04ed999f02e7038f031c"
 
 VERT="\e[32m"
 ROUGE="\e[31m"
@@ -88,10 +89,17 @@ echo ${FOLDER}
 # Change config for preprod
 if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "preprod" ]; then
     sed -i 's/lengow.io/lengow.net/g' ${FOLDER}/classes/models/LengowConnector.php
+    sed -i 's/lengow.local/lengow.net/g' ${FOLDER}/classes/models/LengowConnector.php
 fi
 if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "prod" ]; then
     sed -i 's/lengow.net/lengow.io/g' ${FOLDER}/classes/models/LengowConnector.php
+    sed -i 's/lengow.local/lengow.io/g' ${FOLDER}/classes/models/LengowConnector.php
 fi
+# add module key
+if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "prod" ]; then
+    sed -i 's/MODULE_KEY = ''/MODULE_KEY = '${MODULE_KEY}'/g' ${FOLDER}/lengow.php
+    echo -e "- Add module key : ${VERT}DONE${NORMAL}"
+fi    
 # remove TMP FOLDER
 if [ -d "${FOLDER_TMP}" ]
 then
