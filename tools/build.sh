@@ -88,11 +88,7 @@ if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "prod" ]; then
     sed -i 's/lengow.net/lengow.io/g' ${FOLDER}/classes/models/LengowConnector.php
     sed -i 's/lengow.local/lengow.io/g' ${FOLDER}/classes/models/LengowConnector.php
 fi
-# add module key
-if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "prod" ]; then
-    sed -i 's/MODULE_KEY = ''/MODULE_KEY = '${MODULE_KEY}'/g' ${FOLDER}/lengow.php
-    echo -e "- Add module key : ${VERT}DONE${NORMAL}"
-fi    
+
 # remove TMP FOLDER
 if [ -d "${FOLDER_TMP}" ]
 then
@@ -174,6 +170,11 @@ echo -e "- Delete config_it.xml : ${VERT}DONE${NORMAL}"
 # remove todo.txt
 find $FOLDER_TMP -name "todo.txt" -delete
 echo -e "- todo.txt : ${VERT}DONE${NORMAL}"
+# add module key
+if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "prod" ]; then
+    sed -i "s/__LENGOW_PRESTASHOP_PRODUCT_KEY__/${MODULE_KEY}/g" ${FOLDER_TMP}/lengow.php
+    echo -e "- Add module key : ${VERT}DONE${NORMAL}"
+fi    
 # make zip
 cd /tmp
 zip "-r" $ARCHIVE_NAME "lengow"

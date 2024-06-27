@@ -47,7 +47,7 @@ class Lengow extends Module
     /**
      * @const string LENGOW MODULE KEY
      */
-    public const MODULE_KEY = '';
+    public const MODULE_KEY = '__LENGOW_PRESTASHOP_PRODUCT_KEY__';
     /**
      * @const array LENGOW MODULE COMPATIBILITY
      */
