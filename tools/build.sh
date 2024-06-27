@@ -9,6 +9,11 @@
 #     - Clean translation folder
 #     - Remove tools folder
 #     - Remove .git Folder and .gitignore
+source decrypt.sh
+if [ !  -f "./vars.sh" ]; then
+    echo 'Variables file not found. can not build module archive.'    
+    exit 0
+fi
 
 remove_if_exist(){
     if [ -f $1 ]; then
@@ -58,22 +63,10 @@ fi
 if [ ! -z "$2" ] && [ "$2" == "preprod" ]; then
         ARCHIVE_NAME="preprod__${ARCHIVE_NAME}"
 fi
-
-# Variables
-FOLDER_TMP="/tmp/lengow"
-FOLDER_LOGS="/tmp/lengow/logs"
-FOLDER_CONFIG="/tmp/lengow/config"
-FOLDER_EXPORT="/tmp/lengow/export"
-FOLDER_TOOLS="/tmp/lengow/tools"
-FOLDER_TRANSLATION="/tmp/lengow/translations/yml"
-MODULE_KEY = "92f99f52f2bc04ed999f02e7038f031c"
-
-VERT="\e[32m"
-ROUGE="\e[31m"
-NORMAL="\e[39m"
-BLEU="\e[36m"
-DEPLOY_ENV=$2
-
+#load vars
+source vars.sh
+# encrypt vars file
+source encrypt.sh
 
 # process
 echo
@@ -191,3 +184,4 @@ then
 else
     mv $ARCHIVE_NAME ~/shared
 fi
+
