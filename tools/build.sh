@@ -9,9 +9,20 @@
 #     - Clean translation folder
 #     - Remove tools folder
 #     - Remove .git Folder and .gitignore
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     CURRENT_OS=Linux;;
+    Darwin*)    CURRENT_OS=MacOS;;
+    CYGWIN*)    CURRENT_OS=Cygwin;;
+    MINGW*)     CURRENT_OS=MinGw;;
+    MSYS_NT*)   CURRENT_OS=Git;;
+    *)          CURRENT_OS="UNKNOWN:${unameOut}"
+esac
+
+
 source decrypt.sh
 if [ !  -f "./vars.sh" ]; then
-    echo 'Variables file not found. can not build module archive.'    
+    echo 'Variables file not found. can not build module archive.'
     exit 0
 fi
 
@@ -174,7 +185,7 @@ echo -e "- todo.txt : ${VERT}DONE${NORMAL}"
 if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "prod" ]; then
     sed -i "s/__LENGOW_PRESTASHOP_PRODUCT_KEY__/${MODULE_KEY}/g" ${FOLDER_TMP}/lengow.php
     echo -e "- Add module key : ${VERT}DONE${NORMAL}"
-fi    
+fi
 # make zip
 cd /tmp
 zip "-r" $ARCHIVE_NAME "lengow"
