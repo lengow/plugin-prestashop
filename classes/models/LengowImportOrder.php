@@ -1221,8 +1221,13 @@ class LengowImportOrder
 
         if ((bool) LengowConfiguration::getGlobalValue(LengowConfiguration::ANONYMIZE_EMAIL)) {
             $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
-            $billingData['email'] = md5($this->marketplaceSku . '-' . $this->marketplace->name) . '@' . strtolower($domain);
+            if (LengowConfiguration::getGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 0) {
+                $billingData['email'] = md5($this->marketplaceSku . '-' . $this->marketplace->name) . '@' . strtolower($domain);
+            } elseif (LengowConfiguration::getGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 1) {
+                $billingData['email'] = $this->marketplaceSku . '-' . $this->marketplace->name . '@' . $domain;
+            }
         }
+
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.generate_unique_email', ['email' => $billingData['email']]),
@@ -1653,8 +1658,8 @@ class LengowImportOrder
         // add quantity back for re-import order and order shipped by marketplace
         if ($this->isReimported
             || ($this->shippedByMp && !(bool) LengowConfiguration::getGlobalValue(
-                LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED
-            ))
+                    LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED
+                ))
         ) {
             $logMessage = $this->isReimported
                 ? LengowMain::setLogMessage('log.import.quantity_back_reimported_order')

@@ -386,6 +386,7 @@ fr:
     lengow_carrier_semantic_enable_legend: "Avec cette option, faites correspondre le transporteur ou la méthode de transport indiqué par la marketplace avec le nom de vos transporteurs PrestaShop."
     lengow_import_days_title: "Synchroniser toutes les commandes mises à jour depuis"
     lengow_anonymize_email: "Anonymiser les adresses e-mail des clients"
+    lengow_type_anonymize_email: "Sélectionner le type d'anonymisation des emails des clients"
     lengow_active_new_order_hook: "Activer le Hook des nouvelles commandes (déclenche l'événement)"
     lengow_active_new_order_hook_legend: "Déclenchera l'événement des nouvelles commandes pour les autres plugins"
     lengow_import_days_legend: "Activez cette option si vous avez des commandes en erreur en attente. Cela vous permet de réimporter les commandes passées depuis le dernier import réussi."
