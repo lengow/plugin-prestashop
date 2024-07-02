@@ -9,6 +9,7 @@
 #     - Clean translation folder
 #     - Remove tools folder
 #     - Remove .git Folder and .gitignore
+
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     CURRENT_OS=Linux;;
@@ -40,13 +41,11 @@ remove_directory(){
 remove_files(){
     DIRECTORY="$1"
     FILE="$2"
-    if [ -f "${DIRECTORY}/${FILE}" ]
-    then
-        find "$DIRECTORY" -name "$FILE" -nowarn -exec rm -rf {} \;
+    if [ -f "${DIRECTORY}/${FILE}" ]; then
+        find "$DIRECTORY" -name "$FILE" -exec rm -rf {} \;
         echo -e "- Delete ${FILE} : ${VERT}DONE${NORMAL}"
     fi
-    if [ -d "${DIRECTORY}/${FILE}" ]
-    then
+    if [ -d "${DIRECTORY}/${FILE}" ]; then
         rm -Rf "${DIRECTORY}/${FILE}"
     fi
 }
@@ -56,26 +55,30 @@ remove_directories(){
     find "$DIRECTORY" -maxdepth 1 -mindepth 1 -type d -exec rm -rf {} \;
     echo -e "- Delete $FILE : ${VERT}DONE${NORMAL}"
 }
+
 # check parameters
 if [ -z "$1" ]; then
-	echo 'Version parameter is not set'
-	echo
-	exit 0
+    echo 'Version parameter is not set'
+    echo
+    exit 0
 else
-	VERSION="$1"
+    VERSION="$1"
     ARCHIVE_NAME="lengow.prestashop.${VERSION}.zip"
 fi
+
 # Check parameters
 if [ -z "$2" ]; then
-	echo 'Deploy environment is not set: preprod or prod'
-	echo
-	exit 0
+    echo 'Deploy environment is not set: preprod or prod'
+    echo
+    exit 0
 fi
+
 if [ ! -z "$2" ] && [ "$2" == "preprod" ]; then
-        ARCHIVE_NAME="preprod__${ARCHIVE_NAME}"
+    ARCHIVE_NAME="preprod__${ARCHIVE_NAME}"
 fi
 echo "ARCHIVE_NAME will be: ${ARCHIVE_NAME}"
-#load vars
+
+# load vars
 source vars.sh
 # encrypt vars file
 source encrypt.sh
@@ -92,40 +95,41 @@ PWD=$(pwd)
 FOLDER=$(dirname "${PWD}")
 echo "${FOLDER}"
 sleep 3
+
 # Change config for preprod
 if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "preprod" ]; then
-    if [ "$CURRENT_OS" == "Macos"]; then
+    if [ "$CURRENT_OS" == "MacOS" ]; then
         sed -i '' 's/lengow.io/lengow.net/g' "${FOLDER}/classes/models/LengowConnector.php"
         sed -i '' 's/lengow.local/lengow.net/g' "${FOLDER}/classes/models/LengowConnector.php"
     else
-        sed -i 's/lengow.io/lengow.net/g' ${FOLDER}/classes/models/LengowConnector.php
-        sed -i 's/lengow.local/lengow.net/g' ${FOLDER}/classes/models/LengowConnector.php
+        sed -i 's/lengow.io/lengow.net/g' "${FOLDER}/classes/models/LengowConnector.php"
+        sed -i 's/lengow.local/lengow.net/g' "${FOLDER}/classes/models/LengowConnector.php"
     fi
 fi
 
 if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "prod" ]; then
-    if [ "$CURRENT_OS" == "Macos" ]; then
+    if [ "$CURRENT_OS" == "MacOS" ]; then
         sed -i '' 's/lengow.net/lengow.io/g' "${FOLDER}/classes/models/LengowConnector.php"
         sed -i '' 's/lengow.local/lengow.io/g' "${FOLDER}/classes/models/LengowConnector.php"
     else
-        sed -i 's/lengow.net/lengow.io/g' ${FOLDER}/classes/models/LengowConnector.php
-        sed -i 's/lengow.local/lengow.io/g' ${FOLDER}/classes/models/LengowConnector.php
+        sed -i 's/lengow.net/lengow.io/g' "${FOLDER}/classes/models/LengowConnector.php"
+        sed -i 's/lengow.local/lengow.io/g' "${FOLDER}/classes/models/LengowConnector.php"
     fi
 fi
 
 # remove TMP FOLDER
-if [ -d "${FOLDER_TMP}" ]
-then
+if [ -d "${FOLDER_TMP}" ]; then
     rm -Rf "${FOLDER_TMP}"
 fi
 mkdir "${FOLDER_TMP}"
 
 if [ ! -d "$FOLDER" ]; then
-	echo -e "Folder doesn't exist : ${ROUGE}ERROR${NORMAL}"
-	echo
-	exit 0
+    echo -e "Folder doesn't exist : ${ROUGE}ERROR${NORMAL}"
+    echo
+    exit 0
 fi
-if [ "$CURRENT_OS" == "Macos" ]; then
+
+if [ "$CURRENT_OS" == "MacOS" ]; then
     PHP=$(realpath "$(which php)")
 else
     PHP=$(which php8.1)
@@ -199,23 +203,22 @@ find "$FOLDER_TMP" -name "todo.txt" -delete
 echo -e "- todo.txt : ${VERT}DONE${NORMAL}"
 # add module key
 if [ ! -z "${DEPLOY_ENV}" ] && [ "${DEPLOY_ENV}" == "prod" ]; then
-    if [ "$CURRENT_OS" == "Macos" ]; then
+    if [ "$CURRENT_OS" == "MacOS" ]; then
         sed -i '' "s/__LENGOW_PRESTASHOP_PRODUCT_KEY__/${MODULE_KEY}/g" "${FOLDER_TMP}/lengow.php"
     else
         sed -i "s/__LENGOW_PRESTASHOP_PRODUCT_KEY__/${MODULE_KEY}/g" ${FOLDER_TMP}/lengow.php
     fi
     echo -e "- Add module key : ${VERT}DONE${NORMAL}"
 fi
+
 # make zip
 cd /tmp
 zip "-r" "$ARCHIVE_NAME" "lengow"
 echo -e "- Build archive : ${VERT}DONE${NORMAL}"
-if [ -d  "~/Bureau" ]
-then
+if [ -d  "~/Bureau" ]; then
     mv "$ARCHIVE_NAME" ~/Bureau
 else
     mv "$ARCHIVE_NAME" ~/shared
 fi
 sleep 3
 echo "End of build."
-
