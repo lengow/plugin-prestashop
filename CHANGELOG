@@ -1,4 +1,13 @@
 =============================================================
+Version 3.5.3
+=============================================================
+ - BugFix: fix same product id registred for lengow order line
+ - BugFix: fix get order from lengow order returning false in specific case
+ - BugFix: security fixes with Db escaping
+ - BugFix: move module product key from versioning
+ - Feature: add configuration select type of anonymization of email customer for order
+ - Feature: change api plan to api restrictions
+=============================================================
 Version 3.5.2
 =============================================================
   - BugFix: FBA orders amazon_us default address data

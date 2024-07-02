@@ -1065,4 +1065,3 @@ class LengowProduct extends Product
         throw new LengowException(LengowMain::setLogMessage('log.export.error_cant_find_image_size'));
     }
 }
-

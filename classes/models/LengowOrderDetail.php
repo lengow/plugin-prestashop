@@ -37,23 +37,23 @@ class LengowOrderDetail extends OrderDetail
     public static function findByOrderIdProductId($idOrder, $idProduct)
     {
         $whereArr = [
-            '`id_order`=' . (int)$idOrder,
-            '`product_id`=' . (int)$idProduct
+            '`id_order`=' . (int) $idOrder,
+            '`product_id`=' . (int) $idProduct,
         ];
 
         // Divide the product ID using the underscore character as a separator
-        $ids = explode('_', (string)$idProduct);
+        $ids = explode('_', (string) $idProduct);
 
         // If a second element exists in the $ids array, it is considered the ID of the product attribute
         if (isset($ids[1])) {
-            $productAttributeId = (int)$ids[1];
+            $productAttributeId = (int) $ids[1];
             // Add condition for product attribute ID
             $whereArr[] = '`product_attribute_id`=' . $productAttributeId;
         }
 
         $sql = 'SELECT `id_order_detail` FROM `' . _DB_PREFIX_ . 'order_detail` WHERE ' . implode(' AND ', $whereArr);
 
-        return (int)Db::getInstance()->getValue($sql);
+        return (int) Db::getInstance()->getValue($sql);
     }
 
     /**

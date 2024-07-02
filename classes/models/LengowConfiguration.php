@@ -449,11 +449,11 @@ class LengowConfiguration extends Configuration
                 self::TYPE_ANONYMIZE_EMAIL => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
                     self::PARAM_GLOBAL => true,
-                    self::PARAM_LABEL => $locale->t("lengow_setting.lengow_type_anonymize_email"),
+                    self::PARAM_LABEL => $locale->t('lengow_setting.lengow_type_anonymize_email'),
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_COLLECTION => [
                         ['id' => 0, 'text' => 'Encrypted (ex : dd5977970768e679d7140aa901385b15@domain-prestashop.fr)'],
-                        ['id' => 1, 'text' => 'Not encrypted (ex : SKU23424-la_redoute@domain-prestashop.fr)']
+                        ['id' => 1, 'text' => 'Not encrypted (ex : SKU23424-la_redoute@domain-prestashop.fr)'],
                     ],
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
                 ],

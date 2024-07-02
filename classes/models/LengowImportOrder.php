@@ -1658,8 +1658,8 @@ class LengowImportOrder
         // add quantity back for re-import order and order shipped by marketplace
         if ($this->isReimported
             || ($this->shippedByMp && !(bool) LengowConfiguration::getGlobalValue(
-                    LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED
-                ))
+                LengowConfiguration::SHIPPED_BY_MARKETPLACE_STOCK_ENABLED
+            ))
         ) {
             $logMessage = $this->isReimported
                 ? LengowMain::setLogMessage('log.import.quantity_back_reimported_order')
