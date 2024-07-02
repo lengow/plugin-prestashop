@@ -29,6 +29,33 @@ if (!defined('_PS_VERSION_')) {
 class Lengow extends Module
 {
     /**
+     * @const string LENGOW MODULE NAME
+     */
+    public const MODULE_NAME = 'lengow';
+    /**
+     * @const string LENGOW MODULE TAB
+     */
+    public const MODULE_TAB = 'export';
+    /**
+     * @const string LENGOW MODULE VERSION
+     */
+    public const MODULE_VERSION = '3.5.2';
+    /**
+     * @const string LENGOW MODULE AUTHOR
+     */
+    public const MODULE_AUTHOR = 'Lengow';
+    /**
+     * @const string LENGOW MODULE KEY
+     */
+    public const MODULE_KEY = '__LENGOW_PRESTASHOP_PRODUCT_KEY__';
+    /**
+     * @const array LENGOW MODULE COMPATIBILITY
+     */
+    public const MODULE_COMPATIBILITY = [
+        'min' => '1.7.7.0',
+        'max' => '8.99.99',
+    ];    
+    /**
      * Lengow Install Class
      */
     private $installClass;
@@ -43,15 +70,12 @@ class Lengow extends Module
      */
     public function __construct()
     {
-        $this->name = 'lengow';
-        $this->tab = 'export';
-        $this->version = '3.5.2';
-        $this->author = 'Lengow';
-        $this->module_key = '92f99f52f2bc04ed999f02e7038f031c';
-        $this->ps_versions_compliancy = [
-            'min' => '1.7.7.0',
-            'max' => '8.99.99',
-        ];
+        $this->name = self::MODULE_NAME;
+        $this->tab = self::MODULE_TAB;
+        $this->version = self::MODULE_VERSION;
+        $this->author = self::MODULE_AUTHOR;
+        $this->module_key = self::MODULE_KEY;
+        $this->ps_versions_compliancy = self::MODULE_COMPATIBILITY
         $this->bootstrap = true;
 
         parent::__construct();
