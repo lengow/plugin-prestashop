@@ -1450,7 +1450,10 @@ class LengowImportOrder
                         continue;
                     }
                     $carrierMktp = LengowCarrier::getCarrierMarketplaceById($carrierMktpId);
-                    if ($carrierMktp['carrier_marketplace_name'] === $this->carrierMethod) {
+                    if (
+                        $carrierMktp['carrier_marketplace_name'] === $this->carrierMethod
+                        || $carrierMktp['carrier_marketplace_label'] === $this->carrierMethod
+                    ) {
                         $idCarrier = $carrierIdMatched;
                     }
                 }
