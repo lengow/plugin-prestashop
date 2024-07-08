@@ -127,6 +127,15 @@ class LengowTranslation
      */
     public function loadFile($isoCode, $filename = null)
     {
+        $validCodes = [
+            self::ISO_CODE_EN,
+            self::ISO_CODE_FR,
+            self::ISO_CODE_ES,
+            self::ISO_CODE_IT,
+        ];
+        if (!in_array($isoCode, $validCodes)) {
+            return false;
+        }
         if (!$filename) {
             $sep = DIRECTORY_SEPARATOR;
             $filename = LengowMain::getLengowFolder()

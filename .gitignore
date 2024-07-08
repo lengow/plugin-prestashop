@@ -6,3 +6,4 @@ config.xml
 config_fr.xml
 **/.DS_Store
 config/marketplaces.json
+tools/vars.sh

@@ -45,9 +45,9 @@ class Lengow extends Module
     {
         $this->name = 'lengow';
         $this->tab = 'export';
-        $this->version = '3.5.2';
+        $this->version = '3.5.3';
         $this->author = 'Lengow';
-        $this->module_key = '92f99f52f2bc04ed999f02e7038f031c';
+        $this->module_key = '__LENGOW_PRESTASHOP_PRODUCT_KEY__';
         $this->ps_versions_compliancy = [
             'min' => '1.7.7.0',
             'max' => '8.99.99',

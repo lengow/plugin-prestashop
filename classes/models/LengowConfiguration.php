@@ -62,6 +62,7 @@ class LengowConfiguration extends Configuration
     public const CANCELED_ORDER_ID = 'LENGOW_ORDER_ID_CANCEL';
     public const SHIPPED_BY_MARKETPLACE_ORDER_ID = 'LENGOW_ORDER_ID_SHIPPEDBYMP';
     public const ANONYMIZE_EMAIL = 'LENGOW_ANONYMIZE_EMAIL';
+    public const TYPE_ANONYMIZE_EMAIL = 'LENGOW_TYPE_ANONYMIZE_EMAIL';
     public const ACTIVE_NEW_ORDER_HOOK = 'LENGOW_ACTIVE_NEW_ORDER_HOOK';
     public const SYNCHRONIZATION_DAY_INTERVAL = 'LENGOW_IMPORT_DAYS';
     public const SEMANTIC_MATCHING_CARRIER_ENABLED = 'LENGOW_CARRIER_SEMANTIC_ENABLE';
@@ -143,6 +144,7 @@ class LengowConfiguration extends Configuration
         self::SHIPPED_ORDER_ID => 'shipped_order_id',
         self::CANCELED_ORDER_ID => 'canceled_order_id',
         self::ANONYMIZE_EMAIL => 'anonymize_customer_email',
+        self::TYPE_ANONYMIZE_EMAIL => 'type_anonymize_email',
         self::ACTIVE_NEW_ORDER_HOOK => 'active_new_order_hook',
         self::SHIPPED_BY_MARKETPLACE_ORDER_ID => 'shipped_by_marketplace_order_id',
         self::SYNCHRONIZATION_DAY_INTERVAL => 'synchronization_day_interval',
@@ -443,6 +445,17 @@ class LengowConfiguration extends Configuration
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_UPDATE => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
+                ],
+                self::TYPE_ANONYMIZE_EMAIL => [
+                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
+                    self::PARAM_GLOBAL => true,
+                    self::PARAM_LABEL => $locale->t('lengow_setting.lengow_type_anonymize_email'),
+                    self::PARAM_DEFAULT_VALUE => 0,
+                    self::PARAM_COLLECTION => [
+                        ['id' => 0, 'text' => 'Encrypted (ex : dd5977970768e679d7140aa901385b15@domain-prestashop.fr)'],
+                        ['id' => 1, 'text' => 'Not encrypted (ex : SKU23424-la_redoute@domain-prestashop.fr)'],
+                    ],
+                    self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
                 ],
                 self::ACTIVE_NEW_ORDER_HOOK => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,

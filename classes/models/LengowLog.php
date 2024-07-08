@@ -99,7 +99,7 @@ class LengowLog extends LengowFile
         }
         foreach ($files as $file) {
             preg_match('/^logs-([0-9]{4}-[0-9]{2}-[0-9]{2})\.txt$/', $file->fileName, $match);
-            $date = $match[1];
+            $date = $match[1] ?? '';
             $logs[] = [
                 self::LOG_DATE => $date,
                 self::LOG_LINK => LengowMain::getToolboxUrl()
@@ -162,6 +162,16 @@ class LengowLog extends LengowFile
         if ($logFiles) {
             foreach ($logFiles as $logFile) {
                 $filePath = $logFile->getPath();
+                if (!file_exists($filePath)) {
+                    continue;
+                }
+                $fileInfo = pathinfo($filePath);
+                if ($fileInfo['extension'] !== 'txt') {
+                    continue;
+                }
+                if (strrpos($fileInfo['basename'], 'logs') === false) {
+                    continue;
+                }
                 $handle = fopen($filePath, 'rb');
                 $fileSize = filesize($filePath);
                 if ($fileSize > 0) {

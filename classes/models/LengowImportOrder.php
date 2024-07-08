@@ -1221,8 +1221,13 @@ class LengowImportOrder
 
         if ((bool) LengowConfiguration::getGlobalValue(LengowConfiguration::ANONYMIZE_EMAIL)) {
             $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
-            $billingData['email'] = md5($this->marketplaceSku . '-' . $this->marketplace->name) . '@' . strtolower($domain);
+            if (LengowConfiguration::getGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 0) {
+                $billingData['email'] = md5($this->marketplaceSku . '-' . $this->marketplace->name) . '@' . strtolower($domain);
+            } elseif (LengowConfiguration::getGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 1) {
+                $billingData['email'] = $this->marketplaceSku . '-' . $this->marketplace->name . '@' . $domain;
+            }
         }
+
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.generate_unique_email', ['email' => $billingData['email']]),
@@ -1445,7 +1450,10 @@ class LengowImportOrder
                         continue;
                     }
                     $carrierMktp = LengowCarrier::getCarrierMarketplaceById($carrierMktpId);
-                    if ($carrierMktp['carrier_marketplace_name'] === $this->carrierMethod) {
+                    if (
+                        $carrierMktp['carrier_marketplace_name'] === $this->carrierMethod
+                        || $carrierMktp['carrier_marketplace_label'] === $this->carrierMethod
+                    ) {
                         $idCarrier = $carrierIdMatched;
                     }
                 }
