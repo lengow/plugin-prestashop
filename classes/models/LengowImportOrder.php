@@ -1221,9 +1221,9 @@ class LengowImportOrder
 
         if ((bool) LengowConfiguration::getGlobalValue(LengowConfiguration::ANONYMIZE_EMAIL)) {
             $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
-            if (LengowConfiguration::getGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 0) {
+            if ((int) LengowConfiguration::getGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 0) {
                 $billingData['email'] = md5($this->marketplaceSku . '-' . $this->marketplace->name) . '@' . strtolower($domain);
-            } elseif (LengowConfiguration::getGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 1) {
+            } elseif ((int) LengowConfiguration::getGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 1) {
                 $billingData['email'] = $this->marketplaceSku . '-' . $this->marketplace->name . '@' . $domain;
             }
         }
