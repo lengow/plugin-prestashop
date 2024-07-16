@@ -482,7 +482,7 @@ class LengowImport
             return;
         }
         if ($days) {
-            $intervalTime = $days * self::MIN_INTERVAL_TIME;
+            $intervalTime = floor($days * self::MIN_INTERVAL_TIME);
             $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
         } else {
             // order recovery updated since ... days
