@@ -489,7 +489,7 @@ class LengowImport
             $importDays = LengowConfiguration::getTypedGlobalValue(
                 LengowConfiguration::SYNCHRONIZATION_DAY_INTERVAL
             );
-            $intervalTime = $importDays * self::MIN_INTERVAL_TIME;
+            $intervalTime = floor($importDays * self::MIN_INTERVAL_TIME);
             // add security for older versions of the plugin
             $intervalTime = $intervalTime < self::MIN_INTERVAL_TIME ? self::MIN_INTERVAL_TIME : $intervalTime;
             $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
