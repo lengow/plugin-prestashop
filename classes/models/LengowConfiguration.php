@@ -107,6 +107,7 @@ class LengowConfiguration extends Configuration
     public const RETURN_TYPE_INTEGER = 'integer';
     public const RETURN_TYPE_ARRAY = 'array';
     public const RETURN_TYPE_STRING = 'string';
+    public const RETURN_TYPE_FLOAT = 'float';
 
     /**
      * @var array params correspondence keys for toolbox
@@ -436,7 +437,7 @@ class LengowConfiguration extends Configuration
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_days_title'),
                     self::PARAM_DEFAULT_VALUE => 3,
                     self::PARAM_UPDATE => true,
-                    self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
+                    self::PARAM_RETURN => self::RETURN_TYPE_FLOAT,
                 ],
                 self::ANONYMIZE_EMAIL => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
@@ -1001,6 +1002,16 @@ class LengowConfiguration extends Configuration
     }
 
     /**
+     * Will return the global the typed global value
+     * @return mixed
+     */
+    public static function getTypedGlobalValue($key)
+    {
+        $value = self::get($key);
+        return self::getValueWithCorrectType($key, $value);
+    }
+
+    /**
      * Get configuration value in correct type
      *
      * @param string $key Lengow configuration key
@@ -1023,6 +1034,8 @@ class LengowConfiguration extends Configuration
                         : [];
                 case self::RETURN_TYPE_STRING:
                     return (string) $value;
+                case self::RETURN_TYPE_FLOAT:
+                    return (float) $value;
             }
         }
 
