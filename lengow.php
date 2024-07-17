@@ -181,6 +181,8 @@ class Lengow extends Module
     /**
      * Order status update
      * Event This hook launches modules when the status of an order changes
+     *
+     * @param array $args Arguments of hook
      */
     public function hookActionOrderStatusUpdate($args)
     {
