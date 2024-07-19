@@ -317,6 +317,9 @@ class LengowHook
         if (!isset($args['id_order'])) {
             return;
         }
+        if (!(bool) LengowConfiguration::get(LengowConfiguration::SEND_EMAIL_DISABLED)) {
+            return;
+        }
         $lengowOrder = new LengowOrder($args['id_order']);
         // not send state if we are on lengow import module
         if (LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
@@ -392,3 +395,4 @@ class LengowHook
         }
     }
 }
+

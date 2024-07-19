@@ -381,6 +381,8 @@ lengow_setting.lengow_tracking_id_legend|El nombre del identificador único indi
 lengow_setting.lengow_currency_conversion_title|Convierte la divisa de tu pedido
 lengow_setting.lengow_currency_conversion_legend|Todos los pedidos importados a Magento serán transformados automáticamente con la moneda que seleccionaste en Lengow
 lengow_setting.lengow_currency_conversion_switch|Activa la conversion
+lengow_setting.lengow_disable_send_email_title|Deshabilitar el envío de email
+lengow_setting.lengow_disable_send_email_legend|Deshabilitar el envío de email al cambiar el estado del pedido
 lengow_log.error.nb_order_imported|%{nb_order} pedido(s) importada
 lengow_log.error.nb_order_updated|%{nb_order} pedido(s) actualizado
 lengow_log.error.nb_order_with_error|%{nb_order} pedido(s) con errores
