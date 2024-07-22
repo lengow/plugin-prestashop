@@ -85,6 +85,7 @@ class LengowConfiguration extends Configuration
     public const LAST_UPDATE_PLUGIN_DATA = 'LENGOW_PLUGIN_DATA_UPDATE';
     public const LAST_UPDATE_AUTHORIZATION_TOKEN = 'LENGOW_LAST_AUTH_TOKEN_UPDATE';
     public const LAST_UPDATE_PLUGIN_MODAL = 'LENGOW_LAST_PLUGIN_MODAL';
+    public const SEND_EMAIL_DISABLED = 'LENGOW_SEND_EMAIL_DISABLED';
 
     /* Configuration parameters */
     public const PARAM_COLLECTION = 'collection';
@@ -168,6 +169,7 @@ class LengowConfiguration extends Configuration
         self::LAST_UPDATE_PLUGIN_DATA => 'last_update_plugin_data',
         self::LAST_UPDATE_AUTHORIZATION_TOKEN => 'last_update_authorization_token',
         self::LAST_UPDATE_PLUGIN_MODAL => 'last_update_plugin_modal',
+        self::SEND_EMAIL_DISABLED => 'send_email_disabled',
     ];
 
     /**
@@ -574,6 +576,13 @@ class LengowConfiguration extends Configuration
                 self::LAST_UPDATE_PLUGIN_MODAL => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
+                ],
+                self::SEND_EMAIL_DISABLED => [
+                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
+                    self::PARAM_GLOBAL => true,
+                    self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
+                    self::PARAM_LABEL => $locale->t('lengow_setting.lengow_disable_send_email_title'),
+                    self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_disable_send_email_legend'),
                 ],
             ];
         }
@@ -1029,3 +1038,4 @@ class LengowConfiguration extends Configuration
         return $value;
     }
 }
+

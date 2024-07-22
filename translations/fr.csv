@@ -381,6 +381,8 @@ lengow_setting.lengow_tracking_id_legend|Le nom de l'identifiant unique indiqué
 lengow_setting.lengow_currency_conversion_title|Convertir la devise de vos commandes
 lengow_setting.lengow_currency_conversion_legend|Toutes les commandes importées dans PrestaShop seront automatiquement converties dans la devise choisie dans Lengow
 lengow_setting.lengow_currency_conversion_switch|Activer la conversion de devises
+lengow_setting.lengow_disable_send_email_title|Désactiver l'envoi d'email
+lengow_setting.lengow_disable_send_email_legend|Désactive l'envoi d'email lors des changements de statut de commande
 lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs

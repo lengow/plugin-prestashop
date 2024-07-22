@@ -141,9 +141,25 @@ class Lengow extends Module
     }
 
     /**
+     * Hook on Home page
+     */
+    public function hookDisplayHome()
+    {
+        $this->hookClass->hookHome();
+    }
+
+    /**
      * Hook on Payment page
      */
     public function hookPaymentTop()
+    {
+        $this->hookClass->hookPaymentTop();
+    }
+
+    /**
+     * Hook on Payment page
+     */
+    public function hookDisplayPaymentTop()
     {
         $this->hookClass->hookPaymentTop();
     }
@@ -159,11 +175,31 @@ class Lengow extends Module
     }
 
     /**
+     * Hook for generate tracker on front footer page
+     *
+     * @return mixed
+     */
+    public function hookDisplayFooter()
+    {
+        return $this->hookClass->hookFooter();
+    }
+
+    /**
      * Hook on order confirmation page to init order's product list
      *
      * @param array $args Arguments of hook
      */
     public function hookOrderConfirmation($args)
+    {
+        $this->hookClass->hookOrderConfirmation($args);
+    }
+
+    /**
+     * Hook on order confirmation page to init order's product list
+     *
+     * @param array $args Arguments of hook
+     */
+    public function hookDisplayOrderConfirmation($args)
     {
         $this->hookClass->hookOrderConfirmation($args);
     }
@@ -177,6 +213,25 @@ class Lengow extends Module
     {
         $this->hookClass->hookUpdateOrderStatus($args);
     }
+
+    /**
+     * Order status update
+     * Event This hook launches modules when the status of an order changes
+     */
+    public function hookActionOrderStatusUpdate($args)
+    {
+        $this->hookClass->hookUpdateOrderStatus($args);
+    }
+
+    /**
+     * Order status post update
+     * @param array $args Arguments of hook
+     */
+    public function hookActionOrderStatusPostUpdate($args)
+    {
+        $this->hookClass->hookPostUpdateOrderStatus($args);
+    }
+
 
     /**
      * Hook after an status update to synchronize status with lengow
