@@ -425,7 +425,7 @@ class LengowAction
     public static function createAction($params)
     {
         $insertParams = [
-            self::FIELD_PARAMETERS => pSQL(json_encode($params[self::FIELD_PARAMETERS])),
+            self::FIELD_PARAMETERS => pSQL(json_encode($params[self::FIELD_PARAMETERS]), true),
             self::FIELD_ORDER_ID => (int) $params[self::FIELD_ORDER_ID],
             self::FIELD_ACTION_ID => (int) $params[self::FIELD_ACTION_ID],
             self::FIELD_ACTION_TYPE => pSQL($params[self::FIELD_ACTION_TYPE]),
