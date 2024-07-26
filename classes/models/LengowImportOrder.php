@@ -1219,11 +1219,11 @@ class LengowImportOrder
         // generation of fictitious email
         $billingData['email'] = $this->getCustomerEmail();
 
-        if ((bool) LengowConfiguration::getGlobalValue(LengowConfiguration::ANONYMIZE_EMAIL)) {
+        if ((LengowConfiguration::getTypedGlobalValue(LengowConfiguration::ANONYMIZE_EMAIL)) {
             $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
-            if ((int) LengowConfiguration::getGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 0) {
+            if (LengowConfiguration::getTypedGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 0) {
                 $billingData['email'] = md5($this->marketplaceSku . '-' . $this->marketplace->name) . '@' . strtolower($domain);
-            } elseif ((int) LengowConfiguration::getGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 1) {
+            } elseif (LengowConfiguration::getTypedGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 1) {
                 $billingData['email'] = $this->marketplaceSku . '-' . $this->marketplace->name . '@' . $domain;
             }
         }
