@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.sticky-icon').forEach(icon => {
         icon.addEventListener('click', function() {
-            const shopId = this.dataset.shopId; // Assurez-vous que cet attribut est bien présent dans le HTML
+            const shopId = this.dataset.shopId;
             const stickySwitches = document.querySelectorAll(`.sticky-switch${shopId}`);
 
             stickySwitches.forEach(function(switchElem) {
@@ -113,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Gérer les changements de switch produit
         $('.lgw-container').on('change', '.lengow_switch_product', function () {
             var href = $(this).attr('data-href');
             var action = $(this).attr('data-action');
