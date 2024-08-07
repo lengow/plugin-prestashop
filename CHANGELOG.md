@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.6.0](https://github.com/lengow/plugin-prestashop/compare/v3.5.3...v3.6.0) (2024-08-07)
+
+
+### Features
+
+* **cicd:** Add a besic CI to the project ([#15](https://github.com/lengow/plugin-prestashop/issues/15)) ([3c6c19c](https://github.com/lengow/plugin-prestashop/commit/3c6c19c0aae423409828aaf8cdbffa911c9acf6b))
+
+
+### Miscellaneous
+
+* **clean:** Remove obsolete files ([3c6c19c](https://github.com/lengow/plugin-prestashop/commit/3c6c19c0aae423409828aaf8cdbffa911c9acf6b))
+* **docs:** Precise Changelog file type ([3c6c19c](https://github.com/lengow/plugin-prestashop/commit/3c6c19c0aae423409828aaf8cdbffa911c9acf6b))
+
+## Changelog
+
 
 =============================================================
 Version 3.5.3
