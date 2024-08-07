@@ -412,6 +412,8 @@ it:
     lengow_currency_conversion_title: "Converti la divisa del tuo ordine"
     lengow_currency_conversion_legend: "Tutti gli ordini importati in PrestaShop saranno automaticamente importati nella Divisa che hai selezionato in Lengow"
     lengow_currency_conversion_switch: "Attivare la conversione"
+    lengow_disable_send_email_title: "Disabilita l'invio di email"
+    lengow_disable_send_email_legend: "Disabilita l'invio di email al cambiamento dello stato dell'ordine"
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} ordine importato"

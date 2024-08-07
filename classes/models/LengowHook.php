@@ -117,7 +117,7 @@ class LengowHook
             'displayBackOfficeHeader' => '1.6',
         ];
         foreach ($lengowHooks as $hook => $version) {
-            if ($version <= Tools::substr(_PS_VERSION_, 0, 3)) {
+            if ((float) $version <= (float) Tools::substr(_PS_VERSION_, 0, 3)) {
                 if ($this->module->isRegisteredInHook($hook)) {
                     continue;
                 }
@@ -178,9 +178,14 @@ class LengowHook
      * Hook on order confirmation page to init order's product list
      *
      * @param array $args arguments of hook
+     *
+     * @return mixed null|void
      */
     public function hookOrderConfirmation($args)
     {
+        if (!isset($args['objOrder']) && !isset($args['order'])) {
+            return;
+        }
         $i = 0;
         $productsCart = [];
         $order = isset($args['objOrder']) ? $args['objOrder'] : $args['order'];
@@ -234,6 +239,9 @@ class LengowHook
      */
     public function hookAdminOrder($args)
     {
+        if (!isset($args['id_order'])) {
+            return;
+        }
         if (LengowOrder::isFromLengow($args['id_order'])) {
             $lengowLink = new LengowLink();
             $locale = new LengowTranslation();
@@ -301,9 +309,17 @@ class LengowHook
      * Hook before an status' update to synchronize status with lengow
      *
      * @param array $args arguments of hook
+     *
+     * @return mixed null|void
      */
     public function hookUpdateOrderStatus($args)
     {
+        if (!isset($args['id_order'])) {
+            return;
+        }
+        if (!(bool) LengowConfiguration::get(LengowConfiguration::SEND_EMAIL_DISABLED)) {
+            return;
+        }
         $lengowOrder = new LengowOrder($args['id_order']);
         // not send state if we are on lengow import module
         if (LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
@@ -317,9 +333,14 @@ class LengowHook
      * Hook after an status' update to synchronize status with lengow
      *
      * @param array $args arguments of hook
+     *
+     * @return mixed null|void
      */
     public function hookPostUpdateOrderStatus($args)
     {
+        if (!isset($args['id_order'])) {
+            return;
+        }
         $lengowOrder = new LengowOrder($args['id_order']);
         // do nothing if order is not from Lengow or is being imported
         if (LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
@@ -344,9 +365,17 @@ class LengowHook
      * Update, if isset tracking number
      *
      * @param array $args arguments of hook
+     *
+     * @return mixed null|void
      */
     public function hookActionObjectUpdateAfter($args)
     {
+        if (!isset($args['object']->id)) {
+            return;
+        }
+        if (! $args['object'] instanceof Order) {
+            return;
+        }
         if (($args['object'] instanceof Order) && LengowOrder::isFromLengow($args['object']->id)) {
             $lengowOrder = new LengowOrder($args['object']->id);
 
@@ -366,3 +395,4 @@ class LengowHook
         }
     }
 }
+
