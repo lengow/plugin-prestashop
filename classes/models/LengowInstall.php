@@ -43,6 +43,7 @@ class LengowInstall
         LengowMethod::TABLE_METHOD_MARKETPLACE,
         LengowMethod::TABLE_MARKETPLACE_METHOD_MARKETPLACE,
         LengowMethod::TABLE_MARKETPLACE_METHOD_COUNTRY,
+        'lengow_exported_fields',
     ];
 
     /**
