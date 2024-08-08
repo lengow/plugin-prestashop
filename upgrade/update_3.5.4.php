@@ -4,7 +4,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
- * a copy of the License at
+ * this file at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -38,6 +38,7 @@ if (!$tableExists) {
         id INT(11) NOT NULL AUTO_INCREMENT,
         lengow_field VARCHAR(255) NOT NULL,
         prestashop_value VARCHAR(255) NOT NULL,
+        default_key VARCHAR(255) NOT NULL, -- Nouvelle colonne ajoutée
         PRIMARY KEY (id)
     ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
@@ -104,9 +105,9 @@ if (!$tableExists) {
         'weight_unit' => 'weight_unit',
     ];
 
-    foreach ($fields as $prestashopValue => $lengowField) {
-        $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'lengow_exported_fields (lengow_field, prestashop_value) 
-            VALUES ("' . pSQL($prestashopValue) . '", "' . pSQL($lengowField) . '")';
+    foreach ($fields as $lengowField => $prestashopValue) {
+        $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'lengow_exported_fields (lengow_field, prestashop_value, default_key) 
+            VALUES ("' . pSQL($lengowField) . '", "' . pSQL($prestashopValue) . '", "' . pSQL($lengowField) . '")';
         Db::getInstance()->execute($sql);
     }
 }
