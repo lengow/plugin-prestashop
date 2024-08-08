@@ -236,6 +236,34 @@ class LengowFeedController extends LengowController
                     }
                     echo json_encode($data);
                     break;
+                case 'update_fields':
+                    $fields = Tools::getValue('fields');
+                    if (is_array($fields)) {
+                        foreach ($fields as $key => $field) {
+                            // Assurez-vous que les champs sont bien définis
+                            $lengowField = $field['name'];
+                            $prestashopValue = isset($field['value']) ? pSQL($field['value']) : '';
+
+                            // Vérifiez si le champ existe déjà
+                            $sql = 'SELECT COUNT(*) FROM ' . _DB_PREFIX_ . 'lengow_exported_fields WHERE lengow_field = "' . $lengowField . '"';
+                            $exists = Db::getInstance()->getValue($sql);
+                            var_dump($exists);
+                            exit($exists);
+
+                            if ($exists) {
+                                // Met à jour l'entrée existante
+                                $sql = 'UPDATE ' . _DB_PREFIX_ . 'lengow_exported_fields
+                                    SET prestashop_value = "' . $prestashopValue . '"
+                                    WHERE lengow_field = "' . $lengowField . '"';
+                            } else {
+                                // Insère une nouvelle entrée
+                                $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'lengow_exported_fields (lengow_field, prestashop_value)
+                                    VALUES ("' . $lengowField . '", "' . $prestashopValue . '")';
+                            }
+                            Db::getInstance()->execute($sql);
+                        }
+                    }
+                    break;
             }
             exit;
         }
@@ -246,6 +274,8 @@ class LengowFeedController extends LengowController
      */
     public function display()
     {
+        $lengowExport = new LengowExport([LengowExport::PARAM_SHOP_ID => $shop->id]);
+        $fields = $lengowExport->getNewFields();
         $shopCollection = [];
         if ($currentShop = Shop::getContextShopID()) {
             $results = [['id_shop' => $currentShop]];
@@ -293,6 +323,7 @@ class LengowFeedController extends LengowController
             ];
         }
         $this->context->smarty->assign('shopCollection', $shopCollection);
+        $this->context->smarty->assign('fields', $fields);
         parent::display();
     }
 

@@ -506,7 +506,27 @@ class LengowExport
                 $this->legacy = false;
             }
         }
-        self::$defaultFields = $this->legacy ? $this->legacyFields : $this->newFields;
+        self::$defaultFields = $this->legacy ? $this->legacyFields : $this->getNewFields();
+    }
+
+    /**
+     * Retrieves new fields from the lengow_exported_fields table
+     *
+     * @return array Array of fields and valuies
+     */
+    public function getNewFields()
+    {
+        $sql = 'SELECT prestashop_value, lengow_field FROM ' . _DB_PREFIX_ . 'lengow_exported_fields';
+        $result = Db::getInstance()->executeS($sql);
+
+        $newFields = [];
+        if ($result) {
+            foreach ($result as $row) {
+                $newFields[$row['lengow_field']] = $row['prestashop_value'];
+            }
+        }
+
+        return $newFields;
     }
 
     /**
