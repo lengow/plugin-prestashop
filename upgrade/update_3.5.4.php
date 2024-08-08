@@ -106,7 +106,7 @@ if (!$tableExists) {
 
     foreach ($fields as $prestashopValue => $lengowField) {
         $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'lengow_exported_fields (lengow_field, prestashop_value) 
-                VALUES ("' . pSQL($prestashopValue) . '", "' . pSQL($lengowField) . '")';
+                VALUES ("' . pSQL($lengowField) . '", "' . pSQL($prestashopValue) . '")';
         Db::getInstance()->execute($sql);
     }
 }
