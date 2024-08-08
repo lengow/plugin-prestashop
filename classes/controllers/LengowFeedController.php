@@ -240,27 +240,25 @@ class LengowFeedController extends LengowController
                     $fields = Tools::getValue('fields');
                     if (is_array($fields)) {
                         foreach ($fields as $key => $field) {
-                            // Assurez-vous que les champs sont bien définis
-                            $lengowField = $field['name'];
-                            $prestashopValue = isset($field['value']) ? pSQL($field['value']) : '';
 
-                            // Vérifiez si le champ existe déjà
-                            $sql = 'SELECT COUNT(*) FROM ' . _DB_PREFIX_ . 'lengow_exported_fields WHERE lengow_field = "' . $lengowField . '"';
+                            $defaultKey = $key;
+                            $prestashopValue = isset($field['prestashop_value']) ? pSQL($field['prestashop_value']) : '';
+                            $lengowField = isset($field['lengow_field']) ? pSQL($field['lengow_field']) : '';
+
+                            $sql = 'SELECT COUNT(*) FROM ' . _DB_PREFIX_ . 'lengow_exported_fields WHERE default_key = "' . $defaultKey . '"';
                             $exists = Db::getInstance()->getValue($sql);
-                            var_dump($exists);
-                            exit($exists);
 
                             if ($exists) {
-                                // Met à jour l'entrée existante
                                 $sql = 'UPDATE ' . _DB_PREFIX_ . 'lengow_exported_fields
-                                    SET prestashop_value = "' . $prestashopValue . '"
-                                    WHERE lengow_field = "' . $lengowField . '"';
+                                SET prestashop_value = "' . $prestashopValue . '",
+                                    lengow_field = "' . $lengowField . '"
+                                WHERE default_key = "' . $defaultKey . '"';
                             } else {
-                                // Insère une nouvelle entrée
-                                $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'lengow_exported_fields (lengow_field, prestashop_value)
-                                    VALUES ("' . $lengowField . '", "' . $prestashopValue . '")';
+                                $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'lengow_exported_fields (default_key, prestashop_value, lengow_field)
+                                VALUES ("' . $defaultKey . '", "' . $prestashopValue . '", "' . $lengowField . '")';
                             }
                             Db::getInstance()->execute($sql);
+                            return Tools::redirectAdmin($this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed'));
                         }
                     }
                     break;
@@ -274,8 +272,8 @@ class LengowFeedController extends LengowController
      */
     public function display()
     {
-        $lengowExport = new LengowExport([LengowExport::PARAM_SHOP_ID => $shop->id]);
-        $fields = $lengowExport->getNewFields();
+        $lengowExport = new LengowExport();
+        $fields = $lengowExport->getConfigFields();
         $shopCollection = [];
         if ($currentShop = Shop::getContextShopID()) {
             $results = [['id_shop' => $currentShop]];
@@ -562,9 +560,9 @@ class LengowFeedController extends LengowController
         $html .= '<div class="lengow_select_all_shop lgw-container" style="display:none;">';
         $html .= '<input type="checkbox" id="select_all_shop_' . $idShop . '"/>&nbsp;&nbsp;';
         $html .= '<span>' . $this->locale->t(
-            'product.screen.select_all_products',
-            ['nb' => $this->list->getTotal()]
-        );
+                'product.screen.select_all_products',
+                ['nb' => $this->list->getTotal()]
+            );
         $html .= '</span>';
         $html .= '</div>';
         $html .= '</div>';

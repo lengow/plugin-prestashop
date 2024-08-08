@@ -323,7 +323,7 @@ class LengowExport
         $this->stream = isset($params[self::PARAM_STREAM]) ? $params[self::PARAM_STREAM] : false;
         $this->limit = isset($params[self::PARAM_LIMIT]) ? (int) $params[self::PARAM_LIMIT] : false;
         $this->idShop = (int) (
-            isset($params[self::PARAM_SHOP_ID])
+        isset($params[self::PARAM_SHOP_ID])
             ? $params[self::PARAM_SHOP_ID]
             : Context::getContext()->shop->id
         );
@@ -528,6 +528,30 @@ class LengowExport
 
         return $newFields;
     }
+
+    /**
+     * Retrieves fields config from the lengow_exported_fields table
+     *
+     * @return array Array of fields with their values
+     */
+    public function getConfigFields()
+    {
+        $sql = 'SELECT default_key, prestashop_value, lengow_field FROM ' . _DB_PREFIX_ . 'lengow_exported_fields';
+        $result = Db::getInstance()->executeS($sql);
+
+        $newFields = [];
+        if ($result) {
+            foreach ($result as $row) {
+                $newFields[$row['default_key']] = [
+                    'prestashop_value' => $row['prestashop_value'],
+                    'lengow_field' => $row['lengow_field']
+                ];
+            }
+        }
+
+        return $newFields;
+    }
+
 
     /**
      * Export products

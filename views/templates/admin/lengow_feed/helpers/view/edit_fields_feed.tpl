@@ -19,48 +19,49 @@
  *}
 
 <div class="btn-container text-center">
-    <button id="open-modal" class="btn btn-primary">Configuration des champs</button>
+    <div id="open-modal" class="config_field_button">Configuration des champs</div>
 </div>
 
-<div id="modal-edit-fields" class="modal fade" tabindex="-1" role="dialog">
+<img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/settings-product.svg"
+     class="lgw-module-illu-module"
+     alt="prestashop">
+
+<div id="modal-edit-fields" class="modal fade-scale" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="lengow-modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Modifier les Champs du catalogue exporté</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close-button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="lengow-modal-body">
                 <form id="edit-fields-form" method="post">
-                    <ul>
+                    <ul class="fields-container">
                         {foreach from=$fields item=field key=key}
                             <li>
                                 <div class="lgw-row">
-                                    <!-- Nom du champ Lengow -->
-                                    <div class="lgw-col-6">
+                                    <div class="lgw-col-5">
                                         <input type="text"
-                                               name="fields[{$key}][name]"
+                                               name="fields[{$key}][lengow_field]"
                                                class="feed-field lengow_input"
                                                placeholder="Nom du champ"
-                                               value="{$key}"
+                                               value="{$field.lengow_field}"
                                                pattern="[A-Za-z0-9_-]+"
                                                title="Veuillez entrer un nom de champ valide (lettres, chiffres, _ et - uniquement)"
-                                               data-action="update_field_name">
+                                               data-action="update_field_name"
+                                               data-default="{$key}">
                                     </div>
-                                    <!-- Flèche entre le texte et le champ de texte -->
-                                    <div class="lgw-col-1">
+                                    <div class="lgw-col-2">
                                         <div class="lgw-arrow-right"></div>
                                     </div>
-                                    <!-- Valeur du champ -->
                                     <div class="lgw-col-5">
-                                        <select name="fields[{$key}][value]" class="filed lengow_select required"
+                                        <select name="fields[{$key}][prestashop_value]" class="filed lengow_select required"
                                                 data-action="update_field_value">
                                             <option value="">Veuillez sélectionner une valeur pour le champ</option>
-                                            <option value="test">test</option>
-                                            {foreach from=$availableValues item=value}
-                                                <option value="{$value}" selected="selected">{$value}</option>
-                                            {/foreach}
+                                            <option value="{$field.prestashop_value}" selected>
+                                                {$field.prestashop_value}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -68,12 +69,13 @@
                         {/foreach}
                     </ul>
                     <input type="hidden" name="action" value="update_fields">
-                    <input type="submit" class="btn btn-primary" value="Sauvegarder">
+                    <div class="form__buttons uk-tile uk-tile-muted uk-margin-top">
+                        <input type="submit" class="uk-button uk-button-secondary" value="Sauvegarder">
+                        <button id="reset-all-fields" class="btn btn-warning">Réinitialiser Tous les Champs</button>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-            </div>
+
         </div>
     </div>
 </div>
@@ -84,14 +86,12 @@
             $('#modal-edit-fields').modal('show');
         });
 
-        // Gestion des actions des champs
-        document.querySelectorAll('[data-action]').forEach(function(element) {
-            element.addEventListener('change', function() {
-                const action = this.getAttribute('data-action');
-                // Traiter les actions selon la valeur de l'attribut data-action
-                console.log('Action:', action);
-                console.log('Value:', this.value);
-                // Vous pouvez envoyer une requête AJAX ici pour traiter les actions si nécessaire
+        document.querySelector('#reset-all-fields').addEventListener('click', function(event) {
+            event.preventDefault();
+
+            document.querySelectorAll('input[data-default], select[data-default]').forEach(function(field) {
+                var defaultValue = field.getAttribute('data-default');
+                field.value = defaultValue;
             });
         });
     });
