@@ -443,16 +443,45 @@
   width: fit-content;
 }
 
+.modal-header-lengow {
+  padding: 15px;
+  padding-bottom: 0;
+  border-bottom: 1px solid #e5e5e5;
+  min-height: 16.428571429px;
+}
+
 .lengow-modal-body {
-  height: 620px;
+  height: 600px;
   overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.header-row {
+  margin-top: 30px;
+}
+
+.field-name {
+  border-left: none;
+  border-top: 1px solid #eff1f2;
+  border-right: 1px solid #eff1f2;
+}
+
+.presta-field {
+  border-right: none;
+  border-top: 1px solid #eff1f2;
 }
 
 .fields-container {
   padding: 50px;
 }
 
+.field-value {
+  text-align: center;
+}
+
 .form__buttons {
+  display: flex;
+  justify-content: space-around;
   border-top: 1px solid #eff1f2;
   background: white;
   position: sticky;
@@ -461,21 +490,63 @@
   margin: -1em;
 }
 
-.config_field_button {
-  color: white;
-  background: blue;
-  padding: 8px 10px 5px 10px;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  position: absolute;
-  right: 40px;
-  font-size: 11px;
-  font-weight: bold;
-  z-index: 2;
-  top: 54px;
-  text-decoration: none;
+.config_field_button-container {
+  width: 98%;
+  display: flex;
+  justify-content: end;
 }
 
+.config_field_button {
+  position: relative;
+  margin-bottom: 10px;
+  width: 20px;
+  padding: 10px;
+  background: #ded3d3;
+}
+
+.config_field_button:hover {
+  cursor: pointer;
+  background: grey;
+}
+
+.config_field_button:hover i {
+  color: white !important;
+}
+
+.container-close-button {
+  display: flex;
+  justify-content: end;
+}
+
+.close-button {
+ box-sizing: border-box;
+ color: #949393;
+ cursor: pointer;
+ display: inline-block;
+ font-size: 26px;
+ font-weight: 800;
+ line-height: 16px;
+ min-height: 30px;
+ outline: 0;
+ text-align: center;
+ text-rendering: geometricprecision;
+ text-transform: none;
+ user-select: none;
+ -webkit-user-select: none;
+ touch-action: manipulation;
+ vertical-align: middle;
+}
+
+.close-button:hover,
+.close-button:active {
+  background-color: initial;
+  background-position: 0 0;
+  color: #555;
+}
+
+.close-button:active {
+  opacity: .5;
+}
 
 /*************************************************/
 /*                     ORDERS                    */
@@ -487,7 +558,7 @@ body.page-sidebar #lengow_form_order_setting{
 }
 
 .adminlengoworder .lengow-nav {
-  min-width: 1450px;
+  min-width: 1250px;
 }
 
 .adminlengoworder .nobootstrap,
@@ -496,7 +567,7 @@ body.page-sidebar #lengow_form_order_setting{
 }
 
 .adminlengoworder .lgw-container {
-  min-width: 1450px;
+  min-width: 1250px;
   width:100%;
 }
 

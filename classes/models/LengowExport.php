@@ -86,66 +86,6 @@ class LengowExport
     ];
 
     /**
-     * @var array new fields for v3
-     */
-    protected $newFields = [
-        'id' => 'id',
-        'sku' => 'sku',
-        'sku_supplier' => 'sku_supplier',
-        'ean' => 'ean',
-        'upc' => 'upc',
-        'isbn' => 'isbn',
-        'name' => 'name',
-        'quantity' => 'quantity',
-        'minimal_quantity' => 'minimal_quantity',
-        'availability' => 'availability',
-        'is_virtual' => 'is_virtual',
-        'condition' => 'condition',
-        'category' => 'category',
-        'status' => 'status',
-        'url' => 'url',
-        'url_rewrite' => 'url_rewrite',
-        'price_excl_tax' => 'price_excl_tax',
-        'price_incl_tax' => 'price_incl_tax',
-        'price_before_discount_excl_tax' => 'price_before_discount_excl_tax',
-        'price_before_discount_incl_tax' => 'price_before_discount_incl_tax',
-        'price_wholesale' => 'price_wholesale',
-        'discount_percent' => 'discount_percent',
-        'discount_start_date' => 'discount_start_date',
-        'discount_end_date' => 'discount_end_date',
-        'ecotax' => 'ecotax',
-        'shipping_cost' => 'shipping_cost',
-        'shipping_delay' => 'shipping_delay',
-        'currency' => 'currency',
-        'image_url_1' => 'image_1',
-        'image_url_2' => 'image_2',
-        'image_url_3' => 'image_3',
-        'image_url_4' => 'image_4',
-        'image_url_5' => 'image_5',
-        'image_url_6' => 'image_6',
-        'image_url_7' => 'image_7',
-        'image_url_8' => 'image_8',
-        'image_url_9' => 'image_9',
-        'image_url_10' => 'image_10',
-        'type' => 'type',
-        'parent_id' => 'parent_id',
-        'variation' => 'variation',
-        'language' => 'language',
-        'description' => 'description',
-        'description_html' => 'description_html',
-        'description_short' => 'short_description',
-        'description_short_html' => 'short_description_html',
-        'tags' => 'tags',
-        'meta_title' => 'meta_title',
-        'meta_keyword' => 'meta_keywords',
-        'meta_description' => 'meta_description',
-        'manufacturer' => 'manufacturer',
-        'supplier' => 'supplier',
-        'weight' => 'weight',
-        'weight_unit' => 'weight_unit',
-    ];
-
-    /**
      * @var array legacy fields for export
      */
     protected $legacyFields = [

@@ -18,22 +18,30 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  *}
 
-<div class="btn-container text-center">
-    <div id="open-modal" class="config_field_button">Configuration des champs</div>
+<div class="config_field_button-container">
+    <div data-original-title="Edit exported fields" id="open-modal" class="config_field_button hover-target lengow_link_tooltip ">
+        <i style="font-size: 20px;color: #555; position: relative " class="fa fa-wrench feed-settong-icon"></i>
+    </div>
 </div>
-
-<img src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/img/settings-product.svg"
-     class="lgw-module-illu-module"
-     alt="prestashop">
 
 <div id="modal-edit-fields" class="modal fade-scale" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="lengow-modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modifier les Champs du catalogue exporté</h5>
-                <button type="button" class="close-button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="modal-header-lengow">
+                <div class="container-close-button">
+                    <span type="button" class="close-button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </span>
+                </div>
+                <h3 class="modal-title text-center">Modifier les noms Champs de base du catalogue exporté</h3>
+                <div class="lgw-row header-row">
+                    <div class="lgw-col-6 text-center field-name">
+                        <strong>Nom du Champ</strong>
+                    </div>
+                    <div class="lgw-col-6 text-center presta-field">
+                        <strong>Valeur PrestaShop</strong>
+                    </div>
+                </div>
             </div>
             <div class="lengow-modal-body">
                 <form id="edit-fields-form" method="post">
@@ -56,13 +64,10 @@
                                         <div class="lgw-arrow-right"></div>
                                     </div>
                                     <div class="lgw-col-5">
-                                        <select name="fields[{$key}][prestashop_value]" class="filed lengow_select required"
-                                                data-action="update_field_value">
-                                            <option value="">Veuillez sélectionner une valeur pour le champ</option>
-                                            <option value="{$field.prestashop_value}" selected>
-                                                {$field.prestashop_value}
-                                            </option>
-                                        </select>
+                                        <p class="field-value">
+                                            {$field.prestashop_value}
+                                        </p>
+                                        <input type="hidden" name="fields[{$key}][prestashop_value]" value="{$field.prestashop_value}">
                                     </div>
                                 </div>
                             </li>
@@ -70,8 +75,8 @@
                     </ul>
                     <input type="hidden" name="action" value="update_fields">
                     <div class="form__buttons uk-tile uk-tile-muted uk-margin-top">
-                        <input type="submit" class="uk-button uk-button-secondary" value="Sauvegarder">
-                        <button id="reset-all-fields" class="btn btn-warning">Réinitialiser Tous les Champs</button>
+                        <button type="submit" class="lgw-btn" >Sauvegarder</button>
+                        <button id="reset-all-fields" class="lgw-btn">Réinitialiser Tous les Champs</button>
                     </div>
                 </form>
             </div>
