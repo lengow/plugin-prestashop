@@ -29,7 +29,7 @@
         {foreach from=$shopCollection item=shop}
             <div class="filter-column">
                 <div class="sticky-icon" data-shop-id="{$shop['shop']->id|escape:'htmlall':'UTF-8'}" id="sticky-icon-{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
-                    <a title="{$locale->t('product.screen.filter_exported')|escape:'htmlall':'UTF-8'}">
+                    <a title="{$locale->t('update.screen.filter_exported')|escape:'htmlall':'UTF-8'}">
                         <i
                             style="font-size: 20px;color: #555"
                             class="fa fa-filter lengow_link_tooltip"

@@ -33,13 +33,13 @@
                         <span aria-hidden="true">&times;</span>
                     </span>
                 </div>
-                <h3 class="modal-title text-center">{$locale->t('global_setting.screen.title_fields_settings')|escape:'htmlall':'UTF-8'}</h3>
+                <h3 class="modal-title text-center">{$locale->t('product.screen.title_fields_settings')|escape:'htmlall':'UTF-8'}</h3>
                 <div class="lgw-row header-row">
                     <div class="lgw-col-6 text-center field-name">
-                        <strong>{$locale->t('global_setting.screen.title_column_name_fields')|escape:'htmlall':'UTF-8'}</strong>
+                        <strong>{$locale->t('product.screen.title_column_name_fields')|escape:'htmlall':'UTF-8'}</strong>
                     </div>
                     <div class="lgw-col-6 text-center presta-field">
-                        <strong>{$locale->t('global_setting.screen.title_column_prestashop_value')|escape:'htmlall':'UTF-8'}</strong>
+                        <strong>{$locale->t('product.screen.title_column_prestashop_value')|escape:'htmlall':'UTF-8'}</strong>
                     </div>
                 </div>
             </div>
