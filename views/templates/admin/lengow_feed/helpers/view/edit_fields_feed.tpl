@@ -19,7 +19,7 @@
  *}
 
 <div class="config_field_button-container">
-    <div data-original-title="Edit exported fields" id="open-modal" class="config_field_button hover-target lengow_link_tooltip ">
+    <div data-original-title="{$locale->t('product.screen.button_fields_setting')|escape:'htmlall':'UTF-8'}" id="open-modal" class="config_field_button hover-target lengow_link_tooltip ">
         <i style="font-size: 20px;color: #555; position: relative " class="fa fa-wrench feed-settong-icon"></i>
     </div>
 </div>
@@ -33,13 +33,13 @@
                         <span aria-hidden="true">&times;</span>
                     </span>
                 </div>
-                <h3 class="modal-title text-center">Modifier les noms Champs de base du catalogue exporté</h3>
+                <h3 class="modal-title text-center">{$locale->t('global_setting.screen.title_fields_settings')|escape:'htmlall':'UTF-8'}</h3>
                 <div class="lgw-row header-row">
                     <div class="lgw-col-6 text-center field-name">
-                        <strong>Nom du Champ</strong>
+                        <strong>{$locale->t('global_setting.screen.title_column_name_fields')|escape:'htmlall':'UTF-8'}</strong>
                     </div>
                     <div class="lgw-col-6 text-center presta-field">
-                        <strong>Valeur PrestaShop</strong>
+                        <strong>{$locale->t('global_setting.screen.title_column_prestashop_value')|escape:'htmlall':'UTF-8'}</strong>
                     </div>
                 </div>
             </div>
@@ -75,8 +75,8 @@
                     </ul>
                     <input type="hidden" name="action" value="update_fields">
                     <div class="form__buttons uk-tile uk-tile-muted uk-margin-top">
-                        <button type="submit" class="lgw-btn" >Sauvegarder</button>
-                        <button id="reset-all-fields" class="lgw-btn">Réinitialiser Tous les Champs</button>
+                        <button type="submit" class="lgw-btn" >{$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}</button>
+                        <button id="reset-all-fields" class="lgw-btn">{$locale->t('product.screen.button_filter')|escape:'htmlall':'UTF-8'}</button>
                     </div>
                 </form>
             </div>

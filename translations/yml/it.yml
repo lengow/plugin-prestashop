@@ -38,6 +38,13 @@ it:
     not_working: "¿No funciona? Contattare il nostro"
     customer_success_team: "Customer Success team"
     button_download_version: "Lengow PrestaShop %{version}"
+    button_filter: "Filtro"
+    button_fields_setting: "Modifica dei nomi dei campi"
+    button_fields_reset: "Azzeramento di tutti i campi"
+    title_fields_settings: "Modificare i nomi dei campi predefiniti del catalogo esportato"
+    title_column_name_fields: "Nome del campo"
+    title_column_prestashop_value: "Nome del campo"
+    title_column_prestashop_value: "Valore di PrestaShop"
     button_remind_me_later: "Non ora, ricordamelo più tardi"
   footer:
     settings: "Impostazioni"

@@ -33,7 +33,7 @@
                         <i
                             style="font-size: 20px;color: #555"
                             class="fa fa-filter lengow_link_tooltip"
-                            data-original-title="Filtre"
+                            data-original-title="{$locale->t('product.screen.button_filter')|escape:'htmlall':'UTF-8'}"
                         ></i>
                     </a>
                 </div>

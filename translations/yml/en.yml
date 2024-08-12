@@ -38,6 +38,12 @@ en:
     not_working: "Not working? Contact our"
     customer_success_team: "Customer Success team"
     button_download_version: "Lengow PrestaShop %{version}"
+    button_filter: "Filter"
+    button_fields_setting: "Modify field names"
+    button_fields_reset: "Reset all fields"
+    title_fields_settings: "Modify the default field names of the exported catalogue"
+    title_column_name_fields: "Field name"
+    title_column_prestashop_value: "PrestaShop value"
     button_remind_me_later: "Not now, remind me later"
   footer:
     settings: "Settings"

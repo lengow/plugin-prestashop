@@ -33,6 +33,12 @@ update.update_procedure|el procedimiento de actualización (fácil y rápido).
 update.not_working|¿No funciona? Póngase en contacto con nuestro
 update.customer_success_team|equipo de Éxito del cliente
 update.button_download_version|Lengow PrestaShop %{version}
+update.button_filter|Filtro
+update.button_fields_setting|Modificación de los nombres de los campos
+update.button_fields_reset|Restablecer todos los campos
+update.title_fields_settings|Modificar los nombres de campo por defecto del catálogo exportado
+update.title_column_name_fields|Nombre del campo
+update.title_column_prestashop_value|Valor de PrestaShop
 update.button_remind_me_later|Ahora no, recuérdamelo más tarde
 footer.settings|Ajustes
 footer.toolbox|Toolbox
