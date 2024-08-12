@@ -240,7 +240,6 @@ class LengowFeedController extends LengowController
                     $fields = Tools::getValue('fields');
                     if (is_array($fields)) {
                         foreach ($fields as $key => $field) {
-
                             $defaultKey = $key;
                             $prestashopValue = isset($field['prestashop_value']) ? pSQL($field['prestashop_value']) : '';
                             $lengowField = isset($field['lengow_field']) ? pSQL($field['lengow_field']) : '';
@@ -258,8 +257,8 @@ class LengowFeedController extends LengowController
                                 VALUES ("' . $defaultKey . '", "' . $prestashopValue . '", "' . $lengowField . '")';
                             }
                             Db::getInstance()->execute($sql);
-                            return Tools::redirectAdmin($this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed'));
                         }
+                        return Tools::redirectAdmin($this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed'));
                     }
                     break;
             }
