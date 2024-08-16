@@ -208,7 +208,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected function getBody($data, $isFirst, $maxCharacter)
+    public function getBody($data, $isFirst, $maxCharacter)
     {
         switch ($this->format) {
             case self::FORMAT_CSV:

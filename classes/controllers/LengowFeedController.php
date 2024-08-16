@@ -272,6 +272,7 @@ class LengowFeedController extends LengowController
     public function display()
     {
         $lengowExport = new LengowExport();
+        $lengowProduct = new LengowProduct();
         $fields = $lengowExport->getConfigFields();
         $shopCollection = [];
         if ($currentShop = Shop::getContextShopID()) {
@@ -319,8 +320,12 @@ class LengowFeedController extends LengowController
                 'list' => $this->buildTable($shop->id),
             ];
         }
+
+        $productsData = $lengowExport->getProductsListData();
+
         $this->context->smarty->assign('shopCollection', $shopCollection);
         $this->context->smarty->assign('fields', $fields);
+        $this->context->smarty->assign('json_products', $productsData);
         parent::display();
     }
 

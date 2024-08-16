@@ -230,7 +230,7 @@ class LengowExport
     /**
      * @var array cache combination
      */
-    protected $cacheCombination;
+    public $cacheCombination;
 
     /**
      * @var array excluded products for export
@@ -973,4 +973,58 @@ class LengowExport
 
         return $arrayProduct;
     }
+
+    public function getProductsListData() {
+        $lengowProduct = new LengowProduct();
+        $productsData = [];
+        try {
+            $exportFields = $this->getNewFields();
+            $products = $lengowProduct->getIdProductWithMostData();
+
+            foreach ($products as $p) {
+                $idProduct = (int)$p['id_product'];
+                $idProductAttribute = (int)$p['id_product_attribute'];
+
+                if (in_array($idProduct, $this->excludedProducts, true)) {
+                    continue;
+                }
+
+                $productData = [];
+                $product = new LengowProduct($idProduct, $this->language->id, [
+                    'carrier' => $this->carrier,
+                    'image_size' => LengowProduct::getMaxImageType(),
+                    'language' => $this->language,
+                ]);
+
+                if ($idProduct) {
+                    foreach ($exportFields as $field) {
+                        $data = $product->getData($field, $idProductAttribute);
+                        // Ensure data is properly encoded
+                        $productData[$field] = $data;
+                    }
+
+                    $productsData[] = $productData;
+                }
+            }
+        } catch (Exception $e) {
+            LengowMain::log(LengowLog::CODE_EXPORT, LengowMain::setLogMessage('log.export.error', ['message' => $e->getMessage()]), $this->logOutput);
+        }
+
+        $lengowFeed = new LengowFeed(1, 'json', false);
+        $allProductsArray = [];
+
+        foreach ($productsData as $product) {
+            $productJson = $lengowFeed->getBody($product, true, 0);
+            if ($productJson !== false) {
+                $productArray = json_decode($productJson, true); // Decode the JSON string to an associative array
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $allProductsArray[] = $productArray;
+                }
+            }
+        }
+
+        return json_encode($allProductsArray);
+    }
+
+
 }
