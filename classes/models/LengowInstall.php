@@ -43,6 +43,7 @@ class LengowInstall
         LengowMethod::TABLE_METHOD_MARKETPLACE,
         LengowMethod::TABLE_MARKETPLACE_METHOD_MARKETPLACE,
         LengowMethod::TABLE_MARKETPLACE_METHOD_COUNTRY,
+        'lengow_exported_fields',
     ];
 
     /**
@@ -385,7 +386,7 @@ class LengowInstall
         $column = LengowAction::ARG_RETURN_TRACKING_NUMBER;
         if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'DROP COLUMN `' . Db::getInstance()->_escape($column) . '`;';
+                . 'DROP COLUMN `' . Db::getInstance()->_escape($column) . '`;';
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_UNINSTALL,
@@ -395,7 +396,7 @@ class LengowInstall
         $column = LengowAction::ARG_RETURN_CARRIER;
         if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'DROP COLUMN `' . Db::getInstance()->_escape($column) . '`;';
+                . 'DROP COLUMN `' . Db::getInstance()->_escape($column) . '`;';
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_UNINSTALL,
@@ -851,7 +852,7 @@ class LengowInstall
         $column = LengowAction::ARG_RETURN_TRACKING_NUMBER;
         if (self::checkTableExists($name) && !self::checkFieldExists($name, $column)) {
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'ADD COLUMN `' . $column . '` VARCHAR(64);';
+                . 'ADD COLUMN `' . $column . '` VARCHAR(64);';
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
@@ -866,7 +867,7 @@ class LengowInstall
         $column = LengowAction::ARG_RETURN_CARRIER;
         if (self::checkTableExists($name) && !self::checkFieldExists($name, $column)) {
             $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'ADD COLUMN `' . $column . '` VARCHAR(64);';
+                . 'ADD COLUMN `' . $column . '` VARCHAR(64);';
             Db::getInstance()->execute($sql);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,

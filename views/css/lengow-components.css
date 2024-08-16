@@ -18,7 +18,7 @@
   color: #555;
   text-decoration: none;
   transition: top 100ms ease,
-              box-shadow 100ms ease;
+  box-shadow 100ms ease;
 }
 
 a.lgw-box-link:hover {
@@ -255,9 +255,9 @@ a.lgw-box-link:hover {
     transform: scale(0.0);
     -webkit-transform: scale(0.0);
   } 50% {
-    transform: scale(1.0);
-    -webkit-transform: scale(1.0);
-  }
+      transform: scale(1.0);
+      -webkit-transform: scale(1.0);
+    }
 }
 
 /*************************************************/
@@ -1120,7 +1120,7 @@ a.lgw-box-link:hover {
   background: url('../img/carret-up.png') no-repeat right center;
 }
 
-.lgw-container .accordion  .lgw-arrow-right {
+.lgw-arrow-right {
   background: url('../img/arrow-right.png') no-repeat right center;
   height: 43px;
   width: 30px;

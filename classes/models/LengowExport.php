@@ -86,66 +86,6 @@ class LengowExport
     ];
 
     /**
-     * @var array new fields for v3
-     */
-    protected $newFields = [
-        'id' => 'id',
-        'sku' => 'sku',
-        'sku_supplier' => 'sku_supplier',
-        'ean' => 'ean',
-        'upc' => 'upc',
-        'isbn' => 'isbn',
-        'name' => 'name',
-        'quantity' => 'quantity',
-        'minimal_quantity' => 'minimal_quantity',
-        'availability' => 'availability',
-        'is_virtual' => 'is_virtual',
-        'condition' => 'condition',
-        'category' => 'category',
-        'status' => 'status',
-        'url' => 'url',
-        'url_rewrite' => 'url_rewrite',
-        'price_excl_tax' => 'price_excl_tax',
-        'price_incl_tax' => 'price_incl_tax',
-        'price_before_discount_excl_tax' => 'price_before_discount_excl_tax',
-        'price_before_discount_incl_tax' => 'price_before_discount_incl_tax',
-        'price_wholesale' => 'price_wholesale',
-        'discount_percent' => 'discount_percent',
-        'discount_start_date' => 'discount_start_date',
-        'discount_end_date' => 'discount_end_date',
-        'ecotax' => 'ecotax',
-        'shipping_cost' => 'shipping_cost',
-        'shipping_delay' => 'shipping_delay',
-        'currency' => 'currency',
-        'image_url_1' => 'image_1',
-        'image_url_2' => 'image_2',
-        'image_url_3' => 'image_3',
-        'image_url_4' => 'image_4',
-        'image_url_5' => 'image_5',
-        'image_url_6' => 'image_6',
-        'image_url_7' => 'image_7',
-        'image_url_8' => 'image_8',
-        'image_url_9' => 'image_9',
-        'image_url_10' => 'image_10',
-        'type' => 'type',
-        'parent_id' => 'parent_id',
-        'variation' => 'variation',
-        'language' => 'language',
-        'description' => 'description',
-        'description_html' => 'description_html',
-        'description_short' => 'short_description',
-        'description_short_html' => 'short_description_html',
-        'tags' => 'tags',
-        'meta_title' => 'meta_title',
-        'meta_keyword' => 'meta_keywords',
-        'meta_description' => 'meta_description',
-        'manufacturer' => 'manufacturer',
-        'supplier' => 'supplier',
-        'weight' => 'weight',
-        'weight_unit' => 'weight_unit',
-    ];
-
-    /**
      * @var array legacy fields for export
      */
     protected $legacyFields = [
@@ -290,7 +230,7 @@ class LengowExport
     /**
      * @var array cache combination
      */
-    protected $cacheCombination;
+    public $cacheCombination;
 
     /**
      * @var array excluded products for export
@@ -323,7 +263,7 @@ class LengowExport
         $this->stream = isset($params[self::PARAM_STREAM]) ? $params[self::PARAM_STREAM] : false;
         $this->limit = isset($params[self::PARAM_LIMIT]) ? (int) $params[self::PARAM_LIMIT] : false;
         $this->idShop = (int) (
-            isset($params[self::PARAM_SHOP_ID])
+        isset($params[self::PARAM_SHOP_ID])
             ? $params[self::PARAM_SHOP_ID]
             : Context::getContext()->shop->id
         );
@@ -506,8 +446,52 @@ class LengowExport
                 $this->legacy = false;
             }
         }
-        self::$defaultFields = $this->legacy ? $this->legacyFields : $this->newFields;
+        self::$defaultFields = $this->legacy ? $this->legacyFields : $this->getNewFields();
     }
+
+    /**
+     * Retrieves new fields from the lengow_exported_fields table
+     *
+     * @return array Array of fields and valuies
+     */
+    public function getNewFields()
+    {
+        $sql = 'SELECT prestashop_value, lengow_field FROM ' . _DB_PREFIX_ . 'lengow_exported_fields';
+        $result = Db::getInstance()->executeS($sql);
+
+        $newFields = [];
+        if ($result) {
+            foreach ($result as $row) {
+                $newFields[$row['lengow_field']] = $row['prestashop_value'];
+            }
+        }
+
+        return $newFields;
+    }
+
+    /**
+     * Retrieves fields config from the lengow_exported_fields table
+     *
+     * @return array Array of fields with their values
+     */
+    public function getConfigFields()
+    {
+        $sql = 'SELECT default_key, prestashop_value, lengow_field FROM ' . _DB_PREFIX_ . 'lengow_exported_fields';
+        $result = Db::getInstance()->executeS($sql);
+
+        $newFields = [];
+        if ($result) {
+            foreach ($result as $row) {
+                $newFields[$row['default_key']] = [
+                    'prestashop_value' => $row['prestashop_value'],
+                    'lengow_field' => $row['lengow_field']
+                ];
+            }
+        }
+
+        return $newFields;
+    }
+
 
     /**
      * Export products
@@ -989,4 +973,58 @@ class LengowExport
 
         return $arrayProduct;
     }
+
+    public function getProductsListData() {
+        $lengowProduct = new LengowProduct();
+        $productsData = [];
+        try {
+            $exportFields = $this->getNewFields();
+            $products = $lengowProduct->getIdProductWithMostData();
+
+            foreach ($products as $p) {
+                $idProduct = (int)$p['id_product'];
+                $idProductAttribute = (int)$p['id_product_attribute'];
+
+                if (in_array($idProduct, $this->excludedProducts, true)) {
+                    continue;
+                }
+
+                $productData = [];
+                $product = new LengowProduct($idProduct, $this->language->id, [
+                    'carrier' => $this->carrier,
+                    'image_size' => LengowProduct::getMaxImageType(),
+                    'language' => $this->language,
+                ]);
+
+                if ($idProduct) {
+                    foreach ($exportFields as $field) {
+                        $data = $product->getData($field, $idProductAttribute);
+                        // Ensure data is properly encoded
+                        $productData[$field] = $data;
+                    }
+
+                    $productsData[] = $productData;
+                }
+            }
+        } catch (Exception $e) {
+            LengowMain::log(LengowLog::CODE_EXPORT, LengowMain::setLogMessage('log.export.error', ['message' => $e->getMessage()]), $this->logOutput);
+        }
+
+        $lengowFeed = new LengowFeed(1, 'json', false);
+        $allProductsArray = [];
+
+        foreach ($productsData as $product) {
+            $productJson = $lengowFeed->getBody($product, true, 0);
+            if ($productJson !== false) {
+                $productArray = json_decode($productJson, true); // Decode the JSON string to an associative array
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $allProductsArray[] = $productArray;
+                }
+            }
+        }
+
+        return json_encode($allProductsArray);
+    }
+
+
 }

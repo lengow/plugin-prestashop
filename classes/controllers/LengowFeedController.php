@@ -236,6 +236,31 @@ class LengowFeedController extends LengowController
                     }
                     echo json_encode($data);
                     break;
+                case 'update_fields':
+                    $fields = Tools::getValue('fields');
+                    if (is_array($fields)) {
+                        foreach ($fields as $key => $field) {
+                            $defaultKey = $key;
+                            $prestashopValue = isset($field['prestashop_value']) ? pSQL($field['prestashop_value']) : '';
+                            $lengowField = isset($field['lengow_field']) ? pSQL($field['lengow_field']) : '';
+
+                            $sql = 'SELECT COUNT(*) FROM ' . _DB_PREFIX_ . 'lengow_exported_fields WHERE default_key = "' . $defaultKey . '"';
+                            $exists = Db::getInstance()->getValue($sql);
+
+                            if ($exists) {
+                                $sql = 'UPDATE ' . _DB_PREFIX_ . 'lengow_exported_fields
+                                SET prestashop_value = "' . $prestashopValue . '",
+                                    lengow_field = "' . $lengowField . '"
+                                WHERE default_key = "' . $defaultKey . '"';
+                            } else {
+                                $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'lengow_exported_fields (default_key, prestashop_value, lengow_field)
+                                VALUES ("' . $defaultKey . '", "' . $prestashopValue . '", "' . $lengowField . '")';
+                            }
+                            Db::getInstance()->execute($sql);
+                        }
+                        return Tools::redirectAdmin($this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed'));
+                    }
+                    break;
             }
             exit;
         }
@@ -246,6 +271,9 @@ class LengowFeedController extends LengowController
      */
     public function display()
     {
+        $lengowExport = new LengowExport();
+        $lengowProduct = new LengowProduct();
+        $fields = $lengowExport->getConfigFields();
         $shopCollection = [];
         if ($currentShop = Shop::getContextShopID()) {
             $results = [['id_shop' => $currentShop]];
@@ -292,7 +320,12 @@ class LengowFeedController extends LengowController
                 'list' => $this->buildTable($shop->id),
             ];
         }
+
+        $productsData = $lengowExport->getProductsListData();
+
         $this->context->smarty->assign('shopCollection', $shopCollection);
+        $this->context->smarty->assign('fields', $fields);
+        $this->context->smarty->assign('json_products', $productsData);
         parent::display();
     }
 
@@ -531,9 +564,9 @@ class LengowFeedController extends LengowController
         $html .= '<div class="lengow_select_all_shop lgw-container" style="display:none;">';
         $html .= '<input type="checkbox" id="select_all_shop_' . $idShop . '"/>&nbsp;&nbsp;';
         $html .= '<span>' . $this->locale->t(
-            'product.screen.select_all_products',
-            ['nb' => $this->list->getTotal()]
-        );
+                'product.screen.select_all_products',
+                ['nb' => $this->list->getTotal()]
+            );
         $html .= '</span>';
         $html .= '</div>';
         $html .= '</div>';

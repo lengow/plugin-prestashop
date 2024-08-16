@@ -113,6 +113,12 @@ product.screen.date_from|From
 product.screen.date_to|To
 product.screen.button_copy|Copy
 product.screen.button_download|Download
+product.screen.button_filter|Filter
+product.screen.button_fields_setting|Modify field names
+product.screen.button_fields_reset|Reset all fields
+product.screen.title_fields_settings|Modify the default field names of the exported catalogue
+product.screen.title_column_name_fields|Field name
+product.screen.title_column_prestashop_value|PrestaShop value
 product.screen.button_yes|Yes
 product.screen.button_no|No
 product.screen.button_search|Search

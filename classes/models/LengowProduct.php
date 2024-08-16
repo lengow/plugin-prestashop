@@ -628,7 +628,7 @@ class LengowProduct extends Product
      *
      * @return string
      */
-    protected function getImageLink($name, $idProductAttribute = null)
+    public function getImageLink($name, $idProductAttribute = null)
     {
         $index = explode('_', $name);
         $idImage = $index[1] - 1;
@@ -1064,4 +1064,120 @@ class LengowProduct extends Product
         }
         throw new LengowException(LengowMain::setLogMessage('log.export.error_cant_find_image_size'));
     }
+
+    public function getTopProductsWithScores($langId, $limit = 10)
+    {
+        $query = new DbQuery();
+
+        $query->select('p.id_product');
+        $query->select('pl.name AS product_name');
+        $query->select('pa.id_product_attribute');
+        $query->select('(LENGTH(pl.description) > 0) AS description_score');
+        $query->select('(LENGTH(pl.description_short) > 0) AS short_description_score');
+        $query->select('(SELECT COUNT(img.id_image) FROM ' . _DB_PREFIX_ . 'image img WHERE img.id_product = p.id_product) AS image_score');
+        $query->select('(SELECT COUNT(pa_inner.id_product_attribute) FROM ' . _DB_PREFIX_ . 'product_attribute pa_inner WHERE pa_inner.id_product = p.id_product) AS attribute_score');
+        $query->select('(SELECT COUNT(pf.id_feature) FROM ' . _DB_PREFIX_ . 'feature_product pf WHERE pf.id_product = p.id_product) AS feature_score');
+        $query->select('(SELECT COUNT(pt.id_tag) FROM ' . _DB_PREFIX_ . 'product_tag pt WHERE pt.id_product = p.id_product) AS tag_score');
+        $query->select('((LENGTH(pl.description) > 0) + 
+                      (LENGTH(pl.description_short) > 0) + 
+                      (SELECT COUNT(img.id_image) FROM ' . _DB_PREFIX_ . 'image img WHERE img.id_product = p.id_product) +
+                      (SELECT COUNT(pa_inner.id_product_attribute) FROM ' . _DB_PREFIX_ . 'product_attribute pa_inner WHERE pa_inner.id_product = p.id_product) +
+                      (SELECT COUNT(pf.id_feature) FROM ' . _DB_PREFIX_ . 'feature_product pf WHERE pf.id_product = p.id_product) +
+                      (SELECT COUNT(pt.id_tag) FROM ' . _DB_PREFIX_ . 'product_tag pt WHERE pt.id_product = p.id_product)) AS total_score');
+
+        $query->from('product', 'p');
+        $query->innerJoin('product_lang', 'pl', 'p.id_product = pl.id_product');
+        $query->leftJoin('product_attribute', 'pa', 'p.id_product = pa.id_product');
+
+        $query->where('pl.id_lang = ' . (int)$langId);
+
+        // Trier par score total et limiter les résultats
+        $query->orderBy('total_score DESC');
+        $query->limit((int)$limit);
+
+        return Db::getInstance()->executeS($query);
+    }
+
+    public function getProductsWithMostImages()
+    {
+        $query = new DbQuery();
+        $query->select('p.id_product');
+        $query->select('pl.name AS product_name');
+        $query->select('COUNT(img.id_image) AS image_count');
+        $query->from('product', 'p');
+        $query->innerJoin('product_lang', 'pl', 'p.id_product = pl.id_product');
+        $query->leftJoin('image', 'img', 'p.id_product = img.id_product');
+        $query->where('pl.id_lang = ' . (int)Context::getContext()->language->id);
+        $query->groupBy('p.id_product');
+        $query->orderBy('image_count DESC');
+        $query->limit(5);
+
+        return Db::getInstance()->executeS($query);
+    }
+
+    public function getProductsWithoutAttributesWithMostCompletedData()
+    {
+        $query = new DbQuery();
+
+        $query->select('p.id_product');
+        $query->select('pl.name AS product_name');
+        $query->select('(LENGTH(pl.description) > 0) AS description_score');
+        $query->select('(LENGTH(pl.description_short) > 0) AS short_description_score');
+        $query->select('(SELECT COUNT(img.id_image) FROM ' . _DB_PREFIX_ . 'image img WHERE img.id_product = p.id_product) AS image_score');
+        $query->select('(SELECT COUNT(pf.id_feature) FROM ' . _DB_PREFIX_ . 'feature_product pf WHERE pf.id_product = p.id_product) AS feature_score');
+        $query->select('(SELECT COUNT(pt.id_tag) FROM ' . _DB_PREFIX_ . 'product_tag pt WHERE pt.id_product = p.id_product) AS tag_score');
+
+        $query->select('((LENGTH(pl.description) > 0) + 
+                     (LENGTH(pl.description_short) > 0) + 
+                     (SELECT COUNT(img.id_image) FROM ' . _DB_PREFIX_ . 'image img WHERE img.id_product = p.id_product) +
+                     (SELECT COUNT(pf.id_feature) FROM ' . _DB_PREFIX_ . 'feature_product pf WHERE pf.id_product = p.id_product) +
+                     (SELECT COUNT(pt.id_tag) FROM ' . _DB_PREFIX_ . 'product_tag pt WHERE pt.id_product = p.id_product)) AS total_score');
+
+        $query->from('product', 'p');
+        $query->innerJoin('product_lang', 'pl', 'p.id_product = pl.id_product');
+        $query->where('pl.id_lang = ' . (int)Context::getContext()->language->id);
+        $query->where('p.id_product NOT IN (
+        SELECT pa.id_product
+        FROM ' . _DB_PREFIX_ . 'product_attribute pa )');
+        $query->orderBy('total_score DESC');
+        $query->limit(5);
+
+        return Db::getInstance()->executeS($query);
+    }
+
+    public function getIdProductWithMostData()
+    {
+        $fullestProducts = $this->getTopProductsWithScores(Context::getContext()->language->id);
+        $productsWithMostImages = $this->getProductsWithMostImages();
+        $productsWithoutDeclinaison = $this->getProductsWithoutAttributesWithMostCompletedData();
+
+        $mergedProducts = array();
+
+        foreach ($fullestProducts as $product) {
+            $mergedProducts[] = array(
+                'id_product' => $product['id_product'],
+                'id_product_attribute' => isset($product['id_product_attribute']) ? $product['id_product_attribute'] : null
+            );
+        }
+
+        foreach ($productsWithMostImages as $product) {
+            $mergedProducts[] = array(
+                'id_product' => $product['id_product'],
+                'id_product_attribute' => isset($product['id_product_attribute']) ? $product['id_product_attribute'] : null
+            );
+        }
+
+        foreach ($productsWithoutDeclinaison as $product) {
+            $mergedProducts[] = array(
+                'id_product' => $product['id_product'],
+                'id_product_attribute' => isset($product['id_product_attribute']) ? $product['id_product_attribute'] : null
+            );
+        }
+
+        $uniqueProducts = array_unique($mergedProducts, SORT_REGULAR);
+
+        return $uniqueProducts;
+    }
+
+
 }

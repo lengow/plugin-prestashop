@@ -369,7 +369,7 @@ hr {
 
 body.page-sidebar-closed .lengow-nav,
 body.page-sidebar-closed .lengow-nav-bottom {
-  left: -5px;
+  left: 30px;
 }
 
 #lengow_logo img {
@@ -486,6 +486,10 @@ body.page-sidebar-closed .lengow-nav-bottom {
   font-weight: bold;
   z-index: 2;
   top: 54px;
+}
+
+body.page-sidebar-closed #lgw-debug {
+  left: 60px;
 }
 
 /*************************************************/

@@ -191,7 +191,7 @@ class LengowFeed
                 return rtrim($header, self::CSV_SEPARATOR) . self::EOL;
             case self::FORMAT_XML:
                 return '<?xml version="1.0" encoding="UTF-8"?>' . self::EOL
-                . '<catalog>' . self::EOL;
+                    . '<catalog>' . self::EOL;
             case self::FORMAT_JSON:
                 return '{"catalog":[';
             case self::FORMAT_YAML:
@@ -208,7 +208,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected function getBody($data, $isFirst, $maxCharacter)
+    public function getBody($data, $isFirst, $maxCharacter)
     {
         switch ($this->format) {
             case self::FORMAT_CSV:
@@ -387,23 +387,19 @@ class LengowFeed
                 }
 
                 return Tools::substr(
-                    Tools::strtolower(
-                        preg_replace(
-                            '/[^a-zA-Z0-9_]+/',
-                            '',
-                            str_replace([' ', '\''], '_', LengowMain::replaceAccentedChars($str))
-                        )
+                    preg_replace(
+                        '/[^a-zA-Z0-9_]+/',
+                        '',
+                        str_replace([' ', '\''], '_', LengowMain::replaceAccentedChars($str))
                     ),
                     0,
                     58
                 );
             default:
-                return Tools::strtolower(
-                    preg_replace(
-                        '/[^a-zA-Z0-9_]+/',
-                        '',
-                        str_replace([' ', '\''], '_', LengowMain::replaceAccentedChars($str))
-                    )
+                return preg_replace(
+                    '/[^a-zA-Z0-9_]+/',
+                    '',
+                    str_replace([' ', '\''], '_', LengowMain::replaceAccentedChars($str))
                 );
         }
     }
