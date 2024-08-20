@@ -225,13 +225,13 @@ class Lengow extends Module
 
     /**
      * Order status post update
+     *
      * @param array $args Arguments of hook
      */
     public function hookActionOrderStatusPostUpdate($args)
     {
         $this->hookClass->hookPostUpdateOrderStatus($args);
     }
-
 
     /**
      * Hook after an status update to synchronize status with lengow

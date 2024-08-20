@@ -1012,11 +1012,13 @@ class LengowConfiguration extends Configuration
 
     /**
      * Will return the global the typed global value
+     *
      * @return mixed
      */
     public static function getTypedGlobalValue($key)
     {
         $value = self::get($key);
+
         return self::getValueWithCorrectType($key, $value);
     }
 
@@ -1051,4 +1053,3 @@ class LengowConfiguration extends Configuration
         return $value;
     }
 }
-

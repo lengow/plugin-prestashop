@@ -373,7 +373,7 @@ class LengowHook
         if (!isset($args['object']->id)) {
             return;
         }
-        if (! $args['object'] instanceof Order) {
+        if (!$args['object'] instanceof Order) {
             return;
         }
         if (($args['object'] instanceof Order) && LengowOrder::isFromLengow($args['object']->id)) {
@@ -395,4 +395,3 @@ class LengowHook
         }
     }
 }
-

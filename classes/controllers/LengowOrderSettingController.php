@@ -42,7 +42,7 @@ class LengowOrderSettingController extends LengowController
                 LengowConfiguration::SHIPPED_ORDER_ID,
                 LengowConfiguration::CANCELED_ORDER_ID,
                 LengowConfiguration::SHIPPED_BY_MARKETPLACE_ORDER_ID,
-                LengowConfiguration::SEND_EMAIL_DISABLED
+                LengowConfiguration::SEND_EMAIL_DISABLED,
             ]
         );
         $importParams = $form->buildInputs(
@@ -185,4 +185,3 @@ class LengowOrderSettingController extends LengowController
         }
     }
 }
-
