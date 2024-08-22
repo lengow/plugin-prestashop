@@ -314,12 +314,10 @@ class LengowHook
      */
     public function hookUpdateOrderStatus($args)
     {
-        if (!isset($args['id_order'])) {
+        if (!isset($args['id_order']) || !(bool) LengowConfiguration::get(LengowConfiguration::SEND_EMAIL_DISABLED)) {
             return;
         }
-        if (!(bool) LengowConfiguration::get(LengowConfiguration::SEND_EMAIL_DISABLED)) {
-            return;
-        }
+
         $lengowOrder = new LengowOrder($args['id_order']);
         // not send state if we are on lengow import module
         if (LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
@@ -370,12 +368,10 @@ class LengowHook
      */
     public function hookActionObjectUpdateAfter($args)
     {
-        if (!isset($args['object']->id)) {
+        if (!isset($args['object']->id) || !$args['object'] instanceof Order) {
             return;
         }
-        if (!$args['object'] instanceof Order) {
-            return;
-        }
+
         if (($args['object'] instanceof Order) && LengowOrder::isFromLengow($args['object']->id)) {
             $lengowOrder = new LengowOrder($args['object']->id);
 

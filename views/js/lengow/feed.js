@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.sticky-icon').forEach(icon => {
         icon.addEventListener('click', function() {
             const shopId = this.dataset.shopId;
-            const stickySwitches = document.querySelectorAll(`.sticky-switch${shopId}`);
+            const stickySwitches = document.querySelectorAll(`.sticky-switch-${shopId}`);
 
             stickySwitches.forEach(function(switchElem) {
                 const isSwitchVisible = switchElem.classList.contains('show-switch');

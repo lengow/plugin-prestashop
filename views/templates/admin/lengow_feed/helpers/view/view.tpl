@@ -55,7 +55,7 @@
                         </p>
                     </div>
                     <hr>
-                    <div class="sticky-switch{$shop['shop']->id|escape:'htmlall':'UTF-8'} sticky-switch" data-shop-id="{$shop['shop']->id|escape:'htmlall':'UTF-8'}" id="sticky-switch-{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
+                    <div class="sticky-switch-{$shop['shop']->id|escape:'htmlall':'UTF-8'} sticky-switch" data-shop-id="{$shop['shop']->id|escape:'htmlall':'UTF-8'}" id="sticky-switch-{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
                         <div class="switch-row variation-row">
                             <div class="lgw-switch switch-variation {if $shop['option_selected__variation'] == 1} checked{/if}">
                                 <label>
