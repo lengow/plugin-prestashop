@@ -3,11 +3,6 @@
 ## [3.5.4](https://github.com/lengow/plugin-prestashop/compare/v3.5.3...v3.5.4) (2024-08-22)
 
 
-### chore
-
-* release 3.5.4 ([6cfe565](https://github.com/lengow/plugin-prestashop/commit/6cfe56511d8d59046b2f499754447b0d3b372ecc))
-
-
 ### Features
 
 * **cicd:** Add a besic CI to the project ([#15](https://github.com/lengow/plugin-prestashop/issues/15)) ([3c6c19c](https://github.com/lengow/plugin-prestashop/commit/3c6c19c0aae423409828aaf8cdbffa911c9acf6b))
