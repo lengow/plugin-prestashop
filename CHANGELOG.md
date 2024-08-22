@@ -1,3 +1,11 @@
+# Changelog
+
+
+=============================================================
+Version 3.5.4
+=============================================================
+    - BugFix: nb days for sync could be less than 1
+    - BugFix: config for disabled sending email when order status changes actionOrderStatusUpdate
 =============================================================
 Version 3.5.3
 =============================================================

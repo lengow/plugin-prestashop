@@ -85,6 +85,7 @@ class LengowConfiguration extends Configuration
     public const LAST_UPDATE_PLUGIN_DATA = 'LENGOW_PLUGIN_DATA_UPDATE';
     public const LAST_UPDATE_AUTHORIZATION_TOKEN = 'LENGOW_LAST_AUTH_TOKEN_UPDATE';
     public const LAST_UPDATE_PLUGIN_MODAL = 'LENGOW_LAST_PLUGIN_MODAL';
+    public const SEND_EMAIL_DISABLED = 'LENGOW_SEND_EMAIL_DISABLED';
 
     /* Configuration parameters */
     public const PARAM_COLLECTION = 'collection';
@@ -107,6 +108,7 @@ class LengowConfiguration extends Configuration
     public const RETURN_TYPE_INTEGER = 'integer';
     public const RETURN_TYPE_ARRAY = 'array';
     public const RETURN_TYPE_STRING = 'string';
+    public const RETURN_TYPE_FLOAT = 'float';
 
     /**
      * @var array params correspondence keys for toolbox
@@ -168,6 +170,7 @@ class LengowConfiguration extends Configuration
         self::LAST_UPDATE_PLUGIN_DATA => 'last_update_plugin_data',
         self::LAST_UPDATE_AUTHORIZATION_TOKEN => 'last_update_authorization_token',
         self::LAST_UPDATE_PLUGIN_MODAL => 'last_update_plugin_modal',
+        self::SEND_EMAIL_DISABLED => 'send_email_disabled',
     ];
 
     /**
@@ -436,7 +439,7 @@ class LengowConfiguration extends Configuration
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_import_days_title'),
                     self::PARAM_DEFAULT_VALUE => 3,
                     self::PARAM_UPDATE => true,
-                    self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
+                    self::PARAM_RETURN => self::RETURN_TYPE_FLOAT,
                 ],
                 self::ANONYMIZE_EMAIL => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
@@ -574,6 +577,13 @@ class LengowConfiguration extends Configuration
                 self::LAST_UPDATE_PLUGIN_MODAL => [
                     self::PARAM_GLOBAL => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
+                ],
+                self::SEND_EMAIL_DISABLED => [
+                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
+                    self::PARAM_GLOBAL => true,
+                    self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
+                    self::PARAM_LABEL => $locale->t('lengow_setting.lengow_disable_send_email_title'),
+                    self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_disable_send_email_legend'),
                 ],
             ];
         }
@@ -1001,6 +1011,18 @@ class LengowConfiguration extends Configuration
     }
 
     /**
+     * Will return the global the typed global value
+     *
+     * @return mixed
+     */
+    public static function getTypedGlobalValue($key)
+    {
+        $value = self::get($key);
+
+        return self::getValueWithCorrectType($key, $value);
+    }
+
+    /**
      * Get configuration value in correct type
      *
      * @param string $key Lengow configuration key
@@ -1023,6 +1045,8 @@ class LengowConfiguration extends Configuration
                         : [];
                 case self::RETURN_TYPE_STRING:
                     return (string) $value;
+                case self::RETURN_TYPE_FLOAT:
+                    return (float) $value;
             }
         }
 

@@ -20,19 +20,19 @@
 
 <div class="cms-global" id="lengow_feed_wrapper">
     <div class="lgw-container">
-        <div class="filter-column">
-            <div class="sticky-icon" id="sticky-icon">
-                <a title="{$locale->t('product.screen.filter_exported')|escape:'htmlall':'UTF-8'}">
-                    <i style="font-size: 20px;color: #555" class="fa fa-filter"></i>
-                </a>
-            </div>
-        </div>
         {if $debugMode}
             <div id="lgw-debug" class="adminlengowfeed {if $multiShop}multi-shop{/if}">
                 {$locale->t('menu.debug_active')|escape:'htmlall':'UTF-8'}
             </div>
         {/if}
         {foreach from=$shopCollection item=shop}
+            <div class="filter-column">
+                <div class="sticky-icon" data-shop-id="{$shop['shop']->id|escape:'htmlall':'UTF-8'}" id="sticky-icon-{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
+                    <a title="{$locale->t('product.screen.filter_exported')|escape:'htmlall':'UTF-8'}">
+                        <i style="font-size: 20px;color: #555" class="fa fa-filter"></i>
+                    </a>
+                </div>
+            </div>
             <div class="lgw-box" id="block_{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
                 <a href="{$shop['link']|escape:'htmlall':'UTF-8'}&stream=1&update_export_date=0"
                    class="lengow_export_feed lengow_link_tooltip"
@@ -55,7 +55,7 @@
                         </p>
                     </div>
                     <hr>
-                    <div class="sticky-switch" id="sticky-switch-{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
+                    <div class="sticky-switch-{$shop['shop']->id|escape:'htmlall':'UTF-8'} sticky-switch" data-shop-id="{$shop['shop']->id|escape:'htmlall':'UTF-8'}" id="sticky-switch-{$shop['shop']->id|escape:'htmlall':'UTF-8'}">
                         <div class="switch-row variation-row">
                             <div class="lgw-switch switch-variation {if $shop['option_selected__variation'] == 1} checked{/if}">
                                 <label>
@@ -66,7 +66,7 @@
                                                 data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
                                                 data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
                                                 name="lengow_export_variation"
-                                                class="lengow_switch_option option-variation"
+                                                class="lengow_switch_option option-variation-{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
                                                 data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}"
                                                 data-action="change_option_selected__variation"
                                                 data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
@@ -88,7 +88,7 @@
                                                 data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
                                                 data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
                                                 name="lengow_export_out_of_stock"
-                                                class="lengow_switch_option option-out-of-stock"
+                                                class="lengow_switch_option option-out-of-stock-{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
                                                 data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}"
                                                 data-action="change_option_selected__out_of_stock"
                                                 data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
@@ -110,7 +110,7 @@
                                                 data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
                                                 data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
                                                 name="lengow_export_inactive"
-                                                class="lengow_switch_option option-inactive"
+                                                class="lengow_switch_option option-inactive-{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
                                                 data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}"
                                                 data-action="change_option_selected__inactive"
                                                 data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
@@ -132,7 +132,7 @@
                                                 data-on-text="{$locale->t('product.screen.button_yes')|escape:'htmlall':'UTF-8'}"
                                                 data-off-text="{$locale->t('product.screen.button_no')|escape:'htmlall':'UTF-8'}"
                                                 name="lengow_export_selection"
-                                                class="lengow_switch_option option-selection"
+                                                class="lengow_switch_option option-selection-{$shop['shop']->id|escape:'htmlall':'UTF-8'}"
                                                 data-href="{$lengow_link->getAbsoluteAdminLink('AdminLengowFeed')|escape:'htmlall':'UTF-8'}"
                                                 data-action="change_option_selected__selection"
                                                 data-id_shop="{$shop['shop']->id|escape:'htmlall':'UTF-8'}"

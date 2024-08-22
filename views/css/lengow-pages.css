@@ -381,9 +381,6 @@
 }
 
 .sticky-icon {
-  position: fixed;
-  top: 170px;
-  transform: translateY(-50%);
   z-index: 999;
   padding: 10px;
   cursor: pointer;
@@ -394,13 +391,12 @@
 }
 
 .sticky-switch {
+  position: absolute;
   display: flex;
   justify-content: center;
   flex-direction: column;
   visibility: hidden;
-  position: fixed;
-  top: 275px;
-  transform: translateY(-50%);
+  top: 10px;
   padding: 10px;
   width: 25%;
   max-height: 100vh;
@@ -419,7 +415,8 @@
 
 .filter-column {
   float: left;
-  width: 50px;
+  margin-top: 10px;
+  width: 80px;
   display: flex;
   justify-content: center;
 }

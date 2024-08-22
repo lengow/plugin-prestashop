@@ -7,3 +7,6 @@ config_fr.xml
 **/.DS_Store
 config/marketplaces.json
 tools/vars.sh
+.php_cs.cache
+.php-cs-fixer.cache
+.php-cs-fixer.dist.php
