@@ -160,6 +160,7 @@ remove_files "$FOLDER_TMP" ".php-cs-fixer.dist.php"
 remove_files "$FOLDER_TMP" ".php_cs.cache"
 # remove .git
 remove_files "$FOLDER_TMP" ".git"
+rm -Rf "$FOLDER_TMP/.github"
 # remove .DS_Store
 remove_files "$FOLDER_TMP" ".DS_Store"
 # remove composer.json

@@ -1,5 +1,31 @@
 # Changelog
 
+## [3.5.4](https://github.com/lengow/plugin-prestashop/compare/v3.5.3...v3.5.4) (2024-08-22)
+
+
+### Features
+
+* **cicd:** Add a besic CI to the project ([#15](https://github.com/lengow/plugin-prestashop/issues/15)) ([3c6c19c](https://github.com/lengow/plugin-prestashop/commit/3c6c19c0aae423409828aaf8cdbffa911c9acf6b))
+
+* **import:** [ECP-96] nb days sync could be inf at 1 ([#14](https://github.com/lengow/plugin-prestashop/issues/14)) ([5b2d575](https://github.com/lengow/plugin-prestashop/commit/5b2d575ba1853022fcdb240cda74b55795e6780a))
+
+
+### Bug Fixes
+
+* **plugins:** [ECP-101] fix syntax - change version ([#14](https://github.com/lengow/plugin-prestashop/issues/14)) ([5b2d575](https://github.com/lengow/plugin-prestashop/commit/5b2d575ba1853022fcdb240cda74b55795e6780a))
+
+* **plugins:** [PST-21540] Prestashop hook callable in main class ([#14](https://github.com/lengow/plugin-prestashop/issues/14)) ([5b2d575](https://github.com/lengow/plugin-prestashop/commit/5b2d575ba1853022fcdb240cda74b55795e6780a))
+
+* **plugins:** [PST-21540] config for disable email and order status change ([#14](https://github.com/lengow/plugin-prestashop/issues/14)) ([5b2d575](https://github.com/lengow/plugin-prestashop/commit/5b2d575ba1853022fcdb240cda74b55795e6780a))
+
+
+### Miscellaneous
+
+* **clean:** Remove obsolete files ([3c6c19c](https://github.com/lengow/plugin-prestashop/commit/3c6c19c0aae423409828aaf8cdbffa911c9acf6b))
+* **docs:** Precise Changelog file type ([3c6c19c](https://github.com/lengow/plugin-prestashop/commit/3c6c19c0aae423409828aaf8cdbffa911c9acf6b))
+
+## Changelog
+
 
 =============================================================
 Version 3.5.4
