@@ -1,5 +1,21 @@
 # Changelog
 
+
+## [3.5.5](https://github.com/lengow/plugin-prestashop/compare/v3.5.4...v3.5.5) (2024-08-28)
+
+
+### Bug Fixes
+
+* **products:** [PST-21685] Prestashop problem display product with version 3.5.4 ([#21](https://github.com/lengow/plugin-prestashop/issues/21)) ([ac663ec](https://github.com/lengow/plugin-prestashop/commit/ac663ecf6e3673e3a3df8915f19cddeac71645ae))
+
+
+### Miscellaneous
+
+* add version composer ([#19](https://github.com/lengow/plugin-prestashop/issues/19)) ([f8202a3](https://github.com/lengow/plugin-prestashop/commit/f8202a3ace406d578385a3fc535a0200dcdb988c))
+* add version in composer.json ([f8202a3](https://github.com/lengow/plugin-prestashop/commit/f8202a3ace406d578385a3fc535a0200dcdb988c))
+* add version in composer.json ([#18](https://github.com/lengow/plugin-prestashop/issues/18)) ([6d3aa63](https://github.com/lengow/plugin-prestashop/commit/6d3aa63c6702e434d7d8483bbb9b2fd02e277307))
+
+>>>>>>> c407e0f5d26e7633b7a080a00d7eb917b49c3ce3
 ## [3.5.4](https://github.com/lengow/plugin-prestashop/compare/v3.5.3...v3.5.4) (2024-08-22)
 
 
