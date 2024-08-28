@@ -1,7 +1,6 @@
 # Changelog
 
-<<<<<<< HEAD
-=======
+
 ## [3.5.5](https://github.com/lengow/plugin-prestashop/compare/v3.5.4...v3.5.5) (2024-08-28)
 
 
