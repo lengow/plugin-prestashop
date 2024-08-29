@@ -33,9 +33,19 @@ class LengowConnector
     public const LENGOW_URL = 'lengow.io';
 
     /**
+     * @var string url of Lengow solution for DEV
+     */
+    public const LENGOW_URL_DEV = 'my.test.aws.lgw.io';
+
+    /**
      * @var string url of the Lengow API
      */
     public const LENGOW_API_URL = 'https://api.lengow.io';
+
+    /**
+     * @var string url of the Lengow API for DEV
+     */
+    public const LENGOW_API_URL_DEV = 'https://internal.api.test.aws.lgw.io';
 
     /**
      * @var string suffix for prod

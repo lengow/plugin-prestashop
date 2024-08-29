@@ -185,13 +185,23 @@ class LengowConfigurationForm
                 $html .= '</div>';
                 break;
             case self::TYPE_OPTIONS:
-                $html .= '<label class="control-label">' . $label . '</label>
+                if (LengowConfiguration::getTypedGlobalValue(LengowConfiguration::DEVELOPER_MODE)) {
+                    $html .= '<label class="control-label">' . $label . '</label>
+                    <select class="form-control lengow_select" name="' . $name . '" disabled="disabled">
+                      <option value="test" selected="selected">Test</option>
+                    </select>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">Developer mode</span>';
+
+                } else {
+                    $html .= '<label class="control-label">' . $label . '</label>
                                   <select class="form-control lengow_select" name="' . $name . '">
                                     <option value="prod" ' . ($value == 'prod' ? 'selected' : '') . '>Prod</option>
                                     <option value="pre-prod" ' . ($value == 'pre-prod' ? 'selected' : '') . '>Preprod</option>
                                   </select>';
-                if (!empty($legend)) {
-                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    if (!empty($legend)) {
+                        $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    }
+
                 }
 
                 $html .= '</div>';

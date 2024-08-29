@@ -29,6 +29,7 @@ if (!defined('_PS_VERSION_')) {
 class LengowConfiguration extends Configuration
 {
     /* Settings database key */
+    public const DEVELOPER_MODE = 'LENGOW_DEVELOPER_MODE';
     public const PLUGIN_ENV = 'LENGOW_PLUGIN_ENV';
     public const ACCOUNT_ID = 'LENGOW_ACCOUNT_ID';
     public const ACCESS_TOKEN = 'LENGOW_ACCESS_TOKEN';
@@ -114,6 +115,7 @@ class LengowConfiguration extends Configuration
      * @var array params correspondence keys for toolbox
      */
     public static $genericParamKeys = [
+        self::DEVELOPER_MODE => 'developer_mode',
         self::PLUGIN_ENV => 'plugin_env',
         self::ACCOUNT_ID => 'account_id',
         self::ACCESS_TOKEN => 'access_token',
@@ -217,6 +219,14 @@ class LengowConfiguration extends Configuration
                 ];
             }
             $keys = [
+                self::DEVELOPER_MODE => [
+                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
+                    self::PARAM_GLOBAL => true,
+                    self::PARAM_EXPORT_TOOLBOX => false,
+                    self::PARAM_LABEL => $locale->t('lengow_setting.lengow_developer_mode_title'),
+                    self::PARAM_DEFAULT_VALUE => 0,
+                    self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
+                ],
                 self::PLUGIN_ENV => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_OPTIONS,
                     self::PARAM_GLOBAL => true,
@@ -942,6 +952,9 @@ class LengowConfiguration extends Configuration
      */
     public static function getLengowUrl()
     {
+        if (self::getTypedGlobalValue(self::DEVELOPER_MODE)) {
+            return LengowConnector::LENGOW_URL_DEV;
+        }
         $url = LengowConnector::LENGOW_URL;
         if (self::isProductionMode()) {
             $url = str_replace(
@@ -967,6 +980,9 @@ class LengowConfiguration extends Configuration
      */
     public static function getLengowApiUrl()
     {
+        if (self::getTypedGlobalValue(self::DEVELOPER_MODE)) {
+            return LengowConnector::LENGOW_API_URL_DEV;
+        }
         $url = LengowConnector::LENGOW_API_URL;
         if (self::isProductionMode()) {
             $url = str_replace(
