@@ -153,6 +153,7 @@ class LengowController
         $this->context->smarty->assign('version', _PS_VERSION_);
         $this->context->smarty->assign('lengowVersion', $this->module->version);
         $this->context->smarty->assign('lengowUrl', LengowConfiguration::getLengowUrl());
+        $this->context->smarty->assign('isDeveloperMode', LengowConfiguration::getTypedGlobalValue(LengowConfiguration::DEVELOPER_MODE));
         $this->context->smarty->assign('displayToolbar', $displayToolbar);
         $this->context->smarty->assign('pluginData', $pluginData);
         $this->context->smarty->assign('pluginIsUpToDate', $pluginIsUpToDate);
