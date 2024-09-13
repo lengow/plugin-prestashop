@@ -86,8 +86,11 @@ class LengowGender extends Gender
         }
         $query = 'SELECT `id_gender` FROM `' . _DB_PREFIX_ . 'gender_lang`
             WHERE `name` = \'' . pSQL($name) . '\' LIMIT 1;';
-        if ($result = Db::getInstance()->Execute($query)) {
-            return (string) $result['id_gender'];
+        if ($result = Db::getInstance()->getRow($query)) {
+            if (!is_array($result)) {
+                return '';
+            }
+            return (string) $result['id_gender'] ?? '';
         }
 
         return '';
