@@ -60,3 +60,6 @@ jobs:
               {"type":"refactor","section":"Refactoring","hidden":false},
               {"type":"misc","section":"Miscellaneous","hidden":false}
             ]
+          extra-files: |
+            lengow.php
+            README.md
