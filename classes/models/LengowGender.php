@@ -37,7 +37,10 @@ class LengowGender extends Gender
         'Mister',
         'Monsieur',
         'monsieur',
+        'MONSIEUR',
         'mister',
+        'MISTER',
+        'MR',
         'm.',
         'mr ',
     ];
@@ -47,22 +50,29 @@ class LengowGender extends Gender
      */
     public static $currentFemale = [
         'Mme',
+        'MME',
         'mme',
         'Mm',
         'mm',
         'Mlle',
         'mlle',
+        'MLLE',
         'Madame',
+        'MADAME',
         'madame',
         'Mademoiselle',
         'madamoiselle',
+        'MADEMOISELLE',
         'Mrs',
+        'MRS',
         'mrs',
         'Mrs.',
         'mrs.',
         'Miss',
         'miss',
+        'MISS',
         'Ms',
+        'MS',
         'ms',
     ];
 
@@ -78,18 +88,22 @@ class LengowGender extends Gender
         if (empty($name)) {
             return '';
         }
-        if (in_array($name, self::$currentMale, true)) {
+        if (in_array(strtolower($name), self::$currentMale, true)) {
             return '1';
         }
-        if (in_array($name, self::$currentFemale, true)) {
+        if (in_array(strtolower($name), self::$currentFemale, true)) {
             return '2';
         }
-        $query = 'SELECT `id_gender` FROM `' . _DB_PREFIX_ . 'gender_lang`
-            WHERE `name` = \'' . pSQL($name) . '\' LIMIT 1;';
-        if ($result = Db::getInstance()->Execute($query)) {
-            return (string) $result['id_gender'];
+        $query = 'SELECT `id_gender` FROM ' . _DB_PREFIX_ . 'gender_lang AS gl
+            WHERE gl.`name` = \'' . pSQL($name) . '\' LIMIT 1;';
+        $result = Db::getInstance()->ExecuteS($query);
+
+        if ($result && is_array($result)) {
+
+            return (string) $result[0]['id_gender'] ?? '';
         }
 
         return '';
     }
 }
+
