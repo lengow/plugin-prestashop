@@ -59,7 +59,7 @@ class LengowGender extends Gender
         'MLLE',
         'Madame',
         'MADAME',
-        'madame',        
+        'madame',
         'Mademoiselle',
         'madamoiselle',
         'MADEMOISELLE',
@@ -88,10 +88,10 @@ class LengowGender extends Gender
         if (empty($name)) {
             return '';
         }
-        if (in_array($name, self::$currentMale, true)) {
+        if (in_array(strtolower($name), self::$currentMale, true)) {
             return '1';
         }
-        if (in_array($name, self::$currentFemale, true)) {
+        if (in_array(strtolower($name), self::$currentFemale, true)) {
             return '2';
         }
         $query = 'SELECT `id_gender` FROM ' . _DB_PREFIX_ . 'gender_lang AS gl
