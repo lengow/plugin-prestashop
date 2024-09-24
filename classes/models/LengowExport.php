@@ -456,13 +456,16 @@ class LengowExport
      */
     public function getNewFields()
     {
-        $sql = 'SELECT prestashop_value, lengow_field FROM ' . _DB_PREFIX_ . 'lengow_exported_fields';
+        $sql = 'SELECT prestashop_value, lengow_field, exported FROM ' . _DB_PREFIX_ . 'lengow_exported_fields';
         $result = Db::getInstance()->executeS($sql);
+
 
         $newFields = [];
         if ($result) {
             foreach ($result as $row) {
-                $newFields[$row['lengow_field']] = $row['prestashop_value'];
+                if ($row['exported'] === '1') {
+                    $newFields[$row['lengow_field']] = $row['prestashop_value'];
+                }
             }
         }
 
@@ -476,7 +479,7 @@ class LengowExport
      */
     public function getConfigFields()
     {
-        $sql = 'SELECT default_key, prestashop_value, lengow_field FROM ' . _DB_PREFIX_ . 'lengow_exported_fields';
+        $sql = 'SELECT default_key, prestashop_value, lengow_field, exported FROM ' . _DB_PREFIX_ . 'lengow_exported_fields';
         $result = Db::getInstance()->executeS($sql);
 
         $newFields = [];
@@ -484,7 +487,8 @@ class LengowExport
             foreach ($result as $row) {
                 $newFields[$row['default_key']] = [
                     'prestashop_value' => $row['prestashop_value'],
-                    'lengow_field' => $row['lengow_field']
+                    'lengow_field' => $row['lengow_field'],
+                    'exported' => $row['exported'],
                 ];
             }
         }

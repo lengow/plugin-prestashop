@@ -240,9 +240,13 @@ class LengowFeedController extends LengowController
                     $fields = Tools::getValue('fields');
                     if (is_array($fields)) {
                         foreach ($fields as $key => $field) {
+                            if (in_array($field['prestashop_value'], ['id', 'category', 'name', 'price_incl_tax', 'language'])) {
+                                $field['exported'] = '1';
+                            }
                             $defaultKey = $key;
                             $prestashopValue = isset($field['prestashop_value']) ? pSQL($field['prestashop_value']) : '';
                             $lengowField = isset($field['lengow_field']) ? pSQL($field['lengow_field']) : '';
+                            $exported = isset($field['exported']) ? (int) $field['exported'] : 0;
 
                             $sql = 'SELECT COUNT(*) FROM ' . _DB_PREFIX_ . 'lengow_exported_fields WHERE default_key = "' . $defaultKey . '"';
                             $exists = Db::getInstance()->getValue($sql);
@@ -250,12 +254,14 @@ class LengowFeedController extends LengowController
                             if ($exists) {
                                 $sql = 'UPDATE ' . _DB_PREFIX_ . 'lengow_exported_fields
                                 SET prestashop_value = "' . $prestashopValue . '",
-                                    lengow_field = "' . $lengowField . '"
+                                    lengow_field = "' . $lengowField . '",
+                                    exported = "' . $exported . '"
                                 WHERE default_key = "' . $defaultKey . '"';
                             } else {
-                                $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'lengow_exported_fields (default_key, prestashop_value, lengow_field)
-                                VALUES ("' . $defaultKey . '", "' . $prestashopValue . '", "' . $lengowField . '")';
+                                $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'lengow_exported_fields (default_key, prestashop_value, lengow_field, exported)
+                                VALUES ("' . $defaultKey . '", "' . $prestashopValue . '", "' . $lengowField . '", "' . $exported . '")';
                             }
+
                             Db::getInstance()->execute($sql);
                         }
                         return Tools::redirectAdmin($this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed'));

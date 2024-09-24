@@ -62,7 +62,13 @@
                         {foreach from=$fields item=field key=key}
                             <div class="grid-row">
                                 <div class="grid-item new-column">
-                                   <button>ACTIVE</button>
+                                    <input type="hidden" name="fields[{$key}][exported]" value="0">
+                                    <input type="checkbox"
+                                           name="fields[{$key}][exported]"
+                                           class="exported-checkbox"
+                                           {if $field.exported == '1'}checked{/if}
+                                            {if in_array($field.prestashop_value, ['id', 'category', 'name', 'price_incl_tax', 'language'])}disabled{/if}
+                                           value="1">
                                 </div>
                                 <div class="grid-item">
                                     <p class="field-value" data-prestashop-value="{$field.prestashop_value}">{$field.prestashop_value}</p>
