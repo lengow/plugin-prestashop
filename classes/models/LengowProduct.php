@@ -631,7 +631,7 @@ class LengowProduct extends Product
     protected function getImageLink($name, $idProductAttribute = null)
     {
         $index = explode('_', $name);
-        $idImage = (isset($index[1]))? $index[1] - 1 : null;
+        $idImage = (isset($index[1])) ? $index[1] - 1 : null;
         if (is_null($idImage)) {
             return '';
         }
