@@ -133,7 +133,7 @@ fr:
       button_fields_setting: "Modifier les noms de champs"
       button_fields_reset: "Réinitialiser tous les champs"
       title_fields_settings: "Modifier les noms de champs par default du catalogue exporté"
-      title_column_name_fields: "Nom du Champ"
+      title_column_name_fields: "Nom du champ Lengow"
       title_column_prestashop_value: "Valeur PrestaShop"
       button_yes: "Oui"
       button_no: "Non"

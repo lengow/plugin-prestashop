@@ -1126,6 +1126,12 @@ a.lgw-box-link:hover {
   width: 30px;
 }
 
+.lgw-arrow-left {
+  background: url('../img/arrow-right.png') no-repeat left center;
+  height: 43px;
+  width: 30px;
+}
+
 
 /*************************************************/
 /*                   LOADER                      */

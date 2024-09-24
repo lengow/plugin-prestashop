@@ -1011,6 +1011,7 @@ class LengowImportOrder
                 $this->checkCarrierCompatibility($order);
                 if (LengowConfiguration::getGlobalValue(LengowConfiguration::ACTIVE_NEW_ORDER_HOOK)) {
                     // launch validateOrder hook for other plugin
+
                     $this->launchValidateOrderHook($order);
                 }
             }

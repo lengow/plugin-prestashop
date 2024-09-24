@@ -38,7 +38,8 @@ if (!$tableExists) {
         id INT(11) NOT NULL AUTO_INCREMENT,
         lengow_field VARCHAR(255) NOT NULL,
         prestashop_value VARCHAR(255) NOT NULL,
-        default_key VARCHAR(255) NOT NULL, -- Nouvelle colonne ajoutée
+        default_key VARCHAR(255) NOT NULL,
+        exported TINYINT(1) NOT NULL DEFAULT 1,
         PRIMARY KEY (id)
     ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 

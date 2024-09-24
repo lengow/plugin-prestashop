@@ -32,16 +32,24 @@
                     </span>
                 </div>
                 <h3 class="modal-title text-center">{$locale->t('product.screen.title_fields_settings')|escape:'htmlall':'UTF-8'}</h3>
-                <div class="search-container">
-                    <input type="text" id="product-search" placeholder="Rechercher un produit" />
-                    <ul id="product-results" class="search-results"></ul>
+                <hr>
+                <div class="select-product-container">
+                    <p>Select product</p>
+                    <select id="product-select">
+                        {foreach from=$productsData item=product}
+                            <option value="{$product.id}">{$product.id}</option>
+                        {/foreach}
+                    </select>
                 </div>
                 <div class="grid-header">
+                    <div class="grid-item header-item new-column">
+                        <strong>Exporter</strong>
+                    </div>
                     <div class="grid-item header-item field-name">
                         <strong>{$locale->t('product.screen.title_column_prestashop_value')|escape:'htmlall':'UTF-8'}</strong>
                     </div>
                     <div class="grid-item header-item presta-field">
-                        <strong>Exemple de valeur pour le produit ()</strong>
+                        <strong>Exemples de valeurs exportées</strong>
                     </div>
                     <div class="grid-item header-item presta-field">
                         <strong>{$locale->t('product.screen.title_column_name_fields')|escape:'htmlall':'UTF-8'}</strong>
@@ -51,34 +59,27 @@
             <div class="lengow-modal-body">
                 <form id="edit-fields-form" method="post">
                     <div class="fields-container">
-                        <div class="grid-row">
-                            <div class="grid-item">
-                                <select id="product-select" class="form-control">
-                                    {foreach from=$productsData item=product}
-                                        <option value="{$product.id}">{$product.id}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                        </div>
                         {foreach from=$fields item=field key=key}
                             <div class="grid-row">
+                                <div class="grid-item new-column">
+                                   <button>ACTIVE</button>
+                                </div>
                                 <div class="grid-item">
                                     <p class="field-value" data-prestashop-value="{$field.prestashop_value}">{$field.prestashop_value}</p>
                                     <input type="hidden" name="fields[{$key}][prestashop_value]" value="{$field.prestashop_value}">
                                 </div>
                                 <div class="grid-item line-name-field">
                                     {if strpos($field.prestashop_value, 'image') !== false}
-                                        <img id="field-value-{$field.prestashop_value}" src="{$product}" alt="Image" style="width: 100px; height: 60px;" class="field-value"/>
+                                        <span style="width: 100%" id="field-value-{$field.prestashop_value}" class="field-value image-container">
+                                        </span>
                                     {elseif strpos($field.prestashop_value, 'description') !== false
                                     || strpos($field.prestashop_value, 'url') !== false
                                     || strpos($field.prestashop_value, 'url_rewrite') !== false
                                     || strpos($field.prestashop_value, 'short_description') !== false
                                     || strpos($field.prestashop_value, 'short_description_html') !== false
                                     || strpos($field.prestashop_value, 'description_html') !== false}
-                                        <div style="display: flex; justify-content: space-between; width: 100%">
-                                            <label for="field-value-{$field.prestashop_value}"></label>
-                                            <textarea id="field-value-{$field.prestashop_value}" class="field-value" rows="4" cols="20" readonly>
-                                        </textarea>
+                                        <div style="display: flex; justify-content: center; width: 100%">
+                                            <p id="field-value-{$field.prestashop_value}" class="field-value"></p>
                                         </div>
                                     {else}
                                         <p style="width: 100%" id="field-value-{$field.prestashop_value}" class="field-value"></p>
@@ -114,22 +115,22 @@
     document.addEventListener("DOMContentLoaded", function() {
         var products = {$json_products};
 
+        // Fonction pour mettre à jour les informations de produit
         function updateProductInfo(productId) {
-            var product = products.find(p => p.id == productId);
-            console.log(product);
-
+            var product = products.find(function(p) { return p.id == productId; });
             if (product) {
                 document.querySelectorAll(".field-value").forEach(function(fieldElement) {
                     var prestashopValue = fieldElement.getAttribute("data-prestashop-value");
-
-                    var value = product[prestashopValue] || "Aucune donnée";
-
+                    var value = product[prestashopValue] || "";
                     var fieldValueElement = document.querySelector("#field-value-" + prestashopValue);
                     if (fieldValueElement) {
-                        if (fieldValueElement.tagName === "IMG") {
-                            fieldValueElement.src = value;
+                        if (fieldValueElement.tagName === "SPAN") {
+                            fieldValueElement.innerHTML = value
+                                ? "<img src=\"" + value + "\" alt=\"Product Image\" style=\"width: 100px; height: 60px;\">"
+                                : "<p>Pas d'image disponible</p>";
+                        } else {
+                            fieldValueElement.textContent = value || "Aucune donnée";
                         }
-                        fieldValueElement.textContent = value;
                     }
                 });
             } else {
@@ -137,30 +138,48 @@
             }
         }
 
-
+        // Sélection de l'élément select
         var productSelect = document.querySelector("#product-select");
-        products.forEach(function(product) {
-            var option = document.createElement("option");
-            option.value = product.id;
-            option.textContent = product.id;
-            productSelect.appendChild(option);
+
+        // Fonction pour ajouter dynamiquement des options au select
+        function populateProductSelect() {
+            products.forEach(function(product) {
+                var option = document.createElement("option");
+                option.value = product.id;
+                option.textContent = product.id;
+                productSelect.appendChild(option);
+            });
+        }
+
+        // Appel de la fonction pour ajouter les options dynamiquement
+        populateProductSelect();
+
+        // Initialisation de Select2 après avoir ajouté les options
+        lengow_jquery("#product-select").select2({
+            placeholder: "Sélectionnez un produit",
+            minimumResultsForSearch: -1,
+            dropdownAutoWidth: true
         });
 
+        // Définir la valeur par défaut si des produits sont présents
         if (products.length > 0) {
             var defaultProductId = products[0].id;
-            productSelect.value = defaultProductId;
+            lengow_jquery("#product-select").val(defaultProductId).trigger("change"); // Utilisation de jQuery pour Select2
             updateProductInfo(defaultProductId);
         }
 
-        productSelect.addEventListener("change", function() {
-            var selectedProductId = this.value;
+        // Gérer les changements de sélection via Select2
+        lengow_jquery("#product-select").on("change", function() {
+            var selectedProductId = lengow_jquery(this).val(); // Utilisation de jQuery pour récupérer la valeur
             updateProductInfo(selectedProductId);
         });
 
+        // Ouverture de la modal
         document.querySelector("#open-modal").addEventListener("click", function() {
-            $("#modal-edit-fields").modal("show");
+            lengow_jquery("#modal-edit-fields").modal("show");
         });
 
+        // Gestion du bouton de réinitialisation
         document.querySelector("#reset-all-fields").addEventListener("click", function(event) {
             event.preventDefault();
             document.querySelectorAll("input[data-default], select[data-default]").forEach(function(field) {
@@ -169,4 +188,5 @@
             });
         });
     });
+
 </script>
