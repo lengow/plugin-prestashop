@@ -819,32 +819,34 @@ class LengowExport
             $fields[] = $key;
             $formattedFields[] = LengowFeed::formatFields($key, $this->format, $this->legacy);
         }
-        // get product Features
-        // TODO: add configurable option to export features
-        $features = Feature::getFeatures($this->language->id);
-        foreach ($features as $feature) {
-            $formattedFeature = LengowFeed::formatFields($feature['name'], $this->format, $this->legacy);
-            if (!in_array($formattedFeature, $formattedFields, true)) {
-                $fields[] = $feature['name'];
-                $formattedFields[] = $formattedFeature;
-            } else {
-                if ($this->legacy) {
-                    $fields[] = $feature['name'] . '_1';
+        if ((bool)LengowConfiguration::get(LengowConfiguration::EXPORT_PRODUCT_FEATURE_ENABLED)) {
+            // product Features
+            $features = Feature::getFeatures($this->language->id);
+            foreach ($features as $feature) {
+                $formattedFeature = LengowFeed::formatFields($feature['name'], $this->format, $this->legacy);
+                if (!in_array($formattedFeature, $formattedFields, true)) {
+                    $fields[] = $feature['name'];
+                    $formattedFields[] = $formattedFeature;
+                } else {
+                    if ($this->legacy) {
+                        $fields[] = $feature['name'] . '_1';
+                    }
                 }
             }
-        }
-        // if export product variations -> get variations attributes
-        if ($this->variation) {
-            $attributes = AttributeGroup::getAttributesGroups($this->language->id);
-            foreach ($attributes as $attribute) {
-                // don't export empty attributes
-                if ($attribute['name'] === '') {
-                    continue;
-                }
-                $formattedAttribute = LengowFeed::formatFields($attribute['name'], $this->format, $this->legacy);
-                if (!in_array($formattedAttribute, $formattedFields, true)) {
-                    $fields[] = $attribute['name'];
-                    $formattedFields[] = $formattedAttribute;
+
+            // if export product variations -> get variations attributes
+            if ($this->variation) {
+                $attributes = AttributeGroup::getAttributesGroups($this->language->id);
+                foreach ($attributes as $attribute) {
+                    // don't export empty attributes
+                    if ($attribute['name'] === '') {
+                        continue;
+                    }
+                    $formattedAttribute = LengowFeed::formatFields($attribute['name'], $this->format, $this->legacy);
+                    if (!in_array($formattedAttribute, $formattedFields, true)) {
+                        $fields[] = $attribute['name'];
+                        $formattedFields[] = $formattedAttribute;
+                    }
                 }
             }
         }

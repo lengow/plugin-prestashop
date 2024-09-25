@@ -28,7 +28,7 @@
 <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic|Open+Sans:700,600,800,400,300" type="text/css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow-layout.css">
 <link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow-components.css?v=1">
-<link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow-pages.css?v=28">
+<link rel="stylesheet" type="text/css" href="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/css/lengow-pages.css?v=29">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
 {if $displayToolbar eq 1}

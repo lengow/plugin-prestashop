@@ -238,6 +238,18 @@ class LengowFeedController extends LengowController
                     break;
                 case 'update_fields':
                     $fields = Tools::getValue('fields');
+                    $exportFeatures = Tools::getValue('LENGOW_EXPORT_PRODUCT_FEATURE_ENABLED');
+                    if ($exportFeatures === 'on') {
+                        LengowConfiguration::updateValue(
+                            LengowConfiguration::EXPORT_PRODUCT_FEATURE_ENABLED,
+                            1
+                        );
+                    } else {
+                        LengowConfiguration::updateValue(
+                            LengowConfiguration::EXPORT_PRODUCT_FEATURE_ENABLED,
+                            0
+                        );
+                    }
                     if (is_array($fields)) {
                         foreach ($fields as $key => $field) {
                             if (in_array($field['prestashop_value'], ['id', 'category', 'name', 'price_incl_tax', 'language'])) {
@@ -264,12 +276,7 @@ class LengowFeedController extends LengowController
 
                             Db::getInstance()->execute($sql);
                         }
-                        $form = new LengowConfigurationForm(['fields' => LengowConfiguration::getKeys()]);
-                        $form->postProcess(
-                            [
-                                LengowConfiguration::EXPORT_PRODUCT_FEATURE_ENABLED,
-                            ]
-                        );
+
                         return Tools::redirectAdmin($this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed'));
                     }
                     break;
@@ -286,11 +293,7 @@ class LengowFeedController extends LengowController
         $lengowExport = new LengowExport();
         $fields = $lengowExport->getConfigFields();
         $form = new LengowConfigurationForm(['fields' => LengowConfiguration::getKeys()]);
-        $exportParams = $form->buildInputs(
-            [
-                LengowConfiguration::EXPORT_PRODUCT_FEATURE_ENABLED,
-            ]
-        );
+        $exportFeatures = $form->buildInputs([LengowConfiguration::EXPORT_PRODUCT_FEATURE_ENABLED]);
         $shopCollection = [];
         if ($currentShop = Shop::getContextShopID()) {
             $results = [['id_shop' => $currentShop]];
@@ -343,7 +346,7 @@ class LengowFeedController extends LengowController
         $this->context->smarty->assign('shopCollection', $shopCollection);
         $this->context->smarty->assign('fields', $fields);
         $this->context->smarty->assign('json_products', $productsData);
-        $this->context->smarty->assign('export_params', $exportParams);
+        $this->context->smarty->assign('export_features', $exportFeatures);
         parent::display();
     }
 

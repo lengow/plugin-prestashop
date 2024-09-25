@@ -25,6 +25,7 @@
 <div id="modal-edit-fields" class="modal fade-scale" tabindex="-1" role="dialog">
     <div class="lengow-modal-dialog" role="document">
         <div class="lengow-modal-content">
+            <form id="edit-fields-form" method="post">
             <div class="modal-header-lengow">
                 <div class="container-close-button">
                     <span type="button" class="close-button" data-dismiss="modal" aria-label="Close">
@@ -43,7 +44,7 @@
                         </select>
                     </div>
                     <div class="export-feature">
-                        <p>{html_entity_decode($export_params|escape:'htmlall':'UTF-8')}</p>
+                        <p>{html_entity_decode($export_features|escape:'htmlall':'UTF-8')}</p>
                     </div>
                 </div>
 
@@ -63,7 +64,6 @@
                 </div>
             </div>
             <div class="lengow-modal-body">
-                <form id="edit-fields-form" method="post">
                     <div class="fields-container">
                         {foreach from=$fields item=field key=key}
                             <div class="grid-row">
@@ -117,8 +117,8 @@
                         <button type="submit" class="lgw-btn">{$locale->t('global_setting.screen.button_save')|escape:'htmlall':'UTF-8'}</button>
                         <button id="reset-all-fields" class="lgw-btn">{$locale->t('product.screen.button_fields_reset')|escape:'htmlall':'UTF-8'}</button>
                     </div>
-                </form>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -127,7 +127,6 @@
     document.addEventListener("DOMContentLoaded", function() {
         var products = {$json_products};
 
-        // Fonction pour mettre à jour les informations de produit
         function updateProductInfo(productId) {
             var product = products.find(function(p) { return p.id == productId; });
             if (product) {
@@ -150,10 +149,8 @@
             }
         }
 
-        // Sélection de l'élément select
         var productSelect = document.querySelector("#product-select");
 
-        // Fonction pour ajouter dynamiquement des options au select
         function populateProductSelect() {
             products.forEach(function(product) {
                 var option = document.createElement("option");
@@ -163,35 +160,29 @@
             });
         }
 
-        // Appel de la fonction pour ajouter les options dynamiquement
         populateProductSelect();
 
-        // Initialisation de Select2 après avoir ajouté les options
         lengow_jquery("#product-select").select2({
             placeholder: "Sélectionnez un produit",
             minimumResultsForSearch: -1,
             dropdownAutoWidth: true
         });
 
-        // Définir la valeur par défaut si des produits sont présents
         if (products.length > 0) {
             var defaultProductId = products[0].id;
             lengow_jquery("#product-select").val(defaultProductId).trigger("change"); // Utilisation de jQuery pour Select2
             updateProductInfo(defaultProductId);
         }
 
-        // Gérer les changements de sélection via Select2
         lengow_jquery("#product-select").on("change", function() {
             var selectedProductId = lengow_jquery(this).val(); // Utilisation de jQuery pour récupérer la valeur
             updateProductInfo(selectedProductId);
         });
 
-        // Ouverture de la modal
         document.querySelector("#open-modal").addEventListener("click", function() {
             lengow_jquery("#modal-edit-fields").modal("show");
         });
 
-        // Gestion du bouton de réinitialisation
         document.querySelector("#reset-all-fields").addEventListener("click", function(event) {
             event.preventDefault();
             document.querySelectorAll("input[data-default], select[data-default]").forEach(function(field) {
@@ -200,5 +191,4 @@
             });
         });
     });
-
 </script>
