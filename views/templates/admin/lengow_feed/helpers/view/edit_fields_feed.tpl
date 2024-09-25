@@ -170,12 +170,12 @@
 
         if (products.length > 0) {
             var defaultProductId = products[0].id;
-            lengow_jquery("#product-select").val(defaultProductId).trigger("change"); // Utilisation de jQuery pour Select2
+            lengow_jquery("#product-select").val(defaultProductId).trigger("change");
             updateProductInfo(defaultProductId);
         }
 
         lengow_jquery("#product-select").on("change", function() {
-            var selectedProductId = lengow_jquery(this).val(); // Utilisation de jQuery pour récupérer la valeur
+            var selectedProductId = lengow_jquery(this).val();
             updateProductInfo(selectedProductId);
         });
 
