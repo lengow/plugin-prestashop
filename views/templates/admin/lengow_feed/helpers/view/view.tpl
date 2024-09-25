@@ -160,7 +160,7 @@
         {/foreach}
     </div>
 </div>
-<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/feed.js?v=2"></script>
+<script type="text/javascript" src="{$lengowPathUri|escape:'htmlall':'UTF-8'}views/js/lengow/feed.js"></script>
 <script type="text/javascript">
     console.log("Generated Admin Link: {$lengow_link->getAbsoluteAdminLink("AdminLengowFeed")|escape:"htmlall":"UTF-8"}");
 </script>
