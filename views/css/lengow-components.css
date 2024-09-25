@@ -427,6 +427,7 @@ a.lgw-box-link:hover {
   display: block;
   width: 100% !important;
   max-width: 500px;
+  z-index: 100000;
 }
 
 .select2-container--default .select2-selection--single {

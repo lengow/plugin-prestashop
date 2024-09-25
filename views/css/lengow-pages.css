@@ -616,6 +616,12 @@ display: flex;
   margin-bottom: 10px;
 }
 
+.select-all-buttons {
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+}
+
 /*************************************************/
 /*                     ORDERS                    */
 /*************************************************/

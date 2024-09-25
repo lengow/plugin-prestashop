@@ -42,6 +42,10 @@
                                 <option value="{$product.id}">{$product.id}</option>
                             {/foreach}
                         </select>
+                        <div class="select-all-buttons">
+                            <button type="button" id="select-all-fields" class="lgw-btn">Add all fields</button>
+                            <button type="button" id="deselect-all-fields" class="lgw-btn">Remove all fields</button>
+                        </div>
                     </div>
                     <div class="export-feature">
                         <p>{html_entity_decode($export_features|escape:'htmlall':'UTF-8')}</p>
@@ -165,7 +169,7 @@
         lengow_jquery("#product-select").select2({
             placeholder: "Sélectionnez un produit",
             minimumResultsForSearch: -1,
-            dropdownAutoWidth: true
+            dropdownAutoWidth: true,
         });
 
         if (products.length > 0) {
@@ -190,5 +194,17 @@
                 field.value = defaultValue;
             });
         });
+        document.querySelector("#select-all-fields").addEventListener("click", function() {
+            document.querySelectorAll(".exported-checkbox:not(:disabled)").forEach(function(checkbox) {
+                checkbox.checked = true;
+            });
+        });
+
+        document.querySelector("#deselect-all-fields").addEventListener("click", function() {
+            document.querySelectorAll(".exported-checkbox:not(:disabled)").forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+        });
+
     });
 </script>
