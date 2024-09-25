@@ -820,6 +820,7 @@ class LengowExport
             $formattedFields[] = LengowFeed::formatFields($key, $this->format, $this->legacy);
         }
         // get product Features
+        // TODO: add configurable option to export features
         $features = Feature::getFeatures($this->language->id);
         foreach ($features as $feature) {
             $formattedFeature = LengowFeed::formatFields($feature['name'], $this->format, $this->legacy);

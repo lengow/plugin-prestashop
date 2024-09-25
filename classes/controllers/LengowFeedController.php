@@ -264,6 +264,12 @@ class LengowFeedController extends LengowController
 
                             Db::getInstance()->execute($sql);
                         }
+                        $form = new LengowConfigurationForm(['fields' => LengowConfiguration::getKeys()]);
+                        $form->postProcess(
+                            [
+                                LengowConfiguration::EXPORT_PRODUCT_FEATURE_ENABLED,
+                            ]
+                        );
                         return Tools::redirectAdmin($this->lengowLink->getAbsoluteAdminLink('AdminLengowFeed'));
                     }
                     break;
@@ -278,8 +284,13 @@ class LengowFeedController extends LengowController
     public function display()
     {
         $lengowExport = new LengowExport();
-        $lengowProduct = new LengowProduct();
         $fields = $lengowExport->getConfigFields();
+        $form = new LengowConfigurationForm(['fields' => LengowConfiguration::getKeys()]);
+        $exportParams = $form->buildInputs(
+            [
+                LengowConfiguration::EXPORT_PRODUCT_FEATURE_ENABLED,
+            ]
+        );
         $shopCollection = [];
         if ($currentShop = Shop::getContextShopID()) {
             $results = [['id_shop' => $currentShop]];
@@ -332,6 +343,7 @@ class LengowFeedController extends LengowController
         $this->context->smarty->assign('shopCollection', $shopCollection);
         $this->context->smarty->assign('fields', $fields);
         $this->context->smarty->assign('json_products', $productsData);
+        $this->context->smarty->assign('export_params', $exportParams);
         parent::display();
     }
 

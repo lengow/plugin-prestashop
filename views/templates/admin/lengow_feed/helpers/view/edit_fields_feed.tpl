@@ -33,14 +33,20 @@
                 </div>
                 <h3 class="modal-title text-center">{$locale->t('product.screen.title_fields_settings')|escape:'htmlall':'UTF-8'}</h3>
                 <hr>
-                <div class="select-product-container">
-                    <p>Select product</p>
-                    <select id="product-select">
-                        {foreach from=$productsData item=product}
-                            <option value="{$product.id}">{$product.id}</option>
-                        {/foreach}
-                    </select>
+                <div class="product-setting-header-row">
+                    <div class="select-product-container">
+                        <p>Select product</p>
+                        <select id="product-select">
+                            {foreach from=$productsData item=product}
+                                <option value="{$product.id}">{$product.id}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="export-feature">
+                        <p>{html_entity_decode($export_params|escape:'htmlall':'UTF-8')}</p>
+                    </div>
                 </div>
+
                 <div class="grid-header">
                     <div class="grid-item header-item new-column">
                         <strong>Exporter</strong>

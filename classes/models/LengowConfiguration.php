@@ -86,6 +86,7 @@ class LengowConfiguration extends Configuration
     public const LAST_UPDATE_AUTHORIZATION_TOKEN = 'LENGOW_LAST_AUTH_TOKEN_UPDATE';
     public const LAST_UPDATE_PLUGIN_MODAL = 'LENGOW_LAST_PLUGIN_MODAL';
     public const SEND_EMAIL_DISABLED = 'LENGOW_SEND_EMAIL_DISABLED';
+    public const EXPORT_PRODUCT_FEATURE_ENABLED = 'LENGOW_EXPORT_PRODUCT_FEATURE_ENABLED';
 
     /* Configuration parameters */
     public const PARAM_COLLECTION = 'collection';
@@ -171,6 +172,7 @@ class LengowConfiguration extends Configuration
         self::LAST_UPDATE_AUTHORIZATION_TOKEN => 'last_update_authorization_token',
         self::LAST_UPDATE_PLUGIN_MODAL => 'last_update_plugin_modal',
         self::SEND_EMAIL_DISABLED => 'send_email_disabled',
+        self::EXPORT_PRODUCT_FEATURE_ENABLED => 'export_product_feature_enabled',
     ];
 
     /**
@@ -584,6 +586,12 @@ class LengowConfiguration extends Configuration
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_disable_send_email_title'),
                     self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_disable_send_email_legend'),
+                ],
+                self::EXPORT_PRODUCT_FEATURE_ENABLED => [
+                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
+                    self::PARAM_GLOBAL => true,
+                    self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
+                    self::PARAM_LABEL => "Export product feature",
                 ],
             ];
         }

@@ -603,6 +603,26 @@ display: flex;
   width: 100% !important;
 }
 
+.product-setting-header-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.export-feature {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.export-feature p {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 4px;
+  margin-right: 10px;
+}
+
 /*************************************************/
 /*                     ORDERS                    */
 /*************************************************/
