@@ -69,7 +69,7 @@ connection.cms.failed_description_second_credentials_prod|Por favor, verifique q
 connection.cms.failed_description_second_credentials_preprod|Por favor, verifique que estas credenciales coincidan con el entorno de pre-producción de Lengow.
 connection.cms.failed_help|Si el problema persiste, puede consultar la
 connection.cms.failed_help_center|"Guía de PrestaShop"
-connection.cms.failed_help_or|o contactar con nuestro 
+connection.cms.failed_help_or|o contactar con nuestro
 connection.cms.failed_help_customer_success_team|"Equipo de éxito del cliente"
 connection.cms.failed_button|Volver a intentar
 connection.catalog.link_title|Vincule sus tiendas con Lengow
@@ -116,7 +116,7 @@ product.screen.button_download|Descargar
 product.screen.button_filter|Filtro
 product.screen.button_fields_setting|Modificación de los nombres de los campos
 product.screen.button_fields_reset|Restablecer todos los campos
-product.screen.title_fields_settings|Modificar los nombres de campo por defecto del catálogo exportado
+product.screen.title_fields_settings|Modificar los campo por defecto del catálogo exportado
 product.screen.title_column_name_fields|Nombre del campo de Lengow
 product.screen.title_column_prestashop_value|Valor de PrestaShop
 product.screen.button_yes|Si
@@ -139,7 +139,7 @@ product.table.lengow_status|Incluir en el export ?
 product.table.pagination_of|de
 order.screen.import_charge_first|Recuperando tus pedidos...
 order.screen.import_charge_second|Por favor, ten paciencia con nosotros; esto no te llevará mucho tiempo (2 minutos de espera más o menos )
-order.screen.all_order_will_be_sent_to|Todos los informes de envios de pedidos serán enviados por email 
+order.screen.all_order_will_be_sent_to|Todos los informes de envios de pedidos serán enviados por email
 order.screen.change_this|¿Cambiar esto?
 order.screen.last_order_importation|Última sincronización
 order.screen.no_order_importation|No hay sincronización por ahora
@@ -415,11 +415,11 @@ lengow_log.exception.order_list_is_empty|el pedido no ha podido ser registrado
 lengow_log.exception.carrier_shipping_address_no_country|la dirección de envío no contiene el país
 lengow_log.exception.no_default_carrier_for_country|Debe seleccionar un proveedor predeterminado para el país: %{country_name} y marketplace: %{marketplace_name}
 lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} no figura en la lista del mercado
-lengow_log.exception.order_line_required|la línea de pedido es requerida pero no se encuentra 
+lengow_log.exception.order_line_required|la línea de pedido es requerida pero no se encuentra
 lengow_log.exception.action_not_valid|la acción %{action} no es válida
 lengow_log.exception.marketplace_action_not_present|acción marketplace %{action} no está presente
 lengow_log.exception.marketplace_sku_require|se requiere la referencia del pedido marketplace
-lengow_log.exception.marketplace_name_require|es necesario el nombre del marketplace 
+lengow_log.exception.marketplace_name_require|es necesario el nombre del marketplace
 lengow_log.exception.no_delivery_country_in_order|no puede encontrar el país de entrega en el pedido
 lengow_log.exception.match_carrier_with_country|necesitas relacionar el transportista %{carrier_name} con el país %{country_name}
 lengow_log.exception.arg_is_required|envío de acción imposible: %{arg_name} es requerido
@@ -427,7 +427,7 @@ lengow_log.exception.action_not_created|creación de la acción imposible: %{err
 lengow_log.exception.action_not_created_api|la acción no puede crearse porque la API Lengow se encuentra indisponible. Inténtelo de nuevo
 lengow_log.exception.action_is_too_old|order action is too old. Please retry the call
 lengow_log.exception.cannot_load_order_status|no se puede cargar el estado del pedido
-lengow_log.exception.order_creation_failed|la creación del pedido PrestaShop ha fallado 
+lengow_log.exception.order_creation_failed|la creación del pedido PrestaShop ha fallado
 lengow_log.exception.payment_module_not_active|el módulo de "pagos" no está activo
 lengow_log.exception.cart_cannot_be_loaded|la compra no se puede cargar, o bien un pedido ya ha sido colocado usando esta misma compra
 lengow_log.exception.delivery_country_not_active|el país %{country_name} en la dirección de entrega no está activo

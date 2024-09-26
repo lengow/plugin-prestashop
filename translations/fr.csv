@@ -100,7 +100,7 @@ status.screen.third_description_end_free_trial|Votre compte d'essai sera supprim
 status.screen.upgrade_account_button|Je suis prêt à souscrire !
 status.screen.refresh_action|Actualiser mon compte
 product.screen.filter_exported|filtrer les produits exportés
-product.screen.nb_exported|produits exportés 
+product.screen.nb_exported|produits exportés
 product.screen.nb_available|produits disponibles
 product.screen.include_variation_product|Inclure les variations de produits
 product.screen.include_out_of_stock_product|Inclure les produits hors stock
@@ -116,7 +116,7 @@ product.screen.button_download|Télécharger
 product.screen.button_filter|Filtre
 product.screen.button_fields_setting|Modifier les noms de champs
 product.screen.button_fields_reset|Réinitialiser tous les champs
-product.screen.title_fields_settings|Modifier les noms de champs par default du catalogue exporté
+product.screen.title_fields_settings|Modifier les champs par default du catalogue exporté
 product.screen.title_column_name_fields|Nom du Champ Lengow
 product.screen.title_column_prestashop_value|Valeur PrestaShop
 product.screen.button_yes|Oui
@@ -158,7 +158,7 @@ order.screen.action_sent|Action %{action_type} envoyée
 order.screen.action_waiting_return|Action envoyée, en attente d'une réponse.
 order.screen.action_sent_not_work|Erreur sur l'action envoyée à la marketplace.
 order.screen.no_error_message|Erreur non identifiée, merci de contacter le support Lengow pour plus d'informations
-order.screen.no_order_title|Le meilleur est encore à venir ! 
+order.screen.no_order_title|Le meilleur est encore à venir !
 order.screen.no_order_description|Vos produits sont bien visibles, vos ventes sont sur le point de décoller
 order.screen.action_success|Succès
 order.screen.action_error|Erreur

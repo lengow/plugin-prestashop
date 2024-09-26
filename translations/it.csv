@@ -65,7 +65,7 @@ connection.cms.success_button_catalog|Collega i cataloghi
 connection.cms.failed_title|Ooops! Impossibile collegare Lengow al tuo PrestaShop
 connection.cms.failed_description|Non siamo stati in grado di effettuare il collegamento tra il tuo PrestaShop e Lengow.
 connection.cms.failed_description_first_credentials|Incapace di connettersi con le credenziali fornite.
-connection.cms.failed_description_second_credentials_prod|Si prega di verificare che queste credenziali corrispondano all'ambiente di produzione di Lengow. 
+connection.cms.failed_description_second_credentials_prod|Si prega di verificare che queste credenziali corrispondano all'ambiente di produzione di Lengow.
 connection.cms.failed_description_second_credentials_preprod|Si prega di verificare che queste credenziali corrispondano all'ambiente di pre-produzione di Lengow.
 connection.cms.failed_help|Se il problema persiste, potrai dare un'occhiata alla
 connection.cms.failed_help_center|"guida PrestaShop"
@@ -116,7 +116,7 @@ product.screen.button_download|Scarica
 product.screen.button_filter|Filtro
 product.screen.button_fields_setting|Modifica dei nomi dei campi
 product.screen.button_fields_reset|Azzeramento di tutti i campi
-product.screen.title_fields_settings|Modificare i nomi dei campi predefiniti del catalogo esportato
+product.screen.title_fields_settings|Modificare i campi predefiniti del catalogo esportato
 product.screen.title_column_name_fields|Nome del campo Lengow
 product.screen.title_column_prestashop_value|Valore di PrestaShop
 product.screen.button_yes|Si
@@ -249,7 +249,7 @@ help.screen.contain_text_support|Contattaci o condividi i tuoi feedback con
 help.screen.title_lengow_support|il Supporto Lengow
 help.screen.need_some_help|Hai bisogno d'aiuto ?
 help.screen.contain_text_support_hour|Faremo il possibile per darti una risposta durante le ore di lavoro (dal Lunedi al Venerdi - 9h/18h)
-help.screen.find_answer|Potresti trovare una risposta nella nostra  
+help.screen.find_answer|Potresti trovare una risposta nella nostra
 help.screen.link_prestashop_guide|guida dedicata PrestaShop
 legals.screen.simplified_company|Società responsabilità limitata
 legals.screen.social_capital|Capitale sociale:
@@ -350,7 +350,7 @@ lengow_setting.lengow_export_format_title|Esporta formato
 lengow_setting.lengow_export_file_enabled_title|Esporta in un file
 lengow_setting.lengow_export_file_enabled_legend|E' consigliato attivare questa opzione se avete 3.000 o piu' prodotti nel vostro flusso.
 lengow_setting.lengow_export_carrier_default_title|Trasportatore di default
-lengow_setting.lengow_last_export_title|Ultima esportazione 
+lengow_setting.lengow_last_export_title|Ultima esportazione
 lengow_setting.lengow_order_id_process_title|Ordini in preparazione
 lengow_setting.lengow_order_id_shipped_title|Ordine Spedizione
 lengow_setting.lengow_order_id_cancel_title|Ordine cancellato

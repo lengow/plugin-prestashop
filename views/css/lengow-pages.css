@@ -439,6 +439,7 @@
 }
 
 .lengow-modal-dialog {
+  margin-top: 20px;
   display: flex;
   justify-content: center;
 }
@@ -476,6 +477,7 @@ display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
+  min-width: 225px;
   text-align: center;
   border: 1px solid #d5dadc;
 }
@@ -616,10 +618,8 @@ display: flex;
   margin-bottom: 10px;
 }
 
-.select-all-buttons {
-  width: 300px;
-  display: flex;
-  justify-content: space-between;
+#toggle-all-fields {
+  margin-right: 10px;
 }
 
 /*************************************************/

@@ -116,7 +116,7 @@ product.screen.button_download|Download
 product.screen.button_filter|Filter
 product.screen.button_fields_setting|Modify field names
 product.screen.button_fields_reset|Reset all fields
-product.screen.title_fields_settings|Modify the default field names of the exported catalogue
+product.screen.title_fields_settings|Modify the default field of the exported catalogue
 product.screen.title_column_name_fields|Name of the Lengow field
 product.screen.title_column_prestashop_value|PrestaShop value
 product.screen.button_yes|Yes
@@ -249,7 +249,7 @@ help.screen.contain_text_support|Ask us anything about Lengow or share feedback 
 help.screen.title_lengow_support|Lengow Support.
 help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
-help.screen.find_answer|You can also find answers in our 
+help.screen.find_answer|You can also find answers in our
 help.screen.link_prestashop_guide|PrestaShop dedicated guide
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:

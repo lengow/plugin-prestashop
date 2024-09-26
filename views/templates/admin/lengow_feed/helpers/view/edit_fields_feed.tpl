@@ -42,10 +42,6 @@
                                 <option value="{$product.id}">{$product.id}</option>
                             {/foreach}
                         </select>
-                        <div class="select-all-buttons">
-                            <button type="button" id="select-all-fields" class="lgw-btn">Add all fields</button>
-                            <button type="button" id="deselect-all-fields" class="lgw-btn">Remove all fields</button>
-                        </div>
                     </div>
                     <div class="export-feature">
                         <p>{html_entity_decode($export_features|escape:'htmlall':'UTF-8')}</p>
@@ -54,6 +50,7 @@
 
                 <div class="grid-header">
                     <div class="grid-item header-item new-column">
+                        <input class="checkbox-export-column" type="checkbox" id="toggle-all-fields">
                         <strong>Exporter</strong>
                     </div>
                     <div class="grid-item header-item field-name">
@@ -194,17 +191,31 @@
                 field.value = defaultValue;
             });
         });
-        document.querySelector("#select-all-fields").addEventListener("click", function() {
-            document.querySelectorAll(".exported-checkbox:not(:disabled)").forEach(function(checkbox) {
-                checkbox.checked = true;
+        var toggleAllCheckbox = document.querySelector("#toggle-all-fields");
+        var exportedCheckboxes = document.querySelectorAll(".exported-checkbox:not(:disabled)");
+
+        toggleAllCheckbox.addEventListener("change", function() {
+            exportedCheckboxes.forEach(function(checkbox) {
+                checkbox.checked = toggleAllCheckbox.checked;
             });
         });
 
-        document.querySelector("#deselect-all-fields").addEventListener("click", function() {
-            document.querySelectorAll(".exported-checkbox:not(:disabled)").forEach(function(checkbox) {
-                checkbox.checked = false;
+        function updateToggleAllCheckbox() {
+            var allChecked = Array.from(exportedCheckboxes).every(function(checkbox) {
+                return checkbox.checked;
             });
+            var someChecked = Array.from(exportedCheckboxes).some(function(checkbox) {
+                return checkbox.checked;
+            });
+
+            toggleAllCheckbox.checked = allChecked;
+            toggleAllCheckbox.indeterminate = someChecked && !allChecked;
+        }
+
+        exportedCheckboxes.forEach(function(checkbox) {
+            checkbox.addEventListener("change", updateToggleAllCheckbox);
         });
 
+        updateToggleAllCheckbox();
     });
 </script>
