@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [3.5.6](https://github.com/lengow/plugin-prestashop/compare/v3.5.5...v3.5.6) (2024-09-23)
+
+
+### Bug Fixes
+
+* **lengow:** [ECP-108] Change lengow's logo for the new logo ([#22](https://github.com/lengow/plugin-prestashop/issues/22)) ([741e513](https://github.com/lengow/plugin-prestashop/commit/741e513c494344f339c92bac775a10bbbc85eb23))
+* **orders:** [PST-21738] prestashop orders from mirakl are not imported ([#23](https://github.com/lengow/plugin-prestashop/issues/23)) ([3c50b2d](https://github.com/lengow/plugin-prestashop/commit/3c50b2d5725403f45a8250a6cfe6a844a557965f))
+
 ## [3.5.5](https://github.com/lengow/plugin-prestashop/compare/v3.5.4...v3.5.5) (2024-08-28)
 
 
