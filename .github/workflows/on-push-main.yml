@@ -60,6 +60,9 @@ jobs:
               {"type":"refactor","section":"Refactoring","hidden":false},
               {"type":"misc","section":"Miscellaneous","hidden":false}
             ]
+          extra-files: |
+            lengow.php
+            README.md
       - name: Checkout appropriate branch
         if: ${{ !startsWith(github.head_ref, 'release-please') }}
         uses: actions/checkout@v4
