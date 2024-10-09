@@ -831,7 +831,12 @@ class LengowProduct extends Product
         foreach (self::$productApiNodes as $node) {
             $temp[$node] = $api->{$node};
         }
-        $temp['price_unit'] = (float) $temp['amount'] / (float) $temp['quantity'];
+        $qty = (float) $temp['quantity'];
+        if ($qty <= 0) {
+            $temp['price_unit'] = 0;
+        } else {
+            $temp['price_unit'] = (float) $temp['amount'] / $qty;
+        }
 
         return $temp;
     }
