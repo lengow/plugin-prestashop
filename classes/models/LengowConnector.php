@@ -456,8 +456,7 @@ class LengowConnector
      */
     private function rateLimitingRequests(string $api): void
     {
-
-        switch($api) {
+        switch ($api) {
             case self::API_ORDER:
                 $wait = $this->getWaitLimitOrderRequests();
                 break;
@@ -491,13 +490,13 @@ class LengowConnector
         if (is_null($timeStart)) {
             $timeStart = time();
         }
-        $nbRequest++;
+        ++$nbRequest;
         if ($nbRequest >= self::REQUEST_LIMIT) {
             $timeDiff = time() - $timeStart;
             $nbRequest = 0;
             $timeStart = time();
             if ($timeDiff < 60) {
-                return (60 - $timeDiff);
+                return 60 - $timeDiff;
             }
         }
 
@@ -514,13 +513,13 @@ class LengowConnector
         if (is_null($timeStart)) {
             $timeStart = time();
         }
-        $nbRequest++;
+        ++$nbRequest;
         if ($nbRequest >= self::REQUEST_LIMIT) {
             $timeDiff = time() - $timeStart;
             $nbRequest = 0;
             $timeStart = time();
             if ($timeDiff < 60) {
-                return (60 - $timeDiff);
+                return 60 - $timeDiff;
             }
         }
 

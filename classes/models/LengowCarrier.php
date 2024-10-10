@@ -501,11 +501,8 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function insertCarrierMarketplace(
-        $carrierMarketplaceName,
-        $carrierMarketplaceLabel,
-        $carrierLengowCode = null
-    ) {
+    public static function insertCarrierMarketplace($carrierMarketplaceName, $carrierMarketplaceLabel, $carrierLengowCode = null)
+    {
         $params = [
             self::FIELD_CARRIER_MARKETPLACE_NAME => pSQL($carrierMarketplaceName),
             self::FIELD_CARRIER_MARKETPLACE_LABEL => pSQL($carrierMarketplaceLabel),
@@ -968,12 +965,8 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function insertMarketplaceCarrierCountry(
-        $idCountry,
-        $idMarketplace,
-        $idCarrier,
-        $idCarrierMarketplace
-    ) {
+    public static function insertMarketplaceCarrierCountry($idCountry, $idMarketplace, $idCarrier, $idCarrierMarketplace)
+    {
         $params = [
             self::FIELD_COUNTRY_ID => (int) $idCountry,
             self::FIELD_MARKETPLACE_ID => (int) $idMarketplace,

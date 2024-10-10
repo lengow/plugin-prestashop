@@ -1,6 +1,24 @@
 # Changelog
 
 
+<<<<<<< HEAD
+=======
+## [3.5.7](https://github.com/lengow/plugin-prestashop/compare/v3.5.6...v3.5.7) (2024-10-10)
+
+
+### Bug Fixes
+
+* **connector:** [ECP-112] rate limit request for prestashop ([#27](https://github.com/lengow/plugin-prestashop/issues/27)) ([6395ed9](https://github.com/lengow/plugin-prestashop/commit/6395ed9a6bc5f69abcafdf45cf65ee424f41b72a))
+* **cron:** don't crash when (canceled) product have 0 qty ([#29](https://github.com/lengow/plugin-prestashop/issues/29)) ([2047093](https://github.com/lengow/plugin-prestashop/commit/2047093666143f6514a5ffb9c109c4dd1e684036))
+* **orders:** [PST-21861] fix extra field cut by the char ([#30](https://github.com/lengow/plugin-prestashop/issues/30)) ([154ba64](https://github.com/lengow/plugin-prestashop/commit/154ba6456e709c9f7317e05bcf1224294116da74))
+
+
+### Miscellaneous
+
+* **ci-cd:** automatically update release-please version in files ([#25](https://github.com/lengow/plugin-prestashop/issues/25)) ([ff16ff8](https://github.com/lengow/plugin-prestashop/commit/ff16ff85a59881dc2c471a533bc44bce596347dd))
+* **cicd:** Add a CI job to generate plugin checksums ([#26](https://github.com/lengow/plugin-prestashop/issues/26)) ([54e705b](https://github.com/lengow/plugin-prestashop/commit/54e705bc190dcbdd755d83a89c965dea0baa3195))
+
+>>>>>>> 6f02e41d8931dfe52501e9e4978bca0dbe05bc3a
 ## [3.5.6](https://github.com/lengow/plugin-prestashop/compare/v3.5.5...v3.5.6) (2024-09-23)
 
 
