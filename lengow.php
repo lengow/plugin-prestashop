@@ -135,14 +135,6 @@ class Lengow extends Module
     /**
      * Hook on Home page
      */
-    public function hookHome()
-    {
-        $this->hookClass->hookHome();
-    }
-
-    /**
-     * Hook on Home page
-     */
     public function hookDisplayHome()
     {
         $this->hookClass->hookHome();
@@ -151,27 +143,9 @@ class Lengow extends Module
     /**
      * Hook on Payment page
      */
-    public function hookPaymentTop()
-    {
-        $this->hookClass->hookPaymentTop();
-    }
-
-    /**
-     * Hook on Payment page
-     */
     public function hookDisplayPaymentTop()
     {
         $this->hookClass->hookPaymentTop();
-    }
-
-    /**
-     * Hook for generate tracker on front footer page
-     *
-     * @return mixed
-     */
-    public function hookFooter()
-    {
-        return $this->hookClass->hookFooter();
     }
 
     /**
@@ -189,29 +163,9 @@ class Lengow extends Module
      *
      * @param array $args Arguments of hook
      */
-    public function hookOrderConfirmation($args)
-    {
-        $this->hookClass->hookOrderConfirmation($args);
-    }
-
-    /**
-     * Hook on order confirmation page to init order's product list
-     *
-     * @param array $args Arguments of hook
-     */
     public function hookDisplayOrderConfirmation($args)
     {
         $this->hookClass->hookOrderConfirmation($args);
-    }
-
-    /**
-     * Hook before an status update to synchronize status with lengow
-     *
-     * @param array $args Arguments of hook
-     */
-    public function hookUpdateOrderStatus($args)
-    {
-        $this->hookClass->hookUpdateOrderStatus($args);
     }
 
     /**
@@ -234,16 +188,6 @@ class Lengow extends Module
     }
 
     /**
-     * Hook after an status update to synchronize status with lengow
-     *
-     * @param array $args Arguments of hook
-     */
-    public function hookPostUpdateOrderStatus($args)
-    {
-        $this->hookClass->hookPostUpdateOrderStatus($args);
-    }
-
-    /**
      * Hook for update order if isset tracking number
      *
      * @param array $args Arguments of hook
@@ -260,7 +204,7 @@ class Lengow extends Module
      *
      * @return mixed
      */
-    public function hookAdminOrder($args)
+    public function hookDisplayAdminOrder($args)
     {
         return $this->hookClass->hookAdminOrder($args);
     }

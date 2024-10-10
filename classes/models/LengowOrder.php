@@ -336,11 +336,8 @@ class LengowOrder extends Order
      *
      * @return int|false
      */
-    public static function getOrderIdFromLengowOrders(
-        $marketplaceSku,
-        $marketplace,
-        $marketplaceLegacy
-    ) {
+    public static function getOrderIdFromLengowOrders($marketplaceSku, $marketplace, $marketplaceLegacy)
+    {
         // v2 compatibility
         $in = (
             $marketplaceLegacy === null

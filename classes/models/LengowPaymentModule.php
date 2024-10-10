@@ -54,20 +54,8 @@ class LengowPaymentModule extends PaymentModule
      *                                   delivery country not active / product is not listed / unable to save order
      *                                   unable to save order payment / order creation failed
      */
-    public function makeOrder(
-        $idCart,
-        $idOrderState,
-        $paymentMethod,
-        $message,
-        $lengowProducts,
-        $lengowShippingCosts,
-        $processingFees,
-        $lengowTrackingNumber,
-        $idOrderLengow,
-        $orderStateLengow,
-        $marketplaceSku,
-        $logOutput
-    ) {
+    public function makeOrder($idCart, $idOrderState, $paymentMethod, $message, $lengowProducts, $lengowShippingCosts, $processingFees, $lengowTrackingNumber, $idOrderLengow, $orderStateLengow, $marketplaceSku, $logOutput)
+    {
         if (!isset($this->context)) {
             $this->context = Context::getContext();
         }

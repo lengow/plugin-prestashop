@@ -74,11 +74,8 @@ class LengowOrderError
      *
      * @return array|false
      */
-    public static function getLastImportLogNotFinished(
-        $marketplaceSku,
-        $marketplaceName,
-        $type = self::TYPE_ERROR_IMPORT
-    ) {
+    public static function getLastImportLogNotFinished($marketplaceSku, $marketplaceName, $type = self::TYPE_ERROR_IMPORT)
+    {
         // check if log already exists for the given order id
         $query = 'SELECT lli.`message`, lli.`date` FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
             LEFT JOIN `' . _DB_PREFIX_ . 'lengow_orders` lo ON lli.`id_order_lengow` = lo.`id`
