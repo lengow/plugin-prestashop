@@ -163,11 +163,8 @@ class LengowMethod
      *
      * @return int|false
      */
-    public static function insertMethodMarketplace(
-        $methodMarketplaceName,
-        $methodMarketplaceLabel,
-        $methodLengowCode = null
-    ) {
+    public static function insertMethodMarketplace($methodMarketplaceName, $methodMarketplaceLabel, $methodLengowCode = null)
+    {
         $params = [
             self::FIELD_METHOD_MARKETPLACE_NAME => pSQL($methodMarketplaceName),
             self::FIELD_METHOD_MARKETPLACE_LABEL => pSQL($methodMarketplaceLabel),
@@ -413,12 +410,8 @@ class LengowMethod
      *
      * @return int|false
      */
-    public static function insertMarketplaceMethodCountry(
-        $idCountry,
-        $idMarketplace,
-        $idCarrier,
-        $idMethodMarketplace
-    ) {
+    public static function insertMarketplaceMethodCountry($idCountry, $idMarketplace, $idCarrier, $idMethodMarketplace)
+    {
         $params = [
             self::FIELD_COUNTRY_ID => $idCountry,
             self::FIELD_MARKETPLACE_ID => $idMarketplace,
