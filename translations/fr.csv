@@ -66,7 +66,7 @@ connection.cms.failed_title|Ooops! Impossible de connecter Lengow à votre Prest
 connection.cms.failed_description|Nous n'avons pas réussi à établir la connexion entre votre PrestaShop et Lengow.
 connection.cms.failed_description_first_credentials|Impossible de se connecter avec les identifiants fournis.
 connection.cms.failed_description_second_credentials_prod|Veuillez vérifier que ces identifiants correspondent à l'environnement de production de Lengow.
-connection.cms.failed_description_second_credentials_preprod|Veuillez vérifier que ces identifiants correspondent à l'environnement de pré-production de Lengow.
+connection.cms.failed_description_second_credentials_preprod|Veuillez vérifier que ces identifiants correspondent à l'environnement de sandbox de Lengow.
 connection.cms.failed_help|Si le problème persiste, vous pouvez consulter le
 connection.cms.failed_help_center|"guide PrestaShop"
 connection.cms.failed_help_or|ou contacter notre
@@ -216,7 +216,7 @@ global_setting.screen.tracker_description|Ce tracker vous permet de récupérer 
 global_setting.screen.shop_title|Gestion de la boutique
 global_setting.screen.shop_description|Liez vos différentes boutiques PrestaShop à Lengow afin d'importer vos commandes. Ces données sont automatiquement complétées et activées lors de la connexion avec Lengow. Vous pouvez néanmoins ajouter des catalogue ids dans les champs correspondants en les séparant par des ";"
 global_setting.screen.debug_mode_title|Debug Mode
-global_setting.screen.debug_mode_description|Utilisez le Debug Mode pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ce paramètre UNIQUEMENT sur votre serveur de préproduction
+global_setting.screen.debug_mode_description|Utilisez le Debug Mode pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ce paramètre UNIQUEMENT sur votre serveur de sandbox
 global_setting.screen.log_file_title|Fichiers de Log
 global_setting.screen.log_file_description|Retrouvez ci-dessous tout l'historique des logs (commandes importées, messages d'erreurs...). Ils seront sauvegardés ici pendant 20 jours.
 global_setting.screen.please_choose_log|Choisissez un fichier de log...

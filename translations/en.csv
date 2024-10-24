@@ -66,7 +66,7 @@ connection.cms.failed_title|Ooops! Unable to connect Lengow to your PrestaShop
 connection.cms.failed_description|We were unable to make the connection between your PrestaShop and Lengow.
 connection.cms.failed_description_first_credentials|Unable to connect with credentials provided.
 connection.cms.failed_description_second_credentials_prod|Please verify that these credentials match Lengow's production environment.
-connection.cms.failed_description_second_credentials_preprod|Please verify that these credentials match Lengow's pre-production environment.
+connection.cms.failed_description_second_credentials_preprod|Please verify that these credentials match Lengow's sandbox environment.
 connection.cms.failed_help|If the problem persists, you can take a look at
 connection.cms.failed_help_center|"PrestaShop guide"
 connection.cms.failed_help_or|or contact our
@@ -216,7 +216,7 @@ global_setting.screen.tracker_description|This tracker allows you to retrieve or
 global_setting.screen.shop_title|Shop management
 global_setting.screen.shop_description|Link your PrestaShop shops to Lengow to import your orders. This part is automatically completed and activated when connecting with Lengow. However you can add catalog ids in the corresponding fields by separating them with ";"
 global_setting.screen.debug_mode_title|Debug Mode
-global_setting.screen.debug_mode_description|Use Debug Mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your pre-production server ONLY
+global_setting.screen.debug_mode_description|Use Debug Mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your sandbox server ONLY
 global_setting.screen.log_file_title|Log Files
 global_setting.screen.log_file_description|Find all the maintenance logs below (imported orders, errors reports...). They will be recorded here for 20 days.
 global_setting.screen.please_choose_log|Please choose a log file...
