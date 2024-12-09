@@ -188,7 +188,7 @@ class LengowConfigurationForm
                 $html .= '<label class="control-label">' . $label . '</label>
                                   <select class="form-control lengow_select" name="' . $name . '">
                                     <option value="prod" ' . ($value == 'prod' ? 'selected' : '') . '>Prod</option>
-                                    <option value="pre-prod" ' . ($value == 'pre-prod' ? 'selected' : '') . '>Preprod</option>
+                                    <option value="pre-prod" ' . ($value == 'pre-prod' ? 'selected' : '') . '>Sandbox</option>
                                   </select>';
                 if (!empty($legend)) {
                     $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
