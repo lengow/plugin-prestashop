@@ -3,6 +3,14 @@
 
 <<<<<<< HEAD
 =======
+## [3.5.8](https://github.com/lengow/plugin-prestashop/compare/v3.5.7...v3.5.8) (2024-12-09)
+
+
+### Bug Fixes
+
+* **export:** [PST-22027] ignore Root category from breadcrumb ([#33](https://github.com/lengow/plugin-prestashop/issues/33)) ([ba8b29a](https://github.com/lengow/plugin-prestashop/commit/ba8b29ab38aa1d37b8100e9a73517f3da9257fb1))
+* **settings:** [PST-21910] change preprod to sandbox word ([#32](https://github.com/lengow/plugin-prestashop/issues/32)) ([da61a11](https://github.com/lengow/plugin-prestashop/commit/da61a110bb8edcc1b9e954d84feb1915d15ffdc7))
+
 ## [3.5.7](https://github.com/lengow/plugin-prestashop/compare/v3.5.6...v3.5.7) (2024-10-10)
 
 
