@@ -66,7 +66,7 @@ connection.cms.failed_title|Ooops! Impossibile collegare Lengow al tuo PrestaSho
 connection.cms.failed_description|Non siamo stati in grado di effettuare il collegamento tra il tuo PrestaShop e Lengow.
 connection.cms.failed_description_first_credentials|Incapace di connettersi con le credenziali fornite.
 connection.cms.failed_description_second_credentials_prod|Si prega di verificare che queste credenziali corrispondano all'ambiente di produzione di Lengow. 
-connection.cms.failed_description_second_credentials_preprod|Si prega di verificare che queste credenziali corrispondano all'ambiente di pre-produzione di Lengow.
+connection.cms.failed_description_second_credentials_preprod|Si prega di verificare che queste credenziali corrispondano all'ambiente di sandbox di Lengow.
 connection.cms.failed_help|Se il problema persiste, potrai dare un'occhiata alla
 connection.cms.failed_help_center|"guida PrestaShop"
 connection.cms.failed_help_or|o contattare il nostro
@@ -216,7 +216,7 @@ global_setting.screen.tracker_description|Questo tracker ti permette di recupera
 global_setting.screen.shop_title|Gestione del negozio
 global_setting.screen.shop_description|Collega i tuoi negozi PrestaShop a Lengow per importare i tuoi ordini. Questa parte viene completata automaticamente e attivata quando ci si connette con Lengow. Tuttavia è possibile aggiungere gli ID catalogo nei campi corrispondenti separandoli con ";"
 global_setting.screen.debug_mode_title|Debug Mode
-global_setting.screen.debug_mode_description|Utilizza Debug Mode per testare e generare ordini fittizzi. Nota bene, devi attivare questa impostazione SOLAMENTE nel tuo pre-preduction server
+global_setting.screen.debug_mode_description|Utilizza Debug Mode per testare e generare ordini fittizzi. Nota bene, devi attivare questa impostazione SOLAMENTE nel tuo sandbox server
 global_setting.screen.log_file_title|Log File
 global_setting.screen.log_file_description|Trovi tutti i log di manutenzione di seguito (ordini importati,rapporti di errore...). Sarano registrati qui per 20 giorni.
 global_setting.screen.please_choose_log|Seleziona Log...

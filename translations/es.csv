@@ -66,7 +66,7 @@ connection.cms.failed_title|¡Vaya! Imposible conectar Lengow a su PrestaShop
 connection.cms.failed_description|No pudimos hacer la conexión entre su PrestaShop y Lengow.
 connection.cms.failed_description_first_credentials|No se puede conectar con las credenciales proporcionadas.
 connection.cms.failed_description_second_credentials_prod|Por favor, verifique que estas credenciales coincidan con el entorno de producción de Lengow.
-connection.cms.failed_description_second_credentials_preprod|Por favor, verifique que estas credenciales coincidan con el entorno de pre-producción de Lengow.
+connection.cms.failed_description_second_credentials_preprod|Por favor, verifique que estas credenciales coincidan con el entorno de sandbox de Lengow.
 connection.cms.failed_help|Si el problema persiste, puede consultar la
 connection.cms.failed_help_center|"Guía de PrestaShop"
 connection.cms.failed_help_or|o contactar con nuestro 
@@ -216,7 +216,7 @@ global_setting.screen.tracker_description|Este tracker te permite recuperar las 
 global_setting.screen.shop_title|Gestión de la tienda
 global_setting.screen.shop_description|Vincula tus tiendas PrestaShop a Lengow para importar tus pedidos. Esta parte se completa y activa automáticamente cuando se conecta con Lengow. Sin embargo, puede agregar identificadores de catálogo en los campos correspondientes separándolos con ";"
 global_setting.screen.debug_mode_title|Debug Mode
-global_setting.screen.debug_mode_description|Utiliza el Debug Mode para pruebas y para simular pedidos ficticios. Ten en cuenta que hay que activar esta configuración en el servidor de pre-producción SOLAMENTE
+global_setting.screen.debug_mode_description|Utiliza el Debug Mode para pruebas y para simular pedidos ficticios. Ten en cuenta que hay que activar esta configuración en el servidor de sandbox SOLAMENTE
 global_setting.screen.log_file_title|Logs archivos
 global_setting.screen.log_file_description|Encuentra todos los registros de mantenimiento aqui debajo (pedidos importados , informes de errores ... ). Ellos serán registrados aquí durante 20 días.
 global_setting.screen.please_choose_log|Por favor, seleccione un archivo de registro ...
