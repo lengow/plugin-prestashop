@@ -481,7 +481,7 @@ class LengowProduct extends Product
             $breadcrumb = '';
             $categories = $this->categoryDefault->getParentsCategories();
             foreach ($categories as $category) {
-                if (isset($category['id_parent']) && $category['id_parent'] === 0) {
+                if (isset($category['id_parent']) && (int) $category['id_parent'] === 0) {
                     continue;
                 }
                 $breadcrumb = $category['name'] . ' > ' . $breadcrumb;

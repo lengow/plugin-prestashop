@@ -487,7 +487,7 @@ class LengowSync
      *
      * @return array
      */
-    public static function getPluginLinks(?string $isoCode = null, ?bool $default = false)
+    public static function getPluginLinks(string $isoCode = null, bool $default = false)
     {
         $pluginData = self::getPluginData();
         if (!$pluginData || $default) {
