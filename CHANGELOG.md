@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.5.9](https://github.com/lengow/plugin-prestashop/compare/v3.5.8...v3.5.9) (2024-12-13)
+
+
+### Bug Fixes
+
+* **categories:** [PST-22027] Fix categories rollback ([#36](https://github.com/lengow/plugin-prestashop/issues/36)) ([7dc1f45](https://github.com/lengow/plugin-prestashop/commit/7dc1f458deb62675ea31439e2b02d4758733dcc3))
+
 ## [3.5.8](https://github.com/lengow/plugin-prestashop/compare/v3.5.7...v3.5.8) (2024-12-09)
 
 
