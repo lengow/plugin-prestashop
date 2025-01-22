@@ -142,6 +142,9 @@ class LengowExport
         'manufacturer' => 'manufacturer',
         'supplier' => 'supplier',
         'weight' => 'weight',
+        'width' => 'width',
+        'height' => 'height',
+        'depth' => 'depth',
         'weight_unit' => 'weight_unit',
     ];
 
