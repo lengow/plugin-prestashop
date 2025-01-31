@@ -388,7 +388,7 @@ class LengowImport
         }
         // clean Context type with initial type if different
         $currentContextShop = Context::getContext()->shop;
-        if (isset($initialContextType) && $initialContextType !== $currentContextShop::getContext()) {
+        if ($initialContextType !== $currentContextShop::getContext()) {
             try {
                 $currentContextShop::setContext($initialContextType);
             } catch (Exception $e) {

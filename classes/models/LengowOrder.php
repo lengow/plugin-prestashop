@@ -601,7 +601,7 @@ class LengowOrder extends Order
             SET `is_reimported` = 1
             WHERE `id_order`= \'' . (int) $this->id . '\'';
 
-        return DB::getInstance()->execute($query);
+        return Db::getInstance()->execute($query);
     }
 
     /**
@@ -792,7 +792,7 @@ class LengowOrder extends Order
                     SET `marketplace_name` = \'' . pSQL(Tools::strtolower((string) $order->marketplace)) . '\'
                     WHERE `id_order` = \'' . (int) $this->id . '\'
                 ';
-                DB::getInstance()->execute($update);
+                Db::getInstance()->execute($update);
                 $this->loadLengowFields();
             }
         }

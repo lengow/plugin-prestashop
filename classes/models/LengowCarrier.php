@@ -98,6 +98,7 @@ class LengowCarrier extends Carrier
     public static function getCarriersChoices($langId)
     {
         $carriers = parent::getCarriers($langId, true);
+        $carriersChoices = [];
         foreach ($carriers as $carrier) {
             $choiceId = $carrier['name'];
             if (!empty($carrier['name'])) {

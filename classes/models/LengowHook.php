@@ -85,6 +85,11 @@ class LengowHook
     private $module;
 
     /**
+     * @var Context PrestaShop context
+     */
+    private $context;
+
+    /**
      * Construct
      *
      * @param Lengow $module Lengow module instance
