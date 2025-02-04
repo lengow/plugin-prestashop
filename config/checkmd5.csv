@@ -17,7 +17,7 @@
 /classes/controllers/LengowOrderController.php|5e9145ead32502c3e2212b8746b0e5f8
 /classes/controllers/LengowToolboxController.php|48c875b7c202a21c9b5ee07e9ddbd4ae
 /classes/controllers/LengowLegalsController.php|14effece7503b9524c83f628d255d146
-/classes/controllers/LengowController.php|79069614553337166806e6d95a49a875
+/classes/controllers/LengowController.php|4d3025edb706f3b10210a06e807fd2dc
 /classes/controllers/LengowHelpController.php|e0b813a636dcf6a6910e8a2c7199931c
 /classes/controllers/index.php|a90243841e2e64a4ee2965d4dfa12491
 /classes/controllers/LengowFeedController.php|b9a4e1bfe6836ad7a648de8a2a79bf77
@@ -444,9 +444,9 @@
 /views/templates/admin/lengow_feed/index.php|be8b25f88c14bddd7711e4585ebae316
 /views/templates/admin/lengow_dashboard/helpers/index.php|eba0357470b4f2caf856c15f9ee875a0
 /views/templates/admin/lengow_dashboard/helpers/view/status.tpl|1e6678a36f90f268f7d8fec583b22154
-/views/templates/admin/lengow_dashboard/helpers/view/view.tpl|01c5146729441a7adf8a7dc65fd03ff4
+/views/templates/admin/lengow_dashboard/helpers/view/view.tpl|a568171b9cb074bd40eb038e74a1eba8
 /views/templates/admin/lengow_dashboard/helpers/view/index.php|eba0357470b4f2caf856c15f9ee875a0
-/views/templates/admin/lengow_dashboard/helpers/view/dashboard.tpl|63237d59aacd6849801b6cdbe1decf4f
+/views/templates/admin/lengow_dashboard/helpers/view/dashboard.tpl|0951b2a85ef326dcd3d609e549f4625b
 /views/templates/admin/lengow_dashboard/layout.tpl|89267905b72cffc708bb36c1c9bb1ca1
 /views/templates/admin/lengow_dashboard/index.php|eba0357470b4f2caf856c15f9ee875a0
 /views/templates/admin/lengow_toolbox/helpers/index.php|8c05a3431d3dcff6cdbfb4890fcafeb2
@@ -480,7 +480,7 @@
 /views/templates/admin/lengow_main_setting/index.php|be8b25f88c14bddd7711e4585ebae316
 /views/templates/admin/order/info.tpl|aed8436e09c5b0b86589789fa189f4e6
 /views/templates/admin/order/index.php|be8b25f88c14bddd7711e4585ebae316
-/views/templates/admin/header.tpl|3711f5805799295ae700262bfc7ea0c5
+/views/templates/admin/header.tpl|064d8925d83e23f681889828c402552f
 /views/templates/admin/index.php|be8b25f88c14bddd7711e4585ebae316
 /views/templates/admin/header_order.tpl|452332339e744007db76a1c4e8ae5805
 /views/templates/admin/lengow_help/helpers/index.php|be8b25f88c14bddd7711e4585ebae316

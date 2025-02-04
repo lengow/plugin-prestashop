@@ -34,7 +34,7 @@
                 {/if}
             </div>
             <div class="text-right lgw-col-6" id="alert-counter-trial">
-                {if $merchantStatus['type'] == 'free_trial' && !$merchantStatus['expired']}
+                {if $merchantStatus && $merchantStatus['type'] == 'free_trial' && !$merchantStatus['expired']}
                     {$locale->t('menu.counter', ['counter' => $merchantStatus['day']])|escape:'htmlall':'UTF-8'}
                     <a href="https://my.{$lengowUrl|escape:'htmlall':'UTF-8'}" target="_blank">
                         {$locale->t('menu.upgrade_account')|escape:'htmlall':'UTF-8'}

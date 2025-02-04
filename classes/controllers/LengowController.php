@@ -128,7 +128,7 @@ class LengowController
         $debugMode = LengowConfiguration::debugModeIsActive();
         $merchantStatus = LengowSync::getStatusAccount();
         // show header or not
-        if ($this->isNewMerchant || ($merchantStatus['type'] === 'free_trial' && $merchantStatus['expired'])) {
+        if ($this->isNewMerchant || (is_array($merchantStatus) && $merchantStatus['type'] === 'free_trial' && $merchantStatus['expired'])) {
             $displayToolbar = false;
         } else {
             $displayToolbar = true;
