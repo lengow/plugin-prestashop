@@ -609,9 +609,6 @@ class LengowAction
 
             ++$page;
         } while (!empty($results->next));
-        if (empty($apiActions)) {
-            return false;
-        }
         // check foreach action if is complete
         foreach ($activeActions as $action) {
             if (!isset($apiActions[$action[self::FIELD_ACTION_ID]])) {

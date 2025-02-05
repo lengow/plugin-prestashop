@@ -98,14 +98,14 @@ class LengowBackup extends Backup
                 } catch (PrestaShopDatabaseException $e) {
                     return false;
                 }
-                $sizeof = DB::getInstance()->NumRows();
+                $sizeof = Db::getInstance()->NumRows();
                 $lines = explode("\n", $schema[0]['Create Table']);
 
                 if ($data && $sizeof > 0) {
                     // export the table data
                     fwrite($fp, 'INSERT INTO `' . $schema[0]['Table'] . "` VALUES\n");
                     $i = 1;
-                    while ($row = DB::getInstance()->nextRow($data)) {
+                    while ($row = Db::getInstance()->nextRow($data)) {
                         $s = '(';
                         foreach ($row as $field => $value) {
                             $tmp = "'" . pSQL($value, true) . "',";

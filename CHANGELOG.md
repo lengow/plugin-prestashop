@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.5.10](https://github.com/lengow/plugin-prestashop/compare/v3.5.9...v3.5.10) (2025-01-31)
+
+
+### Bug Fixes
+
+* **export:** [PST-22252] add missing with, height and depth product properties in the export ([#38](https://github.com/lengow/plugin-prestashop/issues/38)) ([c3782cc](https://github.com/lengow/plugin-prestashop/commit/c3782ccd0f0e97dfcc817e1730f72bfc5b9f1234))
+
 ## [3.5.9](https://github.com/lengow/plugin-prestashop/compare/v3.5.8...v3.5.9) (2024-12-13)
 
 

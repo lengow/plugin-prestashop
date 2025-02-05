@@ -360,7 +360,7 @@ class LengowPaymentModule extends PaymentModule
         foreach ($orderDetailList as $key => $orderDetail) {
             $order = $orderList[$key];
             if (!$orderCreationFailed && isset($order->id)) {
-                if (isset($message) & !empty($message)) {
+                if (!empty($message)) {
                     $msg = new Message();
                     $message = strip_tags($message, '<br>');
                     if (Validate::isCleanHtml($message)) {
@@ -447,13 +447,15 @@ class LengowPaymentModule extends PaymentModule
         }
 
         // update Order Details Tax in case cart rules have free shipping
-        foreach ($order->getOrderDetailList() as $detail) {
-            $orderDetail = new OrderDetail($detail['id_order_detail']);
-            $orderDetail->updateTaxAmount($order);
+        if (isset($order) && $order instanceof Order) {
+            foreach ($order->getOrderDetailList() as $detail) {
+                $orderDetail = new OrderDetail($detail['id_order_detail']);
+                $orderDetail->updateTaxAmount($order);
+            }
         }
 
         // use the last order as currentOrder
-        if (isset($order) && $order->id) {
+        if (isset($order) && $order instanceof Order) {
             $this->currentOrder = (int) $order->id;
         }
 

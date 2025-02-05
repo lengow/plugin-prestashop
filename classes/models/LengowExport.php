@@ -738,7 +738,6 @@ class LengowExport
     public function buildTotalQuery($variation = false)
     {
         $where = [];
-
         $query = ' FROM ' . _DB_PREFIX_ . 'product p';
         if ($this->selection) {
             $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'lengow_product lp
@@ -783,9 +782,7 @@ class LengowExport
         if (!empty($this->productIds)) {
             $where[] = ' p.`id_product` IN (' . implode(',', $this->productIds) . ')';
         }
-        if (!empty($where)) {
-            $query .= ' WHERE ' . join(' AND ', $where);
-        }
+        $query .= ' WHERE ' . join(' AND ', $where);
 
         return $query;
     }

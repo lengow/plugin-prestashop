@@ -740,7 +740,7 @@ class LengowAddress extends Address
                 $isoCode = isset($this->regionCodes[$countryIsoA2][$postcodeSubstr])
                     ? $this->regionCodes[$countryIsoA2][$postcodeSubstr]
                     : false;
-                if ($isoCode && is_array($isoCode) && !empty($isoCode)) {
+                if (is_array($isoCode)) {
                     $isoCode = $this->getIsoCodeFromIntervalPostcodes((int) $postcode, $isoCode);
                 }
                 break;
@@ -767,7 +767,7 @@ class LengowAddress extends Address
     {
         foreach ($intervalPostcodes as $intervalPostcode => $isoCode) {
             $intervalPostcodes = explode('-', $intervalPostcode);
-            if (!empty($intervalPostcodes) && count($intervalPostcodes) === 2) {
+            if (count($intervalPostcodes) === 2) {
                 $minPostcode = is_numeric($intervalPostcodes[0]) ? (int) $intervalPostcodes[0] : false;
                 $maxPostcode = is_numeric($intervalPostcodes[1]) ? (int) $intervalPostcodes[1] : false;
                 if (($minPostcode && $maxPostcode) && ($postcode >= $minPostcode && $postcode <= $maxPostcode)) {

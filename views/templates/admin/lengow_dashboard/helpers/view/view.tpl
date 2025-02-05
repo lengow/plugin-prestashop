@@ -19,7 +19,7 @@
  *}
 
 <script type="text/javascript">$(document.body).addClass("adminlengowhome");</script>
-{if ($merchantStatus['type'] == 'free_trial' && $merchantStatus['expired'])}
+{if ($merchantStatus && $merchantStatus['type'] == 'free_trial' && $merchantStatus['expired'])}
     {include file='./status.tpl'}
 {else}
     {include file='./dashboard.tpl'}
