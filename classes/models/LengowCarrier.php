@@ -21,6 +21,10 @@
 /*
  * Lengow Carrier Class
  */
+
+use MondialrelayClasslib\Actions\ActionsHandler;
+use MondialrelayClasslib\Extensions\ProcessLogger\ProcessLoggerHandler;
+
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -1072,19 +1076,32 @@ class LengowCarrier extends Carrier
             ) ? self::COMPATIBILITY_OK : self::COMPATIBILITY_KO;
         }
         // Mondial Relay
-        if (!LengowMain::isMondialRelayAvailable()) {
-            return self::COMPATIBILITY_KO;
-        }
-        $mr = new MondialRelay();
-        if ($mr->isMondialRelayCarrier($idCarrier)) {
-            $relay = self::getMRRelay($shippingAddress->id, $shippingAddress->idRelay, $mr);
-            if (!$relay) {
-                throw new LengowException(LengowMain::setLogMessage('log.import.error_mondial_relay_not_found', ['id_relay' => $shippingAddress->idRelay]));
-            }
+        if (LengowMain::isMondialRelayV2Available()) {
+            $mr = new MondialRelay();
+            if ($mr->isMondialRelayCarrier($idCarrier)) {
+                $relay = self::getMRRelayV2($shippingAddress->id, $shippingAddress->idRelay, $mr);
+                if (!$relay) {
+                    throw new LengowException(LengowMain::setLogMessage('log.import.error_mondial_relay_not_found', ['id_relay' => $shippingAddress->idRelay]));
+                }
 
-            return self::addMondialRelay($relay, $idOrder, $idCustomer, $idCarrier, $idCart)
-                ? self::COMPATIBILITY_OK
-                : self::COMPATIBILITY_KO;
+                return self::addMondialRelay($relay, $idOrder, $idCustomer, $idCarrier, $idCart)
+                    ? self::COMPATIBILITY_OK
+                    : self::COMPATIBILITY_KO;
+            }
+        } elseif (LengowMain::isMondialRelayV3Available()) {
+            try {
+                if (!self::handleMRRelayV3($idOrder, $idCarrier, $shippingAddress->idRelay)) {
+                    return self::COMPATIBILITY_KO;
+                }
+
+                return self::COMPATIBILITY_OK;
+            } catch (PrestaShopException $e) {
+                throw new LengowException(
+                    LengowMain::setLogMessage('log.import.error_mondial_relay_not_found', ['id_relay' => $shippingAddress->idRelay]),
+                    $e->getCode(),
+                    $e
+                );
+            }
         }
 
         return self::NO_COMPATIBILITY;
@@ -1249,7 +1266,7 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * Check if relay ID is correct
+     * Check if relay ID is correct for Mondial Relay V2
      *
      * @param int $idAddressDelivery PrestaShop shipping address id
      * @param string $idRelay relay id
@@ -1259,7 +1276,7 @@ class LengowCarrier extends Carrier
      *
      * @throws LengowException mondial relay missing file
      */
-    public static function getMRRelay($idAddressDelivery, $idRelay, $mr)
+    public static function getMRRelayV2($idAddressDelivery, $idRelay, $mr)
     {
         $sep = DIRECTORY_SEPARATOR;
         if (empty($idRelay)) {
@@ -1286,6 +1303,67 @@ class LengowCarrier extends Carrier
         }
 
         return false;
+    }
+
+    /**
+     * Check if relay ID is correct for Mondial Relay V3
+     *
+     * @param int $idOrder PrestaShop order id
+     * @param int $idCarrier PrestaShop shipping address id
+     * @param string $idRelay relay id
+     *
+     * @return bool
+     *
+     * @throws PrestaShopDatabaseException|PrestaShopException
+     */
+    public static function handleMRRelayV3($idOrder, $idCarrier, $idRelay)
+    {
+        $order = new Order($idOrder);
+        $carrierMethod = MondialrelayCarrierMethod::getFromNativeCarrierId($idCarrier);
+        if (!Validate::isLoadedObject($carrierMethod)) {
+            return false;
+        }
+
+        if (!$carrierMethod->needsRelay()) {
+            return false;
+        }
+
+        $deliveryAddress = new Address($order->id_address_delivery);
+        $countryIso = Country::getIsoById($deliveryAddress->id_country);
+
+        $handler = new ActionsHandler();
+        $handler->setConveyor([
+            'enseigne' => Configuration::get(Mondialrelay::WEBSERVICE_ENSEIGNE),
+            'country_iso' => $countryIso,
+            // relayNumber is 6 digits, leading 0 are sometimes missing
+            'relayNumber' => str_pad($idRelay, 6, '0', STR_PAD_LEFT),
+            'carrierMethod' => $carrierMethod,
+            'cart' => $cart = new Cart($order->id_cart),
+            'id_order' => $order->id
+        ]);
+        $handler->addActions('getRelayInformations', 'setSelectedRelay');
+
+        try {
+            $handler->process('SelectRelay');
+        } catch (Exception $e) {
+            $phpError = $e->getFile() . ':' . $e->getLine() . ' - ' . $e->getMessage();
+            ProcessLoggerHandler::logError($phpError);
+        }
+
+        $conveyor = $handler->getConveyor();
+        /* @var $selectedRelay MondialrelaySelectedRelay */
+        $selectedRelay = $conveyor['selectedRelay'] ?? null;
+        if (!$selectedRelay) {
+            return false;
+        }
+
+        $selectedRelay->id_order = $order->id;
+        $selectedRelay->package_weight = $cart->getTotalWeight() * Configuration::get(Mondialrelay::WEIGHT_COEFF);
+        if (!$selectedRelay->save()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
