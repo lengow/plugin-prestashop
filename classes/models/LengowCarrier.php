@@ -1096,11 +1096,7 @@ class LengowCarrier extends Carrier
 
                 return self::COMPATIBILITY_OK;
             } catch (PrestaShopException $e) {
-                throw new LengowException(
-                    LengowMain::setLogMessage('log.import.error_mondial_relay_not_found', ['id_relay' => $shippingAddress->idRelay]),
-                    $e->getCode(),
-                    $e
-                );
+                throw new LengowException(LengowMain::setLogMessage('log.import.error_mondial_relay_not_found', ['id_relay' => $shippingAddress->idRelay]), $e->getCode(), $e);
             }
         }
 
@@ -1339,7 +1335,7 @@ class LengowCarrier extends Carrier
             'relayNumber' => str_pad($idRelay, 6, '0', STR_PAD_LEFT),
             'carrierMethod' => $carrierMethod,
             'cart' => $cart = new Cart($order->id_cart),
-            'id_order' => $order->id
+            'id_order' => $order->id,
         ]);
         $handler->addActions('getRelayInformations', 'setSelectedRelay');
 
