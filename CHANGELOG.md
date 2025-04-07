@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.6.0](https://github.com/lengow/plugin-prestashop/compare/v3.5.10...v3.6.0) (2025-04-07)
+
+
+### Features
+
+* **mondial-relay:** add support for mondial relay v3 ([#41](https://github.com/lengow/plugin-prestashop/issues/41)) ([1e2e8a1](https://github.com/lengow/plugin-prestashop/commit/1e2e8a17ca4481910d4a5012dbc8e6eaa2076875))
+
 ## [3.5.10](https://github.com/lengow/plugin-prestashop/compare/v3.5.9...v3.5.10) (2025-01-31)
 
 
