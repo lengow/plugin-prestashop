@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.6.1](https://github.com/lengow/plugin-prestashop/compare/v3.6.0...v3.6.1) (2025-04-07)
+
+
+### Miscellaneous
+
+* **standard:** fix code standards for prestashop ([#43](https://github.com/lengow/plugin-prestashop/issues/43)) ([b778116](https://github.com/lengow/plugin-prestashop/commit/b778116d61b8e172dde054a5809c3da00f59d4bb))
+
 ## [3.6.0](https://github.com/lengow/plugin-prestashop/compare/v3.5.10...v3.6.0) (2025-04-07)
 
 
