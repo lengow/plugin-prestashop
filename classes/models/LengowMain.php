@@ -845,15 +845,18 @@ class LengowMain
     }
 
     /**
-     * Check if Mondial Relay is installed, active and if version is supported
+     * Check if Mondial Relay v2 is installed, active and if version is supported
      *
      * @return bool
      */
-    public static function isMondialRelayAvailable()
+    public static function isMondialRelayV2Available()
+    {
+        return self::isMondialRelayVersionAvailable('2.1.0', '3.0.0');
+    }
+
+    private static function isMondialRelayVersionAvailable($minVersion, $maxVersion)
     {
         $moduleName = 'mondialrelay';
-        $supportedMinVersion = '2.1.0';
-        $supportedMaxVersion = '3.0.0';
         $sep = DIRECTORY_SEPARATOR;
         $moduleDir = _PS_MODULE_DIR_ . $moduleName . $sep;
         if (!self::isModuleInstalled($moduleName)) {
@@ -862,8 +865,18 @@ class LengowMain
         require_once $moduleDir . $moduleName . '.php';
         $mr = new MondialRelay();
 
-        return version_compare($mr->version, $supportedMinVersion, '>=')
-            && version_compare($mr->version, $supportedMaxVersion, '<');
+        return version_compare($mr->version, $minVersion, '>=')
+            && version_compare($mr->version, $maxVersion, '<');
+    }
+
+    /**
+     * Check if Mondial Relay v3 is installed, active and if version is supported
+     *
+     * @return bool
+     */
+    public static function isMondialRelayV3Available()
+    {
+        return self::isMondialRelayVersionAvailable('3.0.0', '4.0.0');
     }
 
     /**
