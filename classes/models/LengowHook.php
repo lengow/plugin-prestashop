@@ -120,6 +120,8 @@ class LengowHook
             'actionObjectUpdateAfter' => '1.5',
             // version 1.6
             'displayBackOfficeHeader' => '1.6',
+            // version 1.7
+            'actionProductCancel' => '1.7'
         ];
         foreach ($lengowHooks as $hook => $version) {
             if ((float) $version <= (float) Tools::substr(_PS_VERSION_, 0, 3)) {
@@ -393,6 +395,44 @@ class LengowHook
                     $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
                 }
             }
+        }
+    }
+
+    /**
+     * Hook on product cancel
+     */
+    public function hookActionProductCancel(array $args)
+    {
+        if (!isset($args['order'])) {
+            return;
+        }
+        $order = $args['order'];
+        $lengowOrder = new LengowOrder($order->id);
+        if ($lengowOrder instanceof LengowOrder && LengowOrder::isFromLengow($order->id)) {
+            $idOrderDetail = (int) $args['id_order_detail'];
+            $cancelQuantity = (int) $args['cancel_quantity'];
+
+            $orderDetail = new OrderDetail($idOrderDetail);
+            $lengowOrderLine = LengowOrderLine::findOrderLineByOrderDetailId($orderDetail->id);
+            if (empty($lengowOrderLine)) {
+                return;
+            }
+            if ($cancelQuantity < $orderDetail->product_quantity) {
+                return;
+            }
+            $reason = Tools::getValue('reason');
+
+            $params = [
+                LengowAction::ARG_ACTION_TYPE => LengowAction::TYPE_REFUND,
+                LengowAction::ARG_REFUND_REASON => $reason,
+                LengowAction::ARG_LINE => $lengowOrderLine[LengowOrderLine::FIELD_ORDER_LINE_ID],
+
+            ];
+            if (!LengowAction::canSendAction($params, $lengowOrder)) {
+                return;
+            }
+            LengowAction::sendAction($params, $lengowOrder);
+
         }
     }
 }

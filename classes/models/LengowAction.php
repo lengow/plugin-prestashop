@@ -50,6 +50,7 @@ class LengowAction
     /* Action types */
     public const TYPE_SHIP = 'ship';
     public const TYPE_CANCEL = 'cancel';
+    public const TYPE_REFUND = 'refund';
 
     /* Action API arguments */
     public const ARG_ACTION_TYPE = 'action_type';
@@ -65,6 +66,7 @@ class LengowAction
     public const ARG_SHIPPING_PRICE = 'shipping_price';
     public const ARG_SHIPPING_DATE = 'shipping_date';
     public const ARG_DELIVERY_DATE = 'delivery_date';
+    public const ARG_REFUND_REASON = 'reason';
 
     /**
      * @var int max interval time for action synchronisation (3 days)
