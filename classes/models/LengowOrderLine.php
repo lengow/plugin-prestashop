@@ -54,4 +54,22 @@ class LengowOrderLine
             return [];
         }
     }
+
+    /**
+     * Get Order Line by PrestaShop order detail id
+     *
+     * @param int $idOrderDetail PrestaShop order detail id
+     *
+     * @return array
+     */
+    public static function findOrderLineByOrderDetailId($idOrderDetail)
+    {
+        $sql = 'SELECT * FROM `' . _DB_PREFIX_ . 'lengow_order_line`
+            WHERE id_order_detail = ' . (int) $idOrderDetail;
+        try {
+            return Db::getInstance()->getRow($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            return [];
+        }
+    }
 }
