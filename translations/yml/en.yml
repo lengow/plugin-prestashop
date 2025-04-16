@@ -189,6 +189,7 @@ en:
       return_tracking_number_label: "Return tracking number"
       return_carrier_label: "Return carrier"
       not_provided: "Not provided by the marketplace"
+      refund_reason_lanel: "Refund reason"
     table:
       action_lengow: "Actions"
       order_lengow_state: "Status"

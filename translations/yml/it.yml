@@ -189,6 +189,7 @@ it:
       return_tracking_number_label: "Numero di ritorno"
       return_carrier_label: "Vettore di ritorno"
       not_provided: "Non fornito dal marketplace"
+      refund_reason_label: "Motivo del rimborso"
     table:
       action_lengow: "Azione"
       order_lengow_state: "Stato"

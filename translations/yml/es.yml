@@ -189,6 +189,7 @@ es:
       return_tracking_number_label: "Número de vuelta"
       return_carrier_label: "Transportista de vuelta"
       not_provided: "No entregado por Marketplace"
+      refund_reason_label: "Motivo de reintegro"
     table:
       action_lengow: "Acciones"
       order_lengow_state: "Estado"
