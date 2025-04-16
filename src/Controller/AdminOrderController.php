@@ -142,8 +142,13 @@ class AdminOrderController extends OrderController
         ], [
             'order_id' => $orderId,
         ]);
-        $isActiveReturnTrackingNumber = $this->isActiveReturnTrackingNumber($orderId);
-        $isActiveReturnCarrier = $this->isActiveReturnTrackingCarrier($orderId);
+        $isActiveReturnCarrier = false;
+        $isActiveReturnTrackingNumber = false;
+        if($this->isFromLengow($orderId)) {
+            $isActiveReturnTrackingNumber = $this->isActiveReturnTrackingNumber($orderId);
+            $isActiveReturnCarrier = $this->isActiveReturnTrackingCarrier($orderId);
+        }
+
 
         if ($isActiveReturnTrackingNumber) {
             $returnTrackingNumber = $this->getReturnTrackingNumber($orderId);
@@ -194,6 +199,18 @@ class AdminOrderController extends OrderController
             );
 
             $cancelProductForm = $formBuilder->getFormFor($orderId);
+            if ($this->isFromLengow($orderId)) {
+                $lengowOrder = new \LengowOrder($orderId);
+                $marketplace =  $lengowOrder->getMarketplace();
+
+
+                $cancelProductForm->add(\LengowAction::ARG_REFUND_REASON, ChoiceType::class, [
+                    'required' => false,
+                    'data' => '',
+                    'choices' => $marketplace->getRefundReasons(),
+                    'label' => $locale->t('order.screen.refund_reason_label'),
+                ]);
+            }
         } catch (\Exception $e) {
             $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
 
@@ -268,86 +285,6 @@ class AdminOrderController extends OrderController
         ]);
     }
 
-    /**
-     * @AdminSecurity(
-     *     "is_granted('update', request.get('_legacy_controller'))",
-     *     redirectRoute="admin_orders_view",
-     *     redirectQueryParamsToKeep={"orderId"},
-     *     message="You do not have permission to edit this."
-     * )
-     *
-     * @param int $orderId
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     */
-    public function updateShippingAction(int $orderId, Request $request): RedirectResponse
-    {
-        $form = $this->createForm(UpdateOrderShippingType::class, [], [
-            'order_id' => $orderId,
-        ]);
-        if ($this->isActiveReturnTrackingNumber($orderId)) {
-            $form->add(\LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
-                'required' => false,
-            ]);
-        }
-        if ($this->isActiveReturnTrackingCarrier($orderId)) {
-            $order = new \LengowOrder($orderId);
-            $form->add(\LengowAction::ARG_RETURN_CARRIER, ChoiceType::class, [
-                'required' => false,
-                'choices' => \LengowCarrier::getCarriersChoices(
-                    $order->id_lang
-                ),
-            ]);
-        }
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            try {
-                if (!empty($data[\LengowAction::ARG_RETURN_TRACKING_NUMBER])) {
-                    \LengowOrderDetail::updateOrderReturnTrackingNumber(
-                        $data[\LengowAction::ARG_RETURN_TRACKING_NUMBER],
-                        $orderId
-                    );
-                }
-                if (!empty($data[\LengowAction::ARG_RETURN_CARRIER])) {
-                    \LengowOrderDetail::updateOrderReturnCarrier(
-                        (int) $data[\LengowAction::ARG_RETURN_CARRIER],
-                        $orderId
-                    );
-                }
-                $this->getCommandBus()->handle(
-                    new UpdateOrderShippingDetailsCommand(
-                        $orderId,
-                        (int) $data['current_order_carrier_id'],
-                        (int) $data['new_carrier_id'],
-                        $data['tracking_number']
-                    )
-                );
-
-                $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
-            } catch (TransistEmailSendingException $e) {
-                $this->addFlash(
-                    'error',
-                    $this->trans(
-                        'An error occurred while sending an email to the customer.',
-                        'Admin.Orderscustomers.Notification'
-                    )
-                );
-            } catch (\Exception $e) {
-                $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
-            }
-        } else {
-            // exit ('form not valid');
-        }
-
-        return $this->redirectToRoute('admin_orders_view', [
-            'orderId' => $orderId,
-        ]);
-    }
     public function partialRefundAction(int $orderId, Request $request)
     {
 
@@ -429,6 +366,91 @@ class AdminOrderController extends OrderController
             }
         } catch (Exception $e) {
             $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
+        }
+
+        return $this->redirectToRoute('admin_orders_view', [
+            'orderId' => $orderId,
+        ]);
+    }
+
+    /**
+     * @AdminSecurity(
+     *     "is_granted('update', request.get('_legacy_controller'))",
+     *     redirectRoute="admin_orders_view",
+     *     redirectQueryParamsToKeep={"orderId"},
+     *     message="You do not have permission to edit this."
+     * )
+     *
+     * @param int $orderId
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function updateShippingAction(int $orderId, Request $request): RedirectResponse
+    {
+        $form = $this->createForm(UpdateOrderShippingType::class, [], [
+            'order_id' => $orderId,
+        ]);
+
+        if ($this->isFromLengow($orderId)) {
+            if ($this->isActiveReturnTrackingNumber($orderId)) {
+                $form->add(\LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
+                    'required' => false,
+                ]);
+            }
+            if ($this->isActiveReturnTrackingCarrier($orderId)) {
+                $order = new \LengowOrder($orderId);
+                $form->add(\LengowAction::ARG_RETURN_CARRIER, ChoiceType::class, [
+                    'required' => false,
+                    'choices' => \LengowCarrier::getCarriersChoices(
+                        $order->id_lang
+                    ),
+                ]);
+            }
+        }
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            try {
+                if (!empty($data[\LengowAction::ARG_RETURN_TRACKING_NUMBER])) {
+                    \LengowOrderDetail::updateOrderReturnTrackingNumber(
+                        $data[\LengowAction::ARG_RETURN_TRACKING_NUMBER],
+                        $orderId
+                    );
+                }
+                if (!empty($data[\LengowAction::ARG_RETURN_CARRIER])) {
+                    \LengowOrderDetail::updateOrderReturnCarrier(
+                        (int) $data[\LengowAction::ARG_RETURN_CARRIER],
+                        $orderId
+                    );
+                }
+                $this->getCommandBus()->handle(
+                    new UpdateOrderShippingDetailsCommand(
+                        $orderId,
+                        (int) $data['current_order_carrier_id'],
+                        (int) $data['new_carrier_id'],
+                        $data['tracking_number']
+                    )
+                );
+
+                $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
+            } catch (TransistEmailSendingException $e) {
+                $this->addFlash(
+                    'error',
+                    $this->trans(
+                        'An error occurred while sending an email to the customer.',
+                        'Admin.Orderscustomers.Notification'
+                    )
+                );
+            } catch (\Exception $e) {
+                $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
+            }
+        } else {
+            // exit ('form not valid');
         }
 
         return $this->redirectToRoute('admin_orders_view', [
@@ -652,5 +674,13 @@ class AdminOrderController extends OrderController
     private function getReturnCarrierName(int $orderId): string
     {
         return \LengowOrderDetail::getOrderReturnCarrierName($orderId);
+    }
+
+    /**
+     * @param int $orderId
+     */
+    private function isFromLengow(int $orderId): bool
+    {
+        return \LengowOrder::isFromLengow($orderId);
     }
 }
