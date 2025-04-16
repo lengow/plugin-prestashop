@@ -348,6 +348,93 @@ class AdminOrderController extends OrderController
             'orderId' => $orderId,
         ]);
     }
+    public function partialRefundAction(int $orderId, Request $request)
+    {
+
+        $formBuilder = $this->get('prestashop.core.form.identifiable_object.builder.cancel_product_form_builder');
+        $formHandler = $this->get('prestashop.core.form.identifiable_object.partial_refund_form_handler');
+        $form = $formBuilder->getFormFor($orderId);
+        $locale = new \LengowTranslation();
+        if ($this->isFromLengow($orderId)) {
+            $lengowOrder = new \LengowOrder($orderId);
+            $marketplace =  $lengowOrder->getMarketplace();
+            if ($marketplace instanceof \LengowMarketplace) {
+                $form->add(\LengowAction::ARG_REFUND_REASON, ChoiceType::class, [
+                    'required' => false,
+                    'data' => '',
+                    'choices' => $marketplace->getRefundReasons(),
+                    'label' => $locale->t('order.screen.refund_reason_label'),
+                ]);
+            }
+        }
+
+        try {
+            $form->handleRequest($request);
+            $result = $formHandler->handleFor($orderId, $form);
+            if ($result->isSubmitted()) {
+                if ($result->isValid()) {
+                    $this->addFlash('success', $this->trans('A partial refund was successfully created.', 'Admin.Orderscustomers.Notification'));
+                } else {
+                    $this->addFlashFormErrors($form);
+                }
+            }
+        } catch (Exception $e) {
+            $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
+        }
+
+        return $this->redirectToRoute('admin_orders_view', [
+            'orderId' => $orderId,
+        ]);
+    }
+
+     /**
+     * @AdminSecurity(
+     *     "is_granted('update', request.get('_legacy_controller')) && is_granted('delete', request.get('_legacy_controller'))"
+     * )
+     *
+     * @param int $orderId
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function standardRefundAction(int $orderId, Request $request)
+    {
+
+        $formBuilder = $this->get('prestashop.core.form.identifiable_object.builder.cancel_product_form_builder');
+        $formHandler = $this->get('prestashop.core.form.identifiable_object.standard_refund_form_handler');
+        $form = $formBuilder->getFormFor($orderId);
+        $locale = new \LengowTranslation();
+        if ($this->isFromLengow($orderId)) {
+            $lengowOrder = new \LengowOrder($orderId);
+            $marketplace =  $lengowOrder->getMarketplace();
+            if ($marketplace instanceof \LengowMarketplace) {
+                $form->add(\LengowAction::ARG_REFUND_REASON, ChoiceType::class, [
+                    'required' => false,
+                    'data' => '',
+                    'choices' => $marketplace->getRefundReasons(),
+                    'label' => $locale->t('order.screen.refund_reason_label'),
+                ]);
+            }
+        }
+
+        try {
+            $form->handleRequest($request);
+            $result = $formHandler->handleFor($orderId, $form);
+            if ($result->isSubmitted()) {
+                if ($result->isValid()) {
+                    $this->addFlash('success', $this->trans('A standard refund was successfully created.', 'Admin.Orderscustomers.Notification'));
+                } else {
+                    $this->addFlashFormErrors($form);
+                }
+            }
+        } catch (Exception $e) {
+            $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
+        }
+
+        return $this->redirectToRoute('admin_orders_view', [
+            'orderId' => $orderId,
+        ]);
+    }
 
     /**
      * @param OrderForViewing $orderForViewing

@@ -413,6 +413,9 @@ class LengowHook
             $cancelQuantity = (int) $args['cancel_quantity'];
 
             $orderDetail = new OrderDetail($idOrderDetail);
+            if (! $orderDetail instanceof OrderDetail) {
+                return;
+            }
             $lengowOrderLine = LengowOrderLine::findOrderLineByOrderDetailId($orderDetail->id);
             if (empty($lengowOrderLine)) {
                 return;
@@ -420,7 +423,8 @@ class LengowHook
             if ($cancelQuantity < $orderDetail->product_quantity) {
                 return;
             }
-            $reason = Tools::getValue('reason');
+            $cancelProductPosted = Tools::getValue('cancel_product');
+            $reason = $cancelProductPosted['reason'] ?? '';
 
             $params = [
                 LengowAction::ARG_ACTION_TYPE => LengowAction::TYPE_REFUND,
@@ -432,7 +436,6 @@ class LengowHook
                 return;
             }
             LengowAction::sendAction($params, $lengowOrder);
-
         }
     }
 }
