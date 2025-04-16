@@ -170,6 +170,7 @@ order.screen.type_business|Business
 order.screen.return_tracking_number_label|Número de vuelta
 order.screen.return_carrier_label|Transportista de vuelta
 order.screen.not_provided|No entregado por Marketplace
+order.screen.refund_reason_label|Motivo de reintegro
 order.table.action_lengow|Acciones
 order.table.order_lengow_state|Estado
 order.table.order_types|Tipos

@@ -170,6 +170,7 @@ order.screen.type_business|Business
 order.screen.return_tracking_number_label|Return tracking number
 order.screen.return_carrier_label|Return carrier
 order.screen.not_provided|Not provided by the marketplace
+order.screen.refund_reason_lanel|Refund reason
 order.table.action_lengow|Actions
 order.table.order_lengow_state|Status
 order.table.order_types|Types

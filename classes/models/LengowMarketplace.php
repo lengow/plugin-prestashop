@@ -791,4 +791,23 @@ class LengowMarketplace
 
         return in_array(LengowAction::ARG_RETURN_TRACKING_NUMBER, $arguments);
     }
+
+    /**
+     * Get all refund reasons choices
+     */
+    public function getRefundReasons(): array
+    {
+        $action = $this->getAction(LengowAction::TYPE_REFUND);
+        if (!$action) {
+            return [];
+        }
+        $choices = [];
+        $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_REFUND);
+        $reasons = in_array(LengowAction::ARG_REFUND_REASON, $arguments) ? $this->argValues[LengowAction::ARG_REFUND_REASON]['valid_values'] : [];
+        foreach ($reasons as $key => $reason) {
+            $choices[$reason] = $key;
+        }
+
+        return $choices;
+    }
 }
