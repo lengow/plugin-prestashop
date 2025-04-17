@@ -376,12 +376,14 @@ class LengowMarketplace
         $cancelQuantity = 0
     ) : bool
     {
-        if (!$this->checkAction(LengowAction::TYPE_REFUND)) {
+        if (! $this->checkAction(LengowAction::TYPE_REFUND)) {
             return false;
         }
+
         $cancelProductPosted = Tools::getValue('cancel_product');
         $reason = $cancelProductPosted[LengowAction::ARG_REFUND_REASON] ?? '';
         $mode = $cancelProductPosted[LengowAction::ARG_REFUND_MODE] ?? '';
+        $shippingPriceTTC = $cancelProductPosted[LengowAction::ARG_SHIPPING_PRICE] ?? 0;
         $refundArguments = $this->getRefundArguments();
         $params = [
             LengowAction::ARG_ACTION_TYPE => LengowAction::TYPE_REFUND,
@@ -403,6 +405,12 @@ class LengowMarketplace
                     break;
                 case LengowAction::ARG_REFUND_MODE:
                     $params[LengowAction::ARG_REFUND_MODE] = $mode;
+                    break;
+                case LengowAction::ARG_SHIPPING_PRICE:
+                    $params[LengowAction::ARG_SHIPPING_PRICE] = (float) $shippingPriceTTC;
+                    break;
+                case LengowAction::ARG_REFUND_SHIPPING_FEES:
+                    $params[LengowAction::ARG_REFUND_SHIPPING_FEES] = ((float) $shippingPriceTTC > 0);
                     break;
                 default:
                     break;

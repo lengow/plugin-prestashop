@@ -66,11 +66,13 @@ class LengowAction
     public const ARG_SHIPPING_PRICE = 'shipping_price';
     public const ARG_SHIPPING_DATE = 'shipping_date';
     public const ARG_DELIVERY_DATE = 'delivery_date';
+    // refund API arguments
     public const ARG_REFUND_REASON = 'refund_reason';
     public const ARG_REASON = 'reason';
     public const ARG_QUANTITY = 'quantity';
     public const ARG_COMMENT = 'comment';
     public const ARG_REFUND_MODE = 'refund_mode';
+    public const ARG_REFUND_SHIPPING_FEES = 'refund_shipping_fees';
 
     /**
      * @var int max interval time for action synchronisation (3 days)

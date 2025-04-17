@@ -35,7 +35,7 @@ class LengowConnector
     /**
      * @var string url of the Lengow API
      */
-    public const LENGOW_API_URL = 'https://api.lengow.io';
+    public const LENGOW_API_URL = 'https://api.lengow.local';
 
     /**
      * @var string suffix for prod
