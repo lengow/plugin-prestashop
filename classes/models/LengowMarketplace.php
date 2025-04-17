@@ -801,7 +801,8 @@ class LengowMarketplace
         if (!$action) {
             return [];
         }
-        $choices = [];
+        $locale = new LengowTranslation();
+        $choices = [$locale->t('order.screen.refund_reason_label') => ''];
         $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_REFUND);
         $reasons = in_array(LengowAction::ARG_REFUND_REASON, $arguments) ? $this->argValues[LengowAction::ARG_REFUND_REASON]['valid_values'] : [];
         foreach ($reasons as $key => $reason) {

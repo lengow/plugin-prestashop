@@ -205,7 +205,7 @@ class AdminOrderController extends OrderController
 
 
                 $cancelProductForm->add(\LengowAction::ARG_REFUND_REASON, ChoiceType::class, [
-                    'required' => false,
+                    'required' => true,
                     'data' => '',
                     'choices' => $marketplace->getRefundReasons(),
                     'label' => $locale->t('order.screen.refund_reason_label'),
@@ -297,7 +297,7 @@ class AdminOrderController extends OrderController
             $marketplace =  $lengowOrder->getMarketplace();
             if ($marketplace instanceof \LengowMarketplace) {
                 $form->add(\LengowAction::ARG_REFUND_REASON, ChoiceType::class, [
-                    'required' => false,
+                    'required' => true,
                     'data' => '',
                     'choices' => $marketplace->getRefundReasons(),
                     'label' => $locale->t('order.screen.refund_reason_label'),
@@ -346,7 +346,7 @@ class AdminOrderController extends OrderController
             $marketplace =  $lengowOrder->getMarketplace();
             if ($marketplace instanceof \LengowMarketplace) {
                 $form->add(\LengowAction::ARG_REFUND_REASON, ChoiceType::class, [
-                    'required' => false,
+                    'required' => true,
                     'data' => '',
                     'choices' => $marketplace->getRefundReasons(),
                     'label' => $locale->t('order.screen.refund_reason_label'),
