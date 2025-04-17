@@ -171,6 +171,7 @@ order.screen.return_tracking_number_label|Numéro de retour
 order.screen.return_carrier_label|Transporteur de retour
 order.screen.not_provided|Non fourni par la marketplace
 order.screen.refund_reason_label|Raison du remboursement
+order.screen.refund_mode_label|Mode de remboursement
 order.table.action_lengow|Actions
 order.table.order_lengow_state|Statut
 order.table.order_types|Types

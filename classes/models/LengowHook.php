@@ -417,32 +417,14 @@ class LengowHook
                 return;
             }
             $lengowOrderLine = LengowOrderLine::findOrderLineByOrderDetailId($orderDetail->id);
+            $marketPlace = $lengowOrder->getMarketPlace();
             if (empty($lengowOrderLine)) {
                 return;
             }
             if ($cancelQuantity < $orderDetail->product_quantity) {
                 return;
             }
-            $cancelProductPosted = Tools::getValue('cancel_product');
-            $reason = $cancelProductPosted['reason'] ?? '';
-            $params = [
-                LengowAction::ARG_ACTION_TYPE => LengowAction::TYPE_REFUND,
-                LengowAction::ARG_REFUND_REASON => $reason,
-                LengowAction::ARG_LINE => $lengowOrderLine[LengowOrderLine::FIELD_ORDER_LINE_ID],
-
-            ];
-            if (empty($reason)) {
-                LengowMain::log(
-                    LengowLog::CODE_ACTION,
-                    LengowMain::setLogMessage('refund reason must not be empty', $params)
-                );
-                return;
-            }
-            if (!LengowAction::canSendAction($params, $lengowOrder)) {
-                return;
-            }
-
-            return LengowAction::sendAction($params, $lengowOrder);
+            $marketPlace->callRefundAction($lengowOrder, $lengowOrderLine, $cancelQuantity);
         }
     }
 }

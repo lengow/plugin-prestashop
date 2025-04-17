@@ -190,13 +190,14 @@ en:
       return_carrier_label: "Return carrier"
       not_provided: "Not provided by the marketplace"
       refund_reason_label: "Refund reason"
+      refund_mode_label: "Refund mode"
     table:
       action_lengow: "Actions"
       order_lengow_state: "Status"
       order_types: "Types"
       marketplace_name: "Marketplace"
       shop_name: "Shop"
-      marketplace_sku: "Order ID"refund_reason
+      marketplace_sku: "Order ID"
       reference_prestashop: "Reference"
       customer: "Customer Name"
       order_date: "Date"

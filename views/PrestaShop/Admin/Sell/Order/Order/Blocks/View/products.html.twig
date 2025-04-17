@@ -254,7 +254,10 @@
     {# PRODUCT CANCEL #}
     <div class="cancel-product-element refund-checkboxes-container">
        <div class="cancel-product-element form-group restock-products">
-        {{ form_widget(cancelProductForm.reason) }}
+        {{ form_widget(cancelProductForm.refund_reason) }}
+      </div>
+      <div class="cancel-product-element form-group restock-products">
+        {{ form_widget(cancelProductForm.refund_mode) }}
       </div>
       <div class="cancel-product-element form-group restock-products">
         {{ form_widget(cancelProductForm.restock) }}
