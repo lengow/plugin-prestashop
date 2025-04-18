@@ -379,6 +379,17 @@ class LengowMarketplace
     {
 
         $this->checkAction(LengowAction::TYPE_REFUND);
+        if (!in_array($lengowOrder->lengowState, $this->getRefundStatuses())) {
+            LengowMain::log(
+                LengowLog::CODE_ACTION,
+                LengowMain::setLogMessage(
+                    'refund action not available for this order_state',
+                    [LengowOrder::FIELD_ORDER_LENGOW_STATE => $lengowOrder->lengowState]
+                )
+            );
+            return false;
+
+        }
         $cancelProductPosted = Tools::getValue('cancel_product');
         $reason = $cancelProductPosted[LengowAction::ARG_REFUND_REASON] ?? '';
         $mode = $cancelProductPosted[LengowAction::ARG_REFUND_MODE] ?? '';
@@ -881,7 +892,7 @@ class LengowMarketplace
     }
 
     /**
-     *
+     * Will return all refund modes for cdsicount
      */
     public function getRefundModes() : array
     {
@@ -917,4 +928,16 @@ class LengowMarketplace
 
         return array_intersect($arguments, array_keys($this->argValues));
     }
+
+    /**
+     * Will return valid statuses for refund
+     */
+    public function getRefundStatuses(): array
+    {
+        $action = $this->getAction(LengowAction::TYPE_REFUND);
+        $statuses = $action['status'] ?? [];
+
+        return array_keys($statuses);
+    }
 }
+
