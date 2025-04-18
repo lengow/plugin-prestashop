@@ -48,6 +48,7 @@ class LengowMarketplace
     public static $validActions = [
         LengowAction::TYPE_SHIP,
         LengowAction::TYPE_CANCEL,
+        LengowAction::TYPE_REFUND,
     ];
 
     /**
@@ -368,6 +369,69 @@ class LengowMarketplace
     }
 
     /**
+     * Call API refund action and create action in lengow_actions table
+     */
+    public function callRefundAction(
+        LengowOrder $lengowOrder,
+        array $lengowOrderLine,
+        $cancelQuantity = 0
+    ) : bool
+    {
+
+        $this->checkAction(LengowAction::TYPE_REFUND);
+        $cancelProductPosted = Tools::getValue('cancel_product');
+        $reason = $cancelProductPosted[LengowAction::ARG_REFUND_REASON] ?? '';
+        $mode = $cancelProductPosted[LengowAction::ARG_REFUND_MODE] ?? '';
+        $shippingPriceTTC = $cancelProductPosted[LengowAction::ARG_SHIPPING_PRICE] ?? 0;
+        $refundArguments = $this->getRefundArguments();
+        $params = [
+            LengowAction::ARG_ACTION_TYPE => LengowAction::TYPE_REFUND,
+        ];
+
+        foreach ($refundArguments as $argument) {
+            switch ($argument) {
+                case LengowAction::ARG_REFUND_REASON:
+                    $params[LengowAction::ARG_REFUND_REASON] = $reason;
+                    break;
+                case LengowAction::ARG_REASON:
+                    $params[LengowAction::ARG_REASON] = $reason;
+                    break;
+                case LengowAction::ARG_QUANTITY:
+                    $params[LengowAction::ARG_QUANTITY] = $cancelQuantity;
+                    break;
+                case LengowAction::ARG_LINE:
+                    $params[LengowAction::ARG_LINE] = $lengowOrderLine[LengowOrderLine::FIELD_ORDER_LINE_ID];
+                    break;
+                case LengowAction::ARG_REFUND_MODE:
+                    $params[LengowAction::ARG_REFUND_MODE] = $mode;
+                    break;
+                case LengowAction::ARG_SHIPPING_PRICE:
+                    $params[LengowAction::ARG_SHIPPING_PRICE] = (float) $shippingPriceTTC;
+                    break;
+                case LengowAction::ARG_REFUND_SHIPPING_FEES:
+                    $params[LengowAction::ARG_REFUND_SHIPPING_FEES] = ((float) $shippingPriceTTC > 0);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (empty($reason)) {
+            LengowMain::log(
+                LengowLog::CODE_ACTION,
+                LengowMain::setLogMessage('refund reason must not be empty', $params)
+            );
+            return false;
+        }
+        if (!LengowAction::canSendAction($params, $lengowOrder)) {
+            return false;
+        }
+        LengowAction::sendAction($params, $lengowOrder);
+
+        return true;
+    }
+
+    /**
      * Check if the action is valid and present on the marketplace
      *
      * @param string $action Lengow order actions type (ship or cancel)
@@ -376,6 +440,7 @@ class LengowMarketplace
      */
     protected function checkAction($action)
     {
+
         if (!in_array($action, self::$validActions, true)) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.action_not_valid', ['action' => $action]));
         }
@@ -790,5 +855,66 @@ class LengowMarketplace
         $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_SHIP);
 
         return in_array(LengowAction::ARG_RETURN_TRACKING_NUMBER, $arguments);
+    }
+
+    /**
+     * Get all refund reasons choices
+     */
+    public function getRefundReasons(): array
+    {
+        $action = $this->getAction(LengowAction::TYPE_REFUND);
+        if (!$action) {
+            return [];
+        }
+        $locale = new LengowTranslation();
+        $choices = [$locale->t('order.screen.refund_reason_label') => ''];
+        $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_REFUND);
+        $reasons = in_array(LengowAction::ARG_REFUND_REASON, $arguments) ? $this->argValues[LengowAction::ARG_REFUND_REASON]['valid_values'] : [];
+        if (empty($reasons)) {
+            $reasons = in_array(LengowAction::ARG_REASON, $arguments) ? $this->argValues[LengowAction::ARG_REASON]['valid_values'] : [];
+        }
+        foreach ($reasons as $key => $reason) {
+            $choices[$reason] = $key;
+        }
+
+        return $choices;
+    }
+
+    /**
+     *
+     */
+    public function getRefundModes() : array
+    {
+        $action = $this->getAction(LengowAction::TYPE_REFUND);
+        if (!$action) {
+            return [];
+        }
+        $locale = new LengowTranslation();
+        $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_REFUND);
+        $modes = in_array(LengowAction::ARG_REFUND_MODE, $arguments) ? $this->argValues[LengowAction::ARG_REFUND_MODE]['valid_values'] : [];
+        $choices = [$locale->t('order.screen.refund_mode_label') => ''];
+        if (empty($modes)) {
+            return [];
+        }
+
+        foreach ($modes as $key => $mode) {
+            $choices[$mode] = $key;
+        }
+
+        return $choices;
+    }
+
+    /**
+     * Get all refund arguments
+     */
+    public function getRefundArguments(): array
+    {
+        $action = $this->getAction(LengowAction::TYPE_REFUND);
+        if (!$action) {
+            return [];
+        }
+        $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_REFUND);
+
+        return array_intersect($arguments, array_keys($this->argValues));
     }
 }

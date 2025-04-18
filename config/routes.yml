@@ -21,4 +21,28 @@ admin_orders_update_shipping:
     _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::updateShippingAction'
     _legacy_controller: AdminOrders
   requirements:
-    orderId: \d+        
+    orderId: \d+
+
+admin_orders_partial_refund:
+  path: /sell/orders/{orderId}/partial-refund
+  methods: [ POST ]
+  defaults:
+    _disable_module_prefix: true
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::partialRefundAction'
+    _legacy_controller: AdminOrders
+  requirements:
+    orderId: \d+
+
+
+admin_orders_standard_refund:
+  path: /sell/orders/{orderId}/standard-refund
+  methods: [ POST ]
+  defaults:
+    _disable_module_prefix: true
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::standardRefundAction'
+    _legacy_controller: AdminOrders
+  requirements:
+    orderId: \d+
+  options:
+    expose: true    
+          
