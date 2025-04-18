@@ -48,6 +48,7 @@ class LengowMarketplace
     public static $validActions = [
         LengowAction::TYPE_SHIP,
         LengowAction::TYPE_CANCEL,
+        LengowAction::TYPE_REFUND,
     ];
 
     /**
@@ -376,10 +377,8 @@ class LengowMarketplace
         $cancelQuantity = 0
     ) : bool
     {
-        if (! $this->checkAction(LengowAction::TYPE_REFUND)) {
-            return false;
-        }
 
+        $this->checkAction(LengowAction::TYPE_REFUND);
         $cancelProductPosted = Tools::getValue('cancel_product');
         $reason = $cancelProductPosted[LengowAction::ARG_REFUND_REASON] ?? '';
         $mode = $cancelProductPosted[LengowAction::ARG_REFUND_MODE] ?? '';
@@ -441,6 +440,7 @@ class LengowMarketplace
      */
     protected function checkAction($action)
     {
+
         if (!in_array($action, self::$validActions, true)) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.action_not_valid', ['action' => $action]));
         }
@@ -880,6 +880,9 @@ class LengowMarketplace
         return $choices;
     }
 
+    /**
+     *
+     */
     public function getRefundModes() : array
     {
         $action = $this->getAction(LengowAction::TYPE_REFUND);
@@ -888,8 +891,11 @@ class LengowMarketplace
         }
         $locale = new LengowTranslation();
         $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_REFUND);
-        $choices = [$locale->t('order.screen.refund_mode_label') => ''];
         $modes = in_array(LengowAction::ARG_REFUND_MODE, $arguments) ? $this->argValues[LengowAction::ARG_REFUND_MODE]['valid_values'] : [];
+        $choices = [$locale->t('order.screen.refund_mode_label') => ''];
+        if (empty($modes)) {
+            return [];
+        }
 
         foreach ($modes as $key => $mode) {
             $choices[$mode] = $key;
@@ -898,6 +904,9 @@ class LengowMarketplace
         return $choices;
     }
 
+    /**
+     * Get all refund arguments
+     */
     public function getRefundArguments(): array
     {
         $action = $this->getAction(LengowAction::TYPE_REFUND);

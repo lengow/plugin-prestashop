@@ -211,12 +211,16 @@ class AdminOrderController extends OrderController
                     'label' => $locale->t('order.screen.refund_reason_label'),
                 ]);
 
-                $cancelProductForm->add(\LengowAction::ARG_REFUND_MODE, ChoiceType::class, [
-                    'required' => false,
-                    'data' => '',
-                    'choices' => $marketplace->getRefundModes(),
-                    'label' => $locale->t('order.screen.refund_mode_label'),
-                ]);
+                $refundModes = $marketplace->getRefundModes();
+                if (count($refundModes)) {
+                    $cancelProductForm->add(\LengowAction::ARG_REFUND_MODE, ChoiceType::class, [
+                        'required' => false,
+                        'data' => '',
+                        'choices' => $refundModes,
+                        'label' => $locale->t('order.screen.refund_mode_label'),
+                    ]);
+                }
+
             }
         } catch (\Exception $e) {
             $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
@@ -289,6 +293,7 @@ class AdminOrderController extends OrderController
             'returnTrackingNumberLabel' => $locale->t('order.screen.return_tracking_number_label'),
             'returnCarrierLabel' => $locale->t('order.screen.return_carrier_label'),
             'returnCarrierName' => $this->getReturnCarrierName($orderId),
+            'hasRefundModes' => ($this->isFromLengow($orderId) && count($refundModes) > 0),
         ]);
     }
 
@@ -309,12 +314,15 @@ class AdminOrderController extends OrderController
                     'choices' => $marketplace->getRefundReasons(),
                     'label' => $locale->t('order.screen.refund_reason_label'),
                 ]);
-                $form->add(\LengowAction::ARG_REFUND_MODE, ChoiceType::class, [
-                    'required' => false,
-                    'data' => '',
-                    'choices' => $marketplace->getRefundModes(),
-                    'label' => $locale->t('order.screen.refund_mode_label'),
-                ]);
+                $refundModes = $marketplace->getRefundModes();
+                if (count($refundModes)) {
+                    $form->add(\LengowAction::ARG_REFUND_MODE, ChoiceType::class, [
+                        'required' => false,
+                        'data' => '',
+                        'choices' => $refundModes,
+                        'label' => $locale->t('order.screen.refund_mode_label'),
+                    ]);
+                }
             }
         }
 
@@ -364,12 +372,15 @@ class AdminOrderController extends OrderController
                     'choices' => $marketplace->getRefundReasons(),
                     'label' => $locale->t('order.screen.refund_reason_label'),
                 ]);
-                $form->add(\LengowAction::ARG_REFUND_MODE, ChoiceType::class, [
-                    'required' => false,
-                    'data' => '',
-                    'choices' => $marketplace->getRefundModes(),
-                    'label' => $locale->t('order.screen.refund_mode_label'),
-                ]);
+                $refundModes = $marketplace->getRefundModes();
+                if (count($refundModes)) {
+                    $form->add(\LengowAction::ARG_REFUND_MODE, ChoiceType::class, [
+                        'required' => false,
+                        'data' => '',
+                        'choices' => $refundModes,
+                        'label' => $locale->t('order.screen.refund_mode_label'),
+                    ]);
+                }
             }
         }
 

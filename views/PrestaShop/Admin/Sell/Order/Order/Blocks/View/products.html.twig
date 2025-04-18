@@ -256,9 +256,11 @@
        <div class="cancel-product-element form-group restock-products">
         {{ form_widget(cancelProductForm.refund_reason) }}
       </div>
-      <div class="cancel-product-element form-group restock-products">
-        {{ form_widget(cancelProductForm.refund_mode) }}
-      </div>
+      {% if hasRefundModes %}
+        <div class="cancel-product-element form-group restock-products">
+          {{ form_widget(cancelProductForm.refund_mode) }}
+        </div>
+      {% endif %}
       <div class="cancel-product-element form-group restock-products">
         {{ form_widget(cancelProductForm.restock) }}
       </div>
