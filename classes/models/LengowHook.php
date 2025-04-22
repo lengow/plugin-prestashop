@@ -120,6 +120,7 @@ class LengowHook
             'actionObjectUpdateAfter' => '1.5',
             // version 1.6
             'displayBackOfficeHeader' => '1.6',
+            'displayAdminOrderSide' => '1.6',
         ];
         foreach ($lengowHooks as $hook => $version) {
             if ((float) $version <= (float) Tools::substr(_PS_VERSION_, 0, 3)) {
@@ -308,6 +309,36 @@ class LengowHook
         }
 
         return '';
+    }
+
+    /**
+     * Hook on admin page's order side
+     *
+     * @param array $args Arguments of hook
+     *
+     * @return mixed
+     */
+    public function hookAdminOrderSide($params)
+    {
+        $id_order = (int) $params['id_order'];
+        $lengowOrder = LengowOrder::getLengowOrderByPrestashopId($id_order);
+
+        if (!$lengowOrder) {
+            return '';
+        }
+
+        $marketplaceName = $lengowOrder['marketplace_name'];
+        $shippingMethods = LengowMarketplace::getValidShippingMethods($marketplaceName);
+
+        $ajaxUrl = $this->context->link->getAdminLink('AdminLengowOrder', true);
+        $this->context->smarty->assign([
+            'id_order'         => $id_order,
+            'shipping_methods' => $shippingMethods,
+            'lengowOrder'      => $lengowOrder,
+            'ajax_url'         => $ajaxUrl,
+        ]);
+
+        return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/hook/order/admin_order_side.tpl');
     }
 
     /**
