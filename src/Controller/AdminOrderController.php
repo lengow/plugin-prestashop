@@ -281,7 +281,6 @@ class AdminOrderController extends OrderController
             'refundModes' => $refundMode ?? [],
             'refundReasonSelected' => $refundSelectedDatas['refund_reason'] ?? '',
             'refundModeSelected' => $refundSelectedDatas['refund_mode'] ?? '',
-            'refundJsPath' => $this->get('request_stack')->getCurrentRequest()->getBasePath() . '/modules/lengow/views/js/admin/refund-handler.js',
         ]);
     }
 

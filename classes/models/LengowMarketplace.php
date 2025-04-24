@@ -558,7 +558,12 @@ class LengowMarketplace
      *
      * @throws Exception|LengowException no delivery country in order
      */
-    protected function getAllParamsForPartialRefund(string $action, LengowOrder $lengowOrder, array $marketplaceArguments, $orderLineId): array
+    protected function getAllParamsForPartialRefund(
+        string $action,
+        LengowOrder $lengowOrder,
+        array $marketplaceArguments,
+        $orderLineId
+    ): array
     {
         $this->checkAction($action);
         if (!in_array($lengowOrder->lengowState, $this->getRefundStatuses(), true)) {
@@ -573,10 +578,8 @@ class LengowMarketplace
 
         }
 
-
         $shippingPriceTTC = $lengowOrder->getTotalShippingCostByOrderId($lengowOrder->id)
             ?? 0;
-
 
         foreach ($marketplaceArguments as $arg) {
             switch ($arg) {
