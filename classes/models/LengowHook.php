@@ -120,8 +120,6 @@ class LengowHook
             'actionObjectUpdateAfter' => '1.5',
             // version 1.6
             'displayBackOfficeHeader' => '1.6',
-            // version 1.7
-            'actionProductCancel' => '1.7'
         ];
         foreach ($lengowHooks as $hook => $version) {
             if ((float) $version <= (float) Tools::substr(_PS_VERSION_, 0, 3)) {
@@ -358,6 +356,11 @@ class LengowHook
                 $lengowOrder->callAction(LengowAction::TYPE_SHIP);
                 $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
             }
+            // call Lengow API to send refund state order
+            if ($idOrderState === LengowMain::getOrderState(LengowOrder::STATE_REFUNDED)) {
+                $lengowOrder->callAction(LengowAction::TYPE_REFUND);
+                $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
+            }
             // call Lengow API WSDL to send refuse state order
             if ($idOrderState === LengowMain::getOrderState(LengowOrder::STATE_CANCELED)) {
                 $lengowOrder->callAction(LengowAction::TYPE_CANCEL);
@@ -395,36 +398,6 @@ class LengowHook
                     $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
                 }
             }
-        }
-    }
-
-    /**
-     * Hook on product cancel
-     */
-    public function hookActionProductCancel(array $args)
-    {
-        if (!isset($args['order'])) {
-            return;
-        }
-        $order = $args['order'];
-        $lengowOrder = new LengowOrder($order->id);
-        if ($lengowOrder instanceof LengowOrder && LengowOrder::isFromLengow($order->id)) {
-            $idOrderDetail = (int) $args['id_order_detail'];
-            $cancelQuantity = (int) $args['cancel_quantity'];
-
-            $orderDetail = new OrderDetail($idOrderDetail);
-            if (! $orderDetail instanceof OrderDetail) {
-                return;
-            }
-            $lengowOrderLine = LengowOrderLine::findOrderLineByOrderDetailId($orderDetail->id);
-            $marketPlace = $lengowOrder->getMarketPlace();
-            if (empty($lengowOrderLine)) {
-                return;
-            }
-            if ($cancelQuantity < $orderDetail->product_quantity) {
-                return;
-            }
-            $marketPlace->callRefundAction($lengowOrder, $lengowOrderLine, $cancelQuantity);
         }
     }
 }
