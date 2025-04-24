@@ -253,12 +253,22 @@
 
     {# PRODUCT CANCEL #}
     <div class="cancel-product-element refund-checkboxes-container">
-       <div class="cancel-product-element form-group restock-products">
-        {{ form_widget(cancelProductForm.refund_reason) }}
+      <div class="cancel-product-element form-group refund-reason">
+        <select id="lengow_refund_reason" class="form-control">
+          {% for label, value in refundReasons %}
+            <option value="{{ value }}" {% if refundReasonSelected == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+        <div id="refund-reason-message" class="alert alert-success d-none" role="alert"></div>
       </div>
-      {% if hasRefundModes %}
-        <div class="cancel-product-element form-group restock-products">
-          {{ form_widget(cancelProductForm.refund_mode) }}
+      {% if refundModes is not empty %}
+        <div class="cancel-product-element form-group refund-mode">
+          <select id="lengow_refund_mode" class="form-control">
+            {% for label, value in refundModes %}
+              <option value="{{ value }}" {% if value == refundModeSelected %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          <div id="refund--mode-message" class="alert alert-success d-none" role="alert"></div>
         </div>
       {% endif %}
       <div class="cancel-product-element form-group restock-products">
@@ -292,3 +302,85 @@
     {{ form_end(cancelProductForm) }}
   </div>
 </div>
+
+{% block javascripts %}
+  <script>
+    function showRefundReasonMessage(message, type = 'success') {
+      const messageElement = document.getElementById('refund-reason-message');
+      messageElement.textContent = message;
+      messageElement.className = `alert alert-${type}`;
+      messageElement.classList.remove('d-none');
+
+      setTimeout(() => {
+        messageElement.classList.add('d-none');
+      }, 3000);
+    }
+
+    function showRefundModeMessage(message, type = 'success') {
+      const messageElement = document.getElementById('refund-mode-message');
+      messageElement.textContent = message;
+      messageElement.className = `alert alert-${type}`;
+      messageElement.classList.remove('d-none');
+
+      setTimeout(() => {
+        messageElement.classList.add('d-none');
+      }, 3000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log('DOM fully loaded and parsed');
+      const selectreason = document.getElementById('lengow_refund_reason');
+      const selectMode = document.getElementById('lengow_refund_mode');
+
+      selectreason.addEventListener('change', function () {
+        const reason = selectreason.value;
+        const orderId = {{ orderForViewing.id }};
+
+        fetch('{{ path("lengow_save_refund_reason") }}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify({ orderId: orderId, reason: reason })
+        })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.success) {
+                    showRefundReasonMessage('Raison enregistrée', 'success');
+                  } else {
+                    showRefundReasonMessage(data.message || 'Erreur lors de l’enregistrement', 'danger');
+                  }
+                })
+                .catch(() => {
+                  showRefundReasonMessage('Erreur réseau', 'danger');
+                });
+      });
+
+      selectMode.addEventListener('change', function () {
+        const reason = selectreason.value;
+        const orderId = {{ orderForViewing.id }};
+
+        fetch('{{ path("lengow_save_refund_mode") }}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify({ orderId: orderId, reason: reason })
+        })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.success) {
+                    showRefundReasonMessage('Mode enregistrée', 'success');
+                  } else {
+                    showRefundReasonMessage(data.message || 'Erreur lors de l’enregistrement', 'danger');
+                  }
+                })
+                .catch(() => {
+                  showRefundReasonMessage('Erreur réseau', 'danger');
+                });
+      });
+    });
+  </script>
+{% endblock %}

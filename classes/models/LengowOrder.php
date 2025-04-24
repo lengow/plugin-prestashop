@@ -30,6 +30,7 @@ class LengowOrder extends Order
      * @var string Lengow order table name
      */
     public const TABLE_ORDER = 'lengow_orders';
+    public const TABLE_ORDER_LINE = 'lengow_order_line';
 
     /* Order fields */
     public const FIELD_ID = 'id';
@@ -57,6 +58,10 @@ class LengowOrder extends Order
     public const FIELD_CARRIER = 'carrier';
     public const FIELD_CARRIER_METHOD = 'method';
     public const FIELD_CARRIER_TRACKING = 'tracking';
+    public const FIELD_REFUND_REASON = 'refund_reason';
+    public const FIELD_REFUND_MODE = 'refund_mode';
+    public const FIELD_REFUNDED = 'refunded';
+    public const FIELD_QUANTITY_REFUNDED = 'quantity_refunded';
     public const FIELD_CARRIER_RELAY_ID = 'id_relay';
     public const FIELD_SENT_MARKETPLACE = 'sent_marketplace';
     public const FIELD_IS_REIMPORTED = 'is_reimported';
@@ -1049,7 +1054,7 @@ class LengowOrder extends Order
      *
      * @return bool
      */
-    public function callAction($action)
+    public function callAction($action, $partialAction = false)
     {
         $success = true;
         LengowMain::log(
@@ -1094,12 +1099,22 @@ class LengowOrder extends Order
                         throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.order_line_required'));
                     }
                     $results = [];
+
                     foreach ($orderLineCollection as $row) {
-                        $results[] = $marketplace->callAction(
-                            $action,
-                            $this,
-                            $row[LengowOrderLine::FIELD_ORDER_LINE_ID]
-                        );
+                        if ($partialAction) {
+                            $results[] = $marketplace->callAction(
+                                $action,
+                                $this,
+                                $row[LengowOrderLine::FIELD_ORDER_LINE_ID],
+                                $partialAction
+                            );
+                        } else {
+                            $results[] = $marketplace->callAction(
+                                $action,
+                                $this,
+                                $row[LengowOrderLine::FIELD_ORDER_LINE_ID]
+                            );
+                        }
                     }
                     $success = !in_array(false, $results, true);
                 } else {
@@ -1286,4 +1301,84 @@ class LengowOrder extends Order
 
         return (int) $row['total'];
     }
+
+    /**
+     * Get the refund reason from the Lengow orders table
+     *
+     * @param int $idOrder PrestaShop order id
+     *
+     * @return string|null
+     */
+    public static function getRefundReasonByPrestashopId($idOrder): ?string
+    {
+        $query = 'SELECT * FROM `' . _DB_PREFIX_ . 'lengow_orders` WHERE `id` = ' . (int) $idOrder;
+        try {
+            $result = Db::getInstance()->getRow($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return null;
+        }
+
+        return $result['refund_reason'] ?? null;
+    }
+
+    /**
+     * Get the refund mode from the Lengow orders table
+     *
+     * @param int $idOrder PrestaShop order id
+     *
+     * @return string|null
+     */
+    public static function getRefundModeByPrestashopId($idOrder): ?string
+    {
+        $query = 'SELECT * FROM `' . _DB_PREFIX_ . 'lengow_orders` WHERE `id` = ' . (int) $idOrder;
+        try {
+            $result = Db::getInstance()->getRow($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return null;
+        }
+
+        return $result['refund_mode'] ?? null;
+    }
+
+    /**
+     * Get the total shipping cost amount for a specific order ID
+     *
+     * @param int $orderId The ID of the order
+     *
+     * @return float|false Returns the total shipping cost amount or false on failure
+     */
+    public static function getTotalShippingCostByOrderId($orderId)
+    {
+        $query = 'SELECT SUM(os.shipping_cost_amount) AS total_shipping_cost
+              FROM `' . _DB_PREFIX_ . 'order_slip` os
+              WHERE os.id_order = ' . (int) $orderId;
+
+        try {
+            $result = Db::getInstance()->getRow($query);
+            return $result ? (float) $result['total_shipping_cost'] : 0.0;
+        } catch (PrestaShopDatabaseException $e) {
+            return 0;
+        }
+    }
+
+    public function getRefundDataFromLengowOrder(int $orderId): array
+    {
+        $db = \Db::getInstance();
+        $sql = 'SELECT refund_reason, refund_mode FROM ' . _DB_PREFIX_ . 'lengow_orders WHERE id_order = ' . (int) $orderId;
+
+        $result = $db->getRow($sql);
+
+        if (!$result) {
+            return [
+                'refund_reason' => [],
+                'refund_mode' => [],
+            ];
+        }
+
+        return [
+            'refund_reason' => $result['refund_reason'] ?? [],
+            'refund_mode' => $result['refund_mode'] ?? [],
+        ];
+    }
+
 }

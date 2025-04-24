@@ -344,24 +344,36 @@ class LengowHook
         if (!isset($args['id_order'])) {
             return;
         }
+
         $lengowOrder = new LengowOrder($args['id_order']);
-        // do nothing if order is not from Lengow or is being imported
+
+        // Do nothing if order is not from Lengow or is being imported
         if (LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
             && !array_key_exists($lengowOrder->lengowMarketplaceSku, $this->alreadyShipped)
             && LengowOrder::isFromLengow($args['id_order'])
         ) {
             $newOrderState = $args['newOrderStatus'];
             $idOrderState = (int) $newOrderState->id;
+
             if ($idOrderState === LengowMain::getOrderState(LengowOrder::STATE_SHIPPED)) {
                 $lengowOrder->callAction(LengowAction::TYPE_SHIP);
                 $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
             }
-            // call Lengow API to send refund state order
+
+            // Call Lengow API to send refund state order
             if ($idOrderState === LengowMain::getOrderState(LengowOrder::STATE_REFUNDED)) {
                 $lengowOrder->callAction(LengowAction::TYPE_REFUND);
                 $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
             }
-            // call Lengow API WSDL to send refuse state order
+
+            // Call Lengow API to send partial refund state order
+            if ($idOrderState === LengowMain::getOrderState(LengowOrder::STATE_PARTIALLY_REFUNDED)) {
+                $lengowOrder->callAction(LengowAction::TYPE_REFUND, true);
+
+                $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
+            }
+
+            // Call Lengow API WSDL to send refuse state order
             if ($idOrderState === LengowMain::getOrderState(LengowOrder::STATE_CANCELED)) {
                 $lengowOrder->callAction(LengowAction::TYPE_CANCEL);
                 $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
@@ -398,6 +410,29 @@ class LengowHook
                     $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
                 }
             }
+        }
+    }
+
+    /**
+     * Hook on product cancel
+     */
+    public function hookActionProductCancel(array $args)
+    {
+        if (!isset($args['order'])) {
+            return;
+        }
+        $order = $args['order'];
+        $lengowOrder = new LengowOrder($order->id);
+        if ($lengowOrder instanceof LengowOrder && LengowOrder::isFromLengow($order->id)) {
+            $idOrderDetail = (int) $args['id_order_detail'];
+            $cancelQuantity = (int) $args['cancel_quantity'];
+
+            $orderDetail = new OrderDetail($idOrderDetail);
+            if (! $orderDetail instanceof OrderDetail) {
+                return;
+            }
+            $lengowOrderLine = LengowOrderLine::findOrderLineByOrderDetailId($orderDetail->id);
+            LengowOrderLine::setRefunded($idOrderDetail, $lengowOrderLine['id_order_line'], $cancelQuantity);
         }
     }
 }

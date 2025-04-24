@@ -59,6 +59,7 @@ use PrestaShopBundle\Form\Admin\Sell\Order\UpdateOrderStatusType;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -202,25 +203,9 @@ class AdminOrderController extends OrderController
             if ($this->isFromLengow($orderId)) {
                 $lengowOrder = new \LengowOrder($orderId);
                 $marketplace =  $lengowOrder->getMarketplace();
-
-
-                $cancelProductForm->add(\LengowAction::ARG_REFUND_REASON, ChoiceType::class, [
-                    'required' => true,
-                    'data' => '',
-                    'choices' => $marketplace->getRefundReasons(),
-                    'label' => $locale->t('order.screen.refund_reason_label'),
-                ]);
-
-                $refundModes = $marketplace->getRefundModes();
-                if (count($refundModes)) {
-                    $cancelProductForm->add(\LengowAction::ARG_REFUND_MODE, ChoiceType::class, [
-                        'required' => false,
-                        'data' => '',
-                        'choices' => $refundModes,
-                        'label' => $locale->t('order.screen.refund_mode_label'),
-                    ]);
-                }
-
+                $refundReasons = $marketplace->getRefundReasons();
+                $refundMode = $marketplace->getRefundModes();
+                $refundSelectedDatas = $lengowOrder->getRefundDataFromLengowOrder($orderId);
             }
         } catch (\Exception $e) {
             $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
@@ -241,7 +226,6 @@ class AdminOrderController extends OrderController
             $paginationNumOptions[] = $paginationNum;
         }
         sort($paginationNumOptions);
-
         $metatitle = sprintf(
             '%s %s %s',
             $this->trans('Orders', 'Admin.Orderscustomers.Feature'),
@@ -293,113 +277,11 @@ class AdminOrderController extends OrderController
             'returnTrackingNumberLabel' => $locale->t('order.screen.return_tracking_number_label'),
             'returnCarrierLabel' => $locale->t('order.screen.return_carrier_label'),
             'returnCarrierName' => $this->getReturnCarrierName($orderId),
-            'hasRefundModes' => ($this->isFromLengow($orderId) && count($refundModes) > 0),
-        ]);
-    }
-
-    public function partialRefundAction(int $orderId, Request $request)
-    {
-
-        $formBuilder = $this->get('prestashop.core.form.identifiable_object.builder.cancel_product_form_builder');
-        $formHandler = $this->get('prestashop.core.form.identifiable_object.partial_refund_form_handler');
-        $form = $formBuilder->getFormFor($orderId);
-        $locale = new \LengowTranslation();
-        if ($this->isFromLengow($orderId)) {
-            $lengowOrder = new \LengowOrder($orderId);
-            $marketplace =  $lengowOrder->getMarketplace();
-            if ($marketplace instanceof \LengowMarketplace) {
-                $form->add(\LengowAction::ARG_REFUND_REASON, ChoiceType::class, [
-                    'required' => true,
-                    'data' => '',
-                    'choices' => $marketplace->getRefundReasons(),
-                    'label' => $locale->t('order.screen.refund_reason_label'),
-                ]);
-                $refundModes = $marketplace->getRefundModes();
-                if (count($refundModes)) {
-                    $form->add(\LengowAction::ARG_REFUND_MODE, ChoiceType::class, [
-                        'required' => false,
-                        'data' => '',
-                        'choices' => $refundModes,
-                        'label' => $locale->t('order.screen.refund_mode_label'),
-                    ]);
-                }
-            }
-        }
-
-        try {
-            $form->handleRequest($request);
-            $result = $formHandler->handleFor($orderId, $form);
-            if ($result->isSubmitted()) {
-                if ($result->isValid()) {
-                    $this->addFlash('success', $this->trans('A partial refund was successfully created.', 'Admin.Orderscustomers.Notification'));
-                } else {
-                    $this->addFlashFormErrors($form);
-                }
-            }
-        } catch (Exception $e) {
-            $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
-        }
-
-        return $this->redirectToRoute('admin_orders_view', [
-            'orderId' => $orderId,
-        ]);
-    }
-
-     /**
-     * @AdminSecurity(
-     *     "is_granted('update', request.get('_legacy_controller')) && is_granted('delete', request.get('_legacy_controller'))"
-     * )
-     *
-     * @param int $orderId
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     */
-    public function standardRefundAction(int $orderId, Request $request)
-    {
-
-        $formBuilder = $this->get('prestashop.core.form.identifiable_object.builder.cancel_product_form_builder');
-        $formHandler = $this->get('prestashop.core.form.identifiable_object.standard_refund_form_handler');
-        $form = $formBuilder->getFormFor($orderId);
-        $locale = new \LengowTranslation();
-        if ($this->isFromLengow($orderId)) {
-            $lengowOrder = new \LengowOrder($orderId);
-            $marketplace =  $lengowOrder->getMarketplace();
-            if ($marketplace instanceof \LengowMarketplace) {
-                $form->add(\LengowAction::ARG_REFUND_REASON, ChoiceType::class, [
-                    'required' => true,
-                    'data' => '',
-                    'choices' => $marketplace->getRefundReasons(),
-                    'label' => $locale->t('order.screen.refund_reason_label'),
-                ]);
-                $refundModes = $marketplace->getRefundModes();
-                if (count($refundModes)) {
-                    $form->add(\LengowAction::ARG_REFUND_MODE, ChoiceType::class, [
-                        'required' => false,
-                        'data' => '',
-                        'choices' => $refundModes,
-                        'label' => $locale->t('order.screen.refund_mode_label'),
-                    ]);
-                }
-            }
-        }
-
-        try {
-            $form->handleRequest($request);
-            $result = $formHandler->handleFor($orderId, $form);
-            if ($result->isSubmitted()) {
-                if ($result->isValid()) {
-                    $this->addFlash('success', $this->trans('A standard refund was successfully created.', 'Admin.Orderscustomers.Notification'));
-                } else {
-                    $this->addFlashFormErrors($form);
-                }
-            }
-        } catch (Exception $e) {
-            $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
-        }
-
-        return $this->redirectToRoute('admin_orders_view', [
-            'orderId' => $orderId,
+            'refundReasons' => $refundReasons ?? [],
+            'refundModes' => $refundMode ?? [],
+            'refundReasonSelected' => $refundSelectedDatas['refund_reason'] ?? '',
+            'refundModeSelected' => $refundSelectedDatas['refund_mode'] ?? '',
+            'refundJsPath' => $this->get('request_stack')->getCurrentRequest()->getBasePath() . '/modules/lengow/views/js/admin/refund-handler.js',
         ]);
     }
 
@@ -438,7 +320,6 @@ class AdminOrderController extends OrderController
                 ]);
             }
         }
-
 
         $form->handleRequest($request);
 
@@ -712,5 +593,39 @@ class AdminOrderController extends OrderController
     private function isFromLengow(int $orderId): bool
     {
         return \LengowOrder::isFromLengow($orderId);
+    }
+
+    public function saveRefundReason(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $orderId = (int) $data['orderId'];
+        $reason = $data['reason'] ?? '';
+
+        if (empty($orderId) || empty($reason)) {
+            return new JsonResponse(['success' => false, 'message' => 'Données manquantes']);
+        }
+
+        \Db::getInstance()->update('lengow_orders', [
+            'refund_reason' => pSQL($reason)
+        ], 'id_order = ' . (int)$orderId);
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    public function saveRefundMode(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $orderId = (int) $data['orderId'];
+        $reason = $data['mode'] ?? '';
+
+        if (empty($orderId) || empty($reason)) {
+            return new JsonResponse(['success' => false, 'message' => 'Données manquantes']);
+        }
+
+        \Db::getInstance()->update('lengow_orders', [
+            'refund_mode' => pSQL($reason)
+        ], 'id_order = ' . (int)$orderId);
+
+        return new JsonResponse(['success' => true]);
     }
 }

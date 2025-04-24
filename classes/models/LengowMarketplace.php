@@ -316,7 +316,7 @@ class LengowMarketplace
      *
      * @return bool
      */
-    public function callAction($action, $lengowOrder, $idOrderLine = null)
+    public function callAction($action, $lengowOrder, $idOrderLine = null, $partialAction = false)
     {
         try {
             // check the action and order data
@@ -325,7 +325,16 @@ class LengowMarketplace
             // get all required and optional arguments for a specific marketplace
             $marketplaceArguments = $this->getMarketplaceArguments($action);
             // get all available values from an order
-            $params = $this->getAllParams($action, $lengowOrder, $marketplaceArguments);
+            if ($partialAction) {
+                $orderLineRefunded = LengowOrderLine::findOrderLineByOrderLineId($idOrderLine)['refunded'] ?? false;
+                if ($orderLineRefunded) {
+                    $params = $this->getAllParamsForPartialRefund($action, $lengowOrder, $marketplaceArguments, $idOrderLine);
+                } else {
+                    throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.order_line_not_refunded', ['line_id' => $idOrderLine]));
+                }
+            } else {
+                $params = $this->getAllParams($action, $lengowOrder, $marketplaceArguments);
+            }
             // check required arguments and clean value for empty optionals arguments
             $params = $this->checkAndCleanParams($action, $params);
             // complete the values with the specific values of the account
@@ -364,80 +373,6 @@ class LengowMarketplace
 
             return false;
         }
-
-        return true;
-    }
-
-    /**
-     * Call API refund action and create action in lengow_actions table
-     */
-    public function callRefundAction(
-        LengowOrder $lengowOrder,
-        array $lengowOrderLine,
-        $cancelQuantity = 0
-    ) : bool
-    {
-
-        $this->checkAction(LengowAction::TYPE_REFUND);
-        if (!in_array($lengowOrder->lengowState, $this->getRefundStatuses())) {
-            LengowMain::log(
-                LengowLog::CODE_ACTION,
-                LengowMain::setLogMessage(
-                    'refund action not available for this order_state',
-                    [LengowOrder::FIELD_ORDER_LENGOW_STATE => $lengowOrder->lengowState]
-                )
-            );
-            return false;
-
-        }
-        $cancelProductPosted = Tools::getValue('cancel_product');
-        $reason = $cancelProductPosted[LengowAction::ARG_REFUND_REASON] ?? '';
-        $mode = $cancelProductPosted[LengowAction::ARG_REFUND_MODE] ?? '';
-        $shippingPriceTTC = $cancelProductPosted[LengowAction::ARG_SHIPPING_PRICE] ?? 0;
-        $refundArguments = $this->getRefundArguments();
-        $params = [
-            LengowAction::ARG_ACTION_TYPE => LengowAction::TYPE_REFUND,
-        ];
-
-        foreach ($refundArguments as $argument) {
-            switch ($argument) {
-                case LengowAction::ARG_REFUND_REASON:
-                    $params[LengowAction::ARG_REFUND_REASON] = $reason;
-                    break;
-                case LengowAction::ARG_REASON:
-                    $params[LengowAction::ARG_REASON] = $reason;
-                    break;
-                case LengowAction::ARG_QUANTITY:
-                    $params[LengowAction::ARG_QUANTITY] = $cancelQuantity;
-                    break;
-                case LengowAction::ARG_LINE:
-                    $params[LengowAction::ARG_LINE] = $lengowOrderLine[LengowOrderLine::FIELD_ORDER_LINE_ID];
-                    break;
-                case LengowAction::ARG_REFUND_MODE:
-                    $params[LengowAction::ARG_REFUND_MODE] = $mode;
-                    break;
-                case LengowAction::ARG_SHIPPING_PRICE:
-                    $params[LengowAction::ARG_SHIPPING_PRICE] = (float) $shippingPriceTTC;
-                    break;
-                case LengowAction::ARG_REFUND_SHIPPING_FEES:
-                    $params[LengowAction::ARG_REFUND_SHIPPING_FEES] = ((float) $shippingPriceTTC > 0);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        if (empty($reason)) {
-            LengowMain::log(
-                LengowLog::CODE_ACTION,
-                LengowMain::setLogMessage('refund reason must not be empty', $params)
-            );
-            return false;
-        }
-        if (!LengowAction::canSendAction($params, $lengowOrder)) {
-            return false;
-        }
-        LengowAction::sendAction($params, $lengowOrder);
 
         return true;
     }
@@ -592,6 +527,75 @@ class LengowMarketplace
                 case LengowAction::ARG_SHIPPING_DATE:
                 case LengowAction::ARG_DELIVERY_DATE:
                     $params[$arg] = date(LengowMain::DATE_ISO_8601);
+                    break;
+                case LengowAction::ARG_REASON:
+                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId($lengowOrder->lengowId)
+                        ?? $this->getDefaultValue((string) $arg);
+                    break;
+                default:
+                    if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
+                        break;
+                    }
+                    $defaultValue = $this->getDefaultValue((string) $arg);
+                    $paramValue = $defaultValue ?: $arg . ' not available';
+                    $params[$arg] = $paramValue;
+                    break;
+            }
+        }
+
+        return $params;
+    }
+
+
+    /**
+     * Get all available values from an order for partial refund action
+     *
+     * @param string $action Lengow order actions type (ship or cancel)
+     * @param LengowOrder $lengowOrder Lengow order instance
+     * @param array $marketplaceArguments All marketplace arguments for a specific action
+     *
+     * @return array
+     *
+     * @throws Exception|LengowException no delivery country in order
+     */
+    protected function getAllParamsForPartialRefund(string $action, LengowOrder $lengowOrder, array $marketplaceArguments, $orderLineId): array
+    {
+        $this->checkAction($action);
+        if (!in_array($lengowOrder->lengowState, $this->getRefundStatuses(), true)) {
+            LengowMain::log(
+                LengowLog::CODE_ACTION,
+                LengowMain::setLogMessage(
+                    'refund action not available for this order_state',
+                    [LengowOrder::FIELD_ORDER_LENGOW_STATE => $lengowOrder->lengowState]
+                )
+            );
+            return [];
+
+        }
+
+
+        $shippingPriceTTC = $lengowOrder->getTotalShippingCostByOrderId($lengowOrder->id)
+            ?? 0;
+
+
+        foreach ($marketplaceArguments as $arg) {
+            switch ($arg) {
+                case LengowAction::ARG_REASON:
+                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId($lengowOrder->lengowId)
+                        ?? $this->getDefaultValue((string) $arg);
+                    break;
+                case LengowAction::ARG_QUANTITY:
+                    $params[LengowAction::ARG_QUANTITY] = LengowOrderLine::getQuantityRefunded($orderLineId);
+                    break;
+                case LengowAction::ARG_LINE:
+                    $params[LengowAction::ARG_LINE] = $orderLineId;
+                    break;
+                case LengowAction::ARG_REFUND_MODE:
+                    $params[LengowAction::ARG_REFUND_MODE] =  $lengowOrder->getRefundModeByPrestashopId($lengowOrder->lengowId)
+                        ?? $this->getDefaultValue((string) $arg);
+                    break;
+                case LengowAction::ARG_REFUND_SHIPPING_PRICE:
+                    $params[LengowAction::ARG_REFUND_SHIPPING_PRICE] = (float) $shippingPriceTTC;
                     break;
                 default:
                     if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {

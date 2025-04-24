@@ -72,4 +72,70 @@ class LengowOrderLine
             return [];
         }
     }
+
+    /**
+     * Get Order Line by Lengow order line id
+     *
+     * @param string $idOrderLine Lengow order line id
+     *
+     * @return array
+     */
+    public static function findOrderLineByOrderLineId(string $idOrderLine): array
+    {
+        $sql = 'SELECT * FROM `' . _DB_PREFIX_ . 'lengow_order_line`
+            WHERE id_order_line = "' . pSQL($idOrderLine) . '"';
+
+        try {
+            $result = Db::getInstance()->getRow($sql);
+
+            return $result ?: [];
+        } catch (PrestaShopDatabaseException $e) {
+            LengowMain::log(LengowLog::CODE_ACTION, 'Database error: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+
+    /**
+     * Set refunded status Order Line by PrestaShop order detail id to true and add quantity refunded
+     *
+     * @param int $idOrderDetail PrestaShop order detail id
+     * @param string $idOrderLine Lengow order line id
+     * @param int $cancelQuantity Quantity refunded
+     *
+     * @return bool
+     */
+    public static function setRefunded(int $idOrderDetail, $idOrderLine, int $cancelQuantity)
+    {
+        $sql = 'UPDATE `' . _DB_PREFIX_ . self::TABLE_ORDER_LINE . '`
+            SET refunded = 1, quantity_refunded = ' . (int) $cancelQuantity . '
+            WHERE id_order_detail = ' . (int) $idOrderDetail . '
+            AND id_order_line = "' . pSQL($idOrderLine) . '"';
+        try {
+            return Db::getInstance()->execute($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            LengowMain::log(LengowLog::CODE_ERROR, 'Error updating refunded field: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Get the quantity refunded for a specific order line
+     *
+     * @param string $idOrderLine Lengow order line id
+     *
+     * @return int|null
+     */
+    public static function getQuantityRefunded($idOrderLine)
+    {
+        $sql = 'SELECT quantity_refunded FROM `' . _DB_PREFIX_ . self::TABLE_ORDER_LINE . '`
+            WHERE id_order_line = "' . pSQL($idOrderLine) . '"';
+        try {
+            $result = Db::getInstance()->getValue($sql);
+            return $result !== false ? (int) $result : null;
+        } catch (PrestaShopDatabaseException $e) {
+            LengowMain::log(LengowLog::CODE_ERROR, 'Error fetching quantity_refunded: ' . $e->getMessage());
+            return null;
+        }
+    }
 }

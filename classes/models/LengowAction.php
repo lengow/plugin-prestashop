@@ -64,6 +64,7 @@ class LengowAction
     public const ARG_RETURN_TRACKING_NUMBER = 'return_tracking_number';
     public const ARG_TRACKING_URL = 'tracking_url';
     public const ARG_SHIPPING_PRICE = 'shipping_price';
+    public const ARG_REFUND_SHIPPING_PRICE = 'refund_shipping_price';
     public const ARG_SHIPPING_DATE = 'shipping_date';
     public const ARG_DELIVERY_DATE = 'delivery_date';
     // refund API arguments
