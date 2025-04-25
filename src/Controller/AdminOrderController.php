@@ -205,7 +205,7 @@ class AdminOrderController extends OrderController
                 $marketplace =  $lengowOrder->getMarketplace();
                 $refundReasons = $marketplace->getRefundReasons();
                 $refundMode = $marketplace->getRefundModes();
-                $refundSelectedDatas = $lengowOrder->getRefundDataFromLengowOrder($orderId);
+                $refundSelectedDatas = $lengowOrder->getRefundDataFromLengowOrder($orderId, $marketplace->name);
             }
         } catch (\Exception $e) {
             $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));

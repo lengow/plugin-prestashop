@@ -326,7 +326,7 @@ class LengowMarketplace
             $marketplaceArguments = $this->getMarketplaceArguments($action);
             // get all available values from an order
             if ($partialAction) {
-                $orderLineRefunded = LengowOrderLine::findOrderLineByOrderLineId($idOrderLine)['refunded'] ?? false;
+                $orderLineRefunded = LengowOrderLine::findOrderLineByOrderLineIdAndOrderId($idOrderLine, $lengowOrder->id)['refunded'] ?? false;
                 if ($orderLineRefunded) {
                     $params = $this->getAllParamsForPartialRefund($action, $lengowOrder, $marketplaceArguments, $idOrderLine);
                 } else {

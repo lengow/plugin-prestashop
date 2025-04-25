@@ -80,10 +80,11 @@ class LengowOrderLine
      *
      * @return array
      */
-    public static function findOrderLineByOrderLineId(string $idOrderLine): array
+    public static function findOrderLineByOrderLineIdAndOrderId(string $idOrderLine, int $idOrder): array
     {
         $sql = 'SELECT * FROM `' . _DB_PREFIX_ . 'lengow_order_line`
-            WHERE id_order_line = "' . pSQL($idOrderLine) . '"';
+        WHERE id_order_line = "' . pSQL($idOrderLine) . '"
+        AND id_order = ' . (int) $idOrder;
 
         try {
             $result = Db::getInstance()->getRow($sql);
