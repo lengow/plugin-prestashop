@@ -430,6 +430,7 @@ lengow_log.exception.delivery_country_not_active|el país %{country_name} en la 
 lengow_log.exception.product_is_not_listed|producto %{product_id} no aparece como parte del pedido actual
 lengow_log.exception.unable_to_save_order|no se ha podido guardar el pedido PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
+lengow_log.exception.order_line_not_refunded|la línea de pedido %{order_line_id} no se ha reintegrado
 lengow_log.mail_report.order|Pedido %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|ningún mensaje de error , póngase en contacto con el support via %{support_link}
 lengow_log.connection.status_draft|Borrador

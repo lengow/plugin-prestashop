@@ -430,6 +430,7 @@ lengow_log.exception.delivery_country_not_active|Le pays %{country_name} dans l'
 lengow_log.exception.product_is_not_listed|le produit %{product_id} n'est pas présent dans la commande en cours
 lengow_log.exception.unable_to_save_order|impossible de sauvegarder la commande PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossible de sauvegarder le paiement de la commande PrestaShop
+lengow_log.exception.order_line_not_refunded|la ligne de commande %{order_line_id} n'a pas été remboursée
 lengow_log.mail_report.order|commande %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|Pas de message d'erreur, contacter le support via %{support_link}
 lengow_log.connection.status_draft|Incomplet

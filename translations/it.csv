@@ -430,6 +430,7 @@ lengow_log.exception.delivery_country_not_active|Il paese %{country_name} nell'i
 lengow_log.exception.product_is_not_listed|prodotto %{product_id} non è inserito in questo ordine
 lengow_log.exception.unable_to_save_order|impossibile salvare PrestaShop ordine  - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossibile salvare PrestaShop pagamento ordine
+lengow_log.exception.order_line_not_refunded|impossibile rimborsare la linea d'ordine %{order_line_id}
 lengow_log.mail_report.order|Ordine %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|nessun errore nella mail di report %{support_link}
 lengow_log.connection.status_draft|Bozza
