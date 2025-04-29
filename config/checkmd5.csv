@@ -44,7 +44,7 @@
 /classes/models/LengowPaymentModule.php|b2bf40358df612a8b5d883685b69dfc3
 /classes/models/LengowMethod.php|b5a6f695d06191e20727411205434cab
 /classes/models/LengowOrderDetail.php|c0ea8445020fc1c49b3d9e7099650d7a
-/classes/models/LengowMarketplace.php|52a38249c0baa7ca1d9f1c159bdc415a
+/classes/models/LengowMarketplace.php|df577d74c7fa991ca0b1bc4cb93396ce
 /classes/models/LengowProduct.php|6c852bc3af6971a9ebf663d13bd42556
 /classes/models/LengowCart.php|bbf6f01e6afdea4b2c0433a73fd1282f
 /classes/models/LengowMain.php|afdec4a9df1a0f44c86741d7f3231010
