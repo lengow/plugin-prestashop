@@ -330,6 +330,12 @@ class LengowMarketplace
                 $orderLineRefunded = $orderLine['refunded'] ?? false;
                 if ($orderLineRefunded) {
                     $params = $this->getAllParamsForPartialRefund($action, $lengowOrder, $marketplaceArguments, $idOrderLine);
+                    LengowMain::log(
+                        LengowLog::CODE_ACTION,
+                        LengowMain::setLogMessage('lengow_log.order_action.partial_refund_ready', ['order_line_id' => $idOrderLine, 'params' => json_encode($params)]),
+                        false,
+                        $lengowOrder->lengowMarketplaceSku
+                    );
                 } else {
                     LengowMain::log(
                         LengowLog::CODE_ACTION,

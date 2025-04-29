@@ -473,6 +473,8 @@ en:
       status_active: "Active"
       catalog: "Catalogue %{catalog_id}"
       catalog_label: "%{catalog_id} - %{catalog_name} - %{nb_products} products - %{catalog_status}"
+    order_action:
+      partial_refund_ready: "partial refund is ready for %{iorder_line_id} to be sent to the marketplace with params %{params}"
   admin:
     order:
       import_lengow: "Import Lengow"

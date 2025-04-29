@@ -437,6 +437,7 @@ lengow_log.connection.status_draft|Draft
 lengow_log.connection.status_active|Active
 lengow_log.connection.catalog|Catalogue %{catalog_id}
 lengow_log.connection.catalog_label|%{catalog_id} - %{catalog_name} - %{nb_products} products - %{catalog_status}
+lengow_log.order_action.partial_refund_ready|partial refund is ready for %{iorder_line_id} to be sent to the marketplace with params %{params}
 admin.order.import_lengow|Import Lengow
 admin.order.imported_from_lengow|This order has been imported from Lengow
 admin.order.lengow_order_id|Lengow order ID

@@ -473,6 +473,8 @@ fr:
       status_active: "Actif"
       catalog: "Catalogue %{catalog_id}"
       catalog_label: "%{catalog_id} - %{catalog_name} - %{nb_products} produits - %{catalog_status}"
+    order_action:
+      partial_refund_ready: "Remboursement partiel prêt pour la linge de commande %{order_line_id} avec les paramètres suivants : %{params}"
   admin:
     order:
       import_lengow: "Import Lengow"
