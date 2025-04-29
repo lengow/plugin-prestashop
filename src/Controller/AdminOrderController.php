@@ -59,6 +59,7 @@ use PrestaShopBundle\Form\Admin\Sell\Order\UpdateOrderStatusType;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -142,8 +143,13 @@ class AdminOrderController extends OrderController
         ], [
             'order_id' => $orderId,
         ]);
-        $isActiveReturnTrackingNumber = $this->isActiveReturnTrackingNumber($orderId);
-        $isActiveReturnCarrier = $this->isActiveReturnTrackingCarrier($orderId);
+        $isActiveReturnCarrier = false;
+        $isActiveReturnTrackingNumber = false;
+        if($this->isFromLengow($orderId)) {
+            $isActiveReturnTrackingNumber = $this->isActiveReturnTrackingNumber($orderId);
+            $isActiveReturnCarrier = $this->isActiveReturnTrackingCarrier($orderId);
+        }
+
 
         if ($isActiveReturnTrackingNumber) {
             $returnTrackingNumber = $this->getReturnTrackingNumber($orderId);
@@ -194,6 +200,13 @@ class AdminOrderController extends OrderController
             );
 
             $cancelProductForm = $formBuilder->getFormFor($orderId);
+            if ($this->isFromLengow($orderId)) {
+                $lengowOrder = new \LengowOrder($orderId);
+                $marketplace =  $lengowOrder->getMarketplace();
+                $refundReasons = $marketplace->getRefundReasons();
+                $refundMode = $marketplace->getRefundModes();
+                $refundSelectedDatas = $lengowOrder->getRefundDataFromLengowOrder($orderId, $marketplace->name);
+            }
         } catch (\Exception $e) {
             $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
 
@@ -213,7 +226,6 @@ class AdminOrderController extends OrderController
             $paginationNumOptions[] = $paginationNum;
         }
         sort($paginationNumOptions);
-
         $metatitle = sprintf(
             '%s %s %s',
             $this->trans('Orders', 'Admin.Orderscustomers.Feature'),
@@ -265,6 +277,10 @@ class AdminOrderController extends OrderController
             'returnTrackingNumberLabel' => $locale->t('order.screen.return_tracking_number_label'),
             'returnCarrierLabel' => $locale->t('order.screen.return_carrier_label'),
             'returnCarrierName' => $this->getReturnCarrierName($orderId),
+            'refundReasons' => $refundReasons ?? [],
+            'refundModes' => $refundMode ?? [],
+            'refundReasonSelected' => $refundSelectedDatas['refund_reason'] ?? '',
+            'refundModeSelected' => $refundSelectedDatas['refund_mode'] ?? '',
         ]);
     }
 
@@ -286,19 +302,22 @@ class AdminOrderController extends OrderController
         $form = $this->createForm(UpdateOrderShippingType::class, [], [
             'order_id' => $orderId,
         ]);
-        if ($this->isActiveReturnTrackingNumber($orderId)) {
-            $form->add(\LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
-                'required' => false,
-            ]);
-        }
-        if ($this->isActiveReturnTrackingCarrier($orderId)) {
-            $order = new \LengowOrder($orderId);
-            $form->add(\LengowAction::ARG_RETURN_CARRIER, ChoiceType::class, [
-                'required' => false,
-                'choices' => \LengowCarrier::getCarriersChoices(
-                    $order->id_lang
-                ),
-            ]);
+
+        if ($this->isFromLengow($orderId)) {
+            if ($this->isActiveReturnTrackingNumber($orderId)) {
+                $form->add(\LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
+                    'required' => false,
+                ]);
+            }
+            if ($this->isActiveReturnTrackingCarrier($orderId)) {
+                $order = new \LengowOrder($orderId);
+                $form->add(\LengowAction::ARG_RETURN_CARRIER, ChoiceType::class, [
+                    'required' => false,
+                    'choices' => \LengowCarrier::getCarriersChoices(
+                        $order->id_lang
+                    ),
+                ]);
+            }
         }
 
         $form->handleRequest($request);
@@ -565,5 +584,47 @@ class AdminOrderController extends OrderController
     private function getReturnCarrierName(int $orderId): string
     {
         return \LengowOrderDetail::getOrderReturnCarrierName($orderId);
+    }
+
+    /**
+     * @param int $orderId
+     */
+    private function isFromLengow(int $orderId): bool
+    {
+        return \LengowOrder::isFromLengow($orderId);
+    }
+
+    public function saveRefundReason(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $orderId = (int) $data['orderId'];
+        $reason = $data['reason'] ?? '';
+
+        if (empty($orderId) || empty($reason)) {
+            return new JsonResponse(['success' => false, 'message' => 'Données manquantes']);
+        }
+
+        \Db::getInstance()->update('lengow_orders', [
+            'refund_reason' => pSQL($reason)
+        ], 'id_order = ' . (int)$orderId);
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    public function saveRefundMode(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $orderId = (int) $data['orderId'];
+        $reason = $data['mode'] ?? '';
+
+        if (empty($orderId) || empty($reason)) {
+            return new JsonResponse(['success' => false, 'message' => 'Données manquantes']);
+        }
+
+        \Db::getInstance()->update('lengow_orders', [
+            'refund_mode' => pSQL($reason)
+        ], 'id_order = ' . (int)$orderId);
+
+        return new JsonResponse(['success' => true]);
     }
 }

@@ -144,11 +144,14 @@ class LengowMain
         switch ($state) {
             case LengowOrder::STATE_ACCEPTED:
             case LengowOrder::STATE_WAITING_SHIPMENT:
-            case LengowOrder::STATE_PARTIALLY_REFUNDED:
                 return (int) LengowConfiguration::getGlobalValue(LengowConfiguration::WAITING_SHIPMENT_ORDER_ID);
             case LengowOrder::STATE_SHIPPED:
             case LengowOrder::STATE_CLOSED:
                 return (int) LengowConfiguration::getGlobalValue(LengowConfiguration::SHIPPED_ORDER_ID);
+            case LengowOrder::STATE_REFUNDED:
+                return (int) LengowConfiguration::getGlobalValue(LengowConfiguration::REFUNDED_ORDER_ID);
+            case LengowOrder::STATE_PARTIALLY_REFUNDED:
+                return (int) LengowConfiguration::getGlobalValue(LengowConfiguration::PARTIAL_REFUNDED_ORDER_ID);
             case LengowOrder::STATE_REFUSED:
             case LengowOrder::STATE_CANCELED:
                 return (int) LengowConfiguration::getGlobalValue(LengowConfiguration::CANCELED_ORDER_ID);

@@ -170,6 +170,8 @@ order.screen.type_business|Business
 order.screen.return_tracking_number_label|Número de vuelta
 order.screen.return_carrier_label|Transportista de vuelta
 order.screen.not_provided|No entregado por Marketplace
+order.screen.refund_reason_label|Motivo de reintegro
+order.screen.refund_mode_label|Modo de reintegro
 order.table.action_lengow|Acciones
 order.table.order_lengow_state|Estado
 order.table.order_types|Tipos
@@ -428,6 +430,8 @@ lengow_log.exception.delivery_country_not_active|el país %{country_name} en la 
 lengow_log.exception.product_is_not_listed|producto %{product_id} no aparece como parte del pedido actual
 lengow_log.exception.unable_to_save_order|no se ha podido guardar el pedido PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
+lengow_log.exception.order_line_not_refunded|la línea de pedido %{order_line_id} no se ha reintegrado
+lengow_log.order_action.partial_refund_ready|el reintegro parcial está listo por la linea de pedido %{order_line_id} y los parámetros %{params}
 lengow_log.mail_report.order|Pedido %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|ningún mensaje de error , póngase en contacto con el support via %{support_link}
 lengow_log.connection.status_draft|Borrador
