@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.6.2](https://github.com/lengow/plugin-prestashop/compare/v3.6.1...v3.6.2) (2025-05-05)
+
+
+### Bug Fixes
+
+* **plugin:** [PCMT-364] add field in order side page for add shipping method to action from valid value ([#46](https://github.com/lengow/plugin-prestashop/issues/46)) ([5ae5a57](https://github.com/lengow/plugin-prestashop/commit/5ae5a57b1b4909c7eb225e77c52c1837201f3694))
+
 ## [3.6.1](https://github.com/lengow/plugin-prestashop/compare/v3.6.0...v3.6.1) (2025-04-07)
 
 
