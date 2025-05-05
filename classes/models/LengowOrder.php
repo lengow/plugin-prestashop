@@ -1286,4 +1286,40 @@ class LengowOrder extends Order
 
         return (int) $row['total'];
     }
+
+    /**
+     * Return the Lengow orders from PrestaShop order id
+     *
+     * @return int
+     */
+    public static function getLengowOrderByPrestashopId($idOrder)
+    {
+        $query = 'SELECT * FROM `' . _DB_PREFIX_ . 'lengow_orders` WHERE `id_order` = ' . (int) $idOrder;
+        try {
+            $result = Db::getInstance()->getRow($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return null;
+        }
+
+        return $result ?: null;
+    }
+
+    /**
+     * Get the shipping method from the Lengow orders table
+     *
+     * @param int $idOrder PrestaShop order id
+     *
+     * @return string|null
+     */
+    public static function getShippingMethodByPrestashopId($idOrder)
+    {
+        $query = 'SELECT * FROM `' . _DB_PREFIX_ . 'lengow_orders` WHERE `id` = ' . (int) $idOrder;
+        try {
+            $result = Db::getInstance()->getRow($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return null;
+        }
+
+        return $result['method'] ?? null;
+    }
 }

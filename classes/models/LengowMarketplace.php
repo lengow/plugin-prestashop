@@ -445,6 +445,7 @@ class LengowMarketplace
         $idOrderCarrier = $lengowOrder->getIdOrderCarrier();
         $orderCarrier = new LengowOrderCarrier($idOrderCarrier);
         $trackingNumber = $orderCarrier->tracking_number ?? '';
+        $shippingMethod = $lengowOrder->getShippingMethodByPrestashopId($lengowOrder->lengowId);
         $returnTrackingNumber = $orderCarrier->return_tracking_number ?? '';
         if ($trackingNumber === '') {
             $trackingNumber = $lengowOrder->shipping_number ?? '';
@@ -459,7 +460,6 @@ class LengowMarketplace
                     break;
                 case LengowAction::ARG_CARRIER:
                 case LengowAction::ARG_CARRIER_NAME:
-                case LengowAction::ARG_SHIPPING_METHOD:
                 case LengowAction::ARG_CUSTOM_CARRIER:
                     if ((string) $lengowOrder->lengowCarrier !== '') {
                         $carrierName = (string) $lengowOrder->lengowCarrier;
@@ -479,6 +479,9 @@ class LengowMarketplace
                         );
                     }
                     $params[$arg] = $carrierName;
+                    break;
+                case LengowAction::ARG_SHIPPING_METHOD:
+                    $params[$arg] = $shippingMethod;
                     break;
                 case LengowAction::ARG_RETURN_CARRIER:
                     $idReturnCarrier = LengowOrderDetail::getOrderReturnCarrier($lengowOrder->id);
@@ -790,5 +793,22 @@ class LengowMarketplace
         $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_SHIP);
 
         return in_array(LengowAction::ARG_RETURN_TRACKING_NUMBER, $arguments);
+    }
+
+    /**
+     * Get valid shipping methods for a specific marketplace
+     *
+     * @param string $marketplaceName Name of the marketplace
+     *
+     * @return array|false
+     */
+    public static function getValidShippingMethods(string $marketplaceName)
+    {
+        $idMarketplace = self::getIdMarketplace($marketplaceName);
+        if (!$idMarketplace) {
+            return false;
+        }
+
+        return LengowMethod::getAllMethodMarketplaceByIdMarketplace($idMarketplace);
     }
 }

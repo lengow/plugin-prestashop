@@ -208,4 +208,16 @@ class Lengow extends Module
     {
         return $this->hookClass->hookAdminOrder($args);
     }
+
+    /**
+     * Hook on admin page's order side
+     *
+     * @param array $args Arguments of hook
+     *
+     * @return mixed
+     */
+    public function hookDisplayAdminOrderSide($args)
+    {
+        return $this->hookClass->hookAdminOrderSide($args);
+    }
 }
