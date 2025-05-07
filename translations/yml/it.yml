@@ -470,6 +470,8 @@ it:
       status_active: "Attivo"
       catalog: "Catalogo %{catalog_id}"
       catalog_label: "%{catalog_id} - %{catalog_name} - %{nb_products} prodotti - %{catalog_status}"
+    order_action:
+      partial_refund_ready: "Rimborso parziale pronto per la linea d'ordine %{order_line_id} con i seguenti parametri: %{params}"  
   admin:
     order:
       import_lengow: "Importazione Lengow"
