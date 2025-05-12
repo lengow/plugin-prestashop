@@ -170,6 +170,8 @@ order.screen.type_business|Business
 order.screen.return_tracking_number_label|Return tracking number
 order.screen.return_carrier_label|Return carrier
 order.screen.not_provided|Not provided by the marketplace
+order.screen.refund_reason_label|Refund reason
+order.screen.refund_mode_label|Refund mode
 order.table.action_lengow|Actions
 order.table.order_lengow_state|Status
 order.table.order_types|Types
@@ -428,12 +430,14 @@ lengow_log.exception.delivery_country_not_active|the country %{country_name} in 
 lengow_log.exception.product_is_not_listed|product %{product_id} is not listed as part of the current order
 lengow_log.exception.unable_to_save_order|unable to save PrestaShop order - %{error}
 lengow_log.exception.unable_to_save_order_payment|unable to save PrestaShop order payment
+lengow_log.exception.order_line_not_refunded|order line %{order_line_id} is not refunded
 lengow_log.mail_report.order|Order %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via %{support_link}
 lengow_log.connection.status_draft|Draft
 lengow_log.connection.status_active|Active
 lengow_log.connection.catalog|Catalogue %{catalog_id}
 lengow_log.connection.catalog_label|%{catalog_id} - %{catalog_name} - %{nb_products} products - %{catalog_status}
+lengow_log.order_action.partial_refund_ready|partial refund is ready for %{iorder_line_id} to be sent to the marketplace with params %{params}
 admin.order.import_lengow|Import Lengow
 admin.order.imported_from_lengow|This order has been imported from Lengow
 admin.order.lengow_order_id|Lengow order ID

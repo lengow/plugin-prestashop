@@ -220,4 +220,12 @@ class Lengow extends Module
     {
         return $this->hookClass->hookAdminOrderSide($args);
     }
+
+    /**
+     * Hook when a product line is refunded
+     */
+    public function hookActionProductCancel($args)
+    {
+        $this->hookClass->hookActionProductCancel($args);
+    }
 }

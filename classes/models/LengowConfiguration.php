@@ -60,6 +60,8 @@ class LengowConfiguration extends Configuration
     public const WAITING_SHIPMENT_ORDER_ID = 'LENGOW_ORDER_ID_PROCESS';
     public const SHIPPED_ORDER_ID = 'LENGOW_ORDER_ID_SHIPPED';
     public const CANCELED_ORDER_ID = 'LENGOW_ORDER_ID_CANCEL';
+    public const REFUNDED_ORDER_ID = 'LENGOW_ORDER_ID_REFUNDED';
+    public const PARTIAL_REFUNDED_ORDER_ID = 'LENGOW_ORDER_ID_PARTIAL_REFUNDED';
     public const SHIPPED_BY_MARKETPLACE_ORDER_ID = 'LENGOW_ORDER_ID_SHIPPEDBYMP';
     public const ANONYMIZE_EMAIL = 'LENGOW_ANONYMIZE_EMAIL';
     public const TYPE_ANONYMIZE_EMAIL = 'LENGOW_TYPE_ANONYMIZE_EMAIL';
@@ -145,6 +147,8 @@ class LengowConfiguration extends Configuration
         self::WAITING_SHIPMENT_ORDER_ID => 'waiting_shipment_order_id',
         self::SHIPPED_ORDER_ID => 'shipped_order_id',
         self::CANCELED_ORDER_ID => 'canceled_order_id',
+        self::REFUNDED_ORDER_ID => 'refunded_order_id',
+        self::PARTIAL_REFUNDED_ORDER_ID => 'partial_refunded_order_id',
         self::ANONYMIZE_EMAIL => 'anonymize_customer_email',
         self::TYPE_ANONYMIZE_EMAIL => 'type_anonymize_email',
         self::ACTIVE_NEW_ORDER_HOOK => 'active_new_order_hook',
@@ -422,6 +426,22 @@ class LengowConfiguration extends Configuration
                     self::PARAM_GLOBAL => true,
                     self::PARAM_LABEL => $locale->t('lengow_setting.lengow_order_id_cancel_title'),
                     self::PARAM_DEFAULT_VALUE => 6,
+                    self::PARAM_COLLECTION => $orderStates,
+                    self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
+                ],
+                self::REFUNDED_ORDER_ID => [
+                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
+                    self::PARAM_GLOBAL => true,
+                    self::PARAM_LABEL => $locale->t('lengow_setting.lengow_order_id_cancel_title'),
+                    self::PARAM_DEFAULT_VALUE => 7,
+                    self::PARAM_COLLECTION => $orderStates,
+                    self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
+                ],
+                self::PARTIAL_REFUNDED_ORDER_ID => [
+                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
+                    self::PARAM_GLOBAL => true,
+                    self::PARAM_LABEL => $locale->t('lengow_setting.lengow_order_id_cancel_title'),
+                    self::PARAM_DEFAULT_VALUE => 15,
                     self::PARAM_COLLECTION => $orderStates,
                     self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
                 ],

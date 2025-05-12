@@ -170,6 +170,8 @@ order.screen.type_business|Business
 order.screen.return_tracking_number_label|Numéro de retour
 order.screen.return_carrier_label|Transporteur de retour
 order.screen.not_provided|Non fourni par la marketplace
+order.screen.refund_reason_label|Raison du remboursement
+order.screen.refund_mode_label|Mode de remboursement
 order.table.action_lengow|Actions
 order.table.order_lengow_state|Statut
 order.table.order_types|Types
@@ -428,12 +430,14 @@ lengow_log.exception.delivery_country_not_active|Le pays %{country_name} dans l'
 lengow_log.exception.product_is_not_listed|le produit %{product_id} n'est pas présent dans la commande en cours
 lengow_log.exception.unable_to_save_order|impossible de sauvegarder la commande PrestaShop - %{error}
 lengow_log.exception.unable_to_save_order_payment|impossible de sauvegarder le paiement de la commande PrestaShop
+lengow_log.exception.order_line_not_refunded|la ligne de commande %{order_line_id} n'a pas été remboursée
 lengow_log.mail_report.order|commande %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|Pas de message d'erreur, contacter le support via %{support_link}
 lengow_log.connection.status_draft|Incomplet
 lengow_log.connection.status_active|Actif
 lengow_log.connection.catalog|Catalogue %{catalog_id}
 lengow_log.connection.catalog_label|%{catalog_id} - %{catalog_name} - %{nb_products} produits - %{catalog_status}
+lengow_log.order_action.partial_refund_ready|Remboursement partiel prêt pour la linge de commande %{order_line_id} avec les paramètres suivants : %{params}
 admin.order.import_lengow|Import Lengow
 admin.order.imported_from_lengow|Cette commande a été importée depuis Lengow.
 admin.order.lengow_order_id|N° de commande Lengow

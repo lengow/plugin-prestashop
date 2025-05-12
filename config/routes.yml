@@ -2,7 +2,7 @@ admin_orders_view:
   path: /sell/orders/{orderId}/view
   methods: [ GET, POST ]
   defaults:
-    _disable_module_prefix: true  
+    _disable_module_prefix: true
     _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::viewAction'
     _legacy_controller: AdminOrders
     _legacy_link: AdminOrders:vieworder
@@ -17,8 +17,20 @@ admin_orders_update_shipping:
   path: /sell/orders/{orderId}/shipping
   methods: [ POST ]
   defaults:
-    _disable_module_prefix: true  
+    _disable_module_prefix: true
     _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::updateShippingAction'
     _legacy_controller: AdminOrders
   requirements:
-    orderId: \d+        
+    orderId: \d+
+
+lengow_save_refund_reason:
+  path: /admin/lengow/refund-reason/save
+  methods: [ POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::saveRefundReason'
+
+lengow_save_refund_mode:
+  path: /admin/lengow/refund-mode/save
+  methods: [ POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::saveRefundMode'

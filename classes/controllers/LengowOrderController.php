@@ -701,8 +701,9 @@ class LengowOrderController extends LengowController
             }
         } else {
             // check if order actions in progress
-            if ($item[LengowOrder::FIELD_ORDER_ID] > 0
-                && (int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE] === LengowOrder::PROCESS_STATE_IMPORT
+            if (($item[LengowOrder::FIELD_ORDER_ID] > 0
+                    && (int)$item[LengowOrder::FIELD_ORDER_PROCESS_STATE]
+                    === LengowOrder::PROCESS_STATE_IMPORT) || LengowOrder::PROCESS_STATE_FINISH
             ) {
                 $lastActionType = LengowAction::getLastOrderActionType($item[LengowOrder::FIELD_ORDER_ID]);
                 if ($lastActionType) {
