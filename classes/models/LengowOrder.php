@@ -1364,9 +1364,9 @@ class LengowOrder extends Order
     public function getRefundDataFromLengowOrder(int $orderId, $marketplaceName): array
     {
         $db = \Db::getInstance();
-        $sql = 'SELECT refund_reason, refund_mode 
-            FROM ' . _DB_PREFIX_ . 'lengow_orders 
-            WHERE id_order = ' . (int) $orderId . ' 
+        $sql = 'SELECT refund_reason, refund_mode
+            FROM ' . _DB_PREFIX_ . 'lengow_orders
+            WHERE id_order = ' . (int) $orderId . '
             AND marketplace_name = "' . pSQL($marketplaceName) . '"';
 
         $result = $db->getRow($sql);

@@ -208,7 +208,7 @@ class Lengow extends Module
     {
         return $this->hookClass->hookAdminOrder($args);
     }
-    
+
     /**
      * Hook when a product line is refunded
      */

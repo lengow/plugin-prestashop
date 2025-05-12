@@ -150,6 +150,42 @@ class LengowOrderController extends LengowController
                     }
                     Tools::redirectAdmin(self::getOrderAdminLink($newIdOrder));
                     break;
+                case 'save_shipping_method':
+                    $idOrder        = (int) Tools::getValue('id_order');
+                    $shippingMethod = Tools::getValue('method');
+                    $response       = ['success' => false, 'message' => ''];
+
+                    if (!$idOrder || !$shippingMethod) {
+                        $response['message'] = 'Missing parameters';
+                    } else {
+                        try {
+                            $result = Db::getInstance()->update(
+                                'lengow_orders',
+                                ['method' => pSQL($shippingMethod)],
+                                'id_order = ' . $idOrder
+                            );
+
+                            if ($result) {
+                                $response = [
+                                    'success' => true,
+                                    'message' => 'Delivery method successfully updated'
+                                ];
+                                LengowMain::log(
+                                    LengowLog::CODE_IMPORT,
+                                    'Updated shipping method : ' . $shippingMethod,
+                                    false,
+                                    $idOrder
+                                );
+                            } else {
+                                $response['message'] = 'No changes or errors';
+                            }
+                        } catch (Exception $e) {
+                            $response['message'] = 'Error: ' . $e->getMessage();
+                        }
+                    }
+                    header('Content-Type: application/json');
+                    echo json_encode($response);
+                    break;
                 case 'force_resend':
                     $idOrder = isset($_REQUEST['id_order']) ? (int) $_REQUEST['id_order'] : 0;
                     $actionType = isset($_REQUEST['action_type']) ? $_REQUEST['action_type'] : LengowAction::TYPE_SHIP;
