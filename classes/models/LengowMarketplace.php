@@ -810,6 +810,23 @@ class LengowMarketplace
     }
 
     /**
+     * Get valid shipping methods for a specific marketplace
+     *
+     * @param string $marketplaceName Name of the marketplace
+     *
+     * @return array|false
+     */
+    public static function getValidShippingMethods(string $marketplaceName)
+    {
+        $idMarketplace = self::getIdMarketplace($marketplaceName);
+        if (!$idMarketplace) {
+            return false;
+        }
+
+        return LengowMethod::getAllMethodMarketplaceByIdMarketplace($idMarketplace);
+    }
+
+    /**
      * Insert a new marketplace in the table
      *
      * @param string $marketplaceName Lengow marketplace name
