@@ -62,7 +62,7 @@ class LengowOrderLine
      *
      * @return array
      */
-    public static function findOrderLineByOrderDetailId($idOrderDetail)
+    public static function findOrderLineByOrderDetailId(int $idOrderDetail): array
     {
         $sql = 'SELECT * FROM `' . _DB_PREFIX_ . 'lengow_order_line`
             WHERE id_order_detail = ' . (int) $idOrderDetail;

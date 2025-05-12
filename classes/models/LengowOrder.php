@@ -1101,20 +1101,12 @@ class LengowOrder extends Order
                     $results = [];
 
                     foreach ($orderLineCollection as $row) {
-                        if ($partialAction) {
-                            $results[] = $marketplace->callAction(
-                                $action,
-                                $this,
-                                $row[LengowOrderLine::FIELD_ORDER_LINE_ID],
-                                $partialAction
-                            );
-                        } else {
-                            $results[] = $marketplace->callAction(
-                                $action,
-                                $this,
-                                $row[LengowOrderLine::FIELD_ORDER_LINE_ID]
-                            );
-                        }
+                        $results[] = $marketplace->callAction(
+                            $action,
+                            $this,
+                            $row[LengowOrderLine::FIELD_ORDER_LINE_ID],
+                            $partialAction
+                        );
                     }
                     $success = !in_array(false, $results, true);
                 } else {
