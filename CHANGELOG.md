@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [3.7.0](https://github.com/lengow/plugin-prestashop/compare/v3.6.1...v3.7.0) (2025-05-12)
+
+
+### Features
+
+* **refund:** [PCMT-304] refund full order v2 ([#47](https://github.com/lengow/plugin-prestashop/issues/47)) ([98729b6](https://github.com/lengow/plugin-prestashop/commit/98729b6a7e09978518796387bffb8ef279267b41))
+
+
+### Bug Fixes
+
+* **plugin:** [PCMT-364] add field in order side page for add shipping method to action from valid value ([#46](https://github.com/lengow/plugin-prestashop/issues/46)) ([5ae5a57](https://github.com/lengow/plugin-prestashop/commit/5ae5a57b1b4909c7eb225e77c52c1837201f3694))
+
 ## [3.6.1](https://github.com/lengow/plugin-prestashop/compare/v3.6.0...v3.6.1) (2025-04-07)
 
 
