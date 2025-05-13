@@ -92,6 +92,7 @@ class LengowOrderLine
             return $result ?: [];
         } catch (PrestaShopDatabaseException $e) {
             LengowMain::log(LengowLog::CODE_ACTION, 'Database error: ' . $e->getMessage());
+
             return [];
         }
     }
@@ -115,6 +116,7 @@ class LengowOrderLine
             return Db::getInstance()->execute($sql);
         } catch (PrestaShopDatabaseException $e) {
             LengowMain::log(LengowLog::CODE_ERROR, 'Error updating refunded field: ' . $e->getMessage());
+
             return false;
         }
     }
@@ -132,9 +134,11 @@ class LengowOrderLine
             WHERE id_order_line = "' . pSQL($idOrderLine) . '"';
         try {
             $result = Db::getInstance()->getValue($sql);
+
             return $result !== false ? (int) $result : null;
         } catch (PrestaShopDatabaseException $e) {
             LengowMain::log(LengowLog::CODE_ERROR, 'Error fetching quantity_refunded: ' . $e->getMessage());
+
             return null;
         }
     }

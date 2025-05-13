@@ -27,7 +27,7 @@
                 var method = document.getElementById('lengow_shipping_select').value;
                 var idOrder = {$id_order|intval};
                 // URL générée par getAdminLink (inclut token et controller)
-                var url = "{$ajax_url|escape:'javascript'}";
+                var url = "{$ajax_url|escape:'javascript':'UTF-8'}";
                 url += (url.indexOf('?') === -1 ? '?' : '&') +
                     'action=save_shipping_method&id_order=' + idOrder +
                     '&method=' + encodeURIComponent(method);

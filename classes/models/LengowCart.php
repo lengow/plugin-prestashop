@@ -104,7 +104,7 @@ class LengowCart extends Cart
      *
      * @throws Exception|PrestaShopDatabaseException
      */
-    public function updateQty($quantity, $idProduct, $idProductAttribute = null, $idCustomization = false, $operator = 'up', $idAddressDelivery = 0, Shop $shop = null, $autoAddCartRule = true, $skipAvailabilityCheckOutOfStock = false, $preserveGiftRemoval = true, $useOrderPrices = false)
+    public function updateQty($quantity, $idProduct, $idProductAttribute = null, $idCustomization = false, $operator = 'up', $idAddressDelivery = 0, ?Shop $shop = null, $autoAddCartRule = true, $skipAvailabilityCheckOutOfStock = false, $preserveGiftRemoval = true, $useOrderPrices = false)
     {
         if (!$shop) {
             $shop = Context::getContext()->shop;

@@ -332,10 +332,10 @@ class LengowHook
 
         $ajaxUrl = $this->context->link->getAdminLink('AdminLengowOrder', true);
         $this->context->smarty->assign([
-            'id_order'         => $id_order,
+            'id_order' => $id_order,
             'shipping_methods' => $shippingMethods,
-            'lengowOrder'      => $lengowOrder,
-            'ajax_url'         => $ajaxUrl,
+            'lengowOrder' => $lengowOrder,
+            'ajax_url' => $ajaxUrl,
         ]);
 
         return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/hook/order/admin_order_side.tpl');
@@ -459,7 +459,7 @@ class LengowHook
             $cancelQuantity = (int) $args['cancel_quantity'];
 
             $orderDetail = new OrderDetail($idOrderDetail);
-            if (! $orderDetail instanceof OrderDetail) {
+            if (!$orderDetail instanceof OrderDetail) {
                 return;
             }
             $lengowOrderLine = LengowOrderLine::findOrderLineByOrderDetailId($orderDetail->id);
