@@ -610,9 +610,6 @@ class LengowMarketplace
                     $params[$arg] = (float) $shippingPriceTTC;
                     break;
                 default:
-                    if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
-                        break;
-                    }
                     $defaultValue = $this->getDefaultValue((string) $arg);
                     $paramValue = $defaultValue ?: $arg . ' not available';
                     $params[$arg] = $paramValue;
