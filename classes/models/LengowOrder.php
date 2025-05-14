@@ -1347,6 +1347,7 @@ class LengowOrder extends Order
 
         try {
             $result = Db::getInstance()->getRow($query);
+
             return $result ? (float) $result['total_shipping_cost'] : 0.0;
         } catch (PrestaShopDatabaseException $e) {
             return 0;
@@ -1355,7 +1356,7 @@ class LengowOrder extends Order
 
     public function getRefundDataFromLengowOrder(int $orderId, $marketplaceName): array
     {
-        $db = \Db::getInstance();
+        $db = Db::getInstance();
         $sql = 'SELECT refund_reason, refund_mode
             FROM ' . _DB_PREFIX_ . 'lengow_orders
             WHERE id_order = ' . (int) $orderId . '

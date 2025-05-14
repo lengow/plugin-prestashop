@@ -400,7 +400,6 @@ class LengowMarketplace
      */
     protected function checkAction($action)
     {
-
         if (!in_array($action, self::$validActions, true)) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.action_not_valid', ['action' => $action]));
         }
@@ -563,7 +562,6 @@ class LengowMarketplace
         return $params;
     }
 
-
     /**
      * Get all available values from an order for partial refund action
      *
@@ -580,13 +578,10 @@ class LengowMarketplace
         LengowOrder $lengowOrder,
         array $marketplaceArguments,
         $orderLineId
-    ): array
-    {
+    ): array {
         $this->checkAction($action);
         if (!in_array($lengowOrder->lengowState, $this->getRefundStatuses(), true)) {
-            throw new LengowException(
-                'refund action not available for this order_state: ' . $lengowOrder->lengowState
-            );
+            throw new LengowException('refund action not available for this order_state: ' . $lengowOrder->lengowState);
         }
         $decodedExtra = json_decode($lengowOrder->lengowExtra, true, 512, JSON_THROW_ON_ERROR);
         $shippingPriceTTC = $lengowOrder->getTotalShippingCostByOrderId($lengowOrder->id)
@@ -608,16 +603,13 @@ class LengowMarketplace
                     $params[$arg] = $orderLineId;
                     break;
                 case LengowAction::ARG_REFUND_MODE:
-                    $params[$arg] =  $lengowOrder->getRefundModeByPrestashopId($lengowOrder->lengowId)
+                    $params[$arg] = $lengowOrder->getRefundModeByPrestashopId($lengowOrder->lengowId)
                         ?? $this->getDefaultValue((string) $arg);
                     break;
                 case LengowAction::ARG_REFUND_SHIPPING_PRICE:
                     $params[$arg] = (float) $shippingPriceTTC;
                     break;
                 default:
-                    if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
-                        break;
-                    }
                     $defaultValue = $this->getDefaultValue((string) $arg);
                     $paramValue = $defaultValue ?: $arg . ' not available';
                     $params[$arg] = $paramValue;
@@ -932,7 +924,7 @@ class LengowMarketplace
     /**
      * Will return all refund modes for cdsicount
      */
-    public function getRefundModes() : array
+    public function getRefundModes(): array
     {
         $action = $this->getAction(LengowAction::TYPE_REFUND);
         if (!$action) {
@@ -978,4 +970,3 @@ class LengowMarketplace
         return array_keys($statuses);
     }
 }
-

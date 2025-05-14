@@ -151,9 +151,9 @@ class LengowOrderController extends LengowController
                     Tools::redirectAdmin(self::getOrderAdminLink($newIdOrder));
                     break;
                 case 'save_shipping_method':
-                    $idOrder        = (int) Tools::getValue('id_order');
+                    $idOrder = (int) Tools::getValue('id_order');
                     $shippingMethod = Tools::getValue('method');
-                    $response       = ['success' => false, 'message' => ''];
+                    $response = ['success' => false, 'message' => ''];
 
                     if (!$idOrder || !$shippingMethod) {
                         $response['message'] = 'Missing parameters';
@@ -168,7 +168,7 @@ class LengowOrderController extends LengowController
                             if ($result) {
                                 $response = [
                                     'success' => true,
-                                    'message' => 'Delivery method successfully updated'
+                                    'message' => 'Delivery method successfully updated',
                                 ];
                                 LengowMain::log(
                                     LengowLog::CODE_IMPORT,
@@ -702,7 +702,7 @@ class LengowOrderController extends LengowController
         } else {
             // check if order actions in progress
             if (($item[LengowOrder::FIELD_ORDER_ID] > 0
-                    && (int)$item[LengowOrder::FIELD_ORDER_PROCESS_STATE]
+                    && (int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE]
                     === LengowOrder::PROCESS_STATE_IMPORT) || LengowOrder::PROCESS_STATE_FINISH
             ) {
                 $lastActionType = LengowAction::getLastOrderActionType($item[LengowOrder::FIELD_ORDER_ID]);
