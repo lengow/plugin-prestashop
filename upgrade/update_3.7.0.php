@@ -33,7 +33,8 @@ if (!LengowInstall::isInstallationInProgress()) {
 if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
     if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_REFUND_REASON)) {
         Db::getInstance()->execute(
-            'ALTER TABLE ' . _DB_PREFIX_ . LengowOrder::TABLE_ORDER.' ADD `'.LengowOrder::FIELD_REFUND_REASON.'` VARCHAR(100) NULL'
+            'ALTER TABLE ' . _DB_PREFIX_ . LengowOrder::TABLE_ORDER.' ADD `'.LengowOrder::FIELD_REFUND_REASON.'` VARCHAR(100) NULL'       
+
         );
     }
     if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_REFUND_MODE)) {
