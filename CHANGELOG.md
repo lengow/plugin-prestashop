@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.7.1](https://github.com/lengow/plugin-prestashop/compare/v3.7.0...v3.7.1) (2025-05-21)
+
+
+### Bug Fixes
+
+* **upgrade:** [PCMT-494] rename update_3.7.0php to update_3.7.0.php ([#50](https://github.com/lengow/plugin-prestashop/issues/50)) ([304dfba](https://github.com/lengow/plugin-prestashop/commit/304dfba1b05628f0c43005af721af0d7a9baeb2c))
+
 ## [3.7.0](https://github.com/lengow/plugin-prestashop/compare/v3.6.1...v3.7.0) (2025-05-12)
 
 
