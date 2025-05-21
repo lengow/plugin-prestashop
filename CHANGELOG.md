@@ -6,6 +6,7 @@
 
 ### Bug Fixes
 
+* **update:** [PCMT-494] prestashop plugin fix upgrade for 3.7.0 and 3.7.1 ([#52](https://github.com/lengow/plugin-prestashop/issues/52)) ([9e2a17b](https://github.com/lengow/plugin-prestashop/commit/9e2a17bb41d5255cfbc0ce63b0b2d4234da8811b))
 * **upgrade:** [PCMT-494] rename update_3.7.0php to update_3.7.0.php ([#50](https://github.com/lengow/plugin-prestashop/issues/50)) ([304dfba](https://github.com/lengow/plugin-prestashop/commit/304dfba1b05628f0c43005af721af0d7a9baeb2c))
 
 ## [3.7.0](https://github.com/lengow/plugin-prestashop/compare/v3.6.1...v3.7.0) (2025-05-12)
