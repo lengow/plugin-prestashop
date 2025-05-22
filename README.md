@@ -3,7 +3,7 @@
 - **Requires at least:** 1.7.7
 - **Tested up to:** 8.1.7
 - **Requires PHP:** 7.4
-- **Stable tag:** 3.7.0 <!-- x-release-please-version -->
+- **Stable tag:** 3.7.1 <!-- x-release-please-version -->
 - **License:** Apache-2.0
 - **License URI:** http://www.apache.org/licenses/LICENSE-2.0
 
