@@ -53,6 +53,7 @@ class LengowOrderSettingController extends LengowController
                 LengowConfiguration::ANONYMIZE_EMAIL,
                 LengowConfiguration::TYPE_ANONYMIZE_EMAIL,
                 LengowConfiguration::ACTIVE_NEW_ORDER_HOOK,
+                LengowConfiguration::ORDER_CUSTOMER_GROUP
             ]
         );
         $currencyConversion = $form->buildInputs([LengowConfiguration::CURRENCY_CONVERSION_ENABLED]);
@@ -185,3 +186,4 @@ class LengowOrderSettingController extends LengowController
         }
     }
 }
+

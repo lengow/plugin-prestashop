@@ -202,6 +202,7 @@ class LengowInstall
             LengowLog::CODE_INSTALL,
             LengowMain::setLogMessage('log.install.install_end', ['version' => $this->lengowModule->version])
         );
+        $this->createLengowCustomerGroup();
 
         return true;
     }
@@ -1085,4 +1086,33 @@ class LengowInstall
             }
         }
     }
+
+    /**
+     * Create Lengow customer group if not exists
+     */
+    private function createLengowCustomerGroup()
+    {
+        $marketplaceGroupId = null;
+        $groups = Group::getGroups(Context::getContext()->language->id);
+        foreach ($groups as $group) {
+            if ($group['name'] === LengowCustomer::LENGOW_GROUP_NAME) {
+                $marketplaceGroupId = $group['id_group'];
+                break;
+            }
+        }
+        if (is_null($marketplaceGroupId)) {
+            $group = new Group();
+            $group->name = array_fill_keys(
+                array_keys(Language::getLanguages(false)),
+                LengowCustomer::LENGOW_GROUP_NAME
+            );
+            $group->reduction = 0;
+            $group->price_display_method = PS_TAX_EXC;
+            $group->show_prices = 1;
+            $group->date_add = date('Y-m-d H:i:s');
+            $group->date_upd = date('Y-m-d H:i:s');
+            $group->save();
+        }
+    }
 }
+
