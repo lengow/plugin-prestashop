@@ -416,6 +416,8 @@ it:
     lengow_currency_conversion_switch: "Attivare la conversione"
     lengow_disable_send_email_title: "Disabilita l'invio di email"
     lengow_disable_send_email_legend: "Disabilita l'invio di email al cambiamento dello stato dell'ordine"
+    lengow_customer_group: "Gruppo cliente Lengow"
+    lengow_customer_group_legend: "Seleziona il gruppo cliente Lengow per i tuoi ordini importati."
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} ordine importato"
