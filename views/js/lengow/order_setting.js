@@ -64,7 +64,6 @@ function toggleCountry($head) {
     var $sub = $head.closest('li').find('.sub');
     $head.toggleClass('active');
     $sub.slideToggle(150);
-    disableCarrierMarketplace($head.attr('data-marketplace'));
 }
 
 function pluginsRender() {
@@ -206,8 +205,10 @@ function displayTypeOfAnonymizationEmail() {
         });
         // disable carrier marketplace options
         $(document).on('change', 'select.js-match-carrier', function () {
-            var idMarketplace = $(this).closest('.js-match-carrier').attr('data-marketplace');
-            disableCarrierMarketplace(idMarketplace);
+            var idMarketplace = $(this)
+            .closest('.js-match-carrier')
+            .attr('data-marketplace');
+
         });
         // change score carrier
         $(document).on('change', '#marketplace_matching select', function () {
