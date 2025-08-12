@@ -26,6 +26,9 @@ if (!defined('_PS_VERSION_')) {
 }
 class LengowCustomer extends Customer
 {
+
+    public const LENGOW_GROUP_NAME = 'Lengow - Marketplaces';
+
     /**
      * @var string customer full name
      */
@@ -57,6 +60,7 @@ class LengowCustomer extends Customer
         $this->fullName = $data['full_name'];
         $this->passwd = md5(rand());
         $this->id_gender = LengowGender::getGender((string) $data['civility']);
+        $this->id_default_group = LengowConfiguration::get(LengowConfiguration::ORDER_CUSTOMER_GROUP);
 
         return $this;
     }
@@ -229,3 +233,4 @@ class LengowCustomer extends Customer
         return $this;
     }
 }
+

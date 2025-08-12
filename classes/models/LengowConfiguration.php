@@ -88,6 +88,7 @@ class LengowConfiguration extends Configuration
     public const LAST_UPDATE_AUTHORIZATION_TOKEN = 'LENGOW_LAST_AUTH_TOKEN_UPDATE';
     public const LAST_UPDATE_PLUGIN_MODAL = 'LENGOW_LAST_PLUGIN_MODAL';
     public const SEND_EMAIL_DISABLED = 'LENGOW_SEND_EMAIL_DISABLED';
+    public const ORDER_CUSTOMER_GROUP = 'LENGOW_ORDER_CUSTOMER_GROUP';
 
     /* Configuration parameters */
     public const PARAM_COLLECTION = 'collection';
@@ -175,6 +176,7 @@ class LengowConfiguration extends Configuration
         self::LAST_UPDATE_AUTHORIZATION_TOKEN => 'last_update_authorization_token',
         self::LAST_UPDATE_PLUGIN_MODAL => 'last_update_plugin_modal',
         self::SEND_EMAIL_DISABLED => 'send_email_disabled',
+        self::ORDER_CUSTOMER_GROUP => 'order_customer_group',
     ];
 
     /**
@@ -218,6 +220,14 @@ class LengowConfiguration extends Configuration
                 $carriers[] = [
                     'id' => $idCarrier,
                     'text' => $carrier['name'],
+                ];
+            }
+            $customerGroups = [];
+            $groups = Group::getGroups($langId);
+            foreach ($groups as $group) {
+                $customerGroups[] = [
+                    'id' => $group['id_group'],
+                    'text' => $group['name'],
                 ];
             }
             $keys = [
@@ -488,6 +498,16 @@ class LengowConfiguration extends Configuration
                     self::PARAM_DEFAULT_VALUE => 0,
                     self::PARAM_UPDATE => true,
                     self::PARAM_RETURN => self::RETURN_TYPE_BOOLEAN,
+                ],
+                self::ORDER_CUSTOMER_GROUP => [
+                    self::PARAM_TYPE => LengowConfigurationForm::TYPE_SELECT,
+                    self::PARAM_GLOBAL => true,
+                    self::PARAM_LABEL => $locale->t('lengow_setting.lengow_customer_group'),
+                    self::PARAM_LEGEND => $locale->t('lengow_setting.lengow_customer_group_legend'),
+                    self::PARAM_DEFAULT_VALUE => 3,
+                    self::PARAM_COLLECTION => $customerGroups,
+                    self::PARAM_UPDATE => true,
+                    self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
                 ],
                 self::SEMANTIC_MATCHING_CARRIER_ENABLED => [
                     self::PARAM_TYPE => LengowConfigurationForm::TYPE_CHECKBOX,
