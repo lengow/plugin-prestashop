@@ -676,7 +676,7 @@ class LengowMarketplace
                     }
                 }
                 $idMarketplace = self::getIdMarketplace($marketplaceName);
-                if ($idMarketplace) {
+                if (false !== $idMarketplace) {
                     self::updateMarketplace($idMarketplace, $marketplace->name, $carrierRequired);
                 } else {
                     self::insertMarketplace($marketplaceName, $marketplace->name, $carrierRequired);
