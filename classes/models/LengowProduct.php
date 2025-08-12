@@ -864,6 +864,7 @@ class LengowProduct extends Product
         }
         switch (Tools::strtolower($attributeName)) {
             case 'reference':
+            case 'reference_product':
                 return self::findProduct('reference', $attributeValue, $idShop);
             case 'ean':
                 return self::findProduct('ean13', $attributeValue, $idShop);
