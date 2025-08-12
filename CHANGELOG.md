@@ -1,6 +1,25 @@
 # Changelog
 
 
+## [3.8.0](https://github.com/lengow/plugin-prestashop/compare/v3.7.1...v3.8.0) (2025-08-12)
+
+
+### Features
+
+* **customerGroup:** [PCMT-599] prestashop add customer group assignment during order import ([#53](https://github.com/lengow/plugin-prestashop/issues/53)) ([16429ad](https://github.com/lengow/plugin-prestashop/commit/16429ad8cab3622a05323f9b377a9d57dcbe3a7d))
+
+
+### Bug Fixes
+
+* **carriers:** [PCMT-768] fix carrier disabled in the selectobox ([#56](https://github.com/lengow/plugin-prestashop/issues/56)) ([6b279ac](https://github.com/lengow/plugin-prestashop/commit/6b279ac6c2872b6312c5f62d291131fc95baed7f))
+* **marketplaces:** [PCMT-738] fix condition where id could be 0 ([#55](https://github.com/lengow/plugin-prestashop/issues/55)) ([df360a7](https://github.com/lengow/plugin-prestashop/commit/df360a7a937714b40326015569cf2f447e9222a4))
+* **matchProduct:** [PCMT-620] will find the product order with legacy field reference_product ([#57](https://github.com/lengow/plugin-prestashop/issues/57)) ([2217852](https://github.com/lengow/plugin-prestashop/commit/2217852ae7446ab9f42084143bc9afff6f048a41))
+
+
+### Miscellaneous
+
+* **standards:** [PCMT- 441] prestashop add code quality tester ([#49](https://github.com/lengow/plugin-prestashop/issues/49)) ([0e8c186](https://github.com/lengow/plugin-prestashop/commit/0e8c186b54bffdd60d7a95b9827b63bdeff1ccb4))
+
 ## [3.7.1](https://github.com/lengow/plugin-prestashop/compare/v3.7.0...v3.7.1) (2025-05-21)
 
 
