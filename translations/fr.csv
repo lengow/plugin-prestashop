@@ -385,6 +385,8 @@ lengow_setting.lengow_currency_conversion_legend|Toutes les commandes importées
 lengow_setting.lengow_currency_conversion_switch|Activer la conversion de devises
 lengow_setting.lengow_disable_send_email_title|Désactiver l'envoi d'email
 lengow_setting.lengow_disable_send_email_legend|Désactive l'envoi d'email lors des changements de statut de commande
+lengow_setting.lengow_customer_group|Groupe de clients
+lengow_setting.lengow_customer_group_legend|Sélectionnez le groupe de clients auquel les commandes importées seront attribuées
 lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs

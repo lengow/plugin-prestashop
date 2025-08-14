@@ -1,7 +1,7 @@
 {
   "name": "prestashop/lengow",
   "description": "Lengow",
-  "version": "3.7.1",
+  "version": "3.8.0",
   "autoload": {
     "psr-4": {
       "Lengow\\": "src/"
@@ -12,9 +12,5 @@
       "classes/"
     ]
   },
-  "type": "prestashop-module",
-  "require-dev": {
-    "prestashop/php-dev-tools": "^5.0",
-    "friendsofphp/php-cs-fixer": "^3.75"
-  }
+  "type": "prestashop-module"
 }

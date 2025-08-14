@@ -33,12 +33,12 @@ if (!LengowInstall::isInstallationInProgress()) {
 if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
     if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_REFUND_REASON)) {
         Db::getInstance()->execute(
-            'ALTER TABLE ' . _DB_PREFIX_ . LengowOrder::TABLE_ORDER.' ADD `'.LengowOrder::FIELD_REFUND_REASON.'` VARCHAR(100) NULL'
+            'ALTER TABLE ' . _DB_PREFIX_ . LengowOrder::TABLE_ORDER . ' ADD `' . LengowOrder::FIELD_REFUND_REASON . '` VARCHAR(100) NULL'
         );
     }
     if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_REFUND_MODE)) {
         Db::getInstance()->execute(
-            'ALTER TABLE ' . _DB_PREFIX_ . LengowOrder::TABLE_ORDER.' ADD `'.LengowOrder::FIELD_REFUND_MODE.'` VARCHAR(100) NULL'
+            'ALTER TABLE ' . _DB_PREFIX_ . LengowOrder::TABLE_ORDER . ' ADD `' . LengowOrder::FIELD_REFUND_MODE . '` VARCHAR(100) NULL'
         );
     }
 }
@@ -46,12 +46,12 @@ if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
 if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER_LINE)) {
     if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER_LINE, LengowOrder::FIELD_REFUNDED)) {
         Db::getInstance()->execute(
-            'ALTER TABLE ' . _DB_PREFIX_ . LengowOrder::TABLE_ORDER_LINE.' ADD `'.LengowOrder::FIELD_REFUNDED.'` TINYINT(1) NOT NULL DEFAULT 0'
+            'ALTER TABLE ' . _DB_PREFIX_ . LengowOrder::TABLE_ORDER_LINE . ' ADD `' . LengowOrder::FIELD_REFUNDED . '` TINYINT(1) NOT NULL DEFAULT 0'
         );
     }
     if (!LengowInstall::checkFieldExists(LengowOrder::TABLE_ORDER_LINE, LengowOrder::FIELD_QUANTITY_REFUNDED)) {
         Db::getInstance()->execute(
-            'ALTER TABLE ' . _DB_PREFIX_ . LengowOrder::TABLE_ORDER_LINE.' ADD `'.LengowOrder::FIELD_QUANTITY_REFUNDED.'` INT NOT NULL DEFAULT 0'
+            'ALTER TABLE ' . _DB_PREFIX_ . LengowOrder::TABLE_ORDER_LINE . ' ADD `' . LengowOrder::FIELD_QUANTITY_REFUNDED . '` INT NOT NULL DEFAULT 0'
         );
     }
 }
