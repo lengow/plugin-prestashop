@@ -385,6 +385,8 @@ lengow_setting.lengow_currency_conversion_legend|All orders imported into Presta
 lengow_setting.lengow_currency_conversion_switch|Activate conversion
 lengow_setting.lengow_disable_send_email_title|Disable sending emails
 lengow_setting.lengow_disable_send_email_legend|Activate this option if you do not want to send emails to customers when order's statuses change
+lengow_setting.lengow_customer_group|Customer group
+lengow_setting.lengow_customer_group_legend|Select the customer group to which the customers of your Lengow orders will belong
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors

@@ -12,9 +12,5 @@
       "classes/"
     ]
   },
-  "type": "prestashop-module",
-  "require-dev": {
-    "prestashop/php-dev-tools": "^5.0",
-    "friendsofphp/php-cs-fixer": "^3.75"
-  }
+  "type": "prestashop-module"
 }

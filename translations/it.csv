@@ -385,6 +385,8 @@ lengow_setting.lengow_currency_conversion_legend|Tutti gli ordini importati in P
 lengow_setting.lengow_currency_conversion_switch|Attivare la conversione
 lengow_setting.lengow_disable_send_email_title|Disabilita l'invio di email
 lengow_setting.lengow_disable_send_email_legend|Disabilita l'invio di email al cambiamento dello stato dell'ordine
+lengow_setting.lengow_customer_group|Gruppo cliente Lengow
+lengow_setting.lengow_customer_group_legend|Seleziona il gruppo cliente Lengow per i tuoi ordini importati.
 lengow_log.error.nb_order_imported|%{nb_order} ordine importato
 lengow_log.error.nb_order_updated|%{nb_order} ordine aggiornato
 lengow_log.error.nb_order_with_error|%{nb_order} errore numero ordine
@@ -437,6 +439,7 @@ lengow_log.connection.status_draft|Bozza
 lengow_log.connection.status_active|Attivo
 lengow_log.connection.catalog|Catalogo %{catalog_id}
 lengow_log.connection.catalog_label|%{catalog_id} - %{catalog_name} - %{nb_products} prodotti - %{catalog_status}
+lengow_log.order_action.partial_refund_ready|Rimborso parziale pronto per la linea d'ordine %{order_line_id} con i seguenti parametri: %{params}
 admin.order.import_lengow|Importazione Lengow
 admin.order.imported_from_lengow|Questo ordine è stato importato da Lengow
 admin.order.lengow_order_id|ID Ordine Lengow

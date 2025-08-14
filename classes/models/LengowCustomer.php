@@ -26,7 +26,6 @@ if (!defined('_PS_VERSION_')) {
 }
 class LengowCustomer extends Customer
 {
-
     public const LENGOW_GROUP_NAME = 'Lengow - Marketplaces';
 
     /**
@@ -233,4 +232,3 @@ class LengowCustomer extends Customer
         return $this;
     }
 }
-
