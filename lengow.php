@@ -51,8 +51,7 @@ class Lengow extends Module
         $this->ps_versions_compliancy = [
             'min' => '1.7.8',
             'max' => '8.99.99',
-              ];
-
+        ];
 
         $this->bootstrap = true;
 
