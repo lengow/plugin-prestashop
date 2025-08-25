@@ -252,15 +252,17 @@
     </p>
 
     {# PRODUCT CANCEL #}
-    <div class="cancel-product-element refund-checkboxes-container">
-      <div class="cancel-product-element form-group refund-reason">
-        <select id="lengow_refund_reason" class="form-control">
-          {% for label, value in refundReasons %}
-            <option value="{{ value }}" {% if refundReasonSelected == value %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-        <div id="refund-reason-message" class="alert alert-success d-none" role="alert"></div>
-      </div>
+    {% if refundReasons is not empty %}
+      <div class="cancel-product-element refund-checkboxes-container">
+        <div class="cancel-product-element form-group refund-reason">
+          <select id="lengow_refund_reason" class="form-control">
+            {% for label, value in refundReasons %}
+              <option value="{{ value }}" {% if refundReasonSelected == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          <div id="refund-reason-message" class="alert alert-success d-none" role="alert"></div>
+        </div>
+      {% endif %}
       {% if refundModes is not empty %}
         <div class="cancel-product-element form-group refund-mode">
           <select id="lengow_refund_mode" class="form-control">
