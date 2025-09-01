@@ -1,7 +1,7 @@
 {
   "name": "prestashop/lengow",
   "description": "Lengow",
-  "version": "3.8.0",
+  "version": "3.8.1",
   "autoload": {
     "psr-4": {
       "Lengow\\": "src/"

@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.8.1](https://github.com/lengow/plugin-prestashop/compare/v3.8.0...v3.8.1) (2025-09-01)
+
+
+### Bug Fixes
+
+* **refundReason:** [PCMT-707] Fix issue on lengow_refund_reason display ([#59](https://github.com/lengow/plugin-prestashop/issues/59)) ([9cc8db1](https://github.com/lengow/plugin-prestashop/commit/9cc8db18b1f102bb0ffaed5c957017def0dc5c3d))
+
 ## [3.8.0](https://github.com/lengow/plugin-prestashop/compare/v3.7.1...v3.8.0) (2025-08-12)
 
 
