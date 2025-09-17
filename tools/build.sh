@@ -175,7 +175,7 @@ remove_files "$FOLDER_TMP" "Jenkinsfile"
 # clean Config Folder
 remove_files "$FOLDER_CONFIG" "marketplaces.json"
 # clean Log Folder
-remove_files "$FOLDER_LOGS" "*.txt"
+rm -Rf $FOLDER_TMP/logs/*.txt
 echo -e "- Clean logs folder : ${VERT}DONE${NORMAL}"
 # clean export folder
 remove_directories "$FOLDER_EXPORT"
