@@ -323,13 +323,13 @@ class LengowImport
             $this->marketplaceSku = null;
             // set the time interval
             if (isset($params[self::PARAM_MINUTES])) {
-            $minutes = (float) $params[self::PARAM_MINUTES];
-            $this->setIntervalTime(
-                $minutes,
-                null,
-                $params[self::PARAM_CREATED_FROM] ?? null,
-                $params[self::PARAM_CREATED_TO] ?? null
-            );
+                $minutes = (float) $params[self::PARAM_MINUTES];
+                $this->setIntervalTime(
+                    $minutes,
+                    null,
+                    $params[self::PARAM_CREATED_FROM] ?? null,
+                    $params[self::PARAM_CREATED_TO] ?? null
+                );
             } else {
                 $days = $params[self::PARAM_DAYS] ?? null;
                 $this->setIntervalTime(
