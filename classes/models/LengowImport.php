@@ -34,6 +34,7 @@ class LengowImport
     public const PARAM_MARKETPLACE_NAME = 'marketplace_name';
     public const PARAM_DELIVERY_ADDRESS_ID = 'delivery_address_id';
     public const PARAM_DAYS = 'days';
+    public const PARAM_MINUTES = 'minutes';
     public const PARAM_CREATED_FROM = 'created_from';
     public const PARAM_CREATED_TO = 'created_to';
     public const PARAM_ID_ORDER_LENGOW = 'id_order_lengow';
@@ -321,11 +322,23 @@ class LengowImport
         } else {
             $this->marketplaceSku = null;
             // set the time interval
+            if (isset($params[self::PARAM_MINUTES])) {
+            $minutes = (float) $params[self::PARAM_MINUTES];
             $this->setIntervalTime(
-                isset($params[self::PARAM_DAYS]) ? (float) $params[self::PARAM_DAYS] : null,
-                isset($params[self::PARAM_CREATED_FROM]) ? $params[self::PARAM_CREATED_FROM] : null,
-                isset($params[self::PARAM_CREATED_TO]) ? $params[self::PARAM_CREATED_TO] : null
+                $minutes,
+                null,
+                $params[self::PARAM_CREATED_FROM] ?? null,
+                $params[self::PARAM_CREATED_TO] ?? null
             );
+            } else {
+                $days = $params[self::PARAM_DAYS] ?? null;
+                $this->setIntervalTime(
+                    null,
+                    (float) $days,
+                    $params[self::PARAM_CREATED_FROM] ?? null,
+                    $params[self::PARAM_CREATED_TO] ?? null
+                );
+            }
             $this->limit = isset($params[self::PARAM_LIMIT]) ? (int) $params[self::PARAM_LIMIT] : 0;
         }
         LengowMain::log(
@@ -459,11 +472,12 @@ class LengowImport
     /**
      * Set interval time for order synchronisation
      *
+     * @param float|null $minutes Import period in minutes
      * @param float|null $days Import period
      * @param string|null $createdFrom Import of orders since
      * @param string|null $createdTo Import of orders until
      */
-    private function setIntervalTime($days = null, $createdFrom = null, $createdTo = null)
+    private function setIntervalTime($minutes = null, $days = null, $createdFrom = null, $createdTo = null)
     {
         if ($createdFrom && $createdTo) {
             // retrieval of orders created from ... until ...
@@ -481,8 +495,12 @@ class LengowImport
 
             return;
         }
-        if ($days) {
-            $intervalTime = floor($days * self::MIN_INTERVAL_TIME);
+        if ($minutes) {
+            $intervalTime = floor($minutes * 60); // convert minutes to seconds
+            $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
+        }
+        elseif ($days) {
+            $intervalTime = floor($days * self::MIN_INTERVAL_TIME); // convert days to seconds
             $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
         } else {
             // order recovery updated since ... days
