@@ -342,8 +342,8 @@ class LengowMethod
         }
     }
 
-    /**
-     * Get carrier id by country id, marketplace id and method marketplace name
+     /**
+     * Get carrier id by country id, marketplace id and method marketplace label or name
      *
      * @param int $idCountry PrestaShop country id
      * @param string $idMarketplace Lengow marketplace id
@@ -353,19 +353,32 @@ class LengowMethod
      */
     public static function getIdCarrierByMethodMarketplaceName($idCountry, $idMarketplace, $methodMarketplaceName)
     {
-        if ($methodMarketplaceName) {
-            // find in lengow marketplace method country table
+        if (!$methodMarketplaceName) {
+            return false;
+        }
+
+        $result = Db::getInstance()->getRow(
+            'SELECT lmmc.id_carrier FROM ' . _DB_PREFIX_ . 'lengow_marketplace_method_country as lmmc
+        INNER JOIN ' . _DB_PREFIX_ . 'lengow_method_marketplace as lmm
+            ON lmm.id = lmmc.id_method_marketplace
+        WHERE lmmc.id_country = ' . (int) $idCountry . '
+        AND lmmc.id_marketplace = "' . (int) $idMarketplace . '"
+        AND lmm.method_marketplace_label = "' . pSQL($methodMarketplaceName) . '"'
+        );
+
+        if (!$result) {
             $result = Db::getInstance()->getRow(
                 'SELECT lmmc.id_carrier FROM ' . _DB_PREFIX_ . 'lengow_marketplace_method_country as lmmc
-                INNER JOIN ' . _DB_PREFIX_ . 'lengow_method_marketplace as lmm
-                    ON lmm.id = lmmc.id_method_marketplace
-                WHERE lmmc.id_country = ' . (int) $idCountry . '
-                AND lmmc.id_marketplace = "' . (int) $idMarketplace . '"
-                AND lmm.method_marketplace_name = "' . pSQL($methodMarketplaceName) . '"'
+            INNER JOIN ' . _DB_PREFIX_ . 'lengow_method_marketplace as lmm
+                ON lmm.id = lmmc.id_method_marketplace
+            WHERE lmmc.id_country = ' . (int) $idCountry . '
+            AND lmmc.id_marketplace = "' . (int) $idMarketplace . '"
+            AND lmm.method_marketplace_name = "' . pSQL($methodMarketplaceName) . '"'
             );
-            if ($result) {
-                return LengowCarrier::getIdActiveCarrierByIdCarrier($result['id_carrier'], (int) $idCountry);
-            }
+        }
+
+        if ($result) {
+            return LengowCarrier::getIdActiveCarrierByIdCarrier($result['id_carrier'], (int) $idCountry);
         }
 
         return false;
