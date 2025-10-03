@@ -1,6 +1,20 @@
 # Changelog
 
 
+## [3.9.0](https://github.com/lengow/plugin-prestashop/compare/v3.8.0...v3.9.0) (2025-10-03)
+
+
+### Features
+
+* **fastOrder:** [PCMT-845] fast order import prestashop ([#63](https://github.com/lengow/plugin-prestashop/issues/63)) ([e48c894](https://github.com/lengow/plugin-prestashop/commit/e48c8942b4154aaecb2d2e3a1452f0cc9251729d))
+
+
+### Bug Fixes
+
+* **cicd:** Upgrade Release Please ([#61](https://github.com/lengow/plugin-prestashop/issues/61)) ([37e08e8](https://github.com/lengow/plugin-prestashop/commit/37e08e89b7564dbbba808c2aacbb530bca769be4))
+* **refundReason:** [PCMT-707] Fix issue on lengow_refund_reason display ([#59](https://github.com/lengow/plugin-prestashop/issues/59)) ([9cc8db1](https://github.com/lengow/plugin-prestashop/commit/9cc8db18b1f102bb0ffaed5c957017def0dc5c3d))
+* **shipping method:** [PCMT-884] Fix carrier not found with matching of shipping method - add fallback ([#64](https://github.com/lengow/plugin-prestashop/issues/64)) ([5eeea69](https://github.com/lengow/plugin-prestashop/commit/5eeea69a880e330c1ff848bbdad91af4a56c1d45))
+
 ## [3.8.1](https://github.com/lengow/plugin-prestashop/compare/v3.8.0...v3.8.1) (2025-09-01)
 
 
