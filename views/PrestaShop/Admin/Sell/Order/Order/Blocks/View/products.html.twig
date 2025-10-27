@@ -252,8 +252,8 @@
     </p>
 
     {# PRODUCT CANCEL #}
-    {% if refundReasons is not empty %}
-      <div class="cancel-product-element refund-checkboxes-container">
+    <div class="cancel-product-element refund-checkboxes-container">
+      {% if refundReasons is not empty %}
         <div class="cancel-product-element form-group refund-reason">
           <select id="lengow_refund_reason" class="form-control">
             {% for label, value in refundReasons %}
