@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.9.1](https://github.com/lengow/plugin-prestashop/compare/v3.9.0...v3.9.1) (2025-10-27)
+
+
+### Bug Fixes
+
+* **backoffice:** [PCMT-1001] adjust product block alignment in order view ([#65](https://github.com/lengow/plugin-prestashop/issues/65)) ([12b956e](https://github.com/lengow/plugin-prestashop/commit/12b956e3a4bf4e2796e141a06402fff459056547))
+
 ## [3.9.0](https://github.com/lengow/plugin-prestashop/compare/v3.8.0...v3.9.0) (2025-10-03)
 
 
