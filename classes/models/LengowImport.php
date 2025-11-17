@@ -105,6 +105,11 @@ class LengowImport
     public const MINUTE_INTERVAL_TIME = 1;
 
     /**
+     * @var string lock name for import process
+     */
+    public const LOCK_NAME = 'lengow_import_lock';
+
+    /**
      * @var bool import is processing
      */
     public static $processing;
@@ -358,14 +363,15 @@ class LengowImport
      */
     public function exec()
     {
-        $syncOk = true;
-        // get initial context type
-        $initialContextShop = Context::getContext()->shop;
-        $initialContextType = $initialContextShop::getContext();
         // checks if a synchronization is not already in progress
         if (!$this->canExecuteSynchronization()) {
             return $this->getResult();
         }
+
+        $syncOk = true;
+        // get initial context type
+        $initialContextShop = Context::getContext()->shop;
+        $initialContextType = $initialContextShop::getContext();
         // starts some processes necessary for synchronization
         $this->setupSynchronization();
         // get all active shops in Lengow for order synchronization
@@ -414,6 +420,7 @@ class LengowImport
             Context::getContext()->shop = $currentContextShop;
         }
         // complete synchronization and start all necessary processes
+        $this->releaseLock(self::LOCK_NAME);
         $this->finishSynchronization();
 
         return $result;
@@ -535,6 +542,17 @@ class LengowImport
      */
     private function canExecuteSynchronization()
     {
+        if (!$this->acquireLock(self::LOCK_NAME)) {
+            $message = LengowMain::setLogMessage(
+                'lengow_log.error.import_already_in_process',
+                ['rest_time' => self::restTimeToImport()]
+            );
+            LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput);
+            $this->errors[0] = $message;
+
+            return false;
+        }
+
         $globalError = false;
         // checks if the process can start
         if (!$this->debugMode && !$this->importOneOrder && self::isInProcess()) {
@@ -1146,5 +1164,68 @@ class LengowImport
     {
         self::$processing = false;
         LengowConfiguration::updateGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS, -1);
+    }
+
+    /**
+     * Acquire a named lock
+     *
+     * @param string    $lockName   Name of the lock
+     * @param int       $timeout    Timeout in seconds
+     *
+     * @return bool True if the lock was acquired, false otherwise
+     */
+    private function acquireLock(string $lockName, int $timeout = 0): bool
+    {
+        try {
+            $db = \Db::getInstance();
+            $result = $db->getValue(
+                'SELECT GET_LOCK("' . pSQL($lockName) . '", ' . (int) $timeout . ')'
+            );
+
+            return (bool) $result;
+
+        } catch (\Exception $e) {
+            LengowMain::log(
+                LengowLog::CODE_IMPORT,
+                LengowMain::setLogMessage(
+                    'lengow_log.error.acquire_lock_failed',
+                    ['lock_name' => $lockName, 'error_message' => $e->getMessage()]
+                ),
+                $this->logOutput
+            );
+
+            return false;
+        }
+    }
+
+    /**
+     * Release a named lock
+     *
+     * @param string    $lockName   Name of the lock
+     *
+     * @return bool True if the lock was released, false otherwise
+     */
+    private function releaseLock(string $lockName): bool
+    {
+        try {
+            $db = \Db::getInstance();
+            $result = $db->getValue(
+                'SELECT RELEASE_LOCK("' . pSQL($lockName) . '")'
+            );
+
+            return (bool) $result;
+
+        } catch (\Exception $e) {
+            LengowMain::log(
+                LengowLog::CODE_IMPORT,
+                LengowMain::setLogMessage(
+                    'lengow_log.error.release_lock_failed',
+                    ['lock_name' => $lockName, 'error_message' => $e->getMessage()]
+                ),
+                $this->logOutput
+            );
+
+            return false;
+        }
     }
 }

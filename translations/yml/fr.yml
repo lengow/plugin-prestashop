@@ -435,6 +435,8 @@ fr:
       no_billing_address: "Erreur Lengow : pas d'adresse de facturation dans cette commande"
       no_country_for_billing_address: "Erreur Lengow : l'adresse de facturation ne contient pas de pays"
       order_not_found: "Erreur Lengow : la commande n'a pas été trouvée dans le flux Lengow"
+      acquire_lock_failed: "Mysql Acquire Lock %{lock_name} failed, error %{error_message}"
+      release_lock_failed: "Mysql Release Lock %{lock_name} failed, error %{error_message}"
     exception:
       product_not_be_found: "le produit %{product_id} ne peut être trouvé"
       product_is_a_parent: "le produit %{product_id}  est un ID parent. Les déclinaisons du produit sont nécessaires"

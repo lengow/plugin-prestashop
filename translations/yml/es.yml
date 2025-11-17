@@ -435,6 +435,8 @@ es:
       no_billing_address: "Lengow error: no hay ninguna direccion en el pedido"
       no_country_for_billing_address: "Lengow error: la dirección de entrega no contiene el país"
       order_not_found: "Lengow error: el pedido puedo no ser encontrado en Lengow"
+      acquire_lock_failed: "Mysql Acquire Lock %{lock_name} failed, error %{error_message}"
+      release_lock_failed: "Mysql Release Lock %{lock_name} failed, error %{error_message}"
     exception:
       product_not_be_found: "producto %{product_id} no pudo ser encontrado"
       product_is_a_parent: "producto %{product_id} es un parent ID. La variación de productos esrequerida"
