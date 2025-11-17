@@ -435,6 +435,8 @@ it:
       no_billing_address: "Lengow error: nessun indirizzo di fatturazione nell'ordine"
       no_country_for_billing_address: "Lengow error: l'indirizzo della fatturazione non contiene nel paese"
       order_not_found: "Lengow error: l'ordine non é stato trovato in Lengow"
+      acquire_lock_failed: "Mysql Acquire Lock %{lock_name} failed, error %{error_message}"
+      release_lock_failed: "Mysql Release Lock %{lock_name} failed, error %{error_message}"
     exception:
       product_not_be_found: "prodotto %{product_id} non trovato"
       product_is_a_parent: "il prodotto %{product_id} è un ID padre. Si richiedono i prodotti varianti"
@@ -476,7 +478,7 @@ it:
       catalog: "Catalogo %{catalog_id}"
       catalog_label: "%{catalog_id} - %{catalog_name} - %{nb_products} prodotti - %{catalog_status}"
     order_action:
-      partial_refund_ready: "Rimborso parziale pronto per la linea d'ordine %{order_line_id} con i seguenti parametri: %{params}"  
+      partial_refund_ready: "Rimborso parziale pronto per la linea d'ordine %{order_line_id} con i seguenti parametri: %{params}"
   admin:
     order:
       import_lengow: "Importazione Lengow"
