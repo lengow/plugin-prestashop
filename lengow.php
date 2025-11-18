@@ -135,6 +135,15 @@ class Lengow extends Module
 
     /**
      * Hook on Home page
+     * @depercated Use hookDisplayHome instead
+     */
+    public function hookHome()
+    {
+        $this->hookClass->hookDisplayHome();
+    }
+
+    /**
+     * Hook on Home page
      */
     public function hookDisplayHome()
     {
