@@ -138,7 +138,7 @@ class Lengow extends Module
      */
     public function hookDisplayHome()
     {
-        $this->hookClass->hookHome();
+        $this->hookClass->hookDisplayHome();
     }
 
     /**

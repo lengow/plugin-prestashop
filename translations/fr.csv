@@ -402,6 +402,8 @@ lengow_log.error.no_country_for_delivery_address|Erreur Lengow : l'adresse de li
 lengow_log.error.no_billing_address|Erreur Lengow : pas d'adresse de facturation dans cette commande
 lengow_log.error.no_country_for_billing_address|Erreur Lengow : l'adresse de facturation ne contient pas de pays
 lengow_log.error.order_not_found|Erreur Lengow : la commande n'a pas été trouvée dans le flux Lengow
+lengow_log.error.acquire_lock_failed|Mysql Acquire Lock %{lock_name} failed, error %{error_message}
+lengow_log.error.release_lock_failed|Mysql Release Lock %{lock_name} failed, error %{error_message}
 lengow_log.exception.product_not_be_found|le produit %{product_id} ne peut être trouvé
 lengow_log.exception.product_is_a_parent|le produit %{product_id}  est un ID parent. Les déclinaisons du produit sont nécessaires
 lengow_log.exception.no_product_to_cart|il n'y a pas de produit ajouté au panier
