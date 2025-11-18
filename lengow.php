@@ -185,7 +185,7 @@ class Lengow extends Module
      */
     public function hookActionOrderStatusPostUpdate($args)
     {
-        $this->hookClass->hookPostUpdateOrderStatus($args);
+       $this->hookClass->hookActionOrderStatusPostUpdate($args);
     }
 
     /**

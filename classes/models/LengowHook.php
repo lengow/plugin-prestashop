@@ -113,6 +113,7 @@ class LengowHook
             'postUpdateOrderStatus' => '1.4',
             'paymentTop' => '1.4',
             'displayAdminOrder' => '1.4',
+            'home' => '1.4',
             'actionOrderStatusUpdate' => '1.4',
             'orderConfirmation' => '1.4',
             // version 1.5
@@ -120,7 +121,9 @@ class LengowHook
             // version 1.6
             'displayBackOfficeHeader' => '1.6',
             'displayAdminOrderSide' => '1.6',
+            // version 8.0
             'displayHome' => '8.0',
+            'actionOrderStatusPostUpdate' => '8.0'
         ];
         foreach ($lengowHooks as $hook => $version) {
             if ((float) $version <= (float) Tools::substr(_PS_VERSION_, 0, 3)) {
@@ -370,7 +373,7 @@ class LengowHook
      *
      * @return mixed null|void
      */
-    public function hookPostUpdateOrderStatus($args)
+    public function hookActionOrderStatusPostUpdate($args)
     {
         if (!isset($args['id_order'])) {
             return;
