@@ -402,6 +402,8 @@ lengow_log.error.no_country_for_delivery_address|Lengow error: la dirección de 
 lengow_log.error.no_billing_address|Lengow error: no hay ninguna direccion en el pedido
 lengow_log.error.no_country_for_billing_address|Lengow error: la dirección de entrega no contiene el país
 lengow_log.error.order_not_found|Lengow error: el pedido puedo no ser encontrado en Lengow
+lengow_log.error.acquire_lock_failed|Mysql Acquire Lock %{lock_name} failed, error %{error_message}
+lengow_log.error.release_lock_failed|Mysql Release Lock %{lock_name} failed, error %{error_message}
 lengow_log.exception.product_not_be_found|producto %{product_id} no pudo ser encontrado
 lengow_log.exception.product_is_a_parent|producto %{product_id} es un parent ID. La variación de productos esrequerida
 lengow_log.exception.no_product_to_cart|ningún producto añadido a la cesta

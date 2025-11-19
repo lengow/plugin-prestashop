@@ -121,6 +121,9 @@ class LengowHook
             // version 1.6
             'displayBackOfficeHeader' => '1.6',
             'displayAdminOrderSide' => '1.6',
+            // version 8.0
+            'displayHome' => '8.0',
+            'actionOrderStatusPostUpdate' => '8.0'
         ];
         foreach ($lengowHooks as $hook => $version) {
             if ((float) $version <= (float) Tools::substr(_PS_VERSION_, 0, 3)) {
@@ -156,7 +159,7 @@ class LengowHook
     /**
      * Hook on Home page
      */
-    public function hookHome()
+    public function hookDisplayHome()
     {
         self::$currentPageType = self::LENGOW_TRACK_HOMEPAGE;
     }
@@ -370,7 +373,7 @@ class LengowHook
      *
      * @return mixed null|void
      */
-    public function hookPostUpdateOrderStatus($args)
+    public function hookActionOrderStatusPostUpdate($args)
     {
         if (!isset($args['id_order'])) {
             return;

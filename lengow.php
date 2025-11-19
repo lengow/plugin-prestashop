@@ -45,7 +45,7 @@ class Lengow extends Module
     {
         $this->name = 'lengow';
         $this->tab = 'export';
-        $this->version = '3.9.1'; // x-release-please-version
+        $this->version = '3.9.2'; // x-release-please-version
         $this->author = 'Lengow';
         $this->module_key = '__LENGOW_PRESTASHOP_PRODUCT_KEY__';
         $this->ps_versions_compliancy = [
@@ -135,10 +135,19 @@ class Lengow extends Module
 
     /**
      * Hook on Home page
+     * @depercated Use hookDisplayHome instead
+     */
+    public function hookHome()
+    {
+        $this->hookClass->hookDisplayHome();
+    }
+
+    /**
+     * Hook on Home page
      */
     public function hookDisplayHome()
     {
-        $this->hookClass->hookHome();
+        $this->hookClass->hookDisplayHome();
     }
 
     /**
@@ -185,7 +194,7 @@ class Lengow extends Module
      */
     public function hookActionOrderStatusPostUpdate($args)
     {
-        $this->hookClass->hookPostUpdateOrderStatus($args);
+       $this->hookClass->hookActionOrderStatusPostUpdate($args);
     }
 
     /**

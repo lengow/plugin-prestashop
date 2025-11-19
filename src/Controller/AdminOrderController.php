@@ -81,6 +81,9 @@ class AdminOrderController extends OrderController
     public function viewAction(int $orderId, Request $request): Response
     {
         try {
+            if (!$this->isFromLengow($orderId)) {
+                return parent::viewAction($orderId, $request);
+            }
             /** @var OrderForViewing $orderForViewing */
             $orderForViewing = $this->getQueryBus()->handle(new GetOrderForViewing($orderId, QuerySorting::DESC));
         } catch (OrderException $e) {

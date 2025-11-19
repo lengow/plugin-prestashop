@@ -402,6 +402,8 @@ lengow_log.error.no_country_for_delivery_address|Lengow error: delivery address 
 lengow_log.error.no_billing_address|Lengow error: no billing address in the order
 lengow_log.error.no_country_for_billing_address|Lengow error: billing address doesn't contain the country
 lengow_log.error.order_not_found|Lengow error: order cannot be found in Lengow feed
+lengow_log.error.acquire_lock_failed|Mysql Acquire Lock %{lock_name} failed, error %{error_message}
+lengow_log.error.release_lock_failed|Mysql Release Lock %{lock_name} failed, error %{error_message}
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
 lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation is needed
 lengow_log.exception.no_product_to_cart|no product to be added to cart

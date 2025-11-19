@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.9.2](https://github.com/lengow/plugin-prestashop/compare/v3.9.1...v3.9.2) (2025-11-17)
+
+
+### Bug Fixes
+
+* **importOrders:** [PCMT-1059] prestashop order duplicated in the cms ([#67](https://github.com/lengow/plugin-prestashop/issues/67)) ([5655fc6](https://github.com/lengow/plugin-prestashop/commit/5655fc64db6cf2591bf5b31d6b7847b718a1f31b))
+
 ## [3.9.1](https://github.com/lengow/plugin-prestashop/compare/v3.9.0...v3.9.1) (2025-10-27)
 
 
