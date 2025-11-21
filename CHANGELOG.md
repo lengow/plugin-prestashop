@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.9.3](https://github.com/lengow/plugin-prestashop/compare/v3.9.2...v3.9.3) (2025-11-21)
+
+
+### Bug Fixes
+
+* **install:** [PCMT-1074] Fix back office route by flushing caches on install/uninstall ([#69](https://github.com/lengow/plugin-prestashop/issues/69)) ([f23a15e](https://github.com/lengow/plugin-prestashop/commit/f23a15e94f16ed13e6653f6c2822e6eda4f88583))
+
 ## [3.9.2](https://github.com/lengow/plugin-prestashop/compare/v3.9.1...v3.9.2) (2025-11-17)
 
 
