@@ -190,7 +190,6 @@ class LengowInstall
         if (version_compare(_PS_VERSION_, '1.7.8.0', '<')) {
             return false;
         }
-        $this->clearCaches();
         LengowMain::log(
             LengowLog::CODE_INSTALL,
             LengowMain::setLogMessage('log.install.install_start', ['version' => $this->lengowModule->version])
@@ -204,7 +203,6 @@ class LengowInstall
             LengowMain::setLogMessage('log.install.install_end', ['version' => $this->lengowModule->version])
         );
         $this->createLengowCustomerGroup();
-        $this->clearCaches();
 
         return true;
     }
@@ -225,9 +223,36 @@ class LengowInstall
             LengowLog::CODE_UNINSTALL,
             LengowMain::setLogMessage('log.uninstall.uninstall_end', ['version' => $this->lengowModule->version])
         );
-        $this->clearCaches();
+
 
         return true;
+    }
+
+    /**
+     * Clear PrestaShop caches
+     * general cache, asset cache, smarty cache, symfony cache
+     */
+    public function clearCaches()
+    {
+        try {
+            Tools::clearCache(); // Clears PrestaShop general cache
+            Media::clearCache(); // Clears asset cache (CSS, JS)
+            Tools::clearSmartyCache(); // Clears Smarty cache compiled templates
+            Tools::clearSf2Cache(); // Clears symfony cache
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.clear_cache_success')
+            );
+
+        } catch (Exception $e) {
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage(
+                    'log.install.clear_cache_failed',
+                    ['error_message' => $e->getMessage()]
+                )
+            );
+        }
     }
 
     /**
@@ -1115,33 +1140,6 @@ class LengowInstall
             $group->date_add = date('Y-m-d H:i:s');
             $group->date_upd = date('Y-m-d H:i:s');
             $group->save();
-        }
-    }
-
-    /**
-     * Clear PrestaShop caches
-     * general cache, asset cache, smarty cache, symfony cache
-     */
-    private function clearCaches()
-    {
-        try {
-            Tools::clearCache(); // Clears PrestaShop general cache
-            Media::clearCache(); // Clears asset cache (CSS, JS)
-            Tools::clearSmartyCache(); // Clears Smarty cache compiled templates
-            Tools::clearSfCache(); // Clears symfony cache
-            LengowMain::log(
-                LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage('log.install.clear_cache_success')
-            );
-
-        } catch (Exception $e) {
-            LengowMain::log(
-                LengowLog::CODE_INSTALL,
-                LengowMain::setLogMessage(
-                    'log.install.clear_cache_failed',
-                    ['error_message' => $e->getMessage()]
-                )
-            );
         }
     }
 }
