@@ -14,6 +14,8 @@ en:
       update_start: "## start updating for version %{old_version} to %{new_version} ##"
       update_end: "## end updating for version %{old_version} to %{new_version} ##"
       add_upgrade_version: "adding SQL patch required for the plugin version %{version}"
+      clear_cache_success: "cache successfully cleared"
+      clear_cache_failed: "WARNING ! cache could NOT be cleared : %{error_message}"
     uninstall:
       uninstall_start: "## start uninstall for version %{version} ##"
       uninstall_end: "## end uninstall for version %{version} ##"
