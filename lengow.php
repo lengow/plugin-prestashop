@@ -65,10 +65,17 @@ class Lengow extends Module
         $this->hookClass = new LengowHook($this);
 
         if (self::isInstalled($this->name)) {
-            $oldVersion = LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION);
+            $oldVersion = LengowConfiguration::getGlobalValue(
+                LengowConfiguration::PLUGIN_VERSION
+            );
             if ($oldVersion !== $this->version) {
-                LengowConfiguration::updateGlobalValue(LengowConfiguration::PLUGIN_VERSION, $this->version);
+                $this->installClass->clearCaches();
+                LengowConfiguration::updateGlobalValue(
+                    LengowConfiguration::PLUGIN_VERSION,
+                    $this->version
+                );
                 $this->installClass->update($oldVersion);
+                $this->installClass->clearCaches();
             }
         }
 
@@ -94,11 +101,14 @@ class Lengow extends Module
      */
     public function install()
     {
+        $this->installClass->clearCaches();
         if (!parent::install()) {
             return false;
         }
+        $isInstalled = $this->installClass->install();
+        $this->installClass->clearCaches();
 
-        return $this->installClass->install();
+        return $isInstalled;
     }
 
     /**
@@ -108,11 +118,14 @@ class Lengow extends Module
      */
     public function uninstall()
     {
+        $this->installClass->clearCaches();
         if (!parent::uninstall()) {
             return false;
         }
+        $isUninstalled = $this->installClass->uninstall();
+        $this->installClass->clearCaches();
 
-        return $this->installClass->uninstall();
+        return $isUninstalled;
     }
 
     /**
@@ -122,7 +135,11 @@ class Lengow extends Module
      */
     public function reset()
     {
-        return $this->installClass->reset();
+        $this->installClass->clearCaches();
+        $isReset = $this->installClass->reset();
+        $this->installClass->clearCaches();
+
+        return $isReset;
     }
 
     /**
