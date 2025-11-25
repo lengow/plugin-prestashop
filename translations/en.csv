@@ -484,6 +484,8 @@ log.install.registering_hook_error|registering hook - %{hook}: error
 log.install.update_start|## start updating for version %{old_version} to %{new_version} ##
 log.install.update_end|## end updating for version %{old_version} to %{new_version} ##
 log.install.add_upgrade_version|adding SQL patch required for the plugin version %{version}
+log.install.clear_cache_success|cache successfully cleared
+log.install.clear_cache_failed|WARNING ! cache could NOT be cleared : %{error_message}
 log.uninstall.uninstall_start|## start uninstall for version %{version} ##
 log.uninstall.uninstall_end|## end uninstall for version %{version} ##
 log.uninstall.dump_sql_created|creating the sql backup of lengow tables
