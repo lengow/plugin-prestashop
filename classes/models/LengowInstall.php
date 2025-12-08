@@ -1116,8 +1116,8 @@ class LengowInstall
     }
 
     /**
-     * Create Lengow customer group if not exists
-     */
+    * Create Lengow customer group if not exists
+    */
     private function createLengowCustomerGroup()
     {
         $marketplaceGroupId = null;
@@ -1130,10 +1130,10 @@ class LengowInstall
         }
         if (is_null($marketplaceGroupId)) {
             $group = new Group();
-            $group->name = array_fill_keys(
-                array_keys(Language::getLanguages(false)),
-                LengowCustomer::LENGOW_GROUP_NAME
-            );
+            $languages = Language::getLanguages(false);
+            foreach ($languages as $language) {
+                $group->name[$language['id_lang']] = LengowCustomer::LENGOW_GROUP_NAME;
+            }
             $group->reduction = 0;
             $group->price_display_method = PS_TAX_EXC;
             $group->show_prices = 1;
