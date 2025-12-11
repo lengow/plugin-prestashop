@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.9.4](https://github.com/lengow/plugin-prestashop/compare/v3.9.3...v3.9.4) (2025-12-08)
+
+
+### Bug Fixes
+
+* **install:** [PCMT-1182] fix installation of plugin ([#72](https://github.com/lengow/plugin-prestashop/issues/72)) ([1acfd7a](https://github.com/lengow/plugin-prestashop/commit/1acfd7a9dbc95b2f1559d2feaa602f5d52849575))
+
 ## [3.9.3](https://github.com/lengow/plugin-prestashop/compare/v3.9.2...v3.9.3) (2025-11-21)
 
 
