@@ -42,13 +42,37 @@ class AdminLengowHomeController extends ModuleAdminController
     }
     
     /**
-     * Redirect to Symfony controller
+     * Render the page with Twig
      */
     public function initContent()
     {
-        // Redirect to Symfony controller
-        $router = $this->get('router');
-        $url = $router->generate('lengow_admin_home');
-        Tools::redirect($url);
+        parent::initContent();
+        
+        // Process business logic
+        $lengowController = new LengowHomeController();
+        $lengowController->postProcess();
+        
+        // Check if we should redirect to dashboard
+        $isNewMerchant = LengowConfiguration::isNewMerchant();
+        if (!$isNewMerchant) {
+            $lengowLink = new LengowLink();
+            Tools::redirect($lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
+            return;
+        }
+        
+        // Prepare data for Twig template
+        $locale = new LengowTranslation();
+        $module = Module::getInstanceByName('lengow');
+        $lengowLink = new LengowLink();
+        
+        $this->context->smarty->assign([
+            'locale' => $locale,
+            'lengowPathUri' => $module->getPathUri(),
+            'lengow_ajax_link' => $lengowLink->getAbsoluteAdminLink('AdminLengowHome'),
+            'displayToolbar' => 0,
+        ]);
+        
+        // Use Twig template
+        $this->setTemplate('module:lengow/views/templates/admin/home/index.html.twig');
     }
 }

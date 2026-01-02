@@ -42,12 +42,43 @@ class AdminLengowDashboardController extends ModuleAdminController
     }
     
     /**
-     * Redirect to Symfony controller
+     * Render the page with Twig
      */
     public function initContent()
     {
-        $router = $this->get('router');
-        $url = $router->generate('lengow_admin_dashboard');
-        Tools::redirect($url);
+        parent::initContent();
+        
+        // Process business logic
+        $lengowController = new LengowDashboardController();
+        $lengowController->postProcess();
+        
+        // Prepare data for Twig template
+        $locale = new LengowTranslation();
+        $lengowLink = new LengowLink();
+        $module = Module::getInstanceByName('lengow');
+        
+        $action = Tools::getValue('action');
+        if ($action === 'refresh_status') {
+            LengowSync::getStatusAccount(true);
+            Tools::redirect($lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
+            return;
+        }
+        
+        $this->context->smarty->assign([
+            'locale' => $locale,
+            'lengowPathUri' => $module->getPathUri(),
+            'lengowUrl' => LengowConfiguration::getLengowUrl(),
+            'lengow_link' => $lengowLink,
+            'merchantStatus' => LengowSync::getStatusAccount(),
+            'pluginData' => LengowSync::getPluginData(),
+            'pluginIsUpToDate' => LengowSync::isPluginUpToDate(),
+            'displayToolbar' => 1,
+            'current_controller' => 'LengowDashboardController',
+            'total_pending_order' => LengowOrder::countOrderToBeSent(),
+            'refresh_status' => $lengowLink->getAbsoluteAdminLink('AdminLengowDashboard') . '&action=refresh_status',
+        ]);
+        
+        // Use Twig template
+        $this->setTemplate('module:lengow/views/templates/admin/dashboard/index.html.twig');
     }
 }

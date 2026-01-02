@@ -2,31 +2,32 @@
 
 ## Ce qui a été fait ✅
 
-### 1. Infrastructure Symfony complète
-- **9 contrôleurs Symfony** créés dans `src/Controller/` pour toutes les pages admin
-- **Toutes les routes** définies dans `config/routes.yml`
-- **Templates Twig de base** créés dans `views/templates/admin/`
+### 1. Migration vers Twig dans les contrôleurs legacy
+- **9 contrôleurs admin** modifiés dans `controllers/admin/` pour utiliser Twig au lieu de Smarty
+- Les contrôleurs utilisent `setTemplate('module:lengow/views/templates/admin/...')` pour charger les templates Twig
+- La logique métier existante est préservée via les classes `Lengow*Controller`
 - **Compatibilité PrestaShop 9** : version max mise à jour à 9.99.99
 
-### 2. Contrôleurs créés
-| Page | Contrôleur Symfony | Route | Legacy Controller |
-|------|-------------------|-------|-------------------|
-| Dashboard | AdminDashboardController | `/modules/lengow/dashboard` | AdminLengowDashboardController |
-| Home/Connexion | AdminHomeController | `/modules/lengow/home` | AdminLengowHomeController |
-| Produits/Feed | AdminFeedController | `/modules/lengow/feed` | AdminLengowFeedController |
-| Commandes | AdminOrdersController | `/modules/lengow/orders` | AdminLengowOrderController |
-| Paramètres principaux | AdminMainSettingController | `/modules/lengow/settings` | AdminLengowMainSettingController |
-| Paramètres commandes | AdminOrderSettingController | `/modules/lengow/order-settings` | AdminLengowOrderSettingController |
-| Toolbox | AdminToolboxController | `/modules/lengow/toolbox` | AdminLengowToolboxController |
-| Mentions légales | AdminLegalsController | `/modules/lengow/legals` | AdminLengowLegalsController |
-| Aide | AdminHelpController | `/modules/lengow/help` | AdminLengowHelpController |
+### 2. Contrôleurs modifiés
+| Page | Contrôleur Admin | Template Twig | Business Controller |
+|------|-----------------|---------------|---------------------|
+| Dashboard | AdminLengowDashboardController | dashboard/index.html.twig | LengowDashboardController |
+| Home/Connexion | AdminLengowHomeController | home/index.html.twig | LengowHomeController |
+| Produits/Feed | AdminLengowFeedController | feed/index.html.twig | LengowFeedController |
+| Commandes | AdminLengowOrderController | orders/index.html.twig | LengowOrderController |
+| Paramètres principaux | AdminLengowMainSettingController | main_setting/index.html.twig | LengowMainSettingController |
+| Paramètres commandes | AdminLengowOrderSettingController | order_setting/index.html.twig | LengowOrderSettingController |
+| Toolbox | AdminLengowToolboxController | toolbox/index.html.twig | LengowToolboxController |
+| Mentions légales | AdminLengowLegalsController | legals/index.html.twig | LengowLegalsController |
+| Aide | AdminLengowHelpController | help/index.html.twig | LengowHelpController |
 
-### 3. Approche de migration progressive
-Les contrôleurs Symfony actuels :
-- Délèguent la logique métier aux classes `Lengow*Controller` existantes
-- Gèrent le routing moderne via Symfony
-- Préparent les données pour les templates Twig
-- Conservent la compatibilité avec la logique existante
+### 3. Approche de migration corrigée
+**Utilisation des ModuleAdminController avec Twig** :
+- Les contrôleurs restent dans `controllers/admin/` (structure PrestaShop standard)
+- Les URLs legacy fonctionnent : `?controller=AdminLengowHome&token=...`
+- Les contrôleurs utilisent `initContent()` pour préparer les données
+- Les templates Twig sont chargés via `setTemplate('module:lengow/...')`
+- Pas de redirection - rendu direct avec Twig
 
 ### 4. Templates Twig créés
 Structure de base créée :
@@ -35,8 +36,12 @@ Structure de base créée :
 - `_partials/footer.html.twig` - Footer
 - Templates individuels pour chaque page (structure minimale)
 
-### 5. Redirections legacy
-Les contrôleurs `controllers/admin/AdminLengow*.php` redirigent maintenant vers les routes Symfony via `initContent()`.
+### 5. Contrôleurs Symfony (optionnels)
+Les contrôleurs Symfony dans `src/Controller/` peuvent être utilisés pour :
+- Routes API personnalisées
+- Actions AJAX spécifiques
+- Endpoints REST
+Ils ne sont pas utilisés pour les pages admin principales.
 
 ## Ce qui reste à faire 📋
 

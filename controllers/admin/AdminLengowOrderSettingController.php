@@ -42,12 +42,35 @@ class AdminLengowOrderSettingController extends ModuleAdminController
     }
     
     /**
-     * Redirect to Symfony controller
+     * Render the page with Twig
      */
     public function initContent()
     {
-        $router = $this->get('router');
-        $url = $router->generate('lengow_admin_order_setting');
-        Tools::redirect($url);
+        parent::initContent();
+        
+        // Process business logic
+        $lengowController = new LengowOrderSettingController();
+        $lengowController->postProcess();
+        
+        // Prepare data for Twig template
+        $locale = new LengowTranslation();
+        $lengowLink = new LengowLink();
+        $module = Module::getInstanceByName('lengow');
+        
+        $this->context->smarty->assign([
+            'locale' => $locale,
+            'lengowPathUri' => $module->getPathUri(),
+            'lengowUrl' => LengowConfiguration::getLengowUrl(),
+            'lengow_link' => $lengowLink,
+            'displayToolbar' => 1,
+            'current_controller' => 'LengowOrderSettingController',
+            'total_pending_order' => LengowOrder::countOrderToBeSent(),
+            'merchantStatus' => LengowSync::getStatusAccount(),
+            'pluginData' => LengowSync::getPluginData(),
+            'pluginIsUpToDate' => LengowSync::isPluginUpToDate(),
+        ]);
+        
+        // Use Twig template
+        $this->setTemplate('module:lengow/views/templates/admin/order_setting/index.html.twig');
     }
 }
