@@ -5,29 +5,30 @@
 ### 1. Migration vers Twig dans les contrôleurs legacy
 - **9 contrôleurs admin** modifiés dans `controllers/admin/` pour utiliser Twig au lieu de Smarty
 - Les contrôleurs utilisent `setTemplate('module:lengow/views/templates/admin/...')` pour charger les templates Twig
-- La logique métier existante est préservée via les classes `Lengow*Controller`
+- Les données sont préparées directement dans `initContent()` sans appeler les méthodes legacy
 - **Compatibilité PrestaShop 9** : version max mise à jour à 9.99.99
+- **Erreurs corrigées** : Plus d'appels à des méthodes protégées, pas de conflits avec exit()
 
 ### 2. Contrôleurs modifiés
-| Page | Contrôleur Admin | Template Twig | Business Controller |
-|------|-----------------|---------------|---------------------|
-| Dashboard | AdminLengowDashboardController | dashboard/index.html.twig | LengowDashboardController |
-| Home/Connexion | AdminLengowHomeController | home/index.html.twig | LengowHomeController |
-| Produits/Feed | AdminLengowFeedController | feed/index.html.twig | LengowFeedController |
-| Commandes | AdminLengowOrderController | orders/index.html.twig | LengowOrderController |
-| Paramètres principaux | AdminLengowMainSettingController | main_setting/index.html.twig | LengowMainSettingController |
-| Paramètres commandes | AdminLengowOrderSettingController | order_setting/index.html.twig | LengowOrderSettingController |
-| Toolbox | AdminLengowToolboxController | toolbox/index.html.twig | LengowToolboxController |
-| Mentions légales | AdminLengowLegalsController | legals/index.html.twig | LengowLegalsController |
-| Aide | AdminLengowHelpController | help/index.html.twig | LengowHelpController |
+| Page | Contrôleur Admin | Template Twig | État |
+|------|-----------------|---------------|------|
+| Dashboard | AdminLengowDashboardController | dashboard/index.html.twig | ✅ Charge sans erreur |
+| Home/Connexion | AdminLengowHomeController | home/index.html.twig | ✅ Charge sans erreur |
+| Produits/Feed | AdminLengowFeedController | feed/index.html.twig | ✅ Charge sans erreur |
+| Commandes | AdminLengowOrderController | orders/index.html.twig | ✅ Charge sans erreur |
+| Paramètres principaux | AdminLengowMainSettingController | main_setting/index.html.twig | ✅ Charge sans erreur |
+| Paramètres commandes | AdminLengowOrderSettingController | order_setting/index.html.twig | ✅ Charge sans erreur |
+| Toolbox | AdminLengowToolboxController | toolbox/index.html.twig | ✅ Charge sans erreur |
+| Mentions légales | AdminLengowLegalsController | legals/index.html.twig | ✅ Charge sans erreur |
+| Aide | AdminLengowHelpController | help/index.html.twig | ✅ Charge sans erreur |
 
 ### 3. Approche de migration corrigée
 **Utilisation des ModuleAdminController avec Twig** :
 - Les contrôleurs restent dans `controllers/admin/` (structure PrestaShop standard)
 - Les URLs legacy fonctionnent : `?controller=AdminLengowHome&token=...`
-- Les contrôleurs utilisent `initContent()` pour préparer les données
+- Les contrôleurs préparent les données directement dans `initContent()`
 - Les templates Twig sont chargés via `setTemplate('module:lengow/...')`
-- Pas de redirection - rendu direct avec Twig
+- Pas de redirections - rendu direct avec Twig
 
 ### 4. Templates Twig créés
 Structure de base créée :
@@ -44,6 +45,38 @@ Les contrôleurs Symfony dans `src/Controller/` peuvent être utilisés pour :
 Ils ne sont pas utilisés pour les pages admin principales.
 
 ## Ce qui reste à faire 📋
+
+### 1. Actions AJAX et formulaires à réimplémenter
+
+#### Actions critiques manquantes (à restaurer) :
+**AdminLengowHomeController** :
+- `go_to_credentials` - Affichage du formulaire de connexion
+- `connect_cms` - Connexion au CMS Lengow
+- `go_to_catalog` - Sélection des catalogues
+- `link_catalogs` - Liaison des catalogues
+
+**AdminLengowDashboardController** :
+- `remind_me_later` - Report de la notification de mise à jour
+
+**AdminLengowFeedController, AdminLengowOrderController, etc.** :
+- Diverses actions AJAX pour filtres, exports, imports, etc.
+
+**Solutions possibles** :
+1. Créer des méthodes AJAX séparées dans les contrôleurs admin
+2. Utiliser les contrôleurs Symfony pour gérer les endpoints AJAX
+3. Ajouter des méthodes `processAjax()` dans les contrôleurs admin
+
+### 2. Variables template manquantes
+
+Variables de `prepareDisplay()` non assignées :
+- `showPluginUpgradeModal`
+- `lengowModalAjaxLink`
+- `helpCenterLink`, `updateGuideLink`, `changelogLink`, `supportLink`
+- `multiShop`, `debugMode`
+- `isNewMerchant`
+- Et autres variables spécifiques à chaque page
+
+### 3. Migration complète du contenu des templates
 
 ### 1. Migration complète du contenu des templates
 Les templates Twig actuels contiennent des placeholders. Il faut migrer :
