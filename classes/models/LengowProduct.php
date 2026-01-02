@@ -321,7 +321,7 @@ class LengowProduct extends Product
             foreach ($combinations as $c) {
                 $attributeId = $c['id_product_attribute'];
                 $priceToConvert = Tools::convertPrice($c['price'], $this->context->currency);
-                $price = Tools::displayPrice($priceToConvert, $this->context->currency);
+                $price = $this->formatPrice($priceToConvert, $this->context->currency);
                 if (array_key_exists($attributeId, $combArray)) {
                     $combArray[$attributeId]['attributes'][$c['group_name']] = [
                         $c['group_name'],
@@ -1076,5 +1076,34 @@ class LengowProduct extends Product
             return $result[0]['name'];
         }
         throw new LengowException(LengowMain::setLogMessage('log.export.error_cant_find_image_size'));
+    }
+
+    /**
+     * Format price for display (PrestaShop 9 compatibility)
+     *
+     * @param float $price Price to format
+     * @param Currency|null $currency Currency object (optional)
+     *
+     * @return string Formatted price
+     */
+    protected function formatPrice($price, $currency = null)
+    {
+        if ($currency === null) {
+            $currency = $this->context->currency;
+        }
+
+        // Use PrestaShop's locale system if available (PS 1.7.6+)
+        if (method_exists($this->context, 'getCurrentLocale')) {
+            return $this->context->getCurrentLocale()->formatPrice(
+                $price,
+                $currency->iso_code
+            );
+        }
+
+        // Fallback for older PrestaShop versions
+        return Tools::displayPriceSmarty([
+            'price' => $price,
+            'currency' => $currency,
+        ], null);
     }
 }

@@ -313,9 +313,10 @@ class LengowList
                         break;
                     case 'price':
                         if (isset($item['currency'])) {
-                            $value = Tools::displayPrice($item[$key], $this->getCurrencyByCode($item['currency']));
+                            $currency = $this->getCurrencyByCode($item['currency']);
+                            $value = $this->formatPrice($item[$key], $currency);
                         } else {
-                            $value = Tools::displayPrice($item[$key]);
+                            $value = $this->formatPrice($item[$key]);
                         }
                         break;
                     case 'switch_product':
@@ -717,5 +718,34 @@ class LengowList
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * Format price for display (PrestaShop 9 compatibility)
+     *
+     * @param float $price Price to format
+     * @param Currency|null $currency Currency object (optional)
+     *
+     * @return string Formatted price
+     */
+    protected function formatPrice($price, $currency = null)
+    {
+        if ($currency === null) {
+            $currency = $this->context->currency;
+        }
+
+        // Use PrestaShop's locale system if available (PS 1.7.6+)
+        if (method_exists($this->context, 'getCurrentLocale')) {
+            return $this->context->getCurrentLocale()->formatPrice(
+                $price,
+                $currency->iso_code
+            );
+        }
+
+        // Fallback for older PrestaShop versions
+        return Tools::displayPriceSmarty([
+            'price' => $price,
+            'currency' => $currency,
+        ], null);
     }
 }
