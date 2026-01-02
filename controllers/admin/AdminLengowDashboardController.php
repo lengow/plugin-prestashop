@@ -48,21 +48,23 @@ class AdminLengowDashboardController extends ModuleAdminController
     {
         parent::initContent();
         
-        // Process business logic
+        // Handle refresh_status action before processing to avoid double execution
+        $action = Tools::getValue('action');
+        if ($action === 'refresh_status') {
+            LengowSync::getStatusAccount(true);
+            $lengowLink = new LengowLink();
+            Tools::redirect($lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
+            return;
+        }
+        
+        // Process business logic (will skip the action since we already handled it)
         $lengowController = new LengowDashboardController();
-        $lengowController->postProcess();
+        $lengowController->prepareDisplay();
         
         // Prepare data for Twig template
         $locale = new LengowTranslation();
         $lengowLink = new LengowLink();
         $module = Module::getInstanceByName('lengow');
-        
-        $action = Tools::getValue('action');
-        if ($action === 'refresh_status') {
-            LengowSync::getStatusAccount(true);
-            Tools::redirect($lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
-            return;
-        }
         
         $this->context->smarty->assign([
             'locale' => $locale,

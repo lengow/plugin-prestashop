@@ -48,17 +48,17 @@ class AdminLengowHomeController extends ModuleAdminController
     {
         parent::initContent();
         
-        // Process business logic
-        $lengowController = new LengowHomeController();
-        $lengowController->postProcess();
-        
-        // Check if we should redirect to dashboard
+        // Check if we should redirect to dashboard (before processing)
         $isNewMerchant = LengowConfiguration::isNewMerchant();
         if (!$isNewMerchant) {
             $lengowLink = new LengowLink();
             Tools::redirect($lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
             return;
         }
+        
+        // Process business logic
+        $lengowController = new LengowHomeController();
+        $lengowController->postProcess();
         
         // Prepare data for Twig template
         $locale = new LengowTranslation();
