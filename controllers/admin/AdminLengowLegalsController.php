@@ -31,18 +31,11 @@ class AdminLengowLegalsController extends ModuleAdminController
      */
     public function __construct()
     {
-        $this->lang = true;
-        $this->explicitSelect = true;
-        $this->lite_display = true;
-        $this->meta_title = 'Legals';
-        $this->list_no_link = true;
-        $this->template = 'layout.tpl';
-        $this->display = 'view';
-
         parent::__construct();
-
-        $lengowController = new LengowLegalsController();
-        $lengowController->postProcess();
-        $lengowController->display();
+        
+        // Redirect to Symfony controller
+        $router = $this->get('router');
+        $url = $router->generate('lengow_admin_legals');
+        Tools::redirect($url);
     }
 }

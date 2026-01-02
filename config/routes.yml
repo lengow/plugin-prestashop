@@ -34,3 +34,105 @@ lengow_save_refund_mode:
   methods: [ POST ]
   defaults:
     _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::saveRefundMode'
+
+# Lengow Dashboard
+lengow_admin_dashboard:
+  path: /modules/lengow/dashboard
+  methods: [ GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminDashboardController::indexAction'
+    _legacy_controller: AdminLengowDashboard
+
+lengow_admin_dashboard_remind:
+  path: /modules/lengow/dashboard/remind-me-later
+  methods: [ POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminDashboardController::remindMeLaterAction'
+
+# Lengow Home/Connection
+lengow_admin_home:
+  path: /modules/lengow/home
+  methods: [ GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminHomeController::indexAction'
+    _legacy_controller: AdminLengowHome
+
+lengow_admin_home_ajax:
+  path: /modules/lengow/home/ajax
+  methods: [ POST, GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminHomeController::ajaxAction'
+
+# Lengow Feed/Product
+lengow_admin_feed:
+  path: /modules/lengow/feed
+  methods: [ GET, POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminFeedController::indexAction'
+    _legacy_controller: AdminLengowFeed
+
+lengow_admin_feed_ajax:
+  path: /modules/lengow/feed/ajax
+  methods: [ POST, GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminFeedController::ajaxAction'
+
+# Lengow Orders
+lengow_admin_orders:
+  path: /modules/lengow/orders
+  methods: [ GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::indexAction'
+    _legacy_controller: AdminLengowOrder
+
+lengow_admin_orders_ajax:
+  path: /modules/lengow/orders/ajax
+  methods: [ POST, GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::ajaxAction'
+
+# Lengow Main Settings
+lengow_admin_main_setting:
+  path: /modules/lengow/settings
+  methods: [ GET, POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminMainSettingController::indexAction'
+    _legacy_controller: AdminLengowMainSetting
+
+# Lengow Order Settings
+lengow_admin_order_setting:
+  path: /modules/lengow/order-settings
+  methods: [ GET, POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderSettingController::indexAction'
+    _legacy_controller: AdminLengowOrderSetting
+
+lengow_admin_order_setting_ajax:
+  path: /modules/lengow/order-settings/ajax
+  methods: [ POST, GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderSettingController::ajaxAction'
+
+# Lengow Toolbox
+lengow_admin_toolbox:
+  path: /modules/lengow/toolbox
+  methods: [ GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminToolboxController::indexAction'
+    _legacy_controller: AdminLengowToolbox
+
+# Lengow Legals
+lengow_admin_legals:
+  path: /modules/lengow/legals
+  methods: [ GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminLegalsController::indexAction'
+    _legacy_controller: AdminLengowLegals
+
+# Lengow Help
+lengow_admin_help:
+  path: /modules/lengow/help
+  methods: [ GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminHelpController::indexAction'
+    _legacy_controller: AdminLengowHelp

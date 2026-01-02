@@ -31,18 +31,11 @@ class AdminLengowToolboxController extends ModuleAdminController
      */
     public function __construct()
     {
-        $this->lang = true;
-        $this->explicitSelect = true;
-        $this->lite_display = true;
-        $this->meta_title = 'Toolbox';
-        $this->list_no_link = true;
-        $this->template = 'layout.tpl';
-        $this->display = 'view';
-
         parent::__construct();
-
-        $lengowController = new LengowToolboxController();
-        $lengowController->postProcess();
-        $lengowController->display();
+        
+        // Redirect to Symfony controller
+        $router = $this->get('router');
+        $url = $router->generate('lengow_admin_toolbox');
+        Tools::redirect($url);
     }
 }

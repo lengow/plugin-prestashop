@@ -31,18 +31,11 @@ class AdminLengowHelpController extends ModuleAdminController
      */
     public function __construct()
     {
-        $this->lang = true;
-        $this->explicitSelect = true;
-        $this->lite_display = true;
-        $this->meta_title = 'Configuration';
-        $this->list_no_link = true;
-        $this->template = 'layout.tpl';
-        $this->display = 'view';
-
         parent::__construct();
-
-        $lengowController = new LengowHelpController();
-        $lengowController->postProcess();
-        $lengowController->display();
+        
+        // Redirect to Symfony controller
+        $router = $this->get('router');
+        $url = $router->generate('lengow_admin_help');
+        Tools::redirect($url);
     }
 }
