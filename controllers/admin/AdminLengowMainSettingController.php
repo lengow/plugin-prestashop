@@ -48,10 +48,6 @@ class AdminLengowMainSettingController extends ModuleAdminController
     {
         parent::initContent();
         
-        // Process business logic
-        $lengowController = new LengowMainSettingController();
-        $lengowController->postProcess();
-        
         // Prepare data for Twig template
         $locale = new LengowTranslation();
         $lengowLink = new LengowLink();

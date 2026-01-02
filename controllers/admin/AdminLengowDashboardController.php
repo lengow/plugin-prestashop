@@ -48,7 +48,7 @@ class AdminLengowDashboardController extends ModuleAdminController
     {
         parent::initContent();
         
-        // Handle refresh_status action before processing to avoid double execution
+        // Handle refresh_status action
         $action = Tools::getValue('action');
         if ($action === 'refresh_status') {
             LengowSync::getStatusAccount(true);
@@ -56,10 +56,6 @@ class AdminLengowDashboardController extends ModuleAdminController
             Tools::redirect($lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
             return;
         }
-        
-        // Process business logic (will skip the action since we already handled it)
-        $lengowController = new LengowDashboardController();
-        $lengowController->prepareDisplay();
         
         // Prepare data for Twig template
         $locale = new LengowTranslation();

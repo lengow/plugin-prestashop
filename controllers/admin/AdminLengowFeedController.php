@@ -48,10 +48,6 @@ class AdminLengowFeedController extends ModuleAdminController
     {
         parent::initContent();
         
-        // Process business logic
-        $lengowController = new LengowFeedController();
-        $lengowController->postProcess();
-        
         // Prepare data for Twig template
         $locale = new LengowTranslation();
         $lengowLink = new LengowLink();

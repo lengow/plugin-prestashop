@@ -48,10 +48,6 @@ class AdminLengowOrderSettingController extends ModuleAdminController
     {
         parent::initContent();
         
-        // Process business logic
-        $lengowController = new LengowOrderSettingController();
-        $lengowController->postProcess();
-        
         // Prepare data for Twig template
         $locale = new LengowTranslation();
         $lengowLink = new LengowLink();

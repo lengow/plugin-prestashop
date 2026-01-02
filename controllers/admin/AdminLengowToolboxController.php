@@ -48,10 +48,6 @@ class AdminLengowToolboxController extends ModuleAdminController
     {
         parent::initContent();
         
-        // Process business logic
-        $lengowController = new LengowToolboxController();
-        $lengowController->postProcess();
-        
         // Prepare data for Twig template
         $locale = new LengowTranslation();
         $lengowLink = new LengowLink();
