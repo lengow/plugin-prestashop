@@ -736,10 +736,13 @@ class LengowList
 
         // Use PrestaShop's locale system if available (PS 1.7.6+)
         if (method_exists($this->context, 'getCurrentLocale')) {
-            return $this->context->getCurrentLocale()->formatPrice(
-                $price,
-                $currency->iso_code
-            );
+            $locale = $this->context->getCurrentLocale();
+            if ($locale !== null) {
+                return $locale->formatPrice(
+                    $price,
+                    $currency->iso_code
+                );
+            }
         }
 
         // Fallback for older PrestaShop versions
