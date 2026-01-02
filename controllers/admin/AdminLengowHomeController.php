@@ -40,54 +40,9 @@ class AdminLengowHomeController extends ModuleAdminController
         $this->display = 'view';
 
         parent::__construct();
-    }
-    
-    /**
-     * Initialize page content
-     */
-    public function initContent()
-    {
-        parent::initContent();
-        
-        // Check if we should redirect to dashboard (for non-new merchants)
-        $isNewMerchant = LengowConfiguration::isNewMerchant();
-        if (!$isNewMerchant) {
-            $lengowLink = new LengowLink();
-            Tools::redirect($lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
-            return;
-        }
-        
-        // Prepare data for template
-        $locale = new LengowTranslation();
-        $module = Module::getInstanceByName('lengow');
-        $lengowLink = new LengowLink();
-        $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
-        $multiShop = Shop::isFeatureActive();
-        $debugMode = LengowConfiguration::debugModeIsActive();
-        $merchantStatus = LengowSync::getStatusAccount();
-        
-        // Get plugin links
-        $pluginLinks = LengowSync::getPluginLinks($localeIsoCode, true);
-        
-        $this->context->smarty->assign([
-            'locale' => $locale,
-            'lengowPathUri' => $module->getPathUri(),
-            'lengow_ajax_link' => $lengowLink->getAbsoluteAdminLink('AdminLengowHome'),
-            'lengowUrl' => LengowConfiguration::getLengowUrl(),
-            'lengow_link' => $lengowLink,
-            'current_controller' => 'LengowHomeController',
-            'localeIsoCode' => $localeIsoCode,
-            'version' => _PS_VERSION_,
-            'lengowVersion' => $module->version,
-            'displayToolbar' => 0,
-            'helpCenterLink' => $pluginLinks[LengowSync::LINK_TYPE_HELP_CENTER],
-            'updateGuideLink' => $pluginLinks[LengowSync::LINK_TYPE_UPDATE_GUIDE],
-            'changelogLink' => $pluginLinks[LengowSync::LINK_TYPE_CHANGELOG],
-            'supportLink' => $pluginLinks[LengowSync::LINK_TYPE_SUPPORT],
-            'multiShop' => $multiShop,
-            'debugMode' => $debugMode,
-            'isNewMerchant' => $isNewMerchant,
-            'merchantStatus' => $merchantStatus,
-        ]);
+
+        $lengowController = new LengowHomeController();
+        $lengowController->postProcess();
+        $lengowController->display();
     }
 }
