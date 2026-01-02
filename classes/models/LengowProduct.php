@@ -1103,10 +1103,15 @@ class LengowProduct extends Product
             }
         }
 
-        // Fallback for older PrestaShop versions
-        return Tools::displayPriceSmarty([
-            'price' => $price,
-            'currency' => $currency,
-        ], null);
+        // Fallback: manual formatting using currency properties
+        $blank = ($currency->format % 2 != 0) ? ' ' : '';
+        $decimals = (int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_;
+        $priceFormatted = number_format($price, $decimals, '.', '');
+        
+        if ($currency->format % 2 == 0) {
+            return $currency->sign . $blank . $priceFormatted;
+        } else {
+            return $priceFormatted . $blank . $currency->sign;
+        }
     }
 }
