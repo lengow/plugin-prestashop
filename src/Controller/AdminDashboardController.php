@@ -1,0 +1,98 @@
+<?php
+/**
+ * Copyright 2017 Lengow SAS.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ * @author    Team Connector <team-connector@lengow.com>
+ * @copyright 2017 Lengow SAS
+ * @license   http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+namespace PrestaShop\Module\Lengow\Controller;
+
+use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use PrestaShopBundle\Security\Annotation\AdminSecurity;
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+/**
+ * Lengow Dashboard Controller for PrestaShop 9
+ */
+class AdminDashboardController extends FrameworkBundleAdminController
+{
+    /**
+     * Dashboard page
+     *
+     * @AdminSecurity("is_granted('read', 'AdminLengowDashboard')")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function indexAction(Request $request): Response
+    {
+        $locale = new \LengowTranslation();
+        $lengowLink = new \LengowLink();
+        $module = \Module::getInstanceByName('lengow');
+        
+        // Get merchant status and plugin information
+        $merchantStatus = \LengowSync::getStatusAccount();
+        $pluginData = \LengowSync::getPluginData();
+        $pluginIsUpToDate = \LengowSync::isPluginUpToDate();
+        $currentController = 'LengowDashboardController';
+        
+        // Handle refresh status action
+        $action = $request->query->get('action');
+        if ($action === 'refresh_status') {
+            \LengowSync::getStatusAccount(true);
+            return $this->redirectToRoute('lengow_admin_dashboard');
+        }
+        
+        $refreshStatusUrl = $this->generateUrl('lengow_admin_dashboard', ['action' => 'refresh_status']);
+        
+        return $this->render('@Modules/lengow/views/templates/admin/dashboard/index.html.twig', [
+            'locale' => $locale,
+            'lengowPathUri' => $module->getPathUri(),
+            'lengowUrl' => \LengowConfiguration::getLengowUrl(),
+            'lengow_link' => $lengowLink,
+            'merchantStatus' => $merchantStatus,
+            'pluginData' => $pluginData,
+            'pluginIsUpToDate' => $pluginIsUpToDate,
+            'displayToolbar' => 1,
+            'current_controller' => $currentController,
+            'total_pending_order' => \LengowOrder::countOrderToBeSent(),
+            'refresh_status' => $refreshStatusUrl,
+        ]);
+    }
+    
+    /**
+     * Handle remind me later action for plugin update modal
+     *
+     * @AdminSecurity("is_granted('update', 'AdminLengowDashboard')")
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function remindMeLaterAction(Request $request): JsonResponse
+    {
+        $timestamp = time() + (7 * 86400);
+        \LengowConfiguration::updateGlobalValue(\LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL, $timestamp);
+        
+        return new JsonResponse(['success' => true]);
+    }
+}

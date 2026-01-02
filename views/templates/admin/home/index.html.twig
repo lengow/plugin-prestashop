@@ -1,0 +1,25 @@
+{% extends '@Modules/lengow/views/templates/admin/_partials/base.html.twig' %}
+
+{% block title %}Lengow - Home{% endblock %}
+
+{% block content %}
+<script type="text/javascript">$(document.body).addClass("adminlengowhome");</script>
+<div id="lengow_home_wrapper" class="cms-global">
+    <div class="lgw-container lgw-connection text-center">
+        <div class="lgw-content-section">
+            <div class="lgw-logo">
+                <img src="{{ lengowPathUri }}views/img/lengow-blue.png" alt="lengow">
+            </div>
+        </div>
+        <div id="lgw-connection-content">
+            {# Connection content will be loaded via AJAX #}
+            <p>Connection page - Content loaded via AJAX</p>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="lengow_ajax_link" value="{{ lengow_ajax_link }}">
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="{{ lengowPathUri }}views/js/lengow/home.js"></script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends '@Modules/lengow/views/templates/admin/_partials/base.html.twig' %}
+
+{% block title %}Lengow - Settings{% endblock %}
+
+{% block content %}
+<script type="text/javascript">$(document.body).addClass("adminlengowmainsetting");</script>
+<div id="lengow_main_setting_wrapper" class="cms-global">
+    <div class="lgw-container">
+        <h2>{{ locale.t('settings.title')|default('Settings') }}</h2>
+        {# Settings content will be migrated from legacy templates #}
+        <p>Settings content - To be migrated from legacy template</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="{{ lengowPathUri }}views/js/lengow/main_setting.js"></script>
+{% endblock %}

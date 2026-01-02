@@ -1,0 +1,68 @@
+{#
+ # Copyright 2017 Lengow SAS.
+ # Navigation header for Lengow pages
+ #}
+
+<div class="lgw-container">
+    <ul class="nav nav-pills lengow-nav lengow-nav-top">
+        <li role="presentation" id="lengow_logo">
+            <a href="{{ path('lengow_admin_dashboard') }}">
+                <img src="{{ lengowPathUri }}views/img/lengow-white.png" alt="lengow">
+            </a>
+        </li>
+        <li role="presentation" {% if current_controller == 'LengowFeedController' %}class="active"{% endif %}>
+            <a href="{{ path('lengow_admin_feed') }}">
+                {{ locale.t('menu.product') }}
+            </a>
+        </li>
+        <li role="presentation" {% if current_controller in ['LengowOrderController', 'LengowOrderSettingController'] %}class="active"{% endif %}>
+            <a href="{{ path('lengow_admin_orders') }}" class="lengow_order_link">
+                {{ locale.t('menu.order') }}
+                {% if total_pending_order > 0 %}
+                    <span class="lengow-nav-notif">{{ total_pending_order }}</span>
+                {% endif %}
+            </a>
+        </li>
+        <li class="lengow_float_right {% if current_controller == 'LengowMainSettingController' %}active{% endif %}" id="menugotosetting">
+            <a href="{{ path('lengow_admin_main_setting') }}"
+               class="lengow_link_tooltip"
+               data-placement="bottom"
+               data-original-title="{{ locale.t('menu.global_parameter') }}">
+                <i class="fa fa-cog fa-2x"></i>
+            </a>
+        </li>
+        <li class="lengow_float_right {% if current_controller == 'LengowHelpController' %}active{% endif %}" id="menugotohelp">
+            <a href="{{ path('lengow_admin_help') }}"
+               class="lengow_link_tooltip"
+               data-placement="bottom"
+               data-original-title="{{ locale.t('menu.help') }}">
+                <i class="fa fa-life-ring fa-2x"></i>
+            </a>
+        </li>
+        <li class="lengow_float_right" id="menugotosolution">
+            <a href="https://my.{{ lengowUrl }}" target="_blank">
+                {{ locale.t('menu.jump_to_lengow') }}
+            </a>
+        </li>
+        {% if merchantStatus is defined and merchantStatus and merchantStatus.type == 'free_trial' and not merchantStatus.expired %}
+            <li class="lengow_float_right" id="menucountertrial">
+                <div class="lgw-block">
+                    {{ locale.t('menu.counter', {'counter': merchantStatus.day}) }}
+                    <a href="https://my.{{ lengowUrl }}" target="_blank">
+                        {{ locale.t('menu.upgrade_account') }}
+                    </a>
+                </div>
+            </li>
+        {% endif %}
+        {% if pluginIsUpToDate is defined and not pluginIsUpToDate %}
+            <li class="lengow_float_right" id="menupluginavailable">
+                <div class="lgw-block">
+                    {{ locale.t('menu.new_version_available', {'version': pluginData.version}) }}
+                    <button class="btn-link mod-inline js-upgrade-plugin-modal-open">
+                        {{ locale.t('menu.download_plugin') }}
+                    </button>
+                </div>
+            </li>
+        {% endif %}
+    </ul>
+</div>

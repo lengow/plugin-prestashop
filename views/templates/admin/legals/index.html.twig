@@ -1,0 +1,14 @@
+{% extends '@Modules/lengow/views/templates/admin/_partials/base.html.twig' %}
+
+{% block title %}Lengow - Legals{% endblock %}
+
+{% block content %}
+<script type="text/javascript">$(document.body).addClass("adminlengowlegals");</script>
+<div id="lengow_legals_wrapper" class="cms-global">
+    <div class="lgw-container">
+        <h2>{{ locale.t('legals.title')|default('Legal Information') }}</h2>
+        {# Legals content will be migrated from legacy templates #}
+        <p>Legals content - To be migrated from legacy template</p>
+    </div>
+</div>
+{% endblock %}
