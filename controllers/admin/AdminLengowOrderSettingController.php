@@ -31,9 +31,21 @@ class AdminLengowOrderSettingController extends ModuleAdminController
      */
     public function __construct()
     {
+        $this->lang = false;
+        $this->explicitSelect = true;
+        $this->lite_display = true;
+        $this->meta_title = 'Configuration';
+        $this->list_no_link = true;
+        $this->display = false;
+
         parent::__construct();
-        
-        // Redirect to Symfony controller
+    }
+    
+    /**
+     * Redirect to Symfony controller
+     */
+    public function initContent()
+    {
         $router = $this->get('router');
         $url = $router->generate('lengow_admin_order_setting');
         Tools::redirect($url);

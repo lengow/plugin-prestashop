@@ -86,6 +86,29 @@ Once the translations are finished, just run the translation update script in `l
 
 The plugin is translated into English, French, Spanish and Italian.
 
+## Architecture
+
+### Symfony Controllers (PrestaShop 9 Compatible)
+
+Starting from version 3.9.4, the module uses Symfony controllers and Twig templates for PrestaShop 9 compatibility.
+
+**Available Routes:**
+- `/modules/lengow/dashboard` - Dashboard page
+- `/modules/lengow/home` - Connection/Home page
+- `/modules/lengow/feed` - Product catalog management
+- `/modules/lengow/orders` - Order list
+- `/modules/lengow/settings` - Main settings
+- `/modules/lengow/order-settings` - Order-specific settings
+- `/modules/lengow/toolbox` - Diagnostic tools
+- `/modules/lengow/legals` - Legal information
+- `/modules/lengow/help` - Help and documentation
+
+**Controllers Location:** `src/Controller/Admin*.php`  
+**Templates Location:** `views/templates/admin/*/index.html.twig`  
+**Routes Definition:** `config/routes.yml`
+
+The legacy ModuleAdminController classes in `controllers/admin/` now redirect to the Symfony routes.
+
 ## Changelog
 
 The changelog and all available commits are located under [CHANGELOG](CHANGELOG).
