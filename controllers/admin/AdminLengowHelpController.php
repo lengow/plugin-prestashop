@@ -53,15 +53,41 @@ class AdminLengowHelpController extends ModuleAdminController
         $locale = new LengowTranslation();
         $lengowLink = new LengowLink();
         $module = Module::getInstanceByName('lengow');
+        $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
+        $multiShop = Shop::isFeatureActive();
+        $debugMode = LengowConfiguration::debugModeIsActive();
+        $merchantStatus = LengowSync::getStatusAccount();
+        $isNewMerchant = LengowConfiguration::isNewMerchant();
+        
+        // Show header or not
+        if ($isNewMerchant || (is_array($merchantStatus) && $merchantStatus['type'] === 'free_trial' && $merchantStatus['expired'])) {
+            $displayToolbar = false;
+        } else {
+            $displayToolbar = true;
+        }
+        
+        // Get plugin links
+        $pluginLinks = LengowSync::getPluginLinks($localeIsoCode, true);
         
         $this->context->smarty->assign([
             'locale' => $locale,
             'lengowPathUri' => $module->getPathUri(),
             'lengowUrl' => LengowConfiguration::getLengowUrl(),
             'lengow_link' => $lengowLink,
-            'displayToolbar' => 1,
             'current_controller' => 'LengowHelpController',
+            'localeIsoCode' => $localeIsoCode,
+            'version' => _PS_VERSION_,
+            'lengowVersion' => $module->version,
+            'displayToolbar' => $displayToolbar,
             'total_pending_order' => LengowOrder::countOrderToBeSent(),
+            'helpCenterLink' => $pluginLinks[LengowSync::LINK_TYPE_HELP_CENTER],
+            'updateGuideLink' => $pluginLinks[LengowSync::LINK_TYPE_UPDATE_GUIDE],
+            'changelogLink' => $pluginLinks[LengowSync::LINK_TYPE_CHANGELOG],
+            'supportLink' => $pluginLinks[LengowSync::LINK_TYPE_SUPPORT],
+            'multiShop' => $multiShop,
+            'debugMode' => $debugMode,
+            'isNewMerchant' => $isNewMerchant,
+            'merchantStatus' => $merchantStatus,
         ]);
     }
 }
