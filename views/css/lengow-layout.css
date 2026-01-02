@@ -23,7 +23,8 @@ body.page-topbar .cms-global{
 }
 
 /* PrestaShop 9 compatibility: ensure content is not covered by sidebar */
-body.page-sidebar .lengow_body .nobootstrap {
+body.page-sidebar .lengow_body .nobootstrap,
+body.page-sidebar .lengow_body {
   margin-left: 0;
   padding-left: 0;
 }
@@ -31,7 +32,6 @@ body.page-sidebar .lengow_body .nobootstrap {
 /* PrestaShop 9: respect the main content area */
 #main-div .lengow_body .nobootstrap,
 .page-content .lengow_body .nobootstrap {
-  width: 100%;
   max-width: 100%;
 }
 
@@ -649,23 +649,16 @@ body.page-sidebar-closed .lengow-nav-bottom {
 /* Ensure proper spacing for PS9 main content area */
 body.page-sidebar #content .lengow_body,
 body.page-sidebar .page-content .lengow_body {
-  width: 100%;
   max-width: 100%;
   margin-left: 0;
 }
 
-/* Fix content width in PS9 main container */
+/* Fix content width in PS9 main container - allow more space than default */
 #main-div .lgw-container,
 .page-content .lgw-container {
   width: 100%;
   max-width: 1200px;
   padding: 0 15px;
-}
-
-/* Prevent sidebar overlap */
-body.page-sidebar .lengow_body {
-  margin-left: 0;
-  padding-left: 0;
 }
 
 /* Adjust for PS9 content wrapper */
