@@ -32,7 +32,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
 {if $displayToolbar eq 1}
-<div class="lgw-container lengow-header-wrapper">
+<div class="lgw-container">
     <ul class="nav nav-pills lengow-nav lengow-nav-top">
         <li role="presentation" id="lengow_logo">
             <a href="{$lengow_link->getAbsoluteAdminLink('AdminLengowDashboard')|escape:'htmlall':'UTF-8'}">

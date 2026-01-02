@@ -22,25 +22,9 @@ body.page-topbar .cms-global{
   position: relative;
 }
 
-/* PrestaShop 9 compatibility: ensure content is not covered by sidebar */
-body.page-sidebar .lengow_body .nobootstrap,
-body.page-sidebar .lengow_body {
-  margin-left: 0;
-  padding-left: 0;
-}
-
-/* PrestaShop 9: respect the main content area */
-#main-div .lengow_body .nobootstrap,
-.page-content .lengow_body .nobootstrap {
-  max-width: 100%;
-}
-
 .lgw-container {
-  width: 100%;
-  max-width: 990px;
+  width: 990px;
   margin: 0 auto;
-  position: relative;
-  z-index: 1;
 }
 
 .lgw-block {
@@ -627,57 +611,4 @@ body.page-sidebar-closed .lengow-nav-bottom {
   width: 560px;
   margin: 120px auto;
   padding: 15px;
-}
-
-/*************************************************/
-/*       PRESTASHOP 9 COMPATIBILITY              */
-/*************************************************/
-
-/* Fix navbar visibility in PrestaShop 9 */
-.lengow-header-wrapper {
-  position: relative;
-  z-index: 100;
-}
-
-.lengow-nav.lengow-nav-top {
-  position: relative;
-  z-index: 100;
-  background: #00aff0;
-  margin-bottom: 0;
-}
-
-/* Ensure proper spacing for PS9 main content area */
-body.page-sidebar #content .lengow_body,
-body.page-sidebar .page-content .lengow_body {
-  max-width: 100%;
-  margin-left: 0;
-}
-
-/* Fix content width in PS9 main container - allow more space than default */
-#main-div .lgw-container,
-.page-content .lgw-container {
-  width: 100%;
-  max-width: 1200px;
-  padding: 0 15px;
-}
-
-/* Adjust for PS9 content wrapper */
-.content-div .lengow_body,
-#content .lengow_body {
-  width: 100%;
-}
-
-/* Fix z-index stacking for PS9 */
-.lengow_body .panel,
-.lengow_body .lgw-box {
-  position: relative;
-  z-index: 1;
-}
-
-/* Responsive adjustments for PS9 */
-@media (min-width: 768px) {
-  body.page-sidebar #content .lgw-container {
-    margin-left: auto;
-    margin-right: auto;
-  }
 }
