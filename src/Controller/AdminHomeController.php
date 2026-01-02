@@ -104,10 +104,15 @@ class AdminHomeController extends FrameworkBundleAdminController
                     }
                 }
                 
-                return $this->render('@Modules/lengow/views/templates/admin/home/connection_cms_result.html.twig', [
+                $content = $this->renderView('@Modules/lengow/views/templates/admin/home/connection_cms_result.html.twig', [
                     'credentialsValid' => $credentialsValid,
                     'cmsConnected' => $cmsConnected,
                     'hasCatalogToLink' => $hasCatalogToLink,
+                ]);
+                
+                return new JsonResponse([
+                    'success' => $cmsConnected,
+                    'content' => preg_replace('/\r|\n/', '', $content),
                 ]);
                 
             case 'go_to_catalog':
@@ -117,9 +122,13 @@ class AdminHomeController extends FrameworkBundleAdminController
                     \LengowConfiguration::resetCatalogIds();
                 }
                 
-                return $this->render('@Modules/lengow/views/templates/admin/home/connection_catalog.html.twig', [
+                $content = $this->renderView('@Modules/lengow/views/templates/admin/home/connection_catalog.html.twig', [
                     'shopCollection' => \LengowShop::getActiveShops(),
                     'catalogList' => $this->getCatalogList(),
+                ]);
+                
+                return new JsonResponse([
+                    'content' => preg_replace('/\r|\n/', '', $content)
                 ]);
                 
             case 'link_catalogs':
