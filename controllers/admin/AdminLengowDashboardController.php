@@ -62,14 +62,21 @@ class AdminLengowDashboardController extends ModuleAdminController
         $lengowLink = new LengowLink();
         $module = Module::getInstanceByName('lengow');
         
+        // Check if plugin is up to date
+        $pluginData = LengowSync::getPluginData();
+        $pluginIsUpToDate = true;
+        if ($pluginData && version_compare($pluginData['version'], $module->version, '>')) {
+            $pluginIsUpToDate = false;
+        }
+        
         $this->context->smarty->assign([
             'locale' => $locale,
             'lengowPathUri' => $module->getPathUri(),
             'lengowUrl' => LengowConfiguration::getLengowUrl(),
             'lengow_link' => $lengowLink,
             'merchantStatus' => LengowSync::getStatusAccount(),
-            'pluginData' => LengowSync::getPluginData(),
-            'pluginIsUpToDate' => LengowSync::isPluginUpToDate(),
+            'pluginData' => $pluginData,
+            'pluginIsUpToDate' => $pluginIsUpToDate,
             'displayToolbar' => 1,
             'current_controller' => 'LengowDashboardController',
             'total_pending_order' => LengowOrder::countOrderToBeSent(),

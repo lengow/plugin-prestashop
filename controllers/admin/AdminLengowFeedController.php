@@ -53,6 +53,13 @@ class AdminLengowFeedController extends ModuleAdminController
         $lengowLink = new LengowLink();
         $module = Module::getInstanceByName('lengow');
         
+        // Check if plugin is up to date
+        $pluginData = LengowSync::getPluginData();
+        $pluginIsUpToDate = true;
+        if ($pluginData && version_compare($pluginData['version'], $module->version, '>')) {
+            $pluginIsUpToDate = false;
+        }
+        
         $this->context->smarty->assign([
             'locale' => $locale,
             'lengowPathUri' => $module->getPathUri(),
@@ -62,8 +69,8 @@ class AdminLengowFeedController extends ModuleAdminController
             'current_controller' => 'LengowFeedController',
             'total_pending_order' => LengowOrder::countOrderToBeSent(),
             'merchantStatus' => LengowSync::getStatusAccount(),
-            'pluginData' => LengowSync::getPluginData(),
-            'pluginIsUpToDate' => LengowSync::isPluginUpToDate(),
+            'pluginData' => $pluginData,
+            'pluginIsUpToDate' => $pluginIsUpToDate,
         ]);
         
         // Use Twig template
