@@ -36,13 +36,14 @@ class AdminLengowHomeController extends ModuleAdminController
         $this->lite_display = true;
         $this->meta_title = 'Configuration';
         $this->list_no_link = true;
-        $this->display = false;
+        $this->template = 'layout.tpl';
+        $this->display = 'view';
 
         parent::__construct();
     }
     
     /**
-     * Render the page with Twig
+     * Initialize page content
      */
     public function initContent()
     {
@@ -56,7 +57,7 @@ class AdminLengowHomeController extends ModuleAdminController
             return;
         }
         
-        // Prepare data for Twig template
+        // Prepare data for template
         $locale = new LengowTranslation();
         $module = Module::getInstanceByName('lengow');
         $lengowLink = new LengowLink();
@@ -67,8 +68,5 @@ class AdminLengowHomeController extends ModuleAdminController
             'lengow_ajax_link' => $lengowLink->getAbsoluteAdminLink('AdminLengowHome'),
             'displayToolbar' => 0,
         ]);
-        
-        // Use Twig template
-        $this->setTemplate('module:lengow/views/templates/admin/home/index.html.twig');
     }
 }

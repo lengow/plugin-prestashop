@@ -36,19 +36,20 @@ class AdminLengowLegalsController extends ModuleAdminController
         $this->lite_display = true;
         $this->meta_title = 'Legals';
         $this->list_no_link = true;
-        $this->display = false;
+        $this->template = 'layout.tpl';
+        $this->display = 'view';
 
         parent::__construct();
     }
     
     /**
-     * Render the page with Twig
+     * Initialize page content
      */
     public function initContent()
     {
         parent::initContent();
         
-        // Prepare data for Twig template
+        // Prepare data for template
         $locale = new LengowTranslation();
         $lengowLink = new LengowLink();
         $module = Module::getInstanceByName('lengow');
@@ -62,8 +63,5 @@ class AdminLengowLegalsController extends ModuleAdminController
             'current_controller' => 'LengowLegalsController',
             'total_pending_order' => LengowOrder::countOrderToBeSent(),
         ]);
-        
-        // Use Twig template
-        $this->setTemplate('module:lengow/views/templates/admin/legals/index.html.twig');
     }
 }

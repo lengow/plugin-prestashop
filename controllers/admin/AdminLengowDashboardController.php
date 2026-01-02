@@ -36,13 +36,14 @@ class AdminLengowDashboardController extends ModuleAdminController
         $this->lite_display = true;
         $this->meta_title = 'Configuration';
         $this->list_no_link = true;
-        $this->display = false;
+        $this->template = 'layout.tpl';
+        $this->display = 'view';
 
         parent::__construct();
     }
     
     /**
-     * Render the page with Twig
+     * Initialize page content
      */
     public function initContent()
     {
@@ -57,7 +58,7 @@ class AdminLengowDashboardController extends ModuleAdminController
             return;
         }
         
-        // Prepare data for Twig template
+        // Prepare data for template
         $locale = new LengowTranslation();
         $lengowLink = new LengowLink();
         $module = Module::getInstanceByName('lengow');
@@ -82,8 +83,5 @@ class AdminLengowDashboardController extends ModuleAdminController
             'total_pending_order' => LengowOrder::countOrderToBeSent(),
             'refresh_status' => $lengowLink->getAbsoluteAdminLink('AdminLengowDashboard') . '&action=refresh_status',
         ]);
-        
-        // Use Twig template
-        $this->setTemplate('module:lengow/views/templates/admin/dashboard/index.html.twig');
     }
 }
