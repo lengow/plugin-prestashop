@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Lengow - PrestaShop{% endblock %}</title>
+    
+    {# PrestaShop admin styles #}
+    <link rel="stylesheet" href="{{ asset('themes/new-theme/public/theme.css') }}" type="text/css" media="all">
+    
+    {# Lengow module styles #}
+    <link rel="stylesheet" href="{{ asset('modules/lengow/views/css/lengow-layout.css') }}" type="text/css" media="all">
+    <link rel="stylesheet" href="{{ asset('modules/lengow/views/css/lengow.css') }}" type="text/css" media="all">
+    
+    {% block stylesheets %}{% endblock %}
+</head>
+<body class="lengow-page">
+    {% block header %}
+        {% include '@Modules/lengow/views/templates/twig/admin/_partials/header.html.twig' %}
+    {% endblock %}
+    
+    <div class="lengow_body nobootstrap">
+        <div class="lgw-container">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    
+    {% block footer %}
+        {% include '@Modules/lengow/views/templates/twig/admin/_partials/footer.html.twig' %}
+    {% endblock %}
+    
+    {# PrestaShop admin scripts #}
+    <script src="{{ asset('js/jquery/jquery-1.11.0.min.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
+    
+    {# Lengow module scripts #}
+    <script src="{{ asset('modules/lengow/views/js/lengow.js') }}"></script>
+    
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

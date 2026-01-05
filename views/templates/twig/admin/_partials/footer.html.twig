@@ -1,0 +1,16 @@
+{# Lengow Footer #}
+<footer class="lengow_footer">
+    <div class="lgw-container">
+        <div class="lengow_footer_content">
+            <p>
+                &copy; {{ 'now'|date('Y') }} Lengow - 
+                <a href="{{ path('lengow_admin_legals') }}">{{ 'Legal Notice'|trans({}, 'Modules.Lengow.Admin') }}</a>
+            </p>
+            {% if lengowVersion is defined %}
+            <p class="lengow_version">
+                {{ 'Module version'|trans({}, 'Modules.Lengow.Admin') }}: {{ lengowVersion }}
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</footer>

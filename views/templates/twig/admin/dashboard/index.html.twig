@@ -1,0 +1,61 @@
+{% extends '@Modules/lengow/views/templates/twig/admin/_partials/base.html.twig' %}
+
+{% block title %}{{ 'Dashboard'|trans({}, 'Modules.Lengow.Admin') }} - Lengow{% endblock %}
+
+{% block content %}
+<div class="lengow-dashboard">
+    <div class="lengow-page-header">
+        <h1>{{ 'Dashboard'|trans({}, 'Modules.Lengow.Admin') }}</h1>
+    </div>
+    
+    {% if not pluginIsUpToDate %}
+    <div class="alert alert-warning">
+        <strong>{{ 'Update available'|trans({}, 'Modules.Lengow.Admin') }}</strong>
+        {{ 'A new version of the Lengow module is available'|trans({}, 'Modules.Lengow.Admin') }}.
+        <a href="{{ updateGuideLink }}" target="_blank">{{ 'View update guide'|trans({}, 'Modules.Lengow.Admin') }}</a>
+    </div>
+    {% endif %}
+    
+    <div class="lengow-dashboard-content">
+        {# Merchant status #}
+        {% if merchantStatus %}
+        <div class="lengow-box">
+            <h2>{{ 'Account status'|trans({}, 'Modules.Lengow.Admin') }}</h2>
+            <div class="merchant-status">
+                <p><strong>{{ 'Status'|trans({}, 'Modules.Lengow.Admin') }}:</strong> 
+                    {% if merchantStatus.type == 'success' %}
+                        <span class="label label-success">{{ merchantStatus.message }}</span>
+                    {% else %}
+                        <span class="label label-warning">{{ merchantStatus.message }}</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        {% endif %}
+        
+        {# Statistics placeholder #}
+        <div class="lengow-box">
+            <h2>{{ 'Statistics'|trans({}, 'Modules.Lengow.Admin') }}</h2>
+            <div class="lengow-stats">
+                <p>{{ 'Dashboard statistics'|trans({}, 'Modules.Lengow.Admin') }}</p>
+            </div>
+        </div>
+        
+        {# Quick actions #}
+        <div class="lengow-box">
+            <h2>{{ 'Quick actions'|trans({}, 'Modules.Lengow.Admin') }}</h2>
+            <div class="lengow-actions">
+                <a href="{{ path('lengow_admin_orders') }}" class="lgw-btn lgw-btn-primary">
+                    {{ 'Manage orders'|trans({}, 'Modules.Lengow.Admin') }}
+                </a>
+                <a href="{{ path('lengow_admin_feed') }}" class="lgw-btn lgw-btn-primary">
+                    {{ 'Manage catalog'|trans({}, 'Modules.Lengow.Admin') }}
+                </a>
+                <a href="{{ path('lengow_admin_main_setting') }}" class="lgw-btn lgw-btn-primary">
+                    {{ 'Settings'|trans({}, 'Modules.Lengow.Admin') }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
