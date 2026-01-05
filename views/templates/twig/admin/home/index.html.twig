@@ -1,0 +1,25 @@
+{% extends '@Modules/lengow/views/templates/twig/admin/_partials/base.html.twig' %}
+
+{% block title %}{{ 'Connection'|trans({}, 'Modules.Lengow.Admin') }} - Lengow{% endblock %}
+
+{% block content %}
+<div class="lengow-home">
+    <div class="lengow-page-header">
+        <h1>{{ 'Connect your Lengow account'|trans({}, 'Modules.Lengow.Admin') }}</h1>
+    </div>
+    
+    <div class="lengow-connection-content">
+        {% if isNewMerchant %}
+        <div class="lengow-box">
+            <h2>{{ 'Welcome to Lengow'|trans({}, 'Modules.Lengow.Admin') }}</h2>
+            <p>{{ 'Please connect your Lengow account to start using the module'|trans({}, 'Modules.Lengow.Admin') }}.</p>
+        </div>
+        {% else %}
+        <div class="lengow-box">
+            <h2>{{ 'Account connected'|trans({}, 'Modules.Lengow.Admin') }}</h2>
+            <p>{{ 'Your Lengow account is successfully connected'|trans({}, 'Modules.Lengow.Admin') }}.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

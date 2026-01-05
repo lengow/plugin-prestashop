@@ -1,0 +1,19 @@
+{% extends '@Modules/lengow/views/templates/admin/_partials/base.html.twig' %}
+
+{% block title %}Lengow - Dashboard{% endblock %}
+
+{% block content %}
+<script type="text/javascript">$(document.body).addClass("adminlengowdashboard");</script>
+<div id="lengow_dashboard_wrapper" class="cms-global">
+    {# Dashboard content will be loaded here - For now using a placeholder #}
+    {# The full dashboard content from the legacy templates will be migrated progressively #}
+    <div class="lgw-container">
+        <h2>{{ locale.t('dashboard.title')|default('Dashboard') }}</h2>
+        <p>Dashboard content - To be migrated from legacy template</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="{{ lengowPathUri }}views/js/lengow/dashboard.js"></script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{# Lengow Header with Navigation #}
+<div class="lengow-header-wrapper">
+    <div class="lgw-container">
+        <header class="lengow_header">
+            <div class="lengow_header_wrapper">
+                <div class="lengow_header_logo">
+                    <img src="{{ asset('modules/lengow/views/img/lengow-white.png') }}" alt="Lengow" />
+                </div>
+                
+                <nav class="lengow_header_nav">
+                    <ul class="lengow_nav_list">
+                        <li class="{% if app.request.get('_route') == 'lengow_admin_dashboard' %}active{% endif %}">
+                            <a href="{{ path('lengow_admin_dashboard') }}">
+                                {{ 'Dashboard'|trans({}, 'Modules.Lengow.Admin') }}
+                            </a>
+                        </li>
+                        <li class="{% if app.request.get('_route') starts with 'lengow_admin_order' %}active{% endif %}">
+                            <a href="{{ path('lengow_admin_orders') }}">
+                                {{ 'Orders'|trans({}, 'Modules.Lengow.Admin') }}
+                            </a>
+                        </li>
+                        <li class="{% if app.request.get('_route') == 'lengow_admin_feed' %}active{% endif %}">
+                            <a href="{{ path('lengow_admin_feed') }}">
+                                {{ 'Catalog'|trans({}, 'Modules.Lengow.Admin') }}
+                            </a>
+                        </li>
+                        <li class="{% if app.request.get('_route') == 'lengow_admin_main_setting' %}active{% endif %}">
+                            <a href="{{ path('lengow_admin_main_setting') }}">
+                                {{ 'Settings'|trans({}, 'Modules.Lengow.Admin') }}
+                            </a>
+                        </li>
+                        <li class="{% if app.request.get('_route') == 'lengow_admin_order_setting' %}active{% endif %}">
+                            <a href="{{ path('lengow_admin_order_setting') }}">
+                                {{ 'Order Settings'|trans({}, 'Modules.Lengow.Admin') }}
+                            </a>
+                        </li>
+                        <li class="{% if app.request.get('_route') == 'lengow_admin_toolbox' %}active{% endif %}">
+                            <a href="{{ path('lengow_admin_toolbox') }}">
+                                {{ 'Toolbox'|trans({}, 'Modules.Lengow.Admin') }}
+                            </a>
+                        </li>
+                        <li class="{% if app.request.get('_route') == 'lengow_admin_help' %}active{% endif %}">
+                            <a href="{{ path('lengow_admin_help') }}">
+                                {{ 'Help'|trans({}, 'Modules.Lengow.Admin') }}
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                {% if helpCenterLink is defined %}
+                <div class="lengow_header_help">
+                    <a href="{{ helpCenterLink }}" target="_blank" class="lgw-btn lgw-btn-white">
+                        <i class="fa fa-life-ring"></i> {{ 'Help Center'|trans({}, 'Modules.Lengow.Admin') }}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </header>
+    </div>
+</div>

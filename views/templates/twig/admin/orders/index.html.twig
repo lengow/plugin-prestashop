@@ -1,0 +1,89 @@
+{#
+ # Copyright 2017 Lengow SAS.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License"); you may
+ # not use this file except in compliance with the License. You may obtain
+ # a copy of the License at
+ #
+ #   http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ # License for the specific language governing permissions and limitations
+ # under the License.
+ #
+ # @author    Team Connector <team-connector@lengow.com>
+ # @copyright 2017 Lengow SAS
+ # @license   http://www.apache.org/licenses/LICENSE-2.0
+ #}
+
+{% extends '@Modules/lengow/views/templates/twig/admin/_partials/base.html.twig' %}
+
+{% block lengow_content %}
+<div id="lengow_order_wrapper" class="cms-global">
+    <div class="lgw-container">
+        {% if debugMode %}
+            <div id="lgw-debug" class="adminlengoworder {% if multiShop %}multi-shop{% endif %}">
+                {{ locale.t('menu.debug_active') }}
+            </div>
+        {% endif %}
+
+        <div class="lgw-box">
+            {# Warning Messages #}
+            <div id="lengow_warning_message">
+                {% include '@Modules/lengow/views/templates/twig/admin/orders/_partials/warning_message.html.twig' %}
+            </div>
+
+            <div class="lgw-col-8" style="padding:0;">
+                {# Last Importation Info #}
+                <div id="lengow_last_importation">
+                    {% include '@Modules/lengow/views/templates/twig/admin/orders/_partials/last_importation.html.twig' %}
+                </div>
+
+                {# Messages Container #}
+                <div id="lengow_wrapper_messages" class="blue-frame mod-order-notification" style="display:none;"></div>
+            </div>
+
+            <div class="pull-right text-right lgw-col-3">
+                <a id="lengow_import_orders" class="lgw-btn btn no-margin-top"
+                   data-href="{{ path('lengow_admin_order_import_all') }}">
+                    {{ locale.t('order.screen.button_update_orders') }}
+                </a>
+            </div>
+
+            {# Loading Indicator #}
+            <div id="lengow_charge_import_order" style="display:none">
+                <div class="ajax-loading mod-synchronise-order">
+                    <div class="ajax-loading-ball1"></div>
+                    <div class="ajax-loading-ball2"></div>
+                </div>
+                <p id="lengow_charge_lign1">{{ locale.t('order.screen.import_charge_first') }}</p>
+                <p id="lengow_charge_lign2">{{ locale.t('order.screen.import_charge_second') }}</p>
+            </div>
+
+            {# Orders Table #}
+            <div class="clearfix"></div>
+            <div id="lengow_order_table_wrapper">
+                {% if nb_order_imported == 0 %}
+                    {% include '@Modules/lengow/views/templates/twig/admin/orders/_partials/no_order.html.twig' %}
+                {% else %}
+                    {{ lengow_table|raw }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+// Initialize order page JavaScript
+var lengowOrderPageConfig = {
+    baseUrl: '{{ path('lengow_admin_order_index') }}',
+    reImportUrl: '{{ path('lengow_admin_order_reimport') }}',
+    reSendUrl: '{{ path('lengow_admin_order_resend') }}',
+    loadTableUrl: '{{ path('lengow_admin_order_load_table') }}',
+    importAllUrl: '{{ path('lengow_admin_order_import_all') }}'
+};
+</script>
+<script type="text/javascript" src="{{ lengowPathUri }}views/js/lengow/order.js"></script>
+{% endblock %}
