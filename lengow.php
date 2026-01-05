@@ -255,4 +255,18 @@ class Lengow extends Module
     {
         $this->hookClass->hookActionProductCancel($args);
     }
+
+    /**
+     * Load Symfony routes configuration for the module
+     * Required for PrestaShop 1.7.7+ / 8+ / 9+ to enable Symfony routing
+     *
+     * This method tells PrestaShop where to find the routes.yml file
+     * that contains all Symfony route definitions for this module.
+     *
+     * @return \Symfony\Component\Config\FileLocator
+     */
+    public function getRoutingConfigPath()
+    {
+        return $this->getLocalPath() . 'config/routes.yml';
+    }
 }

@@ -4,6 +4,7 @@
   "version": "3.9.4",
   "autoload": {
     "psr-4": {
+      "PrestaShop\\Module\\Lengow\\": "src/",
       "Lengow\\": "src/"
     },
     "classmap": [
@@ -12,5 +13,10 @@
       "classes/"
     ]
   },
-  "type": "prestashop-module"
+  "type": "prestashop-module",
+  "config": {
+    "preferred-install": "dist",
+    "optimize-autoloader": true,
+    "classmap-authoritative": false
+  }
 }
