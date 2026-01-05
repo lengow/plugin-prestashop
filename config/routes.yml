@@ -78,18 +78,60 @@ lengow_admin_feed_ajax:
     _controller: 'PrestaShop\Module\Lengow\Controller\AdminFeedController::ajaxAction'
 
 # Lengow Orders
-lengow_admin_orders:
+lengow_admin_order_index:
   path: /modules/lengow/orders
   methods: [ GET ]
   defaults:
     _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::indexAction'
     _legacy_controller: AdminLengowOrder
 
-lengow_admin_orders_ajax:
-  path: /modules/lengow/orders/ajax
+lengow_admin_order_load_table:
+  path: /modules/lengow/orders/load-table
   methods: [ POST, GET ]
   defaults:
-    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::ajaxAction'
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::loadTableAction'
+
+lengow_admin_order_reimport:
+  path: /modules/lengow/orders/re-import
+  methods: [ POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::reImportAction'
+
+lengow_admin_order_resend:
+  path: /modules/lengow/orders/re-send
+  methods: [ POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::reSendAction'
+
+lengow_admin_order_import_all:
+  path: /modules/lengow/orders/import-all
+  methods: [ POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::importAllAction'
+
+lengow_admin_order_synchronize:
+  path: /modules/lengow/orders/synchronize
+  methods: [ POST, GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::synchronizeAction'
+
+lengow_admin_order_cancel_reimport:
+  path: /modules/lengow/orders/cancel-re-import
+  methods: [ POST, GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::cancelReImportAction'
+
+lengow_admin_order_save_shipping_method:
+  path: /modules/lengow/orders/save-shipping-method
+  methods: [ POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::saveShippingMethodAction'
+
+lengow_admin_order_force_resend:
+  path: /modules/lengow/orders/force-resend
+  methods: [ POST, GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrdersController::forceResendAction'
 
 # Lengow Main Settings
 lengow_admin_main_setting:
