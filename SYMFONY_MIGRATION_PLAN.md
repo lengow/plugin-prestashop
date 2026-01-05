@@ -1,17 +1,27 @@
 # Migration complète vers Symfony/Twig - Plan détaillé
 
+> **📖 Guide Complet** : Voir [`SYMFONY_TWIG_MIGRATION_GUIDE.md`](./SYMFONY_TWIG_MIGRATION_GUIDE.md) pour un guide d'implémentation détaillé avec exemples de code complets.
+
 ## État actuel (analysé le 2026-01-05)
 
 ### ✅ Ce qui existe déjà
 - **10 contrôleurs Symfony** dans `src/Controller/` (squelettes)
 - **Routes Symfony** définies dans `config/routes.yml`
 - **Corrections API PrestaShop 9** : formatPrice(), compatibilité 9.99.99
+- **Infrastructure Twig de base** : Layout, header, footer créés
+- **Guide de migration complet** : `SYMFONY_TWIG_MIGRATION_GUIDE.md`
 
 ### ❌ Ce qui manque / à finaliser
 - **37 templates Smarty** (.tpl) à convertir en Twig (.twig)
-- **Contrôleurs Symfony incomplets** : ne retournent pas de Response
+- **Contrôleurs Symfony incomplets** : ne retournent pas de Response complète
 - **9 contrôleurs legacy** AdminLengow* toujours actifs
 - **Tests** de compatibilité PS 8+/9
+
+### 📚 Ressources Disponibles
+- **Guide détaillé** : `SYMFONY_TWIG_MIGRATION_GUIDE.md` - Guide complet avec exemples
+- **Exemples de contrôleurs** : `src/Controller/AdminDashboardController.php`
+- **Templates de base** : `views/templates/twig/admin/_partials/`
+- **Routes** : `config/routes.yml`
 
 ## Plan de migration par phase
 
