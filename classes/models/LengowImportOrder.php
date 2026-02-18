@@ -1442,7 +1442,7 @@ class LengowImportOrder
                 $idMarketplace,
                 $this->carrierMethod
             );
-
+    
             if (!$idCarrier) {
                 $matchedCarriers = LengowCarrier::getAllMarketplaceCarrierCountryByIdMarketplace($idCountry, $idMarketplace);
                 foreach ($matchedCarriers as $carrierIdMatched => $carrierMktpId) {
@@ -1459,6 +1459,13 @@ class LengowImportOrder
                 }
             }
             $matchingFound = $idCarrier ? 'method' : false;
+        }
+        // Fallback: marketplace has carriers but no shipping_methods
+        // and carrierName is empty but carrierMethod has a value
+        // Try to match carrierMethod against carrier mapping
+        if (!$idCarrier && $this->carrierMethod && !$this->carrierName && $hasCarriers && !$hasShippingMethods) {
+            $idCarrier = $this->getCarrierIdByMethodAsCarrierFallback($idCountry, $idMarketplace);
+            $matchingFound = $idCarrier ? 'method_as_carrier' : false;
         }
         if (!$idCarrier) {
             // get default carrier by country
@@ -1499,10 +1506,84 @@ class LengowImportOrder
                 $this->marketplaceSku
             );
         }
-
+    
         return $idCarrier;
     }
-
+    
+    /**
+     * Fallback: use carrierMethod value to match against carrier mapping
+     * For marketplaces that have carriers defined but no shipping_methods,
+     * and where the order has carrierMethod but no carrierName
+     *
+     * @param int $idCountry PrestaShop country id
+     * @param int $idMarketplace Lengow marketplace id
+     *
+     * @return int|false
+     */
+    private function getCarrierIdByMethodAsCarrierFallback($idCountry, $idMarketplace)
+    {
+        if (!$this->carrierMethod) {
+            return false;
+        }
+    
+        // Try to match carrierMethod with carrier marketplace name
+        $idCarrier = LengowCarrier::getIdCarrierByCarrierMarketplaceName(
+            $idCountry,
+            $idMarketplace,
+            $this->carrierMethod
+        );
+    
+        if ($idCarrier) {
+            LengowMain::log(
+                LengowLog::CODE_IMPORT,
+                'Carrier matched using method as carrier fallback (by name) - method: ' . $this->carrierMethod,
+                $this->logOutput,
+                $this->marketplaceSku
+            );
+            return $idCarrier;
+        }
+    
+        // Try to match carrierMethod with carrier marketplace label
+        $idCarrier = LengowCarrier::getIdCarrierByCarrierMarketplaceLabel(
+            $idCountry,
+            $idMarketplace,
+            $this->carrierMethod
+        );
+    
+        if ($idCarrier) {
+            LengowMain::log(
+                LengowLog::CODE_IMPORT,
+                'Carrier matched using method as carrier fallback (by label) - method: ' . $this->carrierMethod,
+                $this->logOutput,
+                $this->marketplaceSku
+            );
+            return $idCarrier;
+        }
+    
+        // Search in all mapped carriers for this marketplace/country
+        $matchedCarriers = LengowCarrier::getAllMarketplaceCarrierCountryByIdMarketplace($idCountry, $idMarketplace);
+        foreach ($matchedCarriers as $carrierIdMatched => $carrierMktpId) {
+            if ($carrierMktpId === 0) {
+                continue;
+            }
+            $carrierMktp = LengowCarrier::getCarrierMarketplaceById($carrierMktpId);
+            if ($carrierMktp && (
+                $carrierMktp['carrier_marketplace_name'] === $this->carrierMethod
+                || $carrierMktp['carrier_marketplace_label'] === $this->carrierMethod
+            )) {
+                LengowMain::log(
+                    LengowLog::CODE_IMPORT,
+                    'Carrier matched using method as carrier fallback (in mapping) - method: ' . $this->carrierMethod . ' - carrier_id: ' . $carrierIdMatched,
+                    $this->logOutput,
+                    $this->marketplaceSku
+                );
+                return $carrierIdMatched;
+            }
+        }
+    
+        return false;
+    }
+    
     /**
      * Create and validate PrestaShop order
      *
