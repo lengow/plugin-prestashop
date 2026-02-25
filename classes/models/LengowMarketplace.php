@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -577,7 +578,7 @@ class LengowMarketplace
         string $action,
         LengowOrder $lengowOrder,
         array $marketplaceArguments,
-        $orderLineId
+        $orderLineId,
     ): array {
         $this->checkAction($action);
         if (!in_array($lengowOrder->lengowState, $this->getRefundStatuses(), true)) {

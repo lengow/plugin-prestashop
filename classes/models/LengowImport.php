@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -505,8 +506,7 @@ class LengowImport
         if ($minutes) {
             $intervalTime = floor($minutes * 60); // convert minutes to seconds
             $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
-        }
-        elseif ($days) {
+        } elseif ($days) {
             $intervalTime = floor($days * self::MIN_INTERVAL_TIME); // convert days to seconds
             $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
         } else {
@@ -1169,22 +1169,21 @@ class LengowImport
     /**
      * Acquire a named lock
      *
-     * @param string    $lockName   Name of the lock
-     * @param int       $timeout    Timeout in seconds
+     * @param string $lockName Name of the lock
+     * @param int $timeout Timeout in seconds
      *
      * @return bool True if the lock was acquired, false otherwise
      */
     private function acquireLock(string $lockName, int $timeout = 0): bool
     {
         try {
-            $db = \Db::getInstance();
+            $db = Db::getInstance();
             $result = $db->getValue(
                 'SELECT GET_LOCK("' . pSQL($lockName) . '", ' . (int) $timeout . ')'
             );
 
             return (bool) $result;
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(
@@ -1201,21 +1200,20 @@ class LengowImport
     /**
      * Release a named lock
      *
-     * @param string    $lockName   Name of the lock
+     * @param string $lockName Name of the lock
      *
      * @return bool True if the lock was released, false otherwise
      */
     private function releaseLock(string $lockName): bool
     {
         try {
-            $db = \Db::getInstance();
+            $db = Db::getInstance();
             $result = $db->getValue(
                 'SELECT RELEASE_LOCK("' . pSQL($lockName) . '")'
             );
 
             return (bool) $result;
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2017 Lengow SAS.
  *
@@ -50,7 +51,7 @@ class Lengow extends Module
         $this->module_key = '__LENGOW_PRESTASHOP_PRODUCT_KEY__';
         $this->ps_versions_compliancy = [
             'min' => '1.7.8',
-            'max' => '8.99.99',
+            'max' => '9.99.99',
         ];
 
         $this->bootstrap = true;
@@ -152,6 +153,7 @@ class Lengow extends Module
 
     /**
      * Hook on Home page
+     *
      * @depercated Use hookDisplayHome instead
      */
     public function hookHome()
@@ -211,7 +213,7 @@ class Lengow extends Module
      */
     public function hookActionOrderStatusPostUpdate($args)
     {
-       $this->hookClass->hookActionOrderStatusPostUpdate($args);
+        $this->hookClass->hookActionOrderStatusPostUpdate($args);
     }
 
     /**

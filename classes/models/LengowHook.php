@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -123,7 +124,7 @@ class LengowHook
             'displayAdminOrderSide' => '1.6',
             // version 8.0
             'displayHome' => '8.0',
-            'actionOrderStatusPostUpdate' => '8.0'
+            'actionOrderStatusPostUpdate' => '8.0',
         ];
         foreach ($lengowHooks as $hook => $version) {
             if ((float) $version <= (float) Tools::substr(_PS_VERSION_, 0, 3)) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -115,7 +116,7 @@ class LengowCart extends Cart
         $autoAddCartRule = true,
         $skipAvailabilityCheckOutOfStock = false,
         $preserveGiftRemoval = true,
-        $useOrderPrices = false
+        $useOrderPrices = false,
     ) {
         if (!$shop instanceof Shop) {
             $shop = Context::getContext()->shop;

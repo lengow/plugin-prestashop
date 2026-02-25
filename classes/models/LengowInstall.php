@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -224,7 +225,6 @@ class LengowInstall
             LengowMain::setLogMessage('log.uninstall.uninstall_end', ['version' => $this->lengowModule->version])
         );
 
-
         return true;
     }
 
@@ -243,7 +243,6 @@ class LengowInstall
                 LengowLog::CODE_INSTALL,
                 LengowMain::setLogMessage('log.install.clear_cache_success')
             );
-
         } catch (Exception $e) {
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
@@ -1116,8 +1115,8 @@ class LengowInstall
     }
 
     /**
-    * Create Lengow customer group if not exists
-    */
+     * Create Lengow customer group if not exists
+     */
     private function createLengowCustomerGroup()
     {
         $marketplaceGroupId = null;

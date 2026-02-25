@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2017 Lengow SAS.
  *
@@ -361,9 +362,8 @@ class AdminOrderController extends OrderController
             } catch (\Exception $e) {
                 $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
             }
-        } else {
-            // exit ('form not valid');
         }
+        // exit ('form not valid');
 
         return $this->redirectToRoute('admin_orders_view', [
             'orderId' => $orderId,

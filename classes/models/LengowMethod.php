@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -342,7 +343,7 @@ class LengowMethod
         }
     }
 
-     /**
+    /**
      * Get carrier id by country id, marketplace id and method marketplace label or name
      *
      * @param int $idCountry PrestaShop country id

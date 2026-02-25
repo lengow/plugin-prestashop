@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2017 Lengow SAS.
  *
@@ -92,7 +93,7 @@ class LengowOrder extends Order
     public const FIELD_B2B_VALUE = 'B2B';
 
     /**
-     * @const number of tries to sync order num
+     * @var number of tries to sync order num
      */
     public const SYNCHRONIZE_TRIES = 5;
 
