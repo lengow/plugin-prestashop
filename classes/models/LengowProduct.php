@@ -653,7 +653,7 @@ class LengowProduct extends Product
 
         return isset($this->images[$idImage]) ? $this->context->link->getImageLink(
             $this->link_rewrite,
-            $this->id . '-' . $this->images[$idImage]['id_image'],
+            $this->images[$idImage]['id_image'],
             $this->imageSize
         ) : '';
     }
@@ -1045,7 +1045,7 @@ class LengowProduct extends Product
                     if (!isset($cImages[$productAttributeId]) || count($cImages[$productAttributeId]) < $maxImage) {
                         $cImages[$productAttributeId][] = $this->context->link->getImageLink(
                             $this->link_rewrite,
-                            $this->id . '-' . $image['id_image'],
+                            $image['id_image'],
                             $this->imageSize
                         );
                     }
