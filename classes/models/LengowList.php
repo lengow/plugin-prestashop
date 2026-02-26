@@ -313,11 +313,8 @@ class LengowList
                         );
                         break;
                     case 'price':
-                        if (isset($item['currency'])) {
-                            $value = Tools::displayPrice($item[$key], $this->getCurrencyByCode($item['currency']));
-                        } else {
-                            $value = Tools::displayPrice($item[$key]);
-                        }
+                        $currency = isset($item['currency']) ? $this->getCurrencyByCode($item['currency']) : null;
+                        $value = $this->formatPrice((float) $item[$key], $currency);
                         break;
                     case 'switch_product':
                         $value = '<div class="lgw-switch ' . ($item[$key] ? 'checked' : '')
@@ -499,7 +496,7 @@ class LengowList
                             break;
                         case 'select':
                         case 'text':
-                            if (Tools::strlen($value) > 0) {
+                            if (mb_strlen((string) $value) > 0) {
                                 $where[] = ' ' . pSQL($fieldValue['filter_key']) . ' LIKE "%' . pSQL($value) . '%"';
                             }
                             break;
@@ -526,7 +523,7 @@ class LengowList
                             }
                             break;
                         case 'order_types':
-                            if (Tools::strlen($value) > 0) {
+                            if (mb_strlen((string) $value) > 0) {
                                 if ($value === LengowOrder::TYPE_EXPRESS) {
                                     $where[] = ' (lo.order_types LIKE "%' . pSQL(LengowOrder::TYPE_EXPRESS) . '%"
                                         OR lo.order_types LIKE "%' . pSQL(LengowOrder::TYPE_PRIME) . '%")';
@@ -570,7 +567,7 @@ class LengowList
             $sql .= ' HAVING ' . implode(' AND ', $having);
         }
         if (!$total && !$selectAll) {
-            if (Tools::strlen($this->orderColumn) > 0 && in_array($this->orderValue, ['ASC', 'DESC'])) {
+            if (mb_strlen((string) $this->orderColumn) > 0 && in_array($this->orderValue, ['ASC', 'DESC'])) {
                 $sql .= ' ORDER BY ' . pSQL($this->orderColumn) . ' ' . $this->orderValue;
                 if (isset($this->sql['order'])) {
                     $sql .= ', ' . $this->sql['order'];
@@ -718,5 +715,35 @@ class LengowList
     public function getTotal()
     {
         return $this->total;
+    }
+
+    protected function formatPrice(float $price, ?Currency $currency = null): string
+    {
+        if ($currency === null) {
+            $currency = $this->context->currency;
+        }
+
+        $locale = null;
+        if (method_exists('Tools', 'getContextLocale')) {
+            $locale = Tools::getContextLocale($this->context);
+        } elseif (method_exists($this->context, 'getCurrentLocale')) {
+            $locale = $this->context->getCurrentLocale();
+        }
+
+        if ($locale !== null) {
+            return $locale->formatPrice(
+                $price,
+                $currency->iso_code
+            );
+        }
+
+        $precision = $currency->precision ?? 2;
+        $symbol = $currency->iso_code;
+        if (property_exists($currency, 'symbol') && is_string($currency->symbol) && $currency->symbol !== '') {
+            $symbol = $currency->symbol;
+        }
+
+        $priceFormatted = number_format($price, $precision, '.', ' ');
+        return $priceFormatted . ' ' . $symbol;
     }
 }

@@ -419,7 +419,7 @@ class LengowFeed
      */
     protected function indentYaml($name, $maxSize)
     {
-        $strlen = Tools::strlen($name);
+        $strlen = mb_strlen((string) $name);
         $spaces = '';
         for ($i = $strlen; $i < $maxSize; ++$i) {
             $spaces .= ' ';

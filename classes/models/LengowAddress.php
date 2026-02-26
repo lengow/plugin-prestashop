@@ -546,7 +546,7 @@ class LengowAddress extends Address
             ) {
                 $this->validateFieldLengow($fieldName, self::LENGOW_EMPTY_ERROR);
             }
-            if (isset($constraints['size']) && Tools::strlen($this->{$fieldName}) > $constraints['size']) {
+            if (isset($constraints['size']) && mb_strlen((string) $this->{$fieldName}) > $constraints['size']) {
                 $this->validateFieldLengow($fieldName, self::LENGOW_SIZE_ERROR);
             }
         }
@@ -662,21 +662,21 @@ class LengowAddress extends Address
                     $this->address2 = '';
                     $this->other = '';
                     foreach ($fullAddressArray as $addressPart) {
-                        if (Tools::strlen($this->address1) < $address1Maxlength) {
+                        if (mb_strlen((string) $this->address1) < $address1Maxlength) {
                             if (!empty($this->address1)) {
                                 $this->address1 .= ' ';
                             }
                             $this->address1 .= $addressPart;
                             continue;
                         }
-                        if (Tools::strlen($this->address2) < $address2Maxlength) {
+                        if (mb_strlen((string) $this->address2) < $address2Maxlength) {
                             if (!empty($this->address2)) {
                                 $this->address2 .= ' ';
                             }
                             $this->address2 .= $addressPart;
                             continue;
                         }
-                        if (Tools::strlen($this->other) < $otherMaxlength) {
+                        if (mb_strlen((string) $this->other) < $otherMaxlength) {
                             if (!empty($this->other)) {
                                 $this->other .= ' ';
                             }

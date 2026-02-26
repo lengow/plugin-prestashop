@@ -536,8 +536,8 @@ class LengowExport
         // get the maximum of character for yaml format
         $maxCharacter = 0;
         foreach ($fields as $field) {
-            if (Tools::strlen($field) > $maxCharacter) {
-                $maxCharacter = Tools::strlen($field);
+            if (mb_strlen((string) $field) > $maxCharacter) {
+                $maxCharacter = mb_strlen((string) $field);
             }
         }
         foreach ($products as $p) {

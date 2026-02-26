@@ -160,7 +160,7 @@ class LengowCustomer extends Customer
             case 'address1':
             case 'address2':
             case 'other':
-                $addressFullArray = explode(' ', $this->address_full);
+                $addressFullArray = explode(' ', $this->address_full ?? '');
                 if (count($addressFullArray) < 1) {
                     $definition = self::getFieldDefinition();
                     $address1MaxLength = $definition['address1']['size'];

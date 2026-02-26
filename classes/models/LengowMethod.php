@@ -133,12 +133,12 @@ class LengowMethod
                             );
                         } else {
                             $params = [];
-                            if ($method->label !== null && Tools::strlen($method->label) > 0) {
+                            if ($method->label !== null && mb_strlen((string) $method->label) > 0) {
                                 $params[self::FIELD_METHOD_MARKETPLACE_LABEL] = pSQL($method->label);
                             }
                             if (isset($method->lengow_code)
                                 && $method->lengow_code !== null
-                                && Tools::strlen($method->lengow_code) > 0
+                                && mb_strlen((string) $method->lengow_code) > 0
                             ) {
                                 $params[self::FIELD_METHOD_LENGOW_CODE] = pSQL($method->lengow_code);
                             }
@@ -170,7 +170,7 @@ class LengowMethod
             self::FIELD_METHOD_MARKETPLACE_NAME => pSQL($methodMarketplaceName),
             self::FIELD_METHOD_MARKETPLACE_LABEL => pSQL($methodMarketplaceLabel),
         ];
-        if ($methodLengowCode !== null && Tools::strlen($methodLengowCode) > 0) {
+        if ($methodLengowCode !== null && mb_strlen((string) $methodLengowCode) > 0) {
             $params[self::FIELD_METHOD_LENGOW_CODE] = pSQL($methodLengowCode);
         }
         $db = Db::getInstance();

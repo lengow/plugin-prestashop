@@ -476,7 +476,7 @@ class LengowCarrier extends Carrier
                             );
                         } else {
                             $params = [];
-                            if ($carrier->label !== null && Tools::strlen($carrier->label) > 0) {
+                            if ($carrier->label !== null && mb_strlen((string) $carrier->label) > 0) {
                                 $params[self::FIELD_CARRIER_MARKETPLACE_LABEL] = pSQL($carrier->label);
                             }
                             if (isset($carrier->lengow_code)

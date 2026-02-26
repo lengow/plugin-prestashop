@@ -145,7 +145,7 @@ class LengowTranslation
         $translation = [];
         if (file_exists($filename)) {
             if (($handle = fopen($filename, 'rb')) !== false) {
-                while (($data = fgetcsv($handle, 1000, '|')) !== false) {
+                while (($data = fgetcsv($handle, 1000, '|', '"', '\\')) !== false) {
                     if (isset($data[1])) {
                         $translation[$data[0]] = $data[1];
                     }

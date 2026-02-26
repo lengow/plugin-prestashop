@@ -43,7 +43,10 @@ use PrestaShop\PrestaShop\Core\Domain\Order\QueryResult\OrderForViewing;
 use PrestaShop\PrestaShop\Core\Domain\Product\Exception\ProductOutOfStockException;
 use PrestaShop\PrestaShop\Core\Domain\ValueObject\QuerySorting;
 use PrestaShop\PrestaShop\Core\Order\OrderSiblingProviderInterface;
-use PrestaShopBundle\Controller\Admin\Sell\Order\ActionsBarButtonsCollection;
+use PrestaShop\PrestaShop\Core\Action\ActionsBarButtonsCollection;
+use PrestaShop\PrestaShop\Adapter\Currency\CurrencyDataProvider;
+use PrestaShop\PrestaShop\Adapter\Configuration;
+use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilderInterface;
 use PrestaShopBundle\Controller\Admin\Sell\Order\OrderController;
 use PrestaShopBundle\Exception\InvalidModuleException;
 use PrestaShopBundle\Form\Admin\Sell\Customer\PrivateNoteType;
@@ -58,8 +61,10 @@ use PrestaShopBundle\Form\Admin\Sell\Order\OrderPaymentType;
 use PrestaShopBundle\Form\Admin\Sell\Order\UpdateOrderShippingType;
 use PrestaShopBundle\Form\Admin\Sell\Order\UpdateOrderStatusType;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,6 +76,18 @@ if (!defined('_PS_VERSION_')) {
 
 class AdminOrderController extends OrderController
 {
+    private $configuration;
+    private $formFactory;
+
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        Configuration $configuration
+    ) {
+        parent::__construct($formFactory);
+        $this->formFactory = $formFactory;
+        $this->configuration = $configuration;
+    }
+
     /**
      * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))")
      *
@@ -79,21 +96,26 @@ class AdminOrderController extends OrderController
      *
      * @return Response
      */
-    public function viewAction(int $orderId, Request $request): Response
-    {
+    public function viewAction(
+        int $orderId,
+        Request $request,
+        #[Autowire(service: 'prestashop.core.form.identifiable_object.builder.cancel_product_form_builder')] FormBuilderInterface $formBuilder,
+        #[Autowire(service: 'prestashop.adapter.order.order_sibling_provider')] OrderSiblingProviderInterface $orderSiblingProvider,
+        CurrencyDataProvider $currencyDataProvider
+    ): Response {
         try {
             if (!$this->isFromLengow($orderId)) {
-                return parent::viewAction($orderId, $request);
+                return parent::viewAction($orderId, $request, $formBuilder, $orderSiblingProvider, $currencyDataProvider);
             }
             /** @var OrderForViewing $orderForViewing */
-            $orderForViewing = $this->getQueryBus()->handle(new GetOrderForViewing($orderId, QuerySorting::DESC));
+            $orderForViewing = $this->dispatchQuery(new GetOrderForViewing($orderId, QuerySorting::DESC));
         } catch (OrderException $e) {
             $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
 
             return $this->redirectToRoute('admin_orders_index');
         }
         $locale = new \LengowTranslation();
-        $formFactory = $this->get('form.factory');
+        $formFactory = $this->formFactory; // Use injected property
         $updateOrderStatusForm = $formFactory->createNamed(
             'update_order_status',
             UpdateOrderStatusType::class,
@@ -189,11 +211,11 @@ class AdminOrderController extends OrderController
             'note' => $orderForViewing->getNote(),
         ]);
 
-        $formBuilder = $this->get('prestashop.core.form.identifiable_object.builder.cancel_product_form_builder');
+        // $formBuilder provided as argument
         $backOfficeOrderButtons = new ActionsBarButtonsCollection();
 
         try {
-            $this->dispatchHook(
+            $this->dispatchHookWithParameters(
                 'actionGetAdminOrderButtons',
                 [
                     'controller' => $this,
@@ -220,9 +242,6 @@ class AdminOrderController extends OrderController
 
         $merchandiseReturnEnabled = (bool) $this->configuration->get('PS_ORDER_RETURN');
 
-        /** @var OrderSiblingProviderInterface $orderSiblingProvider */
-        $orderSiblingProvider = $this->get('prestashop.adapter.order.order_sibling_provider');
-
         $paginationNum = (int) $this->configuration->get('PS_ORDER_PRODUCTS_NB_PER_PAGE', self::DEFAULT_PRODUCTS_NUMBER);
         $paginationNumOptions = self::PRODUCTS_PAGINATION_OPTIONS;
         if (!in_array($paginationNum, $paginationNumOptions)) {
@@ -231,16 +250,16 @@ class AdminOrderController extends OrderController
         sort($paginationNumOptions);
         $metatitle = sprintf(
             '%s %s %s',
-            $this->trans('Orders', 'Admin.Orderscustomers.Feature'),
+            $this->trans('Orders', [], 'Admin.Orderscustomers.Feature'),
             $this->configuration->get('PS_NAVIGATION_PIPE', '>'),
             $this->trans(
                 'Order %reference% from %firstname% %lastname%',
-                'Admin.Orderscustomers.Feature',
                 [
                     '%reference%' => $orderForViewing->getReference(),
                     '%firstname%' => $orderForViewing->getCustomer()->getFirstName(),
                     '%lastname%' => $orderForViewing->getCustomer()->getLastName(),
-                ]
+                ],
+                'Admin.Orderscustomers.Feature'
             )
         );
 
@@ -266,7 +285,7 @@ class AdminOrderController extends OrderController
             'editProductRowForm' => $editProductRowForm->createView(),
             'backOfficeOrderButtons' => $backOfficeOrderButtons,
             'merchandiseReturnEnabled' => $merchandiseReturnEnabled,
-            'priceSpecification' => $this->getContextLocale()->getPriceSpecification($orderCurrency->iso_code)->toArray(),
+            'priceSpecification' => \Context::getContext()->getCurrentLocale()->getPriceSpecification($orderCurrency->iso_code)->toArray(),
             'previousOrderId' => $orderSiblingProvider->getPreviousOrderId($orderId),
             'nextOrderId' => $orderSiblingProvider->getNextOrderId($orderId),
             'paginationNum' => $paginationNum,
@@ -341,7 +360,7 @@ class AdminOrderController extends OrderController
                         $orderId
                     );
                 }
-                $this->getCommandBus()->handle(
+                $this->dispatchCommand(
                     new UpdateOrderShippingDetailsCommand(
                         $orderId,
                         (int) $data['current_order_carrier_id'],
@@ -350,12 +369,13 @@ class AdminOrderController extends OrderController
                     )
                 );
 
-                $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
+                $this->addFlash('success', $this->trans('Successful update.', [], 'Admin.Notifications.Success'));
             } catch (TransistEmailSendingException $e) {
                 $this->addFlash(
                     'error',
                     $this->trans(
                         'An error occurred while sending an email to the customer.',
+                        [],
                         'Admin.Orderscustomers.Notification'
                     )
                 );
@@ -384,7 +404,7 @@ class AdminOrderController extends OrderController
             if ($product->getAvailableQuantity() <= 0) {
                 $this->addFlash(
                     'warning',
-                    $this->trans('This product is out of stock:', 'Admin.Orderscustomers.Notification') . ' ' . $product->getName()
+                    $this->trans('This product is out of stock:', [], 'Admin.Orderscustomers.Notification') . ' ' . $product->getName()
                 );
             }
         }
@@ -407,101 +427,121 @@ class AdminOrderController extends OrderController
         }
 
         return [
-            CannotEditDeliveredOrderProductException::class => $this->trans('You cannot edit the cart once the order delivered.', 'Admin.Orderscustomers.Notification'),
+            CannotEditDeliveredOrderProductException::class => $this->trans('You cannot edit the cart once the order delivered.', [], 'Admin.Orderscustomers.Notification'),
             OrderNotFoundException::class => $e instanceof OrderNotFoundException ?
                 $this->trans(
                     'Order #%d cannot be loaded.',
-                    'Admin.Orderscustomers.Notification',
-                    ['#%d' => $e->getOrderId()->getValue()]
+                    ['#%d' => $e->getOrderId()->getValue()],
+                    'Admin.Orderscustomers.Notification'
                 ) : '',
             OrderEmailSendException::class => $this->trans(
                 'An error occurred while sending the e-mail to the customer.',
+                [],
                 'Admin.Orderscustomers.Notification'
             ),
             OrderException::class => $this->trans(
                 $e->getMessage(),
+                [],
                 'Admin.Orderscustomers.Notification'
             ),
             InvalidAmountException::class => $this->trans(
                 'Only numbers and decimal points (".") are allowed in the amount fields, e.g. 10.50 or 1050.',
+                [],
                 'Admin.Orderscustomers.Notification'
             ),
             InvalidCartRuleDiscountValueException::class => [
                 InvalidCartRuleDiscountValueException::INVALID_MIN_PERCENT => $this->trans(
                     'Percent value must be greater than 0.',
+                    [],
                     'Admin.Orderscustomers.Notification'
                 ),
                 InvalidCartRuleDiscountValueException::INVALID_MAX_PERCENT => $this->trans(
                     'Percent value cannot exceed 100.',
+                    [],
                     'Admin.Orderscustomers.Notification'
                 ),
                 InvalidCartRuleDiscountValueException::INVALID_MIN_AMOUNT => $this->trans(
                     'Amount value must be greater than 0.',
+                    [],
                     'Admin.Orderscustomers.Notification'
                 ),
                 InvalidCartRuleDiscountValueException::INVALID_MAX_AMOUNT => $this->trans(
                     'Discount value cannot exceed the total price of this order.',
+                    [],
                     'Admin.Orderscustomers.Notification'
                 ),
                 InvalidCartRuleDiscountValueException::INVALID_FREE_SHIPPING => $this->trans(
                     'Shipping discount value cannot exceed the total price of this order.',
+                    [],
                     'Admin.Orderscustomers.Notification'
                 ),
             ],
             InvalidCancelProductException::class => [
                 InvalidCancelProductException::INVALID_QUANTITY => $this->trans(
                     'Positive product quantity is required.',
+                    [],
                     'Admin.Notifications.Error'
                 ),
                 InvalidCancelProductException::QUANTITY_TOO_HIGH => $this->trans(
                     'Please enter a maximum quantity of [1].',
-                    'Admin.Orderscustomers.Notification',
-                    ['[1]' => $refundableQuantity]
+                    ['[1]' => $refundableQuantity],
+                    'Admin.Orderscustomers.Notification'
                 ),
                 InvalidCancelProductException::NO_REFUNDS => $this->trans(
                     'Please select at least one product.',
+                    [],
                     'Admin.Orderscustomers.Notification'
                 ),
                 InvalidCancelProductException::INVALID_AMOUNT => $this->trans(
                     'Please enter a positive amount.',
+                    [],
                     'Admin.Orderscustomers.Notification'
                 ),
                 InvalidCancelProductException::NO_GENERATION => $this->trans(
                     'Please generate at least one credit slip or voucher.',
+                    [],
                     'Admin.Orderscustomers.Notification'
                 ),
             ],
             InvalidModuleException::class => $this->trans(
                 'You must choose a payment module to create the order.',
+                [],
                 'Admin.Orderscustomers.Notification'
             ),
             ProductOutOfStockException::class => $this->trans(
                 'There are not enough products in stock.',
+                [],
                 'Admin.Catalog.Notification'
             ),
             NegativePaymentAmountException::class => $this->trans(
                 'Invalid value: the payment must be a positive amount.',
+                [],
                 'Admin.Notifications.Error'
             ),
             InvalidOrderStateException::class => [
                 InvalidOrderStateException::ALREADY_PAID => $this->trans(
                     'Invalid action: this order has already been paid.',
+                    [],
                     'Admin.Notifications.Error'
                 ),
                 InvalidOrderStateException::DELIVERY_NOT_FOUND => $this->trans(
                     'Invalid action: this order has not been delivered.',
+                    [],
                     'Admin.Notifications.Error'
                 ),
                 InvalidOrderStateException::UNEXPECTED_DELIVERY => $this->trans(
                     'Invalid action: this order has already been delivered.',
+                    [],
                     'Admin.Notifications.Error'
                 ),
                 InvalidOrderStateException::NOT_PAID => $this->trans(
                     'Invalid action: this order has not been paid.',
+                    [],
                     'Admin.Notifications.Error'
                 ),
                 InvalidOrderStateException::INVALID_ID => $this->trans(
                     'You must choose an order status to create the order.',
+                    [],
                     'Admin.Orderscustomers.Notification'
                 ),
             ],
@@ -509,24 +549,28 @@ class AdminOrderController extends OrderController
             OrderConstraintException::class => [
                 OrderConstraintException::INVALID_CUSTOMER_MESSAGE => $this->trans(
                     'The order message given is invalid.',
+                    [],
                     'Admin.Orderscustomers.Notification'
                 ),
             ],
             InvalidProductQuantityException::class => $this->trans(
                 'Positive product quantity is required.',
+                [],
                 'Admin.Notifications.Error'
             ),
             DuplicateProductInOrderException::class => $this->trans(
                 'This product is already in your order, please edit the quantity instead.',
+                [],
                 'Admin.Notifications.Error'
             ),
             DuplicateProductInOrderInvoiceException::class => $this->trans(
                 'This product is already in the invoice [1], please edit the quantity instead.',
-                'Admin.Notifications.Error',
-                ['[1]' => $orderInvoiceNumber]
+                ['[1]' => $orderInvoiceNumber],
+                'Admin.Notifications.Error'
             ),
             CannotFindProductInOrderException::class => $this->trans(
                 'You cannot edit the price of a product that no longer exists in your catalog.',
+                [],
                 'Admin.Notifications.Error'
             ),
         ];

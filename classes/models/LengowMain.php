@@ -297,7 +297,7 @@ class LengowMain
         $string = preg_replace('`[\s]+`sim', ' ', $string);
         $string = preg_replace('`"`sim', '', $string);
         $string = nl2br($string);
-        $pattern = '@<[\/\!]*?[^<>]*?>@si';
+        $pattern = '@<[/!]*?[^<>]*?>@si';
         $string = preg_replace($pattern, ' ', $string);
         $string = preg_replace('/[\s]+/', ' ', $string);
         $string = trim($string);
@@ -466,14 +466,14 @@ class LengowMain
      */
     public static function decodeLogMessage($message, $isoCode = null, $params = null)
     {
-        if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
+        if (preg_match('/^(([a-z_]*\.){1,3}[a-z_]*)(\[(.*)\]|)$/', $message, $result)) {
             if (isset($result[1])) {
                 $key = $result[1];
                 if (isset($result[4]) && $params === null) {
                     $strParam = $result[4];
-                    $allParams = explode('|', $strParam);
+                    $allParams = explode('|', (string) $strParam);
                     foreach ($allParams as $param) {
-                        $result = explode('==', $param);
+                        $result = explode('==', (string) $param);
                         $params[$result[0]] = $result[1];
                     }
                 }
@@ -672,7 +672,7 @@ class LengowMain
             /* K */
             '/[\x{0136}]/u',
             /* L */
-            '/[\x{0139}\x{013B}\x{013D}\x{0139}\x{0141}]/u',
+            '/[\x{0139}\x{013B}\x{013D}\x{0141}]/u',
             /* N */
             '/[\x{00D1}\x{0143}\x{0145}\x{0147}\x{014A}]/u',
             /* O */

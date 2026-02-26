@@ -93,7 +93,7 @@ class LengowController
         $module = Module::getInstanceByName('lengow');
         $lengowMain = new LengowMain();
         $className = get_class($this);
-        $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, Tools::strlen($className) - 10));
+        $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, mb_strlen($className) - 10));
         $this->prepareDisplay();
         echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/' . $path . '/helpers/view/view.tpl');
     }

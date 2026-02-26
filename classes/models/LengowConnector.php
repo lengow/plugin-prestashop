@@ -555,7 +555,7 @@ class LengowConnector
         if (!isset($data['token'])) {
             throw new LengowException(LengowMain::setLogMessage('log.connector.token_not_return'), self::CODE_500);
         }
-        if (Tools::strlen($data['token']) === 0) {
+        if (mb_strlen((string) $data['token']) === 0) {
             throw new LengowException(LengowMain::setLogMessage('log.connector.token_is_empty'), self::CODE_500);
         }
 
@@ -611,7 +611,7 @@ class LengowConnector
                     $opts[CURLOPT_HTTPHEADER],
                     [
                         'Content-Type: application/json',
-                        'Content-Length: ' . Tools::strlen($body),
+                        'Content-Length: ' . mb_strlen((string) $body),
                     ]
                 );
                 $opts[CURLOPT_POSTFIELDS] = $body;
