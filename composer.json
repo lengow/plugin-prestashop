@@ -15,10 +15,5 @@
       "classes/"
     ]
   },
-  "type": "prestashop-module",
-  "require-dev": {
-    "prestashop/php-dev-tools": "^5.0",
-    "friendsofphp/php-cs-fixer": "^3.94",
-    "phpstan/phpstan": "^2.1"
-  }
+  "type": "prestashop-module"
 }

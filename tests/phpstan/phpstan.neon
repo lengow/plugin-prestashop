@@ -1,6 +1,7 @@
-includes:
-  - %currentWorkingDirectory%/vendor/prestashop/php-dev-tools/phpstan/ps-module-extension.neon
+# _PS_ROOT_DIR_=~/prestashop/root PS_DEV_TOOLS_DIR=~/.config/composer/vendor/prestashop/php-dev-tools phpstan analyse --configuration=tests/phpstan/phpstan.neon
 
+includes:
+  - %env.PS_DEV_TOOLS_DIR%/phpstan/ps-module-extension.neon
 parameters:
   level: 0
   paths:
