@@ -373,7 +373,7 @@ class LengowAddress extends Address
         self::cleanName($fullName);
         $np = new LengowNameParser();
         $np->setFullName($fullName);
-        $parsed = $np->parse();
+        $np->parse();
         $firstName = $np->getFirstName();
         $middleName = $np->getMiddleName();
         $lastName = $np->getLastName();

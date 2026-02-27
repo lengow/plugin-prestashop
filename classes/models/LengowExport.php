@@ -247,7 +247,7 @@ class LengowExport
     protected $outOfStock = false;
 
     /**
-     * @var string export language
+     * @var Language export language
      */
     protected $language;
 

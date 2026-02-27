@@ -34,10 +34,10 @@ class LengowOrderCarrier extends OrderCarrier
     public $return_carrier;
 
     /**
-     * @param type $id
-     * @param type $id_lang
-     * @param type $id_shop
-     * @param type $translator
+     * @param int|null $id
+     * @param int|null $id_lang
+     * @param int|null $id_shop
+     * @param mixed $translator
      */
     public function __construct($id = null, $id_lang = null, $id_shop = null, $translator = null)
     {

@@ -318,7 +318,7 @@ class LengowHook
     /**
      * Hook on admin page's order side
      *
-     * @param array $args Arguments of hook
+     * @param array $params Arguments of hook
      *
      * @return mixed
      */

@@ -52,7 +52,7 @@ class LengowNameParser
     /**
      * Array of possible name suffices.
      *
-     * @var array;
+     * @var array
      */
     private $suffices;
 

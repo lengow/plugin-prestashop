@@ -1186,7 +1186,7 @@ class LengowImportOrder
         $cart = new LengowCart();
         $cart->assign($cartData);
         $cart->validateLengow();
-        $cart->force_product = $this->forceProduct;
+        $cart->forceProduct = $this->forceProduct;
         // add products to cart
         $cart->addProducts($products);
         // removes non-Lengow products from cart

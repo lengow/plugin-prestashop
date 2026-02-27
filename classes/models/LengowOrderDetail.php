@@ -79,7 +79,7 @@ class LengowOrderDetail extends OrderDetail
     }
 
     /**
-     * @param string $returnTrackingNumber
+     * @param string $returnCarrier
      * @param int $orderId
      */
     public static function updateOrderReturnCarrier($returnCarrier, $orderId)

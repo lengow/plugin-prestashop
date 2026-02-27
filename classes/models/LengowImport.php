@@ -451,7 +451,7 @@ class LengowImport
      */
     public static function isInProcess()
     {
-        $timestamp = LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
+        $timestamp = (int) LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
         if ($timestamp <= 0) {
             return false;
         }
@@ -472,7 +472,7 @@ class LengowImport
      */
     public static function restTimeToImport()
     {
-        $timestamp = LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
+        $timestamp = (int) LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
 
         return $timestamp > 0 ? $timestamp + (60 * self::MINUTE_INTERVAL_TIME) - time() : 0;
     }

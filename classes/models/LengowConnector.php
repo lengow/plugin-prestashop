@@ -214,7 +214,7 @@ class LengowConnector
      * @param string $body body data for request
      * @param bool $logOutput see log or not
      *
-     * @return array|false
+     * @return mixed
      */
     public static function queryApi($type, $api, $args = [], $body = '', $logOutput = false)
     {
@@ -307,7 +307,7 @@ class LengowConnector
             && $token !== null
             && $updatedAt !== null
             && $token !== ''
-            && (time() - $updatedAt) < $this->tokenLifetime
+            && (time() - (int) $updatedAt) < $this->tokenLifetime
         ) {
             $authorizationToken = $token;
         } else {

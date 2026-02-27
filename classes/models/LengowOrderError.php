@@ -120,7 +120,7 @@ class LengowOrderError
      *
      * @param int $idOrderLengow Lengow order id
      * @param string $message error message
-     * @param string $type order log type (import or send)
+     * @param int $type order log type (import or send)
      * @param int $finished error is finished
      *
      * @return bool
@@ -147,7 +147,7 @@ class LengowOrderError
      * Removes all order logs
      *
      * @param int $idOrderLengow Lengow order id
-     * @param string $type order log type (import or send)
+     * @param int $type order log type (import or send)
      *
      * @return bool
      */

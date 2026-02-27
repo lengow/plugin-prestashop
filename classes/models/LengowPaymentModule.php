@@ -248,7 +248,7 @@ class LengowPaymentModule extends PaymentModule
                 $order->total_shipping_tax_incl = (float) Tools::ps_round($lengowShippingCosts, $precision);
                 $order->total_shipping = $order->total_shipping_tax_incl;
                 if ($lengowTrackingNumber !== null) {
-                    $order->shipping_number = (string) $lengowTrackingNumber;
+                    $order->setWsShippingNumber((string) $lengowTrackingNumber);
                 }
                 // add processing fees to wrapping fees
                 $taxManager = TaxManagerFactory::getManager(

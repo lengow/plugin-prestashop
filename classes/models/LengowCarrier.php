@@ -337,9 +337,9 @@ class LengowCarrier extends Carrier
     /**
      * Get carrier id by country id, marketplace id and carrier marketplace label
      *
-     * @param type $idCountry
-     * @param type $idMarketplace
-     * @param type $carrierMarketplaceLabel
+     * @param int $idCountry
+     * @param int $idMarketplace
+     * @param string $carrierMarketplaceLabel
      *
      * @return int|false
      */
