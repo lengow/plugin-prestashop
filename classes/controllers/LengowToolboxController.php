@@ -31,7 +31,7 @@ class LengowToolboxController extends LengowController
      * Display data page
      * @return void
      */
-    public function display()
+    public function display(): void
     {
         $toolboxElement = new LengowToolboxElement();
         $this->context->smarty->assign('checklist', $toolboxElement->getCheckList());

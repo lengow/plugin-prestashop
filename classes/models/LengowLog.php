@@ -54,7 +54,7 @@ class LengowLog extends LengowFile
      *
      * @throws LengowException
      */
-    public function __construct($fileName = null)
+    public function __construct(?string $fileName = null)
     {
         if (empty($fileName)) {
             $this->fileName = 'logs-' . date(LengowMain::DATE_DAY) . '.txt';
@@ -73,7 +73,7 @@ class LengowLog extends LengowFile
      * @param string|null $marketplaceSku Lengow order id
      * @return void
      */
-    public function write($category, $message = '', $logOutput = false, $marketplaceSku = null)
+    public function write(string $category,string $message = '',bool $logOutput = false,?string $marketplaceSku = null): void
     {
         $decodedMessage = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
         $log = date(LengowMain::DATE_FULL);
@@ -92,7 +92,7 @@ class LengowLog extends LengowFile
      *
      * @return array<int|string, mixed>
      */
-    public static function getPaths()
+    public static function getPaths(): array
     {
         $logs = [];
         $files = self::getFiles();
@@ -118,7 +118,7 @@ class LengowLog extends LengowFile
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         $sep = DIRECTORY_SEPARATOR;
 
@@ -130,7 +130,7 @@ class LengowLog extends LengowFile
      *
      * @return array<int|string, mixed>
      */
-    public static function getFiles()
+    public static function getFiles(): array
     {
         return LengowFile::getFilesFromFolder(LengowMain::FOLDER_LOG);
     }
@@ -141,7 +141,7 @@ class LengowLog extends LengowFile
      * @param string|null $date date for a specific log file
      * @return void
      */
-    public static function download($date = null)
+    public static function download(?string $date = null): void
     {
         /* @var LengowFile[] $logFiles */
         if ($date && preg_match('/^(\d{4}-\d{2}-\d{2})$/', $date, $match)) {
@@ -193,7 +193,7 @@ class LengowLog extends LengowFile
      * Can be useful when the script crash silently
      * @return void
      */
-    public static function registerShutdownFunction()
+    public static function registerShutdownFunction(): void
     {
         ini_set('log_errors_max_len', 10240);
         register_shutdown_function(

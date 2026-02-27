@@ -34,7 +34,7 @@ class LengowBackup extends Backup
      *
      * @throws Exception
      */
-    public function add()
+    public function add(): bool
     {
         if (!$this->psBackupAll) {
             $ignoreInsertTable = [

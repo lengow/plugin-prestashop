@@ -36,22 +36,22 @@ class LengowController
     /**
      * @var Context PrestaShop context instance
      */
-    protected $context;
+    protected Context $context;
 
     /**
      * @var LengowLink Lengow link instance
      */
-    protected $lengowLink;
+    protected LengowLink $lengowLink;
 
     /**
      * @var LengowTranslation Lengow translation instance
      */
-    protected $locale;
+    protected LengowTranslation $locale;
 
     /**
      * @var bool Check if is a new merchant
      */
-    protected $isNewMerchant;
+    protected bool $isNewMerchant;
 
     /**
      * Construct the main Lengow controller
@@ -72,7 +72,7 @@ class LengowController
      * Process Post Parameters
      * @return void
      */
-    public function postProcess()
+    public function postProcess(): void
     {
         $this->prepareDisplay();
     }
@@ -81,7 +81,7 @@ class LengowController
      * Display data page
      * @return void
      */
-    public function display()
+    public function display(): void
     {
         $this->prepareDisplay();
         $this->context->smarty->assign('total_pending_order', LengowOrder::countOrderToBeSent());
@@ -91,7 +91,7 @@ class LengowController
      * Force Display data page
      * @return void
      */
-    public function forceDisplay()
+    public function forceDisplay(): void
     {
         $module = Module::getInstanceByName('lengow');
         $lengowMain = new LengowMain();
@@ -106,7 +106,7 @@ class LengowController
      *
      * @return bool
      */
-    private function showPluginUpgradeModal()
+    private function showPluginUpgradeModal(): bool
     {
         // never display the upgrade modal during the connection process
         $className = get_class($this);
@@ -126,7 +126,7 @@ class LengowController
      * affect variables to template display
      * @return void
      */
-    protected function prepareDisplay()
+    protected function prepareDisplay(): void
     {
         $localeIsoCode = Tools::substr(Context::getContext()->language->language_code, 0, 2);
         $multiShop = Shop::isFeatureActive();

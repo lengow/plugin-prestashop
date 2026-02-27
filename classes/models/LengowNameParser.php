@@ -210,7 +210,7 @@ class LengowNameParser
      * @param mixed $needle the needle to look for
      * @param array<string, mixed> $haystack the haystack from which to look into
      */
-    private function inArrayNorm($needle, array $haystack): bool
+    private function inArrayNorm(mixed $needle,array $haystack): bool
     {
         $needle = trim(strtolower(str_replace('.', '', $needle)));
 

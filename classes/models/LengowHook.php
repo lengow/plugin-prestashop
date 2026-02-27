@@ -47,7 +47,7 @@ class LengowHook
      *
      * @param Lengow $module Lengow module instance
      */
-    public function __construct($module)
+    public function __construct(Lengow $module)
     {
         $this->module = $module;
         $this->context = Context::getContext();
@@ -58,7 +58,7 @@ class LengowHook
      *
      * @return bool
      */
-    public function registerHooks()
+    public function registerHooks(): bool
     {
         $error = false;
         $lengowHooks = [
@@ -105,7 +105,7 @@ class LengowHook
      * Hook to display the icon
      * @return void
      */
-    public function hookDisplayBackOfficeHeader()
+    public function hookDisplayBackOfficeHeader(): void
     {
         $this->context->controller->addCss(_PS_MODULE_LENGOW_DIR_ . 'views/css/lengow-tab.css');
     }
@@ -114,7 +114,7 @@ class LengowHook
      * Hook on Home page
      * @return void
      */
-    public function hookDisplayHome()
+    public function hookDisplayHome(): void
     {
         // tracker is disabled now
     }
@@ -123,7 +123,7 @@ class LengowHook
      * Hook on Payment page
      * @return void
      */
-    public function hookPaymentTop()
+    public function hookPaymentTop(): void
     {
         // tracker is disabled now
     }
@@ -133,7 +133,7 @@ class LengowHook
      *
      * @return mixed
      */
-    public function hookFooter()
+    public function hookFooter(): mixed
     {
         // tracker is disabled now
         return '';
@@ -144,9 +144,9 @@ class LengowHook
      *
      * @param array<string, mixed> $args arguments of hook
      *
-     * @return mixed null|void
+     * @return void
      */
-    public function hookOrderConfirmation($args)
+    public function hookOrderConfirmation(array $args): void
     {
         // tracker is disabled now
     }
@@ -158,10 +158,10 @@ class LengowHook
      *
      * @return mixed
      */
-    public function hookAdminOrder($args)
+    public function hookAdminOrder(array $args): mixed
     {
         if (!isset($args['id_order'])) {
-            return;
+            return null;
         }
         if (LengowOrder::isFromLengow($args['id_order'])) {
             $lengowLink = new LengowLink();
@@ -233,7 +233,7 @@ class LengowHook
      *
      * @return mixed
      */
-    public function hookAdminOrderSide($params)
+    public function hookAdminOrderSide(array $params): mixed
     {
         $id_order = (int) $params['id_order'];
         $lengowOrder = LengowOrder::getLengowOrderByPrestashopId($id_order);
@@ -261,9 +261,9 @@ class LengowHook
      *
      * @param array<string, mixed> $args arguments of hook
      *
-     * @return mixed null|void
+     * @return void
      */
-    public function hookUpdateOrderStatus($args)
+    public function hookUpdateOrderStatus(array $args): void
     {
         if (!isset($args['id_order']) || !(bool) LengowConfiguration::get(LengowConfiguration::SEND_EMAIL_DISABLED)) {
             return;
@@ -283,9 +283,9 @@ class LengowHook
      *
      * @param array<string, mixed> $args arguments of hook
      *
-     * @return mixed null|void
+     * @return void
      */
-    public function hookActionOrderStatusPostUpdate($args)
+    public function hookActionOrderStatusPostUpdate(array $args): void
     {
         if (!isset($args['id_order'])) {
             return;
@@ -332,9 +332,9 @@ class LengowHook
      *
      * @param array<string, mixed> $args arguments of hook
      *
-     * @return mixed null|void
+     * @return void
      */
-    public function hookActionObjectUpdateAfter($args)
+    public function hookActionObjectUpdateAfter(array $args): void
     {
         if (!isset($args['object']->id) || !$args['object'] instanceof Order) {
             return;
@@ -364,7 +364,7 @@ class LengowHook
      * @return void
      * @param array<string, mixed> $args
      */
-    public function hookActionProductCancel(array $args)
+    public function hookActionProductCancel(array $args): void
     {
         if (!isset($args['order'])) {
             return;

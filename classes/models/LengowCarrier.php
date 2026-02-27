@@ -73,7 +73,7 @@ class LengowCarrier extends Carrier
      *
      * @return array<int|string, mixed>
      */
-    public static function getActiveCarriers($idCountry = null)
+    public static function getActiveCarriers(?int $idCountry = null): array
     {
         $carriers = [];
         if ($idCountry) {
@@ -104,7 +104,7 @@ class LengowCarrier extends Carrier
      * @param int $langId
      * @return array<int|string, mixed>
      */
-    public static function getCarriersChoices($langId)
+    public static function getCarriersChoices(int $langId): array
     {
         $carriers = parent::getCarriers($langId, true);
         $carriersChoices = [];
@@ -128,7 +128,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdCarrierBySemanticSearch($search, $idCountry = null, $idRelay = null)
+    public static function getIdCarrierBySemanticSearch(string $search,?int $idCountry = null,?string $idRelay = null): int|false
     {
         $idCarrier = self::getIdCarrierByCarrierName($search, $idCountry);
         if (!$idCarrier) {
@@ -149,7 +149,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdCarrierByCarrierName($search, $idCountry = null)
+    public static function getIdCarrierByCarrierName(string $search,?int $idCountry = null): int|false
     {
         $search = Tools::strtolower(str_replace(' ', '', $search));
         $activeCarriers = self::getActiveCarriers($idCountry);
@@ -171,7 +171,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdCarrierByExternalModuleName($search, $idCountry = null, $idRelay = null)
+    public static function getIdCarrierByExternalModuleName(string $search,?int $idCountry = null,?string $idRelay = null): int|false
     {
         $carriers = [];
         $search = Tools::strtolower(str_replace(' ', '', $search));
@@ -249,7 +249,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdActiveCarrierByIdCarrier($idCarrier, $idCountry = null)
+    public static function getIdActiveCarrierByIdCarrier(int $idCarrier,?int $idCountry = null): int|false
     {
         if ($idCountry) {
             $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
@@ -290,7 +290,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdReferenceByIdCarrier($idCarrier, $idCountry = null)
+    public static function getIdReferenceByIdCarrier(int $idCarrier,?int $idCountry = null): int|false
     {
         if ($idCountry) {
             $sql = 'SELECT c.id_reference FROM ' . _DB_PREFIX_ . 'carrier as c
@@ -318,7 +318,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdCarrierByCarrierMarketplaceName($idCountry, $idMarketplace, $carrierMarketplaceName)
+    public static function getIdCarrierByCarrierMarketplaceName(int $idCountry,int $idMarketplace,string $carrierMarketplaceName): int|false
     {
         if ($carrierMarketplaceName !== '') {
             // find in lengow marketplace carrier country table
@@ -347,7 +347,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdCarrierByCarrierMarketplaceLabel($idCountry, $idMarketplace, $carrierMarketplaceLabel)
+    public static function getIdCarrierByCarrierMarketplaceLabel(int $idCountry,int $idMarketplace,string $carrierMarketplaceLabel): int|false
     {
         if ($carrierMarketplaceLabel !== '') {
             // find in lengow marketplace carrier country table
@@ -373,7 +373,7 @@ class LengowCarrier extends Carrier
      *
      * @return array<int|string, mixed>
      */
-    public static function getAllCarrierMarketplace()
+    public static function getAllCarrierMarketplace(): array
     {
         try {
             $results = Db::getInstance()->ExecuteS('SELECT * FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace');
@@ -391,7 +391,7 @@ class LengowCarrier extends Carrier
      *
      * @return array<int|string, mixed>
      */
-    public static function getAllCarrierMarketplaceByIdMarketplace($idMarketplace)
+    public static function getAllCarrierMarketplaceByIdMarketplace(int $idMarketplace): array
     {
         try {
             $results = Db::getInstance()->ExecuteS(
@@ -422,7 +422,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdCarrierMarketplace($carrierMarketplaceName)
+    public static function getIdCarrierMarketplace(string $carrierMarketplaceName): int|false
     {
         try {
             $results = Db::getInstance()->ExecuteS(
@@ -451,7 +451,7 @@ class LengowCarrier extends Carrier
      *
      * @return array<int|string, mixed>|false
      */
-    public static function getCarrierMarketplaceById($idCarrierMarketplace)
+    public static function getCarrierMarketplaceById(int $idCarrierMarketplace): array|false
     {
         $result = Db::getInstance()->getRow(
             'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_carrier_marketplace WHERE id = ' . (int) $idCarrierMarketplace
@@ -464,7 +464,7 @@ class LengowCarrier extends Carrier
      * Sync Lengow carrier marketplaces
      * @return void
      */
-    public static function syncCarrierMarketplace()
+    public static function syncCarrierMarketplace(): void
     {
         LengowMarketplace::loadApiMarketplace();
         if (LengowMarketplace::$marketplaces && !empty(LengowMarketplace::$marketplaces)) {
@@ -511,7 +511,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function insertCarrierMarketplace($carrierMarketplaceName, $carrierMarketplaceLabel, $carrierLengowCode = null)
+    public static function insertCarrierMarketplace(string $carrierMarketplaceName,string $carrierMarketplaceLabel,?string $carrierLengowCode = null): int|false
     {
         $params = [
             self::FIELD_CARRIER_MARKETPLACE_NAME => pSQL($carrierMarketplaceName),
@@ -534,7 +534,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function updateCarrierMarketplace($idCarrierMarketplace, $params)
+    public static function updateCarrierMarketplace(int $idCarrierMarketplace,array $params): int|false
     {
         $db = Db::getInstance();
         $success = $db->update(self::TABLE_CARRIER_MARKETPLACE, $params, 'id = ' . (int) $idCarrierMarketplace);
@@ -550,7 +550,7 @@ class LengowCarrier extends Carrier
      *
      * @return bool
      */
-    public static function matchCarrierMarketplaceWithMarketplace($idMarketplace, $idCarrierMarketplace)
+    public static function matchCarrierMarketplaceWithMarketplace(int $idMarketplace,int $idCarrierMarketplace): bool
     {
         $db = Db::getInstance();
         try {
@@ -582,7 +582,7 @@ class LengowCarrier extends Carrier
      *
      * @return bool
      */
-    public static function deleteMarketplaceCarrierMarketplace($idMarketplaceCarrierMarketplace)
+    public static function deleteMarketplaceCarrierMarketplace(int $idMarketplaceCarrierMarketplace): bool
     {
         return Db::getInstance()->delete(
             self::TABLE_MARKETPLACE_CARRIER_MARKETPLACE,
@@ -594,7 +594,7 @@ class LengowCarrier extends Carrier
      * Clean carrier marketplace matching for old carriers
      * @return void
      */
-    public static function cleanCarrierMarketplaceMatching()
+    public static function cleanCarrierMarketplaceMatching(): void
     {
         LengowMarketplace::loadApiMarketplace();
         if (LengowMarketplace::$marketplaces && !empty(LengowMarketplace::$marketplaces)) {
@@ -639,7 +639,7 @@ class LengowCarrier extends Carrier
      * @param int|null $idMarketplace Lengow marketplace id
      * @return void
      */
-    public static function createDefaultCarrier($idCountry = null, $idMarketplace = null)
+    public static function createDefaultCarrier(?int $idCountry = null,?int $idMarketplace = null): void
     {
         if ($idCountry === null) {
             $idCountry = (int) Configuration::get('PS_COUNTRY_DEFAULT');
@@ -663,7 +663,7 @@ class LengowCarrier extends Carrier
      * @param int $idCarrierMarketplace Lengow carrier marketplace id
      * @return void
      */
-    public static function cleanDefaultCarrierByIdMarketplace($idMarketplace, $idCarrierMarketplace)
+    public static function cleanDefaultCarrierByIdMarketplace(int $idMarketplace,int $idCarrierMarketplace): void
     {
         try {
             $results = Db::getInstance()->ExecuteS(
@@ -694,7 +694,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdDefaultCarrier($idCountry, $idMarketplace)
+    public static function getIdDefaultCarrier(int $idCountry,int $idMarketplace): int|false
     {
         try {
             $results = Db::getInstance()->ExecuteS(
@@ -717,7 +717,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getDefaultIdCarrier($idCountry, $idMarketplace, $active = false)
+    public static function getDefaultIdCarrier(int $idCountry,int $idMarketplace,bool $active = false): int|false
     {
         $idCarrier = false;
         $result = Db::getInstance()->getRow(
@@ -743,7 +743,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getDefaultIdCarrierMarketplace($idCountry, $idMarketplace)
+    public static function getDefaultIdCarrierMarketplace(int $idCountry,int $idMarketplace): int|false
     {
         $idCarrier = false;
         $result = Db::getInstance()->getRow(
@@ -765,7 +765,7 @@ class LengowCarrier extends Carrier
      *
      * @return array<int|string, mixed>
      */
-    public static function getDefaultCarrierNotMatched()
+    public static function getDefaultCarrierNotMatched(): array
     {
         $defaultCarriers = [];
 
@@ -790,7 +790,7 @@ class LengowCarrier extends Carrier
      *
      * @return bool
      */
-    public static function hasDefaultCarrierNotMatched()
+    public static function hasDefaultCarrierNotMatched(): bool
     {
         $carrierNotMatched = self::getDefaultCarrierNotMatched();
 
@@ -802,7 +802,7 @@ class LengowCarrier extends Carrier
      *
      * @return array<int|string, mixed>|false
      */
-    public static function getCountries()
+    public static function getCountries(): array|false
     {
         try {
             $results = Db::getInstance()->executeS(
@@ -828,7 +828,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function insertDefaultCarrier($idCountry, $idMarketplace, $additionalParams = [])
+    public static function insertDefaultCarrier(int $idCountry,int $idMarketplace,array $additionalParams = []): int|false
     {
         $params = array_merge(
             [
@@ -851,7 +851,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function updateDefaultCarrier($idDefaultCarrier, $params)
+    public static function updateDefaultCarrier(int $idDefaultCarrier,array $params): int|false
     {
         $db = Db::getInstance();
         $success = $db->update(self::TABLE_DEFAULT_CARRIER, $params, 'id = ' . (int) $idDefaultCarrier);
@@ -868,7 +868,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdMarketplaceCarrierCountry($idCountry, $idMarketplace, $idCarrier)
+    public static function getIdMarketplaceCarrierCountry(int $idCountry,int $idMarketplace,int $idCarrier): int|false
     {
         try {
             $result = Db::getInstance()->ExecuteS(
@@ -891,7 +891,7 @@ class LengowCarrier extends Carrier
      * @param int $idCarrierMarketplace Lengow carrier marketplace id
      * @return void
      */
-    public static function cleanMarketplaceCarrierCountryByIdMarketplace($idMarketplace, $idCarrierMarketplace)
+    public static function cleanMarketplaceCarrierCountryByIdMarketplace(int $idMarketplace,int $idCarrierMarketplace): void
     {
         try {
             $results = Db::getInstance()->ExecuteS(
@@ -920,7 +920,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdCarrierMarketplaceByMarketplaceCarrierCountry($idCountry, $idMarketplace, $idCarrier)
+    public static function getIdCarrierMarketplaceByMarketplaceCarrierCountry(int $idCountry,int $idMarketplace,int $idCarrier): int|false
     {
         $result = Db::getInstance()->getRow(
             'SELECT id_carrier_marketplace FROM ' . _DB_PREFIX_ . 'lengow_marketplace_carrier_country
@@ -946,7 +946,7 @@ class LengowCarrier extends Carrier
      *
      * @return array<int|string, mixed>
      */
-    public static function getAllMarketplaceCarrierCountryByIdMarketplace($idCountry, $idMarketplace)
+    public static function getAllMarketplaceCarrierCountryByIdMarketplace(int $idCountry,int $idMarketplace): array
     {
         $carriers = [];
         try {
@@ -977,7 +977,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function insertMarketplaceCarrierCountry($idCountry, $idMarketplace, $idCarrier, $idCarrierMarketplace)
+    public static function insertMarketplaceCarrierCountry(int $idCountry,int $idMarketplace,int $idCarrier,int $idCarrierMarketplace): int|false
     {
         $params = [
             self::FIELD_COUNTRY_ID => (int) $idCountry,
@@ -999,7 +999,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function updateMarketplaceCarrierCountry($idMarketplaceCarrierCountry, $idCarrierMarketplace)
+    public static function updateMarketplaceCarrierCountry(int $idMarketplaceCarrierCountry,int $idCarrierMarketplace): int|false
     {
         $db = Db::getInstance();
         $success = $db->update(
@@ -1020,7 +1020,7 @@ class LengowCarrier extends Carrier
      *
      * @return string
      */
-    public static function getCarrierMarketplaceCode($idCountry, $idMarketplace, $idCarrier)
+    public static function getCarrierMarketplaceCode(int $idCountry,int $idMarketplace,int $idCarrier): string
     {
         $marketplaceCode = '';
         $idCarrier = self::getIdReferenceByIdCarrier($idCarrier, $idCountry);
@@ -1065,7 +1065,7 @@ class LengowCarrier extends Carrier
      *
      * @throws LengowException mondial relay not found
      */
-    public static function carrierCompatibility($idOrder, $idCustomer, $idCart, $idCarrier, $shippingAddress)
+    public static function carrierCompatibility(int $idOrder,int $idCustomer,int $idCart,int $idCarrier,LengowAddress $shippingAddress): int
     {
         // get SoColissimo carrier id
         $soColissimoCarrierId = _PS_VERSION_ < '1.7'
@@ -1121,7 +1121,7 @@ class LengowCarrier extends Carrier
      *
      * @throws LengowException colissimo missing file
      */
-    public static function addSoColissimo($idCart, $idCustomer, $shippingAddress)
+    public static function addSoColissimo(int $idCart,int $idCustomer,LengowAddress $shippingAddress): bool
     {
         $sep = DIRECTORY_SEPARATOR;
         $moduleName = _PS_VERSION_ < '1.7' ? 'socolissimo' : 'colissimo_simplicite';
@@ -1246,7 +1246,7 @@ class LengowCarrier extends Carrier
      *
      * @return int|false
      */
-    public static function getIdMondialRelayCarrier($idRelay = null)
+    public static function getIdMondialRelayCarrier(?string $idRelay = null): int|false
     {
         if (LengowInstall::checkTableExists('mr_method')) {
             $sql = 'SELECT c.id_reference as id_carrier FROM ' . _DB_PREFIX_ . 'carrier c
@@ -1272,7 +1272,7 @@ class LengowCarrier extends Carrier
      *
      * @throws LengowException mondial relay missing file
      */
-    public static function getMRRelayV2($idAddressDelivery, $idRelay, $mr)
+    public static function getMRRelayV2(int $idAddressDelivery,string $idRelay,MondialRelay $mr): bool
     {
         $sep = DIRECTORY_SEPARATOR;
         if (empty($idRelay)) {
@@ -1312,7 +1312,7 @@ class LengowCarrier extends Carrier
      *
      * @throws PrestaShopDatabaseException|PrestaShopException
      */
-    public static function handleMRRelayV3($idOrder, $idCarrier, $idRelay)
+    public static function handleMRRelayV3(int $idOrder,int $idCarrier,string $idRelay): bool
     {
         $order = new Order($idOrder);
         $carrierMethod = MondialrelayCarrierMethod::getFromNativeCarrierId($idCarrier);
@@ -1374,7 +1374,7 @@ class LengowCarrier extends Carrier
      *
      * @return bool
      */
-    public static function addMondialRelay($relay, $idOrder, $idCustomer, $idCarrier, $idCart, $insurance = 0)
+    public static function addMondialRelay(mixed $relay,int $idOrder,int $idCustomer,int $idCarrier,int $idCart,int $insurance = 0): bool
     {
         $mdArrayKeys = [
             'Num',

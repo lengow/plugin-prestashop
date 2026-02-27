@@ -208,7 +208,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    public static function getData($type = self::DATA_TYPE_CMS)
+    public static function getData(string $type = self::DATA_TYPE_CMS): array
     {
         switch ($type) {
             case self::DATA_TYPE_ALL:
@@ -243,7 +243,7 @@ class LengowToolbox
      * @param string|null $date name of file to download
      * @return void
      */
-    public static function downloadLog($date = null)
+    public static function downloadLog(?string $date = null): void
     {
         LengowLog::download($date);
     }
@@ -255,7 +255,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    public static function syncOrders($params = [])
+    public static function syncOrders(array $params = []): array
     {
         // get all params for order synchronization
         $params = self::filterParamsForSync($params);
@@ -279,7 +279,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    public static function getOrderData($marketplaceSku = null, $marketplaceName = null, $type = self::DATA_TYPE_ORDER)
+    public static function getOrderData(?string $marketplaceSku = null,?string $marketplaceName = null,string $type = self::DATA_TYPE_ORDER): array
     {
         $lengowOrders = $marketplaceSku && $marketplaceName
             ? LengowOrder::getAllLengowOrders($marketplaceSku, $marketplaceName)
@@ -321,7 +321,7 @@ class LengowToolbox
      *
      * @return bool
      */
-    public static function isCurlActivated()
+    public static function isCurlActivated(): bool
     {
         return function_exists(self::PHP_EXTENSION_CURL);
     }
@@ -331,7 +331,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getAllData()
+    private static function getAllData(): array
     {
         return [
             self::CHECKLIST => self::getChecklistData(),
@@ -349,7 +349,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getCmsData()
+    private static function getCmsData(): array
     {
         return [
             self::CHECKLIST => self::getChecklistData(),
@@ -364,7 +364,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getChecklistData()
+    private static function getChecklistData(): array
     {
         $checksumData = self::getChecksumData();
 
@@ -381,7 +381,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getPluginData()
+    private static function getPluginData(): array
     {
         return [
             self::PLUGIN_CMS_VERSION => _PS_VERSION_,
@@ -403,7 +403,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getSynchronizationData()
+    private static function getSynchronizationData(): array
     {
         $lastImport = LengowMain::getLastImport();
 
@@ -424,7 +424,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getShopData()
+    private static function getShopData(): array
     {
         $exportData = [];
         $shops = LengowShop::getActiveShops();
@@ -458,7 +458,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getOptionData()
+    private static function getOptionData(): array
     {
         $optionData = [
             self::CMS_OPTIONS => LengowConfiguration::getAllValues(),
@@ -477,7 +477,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getChecksumData()
+    private static function getChecksumData(): array
     {
         $fileCounter = 0;
         $fileModified = [];
@@ -529,7 +529,7 @@ class LengowToolbox
      * @return array<string, mixed>
      * @param mixed $shortPathParam
      */
-    private static function getModifiedFilesData($shortPathParam)
+    private static function getModifiedFilesData(mixed $shortPathParam): array
     {
         $fileCounter = 0;
         $fileModified = [];
@@ -577,7 +577,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getLogData()
+    private static function getLogData(): array
     {
         $logs = LengowLog::getPaths();
         if (!empty($logs)) {
@@ -596,7 +596,7 @@ class LengowToolbox
      *
      * @return bool
      */
-    private static function isSimpleXMLActivated()
+    private static function isSimpleXMLActivated(): bool
     {
         return function_exists(self::PHP_EXTENSION_SIMPLEXML);
     }
@@ -606,7 +606,7 @@ class LengowToolbox
      *
      * @return bool
      */
-    private static function isJsonActivated()
+    private static function isJsonActivated(): bool
     {
         return function_exists(self::PHP_EXTENSION_JSON);
     }
@@ -616,7 +616,7 @@ class LengowToolbox
      *
      * @return bool
      */
-    private static function testWritePermission()
+    private static function testWritePermission(): bool
     {
         $sep = DIRECTORY_SEPARATOR;
         $filePath = LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_TEST;
@@ -640,7 +640,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function filterParamsForSync($params = [])
+    private static function filterParamsForSync(array $params = []): array
     {
         $paramsFiltered = [LengowImport::PARAM_TYPE => LengowImport::TYPE_TOOLBOX];
         if (isset(
@@ -677,7 +677,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getOrderDataByType($type, $data, $lengowOrder = null)
+    private static function getOrderDataByType(string $type,array $data,?LengowOrder $lengowOrder = null): array
     {
         $orderReferences = [
             self::ID => (int) $data[LengowOrder::FIELD_ID],
@@ -717,7 +717,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getAllOrderData($data, $lengowOrder = null)
+    private static function getAllOrderData(array $data,?LengowOrder $lengowOrder = null): array
     {
         $orderTypes = json_decode($data[LengowOrder::FIELD_ORDER_TYPES], true);
 
@@ -791,7 +791,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getOrderErrorsData($idOrderLengow)
+    private static function getOrderErrorsData(int $idOrderLengow): array
     {
         $orderErrors = [];
         $errors = LengowOrderError::getOrderLogs($idOrderLengow);
@@ -825,7 +825,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getOrderActionData($idOrder)
+    private static function getOrderActionData(int $idOrder): array
     {
         $orderActions = [];
         $actions = LengowAction::getActionsByOrderId($idOrder);
@@ -854,7 +854,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getOrderStatusesData($lengowOrder)
+    private static function getOrderStatusesData(LengowOrder $lengowOrder): array
     {
         $orderStatuses = [];
         $idLang = Language::getIdByIso(LengowTranslation::ISO_CODE_EN);
@@ -879,7 +879,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getOrderExtraData($data, $lengowOrder = null)
+    private static function getOrderExtraData(array $data,?LengowOrder $lengowOrder = null): array
     {
         $orderData = json_decode($data[LengowOrder::FIELD_EXTRA], true);
         $orderData[self::EXTRA_UPDATED_AT] = $lengowOrder
@@ -896,7 +896,7 @@ class LengowToolbox
      *
      * @return string
      */
-    private static function getOrderProcessLabel($orderProcess)
+    private static function getOrderProcessLabel(int $orderProcess): string
     {
         switch ($orderProcess) {
             case LengowOrder::PROCESS_STATE_NEW:
@@ -916,7 +916,7 @@ class LengowToolbox
      *
      * @return string|null
      */
-    private static function getOrderStatusCorrespondence($idOrderState)
+    private static function getOrderStatusCorrespondence(int $idOrderState): ?string
     {
         $idStatusWaitingShipment = LengowMain::getOrderState(LengowOrder::STATE_WAITING_SHIPMENT);
         $idStatusShipped = LengowMain::getOrderState(LengowOrder::STATE_SHIPPED);
@@ -941,7 +941,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function generateErrorReturn($httpCode, $error)
+    private static function generateErrorReturn(int $httpCode,string $error): array
     {
         return [
             self::ERRORS => [

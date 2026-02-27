@@ -52,7 +52,7 @@ class LengowOrderError
      *
      * @return bool
      */
-    public static function lengowOrderIsInError($idLengowOrder)
+    public static function lengowOrderIsInError(int $idLengowOrder): bool
     {
         $query = 'SELECT lli.id FROM ' . _DB_PREFIX_ . 'lengow_logs_import lli
             LEFT JOIN ' . _DB_PREFIX_ . 'lengow_orders lo ON lli.id_order_lengow = lo.id
@@ -75,7 +75,7 @@ class LengowOrderError
      *
      * @return array<int|string, mixed>|false
      */
-    public static function getLastImportLogNotFinished($marketplaceSku, $marketplaceName, $type = self::TYPE_ERROR_IMPORT)
+    public static function getLastImportLogNotFinished(string $marketplaceSku,string $marketplaceName,int $type = self::TYPE_ERROR_IMPORT): array|false
     {
         // check if log already exists for the given order id
         $query = 'SELECT lli.`message`, lli.`date` FROM `' . _DB_PREFIX_ . 'lengow_logs_import` lli
@@ -97,7 +97,7 @@ class LengowOrderError
      *
      * @return array<int|string, mixed>|false
      */
-    public static function getOrderLogs($idOrderLengow, $type = null, $finished = null)
+    public static function getOrderLogs(int $idOrderLengow,?int $type = null,?bool $finished = null): array|false
     {
         $andType = $type !== null ? ' AND `type` = \'' . $type . '\'' : '';
         $andFinished = '';
@@ -125,7 +125,7 @@ class LengowOrderError
      *
      * @return bool
      */
-    public static function addOrderLog($idOrderLengow, $message = '', $type = self::TYPE_ERROR_IMPORT, $finished = 0)
+    public static function addOrderLog(int $idOrderLengow,string $message = '',int $type = self::TYPE_ERROR_IMPORT,int $finished = 0): bool
     {
         try {
             return Db::getInstance()->insert(
@@ -151,7 +151,7 @@ class LengowOrderError
      *
      * @return bool
      */
-    public static function finishOrderLogs($idOrderLengow, $type = self::TYPE_ERROR_IMPORT)
+    public static function finishOrderLogs(int $idOrderLengow,int $type = self::TYPE_ERROR_IMPORT): bool
     {
         $query = 'SELECT `id` FROM `' . _DB_PREFIX_ . 'lengow_logs_import`
             WHERE `id_order_lengow` = \'' . (int) $idOrderLengow . '\'
@@ -181,7 +181,7 @@ class LengowOrderError
      *
      * @return array<int|string, mixed>
      */
-    public static function getAllOrderLogsNotSent()
+    public static function getAllOrderLogsNotSent(): array
     {
         try {
             $sqlLogs = 'SELECT lo.`marketplace_sku`, lli.`message`, lli.`id`
@@ -205,7 +205,7 @@ class LengowOrderError
      *
      * @return bool
      */
-    public static function logSent($idOrderLog)
+    public static function logSent(int $idOrderLog): bool
     {
         try {
             return Db::getInstance()->update(

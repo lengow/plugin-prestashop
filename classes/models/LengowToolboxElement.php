@@ -55,7 +55,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function getCheckList()
+    public function getCheckList(): string
     {
         $checklistData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_CHECKLIST);
         $mailCheck = $this->getMailConfiguration();
@@ -105,7 +105,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function getGlobalInformation()
+    public function getGlobalInformation(): string
     {
         $pluginData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_PLUGIN);
         $checklist = [
@@ -155,7 +155,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function getImportInformation()
+    public function getImportInformation(): string
     {
         $synchronizationData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_SYNCHRONIZATION);
         $lastSynchronization = $synchronizationData[LengowToolbox::SYNCHRONIZATION_LAST_SYNCHRONIZATION];
@@ -223,7 +223,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function getExportInformation()
+    public function getExportInformation(): string
     {
         $content = '';
         $exportData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_SHOP);
@@ -300,7 +300,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function getFileInformation()
+    public function getFileInformation(): string
     {
         $content = '';
         $exportData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_SHOP);
@@ -348,7 +348,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function checkFileMd5()
+    public function checkFileMd5(): string
     {
         $checklist = [];
         $checksumData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_CHECKSUM);
@@ -416,7 +416,7 @@ class LengowToolboxElement
      *
      * @return array<int|string, mixed>
      */
-    private function getMailConfiguration()
+    private function getMailConfiguration(): array
     {
         $mailMethod = (int) Configuration::get('PS_MAIL_METHOD');
         if ($mailMethod === 2) {
@@ -443,7 +443,7 @@ class LengowToolboxElement
      *
      * @return bool
      */
-    private function isShopActivated()
+    private function isShopActivated(): bool
     {
         if (Configuration::get('PS_CATALOG_MODE')) {
             return false;
@@ -459,7 +459,7 @@ class LengowToolboxElement
      *
      * @return string|null
      */
-    private function getContent($checklist = [])
+    private function getContent(array $checklist = []): ?string
     {
         if (empty($checklist)) {
             return null;

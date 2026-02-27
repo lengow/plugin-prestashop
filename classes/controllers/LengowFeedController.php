@@ -31,13 +31,13 @@ class LengowFeedController extends LengowController
     /**
      * @var LengowList Lengow list instance
      */
-    protected $list;
+    protected LengowList $list;
 
     /**
      * Process Post Parameters
      * @return void
      */
-    public function postProcess()
+    public function postProcess(): void
     {
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
         if ($action) {
@@ -247,7 +247,7 @@ class LengowFeedController extends LengowController
      * Display data page
      * @return void
      */
-    public function display()
+    public function display(): void
     {
         $shopCollection = [];
         if ($currentShop = Shop::getContextShopID()) {
@@ -306,7 +306,7 @@ class LengowFeedController extends LengowController
      *
      * @return array<int|string, mixed> Number of product exported/total for this shop
      */
-    public function reloadTotal($idShop)
+    public function reloadTotal(int $idShop): array
     {
         $lengowExport = new LengowExport([LengowExport::PARAM_SHOP_ID => $idShop]);
         $result = [];
@@ -323,7 +323,7 @@ class LengowFeedController extends LengowController
      *
      * @return string
      */
-    public function buildTable($idShop)
+    public function buildTable(int $idShop): string
     {
         $fieldsList = [];
 
@@ -563,7 +563,7 @@ class LengowFeedController extends LengowController
      *
      * @throws Exception
      */
-    public static function displayLink($key, $value, $item)
+    public static function displayLink(string $key,string $value,array $item): string
     {
         // this line is useless, but PrestaShop validator require it
         $key = $key;

@@ -111,7 +111,7 @@ class LengowSync
      *
      * @return array<int|string, mixed>
      */
-    public static function getSyncData()
+    public static function getSyncData(): array
     {
         $data = [
             'domain_name' => $_SERVER['SERVER_NAME'],
@@ -151,7 +151,7 @@ class LengowSync
      *
      * @return bool
      */
-    public static function syncCatalog($force = false, $logOutput = false)
+    public static function syncCatalog(bool $force = false,bool $logOutput = false): bool
     {
         $success = false;
         $settingUpdated = false;
@@ -204,7 +204,7 @@ class LengowSync
      *
      * @return bool
      */
-    public static function syncCarrier($force = false, $logOutput = false)
+    public static function syncCarrier(bool $force = false,bool $logOutput = false): bool
     {
         if (LengowConfiguration::isNewMerchant()) {
             return false;
@@ -232,7 +232,7 @@ class LengowSync
      *
      * @return array<int|string, mixed>
      */
-    public static function getOptionData()
+    public static function getOptionData(): array
     {
         $data = [
             'token' => LengowMain::getToken(),
@@ -265,7 +265,7 @@ class LengowSync
      *
      * @return bool
      */
-    public static function setCmsOption($force = false, $logOutput = false)
+    public static function setCmsOption(bool $force = false,bool $logOutput = false): bool
     {
         if (LengowConfiguration::isNewMerchant() || LengowConfiguration::debugModeIsActive()) {
             return false;
@@ -291,7 +291,7 @@ class LengowSync
      *
      * @return array<int|string, mixed>|false
      */
-    public static function getStatusAccount($force = false, $logOutput = false)
+    public static function getStatusAccount(bool $force = false,bool $logOutput = false): array|false
     {
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_ACCOUNT_STATUS_DATA);
@@ -342,7 +342,7 @@ class LengowSync
      *
      * @return mixed
      */
-    public static function getMarketplaces($force = false, $logOutput = false)
+    public static function getMarketplaces(bool $force = false,bool $logOutput = false): mixed
     {
         $filePath = LengowMarketplace::getFilePath();
         if (!$force) {
@@ -413,7 +413,7 @@ class LengowSync
      *
      * @return array<int|string, mixed>|false
      */
-    public static function getPluginData($force = false, $logOutput = false)
+    public static function getPluginData(bool $force = false,bool $logOutput = false): array|false
     {
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_DATA);
@@ -488,7 +488,7 @@ class LengowSync
      *
      * @return array<int|string, mixed>
      */
-    public static function getPluginLinks($isoCode = null, $default = false)
+    public static function getPluginLinks(?string $isoCode = null,?bool $default = false): array
     {
         $pluginData = self::getPluginData();
         if (!$pluginData || $default) {

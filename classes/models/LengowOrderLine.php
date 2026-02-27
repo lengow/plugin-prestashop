@@ -45,7 +45,7 @@ class LengowOrderLine
      *
      * @return array<int|string, mixed>
      */
-    public static function findOrderLineIds($idOrder)
+    public static function findOrderLineIds(int $idOrder): array
     {
         $sql = 'SELECT id_order_line FROM `' . _DB_PREFIX_ . 'lengow_order_line`
             WHERE id_order = ' . (int) $idOrder;
@@ -107,7 +107,7 @@ class LengowOrderLine
      *
      * @return bool
      */
-    public static function setRefunded(int $idOrderDetail, $idOrderLine, int $cancelQuantity)
+    public static function setRefunded(int $idOrderDetail,string $idOrderLine,int $cancelQuantity): bool
     {
         $sql = 'UPDATE `' . _DB_PREFIX_ . self::TABLE_ORDER_LINE . '`
             SET refunded = 1, quantity_refunded = ' . (int) $cancelQuantity . '
@@ -129,7 +129,7 @@ class LengowOrderLine
      *
      * @return int|null
      */
-    public static function getQuantityRefunded($idOrderLine)
+    public static function getQuantityRefunded(string $idOrderLine): ?int
     {
         $sql = 'SELECT quantity_refunded FROM `' . _DB_PREFIX_ . self::TABLE_ORDER_LINE . '`
             WHERE id_order_line = "' . pSQL($idOrderLine) . '"';

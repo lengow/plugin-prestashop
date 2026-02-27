@@ -35,7 +35,7 @@ class LengowOrderDetail extends OrderDetail
      *
      * @return int
      */
-    public static function findByOrderIdProductId($idOrder, $idProduct)
+    public static function findByOrderIdProductId(int $idOrder,$idProduct): int
     {
         $whereArr = [
             '`id_order`=' . (int) $idOrder,
@@ -62,7 +62,7 @@ class LengowOrderDetail extends OrderDetail
      * @param int $orderId
      * @return void
      */
-    public static function updateOrderReturnTrackingNumber($returnTrackingNumber, $orderId)
+    public static function updateOrderReturnTrackingNumber(string $returnTrackingNumber,int $orderId): void
     {
         try {
             $returnTrackingNumber = pSQL($returnTrackingNumber);
@@ -84,7 +84,7 @@ class LengowOrderDetail extends OrderDetail
      * @param int $orderId
      * @return void
      */
-    public static function updateOrderReturnCarrier($returnCarrier, $orderId)
+    public static function updateOrderReturnCarrier(string $returnCarrier,int $orderId): void
     {
         try {
             $returnCarrier = pSQL($returnCarrier);
@@ -106,7 +106,7 @@ class LengowOrderDetail extends OrderDetail
      *
      * @return string
      */
-    public static function getOrderReturnTrackingNumber($orderId)
+    public static function getOrderReturnTrackingNumber(int $orderId): string
     {
         try {
             $order = new Order($orderId);
@@ -129,7 +129,7 @@ class LengowOrderDetail extends OrderDetail
      *
      * @return string
      */
-    public static function getOrderReturnCarrier($orderId)
+    public static function getOrderReturnCarrier(int $orderId): string
     {
         try {
             $order = new Order($orderId);
@@ -152,7 +152,7 @@ class LengowOrderDetail extends OrderDetail
      *
      * @return string
      */
-    public static function getOrderReturnCarrierName($orderId)
+    public static function getOrderReturnCarrierName(int $orderId): string
     {
         try {
             $order = new Order($orderId);

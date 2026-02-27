@@ -91,7 +91,7 @@ class Lengow extends Module
      * Redirect on lengow configure page
      * @return void
      */
-    public function getContent()
+    public function getContent(): void
     {
         $link = new LengowLink();
         $configLink = $link->getAbsoluteAdminLink('AdminLengowHome');
@@ -103,7 +103,7 @@ class Lengow extends Module
      *
      * @return bool
      */
-    public function install()
+    public function install(): bool
     {
         $this->installClass->clearCaches();
         if (!parent::install()) {
@@ -120,7 +120,7 @@ class Lengow extends Module
      *
      * @return bool
      */
-    public function uninstall()
+    public function uninstall(): bool
     {
         $this->installClass->clearCaches();
         if (!parent::uninstall()) {
@@ -137,7 +137,7 @@ class Lengow extends Module
      *
      * @return bool
      */
-    public function reset()
+    public function reset(): bool
     {
         $this->installClass->clearCaches();
         $isReset = $this->installClass->reset();
@@ -150,7 +150,7 @@ class Lengow extends Module
      * Hook to display the icon
      * @return void
      */
-    public function hookDisplayBackOfficeHeader()
+    public function hookDisplayBackOfficeHeader(): void
     {
         $this->hookClass->hookDisplayBackOfficeHeader();
     }
@@ -161,7 +161,7 @@ class Lengow extends Module
      * @depercated Use hookDisplayHome instead
      * @return void
      */
-    public function hookHome()
+    public function hookHome(): void
     {
         $this->hookClass->hookDisplayHome();
     }
@@ -170,7 +170,7 @@ class Lengow extends Module
      * Hook on Home page
      * @return void
      */
-    public function hookDisplayHome()
+    public function hookDisplayHome(): void
     {
         $this->hookClass->hookDisplayHome();
     }
@@ -179,7 +179,7 @@ class Lengow extends Module
      * Hook on Payment page
      * @return void
      */
-    public function hookDisplayPaymentTop()
+    public function hookDisplayPaymentTop(): void
     {
         $this->hookClass->hookPaymentTop();
     }
@@ -189,7 +189,7 @@ class Lengow extends Module
      *
      * @return mixed
      */
-    public function hookDisplayFooter()
+    public function hookDisplayFooter(): mixed
     {
         return $this->hookClass->hookFooter();
     }
@@ -200,7 +200,7 @@ class Lengow extends Module
      * @param array<string, mixed> $args Arguments of hook
      * @return void
      */
-    public function hookDisplayOrderConfirmation($args)
+    public function hookDisplayOrderConfirmation(array $args): void
     {
         $this->hookClass->hookOrderConfirmation($args);
     }
@@ -211,7 +211,7 @@ class Lengow extends Module
      * @return void
      * @param array<string, mixed> $args
      */
-    public function hookActionOrderStatusUpdate($args)
+    public function hookActionOrderStatusUpdate(array $args): void
     {
         $this->hookClass->hookUpdateOrderStatus($args);
     }
@@ -222,7 +222,7 @@ class Lengow extends Module
      * @param array<string, mixed> $args Arguments of hook
      * @return void
      */
-    public function hookActionOrderStatusPostUpdate($args)
+    public function hookActionOrderStatusPostUpdate(array $args): void
     {
         $this->hookClass->hookActionOrderStatusPostUpdate($args);
     }
@@ -233,7 +233,7 @@ class Lengow extends Module
      * @param array<string, mixed> $args Arguments of hook
      * @return void
      */
-    public function hookActionObjectUpdateAfter($args)
+    public function hookActionObjectUpdateAfter(array $args): void
     {
         $this->hookClass->hookActionObjectUpdateAfter($args);
     }
@@ -245,7 +245,7 @@ class Lengow extends Module
      *
      * @return mixed
      */
-    public function hookDisplayAdminOrder($args)
+    public function hookDisplayAdminOrder(array $args): mixed
     {
         return $this->hookClass->hookAdminOrder($args);
     }
@@ -257,7 +257,7 @@ class Lengow extends Module
      *
      * @return mixed
      */
-    public function hookDisplayAdminOrderSide($args)
+    public function hookDisplayAdminOrderSide(array $args): mixed
     {
         return $this->hookClass->hookAdminOrderSide($args);
     }
@@ -267,7 +267,7 @@ class Lengow extends Module
      * @return void
      * @param array<string, mixed> $args
      */
-    public function hookActionProductCancel($args)
+    public function hookActionProductCancel(array $args): void
     {
         $this->hookClass->hookActionProductCancel($args);
     }

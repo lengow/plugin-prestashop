@@ -39,7 +39,7 @@ class LengowCustomer extends Customer
      *
      * @return array<int|string, mixed>
      */
-    public static function getFieldDefinition()
+    public static function getFieldDefinition(): array
     {
         return self::$definition['fields'];
     }
@@ -51,7 +51,7 @@ class LengowCustomer extends Customer
      *
      * @return LengowCustomer
      */
-    public function assign($data = [])
+    public function assign(array $data = []): LengowCustomer
     {
         $this->company = LengowAddress::cleanName((string) $data['company']);
         $this->email = $data['email'];
@@ -72,7 +72,7 @@ class LengowCustomer extends Customer
      *
      * @throws Exception|LengowException invalid object
      */
-    public function validateLengow()
+    public function validateLengow(): bool
     {
         $definition = self::getFieldDefinition();
         foreach ($definition as $fieldName => $constraints) {
@@ -100,7 +100,7 @@ class LengowCustomer extends Customer
      * @param int $errorType type of error
      * @return void
      */
-    public function validateFieldLengow($fieldName, $errorType)
+    public function validateFieldLengow(string $fieldName,int $errorType): void
     {
         switch ($errorType) {
             case LengowAddress::LENGOW_EMPTY_ERROR:
@@ -120,7 +120,7 @@ class LengowCustomer extends Customer
      * @param string $fieldName field name
      * @return void
      */
-    public function validateEmptyLengow($fieldName)
+    public function validateEmptyLengow(string $fieldName): void
     {
         switch ($fieldName) {
             case 'lastname':
@@ -157,7 +157,7 @@ class LengowCustomer extends Customer
      * @param string $fieldName field name
      * @return void
      */
-    public function validateSizeLengow($fieldName)
+    public function validateSizeLengow(string $fieldName): void
     {
         // Customer fields are validated by their own definition.
         // Address-specific fields (address1, address2, other, phone, phone_mobile)
@@ -176,7 +176,7 @@ class LengowCustomer extends Customer
      *
      * @return LengowCustomer|false
      */
-    public function getByEmailAndShop($email, $idShop)
+    public function getByEmailAndShop(string $email,int $idShop)
     {
         $sql = 'SELECT *
             FROM `' . _DB_PREFIX_ . 'customer`

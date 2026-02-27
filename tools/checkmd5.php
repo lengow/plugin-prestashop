@@ -51,7 +51,7 @@ fclose($fp);
  * @param string $path
  * @return list<string>
  */
-function explorer($path)
+function explorer(string $path): array
 {
     $paths = [];
     if (is_dir($path)) {
@@ -75,7 +75,7 @@ function explorer($path)
  * @param list<string> $frontKey
  * @return void
  */
-function writeCsv($fp, $text, &$frontKey = [])
+function writeCsv($fp,$text,array &$frontKey = []): void
 {
     if (is_array($text)) {
         foreach ($text as $k => $v) {

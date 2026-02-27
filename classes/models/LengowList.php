@@ -142,7 +142,7 @@ class LengowList
      *
      * @param array<string, mixed> $params list of parameters
      */
-    public function __construct($params)
+    public function __construct(array $params)
     {
         $this->id = $params['id'];
         $this->fieldsList = $params['fields_list'];
@@ -170,7 +170,7 @@ class LengowList
      *
      * @return string
      */
-    public function displayHeader($order)
+    public function displayHeader(string $order): string
     {
         $tableClass = empty($this->collection) ? 'table_no_result' : '';
         $newOrder = (empty($this->orderValue) || $this->orderValue === 'ASC') ? 'DESC' : 'ASC';
@@ -255,7 +255,7 @@ class LengowList
      *
      * @return string
      */
-    public function displayContent()
+    public function displayContent(): string
     {
         $html = '<tbody>';
         if (empty($this->collection)) {
@@ -280,7 +280,7 @@ class LengowList
      *
      * @return string
      */
-    public function displayRow($item)
+    public function displayRow(array $item): string
     {
         $lengowLink = new LengowLink();
         $html = '';
@@ -361,7 +361,7 @@ class LengowList
      *
      * @return string
      */
-    public function displayFooter()
+    public function displayFooter(): string
     {
         return '</table>';
     }
@@ -371,7 +371,7 @@ class LengowList
      *
      * @return string
      */
-    public function display()
+    public function display(): string
     {
         $lengowLink = new LengowLink();
         $html = '<form id="form_table_' . $this->id . '" class="lengow_form_table"
@@ -392,7 +392,7 @@ class LengowList
      *
      * @return mixed
      */
-    public function executeQuery()
+    public function executeQuery(): mixed
     {
         $sql = $this->buildQuery();
         try {
@@ -427,7 +427,7 @@ class LengowList
      *
      * @return array<int|string, mixed>
      */
-    public function getRow($where)
+    public function getRow(string $where): array
     {
         if (!isset($this->sql['where'])) {
             $this->sql['where'] = [];
@@ -452,7 +452,7 @@ class LengowList
      *
      * @return array<int|string, mixed>|false
      */
-    public function findValueByKey($keyToSearch)
+    public function findValueByKey(string $keyToSearch): array|false
     {
         foreach ($this->fieldsList as $key => $value) {
             if ($keyToSearch === $key) {
@@ -471,7 +471,7 @@ class LengowList
      *
      * @return string
      */
-    public function buildQuery($total = false, $selectAll = false)
+    public function buildQuery(bool $total = false,bool $selectAll = false): string
     {
         $where = isset($this->sql['where']) ? $this->sql['where'] : [];
         $groupBy = false;
@@ -590,7 +590,7 @@ class LengowList
      * @param array<int|string, mixed> $collection collection of result
      * @return void
      */
-    public function updateCollection($collection)
+    public function updateCollection(array $collection): void
     {
         $this->collection = $collection;
     }
@@ -602,7 +602,7 @@ class LengowList
      *
      * @return string
      */
-    public function renderPagination($params = [])
+    public function renderPagination(array $params = []): string
     {
         $navClass = isset($params['nav_class']) ? $params['nav_class'] : '';
         $lengowLink = new LengowLink();
@@ -689,7 +689,7 @@ class LengowList
      *
      * @return Currency
      */
-    private function getCurrencyByCode($isoCode)
+    private function getCurrencyByCode(string $isoCode): Currency
     {
         if ($isoCode) {
             if (isset($this->currencyCode[$isoCode])) {
@@ -713,7 +713,7 @@ class LengowList
      *
      * @return int
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->total;
     }

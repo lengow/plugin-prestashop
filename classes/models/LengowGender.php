@@ -84,7 +84,7 @@ class LengowGender extends Gender
      *
      * @return string
      */
-    public static function getGender($name)
+    public static function getGender(string $name): string
     {
         if (empty($name)) {
             return '';

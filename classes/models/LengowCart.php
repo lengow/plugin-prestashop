@@ -41,7 +41,7 @@ class LengowCart extends Cart
      *
      * @throws Exception|LengowException Cannot add product to cart / No quantity for product
      */
-    public function addProducts($products = [])
+    public function addProducts(array $products = []): bool
     {
         if (!$products) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_product_to_cart'));
@@ -69,7 +69,7 @@ class LengowCart extends Cart
      * @throws Exception Cannot add product to cart
      * @return void
      */
-    public function cleanCart($products = [])
+    public function cleanCart(array $products = []): void
     {
         $cartProducts = $this->getProducts();
         if (empty($cartProducts)) {
@@ -106,19 +106,7 @@ class LengowCart extends Cart
      *
      * @throws Exception|PrestaShopDatabaseException
      */
-    public function updateQty(
-        $quantity,
-        $idProduct,
-        $idProductAttribute = null,
-        $idCustomization = false,
-        $operator = 'up',
-        $idAddressDelivery = 0,
-        $shop = null,
-        $autoAddCartRule = true,
-        $skipAvailabilityCheckOutOfStock = false,
-        $preserveGiftRemoval = true,
-        $useOrderPrices = false,
-    ) {
+    public function updateQty($quantity,$idProduct,$idProductAttribute = null,$idCustomization = false,$operator = 'up',$idAddressDelivery = 0,$shop = null,$autoAddCartRule = true,$skipAvailabilityCheckOutOfStock = false,$preserveGiftRemoval = true,$useOrderPrices = false): bool {
         if (!$shop instanceof Shop) {
             $shop = Context::getContext()->shop;
         }
@@ -261,7 +249,7 @@ class LengowCart extends Cart
      *
      * @return array<int|string, mixed>
      */
-    public static function getFieldDefinition()
+    public static function getFieldDefinition(): array
     {
         return self::$definition['fields'];
     }
@@ -272,7 +260,7 @@ class LengowCart extends Cart
      * @param array<string, mixed> $data API data
      * @return void
      */
-    public function assign($data = [])
+    public function assign(array $data = []): void
     {
         foreach ($data as $field => $value) {
             $this->{$field} = $value;
@@ -287,7 +275,7 @@ class LengowCart extends Cart
      * @throws LengowException invalid object
      * @throws Exception
      */
-    public function validateLengow()
+    public function validateLengow(): bool
     {
         $definition = self::getFieldDefinition();
         foreach ($definition as $fieldName => $constraints) {
@@ -315,7 +303,7 @@ class LengowCart extends Cart
      * @param int $errorType type of error
      * @return void
      */
-    public function validateFieldLengow($fieldName, $errorType)
+    public function validateFieldLengow(string $fieldName,int $errorType): void
     {
         if ($errorType === LengowAddress::LENGOW_EMPTY_ERROR && $fieldName === 'id_lang') {
             $this->{$fieldName} = Context::getContext()->language->id;
@@ -332,7 +320,7 @@ class LengowCart extends Cart
      *
      * @return array<int|string, mixed>|false Record from cart_product table
      */
-    public function containsProduct($idProduct, $idProductAttribute = 0, $idCustomization = 0, $idAddressDelivery = 0)
+    public function containsProduct(int $idProduct,int $idProductAttribute = 0,int $idCustomization = 0,int $idAddressDelivery = 0): array|false
     {
         $sql = 'SELECT *
             FROM `' . _DB_PREFIX_ . 'cart_product`
@@ -359,7 +347,7 @@ class LengowCart extends Cart
      *
      * @return bool
      */
-    protected function _updateCustomizationQuantity($quantity, $idCustomization, $idProduct, $idProductAttribute, $idAddressDelivery, $operator = 'up')
+    protected function _updateCustomizationQuantity(int $quantity,int $idCustomization,int $idProduct,int $idProductAttribute,int $idAddressDelivery,string $operator = 'up'): bool
     {
         // Check if the customization exists
         $sql = 'SELECT `quantity`

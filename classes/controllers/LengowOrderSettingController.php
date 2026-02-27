@@ -31,7 +31,7 @@ class LengowOrderSettingController extends LengowController
      * Display data page
      * @return void
      */
-    public function display()
+    public function display(): void
     {
         $countries = LengowCarrier::getCountries();
         $marketplaceCounters = LengowMarketplace::getMarketplaceCounters();
@@ -75,7 +75,7 @@ class LengowOrderSettingController extends LengowController
      * Process Post Parameters
      * @return void
      */
-    public function postProcess()
+    public function postProcess(): void
     {
         $action = Tools::getValue('action');
         $idCountry = Tools::getIsset('id_country') ? (int) Tools::getValue('id_country') : false;

@@ -31,7 +31,7 @@ class LengowHomeController extends LengowController
      * Process Post Parameters
      * @return void
      */
-    public function postProcess()
+    public function postProcess(): void
     {
         $this->prepareDisplay();
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
@@ -119,7 +119,7 @@ class LengowHomeController extends LengowController
      * Display data page
      * @return void
      */
-    public function display()
+    public function display(): void
     {
         if ($this->isNewMerchant) {
             $this->context->smarty->assign(
@@ -140,7 +140,7 @@ class LengowHomeController extends LengowController
      *
      * @return bool
      */
-    private function checkApiCredentials($accessToken, $secret)
+    private function checkApiCredentials(string $accessToken,string $secret): bool
     {
         $accessIdsSaved = false;
         $accountId = LengowConnector::getAccountIdByCredentials($accessToken, $secret);
@@ -162,7 +162,7 @@ class LengowHomeController extends LengowController
      *
      * @return bool
      */
-    private function connectCms()
+    private function connectCms(): bool
     {
         $cmsToken = LengowMain::getToken();
         $cmsConnected = LengowSync::syncCatalog(true);
@@ -199,7 +199,7 @@ class LengowHomeController extends LengowController
      *
      * @return bool
      */
-    private function hasCatalogToLink()
+    private function hasCatalogToLink(): bool
     {
         $activeShops = LengowShop::getActiveShops(true);
         if (empty($activeShops)) {
@@ -214,7 +214,7 @@ class LengowHomeController extends LengowController
      *
      * @return array<int|string, mixed>
      */
-    private function getCatalogList()
+    private function getCatalogList(): array
     {
         $activeShops = LengowShop::getActiveShops(true);
         if (empty($activeShops)) {
@@ -232,7 +232,7 @@ class LengowHomeController extends LengowController
      *
      * @return bool
      */
-    private function saveCatalogsLinked($catalogSelected)
+    private function saveCatalogsLinked(array $catalogSelected): bool
     {
         $catalogsLinked = true;
         $catalogsByShops = [];

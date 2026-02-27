@@ -394,7 +394,7 @@ class AdminOrderController extends OrderController
      * @param OrderForViewing $orderForViewing
      * @return void
      */
-    private function handleOutOfStockProduct(OrderForViewing $orderForViewing)
+    private function handleOutOfStockProduct(OrderForViewing $orderForViewing): void
     {
         $isStockManagementEnabled = $this->configuration->getBoolean('PS_STOCK_MANAGEMENT');
         if (!$isStockManagementEnabled || $orderForViewing->isDelivered() || $orderForViewing->isShipped()) {
@@ -416,7 +416,7 @@ class AdminOrderController extends OrderController
      *
      * @return array<int|string, mixed>
      */
-    private function getErrorMessages(\Exception $e)
+    private function getErrorMessages(\Exception $e): array
     {
         $refundableQuantity = 0;
         if ($e instanceof InvalidCancelProductException) {

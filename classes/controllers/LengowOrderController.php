@@ -30,13 +30,13 @@ class LengowOrderController extends LengowController
     /**
      * @var LengowList Lengow list instance
      */
-    protected $list;
+    protected LengowList $list;
 
     /**
      * Display data page
      * @return void
      */
-    public function display()
+    public function display(): void
     {
         $this->assignLastImportationInfos();
         $this->assignNbOrderImported();
@@ -50,7 +50,7 @@ class LengowOrderController extends LengowController
      * Process Post Parameters
      * @return void
      */
-    public function postProcess()
+    public function postProcess(): void
     {
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
         if ($action) {
@@ -205,7 +205,7 @@ class LengowOrderController extends LengowController
      * Get all warning messages
      * @return void
      */
-    public function assignWarningMessages()
+    public function assignWarningMessages(): void
     {
         $warningMessages = [];
         if (LengowConfiguration::debugModeIsActive()) {
@@ -232,7 +232,7 @@ class LengowOrderController extends LengowController
      * Get all last importation data
      * @return void
      */
-    public function assignLastImportationInfos()
+    public function assignLastImportationInfos(): void
     {
         $lastImport = LengowMain::getLastImport();
         $orderCollection = [
@@ -252,7 +252,7 @@ class LengowOrderController extends LengowController
      * Display data page
      * @return void
      */
-    public function assignNbOrderImported()
+    public function assignNbOrderImported(): void
     {
         $sql = 'SELECT COUNT(*) as `total` FROM `' . _DB_PREFIX_ . 'lengow_orders`';
         try {
@@ -269,7 +269,7 @@ class LengowOrderController extends LengowController
      *
      * @return LengowList
      */
-    public function loadTable()
+    public function loadTable(): LengowList
     {
         $fieldsList = [];
         $fieldsList['log_status'] = [
@@ -482,7 +482,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public function buildTable()
+    public function buildTable(): string
     {
         $this->list = $this->loadTable();
         $this->list->executeQuery();
@@ -515,7 +515,7 @@ class LengowOrderController extends LengowController
      *
      * @return array<int|string, mixed>
      */
-    public function getMarketplaces()
+    public function getMarketplaces(): array
     {
         $marketplaces = [];
         $sql = 'SELECT DISTINCT(marketplace_name) as name,
@@ -541,7 +541,7 @@ class LengowOrderController extends LengowController
      *
      * @return array<int|string, mixed>
      */
-    public function getShops()
+    public function getShops(): array
     {
         $shops = [];
         $sql = 'SELECT id_shop, name FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
@@ -566,7 +566,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function displayLengowState($key, $value, $item)
+    public static function displayLengowState(string $key,string $value,array $item): string
     {
         // this two lines are useless, but PrestaShop validator require it
         $key = $key;
@@ -588,7 +588,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function displayOrderTypes($key, $value, $item)
+    public static function displayOrderTypes(string $key,string $value,array $item): string
     {
         $return = '<div>';
         $orderTypes = $value !== '' ? json_decode($value, true) : [];
@@ -623,7 +623,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function displayOrderLink($key, $value, $item)
+    public static function displayOrderLink(string $key,string $value,array $item): string
     {
         // this line is useless, but PrestaShop validator require it
         $key = $key;
@@ -645,7 +645,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function displayMarketplaceName($key, $value, $item)
+    public static function displayMarketplaceName(string $key,string $value,array $item): string
     {
         // this line is useless, but PrestaShop validator require it
         $key = $key;
@@ -663,7 +663,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function displayLogStatus($key, $value, $item)
+    public static function displayLogStatus(string $key,string $value,array $item): string
     {
         if ($item[$key] && (int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE] !== LengowOrder::PROCESS_STATE_FINISH) {
             $errorMessages = [];
@@ -739,7 +739,7 @@ class LengowOrderController extends LengowController
      *
      * @return array<int|string, mixed>
      */
-    public function loadMessage($return)
+    public function loadMessage(array $return): array
     {
         $messages = [];
         // if global error return this
@@ -793,7 +793,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function generateOrderTypeIcon($iconLabel, $iconColor, $iconMod)
+    public static function generateOrderTypeIcon(string $iconLabel,string $iconColor,string $iconMod): string
     {
         return '
             <div class="lgw-label ' . $iconColor . ' icon-solo lengow_link_tooltip"
@@ -810,7 +810,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    private static function getOrderAdminLink($idOrder)
+    private static function getOrderAdminLink(int $idOrder): string
     {
         $link = new LengowLink();
         try {

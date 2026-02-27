@@ -165,7 +165,7 @@ class LengowInstall
      *
      * @param Lengow $module Lengow module instance
      */
-    public function __construct($module)
+    public function __construct(Lengow $module)
     {
         $this->lengowModule = $module;
         $this->lengowHook = new LengowHook($module);
@@ -176,7 +176,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public function reset()
+    public function reset(): bool
     {
         return LengowConfiguration::resetAll(true);
     }
@@ -186,7 +186,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public function install()
+    public function install(): bool
     {
         if (version_compare(_PS_VERSION_, '1.7.8.0', '<')) {
             return false;
@@ -213,7 +213,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public function uninstall()
+    public function uninstall(): bool
     {
         LengowMain::log(
             LengowLog::CODE_UNINSTALL,
@@ -233,7 +233,7 @@ class LengowInstall
      * general cache, asset cache, smarty cache, symfony cache
      * @return void
      */
-    public function clearCaches()
+    public function clearCaches(): void
     {
         try {
             Tools::clearCache(); // Clears PrestaShop general cache
@@ -262,7 +262,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public function update($oldVersion = false)
+    public function update($oldVersion = false): bool
     {
         if (self::isInstallationInProgress()) {
             return true;
@@ -331,7 +331,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public static function checkTableExists($table)
+    public static function checkTableExists(string $table): bool
     {
         $sql = 'SHOW TABLES LIKE \'' . _DB_PREFIX_ . $table . '\'';
         try {
@@ -351,7 +351,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public static function checkIndexExists($table, $index)
+    public static function checkIndexExists(string $table,string $index): bool
     {
         $sql = 'SHOW INDEXES FROM ' . _DB_PREFIX_ . $table . ' WHERE `Column_name` = \'' . $index . '\'';
         try {
@@ -371,7 +371,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public static function checkFieldExists($table, $field)
+    public static function checkFieldExists(string $table,string $field): bool
     {
         $sql = 'SHOW COLUMNS FROM ' . _DB_PREFIX_ . $table . ' LIKE \'' . $field . '\'';
         try {
@@ -390,7 +390,7 @@ class LengowInstall
      * @param string $field Lengow field
      * @return void
      */
-    public static function checkFieldAndDrop($table, $field)
+    public static function checkFieldAndDrop(string $table,string $field): void
     {
         if (self::checkFieldExists($table, $field)) {
             Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . $table . ' DROP COLUMN `' . $field . '`');
@@ -402,7 +402,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public static function dropTable()
+    public static function dropTable(): bool
     {
         foreach (self::$tables as $table) {
             LengowMain::log(
@@ -442,7 +442,7 @@ class LengowInstall
      * @param bool $status installation status
      * @return void
      */
-    public static function setInstallationStatus($status)
+    public static function setInstallationStatus(bool $status): void
     {
         LengowConfiguration::updateGlobalValue(LengowConfiguration::INSTALLATION_IN_PROGRESS, (int) $status);
         self::$installationStatus = $status;
@@ -453,7 +453,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public static function isInstallationInProgress()
+    public static function isInstallationInProgress(): bool
     {
         $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration
             WHERE `name` = \'LENGOW_INSTALLATION_IN_PROGRESS\'';
@@ -468,7 +468,7 @@ class LengowInstall
      * @param string $file name of file to delete
      * @return void
      */
-    public static function removeFile($file)
+    public static function removeFile(string $file): void
     {
         $filePath = _PS_MODULE_LENGOW_DIR_ . $file;
         if (file_exists($filePath)) {
@@ -487,7 +487,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public static function deleteDir($dirPath)
+    public static function deleteDir(string $dirPath): bool
     {
         $length = Tools::strlen(_PS_MODULE_LENGOW_DIR_);
         if (Tools::substr($dirPath, 0, $length) !== _PS_MODULE_LENGOW_DIR_) {
@@ -517,7 +517,7 @@ class LengowInstall
      * @param bool $shopConfiguration configuration by shop or global
      * @return void
      */
-    public static function renameConfigurationKey($oldKey, $newKey, $shopConfiguration = false)
+    public static function renameConfigurationKey(string $oldKey,string $newKey,bool $shopConfiguration = false): void
     {
         if (LengowConfiguration::checkKeyExists($oldKey)) {
             $globalValue = LengowConfiguration::getGlobalValue($oldKey);
@@ -540,7 +540,7 @@ class LengowInstall
      *
      * @return bool
      */
-    private function createLengowTables()
+    private function createLengowTables(): bool
     {
         // create table lengow_product
         $name = LengowProduct::TABLE_PRODUCT;
@@ -920,7 +920,7 @@ class LengowInstall
      *
      * @return bool
      */
-    private function createTab()
+    private function createTab(): bool
     {
         try {
             $tabParent = new Tab();
@@ -957,7 +957,7 @@ class LengowInstall
      *
      * @return bool
      */
-    private function uninstallTab()
+    private function uninstallTab(): bool
     {
         try {
             $sql = 'SELECT `id_tab`, `class_name` FROM `' . _DB_PREFIX_ . 'tab` WHERE `module` = \'lengow\'';
@@ -992,7 +992,7 @@ class LengowInstall
      *
      * @return bool
      */
-    private function setDefaultValues()
+    private function setDefaultValues(): bool
     {
         return LengowConfiguration::resetAll();
     }
@@ -1002,7 +1002,7 @@ class LengowInstall
      *
      * @return bool
      */
-    private function addStatusError()
+    private function addStatusError(): bool
     {
         // add Lengow order error status
         try {
@@ -1070,7 +1070,7 @@ class LengowInstall
      * Delete old files
      * @return void
      */
-    private function removeOldFiles()
+    private function removeOldFiles(): void
     {
         foreach ($this->oldFiles as $file) {
             self::removeFile($file);
@@ -1081,7 +1081,7 @@ class LengowInstall
      * Delete old configuration keys
      * @return void
      */
-    private function removeOldConfigurationKeys()
+    private function removeOldConfigurationKeys(): void
     {
         foreach ($this->oldConfigurationKeys as $configuration) {
             Configuration::deleteByName($configuration);
@@ -1092,7 +1092,7 @@ class LengowInstall
      * Delete all lengow config files
      * @return void
      */
-    private function removeConfigFiles()
+    private function removeConfigFiles(): void
     {
         $files = scandir(_PS_MODULE_LENGOW_DIR_);
         foreach ($files as $file) {
@@ -1106,7 +1106,7 @@ class LengowInstall
      * Save Override directory
      * @return void
      */
-    private function saveOverride()
+    private function saveOverride(): void
     {
         $directoryBackup = _PS_MODULE_LENGOW_DIR_ . 'backup/';
         $directory = _PS_MODULE_LENGOW_DIR_ . 'override/';
@@ -1127,7 +1127,7 @@ class LengowInstall
      * Create Lengow customer group if not exists
      * @return void
      */
-    private function createLengowCustomerGroup()
+    private function createLengowCustomerGroup(): void
     {
         $marketplaceGroupId = null;
         $groups = Group::getGroups(Context::getContext()->language->id);

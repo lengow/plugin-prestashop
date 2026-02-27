@@ -335,7 +335,7 @@ class LengowAddress extends Address
      *
      * @return LengowAddress|false
      */
-    public static function getByAlias($alias)
+    public static function getByAlias(string $alias)
     {
         $row = Db::getInstance()->getRow(
             'SELECT `id_address`
@@ -356,7 +356,7 @@ class LengowAddress extends Address
      *
      * @return LengowAddress|false
      */
-    public static function getByHash($alias)
+    public static function getByHash(string $alias)
     {
         return self::getByAlias(self::hash($alias));
     }
@@ -368,7 +368,7 @@ class LengowAddress extends Address
      *
      * @return array<int|string, mixed>
      */
-    public static function extractNames($fullName)
+    public static function extractNames(string $fullName): array
     {
         self::cleanName($fullName);
         $np = new LengowNameParser();
@@ -393,7 +393,7 @@ class LengowAddress extends Address
      *
      * @return string
      */
-    public static function cleanName($name)
+    public static function cleanName(string $name): string
     {
         return LengowMain::replaceAccentedChars(
             trim(preg_replace('/[0-9!<>,;?=+()@#"�{}_$%:]/', '', (string) $name))
@@ -407,7 +407,7 @@ class LengowAddress extends Address
      *
      * @return string Hash
      */
-    public static function hash($address)
+    public static function hash(string $address): string
     {
         return md5($address);
     }
@@ -419,7 +419,7 @@ class LengowAddress extends Address
      *
      * @return array<int|string, mixed>
      */
-    public static function extractAddressDataFromAPI($api)
+    public static function extractAddressDataFromAPI(object $api): array
     {
         $temp = [];
         foreach (self::$addressApiNodes as $node) {
@@ -434,7 +434,7 @@ class LengowAddress extends Address
      *
      * @return array<int|string, mixed>
      */
-    public static function getFieldDefinition()
+    public static function getFieldDefinition(): array
     {
         return self::$definition['fields'];
     }
@@ -447,7 +447,7 @@ class LengowAddress extends Address
      *
      * @return object
      */
-    public static function hydrateAddress($orderData, $address)
+    public static function hydrateAddress(object $orderData,object $address): object
     {
         $locale = new LengowTranslation();
         $notProvided = $locale->t('order.screen.not_provided');
@@ -500,7 +500,7 @@ class LengowAddress extends Address
      *
      * @return LengowAddress
      */
-    public function assign($data = [])
+    public function assign(array $data = []): LengowAddress
     {
         $this->company = $data['company'];
         $this->lastname = $data['last_name'];
@@ -534,7 +534,7 @@ class LengowAddress extends Address
      *
      * @throws Exception|LengowException invalid object
      */
-    public function validateLengow()
+    public function validateLengow(): bool
     {
         $definition = self::getFieldDefinition();
         foreach ($definition as $fieldName => $constraints) {
@@ -567,7 +567,7 @@ class LengowAddress extends Address
      * @param int $errorType type of error
      * @return void
      */
-    public function validateFieldLengow($fieldName, $errorType)
+    public function validateFieldLengow(string $fieldName,int $errorType): void
     {
         switch ($errorType) {
             case self::LENGOW_EMPTY_ERROR:
@@ -587,7 +587,7 @@ class LengowAddress extends Address
      * @param string $fieldName field name
      * @return void
      */
-    public function validateEmptyLengow($fieldName)
+    public function validateEmptyLengow(string $fieldName): void
     {
         switch ($fieldName) {
             case 'lastname':
@@ -649,7 +649,7 @@ class LengowAddress extends Address
      * @param string $fieldName field name
      * @return void
      */
-    public function validateSizeLengow($fieldName)
+    public function validateSizeLengow(string $fieldName): void
     {
         switch ($fieldName) {
             case 'address1':
@@ -705,7 +705,7 @@ class LengowAddress extends Address
      *
      * @return int
      */
-    protected function getIdState($idCountry, $addressData)
+    protected function getIdState(int $idCountry,array $addressData): int
     {
         $idState = 0;
         $countryIsoA2 = $addressData['common_country_iso_a2'];
@@ -728,7 +728,7 @@ class LengowAddress extends Address
      *
      * @return int
      */
-    protected function searchIdStateByPostcode($idCountry, $countryIsoA2, $postcode)
+    protected function searchIdStateByPostcode(int $idCountry,string $countryIsoA2,string $postcode): int
     {
         $idState = 0;
         $postcodeSubstr = Tools::substr(str_pad($postcode, 5, '0', STR_PAD_LEFT), 0, 2);
@@ -765,7 +765,7 @@ class LengowAddress extends Address
      *
      * @return string|false
      */
-    protected function getIsoCodeFromIntervalPostcodes($postcode, $intervalPostcodes)
+    protected function getIsoCodeFromIntervalPostcodes(int $postcode,array $intervalPostcodes): string|false
     {
         foreach ($intervalPostcodes as $intervalPostcode => $isoCode) {
             $intervalPostcodes = explode('-', $intervalPostcode);
@@ -789,7 +789,7 @@ class LengowAddress extends Address
      *
      * @return int
      */
-    protected function getIdStateByIsoAndCountry($isoCode, $idCountry)
+    protected function getIdStateByIsoAndCountry(string $isoCode,int $idCountry): int
     {
         $idState = Db::getInstance()->getValue(
             'SELECT `id_state`
@@ -808,7 +808,7 @@ class LengowAddress extends Address
      *
      * @return int
      */
-    protected function searchIdStateByStateRegion($idCountry, $stateRegion)
+    protected function searchIdStateByStateRegion(int $idCountry,string $stateRegion): int
     {
         $idState = 0;
         $countryStates = State::getStatesByIdCountry($idCountry);
@@ -849,7 +849,7 @@ class LengowAddress extends Address
      *
      * @return string
      */
-    protected function cleanString($string)
+    protected function cleanString(string $string): string
     {
         $string = Tools::strtolower(
             str_replace([' ', '-', '_', '.'], '', trim((string) $string))

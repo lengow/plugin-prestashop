@@ -47,7 +47,7 @@ foreach ($listFiles as $list) {
  * @param list<string> $frontKey
  * @return void
  */
-function writeCsv($fp, $text, &$frontKey = [])
+function writeCsv($fp,$text,array &$frontKey = []): void
 {
     if (is_array($text)) {
         foreach ($text as $k => $v) {

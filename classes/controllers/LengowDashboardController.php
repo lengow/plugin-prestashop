@@ -31,7 +31,7 @@ class LengowDashboardController extends LengowController
      * Process Post Parameters
      * @return void
      */
-    public function postProcess()
+    public function postProcess(): void
     {
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
         if ($action) {
@@ -54,7 +54,7 @@ class LengowDashboardController extends LengowController
      * Display data page
      * @return void
      */
-    public function display()
+    public function display(): void
     {
         $refreshStatus = $this->lengowLink->getAbsoluteAdminLink('AdminLengowDashboard') . '&action=refresh_status';
         $this->context->smarty->assign('refresh_status', $refreshStatus);

@@ -319,7 +319,7 @@ class LengowExport
      *                      boolean legacy_fields      Export with legacy fields (1) | Export with new fields (0)
      *                      boolean update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1) or not
      */
-    public function __construct($params = [])
+    public function __construct(array $params = [])
     {
         $this->setFormat(isset($params[self::PARAM_FORMAT]) ? $params[self::PARAM_FORMAT] : LengowFeed::FORMAT_CSV);
         $this->offset = isset($params[self::PARAM_OFFSET]) ? (int) $params[self::PARAM_OFFSET] : false;
@@ -393,7 +393,7 @@ class LengowExport
      * @param string $format The export format
      * @return void
      */
-    public function setFormat($format)
+    public function setFormat(string $format): void
     {
         $this->format = in_array($format, LengowFeed::$availableFormats, true) ? $format : LengowFeed::FORMAT_CSV;
     }
@@ -402,7 +402,7 @@ class LengowExport
      * Execute export process
      * @return void
      */
-    public function exec()
+    public function exec(): void
     {
         try {
             // clean logs
@@ -476,7 +476,7 @@ class LengowExport
      *
      * @throws LengowException illegal currency
      */
-    public function checkCurrency()
+    public function checkCurrency(): bool
     {
         if (!Context::getContext()->currency) {
             throw new LengowException(LengowMain::setLogMessage('log.export.error_illegal_currency'));
@@ -492,7 +492,7 @@ class LengowExport
      *
      * @throws LengowException no default carrier selected
      */
-    public function setCarrier()
+    public function setCarrier(): bool
     {
         $carrier = LengowCarrier::getDefaultExportCarrier();
         if (!$carrier) {
@@ -507,7 +507,7 @@ class LengowExport
      * Set or not legacy fields to export
      * @return void
      */
-    public function setLegacyFields()
+    public function setLegacyFields(): void
     {
         if ($this->legacy === null) {
             $merchantStatus = LengowSync::getStatusAccount();
@@ -530,7 +530,7 @@ class LengowExport
      * @throws Exception|LengowException folder not writable
      * @return void
      */
-    public function export($products, $fields, $shop)
+    public function export(array $products,array $fields,Shop $shop): void
     {
         $productCount = 0;
         $this->feed = new LengowFeed(
@@ -652,7 +652,7 @@ class LengowExport
      *
      * @throws Exception
      */
-    public function loadCacheCombinations($product, $fields)
+    public function loadCacheCombinations(LengowProduct $product,array $fields): bool
     {
         if (!isset($this->cacheCombination[$product->id])) {
             $this->cacheCombination = [];
@@ -686,7 +686,7 @@ class LengowExport
      *
      * @return int
      */
-    public function getTotalProduct()
+    public function getTotalProduct(): int
     {
         $join = ' INNER JOIN ' . _DB_PREFIX_ . 'product_shop ps
             ON (ps.id_product = p.id_product AND ps.id_shop = ' . (int) $this->idShop . ') ';
@@ -717,7 +717,7 @@ class LengowExport
      *
      * @return int
      */
-    public function getTotalExportProduct()
+    public function getTotalExportProduct(): int
     {
         if ($this->variation) {
             $query = ' SELECT SUM(total) as total FROM ( ( ';
@@ -744,7 +744,7 @@ class LengowExport
      *
      * @return string
      */
-    public function buildTotalQuery($variation = false)
+    public function buildTotalQuery(bool $variation = false): string
     {
         $where = [];
         $query = ' FROM ' . _DB_PREFIX_ . 'product p';
@@ -801,7 +801,7 @@ class LengowExport
      *
      * @return array<int|string, mixed>
      */
-    public function exportIds()
+    public function exportIds(): array
     {
         if ($this->variation) {
             $query = ' SELECT * FROM ( ( ';
@@ -831,7 +831,7 @@ class LengowExport
      *
      * @return array<int|string, mixed>
      */
-    protected function getFields()
+    protected function getFields(): array
     {
         $fields = [];
         // check field name to lower to avoid duplicates
@@ -878,7 +878,7 @@ class LengowExport
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->feed->getFilename();
     }
@@ -888,7 +888,7 @@ class LengowExport
      *
      * @return string
      */
-    public function getExportParams()
+    public function getExportParams(): string
     {
         $params = [];
         foreach (self::$exportParams as $param) {
@@ -967,7 +967,7 @@ class LengowExport
      *
      * @return array<int|string, mixed>
      */
-    public static function setAdditionalFields($fields)
+    public static function setAdditionalFields(array $fields): array
     {
         /*
          * Write here your process
@@ -986,7 +986,7 @@ class LengowExport
      *
      * @return array<int|string, mixed>
      */
-    public static function setAdditionalFieldsValues($product, $idProductAttribute = null, $arrayProduct = null)
+    public static function setAdditionalFieldsValues(LengowProduct $product,?int $idProductAttribute = null,?array $arrayProduct = null): array
     {
         /**
          * Write here your process

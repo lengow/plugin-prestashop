@@ -32,7 +32,7 @@ class LengowCatalog
      *
      * @return bool
      */
-    public static function hasCatalogNotLinked()
+    public static function hasCatalogNotLinked(): bool
     {
         $lengowCatalogs = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS_CATALOG);
         if (!$lengowCatalogs) {
@@ -54,7 +54,7 @@ class LengowCatalog
      *
      * @return array<int|string, mixed>
      */
-    public static function getCatalogList()
+    public static function getCatalogList(): array
     {
         $catalogList = [];
         $lengowCatalogs = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS_CATALOG);
@@ -99,7 +99,7 @@ class LengowCatalog
      *
      * @return bool
      */
-    public static function linkCatalogs(array $catalogsByShops)
+    public static function linkCatalogs(array $catalogsByShops): bool
     {
         $catalogsLinked = false;
         $hasCatalogToLink = false;

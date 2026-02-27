@@ -32,7 +32,7 @@ class LengowMainSettingController extends LengowController
      * Process Post Parameters
      * @return void
      */
-    public function postProcess()
+    public function postProcess(): void
     {
         $action = Tools::getValue('action');
 
@@ -90,7 +90,7 @@ class LengowMainSettingController extends LengowController
      * Display data page
      * @return void
      */
-    public function display()
+    public function display(): void
     {
         $form = new LengowConfigurationForm(['fields' => LengowConfiguration::getKeys()]);
         $form->fields[LengowConfiguration::REPORT_MAILS][LengowConfiguration::PARAM_LABEL] = '';

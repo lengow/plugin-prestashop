@@ -108,7 +108,7 @@ class LengowFeed
      *
      * @throws LengowException unable to create folder
      */
-    public function __construct($stream, $format, $legacy, $shopName = null)
+    public function __construct(bool $stream,string $format,bool $legacy,?string $shopName = null)
     {
         $this->stream = $stream;
         $this->format = $format;
@@ -128,7 +128,7 @@ class LengowFeed
      * @throws LengowException unable to create folder
      * @return void
      */
-    public function initExportFile()
+    public function initExportFile(): void
     {
         $sep = DIRECTORY_SEPARATOR;
         $this->exportFolder = LengowMain::FOLDER_EXPORT . $sep . $this->shopFolder;
@@ -149,7 +149,7 @@ class LengowFeed
      * @param int|null $maxCharacter max characters for yaml format
      * @return void
      */
-    public function write($type, $data = [], $isFirst = null, $maxCharacter = null)
+    public function write(string $type,array $data = [],?bool $isFirst = null,?int $maxCharacter = null): void
     {
         switch ($type) {
             case self::HEADER:
@@ -180,7 +180,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected function getHeader($data)
+    protected function getHeader(array $data): string
     {
         switch ($this->format) {
             case self::FORMAT_CSV:
@@ -211,7 +211,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected function getBody($data, $isFirst, $maxCharacter)
+    protected function getBody(array $data,bool $isFirst,int $maxCharacter): string
     {
         switch ($this->format) {
             case self::FORMAT_CSV:
@@ -263,7 +263,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected function getFooter()
+    protected function getFooter(): string
     {
         switch ($this->format) {
             case self::FORMAT_XML:
@@ -281,7 +281,7 @@ class LengowFeed
      * @param string $content feed content to be flushed
      * @return void
      */
-    public function flush($content)
+    public function flush(string $content): void
     {
         if ($this->stream) {
             echo $content;
@@ -298,7 +298,7 @@ class LengowFeed
      *
      * @throws LengowException
      */
-    public function end()
+    public function end(): bool
     {
         $this->write(self::FOOTER);
         if (!$this->stream) {
@@ -328,7 +328,7 @@ class LengowFeed
      *
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->file->getLink();
     }
@@ -338,7 +338,7 @@ class LengowFeed
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->file->getPath();
     }
@@ -348,7 +348,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected function getHtmlHeader()
+    protected function getHtmlHeader(): string
     {
         switch ($this->format) {
             case self::FORMAT_CSV:
@@ -372,7 +372,7 @@ class LengowFeed
      *
      * @return string
      */
-    public static function formatFields($str, $format, $legacy = false)
+    public static function formatFields(string $str,string $format,bool $legacy = false): string
     {
         switch ($format) {
             case self::FORMAT_CSV:
@@ -420,7 +420,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected function indentYaml($name, $maxSize)
+    protected function indentYaml(string $name,int $maxSize): string
     {
         $strlen = mb_strlen((string) $name);
         $spaces = '';

@@ -34,7 +34,7 @@ class LengowShop extends Shop
      *
      * @return LengowShop|false
      */
-    public static function findByToken($token)
+    public static function findByToken(string $token)
     {
         try {
             $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
@@ -58,7 +58,7 @@ class LengowShop extends Shop
      *
      * @return array<int|string, mixed>
      */
-    public static function findAll($forceContext = false)
+    public static function findAll(bool $forceContext = false): array
     {
         if (!$forceContext && $currentShop = Shop::getContextShopID()) {
             $results = [['id_shop' => $currentShop]];
@@ -82,7 +82,7 @@ class LengowShop extends Shop
      *
      * @return array<int|string, mixed>
      */
-    public static function getActiveShops($activeInLengow = false, $idShop = null)
+    public static function getActiveShops(bool $activeInLengow = false,?int $idShop = null): array
     {
         $result = [];
         $shops = self::findAll(true);

@@ -34,7 +34,7 @@ class LengowLink extends LinkCore
      *
      * @return string
      */
-    public function getAbsoluteAdminLink($controller)
+    public function getAbsoluteAdminLink(string $controller): string
     {
         $adminPath = Tools::getShopDomainSsl(true, true) .
             __PS_BASE_URI__ . Tools::substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);

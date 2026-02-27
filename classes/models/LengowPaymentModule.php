@@ -55,7 +55,7 @@ class LengowPaymentModule extends PaymentModule
      *                                   delivery country not active / product is not listed / unable to save order
      *                                   unable to save order payment / order creation failed
      */
-    public function makeOrder($idCart, $idOrderState, $paymentMethod, $message, $lengowProducts, $lengowShippingCosts, $processingFees, $lengowTrackingNumber, $idOrderLengow, $orderStateLengow, $marketplaceSku, $logOutput)
+    public function makeOrder(int $idCart,int $idOrderState,string $paymentMethod,string $message,array $lengowProducts,float $lengowShippingCosts,float $processingFees,?string $lengowTrackingNumber,int $idOrderLengow,string $orderStateLengow,string $marketplaceSku,bool $logOutput): array
     {
         $this->context->cart = new Cart($idCart);
         $this->context->customer = new Customer($this->context->cart->id_customer);
@@ -444,7 +444,7 @@ class LengowPaymentModule extends PaymentModule
      * @param Context $context PrestaShop context instance
      * @return void
      */
-    public function setContext(Context $context)
+    public function setContext(Context $context): void
     {
         $this->context = $context;
     }

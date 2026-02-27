@@ -294,7 +294,7 @@ class LengowImport
      *                      boolean force_sync          Force synchronization order even if there are errors
      *                      boolean force_product       Force import product when quantity is insufficient
      */
-    public function __construct($params = [])
+    public function __construct(array $params = [])
     {
         // get generic params for synchronisation
         $this->debugMode = isset($params[self::PARAM_DEBUG_MODE])
@@ -362,7 +362,7 @@ class LengowImport
      *
      * @return array<int|string, mixed>
      */
-    public function exec()
+    public function exec(): array
     {
         // checks if a synchronization is not already in progress
         if (!$this->canExecuteSynchronization()) {
@@ -435,7 +435,7 @@ class LengowImport
      *
      * @return bool
      */
-    public static function checkState($orderStateMarketplace, $marketplace)
+    public static function checkState(string $orderStateMarketplace,LengowMarketplace $marketplace): bool
     {
         if (empty($orderStateMarketplace)) {
             return false;
@@ -449,7 +449,7 @@ class LengowImport
      *
      * @return bool
      */
-    public static function isInProcess()
+    public static function isInProcess(): bool
     {
         $timestamp = (int) LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
         if ($timestamp <= 0) {
@@ -470,7 +470,7 @@ class LengowImport
      *
      * @return int
      */
-    public static function restTimeToImport()
+    public static function restTimeToImport(): int
     {
         $timestamp = (int) LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
 
@@ -486,7 +486,7 @@ class LengowImport
      * @param string|null $createdTo Import of orders until
      * @return void
      */
-    private function setIntervalTime($minutes = null, $days = null, $createdFrom = null, $createdTo = null)
+    private function setIntervalTime(?float $minutes = null,?float $days = null,?string $createdFrom = null,?string $createdTo = null): void
     {
         if ($createdFrom && $createdTo) {
             // retrieval of orders created from ... until ...
@@ -541,7 +541,7 @@ class LengowImport
      *
      * @return bool
      */
-    private function canExecuteSynchronization()
+    private function canExecuteSynchronization(): bool
     {
         if (!$this->acquireLock(self::LOCK_NAME)) {
             $message = LengowMain::setLogMessage(
@@ -584,7 +584,7 @@ class LengowImport
      * Starts some processes necessary for synchronization
      * @return void
      */
-    private function setupSynchronization()
+    private function setupSynchronization(): void
     {
         // suppress log files when too old
         LengowMain::cleanLog();
@@ -617,7 +617,7 @@ class LengowImport
      *
      * @return bool
      */
-    private function checkCredentials()
+    private function checkCredentials(): bool
     {
         if (LengowConnector::isValidAuth($this->logOutput)) {
             list($this->accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
@@ -634,7 +634,7 @@ class LengowImport
      *
      * @return array<int|string, mixed>
      */
-    private function getResult()
+    private function getResult(): array
     {
         $nbOrdersCreated = count($this->ordersCreated);
         $nbOrdersUpdated = count($this->ordersUpdated);
@@ -670,7 +670,7 @@ class LengowImport
      *
      * @return bool
      */
-    private function synchronizeOrdersByShop($shop)
+    private function synchronizeOrdersByShop(LengowShop $shop): bool
     {
         LengowMain::log(
             LengowLog::CODE_IMPORT,
@@ -763,7 +763,7 @@ class LengowImport
      *
      * @return bool
      */
-    private function checkCatalogIds($shop)
+    private function checkCatalogIds(LengowShop $shop): bool
     {
         if ($this->importOneOrder) {
             return true;
@@ -818,7 +818,7 @@ class LengowImport
      * @throws Exception
      * @return void
      */
-    private function changeContext($idShop)
+    private function changeContext(int $idShop): void
     {
         $this->context = Context::getContext()->cloneContext();
         $shop = new Shop($idShop);
@@ -837,7 +837,7 @@ class LengowImport
      *
      * @throws LengowException no connection with the webservice / credentials not valid
      */
-    private function getOrdersFromApi($shop)
+    private function getOrdersFromApi(LengowShop $shop): array
     {
         $page = 1;
         $orders = [];
@@ -947,7 +947,7 @@ class LengowImport
      * @param int $idShop PrestaShop shop Id
      * @return void
      */
-    private function importOrders($orders, $idShop)
+    private function importOrders(mixed $orders,int $idShop): void
     {
         $importFinished = false;
         foreach ($orders as $orderData) {
@@ -1054,7 +1054,7 @@ class LengowImport
      * @param mixed $orderData API order data
      * @return void
      */
-    private function addOrderNotFormatted($marketplaceSku, $errorMessage, $orderData)
+    private function addOrderNotFormatted(string $marketplaceSku,string $errorMessage,mixed $orderData): void
     {
         $messageDecoded = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
         $this->ordersNotFormatted[] = [
@@ -1077,7 +1077,7 @@ class LengowImport
      * @param array<string, mixed> $result synchronization order result
      * @return void
      */
-    private function synchronizeMerchantOrderId($result)
+    private function synchronizeMerchantOrderId(array $result): void
     {
         if (!$this->debugMode && $result[LengowImportOrder::RESULT_TYPE] === LengowImportOrder::RESULT_CREATED) {
             $lengowOrder = new LengowOrder((int) $result[LengowImportOrder::MERCHANT_ORDER_ID]);
@@ -1103,7 +1103,7 @@ class LengowImport
      * @param array<string, mixed> $result synchronization order result
      * @return void
      */
-    private function saveSynchronizationResult($result)
+    private function saveSynchronizationResult(array $result): void
     {
         $resultType = $result[LengowImportOrder::RESULT_TYPE];
         unset($result[LengowImportOrder::RESULT_TYPE]);
@@ -1127,7 +1127,7 @@ class LengowImport
      * Complete synchronization and start all necessary processes
      * @return void
      */
-    private function finishSynchronization()
+    private function finishSynchronization(): void
     {
         // finish synchronization process
         self::setEnd();
@@ -1159,7 +1159,7 @@ class LengowImport
      * Set import to "in process" state
      * @return void
      */
-    private static function setInProcess()
+    private static function setInProcess(): void
     {
         self::$processing = true;
         LengowConfiguration::updateGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS, time());
@@ -1169,7 +1169,7 @@ class LengowImport
      * Set import to finished
      * @return void
      */
-    private static function setEnd()
+    private static function setEnd(): void
     {
         self::$processing = false;
         LengowConfiguration::updateGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS, -1);

@@ -51,7 +51,7 @@ class LengowConfigurationForm
      *
      * @param array<string, mixed> $params construct parameters
      */
-    public function __construct($params)
+    public function __construct(array $params)
     {
         $this->fields = isset($params['fields']) ? $params['fields'] : false;
         $this->locale = new LengowTranslation();
@@ -65,7 +65,7 @@ class LengowConfigurationForm
      *
      * @return string
      */
-    public function buildShopInputs($idShop, $displayKeys)
+    public function buildShopInputs(int $idShop,array $displayKeys): string
     {
         $html = '';
         foreach ($displayKeys as $key) {
@@ -86,7 +86,7 @@ class LengowConfigurationForm
      *
      * @return string
      */
-    public function buildInputs($displayKeys)
+    public function buildInputs(array $displayKeys): string
     {
         $html = '';
         foreach ($displayKeys as $key) {
@@ -111,7 +111,7 @@ class LengowConfigurationForm
      *
      * @return string
      */
-    public function input($key, $input, $idShop = null)
+    public function input(string $key,array $input,?int $idShop = null): string
     {
         $html = '';
         if ($idShop) {
@@ -209,7 +209,7 @@ class LengowConfigurationForm
      * @param list<string> $checkboxKeys Lengow checkbox
      * @return void
      */
-    public function postProcess($checkboxKeys)
+    public function postProcess(array $checkboxKeys): void
     {
         try {
             $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
@@ -287,7 +287,7 @@ class LengowConfigurationForm
      * @param int $idShop PrestaShop shop id
      * @return void
      */
-    public function checkAndLog($key, $value, $idShop = null)
+    public function checkAndLog(string $key,mixed $value,?int $idShop = null): void
     {
         if (array_key_exists($key, $this->fields)) {
             $setting = $this->fields[$key];

@@ -34,7 +34,7 @@ class LengowCountry
      *
      * @return string
      */
-    public static function getNameByIso($isoCode)
+    public static function getNameByIso(string $isoCode): string
     {
         $idLang = (int) Context::getContext()->language->id;
         if ($idLang > 0) {
@@ -57,7 +57,7 @@ class LengowCountry
      *
      * @return array<int|string, mixed>|false
      */
-    public static function getCountry($idCountry)
+    public static function getCountry(int $idCountry): array|false
     {
         return Db::getInstance()->getRow(
             'SELECT c.id_country, c.iso_code, cl.name FROM ' . _DB_PREFIX_ . 'country as c
