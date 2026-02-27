@@ -902,7 +902,7 @@ class LengowOrder extends Order
      *
      * @param string $state state to be matched
      *
-     * @return int
+     * @return int|false
      */
     public static function getOrderProcessState($state)
     {
@@ -926,7 +926,7 @@ class LengowOrder extends Order
      *
      * @param int $idOrderLengow Lengow order id
      *
-     * @return bool
+     * @return array|false
      */
     public static function find($idOrderLengow)
     {
@@ -1381,7 +1381,9 @@ class LengowOrder extends Order
     /**
      * Return the Lengow orders from PrestaShop order id
      *
-     * @return int
+     * @param int $idOrder PrestaShop order id
+     *
+     * @return array|null
      */
     public static function getLengowOrderByPrestashopId($idOrder)
     {

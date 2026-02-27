@@ -457,7 +457,7 @@ class LengowToolboxElement
      *
      * @param array $checklist all information for toolbox
      *
-     * @return string
+     * @return string|null
      */
     private function getContent($checklist = [])
     {

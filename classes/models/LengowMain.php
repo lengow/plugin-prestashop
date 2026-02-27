@@ -114,7 +114,7 @@ class LengowMain
      *
      * @param string $version the version to compare
      *
-     * @return bool
+     * @return int
      */
     public static function compareVersion($version = '1.4')
     {
@@ -138,7 +138,7 @@ class LengowMain
      *
      * @param string $state state to be matched
      *
-     * @return int
+     * @return int|false
      */
     public static function getOrderState($state)
     {
@@ -314,7 +314,7 @@ class LengowMain
      *
      * @param float $float the float to format
      *
-     * @return float
+     * @return string
      */
     public static function formatNumber($float)
     {
@@ -578,7 +578,7 @@ class LengowMain
      *
      * @param string $phone Phone to clean
      *
-     * @return string
+     * @return string|null
      */
     public static function cleanPhone($phone)
     {

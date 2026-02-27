@@ -61,9 +61,9 @@ class LengowHook
     private static $orderCurrency = '';
 
     /**
-     * @var string total order
+     * @var float total order
      */
-    private static $orderTotal = '';
+    private static $orderTotal = 0.0;
 
     /**
      * @var string product cart ids
@@ -327,7 +327,7 @@ class LengowHook
         $id_order = (int) $params['id_order'];
         $lengowOrder = LengowOrder::getLengowOrderByPrestashopId($id_order);
 
-        if (!$lengowOrder) {
+        if (!$lengowOrder || !is_array($lengowOrder)) {
             return '';
         }
 

@@ -3,7 +3,7 @@
 includes:
   - %env.PS_DEV_TOOLS_DIR%/phpstan/ps-module-extension.neon
 parameters:
-  level: 2
+  level: 3
   paths:
     - %currentWorkingDirectory%
   excludePaths:

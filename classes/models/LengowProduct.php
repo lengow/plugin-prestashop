@@ -178,7 +178,7 @@ class LengowProduct extends Product
      * @param string $name data name
      * @param int|null $idProductAttribute PrestaShop product attribute id
      *
-     * @return string
+     * @return mixed
      *
      * @throws Exception
      */
@@ -567,7 +567,7 @@ class LengowProduct extends Product
      *
      * @param int|null $idProductAttribute PrestaShop product attribute id
      *
-     * @return float
+     * @return string
      *
      * @throws Exception
      */
@@ -693,7 +693,7 @@ class LengowProduct extends Product
      *
      * @param int|null $idProductAttribute PrestaShop product attribute id
      *
-     * @return string
+     * @return float
      */
     protected function getWeight($idProductAttribute = null)
     {
@@ -947,7 +947,7 @@ class LengowProduct extends Product
      * @param string $value attribute value
      * @param int $idShop PrestaShop shop id
      *
-     * @return int|false
+     * @return array|false
      */
     protected static function findProduct($key, $value, $idShop)
     {

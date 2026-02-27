@@ -190,7 +190,7 @@ class LengowPaymentModule extends PaymentModule
                     $order->module = $this->name;
                 }
                 $order->recyclable = $this->context->cart->recyclable;
-                $order->gift = (int) $this->context->cart->gift;
+                $order->gift = (bool) $this->context->cart->gift;
                 $order->gift_message = $this->context->cart->gift_message;
                 $order->mobile_theme = false;
                 $order->conversion_rate = $this->context->currency->conversion_rate;
@@ -271,7 +271,7 @@ class LengowPaymentModule extends PaymentModule
                     $precision
                 );
                 $order->total_paid = $order->total_paid_tax_incl;
-                $order->round_mode = Configuration::get('PS_PRICE_ROUND_MODE');
+                $order->round_mode = (int) Configuration::get('PS_PRICE_ROUND_MODE');
                 $order->invoice_date = '0000-00-00 00:00:00';
                 $order->delivery_date = '0000-00-00 00:00:00';
 
@@ -367,7 +367,7 @@ class LengowPaymentModule extends PaymentModule
                     if (Validate::isCleanHtml($message)) {
                         $msg->message = $message;
                         $msg->id_order = (int) $order->id;
-                        $msg->private = 1;
+                        $msg->private = true;
                         $msg->add();
                     }
                 }
@@ -394,7 +394,7 @@ class LengowPaymentModule extends PaymentModule
                     $customerMessage->id_customer_thread = $customerThread->id;
                     $customerMessage->id_employee = 0;
                     $customerMessage->message = $updateMessage->message;
-                    $customerMessage->private = 0;
+                    $customerMessage->private = false;
                     $customerMessage->add();
                 }
 

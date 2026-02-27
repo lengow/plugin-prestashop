@@ -153,7 +153,7 @@ class LengowImportOrder
     private $idOrder;
 
     /**
-     * @var int PrestaShop order reference
+     * @var string PrestaShop order reference
      */
     private $orderReference;
 
@@ -1595,7 +1595,7 @@ class LengowImportOrder
         if (!empty($comment)) {
             $msg = new Message();
             $msg->id_order = $idOrder;
-            $msg->private = 1;
+            $msg->private = true;
             $msg->message = $comment;
             $msg->add();
         }

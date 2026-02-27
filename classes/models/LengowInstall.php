@@ -1133,9 +1133,9 @@ class LengowInstall
             foreach ($languages as $language) {
                 $group->name[$language['id_lang']] = LengowCustomer::LENGOW_GROUP_NAME;
             }
-            $group->reduction = 0;
+            $group->reduction = '0';
             $group->price_display_method = PS_TAX_EXC;
-            $group->show_prices = 1;
+            $group->show_prices = true;
             $group->date_add = date('Y-m-d H:i:s');
             $group->date_upd = date('Y-m-d H:i:s');
             $group->save();

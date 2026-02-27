@@ -38,7 +38,7 @@ class LengowFile
     public $folderName;
 
     /**
-     * @var string file link
+     * @var string|null file link
      */
     public $link;
 

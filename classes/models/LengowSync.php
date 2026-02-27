@@ -340,7 +340,7 @@ class LengowSync
      * @param bool $force force cache update
      * @param bool $logOutput see log or not
      *
-     * @return array|false
+     * @return mixed
      */
     public static function getMarketplaces($force = false, $logOutput = false)
     {

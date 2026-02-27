@@ -122,7 +122,7 @@ class LengowConnector
     protected $secret;
 
     /**
-     * @var string temporary token for the authorization
+     * @var string|null temporary token for the authorization
      */
     protected $token;
 

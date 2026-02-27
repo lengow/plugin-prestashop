@@ -116,7 +116,7 @@ class LengowImport
     public static $processing;
 
     /**
-     * @var string order id being imported
+     * @var int|string order id being imported
      */
     public static $currentOrder = -1;
 
@@ -216,7 +216,7 @@ class LengowImport
     private $connector;
 
     /**
-     * @var Context Context for import order
+     * @var Context|null Context for import order
      */
     private $context;
 

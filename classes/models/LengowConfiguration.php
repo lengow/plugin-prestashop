@@ -1069,7 +1069,7 @@ class LengowConfiguration extends Configuration
      * @param string $key Lengow configuration key
      * @param string|null $value configuration value for conversion
      *
-     * @return array|bool|int|string|string[]|null
+     * @return array|bool|float|int|string|string[]|null
      */
     private static function getValueWithCorrectType($key, $value = null)
     {

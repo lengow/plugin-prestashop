@@ -29,7 +29,7 @@ if (!defined('_PS_VERSION_')) {
 class LengowController
 {
     /**
-     * @var Lengow Lengow module instance
+     * @var Lengow|false Lengow module instance
      */
     protected $module;
 

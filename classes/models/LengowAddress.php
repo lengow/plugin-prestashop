@@ -614,10 +614,10 @@ class LengowAddress extends Address
             case 'address1':
                 if (!empty($this->address2)) {
                     $this->address1 = $this->address2;
-                    $this->address2 = null;
+                    $this->address2 = '';
                 } elseif (!empty($this->other)) {
                     $this->address1 = $this->other;
-                    $this->other = null;
+                    $this->other = '';
                 }
                 break;
             case 'phone':

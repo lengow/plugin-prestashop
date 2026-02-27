@@ -276,7 +276,7 @@ class LengowList
     /**
      * Display Table Row
      *
-     * @param string $item item of the collection
+     * @param array $item item of the collection
      *
      * @return string
      */
@@ -401,8 +401,8 @@ class LengowList
             $this->collection = [];
         }
         $sqlTotal = $this->buildQuery(true);
-        $this->total = Db::getInstance()->getValue($sqlTotal, false);
-        $this->nbMaxPage = ceil($this->total / $this->nbPerPage);
+        $this->total = (int) Db::getInstance()->getValue($sqlTotal, false);
+        $this->nbMaxPage = (int) ceil($this->total / $this->nbPerPage);
         $this->paginationFrom = ($this->currentPage - 1) * $this->nbPerPage + 1;
         if ($this->total === 0) {
             $this->paginationFrom = 0;
@@ -450,7 +450,7 @@ class LengowList
      *
      * @param string $keyToSearch key search in field list
      *
-     * @return bool
+     * @return array|false
      */
     public function findValueByKey($keyToSearch)
     {
