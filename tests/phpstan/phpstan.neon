@@ -8,3 +8,13 @@ parameters:
     - %currentWorkingDirectory%
   excludePaths:
     - %currentWorkingDirectory%/vendor
+  ignoreErrors:
+    # External third-party module classes (optional runtime dependencies, loaded conditionally)
+    - identifier: class.notFound
+      message: '#(MondialRelay|MondialrelayCarrierMethod|MondialrelayClasslib|Mondialrelay|MRRelayDetail|MRTools|SCFields|Colissimo_simplicite|Socolissimo)#'
+      reportUnmatched: false
+    # DIRECTORY_SEPARATOR path resolution: PHPStan tests both / and \ variants
+    - identifier: includeOnce.fileNotFound
+      reportUnmatched: false
+    - identifier: requireOnce.fileNotFound
+      reportUnmatched: false

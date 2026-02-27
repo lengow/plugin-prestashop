@@ -430,18 +430,6 @@ class LengowPaymentModule extends PaymentModule
 
                 // order is reloaded because the status just changed
                 $order = new Order($order->id);
-
-                // updates stock in shops
-                if (Configuration::get('PS_ADVANCED_STOCK_MANAGEMENT')) {
-                    $productList = $order->getProducts();
-                    foreach ($productList as $product) {
-                        // if the available quantities depends on the physical stock
-                        if (StockAvailable::dependsOnStock($product['product_id'])) {
-                            // synchronizes
-                            StockAvailable::synchronize($product['product_id'], $order->id_shop);
-                        }
-                    }
-                }
             } else {
                 throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.order_creation_failed'));
             }

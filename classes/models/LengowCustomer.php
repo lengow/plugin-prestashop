@@ -156,51 +156,12 @@ class LengowCustomer extends Customer
      */
     public function validateSizeLengow($fieldName)
     {
-        switch ($fieldName) {
-            case 'address1':
-            case 'address2':
-            case 'other':
-                $addressFullArray = explode(' ', $this->address_full ?? '');
-                if (count($addressFullArray) < 1) {
-                    $definition = self::getFieldDefinition();
-                    $address1MaxLength = $definition['address1']['size'];
-                    $address2MaxLength = $definition['address1']['size'];
-                    $otherMaxLength = $definition['other']['size'];
-                    $this->address1 = '';
-                    $this->address2 = '';
-                    $this->other = '';
-                    foreach ($addressFullArray as $addressPart) {
-                        if (Tools::strlen($this->address1) < $address1MaxLength) {
-                            if (!empty($this->address1)) {
-                                $this->address1 .= ' ';
-                            }
-                            $this->address1 .= $addressPart;
-                            continue;
-                        }
-                        if (Tools::strlen($this->address2) < $address2MaxLength) {
-                            if (!empty($this->address2)) {
-                                $this->address2 .= ' ';
-                            }
-                            $this->address2 .= $addressPart;
-                            continue;
-                        }
-                        if (Tools::strlen($this->other) < $otherMaxLength) {
-                            if (!empty($this->other)) {
-                                $this->other .= ' ';
-                            }
-                            $this->other .= $addressPart;
-                        }
-                    }
-                }
-                break;
-            case 'phone':
-                $this->phone = LengowMain::cleanPhone($this->phone);
-                break;
-            case 'phone_mobile':
-                $this->phone_mobile = LengowMain::cleanPhone($this->phone_mobile);
-                break;
-            default:
-                break;
+        // Customer fields are validated by their own definition.
+        // Address-specific fields (address1, address2, other, phone, phone_mobile)
+        // are handled by LengowAddress::validateSizeLengow() instead.
+        $definition = self::getFieldDefinition();
+        if (isset($definition[$fieldName]['size'])) {
+            $this->{$fieldName} = Tools::substr($this->{$fieldName}, 0, $definition[$fieldName]['size']);
         }
     }
 
