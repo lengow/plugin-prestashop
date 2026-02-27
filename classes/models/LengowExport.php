@@ -529,7 +529,7 @@ class LengowExport
             $this->stream,
             $this->format,
             $this->legacy,
-            isset($shop->name) ? $shop->name : 'default'
+            $shop->name !== '' ? $shop->name : 'default'
         );
         $this->feed->write(LengowFeed::HEADER, $fields);
         $isFirst = true;

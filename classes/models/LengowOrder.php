@@ -338,7 +338,7 @@ class LengowOrder extends Order
      *
      * @param string $marketplaceSku Lengow order id
      * @param string $marketplace marketplace name
-     * @param string $marketplaceLegacy old marketplace name for v2 compatibility
+     * @param string|null $marketplaceLegacy old marketplace name for v2 compatibility
      *
      * @return int|false
      */

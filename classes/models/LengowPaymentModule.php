@@ -43,7 +43,7 @@ class LengowPaymentModule extends PaymentModule
      * @param array $lengowProducts list of Lengow products
      * @param float $lengowShippingCosts order shipping costs
      * @param float $processingFees order processing fees
-     * @param string $lengowTrackingNumber Lengow carrier tracking number
+     * @param string|null $lengowTrackingNumber Lengow carrier tracking number
      * @param int $idOrderLengow id of the record Lengow order table
      * @param string $orderStateLengow Lengow order state
      * @param string $marketplaceSku id lengow of current order
@@ -57,18 +57,14 @@ class LengowPaymentModule extends PaymentModule
      */
     public function makeOrder($idCart, $idOrderState, $paymentMethod, $message, $lengowProducts, $lengowShippingCosts, $processingFees, $lengowTrackingNumber, $idOrderLengow, $orderStateLengow, $marketplaceSku, $logOutput)
     {
-        if (!isset($this->context)) {
+        if (!$this->context) {
             $this->context = Context::getContext();
         }
         $this->context->cart = new Cart($idCart);
         $this->context->customer = new Customer($this->context->cart->id_customer);
         // the tax cart is loaded before the customer so re-cache the tax calculation method
-        if (method_exists($this->context->cart, 'setTaxCalculationMethod')) {
-            $this->context->cart->setTaxCalculationMethod();
-        }
-        if (method_exists(new ShopUrl(), 'resetMainDomainCache')) {
-            ShopUrl::resetMainDomainCache();
-        }
+        $this->context->cart->setTaxCalculationMethod();
+        ShopUrl::resetMainDomainCache();
 
         $idCurrency = (int) $this->context->cart->id_currency;
         $this->context->currency = new Currency($idCurrency, null, $this->context->shop->id);
@@ -101,7 +97,7 @@ class LengowPaymentModule extends PaymentModule
                     // force carrier to be the one chosen in Lengow config
                     $carrierOptions = explode(',', $key);
                     foreach ($carrierOptions as $c) {
-                        if ($c === $this->context->cart->id_carrier) {
+                        if ((int) $c === (int) $this->context->cart->id_carrier) {
                             $cartDeliveryOption[$idAddress] = $key;
                             $carrierAssigned = true;
                             break;
@@ -129,7 +125,6 @@ class LengowPaymentModule extends PaymentModule
 
         $this->currentOrderReference = $reference;
 
-        $orderCreationFailed = false;
         if ($cartDeliveryOption) {
             foreach ($cartDeliveryOption as $idAddress => $keyCarriers) {
                 foreach ($deliveryOptionList[$idAddress][$keyCarriers]['carrier_list'] as $idCarrier => $data) {
@@ -139,13 +134,11 @@ class LengowPaymentModule extends PaymentModule
                             $idCarrier = $this->context->cart->id_carrier;
                         }
                         // rewrite the id_warehouse
-                        if (method_exists($this->context->cart, 'getPackageIdWarehouse')) {
-                            $idWarehouse = (int) $this->context->cart->getPackageIdWarehouse(
-                                $packageList[$idAddress][$idPackage],
-                                (int) $idCarrier
-                            );
-                            $packageList[$idAddress][$idPackage]['id_warehouse'] = $idWarehouse;
-                        }
+                        $idWarehouse = (int) $this->context->cart->getPackageIdWarehouse(
+                            $packageList[$idAddress][$idPackage],
+                            (int) $idCarrier
+                        );
+                        $packageList[$idAddress][$idPackage]['id_warehouse'] = $idWarehouse;
                         $packageList[$idAddress][$idPackage]['id_carrier'] = $idCarrier;
                     }
                 }
@@ -186,7 +179,7 @@ class LengowPaymentModule extends PaymentModule
 
                 $order->secure_key = pSQL($this->context->customer->secure_key);
                 $order->payment = $paymentMethod;
-                if (isset($this->name)) {
+                if ($this->name !== '') {
                     $order->module = $this->name;
                 }
                 $order->recyclable = $this->context->cart->recyclable;
@@ -334,7 +327,7 @@ class LengowPaymentModule extends PaymentModule
                 $orderDetailList[] = $orderDetail;
 
                 // adding an entry in order_carrier table
-                if ($carrier !== null) {
+                if (Validate::isLoadedObject($carrier)) {
                     $orderCarrier = new LengowOrderCarrier();
                     $orderCarrier->id_order = (int) $order->id;
                     $orderCarrier->id_carrier = (int) $idCarrier;
@@ -360,7 +353,7 @@ class LengowPaymentModule extends PaymentModule
 
         foreach ($orderDetailList as $key => $orderDetail) {
             $order = $orderList[$key];
-            if (!$orderCreationFailed && isset($order->id)) {
+            if (isset($order->id)) {
                 if (!empty($message)) {
                     $msg = new Message();
                     $message = strip_tags($message, '<br>');
@@ -436,7 +429,7 @@ class LengowPaymentModule extends PaymentModule
         }
 
         // update Order Details Tax in case cart rules have free shipping
-        if (isset($order) && $order instanceof Order) {
+        if (isset($order)) {
             foreach ($order->getOrderDetailList() as $detail) {
                 $orderDetail = new OrderDetail($detail['id_order_detail']);
                 $orderDetail->updateTaxAmount($order);
@@ -444,7 +437,7 @@ class LengowPaymentModule extends PaymentModule
         }
 
         // use the last order as currentOrder
-        if (isset($order) && $order instanceof Order) {
+        if (isset($order)) {
             $this->currentOrder = (int) $order->id;
         }
 

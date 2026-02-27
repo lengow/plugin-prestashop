@@ -724,11 +724,7 @@ class LengowList
         }
 
         $locale = null;
-        if (method_exists('Tools', 'getContextLocale')) {
-            $locale = Tools::getContextLocale($this->context);
-        } elseif (method_exists($this->context, 'getCurrentLocale')) {
-            $locale = $this->context->getCurrentLocale();
-        }
+        $locale = Tools::getContextLocale($this->context);
 
         if ($locale !== null) {
             return $locale->formatPrice(

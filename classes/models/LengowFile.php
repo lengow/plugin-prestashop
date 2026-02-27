@@ -43,7 +43,7 @@ class LengowFile
     public $link;
 
     /**
-     * @var resource a file pointer resource
+     * @var resource|null a file pointer resource
      */
     public $instance;
 

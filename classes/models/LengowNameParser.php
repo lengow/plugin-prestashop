@@ -405,6 +405,7 @@ class LengowNameParser
                                 $this->middle = $current;
                             }
                         }
+                        $this->last = $pieces[0];
                         if (isset($pieces[2]) && $pieces[2]) {
                             if ($this->last == '') {
                                 $this->suffix = trim($pieces[2]);
@@ -417,7 +418,6 @@ class LengowNameParser
                                 }
                             }
                         }
-                        $this->last = $pieces[0];
                         break;
                 }
                 unset($pieces);

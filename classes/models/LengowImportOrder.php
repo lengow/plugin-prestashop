@@ -163,7 +163,7 @@ class LengowImportOrder
     private $orderTypes;
 
     /**
-     * @var LengowMarketplace Lengow marketplace instance
+     * @var LengowMarketplace|null Lengow marketplace instance
      */
     private $marketplace;
 
@@ -1384,9 +1384,6 @@ class LengowImportOrder
     {
         $idCarrier = false;
         $matchingFound = false;
-        if (!isset($this->shippingAddress->id_country)) {
-            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country'));
-        }
         $idCountry = (int) $this->shippingAddress->id_country;
         if ($idCountry === 0) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.carrier_shipping_address_no_country'));

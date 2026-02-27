@@ -653,7 +653,7 @@ class LengowAddress extends Address
             case 'address2':
             case 'other':
                 $fullAddressArray = explode(' ', $this->fullAddress);
-                if (count($fullAddressArray) < 1) {
+                if (count($fullAddressArray) >= 1) {
                     $definition = self::getFieldDefinition();
                     $address1Maxlength = $definition['address1']['size'];
                     $address2Maxlength = $definition['address1']['size'];

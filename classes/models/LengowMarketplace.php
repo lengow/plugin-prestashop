@@ -469,9 +469,9 @@ class LengowMarketplace
         // get tracking number for tracking number and tracking url
         $idOrderCarrier = $lengowOrder->getIdOrderCarrier();
         $orderCarrier = new LengowOrderCarrier($idOrderCarrier);
-        $trackingNumber = $orderCarrier->tracking_number ?? '';
+        $trackingNumber = $orderCarrier->tracking_number;
         $shippingMethod = $lengowOrder->getShippingMethodByPrestashopId($lengowOrder->lengowId);
-        $returnTrackingNumber = $orderCarrier->return_tracking_number ?? '';
+        $returnTrackingNumber = $orderCarrier->return_tracking_number;
         if ($trackingNumber === '') {
             $trackingNumber = $lengowOrder->shipping_number ?? '';
         }
@@ -489,7 +489,7 @@ class LengowMarketplace
                     if ((string) $lengowOrder->lengowCarrier !== '') {
                         $carrierName = (string) $lengowOrder->lengowCarrier;
                     } else {
-                        if (!isset($deliveryAddress->id_country) || (int) $deliveryAddress->id_country === 0) {
+                        if ((int) $deliveryAddress->id_country === 0) {
                             if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
                                 break;
                             }
@@ -585,8 +585,7 @@ class LengowMarketplace
             throw new LengowException('refund action not available for this order_state: ' . $lengowOrder->lengowState);
         }
         $decodedExtra = json_decode($lengowOrder->lengowExtra, true, 512, JSON_THROW_ON_ERROR);
-        $shippingPriceTTC = $lengowOrder->getTotalShippingCostByOrderId($lengowOrder->id)
-            ?? 0;
+        $shippingPriceTTC = $lengowOrder->getTotalShippingCostByOrderId($lengowOrder->id);
         foreach ($marketplaceArguments as $arg) {
             switch ($arg) {
                 case LengowAction::ARG_REFUND_REASON:

@@ -171,10 +171,8 @@ class AdminOrderController extends OrderController
         ]);
         $isActiveReturnCarrier = false;
         $isActiveReturnTrackingNumber = false;
-        if ($this->isFromLengow($orderId)) {
-            $isActiveReturnTrackingNumber = $this->isActiveReturnTrackingNumber($orderId);
-            $isActiveReturnCarrier = $this->isActiveReturnTrackingCarrier($orderId);
-        }
+        $isActiveReturnTrackingNumber = $this->isActiveReturnTrackingNumber($orderId);
+        $isActiveReturnCarrier = $this->isActiveReturnTrackingCarrier($orderId);
 
         if ($isActiveReturnTrackingNumber) {
             $returnTrackingNumber = $this->getReturnTrackingNumber($orderId);

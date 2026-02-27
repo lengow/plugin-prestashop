@@ -327,7 +327,7 @@ class LengowHook
         $id_order = (int) $params['id_order'];
         $lengowOrder = LengowOrder::getLengowOrderByPrestashopId($id_order);
 
-        if (!$lengowOrder || !is_array($lengowOrder)) {
+        if (!$lengowOrder) {
             return '';
         }
 
@@ -429,7 +429,7 @@ class LengowHook
             return;
         }
 
-        if (($args['object'] instanceof Order) && LengowOrder::isFromLengow($args['object']->id)) {
+        if (LengowOrder::isFromLengow($args['object']->id)) {
             $lengowOrder = new LengowOrder($args['object']->id);
 
             // Check if the tracking field has been updated
@@ -458,12 +458,12 @@ class LengowHook
         }
         $order = $args['order'];
         $lengowOrder = new LengowOrder($order->id);
-        if ($lengowOrder instanceof LengowOrder && LengowOrder::isFromLengow($order->id)) {
+        if (LengowOrder::isFromLengow($order->id)) {
             $idOrderDetail = (int) $args['id_order_detail'];
             $cancelQuantity = (int) $args['cancel_quantity'];
 
             $orderDetail = new OrderDetail($idOrderDetail);
-            if (!$orderDetail instanceof OrderDetail) {
+            if (!Validate::isLoadedObject($orderDetail)) {
                 return;
             }
             $lengowOrderLine = LengowOrderLine::findOrderLineByOrderDetailId($orderDetail->id);

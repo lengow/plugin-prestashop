@@ -206,31 +206,31 @@ class LengowMain
      */
     public static function getLastImport()
     {
-        $timestampCron = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_CRON_SYNCHRONIZATION);
-        $timestampManual = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_MANUAL_SYNCHRONIZATION);
+        $timestampCron = (int) LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_CRON_SYNCHRONIZATION);
+        $timestampManual = (int) LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_MANUAL_SYNCHRONIZATION);
         if ($timestampCron && $timestampManual) {
-            if ((int) $timestampCron > (int) $timestampManual) {
+            if ($timestampCron > $timestampManual) {
                 return [
                     'type' => LengowImport::TYPE_CRON,
-                    'timestamp' => (int) $timestampCron,
+                    'timestamp' => $timestampCron,
                 ];
             }
 
             return [
                 'type' => LengowImport::TYPE_MANUAL,
-                'timestamp' => (int) $timestampManual,
+                'timestamp' => $timestampManual,
             ];
         }
-        if ($timestampCron && !$timestampManual) {
+        if ($timestampCron) {
             return [
                 'type' => LengowImport::TYPE_CRON,
-                'timestamp' => (int) $timestampCron,
+                'timestamp' => $timestampCron,
             ];
         }
-        if ($timestampManual && !$timestampCron) {
+        if ($timestampManual) {
             return [
                 'type' => LengowImport::TYPE_MANUAL,
-                'timestamp' => (int) $timestampManual,
+                'timestamp' => $timestampManual,
             ];
         }
 
@@ -330,7 +330,7 @@ class LengowMain
     {
         $domain = defined('_PS_SHOP_DOMAIN_') ? _PS_SHOP_DOMAIN_ : _PS_BASE_URL_;
         preg_match('`([a-zàâäéèêëôöùûüîïç0-9-]+\.[a-z]+)`', $domain, $out);
-        if ($out[1]) {
+        if (!empty($out[1])) {
             return $out[1];
         }
 
@@ -443,7 +443,7 @@ class LengowMain
      */
     public static function setLogMessage($key, $params = null)
     {
-        if ($params === null || (is_array($params) && empty($params))) {
+        if ($params === null || empty($params)) {
             return $key;
         }
         $allParams = [];
@@ -467,19 +467,17 @@ class LengowMain
     public static function decodeLogMessage($message, $isoCode = null, $params = null)
     {
         if (preg_match('/^(([a-z_]*\.){1,3}[a-z_]*)(\[(.*)\]|)$/', $message, $result)) {
-            if (isset($result[1])) {
-                $key = $result[1];
-                if (isset($result[4]) && $params === null) {
-                    $strParam = $result[4];
-                    $allParams = explode('|', (string) $strParam);
-                    foreach ($allParams as $param) {
-                        $result = explode('==', (string) $param);
-                        $params[$result[0]] = $result[1];
-                    }
+            $key = $result[1];
+            if (isset($result[4]) && $params === null) {
+                $strParam = $result[4];
+                $allParams = explode('|', (string) $strParam);
+                foreach ($allParams as $param) {
+                    $result = explode('==', (string) $param);
+                    $params[$result[0]] = $result[1];
                 }
-                $locale = new LengowTranslation();
-                $message = $locale->t($key, $params, $isoCode);
             }
+            $locale = new LengowTranslation();
+            $message = $locale->t($key, $params, $isoCode);
         }
 
         return $message;

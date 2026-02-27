@@ -100,7 +100,7 @@ class LengowGender extends Gender
         $result = Db::getInstance()->ExecuteS($query);
 
         if ($result && is_array($result)) {
-            return (string) $result[0]['id_gender'] ?? '';
+            return (string) ($result[0]['id_gender'] ?? '');
         }
 
         return '';

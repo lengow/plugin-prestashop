@@ -160,7 +160,7 @@ class LengowSync
         }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_CATALOG);
-            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CATALOG]) {
+            if ($updatedAt !== '' && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CATALOG]) {
                 return $success;
             }
         }
@@ -211,7 +211,7 @@ class LengowSync
         }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE_LIST);
-            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CARRIER]) {
+            if ($updatedAt !== '' && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CARRIER]) {
                 return false;
             }
         }
@@ -272,7 +272,7 @@ class LengowSync
         }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_OPTION_CMS);
-            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CMS_OPTION]) {
+            if ($updatedAt !== '' && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CMS_OPTION]) {
                 return false;
             }
         }
@@ -295,7 +295,7 @@ class LengowSync
     {
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_ACCOUNT_STATUS_DATA);
-            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
+            if ($updatedAt !== '' && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
                 return json_decode(
                     LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_STATUS_DATA),
                     true
@@ -347,7 +347,7 @@ class LengowSync
         $filePath = LengowMarketplace::getFilePath();
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE);
-            if ($updatedAt !== null
+            if ($updatedAt !== ''
                 && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_MARKETPLACE]
                 && file_exists($filePath)
             ) {
@@ -417,7 +417,7 @@ class LengowSync
     {
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_DATA);
-            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_PLUGIN_DATA]) {
+            if ($updatedAt !== '' && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_PLUGIN_DATA]) {
                 return json_decode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
             }
         }

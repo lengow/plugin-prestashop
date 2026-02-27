@@ -586,7 +586,7 @@ class LengowOrderController extends LengowController
     public static function displayOrderTypes($key, $value, $item)
     {
         $return = '<div>';
-        $orderTypes = $value !== null ? json_decode($value, true) : [];
+        $orderTypes = $value !== '' ? json_decode($value, true) : [];
         if (isset($orderTypes[LengowOrder::TYPE_EXPRESS]) || isset($orderTypes[LengowOrder::TYPE_PRIME])) {
             $iconLabel = isset($orderTypes[LengowOrder::TYPE_PRIME])
                 ? $orderTypes[LengowOrder::TYPE_PRIME]
@@ -702,9 +702,10 @@ class LengowOrderController extends LengowController
             }
         } else {
             // check if order actions in progress
-            if (($item[LengowOrder::FIELD_ORDER_ID] > 0
-                    && (int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE]
-                    === LengowOrder::PROCESS_STATE_IMPORT) || LengowOrder::PROCESS_STATE_FINISH
+            if ($item[LengowOrder::FIELD_ORDER_ID] > 0
+                    && ((int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE]
+                    === LengowOrder::PROCESS_STATE_IMPORT || (int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE]
+                    === LengowOrder::PROCESS_STATE_FINISH)
             ) {
                 $lastActionType = LengowAction::getLastOrderActionType($item[LengowOrder::FIELD_ORDER_ID]);
                 if ($lastActionType) {

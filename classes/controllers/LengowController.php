@@ -111,7 +111,7 @@ class LengowController
             return false;
         }
         $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL);
-        if ($updatedAt !== null && (time() - (int) $updatedAt) < 86400) {
+        if ($updatedAt !== '' && (time() - (int) $updatedAt) < 86400) {
             return false;
         }
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL, time());

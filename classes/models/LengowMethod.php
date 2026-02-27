@@ -137,7 +137,6 @@ class LengowMethod
                                 $params[self::FIELD_METHOD_MARKETPLACE_LABEL] = pSQL($method->label);
                             }
                             if (isset($method->lengow_code)
-                                && $method->lengow_code !== null
                                 && mb_strlen((string) $method->lengow_code) > 0
                             ) {
                                 $params[self::FIELD_METHOD_LENGOW_CODE] = pSQL($method->lengow_code);

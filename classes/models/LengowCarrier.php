@@ -480,7 +480,6 @@ class LengowCarrier extends Carrier
                                 $params[self::FIELD_CARRIER_MARKETPLACE_LABEL] = pSQL($carrier->label);
                             }
                             if (isset($carrier->lengow_code)
-                                && $carrier->lengow_code !== null
                                 && Tools::strlen($carrier->lengow_code) > 0
                             ) {
                                 $params[self::FIELD_CARRIER_LENGOW_CODE] = pSQL($carrier->lengow_code);
@@ -719,7 +718,6 @@ class LengowCarrier extends Carrier
         );
         if ($result
             && isset($result[self::FIELD_CARRIER_ID])
-            && $result[self::FIELD_CARRIER_ID] !== null
             && (int) $result[self::FIELD_CARRIER_ID] > 0
         ) {
             $idCarrier = (int) $result[self::FIELD_CARRIER_ID];
@@ -746,7 +744,6 @@ class LengowCarrier extends Carrier
         );
         if ($result
             && isset($result[self::FIELD_CARRIER_MARKETPLACE_ID])
-            && $result[self::FIELD_CARRIER_MARKETPLACE_ID] !== null
             && (int) $result[self::FIELD_CARRIER_MARKETPLACE_ID] > 0
         ) {
             $idCarrier = (int) $result[self::FIELD_CARRIER_MARKETPLACE_ID];
@@ -1125,6 +1122,7 @@ class LengowCarrier extends Carrier
             throw new LengowException(LengowMain::setLogMessage('log.import.error_colissimo_missing_file', ['file_path' => $filePath]));
         }
         $customer = new LengowCustomer($idCustomer);
+        /** @var array<string, string> $params */
         $params = [];
         if (!empty($shippingAddress->idRelay)) {
             $deliveryMode = 'A2P';

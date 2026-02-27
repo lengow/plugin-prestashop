@@ -241,7 +241,7 @@ class LengowImport
     private $catalogIds = [];
 
     /**
-     * @var int id of lengow order record
+     * @var int|null id of lengow order record
      */
     private $idOrderLengow;
 
@@ -818,10 +818,9 @@ class LengowImport
     private function changeContext($idShop)
     {
         $this->context = Context::getContext()->cloneContext();
-        if ($shop = new Shop($idShop)) {
-            $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
-            $this->context->shop = $shop;
-        }
+        $shop = new Shop($idShop);
+        $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
+        $this->context->shop = $shop;
         $this->idLang = $this->context->language->id;
         $this->idShopGroup = $this->context->shop->id_shop_group;
     }

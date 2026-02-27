@@ -304,9 +304,8 @@ class LengowConnector
         $token = LengowConfiguration::getGlobalValue(LengowConfiguration::AUTHORIZATION_TOKEN);
         $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_AUTHORIZATION_TOKEN);
         if (!$force
-            && $token !== null
-            && $updatedAt !== null
             && $token !== ''
+            && $updatedAt !== ''
             && (time() - (int) $updatedAt) < $this->tokenLifetime
         ) {
             $authorizationToken = $token;
@@ -646,10 +645,10 @@ class LengowConnector
     /**
      * Check return request and generate exception if needed
      *
-     * @param string $result Curl return call
+     * @param string|false $result Curl return call
      * @param int $httpCode request http code
      * @param string $curlError Curl error
-     * @param string $curlErrorNumber Curl error number
+     * @param int $curlErrorNumber Curl error number
      *
      * @throws LengowException
      */

@@ -65,7 +65,7 @@ class LengowProduct extends Product
     protected $imageSize;
 
     /**
-     * @var Category PrestaShop category instance
+     * @var Category|null PrestaShop category instance
      */
     protected $categoryDefault;
 
@@ -90,7 +90,7 @@ class LengowProduct extends Product
     protected $features;
 
     /**
-     * @var Carrier PrestaShop carrier instance
+     * @var Carrier|null PrestaShop carrier instance
      */
     protected $carrier;
 
@@ -317,7 +317,7 @@ class LengowProduct extends Product
     {
         $combArray = [];
         $combinations = $this->getAttributesGroups($this->context->language->id);
-        if (is_array($combinations)) {
+        if (!empty($combinations)) {
             $cImages = $this->getImageUrlCombination();
             foreach ($combinations as $c) {
                 $attributeId = $c['id_product_attribute'];
@@ -368,7 +368,7 @@ class LengowProduct extends Product
                     $this->variation = rtrim($name, ', ');
                 }
                 $combArray[$idProductAttribute]['available_date'] = (
-                    $productAttribute['available_date'] != 0
+                    $productAttribute['available_date'] !== '0000-00-00'
                     ? date(LengowMain::DATE_DAY, strtotime($productAttribute['available_date']))
                     : '0000-00-00'
                 );
@@ -721,7 +721,7 @@ class LengowProduct extends Product
             $value = $this->combinations[$idProductAttribute][$name];
         }
         // if the value of the combination is not given, we take that of the parent
-        if (!$value || $value === 0 || $value === '0' || $value === '') {
+        if (empty($value)) {
             $value = isset($this->{$name}) ? $this->{$name} : '';
         }
 
@@ -878,7 +878,7 @@ class LengowProduct extends Product
                 // compatibility with old plugins
                 $sku = str_replace(['\_', 'X'], '_', $attributeValue);
                 $sku = explode('_', $sku);
-                if (isset($sku[0]) && preg_match('/^[0-9]*$/', $sku[0]) && count($sku) < 3) {
+                if (preg_match('/^[0-9]*$/', $sku[0]) && count($sku) < 3) {
                     $idsProduct['id_product'] = (int) $sku[0];
                     if (isset($sku[1])) {
                         if (preg_match('/^[0-9]*$/', $sku[1]) && count($sku) === 2) {

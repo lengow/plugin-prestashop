@@ -310,7 +310,7 @@ class LengowCart extends Cart
      * Modify a field according to the type of error
      *
      * @param string $fieldName incorrect field
-     * @param string $errorType type of error
+     * @param int $errorType type of error
      */
     public function validateFieldLengow($fieldName, $errorType)
     {
