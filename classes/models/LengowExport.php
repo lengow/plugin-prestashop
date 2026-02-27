@@ -61,12 +61,12 @@ class LengowExport
     /**
      * @var array<string, mixed> default fields for export
      */
-    public static $defaultFields;
+    public static array $defaultFields = [];
 
     /**
      * @var list<string> all available params for export
      */
-    public static $exportParams = [
+    public static array $exportParams = [
         self::PARAM_MODE,
         self::PARAM_FORMAT,
         self::PARAM_STREAM,
@@ -89,7 +89,7 @@ class LengowExport
     /**
      * @var array<string, mixed> new fields for v3
      */
-    protected $newFields = [
+    protected array $newFields = [
         'id' => 'id',
         'sku' => 'sku',
         'sku_supplier' => 'sku_supplier',
@@ -152,7 +152,7 @@ class LengowExport
     /**
      * @var array<string, mixed> legacy fields for export
      */
-    protected $legacyFields = [
+    protected array $legacyFields = [
         'id_product' => 'id',
         'name_product' => 'name',
         'reference_product' => 'sku',
@@ -214,92 +214,92 @@ class LengowExport
     /**
      * @var string format to return
      */
-    protected $format;
+    protected string $format;
 
     /**
      * @var Carrier PrestaShop Carrier instance
      */
-    protected $carrier;
+    protected Carrier $carrier;
 
     /**
      * @var LengowFeed Feed
      */
-    protected $feed;
+    protected LengowFeed $feed;
 
     /**
      * @var int PrestaShop shop id
      */
-    protected $idShop;
+    protected int $idShop;
 
     /**
      * @var bool stream return
      */
-    protected $stream = true;
+    protected bool $stream = true;
 
     /**
      * @var bool export Lengow selection
      */
-    protected $selection = false;
+    protected bool $selection = false;
 
     /**
      * @var bool export out of stock product
      */
-    protected $outOfStock = false;
+    protected bool $outOfStock = false;
 
     /**
      * @var Language export language
      */
-    protected $language;
+    protected Language $language;
 
     /**
      * @var bool export product variations
      */
-    protected $variation = true;
+    protected bool $variation = true;
 
     /**
      * @var bool include active products
      */
-    protected $inactive = false;
+    protected bool $inactive = false;
 
     /**
      * @var bool see log or not
      */
-    protected $logOutput;
+    protected bool $logOutput;
 
     /**
-     * @var bool use legacy fields
+     * @var bool|null use legacy fields
      */
-    protected $legacy = false;
+    protected ?bool $legacy = null;
 
     /**
      * @var int amount of products to export
      */
-    protected $limit = 0;
+    protected int $limit = 0;
 
     /**
      * @var int offset of total product
      */
-    protected $offset = 0;
+    protected int $offset = 0;
 
     /**
      * @var array<string, mixed> product ids to be exported
      */
-    protected $productIds = [];
+    protected array $productIds = [];
 
     /**
      * @var bool update export date
      */
-    protected $updateExportDate;
+    protected bool $updateExportDate;
 
     /**
      * @var array<int, array<int, array<string, mixed>>> cache combination
      */
-    protected $cacheCombination;
+    protected array $cacheCombination;
 
     /**
      * @var array<string, mixed> excluded products for export
      */
-    protected $excludedProducts = [];
+    protected array $excludedProducts = [];
 
     /**
      * Construct new Lengow export

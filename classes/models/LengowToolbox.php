@@ -195,7 +195,7 @@ class LengowToolbox
     /**
      * @var list<string> valid toolbox actions
      */
-    public static $toolboxActions = [
+    public static array $toolboxActions = [
         self::ACTION_DATA,
         self::ACTION_LOG,
         self::ACTION_ORDER,

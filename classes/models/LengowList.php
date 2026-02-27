@@ -30,112 +30,112 @@ class LengowList
     /**
      * @var array<string, mixed> list of fields
      */
-    protected $fieldsList;
+    protected array $fieldsList;
 
     /**
      * @var array<string, mixed> collection of result
      */
-    protected $collection;
+    protected array $collection;
 
     /**
      * @var int total number of results
      */
-    protected $total;
+    protected int $total;
 
     /**
      * @var string name of the identifier
      */
-    protected $identifier;
+    protected string $identifier;
 
     /**
      * @var bool if attribute is selected
      */
-    protected $selection;
+    protected bool $selection;
 
     /**
      * @var string specific selection condition
      */
-    protected $selectionCondition;
+    protected string $selectionCondition;
 
     /**
      * @var string name of Lengow controller
      */
-    protected $controller;
+    protected string $controller;
 
     /**
      * @var int PrestaShop shop id
      */
-    protected $shopId;
+    protected int $shopId;
 
     /**
      * @var int number of the current page
      */
-    protected $currentPage;
+    protected int $currentPage;
 
     /**
      * @var array<int, int> choice of number of results per page
      */
-    protected $nbPerPageList;
+    protected array $nbPerPageList;
 
     /**
      * @var int number of results per page
      */
-    protected $nbPerPage;
+    protected int $nbPerPage;
 
     /**
      * @var int maximum number of pages
      */
-    protected $nbMaxPage;
+    protected int $nbMaxPage;
 
     /**
      * @var int pagination from
      */
-    protected $paginationFrom;
+    protected int $paginationFrom;
 
     /**
      * @var int pagination to
      */
-    protected $paginationTo;
+    protected int $paginationTo;
 
     /**
      * @var array<string, mixed> all params for sql request
      */
-    protected $sql;
+    protected array $sql;
 
     /**
      * @var string shop identifier
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @var bool is ajax request
      */
-    protected $ajax;
+    protected bool $ajax;
 
     /**
      * @var Context PrestaShop context instance
      */
-    protected $context;
+    protected Context $context;
 
     /**
      * @var LengowTranslation Lengow translation instance
      */
-    protected $locale;
+    protected LengowTranslation $locale;
 
     /**
      * @var array<string, mixed> PrestaShop currency by iso code
      */
-    protected $currencyCode;
+    protected array $currencyCode;
 
     /**
      * @var string order value condition
      */
-    protected $orderValue;
+    protected string $orderValue;
 
     /**
      * @var string order column condition
      */
-    protected $orderColumn;
+    protected string $orderColumn;
 
     /**
      * Construct

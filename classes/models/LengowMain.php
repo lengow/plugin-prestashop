@@ -51,19 +51,19 @@ class LengowMain
     public const LOG_LIFE = 20;
 
     /**
-     * @var LengowLog Lengow log file instance
+     * @var LengowLog|null Lengow log file instance
      */
-    public static $log;
+    public static ?LengowLog $log = null;
 
     /**
      * @var array<string, mixed> marketplace registers
      */
-    public static $registers;
+    public static array $registers = [];
 
     /**
      * @var array<string, mixed> product ids available to track products
      */
-    public static $trackerChoiceId = [
+    public static array $trackerChoiceId = [
         'id' => 'Product ID',
         'ean' => 'Product EAN',
         'upc' => 'Product UPC',
@@ -73,7 +73,7 @@ class LengowMain
     /**
      * @var list<string> Lengow Authorized IPs
      */
-    protected static $ipsLengow = [
+    protected static array $ipsLengow = [
         '127.0.0.1',
         '10.0.4.150',
         '46.19.183.204',
@@ -107,7 +107,7 @@ class LengowMain
     /**
      * @var array<string, mixed> PrestaShop mail configuration
      */
-    protected static $mailConfigurations = [];
+    protected static array $mailConfigurations = [];
 
     /**
      * The PrestaShop compare version with current version.
@@ -966,7 +966,7 @@ class LengowMain
      *
      * @return LengowLog|false
      */
-    public static function getLogInstance()
+    public static function getLogInstance(): LengowLog|false
     {
         if (self::$log === null) {
             try {

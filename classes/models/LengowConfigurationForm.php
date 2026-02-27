@@ -39,12 +39,12 @@ class LengowConfigurationForm
     /**
      * @var array<string, mixed> checkbox keys
      */
-    public $fields;
+    public array $fields;
 
     /**
      * @var LengowTranslation Lengow translation instance
      */
-    protected $locale;
+    protected LengowTranslation $locale;
 
     /**
      * Construct

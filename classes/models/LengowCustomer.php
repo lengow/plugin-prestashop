@@ -32,7 +32,7 @@ class LengowCustomer extends Customer
     /**
      * @var string customer full name
      */
-    public $fullName;
+    public string $fullName;
 
     /**
      * Get definition array
@@ -176,7 +176,7 @@ class LengowCustomer extends Customer
      *
      * @return LengowCustomer|false
      */
-    public function getByEmailAndShop(string $email,int $idShop)
+    public function getByEmailAndShop(string $email,int $idShop): LengowCustomer|false
     {
         $sql = 'SELECT *
             FROM `' . _DB_PREFIX_ . 'customer`

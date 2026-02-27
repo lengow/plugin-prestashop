@@ -40,7 +40,7 @@ class LengowToolboxElement
     /**
      * @var LengowTranslation Lengow translation instance
      */
-    protected $locale;
+    protected LengowTranslation $locale;
 
     /**
      * Constructor

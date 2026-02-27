@@ -30,7 +30,7 @@ class LengowInstall
     /**
      * @var list<string> all module tables
      */
-    public static $tables = [
+    public static array $tables = [
         LengowOrder::TABLE_ORDER,
         LengowOrderLine::TABLE_ORDER_LINE,
         LengowOrderError::TABLE_ORDER_ERROR,
@@ -49,27 +49,27 @@ class LengowInstall
     /**
      * @var string old version for update scripts
      */
-    public static $oldVersion;
+    public static string $oldVersion = '';
 
     /**
      * @var bool installation status
      */
-    protected static $installationStatus;
+    protected static bool $installationStatus = false;
 
     /**
      * @var Lengow Lengow module instance
      */
-    private $lengowModule;
+    private Lengow $lengowModule;
 
     /**
      * @var LengowHook Lengow hook instance
      */
-    private $lengowHook;
+    private LengowHook $lengowHook;
 
     /**
      * @var array<string, mixed> all module tabs
      */
-    private $tabs = [
+    private array $tabs = [
         'tab.home' => ['name' => 'AdminLengowHome', 'active' => true],
         'tab.dashboard' => ['name' => 'AdminLengowDashboard', 'active' => false],
         'tab.product' => ['name' => 'AdminLengowFeed', 'active' => false],
@@ -84,7 +84,7 @@ class LengowInstall
     /**
      * @var list<string> all old files to remove
      */
-    private $oldFiles = [
+    private array $oldFiles = [
         'AdminLengow14.php',
         'AdminLengowLog14.php',
         'classes/models/LengowCurrency.php',
@@ -117,7 +117,7 @@ class LengowInstall
     /**
      * @var list<string> old configuration keys to remove
      */
-    private $oldConfigurationKeys = [
+    private array $oldConfigurationKeys = [
         'LENGOW_ID_ACCOUNT',
         'LENGOW_SECRET',
         'LENGOW_CRON',

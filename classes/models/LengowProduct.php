@@ -40,7 +40,7 @@ class LengowProduct extends Product
     /**
      * @var list<string> API nodes containing relevant data
      */
-    public static $productApiNodes = [
+    public static array $productApiNodes = [
         'marketplace_product_id',
         'marketplace_status',
         'merchant_product_id',
@@ -52,52 +52,52 @@ class LengowProduct extends Product
     /**
      * @var Context PrestaShop context instance
      */
-    protected $context;
+    protected Context $context;
 
     /**
      * @var array<int|string, mixed> product images
      */
-    protected $images;
+    protected array $images;
 
     /**
      * @var string image size
      */
-    protected $imageSize;
+    protected string $imageSize;
 
     /**
      * @var Category|null PrestaShop category instance
      */
-    protected $categoryDefault;
+    protected ?Category $categoryDefault = null;
 
     /**
      * @var string name of the default category
      */
-    protected $categoryDefaultName;
+    protected string $categoryDefaultName;
 
     /**
      * @var bool is product in sale
      */
-    protected $isSale;
+    protected bool $isSale;
 
     /**
      * @var array<int|string, mixed>|null combination of product's attributes
      */
-    protected $combinations;
+    protected ?array $combinations = null;
 
     /**
      * @var array<int|string, mixed> product's features
      */
-    protected $features;
+    protected array $features;
 
     /**
      * @var Carrier|null PrestaShop carrier instance
      */
-    protected $carrier;
+    protected ?Carrier $carrier = null;
 
     /**
      * @var string all product variations
      */
-    protected $variation;
+    protected string $variation;
 
     /**
      * Load a new product

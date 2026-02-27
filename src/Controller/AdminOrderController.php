@@ -77,9 +77,9 @@ if (!defined('_PS_VERSION_')) {
 class AdminOrderController extends OrderController
 {
     /** @var Configuration */
-    private $configuration;
+    private Configuration $configuration;
     /** @var FormFactoryInterface */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     public function __construct(
         FormFactoryInterface $formFactory,

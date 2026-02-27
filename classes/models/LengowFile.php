@@ -30,17 +30,17 @@ class LengowFile
     /**
      * @var string file name
      */
-    public $fileName;
+    public string $fileName;
 
     /**
      * @var string folder name that contains the file
      */
-    public $folderName;
+    public string $folderName;
 
     /**
      * @var string|null file link
      */
-    public $link;
+    public ?string $link = null;
 
     /**
      * @var resource|null a file pointer resource
@@ -108,9 +108,9 @@ class LengowFile
      * @param string $path path to the file
      * @param string $mode type of access
      *
-     * @return resource
+     * @return resource|false
      */
-    public static function getResource(string $path,string $mode = 'a+')
+    public static function getResource(string $path,string $mode = 'a+'): mixed
     {
         return fopen($path, $mode);
     }

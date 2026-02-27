@@ -83,7 +83,7 @@ class LengowConnector
     /**
      * @var list<int> success HTTP codes for request
      */
-    protected $successCodes = [
+    protected array $successCodes = [
         self::CODE_200,
         self::CODE_201,
     ];
@@ -91,7 +91,7 @@ class LengowConnector
     /**
      * @var list<int> authorization HTTP codes for request
      */
-    protected $authorizationCodes = [
+    protected array $authorizationCodes = [
         self::CODE_401,
         self::CODE_403,
     ];
@@ -99,12 +99,12 @@ class LengowConnector
     /**
      * @var int Authorization token lifetime
      */
-    protected $tokenLifetime = 3000;
+    protected int $tokenLifetime = 3000;
 
     /**
      * @var array<int, int|string|bool> default options for curl
      */
-    protected $curlOpts = [
+    protected array $curlOpts = [
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 10,
@@ -114,22 +114,22 @@ class LengowConnector
     /**
      * @var string the access token to connect
      */
-    protected $accessToken;
+    protected string $accessToken;
 
     /**
      * @var string the secret to connect
      */
-    protected $secret;
+    protected string $secret;
 
     /**
      * @var string|null temporary token for the authorization
      */
-    protected $token;
+    protected ?string $token = null;
 
     /**
      * @var array<string, mixed> lengow url for curl timeout
      */
-    protected $lengowUrls = [
+    protected array $lengowUrls = [
         self::API_ORDER => 20,
         self::API_ORDER_MOI => 10,
         self::API_ORDER_ACTION => 15,
@@ -144,7 +144,7 @@ class LengowConnector
     /**
      * @var list<string> API requiring no arguments in the call url
      */
-    protected $apiWithoutUrlArgs = [
+    protected array $apiWithoutUrlArgs = [
         self::API_ACCESS_TOKEN,
         self::API_ORDER_ACTION,
         self::API_ORDER_MOI,
@@ -153,7 +153,7 @@ class LengowConnector
     /**
      * @var list<string> API requiring no authorization for the call url
      */
-    protected static $apiWithoutAuthorizations = [
+    protected static array $apiWithoutAuthorizations = [
         self::API_PLUGIN,
     ];
 

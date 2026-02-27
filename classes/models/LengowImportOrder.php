@@ -65,182 +65,182 @@ class LengowImportOrder
     /**
      * @var int|null PrestaShop shop id
      */
-    private $idShop;
+    private ?int $idShop = null;
 
     /**
      * @var int PrestaShop shop group id
      */
-    private $idShopGroup;
+    private int $idShopGroup;
 
     /**
      * @var int PrestaShop lang id
      */
-    private $idLang;
+    private int $idLang;
 
     /**
      * @var Context PrestaShop Context for import order
      */
-    private $context;
+    private Context $context;
 
     /**
      * @var bool force import order even if there are errors
      */
-    private $forceSync;
+    private bool $forceSync;
 
     /**
      * @var bool import inactive & out of stock products
      */
-    private $forceProduct;
+    private bool $forceProduct;
 
     /**
      * @var bool use debug mode
      */
-    private $debugMode;
+    private bool $debugMode;
 
     /**
      * @var bool display log messages
      */
-    private $logOutput;
+    private bool $logOutput;
 
     /**
      * @var string id lengow of current order
      */
-    private $marketplaceSku;
+    private string $marketplaceSku;
 
     /**
      * @var string marketplace label
      */
-    private $marketplaceLabel;
+    private string $marketplaceLabel;
 
     /**
      * @var int id of delivery address for current order
      */
-    private $deliveryAddressId;
+    private int $deliveryAddressId;
 
     /**
      * @var mixed API order data
      */
-    private $orderData;
+    private mixed $orderData;
 
     /**
      * @var mixed API package data
      */
-    private $packageData;
+    private mixed $packageData;
 
     /**
      * @var bool is first package
      */
-    private $firstPackage;
+    private bool $firstPackage;
 
     /**
      * @var bool import one order var from lengow import
      */
-    private $importOneOrder;
+    private bool $importOneOrder;
 
     /**
      * @var bool re-import order
      */
-    private $isReimported;
+    private bool $isReimported;
 
     /**
      * @var int id of the record Lengow order table
      */
-    private $idOrderLengow;
+    private int $idOrderLengow;
 
     /**
      * @var int id of the record PrestaShop order table
      */
-    private $idOrder;
+    private int $idOrder;
 
     /**
      * @var string PrestaShop order reference
      */
-    private $orderReference;
+    private string $orderReference;
 
     /**
      * @var string order types data
      */
-    private $orderTypes;
+    private string $orderTypes;
 
     /**
      * @var LengowMarketplace|null Lengow marketplace instance
      */
-    private $marketplace;
+    private ?LengowMarketplace $marketplace = null;
 
     /**
      * @var string marketplace order state
      */
-    private $orderStateMarketplace;
+    private string $orderStateMarketplace;
 
     /**
      * @var string Lengow order state
      */
-    private $orderStateLengow;
+    private string $orderStateLengow;
 
     /**
      * @var string Previous Lengow order state
      */
-    private $previousOrderStateLengow;
+    private string $previousOrderStateLengow;
 
     /**
      * @var float order processing fee
      */
-    private $processingFee;
+    private float $processingFee;
 
     /**
      * @var float order shipping cost
      */
-    private $shippingCost;
+    private float $shippingCost;
 
     /**
      * @var float order total amount
      */
-    private $orderAmount;
+    private float $orderAmount;
 
     /**
      * @var int number of order items
      */
-    private $orderItems;
+    private int $orderItems;
 
     /**
      * @var string|null carrier name
      */
-    private $carrierName;
+    private ?string $carrierName = null;
 
     /**
      * @var string|null carrier method
      */
-    private $carrierMethod;
+    private ?string $carrierMethod = null;
 
     /**
      * @var string|null carrier tracking number
      */
-    private $trackingNumber;
+    private ?string $trackingNumber = null;
 
     /**
      * @var string|null carrier relay id
      */
-    private $relayId;
+    private ?string $relayId = null;
 
     /**
      * @var bool if order shipped by marketplace
      */
-    private $shippedByMp = false;
+    private bool $shippedByMp = false;
 
     /**
      * @var LengowAddress Lengow Address instance
      */
-    private $shippingAddress;
+    private LengowAddress $shippingAddress;
 
     /**
      * @var string Marketplace order comment
      */
-    private $orderComment;
+    private string $orderComment;
 
     /**
      * @var array<string, mixed> order errors
      */
-    private $errors = [];
+    private array $errors = [];
 
     /**
      * Construct the import manager

@@ -34,70 +34,70 @@ class LengowNameParser
      *
      * @var array<string, mixed>
      */
-    private $titles;
+    private array $titles;
 
     /**
      * Array of possible last name prefixes.
      *
      * @var array<string, mixed>
      */
-    private $prefices;
+    private array $prefices;
 
     /**
      * Array of possible name suffices.
      *
      * @var array<string, mixed>
      */
-    private $suffices;
+    private array $suffices;
 
     /**
      * The TITLE ie. Dr., Mr. Mrs., etc...
      *
      * @var string
      */
-    private $title;
+    private string $title;
 
     /**
      * The FIRST Name
      *
      * @var string
      */
-    private $first;
+    private string $first;
 
     /**
      * The MIDDLE Name
      *
      * @var string
      */
-    private $middle;
+    private string $middle;
 
     /**
      * The LAST Name
      *
      * @var string
      */
-    private $last;
+    private string $last;
 
     /**
      * Name addendum ie. III, Sr., etc...
      *
      * @var string
      */
-    private $suffix;
+    private string $suffix;
 
     /**
      * Full name string passed to class
      *
      * @var string
      */
-    private $fullName;
+    private string $fullName;
 
     /**
      * Set to false by default, but set to true if parse() is executed on a name that is not parseable
      *
      * @var bool
      */
-    private $notParseable;
+    private bool $notParseable;
 
     /**
      * File name for config parser

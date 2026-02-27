@@ -56,42 +56,42 @@ class LengowFeed
     /**
      * @var LengowFile Lengow file instance
      */
-    protected $file;
+    protected LengowFile $file;
 
     /**
      * @var string feed content
      */
-    protected $content = '';
+    protected string $content = '';
 
     /**
      * @var bool stream or file
      */
-    protected $stream;
+    protected bool $stream;
 
     /**
      * @var string feed format
      */
-    protected $format;
+    protected string $format;
 
     /**
      * @var bool Use legacy fields
      */
-    protected $legacy;
+    protected bool $legacy;
 
     /**
      * @var string|null export shop folder
      */
-    protected $shopFolder;
+    protected ?string $shopFolder = null;
 
     /**
      * @var string full export folder
      */
-    protected $exportFolder;
+    protected string $exportFolder;
 
     /**
      * @var list<string> formats available for export
      */
-    public static $availableFormats = [
+    public static array $availableFormats = [
         self::FORMAT_CSV,
         self::FORMAT_YAML,
         self::FORMAT_XML,

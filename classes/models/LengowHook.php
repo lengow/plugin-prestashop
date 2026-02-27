@@ -30,17 +30,17 @@ class LengowHook
     /**
      * @var array<string, mixed> order is already shipped
      */
-    protected $alreadyShipped = [];
+    protected array $alreadyShipped = [];
 
     /**
      * @var Lengow Lengow module instance
      */
-    private $module;
+    private Lengow $module;
 
     /**
      * @var Context PrestaShop context
      */
-    private $context;
+    private Context $context;
 
     /**
      * Construct

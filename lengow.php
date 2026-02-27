@@ -32,14 +32,14 @@ class Lengow extends Module
     /**
      * Lengow Install Class
      */
-    /** @var LengowInstall|null */
-    private $installClass;
+    /** @var LengowInstall */
+    private LengowInstall $installClass;
 
     /**
      * Lengow Hook Class
      */
-    /** @var LengowHook|null */
-    private $hookClass;
+    /** @var LengowHook */
+    private LengowHook $hookClass;
 
     /**
      * Construct

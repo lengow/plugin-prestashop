@@ -30,7 +30,7 @@ class LengowGender extends Gender
     /**
      * @var list<string> current alias of mister
      */
-    public static $currentMale = [
+    public static array $currentMale = [
         'M',
         'M.',
         'Mr',
@@ -49,7 +49,7 @@ class LengowGender extends Gender
     /**
      * @var list<string> current alias of miss
      */
-    public static $currentFemale = [
+    public static array $currentFemale = [
         'Mme',
         'MME',
         'mme',

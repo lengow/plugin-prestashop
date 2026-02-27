@@ -105,142 +105,142 @@ class LengowOrder extends Order
     /**
      * @var string Lengow order record id
      */
-    public $lengowId;
+    public string $lengowId = '';
 
     /**
      * @var int PrestaShop shop ID
      */
-    public $lengowIdShop;
+    public int $lengowIdShop = 0;
 
     /**
-     * @var int Lengow flux id
+     * @var int|null Lengow flux id
      */
-    public $lengowIdFlux;
+    public ?int $lengowIdFlux = null;
 
     /**
      * @var int id of the delivery address
      */
-    public $lengowDeliveryAddressId;
+    public int $lengowDeliveryAddressId = 0;
 
     /**
      * @var string ISO code for country
      */
-    public $lengowDeliveryCountryIso;
+    public string $lengowDeliveryCountryIso = '';
 
     /**
      * @var string Lengow order id
      */
-    public $lengowMarketplaceSku;
+    public string $lengowMarketplaceSku = '';
 
     /**
      * @var string marketplace's code
      */
-    public $lengowMarketplaceName;
+    public string $lengowMarketplaceName = '';
 
     /**
      * @var string marketplace's label
      */
-    public $lengowMarketplaceLabel;
+    public string $lengowMarketplaceLabel = '';
 
     /**
      * @var string current Lengow state
      */
-    public $lengowState;
+    public string $lengowState = '';
 
     /**
      * @var int Lengow process state (0 => error, 1 => imported, 2 => finished)
      */
-    public $lengowProcessState;
+    public int $lengowProcessState = 0;
 
     /**
      * @var string marketplace order date
      */
-    public $lengowOrderDate;
+    public string $lengowOrderDate = '';
 
     /**
      * @var int number of items
      */
-    public $lengowOrderItem;
+    public int $lengowOrderItem = 0;
 
     /**
      * @var array<string, mixed> order types (is_express, is_prime...)
      */
-    public $lengowOrderTypes;
+    public array $lengowOrderTypes = [];
 
     /**
      * @var string order currency
      */
-    public $lengowCurrency;
+    public string $lengowCurrency = '';
 
     /**
      * @var float total paid on marketplace
      */
-    public $lengowTotalPaid;
+    public float $lengowTotalPaid = 0.0;
 
     /**
      * @var string Customer vat number
      */
-    public $lengowCustomerVatNumber;
+    public string $lengowCustomerVatNumber = '';
 
     /**
      * @var float commission on marketplace
      */
-    public $lengowCommission;
+    public float $lengowCommission = 0.0;
 
     /**
      * @var string the name of the customer
      */
-    public $lengowCustomerName;
+    public string $lengowCustomerName = '';
 
     /**
      * @var string email of the customer
      */
-    public $lengowCustomerEmail;
+    public string $lengowCustomerEmail = '';
 
     /**
      * @var string carrier from marketplace
      */
-    public $lengowCarrier;
+    public string $lengowCarrier = '';
 
     /**
      * @var string carrier Method from marketplace
      */
-    public $lengowMethod;
+    public string $lengowMethod = '';
 
     /**
      * @var string tracking
      */
-    public $lengowTracking;
+    public string $lengowTracking = '';
 
     /**
      * @var string id relay
      */
-    public $lengowIdRelay;
+    public string $lengowIdRelay = '';
 
     /**
      * @var bool order shipped by marketplace
      */
-    public $lengowSentMarketplace;
+    public bool $lengowSentMarketplace = false;
 
     /**
      * @var bool order is reimported (ready to be reimported)
      */
-    public $lengowIsReimported;
+    public bool $lengowIsReimported = false;
 
     /**
      * @var string message
      */
-    public $lengowMessage;
+    public string $lengowMessage = '';
 
     /**
      * @var string creation order date
      */
-    public $lengowDateAdd;
+    public string $lengowDateAdd = '';
 
     /**
      * @var string extra information (json node form import)
      */
-    public $lengowExtra;
+    public string $lengowExtra = '';
 
     /**
      * Construct a Lengow order based on PrestaShop order

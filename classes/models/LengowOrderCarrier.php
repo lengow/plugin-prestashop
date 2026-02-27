@@ -28,10 +28,10 @@ if (!defined('_PS_VERSION_')) {
 class LengowOrderCarrier extends OrderCarrier
 {
     /** @var string */
-    public $return_tracking_number;
+    public string $return_tracking_number = '';
 
     /** @var string */
-    public $return_carrier;
+    public string $return_carrier = '';
 
     /**
      * @param int|null $id

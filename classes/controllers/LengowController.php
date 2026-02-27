@@ -31,7 +31,7 @@ class LengowController
     /**
      * @var Lengow|false Lengow module instance
      */
-    protected $module;
+    protected Lengow|false $module;
 
     /**
      * @var Context PrestaShop context instance

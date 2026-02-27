@@ -63,7 +63,7 @@ class LengowSync
     /**
      * @var array<string, mixed> cache time for catalog, carrier, account status, options and marketplace synchronisation
      */
-    protected static $cacheTimes = [
+    protected static array $cacheTimes = [
         self::SYNC_CATALOG => 21600,
         self::SYNC_CARRIER => 86400,
         self::SYNC_CMS_OPTION => 86400,
@@ -75,7 +75,7 @@ class LengowSync
     /**
      * @var list<string> valid sync actions
      */
-    public static $syncActions = [
+    public static array $syncActions = [
         self::SYNC_ORDER,
         self::SYNC_CARRIER,
         self::SYNC_CMS_OPTION,
@@ -89,7 +89,7 @@ class LengowSync
     /**
      * @var array<string, mixed> iso code correspondence for plugin links
      */
-    public static $genericIsoCodes = [
+    public static array $genericIsoCodes = [
         self::API_ISO_CODE_EN => LengowTranslation::ISO_CODE_EN,
         self::API_ISO_CODE_FR => LengowTranslation::ISO_CODE_FR,
         self::API_ISO_CODE_ES => LengowTranslation::ISO_CODE_ES,
@@ -99,7 +99,7 @@ class LengowSync
     /**
      * @var array<string, mixed> default plugin links when the API is not available
      */
-    public static $defaultPluginLinks = [
+    public static array $defaultPluginLinks = [
         self::LINK_TYPE_HELP_CENTER => self::LINK_HELP_CENTER,
         self::LINK_TYPE_CHANGELOG => self::LINK_CHANGELOG,
         self::LINK_TYPE_UPDATE_GUIDE => self::LINK_UPDATE_GUIDE,

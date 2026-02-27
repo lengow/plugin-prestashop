@@ -113,17 +113,17 @@ class LengowImport
     /**
      * @var bool import is processing
      */
-    public static $processing;
+    public static bool $processing = false;
 
     /**
      * @var int|string order id being imported
      */
-    public static $currentOrder = -1;
+    public static int|string $currentOrder = -1;
 
     /**
      * @var list<string> valid states lengow to create a Lengow order
      */
-    public static $lengowStates = [
+    public static array $lengowStates = [
         LengowOrder::STATE_WAITING_SHIPMENT,
         LengowOrder::STATE_SHIPPED,
         LengowOrder::STATE_CLOSED,
@@ -133,147 +133,147 @@ class LengowImport
     /**
      * @var int PrestaShop lang id
      */
-    private $idLang;
+    private int $idLang;
 
     /**
      * @var int|null PrestaShop shop id
      */
-    private $idShop;
+    private ?int $idShop = null;
 
     /**
      * @var int PrestaShop shop group id
      */
-    private $idShopGroup;
+    private int $idShopGroup;
 
     /**
      * @var bool use debug mode
      */
-    private $debugMode;
+    private bool $debugMode;
 
     /**
      * @var bool display log messages
      */
-    private $logOutput;
+    private bool $logOutput;
 
     /**
      * @var string|null marketplace order sku
      */
-    private $marketplaceSku;
+    private ?string $marketplaceSku = null;
 
     /**
      * @var string|null marketplace name
      */
-    private $marketplaceName;
+    private ?string $marketplaceName = null;
 
     /**
      * @var int|null delivery address id
      */
-    private $deliveryAddressId;
+    private ?int $deliveryAddressId = null;
 
     /**
      * @var int maximum number of new orders created
      */
-    private $limit;
+    private int $limit;
 
     /**
      * @var bool force import order even if there are errors
      */
-    private $forceSync;
+    private bool $forceSync;
 
     /**
      * @var bool import inactive & out of stock products
      */
-    private $forceProduct;
+    private bool $forceProduct;
 
     /**
      * @var int|false imports orders updated since (timestamp)
      */
-    private $updatedFrom = false;
+    private int|false $updatedFrom = false;
 
     /**
      * @var int|false imports orders updated until (timestamp)
      */
-    private $updatedTo = false;
+    private int|false $updatedTo = false;
 
     /**
      * @var int|false imports orders created since (timestamp)
      */
-    private $createdFrom = false;
+    private int|false $createdFrom = false;
 
     /**
      * @var int|false imports orders created until (timestamp)
      */
-    private $createdTo = false;
+    private int|false $createdTo = false;
 
     /**
      * @var string Lengow account id
      */
-    private $accountId;
+    private string $accountId;
 
     /**
      * @var LengowConnector Lengow connector
      */
-    private $connector;
+    private LengowConnector $connector;
 
     /**
      * @var Context|null Context for import order
      */
-    private $context;
+    private ?Context $context = null;
 
     /**
      * @var string type import (manual or cron)
      */
-    private $typeImport;
+    private string $typeImport;
 
     /**
      * @var bool import one order
      */
-    private $importOneOrder = false;
+    private bool $importOneOrder = false;
 
     /**
      * @var list<mixed> shop catalog ids for import
      */
-    private $shopCatalogIds = [];
+    private array $shopCatalogIds = [];
 
     /**
      * @var array<string, mixed> catalog ids already imported
      */
-    private $catalogIds = [];
+    private array $catalogIds = [];
 
     /**
      * @var int|null id of lengow order record
      */
-    private $idOrderLengow;
+    private ?int $idOrderLengow = null;
 
     /**
      * @var array<string, mixed> all orders created during the process
      */
-    private $ordersCreated = [];
+    private array $ordersCreated = [];
 
     /**
      * @var array<string, mixed> all orders updated during the process
      */
-    private $ordersUpdated = [];
+    private array $ordersUpdated = [];
 
     /**
      * @var array<string, mixed> all orders failed during the process
      */
-    private $ordersFailed = [];
+    private array $ordersFailed = [];
 
     /**
      * @var array<string, mixed> all orders ignored during the process
      */
-    private $ordersIgnored = [];
+    private array $ordersIgnored = [];
 
     /**
      * @var array<string, mixed> all incorrectly formatted orders that cannot be processed
      */
-    private $ordersNotFormatted = [];
+    private array $ordersNotFormatted = [];
 
     /**
      * @var array<int|string, mixed> all synchronization error (global or by shop)
      */
-    private $errors = [];
+    private array $errors = [];
 
     /**
      * Construct the import manager

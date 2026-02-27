@@ -226,7 +226,7 @@ class LengowCarrier extends Carrier
      *
      * @return Carrier|false
      */
-    public static function getDefaultExportCarrier()
+    public static function getDefaultExportCarrier(): Carrier|false
     {
         $idCarrier = (int) LengowConfiguration::getGlobalValue(LengowConfiguration::DEFAULT_EXPORT_CARRIER_ID);
         if ($idCarrier > 0) {

@@ -45,7 +45,7 @@ class LengowLog extends LengowFile
     /**
      * @var LengowFile Lengow file instance
      */
-    protected $file;
+    protected LengowFile $file;
 
     /**
      * Construct

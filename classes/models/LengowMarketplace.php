@@ -46,7 +46,7 @@ class LengowMarketplace
     /**
      * @var list<string> all valid actions
      */
-    public static $validActions = [
+    public static array $validActions = [
         LengowAction::TYPE_SHIP,
         LengowAction::TYPE_CANCEL,
         LengowAction::TYPE_REFUND,
@@ -55,62 +55,62 @@ class LengowMarketplace
     /**
      * @var array<string, mixed>|false all marketplaces
      */
-    public static $marketplaces = false;
+    public static array|false $marketplaces = false;
 
     /**
      * @var mixed the current marketplace
      */
-    public $marketplace;
+    public mixed $marketplace;
 
     /**
      * @var string the code of the marketplace
      */
-    public $name;
+    public string $name;
 
     /**
      * @var string the old code of the marketplace for v2 compatibility
      */
-    public $legacyCode;
+    public string $legacyCode;
 
     /**
      * @var string the name of the marketplace
      */
-    public $labelName;
+    public string $labelName;
 
     /**
      * @var bool if the marketplace is loaded
      */
-    public $isLoaded = false;
+    public bool $isLoaded = false;
 
     /**
      * @var array<string, mixed> Lengow states => marketplace states
      */
-    public $statesLengow = [];
+    public array $statesLengow = [];
 
     /**
      * @var array<string, mixed> marketplace states => Lengow states
      */
-    public $states = [];
+    public array $states = [];
 
     /**
      * @var array<string, mixed> all possible actions of the marketplace
      */
-    public $actions = [];
+    public array $actions = [];
 
     /**
      * @var array<string, mixed> all possible values for actions of the marketplace
      */
-    public $argValues = [];
+    public array $argValues = [];
 
     /**
      * @var array<string, mixed> all carriers of the marketplace
      */
-    public $carriers = [];
+    public array $carriers = [];
 
     /**
      * @var array<string, mixed> all shipping methods of the marketplace
      */
-    public $shippingMethods = [];
+    public array $shippingMethods = [];
 
     /**
      * Construct a new Marketplace instance with marketplace API

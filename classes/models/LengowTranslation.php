@@ -41,17 +41,17 @@ class LengowTranslation
     /**
      * @var array<string, mixed>|null all translations
      */
-    protected static $translation;
+    protected static ?array $translation = null;
 
     /**
      * @var string|null iso code
      */
-    protected $isoCode;
+    protected ?string $isoCode = null;
 
     /**
      * @var string|null force iso code for log and toolbox
      */
-    public static $forceIsoCode;
+    public static ?string $forceIsoCode = null;
 
     /**
      * Construct

@@ -34,7 +34,7 @@ class LengowShop extends Shop
      *
      * @return LengowShop|false
      */
-    public static function findByToken(string $token)
+    public static function findByToken(string $token): LengowShop|false
     {
         try {
             $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';

@@ -50,7 +50,7 @@ class LengowAddress extends Address
     /**
      * @var list<string> API fields for an address
      */
-    public static $addressApiNodes = [
+    public static array $addressApiNodes = [
         'company',
         'civility',
         'email',
@@ -73,27 +73,27 @@ class LengowAddress extends Address
     /**
      * @var string phone_office given in API
      */
-    public $phoneOffice;
+    public string $phoneOffice;
 
     /**
      * @var string full address
      */
-    public $fullAddress = '';
+    public string $fullAddress = '';
 
     /**
      * @var string full name
      */
-    public $fullName;
+    public string $fullName;
 
     /**
      * @var string Relay id (so colissimo, Mondial Relay)
      */
-    public $idRelay;
+    public string $idRelay;
 
     /**
      * @var array<string, mixed> All region codes for correspondence
      */
-    protected $regionCodes = [
+    protected array $regionCodes = [
         self::ISO_A2_ES => [
             '01' => 'ES-VI',
             '02' => 'ES-AB',
@@ -335,7 +335,7 @@ class LengowAddress extends Address
      *
      * @return LengowAddress|false
      */
-    public static function getByAlias(string $alias)
+    public static function getByAlias(string $alias): LengowAddress|false
     {
         $row = Db::getInstance()->getRow(
             'SELECT `id_address`
@@ -356,7 +356,7 @@ class LengowAddress extends Address
      *
      * @return LengowAddress|false
      */
-    public static function getByHash(string $alias)
+    public static function getByHash(string $alias): LengowAddress|false
     {
         return self::getByAlias(self::hash($alias));
     }

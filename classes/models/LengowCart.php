@@ -30,7 +30,7 @@ class LengowCart extends Cart
     /**
      * @var bool add inactive & out of stock products to cart
      */
-    public $forceProduct = true;
+    public bool $forceProduct = true;
 
     /**
      * Add product to cart

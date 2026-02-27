@@ -117,7 +117,7 @@ class LengowConfiguration extends Configuration
     /**
      * @var array<string, mixed> params correspondence keys for toolbox
      */
-    public static $genericParamKeys = [
+    public static array $genericParamKeys = [
         self::PLUGIN_ENV => 'plugin_env',
         self::ACCOUNT_ID => 'account_id',
         self::ACCESS_TOKEN => 'access_token',
@@ -1075,7 +1075,7 @@ class LengowConfiguration extends Configuration
      *
      * @return array|bool|float|int|string|string[]|null
      */
-    private static function getValueWithCorrectType(string $key,?string $value = null)
+    private static function getValueWithCorrectType(string $key,?string $value = null): mixed
     {
         $keyParams = self::getKeys($key);
         if (isset($keyParams[self::PARAM_RETURN])) {
