@@ -71,6 +71,7 @@ class LengowLog extends LengowFile
      * @param string $message log message
      * @param bool $logOutput display on screen
      * @param string|null $marketplaceSku Lengow order id
+     * @return void
      */
     public function write($category, $message = '', $logOutput = false, $marketplaceSku = null)
     {
@@ -89,7 +90,7 @@ class LengowLog extends LengowFile
     /**
      * Get log files path
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getPaths()
     {
@@ -127,7 +128,7 @@ class LengowLog extends LengowFile
     /**
      * Get log files
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getFiles()
     {
@@ -138,6 +139,7 @@ class LengowLog extends LengowFile
      * Download log file
      *
      * @param string|null $date date for a specific log file
+     * @return void
      */
     public static function download($date = null)
     {
@@ -189,6 +191,7 @@ class LengowLog extends LengowFile
     /**
      * Logs potential PHP fatal error on shutdown.
      * Can be useful when the script crash silently
+     * @return void
      */
     public static function registerShutdownFunction()
     {

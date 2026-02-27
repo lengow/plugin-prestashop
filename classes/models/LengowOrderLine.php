@@ -43,7 +43,7 @@ class LengowOrderLine
      *
      * @param int $idOrder PrestaShop order id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function findOrderLineIds($idOrder)
     {
@@ -61,7 +61,7 @@ class LengowOrderLine
      *
      * @param int $idOrderDetail PrestaShop order detail id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function findOrderLineByOrderDetailId(int $idOrderDetail): array
     {
@@ -79,7 +79,7 @@ class LengowOrderLine
      *
      * @param string $idOrderLine Lengow order line id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function findOrderLineByOrderLineIdAndOrderId(string $idOrderLine, int $idOrder): array
     {

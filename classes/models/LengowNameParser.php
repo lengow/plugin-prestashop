@@ -32,21 +32,21 @@ class LengowNameParser
     /**
      * Array of possible name titles.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     private $titles;
 
     /**
      * Array of possible last name prefixes.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     private $prefices;
 
     /**
      * Array of possible name suffices.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     private $suffices;
 
@@ -208,7 +208,7 @@ class LengowNameParser
      * Determine if the needle is in the haystack.
      *
      * @param mixed $needle the needle to look for
-     * @param array $haystack the haystack from which to look into
+     * @param array<string, mixed> $haystack the haystack from which to look into
      */
     private function inArrayNorm($needle, array $haystack): bool
     {

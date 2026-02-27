@@ -70,6 +70,7 @@ class LengowController
 
     /**
      * Process Post Parameters
+     * @return void
      */
     public function postProcess()
     {
@@ -78,6 +79,7 @@ class LengowController
 
     /**
      * Display data page
+     * @return void
      */
     public function display()
     {
@@ -87,6 +89,7 @@ class LengowController
 
     /**
      * Force Display data page
+     * @return void
      */
     public function forceDisplay()
     {
@@ -121,6 +124,7 @@ class LengowController
 
     /**
      * affect variables to template display
+     * @return void
      */
     protected function prepareDisplay()
     {

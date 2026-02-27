@@ -37,7 +37,7 @@ class LengowCustomer extends Customer
     /**
      * Get definition array
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getFieldDefinition()
     {
@@ -47,7 +47,7 @@ class LengowCustomer extends Customer
     /**
      * Assign API data
      *
-     * @param array $data API data
+     * @param array<string, mixed> $data API data
      *
      * @return LengowCustomer
      */
@@ -98,6 +98,7 @@ class LengowCustomer extends Customer
      *
      * @param string $fieldName incorrect field
      * @param int $errorType type of error
+     * @return void
      */
     public function validateFieldLengow($fieldName, $errorType)
     {
@@ -117,6 +118,7 @@ class LengowCustomer extends Customer
      * Modify an empty field
      *
      * @param string $fieldName field name
+     * @return void
      */
     public function validateEmptyLengow($fieldName)
     {
@@ -153,6 +155,7 @@ class LengowCustomer extends Customer
      * Modify a field to fit its size
      *
      * @param string $fieldName field name
+     * @return void
      */
     public function validateSizeLengow($fieldName)
     {

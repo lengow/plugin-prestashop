@@ -59,12 +59,12 @@ class LengowExport
     public const PARAM_LEGACY_LANGUAGE = 'lang';
 
     /**
-     * @var array default fields for export
+     * @var array<string, mixed> default fields for export
      */
     public static $defaultFields;
 
     /**
-     * @var array all available params for export
+     * @var list<string> all available params for export
      */
     public static $exportParams = [
         self::PARAM_MODE,
@@ -87,7 +87,7 @@ class LengowExport
     ];
 
     /**
-     * @var array new fields for v3
+     * @var array<string, mixed> new fields for v3
      */
     protected $newFields = [
         'id' => 'id',
@@ -150,7 +150,7 @@ class LengowExport
     ];
 
     /**
-     * @var array legacy fields for export
+     * @var array<string, mixed> legacy fields for export
      */
     protected $legacyFields = [
         'id_product' => 'id',
@@ -282,7 +282,7 @@ class LengowExport
     protected $offset = 0;
 
     /**
-     * @var array product ids to be exported
+     * @var array<string, mixed> product ids to be exported
      */
     protected $productIds = [];
 
@@ -292,19 +292,19 @@ class LengowExport
     protected $updateExportDate;
 
     /**
-     * @var array cache combination
+     * @var array<int, array<int, array<string, mixed>>> cache combination
      */
     protected $cacheCombination;
 
     /**
-     * @var array excluded products for export
+     * @var array<string, mixed> excluded products for export
      */
     protected $excludedProducts = [];
 
     /**
      * Construct new Lengow export
      *
-     * @param array $params optional options
+     * @param array<string, mixed> $params optional options
      *                      integer limit              The number of product to be exported
      *                      integer offset             From what product export
      *                      integer shop_id            Shop id for export
@@ -391,6 +391,7 @@ class LengowExport
      * Set format to export
      *
      * @param string $format The export format
+     * @return void
      */
     public function setFormat($format)
     {
@@ -399,6 +400,7 @@ class LengowExport
 
     /**
      * Execute export process
+     * @return void
      */
     public function exec()
     {
@@ -503,6 +505,7 @@ class LengowExport
 
     /**
      * Set or not legacy fields to export
+     * @return void
      */
     public function setLegacyFields()
     {
@@ -520,11 +523,12 @@ class LengowExport
     /**
      * Export products
      *
-     * @param array $products list of products to be exported
-     * @param array $fields list of fields
+     * @param list<mixed> $products list of products to be exported
+     * @param list<string> $fields list of fields
      * @param Shop $shop PrestaShop shop being exported
      *
      * @throws Exception|LengowException folder not writable
+     * @return void
      */
     public function export($products, $fields, $shop)
     {
@@ -642,7 +646,7 @@ class LengowExport
      * Load cache combinations
      *
      * @param LengowProduct $product Lengow product instance
-     * @param array $fields list of fields
+     * @param list<string> $fields list of fields
      *
      * @return bool
      *
@@ -795,7 +799,7 @@ class LengowExport
     /**
      * Get the products to export
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public function exportIds()
     {
@@ -825,7 +829,7 @@ class LengowExport
     /**
      * Get fields to export
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     protected function getFields()
     {
@@ -959,9 +963,9 @@ class LengowExport
     /**
      * Override this function in override/lengow.export.class.php to add header
      *
-     * @param array $fields fields to export
+     * @param list<string> $fields fields to export
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function setAdditionalFields($fields)
     {
@@ -978,9 +982,9 @@ class LengowExport
      *
      * @param LengowProduct $product Lengow product instance
      * @param int|null $idProductAttribute PrestaShop product attribute id
-     * @param array|null $arrayProduct product data
+     * @param array<string, mixed>|null $arrayProduct product data
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function setAdditionalFieldsValues($product, $idProductAttribute = null, $arrayProduct = null)
     {

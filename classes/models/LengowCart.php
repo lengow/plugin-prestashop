@@ -35,7 +35,7 @@ class LengowCart extends Cart
     /**
      * Add product to cart
      *
-     * @param array $products list of products to be added
+     * @param array<string, mixed> $products list of products to be added
      *
      * @return bool
      *
@@ -64,9 +64,10 @@ class LengowCart extends Cart
     /**
      * Removes non-Lengow products from cart
      *
-     * @param array $products list of products to be added
+     * @param array<string, mixed> $products list of products to be added
      *
      * @throws Exception Cannot add product to cart
+     * @return void
      */
     public function cleanCart($products = [])
     {
@@ -258,7 +259,7 @@ class LengowCart extends Cart
     /**
      * Get definition array
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getFieldDefinition()
     {
@@ -268,7 +269,8 @@ class LengowCart extends Cart
     /**
      * Assign API data
      *
-     * @param array $data API data
+     * @param array<string, mixed> $data API data
+     * @return void
      */
     public function assign($data = [])
     {
@@ -311,6 +313,7 @@ class LengowCart extends Cart
      *
      * @param string $fieldName incorrect field
      * @param int $errorType type of error
+     * @return void
      */
     public function validateFieldLengow($fieldName, $errorType)
     {
@@ -327,7 +330,7 @@ class LengowCart extends Cart
      * @param int $idCustomization Customization ID
      * @param int $idAddressDelivery Delivery address ID
      *
-     * @return array|false Record from cart_product table
+     * @return array<int|string, mixed>|false Record from cart_product table
      */
     public function containsProduct($idProduct, $idProductAttribute = 0, $idCustomization = 0, $idAddressDelivery = 0)
     {

@@ -47,6 +47,10 @@ foreach ($filePaths as $filePath) {
 }
 fclose($fp);
 
+/**
+ * @param string $path
+ * @return list<string>
+ */
 function explorer($path)
 {
     $paths = [];
@@ -65,6 +69,12 @@ function explorer($path)
     return $paths;
 }
 
+/**
+ * @param resource $fp
+ * @param string|array<string, mixed> $text
+ * @param list<string> $frontKey
+ * @return void
+ */
 function writeCsv($fp, $text, &$frontKey = [])
 {
     if (is_array($text)) {

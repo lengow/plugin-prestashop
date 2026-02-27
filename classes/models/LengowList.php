@@ -28,12 +28,12 @@ if (!defined('_PS_VERSION_')) {
 class LengowList
 {
     /**
-     * @var array list of fields
+     * @var array<string, mixed> list of fields
      */
     protected $fieldsList;
 
     /**
-     * @var array collection of result
+     * @var array<string, mixed> collection of result
      */
     protected $collection;
 
@@ -73,7 +73,7 @@ class LengowList
     protected $currentPage;
 
     /**
-     * @var array choice of number of results per page
+     * @var array<int, int> choice of number of results per page
      */
     protected $nbPerPageList;
 
@@ -98,7 +98,7 @@ class LengowList
     protected $paginationTo;
 
     /**
-     * @var array all params for sql request
+     * @var array<string, mixed> all params for sql request
      */
     protected $sql;
 
@@ -123,7 +123,7 @@ class LengowList
     protected $locale;
 
     /**
-     * @var array PrestaShop currency by iso code
+     * @var array<string, mixed> PrestaShop currency by iso code
      */
     protected $currencyCode;
 
@@ -140,7 +140,7 @@ class LengowList
     /**
      * Construct
      *
-     * @param array $params list of parameters
+     * @param array<string, mixed> $params list of parameters
      */
     public function __construct($params)
     {
@@ -276,7 +276,7 @@ class LengowList
     /**
      * Display Table Row
      *
-     * @param array $item item of the collection
+     * @param array<string, mixed> $item item of the collection
      *
      * @return string
      */
@@ -425,7 +425,7 @@ class LengowList
      *
      * @param string $where where conditions
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public function getRow($where)
     {
@@ -450,7 +450,7 @@ class LengowList
      *
      * @param string $keyToSearch key search in field list
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public function findValueByKey($keyToSearch)
     {
@@ -587,7 +587,8 @@ class LengowList
     /**
      * Update collection
      *
-     * @param array $collection collection of result
+     * @param array<int|string, mixed> $collection collection of result
+     * @return void
      */
     public function updateCollection($collection)
     {
@@ -597,7 +598,7 @@ class LengowList
     /**
      * Render pagination
      *
-     * @param array $params pagination params
+     * @param array<string, mixed> $params pagination params
      *
      * @return string
      */

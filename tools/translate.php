@@ -41,6 +41,12 @@ foreach ($listFiles as $list) {
     fclose($fp);
 }
 
+/**
+ * @param resource $fp
+ * @param string|array<string, mixed> $text
+ * @param list<string> $frontKey
+ * @return void
+ */
 function writeCsv($fp, $text, &$frontKey = [])
 {
     if (is_array($text)) {

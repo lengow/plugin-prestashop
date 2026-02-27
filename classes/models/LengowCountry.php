@@ -55,7 +55,7 @@ class LengowCountry
      *
      * @param int $idCountry PrestaShop country id
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function getCountry($idCountry)
     {

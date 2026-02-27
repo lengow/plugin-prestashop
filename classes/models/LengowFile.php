@@ -78,6 +78,7 @@ class LengowFile
      * Write content in file
      *
      * @param string $txt text to be written
+     * @return void
      */
     public function write($txt)
     {
@@ -89,6 +90,7 @@ class LengowFile
 
     /**
      * Delete file
+     * @return void
      */
     public function delete()
     {
@@ -169,6 +171,7 @@ class LengowFile
 
     /**
      * Close file handle
+     * @return void
      */
     public function close()
     {
@@ -192,7 +195,7 @@ class LengowFile
      *
      * @param string $folder folder name
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function getFilesFromFolder($folder)
     {

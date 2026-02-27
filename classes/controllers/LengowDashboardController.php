@@ -29,6 +29,7 @@ class LengowDashboardController extends LengowController
 {
     /**
      * Process Post Parameters
+     * @return void
      */
     public function postProcess()
     {
@@ -51,6 +52,7 @@ class LengowDashboardController extends LengowController
 
     /**
      * Display data page
+     * @return void
      */
     public function display()
     {

@@ -56,7 +56,7 @@ class LengowShop extends Shop
      *
      * @param bool $forceContext force context to get all shops
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function findAll($forceContext = false)
     {
@@ -80,7 +80,7 @@ class LengowShop extends Shop
      * @param bool $activeInLengow get only shop active in Lengow
      * @param int $idShop PrestaShop shop id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getActiveShops($activeInLengow = false, $idShop = null)
     {

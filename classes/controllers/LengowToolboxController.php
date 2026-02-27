@@ -29,6 +29,7 @@ class LengowToolboxController extends LengowController
 {
     /**
      * Display data page
+     * @return void
      */
     public function display()
     {

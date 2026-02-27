@@ -121,7 +121,7 @@ class LengowImport
     public static $currentOrder = -1;
 
     /**
-     * @var array valid states lengow to create a Lengow order
+     * @var list<string> valid states lengow to create a Lengow order
      */
     public static $lengowStates = [
         LengowOrder::STATE_WAITING_SHIPMENT,
@@ -231,12 +231,12 @@ class LengowImport
     private $importOneOrder = false;
 
     /**
-     * @var array shop catalog ids for import
+     * @var list<mixed> shop catalog ids for import
      */
     private $shopCatalogIds = [];
 
     /**
-     * @var array catalog ids already imported
+     * @var array<string, mixed> catalog ids already imported
      */
     private $catalogIds = [];
 
@@ -246,39 +246,39 @@ class LengowImport
     private $idOrderLengow;
 
     /**
-     * @var array all orders created during the process
+     * @var array<string, mixed> all orders created during the process
      */
     private $ordersCreated = [];
 
     /**
-     * @var array all orders updated during the process
+     * @var array<string, mixed> all orders updated during the process
      */
     private $ordersUpdated = [];
 
     /**
-     * @var array all orders failed during the process
+     * @var array<string, mixed> all orders failed during the process
      */
     private $ordersFailed = [];
 
     /**
-     * @var array all orders ignored during the process
+     * @var array<string, mixed> all orders ignored during the process
      */
     private $ordersIgnored = [];
 
     /**
-     * @var array all incorrectly formatted orders that cannot be processed
+     * @var array<string, mixed> all incorrectly formatted orders that cannot be processed
      */
     private $ordersNotFormatted = [];
 
     /**
-     * @var array all synchronization error (global or by shop)
+     * @var array<int|string, mixed> all synchronization error (global or by shop)
      */
     private $errors = [];
 
     /**
      * Construct the import manager
      *
-     * @param array $params optional options
+     * @param array<string, mixed> $params optional options
      *                      string  marketplace_sku     Lengow marketplace order id to synchronize
      *                      string  marketplace_name    Lengow marketplace name to synchronize
      *                      string  type                Type of current synchronization
@@ -360,7 +360,7 @@ class LengowImport
     /**
      * Execute import : fetch orders and import them
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public function exec()
     {
@@ -484,6 +484,7 @@ class LengowImport
      * @param float|null $days Import period
      * @param string|null $createdFrom Import of orders since
      * @param string|null $createdTo Import of orders until
+     * @return void
      */
     private function setIntervalTime($minutes = null, $days = null, $createdFrom = null, $createdTo = null)
     {
@@ -581,6 +582,7 @@ class LengowImport
 
     /**
      * Starts some processes necessary for synchronization
+     * @return void
      */
     private function setupSynchronization()
     {
@@ -630,7 +632,7 @@ class LengowImport
     /**
      * Return the synchronization result
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     private function getResult()
     {
@@ -814,6 +816,7 @@ class LengowImport
      * @param int $idShop PrestaShop shop Id
      *
      * @throws Exception
+     * @return void
      */
     private function changeContext($idShop)
     {
@@ -830,7 +833,7 @@ class LengowImport
      *
      * @param LengowShop $shop
      *
-     * @return array
+     * @return array<int|string, mixed>
      *
      * @throws LengowException no connection with the webservice / credentials not valid
      */
@@ -942,6 +945,7 @@ class LengowImport
      *
      * @param mixed $orders API orders
      * @param int $idShop PrestaShop shop Id
+     * @return void
      */
     private function importOrders($orders, $idShop)
     {
@@ -1048,6 +1052,7 @@ class LengowImport
      * @param string $marketplaceSku id lengow of current order
      * @param string $errorMessage Error message
      * @param mixed $orderData API order data
+     * @return void
      */
     private function addOrderNotFormatted($marketplaceSku, $errorMessage, $orderData)
     {
@@ -1069,7 +1074,8 @@ class LengowImport
     /**
      * Synchronize the merchant order id with Lengow
      *
-     * @param array $result synchronization order result
+     * @param array<string, mixed> $result synchronization order result
+     * @return void
      */
     private function synchronizeMerchantOrderId($result)
     {
@@ -1094,7 +1100,8 @@ class LengowImport
     /**
      * Save the result of the order synchronization by type
      *
-     * @param array $result synchronization order result
+     * @param array<string, mixed> $result synchronization order result
+     * @return void
      */
     private function saveSynchronizationResult($result)
     {
@@ -1118,6 +1125,7 @@ class LengowImport
 
     /**
      * Complete synchronization and start all necessary processes
+     * @return void
      */
     private function finishSynchronization()
     {
@@ -1149,6 +1157,7 @@ class LengowImport
 
     /**
      * Set import to "in process" state
+     * @return void
      */
     private static function setInProcess()
     {
@@ -1158,6 +1167,7 @@ class LengowImport
 
     /**
      * Set import to finished
+     * @return void
      */
     private static function setEnd()
     {

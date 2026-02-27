@@ -73,7 +73,7 @@ class LengowOrderError
      * @param string $marketplaceName Lengow marketplace name
      * @param int $type order log type (import or send)
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function getLastImportLogNotFinished($marketplaceSku, $marketplaceName, $type = self::TYPE_ERROR_IMPORT)
     {
@@ -95,7 +95,7 @@ class LengowOrderError
      * @param int|null $type order log type (import or send)
      * @param bool|null $finished log finished (true or false)
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function getOrderLogs($idOrderLengow, $type = null, $finished = null)
     {
@@ -179,7 +179,7 @@ class LengowOrderError
     /**
      * Get all order errors not yet sent by email
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getAllOrderLogsNotSent()
     {

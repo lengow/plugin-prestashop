@@ -48,7 +48,7 @@ class LengowAddress extends Address
     public const LENGOW_SIZE_ERROR = 2;
 
     /**
-     * @var array API fields for an address
+     * @var list<string> API fields for an address
      */
     public static $addressApiNodes = [
         'company',
@@ -91,7 +91,7 @@ class LengowAddress extends Address
     public $idRelay;
 
     /**
-     * @var array All region codes for correspondence
+     * @var array<string, mixed> All region codes for correspondence
      */
     protected $regionCodes = [
         self::ISO_A2_ES => [
@@ -366,7 +366,7 @@ class LengowAddress extends Address
      *
      * @param string $fullName customer full name
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function extractNames($fullName)
     {
@@ -417,7 +417,7 @@ class LengowAddress extends Address
      *
      * @param object $api API nodes containing the data
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function extractAddressDataFromAPI($api)
     {
@@ -432,7 +432,7 @@ class LengowAddress extends Address
     /**
      * Get definition array
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getFieldDefinition()
     {
@@ -496,7 +496,7 @@ class LengowAddress extends Address
     /**
      * Assign API data
      *
-     * @param array $data API datas
+     * @param array<string, mixed> $data API datas
      *
      * @return LengowAddress
      */
@@ -565,6 +565,7 @@ class LengowAddress extends Address
      *
      * @param string $fieldName incorrect field
      * @param int $errorType type of error
+     * @return void
      */
     public function validateFieldLengow($fieldName, $errorType)
     {
@@ -584,6 +585,7 @@ class LengowAddress extends Address
      * Modify an empty field
      *
      * @param string $fieldName field name
+     * @return void
      */
     public function validateEmptyLengow($fieldName)
     {
@@ -645,6 +647,7 @@ class LengowAddress extends Address
      * Modify a field to fit its size
      *
      * @param string $fieldName field name
+     * @return void
      */
     public function validateSizeLengow($fieldName)
     {
@@ -698,7 +701,7 @@ class LengowAddress extends Address
      * Get country state if exist
      *
      * @param int $idCountry PrestaShop country id
-     * @param array $addressData API address data
+     * @param array<string, mixed> $addressData API address data
      *
      * @return int
      */
@@ -758,7 +761,7 @@ class LengowAddress extends Address
      * Get iso code from interval postcodes
      *
      * @param int $postcode address postcode
-     * @param array $intervalPostcodes postcode intervals
+     * @param array<string, mixed> $intervalPostcodes postcode intervals
      *
      * @return string|false
      */

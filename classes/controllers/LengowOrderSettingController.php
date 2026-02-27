@@ -29,6 +29,7 @@ class LengowOrderSettingController extends LengowController
 {
     /**
      * Display data page
+     * @return void
      */
     public function display()
     {
@@ -72,6 +73,7 @@ class LengowOrderSettingController extends LengowController
 
     /**
      * Process Post Parameters
+     * @return void
      */
     public function postProcess()
     {

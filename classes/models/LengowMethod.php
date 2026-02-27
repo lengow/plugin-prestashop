@@ -86,7 +86,7 @@ class LengowMethod
      *
      * @param int $idMarketplace Lengow marketplace id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getAllMethodMarketplaceByIdMarketplace($idMarketplace)
     {
@@ -115,6 +115,7 @@ class LengowMethod
 
     /**
      * Sync Lengow methods marketplace
+     * @return void
      */
     public static function syncMethodMarketplace()
     {
@@ -186,7 +187,7 @@ class LengowMethod
      * Update a method marketplace
      *
      * @param int $idMethodMarketplace Lengow method marketplace id
-     * @param array $params all parameters to update a carrier method
+     * @param array<string, mixed> $params all parameters to update a carrier method
      *
      * @return int|false
      */
@@ -252,6 +253,7 @@ class LengowMethod
 
     /**
      * Clean method marketplace matching for old methods
+     * @return void
      */
     public static function cleanMethodMarketplaceMatching()
     {
@@ -321,6 +323,7 @@ class LengowMethod
      *
      * @param int $idMarketplace Lengow marketplace id
      * @param int $idMethodMarketplace Lengow method marketplace id
+     * @return void
      */
     public static function cleanMarketplaceMethodCountryByIdMarketplace($idMarketplace, $idMethodMarketplace)
     {
@@ -390,7 +393,7 @@ class LengowMethod
      * @param int $idCountry PrestaShop country id
      * @param int $idMarketplace Lengow marketplace id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getAllMarketplaceMethodCountryByIdMarketplace($idCountry, $idMarketplace)
     {

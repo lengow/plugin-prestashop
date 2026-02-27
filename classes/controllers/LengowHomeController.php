@@ -29,6 +29,7 @@ class LengowHomeController extends LengowController
 {
     /**
      * Process Post Parameters
+     * @return void
      */
     public function postProcess()
     {
@@ -116,6 +117,7 @@ class LengowHomeController extends LengowController
 
     /**
      * Display data page
+     * @return void
      */
     public function display()
     {
@@ -210,7 +212,7 @@ class LengowHomeController extends LengowController
     /**
      * Get all catalogs available in Lengow
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     private function getCatalogList()
     {
@@ -226,7 +228,7 @@ class LengowHomeController extends LengowController
     /**
      * Save catalogs linked in database and send data to Lengow with call API
      *
-     * @param array $catalogSelected
+     * @param array<string, mixed> $catalogSelected
      *
      * @return bool
      */

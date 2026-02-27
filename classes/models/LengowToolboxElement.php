@@ -414,7 +414,7 @@ class LengowToolboxElement
     /**
      * Get mail configuration information
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     private function getMailConfiguration()
     {
@@ -455,7 +455,7 @@ class LengowToolboxElement
     /**
      * Get HTML Table content of checklist
      *
-     * @param array $checklist all information for toolbox
+     * @param array<int|string, mixed> $checklist all information for toolbox
      *
      * @return string|null
      */

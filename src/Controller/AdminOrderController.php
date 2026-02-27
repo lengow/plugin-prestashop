@@ -76,7 +76,9 @@ if (!defined('_PS_VERSION_')) {
 
 class AdminOrderController extends OrderController
 {
+    /** @var Configuration */
     private $configuration;
+    /** @var FormFactoryInterface */
     private $formFactory;
 
     public function __construct(
@@ -390,6 +392,7 @@ class AdminOrderController extends OrderController
 
     /**
      * @param OrderForViewing $orderForViewing
+     * @return void
      */
     private function handleOutOfStockProduct(OrderForViewing $orderForViewing)
     {
@@ -411,7 +414,7 @@ class AdminOrderController extends OrderController
     /**
      * @param \Exception $e
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     private function getErrorMessages(\Exception $e)
     {
@@ -638,7 +641,7 @@ class AdminOrderController extends OrderController
         return \LengowOrder::isFromLengow($orderId);
     }
 
-    public function saveRefundReason(Request $request)
+    public function saveRefundReason(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $orderId = (int) $data['orderId'];
@@ -655,7 +658,7 @@ class AdminOrderController extends OrderController
         return new JsonResponse(['success' => true]);
     }
 
-    public function saveRefundMode(Request $request)
+    public function saveRefundMode(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $orderId = (int) $data['orderId'];

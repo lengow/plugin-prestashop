@@ -88,7 +88,7 @@ class LengowAction
     public const SECURITY_INTERVAL_TIME = 7200;
 
     /**
-     * @var array Parameters to delete for Get call
+     * @var list<string> Parameters to delete for Get call
      */
     public static $getParamsToDelete = [
         self::ARG_SHIPPING_DATE,
@@ -143,7 +143,8 @@ class LengowAction
     /**
      * Load action data
      *
-     * @param array $row All action data
+     * @param array<string, mixed> $row All action data
+     * @return void
      */
     public function load($row)
     {
@@ -206,7 +207,7 @@ class LengowAction
      * @param string|null $actionType action type (ship or cancel)
      * @param bool $load load LengowAction or not
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function getActionsByOrderId($idOrder, $onlyActive = false, $actionType = null, $load = true)
     {
@@ -243,7 +244,7 @@ class LengowAction
      *
      * @param bool $load load LengowAction or not
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function getActiveActions($load = true)
     {
@@ -320,7 +321,7 @@ class LengowAction
     /**
      * Indicates whether an action can be created if it does not already exist
      *
-     * @param array $params all available values
+     * @param array<string, mixed> $params all available values
      * @param LengowOrder $lengowOrder Lengow order instance
      *
      * @return bool
@@ -378,10 +379,11 @@ class LengowAction
     /**
      * Send a new action on the order via the Lengow API
      *
-     * @param array $params all available values
+     * @param array<string, mixed> $params all available values
      * @param LengowOrder $lengowOrder Lengow order instance
      *
      * @throws LengowException
+     * @return void
      */
     public static function sendAction($params, $lengowOrder)
     {
@@ -429,7 +431,7 @@ class LengowAction
     /**
      * Create action
      *
-     * @param array $params action params
+     * @param array<string, mixed> $params action params
      *
      * @return bool
      */
@@ -464,7 +466,7 @@ class LengowAction
     /**
      * Update action
      *
-     * @param array $params action params
+     * @param array<string, mixed> $params action params
      *
      * @return bool
      */
@@ -725,7 +727,7 @@ class LengowAction
     /**
      * Get old untreated actions of more than 3 days
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function getOldActions()
     {

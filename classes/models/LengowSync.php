@@ -61,7 +61,7 @@ class LengowSync
     public const API_ISO_CODE_IT = 'it';
 
     /**
-     * @var array cache time for catalog, carrier, account status, options and marketplace synchronisation
+     * @var array<string, mixed> cache time for catalog, carrier, account status, options and marketplace synchronisation
      */
     protected static $cacheTimes = [
         self::SYNC_CATALOG => 21600,
@@ -73,7 +73,7 @@ class LengowSync
     ];
 
     /**
-     * @var array valid sync actions
+     * @var list<string> valid sync actions
      */
     public static $syncActions = [
         self::SYNC_ORDER,
@@ -87,7 +87,7 @@ class LengowSync
     ];
 
     /**
-     * @var array iso code correspondence for plugin links
+     * @var array<string, mixed> iso code correspondence for plugin links
      */
     public static $genericIsoCodes = [
         self::API_ISO_CODE_EN => LengowTranslation::ISO_CODE_EN,
@@ -97,7 +97,7 @@ class LengowSync
     ];
 
     /**
-     * @var array default plugin links when the API is not available
+     * @var array<string, mixed> default plugin links when the API is not available
      */
     public static $defaultPluginLinks = [
         self::LINK_TYPE_HELP_CENTER => self::LINK_HELP_CENTER,
@@ -109,7 +109,7 @@ class LengowSync
     /**
      * Get Sync Data (Inscription / Update)
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getSyncData()
     {
@@ -230,7 +230,7 @@ class LengowSync
     /**
      * Get options for all shops
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getOptionData()
     {
@@ -289,7 +289,7 @@ class LengowSync
      * @param bool $force force cache update
      * @param bool $logOutput see log or not
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function getStatusAccount($force = false, $logOutput = false)
     {
@@ -411,7 +411,7 @@ class LengowSync
      * @param bool $force force cache update
      * @param bool $logOutput see log or not
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function getPluginData($force = false, $logOutput = false)
     {
@@ -486,7 +486,7 @@ class LengowSync
      * @param string|null $isoCode
      * @param bool|null $default
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getPluginLinks($isoCode = null, $default = false)
     {

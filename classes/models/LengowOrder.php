@@ -163,7 +163,7 @@ class LengowOrder extends Order
     public $lengowOrderItem;
 
     /**
-     * @var array order types (is_express, is_prime...)
+     * @var array<string, mixed> order types (is_express, is_prime...)
      */
     public $lengowOrderTypes;
 
@@ -438,7 +438,7 @@ class LengowOrder extends Order
      * @param string $marketplaceSku Lengow order id
      * @param string $marketplace marketplace name
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getAllOrderIdsFromLengowOrder($marketplaceSku, $marketplace)
     {
@@ -459,7 +459,7 @@ class LengowOrder extends Order
      * @param string $marketplaceSku Lengow order id
      * @param string $marketplace marketplace name
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getAllLengowOrders($marketplaceSku, $marketplace)
     {
@@ -477,7 +477,7 @@ class LengowOrder extends Order
      * Update order Lengow
      *
      * @param int $id Id of the record
-     * @param array $params Fields update
+     * @param array<string, mixed> $params Fields update
      *
      * @return bool
      */
@@ -612,6 +612,7 @@ class LengowOrder extends Order
 
     /**
      * Sets order state to Lengow technical error
+     * @return void
      */
     public function setStateToError()
     {
@@ -625,7 +626,7 @@ class LengowOrder extends Order
     /**
      * Get all unset orders
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function getUnsentOrders()
     {
@@ -926,7 +927,7 @@ class LengowOrder extends Order
      *
      * @param int $idOrderLengow Lengow order id
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function find($idOrderLengow)
     {
@@ -959,7 +960,7 @@ class LengowOrder extends Order
      *
      * @param int $idOrderLengow Lengow order id
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public static function reImportOrder($idOrderLengow)
     {
@@ -1054,6 +1055,7 @@ class LengowOrder extends Order
      * @param string $action Lengow Actions type (ship or cancel)
      *
      * @return bool
+     * @param mixed $partialAction
      */
     public function callAction($action, $partialAction = false)
     {
@@ -1161,7 +1163,7 @@ class LengowOrder extends Order
     /**
      * Get order line by API
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public function getOrderLineByApi()
     {
@@ -1355,6 +1357,11 @@ class LengowOrder extends Order
         }
     }
 
+    /**
+     * @param int $orderId
+     * @param string $marketplaceName
+     * @return array<string, mixed>
+     */
     public function getRefundDataFromLengowOrder(int $orderId, $marketplaceName): array
     {
         $db = Db::getInstance();
@@ -1383,7 +1390,7 @@ class LengowOrder extends Order
      *
      * @param int $idOrder PrestaShop order id
      *
-     * @return array|null
+     * @return array<int|string, mixed>|null
      */
     public static function getLengowOrderByPrestashopId($idOrder)
     {

@@ -30,6 +30,7 @@ class LengowMainSettingController extends LengowController
 {
     /**
      * Process Post Parameters
+     * @return void
      */
     public function postProcess()
     {
@@ -87,6 +88,7 @@ class LengowMainSettingController extends LengowController
 
     /**
      * Display data page
+     * @return void
      */
     public function display()
     {

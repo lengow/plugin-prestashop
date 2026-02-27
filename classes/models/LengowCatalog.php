@@ -52,7 +52,7 @@ class LengowCatalog
     /**
      * Get all catalogs available in Lengow
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getCatalogList()
     {
@@ -95,7 +95,7 @@ class LengowCatalog
     /**
      * Link all catalogs by API
      *
-     * @param array $catalogsByShops all catalog ids organised by shops
+     * @param array<string, mixed> $catalogsByShops all catalog ids organised by shops
      *
      * @return bool
      */
@@ -115,7 +115,7 @@ class LengowCatalog
                 continue;
             }
             $hasCatalogToLink = true;
-            $shopToken = LengowMain::getToken($idShop);
+            $shopToken = LengowMain::getToken((int) $idShop);
             $linkCatalogData['shops'][] = [
                 'shop_token' => $shopToken,
                 'catalogs_id' => $catalogIds,

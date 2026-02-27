@@ -35,6 +35,7 @@ class LengowFeedController extends LengowController
 
     /**
      * Process Post Parameters
+     * @return void
      */
     public function postProcess()
     {
@@ -244,6 +245,7 @@ class LengowFeedController extends LengowController
 
     /**
      * Display data page
+     * @return void
      */
     public function display()
     {
@@ -302,7 +304,7 @@ class LengowFeedController extends LengowController
      *
      * @param int $idShop PrestaShop shop id
      *
-     * @return array Number of product exported/total for this shop
+     * @return array<int|string, mixed> Number of product exported/total for this shop
      */
     public function reloadTotal($idShop)
     {
@@ -555,7 +557,7 @@ class LengowFeedController extends LengowController
      *
      * @param string $key row key
      * @param string $value row value
-     * @param array $item item values
+     * @param array<string, mixed> $item item values
      *
      * @return string
      *

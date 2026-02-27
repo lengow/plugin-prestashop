@@ -28,7 +28,7 @@ if (!defined('_PS_VERSION_')) {
 class LengowHook
 {
     /**
-     * @var array order is already shipped
+     * @var array<string, mixed> order is already shipped
      */
     protected $alreadyShipped = [];
 
@@ -103,6 +103,7 @@ class LengowHook
 
     /**
      * Hook to display the icon
+     * @return void
      */
     public function hookDisplayBackOfficeHeader()
     {
@@ -111,6 +112,7 @@ class LengowHook
 
     /**
      * Hook on Home page
+     * @return void
      */
     public function hookDisplayHome()
     {
@@ -119,6 +121,7 @@ class LengowHook
 
     /**
      * Hook on Payment page
+     * @return void
      */
     public function hookPaymentTop()
     {
@@ -139,7 +142,7 @@ class LengowHook
     /**
      * Hook on order confirmation page to init order's product list
      *
-     * @param array $args arguments of hook
+     * @param array<string, mixed> $args arguments of hook
      *
      * @return mixed null|void
      */
@@ -151,7 +154,7 @@ class LengowHook
     /**
      * Hook on admin page's order
      *
-     * @param array $args arguments of hook
+     * @param array<string, mixed> $args arguments of hook
      *
      * @return mixed
      */
@@ -226,7 +229,7 @@ class LengowHook
     /**
      * Hook on admin page's order side
      *
-     * @param array $params Arguments of hook
+     * @param array<string, mixed> $params Arguments of hook
      *
      * @return mixed
      */
@@ -256,7 +259,7 @@ class LengowHook
     /**
      * Hook before an status' update to synchronize status with lengow
      *
-     * @param array $args arguments of hook
+     * @param array<string, mixed> $args arguments of hook
      *
      * @return mixed null|void
      */
@@ -278,7 +281,7 @@ class LengowHook
     /**
      * Hook after an status' update to synchronize status with lengow
      *
-     * @param array $args arguments of hook
+     * @param array<string, mixed> $args arguments of hook
      *
      * @return mixed null|void
      */
@@ -327,7 +330,7 @@ class LengowHook
     /**
      * Update, if isset tracking number
      *
-     * @param array $args arguments of hook
+     * @param array<string, mixed> $args arguments of hook
      *
      * @return mixed null|void
      */
@@ -358,6 +361,8 @@ class LengowHook
 
     /**
      * Hook on product cancel
+     * @return void
+     * @param array<string, mixed> $args
      */
     public function hookActionProductCancel(array $args)
     {

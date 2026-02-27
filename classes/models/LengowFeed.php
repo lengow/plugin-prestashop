@@ -89,7 +89,7 @@ class LengowFeed
     protected $exportFolder;
 
     /**
-     * @var array formats available for export
+     * @var list<string> formats available for export
      */
     public static $availableFormats = [
         self::FORMAT_CSV,
@@ -126,6 +126,7 @@ class LengowFeed
      * Create export file
      *
      * @throws LengowException unable to create folder
+     * @return void
      */
     public function initExportFile()
     {
@@ -143,9 +144,10 @@ class LengowFeed
      * Write feed
      *
      * @param string $type data type (header, body or footer)
-     * @param array $data export data
+     * @param array<int|string, mixed> $data export data
      * @param bool|null $isFirst is first product
      * @param int|null $maxCharacter max characters for yaml format
+     * @return void
      */
     public function write($type, $data = [], $isFirst = null, $maxCharacter = null)
     {
@@ -174,7 +176,7 @@ class LengowFeed
     /**
      * Return feed header
      *
-     * @param array $data export data
+     * @param array<string, mixed> $data export data
      *
      * @return string
      */
@@ -203,7 +205,7 @@ class LengowFeed
     /**
      * Get feed body
      *
-     * @param array $data feed data
+     * @param array<string, mixed> $data feed data
      * @param bool $isFirst is first product
      * @param int $maxCharacter max characters for yaml format
      *
@@ -277,6 +279,7 @@ class LengowFeed
      * Flush feed content
      *
      * @param string $content feed content to be flushed
+     * @return void
      */
     public function flush($content)
     {

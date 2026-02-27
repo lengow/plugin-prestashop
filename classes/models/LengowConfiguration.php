@@ -115,7 +115,7 @@ class LengowConfiguration extends Configuration
     public const RETURN_TYPE_FLOAT = 'float';
 
     /**
-     * @var array params correspondence keys for toolbox
+     * @var array<string, mixed> params correspondence keys for toolbox
      */
     public static $genericParamKeys = [
         self::PLUGIN_ENV => 'plugin_env',
@@ -185,7 +185,7 @@ class LengowConfiguration extends Configuration
      *
      * @param string $key Lengow configuration key
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getKeys($key = null)
     {
@@ -676,7 +676,7 @@ class LengowConfiguration extends Configuration
     /**
      * Get Valid Account / Access token / Secret token
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getAccessIds()
     {
@@ -693,7 +693,7 @@ class LengowConfiguration extends Configuration
     /**
      * Set Valid Account id / Access token / Secret token
      *
-     * @param array $accessIds Account id / Access token / Secret token
+     * @param array<string, mixed> $accessIds Account id / Access token / Secret token
      *
      * @return bool
      */
@@ -716,6 +716,7 @@ class LengowConfiguration extends Configuration
 
     /**
      * Reset access ids for old customer
+     * @return void
      */
     public static function resetAccessIds()
     {
@@ -730,6 +731,7 @@ class LengowConfiguration extends Configuration
 
     /**
      * Reset authorization token
+     * @return void
      */
     public static function resetAuthorizationToken()
     {
@@ -754,7 +756,7 @@ class LengowConfiguration extends Configuration
      *
      * @param int $idShop PrestaShop shop id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getCatalogIds($idShop)
     {
@@ -776,7 +778,7 @@ class LengowConfiguration extends Configuration
     /**
      * Set catalog ids for a specific shop
      *
-     * @param array $catalogIds Lengow catalog ids
+     * @param array<string, mixed> $catalogIds Lengow catalog ids
      * @param int $idShop PrestaShop shop id
      *
      * @return bool
@@ -798,6 +800,7 @@ class LengowConfiguration extends Configuration
 
     /**
      * Reset all catalog ids
+     * @return void
      */
     public static function resetCatalogIds()
     {
@@ -852,7 +855,7 @@ class LengowConfiguration extends Configuration
     /**
      * Get Report Email Address for error report
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getReportEmailAddress()
     {
@@ -867,7 +870,7 @@ class LengowConfiguration extends Configuration
     /**
      * Get authorized IPs
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getAuthorizedIps()
     {
@@ -945,7 +948,7 @@ class LengowConfiguration extends Configuration
      * @param int|null $idShop PrestaShop shop id
      * @param bool $toolbox get all values for toolbox or not
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getAllValues($idShop = null, $toolbox = false)
     {
@@ -1055,6 +1058,7 @@ class LengowConfiguration extends Configuration
      * Will return the global the typed global value
      *
      * @return mixed
+     * @param mixed $key
      */
     public static function getTypedGlobalValue($key)
     {

@@ -238,14 +238,14 @@ class LengowImportOrder
     private $orderComment;
 
     /**
-     * @var array order errors
+     * @var array<string, mixed> order errors
      */
     private $errors = [];
 
     /**
      * Construct the import manager
      *
-     * @param array $params optional options
+     * @param array<string, mixed> $params optional options
      *
      * integer  shop_id             Id shop for current order
      * integer  shop_group_id       Id shop group for current order
@@ -282,7 +282,7 @@ class LengowImportOrder
     /**
      * Create or update order
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public function importOrder()
     {
@@ -380,7 +380,7 @@ class LengowImportOrder
      *
      * @param string $resultType Type of result (created, updated, failed or ignored)
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     private function returnResult($resultType)
     {
@@ -694,6 +694,7 @@ class LengowImportOrder
 
     /**
      * Load order comment from marketplace
+     * @return void
      */
     private function loadOrderComment()
     {
@@ -707,6 +708,7 @@ class LengowImportOrder
 
     /**
      * Load order types data and update Lengow order record
+     * @return void
      */
     private function loadOrderTypesData()
     {
@@ -850,6 +852,7 @@ class LengowImportOrder
 
     /**
      * Load order amount, processing fees and shipping costs
+     * @return void
      */
     private function loadOrderAmount()
     {
@@ -896,6 +899,7 @@ class LengowImportOrder
 
     /**
      * Load tracking data
+     * @return void
      */
     private function loadTrackingData()
     {
@@ -1064,7 +1068,7 @@ class LengowImportOrder
     /**
      * Get products from API data
      *
-     * @return array
+     * @return array<int|string, mixed>
      *
      * @throws Exception|LengowException product is a parent / product no be found
      */
@@ -1177,6 +1181,7 @@ class LengowImportOrder
      * @return LengowCart
      *
      * @throws Exception|LengowException
+     * @param mixed $products
      */
     private function createCart($products)
     {
@@ -1200,7 +1205,7 @@ class LengowImportOrder
     /**
      * Create PrestaShop Customer, addresses and load cart data
      *
-     * @return array
+     * @return array<int|string, mixed>
      *
      * @throws LengowException
      */
@@ -1288,7 +1293,7 @@ class LengowImportOrder
     /**
      * Create or load customer based on API data
      *
-     * @param array $customerData API data
+     * @param array<string, mixed> $customerData API data
      *
      * @return LengowCustomer
      */
@@ -1310,7 +1315,7 @@ class LengowImportOrder
      * Create or load address based on API data
      *
      * @param int $idCustomer PrestaShop customer id
-     * @param array $addressData address data
+     * @param array<string, mixed> $addressData address data
      * @param bool $shippingData is shipping address
      *
      * @return LengowAddress
@@ -1505,9 +1510,9 @@ class LengowImportOrder
      * Create and validate PrestaShop order
      *
      * @param LengowCart $cart Lengow cart instance
-     * @param array $products List of Lengow products
+     * @param array<string, mixed> $products List of Lengow products
      *
-     * @return array
+     * @return array<int|string, mixed>
      *
      * @throws LengowException
      */
@@ -1551,6 +1556,7 @@ class LengowImportOrder
      * Ensure carrier compatibility with SoColissimo & Mondial Relay
      *
      * @param LengowOrder $order order imported
+     * @return void
      */
     private function checkCarrierCompatibility($order)
     {
@@ -1586,6 +1592,7 @@ class LengowImportOrder
      * @param string $comment order comment
      *
      * @throws Exception
+     * @return void
      */
     private function addCommentOrder($idOrder, $comment)
     {
@@ -1602,7 +1609,8 @@ class LengowImportOrder
      * Save order line in lengow orders line table
      *
      * @param LengowOrder $order Lengow order instance
-     * @param array $products order products
+     * @param array<string, mixed> $products order products
+     * @return void
      */
     private function saveLengowOrderLine($order, $products)
     {
@@ -1650,9 +1658,10 @@ class LengowImportOrder
     /**
      * Add quantity back to stock
      *
-     * @param array $products list of products
+     * @param array<string, mixed> $products list of products
      *
      * @throws Exception
+     * @return void
      */
     private function addQuantityBack($products)
     {
@@ -1683,6 +1692,7 @@ class LengowImportOrder
      * Launch validateOrder hook for carrier plugins
      *
      * @param Order $order PrestaShop order instance
+     * @return void
      */
     private function launchValidateOrderHook($order)
     {

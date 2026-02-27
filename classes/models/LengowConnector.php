@@ -81,7 +81,7 @@ class LengowConnector
     public const REQUEST_LIMIT = 500;
 
     /**
-     * @var array success HTTP codes for request
+     * @var list<int> success HTTP codes for request
      */
     protected $successCodes = [
         self::CODE_200,
@@ -89,7 +89,7 @@ class LengowConnector
     ];
 
     /**
-     * @var array authorization HTTP codes for request
+     * @var list<int> authorization HTTP codes for request
      */
     protected $authorizationCodes = [
         self::CODE_401,
@@ -102,7 +102,7 @@ class LengowConnector
     protected $tokenLifetime = 3000;
 
     /**
-     * @var array default options for curl
+     * @var array<int, int|string|bool> default options for curl
      */
     protected $curlOpts = [
         CURLOPT_CONNECTTIMEOUT => 10,
@@ -127,7 +127,7 @@ class LengowConnector
     protected $token;
 
     /**
-     * @var array lengow url for curl timeout
+     * @var array<string, mixed> lengow url for curl timeout
      */
     protected $lengowUrls = [
         self::API_ORDER => 20,
@@ -142,7 +142,7 @@ class LengowConnector
     ];
 
     /**
-     * @var array API requiring no arguments in the call url
+     * @var list<string> API requiring no arguments in the call url
      */
     protected $apiWithoutUrlArgs = [
         self::API_ACCESS_TOKEN,
@@ -151,7 +151,7 @@ class LengowConnector
     ];
 
     /**
-     * @var array API requiring no authorization for the call url
+     * @var list<string> API requiring no authorization for the call url
      */
     protected static $apiWithoutAuthorizations = [
         self::API_PLUGIN,
@@ -210,7 +210,7 @@ class LengowConnector
      *
      * @param string $type request type (GET / POST / PUT / PATCH)
      * @param string $api request api
-     * @param array $args request params
+     * @param array<string, mixed> $args request params
      * @param string $body body data for request
      * @param bool $logOutput see log or not
      *
@@ -298,6 +298,7 @@ class LengowConnector
      * @param bool $logOutput see log or not
      *
      * @throws LengowException
+     * @return void
      */
     public function connect($force = false, $logOutput = false)
     {
@@ -321,7 +322,7 @@ class LengowConnector
      * Get API call
      *
      * @param string $api Lengow method API call
-     * @param array $args Lengow method API parameters
+     * @param array<string, mixed> $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
      * @param bool $logOutput see log or not
@@ -339,7 +340,7 @@ class LengowConnector
      * Post API call
      *
      * @param string $api Lengow method API call
-     * @param array $args Lengow method API parameters
+     * @param array<string, mixed> $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
      * @param bool $logOutput see log or not
@@ -357,7 +358,7 @@ class LengowConnector
      * Put API call
      *
      * @param string $api Lengow method API call
-     * @param array $args Lengow method API parameters
+     * @param array<string, mixed> $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
      * @param bool $logOutput see log or not
@@ -375,7 +376,7 @@ class LengowConnector
      * Patch API call
      *
      * @param string $api Lengow method API call
-     * @param array $args Lengow method API parameters
+     * @param array<string, mixed> $args Lengow method API parameters
      * @param string $format return format of API
      * @param string $body body data for request
      * @param bool $logOutput see log or not
@@ -393,7 +394,7 @@ class LengowConnector
      * The API method
      *
      * @param string $api Lengow method API call
-     * @param array $args Lengow method API parameters
+     * @param array<string, mixed> $args Lengow method API parameters
      * @param string $type type of request GET|POST|PUT|PATCH
      * @param string $format return format of API
      * @param string $body body data for request
@@ -433,7 +434,7 @@ class LengowConnector
      * Call API action
      *
      * @param string $api Lengow method API call
-     * @param array $args Lengow method API parameters
+     * @param array<string, mixed> $args Lengow method API parameters
      * @param string $type type of request GET|POST|PUT|PATCH
      * @param string $format return format of API
      * @param string $body body data for request
@@ -566,7 +567,7 @@ class LengowConnector
      *
      * @param string $type type of request GET|POST|PUT|PATCH
      * @param string $api Lengow method API call
-     * @param array $args Lengow method API parameters
+     * @param array<string, mixed> $args Lengow method API parameters
      * @param string $token temporary authorization token
      * @param string $body body data for request
      * @param bool $logOutput see log or not
@@ -651,6 +652,7 @@ class LengowConnector
      * @param int $curlErrorNumber Curl error number
      *
      * @throws LengowException
+     * @return void
      */
     private function checkReturnRequest($result, $httpCode, $curlError, $curlErrorNumber)
     {

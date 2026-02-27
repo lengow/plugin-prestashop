@@ -39,7 +39,7 @@ class LengowTranslation
     public const DEFAULT_ISO_CODE = self::ISO_CODE_EN;
 
     /**
-     * @var array|null all translations
+     * @var array<string, mixed>|null all translations
      */
     protected static $translation;
 
@@ -65,7 +65,7 @@ class LengowTranslation
      * Translate message
      *
      * @param string $message localization key
-     * @param array $args arguments to replace word in string
+     * @param array<string, mixed> $args arguments to replace word in string
      * @param string|null $isoCode translation iso code
      *
      * @return string
@@ -98,7 +98,7 @@ class LengowTranslation
      * Translate string
      *
      * @param string $text localization key
-     * @param array $args arguments to replace word in string
+     * @param array<string, mixed> $args arguments to replace word in string
      *
      * @return string
      */

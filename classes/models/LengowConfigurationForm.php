@@ -37,7 +37,7 @@ class LengowConfigurationForm
     public const TYPE_OPTIONS = 'options';
 
     /**
-     * @var array checkbox keys
+     * @var array<string, mixed> checkbox keys
      */
     public $fields;
 
@@ -49,7 +49,7 @@ class LengowConfigurationForm
     /**
      * Construct
      *
-     * @param array $params construct parameters
+     * @param array<string, mixed> $params construct parameters
      */
     public function __construct($params)
     {
@@ -61,7 +61,7 @@ class LengowConfigurationForm
      * Construct Lengow setting input for shop
      *
      * @param int $idShop PrestaShop shop id
-     * @param array $displayKeys names of Lengow setting
+     * @param list<string> $displayKeys names of Lengow setting
      *
      * @return string
      */
@@ -82,7 +82,7 @@ class LengowConfigurationForm
     /**
      * Construct Lengow setting input
      *
-     * @param array $displayKeys names of Lengow setting
+     * @param list<string> $displayKeys names of Lengow setting
      *
      * @return string
      */
@@ -106,7 +106,7 @@ class LengowConfigurationForm
      * Get lengow input
      *
      * @param string $key name of Lengow setting
-     * @param array $input all Lengow settings
+     * @param array<string, mixed> $input all Lengow settings
      * @param int|null $idShop PrestaShop shop id
      *
      * @return string
@@ -206,7 +206,8 @@ class LengowConfigurationForm
     /**
      * Save Lengow settings
      *
-     * @param array $checkboxKeys Lengow checkbox
+     * @param list<string> $checkboxKeys Lengow checkbox
+     * @return void
      */
     public function postProcess($checkboxKeys)
     {
@@ -284,6 +285,7 @@ class LengowConfigurationForm
      * @param string $key name of Lengow setting
      * @param mixed $value setting value
      * @param int $idShop PrestaShop shop id
+     * @return void
      */
     public function checkAndLog($key, $value, $idShop = null)
     {

@@ -38,7 +38,7 @@ class LengowProduct extends Product
     public const FIELD_SHOP_ID = 'id_shop';
 
     /**
-     * @var array API nodes containing relevant data
+     * @var list<string> API nodes containing relevant data
      */
     public static $productApiNodes = [
         'marketplace_product_id',
@@ -55,7 +55,7 @@ class LengowProduct extends Product
     protected $context;
 
     /**
-     * @var array product images
+     * @var array<int|string, mixed> product images
      */
     protected $images;
 
@@ -80,12 +80,12 @@ class LengowProduct extends Product
     protected $isSale;
 
     /**
-     * @var array|null combination of product's attributes
+     * @var array<int|string, mixed>|null combination of product's attributes
      */
     protected $combinations;
 
     /**
-     * @var array product's features
+     * @var array<int|string, mixed> product's features
      */
     protected $features;
 
@@ -104,7 +104,7 @@ class LengowProduct extends Product
      *
      * @param int|null $idProduct PrestaShop product id
      * @param int|null $idLang PrestaShop lang id
-     * @param array $params all export parameters
+     * @param array<string, mixed> $params all export parameters
      *
      * @throws Exception|LengowException
      */
@@ -299,6 +299,7 @@ class LengowProduct extends Product
 
     /**
      * Make the feature of current product
+     * @return void
      */
     public function makeFeatures()
     {
@@ -312,6 +313,7 @@ class LengowProduct extends Product
 
     /**
      * Make the attributes of current product
+     * @return void
      */
     public function makeAttributes()
     {
@@ -380,7 +382,7 @@ class LengowProduct extends Product
     /**
      * Get combinations of current product
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public function getCombinations()
     {
@@ -393,7 +395,7 @@ class LengowProduct extends Product
      * @param int $idLang PrestaShop lang id
      * @param int $id_product_attribute
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public function getAttributesGroups($idLang, $id_product_attribute = null)
     {
@@ -769,7 +771,7 @@ class LengowProduct extends Product
      * Compares found id with API ids and checks if they match
      *
      * @param LengowProduct $product Lengow product instance
-     * @param array $apiDatas product ids from the API
+     * @param array<string, mixed> $apiDatas product ids from the API
      *
      * @return bool if valid or not
      */
@@ -828,7 +830,7 @@ class LengowProduct extends Product
      *
      * @param mixed $api product datas
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function extractProductDataFromAPI($api)
     {
@@ -852,9 +854,9 @@ class LengowProduct extends Product
      * @param string $attributeName attribute name
      * @param string $attributeValue attribute value
      * @param int $idShop PrestaShop shop id
-     * @param array $apiDatas product ids from the API
+     * @param array<string, mixed> $apiDatas product ids from the API
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      *
      * @throws LengowException
      */
@@ -911,7 +913,7 @@ class LengowProduct extends Product
      * Check if product id found is correct
      *
      * @param int $idProduct PrestaShop product id
-     * @param array $apiDatas product ids from the API
+     * @param array<string, mixed> $apiDatas product ids from the API
      *
      * @return bool
      *
@@ -947,7 +949,7 @@ class LengowProduct extends Product
      * @param string $value attribute value
      * @param int $idShop PrestaShop shop id
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     protected static function findProduct($key, $value, $idShop)
     {
@@ -980,9 +982,9 @@ class LengowProduct extends Product
      *
      * @param string $attributeValue attribute value
      * @param int $idShop PrestaShop shop id
-     * @param array $apiDatas product ids from the API
+     * @param array<string, mixed> $apiDatas product ids from the API
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      *
      * @throws LengowException
      */
@@ -1011,7 +1013,7 @@ class LengowProduct extends Product
     /**
      * Calculate product without taxes using TaxManager
      *
-     * @param array $product product
+     * @param array<string, mixed> $product product
      * @param int $idAddress PrestaShop address id used to get tax rate
      * @param Context $context PrestaShop context instance
      *
@@ -1032,7 +1034,7 @@ class LengowProduct extends Product
     /**
      * get image url of product variations
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
     public function getImageUrlCombination()
     {

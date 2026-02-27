@@ -34,6 +34,7 @@ class LengowOrderController extends LengowController
 
     /**
      * Display data page
+     * @return void
      */
     public function display()
     {
@@ -47,6 +48,7 @@ class LengowOrderController extends LengowController
 
     /**
      * Process Post Parameters
+     * @return void
      */
     public function postProcess()
     {
@@ -201,6 +203,7 @@ class LengowOrderController extends LengowController
 
     /**
      * Get all warning messages
+     * @return void
      */
     public function assignWarningMessages()
     {
@@ -227,6 +230,7 @@ class LengowOrderController extends LengowController
 
     /**
      * Get all last importation data
+     * @return void
      */
     public function assignLastImportationInfos()
     {
@@ -246,6 +250,7 @@ class LengowOrderController extends LengowController
 
     /**
      * Display data page
+     * @return void
      */
     public function assignNbOrderImported()
     {
@@ -508,7 +513,7 @@ class LengowOrderController extends LengowController
     /**
      * Get Marketplace (name and label)
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public function getMarketplaces()
     {
@@ -534,7 +539,7 @@ class LengowOrderController extends LengowController
     /**
      * Get shop (ID and name)
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public function getShops()
     {
@@ -557,7 +562,7 @@ class LengowOrderController extends LengowController
      *
      * @param string $key row key
      * @param string $value row value
-     * @param array $item item values
+     * @param array<string, mixed> $item item values
      *
      * @return string
      */
@@ -579,7 +584,7 @@ class LengowOrderController extends LengowController
      *
      * @param string $key row key
      * @param string $value row value
-     * @param array $item item values
+     * @param array<string, mixed> $item item values
      *
      * @return string
      */
@@ -614,7 +619,7 @@ class LengowOrderController extends LengowController
      *
      * @param string $key row key
      * @param string $value row value
-     * @param array $item item values
+     * @param array<string, mixed> $item item values
      *
      * @return string
      */
@@ -636,7 +641,7 @@ class LengowOrderController extends LengowController
      *
      * @param string $key row key
      * @param string $value row value
-     * @param array $item item values
+     * @param array<string, mixed> $item item values
      *
      * @return string
      */
@@ -654,7 +659,7 @@ class LengowOrderController extends LengowController
      *
      * @param string $key row key
      * @param string $value row value
-     * @param array $item item values
+     * @param array<string, mixed> $item item values
      *
      * @return string
      */
@@ -730,9 +735,9 @@ class LengowOrderController extends LengowController
     /**
      * Generate message array (new, update and errors)
      *
-     * @param array $return
+     * @param array<string, mixed> $return
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public function loadMessage($return)
     {

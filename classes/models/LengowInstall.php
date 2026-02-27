@@ -28,7 +28,7 @@ if (!defined('_PS_VERSION_')) {
 class LengowInstall
 {
     /**
-     * @var array all module tables
+     * @var list<string> all module tables
      */
     public static $tables = [
         LengowOrder::TABLE_ORDER,
@@ -67,7 +67,7 @@ class LengowInstall
     private $lengowHook;
 
     /**
-     * @var array all module tabs
+     * @var array<string, mixed> all module tabs
      */
     private $tabs = [
         'tab.home' => ['name' => 'AdminLengowHome', 'active' => true],
@@ -82,7 +82,7 @@ class LengowInstall
     ];
 
     /**
-     * @var array all old files to remove
+     * @var list<string> all old files to remove
      */
     private $oldFiles = [
         'AdminLengow14.php',
@@ -115,7 +115,7 @@ class LengowInstall
     ];
 
     /**
-     * @var array old configuration keys to remove
+     * @var list<string> old configuration keys to remove
      */
     private $oldConfigurationKeys = [
         'LENGOW_ID_ACCOUNT',
@@ -231,6 +231,7 @@ class LengowInstall
     /**
      * Clear PrestaShop caches
      * general cache, asset cache, smarty cache, symfony cache
+     * @return void
      */
     public function clearCaches()
     {
@@ -387,6 +388,7 @@ class LengowInstall
      *
      * @param string $table Lengow table
      * @param string $field Lengow field
+     * @return void
      */
     public static function checkFieldAndDrop($table, $field)
     {
@@ -438,6 +440,7 @@ class LengowInstall
      * Set Installation Status
      *
      * @param bool $status installation status
+     * @return void
      */
     public static function setInstallationStatus($status)
     {
@@ -463,6 +466,7 @@ class LengowInstall
      * Delete old files
      *
      * @param string $file name of file to delete
+     * @return void
      */
     public static function removeFile($file)
     {
@@ -511,6 +515,7 @@ class LengowInstall
      * @param string $oldKey old configuration key
      * @param string $newKey new configuration key
      * @param bool $shopConfiguration configuration by shop or global
+     * @return void
      */
     public static function renameConfigurationKey($oldKey, $newKey, $shopConfiguration = false)
     {
@@ -1063,6 +1068,7 @@ class LengowInstall
 
     /**
      * Delete old files
+     * @return void
      */
     private function removeOldFiles()
     {
@@ -1073,6 +1079,7 @@ class LengowInstall
 
     /**
      * Delete old configuration keys
+     * @return void
      */
     private function removeOldConfigurationKeys()
     {
@@ -1083,6 +1090,7 @@ class LengowInstall
 
     /**
      * Delete all lengow config files
+     * @return void
      */
     private function removeConfigFiles()
     {
@@ -1096,6 +1104,7 @@ class LengowInstall
 
     /**
      * Save Override directory
+     * @return void
      */
     private function saveOverride()
     {
@@ -1116,6 +1125,7 @@ class LengowInstall
 
     /**
      * Create Lengow customer group if not exists
+     * @return void
      */
     private function createLengowCustomerGroup()
     {

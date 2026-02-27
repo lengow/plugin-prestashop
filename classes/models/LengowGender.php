@@ -28,7 +28,7 @@ if (!defined('_PS_VERSION_')) {
 class LengowGender extends Gender
 {
     /**
-     * @var array current alias of mister
+     * @var list<string> current alias of mister
      */
     public static $currentMale = [
         'M',
@@ -47,7 +47,7 @@ class LengowGender extends Gender
     ];
 
     /**
-     * @var array current alias of miss
+     * @var list<string> current alias of miss
      */
     public static $currentFemale = [
         'Mme',

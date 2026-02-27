@@ -40,7 +40,7 @@ class LengowPaymentModule extends PaymentModule
      * @param int $idOrderState PrestaShop order state id
      * @param string $paymentMethod name of the payment method
      * @param string $message order message
-     * @param array $lengowProducts list of Lengow products
+     * @param array<string, mixed> $lengowProducts list of Lengow products
      * @param float $lengowShippingCosts order shipping costs
      * @param float $processingFees order processing fees
      * @param string|null $lengowTrackingNumber Lengow carrier tracking number
@@ -49,7 +49,7 @@ class LengowPaymentModule extends PaymentModule
      * @param string $marketplaceSku id lengow of current order
      * @param bool $logOutput display log messages
      *
-     * @return array
+     * @return array<int|string, mixed>
      *
      * @throws Exception|LengowException cannot load order status / payment module not active / cart cannot be loaded
      *                                   delivery country not active / product is not listed / unable to save order
@@ -442,6 +442,7 @@ class LengowPaymentModule extends PaymentModule
      * Set context for payment module
      *
      * @param Context $context PrestaShop context instance
+     * @return void
      */
     public function setContext(Context $context)
     {

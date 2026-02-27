@@ -56,12 +56,12 @@ class LengowMain
     public static $log;
 
     /**
-     * @var array marketplace registers
+     * @var array<string, mixed> marketplace registers
      */
     public static $registers;
 
     /**
-     * @var array product ids available to track products
+     * @var array<string, mixed> product ids available to track products
      */
     public static $trackerChoiceId = [
         'id' => 'Product ID',
@@ -71,7 +71,7 @@ class LengowMain
     ];
 
     /**
-     * @var array Lengow Authorized IPs
+     * @var list<string> Lengow Authorized IPs
      */
     protected static $ipsLengow = [
         '127.0.0.1',
@@ -105,7 +105,7 @@ class LengowMain
     ];
 
     /**
-     * @var array PrestaShop mail configuration
+     * @var array<string, mixed> PrestaShop mail configuration
      */
     protected static $mailConfigurations = [];
 
@@ -165,6 +165,7 @@ class LengowMain
 
     /**
      * Temporary enable mail sending
+     * @return void
      */
     public static function enableMail()
     {
@@ -175,6 +176,7 @@ class LengowMain
 
     /**
      * Temporary disable mail sending
+     * @return void
      */
     public static function disableMail()
     {
@@ -189,6 +191,7 @@ class LengowMain
      * Record the date of the last import
      *
      * @param string $type last import type (cron or manual)
+     * @return void
      */
     public static function updateDateImport($type)
     {
@@ -202,7 +205,7 @@ class LengowMain
     /**
      * Get last import (type and timestamp)
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getLastImport()
     {
@@ -425,6 +428,7 @@ class LengowMain
      * @param string $txt log message
      * @param bool $logOutput output on screen
      * @param string|null $marketplaceSku Lengow marketplace sku
+     * @return void
      */
     public static function log($category, $txt, $logOutput = false, $marketplaceSku = null)
     {
@@ -438,7 +442,7 @@ class LengowMain
      * Set message with params for translation
      *
      * @param string $key log key
-     * @param array|null $params log parameters
+     * @param array<int|string, mixed>|null $params log parameters
      *
      * @return string
      */
@@ -461,7 +465,7 @@ class LengowMain
      *
      * @param string $message log message
      * @param string|null $isoCode iso code for translation
-     * @param array|null $params log parameters
+     * @param array<string, mixed>|null $params log parameters
      *
      * @return string
      */
@@ -486,6 +490,7 @@ class LengowMain
 
     /**
      * Suppress log files when too old
+     * @return void
      */
     public static function cleanLog()
     {
@@ -857,6 +862,11 @@ class LengowMain
         return self::isMondialRelayVersionAvailable('2.1.0', '3.0.0');
     }
 
+    /**
+     * @param string $minVersion
+     * @param string $maxVersion
+     * @return bool
+     */
     private static function isMondialRelayVersionAvailable($minVersion, $maxVersion)
     {
         $moduleName = 'mondialrelay';
@@ -934,7 +944,7 @@ class LengowMain
      *
      * @param int $idLang PrestaShop lang id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     public static function getOrderStates($idLang)
     {
