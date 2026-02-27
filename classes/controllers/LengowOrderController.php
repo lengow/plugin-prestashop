@@ -175,7 +175,7 @@ class LengowOrderController extends LengowController
                                     LengowLog::CODE_IMPORT,
                                     'Updated shipping method : ' . $shippingMethod,
                                     false,
-                                    $idOrder
+                                    (string) $idOrder
                                 );
                             } else {
                                 $response['message'] = 'No changes or errors';

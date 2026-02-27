@@ -48,7 +48,7 @@ class LengowFeedController extends LengowController
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::SELECTION_ENABLED,
                             $state,
-                            null,
+                            false,
                             null,
                             $idShop
                         );
@@ -61,21 +61,21 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::OUT_OF_STOCK_ENABLED,
                                 1,
-                                null,
+                            false,
                                 null,
                                 $idShop
                             );
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::VARIATION_ENABLED,
                                 1,
-                                null,
+                            false,
                                 null,
                                 $idShop
                             );
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::INACTIVE_ENABLED,
                                 0,
-                                null,
+                            false,
                                 null,
                                 $idShop
                             );
@@ -94,7 +94,7 @@ class LengowFeedController extends LengowController
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::OUT_OF_STOCK_ENABLED,
                             $state,
-                            null,
+                            false,
                             null,
                             $idShop
                         );
@@ -107,7 +107,7 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
                                 0,
-                                null,
+                            false,
                                 null,
                                 $idShop
                             );
@@ -124,7 +124,7 @@ class LengowFeedController extends LengowController
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::VARIATION_ENABLED,
                             $state,
-                            null,
+                            false,
                             null,
                             $idShop
                         );
@@ -137,7 +137,7 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
                                 0,
-                                null,
+                            false,
                                 null,
                                 $idShop
                             );
@@ -154,7 +154,7 @@ class LengowFeedController extends LengowController
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::INACTIVE_ENABLED,
                             $state,
-                            null,
+                            false,
                             null,
                             $idShop
                         );
@@ -167,7 +167,7 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
                                 0,
-                                null,
+                            false,
                                 null,
                                 $idShop
                             );
@@ -469,7 +469,7 @@ class LengowFeedController extends LengowController
         if ($collection) {
             for ($i = 0; $i < $nb; ++$i) {
                 $productId = $collection[$i]['id_product'];
-                $nothing = '';
+                $nothing = null;
                 $collection[$i]['price_final'] = Product::getPriceStatic(
                     $productId,
                     true,

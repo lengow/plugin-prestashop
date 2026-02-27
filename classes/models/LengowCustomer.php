@@ -58,7 +58,7 @@ class LengowCustomer extends Customer
         $this->firstname = $data['first_name'];
         $this->lastname = $data['last_name'];
         $this->fullName = $data['full_name'];
-        $this->passwd = md5(rand());
+        $this->passwd = md5((string) rand());
         $this->id_gender = (int) LengowGender::getGender((string) $data['civility']);
         $this->id_default_group = LengowConfiguration::get(LengowConfiguration::ORDER_CUSTOMER_GROUP);
 
@@ -97,7 +97,7 @@ class LengowCustomer extends Customer
      * Modify a field according to the type of error
      *
      * @param string $fieldName incorrect field
-     * @param string $errorType type of error
+     * @param int $errorType type of error
      */
     public function validateFieldLengow($fieldName, $errorType)
     {

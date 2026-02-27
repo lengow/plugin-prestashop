@@ -346,7 +346,7 @@ class LengowMethod
      * Get carrier id by country id, marketplace id and method marketplace label or name
      *
      * @param int $idCountry PrestaShop country id
-     * @param string $idMarketplace Lengow marketplace id
+     * @param int $idMarketplace Lengow marketplace id
      * @param string $methodMarketplaceName Lengow marketplace method name
      *
      * @return int|false

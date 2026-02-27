@@ -901,7 +901,7 @@ class LengowConfiguration extends Configuration
                             self::updateValue($key, $val, false, null, $shop['id_shop']);
                         }
                     } else {
-                        $oldValue = self::get($key, false, null, $shop['id_shop']);
+                        $oldValue = self::get($key, null, null, $shop['id_shop']);
                         if (!$oldValue) {
                             self::updateValue($key, $val, false, null, $shop['id_shop']);
                         }
@@ -964,7 +964,7 @@ class LengowConfiguration extends Configuration
             }
             if ($idShop) {
                 if (isset($keyParams[self::PARAM_SHOP]) && $keyParams[self::PARAM_SHOP]) {
-                    $value = self::get($key, null, false, $idShop);
+                    $value = self::get($key, null, null, $idShop);
                     $rows[self::$genericParamKeys[$key]] = self::getValueWithCorrectType($key, $value);
                 }
             } elseif (isset($keyParams[self::PARAM_GLOBAL]) && $keyParams[self::PARAM_GLOBAL]) {

@@ -1668,7 +1668,7 @@ class LengowImportOrder
             LengowMain::log(LengowLog::CODE_IMPORT, $logMessage, $this->logOutput, $this->marketplaceSku);
             foreach ($products as $sku => $productData) {
                 $idsProduct = explode('_', $sku);
-                $idProductAttribute = isset($idsProduct[1]) ? $idsProduct[1] : null;
+                $idProductAttribute = isset($idsProduct[1]) ? (int) $idsProduct[1] : null;
                 StockAvailable::updateQuantity(
                     (int) $idsProduct[0],
                     $idProductAttribute,

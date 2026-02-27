@@ -333,7 +333,7 @@ class LengowExport
         );
         $this->language = isset($params[self::PARAM_LANGUAGE_ID])
             ? new Language($params[self::PARAM_LANGUAGE_ID])
-            : new Language(Configuration::get('PS_LANG_DEFAULT', null, null, $this->idShop));
+            : new Language((int) Configuration::get('PS_LANG_DEFAULT', null, null, $this->idShop));
         // get specific params in database
         $selection = LengowConfiguration::get(LengowConfiguration::SELECTION_ENABLED, null, null, $this->idShop);
         $outOfStock = LengowConfiguration::get(LengowConfiguration::OUT_OF_STOCK_ENABLED, null, null, $this->idShop);
@@ -341,25 +341,29 @@ class LengowExport
         $inactive = LengowConfiguration::get(LengowConfiguration::INACTIVE_ENABLED, null, null, $this->idShop);
         // set default value for new shop
         if ($selection === null) {
-            LengowConfiguration::updateValue(LengowConfiguration::SELECTION_ENABLED, 0, null, null, $this->idShop);
+            LengowConfiguration::updateValue(LengowConfiguration::SELECTION_ENABLED, 0,
+                            false, null, $this->idShop);
             $selection = false;
         } else {
             $selection = (bool) $selection;
         }
         if ($outOfStock === null) {
-            LengowConfiguration::updateValue(LengowConfiguration::OUT_OF_STOCK_ENABLED, 1, null, null, $this->idShop);
+            LengowConfiguration::updateValue(LengowConfiguration::OUT_OF_STOCK_ENABLED, 1,
+                            false, null, $this->idShop);
             $outOfStock = true;
         } else {
             $outOfStock = (bool) $outOfStock;
         }
         if ($variation === null) {
-            LengowConfiguration::updateValue(LengowConfiguration::VARIATION_ENABLED, 1, null, null, $this->idShop);
+            LengowConfiguration::updateValue(LengowConfiguration::VARIATION_ENABLED, 1,
+                            false, null, $this->idShop);
             $variation = true;
         } else {
             $variation = (bool) $variation;
         }
         if ($inactive === null) {
-            LengowConfiguration::updateValue(LengowConfiguration::INACTIVE_ENABLED, 0, null, null, $this->idShop);
+            LengowConfiguration::updateValue(LengowConfiguration::INACTIVE_ENABLED, 0,
+                            false, null, $this->idShop);
             $inactive = false;
         } else {
             $inactive = (bool) $inactive;
@@ -378,7 +382,7 @@ class LengowExport
         $this->updateExportDate = !isset($params[self::PARAM_UPDATE_EXPORT_DATE])
             || $params[self::PARAM_UPDATE_EXPORT_DATE];
         if (!Context::getContext()->currency) {
-            Context::getContext()->currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
+            Context::getContext()->currency = new Currency((int) Configuration::get('PS_CURRENCY_DEFAULT'));
         }
         $this->legacy = isset($params[self::PARAM_LEGACY_FIELDS]) ? (bool) $params[self::PARAM_LEGACY_FIELDS] : null;
     }

@@ -519,7 +519,7 @@ class LengowInstall
             if ($shopConfiguration) {
                 $shops = LengowShop::findAll(true);
                 foreach ($shops as $shop) {
-                    $shopValue = LengowConfiguration::get($oldKey, false, null, $shop['id_shop']);
+                    $shopValue = LengowConfiguration::get($oldKey, null, null, $shop['id_shop']);
                     $shopValue = $shopValue === null ? $globalValue : $shopValue;
                     LengowConfiguration::updateValue($newKey, $shopValue, false, null, $shop['id_shop']);
                 }

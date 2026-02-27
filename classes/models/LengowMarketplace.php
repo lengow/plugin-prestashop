@@ -373,7 +373,7 @@ class LengowMarketplace
         }
         if (isset($errorMessage)) {
             if ($lengowOrder->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
-                LengowOrderError::addOrderLog($lengowOrder->lengowId, $errorMessage, LengowOrderError::TYPE_ERROR_SEND);
+                LengowOrderError::addOrderLog((int) $lengowOrder->lengowId, $errorMessage, LengowOrderError::TYPE_ERROR_SEND);
             }
             $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
             LengowMain::log(
@@ -470,7 +470,7 @@ class LengowMarketplace
         $idOrderCarrier = $lengowOrder->getIdOrderCarrier();
         $orderCarrier = new LengowOrderCarrier($idOrderCarrier);
         $trackingNumber = $orderCarrier->tracking_number;
-        $shippingMethod = $lengowOrder->getShippingMethodByPrestashopId($lengowOrder->lengowId);
+        $shippingMethod = $lengowOrder->getShippingMethodByPrestashopId((int) $lengowOrder->lengowId);
         $returnTrackingNumber = $orderCarrier->return_tracking_number;
         if ($trackingNumber === '') {
             $trackingNumber = $lengowOrder->shipping_number ?? '';
@@ -546,7 +546,7 @@ class LengowMarketplace
                     $params[$arg] = date(LengowMain::DATE_ISO_8601);
                     break;
                 case LengowAction::ARG_REASON:
-                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId($lengowOrder->lengowId)
+                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId((int) $lengowOrder->lengowId)
                         ?? $this->getDefaultValue((string) $arg);
                     break;
                 default:
@@ -590,7 +590,7 @@ class LengowMarketplace
             switch ($arg) {
                 case LengowAction::ARG_REFUND_REASON:
                 case LengowAction::ARG_REASON:
-                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId($lengowOrder->lengowId)
+                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId((int) $lengowOrder->lengowId)
                         ?? $this->getDefaultValue((string) $arg);
                     break;
                 case LengowAction::ARG_REFUND_PRICE:
@@ -603,7 +603,7 @@ class LengowMarketplace
                     $params[$arg] = $orderLineId;
                     break;
                 case LengowAction::ARG_REFUND_MODE:
-                    $params[$arg] = $lengowOrder->getRefundModeByPrestashopId($lengowOrder->lengowId)
+                    $params[$arg] = $lengowOrder->getRefundModeByPrestashopId((int) $lengowOrder->lengowId)
                         ?? $this->getDefaultValue((string) $arg);
                     break;
                 case LengowAction::ARG_REFUND_SHIPPING_PRICE:

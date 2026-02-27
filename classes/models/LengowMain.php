@@ -312,7 +312,7 @@ class LengowMain
     /**
      * Format float
      *
-     * @param float $float the float to format
+     * @param float|string $float the float to format
      *
      * @return string
      */
@@ -396,7 +396,8 @@ class LengowMain
                 return $token;
             }
             $token = bin2hex(openssl_random_pseudo_bytes(16));
-            LengowConfiguration::updateValue(LengowConfiguration::SHOP_TOKEN, $token, null, null, $idShop);
+            LengowConfiguration::updateValue(LengowConfiguration::SHOP_TOKEN, $token,
+                            false, null, $idShop);
         }
 
         return $token;

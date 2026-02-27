@@ -959,7 +959,7 @@ class LengowProduct extends Product
         $query->from('product', 'p');
         $query->innerJoin('product_shop', 'ps', 'p.id_product = ps.id_product');
         $query->where('p.' . pSQL(Db::getInstance()->_escape($key)) . ' = \'' . pSQL(Db::getInstance()->_escape($value)) . '\'');
-        $query->where('ps.`id_shop` = \'' . (int) Db::getInstance()->_escape($idShop) . '\'');
+        $query->where('ps.`id_shop` = \'' . (int) $idShop . '\'');
         $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
         // if no result, search in attribute
         if ($result == '') {
@@ -968,7 +968,7 @@ class LengowProduct extends Product
             $query->from('product_attribute', 'pa');
             $query->innerJoin('product_shop', 'ps', 'pa.id_product = ps.id_product');
             $query->where('pa.' . pSQL(Db::getInstance()->_escape($key)) . ' = \'' . pSQL(Db::getInstance()->_escape($value)) . '\'');
-            $query->where('ps.`id_shop` = \'' . (int) Db::getInstance()->_escape($idShop) . '\'');
+            $query->where('ps.`id_shop` = \'' . (int) $idShop . '\'');
             $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
         }
 

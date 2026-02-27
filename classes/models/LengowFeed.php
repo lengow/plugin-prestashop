@@ -145,7 +145,7 @@ class LengowFeed
      * @param string $type data type (header, body or footer)
      * @param array $data export data
      * @param bool|null $isFirst is first product
-     * @param bool|null $maxCharacter max characters for yaml format
+     * @param int|null $maxCharacter max characters for yaml format
      */
     public function write($type, $data = [], $isFirst = null, $maxCharacter = null)
     {
@@ -413,7 +413,7 @@ class LengowFeed
      * For YAML, add spaces to have good indentation
      *
      * @param string $name the field name
-     * @param string $maxSize space limit
+     * @param int $maxSize space limit
      *
      * @return string
      */

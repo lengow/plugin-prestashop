@@ -354,7 +354,7 @@ class AdminOrderController extends OrderController
                 }
                 if (!empty($data[\LengowAction::ARG_RETURN_CARRIER])) {
                     \LengowOrderDetail::updateOrderReturnCarrier(
-                        (int) $data[\LengowAction::ARG_RETURN_CARRIER],
+                        (string) $data[\LengowAction::ARG_RETURN_CARRIER],
                         $orderId
                     );
                 }

@@ -129,7 +129,7 @@ class LengowCart extends Cart
         $quantity = (int) $quantity;
         $idProduct = (int) $idProduct;
         $idProductAttribute = (int) $idProductAttribute;
-        $product = new Product($idProduct, false, Configuration::get('PS_LANG_DEFAULT'), $shop->id);
+        $product = new Product($idProduct, false, (int) Configuration::get('PS_LANG_DEFAULT'), $shop->id);
         if ($idProductAttribute) {
             $combination = new Combination((int) $idProductAttribute);
             if ((int) $combination->id_product !== $idProduct) {
@@ -181,7 +181,7 @@ class LengowCart extends Cart
             $qty = '+ ' . (int) $quantity;
             // force here
             if ($newQty > $productQty
-                && !Product::isAvailableWhenOutOfStock(!$this->forceProduct && (int) $result2['out_of_stock'])
+                && !Product::isAvailableWhenOutOfStock((int) (!$this->forceProduct && (int) $result2['out_of_stock']))
             ) {
                 return false;
             }

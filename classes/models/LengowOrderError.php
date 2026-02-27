@@ -91,7 +91,7 @@ class LengowOrderError
     /**
      * Check if log already exists for the given order
      *
-     * @param string $idOrderLengow Lengow order id
+     * @param int $idOrderLengow Lengow order id
      * @param int|null $type order log type (import or send)
      * @param bool|null $finished log finished (true or false)
      *

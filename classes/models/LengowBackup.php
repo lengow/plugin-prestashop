@@ -69,7 +69,7 @@ class LengowBackup extends Backup
         $this->id = realpath($backupFile);
         fwrite(
             $fp,
-            '/* Backup for ' . Tools::getHttpHost(false, false) . __PS_BASE_URI__ . "\n * at " . date($date) . "\n */\n"
+            '/* Backup for ' . Tools::getHttpHost(false, false) . __PS_BASE_URI__ . "\n * at " . date('Y-m-d H:i:s', $date) . "\n */\n"
         );
         fwrite($fp, "\n" . 'SET NAMES \'utf8\';' . "\n\n");
         $found = 0;

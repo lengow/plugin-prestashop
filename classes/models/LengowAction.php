@@ -635,19 +635,19 @@ class LengowAction
                 self::finishAction($action[self::FIELD_ID]);
                 $orderLengow = new LengowOrder($action[self::FIELD_ORDER_ID]);
                 // finish all order logs send
-                LengowOrderError::finishOrderLogs($orderLengow->lengowId, LengowOrderError::TYPE_ERROR_SEND);
+                LengowOrderError::finishOrderLogs((int) $orderLengow->lengowId, LengowOrderError::TYPE_ERROR_SEND);
                 if ($orderLengow->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
                     // if action is accepted -> close order and finish all order actions
                     if ($apiAction->processed == true && empty($apiAction->errors)) {
                         LengowOrder::updateOrderLengow(
-                            $orderLengow->lengowId,
+                            (int) $orderLengow->lengowId,
                             [LengowOrder::FIELD_ORDER_PROCESS_STATE => LengowOrder::PROCESS_STATE_FINISH]
                         );
                         self::finishAllActions($orderLengow->id);
                     } else {
                         // if action is denied -> create order logs and finish all order actions
                         LengowOrderError::addOrderLog(
-                            $orderLengow->lengowId,
+                            (int) $orderLengow->lengowId,
                             $apiAction->errors,
                             LengowOrderError::TYPE_ERROR_SEND
                         );
@@ -698,7 +698,7 @@ class LengowAction
                     // if action is denied -> create order error
                     $errorMessage = LengowMain::setLogMessage('lengow_log.exception.action_is_too_old');
                     LengowOrderError::addOrderLog(
-                        $orderLengow->lengowId,
+                        (int) $orderLengow->lengowId,
                         $errorMessage,
                         LengowOrderError::TYPE_ERROR_SEND
                     );

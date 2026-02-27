@@ -590,8 +590,8 @@ class LengowOrder extends Order
             }
         }
         // in the event of an error, all new order errors are finished and the order is reset
-        LengowOrderError::finishOrderLogs($this->lengowId);
-        self::updateOrderLengow($this->lengowId, [self::FIELD_IS_REIMPORTED => 0]);
+        LengowOrderError::finishOrderLogs((int) $this->lengowId);
+        self::updateOrderLengow((int) $this->lengowId, [self::FIELD_IS_REIMPORTED => 0]);
 
         return false;
     }
@@ -1080,7 +1080,7 @@ class LengowOrder extends Order
         }
         if ($success) {
             // finish all order logs send
-            LengowOrderError::finishOrderLogs($this->lengowId, LengowOrderError::TYPE_ERROR_SEND);
+            LengowOrderError::finishOrderLogs((int) $this->lengowId, LengowOrderError::TYPE_ERROR_SEND);
             try {
                 // compatibility V2
                 if ($this->lengowIdFlux !== null) {
@@ -1121,7 +1121,7 @@ class LengowOrder extends Order
             }
             if (isset($errorMessage)) {
                 if ($this->lengowProcessState !== self::PROCESS_STATE_FINISH) {
-                    LengowOrderError::addOrderLog($this->lengowId, $errorMessage, LengowOrderError::TYPE_ERROR_SEND);
+                    LengowOrderError::addOrderLog((int) $this->lengowId, $errorMessage, LengowOrderError::TYPE_ERROR_SEND);
                 }
                 $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
                 LengowMain::log(

@@ -155,7 +155,7 @@ class LengowOrderDetail extends OrderDetail
         try {
             $order = new Order($orderId);
             $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
-            $carrier = new LengowCarrier($orderCarrier->return_carrier);
+            $carrier = new LengowCarrier((int) $orderCarrier->return_carrier);
 
             return (string) $carrier->name;
         } catch (Exception $e) {

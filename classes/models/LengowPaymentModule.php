@@ -343,7 +343,7 @@ class LengowPaymentModule extends PaymentModule
         // register payment only if the order status validate the order
         if ($orderStatus->logable && isset($order)) {
             $idTransaction = null;
-            if (!$order->addOrderPayment($order->total_paid_tax_incl, null, $idTransaction)) {
+            if (!$order->addOrderPayment((string) $order->total_paid_tax_incl, null, $idTransaction)) {
                 throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.unable_to_save_order_payment'));
             }
         }
@@ -398,18 +398,15 @@ class LengowPaymentModule extends PaymentModule
                 $newHistory = new OrderHistory();
                 $newHistory->id_order = (int) $order->id;
                 $newHistory->changeIdOrderState((int) $idOrderState, $order, true);
-                $newHistory->addWithemail(true, null);
+                $newHistory->addWithemail(true, []);
 
                 // switch to back order if needed
                 if (Configuration::get('PS_STOCK_MANAGEMENT') && $orderDetail->getStockState()) {
                     $history = new OrderHistory();
                     $history->id_order = (int) $order->id;
-                    if (version_compare(_PS_VERSION_, '1.6.0.11', '<')) {
-                        $history->changeIdOrderState(Configuration::get('PS_OS_OUTOFSTOCK'), $order, true);
-                    }
 
                     $history->changeIdOrderState(
-                        Configuration::get($order->valid ? 'PS_OS_OUTOFSTOCK_PAID' : 'PS_OS_OUTOFSTOCK_UNPAID'),
+                        (int) Configuration::get($order->valid ? 'PS_OS_OUTOFSTOCK_PAID' : 'PS_OS_OUTOFSTOCK_UNPAID'),
                         $order,
                         true
                     );

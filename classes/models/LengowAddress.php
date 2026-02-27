@@ -415,7 +415,7 @@ class LengowAddress extends Address
     /**
      * Extract address data from API
      *
-     * @param array $api API nodes containing the data
+     * @param object $api API nodes containing the data
      *
      * @return array
      */
@@ -564,7 +564,7 @@ class LengowAddress extends Address
      * Modify a field according to the type of error
      *
      * @param string $fieldName incorrect field
-     * @param string $errorType type of error
+     * @param int $errorType type of error
      */
     public function validateFieldLengow($fieldName, $errorType)
     {

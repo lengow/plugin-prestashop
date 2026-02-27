@@ -309,7 +309,7 @@ class LengowCarrier extends Carrier
      * Get carrier id by country id, marketplace id and carrier marketplace name
      *
      * @param int $idCountry PrestaShop country id
-     * @param string $idMarketplace Lengow marketplace id
+     * @param int $idMarketplace Lengow marketplace id
      * @param string $carrierMarketplaceName Lengow marketplace carrier name
      *
      * @return int|false
@@ -443,7 +443,7 @@ class LengowCarrier extends Carrier
     /**
      * Get carrier marketplace
      *
-     * @param string $idCarrierMarketplace Lengow carrier marketplace id
+     * @param int $idCarrierMarketplace Lengow carrier marketplace id
      *
      * @return array|false
      */
