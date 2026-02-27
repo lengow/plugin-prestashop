@@ -57,9 +57,6 @@ class LengowPaymentModule extends PaymentModule
      */
     public function makeOrder($idCart, $idOrderState, $paymentMethod, $message, $lengowProducts, $lengowShippingCosts, $processingFees, $lengowTrackingNumber, $idOrderLengow, $orderStateLengow, $marketplaceSku, $logOutput)
     {
-        if (!$this->context) {
-            $this->context = Context::getContext();
-        }
         $this->context->cart = new Cart($idCart);
         $this->context->customer = new Customer($this->context->cart->id_customer);
         // the tax cart is loaded before the customer so re-cache the tax calculation method

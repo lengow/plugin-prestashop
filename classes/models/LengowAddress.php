@@ -653,35 +653,33 @@ class LengowAddress extends Address
             case 'address2':
             case 'other':
                 $fullAddressArray = explode(' ', $this->fullAddress);
-                if (count($fullAddressArray) >= 1) {
-                    $definition = self::getFieldDefinition();
-                    $address1Maxlength = $definition['address1']['size'];
-                    $address2Maxlength = $definition['address1']['size'];
-                    $otherMaxlength = $definition['other']['size'];
-                    $this->address1 = '';
-                    $this->address2 = '';
-                    $this->other = '';
-                    foreach ($fullAddressArray as $addressPart) {
-                        if (mb_strlen((string) $this->address1) < $address1Maxlength) {
-                            if (!empty($this->address1)) {
-                                $this->address1 .= ' ';
-                            }
-                            $this->address1 .= $addressPart;
-                            continue;
+                $definition = self::getFieldDefinition();
+                $address1Maxlength = $definition['address1']['size'];
+                $address2Maxlength = $definition['address1']['size'];
+                $otherMaxlength = $definition['other']['size'];
+                $this->address1 = '';
+                $this->address2 = '';
+                $this->other = '';
+                foreach ($fullAddressArray as $addressPart) {
+                    if (mb_strlen((string) $this->address1) < $address1Maxlength) {
+                        if (!empty($this->address1)) {
+                            $this->address1 .= ' ';
                         }
-                        if (mb_strlen((string) $this->address2) < $address2Maxlength) {
-                            if (!empty($this->address2)) {
-                                $this->address2 .= ' ';
-                            }
-                            $this->address2 .= $addressPart;
-                            continue;
+                        $this->address1 .= $addressPart;
+                        continue;
+                    }
+                    if (mb_strlen((string) $this->address2) < $address2Maxlength) {
+                        if (!empty($this->address2)) {
+                            $this->address2 .= ' ';
                         }
-                        if (mb_strlen((string) $this->other) < $otherMaxlength) {
-                            if (!empty($this->other)) {
-                                $this->other .= ' ';
-                            }
-                            $this->other .= $addressPart;
+                        $this->address2 .= $addressPart;
+                        continue;
+                    }
+                    if (mb_strlen((string) $this->other) < $otherMaxlength) {
+                        if (!empty($this->other)) {
+                            $this->other .= ' ';
                         }
+                        $this->other .= $addressPart;
                     }
                 }
                 break;

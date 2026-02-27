@@ -723,23 +723,11 @@ class LengowList
             $currency = $this->context->currency;
         }
 
-        $locale = null;
         $locale = Tools::getContextLocale($this->context);
 
-        if ($locale !== null) {
-            return $locale->formatPrice(
-                $price,
-                $currency->iso_code
-            );
-        }
-
-        $precision = $currency->precision ?? 2;
-        $symbol = $currency->iso_code;
-        if (property_exists($currency, 'symbol') && is_string($currency->symbol) && $currency->symbol !== '') {
-            $symbol = $currency->symbol;
-        }
-
-        $priceFormatted = number_format($price, $precision, '.', ' ');
-        return $priceFormatted . ' ' . $symbol;
+        return $locale->formatPrice(
+            $price,
+            $currency->iso_code
+        );
     }
 }

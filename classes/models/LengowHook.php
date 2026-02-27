@@ -27,54 +27,6 @@ if (!defined('_PS_VERSION_')) {
 }
 class LengowHook
 {
-    /* PrestaShop track pages */
-    public const LENGOW_TRACK_HOMEPAGE = 'homepage';
-    public const LENGOW_TRACK_PAGE = 'page';
-    public const LENGOW_TRACK_PAGE_LIST = 'listepage';
-    public const LENGOW_TRACK_PAGE_PAYMENT = 'payment';
-    public const LENGOW_TRACK_PAGE_CART = 'basket';
-    public const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
-
-    /**
-     * @var string PrestaShop current page type
-     */
-    private static $currentPageType = 'page';
-
-    /**
-     * @var string PrestaShop order id
-     */
-    private static $idOrder = '';
-
-    /**
-     * @var string PrestaShop cart id
-     */
-    private static $idCart = '';
-
-    /**
-     * @var string order payment
-     */
-    private static $orderPayment = '';
-
-    /**
-     * @var string order currency
-     */
-    private static $orderCurrency = '';
-
-    /**
-     * @var float total order
-     */
-    private static $orderTotal = 0.0;
-
-    /**
-     * @var string product cart ids
-     */
-    private static $idsProductCart = '';
-
-    /**
-     * @var string PrestaShop category id
-     */
-    private static $idCategory = '';
-
     /**
      * @var array order is already shipped
      */
@@ -162,7 +114,7 @@ class LengowHook
      */
     public function hookDisplayHome()
     {
-        self::$currentPageType = self::LENGOW_TRACK_HOMEPAGE;
+        // tracker is disabled now
     }
 
     /**
@@ -170,7 +122,7 @@ class LengowHook
      */
     public function hookPaymentTop()
     {
-        self::$currentPageType = self::LENGOW_TRACK_PAGE;
+        // tracker is disabled now
     }
 
     /**
@@ -193,51 +145,7 @@ class LengowHook
      */
     public function hookOrderConfirmation($args)
     {
-        if (!isset($args['objOrder']) && !isset($args['order'])) {
-            return;
-        }
-        $i = 0;
-        $productsCart = [];
-        $order = isset($args['objOrder']) ? $args['objOrder'] : $args['order'];
-        $orderTotal = Tools::ps_round($order->total_paid, 2);
-        $paymentMethod = LengowMain::replaceAccentedChars(Tools::strtolower(str_replace(' ', '_', $order->payment)));
-        $currency = new Currency($order->id_currency);
-        $productsList = $order->getProducts();
-        foreach ($productsList as $p) {
-            ++$i;
-            switch (LengowConfiguration::get(LengowConfiguration::TRACKING_ID)) {
-                case 'upc':
-                    $idProduct = $p['upc'];
-                    break;
-                case 'ean':
-                    $idProduct = $p['ean13'];
-                    break;
-                case 'ref':
-                    $idProduct = $p['reference'];
-                    break;
-                default:
-                    if ($p['product_attribute_id']) {
-                        $idProduct = $p['product_id'] . '_' . $p['product_attribute_id'];
-                    } else {
-                        $idProduct = $p['product_id'];
-                    }
-                    break;
-            }
-            $price = isset($p['product_price_wt']) ? $p['product_price_wt'] : $p['unit_price_tax_incl'];
-            // basket product
-            $productsCart[] = [
-                'product_id' => $idProduct,
-                'price' => Tools::ps_round($price, 2),
-                'quantity' => $p['product_quantity'],
-            ];
-        }
-        self::$idsProductCart = json_encode($productsCart);
-        self::$currentPageType = self::LENGOW_TRACK_PAGE_CONFIRMATION;
-        self::$idOrder = $order->id;
-        self::$idCart = $order->id_cart;
-        self::$orderTotal = $orderTotal;
-        self::$orderPayment = $paymentMethod;
-        self::$orderCurrency = $currency->iso_code;
+        // tracker is disabled now
     }
 
     /**

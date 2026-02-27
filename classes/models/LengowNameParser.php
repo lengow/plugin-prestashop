@@ -28,12 +28,6 @@ if (!defined('_PS_VERSION_')) {
 }
 class LengowNameParser
 {
-    /**
-     * Array of possible name languages.
-     *
-     * @var array
-     */
-    private $languages;
 
     /**
      * Array of possible name titles.
@@ -131,7 +125,6 @@ class LengowNameParser
         $params = json_decode($paramsJson, true);
 
         // added Military Titles
-        $this->languages = $params['language'];
         $this->titles = $params['titles'];
 
         $this->prefices = $params['prefices'];
