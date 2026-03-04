@@ -65,7 +65,7 @@ class LengowConfigurationForm
      *
      * @return string
      */
-    public function buildShopInputs(int $idShop,array $displayKeys): string
+    public function buildShopInputs(int $idShop, array $displayKeys): string
     {
         $html = '';
         foreach ($displayKeys as $key) {
@@ -111,7 +111,7 @@ class LengowConfigurationForm
      *
      * @return string
      */
-    public function input(string $key,array $input,?int $idShop = null): string
+    public function input(string $key, array $input, ?int $idShop = null): string
     {
         $html = '';
         if ($idShop) {
@@ -207,6 +207,7 @@ class LengowConfigurationForm
      * Save Lengow settings
      *
      * @param list<string> $checkboxKeys Lengow checkbox
+     *
      * @return void
      */
     public function postProcess(array $checkboxKeys): void
@@ -285,9 +286,10 @@ class LengowConfigurationForm
      * @param string $key name of Lengow setting
      * @param mixed $value setting value
      * @param int $idShop PrestaShop shop id
+     *
      * @return void
      */
-    public function checkAndLog(string $key,mixed $value,?int $idShop = null): void
+    public function checkAndLog(string $key, mixed $value, ?int $idShop = null): void
     {
         if (array_key_exists($key, $this->fields)) {
             $setting = $this->fields[$key];

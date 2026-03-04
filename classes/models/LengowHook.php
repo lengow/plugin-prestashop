@@ -66,7 +66,6 @@ class LengowHook
             'postUpdateOrderStatus' => '1.4',
             'paymentTop' => '1.4',
             'displayAdminOrder' => '1.4',
-            'home' => '1.4',
             'actionOrderStatusUpdate' => '1.4',
             'orderConfirmation' => '1.4',
             // version 1.5
@@ -78,6 +77,7 @@ class LengowHook
             'displayHome' => '8.0',
             'actionOrderStatusPostUpdate' => '8.0',
         ];
+
         foreach ($lengowHooks as $hook => $version) {
             if ((float) $version <= (float) Tools::substr(_PS_VERSION_, 0, 3)) {
                 if ($this->module->isRegisteredInHook($hook)) {
@@ -98,11 +98,22 @@ class LengowHook
             }
         }
 
+        // Cleanup: If the deprecated 'home' hook is registered, unregister it to avoid
+        // PrestaShop deprecation warnings. New hook name is 'displayHome'.
+        if ($this->module->isRegisteredInHook('home')) {
+            $this->module->unregisterHook('home');
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.unregistering_deprecated_hook', ['hook' => 'home'])
+            );
+        }
+
         return !$error;
     }
 
     /**
      * Hook to display the icon
+     *
      * @return void
      */
     public function hookDisplayBackOfficeHeader(): void
@@ -112,6 +123,7 @@ class LengowHook
 
     /**
      * Hook on Home page
+     *
      * @return void
      */
     public function hookDisplayHome(): void
@@ -121,6 +133,7 @@ class LengowHook
 
     /**
      * Hook on Payment page
+     *
      * @return void
      */
     public function hookPaymentTop(): void
@@ -361,8 +374,10 @@ class LengowHook
 
     /**
      * Hook on product cancel
-     * @return void
+     *
      * @param array<string, mixed> $args
+     *
+     * @return void
      */
     public function hookActionProductCancel(array $args): void
     {

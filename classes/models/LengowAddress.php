@@ -447,7 +447,7 @@ class LengowAddress extends Address
      *
      * @return object
      */
-    public static function hydrateAddress(object $orderData,object $address): object
+    public static function hydrateAddress(object $orderData, object $address): object
     {
         $locale = new LengowTranslation();
         $notProvided = $locale->t('order.screen.not_provided');
@@ -565,9 +565,10 @@ class LengowAddress extends Address
      *
      * @param string $fieldName incorrect field
      * @param int $errorType type of error
+     *
      * @return void
      */
-    public function validateFieldLengow(string $fieldName,int $errorType): void
+    public function validateFieldLengow(string $fieldName, int $errorType): void
     {
         switch ($errorType) {
             case self::LENGOW_EMPTY_ERROR:
@@ -585,6 +586,7 @@ class LengowAddress extends Address
      * Modify an empty field
      *
      * @param string $fieldName field name
+     *
      * @return void
      */
     public function validateEmptyLengow(string $fieldName): void
@@ -647,6 +649,7 @@ class LengowAddress extends Address
      * Modify a field to fit its size
      *
      * @param string $fieldName field name
+     *
      * @return void
      */
     public function validateSizeLengow(string $fieldName): void
@@ -705,7 +708,7 @@ class LengowAddress extends Address
      *
      * @return int
      */
-    protected function getIdState(int $idCountry,array $addressData): int
+    protected function getIdState(int $idCountry, array $addressData): int
     {
         $idState = 0;
         $countryIsoA2 = $addressData['common_country_iso_a2'];
@@ -728,7 +731,7 @@ class LengowAddress extends Address
      *
      * @return int
      */
-    protected function searchIdStateByPostcode(int $idCountry,string $countryIsoA2,string $postcode): int
+    protected function searchIdStateByPostcode(int $idCountry, string $countryIsoA2, string $postcode): int
     {
         $idState = 0;
         $postcodeSubstr = Tools::substr(str_pad($postcode, 5, '0', STR_PAD_LEFT), 0, 2);
@@ -765,7 +768,7 @@ class LengowAddress extends Address
      *
      * @return string|false
      */
-    protected function getIsoCodeFromIntervalPostcodes(int $postcode,array $intervalPostcodes): string|false
+    protected function getIsoCodeFromIntervalPostcodes(int $postcode, array $intervalPostcodes): string|false
     {
         foreach ($intervalPostcodes as $intervalPostcode => $isoCode) {
             $intervalPostcodes = explode('-', $intervalPostcode);
@@ -789,7 +792,7 @@ class LengowAddress extends Address
      *
      * @return int
      */
-    protected function getIdStateByIsoAndCountry(string $isoCode,int $idCountry): int
+    protected function getIdStateByIsoAndCountry(string $isoCode, int $idCountry): int
     {
         $idState = Db::getInstance()->getValue(
             'SELECT `id_state`
@@ -808,7 +811,7 @@ class LengowAddress extends Address
      *
      * @return int
      */
-    protected function searchIdStateByStateRegion(int $idCountry,string $stateRegion): int
+    protected function searchIdStateByStateRegion(int $idCountry, string $stateRegion): int
     {
         $idState = 0;
         $countryStates = State::getStatesByIdCountry($idCountry);

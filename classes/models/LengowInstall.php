@@ -231,6 +231,7 @@ class LengowInstall
     /**
      * Clear PrestaShop caches
      * general cache, asset cache, smarty cache, symfony cache
+     *
      * @return void
      */
     public function clearCaches(): void
@@ -351,7 +352,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public static function checkIndexExists(string $table,string $index): bool
+    public static function checkIndexExists(string $table, string $index): bool
     {
         $sql = 'SHOW INDEXES FROM ' . _DB_PREFIX_ . $table . ' WHERE `Column_name` = \'' . $index . '\'';
         try {
@@ -371,7 +372,7 @@ class LengowInstall
      *
      * @return bool
      */
-    public static function checkFieldExists(string $table,string $field): bool
+    public static function checkFieldExists(string $table, string $field): bool
     {
         $sql = 'SHOW COLUMNS FROM ' . _DB_PREFIX_ . $table . ' LIKE \'' . $field . '\'';
         try {
@@ -388,9 +389,10 @@ class LengowInstall
      *
      * @param string $table Lengow table
      * @param string $field Lengow field
+     *
      * @return void
      */
-    public static function checkFieldAndDrop(string $table,string $field): void
+    public static function checkFieldAndDrop(string $table, string $field): void
     {
         if (self::checkFieldExists($table, $field)) {
             Db::getInstance()->execute('ALTER TABLE ' . _DB_PREFIX_ . $table . ' DROP COLUMN `' . $field . '`');
@@ -440,6 +442,7 @@ class LengowInstall
      * Set Installation Status
      *
      * @param bool $status installation status
+     *
      * @return void
      */
     public static function setInstallationStatus(bool $status): void
@@ -466,6 +469,7 @@ class LengowInstall
      * Delete old files
      *
      * @param string $file name of file to delete
+     *
      * @return void
      */
     public static function removeFile(string $file): void
@@ -515,9 +519,10 @@ class LengowInstall
      * @param string $oldKey old configuration key
      * @param string $newKey new configuration key
      * @param bool $shopConfiguration configuration by shop or global
+     *
      * @return void
      */
-    public static function renameConfigurationKey(string $oldKey,string $newKey,bool $shopConfiguration = false): void
+    public static function renameConfigurationKey(string $oldKey, string $newKey, bool $shopConfiguration = false): void
     {
         if (LengowConfiguration::checkKeyExists($oldKey)) {
             $globalValue = LengowConfiguration::getGlobalValue($oldKey);
@@ -1068,6 +1073,7 @@ class LengowInstall
 
     /**
      * Delete old files
+     *
      * @return void
      */
     private function removeOldFiles(): void
@@ -1079,6 +1085,7 @@ class LengowInstall
 
     /**
      * Delete old configuration keys
+     *
      * @return void
      */
     private function removeOldConfigurationKeys(): void
@@ -1090,6 +1097,7 @@ class LengowInstall
 
     /**
      * Delete all lengow config files
+     *
      * @return void
      */
     private function removeConfigFiles(): void
@@ -1104,6 +1112,7 @@ class LengowInstall
 
     /**
      * Save Override directory
+     *
      * @return void
      */
     private function saveOverride(): void
@@ -1125,6 +1134,7 @@ class LengowInstall
 
     /**
      * Create Lengow customer group if not exists
+     *
      * @return void
      */
     private function createLengowCustomerGroup(): void

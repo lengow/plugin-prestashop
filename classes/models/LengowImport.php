@@ -279,20 +279,20 @@ class LengowImport
      * Construct the import manager
      *
      * @param array<string, mixed> $params optional options
-     *                      string  marketplace_sku     Lengow marketplace order id to synchronize
-     *                      string  marketplace_name    Lengow marketplace name to synchronize
-     *                      string  type                Type of current synchronization
-     *                      string  created_from        Synchronization of orders since
-     *                      string  created_to          Synchronization of orders until
-     *                      integer delivery_address_id Lengow delivery address id to synchronize
-     *                      integer id_order_lengow     Lengow order id in PrestaShop
-     *                      integer shop_id             Shop id for current synchronization
-     *                      float   days                Synchronization interval time
-     *                      integer limit               Maximum number of new orders created
-     *                      boolean log_output          Display log messages
-     *                      boolean debug_mode          Activate debug mode
-     *                      boolean force_sync          Force synchronization order even if there are errors
-     *                      boolean force_product       Force import product when quantity is insufficient
+     *                                     string  marketplace_sku     Lengow marketplace order id to synchronize
+     *                                     string  marketplace_name    Lengow marketplace name to synchronize
+     *                                     string  type                Type of current synchronization
+     *                                     string  created_from        Synchronization of orders since
+     *                                     string  created_to          Synchronization of orders until
+     *                                     integer delivery_address_id Lengow delivery address id to synchronize
+     *                                     integer id_order_lengow     Lengow order id in PrestaShop
+     *                                     integer shop_id             Shop id for current synchronization
+     *                                     float   days                Synchronization interval time
+     *                                     integer limit               Maximum number of new orders created
+     *                                     boolean log_output          Display log messages
+     *                                     boolean debug_mode          Activate debug mode
+     *                                     boolean force_sync          Force synchronization order even if there are errors
+     *                                     boolean force_product       Force import product when quantity is insufficient
      */
     public function __construct(array $params = [])
     {
@@ -435,7 +435,7 @@ class LengowImport
      *
      * @return bool
      */
-    public static function checkState(string $orderStateMarketplace,LengowMarketplace $marketplace): bool
+    public static function checkState(string $orderStateMarketplace, LengowMarketplace $marketplace): bool
     {
         if (empty($orderStateMarketplace)) {
             return false;
@@ -484,9 +484,10 @@ class LengowImport
      * @param float|null $days Import period
      * @param string|null $createdFrom Import of orders since
      * @param string|null $createdTo Import of orders until
+     *
      * @return void
      */
-    private function setIntervalTime(?float $minutes = null,?float $days = null,?string $createdFrom = null,?string $createdTo = null): void
+    private function setIntervalTime(?float $minutes = null, ?float $days = null, ?string $createdFrom = null, ?string $createdTo = null): void
     {
         if ($createdFrom && $createdTo) {
             // retrieval of orders created from ... until ...
@@ -582,6 +583,7 @@ class LengowImport
 
     /**
      * Starts some processes necessary for synchronization
+     *
      * @return void
      */
     private function setupSynchronization(): void
@@ -815,8 +817,9 @@ class LengowImport
      *
      * @param int $idShop PrestaShop shop Id
      *
-     * @throws Exception
      * @return void
+     *
+     * @throws Exception
      */
     private function changeContext(int $idShop): void
     {
@@ -945,9 +948,10 @@ class LengowImport
      *
      * @param mixed $orders API orders
      * @param int $idShop PrestaShop shop Id
+     *
      * @return void
      */
-    private function importOrders(mixed $orders,int $idShop): void
+    private function importOrders(mixed $orders, int $idShop): void
     {
         $importFinished = false;
         foreach ($orders as $orderData) {
@@ -1052,9 +1056,10 @@ class LengowImport
      * @param string $marketplaceSku id lengow of current order
      * @param string $errorMessage Error message
      * @param mixed $orderData API order data
+     *
      * @return void
      */
-    private function addOrderNotFormatted(string $marketplaceSku,string $errorMessage,mixed $orderData): void
+    private function addOrderNotFormatted(string $marketplaceSku, string $errorMessage, mixed $orderData): void
     {
         $messageDecoded = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
         $this->ordersNotFormatted[] = [
@@ -1075,6 +1080,7 @@ class LengowImport
      * Synchronize the merchant order id with Lengow
      *
      * @param array<string, mixed> $result synchronization order result
+     *
      * @return void
      */
     private function synchronizeMerchantOrderId(array $result): void
@@ -1101,6 +1107,7 @@ class LengowImport
      * Save the result of the order synchronization by type
      *
      * @param array<string, mixed> $result synchronization order result
+     *
      * @return void
      */
     private function saveSynchronizationResult(array $result): void
@@ -1125,6 +1132,7 @@ class LengowImport
 
     /**
      * Complete synchronization and start all necessary processes
+     *
      * @return void
      */
     private function finishSynchronization(): void
@@ -1157,6 +1165,7 @@ class LengowImport
 
     /**
      * Set import to "in process" state
+     *
      * @return void
      */
     private static function setInProcess(): void
@@ -1167,6 +1176,7 @@ class LengowImport
 
     /**
      * Set import to finished
+     *
      * @return void
      */
     private static function setEnd(): void

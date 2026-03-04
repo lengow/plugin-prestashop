@@ -39,7 +39,7 @@ class LengowOrderCarrier extends OrderCarrier
      * @param int|null $id_shop
      * @param mixed $translator
      */
-    public function __construct(?int $id = null,?int $id_lang = null,?int $id_shop = null,mixed $translator = null)
+    public function __construct(?int $id = null, ?int $id_lang = null, ?int $id_shop = null, mixed $translator = null)
     {
         parent::__construct($id, $id_lang, $id_shop, $translator);
 

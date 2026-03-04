@@ -165,6 +165,7 @@ class LengowMain
 
     /**
      * Temporary enable mail sending
+     *
      * @return void
      */
     public static function enableMail(): void
@@ -176,6 +177,7 @@ class LengowMain
 
     /**
      * Temporary disable mail sending
+     *
      * @return void
      */
     public static function disableMail(): void
@@ -191,6 +193,7 @@ class LengowMain
      * Record the date of the last import
      *
      * @param string $type last import type (cron or manual)
+     *
      * @return void
      */
     public static function updateDateImport(string $type): void
@@ -248,7 +251,7 @@ class LengowMain
      *
      * @return string
      */
-    public static function getDateInCorrectFormat(int $timestamp,bool $second = false): string
+    public static function getDateInCorrectFormat(int $timestamp, bool $second = false): string
     {
         if ($second) {
             $format = 'l d F Y @ H:i:s';
@@ -348,7 +351,7 @@ class LengowMain
      *
      * @return bool
      */
-    public static function checkWebservicesAccess(string $token,?int $idShop = null): bool
+    public static function checkWebservicesAccess(string $token, ?int $idShop = null): bool
     {
         if (!(bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)
             && self::checkToken($token, $idShop)
@@ -370,7 +373,7 @@ class LengowMain
      *
      * @return bool
      */
-    public static function checkToken(string $token,?int $idShop = null): bool
+    public static function checkToken(string $token, ?int $idShop = null): bool
     {
         $storeToken = self::getToken($idShop);
 
@@ -400,7 +403,7 @@ class LengowMain
             }
             $token = bin2hex(openssl_random_pseudo_bytes(16));
             LengowConfiguration::updateValue(LengowConfiguration::SHOP_TOKEN, $token,
-                            false, null, $idShop);
+                false, null, $idShop);
         }
 
         return $token;
@@ -428,9 +431,10 @@ class LengowMain
      * @param string $txt log message
      * @param bool $logOutput output on screen
      * @param string|null $marketplaceSku Lengow marketplace sku
+     *
      * @return void
      */
-    public static function log(string $category,string $txt,bool $logOutput = false,?string $marketplaceSku = null): void
+    public static function log(string $category, string $txt, bool $logOutput = false, ?string $marketplaceSku = null): void
     {
         $log = self::getLogInstance();
         if ($log) {
@@ -446,7 +450,7 @@ class LengowMain
      *
      * @return string
      */
-    public static function setLogMessage(string $key,?array $params = null): string
+    public static function setLogMessage(string $key, ?array $params = null): string
     {
         if ($params === null || empty($params)) {
             return $key;
@@ -469,7 +473,7 @@ class LengowMain
      *
      * @return string
      */
-    public static function decodeLogMessage(string $message,?string $isoCode = null,?array $params = null): string
+    public static function decodeLogMessage(string $message, ?string $isoCode = null, ?array $params = null): string
     {
         if (preg_match('/^(([a-z_]*\.){1,3}[a-z_]*)(\[(.*)\]|)$/', $message, $result)) {
             $key = $result[1];
@@ -482,7 +486,7 @@ class LengowMain
                 }
             }
             $locale = new LengowTranslation();
-            $message = $locale->t($key, $params, $isoCode);
+            $message = $locale->t($key, $params ?? [], $isoCode);
         }
 
         return $message;
@@ -490,6 +494,7 @@ class LengowMain
 
     /**
      * Suppress log files when too old
+     *
      * @return void
      */
     public static function cleanLog(): void
@@ -865,9 +870,10 @@ class LengowMain
     /**
      * @param string $minVersion
      * @param string $maxVersion
+     *
      * @return bool
      */
-    private static function isMondialRelayVersionAvailable(string $minVersion,string $maxVersion): bool
+    private static function isMondialRelayVersionAvailable(string $minVersion, string $maxVersion): bool
     {
         $moduleName = 'mondialrelay';
         $sep = DIRECTORY_SEPARATOR;
@@ -924,7 +930,7 @@ class LengowMain
      *
      * @return int
      */
-    public static function getPrestashopStateId(string $orderStateMarketplace,LengowMarketplace $marketplace,bool $shipmentByMp): int
+    public static function getPrestashopStateId(string $orderStateMarketplace, LengowMarketplace $marketplace, bool $shipmentByMp): int
     {
         if ($shipmentByMp) {
             $orderState = 'shippedByMp';

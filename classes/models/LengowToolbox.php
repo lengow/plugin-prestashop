@@ -241,6 +241,7 @@ class LengowToolbox
      * Download log file individually or globally
      *
      * @param string|null $date name of file to download
+     *
      * @return void
      */
     public static function downloadLog(?string $date = null): void
@@ -279,7 +280,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    public static function getOrderData(?string $marketplaceSku = null,?string $marketplaceName = null,string $type = self::DATA_TYPE_ORDER): array
+    public static function getOrderData(?string $marketplaceSku = null, ?string $marketplaceName = null, string $type = self::DATA_TYPE_ORDER): array
     {
         $lengowOrders = $marketplaceSku && $marketplaceName
             ? LengowOrder::getAllLengowOrders($marketplaceSku, $marketplaceName)
@@ -526,8 +527,9 @@ class LengowToolbox
      *
      * @string $shortPathParam the file short path
      *
-     * @return array<string, mixed>
      * @param mixed $shortPathParam
+     *
+     * @return array<string, mixed>
      */
     private static function getModifiedFilesData(mixed $shortPathParam): array
     {
@@ -677,7 +679,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getOrderDataByType(string $type,array $data,?LengowOrder $lengowOrder = null): array
+    private static function getOrderDataByType(string $type, array $data, ?LengowOrder $lengowOrder = null): array
     {
         $orderReferences = [
             self::ID => (int) $data[LengowOrder::FIELD_ID],
@@ -717,7 +719,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getAllOrderData(array $data,?LengowOrder $lengowOrder = null): array
+    private static function getAllOrderData(array $data, ?LengowOrder $lengowOrder = null): array
     {
         $orderTypes = json_decode($data[LengowOrder::FIELD_ORDER_TYPES], true);
 
@@ -879,7 +881,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function getOrderExtraData(array $data,?LengowOrder $lengowOrder = null): array
+    private static function getOrderExtraData(array $data, ?LengowOrder $lengowOrder = null): array
     {
         $orderData = json_decode($data[LengowOrder::FIELD_EXTRA], true);
         $orderData[self::EXTRA_UPDATED_AT] = $lengowOrder
@@ -941,7 +943,7 @@ class LengowToolbox
      *
      * @return array<int|string, mixed>
      */
-    private static function generateErrorReturn(int $httpCode,string $error): array
+    private static function generateErrorReturn(int $httpCode, string $error): array
     {
         return [
             self::ERRORS => [

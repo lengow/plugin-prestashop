@@ -29,6 +29,7 @@ class LengowHomeController extends LengowController
 {
     /**
      * Process Post Parameters
+     *
      * @return void
      */
     public function postProcess(): void
@@ -117,6 +118,7 @@ class LengowHomeController extends LengowController
 
     /**
      * Display data page
+     *
      * @return void
      */
     public function display(): void
@@ -140,7 +142,7 @@ class LengowHomeController extends LengowController
      *
      * @return bool
      */
-    private function checkApiCredentials(string $accessToken,string $secret): bool
+    private function checkApiCredentials(string $accessToken, string $secret): bool
     {
         $accessIdsSaved = false;
         $accountId = LengowConnector::getAccountIdByCredentials($accessToken, $secret);

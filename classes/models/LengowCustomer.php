@@ -98,9 +98,10 @@ class LengowCustomer extends Customer
      *
      * @param string $fieldName incorrect field
      * @param int $errorType type of error
+     *
      * @return void
      */
-    public function validateFieldLengow(string $fieldName,int $errorType): void
+    public function validateFieldLengow(string $fieldName, int $errorType): void
     {
         switch ($errorType) {
             case LengowAddress::LENGOW_EMPTY_ERROR:
@@ -118,6 +119,7 @@ class LengowCustomer extends Customer
      * Modify an empty field
      *
      * @param string $fieldName field name
+     *
      * @return void
      */
     public function validateEmptyLengow(string $fieldName): void
@@ -155,6 +157,7 @@ class LengowCustomer extends Customer
      * Modify a field to fit its size
      *
      * @param string $fieldName field name
+     *
      * @return void
      */
     public function validateSizeLengow(string $fieldName): void
@@ -176,7 +179,7 @@ class LengowCustomer extends Customer
      *
      * @return LengowCustomer|false
      */
-    public function getByEmailAndShop(string $email,int $idShop): LengowCustomer|false
+    public function getByEmailAndShop(string $email, int $idShop): LengowCustomer|false
     {
         $sql = 'SELECT *
             FROM `' . _DB_PREFIX_ . 'customer`

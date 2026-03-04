@@ -305,19 +305,19 @@ class LengowExport
      * Construct new Lengow export
      *
      * @param array<string, mixed> $params optional options
-     *                      integer limit              The number of product to be exported
-     *                      integer offset             From what product export
-     *                      integer shop_id            Shop id for export
-     *                      integer language_id        language for export
-     *                      string  product_ids        Ids product to export
-     *                      string  format             Export Format (csv|yaml|xml|json)
-     *                      boolean stream             Display file when call script (1) | Save File (0)
-     *                      boolean out_of_stock       Export product in stock and out stock (1) | Export Only in stock product (0)
-     *                      boolean selection          Export selected product (1) | Export all products (0)
-     *                      boolean inactive           Export active and inactive product (1) | Export Only active product (0)
-     *                      boolean variation          Export product variation (1) | Export Only simple product (0)
-     *                      boolean legacy_fields      Export with legacy fields (1) | Export with new fields (0)
-     *                      boolean update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1) or not
+     *                                     integer limit              The number of product to be exported
+     *                                     integer offset             From what product export
+     *                                     integer shop_id            Shop id for export
+     *                                     integer language_id        language for export
+     *                                     string  product_ids        Ids product to export
+     *                                     string  format             Export Format (csv|yaml|xml|json)
+     *                                     boolean stream             Display file when call script (1) | Save File (0)
+     *                                     boolean out_of_stock       Export product in stock and out stock (1) | Export Only in stock product (0)
+     *                                     boolean selection          Export selected product (1) | Export all products (0)
+     *                                     boolean inactive           Export active and inactive product (1) | Export Only active product (0)
+     *                                     boolean variation          Export product variation (1) | Export Only simple product (0)
+     *                                     boolean legacy_fields      Export with legacy fields (1) | Export with new fields (0)
+     *                                     boolean update_export_date Update 'LENGOW_LAST_EXPORT' when launching export process (1) or not
      */
     public function __construct(array $params = [])
     {
@@ -342,28 +342,28 @@ class LengowExport
         // set default value for new shop
         if ($selection === null) {
             LengowConfiguration::updateValue(LengowConfiguration::SELECTION_ENABLED, 0,
-                            false, null, $this->idShop);
+                false, null, $this->idShop);
             $selection = false;
         } else {
             $selection = (bool) $selection;
         }
         if ($outOfStock === null) {
             LengowConfiguration::updateValue(LengowConfiguration::OUT_OF_STOCK_ENABLED, 1,
-                            false, null, $this->idShop);
+                false, null, $this->idShop);
             $outOfStock = true;
         } else {
             $outOfStock = (bool) $outOfStock;
         }
         if ($variation === null) {
             LengowConfiguration::updateValue(LengowConfiguration::VARIATION_ENABLED, 1,
-                            false, null, $this->idShop);
+                false, null, $this->idShop);
             $variation = true;
         } else {
             $variation = (bool) $variation;
         }
         if ($inactive === null) {
             LengowConfiguration::updateValue(LengowConfiguration::INACTIVE_ENABLED, 0,
-                            false, null, $this->idShop);
+                false, null, $this->idShop);
             $inactive = false;
         } else {
             $inactive = (bool) $inactive;
@@ -391,6 +391,7 @@ class LengowExport
      * Set format to export
      *
      * @param string $format The export format
+     *
      * @return void
      */
     public function setFormat(string $format): void
@@ -400,6 +401,7 @@ class LengowExport
 
     /**
      * Execute export process
+     *
      * @return void
      */
     public function exec(): void
@@ -505,6 +507,7 @@ class LengowExport
 
     /**
      * Set or not legacy fields to export
+     *
      * @return void
      */
     public function setLegacyFields(): void
@@ -527,10 +530,11 @@ class LengowExport
      * @param list<string> $fields list of fields
      * @param Shop $shop PrestaShop shop being exported
      *
-     * @throws Exception|LengowException folder not writable
      * @return void
+     *
+     * @throws Exception|LengowException folder not writable
      */
-    public function export(array $products,array $fields,Shop $shop): void
+    public function export(array $products, array $fields, Shop $shop): void
     {
         $productCount = 0;
         $this->feed = new LengowFeed(
@@ -652,7 +656,7 @@ class LengowExport
      *
      * @throws Exception
      */
-    public function loadCacheCombinations(LengowProduct $product,array $fields): bool
+    public function loadCacheCombinations(LengowProduct $product, array $fields): bool
     {
         if (!isset($this->cacheCombination[$product->id])) {
             $this->cacheCombination = [];
@@ -986,7 +990,7 @@ class LengowExport
      *
      * @return array<int|string, mixed>
      */
-    public static function setAdditionalFieldsValues(LengowProduct $product,?int $idProductAttribute = null,?array $arrayProduct = null): array
+    public static function setAdditionalFieldsValues(LengowProduct $product, ?int $idProductAttribute = null, ?array $arrayProduct = null): array
     {
         /**
          * Write here your process

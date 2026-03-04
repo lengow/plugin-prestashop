@@ -248,7 +248,7 @@ class LengowOrder extends Order
      * @param int|null $id Lengow order id
      * @param int|null $idLang PrestaShop id lang
      */
-    public function __construct(?int $id = null,?int $idLang = null)
+    public function __construct(?int $id = null, ?int $idLang = null)
     {
         parent::__construct($id, $idLang);
         $this->loadLengowFields();
@@ -342,7 +342,7 @@ class LengowOrder extends Order
      *
      * @return int|false
      */
-    public static function getOrderIdFromLengowOrders(string $marketplaceSku,string $marketplace,?string $marketplaceLegacy): int|false
+    public static function getOrderIdFromLengowOrders(string $marketplaceSku, string $marketplace, ?string $marketplaceLegacy): int|false
     {
         // v2 compatibility
         $in = (
@@ -376,7 +376,7 @@ class LengowOrder extends Order
      *
      * @return int|false
      */
-    public static function getIdFromLengowOrders(string $marketplaceSku,string $marketplace): int|false
+    public static function getIdFromLengowOrders(string $marketplaceSku, string $marketplace): int|false
     {
         $query = 'SELECT `id` FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `' . self::FIELD_MARKETPLACE_SKU . '` = "' . pSQL($marketplaceSku) . '"
@@ -419,7 +419,7 @@ class LengowOrder extends Order
      *
      * @return int|false
      */
-    public static function getIdFromLengowDeliveryAddress(int $idOrder,int $deliveryAddressId): int|false
+    public static function getIdFromLengowDeliveryAddress(int $idOrder, int $deliveryAddressId): int|false
     {
         $query = 'SELECT `id` FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `id_order` = \'' . (int) $idOrder . '\'
@@ -440,7 +440,7 @@ class LengowOrder extends Order
      *
      * @return array<int|string, mixed>
      */
-    public static function getAllOrderIdsFromLengowOrder(string $marketplaceSku,string $marketplace): array
+    public static function getAllOrderIdsFromLengowOrder(string $marketplaceSku, string $marketplace): array
     {
         $query = 'SELECT `id_order` FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `marketplace_sku` = \'' . pSQL($marketplaceSku) . '\'
@@ -461,7 +461,7 @@ class LengowOrder extends Order
      *
      * @return array<int|string, mixed>
      */
-    public static function getAllLengowOrders(string $marketplaceSku,string $marketplace): array
+    public static function getAllLengowOrders(string $marketplaceSku, string $marketplace): array
     {
         $query = 'SELECT * FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `marketplace_sku` = \'' . pSQL($marketplaceSku) . '\'
@@ -481,7 +481,7 @@ class LengowOrder extends Order
      *
      * @return bool
      */
-    public static function updateOrderLengow(int $id,array $params): bool
+    public static function updateOrderLengow(int $id, array $params): bool
     {
         return Db::getInstance()->update(self::TABLE_ORDER, $params, '`id` = \'' . (int) $id . '\'');
     }
@@ -496,7 +496,7 @@ class LengowOrder extends Order
      *
      * @throws Exception
      */
-    public function updateState(string $orderStateLengow,mixed $packageData): string|false
+    public function updateState(string $orderStateLengow, mixed $packageData): string|false
     {
         $orderProcessState = self::getOrderProcessState($orderStateLengow);
         $trackingNumber = !empty($packageData->delivery->trackings)
@@ -612,6 +612,7 @@ class LengowOrder extends Order
 
     /**
      * Sets order state to Lengow technical error
+     *
      * @return void
      */
     public function setStateToError(): void
@@ -677,7 +678,7 @@ class LengowOrder extends Order
      *
      * @return bool
      */
-    public function synchronizeOrder(?LengowConnector $connector = null,bool $logOutput = false): bool
+    public function synchronizeOrder(?LengowConnector $connector = null, bool $logOutput = false): bool
     {
         list($accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
         // get connector
@@ -750,7 +751,7 @@ class LengowOrder extends Order
      *
      * @return bool
      */
-    public function checkAndChangeMarketplaceName(?LengowConnector $connector = null,bool $logOutput = false): bool
+    public function checkAndChangeMarketplaceName(?LengowConnector $connector = null, bool $logOutput = false): bool
     {
         list($accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
         // get connector
@@ -1053,11 +1054,11 @@ class LengowOrder extends Order
      * Send Order action
      *
      * @param string $action Lengow Actions type (ship or cancel)
+     * @param mixed $partialAction
      *
      * @return bool
-     * @param mixed $partialAction
      */
-    public function callAction(string $action,mixed $partialAction = false): bool
+    public function callAction(string $action, mixed $partialAction = false): bool
     {
         $success = true;
         LengowMain::log(
@@ -1360,9 +1361,10 @@ class LengowOrder extends Order
     /**
      * @param int $orderId
      * @param string $marketplaceName
+     *
      * @return array<string, mixed>
      */
-    public function getRefundDataFromLengowOrder(int $orderId,string $marketplaceName): array
+    public function getRefundDataFromLengowOrder(int $orderId, string $marketplaceName): array
     {
         $db = Db::getInstance();
         $sql = 'SELECT refund_reason, refund_mode

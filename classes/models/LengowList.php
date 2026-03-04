@@ -65,7 +65,7 @@ class LengowList
     /**
      * @var int PrestaShop shop id
      */
-    protected int $shopId;
+    protected int $shopId = 0;
 
     /**
      * @var int number of the current page
@@ -150,7 +150,7 @@ class LengowList
         $this->selection = $params['selection'];
         $this->selectionCondition = isset($params['selection_condition']) ? $params['selection_condition'] : false;
         $this->controller = $params['controller'];
-        $this->shopId = isset($params['shop_id']) ? $params['shop_id'] : null;
+        $this->shopId = isset($params['shop_id']) ? (int) $params['shop_id'] : (int) (Context::getContext()->shop->id ?? 0);
         $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
         $this->nbPerPageList = [20, 50, 100, 200];
         $this->nbPerPage = (isset($params['nb_per_page']) && $params['nb_per_page'] != null)
@@ -300,7 +300,7 @@ class LengowList
         }
         foreach ($this->fieldsList as $key => $values) {
             if (isset($values['display_callback'])) {
-                $value = call_user_func_array($values['display_callback'], [$key, $item[$key], $item]);
+                $value = call_user_func_array($values['display_callback'], [$key, $item[$key] ?? '', $item]);
             } elseif (isset($values['type'])) {
                 switch ($values['type']) {
                     case 'date':
@@ -471,7 +471,7 @@ class LengowList
      *
      * @return string
      */
-    public function buildQuery(bool $total = false,bool $selectAll = false): string
+    public function buildQuery(bool $total = false, bool $selectAll = false): string
     {
         $where = isset($this->sql['where']) ? $this->sql['where'] : [];
         $groupBy = false;
@@ -588,6 +588,7 @@ class LengowList
      * Update collection
      *
      * @param array<int|string, mixed> $collection collection of result
+     *
      * @return void
      */
     public function updateCollection(array $collection): void
@@ -691,18 +692,32 @@ class LengowList
      */
     private function getCurrencyByCode(string $isoCode): Currency
     {
-        if ($isoCode) {
-            if (isset($this->currencyCode[$isoCode])) {
-                return $this->currencyCode[$isoCode];
+        if (!$isoCode) {
+            return $this->context->currency;
+        }
+
+        if (isset($this->currencyCode[$isoCode])) {
+            $cached = $this->currencyCode[$isoCode];
+            if ($cached instanceof Currency) {
+                return $cached;
             }
-            $currency = Currency::getCurrency(Currency::getIdByIsoCode($isoCode));
-            if ($currency) {
-                $this->currencyCode[$isoCode] = $currency;
-            } else {
-                $this->currencyCode[$isoCode] = $this->context->currency;
+            if (is_array($cached)) {
+                $id = isset($cached['id_currency']) ? (int) $cached['id_currency'] : (isset($cached['id']) ? (int) $cached['id'] : 0);
+                if ($id > 0) {
+                    $currencyObj = new Currency($id);
+                    $this->currencyCode[$isoCode] = $currencyObj;
+                    return $currencyObj;
+                }
             }
 
-            return $this->currencyCode[$isoCode];
+            return $this->context->currency;
+        }
+
+        $id = Currency::getIdByIsoCode($isoCode);
+        if ($id) {
+            $currencyObj = new Currency((int) $id);
+            $this->currencyCode[$isoCode] = $currencyObj;
+            return $currencyObj;
         }
 
         return $this->context->currency;

@@ -22,6 +22,9 @@
 
 namespace PrestaShop\Module\Lengow\Controller;
 
+use PrestaShop\PrestaShop\Adapter\Configuration;
+use PrestaShop\PrestaShop\Adapter\Currency\CurrencyDataProvider;
+use PrestaShop\PrestaShop\Core\Action\ActionsBarButtonsCollection;
 use PrestaShop\PrestaShop\Core\Domain\CartRule\Exception\InvalidCartRuleDiscountValueException;
 use PrestaShop\PrestaShop\Core\Domain\Order\Command\UpdateOrderShippingDetailsCommand;
 use PrestaShop\PrestaShop\Core\Domain\Order\Exception\CannotEditDeliveredOrderProductException;
@@ -42,11 +45,8 @@ use PrestaShop\PrestaShop\Core\Domain\Order\Query\GetOrderForViewing;
 use PrestaShop\PrestaShop\Core\Domain\Order\QueryResult\OrderForViewing;
 use PrestaShop\PrestaShop\Core\Domain\Product\Exception\ProductOutOfStockException;
 use PrestaShop\PrestaShop\Core\Domain\ValueObject\QuerySorting;
-use PrestaShop\PrestaShop\Core\Order\OrderSiblingProviderInterface;
-use PrestaShop\PrestaShop\Core\Action\ActionsBarButtonsCollection;
-use PrestaShop\PrestaShop\Adapter\Currency\CurrencyDataProvider;
-use PrestaShop\PrestaShop\Adapter\Configuration;
 use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilderInterface;
+use PrestaShop\PrestaShop\Core\Order\OrderSiblingProviderInterface;
 use PrestaShopBundle\Controller\Admin\Sell\Order\OrderController;
 use PrestaShopBundle\Exception\InvalidModuleException;
 use PrestaShopBundle\Form\Admin\Sell\Customer\PrivateNoteType;
@@ -83,7 +83,7 @@ class AdminOrderController extends OrderController
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        Configuration $configuration
+        Configuration $configuration,
     ) {
         parent::__construct($formFactory);
         $this->formFactory = $formFactory;
@@ -103,7 +103,7 @@ class AdminOrderController extends OrderController
         Request $request,
         #[Autowire(service: 'prestashop.core.form.identifiable_object.builder.cancel_product_form_builder')] FormBuilderInterface $formBuilder,
         #[Autowire(service: 'prestashop.adapter.order.order_sibling_provider')] OrderSiblingProviderInterface $orderSiblingProvider,
-        CurrencyDataProvider $currencyDataProvider
+        CurrencyDataProvider $currencyDataProvider,
     ): Response {
         try {
             if (!$this->isFromLengow($orderId)) {
@@ -392,6 +392,7 @@ class AdminOrderController extends OrderController
 
     /**
      * @param OrderForViewing $orderForViewing
+     *
      * @return void
      */
     private function handleOutOfStockProduct(OrderForViewing $orderForViewing): void

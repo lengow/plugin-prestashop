@@ -163,7 +163,7 @@ class LengowConnector
      * @param string $accessToken your access token
      * @param string $secret your secret
      */
-    public function __construct(string $accessToken,string $secret)
+    public function __construct(string $accessToken, string $secret)
     {
         $this->accessToken = $accessToken;
         $this->secret = $secret;
@@ -216,7 +216,7 @@ class LengowConnector
      *
      * @return mixed
      */
-    public static function queryApi(string $type,string $api,array $args = [],string $body = '',bool $logOutput = false): mixed
+    public static function queryApi(string $type, string $api, array $args = [], string $body = '', bool $logOutput = false): mixed
     {
         if (!in_array($type, [self::GET, self::POST, self::PUT, self::PATCH])) {
             return false;
@@ -259,7 +259,7 @@ class LengowConnector
      *
      * @return int|null
      */
-    public static function getAccountIdByCredentials(string $accessToken,string $secret,bool $logOutput = false): ?int
+    public static function getAccountIdByCredentials(string $accessToken, string $secret, bool $logOutput = false): ?int
     {
         $connector = new LengowConnector($accessToken, $secret);
         try {
@@ -297,10 +297,11 @@ class LengowConnector
      * @param bool $force Force cache Update
      * @param bool $logOutput see log or not
      *
-     * @throws LengowException
      * @return void
+     *
+     * @throws LengowException
      */
-    public function connect(bool $force = false,bool $logOutput = false): void
+    public function connect(bool $force = false, bool $logOutput = false): void
     {
         $token = LengowConfiguration::getGlobalValue(LengowConfiguration::AUTHORIZATION_TOKEN);
         $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_AUTHORIZATION_TOKEN);
@@ -331,7 +332,7 @@ class LengowConnector
      *
      * @throws LengowException
      */
-    public function get(string $api,array $args = [],string $format = self::FORMAT_JSON,string $body = '',bool $logOutput = false): mixed
+    public function get(string $api, array $args = [], string $format = self::FORMAT_JSON, string $body = '', bool $logOutput = false): mixed
     {
         return $this->call($api, $args, self::GET, $format, $body, $logOutput);
     }
@@ -349,7 +350,7 @@ class LengowConnector
      *
      * @throws LengowException
      */
-    public function post(string $api,array $args = [],string $format = self::FORMAT_JSON,string $body = '',bool $logOutput = false): mixed
+    public function post(string $api, array $args = [], string $format = self::FORMAT_JSON, string $body = '', bool $logOutput = false): mixed
     {
         return $this->call($api, $args, self::POST, $format, $body, $logOutput);
     }
@@ -367,7 +368,7 @@ class LengowConnector
      *
      * @throws LengowException
      */
-    public function put(string $api,array $args = [],string $format = self::FORMAT_JSON,string $body = '',bool $logOutput = false): mixed
+    public function put(string $api, array $args = [], string $format = self::FORMAT_JSON, string $body = '', bool $logOutput = false): mixed
     {
         return $this->call($api, $args, self::PUT, $format, $body, $logOutput);
     }
@@ -385,7 +386,7 @@ class LengowConnector
      *
      * @throws LengowException
      */
-    public function patch(string $api,array $args = [],string $format = self::FORMAT_JSON,string $body = '',bool $logOutput = false): mixed
+    public function patch(string $api, array $args = [], string $format = self::FORMAT_JSON, string $body = '', bool $logOutput = false): mixed
     {
         return $this->call($api, $args, self::PATCH, $format, $body, $logOutput);
     }
@@ -404,7 +405,7 @@ class LengowConnector
      *
      * @throws LengowException
      */
-    private function call(string $api,array $args,string $type,string $format,string $body,bool $logOutput): mixed
+    private function call(string $api, array $args, string $type, string $format, string $body, bool $logOutput): mixed
     {
         try {
             if (!in_array($api, self::$apiWithoutAuthorizations, true)) {
@@ -444,7 +445,7 @@ class LengowConnector
      *
      * @throws LengowException
      */
-    private function callAction(string $api,array $args,string $type,string $format,string $body,bool $logOutput): mixed
+    private function callAction(string $api, array $args, string $type, string $format, string $body, bool $logOutput): mixed
     {
         $this->rateLimitingRequests($api);
         $result = $this->makeRequest($type, $api, $args, $this->token, $body, $logOutput);
@@ -568,7 +569,7 @@ class LengowConnector
      * @param string $type type of request GET|POST|PUT|PATCH
      * @param string $api Lengow method API call
      * @param array<string, mixed> $args Lengow method API parameters
-     * @param string $token temporary authorization token
+     * @param string|null $token temporary authorization token
      * @param string $body body data for request
      * @param bool $logOutput see log or not
      *
@@ -576,7 +577,7 @@ class LengowConnector
      *
      * @throws LengowException
      */
-    private function makeRequest(string $type,string $api,array $args,string $token,string $body,bool $logOutput): mixed
+    private function makeRequest(string $type, string $api, array $args, ?string $token, string $body, bool $logOutput): mixed
     {
         // define CURLE_OPERATION_TIMEDOUT for old php versions
         defined('CURLE_OPERATION_TIMEDOUT') || define('CURLE_OPERATION_TIMEDOUT', CURLE_OPERATION_TIMEOUTED);
@@ -651,10 +652,11 @@ class LengowConnector
      * @param string $curlError Curl error
      * @param int $curlErrorNumber Curl error number
      *
-     * @throws LengowException
      * @return void
+     *
+     * @throws LengowException
      */
-    private function checkReturnRequest($result,int $httpCode,string $curlError,int $curlErrorNumber): void
+    private function checkReturnRequest($result, int $httpCode, string $curlError, int $curlErrorNumber): void
     {
         if ($result === false) {
             // recovery of Curl errors
@@ -681,7 +683,7 @@ class LengowConnector
      *
      * @return mixed
      */
-    private function format(mixed $data,string $format = self::FORMAT_JSON): mixed
+    private function format(mixed $data, string $format = self::FORMAT_JSON): mixed
     {
         switch ($format) {
             case self::FORMAT_STREAM:

@@ -108,7 +108,7 @@ class LengowFeed
      *
      * @throws LengowException unable to create folder
      */
-    public function __construct(bool $stream,string $format,bool $legacy,?string $shopName = null)
+    public function __construct(bool $stream, string $format, bool $legacy, ?string $shopName = null)
     {
         $this->stream = $stream;
         $this->format = $format;
@@ -125,8 +125,9 @@ class LengowFeed
     /**
      * Create export file
      *
-     * @throws LengowException unable to create folder
      * @return void
+     *
+     * @throws LengowException unable to create folder
      */
     public function initExportFile(): void
     {
@@ -147,9 +148,10 @@ class LengowFeed
      * @param array<int|string, mixed> $data export data
      * @param bool|null $isFirst is first product
      * @param int|null $maxCharacter max characters for yaml format
+     *
      * @return void
      */
-    public function write(string $type,array $data = [],?bool $isFirst = null,?int $maxCharacter = null): void
+    public function write(string $type, array $data = [], ?bool $isFirst = null, ?int $maxCharacter = null): void
     {
         switch ($type) {
             case self::HEADER:
@@ -211,7 +213,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected function getBody(array $data,bool $isFirst,int $maxCharacter): string
+    protected function getBody(array $data, bool $isFirst, int $maxCharacter): string
     {
         switch ($this->format) {
             case self::FORMAT_CSV:
@@ -279,6 +281,7 @@ class LengowFeed
      * Flush feed content
      *
      * @param string $content feed content to be flushed
+     *
      * @return void
      */
     public function flush(string $content): void
@@ -372,7 +375,7 @@ class LengowFeed
      *
      * @return string
      */
-    public static function formatFields(string $str,string $format,bool $legacy = false): string
+    public static function formatFields(string $str, string $format, bool $legacy = false): string
     {
         switch ($format) {
             case self::FORMAT_CSV:
@@ -420,7 +423,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected function indentYaml(string $name,int $maxSize): string
+    protected function indentYaml(string $name, int $maxSize): string
     {
         $strlen = mb_strlen((string) $name);
         $spaces = '';

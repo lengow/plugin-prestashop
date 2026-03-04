@@ -35,6 +35,7 @@ class LengowFeedController extends LengowController
 
     /**
      * Process Post Parameters
+     *
      * @return void
      */
     public function postProcess(): void
@@ -62,21 +63,21 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::OUT_OF_STOCK_ENABLED,
                                 1,
-                            false,
+                                false,
                                 null,
                                 $idShop
                             );
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::VARIATION_ENABLED,
                                 1,
-                            false,
+                                false,
                                 null,
                                 $idShop
                             );
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::INACTIVE_ENABLED,
                                 0,
-                            false,
+                                false,
                                 null,
                                 $idShop
                             );
@@ -108,7 +109,7 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
                                 0,
-                            false,
+                                false,
                                 null,
                                 $idShop
                             );
@@ -138,7 +139,7 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
                                 0,
-                            false,
+                                false,
                                 null,
                                 $idShop
                             );
@@ -168,7 +169,7 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
                                 0,
-                            false,
+                                false,
                                 null,
                                 $idShop
                             );
@@ -245,6 +246,7 @@ class LengowFeedController extends LengowController
 
     /**
      * Display data page
+     *
      * @return void
      */
     public function display(): void
@@ -563,7 +565,7 @@ class LengowFeedController extends LengowController
      *
      * @throws Exception
      */
-    public static function displayLink(string $key,string $value,array $item): string
+    public static function displayLink(string $key, string $value, array $item): string
     {
         // this line is useless, but PrestaShop validator require it
         $key = $key;

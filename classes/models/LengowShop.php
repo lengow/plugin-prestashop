@@ -82,7 +82,7 @@ class LengowShop extends Shop
      *
      * @return array<int|string, mixed>
      */
-    public static function getActiveShops(bool $activeInLengow = false,?int $idShop = null): array
+    public static function getActiveShops(bool $activeInLengow = false, ?int $idShop = null): array
     {
         $result = [];
         $shops = self::findAll(true);

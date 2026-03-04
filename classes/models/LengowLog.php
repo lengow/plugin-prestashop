@@ -71,9 +71,10 @@ class LengowLog extends LengowFile
      * @param string $message log message
      * @param bool $logOutput display on screen
      * @param string|null $marketplaceSku Lengow order id
+     *
      * @return void
      */
-    public function write(string $category,string $message = '',bool $logOutput = false,?string $marketplaceSku = null): void
+    public function write(string $category, string $message = '', bool $logOutput = false, ?string $marketplaceSku = null): void
     {
         $decodedMessage = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
         $log = date(LengowMain::DATE_FULL);
@@ -139,6 +140,7 @@ class LengowLog extends LengowFile
      * Download log file
      *
      * @param string|null $date date for a specific log file
+     *
      * @return void
      */
     public static function download(?string $date = null): void
@@ -191,6 +193,7 @@ class LengowLog extends LengowFile
     /**
      * Logs potential PHP fatal error on shutdown.
      * Can be useful when the script crash silently
+     *
      * @return void
      */
     public static function registerShutdownFunction(): void

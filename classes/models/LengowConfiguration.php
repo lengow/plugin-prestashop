@@ -643,7 +643,7 @@ class LengowConfiguration extends Configuration
      *
      * @return mixed
      */
-    public static function get($key,$idLang = null,$idShopGroup = null,$idShop = null,$default = false): mixed
+    public static function get($key, $idLang = null, $idShopGroup = null, $idShop = null, $default = false): mixed
     {
         if ($idShop > 1 && Shop::isFeatureActive()) {
             $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration
@@ -716,6 +716,7 @@ class LengowConfiguration extends Configuration
 
     /**
      * Reset access ids for old customer
+     *
      * @return void
      */
     public static function resetAccessIds(): void
@@ -731,6 +732,7 @@ class LengowConfiguration extends Configuration
 
     /**
      * Reset authorization token
+     *
      * @return void
      */
     public static function resetAuthorizationToken(): void
@@ -783,7 +785,7 @@ class LengowConfiguration extends Configuration
      *
      * @return bool
      */
-    public static function setCatalogIds(array $catalogIds,int $idShop): bool
+    public static function setCatalogIds(array $catalogIds, int $idShop): bool
     {
         $valueChange = false;
         $shopCatalogIds = self::getCatalogIds($idShop);
@@ -800,6 +802,7 @@ class LengowConfiguration extends Configuration
 
     /**
      * Reset all catalog ids
+     *
      * @return void
      */
     public static function resetCatalogIds(): void
@@ -950,7 +953,7 @@ class LengowConfiguration extends Configuration
      *
      * @return array<int|string, mixed>
      */
-    public static function getAllValues(?int $idShop = null,bool $toolbox = false): array
+    public static function getAllValues(?int $idShop = null, bool $toolbox = false): array
     {
         $rows = [];
         $keys = self::getKeys();
@@ -1057,8 +1060,9 @@ class LengowConfiguration extends Configuration
     /**
      * Will return the global the typed global value
      *
-     * @return mixed
      * @param mixed $key
+     *
+     * @return mixed
      */
     public static function getTypedGlobalValue(mixed $key): mixed
     {
@@ -1075,7 +1079,7 @@ class LengowConfiguration extends Configuration
      *
      * @return array|bool|float|int|string|string[]|null
      */
-    private static function getValueWithCorrectType(string $key,?string $value = null): mixed
+    private static function getValueWithCorrectType(string $key, ?string $value = null): mixed
     {
         $keyParams = self::getKeys($key);
         if (isset($keyParams[self::PARAM_RETURN])) {

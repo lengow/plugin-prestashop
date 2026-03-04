@@ -34,6 +34,7 @@ class LengowOrderController extends LengowController
 
     /**
      * Display data page
+     *
      * @return void
      */
     public function display(): void
@@ -48,6 +49,7 @@ class LengowOrderController extends LengowController
 
     /**
      * Process Post Parameters
+     *
      * @return void
      */
     public function postProcess(): void
@@ -203,6 +205,7 @@ class LengowOrderController extends LengowController
 
     /**
      * Get all warning messages
+     *
      * @return void
      */
     public function assignWarningMessages(): void
@@ -230,6 +233,7 @@ class LengowOrderController extends LengowController
 
     /**
      * Get all last importation data
+     *
      * @return void
      */
     public function assignLastImportationInfos(): void
@@ -250,6 +254,7 @@ class LengowOrderController extends LengowController
 
     /**
      * Display data page
+     *
      * @return void
      */
     public function assignNbOrderImported(): void
@@ -566,7 +571,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function displayLengowState(string $key,string $value,array $item): string
+    public static function displayLengowState(string $key, string $value, array $item): string
     {
         // this two lines are useless, but PrestaShop validator require it
         $key = $key;
@@ -588,7 +593,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function displayOrderTypes(string $key,string $value,array $item): string
+    public static function displayOrderTypes(string $key, string $value, array $item): string
     {
         $return = '<div>';
         $orderTypes = $value !== '' ? json_decode($value, true) : [];
@@ -623,7 +628,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function displayOrderLink(string $key,string $value,array $item): string
+    public static function displayOrderLink(string $key, string $value, array $item): string
     {
         // this line is useless, but PrestaShop validator require it
         $key = $key;
@@ -645,7 +650,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function displayMarketplaceName(string $key,string $value,array $item): string
+    public static function displayMarketplaceName(string $key, string $value, array $item): string
     {
         // this line is useless, but PrestaShop validator require it
         $key = $key;
@@ -663,7 +668,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function displayLogStatus(string $key,string $value,array $item): string
+    public static function displayLogStatus(string $key, string $value, array $item): string
     {
         if ($item[$key] && (int) $item[LengowOrder::FIELD_ORDER_PROCESS_STATE] !== LengowOrder::PROCESS_STATE_FINISH) {
             $errorMessages = [];
@@ -793,7 +798,7 @@ class LengowOrderController extends LengowController
      *
      * @return string
      */
-    public static function generateOrderTypeIcon(string $iconLabel,string $iconColor,string $iconMod): string
+    public static function generateOrderTypeIcon(string $iconLabel, string $iconColor, string $iconMod): string
     {
         return '
             <div class="lgw-label ' . $iconColor . ' icon-solo lengow_link_tooltip"

@@ -70,7 +70,7 @@ class LengowTranslation
      *
      * @return string
      */
-    public function t(string $message,array $args = [],?string $isoCode = null): string
+    public function t(string $message, array $args = [], ?string $isoCode = null): string
     {
         if (self::$forceIsoCode !== null) {
             $isoCode = self::$forceIsoCode;
@@ -102,7 +102,7 @@ class LengowTranslation
      *
      * @return string
      */
-    protected function translateFinal(string $text,array $args): string
+    protected function translateFinal(string $text, array $args): string
     {
         if ($args) {
             $params = [];
@@ -126,7 +126,7 @@ class LengowTranslation
      *
      * @return bool
      */
-    public function loadFile(string $isoCode,?string $filename = null): bool
+    public function loadFile(string $isoCode, ?string $filename = null): bool
     {
         $validCodes = [
             self::ISO_CODE_EN,

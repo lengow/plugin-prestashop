@@ -107,7 +107,7 @@ class LengowOrderLine
      *
      * @return bool
      */
-    public static function setRefunded(int $idOrderDetail,string $idOrderLine,int $cancelQuantity): bool
+    public static function setRefunded(int $idOrderDetail, string $idOrderLine, int $cancelQuantity): bool
     {
         $sql = 'UPDATE `' . _DB_PREFIX_ . self::TABLE_ORDER_LINE . '`
             SET refunded = 1, quantity_refunded = ' . (int) $cancelQuantity . '

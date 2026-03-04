@@ -66,8 +66,9 @@ class LengowCart extends Cart
      *
      * @param array<string, mixed> $products list of products to be added
      *
-     * @throws Exception Cannot add product to cart
      * @return void
+     *
+     * @throws Exception Cannot add product to cart
      */
     public function cleanCart(array $products = []): void
     {
@@ -106,7 +107,8 @@ class LengowCart extends Cart
      *
      * @throws Exception|PrestaShopDatabaseException
      */
-    public function updateQty($quantity,$idProduct,$idProductAttribute = null,$idCustomization = false,$operator = 'up',$idAddressDelivery = 0,$shop = null,$autoAddCartRule = true,$skipAvailabilityCheckOutOfStock = false,$preserveGiftRemoval = true,$useOrderPrices = false): bool {
+    public function updateQty($quantity, $idProduct, $idProductAttribute = null, $idCustomization = false, $operator = 'up', $idAddressDelivery = 0, $shop = null, $autoAddCartRule = true, $skipAvailabilityCheckOutOfStock = false, $preserveGiftRemoval = true, $useOrderPrices = false): bool
+    {
         if (!$shop instanceof Shop) {
             $shop = Context::getContext()->shop;
         }
@@ -258,6 +260,7 @@ class LengowCart extends Cart
      * Assign API data
      *
      * @param array<string, mixed> $data API data
+     *
      * @return void
      */
     public function assign(array $data = []): void
@@ -301,9 +304,10 @@ class LengowCart extends Cart
      *
      * @param string $fieldName incorrect field
      * @param int $errorType type of error
+     *
      * @return void
      */
-    public function validateFieldLengow(string $fieldName,int $errorType): void
+    public function validateFieldLengow(string $fieldName, int $errorType): void
     {
         if ($errorType === LengowAddress::LENGOW_EMPTY_ERROR && $fieldName === 'id_lang') {
             $this->{$fieldName} = Context::getContext()->language->id;
@@ -320,7 +324,7 @@ class LengowCart extends Cart
      *
      * @return array<int|string, mixed>|false Record from cart_product table
      */
-    public function containsProduct(int $idProduct,int $idProductAttribute = 0,int $idCustomization = 0,int $idAddressDelivery = 0): array|false
+    public function containsProduct(int $idProduct, int $idProductAttribute = 0, int $idCustomization = 0, int $idAddressDelivery = 0): array|false
     {
         $sql = 'SELECT *
             FROM `' . _DB_PREFIX_ . 'cart_product`
@@ -347,7 +351,7 @@ class LengowCart extends Cart
      *
      * @return bool
      */
-    protected function _updateCustomizationQuantity(int $quantity,int $idCustomization,int $idProduct,int $idProductAttribute,int $idAddressDelivery,string $operator = 'up'): bool
+    protected function _updateCustomizationQuantity(int $quantity, int $idCustomization, int $idProduct, int $idProductAttribute, int $idAddressDelivery, string $operator = 'up'): bool
     {
         // Check if the customization exists
         $sql = 'SELECT `quantity`
@@ -372,13 +376,13 @@ class LengowCart extends Cart
                     'DELETE FROM `' . _DB_PREFIX_ . 'customization`
                     WHERE `id_customization` = ' . (int) $idCustomization
                 );
-            } else {
-                return Db::getInstance()->execute(
-                    'UPDATE `' . _DB_PREFIX_ . 'customization`
+            }
+
+            return Db::getInstance()->execute(
+                'UPDATE `' . _DB_PREFIX_ . 'customization`
                     SET `quantity` = ' . (int) $newQuantity . '
                     WHERE `id_customization` = ' . (int) $idCustomization
-                );
-            }
+            );
         }
 
         return true;

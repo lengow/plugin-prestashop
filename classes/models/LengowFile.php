@@ -56,7 +56,7 @@ class LengowFile
      *
      * @throws LengowException unable to create file
      */
-    public function __construct(string $folderName,?string $fileName = null,string $mode = 'a+')
+    public function __construct(string $folderName, ?string $fileName = null, string $mode = 'a+')
     {
         $this->fileName = $fileName;
         $this->folderName = $folderName;
@@ -78,6 +78,7 @@ class LengowFile
      * Write content in file
      *
      * @param string $txt text to be written
+     *
      * @return void
      */
     public function write(string $txt): void
@@ -90,6 +91,7 @@ class LengowFile
 
     /**
      * Delete file
+     *
      * @return void
      */
     public function delete(): void
@@ -110,7 +112,7 @@ class LengowFile
      *
      * @return resource|false
      */
-    public static function getResource(string $path,string $mode = 'a+'): mixed
+    public static function getResource(string $path, string $mode = 'a+'): mixed
     {
         return fopen($path, $mode);
     }
@@ -171,6 +173,7 @@ class LengowFile
 
     /**
      * Close file handle
+     *
      * @return void
      */
     public function close(): void

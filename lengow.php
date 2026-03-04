@@ -89,6 +89,7 @@ class Lengow extends Module
     /**
      * Configure Link
      * Redirect on lengow configure page
+     *
      * @return void
      */
     public function getContent(): void
@@ -148,6 +149,7 @@ class Lengow extends Module
 
     /**
      * Hook to display the icon
+     *
      * @return void
      */
     public function hookDisplayBackOfficeHeader(): void
@@ -158,16 +160,6 @@ class Lengow extends Module
     /**
      * Hook on Home page
      *
-     * @depercated Use hookDisplayHome instead
-     * @return void
-     */
-    public function hookHome(): void
-    {
-        $this->hookClass->hookDisplayHome();
-    }
-
-    /**
-     * Hook on Home page
      * @return void
      */
     public function hookDisplayHome(): void
@@ -177,6 +169,7 @@ class Lengow extends Module
 
     /**
      * Hook on Payment page
+     *
      * @return void
      */
     public function hookDisplayPaymentTop(): void
@@ -198,6 +191,7 @@ class Lengow extends Module
      * Hook on order confirmation page to init order's product list
      *
      * @param array<string, mixed> $args Arguments of hook
+     *
      * @return void
      */
     public function hookDisplayOrderConfirmation(array $args): void
@@ -208,8 +202,10 @@ class Lengow extends Module
     /**
      * Order status update
      * Event This hook launches modules when the status of an order changes
-     * @return void
+     *
      * @param array<string, mixed> $args
+     *
+     * @return void
      */
     public function hookActionOrderStatusUpdate(array $args): void
     {
@@ -220,6 +216,7 @@ class Lengow extends Module
      * Order status post update
      *
      * @param array<string, mixed> $args Arguments of hook
+     *
      * @return void
      */
     public function hookActionOrderStatusPostUpdate(array $args): void
@@ -231,6 +228,7 @@ class Lengow extends Module
      * Hook for update order if isset tracking number
      *
      * @param array<string, mixed> $args Arguments of hook
+     *
      * @return void
      */
     public function hookActionObjectUpdateAfter(array $args): void
@@ -264,8 +262,10 @@ class Lengow extends Module
 
     /**
      * Hook when a product line is refunded
-     * @return void
+     *
      * @param array<string, mixed> $args
+     *
+     * @return void
      */
     public function hookActionProductCancel(array $args): void
     {

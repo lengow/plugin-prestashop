@@ -694,6 +694,7 @@ class LengowImportOrder
 
     /**
      * Load order comment from marketplace
+     *
      * @return void
      */
     private function loadOrderComment(): void
@@ -708,6 +709,7 @@ class LengowImportOrder
 
     /**
      * Load order types data and update Lengow order record
+     *
      * @return void
      */
     private function loadOrderTypesData(): void
@@ -852,6 +854,7 @@ class LengowImportOrder
 
     /**
      * Load order amount, processing fees and shipping costs
+     *
      * @return void
      */
     private function loadOrderAmount(): void
@@ -899,6 +902,7 @@ class LengowImportOrder
 
     /**
      * Load tracking data
+     *
      * @return void
      */
     private function loadTrackingData(): void
@@ -1178,10 +1182,11 @@ class LengowImportOrder
     /**
      * Create a PrestaShop cart
      *
+     * @param mixed $products
+     *
      * @return LengowCart
      *
      * @throws Exception|LengowException
-     * @param mixed $products
      */
     private function createCart(mixed $products): LengowCart
     {
@@ -1320,7 +1325,7 @@ class LengowImportOrder
      *
      * @return LengowAddress
      */
-    private function getAddress(int $idCustomer,array $addressData = [],bool $shippingData = false): LengowAddress
+    private function getAddress(int $idCustomer, array $addressData = [], bool $shippingData = false): LengowAddress
     {
         // if tracking_information exist => get id_relay
         if ($shippingData && $this->relayId !== null) {
@@ -1516,7 +1521,7 @@ class LengowImportOrder
      *
      * @throws LengowException
      */
-    private function createAndValidatePayment(LengowCart $cart,array $products): array
+    private function createAndValidatePayment(LengowCart $cart, array $products): array
     {
         $idOrderState = LengowMain::getPrestashopStateId(
             $this->orderStateMarketplace,
@@ -1556,6 +1561,7 @@ class LengowImportOrder
      * Ensure carrier compatibility with SoColissimo & Mondial Relay
      *
      * @param LengowOrder $order order imported
+     *
      * @return void
      */
     private function checkCarrierCompatibility(LengowOrder $order): void
@@ -1591,10 +1597,11 @@ class LengowImportOrder
      * @param int $idOrder PrestaShop order id
      * @param string $comment order comment
      *
-     * @throws Exception
      * @return void
+     *
+     * @throws Exception
      */
-    private function addCommentOrder(int $idOrder,string $comment): void
+    private function addCommentOrder(int $idOrder, string $comment): void
     {
         if (!empty($comment)) {
             $msg = new Message();
@@ -1610,9 +1617,10 @@ class LengowImportOrder
      *
      * @param LengowOrder $order Lengow order instance
      * @param array<string, mixed> $products order products
+     *
      * @return void
      */
-    private function saveLengowOrderLine(LengowOrder $order,array $products): void
+    private function saveLengowOrderLine(LengowOrder $order, array $products): void
     {
         $orderLineSaved = false;
         foreach ($products as $idProduct => $values) {
@@ -1660,8 +1668,9 @@ class LengowImportOrder
      *
      * @param array<string, mixed> $products list of products
      *
-     * @throws Exception
      * @return void
+     *
+     * @throws Exception
      */
     private function addQuantityBack(array $products): void
     {
@@ -1692,6 +1701,7 @@ class LengowImportOrder
      * Launch validateOrder hook for carrier plugins
      *
      * @param Order $order PrestaShop order instance
+     *
      * @return void
      */
     private function launchValidateOrderHook(Order $order): void

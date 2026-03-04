@@ -144,6 +144,7 @@ class LengowAction
      * Load action data
      *
      * @param array<string, mixed> $row All action data
+     *
      * @return void
      */
     public function load(array $row): void
@@ -209,7 +210,7 @@ class LengowAction
      *
      * @return array<int|string, mixed>|false
      */
-    public static function getActionsByOrderId(int $idOrder,bool $onlyActive = false,?string $actionType = null,bool $load = true): array|false
+    public static function getActionsByOrderId(int $idOrder, bool $onlyActive = false, ?string $actionType = null, bool $load = true): array|false
     {
         try {
             $sqlOnlyActive = $onlyActive ? ' AND  state = ' . self::STATE_NEW : '';
@@ -328,7 +329,7 @@ class LengowAction
      *
      * @throws LengowException
      */
-    public static function canSendAction(array $params,LengowOrder $lengowOrder): bool
+    public static function canSendAction(array $params, LengowOrder $lengowOrder): bool
     {
         $sendAction = true;
         $getParams = array_merge($params, ['queued' => 'True']);
@@ -382,10 +383,11 @@ class LengowAction
      * @param array<string, mixed> $params all available values
      * @param LengowOrder $lengowOrder Lengow order instance
      *
-     * @throws LengowException
      * @return void
+     *
+     * @throws LengowException
      */
-    public static function sendAction(array $params,LengowOrder $lengowOrder): void
+    public static function sendAction(array $params, LengowOrder $lengowOrder): void
     {
         if (!LengowConfiguration::debugModeIsActive()) {
             $result = LengowConnector::queryApi(LengowConnector::POST, LengowConnector::API_ORDER_ACTION, $params);
@@ -515,7 +517,7 @@ class LengowAction
      *
      * @return bool
      */
-    public static function finishAllActions(int $idOrder,?string $actionType = null): bool
+    public static function finishAllActions(int $idOrder, ?string $actionType = null): bool
     {
         try {
             $sqlActionType = $actionType === null ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
