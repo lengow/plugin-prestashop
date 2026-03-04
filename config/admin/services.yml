@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+    autoconfigure: true
+
+  PrestaShop\Module\Lengow\Controller\Admin\LengowHomeAdminController: ~
+  PrestaShop\Module\Lengow\Controller\Admin\LengowDashboardAdminController: ~
+  PrestaShop\Module\Lengow\Controller\Admin\LengowFeedAdminController: ~
+  PrestaShop\Module\Lengow\Controller\Admin\LengowOrderAdminController: ~
+  PrestaShop\Module\Lengow\Controller\Admin\LengowOrderSettingAdminController: ~
+  PrestaShop\Module\Lengow\Controller\Admin\LengowMainSettingAdminController: ~
+  PrestaShop\Module\Lengow\Controller\Admin\LengowHelpAdminController: ~
+  PrestaShop\Module\Lengow\Controller\Admin\LengowLegalsAdminController: ~
+  PrestaShop\Module\Lengow\Controller\Admin\LengowToolboxAdminController: ~
+

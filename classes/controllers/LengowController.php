@@ -100,8 +100,10 @@ class LengowController
         $lengowMain = new LengowMain();
         $className = get_class($this);
         $path = $lengowMain->fromCamelCase(Tools::substr($className, 0, mb_strlen($className) - 10));
-        $this->prepareDisplay();
-        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/' . $path . '/helpers/view/view.tpl');
+        $this->display();
+        $content = $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/' . $path . '/helpers/view/view.tpl');
+        $this->context->smarty->assign('content', $content);
+        echo $module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/' . $path . '/layout.tpl');
     }
 
     /**

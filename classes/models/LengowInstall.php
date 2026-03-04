@@ -70,15 +70,15 @@ class LengowInstall
      * @var array<string, mixed> all module tabs
      */
     private array $tabs = [
-        'tab.home' => ['name' => 'AdminLengowHome', 'active' => true],
-        'tab.dashboard' => ['name' => 'AdminLengowDashboard', 'active' => false],
-        'tab.product' => ['name' => 'AdminLengowFeed', 'active' => false],
-        'tab.order' => ['name' => 'AdminLengowOrder', 'active' => false],
-        'tab.order_setting' => ['name' => 'AdminLengowOrderSetting', 'active' => false],
-        'tab.help' => ['name' => 'AdminLengowHelp', 'active' => false],
-        'tab.main_setting' => ['name' => 'AdminLengowMainSetting', 'active' => false],
-        'tab.legals' => ['name' => 'AdminLengowLegals', 'active' => false],
-        'tab.toolbox' => ['name' => 'AdminLengowToolbox', 'active' => false],
+        'tab.home' => ['name' => 'AdminLengowHome', 'active' => true, 'route_name' => 'lengow_home'],
+        'tab.dashboard' => ['name' => 'AdminLengowDashboard', 'active' => false, 'route_name' => 'lengow_dashboard'],
+        'tab.product' => ['name' => 'AdminLengowFeed', 'active' => false, 'route_name' => 'lengow_feed'],
+        'tab.order' => ['name' => 'AdminLengowOrder', 'active' => false, 'route_name' => 'lengow_order'],
+        'tab.order_setting' => ['name' => 'AdminLengowOrderSetting', 'active' => false, 'route_name' => 'lengow_order_setting'],
+        'tab.help' => ['name' => 'AdminLengowHelp', 'active' => false, 'route_name' => 'lengow_help'],
+        'tab.main_setting' => ['name' => 'AdminLengowMainSetting', 'active' => false, 'route_name' => 'lengow_main_setting'],
+        'tab.legals' => ['name' => 'AdminLengowLegals', 'active' => false, 'route_name' => 'lengow_legals'],
+        'tab.toolbox' => ['name' => 'AdminLengowToolbox', 'active' => false, 'route_name' => 'lengow_toolbox'],
     ];
 
     /**
@@ -940,6 +940,9 @@ class LengowInstall
                 $tab->id_parent = $tabParent->id;
                 $tab->active = $values['active'];
                 $tab->module = $this->lengowModule->name;
+                if (version_compare(_PS_VERSION_, '9.0.0', '>=') && isset($values['route_name'])) {
+                    $tab->route_name = $values['route_name'];
+                }
                 $languages = Language::getLanguages(false);
                 foreach ($languages as $language) {
                     $tab->name[$language['id_lang']] = LengowMain::decodeLogMessage($name, $language['iso_code']);

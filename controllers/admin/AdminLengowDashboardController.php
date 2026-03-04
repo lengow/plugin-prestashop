@@ -25,6 +25,11 @@
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+// On PrestaShop 9+, this page is handled by the Symfony controller
+// PrestaShop\Module\Lengow\Controller\Admin\LengowDashboardAdminController (see config/routes.yml).
+if (version_compare(_PS_VERSION_, '9.0.0', '>=')) {
+    return;
+}
 class AdminLengowDashboardController extends ModuleAdminController
 {
     /**

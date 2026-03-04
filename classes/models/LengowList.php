@@ -706,6 +706,7 @@ class LengowList
                 if ($id > 0) {
                     $currencyObj = new Currency($id);
                     $this->currencyCode[$isoCode] = $currencyObj;
+
                     return $currencyObj;
                 }
             }
@@ -717,6 +718,7 @@ class LengowList
         if ($id) {
             $currencyObj = new Currency((int) $id);
             $this->currencyCode[$isoCode] = $currencyObj;
+
             return $currencyObj;
         }
 

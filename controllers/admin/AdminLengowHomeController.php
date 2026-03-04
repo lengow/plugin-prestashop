@@ -25,6 +25,12 @@
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+// On PrestaShop 9+, this page is handled by the Symfony controller
+// PrestaShop\Module\Lengow\Controller\Admin\LengowHomeAdminController (see config/routes.yml).
+// The legacy ModuleAdminController is kept for backward compatibility with PS 8.x.
+if (version_compare(_PS_VERSION_, '9.0.0', '>=')) {
+    return;
+}
 class AdminLengowHomeController extends ModuleAdminController
 {
     /**

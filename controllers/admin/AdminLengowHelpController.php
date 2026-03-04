@@ -25,6 +25,10 @@
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+// On PS 9+, this is handled by PrestaShop\Module\Lengow\Controller\Admin\LengowHelpAdminController (see config/routes.yml).
+if (version_compare(_PS_VERSION_, '9.0.0', '>=')) {
+    return;
+}
 class AdminLengowHelpController extends ModuleAdminController
 {
     /**
