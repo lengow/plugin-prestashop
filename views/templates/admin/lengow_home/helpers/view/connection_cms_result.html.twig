@@ -1,0 +1,91 @@
+{#
+ * Copyright 2021 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+<div id="lgw-connection-cms-result">
+    {% if cmsConnected %}
+        <div class="lgw-content-section">
+            <h2>{{ locale.t('connection.cms.success_title') }}</h2>
+        </div>
+        <div class="lgw-module-illu mod-connected">
+            <img src="{{ lengowPathUri }}views/img/connected-prestashop.png"
+                 class="lgw-module-illu-module mod-connected"
+                 alt="prestashop">
+            <img src="{{ lengowPathUri }}views/img/connected-lengow.png"
+                 class="lgw-module-illu-lengow mod-connected"
+                 alt="lengow">
+            <img src="{{ lengowPathUri }}views/img/connection-module.png"
+                 class="lgw-module-illu-plug mod-connected"
+                 alt="connection">
+        </div>
+        {% if hasCatalogToLink %}
+            <div class="lgw-content-section">
+                <p>{{ locale.t('connection.cms.success_description_first_catalog') }}</p>
+                <p>{{ locale.t('connection.cms.success_description_second_catalog') }}</p>
+            </div>
+            <div>
+                <button class="lgw-btn lgw-btn-green js-go-to-catalog" data-retry="false">
+                    {{ locale.t('connection.cms.success_button_catalog') }}
+                </button>
+            </div>
+        {% else %}
+            <div class="lgw-content-section">
+                <p>{{ locale.t('connection.cms.success_description_first') }}</p>
+                <p>
+                    {{ locale.t('connection.cms.success_description_second') }}
+                    <a href="https://my.{{ lengowUrl }}" target="_blank">
+                        {{ locale.t('connection.cms.success_description_second_go_to_lengow') }}
+                    </a>
+                </p>
+            </div>
+            <div>
+                <a href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowDashboard') }}"
+                   class="lgw-btn lgw-btn-green">
+                    {{ locale.t('connection.cms.success_button') }}
+                </a>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="lgw-content-section">
+            <h2>{{ locale.t('connection.cms.failed_title') }}</h2>
+        </div>
+        <div class="lgw-module-illu mod-disconnected">
+            <img src="{{ lengowPathUri }}views/img/connected-prestashop.png"
+                 class="lgw-module-illu-module mod-disconnected"
+                 alt="prestashop">
+            <img src="{{ lengowPathUri }}views/img/connected-lengow.png"
+                 class="lgw-module-illu-lengow mod-disconnected"
+                 alt="lengow">
+            <img src="{{ lengowPathUri }}views/img/unplugged.png"
+                 class="lgw-module-illu-plug mod-disconnected"
+                 alt="unplugged">
+        </div>
+        <div class="lgw-content-section">
+            {% if credentialsValid %}
+                <p>{{ locale.t('connection.cms.failed_description') }}</p>
+            {% else %}
+                <p>{{ locale.t('connection.cms.failed_description_first_credentials') }}</p>
+                {% if lengowUrl == 'lengow.net' %}
+                    <p>{{ locale.t('connection.cms.failed_description_second_credentials_preprod') }}</p>
+                {% else %}
+                    <p>{{ locale.t('connection.cms.failed_description_second_credentials_prod') }}</p>
+                {% endif %}
+            {% endif %}
+            <p>
+                {{ locale.t('connection.cms.failed_help') }}
+                <a href="{{ helpCenterLink }}" target="_blank">
+                    {{ locale.t('connection.cms.failed_help_center') }}
+                </a>
+                {{ locale.t('connection.cms.failed_help_or') }}
+                <a href="{{ supportLink }}" target="_blank">
+                    {{ locale.t('connection.cms.failed_help_customer_success_team') }}
+                </a>
+            </p>
+        </div>
+        <div>
+            <button class="lgw-btn lgw-btn-green js-go-to-credentials">
+                {{ locale.t('connection.cms.failed_button') }}
+            </button>
+        </div>
+    {% endif %}
+</div>

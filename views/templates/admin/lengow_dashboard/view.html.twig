@@ -1,0 +1,22 @@
+{#
+ * Copyright 2021 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+{% extends base_layout %}
+
+{% block lengow_header %}
+    {% include '@Modules/lengow/views/templates/admin/twig/header.html.twig' %}
+{% endblock %}
+
+{% block lengow_content %}
+    <script type="text/javascript">$(document.body).addClass("adminlengowhome");</script>
+    {% if merchantStatus and merchantStatus['type'] == 'free_trial' and merchantStatus['expired'] %}
+        {% include '@Modules/lengow/views/templates/admin/lengow_dashboard/helpers/view/status.html.twig' %}
+    {% else %}
+        {% include '@Modules/lengow/views/templates/admin/lengow_dashboard/helpers/view/dashboard.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block lengow_footer %}
+    {% include '@Modules/lengow/views/templates/admin/twig/footer.html.twig' %}
+{% endblock %}

@@ -1,0 +1,50 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+<div class="lgw-row">
+    <div class="lengow_default_carrier js-default-carrier lgw-col-6">
+        <p>
+            {{ locale.t('order_setting.screen.default_carrier_prestashop') }}
+            <span class="label-required">*<span>
+        </p>
+        <select name="default_carriers[{{ marketplace['id'] }}][carrier]" class="carrier lengow_select required">
+            <option value="">{{ locale.t('order_setting.screen.please_select_carrier_prestashop') }}</option>
+            {% for idCarrier, carrier in carriers %}
+                {% if marketplace['id_carrier'] == idCarrier %}
+                    <option value="{{ idCarrier }}" selected="selected">{{ carrier['name'] }}</option>
+                {% else %}
+                    <option value="{{ idCarrier }}">{{ carrier['name'] }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <div class="default_carrier_missing" style="display:none;">
+            {{ locale.t('order_setting.screen.no_default_carrier_selected') }}
+        </div>
+    </div>
+    {% if marketplace['carriers'] is defined and marketplace['carriers']|length > 0 %}
+        <div class="lengow_default_carrier_marketplace js-default-carrier lgw-col-6">
+            <p>
+                {{ locale.t('order_setting.screen.default_carrier_marketplace', {'marketplace_name': marketplace['label']}) }}
+                {% if marketplace['carrier_required'] %}
+                    <span class="label-required">*<span>
+                {% endif %}
+            </p>
+            <select name="default_carriers[{{ marketplace['id'] }}][carrier_marketplace]" class="carrier lengow_select {% if marketplace['carrier_required'] %}required{% endif %}">
+                <option value="">{{ locale.t('order_setting.screen.please_select_carrier_marketplace', {'marketplace_name': marketplace['label']}) }}</option>
+                {% for marketplaceCarrier in marketplace['carriers'] %}
+                    {% if marketplace['id_carrier_marketplace'] == marketplaceCarrier['id_carrier_marketplace'] %}
+                        <option value="{{ marketplaceCarrier['id_carrier_marketplace'] }}" selected="selected">{{ marketplaceCarrier['carrier_marketplace_label'] }}</option>
+                    {% else %}
+                        <option value="{{ marketplaceCarrier['id_carrier_marketplace'] }}">{{ marketplaceCarrier['carrier_marketplace_label'] }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            {% if marketplace['carrier_required'] %}
+                <div class="default_carrier_missing" style="display:none;">
+                    {{ locale.t('order_setting.screen.no_default_carrier_marketplace_selected') }}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

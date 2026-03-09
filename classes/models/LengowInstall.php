@@ -62,6 +62,11 @@ class LengowInstall
     private Lengow $lengowModule;
 
     /**
+     * @var Context PrestaShop context
+     */
+    private Context $context;
+
+    /**
      * @var LengowHook Lengow hook instance
      */
     private LengowHook $lengowHook;
@@ -164,11 +169,13 @@ class LengowInstall
      * Construct
      *
      * @param Lengow $module Lengow module instance
+     * @param Context $context PrestaShop context
      */
-    public function __construct(Lengow $module)
+    public function __construct(Lengow $module, Context $context)
     {
         $this->lengowModule = $module;
-        $this->lengowHook = new LengowHook($module);
+        $this->context = $context;
+        $this->lengowHook = new LengowHook($module, $context);
     }
 
     /**
@@ -1143,7 +1150,7 @@ class LengowInstall
     private function createLengowCustomerGroup(): void
     {
         $marketplaceGroupId = null;
-        $groups = Group::getGroups(Context::getContext()->language->id);
+        $groups = Group::getGroups($this->context->language->id);
         foreach ($groups as $group) {
             if ($group['name'] === LengowCustomer::LENGOW_GROUP_NAME) {
                 $marketplaceGroupId = $group['id_group'];

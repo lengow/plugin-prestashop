@@ -24,21 +24,78 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\Lengow\Controller\Admin;
 
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
+use PrestaShop\PrestaShop\Adapter\LegacyContext;
+use PrestaShopBundle\Controller\Admin\PrestaShopAdminController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
-// PS8 compatibility: PrestaShopAdminController was introduced in PS9.
-// Alias it to FrameworkBundleAdminController which exists in both PS8 and PS9.
-if (!class_exists('PrestaShopBundle\Controller\Admin\PrestaShopAdminController')) {
+if (
+    !class_exists('PrestaShopBundle\Controller\Admin\PrestaShopAdminController')
+    && class_exists('PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController')
+) {
     class_alias(
         'PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController',
         'PrestaShopBundle\Controller\Admin\PrestaShopAdminController'
     );
 }
 
-use PrestaShopBundle\Controller\Admin\PrestaShopAdminController;
-
 abstract class AbstractLengowAdminController extends PrestaShopAdminController
 {
+    protected \Context $legacyContext;
+
+    public function __construct(
+        LegacyContext $legacyContext,
+        protected readonly Environment $twig,
+    ) {
+        $this->legacyContext = $legacyContext->getContext();
+        \LengowContext::setContext($this->legacyContext);
+    }
+
+    protected function handleLegacyPostAction(Request $request, object $legacyController): ?Response
+    {
+        $action = (string) $request->get('action', '');
+        if ($action === '') {
+            return null;
+        }
+
+        $legacyControllerName = (string) $request->attributes->get('_legacy_controller', '');
+        if ($request->isMethod('POST') && $legacyControllerName !== '' && !$this->isGranted('update', $legacyControllerName)) {
+            return new JsonResponse(
+                ['success' => false, 'message' => $this->trans('You do not have permission to edit this.', [], 'Admin.Notifications.Error')],
+                Response::HTTP_FORBIDDEN
+            );
+        }
+
+        $legacyController->postProcess();
+        if (!method_exists($legacyController, 'consumeJsonResponse')) {
+            return new Response('', Response::HTTP_NO_CONTENT);
+        }
+
+        $payload = $legacyController->consumeJsonResponse();
+        if ($payload === null) {
+            return new Response('', Response::HTTP_NO_CONTENT);
+        }
+
+        return new JsonResponse(
+            $payload,
+            Response::HTTP_OK,
+            [],
+            false
+        );
+    }
+
+    protected function renderLegacyPage(string $template, object $legacyController): Response
+    {
+        $legacyController->display();
+
+        return $this->render(
+            $template,
+            array_merge(
+                $legacyController->getTemplateVars(),
+                ['base_layout' => '@Modules/lengow/views/templates/admin/twig/ps9_base.html.twig']
+            )
+        );
+    }
 }

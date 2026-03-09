@@ -371,7 +371,7 @@ class LengowImport
 
         $syncOk = true;
         // get initial context type
-        $initialContextShop = Context::getContext()->shop;
+        $initialContextShop = LengowContext::getContext()->shop;
         $initialContextType = $initialContextShop::getContext();
         // starts some processes necessary for synchronization
         $this->setupSynchronization();
@@ -407,7 +407,7 @@ class LengowImport
             LengowMain::updateDateImport($this->typeImport);
         }
         // clean Context type with initial type if different
-        $currentContextShop = Context::getContext()->shop;
+        $currentContextShop = LengowContext::getContext()->shop;
         if ($initialContextType !== $currentContextShop::getContext()) {
             try {
                 $currentContextShop::setContext($initialContextType);
@@ -418,7 +418,7 @@ class LengowImport
                     $this->logOutput
                 );
             }
-            Context::getContext()->shop = $currentContextShop;
+            LengowContext::getContext()->shop = $currentContextShop;
         }
         // complete synchronization and start all necessary processes
         $this->releaseLock(self::LOCK_NAME);
@@ -823,7 +823,7 @@ class LengowImport
      */
     private function changeContext(int $idShop): void
     {
-        $this->context = Context::getContext()->cloneContext();
+        $this->context = LengowContext::getContext()->cloneContext();
         $shop = new Shop($idShop);
         $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
         $this->context->shop = $shop;

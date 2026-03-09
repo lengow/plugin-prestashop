@@ -1,0 +1,84 @@
+{#
+ * Copyright 2021 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+<div id="lengow_home_wrapper" class="cms-global">
+    <div class="lgw-container">
+        {% if debugMode %}
+            <div id="lgw-debug" class="adminlengowhome {% if multiShop %}multi-shop{% endif %}">
+                {{ locale.t('menu.debug_active') }}
+            </div>
+        {% endif %}
+        <div class="lgw-row">
+            <div class="text-left lgw-col-6" id="alert-plugin-available">
+                {% if not pluginIsUpToDate %}
+                    {{ locale.t('menu.new_version_available', {'version': pluginData['version']}) }}
+                    <button class="btn-link mod-blue mod-inline js-upgrade-plugin-modal-open">
+                        {{ locale.t('menu.download_plugin') }}
+                    </button>
+                {% endif %}
+            </div>
+            <div class="text-right lgw-col-6" id="alert-counter-trial">
+                {% if merchantStatus and merchantStatus['type'] == 'free_trial' and not merchantStatus['expired'] %}
+                    {{ locale.t('menu.counter', {'counter': merchantStatus['day']}) }}
+                    <a href="https://my.{{ lengowUrl }}" target="_blank">
+                        {{ locale.t('menu.upgrade_account') }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="lgw-box lgw-home-header text-center">
+            <img src="{{ lengowPathUri }}views/img/lengow-white-big.png" alt="lengow">
+            <h1>{{ locale.t('dashboard.screen.welcome_back') }}</h1>
+            <a href="https://my.{{ lengowUrl }}" class="lgw-btn" target="_blank">
+                {{ locale.t('dashboard.screen.go_to_lengow') }}
+            </a>
+        </div>
+        <div class="lgw-row lgw-home-menu text-center">
+            <div class="lgw-col-4">
+                <a href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowFeed') }}" class="lgw-box-link">
+                    <div class="lgw-box">
+                        <img src="{{ lengowPathUri }}views/img/home-products.png" class="img-responsive">
+                        <h2>{{ locale.t('dashboard.screen.products_title') }}</h2>
+                        <p>{{ locale.t('dashboard.screen.products_text') }}</p>
+                    </div>
+                </a>
+            </div>
+            <div class="lgw-col-4">
+                <a href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowOrder') }}" class="lgw-box-link">
+                    <div class="lgw-box">
+                        <img src="{{ lengowPathUri }}views/img/home-orders.png" class="img-responsive">
+                        <h2>
+                            {{ locale.t('dashboard.screen.orders_title') }}
+                            {% if total_pending_order is defined and total_pending_order > 0 %}
+                                <span class="lgw-label lgw-label red">{{ total_pending_order }}</span>
+                            {% endif %}
+                        </h2>
+                        <p>{{ locale.t('dashboard.screen.orders_text') }}</p>
+                    </div>
+                </a>
+            </div>
+            <div class="lgw-col-4">
+                <a href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowMainSetting') }}" class="lgw-box-link">
+                    <div class="lgw-box">
+                        <img src="{{ lengowPathUri }}views/img/home-settings.png" class="img-responsive">
+                        <h2>{{ locale.t('dashboard.screen.settings_title') }}</h2>
+                        <p>{{ locale.t('dashboard.screen.settings_text') }}</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="lgw-box">
+            <h2>{{ locale.t('dashboard.screen.some_help_title') }}</h2>
+            <p>
+                <a href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowHelp') }}">
+                    {{ locale.t('dashboard.screen.get_in_touch') }}
+                </a>
+            </p>
+            <p>
+                <a href="{{ helpCenterLink }}" target="_blank">{{ locale.t('dashboard.screen.visit_help_center') }}</a>
+                {{ locale.t('dashboard.screen.configure_plugin') }}
+            </p>
+        </div>
+    </div>
+</div>

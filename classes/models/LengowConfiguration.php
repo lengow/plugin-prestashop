@@ -191,7 +191,7 @@ class LengowConfiguration extends Configuration
     {
         static $keys = null;
         if ($keys === null) {
-            $langId = (int) Context::getContext()->cookie->id_lang;
+            $langId = (int) LengowContext::getContext()->cookie->id_lang;
             $locale = new LengowTranslation();
             $orderStates = [];
             $allOrderStates = OrderState::getOrderStates($langId);

@@ -46,11 +46,12 @@ class LengowHook
      * Construct
      *
      * @param Lengow $module Lengow module instance
+     * @param Context $context PrestaShop context
      */
-    public function __construct(Lengow $module)
+    public function __construct(Lengow $module, Context $context)
     {
         $this->module = $module;
-        $this->context = Context::getContext();
+        $this->context = $context;
     }
 
     /**

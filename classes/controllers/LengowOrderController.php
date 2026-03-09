@@ -42,8 +42,8 @@ class LengowOrderController extends LengowController
         $this->assignLastImportationInfos();
         $this->assignNbOrderImported();
         $this->assignWarningMessages();
-        $this->context->smarty->assign('showCarrierNotification', LengowCarrier::hasDefaultCarrierNotMatched());
-        $this->context->smarty->assign('lengow_table', $this->buildTable());
+        $this->templateVars['showCarrierNotification'] = LengowCarrier::hasDefaultCarrierNotMatched();
+        $this->templateVars['lengow_table'] = $this->buildTable();
         parent::display();
     }
 
@@ -60,7 +60,7 @@ class LengowOrderController extends LengowController
                 case 'load_table':
                     $data = [];
                     $data['order_table'] = preg_replace('/\r|\n/', '', $this->buildTable());
-                    echo json_encode($data);
+                    $this->respondJson($data);
                     break;
                 case 're_import':
                     $idOrderLengow = isset($_REQUEST['id']) ? (int) $_REQUEST['id'] : 0;
@@ -72,7 +72,7 @@ class LengowOrderController extends LengowController
                     $data = [];
                     $data['id_order_lengow'] = $idOrderLengow;
                     $data['html'] = $html;
-                    echo json_encode($data);
+                    $this->respondJson($data);
                     break;
                 case 're_send':
                     $idOrderLengow = isset($_REQUEST['id']) ? (int) $_REQUEST['id'] : 0;
@@ -84,7 +84,7 @@ class LengowOrderController extends LengowController
                     $data = [];
                     $data['id_order_lengow'] = $idOrderLengow;
                     $data['html'] = $html;
-                    echo json_encode($data);
+                    $this->respondJson($data);
                     break;
                 case 'import_all':
                     if (Shop::getContextShopID()) {
@@ -101,22 +101,21 @@ class LengowOrderController extends LengowController
                     $message = $this->loadMessage($return);
                     $this->assignLastImportationInfos();
                     $this->assignWarningMessages();
-                    $module = Module::getInstanceByName('lengow');
-                    $displayWarningMessage = $module->display(
-                        _PS_MODULE_LENGOW_DIR_,
-                        'views/templates/admin/lengow_order/helpers/view/warning_message.tpl'
+                    $displayWarningMessage = $this->twig->render(
+                        '@Modules/lengow/views/templates/admin/lengow_order/helpers/view/warning_message.html.twig',
+                        $this->templateVars
                     );
-                    $displayLastImportation = $module->display(
-                        _PS_MODULE_LENGOW_DIR_,
-                        'views/templates/admin/lengow_order/helpers/view/last_importation.tpl'
+                    $displayLastImportation = $this->twig->render(
+                        '@Modules/lengow/views/templates/admin/lengow_order/helpers/view/last_importation.html.twig',
+                        $this->templateVars
                     );
                     $orderTable = $this->buildTable();
                     if ($this->list->getTotal() > 0) {
                         $displayListOrder = $orderTable;
                     } else {
-                        $displayListOrder = $module->display(
-                            _PS_MODULE_LENGOW_DIR_,
-                            'views/templates/admin/lengow_order/helpers/view/no_order.tpl'
+                        $displayListOrder = $this->twig->render(
+                            '@Modules/lengow/views/templates/admin/lengow_order/helpers/view/no_order.html.twig',
+                            $this->templateVars
                         );
                     }
                     $data = [];
@@ -126,7 +125,7 @@ class LengowOrderController extends LengowController
                     $data['import_orders'] = $this->locale->t('order.screen.button_update_orders');
                     $data['list_order'] = preg_replace('/\r|\n/', '', $displayListOrder);
                     $data['show_carrier_notification'] = LengowCarrier::hasDefaultCarrierNotMatched();
-                    echo json_encode($data);
+                    $this->respondJson($data);
                     break;
                 case 'synchronize':
                     $idOrder = isset($_REQUEST['id_order']) ? (int) $_REQUEST['id_order'] : 0;
@@ -188,8 +187,10 @@ class LengowOrderController extends LengowController
                             $response['message'] = 'Error: ' . $e->getMessage();
                         }
                     }
-                    header('Content-Type: application/json');
-                    echo json_encode($response);
+                    if (!$this->bridgeMode) {
+                        header('Content-Type: application/json');
+                    }
+                    $this->respondJson($response);
                     break;
                 case 'force_resend':
                     $idOrder = isset($_REQUEST['id_order']) ? (int) $_REQUEST['id_order'] : 0;
@@ -199,7 +200,7 @@ class LengowOrderController extends LengowController
                     Tools::redirectAdmin(self::getOrderAdminLink($idOrder));
                     break;
             }
-            exit;
+            $this->finishPostProcess();
         }
     }
 
@@ -228,7 +229,7 @@ class LengowOrderController extends LengowController
         } else {
             $message = false;
         }
-        $this->context->smarty->assign('warning_message', $message);
+        $this->templateVars['warning_message'] = $message;
     }
 
     /**
@@ -247,9 +248,9 @@ class LengowOrderController extends LengowController
             'link' => LengowMain::getCronUrl(),
         ];
         $reportMailEnabled = (bool) LengowConfiguration::getGlobalValue(LengowConfiguration::REPORT_MAIL_ENABLED);
-        $this->context->smarty->assign('reportMailEnabled', $reportMailEnabled);
-        $this->context->smarty->assign('report_mail_address', LengowConfiguration::getReportEmailAddress());
-        $this->context->smarty->assign('orderCollection', $orderCollection);
+        $this->templateVars['reportMailEnabled'] = $reportMailEnabled;
+        $this->templateVars['report_mail_address'] = LengowConfiguration::getReportEmailAddress();
+        $this->templateVars['orderCollection'] = $orderCollection;
     }
 
     /**
@@ -266,7 +267,7 @@ class LengowOrderController extends LengowController
         } catch (PrestaShopDatabaseException $e) {
             $nbOrderImported = 0;
         }
-        $this->context->smarty->assign('nb_order_imported', $nbOrderImported);
+        $this->templateVars['nb_order_imported'] = $nbOrderImported;
     }
 
     /**
@@ -478,7 +479,8 @@ class LengowOrderController extends LengowController
                     'select_having' => $selectHaving,
                     'order' => 'IF (order_lengow_state = "waiting_shipment",1,0) DESC, order_date DESC',
                 ],
-            ]
+            ],
+            $this->context
         );
     }
 

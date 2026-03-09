@@ -52,7 +52,7 @@ class Lengow extends Module
         $this->author = 'Lengow';
         $this->module_key = '__LENGOW_PRESTASHOP_PRODUCT_KEY__';
         $this->ps_versions_compliancy = [
-            'min' => '1.7.8',
+            'min' => '8.2.0',
             'max' => '9.99.99',
         ];
 
@@ -60,12 +60,14 @@ class Lengow extends Module
 
         parent::__construct();
 
+        LengowContext::setContext($this->context);
+
         $this->displayName = $this->l('Lengow');
         $this->description = $this->l('Lengow allows you to easily export your product catalogue from your PrestaShop store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister. Choose from our 1,800 available marketing channels!');
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall the Lengow module?');
 
-        $this->installClass = new LengowInstall($this);
-        $this->hookClass = new LengowHook($this);
+        $this->installClass = new LengowInstall($this, $this->context);
+        $this->hookClass = new LengowHook($this, $this->context);
 
         if (self::isInstalled($this->name)) {
             $oldVersion = LengowConfiguration::getGlobalValue(
@@ -82,7 +84,6 @@ class Lengow extends Module
             }
         }
 
-        $this->context = Context::getContext();
         $this->context->smarty->assign('lengow_link', new LengowLink());
     }
 

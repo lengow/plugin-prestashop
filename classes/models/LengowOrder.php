@@ -620,7 +620,7 @@ class LengowOrder extends Order
         $idErrorLengowState = LengowMain::getLengowErrorStateId();
         // update order to Lengow error state if not already updated
         if ($idErrorLengowState && (int) $this->getCurrentState() !== $idErrorLengowState) {
-            $this->setCurrentState($idErrorLengowState, Context::getContext()->employee->id);
+            $this->setCurrentState($idErrorLengowState, LengowContext::getContext()->employee->id);
         }
     }
 

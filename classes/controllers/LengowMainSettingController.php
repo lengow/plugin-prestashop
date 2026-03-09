@@ -139,13 +139,13 @@ class LengowMainSettingController extends LengowController
             ) . '</div>';
         }
         $listFile = LengowLog::getPaths();
-        $this->context->smarty->assign('list_file', $listFile);
-        $this->context->smarty->assign('mail_report', $mailReport);
-        $this->context->smarty->assign('defaultExportCarrier', $defaultExportCarrier);
-        $this->context->smarty->assign('ipSecurity', $ipSecurity);
-        $this->context->smarty->assign('debug_report', $debugReport);
-        $this->context->smarty->assign('debug_wrapper', $debugWrapper);
-        $this->context->smarty->assign('shopCatalog', $shopCatalog);
+        $this->templateVars['list_file'] = $listFile;
+        $this->templateVars['mail_report'] = $mailReport;
+        $this->templateVars['defaultExportCarrier'] = $defaultExportCarrier;
+        $this->templateVars['ipSecurity'] = $ipSecurity;
+        $this->templateVars['debug_report'] = $debugReport;
+        $this->templateVars['debug_wrapper'] = $debugWrapper;
+        $this->templateVars['shopCatalog'] = $shopCatalog;
         parent::display();
     }
 }

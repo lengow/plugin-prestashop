@@ -86,7 +86,7 @@ class LengowFeedController extends LengowController
                         }
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
-                        echo json_encode($result);
+                        $this->respondJson($result);
                     }
                     break;
                 case 'change_option_selected__out_of_stock':
@@ -116,7 +116,7 @@ class LengowFeedController extends LengowController
                         }
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
-                        echo json_encode($result);
+                        $this->respondJson($result);
                     }
                     break;
                 case 'change_option_selected__variation':
@@ -146,7 +146,7 @@ class LengowFeedController extends LengowController
                         }
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
-                        echo json_encode($result);
+                        $this->respondJson($result);
                     }
                     break;
                 case 'change_option_selected__inactive':
@@ -176,7 +176,7 @@ class LengowFeedController extends LengowController
                         }
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
-                        echo json_encode($result);
+                        $this->respondJson($result);
                     }
                     break;
                 case 'select_product':
@@ -185,7 +185,7 @@ class LengowFeedController extends LengowController
                     $productId = isset($_REQUEST['id_product']) ? $_REQUEST['id_product'] : null;
                     if ($state !== null) {
                         LengowProduct::publish($productId, $state, $idShop);
-                        echo json_encode($this->reloadTotal($idShop));
+                        $this->respondJson($this->reloadTotal($idShop));
                     }
                     break;
                 case 'load_table':
@@ -193,7 +193,7 @@ class LengowFeedController extends LengowController
                     $data = [];
                     $data['shop_id'] = $idShop;
                     $data['footer_content'] = preg_replace('/\r|\n/', '', $this->buildTable($idShop));
-                    echo json_encode($data);
+                    $this->respondJson($data);
                     break;
                 case 'lengow_export_action':
                     $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
@@ -237,10 +237,10 @@ class LengowFeedController extends LengowController
                     } else {
                         $data['message'] = $this->locale->t('product.screen.no_product_selected');
                     }
-                    echo json_encode($data);
+                    $this->respondJson($data);
                     break;
             }
-            exit;
+            $this->finishPostProcess();
         }
     }
 
@@ -297,7 +297,7 @@ class LengowFeedController extends LengowController
                 'list' => $this->buildTable($shop->id),
             ];
         }
-        $this->context->smarty->assign('shopCollection', $shopCollection);
+        $this->templateVars['shopCollection'] = $shopCollection;
         parent::display();
     }
 
@@ -458,7 +458,8 @@ class LengowFeedController extends LengowController
                     'where' => $where,
                     'order' => 'p.id_product ASC',
                 ],
-            ]
+            ],
+            $this->context
         );
 
         $collection = $this->list->executeQuery();

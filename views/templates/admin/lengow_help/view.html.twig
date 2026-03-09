@@ -1,0 +1,41 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+{% extends base_layout %}
+
+{% block lengow_header %}
+    {% include '@Modules/lengow/views/templates/admin/twig/header.html.twig' %}
+{% endblock %}
+
+{% block lengow_content %}
+<div class="cms-global">
+    <div class="lgw-container">
+        {% if debugMode %}
+            <div id="lgw-debug" class="adminlengowhelp {% if multiShop %}multi-shop{% endif %}">
+                {{ locale.t('menu.debug_active') }}
+            </div>
+        {% endif %}
+        <div class="lgw-box lengow_help_wrapper text-center">
+            <h2>{{ locale.t('help.screen.title') }}</h2>
+            <p>
+                {{ locale.t('help.screen.contain_text_support') }}
+                <a href="{{ supportLink }}" target="_blank" title="Lengow Support">
+                    {{ locale.t('help.screen.title_lengow_support') }}
+                </a>
+            </p>
+            <p>{{ locale.t('help.screen.contain_text_support_hour') }}</p>
+            <p>
+                {{ locale.t('help.screen.find_answer') }}
+                <a href="{{ helpCenterLink }}" target="_blank" title="Help Center">
+                    {{ locale.t('help.screen.link_prestashop_guide') }}
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block lengow_footer %}
+    {% include '@Modules/lengow/views/templates/admin/twig/footer.html.twig' %}
+{% endblock %}

@@ -65,7 +65,7 @@ if (!Module::isInstalled($lengow->name)) {
 }
 // CheckIP
 $token = Tools::getIsset(LengowExport::PARAM_TOKEN) ? Tools::getValue(LengowExport::PARAM_TOKEN) : '';
-if (!LengowMain::checkWebservicesAccess($token, Context::getContext()->shop->id)) {
+if (!LengowMain::checkWebservicesAccess($token, LengowContext::getContext()->shop->id)) {
     if ((bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)) {
         $errorMessage = 'Unauthorized access for IP: ' . $_SERVER['REMOTE_ADDR'];
     } else {
@@ -102,10 +102,10 @@ if (Tools::getIsset(LengowExport::PARAM_SHOP)) {
     $shop = new Shop((int) Tools::getValue(LengowExport::PARAM_SHOP));
     if ($shop->id) {
         $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
-        Context::getContext()->shop = $shop;
+        LengowContext::getContext()->shop = $shop;
     }
 }
-$idShop = (int) Context::getContext()->shop->id;
+$idShop = (int) LengowContext::getContext()->shop->id;
 // export lengow selection
 $selection = Tools::getIsset(LengowExport::PARAM_LEGACY_SELECTION)
     ? !(bool) Tools::getValue(LengowExport::PARAM_LEGACY_SELECTION)
@@ -173,7 +173,7 @@ if ($currency !== null || Tools::getIsset(LengowExport::PARAM_CURRENCY)) {
     $currency = $currency !== null ? $currency : Tools::getValue(LengowExport::PARAM_CURRENCY);
     $idCurrency = (int) Currency::getIdByIsoCode($currency);
     if ($idCurrency !== 0) {
-        Context::getContext()->currency = new Currency($idCurrency);
+        LengowContext::getContext()->currency = new Currency($idCurrency);
     }
 }
 // define language
@@ -184,10 +184,10 @@ if ($language !== null || Tools::getIsset(LengowExport::PARAM_LANGUAGE)) {
     $language = $language !== null ? $language : Tools::getValue(LengowExport::PARAM_LANGUAGE);
     $languageId = (int) Language::getIdByIso($language);
     if ($languageId === 0) {
-        $languageId = Context::getContext()->language->id;
+        $languageId = LengowContext::getContext()->language->id;
     }
 } else {
-    $languageId = Context::getContext()->language->id;
+    $languageId = LengowContext::getContext()->language->id;
 }
 // get legacy fields
 $legacyFields = Tools::getIsset(LengowExport::PARAM_LEGACY_FIELDS)

@@ -35,12 +35,12 @@ class LengowToolboxController extends LengowController
     public function display(): void
     {
         $toolboxElement = new LengowToolboxElement();
-        $this->context->smarty->assign('checklist', $toolboxElement->getCheckList());
-        $this->context->smarty->assign('globalInformation', $toolboxElement->getGlobalInformation());
-        $this->context->smarty->assign('synchronizationInformation', $toolboxElement->getImportInformation());
-        $this->context->smarty->assign('exportInformation', $toolboxElement->getExportInformation());
-        $this->context->smarty->assign('fileInformation', $toolboxElement->getFileInformation());
-        $this->context->smarty->assign('checksum', $toolboxElement->checkFileMd5());
+        $this->templateVars['checklist'] = $toolboxElement->getCheckList();
+        $this->templateVars['globalInformation'] = $toolboxElement->getGlobalInformation();
+        $this->templateVars['synchronizationInformation'] = $toolboxElement->getImportInformation();
+        $this->templateVars['exportInformation'] = $toolboxElement->getExportInformation();
+        $this->templateVars['fileInformation'] = $toolboxElement->getFileInformation();
+        $this->templateVars['checksum'] = $toolboxElement->checkFileMd5();
         parent::display();
     }
 }

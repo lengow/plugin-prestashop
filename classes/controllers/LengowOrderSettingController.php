@@ -61,14 +61,14 @@ class LengowOrderSettingController extends LengowController
         );
         $currencyConversion = $form->buildInputs([LengowConfiguration::CURRENCY_CONVERSION_ENABLED]);
         $semanticSearch = $form->buildInputs([LengowConfiguration::SEMANTIC_MATCHING_CARRIER_ENABLED]);
-        $this->context->smarty->assign('matching', $matching);
-        $this->context->smarty->assign('semantic_search', $semanticSearch);
-        $this->context->smarty->assign('import_params', $importParams);
-        $this->context->smarty->assign('currency_conversion', $currencyConversion);
-        $this->context->smarty->assign('countries', $countries);
-        $this->context->smarty->assign('marketplaceCounters', $marketplaceCounters);
-        $this->context->smarty->assign('defaultCarrierNotMatched', $defaultCarrierNotMatched);
-        $this->context->smarty->assign('showCarrierNotification', $showCarrierNotification);
+        $this->templateVars['matching'] = $matching;
+        $this->templateVars['semantic_search'] = $semanticSearch;
+        $this->templateVars['import_params'] = $importParams;
+        $this->templateVars['currency_conversion'] = $currencyConversion;
+        $this->templateVars['countries'] = $countries;
+        $this->templateVars['marketplaceCounters'] = $marketplaceCounters;
+        $this->templateVars['defaultCarrierNotMatched'] = $defaultCarrierNotMatched;
+        $this->templateVars['showCarrierNotification'] = $showCarrierNotification;
         parent::display();
     }
 
@@ -94,19 +94,21 @@ class LengowOrderSettingController extends LengowController
                 $country = LengowCountry::getCountry($idCountry);
                 $marketplaces = LengowMarketplace::getAllMarketplaceDataByCountry($idCountry);
                 $carriers = LengowCarrier::getActiveCarriers($idCountry);
-                $this->context->smarty->assign('country', $country);
-                $this->context->smarty->assign('marketplaces', $marketplaces);
-                $this->context->smarty->assign('carriers', $carriers);
-                $module = Module::getInstanceByName('lengow');
-                $displayMarketplaceMatching = $module->display(
-                    _PS_MODULE_LENGOW_DIR_,
-                    'views/templates/admin/lengow_order_setting/helpers/view/marketplace_matching.tpl'
+                $displayMarketplaceMatching = $this->twig->render(
+                    '@Modules/lengow/views/templates/admin/lengow_order_setting/helpers/view/marketplace_matching.html.twig',
+                    array_merge($this->templateVars, [
+                        'country' => $country,
+                        'marketplaces' => $marketplaces,
+                        'carriers' => $carriers,
+                    ])
                 );
                 $data = [
                     'marketplace_matching' => preg_replace('/\r|\n/', '', $displayMarketplaceMatching),
                 ];
-                echo json_encode($data);
-                exit;
+                $this->respondJson($data);
+                $this->finishPostProcess();
+
+                return;
             case 'process':
                 // save carrier matching
                 if ($idCountry) {

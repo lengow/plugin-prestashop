@@ -141,16 +141,18 @@ class LengowList
      * Construct
      *
      * @param array<string, mixed> $params list of parameters
+     * @param Context|null $context PrestaShop context (injected from legacy controller where available)
      */
-    public function __construct(array $params)
+    public function __construct(array $params, ?Context $context = null)
     {
+        $ctx = $context ?? LengowContext::getContext();
         $this->id = $params['id'];
         $this->fieldsList = $params['fields_list'];
         $this->identifier = $params['identifier'];
         $this->selection = $params['selection'];
         $this->selectionCondition = isset($params['selection_condition']) ? $params['selection_condition'] : false;
         $this->controller = $params['controller'];
-        $this->shopId = isset($params['shop_id']) ? (int) $params['shop_id'] : (int) (Context::getContext()->shop->id ?? 0);
+        $this->shopId = isset($params['shop_id']) ? (int) $params['shop_id'] : (int) ($ctx->shop->id ?? 0);
         $this->currentPage = isset($params['current_page']) ? $params['current_page'] : 1;
         $this->nbPerPageList = [20, 50, 100, 200];
         $this->nbPerPage = (isset($params['nb_per_page']) && $params['nb_per_page'] != null)
@@ -159,8 +161,8 @@ class LengowList
         $this->sql = $params['sql'];
         $this->orderValue = isset($params['order_value']) ? $params['order_value'] : '';
         $this->orderColumn = isset($params['order_column']) ? $params['order_column'] : '';
-        $this->locale = new LengowTranslation();
-        $this->context = Context::getContext();
+        $this->locale = new LengowTranslation($ctx);
+        $this->context = $ctx;
     }
 
     /**

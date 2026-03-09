@@ -1,0 +1,52 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+{% extends base_layout %}
+
+{% block lengow_header %}
+    {% include '@Modules/lengow/views/templates/admin/twig/header.html.twig' %}
+{% endblock %}
+
+{% block lengow_content %}
+<div class="cms-global">
+    <div class="lgw-container">
+        {% if debugMode %}
+            <div id="lgw-debug" class="adminlengowlegals {% if multiShop %}multi-shop{% endif %}">
+                {{ locale.t('menu.debug_active') }}
+            </div>
+        {% endif %}
+        <div class="lgw-box lengow_legals_wrapper">
+            <h3>SAS Lengow</h3>
+            {{ locale.t('legals.screen.simplified_company') }}
+            <br />
+            {{ locale.t('legals.screen.social_capital') }}
+            368 778 &euro;
+            <br />
+            {{ locale.t('legals.screen.cnil_declaration') }}
+            1748784 v 0
+            <br />
+            {{ locale.t('legals.screen.company_registration_number') }}
+            513 381 434
+            <br />
+            {{ locale.t('legals.screen.vat_identification_number') }}
+            FR42513381434
+            <h3>{{ locale.t('legals.screen.address') }}</h3>
+            6 rue Ren&eacute; Viviani<br />
+            44200 Nantes
+            <h3>{{ locale.t('legals.screen.contact') }}</h3>
+            contact@lengow.com<br />
+            +33 (0)2 85 52 64 14
+            <h3>{{ locale.t('legals.screen.hosting') }}</h3>
+            OXALIDE<br />
+            RCS Paris : 803 816 529<br />
+            25 Boulevard de Strasbourg &#8211; 75010 Paris<br />
+            +33 (0)1 75 77 16 66
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block lengow_footer %}
+    {% include '@Modules/lengow/views/templates/admin/twig/footer.html.twig' %}
+{% endblock %}

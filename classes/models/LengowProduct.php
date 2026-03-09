@@ -115,8 +115,8 @@ class LengowProduct extends Product
         $this->combinations = null;
         $this->carrier = isset($params['carrier']) ? $params['carrier'] : null;
         $this->imageSize = isset($params['image_size']) ? $params['image_size'] : self::getMaxImageType();
-        $this->context = Context::getContext();
-        $this->context->language = isset($params['language']) ? $params['language'] : Context::getContext()->language;
+        $this->context = LengowContext::getContext();
+        $this->context->language = isset($params['language']) ? $params['language'] : $this->context->language;
         // the applicable tax may be BOTH the product one and the state one (moreover this variable is some deadcode)
         $this->tax_name = 'deprecated';
         $this->manufacturer_name = Manufacturer::getNameById((int) $this->id_manufacturer);
@@ -243,7 +243,7 @@ class LengowProduct extends Product
             case 'shipping_delay':
                 return $this->carrier->delay[$this->context->language->id];
             case 'currency':
-                return Context::getContext()->currency->iso_code;
+                return $this->context->currency->iso_code;
             case (bool) preg_match('`image_([0-9]+)`', $name):
                 return $this->getImageLink($name, $idProductAttribute);
             case 'type':

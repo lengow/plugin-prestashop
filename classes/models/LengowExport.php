@@ -329,7 +329,7 @@ class LengowExport
         $this->idShop = (int) (
             isset($params[self::PARAM_SHOP_ID])
             ? $params[self::PARAM_SHOP_ID]
-            : Context::getContext()->shop->id
+            : LengowContext::getContext()->shop->id
         );
         $this->language = isset($params[self::PARAM_LANGUAGE_ID])
             ? new Language($params[self::PARAM_LANGUAGE_ID])
@@ -381,8 +381,8 @@ class LengowExport
         }
         $this->updateExportDate = !isset($params[self::PARAM_UPDATE_EXPORT_DATE])
             || $params[self::PARAM_UPDATE_EXPORT_DATE];
-        if (!Context::getContext()->currency) {
-            Context::getContext()->currency = new Currency((int) Configuration::get('PS_CURRENCY_DEFAULT'));
+        if (!LengowContext::getContext()->currency) {
+            LengowContext::getContext()->currency = new Currency((int) Configuration::get('PS_CURRENCY_DEFAULT'));
         }
         $this->legacy = isset($params[self::PARAM_LEGACY_FIELDS]) ? (bool) $params[self::PARAM_LEGACY_FIELDS] : null;
     }
@@ -480,7 +480,7 @@ class LengowExport
      */
     public function checkCurrency(): bool
     {
-        if (!Context::getContext()->currency) {
+        if (!LengowContext::getContext()->currency) {
             throw new LengowException(LengowMain::setLogMessage('log.export.error_illegal_currency'));
         }
 
@@ -772,7 +772,7 @@ class LengowExport
                 // verify if multishop and share stock is active
                 if (
                     Configuration::get('PS_MULTISHOP_FEATURE_ACTIVE') == 1
-                    && Context::getContext()->shop->getContextShopGroup()->share_stock === 1
+                    && LengowContext::getContext()->shop->getContextShopGroup()->share_stock === 1
                 ) {
                     $query .= ' INNER JOIN ' . _DB_PREFIX_ . 'stock_available sa ON
                         (sa.id_product=p.id_product

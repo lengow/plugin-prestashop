@@ -110,7 +110,7 @@ class LengowCart extends Cart
     public function updateQty($quantity, $idProduct, $idProductAttribute = null, $idCustomization = false, $operator = 'up', $idAddressDelivery = 0, $shop = null, $autoAddCartRule = true, $skipAvailabilityCheckOutOfStock = false, $preserveGiftRemoval = true, $useOrderPrices = false): bool
     {
         if (!$shop instanceof Shop) {
-            $shop = Context::getContext()->shop;
+            $shop = LengowContext::getContext()->shop;
         }
         // this line are useless, but PrestaShop validator require it
         $autoAddCartRule = $autoAddCartRule;
@@ -229,7 +229,7 @@ class LengowCart extends Cart
         // refresh cache of self::_products
         $this->_products = $this->getProducts(true);
         $this->update();
-        $context = Context::getContext()->cloneContext();
+        $context = LengowContext::getContext()->cloneContext();
         $context->cart = $this;
         Cache::clean('getContextualValue_*');
         if ($product->customizable) {
@@ -310,7 +310,7 @@ class LengowCart extends Cart
     public function validateFieldLengow(string $fieldName, int $errorType): void
     {
         if ($errorType === LengowAddress::LENGOW_EMPTY_ERROR && $fieldName === 'id_lang') {
-            $this->{$fieldName} = Context::getContext()->language->id;
+            $this->{$fieldName} = LengowContext::getContext()->language->id;
         }
     }
 

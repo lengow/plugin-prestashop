@@ -25,50 +25,21 @@ declare(strict_types=1);
 namespace PrestaShop\Module\Lengow\Controller\Admin;
 
 use PrestaShopBundle\Security\Attribute\AdminSecurity;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
 
 class LengowDashboardAdminController extends AbstractLengowAdminController
 {
     #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))")]
     public function indexAction(Request $request): Response
     {
-        $lengowController = new \LengowDashboardController();
+        $lengowController = new \LengowDashboardController($this->legacyContext, $this->twig, true);
 
-        $action = $request->get('action', false);
-        if ($action) {
-            ob_start();
-            $lengowController->postProcess();
-            $output = ob_get_clean();
-
-            if ($output !== '') {
-                return new JsonResponse(
-                    json_decode($output, true) ?? [],
-                    Response::HTTP_OK,
-                    [],
-                    false
-                );
-            }
-
-            // postProcess may have redirected — if so, it already called Tools::redirectAdmin
-            // which calls header() + exit. We won't reach here.
-            return new Response('', Response::HTTP_NO_CONTENT);
+        $response = $this->handleLegacyPostAction($request, $lengowController);
+        if ($response instanceof Response) {
+            return $response;
         }
 
-        $lengowController->postProcess();
-
-        ob_start();
-        $lengowController->forceDisplay();
-        $pageContent = ob_get_clean();
-
-        return $this->render(
-            '@Modules/lengow/views/templates/admin/symfony/layout.html.twig',
-            ['page_content' => $pageContent]
-        );
+        return $this->renderLegacyPage('@Modules/lengow/views/templates/admin/lengow_dashboard/view.html.twig', $lengowController);
     }
 }

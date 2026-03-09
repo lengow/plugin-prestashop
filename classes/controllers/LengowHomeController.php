@@ -39,12 +39,11 @@ class LengowHomeController extends LengowController
         if ($action) {
             switch ($action) {
                 case 'go_to_credentials':
-                    $module = Module::getInstanceByName('lengow');
-                    $displayContent = $module->display(
-                        _PS_MODULE_LENGOW_DIR_,
-                        'views/templates/admin/lengow_home/helpers/view/connection_cms.tpl'
+                    $displayContent = $this->twig->render(
+                        '@Modules/lengow/views/templates/admin/lengow_home/helpers/view/connection_cms.html.twig',
+                        $this->getCommonVarsForSubTemplate()
                     );
-                    echo json_encode(
+                    $this->respondJson(
                         ['content' => preg_replace('/\r|\n/', '', $displayContent)]
                     );
                     break;
@@ -60,15 +59,15 @@ class LengowHomeController extends LengowController
                             $hasCatalogToLink = $this->hasCatalogToLink();
                         }
                     }
-                    $this->context->smarty->assign('credentialsValid', $credentialsValid);
-                    $this->context->smarty->assign('cmsConnected', $cmsConnected);
-                    $this->context->smarty->assign('hasCatalogToLink', $hasCatalogToLink);
-                    $module = Module::getInstanceByName('lengow');
-                    $displayContent = $module->display(
-                        _PS_MODULE_LENGOW_DIR_,
-                        'views/templates/admin/lengow_home/helpers/view/connection_cms_result.tpl'
+                    $displayContent = $this->twig->render(
+                        '@Modules/lengow/views/templates/admin/lengow_home/helpers/view/connection_cms_result.html.twig',
+                        array_merge($this->getCommonVarsForSubTemplate(), [
+                            'credentialsValid' => $credentialsValid,
+                            'cmsConnected' => $cmsConnected,
+                            'hasCatalogToLink' => $hasCatalogToLink,
+                        ])
                     );
-                    echo json_encode(
+                    $this->respondJson(
                         [
                             'success' => $cmsConnected,
                             'content' => preg_replace('/\r|\n/', '', $displayContent),
@@ -80,14 +79,14 @@ class LengowHomeController extends LengowController
                     if ($retry) {
                         LengowConfiguration::resetCatalogIds();
                     }
-                    $this->context->smarty->assign('shopCollection', LengowShop::getActiveShops());
-                    $this->context->smarty->assign('catalogList', $this->getCatalogList());
-                    $module = Module::getInstanceByName('lengow');
-                    $displayContent = $module->display(
-                        _PS_MODULE_LENGOW_DIR_,
-                        'views/templates/admin/lengow_home/helpers/view/connection_catalog.tpl'
+                    $displayContent = $this->twig->render(
+                        '@Modules/lengow/views/templates/admin/lengow_home/helpers/view/connection_catalog.html.twig',
+                        array_merge($this->getCommonVarsForSubTemplate(), [
+                            'shopCollection' => LengowShop::getActiveShops(),
+                            'catalogList' => $this->getCatalogList(),
+                        ])
                     );
-                    echo json_encode(
+                    $this->respondJson(
                         ['content' => preg_replace('/\r|\n/', '', $displayContent)]
                     );
                     break;
@@ -99,12 +98,11 @@ class LengowHomeController extends LengowController
                     if (!empty($catalogSelected)) {
                         $catalogsLinked = $this->saveCatalogsLinked($catalogSelected);
                     }
-                    $module = Module::getInstanceByName('lengow');
-                    $displayConnectionResult = $module->display(
-                        _PS_MODULE_LENGOW_DIR_,
-                        'views/templates/admin/lengow_home/helpers/view/connection_catalog_failed.tpl'
+                    $displayConnectionResult = $this->twig->render(
+                        '@Modules/lengow/views/templates/admin/lengow_home/helpers/view/connection_catalog_failed.html.twig',
+                        $this->getCommonVarsForSubTemplate()
                     );
-                    echo json_encode(
+                    $this->respondJson(
                         [
                             'success' => $catalogsLinked,
                             'content' => preg_replace('/\r|\n/', '', $displayConnectionResult),
@@ -112,7 +110,7 @@ class LengowHomeController extends LengowController
                     );
                     break;
             }
-            exit;
+            $this->finishPostProcess();
         }
     }
 
@@ -124,14 +122,28 @@ class LengowHomeController extends LengowController
     public function display(): void
     {
         if ($this->isNewMerchant) {
-            $this->context->smarty->assign(
-                'lengow_ajax_link',
-                $this->lengowLink->getAbsoluteAdminLink('AdminLengowHome')
-            );
+            $this->templateVars['lengow_ajax_link'] = $this->lengowLink->getAbsoluteAdminLink('AdminLengowHome');
             parent::display();
         } else {
             Tools::redirectAdmin($this->lengowLink->getAbsoluteAdminLink('AdminLengowDashboard'));
         }
+    }
+
+    /**
+     * Get common variables for sub-template rendering (AJAX context)
+     *
+     * @return array<string, mixed>
+     */
+    private function getCommonVarsForSubTemplate(): array
+    {
+        return [
+            'lengowPathUri' => $this->templateVars['lengowPathUri'] ?? $this->module->getPathUri(),
+            'locale' => $this->locale,
+            'lengow_link' => $this->lengowLink,
+            'lengowUrl' => LengowConfiguration::getLengowUrl(),
+            'helpCenterLink' => $this->templateVars['helpCenterLink'] ?? '',
+            'supportLink' => $this->templateVars['supportLink'] ?? '',
+        ];
     }
 
     /**

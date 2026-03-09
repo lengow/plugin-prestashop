@@ -55,10 +55,14 @@ class LengowTranslation
 
     /**
      * Construct
+     *
+     * @param Context|null $context PrestaShop context (injected where available,
+     *                              falls back to LengowContext for legacy callers)
      */
-    public function __construct()
+    public function __construct(?Context $context = null)
     {
-        $this->isoCode = Context::getContext()->language->iso_code;
+        $ctx = $context ?? LengowContext::getContext();
+        $this->isoCode = $ctx->language->iso_code;
     }
 
     /**

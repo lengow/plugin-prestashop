@@ -22,8 +22,10 @@
 
 namespace PrestaShop\Module\Lengow\Controller;
 
+use PrestaShop\Module\Lengow\Service\OrderRefundDataUpdater;
 use PrestaShop\PrestaShop\Adapter\Configuration;
 use PrestaShop\PrestaShop\Adapter\Currency\CurrencyDataProvider;
+use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShop\PrestaShop\Core\Action\ActionsBarButtonsCollection;
 use PrestaShop\PrestaShop\Core\Domain\CartRule\Exception\InvalidCartRuleDiscountValueException;
 use PrestaShop\PrestaShop\Core\Domain\Order\Command\UpdateOrderShippingDetailsCommand;
@@ -60,8 +62,7 @@ use PrestaShopBundle\Form\Admin\Sell\Order\OrderMessageType;
 use PrestaShopBundle\Form\Admin\Sell\Order\OrderPaymentType;
 use PrestaShopBundle\Form\Admin\Sell\Order\UpdateOrderShippingType;
 use PrestaShopBundle\Form\Admin\Sell\Order\UpdateOrderStatusType;
-use PrestaShopBundle\Security\Annotation\AdminSecurity;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -70,44 +71,46 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
-
 class AdminOrderController extends OrderController
 {
-    /** @var Configuration */
-    private Configuration $configuration;
-    /** @var FormFactoryInterface */
+    private Configuration $lengowConfiguration;
     private FormFactoryInterface $formFactory;
+    private \Context $legacyCtx;
 
     public function __construct(
         FormFactoryInterface $formFactory,
         Configuration $configuration,
+        LegacyContext $legacyContext,
+        private readonly OrderRefundDataUpdater $orderRefundDataUpdater,
     ) {
         parent::__construct($formFactory);
+        $this->lengowConfiguration = $configuration;
         $this->formFactory = $formFactory;
-        $this->configuration = $configuration;
+        $this->legacyCtx = $legacyContext->getContext();
+        \LengowContext::setContext($this->legacyCtx);
     }
 
-    /**
-     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))")
-     *
-     * @param int $orderId
-     * @param Request $request
-     *
-     * @return Response
-     */
+    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))")]
     public function viewAction(
         int $orderId,
         Request $request,
-        #[Autowire(service: 'prestashop.core.form.identifiable_object.builder.cancel_product_form_builder')] FormBuilderInterface $formBuilder,
-        #[Autowire(service: 'prestashop.adapter.order.order_sibling_provider')] OrderSiblingProviderInterface $orderSiblingProvider,
-        CurrencyDataProvider $currencyDataProvider,
+        ?FormBuilderInterface $formBuilder = null,
+        ?OrderSiblingProviderInterface $orderSiblingProvider = null,
+        ?CurrencyDataProvider $currencyDataProvider = null,
     ): Response {
+        $formBuilder = $this->resolveCancelProductFormBuilder($formBuilder);
+        $orderSiblingProvider = $this->resolveOrderSiblingProvider($orderSiblingProvider);
+        $currencyDataProvider = $this->resolveCurrencyDataProvider($currencyDataProvider);
+
         try {
             if (!$this->isFromLengow($orderId)) {
-                return parent::viewAction($orderId, $request, $formBuilder, $orderSiblingProvider, $currencyDataProvider);
+                return $this->callParentViewAction(
+                    $orderId,
+                    $request,
+                    $formBuilder,
+                    $orderSiblingProvider,
+                    $currencyDataProvider
+                );
             }
             /** @var OrderForViewing $orderForViewing */
             $orderForViewing = $this->dispatchQuery(new GetOrderForViewing($orderId, QuerySorting::DESC));
@@ -194,7 +197,6 @@ class AdminOrderController extends OrderController
                 ),
             ]);
         }
-        $currencyDataProvider = $this->container->get('prestashop.adapter.data_provider.currency');
         $orderCurrency = $currencyDataProvider->getCurrencyById($orderForViewing->getCurrencyId());
 
         $addProductRowForm = $this->createForm(AddProductRowType::class, [], [
@@ -240,9 +242,9 @@ class AdminOrderController extends OrderController
 
         $this->handleOutOfStockProduct($orderForViewing);
 
-        $merchandiseReturnEnabled = (bool) $this->configuration->get('PS_ORDER_RETURN');
+        $merchandiseReturnEnabled = (bool) $this->lengowConfiguration->get('PS_ORDER_RETURN');
 
-        $paginationNum = (int) $this->configuration->get('PS_ORDER_PRODUCTS_NB_PER_PAGE', self::DEFAULT_PRODUCTS_NUMBER);
+        $paginationNum = (int) $this->lengowConfiguration->get('PS_ORDER_PRODUCTS_NB_PER_PAGE', self::DEFAULT_PRODUCTS_NUMBER);
         $paginationNumOptions = self::PRODUCTS_PAGINATION_OPTIONS;
         if (!in_array($paginationNum, $paginationNumOptions)) {
             $paginationNumOptions[] = $paginationNum;
@@ -251,7 +253,7 @@ class AdminOrderController extends OrderController
         $metatitle = sprintf(
             '%s %s %s',
             $this->trans('Orders', [], 'Admin.Orderscustomers.Feature'),
-            $this->configuration->get('PS_NAVIGATION_PIPE', '>'),
+            $this->lengowConfiguration->get('PS_NAVIGATION_PIPE', '>'),
             $this->trans(
                 'Order %reference% from %firstname% %lastname%',
                 [
@@ -285,12 +287,12 @@ class AdminOrderController extends OrderController
             'editProductRowForm' => $editProductRowForm->createView(),
             'backOfficeOrderButtons' => $backOfficeOrderButtons,
             'merchandiseReturnEnabled' => $merchandiseReturnEnabled,
-            'priceSpecification' => \Context::getContext()->getCurrentLocale()->getPriceSpecification($orderCurrency->iso_code)->toArray(),
+            'priceSpecification' => $this->legacyCtx->getCurrentLocale()->getPriceSpecification($orderCurrency->iso_code)->toArray(),
             'previousOrderId' => $orderSiblingProvider->getPreviousOrderId($orderId),
             'nextOrderId' => $orderSiblingProvider->getNextOrderId($orderId),
             'paginationNum' => $paginationNum,
             'paginationNumOptions' => $paginationNumOptions,
-            'isAvailableQuantityDisplayed' => $this->configuration->getBoolean('PS_STOCK_MANAGEMENT'),
+            'isAvailableQuantityDisplayed' => $this->lengowConfiguration->getBoolean('PS_STOCK_MANAGEMENT'),
             'internalNoteForm' => $internalNoteForm->createView(),
             'returnTrackingNumber' => $this->getReturnTrackingNumber($orderId),
             'returnCarrier' => $this->getReturnCarrier($orderId),
@@ -306,19 +308,12 @@ class AdminOrderController extends OrderController
         ]);
     }
 
-    /**
-     * @AdminSecurity(
-     *     "is_granted('update', request.get('_legacy_controller'))",
-     *     redirectRoute="admin_orders_view",
-     *     redirectQueryParamsToKeep={"orderId"},
-     *     message="You do not have permission to edit this."
-     * )
-     *
-     * @param int $orderId
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     */
+    #[AdminSecurity(
+        "is_granted('update', request.get('_legacy_controller'))",
+        redirectRoute: 'admin_orders_view',
+        redirectQueryParamsToKeep: ['orderId'],
+        message: 'You do not have permission to edit this.'
+    )]
     public function updateShippingAction(int $orderId, Request $request): RedirectResponse
     {
         $form = $this->createForm(UpdateOrderShippingType::class, [], [
@@ -397,7 +392,7 @@ class AdminOrderController extends OrderController
      */
     private function handleOutOfStockProduct(OrderForViewing $orderForViewing): void
     {
-        $isStockManagementEnabled = $this->configuration->getBoolean('PS_STOCK_MANAGEMENT');
+        $isStockManagementEnabled = $this->lengowConfiguration->getBoolean('PS_STOCK_MANAGEMENT');
         if (!$isStockManagementEnabled || $orderForViewing->isDelivered() || $orderForViewing->isShipped()) {
             return;
         }
@@ -642,37 +637,144 @@ class AdminOrderController extends OrderController
         return \LengowOrder::isFromLengow($orderId);
     }
 
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))")]
     public function saveRefundReason(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $orderId = (int) $data['orderId'];
-        $reason = $data['reason'] ?? '';
-
-        if (empty($orderId) || empty($reason)) {
-            return new JsonResponse(['success' => false, 'message' => 'Données manquantes']);
+        $payload = $this->extractRefundPayload($request, 'reason');
+        if ($payload === null) {
+            return new JsonResponse(
+                [
+                    'success' => false,
+                    'message' => $this->trans('Missing or invalid request payload.', [], 'Admin.Notifications.Error'),
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
-        \Db::getInstance()->update('lengow_orders', [
-            'refund_reason' => pSQL($reason),
-        ], 'id_order = ' . (int) $orderId);
+        if (!$this->orderRefundDataUpdater->updateRefundReason($payload['orderId'], $payload['value'])) {
+            return new JsonResponse(
+                [
+                    'success' => false,
+                    'message' => $this->trans('Unable to save refund reason.', [], 'Admin.Orderscustomers.Notification'),
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
 
         return new JsonResponse(['success' => true]);
     }
 
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))")]
     public function saveRefundMode(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $orderId = (int) $data['orderId'];
-        $reason = $data['mode'] ?? '';
-
-        if (empty($orderId) || empty($reason)) {
-            return new JsonResponse(['success' => false, 'message' => 'Données manquantes']);
+        $payload = $this->extractRefundPayload($request, 'mode');
+        if ($payload === null) {
+            return new JsonResponse(
+                [
+                    'success' => false,
+                    'message' => $this->trans('Missing or invalid request payload.', [], 'Admin.Notifications.Error'),
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
-        \Db::getInstance()->update('lengow_orders', [
-            'refund_mode' => pSQL($reason),
-        ], 'id_order = ' . (int) $orderId);
+        if (!$this->orderRefundDataUpdater->updateRefundMode($payload['orderId'], $payload['value'])) {
+            return new JsonResponse(
+                [
+                    'success' => false,
+                    'message' => $this->trans('Unable to save refund mode.', [], 'Admin.Orderscustomers.Notification'),
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
 
         return new JsonResponse(['success' => true]);
+    }
+
+    /**
+     * @return array{orderId: int, value: string}|null
+     */
+    private function extractRefundPayload(Request $request, string $field): ?array
+    {
+        $data = json_decode($request->getContent(), true);
+        if (!is_array($data)) {
+            return null;
+        }
+
+        $orderId = isset($data['orderId']) ? (int) $data['orderId'] : 0;
+        $value = isset($data[$field]) ? trim((string) $data[$field]) : '';
+        if ($orderId <= 0 || $value === '') {
+            return null;
+        }
+
+        return [
+            'orderId' => $orderId,
+            'value' => $value,
+        ];
+    }
+
+    private function callParentViewAction(
+        int $orderId,
+        Request $request,
+        FormBuilderInterface $formBuilder,
+        OrderSiblingProviderInterface $orderSiblingProvider,
+        CurrencyDataProvider $currencyDataProvider,
+    ): Response {
+        $reflection = new \ReflectionMethod(parent::class, 'viewAction');
+        $arguments = [$orderId, $request];
+        if ($reflection->getNumberOfParameters() > 2) {
+            $arguments[] = $formBuilder;
+            $arguments[] = $orderSiblingProvider;
+            $arguments[] = $currencyDataProvider;
+        }
+
+        $response = $reflection->invokeArgs($this, $arguments);
+        if (!$response instanceof Response) {
+            throw new \RuntimeException('Unexpected response type from parent order view action.');
+        }
+
+        return $response;
+    }
+
+    private function resolveCancelProductFormBuilder(?FormBuilderInterface $formBuilder): FormBuilderInterface
+    {
+        if ($formBuilder !== null) {
+            return $formBuilder;
+        }
+
+        $service = $this->container->get('prestashop.core.form.identifiable_object.builder.cancel_product_form_builder');
+        if (!$service instanceof FormBuilderInterface) {
+            throw new \RuntimeException('Unable to load cancel product form builder service.');
+        }
+
+        return $service;
+    }
+
+    private function resolveOrderSiblingProvider(?OrderSiblingProviderInterface $orderSiblingProvider): OrderSiblingProviderInterface
+    {
+        if ($orderSiblingProvider !== null) {
+            return $orderSiblingProvider;
+        }
+
+        $service = $this->container->get('prestashop.adapter.order.order_sibling_provider');
+        if (!$service instanceof OrderSiblingProviderInterface) {
+            throw new \RuntimeException('Unable to load order sibling provider service.');
+        }
+
+        return $service;
+    }
+
+    private function resolveCurrencyDataProvider(?CurrencyDataProvider $currencyDataProvider): CurrencyDataProvider
+    {
+        if ($currencyDataProvider !== null) {
+            return $currencyDataProvider;
+        }
+
+        $service = $this->container->get('prestashop.adapter.data_provider.currency');
+        if (!$service instanceof CurrencyDataProvider) {
+            throw new \RuntimeException('Unable to load currency data provider service.');
+        }
+
+        return $service;
     }
 }

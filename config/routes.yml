@@ -100,9 +100,13 @@ lengow_save_refund_reason:
   methods: [ POST ]
   defaults:
     _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::saveRefundReason'
+    _legacy_controller: AdminOrders
+    _legacy_link: AdminOrders:vieworder
 
 lengow_save_refund_mode:
   path: /admin/lengow/refund-mode/save
   methods: [ POST ]
   defaults:
     _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::saveRefundMode'
+    _legacy_controller: AdminOrders
+    _legacy_link: AdminOrders:vieworder

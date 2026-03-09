@@ -796,7 +796,7 @@ class LengowMain
             ];
             // send an email if the template exists for the locale
             $emails = LengowConfiguration::getReportEmailAddress();
-            $idLang = (int) Context::getContext()->cookie->id_lang;
+            $idLang = (int) LengowContext::getContext()->cookie->id_lang;
             $iso = Language::getIsoById($idLang);
             if (file_exists(_PS_MODULE_DIR_ . 'lengow/mails/' . $iso . '/report.txt')
                 && file_exists(_PS_MODULE_DIR_ . 'lengow/mails/' . $iso . '/report.html')
@@ -1037,7 +1037,7 @@ class LengowMain
     {
         $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 's' : '';
         try {
-            $idShop = $idShop === null ? Context::getContext()->shop->id : $idShop;
+            $idShop = $idShop === null ? LengowContext::getContext()->shop->id : $idShop;
             $shopUrl = self::getMainShopUrl($idShop);
             $base = 'http' . $isHttps . '://' . $shopUrl->domain . $shopUrl->physical_uri . $shopUrl->virtual_uri;
         } catch (Exception $e) {
@@ -1101,7 +1101,7 @@ class LengowMain
             return (int) $idErrorState;
         }
         if (!$idLang) {
-            $idLang = Context::getContext()->language->id;
+            $idLang = LengowContext::getContext()->language->id;
         }
         $states = OrderState::getOrderStates($idLang);
         foreach ($states as $state) {

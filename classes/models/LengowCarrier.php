@@ -814,7 +814,7 @@ class LengowCarrier extends Carrier
                 'SELECT ldc.id_country, c.iso_code, cl.name FROM ' . _DB_PREFIX_ . 'lengow_default_carrier as ldc
                 INNER JOIN ' . _DB_PREFIX_ . 'country as c ON ldc.id_country = c.id_country
                 INNER JOIN ' . _DB_PREFIX_ . 'country_lang as cl ON c.id_country = cl.id_country
-                AND cl.id_lang = ' . (int) Context::getContext()->language->id . '
+                AND cl.id_lang = ' . (int) LengowContext::getContext()->language->id . '
                 GROUP BY ldc.id_country'
             );
 

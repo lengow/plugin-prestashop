@@ -1,0 +1,31 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+{% extends base_layout %}
+
+{% block lengow_header %}
+    {% include '@Modules/lengow/views/templates/admin/twig/header.html.twig' %}
+{% endblock %}
+
+{% block lengow_content %}
+<script type="text/javascript">$(document.body).addClass("adminlengowhome");</script>
+<div id="lengow_home_wrapper" class="cms-global">
+    <div class="lgw-container lgw-connection text-center">
+        <div class="lgw-content-section">
+            <div class="lgw-logo">
+                <img src="{{ lengowPathUri }}views/img/lengow-blue.png" alt="lengow">
+            </div>
+        </div>
+        <div id="lgw-connection-content">
+            {% include '@Modules/lengow/views/templates/admin/lengow_home/helpers/view/connection_home.html.twig' %}
+        </div>
+    </div>
+</div>
+<input type="hidden" id="lengow_ajax_link" value="{{ lengow_ajax_link }}">
+<script type="text/javascript" src="{{ lengowPathUri }}views/js/lengow/home.js"></script>
+{% endblock %}
+
+{% block lengow_footer %}
+    {% include '@Modules/lengow/views/templates/admin/twig/footer.html.twig' %}
+{% endblock %}

@@ -114,7 +114,7 @@ class LengowFeed
         $this->format = $format;
         $this->legacy = $legacy;
         if ($shopName === null) {
-            $shopName = Context::getContext()->shop->name;
+            $shopName = LengowContext::getContext()->shop->name;
         }
         $this->shopFolder = LengowMain::getShopNameCleaned($shopName);
         if (!$this->stream) {
@@ -137,7 +137,7 @@ class LengowFeed
         if (!file_exists($folderPath) && !mkdir($folderPath) && !is_dir($folderPath)) {
             throw new LengowException(LengowMain::setLogMessage('log.export.error_unable_to_create_folder', ['folder_path' => $folderPath]));
         }
-        $fileName = 'flux-' . Context::getContext()->language->iso_code . '-' . time() . '.' . $this->format;
+        $fileName = 'flux-' . LengowContext::getContext()->language->iso_code . '-' . time() . '.' . $this->format;
         $this->file = new LengowFile($this->exportFolder, $fileName);
     }
 
@@ -305,7 +305,7 @@ class LengowFeed
     {
         $this->write(self::FOOTER);
         if (!$this->stream) {
-            $oldFileName = 'flux-' . Context::getContext()->language->iso_code . '.' . $this->format;
+            $oldFileName = 'flux-' . LengowContext::getContext()->language->iso_code . '.' . $this->format;
             $oldFile = new LengowFile($this->exportFolder, $oldFileName);
             if ($oldFile->exists()) {
                 $oldFilePath = $oldFile->getPath();

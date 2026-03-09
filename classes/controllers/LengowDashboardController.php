@@ -44,10 +44,10 @@ class LengowDashboardController extends LengowController
                 case 'remind_me_later':
                     $timestamp = time() + (7 * 86400);
                     LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_MODAL, $timestamp);
-                    echo json_encode(['success' => true]);
+                    $this->respondJson(['success' => true]);
                     break;
             }
-            exit;
+            $this->finishPostProcess();
         }
     }
 
@@ -59,7 +59,7 @@ class LengowDashboardController extends LengowController
     public function display(): void
     {
         $refreshStatus = $this->lengowLink->getAbsoluteAdminLink('AdminLengowDashboard') . '&action=refresh_status';
-        $this->context->smarty->assign('refresh_status', $refreshStatus);
+        $this->templateVars['refresh_status'] = $refreshStatus;
         parent::display();
     }
 }

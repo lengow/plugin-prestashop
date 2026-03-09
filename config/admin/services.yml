@@ -13,4 +13,5 @@ services:
   PrestaShop\Module\Lengow\Controller\Admin\LengowHelpAdminController: ~
   PrestaShop\Module\Lengow\Controller\Admin\LengowLegalsAdminController: ~
   PrestaShop\Module\Lengow\Controller\Admin\LengowToolboxAdminController: ~
-
+  PrestaShop\Module\Lengow\Controller\AdminOrderController: ~
+  PrestaShop\Module\Lengow\Service\OrderRefundDataUpdater: ~
