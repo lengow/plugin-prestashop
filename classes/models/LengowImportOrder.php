@@ -1520,7 +1520,7 @@ class LengowImportOrder
      *
      * @return int|false
      */
-    private function getCarrierIdByMethodAsCarrierFallback($idCountry, $idMarketplace)
+  private function getCarrierIdByMethodAsCarrierFallback($idCountry, $idMarketplace)
     {
         if (!$this->carrierMethod) {
             return false;
