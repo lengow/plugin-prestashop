@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2026 Lengow SAS.
  *
@@ -23,6 +22,10 @@
 declare(strict_types=1);
 
 namespace PrestaShop\Module\Lengow\Service;
+
+if (!\defined('_PS_VERSION_')) {
+    exit;
+}
 
 final class OrderRefundDataUpdater
 {

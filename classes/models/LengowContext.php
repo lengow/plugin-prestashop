@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -26,8 +25,8 @@ if (!defined('_PS_VERSION_')) {
 /**
  * Centralised context provider for the Lengow module.
  *
- * In PrestaShop 9 the static Context::getContext() helper is deprecated in
- * favour of dependency injection.  This class acts as the single bridge:
+ * In PrestaShop 9 the legacy global context helper is deprecated in favour
+ * of dependency injection. This class acts as the single bridge:
  *  - The module constructor calls setContext() immediately after parent::__construct()
  *    so the instance is available before any other class is instantiated.
  *  - Symfony controllers call setContext() via the @required setter injection in
@@ -55,10 +54,7 @@ class LengowContext
     public static function getContext(): Context
     {
         if (self::$instance === null) {
-            throw new \RuntimeException(
-                'LengowContext has not been initialised. '
-                . 'Ensure the Lengow module is loaded before calling LengowContext::getContext().'
-            );
+            throw new \RuntimeException('LengowContext has not been initialised. Ensure the Lengow module is loaded before calling LengowContext::getContext().');
         }
 
         return self::$instance;

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -340,11 +339,18 @@ class LengowAction
             }
         }
         $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_ORDER_ACTION, $getParams);
-        if (isset($result->error, $result->error->message)) {
-            throw new LengowException($result->error->message);
+        $resultData = is_object($result) ? (array) $result : [];
+        $resultError = $resultData['error'] ?? null;
+        if (is_object($resultError) && isset($resultError->message)) {
+            throw new LengowException($resultError->message);
         }
-        if (isset($result->count) && $result->count > 0) {
-            foreach ($result->results as $row) {
+        $resultCount = isset($resultData['count']) ? (int) $resultData['count'] : 0;
+        $resultRows = isset($resultData['results']) && is_iterable($resultData['results']) ? $resultData['results'] : [];
+        if ($resultCount > 0) {
+            foreach ($resultRows as $row) {
+                if (!is_object($row) || !isset($row->id)) {
+                    continue;
+                }
                 $orderActionId = self::getActionByActionId($row->id);
                 if ($orderActionId) {
                     $update = self::updateAction(
@@ -610,12 +616,16 @@ class LengowAction
                 '',
                 $logOutput
             );
-            if (!is_object($results) || isset($results->error)) {
+            if (!is_object($results)) {
                 break;
             }
-            if (isset($results->results)) {
+            $resultsData = (array) $results;
+            if (isset($resultsData['error'])) {
+                break;
+            }
+            if (isset($resultsData['results']) && is_iterable($resultsData['results'])) {
                 // construct array actions
-                foreach ($results->results as $action) {
+                foreach ($resultsData['results'] as $action) {
                     if (isset($action->id)) {
                         $apiActions[$action->id] = $action;
                     }
@@ -623,7 +633,7 @@ class LengowAction
             }
 
             ++$page;
-        } while (!empty($results->next));
+        } while (!empty($resultsData['next']));
         // check foreach action if is complete
         foreach ($activeActions as $action) {
             if (!isset($apiActions[$action[self::FIELD_ACTION_ID]])) {

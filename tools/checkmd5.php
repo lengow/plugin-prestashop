@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Check MD5
  */

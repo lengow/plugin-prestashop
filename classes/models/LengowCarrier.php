@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -22,10 +21,6 @@
 /*
  * Lengow Carrier Class
  */
-
-use MondialrelayClasslib\Actions\ActionsHandler;
-use MondialrelayClasslib\Extensions\ProcessLogger\ProcessLoggerHandler;
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -1090,8 +1085,12 @@ class LengowCarrier extends Carrier
         }
         // Mondial Relay
         if (LengowMain::isMondialRelayV2Available()) {
-            $mr = new MondialRelay();
-            if ($mr->isMondialRelayCarrier($idCarrier)) {
+            $mondialRelayClass = 'MondialRelay';
+            if (!class_exists($mondialRelayClass)) {
+                return self::NO_COMPATIBILITY;
+            }
+            $mr = new $mondialRelayClass();
+            if (is_object($mr) && method_exists($mr, 'isMondialRelayCarrier') && $mr->isMondialRelayCarrier($idCarrier)) {
                 $relay = self::getMRRelayV2($shippingAddress->id, $shippingAddress->idRelay, $mr);
                 if (!$relay) {
                     throw new LengowException(LengowMain::setLogMessage('log.import.error_mondial_relay_not_found', ['id_relay' => $shippingAddress->idRelay]));
@@ -1136,12 +1135,16 @@ class LengowCarrier extends Carrier
         if (!$loaded) {
             throw new LengowException(LengowMain::setLogMessage('log.import.error_colissimo_missing_file', ['file_path' => $filePath]));
         }
+        $scFieldsClass = 'SCFields';
+        if (!class_exists($scFieldsClass)) {
+            throw new LengowException(LengowMain::setLogMessage('log.import.error_colissimo_missing_file', ['file_path' => $filePath]));
+        }
         $customer = new LengowCustomer($idCustomer);
         /** @var array<string, string> $params */
         $params = [];
         if (!empty($shippingAddress->idRelay)) {
             $deliveryMode = 'A2P';
-            $soColissimo = new SCFields($deliveryMode);
+            $soColissimo = new $scFieldsClass($deliveryMode);
             $params['PRID'] = (string) $shippingAddress->idRelay;
             $params['PRCOMPLADRESS'] = (string) $shippingAddress->other;
             $params['PRADRESS1'] = (string) $shippingAddress->address1;
@@ -1153,7 +1156,7 @@ class LengowCarrier extends Carrier
             $params['CEEMAIL'] = (string) $customer->email;
         } else {
             $deliveryMode = 'DOM';
-            $soColissimo = new SCFields($deliveryMode);
+            $soColissimo = new $scFieldsClass($deliveryMode);
             $params['CECOMPLADRESS'] = (string) $shippingAddress->other;
             $params['CEADRESS2'] = (string) $shippingAddress->address2;
             $params['CEADRESS3'] = (string) $shippingAddress->address1;
@@ -1193,7 +1196,9 @@ class LengowCarrier extends Carrier
             `cename`,
             `cefirstname`)
             VALUES (' . (int) $idCart . ', ' . (int) $idCustomer . ',';
-        if ($soColissimo->delivery_mode === SCFields::RELAY_POINT) {
+        $relayPointDeliveryMode = defined($scFieldsClass . '::RELAY_POINT') ? constant($scFieldsClass . '::RELAY_POINT') : 'A2P';
+        $soColissimoData = is_object($soColissimo) ? (array) $soColissimo : [];
+        if (($soColissimoData['delivery_mode'] ?? null) === $relayPointDeliveryMode) {
             $sql .= '\'' . pSQL($deliveryMode) . '\',
                 ' . (isset($params['PRID']) ? '\'' . pSQL($params['PRID']) . '\'' : '\'\'') . ',
                 \'' . pSQL($params['CENAME']) . '\',
@@ -1272,13 +1277,13 @@ class LengowCarrier extends Carrier
      *
      * @param int $idAddressDelivery PrestaShop shipping address id
      * @param string $idRelay relay id
-     * @param MondialRelay $mr Mondial Relay module
+     * @param object $mr Mondial Relay module
      *
      * @return bool
      *
      * @throws LengowException mondial relay missing file
      */
-    public static function getMRRelayV2(int $idAddressDelivery, string $idRelay, MondialRelay $mr): bool
+    public static function getMRRelayV2(int $idAddressDelivery, string $idRelay, object $mr): bool
     {
         $sep = DIRECTORY_SEPARATOR;
         if (empty($idRelay)) {
@@ -1292,7 +1297,14 @@ class LengowCarrier extends Carrier
             'id_address_delivery' => (int) $idAddressDelivery,
             'relayPointNumList' => [$idRelay],
         ];
-        $mrRd = new MRRelayDetail($params, $mr);
+        $mrRelayDetailClass = 'MRRelayDetail';
+        if (!class_exists($mrRelayDetailClass)) {
+            return false;
+        }
+        $mrRd = new $mrRelayDetailClass($params, $mr);
+        if (!method_exists($mrRd, 'init') || !method_exists($mrRd, 'send') || !method_exists($mrRd, 'getResult')) {
+            return false;
+        }
         try {
             $mrRd->init();
             $mrRd->send();
@@ -1321,21 +1333,39 @@ class LengowCarrier extends Carrier
     public static function handleMRRelayV3(int $idOrder, int $idCarrier, string $idRelay): bool
     {
         $order = new Order($idOrder);
-        $carrierMethod = MondialrelayCarrierMethod::getFromNativeCarrierId($idCarrier);
+        $carrierMethodClass = 'MondialrelayCarrierMethod';
+        if (!class_exists($carrierMethodClass)) {
+            return false;
+        }
+        $carrierMethod = $carrierMethodClass::getFromNativeCarrierId($idCarrier);
         if (!Validate::isLoadedObject($carrierMethod)) {
             return false;
         }
 
-        if (!$carrierMethod->needsRelay()) {
+        if (!method_exists($carrierMethod, 'needsRelay') || !$carrierMethod->needsRelay()) {
             return false;
         }
 
         $deliveryAddress = new Address($order->id_address_delivery);
         $countryIso = Country::getIsoById($deliveryAddress->id_country);
-
-        $handler = new ActionsHandler();
+        $actionsHandlerClass = 'MondialrelayClasslib\\Actions\\ActionsHandler';
+        if (!class_exists($actionsHandlerClass)) {
+            return false;
+        }
+        $handler = new $actionsHandlerClass();
+        if (!method_exists($handler, 'setConveyor')
+            || !method_exists($handler, 'addActions')
+            || !method_exists($handler, 'process')
+            || !method_exists($handler, 'getConveyor')
+        ) {
+            return false;
+        }
+        $enseigneConstant = 'Mondialrelay::WEBSERVICE_ENSEIGNE';
+        if (!defined($enseigneConstant)) {
+            return false;
+        }
         $handler->setConveyor([
-            'enseigne' => Configuration::get(Mondialrelay::WEBSERVICE_ENSEIGNE),
+            'enseigne' => Configuration::get(constant($enseigneConstant)),
             'country_iso' => $countryIso,
             // relayNumber is 6 digits, leading 0 are sometimes missing
             'relayNumber' => str_pad($idRelay, 6, '0', STR_PAD_LEFT),
@@ -1349,18 +1379,28 @@ class LengowCarrier extends Carrier
             $handler->process('SelectRelay');
         } catch (Exception $e) {
             $phpError = $e->getFile() . ':' . $e->getLine() . ' - ' . $e->getMessage();
-            ProcessLoggerHandler::logError($phpError);
+            $processLoggerHandlerClass = 'MondialrelayClasslib\\Extensions\\ProcessLogger\\ProcessLoggerHandler';
+            if (class_exists($processLoggerHandlerClass) && is_callable([$processLoggerHandlerClass, 'logError'])) {
+                $processLoggerHandlerClass::logError($phpError);
+            }
         }
 
         $conveyor = $handler->getConveyor();
         /* @var $selectedRelay MondialrelaySelectedRelay */
-        $selectedRelay = $conveyor['selectedRelay'] ?? null;
+        $selectedRelay = is_array($conveyor) ? ($conveyor['selectedRelay'] ?? null) : null;
         if (!$selectedRelay) {
             return false;
         }
 
+        if (!is_object($selectedRelay) || !method_exists($selectedRelay, 'save')) {
+            return false;
+        }
+        $weightCoeffConstant = 'Mondialrelay::WEIGHT_COEFF';
+        if (!defined($weightCoeffConstant)) {
+            return false;
+        }
         $selectedRelay->id_order = $order->id;
-        $selectedRelay->package_weight = $cart->getTotalWeight() * Configuration::get(Mondialrelay::WEIGHT_COEFF);
+        $selectedRelay->package_weight = $cart->getTotalWeight() * Configuration::get(constant($weightCoeffConstant));
         if (!$selectedRelay->save()) {
             return false;
         }
@@ -1403,12 +1443,12 @@ class LengowCarrier extends Carrier
         // get column names specific to a relay
         if (is_array($relay)) {
             foreach ($relay as $nameKey => $value) {
-                $query .= '`MR_Selected_' . MRTools::bqSQL($nameKey) . '`, ';
+                $query .= '`MR_Selected_' . self::escapeMondialRelayColumn((string) $nameKey) . '`, ';
             }
         } elseif (is_object($relay)) {
             foreach ($mdArrayKeys as $key) {
                 if (isset($relay->{$key})) {
-                    $query .= '`MR_Selected_' . MRTools::bqSQL($key) . '`, ';
+                    $query .= '`MR_Selected_' . self::escapeMondialRelayColumn($key) . '`, ';
                 }
             }
         }
@@ -1437,5 +1477,15 @@ class LengowCarrier extends Carrier
         $db = Db::getInstance();
 
         return $db->execute($query);
+    }
+
+    private static function escapeMondialRelayColumn(string $column): string
+    {
+        $mrToolsClass = 'MRTools';
+        if (class_exists($mrToolsClass) && is_callable([$mrToolsClass, 'bqSQL'])) {
+            return $mrToolsClass::bqSQL($column);
+        }
+
+        return pSQL($column);
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -23,6 +22,10 @@
 declare(strict_types=1);
 
 namespace PrestaShop\Module\Lengow\Controller\Admin;
+
+if (!\defined('_PS_VERSION_')) {
+    exit;
+}
 
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShopBundle\Controller\Admin\PrestaShopAdminController;

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * New Translation system base on YAML files
  * We need to edit yml file for each languages

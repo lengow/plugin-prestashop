@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2020 Lengow SAS.
  *

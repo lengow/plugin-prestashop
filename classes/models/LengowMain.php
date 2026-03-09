@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2017 Lengow SAS.
  *
@@ -876,16 +875,25 @@ class LengowMain
     private static function isMondialRelayVersionAvailable(string $minVersion, string $maxVersion): bool
     {
         $moduleName = 'mondialrelay';
+        $moduleClassName = 'MondialRelay';
         $sep = DIRECTORY_SEPARATOR;
         $moduleDir = _PS_MODULE_DIR_ . $moduleName . $sep;
         if (!self::isModuleInstalled($moduleName)) {
             return false;
         }
         require_once $moduleDir . $moduleName . '.php';
-        $mr = new MondialRelay();
+        if (!class_exists($moduleClassName)) {
+            return false;
+        }
+        $mr = new $moduleClassName();
+        $mrData = is_object($mr) ? (array) $mr : [];
+        $moduleVersion = isset($mrData['version']) && is_string($mrData['version']) ? $mrData['version'] : null;
+        if ($moduleVersion === null) {
+            return false;
+        }
 
-        return version_compare($mr->version, $minVersion, '>=')
-            && version_compare($mr->version, $maxVersion, '<');
+        return version_compare($moduleVersion, $minVersion, '>=')
+            && version_compare($moduleVersion, $maxVersion, '<');
     }
 
     /**
@@ -906,6 +914,7 @@ class LengowMain
     public static function isSoColissimoAvailable(): bool
     {
         $moduleName = _PS_VERSION_ < '1.7' ? 'socolissimo' : 'colissimo_simplicite';
+        $moduleClassName = _PS_VERSION_ < '1.7' ? 'Socolissimo' : 'Colissimo_simplicite';
         $supportedVersion = '2.8.5';
         $sep = DIRECTORY_SEPARATOR;
         $moduleDir = _PS_MODULE_DIR_ . $moduleName . $sep;
@@ -913,8 +922,16 @@ class LengowMain
             return false;
         }
         require_once $moduleDir . $moduleName . '.php';
-        $soColissimo = _PS_VERSION_ < '1.7' ? new Socolissimo() : new Colissimo_simplicite();
-        if (version_compare($soColissimo->version, $supportedVersion, '>=')) {
+        if (!class_exists($moduleClassName)) {
+            return false;
+        }
+        $soColissimo = new $moduleClassName();
+        $soColissimoData = is_object($soColissimo) ? (array) $soColissimo : [];
+        $moduleVersion = isset($soColissimoData['version']) && is_string($soColissimoData['version']) ? $soColissimoData['version'] : null;
+        if ($moduleVersion === null) {
+            return false;
+        }
+        if (version_compare($moduleVersion, $supportedVersion, '>=')) {
             return true;
         }
 

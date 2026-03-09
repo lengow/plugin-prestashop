@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2017 Lengow SAS.
  *
@@ -21,6 +20,10 @@
  */
 
 namespace PrestaShop\Module\Lengow\Controller;
+
+if (!\defined('_PS_VERSION_')) {
+    exit;
+}
 
 use PrestaShop\Module\Lengow\Service\OrderRefundDataUpdater;
 use PrestaShop\PrestaShop\Adapter\Configuration;

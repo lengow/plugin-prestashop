@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -309,12 +308,16 @@ class LengowSync
             '',
             $logOutput
         );
-        if (isset($result->isFreeTrial)) {
+        $resultData = is_object($result) ? (array) $result : [];
+        if (array_key_exists('isFreeTrial', $resultData)) {
+            $leftDaysBeforeExpired = isset($resultData['leftDaysBeforeExpired']) ? (int) $resultData['leftDaysBeforeExpired'] : 0;
+            $isExpired = isset($resultData['isExpired']) ? (bool) $resultData['isExpired'] : false;
+            $accountVersion = isset($resultData['accountVersion']) ? (string) $resultData['accountVersion'] : '';
             $status = [
-                'type' => $result->isFreeTrial ? 'free_trial' : '',
-                'day' => (int) $result->leftDaysBeforeExpired < 0 ? 0 : (int) $result->leftDaysBeforeExpired,
-                'expired' => (bool) $result->isExpired,
-                'legacy' => $result->accountVersion === 'v2',
+                'type' => (bool) $resultData['isFreeTrial'] ? 'free_trial' : '',
+                'day' => $leftDaysBeforeExpired < 0 ? 0 : $leftDaysBeforeExpired,
+                'expired' => $isExpired,
+                'legacy' => $accountVersion === 'v2',
             ];
             LengowConfiguration::updateGlobalValue(
                 LengowConfiguration::ACCOUNT_STATUS_DATA,
