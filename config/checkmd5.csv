@@ -13,7 +13,7 @@
 /classes/controllers/LengowOrderController.php|3dbc1a208e61d72f1424af5df3c3c00d
 /classes/controllers/LengowDashboardController.php|ebe6a9d71e4a9be250061d96ec23b9ca
 /classes/controllers/LengowLegalsController.php|14effece7503b9524c83f628d255d146
-/classes/controllers/LengowController.php|e4d8bbb3a4d2212e138f8d67dbd1dcd7
+/classes/controllers/LengowController.php|6b6c0f9f550cf3cfc57125f2baf4e8b0
 /classes/controllers/LengowToolboxController.php|292b629d678c2743e0050782e73ace07
 /classes/controllers/LengowHelpController.php|e0b813a636dcf6a6910e8a2c7199931c
 /classes/controllers/LengowMainSettingController.php|bbd1135a358b667bd922acd101104a05
@@ -38,7 +38,7 @@
 /classes/models/LengowMethod.php|f49543513b3159adadb8ff124658c0ba
 /classes/models/LengowToolbox.php|41550f5bf339bf9a85f331e584cd2ae6
 /classes/models/LengowProduct.php|a3004a2b437bfba8412948bae5fef21e
-/classes/models/LengowContext.php|11f3475914bc4e4ccbb2ee8a34776031
+/classes/models/LengowContext.php|af29b1a24c96ee0dbc6f49ff8ad2f812
 /classes/models/LengowGender.php|13bcb15e024a66ceb8635ac848a50cc9
 /classes/models/LengowPaymentModule.php|5df1a660dd421bcb3dfa7681f5314ec6
 /classes/models/LengowNameParser.php|138ff50086fbadcef00dbe1365be5148
@@ -56,15 +56,13 @@
 /classes/models/LengowLog.php|0e5d5cd7851d428b5c98acae6cfc877a
 /classes/models/LengowCatalog.php|07c15f25bb0905335f9a64a49d318be5
 /classes/models/LengowException.php|8beecbf00b5c1c047ee19af552903439
-/classes/models/LengowCarrier.php|799c41d44607453f2f2629fdb815b6ac
+/classes/models/LengowCarrier.php|09d34137ce3d73f6863b1767f7715923
 /classes/models/index.php|a90243841e2e64a4ee2965d4dfa12491
 /classes/models/LengowBackup.php|f623888737423524ef6a440c7ed2fcaa
 /classes/models/LengowCart.php|b5bddff5c3c6b14bdbc2291d7f175f19
 /classes/models/LengowCountry.php|d842caedcd144ae3a02144958804176c
 /classes/models/LengowShop.php|988978cd8bbf3d7c47f41a91069811d9
 /classes/index.php|a90243841e2e64a4ee2965d4dfa12491
-/controllers/admin/index.php|be8b25f88c14bddd7711e4585ebae316
-/controllers/index.php|be8b25f88c14bddd7711e4585ebae316
 /mails/nl/report.txt|de4160ab037db7fa1806b1dabe546a60
 /mails/nl/index.php|be8b25f88c14bddd7711e4585ebae316
 /mails/nl/report.html|aa21eced7789f09a68ca474b04cc431e

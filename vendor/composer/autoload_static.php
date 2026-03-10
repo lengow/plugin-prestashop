@@ -4,17 +4,25 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit4bfa755ad204a2f10b057f94fa964aec
+class ComposerStaticInit30bb8244360bd03582d49c20c2bea86f
 {
     public static $prefixLengthsPsr4 = array (
-        'L' => 
+        'P' =>
+        array (
+            'PrestaShop\\Module\\Lengow\\Controller\\Admin\\' => 42,
+        ),
+        'L' =>
         array (
             'Lengow\\' => 7,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Lengow\\' => 
+        'PrestaShop\\Module\\Lengow\\Controller\\Admin\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/src/Controller/Admin',
+        ),
+        'Lengow\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
@@ -32,6 +40,7 @@ class ComposerStaticInit4bfa755ad204a2f10b057f94fa964aec
         'LengowConfiguration' => __DIR__ . '/../..' . '/classes/models/LengowConfiguration.php',
         'LengowConfigurationForm' => __DIR__ . '/../..' . '/classes/models/LengowConfigurationForm.php',
         'LengowConnector' => __DIR__ . '/../..' . '/classes/models/LengowConnector.php',
+        'LengowContext' => __DIR__ . '/../..' . '/classes/models/LengowContext.php',
         'LengowController' => __DIR__ . '/../..' . '/classes/controllers/LengowController.php',
         'LengowCountry' => __DIR__ . '/../..' . '/classes/models/LengowCountry.php',
         'LengowCustomer' => __DIR__ . '/../..' . '/classes/models/LengowCustomer.php',
@@ -73,14 +82,25 @@ class ComposerStaticInit4bfa755ad204a2f10b057f94fa964aec
         'LengowToolboxElement' => __DIR__ . '/../..' . '/classes/models/LengowToolboxElement.php',
         'LengowTranslation' => __DIR__ . '/../..' . '/classes/models/LengowTranslation.php',
         'PrestaShop\\Module\\Lengow\\Controller\\AdminOrderController' => __DIR__ . '/../..' . '/src/Controller/AdminOrderController.php',
+        'PrestaShop\\Module\\Lengow\\Controller\\Admin\\AbstractLengowAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/AbstractLengowAdminController.php',
+        'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowDashboardAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/LengowDashboardAdminController.php',
+        'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowFeedAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/LengowFeedAdminController.php',
+        'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowHelpAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/LengowHelpAdminController.php',
+        'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowHomeAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/LengowHomeAdminController.php',
+        'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowLegalsAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/LengowLegalsAdminController.php',
+        'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowMainSettingAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/LengowMainSettingAdminController.php',
+        'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowOrderAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/LengowOrderAdminController.php',
+        'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowOrderSettingAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/LengowOrderSettingAdminController.php',
+        'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowToolboxAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/LengowToolboxAdminController.php',
+        'PrestaShop\\Module\\Lengow\\Service\\OrderRefundDataUpdater' => __DIR__ . '/../..' . '/src/Service/OrderRefundDataUpdater.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit4bfa755ad204a2f10b057f94fa964aec::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit4bfa755ad204a2f10b057f94fa964aec::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit4bfa755ad204a2f10b057f94fa964aec::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit30bb8244360bd03582d49c20c2bea86f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit30bb8244360bd03582d49c20c2bea86f::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit30bb8244360bd03582d49c20c2bea86f::$classMap;
 
         }, null, ClassLoader::class);
     }

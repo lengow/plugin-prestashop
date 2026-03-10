@@ -49,12 +49,12 @@ class LengowContext
     /**
      * Retrieve the Context instance.
      *
-     * @throws \RuntimeException if setContext() was never called
+     * @throws RuntimeException if setContext() was never called
      */
     public static function getContext(): Context
     {
         if (self::$instance === null) {
-            throw new \RuntimeException('LengowContext has not been initialised. Ensure the Lengow module is loaded before calling LengowContext::getContext().');
+            throw new RuntimeException('LengowContext has not been initialised. Ensure the Lengow module is loaded before calling LengowContext::getContext().');
         }
 
         return self::$instance;

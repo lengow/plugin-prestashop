@@ -4,10 +4,8 @@ includes:
   - %env.PS_DEV_TOOLS_DIR%/phpstan/ps-module-extension.neon
 parameters:
   level: 6
-  paths:
-    - %currentWorkingDirectory%
   excludePaths:
-    - %currentWorkingDirectory%/vendor
+    - vendor
   ignoreErrors:
     # External third-party module classes (optional runtime dependencies, loaded conditionally)
     - identifier: class.notFound

@@ -21,10 +21,18 @@
 
 namespace PrestaShop\Module\Lengow\Controller;
 
-if (!\defined('_PS_VERSION_')) {
+if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+use Context;
+use Exception;
+use LengowAction;
+use LengowCarrier;
+use LengowContext;
+use LengowOrder;
+use LengowOrderDetail;
+use LengowTranslation;
 use PrestaShop\Module\Lengow\Service\OrderRefundDataUpdater;
 use PrestaShop\PrestaShop\Adapter\Configuration;
 use PrestaShop\PrestaShop\Adapter\Currency\CurrencyDataProvider;
@@ -66,6 +74,8 @@ use PrestaShopBundle\Form\Admin\Sell\Order\OrderPaymentType;
 use PrestaShopBundle\Form\Admin\Sell\Order\UpdateOrderShippingType;
 use PrestaShopBundle\Form\Admin\Sell\Order\UpdateOrderStatusType;
 use PrestaShopBundle\Security\Attribute\AdminSecurity;
+use ReflectionMethod;
+use RuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -78,7 +88,7 @@ class AdminOrderController extends OrderController
 {
     private Configuration $lengowConfiguration;
     private FormFactoryInterface $formFactory;
-    private \Context $legacyCtx;
+    private Context $legacyCtx;
 
     public function __construct(
         FormFactoryInterface $formFactory,
@@ -90,7 +100,7 @@ class AdminOrderController extends OrderController
         $this->lengowConfiguration = $configuration;
         $this->formFactory = $formFactory;
         $this->legacyCtx = $legacyContext->getContext();
-        \LengowContext::setContext($this->legacyCtx);
+        LengowContext::setContext($this->legacyCtx);
     }
 
     #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))")]
@@ -122,7 +132,7 @@ class AdminOrderController extends OrderController
 
             return $this->redirectToRoute('admin_orders_index');
         }
-        $locale = new \LengowTranslation();
+        $locale = new LengowTranslation();
         $formFactory = $this->formFactory; // Use injected property
         $updateOrderStatusForm = $formFactory->createNamed(
             'update_order_status',
@@ -184,7 +194,7 @@ class AdminOrderController extends OrderController
 
         if ($isActiveReturnTrackingNumber) {
             $returnTrackingNumber = $this->getReturnTrackingNumber($orderId);
-            $updateOrderShippingForm->add(\LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
+            $updateOrderShippingForm->add(LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
                 'required' => false,
                 'data' => $returnTrackingNumber,
             ]);
@@ -192,10 +202,10 @@ class AdminOrderController extends OrderController
 
         if ($isActiveReturnCarrier) {
             $returnCarrier = $this->getReturnCarrier($orderId);
-            $updateOrderShippingForm->add(\LengowAction::ARG_RETURN_CARRIER, ChoiceType::class, [
+            $updateOrderShippingForm->add(LengowAction::ARG_RETURN_CARRIER, ChoiceType::class, [
                 'required' => false,
                 'data' => $returnCarrier,
-                'choices' => \LengowCarrier::getCarriersChoices(
+                'choices' => LengowCarrier::getCarriersChoices(
                     $orderForViewing->getCustomer()->getLanguageId()
                 ),
             ]);
@@ -231,13 +241,13 @@ class AdminOrderController extends OrderController
 
             $cancelProductForm = $formBuilder->getFormFor($orderId);
             if ($this->isFromLengow($orderId)) {
-                $lengowOrder = new \LengowOrder($orderId);
+                $lengowOrder = new LengowOrder($orderId);
                 $marketplace = $lengowOrder->getMarketplace();
                 $refundReasons = $marketplace->getRefundReasons();
                 $refundMode = $marketplace->getRefundModes();
                 $refundSelectedDatas = $lengowOrder->getRefundDataFromLengowOrder($orderId, $marketplace->name);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
 
             return $this->redirectToRoute('admin_orders_index');
@@ -325,15 +335,15 @@ class AdminOrderController extends OrderController
 
         if ($this->isFromLengow($orderId)) {
             if ($this->isActiveReturnTrackingNumber($orderId)) {
-                $form->add(\LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
+                $form->add(LengowAction::ARG_RETURN_TRACKING_NUMBER, TextType::class, [
                     'required' => false,
                 ]);
             }
             if ($this->isActiveReturnTrackingCarrier($orderId)) {
-                $order = new \LengowOrder($orderId);
-                $form->add(\LengowAction::ARG_RETURN_CARRIER, ChoiceType::class, [
+                $order = new LengowOrder($orderId);
+                $form->add(LengowAction::ARG_RETURN_CARRIER, ChoiceType::class, [
                     'required' => false,
-                    'choices' => \LengowCarrier::getCarriersChoices(
+                    'choices' => LengowCarrier::getCarriersChoices(
                         $order->id_lang
                     ),
                 ]);
@@ -346,15 +356,15 @@ class AdminOrderController extends OrderController
             $data = $form->getData();
 
             try {
-                if (!empty($data[\LengowAction::ARG_RETURN_TRACKING_NUMBER])) {
-                    \LengowOrderDetail::updateOrderReturnTrackingNumber(
-                        $data[\LengowAction::ARG_RETURN_TRACKING_NUMBER],
+                if (!empty($data[LengowAction::ARG_RETURN_TRACKING_NUMBER])) {
+                    LengowOrderDetail::updateOrderReturnTrackingNumber(
+                        $data[LengowAction::ARG_RETURN_TRACKING_NUMBER],
                         $orderId
                     );
                 }
-                if (!empty($data[\LengowAction::ARG_RETURN_CARRIER])) {
-                    \LengowOrderDetail::updateOrderReturnCarrier(
-                        (string) $data[\LengowAction::ARG_RETURN_CARRIER],
+                if (!empty($data[LengowAction::ARG_RETURN_CARRIER])) {
+                    LengowOrderDetail::updateOrderReturnCarrier(
+                        (string) $data[LengowAction::ARG_RETURN_CARRIER],
                         $orderId
                     );
                 }
@@ -377,7 +387,7 @@ class AdminOrderController extends OrderController
                         'Admin.Orderscustomers.Notification'
                     )
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
             }
         }
@@ -411,11 +421,11 @@ class AdminOrderController extends OrderController
     }
 
     /**
-     * @param \Exception $e
+     * @param Exception $e
      *
      * @return array<int|string, mixed>
      */
-    private function getErrorMessages(\Exception $e): array
+    private function getErrorMessages(Exception $e): array
     {
         $refundableQuantity = 0;
         if ($e instanceof InvalidCancelProductException) {
@@ -581,7 +591,7 @@ class AdminOrderController extends OrderController
      */
     private function isActiveReturnTrackingNumber(int $orderId): bool
     {
-        $lengowOrder = new \LengowOrder($orderId);
+        $lengowOrder = new LengowOrder($orderId);
         if ($lengowOrder->getMarketplace()) {
             return $lengowOrder->getMarketplace()->hasReturnTrackingNumber();
         }
@@ -594,7 +604,7 @@ class AdminOrderController extends OrderController
      */
     private function isActiveReturnTrackingCarrier(int $orderId): bool
     {
-        $lengowOrder = new \LengowOrder($orderId);
+        $lengowOrder = new LengowOrder($orderId);
         if ($lengowOrder->getMarketplace()) {
             return $lengowOrder->getMarketplace()->hasReturnTrackingCarrier();
         }
@@ -609,7 +619,7 @@ class AdminOrderController extends OrderController
      */
     private function getReturnTrackingNumber(int $orderId): string
     {
-        return \LengowOrderDetail::getOrderReturnTrackingNumber($orderId);
+        return LengowOrderDetail::getOrderReturnTrackingNumber($orderId);
     }
 
     /**
@@ -619,7 +629,7 @@ class AdminOrderController extends OrderController
      */
     private function getReturnCarrier(int $orderId): string
     {
-        return \LengowOrderDetail::getOrderReturnCarrier($orderId);
+        return LengowOrderDetail::getOrderReturnCarrier($orderId);
     }
 
     /**
@@ -629,7 +639,7 @@ class AdminOrderController extends OrderController
      */
     private function getReturnCarrierName(int $orderId): string
     {
-        return \LengowOrderDetail::getOrderReturnCarrierName($orderId);
+        return LengowOrderDetail::getOrderReturnCarrierName($orderId);
     }
 
     /**
@@ -637,7 +647,7 @@ class AdminOrderController extends OrderController
      */
     private function isFromLengow(int $orderId): bool
     {
-        return \LengowOrder::isFromLengow($orderId);
+        return LengowOrder::isFromLengow($orderId);
     }
 
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))")]
@@ -723,7 +733,7 @@ class AdminOrderController extends OrderController
         OrderSiblingProviderInterface $orderSiblingProvider,
         CurrencyDataProvider $currencyDataProvider,
     ): Response {
-        $reflection = new \ReflectionMethod(parent::class, 'viewAction');
+        $reflection = new ReflectionMethod(parent::class, 'viewAction');
         $arguments = [$orderId, $request];
         if ($reflection->getNumberOfParameters() > 2) {
             $arguments[] = $formBuilder;
@@ -733,7 +743,7 @@ class AdminOrderController extends OrderController
 
         $response = $reflection->invokeArgs($this, $arguments);
         if (!$response instanceof Response) {
-            throw new \RuntimeException('Unexpected response type from parent order view action.');
+            throw new RuntimeException('Unexpected response type from parent order view action.');
         }
 
         return $response;
@@ -747,7 +757,7 @@ class AdminOrderController extends OrderController
 
         $service = $this->container->get('prestashop.core.form.identifiable_object.builder.cancel_product_form_builder');
         if (!$service instanceof FormBuilderInterface) {
-            throw new \RuntimeException('Unable to load cancel product form builder service.');
+            throw new RuntimeException('Unable to load cancel product form builder service.');
         }
 
         return $service;
@@ -761,7 +771,7 @@ class AdminOrderController extends OrderController
 
         $service = $this->container->get('prestashop.adapter.order.order_sibling_provider');
         if (!$service instanceof OrderSiblingProviderInterface) {
-            throw new \RuntimeException('Unable to load order sibling provider service.');
+            throw new RuntimeException('Unable to load order sibling provider service.');
         }
 
         return $service;
@@ -775,7 +785,7 @@ class AdminOrderController extends OrderController
 
         $service = $this->container->get('prestashop.adapter.data_provider.currency');
         if (!$service instanceof CurrencyDataProvider) {
-            throw new \RuntimeException('Unable to load currency data provider service.');
+            throw new RuntimeException('Unable to load currency data provider service.');
         }
 
         return $service;

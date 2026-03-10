@@ -1399,8 +1399,12 @@ class LengowCarrier extends Carrier
         if (!defined($weightCoeffConstant)) {
             return false;
         }
-        $selectedRelay->id_order = $order->id;
-        $selectedRelay->package_weight = $cart->getTotalWeight() * Configuration::get(constant($weightCoeffConstant));
+        self::setDynamicProperty($selectedRelay, 'id_order', $order->id);
+        self::setDynamicProperty(
+            $selectedRelay,
+            'package_weight',
+            $cart->getTotalWeight() * Configuration::get(constant($weightCoeffConstant))
+        );
         if (!$selectedRelay->save()) {
             return false;
         }
@@ -1477,6 +1481,11 @@ class LengowCarrier extends Carrier
         $db = Db::getInstance();
 
         return $db->execute($query);
+    }
+
+    private static function setDynamicProperty(object $target, string $property, mixed $value): void
+    {
+        $target->{$property} = $value;
     }
 
     private static function escapeMondialRelayColumn(string $column): string
