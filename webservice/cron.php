@@ -18,19 +18,13 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  *
- * @deprecated This entry point is kept for backward compatibility only.
- *             The canonical URL is now: /index.php?fc=module&module=lengow&controller=cron
- *             With pretty URLs enabled: /module/lengow/cron
+ * Backward-compatible entry point. Kept so the legacy URL
+ * modules/lengow/webservice/cron.php still works in PS 8.2+/9.0 without
+ * any HTTP redirect: bootstraps PS and dispatches to the FO controller.
  */
-$proto = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http';
-$baseUrl = rtrim(
-    str_replace('modules/lengow/webservice/cron.php', '', $proto . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']),
-    '/'
-);
-$qs = http_build_query($_GET);
-header(
-    'Location: ' . $baseUrl . '/index.php?fc=module&module=lengow&controller=cron' . ($qs !== '' ? '&' . $qs : ''),
-    true,
-    301
-);
-exit;
+$_GET['fc'] = 'module';
+$_GET['module'] = 'lengow';
+$_GET['controller'] = 'cron';
+
+chdir(dirname(__FILE__, 4));
+require 'index.php';
