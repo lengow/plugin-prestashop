@@ -29,23 +29,19 @@ body.page-topbar .cms-global{
 
 .lgw-ps9-content {
   position: relative;
-  /* 54px nav + 20px gap below it, minus 16px since nav uses top:-16px to close the top gap */
   padding-top: 58px;
 }
 
-/* Extend nav to cover the content-div's padding gaps (left: 16px sidebar gap, top: 16px) */
 .lgw-ps9-content .lengow-nav-top {
   left: -16px;
   right: -16px;
   top: -16px;
 }
 
-/* In flex nav (Bootstrap nav-pills on PS9), float:right is ignored — use margin-left:auto instead */
 .lgw-ps9-content .lengow-nav li:not(.lengow_float_right) + li.lengow_float_right {
   margin-left: auto;
 }
 
-/* Logo vertical centering via flex (replaces margin-top: 13px approach) */
 .lgw-ps9-content #lengow_logo a {
   display: flex;
   align-items: center;
@@ -54,21 +50,30 @@ body.page-topbar .cms-global{
   margin-top: 0;
 }
 
-/* Debug mode: nav uses top:-16px, so offset debug button to stay flush under the nav */
 .lgw-ps9-content #lgw-debug {
-  top: 38px; /* 54px (nav height) - 16px (nav top offset) = right below nav bottom */
+  top: 38px;
 }
 
-/* Sub-nav (Overview/Settings tabs): align flush under nav-top, extend to sidebar edge */
 .lgw-ps9-content .lengow-nav-bottom {
-  top: 38px; /* nav-top ends at wrapper+38px (top:-16 + height:54) */
+  top: 38px;
   left: -16px;
   right: -16px;
 }
 
-/* When sub-nav is present, push cms-global below it (sub-nav is absolute, won't push content) */
 .lgw-ps9-content:has(.lengow-nav-bottom) .cms-global {
-  padding-top: 54px; /* sub-nav height — creates ~20px gap between tabs and content */
+  padding-top: 54px;
+}
+
+.lgw-ps9-content .lgw-container .accordion .marketplace {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.lgw-ps9-content .lgw-container .accordion .score {
+  float: none;
 }
 
 .lgw-block {
