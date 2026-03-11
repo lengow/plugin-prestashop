@@ -156,8 +156,8 @@ class LengowCart extends Cart
         if (isset(self::$_totalWeight[$this->id])) {
             unset(self::$_totalWeight[$this->id]);
         }
-        if ((!$product->available_for_order && !$this->forceProduct)
-            || (Configuration::get('PS_CATALOG_MODE') && !defined('_PS_ADMIN_DIR_'))
+        if ((!$product->available_for_order || (Configuration::get('PS_CATALOG_MODE') && !defined('_PS_ADMIN_DIR_')))
+            && !$this->forceProduct
         ) {
             return false;
         }
