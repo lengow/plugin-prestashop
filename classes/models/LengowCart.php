@@ -156,8 +156,8 @@ class LengowCart extends Cart
         if (isset(self::$_totalWeight[$this->id])) {
             unset(self::$_totalWeight[$this->id]);
         }
-        if ((!$product->available_for_order && !$this->forceProduct)
-            || (Configuration::get('PS_CATALOG_MODE') && !defined('_PS_ADMIN_DIR_'))
+        if ((!$product->available_for_order || (Configuration::get('PS_CATALOG_MODE') && !defined('_PS_ADMIN_DIR_')))
+            && !$this->forceProduct
         ) {
             return false;
         }
@@ -185,7 +185,8 @@ class LengowCart extends Cart
             $qty = '+ ' . (int) $quantity;
             // force here
             if ($newQty > $productQty
-                && !Product::isAvailableWhenOutOfStock(!$this->forceProduct && (int) $result2['out_of_stock'])
+                && !$this->forceProduct
+                && !Product::isAvailableWhenOutOfStock((int) $result2['out_of_stock'])
             ) {
                 return false;
             }
