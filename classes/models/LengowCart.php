@@ -185,7 +185,8 @@ class LengowCart extends Cart
             $qty = '+ ' . (int) $quantity;
             // force here
             if ($newQty > $productQty
-                && !Product::isAvailableWhenOutOfStock(!$this->forceProduct && (int) $result2['out_of_stock'])
+                && !$this->forceProduct
+                && !Product::isAvailableWhenOutOfStock((int) $result2['out_of_stock'])
             ) {
                 return false;
             }
