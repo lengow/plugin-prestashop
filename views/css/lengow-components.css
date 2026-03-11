@@ -13,6 +13,10 @@
   top: 0;
 }
 
+a.lgw-box-link {
+  text-decoration: none !important;
+}
+
 .lgw-box-link .lgw-box {
   top: 0;
   color: #555;

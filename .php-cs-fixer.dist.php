@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 $finder = PhpCsFixer\Finder::create()->in([
     __DIR__.'/classes',
     __DIR__.'/src',

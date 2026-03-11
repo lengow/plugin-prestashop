@@ -1003,7 +1003,7 @@ class LengowMain
     }
 
     /**
-     * Get export webservice links
+     * Get export controller links
      *
      * @param int|null $idShop PrestaShop shop id
      *
@@ -1011,36 +1011,42 @@ class LengowMain
      */
     public static function getExportUrl(?int $idShop = null): string
     {
-        $sep = DIRECTORY_SEPARATOR;
-
-        return self::getLengowBaseUrl($idShop) . self::FOLDER_WEBSERVICE . $sep . self::WEBSERVICE_EXPORT . '?'
-            . LengowExport::PARAM_TOKEN . '=' . self::getToken($idShop);
+        return LengowContext::getContext()->link->getModuleLink(
+            'lengow',
+            'export',
+            [LengowExport::PARAM_TOKEN => self::getToken($idShop)],
+            null,
+            null,
+            $idShop
+        );
     }
 
     /**
-     * Get cron webservice links
+     * Get cron controller links
      *
      * @return string
      */
     public static function getCronUrl(): string
     {
-        $sep = DIRECTORY_SEPARATOR;
-
-        return self::getLengowBaseUrl() . self::FOLDER_WEBSERVICE . $sep . self::WEBSERVICE_CRON . '?'
-            . LengowImport::PARAM_TOKEN . '=' . self::getToken();
+        return LengowContext::getContext()->link->getModuleLink(
+            'lengow',
+            'cron',
+            [LengowImport::PARAM_TOKEN => self::getToken()]
+        );
     }
 
     /**
-     * Get toolbox webservice links
+     * Get toolbox controller links
      *
      * @return string
      */
     public static function getToolboxUrl(): string
     {
-        $sep = DIRECTORY_SEPARATOR;
-
-        return self::getLengowBaseUrl() . self::FOLDER_WEBSERVICE . $sep . self::WEBSERVICE_TOOLBOX . '?'
-            . LengowToolbox::PARAM_TOKEN . '=' . self::getToken();
+        return LengowContext::getContext()->link->getModuleLink(
+            'lengow',
+            'toolbox',
+            [LengowToolbox::PARAM_TOKEN => self::getToken()]
+        );
     }
 
     /**
