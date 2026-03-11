@@ -59,6 +59,18 @@ body.page-topbar .cms-global{
   top: 38px; /* 54px (nav height) - 16px (nav top offset) = right below nav bottom */
 }
 
+/* Sub-nav (Overview/Settings tabs): align flush under nav-top, extend to sidebar edge */
+.lgw-ps9-content .lengow-nav-bottom {
+  top: 38px; /* nav-top ends at wrapper+38px (top:-16 + height:54) */
+  left: -16px;
+  right: -16px;
+}
+
+/* When sub-nav is present, push cms-global below it (sub-nav is absolute, won't push content) */
+.lgw-ps9-content:has(.lengow-nav-bottom) .cms-global {
+  padding-top: 54px; /* sub-nav height — creates ~20px gap between tabs and content */
+}
+
 .lgw-block {
   display: block;
   line-height: 54px;
