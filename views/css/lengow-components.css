@@ -671,7 +671,7 @@ a.lgw-box-link:hover {
 }
 
 .lgw-switch.checked span {
-  left: 24px;
+  left: 20px; /* was 24px: corrected for box-sizing:border-box (42px outer - 2px right padding - 18px circle = 22px, minus 2px initial padding = 20px) */
 }
 
 .lgw-switch.checked:hover div,

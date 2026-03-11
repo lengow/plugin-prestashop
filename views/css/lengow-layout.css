@@ -27,6 +27,38 @@ body.page-topbar .cms-global{
   margin: 0 auto;
 }
 
+.lgw-ps9-content {
+  position: relative;
+  /* 54px nav + 20px gap below it, minus 16px since nav uses top:-16px to close the top gap */
+  padding-top: 58px;
+}
+
+/* Extend nav to cover the content-div's padding gaps (left: 16px sidebar gap, top: 16px) */
+.lgw-ps9-content .lengow-nav-top {
+  left: -16px;
+  right: -16px;
+  top: -16px;
+}
+
+/* In flex nav (Bootstrap nav-pills on PS9), float:right is ignored — use margin-left:auto instead */
+.lgw-ps9-content .lengow-nav li:not(.lengow_float_right) + li.lengow_float_right {
+  margin-left: auto;
+}
+
+/* Logo vertical centering via flex (replaces margin-top: 13px approach) */
+.lgw-ps9-content #lengow_logo a {
+  display: flex;
+  align-items: center;
+}
+.lgw-ps9-content #lengow_logo img {
+  margin-top: 0;
+}
+
+/* Debug mode: nav uses top:-16px, so offset debug button to stay flush under the nav */
+.lgw-ps9-content #lgw-debug {
+  top: 38px; /* 54px (nav height) - 16px (nav top offset) = right below nav bottom */
+}
+
 .lgw-block {
   display: block;
   line-height: 54px;
@@ -387,7 +419,7 @@ body.page-sidebar-closed .lengow-nav-bottom {
   height: 54px;
   display: block;
   padding: 0 15px;
-  text-decoration: none;
+  text-decoration: none !important;
   transition: all 100ms ease;
 }
 
