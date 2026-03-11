@@ -487,7 +487,7 @@ class LengowToolbox
         if (file_exists($fileName)) {
             $md5Available = true;
             if (($file = fopen($fileName, 'rb')) !== false) {
-                while (($data = fgetcsv($file, 1000, '|')) !== false) {
+                while (($data = fgetcsv($file, 1000, '|', '"', '')) !== false) {
                     ++$fileCounter;
                     $shortPath = $data[0];
                     $filePath = LengowMain::getLengowFolder() . $data[0];
@@ -541,7 +541,7 @@ class LengowToolbox
         if (file_exists($fileName)) {
             $md5Available = true;
             if (($file = fopen($fileName, 'rb')) !== false) {
-                while (($data = fgetcsv($file, 1000, '|')) !== false) {
+                while (($data = fgetcsv($file, 1000, '|', '"', '')) !== false) {
                     ++$fileCounter;
                     $shortPath = $data[0];
                     $filePath = LengowMain::getLengowFolder() . $data[0];

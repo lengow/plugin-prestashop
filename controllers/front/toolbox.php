@@ -126,7 +126,7 @@ class LengowToolboxModuleFrontController extends ModuleFrontController
                 break;
             default:
                 header('Content-Type: application/json');
-                $type = Tools::getValue(LengowToolbox::PARAM_TYPE, null);
+                $type = (string) (Tools::getValue(LengowToolbox::PARAM_TYPE) ?: LengowToolbox::DATA_TYPE_CMS);
                 echo json_encode(LengowToolbox::getData($type));
                 break;
         }
