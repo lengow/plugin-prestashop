@@ -261,6 +261,30 @@ class Lengow extends Module
     }
 
     /**
+     * Hook to add a Lengow tab link in the order detail tabs
+     *
+     * @param array<string, mixed> $params
+     *
+     * @return string
+     */
+    public function hookDisplayAdminOrderTabLink(array $params): string
+    {
+        return $this->hookClass->hookDisplayAdminOrderTabLink($params);
+    }
+
+    /**
+     * Hook to add Lengow tab content in the order detail tabs
+     *
+     * @param array<string, mixed> $params
+     *
+     * @return string
+     */
+    public function hookDisplayAdminOrderTabContent(array $params): string
+    {
+        return $this->hookClass->hookDisplayAdminOrderTabContent($params);
+    }
+
+    /**
      * Hook when a product line is refunded
      *
      * @param array<string, mixed> $args

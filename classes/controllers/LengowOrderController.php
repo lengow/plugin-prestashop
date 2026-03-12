@@ -191,6 +191,82 @@ class LengowOrderController extends LengowController
                     }
                     $this->respondJson($response);
                     break;
+                case 'save_return_tracking':
+                    $idOrder = (int) Tools::getValue('id_order');
+                    $value = (string) Tools::getValue('value', '');
+                    $response = ['success' => false, 'message' => ''];
+                    if (!$idOrder) {
+                        $response['message'] = 'Missing order id';
+                    } else {
+                        try {
+                            LengowOrderDetail::updateOrderReturnTrackingNumber($value, $idOrder);
+                            $response['success'] = true;
+                        } catch (Exception $e) {
+                            $response['message'] = $e->getMessage();
+                        }
+                    }
+                    if (!$this->bridgeMode) {
+                        header('Content-Type: application/json');
+                    }
+                    $this->respondJson($response);
+                    break;
+                case 'save_return_carrier':
+                    $idOrder = (int) Tools::getValue('id_order');
+                    $value = (string) Tools::getValue('value', '');
+                    $response = ['success' => false, 'message' => ''];
+                    if (!$idOrder) {
+                        $response['message'] = 'Missing order id';
+                    } else {
+                        try {
+                            LengowOrderDetail::updateOrderReturnCarrier($value, $idOrder);
+                            $response['success'] = true;
+                        } catch (Exception $e) {
+                            $response['message'] = $e->getMessage();
+                        }
+                    }
+                    if (!$this->bridgeMode) {
+                        header('Content-Type: application/json');
+                    }
+                    $this->respondJson($response);
+                    break;
+                case 'save_refund_reason':
+                    $idOrder = (int) Tools::getValue('id_order');
+                    $value = (string) Tools::getValue('value', '');
+                    $response = ['success' => false, 'message' => ''];
+                    if (!$idOrder) {
+                        $response['message'] = 'Missing order id';
+                    } else {
+                        $db = Db::getInstance();
+                        $result = $db->update('lengow_orders', ['refund_reason' => pSQL($value)], 'id_order = ' . $idOrder);
+                        $response['success'] = (bool) $result;
+                        if (!$result) {
+                            $response['message'] = 'No changes or error';
+                        }
+                    }
+                    if (!$this->bridgeMode) {
+                        header('Content-Type: application/json');
+                    }
+                    $this->respondJson($response);
+                    break;
+                case 'save_refund_mode':
+                    $idOrder = (int) Tools::getValue('id_order');
+                    $value = (string) Tools::getValue('value', '');
+                    $response = ['success' => false, 'message' => ''];
+                    if (!$idOrder) {
+                        $response['message'] = 'Missing order id';
+                    } else {
+                        $db = Db::getInstance();
+                        $result = $db->update('lengow_orders', ['refund_mode' => pSQL($value)], 'id_order = ' . $idOrder);
+                        $response['success'] = (bool) $result;
+                        if (!$result) {
+                            $response['message'] = 'No changes or error';
+                        }
+                    }
+                    if (!$this->bridgeMode) {
+                        header('Content-Type: application/json');
+                    }
+                    $this->respondJson($response);
+                    break;
                 case 'force_resend':
                     $idOrder = isset($_REQUEST['id_order']) ? (int) $_REQUEST['id_order'] : 0;
                     $actionType = isset($_REQUEST['action_type']) ? $_REQUEST['action_type'] : LengowAction::TYPE_SHIP;

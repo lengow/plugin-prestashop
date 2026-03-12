@@ -76,6 +76,9 @@ class LengowHook
             // version 8.0
             'displayHome' => '8.0',
             'actionOrderStatusPostUpdate' => '8.0',
+            // version 1.7.8 — order page tabs
+            'displayAdminOrderTabLink' => '1.7',
+            'displayAdminOrderTabContent' => '1.7',
         ];
 
         foreach ($lengowHooks as $hook => $version) {
@@ -370,6 +373,89 @@ class LengowHook
                 }
             }
         }
+    }
+
+    /**
+     * Hook to add a Lengow tab link in the order detail tabs
+     *
+     * @param array<string, mixed> $params arguments of hook
+     *
+     * @return string
+     */
+    public function hookDisplayAdminOrderTabLink(array $params): string
+    {
+        $idOrder = (int) ($params['id_order'] ?? 0);
+        if (!$idOrder || !LengowOrder::isFromLengow($idOrder)) {
+            return '';
+        }
+
+        $lengowOrder = new LengowOrder($idOrder);
+        $marketplace = $lengowOrder->getMarketplace();
+        if (!$marketplace) {
+            return '';
+        }
+
+        $hasContent = $marketplace->hasReturnTrackingNumber()
+            || $marketplace->hasReturnTrackingCarrier()
+            || !empty($marketplace->getRefundReasons())
+            || !empty($marketplace->getRefundModes());
+
+        if (!$hasContent) {
+            return '';
+        }
+
+        return '<li class="nav-item">
+            <a class="nav-link" id="lengow-tab" data-toggle="tab" href="#lengow-tab-content" role="tab">
+                Lengow
+            </a>
+        </li>';
+    }
+
+    /**
+     * Hook to add a Lengow tab content (return tracking, refund reason/mode) in the order detail tabs
+     *
+     * @param array<string, mixed> $params arguments of hook
+     *
+     * @return string
+     */
+    public function hookDisplayAdminOrderTabContent(array $params): string
+    {
+        $idOrder = (int) ($params['id_order'] ?? 0);
+        if (!$idOrder || !LengowOrder::isFromLengow($idOrder)) {
+            return '';
+        }
+
+        $lengowOrder = new LengowOrder($idOrder);
+        $marketplace = $lengowOrder->getMarketPlace();
+        if (!$marketplace) {
+            return '';
+        }
+
+        $isActiveReturnTrackingNumber = $marketplace->hasReturnTrackingNumber();
+        $isActiveReturnCarrier = $marketplace->hasReturnTrackingCarrier();
+        $refundReasons = $marketplace->getRefundReasons();
+        $refundModes = $marketplace->getRefundModes();
+        $refundSelectedDatas = $lengowOrder->getRefundDataFromLengowOrder($idOrder, $marketplace->name);
+
+        $locale = new LengowTranslation();
+
+        $this->context->smarty->assign([
+            'orderId' => $idOrder,
+            'ajax_url' => $this->context->link->getAdminLink('AdminLengowOrder', true),
+            'isActiveReturnTrackingNumber' => $isActiveReturnTrackingNumber,
+            'isActiveReturnCarrier' => $isActiveReturnCarrier,
+            'returnTrackingNumber' => $isActiveReturnTrackingNumber ? LengowOrderDetail::getOrderReturnTrackingNumber($idOrder) : '',
+            'returnCarrier' => $isActiveReturnCarrier ? LengowOrderDetail::getOrderReturnCarrier($idOrder) : '',
+            'returnTrackingNumberLabel' => $locale->t('order.screen.return_tracking_number_label'),
+            'returnCarrierLabel' => $locale->t('order.screen.return_carrier_label'),
+            'carriers' => $isActiveReturnCarrier ? LengowCarrier::getCarriersChoices($this->context->language->id) : [],
+            'refundReasons' => $refundReasons,
+            'refundModes' => $refundModes,
+            'refundReasonSelected' => $refundSelectedDatas['refund_reason'] ?? '',
+            'refundModeSelected' => $refundSelectedDatas['refund_mode'] ?? '',
+        ]);
+
+        return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/hook/order/admin_order_tab.tpl');
     }
 
     /**

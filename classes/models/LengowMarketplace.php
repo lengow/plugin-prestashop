@@ -921,6 +921,9 @@ class LengowMarketplace
         if (empty($reasons)) {
             $reasons = in_array(LengowAction::ARG_REASON, $arguments) ? $this->argValues[LengowAction::ARG_REASON]['valid_values'] : [];
         }
+        if (empty($reasons)) {
+            return [];
+        }
         foreach ($reasons as $key => $reason) {
             $choices[$reason] = $key;
         }
