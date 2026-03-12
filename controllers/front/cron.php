@@ -56,8 +56,8 @@ class LengowCronModuleFrontController extends ModuleFrontController
         LengowLog::registerShutdownFunction();
 
         // check if Lengow is installed and enabled
-        if (!Module::isInstalled($this->module->name)) {
-            $errorMessage = !Module::isEnabled($this->module->name)
+        if (!(bool) Module::getModuleIdByName($this->module->name)) {
+            $errorMessage = !$this->module->active
                 ? 'Lengow module is not active'
                 : 'Lengow module is not installed';
             header('HTTP/1.1 400 Bad Request');

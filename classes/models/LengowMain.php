@@ -853,7 +853,9 @@ class LengowMain
      */
     public static function isModuleInstalled(string $moduleName): bool
     {
-        return Module::isInstalled($moduleName) && Module::isEnabled($moduleName);
+        $module = Module::getInstanceByName($moduleName);
+
+        return $module !== false && (bool) $module->active;
     }
 
     /**
