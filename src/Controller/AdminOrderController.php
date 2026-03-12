@@ -76,6 +76,7 @@ use PrestaShopBundle\Form\Admin\Sell\Order\UpdateOrderStatusType;
 use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use ReflectionMethod;
 use RuntimeException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -107,14 +108,10 @@ class AdminOrderController extends OrderController
     public function viewAction(
         int $orderId,
         Request $request,
-        ?FormBuilderInterface $formBuilder = null,
-        ?OrderSiblingProviderInterface $orderSiblingProvider = null,
-        ?CurrencyDataProvider $currencyDataProvider = null,
+        #[Autowire(service: 'prestashop.core.form.identifiable_object.builder.cancel_product_form_builder')] FormBuilderInterface $formBuilder,
+        #[Autowire(service: 'prestashop.adapter.order.order_sibling_provider')] OrderSiblingProviderInterface $orderSiblingProvider,
+        CurrencyDataProvider $currencyDataProvider,
     ): Response {
-        $formBuilder = $this->resolveCancelProductFormBuilder($formBuilder);
-        $orderSiblingProvider = $this->resolveOrderSiblingProvider($orderSiblingProvider);
-        $currencyDataProvider = $this->resolveCurrencyDataProvider($currencyDataProvider);
-
         try {
             if (!$this->isFromLengow($orderId)) {
                 return $this->callParentViewAction(
@@ -747,47 +744,5 @@ class AdminOrderController extends OrderController
         }
 
         return $response;
-    }
-
-    private function resolveCancelProductFormBuilder(?FormBuilderInterface $formBuilder): FormBuilderInterface
-    {
-        if ($formBuilder !== null) {
-            return $formBuilder;
-        }
-
-        $service = $this->container->get('prestashop.core.form.identifiable_object.builder.cancel_product_form_builder');
-        if (!$service instanceof FormBuilderInterface) {
-            throw new RuntimeException('Unable to load cancel product form builder service.');
-        }
-
-        return $service;
-    }
-
-    private function resolveOrderSiblingProvider(?OrderSiblingProviderInterface $orderSiblingProvider): OrderSiblingProviderInterface
-    {
-        if ($orderSiblingProvider !== null) {
-            return $orderSiblingProvider;
-        }
-
-        $service = $this->container->get('prestashop.adapter.order.order_sibling_provider');
-        if (!$service instanceof OrderSiblingProviderInterface) {
-            throw new RuntimeException('Unable to load order sibling provider service.');
-        }
-
-        return $service;
-    }
-
-    private function resolveCurrencyDataProvider(?CurrencyDataProvider $currencyDataProvider): CurrencyDataProvider
-    {
-        if ($currencyDataProvider !== null) {
-            return $currencyDataProvider;
-        }
-
-        $service = $this->container->get('prestashop.adapter.data_provider.currency');
-        if (!$service instanceof CurrencyDataProvider) {
-            throw new RuntimeException('Unable to load currency data provider service.');
-        }
-
-        return $service;
     }
 }

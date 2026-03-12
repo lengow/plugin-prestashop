@@ -595,6 +595,9 @@ class LengowImport
         // checks Lengow catalogs and carriers for order synchronization
         if (!$this->importOneOrder && $this->typeImport === self::TYPE_MANUAL) {
             LengowSync::syncCatalog();
+        }
+        // sync marketplace/carrier data on every import type so new marketplaces are registered in DB
+        if (!$this->importOneOrder) {
             LengowSync::syncCarrier();
         }
         LengowMain::log(

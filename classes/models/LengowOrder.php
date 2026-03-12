@@ -297,10 +297,10 @@ class LengowOrder extends Order
             $this->lengowIdShop = (int) $result[self::FIELD_SHOP_ID];
             $this->lengowIdFlux = $result[self::FIELD_FLUX_ID];
             $this->lengowDeliveryAddressId = (int) $result[self::FIELD_DELIVERY_ADDRESS_ID];
-            $this->lengowDeliveryCountryIso = $result[self::FIELD_DELIVERY_COUNTRY_ISO];
+            $this->lengowDeliveryCountryIso = $result[self::FIELD_DELIVERY_COUNTRY_ISO] ?? '';
             $this->lengowMarketplaceSku = $result[self::FIELD_MARKETPLACE_SKU];
-            $this->lengowMarketplaceName = $result[self::FIELD_MARKETPLACE_NAME];
-            $this->lengowMarketplaceLabel = $result[self::FIELD_MARKETPLACE_LABEL];
+            $this->lengowMarketplaceName = $result[self::FIELD_MARKETPLACE_NAME] ?? '';
+            $this->lengowMarketplaceLabel = $result[self::FIELD_MARKETPLACE_LABEL] ?? '';
             $this->lengowState = $result[self::FIELD_ORDER_LENGOW_STATE];
             $this->lengowProcessState = (int) $result[self::FIELD_ORDER_PROCESS_STATE];
             $this->lengowOrderDate = $result[self::FIELD_ORDER_DATE];
@@ -308,23 +308,21 @@ class LengowOrder extends Order
             $this->lengowOrderTypes = $result[self::FIELD_ORDER_TYPES] !== null
                 ? json_decode($result[self::FIELD_ORDER_TYPES], true)
                 : [];
-            $this->lengowCurrency = $result[self::FIELD_CURRENCY];
-            $this->lengowTotalPaid = $result[self::FIELD_TOTAL_PAID];
-            $this->lengowCustomerVatNumber = $result[self::FIELD_CUSTOMER_VAT_NUMBER] !== null
-                ? $result[self::FIELD_CUSTOMER_VAT_NUMBER]
-                : '';
-            $this->lengowCommission = $result[self::FIELD_COMMISSION];
-            $this->lengowCustomerName = $result[self::FIELD_CUSTOMER_NAME];
-            $this->lengowCustomerEmail = $result[self::FIELD_CUSTOMER_EMAIL];
-            $this->lengowCarrier = $result[self::FIELD_CARRIER];
-            $this->lengowMethod = $result[self::FIELD_CARRIER_METHOD];
-            $this->lengowTracking = $result[self::FIELD_CARRIER_TRACKING];
-            $this->lengowIdRelay = $result[self::FIELD_CARRIER_RELAY_ID];
+            $this->lengowCurrency = $result[self::FIELD_CURRENCY] ?? '';
+            $this->lengowTotalPaid = (float) ($result[self::FIELD_TOTAL_PAID] ?? 0.0);
+            $this->lengowCustomerVatNumber = $result[self::FIELD_CUSTOMER_VAT_NUMBER] ?? '';
+            $this->lengowCommission = (float) ($result[self::FIELD_COMMISSION] ?? 0.0);
+            $this->lengowCustomerName = $result[self::FIELD_CUSTOMER_NAME] ?? '';
+            $this->lengowCustomerEmail = $result[self::FIELD_CUSTOMER_EMAIL] ?? '';
+            $this->lengowCarrier = $result[self::FIELD_CARRIER] ?? '';
+            $this->lengowMethod = $result[self::FIELD_CARRIER_METHOD] ?? '';
+            $this->lengowTracking = $result[self::FIELD_CARRIER_TRACKING] ?? '';
+            $this->lengowIdRelay = $result[self::FIELD_CARRIER_RELAY_ID] ?? '';
             $this->lengowSentMarketplace = (bool) $result[self::FIELD_SENT_MARKETPLACE];
             $this->lengowIsReimported = (bool) $result[self::FIELD_IS_REIMPORTED];
-            $this->lengowMessage = $result[self::FIELD_MESSAGE];
+            $this->lengowMessage = $result[self::FIELD_MESSAGE] ?? '';
             $this->lengowDateAdd = $result[self::FIELD_CREATED_AT];
-            $this->lengowExtra = $result[self::FIELD_EXTRA];
+            $this->lengowExtra = $result[self::FIELD_EXTRA] ?? '';
 
             return true;
         }

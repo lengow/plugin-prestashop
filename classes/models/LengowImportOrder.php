@@ -1399,6 +1399,11 @@ class LengowImportOrder
         }
         // get marketplace id by marketplace name
         $idMarketplace = LengowMarketplace::getIdMarketplace($this->marketplace->name);
+        if ($idMarketplace === false) {
+            // marketplace not yet in DB — force a carrier sync to populate it
+            LengowSync::syncCarrier(true);
+            $idMarketplace = LengowMarketplace::getIdMarketplace($this->marketplace->name);
+        }
         $hasCarriers = $this->marketplace->hasCarriers();
         $hasShippingMethods = $this->marketplace->hasShippingMethods();
         // if the marketplace has neither carrier nor shipping methods, use semantic matching
@@ -1559,11 +1564,11 @@ class LengowImportOrder
     /**
      * Ensure carrier compatibility with SoColissimo & Mondial Relay
      *
-     * @param LengowOrder $order order imported
+     * @param Order $order PrestaShop order instance
      *
      * @return void
      */
-    private function checkCarrierCompatibility(LengowOrder $order): void
+    private function checkCarrierCompatibility(Order $order): void
     {
         try {
             $carrierCompatibility = LengowCarrier::carrierCompatibility(
@@ -1614,12 +1619,12 @@ class LengowImportOrder
     /**
      * Save order line in lengow orders line table
      *
-     * @param LengowOrder $order Lengow order instance
+     * @param Order $order PrestaShop order instance
      * @param array<string, mixed> $products order products
      *
      * @return void
      */
-    private function saveLengowOrderLine(LengowOrder $order, array $products): void
+    private function saveLengowOrderLine(Order $order, array $products): void
     {
         $orderLineSaved = false;
         foreach ($products as $idProduct => $values) {
