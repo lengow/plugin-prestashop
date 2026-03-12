@@ -423,12 +423,12 @@ class LengowMethod
      *
      * @param int $idCountry PrestaShop country id
      * @param int $idMarketplace Lengow marketplace id
-     * @param int $idCarrier PrestaShop carrier id
+     * @param int|null $idCarrier PrestaShop carrier id
      * @param int $idMethodMarketplace Lengow method marketplace id
      *
      * @return int|false
      */
-    public static function insertMarketplaceMethodCountry(int $idCountry, int $idMarketplace, int $idCarrier, int $idMethodMarketplace): int|false
+    public static function insertMarketplaceMethodCountry(int $idCountry, int $idMarketplace, ?int $idCarrier, int $idMethodMarketplace): int|false
     {
         $params = [
             self::FIELD_COUNTRY_ID => $idCountry,
@@ -450,11 +450,11 @@ class LengowMethod
      * Update a marketplace method country
      *
      * @param int $idMarketplaceMethodCountry Lengow marketplace method country id
-     * @param int $idCarrier PrestaShop carrier id
+     * @param int|null $idCarrier PrestaShop carrier id
      *
      * @return int|false
      */
-    public static function updateMarketplaceMethodCountry(int $idMarketplaceMethodCountry, int $idCarrier): int|false
+    public static function updateMarketplaceMethodCountry(int $idMarketplaceMethodCountry, ?int $idCarrier): int|false
     {
         $db = Db::getInstance();
         $success = $db->update(

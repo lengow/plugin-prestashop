@@ -974,11 +974,11 @@ class LengowCarrier extends Carrier
      * @param int $idCountry PrestaShop country id
      * @param int $idMarketplace Lengow marketplace id
      * @param int $idCarrier PrestaShop carrier id
-     * @param int $idCarrierMarketplace Lengow carrier marketplace id
+     * @param int|null $idCarrierMarketplace Lengow carrier marketplace id
      *
      * @return int|false
      */
-    public static function insertMarketplaceCarrierCountry(int $idCountry, int $idMarketplace, int $idCarrier, int $idCarrierMarketplace): int|false
+    public static function insertMarketplaceCarrierCountry(int $idCountry, int $idMarketplace, int $idCarrier, ?int $idCarrierMarketplace): int|false
     {
         $params = [
             self::FIELD_COUNTRY_ID => (int) $idCountry,
@@ -996,11 +996,11 @@ class LengowCarrier extends Carrier
      * Update a marketplace carrier country
      *
      * @param int $idMarketplaceCarrierCountry Lengow marketplace carrier country id
-     * @param int $idCarrierMarketplace Lengow carrier marketplace id
+     * @param int|null $idCarrierMarketplace Lengow carrier marketplace id
      *
      * @return int|false
      */
-    public static function updateMarketplaceCarrierCountry(int $idMarketplaceCarrierCountry, int $idCarrierMarketplace): int|false
+    public static function updateMarketplaceCarrierCountry(int $idMarketplaceCarrierCountry, ?int $idCarrierMarketplace): int|false
     {
         $db = Db::getInstance();
         $success = $db->update(

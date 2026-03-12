@@ -150,12 +150,16 @@ class LengowProduct extends Product
         $this->loadStockData();
         if ($this->id_category_default && $this->id_category_default > 1) {
             $this->categoryDefault = new Category((int) $this->id_category_default, $idLang);
-            $this->categoryDefaultName = $this->categoryDefault->name;
+            $this->categoryDefaultName = is_array($this->categoryDefault->name)
+                ? (string) reset($this->categoryDefault->name)
+                : (string) $this->categoryDefault->name;
         } else {
             $categories = self::getProductCategories($this->id);
             if (!empty($categories)) {
                 $this->categoryDefault = new Category($categories[0], $idLang);
-                $this->categoryDefaultName = $this->categoryDefault->name;
+                $this->categoryDefaultName = is_array($this->categoryDefault->name)
+                    ? (string) reset($this->categoryDefault->name)
+                    : (string) $this->categoryDefault->name;
             }
         }
         $this->images = $this->getImages($idLang);

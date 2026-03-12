@@ -109,7 +109,7 @@ class LengowImportOrder
     /**
      * @var string marketplace label
      */
-    private string $marketplaceLabel;
+    private string $marketplaceLabel = '';
 
     /**
      * @var int id of delivery address for current order
@@ -139,27 +139,27 @@ class LengowImportOrder
     /**
      * @var bool re-import order
      */
-    private bool $isReimported;
+    private bool $isReimported = false;
 
     /**
      * @var int id of the record Lengow order table
      */
-    private int $idOrderLengow;
+    private int $idOrderLengow = 0;
 
     /**
      * @var int id of the record PrestaShop order table
      */
-    private int $idOrder;
+    private ?int $idOrder = null;
 
     /**
      * @var string PrestaShop order reference
      */
-    private string $orderReference;
+    private ?string $orderReference = null;
 
     /**
      * @var string order types data
      */
-    private string $orderTypes;
+    private string $orderTypes = '';
 
     /**
      * @var LengowMarketplace|null Lengow marketplace instance
@@ -169,37 +169,37 @@ class LengowImportOrder
     /**
      * @var string marketplace order state
      */
-    private string $orderStateMarketplace;
+    private string $orderStateMarketplace = '';
 
     /**
      * @var string Lengow order state
      */
-    private string $orderStateLengow;
+    private string $orderStateLengow = '';
 
     /**
      * @var string Previous Lengow order state
      */
-    private string $previousOrderStateLengow;
+    private string $previousOrderStateLengow = '';
 
     /**
      * @var float order processing fee
      */
-    private float $processingFee;
+    private float $processingFee = 0.0;
 
     /**
      * @var float order shipping cost
      */
-    private float $shippingCost;
+    private float $shippingCost = 0.0;
 
     /**
      * @var float order total amount
      */
-    private float $orderAmount;
+    private float $orderAmount = 0.0;
 
     /**
      * @var int number of order items
      */
-    private int $orderItems;
+    private int $orderItems = 0;
 
     /**
      * @var string|null carrier name
@@ -234,7 +234,7 @@ class LengowImportOrder
     /**
      * @var string Marketplace order comment
      */
-    private string $orderComment;
+    private string $orderComment = '';
 
     /**
      * @var array<string, mixed> order errors

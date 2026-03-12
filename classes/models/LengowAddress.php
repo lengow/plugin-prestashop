@@ -72,7 +72,7 @@ class LengowAddress extends Address
     /**
      * @var string phone_office given in API
      */
-    public string $phoneOffice;
+    public ?string $phoneOffice = null;
 
     /**
      * @var string full address
@@ -82,12 +82,12 @@ class LengowAddress extends Address
     /**
      * @var string full name
      */
-    public string $fullName;
+    public ?string $fullName = null;
 
     /**
      * @var string Relay id (so colissimo, Mondial Relay)
      */
-    public string $idRelay;
+    public ?string $idRelay = null;
 
     /**
      * @var array<string, mixed> All region codes for correspondence
@@ -504,7 +504,7 @@ class LengowAddress extends Address
         $this->company = $data['company'];
         $this->lastname = $data['last_name'];
         $this->firstname = $data['first_name'];
-        $this->fullName = $data['full_name'];
+        $this->fullName = $data['full_name'] ?? null;
         $this->address1 = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['first_line']);
         $this->address2 = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['second_line']);
         $this->other = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['complement']);
@@ -518,7 +518,7 @@ class LengowAddress extends Address
         $this->id_state = $this->getIdState($this->id_country, $data);
         $this->phone = $data['phone_home'];
         $this->phone_mobile = $data['phone_mobile'];
-        $this->phoneOffice = $data['phone_office'];
+        $this->phoneOffice = $data['phone_office'] ?? null;
         $this->vat_number = $data['vat_number'];
         $this->fullAddress = $data['address_full'];
         $this->alias = self::hash($this->fullAddress);
@@ -603,7 +603,7 @@ class LengowAddress extends Address
                 $this->lastname = $names['lastname'];
                 // check full name if last_name and first_name are empty
                 if (empty($this->firstname) && empty($this->lastname)) {
-                    $names = self::extractNames($this->fullName);
+                    $names = self::extractNames($this->fullName ?? '');
                     $this->firstname = $names['firstname'];
                     $this->lastname = $names['lastname'];
                 }
@@ -625,9 +625,9 @@ class LengowAddress extends Address
                 break;
             case 'phone':
             case 'phone_mobile':
-                $this->phone = LengowMain::cleanPhone($this->phone);
-                $this->phone_mobile = LengowMain::cleanPhone($this->phone_mobile);
-                $this->phoneOffice = LengowMain::cleanPhone($this->phoneOffice);
+                $this->phone = LengowMain::cleanPhone($this->phone) ?? '';
+                $this->phone_mobile = LengowMain::cleanPhone($this->phone_mobile) ?? '';
+                $this->phoneOffice = LengowMain::cleanPhone($this->phoneOffice ?? '');
                 if ($fieldName === 'phone') {
                     if (!empty($this->phoneOffice)) {
                         $this->phone = $this->phoneOffice;
@@ -689,10 +689,10 @@ class LengowAddress extends Address
                 }
                 break;
             case 'phone':
-                $this->phone = LengowMain::cleanPhone($this->phone);
+                $this->phone = LengowMain::cleanPhone($this->phone) ?? '';
                 break;
             case 'phone_mobile':
-                $this->phone_mobile = LengowMain::cleanPhone($this->phone_mobile);
+                $this->phone_mobile = LengowMain::cleanPhone($this->phone_mobile) ?? '';
                 break;
             default:
                 break;

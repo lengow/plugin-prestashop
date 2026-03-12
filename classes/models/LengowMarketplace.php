@@ -52,9 +52,9 @@ class LengowMarketplace
     ];
 
     /**
-     * @var array<string, mixed>|false all marketplaces
+     * @var object|false all marketplaces
      */
-    public static array|false $marketplaces = false;
+    public static object|false $marketplaces = false;
 
     /**
      * @var mixed the current marketplace
