@@ -578,8 +578,6 @@ class LengowConnector
      */
     private function makeRequest(string $type, string $api, array $args, ?string $token, string $body, bool $logOutput): mixed
     {
-        // define CURLE_OPERATION_TIMEDOUT for old php versions
-        defined('CURLE_OPERATION_TIMEDOUT') || define('CURLE_OPERATION_TIMEDOUT', CURLE_OPERATION_TIMEOUTED);
         $ch = curl_init();
         // get default curl options
         $opts = $this->curlOpts;
@@ -589,6 +587,7 @@ class LengowConnector
         }
         // get base url for a specific environment
         $url = LengowConfiguration::getLengowApiUrl() . $api;
+
         $opts[CURLOPT_CUSTOMREQUEST] = Tools::strtoupper($type);
         $url = parse_url($url);
         if (isset($url['port'])) {
@@ -655,11 +654,11 @@ class LengowConnector
      *
      * @throws LengowException
      */
-    private function checkReturnRequest($result, int $httpCode, string $curlError, int $curlErrorNumber): void
+    private function checkReturnRequest(string|false $result, int $httpCode, string $curlError, int $curlErrorNumber): void
     {
         if ($result === false) {
             // recovery of Curl errors
-            if (in_array($curlErrorNumber, [CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED], true)) {
+            if ($curlErrorNumber === CURLE_OPERATION_TIMEDOUT) {
                 throw new LengowException(LengowMain::setLogMessage('log.connector.timeout_api'), self::CODE_504);
             }
             throw new LengowException(LengowMain::setLogMessage('log.connector.error_curl', ['error_code' => $curlErrorNumber, 'error_message' => $curlError]), self::CODE_500);

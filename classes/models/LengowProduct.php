@@ -429,7 +429,7 @@ class LengowProduct extends Product
             ps.`product_supplier_reference` AS `supplier_reference`,
             pa.`ean13`,
             pa.`upc`,
-            ' . (version_compare(_PS_VERSION_, '1.7.0', '>=') ? 'pa.`isbn`,' : '') . '
+            pa.`isbn`,
             pa.`wholesale_price`,
             pa.`ecotax`
             FROM `' . _DB_PREFIX_ . 'product_attribute` pa
@@ -515,34 +515,21 @@ class LengowProduct extends Product
     protected function getProductUrl(?int $idProductAttribute = null, bool $rewrite = false): string
     {
         try {
-            if (version_compare(_PS_VERSION_, '1.6.1.1', '<')) {
-                $productUrl = $this->context->link->getProductLink(
-                    $this,
-                    $rewrite ? $this->link_rewrite : null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    $idProductAttribute,
-                    _PS_VERSION_ === '1.6.1.0' && !$rewrite
-                );
-            } else {
-                if (version_compare(_PS_VERSION_, '1.7.1', '>=') && $idProductAttribute === null) {
-                    $idProductAttribute = $this->getDefaultAttribute($this->id);
-                }
-                $productUrl = $this->context->link->getProductLink(
-                    $this,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    $idProductAttribute,
-                    !(version_compare(_PS_VERSION_, '1.7.1', '<') && $rewrite),
-                    false,
-                    true
-                );
+            if ($idProductAttribute === null) {
+                $idProductAttribute = $this->getDefaultAttribute($this->id);
             }
+            $productUrl = $this->context->link->getProductLink(
+                $this,
+                null,
+                null,
+                null,
+                null,
+                null,
+                $idProductAttribute,
+                true,
+                false,
+                true
+            );
         } catch (Exception $e) {
             $productUrl = '';
         }
@@ -959,7 +946,7 @@ class LengowProduct extends Product
      */
     protected static function findProduct(string $key, string $value, int $idShop): array|false
     {
-        if (empty($key) || empty($value) || ($key === 'isbn' && version_compare(_PS_VERSION_, '1.7.0', '<'))) {
+        if (empty($key) || empty($value)) {
             return false;
         }
         $query = new DbQuery();

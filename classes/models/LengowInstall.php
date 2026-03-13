@@ -1158,7 +1158,7 @@ class LengowInstall
         }
         if (is_null($marketplaceGroupId)) {
             $group = new Group();
-            $languages = Language::getLanguages(false);
+            $languages = Language::getLanguages(true);
             foreach ($languages as $language) {
                 $group->name[$language['id_lang']] = LengowCustomer::LENGOW_GROUP_NAME;
             }
