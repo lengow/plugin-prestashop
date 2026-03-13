@@ -117,6 +117,15 @@ function openModal(){
 
 (function ($) {
     $(document).ready(function () {
+        function lengowIsValidUrl(url) {
+            try {
+                var parsed = new URL(url, window.location.origin);
+                return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+            } catch (e) {
+                return false;
+            }
+        }
+
         // modal
         // open modal
         $('.lgw-modal-delete').click(function(){
@@ -189,8 +198,9 @@ function openModal(){
             }
         });
         $('#download_log').click(function() {
-            if ($('#select_log').val() !== null) {
-                window.location.href = $('#select_log').val();
+            var logUrl = $('#select_log').val();
+            if (logUrl !== null && lengowIsValidUrl(logUrl)) {
+                window.location.href = logUrl;
             }
         });
         // submit form

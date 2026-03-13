@@ -21,6 +21,15 @@
 (function ($) {
     $(document).ready(function () {
 
+        function lengowIsValidUrl(url) {
+            try {
+                var parsed = new URL(url, window.location.origin);
+                return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+            } catch (e) {
+                return false;
+            }
+        }
+
         $('#lengow_order_wrapper').on('click', '.lgw-pagination a', function () {
             if ($(this).parent().hasClass('disabled')) {
                 return false;
@@ -154,7 +163,7 @@
             $.getJSON(href, data, function(content) {
                 lengow_jquery("#lengow_wrapper_messages").html(content['message']);
                 lengow_jquery("#lengow_warning_message").html(content['warning_message']);
-                lengow_jquery("#lengow_last_importation").html(content['last_importation']);
+                lengow_jquery("#lengow_last_importation").text(content['last_importation']);
                 lengow_jquery("#lengow_import_orders").html(content['import_orders']);
                 lengow_jquery("#lengow_order_table_wrapper").html(content['list_order']);
                 if (content['show_carrier_notification']) {
@@ -173,7 +182,7 @@
 
         $('#lengow_order_wrapper').on('click', '#table_order td.link', function() {
             var link = $(this).parents('tr').find('td.reference a');
-            if (link.length > 0){
+            if (link.length > 0 && lengowIsValidUrl(link.attr('href'))){
                 window.open(link.attr('href'));
             }
             return false;
@@ -199,7 +208,7 @@
 
         $('.lengow_table').on('click', '.table_row td:not(.no-link)', function(){
             var url = $(this).closest('.table_row').find('.reference a').attr('href');
-            if (url) {
+            if (url && lengowIsValidUrl(url)) {
                window.open(url, '_blank'); 
             };
             return false;

@@ -50,9 +50,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 (function ($) {
     $(document).ready(function () {
+        function lengowIsValidUrl(url) {
+            try {
+                var parsed = new URL(url, window.location.origin);
+                return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+            } catch (e) {
+                return false;
+            }
+        }
+
         function reloadTotal(data, idShop) {
-            lengow_jquery("#block_" + idShop + " .lengow_exported").html(data['total_export_product']);
-            lengow_jquery("#block_" + idShop + " .lengow_total").html(data['total_product']);
+            lengow_jquery("#block_" + idShop + " .lengow_exported").text(data['total_export_product']);
+            lengow_jquery("#block_" + idShop + " .lengow_total").text(data['total_product']);
         }
 
         $('.lgw-container').on('change', '.lengow_switch_option', function () {
@@ -271,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         $('.lengow_table').on('click', '.table_row td:not(.no-link)', function(){
             var url = $(this).closest('.table_row').find('.feed_name a').attr('href');
-            if (url) {
+            if (url && lengowIsValidUrl(url)) {
                 window.open(url, '_blank');
             };
             return false;
