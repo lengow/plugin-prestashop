@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2021 Lengow SAS.
  *
@@ -323,7 +324,7 @@ class LengowCart extends Cart
      *
      * @return array<int|string, mixed>|false Record from cart_product table
      */
-    public function containsProduct(int $idProduct, int $idProductAttribute = 0, int $idCustomization = 0, int $idAddressDelivery = 0): array|false
+    public function containsProduct($idProduct, $idProductAttribute = 0, $idCustomization = 0, $idAddressDelivery = 0): array|false
     {
         $sql = 'SELECT *
             FROM `' . _DB_PREFIX_ . 'cart_product`
@@ -350,7 +351,7 @@ class LengowCart extends Cart
      *
      * @return bool
      */
-    protected function _updateCustomizationQuantity(int $quantity, int $idCustomization, int $idProduct, int $idProductAttribute, int $idAddressDelivery, string $operator = 'up'): bool
+    protected function _updateCustomizationQuantity($quantity, $idCustomization, $idProduct, $idProductAttribute, $idAddressDelivery, $operator = 'up'): bool
     {
         // Check if the customization exists
         $sql = 'SELECT `quantity`

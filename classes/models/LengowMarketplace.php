@@ -69,7 +69,7 @@ class LengowMarketplace
     /**
      * @var string the old code of the marketplace for v2 compatibility
      */
-    public string $legacyCode;
+    public ?string $legacyCode = null;
 
     /**
      * @var string the name of the marketplace
