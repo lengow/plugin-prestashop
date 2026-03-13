@@ -76,6 +76,7 @@ class LengowHook
             // version 8.0
             'displayHome' => '8.0',
             'actionOrderStatusPostUpdate' => '8.0',
+            'actionProductCancel' => '8.0',
             // version 1.7.8 — order page tabs
             'displayAdminOrderTabLink' => '1.7',
             'displayAdminOrderTabContent' => '1.7',

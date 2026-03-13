@@ -135,9 +135,9 @@ class LengowAction
     public string $createdAt;
 
     /**
-     * @var string updated at
+     * @var string|null updated at
      */
-    public string $updatedAt;
+    public ?string $updatedAt = null;
 
     /**
      * Load action data
