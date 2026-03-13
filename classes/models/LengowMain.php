@@ -1157,4 +1157,30 @@ class LengowMain
             $str
         );
     }
+
+    /**
+     * Check if a file path is within an allowed base directory
+     *
+     * @param string $filePath file path to validate
+     * @param string $baseDir allowed base directory
+     *
+     * @return bool
+     */
+    public static function isPathAllowed(string $filePath, string $baseDir): bool
+    {
+        $realBase = realpath($baseDir);
+        if ($realBase === false) {
+            return false;
+        }
+        // For files that don't exist yet, check the parent directory
+        $realPath = realpath($filePath);
+        if ($realPath === false) {
+            $realPath = realpath(dirname($filePath));
+            if ($realPath === false) {
+                return false;
+            }
+        }
+
+        return str_starts_with($realPath, $realBase);
+    }
 }

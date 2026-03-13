@@ -265,7 +265,11 @@ class LengowCart extends Cart
      */
     public function assign(array $data = []): void
     {
+        $allowedFields = array_keys(self::getFieldDefinition());
         foreach ($data as $field => $value) {
+            if (!in_array($field, $allowedFields, true)) {
+                continue;
+            }
             $this->{$field} = $value;
         }
     }
@@ -281,7 +285,11 @@ class LengowCart extends Cart
     public function validateLengow(): bool
     {
         $definition = self::getFieldDefinition();
+        $allowedFields = array_keys($definition);
         foreach ($definition as $fieldName => $constraints) {
+            if (!in_array($fieldName, $allowedFields, true)) {
+                continue;
+            }
             if (isset($constraints['required']) && $constraints['required'] && !$this->{$fieldName}) {
                 $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_EMPTY_ERROR);
             }
@@ -309,6 +317,10 @@ class LengowCart extends Cart
      */
     public function validateFieldLengow(string $fieldName, int $errorType): void
     {
+        $allowedFields = array_keys(self::getFieldDefinition());
+        if (!in_array($fieldName, $allowedFields, true)) {
+            return;
+        }
         if ($errorType === LengowAddress::LENGOW_EMPTY_ERROR && $fieldName === 'id_lang') {
             $this->{$fieldName} = LengowContext::getContext()->language->id;
         }

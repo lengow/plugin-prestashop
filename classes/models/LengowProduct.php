@@ -276,6 +276,10 @@ class LengowProduct extends Product
             case 'width':
             case 'height':
             case 'depth':
+                if (!in_array($name, ['width', 'height', 'depth'], true)) {
+                    return '';
+                }
+
                 return LengowMain::formatNumber($this->{$name});
             case 'weight_unit':
                 return Configuration::get('PS_WEIGHT_UNIT');
@@ -292,7 +296,7 @@ class LengowProduct extends Product
                 ) {
                     return LengowMain::cleanData($this->combinations[$idProductAttribute]['attributes'][$name][1]);
                 }
-                if (isset($this->{$name})) {
+                if (property_exists($this, $name) && isset($this->{$name})) {
                     return LengowMain::cleanData($this->{$name});
                 }
 
@@ -711,12 +715,16 @@ class LengowProduct extends Product
      */
     protected function getProductData(string $name, ?int $idProductAttribute = null): string
     {
+        $allowedProductFields = ['reference', 'ean13', 'upc', 'isbn', 'wholesale_price', 'minimal_quantity'];
         $value = false;
         if ($idProductAttribute && $this->combinations[$idProductAttribute][$name]) {
             $value = $this->combinations[$idProductAttribute][$name];
         }
         // if the value of the combination is not given, we take that of the parent
         if (empty($value)) {
+            if (!in_array($name, $allowedProductFields, true)) {
+                return '';
+            }
             $value = isset($this->{$name}) ? $this->{$name} : '';
         }
 
@@ -775,6 +783,9 @@ class LengowProduct extends Product
         if (!empty($combinations)) {
             foreach ($combinations as $combination) {
                 foreach ($attributes as $attributeName) {
+                    if (!in_array($attributeName, ['reference', 'ean13', 'upc', 'id'], true)) {
+                        continue;
+                    }
                     foreach ($apiDatas as $idApi) {
                         if (!empty($idApi)) {
                             if ($attributeName === 'id') {
@@ -795,6 +806,9 @@ class LengowProduct extends Product
             }
         } else {
             foreach ($attributes as $attributeName) {
+                if (!in_array($attributeName, ['reference', 'ean13', 'upc', 'id'], true)) {
+                    continue;
+                }
                 foreach ($apiDatas as $idApi) {
                     if (!empty($idApi)) {
                         if ($attributeName === 'id') {
@@ -829,6 +843,9 @@ class LengowProduct extends Product
     {
         $temp = [];
         foreach (self::$productApiNodes as $node) {
+            if (!in_array($node, self::$productApiNodes, true)) {
+                continue;
+            }
             $temp[$node] = $api->{$node};
         }
         $qty = (float) $temp['quantity'];
@@ -949,21 +966,29 @@ class LengowProduct extends Product
         if (empty($key) || empty($value)) {
             return false;
         }
+        $allowedColumns = ['id_product', 'reference', 'ean13', 'isbn', 'upc', 'mpn', 'supplier_reference'];
+        if (!in_array($key, $allowedColumns, true)) {
+            return false;
+        }
         $query = new DbQuery();
         $query->select('p.id_product');
         $query->from('product', 'p');
         $query->innerJoin('product_shop', 'ps', 'p.id_product = ps.id_product');
-        $query->where('p.' . pSQL(Db::getInstance()->_escape($key)) . ' = \'' . pSQL(Db::getInstance()->_escape($value)) . '\'');
-        $query->where('ps.`id_shop` = \'' . (int) $idShop . '\'');
+        $query->where('p.`' . bqSQL($key) . '` = \'' . pSQL($value) . '\'');
+        $query->where('ps.`id_shop` = ' . (int) $idShop);
         $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
         // if no result, search in attribute
         if ($result == '') {
+            $allowedAttrColumns = ['id_product_attribute', 'reference', 'ean13', 'isbn', 'upc', 'mpn', 'supplier_reference'];
+            if (!in_array($key, $allowedAttrColumns, true)) {
+                return false;
+            }
             $query = new DbQuery();
             $query->select('pa.id_product, pa.id_product_attribute');
             $query->from('product_attribute', 'pa');
             $query->innerJoin('product_shop', 'ps', 'pa.id_product = ps.id_product');
-            $query->where('pa.' . pSQL(Db::getInstance()->_escape($key)) . ' = \'' . pSQL(Db::getInstance()->_escape($value)) . '\'');
-            $query->where('ps.`id_shop` = \'' . (int) $idShop . '\'');
+            $query->where('pa.`' . bqSQL($key) . '` = \'' . pSQL($value) . '\'');
+            $query->where('ps.`id_shop` = ' . (int) $idShop);
             $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query);
         }
 

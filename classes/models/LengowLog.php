@@ -176,6 +176,9 @@ class LengowLog extends LengowFile
                 if (strrpos($fileInfo['basename'], 'logs') === false) {
                     continue;
                 }
+                if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+                    continue;
+                }
                 $handle = fopen($filePath, 'rb');
                 $fileSize = filesize($filePath);
                 if ($fileSize > 0) {
@@ -184,7 +187,8 @@ class LengowLog extends LengowFile
             }
         }
         header('Content-type: text/plain');
-        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        $safeFileName = preg_replace('/[^a-zA-Z0-9._\-]/', '', str_replace(["\r", "\n"], '', $fileName));
+        header('Content-Disposition: attachment; filename="' . $safeFileName . '"');
         echo $contents;
         exit;
     }

@@ -1451,6 +1451,9 @@ class LengowCarrier extends Carrier
             }
         } elseif (is_object($relay)) {
             foreach ($mdArrayKeys as $key) {
+                if (!in_array($key, $mdArrayKeys, true)) {
+                    continue;
+                }
                 if (isset($relay->{$key})) {
                     $query .= '`MR_Selected_' . self::escapeMondialRelayColumn($key) . '`, ';
                 }
@@ -1471,6 +1474,9 @@ class LengowCarrier extends Carrier
             }
         } elseif (is_object($relay)) {
             foreach ($mdArrayKeys as $key) {
+                if (!in_array($key, $mdArrayKeys, true)) {
+                    continue;
+                }
                 if (isset($relay->{$key})) {
                     $query .= '"' . pSQL($relay->{$key}) . '", ';
                 }

@@ -486,11 +486,23 @@ class LengowToolbox
         $fileName = LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_CHECKMD5;
         if (file_exists($fileName)) {
             $md5Available = true;
+            if (!LengowMain::isPathAllowed($fileName, _PS_MODULE_LENGOW_DIR_)) {
+                return [
+                    self::CHECKSUM_AVAILABLE => false,
+                    self::CHECKSUM_SUCCESS => false,
+                    self::CHECKSUM_NUMBER_FILES_CHECKED => 0,
+                    self::CHECKSUM_FILE_MODIFIED => [],
+                    self::CHECKSUM_FILE_DELETED => [],
+                ];
+            }
             if (($file = fopen($fileName, 'rb')) !== false) {
                 while (($data = fgetcsv($file, 1000, '|', '"', '')) !== false) {
                     ++$fileCounter;
                     $shortPath = $data[0];
                     $filePath = LengowMain::getLengowFolder() . $data[0];
+                    if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+                        continue;
+                    }
                     if (file_exists($filePath)) {
                         $fileMd = md5_file($filePath);
                         if ($fileMd !== $data[1]) {
@@ -540,11 +552,23 @@ class LengowToolbox
 
         if (file_exists($fileName)) {
             $md5Available = true;
+            if (!LengowMain::isPathAllowed($fileName, _PS_MODULE_LENGOW_DIR_)) {
+                return [
+                    self::CHECKSUM_AVAILABLE => false,
+                    self::CHECKSUM_SUCCESS => false,
+                    self::CHECKSUM_NUMBER_FILES_CHECKED => 0,
+                    self::CHECKSUM_FILE_MODIFIED => [],
+                    self::CHECKSUM_FILE_DELETED => [],
+                ];
+            }
             if (($file = fopen($fileName, 'rb')) !== false) {
                 while (($data = fgetcsv($file, 1000, '|', '"', '')) !== false) {
                     ++$fileCounter;
                     $shortPath = $data[0];
                     $filePath = LengowMain::getLengowFolder() . $data[0];
+                    if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+                        continue;
+                    }
                     if (file_exists($filePath)) {
                         $fileMd = md5_file($filePath);
                         if ($fileMd !== $data[1]) {
@@ -621,6 +645,9 @@ class LengowToolbox
     {
         $sep = DIRECTORY_SEPARATOR;
         $filePath = LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_TEST;
+        if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+            return false;
+        }
         try {
             $file = fopen($filePath, 'wb+');
             if (!$file) {

@@ -119,6 +119,9 @@ class LengowNameParser
         $this->suffix = '';
 
         $filePath = self::getParserFilePath();
+        if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+            return;
+        }
         $paramsJson = Tools::file_get_contents($filePath);
         $params = json_decode($paramsJson, true);
 

@@ -189,8 +189,8 @@ class LengowList
             }
             $html .= '<th>';
             if (isset($values['filter_order']) && $values['filter_order']) {
-                $html .= '<a href="#" class="table_order ' . $orderClass . '" data-order="' . $newOrder . '"
-                    data-column="' . $values['filter_key'] . '">' . $values['title'] . '</a>';
+                $html .= '<a href="#" class="table_order ' . $orderClass . '" data-order="' . htmlspecialchars($newOrder, ENT_QUOTES, 'UTF-8') . '"
+                    data-column="' . htmlspecialchars($values['filter_key'], ENT_QUOTES, 'UTF-8') . '">' . $values['title'] . '</a>';
             } else {
                 $html .= $values['title'];
             }
@@ -200,7 +200,7 @@ class LengowList
 
         $html .= '<tr class="lengow_filter">';
         if ($this->selection) {
-            $html .= '<th><input type="checkbox" id="select_' . $this->id . '"
+            $html .= '<th><input type="checkbox" id="select_' . htmlspecialchars($this->id, ENT_QUOTES, 'UTF-8') . '"
                 class="lengow_select_all lengow_link_tooltip"/></th>';
         }
         foreach ($this->fieldsList as $key => $values) {
@@ -215,28 +215,28 @@ class LengowList
                 }
                 switch ($type) {
                     case 'text':
-                        $html .= '<input type="text" class="focus_' . $key
-                            . '" name="' . $name . '" value="' . $value . '" />';
+                        $html .= '<input type="text" class="focus_' . htmlspecialchars($key, ENT_QUOTES, 'UTF-8')
+                            . '" name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '" value="' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '" />';
                         break;
                     case 'select':
-                        $html .= '<select class="form-control" name="' . $name . '">';
+                        $html .= '<select class="form-control" name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '">';
                         $html .= '<option value="" ' . ($value ? 'selected' : '') . '></option>';
                         foreach ($values['filter_collection'] as $row) {
                             $selected = $row['id'] == $value ? 'selected' : '';
-                            $html .= '<option value="' . $row['id'] . '" ' . $selected . '>'
-                                . $row['text'] . '</option>';
+                            $html .= '<option value="' . htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8') . '" ' . $selected . '>'
+                                . htmlspecialchars($row['text'], ENT_QUOTES, 'UTF-8') . '</option>';
                         }
                         $html .= '</select>';
                         break;
                     case 'date':
                         $from = isset($value['from']) ? $value['from'] : null;
                         $to = isset($value['to']) ? $value['to'] : null;
-                        $html .= '<div class="lengow_datepicker_box"><input type="text" name="' . $name . '[from]"
+                        $html .= '<div class="lengow_datepicker_box"><input type="text" name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '[from]"
                             placeholder="' . $this->locale->t('product.screen.date_from') . '"
-                            value="' . $from . '" class="lengow_datepicker" />';
-                        $html .= '<input type="text" name="' . $name . '[to]"
+                            value="' . htmlspecialchars((string) $from, ENT_QUOTES, 'UTF-8') . '" class="lengow_datepicker" />';
+                        $html .= '<input type="text" name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '[to]"
                             placeholder="' . $this->locale->t('product.screen.date_to') . '"
-                            value="' . $to . '" class="lengow_datepicker" /></div>';
+                            value="' . htmlspecialchars((string) $to, ENT_QUOTES, 'UTF-8') . '" class="lengow_datepicker" /></div>';
                         break;
                 }
             } elseif (isset($values['button_search']) && $values['button_search']) {
@@ -285,18 +285,18 @@ class LengowList
     {
         $lengowLink = new LengowLink();
         $html = '';
-        $html .= '<tr id=' . $this->id . '_' . $item[$this->identifier] . ' class="table_row">';
+        $html .= '<tr id=' . htmlspecialchars($this->id, ENT_QUOTES, 'UTF-8') . '_' . htmlspecialchars($item[$this->identifier], ENT_QUOTES, 'UTF-8') . ' class="table_row">';
         if ($this->selection) {
             if ($this->selectionCondition) {
                 if ($item[$this->selectionCondition] > 0) {
                     $html .= '<td class="no-link"> <input type="checkbox" class="lengow_selection"
-                    name="selection[' . $item[$this->identifier] . ']" value="1"></td>';
+                    name="selection[' . htmlspecialchars($item[$this->identifier], ENT_QUOTES, 'UTF-8') . ']" value="1"></td>';
                 } else {
                     $html .= '<td></td>';
                 }
             } else {
                 $html .= '<td class="no-link"><input type="checkbox" class="lengow_selection"
-                    name="selection[' . $item[$this->identifier] . ']" value="1"></td>';
+                    name="selection[' . htmlspecialchars($item[$this->identifier], ENT_QUOTES, 'UTF-8') . ']" value="1"></td>';
             }
         }
         foreach ($this->fieldsList as $key => $values) {
@@ -324,21 +324,21 @@ class LengowList
                             class="lengow_switch_product"
                             data-on-text="' . $this->locale->t('product.screen.button_yes') . '"
                             data-off-text="' . $this->locale->t('product.screen.button_no') . '"
-                            name="lengow_product_selection[' . $item[$this->identifier] . ']"
-                            lengow_product_selection_' . $item[$this->identifier] . '"
+                            name="lengow_product_selection[' . htmlspecialchars($item[$this->identifier], ENT_QUOTES, 'UTF-8') . ']"
+                            lengow_product_selection_' . htmlspecialchars($item[$this->identifier], ENT_QUOTES, 'UTF-8') . '"
                             data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller) . '"
                             data-action="select_product"
-                            data-id_shop="' . $this->shopId . '"
-                            data-id_product="' . $item[$this->identifier] . '"
+                            data-id_shop="' . (int) $this->shopId . '"
+                            data-id_product="' . htmlspecialchars($item[$this->identifier], ENT_QUOTES, 'UTF-8') . '"
                             value="1" ' . ($item[$key] ? 'checked="checked"' : '') . '/></div></label></div>';
                         break;
                     case 'flag_country':
                         if ($item[$key]) {
                             $isoCode = Tools::strtoupper($item[$key]);
                             $value = '<img src="' . __PS_BASE_URI__
-                                . 'modules/lengow/views/img/flag/' . $isoCode . '.png"
+                                . 'modules/lengow/views/img/flag/' . htmlspecialchars($isoCode, ENT_QUOTES, 'UTF-8') . '.png"
                                 class="lengow_link_tooltip"
-                                data-original-title="' . LengowCountry::getNameByIso($isoCode) . '"/>';
+                                data-original-title="' . htmlspecialchars(LengowCountry::getNameByIso($isoCode), ENT_QUOTES, 'UTF-8') . '"/>';
                         } else {
                             $value = '';
                         }
@@ -375,12 +375,12 @@ class LengowList
     public function display(): string
     {
         $lengowLink = new LengowLink();
-        $html = '<form id="form_table_' . $this->id . '" class="lengow_form_table"
+        $html = '<form id="form_table_' . htmlspecialchars($this->id, ENT_QUOTES, 'UTF-8') . '" class="lengow_form_table"
             data-href="' . $lengowLink->getAbsoluteAdminLink($this->controller) . '">';
-        $html .= '<input type="hidden" name="p" value="' . $this->currentPage . '" />';
-        $html .= '<input type="hidden" name="nb_per_page" value="' . $this->nbPerPage . '" />';
-        $html .= '<input type="hidden" name="order_value" value="' . $this->orderValue . '" />';
-        $html .= '<input type="hidden" name="order_column" value="' . $this->orderColumn . '" />';
+        $html .= '<input type="hidden" name="p" value="' . (int) $this->currentPage . '" />';
+        $html .= '<input type="hidden" name="nb_per_page" value="' . (int) $this->nbPerPage . '" />';
+        $html .= '<input type="hidden" name="order_value" value="' . htmlspecialchars($this->orderValue, ENT_QUOTES, 'UTF-8') . '" />';
+        $html .= '<input type="hidden" name="order_column" value="' . htmlspecialchars($this->orderColumn, ENT_QUOTES, 'UTF-8') . '" />';
         $html .= $this->displayHeader($this->orderColumn) . $this->displayContent() . $this->displayFooter();
         $html .= '<input type="submit" value="Search" style="visibility: hidden"/>';
         $html .= '</form>';

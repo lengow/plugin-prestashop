@@ -74,7 +74,11 @@ class LengowCustomer extends Customer
     public function validateLengow(): bool
     {
         $definition = self::getFieldDefinition();
+        $allowedFields = array_keys($definition);
         foreach ($definition as $fieldName => $constraints) {
+            if (!in_array($fieldName, $allowedFields, true)) {
+                continue;
+            }
             if (isset($constraints['required']) && $constraints['required'] && !$this->{$fieldName}) {
                 $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_EMPTY_ERROR);
             }
@@ -123,6 +127,10 @@ class LengowCustomer extends Customer
      */
     public function validateEmptyLengow(string $fieldName): void
     {
+        $allowedFields = array_keys(self::getFieldDefinition());
+        if (!in_array($fieldName, $allowedFields, true)) {
+            return;
+        }
         switch ($fieldName) {
             case 'lastname':
             case 'firstname':
@@ -165,6 +173,9 @@ class LengowCustomer extends Customer
         // Address-specific fields (address1, address2, other, phone, phone_mobile)
         // are handled by LengowAddress::validateSizeLengow() instead.
         $definition = self::getFieldDefinition();
+        if (!array_key_exists($fieldName, $definition)) {
+            return;
+        }
         if (isset($definition[$fieldName]['size'])) {
             $this->{$fieldName} = Tools::substr($this->{$fieldName}, 0, $definition[$fieldName]['size']);
         }
@@ -190,7 +201,12 @@ class LengowCustomer extends Customer
             return false;
         }
         $this->id = $result['id_customer'];
+        $allowedKeys = array_keys(self::getFieldDefinition());
+        $allowedKeys[] = 'id_customer';
         foreach ($result as $key => $value) {
+            if (!in_array($key, $allowedKeys, true)) {
+                continue;
+            }
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }

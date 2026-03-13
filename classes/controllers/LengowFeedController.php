@@ -585,7 +585,7 @@ class LengowFeedController extends LengowController
                 );
             }
 
-            return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
+            return '<a href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '" target="_blank">' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '</a>';
         }
 
         return $value;

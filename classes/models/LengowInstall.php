@@ -420,25 +420,17 @@ class LengowInstall
             Db::getInstance()->execute('DROP TABLE IF EXISTS ' . _DB_PREFIX_ . $table);
         }
         $name = 'order_carrier';
-        $column = LengowAction::ARG_RETURN_TRACKING_NUMBER;
-        if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
-            $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'DROP COLUMN `' . Db::getInstance()->_escape($column) . '`;';
-            Db::getInstance()->execute($sql);
-            LengowMain::log(
-                LengowLog::CODE_UNINSTALL,
-                LengowMain::setLogMessage('log.uninstall.column_deleted', ['name' => $column])
-            );
-        }
-        $column = LengowAction::ARG_RETURN_CARRIER;
-        if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
-            $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
-                    . 'DROP COLUMN `' . Db::getInstance()->_escape($column) . '`;';
-            Db::getInstance()->execute($sql);
-            LengowMain::log(
-                LengowLog::CODE_UNINSTALL,
-                LengowMain::setLogMessage('log.uninstall.column_deleted', ['name' => $column])
-            );
+        $allowedColumns = [LengowAction::ARG_RETURN_TRACKING_NUMBER, LengowAction::ARG_RETURN_CARRIER];
+        foreach ($allowedColumns as $column) {
+            if (self::checkTableExists($name) && self::checkFieldExists($name, $column)) {
+                $sql = 'ALTER TABLE ' . _DB_PREFIX_ . 'order_carrier '
+                        . 'DROP COLUMN `' . bqSQL($column) . '`;';
+                Db::getInstance()->execute($sql);
+                LengowMain::log(
+                    LengowLog::CODE_UNINSTALL,
+                    LengowMain::setLogMessage('log.uninstall.column_deleted', ['name' => $column])
+                );
+            }
         }
 
         return true;
@@ -481,6 +473,9 @@ class LengowInstall
     public static function removeFile(string $file): void
     {
         $filePath = _PS_MODULE_LENGOW_DIR_ . $file;
+        if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+            return;
+        }
         if (file_exists($filePath)) {
             if (is_dir($filePath)) {
                 self::deleteDir($filePath);
@@ -1158,7 +1153,10 @@ class LengowInstall
         }
         if (is_null($marketplaceGroupId)) {
             $group = new Group();
-            $languages = Language::getLanguages(true);
+            $languages = Language::getLanguages(false);
+            if (empty($languages)) {
+                $languages = [['id_lang' => (int) Configuration::get('PS_LANG_DEFAULT')]];
+            }
             foreach ($languages as $language) {
                 $group->name[$language['id_lang']] = LengowCustomer::LENGOW_GROUP_NAME;
             }

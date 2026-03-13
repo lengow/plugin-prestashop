@@ -128,50 +128,50 @@ class LengowConfigurationForm
         $placeholder = isset($input[LengowConfiguration::PARAM_PLACEHOLDER])
             ? $input[LengowConfiguration::PARAM_PLACEHOLDER]
             : '';
-        $html .= '<div class="form-group ' . Tools::strtolower($key) . '"'
-            . ($idShop ? ' data-id_shop="' . $idShop . '"' : '') . '>';
+        $html .= '<div class="form-group ' . htmlspecialchars(Tools::strtolower($key), ENT_QUOTES, 'UTF-8') . '"'
+            . ($idShop ? ' data-id_shop="' . (int) $idShop . '"' : '') . '>';
         switch ($inputType) {
             case self::TYPE_CHECKBOX:
                 $checked = $value ? 'checked' : '';
                 $html .= '<div class="lgw-switch ' . $checked . '"><label><div><span></span>';
-                $html .= '<input name="' . $name . '" type="checkbox" ' . $checked . ' >';
-                $html .= '</div>' . $label;
+                $html .= '<input name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '" type="checkbox" ' . $checked . ' >';
+                $html .= '</div>' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
                 $html .= '</label></div></div>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . htmlspecialchars($legend, ENT_QUOTES, 'UTF-8') . '</span>';
                 }
                 break;
             case self::TYPE_TEXT:
-                $html .= '<label class="control-label">' . $label . '</label>
+                $html .= '<label class="control-label">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</label>
                     <input type="text"
-                           name="' . $name . '"
-                           class="form-control" placeholder="' . $placeholder . '"
-                           value="' . $value . '">
+                           name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '"
+                           class="form-control" placeholder="' . htmlspecialchars($placeholder, ENT_QUOTES, 'UTF-8') . '"
+                           value="' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '">
                     </div>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . htmlspecialchars($legend, ENT_QUOTES, 'UTF-8') . '</span>';
                 }
                 break;
             case self::TYPE_SELECT:
-                $html .= '<label class="control-label">' . $label . '</label>
-                    <select class="form-control lengow_select" name="' . $name . '">';
+                $html .= '<label class="control-label">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</label>
+                    <select class="form-control lengow_select" name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '">';
                 foreach ($input[LengowConfiguration::PARAM_COLLECTION] as $row) {
                     $selected = $row['id'] == $value ? 'selected' : '';
-                    $html .= '<option value="' . $row['id'] . '" ' . $selected . '>' . $row['text'] . '</option>';
+                    $html .= '<option value="' . htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8') . '" ' . $selected . '>' . htmlspecialchars($row['text'], ENT_QUOTES, 'UTF-8') . '</option>';
                 }
                 $html .= '</select>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . htmlspecialchars($legend, ENT_QUOTES, 'UTF-8') . '</span>';
                 }
                 $html .= '</div>';
                 break;
             case self::TYPE_DAY:
-                $html .= '<label class="control-label">' . $label . '</label>
+                $html .= '<label class="control-label">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</label>
                         <div class="input-group">
                             <input type="number"
-                                   name="' . $name . '"
+                                   name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '"
                                    class="form-control"
-                                   value="' . $value . '"
+                                   value="' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '"
                                    min="' . (LengowImport::MIN_INTERVAL_TIME / 86400) . '"
                                    max="' . (LengowImport::MAX_INTERVAL_TIME / 86400) . '">
                             <div class="input-group-addon">
@@ -180,18 +180,18 @@ class LengowConfigurationForm
                             <div class="clearfix"></div>
                         </div>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . htmlspecialchars($legend, ENT_QUOTES, 'UTF-8') . '</span>';
                 }
                 $html .= '</div>';
                 break;
             case self::TYPE_OPTIONS:
-                $html .= '<label class="control-label">' . $label . '</label>
-                                  <select class="form-control lengow_select" name="' . $name . '">
+                $html .= '<label class="control-label">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</label>
+                                  <select class="form-control lengow_select" name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '">
                                     <option value="prod" ' . ($value == 'prod' ? 'selected' : '') . '>Prod</option>
                                     <option value="pre-prod" ' . ($value == 'pre-prod' ? 'selected' : '') . '>Sandbox</option>
                                   </select>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . htmlspecialchars($legend, ENT_QUOTES, 'UTF-8') . '</span>';
                 }
 
                 $html .= '</div>';

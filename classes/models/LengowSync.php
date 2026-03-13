@@ -348,6 +348,9 @@ class LengowSync
     public static function getMarketplaces(bool $force = false, bool $logOutput = false): mixed
     {
         $filePath = LengowMarketplace::getFilePath();
+        if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+            return false;
+        }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE);
             if ($updatedAt !== ''

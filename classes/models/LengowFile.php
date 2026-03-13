@@ -113,6 +113,10 @@ class LengowFile
      */
     public static function getResource(string $path, string $mode = 'a+'): mixed
     {
+        if (!LengowMain::isPathAllowed($path, _PS_MODULE_LENGOW_DIR_)) {
+            return false;
+        }
+
         return fopen($path, $mode);
     }
 

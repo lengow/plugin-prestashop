@@ -325,7 +325,7 @@ class LengowToolboxElement
                 $checklist[] = [self::DATA_SIMPLE => $this->locale->t('toolbox.screen.file_list')];
                 foreach ($files as $file) {
                     $fileTimestamp = filectime($folderPath . $file);
-                    $fileLink = '<a href="' . $folderUrl . $file . '" target="_blank">' . $file . '</a>';
+                    $fileLink = '<a href="' . htmlspecialchars($folderUrl . $file, ENT_QUOTES, 'UTF-8') . '" target="_blank">' . htmlspecialchars($file, ENT_QUOTES, 'UTF-8') . '</a>';
                     $checklist[] = [
                         self::DATA_TITLE => $fileLink,
                         self::DATA_MESSAGE => LengowMain::getDateInCorrectFormat($fileTimestamp, true),

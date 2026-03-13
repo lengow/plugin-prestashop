@@ -712,7 +712,7 @@ class LengowOrderController extends LengowController
         if ($item[LengowOrder::FIELD_ORDER_ID]) {
             $href = self::getOrderAdminLink($item[LengowOrder::FIELD_ORDER_ID]);
 
-            return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
+            return '<a href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '" target="_blank">' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '</a>';
         }
 
         return $value;
